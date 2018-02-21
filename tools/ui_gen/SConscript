@@ -1,0 +1,10 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env['LIBS'] = ['common', 'ui_loader', 'xml'] + env['LIBS']
+env.Program('xml_to_ui', ["xml_to_ui.c"])
+
+
+

@@ -1,0 +1,11 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env.Library('theme_gen', ['theme_gen.cc', 'xml_theme_gen.cc'])
+env['LIBS'] = env['LIBS'] + ['theme_gen', 'xml', 'common', 'lftk_base']
+env.Program('themegen', ['main.cc'])
+
+
+

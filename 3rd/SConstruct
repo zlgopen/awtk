@@ -1,0 +1,12 @@
+env=Environment(CCFLAGS = ['-g','-Os','-Wall'], 
+  CPPPATH=['nanovg/src', 'nanovg/example'],
+  LINKFLAGS='-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework Carbon')
+
+
+env.Library('nanovg', ['nanovg/src/nanovg.c'])
+
+LIBPATH=['./'];
+LIBS=['nanovg', 'glfw']
+SRC=['nanovg/example/example_gl3.c', 'nanovg/example/demo.c', 'nanovg/example/perf.c']
+
+env.Program('vgdemo', SRC, LIBS=LIBS, LIBPATH = LIBPATH)

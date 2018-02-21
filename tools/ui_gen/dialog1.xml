@@ -1,0 +1,4 @@
+<dialog x="0" y="0" w="400" h="300">
+  <button x="0" y="0" w="80" h="30" name="ok" text="ok" />
+  <label x="128" y="0" w="80" h="30" name="cancel" text="cancel" />
+</dialog>

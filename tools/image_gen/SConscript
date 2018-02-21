@@ -1,0 +1,11 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env.Library('image_gen', ['image_gen.c']);
+env['LIBS'] = ['image_gen', 'imageloaderbitmap', 'imageloaderstb', 'common'] + env['LIBS']
+env.Program('imagegen', ["main.c"])
+
+
+

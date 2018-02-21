@@ -1,0 +1,8 @@
+import os
+
+env=DefaultEnvironment()
+env.Library('sdl_lcd', ['lcd_sdl2.c', 'lcd_mem.c'])
+
+env.Library('mem_lcd', 'lcd_mem.c')
+env.Library('stm32_raw_lcd', 'lcd_stm32_raw.c')
+

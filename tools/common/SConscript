@@ -1,0 +1,10 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env.Library('common', ['utils.c', 'color_parser.c', 'str.c'])
+
+
+
+

@@ -1,0 +1,7 @@
+import os
+
+env=DefaultEnvironment()
+env.Library('fontstb', ['font_stb.c'])
+env.Library('fontbitmap', ['font_bitmap.c'])
+
+

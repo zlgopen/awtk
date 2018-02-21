@@ -1,0 +1,13 @@
+<window bg-color="#f0f0f0" text-color="black" font-name="sans" font-size="12" />
+<dialog bg-color="#f0f0f0" fg-color="#808080" border-color="#808080" text-color="black" font-name="sans" font-size="12" />
+<button state="normal"   bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
+<button state="pressed"    bg-color="#c0c0c0" text-color="black" border-color="#a0a0a0" />
+<button state="over"     bg-color="#e0e0e0" text-color="black" border-color="#a0a0a0" />
+<button state="disable"  bg-color="gray" text-color="#d0d0d0" border-color="#a0a0a0" />
+<label state="normal"   bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
+<progress_bar state="normal" bg-color="#f0f0f0" text-color="gold" fg-color="black" border-color="#a0a0a0" />
+<check_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="checked" />
+<check_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="unchecked" />
+<radio_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
+<radio_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
+

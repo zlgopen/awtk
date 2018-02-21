@@ -1,0 +1,14 @@
+{
+  "name": "idl_gen",
+  "version": "1.0.0",
+  "description": "generate idl json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xianjimli@hotmail.com",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "glob": "^7.1.2"
+  }
+}

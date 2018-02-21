@@ -1,0 +1,6 @@
+import os
+
+env=DefaultEnvironment().Clone()
+env.Library('lftk_base', Glob('*.c'))
+
+env.Program('mem_test', ["mem_test.cc"])

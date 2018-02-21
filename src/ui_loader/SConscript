@@ -1,0 +1,6 @@
+import os
+
+env=DefaultEnvironment().Clone()
+env.Library('ui_loader', Glob('*.c'))
+
+

@@ -1,0 +1,14 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env.Library('font_gen', ["font_gen.c"])
+env['LIBS'] = ['font_gen', 'fontstb', 'common'] + env['LIBS']
+
+env.Program('fontgen', ["main.c"])
+
+env.Program('genascii', ["gen_ascii.c"])
+
+
+

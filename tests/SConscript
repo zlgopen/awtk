@@ -1,0 +1,26 @@
+import os
+import sys
+
+LFTK_ROOT=os.environ['LFTK_ROOT'];
+GTEST_ROOT=os.environ['GTEST_ROOT'];
+
+env=DefaultEnvironment().Clone();
+
+INCLUDE_PATH = [LFTK_ROOT, 
+  GTEST_ROOT,
+  os.path.join(LFTK_ROOT, 'src'),  
+  os.path.join(GTEST_ROOT, 'src'),
+  os.path.join(GTEST_ROOT, 'include'),
+  os.path.join(GTEST_ROOT, 'make')]
+
+env['CPPPATH'] = INCLUDE_PATH
+env['LIBS'] = ['theme_gen', 'font_gen', 'ui_loader', 'fontstb',  'fontbitmap', 'xml', 'common', 'lftk_base'] + env['LIBS']
+
+SOURCES = [
+ os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
+] + Glob('*.cc') + Glob('*.c')
+
+env.Program('runTest', SOURCES);
+
+
+

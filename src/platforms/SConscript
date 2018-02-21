@@ -1,0 +1,5 @@
+import os
+
+env=DefaultEnvironment().Clone()
+env.Library('platform', ['platform_default.c']);
+
