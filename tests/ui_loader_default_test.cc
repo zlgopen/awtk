@@ -1,8 +1,8 @@
-#include "gtest/gtest.h"
 #include "base/dialog.h"
-#include "ui_loader/ui_loader_default.h"
-#include "ui_loader/ui_builder_writer.h"
 #include "ui_loader/ui_builder_default.h"
+#include "ui_loader/ui_builder_writer.h"
+#include "ui_loader/ui_loader_default.h"
+#include "gtest/gtest.h"
 
 TEST(UILoader, basic) {
   uint8_t data[1024];

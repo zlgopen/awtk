@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/group_box.h"
+#include "base/mem.h"
 
 static const widget_vtable_t s_group_box_vtable;
 

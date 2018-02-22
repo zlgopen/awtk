@@ -19,12 +19,12 @@
  *
  */
 
-#include "base/utf8.h"
-#include "base/mem.h"
-#include "common/utils.h"
-#include "font/font_stb.h"
-#include "font/font_bitmap.h"
 #include "font_gen/font_gen.h"
+#include "base/mem.h"
+#include "base/utf8.h"
+#include "common/utils.h"
+#include "font/font_bitmap.h"
+#include "font/font_stb.h"
 
 #define MAX_CHARS 100 * 1024
 #define MAX_BUFF_SIZE 5 * 1024 * 1024

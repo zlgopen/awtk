@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/label.h"
+#include "base/mem.h"
 
 static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   xy_t x = 0;

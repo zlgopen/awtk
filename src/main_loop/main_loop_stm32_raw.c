@@ -19,22 +19,22 @@
  *
  */
 
-#include "sys.h"
-#include "delay.h"
-#include "usart.h"
-#include "led.h"
-#include "button.h"
-#include "lcd_driver.h"
-#include "gui.h"
-#include "tim.h"
-#include "rtc.h"
-#include "stdlib.h"
-#include "flash.h"
-#include "touch.h"
+#include "main_loop/main_loop_stm32_raw.h"
 #include "base/font_manager.h"
 #include "base/window_manager.h"
+#include "button.h"
+#include "delay.h"
+#include "flash.h"
+#include "gui.h"
 #include "lcd/lcd_stm32_raw.h"
-#include "main_loop/main_loop_stm32_raw.h"
+#include "lcd_driver.h"
+#include "led.h"
+#include "rtc.h"
+#include "stdlib.h"
+#include "sys.h"
+#include "tim.h"
+#include "touch.h"
+#include "usart.h"
 
 typedef struct _main_loop_stm32_raw_t {
   main_loop_t base;
@@ -107,7 +107,7 @@ static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
 static ret_t main_loop_stm32_raw_paint(main_loop_stm32_raw_t* loop) {
   canvas_t* c = &(loop->canvas);
 
-  //return canvas_test_paint(c, loop->pressed, loop->touch_x, loop->touch_y);
+  // return canvas_test_paint(c, loop->pressed, loop->touch_x, loop->touch_y);
   return window_manager_paint(loop->wm, c);
 }
 
@@ -164,4 +164,3 @@ main_loop_t* main_loop_stm32_raw_init(int w, int h) {
 }
 
 main_loop_t* default_main_loop() { return &loop.base; }
-

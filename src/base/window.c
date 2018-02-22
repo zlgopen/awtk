@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/window.h"
+#include "base/mem.h"
 #include "base/window_manager.h"
 
 static ret_t window_on_paint_self(widget_t* widget, canvas_t* c) {

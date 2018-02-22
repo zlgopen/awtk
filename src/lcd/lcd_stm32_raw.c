@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/color.h"
-#include "lcd/rgb565.h"
 #include "lcd/lcd_stm32_raw.h"
+#include "base/color.h"
+#include "base/mem.h"
+#include "lcd/rgb565.h"
 
 static tft_set_window_t set_window_func;
 static tft_write_data_t write_data_func;

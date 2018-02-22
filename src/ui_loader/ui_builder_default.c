@@ -19,17 +19,17 @@
  *
  */
 
+#include "base/button.h"
+#include "base/check_button.h"
+#include "base/dialog.h"
+#include "base/enums.h"
+#include "base/group_box.h"
+#include "base/image.h"
+#include "base/label.h"
+#include "base/progress_bar.h"
 #include "base/utf8.h"
 #include "base/value.h"
-#include "base/enums.h"
-#include "base/dialog.h"
 #include "base/window.h"
-#include "base/label.h"
-#include "base/image.h"
-#include "base/button.h"
-#include "base/group_box.h"
-#include "base/check_button.h"
-#include "base/progress_bar.h"
 #include "ui_loader/ui_builder.h"
 
 static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y,

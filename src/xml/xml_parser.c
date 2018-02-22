@@ -18,8 +18,8 @@
  * 2018-01-19 Li XianJing <xianjimli@hotmail.com> adapted from ftk.
  *
  */
-#include "base/mem.h"
 #include "xml/xml_parser.h"
+#include "base/mem.h"
 
 #define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
 #define isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))

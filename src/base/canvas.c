@@ -538,15 +538,15 @@ ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y) {
   canvas_draw_hline(c, 10, 300, 100);
   canvas_draw_vline(c, 10, 300, 100);
   canvas_draw_text(c, L"abababababa", 10, 15, 110);
-	
-	if(pressed) {
-		canvas_set_fill_color(c, fg);
-	} else {
-		canvas_set_fill_color(c, bg);
-	}
-	 
-	canvas_fill_rect(c, x, y, 10, 10);
-	
+
+  if (pressed) {
+    canvas_set_fill_color(c, fg);
+  } else {
+    canvas_set_fill_color(c, bg);
+  }
+
+  canvas_fill_rect(c, x, y, 10, 10);
+
   canvas_end_frame(c);
 
   return RET_OK;

@@ -19,23 +19,23 @@
  *
  */
 
-#include "resource.h"
 #include "base/platform.h"
+#include "resource.h"
 
 #ifdef WITH_STM32F103ZE_RAW
-#include "sys.h"
-#include "delay.h"
-#include "usart.h"
-#include "led.h"
 #include "button.h"
-#include "lcd_driver.h"
+#include "delay.h"
+#include "flash.h"
 #include "gui.h"
-#include "tim.h"
+#include "lcd_driver.h"
+#include "led.h"
+#include "main_loop/main_loop_stm32_raw.h"
 #include "rtc.h"
 #include "stdlib.h"
-#include "flash.h"
+#include "sys.h"
+#include "tim.h"
 #include "touch.h"
-#include "main_loop/main_loop_stm32_raw.h"
+#include "usart.h"
 
 static __align(8) uint32_t s_heap_mem[2048];
 #else

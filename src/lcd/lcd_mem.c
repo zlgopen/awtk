@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "lcd/lcd_mem.h"
+#include "base/mem.h"
 #include "lcd/rgb565.h"
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {

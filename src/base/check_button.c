@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/wstr.h"
 #include "base/check_button.h"
 #include "base/image_manager.h"
+#include "base/mem.h"
 #include "base/widget_vtable.h"
+#include "base/wstr.h"
 
 enum { BORDER = 2 };
 

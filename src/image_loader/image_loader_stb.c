@@ -21,9 +21,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
+#include "image_loader/image_loader_stb.h"
 #include "base/mem.h"
 #include "stb/stb_image.h"
-#include "image_loader/image_loader_stb.h"
 
 typedef struct _image_loader_stb_t {
   image_loader_t loader;

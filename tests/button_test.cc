@@ -1,10 +1,10 @@
 #include "base/button.h"
-#include <stdlib.h>
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"
-#include "gtest/gtest.h"
 #include "lcd_log.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
 TEST(Button, basic) {
   value_t v1;

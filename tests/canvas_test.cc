@@ -1,10 +1,10 @@
-#include "base/canvas.h"
-#include <stdlib.h>
 #include "base/array.h"
+#include "base/canvas.h"
 #include "base/font_manager.h"
 #include "font_dummy.h"
-#include "gtest/gtest.h"
 #include "lcd_log.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
 TEST(Canvas, draw_hline) {
   rect_t r;

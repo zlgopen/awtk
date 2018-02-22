@@ -1,9 +1,9 @@
 
-#include "base/theme.h"
-#include <stdlib.h>
 #include "base/array.h"
-#include "gtest/gtest.h"
+#include "base/theme.h"
 #include "tools/theme_gen/theme_gen.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
 #include <string>
 using std::string;

@@ -20,8 +20,8 @@
  */
 
 #include "base/image.h"
-#include "base/mem.h"
 #include "base/image_manager.h"
+#include "base/mem.h"
 
 static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   xy_t x = 0;

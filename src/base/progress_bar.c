@@ -19,9 +19,9 @@
  *
  */
 
+#include "base/progress_bar.h"
 #include "base/mem.h"
 #include "base/utils.h"
-#include "base/progress_bar.h"
 
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   xy_t x = 0;

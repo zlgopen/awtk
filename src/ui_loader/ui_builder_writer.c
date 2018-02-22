@@ -19,10 +19,10 @@
  *
  */
 
+#include "base/buffer.h"
+#include "base/enums.h"
 #include "base/utf8.h"
 #include "base/value.h"
-#include "base/enums.h"
-#include "base/buffer.h"
 #include "ui_loader/ui_builder.h"
 #include "ui_loader/ui_loader_default.h"
 

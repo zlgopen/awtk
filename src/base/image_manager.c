@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/image_manager.h"
+#include "base/mem.h"
 
 typedef struct _image_item_t {
   const char* name;

@@ -19,16 +19,16 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/image.h"
-#include "base/utils.h"
-#include "base/label.h"
-#include "base/dialog.h"
 #include "base/button.h"
-#include "base/window.h"
 #include "base/check_button.h"
+#include "base/dialog.h"
+#include "base/image.h"
 #include "base/image_manager.h"
+#include "base/label.h"
+#include "base/mem.h"
 #include "base/progress_bar.h"
+#include "base/utils.h"
+#include "base/window.h"
 
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* progress_bar = (widget_t*)ctx;
@@ -130,7 +130,7 @@ ret_t application_init() {
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);
-//  progress_bar_set_show_text(progress_bar, TRUE);
+  //  progress_bar_set_show_text(progress_bar, TRUE);
 
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
   widget_on(cancel, EVT_CLICK, on_dec, progress_bar);

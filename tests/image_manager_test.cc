@@ -1,9 +1,9 @@
 
-#include "base/image_manager.h"
-#include <stdlib.h>
 #include "base/array.h"
-#include "gtest/gtest.h"
+#include "base/image_manager.h"
 #include "lcd_log.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
 static ret_t dummy_loader_load1(image_loader_t* loader, const char* name, bitmap_t* image) {
   return_value_if_fail(strcmp(name, "11") == 0, RET_FAIL);

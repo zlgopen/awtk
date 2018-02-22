@@ -38,6 +38,8 @@ typedef enum _ret_t {
   RET_FAIL,
   RET_QUIT,
   RET_FOUND,
+  RET_REMOVE,
+  RET_REPEAT,
   RET_NOT_FOUND,
   RET_BAD_PARAMS
 }ret_t;

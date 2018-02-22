@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/button.h"
+#include "base/mem.h"
 
 static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
   xy_t x = 0;

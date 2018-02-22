@@ -19,14 +19,14 @@
  *
  */
 
-#include "theme_gen.h"
-#include "base/theme.h"
-#include "base/enums.h"
-#include "base/widget.h"
 #include "xml_theme_gen.h"
-#include "common/utils.h"
-#include "xml/xml_parser.h"
+#include "base/enums.h"
+#include "base/theme.h"
+#include "base/widget.h"
 #include "common/color_parser.h"
+#include "common/utils.h"
+#include "theme_gen.h"
+#include "xml/xml_parser.h"
 
 typedef struct _xml_builder_t {
   XmlBuilder builder;

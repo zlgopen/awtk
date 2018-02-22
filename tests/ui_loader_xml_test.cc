@@ -1,8 +1,8 @@
-#include "gtest/gtest.h"
 #include "base/dialog.h"
-#include "ui_loader/ui_loader_xml.h"
-#include "ui_loader/ui_builder_writer.h"
 #include "ui_loader/ui_builder_default.h"
+#include "ui_loader/ui_builder_writer.h"
+#include "ui_loader/ui_loader_xml.h"
+#include "gtest/gtest.h"
 
 TEST(UILoaderXML, basic) {
   widget_t* ok = NULL;

@@ -21,8 +21,8 @@
 
 #include "base/mem.h"
 #include "common/utils.h"
-#include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_builder_writer.h"
+#include "ui_loader/ui_loader_xml.h"
 
 int main(int argc, char** argv) {
   uint32_t size = 0;

@@ -1,5 +1,5 @@
-#include <assert.h>
 #include "base/mem.h"
+#include <assert.h>
 
 uint32_t heap[1024];
 

@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/enums.h"
-#include "xml/xml_parser.h"
 #include "ui_loader/ui_loader_xml.h"
+#include "base/enums.h"
+#include "base/mem.h"
+#include "xml/xml_parser.h"
 
 typedef struct _xml_builder_t {
   XmlBuilder builder;

@@ -1,14 +1,14 @@
 
-#include "tools/font_gen/font_gen.h"
-#include <stdlib.h>
 #include "base/array.h"
 #include "base/font.h"
 #include "base/mem.h"
 #include "base/widget.h"
 #include "font/font_bitmap.h"
 #include "font/font_stb.h"
-#include "gtest/gtest.h"
 #include "tools/common/utils.h"
+#include "tools/font_gen/font_gen.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
 #include <string>
 using std::string;

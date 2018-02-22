@@ -19,19 +19,19 @@
  *
  */
 
-#include "sys.h"
-#include "delay.h"
-#include "usart.h"
-#include "led.h"
+#include "base/platform.h"
 #include "button.h"
-#include "lcd_driver.h"
+#include "delay.h"
+#include "flash.h"
 #include "gui.h"
-#include "tim.h"
+#include "lcd_driver.h"
+#include "led.h"
 #include "rtc.h"
 #include "stdlib.h"
-#include "flash.h"
+#include "sys.h"
+#include "tim.h"
 #include "touch.h"
-#include "base/platform.h"
+#include "usart.h"
 
 ret_t platform_init() {
   delay_init();

@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/dialog.h"
 #include "base/group_box.h"
-#include "base/main_loop.h"
 #include "base/image_manager.h"
+#include "base/main_loop.h"
+#include "base/mem.h"
 #include "base/window_manager.h"
 
 enum { TITLE_H = 32 };

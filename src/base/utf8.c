@@ -169,8 +169,8 @@ int unichar_to_utf8(wchar_t c, char* outbuf) {
 #define SURROGATE_VALUE(h, l) (((h)-0xd800) * 0x400 + (l)-0xdc00 + 0x10000)
 
 char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_len) {
-  /* This function and g_utf16_to_ucs4 are almost exactly identical - The lines that differ
-   * are marked.
+  /* This function and g_utf16_to_ucs4 are almost exactly identical - The lines
+   * that differ are marked.
    */
   const wchar_t* in;
   char* out;

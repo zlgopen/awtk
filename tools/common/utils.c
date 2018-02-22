@@ -20,13 +20,13 @@
  */
 
 #include "utils.h"
+#include "base/mem.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "base/mem.h"
 
 char* read_file(const char* file_name, uint32_t* length) {
   struct stat st = {0};

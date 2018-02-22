@@ -1,8 +1,8 @@
 
-#include "base/emitter.h"
-#include <stdlib.h>
 #include "base/array.h"
+#include "base/emitter.h"
 #include "gtest/gtest.h"
+#include <stdlib.h>
 
 #include <string>
 using std::string;

@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
 #include "base/window_manager.h"
+#include "base/mem.h"
 
 static ret_t on_window_destroy(void* ctx, event_t* e) {
   widget_t* wm = WIDGETP(ctx);
