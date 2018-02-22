@@ -27,6 +27,7 @@
 BEGIN_C_DECLS
 
 ret_t platform_init(void);
+uint32_t get_time_ms();
 
 END_C_DECLS
 

@@ -41,15 +41,3 @@ ret_t main_loop_destroy(main_loop_t* l) {
 
   return l->destroy(l);
 }
-
-ret_t main_loop_remove_timer(main_loop_t* l, id_t id) {
-  return_value_if_fail(l != NULL && l->remove_timer != NULL, RET_BAD_PARAMS);
-
-  return l->remove_timer(l, id);
-}
-
-id_t main_loop_add_timer(main_loop_t* l, uint32_t time_ms, event_handler on_event, void* ctx) {
-  return_value_if_fail(l != NULL && l->add_timer != NULL && on_event != NULL, RET_BAD_PARAMS);
-
-  return l->add_timer(l, time_ms, on_event, ctx);
-}

@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/timer.h"
 #include "main_loop/main_loop_stm32_raw.h"
 #include "base/font_manager.h"
 #include "base/window_manager.h"
@@ -115,6 +116,7 @@ static ret_t main_loop_stm32_raw_run(main_loop_t* l) {
   main_loop_stm32_raw_t* loop = (main_loop_stm32_raw_t*)l;
 
   while (l->running) {
+    timer_check();
     main_loop_stm32_raw_dispatch(loop);
     main_loop_stm32_raw_paint(loop);
     delay_ms(100);
@@ -130,17 +132,6 @@ static ret_t main_loop_stm32_raw_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
-static ret_t main_loop_stm32_raw_remove_timer(main_loop_t* l, id_t id) {
-  /*TODO*/
-  return RET_OK;
-}
-
-static id_t main_loop_stm32_raw_add_timer(main_loop_t* l, uint32_t time_ms, event_handler on_event,
-                                          void* ctx) {
-  /*TODO*/
-  return RET_OK;
-}
-
 main_loop_t* main_loop_stm32_raw_init(int w, int h) {
   lcd_t* lcd = NULL;
   widget_t* wm = default_wm();
@@ -151,8 +142,6 @@ main_loop_t* main_loop_stm32_raw_init(int w, int h) {
   base->run = main_loop_stm32_raw_run;
   base->quit = main_loop_stm32_raw_quit;
   base->destroy = main_loop_stm32_raw_destroy;
-  base->add_timer = main_loop_stm32_raw_add_timer;
-  base->remove_timer = main_loop_stm32_raw_remove_timer;
 
   loop.wm = wm;
   window_manager_resize(wm, w, h);

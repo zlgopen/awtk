@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/timer.h"
 #include "base/button.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
@@ -29,6 +30,14 @@
 #include "base/progress_bar.h"
 #include "base/utils.h"
 #include "base/window.h"
+
+static ret_t on_timer(const timer_t* timer) {
+  widget_t* progress_bar = (widget_t*)timer->user_data;
+  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
+  progress_bar_set_value(progress_bar, value);
+
+  return RET_REPEAT;
+}
 
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* progress_bar = (widget_t*)ctx;
@@ -130,6 +139,7 @@ ret_t application_init() {
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);
+  timer_add(on_timer, progress_bar, 1000);
   //  progress_bar_set_show_text(progress_bar, TRUE);
 
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
@@ -137,6 +147,7 @@ ret_t application_init() {
   widget_on(show_dialog, EVT_CLICK, on_show_dialog, NULL);
 
   progress_bar = progress_bar_create(win, 260, 80, 30, 118);
+  timer_add(on_timer, progress_bar, 1000);
   widget_set_value(progress_bar, 40);
   progress_bar_set_vertical(progress_bar, TRUE);
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);

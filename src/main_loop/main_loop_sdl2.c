@@ -23,6 +23,7 @@
 #include "base/font_manager.h"
 #include "base/window_manager.h"
 #include "lcd/lcd_sdl2.h"
+#include "base/timer.h"
 
 typedef struct _main_loop_sdl2_t {
   main_loop_t base;
@@ -145,6 +146,7 @@ static ret_t main_loop_sdl2_run(main_loop_t* l) {
   main_loop_sdl2_t* loop = (main_loop_sdl2_t*)l;
 
   while (l->running) {
+    timer_check();
     main_loop_sdl2_dispatch(loop);
     main_loop_sdl2_paint(loop);
   }
@@ -176,17 +178,6 @@ static ret_t main_loop_sdl2_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
-static ret_t main_loop_sdl2_remove_timer(main_loop_t* l, id_t id) {
-  /*TODO*/
-  return RET_OK;
-}
-
-static id_t main_loop_sdl2_add_timer(main_loop_t* l, uint32_t time_ms, event_handler on_event,
-                                     void* ctx) {
-  /*TODO*/
-  return RET_OK;
-}
-
 static ret_t main_loop_sdl2_create_window(main_loop_sdl2_t* l, font_manager_t* fm, int w, int h) {
   l->w = w;
   l->h = h;
@@ -215,8 +206,6 @@ main_loop_t* main_loop_sdl2_init(int w, int h) {
   base->run = main_loop_sdl2_run;
   base->quit = main_loop_sdl2_quit;
   base->destroy = main_loop_sdl2_destroy;
-  base->add_timer = main_loop_sdl2_add_timer;
-  base->remove_timer = main_loop_sdl2_remove_timer;
 
   loop.wm = wm;
   window_manager_resize(wm, w, h);
