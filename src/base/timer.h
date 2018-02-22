@@ -27,10 +27,10 @@
 BEGIN_C_DECLS
 
 struct _timer_t;
-typedef struct _timer_t timer_t;
+typedef struct _timer_t f_timer_t;
 
 typedef uint32_t (*timer_get_time_t)();
-typedef ret_t (*timer_func_t)(const timer_t* timer);
+typedef ret_t (*timer_func_t)(const f_timer_t* timer);
 
 typedef struct _timer_t {
   timer_func_t on_timer;
@@ -38,7 +38,7 @@ typedef struct _timer_t {
   uint32_t start;
   uint32_t duration_ms; 
   bool_t repeat;
-}timer_t;
+}f_timer_t;
 
 ret_t timer_init(timer_get_time_t get_time);
 ret_t timer_add(timer_func_t on_timer, void* user_data, uint32_t duration_ms);

@@ -24,7 +24,7 @@ static void test_add(array_t* array, void* pv) {
 }
 
 TEST(OArrayTest, popPush) {
-  int i = 0;
+  uint32_t i = 0;
   char* p = NULL;
   array_t array;
   int cases[] = {1, 2, 13, 14, 12, 41, 34, 34, 5, 563, 12, 1, 2, 33};

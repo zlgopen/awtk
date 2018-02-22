@@ -24,6 +24,7 @@
 #include "base/window_manager.h"
 #include "lcd/lcd_sdl2.h"
 #include "base/timer.h"
+#include <SDL2/SDL.h>
 
 typedef struct _main_loop_sdl2_t {
   main_loop_t base;

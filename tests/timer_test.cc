@@ -9,12 +9,12 @@ static uint32_t now = 0;
 static uint32_t timer_get_time() { return now; }
 
 static string s_log;
-static ret_t timer_once(const timer_t* timer) {
+static ret_t timer_once(const f_timer_t* timer) {
   s_log += "o:";
   return RET_OK;
 }
 
-static ret_t timer_repeat(const timer_t* timer) {
+static ret_t timer_repeat(const f_timer_t* timer) {
   s_log += "r:";
   return RET_REPEAT;
 }

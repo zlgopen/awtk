@@ -44,12 +44,12 @@ static ret_t ensure_timer_manager() {
 }
 
 ret_t timer_add(timer_func_t on_timer, void* user_data, uint32_t duration_ms) {
-  timer_t* timer = NULL;
+  f_timer_t* timer = NULL;
 
   return_value_if_fail(s_get_time != NULL && on_timer != NULL && ensure_timer_manager() == RET_OK,
                        RET_BAD_PARAMS);
 
-  timer = MEM_ZALLOC(timer_t);
+  timer = MEM_ZALLOC(f_timer_t);
   return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
 
   timer->start = s_get_time();
@@ -61,8 +61,8 @@ ret_t timer_add(timer_func_t on_timer, void* user_data, uint32_t duration_ms) {
 }
 
 static int compare_timer(const void* a, const void* b) {
-  timer_t* t1 = (timer_t*)a;
-  timer_t* t2 = (timer_t*)b;
+  f_timer_t* t1 = (f_timer_t*)a;
+  f_timer_t* t2 = (f_timer_t*)b;
 
   if (t1->on_timer == t2->on_timer && t1->user_data == t2->user_data &&
       t1->duration_ms == t2->duration_ms) {
@@ -73,7 +73,7 @@ static int compare_timer(const void* a, const void* b) {
 }
 
 ret_t timer_remove(timer_func_t on_timer, void* user_data, uint32_t duration_ms) {
-  timer_t timer;
+  f_timer_t timer;
   return_value_if_fail(on_timer != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
 
   timer.on_timer = on_timer;
@@ -88,7 +88,7 @@ ret_t timer_check() {
   uint32_t k = 0;
   uint32_t nr = 0;
   uint32_t now = 0;
-  timer_t** timers = NULL;
+  f_timer_t** timers = NULL;
   return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
 
   if (s_timer_manager->size == 0) {
@@ -96,9 +96,9 @@ ret_t timer_check() {
   }
 
   now = s_get_time();
-  timers = (timer_t**)s_timer_manager->elms;
+  timers = (f_timer_t**)s_timer_manager->elms;
   for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
-    timer_t* iter = timers[i];
+    f_timer_t* iter = timers[i];
     if ((iter->start + iter->duration_ms) <= now) {
       iter->repeat = RET_REPEAT == iter->on_timer(iter);
       if (iter->repeat) {
@@ -110,7 +110,7 @@ ret_t timer_check() {
   }
 
   for (k = 0, i = 0, nr = s_timer_manager->size; i < nr; i++) {
-    timer_t* iter = timers[i];
+    f_timer_t* iter = timers[i];
     if (iter->repeat) {
       timers[k++] = timers[i];
     }

@@ -31,7 +31,7 @@
 #include "base/utils.h"
 #include "base/window.h"
 
-static ret_t on_timer(const timer_t* timer) {
+static ret_t on_timer(const f_timer_t* timer) {
   widget_t* progress_bar = (widget_t*)timer->user_data;
   uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
   progress_bar_set_value(progress_bar, value);

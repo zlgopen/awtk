@@ -22,7 +22,6 @@
 #ifndef LFTK_MAIN_LOOP_SDL2_H
 #define LFTK_MAIN_LOOP_SDL2_H
 
-#include <SDL2/SDL.h>
 #include "base/main_loop.h"
 
 BEGIN_C_DECLS
