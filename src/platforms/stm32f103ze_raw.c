@@ -33,7 +33,7 @@
 #include "touch.h"
 #include "usart.h"
 
-ret_t platform_init() {
+ret_t platform_prepare() {
   delay_init();
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
   led_init();
