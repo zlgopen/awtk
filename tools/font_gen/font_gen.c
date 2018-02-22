@@ -27,7 +27,7 @@
 #include "font/font_stb.h"
 
 #define MAX_CHARS 100 * 1024
-#define MAX_BUFF_SIZE 5 * 1024 * 1024
+#define MAX_BUFF_SIZE 1 * 1024 * 1024
 
 static int char_cmp(const void* a, const void* b) {
   wchar_t c1 = *(wchar_t*)a;

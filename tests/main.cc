@@ -31,11 +31,11 @@
 #include "gtest/gtest.h"
 #include <stdio.h>
 
-static uint32_t heap[1024 * 1024];
+static uint32_t s_heap_mem[1024 * 1024];
 
 GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
-  mem_init(heap, sizeof(heap));
+  mem_init(s_heap_mem, sizeof(s_heap_mem));
   return RUN_ALL_TESTS();
 }

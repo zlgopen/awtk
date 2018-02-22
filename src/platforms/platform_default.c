@@ -51,6 +51,8 @@ int gettimeofday(struct timeval* tp, void* tzp) {
   tp->tv_usec = wtm.wMilliseconds * 1000;
   return (0);
 }
+#else
+#include <sys/time.h>
 #endif
 
 uint32_t get_time_ms() {

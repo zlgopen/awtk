@@ -25,7 +25,7 @@
 #include "image_loader/image_loader_bitmap.h"
 #include "image_loader/image_loader_stb.h"
 
-#define MAX_BUFF_SIZE 4 * 1024 * 1024
+#define MAX_BUFF_SIZE 1 * 1024 * 1024
 
 ret_t image_gen(bitmap_t* image, const char* output_filename) {
   uint32_t size = 0;

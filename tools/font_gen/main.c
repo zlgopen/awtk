@@ -35,6 +35,9 @@ int main(int argc, char** argv) {
   const char* str_filename = NULL;
   const char* output_filename = NULL;
 
+  static uint32_t s_heap_mem[1024 * 1024];
+  mem_init(s_heap_mem, sizeof(s_heap_mem));
+
   if (argc != 5) {
     printf("Usage: ttf_filename str_filename output_filename font_size\n");
 

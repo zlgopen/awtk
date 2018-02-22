@@ -19,9 +19,13 @@
  *
  */
 
+#include "base/mem.h"
 #include "xml_theme_gen.h"
 
 int main(int argc, char* argv[]) {
+  static uint32_t s_heap_mem[1024 * 1024];
+  mem_init(s_heap_mem, sizeof(s_heap_mem));
+
   if (argc != 3) {
     printf("Usage: %s input output\n", argv[0]);
     return 0;

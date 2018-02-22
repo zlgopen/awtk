@@ -26,10 +26,13 @@
 #include "image_loader/image_loader_stb.h"
 
 int main(int argc, char** argv) {
+  bitmap_t image;
   const char* in_filename = NULL;
   const char* out_filename = NULL;
   image_loader_t* loader = NULL;
-  bitmap_t image;
+
+  static uint32_t s_heap_mem[1024 * 1024];
+  mem_init(s_heap_mem, sizeof(s_heap_mem));
 
   if (argc != 3) {
     printf("Usage: in_filename out_filename\n");
