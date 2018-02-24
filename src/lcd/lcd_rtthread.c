@@ -126,10 +126,9 @@ lcd_t* lcd_rtthread_init(struct rtgui_graphic_driver* driver) {
 
   base->width = (wh_t)driver->width;
   base->height = (wh_t)driver->height;
-  
+
   lcd.driver = driver;
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(base->width, base->height, FALSE);
 
   return base;
 }
-

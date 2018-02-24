@@ -22,6 +22,7 @@
 #include "resource.h"
 #include "base/platform.h"
 
+#define WITH_RT_THREAD 1
 ret_t application_init(void);
 
 #ifdef WITH_STM32F103ZE_RAW
@@ -48,16 +49,17 @@ static uint32_t s_heap_mem[2048];
 static uint32_t s_heap_mem[2048];
 #endif
 
-#ifdef WIN32
+#ifdef WITH_RT_THREAD
+#include "base/mem.h"
+int gui_app_start(void* params) {
+#elif defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-#elif defined(WITH_RT_THREAD)
-#include "base/mem.h"
-int gui_app_start() {
 #else
 #include "base/mem.h"
 int main(void) {
 #endif
+
   platform_prepare();
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
@@ -66,6 +68,8 @@ int main(void) {
 
 #ifdef WITH_STM32F103ZE_RAW
   main_loop_stm32_raw_init(320, 480);
+#elif defined(WITH_RT_THREAD)
+  main_loop_rtthread_init(320, 480);
 #else
   main_loop_sdl2_init(320, 480);
 #endif
