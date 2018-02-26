@@ -21,12 +21,6 @@
 
 #include "base/lcd.h"
 
-ret_t lcd_init(lcd_t* lcd) {
-  return_value_if_fail(lcd != NULL && lcd->init != NULL, RET_BAD_PARAMS);
-
-  return lcd->init(lcd);
-}
-
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 

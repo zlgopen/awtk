@@ -31,7 +31,6 @@ BEGIN_C_DECLS
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 
-typedef ret_t (*lcd_init_t)(lcd_t* lcd);
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
 
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
@@ -45,7 +44,6 @@ typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
 struct _lcd_t {
-    lcd_init_t         init;
     lcd_begin_frame_t  begin_frame;
     lcd_draw_vline_t   draw_vline;
     lcd_draw_hline_t   draw_hline;
@@ -65,8 +63,6 @@ struct _lcd_t {
     color_t fill_color;
     color_t stroke_color;
 };
-
-ret_t lcd_init(lcd_t* lcd);
 
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect);
 

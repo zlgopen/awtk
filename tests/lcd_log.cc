@@ -26,8 +26,6 @@ typedef struct _lcd_log_t {
   string str;
 } lcd_log_t;
 
-static ret_t lcd_log_init(lcd_t* lcd) { return RET_OK; }
-
 static string itos(int v) {
   char str[32];
   snprintf(str, sizeof(str), "%d", v);
@@ -114,7 +112,6 @@ lcd_t* lcd_log_init(wh_t w, wh_t h) {
 
   memset(&lcd, 0x00, sizeof(lcd_log_t));
 
-  base->init = lcd_log_init;
   base->begin_frame = lcd_log_begin_frame;
   base->draw_vline = lcd_log_draw_vline;
   base->draw_hline = lcd_log_draw_hline;
