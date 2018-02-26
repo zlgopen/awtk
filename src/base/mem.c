@@ -40,9 +40,9 @@ typedef struct _mem_info_t {
 
 static mem_info_t mem_info;
 
-void* mem_calloc(uint32_t nmemb, uint32_t size) {
+void* lftk_calloc(uint32_t nmemb, uint32_t size) {
   uint32_t length = nmemb * size;
-  char* ptr = mem_alloc(length);
+  char* ptr = lftk_alloc(length);
 
   if (ptr != NULL) {
     memset(ptr, 0x00, length);
@@ -51,7 +51,7 @@ void* mem_calloc(uint32_t nmemb, uint32_t size) {
   return ptr;
 }
 
-void* mem_alloc(uint32_t size) {
+void* lftk_alloc(uint32_t size) {
   free_node_t* iter = NULL;
   uint32_t length = REAL_SIZE(size);
 
@@ -140,7 +140,7 @@ static void node_merge(free_node_t* iter) {
   return;
 }
 
-void mem_free(void* ptr) {
+void lftk_free(void* ptr) {
   free_node_t* iter = NULL;
   free_node_t* free_iter = NULL;
 
@@ -188,7 +188,7 @@ void mem_free(void* ptr) {
   return;
 }
 
-void* meme_realloc(void* ptr, uint32_t size) {
+void* lftk_realloc(void* ptr, uint32_t size) {
   void* new_ptr = NULL;
 
   if (ptr != NULL) {
@@ -197,13 +197,13 @@ void* meme_realloc(void* ptr, uint32_t size) {
       return ptr;
     }
 
-    new_ptr = mem_alloc(size);
+    new_ptr = lftk_alloc(size);
     if (new_ptr != NULL) {
       memcpy(new_ptr, ptr, size < old_size ? size : old_size);
-      mem_free(ptr);
+      lftk_free(ptr);
     }
   } else {
-    new_ptr = mem_alloc(size);
+    new_ptr = lftk_alloc(size);
   }
 
   return new_ptr;

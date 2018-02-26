@@ -40,18 +40,18 @@ mem_stat_t mem_stat(void);
 
 void mem_info_dump(void);
 
-void* mem_calloc(uint32_t nmemb, uint32_t size);
-void* meme_realloc(void* ptr, uint32_t size);
-void  mem_free(void* ptr);
-void* mem_alloc(uint32_t size);
+void* lftk_calloc(uint32_t nmemb, uint32_t size);
+void* lftk_realloc(void* ptr, uint32_t size);
+void  lftk_free(void* ptr);
+void* lftk_alloc(uint32_t size);
 
 END_C_DECLS
 
-#define MEM_ALLOC(size) mem_alloc(size)
-#define MEM_ZALLOC(type) (type*)mem_calloc(1, sizeof(type))
-#define MEM_ZALLOCN(type, n) (type*)mem_calloc(n, sizeof(type))
-#define MEM_REALLOC(type, p, n) (type*)meme_realloc(p, (n) * sizeof(type))
-#define MEM_FREE(p) mem_free(p)
+#define MEM_ALLOC(size) lftk_alloc(size)
+#define MEM_ZALLOC(type) (type*)lftk_calloc(1, sizeof(type))
+#define MEM_ZALLOCN(type, n) (type*)lftk_calloc(n, sizeof(type))
+#define MEM_REALLOC(type, p, n) (type*)lftk_realloc(p, (n) * sizeof(type))
+#define MEM_FREE(p) lftk_free(p)
 
 #endif/*LFTK_MEM_MANAGER_H*/
 
