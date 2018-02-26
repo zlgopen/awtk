@@ -61,5 +61,5 @@ SConscript([
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
-  'tools/ui_gen/SConscript', 
+  'lua/SConscript', 
   'tests/SConscript'])

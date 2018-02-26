@@ -1,0 +1,437 @@
+[
+ {
+  "type": "enum",
+  "header": [
+   "base/value.h"
+  ],
+  "name": "value_type_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "VALUE_TYPE_INVALID"
+   },
+   {
+    "name": "VALUE_TYPE_BOOL"
+   },
+   {
+    "name": "VALUE_TYPE_INT8"
+   },
+   {
+    "name": "VALUE_TYPE_UINT8"
+   },
+   {
+    "name": "VALUE_TYPE_INT16"
+   },
+   {
+    "name": "VALUE_TYPE_UINT16"
+   },
+   {
+    "name": "VALUE_TYPE_INT32"
+   },
+   {
+    "name": "VALUE_TYPE_UINT32"
+   },
+   {
+    "name": "VALUE_TYPE_INT64"
+   },
+   {
+    "name": "VALUE_TYPE_UINT64"
+   },
+   {
+    "name": "VALUE_TYPE_POINTER"
+   },
+   {
+    "name": "VALUE_TYPE_FLOAT32"
+   },
+   {
+    "name": "VALUE_TYPE_FLOAT64"
+   },
+   {
+    "name": "VALUE_TYPE_STRING"
+   },
+   {
+    "name": "VALUE_TYPE_WSTRING"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "value_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "bool_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_bool",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_bool",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "int8_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_int8",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_int8",
+    "return": "int8_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "uint8_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_uint8",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_uint8",
+    "return": "int8_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "int16_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_int16",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_int16",
+    "return": "int16_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "uint16_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_uint16",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_uint16",
+    "return": "uint16_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_int32",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_int32",
+    "return": "int32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "uint32_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_uint32",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_uint32",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "int64_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_int64",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_int64",
+    "return": "int64_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "uint64_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_uint64",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_uint64",
+    "return": "uint64_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "pointer_t",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_pointer",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_pointer",
+    "return": "void*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "float",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_float",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_float",
+    "return": "float"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "double",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_double",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_double",
+    "return": "double"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     },
+     {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "value_set_str",
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_str",
+    "return": "const char*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "value"
+     }
+    ],
+    "name": "value_is_null",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_int",
+    "return": "int"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "dst"
+     },
+     {
+      "type": "value_t*",
+      "name": "src"
+     }
+    ],
+    "name": "value_copy",
+    "return": "void"
+   },
+   {
+    "params": [],
+    "name": "value_create",
+    "isConstructor": true,
+    "return": "value_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "value_destroy",
+    "isDeconstructor": true,
+    "return": "void"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int8_t",
+    "name": "type",
+    "readonly": true
+   }
+  ],
+  "header": [
+   "base/value.h"
+  ]
+ }
+]

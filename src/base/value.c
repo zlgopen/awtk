@@ -19,13 +19,14 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/value.h"
 #include "base/utils.h"
 
-bool_t value_bool(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_BOOL, FALSE);
+bool_t value_bool(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_BOOL, FALSE);
 
-  return v.value.i8;
+  return v->value.i8;
 }
 
 value_t* value_set_bool(value_t* v, bool_t value) {
@@ -45,10 +46,10 @@ value_t* value_set_int8(value_t* v, int8_t value) {
   return v;
 }
 
-int8_t value_int8(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_INT8, 0);
+int8_t value_int8(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_INT8, 0);
 
-  return v.value.i8;
+  return v->value.i8;
 }
 
 value_t* value_set_uint8(value_t* v, uint8_t value) {
@@ -60,10 +61,10 @@ value_t* value_set_uint8(value_t* v, uint8_t value) {
   return v;
 }
 
-uint8_t value_uint8(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_UINT8, 0);
+uint8_t value_uint8(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_UINT8, 0);
 
-  return v.value.u8;
+  return v->value.u8;
 }
 
 value_t* value_set_int16(value_t* v, int16_t value) {
@@ -75,10 +76,10 @@ value_t* value_set_int16(value_t* v, int16_t value) {
   return v;
 }
 
-int16_t value_int16(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_INT16, 0);
+int16_t value_int16(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_INT16, 0);
 
-  return v.value.i16;
+  return v->value.i16;
 }
 
 value_t* value_set_uint16(value_t* v, uint16_t value) {
@@ -90,10 +91,10 @@ value_t* value_set_uint16(value_t* v, uint16_t value) {
   return v;
 }
 
-uint16_t value_uint16(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_UINT16, 0);
+uint16_t value_uint16(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_UINT16, 0);
 
-  return v.value.u16;
+  return v->value.u16;
 }
 
 value_t* value_set_int32(value_t* v, int32_t value) {
@@ -105,10 +106,10 @@ value_t* value_set_int32(value_t* v, int32_t value) {
   return v;
 }
 
-int32_t value_int32(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_INT32, 0);
+int32_t value_int32(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_INT32, 0);
 
-  return v.value.i32;
+  return v->value.i32;
 }
 
 value_t* value_set_uint32(value_t* v, uint32_t value) {
@@ -119,10 +120,10 @@ value_t* value_set_uint32(value_t* v, uint32_t value) {
   return v;
 }
 
-uint32_t value_uint32(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_UINT32, 0);
+uint32_t value_uint32(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_UINT32, 0);
 
-  return v.value.u32;
+  return v->value.u32;
 }
 
 value_t* value_set_int64(value_t* v, int64_t value) {
@@ -134,10 +135,10 @@ value_t* value_set_int64(value_t* v, int64_t value) {
   return v;
 }
 
-int64_t value_int64(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_INT64, 0);
+int64_t value_int64(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_INT64, 0);
 
-  return v.value.i64;
+  return v->value.i64;
 }
 
 value_t* value_set_uint64(value_t* v, uint64_t value) {
@@ -149,10 +150,10 @@ value_t* value_set_uint64(value_t* v, uint64_t value) {
   return v;
 }
 
-uint64_t value_uint64(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_UINT64, 0);
+uint64_t value_uint64(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_UINT64, 0);
 
-  return v.value.u64;
+  return v->value.u64;
 }
 
 value_t* value_set_pointer(value_t* v, pointer_t value) {
@@ -164,10 +165,10 @@ value_t* value_set_pointer(value_t* v, pointer_t value) {
   return v;
 }
 
-pointer_t value_pointer(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_POINTER, NULL);
+pointer_t value_pointer(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_POINTER, NULL);
 
-  return v.value.ptr;
+  return v->value.ptr;
 }
 
 value_t* value_set_float(value_t* v, float value) {
@@ -179,10 +180,10 @@ value_t* value_set_float(value_t* v, float value) {
   return v;
 }
 
-float value_float(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_FLOAT32, 0.0);
+float value_float(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_FLOAT32, 0.0);
 
-  return v.value.f32;
+  return v->value.f32;
 }
 
 value_t* value_set_double(value_t* v, double value) {
@@ -194,10 +195,10 @@ value_t* value_set_double(value_t* v, double value) {
   return v;
 }
 
-double value_double(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_FLOAT64, 0);
+double value_double(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_FLOAT64, 0);
 
-  return v.value.f64;
+  return v->value.f64;
 }
 
 value_t* value_set_str(value_t* v, const char* value) {
@@ -218,15 +219,15 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value) {
   return v;
 }
 
-const char* value_str(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_STRING, NULL);
+const char* value_str(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_STRING, NULL);
 
-  return v.value.str;
+  return v->value.str;
 }
-const wchar_t* value_wstr(value_t v) {
-  return_value_if_fail(v.type == VALUE_TYPE_WSTRING, NULL);
+const wchar_t* value_wstr(const value_t* v) {
+  return_value_if_fail(v->type == VALUE_TYPE_WSTRING, NULL);
 
-  return v.value.wstr;
+  return v->value.wstr;
 }
 
 void value_copy(value_t* dst, const value_t* src) {
@@ -238,46 +239,44 @@ void value_copy(value_t* dst, const value_t* src) {
   memcpy(dst, src, sizeof(value_t));
 }
 
-const value_t value_null = {VALUE_TYPE_INVALID};
+bool_t value_is_null(value_t* v) { return v->type == VALUE_TYPE_INVALID; }
 
-bool_t value_is_null(value_t value) { return value.type == VALUE_TYPE_INVALID; }
+int value_int(const value_t* v) {
+  return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
-int value_int(value_t v) {
-  return_value_if_fail(v.type != VALUE_TYPE_INVALID, 0);
-
-  switch (v.type) {
+  switch (v->type) {
     case VALUE_TYPE_INT8: {
-      return (int)v.value.i8;
+      return (int)v->value.i8;
     }
     case VALUE_TYPE_UINT8: {
-      return (int)v.value.u8;
+      return (int)v->value.u8;
     }
     case VALUE_TYPE_INT16: {
-      return (int)v.value.i16;
+      return (int)v->value.i16;
     }
     case VALUE_TYPE_UINT16: {
-      return (int)v.value.u16;
+      return (int)v->value.u16;
     }
     case VALUE_TYPE_INT32: {
-      return (int)v.value.i32;
+      return (int)v->value.i32;
     }
     case VALUE_TYPE_UINT32: {
-      return (int)v.value.u32;
+      return (int)v->value.u32;
     }
     case VALUE_TYPE_INT64: {
-      return (int)v.value.i64;
+      return (int)v->value.i64;
     }
     case VALUE_TYPE_UINT64: {
-      return (int)v.value.u64;
+      return (int)v->value.u64;
     }
     case VALUE_TYPE_FLOAT32: {
-      return (int)v.value.f32;
+      return (int)v->value.f32;
     }
     case VALUE_TYPE_FLOAT64: {
-      return (int)v.value.f64;
+      return (int)v->value.f64;
     }
     case VALUE_TYPE_STRING: {
-      return ftk_atoi(v.value.str);
+      return ftk_atoi(v->value.str);
     }
     default:
       break;
@@ -287,3 +286,12 @@ int value_int(value_t v) {
 }
 
 value_t* value_set_int(value_t* v, int32_t value) { return value_set_int32(v, value); }
+
+value_t* value_create() {
+  return MEM_ZALLOC(value_t);
+}
+
+void value_destroy(value_t* v) {
+  MEM_FREE(v);
+}
+

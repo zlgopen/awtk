@@ -1,0 +1,13 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env['LIBS'] = ['lua'] + env['LIBS']
+env.Library('lftk_lua', ['lftk_lua.c'])
+env.Program('lftk_run', ["lftk_run.c", 'lftk_lua.c'])
+env.Program('demo1', ["demo1.c"])
+
+
+
+

@@ -79,14 +79,14 @@ uint32_t widget_get_value(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, 0);
 
-  return widget_get_prop(widget, "value", &v) == RET_OK ? value_int(v) : 0;
+  return widget_get_prop(widget, "value", &v) == RET_OK ? value_int(&v) : 0;
 }
 
 const wchar_t* widget_get_text(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, NULL);
 
-  return widget_get_prop(widget, "value", &v) == RET_OK ? value_wstr(v) : NULL;
+  return widget_get_prop(widget, "value", &v) == RET_OK ? value_wstr(&v) : NULL;
 }
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
@@ -302,22 +302,22 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   if (name[1] == '\0') {
     switch (name[0]) {
       case 'x':
-        widget->x = (wh_t)value_int(*v);
+        widget->x = (wh_t)value_int(v);
         break;
       case 'y':
-        widget->y = (wh_t)value_int(*v);
+        widget->y = (wh_t)value_int(v);
         break;
       case 'w':
-        widget->w = (wh_t)value_int(*v);
+        widget->w = (wh_t)value_int(v);
         break;
       case 'h':
-        widget->h = (wh_t)value_int(*v);
+        widget->h = (wh_t)value_int(v);
         break;
       case 'v': /*visible*/
-        widget->visible = !!value_int(*v);
+        widget->visible = !!value_int(v);
         break;
       case 'e': /*enable*/
-        widget->enable = !!value_int(*v);
+        widget->enable = !!value_int(v);
         break;
       default: {
         if (widget->vt->set_prop) {
@@ -328,11 +328,11 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       }
     }
   } else if (strcmp(name, "visible") == 0) {
-    widget->visible = !!value_int(*v);
+    widget->visible = !!value_int(v);
   } else if (strcmp(name, "enable") == 0) {
-    widget->enable = !!value_int(*v);
+    widget->enable = !!value_int(v);
   } else if (strcmp(name, "name") == 0) {
-    const char* str = value_str(*v);
+    const char* str = value_str(v);
     if (str != NULL) {
       strncpy(widget->name, str, NAME_LEN);
     }

@@ -151,9 +151,9 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (strcmp(name, "value") == 0) {
-    return check_button_set_value(widget, value_int(*v));
+    return check_button_set_value(widget, value_int(v));
   } else if (strcmp(name, "text") == 0) {
-    return check_button_set_text(widget, value_wstr(*v));
+    return check_button_set_text(widget, value_wstr(v));
   }
 
   return RET_NOT_FOUND;

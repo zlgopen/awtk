@@ -22,7 +22,6 @@
 #include "resource.h"
 #include "base/platform.h"
 
-#define WITH_RT_THREAD 1
 ret_t application_init(void);
 
 #ifdef WITH_STM32F103ZE_RAW

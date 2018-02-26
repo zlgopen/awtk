@@ -135,11 +135,11 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (strcmp(name, "value") == 0) {
-    return progress_bar_set_value(widget, value_int(*v));
+    return progress_bar_set_value(widget, value_int(v));
   } else if (strcmp(name, "vertical") == 0) {
-    return progress_bar_set_vertical(widget, value_int(*v));
+    return progress_bar_set_vertical(widget, value_int(v));
   } else if (strcmp(name, "show_text") == 0) {
-    return progress_bar_set_show_text(widget, value_int(*v));
+    return progress_bar_set_show_text(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;

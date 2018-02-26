@@ -59,25 +59,25 @@ TEST(Widget, props) {
   ASSERT_EQ(widget_set_prop(&w, "x", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(&w, "x", &v2), RET_OK);
   ASSERT_EQ(v1.type, v2.type);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_int(&v1, 2);
   ASSERT_EQ(widget_set_prop(&w, "y", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(&w, "y", &v2), RET_OK);
   ASSERT_EQ(v1.type, v2.type);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_int(&v1, 3);
   ASSERT_EQ(widget_set_prop(&w, "w", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(&w, "w", &v2), RET_OK);
   ASSERT_EQ(v1.type, v2.type);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_int(&v1, 4);
   ASSERT_EQ(widget_set_prop(&w, "h", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(&w, "h", &v2), RET_OK);
   ASSERT_EQ(v1.type, v2.type);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   ASSERT_EQ(widget_set_prop(&w, "hh", &v1), RET_NOT_FOUND);
   ASSERT_EQ(widget_get_prop(&w, "hh", &v2), RET_NOT_FOUND);

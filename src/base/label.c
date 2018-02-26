@@ -134,14 +134,14 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
 
   if (name[0] == 't') {
     if (strcmp(name, "text") == 0) {
-      return label_set_text(widget, value_wstr(*v));
+      return label_set_text(widget, value_wstr(v));
     } else if (strcmp(name, "text-align-v") == 0) {
-      return label_set_text_align_v(widget, value_int(*v));
+      return label_set_text_align_v(widget, value_int(v));
     } else if (strcmp(name, "text-align-h") == 0) {
-      return label_set_text_align_h(widget, value_int(*v));
+      return label_set_text_align_h(widget, value_int(v));
     }
   } else if (name[0] == 'b') {
-    return label_set_border(widget, value_int(*v));
+    return label_set_border(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;

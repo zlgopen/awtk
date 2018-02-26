@@ -86,7 +86,7 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (strcmp(name, "text") == 0) {
-    return wstr_set(&(dialog->title), value_wstr(*v));
+    return wstr_set(&(dialog->title), value_wstr(v));
   }
 
   return RET_NOT_FOUND;

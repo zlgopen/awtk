@@ -75,7 +75,7 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (name[0] == 't') {
-    return button_set_text(widget, value_wstr(*v));
+    return button_set_text(widget, value_wstr(v));
   }
 
   return RET_NOT_FOUND;

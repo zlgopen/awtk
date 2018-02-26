@@ -24,17 +24,17 @@ TEST(Label, basic) {
   value_set_uint8(&v1, 1);
   ASSERT_EQ(widget_set_prop(b, "text-align-h", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, "text-align-h", &v2), RET_OK);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_uint8(&v1, 2);
   ASSERT_EQ(widget_set_prop(b, "text-align-v", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, "text-align-v", &v2), RET_OK);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_uint8(&v1, 3);
   ASSERT_EQ(widget_set_prop(b, "border", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, "border", &v2), RET_OK);
-  ASSERT_EQ(value_int(v1), value_int(v2));
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   widget_destroy(b);
 }
