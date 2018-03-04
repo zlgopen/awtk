@@ -30,16 +30,16 @@ static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
   button_t* button = BUTTON(widget);
   color_t color = color_init(0xff, 0xff, 0xff, 0xff);
 
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
-  canvas_set_text_color(c, style_get_color(style, E_TEXT_COLOR, color));
-  canvas_set_stroke_color(c, style_get_color(style, E_BORDER_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
+  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
+  canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
 
   canvas_fill_rect(c, 0, 0, widget->w, widget->h);
   canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
 
   if (button->text.size > 0) {
-    const char* font_name = style_get_str(style, E_FONT_NAME, NULL);
-    uint16_t font_size = style_get_int(style, E_FONT_SIZE, 20);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
 
     canvas_set_font(c, font_name, font_size);
     w = canvas_measure_text(c, button->text.str, button->text.size);
@@ -89,9 +89,11 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       break;
     case EVT_POINTER_UP: {
-      event_t click_e = {EVT_CLICK, widget};
+      pointer_event_t evt = *(pointer_event_t*)e;
+      evt.e.type = EVT_CLICK;
+      evt.e.target = widget;
       widget_set_state(widget, WIDGET_STATE_OVER);
-      widget_dispatch(widget, &click_e);
+      widget_dispatch(widget, (event_t*)&evt);
       break;
     }
     case EVT_POINTER_LEAVE:

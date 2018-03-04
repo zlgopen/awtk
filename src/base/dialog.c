@@ -35,13 +35,13 @@ static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
   dialog_t* dialog = DIALOG(widget);
   color_t color = color_init(0x80, 0x80, 0x80, 0xff);
 
-  canvas_set_fill_color(c, style_get_color(style, E_FG_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_FG_COLOR, color));
   canvas_fill_rect(c, 0, 0, widget->w, TITLE_H);
 
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
   canvas_fill_rect(c, 0, TITLE_H, widget->w, widget->h - TITLE_H);
 
-  canvas_set_stroke_color(c, style_get_color(style, E_BORDER_COLOR, color));
+  canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
   canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
 
   if (dialog->icon.data != NULL) {
@@ -58,11 +58,11 @@ static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
   x += TITLE_H;
   y = (TITLE_H >> 1);
   if (dialog->title.size > 0) {
-    const char* font_name = style_get_str(style, E_FONT_NAME, NULL);
-    uint16_t font_size = style_get_int(style, E_FONT_SIZE, 20);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
 
     canvas_set_font(c, font_name, font_size);
-    canvas_set_fill_color(c, style_get_color(style, E_FG_COLOR, color));
+    canvas_set_fill_color(c, style_get_color(style, STYLE_ID_FG_COLOR, color));
     canvas_draw_text(c, dialog->title.str, dialog->title.size, x, y);
   }
 
@@ -139,14 +139,14 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title) {
 
 uint32_t dialog_modal(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  bool_t running = default_main_loop()->running;
+  bool_t running = main_loop_get_default()->running;
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   log_debug("%s run\n", __func__);
 
   widget_invalidate(widget, NULL);
-  main_loop_run(default_main_loop());
-  default_main_loop()->running = running;
+  main_loop_run(main_loop_get_default());
+  main_loop_get_default()->running = running;
 
   log_debug("%s quit\n", __func__);
 
@@ -158,7 +158,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   dialog->quit_code = code;
-  main_loop_quit(default_main_loop());
+  main_loop_quit(main_loop_get_default());
 
   return RET_OK;
 }

@@ -28,7 +28,8 @@ os.environ['LFTK_ROOT'] = LFTK_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
 
 DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\"', 
-  CPPPATH = [LFTK_SRC, LFTK_3RD_ROOT, LFTK_TOOLS_ROOT] + OS_CPPPATH, 
+  CPPPATH = [LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, LFTK_TOOLS_ROOT, 
+  ] + OS_CPPPATH, 
   LIBS=['lftk_base', 'platform'] + OS_LIBS,
   LINKFLAGS=OS_LINKFLAGS,
   OS_SUBSYSTEM_CONSOLE=OS_SUBSYSTEM_CONSOLE,
@@ -44,6 +45,7 @@ DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\"',
   os.path.join(LFTK_ROOT, 'src/image_loader'), 
   os.path.join(LFTK_ROOT, 'tools/common'), 
   os.path.join(LFTK_ROOT, 'tools/font_gen'), 
+  os.path.join(LFTK_ROOT, 'demos'), 
   os.path.join(LFTK_ROOT, 'tools/image_gen'), 
   os.path.join(LFTK_ROOT, 'tools/theme_gen')] + OS_LIBPATH)
 
@@ -61,5 +63,6 @@ SConscript([
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
-  'lua/SConscript', 
-  'tests/SConscript'])
+  'tests/SConscript',
+  'lua/SConscript'
+  ])

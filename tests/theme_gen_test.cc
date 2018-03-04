@@ -22,15 +22,15 @@ TEST(ThemeGen, basic) {
 
   style.data = theme_find_style(&theme, WIDGET_NONE, 0, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style.data != NULL, true);
-  ASSERT_EQ(style_get_int(&style, E_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_get_int(&style, E_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_get_int(&style, E_FG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_get_str(&style, E_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style.data = theme_find_style(&theme, WIDGET_PROGRESS_BAR, 0, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style.data != NULL, true);
-  ASSERT_EQ(style_get_int(&style, E_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_get_int(&style, E_FG_COLOR, 0), 0x7f00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
 }
 
 TEST(ThemeGen, state) {
@@ -46,13 +46,13 @@ TEST(ThemeGen, state) {
 
   style.data = theme_find_style(&theme, WIDGET_BUTTON, 0, WIDGET_STATE_OVER);
   ASSERT_EQ(style.data != NULL, true);
-  ASSERT_EQ(style_get_int(&style, E_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_get_int(&style, E_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_get_int(&style, E_FG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_get_str(&style, E_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style.data = theme_find_style(&theme, WIDGET_BUTTON, 0, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style.data != NULL, true);
-  ASSERT_EQ(style_get_int(&style, E_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_get_int(&style, E_FG_COLOR, 0), 0x7f00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
 }

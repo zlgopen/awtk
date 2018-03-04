@@ -34,18 +34,18 @@ static const key_type_value_t widget_name_value[] = {{"widget", 0, WIDGET_NONE},
                                                      {"progress_bar", 0, WIDGET_PROGRESS_BAR}};
 
 static const key_type_value_t style_name_value[] = {
-    {"bg-color", TYPE_COLOR, E_BG_COLOR},       {"fg-color", TYPE_COLOR, E_FG_COLOR},
-    {"text-color", TYPE_COLOR, E_TEXT_COLOR},   {"border-color", TYPE_COLOR, E_BORDER_COLOR},
-    {"font-name", TYPE_STRING, E_FONT_NAME},    {"font-size", TYPE_INT, E_FONT_SIZE},
-    {"font-style", TYPE_INT, E_FONT_STYLE},     {"text-align-h", TYPE_INT, E_TEXT_ALIGN_H},
-    {"text-align-v", TYPE_INT, E_TEXT_ALIGN_V}, {"icon", TYPE_STRING, E_ICON},
+    {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},       {"fg-color", TYPE_COLOR, STYLE_ID_FG_COLOR},
+    {"text-color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},   {"border-color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
+    {"font-name", TYPE_STRING, STYLE_ID_FONT_NAME},    {"font-size", TYPE_INT, STYLE_ID_FONT_SIZE},
+    {"font-style", TYPE_INT, STYLE_ID_FONT_STYLE},     {"text-align-h", TYPE_INT, STYLE_ID_TEXT_ALIGN_H},
+    {"text-align-v", TYPE_INT, STYLE_ID_TEXT_ALIGN_V}, {"icon", TYPE_STRING, STYLE_ID_ICON},
 };
 
 static const key_type_value_t state_name_value[] = {
-    {"normal", 0, WIDGET_STATE_NORMAL},   {"over", 0, WIDGET_STATE_OVER},
-    {"pressed", 0, WIDGET_STATE_PRESSED}, {"disable", 0, WIDGET_STATE_DISABLE},
-    {"focus", 0, WIDGET_STATE_FOCUS},     {"selected", 0, WIDGET_STATE_SELECTED},
-    {"checked", 0, WIDGET_STATE_CHECKED}, {"unchecked", 0, WIDGET_STATE_UNCHECKED}};
+    {"normal", 0, WIDGET_STATE_NORMAL},      {"over", 0, WIDGET_STATE_OVER},
+    {"pressed", 0, WIDGET_STATE_PRESSED},    {"disable", 0, WIDGET_STATE_DISABLE},
+    {"focused", 0, WIDGET_STATE_FOCUSED},    {"checked", 0, WIDGET_STATE_CHECKED},
+    {"unchecked", 0, WIDGET_STATE_UNCHECKED}};
 
 static const key_type_value_t align_v_name_value[] = {
     {"top", 0, ALIGN_V_TOP}, {"middle", 0, ALIGN_V_MIDDLE}, {"bottom", 0, ALIGN_V_BOTTOM}};

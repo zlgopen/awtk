@@ -50,6 +50,10 @@ function parseProperty(comment) {
       property.name = arr[3];
     } else if (iter.indexOf('@readonly') >= 0) {
       property.readonly = true;
+    } else if (iter.indexOf(' @private') >= 0) {
+      property.isPrivate = true;
+    } else if (iter.indexOf(' @scriptable') >= 0 && iter.indexOf('no') >= 0) {
+      property.isPrivate = true;
     }
   });
 
@@ -68,6 +72,14 @@ function parseMethod(comment) {
       method.isDeconstructor = true;
     } else if (iter.indexOf(' @constructor') >= 0) {
       method.isConstructor = true;
+    } else if (iter.indexOf(' @global') >= 0) {
+      method.isGlobal = true;
+    } else if (iter.indexOf(' @private') >= 0) {
+      method.isPrivate = true;
+    } else if (iter.indexOf(' @scriptable') >= 0 && iter.indexOf('no') >= 0) {
+      method.isPrivate = true;
+    } else if (iter.indexOf(' @scriptable') >= 0 && iter.indexOf('custom') >= 0) {
+      method.isCustom = true;
     } else if (iter.indexOf(' @param') >= 0) {
       const param = {};
       const arr = parseTokens(iter);
@@ -105,9 +117,21 @@ function extractIDL(result, filename, content) {
             cls.properties = [];
             cls.header = filename;
           } else if (comment.indexOf(' @method') >= 0) {
-            cls.methods.push(parseMethod(comment));
+            const m = parseMethod(comment);
+            if (m && !m.isPrivate) {
+              if (m.isGlobal) {
+                m.type = 'method';
+                m.header = filename;
+                result.push(m);
+              } else {
+                cls.methods.push(m);
+              }
+            }
           } else if (comment.indexOf(' @property') >= 0) {
-            cls.properties.push(parseProperty(comment));
+            const p = parseProperty(comment);
+            if (p && !p.isPrivate) {
+              cls.properties.push(p);
+            }
           } else if (comment.indexOf(' @const') >= 0) {
             cls.consts.push(parseConst(comment));
           } else if (comment.indexOf(' @enum') >= 0) {
@@ -129,13 +153,14 @@ function extractIDL(result, filename, content) {
 
 function genOneFile(result, filename) {
   const content = fs.readFileSync(filename).toString();
-  const name = filename.match(/[a-z|_\d|\.|A-Z]*\/[a-z|_\d|\.|A-Z]*$/);
+  const name = filename.match(/[a-z|_\d|\.|A-Z]*\/[a-z|_\d|\.|A-Z]*$/)[0];
+  console.log(filename);
   extractIDL(result, name, content);
 }
 
 function genAll() {
   const result = [];
-  glob('../../src/**/value.h', null, function (er, files) {
+  glob('../../src/**/*.h', null, function (er, files) {
     files.forEach(iter => {
       genOneFile(result, iter);
     });

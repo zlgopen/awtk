@@ -27,7 +27,7 @@ static ret_t window_on_paint_self(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t color = color_init(0xe9, 0xe9, 0xe9, 0xff);
 
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
   canvas_fill_rect(c, widget->x, widget->y, widget->w, widget->h);
 
   return RET_OK;

@@ -57,12 +57,12 @@ static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
   color_t color = color_init(0xff, 0xff, 0xff, 0xff);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  icon_name = style_get_str(style, E_ICON, NULL);
+  icon_name = style_get_str(style, STYLE_ID_ICON, NULL);
   return_value_if_fail(icon_name != NULL, RET_BAD_PARAMS);
   return_value_if_fail(image_manager_load(default_im(), icon_name, &bitmap) == RET_OK, RET_FAIL);
 
-  canvas_set_text_color(c, style_get_color(style, E_TEXT_COLOR, color));
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
+  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
 
   if (bitmap.data != NULL) {
     rect_t src;
@@ -77,8 +77,8 @@ static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
 
   x += widget->h;
   if (check_button->text.size > 0) {
-    const char* font_name = style_get_str(style, E_FONT_NAME, NULL);
-    uint16_t font_size = style_get_int(style, E_FONT_SIZE, 20);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
 
     canvas_set_font(c, font_name, font_size);
     y = (widget->h >> 1);
@@ -178,7 +178,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   return widget;
 }
 
-widget_t* radio_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = check_button_create(parent, x, y, w, h);
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(widget != NULL, NULL);

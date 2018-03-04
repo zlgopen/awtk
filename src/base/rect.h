@@ -26,16 +26,56 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class point_t
+ * @scriptable
+ * 点。包括一个x坐标和一个y坐标。
+ */
 typedef struct _point_t {
-    xy_t x;
-    xy_t y;
+  /**
+   * @property {xy_t} x 
+   * @readonly
+   * x坐标。
+   */
+  xy_t x;
+  /**
+   * @property {xy_t} y 
+   * @readonly
+   * y坐标。
+   */
+  xy_t y;
 }point_t;
 
+/**
+ * @class rect_t
+ * @scriptable
+ * 矩形。包括一个x坐标、y坐标、宽度和高度。
+ */
 typedef struct _rect_t {
-    xy_t x;
-    xy_t y;
-    wh_t w;
-    wh_t h;    
+  /**
+   * @property {xy_t} x 
+   * @readonly
+   * x坐标。
+   */
+  xy_t x;
+  /**
+   * @property {xy_t} y 
+   * @readonly
+   * y坐标。
+   */
+  xy_t y;
+  /**
+   * @property {wh_t} w 
+   * @readonly
+   * 宽度。
+   */
+  wh_t w;
+  /**
+   * @property {wh_t} h 
+   * @readonly
+   * 高度。
+   */
+  wh_t h;    
 }rect_t;
 
 #define rect_init(r, xx, yy, ww, hh) r.x = (xx); r.y = (yy); r.w = (ww); r.h = (hh);

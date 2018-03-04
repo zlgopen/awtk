@@ -174,14 +174,14 @@ pointer_t value_pointer(const value_t* v) {
 value_t* value_set_float(value_t* v, float value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_FLOAT32;
+  v->type = VALUE_TYPE_FLOAT;
   v->value.f32 = value;
 
   return v;
 }
 
 float value_float(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_FLOAT32, 0.0);
+  return_value_if_fail(v->type == VALUE_TYPE_FLOAT, 0.0);
 
   return v->value.f32;
 }
@@ -189,14 +189,14 @@ float value_float(const value_t* v) {
 value_t* value_set_double(value_t* v, double value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_FLOAT64;
+  v->type = VALUE_TYPE_DOUBLE;
   v->value.f64 = value;
 
   return v;
 }
 
 double value_double(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_FLOAT64, 0);
+  return_value_if_fail(v->type == VALUE_TYPE_DOUBLE, 0);
 
   return v->value.f64;
 }
@@ -269,10 +269,10 @@ int value_int(const value_t* v) {
     case VALUE_TYPE_UINT64: {
       return (int)v->value.u64;
     }
-    case VALUE_TYPE_FLOAT32: {
+    case VALUE_TYPE_FLOAT: {
       return (int)v->value.f32;
     }
-    case VALUE_TYPE_FLOAT64: {
+    case VALUE_TYPE_DOUBLE: {
       return (int)v->value.f64;
     }
     case VALUE_TYPE_STRING: {
@@ -287,11 +287,6 @@ int value_int(const value_t* v) {
 
 value_t* value_set_int(value_t* v, int32_t value) { return value_set_int32(v, value); }
 
-value_t* value_create() {
-  return MEM_ZALLOC(value_t);
-}
+value_t* value_create() { return MEM_ZALLOC(value_t); }
 
-void value_destroy(value_t* v) {
-  MEM_FREE(v);
-}
-
+void value_destroy(value_t* v) { MEM_FREE(v); }

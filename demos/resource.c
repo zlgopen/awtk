@@ -35,7 +35,7 @@
 #include "image_loader/image_loader_bitmap.h"
 
 ret_t resource_init() {
-  default_theme_init(theme_data);
+  theme_init(theme_data);
   image_loader_t* bitmap_loader = image_loader_bitmap_create(10);
   font_manager_add(default_fm(), font_bitmap_create(font_font20));
 

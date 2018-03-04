@@ -163,7 +163,7 @@ rt_bool_t on_event(struct rtgui_object* object, rtgui_event_t* event) {
   return FALSE;
 }
 
-main_loop_t* main_loop_rtthread_init(int w, int h) {
+main_loop_t* main_loop_init(int w, int h) {
   lcd_t* lcd = NULL;
   widget_t* wm = default_wm();
   main_loop_t* base = &(loop.base);
@@ -194,4 +194,4 @@ main_loop_t* main_loop_rtthread_init(int w, int h) {
   return base;
 }
 
-main_loop_t* default_main_loop() { return &loop.base; }
+main_loop_t* main_loop_get_default() { return &loop.base; }

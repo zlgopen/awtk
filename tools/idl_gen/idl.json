@@ -1,9 +1,867 @@
 [
  {
-  "type": "enum",
-  "header": [
-   "base/value.h"
+  "type": "class",
+  "name": "button_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "button_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "button_set_text",
+    "return": "ret_t"
+   }
   ],
+  "properties": [],
+  "header": "base/button.h"
+ },
+ {
+  "type": "class",
+  "name": "check_button_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "check_button_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "check_button_create_radio",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "check_button_set_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "value"
+     }
+    ],
+    "name": "check_button_set_value",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "value",
+    "readonly": true
+   }
+  ],
+  "header": "base/check_button.h"
+ },
+ {
+  "type": "class",
+  "name": "dialog_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "dialog_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "dialog_set_icon",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "title"
+     }
+    ],
+    "name": "dialog_set_title",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "dialog_modal",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "code"
+     }
+    ],
+    "name": "dialog_quit",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/dialog.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/events.h",
+  "name": "event_type_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "EVT_NONE"
+   },
+   {
+    "name": "EVT_POINTER_DOWN"
+   },
+   {
+    "name": "EVT_POINTER_MOVE"
+   },
+   {
+    "name": "EVT_POINTER_UP"
+   },
+   {
+    "name": "EVT_POINTER_ENTER"
+   },
+   {
+    "name": "EVT_POINTER_LEAVE"
+   },
+   {
+    "name": "EVT_CLICK"
+   },
+   {
+    "name": "EVT_KEY_DOWN"
+   },
+   {
+    "name": "EVT_KEY_UP"
+   },
+   {
+    "name": "EVT_MOVE"
+   },
+   {
+    "name": "EVT_RESIZE"
+   },
+   {
+    "name": "EVT_DESTROY"
+   },
+   {
+    "name": "EVT_MOVE_RESIZE"
+   },
+   {
+    "name": "EVT_PROP_CHANGED"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "event_t",
+  "scriptable": true,
+  "methods": [],
+  "properties": [
+   {
+    "type": "int16_t",
+    "name": "type",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
+  "name": "pointer_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "event_t*",
+      "name": "event"
+     }
+    ],
+    "name": "pointer_event_cast",
+    "isConstructor": true,
+    "return": "pointer_event_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "xy_t",
+    "name": "x",
+    "readonly": true
+   },
+   {
+    "type": "xy_t",
+    "name": "y",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "button",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "pressed",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
+  "name": "key_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "event_t*",
+      "name": "event"
+     }
+    ],
+    "name": "key_event_cast",
+    "isConstructor": true,
+    "return": "key_event_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint8_t",
+    "name": "key",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "alt",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "ctrl",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "shift",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
+  "name": "group_box_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "group_box_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/group_box.h"
+ },
+ {
+  "type": "class",
+  "name": "image_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "image_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "image_set_image_name",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/image.h"
+ },
+ {
+  "type": "class",
+  "name": "label_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "label_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint8_t",
+      "name": "border"
+     }
+    ],
+    "name": "label_set_border",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint8_t",
+      "name": "text_align_h"
+     }
+    ],
+    "name": "label_set_text_align_h",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint8_t",
+      "name": "text_align_v"
+     }
+    ],
+    "name": "label_set_text_align_v",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "label_set_text",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint8_t",
+    "name": "border",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "text_align_v",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "text_align_h",
+    "readonly": true
+   }
+  ],
+  "header": "base/label.h"
+ },
+ {
+  "params": [],
+  "name": "lftk_quit",
+  "isGlobal": true,
+  "return": "ret_t",
+  "type": "method",
+  "header": "base/lftk.h"
+ },
+ {
+  "type": "class",
+  "name": "progress_bar_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "progress_bar_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint8_t",
+      "name": "value"
+     }
+    ],
+    "name": "progress_bar_set_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "vertical"
+     }
+    ],
+    "name": "progress_bar_set_vertical",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "show_text"
+     }
+    ],
+    "name": "progress_bar_set_show_text",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint8_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "vertical",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "show_text",
+    "readonly": true
+   }
+  ],
+  "header": "base/progress_bar.h"
+ },
+ {
+  "type": "class",
+  "name": "point_t",
+  "scriptable": true,
+  "methods": [],
+  "properties": [
+   {
+    "type": "xy_t",
+    "name": "x",
+    "readonly": true
+   },
+   {
+    "type": "xy_t",
+    "name": "y",
+    "readonly": true
+   }
+  ],
+  "header": "base/rect.h"
+ },
+ {
+  "type": "class",
+  "name": "rect_t",
+  "scriptable": true,
+  "methods": [],
+  "properties": [
+   {
+    "type": "xy_t",
+    "name": "x",
+    "readonly": true
+   },
+   {
+    "type": "xy_t",
+    "name": "y",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "h",
+    "readonly": true
+   }
+  ],
+  "header": "base/rect.h"
+ },
+ {
+  "type": "class",
+  "name": "style_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/theme.h"
+ },
+ {
+  "type": "class",
+  "name": "theme_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/theme.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/theme.h",
+  "name": "style_type_t",
+  "consts": [
+   {
+    "name": "STYLE_ID_BG_COLOR"
+   },
+   {
+    "name": "STYLE_ID_BG_COLOR"
+   },
+   {
+    "name": "STYLE_ID_FONT_NAME"
+   },
+   {
+    "name": "STYLE_ID_FONT_SIZE"
+   },
+   {
+    "name": "STYLE_ID_FONT_STYLE"
+   },
+   {
+    "name": "STYLE_ID_TEXT_COLOR"
+   },
+   {
+    "name": "STYLE_ID_TEXT_ALIGN_H"
+   },
+   {
+    "name": "STYLE_ID_TEXT_ALIGN_V"
+   },
+   {
+    "name": "STYLE_ID_BORDER_COLOR"
+   },
+   {
+    "name": "STYLE_ID_ICON"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/theme.h",
+  "name": "align_v_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "ALIGN_V_NONE"
+   },
+   {
+    "name": "ALIGN_V_MIDDLE"
+   },
+   {
+    "name": "ALIGN_V_TOP"
+   },
+   {
+    "name": "ALIGN_V_BOTTOM"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/theme.h",
+  "name": "align_h_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "ALIGN_H_NONE"
+   },
+   {
+    "name": "ALIGN_H_CENTER"
+   },
+   {
+    "name": "ALIGN_H_LEFT"
+   },
+   {
+    "name": "ALIGN_H_RIGHT"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "ret_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "RET_OK"
+   },
+   {
+    "name": "RET_OOM"
+   },
+   {
+    "name": "RET_FAIL"
+   },
+   {
+    "name": "RET_QUIT"
+   },
+   {
+    "name": "RET_FOUND"
+   },
+   {
+    "name": "RET_REMOVE"
+   },
+   {
+    "name": "RET_REPEAT"
+   },
+   {
+    "name": "RET_NOT_FOUND"
+   },
+   {
+    "name": "RET_BAD_PARAMS"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/value.h",
   "name": "value_type_t",
   "scriptable": true,
   "consts": [
@@ -41,10 +899,10 @@
     "name": "VALUE_TYPE_POINTER"
    },
    {
-    "name": "VALUE_TYPE_FLOAT32"
+    "name": "VALUE_TYPE_FLOAT"
    },
    {
-    "name": "VALUE_TYPE_FLOAT64"
+    "name": "VALUE_TYPE_DOUBLE"
    },
    {
     "name": "VALUE_TYPE_STRING"
@@ -282,30 +1140,6 @@
       "name": "v"
      },
      {
-      "type": "pointer_t",
-      "name": "value"
-     }
-    ],
-    "name": "value_set_pointer",
-    "return": "value_t*"
-   },
-   {
-    "params": [
-     {
-      "type": "value_t*",
-      "name": "v"
-     }
-    ],
-    "name": "value_pointer",
-    "return": "void*"
-   },
-   {
-    "params": [
-     {
-      "type": "value_t*",
-      "name": "v"
-     },
-     {
       "type": "float",
       "name": "value"
      }
@@ -430,8 +1264,621 @@
     "readonly": true
    }
   ],
-  "header": [
-   "base/value.h"
+  "header": "base/value.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/widget.h",
+  "name": "widget_state_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "WIDGET_STATE_NONE"
+   },
+   {
+    "name": "WIDGET_STATE_NORMAL"
+   },
+   {
+    "name": "WIDGET_STATE_PRESSED"
+   },
+   {
+    "name": "WIDGET_STATE_OVER"
+   },
+   {
+    "name": "WIDGET_STATE_DISABLE"
+   },
+   {
+    "name": "WIDGET_STATE_FOCUSED"
+   },
+   {
+    "name": "WIDGET_STATE_CHECKED"
+   },
+   {
+    "name": "WIDGET_STATE_UNCHECKED"
+   }
   ]
+ },
+ {
+  "type": "enum",
+  "header": "base/widget.h",
+  "name": "widget_type_t",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "WIDGET_NONE"
+   },
+   {
+    "name": "WIDGET_WINDOW_MANAGER"
+   },
+   {
+    "name": "WIDGET_NORMAL_WINDOW"
+   },
+   {
+    "name": "WIDGET_TOOLBAR"
+   },
+   {
+    "name": "WIDGET_DIALOG"
+   },
+   {
+    "name": "WIDGET_POPUP"
+   },
+   {
+    "name": "WIDGET_LABEL"
+   },
+   {
+    "name": "WIDGET_BUTTON"
+   },
+   {
+    "name": "WIDGET_IMAGE"
+   },
+   {
+    "name": "WIDGET_EDIT"
+   },
+   {
+    "name": "WIDGET_PROGRESS_BAR"
+   },
+   {
+    "name": "WIDGET_GROUP_BOX"
+   },
+   {
+    "name": "WIDGET_CHECK_BUTTON"
+   },
+   {
+    "name": "WIDGET_RADIO_BUTTON"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_count_children",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "index"
+     }
+    ],
+    "name": "widget_get_child",
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     }
+    ],
+    "name": "widget_move",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "widget_resize",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "widget_move_resize",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "value"
+     }
+    ],
+    "name": "widget_set_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "widget_set_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_get_value",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_get_text",
+    "return": "wchar_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "point_t*",
+      "name": "p"
+     }
+    ],
+    "name": "widget_to_local",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "point_t*",
+      "name": "p"
+     }
+    ],
+    "name": "widget_to_global",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "widget_set_name",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "enable"
+     }
+    ],
+    "name": "widget_set_enable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "focused"
+     }
+    ],
+    "name": "widget_set_focused",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_state_t",
+      "name": "state"
+     }
+    ],
+    "name": "widget_set_state",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_destroy_children",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "child"
+     }
+    ],
+    "name": "widget_add_child",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "child"
+     }
+    ],
+    "name": "widget_remove_child",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "bool_t",
+      "name": "recursive"
+     }
+    ],
+    "name": "widget_lookup",
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "visible"
+     },
+     {
+      "type": "bool_t",
+      "name": "recursive"
+     }
+    ],
+    "name": "widget_set_visible",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "widget_on",
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "widget_off",
+    "isCustom": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "rect_t*",
+      "name": "r"
+     }
+    ],
+    "name": "widget_invalidate",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "widget_get_prop",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "widget_set_prop",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "child"
+     }
+    ],
+    "name": "widget_grab",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "child"
+     }
+    ],
+    "name": "widget_ungrab",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "xy_t",
+    "name": "x",
+    "readonly": true
+   },
+   {
+    "type": "xy_t",
+    "name": "y",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "h",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "type",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "subtype",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "state",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "enable",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "visible",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "focused",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "name",
+    "readonly": true
+   },
+   {
+    "type": "widget_t*",
+    "name": "parent",
+    "readonly": true
+   }
+  ],
+  "header": "base/widget.h"
+ },
+ {
+  "type": "class",
+  "name": "window_manager_t",
+  "parent": "widget_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/window_manager.h"
+ },
+ {
+  "type": "class",
+  "name": "window_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "window_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/window.h"
  }
 ]

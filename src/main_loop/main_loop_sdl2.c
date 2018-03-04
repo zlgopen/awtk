@@ -197,7 +197,7 @@ static ret_t main_loop_sdl2_create_window(main_loop_sdl2_t* l, font_manager_t* f
 }
 
 static main_loop_sdl2_t loop;
-main_loop_t* main_loop_sdl2_init(int w, int h) {
+main_loop_t* main_loop_init(int w, int h) {
   widget_t* wm = default_wm();
   font_manager_t* fm = default_fm();
   main_loop_t* base = &(loop.base);
@@ -215,4 +215,4 @@ main_loop_t* main_loop_sdl2_init(int w, int h) {
   return base;
 }
 
-main_loop_t* default_main_loop() { return &loop.base; }
+main_loop_t* main_loop_get_default() { return &loop.base; }

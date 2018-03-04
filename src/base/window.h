@@ -26,10 +26,28 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class window_t 
+ * @parent widget_t
+ * @scriptable
+ * 窗口。
+ */
 typedef struct _window_t {
   widget_t widget;
 }window_t;
 
+/**
+ * @method window_create
+ * @constructor
+ * 创建window对象
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ *
+ * @return {widget_t*} 对象。
+ */
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS

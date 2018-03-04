@@ -132,7 +132,7 @@ static ret_t main_loop_stm32_raw_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
-main_loop_t* main_loop_stm32_raw_init(int w, int h) {
+main_loop_t* main_loop_init(int w, int h) {
   lcd_t* lcd = NULL;
   widget_t* wm = default_wm();
   main_loop_t* base = &(loop.base);
@@ -152,4 +152,4 @@ main_loop_t* main_loop_stm32_raw_init(int w, int h) {
   return base;
 }
 
-main_loop_t* default_main_loop() { return &loop.base; }
+main_loop_t* main_loop_get_default() { return &loop.base; }

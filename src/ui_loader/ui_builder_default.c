@@ -68,7 +68,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, uint16_t type, 
       widget = check_button_create(parent, x, y, w, h);
       break;
     case WIDGET_RADIO_BUTTON:
-      widget = radio_button_create(parent, x, y, w, h);
+      widget = check_button_create_radio(parent, x, y, w, h);
       break;
     default:
       log_debug("%s: not supported type %d\n", __func__, type);

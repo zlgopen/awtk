@@ -32,6 +32,7 @@ emitter_t* emitter_init(emitter_t* emitter) {
   return_value_if_fail(emitter, NULL);
   memset(emitter, 0x00, sizeof(emitter_t));
   emitter->enable = TRUE;
+  emitter->curr_id = 1;
 
   return emitter;
 }
@@ -87,21 +88,66 @@ static ret_t emitter_extends(emitter_t* emitter, uint32_t nr) {
   return RET_OK;
 }
 
-ret_t emitter_on(emitter_t* emitter, uint16_t etype, event_handler handler, void* ctx) {
+uint32_t emitter_on(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx) {
   emitter_item_t* iter = NULL;
-  return_value_if_fail(emitter != NULL && handler != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(emitter_extends(emitter, 1) == RET_OK, RET_FAIL);
+  return_value_if_fail(emitter != NULL && handler != NULL, 0);
+  return_value_if_fail(emitter_extends(emitter, 1) == RET_OK, 0);
 
   iter = emitter->items + emitter->size;
   iter->type = etype;
   iter->ctx = ctx;
   iter->handler = handler;
+  iter->id = emitter->curr_id++;
+
   emitter->size++;
 
-  return RET_OK;
+  return iter->id;
 }
 
-ret_t emitter_off(emitter_t* emitter, uint16_t etype, event_handler handler, void* ctx) {
+emitter_item_t* emitter_find(emitter_t* emitter, uint32_t id) {
+  return_value_if_fail(emitter != NULL, NULL);
+
+  if (emitter->items) {
+    uint32_t i = 0;
+    uint32_t size = emitter->size;
+    emitter_item_t* items = emitter->items;
+
+    for (i = 0; i < size; i++) {
+      emitter_item_t* iter = items + i;
+      if (iter->id == id) {
+        return iter;
+      }
+    }
+  }
+
+  return NULL;
+}
+
+ret_t emitter_off(emitter_t* emitter, uint32_t id) {
+  return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
+
+  if (emitter->items) {
+    uint32_t i = 0;
+    uint32_t size = emitter->size;
+    emitter_item_t* items = emitter->items;
+
+    for (i = 0; i < size; i++) {
+      emitter_item_t* iter = items + i;
+      if (iter->id == id) {
+        for (; i < (size - 1); i++) {
+          items[i] = items[i + 1];
+        }
+        emitter->size--;
+
+        return RET_OK;
+      }
+    }
+  }
+
+  return RET_FAIL;
+}
+
+ret_t emitter_off_by_func(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx) {
   return_value_if_fail(emitter != NULL && handler != NULL, RET_BAD_PARAMS);
 
   if (emitter->items) {

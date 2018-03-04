@@ -26,6 +26,10 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class style_t
+ * 控件风格的参数。
+ */
 typedef struct _style_t {
   const uint8_t* data;
 }style_t;
@@ -34,41 +38,131 @@ uint32_t    style_get_int(style_t* s, uint32_t name, uint32_t defval);
 color_t     style_get_color(style_t* s, uint32_t name, color_t defval);
 const char* style_get_str(style_t* s, uint32_t name, const char* defval);
 
+/**
+ * @class theme_t
+ * 主题。
+ */
 typedef struct _theme_t {
   const uint8_t* data;
 }theme_t;
 
-theme_t* default_theme(void);
-theme_t* default_theme_init(const uint8_t* data);
+theme_t* theme_get_default(void);
+theme_t* theme_init(const uint8_t* data);
 
 const uint8_t* theme_find_style(theme_t* t, uint16_t type, uint8_t subtype, uint8_t state);
 
-enum {
-  E_BG_COLOR = 1,
-  E_FG_COLOR,
-  E_FONT_NAME,
-  E_FONT_SIZE,
-  E_FONT_STYLE,
-  E_TEXT_COLOR,
-  E_TEXT_ALIGN_H,
-  E_TEXT_ALIGN_V,
-  E_BORDER_COLOR,
-  E_ICON
-};
+/**
+ * @enum style_type_t
+ * 类型常量定义。
+ */
+typedef enum _style_id_t {
+  /**
+   * @const STYLE_ID_BG_COLOR 
+   * 背景颜色。
+   */
+  STYLE_ID_BG_COLOR = 1,
+  /**
+   * @const STYLE_ID_BG_COLOR 
+   * 前景颜色。
+   */
+  STYLE_ID_FG_COLOR,
+  /**
+   * @const STYLE_ID_FONT_NAME
+   * 字体名称。
+   */
+  STYLE_ID_FONT_NAME,
+  /**
+   * @const STYLE_ID_FONT_SIZE
+   * 字体大小。
+   */
+  STYLE_ID_FONT_SIZE,
+  /**
+   * @const STYLE_ID_FONT_STYLE
+   * 字体风格(粗体、斜体等)。
+   */
+  STYLE_ID_FONT_STYLE,
+  /**
+   * @const STYLE_ID_TEXT_COLOR
+   * 文本颜色。
+   */
+  STYLE_ID_TEXT_COLOR,
+  /**
+   * @const STYLE_ID_TEXT_ALIGN_H
+   * 文本水平对齐的方式。
+   */
+  STYLE_ID_TEXT_ALIGN_H,
+  /**
+   * @const STYLE_ID_TEXT_ALIGN_V
+   * 文本垂直对齐的方式。
+   */
+  STYLE_ID_TEXT_ALIGN_V,
+  /**
+   * @const STYLE_ID_BORDER_COLOR
+   * 边框颜色。
+   */
+  STYLE_ID_BORDER_COLOR,
+  /**
+   * @const STYLE_ID_ICON
+   * 图标的名称。
+   */
+  STYLE_ID_ICON
+}style_id_t;
 
-enum {
+/**
+ * @enum align_v_t
+ * @scriptable
+ * 类型常量定义。
+ */
+typedef enum _align_v_t {
+  /**
+   * @const ALIGN_V_NONE
+   * 无效对齐方式。
+   */
   ALIGN_V_NONE= 0,
+  /**
+   * @const ALIGN_V_MIDDLE
+   * 居中对齐。
+   */
   ALIGN_V_MIDDLE,
+  /**
+   * @const ALIGN_V_TOP
+   * 顶部对齐。
+   */
   ALIGN_V_TOP,
+  /**
+   * @const ALIGN_V_BOTTOM
+   * 底部对齐。
+   */
   ALIGN_V_BOTTOM
-};
+}align_v_t;
 
-enum {
+/**
+ * @enum align_h_t
+ * @scriptable
+ * 类型常量定义。
+ */
+typedef enum _align_h_t {
+  /**
+   * @const ALIGN_H_NONE
+   * 无效对齐方式。
+   */
   ALIGN_H_NONE = 0,
+  /**
+   * @const ALIGN_H_CENTER
+   * 居中对齐。
+   */
   ALIGN_H_CENTER,
+  /**
+   * @const ALIGN_H_LEFT
+   * 左边对齐。
+   */
   ALIGN_H_LEFT,
+  /**
+   * @const ALIGN_H_RIGHT
+   * 右边对齐。
+   */
   ALIGN_H_RIGHT
-};
+}align_h_t;
 
 #define THEME_MAGIC 0xFAFBFCFD
 

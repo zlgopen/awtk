@@ -159,13 +159,13 @@ ret_t application_init() {
   check_button = check_button_create(win, 100, 150, 80, 30);
   widget_set_text(check_button, L"Food");
 
-  radio_button = radio_button_create(win, 10, 200, 80, 30);
+  radio_button = check_button_create_radio(win, 10, 200, 80, 30);
   widget_set_text(radio_button, L"Book");
 
-  radio_button = radio_button_create(win, 100, 200, 80, 30);
+  radio_button = check_button_create_radio(win, 100, 200, 80, 30);
   widget_set_text(radio_button, L"Food");
 
-  radio_button = radio_button_create(win, 190, 200, 80, 30);
+  radio_button = check_button_create_radio(win, 190, 200, 80, 30);
   widget_set_text(radio_button, L"Pencil");
   widget_set_value(radio_button, TRUE);
 

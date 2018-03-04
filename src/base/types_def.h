@@ -33,14 +33,56 @@ typedef int xy_t;
 typedef uint32_t id_t;
 typedef uint32_t wh_t;
 
+/**
+ * @enum ret_t
+ * @scriptable
+ * 函数返回值常量定义。
+ */
 typedef enum _ret_t {
+  /**
+   * @const RET_OK
+   * 成功。
+   */
   RET_OK,
+  /**
+   * @const RET_OOM
+   * Out of memory。
+   */
+  RET_OOM,
+  /**
+   * @const RET_FAIL
+   * 失败。
+   */
   RET_FAIL,
+  /**
+   * @const RET_QUIT
+   * 退出。通常用于主循环。
+   */
   RET_QUIT,
+  /**
+   * @const RET_FOUND
+   * 找到。
+   */
   RET_FOUND,
+  /**
+   * @const RET_REMOVE
+   * 移出。通常用于定时器。
+   */
   RET_REMOVE,
+  /**
+   * @const RET_REPEAT
+   * 重复。通常用于定时器。
+   */
   RET_REPEAT,
+  /**
+   * @const RET_NOT_FOUND
+   * 没找到。
+   */
   RET_NOT_FOUND,
+  /**
+   * @const RET_BAD_PARAMS
+   * 无效参数。
+   */
   RET_BAD_PARAMS
 }ret_t;
 
@@ -138,3 +180,4 @@ enum {
 };
 
 #endif/*TYPES_DEF_H*/
+

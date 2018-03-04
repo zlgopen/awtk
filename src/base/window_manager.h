@@ -26,6 +26,11 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class window_manager_t
+ * @parent widget_t
+ * 窗口管理器。
+ */
 typedef struct _window_manager_t {
   widget_t widget;
 

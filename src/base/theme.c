@@ -113,16 +113,14 @@ const uint8_t* theme_find_style(theme_t* t, uint16_t type, uint8_t subtype, uint
 }
 
 static theme_t s_theme;
-theme_t* default_theme() {
-  return_value_if_fail(s_theme.data != NULL, NULL);
-
+theme_t* theme_get_default() {
   return &s_theme;
 }
 
-theme_t* default_theme_init(const uint8_t* data) {
+theme_t* theme_init(const uint8_t* data) {
   return_value_if_fail(data != NULL, NULL);
 
   s_theme.data = data;
 
-  return default_theme();
+  return theme_get_default();
 }

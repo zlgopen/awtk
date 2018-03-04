@@ -33,9 +33,9 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   color_t color = color_init(0xff, 0xff, 0xff, 0xff);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  canvas_set_text_color(c, style_get_color(style, E_TEXT_COLOR, color));
+  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
 
-  canvas_set_fill_color(c, style_get_color(style, E_FG_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_FG_COLOR, color));
   if (progress_bar->vertical) {
     h = (widget->h * progress_bar->value) / 100;
     canvas_fill_rect(c, x, y + widget->h - h, widget->w, h);
@@ -44,7 +44,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_fill_rect(c, x, y, w, widget->h);
   }
 
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
   if (progress_bar->vertical) {
     h = widget->h - h;
     canvas_fill_rect(c, x, y, widget->w, h);
@@ -54,7 +54,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_fill_rect(c, x, y, w, widget->h);
   }
 
-  canvas_set_stroke_color(c, style_get_color(style, E_BORDER_COLOR, color));
+  canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
   canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
 
   if (progress_bar->show_text) {

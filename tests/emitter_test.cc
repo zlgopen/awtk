@@ -29,7 +29,7 @@ TEST(Emitter, basic) {
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1);
 
-  ASSERT_EQ(emitter_off(&emitter, type, on_event, &n), RET_OK);
+  ASSERT_EQ(emitter_off_by_func(&emitter, type, on_event, &n), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1);
 

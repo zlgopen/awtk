@@ -20,8 +20,8 @@ TEST(UILoaderXML, basic) {
   ASSERT_EQ(builder->root->type == WIDGET_DIALOG, TRUE);
   ASSERT_EQ(widget_count_children(builder->root), 1);
 
-  ok = widget_lookup(builder->root, "ok");
-  cancel = widget_lookup(builder->root, "cancel");
+  ok = widget_lookup(builder->root, "ok", TRUE);
+  cancel = widget_lookup(builder->root, "cancel", TRUE);
 
   ASSERT_EQ(ok != NULL, true);
   ASSERT_EQ(ok->type == WIDGET_BUTTON, true);

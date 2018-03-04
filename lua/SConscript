@@ -3,10 +3,8 @@ import sys
 
 env=DefaultEnvironment().Clone()
 
-env['LIBS'] = ['lua'] + env['LIBS']
-env.Library('lftk_lua', ['lftk_lua.c'])
-env.Program('lftk_run', ["lftk_run.c", 'lftk_lua.c'])
-env.Program('demo1', ["demo1.c"])
+env['LIBS'] = ['resource', 'sdl_main_loop', 'sdl_lcd', 'SDL2', 'fontbitmap', 'imageloaderbitmap', 'lua'] + env['LIBS']
+env.Program('run_lua', ["run_lua.c", 'lftk_lua.c'])
 
 
 

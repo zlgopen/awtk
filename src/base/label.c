@@ -34,14 +34,14 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   canvas_set_font(c, NULL, 20);
-  canvas_set_fill_color(c, style_get_color(style, E_BG_COLOR, color));
-  canvas_set_text_color(c, style_get_color(style, E_TEXT_COLOR, color));
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
+  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
 
   canvas_fill_rect(c, 0, 0, widget->w, widget->h);
   w = canvas_measure_text(c, label->text.str, label->text.size);
 
-  text_align_h = style_get_int(style, E_TEXT_ALIGN_H, label->text_align_h);
-  text_align_v = style_get_int(style, E_TEXT_ALIGN_V, label->text_align_v);
+  text_align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, label->text_align_h);
+  text_align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, label->text_align_v);
 
   switch (text_align_v) {
     case ALIGN_V_TOP:

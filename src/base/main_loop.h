@@ -41,7 +41,9 @@ struct _main_loop_t {
   bool_t running;
 };
 
-main_loop_t* default_main_loop(void);
+main_loop_t* main_loop_init(int w, int h);
+
+main_loop_t* main_loop_get_default(void);
 
 ret_t main_loop_run(main_loop_t* l);
 ret_t main_loop_quit(main_loop_t* l);

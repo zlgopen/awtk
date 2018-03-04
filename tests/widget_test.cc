@@ -29,17 +29,14 @@ TEST(Widget, moveresize) {
   ASSERT_EQ(widget_set_enable(&w, FALSE), RET_OK);
   ASSERT_EQ(w.enable, FALSE);
 
-  ASSERT_EQ(widget_set_visible(&w, TRUE), RET_OK);
+  ASSERT_EQ(widget_set_visible(&w, TRUE, TRUE), RET_OK);
   ASSERT_EQ(w.visible, TRUE);
 
-  ASSERT_EQ(widget_set_visible(&w, FALSE), RET_OK);
+  ASSERT_EQ(widget_set_visible(&w, FALSE, TRUE), RET_OK);
   ASSERT_EQ(w.visible, FALSE);
 
-  ASSERT_EQ(widget_set_selected(&w, TRUE), RET_OK);
-  ASSERT_EQ(w.selected, TRUE);
-
-  ASSERT_EQ(widget_set_selected(&w, FALSE), RET_OK);
-  ASSERT_EQ(w.selected, FALSE);
+  ASSERT_EQ(widget_set_focused(&w, FALSE), RET_OK);
+  ASSERT_EQ(w.focused, FALSE);
 }
 
 TEST(Widget, props) {
@@ -121,17 +118,17 @@ TEST(Widget, children) {
   ASSERT_EQ(widget_set_name(&c6, "c6"), RET_OK);
   ASSERT_EQ(widget_set_name(&group, "group"), RET_OK);
 
-  ASSERT_EQ(widget_lookup_child(&w, "c1"), &c1);
-  ASSERT_EQ(widget_lookup_child(&w, "c2"), &c2);
-  ASSERT_EQ(widget_lookup_child(&w, "c3"), &c3);
+  ASSERT_EQ(widget_lookup(&w, "c1", FALSE), &c1);
+  ASSERT_EQ(widget_lookup(&w, "c2", FALSE), &c2);
+  ASSERT_EQ(widget_lookup(&w, "c3", FALSE), &c3);
 
-  ASSERT_EQ(widget_lookup(&w, "c1"), &c1);
-  ASSERT_EQ(widget_lookup(&w, "c2"), &c2);
-  ASSERT_EQ(widget_lookup(&w, "c3"), &c3);
+  ASSERT_EQ(widget_lookup(&w, "c1", TRUE), &c1);
+  ASSERT_EQ(widget_lookup(&w, "c2", TRUE), &c2);
+  ASSERT_EQ(widget_lookup(&w, "c3", TRUE), &c3);
 
-  ASSERT_EQ(widget_lookup(&w, "c4"), &c4);
-  ASSERT_EQ(widget_lookup(&w, "c5"), &c5);
-  ASSERT_EQ(widget_lookup(&w, "c6"), &c6);
+  ASSERT_EQ(widget_lookup(&w, "c4", TRUE), &c4);
+  ASSERT_EQ(widget_lookup(&w, "c5", TRUE), &c5);
+  ASSERT_EQ(widget_lookup(&w, "c6", TRUE), &c6);
 
   widget_move_resize(&c1, 10, 10, 20, 20);
   ASSERT_EQ(widget_find_target(&w, 11, 11), &c1);

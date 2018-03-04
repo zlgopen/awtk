@@ -88,15 +88,15 @@ typedef enum _value_type_t {
  */
 	VALUE_TYPE_POINTER,
 /**
- * @const VALUE_TYPE_FLOAT32
+ * @const VALUE_TYPE_FLOAT
  * float类型。
  */
-	VALUE_TYPE_FLOAT32,
+	VALUE_TYPE_FLOAT,
 /**
- * @const VALUE_TYPE_FLOAT64
+ * @const VALUE_TYPE_DOUBLE
  * double类型。
  */
-	VALUE_TYPE_FLOAT64,
+	VALUE_TYPE_DOUBLE,
 /**
  * @const VALUE_TYPE_STRING
  * char*类型。
@@ -314,6 +314,7 @@ uint64_t value_uint64(const value_t* v);
 /**
  * @method value_set_pointer
  * 设置类型为pointer的值。
+ * @scriptable no
  * @param {value_t*}  v       value对象。
  * @param {pointer_t}     value   待设置的值。
  *
@@ -324,6 +325,7 @@ value_t* value_set_pointer(value_t* v, pointer_t value);
 /**
  * @method value_pointer
  * 获取类型为pointer的值。
+ * @scriptable no
  * @param {value_t*} v value对象。
  *
  * @return {void*} 值。

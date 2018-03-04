@@ -27,9 +27,10 @@
 BEGIN_C_DECLS
 
 typedef struct _emitter_item_t {
+  uint32_t id;
   uint16_t type;
   void* ctx;
-  event_handler handler; 
+  event_func_t handler; 
 }emitter_item_t;
 
 typedef struct _emitter_t {
@@ -38,13 +39,17 @@ typedef struct _emitter_t {
   uint8_t stop; 
   uint8_t enable; 
   emitter_item_t* items;
+  uint32_t curr_id;
 }emitter_t;
 
 emitter_t* emitter_create(void);
 emitter_t* emitter_init(emitter_t* emitter);
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
-ret_t emitter_on(emitter_t* emitter, uint16_t etype, event_handler handler, void* ctx);
-ret_t emitter_off(emitter_t* emitter, uint16_t etype, event_handler handler, void* ctx);
+
+uint32_t emitter_on(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx);
+ret_t emitter_off(emitter_t* emitter, uint32_t id);
+emitter_item_t* emitter_find(emitter_t* emitter, uint32_t id);
+ret_t emitter_off_by_func(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx);
 
 ret_t emitter_stop(emitter_t* emitter);
 ret_t emitter_enable(emitter_t* emitter);

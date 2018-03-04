@@ -20,7 +20,7 @@
  */
 
 #include "resource.h"
-#include "base/platform.h"
+#include "base/lftk.h"
 
 ret_t application_init(void);
 
@@ -59,25 +59,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 int main(void) {
 #endif
 
-  platform_prepare();
-  mem_init(s_heap_mem, sizeof(s_heap_mem));
+  lftk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
 
   resource_init();
   application_init();
 
-#ifdef WITH_STM32F103ZE_RAW
-  main_loop_stm32_raw_init(320, 480);
-#elif defined(WITH_RT_THREAD)
-  main_loop_rtthread_init(320, 480);
-#else
-  main_loop_sdl2_init(320, 480);
-#endif
-
-  application_init();
-
-  main_loop_run(default_main_loop());
-
-  main_loop_destroy(default_main_loop());
+  lftk_run();
 
   return 0;
 }

@@ -1,5 +1,5 @@
 
-local v = value_t.create()
+local v = Value.create()
 local a = 100;
 
 v:set_int8(100);
@@ -12,10 +12,13 @@ v:set_bool(true)
 v:set_bool()
 print(v:bool());
 
-v:_set("test", 123);
-print(v:_get("test"));
-
-print("VALUE_TYPE_INVALID=" .. VALUE_TYPE_INVALID);
-print("VALUE_TYPE_STRING=" .. VALUE_TYPE_STRING);
+print(v.type);
+print(ValueType)
+print(ValueType.INVALID);
+print(ValueType.BOOL);
+print(ValueType.FLOAT);
 
 v:destroy();
+
+lftk_quit();
+
