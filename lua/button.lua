@@ -20,7 +20,7 @@ function application_init()
     print(ok, getmetatable(ok));
     print(e, getmetatable(e));
     print("on click:" .. tostring(e.x) .. " " .. tostring(e.y))
-    -- ok:off(rid)
+    ok:off(rid)
     return Ret.OK;
   end);
 

@@ -7,7 +7,7 @@ LFTK_TOOLS_ROOT = os.path.join(LFTK_ROOT, 'tools')
 GTEST_ROOT = os.path.join(LFTK_ROOT, '3rd/gtest/googletest')
 
 if os.name == 'posix':
-  OS_FLAGS='-g -Wall'
+  OS_FLAGS='-g -Wall -DLUA_USE_POSIX -DLUA_COMPAT_MODULE'
   OS_LINKFLAGS=''
   OS_LIBPATH=[]
   OS_CPPPATH=[]
@@ -16,7 +16,7 @@ if os.name == 'posix':
   OS_SUBSYSTEM_WINDOWS=''
   
 elif os.name == 'nt':
-  OS_FLAGS='-DWIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE'
+  OS_FLAGS='-DWIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE -DLUA_USE_POSIX -DLUA_COMPAT_MODULE'
   OS_LINKFLAGS='/MACHINE:X64 '
   OS_LIBPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
   OS_CPPPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/']
@@ -35,6 +35,7 @@ DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\"',
   OS_SUBSYSTEM_CONSOLE=OS_SUBSYSTEM_CONSOLE,
   OS_SUBSYSTEM_WINDOWS=OS_SUBSYSTEM_WINDOWS,
   LIBPATH=[os.path.join(LFTK_ROOT, 'src/base'), 
+  os.path.join(LFTK_3RD_ROOT, 'lua'), 
   os.path.join(LFTK_ROOT, 'src/platforms'), 
   os.path.join(LFTK_ROOT, 'src/widgets'), 
   os.path.join(LFTK_ROOT, 'src/lcd'), 
@@ -64,5 +65,6 @@ SConscript([
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tests/SConscript',
+  '3rd/lua/SConscript',
   'lua/SConscript'
   ])

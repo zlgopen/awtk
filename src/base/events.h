@@ -36,7 +36,7 @@ typedef enum _event_type_t {
  * @const EVT_NONE
  * 无效事件名称。
  */
-  EVT_NONE,
+  EVT_NONE = 0,
 /**
  * @const EVT_POINTER_DOWN
  * 指针按下事件名。
