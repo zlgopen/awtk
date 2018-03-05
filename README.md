@@ -75,3 +75,6 @@ demos\demo1
 
 [stm32f103ze](https://github.com/xianjimli/lftk-stm32f103ze-raw.git)
 
+## 文档
+
+* [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)

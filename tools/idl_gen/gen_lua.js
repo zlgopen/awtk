@@ -1,12 +1,5 @@
 const fs = require('fs');
 
-/** 
- * Ref:
- * https://www.codingnow.com/2000/download/lua_manual.html
- * http://book.luaer.cn/_3.htm
- * http://www.cnblogs.com/luweimy/p/3972353.html
- */
-
 const builtin = `#include "custom.c"\n\n`;
 
 function genAll(json) {
