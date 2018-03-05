@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   value.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  generic value type
@@ -430,7 +430,7 @@ value_t* value_set_int(value_t* v, int32_t value);
  *
  * @return {value_t*} 对象。
  */
-value_t* value_create();
+value_t* value_create(void);
 
 /**
  * @method value_destroy

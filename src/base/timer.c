@@ -120,4 +120,4 @@ ret_t timer_check() {
   return RET_OK;
 }
 
-ret_t timer_count() { return ensure_timer_manager() == RET_OK ? s_timer_manager->size : 0; }
+uint32_t timer_count() { return ensure_timer_manager() == RET_OK ? s_timer_manager->size : 0; }

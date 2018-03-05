@@ -43,8 +43,8 @@ typedef struct _timer_t {
 ret_t timer_init(timer_get_time_t get_time);
 ret_t timer_add(timer_func_t on_timer, void* user_data, uint32_t duration_ms);
 ret_t timer_remove(timer_func_t on_timer, void* user_data, uint32_t duration_ms);
-ret_t timer_check();
-ret_t timer_count();
+ret_t timer_check(void);
+uint32_t timer_count(void);
 
 END_C_DECLS
 

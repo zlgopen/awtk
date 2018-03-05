@@ -48,7 +48,7 @@ ret_t lftk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lftk_run();
+ret_t lftk_run(void);
 
 /**
  * @method lftk_quit
@@ -57,7 +57,7 @@ ret_t lftk_run();
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lftk_quit();
+ret_t lftk_quit(void);
 
 END_C_DECLS
 

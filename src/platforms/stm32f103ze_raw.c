@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/timer.h"
 #include "base/platform.h"
 #include "button.h"
 #include "delay.h"

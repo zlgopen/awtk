@@ -282,7 +282,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return ret;
 }
 
-ret_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
+uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   if (widget->emitter == NULL) {
     widget->emitter = emitter_create();
