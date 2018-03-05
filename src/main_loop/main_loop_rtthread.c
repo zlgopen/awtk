@@ -187,6 +187,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop.main_win = rtgui_mainwin_create(RT_NULL, "UiWindow", RTGUI_WIN_STYLE_NO_TITLE);
   rtgui_object_set_event_handler(RTGUI_OBJECT(&loop), on_event);
   rtgui_win_show(loop.main_win, RT_FALSE);
+  main_loop_set_default(base);
 
   (void)w;
   (void)h;
@@ -194,4 +195,3 @@ main_loop_t* main_loop_init(int w, int h) {
   return base;
 }
 
-main_loop_t* main_loop_get_default() { return &loop.base; }

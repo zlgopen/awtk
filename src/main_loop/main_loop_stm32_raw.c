@@ -148,8 +148,8 @@ main_loop_t* main_loop_init(int w, int h) {
 
   lcd = lcd_stm32_raw_create(w, h, TFT_WriteData, TFT_SetWindow);
   canvas_init(&(loop.canvas), lcd, default_fm());
+  main_loop_set_default(base);
 
   return base;
 }
 
-main_loop_t* main_loop_get_default() { return &loop.base; }

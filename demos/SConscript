@@ -4,7 +4,7 @@ env=DefaultEnvironment().Clone();
 
 env.Library('resource', ['resource.c']);
 
-env['LIBS'] = ['resource', 'sdl_main_loop', 'sdl_lcd', 'SDL2', 'fontbitmap', 'imageloaderbitmap'] + env['LIBS']
+env['LIBS'] = ['resource', 'fontbitmap', 'imageloaderbitmap'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
 env.Program('demo1', ['demo1_main.c', 'demo1_app.c']);
 

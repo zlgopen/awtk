@@ -111,7 +111,7 @@ typedef enum _style_id_t {
 /**
  * @enum align_v_t
  * @scriptable
- * 类型常量定义。
+ * 垂直对齐的常量定义。
  */
 typedef enum _align_v_t {
   /**
@@ -139,7 +139,7 @@ typedef enum _align_v_t {
 /**
  * @enum align_h_t
  * @scriptable
- * 类型常量定义。
+ * 水平对齐的常量定义。
  */
 typedef enum _align_h_t {
   /**

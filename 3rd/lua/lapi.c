@@ -72,7 +72,6 @@ static TValue *index2value (lua_State *L, int idx) {
   else if (idx == LUA_REGISTRYINDEX)
     return &G(L)->l_registry;
   else {  /* upvalues */
-    int r = LUA_REGISTRYINDEX;
     idx = LUA_REGISTRYINDEX - idx;
     api_check(L, idx <= MAXUPVAL + 1, "upvalue index too large");
     if (ttislcf(s2v(ci->func)))  /* light C function? */
