@@ -825,6 +825,54 @@
   ]
  },
  {
+  "type": "class",
+  "name": "timer_t",
+  "scriptable": true,
+  "isFake": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "timer_func_t",
+      "name": "on_timer"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration_ms"
+     }
+    ],
+    "name": "timer_add",
+    "isStatic": true,
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "uint32_t",
+      "name": "timer_id"
+     }
+    ],
+    "name": "timer_remove",
+    "isStatic": true,
+    "isCustom": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "timer_count",
+    "isStatic": true,
+    "return": "uint32_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/timer.h"
+ },
+ {
   "type": "enum",
   "header": "base/types_def.h",
   "name": "ret_t",

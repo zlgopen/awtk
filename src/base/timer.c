@@ -23,8 +23,9 @@
 #include "base/array.h"
 #include "base/mem.h"
 
-static timer_get_time_t s_get_time = NULL;
+static uint32_t s_timer_id = 1;
 static array_t* s_timer_manager = NULL;
+static timer_get_time_t s_get_time = NULL;
 
 ret_t timer_init(timer_get_time_t get_time) {
   return_value_if_fail(get_time != NULL, RET_BAD_PARAMS);
@@ -43,44 +44,53 @@ static ret_t ensure_timer_manager() {
   return RET_OK;
 }
 
-ret_t timer_add(timer_func_t on_timer, void* user_data, uint32_t duration_ms) {
-  f_timer_t* timer = NULL;
+uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms) {
+  timer_info_t* timer = NULL;
+  return_value_if_fail(on_timer != NULL, 0);
+  return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, 0);
 
-  return_value_if_fail(s_get_time != NULL && on_timer != NULL && ensure_timer_manager() == RET_OK,
-                       RET_BAD_PARAMS);
+  timer = MEM_ZALLOC(timer_info_t);
+  return_value_if_fail(timer != NULL, 0);
 
-  timer = MEM_ZALLOC(f_timer_t);
-  return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
-
+  timer->ctx = ctx;
+  timer->id = s_timer_id++;
   timer->start = s_get_time();
-  timer->user_data = user_data;
   timer->on_timer = on_timer;
   timer->duration_ms = duration_ms;
 
-  return array_push(s_timer_manager, timer) ? RET_OK : RET_FAIL;
+  return array_push(s_timer_manager, timer) ? timer->id : 0;
 }
 
 static int compare_timer(const void* a, const void* b) {
-  f_timer_t* t1 = (f_timer_t*)a;
-  f_timer_t* t2 = (f_timer_t*)b;
+  timer_info_t* t1 = (timer_info_t*)a;
+  timer_info_t* t2 = (timer_info_t*)b;
 
-  if (t1->on_timer == t2->on_timer && t1->user_data == t2->user_data &&
-      t1->duration_ms == t2->duration_ms) {
+  if (t1->id == t2->id) {
     return 0;
   }
 
   return -1;
 }
 
-ret_t timer_remove(timer_func_t on_timer, void* user_data, uint32_t duration_ms) {
-  f_timer_t timer;
-  return_value_if_fail(on_timer != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
+ret_t timer_remove(uint32_t timer_id) {
+  timer_info_t timer;
+  return_value_if_fail(timer_id > 0, RET_BAD_PARAMS);
+  return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
 
-  timer.on_timer = on_timer;
-  timer.user_data = user_data;
-  timer.duration_ms = duration_ms;
+  timer.id = timer_id;
 
   return array_remove(s_timer_manager, compare_timer, &timer) ? RET_OK : RET_FAIL;
+}
+
+const timer_info_t* timer_find(uint32_t timer_id) {
+  timer_info_t timer;
+  return_value_if_fail(timer_id > 0, NULL);
+  return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, NULL);
+
+  timer.id = timer_id;
+
+  return (const timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
+
 }
 
 ret_t timer_check() {
@@ -88,7 +98,7 @@ ret_t timer_check() {
   uint32_t k = 0;
   uint32_t nr = 0;
   uint32_t now = 0;
-  f_timer_t** timers = NULL;
+  timer_info_t** timers = NULL;
   return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
 
   if (s_timer_manager->size == 0) {
@@ -96,9 +106,9 @@ ret_t timer_check() {
   }
 
   now = s_get_time();
-  timers = (f_timer_t**)s_timer_manager->elms;
+  timers = (timer_info_t**)s_timer_manager->elms;
   for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
-    f_timer_t* iter = timers[i];
+    timer_info_t* iter = timers[i];
     if ((iter->start + iter->duration_ms) <= now) {
       iter->repeat = RET_REPEAT == iter->on_timer(iter);
       if (iter->repeat) {
@@ -110,7 +120,7 @@ ret_t timer_check() {
   }
 
   for (k = 0, i = 0, nr = s_timer_manager->size; i < nr; i++) {
-    f_timer_t* iter = timers[i];
+    timer_info_t* iter = timers[i];
     if (iter->repeat) {
       timers[k++] = timers[i];
     }
@@ -121,3 +131,4 @@ ret_t timer_check() {
 }
 
 uint32_t timer_count() { return ensure_timer_manager() == RET_OK ? s_timer_manager->size : 0; }
+

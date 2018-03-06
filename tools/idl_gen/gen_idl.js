@@ -16,6 +16,8 @@ function parseClass(cls, comment) {
       cls.scriptable = true;
     } else if (iter.indexOf('@parent') >= 0) {
       cls.parent = parseTokens(iter)[2];
+    } else if (iter.indexOf('@fake') >= 0) {
+      cls.isFake = true;
     }
   });
 }
@@ -72,6 +74,8 @@ function parseMethod(comment) {
       method.isDeconstructor = true;
     } else if (iter.indexOf(' @constructor') >= 0) {
       method.isConstructor = true;
+    } else if (iter.indexOf(' @static') >= 0) {
+      method.isStatic = true;
     } else if (iter.indexOf(' @global') >= 0) {
       method.isGlobal = true;
     } else if (iter.indexOf(' @private') >= 0) {

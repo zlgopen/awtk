@@ -14,6 +14,7 @@
 #include "base/progress_bar.h"
 #include "base/rect.h"
 #include "base/theme.h"
+#include "base/timer.h"
 #include "base/types_def.h"
 #include "base/value.h"
 #include "base/widget.h"
@@ -1438,6 +1439,26 @@ static void align_h_t_init(lua_State* L) {
 
 }
 
+static int wrap_timer_count(lua_State* L) {
+  uint32_t ret = 0;
+  ret = (uint32_t)timer_count();
+
+  lua_pushinteger(L,(lua_Integer)(ret));
+
+  return 1;
+}
+
+static void timer_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {
+    {"add", wrap_timer_add},
+    {"remove", wrap_timer_remove},
+    {"count", wrap_timer_count},
+    {NULL, NULL}
+  };
+
+  luaL_openlib(L, "Timer", static_funcs, 0);
+  lua_settop(L, 0);
+}
 static void ret_t_init(lua_State* L) {
   lua_newtable(L);
   lua_setglobal(L, "Ret");
@@ -2616,6 +2637,7 @@ void luaL_openlftk(lua_State* L) {
   style_type_t_init(L);
   align_v_t_init(L);
   align_h_t_init(L);
+  timer_t_init(L);
   ret_t_init(L);
   value_type_t_init(L);
   value_t_init(L);

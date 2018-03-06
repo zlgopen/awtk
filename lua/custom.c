@@ -57,7 +57,7 @@ static ret_t call_on_event(void* ctx, event_t* e) {
 
   lua_pcall(L,1,1,0);
 
-  return RET_OK;
+  return 1;
 }
 
 static int wrap_widget_on(lua_State* L) {
@@ -113,6 +113,54 @@ static int to_str(lua_State* L) {
 
   utf8_from_utf16(str, p, size);
   lua_pushstring(L, p); 
+
+  return 1;
+}
+
+static ret_t call_on_timer(const timer_info_t* timer) {
+  ret_t ret = RET_REMOVE;
+  lua_State* L = (lua_State*)s_current_L;
+  int func_id = (char*)(timer->ctx) - (char*)NULL;
+
+  lua_settop(L, 0);
+  lua_rawgeti(L, LUA_REGISTRYINDEX, func_id);
+
+  lua_pcall(L, 0, 1, 0);
+  
+  ret = (ret_t)lua_tonumber(L, -1);
+
+  return ret;
+}
+
+static int wrap_timer_add(lua_State* L) {
+  uint32_t id = 0;
+  if(lua_isfunction(L, 1)) {
+    int func_id = 0;
+    uint32_t duration_ms = (uint32_t)luaL_checkinteger(L, 2);
+    lua_pushvalue(L, 1); 
+    func_id = luaL_ref(L, LUA_REGISTRYINDEX);
+  
+    id = timer_add(call_on_timer, (char*)NULL + func_id, duration_ms);
+    lua_pushnumber(L,(lua_Number)id);
+
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+static int wrap_timer_remove(lua_State* L) {
+  ret_t ret = 0;
+  uint32_t id = (uint32_t)luaL_checkinteger(L, 1);
+  const timer_info_t* timer = timer_find(id);
+
+  if(timer) {
+    uint32_t func_id = (char*)(timer->ctx) - (char*)NULL;
+    luaL_unref(L, LUA_REGISTRYINDEX, func_id);
+    ret = (ret_t)timer_remove(id);
+  }
+
+  lua_pushnumber(L,(lua_Number)(ret));
 
   return 1;
 }

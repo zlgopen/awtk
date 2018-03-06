@@ -272,7 +272,7 @@ function genAll(json) {
     str += '  static const struct luaL_Reg static_funcs[] = {\n'
     cls.methods.forEach(m => {
       const name = methodToShortName(cls.name, m.name);
-      if (m.isConstructor) {
+      if (m.isConstructor || m.isStatic) {
         str += `    {"${name}", wrap_${m.name}},\n`;
       }
     });
@@ -280,17 +280,21 @@ function genAll(json) {
     str += `    {NULL, NULL}\n`;
     str += '  };\n\n'
 
-    str += '  static const struct luaL_Reg index_funcs[] = {\n'
-    str += `    {"__index", wrap_${clsName}_get_prop},\n`;
-    str += `    {"__newindex", wrap_${clsName}_set_prop},\n`;
-    str += `    {NULL, NULL}\n`;
-    str += '  };\n\n'
 
-    str += `  luaL_newmetatable(L, "lftk.${cls.name}");\n`;
-    str += `  lua_pushstring(L, "__index");\n`;
-    str += '  lua_pushvalue(L, -2);\n';
-    str += '  lua_settable(L, -3);\n';
-    str += `  luaL_openlib(L, NULL, index_funcs, 0);\n`;
+    if(!cls.isFake) {
+      str += '  static const struct luaL_Reg index_funcs[] = {\n'
+      str += `    {"__index", wrap_${clsName}_get_prop},\n`;
+      str += `    {"__newindex", wrap_${clsName}_set_prop},\n`;
+      str += `    {NULL, NULL}\n`;
+      str += '  };\n\n'
+
+      str += `  luaL_newmetatable(L, "lftk.${cls.name}");\n`;
+      str += `  lua_pushstring(L, "__index");\n`;
+      str += '  lua_pushvalue(L, -2);\n';
+      str += '  lua_settable(L, -3);\n';
+      str += `  luaL_openlib(L, NULL, index_funcs, 0);\n`;
+    }
+
     str += `  luaL_openlib(L, "${toLuaClassName(cls.name)}", static_funcs, 0);\n`;
 
     str += '  lua_settop(L, 0);\n';
@@ -309,15 +313,17 @@ function genAll(json) {
       }
     });
 
-    str += `\nstatic const struct luaL_Reg ${cls.name}_member_funcs[] = {\n`
-    cls.methods.forEach(m => {
-      const name = methodToShortName(cls.name, m.name);
-      if (!m.isConstructor) {
-        str += `  {"${name}", wrap_${m.name}},\n`;
-      }
-    });
-    str += `  {NULL, NULL}\n`;
-    str += '};\n\n'
+    if(!cls.isFake) {
+      str += `\nstatic const struct luaL_Reg ${cls.name}_member_funcs[] = {\n`
+      cls.methods.forEach(m => {
+        const name = methodToShortName(cls.name, m.name);
+        if (!m.isConstructor && !m.isStatic) {
+          str += `  {"${name}", wrap_${m.name}},\n`;
+        }
+      });
+      str += `  {NULL, NULL}\n`;
+      str += '};\n\n'
+    }
 
     return str;
   }
@@ -326,8 +332,10 @@ function genAll(json) {
     let str = '';
 
     str += genMethods(cls);
-    str += genSetProp(cls);
-    str += genGetProp(cls);
+    if(!cls.isFake) {
+      str += genSetProp(cls);
+      str += genGetProp(cls);
+    }
     str += genClassInit(cls);
 
     return str;
@@ -387,8 +395,10 @@ function genAll(json) {
     json.forEach(iter => {
       if (iter.type == 'class') {
         const clsName = iter.name;
-        result += `static int wrap_${clsName}_get_prop(lua_State* L);\n`;
-        result += `static int wrap_${clsName}_set_prop(lua_State* L);\n`;
+        if(!iter.isFake) {
+          result += `static int wrap_${clsName}_get_prop(lua_State* L);\n`;
+          result += `static int wrap_${clsName}_set_prop(lua_State* L);\n`;
+        }
       }
     });
     result += '\n';

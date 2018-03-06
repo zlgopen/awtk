@@ -40,7 +40,7 @@ ret_t lftk_run() {
   return RET_OK;
 }
 
-static ret_t lftk_quit_idle(const f_timer_t* timer) {
+static ret_t lftk_quit_idle(const timer_info_t* timer) {
   return main_loop_quit(main_loop_get_default());
 }
 
