@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lftk.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  lftk

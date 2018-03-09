@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widget_vtable.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  widget vtable default impl

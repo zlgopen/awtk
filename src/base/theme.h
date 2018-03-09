@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   theme.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  theme interface

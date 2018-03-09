@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  window

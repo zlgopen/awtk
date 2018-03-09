@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_manager.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  bitmap manager

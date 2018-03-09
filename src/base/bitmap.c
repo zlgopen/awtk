@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   bitmap.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  bitmap interface

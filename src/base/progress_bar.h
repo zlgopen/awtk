@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   progress_bar.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  progress_bar

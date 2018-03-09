@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   platform.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  platform struct and utils functions.

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   emitter.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  emitter dispatcher

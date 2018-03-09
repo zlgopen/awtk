@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   array.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  dynamic array.

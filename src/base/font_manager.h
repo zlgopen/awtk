@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_manager.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  font manager

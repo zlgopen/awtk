@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   utf8.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  utf8 encode decode

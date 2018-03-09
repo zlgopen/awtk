@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   rect.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  rect struct and utils functions.

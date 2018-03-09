@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mem.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  memory manager functions.

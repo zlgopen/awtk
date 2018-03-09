@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_manager.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  window manager

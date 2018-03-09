@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   enums.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  enumerations

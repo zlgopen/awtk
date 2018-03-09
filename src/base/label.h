@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   label.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  label

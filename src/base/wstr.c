@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   wstr.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  width char

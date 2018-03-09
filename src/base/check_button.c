@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   check_button.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  check_button

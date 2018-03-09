@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   color.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  color structs.

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   events.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  events structs

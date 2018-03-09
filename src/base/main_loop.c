@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   main_loop.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  main_loop interface

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   utils.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  utils struct and utils functions.

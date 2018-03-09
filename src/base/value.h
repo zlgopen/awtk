@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   value.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  generic value type

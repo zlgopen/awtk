@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   theme.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  theme manager

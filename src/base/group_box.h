@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   group_box.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  group_box

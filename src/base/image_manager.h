@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_manager.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  image manager

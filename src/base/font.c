@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  font interface

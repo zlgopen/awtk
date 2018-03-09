@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   dialog.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  dialog

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  lcd interface
