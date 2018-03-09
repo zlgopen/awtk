@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "common/utils.h"
+#include "base/resource_manager.h"
 #include "ui_loader/ui_builder_writer.h"
 #include "ui_loader/ui_loader_xml.h"
 
@@ -50,7 +51,7 @@ int main(int argc, char** argv) {
 
   ui_loader_load(loader, (const uint8_t*)content, size, builder);
 
-  output_c_source(out_filename, "ui_", NULL, wbuffer.data, wbuffer.cursor);
+  output_res_c_source(out_filename, RESOURCE_TYPE_UI, wbuffer.data, wbuffer.cursor);
 
   MEM_FREE(content);
 

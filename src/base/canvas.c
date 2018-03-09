@@ -343,13 +343,26 @@ ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
 static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y) {
   glyph_t g;
   int32_t i = 0;
+  xy_t left = x;
+
   if (nr < 0) {
     nr = wcslen(str);
   }
 
   y -= c->font->size * 2 / 3;
   for (i = 0; i < nr; i++) {
-    if (font_find_glyph(c->font, str[i], &g) == RET_OK) {
+    wchar_t chr = str[i];
+    if (chr == ' ') {
+      x += 4 + 1;
+    } else if (chr == '\r') {
+      if (str[i + 1] != '\n') {
+        y += c->font->size;
+        x = left;
+      }
+    } else if (chr == '\r') {
+      y += c->font->size;
+      x = left;
+    } else if (font_find_glyph(c->font, chr, &g) == RET_OK) {
       xy_t xx = x + g.x;
       xy_t yy = y + c->font->size + g.y;
 

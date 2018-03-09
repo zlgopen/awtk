@@ -4,9 +4,11 @@ env=DefaultEnvironment().Clone();
 
 env.Library('resource', ['resource.c']);
 
-env['LIBS'] = ['resource', 'fontbitmap', 'imageloaderbitmap'] + env['LIBS']
+env['LIBS'] = ['ui_loader', 'resource', 'fontbitmap', 'imageloaderbitmap'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
-env.Program('demo1', ['demo1_main.c', 'demo1_app.c']);
+
+env.Program('demo1', ['demo_main.c', 'demo1_app.c']);
+env.Program('demoui', ['demo_ui_app.c', 'demo_main.c']);
 
 
 

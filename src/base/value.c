@@ -24,9 +24,49 @@
 #include "base/utils.h"
 
 bool_t value_bool(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_BOOL, FALSE);
+  return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
-  return v->value.i8;
+  switch (v->type) {
+    case VALUE_TYPE_INT8: {
+      return v->value.i8 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_UINT8: {
+      return v->value.u8 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_INT16: {
+      return v->value.i16 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_UINT16: {
+      return v->value.u16 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_INT32: {
+      return v->value.i32 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_UINT32: {
+      return v->value.u32 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_INT64: {
+      return v->value.i64 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_UINT64: {
+      return v->value.u64 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_FLOAT: {
+      return v->value.f32 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return v->value.f64 ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_STRING: {
+      return (v->value.str == NULL || v->value.str[0] == '\0' || strcmp(v->value.str, "false") == 0)
+                 ? FALSE
+                 : TRUE;
+    }
+    default:
+      break;
+  }
+
+  return FALSE;
 }
 
 value_t* value_set_bool(value_t* v, bool_t value) {

@@ -31,6 +31,8 @@ char* read_file(const char* file_name, uint32_t* length);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff, uint32_t size);
 
+ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uint32_t size);
+
 END_C_DECLS
 
 #endif//UTILS_H

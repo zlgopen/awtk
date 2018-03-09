@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
   } else {
     lftk_run();
   }
-  
+
   lua_close(L);
 
   return 0;

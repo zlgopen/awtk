@@ -20,6 +20,9 @@
  */
 
 #include "ui_loader/ui_loader.h"
+#include "base/resource_manager.h"
+#include "ui_loader/ui_loader_default.h"
+#include "ui_loader/ui_builder_default.h"
 
 ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui_builder_t* b) {
   return_value_if_fail(loader != NULL && loader->load != NULL, RET_BAD_PARAMS);

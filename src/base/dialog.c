@@ -87,6 +87,8 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
 
   if (strcmp(name, "text") == 0) {
     return wstr_set(&(dialog->title), value_wstr(v));
+  } else if (strcmp(name, "icon") == 0) {
+    return dialog_set_icon(widget, value_str(v));
   }
 
   return RET_NOT_FOUND;

@@ -215,4 +215,3 @@ main_loop_t* main_loop_init(int w, int h) {
 
   return base;
 }
-

@@ -241,6 +241,7 @@
   "type": "enum",
   "header": "base/events.h",
   "name": "event_type_t",
+  "prefix": "EVT_",
   "scriptable": true,
   "consts": [
    {
@@ -751,6 +752,7 @@
   "type": "enum",
   "header": "base/theme.h",
   "name": "style_type_t",
+  "prefix": "STYLE",
   "consts": [
    {
     "name": "STYLE_ID_BG_COLOR"
@@ -788,6 +790,7 @@
   "type": "enum",
   "header": "base/theme.h",
   "name": "align_v_t",
+  "prefix": "ALIGN_V_",
   "scriptable": true,
   "consts": [
    {
@@ -808,6 +811,7 @@
   "type": "enum",
   "header": "base/theme.h",
   "name": "align_h_t",
+  "prefix": "ALIGN_H_",
   "scriptable": true,
   "consts": [
    {
@@ -876,6 +880,7 @@
   "type": "enum",
   "header": "base/types_def.h",
   "name": "ret_t",
+  "prefix": "RET_",
   "scriptable": true,
   "consts": [
    {
@@ -911,6 +916,7 @@
   "type": "enum",
   "header": "base/value.h",
   "name": "value_type_t",
+  "prefix": "VALUE_TYPE_",
   "scriptable": true,
   "consts": [
    {
@@ -1318,6 +1324,7 @@
   "type": "enum",
   "header": "base/widget.h",
   "name": "widget_state_t",
+  "prefix": "WIDGET_",
   "scriptable": true,
   "consts": [
    {
@@ -1350,6 +1357,7 @@
   "type": "enum",
   "header": "base/widget.h",
   "name": "widget_type_t",
+  "prefix": "WIDGET_TYPE_",
   "scriptable": true,
   "consts": [
    {
@@ -1362,13 +1370,22 @@
     "name": "WIDGET_NORMAL_WINDOW"
    },
    {
-    "name": "WIDGET_TOOLBAR"
+    "name": "WIDGET_TOOL_BAR"
    },
    {
     "name": "WIDGET_DIALOG"
    },
    {
     "name": "WIDGET_POPUP"
+   },
+   {
+    "name": "WIDGET_SPRITE"
+   },
+   {
+    "name": "WIDGET_KEYBOARD"
+   },
+   {
+    "name": "WIDGET_DRAGGER"
    },
    {
     "name": "WIDGET_LABEL"

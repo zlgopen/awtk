@@ -34,6 +34,7 @@ BEGIN_C_DECLS
 /**
  * @enum widget_state_t
  * @scriptable
+ * @prefix WIDGET_
  * 控件状态常量定义。
  */
 typedef enum _widget_state_t {
@@ -101,10 +102,10 @@ typedef enum _widget_type_t {
    */
   WIDGET_NORMAL_WINDOW,
   /**
-   * @const WIDGET_TOOLBAR
+   * @const WIDGET_TOOL_BAR
    * 工具条。
    */
-  WIDGET_TOOLBAR,
+  WIDGET_TOOL_BAR,
   /**
    * @const WIDGET_DIALOG
    * 对话框。
@@ -115,6 +116,21 @@ typedef enum _widget_type_t {
    * 弹出框。
    */
   WIDGET_POPUP,
+  /**
+   * @const WIDGET_SPRITE
+   * 精灵窗口如鼠标指针。
+   */
+  WIDGET_SPRITE,
+  /**
+   * @const WIDGET_KEYBOARD
+   * 软键盘。
+   */
+  WIDGET_KEYBOARD,
+  /**
+   * @const WIDGET_DRAGGER
+   * drag & drop icon。
+   */
+  WIDGET_DRAGGER,
   /**
    * @const WIDGET_LABEL
    * 简单文本。
@@ -577,6 +593,32 @@ uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, v
 ret_t widget_off(widget_t* widget, uint32_t id);
 
 /**
+ * @method widget_child_on
+ * 注册指定事件的处理函数。
+ * @scriptable custom
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 子控件的名称。
+ * @param {event_type_t} type 事件类型。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {uint32_t} 返回id，用于widget_off。
+ */
+uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type, event_func_t on_event, void* ctx); 
+
+/**
+ * @method widget_on
+ * 注册指定事件的处理函数。
+ * @scriptable custom
+ * @param {widget_t*} widget 控件对象。
+ * @param {event_type_t} type 事件类型。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {uint32_t} 返回id，用于widget_off。
+ */
+uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx); 
+/**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
  * @scriptable no
@@ -682,6 +724,8 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_destroy(widget_t* widget);
+
+ret_t widget_to_xml(widget_t* widget);
 
 #define WIDGET(w) (&(w.widget))
 #define WIDGETP(w) (widget_t*)(w)

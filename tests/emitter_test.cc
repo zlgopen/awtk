@@ -18,14 +18,15 @@ static ret_t on_event(void* ctx, event_t* e) {
 TEST(Emitter, basic) {
   event_t e;
   uint32_t n = 0;
+  uint32_t id = 0;
   emitter_t emitter;
   emitter_init(&emitter);
   uint16_t type = 12;
   e.type = type;
-  ASSERT_EQ(emitter_on(NULL, type, on_event, NULL), RET_BAD_PARAMS);
-  ASSERT_EQ(emitter_on(&emitter, type, NULL, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(emitter_on(NULL, type, on_event, NULL), 0);
+  ASSERT_EQ(emitter_on(&emitter, type, NULL, NULL), 0);
 
-  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n), RET_OK);
+  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1);
 
@@ -34,17 +35,17 @@ TEST(Emitter, basic) {
   ASSERT_EQ(n, 1);
 
   n = 0;
-  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n), RET_OK);
+  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1);
 
   n = 0;
-  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n), RET_OK);
+  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 2);
 
   n = 0;
-  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n), RET_OK);
+  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 3);
 

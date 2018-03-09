@@ -26,8 +26,11 @@ function parseEnum(cls, comment) {
   comment.split('\n').forEach(iter => {
     if (iter.indexOf('@enum') >= 0) {
       cls.name = parseTokens(iter)[2];
+      cls.prefix = cls.name.replace(/t$/, "").toUpperCase();
     } else if (iter.indexOf('@scriptable') >= 0) {
       cls.scriptable = true;
+    } else if (iter.indexOf('@prefix') >= 0) {
+      cls.prefix = parseTokens(iter)[2].toUpperCase();
     }
   });
 }

@@ -30,7 +30,9 @@
 #include "base/utf8.h"
 #include "base/value.h"
 #include "base/window.h"
-#include "ui_loader/ui_builder.h"
+#include "ui_loader/ui_builder_default.h"
+#include "ui_loader/ui_loader_default.h"
+#include "base/resource_manager.h"
 
 static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y,
                                                 xy_t w, xy_t h) {
@@ -80,6 +82,8 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, uint16_t type, 
     b->root = widget;
   }
 
+  log_debug("%d %d %d %d %d\n", type, x, y, w, h);
+
   return RET_OK;
 }
 
@@ -117,6 +121,11 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
   return RET_OK;
 }
 
+static ret_t ui_builder_default_on_widget_prop_end(ui_builder_t* b) {
+  (void)b;
+  return RET_OK;
+}
+
 static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
   b->widget = b->widget->parent;
 
@@ -130,7 +139,20 @@ ui_builder_t* ui_builder_default() {
 
   s_ui_builder.on_widget_start = ui_builder_default_on_widget_start;
   s_ui_builder.on_widget_prop = ui_builder_default_on_widget_prop;
+  s_ui_builder.on_widget_prop_end = ui_builder_default_on_widget_prop_end;
   s_ui_builder.on_widget_end = ui_builder_default_on_widget_end;
 
   return &s_ui_builder;
+}
+
+widget_t* window_open(const char* name) {
+  ui_loader_t* loader = default_ui_loader();
+  ui_builder_t* builder = ui_builder_default();
+  const resource_info_t* ui = resource_manager_ref(RESOURCE_TYPE_UI, name);
+  return_value_if_fail(ui != NULL, NULL);
+
+  ui_loader_load(loader, ui->data, ui->size, builder);
+  resource_manager_unref(ui);
+
+  return builder->root;
 }

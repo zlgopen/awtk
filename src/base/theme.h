@@ -53,6 +53,7 @@ const uint8_t* theme_find_style(theme_t* t, uint16_t type, uint8_t subtype, uint
 
 /**
  * @enum style_type_t
+ * @prefix STYLE
  * 类型常量定义。
  */
 typedef enum _style_id_t {

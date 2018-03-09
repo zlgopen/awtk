@@ -348,7 +348,7 @@ function genAll(json) {
     str += `  lua_setglobal(L, "${toLuaClassName(cls.name)}");\n`;
     str += `  lua_getglobal(L, "${toLuaClassName(cls.name)}");\n\n`;
 
-    const clsNamePrefix = cls.name.toUpperCase().replace(/_T$/, "_");
+    const clsNamePrefix = cls.prefix;
     cls.consts.forEach(iter => {
       const name = iter.name.replace(clsNamePrefix, "");
 

@@ -28,6 +28,8 @@ BEGIN_C_DECLS
 
 ui_builder_t* ui_builder_default();
 
+widget_t* window_open(const char* name);
+
 END_C_DECLS
 
 #endif/*LFTK_UI_BUILDER_DEFAULT_H*/

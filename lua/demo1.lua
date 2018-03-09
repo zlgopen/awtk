@@ -13,13 +13,13 @@ function application_init()
   local bar = ProgressBar.create(win, 10, 80, 168, 30);
   bar:set_value(40);
   
-  inc:on(EventType.EVT_CLICK, function(evt) 
+  inc:on(EventType.CLICK, function(evt) 
     local e = PointerEvent.cast(evt);
     bar:set_value(bar.value + 10);
     print('on inc click:(' .. tostring(e.x) .. ' ' .. tostring(e.y) .. ')')
   end);
   
-  dec:on(EventType.EVT_CLICK, function(evt) 
+  dec:on(EventType.CLICK, function(evt) 
     local e = PointerEvent.cast(evt);
     bar:set_value(bar.value - 10);
     print('on dec click:(' .. tostring(e.x) .. ' ' .. tostring(e.y) .. ')')

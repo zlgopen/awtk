@@ -19,8 +19,9 @@
  *
  */
 
-#include "base/widget.h"
 #include "base/mem.h"
+#include "base/enums.h"
+#include "base/widget.h"
 #include "base/widget_vtable.h"
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
@@ -86,7 +87,7 @@ const wchar_t* widget_get_text(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, NULL);
 
-  return widget_get_prop(widget, "value", &v) == RET_OK ? value_wstr(&v) : NULL;
+  return widget_get_prop(widget, "text", &v) == RET_OK ? value_wstr(&v) : NULL;
 }
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
@@ -289,6 +290,11 @@ uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, v
   }
 
   return emitter_on(widget->emitter, type, on_event, ctx);
+}
+
+uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
+                         event_func_t on_event, void* ctx) {
+  return widget_on(widget_lookup(widget, name, TRUE), type, on_event, ctx);
 }
 
 ret_t widget_off(widget_t* widget, uint32_t id) {
@@ -666,7 +672,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
     widget->vt = widget_vtable_default();
   }
 
-  if(type != WIDGET_WINDOW_MANAGER) {
+  if (type != WIDGET_WINDOW_MANAGER) {
     widget_update_style(widget);
   }
 
@@ -712,4 +718,33 @@ widget_t* widget_get_child(widget_t* widget, uint32_t index) {
   return_value_if_fail(index < widget->children->size, NULL);
 
   return WIDGETP(widget->children->elms[index]);
+}
+
+ret_t widget_to_xml(widget_t* widget) {
+  const wchar_t* text = NULL;
+  const key_type_value_t* kv = widget_name_find_by_value(widget->type);
+
+  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name,
+            widget->x, widget->y, widget->w, widget->h);
+  text = widget_get_text(widget);
+  if (text) {
+    char str[128];
+    utf8_from_utf16(text, str, sizeof(str));
+    log_debug(" text=\"%s\"", str);
+  }
+
+  if (widget->children) {
+    uint32_t i = 0;
+    log_debug(">\n");
+    for (i = 0; i < widget_count_children(widget); i++) {
+      widget_t* iter = widget_get_child(widget, i);
+      widget_to_xml(iter);
+    }
+
+    log_debug("</%s>\n", kv->name);
+  } else {
+    log_debug("/>\n");
+  }
+
+  return RET_OK;
 }

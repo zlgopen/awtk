@@ -172,7 +172,7 @@ bool xml_gen(const char* input_file, const char* output_file) {
   return_value_if_fail(end != NULL, false);
 
   uint32_t size = end - buff;
-  output_c_source(output_file, "theme_", "data", buff, size);
+  output_c_source(output_file, "theme", "data", buff, size);
 
   xml_parser_destroy(parser);
 

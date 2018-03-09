@@ -20,6 +20,7 @@
  */
 
 #include "base/timer.h"
+#include "base/enums.h"
 #include "base/button.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
@@ -29,6 +30,7 @@
 #include "base/mem.h"
 #include "base/progress_bar.h"
 #include "base/utils.h"
+#include "base/utf8.h"
 #include "base/window.h"
 
 static ret_t on_timer(const timer_info_t* timer) {
@@ -76,6 +78,7 @@ static ret_t on_cancel(void* ctx, event_t* e) {
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;
   widget_t* ok = NULL;
+  widget_t* label = NULL;
   widget_t* cancel = NULL;
   widget_t* win = dialog_create(NULL, 0, 0, 300, 240);
   dialog_t* dialog = DIALOG(win);
@@ -84,16 +87,20 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   dialog_set_icon(win, "info");
 
   ok = button_create(dialog->client, 60, 160, 80, 30);
-  widget_set_text(ok, L"OK");
+  widget_set_text(ok, L"Go");
 
   cancel = button_create(dialog->client, 200, 160, 80, 30);
   widget_set_text(cancel, L"Cancel");
 
+  label = label_create(dialog->client, 10, 10, 200, 30);
+  widget_set_text(label, L"Are you ready!");
+
   widget_on(ok, EVT_CLICK, on_ok, dialog);
   widget_on(cancel, EVT_CLICK, on_cancel, dialog);
 
+  widget_to_xml(win);
   code = dialog_modal(win);
-  printf("code=%d\n", code);
+  log_debug("code=%d\n", code);
   widget_destroy(win);
 
   mem_info_dump();
@@ -168,6 +175,8 @@ ret_t application_init() {
   radio_button = check_button_create_radio(win, 190, 200, 80, 30);
   widget_set_text(radio_button, L"Pencil");
   widget_set_value(radio_button, TRUE);
+
+  widget_to_xml(win);
 
   return RET_OK;
 }

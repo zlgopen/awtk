@@ -90,7 +90,6 @@ const timer_info_t* timer_find(uint32_t timer_id) {
   timer.id = timer_id;
 
   return (const timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
-
 }
 
 ret_t timer_check() {
@@ -131,4 +130,3 @@ ret_t timer_check() {
 }
 
 uint32_t timer_count() { return ensure_timer_manager() == RET_OK ? s_timer_manager->size : 0; }
-

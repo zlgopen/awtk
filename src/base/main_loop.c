@@ -44,9 +44,7 @@ ret_t main_loop_destroy(main_loop_t* l) {
 
 static main_loop_t* s_default_main_loop = NULL;
 
-main_loop_t* main_loop_get_default(void) {
-  return s_default_main_loop;	
-}
+main_loop_t* main_loop_get_default(void) { return s_default_main_loop; }
 
 ret_t main_loop_set_default(main_loop_t* loop) {
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
@@ -54,5 +52,3 @@ ret_t main_loop_set_default(main_loop_t* loop) {
 
   return RET_OK;
 }
-
-

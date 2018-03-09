@@ -66,9 +66,9 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
 
   i = 0;
   while (attrs[i] != NULL) {
-    char c = key[0];
     key = attrs[i];
     value = attrs[i + 1];
+    c = key[0];
 
     if (key[1] == '\0') {
       if (c == 'x' || c == 'y' || c == 'w' || c == 'h') {

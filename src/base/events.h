@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 /**
  * @enum event_type_t 
  * @scriptable
+ * @prefix EVT_
  * 类型常量定义。
  */
 typedef enum _event_type_t {

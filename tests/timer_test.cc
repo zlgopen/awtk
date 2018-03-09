@@ -70,4 +70,3 @@ TEST(Timer, repeat) {
   }
   ASSERT_EQ(timer_count(), 0);
 }
-

@@ -42,7 +42,7 @@ ret_t font_gen(font_t* font, const char* str, const char* output_filename) {
   uint32_t size = font_gen_buff(font, str, buff, MAX_BUFF_SIZE);
 
   filename_to_name(output_filename, name, sizeof(name));
-  output_c_source(output_filename, "font_", name, buff, size);
+  output_c_source(output_filename, "font", name, buff, size);
 
   MEM_FREE(buff);
 
