@@ -159,10 +159,18 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
+static ret_t check_button_destroy(widget_t* widget) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  wstr_reset(&(check_button->text));
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_check_button_vtable = {.on_event = check_button_on_event,
                                                       .on_paint_self = check_button_on_paint_self,
                                                       .get_prop = check_button_get_prop,
-                                                      .set_prop = check_button_set_prop};
+                                                      .set_prop = check_button_set_prop,
+                                                      .destroy = check_button_destroy};
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

@@ -40,7 +40,7 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
     const char* value = NULL;
     return_value_if_fail(rbuffer_read_binary(&rbuffer, &desc, sizeof(desc)) == RET_OK,
                          RET_BAD_PARAMS);
-    ui_builder_on_widget_start(b, desc.type, desc.x, desc.y, desc.w, desc.h);
+    ui_builder_on_widget_start(b, &desc);
 
     return_value_if_fail(rbuffer_read_string(&rbuffer, &key) == RET_OK, RET_BAD_PARAMS);
     while (*key) {

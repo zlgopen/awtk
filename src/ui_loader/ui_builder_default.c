@@ -34,10 +34,23 @@
 #include "ui_loader/ui_loader_default.h"
 #include "base/resource_manager.h"
 
-static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y,
-                                                xy_t w, xy_t h) {
+static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
+  rect_t r;
+  xy_t x = desc->layout.x;
+  xy_t y = desc->layout.y;
+  wh_t w = desc->layout.w;
+  wh_t h = desc->layout.h;
   widget_t* widget = NULL;
+  uint16_t type = desc->type;
   widget_t* parent = b->widget;
+
+  if (parent != NULL) {
+    widget_layout_calc(&desc->layout, &r, parent->w, parent->h);
+    x = r.x;
+    y = r.y;
+    w = r.w;
+    h = r.h;
+  }
 
   if (parent && parent->type == WIDGET_DIALOG) {
     dialog_t* dlg = DIALOG(parent);

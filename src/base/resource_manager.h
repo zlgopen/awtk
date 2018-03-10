@@ -51,6 +51,7 @@ ret_t resource_manager_add(const resource_info_t* info);
 const resource_info_t* resource_manager_ref(resource_type_t type, const char* name);
 ret_t resource_manager_unref(const resource_info_t* info);
 
+ret_t resource_manager_deinit();
 
 END_C_DECLS
 

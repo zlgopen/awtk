@@ -30,12 +30,22 @@
 #include "base/mem.h"
 #include "gtest/gtest.h"
 #include <stdio.h>
+#include "demos/resource.h"
+#include "base/font_manager.h"
+#include "base/resource_manager.h"
 
-static uint32_t s_heap_mem[1024 * 1024];
+static uint32_t s_heap_mem[4 * 1024 * 1024];
 
 GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
-  return RUN_ALL_TESTS();
+  resource_init();
+
+  RUN_ALL_TESTS();
+
+  font_manager_destroy(default_fm());
+  resource_manager_deinit();
+
+  return 0;
 }

@@ -19,9 +19,9 @@ function application_init()
     end
     return Ret.REPEAT
   end, 500)
-  
-  win.dialog:on(EventType.CLICK, function(evt) 
-    local dlg = Dialog.open("dialog1");
+ 
+  function show_dialog(name)
+    local dlg = Dialog.open(name)
 
     dlg.client.ok:on(EventType.CLICK, function(evt)
       dlg:quit(0)
@@ -33,6 +33,14 @@ function application_init()
 
     dlg:modal()
     dlg:destroy()
+  end
+
+  win.dialog:on(EventType.CLICK, function(evt) 
+    show_dialog("dialog1");
+  end);
+  
+  win.dialog2:on(EventType.CLICK, function(evt) 
+    show_dialog("dialog2");
   end);
 end
 

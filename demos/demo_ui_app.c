@@ -76,7 +76,8 @@ static ret_t on_cancel(void* ctx, event_t* e) {
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;
-  widget_t* win = window_open("dialog1");
+  const char* name = (const char*)ctx;
+  widget_t* win = window_open(name);
 
   widget_child_on(win, "ok", EVT_CLICK, on_ok, win);
   widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
@@ -95,7 +96,8 @@ ret_t application_init() {
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
   widget_child_on(win, "inc", EVT_CLICK, on_inc, progress_bar);
   widget_child_on(win, "dec", EVT_CLICK, on_dec, progress_bar);
-  widget_child_on(win, "dialog", EVT_CLICK, on_show_dialog, NULL);
+  widget_child_on(win, "dialog", EVT_CLICK, on_show_dialog, "dialog1");
+  widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
   timer_add(on_timer, widget_lookup(win, "bar2", TRUE), 500);
 
   return RET_OK;

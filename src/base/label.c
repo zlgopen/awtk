@@ -147,8 +147,17 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_label_vtable = {
-    .on_paint_self = label_on_paint_self, .get_prop = label_get_prop, .set_prop = label_set_prop};
+static ret_t label_destroy(widget_t* widget) {
+  label_t* label = LABEL(widget);
+  wstr_reset(&(label->text));
+
+  return RET_OK;
+}
+
+static const widget_vtable_t s_label_vtable = {.on_paint_self = label_on_paint_self,
+                                               .get_prop = label_get_prop,
+                                               .set_prop = label_set_prop,
+                                               .destroy = label_destroy};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

@@ -31,19 +31,9 @@ typedef struct _ui_builder_writer_t {
   wbuffer_t* wbuffer;
 } ui_builder_writer_t;
 
-static ret_t ui_builder_writer_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y,
-                                               xy_t w, xy_t h) {
-  widget_desc_t desc;
+static ret_t ui_builder_writer_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
   ui_builder_writer_t* writer = (ui_builder_writer_t*)b;
-
-  desc.x = x;
-  desc.y = y;
-  desc.w = w;
-  desc.h = h;
-  desc.type = type;
-  desc.reserve = 0;
-
-  return wbuffer_write_binary(writer->wbuffer, &desc, sizeof(desc));
+  return wbuffer_write_binary(writer->wbuffer, desc, sizeof(*desc));
 }
 
 static ret_t ui_builder_writer_on_widget_prop(ui_builder_t* b, const char* name,

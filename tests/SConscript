@@ -14,7 +14,7 @@ INCLUDE_PATH = [LFTK_ROOT,
   os.path.join(GTEST_ROOT, 'make')]
 
 env['CPPPATH'] = INCLUDE_PATH
-env['LIBS'] = ['theme_gen', 'font_gen', 'ui_loader', 'fontstb',  'fontbitmap', 'xml', 'common', 'lftk_base'] + env['LIBS']
+env['LIBS'] = ['resource', 'imageloaderbitmap', 'theme_gen', 'font_gen', 'ui_loader', 'fontstb',  'fontbitmap', 'xml', 'common', 'lftk_base'] + env['LIBS']
 
 SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),

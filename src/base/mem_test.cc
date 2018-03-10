@@ -4,6 +4,7 @@
 uint32_t heap[1024];
 
 int main() {
+#ifndef HAS_STD_MALLOC
   char* str = NULL;
   char* p[32];
   uint32_t i = 0;
@@ -33,6 +34,6 @@ int main() {
   }
 
   mem_info_dump();
-
+#endif
   return 0;
 }

@@ -53,7 +53,8 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
 
   size = this->int_values.size();
   save_uint32(p, size);
-  printf("  size=%d type=%d subtype=%d state=%d\n", size, this->type, this->subtype, this->state);
+  // printf("  size=%d type=%d subtype=%d state=%d\n", size, this->type, this->subtype,
+  // this->state);
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     uint32_t name = i->name;

@@ -29,6 +29,7 @@
 #include "res/theme/theme.data"
 #include "res/ui/window1.data"
 #include "res/ui/dialog1.data"
+#include "res/ui/dialog2.data"
 
 #include "base/theme.h"
 #include "font/font_bitmap.h"
@@ -44,6 +45,7 @@ ret_t resource_init() {
   font_manager_add(default_fm(), font_bitmap_create(font_font20));
 
   resource_manager_add((const resource_info_t*)ui_dialog1);
+  resource_manager_add((const resource_info_t*)ui_dialog2);
   resource_manager_add((const resource_info_t*)ui_window1);
   image_loader_bitmap_add(bitmap_loader, earth);
   image_loader_bitmap_add(bitmap_loader, info);

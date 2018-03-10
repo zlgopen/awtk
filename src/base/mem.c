@@ -21,6 +21,21 @@
 
 #include "base/mem.h"
 
+#ifdef HAS_STD_MALLOC
+ret_t mem_init(void* buffer, uint32_t length) {
+  (void)buffer;
+  (void)length;
+  return RET_OK;
+}
+
+mem_stat_t mem_stat(void) {
+  mem_stat_t stat;
+  return stat;
+}
+
+void mem_info_dump(void) {}
+
+#else
 typedef struct _free_node_t {
   uint32_t length;
   struct _free_node_t* next;
@@ -254,3 +269,4 @@ mem_stat_t mem_stat() {
 
   return st;
 }
+#endif

@@ -26,15 +26,6 @@
 
 BEGIN_C_DECLS
 
-typedef struct _widget_desc_t {
-  uint16_t type;
-  uint16_t reserve;
-  xy_t x;
-  xy_t y;
-  wh_t w;
-  wh_t h;
-}widget_desc_t;
-
 ui_loader_t* default_ui_loader();
 
 END_C_DECLS

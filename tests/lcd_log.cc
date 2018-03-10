@@ -104,13 +104,17 @@ static ret_t lcd_log_end_frame(lcd_t* lcd) {
   return RET_OK;
 }
 
-static ret_t lcd_log_destroy(lcd_t* lcd) { return RET_OK; }
+static ret_t lcd_log_destroy(lcd_t* lcd) { 
+  lcd_log_t* log = (lcd_log_t*)lcd;
+  delete log;
+  return RET_OK; 
+}
 
 lcd_t* lcd_log_init(wh_t w, wh_t h) {
-  static lcd_log_t lcd;
-  lcd_t* base = &(lcd.base);
+  lcd_log_t* lcd = new lcd_log_t();
+  lcd_t* base = &(lcd->base);
 
-  memset(&lcd, 0x00, sizeof(lcd_log_t));
+  memset(lcd, 0x00, sizeof(lcd_log_t));
 
   base->begin_frame = lcd_log_begin_frame;
   base->draw_vline = lcd_log_draw_vline;

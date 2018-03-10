@@ -23,13 +23,20 @@
 #define LFTK_UI_BUILDER_H
 
 #include "base/widget.h"
+#include "base/layout.h"
 
 BEGIN_C_DECLS
 
 struct _ui_builder_t;
 typedef struct _ui_builder_t ui_builder_t;
 
-typedef ret_t (*ui_builder_on_widget_start_t)(ui_builder_t* b, uint16_t type, xy_t x, xy_t y, xy_t w, xy_t h);
+typedef struct _widget_desc_t {
+  uint16_t version;
+  uint16_t type;
+  widget_layout_t layout;
+}widget_desc_t;
+
+typedef ret_t (*ui_builder_on_widget_start_t)(ui_builder_t* b, const widget_desc_t* desc);
 typedef ret_t (*ui_builder_on_widget_prop_t)(ui_builder_t* b, const char* name, const char* value);
 typedef ret_t (*ui_builder_on_widget_prop_end_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_widget_end_t)(ui_builder_t* b);
@@ -43,7 +50,7 @@ struct _ui_builder_t {
   widget_t* widget;
 };
 
-ret_t ui_builder_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y, xy_t w, xy_t h);
+ret_t ui_builder_on_widget_start(ui_builder_t* b, const widget_desc_t* desc);
 ret_t ui_builder_on_widget_prop(ui_builder_t* b, const char* name, const char* value);
 ret_t ui_builder_on_widget_prop_end(ui_builder_t* b);
 ret_t ui_builder_on_widget_end(ui_builder_t* b);

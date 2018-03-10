@@ -46,6 +46,8 @@ TEST(Canvas, draw_hline) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(290,110,10);");
 
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
 
 TEST(Canvas, draw_vline) {
@@ -88,6 +90,8 @@ TEST(Canvas, draw_vline) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,290,10);");
 
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
 
 TEST(Canvas, fill_rect) {
@@ -162,6 +166,8 @@ TEST(Canvas, fill_rect) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "fr(100,120,30,40);");
 
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
 
 TEST(Canvas, draw_points) {
@@ -204,6 +210,8 @@ TEST(Canvas, draw_points) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dps((100,100)(200,200)(300,300));");
 
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
 
 TEST(Canvas, draw_glyph) {
@@ -258,6 +266,8 @@ TEST(Canvas, draw_glyph) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(5,0,5,5,100,295);");
 
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
 
 TEST(Canvas, draw_image) {
@@ -267,6 +277,7 @@ TEST(Canvas, draw_image) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
+  font_manager_init(&font_manager);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -328,4 +339,7 @@ TEST(Canvas, draw_image) {
   canvas_draw_image(&c, &img, &s, &d);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,10,10,290,290,10,10);");
   canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
+

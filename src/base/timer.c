@@ -74,12 +74,18 @@ static int compare_timer(const void* a, const void* b) {
 
 ret_t timer_remove(uint32_t timer_id) {
   timer_info_t timer;
+  timer_info_t* ret = NULL;
   return_value_if_fail(timer_id > 0, RET_BAD_PARAMS);
   return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, RET_BAD_PARAMS);
 
   timer.id = timer_id;
+  ret = (timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
+  return_value_if_fail(ret != NULL, RET_NOT_FOUND);
+  if (array_remove(s_timer_manager, compare_timer, &timer)) {
+    MEM_FREE(ret);
+  }
 
-  return array_remove(s_timer_manager, compare_timer, &timer) ? RET_OK : RET_FAIL;
+  return RET_OK;
 }
 
 const timer_info_t* timer_find(uint32_t timer_id) {
@@ -122,6 +128,8 @@ ret_t timer_check() {
     timer_info_t* iter = timers[i];
     if (iter->repeat) {
       timers[k++] = timers[i];
+    } else {
+      MEM_FREE(timers[i]);
     }
   }
   s_timer_manager->size = k;

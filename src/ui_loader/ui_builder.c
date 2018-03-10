@@ -21,10 +21,10 @@
 
 #include "ui_loader/ui_builder.h"
 
-ret_t ui_builder_on_widget_start(ui_builder_t* b, uint16_t type, xy_t x, xy_t y, xy_t w, xy_t h) {
-  return_value_if_fail(b != NULL && b->on_widget_start != NULL, RET_BAD_PARAMS);
+ret_t ui_builder_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
+  return_value_if_fail(b != NULL && b->on_widget_start != NULL && desc != NULL, RET_BAD_PARAMS);
 
-  return b->on_widget_start(b, type, x, y, w, h);
+  return b->on_widget_start(b, desc);
 }
 
 ret_t ui_builder_on_widget_prop(ui_builder_t* b, const char* name, const char* value) {

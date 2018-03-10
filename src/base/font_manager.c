@@ -69,7 +69,18 @@ font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {
 }
 
 ret_t font_manager_deinit(font_manager_t* fm) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  font_t** fonts = NULL;
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+
+  nr = fm->fonts.size;
+  fonts = (font_t**)fm->fonts.elms;
+  for (i = 0; i < nr; i++) {
+    font_t* iter = fonts[i];
+    font_destroy(iter);
+  }
+
   array_deinit(&(fm->fonts));
 
   return RET_OK;

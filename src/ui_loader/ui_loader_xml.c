@@ -19,10 +19,11 @@
  *
  */
 
-#include "ui_loader/ui_loader_xml.h"
 #include "base/enums.h"
 #include "base/mem.h"
+#include "base/layout.h"
 #include "xml/xml_parser.h"
+#include "ui_loader/ui_loader_xml.h"
 
 typedef struct _xml_builder_t {
   XmlBuilder builder;
@@ -30,18 +31,22 @@ typedef struct _xml_builder_t {
 } xml_builder_t;
 
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  xy_t x = 0;
-  xy_t y = 0;
-  wh_t w = 0;
-  wh_t h = 0;
   char c = '\0';
   uint32_t i = 0;
+  const char* x = "0";
+  const char* y = "0";
+  const char* w = "100";
+  const char* h = "30";
+  widget_desc_t desc;
   const char* key = NULL;
   const char* value = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
   const key_type_value_t* widget_item = widget_name_find(tag);
   return_if_fail(widget_item != NULL);
 
+  memset(&desc, 0x00, sizeof(desc));
+
+  desc.version = 0x01;
   while (attrs[i] != NULL) {
     key = attrs[i];
     value = attrs[i + 1];
@@ -49,20 +54,22 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     c = key[0];
     if (key[1] == '\0') {
       if (c == 'x') {
-        x = atoi(value);
+        x = (value);
       } else if (c == 'y') {
-        y = atoi(value);
+        y = (value);
       } else if (c == 'w') {
-        w = atoi(value);
+        w = (value);
       } else if (c == 'h') {
-        h = atoi(value);
+        h = (value);
       }
     }
 
     i += 2;
   }
 
-  ui_builder_on_widget_start(b->ui_builder, widget_item->value, x, y, w, h);
+  desc.type = widget_item->value;
+  widget_layout_parse(&(desc.layout), x, y, w, h);
+  ui_builder_on_widget_start(b->ui_builder, &desc);
 
   i = 0;
   while (attrs[i] != NULL) {

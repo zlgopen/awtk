@@ -27,7 +27,7 @@ elif os.name == 'nt':
 os.environ['LFTK_ROOT'] = LFTK_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
 
-DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\"', 
+DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\" -DHAS_STD_MALLOC', 
   CPPPATH = [LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, LFTK_TOOLS_ROOT, 
   ] + OS_CPPPATH, 
   LIBS=['lftk_base', 'main_loop', 'lcd', 'platform', 'SDL2'] + OS_LIBS,
@@ -59,12 +59,12 @@ SConscript([
   'src/font/SConscript', 
   'src/ui_loader/SConscript', 
   'src/image_loader/SConscript', 
-  'demos/SConscript', 
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tools/ui_gen/SConscript', 
+  'demos/SConscript', 
   'tests/SConscript',
   '3rd/lua/SConscript',
   'lua/SConscript'

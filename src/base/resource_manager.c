@@ -55,3 +55,9 @@ ret_t resource_manager_add(const resource_info_t* info) {
 
   return array_push(&s_resources, (void*)info) ? RET_OK : RET_FAIL;
 }
+
+ret_t resource_manager_deinit() {
+  array_deinit(&(s_resources));
+  return RET_OK;
+}
+

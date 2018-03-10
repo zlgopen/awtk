@@ -10,4 +10,5 @@ TEST(WStr, basic) {
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
   ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wstr_reset(&str), RET_OK);
 }

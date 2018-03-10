@@ -8,7 +8,6 @@ TEST(ResourceManager, basic) {
   resource_info_t ui1 = {RESOURCE_TYPE_UI, 102, "ui1"};
   resource_info_t ui2 = {RESOURCE_TYPE_UI, 103, "ui2"};
 
-  ASSERT_EQ(resource_manager_init(10), RET_OK);
   ASSERT_EQ(resource_manager_add(&img1), RET_OK);
   ASSERT_EQ(resource_manager_add(&img2), RET_OK);
   ASSERT_EQ(resource_manager_add(&ui1), RET_OK);
