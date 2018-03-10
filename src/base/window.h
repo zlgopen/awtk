@@ -50,6 +50,15 @@ typedef struct _window_t {
  */
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method window_open
+ * @constructor
+ * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name window的名称。
+ *
+ * @return {widget_t*} 对象。
+ */
+
 END_C_DECLS
 
 #endif/*LFTK_WINDOW_H*/

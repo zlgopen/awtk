@@ -184,6 +184,17 @@
    {
     "params": [
      {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "dialog_open",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
       "type": "widget_t*",
       "name": "widget"
      },
@@ -1755,6 +1766,29 @@
       "name": "widget"
      },
      {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "widget_on",
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
       "type": "rect_t*",
       "name": "r"
      }
@@ -1939,6 +1973,17 @@
      }
     ],
     "name": "window_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "window_open",
     "isConstructor": true,
     "return": "widget_t*"
    }

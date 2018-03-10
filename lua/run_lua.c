@@ -9,7 +9,7 @@ extern void luaL_openlftk(lua_State* L);
 int main(int argc, char* argv[]) {
   lua_State* L = luaL_newstate();
   static uint32_t s_heap_mem[10 * 1024];
-  const char* lua_file = argc == 2 ? argv[1] : "./demo.lua";
+  const char* lua_file = argc == 2 ? argv[1] : "./demo2.lua";
 
   luaL_openlibs(L);
   luaL_openlftk(L);

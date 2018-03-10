@@ -56,6 +56,16 @@ typedef struct _dialog_t {
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method dialog_open
+ * @constructor
+ * 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name dialog的名称。
+ *
+ * @return {widget_t*} 对象。
+ */
+
+
+/**
  * @method dialog_set_icon
  * 设置对话框的标题图标。
  * @param {widget_t*} widget dialog对象。

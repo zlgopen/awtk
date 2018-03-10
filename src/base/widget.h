@@ -595,7 +595,7 @@ ret_t widget_off(widget_t* widget, uint32_t id);
 /**
  * @method widget_child_on
  * 注册指定事件的处理函数。
- * @scriptable custom
+ * @scriptable no
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 子控件的名称。
  * @param {event_type_t} type 事件类型。

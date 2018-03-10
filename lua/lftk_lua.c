@@ -256,6 +256,14 @@ static int wrap_dialog_create(lua_State* L) {
   return lftk_newuserdata(L, ret, "/dialog_t/widget_t", "lftk.dialog_t");
 }
 
+static int wrap_dialog_open(lua_State* L) {
+  widget_t* ret = NULL;
+  char* name = (char*)luaL_checkstring(L, 1);
+  ret = (widget_t*)dialog_open(name);
+
+  return lftk_newuserdata(L, ret, "/dialog_t/widget_t", "lftk.dialog_t");
+}
+
 static int wrap_dialog_set_icon(lua_State* L) {
   ret_t ret = 0;
   widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
@@ -331,7 +339,8 @@ static int wrap_dialog_t_get_prop(lua_State* L) {
 }
 
 static void dialog_t_init(lua_State* L) {
-  static const struct luaL_Reg static_funcs[] = {{"create", wrap_dialog_create}, {NULL, NULL}};
+  static const struct luaL_Reg static_funcs[] = {
+      {"create", wrap_dialog_create}, {"open", wrap_dialog_open}, {NULL, NULL}};
 
   static const struct luaL_Reg index_funcs[] = {
       {"__index", wrap_dialog_t_get_prop}, {"__newindex", wrap_dialog_t_set_prop}, {NULL, NULL}};
@@ -439,7 +448,7 @@ static int wrap_event_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -1013,7 +1022,7 @@ static int wrap_point_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -1086,7 +1095,7 @@ static int wrap_rect_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -1128,7 +1137,7 @@ static int wrap_style_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -1170,7 +1179,7 @@ static int wrap_theme_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -1735,7 +1744,7 @@ static int wrap_value_t_get_prop(lua_State* L) {
     return 1;
   } else {
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -2174,6 +2183,7 @@ static const struct luaL_Reg widget_t_member_funcs[] = {
     {"set_visible", wrap_widget_set_visible},
     {"on", wrap_widget_on},
     {"off", wrap_widget_off},
+    {"on", wrap_widget_on},
     {"invalidate", wrap_widget_invalidate},
     {"get_prop", wrap_widget_get_prop},
     {"set_prop", wrap_widget_set_prop},
@@ -2287,8 +2297,12 @@ static int wrap_widget_t_get_prop(lua_State* L) {
   } else if (strcmp(name, "parent") == 0) {
     return lftk_newuserdata(L, obj->parent, "/widget_t", "lftk.widget_t");
   } else {
+    widget_t* child = widget_lookup(obj, name, FALSE);
+    if (child != NULL) {
+      return lftk_newuserdata(L, child, "/widget_t", "lftk.widget_t");
+    }
     printf("%s: not supported %s\n", __func__, name);
-    return 1;
+    return 0;
   }
 }
 
@@ -2361,6 +2375,14 @@ static int wrap_window_create(lua_State* L) {
   return lftk_newuserdata(L, ret, "/window_t/widget_t", "lftk.window_t");
 }
 
+static int wrap_window_open(lua_State* L) {
+  widget_t* ret = NULL;
+  char* name = (char*)luaL_checkstring(L, 1);
+  ret = (widget_t*)window_open(name);
+
+  return lftk_newuserdata(L, ret, "/window_t/widget_t", "lftk.window_t");
+}
+
 static const struct luaL_Reg window_t_member_funcs[] = {{NULL, NULL}};
 
 static int wrap_window_t_set_prop(lua_State* L) {
@@ -2389,7 +2411,8 @@ static int wrap_window_t_get_prop(lua_State* L) {
 }
 
 static void window_t_init(lua_State* L) {
-  static const struct luaL_Reg static_funcs[] = {{"create", wrap_window_create}, {NULL, NULL}};
+  static const struct luaL_Reg static_funcs[] = {
+      {"create", wrap_window_create}, {"open", wrap_window_open}, {NULL, NULL}};
 
   static const struct luaL_Reg index_funcs[] = {
       {"__index", wrap_window_t_get_prop}, {"__newindex", wrap_window_t_set_prop}, {NULL, NULL}};

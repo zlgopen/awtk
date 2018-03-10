@@ -161,7 +161,7 @@ function extractIDL(result, filename, content) {
 function genOneFile(result, filename) {
   const content = fs.readFileSync(filename).toString();
   const name = filename.match(/[a-z|_\d|\.|A-Z]*\/[a-z|_\d|\.|A-Z]*$/)[0];
-  console.log(filename);
+  console.log(`process ${filename}`);
   extractIDL(result, name, content);
 }
 

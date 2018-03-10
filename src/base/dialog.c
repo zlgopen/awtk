@@ -117,6 +117,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   wstr_init(&(dialog->title), 0);
   widget_set_state(widget, WIDGET_STATE_NORMAL);
   dialog->client = group_box_create(widget, 0, TITLE_H, widget->w, widget->h - TITLE_H);
+  widget_set_name(dialog->client, "client");
 
   log_debug("%s\n", __func__);
 

@@ -156,3 +156,5 @@ widget_t* window_open(const char* name) {
 
   return builder->root;
 }
+
+widget_t* dialog_open(const char* name) { return window_open(name); }

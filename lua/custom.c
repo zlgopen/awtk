@@ -1,3 +1,6 @@
+#include "base/enums.h"
+#include "ui_loader/ui_builder_default.h"
+
 typedef struct _userdata_info_t {
   const char* info;
   void* data;
@@ -7,6 +10,7 @@ static lua_State* s_current_L = NULL;
 extern void luaL_openlib(lua_State* L, const char* libname, const luaL_Reg* l, int nup);
 
 static int lftk_newuserdata(lua_State* L, void* data, const char* info, const char* metatable) {
+  char str[48];
   userdata_info_t* udata = NULL;
   return_value_if_fail(data != NULL, 0);
 
@@ -15,6 +19,15 @@ static int lftk_newuserdata(lua_State* L, void* data, const char* info, const ch
 
   udata->data = data;
   udata->info = info;
+
+  if (strstr(info, "/widget_t") != NULL && strcmp(metatable, "lftk.widget_t") == 0) {
+    widget_t* widget = (widget_t*)data;
+    const key_type_value_t* kv = widget_name_find_by_value(widget->type);
+    if (kv != NULL) {
+      snprintf(str, sizeof(str), "lftk.%s_t", kv->name);
+      metatable = str;
+    }
+  }
 
   if (metatable != NULL) {
     luaL_getmetatable(L, metatable);
@@ -40,7 +53,7 @@ static const luaL_Reg* find_member(const luaL_Reg* funcs, const char* name) {
 static void* lftk_checkudata(lua_State* L, int idx, const char* name) {
   userdata_info_t* udata = (userdata_info_t*)lua_touserdata(L, idx);
   if (udata) {
-    assert(strstr(udata->info, name) != NULL);
+    // assert(strstr(udata->info, name) != NULL);
     return udata->data;
   } else {
     return NULL;

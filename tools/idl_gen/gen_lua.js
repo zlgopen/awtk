@@ -162,10 +162,9 @@ function genAll(json) {
     } else {
       str += `  else if(strcmp(name, "${p.name}") == 0) {\n`;
     }
-    str += '  ';
     if (p.readonly) {
       str += `    printf("${p.name} is readonly\\n");\n`;
-      str += `      return 0;\n`;
+      str += `    return 0;\n`;
     } else {
       str += genDecl(2, p.type, p.name);
       str += `    obj->${p.name} = ${p.name};\n`;
@@ -200,8 +199,8 @@ function genAll(json) {
     str += `static int wrap_${clsName}_set_prop(lua_State* L) {\n`;
     str += genDecl(0, cls.name + '*', "obj");
     str += genDecl(1, "const char*", "name");
-    str += '(void)obj;\n';
-    str += '(void)name;\n';
+    str += '  (void)obj;\n';
+    str += '  (void)name;\n';
 
     let hasSetProps = false;
     cls.properties.forEach((m, index) => {
@@ -210,19 +209,19 @@ function genAll(json) {
     });
 
     if (hasSetProps) {
-      str += `  else {\n  `;
+      str += `  else {\n`;
     }
     if (cls.parent) {
       str += `  return wrap_${cls.parent}_set_prop(L);\n`;
     } else if (hasSetProps) {
-      str += `  printf("%s: not supported %s\\n", __func__, name);\n`;
-      str += `  return 0;\n`;
+      str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
+      str += `    return 0;\n`;
     }
     if (hasSetProps) {
       str += `  }\n`;
     } else {
-      str += `  printf("%s: not supported %s\\n", __func__, name);\n`;
-      str += `  return 0;\n`;
+      str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
+      str += `    return 0;\n`;
     }
 
     str += `}\n\n`;
@@ -254,8 +253,14 @@ function genAll(json) {
     if (cls.parent) {
       str += `    return wrap_${cls.parent}_get_prop(L);\n`;
     } else {
+      if(cls.name === 'widget_t') {
+        str += `    widget_t* child = widget_lookup(obj, name, FALSE);\n`;
+        str += `    if(child != NULL) {\n`;
+        str += `      return lftk_newuserdata(L, child, "/widget_t", "lftk.widget_t");\n`;
+        str += `    }\n`;
+      }
       str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
-      str += `    return 1;\n`;
+      str += `    return 0;\n`;
     }
     str += `  }\n`;
 
