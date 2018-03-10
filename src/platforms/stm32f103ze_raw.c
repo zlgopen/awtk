@@ -53,5 +53,5 @@ ret_t platform_prepare() {
 
 uint32_t get_time_ms() {
   /*TODO*/
-  return 0;
+  return RTC_GetCounter();
 }
