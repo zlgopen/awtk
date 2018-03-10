@@ -78,3 +78,13 @@ demos\demo1
 ## 文档
 
 * [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+
+## 任务完成情况
+[TODO.md](TODO.md)
+
+## 最新动态
+
+* 2018/03/10 
+    * lua绑定及相关示例完成。
+    * 支持从UI描述文件创建界面。
+G

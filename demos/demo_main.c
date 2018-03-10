@@ -1,7 +1,7 @@
 /**
- * File:   demo1_main.c
+ * File:   demo_main.c
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  demo1 main
+ * Brief:  demo main
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
