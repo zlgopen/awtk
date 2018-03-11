@@ -152,6 +152,9 @@ static ret_t ui_builder_default_on_widget_prop_end(ui_builder_t* b) {
 
 static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
   b->widget = b->widget->parent;
+  if(b->widget == b->root) {
+    widget_layout(b->root);
+  }
 
   return RET_OK;
 }
@@ -177,7 +180,6 @@ widget_t* window_open(const char* name) {
 
   ui_loader_load(loader, ui->data, ui->size, builder);
   resource_manager_unref(ui);
-  widget_layout(builder->root);
 
   return builder->root;
 }

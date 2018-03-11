@@ -28,12 +28,12 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
 
   memset(layout, 0x00, sizeof(*layout));
   if (x != NULL) {
-    if (strstr(x, "center") != NULL) {
+    if (x[0] == 'c') {
       if (x[6] == ':') {
         layout->x = atoi(x + 7);
       }
       layout->x_attr = X_ATTR_CENTER;
-    } else if (strstr(x, "right") != NULL) {
+    } else if (x[0] == 'r') {
       if (x[5] == ':') {
         layout->x = atoi(x + 6);
       }
@@ -50,12 +50,12 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   }
 
   if (y != NULL) {
-    if (strstr(y, "middle") != NULL) {
+    if (y[0] == 'm') {
       if (y[6] == ':') {
         layout->y = atoi(y + 7);
       }
       layout->y_attr = Y_ATTR_MIDDLE;
-    } else if (strstr(y, "bottom") != NULL) {
+    } else if (y[0] == 'b') {
       if (y[6] == ':') {
         layout->y = atoi(y + 7);
       }
@@ -251,7 +251,7 @@ ret_t widget_layout_children(widget_t* widget) {
         iter = children[i];
         widget_move_resize(iter, x, y, iter->w, h);
         x += iter->w + cell_spacing;
-        return_value_if_fail(x < widget->w, RET_BAD_PARAMS);
+        return_value_if_fail(x <= widget->w, RET_BAD_PARAMS);
       }
 
       for (i = 0; i < n; i++) {
@@ -270,9 +270,9 @@ ret_t widget_layout_children(widget_t* widget) {
 
       for (i = 0; i < n; i++) {
         iter = children[i];
+        return_value_if_fail(y <= widget->h, RET_BAD_PARAMS);
         widget_move_resize(iter, x, y, w, iter->h);
         y += iter->h + cell_spacing;
-        return_value_if_fail(y < widget->h, RET_BAD_PARAMS);
       }
 
       for (i = 0; i < n; i++) {
@@ -293,6 +293,8 @@ ret_t widget_layout_children(widget_t* widget) {
 
       for (i = 0; i < n; i++) {
         iter = children[i];
+        return_value_if_fail(y <= widget->h, RET_BAD_PARAMS);
+
         widget_move_resize(iter, x, y, item_w, item_h);
         c++;
         if (c == cols) {
@@ -303,7 +305,6 @@ ret_t widget_layout_children(widget_t* widget) {
         } else {
           x += item_w + cell_spacing;
         }
-        return_value_if_fail(y < widget->h, RET_BAD_PARAMS);
       }
 
       for (i = 0; i < n; i++) {
