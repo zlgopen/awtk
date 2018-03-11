@@ -1,4 +1,9 @@
 <window name="main" x="0" y="0" w="320" h="480">
   <button x="0" y="5" w="50%" h="30" text="50%"/>
   <button x="0" y="40" w="100%" h="30" text="100%"/>
+  
+  <button x="center" y="middle" w="30%" h="30" text="ok"/>
+
+  <button x="20" y="bottom:30" w="30%" h="30" text="ok"/>
+  <button x="right:20" y="bottom:30" w="30%" h="30" text="cancel"/>
 </window>
