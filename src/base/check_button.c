@@ -153,7 +153,7 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (strcmp(name, "value") == 0) {
-    return check_button_set_value(widget, value_int(v));
+    return check_button_set_value(widget, value_bool(v));
   } else if (strcmp(name, "text") == 0) {
     return check_button_set_text(widget, value_wstr(v));
   }
@@ -183,7 +183,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   widget_init(widget, parent, WIDGET_CHECK_BUTTON);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_check_button_vtable;
-  check_button_set_value(widget, FALSE);
+  check_button_set_value_only(widget, FALSE);
 
   return widget;
 }
@@ -196,7 +196,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   check_button->radio = TRUE;
   widget->type = WIDGET_RADIO_BUTTON;
   widget->state = WIDGET_STATE_NORMAL;
-  check_button_set_value(widget, FALSE);
+  check_button_set_value_only(widget, FALSE);
 
   return widget;
 }
