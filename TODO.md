@@ -33,6 +33,8 @@
 * tableview
 * edit
 * slider
+* spinbox
+* drag & drop
 * tab控件
 * python binging 
 * jerryscript binging 
@@ -43,13 +45,14 @@
 * rtthread移植
 * sylixos移植
 * djyos移植
+* 嵌入式linux移植
 * 用LFTK实现界面编辑器
+
+## 长期计划
 * 支持tween动画
 * 支持窗口动画
 * 支持粒子产生器
 * 支持骨骼动画
-
-## 长期计划
 * flash播放器支持
 * android移植
 * ios移植
