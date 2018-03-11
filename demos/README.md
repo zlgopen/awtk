@@ -4,6 +4,11 @@
 
 * demo1  按传统方式创建界面。
 * demoui 从UI资源文件中创建界面。
+* ./prefix\_xml\_ui 预览XML界面描述文件。
+
+```
+./prefix\_xml\_ui ../tools/ui_gen/window1.xml 
+```
 
 ### 源代码介绍
 

@@ -150,6 +150,10 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
       }
     }
 
+    if(i < 0) {
+      i = 0;
+    }
+
     for (; i < nr; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
       if (iter->visible) {

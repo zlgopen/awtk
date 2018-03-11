@@ -1,3 +1,5 @@
 demo1
-demo1.exp
-demo1.lib
+demoui
+prefix_xml_ui
+*.exe
+*.lib
