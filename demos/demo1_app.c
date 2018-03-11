@@ -106,7 +106,7 @@ ret_t application_init() {
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);
   timer_add(on_timer, progress_bar, 1000);
-  //progress_bar_set_show_text(progress_bar, TRUE);
+  // progress_bar_set_show_text(progress_bar, TRUE);
 
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
   widget_on(cancel, EVT_CLICK, on_dec, progress_bar);

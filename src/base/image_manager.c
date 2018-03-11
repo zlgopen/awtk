@@ -117,7 +117,7 @@ ret_t image_manager_add_image(image_manager_t* im, const char* name, bitmap_t* b
 ret_t image_manager_deinit(image_manager_t* im) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  image_item_t* item= NULL;
+  image_item_t* item = NULL;
   image_item_t** elms = NULL;
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
   nr = im->images.size;

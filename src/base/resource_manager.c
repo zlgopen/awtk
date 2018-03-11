@@ -60,4 +60,3 @@ ret_t resource_manager_deinit() {
   array_deinit(&(s_resources));
   return RET_OK;
 }
-

@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/window_manager.h"
 #include "base/mem.h"
+#include "base/window_manager.h"
 
 static ret_t on_window_destroy(void* ctx, event_t* e) {
   widget_t* wm = WIDGETP(ctx);
@@ -30,7 +30,7 @@ static ret_t on_window_destroy(void* ctx, event_t* e) {
 }
 
 ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
-  return_value_if_fail(wm != NULL && window != NULL, RET_OK);
+  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window->type == WIDGET_NORMAL_WINDOW) {
     widget_move(window, 0, 0);
@@ -48,11 +48,18 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
 }
 
 ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
-  return_value_if_fail(wm != NULL && window != NULL, RET_OK);
+  ret_t ret = RET_OK;
+  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
-  widget_invalidate(window, NULL);
+  ret = widget_remove_child(wm, window);
+  if (ret == RET_OK) {
+    widget_t* top = window_manager_get_top_window(wm);
+    if (top) {
+      widget_invalidate(top, NULL);
+    }
+  }
 
-  return widget_remove_child(wm, window);
+  return ret;
 }
 
 widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
@@ -136,6 +143,30 @@ static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
   return RET_OK;
 }
 
+int32_t window_manager_find_top_window_index(widget_t* widget) {
+  int32_t i = 0;
+  int32_t nr = 0;
+  return_value_if_fail(widget != NULL, -1);
+
+  if (widget->children != NULL && widget->children->size > 0) {
+    nr = widget->children->size;
+    for (i = nr - 1; i >= 0; i--) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      if (iter->type == WIDGET_NORMAL_WINDOW) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
+widget_t* window_manager_get_top_window(widget_t* widget) {
+  int32_t index = window_manager_find_top_window_index(widget);
+
+  return widget_get_child(widget, index);
+}
+
 ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   int32_t i = 0;
   int32_t nr = 0;
@@ -143,6 +174,15 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
 
   if (widget->children != NULL && widget->children->size > 0) {
     nr = widget->children->size;
+#ifdef FAST_MODE
+    for (i = nr - 1; i >= 0; i--) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      if (iter->visible) {
+        widget_paint(iter, c);
+        break;
+      }
+    }
+#else
     for (i = nr - 1; i >= 0; i--) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
       if (iter->type == WIDGET_NORMAL_WINDOW) {
@@ -150,7 +190,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
       }
     }
 
-    if(i < 0) {
+    if (i < 0) {
       i = 0;
     }
 
@@ -160,6 +200,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
         widget_paint(iter, c);
       }
     }
+#endif/*FAST_MODE*/
   }
 
   return RET_OK;

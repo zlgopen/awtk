@@ -54,7 +54,7 @@ widget_t* prefix_xml_ui(const char* filename) {
   ui_loader_t* loader = xml_ui_loader();
   ui_builder_t* builder = ui_builder_default();
   printf("preview %s\n", filename);
-  return_value_if_fail(content != NULL, NULL);  
+  return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
   free(content);
 

@@ -104,10 +104,10 @@ static ret_t lcd_log_end_frame(lcd_t* lcd) {
   return RET_OK;
 }
 
-static ret_t lcd_log_destroy(lcd_t* lcd) { 
+static ret_t lcd_log_destroy(lcd_t* lcd) {
   lcd_log_t* log = (lcd_log_t*)lcd;
   delete log;
-  return RET_OK; 
+  return RET_OK;
 }
 
 lcd_t* lcd_log_init(wh_t w, wh_t h) {

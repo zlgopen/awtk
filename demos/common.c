@@ -39,4 +39,3 @@ static ret_t on_cancel(void* ctx, event_t* e) {
   mem_info_dump();
   return RET_OK;
 }
-

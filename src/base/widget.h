@@ -285,6 +285,15 @@ struct _widget_t {
    * 标识控件是否还在初始化中。
    */
   uint8_t initializing:1;
+
+  /**
+   * @property {bool_t} dirty
+   * @private
+   * @scriptable no
+   * 标识控件是否需要重绘。
+   */
+  uint8_t dirty:1;
+
   /**
    * @property {char*} name
    * @readonly

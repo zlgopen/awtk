@@ -315,9 +315,16 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   canvas_translate(c, widget->x, widget->y);
+#ifdef FAST_MODE
+  if (widget->dirty) {
+    widget_on_paint_self(widget, c);
+  }
+#else
   widget_on_paint_self(widget, c);
+#endif
   widget_on_paint_children(widget, c);
   canvas_untranslate(c, widget->x, widget->y);
+  widget->dirty = FALSE;
 
   return RET_OK;
 }
@@ -619,6 +626,22 @@ ret_t widget_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t widget_set_dirty(widget_t* widget) {
+  uint32_t i = 0;
+  uint32_t n = 0;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->dirty = TRUE;
+  if (widget->children != NULL) {
+    for (i = 0, n = widget->children->size; i < n; i++) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      widget_set_dirty(iter);
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   rect_t rself;
   if (r == NULL) {
@@ -630,6 +653,7 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   return_value_if_fail(r->x >= 0 && r->y >= 0, RET_BAD_PARAMS);
   return_value_if_fail((r->x + r->w) <= widget->w && (r->y + r->h) <= widget->h, RET_BAD_PARAMS);
 
+  widget_set_dirty(widget);
   if (widget->vt && widget->vt->invalidate) {
     return widget->vt->invalidate(widget, r);
   } else {
@@ -656,6 +680,7 @@ ret_t widget_update_style(widget_t* widget) {
 widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
   return_value_if_fail(widget != NULL, NULL);
 
+  widget->dirty = TRUE;
   widget->type = type;
   widget->subtype = 0;
   widget->enable = TRUE;

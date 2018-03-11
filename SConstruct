@@ -7,7 +7,7 @@ LFTK_TOOLS_ROOT = os.path.join(LFTK_ROOT, 'tools')
 GTEST_ROOT = os.path.join(LFTK_ROOT, '3rd/gtest/googletest')
 
 if os.name == 'posix':
-  OS_FLAGS='-g -Wall -DLUA_USE_POSIX -DLUA_COMPAT_MODULE'
+  OS_FLAGS='-g -Wall -DLUA_USE_POSIX -DLUA_COMPAT_MODULE -DHAS_STD_MALLOC -DFAST_MODE'
   OS_LINKFLAGS=''
   OS_LIBPATH=[]
   OS_CPPPATH=[]
@@ -27,7 +27,7 @@ elif os.name == 'nt':
 os.environ['LFTK_ROOT'] = LFTK_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
 
-DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\" -DHAS_STD_MALLOC', 
+DefaultEnvironment(CCFLAGS = OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\"', 
   CPPPATH = [LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, LFTK_TOOLS_ROOT, 
   ] + OS_CPPPATH, 
   LIBS=['lftk_base', 'main_loop', 'lcd', 'platform', 'SDL2'] + OS_LIBS,

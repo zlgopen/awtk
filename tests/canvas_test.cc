@@ -342,4 +342,3 @@ TEST(Canvas, draw_image) {
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
 }
-

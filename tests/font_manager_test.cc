@@ -25,6 +25,6 @@ TEST(FontManager, basic) {
 
   ASSERT_EQ(font_manager_find(&font_manager, NULL, 20) != NULL, true);
   ASSERT_EQ(font_manager_find(&font_manager, "demo0", 20) != NULL, true);
-  
+
   font_manager_deinit(&font_manager);
 }

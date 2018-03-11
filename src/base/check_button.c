@@ -63,7 +63,9 @@ static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
 
   canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
   canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
-
+#ifdef FAST_MODE
+  canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+#endif/*FAST_MODE*/
   if (bitmap.data != NULL) {
     rect_t src;
     rect_t dst;
