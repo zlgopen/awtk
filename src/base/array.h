@@ -26,6 +26,11 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class array_t
+ * @scriptable no
+ * 数组。 
+ */
 typedef struct _array_t
 {
   void **elms;
@@ -33,21 +38,94 @@ typedef struct _array_t
   uint16_t capacity;
 } array_t;
 
+/**
+ * @method array_create
+ * @constructor
+ * 创建array对象
+ * @param {uint16_t*} capacity 数组最大的容量。
+ *
+ * @return {array_t*} 数组对象。
+ */
 array_t *array_create(uint16_t capacity);
 
+/**
+ * @method array_init
+ * 初始化array对象
+ * @param {array_t*} array 数组对象。
+ * @param {uint16_t*} capacity 数组最大的容量。
+ *
+ * @return {array_t*} 数组对象。
+ */
 array_t *array_init(array_t *array, uint16_t capacity);
 
-void *array_find(array_t *array, compare_t cmp, void *data);
-int array_find_index(array_t *array, compare_t cmp, void *data);
+/**
+ * @method array_find
+ * 查找第一个满足条件的元素。
+ * @param {array_t*} array 数组对象。
+ * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
+ */
+void *array_find(array_t *array, compare_t cmp, void *ctx);
 
-bool_t array_remove(array_t *array, compare_t cmp, void *data);
-bool_t array_foreach(array_t *array, visit_t visit, void *ctx);
+/**
+ * @method array_find_index
+ * 查找第一个满足条件的元素，并返回位置。
+ * @param {array_t*} array 数组对象。
+ * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {int} 如果找到，返回满足条件的对象的位置，否则返回-1。
+ */
+int array_find_index(array_t *array, compare_t cmp, void *ctx);
 
+/**
+ * @method array_remove
+ * 删除第一个满足条件的元素。
+ * @param {array_t*} array 数组对象。
+ * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ */
+bool_t array_remove(array_t *array, compare_t cmp, void *ctx);
+
+/**
+ * @method array_pop
+ * 弹出最后一个元素。
+ * @param {array_t*} array 数组对象。
+ *
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ */
 void *array_pop(array_t *array);
+
+/**
+ * @method array_push
+ * 在尾巴追加一个元素。
+ * @param {array_t*} array 数组对象。
+ * @param {void*} data 待追加的元素。
+ *
+ * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ */
 bool_t array_push(array_t *array, void *data);
 
+/**
+ * @method array_deinit
+ * 清除数组中的元素。
+ * @param {array_t*} array 数组对象。
+ *
+ * @return {void} 无。
+ */
 void array_deinit(array_t *array);
 
+/**
+ * @method array_destroy
+ * 清除数组中的元素，并释放数组对象。
+ * @param {array_t*} array 数组对象。
+ *
+ * @return {void} 无。
+ */
 void array_destroy(array_t *array);
 
 END_C_DECLS

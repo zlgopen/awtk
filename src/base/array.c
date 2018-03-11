@@ -118,23 +118,6 @@ bool_t array_remove(array_t* array, compare_t cmp, void* data) {
   return TRUE;
 }
 
-bool_t array_foreach(array_t* array, visit_t visit, void* ctx) {
-  uint16_t i = 0;
-  uint16_t size = 0;
-  void** elms = NULL;
-  return_value_if_fail(array != NULL && visit != NULL, FALSE);
-
-  size = array->size;
-  elms = array->elms;
-  for (i = 0; i < size; i++) {
-    if (!visit(ctx, elms[i])) {
-      return FALSE;
-    }
-  }
-
-  return TRUE;
-}
-
 void* array_find(array_t* array, compare_t cmp, void* data) {
   int pos = array_find_index(array, cmp, data);
   if (pos >= 0) {

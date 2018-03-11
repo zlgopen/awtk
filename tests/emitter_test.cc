@@ -18,7 +18,6 @@ static ret_t on_event(void* ctx, event_t* e) {
 TEST(Emitter, basic) {
   event_t e;
   uint32_t n = 0;
-  uint32_t id = 0;
   emitter_t emitter;
   emitter_init(&emitter);
   uint16_t type = 12;
