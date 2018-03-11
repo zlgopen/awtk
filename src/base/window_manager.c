@@ -200,7 +200,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
         widget_paint(iter, c);
       }
     }
-#endif/*FAST_MODE*/
+#endif /*FAST_MODE*/
   }
 
   return RET_OK;

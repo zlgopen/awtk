@@ -621,6 +621,10 @@ ret_t widget_destroy(widget_t* widget) {
     widget->vt->destroy(widget);
   }
 
+  if (widget->layout_params != NULL) {
+    MEM_FREE(widget->layout_params);
+  }
+
   memset(widget, 0x00, sizeof(widget_t));
   MEM_FREE(widget);
 

@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/layout.h"
 
 widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, const char* y,
@@ -72,10 +73,13 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
 
   if (w != NULL) {
     layout->w = atoi(w);
-    if (w != NULL && strchr(w, '%') != NULL) {
-      layout->w_attr = W_ATTR_PERCENT;
-    } else {
-      layout->w_attr = W_ATTR_PIXEL;
+    layout->w_attr = W_ATTR_PIXEL;
+    if (w != NULL) {
+      if(strchr(w, '%') != NULL) {
+        layout->w_attr = W_ATTR_PERCENT;
+      } else if(strstr(w, "fill") != NULL) {
+        layout->w_attr = W_ATTR_FILL;
+      }
     }
   } else {
     layout->h_attr = H_ATTR_PIXEL;
@@ -83,10 +87,13 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
 
   if (h != NULL) {
     layout->h = atoi(h);
-    if (strchr(h, '%') != NULL) {
-      layout->h_attr = H_ATTR_PERCENT;
-    } else {
-      layout->h_attr = H_ATTR_PIXEL;
+    layout->h_attr = H_ATTR_PIXEL;
+    if(h != NULL) {
+      if (strchr(h, '%') != NULL) {
+        layout->h_attr = H_ATTR_PERCENT;
+      } else if(strstr(h, "fill") != NULL) {
+        layout->h_attr = H_ATTR_FILL;
+      }
     }
   } else {
     layout->h_attr = H_ATTR_PIXEL;
@@ -152,28 +159,252 @@ ret_t widget_layout_calc(const widget_layout_t* layout, rect_t* r, wh_t parent_w
 }
 
 ret_t widget_set_self_layout_params(widget_t* widget, const widget_layout_t* layout) {
-  /*TODO*/
+  return_value_if_fail(widget != NULL && layout != NULL, RET_BAD_PARAMS);
+  if (widget->layout_params == NULL) {
+    widget->layout_params = MEM_ZALLOC(layout_params_t);
+  }
+  return_value_if_fail(widget->layout_params != NULL, RET_OOM);
+  memcpy(&(widget->layout_params->self), layout, sizeof(*layout));
+
   return RET_OK;
 }
 
 ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t margin, uint8_t cell_h_margin,
-                                        uint8_t cell_v_margin) {
-  /*TODO*/
+                                        uint8_t margin, 
+                                        uint8_t cell_spacing) {
+  children_layout_t* layout = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->layout_params == NULL) {
+    widget->layout_params = MEM_ZALLOC(layout_params_t);
+  }
+  return_value_if_fail(widget->layout_params != NULL, RET_OOM);
+  layout = &(widget->layout_params->children);
+  layout->rows = rows;
+  layout->cols = cols;
+  layout->margin = margin;
+  layout->cell_spacing = cell_spacing;
+
   return RET_OK;
 }
 
 ret_t widget_layout(widget_t* widget) {
-  /*TODO*/
-  return RET_OK;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_layout_self(widget);
+
+  return widget_layout_children(widget);
 }
 
 ret_t widget_layout_self(widget_t* widget) {
-  /*TODO*/
+  rect_t r;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->parent != NULL && widget->layout_params != NULL) {
+    widget_layout_t* layout = &(widget->layout_params->self);
+    widget_layout_calc(layout, &r, widget->parent->w, widget->parent->h);
+    widget_move_resize(widget, r.x, r.y, r.w, r.h);
+  }
+
   return RET_OK;
 }
 
 ret_t widget_layout_children(widget_t* widget) {
-  /*TODO*/
+  wh_t w = 0;
+  wh_t h = 0;
+  xy_t x = 0;
+  xy_t y = 0;
+  uint32_t i = 0;
+  uint32_t n = 0;
+  uint8_t margin = 0;
+  widget_t* iter = NULL;
+  uint8_t cell_spacing = 0;
+  widget_t** children = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->children == NULL) {
+    return RET_OK;
+  }
+
+  n = widget->children->size;
+  children = (widget_t**)(widget->children->elms);
+
+  if (widget->layout_params) {
+    children_layout_t* layout = &(widget->layout_params->children);
+    uint8_t rows = layout->rows;
+    uint8_t cols = layout->cols;
+
+    x = layout->margin;
+    y = layout->margin;
+    margin = layout->margin;
+    cell_spacing = layout->cell_spacing;
+
+    if (rows == 1 && cols == 0) { /*hbox*/
+      h = widget->h - 2 * margin;
+      return_value_if_fail(h > 0, RET_BAD_PARAMS);
+
+      for (i = 0; i < n; i++) {
+        iter = children[i];
+        widget_layout_self(iter);
+      }
+
+      for (i = 0; i < n; i++) {
+        iter = children[i];
+        widget_move_resize(iter, x, y, iter->w, h);
+        x += iter->w + cell_spacing;
+        return_value_if_fail(x < widget->w, RET_BAD_PARAMS);
+      }
+
+      for (i = 0; i < n; i++) {
+        widget_layout_children(children[i]);
+      }
+
+      return RET_OK;
+    } else if (cols == 1 && rows == 0) { /*vbox*/
+      w = widget->w - 2 * margin;
+      return_value_if_fail(w > 0, RET_BAD_PARAMS);
+
+      for (i = 0; i < n; i++) {
+        iter = children[i];
+        widget_layout_self(iter);
+      }
+
+      for (i = 0; i < n; i++) {
+        iter = children[i];
+        widget_move_resize(iter, x, y, w, iter->h);
+        y += iter->h + cell_spacing;
+        return_value_if_fail(y < widget->h, RET_BAD_PARAMS);
+      }
+
+      for (i = 0; i < n; i++) {
+        widget_layout_children(children[i]);
+      }
+
+      return RET_OK;
+    } else if (cols > 0 && rows > 0) { /*grid|vlist|hlist*/
+      uint8_t r = 0;
+      uint8_t c = 0;
+      wh_t item_w = 0;
+      wh_t item_h = 0;
+      w = widget->w - 2 * margin - (cols - 1) * cell_spacing;
+      h = widget->h - 2 * margin - (rows - 1) * cell_spacing;
+      item_w = w / cols;
+      item_h = h / rows;
+      return_value_if_fail(item_w > 0 && item_h > 0, RET_BAD_PARAMS);
+
+      for (i = 0; i < n; i++) {
+        iter = children[i];
+        widget_move_resize(iter, x, y, item_w, item_h);
+        c++;
+        if (c == cols) {
+          r++;
+          y += item_h + cell_spacing;
+          c = 0;
+          x = margin;
+        } else {
+          x += item_w + cell_spacing;
+        }
+        return_value_if_fail(y < widget->h, RET_BAD_PARAMS);
+      }
+
+      for (i = 0; i < n; i++) {
+        widget_layout_children(children[i]);
+      }
+
+      return RET_OK;
+    } else if (rows == 0 && cols == 0) { /*free layout*/
+      /*fall through*/
+    } else { /*not support*/
+      log_debug("not supported(rows=%d, cols=%d)\n", rows, cols);
+      return RET_OK;
+    }
+  }
+
+  for (i = 0; i < n; i++) {
+    iter = children[i];
+    widget_layout_self(iter);
+  }
+
+  for (i = 0; i < n; i++) {
+    iter = children[i];
+    x = iter->x;
+    y = iter->y;
+    w = iter->w;
+    h = iter->h;
+    if (iter->layout_params) {
+      widget_layout_t* l = &(iter->layout_params->self);
+      if (l->w_attr == W_ATTR_FILL || l->h_attr == H_ATTR_FILL) {
+        widget_t* prev = i > 0 ? widget_get_child(widget, i - 1) : NULL;
+        widget_t* next = (i + 1) == widget->children->size ? NULL : widget_get_child(widget, i + 1);
+        if (l->w_attr == W_ATTR_FILL) {
+          if (prev) {
+            x = prev->x + prev->w + cell_spacing;
+          } else {
+            x = margin;
+          }
+          if (next) {
+            w = (next->x - cell_spacing) - x;
+          } else {
+            w = widget->w - margin - x;
+          }
+        }
+
+        if (l->h_attr == H_ATTR_FILL) {
+          if (prev != NULL) {
+            y = prev->y + prev->h + cell_spacing;
+          } else {
+            y = margin;
+          }
+
+          if (next != NULL) {
+            h = next->y - cell_spacing - y;
+          } else {
+            h = widget->h - margin - y;
+          }
+        }
+
+        return_value_if_fail(w > 0 && h > 0, RET_BAD_PARAMS);
+        widget_move_resize(iter, x, y, w, h);
+      }
+    }
+  }
+
+  for (i = 0; i < n; i++) {
+    widget_layout_children(children[i]);
+  }
+
   return RET_OK;
+}
+
+children_layout_t* children_layout_parser(children_layout_t* layout, const char* params) {
+  const char* p = params;
+  return_value_if_fail(layout != NULL && params != NULL, NULL);
+
+  memset(layout, 0x00, sizeof(*layout));
+
+  layout->rows = atoi(p);
+  p = strchr(p, ' ');
+  if(p != NULL) {
+    while(*p == ' ') p++;
+    if(*p) {
+      layout->cols = atoi(p);
+    }
+    
+    p = strchr(p, ' ');
+    if(p != NULL) {
+      while(*p == ' ') p++;
+      if(*p) {
+        layout->margin = atoi(p);
+      }
+
+      p = strchr(p, ' ');
+      if(p != NULL) {
+        while(*p == ' ') p++;
+        if(*p) {
+          layout->cell_spacing = atoi(p);
+        }
+      }
+    }
+  }
+
+  return layout;
 }

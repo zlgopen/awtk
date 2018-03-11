@@ -1,0 +1,4 @@
+<window name="main" x="0" y="0" w="320" h="480" layout="1 0">
+  <button x="0" y="5" w="50%" h="30" text="20%"/>
+  <button x="0" y="40" w="100%" h="30" text="30%"/>
+</window>

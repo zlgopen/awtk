@@ -36,16 +36,18 @@
 
 static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
   rect_t r;
-  xy_t x = desc->layout.x;
-  xy_t y = desc->layout.y;
-  wh_t w = desc->layout.w;
-  wh_t h = desc->layout.h;
+  const widget_layout_t* layout = &(desc->layout);
+
+  xy_t x = layout->x;
+  xy_t y = layout->y;
+  wh_t w = layout->w;
+  wh_t h = layout->h;
   widget_t* widget = NULL;
   uint16_t type = desc->type;
   widget_t* parent = b->widget;
 
   if (parent != NULL) {
-    widget_layout_calc(&desc->layout, &r, parent->w, parent->h);
+    widget_layout_calc(layout, &r, parent->w, parent->h);
     x = r.x;
     y = r.y;
     w = r.w;
@@ -90,6 +92,10 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
       break;
   }
 
+  if(layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT || layout->w_attr == W_ATTR_PIXEL || layout->h_attr == H_ATTR_PIXEL) {
+    widget_set_self_layout_params(widget, layout);
+  }
+
   b->widget = widget;
   if (b->root == NULL) {
     b->root = widget;
@@ -126,6 +132,11 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
     } else {
       log_debug("%s %s is invalid.\n", __func__, value);
     }
+  } else if (strcmp(name, "layout") == 0) {
+    /*2 2 5 10 10*/
+    children_layout_t cl;
+    children_layout_parser(&cl, value);
+    widget_set_children_layout_params(b->widget, cl.rows, cl.cols, cl.margin, cl.cell_spacing);
   } else {
     value_set_str(&v, value);
     widget_set_prop(b->widget, name, &v);
@@ -166,6 +177,7 @@ widget_t* window_open(const char* name) {
 
   ui_loader_load(loader, ui->data, ui->size, builder);
   resource_manager_unref(ui);
+  widget_layout(builder->root);
 
   return builder->root;
 }

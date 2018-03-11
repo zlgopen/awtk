@@ -20,9 +20,10 @@
 * binarry ui loader
 * xml ui loader
 * api doc
+* 基本layout功能
+* 极速模式
 
 ## 短期计划(顺序不定)
-* 基本layout功能
 * Qt界面文件转换器
 * 微软Rc界面文件转换器 
 * API doc到PDF转换工具

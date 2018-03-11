@@ -28,6 +28,7 @@
 #include "base/emitter.h"
 #include "base/canvas.h"
 #include "base/theme.h"
+#include "base/layout_def.h"
 
 BEGIN_C_DECLS
 
@@ -332,6 +333,12 @@ struct _widget_t {
    * Style数据。
    */
   style_t style;
+  /**
+   * @property {layout_params_t*} layout_params
+   * @private
+   * 布局参数。
+   */
+  layout_params_t* layout_params;
   /**
    * @property {widget_vtable_t} vt
    * @private
