@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lftk.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  lftk
@@ -44,4 +44,7 @@ static ret_t lftk_quit_idle(const timer_info_t* timer) {
   return main_loop_quit(main_loop_get_default());
 }
 
-ret_t lftk_quit() { return timer_add(lftk_quit_idle, NULL, 0); }
+ret_t lftk_quit() { 
+  timer_add(lftk_quit_idle, NULL, 0); 
+	return RET_OK;
+}

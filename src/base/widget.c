@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  basic class of all widget
@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utf8.h"
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/widget_vtable.h"
