@@ -152,7 +152,11 @@ static ret_t ui_builder_default_on_widget_prop_end(ui_builder_t* b) {
 
 static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
   b->widget = b->widget->parent;
-  if(b->widget == b->root) {
+  return RET_OK;
+}
+
+static ret_t ui_builder_default_on_end(ui_builder_t* b) {
+  if(b->root != NULL) {
     widget_layout(b->root);
   }
 
@@ -168,6 +172,7 @@ ui_builder_t* ui_builder_default() {
   s_ui_builder.on_widget_prop = ui_builder_default_on_widget_prop;
   s_ui_builder.on_widget_prop_end = ui_builder_default_on_widget_prop_end;
   s_ui_builder.on_widget_end = ui_builder_default_on_widget_end;
+  s_ui_builder.on_end = ui_builder_default_on_end;
 
   return &s_ui_builder;
 }

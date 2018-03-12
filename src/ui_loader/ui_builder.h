@@ -36,16 +36,20 @@ typedef struct _widget_desc_t {
   widget_layout_t layout;
 }widget_desc_t;
 
+typedef ret_t (*ui_builder_on_start_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_widget_start_t)(ui_builder_t* b, const widget_desc_t* desc);
 typedef ret_t (*ui_builder_on_widget_prop_t)(ui_builder_t* b, const char* name, const char* value);
 typedef ret_t (*ui_builder_on_widget_prop_end_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_widget_end_t)(ui_builder_t* b);
+typedef ret_t (*ui_builder_on_end_t)(ui_builder_t* b);
 
 struct _ui_builder_t {
+  ui_builder_on_start_t on_start;
   ui_builder_on_widget_start_t on_widget_start;
   ui_builder_on_widget_prop_t on_widget_prop;
   ui_builder_on_widget_prop_end_t on_widget_prop_end;
   ui_builder_on_widget_end_t on_widget_end;
+  ui_builder_on_end_t on_end;
   widget_t* root;
   widget_t* widget;
 };
@@ -54,6 +58,8 @@ ret_t ui_builder_on_widget_start(ui_builder_t* b, const widget_desc_t* desc);
 ret_t ui_builder_on_widget_prop(ui_builder_t* b, const char* name, const char* value);
 ret_t ui_builder_on_widget_prop_end(ui_builder_t* b);
 ret_t ui_builder_on_widget_end(ui_builder_t* b);
+ret_t ui_builder_on_start(ui_builder_t* b);
+ret_t ui_builder_on_end(ui_builder_t* b);
 
 #define UI_DATA_MAGIC 0x11221212
 

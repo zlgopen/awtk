@@ -156,7 +156,9 @@ ret_t ui_loader_load_xml(ui_loader_t* loader, const uint8_t* data, uint32_t size
 
   parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(&b, ui_builder));
+  ui_builder_on_start(ui_builder);
   xml_parser_parse(parser, (const char*)data, size);
+  ui_builder_on_end(ui_builder);
   xml_parser_destroy(parser);
 
   return RET_OK;

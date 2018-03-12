@@ -35,6 +35,7 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
   return_value_if_fail(rbuffer_read_uint32(&rbuffer, &magic) == RET_OK, RET_BAD_PARAMS);
   return_value_if_fail(magic == UI_DATA_MAGIC, RET_BAD_PARAMS);
 
+  ui_builder_on_start(b);
   while (rbuffer_has_more(&rbuffer)) {
     const char* key = NULL;
     const char* value = NULL;
@@ -56,6 +57,7 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
       ui_builder_on_widget_end(b);
     }
   }
+  ui_builder_on_end(b);
 
   return RET_OK;
 }
