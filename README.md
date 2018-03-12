@@ -78,6 +78,7 @@ demos\demo1
 ## 文档
 
 * [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+* [LFTK控件的布局参数介绍](docs/layout.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)

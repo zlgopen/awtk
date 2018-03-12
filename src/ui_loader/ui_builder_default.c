@@ -93,7 +93,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   }
 
   if(layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT || layout->w_attr == W_ATTR_PIXEL || layout->h_attr == H_ATTR_PIXEL) {
-    widget_set_self_layout_params(widget, layout);
+    widget_set_parsed_self_layout_params(widget, layout);
   }
 
   b->widget = widget;
