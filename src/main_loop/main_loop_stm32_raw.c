@@ -19,15 +19,10 @@
  *
  */
 
-#include "base/timer.h"
-#include "main_loop/main_loop_stm32_raw.h"
-#include "base/font_manager.h"
-#include "base/window_manager.h"
 #include "button.h"
 #include "delay.h"
 #include "flash.h"
 #include "gui.h"
-#include "lcd/lcd_stm32_raw.h"
 #include "lcd_driver.h"
 #include "led.h"
 #include "rtc.h"
@@ -36,6 +31,13 @@
 #include "tim.h"
 #include "touch.h"
 #include "usart.h"
+
+#include "base/timer.h"
+#include "base/event_queue.h"
+#include "lcd/lcd_stm32_raw.h"
+#include "base/font_manager.h"
+#include "base/window_manager.h"
+#include "main_loop/main_loop_stm32_raw.h"
 
 typedef struct _main_loop_stm32_raw_t {
   main_loop_t base;
@@ -48,13 +50,14 @@ typedef struct _main_loop_stm32_raw_t {
   xy_t touch_x;
   xy_t touch_y;
   bool_t pressed;
+  event_queue_t* queue;
 } main_loop_stm32_raw_t;
 
 static main_loop_stm32_raw_t loop;
 
 static void dispatch_touch_events(bool_t pressed, xy_t x, xy_t y) {
+  event_all_t any;
   pointer_event_t event;
-  widget_t* widget = loop.wm;
 
   loop.touch_x = x;
   loop.touch_y = y;
@@ -72,13 +75,16 @@ static void dispatch_touch_events(bool_t pressed, xy_t x, xy_t y) {
     loop.pressed = TRUE;
     event.pressed = loop.pressed;
 
-    widget_on_pointer_down(widget, &event);
+    any.e.pointer_event = event;
+    event_queue_send(loop.queue, &any);
   } else {
     if (loop.pressed) {
       loop.pressed = FALSE;
       event.e.type = EVT_POINTER_UP;
       event.pressed = loop.pressed;
-      widget_on_pointer_up(widget, &event);
+
+      any.e.pointer_event = event;
+      event_queue_send(loop.queue, &any);
     }
   }
 }
@@ -96,11 +102,24 @@ void TIM3_IRQHandler(void) {
 }
 
 static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
+  event_all_t event;
+  widget_t* widget = loop.wm;
   uint8_t key = keyscan(0);
-
-  /*TODO:
-  main_loop_stm32_raw_dispatch_key_event(loop, &event);
-  */
+  /*TODO dispatch key*/
+  while(event_queue_recv(loop.queue, &event) == RET_OK) {
+    switch(event.e.event.type) {
+      case EVT_POINTER_DOWN:
+        widget_on_pointer_down(widget, &(event.e.pointer_event));
+        break;
+      case EVT_POINTER_MOVE:
+        widget_on_pointer_move(widget, &(event.e.pointer_event));
+        break;
+      case EVT_POINTER_UP:
+        widget_on_pointer_up(widget, &(event.e.pointer_event));
+        break;
+      default:break;
+    }
+  }
 
   return RET_OK;
 }
@@ -128,14 +147,19 @@ static ret_t main_loop_stm32_raw_run(main_loop_t* l) {
 static ret_t main_loop_stm32_raw_quit(main_loop_t* l) { return RET_OK; }
 
 static ret_t main_loop_stm32_raw_destroy(main_loop_t* l) {
-  (void)l;
+  main_loop_stm32_raw_t* loop = (main_loop_stm32_raw_t*)l;
+  event_queue_destroy(loop->queue);
+
   return RET_OK;
 }
 
 main_loop_t* main_loop_init(int w, int h) {
   lcd_t* lcd = NULL;
+  event_queue_t* queue = NULL;
   widget_t* wm = default_wm();
   main_loop_t* base = &(loop.base);
+  queue = event_queue_create(20);
+  return_value_if_fail(q != NULL, NULL);
 
   memset(&loop, 0x00, sizeof(loop));
 
@@ -144,6 +168,7 @@ main_loop_t* main_loop_init(int w, int h) {
   base->destroy = main_loop_stm32_raw_destroy;
 
   loop.wm = wm;
+  loop.queue = queue;
   window_manager_resize(wm, w, h);
 
   lcd = lcd_stm32_raw_create(w, h, TFT_WriteData, TFT_SetWindow);
