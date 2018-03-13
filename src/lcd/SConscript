@@ -1,7 +1,7 @@
 import os
 
 env=DefaultEnvironment()
-env.Library('lcd', ['lcd_sdl2.c', 'lcd_mem.c'])
+env.Library('lcd', ['lcd_sdl2.c', 'lcd_mem_565.c'])
 
-env.Library('mem_lcd', 'lcd_mem.c')
+env.Library('mem_lcd', 'lcd_mem_565.c')
 

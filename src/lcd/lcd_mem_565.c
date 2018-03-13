@@ -1,7 +1,7 @@
 /**
- * File:   lcd_stm32_raw.c
+ * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  stm32_raw implemented lcd interface/
+ * Brief:  mem implemented lcd interface/
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -15,19 +15,11 @@
 /**
  * History:
  * ================================================================
- * 2018-02-16 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#include "gui.h"
-#include "lcd_driver.h"
-#include "lcd/lcd_reg.h"
-
-#define set_window_func TFT_SetWindow
-#define write_data_func TFT_WriteData
-
-#include "base/color.h"
 #include "base/mem.h"
+#include "lcd/lcd_mem.h"
 #include "lcd/rgb565.h"
-#include "lcd/lcd_reg.inc"
-
+#include "lcd/lcd_mem.inc"

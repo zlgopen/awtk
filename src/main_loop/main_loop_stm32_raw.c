@@ -33,8 +33,8 @@
 #include "usart.h"
 
 #include "base/timer.h"
+#include "lcd/lcd_reg.h"
 #include "base/event_queue.h"
-#include "lcd/lcd_stm32_raw.h"
 #include "base/font_manager.h"
 #include "base/window_manager.h"
 #include "main_loop/main_loop_stm32_raw.h"
@@ -103,10 +103,10 @@ void TIM3_IRQHandler(void) {
 
 static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
   event_all_t event;
-  widget_t* widget = loop.wm;
+  widget_t* widget = loop->wm;
   uint8_t key = keyscan(0);
   /*TODO dispatch key*/
-  while(event_queue_recv(loop.queue, &event) == RET_OK) {
+  while(event_queue_recv(loop->queue, &event) == RET_OK) {
     switch(event.e.event.type) {
       case EVT_POINTER_DOWN:
         widget_on_pointer_down(widget, &(event.e.pointer_event));
@@ -159,7 +159,7 @@ main_loop_t* main_loop_init(int w, int h) {
   widget_t* wm = default_wm();
   main_loop_t* base = &(loop.base);
   queue = event_queue_create(20);
-  return_value_if_fail(q != NULL, NULL);
+  return_value_if_fail(queue != NULL, NULL);
 
   memset(&loop, 0x00, sizeof(loop));
 
@@ -171,7 +171,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop.queue = queue;
   window_manager_resize(wm, w, h);
 
-  lcd = lcd_stm32_raw_create(w, h, TFT_WriteData, TFT_SetWindow);
+  lcd = lcd_reg_create(w, h);
   canvas_init(&(loop.canvas), lcd, default_fm());
   main_loop_set_default(base);
 
