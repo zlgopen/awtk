@@ -1,0 +1,4 @@
+<window name="IDD_DIALOG2" x="0" y="0" w="216" h="122"text="Dialog">
+<button text="确定" name="IDOK" x="68" y="90" w="50" h="14" />
+<button text="取消" name="IDCANCEL" x="142" y="90" w="50" h="14" />
+</window>

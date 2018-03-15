@@ -75,9 +75,9 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
     layout->w = atoi(w);
     layout->w_attr = W_ATTR_PIXEL;
     if (w != NULL) {
-      if(strchr(w, '%') != NULL) {
+      if (strchr(w, '%') != NULL) {
         layout->w_attr = W_ATTR_PERCENT;
-      } else if(strstr(w, "fill") != NULL) {
+      } else if (strstr(w, "fill") != NULL) {
         layout->w_attr = W_ATTR_FILL;
       }
     }
@@ -88,10 +88,10 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   if (h != NULL) {
     layout->h = atoi(h);
     layout->h_attr = H_ATTR_PIXEL;
-    if(h != NULL) {
+    if (h != NULL) {
       if (strchr(h, '%') != NULL) {
         layout->h_attr = H_ATTR_PERCENT;
-      } else if(strstr(h, "fill") != NULL) {
+      } else if (strstr(h, "fill") != NULL) {
         layout->h_attr = H_ATTR_FILL;
       }
     }
@@ -169,17 +169,18 @@ ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout
   return RET_OK;
 }
 
-ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w, const char* h) {
+ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
+                                    const char* h) {
   widget_layout_t layout;
-  return_value_if_fail(widget != NULL && x != NULL && y != NULL && w != NULL && h!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && x != NULL && y != NULL && w != NULL && h != NULL,
+                       RET_BAD_PARAMS);
   widget_layout_parse(&layout, x, y, w, h);
 
   return widget_set_parsed_self_layout_params(widget, &layout);
 }
 
 ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t margin, 
-                                        uint8_t cell_spacing) {
+                                        uint8_t margin, uint8_t cell_spacing) {
   children_layout_t* layout = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -392,23 +393,23 @@ children_layout_t* children_layout_parser(children_layout_t* layout, const char*
 
   layout->rows = atoi(p);
   p = strchr(p, ' ');
-  if(p != NULL) {
-    while(*p == ' ') p++;
-    if(*p) {
+  if (p != NULL) {
+    while (*p == ' ') p++;
+    if (*p) {
       layout->cols = atoi(p);
     }
-    
+
     p = strchr(p, ' ');
-    if(p != NULL) {
-      while(*p == ' ') p++;
-      if(*p) {
+    if (p != NULL) {
+      while (*p == ' ') p++;
+      if (*p) {
         layout->margin = atoi(p);
       }
 
       p = strchr(p, ' ');
-      if(p != NULL) {
-        while(*p == ' ') p++;
-        if(*p) {
+      if (p != NULL) {
+        while (*p == ' ') p++;
+        if (*p) {
           layout->cell_spacing = atoi(p);
         }
       }

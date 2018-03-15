@@ -106,8 +106,8 @@ static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
   widget_t* widget = loop->wm;
   uint8_t key = keyscan(0);
   /*TODO dispatch key*/
-  while(event_queue_recv(loop->queue, &event) == RET_OK) {
-    switch(event.e.event.type) {
+  while (event_queue_recv(loop->queue, &event) == RET_OK) {
+    switch (event.e.event.type) {
       case EVT_POINTER_DOWN:
         widget_on_pointer_down(widget, &(event.e.pointer_event));
         break;
@@ -117,7 +117,8 @@ static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
       case EVT_POINTER_UP:
         widget_on_pointer_up(widget, &(event.e.pointer_event));
         break;
-      default:break;
+      default:
+        break;
     }
   }
 

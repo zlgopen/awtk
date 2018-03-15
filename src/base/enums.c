@@ -77,8 +77,7 @@ static const key_type_value_t resource_type_name_value[] = {
     {"xml", 0, RESOURCE_TYPE_XML},
 };
 
-static const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr,
-                                         const char* name) {
+const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;
   return_value_if_fail(items != NULL && name != NULL, NULL);
 
@@ -92,8 +91,8 @@ static const key_type_value_t* find_item(const key_type_value_t* items, uint32_t
   return NULL;
 }
 
-static const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,
-                                                  uint32_t value) {
+const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,
+                                           uint32_t value) {
   uint32_t i = 0;
   return_value_if_fail(items != NULL, NULL);
 

@@ -44,6 +44,10 @@ const key_type_value_t* align_h_name_find(const char* name);
 const key_type_value_t* resouce_type_name_find(const char* name);
 const key_type_value_t* resouce_type_name_find_by_value(uint32_t value);
 
+const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr,
+                                         const char* name);
+const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,
+                                         uint32_t value);
 END_C_DECLS
 
 #endif/*LFTK_ENUMS_H*/

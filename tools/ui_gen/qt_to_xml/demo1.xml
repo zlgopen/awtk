@@ -1,0 +1,12 @@
+<window name="MainWindow" x="0" y="0" w="484" h="329" windowTitle="MainWindow">
+<group_box name="centralwidget">
+<label name="lineEdit_2" x="250" y="70" w="200" h="32" text="{path}" />
+<button name="pushButton" x="80" y="200" w="90" h="36" text="OK" />
+<label name="lineEdit_4" x="249" y="10" w="191" h="32" text="{name}" />
+<label name="label_path" x="50" y="70" w="128" h="32" text="Project Path" />
+<label name="lineEdit_3" x="250" y="130" w="200" h="32" text="{fullpath}" />
+<button name="pushButton_2" x="330" y="200" w="91" h="36" text="Cancel" />
+<label name="label_name" x="50" y="20" w="128" h="32" text="Project Name" />
+<label name="label_fullpath" x="50" y="120" w="128" h="32" text="Full Path" />
+</group_box>
+</window>

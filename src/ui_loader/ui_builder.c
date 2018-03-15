@@ -49,7 +49,7 @@ ret_t ui_builder_on_widget_end(ui_builder_t* b) {
 ret_t ui_builder_on_start(ui_builder_t* b) {
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
 
-  if(b->on_start) {
+  if (b->on_start) {
     return b->on_start(b);
   } else {
     return RET_OK;
@@ -59,10 +59,9 @@ ret_t ui_builder_on_start(ui_builder_t* b) {
 ret_t ui_builder_on_end(ui_builder_t* b) {
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
 
-  if(b->on_end) {
+  if (b->on_end) {
     return b->on_end(b);
   } else {
     return RET_OK;
   }
 }
-

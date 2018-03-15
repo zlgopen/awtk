@@ -27,22 +27,22 @@ TEST(EventQueue, basic) {
   ASSERT_EQ(memcmp(&r, &w, sizeof(r)), 0);
   ASSERT_EQ(event_queue_recv(q, &r), RET_FAIL);
 
-  for(i = 0; i < NR; i++) {
+  for (i = 0; i < NR; i++) {
     w.e.pointer_event.e.type = i;
     ASSERT_EQ(event_queue_send(q, &w), RET_OK);
   }
   ASSERT_EQ(q->full, TRUE);
   ASSERT_EQ(event_queue_send(q, &w), RET_FAIL);
-  for(i = 0; i < NR; i++) {
+  for (i = 0; i < NR; i++) {
     ASSERT_EQ(event_queue_recv(q, &r), RET_OK);
     ASSERT_EQ(r.e.pointer_event.e.type, i);
   }
   ASSERT_EQ(event_queue_recv(q, &r), RET_FAIL);
   ASSERT_EQ(q->full, FALSE);
-    
+
   w.e.pointer_event.e.type = 1;
   ASSERT_EQ(event_queue_send(q, &w), RET_OK);
-  
+
   w.e.pointer_event.e.type = 2;
   ASSERT_EQ(event_queue_replace_last(q, &w), RET_OK);
 
@@ -51,4 +51,3 @@ TEST(EventQueue, basic) {
 
   event_queue_destroy(q);
 }
-

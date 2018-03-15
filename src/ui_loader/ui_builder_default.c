@@ -92,7 +92,8 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
       break;
   }
 
-  if(layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT || layout->w_attr == W_ATTR_PIXEL || layout->h_attr == H_ATTR_PIXEL) {
+  if (layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT ||
+      layout->w_attr != W_ATTR_PIXEL || layout->h_attr != H_ATTR_PIXEL) {
     widget_set_parsed_self_layout_params(widget, layout);
   }
 
@@ -156,7 +157,7 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
 }
 
 static ret_t ui_builder_default_on_end(ui_builder_t* b) {
-  if(b->root != NULL) {
+  if (b->root != NULL) {
     widget_layout(b->root);
   }
 

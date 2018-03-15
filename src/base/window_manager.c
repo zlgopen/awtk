@@ -33,8 +33,7 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window->type == WIDGET_NORMAL_WINDOW) {
-    widget_move(window, 0, 0);
-    widget_resize(window, wm->w, wm->h);
+    widget_move_resize(window, 0, 0, wm->w, wm->h);
   } else if (window->type == WIDGET_DIALOG) {
     xy_t x = (wm->w - window->w) >> 1;
     xy_t y = (wm->h - window->h) >> 1;

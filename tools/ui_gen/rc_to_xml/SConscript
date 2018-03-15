@@ -1,0 +1,10 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+
+env['LIBS'] = ['xml', 'common'] + env['LIBS']
+env.Program('rc_to_xml', ["rc_to_xml.cc"])
+
+
+

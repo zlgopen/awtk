@@ -1,5 +1,0 @@
-<dialog name="" icon="info" x="10" y="120" w="300" h="160" text="Dialog">
-  <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready?"/>
-  <button name="ok" x="10" y="bottom:10" w="40%" h="30" text="Yes"/>
-  <button name="cancel" x="right:10" y="bottom:10" w="40%" h="30" text="No"/>
-</dialog>
