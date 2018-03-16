@@ -33,6 +33,13 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
 
 ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uint32_t size);
 
+const char* to_lower(char* str);
+const char* skip_to(const char* p, char c);
+const char* skip_char(const char* p, char c);
+const char* skip_to_next(const char* p, char c);
+bool_t start_with(const char* p, const char* str);
+const char* get_next_token(const char* p, char* token, char c);
+
 END_C_DECLS
 
 #endif//UTILS_H

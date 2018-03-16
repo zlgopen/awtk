@@ -133,3 +133,45 @@ ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uin
 
   return RET_OK;
 }
+
+const char* skip_to(const char* p, char c) {
+  while(*p && *p != c) p++;
+
+  return p;
+}
+
+const char* skip_char(const char* p, char c) {
+  while(*p && *p == c) p++;
+
+  return p;
+}
+
+const char* skip_to_next(const char* p, char c) {
+  return skip_char(skip_to(skip_char(p, c), c), c);
+}
+
+const char* get_next_token(const char* p, char* token, char c) {
+  const char* start = skip_char(p, c);
+  const char* end = skip_to(start, c);
+  uint32_t size = end - start;
+  strncpy(token, start, size);
+  token[size] = '\0';
+
+  return token;
+}
+
+bool_t start_with(const char* p, const char* str) {
+  return strncmp(p, str, strlen(str)) == 0;
+}
+
+const char* to_lower(char* str) {
+  char* p = str;
+
+  while(*p) {
+    *p = tolower(*p);
+    p++;
+  }
+
+  return str;
+}
+
