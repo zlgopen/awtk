@@ -39,19 +39,19 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   widget_t* ok = NULL;
   widget_t* label = NULL;
   widget_t* cancel = NULL;
-  widget_t* win = dialog_create(NULL, 0, 0, 300, 240);
+  widget_t* win = dialog_create(NULL, 0, 0, 240, 160);
   dialog_t* dialog = DIALOG(win);
 
   widget_set_text(win, L"Dialog");
   dialog_set_icon(win, "info");
 
-  ok = button_create(dialog->client, 60, 160, 80, 30);
+  ok = button_create(dialog->client, 20, 80, 80, 30);
   widget_set_text(ok, L"Go");
 
-  cancel = button_create(dialog->client, 200, 160, 80, 30);
+  cancel = button_create(dialog->client, 140, 80, 80, 30);
   widget_set_text(cancel, L"Cancel");
 
-  label = label_create(dialog->client, 10, 10, 200, 30);
+  label = label_create(dialog->client, 10, 30, 200, 30);
   widget_set_text(label, L"Are you ready!");
 
   widget_on(ok, EVT_CLICK, on_ok, dialog);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  window manager
@@ -54,7 +54,9 @@ ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
   if (ret == RET_OK) {
     widget_t* top = window_manager_get_top_window(wm);
     if (top) {
-      widget_invalidate(top, NULL);
+			rect_t r;
+			rect_init(r, window->x, window->y, window->w, window->h);
+      widget_invalidate(top, &r);
     }
   }
 
@@ -173,15 +175,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
 
   if (widget->children != NULL && widget->children->size > 0) {
     nr = widget->children->size;
-#ifdef FAST_MODE
-    for (i = nr - 1; i >= 0; i--) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->visible) {
-        widget_paint(iter, c);
-        break;
-      }
-    }
-#else
+
     for (i = nr - 1; i >= 0; i--) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
       if (iter->type == WIDGET_NORMAL_WINDOW) {
@@ -199,7 +193,6 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
         widget_paint(iter, c);
       }
     }
-#endif /*FAST_MODE*/
   }
 
   return RET_OK;
