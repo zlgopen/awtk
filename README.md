@@ -79,15 +79,21 @@ demos\demo1
 
 * [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 * [LFTK控件的布局参数介绍](docs/layout.md)
+* [LFTK界面描述文件介绍](docs/ui_desc.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
 
+* 2018/03/17
+    * 支持将Qt的UI文件转成LFTK的UI文件。
+    * 支持将VC的RC文件转成LFTK的UI文件。
+    * 编写LFTK UI界面描述的文档。
+
 * 2018/03/11
     * 增加XML界面描述文件预览工具。
-    * 支持极速模式(定义FAST_MODE启用)，只绘制顶层的窗口中变化的控件，绘制效率非常高，但不支持透明背景。
+    * 支持极速模式(定义FAST\_MODE启用)，只绘制顶层的窗口中变化的控件，绘制效率非常高，但不支持透明背景。
     * 支持基本的layout功能。
 
 * 2018/03/10 

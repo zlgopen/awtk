@@ -16,7 +16,7 @@
 
 基于以上这些原因，我决定自己实现[LFTK](https://github.com/xianjimli/lftk)的脚本绑定机制。它的实现原理如下：用特定格式的API注释来描述要脚本化的API，用一个名为gen_idl的工具把注释提取出来生成JSON的接口描述文件，然后用不同的代码产生器生成对应语言的绑定：
 
-![1](images/lftk_binding.png) 
+![1](images/script_binding.png) 
 
 ## 注释格式
 
