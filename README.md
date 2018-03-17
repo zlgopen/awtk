@@ -80,6 +80,7 @@ demos\demo1
 * [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 * [LFTK控件的布局参数介绍](docs/layout.md)
 * [LFTK界面描述文件介绍](docs/ui_desc.md)
+* [将LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
@@ -91,6 +92,7 @@ demos\demo1
     * 支持将VC的RC文件转成LFTK的UI文件。
     * 编写LFTK UI界面描述的文档。
     * 增加事件队列，解决在触屏中断中分发事件的问题。
+    * 编写STM32移植文档。
 
 * 2018/03/11
     * 增加XML界面描述文件预览工具。

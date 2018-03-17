@@ -46,12 +46,12 @@ ret_t platform_prepare() {
 
   TIM3_Init(50, 7199);
   rtc_init();
+
   timer_init(get_time_ms);
 
   return RET_OK;
 }
 
 uint32_t get_time_ms() {
-  /*TODO*/
   return RTC_GetCounter();
 }
