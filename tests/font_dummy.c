@@ -7,7 +7,7 @@ static glyph_t s_glyph_2;
 typedef struct _font_dummy_t {
   font_t base;
   uint16_t font_size;
-}font_dummy_t;
+} font_dummy_t;
 
 ret_t font_dummy_init() {
   s_glyph_0.x = 0;

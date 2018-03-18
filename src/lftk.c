@@ -31,19 +31,19 @@
 
 #ifdef WITH_STB_FONT
 #include "font/font_stb.h"
-#endif/*WITH_STB_FONT*/
+#endif /*WITH_STB_FONT*/
 
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 
 static ret_t lftk_add_font(const resource_info_t* res) {
-  if(res->subtype == RESOURCE_TYPE_FONT_BMP) {
+  if (res->subtype == RESOURCE_TYPE_FONT_BMP) {
     font_manager_add(default_fm(), font_bitmap_create(res->name, res->data, res->size));
 #ifdef WITH_STB_FONT
-  } else if(res->subtype == RESOURCE_TYPE_FONT_TTF) {
+  } else if (res->subtype == RESOURCE_TYPE_FONT_TTF) {
     font_manager_add(default_fm(), font_stb_create(res->name, res->data, res->size));
-#endif/*WITH_STB_FONT*/
+#endif /*WITH_STB_FONT*/
   } else {
     log_debug("not support font type\n");
   }
@@ -56,15 +56,15 @@ ret_t lftk_init_resources() {
   uint32_t nr = 0;
   const resource_info_t** all = resource_manager_get_all(&nr);
 
-  for(i = 0; i < nr; i++) {
+  for (i = 0; i < nr; i++) {
     const resource_info_t* iter = all[i];
-    switch(iter->type) {
-    case RESOURCE_TYPE_FONT:
-    lftk_add_font(iter);
-    break;
-    case RESOURCE_TYPE_THEME:
-    theme_init(iter->data);
-    break;
+    switch (iter->type) {
+      case RESOURCE_TYPE_FONT:
+        lftk_add_font(iter);
+        break;
+      case RESOURCE_TYPE_THEME:
+        theme_init(iter->data);
+        break;
     }
   }
 
@@ -78,7 +78,7 @@ ret_t lftk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size) {
 
 #ifdef WITH_STB_IMAGE
   image_manager_init(default_im(), image_loader_stb());
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 
   return RET_OK;
 }

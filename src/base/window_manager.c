@@ -54,8 +54,8 @@ ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
   if (ret == RET_OK) {
     widget_t* top = window_manager_get_top_window(wm);
     if (top) {
-			rect_t r;
-			rect_init(r, window->x, window->y, window->w, window->h);
+      rect_t r;
+      rect_init(r, window->x, window->y, window->w, window->h);
       widget_invalidate(top, &r);
     }
   }

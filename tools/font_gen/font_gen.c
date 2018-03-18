@@ -50,7 +50,8 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
   return RET_OK;
 }
 
-uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_t* output_buff, uint32_t buff_size) {
+uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_t* output_buff,
+                       uint32_t buff_size) {
   int i = 0;
   glyph_t g;
   int size = 0;

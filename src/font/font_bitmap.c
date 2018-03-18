@@ -68,7 +68,7 @@ static ret_t font_bitmap_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t f
 static bool_t font_bitmap_match(font_t* f, const char* name, uint16_t font_size) {
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
-  if(name == NULL || strcmp(name, font->base.name) == 0) {
+  if (name == NULL || strcmp(name, font->base.name) == 0) {
     return header->font_size == font_size;
   }
 
@@ -80,7 +80,8 @@ static ret_t font_bitmap_destroy(font_t* f) {
   return RET_OK;
 }
 
-font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff, uint32_t buff_size) {
+font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff,
+                         uint32_t buff_size) {
   return_value_if_fail(f != NULL && buff != NULL, NULL);
 
   f->buff = buff;

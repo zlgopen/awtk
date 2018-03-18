@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   timer.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  timer manager
@@ -114,7 +114,8 @@ ret_t timer_check() {
   timers = (timer_info_t**)s_timer_manager->elms;
   for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
     timer_info_t* iter = timers[i];
-    if ((iter->start + iter->duration_ms) <= now) {
+    uint32_t end = iter->start + iter->duration_ms;
+    if (end <= now) {
       iter->repeat = RET_REPEAT == iter->on_timer(iter);
       if (iter->repeat) {
         iter->start = now;

@@ -24,7 +24,7 @@ static void gen_xywh(FILE* fout, const char* p) {
 void gen_button(FILE* fout, const char* p) {
   get_next_token(p, s_text, '\"');
   p = skip_to_next(p, ',');
-  
+
   get_next_token(p, s_name, ',');
   p = skip_to_next(p, ',');
 
@@ -36,7 +36,7 @@ void gen_button(FILE* fout, const char* p) {
 void gen_label(FILE* fout, const char* p) {
   get_next_token(p, s_text, '\"');
   p = skip_to_next(p, ',');
-  
+
   get_next_token(p, s_name, ',');
   p = skip_to_next(p, ',');
 
@@ -48,21 +48,21 @@ void gen_label(FILE* fout, const char* p) {
 void gen_control(FILE* fout, const char* p) {
   get_next_token(p, s_text, '\"');
   p = skip_to_next(p, ',');
-  
+
   get_next_token(p, s_name, ',');
   p = skip_to_next(p, ',');
-  
+
   get_next_token(p, s_type, ',');
   p = skip_to_next(p, ',');
-  
+
   get_next_token(p, s_flags, ',');
   p = skip_to_next(p, ',');
 
-  if(strstr(s_type, "msctls_progress32") != NULL) {
+  if (strstr(s_type, "msctls_progress32") != NULL) {
     fprintf(fout, "<progress_bar name=\"%s\" text=\"%s\"", to_lower(s_name), s_text);
-  }else if(strstr(s_flags, "BS_AUTOCHECKBOX") != NULL){
+  } else if (strstr(s_flags, "BS_AUTOCHECKBOX") != NULL) {
     fprintf(fout, "<check_button name=\"%s\" text=\"%s\"", to_lower(s_name), s_text);
-  }else if(strstr(s_flags, "BS_AUTORADIOBUTTON") != NULL){
+  } else if (strstr(s_flags, "BS_AUTORADIOBUTTON") != NULL) {
     fprintf(fout, "<radio_button name=\"%s\" text=\"%s\"", to_lower(s_name), s_text);
   } else {
     fprintf(fout, "<unknow name=\"%s\" text=\"%s\"", to_lower(s_name), s_text);
@@ -72,14 +72,14 @@ void gen_control(FILE* fout, const char* p) {
 }
 
 void gen_widget(FILE* fout) {
-  const char* p = skip_char(s_line, ' ');  
-  if(start_with(p, "DEFPUSHBUTTON")) {
+  const char* p = skip_char(s_line, ' ');
+  if (start_with(p, "DEFPUSHBUTTON")) {
     gen_button(fout, skip_char(skip_to_next(s_line, ' '), ' '));
-  } else if(start_with(p, "PUSHBUTTON")) {
+  } else if (start_with(p, "PUSHBUTTON")) {
     gen_button(fout, skip_char(skip_to_next(s_line, ' '), ' '));
-  } else if(start_with(p, "CONTROL")) {
+  } else if (start_with(p, "CONTROL")) {
     gen_control(fout, skip_char(skip_to_next(s_line, ' '), ' '));
-  } else if(start_with(p, "LTEXT")) {
+  } else if (start_with(p, "LTEXT")) {
     gen_label(fout, skip_char(skip_to_next(s_line, ' '), ' '));
   }
 }
@@ -101,7 +101,8 @@ void gen_window(FILE* fin) {
   get_next_token(s_line, s_name, ' ');
   fout = fopen(to_filename(filename, sizeof(filename)), "wb+");
   sscanf(p, "DIALOGEX %d, %d, %d, %d", &x, &y, &w, &h);
-  fprintf(fout, "<window name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\" ", to_lower(s_name), x, y, w, h);
+  fprintf(fout, "<window name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\" ", to_lower(s_name), x, y,
+          w, h);
 
   fgets(s_line, sizeof(s_line), fin); /*STYLE*/
   fgets(s_line, sizeof(s_line), fin); /*CAPTION*/
@@ -110,8 +111,8 @@ void gen_window(FILE* fin) {
   fgets(s_line, sizeof(s_line), fin); /*FONT*/
   fgets(s_line, sizeof(s_line), fin); /*BEGIN*/
 
-  while(fgets(s_line, sizeof(s_line), fin)) {
-    if(strstr(s_line, "END") == NULL) {
+  while (fgets(s_line, sizeof(s_line), fin)) {
+    if (strstr(s_line, "END") == NULL) {
       gen_widget(fout);
     } else {
       break;
@@ -125,8 +126,8 @@ void gen_window(FILE* fin) {
 
 void gen(const char* in) {
   FILE* fin = fopen(in, "r");
-  while(fgets(s_line, sizeof(s_line), fin)) {
-    if(strstr(s_line, "DIALOGEX") != NULL) {
+  while (fgets(s_line, sizeof(s_line), fin)) {
+    if (strstr(s_line, "DIALOGEX") != NULL) {
       gen_window(fin);
     }
   }
@@ -135,7 +136,7 @@ void gen(const char* in) {
 }
 
 int main(int argc, char* argv[]) {
-  if(argc != 2) {
+  if (argc != 2) {
     printf("Usage: %s rcfile\n", argv[0]);
     exit(0);
   }

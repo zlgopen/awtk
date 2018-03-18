@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 
   loader = image_loader_stb();
   buff = (uint8_t*)read_file(in_filename, &size);
-  if(buff != NULL) {
+  if (buff != NULL) {
     if (image_loader_load(loader, buff, size, &image) == RET_OK) {
       if (image_gen(&image, out_filename) == RET_OK) {
         printf("done\n");

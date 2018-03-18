@@ -52,6 +52,4 @@ ret_t platform_prepare() {
   return RET_OK;
 }
 
-uint32_t get_time_ms() {
-  return RTC_GetCounter();
-}
+uint32_t get_time_ms() { return RTC_GetCounter(); }

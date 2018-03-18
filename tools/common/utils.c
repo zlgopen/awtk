@@ -118,7 +118,8 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
   return RET_FAIL;
 }
 
-ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff, uint32_t size) {
+ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
+                          uint32_t size) {
   resource_info_t* res = NULL;
   uint32_t total_size = sizeof(resource_info_t) + size;
   const key_type_value_t* kv = resouce_type_name_find_by_value(type);
@@ -139,13 +140,13 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
 }
 
 const char* skip_to(const char* p, char c) {
-  while(*p && *p != c) p++;
+  while (*p && *p != c) p++;
 
   return p;
 }
 
 const char* skip_char(const char* p, char c) {
-  while(*p && *p == c) p++;
+  while (*p && *p == c) p++;
 
   return p;
 }
@@ -164,18 +165,15 @@ const char* get_next_token(const char* p, char* token, char c) {
   return token;
 }
 
-bool_t start_with(const char* p, const char* str) {
-  return strncmp(p, str, strlen(str)) == 0;
-}
+bool_t start_with(const char* p, const char* str) { return strncmp(p, str, strlen(str)) == 0; }
 
 const char* to_lower(char* str) {
   char* p = str;
 
-  while(*p) {
+  while (*p) {
     *p = tolower(*p);
     p++;
   }
 
   return str;
 }
-

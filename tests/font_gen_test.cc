@@ -48,4 +48,3 @@ TEST(FontGen, basic) {
   MEM_FREE(bmp_buff);
   MEM_FREE(ttf_buff);
 }
-

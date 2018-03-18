@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   dialog.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  dialog
@@ -44,6 +44,7 @@ static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
   canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
   canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
 
+  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_FG_COLOR, color));
   if (dialog->icon.data != NULL) {
     rect_t src;
     rect_t dst;

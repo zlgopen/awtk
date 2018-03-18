@@ -111,7 +111,7 @@ ret_t application_init() {
   progress_bar = progress_bar_create(win, 260, 80, 30, 118);
   widget_set_value(progress_bar, 40);
   progress_bar_set_vertical(progress_bar, TRUE);
-  
+
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
   widget_on(cancel, EVT_CLICK, on_dec, progress_bar);
   widget_on(show_dialog, EVT_CLICK, on_show_dialog, NULL);

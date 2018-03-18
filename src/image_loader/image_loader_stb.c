@@ -37,7 +37,8 @@ static bool_t image_loader_stb_match(image_loader_t* l, uint16_t type) {
   return TRUE;
 }
 
-static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint32_t buff_size, bitmap_t* image) {
+static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint32_t buff_size,
+                                   bitmap_t* image) {
   int w = 0;
   int h = 0;
   int n = 0;

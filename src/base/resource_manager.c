@@ -25,7 +25,6 @@
 static array_t s_resources;
 
 ret_t resource_manager_init(uint32_t init_res_nr) {
-
   return array_init(&(s_resources), init_res_nr) ? RET_OK : RET_FAIL;
 }
 
@@ -64,10 +63,9 @@ ret_t resource_manager_deinit() {
 }
 
 const resource_info_t** resource_manager_get_all(uint32_t* size) {
-  if(size != NULL) {
+  if (size != NULL) {
     *size = s_resources.size;
   }
 
   return (const resource_info_t**)s_resources.elms;
 }
-

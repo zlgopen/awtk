@@ -75,4 +75,3 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
 
   return &(f->base);
 }
-

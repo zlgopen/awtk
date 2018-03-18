@@ -53,7 +53,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
   res = resource_manager_ref(RESOURCE_TYPE_IMAGE, name);
   return_value_if_fail(res != NULL, RET_NOT_FOUND);
 
-  if(res->subtype == RESOURCE_TYPE_IMAGE_RAW) {
+  if (res->subtype == RESOURCE_TYPE_IMAGE_RAW) {
     const bitmap_header_t* header = (const bitmap_header_t*)res->data;
     image->w = header->w;
     image->h = header->h;
@@ -61,7 +61,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     image->name = res->name;
     image->data = header->data;
     return RET_OK;
-  } else if(imm->loader != NULL) {
+  } else if (imm->loader != NULL) {
     return image_loader_load(imm->loader, res->data, res->size, image);
   } else {
     return RET_NOT_FOUND;
@@ -79,4 +79,3 @@ ret_t image_manager_destroy(image_manager_t* imm) {
 
   return RET_OK;
 }
-

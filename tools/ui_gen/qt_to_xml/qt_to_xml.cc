@@ -34,11 +34,16 @@ typedef struct _key_value_t {
   const char* value;
 } key_value_t;
 
-static const key_value_t qt_lftk_map[] = {{"QLabel", "label"},       {"QPushButton", "button"},
-                                          {"QLineEdit", "label"},     {"QWidget", "group_box"},
-                                          {"QCheckBox", "check_button"},     {"QRadioButton", "radio_button"},
-                                          {"QProgressBar", "progress_bar"},     {"QDialog", "dialog"},
-                                          {"QMainWindow", "window"}, {NULL, NULL}};
+static const key_value_t qt_lftk_map[] = {{"QLabel", "label"},
+                                          {"QPushButton", "button"},
+                                          {"QLineEdit", "label"},
+                                          {"QWidget", "group_box"},
+                                          {"QCheckBox", "check_button"},
+                                          {"QRadioButton", "radio_button"},
+                                          {"QProgressBar", "progress_bar"},
+                                          {"QDialog", "dialog"},
+                                          {"QMainWindow", "window"},
+                                          {NULL, NULL}};
 
 static string map_type(const string& type) {
   uint32_t i = 0;
@@ -209,16 +214,16 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
 
 static void write_and_destroy_widget_info(WidgetInfo* info, FILE* fp) {
   if (info->supported) {
-    if(strstr(info->properties.c_str(), "x=") == NULL) {
-      info->properties += " x=\"0\""; 
+    if (strstr(info->properties.c_str(), "x=") == NULL) {
+      info->properties += " x=\"0\"";
     }
-    if(strstr(info->properties.c_str(), "y=") == NULL) {
+    if (strstr(info->properties.c_str(), "y=") == NULL) {
       info->properties += " y=\"0\"";
     }
-    if(strstr(info->properties.c_str(), "w=") == NULL) {
-      info->properties += " w=\"100%\""; 
+    if (strstr(info->properties.c_str(), "w=") == NULL) {
+      info->properties += " w=\"100%\"";
     }
-    if(strstr(info->properties.c_str(), "h=") == NULL) {
+    if (strstr(info->properties.c_str(), "h=") == NULL) {
       info->properties += " h=\"100%\"";
     }
 

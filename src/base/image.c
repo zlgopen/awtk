@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  image
@@ -34,6 +34,12 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
 
   bitmap = &(image->bitmap);
   if (bitmap->data != NULL) {
+    color_t color = color_init(0x80, 0x80, 0x80, 0xff);
+    if (widget->parent) {
+      style_t* style = &(widget->parent->style);
+      canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
+    }
+
     x = (widget->w - bitmap->w) >> 1;
     y = (widget->h - bitmap->h) >> 1;
     rect_init(src, 0, 0, bitmap->w, bitmap->h);
