@@ -47,7 +47,7 @@ x/y/w/h 可以使用[LFTK的layout参数](layout.md)。
 XML UI文件写好后，可以用预览工具预览。如：
 
 ```
-./demos/prefix_xml_ui tools/ui_gen/xml_to_ui/window1.xml
+./bin/prefix_xml_ui tools/ui_gen/xml_to_ui/window1.xml
 ```
 
 ### 3.转换成二进制格式的界面描述文件
@@ -55,8 +55,7 @@ XML UI文件写好后，可以用预览工具预览。如：
 对XML预览的效果满意之后，把它转换成二进制的格式：
 
 ```
- cd tools/ui_gen/xml_to_ui
- ./xml_to_ui window1.xml window1.data
+ ./bin/xml_to_ui window1.xml window1.data
 ```
 
 为了方便在没有文件系统的嵌入式系统中使用，直接生成常量数据，和程序一起编译。如：
@@ -125,18 +124,19 @@ resource_manager_add((const resource_info_t*)ui_window1);
 
 ## 二、将Qt的UI文件转成
 
-转换工具在tools/ui\_gen/qt\_to\_xml目录下，使用方法：
+转换工具在bin/qt\_to\_xml目录下，使用方法：
 
 ```
-Usage: ./tools/ui_gen/qt_to_xml/qt_to_xml in_filename out_filename
-   Ex: ./tools/ui_gen/qt_to_xml/qt_to_xml demo1.ui demo1.xml
+Usage: ./bin/qt_to_xml in_filename out_filename
+   Ex: ./bin/qt_to_xml demo1.ui demo1.xml
 ```
 
 ## 三、将Qt的UI文件转成
 
-转换工具在tools/ui\_gen/rc\_to\_xml目录下，使用方法：
+转换工具在bin/rc\_to\_xml目录下，使用方法：
 
 ```
-Usage: ./tools/ui_gen/rc_to_xml/rc_to_xml rcfile
+Usage: ./bin/rc_to_xml rcfile
 ```
 > RC文件需要先转换成UTF-8编码。
+
