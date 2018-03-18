@@ -87,6 +87,10 @@ demos\demo1
 
 ## 最新动态
 
+* 2018/03/18
+    * 支持anti-aliasing直线。
+    * 重新设计资源管理器。
+
 * 2018/03/17
     * 支持将Qt的UI文件转成LFTK的UI文件。
     * 支持将VC的RC文件转成LFTK的UI文件。
