@@ -20,6 +20,7 @@
  */
 
 #include "base/canvas.h"
+#include "base/wuxiaolin.inc"
 
 ret_t canvas_translate(canvas_t* c, xy_t dx, xy_t dy) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
@@ -186,6 +187,58 @@ ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   return canvas_draw_vline_impl(c, c->ox + x, c->oy + y, h);
+}
+
+typedef int OutCode;
+
+const int INSIDE = 0;  // 0000
+const int LEFT = 1;    // 0001
+const int RIGHT = 2;   // 0010
+const int BOTTOM = 4;  // 0100
+const int TOP = 8;     // 1000
+
+// Compute the bit code for a point (x, y) using the clip rectangle
+// bounded diagonally by (xmin, ymin), and (xmax, ymax)
+
+// ASSUME THAT xmax, xmin, ymax and ymin are global constants.
+
+OutCode ComputeOutCode(double x, double y, double xmin, double ymin, double xmax, double ymax) {
+  OutCode code;
+
+  code = INSIDE;  // initialised as being inside of [[clip window]]
+
+  if (x < xmin)  // to the left of clip window
+    code |= LEFT;
+  else if (x > xmax)  // to the right of clip window
+    code |= RIGHT;
+  if (y < ymin)  // below the clip window
+    code |= BOTTOM;
+  else if (y > ymax)  // above the clip window
+    code |= TOP;
+
+  return code;
+}
+
+static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
+  if ((x1 < c->clip_left && x2 < c->clip_left) || (x1 > c->clip_right && x2 > c->clip_right) ||
+      (y1 < c->clip_top && y2 < c->clip_top) || (y1 > c->clip_bottom && y2 > c->clip_bottom)) {
+    return RET_OK;
+  }
+
+  if (x1 == x2) {
+    return canvas_draw_vline_impl(c, x1, y1, ftk_abs(y2 - y1) + 1);
+  } else if (y1 == y2) {
+    return canvas_draw_hline_impl(c, x1, y1, ftk_abs(x2 - x1) + 1);
+  } else {
+    draw_line(c, x1, y1, x2, y2);
+    return RET_OK;
+  }
+}
+
+ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  return canvas_draw_line_impl(c, c->ox + x1, c->oy + y1, c->ox + x2, c->oy + y2);
 }
 
 #define MAX_POINTS_PER_DRAW 20
@@ -531,6 +584,12 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   return RET_OK;
 }
+
+ret_t canvas_fill_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, rrect_option_t* opt) {
+  return RET_OK;
+}
+
+ret_t canvas_stroke_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) { return RET_OK; }
 
 ret_t canvas_end_frame(canvas_t* c) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);

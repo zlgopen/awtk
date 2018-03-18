@@ -66,9 +66,37 @@ ret_t canvas_untranslate(canvas_t* c, xy_t dx, xy_t dy);
 
 ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h);
 ret_t canvas_draw_hline(canvas_t* c, xy_t x, xy_t y, wh_t w);
+ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2);
 ret_t canvas_draw_points(canvas_t* c, point_t* points, uint32_t nr);
+
 ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
+
+typedef enum _gradient_t {
+  GRADIENT_NONE,
+  GRADIENT_LINE,
+  GRADIENT_SIN,
+} gradient_t;
+
+typedef enum _rrect_style_t {
+  RRECT_ALL,
+  RRECT_LEFT,
+  RRECT_TOP,
+  RRECT_RIGHT,
+  RRECT_BOTTOM
+} rrect_style_t;
+
+typedef struct _rrect_option_t {
+  uint8_t gradient;
+  uint8_t style;
+} rrect_option_t;
+
+ret_t canvas_fill_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, rrect_option_t* opt);
+ret_t canvas_stroke_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
+
+ret_t canvas_fill_circle(canvas_t* c, xy_t x, xy_t y, wh_t r);
+ret_t canvas_stroke_circle(canvas_t* c, xy_t x, xy_t y, wh_t r);
+
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
@@ -81,6 +109,4 @@ ret_t canvas_end_frame(canvas_t* c);
 
 END_C_DECLS
 
-#endif/*LFTK_CANVAS_H*/
-
-
+#endif /*LFTK_CANVAS_H*/
