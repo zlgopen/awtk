@@ -105,17 +105,16 @@ ret_t application_init() {
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);
-  timer_add(on_timer, progress_bar, 1000);
+  timer_add(on_timer, progress_bar, 200);
   // progress_bar_set_show_text(progress_bar, TRUE);
 
+  progress_bar = progress_bar_create(win, 260, 80, 30, 118);
+  widget_set_value(progress_bar, 40);
+  progress_bar_set_vertical(progress_bar, TRUE);
+  
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
   widget_on(cancel, EVT_CLICK, on_dec, progress_bar);
   widget_on(show_dialog, EVT_CLICK, on_show_dialog, NULL);
-
-  progress_bar = progress_bar_create(win, 260, 80, 30, 118);
-  timer_add(on_timer, progress_bar, 1000);
-  widget_set_value(progress_bar, 40);
-  progress_bar_set_vertical(progress_bar, TRUE);
 
   check_button = check_button_create(win, 10, 150, 80, 30);
   widget_set_text(check_button, L"Book");

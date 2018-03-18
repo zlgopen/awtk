@@ -26,19 +26,7 @@
 
 BEGIN_C_DECLS
 
-typedef struct _stb_header_t {
-  uint32_t magic;
-  const char name[32];
-  uint32_t size;
-  uint8_t data[1];
-}stb_header_t;
-
-image_loader_t* image_loader_stb_file_create();
-image_loader_t* image_loader_stb_mem_create(uint32_t max_image_nr);
-
-ret_t image_loader_stb_add(image_loader_t* loader, const stb_header_t* data);
-
-#define IMAGE_STB_MAGIC 0x33223344
+image_loader_t* image_loader_stb();
 
 END_C_DECLS
 

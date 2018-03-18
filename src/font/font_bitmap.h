@@ -32,16 +32,12 @@ typedef struct _font_bitmap_index_t {
 }font_bitmap_index_t;
 
 typedef struct _font_bitmap_header_t {
-  uint32_t magic;
   uint16_t char_nr;
   uint16_t font_size;
-  char name[NAME_LEN+1];
   font_bitmap_index_t index[1]; 
 }font_bitmap_header_t;
 
-font_t* font_bitmap_create(const uint8_t* buff);
-
-#define FONT_MAGIC 0x11223344
+font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_size);
 
 END_C_DECLS
 

@@ -20,7 +20,7 @@
  */
 
 #include "resource.h"
-#include "base/lftk.h"
+#include "lftk.h"
 
 ret_t application_init(void);
 

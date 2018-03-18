@@ -1,7 +1,0 @@
-import os
-
-env=DefaultEnvironment()
-env.Library('imageloaderstb', ['image_loader_stb.c'])
-env.Library('imageloaderbitmap', ['image_loader_bitmap.c'])
-
-

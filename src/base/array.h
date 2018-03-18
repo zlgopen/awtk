@@ -28,7 +28,6 @@ BEGIN_C_DECLS
 
 /**
  * @class array_t
- * @scriptable no
  * 数组。 
  */
 typedef struct _array_t

@@ -21,10 +21,16 @@
 
 #include "base/font.h"
 
-ret_t font_find_glyph(font_t* f, wchar_t chr, glyph_t* g) {
+ret_t font_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size) {
   return_value_if_fail(f != NULL && f->find_glyph != NULL && g != NULL, RET_BAD_PARAMS);
 
-  return f->find_glyph(f, chr, g);
+  return f->find_glyph(f, chr, g, font_size);
+}
+
+bool_t font_match(font_t* f, const char* name, uint16_t font_size) {
+  return_value_if_fail(f != NULL && f->match != NULL, FALSE);
+
+  return f->match(f, name, font_size);
 }
 
 ret_t font_destroy(font_t* f) {

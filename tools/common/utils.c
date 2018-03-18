@@ -70,11 +70,14 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
   if (name == NULL) {
     name = strrchr(filename, '\\');
   }
+
   if (name == NULL) {
     name = filename;
+  } else {
+    name += 1;
   }
 
-  strncpy(str, filename, size);
+  strncpy(str, name, size);
   str[size - 1] = '\0';
   p = strchr(str, '.');
   if (p != NULL) {
@@ -115,7 +118,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
   return RET_FAIL;
 }
 
-ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uint32_t size) {
+ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff, uint32_t size) {
   resource_info_t* res = NULL;
   uint32_t total_size = sizeof(resource_info_t) + size;
   const key_type_value_t* kv = resouce_type_name_find_by_value(type);
@@ -126,6 +129,7 @@ ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uin
   memset(res, 0x00, sizeof(resource_info_t));
   res->size = size;
   res->type = type;
+  res->subtype = subtype;
   memcpy(res->data, buff, size);
   filename_to_name(filename, res->name, sizeof(res->name));
   output_c_source(filename, kv->name, res->name, (uint8_t*)res, total_size);

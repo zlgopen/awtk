@@ -46,18 +46,20 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
 
   mem_info_dump();
   (void)e;
+  (void)code;
 
   return RET_OK;
 }
 
 ret_t application_init() {
   widget_t* win = window_open("window1");
-  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  widget_child_on(win, "inc", EVT_CLICK, on_inc, progress_bar);
-  widget_child_on(win, "dec", EVT_CLICK, on_dec, progress_bar);
+  widget_t* bar1 = widget_lookup(win, "bar1", TRUE);
+  widget_t* bar2 = widget_lookup(win, "bar2", TRUE);
+  widget_child_on(win, "inc", EVT_CLICK, on_inc, bar2);
+  widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
   widget_child_on(win, "dialog", EVT_CLICK, on_show_dialog, "dialog1");
   widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
-  timer_add(on_timer, widget_lookup(win, "bar2", TRUE), 500);
+  timer_add(on_timer, bar1, 500);
 
   return RET_OK;
 }

@@ -20,13 +20,15 @@
  */
 
 #include "base/mem.h"
-#include "common/utils.h"
 #include "image_gen.h"
-#include "image_loader/image_loader_bitmap.h"
+#include "common/utils.h"
+#include "base/image_manager.h"
 #include "image_loader/image_loader_stb.h"
 
 int main(int argc, char** argv) {
   bitmap_t image;
+  uint32_t size = 0;
+  uint8_t* buff = NULL;
   const char* in_filename = NULL;
   const char* out_filename = NULL;
   image_loader_t* loader = NULL;
@@ -43,15 +45,19 @@ int main(int argc, char** argv) {
   in_filename = argv[1];
   out_filename = argv[2];
 
-  loader = image_loader_stb_file_create();
-  if (image_loader_load(loader, in_filename, &image) == RET_OK) {
-    if (image_gen(&image, out_filename) == RET_OK) {
-      printf("done\n");
+  loader = image_loader_stb();
+  buff = (uint8_t*)read_file(in_filename, &size);
+  if(buff != NULL) {
+    if (image_loader_load(loader, buff, size, &image) == RET_OK) {
+      if (image_gen(&image, out_filename) == RET_OK) {
+        printf("done\n");
+      } else {
+        printf("gen %s failed\n", out_filename);
+      }
     } else {
-      printf("gen %s failed\n", out_filename);
+      printf("load %s failed\n", in_filename);
     }
-  } else {
-    printf("load %s failed\n", in_filename);
+    free(buff);
   }
 
   return 0;

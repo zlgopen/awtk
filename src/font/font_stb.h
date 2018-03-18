@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-font_t* font_stb_create(const char* name, uint16_t font_size, const uint8_t* buff);
+font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
 
 END_C_DECLS
 

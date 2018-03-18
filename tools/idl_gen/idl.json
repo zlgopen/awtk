@@ -1,6 +1,137 @@
 [
  {
   "type": "class",
+  "name": "array_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "uint16_t*",
+      "name": "capacity"
+     }
+    ],
+    "name": "array_create",
+    "isConstructor": true,
+    "return": "array_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "uint16_t*",
+      "name": "capacity"
+     }
+    ],
+    "name": "array_init",
+    "return": "array_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "compare_t",
+      "name": "cmp"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "array_find",
+    "return": "void*"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "compare_t",
+      "name": "cmp"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "array_find_index",
+    "return": "int"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "compare_t",
+      "name": "cmp"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "array_remove",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     }
+    ],
+    "name": "array_pop",
+    "return": "void*"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "void*",
+      "name": "data"
+     }
+    ],
+    "name": "array_push",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     }
+    ],
+    "name": "array_deinit",
+    "return": "void"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     }
+    ],
+    "name": "array_destroy",
+    "return": "void"
+   }
+  ],
+  "properties": [],
+  "header": "base/array.h"
+ },
+ {
+  "type": "class",
   "name": "button_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -595,14 +726,6 @@
   "header": "base/label.h"
  },
  {
-  "params": [],
-  "name": "lftk_quit",
-  "isGlobal": true,
-  "return": "ret_t",
-  "type": "method",
-  "header": "base/lftk.h"
- },
- {
   "type": "class",
   "name": "progress_bar_t",
   "parent": "widget_t",
@@ -744,6 +867,104 @@
    }
   ],
   "header": "base/rect.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/resource_manager.h",
+  "name": "resource_type_t",
+  "prefix": "RESOURCE_TYPE_",
+  "consts": []
+ },
+ {
+  "type": "enum",
+  "header": "base/resource_manager.h",
+  "name": "resource_font_type_t",
+  "prefix": "RESOURCE_FONT_TYPE_",
+  "consts": []
+ },
+ {
+  "type": "enum",
+  "header": "base/resource_manager.h",
+  "name": "resource_image_type_t",
+  "prefix": "RESOURCE_IMAGE_TYPE_",
+  "consts": []
+ },
+ {
+  "type": "enum",
+  "header": "base/resource_manager.h",
+  "name": "resource_ui_type_t",
+  "prefix": "RESOURCE_UI_TYPE_",
+  "consts": []
+ },
+ {
+  "type": "class",
+  "name": "resource_info_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/resource_manager.h"
+ },
+ {
+  "type": "class",
+  "name": "resource_manager_t",
+  "isFake": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "uint32_t",
+      "name": "init_res_nr"
+     }
+    ],
+    "name": "resource_manager_init",
+    "isStatic": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_info_t",
+      "name": "info"
+     }
+    ],
+    "name": "resource_manager_add",
+    "isStatic": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_type_t",
+      "name": "type"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "resource_manager_ref",
+    "isStatic": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_info_t",
+      "name": "info"
+     }
+    ],
+    "name": "resource_manager_unref",
+    "isStatic": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "resource_manager_deinit",
+    "isStatic": true,
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/resource_manager.h"
  },
  {
   "type": "class",
@@ -1990,5 +2211,13 @@
   ],
   "properties": [],
   "header": "base/window.h"
+ },
+ {
+  "params": [],
+  "name": "lftk_quit",
+  "isGlobal": true,
+  "return": "ret_t",
+  "type": "method",
+  "header": "src/lftk.h"
  }
 ]

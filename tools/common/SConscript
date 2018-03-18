@@ -2,8 +2,9 @@ import os
 import sys
 
 env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library('common', ['utils.c', 'color_parser.c', 'str.c'])
+env.Library(os.path.join(LIB_DIR, 'common'), ['utils.c', 'color_parser.c', 'str.c'])
 
 
 

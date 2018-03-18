@@ -1,0 +1,15 @@
+import os
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources=Glob('base/*.c') +\
+  Glob('font/*.c') + \
+  Glob('image_loader/*.c') + \
+  Glob('ui_loader/*.c') + \
+  Glob('xml/*.c') + \
+  ['lcd/lcd_sdl2.c', 'lcd/lcd_mem_565.c', 'main_loop/main_loop_sdl2.c', 'platforms/platform_default.c', 'lftk.c']
+
+env=DefaultEnvironment().Clone()
+env.Library(os.path.join(LIB_DIR, 'lftk'), sources)
+env.Program(os.path.join(BIN_DIR, 'mem_test'), ["base/mem_test.cc"])

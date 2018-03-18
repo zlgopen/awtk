@@ -4,6 +4,11 @@ static glyph_t s_glyph_0;
 static glyph_t s_glyph_1;
 static glyph_t s_glyph_2;
 
+typedef struct _font_dummy_t {
+  font_t base;
+  uint16_t font_size;
+}font_dummy_t;
+
 ret_t font_dummy_init() {
   s_glyph_0.x = 0;
   s_glyph_0.y = -10;
@@ -23,7 +28,7 @@ ret_t font_dummy_init() {
   return RET_OK;
 }
 
-static ret_t font_dummy_find_glyph(font_t* f, wchar_t chr, glyph_t* g) {
+static ret_t font_dummy_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size) {
   if (chr == 0) {
     *g = s_glyph_0;
   } else if (chr == 1) {
@@ -32,32 +37,43 @@ static ret_t font_dummy_find_glyph(font_t* f, wchar_t chr, glyph_t* g) {
     *g = s_glyph_2;
   }
 
+  (void)font_size;
+
   return RET_OK;
 }
 
-static font_t s_font0;
+static bool_t font_dummy_match(font_t* f, const char* name, uint16_t font_size) {
+  font_dummy_t* font = (font_dummy_t*)f;
+
+  return font->font_size == font_size;
+}
+
+static font_dummy_t s_font0;
 font_t* font_dummy_0(const char* name, uint16_t size) {
-  s_font0.name = name;
-  s_font0.size = size;
-  s_font0.find_glyph = font_dummy_find_glyph;
+  s_font0.base.name = name;
+  s_font0.font_size = size;
+  s_font0.base.match = font_dummy_match;
+  s_font0.base.find_glyph = font_dummy_find_glyph;
 
-  return &s_font0;
+  return &s_font0.base;
 }
 
-static font_t s_font1;
+static font_dummy_t s_font1;
 font_t* font_dummy_1(const char* name, uint16_t size) {
-  s_font1.name = name;
-  s_font1.size = size;
-  s_font1.find_glyph = font_dummy_find_glyph;
+  s_font1.base.name = name;
+  s_font1.font_size = size;
+  s_font1.base.match = font_dummy_match;
+  s_font1.base.find_glyph = font_dummy_find_glyph;
 
-  return &s_font1;
+  return &s_font1.base;
 }
 
-static font_t s_font2;
+static font_dummy_t s_font2;
 font_t* font_dummy_2(const char* name, uint16_t size) {
-  s_font2.name = name;
-  s_font2.size = size;
-  s_font2.find_glyph = font_dummy_find_glyph;
+  s_font2.base.name = name;
+  s_font2.font_size = size;
+  s_font2.base.match = font_dummy_match;
+  s_font2.base.find_glyph = font_dummy_find_glyph;
 
-  return &s_font2;
+  return &s_font2.base;
 }

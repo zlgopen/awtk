@@ -1,6 +1,0 @@
-import os
-
-env=DefaultEnvironment()
-env.Library('xml', Glob('*.c'))
-
-

@@ -368,6 +368,10 @@ function genAll(json) {
   }
 
   function genOne(cls) {
+    if(!cls.scriptable) {
+      return '';
+    }
+
     if (cls.type == 'class') {
       return genClass(cls);
     } else if (cls.type == 'enum') {
@@ -400,7 +404,7 @@ function genAll(json) {
     json.forEach(iter => {
       if (iter.type == 'class') {
         const clsName = iter.name;
-        if(!iter.isFake) {
+        if(!iter.isFake && iter.scriptable) {
           result += `static int wrap_${clsName}_get_prop(lua_State* L);\n`;
           result += `static int wrap_${clsName}_set_prop(lua_State* L);\n`;
         }
@@ -418,7 +422,9 @@ function genAll(json) {
     result += `  globals_init(L);\n`;
     json.forEach(iter => {
       if (iter.type === 'class' || iter.type === 'enum') {
-        result += `  ${iter.name}_init(L);\n`;
+        if(iter.scriptable) {
+          result += `  ${iter.name}_init(L);\n`;
+        }
       }
     });
     result += '  s_current_L = L;\n';

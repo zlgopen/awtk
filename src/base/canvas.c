@@ -130,7 +130,7 @@ wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
 
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
-    if (font_find_glyph(c->font, chr, &g) == RET_OK) {
+    if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
       w += g.w;
     }
   }
@@ -326,10 +326,11 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
 
 static ret_t canvas_draw_char_impl(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   glyph_t g;
-  return_value_if_fail(font_find_glyph(c->font, chr, &g) == RET_OK, RET_BAD_PARAMS);
+  uint16_t font_size = c->font_size;
+  return_value_if_fail(font_find_glyph(c->font, chr, &g, font_size) == RET_OK, RET_BAD_PARAMS);
 
   x += g.x;
-  y += c->font->size + g.y;
+  y += font_size + g.y;
 
   return canvas_draw_glyph(c, &g, x, y);
 }
@@ -344,27 +345,28 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
   glyph_t g;
   int32_t i = 0;
   xy_t left = x;
+  uint16_t font_size = c->font_size;
 
   if (nr < 0) {
     nr = wcslen(str);
   }
 
-  y -= c->font->size * 2 / 3;
+  y -= font_size * 2 / 3;
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (chr == ' ') {
       x += 4 + 1;
     } else if (chr == '\r') {
       if (str[i + 1] != '\n') {
-        y += c->font->size;
+        y += font_size;
         x = left;
       }
     } else if (chr == '\r') {
-      y += c->font->size;
+      y += font_size;
       x = left;
-    } else if (font_find_glyph(c->font, chr, &g) == RET_OK) {
+    } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
       xy_t xx = x + g.x;
-      xy_t yy = y + c->font->size + g.y;
+      xy_t yy = y + font_size + g.y;
 
       canvas_draw_glyph(c, &g, xx, yy);
       x += g.w + 1;

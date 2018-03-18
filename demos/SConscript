@@ -1,17 +1,18 @@
 import os
 
 env=DefaultEnvironment().Clone();
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library('resource', ['resource.c']);
+env.Library(os.path.join(LIB_DIR, 'resource'), ['resource.c']);
 
-env['LIBS'] = ['ui_loader', 'resource', 'fontbitmap', 'imageloaderbitmap'] + env['LIBS']
+env['LIBS'] = ['resource'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
 
-env.Program('demo1', ['demo_main.c', 'demo1_app.c']);
-env.Program('demoui', ['demo_ui_app.c', 'demo_main.c']);
+env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo_main.c', 'demo1_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_app.c', 'demo_main.c']);
 
-env['LIBS'] = ['xml'] + env['LIBS']
-env.Program('prefix_xml_ui', ['prefix_xml_ui.c']);
+env.Program(os.path.join(BIN_DIR, 'prefix_xml_ui'), ['prefix_xml_ui.c']);
 
 
 

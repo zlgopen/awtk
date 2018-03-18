@@ -2,9 +2,10 @@ import os
 import sys
 
 env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
 
-env['LIBS'] = ['resource', 'fontbitmap', 'ui_loader', 'imageloaderbitmap', 'lua'] + env['LIBS']
-env.Program('run_lua', ["run_lua.c", 'lftk_lua.c'])
+env['LIBS'] = ['resource', 'lua'] + env['LIBS']
+env.Program(os.path.join(BIN_DIR, 'runLua'), ["run_lua.c", 'lftk_lua.c'])
 
 
 

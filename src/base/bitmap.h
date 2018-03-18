@@ -41,7 +41,10 @@ enum {
 struct _bitmap_t {
   wh_t w;
   wh_t h;
-  uint32_t format;
+  uint8_t flag;
+  uint8_t format;
+  uint16_t tex_id; /*texture id为opengl保留*/
+  const char* name;
   const uint8_t* data;
   bitmap_destroy_t destroy;
 };
@@ -49,13 +52,16 @@ struct _bitmap_t {
 struct _image_loader_t;
 typedef struct _image_loader_t image_loader_t;
 
-typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const char* name, bitmap_t* bitmap);
+typedef bool_t (*image_loader_match_t)(image_loader_t* loader, uint16_t type);
+typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
 
 struct _image_loader_t {
+  image_loader_match_t match;
   image_loader_load_t load;
 };
 
-ret_t image_loader_load(image_loader_t* loader, const char* name, bitmap_t* bitmap);
+bool_t image_loader_match(image_loader_t* loader, uint16_t type);
+ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
 
 ret_t bitmap_destroy(bitmap_t* bitmap);
 

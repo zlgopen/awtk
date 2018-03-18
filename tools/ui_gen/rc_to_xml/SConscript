@@ -2,9 +2,10 @@ import os
 import sys
 
 env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
 
-env['LIBS'] = ['xml', 'common'] + env['LIBS']
-env.Program('rc_to_xml', ["rc_to_xml.cc"])
+env['LIBS'] = ['common'] + env['LIBS']
+env.Program(os.path.join(BIN_DIR, 'rc_to_xml'), ["rc_to_xml.cc"])
 
 
 

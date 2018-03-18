@@ -25,6 +25,7 @@
 static array_t s_resources;
 
 ret_t resource_manager_init(uint32_t init_res_nr) {
+
   return array_init(&(s_resources), init_res_nr) ? RET_OK : RET_FAIL;
 }
 
@@ -50,7 +51,8 @@ ret_t resource_manager_unref(const resource_info_t* info) {
   return RET_OK;
 }
 
-ret_t resource_manager_add(const resource_info_t* info) {
+ret_t resource_manager_add(const void* data) {
+  const resource_info_t* info = (const resource_info_t*)data;
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   return array_push(&s_resources, (void*)info) ? RET_OK : RET_FAIL;
@@ -60,3 +62,12 @@ ret_t resource_manager_deinit() {
   array_deinit(&(s_resources));
   return RET_OK;
 }
+
+const resource_info_t** resource_manager_get_all(uint32_t* size) {
+  if(size != NULL) {
+    *size = s_resources.size;
+  }
+
+  return (const resource_info_t**)s_resources.elms;
+}
+

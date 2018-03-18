@@ -19,8 +19,8 @@
  *
  */
 
-#include "font/font_stb.h"
 #include "base/mem.h"
+#include "font/font_stb.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb/stb_truetype.h"
@@ -30,12 +30,17 @@ typedef struct _font_stb_t {
   stbtt_fontinfo stb_font;
 } font_stb_t;
 
-static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g) {
+static bool_t font_stb_match(font_t* f, const char* name, uint16_t font_size) {
+  (void)font_size;
+  return (name == NULL || strcmp(name, f->name) == 0);
+}
+
+static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
   int x = 0;
   int y = 0;
   int w = 0;
   int h = 0;
-  int s = f->size;
+  int s = font_size;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
 
@@ -54,16 +59,15 @@ static ret_t font_stb_destroy(font_t* f) {
   return RET_OK;
 }
 
-font_t* font_stb_create(const char* name, uint16_t font_size, const uint8_t* buff) {
+font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_size) {
   font_stb_t* f = NULL;
-  return_value_if_fail(buff != NULL, NULL);
+  return_value_if_fail(buff != NULL && name != NULL, NULL);
 
   f = MEM_ZALLOC(font_stb_t);
   return_value_if_fail(f != NULL, NULL);
 
   f->base.name = name;
-  f->base.size = font_size;
-  f->base.scalable = TRUE;
+  f->base.match = font_stb_match;
   f->base.find_glyph = font_stb_find_glyph;
   f->base.destroy = font_stb_destroy;
 
@@ -71,3 +75,4 @@ font_t* font_stb_create(const char* name, uint16_t font_size, const uint8_t* buf
 
   return &(f->base);
 }
+

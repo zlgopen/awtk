@@ -43,7 +43,7 @@ typedef enum _ret_t {
    * @const RET_OK
    * 成功。
    */
-  RET_OK,
+  RET_OK = 0,
   /**
    * @const RET_OOM
    * Out of memory。

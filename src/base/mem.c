@@ -30,6 +30,7 @@ ret_t mem_init(void* buffer, uint32_t length) {
 
 mem_stat_t mem_stat(void) {
   mem_stat_t stat;
+  memset(&stat, 0x00, sizeof(stat));
   return stat;
 }
 

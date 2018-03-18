@@ -19,14 +19,15 @@
  *
  */
 
-#include "xml_theme_gen.h"
+#include "theme_gen.h"
 #include "base/enums.h"
 #include "base/theme.h"
 #include "base/widget.h"
-#include "common/color_parser.h"
 #include "common/utils.h"
-#include "theme_gen.h"
+#include "xml_theme_gen.h"
 #include "xml/xml_parser.h"
+#include "common/color_parser.h"
+#include "base/resource_manager.h"
 
 typedef struct _xml_builder_t {
   XmlBuilder builder;
@@ -172,7 +173,7 @@ bool xml_gen(const char* input_file, const char* output_file) {
   return_value_if_fail(end != NULL, false);
 
   uint32_t size = end - buff;
-  output_c_source(output_file, "theme", "data", buff, size);
+  output_res_c_source(output_file, RESOURCE_TYPE_THEME, 0, buff, size);
 
   xml_parser_destroy(parser);
 

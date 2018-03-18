@@ -1,7 +1,7 @@
 #include <lua/lua.h>
 #include <lua/lauxlib.h>
 #include <lua/lualib.h>
-#include "base/lftk.h"
+#include "lftk.h"
 #include "demos/resource.h"
 
 extern void luaL_openlftk(lua_State* L);

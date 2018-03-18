@@ -1,6 +1,0 @@
-import os
-
-env=DefaultEnvironment()
-env.Library('main_loop', "main_loop_sdl2.c")
-
-

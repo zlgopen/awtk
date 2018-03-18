@@ -31,7 +31,7 @@ char* read_file(const char* file_name, uint32_t* length);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff, uint32_t size);
 
-ret_t output_res_c_source(const char* filename, int32_t type, uint8_t* buff, uint32_t size);
+ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff, uint32_t size);
 
 const char* to_lower(char* str);
 const char* skip_to(const char* p, char c);

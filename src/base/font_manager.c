@@ -54,13 +54,7 @@ font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {
 
   for (i = 0; i < nr; i++) {
     font_t* iter = fonts[i];
-    if (name) {
-      if (strcmp(name, iter->name) != 0) {
-        continue;
-      }
-    }
-
-    if (iter->size == size) {
+    if (font_match(iter, name, size)) {
       return iter;
     }
   }

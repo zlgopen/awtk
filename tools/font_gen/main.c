@@ -55,9 +55,9 @@ int main(int argc, char** argv) {
   str_buff = read_file(str_filename, &size);
   return_value_if_fail(str_buff != NULL, 0);
 
-  font = font_stb_create("default", font_size, ttf_buff);
+  font = font_stb_create("default", ttf_buff, size);
   if (font != NULL) {
-    font_gen(font, str_buff, output_filename);
+    font_gen(font, (uint16_t)font_size, str_buff, output_filename);
   }
 
   MEM_FREE(ttf_buff);

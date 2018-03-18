@@ -25,7 +25,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "resource.h"
-#include "base/lftk.h"
+#include "lftk.h"
 #include "base/mem.h"
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_builder_default.h"

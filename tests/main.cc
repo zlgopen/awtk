@@ -27,9 +27,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <stdio.h>
+#include "lftk.h"
 #include "base/mem.h"
 #include "gtest/gtest.h"
-#include <stdio.h>
 #include "demos/resource.h"
 #include "base/font_manager.h"
 #include "base/resource_manager.h"
@@ -40,8 +41,9 @@ GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
-  resource_init();
 
+  resource_init();
+  lftk_init_resources();
   RUN_ALL_TESTS();
 
   font_manager_destroy(default_fm());

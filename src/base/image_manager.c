@@ -19,124 +19,64 @@
  *
  */
 
-#include "base/image_manager.h"
 #include "base/mem.h"
-
-typedef struct _image_item_t {
-  const char* name;
-  bitmap_t* bitmap;
-} image_item_t;
-
-typedef struct _image_loader_item_t {
-  const char* name;
-  image_loader_t* loader;
-} image_loader_item_t;
+#include "base/image_manager.h"
+#include "base/resource_manager.h"
 
 image_manager_t* default_im() {
-  static image_manager_t* im = NULL;
-  if (im == NULL) {
-    im = image_manager_create();
+  static image_manager_t* imm = NULL;
+  if (imm == NULL) {
+    imm = image_manager_create();
   }
 
-  return im;
+  return imm;
 }
 
 image_manager_t* image_manager_create() {
-  image_manager_t* im = MEM_ZALLOC(image_manager_t);
+  image_manager_t* imm = MEM_ZALLOC(image_manager_t);
 
-  return image_manager_init(im);
+  return imm;
 }
 
-image_manager_t* image_manager_init(image_manager_t* im) {
-  return_value_if_fail(im != NULL, NULL);
-  memset(im, 0x00, sizeof(image_manager_t));
-  return_value_if_fail(array_init(&(im->images), 3) != NULL, NULL);
-  return_value_if_fail(array_init(&(im->loaders), 3) != NULL, NULL);
+image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader) {
+  return_value_if_fail(imm != NULL, NULL);
 
-  return im;
+  imm->loader = loader;
+
+  return imm;
 }
 
-ret_t image_manager_add_loader(image_manager_t* im, image_loader_t* loader) {
-  return_value_if_fail(im != NULL && loader != NULL, RET_BAD_PARAMS);
+ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
+  const resource_info_t* res = NULL;
+  return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
-  array_push(&(im->loaders), loader);
+  res = resource_manager_ref(RESOURCE_TYPE_IMAGE, name);
+  return_value_if_fail(res != NULL, RET_NOT_FOUND);
 
-  return RET_OK;
-}
-
-static int image_compare(const void* aa, const void* bb) {
-  image_item_t* a = (image_item_t*)aa;
-  image_item_t* b = (image_item_t*)bb;
-
-  return strcmp(a->name, b->name);
-}
-
-bitmap_t* image_manager_find_image(image_manager_t* im, const char* name) {
-  image_item_t item;
-  image_item_t* ret = NULL;
-
-  item.name = name;
-  ret = (image_item_t*)array_find(&(im->images), image_compare, &item);
-
-  return ret ? ret->bitmap : NULL;
-}
-
-ret_t image_manager_load(image_manager_t* im, const char* name, bitmap_t* bitmap) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  image_loader_t* loader = NULL;
-  image_loader_t** elms = NULL;
-  return_value_if_fail(im != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
-
-  elms = (image_loader_t**)(im->loaders.elms);
-  nr = im->loaders.size;
-  for (i = 0; i < nr; i++) {
-    loader = elms[i];
-    if (image_loader_load(loader, name, bitmap) == RET_OK) {
-      return RET_OK;
-    }
+  if(res->subtype == RESOURCE_TYPE_IMAGE_RAW) {
+    const bitmap_header_t* header = (const bitmap_header_t*)res->data;
+    image->w = header->w;
+    image->h = header->h;
+    image->format = header->format;
+    image->name = res->name;
+    image->data = header->data;
+    return RET_OK;
+  } else if(imm->loader != NULL) {
+    return image_loader_load(imm->loader, res->data, res->size, image);
+  } else {
+    return RET_NOT_FOUND;
   }
-
-  return RET_FAIL;
 }
 
-ret_t image_manager_add_image(image_manager_t* im, const char* name, bitmap_t* bitmap) {
-  image_item_t* item = NULL;
-  return_value_if_fail(im != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
-
-  item = MEM_ZALLOC(image_item_t);
-  return_value_if_fail(item != NULL, RET_FAIL);
-
-  item->name = name;
-  item->bitmap = bitmap;
-  array_push(&(im->images), item);
+ret_t image_manager_deinit(image_manager_t* imm) {
+  imm->loader = NULL;
 
   return RET_OK;
 }
 
-ret_t image_manager_deinit(image_manager_t* im) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  image_item_t* item = NULL;
-  image_item_t** elms = NULL;
-  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
-  nr = im->images.size;
-  elms = (image_item_t**)(im->images.elms);
-  for (i = 0; i < nr; i++) {
-    item = elms[i];
-    MEM_FREE(item);
-  }
-
-  array_deinit(&(im->images));
-  array_deinit(&(im->loaders));
+ret_t image_manager_destroy(image_manager_t* imm) {
+  MEM_FREE(imm);
 
   return RET_OK;
 }
 
-ret_t image_manager_destroy(image_manager_t* im) {
-  return_value_if_fail(image_manager_deinit(im) == RET_OK, RET_FAIL);
-
-  MEM_FREE(im);
-
-  return RET_OK;
-}
