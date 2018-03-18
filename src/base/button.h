@@ -28,7 +28,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class button_t 
+ * @class button_t
  * @parent widget_t
  * @scriptable
  * 按钮控件。
@@ -36,7 +36,7 @@ BEGIN_C_DECLS
 typedef struct _button_t {
   widget_t widget;
   wstr_t text;
-}button_t;
+} button_t;
 
 /**
  * @method button_create
@@ -66,5 +66,4 @@ ret_t button_set_text(widget_t* widget, const wchar_t* text);
 
 END_C_DECLS
 
-#endif/*LFTK_BUTTON_H*/
-
+#endif /*LFTK_BUTTON_H*/

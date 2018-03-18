@@ -1,7 +1,7 @@
 /**
  * File:   ui_loader_default.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  default ui_loader 
+ * Brief:  default ui_loader
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -30,5 +30,4 @@ ui_loader_t* default_ui_loader();
 
 END_C_DECLS
 
-#endif/*LFTK_UI_LOADER_DEFAULT_H*/
-
+#endif /*LFTK_UI_LOADER_DEFAULT_H*/

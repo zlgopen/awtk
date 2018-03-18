@@ -29,7 +29,8 @@ BEGIN_C_DECLS
 struct _ui_loader_t;
 typedef struct _ui_loader_t ui_loader_t;
 
-typedef ret_t (*ui_loader_load_t)(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui_builder_t* b);
+typedef ret_t (*ui_loader_load_t)(ui_loader_t* loader, const uint8_t* data, uint32_t size,
+                                  ui_builder_t* b);
 
 struct _ui_loader_t {
   ui_loader_load_t load;
@@ -39,5 +40,4 @@ ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui
 
 END_C_DECLS
 
-#endif/*LFTK_UI_LOADER_H*/
-
+#endif /*LFTK_UI_LOADER_H*/

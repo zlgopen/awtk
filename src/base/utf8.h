@@ -26,10 +26,9 @@
 
 BEGIN_C_DECLS
 
-char*    utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
+char* utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
 wchar_t* utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
 
 END_C_DECLS
 
-#endif/*LFTK_UTF8_H*/
-
+#endif /*LFTK_UTF8_H*/

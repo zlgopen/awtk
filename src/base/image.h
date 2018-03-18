@@ -29,7 +29,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class image_t 
+ * @class image_t
  * @parent widget_t
  * @scriptable
  * 图片控件。
@@ -37,7 +37,7 @@ BEGIN_C_DECLS
 typedef struct _image_t {
   widget_t widget;
   bitmap_t bitmap;
-}image_t;
+} image_t;
 
 /**
  * @method image_create
@@ -69,5 +69,4 @@ ret_t image_set_image(widget_t* widget, bitmap_t* image);
 
 END_C_DECLS
 
-#endif/*LFTK_IMAGE_H*/
-
+#endif /*LFTK_IMAGE_H*/

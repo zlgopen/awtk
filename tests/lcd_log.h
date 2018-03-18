@@ -33,8 +33,7 @@ lcd_t* lcd_log_init(wh_t w, wh_t h);
 
 END_C_DECLS
 
-ret_t  lcd_log_reset(lcd_t* lcd);
+ret_t lcd_log_reset(lcd_t* lcd);
 const string& lcd_log_get_commands(lcd_t* lcd);
 
-#endif/*LCD_LOG_H*/
-
+#endif /*LCD_LOG_H*/

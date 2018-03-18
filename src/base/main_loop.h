@@ -52,5 +52,4 @@ ret_t main_loop_destroy(main_loop_t* l);
 
 END_C_DECLS
 
-#endif/*LFTK_MAIN_LOOP_H*/
-
+#endif /*LFTK_MAIN_LOOP_H*/

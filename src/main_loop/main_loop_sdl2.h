@@ -30,5 +30,4 @@ main_loop_t* main_loop_init(int w, int h);
 
 END_C_DECLS
 
-#endif/*LFTK_MAIN_LOOP_SDL2_H*/
-
+#endif /*LFTK_MAIN_LOOP_SDL2_H*/

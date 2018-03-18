@@ -12,5 +12,4 @@ font_t* font_dummy_2(const char* name, uint16_t size);
 
 END_C_DECLS
 
-#endif/*LFTK_FONT_DUMMY_H*/
-
+#endif /*LFTK_FONT_DUMMY_H*/

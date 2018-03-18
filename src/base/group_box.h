@@ -27,14 +27,14 @@
 BEGIN_C_DECLS
 
 /**
- * @class group_box_t 
+ * @class group_box_t
  * @parent widget_t
  * @scriptable
  * 分组控件。
  */
 typedef struct _group_box_t {
   widget_t widget;
-}group_box_t;
+} group_box_t;
 
 /**
  * @method group_box_create
@@ -52,5 +52,4 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif/*LFTK_GROUP_BOX_H*/
-
+#endif /*LFTK_GROUP_BOX_H*/

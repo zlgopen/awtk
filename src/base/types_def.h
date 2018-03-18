@@ -1,5 +1,5 @@
 ﻿/**
- * File:   types_def.h 
+ * File:   types_def.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  basic types definitions.
  *
@@ -84,7 +84,7 @@ typedef enum _ret_t {
    * 无效参数。
    */
   RET_BAD_PARAMS
-}ret_t;
+} ret_t;
 
 #ifdef WIN32
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
@@ -101,37 +101,31 @@ typedef enum _ret_t {
 #ifdef NDEBUG
 #define ENSURE(p) p
 #define return_if_fail(p) \
-  if (!(p))               \
-  {                       \
+  if (!(p)) {             \
     return;               \
   }
 #define break_if_fail(p) \
-  if (!(p))              \
-  {                      \
+  if (!(p)) {            \
     break;               \
   }
 #define return_value_if_fail(p, value) \
-  if (!(p))                            \
-  {                                    \
+  if (!(p)) {                          \
     return (value);                    \
   }
 #else
 #define ENSURE(p) assert(p)
 #define break_if_fail(p)                              \
-  if (!(p))                                           \
-  {                                                   \
+  if (!(p)) {                                         \
     printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     break;                                            \
   }
 #define return_if_fail(p)                             \
-  if (!(p))                                           \
-  {                                                   \
+  if (!(p)) {                                         \
     printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return;                                           \
   }
 #define return_value_if_fail(p, value)                \
-  if (!(p))                                           \
-  {                                                   \
+  if (!(p)) {                                         \
     printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return (value);                                   \
   }
@@ -145,39 +139,53 @@ typedef enum _ret_t {
 #define END_C_DECLS
 #endif
 
-enum _bool_t{
-  FALSE = 0,
-  TRUE = 1
-};
+enum _bool_t { FALSE = 0, TRUE = 1 };
 
 typedef int8_t bool_t;
 typedef void* pointer_t;
 
 #ifndef ftk_min
 #define ftk_min(a, b) ((a) < (b) ? (a) : (b))
-#endif/*ftk_min*/
+#endif /*ftk_min*/
+
+#ifndef ftk_abs
+#define ftk_abs(a) ((a) < (0) ? (-a) : (a))
+#endif /*ftk_abs*/
 
 #ifndef ftk_max
 #define ftk_max(a, b) ((a) > (b) ? (a) : (b))
-#endif/*ftk_max*/
+#endif /*ftk_max*/
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-#define load_uint32(p, v) (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); p += 4;
-#define save_uint32(p, v) p[0]  = (v & 0xff); p[1] = (v >> 8) & 0xff; p[2] = (v >> 16) & 0xff; p[3] = (v >> 24) & 0xff; p += 4;
+#define load_uint32(p, v)                                   \
+  (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \
+  p += 4;
+#define save_uint32(p, v)  \
+  p[0] = (v & 0xff);       \
+  p[1] = (v >> 8) & 0xff;  \
+  p[2] = (v >> 16) & 0xff; \
+  p[3] = (v >> 24) & 0xff; \
+  p += 4;
 
-#define load_uint16(p, v) (v) = (p[0] | (p[1] << 8)); p += 2;
-#define save_uint16(p, v) p[0]  = (v & 0xff); p[1] = (v >> 8) & 0xff; p += 2;
+#define load_uint16(p, v)     \
+  (v) = (p[0] | (p[1] << 8)); \
+  p += 2;
+#define save_uint16(p, v) \
+  p[0] = (v & 0xff);      \
+  p[1] = (v >> 8) & 0xff; \
+  p += 2;
 
-#define load_uint8(p, v) (v) = p[0]; p += 1;
-#define save_uint8(p, v) p[0]  = v; p += 1;
+#define load_uint8(p, v) \
+  (v) = p[0];            \
+  p += 1;
+#define save_uint8(p, v) \
+  p[0] = v;              \
+  p += 1;
 
-typedef int (*compare_t)(const void *a, const void *b);
-typedef bool_t (*visit_t)(void *ctx, void *data);
+typedef int (*compare_t)(const void* a, const void* b);
+typedef bool_t (*visit_t)(void* ctx, void* data);
 
-enum {
-  NAME_LEN = 15
-};
+enum { NAME_LEN = 15 };
 
-#endif/*TYPES_DEF_H*/
-
+#endif /*TYPES_DEF_H*/

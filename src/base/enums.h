@@ -32,7 +32,7 @@ typedef struct _key_type_value_t {
   uint32_t value;
 } key_type_value_t;
 
-enum { TYPE_INT = 0, TYPE_COLOR, TYPE_STRING, TYPE_WSTRING, TYPE_BOOL};
+enum { TYPE_INT = 0, TYPE_COLOR, TYPE_STRING, TYPE_WSTRING, TYPE_BOOL };
 
 const key_type_value_t* widget_name_find(const char* name);
 const key_type_value_t* widget_name_find_by_value(uint32_t value);
@@ -44,11 +44,9 @@ const key_type_value_t* align_h_name_find(const char* name);
 const key_type_value_t* resouce_type_name_find(const char* name);
 const key_type_value_t* resouce_type_name_find_by_value(uint32_t value);
 
-const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr,
-                                         const char* name);
+const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name);
 const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,
-                                         uint32_t value);
+                                           uint32_t value);
 END_C_DECLS
 
-#endif/*LFTK_ENUMS_H*/
-
+#endif /*LFTK_ENUMS_H*/

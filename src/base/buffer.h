@@ -1,7 +1,7 @@
 ﻿/**
  * File:   buffer.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  buffer 
+ * Brief:  buffer
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -28,15 +28,15 @@ BEGIN_C_DECLS
 
 typedef struct _wbuffer_t {
   uint8_t* data;
-  uint32_t cursor; 
-  uint32_t capacity; 
-}wbuffer_t;
+  uint32_t cursor;
+  uint32_t capacity;
+} wbuffer_t;
 
 typedef struct _rbuffer_t {
   const uint8_t* data;
-  uint32_t cursor; 
-  uint32_t capacity; 
-}rbuffer_t;
+  uint32_t cursor;
+  uint32_t capacity;
+} rbuffer_t;
 
 wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 
@@ -61,5 +61,4 @@ ret_t rbuffer_peek_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
 END_C_DECLS
 
-#endif/*LFTK_BUFFER_H*/
-
+#endif /*LFTK_BUFFER_H*/

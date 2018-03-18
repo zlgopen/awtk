@@ -30,5 +30,4 @@ image_loader_t* image_loader_stb();
 
 END_C_DECLS
 
-#endif/*LFTK_IMAGE_LOADER_STB_H*/
-
+#endif /*LFTK_IMAGE_LOADER_STB_H*/

@@ -1,7 +1,7 @@
 /**
  * File:   ui_builder_writer.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  ui_builder write widget info into buffer. 
+ * Brief:  ui_builder write widget info into buffer.
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -31,5 +31,4 @@ ui_builder_t* ui_builder_writer(wbuffer_t* wbuffer);
 
 END_C_DECLS
 
-#endif/*LFTK_UI_BUILDER_WRITER_H*/
-
+#endif /*LFTK_UI_BUILDER_WRITER_H*/

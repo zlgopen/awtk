@@ -32,11 +32,11 @@ typedef struct _bitmap_header_t {
   uint16_t h;
   uint32_t format;
   uint8_t data[4];
-}bitmap_header_t;
+} bitmap_header_t;
 
 typedef struct _image_manager_t {
   image_loader_t* loader;
-}image_manager_t;
+} image_manager_t;
 
 image_manager_t* default_im(void);
 
@@ -48,5 +48,4 @@ ret_t image_manager_destroy(image_manager_t* im);
 
 END_C_DECLS
 
-#endif/*LFTK_IMAGE_MANAGER_H*/
-
+#endif /*LFTK_IMAGE_MANAGER_H*/

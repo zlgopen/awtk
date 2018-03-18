@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class progress_bar_t 
+ * @class progress_bar_t
  * @parent widget_t
  * @scriptable
  * 进度条控件。
@@ -35,11 +35,11 @@ BEGIN_C_DECLS
 typedef struct _progress_bar_t {
   widget_t widget;
   /**
-   * @property {uint8_t} value 
+   * @property {uint8_t} value
    * @readonly
    * 进度条的值[0-100]。
    */
-  uint8_t value; 
+  uint8_t value;
   /**
    * @property {bool_t} vertical
    * @readonly
@@ -52,7 +52,7 @@ typedef struct _progress_bar_t {
    * 是否显示文本。
    */
   bool_t show_text;
-}progress_bar_t;
+} progress_bar_t;
 
 /**
  * @method progress_bar_create
@@ -102,5 +102,4 @@ ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text);
 
 END_C_DECLS
 
-#endif/*LFTK_PROGRESS_BAR_H*/
-
+#endif /*LFTK_PROGRESS_BAR_H*/

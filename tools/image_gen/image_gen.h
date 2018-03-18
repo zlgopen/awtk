@@ -26,10 +26,9 @@
 
 BEGIN_C_DECLS
 
-ret_t    image_gen(bitmap_t* image, const char* output_filename);
+ret_t image_gen(bitmap_t* image, const char* output_filename);
 uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_size);
 
 END_C_DECLS
 
-#endif/*IMAGE_GEN_H*/
-
+#endif /*IMAGE_GEN_H*/

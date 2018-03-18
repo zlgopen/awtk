@@ -38,7 +38,7 @@ typedef enum _resource_type_t {
   RESOURCE_TYPE_UI,
   RESOURCE_TYPE_XML,
   RESOURCE_TYPE_DATA
-}resource_type_t;
+} resource_type_t;
 
 /**
  * @enum resource_font_type_t
@@ -71,7 +71,7 @@ typedef enum _resource_ui_type_t {
   RESOURCE_TYPE_UI_NONE,
   RESOURCE_TYPE_UI_BIN,
   RESOURCE_TYPE_UI_XML
-}resource_ui_type_t;
+} resource_ui_type_t;
 
 /**
  * @class resource_info_t
@@ -81,7 +81,7 @@ typedef struct _resource_info_t {
   uint16_t type;
   uint16_t subtype;
   uint32_t size;
-  char name[NAME_LEN+1];
+  char name[NAME_LEN + 1];
   uint8_t data[4];
 } resource_info_t;
 
@@ -145,5 +145,4 @@ const resource_info_t** resource_manager_get_all(uint32_t* size);
 
 END_C_DECLS
 
-#endif/*LFTK_RESOURCE_MANAGER_H*/
-
+#endif /*LFTK_RESOURCE_MANAGER_H*/

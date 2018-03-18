@@ -35,5 +35,4 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc);
 
 END_C_DECLS
 
-#endif/*LCD_MEM_H*/
-
+#endif /*LCD_MEM_H*/

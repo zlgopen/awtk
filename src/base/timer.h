@@ -37,9 +37,9 @@ typedef struct timer_info_t {
   void* ctx;
   uint32_t id;
   uint32_t start;
-  uint32_t duration_ms; 
+  uint32_t duration_ms;
   bool_t repeat;
-}timer_info_t;
+} timer_info_t;
 
 /**
  * @class timer_t
@@ -49,7 +49,7 @@ typedef struct timer_info_t {
  */
 
 /**
- * @method timer_init 
+ * @method timer_init
  * 初始化定时器系统。
  * @private
  * @static
@@ -112,5 +112,4 @@ uint32_t timer_count(void);
 
 END_C_DECLS
 
-#endif/*LFTK_TIMER_H*/
-
+#endif /*LFTK_TIMER_H*/

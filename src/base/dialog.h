@@ -28,7 +28,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class dialog_t 
+ * @class dialog_t
  * @parent widget_t
  * @scriptable
  * 对话框控件。
@@ -39,7 +39,7 @@ typedef struct _dialog_t {
   wstr_t title;
   widget_t* client;
   uint32_t quit_code;
-}dialog_t;
+} dialog_t;
 
 /**
  * @method dialog_create
@@ -63,7 +63,6 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {widget_t*} 对象。
  */
-
 
 /**
  * @method dialog_set_icon
@@ -108,5 +107,4 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 
 END_C_DECLS
 
-#endif/*LFTK_DIALOG_H*/
-
+#endif /*LFTK_DIALOG_H*/

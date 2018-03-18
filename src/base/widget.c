@@ -32,6 +32,7 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   widget->x = x;
   widget->y = y;
 
+  widget_invalidate(widget, NULL);
   widget_dispatch(widget, &e);
 
   return RET_OK;
@@ -44,6 +45,7 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
   widget->w = w;
   widget->h = h;
 
+  widget_invalidate(widget, NULL);
   widget_dispatch(widget, &e);
 
   return RET_OK;
@@ -57,7 +59,7 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->y = y;
   widget->w = w;
   widget->h = h;
-
+  widget_invalidate(widget, NULL);
   widget_dispatch(widget, &e);
 
   return RET_OK;
@@ -445,6 +447,13 @@ ret_t widget_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (widget->vt->on_paint_self) {
     ret = widget->vt->on_paint_self(widget, c);
+  } else {
+    paint_event_t paint;
+    paint.c = c;
+    paint.e.type = EVT_PAINT;
+    paint.e.target = widget;
+
+    widget_dispatch(widget, (event_t*)&paint);
   }
 
   return ret;

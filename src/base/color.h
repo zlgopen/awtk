@@ -31,19 +31,19 @@ typedef struct _rgba_t {
   uint8_t g;
   uint8_t b;
   uint8_t a;
-}rgba_t;
+} rgba_t;
 
 typedef struct _color_t {
   union {
     rgba_t rgba;
     uint32_t color;
   };
-}color_t;
+} color_t;
 
-typedef uint8_t  gray_t;
+typedef uint8_t gray_t;
 
 color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 END_C_DECLS
 
-#endif/*LFTK_COLOR_H*/
+#endif /*LFTK_COLOR_H*/

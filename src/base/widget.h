@@ -79,7 +79,7 @@ typedef enum _widget_state_t {
    * 没勾选状态。
    */
   WIDGET_STATE_UNCHECKED
-}widget_state_t;
+} widget_state_t;
 
 /**
  * @enum widget_type_t
@@ -172,7 +172,7 @@ typedef enum _widget_type_t {
    * 单选按钮。
    */
   WIDGET_RADIO_BUTTON,
-}widget_type_t;
+} widget_type_t;
 
 struct _widget_t;
 typedef struct _widget_t widget_t;
@@ -210,8 +210,8 @@ typedef struct _widget_vtable_t {
   widget_grab_t grab;
   widget_ungrab_t ungrab;
   widget_find_target_t find_target;
-  widget_destroy_t  destroy;
-}widget_vtable_t;
+  widget_destroy_t destroy;
+} widget_vtable_t;
 
 /**
  * @class widget_t
@@ -254,38 +254,38 @@ struct _widget_t {
    * @readonly
    * 子类型，仅用于控制控件的Style。
    */
-  uint8_t subtype:4; /*for style*/
+  uint8_t subtype : 4; /*for style*/
   /**
    * @property {uint8_t} state
    * @readonly
    * 控件的状态。
    */
-  uint8_t state:4;
+  uint8_t state : 4;
   /**
    * @property {bool_t} enable
    * @readonly
    * 启用/禁用状态。
    */
-  uint8_t enable:1;
+  uint8_t enable : 1;
   /**
    * @property {bool_t} visible
    * @readonly
    * 是否可见。
    */
-  uint8_t visible:1;
+  uint8_t visible : 1;
   /**
    * @property {bool_t} focused
    * @readonly
    * 是否得到焦点。
    */
-  uint8_t focused:1;
+  uint8_t focused : 1;
   /**
    * @property {bool_t} initializing
    * @readonly
    * @scriptable no
    * 标识控件是否还在初始化中。
    */
-  uint8_t initializing:1;
+  uint8_t initializing : 1;
 
   /**
    * @property {bool_t} dirty
@@ -293,14 +293,14 @@ struct _widget_t {
    * @scriptable no
    * 标识控件是否需要重绘。
    */
-  uint8_t dirty:1;
+  uint8_t dirty : 1;
 
   /**
    * @property {char*} name
    * @readonly
    * 控件名字
    */
-  char name[NAME_LEN+1];
+  char name[NAME_LEN + 1];
   /**
    * @property {widget_t*} parent
    * @readonly
@@ -308,7 +308,7 @@ struct _widget_t {
    */
   widget_t* parent;
   /**
-   * @property {widget_t*} target 
+   * @property {widget_t*} target
    * @readonly
    * @scriptable no
    * 接收事件的子控件。
@@ -595,7 +595,7 @@ ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
  *
  * @return {uint32_t} 返回id，用于widget_off。
  */
-uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx); 
+uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_off
@@ -620,7 +620,8 @@ ret_t widget_off(widget_t* widget, uint32_t id);
  *
  * @return {uint32_t} 返回id，用于widget_off。
  */
-uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type, event_func_t on_event, void* ctx); 
+uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
+                         event_func_t on_event, void* ctx);
 
 /**
  * @method widget_on
@@ -633,7 +634,7 @@ uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type, 
  *
  * @return {uint32_t} 返回id，用于widget_off。
  */
-uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx); 
+uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 /**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
@@ -645,7 +646,7 @@ uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, v
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx); 
+ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_invalidate
@@ -750,5 +751,4 @@ typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, w
 
 END_C_DECLS
 
-#endif/*LFTK_WIDGET_H*/
-
+#endif /*LFTK_WIDGET_H*/

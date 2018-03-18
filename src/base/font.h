@@ -30,12 +30,12 @@ struct _font_t;
 typedef struct _font_t font_t;
 
 typedef struct _glyph_t {
-    int8_t x;
-    int8_t y;
-    uint8_t w;
-    uint8_t h;
-    const uint8_t* data;
-}glyph_t;
+  int8_t x;
+  int8_t y;
+  uint8_t w;
+  uint8_t h;
+  const uint8_t* data;
+} glyph_t;
 
 typedef bool_t (*font_match_t)(font_t* f, const char* name, uint16_t font_size);
 typedef ret_t (*font_find_glyph_t)(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size);
@@ -54,5 +54,4 @@ ret_t font_destroy(font_t* f);
 
 END_C_DECLS
 
-#endif/*LFTK_FONT_H*/
-
+#endif /*LFTK_FONT_H*/

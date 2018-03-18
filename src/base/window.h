@@ -27,14 +27,14 @@
 BEGIN_C_DECLS
 
 /**
- * @class window_t 
+ * @class window_t
  * @parent widget_t
  * @scriptable
  * 窗口。
  */
 typedef struct _window_t {
   widget_t widget;
-}window_t;
+} window_t;
 
 /**
  * @method window_create
@@ -61,5 +61,4 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif/*LFTK_WINDOW_H*/
-
+#endif /*LFTK_WINDOW_H*/

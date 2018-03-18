@@ -30,5 +30,4 @@ ret_t resource_init(void);
 
 END_C_DECLS
 
-#endif/*RESOURCE_H*/
-
+#endif /*RESOURCE_H*/

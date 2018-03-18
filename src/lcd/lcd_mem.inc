@@ -63,13 +63,17 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   wh_t width = lcd->width;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
-  color_t stroke_color = lcd->stroke_color;
-  pixel_t color = to_pixel(stroke_color);
+  color_t color = lcd->stroke_color;
+  pixel_t pixel = to_pixel(color);
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
     pixel_t* p = pixels + point->y * width + point->x;
-    p[i] = color;
+    if (color.rgba.a == 0xff) {
+      p[i] = pixel;
+    } else if (color.rgba.a) {
+      p[i] = blend_pixel(p[i], color);
+    }
   }
 
   return RET_OK;

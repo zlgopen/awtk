@@ -44,24 +44,24 @@ typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
 struct _lcd_t {
-    lcd_begin_frame_t  begin_frame;
-    lcd_draw_vline_t   draw_vline;
-    lcd_draw_hline_t   draw_hline;
-    lcd_fill_rect_t    fill_rect;
-    lcd_draw_image_t   draw_image;
-    lcd_draw_glyph_t   draw_glyph;
-    lcd_draw_points_t  draw_points;
-    lcd_end_frame_t    end_frame;
-    lcd_destroy_t      destroy; 
+  lcd_begin_frame_t begin_frame;
+  lcd_draw_vline_t draw_vline;
+  lcd_draw_hline_t draw_hline;
+  lcd_fill_rect_t fill_rect;
+  lcd_draw_image_t draw_image;
+  lcd_draw_glyph_t draw_glyph;
+  lcd_draw_points_t draw_points;
+  lcd_end_frame_t end_frame;
+  lcd_destroy_t destroy;
 
-/*properties:*/
-    uint8_t global_alpha;
-    wh_t width;  /*readonly*/
-    wh_t height; /*readonly*/
-    rect_t* dirty_rect;
-    color_t text_color;
-    color_t fill_color;
-    color_t stroke_color;
+  /*properties:*/
+  uint8_t global_alpha;
+  wh_t width;  /*readonly*/
+  wh_t height; /*readonly*/
+  rect_t* dirty_rect;
+  color_t text_color;
+  color_t fill_color;
+  color_t stroke_color;
 };
 
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect);
@@ -79,6 +79,4 @@ ret_t lcd_destroy(lcd_t* lcd);
 
 END_C_DECLS
 
-#endif/*LFTK_LCD_H*/
-
-
+#endif /*LFTK_LCD_H*/

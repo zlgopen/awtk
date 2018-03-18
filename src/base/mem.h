@@ -49,7 +49,7 @@ void mem_info_dump(void);
 #else
 void* lftk_calloc(uint32_t nmemb, uint32_t size);
 void* lftk_realloc(void* ptr, uint32_t size);
-void  lftk_free(void* ptr);
+void lftk_free(void* ptr);
 void* lftk_alloc(uint32_t size);
 
 #define MEM_ALLOC(size) lftk_alloc(size)
@@ -60,5 +60,4 @@ void* lftk_alloc(uint32_t size);
 #endif
 
 END_C_DECLS
-#endif/*LFTK_MEM_MANAGER_H*/
-
+#endif /*LFTK_MEM_MANAGER_H*/

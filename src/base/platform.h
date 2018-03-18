@@ -31,5 +31,4 @@ uint32_t get_time_ms(void);
 
 END_C_DECLS
 
-#endif/*LFTK_PLATFORM_H*/
-
+#endif /*LFTK_PLATFORM_H*/

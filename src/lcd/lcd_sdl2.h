@@ -31,5 +31,4 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render);
 
 END_C_DECLS
 
-#endif/*LCD_SDL_H*/
-
+#endif /*LCD_SDL_H*/

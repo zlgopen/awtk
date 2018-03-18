@@ -59,4 +59,3 @@ static inline pixel_t blend_alpha(color_t fg, uint8_t a) {
 
   return rgb_to_pixel(r, g, b);
 }
-

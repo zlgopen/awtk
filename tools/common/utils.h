@@ -29,9 +29,11 @@ BEGIN_C_DECLS
 int unique(wchar_t* str, int size);
 char* read_file(const char* file_name, uint32_t* length);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
-ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff, uint32_t size);
+ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
+                      uint32_t size);
 
-ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff, uint32_t size);
+ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
+                          uint32_t size);
 
 const char* to_lower(char* str);
 const char* skip_to(const char* p, char c);
@@ -42,5 +44,4 @@ const char* get_next_token(const char* p, char* token, char c);
 
 END_C_DECLS
 
-#endif//UTILS_H
-
+#endif  // UTILS_H

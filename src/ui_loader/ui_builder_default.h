@@ -1,7 +1,7 @@
 /**
  * File:   ui_builder_default.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  ui_builder default 
+ * Brief:  ui_builder default
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -33,5 +33,4 @@ widget_t* dialog_open(const char* name);
 
 END_C_DECLS
 
-#endif/*LFTK_UI_BUILDER_DEFAULT_H*/
-
+#endif /*LFTK_UI_BUILDER_DEFAULT_H*/

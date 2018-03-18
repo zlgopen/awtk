@@ -30,32 +30,31 @@ using std::string;
 using std::vector;
 
 class NameIntValue {
-public:
+ public:
   NameIntValue(uint32_t name, uint32_t value) {
     this->name = name;
     this->value = value;
   }
 
-public:
+ public:
   uint32_t name;
   uint32_t value;
-
 };
 
 class NameStringValue {
-public:
+ public:
   NameStringValue(uint32_t name, const string& value) {
     this->name = name;
     this->value = value;
   }
-  
-public:
+
+ public:
   uint32_t name;
   string value;
 };
 
 class Style {
-public:
+ public:
   Style();
   Style(uint16_t type, uint8_t subtype, uint8_t state);
   ~Style();
@@ -64,7 +63,7 @@ public:
   bool AddString(uint32_t name, const string& str);
   uint8_t* Output(uint8_t* buff, uint32_t max_size);
 
-public:
+ public:
   uint16_t type;
   uint8_t subtype;
   uint8_t state;
@@ -73,13 +72,12 @@ public:
 };
 
 class ThemeGen {
-public:
+ public:
   bool AddStyle(const Style& style);
   uint8_t* Output(uint8_t* buff, uint32_t max_size);
 
-private:
+ private:
   vector<Style> styles;
 };
 
-#endif/*LFTK_THEME_GEN_H*/
-
+#endif /*LFTK_THEME_GEN_H*/

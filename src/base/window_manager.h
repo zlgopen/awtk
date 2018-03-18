@@ -34,10 +34,10 @@ BEGIN_C_DECLS
 typedef struct _window_manager_t {
   widget_t widget;
 
-  array_t graps; 
+  array_t graps;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
-}window_manager_t;
+} window_manager_t;
 
 widget_t* default_wm(void);
 
@@ -53,5 +53,4 @@ ret_t window_manager_paint(widget_t* wm, canvas_t* c);
 
 END_C_DECLS
 
-#endif/*LFTK_WINDOW_MANAGER_H*/
-
+#endif /*LFTK_WINDOW_MANAGER_H*/

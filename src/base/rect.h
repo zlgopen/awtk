@@ -33,18 +33,18 @@ BEGIN_C_DECLS
  */
 typedef struct _point_t {
   /**
-   * @property {xy_t} x 
+   * @property {xy_t} x
    * @readonly
    * x坐标。
    */
   xy_t x;
   /**
-   * @property {xy_t} y 
+   * @property {xy_t} y
    * @readonly
    * y坐标。
    */
   xy_t y;
-}point_t;
+} point_t;
 
 /**
  * @class rect_t
@@ -53,37 +53,44 @@ typedef struct _point_t {
  */
 typedef struct _rect_t {
   /**
-   * @property {xy_t} x 
+   * @property {xy_t} x
    * @readonly
    * x坐标。
    */
   xy_t x;
   /**
-   * @property {xy_t} y 
+   * @property {xy_t} y
    * @readonly
    * y坐标。
    */
   xy_t y;
   /**
-   * @property {wh_t} w 
+   * @property {wh_t} w
    * @readonly
    * 宽度。
    */
   wh_t w;
   /**
-   * @property {wh_t} h 
+   * @property {wh_t} h
    * @readonly
    * 高度。
    */
-  wh_t h;    
-}rect_t;
+  wh_t h;
+} rect_t;
 
-#define rect_init(r, xx, yy, ww, hh) r.x = (xx); r.y = (yy); r.w = (ww); r.h = (hh);
-#define rectp_init(r, xx, yy, ww, hh) r->x = (xx); r->y = (yy); r->w = (ww); r->h = (hh);
+#define rect_init(r, xx, yy, ww, hh) \
+  r.x = (xx);                        \
+  r.y = (yy);                        \
+  r.w = (ww);                        \
+  r.h = (hh);
+#define rectp_init(r, xx, yy, ww, hh) \
+  r->x = (xx);                        \
+  r->y = (yy);                        \
+  r->w = (ww);                        \
+  r->h = (hh);
 
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
 
 END_C_DECLS
 
-#endif/*LFTK_RECT_H*/
-
+#endif /*LFTK_RECT_H*/

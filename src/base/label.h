@@ -28,7 +28,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class label_t 
+ * @class label_t
  * @parent widget_t
  * @scriptable
  * 文本控件。
@@ -54,7 +54,7 @@ typedef struct _label_t {
    * 文本水平对齐方式。
    */
   uint8_t text_align_h;
-}label_t;
+} label_t;
 
 /**
  * @method label_create
@@ -114,5 +114,4 @@ ret_t label_set_text(widget_t* widget, const wchar_t* text);
 
 END_C_DECLS
 
-#endif/*LFTK_LABEL_H*/
-
+#endif /*LFTK_LABEL_H*/

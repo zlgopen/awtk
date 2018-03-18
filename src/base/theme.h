@@ -32,10 +32,10 @@ BEGIN_C_DECLS
  */
 typedef struct _style_t {
   const uint8_t* data;
-}style_t;
+} style_t;
 
-uint32_t    style_get_int(style_t* s, uint32_t name, uint32_t defval);
-color_t     style_get_color(style_t* s, uint32_t name, color_t defval);
+uint32_t style_get_int(style_t* s, uint32_t name, uint32_t defval);
+color_t style_get_color(style_t* s, uint32_t name, color_t defval);
 const char* style_get_str(style_t* s, uint32_t name, const char* defval);
 
 /**
@@ -44,7 +44,7 @@ const char* style_get_str(style_t* s, uint32_t name, const char* defval);
  */
 typedef struct _theme_t {
   const uint8_t* data;
-}theme_t;
+} theme_t;
 
 theme_t* theme_get_default(void);
 theme_t* theme_init(const uint8_t* data);
@@ -58,12 +58,12 @@ const uint8_t* theme_find_style(theme_t* t, uint16_t type, uint8_t subtype, uint
  */
 typedef enum _style_id_t {
   /**
-   * @const STYLE_ID_BG_COLOR 
+   * @const STYLE_ID_BG_COLOR
    * 背景颜色。
    */
   STYLE_ID_BG_COLOR = 1,
   /**
-   * @const STYLE_ID_BG_COLOR 
+   * @const STYLE_ID_BG_COLOR
    * 前景颜色。
    */
   STYLE_ID_FG_COLOR,
@@ -107,7 +107,7 @@ typedef enum _style_id_t {
    * 图标的名称。
    */
   STYLE_ID_ICON
-}style_id_t;
+} style_id_t;
 
 /**
  * @enum align_v_t
@@ -119,7 +119,7 @@ typedef enum _align_v_t {
    * @const ALIGN_V_NONE
    * 无效对齐方式。
    */
-  ALIGN_V_NONE= 0,
+  ALIGN_V_NONE = 0,
   /**
    * @const ALIGN_V_MIDDLE
    * 居中对齐。
@@ -135,7 +135,7 @@ typedef enum _align_v_t {
    * 底部对齐。
    */
   ALIGN_V_BOTTOM
-}align_v_t;
+} align_v_t;
 
 /**
  * @enum align_h_t
@@ -163,11 +163,10 @@ typedef enum _align_h_t {
    * 右边对齐。
    */
   ALIGN_H_RIGHT
-}align_h_t;
+} align_h_t;
 
 #define THEME_MAGIC 0xFAFBFCFD
 
 END_C_DECLS
 
-#endif/*LFTK_THEME_H*/
-
+#endif /*LFTK_THEME_H*/

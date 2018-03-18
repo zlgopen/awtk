@@ -26,31 +26,18 @@
 
 BEGIN_C_DECLS
 
-typedef enum _x_attr_t {
-  X_ATTR_DEFAULT = 0,
-  X_ATTR_PERCENT,
-  X_ATTR_CENTER,
-  X_ATTR_RIGHT
-}x_attr_t;
+typedef enum _x_attr_t { X_ATTR_DEFAULT = 0, X_ATTR_PERCENT, X_ATTR_CENTER, X_ATTR_RIGHT } x_attr_t;
 
 typedef enum _y_attr_t {
   Y_ATTR_DEFAULT = 0,
   Y_ATTR_PERCENT,
   Y_ATTR_MIDDLE,
   Y_ATTR_BOTTOM
-}y_attr_t;
+} y_attr_t;
 
-typedef enum _w_attr_t {
-  W_ATTR_PIXEL = 0,
-  W_ATTR_PERCENT,
-  W_ATTR_FILL
-}w_attr_t;
+typedef enum _w_attr_t { W_ATTR_PIXEL = 0, W_ATTR_PERCENT, W_ATTR_FILL } w_attr_t;
 
-typedef enum _h_attr_t {
-  H_ATTR_PIXEL = 0,
-  H_ATTR_PERCENT,
-  H_ATTR_FILL
-}h_attr_t;
+typedef enum _h_attr_t { H_ATTR_PIXEL = 0, H_ATTR_PERCENT, H_ATTR_FILL } h_attr_t;
 
 typedef struct _widget_layout_t {
   uint8_t x_attr;
@@ -61,21 +48,20 @@ typedef struct _widget_layout_t {
   xy_t y;
   wh_t w;
   wh_t h;
-}widget_layout_t;
+} widget_layout_t;
 
 typedef struct _children_layout_t {
   uint8_t rows;
   uint8_t cols;
   uint8_t margin;
   uint8_t cell_spacing;
-}children_layout_t;
+} children_layout_t;
 
 typedef struct _layout_params_t {
   widget_layout_t self;
   children_layout_t children;
-}layout_params_t;
+} layout_params_t;
 
 END_C_DECLS
 
-#endif/*LFTK_LAYOUT_DEF_H*/
-
+#endif /*LFTK_LAYOUT_DEF_H*/

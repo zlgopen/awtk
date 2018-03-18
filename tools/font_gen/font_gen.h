@@ -26,10 +26,10 @@
 
 BEGIN_C_DECLS
 
-ret_t    font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename);
-uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_t* output_buff, uint32_t buff_size);
+ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename);
+uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_t* output_buff,
+                       uint32_t buff_size);
 
 END_C_DECLS
 
-#endif/*FONT_GEN_H*/
-
+#endif /*FONT_GEN_H*/

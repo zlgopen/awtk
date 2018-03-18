@@ -31,5 +31,4 @@ lcd_t* lcd_rtthread_init(struct rtgui_graphic_driver* driver);
 
 END_C_DECLS
 
-#endif/*LCD_RTT_H*/
-
+#endif /*LCD_RTT_H*/

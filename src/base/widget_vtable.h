@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r);
-ret_t widget_on_event_default(widget_t* widget, event_t* e) ;
+ret_t widget_on_event_default(widget_t* widget, event_t* e);
 ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown_default(widget_t* widget, key_event_t* e);
@@ -47,4 +47,4 @@ ret_t widget_destroy_default(widget_t* widget);
 
 END_C_DECLS
 
-#endif/*LFTK_WIDGET_VTABLE_H*/
+#endif /*LFTK_WIDGET_VTABLE_H*/

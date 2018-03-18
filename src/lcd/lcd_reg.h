@@ -30,5 +30,4 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif/*LCD_REG_H*/
-
+#endif /*LCD_REG_H*/

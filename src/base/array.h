@@ -28,11 +28,10 @@ BEGIN_C_DECLS
 
 /**
  * @class array_t
- * 数组。 
+ * 数组。
  */
-typedef struct _array_t
-{
-  void **elms;
+typedef struct _array_t {
+  void** elms;
   uint16_t size;
   uint16_t capacity;
 } array_t;
@@ -45,7 +44,7 @@ typedef struct _array_t
  *
  * @return {array_t*} 数组对象。
  */
-array_t *array_create(uint16_t capacity);
+array_t* array_create(uint16_t capacity);
 
 /**
  * @method array_init
@@ -55,7 +54,7 @@ array_t *array_create(uint16_t capacity);
  *
  * @return {array_t*} 数组对象。
  */
-array_t *array_init(array_t *array, uint16_t capacity);
+array_t* array_init(array_t* array, uint16_t capacity);
 
 /**
  * @method array_find
@@ -66,7 +65,7 @@ array_t *array_init(array_t *array, uint16_t capacity);
  *
  * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
  */
-void *array_find(array_t *array, compare_t cmp, void *ctx);
+void* array_find(array_t* array, compare_t cmp, void* ctx);
 
 /**
  * @method array_find_index
@@ -77,7 +76,7 @@ void *array_find(array_t *array, compare_t cmp, void *ctx);
  *
  * @return {int} 如果找到，返回满足条件的对象的位置，否则返回-1。
  */
-int array_find_index(array_t *array, compare_t cmp, void *ctx);
+int array_find_index(array_t* array, compare_t cmp, void* ctx);
 
 /**
  * @method array_remove
@@ -88,7 +87,7 @@ int array_find_index(array_t *array, compare_t cmp, void *ctx);
  *
  * @return {bool_t} 成功返回TRUE，失败返回FALSE。
  */
-bool_t array_remove(array_t *array, compare_t cmp, void *ctx);
+bool_t array_remove(array_t* array, compare_t cmp, void* ctx);
 
 /**
  * @method array_pop
@@ -97,7 +96,7 @@ bool_t array_remove(array_t *array, compare_t cmp, void *ctx);
  *
  * @return {void*} 成功返回最后一个元素，失败返回NULL。
  */
-void *array_pop(array_t *array);
+void* array_pop(array_t* array);
 
 /**
  * @method array_push
@@ -107,7 +106,7 @@ void *array_pop(array_t *array);
  *
  * @return {bool_t} 成功返回TRUE，失败返回FALSE。
  */
-bool_t array_push(array_t *array, void *data);
+bool_t array_push(array_t* array, void* data);
 
 /**
  * @method array_deinit
@@ -116,7 +115,7 @@ bool_t array_push(array_t *array, void *data);
  *
  * @return {void} 无。
  */
-void array_deinit(array_t *array);
+void array_deinit(array_t* array);
 
 /**
  * @method array_destroy
@@ -125,9 +124,8 @@ void array_deinit(array_t *array);
  *
  * @return {void} 无。
  */
-void array_destroy(array_t *array);
+void array_destroy(array_t* array);
 
 END_C_DECLS
 
 #endif /*LFTK_ARRAY_H*/
-

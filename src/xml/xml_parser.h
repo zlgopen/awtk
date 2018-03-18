@@ -31,13 +31,12 @@ BEGIN_C_DECLS
 struct _XmlParser;
 typedef struct _XmlParser XmlParser;
 
-XmlParser *xml_parser_create(void);
-void xml_parser_set_builder(XmlParser *thiz, XmlBuilder *builder);
-void xml_parser_parse(XmlParser *thiz, const char *xml, int length);
-void xml_parser_parse_file(XmlParser *thiz, const char *filename);
-void xml_parser_destroy(XmlParser *thiz);
+XmlParser* xml_parser_create(void);
+void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder);
+void xml_parser_parse(XmlParser* thiz, const char* xml, int length);
+void xml_parser_parse_file(XmlParser* thiz, const char* filename);
+void xml_parser_destroy(XmlParser* thiz);
 
 END_C_DECLS
 
 #endif /*XML_PARSER_H*/
-

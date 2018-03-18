@@ -31,12 +31,7 @@ typedef struct _bitmap_t bitmap_t;
 
 typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 
-enum {
-  IMAGE_FMT_NONE = 0,
-  IMAGE_FMT_RGBA,
-  IMAGE_FTM_1555,
-  IMAGE_FTM_565
-};
+enum { IMAGE_FMT_NONE = 0, IMAGE_FMT_RGBA, IMAGE_FTM_1555, IMAGE_FTM_565 };
 
 struct _bitmap_t {
   wh_t w;
@@ -53,7 +48,8 @@ struct _image_loader_t;
 typedef struct _image_loader_t image_loader_t;
 
 typedef bool_t (*image_loader_match_t)(image_loader_t* loader, uint16_t type);
-typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
+typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size,
+                                     bitmap_t* bitmap);
 
 struct _image_loader_t {
   image_loader_match_t match;
@@ -61,11 +57,11 @@ struct _image_loader_t {
 };
 
 bool_t image_loader_match(image_loader_t* loader, uint16_t type);
-ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
+ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size,
+                        bitmap_t* bitmap);
 
 ret_t bitmap_destroy(bitmap_t* bitmap);
 
 END_C_DECLS
 
-#endif/*LFTK_BITMAP_H*/
-
+#endif /*LFTK_BITMAP_H*/

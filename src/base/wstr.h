@@ -22,7 +22,7 @@
 #include "base/types_def.h"
 
 #ifndef WSTR_H
-#define WSTR_H 
+#define WSTR_H
 
 BEGIN_C_DECLS
 
@@ -30,7 +30,7 @@ typedef struct _wstr_t {
   uint16_t size;
   uint16_t capacity;
   wchar_t* str;
-}wstr_t;
+} wstr_t;
 
 wstr_t* wstr_init(wstr_t* str, uint16_t capacity);
 
@@ -43,4 +43,3 @@ ret_t wstr_reset(wstr_t* str);
 END_C_DECLS
 
 #endif
-

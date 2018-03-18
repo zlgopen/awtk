@@ -29,17 +29,16 @@ BEGIN_C_DECLS
 typedef struct _font_bitmap_index_t {
   uint16_t c;
   uint16_t offset;
-}font_bitmap_index_t;
+} font_bitmap_index_t;
 
 typedef struct _font_bitmap_header_t {
   uint16_t char_nr;
   uint16_t font_size;
-  font_bitmap_index_t index[1]; 
-}font_bitmap_header_t;
+  font_bitmap_index_t index[1];
+} font_bitmap_header_t;
 
 font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_size);
 
 END_C_DECLS
 
-#endif/*LFTK_FONT_BITMAP_H*/
-
+#endif /*LFTK_FONT_BITMAP_H*/

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 typedef struct _font_manager_t {
   array_t fonts;
-}font_manager_t;
+} font_manager_t;
 
 font_manager_t* default_fm(void);
 
@@ -45,5 +45,4 @@ ret_t font_manager_destroy(font_manager_t* fm);
 
 END_C_DECLS
 
-#endif/*LFTK_FONT_MANAGER_H*/
-
+#endif /*LFTK_FONT_MANAGER_H*/

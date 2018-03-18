@@ -22,7 +22,7 @@
 #include "base/types_def.h"
 
 #ifndef VALUE_H
-#define VALUE_H 
+#define VALUE_H
 
 BEGIN_C_DECLS
 
@@ -32,82 +32,82 @@ BEGIN_C_DECLS
  * 类型常量定义。
  */
 typedef enum _value_type_t {
-/**
- * @const VALUE_TYPE_INVALID
- * 无效类型。
- */
-	VALUE_TYPE_INVALID = 0,
-/**
- * @const VALUE_TYPE_BOOL
- * BOOL类型。
- */
-	VALUE_TYPE_BOOL,
-/**
- * @const VALUE_TYPE_INT8
- * int8_t类型。
- */
-	VALUE_TYPE_INT8,
-/**
- * @const VALUE_TYPE_UINT8
- * uint8_t类型。
- */
-	VALUE_TYPE_UINT8,
-/**
- * @const VALUE_TYPE_INT16
- * int16_t类型。
- */
-	VALUE_TYPE_INT16,
-/**
- * @const VALUE_TYPE_UINT16
- * uint16_t类型。
- */
-	VALUE_TYPE_UINT16,
-/**
- * @const VALUE_TYPE_INT32
- * int32_t类型。
- */
-	VALUE_TYPE_INT32,
-/**
- * @const VALUE_TYPE_UINT32
- * uint32_t类型。
- */
-	VALUE_TYPE_UINT32,
-/**
- * @const VALUE_TYPE_INT64
- * int64_t类型。
- */
-	VALUE_TYPE_INT64,
-/**
- * @const VALUE_TYPE_UINT64
- * uint64_t类型。
- */
-	VALUE_TYPE_UINT64,
-/**
- * @const VALUE_TYPE_POINTER
- * void*类型。
- */
-	VALUE_TYPE_POINTER,
-/**
- * @const VALUE_TYPE_FLOAT
- * float类型。
- */
-	VALUE_TYPE_FLOAT,
-/**
- * @const VALUE_TYPE_DOUBLE
- * double类型。
- */
-	VALUE_TYPE_DOUBLE,
-/**
- * @const VALUE_TYPE_STRING
- * char*类型。
- */
-	VALUE_TYPE_STRING,
-/**
- * @const VALUE_TYPE_WSTRING
- * wchar_t*类型。
- */
-	VALUE_TYPE_WSTRING
-}value_type_t;
+  /**
+   * @const VALUE_TYPE_INVALID
+   * 无效类型。
+   */
+  VALUE_TYPE_INVALID = 0,
+  /**
+   * @const VALUE_TYPE_BOOL
+   * BOOL类型。
+   */
+  VALUE_TYPE_BOOL,
+  /**
+   * @const VALUE_TYPE_INT8
+   * int8_t类型。
+   */
+  VALUE_TYPE_INT8,
+  /**
+   * @const VALUE_TYPE_UINT8
+   * uint8_t类型。
+   */
+  VALUE_TYPE_UINT8,
+  /**
+   * @const VALUE_TYPE_INT16
+   * int16_t类型。
+   */
+  VALUE_TYPE_INT16,
+  /**
+   * @const VALUE_TYPE_UINT16
+   * uint16_t类型。
+   */
+  VALUE_TYPE_UINT16,
+  /**
+   * @const VALUE_TYPE_INT32
+   * int32_t类型。
+   */
+  VALUE_TYPE_INT32,
+  /**
+   * @const VALUE_TYPE_UINT32
+   * uint32_t类型。
+   */
+  VALUE_TYPE_UINT32,
+  /**
+   * @const VALUE_TYPE_INT64
+   * int64_t类型。
+   */
+  VALUE_TYPE_INT64,
+  /**
+   * @const VALUE_TYPE_UINT64
+   * uint64_t类型。
+   */
+  VALUE_TYPE_UINT64,
+  /**
+   * @const VALUE_TYPE_POINTER
+   * void*类型。
+   */
+  VALUE_TYPE_POINTER,
+  /**
+   * @const VALUE_TYPE_FLOAT
+   * float类型。
+   */
+  VALUE_TYPE_FLOAT,
+  /**
+   * @const VALUE_TYPE_DOUBLE
+   * double类型。
+   */
+  VALUE_TYPE_DOUBLE,
+  /**
+   * @const VALUE_TYPE_STRING
+   * char*类型。
+   */
+  VALUE_TYPE_STRING,
+  /**
+   * @const VALUE_TYPE_WSTRING
+   * wchar_t*类型。
+   */
+  VALUE_TYPE_WSTRING
+} value_type_t;
 
 /**
  * @class value_t
@@ -115,24 +115,24 @@ typedef enum _value_type_t {
  * 一个通用数据类型，用来存放整数、浮点数、obj_t、str_t和其它对象。
  */
 typedef struct _value_t {
-	uint8_t type;
-	union {
-		int8_t i8;       
-		uint8_t u8;
-		int16_t i16;
-		uint16_t u16;
-		int32_t i32;
-		uint32_t u32;
-		int64_t i64;
-		uint64_t u64;
-		float f32;
-		double f64;
+  uint8_t type;
+  union {
+    int8_t i8;
+    uint8_t u8;
+    int16_t i16;
+    uint16_t u16;
+    int32_t i32;
+    uint32_t u32;
+    int64_t i64;
+    uint64_t u64;
+    float f32;
+    double f64;
     bool_t b;
-		pointer_t ptr;
-		const char* str;
-		const wchar_t* wstr;
-	}value;
-}value_t;
+    pointer_t ptr;
+    const char* str;
+    const wchar_t* wstr;
+  } value;
+} value_t;
 
 /**
  * @property {int8_t} type
@@ -205,7 +205,7 @@ uint8_t value_uint8(const value_t* v);
  *
  * @return {value_t*} value对象本身。
  */
-value_t* value_set_int16(value_t* v, int16_t value) ;
+value_t* value_set_int16(value_t* v, int16_t value);
 
 /**
  * @method value_int16
@@ -445,4 +445,3 @@ void value_destroy(value_t* v);
 END_C_DECLS
 
 #endif
-

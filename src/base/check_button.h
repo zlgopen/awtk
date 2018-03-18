@@ -28,7 +28,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class check_button_t 
+ * @class check_button_t
  * @parent widget_t
  * @scriptable
  * 勾选控件。
@@ -43,7 +43,7 @@ typedef struct _check_button_t {
   bool_t value;
   bool_t radio;
   wstr_t text;
-}check_button_t;
+} check_button_t;
 
 /**
  * @method check_button_create
@@ -97,5 +97,4 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
 
 END_C_DECLS
 
-#endif/*LFTK_CHECK_BUTTON_H*/
-
+#endif /*LFTK_CHECK_BUTTON_H*/

@@ -26,13 +26,12 @@
 
 BEGIN_C_DECLS
 
-int    ftk_atoi(const char* str);
+int ftk_atoi(const char* str);
 double ftk_atof(const char* str);
 const char* ftk_itoa(char* str, int len, int n);
 const char* ftk_ftoa(char* str, int len, double f);
-long  ftk_strtol(const char* str, const char **end, int base);
+long ftk_strtol(const char* str, const char** end, int base);
 
 END_C_DECLS
 
-#endif/*LFTK_UTILS_H*/
-
+#endif /*LFTK_UTILS_H*/

@@ -1,7 +1,7 @@
 /**
  * File:   ui_builder.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  ui_builder 
+ * Brief:  ui_builder
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -34,7 +34,7 @@ typedef struct _widget_desc_t {
   uint16_t version;
   uint16_t type;
   widget_layout_t layout;
-}widget_desc_t;
+} widget_desc_t;
 
 typedef ret_t (*ui_builder_on_start_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_widget_start_t)(ui_builder_t* b, const widget_desc_t* desc);
@@ -65,5 +65,4 @@ ret_t ui_builder_on_end(ui_builder_t* b);
 
 END_C_DECLS
 
-#endif/*LFTK_UI_BUILDER_H*/
-
+#endif /*LFTK_UI_BUILDER_H*/
