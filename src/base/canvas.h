@@ -72,36 +72,12 @@ ret_t canvas_draw_points(canvas_t* c, point_t* points, uint32_t nr);
 ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
-typedef enum _gradient_t {
-  GRADIENT_NONE,
-  GRADIENT_LINE,
-  GRADIENT_SIN,
-} gradient_t;
-
-typedef enum _rrect_style_t {
-  RRECT_ALL,
-  RRECT_LEFT,
-  RRECT_TOP,
-  RRECT_RIGHT,
-  RRECT_BOTTOM
-} rrect_style_t;
-
-typedef struct _rrect_option_t {
-  uint8_t gradient;
-  uint8_t style;
-} rrect_option_t;
-
-ret_t canvas_fill_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, rrect_option_t* opt);
-ret_t canvas_stroke_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
-
-ret_t canvas_fill_circle(canvas_t* c, xy_t x, xy_t y, wh_t r);
-ret_t canvas_stroke_circle(canvas_t* c, xy_t x, xy_t y, wh_t r);
-
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
-ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
+
+ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
 
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
 

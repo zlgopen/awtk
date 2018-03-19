@@ -24,37 +24,44 @@
 #include "base/image_manager.h"
 
 static ret_t on_paint(void* ctx, event_t* e) {
+  rect_t s;
   rect_t r;
-  color_t fill_color = color_init(0xff, 0, 0, 0xff);
+  color_t fill_color = color_init(0xe0, 0xe0, 0xe0, 0xff);
   color_t stroke_color = color_init(0x80, 0x80, 0x80, 0xff);
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-
+  canvas_set_fill_color(c, fill_color);
+  canvas_set_stroke_color(c, stroke_color);
   bitmap_t img;
   image_manager_load(default_im(), "btn_blue_n", &img);
 
-  canvas_set_fill_color(c, fill_color);
-
-  r.x = 10;
-  r.y = 10;
-  r.w = 200;
-  r.h = 30;
-  canvas_draw_image_9patch(c, &img, &r);
- 
-  r.x = 10;
-  r.y = 70;
-  r.w = 200;
-  r.h = 60;
+  rect_init(r, 10, 10, 200, 30);
   canvas_draw_image_9patch(c, &img, &r);
 
-  r.x = 10;
-  r.y = 150;
-  r.w = 20;
-  r.h = 60;
+  rect_init(r, 10, 70, 200, 60);
   canvas_draw_image_9patch(c, &img, &r);
+
+  rect_init(r, 10, 150, 20, 60);
+  canvas_draw_image_9patch(c, &img, &r);
+
+  image_manager_load(default_im(), "earth", &img);
+
+  rect_init(s, 0, 0, img.w, img.h);
+  rect_init(r, 10, 220, img.w / 2, img.h / 2);
+  canvas_draw_image(c, &img, &s, &r);
+
+  rect_init(s, 0, 0, img.w, img.h);
+  rect_init(r, 60, 220, img.w, img.h);
+  canvas_draw_image(c, &img, &s, &r);
+
+  rect_init(s, 0, 0, img.w, img.h);
+  rect_init(r, 160, 220, img.w * 2, img.h * 2);
+  canvas_draw_image(c, &img, &s, &r);
 
   canvas_set_stroke_color(c, stroke_color);
   canvas_draw_line(c, 10, 10, 100, 300);
+
+  canvas_translate(c, 100, 100);
 
   return RET_OK;
 }

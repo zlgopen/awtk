@@ -455,16 +455,19 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
   dst.w = ftk_min(x2, c->clip_right) - dst.x;
   dst.h = ftk_min(y2, c->clip_bottom) - dst.y;
 
-  src.x = s->x + (dst.x - x);
-  src.y = s->y + (dst.y - y);
+  src.x = s->x + (dst.x - x) * s->w / d->w;
+  src.y = s->y + (dst.y - y) * s->h / d->h;
+  src.w = dst.w * s->w / d->w;
+  src.h = dst.h * s->h / d->h;
 
   if (src.x >= img->w || src.y >= img->h) {
     return RET_OK;
   }
 
-  src.w = ftk_min((img->w - src.x), dst.w);
-  src.h = ftk_min((img->h - src.y), dst.h);
-  if (src.w == 0 || src.h == 0) {
+  src.w = ftk_min((img->w - src.x), src.w);
+  src.h = ftk_min((img->h - src.y), src.h);
+
+  if (src.w == 0 || src.h == 0 || dst.w == 0 || dst.h == 0) {
     return RET_OK;
   }
 
@@ -485,8 +488,6 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
   rect_t d;
   return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
-  /*not support scale yet*/
-  return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_BAD_PARAMS);
 
   d.x = c->ox + dst->x;
   d.y = c->oy + dst->y;
@@ -509,8 +510,6 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  const color_t* p = NULL;
-  const color_t* data = NULL;
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -518,13 +517,11 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
   img_h = img->h;
   dst_w = dst->w;
   dst_h = dst->h;
-  data = (color_t*)img->data;
-  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   canvas_translate(c, dst->x, dst->y);
 
-  w = ftk_min(img_w, dst_w) >> 1;
-  h = ftk_min(img_h, dst_h) >> 1;
+  w = ftk_min(img_w, dst_w) / 3;
+  h = ftk_min(img_h, dst_h) / 3;
 
   w_w = dst_w - w * 2;
   h_h = dst_h - h * 2;
@@ -552,56 +549,39 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   /*fill center*/
   x = w;
-  if (img_w < dst_w) {
-    p = data;
+  if (w_w > 0) {
+    rect_init(s, w, 0, img_w - 2 * w, h);
+    rect_init(d, w, 0, w_w, h);
+    canvas_draw_image(c, img, &s, &d);
 
-    for (y = 0; y < h; y++) {
-      canvas_set_stroke_color(c, p[w]);
-      canvas_draw_hline(c, x, y, w_w);
-      p += img_w;
-    }
-
-    p = data + img_w * (img_h - h);
-    for (y = 0; y < h; y++) {
-      canvas_set_stroke_color(c, p[w]);
-      canvas_draw_hline(c, x, dst_h - h + y, w_w);
-      p += img_w;
-    }
+    rect_init(s, w, img_h - h, img_w - 2 * w, h);
+    rect_init(d, w, h + h_h, w_w, h);
+    canvas_draw_image(c, img, &s, &d);
   }
 
   /*fill middle*/
   y = h;
-  if (img_h < dst_h) {
-    p = data + img_w * h;
+  if (h_h > 0) {
+    rect_init(s, 0, h, w, img_h - 2 * h);
+    rect_init(d, 0, h, w, h_h);
+    canvas_draw_image(c, img, &s, &d);
 
-    for (x = 0; x < w; x++) {
-      canvas_set_stroke_color(c, p[x]);
-      canvas_draw_vline(c, x, y, h_h);
-    }
-
-    for (x = 0; x < w; x++) {
-      canvas_set_stroke_color(c, p[img_w - w + x]);
-      canvas_draw_vline(c, dst_w - w + x, y, h_h);
-    }
+    rect_init(s, img_w - w, h, w, img_h - 2 * h);
+    rect_init(d, w + w_w, h, w, h_h);
+    canvas_draw_image(c, img, &s, &d);
   }
 
   /*fill center/middle*/
-  if (img_w < dst_w && img_h < dst_h) {
-    p = data + img_w * h + w;
-    canvas_set_fill_color(c, *p);
-    canvas_fill_rect(c, w, h, w_w, h_h);
+  if (w_w > 0 && h_h > 0) {
+    rect_init(s, w, h, img_w - 2 * w, img_h - 2 * h);
+    rect_init(d, w, h, w_w, h_h);
+    canvas_draw_image(c, img, &s, &d);
   }
-  
+
   canvas_untranslate(c, dst->x, dst->y);
 
   return RET_OK;
 }
-
-ret_t canvas_fill_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, rrect_option_t* opt) {
-  return RET_OK;
-}
-
-ret_t canvas_stroke_rrect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) { return RET_OK; }
 
 ret_t canvas_end_frame(canvas_t* c) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);

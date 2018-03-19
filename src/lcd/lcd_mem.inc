@@ -123,23 +123,37 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
-  wh_t sx = src->x;
-  wh_t sy = src->y;
-  wh_t sw = src->w;
-  wh_t sh = src->h;
+  wh_t dx = dst->x;
+  wh_t dy = dst->y;
+  wh_t dw = dst->w;
+  wh_t dh = dst->h;
   wh_t width = lcd->width;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
   pixel_t* dst_p = pixels + dst->y * width + dst->x;
   const color_t* data = (color_t*)img->data;
-  const color_t* src_p = data + img->w * sy + sx;
 
-  for (j = 0; j < sh; j++) {
-    for (i = 0; i < sw; i++) {
-      dst_p[i] = blend_pixel(dst_p[i], src_p[i]);
+  if (src->w == dst->w && src->h == dst->h) {
+    const color_t* src_p = data + img->w * src->y + src->x;
+    for (j = 0; j < dh; j++) {
+      for (i = 0; i < dw; i++) {
+        dst_p[i] = blend_pixel(dst_p[i], src_p[i]);
+      }
+      src_p += img->w;
+      dst_p += width;
     }
-    src_p += img->w;
-    dst_p += width;
+  } else {
+    xy_t sx = src->x;
+    xy_t sy = src->y;
+    xy_t sw = src->w;
+    xy_t sh = src->h;
+    for (j = 0; j < dh; j++) {
+      for (i = 0; i < dw; i++) {
+        const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx + i * sw / dw;
+        dst_p[i] = blend_pixel(dst_p[i], src_p[0]);
+      }
+      dst_p += width;
+    }
   }
 
   return RET_OK;
