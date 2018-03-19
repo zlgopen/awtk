@@ -503,46 +503,54 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
   xy_t y = 0;
   wh_t w = 0;
   wh_t h = 0;
+  wh_t w_w = 0;
+  wh_t h_h = 0;
   wh_t img_w = 0;
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  int32_t w_w = 0;
-  int32_t h_h = 0;
   const color_t* p = NULL;
   const color_t* data = NULL;
+
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
-  data = (color_t*)img->data;
-  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   img_w = img->w;
   img_h = img->h;
   dst_w = dst->w;
   dst_h = dst->h;
-  w_w = dst_w - img_w;
-  h_h = dst_h - img_h;
+  data = (color_t*)img->data;
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   canvas_translate(c, dst->x, dst->y);
 
   w = ftk_min(img_w, dst_w) >> 1;
   h = ftk_min(img_h, dst_h) >> 1;
 
+  w_w = dst_w - w * 2;
+  h_h = dst_h - h * 2;
+
+  /*draw four corners*/
+  /*left top*/
   rect_init(s, 0, 0, w, h);
   rect_init(d, 0, 0, w, h);
   canvas_draw_image(c, img, &s, &d);
 
-  rect_init(s, w, 0, w, h);
+  /*right top*/
+  rect_init(s, img_w - w, 0, w, h);
   rect_init(d, dst_w - w, 0, w, h);
   canvas_draw_image(c, img, &s, &d);
 
-  rect_init(s, 0, h, w, h);
+  /*left bottom*/
+  rect_init(s, 0, img_h - h, w, h);
   rect_init(d, 0, dst_h - h, w, h);
   canvas_draw_image(c, img, &s, &d);
 
-  rect_init(s, w, h, w, h);
+  /*right bottom*/
+  rect_init(s, img_w - w, img_h - h, w, h);
   rect_init(d, dst_w - w, dst_h - h, w, h);
   canvas_draw_image(c, img, &s, &d);
 
+  /*fill center*/
   x = w;
   if (img_w < dst_w) {
     p = data;
@@ -553,7 +561,7 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
       p += img_w;
     }
 
-    p += img_w * h_h;
+    p = data + img_w * (img_h - h);
     for (y = 0; y < h; y++) {
       canvas_set_stroke_color(c, p[w]);
       canvas_draw_hline(c, x, dst_h - h + y, w_w);
@@ -561,6 +569,7 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
     }
   }
 
+  /*fill middle*/
   y = h;
   if (img_h < dst_h) {
     p = data + img_w * h;
@@ -571,16 +580,19 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
     }
 
     for (x = 0; x < w; x++) {
-      canvas_set_stroke_color(c, p[w + w_w + x]);
+      canvas_set_stroke_color(c, p[img_w - w + x]);
       canvas_draw_vline(c, dst_w - w + x, y, h_h);
     }
   }
 
+  /*fill center/middle*/
   if (img_w < dst_w && img_h < dst_h) {
     p = data + img_w * h + w;
-    canvas_set_stroke_color(c, *p);
+    canvas_set_fill_color(c, *p);
     canvas_fill_rect(c, w, h, w_w, h_h);
   }
+  
+  canvas_untranslate(c, dst->x, dst->y);
 
   return RET_OK;
 }

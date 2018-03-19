@@ -21,6 +21,7 @@
 
 #include "base/window.h"
 #include "base/group_box.h"
+#include "base/image_manager.h"
 
 static ret_t on_paint(void* ctx, event_t* e) {
   rect_t r;
@@ -29,7 +30,28 @@ static ret_t on_paint(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
 
+  bitmap_t img;
+  image_manager_load(default_im(), "btn_blue_n", &img);
+
   canvas_set_fill_color(c, fill_color);
+
+  r.x = 10;
+  r.y = 10;
+  r.w = 200;
+  r.h = 30;
+  canvas_draw_image_9patch(c, &img, &r);
+ 
+  r.x = 10;
+  r.y = 70;
+  r.w = 200;
+  r.h = 60;
+  canvas_draw_image_9patch(c, &img, &r);
+
+  r.x = 10;
+  r.y = 150;
+  r.w = 20;
+  r.h = 60;
+  canvas_draw_image_9patch(c, &img, &r);
 
   canvas_set_stroke_color(c, stroke_color);
   canvas_draw_line(c, 10, 10, 100, 300);

@@ -1,6 +1,7 @@
 #include "lftk.h"
 #include "base/resource_manager.h"
 #include "res/src/fonts/font20.data"
+#include "res/src/images/btn_blue_n.data"
 #include "res/src/images/checked.data"
 #include "res/src/images/earth.data"
 #include "res/src/images/info.data"
@@ -16,6 +17,7 @@ ret_t resource_init() {
   resource_manager_init(15);
 
   resource_manager_add(font_font20);
+  resource_manager_add(image_btn_blue_n);
   resource_manager_add(image_checked);
   resource_manager_add(image_earth);
   resource_manager_add(image_info);
