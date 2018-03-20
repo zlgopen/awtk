@@ -497,6 +497,108 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
   return canvas_do_draw_image(c, img, src, &d);
 }
 
+ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  wh_t h = 0;
+  wh_t h_h = 0;
+  wh_t img_w = 0;
+  wh_t img_h = 0;
+  wh_t dst_w = 0;
+  wh_t dst_h = 0;
+
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  img_w = img->w;
+  img_h = img->h;
+  dst_w = dst->w;
+  dst_h = dst->h;
+
+  canvas_translate(c, dst->x, dst->y);
+
+  if(dst_h <= img_h) {
+    rect_init(s, 0, 0, img_w, img_h);
+    rect_init(d, 0, 0, dst_w, dst_h);
+    canvas_draw_image(c, img, &s, &d);
+    canvas_untranslate(c, dst->x, dst->y);
+
+    return RET_OK;
+  }
+
+  h = ftk_min(img_h, dst_h) / 3;
+  h_h = dst_h - h * 2;
+
+  /*top*/
+  rect_init(s, 0, 0, img_w, h);
+  rect_init(d, 0, 0, dst_w, h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*middle*/
+  rect_init(s, 0, h, img_w, img_h - 2 * h);
+  rect_init(d, 0, h, dst_w, h_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*bottom*/
+  rect_init(s, 0, img_h-h, img_w, h);
+  rect_init(d, 0, dst_h-h, dst_w, h);
+  canvas_draw_image(c, img, &s, &d);
+
+  canvas_untranslate(c, dst->x, dst->y);
+
+  return RET_OK;
+}
+
+ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  wh_t w = 0;
+  wh_t w_w = 0;
+  wh_t img_w = 0;
+  wh_t img_h = 0;
+  wh_t dst_w = 0;
+  wh_t dst_h = 0;
+
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  img_w = img->w;
+  img_h = img->h;
+  dst_w = dst->w;
+  dst_h = dst->h;
+
+  canvas_translate(c, dst->x, dst->y);
+
+  if(dst_w <= img_w) {
+    rect_init(s, 0, 0, img_w, img_h);
+    rect_init(d, 0, 0, dst_w, dst_h);
+    canvas_draw_image(c, img, &s, &d);
+    canvas_untranslate(c, dst->x, dst->y);
+
+    return RET_OK;
+  }
+
+  w = ftk_min(img_w, dst_w) / 3;
+  w_w = dst_w - w * 2;
+
+  /*left*/
+  rect_init(s, 0, 0, w, img_h);
+  rect_init(d, 0, 0, w, dst_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*center*/
+  rect_init(s, w, 0, img_w-2*w, img_h);
+  rect_init(d, w, 0, w_w, dst_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*right*/
+  rect_init(s, img_w-w, 0, w, img_h);
+  rect_init(d, dst_w-w, 0, w, dst_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  canvas_untranslate(c, dst->x, dst->y);
+
+  return RET_OK;
+}
+
 ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;

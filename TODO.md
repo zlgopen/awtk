@@ -22,12 +22,21 @@
 * api doc
 * 基本layout功能
 * 极速模式
-
-## 短期计划(顺序不定)
 * Qt界面文件转换器
 * 微软Rc界面文件转换器 
-* API doc到PDF转换工具
 * draw 9patch image
+* draw 3patch\_h image
+* draw 3patch\_v image
+* draw scale image
+
+## 短期计划(顺序不定)
+* draw image repeat\_x repeat\_y repeat
+* image support draw\_type
+* theme support image\_draw\_type 
+* image support 565/index
+* image value
+* image button
+* API doc到PDF转换工具
 * combobox
 * listbox
 * tableview
@@ -38,6 +47,7 @@
 * tab控件
 * python binging 
 * jerryscript binging 
+* remote client
 * 软键盘
 * 中文输入法
 * 键盘导航

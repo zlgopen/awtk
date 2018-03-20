@@ -342,3 +342,109 @@ TEST(Canvas, draw_image) {
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
 }
+
+TEST(Canvas, draw_image_3patch_h) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  rect_init(r, 0, 0, 320, 480);
+  canvas_begin_frame(&c, &r);
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w, img.h);
+  ASSERT_EQ(canvas_draw_image_3patch_h(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,32);");
+  
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w * 3, img.h * 2);
+  ASSERT_EQ(canvas_draw_image_3patch_h(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,10,32,0,0,10,64);dg(10,0,12,32,10,0,76,64);dg(22,0,10,32,86,0,10,64);");
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w * 3, img.h/2);
+  ASSERT_EQ(canvas_draw_image_3patch_h(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,10,32,0,0,10,16);dg(10,0,12,32,10,0,76,16);dg(22,0,10,32,86,0,10,16);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+}
+
+TEST(Canvas, draw_image_3patch_v) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  rect_init(r, 0, 0, 320, 480);
+  canvas_begin_frame(&c, &r);
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w, img.h);
+  ASSERT_EQ(canvas_draw_image_3patch_v(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,32);");
+  
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w * 2, img.h * 3);
+  ASSERT_EQ(canvas_draw_image_3patch_v(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,10,0,0,64,10);dg(0,10,32,12,0,10,64,76);dg(0,22,32,10,0,86,64,10);");
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w/2, img.h * 3);
+  ASSERT_EQ(canvas_draw_image_3patch_v(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,10,0,0,16,10);dg(0,10,32,12,0,10,16,76);dg(0,22,32,10,0,86,16,10);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+}
+
+TEST(Canvas, draw_image_9patch) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  rect_init(r, 0, 0, 320, 480);
+  canvas_begin_frame(&c, &r);
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w, img.h);
+  ASSERT_EQ(canvas_draw_image_9patch(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,10,10,0,0,10,10);dg(22,0,10,10,22,0,10,10);dg(0,22,10,10,0,22,10,10);dg(22,22,10,10,22,22,10,10);dg(10,0,12,10,10,0,12,10);dg(10,22,12,10,10,22,12,10);dg(0,10,10,12,0,10,10,12);dg(22,10,10,12,22,10,10,12);dg(10,10,12,12,10,10,12,12);");
+  
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w * 2, img.h * 3);
+  ASSERT_EQ(canvas_draw_image_9patch(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,10,10,0,0,10,10);dg(22,0,10,10,54,0,10,10);dg(0,22,10,10,0,86,10,10);dg(22,22,10,10,54,86,10,10);dg(10,0,12,10,10,0,44,10);dg(10,22,12,10,10,86,44,10);dg(0,10,10,12,0,10,10,76);dg(22,10,10,12,54,10,10,76);dg(10,10,12,12,10,10,44,76);");
+
+  lcd_log_reset(lcd);
+  rect_init(d, 0, 0, img.w/2, img.h * 3);
+  ASSERT_EQ(canvas_draw_image_9patch(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,5,10,0,0,5,10);dg(27,0,5,10,11,0,5,10);dg(0,22,5,10,0,86,5,10);dg(27,22,5,10,11,86,5,10);dg(5,0,22,10,5,0,6,10);dg(5,22,22,10,5,86,6,10);dg(0,10,5,12,0,10,5,76);dg(27,10,5,12,11,10,5,76);dg(5,10,22,12,5,10,6,76);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+}
+
