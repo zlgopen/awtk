@@ -78,6 +78,9 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
 ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_tile(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_tile_h(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_tile_v(canvas_t* c, bitmap_t* img, rect_t* dst);
 
 ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
 

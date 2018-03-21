@@ -125,11 +125,68 @@ static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_paint_tile_h(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  image_manager_load(default_im(), "btn_blue_n", &img);
+
+  rect_init(r, 10, 10, 10, img.h);
+  canvas_draw_image_tile_h(c, &img, &r);
+  
+  rect_init(r, 10, 60, img.w, img.h);
+  canvas_draw_image_tile_h(c, &img, &r);
+  
+  rect_init(r, 10, 160, img.w*2, img.h*2);
+  canvas_draw_image_tile_h(c, &img, &r);
+
+  return RET_OK;
+}
+
+static ret_t on_paint_tile_v(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  image_manager_load(default_im(), "btn_blue_n", &img);
+
+  rect_init(r, 10, 10, img.w, 10);
+  canvas_draw_image_tile_v(c, &img, &r);
+
+  rect_init(r, 90, 10, img.w, img.h);
+  canvas_draw_image_tile_v(c, &img, &r);
+  
+  rect_init(r, 160, 10, img.w*2, img.h*2);
+  canvas_draw_image_tile_v(c, &img, &r);
+
+  return RET_OK;
+}
+
+static ret_t on_paint_tile(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  image_manager_load(default_im(), "btn_blue_n", &img);
+
+  rect_init(r, 10, 10, img.w/2, img.h/2);
+  canvas_draw_image_tile(c, &img, &r);
+
+  rect_init(r, 50, 50, img.w, img.h);
+  canvas_draw_image_tile(c, &img, &r);
+  
+  rect_init(r, 100, 100, img.w*2+10, img.h*2+10);
+  canvas_draw_image_tile(c, &img, &r);
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = group_box_create(win, 0, 0, win->w, win->h);
 
-  widget_on(canvas, EVT_PAINT, on_paint_9patch, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_tile, NULL);
 
   return RET_OK;
 }

@@ -497,6 +497,95 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
   return canvas_do_draw_image(c, img, src, &d);
 }
 
+ret_t canvas_draw_image_tile(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  xy_t x = 0;
+  xy_t y = 0;
+  wh_t w = 0;
+  wh_t h = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.w = img->w;
+  s.h = img->h;
+
+  d = *dst;
+
+  while(y < dst->h) {
+    h = ftk_min(img->h, dst->h-y);
+    while(x < dst->w) {
+      w = ftk_min(img->w, dst->w-x);
+      s.w = w;
+      s.h = h;
+
+      d.x = x+dst->x;
+      d.y = y+dst->y;
+      d.w = w;
+      d.h = h;
+      canvas_draw_image(c, img, &s, &d);
+      x += w;
+    }
+    y += h;
+    x = 0;
+  }
+
+  return RET_OK;
+}
+
+ret_t canvas_draw_image_tile_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  xy_t x = 0;
+  wh_t w = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.w = img->w;
+  s.h = img->h;
+
+  d = *dst;
+
+  while(x < dst->w) {
+    w = ftk_min(img->w, dst->w-x);
+    s.w = w;
+    d.x = x;
+    d.w = w;
+    canvas_draw_image(c, img, &s, &d);
+    x += w;
+  }
+
+  return RET_OK;
+}
+
+ret_t canvas_draw_image_tile_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  xy_t y = 0;
+  wh_t h = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.w = img->w;
+  s.h = img->h;
+
+  d = *dst;
+
+  while(y < dst->h) {
+    h = ftk_min(img->h, dst->h-y);
+    s.h = h;
+    d.y = y;
+    d.h = h;
+    canvas_draw_image(c, img, &s, &d);
+    y += h;
+  }
+
+  return RET_OK;
+}
+
 ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;

@@ -28,11 +28,14 @@
 * draw 3patch\_h image
 * draw 3patch\_v image
 * draw scale image
+* draw image tile/tile\_h/tile\_v
 
 ## 短期计划(顺序不定)
-* draw image repeat\_x repeat\_y repeat
+* draw scale\_x image
+* draw scale\_y image
 * image support draw\_type
 * theme support image\_draw\_type 
+
 * image support 565/index
 * image value
 * image button
