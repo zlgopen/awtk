@@ -29,9 +29,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef int xy_t;
-typedef uint32_t id_t;
-typedef uint32_t wh_t;
+typedef int32_t xy_t;
+typedef int32_t wh_t;
 
 /**
  * @enum ret_t

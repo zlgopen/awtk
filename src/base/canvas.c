@@ -513,15 +513,15 @@ ret_t canvas_draw_image_tile(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   d = *dst;
 
-  while(y < dst->h) {
-    h = ftk_min(img->h, dst->h-y);
-    while(x < dst->w) {
-      w = ftk_min(img->w, dst->w-x);
+  while (y < dst->h) {
+    h = ftk_min(img->h, dst->h - y);
+    while (x < dst->w) {
+      w = ftk_min(img->w, dst->w - x);
       s.w = w;
       s.h = h;
 
-      d.x = x+dst->x;
-      d.y = y+dst->y;
+      d.x = x + dst->x;
+      d.y = y + dst->y;
       d.w = w;
       d.h = h;
       canvas_draw_image(c, img, &s, &d);
@@ -548,8 +548,8 @@ ret_t canvas_draw_image_tile_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   d = *dst;
 
-  while(x < dst->w) {
-    w = ftk_min(img->w, dst->w-x);
+  while (x < dst->w) {
+    w = ftk_min(img->w, dst->w - x);
     s.w = w;
     d.x = x;
     d.w = w;
@@ -574,8 +574,8 @@ ret_t canvas_draw_image_tile_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   d = *dst;
 
-  while(y < dst->h) {
-    h = ftk_min(img->h, dst->h-y);
+  while (y < dst->h) {
+    h = ftk_min(img->h, dst->h - y);
     s.h = h;
     d.y = y;
     d.h = h;
@@ -605,7 +605,7 @@ ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  if(dst_h <= img_h) {
+  if (dst_h <= img_h) {
     rect_init(s, 0, 0, img_w, img_h);
     rect_init(d, 0, 0, dst_w, dst_h);
     canvas_draw_image(c, img, &s, &d);
@@ -628,8 +628,8 @@ ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst) {
   canvas_draw_image(c, img, &s, &d);
 
   /*bottom*/
-  rect_init(s, 0, img_h-h, img_w, h);
-  rect_init(d, 0, dst_h-h, dst_w, h);
+  rect_init(s, 0, img_h - h, img_w, h);
+  rect_init(d, 0, dst_h - h, dst_w, h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -656,7 +656,7 @@ ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  if(dst_w <= img_w) {
+  if (dst_w <= img_w) {
     rect_init(s, 0, 0, img_w, img_h);
     rect_init(d, 0, 0, dst_w, dst_h);
     canvas_draw_image(c, img, &s, &d);
@@ -674,13 +674,13 @@ ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
   canvas_draw_image(c, img, &s, &d);
 
   /*center*/
-  rect_init(s, w, 0, img_w-2*w, img_h);
+  rect_init(s, w, 0, img_w - 2 * w, img_h);
   rect_init(d, w, 0, w_w, dst_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*right*/
-  rect_init(s, img_w-w, 0, w, img_h);
-  rect_init(d, dst_w-w, 0, w, dst_h);
+  rect_init(s, img_w - w, 0, w, img_h);
+  rect_init(d, dst_w - w, 0, w, dst_h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -807,4 +807,95 @@ ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y) {
   canvas_end_frame(c);
 
   return RET_OK;
+}
+
+ret_t canvas_draw_image_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  wh_t src_h = 0;
+  wh_t dst_h = 0;
+  float scale = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  scale = (float)(dst->w) / img->w;
+  dst_h = ftk_min(img->h * scale, dst->h);
+  src_h = ftk_min(img->h, dst_h / scale);
+
+  s.x = 0;
+  s.y = 0;
+  s.w = img->w;
+  s.h = src_h;
+
+  d = *dst;
+  d.h = dst_h;
+
+  return canvas_draw_image(c, img, &s, &d);
+}
+
+ret_t canvas_draw_image_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  wh_t src_w = 0;
+  wh_t dst_w = 0;
+  float scale = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  scale = (float)(dst->h) / img->h;
+  dst_w = ftk_min(img->w * scale, dst->w);
+  src_w = ftk_min(img->w, dst_w / scale);
+
+  s.x = 0;
+  s.y = 0;
+  s.h = img->h;
+  s.w = src_w;
+
+  d = *dst;
+  d.w = dst_w;
+
+  return canvas_draw_image(c, img, &s, &d);
+}
+
+ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  wh_t dst_w = 0;
+  float scale = 0;
+  float scalex = 0;
+  float scaley = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.h = img->h;
+  s.w = img->w;
+
+  scalex = (float)(dst->w) / img->w;
+  scaley = (float)(dst->h) / img->h;
+  scale = ftk_min(scalex, scaley);
+
+  d.w = img->w * scale;
+  d.h = img->h * scale;
+  d.x = dst->x + ((dst->w - d.w) >> 1);
+  d.y = dst->y + ((dst->h - d.h) >> 1);
+
+  return canvas_draw_image(c, img, &s, &d);
+}
+
+ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.h = img->h;
+  s.w = img->w;
+
+  d = *dst;
+  d.x = dst->x + ((dst->w - s.w) >> 1);
+  d.y = dst->y + ((dst->h - s.h) >> 1);
+  d.w = s.w;
+  d.h = s.h;
+
+  return canvas_draw_image(c, img, &s, &d);
 }

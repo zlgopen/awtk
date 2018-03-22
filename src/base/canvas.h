@@ -75,14 +75,19 @@ ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
+
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
+
+ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_tile(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_tile_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_tile_v(canvas_t* c, bitmap_t* img, rect_t* dst);
-
-ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst);
 
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
 
