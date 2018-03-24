@@ -8,7 +8,8 @@ sources=Glob('base/*.c') +\
   Glob('image_loader/*.c') + \
   Glob('ui_loader/*.c') + \
   Glob('xml/*.c') + \
-  ['lcd/lcd_sdl2.c', 'lcd/lcd_mem_565.c', 'main_loop/main_loop_sdl2.c', 'platforms/platform_default.c', 'lftk.c']
+  Glob('vgcanvas/vgcanvas_agg.cpp') + \
+  ['lcd/lcd_sdl2.c', 'lcd/lcd_mem_rgba.c', 'main_loop/main_loop_sdl2.c', 'platforms/platform_default.c', 'lftk.c']
 
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'lftk'), sources)

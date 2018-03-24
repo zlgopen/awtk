@@ -258,11 +258,29 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_paint_vg(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+
+  image_manager_load(default_im(), "btn_blue_n", &img);
+
+  vgcanvas_clear(vg, 0xf0, 0xf0, 0xf0, 0xff);
+  vgcanvas_set_color(vg, 0xff, 0xff, 0, 0xff);
+  vgcanvas_move_to(vg, 10, 10);
+  vgcanvas_line_to(vg, vg->w, vg->h);
+  vgcanvas_stroke(vg);
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = group_box_create(win, 0, 0, win->w, win->h);
 
-  widget_on(canvas, EVT_PAINT, on_paint_center, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
 
   return RET_OK;
 }

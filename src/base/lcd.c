@@ -76,3 +76,9 @@ ret_t lcd_destroy(lcd_t* lcd) {
 
   return lcd->destroy(lcd);
 }
+
+vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL && lcd->get_vgcanvas != NULL, RET_BAD_PARAMS);
+
+  return lcd->get_vgcanvas(lcd);
+}

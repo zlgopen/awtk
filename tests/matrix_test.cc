@@ -39,7 +39,7 @@ TEST(Matrix, rotate) {
   matrix_transform(m, 10, 20, x, y);
   ASSERT_EQ(x, -10);
   ASSERT_EQ(y, -20);
-  
+
   matrix_rotate(&m, 3.14159);
   matrix_transform(m, 10, 20, x, y);
   ASSERT_EQ(x, 10);
@@ -57,7 +57,7 @@ TEST(Matrix, scale) {
   matrix_transform(m, 10, 20, x, y);
   ASSERT_EQ(x, 20);
   ASSERT_EQ(y, 40);
-  
+
   matrix_scale(&m, 0.5, 0.5);
   matrix_transform(m, 10, 20, x, y);
   ASSERT_EQ(x, 10);
@@ -74,11 +74,9 @@ TEST(Matrix, all) {
   matrix_scale(&m, 2, 2);
   matrix_translate(&m, 2, 2);
   matrix_scale(&m, 2, 2);
-  matrix_rotate(&m, 3.14159/2);
+  matrix_rotate(&m, 3.14159 / 2);
 
   matrix_transform(m, 10, 20, x, y);
   ASSERT_EQ(x, -76);
   ASSERT_EQ(y, 44);
-  
 }
-

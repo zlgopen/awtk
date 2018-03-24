@@ -1,0 +1,38 @@
+Anti-Grain Geometry is a C++ library distributed in sources
+and does not require any installation procedure. The source code 
+is platform independent and does not have any dependencies on 
+system APIs (except for very standard C runtime library).
+You just take source files and include them into 
+your project. The sources are maintained to be highly compatible
+with most popular C++ compilers, including poor ones, like
+Microsoft Visual C++ V6.0. 
+
+On Unix/Linux/MacOS/BeOS/AmigaOS systems you can type "make" to 
+build src/libagg.a There must be GNU Make utility installed.
+Makefiles are very simple, so that if something goes wrong
+you could easily fix it. There are no "include files" 
+dependency suppoeted.
+Also note that there's no "make install" option either;
+basically the original Makefiles are needed only to build
+the examples. 
+
+After building the library you do "cd examples/<YourOS>" and build 
+the examples in a similar way. 
+
+On most Linux platforms the "automake" environment should work.
+It's generously provided by Nikolas Zimmermann, aka WildFox,
+who is a key developer of KDE and KSVG.
+This process will replace the original Makefiles.
+
+On Windows there's no library or a DLL created at all. You just
+add source files into your project or create a preoject to build 
+a LIB/DLL if you wish. The problem is that it's very tedious to 
+maintain building environments for all possible configurations. 
+I'm sorry for not automating it, but the compensation is that
+AGG compiles fine without any hidden problems, nor the neccesity
+to configure.
+All examples have building environments for Microsoft Visual C++ 6.0
+(.dsp/.dsw) and they are self-sufficient. The newer versions
+of the studio can easily convert the projects.
+
+Also, see "readme" for more details.

@@ -107,6 +107,12 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
+static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) { 
+  lcd_sdl2_t* mem = (lcd_sdl2_t*)lcd;
+ 
+  return lcd_get_vgcanvas(mem->lcd_mem);
+}
+
 lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   int w = 0;
   int h = 0;
@@ -125,6 +131,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->draw_glyph = lcd_sdl2_draw_glyph;
   base->draw_points = lcd_sdl2_draw_points;
   base->end_frame = lcd_sdl2_end_frame;
+  base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
   base->destroy = lcd_sdl2_destroy;
 
   SDL_GetRendererOutputSize(render, &w, &h);
@@ -133,7 +140,8 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->height = (wh_t)h;
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(w, h, FALSE);
   lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  //SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
 
   return base;
 }

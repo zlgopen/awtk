@@ -1,0 +1,398 @@
+#
+# Makefile for AmigaOS 4.0
+#
+
+CXX = g++
+CXXFLAGS = -mcrt=clib2 -O3 -Iinclude -Igpc -Ifont_freetype
+CXXLIBS = -Llib -lagg
+CC = gcc
+CFLAGS = -mcrt=clib2 -O3 -Igpc
+AR = ar
+ARFLAGS = cr
+STRIP = strip -R.comment
+
+LIBNAME = lib/libagg.a
+SVGNAME = bin/svg_test
+
+EXAMPLES =\
+bin/aa_demo \
+bin/aa_test \
+bin/alpha_gradient \
+bin/alpha_mask \
+bin/alpha_mask2 \
+bin/alpha_mask3 \
+bin/bezier_div \
+bin/bspline \
+bin/circles \
+bin/component_rendering \
+bin/compositing \
+bin/compositing2 \
+bin/conv_contour \
+bin/conv_dash_marker \
+bin/conv_stroke \
+bin/distortions \
+bin/flash_rasterizer \
+bin/flash_rasterizer2 \
+bin/gamma_correction \
+bin/gamma_ctrl \
+bin/gamma_tuner \
+bin/gouraud \
+bin/gouraud_mesh \
+bin/gpc_test \
+bin/gradients \
+bin/graph_test \
+bin/idea \
+bin/image_alpha \
+bin/image_filters \
+bin/image_filters2 \
+bin/image_fltr_graph \
+bin/image_perspective \
+bin/image_resample \
+bin/image_transforms \
+bin/image1 \
+bin/line_patterns_clip \
+bin/line_patterns \
+bin/lion \
+bin/lion_lens \
+bin/lion_outline \
+bin/mol_view \
+bin/multi_clip \
+bin/pattern_fill \
+bin/pattern_perspective \
+bin/pattern_resample \
+bin/perspective \
+bin/polymorphic_renderer \
+bin/raster_text \
+bin/rasterizers \
+bin/rasterizers2 \
+bin/rounded_rect \
+bin/scanline_boolean \
+bin/scanline_boolean2 \
+bin/simple_blur \
+bin/trans_polar
+
+FREETYPE_EXAMPLES=\
+bin/freetype_test \
+bin/trans_curve1_ft \
+bin/trans_curve2_ft
+
+PLATFORM_SRC=\
+src/platform/AmigaOS/agg_platform_support.cpp
+
+FREETYPE_SRC=\
+font_freetype/agg_font_freetype.cpp
+
+LIB_CXXSRC=\
+src/agg_arc.cpp \
+src/agg_arrowhead.cpp \
+src/agg_bezier_arc.cpp \
+src/agg_bspline.cpp \
+src/agg_curves.cpp \
+src/agg_embedded_raster_fonts.cpp \
+src/agg_gsv_text.cpp \
+src/agg_image_filters.cpp \
+src/agg_line_aa_basics.cpp \
+src/agg_line_profile_aa.cpp \
+src/agg_rounded_rect.cpp \
+src/agg_sqrt_tables.cpp \
+src/agg_trans_affine.cpp \
+src/agg_trans_double_path.cpp \
+src/agg_trans_single_path.cpp \
+src/agg_trans_warp_magnifier.cpp \
+src/agg_vcgen_bspline.cpp \
+src/agg_vcgen_contour.cpp \
+src/agg_vcgen_dash.cpp \
+src/agg_vcgen_markers_term.cpp \
+src/agg_vcgen_smooth_poly1.cpp \
+src/agg_vcgen_stroke.cpp \
+src/agg_vpgen_clip_polygon.cpp \
+src/agg_vpgen_clip_polyline.cpp \
+src/agg_vpgen_segmentator.cpp \
+src/ctrl/agg_bezier_ctrl.cpp \
+src/ctrl/agg_cbox_ctrl.cpp \
+src/ctrl/agg_gamma_ctrl.cpp \
+src/ctrl/agg_gamma_spline.cpp \
+src/ctrl/agg_polygon_ctrl.cpp \
+src/ctrl/agg_rbox_ctrl.cpp \
+src/ctrl/agg_scale_ctrl.cpp \
+src/ctrl/agg_slider_ctrl.cpp \
+src/ctrl/agg_spline_ctrl.cpp
+
+LIB_CSRC=\
+gpc/gpc.c
+
+SVG_SRC=\
+examples/svg_viewer/agg_svg_parser.cpp \
+examples/svg_viewer/agg_svg_path_renderer.cpp \
+examples/svg_viewer/agg_svg_path_tokenizer.cpp \
+examples/svg_viewer/svg_test.cpp \
+$(PLATFORM_SRC)
+
+PLATFORM_OBJ = $(PLATFORM_SRC:.cpp=.o)
+FREETYPE_OBJ = $(FREETYPE_SRC:.cpp=.o)
+LIB_OBJ = $(LIB_CXXSRC:.cpp=.o) $(LIB_CSRC:.c=.o)
+SVG_OBJ = $(SVG_SRC:.cpp=.o)
+
+
+#
+# Targets
+#
+.PHONY : help all lib examples svg freetype clean install wget
+
+help:
+	@Echo Requirements:
+	@Echo - AmigaOS 4.0
+	@Echo - SDK 51.22
+	@Echo - optional: libexpat.a for SVG viewer
+	@Echo - optional: libft2.a for FreeType examples
+	@Echo ""
+	@Echo Targets:
+	@Echo all - build AGG library and all tests/examples
+	@Echo lib - build AGG library only
+	@Echo examples - build AGG library and examples
+	@Echo svg - build AGG library and SVG viewer
+	@Echo freetype - build AGG library and FreeType examples
+	@Echo clean - clean all build files
+	@Echo install - build AGG library and install into SDK
+	@Echo wget - download and install example test files with wget
+
+all: lib examples svg freetype
+	$(STRIP) $(EXAMPLES) $(SVGNAME) $(FREETYPE_EXAMPLES)
+
+lib: $(LIBNAME)
+
+examples: lib $(EXAMPLES)
+
+svg: lib $(SVGNAME)
+
+freetype: lib $(FREETYPE_EXAMPLES)
+
+clean:
+	-@Delete *>NIL: FORCE QUIET examples/#?.o
+	-@Delete *>NIL: FORCE QUIET $(PLATFORM_OBJ) $(FREETYPE_OBJ) $(LIB_OBJ) $(SVG_OBJ)
+	-@Delete *>NIL: FORCE QUIET ALL lib bin
+
+install: lib
+	-@Copy CLONE $(LIBNAME) SDK:Local/clib2/lib
+	-@Copy CLONE ALL include/#?.h SDK:Local/common/include/agg
+	-@Copy CLONE ALL gpc/#?.h SDK:Local/common/include/gpc
+
+$(LIBNAME): $(LIB_OBJ)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(SVGNAME): $(SVG_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS) -lexpat
+
+
+#
+# Examples binaries
+#
+bin/aa_test: examples/aa_test.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/aa_demo: examples/aa_demo.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/alpha_gradient: examples/alpha_gradient.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/alpha_mask: examples/alpha_mask.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/alpha_mask2: examples/alpha_mask2.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/alpha_mask3: examples/alpha_mask3.o examples/make_arrows.o examples/make_gb_poly.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/bezier_div: examples/bezier_div.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/bspline: examples/bspline.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/circles: examples/circles.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/component_rendering: examples/component_rendering.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/compositing: examples/compositing.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/compositing2: examples/compositing2.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/conv_contour: examples/conv_contour.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/conv_dash_marker: examples/conv_dash_marker.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/conv_stroke: examples/conv_stroke.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/distortions: examples/distortions.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/flash_rasterizer: examples/flash_rasterizer.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/flash_rasterizer2: examples/flash_rasterizer2.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gamma_correction: examples/gamma_correction.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gamma_ctrl: examples/gamma_ctrl.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gamma_tuner: examples/gamma_tuner.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gouraud: examples/gouraud.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gouraud_mesh: examples/gouraud_mesh.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gpc_test: examples/gpc_test.o examples/make_arrows.o examples/make_gb_poly.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/gradients: examples/gradients.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/graph_test: examples/graph_test.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/idea: examples/idea.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image1: examples/image1.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_alpha: examples/image_alpha.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_filters: examples/image_filters.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_filters2: examples/image_filters2.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_fltr_graph: examples/image_fltr_graph.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_perspective: examples/image_perspective.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_resample: examples/image_resample.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/image_transforms: examples/image_transforms.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/line_patterns: examples/line_patterns.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/line_patterns_clip: examples/line_patterns_clip.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/lion: examples/lion.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/lion_lens: examples/lion_lens.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/lion_outline: examples/lion_outline.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/mol_view: examples/mol_view.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/multi_clip: examples/multi_clip.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/pattern_fill: examples/pattern_fill.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/pattern_perspective: examples/pattern_perspective.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/pattern_resample: examples/pattern_resample.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/perspective: examples/perspective.o examples/interactive_polygon.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/polymorphic_renderer: examples/polymorphic_renderer.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/rasterizers: examples/rasterizers.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/rasterizers2: examples/rasterizers2.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/raster_text: examples/raster_text.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/rounded_rect: examples/rounded_rect.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/scanline_boolean: examples/scanline_boolean.o examples/interactive_polygon.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/scanline_boolean2: examples/scanline_boolean2.o examples/make_arrows.o examples/make_gb_poly.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/simple_blur: examples/simple_blur.o examples/parse_lion.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/trans_polar: examples/trans_polar.o $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS)
+
+bin/freetype_test: examples/freetype_test.o $(FREETYPE_OBJ) $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS) -lft2
+
+bin/trans_curve1_ft: examples/trans_curve1_ft.o examples/interactive_polygon.o $(FREETYPE_OBJ) $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS) -lft2
+
+bin/trans_curve2_ft: examples/trans_curve2_ft.o examples/interactive_polygon.o $(FREETYPE_OBJ) $(PLATFORM_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(CXXLIBS) -lft2
+
+
+#
+# Examples files
+#
+wget:
+	wget http://www.antigrain.com/svg/tiger.svg
+	move tiger.svg bin
+	wget http://www.antigrain.com/agg.bmp
+	move agg.bmp bin
+	wget http://www.antigrain.com/compositing.bmp
+	move compositing.bmp bin
+	wget http://www.antigrain.com/spheres.bmp
+	move spheres.bmp bin
+	wget http://www.antigrain.com/shapes.txt
+	move shapes.txt bin
+	wget http://www.antigrain.com/1.sdf
+	move 1.sdf bin
+	wget http://www.antigrain.com/line_patterns.bmp.zip
+	xadunfile line_patterns.bmp.zip bin overwrite
+	delete line_patterns.bmp.zip
+	wget http://www.antigrain.com/timesi.zip
+	xadunfile timesi.zip bin overwrite
+	delete timesi.zip
+
+
+#
+# Pattern Rules
+#
+%.o: %.cpp
+	@MakeDir lib bin force
+	$(CXX) -c $(CXXFLAGS) $< -o $@
+
+%.o: %.c
+	@MakeDir lib bin force
+	$(CC) -c $(CFLAGS) $< -o $@

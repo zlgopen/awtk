@@ -33,8 +33,8 @@ os.environ['GTEST_ROOT'] = GTEST_ROOT;
 
 CCFLAGS=OS_FLAGS + ' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\" -DWITH_STB_IMAGE -DWITH_STB_FONT'
 DefaultEnvironment(CCFLAGS = CCFLAGS, 
-  CPPPATH = [LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, LFTK_TOOLS_ROOT] + OS_CPPPATH, 
-  LIBS=['lftk', 'SDL2'] + OS_LIBS,
+  CPPPATH = [LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, os.path.join(LFTK_3RD_ROOT, 'agg-2.5/include'), LFTK_TOOLS_ROOT] + OS_CPPPATH, 
+  LIBS=['lftk', 'agg', 'SDL2'] + OS_LIBS,
   LINKFLAGS=OS_LINKFLAGS,
   OS_SUBSYSTEM_CONSOLE=OS_SUBSYSTEM_CONSOLE,
   OS_SUBSYSTEM_WINDOWS=OS_SUBSYSTEM_WINDOWS,
@@ -52,5 +52,6 @@ SConscript([
   'demos/SConscript', 
   'tests/SConscript',
   '3rd/lua/SConscript',
+  '3rd/agg-2.5/SConscript',
   'lua/SConscript'
   ])

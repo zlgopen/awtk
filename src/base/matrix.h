@@ -44,12 +44,11 @@ matrix_t* matrix_rotate(matrix_t* m, float rad);
 matrix_t* matrix_transform_debug(matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t* out_y);
 
 #define matrix_transform(_m, _x, _y, _ox, _oy) \
-  tempx = _m.a0 * _x + _m.a2 * _y + _m.a4;\
-  tempy = _m.a1 * _x + _m.a3 * _y + _m.a5;\
-  _ox = tempx > 0 ? tempx + 0.5 : tempx - 0.5;\
+  tempx = _m.a0 * _x + _m.a2 * _y + _m.a4;     \
+  tempy = _m.a1 * _x + _m.a3 * _y + _m.a5;     \
+  _ox = tempx > 0 ? tempx + 0.5 : tempx - 0.5; \
   _oy = tempy > 0 ? tempy + 0.5 : tempy - 0.5;
 
 END_C_DECLS
 
 #endif /*LFTK_MATRIX_H*/
-

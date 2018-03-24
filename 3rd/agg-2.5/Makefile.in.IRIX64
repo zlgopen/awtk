@@ -1,0 +1,7 @@
+AGGLIBS= -lagg 
+AGGCXXFLAGS =
+CXX = CC
+C = cc
+LIB = CC -ar -o
+
+.PHONY : clean

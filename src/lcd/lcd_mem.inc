@@ -19,6 +19,8 @@
  *
  */
 
+#include "base/vgcanvas.h"
+
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd->dirty_rect = dirty_rect;
 
@@ -123,8 +125,6 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
-  wh_t dx = dst->x;
-  wh_t dy = dst->y;
   wh_t dw = dst->w;
   wh_t dh = dst->h;
   wh_t width = lcd->width;
@@ -159,6 +159,15 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   return RET_OK;
 }
 
+static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) { 
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  if(mem->vgcanvas == NULL) {
+    mem->vgcanvas = vgcanvas_create(lcd->width, lcd->height, (uint32_t*)(mem->pixels));
+  }
+
+  return mem->vgcanvas;
+}
+
 static ret_t lcd_mem_end_frame(lcd_t* lcd) { return RET_OK; }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
@@ -183,6 +192,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->draw_image = lcd_mem_draw_image;
   base->draw_glyph = lcd_mem_draw_glyph;
   base->draw_points = lcd_mem_draw_points;
+  base->get_vgcanvas = lcd_mem_get_vgcanvas;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = lcd_mem_destroy;
 

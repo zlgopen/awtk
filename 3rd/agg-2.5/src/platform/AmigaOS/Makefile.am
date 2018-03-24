@@ -1,0 +1,1 @@
+EXTRA_DIST=agg_platform_support.cpp

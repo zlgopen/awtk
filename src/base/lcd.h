@@ -25,6 +25,7 @@
 #include "base/rect.h"
 #include "base/font.h"
 #include "base/bitmap.h"
+#include "base/vgcanvas.h"
 
 BEGIN_C_DECLS
 
@@ -39,6 +40,7 @@ typedef ret_t (*lcd_draw_points_t)(lcd_t* lcd, point_t* points, uint32_t nr);
 typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
@@ -52,6 +54,8 @@ struct _lcd_t {
   lcd_draw_glyph_t draw_glyph;
   lcd_draw_points_t draw_points;
   lcd_end_frame_t end_frame;
+  lcd_get_vgcanvas_t get_vgcanvas;
+
   lcd_destroy_t destroy;
 
   /*properties:*/
@@ -72,6 +76,7 @@ ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr);
 ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd);
 
 ret_t lcd_end_frame(lcd_t* lcd);
 

@@ -1,0 +1,7 @@
+AGGLIBS= -lagg 
+AGGCXXFLAGS = -O3 -I/usr/openwin/include -L/usr/openwin/lib
+CXX = CC
+C = cc
+LIB = CC -xar -o
+
+.PHONY : clean

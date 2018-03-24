@@ -1,7 +1,7 @@
 /**
  * File:   rgb565.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  stm32_raw implemented lcd interface/
+ * Brief:  rgb565
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *

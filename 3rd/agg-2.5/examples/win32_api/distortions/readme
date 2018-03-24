@@ -1,0 +1,5 @@
+Download http://www.antigrain.com/spheres.bmp before running this example
+Use the sliders and the radio-buttons to change the parameters of 
+the distortions. Drag the center of the distortions.
+Don't try to understand the shamanic manipulations with affine matrices
+because I composed it using the "hit-and-miss" method :-)
