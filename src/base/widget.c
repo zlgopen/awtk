@@ -761,7 +761,7 @@ widget_t* widget_get_child(widget_t* widget, uint32_t index) {
 
 ret_t widget_to_xml(widget_t* widget) {
   const wchar_t* text = NULL;
-  const key_type_value_t* kv = widget_name_find_by_value(widget->type);
+  const key_type_value_t* kv = widget_type_find_by_value(widget->type);
 
   log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name,
             widget->x, widget->y, widget->w, widget->h);

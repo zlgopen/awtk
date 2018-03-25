@@ -37,6 +37,7 @@ BEGIN_C_DECLS
 typedef struct _image_t {
   widget_t widget;
   bitmap_t bitmap;
+  image_draw_type_t draw_type;
 } image_t;
 
 /**
@@ -57,15 +58,23 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @method image_set_image_name
  * 设置控件的图片名称。
  * @param {widget_t*} widget image对象。
- * @param {char*}  name 图片名称。
+ * @param {char*}  name 图片名称，该图片必须存在于资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_set_image_name(widget_t* widget, const char* name);
 
-ret_t image_set_image(widget_t* widget, bitmap_t* image);
+/**
+ * @method image_set_draw_type
+ * 设置图片的显示方式。
+ * @param {widget_t*} widget image对象。
+ * @param {image_draw_type_t}  draw_type 显示方式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
 
-#define IMAGE(widget) (image_t*)(widget)
+#define IMAGE(widget) ((image_t*)(widget))
 
 END_C_DECLS
 

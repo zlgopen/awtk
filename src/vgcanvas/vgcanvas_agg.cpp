@@ -46,7 +46,8 @@ static ret_t vgcanvas_agg_flush(vgcanvas_t* vg) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_clear_rect(vgcanvas_t* vg, double x, double y, double w, double h, color_t c) {
+static ret_t vgcanvas_agg_clear_rect(vgcanvas_t* vg, double x, double y, double w, double h,
+                                     color_t c) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -236,7 +237,7 @@ static ret_t vgcanvas_agg_set_text_baseline(vgcanvas_t* vg, const char* text_bas
 }
 
 static ret_t vgcanvas_agg_fill_text(vgcanvas_t* vg, const char* text, double x, double y,
-                                   double max_width) {
+                                    double max_width) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
   /*TODO*/
@@ -296,7 +297,7 @@ static ret_t vgcanvas_agg_set_fill_color(vgcanvas_t* vg, color_t c) {
 static ret_t vgcanvas_agg_set_stroke_color(vgcanvas_t* vg, color_t c) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
-  
+
   agg->canvas->set_stroke_color(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
 
   return RET_OK;

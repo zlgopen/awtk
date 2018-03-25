@@ -22,7 +22,7 @@ static int lftk_newuserdata(lua_State* L, void* data, const char* info, const ch
 
   if (strstr(info, "/widget_t") != NULL && strcmp(metatable, "lftk.widget_t") == 0) {
     widget_t* widget = (widget_t*)data;
-    const key_type_value_t* kv = widget_name_find_by_value(widget->type);
+    const key_type_value_t* kv = widget_type_find_by_value(widget->type);
     if (kv != NULL) {
       snprintf(str, sizeof(str), "lftk.%s_t", kv->name);
       metatable = str;

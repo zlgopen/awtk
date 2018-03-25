@@ -23,7 +23,7 @@
 #include "base/widget.h"
 #include "base/resource_manager.h"
 
-static const key_type_value_t widget_name_value[] = {{"widget", 0, WIDGET_NONE},
+static const key_type_value_t widget_type_value[] = {{"widget", 0, WIDGET_NONE},
                                                      {"window_manager", 0, WIDGET_WINDOW_MANAGER},
                                                      {"window", 0, WIDGET_NORMAL_WINDOW},
                                                      {"tool_bar", 0, WIDGET_TOOL_BAR},
@@ -41,7 +41,7 @@ static const key_type_value_t widget_name_value[] = {{"widget", 0, WIDGET_NONE},
                                                      {"check_button", 0, WIDGET_CHECK_BUTTON},
                                                      {"radio_button", 0, WIDGET_RADIO_BUTTON}};
 
-static const key_type_value_t style_name_value[] = {
+static const key_type_value_t style_id_name_value[] = {
     {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},
     {"fg-color", TYPE_COLOR, STYLE_ID_FG_COLOR},
     {"text-color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
@@ -54,7 +54,7 @@ static const key_type_value_t style_name_value[] = {
     {"icon", TYPE_STRING, STYLE_ID_ICON},
 };
 
-static const key_type_value_t state_name_value[] = {
+static const key_type_value_t widget_state_name_value[] = {
     {"normal", 0, WIDGET_STATE_NORMAL},      {"over", 0, WIDGET_STATE_OVER},
     {"pressed", 0, WIDGET_STATE_PRESSED},    {"disable", 0, WIDGET_STATE_DISABLE},
     {"focused", 0, WIDGET_STATE_FOCUSED},    {"checked", 0, WIDGET_STATE_CHECKED},
@@ -66,11 +66,19 @@ static const key_type_value_t align_v_name_value[] = {
 static const key_type_value_t align_h_name_value[] = {
     {"left", 0, ALIGN_H_LEFT}, {"center", 0, ALIGN_H_CENTER}, {"right", 0, ALIGN_H_RIGHT}};
 
-static const key_type_value_t resource_type_name_value[] = {
+static const key_type_value_t resource_type_value[] = {
     {"font", 0, RESOURCE_TYPE_FONT},   {"image", 0, RESOURCE_TYPE_IMAGE},
     {"theme", 0, RESOURCE_TYPE_THEME}, {"ui", 0, RESOURCE_TYPE_UI},
     {"xml", 0, RESOURCE_TYPE_XML},     {"data", 0, RESOURCE_TYPE_DATA},
 };
+
+static const key_type_value_t image_draw_type_name_value[] = {
+    {"center", 0, IMAGE_DRAW_CENTER},         {"scale", 0, IMAGE_DRAW_SCALE},
+    {"scale_auto", 0, IMAGE_DRAW_SCALE_AUTO}, {"scale_x", 0, IMAGE_DRAW_SCALE_X},
+    {"scale_y", 0, IMAGE_DRAW_SCALE_Y},       {"repeat", 0, IMAGE_DRAW_REPEAT},
+    {"repeat_x", 0, IMAGE_DRAW_REPEAT_X},         {"repeat_y", 0, IMAGE_DRAW_REPEAT_Y},
+    {"9patch", 0, IMAGE_DRAW_9PATCH},         {"3patch_h", 0, IMAGE_DRAW_3PATCH_H},
+    {"3patch_v", 0, IMAGE_DRAW_3PATCH_V}};
 
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;
@@ -101,34 +109,43 @@ const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32
   return NULL;
 }
 
-const key_type_value_t* widget_name_find(const char* name) {
-  return find_item(widget_name_value, ARRAY_SIZE(widget_name_value), name);
+const key_type_value_t* widget_type_find(const char* name) {
+  return find_item(widget_type_value, ARRAY_SIZE(widget_type_value), name);
 }
 
-const key_type_value_t* widget_name_find_by_value(uint32_t value) {
-  return find_item_by_value(widget_name_value, ARRAY_SIZE(widget_name_value), value);
+const key_type_value_t* widget_type_find_by_value(uint32_t value) {
+  return find_item_by_value(widget_type_value, ARRAY_SIZE(widget_type_value), value);
 }
 
-const key_type_value_t* style_name_find(const char* name) {
-  return find_item(style_name_value, ARRAY_SIZE(style_name_value), name);
+const key_type_value_t* style_id_find(const char* name) {
+  return find_item(style_id_name_value, ARRAY_SIZE(style_id_name_value), name);
 }
 
-const key_type_value_t* state_name_find(const char* name) {
-  return find_item(state_name_value, ARRAY_SIZE(state_name_value), name);
+const key_type_value_t* widget_state_find(const char* name) {
+  return find_item(widget_state_name_value, ARRAY_SIZE(widget_state_name_value), name);
 }
 
-const key_type_value_t* align_v_name_find(const char* name) {
+const key_type_value_t* align_v_type_find(const char* name) {
   return find_item(align_v_name_value, ARRAY_SIZE(align_v_name_value), name);
 }
 
-const key_type_value_t* align_h_name_find(const char* name) {
+const key_type_value_t* align_h_type_find(const char* name) {
   return find_item(align_h_name_value, ARRAY_SIZE(align_h_name_value), name);
 }
 
-const key_type_value_t* resouce_type_name_find(const char* name) {
-  return find_item(resource_type_name_value, ARRAY_SIZE(resource_type_name_value), name);
+const key_type_value_t* resource_type_find(const char* name) {
+  return find_item(resource_type_value, ARRAY_SIZE(resource_type_value), name);
 }
 
-const key_type_value_t* resouce_type_name_find_by_value(uint32_t value) {
-  return find_item_by_value(resource_type_name_value, ARRAY_SIZE(resource_type_name_value), value);
+const key_type_value_t* resource_type_find_by_value(uint32_t value) {
+  return find_item_by_value(resource_type_value, ARRAY_SIZE(resource_type_value), value);
+}
+
+const key_type_value_t* image_draw_type_find(const char* name) {
+  return find_item(image_draw_type_name_value, ARRAY_SIZE(image_draw_type_name_value), name);
+}
+
+const key_type_value_t* image_draw_type_find_by_value(uint32_t value) {
+  return find_item_by_value(image_draw_type_name_value, ARRAY_SIZE(image_draw_type_name_value),
+                            value);
 }

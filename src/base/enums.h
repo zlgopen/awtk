@@ -34,15 +34,18 @@ typedef struct _key_type_value_t {
 
 enum { TYPE_INT = 0, TYPE_COLOR, TYPE_STRING, TYPE_WSTRING, TYPE_BOOL };
 
-const key_type_value_t* widget_name_find(const char* name);
-const key_type_value_t* widget_name_find_by_value(uint32_t value);
+const key_type_value_t* widget_type_find(const char* name);
+const key_type_value_t* widget_type_find_by_value(uint32_t value);
 
-const key_type_value_t* style_name_find(const char* name);
-const key_type_value_t* state_name_find(const char* name);
-const key_type_value_t* align_v_name_find(const char* name);
-const key_type_value_t* align_h_name_find(const char* name);
-const key_type_value_t* resouce_type_name_find(const char* name);
-const key_type_value_t* resouce_type_name_find_by_value(uint32_t value);
+const key_type_value_t* style_id_find(const char* name);
+const key_type_value_t* widget_state_find(const char* name);
+const key_type_value_t* align_v_type_find(const char* name);
+const key_type_value_t* align_h_type_find(const char* name);
+const key_type_value_t* resource_type_find(const char* name);
+const key_type_value_t* resource_type_find_by_value(uint32_t value);
+
+const key_type_value_t* image_draw_type_find(const char* name);
+const key_type_value_t* image_draw_type_find_by_value(uint32_t value);
 
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name);
 const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,

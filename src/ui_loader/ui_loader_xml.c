@@ -41,7 +41,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   const char* key = NULL;
   const char* value = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
-  const key_type_value_t* widget_item = widget_name_find(tag);
+  const key_type_value_t* widget_item = widget_type_find(tag);
   return_if_fail(widget_item != NULL);
 
   memset(&desc, 0x00, sizeof(desc));

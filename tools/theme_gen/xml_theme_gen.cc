@@ -45,7 +45,7 @@ static color_t parse_color(const char* name) {
 static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
   uint32_t i = 0;
   xml_builder_t* b = (xml_builder_t*)thiz;
-  const key_type_value_t* widget_item = widget_name_find(tag);
+  const key_type_value_t* widget_item = widget_type_find(tag);
 
   return_if_fail(widget_item != NULL);
 
@@ -60,7 +60,7 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
     const char* value = attrs[i + 1];
 
     if (strcmp(name, "state") == 0) {
-      const key_type_value_t* state_item = state_name_find(value);
+      const key_type_value_t* state_item = widget_state_find(value);
       if (state_item != NULL) {
         s.state = state_item->value;
       } else {
@@ -69,7 +69,7 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
     } else if (strcmp(name, "subtype") == 0) {
       s.subtype = atoi(value);
     } else {
-      const key_type_value_t* item = style_name_find(name);
+      const key_type_value_t* item = style_id_find(name);
       if (item != NULL) {
         if (item->type == TYPE_INT) {
           s.AddInt(item->value, atoi(value));

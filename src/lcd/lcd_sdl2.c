@@ -110,7 +110,7 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
 static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
   lcd_sdl2_t* mem = (lcd_sdl2_t*)lcd;
 
-  return lcd_get_vgcanvas(mem->lcd_mem);
+  return lcd_get_vgcanvas((lcd_t*)(mem->lcd_mem));
 }
 
 lcd_t* lcd_sdl2_init(SDL_Renderer* render) {

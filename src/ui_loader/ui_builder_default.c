@@ -118,7 +118,7 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
     value_set_wstr(&v, utf8_to_utf16(value, str, ARRAY_SIZE(str)));
     widget_set_prop(b->widget, name, &v);
   } else if (strcmp(name, "align_v") == 0) {
-    const key_type_value_t* item = align_v_name_find(value);
+    const key_type_value_t* item = align_v_type_find(value);
     if (item != NULL) {
       value_set_int(&v, item->value);
       widget_set_prop(b->widget, name, &v);
@@ -126,7 +126,7 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
       log_debug("%s %s is invalid.\n", __func__, value);
     }
   } else if (strcmp(name, "align_h") == 0) {
-    const key_type_value_t* item = align_h_name_find(value);
+    const key_type_value_t* item = align_h_type_find(value);
     if (item != NULL) {
       value_set_int(&v, item->value);
       widget_set_prop(b->widget, name, &v);

@@ -122,7 +122,7 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
                           uint32_t size) {
   resource_info_t* res = NULL;
   uint32_t total_size = sizeof(resource_info_t) + size;
-  const key_type_value_t* kv = resouce_type_name_find_by_value(type);
+  const key_type_value_t* kv = resource_type_find_by_value(type);
   return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 

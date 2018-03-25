@@ -62,6 +62,69 @@ ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t si
 
 ret_t bitmap_destroy(bitmap_t* bitmap);
 
+/**
+ * @enum image_draw_type_t
+ * @prefix IMAGE_DRAW_
+ * 图片绘制方法常量定义。
+ */
+typedef enum _image_draw_type_t {
+  /**
+   * @const IMAGE_DRAW_CENTER
+   * 居中显示。
+   */
+  IMAGE_DRAW_CENTER = 0,
+  /**
+   * @const IMAGE_DRAW_SCALE
+   * 缩放至目标矩形大小(不保证宽高成比例)。
+   */
+  IMAGE_DRAW_SCALE,
+  /**
+   * @const IMAGE_DRAW_SCALE_AUTO
+   * 缩放至控件的宽度或高度，并居中显示。
+   */
+  IMAGE_DRAW_SCALE_AUTO,
+  /**
+   * @const IMAGE_DRAW_SCALE_X
+   * 缩放至控件的宽度。
+   */
+  IMAGE_DRAW_SCALE_X,
+  /**
+   * @const IMAGE_DRAW_SCALE_Y
+   * 缩放至控件的高度。
+   */
+  IMAGE_DRAW_SCALE_Y,
+  /**
+   * @const IMAGE_DRAW_REPEAT
+   * 平铺显示。
+   */
+  IMAGE_DRAW_REPEAT,
+  /**
+   * @const IMAGE_DRAW_REPEAT_X
+   * 水平方向平铺显示，垂直方向缩放。
+   */
+  IMAGE_DRAW_REPEAT_X,
+  /**
+   * @const IMAGE_DRAW_REPEAT_Y
+   * 垂直方向平铺显示，水平方向缩放。
+   */
+  IMAGE_DRAW_REPEAT_Y,
+  /**
+   * @const IMAGE_DRAW_9PATCH
+   * 9宫格显示。
+   */
+  IMAGE_DRAW_9PATCH,
+  /**
+   * @const IMAGE_DRAW_3PATCH_H
+   * 水平方向3宫格显示。
+   */
+  IMAGE_DRAW_3PATCH_H,
+  /**
+   * @const IMAGE_DRAW_3PATCH_V
+   * 垂直方向3宫格显示。
+   */
+  IMAGE_DRAW_3PATCH_V
+} image_draw_type_t;
+
 END_C_DECLS
 
 #endif /*LFTK_BITMAP_H*/

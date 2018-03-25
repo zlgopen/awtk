@@ -31,7 +31,8 @@ typedef struct _vgcanvas_t vgcanvas_t;
 
 typedef ret_t (*vgcanvas_reset_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_flush_t)(vgcanvas_t* vg);
-typedef ret_t (*vgcanvas_clear_rect_t)(vgcanvas_t* vg, double x, double y, double w, double h, color_t c);
+typedef ret_t (*vgcanvas_clear_rect_t)(vgcanvas_t* vg, double x, double y, double w, double h,
+                                       color_t c);
 
 typedef ret_t (*vgcanvas_begin_path_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_move_to_t)(vgcanvas_t* vg, double x, double y);
