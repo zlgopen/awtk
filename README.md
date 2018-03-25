@@ -82,10 +82,14 @@ bin\demo1
 * [LFTK界面描述文件介绍](docs/ui_desc.md)
 * [将LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
 
+* [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
+
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/03/25
+    * 增加矢量图绘图函数接口，并用agg实现部分功能。
 
 * 2018/03/24
     * 支持图片居中、缩放、9宫格和平铺等10余种显示方式。

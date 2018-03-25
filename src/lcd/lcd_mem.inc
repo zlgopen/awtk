@@ -159,9 +159,9 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   return RET_OK;
 }
 
-static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) { 
+static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  if(mem->vgcanvas == NULL) {
+  if (mem->vgcanvas == NULL) {
     mem->vgcanvas = vgcanvas_create(lcd->width, lcd->height, (uint32_t*)(mem->pixels));
   }
 

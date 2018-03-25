@@ -1,7 +1,7 @@
 /**
  * File:   rgba.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief: rgba 
+ * Brief: rgba
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *

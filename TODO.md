@@ -24,18 +24,21 @@
 * 极速模式
 * Qt界面文件转换器
 * 微软Rc界面文件转换器 
+* stm32 移植
 * draw 9patch image
 * draw 3patch\_h image
 * draw 3patch\_v image
 * draw scale image
 * draw image tile/tile\_h/tile\_v
-
-## 短期计划(顺序不定)
 * draw scale\_x image
 * draw scale\_y image
+* 矢量图绘图函数接口。
+
+## 短期计划(顺序不定)
+
+* agg实现vgcanvas接口
 * image support draw\_type
 * theme support image\_draw\_type 
-
 * image support 565/index
 * image value
 * image button
@@ -54,16 +57,15 @@
 * 软键盘
 * 中文输入法
 * 键盘导航
-* stm32 移植(完善)
 * rtthread移植
 * sylixos移植
 * djyos移植
 * 嵌入式linux移植
 * 用LFTK实现界面编辑器
-
-## 长期计划
 * 支持tween动画
 * 支持窗口动画
+
+## 长期计划
 * 支持粒子产生器
 * 支持骨骼动画
 * flash播放器支持

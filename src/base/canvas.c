@@ -858,7 +858,6 @@ ret_t canvas_draw_image_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
-  wh_t dst_w = 0;
   float scale = 0;
   float scalex = 0;
   float scaley = 0;

@@ -28,53 +28,7 @@ typedef struct _vgcanvas_agg_t {
   tw::Drawing<tw::rgba32>* canvas;
 } vgcanvas_agg_t;
 
-static bool_t vgcanvas_agg_get_antialias(vgcanvas_t* vg) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-
-  return agg->canvas->antialias();
-}
-
-static ret_t vgcanvas_agg_set_antialias(vgcanvas_t* vg, bool_t value) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-
-  agg->canvas->antialias(value);
-
-  return RET_OK;
-}
-
-static double vgcanvas_agg_get_line_width(vgcanvas_t* vg) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-
-  return agg->canvas->line_width();
-}
-
-ret_t vgcanvas_agg_set_line_width(vgcanvas_t* vg, double value) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-
-  agg->canvas->line_width(value);
-
-  return RET_OK;
-}
-
-ret_t vgcanvas_agg_move_to(vgcanvas_t* vg, double x, double y) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
-
-  agg->canvas->move_to(x, y);
-
-  return RET_OK;
-}
-
-ret_t vgcanvas_agg_line_to(vgcanvas_t* vg, double x, double y) {
-  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
-  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
-
-  agg->canvas->line_to(x, y);
-
-  return RET_OK;
-}
-
-ret_t vgcanvas_agg_reset(vgcanvas_t* vg) {
+static ret_t vgcanvas_agg_reset(vgcanvas_t* vg) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -83,16 +37,93 @@ ret_t vgcanvas_agg_reset(vgcanvas_t* vg) {
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_clear(vgcanvas_t* vg, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+static ret_t vgcanvas_agg_flush(vgcanvas_t* vg) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
-  agg->canvas->clear(r, g, b, a);
+  /*TODO*/
 
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_rotate(vgcanvas_t* vg, double rad) {
+static ret_t vgcanvas_agg_clear_rect(vgcanvas_t* vg, double x, double y, double w, double h, color_t c) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  /*TODO*/
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_begin_path(vgcanvas_t* vg) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  agg->canvas->new_path();
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_move_to(vgcanvas_t* vg, double x, double y) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  agg->canvas->move_to(x, y);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_line_to(vgcanvas_t* vg, double x, double y) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  agg->canvas->line_to(x, y);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_quadratic_curve_to(vgcanvas_t* vg, double cpx, double cpy, double x,
+                                             double y) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_bezier_curve_to(vgcanvas_t* vg, double cp1x, double cp1y, double cp2x,
+                                          double cp2y, double x, double y) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_arc_to(vgcanvas_t* vg, double x1, double y1, double x2, double y2,
+                                 double r) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_arc(vgcanvas_t* vg, double x, double y, double r, double start,
+                              double end, bool_t ccw) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+
+  return RET_OK;
+}
+
+static bool_t vgcanvas_agg_is_point_in_path(vgcanvas_t* vg, double x, double y) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+
+  return FALSE;
+}
+
+static ret_t vgcanvas_agg_rotate(vgcanvas_t* vg, double rad) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -101,7 +132,7 @@ ret_t vgcanvas_agg_rotate(vgcanvas_t* vg, double rad) {
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_scale(vgcanvas_t* vg, double x, double y) {
+static ret_t vgcanvas_agg_scale(vgcanvas_t* vg, double x, double y) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -110,7 +141,7 @@ ret_t vgcanvas_agg_scale(vgcanvas_t* vg, double x, double y) {
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_translate(vgcanvas_t* vg, double x, double y) {
+static ret_t vgcanvas_agg_translate(vgcanvas_t* vg, double x, double y) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -119,16 +150,47 @@ ret_t vgcanvas_agg_translate(vgcanvas_t* vg, double x, double y) {
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_set_color(vgcanvas_t* vg, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+static ret_t vgcanvas_agg_transform(vgcanvas_t* vg, double a, double b, double c, double d,
+                                    double e, double f) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
-
-  agg->canvas->set_color(r, g, b, a);
+  /*TODO*/
 
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_fill(vgcanvas_t* vg) {
+static ret_t vgcanvas_agg_set_transform(vgcanvas_t* vg, double a, double b, double c, double d,
+                                        double e, double f) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_round_rect(vgcanvas_t* vg, double x, double y, double w, double h,
+                                     double r) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  agg->canvas->rect(x, y, x + w, y + h, r);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_ellipse(vgcanvas_t* vg, double x, double y, double rx, double ry) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  agg->canvas->ellipse(x, y, rx, ry);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_close_path(vgcanvas_t* vg) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  agg->canvas->end_polygon();
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_fill(vgcanvas_t* vg) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -137,29 +199,168 @@ ret_t vgcanvas_agg_fill(vgcanvas_t* vg) {
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_stroke(vgcanvas_t* vg) {
+static ret_t vgcanvas_agg_clip(vgcanvas_t* vg) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_stroke(vgcanvas_t* vg) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   agg->canvas->stroke();
 
   return RET_OK;
 }
 
-ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
+static ret_t vgcanvas_agg_set_font(vgcanvas_t* vg, const char* font) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
 
-static const vgcanvas_vtable_t vt = {.get_antialias = vgcanvas_agg_get_antialias,
-                                     .set_antialias = vgcanvas_agg_set_antialias,
-                                     .get_line_width = vgcanvas_agg_get_line_width,
-                                     .set_line_width = vgcanvas_agg_set_line_width,
+static ret_t vgcanvas_agg_set_text_align(vgcanvas_t* vg, const char* text_align) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_fill_text(vgcanvas_t* vg, const char* text, double x, double y,
+                                   double max_width) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_stroke_text(vgcanvas_t* vg, const char* text, double x, double y,
+                                      double max_width) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_draw_image(vgcanvas_t* vg, bitmap_t* img, double sx, double sy, double sw,
+                                     double sh, double dx, double dy, double dw, double dh) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_antialias(vgcanvas_t* vg, bool_t value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  agg->canvas->antialias(value);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_line_width(vgcanvas_t* vg, double value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  agg->canvas->line_width(value);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_global_alpha(vgcanvas_t* vg, double value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_fill_color(vgcanvas_t* vg, color_t c) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+
+  agg->canvas->set_fill_color(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_stroke_color(vgcanvas_t* vg, color_t c) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  
+  agg->canvas->set_stroke_color(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_line_cap(vgcanvas_t* vg, const char* value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_line_join(vgcanvas_t* vg, const char* value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_miter_limit(vgcanvas_t* vg, double value) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
+
+static const vgcanvas_vtable_t vt = {.reset = vgcanvas_agg_reset,
+                                     .flush = vgcanvas_agg_flush,
+                                     .clear_rect = vgcanvas_agg_clear_rect,
+                                     .begin_path = vgcanvas_agg_begin_path,
                                      .move_to = vgcanvas_agg_move_to,
                                      .line_to = vgcanvas_agg_line_to,
-                                     .reset = vgcanvas_agg_reset,
-                                     .clear = vgcanvas_agg_clear,
+                                     .quadratic_curve_to = vgcanvas_agg_quadratic_curve_to,
+                                     .bezier_curve_to = vgcanvas_agg_bezier_curve_to,
+                                     .arc_to = vgcanvas_agg_arc_to,
+                                     .arc = vgcanvas_agg_arc,
+                                     .is_point_in_path = vgcanvas_agg_is_point_in_path,
                                      .rotate = vgcanvas_agg_rotate,
                                      .scale = vgcanvas_agg_scale,
                                      .translate = vgcanvas_agg_translate,
-                                     .set_color = vgcanvas_agg_set_color,
+                                     .transform = vgcanvas_agg_transform,
+                                     .set_transform = vgcanvas_agg_set_transform,
+                                     .round_rect = vgcanvas_agg_round_rect,
+                                     .ellipse = vgcanvas_agg_ellipse,
+                                     .close_path = vgcanvas_agg_close_path,
                                      .fill = vgcanvas_agg_fill,
+                                     .clip = vgcanvas_agg_clip,
                                      .stroke = vgcanvas_agg_stroke,
+                                     .set_font = vgcanvas_agg_set_font,
+                                     .set_text_align = vgcanvas_agg_set_text_align,
+                                     .set_text_baseline = vgcanvas_agg_set_text_baseline,
+                                     .fill_text = vgcanvas_agg_fill_text,
+                                     .stroke_text = vgcanvas_agg_stroke_text,
+                                     .draw_image = vgcanvas_agg_draw_image,
+                                     .set_antialias = vgcanvas_agg_set_antialias,
+                                     .set_line_width = vgcanvas_agg_set_line_width,
+                                     .set_global_alpha = vgcanvas_agg_set_global_alpha,
+                                     .set_fill_color = vgcanvas_agg_set_fill_color,
+                                     .set_stroke_color = vgcanvas_agg_set_stroke_color,
+                                     .set_line_cap = vgcanvas_agg_set_line_cap,
+                                     .set_line_join = vgcanvas_agg_set_line_join,
+                                     .set_miter_limit = vgcanvas_agg_set_miter_limit,
                                      .destroy = vgcanvas_agg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff) {

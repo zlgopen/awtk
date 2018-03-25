@@ -265,13 +265,16 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
 
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  vgcanvas_set_fill_color(vg, color_init(0xff, 0xff, 0, 0xff));
+  vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
+  vgcanvas_clear_rect(vg, 0, 0, vg->w, vg->h, color_init(0xf0, 0xf0, 0xf0, 0xff));
 
-  vgcanvas_clear(vg, 0xf0, 0xf0, 0xf0, 0xff);
-  vgcanvas_set_color(vg, 0xff, 0xff, 0, 0xff);
-  vgcanvas_move_to(vg, 10, 10);
-  vgcanvas_line_to(vg, vg->w, vg->h);
+  vgcanvas_set_line_width(vg, 2);
+  vgcanvas_round_rect(vg, 10, 10, 100, 20, 5);
   vgcanvas_stroke(vg);
+
+  vgcanvas_rect(vg, 128, 10, 100, 20);
+  vgcanvas_fill(vg);
 
   return RET_OK;
 }
