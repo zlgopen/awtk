@@ -74,8 +74,8 @@ static const key_type_value_t resource_type_value[] = {
 
 static const key_type_value_t image_draw_type_name_value[] = {
     {"center", 0, IMAGE_DRAW_CENTER},         {"scale", 0, IMAGE_DRAW_SCALE},
-    {"scale_auto", 0, IMAGE_DRAW_SCALE_AUTO}, {"scale_x", 0, IMAGE_DRAW_SCALE_X},
-    {"scale_y", 0, IMAGE_DRAW_SCALE_Y},       {"repeat", 0, IMAGE_DRAW_REPEAT},
+    {"scale_auto", 0, IMAGE_DRAW_SCALE_AUTO}, {"scale_w", 0, IMAGE_DRAW_SCALE_W},
+    {"scale_h", 0, IMAGE_DRAW_SCALE_H},       {"repeat", 0, IMAGE_DRAW_REPEAT},
     {"repeat_x", 0, IMAGE_DRAW_REPEAT_X},     {"repeat_y", 0, IMAGE_DRAW_REPEAT_Y},
     {"9patch", 0, IMAGE_DRAW_9PATCH},         {"3patch_x", 0, IMAGE_DRAW_3PATCH_X},
     {"3patch_y", 0, IMAGE_DRAW_3PATCH_Y}};

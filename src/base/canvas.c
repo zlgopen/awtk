@@ -809,7 +809,7 @@ ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t src_h = 0;
@@ -832,7 +832,7 @@ ret_t canvas_draw_image_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t src_w = 0;
@@ -911,10 +911,10 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
       return canvas_draw_image(c, img, &src, dst);
     case IMAGE_DRAW_SCALE_AUTO: {
       return canvas_draw_image_scale(c, img, dst);
-      case IMAGE_DRAW_SCALE_X:
-        return canvas_draw_image_scale_x(c, img, dst);
-      case IMAGE_DRAW_SCALE_Y:
-        return canvas_draw_image_scale_y(c, img, dst);
+      case IMAGE_DRAW_SCALE_W:
+        return canvas_draw_image_scale_w(c, img, dst);
+      case IMAGE_DRAW_SCALE_H:
+        return canvas_draw_image_scale_h(c, img, dst);
       case IMAGE_DRAW_REPEAT:
         return canvas_draw_image_repeat(c, img, dst);
       case IMAGE_DRAW_REPEAT_X:

@@ -91,8 +91,8 @@ ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* dst);
 

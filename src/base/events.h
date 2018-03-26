@@ -105,6 +105,12 @@ typedef enum _event_type_t {
    * 对象的属性改变事件名。
    */
   EVT_PROP_CHANGED,
+  
+  /**
+   * @const EVT_VALUE_CHANGED
+   * 控件的值改变事件名。
+   */
+  EVT_VALUE_CHANGED,
 
   /**
    * @const EVT_PAINT

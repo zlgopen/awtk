@@ -56,3 +56,21 @@ TEST(ThemeGen, state) {
   ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
 }
+
+TEST(ThemeGen, style_type) {
+  uint8_t buff[1024];
+  theme_t theme;
+  style_t style;
+  const char* str =
+      "<button style_type=\"1:yellow\" state=\"over\" bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" />\
+                     <button style_type=\"1:yellow\" state=\"pressed\" bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" />";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_OVER);
+  ASSERT_EQ(style.data != NULL, true);
+  
+  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_PRESSED);
+  ASSERT_EQ(style.data != NULL, true);
+}
