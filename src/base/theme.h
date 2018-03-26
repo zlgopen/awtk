@@ -104,6 +104,16 @@ typedef enum _style_id_t {
    */
   STYLE_ID_BORDER_COLOR,
   /**
+   * @const STYLE_ID_BG_IMAGE
+   * 图片的名称。
+   */
+  STYLE_ID_BG_IMAGE,
+  /**
+   * @const STYLE_ID_BG_IMAGE_DRAW_TYPE
+   * 图片的显示方式。
+   */
+  STYLE_ID_BG_IMAGE_DRAW_TYPE,
+  /**
    * @const STYLE_ID_ICON
    * 图标的名称。
    */

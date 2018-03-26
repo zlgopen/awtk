@@ -24,6 +24,7 @@
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/widget_vtable.h"
+#include "base/image_manager.h"
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   event_t e = {EVT_MOVE, widget};
@@ -321,6 +322,44 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
+}
+
+ret_t widget_paint_background(widget_t* widget, canvas_t* c) {
+  rect_t dst;
+  bitmap_t img;
+  style_t* style = &(widget->style);
+  color_t trans = color_init(0, 0, 0, 0);
+  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
+  color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+
+  if(bg.rgba.a) {
+    canvas_set_fill_color(c, bg);
+    canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+  }
+
+  if(bd.rgba.a) {
+    canvas_set_stroke_color(c, bd);
+    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  }
+
+  if(image_name != NULL) {
+   if(image_manager_load(default_im(), image_name, &img) == RET_OK) {
+      rect_init(dst, 0, 0, widget->w, widget->h);
+      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      canvas_draw_image_ex(c, &img, draw_type, &dst);
+    }
+  }
+
+  image_name = style_get_str(style, STYLE_ID_ICON, NULL);
+  if(image_name != NULL) {
+   if(image_manager_load(default_im(), image_name, &img) == RET_OK) {
+      rect_init(dst, 0, 0, widget->w, widget->h);
+      canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+    }
+  }
+
+  return RET_OK;
 }
 
 ret_t widget_paint(widget_t* widget, canvas_t* c) {

@@ -753,6 +753,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child);
 ret_t widget_destroy(widget_t* widget);
 
 ret_t widget_to_xml(widget_t* widget);
+ret_t widget_paint_background(widget_t* widget, canvas_t* c);
 
 #define WIDGET(w) (&(w.widget))
 #define WIDGETP(w) (widget_t*)(w)

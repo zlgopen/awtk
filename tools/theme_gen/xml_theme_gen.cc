@@ -66,12 +66,15 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
       } else {
         printf("Not supported state: %s\n", value);
       }
-    } else if (strcmp(name, "style_type") == 0 || strcmp(name, "name") == 0) {
+    } else if (strcmp(name, "style-type") == 0 || strcmp(name, "name") == 0) {
       s.style_type = atoi(value);
     } else {
       const key_type_value_t* item = style_id_find(name);
       if (item != NULL) {
-        if (item->type == TYPE_INT) {
+        if(strcmp(name, "bg-image-draw-type") == 0) {
+          const key_type_value_t* dt = image_draw_type_find(value);
+          s.AddInt(item->value, dt->value);
+        } else if (item->type == TYPE_INT) {
           s.AddInt(item->value, atoi(value));
         } else if (item->type == TYPE_COLOR) {
           s.AddInt(item->value, parse_color(value).color);

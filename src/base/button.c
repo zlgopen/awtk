@@ -29,13 +29,9 @@ static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   button_t* button = BUTTON(widget);
   color_t color = color_init(0xff, 0xff, 0xff, 0xff);
-
-  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
   canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
-  canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
 
-  canvas_fill_rect(c, 0, 0, widget->w, widget->h);
-  canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  widget_paint_background(widget, c);
 
   if (button->text.size > 0) {
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);

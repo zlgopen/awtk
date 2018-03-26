@@ -10,5 +10,11 @@
 <check_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="unchecked" />
 <radio_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
 <radio_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
-<image style_type="1:border" border-color="#000000" bg-color="#e0e0e0"/>
+
+<window style-type="1:bricks" bg-image="bricks"  bg-image-draw-type="repeat"/>
+<label  style-type="1:green" bg-color="#f0f0f0" text-color="green" border-color="#a0a0a0" />
+<image  style-type="1:border" border-color="#000000" bg-color="#e0e0e0"/>
+<button style-type="1:blue_img" state="normal"   bg-image="btn_blue_n" bg-image-draw-type="3patch_x" text-color="white"/>
+<button style-type="1:blue_img" state="pressed"  bg-image="btn_blue_p" bg-image-draw-type="3patch_x" text-color="white"/>
+<button style-type="1:blue_img" state="over"     bg-image="btn_blue_o" bg-image-draw-type="3patch_x" text-color="white"/>
 
