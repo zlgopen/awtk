@@ -72,6 +72,15 @@ ret_t widget_set_value(widget_t* widget, uint32_t value) {
   return widget_set_prop(widget, "value", value_set_uint32(&v, value));
 }
 
+ret_t widget_use_style(widget_t* widget, const char* value) {
+  return_value_if_fail(widget != NULL && value != NULL, RET_BAD_PARAMS);
+
+  widget->style_type = (uint8_t)atoi(value);
+  widget_update_style(widget);
+
+  return RET_OK;
+}
+
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
   value_t v;
   return_value_if_fail(widget != NULL && text != NULL, RET_BAD_PARAMS);
@@ -368,6 +377,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     }
   } else if (strcmp(name, "visible") == 0) {
     widget->visible = !!value_int(v);
+  } else if (strcmp(name, "style") == 0 || strcmp(name, "style_type") == 0) {
+    widget->style_type = value_int(v);
+    widget_update_style(widget);
   } else if (strcmp(name, "enable") == 0) {
     widget->enable = !!value_int(v);
   } else if (strcmp(name, "name") == 0) {
@@ -425,6 +437,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     }
   } else if (strcmp(name, "visible") == 0) {
     value_set_bool(v, widget->visible);
+  } else if (strcmp(name, "style") == 0 || strcmp(name, "style_type") == 0) {
+    value_set_int(v, widget->style_type);
   } else if (strcmp(name, "enable") == 0) {
     value_set_bool(v, widget->enable);
   } else if (strcmp(name, "name") == 0) {
@@ -686,7 +700,8 @@ ret_t widget_update_style(widget_t* widget) {
     state = WIDGET_STATE_FOCUSED;
   }
 
-  widget->style.data = theme_find_style(theme_get_default(), widget->type, widget->subtype, state);
+  widget->style.data =
+      theme_find_style(theme_get_default(), widget->type, widget->style_type, state);
 
   return RET_OK;
 }
@@ -696,7 +711,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
 
   widget->dirty = TRUE;
   widget->type = type;
-  widget->subtype = 0;
+  widget->style_type = 0;
   widget->enable = TRUE;
   widget->visible = TRUE;
   widget->emitter = NULL;

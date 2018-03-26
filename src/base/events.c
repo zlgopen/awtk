@@ -34,3 +34,12 @@ key_event_t* key_event_cast(event_t* event) {
 
   return (key_event_t*)event;
 }
+
+paint_event_t* paint_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(
+      event->type == EVT_PAINT || event->type == EVT_BEFORE_PAINT || event->type == EVT_AFTER_PAINT,
+      NULL);
+
+  return (paint_event_t*)event;
+}

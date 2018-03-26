@@ -114,15 +114,15 @@ typedef enum _image_draw_type_t {
    */
   IMAGE_DRAW_9PATCH,
   /**
-   * @const IMAGE_DRAW_3PATCH_H
+   * @const IMAGE_DRAW_3PATCH_X
    * 水平方向3宫格显示。
    */
-  IMAGE_DRAW_3PATCH_H,
+  IMAGE_DRAW_3PATCH_X,
   /**
-   * @const IMAGE_DRAW_3PATCH_V
+   * @const IMAGE_DRAW_3PATCH_Y
    * 垂直方向3宫格显示。
    */
-  IMAGE_DRAW_3PATCH_V
+  IMAGE_DRAW_3PATCH_Y
 } image_draw_type_t;
 
 END_C_DECLS

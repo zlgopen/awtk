@@ -56,7 +56,7 @@ class NameStringValue {
 class Style {
  public:
   Style();
-  Style(uint16_t type, uint8_t subtype, uint8_t state);
+  Style(uint16_t widget_type, uint8_t style_type, uint8_t state);
   ~Style();
 
   bool AddInt(uint32_t name, int32_t value);
@@ -64,8 +64,8 @@ class Style {
   uint8_t* Output(uint8_t* buff, uint32_t max_size);
 
  public:
-  uint16_t type;
-  uint8_t subtype;
+  uint16_t widget_type;
+  uint8_t style_type;
   uint8_t state;
   vector<NameIntValue> int_values;
   vector<NameStringValue> str_values;

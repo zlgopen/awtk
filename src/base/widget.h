@@ -250,11 +250,11 @@ struct _widget_t {
    */
   uint8_t type;
   /**
-   * @property {uint8_t} subtype
+   * @property {uint8_t} style_type
    * @readonly
    * 子类型，仅用于控制控件的Style。
    */
-  uint8_t subtype : 4; /*for style*/
+  uint8_t style_type;
   /**
    * @property {uint8_t} state
    * @readonly
@@ -432,6 +432,16 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_value(widget_t* widget, uint32_t value);
+
+/**
+ * @method widget_use_style
+ * 使用主题。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*}  value style的名称。名称由ID和注释两部分组成，建议用:分隔。ID为1-255之间的数字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_use_style(widget_t* widget, const char* value);
 
 /**
  * @method widget_set_text

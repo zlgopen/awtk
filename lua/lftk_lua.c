@@ -4,7 +4,9 @@
 #include "lua/lauxlib.h"
 #include "base/utf8.h"
 #include "base/array.h"
+#include "base/bitmap.h"
 #include "base/button.h"
+#include "base/canvas.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/events.h"
@@ -27,6 +29,8 @@
 
 static int wrap_button_t_get_prop(lua_State* L);
 static int wrap_button_t_set_prop(lua_State* L);
+static int wrap_canvas_t_get_prop(lua_State* L);
+static int wrap_canvas_t_set_prop(lua_State* L);
 static int wrap_check_button_t_get_prop(lua_State* L);
 static int wrap_check_button_t_set_prop(lua_State* L);
 static int wrap_dialog_t_get_prop(lua_State* L);
@@ -37,6 +41,8 @@ static int wrap_pointer_event_t_get_prop(lua_State* L);
 static int wrap_pointer_event_t_set_prop(lua_State* L);
 static int wrap_key_event_t_get_prop(lua_State* L);
 static int wrap_key_event_t_set_prop(lua_State* L);
+static int wrap_paint_event_t_get_prop(lua_State* L);
+static int wrap_paint_event_t_set_prop(lua_State* L);
 static int wrap_group_box_t_get_prop(lua_State* L);
 static int wrap_group_box_t_set_prop(lua_State* L);
 static int wrap_image_t_get_prop(lua_State* L);
@@ -137,6 +143,48 @@ static void button_t_init(lua_State* L) {
   lua_settable(L, -3);
   luaL_openlib(L, NULL, index_funcs, 0);
   luaL_openlib(L, "Button", static_funcs, 0);
+  lua_settop(L, 0);
+}
+
+static const struct luaL_Reg canvas_t_member_funcs[] = {{NULL, NULL}};
+
+static int wrap_canvas_t_set_prop(lua_State* L) {
+  canvas_t* obj = (canvas_t*)lftk_checkudata(L, 1, "canvas_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  printf("%s: not supported %s\n", __func__, name);
+  return 0;
+}
+
+static int wrap_canvas_t_get_prop(lua_State* L) {
+  canvas_t* obj = (canvas_t*)lftk_checkudata(L, 1, "canvas_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(canvas_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  } else {
+    printf("%s: not supported %s\n", __func__, name);
+    return 0;
+  }
+}
+
+static void canvas_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {{NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {
+      {"__index", wrap_canvas_t_get_prop}, {"__newindex", wrap_canvas_t_set_prop}, {NULL, NULL}};
+
+  luaL_newmetatable(L, "lftk.canvas_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "Canvas", static_funcs, 0);
   lua_settop(L, 0);
 }
 static int wrap_check_button_create(lua_State* L) {
@@ -409,6 +457,18 @@ static void event_type_t_init(lua_State* L) {
   lua_pushstring(L, "PROP_CHANGED");
   lua_pushinteger(L, EVT_PROP_CHANGED);
   lua_settable(L, -3);
+
+  lua_pushstring(L, "PAINT");
+  lua_pushinteger(L, EVT_PAINT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "BEFORE_PAINT");
+  lua_pushinteger(L, EVT_BEFORE_PAINT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "AFTER_PAINT");
+  lua_pushinteger(L, EVT_AFTER_PAINT);
+  lua_settable(L, -3);
 }
 
 static const struct luaL_Reg event_t_member_funcs[] = {{NULL, NULL}};
@@ -620,6 +680,62 @@ static void key_event_t_init(lua_State* L) {
   luaL_openlib(L, "KeyEvent", static_funcs, 0);
   lua_settop(L, 0);
 }
+static int wrap_paint_event_cast(lua_State* L) {
+  paint_event_t* ret = NULL;
+  event_t* event = (event_t*)lftk_checkudata(L, 1, "event_t");
+  ret = (paint_event_t*)paint_event_cast(event);
+
+  return lftk_newuserdata(L, ret, "/paint_event_t/event_t", "lftk.paint_event_t");
+}
+
+static const struct luaL_Reg paint_event_t_member_funcs[] = {{NULL, NULL}};
+
+static int wrap_paint_event_t_set_prop(lua_State* L) {
+  paint_event_t* obj = (paint_event_t*)lftk_checkudata(L, 1, "paint_event_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  if (strcmp(name, "c") == 0) {
+    printf("c is readonly\n");
+    return 0;
+  } else {
+    return wrap_event_t_set_prop(L);
+  }
+}
+
+static int wrap_paint_event_t_get_prop(lua_State* L) {
+  paint_event_t* obj = (paint_event_t*)lftk_checkudata(L, 1, "paint_event_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(paint_event_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  }
+  if (strcmp(name, "c") == 0) {
+    return lftk_newuserdata(L, obj->c, "/canvas_t", "lftk.canvas_t");
+  } else {
+    return wrap_event_t_get_prop(L);
+  }
+}
+
+static void paint_event_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {{"cast", wrap_paint_event_cast}, {NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {{"__index", wrap_paint_event_t_get_prop},
+                                                {"__newindex", wrap_paint_event_t_set_prop},
+                                                {NULL, NULL}};
+
+  luaL_newmetatable(L, "lftk.paint_event_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "PaintEvent", static_funcs, 0);
+  lua_settop(L, 0);
+}
 static int wrap_group_box_create(lua_State* L) {
   widget_t* ret = NULL;
   widget_t* parent = (widget_t*)lftk_checkudata(L, 1, "widget_t");
@@ -697,8 +813,21 @@ static int wrap_image_set_image_name(lua_State* L) {
   return 1;
 }
 
+static int wrap_image_set_draw_type(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  image_draw_type_t draw_type = (image_draw_type_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)image_set_draw_type(widget, draw_type);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
 static const struct luaL_Reg image_t_member_funcs[] = {
-    {"set_image_name", wrap_image_set_image_name}, {NULL, NULL}};
+    {"set_image_name", wrap_image_set_image_name},
+    {"set_draw_type", wrap_image_set_draw_type},
+    {NULL, NULL}};
 
 static int wrap_image_t_set_prop(lua_State* L) {
   image_t* obj = (image_t*)lftk_checkudata(L, 1, "image_t");
@@ -1808,6 +1937,17 @@ static int wrap_widget_set_value(lua_State* L) {
   return 1;
 }
 
+static int wrap_widget_use_style(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  char* value = (char*)luaL_checkstring(L, 2);
+  ret = (ret_t)widget_use_style(widget, value);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
 static int wrap_widget_set_text(lua_State* L) {
   ret_t ret = 0;
   widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
@@ -2033,6 +2173,7 @@ static const struct luaL_Reg widget_t_member_funcs[] = {
     {"resize", wrap_widget_resize},
     {"move_resize", wrap_widget_move_resize},
     {"set_value", wrap_widget_set_value},
+    {"use_style", wrap_widget_use_style},
     {"set_text", wrap_widget_set_text},
     {"get_value", wrap_widget_get_value},
     {"get_text", wrap_widget_get_text},
@@ -2078,8 +2219,8 @@ static int wrap_widget_t_set_prop(lua_State* L) {
   } else if (strcmp(name, "type") == 0) {
     printf("type is readonly\n");
     return 0;
-  } else if (strcmp(name, "subtype") == 0) {
-    printf("subtype is readonly\n");
+  } else if (strcmp(name, "style_type") == 0) {
+    printf("style_type is readonly\n");
     return 0;
   } else if (strcmp(name, "state") == 0) {
     printf("state is readonly\n");
@@ -2136,8 +2277,8 @@ static int wrap_widget_t_get_prop(lua_State* L) {
     lua_pushinteger(L, (lua_Integer)(obj->type));
 
     return 1;
-  } else if (strcmp(name, "subtype") == 0) {
-    lua_pushinteger(L, (lua_Integer)(obj->subtype));
+  } else if (strcmp(name, "style_type") == 0) {
+    lua_pushinteger(L, (lua_Integer)(obj->style_type));
 
     return 1;
   } else if (strcmp(name, "state") == 0) {
@@ -2252,12 +2393,14 @@ static void window_t_init(lua_State* L) {
 void luaL_openlftk(lua_State* L) {
   globals_init(L);
   button_t_init(L);
+  canvas_t_init(L);
   check_button_t_init(L);
   dialog_t_init(L);
   event_type_t_init(L);
   event_t_init(L);
   pointer_event_t_init(L);
   key_event_t_init(L);
+  paint_event_t_init(L);
   group_box_t_init(L);
   image_t_init(L);
   label_t_init(L);

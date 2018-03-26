@@ -10,4 +10,5 @@
 <check_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="unchecked" />
 <radio_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
 <radio_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
+<image style_type="1:border" border-color="#000000" bg-color="#e0e0e0"/>
 

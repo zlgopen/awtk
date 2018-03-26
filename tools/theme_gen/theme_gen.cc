@@ -25,9 +25,9 @@
 
 Style::Style() {}
 
-Style::Style(uint16_t type, uint8_t subtype, uint8_t state) {
-  this->type = type;
-  this->subtype = subtype;
+Style::Style(uint16_t widget_type, uint8_t style_type, uint8_t state) {
+  this->widget_type = widget_type;
+  this->style_type = style_type;
   this->state = state;
 }
 
@@ -53,8 +53,8 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
 
   size = this->int_values.size();
   save_uint32(p, size);
-  // printf("  size=%d type=%d subtype=%d state=%d\n", size, this->type, this->subtype,
-  // this->state);
+  // printf("  size=%d widget_type=%d style_type=%d state=%d\n", size, this->widget_type,
+  // this->style_type, this->state);
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     uint32_t name = i->name;
@@ -108,7 +108,7 @@ uint8_t* ThemeGen::Output(uint8_t* buff, uint32_t max_size) {
   p += size * 8;
   printf("size=%d\n", size);
   for (vector<Style>::iterator iter = this->styles.begin(); iter != this->styles.end(); iter++) {
-    uint32_t v = (iter->type << 16) | (iter->subtype << 8) | iter->state;
+    uint32_t v = (iter->widget_type << 16) | (iter->style_type << 8) | iter->state;
     uint32_t offset = p - buff;
     save_uint32(index, v);
     save_uint32(index, offset);

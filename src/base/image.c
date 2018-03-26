@@ -37,20 +37,20 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     color_t trans = color_init(0x00, 0x00, 0x00, 0x00);
     color_t bg = style_get_color(&(widget->style), STYLE_ID_BG_COLOR, trans);
     color_t border = style_get_color(&(widget->style), STYLE_ID_BORDER_COLOR, trans);
-    if(bg.rgba.a == 0) {
+    if (bg.rgba.a == 0) {
 #ifdef FAST_MODE
       if (widget->parent != NULL) {
         bg = style_get_color(&(widget->parent->style), STYLE_ID_BG_COLOR, trans);
       }
-#endif/*FAST_MODE*/
-    } 
+#endif /*FAST_MODE*/
+    }
 
-    if(bg.rgba.a) {
+    if (bg.rgba.a) {
       canvas_set_fill_color(c, bg);
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     }
 
-    if(border.rgba.a) {
+    if (border.rgba.a) {
       canvas_set_stroke_color(c, border);
       canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
     }

@@ -30,6 +30,11 @@ BEGIN_C_DECLS
 struct _canvas_t;
 typedef struct _canvas_t canvas_t;
 
+/**
+ * @class canvas_t
+ * @scriptable
+ * canvas类。
+ */
 struct _canvas_t {
   xy_t ox;
   xy_t oy;
@@ -79,8 +84,8 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_3patch_h(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_3patch_v(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst);

@@ -49,11 +49,11 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
 
   return_if_fail(widget_item != NULL);
 
-  uint8_t subtype = 0;
-  uint16_t type = widget_item->value;
+  uint8_t style_type = 0;
+  uint16_t widget_type = widget_item->value;
   uint8_t state = WIDGET_STATE_NORMAL;
 
-  Style s(type, subtype, state);
+  Style s(widget_type, style_type, state);
 
   while (attrs[i]) {
     const char* name = attrs[i];
@@ -66,8 +66,8 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
       } else {
         printf("Not supported state: %s\n", value);
       }
-    } else if (strcmp(name, "subtype") == 0) {
-      s.subtype = atoi(value);
+    } else if (strcmp(name, "style_type") == 0 || strcmp(name, "name") == 0) {
+      s.style_type = atoi(value);
     } else {
       const key_type_value_t* item = style_id_find(name);
       if (item != NULL) {

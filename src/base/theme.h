@@ -49,7 +49,8 @@ typedef struct _theme_t {
 theme_t* theme_get_default(void);
 theme_t* theme_init(const uint8_t* data);
 
-const uint8_t* theme_find_style(theme_t* t, uint16_t type, uint8_t subtype, uint8_t state);
+const uint8_t* theme_find_style(theme_t* t, uint16_t widget_type, uint8_t style_type,
+                                uint8_t state);
 
 /**
  * @enum style_type_t

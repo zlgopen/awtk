@@ -131,6 +131,47 @@
   "header": "base/array.h"
  },
  {
+  "type": "enum",
+  "header": "base/bitmap.h",
+  "name": "image_draw_type_t",
+  "prefix": "IMAGE_DRAW_",
+  "consts": [
+   {
+    "name": "IMAGE_DRAW_CENTER"
+   },
+   {
+    "name": "IMAGE_DRAW_SCALE"
+   },
+   {
+    "name": "IMAGE_DRAW_SCALE_AUTO"
+   },
+   {
+    "name": "IMAGE_DRAW_SCALE_X"
+   },
+   {
+    "name": "IMAGE_DRAW_SCALE_Y"
+   },
+   {
+    "name": "IMAGE_DRAW_REPEAT"
+   },
+   {
+    "name": "IMAGE_DRAW_REPEAT_X"
+   },
+   {
+    "name": "IMAGE_DRAW_REPEAT_Y"
+   },
+   {
+    "name": "IMAGE_DRAW_9PATCH"
+   },
+   {
+    "name": "IMAGE_DRAW_3PATCH_H"
+   },
+   {
+    "name": "IMAGE_DRAW_3PATCH_V"
+   }
+  ]
+ },
+ {
   "type": "class",
   "name": "button_t",
   "parent": "widget_t",
@@ -180,6 +221,14 @@
   ],
   "properties": [],
   "header": "base/button.h"
+ },
+ {
+  "type": "class",
+  "name": "canvas_t",
+  "scriptable": true,
+  "methods": [],
+  "properties": [],
+  "header": "base/canvas.h"
  },
  {
   "type": "class",
@@ -427,6 +476,15 @@
    },
    {
     "name": "EVT_PROP_CHANGED"
+   },
+   {
+    "name": "EVT_PAINT"
+   },
+   {
+    "name": "EVT_BEFORE_PAINT"
+   },
+   {
+    "name": "EVT_AFTER_PAINT"
    }
   ]
  },
@@ -530,6 +588,33 @@
  },
  {
   "type": "class",
+  "name": "paint_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "event_t*",
+      "name": "event"
+     }
+    ],
+    "name": "paint_event_cast",
+    "isConstructor": true,
+    "return": "paint_event_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "canvas_t*",
+    "name": "c",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
   "name": "group_box_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -610,6 +695,20 @@
      }
     ],
     "name": "image_set_image_name",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "image_draw_type_t",
+      "name": "draw_type"
+     }
+    ],
+    "name": "image_set_draw_type",
     "return": "ret_t"
    }
   ],
@@ -1757,6 +1856,20 @@
       "name": "widget"
      },
      {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "widget_use_style",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
       "type": "wchar_t*",
       "name": "text"
      }
@@ -2120,7 +2233,7 @@
    },
    {
     "type": "uint8_t",
-    "name": "subtype",
+    "name": "style_type",
     "readonly": true
    },
    {

@@ -239,7 +239,7 @@ key_event_t* key_event_cast(event_t* event);
 typedef struct _paint_event_t {
   event_t e;
   /**
-   * @property {canvas_t} c
+   * @property {canvas_t*} c
    * @readonly
    * canvas。
    */
