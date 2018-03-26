@@ -80,14 +80,17 @@ bin\demo1
 * [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 * [LFTK控件的布局参数介绍](docs/layout.md)
 * [LFTK界面描述文件介绍](docs/ui_desc.md)
-* [将LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
-
+* [LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
+* [LFTK中的图片显示方式](docs/image_draw_type.md)
 * [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/03/26
+    * 主题支持设置背景图片和背景图片的显示方式。
+
 * 2018/03/25
     * 增加矢量图绘图函数接口，并用agg实现部分功能。
 
