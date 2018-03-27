@@ -83,11 +83,17 @@ bin\demo1
 * [LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
 * [LFTK中的图片显示方式](docs/image_draw_type.md)
 * [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
+* [LFTK中的事件处理函数](docs/event_listener.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/03/27
+    * [Luncher](https://github.com/Luncher) 加入LFTK核心团队。
+    * 完善文档。
+
 * 2018/03/26
     * 主题支持设置背景图片和背景图片的显示方式。
 

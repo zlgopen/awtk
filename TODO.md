@@ -32,17 +32,18 @@
 * draw image tile/tile\_h/tile\_v
 * draw scale\_x image
 * draw scale\_y image
+* image support draw\_type
+* theme support image\_draw\_type 
 * 矢量图绘图函数接口。
 
 ## 短期计划(顺序不定)
 
 * agg实现vgcanvas接口
-* image support draw\_type
-* theme support image\_draw\_type 
+* nanovg实现vgcanvas接口
+* API doc到PDF转换工具
 * image support 565/index
 * image value
 * image button
-* API doc到PDF转换工具
 * combobox
 * listbox
 * tableview
