@@ -22,6 +22,7 @@
 #ifndef LFTK_WIDGET_H
 #define LFTK_WIDGET_H
 
+#include "base/wstr.h"
 #include "base/value.h"
 #include "base/rect.h"
 #include "base/events.h"
@@ -753,12 +754,26 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child);
 ret_t widget_destroy(widget_t* widget);
 
 ret_t widget_to_xml(widget_t* widget);
-ret_t widget_paint_background(widget_t* widget, canvas_t* c);
 
 #define WIDGET(w) (&(w.widget))
 #define WIDGETP(w) (widget_t*)(w)
 
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/*简化控件实现的函数*/
+
+/**
+ * @method widget_paint_helper
+ * 帮助子控件实现自己的绘制函数。
+ * @private
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {char*} icon 图标的名称。
+ * @param {wstr_t*} text 文字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text);
 
 END_C_DECLS
 

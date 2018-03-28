@@ -1,0 +1,1345 @@
+Running main() from gtest_main.cc
+[==========] Running 85 tests from 28 test cases.
+[----------] Global test environment set-up.
+[----------] 4 tests from OArrayTest
+[ RUN      ] OArrayTest.popPush
+[       OK ] OArrayTest.popPush (0 ms)
+[ RUN      ] OArrayTest.random
+[       OK ] OArrayTest.random (6 ms)
+[ RUN      ] OArrayTest.inc
+[       OK ] OArrayTest.inc (5 ms)
+[ RUN      ] OArrayTest.dec
+[       OK ] OArrayTest.dec (9 ms)
+[----------] 4 tests from OArrayTest (20 ms total)
+
+[----------] 1 test from Buffer
+[ RUN      ] Buffer.basic
+[       OK ] Buffer.basic (0 ms)
+[----------] 1 test from Buffer (0 ms total)
+
+[----------] 1 test from Button
+[ RUN      ] Button.basic
+[       OK ] Button.basic (0 ms)
+[----------] 1 test from Button (0 ms total)
+
+[----------] 16 tests from Canvas
+[ RUN      ] Canvas.draw_hline
+[       OK ] Canvas.draw_hline (0 ms)
+[ RUN      ] Canvas.draw_vline
+[       OK ] Canvas.draw_vline (0 ms)
+[ RUN      ] Canvas.fill_rect
+[       OK ] Canvas.fill_rect (0 ms)
+[ RUN      ] Canvas.draw_points
+[       OK ] Canvas.draw_points (0 ms)
+[ RUN      ] Canvas.draw_glyph
+font_destroy:37 f != NULL && f->destroy != NULL
+[       OK ] Canvas.draw_glyph (0 ms)
+[ RUN      ] Canvas.draw_image
+[       OK ] Canvas.draw_image (0 ms)
+[ RUN      ] Canvas.draw_image_3patch_x
+[       OK ] Canvas.draw_image_3patch_x (0 ms)
+[ RUN      ] Canvas.draw_image_3patch_y
+[       OK ] Canvas.draw_image_3patch_y (0 ms)
+[ RUN      ] Canvas.draw_image_9patch
+[       OK ] Canvas.draw_image_9patch (0 ms)
+[ RUN      ] Canvas.draw_image_repeat_x
+[       OK ] Canvas.draw_image_repeat_x (0 ms)
+[ RUN      ] Canvas.draw_image_repeat_y
+[       OK ] Canvas.draw_image_repeat_y (0 ms)
+[ RUN      ] Canvas.draw_image_repeat
+[       OK ] Canvas.draw_image_repeat (0 ms)
+[ RUN      ] Canvas.draw_image_scale_w
+[       OK ] Canvas.draw_image_scale_w (0 ms)
+[ RUN      ] Canvas.draw_image_scale_h
+[       OK ] Canvas.draw_image_scale_h (0 ms)
+[ RUN      ] Canvas.draw_image_scale
+[       OK ] Canvas.draw_image_scale (0 ms)
+[ RUN      ] Canvas.draw_image_center
+[       OK ] Canvas.draw_image_center (0 ms)
+[----------] 16 tests from Canvas (0 ms total)
+
+[----------] 2 tests from CheckButton
+[ RUN      ] CheckButton.basic
+[       OK ] CheckButton.basic (0 ms)
+[ RUN      ] CheckButton.radio
+[       OK ] CheckButton.radio (0 ms)
+[----------] 2 tests from CheckButton (0 ms total)
+
+[----------] 1 test from Emitter
+[ RUN      ] Emitter.basic
+emitter_on:93 emitter != NULL && handler != NULL
+emitter_on:93 emitter != NULL && handler != NULL
+[       OK ] Emitter.basic (0 ms)
+[----------] 1 test from Emitter (0 ms total)
+
+[----------] 1 test from Enums
+[ RUN      ] Enums.basic
+[       OK ] Enums.basic (0 ms)
+[----------] 1 test from Enums (0 ms total)
+
+[----------] 1 test from EventQueue
+[ RUN      ] EventQueue.basic
+[       OK ] EventQueue.basic (0 ms)
+[----------] 1 test from EventQueue (0 ms total)
+
+[----------] 1 test from FontGen
+[ RUN      ] FontGen.basic
+0/19: 0x0031
+1/19: 0x0032
+2/19: 0x0033
+3/19: 0x0034
+4/19: 0x0035
+5/19: 0x0044
+6/19: 0x0045
+7/19: 0x0048
+8/19: 0x004c
+9/19: 0x004f
+10/19: 0x0052
+11/19: 0x0057
+12/19: 0x0064
+13/19: 0x0065
+14/19: 0x0068
+15/19: 0x006c
+16/19: 0x006f
+17/19: 0x0072
+18/19: 0x0077
+[       OK ] FontGen.basic (2 ms)
+[----------] 1 test from FontGen (2 ms total)
+
+[----------] 1 test from FontManager
+[ RUN      ] FontManager.basic
+font_destroy:37 f != NULL && f->destroy != NULL
+font_destroy:37 f != NULL && f->destroy != NULL
+font_destroy:37 f != NULL && f->destroy != NULL
+[       OK ] FontManager.basic (0 ms)
+[----------] 1 test from FontManager (0 ms total)
+
+[----------] 1 test from ImageManager
+[ RUN      ] ImageManager.basic
+image_manager_load:54 res != NULL
+[       OK ] ImageManager.basic (0 ms)
+[----------] 1 test from ImageManager (0 ms total)
+
+[----------] 1 test from Image
+[ RUN      ] Image.basic
+[       OK ] Image.basic (0 ms)
+[----------] 1 test from Image (0 ms total)
+
+[----------] 1 test from Label
+[ RUN      ] Label.basic
+[       OK ] Label.basic (0 ms)
+[----------] 1 test from Label (0 ms total)
+
+[----------] 16 tests from Layuout
+[ RUN      ] Layuout.basic
+[       OK ] Layuout.basic (0 ms)
+[ RUN      ] Layuout.fill
+[       OK ] Layuout.fill (0 ms)
+[ RUN      ] Layuout.percent
+[       OK ] Layuout.percent (0 ms)
+[ RUN      ] Layuout.center_middle
+[       OK ] Layuout.center_middle (0 ms)
+[ RUN      ] Layuout.center_middle1
+[       OK ] Layuout.center_middle1 (0 ms)
+[ RUN      ] Layuout.right_bottom
+[       OK ] Layuout.right_bottom (0 ms)
+[ RUN      ] Layuout.right_bottom1
+[       OK ] Layuout.right_bottom1 (0 ms)
+[ RUN      ] Layuout.layout_children_null
+[       OK ] Layuout.layout_children_null (0 ms)
+[ RUN      ] Layuout.layout_children_00
+[       OK ] Layuout.layout_children_00 (0 ms)
+[ RUN      ] Layuout.layout_children_10
+[       OK ] Layuout.layout_children_10 (0 ms)
+[ RUN      ] Layuout.layout_children_01
+[       OK ] Layuout.layout_children_01 (0 ms)
+[ RUN      ] Layuout.layout_children_11
+[       OK ] Layuout.layout_children_11 (0 ms)
+[ RUN      ] Layuout.layout_children_14
+[       OK ] Layuout.layout_children_14 (0 ms)
+[ RUN      ] Layuout.layout_children_41
+[       OK ] Layuout.layout_children_41 (0 ms)
+[ RUN      ] Layuout.layout_children_22
+[       OK ] Layuout.layout_children_22 (0 ms)
+[ RUN      ] Layuout.layout_children_parse
+[       OK ] Layuout.layout_children_parse (0 ms)
+[----------] 16 tests from Layuout (0 ms total)
+
+[----------] 5 tests from Matrix
+[ RUN      ] Matrix.basic
+[       OK ] Matrix.basic (0 ms)
+[ RUN      ] Matrix.translate
+[       OK ] Matrix.translate (0 ms)
+[ RUN      ] Matrix.rotate
+[       OK ] Matrix.rotate (0 ms)
+[ RUN      ] Matrix.scale
+[       OK ] Matrix.scale (0 ms)
+[ RUN      ] Matrix.all
+[       OK ] Matrix.all (0 ms)
+[----------] 5 tests from Matrix (0 ms total)
+
+[----------] 1 test from Rect
+[ RUN      ] Rect.merge
+[       OK ] Rect.merge (0 ms)
+[----------] 1 test from Rect (0 ms total)
+
+[----------] 1 test from ResourceManager
+[ RUN      ] ResourceManager.basic
+[       OK ] ResourceManager.basic (0 ms)
+[----------] 1 test from ResourceManager (0 ms total)
+
+[----------] 3 tests from ThemeGen
+[ RUN      ] ThemeGen.basic
+size=2
+    1=0xff00ffff
+    2=0xfffcfbfa
+    4=0x0000000c
+    3=sans
+    1=0xff00ffff
+    2=0x7f00ffff
+    9=0xffff00ff
+[       OK ] ThemeGen.basic (0 ms)
+[ RUN      ] ThemeGen.state
+size=2
+    1=0xff00ffff
+    2=0xfffcfbfa
+    4=0x0000000c
+    3=sans
+    1=0xff00ffff
+    2=0x7f00ffff
+    9=0xffff00ff
+[       OK ] ThemeGen.state (0 ms)
+[ RUN      ] ThemeGen.style_type
+Not supported style: style_type
+Not supported style: style_type
+size=2
+    1=0xff00ffff
+    2=0xfffcfbfa
+    4=0x0000000c
+    3=sans
+    1=0xff00ffff
+    2=0x7f00ffff
+    9=0xffff00ff
+tests/theme_gen_test.cc:72: Failure
+Expected equality of these values:
+  style.data != __null
+    Which is: false
+  true
+[  FAILED  ] ThemeGen.style_type (0 ms)
+[----------] 3 tests from ThemeGen (0 ms total)
+
+[----------] 2 tests from Theme
+[ RUN      ] Theme.saveLoad
+[       OK ] Theme.saveLoad (0 ms)
+[ RUN      ] Theme.basic
+size=100
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+    0=0x00000000
+    1=0x00000001
+    2=0x00000002
+    3=0x00000003
+    4=0x00000004
+    0=0
+    1=1
+    2=2
+    3=3
+    4=4
+[       OK ] Theme.basic (1 ms)
+[----------] 2 tests from Theme (1 ms total)
+
+[----------] 2 tests from Timer
+[ RUN      ] Timer.once
+[       OK ] Timer.once (0 ms)
+[ RUN      ] Timer.repeat
+[       OK ] Timer.repeat (0 ms)
+[----------] 2 tests from Timer (0 ms total)
+
+[----------] 2 tests from UILoader
+[ RUN      ] UILoader.basic
+dialog_create
+4 0 0 400 300
+10 0 0 80 30
+9 128 0 80 30
+widget_get_child:850 index < widget->children->size
+[       OK ] UILoader.basic (0 ms)
+[ RUN      ] UILoader.ext
+14 0 0 100 200
+10 10 40 30 80
+9 36 82 30 40
+[       OK ] UILoader.ext (0 ms)
+[----------] 2 tests from UILoader (0 ms total)
+
+[----------] 2 tests from UILoaderXML
+[ RUN      ] UILoaderXML.basic
+dialog_create
+4 0 0 400 300
+10 0 0 80 30
+9 128 0 80 30
+widget_get_child:850 index < widget->children->size
+[       OK ] UILoaderXML.basic (0 ms)
+[ RUN      ] UILoaderXML.attr
+dialog_create
+4 0 0 400 300
+10 10 10 80 20
+10 40 26 320 53
+10 160 124 80 20
+10 320 248 80 20
+widget_get_child:850 index < widget->children->size
+[       OK ] UILoaderXML.attr (0 ms)
+[----------] 2 tests from UILoaderXML (0 ms total)
+
+[----------] 2 tests from Utf8
+[ RUN      ] Utf8.ascii
+[       OK ] Utf8.ascii (0 ms)
+[ RUN      ] Utf8.chinese
+[       OK ] Utf8.chinese (0 ms)
+[----------] 2 tests from Utf8 (0 ms total)
+
+[----------] 1 test from Utils
+[ RUN      ] Utils.basic
+[       OK ] Utils.basic (0 ms)
+[----------] 1 test from Utils (0 ms total)
+
+[----------] 11 tests from value
+[ RUN      ] value.i8
+[       OK ] value.i8 (0 ms)
+[ RUN      ] value.u8
+[       OK ] value.u8 (0 ms)
+[ RUN      ] value.i16
+[       OK ] value.i16 (0 ms)
+[ RUN      ] value.u16
+[       OK ] value.u16 (0 ms)
+[ RUN      ] value.i32
+[       OK ] value.i32 (0 ms)
+[ RUN      ] value.u32
+[       OK ] value.u32 (0 ms)
+[ RUN      ] value.i64
+[       OK ] value.i64 (0 ms)
+[ RUN      ] value.u64
+[       OK ] value.u64 (0 ms)
+[ RUN      ] value.float
+[       OK ] value.float (0 ms)
+[ RUN      ] value.double
+[       OK ] value.double (0 ms)
+[ RUN      ] value.int
+[       OK ] value.int (0 ms)
+[----------] 11 tests from value (0 ms total)
+
+[----------] 1 test from ValueTest
+[ RUN      ] ValueTest.str
+[       OK ] ValueTest.str (0 ms)
+[----------] 1 test from ValueTest (0 ms total)
+
+[----------] 3 tests from Widget
+[ RUN      ] Widget.moveresize
+widget_get_child:850 index < widget->children->size
+[       OK ] Widget.moveresize (0 ms)
+[ RUN      ] Widget.props
+widget_get_child:850 index < widget->children->size
+[       OK ] Widget.props (0 ms)
+[ RUN      ] Widget.children
+widget_get_child:850 index < widget->children->size
+[       OK ] Widget.children (0 ms)
+[----------] 3 tests from Widget (0 ms total)
+
+[----------] 1 test from WStr
+[ RUN      ] WStr.basic
+[       OK ] WStr.basic (0 ms)
+[----------] 1 test from WStr (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 85 tests from 28 test cases ran. (24 ms total)
+[  PASSED  ] 84 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] ThemeGen.style_type
+
+ 1 FAILED TEST

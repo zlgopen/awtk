@@ -48,46 +48,10 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
-  xy_t x = 0;
-  xy_t y = 0;
-  bitmap_t bitmap;
-  const char* icon_name = NULL;
-  style_t* style = &(widget->style);
   check_button_t* check_button = CHECK_BUTTON(widget);
-  color_t color = color_init(0xff, 0xff, 0xff, 0xff);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  icon_name = style_get_str(style, STYLE_ID_ICON, NULL);
-  return_value_if_fail(icon_name != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(image_manager_load(default_im(), icon_name, &bitmap) == RET_OK, RET_FAIL);
-
-  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
-  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
-#ifdef FAST_MODE
-  canvas_fill_rect(c, 0, 0, widget->w, widget->h);
-#endif /*FAST_MODE*/
-  if (bitmap.data != NULL) {
-    rect_t src;
-    rect_t dst;
-
-    x = BORDER;
-    y = (widget->h - bitmap.h) >> 1;
-    rect_init(src, 0, 0, bitmap.w, bitmap.h);
-    rect_init(dst, x, y, bitmap.w, bitmap.h);
-    canvas_draw_image(c, &bitmap, &src, &dst);
-  }
-
-  x += widget->h;
-  if (check_button->text.size > 0) {
-    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
-    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
-
-    canvas_set_font(c, font_name, font_size);
-    y = (widget->h >> 1);
-    canvas_draw_text(c, check_button->text.str, check_button->text.size, x, y);
-  }
-
-  return RET_OK;
+  return widget_paint_helper(widget, c, NULL, &(check_button->text));
 }
 
 static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {

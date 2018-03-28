@@ -324,7 +324,11 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
 }
 
-ret_t widget_paint_background(widget_t* widget, canvas_t* c) {
+ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
+  xy_t x = 0;
+  xy_t y = 0;
+  wh_t w = 0;
+  wh_t h = 0;
   rect_t dst;
   bitmap_t img;
   style_t* style = &(widget->style);
@@ -332,6 +336,11 @@ ret_t widget_paint_background(widget_t* widget, canvas_t* c) {
   const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
+  
+  if(icon == NULL) {
+    icon = style_get_str(style, STYLE_ID_ICON, NULL);
+  }
 
   if(bg.rgba.a) {
     canvas_set_fill_color(c, bg);
@@ -342,21 +351,51 @@ ret_t widget_paint_background(widget_t* widget, canvas_t* c) {
     canvas_set_stroke_color(c, bd);
     canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
   }
-
+  
   if(image_name != NULL) {
    if(image_manager_load(default_im(), image_name, &img) == RET_OK) {
       rect_init(dst, 0, 0, widget->w, widget->h);
-      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, 
+       STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
       canvas_draw_image_ex(c, &img, draw_type, &dst);
     }
   }
 
-  image_name = style_get_str(style, STYLE_ID_ICON, NULL);
-  if(image_name != NULL) {
-   if(image_manager_load(default_im(), image_name, &img) == RET_OK) {
+  if(text != NULL && text->size > 0) {
+    color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+
+    canvas_set_text_color(c, tc);
+    canvas_set_font(c, font_name, font_size);
+  }
+
+  if(icon != NULL && image_manager_load(default_im(), icon, &img) == RET_OK) {
+    if(text != NULL && text->size > 0) {
+      if(widget->h > (img.h + font_size)) {
+        rect_init(dst, 0, 0, widget->w, widget->h-font_size);
+        canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+
+        w = canvas_measure_text(c, text->str, text->size);
+        x = (widget->w - w) >> 1;
+        y = widget->h - font_size;
+        canvas_draw_text(c, text->str, text->size, x, y);
+      } else {
+        rect_init(dst, 0, 0, widget->h, widget->h);
+        canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+
+        x = widget->h+2;
+        y = (widget->h-font_size) >> 1;
+        canvas_draw_text(c, text->str, text->size, x, y);
+      }
+    }else{
       rect_init(dst, 0, 0, widget->w, widget->h);
       canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
     }
+  } else if(text != NULL && text->size > 0) {
+    w = canvas_measure_text(c, text->str, text->size);
+    x = (widget->w - w) >> 1;
+    y = (widget->h - font_size) >> 1;
+    canvas_draw_text(c, text->str, text->size, x, y);
   }
 
   return RET_OK;

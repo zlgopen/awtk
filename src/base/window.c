@@ -19,12 +19,12 @@
  *
  */
 
-#include "base/window.h"
 #include "base/mem.h"
+#include "base/window.h"
 #include "base/window_manager.h"
 
 static ret_t window_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_background(widget, c);
+  return widget_paint_helper(widget, c, NULL, NULL);
 }
 
 static const widget_vtable_t s_window_vtable = {.on_paint_self = window_on_paint_self};

@@ -23,28 +23,10 @@
 #include "base/mem.h"
 
 static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
-  xy_t x = 0;
-  xy_t y = 0;
-  wh_t w = 0;
-  style_t* style = &(widget->style);
   button_t* button = BUTTON(widget);
-  color_t color = color_init(0xff, 0xff, 0xff, 0xff);
-  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  widget_paint_background(widget, c);
-
-  if (button->text.size > 0) {
-    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
-    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
-
-    canvas_set_font(c, font_name, font_size);
-    w = canvas_measure_text(c, button->text.str, button->text.size);
-    x = (widget->w - w) >> 1;
-    y = (widget->h) >> 1;
-    canvas_draw_text(c, button->text.str, button->text.size, x, y);
-  }
-
-  return RET_OK;
+  return widget_paint_helper(widget, c, NULL, &(button->text));
 }
 
 ret_t button_set_text(widget_t* widget, const wchar_t* text) {

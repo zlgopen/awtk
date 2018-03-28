@@ -404,7 +404,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
     nr = wcslen(str);
   }
 
-  y -= font_size * 2 / 3;
+  y -= font_size * 1 / 3;
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (chr == ' ') {
