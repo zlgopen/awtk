@@ -105,21 +105,21 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 }
 
 static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-
+  xy_t x = 0;
+  xy_t y = 0;
   wh_t i = 0;
   wh_t j = 0;
   wh_t dw = dst->w;
   wh_t dh = dst->h;
-  wh_t width = lcd->width;
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
   color_t fill_color = lcd->fill_color;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  pixel_t* dst_p = pixels + dst->y * width + dst->x;
   const color_t* data = (color_t*)img->data;
 
   if (src->w == dst->w && src->h == dst->h) {
-    set_window_func(x, y, x + dw - 1, y + dh - 1);
-    const color_t* src_p = data + img->w * src->y + src->x;
+	x = dst->x;
+	y = dst->y;
+	const color_t* src_p = data + img->w * src->y + src->x;
+		
+    set_window_func(x, y, x + dst->w - 1, y + dst->h - 1);
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         color_t src_color = src_p[i];
@@ -127,7 +127,6 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
         write_data_func(color);
       }
       src_p += img->w;
-      dst_p += width;
     }
   } else {
     xy_t sx = src->x;
@@ -139,13 +138,15 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
         const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx + i * sw / dw;
         color_t src_color = src_p[i];
         pixel_t color = blend_color(fill_color, src_color, src_color.rgba.a);
+		
+		x = dst->x + i;
+		y = dst->y + j;
+		
+		set_window_func(x, y, x, y);
         write_data_func(color);
       }
-      dst_p += width;
     }
   }
-
-  return RET_OK;
 
   return RET_OK;
 }

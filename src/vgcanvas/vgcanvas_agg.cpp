@@ -324,45 +324,66 @@ static ret_t vgcanvas_agg_set_miter_limit(vgcanvas_t* vg, double value) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_agg_save(vgcanvas_t* vg) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_restore(vgcanvas_t* vg) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
 static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
 
-static const vgcanvas_vtable_t vt = {.reset = vgcanvas_agg_reset,
-                                     .flush = vgcanvas_agg_flush,
-                                     .clear_rect = vgcanvas_agg_clear_rect,
-                                     .begin_path = vgcanvas_agg_begin_path,
-                                     .move_to = vgcanvas_agg_move_to,
-                                     .line_to = vgcanvas_agg_line_to,
-                                     .quadratic_curve_to = vgcanvas_agg_quadratic_curve_to,
-                                     .bezier_curve_to = vgcanvas_agg_bezier_curve_to,
-                                     .arc_to = vgcanvas_agg_arc_to,
-                                     .arc = vgcanvas_agg_arc,
-                                     .is_point_in_path = vgcanvas_agg_is_point_in_path,
-                                     .rotate = vgcanvas_agg_rotate,
-                                     .scale = vgcanvas_agg_scale,
-                                     .translate = vgcanvas_agg_translate,
-                                     .transform = vgcanvas_agg_transform,
-                                     .set_transform = vgcanvas_agg_set_transform,
-                                     .round_rect = vgcanvas_agg_round_rect,
-                                     .ellipse = vgcanvas_agg_ellipse,
-                                     .close_path = vgcanvas_agg_close_path,
-                                     .fill = vgcanvas_agg_fill,
-                                     .clip = vgcanvas_agg_clip,
-                                     .stroke = vgcanvas_agg_stroke,
-                                     .set_font = vgcanvas_agg_set_font,
-                                     .set_text_align = vgcanvas_agg_set_text_align,
-                                     .set_text_baseline = vgcanvas_agg_set_text_baseline,
-                                     .fill_text = vgcanvas_agg_fill_text,
-                                     .stroke_text = vgcanvas_agg_stroke_text,
-                                     .draw_image = vgcanvas_agg_draw_image,
-                                     .set_antialias = vgcanvas_agg_set_antialias,
-                                     .set_line_width = vgcanvas_agg_set_line_width,
-                                     .set_global_alpha = vgcanvas_agg_set_global_alpha,
-                                     .set_fill_color = vgcanvas_agg_set_fill_color,
-                                     .set_stroke_color = vgcanvas_agg_set_stroke_color,
-                                     .set_line_cap = vgcanvas_agg_set_line_cap,
-                                     .set_line_join = vgcanvas_agg_set_line_join,
-                                     .set_miter_limit = vgcanvas_agg_set_miter_limit,
-                                     .destroy = vgcanvas_agg_destroy};
+static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
+                                     vgcanvas_agg_flush,
+                                     vgcanvas_agg_clear_rect,
+                                     vgcanvas_agg_begin_path,
+                                     vgcanvas_agg_move_to,
+                                     vgcanvas_agg_line_to,
+                                     vgcanvas_agg_arc,
+                                     vgcanvas_agg_arc_to,
+                                     vgcanvas_agg_bezier_curve_to,
+                                     vgcanvas_agg_quadratic_curve_to,
+                                     vgcanvas_agg_is_point_in_path,
+                                     vgcanvas_agg_ellipse,
+                                     vgcanvas_agg_round_rect,
+                                     vgcanvas_agg_close_path,
+
+                                     vgcanvas_agg_scale,
+                                     vgcanvas_agg_rotate,
+                                     vgcanvas_agg_translate,
+                                     vgcanvas_agg_transform,
+                                     vgcanvas_agg_set_transform,
+
+                                     vgcanvas_agg_fill,
+                                     vgcanvas_agg_clip,
+                                     vgcanvas_agg_stroke,
+                                     vgcanvas_agg_set_font,
+                                     vgcanvas_agg_set_text_align,
+                                     vgcanvas_agg_set_text_baseline,
+                                     vgcanvas_agg_fill_text,
+                                     vgcanvas_agg_stroke_text,
+                                     vgcanvas_agg_draw_image,
+
+                                     vgcanvas_agg_set_antialias,
+                                     vgcanvas_agg_set_global_alpha,
+                                     vgcanvas_agg_set_line_width,
+                                     vgcanvas_agg_set_fill_color,
+                                     vgcanvas_agg_set_stroke_color,
+                                     vgcanvas_agg_set_line_join,
+                                     vgcanvas_agg_set_line_cap,
+                                     vgcanvas_agg_set_miter_limit,
+                                     
+                                     vgcanvas_agg_save,
+                                     vgcanvas_agg_restore,
+                              
+                                     vgcanvas_agg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)MEM_ZALLOC(vgcanvas_agg_t);
