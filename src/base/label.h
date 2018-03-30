@@ -36,24 +36,6 @@ BEGIN_C_DECLS
 typedef struct _label_t {
   widget_t widget;
   wstr_t text;
-  /**
-   * @property {uint8_t} border
-   * @readonly
-   * 边距。
-   */
-  uint8_t border;
-  /**
-   * @property {uint8_t} text_align_v
-   * @readonly
-   * 文本垂直对齐方式。
-   */
-  uint8_t text_align_v;
-  /**
-   * @property {uint8_t} text_align_h
-   * @readonly
-   * 文本水平对齐方式。
-   */
-  uint8_t text_align_h;
 } label_t;
 
 /**
@@ -69,36 +51,6 @@ typedef struct _label_t {
  * @return {widget_t*} 对象。
  */
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-
-/**
- * @method label_set_border
- * 设置控件的边距。
- * @param {widget_t*} widget label对象。
- * @param {uint8_t}  border 边距
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t label_set_border(widget_t* widget, uint8_t border);
-
-/**
- * @method label_set_text_align_h
- * 设置控件的文本水平对齐方式。
- * @param {widget_t*} widget label对象。
- * @param {uint8_t}  text_align_h 文本水平对齐方式。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t label_set_text_align_h(widget_t* widget, uint8_t text_align_h);
-
-/**
- * @method label_set_text_align_v
- * 设置控件的文本垂直对齐方式。
- * @param {widget_t*} widget label对象。
- * @param {uint8_t}  text_align_v 文本垂直对齐方式。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t label_set_text_align_v(widget_t* widget, uint8_t text_align_v);
 
 /**
  * @method label_set_text

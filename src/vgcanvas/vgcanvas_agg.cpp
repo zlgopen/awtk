@@ -379,10 +379,10 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
                                      vgcanvas_agg_set_line_join,
                                      vgcanvas_agg_set_line_cap,
                                      vgcanvas_agg_set_miter_limit,
-                                     
+
                                      vgcanvas_agg_save,
                                      vgcanvas_agg_restore,
-                              
+
                                      vgcanvas_agg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff) {

@@ -87,21 +87,22 @@ ret_t application_init() {
 
   show_dialog = button_create(win, 190, 5, 80, 30);
   widget_set_text(show_dialog, L"Dialog");
+  widget_use_style(show_dialog, "1:blue_img");
 
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
 
   label = label_create(win, 10, 40, 80, 30);
   widget_set_text(label, L"Left");
-  label_set_text_align_h(label, ALIGN_H_LEFT);
+  widget_use_style(label, "3:left");
 
   label = label_create(win, 100, 40, 80, 30);
   widget_set_text(label, L"Center");
-  label_set_text_align_h(label, ALIGN_H_CENTER);
+  widget_use_style(label, "4:center");
 
   label = label_create(win, 200, 40, 80, 30);
   widget_set_text(label, L"Right");
-  label_set_text_align_h(label, ALIGN_H_RIGHT);
+  widget_use_style(label, "5:right");
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);

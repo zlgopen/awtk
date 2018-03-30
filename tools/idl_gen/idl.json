@@ -146,10 +146,10 @@
     "name": "IMAGE_DRAW_SCALE_AUTO"
    },
    {
-    "name": "IMAGE_DRAW_SCALE_X"
+    "name": "IMAGE_DRAW_SCALE_W"
    },
    {
-    "name": "IMAGE_DRAW_SCALE_Y"
+    "name": "IMAGE_DRAW_SCALE_H"
    },
    {
     "name": "IMAGE_DRAW_REPEAT"
@@ -164,10 +164,10 @@
     "name": "IMAGE_DRAW_9PATCH"
    },
    {
-    "name": "IMAGE_DRAW_3PATCH_H"
+    "name": "IMAGE_DRAW_3PATCH_X"
    },
    {
-    "name": "IMAGE_DRAW_3PATCH_V"
+    "name": "IMAGE_DRAW_3PATCH_Y"
    }
   ]
  },
@@ -478,6 +478,9 @@
     "name": "EVT_PROP_CHANGED"
    },
    {
+    "name": "EVT_VALUE_CHANGED"
+   },
+   {
     "name": "EVT_PAINT"
    },
    {
@@ -755,48 +758,6 @@
       "name": "widget"
      },
      {
-      "type": "uint8_t",
-      "name": "border"
-     }
-    ],
-    "name": "label_set_border",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "uint8_t",
-      "name": "text_align_h"
-     }
-    ],
-    "name": "label_set_text_align_h",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "uint8_t",
-      "name": "text_align_v"
-     }
-    ],
-    "name": "label_set_text_align_v",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
       "type": "wchar_t*",
       "name": "text"
      }
@@ -805,23 +766,7 @@
     "return": "ret_t"
    }
   ],
-  "properties": [
-   {
-    "type": "uint8_t",
-    "name": "border",
-    "readonly": true
-   },
-   {
-    "type": "uint8_t",
-    "name": "text_align_v",
-    "readonly": true
-   },
-   {
-    "type": "uint8_t",
-    "name": "text_align_h",
-    "readonly": true
-   }
-  ],
+  "properties": [],
   "header": "base/label.h"
  },
  {
@@ -1113,7 +1058,16 @@
     "name": "STYLE_ID_BORDER_COLOR"
    },
    {
+    "name": "STYLE_ID_BG_IMAGE"
+   },
+   {
+    "name": "STYLE_ID_BG_IMAGE_DRAW_TYPE"
+   },
+   {
     "name": "STYLE_ID_ICON"
+   },
+   {
+    "name": "STYLE_ID_MARGIN"
    }
   ]
  },

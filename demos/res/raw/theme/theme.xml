@@ -4,7 +4,7 @@
 <button state="pressed"    bg-color="#c0c0c0" text-color="black" border-color="#a0a0a0" />
 <button state="over"     bg-color="#e0e0e0" text-color="black" border-color="#a0a0a0" />
 <button state="disable"  bg-color="gray" text-color="#d0d0d0" border-color="#a0a0a0" />
-<label state="normal"   bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
+<label state="normal"   text-color="black" />
 <progress_bar state="normal" bg-color="#f0f0f0" text-color="gold" fg-color="black" border-color="#a0a0a0" />
 <check_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="checked" />
 <check_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="unchecked" />
@@ -12,7 +12,12 @@
 <radio_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
 
 <window style-type="1:bricks" bg-image="bricks"  bg-image-draw-type="repeat"/>
-<label  style-type="1:green" bg-color="#f0f0f0" text-color="green" border-color="#a0a0a0" />
+
+<label  style-type="1:green" text-color="green" />
+<label  style-type="3:left" text-color="red" text-align-h="left" border-color="#a0a0a0" margin="4" />
+<label  style-type="4:center" text-color="green" text-align-h="center" border-color="#a0a0a0" />
+<label  style-type="5:right" text-color="blue" text-align-h="right" border-color="#a0a0a0" margin="4"/>
+
 <image  style-type="1:border" border-color="#000000" bg-color="#e0e0e0"/>
 <button style-type="1:blue_img" state="normal"   bg-image="btn_blue_n" bg-image-draw-type="3patch_x" text-color="white"/>
 <button style-type="1:blue_img" state="pressed"  bg-image="btn_blue_p" bg-image-draw-type="3patch_x" text-color="white"/>

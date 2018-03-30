@@ -71,8 +71,14 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
     } else {
       const key_type_value_t* item = style_id_find(name);
       if (item != NULL) {
-        if(strcmp(name, "bg-image-draw-type") == 0) {
+        if (strcmp(name, "bg-image-draw-type") == 0) {
           const key_type_value_t* dt = image_draw_type_find(value);
+          s.AddInt(item->value, dt->value);
+        } else if (strcmp(name, "text-align-h") == 0) {
+          const key_type_value_t* dt = align_h_type_find(value);
+          s.AddInt(item->value, dt->value);
+        } else if (strcmp(name, "text-align-v") == 0) {
+          const key_type_value_t* dt = align_v_type_find(value);
           s.AddInt(item->value, dt->value);
         } else if (item->type == TYPE_INT) {
           s.AddInt(item->value, atoi(value));

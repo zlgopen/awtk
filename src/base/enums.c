@@ -54,7 +54,7 @@ static const key_type_value_t style_id_name_value[] = {
     {"bg-image", TYPE_STRING, STYLE_ID_BG_IMAGE},
     {"bg-image-draw-type", TYPE_INT, STYLE_ID_BG_IMAGE_DRAW_TYPE},
     {"icon", TYPE_STRING, STYLE_ID_ICON},
-};
+    {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
 static const key_type_value_t widget_state_name_value[] = {
     {"normal", 0, WIDGET_STATE_NORMAL},      {"over", 0, WIDGET_STATE_OVER},
@@ -121,6 +121,10 @@ const key_type_value_t* widget_type_find_by_value(uint32_t value) {
 
 const key_type_value_t* style_id_find(const char* name) {
   return find_item(style_id_name_value, ARRAY_SIZE(style_id_name_value), name);
+}
+
+const key_type_value_t* style_id_find_by_value(uint32_t value) {
+  return find_item_by_value(style_id_name_value, ARRAY_SIZE(style_id_name_value), value);
 }
 
 const key_type_value_t* widget_state_find(const char* name) {

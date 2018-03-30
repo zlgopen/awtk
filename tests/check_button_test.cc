@@ -3,7 +3,7 @@
 
 static ret_t on_changed(void* ctx, event_t* e) {
   int* count = (int*)ctx;
-  if(e->type == EVT_VALUE_CHANGED) {
+  if (e->type == EVT_VALUE_CHANGED) {
     *count += 1;
   }
 
@@ -23,19 +23,19 @@ TEST(CheckButton, basic) {
 
   ASSERT_EQ(check_button_set_value(button, TRUE), RET_OK);
   ASSERT_EQ(CHECK_BUTTON(button)->value, TRUE);
-  ASSERT_EQ(count, 1); 
+  ASSERT_EQ(count, 1);
   ASSERT_EQ(check_button_set_value(button, FALSE), RET_OK);
   ASSERT_EQ(CHECK_BUTTON(button)->value, FALSE);
-  ASSERT_EQ(count, 2); 
+  ASSERT_EQ(count, 2);
 
   ASSERT_EQ(widget_off(button, id), RET_OK);
 
   ASSERT_EQ(check_button_set_value(button, TRUE), RET_OK);
   ASSERT_EQ(CHECK_BUTTON(button)->value, TRUE);
-  ASSERT_EQ(count, 2); 
+  ASSERT_EQ(count, 2);
   ASSERT_EQ(check_button_set_value(button, FALSE), RET_OK);
   ASSERT_EQ(CHECK_BUTTON(button)->value, FALSE);
-  ASSERT_EQ(count, 2); 
+  ASSERT_EQ(count, 2);
 }
 
 TEST(CheckButton, radio) {

@@ -1,6 +1,7 @@
 
 #include "base/array.h"
 #include "base/theme.h"
+#include "base/widget.h"
 #include "tools/theme_gen/theme_gen.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
@@ -51,7 +52,7 @@ TEST(Theme, saveLoad) {
 
 TEST(Theme, basic) {
   uint8_t buff[10240];
-  uint32_t type_nr = 20;
+  uint32_t type_nr = WIDGET_NR;
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;
   theme_t t;
@@ -60,7 +61,7 @@ TEST(Theme, basic) {
   GenThemeData(buff, sizeof(buff), type_nr, state_nr, name_nr);
   t.data = buff;
 
-  for (uint32_t type = 0; type < type_nr; type++) {
+  for (uint32_t type = WIDGET_NONE + 1; type < WIDGET_NR; type++) {
     for (uint32_t state = 0; state < state_nr; state++) {
       s.data = theme_find_style(&t, type, 0, state);
       ASSERT_EQ(s.data != NULL, true);

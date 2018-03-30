@@ -16,13 +16,13 @@
 #define rfpart_(X) (1.0 - fpart_(X))
 #define fabs(xx) ((xx) < 0 ? -(xx) : (xx))
 
-#define swap_(a, b)    \
-  do {                 \
+#define swap_(a, b)       \
+  do {                    \
     unsigned int tmp = a; \
-    a = b;             \
-    b = tmp;           \
+    a = b;                \
+    b = tmp;              \
   } while (0)
-  
+
 void draw_line(canvas_t* c, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
   point_t p;
   lcd_t* lcd = c->lcd;
@@ -33,7 +33,7 @@ void draw_line(canvas_t* c, unsigned int x1, unsigned int y1, unsigned int x2, u
   color_t* color = &(c->lcd->stroke_color);
   double dx = (double)x2 - (double)x1;
   double dy = (double)y2 - (double)y1;
-  
+
   if (fabs(dx) > fabs(dy)) {
     if (x2 < x1) {
       swap_(x1, x2);

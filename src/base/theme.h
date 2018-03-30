@@ -117,7 +117,13 @@ typedef enum _style_id_t {
    * @const STYLE_ID_ICON
    * 图标的名称。
    */
-  STYLE_ID_ICON
+  STYLE_ID_ICON,
+
+  /**
+   * @const STYLE_ID_MARGIN
+   * 边距。
+   */
+  STYLE_ID_MARGIN
 } style_id_t;
 
 /**

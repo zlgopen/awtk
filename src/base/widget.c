@@ -337,31 +337,31 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
   color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
-  
-  if(icon == NULL) {
+
+  if (icon == NULL) {
     icon = style_get_str(style, STYLE_ID_ICON, NULL);
   }
 
-  if(bg.rgba.a) {
+  if (bg.rgba.a) {
     canvas_set_fill_color(c, bg);
     canvas_fill_rect(c, 0, 0, widget->w, widget->h);
   }
 
-  if(bd.rgba.a) {
+  if (bd.rgba.a) {
     canvas_set_stroke_color(c, bd);
     canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
   }
-  
-  if(image_name != NULL) {
-   if(image_manager_load(default_im(), image_name, &img) == RET_OK) {
+
+  if (image_name != NULL) {
+    if (image_manager_load(default_im(), image_name, &img) == RET_OK) {
       rect_init(dst, 0, 0, widget->w, widget->h);
-      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, 
-       STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      image_draw_type_t draw_type =
+          (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
       canvas_draw_image_ex(c, &img, draw_type, &dst);
     }
   }
 
-  if(text != NULL && text->size > 0) {
+  if (text != NULL && text->size > 0) {
     color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
@@ -369,10 +369,10 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
     canvas_set_font(c, font_name, font_size);
   }
 
-  if(icon != NULL && image_manager_load(default_im(), icon, &img) == RET_OK) {
-    if(text != NULL && text->size > 0) {
-      if(widget->h > (img.h + font_size)) {
-        rect_init(dst, 0, 0, widget->w, widget->h-font_size);
+  if (icon != NULL && image_manager_load(default_im(), icon, &img) == RET_OK) {
+    if (text != NULL && text->size > 0) {
+      if (widget->h > (img.h + font_size)) {
+        rect_init(dst, 0, 0, widget->w, widget->h - font_size);
         canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
 
         w = canvas_measure_text(c, text->str, text->size);
@@ -383,18 +383,44 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
         rect_init(dst, 0, 0, widget->h, widget->h);
         canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
 
-        x = widget->h+2;
-        y = (widget->h-font_size) >> 1;
+        x = widget->h + 2;
+        y = (widget->h - font_size) >> 1;
         canvas_draw_text(c, text->str, text->size, x, y);
       }
-    }else{
+    } else {
       rect_init(dst, 0, 0, widget->w, widget->h);
       canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
     }
-  } else if(text != NULL && text->size > 0) {
+  } else if (text != NULL && text->size > 0) {
+    int32_t align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+    int32_t align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
+    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+
     w = canvas_measure_text(c, text->str, text->size);
-    x = (widget->w - w) >> 1;
-    y = (widget->h - font_size) >> 1;
+    switch (align_v) {
+      case ALIGN_V_TOP:
+        y = margin;
+        break;
+      case ALIGN_V_BOTTOM:
+        y = widget->h - margin - font_size;
+        break;
+      default:
+        y = (widget->h - font_size) >> 1;
+        break;
+    }
+
+    switch (align_h) {
+      case ALIGN_H_LEFT:
+        x = margin;
+        break;
+      case ALIGN_H_RIGHT:
+        x = widget->w - margin - w;
+        break;
+      default:
+        x = (widget->w - w) >> 1;
+        break;
+    }
+
     canvas_draw_text(c, text->str, text->size, x, y);
   }
 

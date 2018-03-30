@@ -458,6 +458,10 @@ static void event_type_t_init(lua_State* L) {
   lua_pushinteger(L, EVT_PROP_CHANGED);
   lua_settable(L, -3);
 
+  lua_pushstring(L, "VALUE_CHANGED");
+  lua_pushinteger(L, EVT_VALUE_CHANGED);
+  lua_settable(L, -3);
+
   lua_pushstring(L, "PAINT");
   lua_pushinteger(L, EVT_PAINT);
   lua_settable(L, -3);
@@ -880,39 +884,6 @@ static int wrap_label_create(lua_State* L) {
   return lftk_newuserdata(L, ret, "/label_t/widget_t", "lftk.label_t");
 }
 
-static int wrap_label_set_border(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  uint8_t border = (uint8_t)luaL_checkinteger(L, 2);
-  ret = (ret_t)label_set_border(widget, border);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
-static int wrap_label_set_text_align_h(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  uint8_t text_align_h = (uint8_t)luaL_checkinteger(L, 2);
-  ret = (ret_t)label_set_text_align_h(widget, text_align_h);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
-static int wrap_label_set_text_align_v(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  uint8_t text_align_v = (uint8_t)luaL_checkinteger(L, 2);
-  ret = (ret_t)label_set_text_align_v(widget, text_align_v);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
 static int wrap_label_set_text(lua_State* L) {
   ret_t ret = 0;
   widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
@@ -924,30 +895,17 @@ static int wrap_label_set_text(lua_State* L) {
   return 1;
 }
 
-static const struct luaL_Reg label_t_member_funcs[] = {
-    {"set_border", wrap_label_set_border},
-    {"set_text_align_h", wrap_label_set_text_align_h},
-    {"set_text_align_v", wrap_label_set_text_align_v},
-    {"set_text", wrap_label_set_text},
-    {NULL, NULL}};
+static const struct luaL_Reg label_t_member_funcs[] = {{"set_text", wrap_label_set_text},
+                                                       {NULL, NULL}};
 
 static int wrap_label_t_set_prop(lua_State* L) {
   label_t* obj = (label_t*)lftk_checkudata(L, 1, "label_t");
   const char* name = (const char*)luaL_checkstring(L, 2);
   (void)obj;
   (void)name;
-  if (strcmp(name, "border") == 0) {
-    printf("border is readonly\n");
-    return 0;
-  } else if (strcmp(name, "text_align_v") == 0) {
-    printf("text_align_v is readonly\n");
-    return 0;
-  } else if (strcmp(name, "text_align_h") == 0) {
-    printf("text_align_h is readonly\n");
-    return 0;
-  } else {
-    return wrap_widget_t_set_prop(L);
-  }
+  return wrap_widget_t_set_prop(L);
+  printf("%s: not supported %s\n", __func__, name);
+  return 0;
 }
 
 static int wrap_label_t_get_prop(lua_State* L) {
@@ -959,19 +917,6 @@ static int wrap_label_t_get_prop(lua_State* L) {
   (void)name;
   if (ret) {
     lua_pushcfunction(L, ret->func);
-    return 1;
-  }
-  if (strcmp(name, "border") == 0) {
-    lua_pushinteger(L, (lua_Integer)(obj->border));
-
-    return 1;
-  } else if (strcmp(name, "text_align_v") == 0) {
-    lua_pushinteger(L, (lua_Integer)(obj->text_align_v));
-
-    return 1;
-  } else if (strcmp(name, "text_align_h") == 0) {
-    lua_pushinteger(L, (lua_Integer)(obj->text_align_h));
-
     return 1;
   } else {
     return wrap_widget_t_get_prop(L);

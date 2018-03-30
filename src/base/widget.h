@@ -173,6 +173,8 @@ typedef enum _widget_type_t {
    * 单选按钮。
    */
   WIDGET_RADIO_BUTTON,
+
+  WIDGET_NR
 } widget_type_t;
 
 struct _widget_t;

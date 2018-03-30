@@ -131,8 +131,10 @@ wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
 
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
-    if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
-      w += g.w;
+    if (chr == ' ') {
+      w += 4;
+    } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
+      w += g.w + 1;
     }
   }
 
@@ -408,7 +410,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (chr == ' ') {
-      x += 4 + 1;
+      x += 4;
     } else if (chr == '\r') {
       if (str[i + 1] != '\n') {
         y += font_size;
@@ -424,7 +426,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
       canvas_draw_glyph(c, &g, xx, yy);
       x += g.w + 1;
     } else {
-      x += 4 + 1;
+      x += 4;
     }
   }
 

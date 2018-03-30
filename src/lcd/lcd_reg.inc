@@ -115,10 +115,10 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   const color_t* data = (color_t*)img->data;
 
   if (src->w == dst->w && src->h == dst->h) {
-	x = dst->x;
-	y = dst->y;
-	const color_t* src_p = data + img->w * src->y + src->x;
-		
+    x = dst->x;
+    y = dst->y;
+    const color_t* src_p = data + img->w * src->y + src->x;
+
     set_window_func(x, y, x + dst->w - 1, y + dst->h - 1);
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
@@ -138,11 +138,11 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
         const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx + i * sw / dw;
         color_t src_color = src_p[i];
         pixel_t color = blend_color(fill_color, src_color, src_color.rgba.a);
-		
-		x = dst->x + i;
-		y = dst->y + j;
-		
-		set_window_func(x, y, x, y);
+
+        x = dst->x + i;
+        y = dst->y + j;
+
+        set_window_func(x, y, x, y);
         write_data_func(color);
       }
     }
