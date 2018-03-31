@@ -32,6 +32,9 @@
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ThemeGen gen;
+  Style widget_style;
+  Style share_style;
+
   uint16_t level;
   uint16_t widget_type;
   uint16_t style_name;
@@ -45,39 +48,8 @@ static color_t parse_color(const char* name) {
   return c;
 }
 
-static void xml_gen_on_widget(xml_builder_t* b, const char* tag, const char** attrs) {
-  const key_type_value_t* item = widget_type_find(tag);
-  assert(item != NULL);
-
-  b->widget_type = item->value;
-  b->style_name = 0;
-}
-
-static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** attrs) {
+static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
   uint32_t i = 0;
-  b->style_name = 0;
-
-  while (attrs[i]) {
-    const char* name = attrs[i];
-    const char* value = attrs[i + 1];
-
-    if(strcmp(name, "name") == 0) {
-      if(strcmp(value, "default") == 0 || strcmp(value, "0:default") == 0) {
-        b->style_name = 0;
-      } else {
-        b->style_name = atoi(value);
-      }
-    }
-    
-    i += 2;
-  }
-}
-
-static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** attrs) {
-  uint32_t i = 0;
-  const key_type_value_t* state_item = widget_state_find(tag);
-  assert(state_item != NULL);
-  Style s(b->widget_type, b->style_name, state_item->value);
 
   while (attrs[i]) {
     const char* name = attrs[i];
@@ -101,12 +73,56 @@ static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** att
       } else {
         s.AddString(item->value, value);
       }
-    } else {
+    } else if (strcmp(name, "name") != 0) {
       printf("Not supported style: %s\n", name);
     }
 
     i += 2;
   }
+}
+
+static void xml_gen_on_widget(xml_builder_t* b, const char* tag, const char** attrs) {
+  const key_type_value_t* item = widget_type_find(tag);
+  assert(item != NULL);
+
+  b->widget_style.Reset();
+  xml_gen_style(b, b->widget_style, attrs);
+
+  b->widget_type = item->value;
+  b->style_name = 0;
+}
+
+static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** attrs) {
+  uint32_t i = 0;
+  b->style_name = 0;
+
+  while (attrs[i]) {
+    const char* name = attrs[i];
+    const char* value = attrs[i + 1];
+
+    if (strcmp(name, "name") == 0) {
+      if (strcmp(value, "default") == 0 || strcmp(value, "0:default") == 0) {
+        b->style_name = 0;
+      } else {
+        b->style_name = atoi(value);
+      }
+    }
+
+    i += 2;
+  }
+
+  b->share_style.Reset();
+  xml_gen_style(b, b->share_style, attrs);
+}
+
+static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** attrs) {
+  const key_type_value_t* state_item = widget_state_find(tag);
+  assert(state_item != NULL);
+  Style s(b->widget_type, b->style_name, state_item->value);
+
+  s.Merge(b->widget_style);
+  s.Merge(b->share_style);
+  xml_gen_style(b, s, attrs);
 
   b->gen.AddStyle(s);
 }
@@ -114,12 +130,12 @@ static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** att
 static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
   xml_builder_t* b = (xml_builder_t*)thiz;
 
-  if(b->level == 0) {
-    xml_gen_on_widget(b, tag, attrs); 
-  } else if(b->level == 1) {
-    xml_gen_on_style(b, tag, attrs); 
+  if (b->level == 0) {
+    xml_gen_on_widget(b, tag, attrs);
+  } else if (b->level == 1) {
+    xml_gen_on_style(b, tag, attrs);
   } else {
-    xml_gen_on_state(b, tag, attrs); 
+    xml_gen_on_state(b, tag, attrs);
   }
 
   b->level++;
@@ -177,7 +193,7 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
   b.builder.on_comment = xml_gen_on_comment;
   b.builder.on_pi = xml_gen_on_pi;
   b.builder.destroy = xml_gen_destroy;
-  b.level  = 0;
+  b.level = 0;
   b.style_name = 0;
   b.widget_type = 0;
 

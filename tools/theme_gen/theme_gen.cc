@@ -35,13 +35,50 @@ Style::Style(uint16_t widget_type, uint8_t style_type, uint8_t state) {
 Style::~Style() {}
 
 bool Style::AddInt(uint32_t name, int32_t value) {
+  for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
+       i++) {
+    if (i->name == name) {
+      i->value = value;
+      return true;
+    }
+  }
+
   this->int_values.push_back(NameIntValue(name, value));
 
   return true;
 }
 
 bool Style::AddString(uint32_t name, const string& value) {
+  for (vector<NameStringValue>::iterator i = this->str_values.begin(); i != this->str_values.end();
+       i++) {
+    if (i->name == name) {
+      i->value = value;
+      return true;
+    }
+  }
+
   this->str_values.push_back(NameStringValue(name, value));
+
+  return true;
+}
+
+bool Style::Reset() {
+  this->int_values.clear();
+  this->str_values.clear();
+
+  return true;
+}
+
+bool Style::Merge(Style& other) {
+  for (vector<NameIntValue>::iterator i = other.int_values.begin(); i != other.int_values.end();
+       i++) {
+    this->AddInt(i->name, i->value);
+  }
+
+  for (vector<NameStringValue>::iterator i = other.str_values.begin(); i != other.str_values.end();
+       i++) {
+    this->AddString(i->name, i->value);
+  }
 
   return true;
 }

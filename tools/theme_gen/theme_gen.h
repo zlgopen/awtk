@@ -62,6 +62,8 @@ class Style {
   bool AddInt(uint32_t name, int32_t value);
   bool AddString(uint32_t name, const string& str);
   uint8_t* Output(uint8_t* buff, uint32_t max_size);
+  bool Merge(Style& other);
+  bool Reset();
 
  public:
   uint16_t widget_type;
