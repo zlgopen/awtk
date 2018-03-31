@@ -97,4 +97,3 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 END_C_DECLS
 
 #endif /*LFTK_DIALOG_H*/
-

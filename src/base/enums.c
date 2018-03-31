@@ -23,26 +23,27 @@
 #include "base/widget.h"
 #include "base/resource_manager.h"
 
-static const key_type_value_t widget_type_value[] = {{"widget", 0, WIDGET_NONE},
-                                                     {"window_manager", 0, WIDGET_WINDOW_MANAGER},
-                                                     {"window", 0, WIDGET_NORMAL_WINDOW},
-                                                     {"tool_bar", 0, WIDGET_TOOL_BAR},
-                                                     {"dialog", 0, WIDGET_DIALOG},
-                                                     {"popup", 0, WIDGET_POPUP},
-                                                     {"sprite", 0, WIDGET_SPRITE},
-                                                     {"keyboard", 0, WIDGET_KEYBOARD},
-                                                     {"dragger", 0, WIDGET_DRAGGER},
-                                                     {"label", 0, WIDGET_LABEL},
-                                                     {"button", 0, WIDGET_BUTTON},
-                                                     {"image", 0, WIDGET_IMAGE},
-                                                     {"edit", 0, WIDGET_EDIT},
-                                                     {"progress_bar", 0, WIDGET_PROGRESS_BAR},
-                                                     {"group_box", 0, WIDGET_GROUP_BOX},
-                                                     {"check_button", 0, WIDGET_CHECK_BUTTON},
-                                                     {"radio_button", 0, WIDGET_RADIO_BUTTON},
-                                                     {"dialog_title", 0, WIDGET_DIALOG_TITLE},
-                                                     {"dialog_client", 0, WIDGET_DIALOG_CLIENT},
-                                                     };
+static const key_type_value_t widget_type_value[] = {
+    {"widget", 0, WIDGET_NONE},
+    {"window_manager", 0, WIDGET_WINDOW_MANAGER},
+    {"window", 0, WIDGET_NORMAL_WINDOW},
+    {"tool_bar", 0, WIDGET_TOOL_BAR},
+    {"dialog", 0, WIDGET_DIALOG},
+    {"popup", 0, WIDGET_POPUP},
+    {"sprite", 0, WIDGET_SPRITE},
+    {"keyboard", 0, WIDGET_KEYBOARD},
+    {"dragger", 0, WIDGET_DRAGGER},
+    {"label", 0, WIDGET_LABEL},
+    {"button", 0, WIDGET_BUTTON},
+    {"image", 0, WIDGET_IMAGE},
+    {"edit", 0, WIDGET_EDIT},
+    {"progress_bar", 0, WIDGET_PROGRESS_BAR},
+    {"group_box", 0, WIDGET_GROUP_BOX},
+    {"check_button", 0, WIDGET_CHECK_BUTTON},
+    {"radio_button", 0, WIDGET_RADIO_BUTTON},
+    {"dialog_title", 0, WIDGET_DIALOG_TITLE},
+    {"dialog_client", 0, WIDGET_DIALOG_CLIENT},
+};
 
 static const key_type_value_t style_id_name_value[] = {
     {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},

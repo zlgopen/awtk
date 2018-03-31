@@ -124,11 +124,13 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         color_t src_color = src_p[i];
-		if(src_color.rgba.a > 7) {
-		  pixel_t color = src_color.rgba.a < 0xfe ? blend_color(fill_color, src_color, src_color.rgba.a) : to_pixel(src_color);
-          write_data_func(color);			
+        if (src_color.rgba.a > 7) {
+          pixel_t color = src_color.rgba.a < 0xfe
+                              ? blend_color(fill_color, src_color, src_color.rgba.a)
+                              : to_pixel(src_color);
+          write_data_func(color);
         } else {
-          write_data_func(fill_pixel);			
+          write_data_func(fill_pixel);
         }
       }
       src_p += img->w;
@@ -138,21 +140,23 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     xy_t sy = src->y;
     wh_t sw = src->w;
     wh_t sh = src->h;
-	wh_t iw = img->w;
-	xy_t r = dst->x + dst->w;
-	xy_t b = dst->y + dst->h;
-	
+    wh_t iw = img->w;
+    xy_t r = dst->x + dst->w;
+    xy_t b = dst->y + dst->h;
+
     for (j = 0, y = dst->y; y < b; j++, y++) {
-	  const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx;
+      const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx;
       for (i = 0, x = dst->x; x < r; i++, x++) {
         uint32_t s = (i * sw) / dw;
         color_t src_color = src_p[s];
-		if(src_color.rgba.a > 7) {
-		  pixel_t color = src_color.rgba.a < 0xfe ? blend_color(fill_color, src_color, src_color.rgba.a) : to_pixel(src_color);
+        if (src_color.rgba.a > 7) {
+          pixel_t color = src_color.rgba.a < 0xfe
+                              ? blend_color(fill_color, src_color, src_color.rgba.a)
+                              : to_pixel(src_color);
 
           set_window_func(x, y, x, y);
           write_data_func(color);
-		}
+        }
       }
     }
   }

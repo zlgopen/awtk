@@ -94,8 +94,8 @@ ret_t application_init() {
 
   image = image_create(win, 100, 230, 200, 200);
   image_set_image_name(image, "earth");
-	image_set_draw_type(image, IMAGE_DRAW_SCALE);
-	
+  image_set_draw_type(image, IMAGE_DRAW_SCALE);
+
   label = label_create(win, 10, 40, 80, 30);
   widget_set_text(label, L"Left");
   widget_use_style(label, "2:left");

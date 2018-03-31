@@ -9,23 +9,23 @@
 </window>
 
 <button>
-  <style name="default">
-    <normal     bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
-    <pressed    bg-color="#c0c0c0" text-color="black" border-color="#a0a0a0" />
-    <over       bg-color="#e0e0e0" text-color="black" border-color="#a0a0a0" />
-    <disable    bg-color="gray" text-color="#d0d0d0" border-color="#a0a0a0" />
+  <style name="default" border-color="#a0a0a0"  text-color="black">
+    <normal     bg-color="#f0f0f0" />
+    <pressed    bg-color="#c0c0c0" />
+    <over       bg-color="#e0e0e0" />
+    <disable    bg-color="gray" text-color="#d0d0d0" />
   </style>
 
-  <style name="1:green_btn">
-    <normal   bg-image="green_btn_n" bg-image-draw-type="3patch_x" text-color="white"/>
-    <pressed  bg-image="green_btn_p" bg-image-draw-type="3patch_x" text-color="white"/>
-    <over     bg-image="green_btn_o" bg-image-draw-type="3patch_x" text-color="white"/>
+  <style name="1:green_btn" bg-image-draw-type="3patch_x" text-color="white">
+    <normal   bg-image="green_btn_n" />
+    <pressed  bg-image="green_btn_p" />
+    <over     bg-image="green_btn_o" />
   </style>
 
-  <style name="2:red_btn">
-    <normal   bg-image="red_btn_n" bg-image-draw-type="3patch_x" text-color="white"/>
-    <pressed  bg-image="red_btn_p" bg-image-draw-type="3patch_x" text-color="white"/>
-    <over     bg-image="red_btn_o" bg-image-draw-type="3patch_x" text-color="white"/>
+  <style name="2:red_btn" bg-image-draw-type="3patch_x" text-color="white">
+    <normal   bg-image="red_btn_n" />
+    <pressed  bg-image="red_btn_p" />
+    <over     bg-image="red_btn_o" />
   </style>
 </button>
 
@@ -58,16 +58,16 @@
 </progress_bar>
 
 <check_button>
-  <style name="default">
-    <checked   bg-color="#f0f0f0" text-color="black" icon="checked" />
-    <unchecked bg-color="#f0f0f0" text-color="black" icon="unchecked" />
+  <style name="default" bg-color="#f0f0f0" text-color="black">
+    <checked   icon="checked" />
+    <unchecked icon="unchecked" />
   </style>
 </check_button>
 
 <radio_button>
-  <style name="default">
-    <checked   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
-    <unchecked bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
+  <style name="default" bg-color="#f0f0f0" text-color="black">
+    <checked   icon="radio_checked" />
+    <unchecked icon="radio_unchecked" />
   </style>
 </radio_button>
 

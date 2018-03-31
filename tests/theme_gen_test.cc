@@ -74,3 +74,25 @@ TEST(ThemeGen, style_type) {
   style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style.data != NULL, true);
 }
+
+TEST(ThemeGen, inher) {
+  uint8_t buff[1024];
+  theme_t theme;
+  style_t style;
+  const char* str =
+      "<button font-size=\"12\"><style name=\"1:yellow\" font-name=\"sans\"><over bg-color=\"yellow\" fg-color=\"#fafbfc\" /></style>\
+       <style name=\"1:yellow\"><pressed bg-color=\"rgb(255,255,0)\" font-name=\"serif\" font-size=\"14\" /></style></button>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_OVER);
+  ASSERT_EQ(style.data != NULL, true);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
+
+  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_PRESSED);
+  ASSERT_EQ(style.data != NULL, true);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 14);
+  ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("serif"));
+}
