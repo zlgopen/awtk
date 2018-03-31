@@ -112,6 +112,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   wh_t dw = dst->w;
   wh_t dh = dst->h;
   color_t fill_color = lcd->fill_color;
+  pixel_t fill_pixel = to_pixel(fill_color);
   const color_t* data = (color_t*)img->data;
 
   if (src->w == dst->w && src->h == dst->h) {
@@ -123,8 +124,12 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         color_t src_color = src_p[i];
-        pixel_t color = blend_color(fill_color, src_color, src_color.rgba.a);
-        write_data_func(color);
+		if(src_color.rgba.a > 7) {
+		  pixel_t color = src_color.rgba.a < 0xfe ? blend_color(fill_color, src_color, src_color.rgba.a) : to_pixel(src_color);
+          write_data_func(color);			
+        } else {
+          write_data_func(fill_pixel);			
+        }
       }
       src_p += img->w;
     }
@@ -134,18 +139,20 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     wh_t sw = src->w;
     wh_t sh = src->h;
 	wh_t iw = img->w;
+	xy_t r = dst->x + dst->w;
+	xy_t b = dst->y + dst->h;
 	
-    for (j = 0; j < dh; j++) {
-      for (i = 0; i < dw; i++) {
-        const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx + (i * sw) / dw;
-        color_t src_color = src_p[i];
-        pixel_t color = blend_color(fill_color, src_color, src_color.rgba.a);
+    for (j = 0, y = dst->y; y < b; j++, y++) {
+	  const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx;
+      for (i = 0, x = dst->x; x < r; i++, x++) {
+        uint32_t s = (i * sw) / dw;
+        color_t src_color = src_p[s];
+		if(src_color.rgba.a > 7) {
+		  pixel_t color = src_color.rgba.a < 0xfe ? blend_color(fill_color, src_color, src_color.rgba.a) : to_pixel(src_color);
 
-        x = dst->x + i;
-        y = dst->y + j;
-
-        set_window_func(x, y, x, y);
-        write_data_func(color);
+          set_window_func(x, y, x, y);
+          write_data_func(color);
+		}
       }
     }
   }

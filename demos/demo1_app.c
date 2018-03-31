@@ -89,10 +89,10 @@ ret_t application_init() {
   show_dialog = button_create(win, 190, 5, 80, 30);
   widget_set_text(show_dialog, L"Dialog");
 
-//  image = image_create(win, 10, 230, 100, 100);
-//  image_set_image_name(image, "earth");
+  image = image_create(win, 10, 230, 100, 100);
+  image_set_image_name(image, "earth");
 
-  image = image_create(win, 100, 230, 100, 100);
+  image = image_create(win, 100, 230, 200, 200);
   image_set_image_name(image, "earth");
 	image_set_draw_type(image, IMAGE_DRAW_SCALE);
 	
