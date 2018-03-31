@@ -90,10 +90,10 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = image_draw_type_find(value_str(v));
       if (kv != NULL) {
-        return image_set_draw_type(widget, kv->value);
+        return image_set_draw_type(widget, (image_draw_type_t)(kv->value));
       }
     } else {
-      return image_set_draw_type(widget, value_int(v));
+      return image_set_draw_type(widget, (image_draw_type_t)value_int(v));
     }
 
     return RET_OK;

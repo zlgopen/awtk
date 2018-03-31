@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   canvas.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  canvas provides basic drawings functions.

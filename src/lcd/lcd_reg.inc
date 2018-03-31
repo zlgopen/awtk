@@ -131,11 +131,13 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   } else {
     xy_t sx = src->x;
     xy_t sy = src->y;
-    xy_t sw = src->w;
-    xy_t sh = src->h;
+    wh_t sw = src->w;
+    wh_t sh = src->h;
+	wh_t iw = img->w;
+	
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
-        const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx + i * sw / dw;
+        const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx + (i * sw) / dw;
         color_t src_color = src_p[i];
         pixel_t color = blend_color(fill_color, src_color, src_color.rgba.a);
 

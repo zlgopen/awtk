@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lftk.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  lftk
@@ -59,7 +59,7 @@ ret_t lftk_run(void);
  */
 ret_t lftk_quit(void);
 
-ret_t lftk_init_resources();
+ret_t lftk_init_resources(void);
 
 END_C_DECLS
 

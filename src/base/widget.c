@@ -328,7 +328,6 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
   xy_t x = 0;
   xy_t y = 0;
   wh_t w = 0;
-  wh_t h = 0;
   rect_t dst;
   bitmap_t img;
   style_t* style = &(widget->style);
