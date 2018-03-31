@@ -43,13 +43,14 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   dialog_t* dialog = DIALOG(win);
 
   widget_set_text(win, L"Dialog");
-  dialog_set_icon(win, "info");
 
   ok = button_create(dialog->client, 20, 80, 80, 30);
   widget_set_text(ok, L"Go");
+  widget_use_style(ok, "1:green_btn");
 
   cancel = button_create(dialog->client, 140, 80, 80, 30);
   widget_set_text(cancel, L"Cancel");
+  widget_use_style(cancel, "2:red_btn");
 
   label = label_create(dialog->client, 10, 30, 200, 30);
   widget_set_text(label, L"Are you ready!");
@@ -87,22 +88,21 @@ ret_t application_init() {
 
   show_dialog = button_create(win, 190, 5, 80, 30);
   widget_set_text(show_dialog, L"Dialog");
-  widget_use_style(show_dialog, "1:blue_img");
 
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
 
   label = label_create(win, 10, 40, 80, 30);
   widget_set_text(label, L"Left");
-  widget_use_style(label, "3:left");
+  widget_use_style(label, "2:left");
 
   label = label_create(win, 100, 40, 80, 30);
   widget_set_text(label, L"Center");
-  widget_use_style(label, "4:center");
+  widget_use_style(label, "3:center");
 
   label = label_create(win, 200, 40, 80, 30);
   widget_set_text(label, L"Right");
-  widget_use_style(label, "5:right");
+  widget_use_style(label, "4:right");
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 30);
   widget_set_value(progress_bar, 40);

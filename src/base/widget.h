@@ -173,6 +173,17 @@ typedef enum _widget_type_t {
    * 单选按钮。
    */
   WIDGET_RADIO_BUTTON,
+  /**
+   * @const WIDGET_DIALOG_TITLE
+   * 对话框的标题。
+   */
+  WIDGET_DIALOG_TITLE,
+
+  /**
+   * @const WIDGET_DIALOG_CLIENT
+   * 对话框的客户区。
+   */
+  WIDGET_DIALOG_CLIENT,
 
   WIDGET_NR
 } widget_type_t;

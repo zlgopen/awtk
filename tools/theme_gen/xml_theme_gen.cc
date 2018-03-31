@@ -32,6 +32,9 @@
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ThemeGen gen;
+  uint16_t level;
+  uint16_t widget_type;
+  uint16_t style_name;
 } xml_builder_t;
 
 static color_t parse_color(const char* name) {
@@ -42,60 +45,84 @@ static color_t parse_color(const char* name) {
   return c;
 }
 
-static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
+static void xml_gen_on_widget(xml_builder_t* b, const char* tag, const char** attrs) {
+  const key_type_value_t* item = widget_type_find(tag);
+  assert(item != NULL);
+
+  b->widget_type = item->value;
+  b->style_name = 0;
+}
+
+static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** attrs) {
   uint32_t i = 0;
-  xml_builder_t* b = (xml_builder_t*)thiz;
-  const key_type_value_t* widget_item = widget_type_find(tag);
-
-  return_if_fail(widget_item != NULL);
-
-  uint8_t style_type = 0;
-  uint16_t widget_type = widget_item->value;
-  uint8_t state = WIDGET_STATE_NORMAL;
-
-  Style s(widget_type, style_type, state);
+  b->style_name = 0;
 
   while (attrs[i]) {
     const char* name = attrs[i];
     const char* value = attrs[i + 1];
 
-    if (strcmp(name, "state") == 0) {
-      const key_type_value_t* state_item = widget_state_find(value);
-      if (state_item != NULL) {
-        s.state = state_item->value;
+    if(strcmp(name, "name") == 0) {
+      if(strcmp(value, "default") == 0 || strcmp(value, "0:default") == 0) {
+        b->style_name = 0;
       } else {
-        printf("Not supported state: %s\n", value);
+        b->style_name = atoi(value);
       }
-    } else if (strcmp(name, "style-type") == 0 || strcmp(name, "name") == 0) {
-      s.style_type = atoi(value);
+    }
+    
+    i += 2;
+  }
+}
+
+static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** attrs) {
+  uint32_t i = 0;
+  const key_type_value_t* state_item = widget_state_find(tag);
+  assert(state_item != NULL);
+  Style s(b->widget_type, b->style_name, state_item->value);
+
+  while (attrs[i]) {
+    const char* name = attrs[i];
+    const char* value = attrs[i + 1];
+
+    const key_type_value_t* item = style_id_find(name);
+    if (item != NULL) {
+      if (strcmp(name, "bg-image-draw-type") == 0) {
+        const key_type_value_t* dt = image_draw_type_find(value);
+        s.AddInt(item->value, dt->value);
+      } else if (strcmp(name, "text-align-h") == 0) {
+        const key_type_value_t* dt = align_h_type_find(value);
+        s.AddInt(item->value, dt->value);
+      } else if (strcmp(name, "text-align-v") == 0) {
+        const key_type_value_t* dt = align_v_type_find(value);
+        s.AddInt(item->value, dt->value);
+      } else if (item->type == TYPE_INT) {
+        s.AddInt(item->value, atoi(value));
+      } else if (item->type == TYPE_COLOR) {
+        s.AddInt(item->value, parse_color(value).color);
+      } else {
+        s.AddString(item->value, value);
+      }
     } else {
-      const key_type_value_t* item = style_id_find(name);
-      if (item != NULL) {
-        if (strcmp(name, "bg-image-draw-type") == 0) {
-          const key_type_value_t* dt = image_draw_type_find(value);
-          s.AddInt(item->value, dt->value);
-        } else if (strcmp(name, "text-align-h") == 0) {
-          const key_type_value_t* dt = align_h_type_find(value);
-          s.AddInt(item->value, dt->value);
-        } else if (strcmp(name, "text-align-v") == 0) {
-          const key_type_value_t* dt = align_v_type_find(value);
-          s.AddInt(item->value, dt->value);
-        } else if (item->type == TYPE_INT) {
-          s.AddInt(item->value, atoi(value));
-        } else if (item->type == TYPE_COLOR) {
-          s.AddInt(item->value, parse_color(value).color);
-        } else {
-          s.AddString(item->value, value);
-        }
-      } else {
-        printf("Not supported style: %s\n", name);
-      }
+      printf("Not supported style: %s\n", name);
     }
 
     i += 2;
   }
 
   b->gen.AddStyle(s);
+}
+
+static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  if(b->level == 0) {
+    xml_gen_on_widget(b, tag, attrs); 
+  } else if(b->level == 1) {
+    xml_gen_on_style(b, tag, attrs); 
+  } else {
+    xml_gen_on_state(b, tag, attrs); 
+  }
+
+  b->level++;
 
   return;
 }
@@ -103,6 +130,9 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
 static void xml_gen_on_end(XmlBuilder* thiz, const char* tag) {
   (void)thiz;
   (void)tag;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+  b->level--;
+
   return;
 }
 
@@ -147,6 +177,9 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
   b.builder.on_comment = xml_gen_on_comment;
   b.builder.on_pi = xml_gen_on_pi;
   b.builder.destroy = xml_gen_destroy;
+  b.level  = 0;
+  b.style_name = 0;
+  b.widget_type = 0;
 
   return &(b.builder);
 }

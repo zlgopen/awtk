@@ -35,8 +35,7 @@ BEGIN_C_DECLS
  */
 typedef struct _dialog_t {
   widget_t widget;
-  bitmap_t icon;
-  wstr_t title;
+  widget_t* title;
   widget_t* client;
   uint32_t quit_code;
 } dialog_t;
@@ -63,16 +62,6 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {widget_t*} 对象。
  */
-
-/**
- * @method dialog_set_icon
- * 设置对话框的标题图标。
- * @param {widget_t*} widget dialog对象。
- * @param {char*}  name 图标名称。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t dialog_set_icon(widget_t* widget, const char* name);
 
 /**
  * @method dialog_set_title
@@ -108,3 +97,4 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 END_C_DECLS
 
 #endif /*LFTK_DIALOG_H*/
+

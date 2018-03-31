@@ -19,9 +19,9 @@
  *
  */
 
-#include "twombly.hpp"
 #include "base/mem.h"
 #include "base/vgcanvas.h"
+#include "twombly.hpp"
 
 typedef struct _vgcanvas_agg_t {
   vgcanvas_t base;

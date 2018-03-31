@@ -1,25 +1,91 @@
-<window bg-color="#f0f0f0" text-color="black" font-name="sans" font-size="12" />
-<dialog bg-color="#f0f0f0" fg-color="#808080" border-color="#808080" text-color="black" font-name="sans" font-size="12" />
-<button state="normal"   bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
-<button state="pressed"    bg-color="#c0c0c0" text-color="black" border-color="#a0a0a0" />
-<button state="over"     bg-color="#e0e0e0" text-color="black" border-color="#a0a0a0" />
-<button state="disable"  bg-color="gray" text-color="#d0d0d0" border-color="#a0a0a0" />
-<label state="normal"   text-color="black" />
-<progress_bar state="normal" bg-color="#f0f0f0" text-color="gold" fg-color="black" border-color="#a0a0a0" />
-<check_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="checked" />
-<check_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="unchecked" />
-<radio_button state="checked"   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
-<radio_button state="unchecked"   bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
+<window>
+  <style name="default">
+    <normal bg-color="#f0f0f0"/>
+  </style>
 
-<window style-type="1:bricks" bg-image="bricks"  bg-image-draw-type="repeat"/>
+  <style name="1:bricks">
+    <normal bg-image="bricks"  bg-image-draw-type="repeat"/>
+  </style>
+</window>
 
-<label  style-type="1:green" text-color="green" />
-<label  style-type="3:left" text-color="red" text-align-h="left" border-color="#a0a0a0" margin="4" />
-<label  style-type="4:center" text-color="green" text-align-h="center" border-color="#a0a0a0" />
-<label  style-type="5:right" text-color="blue" text-align-h="right" border-color="#a0a0a0" margin="4"/>
+<button>
+  <style name="default">
+    <normal     bg-color="#f0f0f0" text-color="black" border-color="#a0a0a0" />
+    <pressed    bg-color="#c0c0c0" text-color="black" border-color="#a0a0a0" />
+    <over       bg-color="#e0e0e0" text-color="black" border-color="#a0a0a0" />
+    <disable    bg-color="gray" text-color="#d0d0d0" border-color="#a0a0a0" />
+  </style>
 
-<image  style-type="1:border" border-color="#000000" bg-color="#e0e0e0"/>
-<button style-type="1:blue_img" state="normal"   bg-image="btn_blue_n" bg-image-draw-type="3patch_x" text-color="white"/>
-<button style-type="1:blue_img" state="pressed"  bg-image="btn_blue_p" bg-image-draw-type="3patch_x" text-color="white"/>
-<button style-type="1:blue_img" state="over"     bg-image="btn_blue_o" bg-image-draw-type="3patch_x" text-color="white"/>
+  <style name="1:green_btn">
+    <normal   bg-image="green_btn_n" bg-image-draw-type="3patch_x" text-color="white"/>
+    <pressed  bg-image="green_btn_p" bg-image-draw-type="3patch_x" text-color="white"/>
+    <over     bg-image="green_btn_o" bg-image-draw-type="3patch_x" text-color="white"/>
+  </style>
+
+  <style name="2:red_btn">
+    <normal   bg-image="red_btn_n" bg-image-draw-type="3patch_x" text-color="white"/>
+    <pressed  bg-image="red_btn_p" bg-image-draw-type="3patch_x" text-color="white"/>
+    <over     bg-image="red_btn_o" bg-image-draw-type="3patch_x" text-color="white"/>
+  </style>
+</button>
+
+<label>
+  <style name="default">
+    <normal text-color="black" />
+  </style>
+
+  <style name="1:green">
+    <normal text-color="green" />
+  </style>
+
+  <style name="2:left">
+    <normal text-color="red" text-align-h="left" border-color="#a0a0a0" margin="4" />
+  </style>
+
+  <style name="3:center">
+    <normal text-color="green" text-align-h="center" border-color="#a0a0a0" />
+  </style>
+
+  <style name="4:right">
+    <normal text-color="blue" text-align-h="right" border-color="#a0a0a0" margin="4"/>
+  </style>
+</label>
+
+<progress_bar>
+  <style>
+    <normal bg-color="#f0f0f0" text-color="gold" fg-color="black" border-color="#a0a0a0" />
+  </style>
+</progress_bar>
+
+<check_button>
+  <style name="default">
+    <checked   bg-color="#f0f0f0" text-color="black" icon="checked" />
+    <unchecked bg-color="#f0f0f0" text-color="black" icon="unchecked" />
+  </style>
+</check_button>
+
+<radio_button>
+  <style name="default">
+    <checked   bg-color="#f0f0f0" text-color="black" icon="radio_checked" />
+    <unchecked bg-color="#f0f0f0" text-color="black" icon="radio_unchecked" />
+  </style>
+</radio_button>
+
+<image>
+  <style name="1:border">
+    <normal border-color="#000000" bg-color="#e0e0e0"/>
+  </style>
+</image>
+
+<dialog_title>
+  <style name="default">
+    <normal bg-image="dialog_title"  bg-image-draw-type="3patch_x" icon="info"/>
+  </style>
+</dialog_title>
+
+<dialog_client>
+  <style name="default">
+    <normal bg-color="#ededed" border-color="#a9a9a0" />
+  </style>
+</dialog_client>
 

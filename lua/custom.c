@@ -30,7 +30,11 @@ static int lftk_newuserdata(lua_State* L, void* data, const char* info, const ch
   }
 
   if (metatable != NULL) {
-    luaL_getmetatable(L, metatable);
+    int ret = luaL_getmetatable(L, metatable);
+    if(ret == 0 && strstr(info, "/widget_t") != NULL) {
+      lua_pop(L, 1);
+      ret = luaL_getmetatable(L, "lftk.widget_t");
+    }
     lua_setmetatable(L, -2);
   }
 

@@ -39,7 +39,10 @@ static const key_type_value_t widget_type_value[] = {{"widget", 0, WIDGET_NONE},
                                                      {"progress_bar", 0, WIDGET_PROGRESS_BAR},
                                                      {"group_box", 0, WIDGET_GROUP_BOX},
                                                      {"check_button", 0, WIDGET_CHECK_BUTTON},
-                                                     {"radio_button", 0, WIDGET_RADIO_BUTTON}};
+                                                     {"radio_button", 0, WIDGET_RADIO_BUTTON},
+                                                     {"dialog_title", 0, WIDGET_DIALOG_TITLE},
+                                                     {"dialog_client", 0, WIDGET_DIALOG_CLIENT},
+                                                     };
 
 static const key_type_value_t style_id_name_value[] = {
     {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},

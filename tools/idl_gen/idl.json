@@ -379,20 +379,6 @@
       "name": "widget"
      },
      {
-      "type": "char*",
-      "name": "name"
-     }
-    ],
-    "name": "dialog_set_icon",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
       "type": "wchar_t*",
       "name": "title"
      }
@@ -1695,6 +1681,12 @@
    },
    {
     "name": "WIDGET_RADIO_BUTTON"
+   },
+   {
+    "name": "WIDGET_DIALOG_TITLE"
+   },
+   {
+    "name": "WIDGET_DIALOG_CLIENT"
    }
   ]
  },

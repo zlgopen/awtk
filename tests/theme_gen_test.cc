@@ -14,8 +14,8 @@ TEST(ThemeGen, basic) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<widget bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" />\
-       <progress_bar bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" />";
+      "<widget><style><normal bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></widget>\
+       <progress_bar><style><normal bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" /></style></progress_bar>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -38,8 +38,8 @@ TEST(ThemeGen, state) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<button state=\"over\" bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" />\
-                     <button state=\"pressed\" bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" />";
+      "<button><style><over bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></button>\
+       <button><style><pressed bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\"/></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -62,8 +62,8 @@ TEST(ThemeGen, style_type) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<button style-type=\"1:yellow\" state=\"over\" bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" />\
-                     <button style-type=\"1:yellow\" state=\"pressed\" bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" />";
+      "<button><style name=\"1:yellow\"><over bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></button>\
+       <button><style name=\"1:yellow\"><pressed bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" /></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;

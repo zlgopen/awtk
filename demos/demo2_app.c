@@ -89,16 +89,16 @@ static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 100, 60);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 10, 80, 10, 60);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 10, 160, 300, 50);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 10, 220, 300, 20);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   return RET_OK;
 }
@@ -111,21 +111,21 @@ static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 60, 100);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 80, 10, 60, 10);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 160, 10, 50, 300);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   rect_init(r, 220, 10, 20, 300);
-  canvas_draw_image_3patch_h(c, &img, &r);
+  canvas_draw_image_3patch_x(c, &img, &r);
 
   return RET_OK;
 }
 
-static ret_t on_paint_tile_h(void* ctx, event_t* e) {
+static ret_t on_paint_repeat_x(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -133,18 +133,18 @@ static ret_t on_paint_tile_h(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 10, img.h);
-  canvas_draw_image_tile_h(c, &img, &r);
+  canvas_draw_image_repeat_x(c, &img, &r);
 
   rect_init(r, 10, 60, img.w, img.h);
-  canvas_draw_image_tile_h(c, &img, &r);
+  canvas_draw_image_repeat_x(c, &img, &r);
 
   rect_init(r, 10, 160, img.w * 2, img.h * 2);
-  canvas_draw_image_tile_h(c, &img, &r);
+  canvas_draw_image_repeat_x(c, &img, &r);
 
   return RET_OK;
 }
 
-static ret_t on_paint_tile_v(void* ctx, event_t* e) {
+static ret_t on_paint_repeat_y(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -152,18 +152,18 @@ static ret_t on_paint_tile_v(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w, 10);
-  canvas_draw_image_tile_v(c, &img, &r);
+  canvas_draw_image_repeat_y(c, &img, &r);
 
   rect_init(r, 90, 10, img.w, img.h);
-  canvas_draw_image_tile_v(c, &img, &r);
+  canvas_draw_image_repeat_y(c, &img, &r);
 
   rect_init(r, 160, 10, img.w * 2, img.h * 2);
-  canvas_draw_image_tile_v(c, &img, &r);
+  canvas_draw_image_repeat_y(c, &img, &r);
 
   return RET_OK;
 }
 
-static ret_t on_paint_tile(void* ctx, event_t* e) {
+static ret_t on_paint_repeat(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -171,13 +171,13 @@ static ret_t on_paint_tile(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h / 2);
-  canvas_draw_image_tile(c, &img, &r);
+  canvas_draw_image_repeat(c, &img, &r);
 
   rect_init(r, 50, 50, img.w, img.h);
-  canvas_draw_image_tile(c, &img, &r);
+  canvas_draw_image_repeat(c, &img, &r);
 
   rect_init(r, 100, 100, img.w * 2 + 10, img.h * 2 + 10);
-  canvas_draw_image_tile(c, &img, &r);
+  canvas_draw_image_repeat(c, &img, &r);
 
   return RET_OK;
 }
@@ -190,13 +190,13 @@ static ret_t on_paint_scale_x(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w, img.h / 2);
-  canvas_draw_image_scale_x(c, &img, &r);
+  canvas_draw_image_scale_w(c, &img, &r);
 
   rect_init(r, 50, 50, img.w, img.h);
-  canvas_draw_image_scale_x(c, &img, &r);
+  canvas_draw_image_scale_w(c, &img, &r);
 
   rect_init(r, 100, 100, img.w * 2, img.h);
-  canvas_draw_image_scale_x(c, &img, &r);
+  canvas_draw_image_scale_w(c, &img, &r);
 
   return RET_OK;
 }
@@ -209,13 +209,13 @@ static ret_t on_paint_scale_y(void* ctx, event_t* e) {
   image_manager_load(default_im(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h);
-  canvas_draw_image_scale_y(c, &img, &r);
+  canvas_draw_image_scale_h(c, &img, &r);
 
   rect_init(r, 50, 50, img.w, img.h);
-  canvas_draw_image_scale_y(c, &img, &r);
+  canvas_draw_image_scale_h(c, &img, &r);
 
   rect_init(r, 100, 100, img.w, img.h * 2);
-  canvas_draw_image_scale_y(c, &img, &r);
+  canvas_draw_image_scale_h(c, &img, &r);
 
   return RET_OK;
 }

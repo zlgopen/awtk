@@ -1,5 +1,8 @@
 /*adapted from: https://github.com/zshipko/libtwombly.git*/
 
+#include <stdlib.h>
+#include <stdint.h>
+
 #ifndef TWOMBLY_DRAW_HEADER
 #define TWOMBLY_DRAW_HEADER
 
@@ -54,7 +57,6 @@ enum gradient_type {
 
 #ifdef __cplusplus
 #include <vector>
-#include <cstdint>
 
 #include "agg_basics.h"
 #include "agg_rendering_buffer.h"
@@ -179,7 +181,7 @@ public:
 
 
     Drawing<DrawingType>(int32_t w, int32_t h, int c, uint8_t *d) :
-        data(d != nullptr ? (void*)d : calloc(w * h * c, sizeof(uint8_t))), 
+        data(d != NULL ? (void*)d : calloc(w * h * c, sizeof(uint8_t))), 
         _antialias(true), 
         _preserve(false), 
         _linewidth(1), 

@@ -18,7 +18,7 @@ TEST(UILoaderXML, basic) {
   ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
 
   ASSERT_EQ(builder->root->type == WIDGET_DIALOG, TRUE);
-  ASSERT_EQ(widget_count_children(builder->root), 1);
+  ASSERT_EQ(widget_count_children(builder->root), 2);
 
   ok = widget_lookup(builder->root, "ok", TRUE);
   cancel = widget_lookup(builder->root, "cancel", TRUE);

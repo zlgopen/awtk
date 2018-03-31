@@ -16,18 +16,22 @@ function application_init()
   Timer.add(function() 
     if win.bar1.value <= 95 then
       win.bar1:set_value(win.bar1.value + 5);
+      return Ret.REPEAT
     end
-    return Ret.REPEAT
+     
+    return Ret.REMOVE
   end, 500)
  
   function show_dialog(name)
     local dlg = Dialog.open(name)
 
     dlg.client.ok:on(EventType.CLICK, function(evt)
+      print("ok clicked");
       dlg:quit(0)
     end);
 
     dlg.client.cancel:on(EventType.CLICK, function(evt)
+      print("cancel clicked");
       dlg:quit(1)
     end);
 
