@@ -17,7 +17,7 @@
   </style>
 </button>
 
-<button bg-image-draw-type="3patch_x" text-color="white">
+<button bg-image-draw-type="3patch_x" text-color="blue">
   <style name="1:green_btn" >
     <normal   bg-image="green_btn_n" />
     <pressed  bg-image="green_btn_p" />
@@ -45,12 +45,17 @@
   </style>
 
   <style name="3:center">
-    <normal text-color="green" text-align-h="center" border-color="#a0a0a0" />
+    <normal text-color="green" text-align-h="center" border-color="#a0a0a0"/>
   </style>
-
+  
   <style name="4:right">
     <normal text-color="blue" text-align-h="right" border-color="#a0a0a0" margin="4"/>
   </style>
+  
+  <style name="5:center-ap">
+    <normal text-color="green" text-align-h="center" border-color="#a0a0a0" font-name="ap" font-size="12"/>
+  </style>
+
 </label>
 
 <progress_bar>
@@ -59,10 +64,20 @@
   </style>
 </progress_bar>
 
-<check_button font-name="ap" font-size="12">
-  <style name="default" bg-color="#f0f0f0" text-color="black">
+<group_box>
+  <style name="1:box">
+    <normal bg-color="#f0f0f0" border-color="#a0a0a0" />
+  </style>
+</group_box>
+
+<check_button bg-color="#f0f0f0" text-color="black">
+  <style name="default">
     <checked   icon="checked" />
     <unchecked icon="unchecked" />
+  </style>
+  <style name="1:mute" >
+    <checked   icon="unmuted" />
+    <unchecked icon="muted" />
   </style>
 </check_button>
 
@@ -70,6 +85,18 @@
   <style name="default" bg-color="#f0f0f0" text-color="black">
     <checked   icon="radio_checked" />
     <unchecked icon="radio_unchecked" />
+  </style>
+  <style name="2:left">
+    <checked   icon="left_on" />
+    <unchecked icon="left_off" />
+  </style>
+  <style name="3:middle">
+    <checked   icon="middle_on" />
+    <unchecked icon="middle_off" />
+  </style>
+  <style name="4:right">
+    <checked   icon="right_on" />
+    <unchecked icon="right_off" />
   </style>
 </radio_button>
 

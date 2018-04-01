@@ -32,6 +32,7 @@
 #include "base/utils.h"
 #include "base/utf8.h"
 #include "base/window.h"
+#include "base/group_box.h"
 #include "common.c"
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
@@ -78,6 +79,7 @@ ret_t application_init() {
   widget_t* check_button = NULL;
   widget_t* radio_button = NULL;
   widget_t* show_dialog = NULL;
+  widget_t* group_box = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
 
   ok = button_create(win, 10, 5, 80, 30);
@@ -102,9 +104,13 @@ ret_t application_init() {
 
   label = label_create(win, 100, 40, 80, 30);
   widget_set_text(label, L"Center");
+#ifdef WITH_STM32F103ZE_RAW
   widget_use_style(label, "3:center");
+#else
+  widget_use_style(label, "5:center-ap");
+#endif
 
-  label = label_create(win, 200, 40, 80, 30);
+  label = label_create(win, 190, 40, 80, 30);
   widget_set_text(label, L"Right");
   widget_use_style(label, "4:right");
 
@@ -136,6 +142,18 @@ ret_t application_init() {
   radio_button = check_button_create_radio(win, 190, 200, 80, 30);
   widget_set_text(radio_button, L"Pencil");
   widget_set_value(radio_button, TRUE);
+
+  group_box = group_box_create(win, 10, 300, 32 * 3, 32);
+  widget_use_style(group_box, "1:box");
+  radio_button = check_button_create_radio(group_box, 0, 0, 32, 32);
+  widget_use_style(radio_button, "2:left");
+  radio_button = check_button_create_radio(group_box, 32, 0, 32, 32);
+  widget_use_style(radio_button, "3:middle");
+  radio_button = check_button_create_radio(group_box, 64, 0, 32, 32);
+  widget_use_style(radio_button, "4:right");
+
+  check_button = check_button_create(win, 108, 300, 32, 32);
+  widget_use_style(check_button, "1:mute");
 
   widget_to_xml(win);
 

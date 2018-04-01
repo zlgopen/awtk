@@ -42,12 +42,15 @@ int main(int argc, char** argv) {
 
   input_buff = (uint8_t*)read_file(input_filename, &size);
   return_value_if_fail(input_buff != NULL, 0);
-  if(end_with(input_filename, ".ttf")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_FONT, RESOURCE_TYPE_FONT_TTF, input_buff, size); 
-  } else if(end_with(input_filename, ".png")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_PNG, input_buff, size); 
-  } else if(end_with(input_filename, ".jpg")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_JPG, input_buff, size); 
+  if (end_with(input_filename, ".ttf")) {
+    output_res_c_source(output_filename, RESOURCE_TYPE_FONT, RESOURCE_TYPE_FONT_TTF, input_buff,
+                        size);
+  } else if (end_with(input_filename, ".png")) {
+    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_PNG, input_buff,
+                        size);
+  } else if (end_with(input_filename, ".jpg")) {
+    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_JPG, input_buff,
+                        size);
   } else {
     printf("Not supported file type!\n");
   }

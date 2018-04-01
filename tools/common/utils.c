@@ -165,16 +165,16 @@ const char* get_next_token(const char* p, char* token, char c) {
   return token;
 }
 
-bool_t start_with(const char* p, const char* str) { 
+bool_t start_with(const char* p, const char* str) {
   return_value_if_fail(p != NULL && str != NULL && strlen(p) >= strlen(str), FALSE);
 
-  return strncmp(p, str, strlen(str)) == 0; 
+  return strncmp(p, str, strlen(str)) == 0;
 }
 
-bool_t end_with(const char* p, const char* str) { 
+bool_t end_with(const char* p, const char* str) {
   return_value_if_fail(p != NULL && str != NULL && strlen(p) >= strlen(str), FALSE);
 
-  return strncmp(p+strlen(p)-strlen(str), str, strlen(str)) == 0; 
+  return strncmp(p + strlen(p) - strlen(str), str, strlen(str)) == 0;
 }
 
 const char* to_lower(char* str) {

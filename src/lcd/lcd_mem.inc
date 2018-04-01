@@ -137,7 +137,14 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     const color_t* src_p = data + img->w * src->y + src->x;
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
-        dst_p[i] = blend_pixel(dst_p[i], src_p[i]);
+        color_t c = src_p[i];
+        if(c.rgba.a > 5) { 
+          if(c.rgba.a > 0xfe) {
+            dst_p[i] = to_pixel(c);
+          } else {
+            dst_p[i] = blend_pixel(dst_p[i], c);
+          }
+        }
       }
       src_p += img->w;
       dst_p += width;
@@ -148,9 +155,16 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     xy_t sw = src->w;
     xy_t sh = src->h;
     for (j = 0; j < dh; j++) {
+      const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx;
       for (i = 0; i < dw; i++) {
-        const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx + i * sw / dw;
-        dst_p[i] = blend_pixel(dst_p[i], src_p[0]);
+        color_t c = src_p[i * sw / dw];
+        if(c.rgba.a > 5) {
+          if(c.rgba.a > 0xfe) {
+            dst_p[i] = to_pixel(c);
+          } else {
+            dst_p[i] = blend_pixel(dst_p[i], c);
+          }
+        }
       }
       dst_p += width;
     }
