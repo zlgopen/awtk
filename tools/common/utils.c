@@ -109,7 +109,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
       fprintf(fp, "0x%02x,", (int)(buff[i]));
     }
 
-    fprintf(fp, "};\n");
+    fprintf(fp, "};/*%u*/\n", size);
     fclose(fp);
 
     return RET_OK;
@@ -165,7 +165,17 @@ const char* get_next_token(const char* p, char* token, char c) {
   return token;
 }
 
-bool_t start_with(const char* p, const char* str) { return strncmp(p, str, strlen(str)) == 0; }
+bool_t start_with(const char* p, const char* str) { 
+  return_value_if_fail(p != NULL && str != NULL && strlen(p) >= strlen(str), FALSE);
+
+  return strncmp(p, str, strlen(str)) == 0; 
+}
+
+bool_t end_with(const char* p, const char* str) { 
+  return_value_if_fail(p != NULL && str != NULL && strlen(p) >= strlen(str), FALSE);
+
+  return strncmp(p+strlen(p)-strlen(str), str, strlen(str)) == 0; 
+}
 
 const char* to_lower(char* str) {
   char* p = str;
