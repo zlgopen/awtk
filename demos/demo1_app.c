@@ -92,7 +92,7 @@ ret_t application_init() {
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
 
-  image = image_create(win, 100, 230, 200, 200);
+  image = image_create(win, 100, 230, 60, 60);
   image_set_image_name(image, "earth");
   image_set_draw_type(image, IMAGE_DRAW_SCALE);
 

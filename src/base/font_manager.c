@@ -52,6 +52,10 @@ font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {
   fonts = (font_t**)fm->fonts.elms;
   return_value_if_fail(nr > 0, NULL);
 
+  if(name == NULL) {
+    name = STR_DEFAULT_FONT;
+  }
+
   for (i = 0; i < nr; i++) {
     font_t* iter = fonts[i];
     if (font_match(iter, name, size)) {

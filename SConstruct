@@ -46,6 +46,7 @@ SConscript([
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
+  'tools/res_gen/SConscript', 
   'tools/ui_gen/xml_to_ui/SConscript', 
   'tools/ui_gen/qt_to_xml/SConscript', 
   'tools/ui_gen/rc_to_xml/SConscript',

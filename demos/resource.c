@@ -1,6 +1,7 @@
 #include "lftk.h"
 #include "base/resource_manager.h"
-#include "res/src/fonts/font20.data"
+#include "res/src/fonts/ap.data"
+#include "res/src/fonts/default.data"
 #include "res/src/images/bricks.data"
 #include "res/src/images/checked.data"
 #include "res/src/images/dialog_title.data"
@@ -23,7 +24,8 @@
 ret_t resource_init() {
   resource_manager_init(15);
 
-  resource_manager_add(font_font20);
+  resource_manager_add(font_ap);
+  resource_manager_add(font_default);
   resource_manager_add(image_bricks);
   resource_manager_add(image_checked);
   resource_manager_add(image_dialog_title);

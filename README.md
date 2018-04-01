@@ -90,6 +90,14 @@ bin\demo1
 
 ## 最新动态
 
+* 2018/04/1
+    * 字体管理器支持TTF字体。 
+    * 增加工具resgen。
+
+* 2018/03/31
+    * 重新设计XML主题的格式。
+    * 重构window/button/label/check\_buton，使用同一个绘制函数。
+
 * 2018/03/27
     * [Luncher](https://github.com/Luncher) 加入LFTK核心团队。
     * 完善文档。

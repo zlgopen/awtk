@@ -57,7 +57,7 @@
   </style>
 </progress_bar>
 
-<check_button>
+<check_button font-name="ap" font-size="12">
   <style name="default" bg-color="#f0f0f0" text-color="black">
     <checked   icon="checked" />
     <unchecked icon="unchecked" />
