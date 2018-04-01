@@ -84,6 +84,7 @@ bin\demo1
 * [LFTK中的图片显示方式](docs/image_draw_type.md)
 * [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
 * [LFTK中的事件处理函数](docs/event_listener.md)
+* [LFTK中的主题](docs/theme.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
@@ -93,6 +94,7 @@ bin\demo1
 * 2018/04/1
     * 字体管理器支持TTF字体。 
     * 增加工具resgen。
+    * 增加主题文档。
 
 * 2018/03/31
     * 重新设计XML主题的格式。

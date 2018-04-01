@@ -15,14 +15,16 @@
     <over       bg-color="#e0e0e0" />
     <disable    bg-color="gray" text-color="#d0d0d0" />
   </style>
+</button>
 
-  <style name="1:green_btn" bg-image-draw-type="3patch_x" text-color="white">
+<button bg-image-draw-type="3patch_x" text-color="white">
+  <style name="1:green_btn" >
     <normal   bg-image="green_btn_n" />
     <pressed  bg-image="green_btn_p" />
     <over     bg-image="green_btn_o" />
   </style>
 
-  <style name="2:red_btn" bg-image-draw-type="3patch_x" text-color="white">
+  <style name="2:red_btn">
     <normal   bg-image="red_btn_n" />
     <pressed  bg-image="red_btn_p" />
     <over     bg-image="red_btn_o" />

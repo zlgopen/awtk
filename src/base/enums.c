@@ -57,6 +57,8 @@ static const key_type_value_t style_id_name_value[] = {
     {"text-align-v", TYPE_INT, STYLE_ID_TEXT_ALIGN_V},
     {"bg-image", TYPE_STRING, STYLE_ID_BG_IMAGE},
     {"bg-image-draw-type", TYPE_INT, STYLE_ID_BG_IMAGE_DRAW_TYPE},
+    {"fg-image", TYPE_STRING, STYLE_ID_FG_IMAGE},
+    {"fg-image-draw-type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
     {"icon", TYPE_STRING, STYLE_ID_ICON},
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
