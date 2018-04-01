@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
   if (argc != 5) {
-    printf("Usage: ttf_filename str_filename output_filename font_size\n");
+    printf("Usage: %s ttf_filename str_filename output_filename font_size\n", argv[0]);
 
     return 0;
   }

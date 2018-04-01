@@ -6,4 +6,5 @@
 ./bin/resgen input_filename output_filename
 ```
 
-> 目前支持ttf/png/jpg等文件的转换。
+* input_filename 输入文件。目前支持ttf/png/jpg等文件的转换。
+* output\_filename 输出文件。

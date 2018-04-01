@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
   if (argc != 3) {
-    printf("Usage: in_filename out_filename\n");
+    printf("Usage: %s in_filename out_filename\n", argv[0]);
 
     return 0;
   }
