@@ -90,6 +90,7 @@ typedef struct _rect_t {
   r->h = (hh);
 
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
+bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
 
 END_C_DECLS
 

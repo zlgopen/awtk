@@ -64,6 +64,14 @@
   </style>
 </progress_bar>
 
+<slider>
+  <style>
+    <normal bg-color="#a0a0a0" fg-color="blue" border-color="#ffd700"/>
+    <pressed bg-color="#a0a0a0" fg-color="blue" border-color="#ffa700"/>
+    <over bg-color="#a0a0a0" fg-color="blue" border-color="#ffe700"/>
+  </style>
+</slider>
+
 <group_box>
   <style name="1:box">
     <normal bg-color="#f0f0f0" border-color="#a0a0a0" />

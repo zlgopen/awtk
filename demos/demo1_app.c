@@ -32,6 +32,7 @@
 #include "base/utils.h"
 #include "base/utf8.h"
 #include "base/window.h"
+#include "base/slider.h"
 #include "base/group_box.h"
 #include "common.c"
 
@@ -75,6 +76,7 @@ ret_t application_init() {
   widget_t* ok = NULL;
   widget_t* label = NULL;
   widget_t* cancel = NULL;
+  widget_t* slider = NULL;
   widget_t* progress_bar = NULL;
   widget_t* check_button = NULL;
   widget_t* radio_button = NULL;
@@ -114,14 +116,24 @@ ret_t application_init() {
   widget_set_text(label, L"Right");
   widget_use_style(label, "4:right");
 
-  progress_bar = progress_bar_create(win, 10, 80, 168, 30);
+  progress_bar = progress_bar_create(win, 10, 80, 168, 20);
   widget_set_value(progress_bar, 40);
-  timer_add(on_timer, progress_bar, 200);
-  // progress_bar_set_show_text(progress_bar, TRUE);
+  //timer_add(on_timer, progress_bar, 200);
 
-  progress_bar = progress_bar_create(win, 260, 80, 30, 118);
+#ifndef WITH_STM32F103ZE_RAW
+  progress_bar_set_show_text(progress_bar, TRUE);
+#endif
+
+  slider = slider_create(win, 10, 105, 168, 20);
+  widget_set_value(slider, 40);
+
+  progress_bar = progress_bar_create(win, 260, 80, 20, 118);
   widget_set_value(progress_bar, 40);
   progress_bar_set_vertical(progress_bar, TRUE);
+
+  slider = slider_create(win, 230, 80, 20, 118);
+  widget_set_value(slider, 40);
+  slider_set_vertical(slider, TRUE);
 
   widget_on(ok, EVT_CLICK, on_inc, progress_bar);
   widget_on(cancel, EVT_CLICK, on_dec, progress_bar);

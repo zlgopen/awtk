@@ -12,3 +12,13 @@ TEST(Rect, merge) {
   ASSERT_EQ(dr.h, 70);
   ASSERT_EQ(dr.w, 80);
 }
+
+TEST(Rect, contains) {
+  rect_t r;
+  rect_init(r, 50, 200, 80, 30);
+  ASSERT_EQ(rect_contains(&r, 50, 200), TRUE);
+  ASSERT_EQ(rect_contains(&r, 55, 200), TRUE);
+  ASSERT_EQ(rect_contains(&r, 55, 240), TRUE);
+  ASSERT_EQ(rect_contains(&r, 5, 24), FALSE);
+  ASSERT_EQ(rect_contains(&r, 5, 240), FALSE);
+}

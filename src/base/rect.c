@@ -41,3 +41,9 @@ ret_t rect_merge(rect_t* dr, rect_t* r) {
 
   return RET_OK;
 }
+
+bool_t rect_contains(rect_t* r, xy_t x, xy_t y) {
+  return_value_if_fail(r != NULL, FALSE);
+
+  return (x >= r->x && x < (r->x + r->w)) && (y >= r->y && y < (r->y + r->h));
+}

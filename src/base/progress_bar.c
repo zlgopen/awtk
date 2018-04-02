@@ -62,6 +62,8 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     uint32_t i = 0;
     wchar_t str[32];
     uint32_t len = 0;
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
     ftk_itoa(s, sizeof(s), progress_bar->value);
     len = strlen(s);
@@ -73,10 +75,10 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     }
 
     str[i] = 0;
-    canvas_set_font(c, NULL, 20);
+    canvas_set_font(c, font_name, font_size);
     w = canvas_measure_text(c, str, i);
     x = (widget->w - w) >> 1;
-    y = (widget->h) >> 1;
+    y = (widget->h - font_size) >> 1;
     canvas_draw_text(c, str, i, x, y);
   }
 

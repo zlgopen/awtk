@@ -178,12 +178,16 @@ typedef enum _widget_type_t {
    * 对话框的标题。
    */
   WIDGET_DIALOG_TITLE,
-
   /**
    * @const WIDGET_DIALOG_CLIENT
    * 对话框的客户区。
    */
   WIDGET_DIALOG_CLIENT,
+  /**
+   * @const WIDGET_SLIDER
+   * 滑块。
+   */
+  WIDGET_SLIDER,
 
   WIDGET_NR
 } widget_type_t;

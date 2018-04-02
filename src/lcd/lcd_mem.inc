@@ -138,8 +138,8 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         color_t c = src_p[i];
-        if(c.rgba.a > 5) { 
-          if(c.rgba.a > 0xfe) {
+        if (c.rgba.a > 5) {
+          if (c.rgba.a > 0xfe) {
             dst_p[i] = to_pixel(c);
           } else {
             dst_p[i] = blend_pixel(dst_p[i], c);
@@ -158,8 +158,8 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
       const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx;
       for (i = 0; i < dw; i++) {
         color_t c = src_p[i * sw / dw];
-        if(c.rgba.a > 5) {
-          if(c.rgba.a > 0xfe) {
+        if (c.rgba.a > 5) {
+          if (c.rgba.a > 0xfe) {
             dst_p[i] = to_pixel(c);
           } else {
             dst_p[i] = blend_pixel(dst_p[i], c);

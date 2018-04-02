@@ -432,6 +432,15 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   canvas_translate(c, widget->x, widget->y);
 #ifdef FAST_MODE
   if (widget->dirty) {
+    widget_t* parent = widget->parent;
+    if(parent != NULL && !(parent->dirty)) {
+      color_t trans = color_init(0, 0, 0, 0);
+      style_t* style = &(parent->style);
+      color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
+      canvas_set_fill_color(c, bg);  
+      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+    }
+
     widget_on_paint_self(widget, c);
   }
 #else

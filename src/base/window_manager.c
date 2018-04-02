@@ -67,7 +67,12 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   uint32_t i = 0;
   uint32_t n = 0;
   point_t p = {x, y};
+  window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL, NULL);
+
+  if (wm->graps.size > 0) {
+    return (widget_t*)(wm->graps.elms[wm->graps.size - 1]);
+  }
 
   widget_to_local(widget, &p);
   if (widget->children != NULL && widget->children->size > 0) {
@@ -131,9 +136,21 @@ widget_t* default_wm() {
   return WIDGETP(wm);
 }
 
-static ret_t window_manager_grab(widget_t* widget, widget_t* child) { return RET_OK; }
+static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  array_push(&(wm->graps), child);
 
-static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) { return RET_OK; }
+  return RET_OK;
+}
+
+static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  array_remove(&(wm->graps), NULL, child);
+
+  return RET_OK;
+}
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
