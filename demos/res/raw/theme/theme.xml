@@ -60,7 +60,15 @@
 
 <progress_bar>
   <style>
-    <normal bg-color="#f0f0f0" text-color="gold" fg-color="black" border-color="#a0a0a0" />
+    <normal bg-color="#f0f0f0" text-color="gold" fg-color="#c0c0c0" border-color="#a0a0a0" />
+  </style>
+  
+  <style name="1:img" bg-image="slider_bg" fg-image="slider_fg">
+    <normal icon="slider_drag"/>
+  </style>
+
+  <style name="2:img-v"  bg-image="slider_v_bg" fg-image="slider_v_fg" bg-image-draw-type="3patch_y" fg-image-draw-type="3patch_y">
+    <normal icon="slider_drag"/>
   </style>
 </progress_bar>
 
@@ -69,6 +77,18 @@
     <normal bg-color="#a0a0a0" fg-color="blue" border-color="#ffd700"/>
     <pressed bg-color="#a0a0a0" fg-color="blue" border-color="#ffa700"/>
     <over bg-color="#a0a0a0" fg-color="blue" border-color="#ffe700"/>
+  </style>
+
+  <style name="1:img" bg-image="slider_bg" fg-image="slider_fg">
+    <normal icon="slider_drag"/>
+    <pressed icon="slider_drag_p"/>
+    <over icon="slider_drag_o"/>
+  </style>
+
+  <style name="2:img-v"  bg-image="slider_v_bg" fg-image="slider_v_fg" bg-image-draw-type="3patch_y" fg-image-draw-type="3patch_y">
+    <normal icon="slider_drag"/>
+    <pressed icon="slider_drag_p"/>
+    <over icon="slider_drag_o"/>
   </style>
 </slider>
 

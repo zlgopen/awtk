@@ -19,45 +19,91 @@
  *
  */
 
-#include "base/progress_bar.h"
 #include "base/mem.h"
 #include "base/utils.h"
+#include "base/progress_bar.h"
+#include "base/image_manager.h"
 
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   xy_t x = 0;
   xy_t y = 0;
   wh_t w = 0;
   wh_t h = 0;
+  rect_t r;
+  color_t color;
+  bitmap_t img;
+  const char* image_name = NULL;
   style_t* style = &(widget->style);
+  color_t trans = color_init(0, 0, 0, 0);
+  image_draw_type_t draw_type = IMAGE_DRAW_CENTER;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  color_t color = color_init(0xff, 0xff, 0xff, 0xff);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  canvas_set_text_color(c, style_get_color(style, STYLE_ID_TEXT_COLOR, color));
-
-  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_FG_COLOR, color));
   if (progress_bar->vertical) {
+    x = 0;
+    y = 0;
+    w = widget->w;
+    h = (widget->h * (100 - progress_bar->value)) / 100;
+  } else {
+    x = 0;
+    y = 0;
+    h = widget->h;
+    w = (widget->w * (100 - progress_bar->value)) / 100;
+  }
+
+  rect_init(r, x, y, w, h);
+  color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
+  if (color.rgba.a) {
+    canvas_set_fill_color(c, color);
+    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  }
+
+  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  draw_type =
+      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+  if (image_name && image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    if (progress_bar->vertical) {
+      r.h += r.w;
+    } else {
+      r.w += r.h;
+    }
+    canvas_draw_image_ex(c, &img, draw_type, &r);
+  }
+
+  if (progress_bar->vertical) {
+    x = 0;
+    w = widget->w;
     h = (widget->h * progress_bar->value) / 100;
-    canvas_fill_rect(c, x, y + widget->h - h, widget->w, h);
+    y = widget->h - h;
   } else {
+    h = widget->h;
     w = (widget->w * progress_bar->value) / 100;
-    canvas_fill_rect(c, x, y, w, widget->h);
+    y = 0;
+    x = 0;
   }
 
-  canvas_set_fill_color(c, style_get_color(style, STYLE_ID_BG_COLOR, color));
-  if (progress_bar->vertical) {
-    h = widget->h - h;
-    canvas_fill_rect(c, x, y, widget->w, h);
-  } else {
-    x = w;
-    w = widget->w - w;
-    canvas_fill_rect(c, x, y, w, widget->h);
+  rect_init(r, x, y, w, h);
+  color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+  if (color.rgba.a) {
+    canvas_set_fill_color(c, color);
+    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
 
-  canvas_set_stroke_color(c, style_get_color(style, STYLE_ID_BORDER_COLOR, color));
-  canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
+  draw_type =
+      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+  if (image_name && image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    canvas_draw_image_ex(c, &img, draw_type, &r);
+  }
 
-  if (progress_bar->show_text) {
+  color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+  if (color.rgba.a) {
+    canvas_set_stroke_color(c, color);
+    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  }
+
+  color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
+  if (progress_bar->show_text && color.rgba.a) {
     char s[32];
     uint32_t i = 0;
     wchar_t str[32];
@@ -75,6 +121,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     }
 
     str[i] = 0;
+    canvas_set_text_color(c, color);
     canvas_set_font(c, font_name, font_size);
     w = canvas_measure_text(c, str, i);
     x = (widget->w - w) >> 1;

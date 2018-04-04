@@ -26,6 +26,7 @@
 #include "base/group_box.h"
 #include "base/image.h"
 #include "base/label.h"
+#include "base/slider.h"
 #include "base/progress_bar.h"
 #include "base/utf8.h"
 #include "base/value.h"
@@ -77,6 +78,9 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
       break;
     case WIDGET_PROGRESS_BAR:
       widget = progress_bar_create(parent, x, y, w, h);
+      break;
+    case WIDGET_SLIDER:
+      widget = slider_create(parent, x, y, w, h);
       break;
     case WIDGET_GROUP_BOX:
       widget = group_box_create(parent, x, y, w, h);

@@ -448,7 +448,8 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
   xy_t x2 = d->x + d->w;
   xy_t y2 = d->y + d->h;
 
-  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+  if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || x > c->clip_right || x2 < c->clip_left ||
+      y > c->clip_bottom || y2 < c->clip_top) {
     return RET_OK;
   }
 
@@ -588,7 +589,7 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t h = 0;
@@ -606,15 +607,6 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   dst_h = dst->h;
 
   canvas_translate(c, dst->x, dst->y);
-
-  if (dst_h <= img_h) {
-    rect_init(s, 0, 0, img_w, img_h);
-    rect_init(d, 0, 0, dst_w, dst_h);
-    canvas_draw_image(c, img, &s, &d);
-    canvas_untranslate(c, dst->x, dst->y);
-
-    return RET_OK;
-  }
 
   h = ftk_min(img_h, dst_h) / 3;
   h_h = dst_h - h * 2;
@@ -639,7 +631,51 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  xy_t x = 0;
+  wh_t h = 0;
+  wh_t h_h = 0;
+  wh_t img_w = 0;
+  wh_t img_h = 0;
+  wh_t dst_w = 0;
+  wh_t dst_h = 0;
+
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  img_w = img->w;
+  img_h = img->h;
+  dst_w = dst->w;
+  dst_h = dst->h;
+
+  canvas_translate(c, dst->x, dst->y);
+
+  h = ftk_min(img_h, dst_h) / 3;
+  h_h = dst_h - h * 2;
+
+  x = (dst->w - img->w) >> 1;
+  /*top*/
+  rect_init(s, 0, 0, img_w, h);
+  rect_init(d, x, 0, img_w, h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*middle*/
+  rect_init(s, 0, h, img_w, img_h - 2 * h);
+  rect_init(d, x, h, img_w, h_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*bottom*/
+  rect_init(s, 0, img_h - h, img_w, h);
+  rect_init(d, x, dst_h - h, img_w, h);
+  canvas_draw_image(c, img, &s, &d);
+
+  canvas_untranslate(c, dst->x, dst->y);
+
+  return RET_OK;
+}
+
+ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t w = 0;
@@ -658,15 +694,6 @@ ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  if (dst_w <= img_w) {
-    rect_init(s, 0, 0, img_w, img_h);
-    rect_init(d, 0, 0, dst_w, dst_h);
-    canvas_draw_image(c, img, &s, &d);
-    canvas_untranslate(c, dst->x, dst->y);
-
-    return RET_OK;
-  }
-
   w = ftk_min(img_w, dst_w) / 3;
   w_w = dst_w - w * 2;
 
@@ -683,6 +710,50 @@ ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   /*right*/
   rect_init(s, img_w - w, 0, w, img_h);
   rect_init(d, dst_w - w, 0, w, dst_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  canvas_untranslate(c, dst->x, dst->y);
+
+  return RET_OK;
+}
+
+ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  rect_t s;
+  rect_t d;
+  xy_t y = 0;
+  wh_t w = 0;
+  wh_t w_w = 0;
+  wh_t img_w = 0;
+  wh_t img_h = 0;
+  wh_t dst_w = 0;
+  wh_t dst_h = 0;
+
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  img_w = img->w;
+  img_h = img->h;
+  dst_w = dst->w;
+  dst_h = dst->h;
+
+  canvas_translate(c, dst->x, dst->y);
+
+  w = ftk_min(img_w, dst_w) / 3;
+  w_w = dst_w - w * 2;
+
+  y = (dst_h - img_h) >> 1;
+  /*left*/
+  rect_init(s, 0, 0, w, img_h);
+  rect_init(d, 0, y, w, img_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*center*/
+  rect_init(s, w, 0, img_w - 2 * w, img_h);
+  rect_init(d, w, y, w_w, img_h);
+  canvas_draw_image(c, img, &s, &d);
+
+  /*right*/
+  rect_init(s, img_w - w, 0, w, img_h);
+  rect_init(d, dst_w - w, y, w, img_h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);

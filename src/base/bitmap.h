@@ -129,17 +129,31 @@ typedef enum _image_draw_type_t {
 
   /**
    * @const IMAGE_DRAW_3PATCH_X
-   * 水平方向3宫格显示。
+   * 水平方向3宫格显示，垂直方向居中显示。
    * 将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。
    */
   IMAGE_DRAW_3PATCH_X,
 
   /**
    * @const IMAGE_DRAW_3PATCH_Y
-   * 垂直方向3宫格显示。
+   * 垂直方向3宫格显示，水平方向居中显示。
    * 将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。
    */
-  IMAGE_DRAW_3PATCH_Y
+  IMAGE_DRAW_3PATCH_Y,
+  
+  /**
+   * @const IMAGE_DRAW_3PATCH_X_SCALE_Y
+   * 水平方向3宫格显示，垂直方向缩放显示。
+   * 将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。
+   */
+  IMAGE_DRAW_3PATCH_X_SCALE_Y,
+
+  /**
+   * @const IMAGE_DRAW_3PATCH_Y_SCALE_X
+   * 垂直方向3宫格显示，水平方向缩放显示。
+   * 将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。
+   */
+  IMAGE_DRAW_3PATCH_Y_SCALE_X
 } image_draw_type_t;
 
 END_C_DECLS

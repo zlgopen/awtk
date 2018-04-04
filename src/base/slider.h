@@ -56,11 +56,11 @@ typedef struct _slider_t {
   uint16_t max;
 
   /**
-   * @property {uint16_t} delta
+   * @property {uint16_t} step
    * @readonly
    * 拖动的最小单位。
    */
-  uint16_t delta;
+  uint16_t step;
 
   /**
    * @property {bool_t} vertical
@@ -117,14 +117,14 @@ ret_t slider_set_min(widget_t* widget, uint16_t min);
 ret_t slider_set_max(widget_t* widget, uint16_t max);
 
 /**
- * @method slider_set_delta
+ * @method slider_set_step
  * 设置滑块的拖动的最小单位。
  * @param {widget_t*} widget 控件对象。
- * @param {uint16_t}  delta 拖动的最小单位。
+ * @param {uint16_t}  step 拖动的最小单位。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_delta(widget_t* widget, uint16_t delta);
+ret_t slider_set_step(widget_t* widget, uint16_t step);
 
 /**
  * @method slider_set_vertical

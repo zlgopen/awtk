@@ -23,6 +23,7 @@
 #include "base/rect.h"
 #include "base/utils.h"
 #include "base/slider.h"
+#include "base/image_manager.h"
 
 static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   slider_t* slider = SLIDER(widget);
@@ -69,22 +70,36 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   fvalue = (float)value / (float)range;
 
   if (slider->vertical) {
-    h = widget->h * fvalue;
     w = widget->w >> 1;
+    h = (widget->h - widget->w) * fvalue + w;
     x = widget->w >> 2;
     y = widget->h - h;
   } else {
     x = 0;
-    w = widget->w * fvalue;
     h = widget->h >> 1;
+    w = (widget->w - widget->h) * fvalue + h;
     y = widget->h >> 2;
   }
-  
+
   rect_init(r, x, y, w, h);
   color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  }
+
+  image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
+  draw_type =
+      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+  if (image_name && image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    if (slider->vertical) {
+      r.x = 0;
+      r.w = widget->w;
+    } else {
+      r.y = 0;
+      r.h = widget->h;
+    }
+    canvas_draw_image_ex(c, &img, draw_type, &r);
   }
 
   if (slider->vertical) {
@@ -105,12 +120,29 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
+  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  draw_type =
+      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+  if (image_name && image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    if (slider->vertical) {
+      r.x = 0;
+      r.w = widget->w;
+    } else {
+      r.y = 0;
+      r.h = widget->h;
+    }
+    canvas_draw_image_ex(c, &img, draw_type, &r);
+  }
 
   slider_get_dragger_rect(widget, &r);
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  }
+  image_name = style_get_str(style, STYLE_ID_ICON, NULL);
+  if (image_name && image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
   }
 
   return RET_OK;
@@ -173,10 +205,10 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_LEAVE:
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      widget_set_state(widget, slider->dragging ? WIDGET_STATE_PRESSED : WIDGET_STATE_NORMAL);
       break;
     case EVT_POINTER_ENTER:
-      widget_set_state(widget, WIDGET_STATE_OVER);
+      widget_set_state(widget, slider->dragging ? WIDGET_STATE_PRESSED : WIDGET_STATE_OVER);
       break;
     default:
       break;
@@ -214,11 +246,11 @@ ret_t slider_set_max(widget_t* widget, uint16_t max) {
   return RET_OK;
 }
 
-ret_t slider_set_delta(widget_t* widget, uint16_t delta) {
+ret_t slider_set_step(widget_t* widget, uint16_t step) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && delta > 0, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && step > 0, RET_BAD_PARAMS);
 
-  slider->delta = delta;
+  slider->step = step;
 
   return RET_OK;
 }
@@ -246,8 +278,8 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int(v, slider->min);
   } else if (strcmp(name, "max") == 0) {
     value_set_int(v, slider->max);
-  } else if (strcmp(name, "delta") == 0) {
-    value_set_int(v, slider->delta);
+  } else if (strcmp(name, "step") == 0) {
+    value_set_int(v, slider->step);
     return RET_OK;
   }
 
@@ -265,8 +297,8 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
     return slider_set_min(widget, value_int(v));
   } else if (strcmp(name, "max") == 0) {
     return slider_set_max(widget, value_int(v));
-  } else if (strcmp(name, "delta") == 0) {
-    return slider_set_delta(widget, value_int(v));
+  } else if (strcmp(name, "step") == 0) {
+    return slider_set_step(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;
@@ -288,7 +320,7 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_slider_vtable;
   slider->min = 0;
   slider->max = 100;
-  slider->delta = 1;
+  slider->step = 1;
   slider->value = 0;
 
   return widget;

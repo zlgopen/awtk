@@ -24,7 +24,11 @@
 #include "res/src/images/right_on.data"
 #include "res/src/images/slider_bg.data"
 #include "res/src/images/slider_drag.data"
+#include "res/src/images/slider_drag_o.data"
+#include "res/src/images/slider_drag_p.data"
 #include "res/src/images/slider_fg.data"
+#include "res/src/images/slider_v_bg.data"
+#include "res/src/images/slider_v_fg.data"
 #include "res/src/images/unchecked.data"
 #include "res/src/images/unmuted.data"
 #include "res/src/theme/default.data"
@@ -59,7 +63,11 @@ ret_t resource_init() {
   resource_manager_add(image_right_on);
   resource_manager_add(image_slider_bg);
   resource_manager_add(image_slider_drag);
+  resource_manager_add(image_slider_drag_o);
+  resource_manager_add(image_slider_drag_p);
   resource_manager_add(image_slider_fg);
+  resource_manager_add(image_slider_v_bg);
+  resource_manager_add(image_slider_v_fg);
   resource_manager_add(image_unchecked);
   resource_manager_add(image_unmuted);
   resource_manager_add(theme_default);
