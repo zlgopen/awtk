@@ -25,6 +25,8 @@
 #include "base/slider.h"
 #include "base/image_manager.h"
 
+static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype);
+
 static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   slider_t* slider = SLIDER(widget);
   uint16_t value = slider->value - slider->min;
@@ -189,7 +191,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         }
         value = fvalue * (slider->max - slider->min) + slider->min;
         if (value != slider->value) {
-          slider_set_value(widget, value);
+          slider_set_value_internal(widget, value, EVT_VALUE_CHANGING);
         }
       }
 
@@ -199,6 +201,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       if (slider->dragging) {
         slider->dragging = FALSE;
         widget_ungrab(widget->parent, widget);
+        slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED);
       }
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_invalidate(widget, NULL);
@@ -217,15 +220,34 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-ret_t slider_set_value(widget_t* widget, uint16_t value) {
+static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype) {
+  event_t evt;
+  uint16_t step = 0;
+  uint16_t offset = 0;
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && value <= slider->max && value >= slider->min,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  slider->value = value;
-  widget_invalidate(widget, NULL);
+  step = slider->step;
+  value = ftk_max(ftk_min(value, slider->max), slider->min);
+
+  if (step > 1) {
+    offset = value - slider->min;
+    value = slider->min + ((offset + (step >> 1) - 1) / step) * step;
+  }
+
+  if (slider->value != value) {
+    evt.type = etype;
+    evt.target = widget;
+    slider->value = value;
+    widget_invalidate(widget, NULL);
+    widget_dispatch(widget, &evt);
+  }
 
   return RET_OK;
+}
+
+ret_t slider_set_value(widget_t* widget, uint16_t value) {
+  return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED);
 }
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {
@@ -276,8 +298,10 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (strcmp(name, "min") == 0) {
     value_set_int(v, slider->min);
+    return RET_OK;
   } else if (strcmp(name, "max") == 0) {
     value_set_int(v, slider->max);
+    return RET_OK;
   } else if (strcmp(name, "step") == 0) {
     value_set_int(v, slider->step);
     return RET_OK;

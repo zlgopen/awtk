@@ -343,7 +343,7 @@ TEST(Canvas, draw_image) {
   lcd_destroy(lcd);
 }
 
-TEST(Canvas, draw_image_3patch_x) {
+TEST(Canvas, draw_image_3patch_x_scale_y) {
   rect_t r;
   rect_t d;
   canvas_t c;
@@ -360,24 +360,25 @@ TEST(Canvas, draw_image_3patch_x) {
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w, img.h);
-  ASSERT_EQ(canvas_draw_image_3patch_x(&c, &img, &d), RET_OK);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,32);");
+  ASSERT_EQ(canvas_draw_image_3patch_x_scale_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,10,32,0,0,10,32);dg(10,0,12,32,10,0,12,32);dg(22,0,10,32,22,0,10,32);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w * 3, img.h * 2);
-  ASSERT_EQ(canvas_draw_image_3patch_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_3patch_x_scale_y(&c, &img, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,10,32,0,0,10,64);dg(10,0,12,32,10,0,76,64);dg(22,0,10,32,86,0,10,64);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w * 3, img.h * 2);
-  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_3PATCH_X, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_3PATCH_X_SCALE_Y, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,10,32,0,0,10,64);dg(10,0,12,32,10,0,76,64);dg(22,0,10,32,86,0,10,64);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w * 3, img.h / 2);
-  ASSERT_EQ(canvas_draw_image_3patch_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_3patch_x_scale_y(&c, &img, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,10,32,0,0,10,16);dg(10,0,12,32,10,0,76,16);dg(22,0,10,32,86,0,10,16);");
 
@@ -386,7 +387,7 @@ TEST(Canvas, draw_image_3patch_x) {
   lcd_destroy(lcd);
 }
 
-TEST(Canvas, draw_image_3patch_y) {
+TEST(Canvas, draw_image_3patch_y_scale_x) {
   rect_t r;
   rect_t d;
   canvas_t c;
@@ -403,24 +404,25 @@ TEST(Canvas, draw_image_3patch_y) {
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w, img.h);
-  ASSERT_EQ(canvas_draw_image_3patch_y(&c, &img, &d), RET_OK);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,32);");
+  ASSERT_EQ(canvas_draw_image_3patch_y_scale_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,32,10,0,0,32,10);dg(0,10,32,12,0,10,32,12);dg(0,22,32,10,0,22,32,10);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w * 2, img.h * 3);
-  ASSERT_EQ(canvas_draw_image_3patch_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_3patch_y_scale_x(&c, &img, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,32,10,0,0,64,10);dg(0,10,32,12,0,10,64,76);dg(0,22,32,10,0,86,64,10);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w / 2, img.h * 3);
-  ASSERT_EQ(canvas_draw_image_3patch_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_3patch_y_scale_x(&c, &img, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,32,10,0,0,16,10);dg(0,10,32,12,0,10,16,76);dg(0,22,32,10,0,86,16,10);");
 
   lcd_log_reset(lcd);
   rect_init(d, 0, 0, img.w / 2, img.h * 3);
-  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_3PATCH_Y, &d), RET_OK);
+  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_3PATCH_Y_SCALE_X, &d), RET_OK);
   ASSERT_EQ(lcd_log_get_commands(lcd),
             "dg(0,0,32,10,0,0,16,10);dg(0,10,32,12,0,10,16,76);dg(0,22,32,10,0,86,16,10);");
 

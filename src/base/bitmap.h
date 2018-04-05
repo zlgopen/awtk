@@ -140,7 +140,7 @@ typedef enum _image_draw_type_t {
    * 将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。
    */
   IMAGE_DRAW_3PATCH_Y,
-  
+
   /**
    * @const IMAGE_DRAW_3PATCH_X_SCALE_Y
    * 水平方向3宫格显示，垂直方向缩放显示。

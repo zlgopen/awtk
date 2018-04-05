@@ -91,6 +91,10 @@ bin\demo1
 
 ## 最新动态
 
+* 2018/04/5
+    * Slider控件支持step和事件。
+    * Slider和ProgressBar支持在主题中设置图片。
+
 * 2018/04/2
     * 增加Slider控件。
 

@@ -18,7 +18,7 @@ TEST(Rect, contains) {
   rect_init(r, 50, 200, 80, 30);
   ASSERT_EQ(rect_contains(&r, 50, 200), TRUE);
   ASSERT_EQ(rect_contains(&r, 55, 200), TRUE);
-  ASSERT_EQ(rect_contains(&r, 55, 240), TRUE);
+  ASSERT_EQ(rect_contains(&r, 55, 220), TRUE);
   ASSERT_EQ(rect_contains(&r, 5, 24), FALSE);
   ASSERT_EQ(rect_contains(&r, 5, 240), FALSE);
 }

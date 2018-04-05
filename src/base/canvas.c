@@ -1000,6 +1000,10 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
         return canvas_draw_image_3patch_x(c, img, dst);
       case IMAGE_DRAW_3PATCH_Y:
         return canvas_draw_image_3patch_y(c, img, dst);
+      case IMAGE_DRAW_3PATCH_X_SCALE_Y:
+        return canvas_draw_image_3patch_x_scale_y(c, img, dst);
+      case IMAGE_DRAW_3PATCH_Y_SCALE_X:
+        return canvas_draw_image_3patch_y_scale_x(c, img, dst);
       default:
         return canvas_draw_image_center(c, img, dst);
     }

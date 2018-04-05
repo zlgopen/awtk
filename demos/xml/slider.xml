@@ -5,5 +5,5 @@
 
   <slider x="10" y="130" w="20" h="200" value="10" vertical="true"/>
   <slider style="2:img-v" x="50" y="130" w="30" h="200" value="20" vertical="true"/>
-  <slider style="2:img-v" x="90" y="130" w="30" h="200" value="30" min="5" max="50" vertical="true"/>
+  <slider style="2:img-v" x="90" y="130" w="30" h="200" value="30" min="10" max="50" step="5" vertical="true"/>
 </window>

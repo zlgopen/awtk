@@ -133,13 +133,13 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
-  rect_t r;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(widget != NULL && value <= 100, RET_BAD_PARAMS);
-  progress_bar->value = value;
 
-  rect_init(r, 0, 0, widget->w, widget->h);
-  widget_invalidate(widget, &r);
+  if (progress_bar->value != value) {
+    progress_bar->value = value;
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
