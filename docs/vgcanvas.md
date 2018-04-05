@@ -30,18 +30,18 @@ vgcanvas的接口如何定义呢，nanovg和agg的接口差异极大，必须为
 ```
 
 ret_t vgcanvas_begin_path(vgcanvas_t* vg);
-ret_t vgcanvas_move_to(vgcanvas_t* vg, double x, double y); 
-ret_t vgcanvas_line_to(vgcanvas_t* vg, double x, double y); 
-ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, double cpx, double cpy, double x, double y); 
-ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, double cp1x, double cp1y, double cp2x, double cp2y,
-                               double x, double y); 
-ret_t vgcanvas_arc_to(vgcanvas_t* vg, double x1, double y1, double x2, double y2, double r); 
-ret_t vgcanvas_arc(vgcanvas_t* vg, double x, double y, double r, double start_angle,
-                   double end_angle, bool_t ccw);
-bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, double x, double y); 
-ret_t vgcanvas_rect(vgcanvas_t* vg, double x, double y, double w, double h); 
-ret_t vgcanvas_round_rect(vgcanvas_t* vg, double x, double y, double w, double h, double r); 
-ret_t vgcanvas_ellipse(vgcanvas_t* vg, double x, double y, double rx, double ry);
+ret_t vgcanvas_move_to(vgcanvas_t* vg, float_t x, float_t y); 
+ret_t vgcanvas_line_to(vgcanvas_t* vg, float_t x, float_t y); 
+ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y); 
+ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x, float_t cp2y,
+                               float_t x, float_t y); 
+ret_t vgcanvas_arc_to(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2, float_t r); 
+ret_t vgcanvas_arc(vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t start_angle,
+                   float_t end_angle, bool_t ccw);
+bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, float_t x, float_t y); 
+ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h); 
+ret_t vgcanvas_round_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r); 
+ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry);
 ret_t vgcanvas_close_path(vgcanvas_t* vg);
 
 ...

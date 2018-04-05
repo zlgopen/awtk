@@ -94,6 +94,7 @@ bin\demo1
 * 2018/04/5
     * Slider控件支持step和事件。
     * Slider和ProgressBar支持在主题中设置图片。
+    * 因为性能原因，agg中使用float代替double。
 
 * 2018/04/2
     * 增加Slider控件。
