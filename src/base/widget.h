@@ -188,7 +188,6 @@ typedef enum _widget_type_t {
    * 滑块。
    */
   WIDGET_SLIDER,
-  
   /**
    * @const WIDGET_VIEW
    * 通用容器和自绘控件。
@@ -357,6 +356,12 @@ struct _widget_t {
    * Style数据。
    */
   style_t style;
+  /**
+   * @property {wstr_t} text
+   * @private
+   * 文本。用途视具体情况而定。
+   */
+  wstr_t text;
   /**
    * @property {layout_params_t*} layout_params
    * @private

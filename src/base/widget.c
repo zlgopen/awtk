@@ -83,10 +83,9 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
-  value_t v;
   return_value_if_fail(widget != NULL && text != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop(widget, "text", value_set_wstr(&v, text));
+  return wstr_set(&(widget->text), text);
 }
 
 uint32_t widget_get_value(widget_t* widget) {
@@ -97,10 +96,9 @@ uint32_t widget_get_value(widget_t* widget) {
 }
 
 const wchar_t* widget_get_text(widget_t* widget) {
-  value_t v;
   return_value_if_fail(widget != NULL, NULL);
 
-  return widget_get_prop(widget, "text", &v) == RET_OK ? value_wstr(&v) : NULL;
+  return widget->text.str;
 }
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
@@ -360,6 +358,10 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
     }
   }
 
+  if (text == NULL) {
+    text = &(widget->text);
+  }
+
   if (text != NULL && text->size > 0) {
     color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
@@ -499,6 +501,11 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (str != NULL) {
       strncpy(widget->name, str, NAME_LEN);
     }
+  } else if (strcmp(name, "text") == 0) {
+    const wchar_t* text = value_wstr(v);
+    if (text != NULL) {
+      widget_set_text(widget, text);
+    }
   } else {
     if (widget->vt->set_prop) {
       ret = widget->vt->set_prop(widget, name, v);
@@ -555,6 +562,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->enable);
   } else if (strcmp(name, "name") == 0) {
     value_set_str(v, widget->name);
+  } else if (strcmp(name, "text") == 0) {
+    value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {
       ret = widget->vt->get_prop(widget, name, v);
@@ -760,6 +769,7 @@ ret_t widget_destroy(widget_t* widget) {
     MEM_FREE(widget->layout_params);
   }
 
+  wstr_reset(&(widget->text));
   memset(widget, 0x00, sizeof(widget_t));
   MEM_FREE(widget);
 
@@ -834,6 +844,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
     widget_add_child(parent, widget);
   }
 
+  wstr_init(&(widget->text), 0);
   if (!widget->vt) {
     widget->vt = widget_vtable_default();
   }

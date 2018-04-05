@@ -53,4 +53,3 @@ widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 END_C_DECLS
 
 #endif /*LFTK_VIEW_H*/
-

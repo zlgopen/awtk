@@ -19,11 +19,10 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/check_button.h"
 #include "base/image_manager.h"
-#include "base/mem.h"
 #include "base/widget_vtable.h"
-#include "base/wstr.h"
 
 enum { BORDER = 2 };
 
@@ -48,10 +47,7 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
-  check_button_t* check_button = CHECK_BUTTON(widget);
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-
-  return widget_paint_helper(widget, c, NULL, &(check_button->text));
+  return widget_paint_helper(widget, c, NULL, NULL);
 }
 
 static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
@@ -96,22 +92,12 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
   return RET_OK;
 }
 
-ret_t check_button_set_text(widget_t* widget, const wchar_t* text) {
-  check_button_t* button = CHECK_BUTTON(widget);
-  return_value_if_fail(widget != NULL && text != NULL, RET_BAD_PARAMS);
-
-  return wstr_set(&(button->text), text);
-}
-
 static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* v) {
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (strcmp(name, "value") == 0) {
     value_set_uint8(v, check_button->value);
-    return RET_OK;
-  } else if (strcmp(name, "text") == 0) {
-    value_set_wstr(v, check_button->text.str);
     return RET_OK;
   }
 
@@ -123,25 +109,17 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 
   if (strcmp(name, "value") == 0) {
     return check_button_set_value(widget, value_bool(v));
-  } else if (strcmp(name, "text") == 0) {
-    return check_button_set_text(widget, value_wstr(v));
   }
 
   return RET_NOT_FOUND;
 }
 
-static ret_t check_button_destroy(widget_t* widget) {
-  check_button_t* check_button = CHECK_BUTTON(widget);
-  wstr_reset(&(check_button->text));
-
-  return RET_OK;
-}
-
-static const widget_vtable_t s_check_button_vtable = {.on_event = check_button_on_event,
-                                                      .on_paint_self = check_button_on_paint_self,
-                                                      .get_prop = check_button_get_prop,
-                                                      .set_prop = check_button_set_prop,
-                                                      .destroy = check_button_destroy};
+static const widget_vtable_t s_check_button_vtable = {
+    .on_event = check_button_on_event,
+    .on_paint_self = check_button_on_paint_self,
+    .get_prop = check_button_get_prop,
+    .set_prop = check_button_set_prop,
+};
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

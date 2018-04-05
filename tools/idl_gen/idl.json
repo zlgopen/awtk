@@ -168,6 +168,12 @@
    },
    {
     "name": "IMAGE_DRAW_3PATCH_Y"
+   },
+   {
+    "name": "IMAGE_DRAW_3PATCH_X_SCALE_Y"
+   },
+   {
+    "name": "IMAGE_DRAW_3PATCH_Y_SCALE_X"
    }
   ]
  },
@@ -203,20 +209,6 @@
     "name": "button_create",
     "isConstructor": true,
     "return": "widget_t*"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "wchar_t*",
-      "name": "text"
-     }
-    ],
-    "name": "button_set_text",
-    "return": "ret_t"
    }
   ],
   "properties": [],
@@ -289,20 +281,6 @@
     "name": "check_button_create_radio",
     "isConstructor": true,
     "return": "widget_t*"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "wchar_t*",
-      "name": "text"
-     }
-    ],
-    "name": "check_button_set_text",
-    "return": "ret_t"
    },
    {
     "params": [
@@ -465,6 +443,9 @@
    },
    {
     "name": "EVT_VALUE_CHANGED"
+   },
+   {
+    "name": "EVT_VALUE_CHANGING"
    },
    {
     "name": "EVT_PAINT"
@@ -736,20 +717,6 @@
     "name": "label_create",
     "isConstructor": true,
     "return": "widget_t*"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "wchar_t*",
-      "name": "text"
-     }
-    ],
-    "name": "label_set_text",
-    "return": "ret_t"
    }
   ],
   "properties": [],
@@ -998,6 +965,139 @@
  },
  {
   "type": "class",
+  "name": "slider_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "slider_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint16_t",
+      "name": "value"
+     }
+    ],
+    "name": "slider_set_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint16_t",
+      "name": "min"
+     }
+    ],
+    "name": "slider_set_min",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint16_t",
+      "name": "max"
+     }
+    ],
+    "name": "slider_set_max",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint16_t",
+      "name": "step"
+     }
+    ],
+    "name": "slider_set_step",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "vertical"
+     }
+    ],
+    "name": "slider_set_vertical",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint16_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "min",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "max",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "step",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "vertical",
+    "readonly": true
+   }
+  ],
+  "header": "base/slider.h"
+ },
+ {
+  "type": "class",
   "name": "style_t",
   "methods": [],
   "properties": [],
@@ -1051,6 +1151,12 @@
    },
    {
     "name": "STYLE_ID_ICON"
+   },
+   {
+    "name": "STYLE_ID_FG_IMAGE"
+   },
+   {
+    "name": "STYLE_ID_FG_IMAGE_DRAW_TYPE"
    },
    {
     "name": "STYLE_ID_MARGIN"
@@ -1592,6 +1698,43 @@
   "header": "base/value.h"
  },
  {
+  "type": "class",
+  "name": "view_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "view_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/view.h"
+ },
+ {
   "type": "enum",
   "header": "base/widget.h",
   "name": "widget_state_t",
@@ -1687,6 +1830,12 @@
    },
    {
     "name": "WIDGET_DIALOG_CLIENT"
+   },
+   {
+    "name": "WIDGET_SLIDER"
+   },
+   {
+    "name": "WIDGET_VIEW"
    }
   ]
  },

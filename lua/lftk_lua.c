@@ -16,10 +16,12 @@
 #include "base/progress_bar.h"
 #include "base/rect.h"
 #include "base/resource_manager.h"
+#include "base/slider.h"
 #include "base/theme.h"
 #include "base/timer.h"
 #include "base/types_def.h"
 #include "base/value.h"
+#include "base/view.h"
 #include "base/widget.h"
 #include "base/window_manager.h"
 #include "base/window.h"
@@ -55,8 +57,12 @@ static int wrap_point_t_get_prop(lua_State* L);
 static int wrap_point_t_set_prop(lua_State* L);
 static int wrap_rect_t_get_prop(lua_State* L);
 static int wrap_rect_t_set_prop(lua_State* L);
+static int wrap_slider_t_get_prop(lua_State* L);
+static int wrap_slider_t_set_prop(lua_State* L);
 static int wrap_value_t_get_prop(lua_State* L);
 static int wrap_value_t_set_prop(lua_State* L);
+static int wrap_view_t_get_prop(lua_State* L);
+static int wrap_view_t_set_prop(lua_State* L);
 static int wrap_widget_t_get_prop(lua_State* L);
 static int wrap_widget_t_set_prop(lua_State* L);
 static int wrap_window_t_get_prop(lua_State* L);
@@ -92,19 +98,7 @@ static int wrap_button_create(lua_State* L) {
   return lftk_newuserdata(L, ret, "/button_t/widget_t", "lftk.button_t");
 }
 
-static int wrap_button_set_text(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  wchar_t* text = (wchar_t*)lua_touserdata(L, 2);
-  ret = (ret_t)button_set_text(widget, text);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
-static const struct luaL_Reg button_t_member_funcs[] = {{"set_text", wrap_button_set_text},
-                                                        {NULL, NULL}};
+static const struct luaL_Reg button_t_member_funcs[] = {{NULL, NULL}};
 
 static int wrap_button_t_set_prop(lua_State* L) {
   button_t* obj = (button_t*)lftk_checkudata(L, 1, "button_t");
@@ -211,17 +205,6 @@ static int wrap_check_button_create_radio(lua_State* L) {
   return lftk_newuserdata(L, ret, "/check_button_t/widget_t", "lftk.check_button_t");
 }
 
-static int wrap_check_button_set_text(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  wchar_t* text = (wchar_t*)lua_touserdata(L, 2);
-  ret = (ret_t)check_button_set_text(widget, text);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
 static int wrap_check_button_set_value(lua_State* L) {
   ret_t ret = 0;
   widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
@@ -234,9 +217,7 @@ static int wrap_check_button_set_value(lua_State* L) {
 }
 
 static const struct luaL_Reg check_button_t_member_funcs[] = {
-    {"set_text", wrap_check_button_set_text},
-    {"set_value", wrap_check_button_set_value},
-    {NULL, NULL}};
+    {"set_value", wrap_check_button_set_value}, {NULL, NULL}};
 
 static int wrap_check_button_t_set_prop(lua_State* L) {
   check_button_t* obj = (check_button_t*)lftk_checkudata(L, 1, "check_button_t");
@@ -448,6 +429,10 @@ static void event_type_t_init(lua_State* L) {
 
   lua_pushstring(L, "VALUE_CHANGED");
   lua_pushinteger(L, EVT_VALUE_CHANGED);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "VALUE_CHANGING");
+  lua_pushinteger(L, EVT_VALUE_CHANGING);
   lua_settable(L, -3);
 
   lua_pushstring(L, "PAINT");
@@ -872,19 +857,7 @@ static int wrap_label_create(lua_State* L) {
   return lftk_newuserdata(L, ret, "/label_t/widget_t", "lftk.label_t");
 }
 
-static int wrap_label_set_text(lua_State* L) {
-  ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
-  wchar_t* text = (wchar_t*)lua_touserdata(L, 2);
-  ret = (ret_t)label_set_text(widget, text);
-
-  lua_pushnumber(L, (lua_Number)(ret));
-
-  return 1;
-}
-
-static const struct luaL_Reg label_t_member_funcs[] = {{"set_text", wrap_label_set_text},
-                                                       {NULL, NULL}};
+static const struct luaL_Reg label_t_member_funcs[] = {{NULL, NULL}};
 
 static int wrap_label_t_set_prop(lua_State* L) {
   label_t* obj = (label_t*)lftk_checkudata(L, 1, "label_t");
@@ -1169,6 +1142,153 @@ static void rect_t_init(lua_State* L) {
   lua_settable(L, -3);
   luaL_openlib(L, NULL, index_funcs, 0);
   luaL_openlib(L, "Rect", static_funcs, 0);
+  lua_settop(L, 0);
+}
+static int wrap_slider_create(lua_State* L) {
+  widget_t* ret = NULL;
+  widget_t* parent = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  xy_t x = (xy_t)luaL_checkinteger(L, 2);
+  xy_t y = (xy_t)luaL_checkinteger(L, 3);
+  wh_t w = (wh_t)luaL_checkinteger(L, 4);
+  wh_t h = (wh_t)luaL_checkinteger(L, 5);
+  ret = (widget_t*)slider_create(parent, x, y, w, h);
+
+  return lftk_newuserdata(L, ret, "/slider_t/widget_t", "lftk.slider_t");
+}
+
+static int wrap_slider_set_value(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  uint16_t value = (uint16_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)slider_set_value(widget, value);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_slider_set_min(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  uint16_t min = (uint16_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)slider_set_min(widget, min);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_slider_set_max(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  uint16_t max = (uint16_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)slider_set_max(widget, max);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_slider_set_step(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  uint16_t step = (uint16_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)slider_set_step(widget, step);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_slider_set_vertical(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  bool_t vertical = (bool_t)lua_toboolean(L, 2);
+  ret = (ret_t)slider_set_vertical(widget, vertical);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static const struct luaL_Reg slider_t_member_funcs[] = {
+    {"set_value", wrap_slider_set_value},       {"set_min", wrap_slider_set_min},
+    {"set_max", wrap_slider_set_max},           {"set_step", wrap_slider_set_step},
+    {"set_vertical", wrap_slider_set_vertical}, {NULL, NULL}};
+
+static int wrap_slider_t_set_prop(lua_State* L) {
+  slider_t* obj = (slider_t*)lftk_checkudata(L, 1, "slider_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  if (strcmp(name, "value") == 0) {
+    printf("value is readonly\n");
+    return 0;
+  } else if (strcmp(name, "min") == 0) {
+    printf("min is readonly\n");
+    return 0;
+  } else if (strcmp(name, "max") == 0) {
+    printf("max is readonly\n");
+    return 0;
+  } else if (strcmp(name, "step") == 0) {
+    printf("step is readonly\n");
+    return 0;
+  } else if (strcmp(name, "vertical") == 0) {
+    printf("vertical is readonly\n");
+    return 0;
+  } else {
+    return wrap_widget_t_set_prop(L);
+  }
+}
+
+static int wrap_slider_t_get_prop(lua_State* L) {
+  slider_t* obj = (slider_t*)lftk_checkudata(L, 1, "slider_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(slider_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  }
+  if (strcmp(name, "value") == 0) {
+    lua_pushinteger(L, (lua_Integer)(obj->value));
+
+    return 1;
+  } else if (strcmp(name, "min") == 0) {
+    lua_pushinteger(L, (lua_Integer)(obj->min));
+
+    return 1;
+  } else if (strcmp(name, "max") == 0) {
+    lua_pushinteger(L, (lua_Integer)(obj->max));
+
+    return 1;
+  } else if (strcmp(name, "step") == 0) {
+    lua_pushinteger(L, (lua_Integer)(obj->step));
+
+    return 1;
+  } else if (strcmp(name, "vertical") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->vertical));
+
+    return 1;
+  } else {
+    return wrap_widget_t_get_prop(L);
+  }
+}
+
+static void slider_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {{"create", wrap_slider_create}, {NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {
+      {"__index", wrap_slider_t_get_prop}, {"__newindex", wrap_slider_t_set_prop}, {NULL, NULL}};
+
+  luaL_newmetatable(L, "lftk.slider_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "Slider", static_funcs, 0);
   lua_settop(L, 0);
 }
 static void align_v_t_init(lua_State* L) {
@@ -1690,6 +1810,59 @@ static void value_t_init(lua_State* L) {
   luaL_openlib(L, "Value", static_funcs, 0);
   lua_settop(L, 0);
 }
+static int wrap_view_create(lua_State* L) {
+  widget_t* ret = NULL;
+  widget_t* parent = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  xy_t x = (xy_t)luaL_checkinteger(L, 2);
+  xy_t y = (xy_t)luaL_checkinteger(L, 3);
+  wh_t w = (wh_t)luaL_checkinteger(L, 4);
+  wh_t h = (wh_t)luaL_checkinteger(L, 5);
+  ret = (widget_t*)view_create(parent, x, y, w, h);
+
+  return lftk_newuserdata(L, ret, "/view_t/widget_t", "lftk.view_t");
+}
+
+static const struct luaL_Reg view_t_member_funcs[] = {{NULL, NULL}};
+
+static int wrap_view_t_set_prop(lua_State* L) {
+  view_t* obj = (view_t*)lftk_checkudata(L, 1, "view_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  return wrap_widget_t_set_prop(L);
+  printf("%s: not supported %s\n", __func__, name);
+  return 0;
+}
+
+static int wrap_view_t_get_prop(lua_State* L) {
+  view_t* obj = (view_t*)lftk_checkudata(L, 1, "view_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(view_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  } else {
+    return wrap_widget_t_get_prop(L);
+  }
+}
+
+static void view_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {{"create", wrap_view_create}, {NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {
+      {"__index", wrap_view_t_get_prop}, {"__newindex", wrap_view_t_set_prop}, {NULL, NULL}};
+
+  luaL_newmetatable(L, "lftk.view_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "View", static_funcs, 0);
+  lua_settop(L, 0);
+}
 static void widget_state_t_init(lua_State* L) {
   lua_newtable(L);
   lua_setglobal(L, "WidgetState");
@@ -1807,6 +1980,14 @@ static void widget_type_t_init(lua_State* L) {
 
   lua_pushstring(L, "WIDGET_DIALOG_CLIENT");
   lua_pushinteger(L, WIDGET_DIALOG_CLIENT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "WIDGET_SLIDER");
+  lua_pushinteger(L, WIDGET_SLIDER);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "WIDGET_VIEW");
+  lua_pushinteger(L, WIDGET_VIEW);
   lua_settable(L, -3);
 }
 
@@ -2348,12 +2529,14 @@ void luaL_openlftk(lua_State* L) {
   progress_bar_t_init(L);
   point_t_init(L);
   rect_t_init(L);
+  slider_t_init(L);
   align_v_t_init(L);
   align_h_t_init(L);
   timer_t_init(L);
   ret_t_init(L);
   value_type_t_init(L);
   value_t_init(L);
+  view_t_init(L);
   widget_state_t_init(L);
   widget_type_t_init(L);
   widget_t_init(L);

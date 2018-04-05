@@ -39,12 +39,12 @@ typedef ret_t (*vgcanvas_move_to_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_line_to_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_quadratic_curve_to_t)(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
                                                float_t y);
-typedef ret_t (*vgcanvas_bezier_curve_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
-                                            float_t cp2y, float_t x, float_t y);
+typedef ret_t (*vgcanvas_bezier_curve_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y,
+                                            float_t cp2x, float_t cp2y, float_t x, float_t y);
 typedef ret_t (*vgcanvas_arc_to_t)(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2,
                                    float_t r);
-typedef ret_t (*vgcanvas_arc_t)(vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t start_angle,
-                                float_t end_angle, bool_t ccw);
+typedef ret_t (*vgcanvas_arc_t)(vgcanvas_t* vg, float_t x, float_t y, float_t r,
+                                float_t start_angle, float_t end_angle, bool_t ccw);
 typedef bool_t (*vgcanvas_is_point_in_path_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_round_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
                                        float_t r);
@@ -56,8 +56,8 @@ typedef ret_t (*vgcanvas_scale_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_translate_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_transform_t)(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d,
                                       float_t e, float_t f);
-typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d,
-                                          float_t e, float_t f);
+typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, float_t c,
+                                          float_t d, float_t e, float_t f);
 
 typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_clip_t)(vgcanvas_t* vg);
@@ -164,8 +164,8 @@ ret_t vgcanvas_begin_path(vgcanvas_t* vg);
 ret_t vgcanvas_move_to(vgcanvas_t* vg, float_t x, float_t y);
 ret_t vgcanvas_line_to(vgcanvas_t* vg, float_t x, float_t y);
 ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y);
-ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x, float_t cp2y,
-                               float_t x, float_t y);
+ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+                               float_t cp2y, float_t x, float_t y);
 ret_t vgcanvas_arc_to(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2, float_t r);
 ret_t vgcanvas_arc(vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t start_angle,
                    float_t end_angle, bool_t ccw);
@@ -197,9 +197,10 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* value);
 /*top|middle|bottom*/
 ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* value);
 ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width);
-ret_t vgcanvas_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width);
-ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw, float_t sh,
-                          float_t dx, float_t dy, float_t dw, float_t dh);
+ret_t vgcanvas_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
+                           float_t max_width);
+ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
+                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh);
 ret_t vgcanvas_set_antialias(vgcanvas_t* vg, bool_t value);
 ret_t vgcanvas_set_global_alpha(vgcanvas_t* vg, float_t alpha);
 ret_t vgcanvas_set_line_width(vgcanvas_t* vg, float_t value);

@@ -100,7 +100,7 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && title != NULL, RET_BAD_PARAMS);
 
-  return label_set_text(dialog->title, title);
+  return widget_set_text(dialog->title, title);
 }
 
 uint32_t dialog_modal(widget_t* widget) {

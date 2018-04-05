@@ -252,8 +252,9 @@ static ret_t vgcanvas_agg_stroke_text(vgcanvas_t* vg, const char* text, float_t 
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
-                                     float_t sh, float_t dx, float_t dy, float_t dw, float_t dh) {
+static ret_t vgcanvas_agg_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
+                                     float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
+                                     float_t dh) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
   /*TODO*/

@@ -204,7 +204,8 @@ const int TOP = 8;     // 1000
 
 // ASSUME THAT xmax, xmin, ymax and ymin are global constants.
 
-OutCode ComputeOutCode(float_t x, float_t y, float_t xmin, float_t ymin, float_t xmax, float_t ymax) {
+OutCode ComputeOutCode(float_t x, float_t y, float_t xmin, float_t ymin, float_t xmax,
+                       float_t ymax) {
   OutCode code;
 
   code = INSIDE;  // initialised as being inside of [[clip window]]

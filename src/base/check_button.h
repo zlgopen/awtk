@@ -22,7 +22,6 @@
 #ifndef LFTK_CHECK_BUTTON_H
 #define LFTK_CHECK_BUTTON_H
 
-#include "base/wstr.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
@@ -42,7 +41,6 @@ typedef struct _check_button_t {
    */
   bool_t value;
   bool_t radio;
-  wstr_t text;
 } check_button_t;
 
 /**
@@ -72,16 +70,6 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} 对象。
  */
 widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-
-/**
- * @method check_button_set_text
- * 设置控件的文本。
- * @param {widget_t*} widget check_button对象。
- * @param {wchar_t*}  text 文本。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t check_button_set_text(widget_t* widget, const wchar_t* text);
 
 /**
  * @method check_button_set_value

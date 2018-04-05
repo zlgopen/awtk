@@ -22,7 +22,6 @@
 #ifndef LFTK_BUTTON_H
 #define LFTK_BUTTON_H
 
-#include "base/wstr.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
@@ -35,7 +34,6 @@ BEGIN_C_DECLS
  */
 typedef struct _button_t {
   widget_t widget;
-  wstr_t text;
 } button_t;
 
 /**
@@ -51,16 +49,6 @@ typedef struct _button_t {
  * @return {widget_t*} 对象。
  */
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-
-/**
- * @method button_set_text
- * 设置控件的文本。
- * @param {widget_t*} widget button对象。
- * @param {wchar_t*}  text 文本。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t button_set_text(widget_t* widget, const wchar_t* text);
 
 #define BUTTON(widget) ((button_t*)(widget))
 

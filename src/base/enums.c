@@ -43,6 +43,7 @@ static const key_type_value_t widget_type_value[] = {
     {"check_button", 0, WIDGET_CHECK_BUTTON},
     {"radio_button", 0, WIDGET_RADIO_BUTTON},
     {"dialog_title", 0, WIDGET_DIALOG_TITLE},
+    {"dialog_view", 0, WIDGET_VIEW},
     {"dialog_client", 0, WIDGET_DIALOG_CLIENT},
 };
 

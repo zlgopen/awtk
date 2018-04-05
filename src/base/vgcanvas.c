@@ -143,8 +143,8 @@ ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, floa
   return vg->vt->quadratic_curve_to(vg, cpx, cpy, x, y);
 }
 
-ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x, float_t cp2y,
-                               float_t x, float_t y) {
+ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+                               float_t cp2y, float_t x, float_t y) {
   return_value_if_fail(vg != NULL && vg->vt->bezier_curve_to != NULL, RET_BAD_PARAMS);
 
   return vg->vt->bezier_curve_to(vg, cp1x, cp1y, cp2x, cp2y, x, y);
@@ -195,20 +195,22 @@ ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
   return vg->vt->set_text_align(vg, text_baseline);
 }
 
-ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width) {
+ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
+                         float_t max_width) {
   return_value_if_fail(vg != NULL && vg->vt->fill_text != NULL && text != NULL, RET_BAD_PARAMS);
 
   return vg->vt->fill_text(vg, text, x, y, max_width);
 }
 
-ret_t vgcanvas_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width) {
+ret_t vgcanvas_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
+                           float_t max_width) {
   return_value_if_fail(vg != NULL && vg->vt->stroke_text != NULL && text != NULL, RET_BAD_PARAMS);
 
   return vg->vt->stroke_text(vg, text, x, y, max_width);
 }
 
-ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw, float_t sh,
-                          float_t dx, float_t dy, float_t dw, float_t dh) {
+ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
+                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh) {
   return_value_if_fail(vg != NULL && vg->vt->draw_image != NULL && img != NULL, RET_BAD_PARAMS);
 
   return vg->vt->draw_image(vg, img, sx, sy, sw, sh, dx, dy, dw, dh);

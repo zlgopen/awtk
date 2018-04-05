@@ -12,9 +12,9 @@ TEST(Button, basic) {
   widget_t* b = button_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(widget_set_text(b, L"OK"), RET_OK);
-  ASSERT_EQ(wcscmp(BUTTON(b)->text.str, L"OK"), 0);
+  ASSERT_EQ(wcscmp(b->text.str, L"OK"), 0);
   ASSERT_EQ(widget_set_text(b, L"Cancel"), RET_OK);
-  ASSERT_EQ(wcscmp(BUTTON(b)->text.str, L"Cancel"), 0);
+  ASSERT_EQ(wcscmp(b->text.str, L"Cancel"), 0);
 
   value_set_wstr(&v1, L"button");
   ASSERT_EQ(widget_set_prop(b, "text", &v1), RET_OK);
