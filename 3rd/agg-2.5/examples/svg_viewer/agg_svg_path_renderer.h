@@ -43,7 +43,7 @@ namespace svg
         unsigned count() const { return m_count; }
 
         void rewind(unsigned path_id) { m_source->rewind(path_id); }
-        unsigned vertex(double* x, double* y) 
+        unsigned vertex(float_t* x, float_t* y) 
         { 
             ++m_count; 
             return m_source->vertex(x, y); 
@@ -69,8 +69,8 @@ namespace svg
         bool         even_odd_flag;
         line_join_e  line_join;
         line_cap_e   line_cap;
-        double       miter_limit;
-        double       stroke_width;
+        float_t       miter_limit;
+        float_t       stroke_width;
         trans_affine transform;
 
         // Empty constructor
@@ -153,18 +153,18 @@ namespace svg
 
         // The following functions are essentially a "reflection" of
         // the respective SVG path commands.
-        void move_to(double x, double y, bool rel=false);   // M, m
-        void line_to(double x,  double y, bool rel=false);  // L, l
-        void hline_to(double x, bool rel=false);            // H, h
-        void vline_to(double y, bool rel=false);            // V, v
-        void curve3(double x1, double y1,                   // Q, q
-                    double x,  double y, bool rel=false);
-        void curve3(double x, double y, bool rel=false);    // T, t
-        void curve4(double x1, double y1,                   // C, c
-                    double x2, double y2, 
-                    double x,  double y, bool rel=false);
-        void curve4(double x2, double y2,                   // S, s
-                    double x,  double y, bool rel=false);
+        void move_to(float_t x, float_t y, bool rel=false);   // M, m
+        void line_to(float_t x,  float_t y, bool rel=false);  // L, l
+        void hline_to(float_t x, bool rel=false);            // H, h
+        void vline_to(float_t y, bool rel=false);            // V, v
+        void curve3(float_t x1, float_t y1,                   // Q, q
+                    float_t x,  float_t y, bool rel=false);
+        void curve3(float_t x, float_t y, bool rel=false);    // T, t
+        void curve4(float_t x1, float_t y1,                   // C, c
+                    float_t x2, float_t y2, 
+                    float_t x,  float_t y, bool rel=false);
+        void curve4(float_t x2, float_t y2,                   // S, s
+                    float_t x,  float_t y, bool rel=false);
         void close_subpath();                               // Z, z
 
 //        template<class VertexSource> 
@@ -187,14 +187,14 @@ namespace svg
         void fill(const rgba8& f);
         void stroke(const rgba8& s);
         void even_odd(bool flag);
-        void stroke_width(double w);
+        void stroke_width(float_t w);
         void fill_none();
         void stroke_none();
-        void fill_opacity(double op);
-        void stroke_opacity(double op);
+        void fill_opacity(float_t op);
+        void stroke_opacity(float_t op);
         void line_join(line_join_e join);
         void line_cap(line_cap_e cap);
-        void miter_limit(double ml);
+        void miter_limit(float_t ml);
         trans_affine& transform();
 
         // Make all polygons CCW-oriented
@@ -204,7 +204,7 @@ namespace svg
         }
 
         // Expand all polygons 
-        void expand(double value)
+        void expand(float_t value)
         {
             m_curved_trans_contour.width(value);
         }
@@ -215,7 +215,7 @@ namespace svg
             return m_attr_storage[idx].index;
         }
 
-        void bounding_rect(double* x1, double* y1, double* x2, double* y2)
+        void bounding_rect(float_t* x1, float_t* y1, float_t* x2, float_t* y2)
         {
             agg::conv_transform<agg::path_storage> trans(m_storage, m_transform);
             agg::bounding_rect(trans, *this, 0, m_attr_storage.size(), x1, y1, x2, y2);
@@ -230,7 +230,7 @@ namespace svg
                     Renderer& ren, 
                     const trans_affine& mtx, 
                     const rect_i& cb,
-                    double opacity=1.0)
+                    float_t opacity=1.0)
         {
             unsigned i;
 
@@ -242,7 +242,7 @@ namespace svg
                 const path_attributes& attr = m_attr_storage[i];
                 m_transform = attr.transform;
                 m_transform *= mtx;
-                double scl = m_transform.scale();
+                float_t scl = m_transform.scale();
                 //m_curved.approximation_method(curve_inc);
                 m_curved.approximation_scale(scl);
                 m_curved.angle_tolerance(0.0);

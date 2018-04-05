@@ -33,7 +33,7 @@ namespace agg
     //===============================================================gamma_none
     struct gamma_none
     {
-        double operator()(double x) const { return x; }
+        float_t operator()(float_t x) const { return x; }
     };
 
 
@@ -42,18 +42,18 @@ namespace agg
     {
     public:
         gamma_power() : m_gamma(1.0) {}
-        gamma_power(double g) : m_gamma(g) {}
+        gamma_power(float_t g) : m_gamma(g) {}
 
-        void gamma(double g) { m_gamma = g; }
-        double gamma() const { return m_gamma; }
+        void gamma(float_t g) { m_gamma = g; }
+        float_t gamma() const { return m_gamma; }
 
-        double operator() (double x) const
+        float_t operator() (float_t x) const
         {
             return pow(x, m_gamma);
         }
 
     private:
-        double m_gamma;
+        float_t m_gamma;
     };
 
 
@@ -62,18 +62,18 @@ namespace agg
     {
     public:
         gamma_threshold() : m_threshold(0.5) {}
-        gamma_threshold(double t) : m_threshold(t) {}
+        gamma_threshold(float_t t) : m_threshold(t) {}
 
-        void threshold(double t) { m_threshold = t; }
-        double threshold() const { return m_threshold; }
+        void threshold(float_t t) { m_threshold = t; }
+        float_t threshold() const { return m_threshold; }
 
-        double operator() (double x) const
+        float_t operator() (float_t x) const
         {
             return (x < m_threshold) ? 0.0 : 1.0;
         }
 
     private:
-        double m_threshold;
+        float_t m_threshold;
     };
 
 
@@ -82,15 +82,15 @@ namespace agg
     {
     public:
         gamma_linear() : m_start(0.0), m_end(1.0) {}
-        gamma_linear(double s, double e) : m_start(s), m_end(e) {}
+        gamma_linear(float_t s, float_t e) : m_start(s), m_end(e) {}
 
-        void set(double s, double e) { m_start = s; m_end = e; }
-        void start(double s) { m_start = s; }
-        void end(double e) { m_end = e; }
-        double start() const { return m_start; }
-        double end() const { return m_end; }
+        void set(float_t s, float_t e) { m_start = s; m_end = e; }
+        void start(float_t s) { m_start = s; }
+        void end(float_t e) { m_end = e; }
+        float_t start() const { return m_start; }
+        float_t end() const { return m_end; }
 
-        double operator() (double x) const
+        float_t operator() (float_t x) const
         {
             if(x < m_start) return 0.0;
             if(x > m_end) return 1.0;
@@ -98,8 +98,8 @@ namespace agg
         }
 
     private:
-        double m_start;
-        double m_end;
+        float_t m_start;
+        float_t m_end;
     };
 
 
@@ -108,20 +108,20 @@ namespace agg
     {
     public:
         gamma_multiply() : m_mul(1.0) {}
-        gamma_multiply(double v) : m_mul(v) {}
+        gamma_multiply(float_t v) : m_mul(v) {}
 
-        void value(double v) { m_mul = v; }
-        double value() const { return m_mul; }
+        void value(float_t v) { m_mul = v; }
+        float_t value() const { return m_mul; }
 
-        double operator() (double x) const
+        float_t operator() (float_t x) const
         {
-            double y = x * m_mul;
+            float_t y = x * m_mul;
             if(y > 1.0) y = 1.0;
             return y;
         }
 
     private:
-        double m_mul;
+        float_t m_mul;
     };
 
 }

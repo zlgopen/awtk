@@ -58,8 +58,8 @@ namespace agg
         // Set font parameters
         //--------------------------------------------------------------------
         void resolution(unsigned dpi) { m_resolution = unsigned(dpi); }
-        void height(double h)         { m_height = unsigned(h);  }
-        void width(double w)          { m_width = unsigned(w);   }
+        void height(float_t h)         { m_height = unsigned(h);  }
+        void width(float_t w)          { m_width = unsigned(w);   }
         void weight(int w)            { m_weight = w;            }
         void italic(bool it)          { m_italic = it;           }
         void char_set(DWORD c)        { m_char_set = c;          }
@@ -70,8 +70,8 @@ namespace agg
 
         bool create_font(const char* typeface_, 
                          glyph_rendering ren_type,
-                         double height_,
-                         double width_=0.0,
+                         float_t height_,
+                         float_t width_=0.0,
                          int weight_=FW_REGULAR,
                          bool italic_=false,
                          DWORD char_set_=ANSI_CHARSET,
@@ -94,8 +94,8 @@ namespace agg
         //--------------------------------------------------------------------
         unsigned    resolution()   const { return m_resolution; }
         const char* typeface()     const { return m_typeface;   }
-        double      height()       const { return m_height;     }
-        double      width()        const { return m_width;      }
+        float_t      height()       const { return m_height;     }
+        float_t      width()        const { return m_width;      }
         int         weight()       const { return m_weight;     }
         bool        italic()       const { return m_italic;     }
         DWORD       char_set()     const { return m_char_set;   }
@@ -114,11 +114,11 @@ namespace agg
         unsigned        data_size()   const { return m_data_size;   }
         glyph_data_type data_type()   const { return m_data_type;   }
         const rect_i&   bounds()      const { return m_bounds;      }
-        double          advance_x()   const { return m_advance_x;   }
-        double          advance_y()   const { return m_advance_y;   }
+        float_t          advance_x()   const { return m_advance_x;   }
+        float_t          advance_y()   const { return m_advance_y;   }
         void            write_glyph_to(int8u* data) const;
         bool            add_kerning(unsigned first, unsigned second,
-                                    double* x, double* y);
+                                    float_t* x, float_t* y);
 
     private:
         font_engine_win32_tt_base(const font_engine_win32_tt_base&);
@@ -158,8 +158,8 @@ namespace agg
         unsigned        m_data_size;
         glyph_data_type m_data_type;
         rect_i          m_bounds;
-        double          m_advance_x;
-        double          m_advance_y;
+        float_t          m_advance_x;
+        float_t          m_advance_y;
         MAT2            m_matrix;
         char*           m_gbuf;
         KERNINGPAIR*    m_kerning_pairs;

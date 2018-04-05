@@ -50,7 +50,7 @@ namespace agg
         void attach(base_ren_type& ren) { m_ren = &ren; }
 
         //--------------------------------------------------------------------
-        static int coord(double c) 
+        static int coord(float_t c) 
         { 
             return iround(c * line_bresenham_interpolator::subpixel_scale); 
         }

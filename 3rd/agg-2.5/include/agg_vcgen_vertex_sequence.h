@@ -49,14 +49,14 @@ namespace agg
 
         // Vertex Generator Interface
         void remove_all();
-        void add_vertex(double x, double y, unsigned cmd);
+        void add_vertex(float_t x, float_t y, unsigned cmd);
 
         // Vertex Source Interface
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
-        void shorten(double s) { m_shorten = s; }
-        double shorten() const { return m_shorten; }
+        void shorten(float_t s) { m_shorten = s; }
+        float_t shorten() const { return m_shorten; }
 
     private:
         vcgen_vertex_sequence(const vcgen_vertex_sequence&);
@@ -65,7 +65,7 @@ namespace agg
         vertex_storage m_src_vertices;
         unsigned       m_flags;
         unsigned       m_cur_vertex;
-        double         m_shorten;
+        float_t         m_shorten;
         bool           m_ready;
     };
 
@@ -80,7 +80,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline void vcgen_vertex_sequence::add_vertex(double x, double y, unsigned cmd)
+    inline void vcgen_vertex_sequence::add_vertex(float_t x, float_t y, unsigned cmd)
     {
         m_ready = false;
         if(is_move_to(cmd))
@@ -114,7 +114,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline unsigned vcgen_vertex_sequence::vertex(double* x, double* y)
+    inline unsigned vcgen_vertex_sequence::vertex(float_t* x, float_t* y)
     {
         if(!m_ready)
         {

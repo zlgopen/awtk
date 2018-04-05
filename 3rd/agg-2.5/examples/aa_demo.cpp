@@ -18,11 +18,11 @@ namespace agg
     class square
     {
     public:
-        square(double size) : m_size(size) {}
+        square(float_t size) : m_size(size) {}
 
         template<class Rasterizer, class Scanline, class Renderer, class ColorT> 
         void draw(Rasterizer& ras, Scanline& sl, Renderer& ren, ColorT color, 
-                  double x, double y)
+                  float_t x, float_t y)
         {
             ras.reset();
             ras.move_to_d(x*m_size,        y*m_size);
@@ -33,7 +33,7 @@ namespace agg
         }
 
     private:
-        double m_size;
+        float_t m_size;
     };
 
 
@@ -41,7 +41,7 @@ namespace agg
     template<class Renderer> class renderer_enlarged
     {
     public:
-        renderer_enlarged(Renderer& ren, double size) : 
+        renderer_enlarged(Renderer& ren, float_t size) : 
             m_ren(ren),
             m_square(size), 
             m_size(size) {}
@@ -85,7 +85,7 @@ namespace agg
         Renderer&   m_ren;
         square      m_square;
         rgba8       m_color;
-        double      m_size;
+        float_t      m_size;
     };
 
 
@@ -112,10 +112,10 @@ namespace agg
 
 class the_application : public agg::platform_support
 {
-    double m_x[3];
-    double m_y[3];
-    double m_dx;
-    double m_dy;
+    float_t m_x[3];
+    float_t m_y[3];
+    float_t m_dx;
+    float_t m_dy;
     int    m_idx;
 
     agg::slider_ctrl<agg::rgba8> m_slider1;
@@ -258,8 +258,8 @@ public:
         {
             if(m_idx == 3)
             {
-                double dx = x - m_dx;
-                double dy = y - m_dy;
+                float_t dx = x - m_dx;
+                float_t dy = y - m_dy;
                 m_x[1] -= m_x[0] - dx;
                 m_y[1] -= m_y[0] - dy;
                 m_x[2] -= m_x[0] - dx;

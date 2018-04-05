@@ -30,7 +30,7 @@ enum flip_y_e { flip_y = true };
 class spiral
 {
 public:
-    spiral(double x, double y, double r1, double r2, double step, double start_angle=0) :
+    spiral(float_t x, float_t y, float_t r1, float_t r2, float_t step, float_t start_angle=0) :
         m_x(x), 
         m_y(y), 
         m_r1(r1), 
@@ -50,7 +50,7 @@ public:
         m_start = true; 
     }
 
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         if(m_curr_r > m_r2) return agg::path_cmd_stop;
 
@@ -67,17 +67,17 @@ public:
     }
 
 private:
-    double m_x;
-    double m_y;
-    double m_r1;
-    double m_r2;
-    double m_step;
-    double m_start_angle;
+    float_t m_x;
+    float_t m_y;
+    float_t m_r1;
+    float_t m_r2;
+    float_t m_step;
+    float_t m_start_angle;
 
-    double m_angle;
-    double m_curr_r;
-    double m_da;
-    double m_dr;
+    float_t m_angle;
+    float_t m_curr_r;
+    float_t m_da;
+    float_t m_dr;
     bool   m_start;
 };
 
@@ -112,8 +112,8 @@ class the_application : public agg::platform_support
     agg::rbox_ctrl<agg::rgba8> m_fill_rule;
     agg::rbox_ctrl<agg::rgba8> m_scanline_type;
     agg::rbox_ctrl<agg::rgba8> m_operation;
-    double m_x;
-    double m_y;
+    float_t m_x;
+    float_t m_y;
 
 public:
     the_application(agg::pix_format_e format, bool flip_y) :
@@ -180,8 +180,8 @@ public:
             pixfmt_type pixf(rbuf_window());
             renderer_base rb(pixf);
 
-            double t1 = 0.0;
-            double t2 = 0.0;
+            float_t t1 = 0.0;
+            float_t t2 = 0.0;
             unsigned num_spans = 0;
 
             switch(m_scanline_type.cur_item())
@@ -340,8 +340,8 @@ public:
                 agg::path_storage ps1;
                 agg::path_storage ps2;
 
-                double x = m_x - initial_width()/2 + 100;
-                double y = m_y - initial_height()/2 + 100;
+                float_t x = m_x - initial_width()/2 + 100;
+                float_t y = m_y - initial_height()/2 + 100;
                 ps1.move_to(x+140, y+145);
                 ps1.line_to(x+225, y+44);
                 ps1.line_to(x+296, y+219);
@@ -391,8 +391,8 @@ public:
                 agg::conv_stroke<agg::path_storage> stroke(ps2);
                 stroke.width(15.0);
 
-                double x = m_x - initial_width()/2 + 100;
-                double y = m_y - initial_height()/2 + 100;
+                float_t x = m_x - initial_width()/2 + 100;
+                float_t y = m_y - initial_height()/2 + 100;
                 ps1.move_to(x+140, y+145);
                 ps1.line_to(x+225, y+44);
                 ps1.line_to(x+296, y+219);

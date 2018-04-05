@@ -31,9 +31,9 @@ namespace agg
 {
 
     //-----------------------------------------------------------------------
-    void arc_to_bezier(double cx, double cy, double rx, double ry, 
-                       double start_angle, double sweep_angle,
-                       double* curve);
+    void arc_to_bezier(float_t cx, float_t cy, float_t rx, float_t ry, 
+                       float_t start_angle, float_t sweep_angle,
+                       float_t* curve);
 
 
     //==============================================================bezier_arc
@@ -45,19 +45,19 @@ namespace agg
     public:
         //--------------------------------------------------------------------
         bezier_arc() : m_vertex(26), m_num_vertices(0), m_cmd(path_cmd_line_to) {}
-        bezier_arc(double x,  double y, 
-                   double rx, double ry, 
-                   double start_angle, 
-                   double sweep_angle)
+        bezier_arc(float_t x,  float_t y, 
+                   float_t rx, float_t ry, 
+                   float_t start_angle, 
+                   float_t sweep_angle)
         {
             init(x, y, rx, ry, start_angle, sweep_angle);
         }
 
         //--------------------------------------------------------------------
-        void init(double x,  double y, 
-                  double rx, double ry, 
-                  double start_angle, 
-                  double sweep_angle);
+        void init(float_t x,  float_t y, 
+                  float_t rx, float_t ry, 
+                  float_t start_angle, 
+                  float_t sweep_angle);
 
         //--------------------------------------------------------------------
         void rewind(unsigned)
@@ -66,7 +66,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_vertex >= m_num_vertices) return path_cmd_stop;
             *x = m_vertices[m_vertex];
@@ -79,13 +79,13 @@ namespace agg
         // number of vertices. That is, for 1 vertex it returns 2.
         //--------------------------------------------------------------------
         unsigned  num_vertices() const { return m_num_vertices; }
-        const double* vertices() const { return m_vertices;     }
-        double*       vertices()       { return m_vertices;     }
+        const float_t* vertices() const { return m_vertices;     }
+        float_t*       vertices()       { return m_vertices;     }
  
     private:
         unsigned m_vertex;
         unsigned m_num_vertices;
-        double   m_vertices[26];
+        float_t   m_vertices[26];
         unsigned m_cmd;
     };
 
@@ -108,24 +108,24 @@ namespace agg
         //--------------------------------------------------------------------
         bezier_arc_svg() : m_arc(), m_radii_ok(false) {}
 
-        bezier_arc_svg(double x1, double y1, 
-                       double rx, double ry, 
-                       double angle,
+        bezier_arc_svg(float_t x1, float_t y1, 
+                       float_t rx, float_t ry, 
+                       float_t angle,
                        bool large_arc_flag,
                        bool sweep_flag,
-                       double x2, double y2) : 
+                       float_t x2, float_t y2) : 
             m_arc(), m_radii_ok(false)
         {
             init(x1, y1, rx, ry, angle, large_arc_flag, sweep_flag, x2, y2);
         }
 
         //--------------------------------------------------------------------
-        void init(double x1, double y1, 
-                  double rx, double ry, 
-                  double angle,
+        void init(float_t x1, float_t y1, 
+                  float_t rx, float_t ry, 
+                  float_t angle,
                   bool large_arc_flag,
                   bool sweep_flag,
-                  double x2, double y2);
+                  float_t x2, float_t y2);
 
         //--------------------------------------------------------------------
         bool radii_ok() const { return m_radii_ok; }
@@ -137,7 +137,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             return m_arc.vertex(x, y);
         }
@@ -146,8 +146,8 @@ namespace agg
         // number of vertices. That is, for 1 vertex it returns 2.
         //--------------------------------------------------------------------
         unsigned  num_vertices() const { return m_arc.num_vertices(); }
-        const double* vertices() const { return m_arc.vertices();     }
-        double*       vertices()       { return m_arc.vertices();     }
+        const float_t* vertices() const { return m_arc.vertices();     }
+        float_t*       vertices()       { return m_arc.vertices();     }
 
     private:
         bezier_arc m_arc;

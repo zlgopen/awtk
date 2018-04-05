@@ -502,7 +502,7 @@ public:
                                     int(bbox.y1));
             }
         }
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         char buf[64]; 
         agg::gsv_text t;

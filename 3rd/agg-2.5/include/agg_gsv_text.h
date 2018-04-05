@@ -53,16 +53,16 @@ namespace agg
         void font(const void* font);
         void flip(bool flip_y) { m_flip = flip_y; }
         void load_font(const char* file);
-        void size(double height, double width=0.0);
-        void space(double space);
-        void line_space(double line_space);
-        void start_point(double x, double y);
+        void size(float_t height, float_t width=0.0);
+        void space(float_t space);
+        void line_space(float_t line_space);
+        void start_point(float_t x, float_t y);
         void text(const char* text);
         
-        double text_width();
+        float_t text_width();
 
         void rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         // not supposed to be copied
@@ -86,13 +86,13 @@ namespace agg
         }
 
     private:
-        double          m_x;
-        double          m_y;
-        double          m_start_x;
-        double          m_width;
-        double          m_height;
-        double          m_space;
-        double          m_line_space;
+        float_t          m_x;
+        float_t          m_y;
+        float_t          m_start_x;
+        float_t          m_width;
+        float_t          m_height;
+        float_t          m_space;
+        float_t          m_line_space;
         char            m_chr[2];
         char*           m_text;
         pod_array<char> m_text_buf;
@@ -106,8 +106,8 @@ namespace agg
         int8*           m_glyphs;
         int8*           m_bglyph;
         int8*           m_eglyph;
-        double          m_w;
-        double          m_h;
+        float_t          m_w;
+        float_t          m_h;
     };
 
 
@@ -123,7 +123,7 @@ namespace agg
         {
         }
 
-        void width(double w) 
+        void width(float_t w) 
         { 
             m_polyline.width(w); 
         }
@@ -140,7 +140,7 @@ namespace agg
             m_polyline.line_cap(round_cap);
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             return m_trans.vertex(x, y);
         }

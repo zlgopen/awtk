@@ -29,8 +29,8 @@ namespace agg
 {
   
     //------------------------------------------------------------------------
-    rbox_ctrl_impl::rbox_ctrl_impl(double x1, double y1, 
-                                   double x2, double y2, bool flip_y) :
+    rbox_ctrl_impl::rbox_ctrl_impl(float_t x1, float_t y1, 
+                                   float_t x2, float_t y2, bool flip_y) :
         ctrl(x1, y1, x2, y2, flip_y),
         m_border_width(1.0),
         m_border_extra(0.0),
@@ -71,7 +71,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void rbox_ctrl_impl::border_width(double t, double extra)
+    void rbox_ctrl_impl::border_width(float_t t, float_t extra)
     { 
         m_border_width = t; 
         m_border_extra = extra;
@@ -80,7 +80,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void rbox_ctrl_impl::text_size(double h, double w) 
+    void rbox_ctrl_impl::text_size(float_t h, float_t w) 
     { 
         m_text_width = w; 
         m_text_height = h; 
@@ -167,7 +167,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned rbox_ctrl_impl::vertex(double* x, double* y)
+    unsigned rbox_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         switch(m_idx)
@@ -257,7 +257,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool rbox_ctrl_impl::in_rect(double x, double y) const
+    bool rbox_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         inverse_transform_xy(&x, &y);
         return x >= m_x1 && x <= m_x2 && y >= m_y1 && y <= m_y2;
@@ -266,14 +266,14 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool rbox_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool rbox_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
         unsigned i;
         for(i = 0; i < m_num_items; i++)  
         {
-            double xp = m_xs1 + m_dy / 1.3;
-            double yp = m_ys1 + m_dy * i + m_dy / 1.3;
+            float_t xp = m_xs1 + m_dy / 1.3;
+            float_t yp = m_ys1 + m_dy * i + m_dy / 1.3;
             if(calc_distance(x, y, xp, yp) <= m_text_height / 1.5)
             {
                 m_cur_item = int(i);
@@ -285,13 +285,13 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool rbox_ctrl_impl::on_mouse_move(double, double, bool)
+    bool rbox_ctrl_impl::on_mouse_move(float_t, float_t, bool)
     {
         return false;
     }
 
     //------------------------------------------------------------------------
-    bool rbox_ctrl_impl::on_mouse_button_up(double, double)
+    bool rbox_ctrl_impl::on_mouse_button_up(float_t, float_t)
     {
         return false;
     }

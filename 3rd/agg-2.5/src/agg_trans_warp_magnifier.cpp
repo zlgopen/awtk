@@ -29,11 +29,11 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    void trans_warp_magnifier::transform(double* x, double* y) const
+    void trans_warp_magnifier::transform(float_t* x, float_t* y) const
     {
-        double dx = *x - m_xc;
-        double dy = *y - m_yc;
-        double r = sqrt(dx * dx + dy * dy);
+        float_t dx = *x - m_xc;
+        float_t dy = *y - m_yc;
+        float_t r = sqrt(dx * dx + dy * dy);
         if(r < m_radius)
         {
             *x = m_xc + dx * m_magn;
@@ -41,19 +41,19 @@ namespace agg
             return;
         }
 
-        double m = (r + m_radius * (m_magn - 1.0)) / r;
+        float_t m = (r + m_radius * (m_magn - 1.0)) / r;
         *x = m_xc + dx * m;
         *y = m_yc + dy * m;
     }
 
     //------------------------------------------------------------------------
-    void trans_warp_magnifier::inverse_transform(double* x, double* y) const
+    void trans_warp_magnifier::inverse_transform(float_t* x, float_t* y) const
     {
         // New version by Andrew Skalkin
         //-----------------
-        double dx = *x - m_xc;
-        double dy = *y - m_yc;
-        double r = sqrt(dx * dx + dy * dy);
+        float_t dx = *x - m_xc;
+        float_t dy = *y - m_yc;
+        float_t r = sqrt(dx * dx + dy * dy);
 
         if(r < m_radius * m_magn) 
         {
@@ -62,7 +62,7 @@ namespace agg
         }
         else
         {
-            double rnew = r - m_radius * (m_magn - 1.0);
+            float_t rnew = r - m_radius * (m_magn - 1.0);
             *x = m_xc + rnew * dx / r; 
             *y = m_yc + rnew * dy / r;
         }

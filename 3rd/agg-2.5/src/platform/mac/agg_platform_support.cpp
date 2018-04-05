@@ -507,13 +507,13 @@ pascal void DoPeriodicTask (EventLoopTimerRef theTimer, void* userData);
 
 
     //------------------------------------------------------------------------
-    double platform_support::elapsed_time() const
+    float_t platform_support::elapsed_time() const
     {
         UnsignedWide stop;
         ::Microseconds(&stop);
-        return double(stop.lo - 
+        return float_t(stop.lo - 
                       m_specific->m_sw_start.lo) * 1e6 / 
-                      double(m_specific->m_sw_freq.lo);
+                      float_t(m_specific->m_sw_freq.lo);
     }
 
 
@@ -1045,7 +1045,7 @@ int main(int argc, char* argv[])
 	// argc = ccommand (&argv);
 #endif
     
-    // Check if we are launched by double-clicking under OSX 
+    // Check if we are launched by float_t-clicking under OSX 
 	// Get rid of extra argument, this will confuse the standard argument parsing
 	// calls used in the examples to get the name of the image file to be used
     if ( argc >= 2 && strncmp (argv[1], "-psn", 4) == 0 ) {

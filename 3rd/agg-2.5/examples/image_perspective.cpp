@@ -27,10 +27,10 @@ enum flip_y_e { flip_y = true };
 
 agg::rasterizer_scanline_aa<> g_rasterizer;
 agg::scanline_u8  g_scanline;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
 
 
 
@@ -63,7 +63,7 @@ public:
 
     virtual void on_init()
     {
-        double d = 0.0;
+        float_t d = 0.0;
         g_x1 = d;
         g_y1 = d;
         g_x2 = rbuf_img(0).width() - d;
@@ -203,7 +203,7 @@ public:
                 break;
             }
         }
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         char buf[128]; 
         agg::gsv_text t;

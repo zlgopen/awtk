@@ -75,7 +75,7 @@ public:
         typedef pixfmt_gamma<gamma_type> pixfmt_type;
         typedef agg::renderer_base<pixfmt_type> ren_base;
 
-        double g = m_gamma.value();
+        float_t g = m_gamma.value();
         gamma_type gamma(g);
 
         pixfmt_type pixf(rbuf_window(), gamma);
@@ -105,7 +105,7 @@ public:
         unsigned h = (unsigned)height();
         for(i = 0; i < h; i++)
         {
-            double k = (i - 80) / double(square_size - 1);
+            float_t k = (i - 80) / float_t(square_size - 1);
             if(i < 80)              k = 0.0;
             if(i >= 80+square_size) k = 1.0;
 
@@ -172,7 +172,7 @@ public:
         //---------------------
         for(i = 0; i < square_size; i += 2)
         {
-            double k = i / double(square_size - 1);
+            float_t k = i / float_t(square_size - 1);
             k = 1 - pow(k, 1/m_gamma.value());
             color_type c = color.gradient(agg::rgba(0,0,0), k);
             for(j = 0; j < square_size; j++)
@@ -190,7 +190,7 @@ public:
         //---------------------
         for(i = 0; i < square_size; i++)
         {
-            double k = i / double(square_size - 1);
+            float_t k = i / float_t(square_size - 1);
 
             k = 1 - pow(k/2, 1/m_gamma.value());
             color_type c = color.gradient(color_type(0,0,0), k);

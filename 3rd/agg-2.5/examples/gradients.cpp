@@ -30,8 +30,8 @@
 
 enum flip_y_e { flip_y = true };
 
-const double center_x = 350;
-const double center_y = 280;
+const float_t center_x = 350;
+const float_t center_y = 280;
 
 
 
@@ -84,18 +84,18 @@ class the_application : public agg::platform_support
     agg::spline_ctrl<agg::rgba8> m_spline_a;
     agg::rbox_ctrl<agg::rgba8>   m_rbox;
 
-    double m_pdx;
-    double m_pdy;
-    double m_center_x;
-    double m_center_y;
-    double m_scale;
-    double m_prev_scale;
-    double m_angle;
-    double m_prev_angle;
-    double m_scale_x;
-    double m_prev_scale_x;
-    double m_scale_y;
-    double m_prev_scale_y;
+    float_t m_pdx;
+    float_t m_pdy;
+    float_t m_center_x;
+    float_t m_center_y;
+    float_t m_scale;
+    float_t m_prev_scale;
+    float_t m_angle;
+    float_t m_prev_angle;
+    float_t m_scale_x;
+    float_t m_prev_scale_x;
+    float_t m_scale_y;
+    float_t m_prev_scale_y;
     bool m_mouse_move;
 
 public:
@@ -154,7 +154,7 @@ public:
         fprintf(fd, "%f\n", m_spline_a.y(4));
         fprintf(fd, "%f\n", m_spline_a.x(5));
         fprintf(fd, "%f\n", m_spline_a.y(5));
-        double x1,y1,x2,y2;
+        float_t x1,y1,x2,y2;
         m_profile.values(&x1, &y1, &x2, &y2);
         fprintf(fd, "%f\n", x1);
         fprintf(fd, "%f\n", y1);
@@ -342,7 +342,7 @@ public:
         agg::render_ctrl(ras, sl, rb, m_spline_a);
         agg::render_ctrl(ras, sl, rb, m_rbox);
 
-        double ini_scale = 1.0;
+        float_t ini_scale = 1.0;
 
         agg::trans_affine mtx1;
         mtx1 *= agg::trans_affine_scaling(ini_scale, ini_scale);
@@ -416,14 +416,14 @@ public:
     {
         if(m_mouse_move)
         {
-            double x2 = x;
-            double y2 = y;
+            float_t x2 = x;
+            float_t y2 = y;
             trans_affine_resizing().inverse_transform(&x2, &y2);
 
             if(flags & agg::kbd_ctrl)
             {
-                double dx = x2 - m_center_x;
-                double dy = y2 - m_center_y;
+                float_t dx = x2 - m_center_x;
+                float_t dy = y2 - m_center_y;
                 m_scale_x = m_prev_scale_x * dx / m_pdx;
                 m_scale_y = m_prev_scale_y * dy / m_pdy;
                 force_redraw();
@@ -439,8 +439,8 @@ public:
 
                 if(flags & agg::mouse_right)
                 {
-                    double dx = x2 - m_center_x;
-                    double dy = y2 - m_center_y;
+                    float_t dx = x2 - m_center_x;
+                    float_t dy = y2 - m_center_y;
                     m_scale = m_prev_scale * 
                               sqrt(dx * dx + dy * dy) / 
                               sqrt(m_pdx * m_pdx + m_pdy * m_pdy);
@@ -456,8 +456,8 @@ public:
     virtual void on_mouse_button_down(int x, int y, unsigned flags)
     {
         m_mouse_move = true;
-        double x2 = x;
-        double y2 = y;
+        float_t x2 = x;
+        float_t y2 = y;
         trans_affine_resizing().inverse_transform(&x2, &y2);
 
         m_pdx = m_center_x - x2;

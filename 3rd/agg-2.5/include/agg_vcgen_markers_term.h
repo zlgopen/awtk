@@ -44,11 +44,11 @@ namespace agg
 
         // Vertex Generator Interface
         void remove_all();
-        void add_vertex(double x, double y, unsigned cmd);
+        void add_vertex(float_t x, float_t y, unsigned cmd);
 
         // Vertex Source Interface
         void rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         vcgen_markers_term(const vcgen_markers_term&);
@@ -56,10 +56,10 @@ namespace agg
 
         struct coord_type
         {
-            double x, y;
+            float_t x, y;
 
             coord_type() {}
-            coord_type(double x_, double y_) : x(x_), y(y_) {}
+            coord_type(float_t x_, float_t y_) : x(x_), y(y_) {}
         };
 
         typedef pod_bvector<coord_type, 6> coord_storage; 

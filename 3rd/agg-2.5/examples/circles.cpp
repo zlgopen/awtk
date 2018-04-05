@@ -31,29 +31,29 @@ enum start_size_e
     start_height = 400
 };
 
-static double spline_r_x[] = { 0.000000, 0.200000, 0.400000, 0.910484, 0.957258, 1.000000 };
-static double spline_r_y[] = { 1.000000, 0.800000, 0.600000, 0.066667, 0.169697, 0.600000 };
+static float_t spline_r_x[] = { 0.000000, 0.200000, 0.400000, 0.910484, 0.957258, 1.000000 };
+static float_t spline_r_y[] = { 1.000000, 0.800000, 0.600000, 0.066667, 0.169697, 0.600000 };
 
-static double spline_g_x[] = { 0.000000, 0.292244, 0.485655, 0.564859, 0.795607, 1.000000 };
-static double spline_g_y[] = { 0.000000, 0.607260, 0.964065, 0.892558, 0.435571, 0.000000 };
+static float_t spline_g_x[] = { 0.000000, 0.292244, 0.485655, 0.564859, 0.795607, 1.000000 };
+static float_t spline_g_y[] = { 0.000000, 0.607260, 0.964065, 0.892558, 0.435571, 0.000000 };
 
-static double spline_b_x[] = { 0.000000, 0.055045, 0.143034, 0.433082, 0.764859, 1.000000 };
-static double spline_b_y[] = { 0.385480, 0.128493, 0.021416, 0.271507, 0.713974, 1.000000 };
+static float_t spline_b_x[] = { 0.000000, 0.055045, 0.143034, 0.433082, 0.764859, 1.000000 };
+static float_t spline_b_y[] = { 0.385480, 0.128493, 0.021416, 0.271507, 0.713974, 1.000000 };
 
 
 struct scatter_point
 {
-    double     x;
-    double     y;
-    double     z;
+    float_t     x;
+    float_t     y;
+    float_t     z;
     agg::rgba  color;
 };
 
 
-double random_dbl(double start, double end)
+float_t random_dbl(float_t start, float_t end)
 {
     unsigned r = rand() & 0x7FFF;
-    return double(r) * (end - start) / 32768.0 + start;
+    return float_t(r) * (end - start) / 32768.0 + start;
 }
 
 
@@ -102,17 +102,17 @@ public:
     {
         unsigned i;
 
-        double rx = initial_width()/3.5;
-        double ry = initial_height()/3.5;
+        float_t rx = initial_width()/3.5;
+        float_t ry = initial_height()/3.5;
 
         for(i = 0; i < m_num_points; i++)
         {
-            double z = m_points[i].z = random_dbl(0.0, 1.0);
-            double x = cos(z * 2.0 * agg::pi) * rx;
-            double y = sin(z * 2.0 * agg::pi) * ry;
+            float_t z = m_points[i].z = random_dbl(0.0, 1.0);
+            float_t x = cos(z * 2.0 * agg::pi) * rx;
+            float_t y = sin(z * 2.0 * agg::pi) * ry;
 
-            double dist  = random_dbl(0.0, rx/2.0);
-            double angle = random_dbl(0.0, agg::pi * 2.0);
+            float_t dist  = random_dbl(0.0, rx/2.0);
+            float_t angle = random_dbl(0.0, agg::pi * 2.0);
 
             m_points[i].x = initial_width()/2.0  + x + cos(angle) * dist;
             m_points[i].y = initial_height()/2.0 + y + sin(angle) * dist;
@@ -150,8 +150,8 @@ public:
         unsigned n_drawn = 0;
         for(i = 0; i < m_num_points; i++)
         {
-            double z = m_points[i].z;
-            double alpha = 1.0;
+            float_t z = m_points[i].z;
+            float_t alpha = 1.0;
             if(z < m_scale_ctrl_z.value1())
             {
                 alpha = 

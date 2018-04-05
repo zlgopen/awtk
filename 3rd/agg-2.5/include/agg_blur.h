@@ -1080,7 +1080,7 @@ namespace agg
         typedef typename calculator_type::value_type calc_type;
 
         //--------------------------------------------------------------------
-        template<class Img> void blur_x(Img& img, double radius)
+        template<class Img> void blur_x(Img& img, float_t radius)
         {
             if(radius < 0.62) return;
             if(img.width() < 3) return;
@@ -1155,14 +1155,14 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        template<class Img> void blur_y(Img& img, double radius)
+        template<class Img> void blur_y(Img& img, float_t radius)
         {
             pixfmt_transposer<Img> img2(img);
             blur_x(img2, radius);
         }
 
         //--------------------------------------------------------------------
-        template<class Img> void blur(Img& img, double radius)
+        template<class Img> void blur(Img& img, float_t radius)
         {
             blur_x(img, radius);
             pixfmt_transposer<Img> img2(img);
@@ -1177,7 +1177,7 @@ namespace agg
 
 
     //=================================================recursive_blur_calc_rgba
-    template<class T=double> struct recursive_blur_calc_rgba
+    template<class T=float_t> struct recursive_blur_calc_rgba
     {
         typedef T value_type;
         typedef recursive_blur_calc_rgba<T> self_type;
@@ -1221,7 +1221,7 @@ namespace agg
 
 
     //=================================================recursive_blur_calc_rgb
-    template<class T=double> struct recursive_blur_calc_rgb
+    template<class T=float_t> struct recursive_blur_calc_rgb
     {
         typedef T value_type;
         typedef recursive_blur_calc_rgb<T> self_type;
@@ -1262,7 +1262,7 @@ namespace agg
 
 
     //================================================recursive_blur_calc_gray
-    template<class T=double> struct recursive_blur_calc_gray
+    template<class T=float_t> struct recursive_blur_calc_gray
     {
         typedef T value_type;
         typedef recursive_blur_calc_gray<T> self_type;

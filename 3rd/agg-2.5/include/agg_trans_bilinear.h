@@ -40,7 +40,7 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Arbitrary quadrangle transformations
-        trans_bilinear(const double* src, const double* dst) 
+        trans_bilinear(const float_t* src, const float_t* dst) 
         {
             quad_to_quad(src, dst);
         }
@@ -48,8 +48,8 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Direct transformations 
-        trans_bilinear(double x1, double y1, double x2, double y2, 
-                       const double* quad)
+        trans_bilinear(float_t x1, float_t y1, float_t x2, float_t y2, 
+                       const float_t* quad)
         {
             rect_to_quad(x1, y1, x2, y2, quad);
         }
@@ -57,8 +57,8 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Reverse transformations 
-        trans_bilinear(const double* quad, 
-                       double x1, double y1, double x2, double y2)
+        trans_bilinear(const float_t* quad, 
+                       float_t x1, float_t y1, float_t x2, float_t y2)
         {
             quad_to_rect(quad, x1, y1, x2, y2);
         }
@@ -66,10 +66,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the transformations using two arbitrary quadrangles.
-        void quad_to_quad(const double* src, const double* dst)
+        void quad_to_quad(const float_t* src, const float_t* dst)
         {
-            double left[4][4];
-            double right[4][2];
+            float_t left[4][4];
+            float_t right[4][2];
 
             unsigned i;
             for(i = 0; i < 4; i++)
@@ -90,10 +90,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the direct transformations, i.e., rectangle -> quadrangle
-        void rect_to_quad(double x1, double y1, double x2, double y2, 
-                          const double* quad)
+        void rect_to_quad(float_t x1, float_t y1, float_t x2, float_t y2, 
+                          const float_t* quad)
         {
-            double src[8];
+            float_t src[8];
             src[0] = src[6] = x1;
             src[2] = src[4] = x2;
             src[1] = src[3] = y1;
@@ -104,10 +104,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the reverse transformations, i.e., quadrangle -> rectangle
-        void quad_to_rect(const double* quad, 
-                          double x1, double y1, double x2, double y2)
+        void quad_to_rect(const float_t* quad, 
+                          float_t x1, float_t y1, float_t x2, float_t y2)
         {
-            double dst[8];
+            float_t dst[8];
             dst[0] = dst[6] = x1;
             dst[2] = dst[4] = x2;
             dst[1] = dst[3] = y1;
@@ -121,11 +121,11 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Transform a point (x, y)
-        void transform(double* x, double* y) const
+        void transform(float_t* x, float_t* y) const
         {
-            double tx = *x;
-            double ty = *y;
-            double xy = tx * ty;
+            float_t tx = *x;
+            float_t ty = *y;
+            float_t xy = tx * ty;
             *x = m_mtx[0][0] + m_mtx[1][0] * xy + m_mtx[2][0] * tx + m_mtx[3][0] * ty;
             *y = m_mtx[0][1] + m_mtx[1][1] * xy + m_mtx[2][1] * tx + m_mtx[3][1] * ty;
         }
@@ -134,15 +134,15 @@ namespace agg
         //--------------------------------------------------------------------
         class iterator_x
         {
-            double inc_x;
-            double inc_y;
+            float_t inc_x;
+            float_t inc_y;
 
         public:
-            double x;
-            double y;
+            float_t x;
+            float_t y;
 
             iterator_x() {}
-            iterator_x(double tx, double ty, double step, const double m[4][2]) :
+            iterator_x(float_t tx, float_t ty, float_t step, const float_t m[4][2]) :
                 inc_x(m[1][0] * step * ty + m[2][0] * step),
                 inc_y(m[1][1] * step * ty + m[2][1] * step),
                 x(m[0][0] + m[1][0] * tx * ty + m[2][0] * tx + m[3][0] * ty),
@@ -157,13 +157,13 @@ namespace agg
             }
         };
 
-        iterator_x begin(double x, double y, double step) const
+        iterator_x begin(float_t x, float_t y, float_t step) const
         {
             return iterator_x(x, y, step, m_mtx);
         }
 
     private:
-        double m_mtx[4][2];
+        float_t m_mtx[4][2];
         bool   m_valid;
     };
 

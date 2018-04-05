@@ -87,7 +87,7 @@ namespace agg
 		Hook* m_idcmp_hook;
 		unsigned m_input_flags;
 		bool m_dragging;
-		double m_start_time;
+		float_t m_start_time;
 		uint16 m_last_key;
 		BitMap* m_img_bitmaps[platform_support::max_images];
 	};
@@ -437,14 +437,14 @@ namespace agg
 	}
 
 	//------------------------------------------------------------------------
-	double platform_support::elapsed_time() const
+	float_t platform_support::elapsed_time() const
 	{
 		timeval tv;
 		gettimeofday(&tv, 0);
-		double end_time = tv.tv_secs + tv.tv_micro/1e6;
+		float_t end_time = tv.tv_secs + tv.tv_micro/1e6;
 
-		double elasped_seconds = end_time - m_specific->m_start_time;
-		double elasped_millis = elasped_seconds*1e3;
+		float_t elasped_seconds = end_time - m_specific->m_start_time;
+		float_t elasped_millis = elasped_seconds*1e3;
 
 		return elasped_millis;
 	}

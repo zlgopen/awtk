@@ -1264,10 +1264,10 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    double platform_support::elapsed_time() const
+    float_t platform_support::elapsed_time() const
     {
         clock_t stop = clock();
-        return double(stop - m_specific->m_sw_start) * 1000.0 / CLOCKS_PER_SEC;
+        return float_t(stop - m_specific->m_sw_start) * 1000.0 / CLOCKS_PER_SEC;
     }
 
 

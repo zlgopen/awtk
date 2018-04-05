@@ -27,7 +27,7 @@ enum flip_y_e { flip_y = true };
 class spiral
 {
 public:
-    spiral(double x, double y, double r1, double r2, double step, double start_angle=0) :
+    spiral(float_t x, float_t y, float_t r1, float_t r2, float_t step, float_t start_angle=0) :
         m_x(x), 
         m_y(y), 
         m_r1(r1), 
@@ -47,7 +47,7 @@ public:
         m_start = true; 
     }
 
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         if(m_curr_r > m_r2) return agg::path_cmd_stop;
 
@@ -64,17 +64,17 @@ public:
     }
 
 private:
-    double m_x;
-    double m_y;
-    double m_r1;
-    double m_r2;
-    double m_step;
-    double m_start_angle;
+    float_t m_x;
+    float_t m_y;
+    float_t m_r1;
+    float_t m_r2;
+    float_t m_step;
+    float_t m_start_angle;
 
-    double m_angle;
-    double m_curr_r;
-    double m_da;
-    double m_dr;
+    float_t m_angle;
+    float_t m_curr_r;
+    float_t m_da;
+    float_t m_dr;
     bool   m_start;
 };
 
@@ -97,7 +97,7 @@ namespace agg
             m_src->rewind(path_id);
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             unsigned cmd = m_src->vertex(x, y);
             if(is_vertex(cmd))  ++m_points;
@@ -121,8 +121,8 @@ class the_application : public agg::platform_support
 {
     agg::rbox_ctrl<agg::rgba8> m_polygons;
     agg::rbox_ctrl<agg::rgba8> m_operation;
-    double m_x;
-    double m_y;
+    float_t m_x;
+    float_t m_y;
 
 public:
     the_application(agg::pix_format_e format, bool flip_y) :
@@ -168,11 +168,11 @@ public:
 
             start_timer();
             counter.rewind(0);
-            double t1 = elapsed_time();
+            float_t t1 = elapsed_time();
 
             ras.reset();
-            double x;
-            double y;
+            float_t x;
+            float_t y;
             unsigned cmd;
             start_timer();
             while(!agg::is_stop(cmd = counter.vertex(&x, &y)))
@@ -182,7 +182,7 @@ public:
 
             ren.color(agg::rgba(0.5, 0.0, 0, 0.5));
             agg::render_scanlines(ras, sl, ren);
-            double t2 = elapsed_time();
+            float_t t2 = elapsed_time();
 
             char buf[100];
             sprintf(buf, "Contours: %d   Points: %d", counter.m_contours, counter.m_points);
@@ -227,8 +227,8 @@ public:
 
                 agg::conv_gpc<agg::path_storage, agg::path_storage> gpc(ps1, ps2);
 
-                double x = m_x - initial_width()/2 + 100;
-                double y = m_y - initial_height()/2 + 100;
+                float_t x = m_x - initial_width()/2 + 100;
+                float_t y = m_y - initial_height()/2 + 100;
                 ps1.move_to(x+140, y+145);
                 ps1.line_to(x+225, y+44);
                 ps1.line_to(x+296, y+219);
@@ -282,8 +282,8 @@ public:
                               agg::conv_stroke<agg::path_storage> > gpc(ps1, stroke);
 
 
-                double x = m_x - initial_width()/2 + 100;
-                double y = m_y - initial_height()/2 + 100;
+                float_t x = m_x - initial_width()/2 + 100;
+                float_t y = m_y - initial_height()/2 + 100;
                 ps1.move_to(x+140, y+145);
                 ps1.line_to(x+225, y+44);
                 ps1.line_to(x+296, y+219);
@@ -389,7 +389,7 @@ FILE* fd = fopen("contours.txt", "w");
 if(fd)
 {
     unsigned cmd;
-    double x, y;
+    float_t x, y;
     trans_gb_poly.rewind(0);
     while(!agg::is_stop(cmd = trans_gb_poly.vertex(&x, &y)))
     {
@@ -547,10 +547,10 @@ if(fd)
 // Works quite well on random polygons, no crashes, no memory leaks! 
 // Sometimes takes long to produce the result
 
-    double random(double min, double max)
+    float_t random(float_t min, float_t max)
     {
         int r = (rand() << 15) | rand();
-        return ((r & 0xFFFFFFF) / double(0xFFFFFFF + 1)) * (max - min) + min;
+        return ((r & 0xFFFFFFF) / float_t(0xFFFFFFF + 1)) * (max - min) + min;
     }
 
 

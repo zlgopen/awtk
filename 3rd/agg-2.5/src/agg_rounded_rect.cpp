@@ -29,7 +29,7 @@
 namespace agg
 {
     //------------------------------------------------------------------------
-    rounded_rect::rounded_rect(double x1, double y1, double x2, double y2, double r) :
+    rounded_rect::rounded_rect(float_t x1, float_t y1, float_t x2, float_t y2, float_t r) :
         m_x1(x1), m_y1(y1), m_x2(x2), m_y2(y2),
         m_rx1(r), m_ry1(r), m_rx2(r), m_ry2(r), 
         m_rx3(r), m_ry3(r), m_rx4(r), m_ry4(r)
@@ -39,7 +39,7 @@ namespace agg
     }
 
     //--------------------------------------------------------------------
-    void rounded_rect::rect(double x1, double y1, double x2, double y2)
+    void rounded_rect::rect(float_t x1, float_t y1, float_t x2, float_t y2)
     {
         m_x1 = x1;
         m_y1 = y1;
@@ -50,21 +50,21 @@ namespace agg
     }
 
     //--------------------------------------------------------------------
-    void rounded_rect::radius(double r)
+    void rounded_rect::radius(float_t r)
     {
         m_rx1 = m_ry1 = m_rx2 = m_ry2 = m_rx3 = m_ry3 = m_rx4 = m_ry4 = r; 
     }
 
     //--------------------------------------------------------------------
-    void rounded_rect::radius(double rx, double ry)
+    void rounded_rect::radius(float_t rx, float_t ry)
     {
         m_rx1 = m_rx2 = m_rx3 = m_rx4 = rx; 
         m_ry1 = m_ry2 = m_ry3 = m_ry4 = ry; 
     }
 
     //--------------------------------------------------------------------
-    void rounded_rect::radius(double rx_bottom, double ry_bottom, 
-                              double rx_top,    double ry_top)
+    void rounded_rect::radius(float_t rx_bottom, float_t ry_bottom, 
+                              float_t rx_top,    float_t ry_top)
     {
         m_rx1 = m_rx2 = rx_bottom; 
         m_rx3 = m_rx4 = rx_top; 
@@ -73,8 +73,8 @@ namespace agg
     }
 
     //--------------------------------------------------------------------
-    void rounded_rect::radius(double rx1, double ry1, double rx2, double ry2, 
-                              double rx3, double ry3, double rx4, double ry4)
+    void rounded_rect::radius(float_t rx1, float_t ry1, float_t rx2, float_t ry2, 
+                              float_t rx3, float_t ry3, float_t rx4, float_t ry4)
     {
         m_rx1 = rx1; m_ry1 = ry1; m_rx2 = rx2; m_ry2 = ry2; 
         m_rx3 = rx3; m_ry3 = ry3; m_rx4 = rx4; m_ry4 = ry4;
@@ -83,11 +83,11 @@ namespace agg
     //--------------------------------------------------------------------
     void rounded_rect::normalize_radius()
     {
-        double dx = fabs(m_x2 - m_x1);
-        double dy = fabs(m_y2 - m_y1);
+        float_t dx = fabs(m_x2 - m_x1);
+        float_t dy = fabs(m_y2 - m_y1);
 
-        double k = 1.0;
-        double t;
+        float_t k = 1.0;
+        float_t t;
         t = dx / (m_rx1 + m_rx2); if(t < k) k = t; 
         t = dx / (m_rx3 + m_rx4); if(t < k) k = t; 
         t = dy / (m_ry1 + m_ry2); if(t < k) k = t; 
@@ -107,7 +107,7 @@ namespace agg
     }
 
     //--------------------------------------------------------------------
-    unsigned rounded_rect::vertex(double* x, double* y)
+    unsigned rounded_rect::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_stop;
         switch(m_status)

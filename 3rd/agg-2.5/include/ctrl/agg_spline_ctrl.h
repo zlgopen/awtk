@@ -44,74 +44,74 @@ namespace agg
     class spline_ctrl_impl : public ctrl
     {
     public:
-        spline_ctrl_impl(double x1, double y1, double x2, double y2, 
+        spline_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, 
                          unsigned num_pnt, bool flip_y=false);
 
         // Set other parameters
-        void border_width(double t, double extra=0.0);
-        void curve_width(double t) { m_curve_width = t; }
-        void point_size(double s)  { m_point_size = s; }
+        void border_width(float_t t, float_t extra=0.0);
+        void curve_width(float_t t) { m_curve_width = t; }
+        void point_size(float_t s)  { m_point_size = s; }
 
         // Event handlers. Just call them if the respective events
         // in your system occure. The functions return true if redrawing
         // is required.
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
         void active_point(int i);
 
-        const double* spline()  const { return m_spline_values;  }
+        const float_t* spline()  const { return m_spline_values;  }
         const int8u*  spline8() const { return m_spline_values8; }
-        double value(double x) const;
-        void   value(unsigned idx, double y);
-        void   point(unsigned idx, double x, double y);
-        void   x(unsigned idx, double x) { m_xp[idx] = x; }
-        void   y(unsigned idx, double y) { m_yp[idx] = y; }
-        double x(unsigned idx) const { return m_xp[idx]; }
-        double y(unsigned idx) const { return m_yp[idx]; }
+        float_t value(float_t x) const;
+        void   value(unsigned idx, float_t y);
+        void   point(unsigned idx, float_t x, float_t y);
+        void   x(unsigned idx, float_t x) { m_xp[idx] = x; }
+        void   y(unsigned idx, float_t y) { m_yp[idx] = y; }
+        float_t x(unsigned idx) const { return m_xp[idx]; }
+        float_t y(unsigned idx) const { return m_yp[idx]; }
         void  update_spline();
 
         // Vertex soutce interface
         unsigned num_paths() { return 5; }
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         void calc_spline_box();
         void calc_curve();
-        double calc_xp(unsigned idx);
-        double calc_yp(unsigned idx);
-        void set_xp(unsigned idx, double val);
-        void set_yp(unsigned idx, double val);
+        float_t calc_xp(unsigned idx);
+        float_t calc_yp(unsigned idx);
+        void set_xp(unsigned idx, float_t val);
+        void set_yp(unsigned idx, float_t val);
 
         unsigned m_num_pnt;
-        double   m_xp[32];
-        double   m_yp[32];
+        float_t   m_xp[32];
+        float_t   m_yp[32];
         bspline  m_spline;
-        double   m_spline_values[256];
+        float_t   m_spline_values[256];
         int8u    m_spline_values8[256];
-        double   m_border_width;
-        double   m_border_extra;
-        double   m_curve_width;
-        double   m_point_size;
-        double   m_xs1;
-        double   m_ys1;
-        double   m_xs2;
-        double   m_ys2;
+        float_t   m_border_width;
+        float_t   m_border_extra;
+        float_t   m_curve_width;
+        float_t   m_point_size;
+        float_t   m_xs1;
+        float_t   m_ys1;
+        float_t   m_xs2;
+        float_t   m_ys2;
         path_storage              m_curve_pnt;
         conv_stroke<path_storage> m_curve_poly;
         ellipse                   m_ellipse;
         unsigned m_idx;
         unsigned m_vertex;
-        double   m_vx[32];
-        double   m_vy[32];
+        float_t   m_vx[32];
+        float_t   m_vy[32];
         int      m_active_pnt;
         int      m_move_pnt;
-        double   m_pdx;
-        double   m_pdy;
+        float_t   m_pdx;
+        float_t   m_pdy;
         const trans_affine* m_mtx;
     };
 
@@ -119,7 +119,7 @@ namespace agg
     template<class ColorT> class spline_ctrl : public spline_ctrl_impl
     {
     public:
-        spline_ctrl(double x1, double y1, double x2, double y2, 
+        spline_ctrl(float_t x1, float_t y1, float_t x2, float_t y2, 
                     unsigned num_pnt, bool flip_y=false) :
             spline_ctrl_impl(x1, y1, x2, y2, num_pnt, flip_y),
             m_background_color(rgba(1.0, 1.0, 0.9)),

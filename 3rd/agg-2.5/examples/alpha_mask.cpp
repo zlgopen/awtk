@@ -22,16 +22,16 @@ agg::path_storage g_path;
 agg::rgba8        g_colors[100];
 unsigned          g_path_idx[100];
 unsigned          g_npaths = 0;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
-double            g_base_dx = 0;
-double            g_base_dy = 0;
-double            g_angle = 0;
-double            g_scale = 1.0;
-double            g_skew_x = 0;
-double            g_skew_y = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
+float_t            g_base_dx = 0;
+float_t            g_base_dy = 0;
+float_t            g_angle = 0;
+float_t            g_scale = 1.0;
+float_t            g_skew_x = 0;
+float_t            g_skew_y = 0;
 int               g_nclick = 0;
 
 
@@ -138,7 +138,7 @@ public:
     }
 
 
-    void transform(double width, double height, double x, double y)
+    void transform(float_t width, float_t height, float_t x, float_t y)
     {
         x -= width / 2;
         y -= height / 2;

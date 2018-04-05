@@ -30,8 +30,8 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    slider_ctrl_impl::slider_ctrl_impl(double x1, double y1, 
-                                       double x2, double y2, bool flip_y) :
+    slider_ctrl_impl::slider_ctrl_impl(float_t x1, float_t y1, 
+                                       float_t x2, float_t y2, bool flip_y) :
         ctrl(x1, y1, x2, y2, flip_y),
         m_border_width(1.0),
         m_border_extra((y2 - y1) / 2),
@@ -68,8 +68,8 @@ namespace agg
         if(m_num_steps)
         {
             int step = int(m_preview_value * m_num_steps + 0.5);
-            ret = m_value != step / double(m_num_steps);
-            m_value = step / double(m_num_steps);
+            ret = m_value != step / float_t(m_num_steps);
+            m_value = step / float_t(m_num_steps);
         }
         else
         {
@@ -85,7 +85,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void slider_ctrl_impl::border_width(double t, double extra)
+    void slider_ctrl_impl::border_width(float_t t, float_t extra)
     { 
         m_border_width = t; 
         m_border_extra = extra;
@@ -94,7 +94,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void slider_ctrl_impl::value(double value) 
+    void slider_ctrl_impl::value(float_t value) 
     { 
         m_preview_value = (value - m_min) / (m_max - m_min); 
         if(m_preview_value > 1.0) m_preview_value = 1.0;
@@ -202,11 +202,11 @@ namespace agg
             if(m_num_steps)
             {
                 unsigned i;
-                double d = (m_xs2 - m_xs1) / m_num_steps;
+                float_t d = (m_xs2 - m_xs1) / m_num_steps;
                 if(d > 0.004) d = 0.004;
                 for(i = 0; i < m_num_steps + 1; i++)
                 {
-                    double x = m_xs1 + (m_xs2 - m_xs1) * i / m_num_steps;
+                    float_t x = m_xs1 + (m_xs2 - m_xs1) * i / m_num_steps;
                     m_storage.move_to(x, m_y1);
                     m_storage.line_to(x - d * (m_x2 - m_x1), m_y1 - m_border_extra);
                     m_storage.line_to(x + d * (m_x2 - m_x1), m_y1 - m_border_extra);
@@ -217,7 +217,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned slider_ctrl_impl::vertex(double* x, double* y)
+    unsigned slider_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         switch(m_idx)
@@ -267,7 +267,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool slider_ctrl_impl::in_rect(double x, double y) const
+    bool slider_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         inverse_transform_xy(&x, &y);
         return x >= m_x1 && x <= m_x2 && y >= m_y1 && y <= m_y2;
@@ -275,12 +275,12 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool slider_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool slider_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
 
-        double xp = m_xs1 + (m_xs2 - m_xs1) * m_value;
-        double yp = (m_ys1 + m_ys2) / 2.0;
+        float_t xp = m_xs1 + (m_xs2 - m_xs1) * m_value;
+        float_t yp = (m_ys1 + m_ys2) / 2.0;
 
         if(calc_distance(x, y, xp, yp) <= m_y2 - m_y1)
         {
@@ -293,7 +293,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool slider_ctrl_impl::on_mouse_move(double x, double y, bool button_flag)
+    bool slider_ctrl_impl::on_mouse_move(float_t x, float_t y, bool button_flag)
     {
         inverse_transform_xy(&x, &y);
         if(!button_flag)
@@ -304,7 +304,7 @@ namespace agg
 
         if(m_mouse_move)
         {
-            double xp = x + m_pdx;
+            float_t xp = x + m_pdx;
             m_preview_value = (xp - m_xs1) / (m_xs2 - m_xs1);
             if(m_preview_value < 0.0) m_preview_value = 0.0;
             if(m_preview_value > 1.0) m_preview_value = 1.0;
@@ -315,7 +315,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool slider_ctrl_impl::on_mouse_button_up(double, double)
+    bool slider_ctrl_impl::on_mouse_button_up(float_t, float_t)
     {
         m_mouse_move = false;
         normalize_value(true);
@@ -326,7 +326,7 @@ namespace agg
     //------------------------------------------------------------------------
     bool slider_ctrl_impl::on_arrow_keys(bool left, bool right, bool down, bool up)
     {
-        double d = 0.005;
+        float_t d = 0.005;
         if(m_num_steps)
         {
             d = 1.0 / m_num_steps;

@@ -154,11 +154,11 @@ public:
     template<class Rasterizer, class Renderer>
     void draw_polyline(Rasterizer& ras, 
                        Renderer& ren, 
-                       const double* polyline, 
+                       const float_t* polyline, 
                        int num_points)
     {
-        agg::poly_plain_adaptor<double> vs(polyline, num_points, m_line1.close());
-        agg::conv_transform<agg::poly_plain_adaptor<double> > trans(vs, m_scale);
+        agg::poly_plain_adaptor<float_t> vs(polyline, num_points, m_line1.close());
+        agg::conv_transform<agg::poly_plain_adaptor<float_t> > trans(vs, m_scale);
         ras.add_path(trans);
     }
 
@@ -225,7 +225,7 @@ public:
         // Calculate the dilation value so that, the line caps were
         // drawn correctly.
         //---------------
-        double w2 = 9.0;//p1.height() / 2 + 2;
+        float_t w2 = 9.0;//p1.height() / 2 + 2;
 
 
         // Set the clip box a bit bigger than you expect. You need it
@@ -257,7 +257,7 @@ public:
         //------------------------
         ren_base.copy_bar(0, 0, (int)width(), (int)height(), agg::rgba(1,1,1));
 
-        // Finally draw polyline correctly clipped: We use double clipping, 
+        // Finally draw polyline correctly clipped: We use float_t clipping, 
         // first is vector clipping, with extended clip box, second is raster 
         // clipping with normal clip box.
         //------------------------
@@ -286,7 +286,7 @@ public:
         pt.width(1.5);
         pt.line_cap(agg::round_cap);
 
-        const double* p = m_line1.polygon();
+        const float_t* p = m_line1.polygon();
         sprintf(buf, "Len=%.2f", agg::calc_distance(p[0], p[1], p[2], p[3]) * m_scale.scale());
 
         t.start_point(10.0, 30.0);

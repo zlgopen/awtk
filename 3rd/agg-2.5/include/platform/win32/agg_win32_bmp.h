@@ -71,12 +71,12 @@ namespace agg
         void        draw(HDC h_dc, 
                          const RECT* device_rect=0, 
                          const RECT* bmp_rect=0) const;
-        void        draw(HDC h_dc, int x, int y, double scale=1.0) const;
+        void        draw(HDC h_dc, int x, int y, float_t scale=1.0) const;
 
         void        blend(HDC h_dc, 
                           const RECT* device_rect=0, 
                           const RECT* bmp_rect=0) const;
-        void        blend(HDC h_dc, int x, int y, double scale=1.0) const;
+        void        blend(HDC h_dc, int x, int y, float_t scale=1.0) const;
 
 
         unsigned char* buf();

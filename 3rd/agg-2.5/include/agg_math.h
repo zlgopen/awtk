@@ -36,25 +36,25 @@ namespace agg
 
     //------------------------------------------------------vertex_dist_epsilon
     // Coinciding points maximal distance (Epsilon)
-    const double vertex_dist_epsilon = 1e-14;
+    const float_t vertex_dist_epsilon = 1e-14;
 
     //-----------------------------------------------------intersection_epsilon
     // See calc_intersection
-    const double intersection_epsilon = 1.0e-30;
+    const float_t intersection_epsilon = 1.0e-30;
 
     //------------------------------------------------------------cross_product
-    AGG_INLINE double cross_product(double x1, double y1, 
-                                    double x2, double y2, 
-                                    double x,  double y)
+    AGG_INLINE float_t cross_product(float_t x1, float_t y1, 
+                                    float_t x2, float_t y2, 
+                                    float_t x,  float_t y)
     {
         return (x - x2) * (y2 - y1) - (y - y2) * (x2 - x1);
     }
 
     //--------------------------------------------------------point_in_triangle
-    AGG_INLINE bool point_in_triangle(double x1, double y1, 
-                                      double x2, double y2, 
-                                      double x3, double y3, 
-                                      double x,  double y)
+    AGG_INLINE bool point_in_triangle(float_t x1, float_t y1, 
+                                      float_t x2, float_t y2, 
+                                      float_t x3, float_t y3, 
+                                      float_t x,  float_t y)
     {
         bool cp1 = cross_product(x1, y1, x2, y2, x, y) < 0.0;
         bool cp2 = cross_product(x2, y2, x3, y3, x, y) < 0.0;
@@ -63,29 +63,29 @@ namespace agg
     }
 
     //-----------------------------------------------------------calc_distance
-    AGG_INLINE double calc_distance(double x1, double y1, double x2, double y2)
+    AGG_INLINE float_t calc_distance(float_t x1, float_t y1, float_t x2, float_t y2)
     {
-        double dx = x2-x1;
-        double dy = y2-y1;
+        float_t dx = x2-x1;
+        float_t dy = y2-y1;
         return sqrt(dx * dx + dy * dy);
     }
 
     //--------------------------------------------------------calc_sq_distance
-    AGG_INLINE double calc_sq_distance(double x1, double y1, double x2, double y2)
+    AGG_INLINE float_t calc_sq_distance(float_t x1, float_t y1, float_t x2, float_t y2)
     {
-        double dx = x2-x1;
-        double dy = y2-y1;
+        float_t dx = x2-x1;
+        float_t dy = y2-y1;
         return dx * dx + dy * dy;
     }
 
     //------------------------------------------------calc_line_point_distance
-    AGG_INLINE double calc_line_point_distance(double x1, double y1, 
-                                               double x2, double y2, 
-                                               double x,  double y)
+    AGG_INLINE float_t calc_line_point_distance(float_t x1, float_t y1, 
+                                               float_t x2, float_t y2, 
+                                               float_t x,  float_t y)
     {
-        double dx = x2-x1;
-        double dy = y2-y1;
-        double d = sqrt(dx * dx + dy * dy);
+        float_t dx = x2-x1;
+        float_t dy = y2-y1;
+        float_t d = sqrt(dx * dx + dy * dy);
         if(d < vertex_dist_epsilon)
         {
             return calc_distance(x1, y1, x, y);
@@ -94,29 +94,29 @@ namespace agg
     }
 
     //-------------------------------------------------------calc_line_point_u
-    AGG_INLINE double calc_segment_point_u(double x1, double y1, 
-                                           double x2, double y2, 
-                                           double x,  double y)
+    AGG_INLINE float_t calc_segment_point_u(float_t x1, float_t y1, 
+                                           float_t x2, float_t y2, 
+                                           float_t x,  float_t y)
     {
-        double dx = x2 - x1;
-        double dy = y2 - y1;
+        float_t dx = x2 - x1;
+        float_t dy = y2 - y1;
 
         if(dx == 0 && dy == 0)
         {
 	        return 0;
         }
 
-        double pdx = x - x1;
-        double pdy = y - y1;
+        float_t pdx = x - x1;
+        float_t pdy = y - y1;
 
         return (pdx * dx + pdy * dy) / (dx * dx + dy * dy);
     }
 
     //---------------------------------------------calc_line_point_sq_distance
-    AGG_INLINE double calc_segment_point_sq_distance(double x1, double y1, 
-                                                     double x2, double y2, 
-                                                     double x,  double y,
-                                                     double u)
+    AGG_INLINE float_t calc_segment_point_sq_distance(float_t x1, float_t y1, 
+                                                     float_t x2, float_t y2, 
+                                                     float_t x,  float_t y,
+                                                     float_t u)
     {
         if(u <= 0)
         {
@@ -131,9 +131,9 @@ namespace agg
     }
 
     //---------------------------------------------calc_line_point_sq_distance
-    AGG_INLINE double calc_segment_point_sq_distance(double x1, double y1, 
-                                                     double x2, double y2, 
-                                                     double x,  double y)
+    AGG_INLINE float_t calc_segment_point_sq_distance(float_t x1, float_t y1, 
+                                                     float_t x2, float_t y2, 
+                                                     float_t x,  float_t y)
     {
         return 
             calc_segment_point_sq_distance(
@@ -142,29 +142,29 @@ namespace agg
     }
 
     //-------------------------------------------------------calc_intersection
-    AGG_INLINE bool calc_intersection(double ax, double ay, double bx, double by,
-                                      double cx, double cy, double dx, double dy,
-                                      double* x, double* y)
+    AGG_INLINE bool calc_intersection(float_t ax, float_t ay, float_t bx, float_t by,
+                                      float_t cx, float_t cy, float_t dx, float_t dy,
+                                      float_t* x, float_t* y)
     {
-        double num = (ay-cy) * (dx-cx) - (ax-cx) * (dy-cy);
-        double den = (bx-ax) * (dy-cy) - (by-ay) * (dx-cx);
+        float_t num = (ay-cy) * (dx-cx) - (ax-cx) * (dy-cy);
+        float_t den = (bx-ax) * (dy-cy) - (by-ay) * (dx-cx);
         if(fabs(den) < intersection_epsilon) return false;
-        double r = num / den;
+        float_t r = num / den;
         *x = ax + r * (bx-ax);
         *y = ay + r * (by-ay);
         return true;
     }
 
     //-----------------------------------------------------intersection_exists
-    AGG_INLINE bool intersection_exists(double x1, double y1, double x2, double y2,
-                                        double x3, double y3, double x4, double y4)
+    AGG_INLINE bool intersection_exists(float_t x1, float_t y1, float_t x2, float_t y2,
+                                        float_t x3, float_t y3, float_t x4, float_t y4)
     {
         // It's less expensive but you can't control the 
         // boundary conditions: Less or LessEqual
-        double dx1 = x2 - x1;
-        double dy1 = y2 - y1;
-        double dx2 = x4 - x3;
-        double dy2 = y4 - y3;
+        float_t dx1 = x2 - x1;
+        float_t dy1 = y2 - y1;
+        float_t dx2 = x4 - x3;
+        float_t dy2 = y4 - y3;
         return ((x3 - x2) * dy1 - (y3 - y2) * dx1 < 0.0) != 
                ((x4 - x2) * dy1 - (y4 - y2) * dx1 < 0.0) &&
                ((x1 - x4) * dy2 - (y1 - y4) * dx2 < 0.0) !=
@@ -173,42 +173,42 @@ namespace agg
         // It's is more expensive but more flexible 
         // in terms of boundary conditions.
         //--------------------
-        //double den  = (x2-x1) * (y4-y3) - (y2-y1) * (x4-x3);
+        //float_t den  = (x2-x1) * (y4-y3) - (y2-y1) * (x4-x3);
         //if(fabs(den) < intersection_epsilon) return false;
-        //double nom1 = (x4-x3) * (y1-y3) - (y4-y3) * (x1-x3);
-        //double nom2 = (x2-x1) * (y1-y3) - (y2-y1) * (x1-x3);
-        //double ua = nom1 / den;
-        //double ub = nom2 / den;
+        //float_t nom1 = (x4-x3) * (y1-y3) - (y4-y3) * (x1-x3);
+        //float_t nom2 = (x2-x1) * (y1-y3) - (y2-y1) * (x1-x3);
+        //float_t ua = nom1 / den;
+        //float_t ub = nom2 / den;
         //return ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0;
     }
 
     //--------------------------------------------------------calc_orthogonal
-    AGG_INLINE void calc_orthogonal(double thickness,
-                                    double x1, double y1,
-                                    double x2, double y2,
-                                    double* x, double* y)
+    AGG_INLINE void calc_orthogonal(float_t thickness,
+                                    float_t x1, float_t y1,
+                                    float_t x2, float_t y2,
+                                    float_t* x, float_t* y)
     {
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        double d = sqrt(dx*dx + dy*dy); 
+        float_t dx = x2 - x1;
+        float_t dy = y2 - y1;
+        float_t d = sqrt(dx*dx + dy*dy); 
         *x =  thickness * dy / d;
         *y = -thickness * dx / d;
     }
 
     //--------------------------------------------------------dilate_triangle
-    AGG_INLINE void dilate_triangle(double x1, double y1,
-                                    double x2, double y2,
-                                    double x3, double y3,
-                                    double *x, double* y,
-                                    double d)
+    AGG_INLINE void dilate_triangle(float_t x1, float_t y1,
+                                    float_t x2, float_t y2,
+                                    float_t x3, float_t y3,
+                                    float_t *x, float_t* y,
+                                    float_t d)
     {
-        double dx1=0.0;
-        double dy1=0.0; 
-        double dx2=0.0;
-        double dy2=0.0; 
-        double dx3=0.0;
-        double dy3=0.0; 
-        double loc = cross_product(x1, y1, x2, y2, x3, y3);
+        float_t dx1=0.0;
+        float_t dy1=0.0; 
+        float_t dx2=0.0;
+        float_t dy2=0.0; 
+        float_t dx3=0.0;
+        float_t dy3=0.0; 
+        float_t loc = cross_product(x1, y1, x2, y2, x3, y3);
         if(fabs(loc) > intersection_epsilon)
         {
             if(cross_product(x1, y1, x2, y2, x3, y3) > 0.0) 
@@ -228,22 +228,22 @@ namespace agg
     }
 
     //------------------------------------------------------calc_triangle_area
-    AGG_INLINE double calc_triangle_area(double x1, double y1,
-                                         double x2, double y2,
-                                         double x3, double y3)
+    AGG_INLINE float_t calc_triangle_area(float_t x1, float_t y1,
+                                         float_t x2, float_t y2,
+                                         float_t x3, float_t y3)
     {
         return (x1*y2 - x2*y1 + x2*y3 - x3*y2 + x3*y1 - x1*y3) * 0.5;
     }
 
     //-------------------------------------------------------calc_polygon_area
-    template<class Storage> double calc_polygon_area(const Storage& st)
+    template<class Storage> float_t calc_polygon_area(const Storage& st)
     {
         unsigned i;
-        double sum = 0.0;
-        double x  = st[0].x;
-        double y  = st[0].y;
-        double xs = x;
-        double ys = y;
+        float_t sum = 0.0;
+        float_t x  = st[0].x;
+        float_t y  = st[0].y;
+        float_t xs = x;
+        float_t ys = y;
 
         for(i = 1; i < st.size(); i++)
         {
@@ -371,20 +371,20 @@ namespace agg
     //--------------------
     // Adapted for use in AGG library by Andy Wilk (castor.vulgaris@gmail.com)
     //------------------------------------------------------------------------
-    inline double besj(double x, int n)
+    inline float_t besj(float_t x, int n)
     {
         if(n < 0)
         {
             return 0;
         }
-        double d = 1E-6;
-        double b = 0;
+        float_t d = 1E-6;
+        float_t b = 0;
         if(fabs(x) <= d) 
         {
             if(n != 0) return 0;
             return 1;
         }
-        double b1 = 0; // b1 is the value from the previous iteration
+        float_t b1 = 0; // b1 is the value from the previous iteration
         // Set up a starting order for recurrence
         int m1 = (int)fabs(x) + 6;
         if(fabs(x) > 5) 
@@ -400,9 +400,9 @@ namespace agg
         // Apply recurrence down from curent max order
         for(;;) 
         {
-            double c3 = 0;
-            double c2 = 1E-30;
-            double c4 = 0;
+            float_t c3 = 0;
+            float_t c2 = 1E-30;
+            float_t c4 = 0;
             int m8 = 1;
             if (m2 / 2 * 2 == m2) 
             {
@@ -411,7 +411,7 @@ namespace agg
             int imax = m2 - 2;
             for (int i = 1; i <= imax; i++) 
             {
-                double c6 = 2 * (m2 - i) * c2 / x - c3;
+                float_t c6 = 2 * (m2 - i) * c2 / x - c3;
                 c3 = c2;
                 c2 = c6;
                 if(m2 - i - 1 == n)
@@ -424,7 +424,7 @@ namespace agg
                     c4 = c4 + 2 * c6;
                 }
             }
-            double c6 = 2 * c2 / x - c3;
+            float_t c6 = 2 * c2 / x - c3;
             if(n == 0)
             {
                 b = c6;

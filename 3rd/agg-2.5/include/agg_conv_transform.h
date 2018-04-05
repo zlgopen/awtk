@@ -44,7 +44,7 @@ namespace agg
             m_source->rewind(path_id); 
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             unsigned cmd = m_source->vertex(x, y);
             if(is_vertex(cmd))

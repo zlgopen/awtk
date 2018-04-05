@@ -57,13 +57,13 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void move_to_d(double x, double y)
+        void move_to_d(float_t x, float_t y)
         {
             move_to(m_ren->coord(x), m_ren->coord(y));
         }
 
         //--------------------------------------------------------------------
-        void line_to_d(double x, double y)
+        void line_to_d(float_t x, float_t y)
         {
             line_to(m_ren->coord(x), m_ren->coord(y));
         }
@@ -79,7 +79,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void add_vertex(double x, double y, unsigned cmd)
+        void add_vertex(float_t x, float_t y, unsigned cmd)
         {
             if(is_move_to(cmd)) 
             {
@@ -103,8 +103,8 @@ namespace agg
         template<class VertexSource>
         void add_path(VertexSource& vs, unsigned path_id=0)
         {
-            double x;
-            double y;
+            float_t x;
+            float_t y;
 
             unsigned cmd;
             vs.rewind(path_id);

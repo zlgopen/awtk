@@ -53,12 +53,12 @@ class the_application : public agg::platform_support
     agg::cbox_ctrl<agg::rgba>   m_single_step;
     agg::cbox_ctrl<agg::rgba>   m_refresh;
 
-    double  m_cur_angle;
+    float_t  m_cur_angle;
     int     m_cur_filter;
     int     m_num_steps;
-    double  m_num_pix;
-    double  m_time1;
-    double  m_time2;
+    float_t  m_num_pix;
+    float_t  m_time1;
+    float_t  m_time2;
 
 public:
     the_application(agg::pix_format_e format, bool flip_y) :
@@ -157,7 +157,7 @@ public:
 #else
             sprintf(buf, "%3.2f Kpix/sec", m_num_pix / 
                                           1000.0 /
-                                          (double(m_time2 - m_time1) / CLOCKS_PER_SEC));
+                                          (float_t(m_time2 - m_time1) / CLOCKS_PER_SEC));
 #endif
             t.start_point(10.0, 310.0);
             t.text(buf);
@@ -179,10 +179,10 @@ public:
 
 
 
-    void transform_image(double angle)
+    void transform_image(float_t angle)
     {
-        double width = rbuf_img(0).width();
-        double height = rbuf_img(0).height();
+        float_t width = rbuf_img(0).width();
+        float_t height = rbuf_img(0).height();
 
         pixfmt pixf(rbuf_img(0));
         pixfmt_pre pixf_pre(rbuf_img(0));
@@ -203,7 +203,7 @@ public:
         agg::trans_affine img_mtx = src_mtx;
         img_mtx.invert();
 
-        double r = width;
+        float_t r = width;
         if(height < r) r = height;
 
         r *= 0.5;

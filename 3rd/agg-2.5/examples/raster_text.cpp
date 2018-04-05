@@ -27,7 +27,7 @@ template<class GradientF> class gradient_sine_repeat_adaptor
 public:
     gradient_sine_repeat_adaptor() : m_periods(agg::pi* 2.0) {}
 
-    void periods(double p) { m_periods = p * agg::pi * 2.0; }
+    void periods(float_t p) { m_periods = p * agg::pi * 2.0; }
 
     int calculate(int x, int y, int d) const
     {
@@ -36,7 +36,7 @@ public:
 
 private:
     GradientF m_gradient;
-    double    m_periods;
+    float_t    m_periods;
 };
 
 
@@ -113,7 +113,7 @@ public:
         agg::renderer_raster_htext_solid<ren_base, glyph_gen> rt(rb, glyph);
 
         int i;
-        double y = 5;
+        float_t y = 5;
         rt.color(agg::rgba(0,0,0));
         for(i = 0; fonts[i].font; i++)
         {

@@ -52,7 +52,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void vcgen_contour::add_vertex(double x, double y, unsigned cmd)
+    void vcgen_contour::add_vertex(float_t x, float_t y, unsigned cmd)
     {
         m_status = initial;
         if(is_move_to(cmd))
@@ -104,7 +104,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    unsigned vcgen_contour::vertex(double* x, double* y)
+    unsigned vcgen_contour::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         while(!is_stop(cmd))

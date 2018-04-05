@@ -72,24 +72,24 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::move_to(double x, double y, bool rel)          // M, m
+    void path_renderer::move_to(float_t x, float_t y, bool rel)          // M, m
     {
         if(rel) m_storage.rel_to_abs(&x, &y);
         m_storage.move_to(x, y);
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::line_to(double x,  double y, bool rel)         // L, l
+    void path_renderer::line_to(float_t x,  float_t y, bool rel)         // L, l
     {
         if(rel) m_storage.rel_to_abs(&x, &y);
         m_storage.line_to(x, y);
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::hline_to(double x, bool rel)                   // H, h
+    void path_renderer::hline_to(float_t x, bool rel)                   // H, h
     {
-        double x2 = 0.0;
-        double y2 = 0.0;
+        float_t x2 = 0.0;
+        float_t y2 = 0.0;
         if(m_storage.total_vertices())
         {
             m_storage.vertex(m_storage.total_vertices() - 1, &x2, &y2);
@@ -99,10 +99,10 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::vline_to(double y, bool rel)                   // V, v
+    void path_renderer::vline_to(float_t y, bool rel)                   // V, v
     {
-        double x2 = 0.0;
-        double y2 = 0.0;
+        float_t x2 = 0.0;
+        float_t y2 = 0.0;
         if(m_storage.total_vertices())
         {
             m_storage.vertex(m_storage.total_vertices() - 1, &x2, &y2);
@@ -112,8 +112,8 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::curve3(double x1, double y1,                   // Q, q
-                               double x,  double y, bool rel)
+    void path_renderer::curve3(float_t x1, float_t y1,                   // Q, q
+                               float_t x,  float_t y, bool rel)
     {
         if(rel) 
         {
@@ -124,7 +124,7 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::curve3(double x, double y, bool rel)           // T, t
+    void path_renderer::curve3(float_t x, float_t y, bool rel)           // T, t
     {
 //        throw exception("curve3(x, y) : NOT IMPLEMENTED YET");
         if(rel) 
@@ -137,9 +137,9 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::curve4(double x1, double y1,                   // C, c
-                               double x2, double y2, 
-                               double x,  double y, bool rel)
+    void path_renderer::curve4(float_t x1, float_t y1,                   // C, c
+                               float_t x2, float_t y2, 
+                               float_t x,  float_t y, bool rel)
     {
         if(rel) 
         {
@@ -151,8 +151,8 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::curve4(double x2, double y2,                   // S, s
-                               double x,  double y, bool rel)
+    void path_renderer::curve4(float_t x2, float_t y2,                   // S, s
+                               float_t x,  float_t y, bool rel)
     {
         //throw exception("curve4(x2, y2, x, y) : NOT IMPLEMENTED YET");
         if(rel) 
@@ -221,7 +221,7 @@ namespace svg
     }
     
     //------------------------------------------------------------------------
-    void path_renderer::stroke_width(double w)
+    void path_renderer::stroke_width(float_t w)
     {
         cur_attr().stroke_width = w;
     }
@@ -239,13 +239,13 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::fill_opacity(double op)
+    void path_renderer::fill_opacity(float_t op)
     {
         cur_attr().fill_color.opacity(op);
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::stroke_opacity(double op)
+    void path_renderer::stroke_opacity(float_t op)
     {
         cur_attr().stroke_color.opacity(op);
     }
@@ -263,7 +263,7 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void path_renderer::miter_limit(double ml)
+    void path_renderer::miter_limit(float_t ml)
     {
         cur_attr().miter_limit = ml;
     }
@@ -279,7 +279,7 @@ namespace svg
     {
         while(tok.next())
         {
-            double arg[10];
+            float_t arg[10];
             char cmd = tok.last_command();
             unsigned i;
             switch(cmd)

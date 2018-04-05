@@ -27,12 +27,12 @@ enum flip_y_e { flip_y = true };
 typedef agg::pixfmt_bgr24 pixfmt;
 
 
-void bezier4_point(double x1, double y1, double x2, double y2,
-                   double x3, double y3, double x4, double y4,
-                   double mu,
-                   double* x, double* y)
+void bezier4_point(float_t x1, float_t y1, float_t x2, float_t y2,
+                   float_t x3, float_t y3, float_t x4, float_t y4,
+                   float_t mu,
+                   float_t* x, float_t* y)
 {
-   double mum1, mum13, mu3;
+   float_t mum1, mum13, mu3;
 
    mum1 = 1 - mu;
    mum13 = mum1 * mum1 * mum1;
@@ -190,12 +190,12 @@ public:
     }
 
 
-    template<class Curve> double measure_time(Curve& curve)
+    template<class Curve> float_t measure_time(Curve& curve)
     {
         start_timer();
         for(int i = 0; i < 100; i++)
         {
-            double x, y;
+            float_t x, y;
             curve.init(m_curve1.x1(), m_curve1.y1(),
                        m_curve1.x2(), m_curve1.y2(),
                        m_curve1.x3(), m_curve1.y3(),
@@ -208,7 +208,7 @@ public:
 
 
     template<class Path> 
-    bool find_point(const Path& path, double dist, unsigned* i, unsigned* j)
+    bool find_point(const Path& path, float_t dist, unsigned* i, unsigned* j)
     {
         int k;
         *j = path.size() - 1;
@@ -224,12 +224,12 @@ public:
     struct curve_point
     {
         curve_point() {}
-        curve_point(double x1, double y1, double mu1) : x(x1), y(y1), mu(mu1) {}
-        double x, y, dist, mu;
+        curve_point(float_t x1, float_t y1, float_t mu1) : x(x1), y(y1), mu(mu1) {}
+        float_t x, y, dist, mu;
     };
 
-    template<class Curve> double calc_max_error(Curve& curve, double scale, 
-                                                double* max_angle_error)
+    template<class Curve> float_t calc_max_error(Curve& curve, float_t scale, 
+                                                float_t* max_angle_error)
     {
         curve.approximation_scale(m_approximation_scale.value() * scale);
         curve.init(m_curve1.x1(), m_curve1.y1(),
@@ -239,7 +239,7 @@ public:
 
         agg::pod_bvector<agg::vertex_dist, 8> curve_points;
         unsigned cmd;
-        double x, y;
+        float_t x, y;
         curve.rewind(0);
         while(!agg::is_stop(cmd = curve.vertex(&x, &y)))
         {
@@ -249,7 +249,7 @@ public:
             }
         }
         unsigned i;
-        double curve_dist = 0;
+        float_t curve_dist = 0;
         for(i = 1; i < curve_points.size(); i++)
         {
             curve_points[i - 1].dist = curve_dist;
@@ -261,7 +261,7 @@ public:
         agg::pod_bvector<curve_point, 8> reference_points;
         for(i = 0; i < 4096; i++)
         {
-            double mu = i / 4095.0;
+            float_t mu = i / 4095.0;
             bezier4_point(m_curve1.x1(), m_curve1.y1(),
                           m_curve1.x2(), m_curve1.y2(),
                           m_curve1.x3(), m_curve1.y3(),
@@ -270,7 +270,7 @@ public:
             reference_points.add(curve_point(x, y, mu));
         }
 
-        double reference_dist = 0;
+        float_t reference_dist = 0;
         for(i = 1; i < reference_points.size(); i++)
         {
             reference_points[i - 1].dist = reference_dist;
@@ -282,27 +282,27 @@ public:
 
         unsigned idx1 = 0;
         unsigned idx2 = 1;
-        double max_error = 0;
+        float_t max_error = 0;
         for(i = 0; i < reference_points.size(); i++)
         {
             if(find_point(curve_points, reference_points[i].dist, &idx1, &idx2))
             {
-                double err = fabs(agg::calc_line_point_distance(curve_points[idx1].x,  curve_points[idx1].y,
+                float_t err = fabs(agg::calc_line_point_distance(curve_points[idx1].x,  curve_points[idx1].y,
                                                                 curve_points[idx2].x,  curve_points[idx2].y,
                                                                 reference_points[i].x, reference_points[i].y));
                 if(err > max_error) max_error = err;
             }
         }
 
-        double aerr = 0;
+        float_t aerr = 0;
         for(i = 2; i < curve_points.size(); i++)
         {
-            double a1 = atan2(curve_points[i-1].y - curve_points[i-2].y, 
+            float_t a1 = atan2(curve_points[i-1].y - curve_points[i-2].y, 
                               curve_points[i-1].x - curve_points[i-2].x);
-            double a2 = atan2(curve_points[i].y - curve_points[i-1].y, 
+            float_t a2 = atan2(curve_points[i].y - curve_points[i-1].y, 
                               curve_points[i].x - curve_points[i-1].x);
 
-            double da = fabs(a1 - a2);
+            float_t da = fabs(a1 - a2);
             if(da >= agg::pi) da = 2*agg::pi - da;
             if(da > aerr) aerr = da;
         }
@@ -326,8 +326,8 @@ public:
 
         agg::path_storage path;
 
-        double x, y;
-        double curve_time = 0;
+        float_t x, y;
+        float_t curve_time = 0;
 
         path.remove_all();
         agg::curve4 curve;
@@ -336,16 +336,16 @@ public:
         curve.angle_tolerance(agg::deg2rad(m_angle_tolerance.value()));
         curve.cusp_limit(agg::deg2rad(m_cusp_limit.value()));
         curve_time = measure_time(curve);
-        double max_angle_error_01 = 0;
-        double max_angle_error_1 = 0;
-        double max_angle_error1 = 0;
-        double max_angle_error_10 = 0;
-        double max_angle_error_100 = 0;
-        double max_error_01 = 0;
-        double max_error_1 = 0;
-        double max_error1 = 0;
-        double max_error_10 = 0;
-        double max_error_100 = 0;
+        float_t max_angle_error_01 = 0;
+        float_t max_angle_error_1 = 0;
+        float_t max_angle_error1 = 0;
+        float_t max_angle_error_10 = 0;
+        float_t max_angle_error_100 = 0;
+        float_t max_error_01 = 0;
+        float_t max_error_1 = 0;
+        float_t max_error1 = 0;
+        float_t max_error_10 = 0;
+        float_t max_error_100 = 0;
 
         max_error_01   = calc_max_error(curve, 0.01, &max_angle_error_01);
         max_error_1    = calc_max_error(curve, 0.1,  &max_angle_error_1);
@@ -425,7 +425,7 @@ public:
 
         // Check a circle with huge radius (10,000,000) and high approximation accuracy
         //---------------
-        //double circle_pnt_count = 0;
+        //float_t circle_pnt_count = 0;
         //agg::bezier_arc ell(0,0, 10000000, 10000000, 0, 2*agg::pi);
         //agg::conv_curve<agg::bezier_arc, agg::curve3_div, agg::curve4_div3> crv(ell);
         //crv.approximation_scale(10.0);

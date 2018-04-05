@@ -125,7 +125,7 @@ public:
         agg::rasterizer_scanline_aa<> ras;
         ras.clip_box(0, 0, width(), height());
         agg::scanline_u8 sl;
-        double r = initial_width();
+        float_t r = initial_width();
         if(initial_height() - 60 < r) r = initial_height() - 60;
         agg::ellipse ell(initial_width()  / 2.0 + 10, 
                          initial_height() / 2.0 + 20 + 10, 

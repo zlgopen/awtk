@@ -49,7 +49,7 @@ namespace agg
         span_interpolator_linear() {}
         span_interpolator_linear(const trans_type& trans) : m_trans(&trans) {}
         span_interpolator_linear(const trans_type& trans,
-                                 double x, double y, unsigned len) :
+                                 float_t x, float_t y, unsigned len) :
             m_trans(&trans)
         {
             begin(x, y, len);
@@ -60,10 +60,10 @@ namespace agg
         void transformer(const trans_type& trans) { m_trans = &trans; }
 
         //----------------------------------------------------------------
-        void begin(double x, double y, unsigned len)
+        void begin(float_t x, float_t y, unsigned len)
         {
-            double tx;
-            double ty;
+            float_t tx;
+            float_t ty;
 
             tx = x;
             ty = y;
@@ -82,7 +82,7 @@ namespace agg
         }
 
         //----------------------------------------------------------------
-        void resynchronize(double xe, double ye, unsigned len)
+        void resynchronize(float_t xe, float_t ye, unsigned len)
         {
             m_trans->transform(&xe, &ye);
             m_li_x = dda2_line_interpolator(m_li_x.y(), iround(xe * subpixel_scale), len);
@@ -142,7 +142,7 @@ namespace agg
             m_trans(&trans) {}
 
         span_interpolator_linear_subdiv(const trans_type& trans,
-                                        double x, double y, unsigned len,
+                                        float_t x, float_t y, unsigned len,
                                         unsigned subdiv_shift = 4) :
             m_subdiv_shift(subdiv_shift),
             m_subdiv_size(1 << m_subdiv_shift),
@@ -166,10 +166,10 @@ namespace agg
         }
 
         //----------------------------------------------------------------
-        void begin(double x, double y, unsigned len)
+        void begin(float_t x, float_t y, unsigned len)
         {
-            double tx;
-            double ty;
+            float_t tx;
+            float_t ty;
             m_pos   = 1;
             m_src_x = iround(x * subpixel_scale) + subpixel_scale;
             m_src_y = y;
@@ -199,8 +199,8 @@ namespace agg
             {
                 unsigned len = m_len;
                 if(len > m_subdiv_size) len = m_subdiv_size;
-                double tx = double(m_src_x) / double(subpixel_scale) + len;
-                double ty = m_src_y;
+                float_t tx = float_t(m_src_x) / float_t(subpixel_scale) + len;
+                float_t ty = m_src_y;
                 m_trans->transform(&tx, &ty);
                 m_li_x = dda2_line_interpolator(m_li_x.y(), iround(tx * subpixel_scale), len);
                 m_li_y = dda2_line_interpolator(m_li_y.y(), iround(ty * subpixel_scale), len);
@@ -226,7 +226,7 @@ namespace agg
         dda2_line_interpolator m_li_x;
         dda2_line_interpolator m_li_y;
         int      m_src_x;
-        double   m_src_y;
+        float_t   m_src_y;
         unsigned m_pos;
         unsigned m_len;
     };

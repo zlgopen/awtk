@@ -50,16 +50,16 @@ namespace agg
 
         vcgen_bspline();
 
-        void interpolation_step(double v) { m_interpolation_step = v; }
-        double interpolation_step() const { return m_interpolation_step; }
+        void interpolation_step(float_t v) { m_interpolation_step = v; }
+        float_t interpolation_step() const { return m_interpolation_step; }
 
         // Vertex Generator Interface
         void remove_all();
-        void add_vertex(double x, double y, unsigned cmd);
+        void add_vertex(float_t x, float_t y, unsigned cmd);
 
         // Vertex Source Interface
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         vcgen_bspline(const vcgen_bspline&);
@@ -68,12 +68,12 @@ namespace agg
         vertex_storage m_src_vertices;
         bspline        m_spline_x;
         bspline        m_spline_y;
-        double         m_interpolation_step;
+        float_t         m_interpolation_step;
         unsigned       m_closed;
         status_e       m_status;
         unsigned       m_src_vertex;
-        double         m_cur_abscissa;
-        double         m_max_abscissa;
+        float_t         m_cur_abscissa;
+        float_t         m_max_abscissa;
     };
 
 }

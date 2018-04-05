@@ -100,7 +100,7 @@ namespace svg
 
 
     //------------------------------------------------------------------------
-    double path_tokenizer::next(char cmd)
+    float_t path_tokenizer::next(char cmd)
     {
         if(!next()) throw exception("parse_path: Unexpected end of path");
         if(last_command() != cmd)

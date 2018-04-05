@@ -28,7 +28,7 @@
 namespace agg
 {
 
-    void vpgen_segmentator::move_to(double x, double y)
+    void vpgen_segmentator::move_to(float_t x, float_t y)
     {
         m_x1 = x;
         m_y1 = y;
@@ -39,20 +39,20 @@ namespace agg
         m_cmd = path_cmd_move_to;
     }
 
-    void vpgen_segmentator::line_to(double x, double y)
+    void vpgen_segmentator::line_to(float_t x, float_t y)
     {
         m_x1 += m_dx;
         m_y1 += m_dy;
         m_dx  = x - m_x1;
         m_dy  = y - m_y1;
-        double len = sqrt(m_dx * m_dx + m_dy * m_dy) * m_approximation_scale;
+        float_t len = sqrt(m_dx * m_dx + m_dy * m_dy) * m_approximation_scale;
         if(len < 1e-30) len = 1e-30;
         m_ddl = 1.0 / len;
         m_dl  = (m_cmd == path_cmd_move_to) ? 0.0 : m_ddl;
         if(m_cmd == path_cmd_stop) m_cmd = path_cmd_line_to;
     }
 
-    unsigned vpgen_segmentator::vertex(double* x, double* y)
+    unsigned vpgen_segmentator::vertex(float_t* x, float_t* y)
     {
         if(m_cmd == path_cmd_stop) return path_cmd_stop;
 

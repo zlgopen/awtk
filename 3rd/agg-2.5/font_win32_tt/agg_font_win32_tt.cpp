@@ -134,7 +134,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    static inline FIXED dbl_to_fx(double d)
+    static inline FIXED dbl_to_fx(float_t d)
     {
         int l;
         l = int(d * 65536.0);
@@ -142,7 +142,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    static inline int dbl_to_plain_fx(double d)
+    static inline int dbl_to_plain_fx(float_t d)
     {
         return int(d * 65536.0);
     }
@@ -155,9 +155,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    static inline double fx_to_dbl(const FIXED& p)
+    static inline float_t fx_to_dbl(const FIXED& p)
     {
-        return double(p.value) + double(p.fract) * (1.0 / 65536.0);
+        return float_t(p.value) + float_t(p.fract) * (1.0 / 65536.0);
     }
 
     //------------------------------------------------------------------------
@@ -173,7 +173,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    static inline int dbl_to_int26p6(double p)
+    static inline int dbl_to_int26p6(float_t p)
     {
         return int(p * 64.0 + 0.5);
     }
@@ -276,7 +276,7 @@ namespace agg
     {
         const char* cur_glyph = gbuf;
         const char* end_glyph = gbuf + total_size;
-        double x, y;
+        float_t x, y;
         typedef typename PathStorage::value_type value_type;
         
         while(cur_glyph < end_glyph)
@@ -326,7 +326,7 @@ namespace agg
                             *(int*)&pnt_c.y = (*(int*)&pnt_b.y + *(int*)&pnt_c.y) / 2;
                         }
                         
-                        double x2, y2;
+                        float_t x2, y2;
                         x  = fx_to_dbl(pnt_b.x);
                         y  = fx_to_dbl(pnt_b.y);
                         x2 = fx_to_dbl(pnt_c.x);
@@ -529,8 +529,8 @@ namespace agg
     //------------------------------------------------------------------------
     bool font_engine_win32_tt_base::create_font(const char* typeface_, 
                                                 glyph_rendering ren_type,
-                                                double height_,
-                                                double width_,
+                                                float_t height_,
+                                                float_t width_,
                                                 int weight_,
                                                 bool italic_,
                                                 DWORD char_set_,
@@ -587,7 +587,7 @@ namespace agg
                m_glyph_rendering == glyph_ren_agg_mono ||
                m_glyph_rendering == glyph_ren_agg_gray8)
             {
-                double mtx[6];
+                float_t mtx[6];
                 char buf[100];
                 m_affine.store_to(mtx);
                 sprintf(buf, ",%08X%08X%08X%08X%08X%08X", 
@@ -893,7 +893,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     bool font_engine_win32_tt_base::add_kerning(unsigned first, unsigned second,
-                                                double* x, double* y)
+                                                float_t* x, float_t* y)
     {
         if(m_dc && m_cur_font)
         {
@@ -913,8 +913,8 @@ namespace agg
                 if(m_kerning_pairs[mid].wFirst  == t.wFirst &&
                    m_kerning_pairs[mid].wSecond == t.wSecond)
                 {
-                    double dx = m_kerning_pairs[mid].iKernAmount;
-                    double dy = 0.0;
+                    float_t dx = m_kerning_pairs[mid].iKernAmount;
+                    float_t dy = 0.0;
                     if(m_glyph_rendering == glyph_ren_outline ||
                        m_glyph_rendering == glyph_ren_agg_mono ||
                        m_glyph_rendering == glyph_ren_agg_gray8)

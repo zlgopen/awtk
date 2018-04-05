@@ -73,13 +73,13 @@ namespace agg
 
         //--------------------------------------------------------------------
         gray8(const rgba& c) :
-            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * double(base_mask))),
-            a((value_type)uround(c.a * double(base_mask))) {}
+            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * float_t(base_mask))),
+            a((value_type)uround(c.a * float_t(base_mask))) {}
 
         //--------------------------------------------------------------------
-        gray8(const rgba& c, double a_) :
-            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * double(base_mask))),
-            a((value_type)uround(a_ * double(base_mask))) {}
+        gray8(const rgba& c, float_t a_) :
+            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * float_t(base_mask))),
+            a((value_type)uround(a_ * float_t(base_mask))) {}
 
         //--------------------------------------------------------------------
         gray8(const rgba8& c) :
@@ -105,17 +105,17 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void opacity(double a_)
+        void opacity(float_t a_)
         {
             if(a_ < 0.0) a_ = 0.0;
             if(a_ > 1.0) a_ = 1.0;
-            a = (value_type)uround(a_ * double(base_mask));
+            a = (value_type)uround(a_ * float_t(base_mask));
         }
 
         //--------------------------------------------------------------------
-        double opacity() const
+        float_t opacity() const
         {
-            return double(a) / double(base_mask);
+            return float_t(a) / float_t(base_mask);
         }
 
 
@@ -162,7 +162,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        self_type gradient(self_type c, double k) const
+        self_type gradient(self_type c, float_t k) const
         {
             self_type ret;
             calc_type ik = uround(k * base_scale);
@@ -214,7 +214,7 @@ namespace agg
     {
         return gray8(c).premultiply();
     }
-    inline gray8 gray8_pre(const rgba& c, double a)
+    inline gray8 gray8_pre(const rgba& c, float_t a)
     {
         return gray8(c,a).premultiply();
     }
@@ -260,13 +260,13 @@ namespace agg
 
         //--------------------------------------------------------------------
         gray16(const rgba& c) :
-            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * double(base_mask))),
-            a((value_type)uround(c.a * double(base_mask))) {}
+            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * float_t(base_mask))),
+            a((value_type)uround(c.a * float_t(base_mask))) {}
 
         //--------------------------------------------------------------------
-        gray16(const rgba& c, double a_) :
-            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * double(base_mask))),
-            a((value_type)uround(a_ * double(base_mask))) {}
+        gray16(const rgba& c, float_t a_) :
+            v((value_type)uround((0.299*c.r + 0.587*c.g + 0.114*c.b) * float_t(base_mask))),
+            a((value_type)uround(a_ * float_t(base_mask))) {}
 
         //--------------------------------------------------------------------
         gray16(const rgba8& c) :
@@ -292,17 +292,17 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void opacity(double a_)
+        void opacity(float_t a_)
         {
             if(a_ < 0.0) a_ = 0.0;
             if(a_ > 1.0) a_ = 1.0;
-            a = (value_type)uround(a_ * double(base_mask));
+            a = (value_type)uround(a_ * float_t(base_mask));
         }
 
         //--------------------------------------------------------------------
-        double opacity() const
+        float_t opacity() const
         {
-            return double(a) / double(base_mask);
+            return float_t(a) / float_t(base_mask);
         }
 
 
@@ -349,7 +349,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        self_type gradient(self_type c, double k) const
+        self_type gradient(self_type c, float_t k) const
         {
             self_type ret;
             calc_type ik = uround(k * base_scale);
@@ -401,7 +401,7 @@ namespace agg
     {
         return gray16(c).premultiply();
     }
-    inline gray16 gray16_pre(const rgba& c, double a)
+    inline gray16 gray16_pre(const rgba& c, float_t a)
     {
         return gray16(c,a).premultiply();
     }

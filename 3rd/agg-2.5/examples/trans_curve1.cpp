@@ -57,8 +57,8 @@ public:
     agg::cbox_ctrl<agg::rgba8>   m_preserve_x_scale;
     agg::cbox_ctrl<agg::rgba8>   m_fixed_len;
     agg::cbox_ctrl<agg::rgba8>   m_animate;
-    double                       m_dx[6];
-    double                       m_dy[6];
+    float_t                       m_dx[6];
+    float_t                       m_dy[6];
     bool                         m_prev_animate;
 
     the_application(HDC dc, agg::pix_format_e format, bool flip_y) :
@@ -145,8 +145,8 @@ public:
 
         if(m_feng.create_font("Times New Roman", agg::glyph_ren_outline))
         {
-            double x = 0.0;
-            double y = 3.0;
+            float_t x = 0.0;
+            float_t y = 3.0;
             const char* p = text;
 
             while(*p)
@@ -270,7 +270,7 @@ public:
     }
 
 
-    void move_point(double& x, double& y, double& dx, double& dy)
+    void move_point(float_t& x, float_t& y, float_t& dx, float_t& dy)
     {
         if(x < 0.0)      { x = 0.0;      dx = -dx; }
         if(x > width())  { x = width();  dx = -dx; }

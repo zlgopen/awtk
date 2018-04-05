@@ -28,8 +28,8 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    scale_ctrl_impl::scale_ctrl_impl(double x1, double y1, 
-                                     double x2, double y2, bool flip_y) :
+    scale_ctrl_impl::scale_ctrl_impl(float_t x1, float_t y1, 
+                                     float_t x2, float_t y2, bool flip_y) :
         ctrl(x1, y1, x2, y2, flip_y),
         m_border_thickness(1.0),
         m_border_extra((fabs(x2 - x1) > fabs(y2 - y1)) ? (y2 - y1) / 2 : (x2 - x1) / 2),
@@ -55,7 +55,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void scale_ctrl_impl::border_thickness(double t, double extra)
+    void scale_ctrl_impl::border_thickness(float_t t, float_t extra)
     { 
         m_border_thickness = t; 
         m_border_extra = extra;
@@ -64,7 +64,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void scale_ctrl_impl::resize(double x1, double y1, double x2, double y2)
+    void scale_ctrl_impl::resize(float_t x1, float_t y1, float_t x2, float_t y2)
     {
         m_x1 = x1;
         m_y1 = y1;
@@ -78,7 +78,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void scale_ctrl_impl::value1(double value) 
+    void scale_ctrl_impl::value1(float_t value) 
     { 
         if(value < 0.0) value = 0.0;
         if(value > 1.0) value = 1.0;
@@ -88,7 +88,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void scale_ctrl_impl::value2(double value) 
+    void scale_ctrl_impl::value2(float_t value) 
     { 
         if(value < 0.0) value = 0.0;
         if(value > 1.0) value = 1.0;
@@ -98,7 +98,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void scale_ctrl_impl::move(double d)
+    void scale_ctrl_impl::move(float_t d)
     {
         m_value1 += d;
         m_value2 += d;
@@ -226,7 +226,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned scale_ctrl_impl::vertex(double* x, double* y)
+    unsigned scale_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         switch(m_idx)
@@ -269,7 +269,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool scale_ctrl_impl::in_rect(double x, double y) const
+    bool scale_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         inverse_transform_xy(&x, &y);
         return x >= m_x1 && x <= m_x2 && y >= m_y1 && y <= m_y2;
@@ -277,16 +277,16 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool scale_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool scale_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
 
-        double xp1;
-        double xp2;
-        double ys1;
-        double ys2;
-        double xp;
-        double yp;
+        float_t xp1;
+        float_t xp2;
+        float_t ys1;
+        float_t ys2;
+        float_t xp;
+        float_t yp;
 
         if(fabs(m_x2 - m_x1) > fabs(m_y2 - m_y1))
         {
@@ -356,7 +356,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool scale_ctrl_impl::on_mouse_move(double x, double y, bool button_flag)
+    bool scale_ctrl_impl::on_mouse_move(float_t x, float_t y, bool button_flag)
     {
         inverse_transform_xy(&x, &y);
         if(!button_flag)
@@ -364,9 +364,9 @@ namespace agg
             return on_mouse_button_up(x, y);
         }
 
-        double xp = x + m_pdx;
-        double yp = y + m_pdy;
-        double dv;
+        float_t xp = x + m_pdx;
+        float_t yp = y + m_pdy;
+        float_t dv;
 
         switch(m_move_what)
         {
@@ -427,7 +427,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool scale_ctrl_impl::on_mouse_button_up(double, double)
+    bool scale_ctrl_impl::on_mouse_button_up(float_t, float_t)
     {
         m_move_what = move_nothing;
         return false;

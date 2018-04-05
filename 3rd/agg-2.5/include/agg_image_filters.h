@@ -55,14 +55,14 @@ namespace agg
         template<class FilterF> void calculate(const FilterF& filter,
                                                bool normalization=true)
         {
-            double r = filter.radius();
+            float_t r = filter.radius();
             realloc_lut(r);
             unsigned i;
             unsigned pivot = diameter() << (image_subpixel_shift - 1);
             for(i = 0; i < pivot; i++)
             {
-                double x = double(i) / double(image_subpixel_scale);
-                double y = filter.calc_weight(x);
+                float_t x = float_t(i) / float_t(image_subpixel_scale);
+                float_t y = filter.calc_weight(x);
                 m_weight_array[pivot + i] = 
                 m_weight_array[pivot - i] = (int16)iround(y * image_filter_scale);
             }
@@ -82,18 +82,18 @@ namespace agg
             calculate(filter, normalization);
         }
 
-        double       radius()       const { return m_radius;   }
+        float_t       radius()       const { return m_radius;   }
         unsigned     diameter()     const { return m_diameter; }
         int          start()        const { return m_start;    }
         const int16* weight_array() const { return &m_weight_array[0]; }
         void         normalize();
 
     private:
-        void realloc_lut(double radius);
+        void realloc_lut(float_t radius);
         image_filter_lut(const image_filter_lut&);
         const image_filter_lut& operator = (const image_filter_lut&);
 
-        double           m_radius;
+        float_t           m_radius;
         unsigned         m_diameter;
         int              m_start;
         pod_array<int16> m_weight_array;
@@ -117,8 +117,8 @@ namespace agg
     //-----------------------------------------------image_filter_bilinear
     struct image_filter_bilinear
     {
-        static double radius() { return 1.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 1.0; }
+        static float_t calc_weight(float_t x)
         {
             return 1.0 - x;
         }
@@ -128,8 +128,8 @@ namespace agg
     //-----------------------------------------------image_filter_hanning
     struct image_filter_hanning
     {
-        static double radius() { return 1.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 1.0; }
+        static float_t calc_weight(float_t x)
         {
             return 0.5 + 0.5 * cos(pi * x);
         }
@@ -139,8 +139,8 @@ namespace agg
     //-----------------------------------------------image_filter_hamming
     struct image_filter_hamming
     {
-        static double radius() { return 1.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 1.0; }
+        static float_t calc_weight(float_t x)
         {
             return 0.54 + 0.46 * cos(pi * x);
         }
@@ -149,8 +149,8 @@ namespace agg
     //-----------------------------------------------image_filter_hermite
     struct image_filter_hermite
     {
-        static double radius() { return 1.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 1.0; }
+        static float_t calc_weight(float_t x)
         {
             return (2.0 * x - 3.0) * x * x + 1.0;
         }
@@ -159,10 +159,10 @@ namespace agg
     //------------------------------------------------image_filter_quadric
     struct image_filter_quadric
     {
-        static double radius() { return 1.5; }
-        static double calc_weight(double x)
+        static float_t radius() { return 1.5; }
+        static float_t calc_weight(float_t x)
         {
-            double t;
+            float_t t;
             if(x <  0.5) return 0.75 - x * x;
             if(x <  1.5) {t = x - 1.5; return 0.5 * t * t;}
             return 0.0;
@@ -172,14 +172,14 @@ namespace agg
     //------------------------------------------------image_filter_bicubic
     class image_filter_bicubic
     {
-        static double pow3(double x)
+        static float_t pow3(float_t x)
         {
             return (x <= 0.0) ? 0.0 : x * x * x;
         }
 
     public:
-        static double radius() { return 2.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 2.0; }
+        static float_t calc_weight(float_t x)
         {
             return
                 (1.0/6.0) * 
@@ -190,28 +190,28 @@ namespace agg
     //-------------------------------------------------image_filter_kaiser
     class image_filter_kaiser
     {
-        double a;
-        double i0a;
-        double epsilon;
+        float_t a;
+        float_t i0a;
+        float_t epsilon;
 
     public:
-        image_filter_kaiser(double b = 6.33) :
+        image_filter_kaiser(float_t b = 6.33) :
             a(b), epsilon(1e-12)
         {
             i0a = 1.0 / bessel_i0(b);
         }
 
-        static double radius() { return 1.0; }
-        double calc_weight(double x) const
+        static float_t radius() { return 1.0; }
+        float_t calc_weight(float_t x) const
         {
             return bessel_i0(a * sqrt(1. - x * x)) * i0a;
         }
 
     private:
-        double bessel_i0(double x) const
+        float_t bessel_i0(float_t x) const
         {
             int i;
-            double sum, y, t;
+            float_t sum, y, t;
 
             sum = 1.;
             y = x * x / 4.;
@@ -220,7 +220,7 @@ namespace agg
             for(i = 2; t > epsilon; i++)
             {
                 sum += t;
-                t *= (double)y / (i * i);
+                t *= (float_t)y / (i * i);
             }
             return sum;
         }
@@ -229,8 +229,8 @@ namespace agg
     //----------------------------------------------image_filter_catrom
     struct image_filter_catrom
     {
-        static double radius() { return 2.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 2.0; }
+        static float_t calc_weight(float_t x)
         {
             if(x <  1.0) return 0.5 * (2.0 + x * x * (-5.0 + x * 3.0));
             if(x <  2.0) return 0.5 * (4.0 + x * (-8.0 + x * (5.0 - x)));
@@ -241,11 +241,11 @@ namespace agg
     //---------------------------------------------image_filter_mitchell
     class image_filter_mitchell
     {
-        double p0, p2, p3;
-        double q0, q1, q2, q3;
+        float_t p0, p2, p3;
+        float_t q0, q1, q2, q3;
 
     public:
-        image_filter_mitchell(double b = 1.0/3.0, double c = 1.0/3.0) :
+        image_filter_mitchell(float_t b = 1.0/3.0, float_t c = 1.0/3.0) :
             p0((6.0 - 2.0 * b) / 6.0),
             p2((-18.0 + 12.0 * b + 6.0 * c) / 6.0),
             p3((12.0 - 9.0 * b - 6.0 * c) / 6.0),
@@ -255,8 +255,8 @@ namespace agg
             q3((-b - 6.0 * c) / 6.0)
         {}
 
-        static double radius() { return 2.0; }
-        double calc_weight(double x) const
+        static float_t radius() { return 2.0; }
+        float_t calc_weight(float_t x) const
         {
             if(x < 1.0) return p0 + x * x * (p2 + x * p3);
             if(x < 2.0) return q0 + x * (q1 + x * (q2 + x * q3));
@@ -268,8 +268,8 @@ namespace agg
     //----------------------------------------------image_filter_spline16
     struct image_filter_spline16
     {
-        static double radius() { return 2.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 2.0; }
+        static float_t calc_weight(float_t x)
         {
             if(x < 1.0)
             {
@@ -283,8 +283,8 @@ namespace agg
     //---------------------------------------------image_filter_spline36
     struct image_filter_spline36
     {
-        static double radius() { return 3.0; }
-        static double calc_weight(double x)
+        static float_t radius() { return 3.0; }
+        static float_t calc_weight(float_t x)
         {
            if(x < 1.0)
            {
@@ -302,8 +302,8 @@ namespace agg
     //----------------------------------------------image_filter_gaussian
     struct image_filter_gaussian
     {
-        static double radius() { return 2.0; }
-        static double calc_weight(double x) 
+        static float_t radius() { return 2.0; }
+        static float_t calc_weight(float_t x) 
         {
             return exp(-2.0 * x * x) * sqrt(2.0 / pi);
         }
@@ -313,8 +313,8 @@ namespace agg
     //------------------------------------------------image_filter_bessel
     struct image_filter_bessel
     {
-        static double radius() { return 3.2383; } 
-        static double calc_weight(double x)
+        static float_t radius() { return 3.2383; } 
+        static float_t calc_weight(float_t x)
         {
             return (x == 0.0) ? pi / 4.0 : besj(pi * x, 1) / (2.0 * x);
         }
@@ -325,16 +325,16 @@ namespace agg
     class image_filter_sinc
     {
     public:
-        image_filter_sinc(double r) : m_radius(r < 2.0 ? 2.0 : r) {}
-        double radius() const { return m_radius; }
-        double calc_weight(double x) const
+        image_filter_sinc(float_t r) : m_radius(r < 2.0 ? 2.0 : r) {}
+        float_t radius() const { return m_radius; }
+        float_t calc_weight(float_t x) const
         {
             if(x == 0.0) return 1.0;
             x *= pi;
             return sin(x) / x;
         }
     private:
-        double m_radius;
+        float_t m_radius;
     };
 
 
@@ -342,18 +342,18 @@ namespace agg
     class image_filter_lanczos
     {
     public:
-        image_filter_lanczos(double r) : m_radius(r < 2.0 ? 2.0 : r) {}
-        double radius() const { return m_radius; }
-        double calc_weight(double x) const
+        image_filter_lanczos(float_t r) : m_radius(r < 2.0 ? 2.0 : r) {}
+        float_t radius() const { return m_radius; }
+        float_t calc_weight(float_t x) const
         {
            if(x == 0.0) return 1.0;
            if(x > m_radius) return 0.0;
            x *= pi;
-           double xr = x / m_radius;
+           float_t xr = x / m_radius;
            return (sin(x) / x) * (sin(xr) / xr);
         }
     private:
-        double m_radius;
+        float_t m_radius;
     };
 
 
@@ -361,18 +361,18 @@ namespace agg
     class image_filter_blackman
     {
     public:
-        image_filter_blackman(double r) : m_radius(r < 2.0 ? 2.0 : r) {}
-        double radius() const { return m_radius; }
-        double calc_weight(double x) const
+        image_filter_blackman(float_t r) : m_radius(r < 2.0 ? 2.0 : r) {}
+        float_t radius() const { return m_radius; }
+        float_t calc_weight(float_t x) const
         {
            if(x == 0.0) return 1.0;
            if(x > m_radius) return 0.0;
            x *= pi;
-           double xr = x / m_radius;
+           float_t xr = x / m_radius;
            return (sin(x) / x) * (0.42 + 0.5*cos(xr) + 0.08*cos(2*xr));
         }
     private:
-        double m_radius;
+        float_t m_radius;
     };
 
     //------------------------------------------------image_filter_sinc36

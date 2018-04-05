@@ -42,16 +42,16 @@ agg::path_storage g_path;
 agg::rgba8        g_colors[100];
 unsigned          g_path_idx[100];
 unsigned          g_npaths = 0;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
-double            g_base_dx = 0;
-double            g_base_dy = 0;
-double            g_angle = 0;
-double            g_scale = 1.0;
-double            g_skew_x = 0;
-double            g_skew_y = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
+float_t            g_base_dx = 0;
+float_t            g_base_dy = 0;
+float_t            g_angle = 0;
+float_t            g_scale = 1.0;
+float_t            g_skew_x = 0;
+float_t            g_skew_y = 0;
 int               g_nclick = 0;
 
 
@@ -176,7 +176,7 @@ public:
 
         r.reset_clipping(false);  // Visibility: "false" means "no visible regions"
         int x, y;
-        double n = m_num_cb.value();
+        float_t n = m_num_cb.value();
         for(x = 0; x < n; x++)
         {
             for(y = 0; y < n; y++)
@@ -207,7 +207,7 @@ public:
 //    rs.color(g_colors[i]);
 //
 //    int x, y;
-//    double n = m_num_cb.value();
+//    float_t n = m_num_cb.value();
 //    for(x = 0; x < n; x++)
 //    {
 //        for(y = 0; y < n; y++)
@@ -247,7 +247,7 @@ public:
 
 
         // Render random anti-aliased lines
-        double w = 5.0;
+        float_t w = 5.0;
         agg::line_profile_aa profile;
         profile.width(w);
 
@@ -290,7 +290,7 @@ public:
         {
             x = rand() % width;
             y = rand() % height;
-            double radius = rand() % 10 + 5;
+            float_t radius = rand() % 10 + 5;
             grm.reset();
             grm *= agg::trans_affine_scaling(radius / 10.0);
             grm *= agg::trans_affine_translation(x, y);
@@ -311,7 +311,7 @@ public:
     }
 
 
-    void transform(double width, double height, double x, double y)
+    void transform(float_t width, float_t height, float_t x, float_t y)
     {
         x -= width / 2;
         y -= height / 2;

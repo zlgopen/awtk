@@ -139,7 +139,7 @@ public:
         unsigned stop_len = arr.size() / (colors.size()-1);
         for(size_t color_index = 0; color_index < colors.size()-1; color_index++){
             for(unsigned i = 0; i < stop_len; i++){
-                arr[i + color_index*stop_len] = colors[color_index].gradient(colors[color_index+1], (i - stop_len) / double(stop_len));
+                arr[i + color_index*stop_len] = colors[color_index].gradient(colors[color_index+1], (i - stop_len) / float_t(stop_len));
             }
         }
     }
@@ -152,8 +152,8 @@ private:
     void *data; // buffer data
     // render settings
     bool _antialias, _preserve;
-    double _linewidth; // linewidth
-    double _miterlimit;
+    float_t _linewidth; // linewidth
+    float_t _miterlimit;
     line_cap_style _linecap;
     line_join_style _linejoin;
     bool owns_data, owns_alpha; // data ownership information
@@ -248,19 +248,19 @@ public:
         _antialias = aa;
     }
 
-    void line_width(double w){
+    void line_width(float_t w){
         _linewidth = w;
     }
 
-    double line_width(){
+    float_t line_width(){
         return _linewidth;
     }
 
-    void miter_limit(double m){
+    void miter_limit(float_t m){
         _miterlimit = m;
     }
 
-    double miter_limit(){
+    float_t miter_limit(){
         return _miterlimit;
     }
 
@@ -303,26 +303,26 @@ public:
     }
 
     // Set rotation
-    inline void rotate(double rad){
+    inline void rotate(float_t rad){
         mtx *= agg::trans_affine_rotation(rad);
     }
 
     // Set translation
-    inline void translate(double x, double y){
+    inline void translate(float_t x, float_t y){
         mtx *= agg::trans_affine_translation(x, y);
     }
 
     // Set scale
-    inline void scale(double n){
+    inline void scale(float_t n){
         mtx *= agg::trans_affine_scaling(n);
     }
 
-    inline void scale(double n, double m){
+    inline void scale(float_t n, float_t m){
         mtx *= agg::trans_affine_scaling(n, m);
     }
 
     // Set skew
-    void skew(double x, double y){
+    void skew(float_t x, float_t y){
         mtx *= agg::trans_affine_skewing(x, y);
     }
 
@@ -360,17 +360,17 @@ public:
     }
 
     // Create shape objects
-    void ellipse(double x, double y, double rx, double ry, int n = 100){
+    void ellipse(float_t x, float_t y, float_t rx, float_t ry, int n = 100){
         agg::ellipse ell(x, y, rx, ry, n);
         concat_path<agg::ellipse>(ell);
     }
 
-    inline void rect(double x, double y, double x1, double y1, double border_radius=0){
+    inline void rect(float_t x, float_t y, float_t x1, float_t y1, float_t border_radius=0){
         agg::rounded_rect r(x, y, x1, y1, border_radius);
         concat_path(r);
     }
 
-    inline void clip(double x, double y, double x1, double y1){
+    inline void clip(float_t x, float_t y, float_t x1, float_t y1){
         if (!raster){
             return;
         }
@@ -392,7 +392,7 @@ public:
     }
 
     // Get previous position
-    inline void last_position(double *x, double* y){
+    inline void last_position(float_t *x, float_t* y){
         if (x){
             *x = last_x();
         }
@@ -402,38 +402,38 @@ public:
         }
     }
 
-    inline void curve_to(double x, double y){
+    inline void curve_to(float_t x, float_t y){
         curve3(x, y);
     }
 
-    inline void curve_rel(double x, double y){
+    inline void curve_rel(float_t x, float_t y){
         curve3_rel(x, y);
     }
 
-    inline void curve_to(double x, double y, double a, double b){
+    inline void curve_to(float_t x, float_t y, float_t a, float_t b){
         curve3(a, b, x, y);
     }
 
-    inline void curve_rel(double x, double y, double a, double b){
+    inline void curve_rel(float_t x, float_t y, float_t a, float_t b){
         curve3_rel(a, b, x, y);
     }
 
-    inline void curve_to(double x, double y, double a, double b, double c, double d){
+    inline void curve_to(float_t x, float_t y, float_t a, float_t b, float_t c, float_t d){
         curve4(a, b, c, d, x, y);
     }
 
-    inline void curve_rel(double x, double y, double a, double b, double c, double d){
+    inline void curve_rel(float_t x, float_t y, float_t a, float_t b, float_t c, float_t d){
         curve4_rel(a, b, c, d, x, y);
     }
 
-    inline void arc_to(double rx, double ry, double x, double y, double angle, bool large = false, bool sweep = false){
+    inline void arc_to(float_t rx, float_t ry, float_t x, float_t y, float_t angle, bool large = false, bool sweep = false){
         if (angle == 0)
             return;
 
         agg::path_storage::arc_to(rx, ry, angle, large, sweep, x, y);
     }
 
-    inline void arc_rel( double rx, double ry, double x, double y, double angle, bool large = false, bool sweep = false){
+    inline void arc_rel( float_t rx, float_t ry, float_t x, float_t y, float_t angle, bool large = false, bool sweep = false){
         agg::path_storage::arc_rel(rx, ry, angle, large, sweep, x, y);
     }
 
@@ -468,13 +468,13 @@ public:
      */
 
     template <typename ColorType>
-    inline void blur(double a){
+    inline void blur(float_t a){
         agg::recursive_blur<ColorType, agg::recursive_blur_calc_rgb<> > sb;
         sb.blur(pix, a);
     }
 
     // Draw text without freetype
-    double text_simple(double x, double y, const char *txt, int size=50, double width=2.0, const char *font=NULL, bool flip_y = true){
+    float_t text_simple(float_t x, float_t y, const char *txt, int size=50, float_t width=2.0, const char *font=NULL, bool flip_y = true){
         if (!raster){
             return 0.0;
         }
@@ -539,12 +539,12 @@ public:
         paint(m);
     }
 
-    inline void dash(Color c, double x, double y){
+    inline void dash(Color c, float_t x, float_t y){
         set_color(c);
         dash(x, y);
     }
 
-    void dash(double a, double b){
+    void dash(float_t a, float_t b){
         agg::conv_curve<agg::path_storage> curve(*this);
         agg::conv_dash<agg::conv_curve<agg::path_storage> > p(curve);
         p.add_dash(a, b);
@@ -589,7 +589,7 @@ public:
 
     // Check if point is in rasterizer
     // note: perserve must be set to true for this to work
-    inline bool is_drawn(double x, double y){
+    inline bool is_drawn(float_t x, float_t y){
         if (!raster){
             return false;
         }
@@ -597,8 +597,8 @@ public:
     }
 
     // Check if current point is in current path
-    inline bool in_path(double x, double y){
-        double a, b;
+    inline bool in_path(float_t x, float_t y){
+        float_t a, b;
         for(int i = 0; i < agg::path_storage::total_vertices(); i++){
             agg::path_storage::vertex(i, &a, &b);
             if (a == x && b == y)

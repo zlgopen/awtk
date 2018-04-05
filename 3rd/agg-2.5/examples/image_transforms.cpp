@@ -35,17 +35,17 @@ class the_application : public agg::platform_support
 
     agg::rbox_ctrl<agg::rgba> m_example;
 
-    double m_image_center_x;
-    double m_image_center_y;
+    float_t m_image_center_x;
+    float_t m_image_center_y;
 
-    double m_polygon_cx;
-    double m_polygon_cy;
+    float_t m_polygon_cx;
+    float_t m_polygon_cy;
 
-    double m_image_cx;
-    double m_image_cy;
+    float_t m_image_cx;
+    float_t m_image_cy;
 
-    double m_dx;
-    double m_dy;
+    float_t m_dx;
+    float_t m_dy;
 
     int m_flag;
 
@@ -113,19 +113,19 @@ public:
     //------------------------------------------------------------------------
     void create_star(agg::path_storage& ps)
     {
-        double r = initial_width();
+        float_t r = initial_width();
         if(initial_height() < r) r = initial_height();
 
-        double r1 = r / 3 - 8.0;
-        double r2 = r1 / 1.45;
+        float_t r1 = r / 3 - 8.0;
+        float_t r2 = r1 / 1.45;
         unsigned nr = 14;
 
         unsigned i;
         for(i = 0; i < nr; i++)
         {
-            double a = agg::pi * 2.0 * i / nr - agg::pi / 2.0;
-            double dx = cos(a);
-            double dy = sin(a);
+            float_t a = agg::pi * 2.0 * i / nr - agg::pi / 2.0;
+            float_t dx = cos(a);
+            float_t dy = sin(a);
 
             if(i & 1)
             {

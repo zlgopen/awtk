@@ -42,9 +42,9 @@ enum flip_y_e { flip_y = true };
 
 
 void generate_circles(agg::path_storage& ps, 
-                      const double* quad, 
+                      const float_t* quad, 
                       unsigned num_circles, 
-                      double radius)
+                      float_t radius)
 {
     ps.remove_all();
     unsigned i;

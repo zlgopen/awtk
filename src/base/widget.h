@@ -188,6 +188,12 @@ typedef enum _widget_type_t {
    * 滑块。
    */
   WIDGET_SLIDER,
+  
+  /**
+   * @const WIDGET_VIEW
+   * 通用容器和自绘控件。
+   */
+  WIDGET_VIEW,
 
   WIDGET_NR
 } widget_type_t;

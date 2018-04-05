@@ -23,26 +23,26 @@ enum flip_y_e { flip_y = true };
 
 struct filter_base
 {
-    virtual double radius() const = 0;
-    virtual void set_radius(double r) = 0;
-    virtual double calc_weight(double x) const = 0;
+    virtual float_t radius() const = 0;
+    virtual void set_radius(float_t r) = 0;
+    virtual float_t calc_weight(float_t x) const = 0;
 };
 
 
 template<class Filter> struct image_filter_const_radius_adaptor : filter_base
 {
-    virtual double radius() const { return m_filter.radius(); }
-    virtual void set_radius(double r) {}
-    virtual double calc_weight(double x) const { return m_filter.calc_weight(fabs(x)); }
+    virtual float_t radius() const { return m_filter.radius(); }
+    virtual void set_radius(float_t r) {}
+    virtual float_t calc_weight(float_t x) const { return m_filter.calc_weight(fabs(x)); }
     Filter m_filter;
 };
 
 
 template<class Filter> struct image_filter_variable_radius_adaptor : filter_base
 {
-    virtual double radius() const { return m_filter.radius(); }
-    virtual double calc_weight(double x) const { return m_filter.calc_weight(fabs(x)); }
-    virtual void set_radius(double r) { m_filter = Filter(r); }
+    virtual float_t radius() const { return m_filter.radius(); }
+    virtual float_t calc_weight(float_t x) const { return m_filter.calc_weight(fabs(x)); }
+    virtual void set_radius(float_t r) { m_filter = Filter(r); }
     image_filter_variable_radius_adaptor() : m_filter(2.0) {}
     Filter m_filter;
 };
@@ -177,11 +177,11 @@ public:
         agg::rasterizer_scanline_aa<> ras;
         agg::scanline_p8 sl;
 
-        double x_start = 125.0;
-        double x_end   = initial_width() - 15.0;
-        double y_start = 10.0;
-        double y_end   = initial_height() - 10.0;
-        double x_center = (x_start + x_end) / 2;
+        float_t x_start = 125.0;
+        float_t x_end   = initial_width() - 15.0;
+        float_t y_start = 10.0;
+        float_t y_end   = initial_height() - 10.0;
+        float_t x_center = (x_start + x_end) / 2;
 
         unsigned i;
 
@@ -191,7 +191,7 @@ public:
 
         for(i = 0; i <= 16; i++)
         {
-            double x = x_start + (x_end - x_start) * i / 16.0;
+            float_t x = x_start + (x_end - x_start) * i / 16.0;
             p.remove_all();
             p.move_to(x+0.5, y_start);
             p.line_to(x+0.5, y_end);
@@ -200,7 +200,7 @@ public:
             agg::render_scanlines(ras, sl, rs);
         }
 
-        double ys = y_start + (y_end - y_start) / 6.0;
+        float_t ys = y_start + (y_end - y_start) / 6.0;
 
         p.remove_all();
         p.move_to(x_start, ys);
@@ -219,12 +219,12 @@ public:
                 m_filter_func[i]->set_radius(m_radius.value());
                 unsigned j;
 
-                double radius = m_filter_func[i]->radius();
+                float_t radius = m_filter_func[i]->radius();
                 unsigned n = unsigned(radius * 256 * 2);
-                double dy = y_end - ys;
+                float_t dy = y_end - ys;
 
-                double xs = (x_end + x_start)/2.0 - (radius * (x_end - x_start) / 16.0);
-                double dx = (x_end - x_start) * radius / 8.0;
+                float_t xs = (x_end + x_start)/2.0 - (radius * (x_end - x_start) / 16.0);
+                float_t dx = (x_end - x_start) * radius / 8.0;
 
                 p.remove_all();
                 p.move_to(xs+0.5, ys + dy * m_filter_func[i]->calc_weight(-radius));
@@ -244,18 +244,18 @@ public:
                 for(xint = 0; xint < 256; xint++)
                 {
                     int xfract;
-                    double sum = 0;
+                    float_t sum = 0;
                     for(xfract = -ir; xfract < ir; xfract++) 
                     {
-                        double xf = xint/256.0 + xfract;
+                        float_t xf = xint/256.0 + xfract;
                         if(xf >= -radius || xf <= radius)
                         {
                             sum += m_filter_func[i]->calc_weight(xf);
                         }
                     }
 
-                    double x = x_center + ((-128.0 + xint) / 128.0) * radius * (x_end - x_start) / 16.0;
-                    double y = ys + sum * 256 - 256;
+                    float_t x = x_center + ((-128.0 + xint) / 128.0) * radius * (x_end - x_start) / 16.0;
+                    float_t y = ys + sum * 256 - 256;
 
                     if(xint == 0) p.move_to(x, y);
                     else          p.line_to(x, y);

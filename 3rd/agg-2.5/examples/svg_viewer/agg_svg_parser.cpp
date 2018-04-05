@@ -449,7 +449,7 @@ namespace svg
         }
     }
 
-    double parse_double(const char* str)
+    float_t parse_double(const char* str)
     {
         while(*str == ' ') ++str;
         return atof(str);
@@ -622,10 +622,10 @@ namespace svg
     void parser::parse_rect(const char** attr)
     {
         int i;
-        double x = 0.0;
-        double y = 0.0;
-        double w = 0.0;
-        double h = 0.0;
+        float_t x = 0.0;
+        float_t y = 0.0;
+        float_t w = 0.0;
+        float_t h = 0.0;
 
         m_path.begin_path();
         for(i = 0; attr[i]; i += 2)
@@ -661,10 +661,10 @@ namespace svg
     void parser::parse_line(const char** attr)
     {
         int i;
-        double x1 = 0.0;
-        double y1 = 0.0;
-        double x2 = 0.0;
-        double y2 = 0.0;
+        float_t x1 = 0.0;
+        float_t y1 = 0.0;
+        float_t x2 = 0.0;
+        float_t y2 = 0.0;
 
         m_path.begin_path();
         for(i = 0; attr[i]; i += 2)
@@ -688,8 +688,8 @@ namespace svg
     void parser::parse_poly(const char** attr, bool close_flag)
     {
         int i;
-        double x = 0.0;
-        double y = 0.0;
+        float_t x = 0.0;
+        float_t y = 0.0;
 
         m_path.begin_path();
         for(i = 0; attr[i]; i += 2)
@@ -763,7 +763,7 @@ namespace svg
 
     //-------------------------------------------------------------
     static unsigned parse_transform_args(const char* str, 
-                                         double* args, 
+                                         float_t* args, 
                                          unsigned max_na, 
                                          unsigned* na)
     {
@@ -803,7 +803,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_matrix(const char* str)
     {
-        double args[6];
+        float_t args[6];
         unsigned na = 0;
         unsigned len = parse_transform_args(str, args, 6, &na);
         if(na != 6)
@@ -817,7 +817,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_translate(const char* str)
     {
-        double args[2];
+        float_t args[2];
         unsigned na = 0;
         unsigned len = parse_transform_args(str, args, 2, &na);
         if(na == 1) args[1] = 0.0;
@@ -828,7 +828,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_rotate(const char* str)
     {
-        double args[3];
+        float_t args[3];
         unsigned na = 0;
         unsigned len = parse_transform_args(str, args, 3, &na);
         if(na == 1) 
@@ -852,7 +852,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_scale(const char* str)
     {
-        double args[2];
+        float_t args[2];
         unsigned na = 0;
         unsigned len = parse_transform_args(str, args, 2, &na);
         if(na == 1) args[1] = args[0];
@@ -863,7 +863,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_skew_x(const char* str)
     {
-        double arg;
+        float_t arg;
         unsigned na = 0;
         unsigned len = parse_transform_args(str, &arg, 1, &na);
         m_path.transform().premultiply(trans_affine_skewing(deg2rad(arg), 0.0));
@@ -873,7 +873,7 @@ namespace svg
     //-------------------------------------------------------------
     unsigned parser::parse_skew_y(const char* str)
     {
-        double arg;
+        float_t arg;
         unsigned na = 0;
         unsigned len = parse_transform_args(str, &arg, 1, &na);
         m_path.transform().premultiply(trans_affine_skewing(0.0, deg2rad(arg)));

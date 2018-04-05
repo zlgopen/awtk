@@ -101,8 +101,8 @@ namespace agg
 
 class the_application : public agg::platform_support
 {
-    double m_x[3];
-    double m_y[3];
+    float_t m_x[3];
+    float_t m_y[3];
 
 public:
     the_application(int format, bool flip_y) :

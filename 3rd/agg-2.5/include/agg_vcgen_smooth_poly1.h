@@ -58,16 +58,16 @@ namespace agg
 
         vcgen_smooth_poly1();
 
-        void   smooth_value(double v) { m_smooth_value = v * 0.5; }
-        double smooth_value() const { return m_smooth_value * 2.0; }
+        void   smooth_value(float_t v) { m_smooth_value = v * 0.5; }
+        float_t smooth_value() const { return m_smooth_value * 2.0; }
 
         // Vertex Generator Interface
         void remove_all();
-        void add_vertex(double x, double y, unsigned cmd);
+        void add_vertex(float_t x, float_t y, unsigned cmd);
 
         // Vertex Source Interface
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         vcgen_smooth_poly1(const vcgen_smooth_poly1&);
@@ -79,14 +79,14 @@ namespace agg
                        const vertex_dist& v3);
 
         vertex_storage m_src_vertices;
-        double         m_smooth_value;
+        float_t         m_smooth_value;
         unsigned       m_closed;
         status_e       m_status;
         unsigned       m_src_vertex;
-        double         m_ctrl1_x;
-        double         m_ctrl1_y;
-        double         m_ctrl2_x;
-        double         m_ctrl2_y;
+        float_t         m_ctrl1_x;
+        float_t         m_ctrl1_y;
+        float_t         m_ctrl2_x;
+        float_t         m_ctrl2_y;
     };
 
 }

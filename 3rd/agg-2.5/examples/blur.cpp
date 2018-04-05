@@ -269,7 +269,7 @@ public:
                 }
             }
         }
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         agg::render_ctrl(m_ras, m_sl, renb, m_shadow_ctrl);
 

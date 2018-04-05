@@ -64,8 +64,8 @@ namespace agg
                        const char* font_mem = 0, const long font_mem_size = 0);
         bool attach(const char* file_name);
         bool char_map(FT_Encoding map);
-        bool height(double h);
-        bool width(double w);
+        bool height(float_t h);
+        bool width(float_t w);
         void hinting(bool h);
         void flip_y(bool f);
         void transform(const trans_affine& affine);
@@ -84,10 +84,10 @@ namespace agg
         const char* name()         const { return m_name;       }
         unsigned    num_faces()    const;
         FT_Encoding char_map()     const { return m_char_map;   }
-        double      height()       const { return double(m_height) / 64.0;    }
-        double      width()        const { return double(m_width) / 64.0;     }
-        double      ascender()     const;
-        double      descender()    const;
+        float_t      height()       const { return float_t(m_height) / 64.0;    }
+        float_t      width()        const { return float_t(m_width) / 64.0;     }
+        float_t      ascender()     const;
+        float_t      descender()    const;
         bool        hinting()      const { return m_hinting;    }
         bool        flip_y()       const { return m_flip_y;     }
 
@@ -102,11 +102,11 @@ namespace agg
         unsigned        data_size()   const { return m_data_size;   }
         glyph_data_type data_type()   const { return m_data_type;   }
         const rect_i&   bounds()      const { return m_bounds;      }
-        double          advance_x()   const { return m_advance_x;   }
-        double          advance_y()   const { return m_advance_y;   }
+        float_t          advance_x()   const { return m_advance_x;   }
+        float_t          advance_y()   const { return m_advance_y;   }
         void            write_glyph_to(int8u* data) const;
         bool            add_kerning(unsigned first, unsigned second,
-                                    double* x, double* y);
+                                    float_t* x, float_t* y);
 
     private:
         font_engine_freetype_base(const font_engine_freetype_base&);
@@ -141,8 +141,8 @@ namespace agg
         unsigned        m_data_size;
         glyph_data_type m_data_type;
         rect_i          m_bounds;
-        double          m_advance_x;
-        double          m_advance_y;
+        float_t          m_advance_x;
+        float_t          m_advance_y;
         trans_affine    m_affine;
 
         path_storage_integer<int16, 6>              m_path16;

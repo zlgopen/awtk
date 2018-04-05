@@ -47,8 +47,8 @@ class the_application : public agg::platform_support
     color_func_type                 m_gradient_lut;
     gamma_lut_type                  m_gamma_lut;
 
-    double m_mouse_x, m_mouse_y;
-    double m_old_gamma;
+    float_t m_mouse_x, m_mouse_y;
+    float_t m_old_gamma;
 
 
 public:
@@ -121,15 +121,15 @@ public:
         // change it. But you can apply arbitrary transformations
         // to the gradient (see below).
         //------------------
-        double cx = initial_width()  / 2;
-        double cy = initial_height() / 2;
-        double r = 100;
+        float_t cx = initial_width()  / 2;
+        float_t cy = initial_height() / 2;
+        float_t r = 100;
 
         // Focal center. Defined in the gradient coordinates, 
         // that is, with respect to the origin (0,0)
         //------------------
-        double fx = m_mouse_x - cx;
-        double fy = m_mouse_y - cy;
+        float_t fx = m_mouse_x - cx;
+        float_t fy = m_mouse_y - cy;
 
         gradient_func_type    gradient_func(r, fx, fy);
         gradient_adaptor_type gradient_adaptor(gradient_func);
@@ -162,7 +162,7 @@ public:
         //------------------
         start_timer();
         agg::render_scanlines_aa(m_rasterizer, m_scanline, rb, m_alloc, span_gradient);
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         // Draw the transformed circle that shows the gradient boundary
         //------------------

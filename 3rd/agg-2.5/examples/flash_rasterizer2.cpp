@@ -71,7 +71,7 @@ namespace agg
             m_max_style = -0x7FFFFFFF;
 
             const char space[] = " \t\n\r";
-            double ax, ay, cx, cy;
+            float_t ax, ay, cx, cy;
             if(m_fd)
             {
                 char buf[1024];
@@ -170,20 +170,20 @@ namespace agg
             m_trans.rewind(path_id);
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             return m_trans.vertex(x, y);
         }
 
-        double scale() const
+        float_t scale() const
         {
             return m_affine.scale();
         }
 
-        void scale(double w, double h)
+        void scale(float_t w, float_t h)
         {
             m_affine.reset();
-            double x1, y1, x2, y2;
+            float_t x1, y1, x2, y2;
             bounding_rect(m_path, *this, 0, m_styles.size(), 
                           &x1, &y1, &x2, &y2);
             if(x1 < x2 && y1 < y2)
@@ -197,19 +197,19 @@ namespace agg
             m_curve.approximation_scale(m_affine.scale());
         }
 
-        void approximation_scale(double s)
+        void approximation_scale(float_t s)
         {
             m_curve.approximation_scale(m_affine.scale() * s);
         }
 
-        int hit_test(double x, double y, double r)
+        int hit_test(float_t x, float_t y, float_t r)
         {
             m_affine.inverse_transform(&x, &y);
             r /= m_affine.scale();
             unsigned i;
             for(i = 0; i < m_path.total_vertices(); i++)
             {
-                double vx, vy;
+                float_t vx, vy;
                 unsigned cmd = m_path.vertex(i, &vx, &vy);
                 if(is_vertex(cmd))
                 {
@@ -222,7 +222,7 @@ namespace agg
             return -1;
         }
 
-        void modify_vertex(unsigned i, double x, double y)
+        void modify_vertex(unsigned i, float_t x, float_t y)
         {
             m_affine.inverse_transform(&x, &y);
             m_path.modify_vertex(i, x, y);
@@ -234,7 +234,7 @@ namespace agg
         conv_curve<path_storage>                  m_curve;
         conv_transform<conv_curve<path_storage> > m_trans;
         pod_bvector<path_style>                   m_styles;
-        double                                    m_x1, m_y1, m_x2, m_y2;
+        float_t                                    m_x1, m_y1, m_x2, m_y2;
         int                                       m_min_style;
         int                                       m_max_style;
 
@@ -370,7 +370,7 @@ public:
             }
             agg::render_scanlines_aa_solid(ras, sl, ren_base, m_colors[s]);
         }
-        double tfill = elapsed_time();
+        float_t tfill = elapsed_time();
         ras.auto_close(true);
 
         // Draw strokes
@@ -389,7 +389,7 @@ public:
                 agg::render_scanlines(ras, sl, ren);
             }
         }
-        double tstroke = elapsed_time();
+        float_t tstroke = elapsed_time();
 
 
         char buf[256]; 
@@ -474,8 +474,8 @@ public:
         {
             if(m_point_idx >= 0)
             {
-                double xd = x;
-                double yd = y;
+                float_t xd = x;
+                float_t yd = y;
                 m_scale.inverse_transform(&xd, &yd);
                 m_shape.modify_vertex(m_point_idx, xd, yd);
                 force_redraw();
@@ -487,9 +487,9 @@ public:
     {
         if(flags & 1)
         {
-            double xd = x;
-            double yd = y;
-            double r = 4.0 / m_scale.scale();
+            float_t xd = x;
+            float_t yd = y;
+            float_t r = 4.0 / m_scale.scale();
             m_scale.inverse_transform(&xd, &yd);
             m_point_idx = m_shape.hit_test(xd, yd, r);
             force_redraw();

@@ -48,7 +48,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_smooth_poly1::add_vertex(double x, double y, unsigned cmd)
+    void vcgen_smooth_poly1::add_vertex(float_t x, float_t y, unsigned cmd)
     {
         m_status = initial;
         if(is_move_to(cmd))
@@ -88,13 +88,13 @@ namespace agg
                                        const vertex_dist& v3)
     {
 
-        double k1 = v0.dist / (v0.dist + v1.dist);
-        double k2 = v1.dist / (v1.dist + v2.dist);
+        float_t k1 = v0.dist / (v0.dist + v1.dist);
+        float_t k2 = v1.dist / (v1.dist + v2.dist);
 
-        double xm1 = v0.x + (v2.x - v0.x) * k1;
-        double ym1 = v0.y + (v2.y - v0.y) * k1;
-        double xm2 = v1.x + (v3.x - v1.x) * k2;
-        double ym2 = v1.y + (v3.y - v1.y) * k2;
+        float_t xm1 = v0.x + (v2.x - v0.x) * k1;
+        float_t ym1 = v0.y + (v2.y - v0.y) * k1;
+        float_t xm2 = v1.x + (v3.x - v1.x) * k2;
+        float_t ym2 = v1.y + (v3.y - v1.y) * k2;
 
         m_ctrl1_x = v1.x + m_smooth_value * (v2.x - xm1);
         m_ctrl1_y = v1.y + m_smooth_value * (v2.y - ym1);
@@ -104,7 +104,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned vcgen_smooth_poly1::vertex(double* x, double* y)
+    unsigned vcgen_smooth_poly1::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         while(!is_stop(cmd))

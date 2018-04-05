@@ -46,52 +46,52 @@ namespace agg
         curve3_inc() :
           m_num_steps(0), m_step(0), m_scale(1.0) { }
 
-        curve3_inc(double x1, double y1, 
-                   double x2, double y2, 
-                   double x3, double y3) :
+        curve3_inc(float_t x1, float_t y1, 
+                   float_t x2, float_t y2, 
+                   float_t x3, float_t y3) :
             m_num_steps(0), m_step(0), m_scale(1.0) 
         { 
             init(x1, y1, x2, y2, x3, y3);
         }
 
         void reset() { m_num_steps = 0; m_step = -1; }
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3);
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3);
 
         void approximation_method(curve_approximation_method_e) {}
         curve_approximation_method_e approximation_method() const { return curve_inc; }
 
-        void approximation_scale(double s);
-        double approximation_scale() const;
+        void approximation_scale(float_t s);
+        float_t approximation_scale() const;
 
-        void angle_tolerance(double) {}
-        double angle_tolerance() const { return 0.0; }
+        void angle_tolerance(float_t) {}
+        float_t angle_tolerance() const { return 0.0; }
 
-        void cusp_limit(double) {}
-        double cusp_limit() const { return 0.0; }
+        void cusp_limit(float_t) {}
+        float_t cusp_limit() const { return 0.0; }
 
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         int      m_num_steps;
         int      m_step;
-        double   m_scale;
-        double   m_start_x; 
-        double   m_start_y;
-        double   m_end_x; 
-        double   m_end_y;
-        double   m_fx; 
-        double   m_fy;
-        double   m_dfx; 
-        double   m_dfy;
-        double   m_ddfx; 
-        double   m_ddfy;
-        double   m_saved_fx; 
-        double   m_saved_fy;
-        double   m_saved_dfx; 
-        double   m_saved_dfy;
+        float_t   m_scale;
+        float_t   m_start_x; 
+        float_t   m_start_y;
+        float_t   m_end_x; 
+        float_t   m_end_y;
+        float_t   m_fx; 
+        float_t   m_fy;
+        float_t   m_dfx; 
+        float_t   m_dfy;
+        float_t   m_ddfx; 
+        float_t   m_ddfy;
+        float_t   m_saved_fx; 
+        float_t   m_saved_fy;
+        float_t   m_saved_dfx; 
+        float_t   m_saved_dfy;
     };
 
 
@@ -108,9 +108,9 @@ namespace agg
             m_count(0)
         {}
 
-        curve3_div(double x1, double y1, 
-                   double x2, double y2, 
-                   double x3, double y3) :
+        curve3_div(float_t x1, float_t y1, 
+                   float_t x2, float_t y2, 
+                   float_t x3, float_t y3) :
             m_approximation_scale(1.0),
             m_angle_tolerance(0.0),
             m_count(0)
@@ -119,28 +119,28 @@ namespace agg
         }
 
         void reset() { m_points.remove_all(); m_count = 0; }
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3);
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3);
 
         void approximation_method(curve_approximation_method_e) {}
         curve_approximation_method_e approximation_method() const { return curve_div; }
 
-        void approximation_scale(double s) { m_approximation_scale = s; }
-        double approximation_scale() const { return m_approximation_scale;  }
+        void approximation_scale(float_t s) { m_approximation_scale = s; }
+        float_t approximation_scale() const { return m_approximation_scale;  }
 
-        void angle_tolerance(double a) { m_angle_tolerance = a; }
-        double angle_tolerance() const { return m_angle_tolerance;  }
+        void angle_tolerance(float_t a) { m_angle_tolerance = a; }
+        float_t angle_tolerance() const { return m_angle_tolerance;  }
 
-        void cusp_limit(double) {}
-        double cusp_limit() const { return 0.0; }
+        void cusp_limit(float_t) {}
+        float_t cusp_limit() const { return 0.0; }
 
         void rewind(unsigned)
         {
             m_count = 0;
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_count >= m_points.size()) return path_cmd_stop;
             const point_d& p = m_points[m_count++];
@@ -150,17 +150,17 @@ namespace agg
         }
 
     private:
-        void bezier(double x1, double y1, 
-                    double x2, double y2, 
-                    double x3, double y3);
-        void recursive_bezier(double x1, double y1, 
-                              double x2, double y2, 
-                              double x3, double y3,
+        void bezier(float_t x1, float_t y1, 
+                    float_t x2, float_t y2, 
+                    float_t x3, float_t y3);
+        void recursive_bezier(float_t x1, float_t y1, 
+                              float_t x2, float_t y2, 
+                              float_t x3, float_t y3,
                               unsigned level);
 
-        double               m_approximation_scale;
-        double               m_distance_tolerance_square;
-        double               m_angle_tolerance;
+        float_t               m_approximation_scale;
+        float_t               m_distance_tolerance_square;
+        float_t               m_angle_tolerance;
         unsigned             m_count;
         pod_bvector<point_d> m_points;
     };
@@ -174,26 +174,26 @@ namespace agg
     //-------------------------------------------------------------curve4_points
     struct curve4_points
     {
-        double cp[8];
+        float_t cp[8];
         curve4_points() {}
-        curve4_points(double x1, double y1,
-                      double x2, double y2,
-                      double x3, double y3,
-                      double x4, double y4)
+        curve4_points(float_t x1, float_t y1,
+                      float_t x2, float_t y2,
+                      float_t x3, float_t y3,
+                      float_t x4, float_t y4)
         {
             cp[0] = x1; cp[1] = y1; cp[2] = x2; cp[3] = y2;
             cp[4] = x3; cp[5] = y3; cp[6] = x4; cp[7] = y4;
         }
-        void init(double x1, double y1,
-                  double x2, double y2,
-                  double x3, double y3,
-                  double x4, double y4)
+        void init(float_t x1, float_t y1,
+                  float_t x2, float_t y2,
+                  float_t x3, float_t y3,
+                  float_t x4, float_t y4)
         {
             cp[0] = x1; cp[1] = y1; cp[2] = x2; cp[3] = y2;
             cp[4] = x3; cp[5] = y3; cp[6] = x4; cp[7] = y4;
         }
-        double  operator [] (unsigned i) const { return cp[i]; }
-        double& operator [] (unsigned i)       { return cp[i]; }
+        float_t  operator [] (unsigned i) const { return cp[i]; }
+        float_t& operator [] (unsigned i)       { return cp[i]; }
     };
 
 
@@ -205,10 +205,10 @@ namespace agg
         curve4_inc() :
             m_num_steps(0), m_step(0), m_scale(1.0) { }
 
-        curve4_inc(double x1, double y1, 
-                   double x2, double y2, 
-                   double x3, double y3,
-                   double x4, double y4) :
+        curve4_inc(float_t x1, float_t y1, 
+                   float_t x2, float_t y2, 
+                   float_t x3, float_t y3,
+                   float_t x4, float_t y4) :
             m_num_steps(0), m_step(0), m_scale(1.0) 
         { 
             init(x1, y1, x2, y2, x3, y3, x4, y4);
@@ -221,10 +221,10 @@ namespace agg
         }
 
         void reset() { m_num_steps = 0; m_step = -1; }
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3,
-                  double x4, double y4);
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3,
+                  float_t x4, float_t y4);
 
         void init(const curve4_points& cp)
         {
@@ -234,49 +234,49 @@ namespace agg
         void approximation_method(curve_approximation_method_e) {}
         curve_approximation_method_e approximation_method() const { return curve_inc; }
 
-        void approximation_scale(double s);
-        double approximation_scale() const;
+        void approximation_scale(float_t s);
+        float_t approximation_scale() const;
 
-        void angle_tolerance(double) {}
-        double angle_tolerance() const { return 0.0; }
+        void angle_tolerance(float_t) {}
+        float_t angle_tolerance() const { return 0.0; }
 
-        void cusp_limit(double) {}
-        double cusp_limit() const { return 0.0; }
+        void cusp_limit(float_t) {}
+        float_t cusp_limit() const { return 0.0; }
 
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         int      m_num_steps;
         int      m_step;
-        double   m_scale;
-        double   m_start_x; 
-        double   m_start_y;
-        double   m_end_x; 
-        double   m_end_y;
-        double   m_fx; 
-        double   m_fy;
-        double   m_dfx; 
-        double   m_dfy;
-        double   m_ddfx; 
-        double   m_ddfy;
-        double   m_dddfx; 
-        double   m_dddfy;
-        double   m_saved_fx; 
-        double   m_saved_fy;
-        double   m_saved_dfx; 
-        double   m_saved_dfy;
-        double   m_saved_ddfx; 
-        double   m_saved_ddfy;
+        float_t   m_scale;
+        float_t   m_start_x; 
+        float_t   m_start_y;
+        float_t   m_end_x; 
+        float_t   m_end_y;
+        float_t   m_fx; 
+        float_t   m_fy;
+        float_t   m_dfx; 
+        float_t   m_dfy;
+        float_t   m_ddfx; 
+        float_t   m_ddfy;
+        float_t   m_dddfx; 
+        float_t   m_dddfy;
+        float_t   m_saved_fx; 
+        float_t   m_saved_fy;
+        float_t   m_saved_dfx; 
+        float_t   m_saved_dfy;
+        float_t   m_saved_ddfx; 
+        float_t   m_saved_ddfy;
     };
 
 
 
     //-------------------------------------------------------catrom_to_bezier
-    inline curve4_points catrom_to_bezier(double x1, double y1, 
-                                          double x2, double y2, 
-                                          double x3, double y3,
-                                          double x4, double y4)
+    inline curve4_points catrom_to_bezier(float_t x1, float_t y1, 
+                                          float_t x2, float_t y2, 
+                                          float_t x3, float_t y3,
+                                          float_t x4, float_t y4)
     {
         // Trans. matrix Catmull-Rom to Bezier
         //
@@ -308,10 +308,10 @@ namespace agg
 
 
     //-----------------------------------------------------ubspline_to_bezier
-    inline curve4_points ubspline_to_bezier(double x1, double y1, 
-                                            double x2, double y2, 
-                                            double x3, double y3,
-                                            double x4, double y4)
+    inline curve4_points ubspline_to_bezier(float_t x1, float_t y1, 
+                                            float_t x2, float_t y2, 
+                                            float_t x3, float_t y3,
+                                            float_t x4, float_t y4)
     {
         // Trans. matrix Uniform BSpline to Bezier
         //
@@ -344,10 +344,10 @@ namespace agg
 
 
     //------------------------------------------------------hermite_to_bezier
-    inline curve4_points hermite_to_bezier(double x1, double y1, 
-                                           double x2, double y2, 
-                                           double x3, double y3,
-                                           double x4, double y4)
+    inline curve4_points hermite_to_bezier(float_t x1, float_t y1, 
+                                           float_t x2, float_t y2, 
+                                           float_t x3, float_t y3,
+                                           float_t x4, float_t y4)
     {
         // Trans. matrix Hermite to Bezier
         //
@@ -389,10 +389,10 @@ namespace agg
             m_count(0)
         {}
 
-        curve4_div(double x1, double y1, 
-                   double x2, double y2, 
-                   double x3, double y3,
-                   double x4, double y4) :
+        curve4_div(float_t x1, float_t y1, 
+                   float_t x2, float_t y2, 
+                   float_t x3, float_t y3,
+                   float_t x4, float_t y4) :
             m_approximation_scale(1.0),
             m_angle_tolerance(0.0),
             m_cusp_limit(0.0),
@@ -410,10 +410,10 @@ namespace agg
         }
 
         void reset() { m_points.remove_all(); m_count = 0; }
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3,
-                  double x4, double y4);
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3,
+                  float_t x4, float_t y4);
 
         void init(const curve4_points& cp)
         {
@@ -427,18 +427,18 @@ namespace agg
             return curve_div; 
         }
 
-        void approximation_scale(double s) { m_approximation_scale = s; }
-        double approximation_scale() const { return m_approximation_scale;  }
+        void approximation_scale(float_t s) { m_approximation_scale = s; }
+        float_t approximation_scale() const { return m_approximation_scale;  }
 
-        void angle_tolerance(double a) { m_angle_tolerance = a; }
-        double angle_tolerance() const { return m_angle_tolerance;  }
+        void angle_tolerance(float_t a) { m_angle_tolerance = a; }
+        float_t angle_tolerance() const { return m_angle_tolerance;  }
 
-        void cusp_limit(double v) 
+        void cusp_limit(float_t v) 
         { 
             m_cusp_limit = (v == 0.0) ? 0.0 : pi - v; 
         }
 
-        double cusp_limit() const 
+        float_t cusp_limit() const 
         { 
             return (m_cusp_limit == 0.0) ? 0.0 : pi - m_cusp_limit; 
         }
@@ -448,7 +448,7 @@ namespace agg
             m_count = 0;
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_count >= m_points.size()) return path_cmd_stop;
             const point_d& p = m_points[m_count++];
@@ -458,21 +458,21 @@ namespace agg
         }
 
     private:
-        void bezier(double x1, double y1, 
-                    double x2, double y2, 
-                    double x3, double y3, 
-                    double x4, double y4);
+        void bezier(float_t x1, float_t y1, 
+                    float_t x2, float_t y2, 
+                    float_t x3, float_t y3, 
+                    float_t x4, float_t y4);
 
-        void recursive_bezier(double x1, double y1, 
-                              double x2, double y2, 
-                              double x3, double y3, 
-                              double x4, double y4,
+        void recursive_bezier(float_t x1, float_t y1, 
+                              float_t x2, float_t y2, 
+                              float_t x3, float_t y3, 
+                              float_t x4, float_t y4,
                               unsigned level);
 
-        double               m_approximation_scale;
-        double               m_distance_tolerance_square;
-        double               m_angle_tolerance;
-        double               m_cusp_limit;
+        float_t               m_approximation_scale;
+        float_t               m_distance_tolerance_square;
+        float_t               m_angle_tolerance;
+        float_t               m_cusp_limit;
         unsigned             m_count;
         pod_bvector<point_d> m_points;
     };
@@ -483,9 +483,9 @@ namespace agg
     {
     public:
         curve3() : m_approximation_method(curve_div) {}
-        curve3(double x1, double y1, 
-               double x2, double y2, 
-               double x3, double y3) :
+        curve3(float_t x1, float_t y1, 
+               float_t x2, float_t y2, 
+               float_t x3, float_t y3) :
             m_approximation_method(curve_div)
         { 
             init(x1, y1, x2, y2, x3, y3);
@@ -497,9 +497,9 @@ namespace agg
             m_curve_div.reset();
         }
 
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3)
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3)
         {
             if(m_approximation_method == curve_inc) 
             {
@@ -521,33 +521,33 @@ namespace agg
             return m_approximation_method; 
         }
 
-        void approximation_scale(double s) 
+        void approximation_scale(float_t s) 
         { 
             m_curve_inc.approximation_scale(s);
             m_curve_div.approximation_scale(s);
         }
 
-        double approximation_scale() const 
+        float_t approximation_scale() const 
         { 
             return m_curve_inc.approximation_scale(); 
         }
 
-        void angle_tolerance(double a) 
+        void angle_tolerance(float_t a) 
         { 
             m_curve_div.angle_tolerance(a); 
         }
 
-        double angle_tolerance() const 
+        float_t angle_tolerance() const 
         { 
             return m_curve_div.angle_tolerance(); 
         }
 
-        void cusp_limit(double v) 
+        void cusp_limit(float_t v) 
         { 
             m_curve_div.cusp_limit(v); 
         }
 
-        double cusp_limit() const 
+        float_t cusp_limit() const 
         { 
             return m_curve_div.cusp_limit();  
         }
@@ -564,7 +564,7 @@ namespace agg
             }
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_approximation_method == curve_inc) 
             {
@@ -588,10 +588,10 @@ namespace agg
     {
     public:
         curve4() : m_approximation_method(curve_div) {}
-        curve4(double x1, double y1, 
-               double x2, double y2, 
-               double x3, double y3,
-               double x4, double y4) : 
+        curve4(float_t x1, float_t y1, 
+               float_t x2, float_t y2, 
+               float_t x3, float_t y3,
+               float_t x4, float_t y4) : 
             m_approximation_method(curve_div)
         { 
             init(x1, y1, x2, y2, x3, y3, x4, y4);
@@ -609,10 +609,10 @@ namespace agg
             m_curve_div.reset();
         }
 
-        void init(double x1, double y1, 
-                  double x2, double y2, 
-                  double x3, double y3,
-                  double x4, double y4)
+        void init(float_t x1, float_t y1, 
+                  float_t x2, float_t y2, 
+                  float_t x3, float_t y3,
+                  float_t x4, float_t y4)
         {
             if(m_approximation_method == curve_inc) 
             {
@@ -639,29 +639,29 @@ namespace agg
             return m_approximation_method; 
         }
 
-        void approximation_scale(double s) 
+        void approximation_scale(float_t s) 
         { 
             m_curve_inc.approximation_scale(s);
             m_curve_div.approximation_scale(s);
         }
-        double approximation_scale() const { return m_curve_inc.approximation_scale(); }
+        float_t approximation_scale() const { return m_curve_inc.approximation_scale(); }
 
-        void angle_tolerance(double v) 
+        void angle_tolerance(float_t v) 
         { 
             m_curve_div.angle_tolerance(v); 
         }
 
-        double angle_tolerance() const 
+        float_t angle_tolerance() const 
         { 
             return m_curve_div.angle_tolerance();  
         }
 
-        void cusp_limit(double v) 
+        void cusp_limit(float_t v) 
         { 
             m_curve_div.cusp_limit(v); 
         }
 
-        double cusp_limit() const 
+        float_t cusp_limit() const 
         { 
             return m_curve_div.cusp_limit();  
         }
@@ -678,7 +678,7 @@ namespace agg
             }
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_approximation_method == curve_inc) 
             {

@@ -51,7 +51,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_bspline::add_vertex(double x, double y, unsigned cmd)
+    void vcgen_bspline::add_vertex(float_t x, float_t y, unsigned cmd)
     {
         m_status = initial;
         if(is_move_to(cmd))
@@ -101,7 +101,7 @@ namespace agg
             unsigned i;
             for(i = 0; i < m_src_vertices.size(); i++)
             {
-                double x = m_closed ? i + 4 : i;
+                float_t x = m_closed ? i + 4 : i;
                 m_spline_x.add_point(x, m_src_vertices[i].x);
                 m_spline_y.add_point(x, m_src_vertices[i].y);
             }
@@ -132,7 +132,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned vcgen_bspline::vertex(double* x, double* y)
+    unsigned vcgen_bspline::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         while(!is_stop(cmd))

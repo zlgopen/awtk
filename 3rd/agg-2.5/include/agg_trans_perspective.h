@@ -32,7 +32,7 @@ namespace agg
     //=======================================================trans_perspective
     struct trans_perspective
     {
-        double sx, shy, w0, shx, sy, w1, tx, ty, w2;
+        float_t sx, shy, w0, shx, sy, w1, tx, ty, w2;
 
         //------------------------------------------------------- Construction
         // Identity matrix
@@ -42,15 +42,15 @@ namespace agg
             tx (0), ty (0), w2(1) {}
 
         // Custom matrix
-        trans_perspective(double v0, double v1, double v2, 
-                          double v3, double v4, double v5,
-                          double v6, double v7, double v8) :
+        trans_perspective(float_t v0, float_t v1, float_t v2, 
+                          float_t v3, float_t v4, float_t v5,
+                          float_t v6, float_t v7, float_t v8) :
            sx (v0), shy(v1), w0(v2), 
            shx(v3), sy (v4), w1(v5), 
            tx (v6), ty (v7), w2(v8) {}
 
         // Custom matrix from m[9]
-        explicit trans_perspective(const double* m) :
+        explicit trans_perspective(const float_t* m) :
            sx (m[0]), shy(m[1]), w0(m[2]), 
            shx(m[3]), sy (m[4]), w1(m[5]), 
            tx (m[6]), ty (m[7]), w2(m[8]) {}
@@ -62,32 +62,32 @@ namespace agg
            tx (a.tx ), ty (a.ty ), w2(1) {}
 
         // Rectangle to quadrilateral
-        trans_perspective(double x1, double y1, double x2, double y2, 
-                          const double* quad);
+        trans_perspective(float_t x1, float_t y1, float_t x2, float_t y2, 
+                          const float_t* quad);
 
         // Quadrilateral to rectangle
-        trans_perspective(const double* quad, 
-                          double x1, double y1, double x2, double y2);
+        trans_perspective(const float_t* quad, 
+                          float_t x1, float_t y1, float_t x2, float_t y2);
 
         // Arbitrary quadrilateral transformations
-        trans_perspective(const double* src, const double* dst);
+        trans_perspective(const float_t* src, const float_t* dst);
 
         //-------------------------------------- Quadrilateral transformations
-        // The arguments are double[8] that are mapped to quadrilaterals:
+        // The arguments are float_t[8] that are mapped to quadrilaterals:
         // x1,y1, x2,y2, x3,y3, x4,y4
-        bool quad_to_quad(const double* qs, const double* qd);
+        bool quad_to_quad(const float_t* qs, const float_t* qd);
 
-        bool rect_to_quad(double x1, double y1, 
-                          double x2, double y2,
-                          const double* q);
+        bool rect_to_quad(float_t x1, float_t y1, 
+                          float_t x2, float_t y2,
+                          const float_t* q);
 
-        bool quad_to_rect(const double* q,
-                          double x1, double y1, 
-                          double x2, double y2);
+        bool quad_to_rect(const float_t* q,
+                          float_t x1, float_t y1, 
+                          float_t x2, float_t y2);
 
         // Map square (0,0,1,1) to the quadrilateral and vice versa
-        bool square_to_quad(const double* q);
-        bool quad_to_square(const double* q);
+        bool square_to_quad(const float_t* q);
+        bool quad_to_square(const float_t* q);
 
 
         //--------------------------------------------------------- Operations
@@ -98,10 +98,10 @@ namespace agg
         bool invert();
 
         // Direct transformations operations
-        const trans_perspective& translate(double x, double y);
-        const trans_perspective& rotate(double a);
-        const trans_perspective& scale(double s);
-        const trans_perspective& scale(double x, double y);
+        const trans_perspective& translate(float_t x, float_t y);
+        const trans_perspective& rotate(float_t a);
+        const trans_perspective& scale(float_t s);
+        const trans_perspective& scale(float_t x, float_t y);
 
         // Multiply the matrix by another one
         const trans_perspective& multiply(const trans_perspective& m);
@@ -128,8 +128,8 @@ namespace agg
         const trans_perspective& premultiply_inv(const trans_affine& m);
 
         //--------------------------------------------------------- Load/Store
-        void store_to(double* m) const;
-        const trans_perspective& load_from(const double* m);
+        void store_to(float_t* m) const;
+        const trans_perspective& load_from(const float_t* m);
 
         //---------------------------------------------------------- Operators
         // Multiply the matrix by another one
@@ -196,57 +196,57 @@ namespace agg
 
         //---------------------------------------------------- Transformations
         // Direct transformation of x and y
-        void transform(double* x, double* y) const;
+        void transform(float_t* x, float_t* y) const;
 
         // Direct transformation of x and y, affine part only
-        void transform_affine(double* x, double* y) const;
+        void transform_affine(float_t* x, float_t* y) const;
 
         // Direct transformation of x and y, 2x2 matrix only, no translation
-        void transform_2x2(double* x, double* y) const;
+        void transform_2x2(float_t* x, float_t* y) const;
 
         // Inverse transformation of x and y. It works slow because
         // it explicitly inverts the matrix on every call. For massive 
         // operations it's better to invert() the matrix and then use 
         // direct transformations. 
-        void inverse_transform(double* x, double* y) const;
+        void inverse_transform(float_t* x, float_t* y) const;
 
 
         //---------------------------------------------------------- Auxiliary
         const trans_perspective& from_affine(const trans_affine& a);
-        double determinant() const;
-        double determinant_reciprocal() const;
+        float_t determinant() const;
+        float_t determinant_reciprocal() const;
 
-        bool is_valid(double epsilon = affine_epsilon) const;
-        bool is_identity(double epsilon = affine_epsilon) const;
+        bool is_valid(float_t epsilon = affine_epsilon) const;
+        bool is_identity(float_t epsilon = affine_epsilon) const;
         bool is_equal(const trans_perspective& m, 
-                      double epsilon = affine_epsilon) const;
+                      float_t epsilon = affine_epsilon) const;
 
         // Determine the major affine parameters. Use with caution 
         // considering possible degenerate cases.
-        double scale() const;
-        double rotation() const;
-        void   translation(double* dx, double* dy) const;
-        void   scaling(double* x, double* y) const;
-        void   scaling_abs(double* x, double* y) const;
+        float_t scale() const;
+        float_t rotation() const;
+        void   translation(float_t* dx, float_t* dy) const;
+        void   scaling(float_t* x, float_t* y) const;
+        void   scaling_abs(float_t* x, float_t* y) const;
 
 
 
         //--------------------------------------------------------------------
         class iterator_x
         {
-            double den;
-            double den_step;
-            double nom_x;
-            double nom_x_step;
-            double nom_y;
-            double nom_y_step;
+            float_t den;
+            float_t den_step;
+            float_t nom_x;
+            float_t nom_x_step;
+            float_t nom_y;
+            float_t nom_y_step;
 
         public:
-            double x;
-            double y;
+            float_t x;
+            float_t y;
 
             iterator_x() {}
-            iterator_x(double px, double py, double step, const trans_perspective& m) :
+            iterator_x(float_t px, float_t py, float_t step, const trans_perspective& m) :
                 den(px * m.w0 + py * m.w1 + m.w2),
                 den_step(m.w0 * step),
                 nom_x(px * m.sx + py * m.shx + m.tx),
@@ -262,14 +262,14 @@ namespace agg
                 den   += den_step;
                 nom_x += nom_x_step;
                 nom_y += nom_y_step;
-                double d = 1.0 / den;
+                float_t d = 1.0 / den;
                 x = nom_x * d;
                 y = nom_y * d;
             }
         };
 
         //--------------------------------------------------------------------
-        iterator_x begin(double x, double y, double step) const
+        iterator_x begin(float_t x, float_t y, float_t step) const
         {
             return iterator_x(x, y, step, *this);
         }
@@ -289,10 +289,10 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::square_to_quad(const double* q)
+    inline bool trans_perspective::square_to_quad(const float_t* q)
     {
-        double dx = q[0] - q[2] + q[4] - q[6];
-        double dy = q[1] - q[3] + q[5] - q[7];
+        float_t dx = q[0] - q[2] + q[4] - q[6];
+        float_t dy = q[1] - q[3] + q[5] - q[7];
         if(dx == 0.0 && dy == 0.0)
         {   
             // Affine case (parallelogram)
@@ -309,11 +309,11 @@ namespace agg
         }
         else
         {
-            double dx1 = q[2] - q[4];
-            double dy1 = q[3] - q[5];
-            double dx2 = q[6] - q[4];
-            double dy2 = q[7] - q[5];
-            double den = dx1 * dy2 - dx2 * dy1;
+            float_t dx1 = q[2] - q[4];
+            float_t dy1 = q[3] - q[5];
+            float_t dx2 = q[6] - q[4];
+            float_t dy2 = q[7] - q[5];
+            float_t den = dx1 * dy2 - dx2 * dy1;
             if(den == 0.0)
             {
                 // Singular case
@@ -323,8 +323,8 @@ namespace agg
             }
             // General case
             //---------------
-            double u = (dx * dy2 - dy * dx2) / den;
-            double v = (dy * dx1 - dx * dy1) / den;
+            float_t u = (dx * dy2 - dy * dx2) / den;
+            float_t v = (dy * dx1 - dx * dy1) / den;
             sx  = q[2] - q[0] + u * q[2];
             shy = q[3] - q[1] + u * q[3];
             w0  = u;
@@ -341,10 +341,10 @@ namespace agg
     //------------------------------------------------------------------------
     inline bool trans_perspective::invert()
     {
-        double d0 = sy  * w2 - w1  * ty;
-        double d1 = w0  * ty - shy * w2;
-        double d2 = shy * w1 - w0  * sy;
-        double d  = sx  * d0 + shx * d1 + tx * d2;
+        float_t d0 = sy  * w2 - w1  * ty;
+        float_t d1 = w0  * ty - shy * w2;
+        float_t d2 = shy * w1 - w0  * sy;
+        float_t d  = sx  * d0 + shx * d1 + tx * d2;
         if(d == 0.0) 
         {
             sx = shy = w0 = shx = sy = w1 = tx = ty = w2 = 0.0;
@@ -365,7 +365,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::quad_to_square(const double* q)
+    inline bool trans_perspective::quad_to_square(const float_t* q)
     {
         if(!square_to_quad(q)) return false;
         invert();
@@ -373,8 +373,8 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::quad_to_quad(const double* qs, 
-                                                const double* qd)
+    inline bool trans_perspective::quad_to_quad(const float_t* qs, 
+                                                const float_t* qd)
     {
         trans_perspective p;
         if(!  quad_to_square(qs)) return false;
@@ -384,11 +384,11 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::rect_to_quad(double x1, double y1, 
-                                                double x2, double y2,
-                                                const double* q)
+    inline bool trans_perspective::rect_to_quad(float_t x1, float_t y1, 
+                                                float_t x2, float_t y2,
+                                                const float_t* q)
     {
-        double r[8];
+        float_t r[8];
         r[0] = r[6] = x1;
         r[2] = r[4] = x2;
         r[1] = r[3] = y1;
@@ -397,11 +397,11 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::quad_to_rect(const double* q,
-                                                double x1, double y1, 
-                                                double x2, double y2)
+    inline bool trans_perspective::quad_to_rect(const float_t* q,
+                                                float_t x1, float_t y1, 
+                                                float_t x2, float_t y2)
     {
-        double r[8];
+        float_t r[8];
         r[0] = r[6] = x1;
         r[2] = r[4] = x2;
         r[1] = r[3] = y1;
@@ -410,24 +410,24 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline trans_perspective::trans_perspective(double x1, double y1, 
-                                                double x2, double y2, 
-                                                const double* quad)
+    inline trans_perspective::trans_perspective(float_t x1, float_t y1, 
+                                                float_t x2, float_t y2, 
+                                                const float_t* quad)
     {
         rect_to_quad(x1, y1, x2, y2, quad);
     }
 
     //------------------------------------------------------------------------
-    inline trans_perspective::trans_perspective(const double* quad, 
-                                                double x1, double y1, 
-                                                double x2, double y2)
+    inline trans_perspective::trans_perspective(const float_t* quad, 
+                                                float_t x1, float_t y1, 
+                                                float_t x2, float_t y2)
     {
         quad_to_rect(quad, x1, y1, x2, y2);
     }
 
     //------------------------------------------------------------------------
-    inline trans_perspective::trans_perspective(const double* src, 
-                                                const double* dst) 
+    inline trans_perspective::trans_perspective(const float_t* src, 
+                                                const float_t* dst) 
     {
         quad_to_quad(src, dst);
     }
@@ -544,7 +544,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     inline const trans_perspective& 
-    trans_perspective::translate(double x, double y)
+    trans_perspective::translate(float_t x, float_t y)
     {
         tx += x;
         ty += y;
@@ -552,61 +552,61 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline const trans_perspective& trans_perspective::rotate(double a)
+    inline const trans_perspective& trans_perspective::rotate(float_t a)
     {
         multiply(trans_affine_rotation(a));
         return *this;
     }
 
     //------------------------------------------------------------------------
-    inline const trans_perspective& trans_perspective::scale(double s)
+    inline const trans_perspective& trans_perspective::scale(float_t s)
     {
         multiply(trans_affine_scaling(s));
         return *this;
     }
 
     //------------------------------------------------------------------------
-    inline const trans_perspective& trans_perspective::scale(double x, double y)
+    inline const trans_perspective& trans_perspective::scale(float_t x, float_t y)
     {
         multiply(trans_affine_scaling(x, y));
         return *this;
     }
 
     //------------------------------------------------------------------------
-    inline void trans_perspective::transform(double* px, double* py) const
+    inline void trans_perspective::transform(float_t* px, float_t* py) const
     {
-        double x = *px;
-        double y = *py;
-        double m = 1.0 / (x*w0 + y*w1 + w2);
+        float_t x = *px;
+        float_t y = *py;
+        float_t m = 1.0 / (x*w0 + y*w1 + w2);
         *px = m * (x*sx  + y*shx + tx);
         *py = m * (x*shy + y*sy  + ty);
     }
 
     //------------------------------------------------------------------------
-    inline void trans_perspective::transform_affine(double* x, double* y) const
+    inline void trans_perspective::transform_affine(float_t* x, float_t* y) const
     {
-        double tmp = *x;
+        float_t tmp = *x;
         *x = tmp * sx  + *y * shx + tx;
         *y = tmp * shy + *y * sy  + ty;
     }
 
     //------------------------------------------------------------------------
-    inline void trans_perspective::transform_2x2(double* x, double* y) const
+    inline void trans_perspective::transform_2x2(float_t* x, float_t* y) const
     {
-        double tmp = *x;
+        float_t tmp = *x;
         *x = tmp * sx  + *y * shx;
         *y = tmp * shy + *y * sy;
     }
 
     //------------------------------------------------------------------------
-    inline void trans_perspective::inverse_transform(double* x, double* y) const
+    inline void trans_perspective::inverse_transform(float_t* x, float_t* y) const
     {
         trans_perspective t(*this);
         if(t.invert()) t.transform(x, y);
     }
 
     //------------------------------------------------------------------------
-    inline void trans_perspective::store_to(double* m) const
+    inline void trans_perspective::store_to(float_t* m) const
     {
         *m++ = sx;  *m++ = shy; *m++ = w0; 
         *m++ = shx; *m++ = sy;  *m++ = w1;
@@ -614,7 +614,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline const trans_perspective& trans_perspective::load_from(const double* m)
+    inline const trans_perspective& trans_perspective::load_from(const float_t* m)
     {
         sx  = *m++; shy = *m++; w0 = *m++; 
         shx = *m++; sy  = *m++; w1 = *m++;
@@ -633,7 +633,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline double trans_perspective::determinant() const
+    inline float_t trans_perspective::determinant() const
     {
         return sx  * (sy  * w2 - ty  * w1) +
                shx * (ty  * w0 - shy * w2) +
@@ -641,19 +641,19 @@ namespace agg
     }
   
     //------------------------------------------------------------------------
-    inline double trans_perspective::determinant_reciprocal() const
+    inline float_t trans_perspective::determinant_reciprocal() const
     {
         return 1.0 / determinant();
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::is_valid(double epsilon) const
+    inline bool trans_perspective::is_valid(float_t epsilon) const
     {
         return fabs(sx) > epsilon && fabs(sy) > epsilon && fabs(w2) > epsilon;
     }
 
     //------------------------------------------------------------------------
-    inline bool trans_perspective::is_identity(double epsilon) const
+    inline bool trans_perspective::is_identity(float_t epsilon) const
     {
         return is_equal_eps(sx,  1.0, epsilon) &&
                is_equal_eps(shy, 0.0, epsilon) &&
@@ -668,7 +668,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     inline bool trans_perspective::is_equal(const trans_perspective& m, 
-                                            double epsilon) const
+                                            float_t epsilon) const
     {
         return is_equal_eps(sx,  m.sx,  epsilon) &&
                is_equal_eps(shy, m.shy, epsilon) &&
@@ -682,39 +682,39 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    inline double trans_perspective::scale() const
+    inline float_t trans_perspective::scale() const
     {
-        double x = 0.707106781 * sx  + 0.707106781 * shx;
-        double y = 0.707106781 * shy + 0.707106781 * sy;
+        float_t x = 0.707106781 * sx  + 0.707106781 * shx;
+        float_t y = 0.707106781 * shy + 0.707106781 * sy;
         return sqrt(x*x + y*y);
     }
 
     //------------------------------------------------------------------------
-    inline double trans_perspective::rotation() const
+    inline float_t trans_perspective::rotation() const
     {
-        double x1 = 0.0;
-        double y1 = 0.0;
-        double x2 = 1.0;
-        double y2 = 0.0;
+        float_t x1 = 0.0;
+        float_t y1 = 0.0;
+        float_t x2 = 1.0;
+        float_t y2 = 0.0;
         transform(&x1, &y1);
         transform(&x2, &y2);
         return atan2(y2-y1, x2-x1);
     }
 
     //------------------------------------------------------------------------
-    void trans_perspective::translation(double* dx, double* dy) const
+    void trans_perspective::translation(float_t* dx, float_t* dy) const
     {
         *dx = tx;
         *dy = ty;
     }
 
     //------------------------------------------------------------------------
-    void trans_perspective::scaling(double* x, double* y) const
+    void trans_perspective::scaling(float_t* x, float_t* y) const
     {
-        double x1 = 0.0;
-        double y1 = 0.0;
-        double x2 = 1.0;
-        double y2 = 1.0;
+        float_t x1 = 0.0;
+        float_t y1 = 0.0;
+        float_t x2 = 1.0;
+        float_t y2 = 1.0;
         trans_perspective t(*this);
         t *= trans_affine_rotation(-rotation());
         t.transform(&x1, &y1);
@@ -724,7 +724,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void trans_perspective::scaling_abs(double* x, double* y) const
+    void trans_perspective::scaling_abs(float_t* x, float_t* y) const
     {
         *x = sqrt(sx  * sx  + shx * shx);
         *y = sqrt(shy * shy + sy  * sy);

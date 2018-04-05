@@ -187,4 +187,6 @@ typedef bool_t (*visit_t)(void* ctx, void* data);
 
 enum { NAME_LEN = 15 };
 
+typedef float float_t;
+
 #endif /*TYPES_DEF_H*/

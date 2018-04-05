@@ -67,7 +67,7 @@ static char text[] =
 "on demand. "
 "Coordinate conversion pipeline consists of a number of coordinate "
 "converters. It always works with vectorial data (X,Y) represented "
-"as floating point numbers (double). For example, it can contain an "
+"as floating point numbers (float_t). For example, it can contain an "
 "affine transformer, outline (stroke) generator, some marker "
 "generator (like arrowheads/arrowtails), dashed lines generator, "
 "and so on. The pipeline can have branches and you also can have "
@@ -149,7 +149,7 @@ template<class VS> void dump_path(VS& path)
     fprintf(fd, "-------\n");
     path.rewind(0);
     unsigned cmd;
-    double x, y;
+    float_t x, y;
     while(!agg::is_stop(cmd = path.vertex(&x, &y)))
     {
         fprintf(fd, "%02X %8.2f %8.2f\n", cmd, x, y);
@@ -178,7 +178,7 @@ class the_application : public agg::platform_support
     agg::cbox_ctrl<agg::rgba8>   m_performance;
     font_engine_type             m_feng;
     font_manager_type            m_fman;
-    double                       m_old_height;
+    float_t                       m_old_height;
 
     // Pipeline to process the vectors glyph paths (curves + contour)
     agg::conv_curve<font_manager_type::path_adaptor_type> m_curves;
@@ -289,9 +289,9 @@ public:
             //mtx *= agg::trans_affine_translation(1, 0);
             m_feng.transform(mtx);
 
-            double x  = 10.0;
-            double y0 = height() - m_height.value() - 10.0;
-            double y  = y0;
+            float_t x  = 10.0;
+            float_t y0 = height() - m_height.value() - 10.0;
+            float_t y  = y0;
             const char* p = text;
 
             while(*p)
@@ -440,7 +440,7 @@ public:
             {
                 num_glyphs += draw_text(ras, sl, ren_solid, ren_bin);
             }
-            double t = elapsed_time();
+            float_t t = elapsed_time();
             char buf[100];
             sprintf(buf, 
                     "Glyphs=%u, Time=%.3fms, %.3f glyps/sec, %.3f microsecond/glyph", 

@@ -73,7 +73,7 @@ namespace agg
 class spiral
 {
 public:
-    spiral(double x, double y, double r1, double r2, double step, double start_angle=0) :
+    spiral(float_t x, float_t y, float_t r1, float_t r2, float_t step, float_t start_angle=0) :
         m_x(x), 
         m_y(y), 
         m_r1(r1), 
@@ -93,7 +93,7 @@ public:
         m_start = true; 
     }
 
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         if(m_curr_r > m_r2) return agg::path_cmd_stop;
 
@@ -110,24 +110,24 @@ public:
     }
 
 private:
-    double m_x;
-    double m_y;
-    double m_r1;
-    double m_r2;
-    double m_step;
-    double m_start_angle;
+    float_t m_x;
+    float_t m_y;
+    float_t m_r1;
+    float_t m_r2;
+    float_t m_step;
+    float_t m_start_angle;
 
-    double m_angle;
-    double m_curr_r;
-    double m_da;
-    double m_dr;
+    float_t m_angle;
+    float_t m_curr_r;
+    float_t m_da;
+    float_t m_dr;
     bool   m_start;
 };
 
 
 struct roundoff
 {
-    void transform(double* x, double* y) const
+    void transform(float_t* x, float_t* y) const
     { 
         *x = floor(*x);
         *y = floor(*y);
@@ -143,7 +143,7 @@ class the_application : public agg::platform_support
     agg::cbox_ctrl<agg::rgba8>   m_rotate;
     agg::cbox_ctrl<agg::rgba8>   m_accurate_joins;
     agg::cbox_ctrl<agg::rgba8>   m_scale_pattern;
-    double m_start_angle;
+    float_t m_start_angle;
 
 
 public:
@@ -249,7 +249,7 @@ public:
     void text(rasterizer_scanline& ras, 
               scanline& sl,
               renderer_aa& ren, 
-              double x, double y, const char* txt)
+              float_t x, float_t y, const char* txt)
     {
         agg::gsv_text t;
         t.size(8);
@@ -340,7 +340,7 @@ typedef agg::renderer_base<agg::pixfmt_bgr24> base_ren_type;
 typedef agg::renderer_outline_aa<base_ren_type> renderer_type;
 typedef agg::rasterizer_outline_aa<renderer_type> rasterizer_type;
 
-double width = 5.0;
+float_t width = 5.0;
 //-- create with specifying width
 //-- min_width=1.0, smoother_width=1.0
 //agg::line_profile_aa(width, agg::gamma_none()); 
@@ -496,7 +496,7 @@ ras.render(false);     //false means "don't close
                 draw_aliased_subpix_accuracy(ras_al, ren_prim);
                 m_start_angle += agg::deg2rad(m_step.value());
             }
-            double t2 = elapsed_time();
+            float_t t2 = elapsed_time();
 
             start_timer();
             for(i = 0; i < 200; i++)
@@ -504,7 +504,7 @@ ras.render(false);     //false means "don't close
                 draw_anti_aliased_outline(ras_oaa, ren_oaa);
                 m_start_angle += agg::deg2rad(m_step.value());
             }
-            double t3 = elapsed_time();
+            float_t t3 = elapsed_time();
 
             start_timer();
             for(i = 0; i < 200; i++)
@@ -512,7 +512,7 @@ ras.render(false);     //false means "don't close
                 draw_anti_aliased_scanline(ras_aa, sl, ren_aa);
                 m_start_angle += agg::deg2rad(m_step.value());
             }
-            double t4 = elapsed_time();
+            float_t t4 = elapsed_time();
 
             start_timer();
             for(i = 0; i < 200; i++)
@@ -520,7 +520,7 @@ ras.render(false);     //false means "don't close
                 draw_anti_aliased_outline_img(ras_img, ren_img);
                 m_start_angle += agg::deg2rad(m_step.value());
             }
-            double t5 = elapsed_time();
+            float_t t5 = elapsed_time();
 
             m_test.status(false);
             force_redraw();

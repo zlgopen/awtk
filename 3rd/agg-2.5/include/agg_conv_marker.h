@@ -41,7 +41,7 @@ namespace agg
         const trans_affine& transform() const { return m_transform; }
 
         void rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         conv_marker(const conv_marker<MarkerLocator, MarkerShapes>&);
@@ -90,10 +90,10 @@ namespace agg
 
     //------------------------------------------------------------------------
     template<class MarkerLocator, class MarkerShapes> 
-    unsigned conv_marker<MarkerLocator, MarkerShapes>::vertex(double* x, double* y)
+    unsigned conv_marker<MarkerLocator, MarkerShapes>::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_move_to;
-        double x1, y1, x2, y2;
+        float_t x1, y1, x2, y2;
 
         while(!is_stop(cmd))
         {

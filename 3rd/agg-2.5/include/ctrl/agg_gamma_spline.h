@@ -71,25 +71,25 @@ namespace agg
     public:
         gamma_spline();
 
-        void values(double kx1, double ky1, double kx2, double ky2);
+        void values(float_t kx1, float_t ky1, float_t kx2, float_t ky2);
         const unsigned char* gamma() const { return m_gamma; }
-        double y(double x) const;
-        void values(double* kx1, double* ky1, double* kx2, double* ky2) const;
-        void box(double x1, double y1, double x2, double y2);
+        float_t y(float_t x) const;
+        void values(float_t* kx1, float_t* ky1, float_t* kx2, float_t* ky2) const;
+        void box(float_t x1, float_t y1, float_t x2, float_t y2);
 
         void     rewind(unsigned);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         unsigned char m_gamma[256];
-        double        m_x[4];
-        double        m_y[4];
+        float_t        m_x[4];
+        float_t        m_y[4];
         bspline       m_spline;
-        double        m_x1;
-        double        m_y1;
-        double        m_x2;
-        double        m_y2;
-        double        m_cur_x;
+        float_t        m_x1;
+        float_t        m_y1;
+        float_t        m_x2;
+        float_t        m_y2;
+        float_t        m_cur_x;
     };
 
 

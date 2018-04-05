@@ -20,7 +20,7 @@
  */
 
 #include "base/window.h"
-#include "base/group_box.h"
+#include "base/view.h"
 #include "base/image_manager.h"
 
 static ret_t on_paint_9patch(void* ctx, event_t* e) {
@@ -281,7 +281,7 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
 
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* canvas = group_box_create(win, 0, 0, win->w, win->h);
+  widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
 

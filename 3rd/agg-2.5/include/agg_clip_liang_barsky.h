@@ -90,21 +90,21 @@ namespace agg
                                       const rect_base<T>& clip_box,
                                       T* x, T* y)
     {
-        const double nearzero = 1e-30;
+        const float_t nearzero = 1e-30;
 
-        double deltax = x2 - x1;
-        double deltay = y2 - y1; 
-        double xin;
-        double xout;
-        double yin;
-        double yout;
-        double tinx;
-        double tiny;
-        double toutx;
-        double touty;  
-        double tin1;
-        double tin2;
-        double tout1;
+        float_t deltax = x2 - x1;
+        float_t deltay = y2 - y1; 
+        float_t xin;
+        float_t xout;
+        float_t yin;
+        float_t yout;
+        float_t tinx;
+        float_t tiny;
+        float_t toutx;
+        float_t touty;  
+        float_t tin1;
+        float_t tin2;
+        float_t tout1;
         unsigned np = 0;
 
         if(deltax == 0.0) 
@@ -250,7 +250,7 @@ namespace agg
                return false;
            }
            bound = (flags & clipping_flags_x1_clipped) ? clip_box.x1 : clip_box.x2;
-           *y = (T)(double(bound - x1) * (y2 - y1) / (x2 - x1) + y1);
+           *y = (T)(float_t(bound - x1) * (y2 - y1) / (x2 - x1) + y1);
            *x = bound;
        }
 
@@ -262,7 +262,7 @@ namespace agg
                return false;
            }
            bound = (flags & clipping_flags_y1_clipped) ? clip_box.y1 : clip_box.y2;
-           *x = (T)(double(bound - y1) * (x2 - x1) / (y2 - y1) + x1);
+           *x = (T)(float_t(bound - y1) * (x2 - x1) / (y2 - y1) + x1);
            *y = bound;
        }
        return true;

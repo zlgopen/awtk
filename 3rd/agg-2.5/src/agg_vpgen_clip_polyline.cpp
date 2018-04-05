@@ -36,7 +36,7 @@ namespace agg
     }
 
     //----------------------------------------------------------------------------
-    void vpgen_clip_polyline::move_to(double x, double y)
+    void vpgen_clip_polyline::move_to(float_t x, float_t y)
     {
         m_vertex = 0;
         m_num_vertices = 0;
@@ -46,10 +46,10 @@ namespace agg
     }
 
     //----------------------------------------------------------------------------
-    void vpgen_clip_polyline::line_to(double x, double y)
+    void vpgen_clip_polyline::line_to(float_t x, float_t y)
     {
-        double x2 = x;
-        double y2 = y;
+        float_t x2 = x;
+        float_t y2 = y;
         unsigned flags = clip_line_segment(&m_x1, &m_y1, &x2, &y2, m_clip_box);
 
         m_vertex = 0;
@@ -73,7 +73,7 @@ namespace agg
     }
 
     //----------------------------------------------------------------------------
-    unsigned vpgen_clip_polyline::vertex(double* x, double* y)
+    unsigned vpgen_clip_polyline::vertex(float_t* x, float_t* y)
     {
         if(m_vertex < m_num_vertices)
         {

@@ -51,7 +51,7 @@ namespace agg
         //--------------------------------------------------------------------
         span_interpolator_adaptor(const trans_type& trans,
                                   const distortion_type& dist,
-                                  double x, double y, unsigned len) :
+                                  float_t x, float_t y, unsigned len) :
             base_type(trans, x, y, len),
             m_distortion(&dist)
         {

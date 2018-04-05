@@ -296,33 +296,33 @@ public:
         m_phase(0.0)
     {}
 
-    void center(double x, double y) { m_cx = x; m_cy = y; }
-    void period(double v)           { m_period = v; }
-    void amplitude(double v)        { m_amplitude = 1.0 / v; }
-    void phase(double v)            { m_phase = v; }
+    void center(float_t x, float_t y) { m_cx = x; m_cy = y; }
+    void period(float_t v)           { m_period = v; }
+    void amplitude(float_t v)        { m_amplitude = 1.0 / v; }
+    void phase(float_t v)            { m_phase = v; }
 
     virtual void calculate(int* x, int* y) const = 0;
 
 protected:
-    double m_cx;
-    double m_cy;
-    double m_period;
-    double m_amplitude;
-    double m_phase;
+    float_t m_cx;
+    float_t m_cy;
+    float_t m_period;
+    float_t m_amplitude;
+    float_t m_phase;
 };
 
 
 
 inline void calculate_wave(int* x, int* y, 
-                           double cx, double cy, 
-                           double period, double amplitude, double phase)
+                           float_t cx, float_t cy, 
+                           float_t period, float_t amplitude, float_t phase)
 {
-    double xd = double(*x) / agg::image_subpixel_scale - cx;
-    double yd = double(*y) / agg::image_subpixel_scale - cy;
-    double d = sqrt(xd*xd + yd*yd);
+    float_t xd = float_t(*x) / agg::image_subpixel_scale - cx;
+    float_t yd = float_t(*y) / agg::image_subpixel_scale - cy;
+    float_t d = sqrt(xd*xd + yd*yd);
     if(d > 1)
     {
-        double a = cos(d / (16.0 * period) - phase) * (1.0 / (amplitude * d)) + 1.0; 
+        float_t a = cos(d / (16.0 * period) - phase) * (1.0 / (amplitude * d)) + 1.0; 
         *x = int((xd * a + cx) * agg::image_subpixel_scale);
         *y = int((yd * a + cy) * agg::image_subpixel_scale);
     }
@@ -331,14 +331,14 @@ inline void calculate_wave(int* x, int* y,
 
 
 inline void calculate_swirl(int* x, int* y,
-                            double cx, double cy, 
-                            double amplitude, double phase)
+                            float_t cx, float_t cy, 
+                            float_t amplitude, float_t phase)
 {
-    double xd = double(*x) / agg::image_subpixel_scale - cx;
-    double yd = double(*y) / agg::image_subpixel_scale - cy;
-    double a = double(100.0 - sqrt(xd * xd + yd * yd)) / 100.0 * (0.1 / -amplitude);
-    double sa = sin(a - phase/25.0);
-    double ca = cos(a - phase/25.0);
+    float_t xd = float_t(*x) / agg::image_subpixel_scale - cx;
+    float_t yd = float_t(*y) / agg::image_subpixel_scale - cy;
+    float_t a = float_t(100.0 - sqrt(xd * xd + yd * yd)) / 100.0 * (0.1 / -amplitude);
+    float_t sa = sin(a - phase/25.0);
+    float_t ca = cos(a - phase/25.0);
     *x = int((xd * ca - yd * sa + cx) * agg::image_subpixel_scale);
     *y = int((xd * sa + yd * ca + cy) * agg::image_subpixel_scale);
 }
@@ -399,9 +399,9 @@ class the_application : public agg::platform_support
     agg::slider_ctrl<agg::rgba8> m_period;
     agg::rbox_ctrl<agg::rgba8>   m_distortion;
 
-    double m_center_x;
-    double m_center_y;
-    double m_phase;
+    float_t m_center_x;
+    float_t m_center_y;
+    float_t m_phase;
 
     typedef agg::pod_auto_array<agg::rgba8, 256> color_array_type;
     color_array_type m_gradient_colors;
@@ -465,8 +465,8 @@ public:
 
     virtual void on_draw()
     {
-        double img_width = rbuf_img(0).width();
-        double img_height = rbuf_img(0).height();
+        float_t img_width = rbuf_img(0).width();
+        float_t img_height = rbuf_img(0).height();
     
         typedef agg::pixfmt_bgr24 pixfmt; 
         typedef agg::renderer_base<pixfmt> renderer_base;
@@ -517,8 +517,8 @@ public:
         dist->period(m_period.value());
         dist->amplitude(m_amplitude.value());
         dist->phase(m_phase);
-        double cx = m_center_x;
-        double cy = m_center_y;
+        float_t cx = m_center_x;
+        float_t cy = m_center_y;
         img_mtx.transform(&cx, &cy);
         dist->center(cx, cy);
 
@@ -566,7 +566,7 @@ public:
 
         agg::rasterizer_scanline_aa<> ras;
         agg::scanline_u8 sl;
-        double r = img_width;
+        float_t r = img_width;
         if(img_height < r) r = img_height;
         agg::ellipse ell(img_width  / 2.0, 
                          img_height / 2.0, 

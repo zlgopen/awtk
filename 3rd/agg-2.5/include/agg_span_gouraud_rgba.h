@@ -64,7 +64,7 @@ namespace agg
                 m_x1  = c1.x - 0.5; 
                 m_y1  = c1.y - 0.5;
                 m_dx  = c2.x - c1.x;
-                double dy = c2.y - c1.y;
+                float_t dy = c2.y - c1.y;
                 m_1dy = (dy < 1e-5) ? 1e5 : 1.0 / dy;
                 m_r1  = c1.color.r;
                 m_g1  = c1.color.g;
@@ -76,9 +76,9 @@ namespace agg
                 m_da  = c2.color.a - m_a1;
             }
 
-            void calc(double y)
+            void calc(float_t y)
             {
-                double k = (y - m_y1) * m_1dy;
+                float_t k = (y - m_y1) * m_1dy;
                 if(k < 0.0) k = 0.0;
                 if(k > 1.0) k = 1.0;
                 m_r = m_r1 + iround(m_dr * k);
@@ -88,10 +88,10 @@ namespace agg
                 m_x = iround((m_x1 + m_dx * k) * subpixel_scale);
             }
 
-            double m_x1;
-            double m_y1;
-            double m_dx;
-            double m_1dy;
+            float_t m_x1;
+            float_t m_y1;
+            float_t m_dx;
+            float_t m_1dy;
             int    m_r1;
             int    m_g1;
             int    m_b1;
@@ -114,10 +114,10 @@ namespace agg
         span_gouraud_rgba(const color_type& c1, 
                           const color_type& c2, 
                           const color_type& c3,
-                          double x1, double y1, 
-                          double x2, double y2,
-                          double x3, double y3, 
-                          double d = 0) : 
+                          float_t x1, float_t y1, 
+                          float_t x2, float_t y2,
+                          float_t x3, float_t y3, 
+                          float_t d = 0) : 
             base_type(c1, c2, c3, x1, y1, x2, y2, x3, y3, d)
         {}
 

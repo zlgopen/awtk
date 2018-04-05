@@ -38,35 +38,35 @@ namespace agg
     {
     public:
         rounded_rect() {}
-        rounded_rect(double x1, double y1, double x2, double y2, double r);
+        rounded_rect(float_t x1, float_t y1, float_t x2, float_t y2, float_t r);
 
-        void rect(double x1, double y1, double x2, double y2);
-        void radius(double r);
-        void radius(double rx, double ry);
-        void radius(double rx_bottom, double ry_bottom, double rx_top, double ry_top);
-        void radius(double rx1, double ry1, double rx2, double ry2, 
-                    double rx3, double ry3, double rx4, double ry4);
+        void rect(float_t x1, float_t y1, float_t x2, float_t y2);
+        void radius(float_t r);
+        void radius(float_t rx, float_t ry);
+        void radius(float_t rx_bottom, float_t ry_bottom, float_t rx_top, float_t ry_top);
+        void radius(float_t rx1, float_t ry1, float_t rx2, float_t ry2, 
+                    float_t rx3, float_t ry3, float_t rx4, float_t ry4);
         void normalize_radius();
 
-        void approximation_scale(double s) { m_arc.approximation_scale(s); }
-        double approximation_scale() const { return m_arc.approximation_scale(); }
+        void approximation_scale(float_t s) { m_arc.approximation_scale(s); }
+        float_t approximation_scale() const { return m_arc.approximation_scale(); }
 
         void rewind(unsigned);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        double m_x1;
-        double m_y1;
-        double m_x2;
-        double m_y2;
-        double m_rx1;
-        double m_ry1;
-        double m_rx2;
-        double m_ry2;
-        double m_rx3;
-        double m_ry3;
-        double m_rx4;
-        double m_ry4;
+        float_t m_x1;
+        float_t m_y1;
+        float_t m_x2;
+        float_t m_y2;
+        float_t m_rx1;
+        float_t m_ry1;
+        float_t m_rx2;
+        float_t m_ry2;
+        float_t m_rx3;
+        float_t m_ry3;
+        float_t m_rx4;
+        float_t m_ry4;
         unsigned m_status;
         arc      m_arc;
     };

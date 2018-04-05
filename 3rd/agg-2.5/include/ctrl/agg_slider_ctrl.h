@@ -43,54 +43,54 @@ namespace agg
     class slider_ctrl_impl : public ctrl
     {
     public:
-        slider_ctrl_impl(double x1, double y1, double x2, double y2, bool flip_y=false);
+        slider_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false);
 
-        void border_width(double t, double extra=0.0);
+        void border_width(float_t t, float_t extra=0.0);
 
-        void range(double min, double max) { m_min = min; m_max = max; }
+        void range(float_t min, float_t max) { m_min = min; m_max = max; }
         void num_steps(unsigned num) { m_num_steps = num; }
         void label(const char* fmt);
-        void text_thickness(double t) { m_text_thickness = t; }
+        void text_thickness(float_t t) { m_text_thickness = t; }
 
         bool descending() const { return m_descending; }
         void descending(bool v) { m_descending = v; }
 
-        double value() const { return m_value * (m_max - m_min) + m_min; }
-        void value(double value);
+        float_t value() const { return m_value * (m_max - m_min) + m_min; }
+        void value(float_t value);
 
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
         // Vertex source interface
         unsigned num_paths() { return 6; };
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         void calc_box();
         bool normalize_value(bool preview_value_flag);
 
-        double   m_border_width;
-        double   m_border_extra;
-        double   m_text_thickness;
-        double   m_value;
-        double   m_preview_value;
-        double   m_min;
-        double   m_max;
+        float_t   m_border_width;
+        float_t   m_border_extra;
+        float_t   m_text_thickness;
+        float_t   m_value;
+        float_t   m_preview_value;
+        float_t   m_min;
+        float_t   m_max;
         unsigned m_num_steps;
         bool     m_descending;
         char     m_label[64];
-        double   m_xs1;
-        double   m_ys1;
-        double   m_xs2;
-        double   m_ys2;
-        double   m_pdx;
+        float_t   m_xs1;
+        float_t   m_ys1;
+        float_t   m_xs2;
+        float_t   m_ys2;
+        float_t   m_pdx;
         bool     m_mouse_move;
-        double   m_vx[32];
-        double   m_vy[32];
+        float_t   m_vx[32];
+        float_t   m_vy[32];
 
         ellipse  m_ellipse;
 
@@ -109,7 +109,7 @@ namespace agg
     template<class ColorT> class slider_ctrl : public slider_ctrl_impl
     {
     public:
-        slider_ctrl(double x1, double y1, double x2, double y2, bool flip_y=false) :
+        slider_ctrl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false) :
             slider_ctrl_impl(x1, y1, x2, y2, flip_y),
             m_background_color(rgba(1.0, 0.9, 0.8)),
             m_triangle_color(rgba(0.7, 0.6, 0.6)),

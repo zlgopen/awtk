@@ -19,21 +19,22 @@
  *
  */
 
-#include "base/button.h"
-#include "base/check_button.h"
-#include "base/dialog.h"
+#include "base/view.h"
+#include "base/utf8.h"
 #include "base/enums.h"
-#include "base/group_box.h"
 #include "base/image.h"
 #include "base/label.h"
-#include "base/slider.h"
-#include "base/progress_bar.h"
-#include "base/utf8.h"
 #include "base/value.h"
 #include "base/window.h"
+#include "base/button.h"
+#include "base/dialog.h"
+#include "base/slider.h"
+#include "base/group_box.h"
+#include "base/check_button.h"
+#include "base/progress_bar.h"
+#include "base/resource_manager.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_default.h"
-#include "base/resource_manager.h"
 
 static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
   rect_t r;
@@ -84,6 +85,9 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
       break;
     case WIDGET_GROUP_BOX:
       widget = group_box_create(parent, x, y, w, h);
+      break;
+    case WIDGET_VIEW:
+      widget = view_create(parent, x, y, w, h);
       break;
     case WIDGET_CHECK_BUTTON:
       widget = check_button_create(parent, x, y, w, h);

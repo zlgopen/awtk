@@ -19,10 +19,10 @@ enum flip_y_e { flip_y = true };
 
 class the_application : public agg::platform_support
 {
-    double m_x[2];
-    double m_y[2];
-    double m_dx;
-    double m_dy;
+    float_t m_x[2];
+    float_t m_y[2];
+    float_t m_dx;
+    float_t m_dy;
     int    m_idx;
     agg::slider_ctrl<agg::rgba8> m_radius;
     agg::slider_ctrl<agg::rgba8> m_gamma;
@@ -89,7 +89,7 @@ public:
         ras.add_path(e);
         agg::render_scanlines(ras, sl, ren);
 
-        double d = m_offset.value();
+        float_t d = m_offset.value();
 
         // Creating a rounded rectangle
         agg::rounded_rect r(m_x[0]+d, m_y[0]+d, m_x[1]+d, m_y[1]+d, m_radius.value());

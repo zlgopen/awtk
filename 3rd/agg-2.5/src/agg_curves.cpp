@@ -30,41 +30,41 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    const double curve_distance_epsilon                  = 1e-30;
-    const double curve_collinearity_epsilon              = 1e-30;
-    const double curve_angle_tolerance_epsilon           = 0.01;
+    const float_t curve_distance_epsilon                  = 1e-30;
+    const float_t curve_collinearity_epsilon              = 1e-30;
+    const float_t curve_angle_tolerance_epsilon           = 0.01;
     enum curve_recursion_limit_e { curve_recursion_limit = 32 };
 
 
 
     //------------------------------------------------------------------------
-    void curve3_inc::approximation_scale(double s) 
+    void curve3_inc::approximation_scale(float_t s) 
     { 
         m_scale = s;
     }
 
     //------------------------------------------------------------------------
-    double curve3_inc::approximation_scale() const 
+    float_t curve3_inc::approximation_scale() const 
     { 
         return m_scale;
     }
 
     //------------------------------------------------------------------------
-    void curve3_inc::init(double x1, double y1, 
-                          double x2, double y2, 
-                          double x3, double y3)
+    void curve3_inc::init(float_t x1, float_t y1, 
+                          float_t x2, float_t y2, 
+                          float_t x3, float_t y3)
     {
         m_start_x = x1;
         m_start_y = y1;
         m_end_x   = x3;
         m_end_y   = y3;
 
-        double dx1 = x2 - x1;
-        double dy1 = y2 - y1;
-        double dx2 = x3 - x2;
-        double dy2 = y3 - y2;
+        float_t dx1 = x2 - x1;
+        float_t dy1 = y2 - y1;
+        float_t dx2 = x3 - x2;
+        float_t dy2 = y3 - y2;
 
-        double len = sqrt(dx1 * dx1 + dy1 * dy1) + sqrt(dx2 * dx2 + dy2 * dy2); 
+        float_t len = sqrt(dx1 * dx1 + dy1 * dy1) + sqrt(dx2 * dx2 + dy2 * dy2); 
 
         m_num_steps = uround(len * 0.25 * m_scale);
 
@@ -73,11 +73,11 @@ namespace agg
             m_num_steps = 4;   
         }
 
-        double subdivide_step  = 1.0 / m_num_steps;
-        double subdivide_step2 = subdivide_step * subdivide_step;
+        float_t subdivide_step  = 1.0 / m_num_steps;
+        float_t subdivide_step2 = subdivide_step * subdivide_step;
 
-        double tmpx = (x1 - x2 * 2.0 + x3) * subdivide_step2;
-        double tmpy = (y1 - y2 * 2.0 + y3) * subdivide_step2;
+        float_t tmpx = (x1 - x2 * 2.0 + x3) * subdivide_step2;
+        float_t tmpy = (y1 - y2 * 2.0 + y3) * subdivide_step2;
 
         m_saved_fx = m_fx = x1;
         m_saved_fy = m_fy = y1;
@@ -107,7 +107,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    unsigned curve3_inc::vertex(double* x, double* y)
+    unsigned curve3_inc::vertex(float_t* x, float_t* y)
     {
         if(m_step < 0) return path_cmd_stop;
         if(m_step == m_num_steps)
@@ -135,9 +135,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void curve3_div::init(double x1, double y1, 
-                          double x2, double y2, 
-                          double x3, double y3)
+    void curve3_div::init(float_t x1, float_t y1, 
+                          float_t x2, float_t y2, 
+                          float_t x3, float_t y3)
     {
         m_points.remove_all();
         m_distance_tolerance_square = 0.5 / m_approximation_scale;
@@ -147,9 +147,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void curve3_div::recursive_bezier(double x1, double y1, 
-                                      double x2, double y2, 
-                                      double x3, double y3,
+    void curve3_div::recursive_bezier(float_t x1, float_t y1, 
+                                      float_t x2, float_t y2, 
+                                      float_t x3, float_t y3,
                                       unsigned level)
     {
         if(level > curve_recursion_limit) 
@@ -159,17 +159,17 @@ namespace agg
 
         // Calculate all the mid-points of the line segments
         //----------------------
-        double x12   = (x1 + x2) / 2;                
-        double y12   = (y1 + y2) / 2;
-        double x23   = (x2 + x3) / 2;
-        double y23   = (y2 + y3) / 2;
-        double x123  = (x12 + x23) / 2;
-        double y123  = (y12 + y23) / 2;
+        float_t x12   = (x1 + x2) / 2;                
+        float_t y12   = (y1 + y2) / 2;
+        float_t x23   = (x2 + x3) / 2;
+        float_t y23   = (y2 + y3) / 2;
+        float_t x123  = (x12 + x23) / 2;
+        float_t y123  = (y12 + y23) / 2;
 
-        double dx = x3-x1;
-        double dy = y3-y1;
-        double d = fabs(((x2 - x3) * dy - (y2 - y3) * dx));
-        double da;
+        float_t dx = x3-x1;
+        float_t dy = y3-y1;
+        float_t d = fabs(((x2 - x3) * dy - (y2 - y3) * dx));
+        float_t da;
 
         if(d > curve_collinearity_epsilon)
         { 
@@ -236,9 +236,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void curve3_div::bezier(double x1, double y1, 
-                            double x2, double y2, 
-                            double x3, double y3)
+    void curve3_div::bezier(float_t x1, float_t y1, 
+                            float_t x2, float_t y2, 
+                            float_t x3, float_t y3)
     {
         m_points.add(point_d(x1, y1));
         recursive_bezier(x1, y1, x2, y2, x3, y3, 0);
@@ -250,39 +250,39 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void curve4_inc::approximation_scale(double s) 
+    void curve4_inc::approximation_scale(float_t s) 
     { 
         m_scale = s;
     }
 
     //------------------------------------------------------------------------
-    double curve4_inc::approximation_scale() const 
+    float_t curve4_inc::approximation_scale() const 
     { 
         return m_scale;
     }
 
     //------------------------------------------------------------------------
-    static double MSC60_fix_ICE(double v) { return v; }
+    static float_t MSC60_fix_ICE(float_t v) { return v; }
 
     //------------------------------------------------------------------------
-    void curve4_inc::init(double x1, double y1, 
-                          double x2, double y2, 
-                          double x3, double y3,
-                          double x4, double y4)
+    void curve4_inc::init(float_t x1, float_t y1, 
+                          float_t x2, float_t y2, 
+                          float_t x3, float_t y3,
+                          float_t x4, float_t y4)
     {
         m_start_x = x1;
         m_start_y = y1;
         m_end_x   = x4;
         m_end_y   = y4;
 
-        double dx1 = x2 - x1;
-        double dy1 = y2 - y1;
-        double dx2 = x3 - x2;
-        double dy2 = y3 - y2;
-        double dx3 = x4 - x3;
-        double dy3 = y4 - y3;
+        float_t dx1 = x2 - x1;
+        float_t dy1 = y2 - y1;
+        float_t dx2 = x3 - x2;
+        float_t dy2 = y3 - y2;
+        float_t dx3 = x4 - x3;
+        float_t dy3 = y4 - y3;
 
-        double len = (sqrt(dx1 * dx1 + dy1 * dy1) + 
+        float_t len = (sqrt(dx1 * dx1 + dy1 * dy1) + 
                       sqrt(dx2 * dx2 + dy2 * dy2) + 
                       sqrt(dx3 * dx3 + dy3 * dy3)) * 0.25 * m_scale;
 
@@ -297,20 +297,20 @@ namespace agg
             m_num_steps = 4;   
         }
 
-        double subdivide_step  = 1.0 / m_num_steps;
-        double subdivide_step2 = subdivide_step * subdivide_step;
-        double subdivide_step3 = subdivide_step * subdivide_step * subdivide_step;
+        float_t subdivide_step  = 1.0 / m_num_steps;
+        float_t subdivide_step2 = subdivide_step * subdivide_step;
+        float_t subdivide_step3 = subdivide_step * subdivide_step * subdivide_step;
 
-        double pre1 = 3.0 * subdivide_step;
-        double pre2 = 3.0 * subdivide_step2;
-        double pre4 = 6.0 * subdivide_step2;
-        double pre5 = 6.0 * subdivide_step3;
+        float_t pre1 = 3.0 * subdivide_step;
+        float_t pre2 = 3.0 * subdivide_step2;
+        float_t pre4 = 6.0 * subdivide_step2;
+        float_t pre5 = 6.0 * subdivide_step3;
 	
-        double tmp1x = x1 - x2 * 2.0 + x3;
-        double tmp1y = y1 - y2 * 2.0 + y3;
+        float_t tmp1x = x1 - x2 * 2.0 + x3;
+        float_t tmp1y = y1 - y2 * 2.0 + y3;
 
-        double tmp2x = (x2 - x3) * 3.0 - x1 + x4;
-        double tmp2y = (y2 - y3) * 3.0 - y1 + y4;
+        float_t tmp2x = (x2 - x3) * 3.0 - x1 + x4;
+        float_t tmp2y = (y2 - y3) * 3.0 - y1 + y4;
 
         m_saved_fx = m_fx = x1;
         m_saved_fy = m_fy = y1;
@@ -345,7 +345,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    unsigned curve4_inc::vertex(double* x, double* y)
+    unsigned curve4_inc::vertex(float_t* x, float_t* y)
     {
         if(m_step < 0) return path_cmd_stop;
         if(m_step == m_num_steps)
@@ -381,10 +381,10 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void curve4_div::init(double x1, double y1, 
-                          double x2, double y2, 
-                          double x3, double y3,
-                          double x4, double y4)
+    void curve4_div::init(float_t x1, float_t y1, 
+                          float_t x2, float_t y2, 
+                          float_t x3, float_t y3,
+                          float_t x4, float_t y4)
     {
         m_points.remove_all();
         m_distance_tolerance_square = 0.5 / m_approximation_scale;
@@ -394,10 +394,10 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void curve4_div::recursive_bezier(double x1, double y1, 
-                                      double x2, double y2, 
-                                      double x3, double y3, 
-                                      double x4, double y4,
+    void curve4_div::recursive_bezier(float_t x1, float_t y1, 
+                                      float_t x2, float_t y2, 
+                                      float_t x3, float_t y3, 
+                                      float_t x4, float_t y4,
                                       unsigned level)
     {
         if(level > curve_recursion_limit) 
@@ -407,28 +407,28 @@ namespace agg
 
         // Calculate all the mid-points of the line segments
         //----------------------
-        double x12   = (x1 + x2) / 2;
-        double y12   = (y1 + y2) / 2;
-        double x23   = (x2 + x3) / 2;
-        double y23   = (y2 + y3) / 2;
-        double x34   = (x3 + x4) / 2;
-        double y34   = (y3 + y4) / 2;
-        double x123  = (x12 + x23) / 2;
-        double y123  = (y12 + y23) / 2;
-        double x234  = (x23 + x34) / 2;
-        double y234  = (y23 + y34) / 2;
-        double x1234 = (x123 + x234) / 2;
-        double y1234 = (y123 + y234) / 2;
+        float_t x12   = (x1 + x2) / 2;
+        float_t y12   = (y1 + y2) / 2;
+        float_t x23   = (x2 + x3) / 2;
+        float_t y23   = (y2 + y3) / 2;
+        float_t x34   = (x3 + x4) / 2;
+        float_t y34   = (y3 + y4) / 2;
+        float_t x123  = (x12 + x23) / 2;
+        float_t y123  = (y12 + y23) / 2;
+        float_t x234  = (x23 + x34) / 2;
+        float_t y234  = (y23 + y34) / 2;
+        float_t x1234 = (x123 + x234) / 2;
+        float_t y1234 = (y123 + y234) / 2;
 
 
         // Try to approximate the full cubic curve by a single straight line
         //------------------
-        double dx = x4-x1;
-        double dy = y4-y1;
+        float_t dx = x4-x1;
+        float_t dy = y4-y1;
 
-        double d2 = fabs(((x2 - x4) * dy - (y2 - y4) * dx));
-        double d3 = fabs(((x3 - x4) * dy - (y3 - y4) * dx));
-        double da1, da2, k;
+        float_t d2 = fabs(((x2 - x4) * dy - (y2 - y4) * dx));
+        float_t d3 = fabs(((x3 - x4) * dy - (y3 - y4) * dx));
+        float_t da1, da2, k;
 
         switch((int(d2 > curve_collinearity_epsilon) << 1) +
                 int(d3 > curve_collinearity_epsilon))
@@ -606,10 +606,10 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void curve4_div::bezier(double x1, double y1, 
-                            double x2, double y2, 
-                            double x3, double y3, 
-                            double x4, double y4)
+    void curve4_div::bezier(float_t x1, float_t y1, 
+                            float_t x2, float_t y2, 
+                            float_t x3, float_t y3, 
+                            float_t x4, float_t y4)
     {
         m_points.add(point_d(x1, y1));
         recursive_bezier(x1, y1, x2, y2, x3, y3, x4, y4, 0);

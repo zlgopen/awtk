@@ -65,10 +65,10 @@ namespace agg
 class the_application : public agg::platform_support
 {
     agg::spline_ctrl<agg::rgba8> m_alpha;
-    double     m_x[50];
-    double     m_y[50];
-    double     m_rx[50];
-    double     m_ry[50];
+    float_t     m_x[50];
+    float_t     m_y[50];
+    float_t     m_rx[50];
+    float_t     m_ry[50];
     agg::rgba8 m_colors[50];
 
 public:
@@ -136,8 +136,8 @@ public:
         for(i = 0; i < agg::span_conv_brightness_alpha_rgb8::array_size; i++)
         {
             brightness_alpha_array[i] = 
-                agg::int8u(m_alpha.value(double(i) / 
-                         double(agg::span_conv_brightness_alpha_rgb8::array_size)) * 255.0);
+                agg::int8u(m_alpha.value(float_t(i) / 
+                         float_t(agg::span_conv_brightness_alpha_rgb8::array_size)) * 255.0);
         }
         agg::span_conv_brightness_alpha_rgb8 color_alpha(brightness_alpha_array);
 
@@ -194,8 +194,8 @@ public:
             for(i = 0; i < agg::span_conv_brightness_alpha_rgb8::array_size; i++)
             {
                 int alpha = 
-                    agg::int8u(m_alpha.value(double(i) / 
-                             double(agg::span_conv_brightness_alpha_rgb8::array_size)) * 255.0);
+                    agg::int8u(m_alpha.value(float_t(i) / 
+                             float_t(agg::span_conv_brightness_alpha_rgb8::array_size)) * 255.0);
                 if(i % 32 == 0) fprintf(fd, "\n");
                 fprintf(fd, "%3d, ", alpha);
             }

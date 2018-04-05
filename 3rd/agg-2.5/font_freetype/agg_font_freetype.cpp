@@ -131,19 +131,19 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    static inline int dbl_to_plain_fx(double d)
+    static inline int dbl_to_plain_fx(float_t d)
     {
         return int(d * 65536.0);
     }
 
     //------------------------------------------------------------------------
-    static inline double int26p6_to_dbl(int p)
+    static inline float_t int26p6_to_dbl(int p)
     {
-        return double(p) / 64.0;
+        return float_t(p) / 64.0;
     }
 
     //------------------------------------------------------------------------
-    static inline int dbl_to_int26p6(double p)
+    static inline int dbl_to_int26p6(float_t p)
     {
         return int(p * 64.0 + 0.5);
     }
@@ -161,7 +161,7 @@ namespace agg
         FT_Vector   v_last;
         FT_Vector   v_control;
         FT_Vector   v_start;
-        double x1, y1, x2, y2, x3, y3;
+        float_t x1, y1, x2, y2, x3, y3;
 
         FT_Vector*  point;
         FT_Vector*  limit;
@@ -587,7 +587,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    double font_engine_freetype_base::ascender() const
+    float_t font_engine_freetype_base::ascender() const
     {
         if(m_cur_face)
         {
@@ -597,7 +597,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    double font_engine_freetype_base::descender() const
+    float_t font_engine_freetype_base::descender() const
     {
         if(m_cur_face)
         {
@@ -765,7 +765,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    bool font_engine_freetype_base::height(double h)
+    bool font_engine_freetype_base::height(float_t h)
     {
         m_height = int(h * 64.0);
         if(m_cur_face)
@@ -777,7 +777,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    bool font_engine_freetype_base::width(double w)
+    bool font_engine_freetype_base::width(float_t w)
     {
         m_width = int(w * 64.0);
         if(m_cur_face)
@@ -861,7 +861,7 @@ namespace agg
                m_glyph_rendering == glyph_ren_agg_mono ||
                m_glyph_rendering == glyph_ren_agg_gray8)
             {
-                double mtx[6];
+                float_t mtx[6];
                 char buf[100];
                 m_affine.store_to(mtx);
                 sprintf(buf, ",%08X%08X%08X%08X%08X%08X", 
@@ -1125,15 +1125,15 @@ namespace agg
 
     //------------------------------------------------------------------------
     bool font_engine_freetype_base::add_kerning(unsigned first, unsigned second,
-                                           double* x, double* y)
+                                           float_t* x, float_t* y)
     {
         if(m_cur_face && first && second && FT_HAS_KERNING(m_cur_face))
         {
             FT_Vector delta;
             FT_Get_Kerning(m_cur_face, first, second,
                            FT_KERNING_DEFAULT, &delta);
-            double dx = int26p6_to_dbl(delta.x);
-            double dy = int26p6_to_dbl(delta.y);
+            float_t dx = int26p6_to_dbl(delta.x);
+            float_t dy = int26p6_to_dbl(delta.y);
             if(m_glyph_rendering == glyph_ren_outline ||
                m_glyph_rendering == glyph_ren_agg_mono ||
                m_glyph_rendering == glyph_ren_agg_gray8)

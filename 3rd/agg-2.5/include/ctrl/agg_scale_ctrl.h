@@ -48,50 +48,50 @@ namespace agg
         };
 
     public:
-        scale_ctrl_impl(double x1, double y1, double x2, double y2, bool flip_y=false);
+        scale_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false);
 
-        void border_thickness(double t, double extra=0.0);
-        void resize(double x1, double y1, double x2, double y2);
+        void border_thickness(float_t t, float_t extra=0.0);
+        void resize(float_t x1, float_t y1, float_t x2, float_t y2);
         
-        double min_delta() const { return m_min_d; }
-        void min_delta(double d) { m_min_d = d; }
+        float_t min_delta() const { return m_min_d; }
+        void min_delta(float_t d) { m_min_d = d; }
         
-        double value1() const { return m_value1; }
-        void value1(double value);
+        float_t value1() const { return m_value1; }
+        void value1(float_t value);
 
-        double value2() const { return m_value2; }
-        void value2(double value);
+        float_t value2() const { return m_value2; }
+        void value2(float_t value);
 
-        void move(double d);
+        void move(float_t d);
 
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
         // Vertex soutce interface
         unsigned num_paths() { return 5; };
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         void calc_box();
 
-        double   m_border_thickness;
-        double   m_border_extra;
-        double   m_value1;
-        double   m_value2;
-        double   m_min_d;
-        double   m_xs1;
-        double   m_ys1;
-        double   m_xs2;
-        double   m_ys2;
-        double   m_pdx;
-        double   m_pdy;
+        float_t   m_border_thickness;
+        float_t   m_border_extra;
+        float_t   m_value1;
+        float_t   m_value2;
+        float_t   m_min_d;
+        float_t   m_xs1;
+        float_t   m_ys1;
+        float_t   m_xs2;
+        float_t   m_ys2;
+        float_t   m_pdx;
+        float_t   m_pdy;
         move_e   m_move_what;
-        double   m_vx[32];
-        double   m_vy[32];
+        float_t   m_vx[32];
+        float_t   m_vy[32];
 
         ellipse  m_ellipse;
 
@@ -106,7 +106,7 @@ namespace agg
     template<class ColorT> class scale_ctrl : public scale_ctrl_impl
     {
     public:
-        scale_ctrl(double x1, double y1, double x2, double y2, bool flip_y=false) :
+        scale_ctrl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false) :
             scale_ctrl_impl(x1, y1, x2, y2, flip_y),
             m_background_color(rgba(1.0, 0.9, 0.8)),
             m_border_color(rgba(0.0, 0.0, 0.0)),

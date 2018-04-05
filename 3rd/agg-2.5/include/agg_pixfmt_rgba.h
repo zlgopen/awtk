@@ -1156,16 +1156,16 @@ namespace agg
                                          unsigned r, unsigned g, unsigned b, 
                                          unsigned a, unsigned cover)
         {
-            double sr = double(r * cover) / (base_mask * 255);
-            double sg = double(g * cover) / (base_mask * 255);
-            double sb = double(b * cover) / (base_mask * 255);
-            double sa = double(a * cover) / (base_mask * 255);
+            float_t sr = float_t(r * cover) / (base_mask * 255);
+            float_t sg = float_t(g * cover) / (base_mask * 255);
+            float_t sb = float_t(b * cover) / (base_mask * 255);
+            float_t sa = float_t(a * cover) / (base_mask * 255);
             if(sa > 0)
             {
-                double dr = double(p[Order::R]) / base_mask;
-                double dg = double(p[Order::G]) / base_mask;
-                double db = double(p[Order::B]) / base_mask;
-                double da = double(p[Order::A] ? p[Order::A] : 1) / base_mask;
+                float_t dr = float_t(p[Order::R]) / base_mask;
+                float_t dg = float_t(p[Order::G]) / base_mask;
+                float_t db = float_t(p[Order::B]) / base_mask;
+                float_t da = float_t(p[Order::A] ? p[Order::A] : 1) / base_mask;
                 if(cover < 255)
                 {
                     a = (a * cover + 255) >> 8;

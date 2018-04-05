@@ -48,7 +48,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    bspline::bspline(int num, const double* x, const double* y) :
+    bspline::bspline(int num, const float_t* x, const float_t* y) :
         m_max(0),
         m_num(0),
         m_x(0),
@@ -75,7 +75,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void bspline::add_point(double x, double y)
+    void bspline::add_point(float_t x, float_t y)
     {
         if(m_num < m_max)
         {
@@ -92,10 +92,10 @@ namespace agg
         if(m_num > 2)
         {
             int i, k, n1;
-            double* temp; 
-            double* r; 
-            double* s;
-            double h, p, d, f, e;
+            float_t* temp; 
+            float_t* r; 
+            float_t* s;
+            float_t h, p, d, f, e;
     
             for(k = 0; k < m_num; k++) 
             {
@@ -104,7 +104,7 @@ namespace agg
 
             n1 = 3 * m_num;
 
-            pod_array<double> al(n1);
+            pod_array<float_t> al(n1);
             temp = &al[0];
 
             for(k = 0; k < n1; k++) 
@@ -153,7 +153,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void bspline::init(int num, const double* x, const double* y)
+    void bspline::init(int num, const float_t* x, const float_t* y)
     {
         if(num > 2)
         {
@@ -170,7 +170,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void bspline::bsearch(int n, const double *x, double x0, int *i) 
+    void bspline::bsearch(int n, const float_t *x, float_t x0, int *i) 
     {
         int j = n - 1;
         int k;
@@ -185,38 +185,38 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    double bspline::interpolation(double x, int i) const
+    float_t bspline::interpolation(float_t x, int i) const
     {
         int j = i + 1;
-        double d = m_x[i] - m_x[j];
-        double h = x - m_x[j];
-        double r = m_x[i] - x;
-        double p = d * d / 6.0;
+        float_t d = m_x[i] - m_x[j];
+        float_t h = x - m_x[j];
+        float_t r = m_x[i] - x;
+        float_t p = d * d / 6.0;
         return (m_am[j] * r * r * r + m_am[i] * h * h * h) / 6.0 / d +
                ((m_y[j] - m_am[j] * p) * r + (m_y[i] - m_am[i] * p) * h) / d;
     }
 
 
     //------------------------------------------------------------------------
-    double bspline::extrapolation_left(double x) const
+    float_t bspline::extrapolation_left(float_t x) const
     {
-        double d = m_x[1] - m_x[0];
+        float_t d = m_x[1] - m_x[0];
         return (-d * m_am[1] / 6 + (m_y[1] - m_y[0]) / d) * 
                (x - m_x[0]) + 
                m_y[0];
     }
 
     //------------------------------------------------------------------------
-    double bspline::extrapolation_right(double x) const
+    float_t bspline::extrapolation_right(float_t x) const
     {
-        double d = m_x[m_num - 1] - m_x[m_num - 2];
+        float_t d = m_x[m_num - 1] - m_x[m_num - 2];
         return (d * m_am[m_num - 2] / 6 + (m_y[m_num - 1] - m_y[m_num - 2]) / d) * 
                (x - m_x[m_num - 1]) + 
                m_y[m_num - 1];
     }
 
     //------------------------------------------------------------------------
-    double bspline::get(double x) const
+    float_t bspline::get(float_t x) const
     {
         if(m_num > 2)
         {
@@ -237,7 +237,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    double bspline::get_stateful(double x) const
+    float_t bspline::get_stateful(float_t x) const
     {
         if(m_num > 2)
         {

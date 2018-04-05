@@ -49,8 +49,8 @@ namespace agg
         unsigned        data_size;
         glyph_data_type data_type;
         rect_i          bounds;
-        double          advance_x;
-        double          advance_y;
+        float_t          advance_x;
+        float_t          advance_y;
     };
 
 
@@ -97,8 +97,8 @@ namespace agg
                                  unsigned        data_size,
                                  glyph_data_type data_type,
                                  const rect_i&   bounds,
-                                 double          advance_x,
-                                 double          advance_y)
+                                 float_t          advance_x,
+                                 float_t          advance_y)
         {
             unsigned msb = (glyph_code >> 8) & 0xFF;
             if(m_glyphs[msb] == 0)
@@ -114,7 +114,7 @@ namespace agg
 
             glyph_cache* glyph = 
                 (glyph_cache*)m_allocator.allocate(sizeof(glyph_cache),
-                                                   sizeof(double));
+                                                   sizeof(float_t));
 
             glyph->glyph_index        = glyph_index;
             glyph->data               = m_allocator.allocate(data_size);
@@ -212,8 +212,8 @@ namespace agg
                                  unsigned        data_size,
                                  glyph_data_type data_type,
                                  const rect_i&   bounds,
-                                 double          advance_x,
-                                 double          advance_y)
+                                 float_t          advance_x,
+                                 float_t          advance_y)
         {
             if(m_cur_font) 
             {
@@ -321,8 +321,8 @@ namespace agg
 
         //--------------------------------------------------------------------
         void init_embedded_adaptors(const glyph_cache* gl, 
-                                    double x, double y, 
-                                    double scale=1.0)
+                                    float_t x, float_t y, 
+                                    float_t scale=1.0)
         {
             if(gl)
             {
@@ -357,7 +357,7 @@ namespace agg
         const glyph_cache* last_glyph() const { return m_last_glyph; }
 
         //--------------------------------------------------------------------
-        bool add_kerning(double* x, double* y)
+        bool add_kerning(float_t* x, float_t* y)
         {
             if(m_prev_glyph && m_last_glyph)
             {
@@ -401,8 +401,8 @@ namespace agg
         font_cache_pool     m_fonts;
         font_engine_type&   m_engine;
         int                 m_change_stamp;
-        double              m_dx;
-        double              m_dy;
+        float_t              m_dx;
+        float_t              m_dy;
         const glyph_cache*  m_prev_glyph;
         const glyph_cache*  m_last_glyph;
         path_adaptor_type   m_path_adaptor;

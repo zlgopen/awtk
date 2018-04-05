@@ -31,7 +31,7 @@ void read_gamma(const char* fname)
     if(fd)
     {
         char buf[32];
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
         fgets(buf, 30, fd); kx1 = atof(buf);
         fgets(buf, 30, fd); ky1 = atof(buf);
         fgets(buf, 30, fd); kx2 = atof(buf);
@@ -61,7 +61,7 @@ void write_gamma_txt(const char* fname)
     FILE* fd = fopen(fname, "w");
     if(fd)
     {
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
         g_ctrl.values(&kx1, &ky1, &kx2, &ky2);
         fprintf(fd, "%5.3f\n", kx1);
         fprintf(fd, "%5.3f\n", ky1);
@@ -103,8 +103,8 @@ public:
 
     virtual void on_draw()
     {
-        double ewidth = initial_width() / 2 - 10;
-        double ecenter = initial_width() / 2;
+        float_t ewidth = initial_width() / 2 - 10;
+        float_t ecenter = initial_width() / 2;
 
         typedef agg::renderer_base<pixfmt> ren_base;
 
@@ -223,7 +223,7 @@ public:
         for(int i = 0; i < 35; i++)
         {
             mtx.reset();
-            mtx *= agg::trans_affine_rotation(double(i) / 35.0 * agg::pi * 2.0);
+            mtx *= agg::trans_affine_rotation(float_t(i) / 35.0 * agg::pi * 2.0);
             mtx *= agg::trans_affine_translation(400, 130);
             mtx *= trans_affine_resizing();
             ras.add_path(trans, 0);

@@ -1,6 +1,6 @@
 #include "agg_path_storage.h"
 
-static double poly1[] = 
+static float_t poly1[] = 
 {
     1250.8,1312.4,
     1252.8,1311.6,
@@ -707,7 +707,7 @@ static double poly1[] =
 };
 
 
-static double poly2[] = 
+static float_t poly2[] = 
 {
     1284,1396.4,
     1284.4,1395.6,
@@ -1872,10 +1872,10 @@ void make_gb_poly(agg::path_storage& ps)
 {
     ps.remove_all();
     unsigned i;
-    const double* p = poly1;
+    const float_t* p = poly1;
     ps.move_to(p[0], p[1]);
     p += 2;
-    for(i = 1; i < sizeof(poly1) / sizeof(double) / 2; i++)
+    for(i = 1; i < sizeof(poly1) / sizeof(float_t) / 2; i++)
     {
         ps.line_to(p[0], p[1]);
         p += 2;
@@ -1885,7 +1885,7 @@ void make_gb_poly(agg::path_storage& ps)
     p = poly2;
     ps.move_to(p[0], p[1]);
     p += 2;
-    for(i = 1; i < sizeof(poly2) / sizeof(double) / 2; i++)
+    for(i = 1; i < sizeof(poly2) / sizeof(float_t) / 2; i++)
     {
         ps.line_to(p[0], p[1]);
         p += 2;

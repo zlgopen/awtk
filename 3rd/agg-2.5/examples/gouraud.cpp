@@ -34,10 +34,10 @@ enum flip_y_e { flip_y = true };
 
 class the_application : public agg::platform_support
 {
-    double m_x[3];
-    double m_y[3];
-    double m_dx;
-    double m_dy;
+    float_t m_x[3];
+    float_t m_y[3];
+    float_t m_dx;
+    float_t m_dy;
     int    m_idx;
 
     agg::slider_ctrl<agg::rgba> m_dilation;
@@ -75,8 +75,8 @@ public:
     template<class Scanline, class Ras> 
     void render_gouraud(Scanline& sl, Ras& ras)
     {
-        double alpha = m_alpha.value();
-        double brc = 1;
+        float_t alpha = m_alpha.value();
+        float_t brc = 1;
 
         typedef agg::renderer_base<pixfmt> base_ren_type;
 #ifdef AGG_GRAY8
@@ -94,7 +94,7 @@ public:
 
         ras.gamma(agg::gamma_linear(0.0, m_gamma.value()));
 
-        double d = m_dilation.value();
+        float_t d = m_dilation.value();
 
         // Single triangle
         //span_gen.colors(agg::rgba(1,   0,   0,  alpha),
@@ -106,17 +106,17 @@ public:
 
 
         // Six triangles
-        double xc = (m_x[0] + m_x[1] + m_x[2]) / 3.0;
-        double yc = (m_y[0] + m_y[1] + m_y[2]) / 3.0;
+        float_t xc = (m_x[0] + m_x[1] + m_x[2]) / 3.0;
+        float_t yc = (m_y[0] + m_y[1] + m_y[2]) / 3.0;
 
-        double x1 = (m_x[1] + m_x[0]) / 2 - (xc - (m_x[1] + m_x[0]) / 2);
-        double y1 = (m_y[1] + m_y[0]) / 2 - (yc - (m_y[1] + m_y[0]) / 2);
+        float_t x1 = (m_x[1] + m_x[0]) / 2 - (xc - (m_x[1] + m_x[0]) / 2);
+        float_t y1 = (m_y[1] + m_y[0]) / 2 - (yc - (m_y[1] + m_y[0]) / 2);
 
-        double x2 = (m_x[2] + m_x[1]) / 2 - (xc - (m_x[2] + m_x[1]) / 2);
-        double y2 = (m_y[2] + m_y[1]) / 2 - (yc - (m_y[2] + m_y[1]) / 2);
+        float_t x2 = (m_x[2] + m_x[1]) / 2 - (xc - (m_x[2] + m_x[1]) / 2);
+        float_t y2 = (m_y[2] + m_y[1]) / 2 - (yc - (m_y[2] + m_y[1]) / 2);
 
-        double x3 = (m_x[0] + m_x[2]) / 2 - (xc - (m_x[0] + m_x[2]) / 2);
-        double y3 = (m_y[0] + m_y[2]) / 2 - (yc - (m_y[0] + m_y[2]) / 2);
+        float_t x3 = (m_x[0] + m_x[2]) / 2 - (xc - (m_x[0] + m_x[2]) / 2);
+        float_t y3 = (m_y[0] + m_y[2]) / 2 - (yc - (m_y[0] + m_y[2]) / 2);
 
         span_gen.colors(agg::rgba(1,   0,   0,    alpha),
                         agg::rgba(0,   1,   0,    alpha),
@@ -246,8 +246,8 @@ public:
         {
             if(m_idx == 3)
             {
-                double dx = x - m_dx;
-                double dy = y - m_dy;
+                float_t dx = x - m_dx;
+                float_t dy = y - m_dy;
                 m_x[1] -= m_x[0] - dx;
                 m_y[1] -= m_y[0] - dy;
                 m_x[2] -= m_x[0] - dx;
@@ -279,8 +279,8 @@ public:
     
     virtual void on_key(int x, int y, unsigned key, unsigned flags)
     {
-        double dx = 0;
-        double dy = 0;
+        float_t dx = 0;
+        float_t dy = 0;
         switch(key)
         {
         case agg::key_left:  dx = -0.1; break;

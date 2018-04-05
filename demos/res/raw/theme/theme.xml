@@ -93,6 +93,10 @@
 </slider>
 
 <group_box>
+  <style>
+    <normal />
+  </style>
+
   <style name="1:box">
     <normal bg-color="#f0f0f0" border-color="#a0a0a0" />
   </style>

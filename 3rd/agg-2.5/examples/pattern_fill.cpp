@@ -49,11 +49,11 @@ class the_application : public agg::platform_support
     agg::cbox_ctrl<agg::rgba> m_rotate_pattern;
     agg::cbox_ctrl<agg::rgba> m_tie_pattern;
 
-    double m_polygon_cx;
-    double m_polygon_cy;
+    float_t m_polygon_cx;
+    float_t m_polygon_cy;
 
-    double m_dx;
-    double m_dy;
+    float_t m_dx;
+    float_t m_dy;
 
     int m_flag;
 
@@ -115,18 +115,18 @@ public:
 
 
     //------------------------------------------------------------------------
-    void create_star(double xc, double yc,
-                     double r1, double r2, 
-                     unsigned n, double start_angle = 0.0)
+    void create_star(float_t xc, float_t yc,
+                     float_t r1, float_t r2, 
+                     unsigned n, float_t start_angle = 0.0)
     {
         m_ps.remove_all();
         unsigned i;
         start_angle *= agg::pi / 180.0;
         for(i = 0; i < n; i++)
         {
-            double a = agg::pi * 2.0 * i / n - agg::pi / 2.0;
-            double dx = cos(a + start_angle);
-            double dy = sin(a + start_angle);
+            float_t a = agg::pi * 2.0 * i / n - agg::pi / 2.0;
+            float_t dx = cos(a + start_angle);
+            float_t dy = sin(a + start_angle);
 
             if(i & 1)
             {
@@ -193,8 +193,8 @@ public:
     //------------------------------------------------------------------------
     virtual void on_draw()
     {
-        double width = rbuf_window().width();
-        double height = rbuf_window().height();
+        float_t width = rbuf_window().width();
+        float_t height = rbuf_window().height();
     
         typedef agg::renderer_base<pixfmt>     renderer_base;
         typedef agg::renderer_base<pixfmt_pre> renderer_base_pre;
@@ -214,7 +214,7 @@ public:
         polygon_mtx *= agg::trans_affine_scaling(m_polygon_scale.value());
         polygon_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
 
-        double r = initial_width() / 3.0 - 8.0;
+        float_t r = initial_width() / 3.0 - 8.0;
         create_star(m_polygon_cx, m_polygon_cy, r, r / 1.45, 14);
 
         agg::conv_transform<agg::path_storage> tr(m_ps, polygon_mtx);
@@ -270,7 +270,7 @@ public:
             polygon_mtx *= agg::trans_affine_scaling(m_polygon_scale.value(), m_polygon_scale.value());
             polygon_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
 
-            double r = initial_width() / 3.0 - 8.0;
+            float_t r = initial_width() / 3.0 - 8.0;
             create_star(m_polygon_cx, m_polygon_cy, r, r / 1.45, 14);
 
             agg::conv_transform<agg::path_storage> tr(m_ps, polygon_mtx);

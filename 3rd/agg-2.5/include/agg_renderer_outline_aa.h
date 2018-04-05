@@ -112,8 +112,8 @@ namespace agg
         distance_interpolator1(int x1, int y1, int x2, int y2, int x, int y) :
             m_dx(x2 - x1),
             m_dy(y2 - y1),
-            m_dist(iround(double(x + line_subpixel_scale/2 - x2) * double(m_dy) - 
-                          double(y + line_subpixel_scale/2 - y2) * double(m_dx)))
+            m_dist(iround(float_t(x + line_subpixel_scale/2 - x2) * float_t(m_dy) - 
+                          float_t(y + line_subpixel_scale/2 - y2) * float_t(m_dx)))
         {
             m_dx <<= line_subpixel_shift;
             m_dy <<= line_subpixel_shift;
@@ -186,8 +186,8 @@ namespace agg
             m_dx_start(line_mr(sx) - line_mr(x1)),
             m_dy_start(line_mr(sy) - line_mr(y1)),
 
-            m_dist(iround(double(x + line_subpixel_scale/2 - x2) * double(m_dy) - 
-                          double(y + line_subpixel_scale/2 - y2) * double(m_dx))),
+            m_dist(iround(float_t(x + line_subpixel_scale/2 - x2) * float_t(m_dy) - 
+                          float_t(y + line_subpixel_scale/2 - y2) * float_t(m_dx))),
 
             m_dist_start((line_mr(x + line_subpixel_scale/2) - line_mr(sx)) * m_dy_start - 
                          (line_mr(y + line_subpixel_scale/2) - line_mr(sy)) * m_dx_start)
@@ -205,8 +205,8 @@ namespace agg
             m_dx_start(line_mr(ex) - line_mr(x2)),
             m_dy_start(line_mr(ey) - line_mr(y2)),
 
-            m_dist(iround(double(x + line_subpixel_scale/2 - x2) * double(m_dy) - 
-                          double(y + line_subpixel_scale/2 - y2) * double(m_dx))),
+            m_dist(iround(float_t(x + line_subpixel_scale/2 - x2) * float_t(m_dy) - 
+                          float_t(y + line_subpixel_scale/2 - y2) * float_t(m_dx))),
 
             m_dist_start((line_mr(x + line_subpixel_scale/2) - line_mr(ex)) * m_dy_start - 
                          (line_mr(y + line_subpixel_scale/2) - line_mr(ey)) * m_dx_start)
@@ -336,8 +336,8 @@ namespace agg
             m_dx_end(line_mr(ex) - line_mr(x2)),
             m_dy_end(line_mr(ey) - line_mr(y2)),
 
-            m_dist(iround(double(x + line_subpixel_scale/2 - x2) * double(m_dy) - 
-                          double(y + line_subpixel_scale/2 - y2) * double(m_dx))),
+            m_dist(iround(float_t(x + line_subpixel_scale/2 - x2) * float_t(m_dy) - 
+                          float_t(y + line_subpixel_scale/2 - y2) * float_t(m_dx))),
 
             m_dist_start((line_mr(x + line_subpixel_scale/2) - line_mr(sx)) * m_dy_start - 
                          (line_mr(y + line_subpixel_scale/2) - line_mr(sy)) * m_dx_start),
@@ -1295,7 +1295,7 @@ namespace agg
 
         //---------------------------------------------------------------------
         template<class GammaF> 
-        line_profile_aa(double w, const GammaF& gamma_function) : 
+        line_profile_aa(float_t w, const GammaF& gamma_function) : 
             m_subpixel_width(0),
             m_min_width(1.0),
             m_smoother_width(1.0)
@@ -1305,8 +1305,8 @@ namespace agg
         }
 
         //---------------------------------------------------------------------
-        void min_width(double w) { m_min_width = w; }
-        void smoother_width(double w) { m_smoother_width = w; }
+        void min_width(float_t w) { m_min_width = w; }
+        void smoother_width(float_t w) { m_smoother_width = w; }
 
         //---------------------------------------------------------------------
         template<class GammaF> void gamma(const GammaF& gamma_function)
@@ -1315,18 +1315,18 @@ namespace agg
             for(i = 0; i < aa_scale; i++)
             {
                 m_gamma[i] = value_type(
-                    uround(gamma_function(double(i) / aa_mask) * aa_mask));
+                    uround(gamma_function(float_t(i) / aa_mask) * aa_mask));
             }
         }
 
-        void width(double w);
+        void width(float_t w);
 
         unsigned profile_size() const { return m_profile.size(); }
         int subpixel_width() const { return m_subpixel_width; }
 
         //---------------------------------------------------------------------
-        double min_width() const { return m_min_width; }
-        double smoother_width() const { return m_smoother_width; }
+        float_t min_width() const { return m_min_width; }
+        float_t smoother_width() const { return m_smoother_width; }
 
         //---------------------------------------------------------------------
         value_type value(int dist) const
@@ -1338,15 +1338,15 @@ namespace agg
         line_profile_aa(const line_profile_aa&);
         const line_profile_aa& operator = (const line_profile_aa&);
 
-        value_type* profile(double w);
-        void set(double center_width, double smoother_width);
+        value_type* profile(float_t w);
+        void set(float_t center_width, float_t smoother_width);
 
         //---------------------------------------------------------------------
         pod_array<value_type> m_profile;
         value_type            m_gamma[aa_scale];
         int                   m_subpixel_width;
-        double                m_min_width;
-        double                m_smoother_width;
+        float_t                m_min_width;
+        float_t                m_smoother_width;
     };
 
 
@@ -1382,7 +1382,7 @@ namespace agg
 
         //---------------------------------------------------------------------
         void reset_clipping() { m_clipping = false; }
-        void clip_box(double x1, double y1, double x2, double y2)
+        void clip_box(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_clip_box.x1 = line_coord_sat::conv(x1);
             m_clip_box.y1 = line_coord_sat::conv(y1);

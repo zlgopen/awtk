@@ -599,13 +599,13 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    double platform_support::elapsed_time() const
+    float_t platform_support::elapsed_time() const
     {
         LARGE_INTEGER stop;
         ::QueryPerformanceCounter(&stop);
-        return double(stop.QuadPart - 
+        return float_t(stop.QuadPart - 
                       m_specific->m_sw_start.QuadPart) * 1000.0 / 
-                      double(m_specific->m_sw_freq.QuadPart);
+                      float_t(m_specific->m_sw_freq.QuadPart);
     }
 
 

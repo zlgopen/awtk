@@ -179,8 +179,8 @@ unsigned parse_lion(agg::path_storage& path, agg::rgba8* colors, unsigned* path_
         }
         else
         {
-            double x = 0.0;
-            double y = 0.0;
+            float_t x = 0.0;
+            float_t y = 0.0;
 
             while(*ptr && *ptr != '\n')
             {

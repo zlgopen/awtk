@@ -46,16 +46,16 @@ agg::path_storage g_path;
 agg::rgba8        g_colors[100];
 unsigned          g_path_idx[100];
 unsigned          g_npaths = 0;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
-double            g_base_dx = 0;
-double            g_base_dy = 0;
-double            g_angle = 0;
-double            g_scale = 1.0;
-double            g_skew_x = 0;
-double            g_skew_y = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
+float_t            g_base_dx = 0;
+float_t            g_base_dy = 0;
+float_t            g_angle = 0;
+float_t            g_scale = 1.0;
+float_t            g_skew_x = 0;
+float_t            g_skew_y = 0;
 int               g_nclick = 0;
 
 
@@ -154,7 +154,7 @@ class the_application : public agg::platform_support
     agg::rendering_buffer m_alpha_mask_rbuf;
     alpha_mask_type m_alpha_mask;
 
-    double m_slider_value;
+    float_t m_slider_value;
 
 
 public:
@@ -290,7 +290,7 @@ public:
 
 
         // Render random anti-aliased lines
-        double w = 5.0;
+        float_t w = 5.0;
         agg::line_profile_aa profile;
         profile.width(w);
 
@@ -337,7 +337,7 @@ public:
         {
             x = rand() % width;
             y = rand() % height;
-            double r = rand() % 10 + 5;
+            float_t r = rand() % 10 + 5;
             grm.reset();
             grm *= agg::trans_affine_scaling(r / 10.0);
             grm *= agg::trans_affine_translation(x, y);
@@ -357,7 +357,7 @@ public:
     }
 
 
-    void transform(double width, double height, double x, double y)
+    void transform(float_t width, float_t height, float_t x, float_t y)
     {
         x -= width / 2;
         y -= height / 2;

@@ -57,10 +57,10 @@ public:
     agg::cbox_ctrl<agg::rgba8>   m_fixed_len;
     agg::cbox_ctrl<agg::rgba8>   m_preserve_x_scale;
     agg::cbox_ctrl<agg::rgba8>   m_animate;
-    double                       m_dx1[6];
-    double                       m_dy1[6];
-    double                       m_dx2[6];
-    double                       m_dy2[6];
+    float_t                       m_dx1[6];
+    float_t                       m_dy1[6];
+    float_t                       m_dx2[6];
+    float_t                       m_dy2[6];
     bool                         m_prev_animate;
 
     the_application(agg::pix_format_e format, bool flip_y) :
@@ -169,8 +169,8 @@ public:
 
         if(m_feng.load_font(full_file_name("timesi.ttf"), 0, agg::glyph_ren_outline))
         {
-            double x = 0.0;
-            double y = 3.0;
+            float_t x = 0.0;
+            float_t y = 3.0;
             const char* p = text;
 
             m_feng.hinting(false);
@@ -324,7 +324,7 @@ public:
     }
 
 
-    void move_point(double& x, double& y, double& dx, double& dy)
+    void move_point(float_t& x, float_t& y, float_t& dx, float_t& dy)
     {
         if(x < 0.0)      { x = 0.0;      dx = -dx; }
         if(x > width())  { x = width();  dx = -dx; }
@@ -337,7 +337,7 @@ public:
 
     void normalize_point(unsigned i)
     {
-        double d = agg::calc_distance(m_poly1.xn(i), m_poly1.yn(i), 
+        float_t d = agg::calc_distance(m_poly1.xn(i), m_poly1.yn(i), 
                                       m_poly2.xn(i), m_poly2.yn(i));
         // 28.8 is 20 * sqrt(2)
         if(d > 28.28)

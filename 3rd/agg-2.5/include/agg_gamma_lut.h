@@ -75,7 +75,7 @@ namespace agg
             }
         }
 
-        gamma_lut(double g) :
+        gamma_lut(float_t g) :
             m_gamma(1.0), 
             m_dir_gamma(pod_allocator<HiResT>::allocate(gamma_size)),
             m_inv_gamma(pod_allocator<LoResT>::allocate(hi_res_size))
@@ -83,7 +83,7 @@ namespace agg
             gamma(g);
         }
 
-        void gamma(double g) 
+        void gamma(float_t g) 
         {
             m_gamma = g;
 
@@ -91,18 +91,18 @@ namespace agg
             for(i = 0; i < gamma_size; i++)
             {
                 m_dir_gamma[i] = (HiResT)
-                    uround(pow(i / double(gamma_mask), m_gamma) * double(hi_res_mask));
+                    uround(pow(i / float_t(gamma_mask), m_gamma) * float_t(hi_res_mask));
             }
 
-            double inv_g = 1.0 / g;
+            float_t inv_g = 1.0 / g;
             for(i = 0; i < hi_res_size; i++)
             {
                 m_inv_gamma[i] = (LoResT)
-                    uround(pow(i / double(hi_res_mask), inv_g) * double(gamma_mask));
+                    uround(pow(i / float_t(hi_res_mask), inv_g) * float_t(gamma_mask));
             }
         }
 
-        double gamma() const
+        float_t gamma() const
         {
             return m_gamma;
         }
@@ -121,7 +121,7 @@ namespace agg
         gamma_lut(const self_type&);
         const self_type& operator = (const self_type&);
 
-        double m_gamma;
+        float_t m_gamma;
         HiResT* m_dir_gamma;
         LoResT* m_inv_gamma;
     };

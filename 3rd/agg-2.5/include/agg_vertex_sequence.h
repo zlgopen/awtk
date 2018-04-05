@@ -48,12 +48,12 @@ namespace agg
     //
     //    struct vertex_dist
     //    {
-    //        double   x;
-    //        double   y;
-    //        double   dist;
+    //        float_t   x;
+    //        float_t   y;
+    //        float_t   dist;
     //
     //        vertex_dist() {}
-    //        vertex_dist(double x_, double y_) :
+    //        vertex_dist(float_t x_, float_t y_) :
     //            x(x_),
     //            y(y_),
     //            dist(0.0)
@@ -136,12 +136,12 @@ namespace agg
     // and 0.0 if it's a polyline.
     struct vertex_dist
     {
-        double   x;
-        double   y;
-        double   dist;
+        float_t   x;
+        float_t   y;
+        float_t   dist;
 
         vertex_dist() {}
-        vertex_dist(double x_, double y_) :
+        vertex_dist(float_t x_, float_t y_) :
             x(x_),
             y(y_),
             dist(0.0)
@@ -165,7 +165,7 @@ namespace agg
         unsigned cmd;
 
         vertex_dist_cmd() {}
-        vertex_dist_cmd(double x_, double y_, unsigned cmd_) :
+        vertex_dist_cmd(float_t x_, float_t y_, unsigned cmd_) :
             vertex_dist(x_, y_),
             cmd(cmd_)
         {

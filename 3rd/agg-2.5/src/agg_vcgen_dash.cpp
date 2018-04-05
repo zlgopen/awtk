@@ -57,7 +57,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_dash::add_dash(double dash_len, double gap_len)
+    void vcgen_dash::add_dash(float_t dash_len, float_t gap_len)
     {
         if(m_num_dashes < max_dashes)
         {
@@ -69,7 +69,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_dash::dash_start(double ds)
+    void vcgen_dash::dash_start(float_t ds)
     {
         m_dash_start = ds;
         calc_dash_start(fabs(ds));
@@ -77,7 +77,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_dash::calc_dash_start(double ds)
+    void vcgen_dash::calc_dash_start(float_t ds)
     {
         m_curr_dash = 0;
         m_curr_dash_start = 0.0;
@@ -109,7 +109,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void vcgen_dash::add_vertex(double x, double y, unsigned cmd)
+    void vcgen_dash::add_vertex(float_t x, float_t y, unsigned cmd)
     {
         m_status = initial;
         if(is_move_to(cmd))
@@ -144,7 +144,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned vcgen_dash::vertex(double* x, double* y)
+    unsigned vcgen_dash::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_move_to;
         while(!is_stop(cmd))
@@ -172,7 +172,7 @@ namespace agg
 
             case polyline:
                 {
-                    double dash_rest = m_dashes[m_curr_dash] - m_curr_dash_start;
+                    float_t dash_rest = m_dashes[m_curr_dash] - m_curr_dash_start;
 
                     unsigned cmd = (m_curr_dash & 1) ? 
                                    path_cmd_move_to : 

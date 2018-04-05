@@ -104,12 +104,12 @@ namespace agg
 
 
 
-agg::trans_affine gradient_affine(double x1, double y1, double x2, double y2, 
-                                  double gradient_d2 = 100.0)
+agg::trans_affine gradient_affine(float_t x1, float_t y1, float_t x2, float_t y2, 
+                                  float_t gradient_d2 = 100.0)
 {
     agg::trans_affine mtx;
-    double dx = x2 - x1;
-    double dy = y2 - y1;
+    float_t dx = x2 - x1;
+    float_t dy = y2 - y1;
     mtx.reset();
     mtx *= agg::trans_affine_scaling(sqrt(dx * dx + dy * dy) / gradient_d2);
     mtx *= agg::trans_affine_rotation(atan2(dy, dx));
@@ -122,8 +122,8 @@ agg::trans_affine gradient_affine(double x1, double y1, double x2, double y2,
 
 template<class RenBase> 
 void circle(RenBase& rbase, color c1, color c2, 
-            double x1, double y1, double x2, double y2,
-            double shadow_alpha)
+            float_t x1, float_t y1, float_t x2, float_t y2,
+            float_t shadow_alpha)
 {
     typedef RenBase renderer_base_type;
     typedef agg::gradient_x gradient_func_type;
@@ -147,7 +147,7 @@ void circle(RenBase& rbase, color c1, color c2,
     agg::rasterizer_scanline_aa<> ras;
     agg::scanline_u8 sl;
 
-    double r = agg::calc_distance(x1, y1, x2, y2) / 2;
+    float_t r = agg::calc_distance(x1, y1, x2, y2) / 2;
     agg::ellipse ell((x1+x2)/2+5, (y1+y2)/2-3, r, r, 100);
 
     ras.add_path(ell);
@@ -163,7 +163,7 @@ void circle(RenBase& rbase, color c1, color c2,
 
 template<class RenBase> 
 void src_shape(RenBase& rbase, color c1, color c2, 
-               double x1, double y1, double x2, double y2)
+               float_t x1, float_t y1, float_t x2, float_t y2)
 {
     typedef RenBase renderer_base_type;
     typedef agg::gradient_x gradient_func_type;
@@ -288,7 +288,7 @@ public:
 
         if(m_comp_op.cur_item() == 25) // Contrast
         {
-            double v = m_alpha_src.value();
+            float_t v = m_alpha_src.value();
             src_shape(renderer, 
                       agg::rgba(v, v, v), 
                       agg::rgba(v, v, v),
@@ -344,7 +344,7 @@ public:
 
         start_timer();
         render_scene(rbuf_img(0), pixf2);
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         rb_pre.blend_from(pixf2);
 

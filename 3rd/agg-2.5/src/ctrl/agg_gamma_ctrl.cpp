@@ -30,7 +30,7 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    gamma_ctrl_impl::gamma_ctrl_impl(double x1, double y1, double x2, double y2, bool flip_y) :
+    gamma_ctrl_impl::gamma_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y) :
         ctrl(x1, y1, x2, y2, flip_y),
         m_border_width(2.0),
         m_border_extra(0.0),
@@ -74,7 +74,7 @@ namespace agg
     //------------------------------------------------------------------------
     void gamma_ctrl_impl::calc_points()
     {
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
         m_gamma_spline.values(&kx1, &ky1, &kx2, &ky2);
         m_xp1 = m_xs1 + (m_xs2 - m_xs1) * kx1 * 0.25;
         m_yp1 = m_ys1 + (m_ys2 - m_ys1) * ky1 * 0.25;
@@ -86,7 +86,7 @@ namespace agg
     //------------------------------------------------------------------------
     void gamma_ctrl_impl::calc_values()
     {
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
 
         kx1 = (m_xp1 - m_xs1) * 4.0 / (m_xs2 - m_xs1);
         ky1 = (m_yp1 - m_ys1) * 4.0 / (m_ys2 - m_ys1);
@@ -97,7 +97,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void gamma_ctrl_impl::text_size(double h, double w) 
+    void gamma_ctrl_impl::text_size(float_t h, float_t w) 
     { 
         m_text_width = w; 
         m_text_height = h; 
@@ -108,7 +108,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void gamma_ctrl_impl::border_width(double t, double extra)
+    void gamma_ctrl_impl::border_width(float_t t, float_t extra)
     { 
         m_border_width = t; 
         m_border_extra = extra;
@@ -116,14 +116,14 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void gamma_ctrl_impl::values(double kx1, double ky1, double kx2, double ky2)
+    void gamma_ctrl_impl::values(float_t kx1, float_t ky1, float_t kx2, float_t ky2)
     {
         m_gamma_spline.values(kx1, ky1, kx2, ky2);
     }
 
 
     //------------------------------------------------------------------------
-    void gamma_ctrl_impl::values(double* kx1, double* ky1, double* kx2, double* ky2) const
+    void gamma_ctrl_impl::values(float_t* kx1, float_t* ky1, float_t* kx2, float_t* ky2) const
     {
         m_gamma_spline.values(kx1, ky1, kx2, ky2);
     }
@@ -131,7 +131,7 @@ namespace agg
     //------------------------------------------------------------------------
     void  gamma_ctrl_impl::rewind(unsigned idx)
     {
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
         char tbuf[32];
 
         m_idx = idx;
@@ -259,7 +259,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned gamma_ctrl_impl::vertex(double* x, double* y)
+    unsigned gamma_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         switch(m_idx)
@@ -323,7 +323,7 @@ namespace agg
     //------------------------------------------------------------------------
     bool gamma_ctrl_impl::on_arrow_keys(bool left, bool right, bool down, bool up)
     {
-        double kx1, ky1, kx2, ky2;
+        float_t kx1, ky1, kx2, ky2;
         bool ret = false;
         m_gamma_spline.values(&kx1, &ky1, &kx2, &ky2);
         if(m_p1_active)
@@ -359,7 +359,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool gamma_ctrl_impl::in_rect(double x, double y) const
+    bool gamma_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         inverse_transform_xy(&x, &y);
         return x >= m_x1 && x <= m_x2 && y >= m_y1 && y <= m_y2;
@@ -367,7 +367,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool gamma_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool gamma_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
         calc_points();
@@ -395,7 +395,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool gamma_ctrl_impl::on_mouse_button_up(double, double)
+    bool gamma_ctrl_impl::on_mouse_button_up(float_t, float_t)
     {
         if(m_mouse_point)
         {
@@ -407,7 +407,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool gamma_ctrl_impl::on_mouse_move(double x, double y, bool button_flag)
+    bool gamma_ctrl_impl::on_mouse_move(float_t x, float_t y, bool button_flag)
     {
         inverse_transform_xy(&x, &y);
         if(!button_flag)

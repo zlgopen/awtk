@@ -52,7 +52,7 @@ namespace agg
 
         //--------------------------------------------------------------------
         template<class CharT>
-        void render_text(double x, double y, const CharT* str, bool flip=false)
+        void render_text(float_t x, float_t y, const CharT* str, bool flip=false)
         {
             glyph_rect r;
             while(*str)
@@ -116,7 +116,7 @@ namespace agg
 
         //--------------------------------------------------------------------
         template<class CharT>
-        void render_text(double x, double y, const CharT* str, bool flip=false)
+        void render_text(float_t x, float_t y, const CharT* str, bool flip=false)
         {
             glyph_rect r;
             while(*str)
@@ -220,7 +220,7 @@ namespace agg
 
         //--------------------------------------------------------------------
         template<class CharT>
-        void render_text(double x, double y, const CharT* str, bool flip=false)
+        void render_text(float_t x, float_t y, const CharT* str, bool flip=false)
         {
             glyph_rect r;
             while(*str)

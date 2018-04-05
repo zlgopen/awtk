@@ -99,11 +99,11 @@ long ftk_strtol(const char* str, const char** end, int base) {
 
 int ftk_atoi(const char* str) { return ftk_strtol(str, NULL, 10); }
 
-double ftk_atof(const char* str) {
+float_t ftk_atof(const char* str) {
   int n = 0;
   unsigned int f = 0;
   int neg = 0;
-  double result = 0;
+  float_t result = 0;
   const char* p = NULL;
   return_value_if_fail(str != NULL, 0);
 
@@ -177,7 +177,7 @@ static const char* ftk_itoa_simple(char* str, int len, int n, const char** end) 
 
 const char* ftk_itoa(char* str, int len, int n) { return ftk_itoa_simple(str, len, n, NULL); }
 
-const char* ftk_ftoa(char* str, int len, double value) {
+const char* ftk_ftoa(char* str, int len, float_t value) {
   int i = 0;
   char str_n[32] = {0};
   char str_f[32] = {0};

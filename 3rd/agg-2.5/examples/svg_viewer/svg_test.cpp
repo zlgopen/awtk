@@ -24,15 +24,15 @@ class the_application : public agg::platform_support
     agg::slider_ctrl<agg::rgba8> m_scale;
     agg::slider_ctrl<agg::rgba8> m_rotate;
 
-    double m_min_x;
-    double m_min_y;
-    double m_max_x;
-    double m_max_y;
+    float_t m_min_x;
+    float_t m_min_y;
+    float_t m_max_x;
+    float_t m_max_y;
 
-    double m_x;
-    double m_y;
-    double m_dx;
-    double m_dy;
+    float_t m_x;
+    float_t m_y;
+    float_t m_dx;
+    float_t m_dy;
     bool   m_drag_flag;
 
 public:
@@ -114,7 +114,7 @@ public:
         m_path.expand(m_expand.value());
         start_timer();
         m_path.render(ras, sl, ren, mtx, rb.clip_box(), 1.0);
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
         unsigned vertex_count = m_path.vertex_count();
 
         ras.gamma(agg::gamma_none());
@@ -198,7 +198,7 @@ public:
             mtx *= agg::trans_affine_translation((m_min_x + m_max_x) * 0.5, (m_min_y + m_max_y) * 0.5);
             mtx *= agg::trans_affine_translation(m_x, m_y);
 
-            double m[6];
+            float_t m[6];
             mtx.store_to(m);
 
             char buf[128];

@@ -36,7 +36,7 @@ namespace agg
     class simple_polygon_vertex_source
     {
     public:
-        simple_polygon_vertex_source(const double* polygon, unsigned np, 
+        simple_polygon_vertex_source(const float_t* polygon, unsigned np, 
                                      bool roundoff = false,
                                      bool close = true) :
             m_polygon(polygon),
@@ -55,7 +55,7 @@ namespace agg
             m_vertex = 0;
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_vertex > m_num_points) return path_cmd_stop;
             if(m_vertex == m_num_points) 
@@ -75,7 +75,7 @@ namespace agg
         }
 
     private:
-        const double* m_polygon;
+        const float_t* m_polygon;
         unsigned m_num_points;
         unsigned m_vertex;
         bool     m_roundoff;
@@ -88,21 +88,21 @@ namespace agg
     class polygon_ctrl_impl : public ctrl
     {
     public:
-        polygon_ctrl_impl(unsigned np, double point_radius=5);
+        polygon_ctrl_impl(unsigned np, float_t point_radius=5);
 
         unsigned num_points() const { return m_num_points; }
-        double xn(unsigned n) const { return m_polygon[n * 2];     }
-        double yn(unsigned n) const { return m_polygon[n * 2 + 1]; }
-        double& xn(unsigned n) { return m_polygon[n * 2];     }
-        double& yn(unsigned n) { return m_polygon[n * 2 + 1]; }
+        float_t xn(unsigned n) const { return m_polygon[n * 2];     }
+        float_t yn(unsigned n) const { return m_polygon[n * 2 + 1]; }
+        float_t& xn(unsigned n) { return m_polygon[n * 2];     }
+        float_t& yn(unsigned n) { return m_polygon[n * 2 + 1]; }
     
-        const double* polygon() const { return &m_polygon[0]; }
+        const float_t* polygon() const { return &m_polygon[0]; }
 
-        void   line_width(double w) { m_stroke.width(w); }
-        double line_width() const   { return m_stroke.width(); }
+        void   line_width(float_t w) { m_stroke.width(w); }
+        float_t line_width() const   { return m_stroke.width(); }
 
-        void   point_radius(double r) { m_point_radius = r; }
-        double point_radius() const   { return m_point_radius; }
+        void   point_radius(float_t r) { m_point_radius = r; }
+        float_t point_radius() const   { return m_point_radius; }
 
         void in_polygon_check(bool f) { m_in_polygon_check = f; }
         bool in_polygon_check() const { return m_in_polygon_check; }
@@ -113,30 +113,30 @@ namespace agg
         // Vertex source interface
         unsigned num_paths() { return 1; }
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
 
     private:
-        bool check_edge(unsigned i, double x, double y) const;
-        bool point_in_polygon(double x, double y) const;
+        bool check_edge(unsigned i, float_t x, float_t y) const;
+        bool point_in_polygon(float_t x, float_t y) const;
 
-        pod_array<double> m_polygon;
+        pod_array<float_t> m_polygon;
         unsigned          m_num_points;
         int               m_node;
         int               m_edge;
         simple_polygon_vertex_source              m_vs;
         conv_stroke<simple_polygon_vertex_source> m_stroke;
         ellipse  m_ellipse;
-        double   m_point_radius;
+        float_t   m_point_radius;
         unsigned m_status;
-        double   m_dx;
-        double   m_dy;
+        float_t   m_dx;
+        float_t   m_dy;
         bool     m_in_polygon_check;
     };
 
@@ -146,7 +146,7 @@ namespace agg
     template<class ColorT> class polygon_ctrl : public polygon_ctrl_impl
     {
     public:
-        polygon_ctrl(unsigned np, double point_radius=5) :
+        polygon_ctrl(unsigned np, float_t point_radius=5) :
             polygon_ctrl_impl(np, point_radius),
             m_color(rgba(0.0, 0.0, 0.0))
         {

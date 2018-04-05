@@ -60,20 +60,20 @@ namespace agg
         const  image_filter_lut& filter() const { return *m_filter; }
         int    filter_dx_int()            const { return m_dx_int; }
         int    filter_dy_int()            const { return m_dy_int; }
-        double filter_dx_dbl()            const { return m_dx_dbl; }
-        double filter_dy_dbl()            const { return m_dy_dbl; }
+        float_t filter_dx_dbl()            const { return m_dx_dbl; }
+        float_t filter_dy_dbl()            const { return m_dy_dbl; }
 
         //--------------------------------------------------------------------
         void interpolator(interpolator_type& v)  { m_interpolator = &v; }
         void filter(const image_filter_lut& v)   { m_filter = &v; }
-        void filter_offset(double dx, double dy)
+        void filter_offset(float_t dx, float_t dy)
         {
             m_dx_dbl = dx;
             m_dy_dbl = dy;
             m_dx_int = iround(dx * image_subpixel_scale);
             m_dy_int = iround(dy * image_subpixel_scale);
         }
-        void filter_offset(double d) { filter_offset(d, d); }
+        void filter_offset(float_t d) { filter_offset(d, d); }
 
         //--------------------------------------------------------------------
         interpolator_type& interpolator() { return *m_interpolator; }
@@ -86,8 +86,8 @@ namespace agg
         source_type*            m_src;
         interpolator_type*      m_interpolator;
         const image_filter_lut* m_filter;
-        double   m_dx_dbl;
-        double   m_dy_dbl;
+        float_t   m_dx_dbl;
+        float_t   m_dy_dbl;
         unsigned m_dx_int;
         unsigned m_dy_int;
     };
@@ -128,17 +128,17 @@ namespace agg
         void scale_limit(int v)  { m_scale_limit = v; }
 
         //--------------------------------------------------------------------
-        double blur_x() const { return m_blur_x; }
-        double blur_y() const { return m_blur_y; }
-        void blur_x(double v) { m_blur_x = v; }
-        void blur_y(double v) { m_blur_y = v; }
-        void blur(double v) { m_blur_x = m_blur_y = v; }
+        float_t blur_x() const { return m_blur_x; }
+        float_t blur_y() const { return m_blur_y; }
+        void blur_x(float_t v) { m_blur_x = v; }
+        void blur_y(float_t v) { m_blur_y = v; }
+        void blur(float_t v) { m_blur_x = m_blur_y = v; }
 
         //--------------------------------------------------------------------
         void prepare() 
         {
-            double scale_x;
-            double scale_y;
+            float_t scale_x;
+            float_t scale_y;
 
             base_type::interpolator().transformer().scaling_abs(&scale_x, &scale_y);
 
@@ -160,11 +160,11 @@ namespace agg
             if(scale_x < 1) scale_x = 1;
             if(scale_y < 1) scale_y = 1;
 
-            m_rx     = uround(    scale_x * double(image_subpixel_scale));
-            m_rx_inv = uround(1.0/scale_x * double(image_subpixel_scale));
+            m_rx     = uround(    scale_x * float_t(image_subpixel_scale));
+            m_rx_inv = uround(1.0/scale_x * float_t(image_subpixel_scale));
 
-            m_ry     = uround(    scale_y * double(image_subpixel_scale));
-            m_ry_inv = uround(1.0/scale_y * double(image_subpixel_scale));
+            m_ry     = uround(    scale_y * float_t(image_subpixel_scale));
+            m_ry_inv = uround(1.0/scale_y * float_t(image_subpixel_scale));
         }
 
     protected:
@@ -174,9 +174,9 @@ namespace agg
         int m_ry_inv;
 
     private:
-        double m_scale_limit;
-        double m_blur_x;
-        double m_blur_y;
+        float_t m_scale_limit;
+        float_t m_blur_x;
+        float_t m_blur_y;
     };
 
 
@@ -213,12 +213,12 @@ namespace agg
         void scale_limit(int v)  { m_scale_limit = v; }
 
         //--------------------------------------------------------------------
-        double blur_x() const { return double(m_blur_x) / double(image_subpixel_scale); }
-        double blur_y() const { return double(m_blur_y) / double(image_subpixel_scale); }
-        void blur_x(double v) { m_blur_x = uround(v * double(image_subpixel_scale)); }
-        void blur_y(double v) { m_blur_y = uround(v * double(image_subpixel_scale)); }
-        void blur(double v)   { m_blur_x = 
-                                m_blur_y = uround(v * double(image_subpixel_scale)); }
+        float_t blur_x() const { return float_t(m_blur_x) / float_t(image_subpixel_scale); }
+        float_t blur_y() const { return float_t(m_blur_y) / float_t(image_subpixel_scale); }
+        void blur_x(float_t v) { m_blur_x = uround(v * float_t(image_subpixel_scale)); }
+        void blur_y(float_t v) { m_blur_y = uround(v * float_t(image_subpixel_scale)); }
+        void blur(float_t v)   { m_blur_x = 
+                                m_blur_y = uround(v * float_t(image_subpixel_scale)); }
 
     protected:
         AGG_INLINE void adjust_scale(int* rx, int* ry)

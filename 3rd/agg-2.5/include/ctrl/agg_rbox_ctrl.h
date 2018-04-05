@@ -42,48 +42,48 @@ namespace agg
     class rbox_ctrl_impl : public ctrl
     {
     public:
-        rbox_ctrl_impl(double x1, double y1, double x2, double y2, bool flip_y=false);
+        rbox_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false);
 
-        void border_width(double t, double extra=0.0);
-        void text_thickness(double t)  { m_text_thickness = t; }
-        void text_size(double h, double w=0.0);
+        void border_width(float_t t, float_t extra=0.0);
+        void text_thickness(float_t t)  { m_text_thickness = t; }
+        void text_size(float_t h, float_t w=0.0);
 
         void add_item(const char* text);
         int  cur_item() const { return m_cur_item; }
         void cur_item(int i) { m_cur_item = i; }
 
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
         // Vertex soutce interface
         unsigned num_paths() { return 5; };
         void     rewind(unsigned path_id);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         void calc_rbox();
 
-        double          m_border_width;
-        double          m_border_extra;
-        double          m_text_thickness;
-        double          m_text_height;
-        double          m_text_width;
+        float_t          m_border_width;
+        float_t          m_border_extra;
+        float_t          m_text_thickness;
+        float_t          m_text_height;
+        float_t          m_text_width;
         pod_array<char> m_items[32];
         unsigned        m_num_items;
         int             m_cur_item;
 
-        double   m_xs1;
-        double   m_ys1;
-        double   m_xs2;
-        double   m_ys2;
+        float_t   m_xs1;
+        float_t   m_ys1;
+        float_t   m_xs2;
+        float_t   m_ys2;
 
-        double   m_vx[32];
-        double   m_vy[32];
+        float_t   m_vx[32];
+        float_t   m_vy[32];
         unsigned m_draw_item;
-        double   m_dy;
+        float_t   m_dy;
 
         ellipse               m_ellipse;
         conv_stroke<ellipse>  m_ellipse_poly;
@@ -100,7 +100,7 @@ namespace agg
     template<class ColorT> class rbox_ctrl : public rbox_ctrl_impl
     {
     public:
-        rbox_ctrl(double x1, double y1, double x2, double y2, bool flip_y=false) :
+        rbox_ctrl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false) :
             rbox_ctrl_impl(x1, y1, x2, y2, flip_y),
             m_background_color(rgba(1.0, 1.0, 0.9)),
             m_border_color(rgba(0.0, 0.0, 0.0)),

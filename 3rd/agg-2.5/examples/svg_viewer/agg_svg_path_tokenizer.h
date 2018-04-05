@@ -63,10 +63,10 @@ namespace svg
         void set_path_str(const char* str);
         bool next();
 
-        double next(char cmd);
+        float_t next(char cmd);
 
         char   last_command() const { return m_last_command; }
-        double last_number() const { return m_last_number; }
+        float_t last_number() const { return m_last_number; }
 
 
     private:
@@ -99,7 +99,7 @@ namespace svg
         char m_numeric_mask[256/8];
 
         const char* m_path;
-        double m_last_number;
+        float_t m_last_number;
         char   m_last_command;
 
         static const char s_commands[];

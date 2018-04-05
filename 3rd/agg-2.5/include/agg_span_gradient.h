@@ -69,7 +69,7 @@ namespace agg
         span_gradient(interpolator_type& inter,
                       const GradientF& gradient_function,
                       const ColorF& color_function,
-                      double d1, double d2) : 
+                      float_t d1, float_t d2) : 
             m_interpolator(&inter),
             m_gradient_function(&gradient_function),
             m_color_function(&color_function),
@@ -81,15 +81,15 @@ namespace agg
         interpolator_type& interpolator() { return *m_interpolator; }
         const GradientF& gradient_function() const { return *m_gradient_function; }
         const ColorF& color_function() const { return *m_color_function; }
-        double d1() const { return double(m_d1) / gradient_subpixel_scale; }
-        double d2() const { return double(m_d2) / gradient_subpixel_scale; }
+        float_t d1() const { return float_t(m_d1) / gradient_subpixel_scale; }
+        float_t d2() const { return float_t(m_d2) / gradient_subpixel_scale; }
 
         //--------------------------------------------------------------------
         void interpolator(interpolator_type& i) { m_interpolator = &i; }
         void gradient_function(const GradientF& gf) { m_gradient_function = &gf; }
         void color_function(const ColorF& cf) { m_color_function = &cf; }
-        void d1(double v) { m_d1 = iround(v * gradient_subpixel_scale); }
-        void d2(double v) { m_d2 = iround(v * gradient_subpixel_scale); }
+        void d1(float_t v) { m_d1 = iround(v * gradient_subpixel_scale); }
+        void d2(float_t v) { m_d2 = iround(v * gradient_subpixel_scale); }
 
         //--------------------------------------------------------------------
         void prepare() {}
@@ -139,7 +139,7 @@ namespace agg
         unsigned size() const { return m_size; }
         color_type operator [] (unsigned v) const 
         {
-            return m_c1.gradient(m_c2, double(v) / double(m_size - 1));
+            return m_c1.gradient(m_c2, float_t(v) / float_t(m_size - 1));
         }
 
         void colors(const color_type& c1, const color_type& c2, unsigned size = 256)
@@ -187,7 +187,7 @@ namespace agg
     public:
         static AGG_INLINE int calculate(int x, int y, int)
         {
-            return uround(sqrt(double(x)*double(x) + double(y)*double(y)));
+            return uround(sqrt(float_t(x)*float_t(x) + float_t(y)*float_t(y)));
         }
     };
 
@@ -205,7 +205,7 @@ namespace agg
         }
 
         //---------------------------------------------------------------------
-        gradient_radial_focus(double r, double fx, double fy) : 
+        gradient_radial_focus(float_t r, float_t fx, float_t fy) : 
             m_r (iround(r  * gradient_subpixel_scale)), 
             m_fx(iround(fx * gradient_subpixel_scale)), 
             m_fy(iround(fy * gradient_subpixel_scale))
@@ -214,7 +214,7 @@ namespace agg
         }
 
         //---------------------------------------------------------------------
-        void init(double r, double fx, double fy)
+        void init(float_t r, float_t fx, float_t fy)
         {
             m_r  = iround(r  * gradient_subpixel_scale);
             m_fx = iround(fx * gradient_subpixel_scale);
@@ -223,17 +223,17 @@ namespace agg
         }
 
         //---------------------------------------------------------------------
-        double radius()  const { return double(m_r)  / gradient_subpixel_scale; }
-        double focus_x() const { return double(m_fx) / gradient_subpixel_scale; }
-        double focus_y() const { return double(m_fy) / gradient_subpixel_scale; }
+        float_t radius()  const { return float_t(m_r)  / gradient_subpixel_scale; }
+        float_t focus_x() const { return float_t(m_fx) / gradient_subpixel_scale; }
+        float_t focus_y() const { return float_t(m_fy) / gradient_subpixel_scale; }
 
         //---------------------------------------------------------------------
         int calculate(int x, int y, int) const
         {
-            double dx = x - m_fx;
-            double dy = y - m_fy;
-            double d2 = dx * m_fy - dy * m_fx;
-            double d3 = m_r2 * (dx * dx + dy * dy) - d2 * d2;
+            float_t dx = x - m_fx;
+            float_t dy = y - m_fy;
+            float_t d2 = dx * m_fy - dy * m_fx;
+            float_t d3 = m_r2 * (dx * dx + dy * dy) - d2 * d2;
             return iround((dx * m_fx + dy * m_fy + sqrt(fabs(d3))) * m_mul);
         }
 
@@ -247,16 +247,16 @@ namespace agg
             // one subpixel unit possibly in the direction to the origin (0,0)
             // and calculate the values again.
             //-------------------------
-            m_r2  = double(m_r)  * double(m_r);
-            m_fx2 = double(m_fx) * double(m_fx);
-            m_fy2 = double(m_fy) * double(m_fy);
-            double d = (m_r2 - (m_fx2 + m_fy2));
+            m_r2  = float_t(m_r)  * float_t(m_r);
+            m_fx2 = float_t(m_fx) * float_t(m_fx);
+            m_fy2 = float_t(m_fy) * float_t(m_fy);
+            float_t d = (m_r2 - (m_fx2 + m_fy2));
             if(d == 0)
             {
                 if(m_fx) { if(m_fx < 0) ++m_fx; else --m_fx; }
                 if(m_fy) { if(m_fy < 0) ++m_fy; else --m_fy; }
-                m_fx2 = double(m_fx) * double(m_fx);
-                m_fy2 = double(m_fy) * double(m_fy);
+                m_fx2 = float_t(m_fx) * float_t(m_fx);
+                m_fy2 = float_t(m_fy) * float_t(m_fy);
                 d = (m_r2 - (m_fx2 + m_fy2));
             }
             m_mul = m_r / d;
@@ -265,10 +265,10 @@ namespace agg
         int    m_r;
         int    m_fx;
         int    m_fy;
-        double m_r2;
-        double m_fx2;
-        double m_fy2;
-        double m_mul;
+        float_t m_r2;
+        float_t m_fx2;
+        float_t m_fy2;
+        float_t m_mul;
     };
 
 
@@ -325,7 +325,7 @@ namespace agg
     public:
         static AGG_INLINE int calculate(int x, int y, int d) 
         { 
-            return uround(fabs(atan2(double(y), double(x))) * double(d) / pi);
+            return uround(fabs(atan2(float_t(y), float_t(x))) * float_t(d) / pi);
         }
     };
 

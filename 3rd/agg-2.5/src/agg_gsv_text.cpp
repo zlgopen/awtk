@@ -520,26 +520,26 @@ namespace agg
     }
 
     //-------------------------------------------------------------------------
-    void gsv_text::size(double height, double width)
+    void gsv_text::size(float_t height, float_t width)
     {
         m_height = height;
         m_width  = width;
     }
 
     //-------------------------------------------------------------------------
-    void gsv_text::space(double space)
+    void gsv_text::space(float_t space)
     {
         m_space = space;
     }
 
     //-------------------------------------------------------------------------
-    void gsv_text::line_space(double line_space)
+    void gsv_text::line_space(float_t line_space)
     {
         m_line_space = line_space;
     }
 
     //-------------------------------------------------------------------------
-    void gsv_text::start_point(double x, double y)
+    void gsv_text::start_point(float_t x, float_t y)
     {
         m_x = m_start_x = x;
         m_y = y;
@@ -593,7 +593,7 @@ namespace agg
         if(m_font == 0) return;
         
         m_indices = (int8u*)m_font;
-        double base_height = value(m_indices + 4);
+        float_t base_height = value(m_indices + 4);
         m_indices += value(m_indices);
         m_glyphs = (int8*)(m_indices + 257*2);
         m_h = m_height / base_height;
@@ -603,7 +603,7 @@ namespace agg
     }
 
     //-------------------------------------------------------------------------
-    unsigned gsv_text::vertex(double* x, double* y)
+    unsigned gsv_text::vertex(float_t* x, float_t* y)
     {
         unsigned idx;
         int8 yc, yf;
@@ -658,8 +658,8 @@ namespace agg
                 yc <<= 1; 
                 yc >>= 1;
                 dy = int(yc);
-                m_x += double(dx) * m_w;
-                m_y += double(dy) * m_h;
+                m_x += float_t(dx) * m_w;
+                m_y += float_t(dy) * m_h;
                 *x = m_x;
                 *y = m_y;
                 return yf ? path_cmd_move_to : path_cmd_line_to;
@@ -670,9 +670,9 @@ namespace agg
     }
 
     //-------------------------------------------------------------------------
-    double gsv_text::text_width()
+    float_t gsv_text::text_width()
     {
-        double x1, y1, x2, y2;
+        float_t x1, y1, x2, y2;
         bounding_rect_single(*this, 0, &x1, &y1, &x2, &y2);
         return x2 - x1;
     }

@@ -37,7 +37,7 @@ namespace agg
     public:
         //--------------------------------------------------------------------
         virtual ~ctrl() {}
-        ctrl(double x1, double y1, double x2, double y2, bool flip_y) :
+        ctrl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y) :
             m_x1(x1), m_y1(y1), m_x2(x2), m_y2(y2), 
             m_flip_y(flip_y),
             m_mtx(0)
@@ -45,10 +45,10 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        virtual bool in_rect(double x, double y) const = 0;
-        virtual bool on_mouse_button_down(double x, double y) = 0;
-        virtual bool on_mouse_button_up(double x, double y) = 0;
-        virtual bool on_mouse_move(double x, double y, bool button_flag) = 0;
+        virtual bool in_rect(float_t x, float_t y) const = 0;
+        virtual bool on_mouse_button_down(float_t x, float_t y) = 0;
+        virtual bool on_mouse_button_up(float_t x, float_t y) = 0;
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag) = 0;
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up) = 0;
 
         //--------------------------------------------------------------------
@@ -56,31 +56,31 @@ namespace agg
         void no_transform() { m_mtx = 0; }
 
         //--------------------------------------------------------------------
-        void transform_xy(double* x, double* y) const
+        void transform_xy(float_t* x, float_t* y) const
         {
             if(m_flip_y) *y = m_y1 + m_y2 - *y;
             if(m_mtx) m_mtx->transform(x, y);
         }
 
         //--------------------------------------------------------------------
-        void inverse_transform_xy(double* x, double* y) const
+        void inverse_transform_xy(float_t* x, float_t* y) const
         {
             if(m_mtx) m_mtx->inverse_transform(x, y);
             if(m_flip_y) *y = m_y1 + m_y2 - *y;
         }
 
         //--------------------------------------------------------------------
-        double scale() const { return m_mtx ? m_mtx->scale() : 1.0; }
+        float_t scale() const { return m_mtx ? m_mtx->scale() : 1.0; }
 
     private:
         ctrl(const ctrl&);
         const ctrl& operator = (const ctrl&);
 
     protected:
-        double m_x1;
-        double m_y1;
-        double m_x2;
-        double m_y2;
+        float_t m_x1;
+        float_t m_y1;
+        float_t m_x2;
+        float_t m_y2;
 
     private:
         bool m_flip_y;

@@ -39,34 +39,34 @@ namespace agg
     {
     public:
         arc() : m_scale(1.0), m_initialized(false) {}
-        arc(double x,  double y, 
-            double rx, double ry, 
-            double a1, double a2, 
+        arc(float_t x,  float_t y, 
+            float_t rx, float_t ry, 
+            float_t a1, float_t a2, 
             bool ccw=true);
 
-        void init(double x,  double y, 
-                  double rx, double ry, 
-                  double a1, double a2, 
+        void init(float_t x,  float_t y, 
+                  float_t rx, float_t ry, 
+                  float_t a1, float_t a2, 
                   bool ccw=true);
 
-        void approximation_scale(double s);
-        double approximation_scale() const { return m_scale;  }
+        void approximation_scale(float_t s);
+        float_t approximation_scale() const { return m_scale;  }
 
         void rewind(unsigned);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        void normalize(double a1, double a2, bool ccw);
+        void normalize(float_t a1, float_t a2, bool ccw);
 
-        double   m_x;
-        double   m_y;
-        double   m_rx;
-        double   m_ry;
-        double   m_angle;
-        double   m_start;
-        double   m_end;
-        double   m_scale;
-        double   m_da;
+        float_t   m_x;
+        float_t   m_y;
+        float_t   m_rx;
+        float_t   m_ry;
+        float_t   m_angle;
+        float_t   m_start;
+        float_t   m_end;
+        float_t   m_scale;
+        float_t   m_da;
         bool     m_ccw;
         bool     m_initialized;
         unsigned m_path_cmd;

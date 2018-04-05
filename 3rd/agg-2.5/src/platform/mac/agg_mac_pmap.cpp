@@ -152,7 +152,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void pixel_map::draw(WindowRef window, int x, int y, double scale) const
+    void pixel_map::draw(WindowRef window, int x, int y, float_t scale) const
     {
         if(m_pmap == nil || m_buf == NULL) return;
         unsigned width  = (unsigned)(this->width() * scale);
@@ -172,7 +172,7 @@ namespace agg
     
 
     //------------------------------------------------------------------------
-    void pixel_map::blend(WindowRef window, int x, int y, double scale) const
+    void pixel_map::blend(WindowRef window, int x, int y, float_t scale) const
     {
         draw(window, x, y, scale);	// currently just mapped to drawing method
     }

@@ -59,7 +59,7 @@ namespace agg
             m_interpolator(&interpolator) {}
 
         span_subdiv_adaptor(interpolator_type& interpolator, 
-                             double x, double y, unsigned len,
+                             float_t x, float_t y, unsigned len,
                              unsigned subdiv_shift = 4) :
             m_subdiv_shift(subdiv_shift),
             m_subdiv_size(1 << m_subdiv_shift),
@@ -94,7 +94,7 @@ namespace agg
         }
 
         //----------------------------------------------------------------
-        void begin(double x, double y, unsigned len)
+        void begin(float_t x, float_t y, unsigned len)
         {
             m_pos   = 1;
             m_src_x = iround(x * subpixel_scale) + subpixel_scale;
@@ -112,7 +112,7 @@ namespace agg
             {
                 unsigned len = m_len;
                 if(len > m_subdiv_size) len = m_subdiv_size;
-                m_interpolator->resynchronize(double(m_src_x) / double(subpixel_scale) + len, 
+                m_interpolator->resynchronize(float_t(m_src_x) / float_t(subpixel_scale) + len, 
                                               m_src_y, 
                                               len);
                 m_pos = 0;
@@ -141,7 +141,7 @@ namespace agg
         unsigned m_subdiv_mask;
         interpolator_type* m_interpolator;
         int      m_src_x;
-        double   m_src_y;
+        float_t   m_src_y;
         unsigned m_pos;
         unsigned m_len;
     };

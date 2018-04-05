@@ -46,7 +46,7 @@ namespace agg
     //  clip_box.x1  clip_box.x2
     //
     // 
-    unsigned vpgen_clip_polygon::clipping_flags(double x, double y)
+    unsigned vpgen_clip_polygon::clipping_flags(float_t x, float_t y)
     {
         if(x < m_clip_box.x1) 
         {
@@ -76,7 +76,7 @@ namespace agg
     }
 
     //----------------------------------------------------------------------------
-    void vpgen_clip_polygon::move_to(double x, double y)
+    void vpgen_clip_polygon::move_to(float_t x, float_t y)
     {
         m_vertex = 0;
         m_num_vertices = 0;
@@ -94,7 +94,7 @@ namespace agg
 
 
     //----------------------------------------------------------------------------
-    void vpgen_clip_polygon::line_to(double x, double y)
+    void vpgen_clip_polygon::line_to(float_t x, float_t y)
     {
         m_vertex = 0;
         m_num_vertices = 0;
@@ -124,7 +124,7 @@ namespace agg
 
 
     //----------------------------------------------------------------------------
-    unsigned vpgen_clip_polygon::vertex(double* x, double* y)
+    unsigned vpgen_clip_polygon::vertex(float_t* x, float_t* y)
     {
         if(m_vertex < m_num_vertices)
         {

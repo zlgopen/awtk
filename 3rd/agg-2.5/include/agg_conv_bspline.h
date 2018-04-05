@@ -42,8 +42,8 @@ namespace agg
         conv_bspline(VertexSource& vs) : 
             conv_adaptor_vcgen<VertexSource, vcgen_bspline>(vs) {}
 
-        void   interpolation_step(double v) { base_type::generator().interpolation_step(v); }
-        double interpolation_step() const { return base_type::generator().interpolation_step(); }
+        void   interpolation_step(float_t v) { base_type::generator().interpolation_step(v); }
+        float_t interpolation_step() const { return base_type::generator().interpolation_step(); }
 
     private:
         conv_bspline(const conv_bspline<VertexSource>&);

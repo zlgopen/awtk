@@ -29,9 +29,9 @@
 namespace agg
 {
     //------------------------------------------------------------------------
-    arc::arc(double x,  double y, 
-             double rx, double ry, 
-             double a1, double a2, 
+    arc::arc(float_t x,  float_t y, 
+             float_t rx, float_t ry, 
+             float_t a1, float_t a2, 
              bool ccw) :
         m_x(x), m_y(y), m_rx(rx), m_ry(ry), m_scale(1.0)
     {
@@ -39,9 +39,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void arc::init(double x,  double y, 
-                   double rx, double ry, 
-                   double a1, double a2, 
+    void arc::init(float_t x,  float_t y, 
+                   float_t rx, float_t ry, 
+                   float_t a1, float_t a2, 
                    bool ccw)
     {
         m_x   = x;  m_y  = y;
@@ -50,7 +50,7 @@ namespace agg
     }
     
     //------------------------------------------------------------------------
-    void arc::approximation_scale(double s)
+    void arc::approximation_scale(float_t s)
     {
         m_scale = s;
         if(m_initialized)
@@ -67,7 +67,7 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    unsigned arc::vertex(double* x, double* y)
+    unsigned arc::vertex(float_t* x, float_t* y)
     {
         if(is_stop(m_path_cmd)) return path_cmd_stop;
         if((m_angle < m_end - m_da/4) != m_ccw)
@@ -89,9 +89,9 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
-    void arc::normalize(double a1, double a2, bool ccw)
+    void arc::normalize(float_t a1, float_t a2, bool ccw)
     {
-        double ra = (fabs(m_rx) + fabs(m_ry)) / 2;
+        float_t ra = (fabs(m_rx) + fabs(m_ry)) / 2;
         m_da = acos(ra / (ra + 0.125 / m_scale)) * 2;
         if(ccw)
         {

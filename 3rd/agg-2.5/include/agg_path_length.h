@@ -30,15 +30,15 @@
 namespace agg
 {
     template<class VertexSource> 
-    double path_length(VertexSource& vs, unsigned path_id = 0)
+    float_t path_length(VertexSource& vs, unsigned path_id = 0)
     {
-        double len = 0.0;
-        double start_x = 0.0;
-        double start_y = 0.0;
-        double x1 = 0.0;
-        double y1 = 0.0;
-        double x2 = 0.0;
-        double y2 = 0.0;
+        float_t len = 0.0;
+        float_t start_x = 0.0;
+        float_t start_y = 0.0;
+        float_t x1 = 0.0;
+        float_t y1 = 0.0;
+        float_t x2 = 0.0;
+        float_t y2 = 0.0;
         bool first = true;
 
         unsigned cmd;

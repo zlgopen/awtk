@@ -100,7 +100,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned arrowhead::vertex(double* x, double* y)
+    unsigned arrowhead::vertex(float_t* x, float_t* y)
     {
         if(m_curr_id < 2)
         {

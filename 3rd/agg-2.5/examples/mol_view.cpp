@@ -49,8 +49,8 @@ enum atom_color_e
 
 struct atom_type
 {
-    double   x;
-    double   y;
+    float_t   x;
+    float_t   y;
     char     label[4];
     int      charge;
     unsigned color_idx;
@@ -60,10 +60,10 @@ struct bond_type
 {
     unsigned idx1;
     unsigned idx2;
-    double   x1;
-    double   y1;
-    double   x2;
-    double   y2;
+    float_t   x1;
+    float_t   y1;
+    float_t   x2;
+    float_t   y2;
     unsigned order;
     int      stereo;
     int      topology;
@@ -84,12 +84,12 @@ public:
     const atom_type& atom(unsigned idx) const { return m_atoms[idx]; }
     const bond_type& bond(unsigned idx) const { return m_bonds[idx]; }
 
-    double average_bond_len() const { return m_avr_len; }
+    float_t average_bond_len() const { return m_avr_len; }
 
     const char* name() const { return m_name; }
 
     static int    get_int(const char* buf, int pos, int len);
-    static double get_dbl(const char* buf, int pos, int len);
+    static float_t get_dbl(const char* buf, int pos, int len);
     static char*  get_str(char* dst, const char* buf, int pos, int len);
 
 private:
@@ -98,7 +98,7 @@ private:
     bond_type* m_bonds;
     unsigned   m_num_bonds;
     char       m_name[128];
-    double     m_avr_len;
+    float_t     m_avr_len;
 };
 
 
@@ -130,7 +130,7 @@ int molecule::get_int(const char* buf, int pos, int len)
     return atoi(get_str(tmp, buf, pos, len));
 }
 
-double molecule::get_dbl(const char* buf, int pos, int len)
+float_t molecule::get_dbl(const char* buf, int pos, int len)
 {
     char tmp[32];
     return atof(get_str(tmp, buf, pos, len));
@@ -265,7 +265,7 @@ bool molecule::read(FILE* fd)
         m_avr_len += sqrt((m_bonds[i].x1 - m_bonds[i].x2) * (m_bonds[i].x1 - m_bonds[i].x2) + 
                           (m_bonds[i].y1 - m_bonds[i].y2) * (m_bonds[i].y1 - m_bonds[i].y2));
     }
-    m_avr_len /= double(m_num_bonds);
+    m_avr_len /= float_t(m_num_bonds);
 
     while(fgets(buf, 510, fd))
     {
@@ -288,12 +288,12 @@ namespace agg
         {
         }
 
-        line(double x1, double y1, double x2, double y2, double thickness) :
+        line(float_t x1, float_t y1, float_t x2, float_t y2, float_t thickness) :
             m_x1(x1), m_y1(y1), m_x2(x2), m_y2(y2), m_thickness(thickness)
         {
         }
 
-        void init(double x1, double y1, double x2, double y2)
+        void init(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_x1 = x1;
             m_y1 = y1;
@@ -301,22 +301,22 @@ namespace agg
             m_y2 = y2;
         }
 
-        void thickness(double th)
+        void thickness(float_t th)
         {
             m_thickness = th;
         }
 
         void rewind(unsigned start);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        double   m_x1;
-        double   m_y1;
-        double   m_x2;
-        double   m_y2;
-        double   m_dx;
-        double   m_dy;
-        double   m_thickness;
+        float_t   m_x1;
+        float_t   m_y1;
+        float_t   m_x2;
+        float_t   m_y2;
+        float_t   m_dx;
+        float_t   m_dy;
+        float_t   m_thickness;
         unsigned m_vertex;
     };
 
@@ -330,7 +330,7 @@ namespace agg
 
 
 
-    inline unsigned line::vertex(double* x, double* y)
+    inline unsigned line::vertex(float_t* x, float_t* y)
     {
         switch(m_vertex)
         {
@@ -371,12 +371,12 @@ namespace agg
         {
         }
 
-        solid_wedge(double x1, double y1, double x2, double y2, double thickness) :
+        solid_wedge(float_t x1, float_t y1, float_t x2, float_t y2, float_t thickness) :
             m_x1(x1), m_y1(y1), m_x2(x2), m_y2(y2), m_thickness(thickness)
         {
         }
 
-        void init(double x1, double y1, double x2, double y2)
+        void init(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_x1 = x1;
             m_y1 = y1;
@@ -384,22 +384,22 @@ namespace agg
             m_y2 = y2;
         }
 
-        void thickness(double th)
+        void thickness(float_t th)
         {
             m_thickness = th;
         }
 
         void rewind(unsigned start);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        double   m_x1;
-        double   m_y1;
-        double   m_x2;
-        double   m_y2;
-        double   m_dx;
-        double   m_dy;
-        double   m_thickness;
+        float_t   m_x1;
+        float_t   m_y1;
+        float_t   m_x2;
+        float_t   m_y2;
+        float_t   m_dx;
+        float_t   m_dy;
+        float_t   m_thickness;
         unsigned m_vertex;
     };
 
@@ -413,7 +413,7 @@ namespace agg
 
 
 
-    inline unsigned solid_wedge::vertex(double* x, double* y)
+    inline unsigned solid_wedge::vertex(float_t* x, float_t* y)
     {
         switch(m_vertex)
         {
@@ -456,15 +456,15 @@ namespace agg
         {
         }
 
-        dashed_wedge(double x1, double y1, double x2, double y2, 
-                     double thickness, unsigned num_dashes=8) :
+        dashed_wedge(float_t x1, float_t y1, float_t x2, float_t y2, 
+                     float_t thickness, unsigned num_dashes=8) :
             m_x1(x2), m_y1(y2), m_x2(x1), m_y2(y1), 
             m_thickness(thickness),
             m_num_dashes(num_dashes)
         {
         }
 
-        void init(double x1, double y1, double x2, double y2)
+        void init(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_x1 = x2;
             m_y1 = y2;
@@ -477,26 +477,26 @@ namespace agg
             m_num_dashes = nd;
         }
 
-        void thickness(double th)
+        void thickness(float_t th)
         {
             m_thickness = th;
         }
 
         void rewind(unsigned start);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        double   m_x1;
-        double   m_y1;
-        double   m_x2;
-        double   m_y2;
-        double   m_xt2;
-        double   m_yt2;
-        double   m_xt3;
-        double   m_yt3;
-        double   m_xd[4];
-        double   m_yd[4];
-        double   m_thickness;
+        float_t   m_x1;
+        float_t   m_y1;
+        float_t   m_x2;
+        float_t   m_y2;
+        float_t   m_xt2;
+        float_t   m_yt2;
+        float_t   m_xt3;
+        float_t   m_yt3;
+        float_t   m_xd[4];
+        float_t   m_yd[4];
+        float_t   m_thickness;
         unsigned m_num_dashes;
         unsigned m_vertex;
     };
@@ -505,8 +505,8 @@ namespace agg
 
     void dashed_wedge::rewind(unsigned)
     {
-        double dx;
-        double dy;
+        float_t dx;
+        float_t dy;
         calc_orthogonal(m_thickness*2.0, m_x1, m_y1, m_x2, m_y2, &dx, &dy);
         m_xt2 = m_x2 - dx;
         m_yt2 = m_y2 - dy;
@@ -516,14 +516,14 @@ namespace agg
     }
 
 
-    unsigned dashed_wedge::vertex(double* x, double* y)
+    unsigned dashed_wedge::vertex(float_t* x, float_t* y)
     {
         if(m_vertex < m_num_dashes * 4)
         {
             if((m_vertex % 4) == 0)
             {
-                double k1 = double(m_vertex / 4) / double(m_num_dashes);
-                double k2 = k1 + 0.4 / double(m_num_dashes);
+                float_t k1 = float_t(m_vertex / 4) / float_t(m_num_dashes);
+                float_t k2 = k1 + 0.4 / float_t(m_num_dashes);
 
                 m_xd[0] = m_x1 + (m_xt2 - m_x1) * k1;
                 m_yd[0] = m_y1 + (m_yt2 - m_y1) * k1;
@@ -580,7 +580,7 @@ class bond_vertex_generator
     };
 
 public:
-    bond_vertex_generator(const bond_type& bond, double thickness) :
+    bond_vertex_generator(const bond_type& bond, float_t thickness) :
         m_bond(bond),
         m_thickness(thickness),
         m_style(bond_single)
@@ -606,7 +606,7 @@ public:
 
     void rewind(unsigned)
     {
-        double dx, dy, dx1, dy1, dx2, dy2;
+        float_t dx, dy, dx1, dy1, dx2, dy2;
 
         switch(m_style)
         {
@@ -630,7 +630,7 @@ public:
             dx1 = dy1 = 0;
 
             // To Do: ring perception and the proper drawing 
-            // of the double bonds in the aromatic rings.
+            // of the float_t bonds in the aromatic rings.
             //if(m_style == bond_double)
             {
                 dx1 = dx2 = dx;
@@ -674,7 +674,7 @@ public:
     }
 
 
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         unsigned flag = agg::path_cmd_stop;
         switch(m_style)
@@ -716,7 +716,7 @@ private:
     const bond_vertex_generator& operator = (const bond_vertex_generator&);
 
     const bond_type& m_bond;
-    double m_thickness;
+    float_t m_thickness;
     bond_style_e m_style;
     agg::line m_line1;
     agg::line m_line2;
@@ -743,14 +743,14 @@ class the_application : public agg::platform_support
     unsigned                     m_cur_molecule;
     agg::slider_ctrl<agg::rgba8> m_thickness;
     agg::slider_ctrl<agg::rgba8> m_text_size;
-    double     m_pdx;
-    double     m_pdy;
-    double     m_center_x;
-    double     m_center_y;
-    double     m_scale;
-    double     m_prev_scale;
-    double     m_angle;
-    double     m_prev_angle;
+    float_t     m_pdx;
+    float_t     m_pdy;
+    float_t     m_center_x;
+    float_t     m_center_y;
+    float_t     m_scale;
+    float_t     m_prev_scale;
+    float_t     m_angle;
+    float_t     m_prev_angle;
     bool       m_mouse_move;
     agg::rgba8 m_atom_colors[end_of_atom_colors];
 
@@ -818,8 +818,8 @@ public:
 
     virtual void on_draw()
     {
-        double width = initial_width();
-        double height = initial_height();
+        float_t width = initial_width();
+        float_t height = initial_height();
 
         agg::rasterizer_scanline_aa<> ras;
         agg::scanline_p8 sl;
@@ -837,10 +837,10 @@ public:
 
         const molecule& mol = m_molecules[m_cur_molecule];
         unsigned i;
-        double min_x =  1e100;
-        double max_x = -1e100;
-        double min_y =  1e100;
-        double max_y = -1e100;
+        float_t min_x =  1e100;
+        float_t max_x = -1e100;
+        float_t min_y =  1e100;
+        float_t max_y = -1e100;
 
         for(i = 0; i < mol.num_atoms(); i++)
         {
@@ -854,12 +854,12 @@ public:
 
         mtx *= agg::trans_affine_translation(-(max_x + min_x) * 0.5, -(max_y + min_y) * 0.5);
         
-        double scale = width  / (max_x - min_x);
-        double t = height / (max_y - min_y);
+        float_t scale = width  / (max_x - min_x);
+        float_t t = height / (max_y - min_y);
         if(scale > t) scale = t;
         
-        double text_size = mol.average_bond_len() * m_text_size.value() / 4.0;
-        double thickness = mol.average_bond_len() / 
+        float_t text_size = mol.average_bond_len() * m_text_size.value() / 4.0;
+        float_t thickness = mol.average_bond_len() / 
                            sqrt(m_scale < 0.0001 ? 0.0001 : m_scale) /
                            8.0;
         
@@ -966,8 +966,8 @@ public:
     virtual void on_mouse_button_down(int x, int y, unsigned flags)
     {
         m_mouse_move = true;
-        double x2 = x;
-        double y2 = y;
+        float_t x2 = x;
+        float_t y2 = y;
         trans_affine_resizing().inverse_transform(&x2, &y2);
 
         m_pdx = m_center_x - x2;
@@ -988,14 +988,14 @@ public:
 
     virtual void on_mouse_move(int x, int y, unsigned flags)
     {
-        double x2 = x;
-        double y2 = y;
+        float_t x2 = x;
+        float_t y2 = y;
         trans_affine_resizing().inverse_transform(&x2, &y2);
 
         if(m_mouse_move && (flags & agg::mouse_left) != 0)
         {
-            double dx = x2 - m_center_x;
-            double dy = y2 - m_center_y;
+            float_t dx = x2 - m_center_x;
+            float_t dy = y2 - m_center_y;
             m_scale = m_prev_scale * 
                       sqrt(dx * dx + dy * dy) / 
                       sqrt(m_pdx * m_pdx + m_pdy * m_pdy);

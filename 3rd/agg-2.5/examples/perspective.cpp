@@ -35,16 +35,16 @@ agg::path_storage g_path;
 agg::rgba8        g_colors[100];
 unsigned          g_path_idx[100];
 unsigned          g_npaths = 0;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
-double            g_base_dx = 0;
-double            g_base_dy = 0;
-double            g_angle = 0;
-double            g_scale = 1.0;
-double            g_skew_x = 0;
-double            g_skew_y = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
+float_t            g_base_dx = 0;
+float_t            g_base_dy = 0;
+float_t            g_angle = 0;
+float_t            g_scale = 1.0;
+float_t            g_skew_x = 0;
+float_t            g_skew_y = 0;
 int               g_nclick = 0;
 
 unsigned parse_lion(agg::path_storage& ps, agg::rgba8* colors, unsigned* path_idx);
@@ -105,8 +105,8 @@ public:
 
     virtual void on_init()
     {
-        double dx = width()  / 2.0 - (m_quad.xn(1) - m_quad.xn(0)) / 2.0;
-        double dy = height() / 2.0 - (m_quad.yn(2) - m_quad.yn(0)) / 2.0;
+        float_t dx = width()  / 2.0 - (m_quad.xn(1) - m_quad.xn(0)) / 2.0;
+        float_t dy = height() / 2.0 - (m_quad.yn(2) - m_quad.yn(0)) / 2.0;
         m_quad.xn(0) += dx;
         m_quad.yn(0) += dy;
         m_quad.xn(1) += dx;
@@ -216,7 +216,7 @@ public:
                 //agg::trans_perspective tr2(m_quad.polygon(), g_x1, g_y1, g_x2, g_y2);
                 //if(tr2.is_valid())
                 //{
-                //    double x, y;
+                //    float_t x, y;
                 //    x = m_quad.xn(0); y = m_quad.yn(0); tr2.transform(&x, &y);
                 //    g_rasterizer.move_to_d(x, y);
                 //    x = m_quad.xn(1); y = m_quad.yn(1); tr2.transform(&x, &y);

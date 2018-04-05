@@ -49,8 +49,8 @@ namespace agg
         trans_single_path();
 
         //--------------------------------------------------------------------
-        void   base_length(double v)  { m_base_length = v; }
-        double base_length() const { return m_base_length; }
+        void   base_length(float_t v)  { m_base_length = v; }
+        float_t base_length() const { return m_base_length; }
 
         //--------------------------------------------------------------------
         void preserve_x_scale(bool f) { m_preserve_x_scale = f;    }
@@ -58,16 +58,16 @@ namespace agg
 
         //--------------------------------------------------------------------
         void reset();
-        void move_to(double x, double y);
-        void line_to(double x, double y);
+        void move_to(float_t x, float_t y);
+        void line_to(float_t x, float_t y);
         void finalize_path();
 
         //--------------------------------------------------------------------
         template<class VertexSource> 
         void add_path(VertexSource& vs, unsigned path_id=0)
         {
-            double x;
-            double y;
+            float_t x;
+            float_t y;
 
             unsigned cmd;
             vs.rewind(path_id);
@@ -89,13 +89,13 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        double total_length() const;
-        void transform(double *x, double *y) const;
+        float_t total_length() const;
+        void transform(float_t *x, float_t *y) const;
 
     private:
         vertex_storage m_src_vertices;
-        double         m_base_length;
-        double         m_kindex;
+        float_t         m_base_length;
+        float_t         m_kindex;
         status_e       m_status;
         bool           m_preserve_x_scale;
     };

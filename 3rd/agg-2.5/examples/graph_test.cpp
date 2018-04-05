@@ -62,9 +62,9 @@ class graph
 public:
     struct node
     {
-        double x, y;
+        float_t x, y;
         node() {}
-        node(double x_, double y_) : x(x_), y(y_) {}
+        node(float_t x_, float_t y_) : x(x_), y(y_) {}
     };
 
     struct edge
@@ -93,8 +93,8 @@ public:
 
 	    for(i = 0; i < m_num_nodes; i++)
         {
-            m_nodes[i].x = (double(rand()) / RAND_MAX) * 0.75 + 0.2;
-            m_nodes[i].y = (double(rand()) / RAND_MAX) * 0.85 + 0.1;
+            m_nodes[i].x = (float_t(rand()) / RAND_MAX) * 0.75 + 0.2;
+            m_nodes[i].y = (float_t(rand()) / RAND_MAX) * 0.85 + 0.1;
         }
 
 	    for(i = 0; i < m_num_edges; i++)
@@ -108,7 +108,7 @@ public:
     int get_num_nodes() const { return m_num_nodes; } 
     int get_num_edges() const { return m_num_edges; } 
 
-	node get_node(int idx, double w, double h) const
+	node get_node(int idx, float_t w, float_t h) const
     {
         node p(0.0, 0.0);
         if(idx < m_num_nodes)
@@ -151,14 +151,14 @@ private:
 //============================================================================
 struct line
 {
-    double x1, y1, x2, y2;
+    float_t x1, y1, x2, y2;
     int f;
 
-    line(double x1_, double y1_, double x2_, double y2_) : 
+    line(float_t x1_, float_t y1_, float_t x2_, float_t y2_) : 
         x1(x1_), y1(y1_), x2(x2_), y2(y2_), f(0) {}
 
     void rewind(unsigned) { f = 0; }
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         if(f == 0) { ++f; *x = x1; *y = y1; return agg::path_cmd_move_to; }
         if(f == 1) { ++f; *x = x2; *y = y2; return agg::path_cmd_line_to; }
@@ -174,7 +174,7 @@ struct curve
 {
     agg::curve4 c;
 
-    curve(double x1, double y1, double x2, double y2, double k=0.5)
+    curve(float_t x1, float_t y1, float_t x2, float_t y2, float_t k=0.5)
     {
         c.init(x1, y1, 
                x1 - (y2 - y1) * k,
@@ -185,7 +185,7 @@ struct curve
     }
 
     void rewind(unsigned path_id) { c.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return c.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return c.vertex(x, y); }
 };
 
 
@@ -194,13 +194,13 @@ struct curve
 template<class Source> struct stroke_draft_simple
 {
     Source& s;
-    stroke_draft_simple(Source& src, double w) : 
+    stroke_draft_simple(Source& src, float_t w) : 
         s(src)
     {
     }
 
     void rewind(unsigned path_id) { s.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return s.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return s.vertex(x, y); }
 };
 
 
@@ -216,7 +216,7 @@ template<class Source> struct stroke_draft_arrow
     marker_type    m;
     concat_type    c;
 
-    stroke_draft_arrow(Source& src, double w) : 
+    stroke_draft_arrow(Source& src, float_t w) : 
         s(src),
         ah(),
         m(s.markers(), ah),
@@ -227,7 +227,7 @@ template<class Source> struct stroke_draft_arrow
     }
 
     void rewind(unsigned path_id) { c.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return c.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return c.vertex(x, y); }
 };
 
 
@@ -239,13 +239,13 @@ template<class Source> struct stroke_fine_simple
 
     stroke_type    s;
 
-    stroke_fine_simple(Source& src, double w) : 
+    stroke_fine_simple(Source& src, float_t w) : 
         s(src)
     {
         s.width(w); 
     }
     void rewind(unsigned path_id) { s.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return s.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return s.vertex(x, y); }
 };
 
 
@@ -262,7 +262,7 @@ template<class Source> struct stroke_fine_arrow
     marker_type    m;
     concat_type    c;
 
-    stroke_fine_arrow(Source& src, double w) : 
+    stroke_fine_arrow(Source& src, float_t w) : 
         s(src),
         ah(),
         m(s.markers(), ah),
@@ -274,7 +274,7 @@ template<class Source> struct stroke_fine_arrow
     }
 
     void rewind(unsigned path_id) { c.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return c.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return c.vertex(x, y); }
 };
 
 
@@ -287,16 +287,16 @@ template<class Source> struct dash_stroke_draft_simple
     dash_type d;
     
     dash_stroke_draft_simple(Source& src, 
-                             double dash_len, 
-                             double gap_len, 
-                             double w) : 
+                             float_t dash_len, 
+                             float_t gap_len, 
+                             float_t w) : 
         d(src)
     {
         d.add_dash(dash_len, gap_len);
     }
 
     void rewind(unsigned path_id) { d.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return d.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return d.vertex(x, y); }
 };
 
 
@@ -313,7 +313,7 @@ template<class Source> struct dash_stroke_draft_arrow
     concat_type    c;
 
     dash_stroke_draft_arrow(Source& src, 
-                            double dash_len, double gap_len, double w) : 
+                            float_t dash_len, float_t gap_len, float_t w) : 
         d(src),
         ah(),
         m(d.markers(), ah),
@@ -325,7 +325,7 @@ template<class Source> struct dash_stroke_draft_arrow
     }
 
     void rewind(unsigned path_id) { c.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return c.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return c.vertex(x, y); }
 };
 
 
@@ -341,7 +341,7 @@ template<class Source> struct dash_stroke_fine_simple
     stroke_type    s;
 
     dash_stroke_fine_simple(Source& src, 
-                           double dash_len, double gap_len, double w) : 
+                           float_t dash_len, float_t gap_len, float_t w) : 
         d(src),
         s(d)
     {
@@ -350,7 +350,7 @@ template<class Source> struct dash_stroke_fine_simple
     }
 
     void rewind(unsigned path_id) { s.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return s.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return s.vertex(x, y); }
 };
 
 
@@ -373,7 +373,7 @@ template<class Source> struct dash_stroke_fine_arrow
     concat_type    c;
 
     dash_stroke_fine_arrow(Source& src, 
-                           double dash_len, double gap_len, double w) : 
+                           float_t dash_len, float_t gap_len, float_t w) : 
         d(src),
         s(d),
         ah(),
@@ -387,7 +387,7 @@ template<class Source> struct dash_stroke_fine_arrow
     }
 
     void rewind(unsigned path_id) { c.rewind(path_id); }
-    unsigned vertex(double* x, double* y) { return c.vertex(x, y); }
+    unsigned vertex(float_t* x, float_t* y) { return c.vertex(x, y); }
 };
 
 
@@ -467,7 +467,7 @@ public:
         int i;
         for(i = 0; i < 256; i++)
         {
-            m_gradient_colors[i] = c1.gradient(c2, double(i) / 255.0);
+            m_gradient_colors[i] = c1.gradient(c2, float_t(i) / 255.0);
         }
     }
 
@@ -508,7 +508,7 @@ public:
             graph::node n = m_graph.get_node(i, width(), height());
             agg::ellipse ell(n.x, n.y, 5.0 * m_width.value(), 5.0 * m_width.value());
 
-            double x, y;
+            float_t x, y;
             switch(m_draw)
             {
                 case 0:
@@ -556,7 +556,7 @@ public:
                           draft_renderer& ren_draft,
                           Source& src)
     {
-        double x, y;
+        float_t x, y;
         switch(m_draw)
         {
             case 0:
@@ -871,7 +871,7 @@ public:
             }
             else
             {
-                double times[5];
+                float_t times[5];
                 for(m_draw = 0; m_draw < 4; m_draw++)
                 {
                     start_timer();

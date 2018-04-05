@@ -28,7 +28,7 @@
 namespace agg
 {
     //--------------------------------------------------------------------
-    void image_filter_lut::realloc_lut(double radius)
+    void image_filter_lut::realloc_lut(float_t radius)
     {
         m_radius = radius;
         m_diameter = uceil(radius) * 2;
@@ -67,7 +67,7 @@ namespace agg
 
                 if(sum == image_filter_scale) break;
 
-                double k = double(image_filter_scale) / double(sum);
+                float_t k = float_t(image_filter_scale) / float_t(sum);
                 sum = 0;
                 for(j = 0; j < m_diameter; j++)
                 {

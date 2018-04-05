@@ -38,14 +38,14 @@ namespace agg
 
     struct mesh_point
     {
-        double x,y;
-        double dx,dy;
+        float_t x,y;
+        float_t dx,dy;
         rgba8 color;
         rgba8 dc;
 
         mesh_point() {}
-        mesh_point(double x_, double y_, 
-                   double dx_, double dy_, 
+        mesh_point(float_t x_, float_t y_, 
+                   float_t dx_, float_t dy_, 
                    rgba8 c, rgba8 dc_) : 
             x(x_), y(y_), 
             dx(dx_), dy(dy_), 
@@ -75,7 +75,7 @@ namespace agg
     };
 
 
-    static double random(double v1, double v2)
+    static float_t random(float_t v1, float_t v2)
     {
         return (v2 - v1) * (rand() % 1000) / 999.0 + v1;
     }
@@ -87,16 +87,16 @@ namespace agg
         mesh_ctrl();
 
         void generate(unsigned cols, unsigned rows, 
-                      double cell_w, double cell_h,
-                      double start_x, double start_y);
+                      float_t cell_w, float_t cell_h,
+                      float_t start_x, float_t start_y);
 
-        void randomize_points(double delta); 
+        void randomize_points(float_t delta); 
         void rotate_colors();
 
 
-        bool on_mouse_button_down(double x, double y, unsigned flags);
-        bool on_mouse_move(double x, double y, unsigned flags);
-        bool on_mouse_button_up(double x, double y, unsigned flags);
+        bool on_mouse_button_down(float_t x, float_t y, unsigned flags);
+        bool on_mouse_move(float_t x, float_t y, unsigned flags);
+        bool on_mouse_button_up(float_t x, float_t y, unsigned flags);
 
         unsigned num_vertices() const { return m_vertices.size(); }
         const mesh_point& vertex(unsigned i) const { return m_vertices[i]; }
@@ -117,12 +117,12 @@ namespace agg
         unsigned m_cols;
         unsigned m_rows;
         int      m_drag_idx;
-        double   m_drag_dx;
-        double   m_drag_dy;
-        double   m_cell_w;
-        double   m_cell_h;
-        double   m_start_x;
-        double   m_start_y;
+        float_t   m_drag_dx;
+        float_t   m_drag_dy;
+        float_t   m_cell_w;
+        float_t   m_cell_h;
+        float_t   m_start_x;
+        float_t   m_start_y;
         pod_bvector<mesh_point>    m_vertices;
         pod_bvector<mesh_triangle> m_triangles;
         pod_bvector<mesh_edge>     m_edges;
@@ -139,8 +139,8 @@ namespace agg
 
 
     void mesh_ctrl::generate(unsigned cols, unsigned rows, 
-                             double cell_w, double cell_h,
-                             double start_x, double start_y)
+                             float_t cell_w, float_t cell_h,
+                             float_t start_x, float_t start_y)
     {
         m_cols = cols;
         m_rows = rows;
@@ -153,11 +153,11 @@ namespace agg
         unsigned i, j;
         for(i = 0; i < m_rows; i++)
         {
-            double x = start_x;
+            float_t x = start_x;
             for(j = 0; j < m_cols; j++)
             {
-                double dx = random(-0.5, 0.5);
-                double dy = random(-0.5, 0.5);
+                float_t dx = random(-0.5, 0.5);
+                float_t dy = random(-0.5, 0.5);
                 rgba8 c(rand() & 0xFF, rand() & 0xFF, rand() & 0xFF);
                 rgba8 dc(rand() & 1, rand() & 1, rand() & 1);
                 m_vertices.add(mesh_point(x, start_y, dx, dy, c, dc));
@@ -216,19 +216,19 @@ namespace agg
         }
     }
 
-    void mesh_ctrl::randomize_points(double delta)
+    void mesh_ctrl::randomize_points(float_t delta)
     {
         unsigned i, j;
         for(i = 0; i < m_rows; i++)
         {
             for(j = 0; j < m_cols; j++)
             {
-                double xc = j * m_cell_w + m_start_x;
-                double yc = i * m_cell_h + m_start_y;
-                double x1 = xc - m_cell_w / 4;
-                double y1 = yc - m_cell_h / 4;
-                double x2 = xc + m_cell_w / 4;
-                double y2 = yc + m_cell_h / 4;
+                float_t xc = j * m_cell_w + m_start_x;
+                float_t yc = i * m_cell_h + m_start_y;
+                float_t x1 = xc - m_cell_w / 4;
+                float_t y1 = yc - m_cell_h / 4;
+                float_t x2 = xc + m_cell_w / 4;
+                float_t y2 = yc + m_cell_h / 4;
                 mesh_point& p = vertex(j, i);
                 p.x += p.dx;
                 p.y += p.dy;
@@ -261,7 +261,7 @@ namespace agg
     }
 
 
-    bool mesh_ctrl::on_mouse_button_down(double x, double y, unsigned flags)
+    bool mesh_ctrl::on_mouse_button_down(float_t x, float_t y, unsigned flags)
     {
         if(flags & 1)
         {
@@ -280,7 +280,7 @@ namespace agg
         return false;
     }
 
-    bool mesh_ctrl::on_mouse_move(double x, double y, unsigned flags)
+    bool mesh_ctrl::on_mouse_move(float_t x, float_t y, unsigned flags)
     {
         if(flags & 1)
         {
@@ -298,7 +298,7 @@ namespace agg
         return false;
     }
 
-    bool mesh_ctrl::on_mouse_button_up(double x, double y, unsigned flags)
+    bool mesh_ctrl::on_mouse_button_up(float_t x, float_t y, unsigned flags)
     {
         bool ret = m_drag_idx >= 0;
         m_drag_idx = -1;
@@ -410,7 +410,7 @@ public:
             rasc.line_to_d(p2.x, p2.y);
         }
         agg::render_scanlines_compound(rasc, sl, sl_bin, ren_base, alloc, styles);
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
 
         char buf[256]; 
         agg::gsv_text t;

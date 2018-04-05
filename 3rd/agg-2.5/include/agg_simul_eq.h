@@ -48,10 +48,10 @@ namespace agg
     template<unsigned Rows, unsigned Cols>
     struct matrix_pivot
     {
-        static int pivot(double m[Rows][Cols], unsigned row)
+        static int pivot(float_t m[Rows][Cols], unsigned row)
         {
             int k = int(row);
-            double max_val, tmp;
+            float_t max_val, tmp;
 
             max_val = -1.0;
             unsigned i;
@@ -84,14 +84,14 @@ namespace agg
     template<unsigned Size, unsigned RightCols>
     struct simul_eq
     {
-        static bool solve(const double left[Size][Size], 
-                          const double right[Size][RightCols],
-                          double result[Size][RightCols])
+        static bool solve(const float_t left[Size][Size], 
+                          const float_t right[Size][RightCols],
+                          float_t result[Size][RightCols])
         {
             unsigned i, j, k;
-            double a1;
+            float_t a1;
 
-            double tmp[Size][Size + RightCols];
+            float_t tmp[Size][Size + RightCols];
 
             for(i = 0; i < Size; i++)
             {

@@ -169,7 +169,7 @@ public:
         for(i = 0; i < pixf.width(); i++)
         {
             gr.add(agg::rgba8(255, 255, 0).gradient(agg::rgba8(0, 255, 255), 
-                                                    double(i) / pixf.width()));
+                                                    float_t(i) / pixf.width()));
         }
         for(i = 0; i < pixf.height(); i++)
         {

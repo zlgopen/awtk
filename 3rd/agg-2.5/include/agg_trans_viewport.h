@@ -74,8 +74,8 @@ namespace agg
         {}
 
         //-------------------------------------------------------------------
-        void preserve_aspect_ratio(double alignx, 
-                                   double aligny, 
+        void preserve_aspect_ratio(float_t alignx, 
+                                   float_t aligny, 
                                    aspect_ratio_e aspect)
         {
             m_align_x = alignx;
@@ -85,7 +85,7 @@ namespace agg
         }
 
         //-------------------------------------------------------------------
-        void device_viewport(double x1, double y1, double x2, double y2)
+        void device_viewport(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_device_x1 = x1;
             m_device_y1 = y1;
@@ -95,7 +95,7 @@ namespace agg
         }
 
         //-------------------------------------------------------------------
-        void world_viewport(double x1, double y1, double x2, double y2)
+        void world_viewport(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             m_world_x1 = x1;
             m_world_y1 = y1;
@@ -105,7 +105,7 @@ namespace agg
         }
 
         //-------------------------------------------------------------------
-        void device_viewport(double* x1, double* y1, double* x2, double* y2) const
+        void device_viewport(float_t* x1, float_t* y1, float_t* x2, float_t* y2) const
         {
             *x1 = m_device_x1;
             *y1 = m_device_y1;
@@ -114,7 +114,7 @@ namespace agg
         }
 
         //-------------------------------------------------------------------
-        void world_viewport(double* x1, double* y1, double* x2, double* y2) const
+        void world_viewport(float_t* x1, float_t* y1, float_t* x2, float_t* y2) const
         {
             *x1 = m_world_x1;
             *y1 = m_world_y1;
@@ -123,8 +123,8 @@ namespace agg
         }
 
         //-------------------------------------------------------------------
-        void world_viewport_actual(double* x1, double* y1, 
-                                   double* x2, double* y2) const
+        void world_viewport_actual(float_t* x1, float_t* y1, 
+                                   float_t* x2, float_t* y2) const
         {
             *x1 = m_wx1;
             *y1 = m_wy1;
@@ -134,56 +134,56 @@ namespace agg
 
         //-------------------------------------------------------------------
         bool   is_valid()             const { return m_is_valid; }
-        double align_x()              const { return m_align_x; }
-        double align_y()              const { return m_align_y; }
+        float_t align_x()              const { return m_align_x; }
+        float_t align_y()              const { return m_align_y; }
         aspect_ratio_e aspect_ratio() const { return m_aspect; }
 
         //-------------------------------------------------------------------
-        void transform(double* x, double* y) const
+        void transform(float_t* x, float_t* y) const
         {
             *x = (*x - m_wx1) * m_kx + m_dx1;
             *y = (*y - m_wy1) * m_ky + m_dy1;
         }
 
         //-------------------------------------------------------------------
-        void transform_scale_only(double* x, double* y) const
+        void transform_scale_only(float_t* x, float_t* y) const
         {
             *x *= m_kx;
             *y *= m_ky;
         }
 
         //-------------------------------------------------------------------
-        void inverse_transform(double* x, double* y) const
+        void inverse_transform(float_t* x, float_t* y) const
         {
             *x = (*x - m_dx1) / m_kx + m_wx1;
             *y = (*y - m_dy1) / m_ky + m_wy1;
         }
 
         //-------------------------------------------------------------------
-        void inverse_transform_scale_only(double* x, double* y) const
+        void inverse_transform_scale_only(float_t* x, float_t* y) const
         {
             *x /= m_kx;
             *y /= m_ky;
         }
 
         //-------------------------------------------------------------------
-        double device_dx() const { return m_dx1 - m_wx1 * m_kx; }
-        double device_dy() const { return m_dy1 - m_wy1 * m_ky; }
+        float_t device_dx() const { return m_dx1 - m_wx1 * m_kx; }
+        float_t device_dy() const { return m_dy1 - m_wy1 * m_ky; }
 
         //-------------------------------------------------------------------
-        double scale_x() const
+        float_t scale_x() const
         {
             return m_kx;
         }
 
         //-------------------------------------------------------------------
-        double scale_y() const
+        float_t scale_y() const
         {
             return m_ky;
         }
 
         //-------------------------------------------------------------------
-        double scale() const
+        float_t scale() const
         {
             return (m_kx + m_ky) * 0.5;
         }
@@ -222,26 +222,26 @@ namespace agg
     private:
         void update();
 
-        double         m_world_x1;
-        double         m_world_y1;
-        double         m_world_x2;
-        double         m_world_y2;
-        double         m_device_x1;
-        double         m_device_y1;
-        double         m_device_x2;
-        double         m_device_y2;
+        float_t         m_world_x1;
+        float_t         m_world_y1;
+        float_t         m_world_x2;
+        float_t         m_world_y2;
+        float_t         m_device_x1;
+        float_t         m_device_y1;
+        float_t         m_device_x2;
+        float_t         m_device_y2;
         aspect_ratio_e m_aspect;
         bool           m_is_valid;
-        double         m_align_x;
-        double         m_align_y;
-        double         m_wx1;
-        double         m_wy1;
-        double         m_wx2;
-        double         m_wy2;
-        double         m_dx1;
-        double         m_dy1;
-        double         m_kx;
-        double         m_ky;
+        float_t         m_align_x;
+        float_t         m_align_y;
+        float_t         m_wx1;
+        float_t         m_wy1;
+        float_t         m_wx2;
+        float_t         m_wy2;
+        float_t         m_dx1;
+        float_t         m_dy1;
+        float_t         m_kx;
+        float_t         m_ky;
     };
 
 
@@ -249,7 +249,7 @@ namespace agg
     //-----------------------------------------------------------------------
     inline void trans_viewport::update()
     {
-        const double epsilon = 1e-30;
+        const float_t epsilon = 1e-30;
         if(fabs(m_world_x1  - m_world_x2)  < epsilon ||
            fabs(m_world_y1  - m_world_y2)  < epsilon ||
            fabs(m_device_x1 - m_device_x2) < epsilon ||
@@ -267,17 +267,17 @@ namespace agg
             return;
         }
 
-        double world_x1  = m_world_x1;
-        double world_y1  = m_world_y1;
-        double world_x2  = m_world_x2;
-        double world_y2  = m_world_y2;
-        double device_x1 = m_device_x1;
-        double device_y1 = m_device_y1;
-        double device_x2 = m_device_x2;
-        double device_y2 = m_device_y2;
+        float_t world_x1  = m_world_x1;
+        float_t world_y1  = m_world_y1;
+        float_t world_x2  = m_world_x2;
+        float_t world_y2  = m_world_y2;
+        float_t device_x1 = m_device_x1;
+        float_t device_y1 = m_device_y1;
+        float_t device_x2 = m_device_x2;
+        float_t device_y2 = m_device_y2;
         if(m_aspect != aspect_ratio_stretch)
         {
-            double d;
+            float_t d;
             m_kx = (device_x2 - device_x1) / (world_x2 - world_x1);
             m_ky = (device_y2 - device_y1) / (world_y2 - world_y1);
 

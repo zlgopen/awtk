@@ -10,7 +10,7 @@ namespace agg
     class simple_polygon_vertex_source
     {
     public:
-        simple_polygon_vertex_source(const double* polygon, unsigned np, 
+        simple_polygon_vertex_source(const float_t* polygon, unsigned np, 
                                      bool roundoff = false,
                                      bool close = true) :
             m_polygon(polygon),
@@ -29,7 +29,7 @@ namespace agg
             m_vertex = 0;
         }
 
-        unsigned vertex(double* x, double* y)
+        unsigned vertex(float_t* x, float_t* y)
         {
             if(m_vertex > m_num_points) return path_cmd_stop;
             if(m_vertex == m_num_points) 
@@ -49,7 +49,7 @@ namespace agg
         }
 
     private:
-        const double* m_polygon;
+        const float_t* m_polygon;
         unsigned m_num_points;
         unsigned m_vertex;
         bool     m_roundoff;
@@ -62,15 +62,15 @@ namespace agg
     class interactive_polygon
     {
     public:
-        interactive_polygon(unsigned np, double point_radius);
+        interactive_polygon(unsigned np, float_t point_radius);
 
         unsigned num_points() const { return m_num_points; }
-        double xn(unsigned n) const { return m_polygon[n * 2];     }
-        double yn(unsigned n) const { return m_polygon[n * 2 + 1]; }
-        double& xn(unsigned n) { return m_polygon[n * 2];     }
-        double& yn(unsigned n) { return m_polygon[n * 2 + 1]; }
+        float_t xn(unsigned n) const { return m_polygon[n * 2];     }
+        float_t yn(unsigned n) const { return m_polygon[n * 2 + 1]; }
+        float_t& xn(unsigned n) { return m_polygon[n * 2];     }
+        float_t& yn(unsigned n) { return m_polygon[n * 2 + 1]; }
     
-        const double* polygon() const { return &m_polygon[0]; }
+        const float_t* polygon() const { return &m_polygon[0]; }
 
         int  node() const { return m_node; }
         void node(int n) { m_node = n; }
@@ -79,29 +79,29 @@ namespace agg
         bool close() const { return m_vs.close(); }
 
         void rewind(unsigned);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
-        bool on_mouse_button_down(double x, double y);
-        bool on_mouse_move(double x, double y);
-        bool on_mouse_button_up(double x, double y);
+        bool on_mouse_button_down(float_t x, float_t y);
+        bool on_mouse_move(float_t x, float_t y);
+        bool on_mouse_button_up(float_t x, float_t y);
 
 
     private:
-        bool check_edge(unsigned i, double x, double y) const;
-        bool point_in_polygon(double x, double y) const;
+        bool check_edge(unsigned i, float_t x, float_t y) const;
+        bool point_in_polygon(float_t x, float_t y) const;
 
 
-        pod_array<double> m_polygon;
+        pod_array<float_t> m_polygon;
         unsigned          m_num_points;
         int               m_node;
         int               m_edge;
         simple_polygon_vertex_source m_vs;
         conv_stroke<simple_polygon_vertex_source> m_stroke;
         ellipse  m_ellipse;
-        double   m_point_radius;
+        float_t   m_point_radius;
         unsigned m_status;
-        double   m_dx;
-        double   m_dy;
+        float_t   m_dx;
+        float_t   m_dy;
     };
 
 

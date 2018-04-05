@@ -28,10 +28,10 @@ typedef color_type::value_type color_value_type;
 
 class the_application : public agg::platform_support
 {
-    double m_x[3];
-    double m_y[3];
-    double m_dx;
-    double m_dy;
+    float_t m_x[3];
+    float_t m_y[3];
+    float_t m_dx;
+    float_t m_dy;
     int    m_idx;
     agg::spline_ctrl<color_type> m_alpha;
 
@@ -103,15 +103,15 @@ public:
             ell.init(rand() % w, rand() % h, rand() % 60 + 5, rand() % 60 + 5, 50);
             ras.add_path(ell);
             agg::render_scanlines_aa_solid(ras, sl, ren_base, 
-                                           agg::rgba(rand() / double(RAND_MAX), 
-                                                     rand() / double(RAND_MAX), 
-                                                     rand() / double(RAND_MAX), 
-                                                     rand() / double(RAND_MAX) / 2.0));
+                                           agg::rgba(rand() / float_t(RAND_MAX), 
+                                                     rand() / float_t(RAND_MAX), 
+                                                     rand() / float_t(RAND_MAX), 
+                                                     rand() / float_t(RAND_MAX) / 2.0));
         }
 
 
 
-        double parallelogram[6];
+        float_t parallelogram[6];
         parallelogram[0] = m_x[0];
         parallelogram[1] = m_y[0];
         parallelogram[2] = m_x[1];
@@ -230,7 +230,7 @@ public:
         //----------------
         for(i = 0; i < 256; i++)
         {
-            alpha_array[i] = color_value_type(m_alpha.value(i / 255.0) * double(color_type::base_mask));
+            alpha_array[i] = color_value_type(m_alpha.value(i / 255.0) * float_t(color_type::base_mask));
         }
 
         ell.init(width()/2, height()/2, 150, 150, 100);
@@ -307,8 +307,8 @@ public:
         {
             if(m_idx == 3)
             {
-                double dx = x - m_dx;
-                double dy = y - m_dy;
+                float_t dx = x - m_dx;
+                float_t dy = y - m_dy;
                 m_x[1] -= m_x[0] - dx;
                 m_y[1] -= m_y[0] - dy;
                 m_x[2] -= m_x[0] - dx;
@@ -340,8 +340,8 @@ public:
     
     virtual void on_key(int x, int y, unsigned key, unsigned flags)
     {
-        double dx = 0;
-        double dy = 0;
+        float_t dx = 0;
+        float_t dy = 0;
         switch(key)
         {
         case agg::key_left:  dx = -0.1; break;

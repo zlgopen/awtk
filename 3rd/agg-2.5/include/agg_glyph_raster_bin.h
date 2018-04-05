@@ -41,7 +41,7 @@ namespace agg
         struct glyph_rect
         {
             int x1,y1,x2,y2;
-            double dx, dy;
+            float_t dx, dy;
         };
 
         //--------------------------------------------------------------------
@@ -59,12 +59,12 @@ namespace agg
         void font(const int8u* f) { m_font = f; }
 
         //--------------------------------------------------------------------
-        double height()    const { return m_font[0]; }
-        double base_line() const { return m_font[1]; }
+        float_t height()    const { return m_font[0]; }
+        float_t base_line() const { return m_font[1]; }
 
         //--------------------------------------------------------------------
         template<class CharT>
-        double width(const CharT* str) const
+        float_t width(const CharT* str) const
         {
             unsigned start_char = m_font[2];
             unsigned num_chars = m_font[3];
@@ -82,7 +82,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void prepare(glyph_rect* r, double x, double y, unsigned glyph, bool flip)
+        void prepare(glyph_rect* r, float_t x, float_t y, unsigned glyph, bool flip)
         {
             unsigned start_char = m_font[2];
             unsigned num_chars = m_font[3];

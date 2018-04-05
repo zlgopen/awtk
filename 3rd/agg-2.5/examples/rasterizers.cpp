@@ -23,10 +23,10 @@ enum flip_y_e { flip_y = true };
 
 class the_application : public agg::platform_support
 {
-    double m_x[3];
-    double m_y[3];
-    double m_dx;
-    double m_dy;
+    float_t m_x[3];
+    float_t m_y[3];
+    float_t m_dx;
+    float_t m_dy;
     int    m_idx;
     agg::slider_ctrl<agg::rgba8>  m_gamma;
     agg::slider_ctrl<agg::rgba8>  m_alpha;
@@ -181,8 +181,8 @@ public:
         {
             if(m_idx == 3)
             {
-                double dx = x - m_dx;
-                double dy = y - m_dy;
+                float_t dx = x - m_dx;
+                float_t dy = y - m_dy;
                 m_x[1] -= m_x[0] - dx;
                 m_y[1] -= m_y[0] - dy;
                 m_x[2] -= m_x[0] - dx;
@@ -226,14 +226,14 @@ public:
             {
                 draw_aliased();
             }
-            double t1 = elapsed_time();
+            float_t t1 = elapsed_time();
 
             start_timer();
             for(i = 0; i < 1000; i++)
             {
                 draw_anti_aliased();
             }
-            double t2 = elapsed_time();
+            float_t t2 = elapsed_time();
 
             update_window();
             char buf[100];
@@ -245,8 +245,8 @@ public:
     
     virtual void on_key(int x, int y, unsigned key, unsigned flags)
     {
-        double dx = 0;
-        double dy = 0;
+        float_t dx = 0;
+        float_t dy = 0;
         switch(key)
         {
         case agg::key_left:  dx = -0.1; break;

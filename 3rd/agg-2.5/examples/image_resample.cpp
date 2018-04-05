@@ -28,10 +28,10 @@ enum flip_y_e { flip_y = true };
 
 agg::rasterizer_scanline_aa<> g_rasterizer;
 agg::scanline_u8  g_scanline;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
 
 #include "agg_pixfmt_rgba.h"
 #include "agg_span_image_filter_rgba.h"
@@ -57,7 +57,7 @@ public:
     agg::rbox_ctrl<agg::rgba>    m_trans_type;
     agg::slider_ctrl<agg::rgba>  m_gamma;
     agg::slider_ctrl<agg::rgba>  m_blur;
-    double m_old_gamma;
+    float_t m_old_gamma;
 
     the_application(agg::pix_format_e format, bool flip_y) :
         agg::platform_support(format, flip_y),
@@ -97,13 +97,13 @@ public:
         g_x2 = rbuf_img(0).width();
         g_y2 = rbuf_img(0).height();
 
-        double x1 = g_x1;// * 100.0;
-        double y1 = g_y1;// * 100.0;
-        double x2 = g_x2;// * 100.0;
-        double y2 = g_y2;// * 100.0;
+        float_t x1 = g_x1;// * 100.0;
+        float_t y1 = g_y1;// * 100.0;
+        float_t x2 = g_x2;// * 100.0;
+        float_t y2 = g_y2;// * 100.0;
 
-        double dx = width()  / 2.0 - (x2 - x1) / 2.0;
-        double dy = height() / 2.0 - (y2 - y1) / 2.0;
+        float_t dx = width()  / 2.0 - (x2 - x1) / 2.0;
+        float_t dy = height() / 2.0 - (y2 - y1) / 2.0;
         m_quad.xn(0) = floor(x1 + dx);
         m_quad.yn(0) = floor(y1 + dy);// - 150;
         m_quad.xn(1) = floor(x2 + dx);
@@ -271,7 +271,7 @@ public:
                 break;
             }
         }
-        double tm = elapsed_time();
+        float_t tm = elapsed_time();
         pixf.apply_gamma_inv(m_gamma_lut);
 
         char buf[64]; 
@@ -337,8 +337,8 @@ public:
     {
         if(key == ' ')
         {
-            double cx = (m_quad.xn(0) + m_quad.xn(1) + m_quad.xn(2) + m_quad.xn(3)) / 4;
-            double cy = (m_quad.yn(0) + m_quad.yn(1) + m_quad.yn(2) + m_quad.yn(3)) / 4;
+            float_t cx = (m_quad.xn(0) + m_quad.xn(1) + m_quad.xn(2) + m_quad.xn(3)) / 4;
+            float_t cy = (m_quad.yn(0) + m_quad.yn(1) + m_quad.yn(2) + m_quad.yn(3)) / 4;
             agg::trans_affine tr = agg::trans_affine_translation(-cx, -cy);
             tr *= agg::trans_affine_rotation(agg::pi / 2.0);
             tr *= agg::trans_affine_translation(cx, cy);

@@ -33,10 +33,10 @@ enum flip_y_e { flip_y = true };
 
 agg::rasterizer_scanline_aa<> g_rasterizer;
 agg::scanline_u8  g_scanline;
-double            g_x1 = 0;
-double            g_y1 = 0;
-double            g_x2 = 0;
-double            g_y2 = 0;
+float_t            g_x1 = 0;
+float_t            g_y1 = 0;
+float_t            g_x2 = 0;
+float_t            g_y2 = 0;
 
 
 class the_application : public agg::platform_support
@@ -72,13 +72,13 @@ public:
         g_x2 =  150;
         g_y2 =  150;
 
-        double trans_x1 = -200;
-        double trans_y1 = -200;
-        double trans_x2 =  200;
-        double trans_y2 =  200;
+        float_t trans_x1 = -200;
+        float_t trans_y1 = -200;
+        float_t trans_x2 =  200;
+        float_t trans_y2 =  200;
 
-        double dx = width()  / 2.0 - (trans_x2 + trans_x1) / 2.0;
-        double dy = height() / 2.0 - (trans_y2 + trans_y1) / 2.0;
+        float_t dx = width()  / 2.0 - (trans_x2 + trans_x1) / 2.0;
+        float_t dy = height() / 2.0 - (trans_y2 + trans_y1) / 2.0;
         m_quad.xn(0) = floor(trans_x1 + dx);
         m_quad.yn(0) = floor(trans_y1 + dy);
         m_quad.xn(1) = floor(trans_x2 + dx);

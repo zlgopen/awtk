@@ -26,8 +26,8 @@ class the_application : public agg::platform_support
     agg::slider_ctrl<agg::rgba8> m_thickness;
     agg::slider_ctrl<agg::rgba8> m_gamma;
     agg::slider_ctrl<agg::rgba8> m_contrast;
-    double m_rx;
-    double m_ry;
+    float_t m_rx;
+    float_t m_ry;
 
 public:
     the_application(agg::pix_format_e format, bool flip_y) :
@@ -65,15 +65,15 @@ public:
         typedef pixfmt_gamma<gamma_type> pixfmt_type;
         typedef agg::renderer_base<pixfmt_type> ren_base;
 
-        double g = m_gamma.value();
+        float_t g = m_gamma.value();
         gamma_type gamma(g);
         pixfmt_type pixf(rbuf_window(), gamma);
         ren_base renb(pixf);
         renb.clear(agg::rgba(1, 1, 1));
 
 
-        double dark = 1.0 - m_contrast.value();
-        double light = m_contrast.value();
+        float_t dark = 1.0 - m_contrast.value();
+        float_t light = m_contrast.value();
 
         renb.copy_bar(0,0,int(width())/2, int(height()),                agg::rgba(dark,dark,dark));
         renb.copy_bar(int(width())/2+1,0, int(width()), int(height()),  agg::rgba(light,light,light));
@@ -85,15 +85,15 @@ public:
 
 
         unsigned i;
-        double x = (width() - 256.0) / 2.0;
-        double y = 50.0;
+        float_t x = (width() - 256.0) / 2.0;
+        float_t y = 50.0;
         path.remove_all();
         agg::gamma_power gp(g);
         for(i = 0; i < 256; i++)
         {
-            double v = double(i) / 255.0;
-            double gval = gp(v);
-            double dy = gval * 255.0;
+            float_t v = float_t(i) / 255.0;
+            float_t gval = gp(v);
+            float_t dy = gval * 255.0;
             if(i == 0) path.move_to(x + i, y + dy);
             else       path.line_to(x + i, y + dy);
         }

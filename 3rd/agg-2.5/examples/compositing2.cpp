@@ -146,7 +146,7 @@ public:
 
     template<class RenBase, class ColorRamp> 
     void radial_shape(RenBase& rbase, const ColorRamp& colors,
-                      double x1, double y1, double x2, double y2)
+                      float_t x1, float_t y1, float_t x2, float_t y2)
     {
         typedef RenBase renderer_base_type;
         typedef agg::gradient_radial gradient_func_type;
@@ -167,9 +167,9 @@ public:
                                           colors, 
                                           0, 100);
 
-        double cx = (x1 + x2) / 2.0;
-        double cy = (y1 + y2) / 2.0;
-        double r  = 0.5 * (((x2 - x1) < (y2 - y1)) ? (x2 - x1) : (y2 - y1));
+        float_t cx = (x1 + x2) / 2.0;
+        float_t cy = (y1 + y2) / 2.0;
+        float_t r  = 0.5 * (((x2 - x1) < (y2 - y1)) ? (x2 - x1) : (y2 - y1));
 
         gradient_mtx *= agg::trans_affine_scaling(r / 100.0);
         gradient_mtx *= agg::trans_affine_translation(cx, cy);
@@ -198,8 +198,8 @@ public:
         radial_shape(ren, m_ramp1, 50, 50, 50+320, 50+320);
 
         pixf.comp_op(m_comp_op.cur_item());
-        double cx = 50;
-        double cy = 50;
+        float_t cx = 50;
+        float_t cy = 50;
         radial_shape(ren, m_ramp2, cx+120-70, cy+120-70, cx+120+70, cy+120+70);
         radial_shape(ren, m_ramp2, cx+200-70, cy+120-70, cx+200+70, cy+120+70);
         radial_shape(ren, m_ramp2, cx+120-70, cy+200-70, cx+120+70, cy+200+70); 

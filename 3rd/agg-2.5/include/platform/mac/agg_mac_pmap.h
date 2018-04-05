@@ -61,11 +61,11 @@ namespace agg
         void        draw(WindowRef window, 
                          const Rect* device_rect=0, 
                          const Rect* bmp_rect=0) const;
-        void        draw(WindowRef window, int x, int y, double scale=1.0) const;
+        void        draw(WindowRef window, int x, int y, float_t scale=1.0) const;
         void        blend(WindowRef window, 
                           const Rect* device_rect=0, 
                           const Rect* bmp_rect=0) const;
-        void        blend(WindowRef window, int x, int y, double scale=1.0) const;
+        void        blend(WindowRef window, int x, int y, float_t scale=1.0) const;
 
         unsigned char* buf();
         unsigned       width() const;

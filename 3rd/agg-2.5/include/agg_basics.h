@@ -137,14 +137,14 @@ namespace agg
 #if defined(AGG_FISTP)
 #pragma warning(push)
 #pragma warning(disable : 4035) //Disable warning "no return value"
-    AGG_INLINE int iround(double v)              //-------iround
+    AGG_INLINE int iround(float_t v)              //-------iround
     {
         int t;
         __asm fld   qword ptr [v]
         __asm fistp dword ptr [t]
         __asm mov eax, dword ptr [t]
     }
-    AGG_INLINE unsigned uround(double v)         //-------uround
+    AGG_INLINE unsigned uround(float_t v)         //-------uround
     {
         unsigned t;
         __asm fld   qword ptr [v]
@@ -152,45 +152,45 @@ namespace agg
         __asm mov eax, dword ptr [t]
     }
 #pragma warning(pop)
-    AGG_INLINE unsigned ufloor(double v)         //-------ufloor
+    AGG_INLINE unsigned ufloor(float_t v)         //-------ufloor
     {
         return unsigned(floor(v));
     }
-    AGG_INLINE unsigned uceil(double v)          //--------uceil
+    AGG_INLINE unsigned uceil(float_t v)          //--------uceil
     {
         return unsigned(ceil(v));
     }
 #elif defined(AGG_QIFIST)
-    AGG_INLINE int iround(double v)
+    AGG_INLINE int iround(float_t v)
     {
         return int(v);
     }
-    AGG_INLINE int uround(double v)
+    AGG_INLINE int uround(float_t v)
     {
         return unsigned(v);
     }
-    AGG_INLINE unsigned ufloor(double v)
+    AGG_INLINE unsigned ufloor(float_t v)
     {
         return unsigned(floor(v));
     }
-    AGG_INLINE unsigned uceil(double v)
+    AGG_INLINE unsigned uceil(float_t v)
     {
         return unsigned(ceil(v));
     }
 #else
-    AGG_INLINE int iround(double v)
+    AGG_INLINE int iround(float_t v)
     {
         return int((v < 0.0) ? v - 0.5 : v + 0.5);
     }
-    AGG_INLINE int uround(double v)
+    AGG_INLINE int uround(float_t v)
     {
         return unsigned(v + 0.5);
     }
-    AGG_INLINE unsigned ufloor(double v)
+    AGG_INLINE unsigned ufloor(float_t v)
     {
         return unsigned(v);
     }
-    AGG_INLINE unsigned uceil(double v)
+    AGG_INLINE unsigned uceil(float_t v)
     {
         return unsigned(ceil(v));
     }
@@ -199,10 +199,10 @@ namespace agg
     //---------------------------------------------------------------saturation
     template<int Limit> struct saturation
     {
-        AGG_INLINE static int iround(double v)
+        AGG_INLINE static int iround(float_t v)
         {
-            if(v < double(-Limit)) return -Limit;
-            if(v > double( Limit)) return  Limit;
+            if(v < float_t(-Limit)) return -Limit;
+            if(v > float_t( Limit)) return  Limit;
             return agg::iround(v);
         }
     };
@@ -249,16 +249,16 @@ namespace agg
     };
 
     //-----------------------------------------------------------------------pi
-    const double pi = 3.14159265358979323846;
+    const float_t pi = 3.14159265358979323846;
 
     //------------------------------------------------------------------deg2rad
-    inline double deg2rad(double deg)
+    inline float_t deg2rad(float_t deg)
     {
         return deg * pi / 180.0;
     }
 
     //------------------------------------------------------------------rad2deg
-    inline double rad2deg(double rad)
+    inline float_t rad2deg(float_t rad)
     {
         return rad * 180.0 / pi;
     }
@@ -340,7 +340,7 @@ namespace agg
 
     typedef rect_base<int>    rect_i; //----rect_i
     typedef rect_base<float>  rect_f; //----rect_f
-    typedef rect_base<double> rect_d; //----rect_d
+    typedef rect_base<float_t> rect_d; //----rect_d
 
     //---------------------------------------------------------path_commands_e
     enum path_commands_e
@@ -492,7 +492,7 @@ namespace agg
     };
     typedef point_base<int>    point_i; //-----point_i
     typedef point_base<float>  point_f; //-----point_f
-    typedef point_base<double> point_d; //-----point_d
+    typedef point_base<float_t> point_d; //-----point_d
 
     //-------------------------------------------------------------vertex_base
     template<class T> struct vertex_base
@@ -505,7 +505,7 @@ namespace agg
     };
     typedef vertex_base<int>    vertex_i; //-----vertex_i
     typedef vertex_base<float>  vertex_f; //-----vertex_f
-    typedef vertex_base<double> vertex_d; //-----vertex_d
+    typedef vertex_base<float_t> vertex_d; //-----vertex_d
 
     //----------------------------------------------------------------row_info
     template<class T> struct row_info
@@ -529,7 +529,7 @@ namespace agg
     //------------------------------------------------------------is_equal_eps
     template<class T> inline bool is_equal_eps(T v1, T v2, T epsilon)
     {
-        return fabs(v1 - v2) <= double(epsilon);
+        return fabs(v1 - v2) <= float_t(epsilon);
     }
 
 }

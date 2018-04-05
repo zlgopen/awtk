@@ -80,49 +80,49 @@ namespace agg
             return m_curve4.approximation_method();
         }
 
-        void approximation_scale(double s) 
+        void approximation_scale(float_t s) 
         { 
             m_curve3.approximation_scale(s); 
             m_curve4.approximation_scale(s); 
         }
 
-        double approximation_scale() const 
+        float_t approximation_scale() const 
         { 
             return m_curve4.approximation_scale();  
         }
 
-        void angle_tolerance(double v) 
+        void angle_tolerance(float_t v) 
         { 
             m_curve3.angle_tolerance(v); 
             m_curve4.angle_tolerance(v); 
         }
 
-        double angle_tolerance() const 
+        float_t angle_tolerance() const 
         { 
             return m_curve4.angle_tolerance();  
         }
 
-        void cusp_limit(double v) 
+        void cusp_limit(float_t v) 
         { 
             m_curve3.cusp_limit(v); 
             m_curve4.cusp_limit(v); 
         }
 
-        double cusp_limit() const 
+        float_t cusp_limit() const 
         { 
             return m_curve4.cusp_limit();  
         }
 
         void     rewind(unsigned path_id); 
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         conv_curve(const self_type&);
         const self_type& operator = (const self_type&);
 
         VertexSource* m_source;
-        double        m_last_x;
-        double        m_last_y;
+        float_t        m_last_x;
+        float_t        m_last_y;
         curve3_type   m_curve3;
         curve4_type   m_curve4;
     };
@@ -143,7 +143,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     template<class VertexSource, class Curve3, class Curve4>
-    unsigned conv_curve<VertexSource, Curve3, Curve4>::vertex(double* x, double* y)
+    unsigned conv_curve<VertexSource, Curve3, Curve4>::vertex(float_t* x, float_t* y)
     {
         if(!is_stop(m_curve3.vertex(x, y)))
         {
@@ -159,10 +159,10 @@ namespace agg
             return path_cmd_line_to;
         }
 
-        double ct2_x;
-        double ct2_y;
-        double end_x;
-        double end_y;
+        float_t ct2_x;
+        float_t ct2_y;
+        float_t end_x;
+        float_t end_y;
 
         unsigned cmd = m_source->vertex(x, y);
         switch(cmd)

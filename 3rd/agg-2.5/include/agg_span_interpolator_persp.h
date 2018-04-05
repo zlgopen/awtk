@@ -51,32 +51,32 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Arbitrary quadrangle transformations
-        span_interpolator_persp_exact(const double* src, const double* dst) 
+        span_interpolator_persp_exact(const float_t* src, const float_t* dst) 
         {
             quad_to_quad(src, dst);
         }
 
         //--------------------------------------------------------------------
         // Direct transformations 
-        span_interpolator_persp_exact(double x1, double y1, 
-                                      double x2, double y2, 
-                                      const double* quad)
+        span_interpolator_persp_exact(float_t x1, float_t y1, 
+                                      float_t x2, float_t y2, 
+                                      const float_t* quad)
         {
             rect_to_quad(x1, y1, x2, y2, quad);
         }
 
         //--------------------------------------------------------------------
         // Reverse transformations 
-        span_interpolator_persp_exact(const double* quad, 
-                                      double x1, double y1, 
-                                      double x2, double y2)
+        span_interpolator_persp_exact(const float_t* quad, 
+                                      float_t x1, float_t y1, 
+                                      float_t x2, float_t y2)
         {
             quad_to_rect(quad, x1, y1, x2, y2);
         }
 
         //--------------------------------------------------------------------
         // Set the transformations using two arbitrary quadrangles.
-        void quad_to_quad(const double* src, const double* dst)
+        void quad_to_quad(const float_t* src, const float_t* dst)
         {
             m_trans_dir.quad_to_quad(src, dst);
             m_trans_inv.quad_to_quad(dst, src);
@@ -84,10 +84,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the direct transformations, i.e., rectangle -> quadrangle
-        void rect_to_quad(double x1, double y1, double x2, double y2, 
-                          const double* quad)
+        void rect_to_quad(float_t x1, float_t y1, float_t x2, float_t y2, 
+                          const float_t* quad)
         {
-            double src[8];
+            float_t src[8];
             src[0] = src[6] = x1;
             src[2] = src[4] = x2;
             src[1] = src[3] = y1;
@@ -98,10 +98,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the reverse transformations, i.e., quadrangle -> rectangle
-        void quad_to_rect(const double* quad, 
-                          double x1, double y1, double x2, double y2)
+        void quad_to_rect(const float_t* quad, 
+                          float_t x1, float_t y1, float_t x2, float_t y2)
         {
-            double dst[8];
+            float_t dst[8];
             dst[0] = dst[6] = x1;
             dst[2] = dst[4] = x2;
             dst[1] = dst[3] = y1;
@@ -114,15 +114,15 @@ namespace agg
         bool is_valid() const { return m_trans_dir.is_valid(); }
 
         //----------------------------------------------------------------
-        void begin(double x, double y, unsigned len)
+        void begin(float_t x, float_t y, unsigned len)
         {
             m_iterator = m_trans_dir.begin(x, y, 1.0);
-            double xt = m_iterator.x;
-            double yt = m_iterator.y;
+            float_t xt = m_iterator.x;
+            float_t yt = m_iterator.y;
 
-            double dx;
-            double dy;
-            const double delta = 1/double(subpixel_scale);
+            float_t dx;
+            float_t dy;
+            const float_t delta = 1/float_t(subpixel_scale);
             dx = xt + delta;
             dy = yt;
             m_trans_inv.transform(&dx, &dy);
@@ -160,20 +160,20 @@ namespace agg
 
 
         //----------------------------------------------------------------
-        void resynchronize(double xe, double ye, unsigned len)
+        void resynchronize(float_t xe, float_t ye, unsigned len)
         {
             // Assume x1,y1 are equal to the ones at the previous end point 
             int sx1 = m_scale_x.y();
             int sy1 = m_scale_y.y();
 
             // Calculate transformed coordinates at x2,y2 
-            double xt = xe;
-            double yt = ye;
+            float_t xt = xe;
+            float_t yt = ye;
             m_trans_dir.transform(&xt, &yt);
 
-            const double delta = 1/double(subpixel_scale);
-            double dx;
-            double dy;
+            const float_t delta = 1/float_t(subpixel_scale);
+            float_t dx;
+            float_t dy;
 
             // Calculate scale by X at x2,y2
             dx = xt + delta;
@@ -221,7 +221,7 @@ namespace agg
         }
 
         //----------------------------------------------------------------
-        void transform(double* x, double* y) const
+        void transform(float_t* x, float_t* y) const
         {
             m_trans_dir.transform(x, y);
         }
@@ -261,32 +261,32 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Arbitrary quadrangle transformations
-        span_interpolator_persp_lerp(const double* src, const double* dst) 
+        span_interpolator_persp_lerp(const float_t* src, const float_t* dst) 
         {
             quad_to_quad(src, dst);
         }
 
         //--------------------------------------------------------------------
         // Direct transformations 
-        span_interpolator_persp_lerp(double x1, double y1, 
-                                     double x2, double y2, 
-                                     const double* quad)
+        span_interpolator_persp_lerp(float_t x1, float_t y1, 
+                                     float_t x2, float_t y2, 
+                                     const float_t* quad)
         {
             rect_to_quad(x1, y1, x2, y2, quad);
         }
 
         //--------------------------------------------------------------------
         // Reverse transformations 
-        span_interpolator_persp_lerp(const double* quad, 
-                                     double x1, double y1, 
-                                     double x2, double y2)
+        span_interpolator_persp_lerp(const float_t* quad, 
+                                     float_t x1, float_t y1, 
+                                     float_t x2, float_t y2)
         {
             quad_to_rect(quad, x1, y1, x2, y2);
         }
 
         //--------------------------------------------------------------------
         // Set the transformations using two arbitrary quadrangles.
-        void quad_to_quad(const double* src, const double* dst)
+        void quad_to_quad(const float_t* src, const float_t* dst)
         {
             m_trans_dir.quad_to_quad(src, dst);
             m_trans_inv.quad_to_quad(dst, src);
@@ -294,10 +294,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the direct transformations, i.e., rectangle -> quadrangle
-        void rect_to_quad(double x1, double y1, double x2, double y2, 
-                          const double* quad)
+        void rect_to_quad(float_t x1, float_t y1, float_t x2, float_t y2, 
+                          const float_t* quad)
         {
-            double src[8];
+            float_t src[8];
             src[0] = src[6] = x1;
             src[2] = src[4] = x2;
             src[1] = src[3] = y1;
@@ -308,10 +308,10 @@ namespace agg
 
         //--------------------------------------------------------------------
         // Set the reverse transformations, i.e., quadrangle -> rectangle
-        void quad_to_rect(const double* quad, 
-                          double x1, double y1, double x2, double y2)
+        void quad_to_rect(const float_t* quad, 
+                          float_t x1, float_t y1, float_t x2, float_t y2)
         {
-            double dst[8];
+            float_t dst[8];
             dst[0] = dst[6] = x1;
             dst[2] = dst[4] = x2;
             dst[1] = dst[3] = y1;
@@ -324,18 +324,18 @@ namespace agg
         bool is_valid() const { return m_trans_dir.is_valid(); }
 
         //----------------------------------------------------------------
-        void begin(double x, double y, unsigned len)
+        void begin(float_t x, float_t y, unsigned len)
         {
             // Calculate transformed coordinates at x1,y1 
-            double xt = x;
-            double yt = y;
+            float_t xt = x;
+            float_t yt = y;
             m_trans_dir.transform(&xt, &yt);
             int x1 = iround(xt * subpixel_scale);
             int y1 = iround(yt * subpixel_scale);
 
-            double dx;
-            double dy;
-            const double delta = 1/double(subpixel_scale);
+            float_t dx;
+            float_t dy;
+            const float_t delta = 1/float_t(subpixel_scale);
 
             // Calculate scale by X at x1,y1
             dx = xt + delta;
@@ -386,7 +386,7 @@ namespace agg
 
 
         //----------------------------------------------------------------
-        void resynchronize(double xe, double ye, unsigned len)
+        void resynchronize(float_t xe, float_t ye, unsigned len)
         {
             // Assume x1,y1 are equal to the ones at the previous end point 
             int x1  = m_coord_x.y();
@@ -395,15 +395,15 @@ namespace agg
             int sy1 = m_scale_y.y();
 
             // Calculate transformed coordinates at x2,y2 
-            double xt = xe;
-            double yt = ye;
+            float_t xt = xe;
+            float_t yt = ye;
             m_trans_dir.transform(&xt, &yt);
             int x2 = iround(xt * subpixel_scale);
             int y2 = iround(yt * subpixel_scale);
 
-            const double delta = 1/double(subpixel_scale);
-            double dx;
-            double dy;
+            const float_t delta = 1/float_t(subpixel_scale);
+            float_t dx;
+            float_t dy;
 
             // Calculate scale by X at x2,y2
             dx = xt + delta;
@@ -453,7 +453,7 @@ namespace agg
         }
 
         //----------------------------------------------------------------
-        void transform(double* x, double* y) const
+        void transform(float_t* x, float_t* y) const
         {
             m_trans_dir.transform(x, y);
         }

@@ -30,7 +30,7 @@ namespace agg
 {
 
     //------------------------------------------------------------------------
-    cbox_ctrl_impl::cbox_ctrl_impl(double x, double y, 
+    cbox_ctrl_impl::cbox_ctrl_impl(float_t x, float_t y, 
                                    const char* l, 
                                    bool flip_y) :
         ctrl(x, y, x + 9.0 * 1.5, y + 9.0 * 1.5, flip_y),
@@ -45,7 +45,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void cbox_ctrl_impl::text_size(double h, double w)
+    void cbox_ctrl_impl::text_size(float_t h, float_t w)
     {
         m_text_width = w; 
         m_text_height = h; 
@@ -62,7 +62,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool cbox_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool cbox_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
         if(x >= m_x1 && y >= m_y1 && x <= m_x2 && y <= m_y2)
@@ -75,20 +75,20 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool cbox_ctrl_impl::on_mouse_move(double, double, bool)
+    bool cbox_ctrl_impl::on_mouse_move(float_t, float_t, bool)
     {
         return false;
     }
 
     //------------------------------------------------------------------------
-    bool cbox_ctrl_impl::in_rect(double x, double y) const
+    bool cbox_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         inverse_transform_xy(&x, &y);
         return x >= m_x1 && y >= m_y1 && x <= m_x2 && y <= m_y2;
     }
 
     //------------------------------------------------------------------------
-    bool cbox_ctrl_impl::on_mouse_button_up(double, double)
+    bool cbox_ctrl_impl::on_mouse_button_up(float_t, float_t)
     {
         return false;
     }
@@ -105,8 +105,8 @@ namespace agg
     {
         m_idx = idx;
 
-        double d2;
-        double t;
+        float_t d2;
+        float_t t;
 
         switch(idx)
         {
@@ -170,7 +170,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned cbox_ctrl_impl::vertex(double* x, double* y)
+    unsigned cbox_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_line_to;
         switch(m_idx)

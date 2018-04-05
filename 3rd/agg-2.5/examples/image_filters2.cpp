@@ -44,10 +44,10 @@ class the_application : public agg::platform_support
     agg::rbox_ctrl<agg::rgba>   m_filters;
     agg::cbox_ctrl<agg::rgba>   m_normalize;
 
-    double  m_cur_angle;
+    float_t  m_cur_angle;
     int     m_cur_filter;
     int     m_num_steps;
-    double  m_num_pix;
+    float_t  m_num_pix;
     clock_t m_time1;
     clock_t m_time2;
 
@@ -122,7 +122,7 @@ public:
 
         agg::rendering_buffer img_rbuf(g_image, 4, 4, 4*4);
 
-        double para[] = { 200, 40, 200+300, 40, 200+300, 40+300, 200, 40+300 };
+        float_t para[] = { 200, 40, 200+300, 40, 200+300, 40+300, 200, 40+300 };
         agg::trans_affine img_mtx(para, 0,0,4,4);
 
         typedef agg::span_interpolator_linear<> interpolator_type;
@@ -199,11 +199,11 @@ public:
                 agg::gamma_lut<agg::int8u, agg::int8u, 8, 8> gamma(m_gamma.value());
                 pixf.apply_gamma_inv(gamma);
 
-                double x_start = 5.0;
-                double x_end   = 195.0;
-                double y_start = 235.0;
-                double y_end   = initial_height() - 5.0;
-                double x_center = (x_start + x_end) / 2;
+                float_t x_start = 5.0;
+                float_t x_end   = 195.0;
+                float_t y_start = 235.0;
+                float_t y_end   = initial_height() - 5.0;
+                float_t x_center = (x_start + x_end) / 2;
 
                 agg::path_storage p;
                 agg::conv_stroke<agg::path_storage> stroke(p);
@@ -212,7 +212,7 @@ public:
                 unsigned i;
                 for(i = 0; i <= 16; i++)
                 {
-                    double x = x_start + (x_end - x_start) * i / 16.0;
+                    float_t x = x_start + (x_end - x_start) * i / 16.0;
                     p.remove_all();
                     p.move_to(x+0.5, y_start);
                     p.line_to(x+0.5, y_end);
@@ -221,20 +221,20 @@ public:
                                                    agg::rgba8(0, 0, 0, i == 8 ? 255 : 100));
                 }
                 
-                double ys = y_start + (y_end - y_start) / 6.0;
+                float_t ys = y_start + (y_end - y_start) / 6.0;
                 p.remove_all();
                 p.move_to(x_start, ys);
                 p.line_to(x_end,   ys);
                 ras.add_path(stroke);
                 agg::render_scanlines_aa_solid(ras, sl, rb, agg::rgba8(0, 0, 0));
 
-                double radius = filter.radius();
+                float_t radius = filter.radius();
                 unsigned n = unsigned(radius * 256 * 2);
-                double dx = (x_end - x_start) * radius / 8.0;
-                double dy = y_end - ys;
+                float_t dx = (x_end - x_start) * radius / 8.0;
+                float_t dy = y_end - ys;
 
                 const agg::int16* weights = filter.weight_array();
-                double xs = (x_end + x_start)/2.0 - (filter.diameter() * (x_end - x_start) / 32.0);
+                float_t xs = (x_end + x_start)/2.0 - (filter.diameter() * (x_end - x_start) / 32.0);
                 unsigned nn = filter.diameter() * 256;
                 p.remove_all();
                 p.move_to(xs+0.5, ys + dy * weights[0] / agg::image_filter_scale);

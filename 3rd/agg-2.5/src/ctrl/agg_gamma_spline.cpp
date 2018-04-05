@@ -36,11 +36,11 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    double gamma_spline::y(double x) const 
+    float_t gamma_spline::y(float_t x) const 
     { 
         if(x < 0.0) x = 0.0;
         if(x > 1.0) x = 1.0;
-        double val = m_spline.get(x);
+        float_t val = m_spline.get(x);
         if(val < 0.0) val = 0.0;
         if(val > 1.0) val = 1.0;
         return val;
@@ -49,7 +49,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void gamma_spline::values(double kx1, double ky1, double kx2, double ky2)
+    void gamma_spline::values(float_t kx1, float_t ky1, float_t kx2, float_t ky2)
     {
         if(kx1 < 0.001) kx1 = 0.001;
         if(kx1 > 1.999) kx1 = 1.999;
@@ -74,13 +74,13 @@ namespace agg
         int i;
         for(i = 0; i < 256; i++)
         {
-            m_gamma[i] = (unsigned char)(y(double(i) / 255.0) * 255.0);
+            m_gamma[i] = (unsigned char)(y(float_t(i) / 255.0) * 255.0);
         }
     }
 
 
     //------------------------------------------------------------------------
-    void gamma_spline::values(double* kx1, double* ky1, double* kx2, double* ky2) const
+    void gamma_spline::values(float_t* kx1, float_t* ky1, float_t* kx2, float_t* ky2) const
     {
         *kx1 = m_x[1] * 4.0;
         *ky1 = m_y[1] * 4.0;
@@ -90,7 +90,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void gamma_spline::box(double x1, double y1, double x2, double y2)
+    void gamma_spline::box(float_t x1, float_t y1, float_t x2, float_t y2)
     {
         m_x1 = x1;
         m_y1 = y1;
@@ -107,7 +107,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned gamma_spline::vertex(double* vx, double* vy)
+    unsigned gamma_spline::vertex(float_t* vx, float_t* vy)
     {
         if(m_cur_x == 0.0) 
         {

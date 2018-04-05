@@ -49,10 +49,10 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void bezier_ctrl_impl::curve(double x1, double y1, 
-                                 double x2, double y2, 
-                                 double x3, double y3,
-                                 double x4, double y4)
+    void bezier_ctrl_impl::curve(float_t x1, float_t y1, 
+                                 float_t x2, float_t y2, 
+                                 float_t x3, float_t y3,
+                                 float_t x4, float_t y4)
     {
         m_poly.xn(0) = x1;
         m_poly.yn(0) = y1;
@@ -136,7 +136,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned bezier_ctrl_impl::vertex(double* x, double* y)
+    unsigned bezier_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_stop;
         switch(m_idx)
@@ -166,14 +166,14 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool bezier_ctrl_impl::in_rect(double x, double y) const
+    bool bezier_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         return false;
     }
 
 
     //------------------------------------------------------------------------
-    bool bezier_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool bezier_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
         return m_poly.on_mouse_button_down(x, y);
@@ -181,7 +181,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool bezier_ctrl_impl::on_mouse_move(double x, double y, bool button_flag)
+    bool bezier_ctrl_impl::on_mouse_move(float_t x, float_t y, bool button_flag)
     {
         inverse_transform_xy(&x, &y);
         return m_poly.on_mouse_move(x, y, button_flag);
@@ -189,7 +189,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool bezier_ctrl_impl::on_mouse_button_up(double x, double y)
+    bool bezier_ctrl_impl::on_mouse_button_up(float_t x, float_t y)
     {
         return m_poly.on_mouse_button_up(x, y);
     }
@@ -224,9 +224,9 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void curve3_ctrl_impl::curve(double x1, double y1, 
-                                 double x2, double y2, 
-                                 double x3, double y3)
+    void curve3_ctrl_impl::curve(float_t x1, float_t y1, 
+                                 float_t x2, float_t y2, 
+                                 float_t x3, float_t y3)
     {
         m_poly.xn(0) = x1;
         m_poly.yn(0) = y1;
@@ -296,7 +296,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    unsigned curve3_ctrl_impl::vertex(double* x, double* y)
+    unsigned curve3_ctrl_impl::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_stop;
         switch(m_idx)
@@ -325,14 +325,14 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool curve3_ctrl_impl::in_rect(double x, double y) const
+    bool curve3_ctrl_impl::in_rect(float_t x, float_t y) const
     {
         return false;
     }
 
 
     //------------------------------------------------------------------------
-    bool curve3_ctrl_impl::on_mouse_button_down(double x, double y)
+    bool curve3_ctrl_impl::on_mouse_button_down(float_t x, float_t y)
     {
         inverse_transform_xy(&x, &y);
         return m_poly.on_mouse_button_down(x, y);
@@ -340,7 +340,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool curve3_ctrl_impl::on_mouse_move(double x, double y, bool button_flag)
+    bool curve3_ctrl_impl::on_mouse_move(float_t x, float_t y, bool button_flag)
     {
         inverse_transform_xy(&x, &y);
         return m_poly.on_mouse_move(x, y, button_flag);
@@ -348,7 +348,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    bool curve3_ctrl_impl::on_mouse_button_up(double x, double y)
+    bool curve3_ctrl_impl::on_mouse_button_up(float_t x, float_t y)
     {
         return m_poly.on_mouse_button_up(x, y);
     }

@@ -35,19 +35,19 @@ namespace agg
     // of the sweep_angle. If fabs(sweep_angle) exceeds pi/2 the curve 
     // becomes inaccurate. But slight exceeding is quite appropriate.
     //-------------------------------------------------bezier_arc_angle_epsilon
-    const double bezier_arc_angle_epsilon = 0.01;
+    const float_t bezier_arc_angle_epsilon = 0.01;
 
     //------------------------------------------------------------arc_to_bezier
-    void arc_to_bezier(double cx, double cy, double rx, double ry, 
-                       double start_angle, double sweep_angle,
-                       double* curve)
+    void arc_to_bezier(float_t cx, float_t cy, float_t rx, float_t ry, 
+                       float_t start_angle, float_t sweep_angle,
+                       float_t* curve)
     {
-        double x0 = cos(sweep_angle / 2.0);
-        double y0 = sin(sweep_angle / 2.0);
-        double tx = (1.0 - x0) * 4.0 / 3.0;
-        double ty = y0 - tx * x0 / y0;
-        double px[4];
-        double py[4];
+        float_t x0 = cos(sweep_angle / 2.0);
+        float_t y0 = sin(sweep_angle / 2.0);
+        float_t tx = (1.0 - x0) * 4.0 / 3.0;
+        float_t ty = y0 - tx * x0 / y0;
+        float_t px[4];
+        float_t py[4];
         px[0] =  x0;
         py[0] = -y0;
         px[1] =  x0 + tx;
@@ -57,8 +57,8 @@ namespace agg
         px[3] =  x0;
         py[3] =  y0;
 
-        double sn = sin(start_angle + sweep_angle / 2.0);
-        double cs = cos(start_angle + sweep_angle / 2.0);
+        float_t sn = sin(start_angle + sweep_angle / 2.0);
+        float_t cs = cos(start_angle + sweep_angle / 2.0);
 
         unsigned i;
         for(i = 0; i < 4; i++)
@@ -71,10 +71,10 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void bezier_arc::init(double x,  double y, 
-                          double rx, double ry, 
-                          double start_angle, 
-                          double sweep_angle)
+    void bezier_arc::init(float_t x,  float_t y, 
+                          float_t rx, float_t ry, 
+                          float_t start_angle, 
+                          float_t sweep_angle)
     {
         start_angle = fmod(start_angle, 2.0 * pi);
         if(sweep_angle >=  2.0 * pi) sweep_angle =  2.0 * pi;
@@ -91,9 +91,9 @@ namespace agg
             return;
         }
 
-        double total_sweep = 0.0;
-        double local_sweep = 0.0;
-        double prev_sweep;
+        float_t total_sweep = 0.0;
+        float_t local_sweep = 0.0;
+        float_t prev_sweep;
         m_num_vertices = 2;
         m_cmd = path_cmd_curve4;
         bool done = false;
@@ -137,12 +137,12 @@ namespace agg
 
 
     //--------------------------------------------------------------------
-    void bezier_arc_svg::init(double x0, double y0, 
-                              double rx, double ry, 
-                              double angle,
+    void bezier_arc_svg::init(float_t x0, float_t y0, 
+                              float_t rx, float_t ry, 
+                              float_t angle,
                               bool large_arc_flag,
                               bool sweep_flag,
-                              double x2, double y2)
+                              float_t x2, float_t y2)
     {
         m_radii_ok = true;
 
@@ -152,27 +152,27 @@ namespace agg
         // Calculate the middle point between 
         // the current and the final points
         //------------------------
-        double dx2 = (x0 - x2) / 2.0;
-        double dy2 = (y0 - y2) / 2.0;
+        float_t dx2 = (x0 - x2) / 2.0;
+        float_t dy2 = (y0 - y2) / 2.0;
 
-        double cos_a = cos(angle);
-        double sin_a = sin(angle);
+        float_t cos_a = cos(angle);
+        float_t sin_a = sin(angle);
 
         // Calculate (x1, y1)
         //------------------------
-        double x1 =  cos_a * dx2 + sin_a * dy2;
-        double y1 = -sin_a * dx2 + cos_a * dy2;
+        float_t x1 =  cos_a * dx2 + sin_a * dy2;
+        float_t y1 = -sin_a * dx2 + cos_a * dy2;
 
         // Ensure radii are large enough
         //------------------------
-        double prx = rx * rx;
-        double pry = ry * ry;
-        double px1 = x1 * x1;
-        double py1 = y1 * y1;
+        float_t prx = rx * rx;
+        float_t pry = ry * ry;
+        float_t px1 = x1 * x1;
+        float_t py1 = y1 * y1;
 
         // Check that radii are large enough
         //------------------------
-        double radii_check = px1/prx + py1/pry;
+        float_t radii_check = px1/prx + py1/pry;
         if(radii_check > 1.0) 
         {
             rx = sqrt(radii_check) * rx;
@@ -184,37 +184,37 @@ namespace agg
 
         // Calculate (cx1, cy1)
         //------------------------
-        double sign = (large_arc_flag == sweep_flag) ? -1.0 : 1.0;
-        double sq   = (prx*pry - prx*py1 - pry*px1) / (prx*py1 + pry*px1);
-        double coef = sign * sqrt((sq < 0) ? 0 : sq);
-        double cx1  = coef *  ((rx * y1) / ry);
-        double cy1  = coef * -((ry * x1) / rx);
+        float_t sign = (large_arc_flag == sweep_flag) ? -1.0 : 1.0;
+        float_t sq   = (prx*pry - prx*py1 - pry*px1) / (prx*py1 + pry*px1);
+        float_t coef = sign * sqrt((sq < 0) ? 0 : sq);
+        float_t cx1  = coef *  ((rx * y1) / ry);
+        float_t cy1  = coef * -((ry * x1) / rx);
 
         //
         // Calculate (cx, cy) from (cx1, cy1)
         //------------------------
-        double sx2 = (x0 + x2) / 2.0;
-        double sy2 = (y0 + y2) / 2.0;
-        double cx = sx2 + (cos_a * cx1 - sin_a * cy1);
-        double cy = sy2 + (sin_a * cx1 + cos_a * cy1);
+        float_t sx2 = (x0 + x2) / 2.0;
+        float_t sy2 = (y0 + y2) / 2.0;
+        float_t cx = sx2 + (cos_a * cx1 - sin_a * cy1);
+        float_t cy = sy2 + (sin_a * cx1 + cos_a * cy1);
 
         // Calculate the start_angle (angle1) and the sweep_angle (dangle)
         //------------------------
-        double ux =  (x1 - cx1) / rx;
-        double uy =  (y1 - cy1) / ry;
-        double vx = (-x1 - cx1) / rx;
-        double vy = (-y1 - cy1) / ry;
-        double p, n;
+        float_t ux =  (x1 - cx1) / rx;
+        float_t uy =  (y1 - cy1) / ry;
+        float_t vx = (-x1 - cx1) / rx;
+        float_t vy = (-y1 - cy1) / ry;
+        float_t p, n;
 
         // Calculate the angle start
         //------------------------
         n = sqrt(ux*ux + uy*uy);
         p = ux; // (1 * ux) + (0 * uy)
         sign = (uy < 0) ? -1.0 : 1.0;
-        double v = p / n;
+        float_t v = p / n;
         if(v < -1.0) v = -1.0;
         if(v >  1.0) v =  1.0;
-        double start_angle = sign * acos(v);
+        float_t start_angle = sign * acos(v);
 
         // Calculate the sweep angle
         //------------------------
@@ -224,7 +224,7 @@ namespace agg
         v = p / n;
         if(v < -1.0) v = -1.0;
         if(v >  1.0) v =  1.0;
-        double sweep_angle = sign * acos(v);
+        float_t sweep_angle = sign * acos(v);
         if(!sweep_flag && sweep_angle > 0) 
         {
             sweep_angle -= pi * 2.0;

@@ -55,7 +55,7 @@ namespace agg
 
         color_type color() const
         {
-            return m_c1.gradient(m_c2, double(m_count) / m_len);
+            return m_c1.gradient(m_c2, float_t(m_count) / m_len);
         }
 
     private:
@@ -145,7 +145,7 @@ namespace agg
         //    gradient_lut.add_color(1.0, end_color);
         //--------------------------------------------------------------------
         void remove_all();
-        void add_color(double offset, const color_type& color);
+        void add_color(float_t offset, const color_type& color);
         void build_lut();
 
         // Size-index Interface. This class can be used directly as the 
@@ -165,11 +165,11 @@ namespace agg
         //--------------------------------------------------------------------
         struct color_point
         {
-            double     offset;
+            float_t     offset;
             color_type color;
 
             color_point() {}
-            color_point(double off, const color_type& c) : 
+            color_point(float_t off, const color_type& c) : 
                 offset(off), color(c)
             {
                 if(offset < 0.0) offset = 0.0;
@@ -204,7 +204,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     template<class T, unsigned S>
-    void gradient_lut<T,S>::add_color(double offset, const color_type& color)
+    void gradient_lut<T,S>::add_color(float_t offset, const color_type& color)
     {
         m_color_profile.add(color_point(offset, color));
     }

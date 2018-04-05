@@ -689,7 +689,7 @@ class platform_specific {
                     {
                         fTimerStart = system_time();
                     }
-    double          ElapsedTime() const
+    float_t          ElapsedTime() const
                     {
                         return (system_time() - fTimerStart) / 1000.0;
                     }
@@ -751,7 +751,7 @@ class platform_specific {
     }
 
     //------------------------------------------------------------------------
-    double platform_support::elapsed_time() const
+    float_t platform_support::elapsed_time() const
     {
         return m_specific->ElapsedTime();
     }

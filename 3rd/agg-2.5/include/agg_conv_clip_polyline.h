@@ -51,15 +51,15 @@ namespace agg
         conv_clip_polyline(VertexSource& vs) : 
             conv_adaptor_vpgen<VertexSource, vpgen_clip_polyline>(vs) {}
 
-        void clip_box(double x1, double y1, double x2, double y2)
+        void clip_box(float_t x1, float_t y1, float_t x2, float_t y2)
         {
             base_type::vpgen().clip_box(x1, y1, x2, y2);
         }
 
-        double x1() const { return base_type::vpgen().x1(); }
-        double y1() const { return base_type::vpgen().y1(); }
-        double x2() const { return base_type::vpgen().x2(); }
-        double y2() const { return base_type::vpgen().y2(); }
+        float_t x1() const { return base_type::vpgen().x1(); }
+        float_t y1() const { return base_type::vpgen().y1(); }
+        float_t x2() const { return base_type::vpgen().x2(); }
+        float_t y2() const { return base_type::vpgen().y2(); }
 
     private:
         conv_clip_polyline(const conv_clip_polyline<VertexSource>&);

@@ -336,7 +336,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void pixel_map::draw(HDC h_dc, int x, int y, double scale) const
+    void pixel_map::draw(HDC h_dc, int x, int y, float_t scale) const
     {
         if(m_bmp == 0 || m_buf == 0) return;
 
@@ -447,7 +447,7 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    void pixel_map::blend(HDC h_dc, int x, int y, double scale) const
+    void pixel_map::blend(HDC h_dc, int x, int y, float_t scale) const
     {
         if(m_bmp == 0 || m_buf == 0) return;
         unsigned width  = unsigned(m_bmp->bmiHeader.biWidth * scale);

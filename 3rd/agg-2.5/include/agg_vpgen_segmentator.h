@@ -40,25 +40,25 @@ namespace agg
     public:
         vpgen_segmentator() : m_approximation_scale(1.0) {}
 
-        void approximation_scale(double s) { m_approximation_scale = s;     }
-        double approximation_scale() const { return m_approximation_scale;  }
+        void approximation_scale(float_t s) { m_approximation_scale = s;     }
+        float_t approximation_scale() const { return m_approximation_scale;  }
 
         static bool auto_close()   { return false; }
         static bool auto_unclose() { return false; }
 
         void reset() { m_cmd = path_cmd_stop; }
-        void move_to(double x, double y);
-        void line_to(double x, double y);
-        unsigned vertex(double* x, double* y);
+        void move_to(float_t x, float_t y);
+        void line_to(float_t x, float_t y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
-        double   m_approximation_scale;
-        double   m_x1;
-        double   m_y1;
-        double   m_dx;
-        double   m_dy;
-        double   m_dl;
-        double   m_ddl;
+        float_t   m_approximation_scale;
+        float_t   m_x1;
+        float_t   m_y1;
+        float_t   m_dx;
+        float_t   m_dy;
+        float_t   m_dl;
+        float_t   m_ddl;
         unsigned m_cmd;
     };
 

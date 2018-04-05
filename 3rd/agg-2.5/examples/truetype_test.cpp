@@ -65,7 +65,7 @@ static char_type text[] =
 "on demand. "
 "Coordinate conversion pipeline consists of a number of coordinate "
 "converters. It always works with vectorial data (X,Y) represented "
-"as floating point numbers (double). For example, it can contain an "
+"as floating point numbers (float_t). For example, it can contain an "
 "affine transformer, outline (stroke) generator, some marker "
 "generator (like arrowheads/arrowtails), dashed lines generator, "
 "and so on. The pipeline can have branches and you also can have "
@@ -161,7 +161,7 @@ class the_application : public agg::platform_support
     agg::cbox_ctrl<agg::rgba8>   m_performance;
     font_engine_type             m_feng;
     font_manager_type            m_fman;
-    double                       m_old_height;
+    float_t                       m_old_height;
     gamma_type                   m_gamma_lut;
 
     // Pipeline to process the vectors glyph paths (curves + contour)
@@ -287,9 +287,9 @@ public:
         {
             m_fman.precache(' ', 127);
 
-            double x = 10.0;
-            double y0 = height() - m_height.value() - 10.0;
-            double y = y0;
+            float_t x = 10.0;
+            float_t y0 = height() - m_height.value() - 10.0;
+            float_t y = y0;
             const char_type* p = text;
 
             while(*p)
@@ -423,7 +423,7 @@ public:
             {
                 num_glyphs += draw_text(ras, sl, ren_solid, ren_bin);
             }
-            double t = elapsed_time();
+            float_t t = elapsed_time();
             char buf[100];
             sprintf(buf, 
                     "Glyphs=%u, Time=%.3fms, %.3f glyps/sec, %.3f microsecond/glyph", 

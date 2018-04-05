@@ -3,7 +3,7 @@
 
 namespace agg
 {
-    interactive_polygon::interactive_polygon(unsigned np, double point_radius) :
+    interactive_polygon::interactive_polygon(unsigned np, float_t point_radius) :
         m_polygon(np * 2),
         m_num_points(np),
         m_node(-1),
@@ -25,10 +25,10 @@ namespace agg
         m_stroke.rewind(0);
     }
 
-    unsigned interactive_polygon::vertex(double* x, double* y)
+    unsigned interactive_polygon::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_stop;
-        double r = m_point_radius;
+        float_t r = m_point_radius;
         if(m_status == 0)
         {
             cmd = m_stroke.vertex(x, y);
@@ -47,32 +47,32 @@ namespace agg
     }
 
 
-    bool interactive_polygon::check_edge(unsigned i, double x, double y) const
+    bool interactive_polygon::check_edge(unsigned i, float_t x, float_t y) const
     {
        bool ret = false;
 
        unsigned n1 = i;
        unsigned n2 = (i + m_num_points - 1) % m_num_points;
-       double x1 = xn(n1);
-       double y1 = yn(n1);
-       double x2 = xn(n2);
-       double y2 = yn(n2);
+       float_t x1 = xn(n1);
+       float_t y1 = yn(n1);
+       float_t x2 = xn(n2);
+       float_t y2 = yn(n2);
 
-       double dx = x2 - x1;
-       double dy = y2 - y1;
+       float_t dx = x2 - x1;
+       float_t dy = y2 - y1;
 
        if(sqrt(dx*dx + dy*dy) > 0.0000001)
        {
-          double x3 = x;
-          double y3 = y;
-          double x4 = x3 - dy;
-          double y4 = y3 + dx;
+          float_t x3 = x;
+          float_t y3 = y;
+          float_t x4 = x3 - dy;
+          float_t y4 = y3 + dx;
 
-          double den = (y4-y3) * (x2-x1) - (x4-x3) * (y2-y1);
-          double u1 = ((x4-x3) * (y1-y3) - (y4-y3) * (x1-x3)) / den;
+          float_t den = (y4-y3) * (x2-x1) - (x4-x3) * (y2-y1);
+          float_t u1 = ((x4-x3) * (y1-y3) - (y4-y3) * (x1-x3)) / den;
 
-          double xi = x1 + u1 * (x2 - x1);
-          double yi = y1 + u1 * (y2 - y1);
+          float_t xi = x1 + u1 * (x2 - x1);
+          float_t yi = y1 + u1 * (y2 - y1);
 
           dx = xi - x;
           dy = yi - y;
@@ -87,7 +87,7 @@ namespace agg
 
 
 
-    bool interactive_polygon::on_mouse_button_down(double x, double y)
+    bool interactive_polygon::on_mouse_button_down(float_t x, float_t y)
     {
         unsigned i;
         bool ret = false;
@@ -134,11 +134,11 @@ namespace agg
     }
 
 
-    bool interactive_polygon::on_mouse_move(double x, double y)
+    bool interactive_polygon::on_mouse_move(float_t x, float_t y)
     {
         bool ret = false;
-        double dx;
-        double dy;
+        float_t dx;
+        float_t dy;
         if(m_node == int(m_num_points))
         {
             dx = x - m_dx;
@@ -182,7 +182,7 @@ namespace agg
         return ret;
     }
 
-    bool interactive_polygon::on_mouse_button_up(double x, double y)
+    bool interactive_polygon::on_mouse_button_up(float_t x, float_t y)
     {
         bool ret = (m_node >= 0) || (m_edge >= 0);
         m_node = -1;
@@ -223,13 +223,13 @@ namespace agg
     //
     // Input 2D polygon _pgon_ with _numverts_ number of vertices and test point
     // _point_, returns 1 if inside, 0 if outside.
-    bool interactive_polygon::point_in_polygon(double tx, double ty) const
+    bool interactive_polygon::point_in_polygon(float_t tx, float_t ty) const
     {
         if(m_num_points < 3) return false;
 
         unsigned j;
         int yflag0, yflag1, inside_flag;
-        double  vtx0, vty0, vtx1, vty1;
+        float_t  vtx0, vty0, vtx1, vty1;
 
         vtx0 = xn(m_num_points - 1);
         vty0 = yn(m_num_points - 1);

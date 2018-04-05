@@ -65,8 +65,8 @@ typedef enum                        /* Set operation type                */
 
 typedef struct                      /* Polygon vertex structure          */
 {
-  double              x;            /* Vertex x component                */
-  double              y;            /* vertex y component                */
+  float_t              x;            /* Vertex x component                */
+  float_t              y;            /* vertex y component                */
 } gpc_vertex;
 
 typedef struct                      /* Vertex list structure             */

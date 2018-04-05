@@ -31,7 +31,7 @@ typedef agg::rasterizer_scanline_aa<>                       rasterizer_type;
 
 template<class T> T min(T a, T b) { return (a < b) ? a : b; }
 
-inline double frand(double x)
+inline float_t frand(float_t x)
 { 
     return ((((rand() << 15) | rand()) & 0x3FFFFFFF) % 1000000) * x / 1000000.0;
 }
@@ -48,20 +48,20 @@ public:
     }
 
 
-    simple_vertex_source(double x1, double y1, double x2, double y2)
+    simple_vertex_source(float_t x1, float_t y1, float_t x2, float_t y2)
     {
         init(x1, y1, x2, y2);
     }
 
 
-    simple_vertex_source(double x1, double y1, 
-                         double x2, double y2,
-                         double x3, double y3)
+    simple_vertex_source(float_t x1, float_t y1, 
+                         float_t x2, float_t y2,
+                         float_t x3, float_t y3)
     {
         init(x1, y1, x2, y2, x3, y3);
     }
 
-    void init(double x1, double y1, double x2, double y2)
+    void init(float_t x1, float_t y1, float_t x2, float_t y2)
     {
         m_num_vertices = 2;
         m_count = 0;
@@ -76,9 +76,9 @@ public:
 
 
 
-    void init(double x1, double y1, 
-              double x2, double y2,
-              double x3, double y3)
+    void init(float_t x1, float_t y1, 
+              float_t x2, float_t y2,
+              float_t x3, float_t y3)
     {
         m_num_vertices = 3;
         m_count = 0;
@@ -102,7 +102,7 @@ public:
         m_count = 0;
     }
 
-    unsigned vertex(double* x, double* y)
+    unsigned vertex(float_t* x, float_t* y)
     {
         *x = m_x[m_count];
         *y = m_y[m_count];
@@ -112,8 +112,8 @@ public:
 private:
     unsigned m_num_vertices;
     unsigned m_count;
-    double   m_x[8];
-    double   m_y[8];
+    float_t   m_x[8];
+    float_t   m_y[8];
     unsigned m_cmd[8];
 };
 
@@ -132,8 +132,8 @@ public:
         m_dash_stroke(m_dash)
     {}
 
-    void draw(double x1, double y1, double x2, double y2, 
-              double line_width, double dash_length)
+    void draw(float_t x1, float_t y1, float_t x2, float_t y2, 
+              float_t line_width, float_t dash_length)
     {
         m_src.init(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5);
         m_ras.reset();
@@ -170,12 +170,12 @@ private:
 // from (x1, y1) to (x2, y2). gradient_d2 is the "base" to scale the
 // gradient. Here d1 must be 0.0, and d2 must equal gradient_d2.
 //---------------------------------------------------------------
-void calc_linear_gradient_transform(double x1, double y1, double x2, double y2, 
+void calc_linear_gradient_transform(float_t x1, float_t y1, float_t x2, float_t y2, 
                                     agg::trans_affine& mtx,
-                                    double gradient_d2 = 100.0)
+                                    float_t gradient_d2 = 100.0)
 {
-    double dx = x2 - x1;
-    double dy = y2 - y1;
+    float_t dx = x2 - x1;
+    float_t dy = y2 - y1;
     mtx.reset();
     mtx *= agg::trans_affine_scaling(sqrt(dx * dx + dy * dy) / gradient_d2);
     mtx *= agg::trans_affine_rotation(atan2(dy, dx));
@@ -255,13 +255,13 @@ public:
                     renderer_scanline_type, 
                     scanline_type> dash(ras, ren_sl, sl);
 
-        double cx = width() / 2.0;
-        double cy = height() / 2.0;
+        float_t cx = width() / 2.0;
+        float_t cy = height() / 2.0;
 
         ren_sl.color(agg::rgba(1.0, 1.0, 1.0, 0.2));
         for(i = 180; i > 0; i--) 
         {
-            double n = 2.0 * agg::pi * i / 180.0;
+            float_t n = 2.0 * agg::pi * i / 180.0;
             dash.draw(cx + min(cx, cy) * sin(n), cy + min(cx, cy) * cos(n),
                       cx, cy, 
                       1.0, (i < 90) ? i : 0.0);
@@ -297,7 +297,7 @@ public:
                     renderer_gradient_type, 
                     scanline_type> dash_gradient(ras, ren_gradient, sl);
 
-        double x1, y1, x2, y2;
+        float_t x1, y1, x2, y2;
 
         for(i = 1; i <= 20; i++)
         {
@@ -472,22 +472,22 @@ public:
 
         int i;
 
-        double w = width();
-        double h = height();
+        float_t w = width();
+        float_t h = height();
 
         agg::ellipse ell;
 
         start_timer();
         for(i = 0; i < 20000; i++)
         {
-            double r = frand(20.0) + 1.0;
+            float_t r = frand(20.0) + 1.0;
             ell.init(frand(w), frand(h), r/2, r/2, int(r) + 10);
             ras.reset();
             ras.add_path(ell);
             agg::render_scanlines(ras, sl, ren_sl);
             ren_sl.color(agg::rgba(frand(1.0), frand(1.0), frand(1.0), 0.5+frand(0.5)));
         }
-        double t1 = elapsed_time();
+        float_t t1 = elapsed_time();
 
         typedef agg::gradient_x gradient_func_type;
         typedef agg::span_interpolator_linear<> interpolator_type;
@@ -517,7 +517,7 @@ public:
                     renderer_gradient_type, 
                     scanline_type> dash_gradient(ras, ren_gradient, sl);
 
-        double x1, y1, x2, y2, x3, y3;
+        float_t x1, y1, x2, y2, x3, y3;
 
         start_timer();
         for(i = 0; i < 2000; i++)
@@ -533,7 +533,7 @@ public:
             calc_linear_gradient_transform(x1, y1, x2, y2, gradient_mtx);
             dash_gradient.draw(x1, y1, x2, y2, 10.0, 0);
         }
-        double t2 = elapsed_time();
+        float_t t2 = elapsed_time();
 
 
 
@@ -564,7 +564,7 @@ public:
             agg::render_scanlines(ras, sl, ren_gouraud);
         }
 
-        double t3 = elapsed_time();
+        float_t t3 = elapsed_time();
 
         char buf[256];
         sprintf(buf, "Points=%.2fK/sec, Lines=%.2fK/sec, Triangles=%.2fK/sec", 20000.0/t1, 2000.0/t2, 2000.0/t3);

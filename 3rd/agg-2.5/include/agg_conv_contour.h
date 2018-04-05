@@ -45,19 +45,19 @@ namespace agg
 
         void line_join(line_join_e lj) { base_type::generator().line_join(lj); }
         void inner_join(inner_join_e ij) { base_type::generator().inner_join(ij); }
-        void width(double w) { base_type::generator().width(w); }
-        void miter_limit(double ml) { base_type::generator().miter_limit(ml); }
-        void miter_limit_theta(double t) { base_type::generator().miter_limit_theta(t); }
-        void inner_miter_limit(double ml) { base_type::generator().inner_miter_limit(ml); }
-        void approximation_scale(double as) { base_type::generator().approximation_scale(as); }
+        void width(float_t w) { base_type::generator().width(w); }
+        void miter_limit(float_t ml) { base_type::generator().miter_limit(ml); }
+        void miter_limit_theta(float_t t) { base_type::generator().miter_limit_theta(t); }
+        void inner_miter_limit(float_t ml) { base_type::generator().inner_miter_limit(ml); }
+        void approximation_scale(float_t as) { base_type::generator().approximation_scale(as); }
         void auto_detect_orientation(bool v) { base_type::generator().auto_detect_orientation(v); }
 
         line_join_e line_join() const { return base_type::generator().line_join(); }
         inner_join_e inner_join() const { return base_type::generator().inner_join(); }
-        double width() const { return base_type::generator().width(); }
-        double miter_limit() const { return base_type::generator().miter_limit(); }
-        double inner_miter_limit() const { return base_type::generator().inner_miter_limit(); }
-        double approximation_scale() const { return base_type::generator().approximation_scale(); }
+        float_t width() const { return base_type::generator().width(); }
+        float_t miter_limit() const { return base_type::generator().miter_limit(); }
+        float_t inner_miter_limit() const { return base_type::generator().inner_miter_limit(); }
+        float_t approximation_scale() const { return base_type::generator().approximation_scale(); }
         bool auto_detect_orientation() const { return base_type::generator().auto_detect_orientation(); }
 
     private:

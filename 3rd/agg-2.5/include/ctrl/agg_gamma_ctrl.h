@@ -43,39 +43,39 @@ namespace agg
     class gamma_ctrl_impl : public ctrl
     {
     public:
-        gamma_ctrl_impl(double x1, double y1, double x2, double y2, bool flip_y=false);
+        gamma_ctrl_impl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false);
 
         // Set other parameters
-        void border_width(double t, double extra=0.0);
-        void curve_width(double t)         { m_curve_width = t; }
-        void grid_width(double t)          { m_grid_width = t; }
-        void text_thickness(double t)      { m_text_thickness = t; }
-        void text_size(double h, double w=0.0);
-        void point_size(double s)              { m_point_size = s; }
+        void border_width(float_t t, float_t extra=0.0);
+        void curve_width(float_t t)         { m_curve_width = t; }
+        void grid_width(float_t t)          { m_grid_width = t; }
+        void text_thickness(float_t t)      { m_text_thickness = t; }
+        void text_size(float_t h, float_t w=0.0);
+        void point_size(float_t s)              { m_point_size = s; }
 
         // Event handlers. Just call them if the respective events
         // in your system occure. The functions return true if redrawing
         // is required.
-        virtual bool in_rect(double x, double y) const;
-        virtual bool on_mouse_button_down(double x, double y);
-        virtual bool on_mouse_button_up(double x, double y);
-        virtual bool on_mouse_move(double x, double y, bool button_flag);
+        virtual bool in_rect(float_t x, float_t y) const;
+        virtual bool on_mouse_button_down(float_t x, float_t y);
+        virtual bool on_mouse_button_up(float_t x, float_t y);
+        virtual bool on_mouse_move(float_t x, float_t y, bool button_flag);
         virtual bool on_arrow_keys(bool left, bool right, bool down, bool up);
 
         void change_active_point();
 
         // A copy of agg::gamma_spline interface
-        void  values(double kx1, double ky1, double kx2, double ky2);
-        void  values(double* kx1, double* ky1, double* kx2, double* ky2) const;
+        void  values(float_t kx1, float_t ky1, float_t kx2, float_t ky2);
+        void  values(float_t* kx1, float_t* ky1, float_t* kx2, float_t* ky2) const;
         const unsigned char* gamma() const { return m_gamma_spline.gamma(); }
-        double y(double x) const { return m_gamma_spline.y(x); }
-        double operator() (double x) const { return m_gamma_spline.y(x); }
+        float_t y(float_t x) const { return m_gamma_spline.y(x); }
+        float_t operator() (float_t x) const { return m_gamma_spline.y(x); }
         const gamma_spline& get_gamma_spline() const { return m_gamma_spline; }
 
         // Vertex soutce interface
         unsigned num_paths() { return 7; }
         void     rewind(unsigned idx);
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         void calc_spline_box();
@@ -83,42 +83,42 @@ namespace agg
         void calc_values();
 
         gamma_spline  m_gamma_spline;
-        double m_border_width;
-        double m_border_extra;
-        double m_curve_width;
-        double m_grid_width;
-        double m_text_thickness;
-        double m_point_size;
-        double m_text_height;
-        double m_text_width;
-        double m_xc1;
-        double m_yc1;
-        double m_xc2;
-        double m_yc2;
-        double m_xs1;
-        double m_ys1;
-        double m_xs2;
-        double m_ys2;
-        double m_xt1;
-        double m_yt1;
-        double m_xt2;
-        double m_yt2;
+        float_t m_border_width;
+        float_t m_border_extra;
+        float_t m_curve_width;
+        float_t m_grid_width;
+        float_t m_text_thickness;
+        float_t m_point_size;
+        float_t m_text_height;
+        float_t m_text_width;
+        float_t m_xc1;
+        float_t m_yc1;
+        float_t m_xc2;
+        float_t m_yc2;
+        float_t m_xs1;
+        float_t m_ys1;
+        float_t m_xs2;
+        float_t m_ys2;
+        float_t m_xt1;
+        float_t m_yt1;
+        float_t m_xt2;
+        float_t m_yt2;
         conv_stroke<gamma_spline> m_curve_poly;
         ellipse                   m_ellipse;
         gsv_text                  m_text;
         conv_stroke<gsv_text>     m_text_poly;
         unsigned m_idx;
         unsigned m_vertex;
-        double   m_vx[32];
-        double   m_vy[32];
-        double   m_xp1;
-        double   m_yp1;
-        double   m_xp2;
-        double   m_yp2;
+        float_t   m_vx[32];
+        float_t   m_vy[32];
+        float_t   m_xp1;
+        float_t   m_yp1;
+        float_t   m_xp2;
+        float_t   m_yp2;
         bool     m_p1_active;
         unsigned m_mouse_point;
-        double   m_pdx;
-        double   m_pdy;
+        float_t   m_pdx;
+        float_t   m_pdy;
     };
 
 
@@ -126,7 +126,7 @@ namespace agg
     template<class ColorT> class gamma_ctrl : public gamma_ctrl_impl
     {
     public:
-        gamma_ctrl(double x1, double y1, double x2, double y2, bool flip_y=false) :
+        gamma_ctrl(float_t x1, float_t y1, float_t x2, float_t y2, bool flip_y=false) :
             gamma_ctrl_impl(x1, y1, x2, y2, flip_y),
             m_background_color(rgba(1.0, 1.0, 0.9)),
             m_border_color(rgba(0.0, 0.0, 0.0)),

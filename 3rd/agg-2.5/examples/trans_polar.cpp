@@ -29,7 +29,7 @@ namespace agg
            
         unsigned num_paths() { return m_ctrl.num_paths(); }
         void     rewind(unsigned path_id) { m_pipeline.rewind(path_id); }
-        unsigned vertex(double* x, double* y) { return m_pipeline.vertex(x, y); }
+        unsigned vertex(float_t* x, float_t* y) { return m_pipeline.vertex(x, y); }
         const ColorT& color(unsigned i) const { return m_ctrl.color(i); } 
 
     private:
@@ -53,28 +53,28 @@ namespace agg
           m_spiral(0.0)
         {}
 
-        void base_scale(double v)  { m_base_scale = v; }
-        void full_circle(double v) { m_base_angle = 2.0 * pi / v; }
-        void base_offset(double dx, double dy) { m_base_x = dx; m_base_y = dy; }
-        void translation(double dx, double dy) { m_translation_x = dx; m_translation_y = dy;}
-        void spiral(double v) { m_spiral = v; }
+        void base_scale(float_t v)  { m_base_scale = v; }
+        void full_circle(float_t v) { m_base_angle = 2.0 * pi / v; }
+        void base_offset(float_t dx, float_t dy) { m_base_x = dx; m_base_y = dy; }
+        void translation(float_t dx, float_t dy) { m_translation_x = dx; m_translation_y = dy;}
+        void spiral(float_t v) { m_spiral = v; }
 
-        void transform(double* x, double* y) const
+        void transform(float_t* x, float_t* y) const
         {
-            double x1 = (*x + m_base_x) * m_base_angle;
-            double y1 = (*y + m_base_y) * m_base_scale + (*x * m_spiral);
+            float_t x1 = (*x + m_base_x) * m_base_angle;
+            float_t y1 = (*y + m_base_y) * m_base_scale + (*x * m_spiral);
             *x = cos(x1) * y1 + m_translation_x;
             *y = sin(x1) * y1 + m_translation_y;
         }
 
     private:
-        double m_base_angle;
-        double m_base_scale;
-        double m_base_x;
-        double m_base_y;
-        double m_translation_x;
-        double m_translation_y;
-        double m_spiral;
+        float_t m_base_angle;
+        float_t m_base_scale;
+        float_t m_base_x;
+        float_t m_base_y;
+        float_t m_translation_x;
+        float_t m_translation_y;
+        float_t m_spiral;
     };
 
 

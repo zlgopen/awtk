@@ -33,11 +33,11 @@ namespace agg
     struct null_markers
     {
         void remove_all() {}
-        void add_vertex(double, double, unsigned) {}
+        void add_vertex(float_t, float_t, unsigned) {}
         void prepare_src() {}
 
         void rewind(unsigned) {}
-        unsigned vertex(double*, double*) { return path_cmd_stop; }
+        unsigned vertex(float_t*, float_t*) { return path_cmd_stop; }
     };
 
 
@@ -72,7 +72,7 @@ namespace agg
             m_status = initial;
         }
 
-        unsigned vertex(double* x, double* y);
+        unsigned vertex(float_t* x, float_t* y);
 
     private:
         // Prohibit copying
@@ -85,8 +85,8 @@ namespace agg
         Markers       m_markers;
         status        m_status;
         unsigned      m_last_cmd;
-        double        m_start_x;
-        double        m_start_y;
+        float_t        m_start_x;
+        float_t        m_start_y;
     };
 
 
@@ -95,7 +95,7 @@ namespace agg
 
     //------------------------------------------------------------------------
     template<class VertexSource, class Generator, class Markers> 
-    unsigned conv_adaptor_vcgen<VertexSource, Generator, Markers>::vertex(double* x, double* y)
+    unsigned conv_adaptor_vcgen<VertexSource, Generator, Markers>::vertex(float_t* x, float_t* y)
     {
         unsigned cmd = path_cmd_stop;
         bool done = false;

@@ -33,13 +33,13 @@ namespace agg
 
     //===========================================================shorten_path
     template<class VertexSequence> 
-    void shorten_path(VertexSequence& vs, double s, unsigned closed = 0)
+    void shorten_path(VertexSequence& vs, float_t s, unsigned closed = 0)
     {
         typedef typename VertexSequence::value_type vertex_type;
 
         if(s > 0.0 && vs.size() > 1)
         {
-            double d;
+            float_t d;
             int n = int(vs.size() - 2);
             while(n)
             {
@@ -59,8 +59,8 @@ namespace agg
                 vertex_type& prev = vs[n-1];
                 vertex_type& last = vs[n];
                 d = (prev.dist - s) / prev.dist;
-                double x = prev.x + (last.x - prev.x) * d;
-                double y = prev.y + (last.y - prev.y) * d;
+                float_t x = prev.x + (last.x - prev.x) * d;
+                float_t y = prev.y + (last.y - prev.y) * d;
                 last.x = x;
                 last.y = y;
                 if(!prev(last)) vs.remove_last();
