@@ -19,7 +19,6 @@
  *
  */
 
-
 #ifndef WSTR_H
 #define WSTR_H
 

@@ -83,9 +83,10 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
-  return_value_if_fail(widget != NULL && text != NULL, RET_BAD_PARAMS);
+  value_t v;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return wstr_set(&(widget->text), text);
+  return widget_set_prop(widget, "text", value_set_wstr(&v, text));
 }
 
 uint32_t widget_get_value(widget_t* widget) {
@@ -96,9 +97,10 @@ uint32_t widget_get_value(widget_t* widget) {
 }
 
 const wchar_t* widget_get_text(widget_t* widget) {
-  return_value_if_fail(widget != NULL, NULL);
+  value_t v;
+  return_value_if_fail(widget != NULL, 0);
 
-  return widget->text.str;
+  return widget_get_prop(widget, "text", &v) == RET_OK ? value_wstr(&v) : 0;
 }
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
@@ -176,6 +178,10 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 
   if (widget->target == child) {
     widget->target = NULL;
+  }
+
+  if (widget->key_target == child) {
+    widget->key_target = NULL;
   }
 
   return array_remove(widget->children, NULL, child) ? RET_OK : RET_NOT_FOUND;
@@ -501,11 +507,6 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (str != NULL) {
       strncpy(widget->name, str, NAME_LEN);
     }
-  } else if (strcmp(name, "text") == 0) {
-    const wchar_t* text = value_wstr(v);
-    if (text != NULL) {
-      widget_set_text(widget, text);
-    }
   } else {
     if (widget->vt->set_prop) {
       ret = widget->vt->set_prop(widget, name, v);
@@ -516,6 +517,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
   if (ret != RET_NOT_FOUND) {
     widget_dispatch(widget, &e);
+  } else if (strcmp(name, "text") == 0) {
+    ret = wstr_from_value(&(widget->text), v);
   }
 
   return ret;
@@ -562,11 +565,11 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->enable);
   } else if (strcmp(name, "name") == 0) {
     value_set_str(v, widget->name);
-  } else if (strcmp(name, "text") == 0) {
-    value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {
       ret = widget->vt->get_prop(widget, name, v);
+    } else if (strcmp(name, "text") == 0) {
+      value_set_wstr(v, widget->text.str);
     } else {
       ret = RET_NOT_FOUND;
     }
@@ -616,8 +619,8 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   widget_dispatch(widget, (event_t*)e);
   if (widget->vt->on_keydown) {
     ret = widget->vt->on_keydown(widget, e);
-  } else if (widget->target != NULL) {
-    widget_on_keydown(widget->target, e);
+  } else if (widget->key_target != NULL) {
+    widget_on_keydown(widget->key_target, e);
   }
 
   return ret;
@@ -631,8 +634,8 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   widget_dispatch(widget, (event_t*)e);
   if (widget->vt->on_keyup) {
     ret = widget->vt->on_keyup(widget, e);
-  } else if (widget->target != NULL) {
-    widget_on_keyup(widget->target, e);
+  } else if (widget->key_target != NULL) {
+    widget_on_keyup(widget->key_target, e);
   }
 
   return ret;
@@ -666,7 +669,16 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
+    event_t focus = {EVT_FOCUS, target};
+
+    if (widget->key_target) {
+      event_t blur = {EVT_BLUR, widget->key_target};
+      widget_dispatch(widget->key_target, &blur);
+    }
+
     widget->target = target;
+    widget->key_target = target;
+    widget_dispatch(widget->key_target, &focus);
   }
 
   if (widget->target != NULL) {

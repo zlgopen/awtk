@@ -394,6 +394,170 @@
  },
  {
   "type": "enum",
+  "header": "base/edit.h",
+  "name": "input_type_t",
+  "prefix": "INPUT_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "INPUT_TEXT"
+   },
+   {
+    "name": "INPUT_INT"
+   },
+   {
+    "name": "INPUT_HEX"
+   },
+   {
+    "name": "INPUT_FLOAT"
+   },
+   {
+    "name": "INPUT_EMAIL"
+   },
+   {
+    "name": "INPUT_PHONE"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "edit_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "edit_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "min"
+     },
+     {
+      "type": "uint32_t",
+      "name": "max"
+     }
+    ],
+    "name": "edit_set_text_limit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "min"
+     },
+     {
+      "type": "int32_t",
+      "name": "max"
+     }
+    ],
+    "name": "edit_set_int_limit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float",
+      "name": "min"
+     },
+     {
+      "type": "float",
+      "name": "max"
+     },
+     {
+      "type": "float",
+      "name": "step"
+     }
+    ],
+    "name": "edit_set_float_limit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "readonly"
+     }
+    ],
+    "name": "edit_set_readonly",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "input_type_t",
+      "name": "type"
+     }
+    ],
+    "name": "edit_set_input_type",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "tips"
+     }
+    ],
+    "name": "edit_set_input_tips",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/edit.h"
+ },
+ {
+  "type": "enum",
   "header": "base/events.h",
   "name": "event_type_t",
   "prefix": "EVT_",
@@ -419,6 +583,12 @@
    },
    {
     "name": "EVT_CLICK"
+   },
+   {
+    "name": "EVT_FOCUS"
+   },
+   {
+    "name": "EVT_BLUR"
    },
    {
     "name": "EVT_KEY_DOWN"
@@ -510,6 +680,21 @@
     "type": "bool_t",
     "name": "pressed",
     "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "alt",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "ctrl",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "shift",
+    "readonly": true
    }
   ],
   "header": "base/events.h"
@@ -534,7 +719,7 @@
   ],
   "properties": [
    {
-    "type": "uint8_t",
+    "type": "uint32_t",
     "name": "key",
     "readonly": true
    },
@@ -551,6 +736,11 @@
    {
     "type": "bool_t",
     "name": "shift",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "caplock",
     "readonly": true
    }
   ],
@@ -1133,6 +1323,9 @@
    },
    {
     "name": "STYLE_ID_TEXT_COLOR"
+   },
+   {
+    "name": "STYLE_ID_TIPS_TEXT_COLOR"
    },
    {
     "name": "STYLE_ID_TEXT_ALIGN_H"
@@ -1764,6 +1957,12 @@
    },
    {
     "name": "WIDGET_STATE_UNCHECKED"
+   },
+   {
+    "name": "WIDGET_STATE_EMPTY"
+   },
+   {
+    "name": "WIDGET_STATE_ERROR"
    }
   ]
  },

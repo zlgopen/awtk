@@ -40,6 +40,7 @@ const key_type_value_t* widget_type_find_by_value(uint32_t value);
 const key_type_value_t* style_id_find(const char* name);
 const key_type_value_t* style_id_find_by_value(uint32_t value);
 
+const key_type_value_t* input_type_find(const char* name);
 const key_type_value_t* widget_state_find(const char* name);
 const key_type_value_t* align_v_type_find(const char* name);
 const key_type_value_t* align_h_type_find(const char* name);

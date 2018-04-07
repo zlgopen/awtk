@@ -159,16 +159,16 @@ TEST(WStr, value) {
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wstr_to_int(&str, &vi), RET_OK);
   ASSERT_EQ(value_int(&v1), vi);
-  
+
   value_set_float(&v1, 1234);
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wstr_to_float(&str, &vf), RET_OK);
   ASSERT_EQ(value_float(&v1), vf);
-  
+
   value_set_str(&v1, "a12345");
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wcscmp(str.str, L"a12345"), 0);
-  
+
   value_set_wstr(&v1, L"b12345");
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wcscmp(str.str, L"b12345"), 0);

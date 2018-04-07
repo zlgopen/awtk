@@ -29,6 +29,7 @@
 #include "base/button.h"
 #include "base/dialog.h"
 #include "base/slider.h"
+#include "base/edit.h"
 #include "base/group_box.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
@@ -77,6 +78,9 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     case WIDGET_LABEL:
       widget = label_create(parent, x, y, w, h);
       break;
+    case WIDGET_EDIT:
+      widget = edit_create(parent, x, y, w, h);
+      break;
     case WIDGET_PROGRESS_BAR:
       widget = progress_bar_create(parent, x, y, w, h);
       break;
@@ -118,14 +122,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
 static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name,
                                                const char* value) {
   value_t v;
-  if (strcmp(name, "text") == 0) {
-    wchar_t str[128];
-    uint32_t len = strlen(value);
-    return_value_if_fail(len < ARRAY_SIZE(str), RET_BAD_PARAMS);
-
-    value_set_wstr(&v, utf8_to_utf16(value, str, ARRAY_SIZE(str)));
-    widget_set_prop(b->widget, name, &v);
-  } else if (strcmp(name, "align_v") == 0) {
+  if (strcmp(name, "align_v") == 0) {
     const key_type_value_t* item = align_v_type_find(value);
     if (item != NULL) {
       value_set_int(&v, item->value);

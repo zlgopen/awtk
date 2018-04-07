@@ -22,6 +22,7 @@
 #ifndef TYPES_DEF_H
 #define TYPES_DEF_H
 
+#include <ctype.h>
 #include <wchar.h>
 #include <assert.h>
 #include <stdint.h>

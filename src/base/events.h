@@ -70,6 +70,16 @@ typedef enum _event_type_t {
    */
   EVT_CLICK,
   /**
+   * @const EVT_FOCUS
+   * 得到焦点事件名。
+   */
+  EVT_FOCUS,
+  /**
+   * @const EVT_BLUR
+   * 失去焦点事件名。
+   */
+  EVT_BLUR,
+  /**
    * @const EVT_KEY_DOWN
    * 键按下事件名。
    */
@@ -185,6 +195,25 @@ typedef struct _pointer_event_t {
    * 指针是否按下。
    */
   uint8_t pressed : 1;
+
+  /**
+   * @property {bool_t} alt
+   * @readonly
+   * alt键是否按下。
+   */
+  uint8_t alt : 1;
+  /**
+   * @property {bool_t} ctrl
+   * @readonly
+   * ctrl键是否按下。
+   */
+  uint8_t ctrl : 1;
+  /**
+   * @property {bool_t} shift
+   * @readonly
+   * shift键是否按下。
+   */
+  uint8_t shift : 1;
 } pointer_event_t;
 
 /**
@@ -207,11 +236,12 @@ pointer_event_t* pointer_event_cast(event_t* event);
 typedef struct _key_event_t {
   event_t e;
   /**
-   * @property {uint8_t} key
+   * @property {uint32_t} key
    * @readonly
    * 键值。
    */
-  uint8_t key;
+  uint32_t key;
+
   /**
    * @property {bool_t} alt
    * @readonly
@@ -230,6 +260,12 @@ typedef struct _key_event_t {
    * shift键是否按下。
    */
   uint8_t shift : 1;
+  /**
+   * @property {bool_t} caplock
+   * @readonly
+   * caplock键是否按下。
+   */
+  uint8_t caplock : 1;
 } key_event_t;
 
 /**

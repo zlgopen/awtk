@@ -79,7 +79,17 @@ typedef enum _widget_state_t {
    * @const WIDGET_STATE_UNCHECKED
    * 没勾选状态。
    */
-  WIDGET_STATE_UNCHECKED
+  WIDGET_STATE_UNCHECKED,
+  /**
+   * @const WIDGET_STATE_EMPTY
+   * 编辑器无内容状态。
+   */
+  WIDGET_STATE_EMPTY,
+  /**
+   * @const WIDGET_STATE_ERROR
+   * 输入错误状态。
+   */
+  WIDGET_STATE_ERROR
 } widget_state_t;
 
 /**
@@ -337,6 +347,13 @@ struct _widget_t {
    * 接收事件的子控件。
    */
   widget_t* target;
+  /**
+   * @property {widget_t*} key_target
+   * @readonly
+   * @scriptable no
+   * 接收按键事件的子控件。
+   */
+  widget_t* key_target;
   /**
    * @property {array_t*} children
    * @readonly

@@ -9,6 +9,7 @@
 #include "base/canvas.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
+#include "base/edit.h"
 #include "base/events.h"
 #include "base/group_box.h"
 #include "base/image.h"
@@ -37,6 +38,8 @@ static int wrap_check_button_t_get_prop(lua_State* L);
 static int wrap_check_button_t_set_prop(lua_State* L);
 static int wrap_dialog_t_get_prop(lua_State* L);
 static int wrap_dialog_t_set_prop(lua_State* L);
+static int wrap_edit_t_get_prop(lua_State* L);
+static int wrap_edit_t_set_prop(lua_State* L);
 static int wrap_event_t_get_prop(lua_State* L);
 static int wrap_event_t_set_prop(lua_State* L);
 static int wrap_pointer_event_t_get_prop(lua_State* L);
@@ -366,6 +369,166 @@ static void dialog_t_init(lua_State* L) {
   luaL_openlib(L, "Dialog", static_funcs, 0);
   lua_settop(L, 0);
 }
+static void input_type_t_init(lua_State* L) {
+  lua_newtable(L);
+  lua_setglobal(L, "InputType");
+  lua_getglobal(L, "InputType");
+
+  lua_pushstring(L, "TEXT");
+  lua_pushinteger(L, INPUT_TEXT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "INT");
+  lua_pushinteger(L, INPUT_INT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "HEX");
+  lua_pushinteger(L, INPUT_HEX);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "FLOAT");
+  lua_pushinteger(L, INPUT_FLOAT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "EMAIL");
+  lua_pushinteger(L, INPUT_EMAIL);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "PHONE");
+  lua_pushinteger(L, INPUT_PHONE);
+  lua_settable(L, -3);
+}
+
+static int wrap_edit_create(lua_State* L) {
+  widget_t* ret = NULL;
+  widget_t* parent = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  xy_t x = (xy_t)luaL_checkinteger(L, 2);
+  xy_t y = (xy_t)luaL_checkinteger(L, 3);
+  wh_t w = (wh_t)luaL_checkinteger(L, 4);
+  wh_t h = (wh_t)luaL_checkinteger(L, 5);
+  ret = (widget_t*)edit_create(parent, x, y, w, h);
+
+  return lftk_newuserdata(L, ret, "/edit_t/widget_t", "lftk.edit_t");
+}
+
+static int wrap_edit_set_text_limit(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  uint32_t min = (uint32_t)luaL_checkinteger(L, 2);
+  uint32_t max = (uint32_t)luaL_checkinteger(L, 3);
+  ret = (ret_t)edit_set_text_limit(widget, min, max);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_edit_set_int_limit(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  int32_t min = (int32_t)luaL_checkinteger(L, 2);
+  int32_t max = (int32_t)luaL_checkinteger(L, 3);
+  ret = (ret_t)edit_set_int_limit(widget, min, max);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_edit_set_float_limit(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  float min = (float)luaL_checknumber(L, 2);
+  float max = (float)luaL_checknumber(L, 3);
+  float step = (float)luaL_checknumber(L, 4);
+  ret = (ret_t)edit_set_float_limit(widget, min, max, step);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_edit_set_readonly(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  bool_t readonly = (bool_t)lua_toboolean(L, 2);
+  ret = (ret_t)edit_set_readonly(widget, readonly);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_edit_set_input_type(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  input_type_t type = (input_type_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)edit_set_input_type(widget, type);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_edit_set_input_tips(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  wchar_t* tips = (wchar_t*)lua_touserdata(L, 2);
+  ret = (ret_t)edit_set_input_tips(widget, tips);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static const struct luaL_Reg edit_t_member_funcs[] = {
+    {"set_text_limit", wrap_edit_set_text_limit},
+    {"set_int_limit", wrap_edit_set_int_limit},
+    {"set_float_limit", wrap_edit_set_float_limit},
+    {"set_readonly", wrap_edit_set_readonly},
+    {"set_input_type", wrap_edit_set_input_type},
+    {"set_input_tips", wrap_edit_set_input_tips},
+    {NULL, NULL}};
+
+static int wrap_edit_t_set_prop(lua_State* L) {
+  edit_t* obj = (edit_t*)lftk_checkudata(L, 1, "edit_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  return wrap_widget_t_set_prop(L);
+  printf("%s: not supported %s\n", __func__, name);
+  return 0;
+}
+
+static int wrap_edit_t_get_prop(lua_State* L) {
+  edit_t* obj = (edit_t*)lftk_checkudata(L, 1, "edit_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(edit_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  } else {
+    return wrap_widget_t_get_prop(L);
+  }
+}
+
+static void edit_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {{"create", wrap_edit_create}, {NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {
+      {"__index", wrap_edit_t_get_prop}, {"__newindex", wrap_edit_t_set_prop}, {NULL, NULL}};
+
+  luaL_newmetatable(L, "lftk.edit_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "Edit", static_funcs, 0);
+  lua_settop(L, 0);
+}
 static void event_type_t_init(lua_State* L) {
   lua_newtable(L);
   lua_setglobal(L, "EventType");
@@ -397,6 +560,14 @@ static void event_type_t_init(lua_State* L) {
 
   lua_pushstring(L, "CLICK");
   lua_pushinteger(L, EVT_CLICK);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "FOCUS");
+  lua_pushinteger(L, EVT_FOCUS);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "BLUR");
+  lua_pushinteger(L, EVT_BLUR);
   lua_settable(L, -3);
 
   lua_pushstring(L, "KEY_DOWN");
@@ -526,6 +697,15 @@ static int wrap_pointer_event_t_set_prop(lua_State* L) {
   } else if (strcmp(name, "pressed") == 0) {
     printf("pressed is readonly\n");
     return 0;
+  } else if (strcmp(name, "alt") == 0) {
+    printf("alt is readonly\n");
+    return 0;
+  } else if (strcmp(name, "ctrl") == 0) {
+    printf("ctrl is readonly\n");
+    return 0;
+  } else if (strcmp(name, "shift") == 0) {
+    printf("shift is readonly\n");
+    return 0;
   } else {
     return wrap_event_t_set_prop(L);
   }
@@ -556,6 +736,18 @@ static int wrap_pointer_event_t_get_prop(lua_State* L) {
     return 1;
   } else if (strcmp(name, "pressed") == 0) {
     lua_pushboolean(L, (lua_Integer)(obj->pressed));
+
+    return 1;
+  } else if (strcmp(name, "alt") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->alt));
+
+    return 1;
+  } else if (strcmp(name, "ctrl") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->ctrl));
+
+    return 1;
+  } else if (strcmp(name, "shift") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->shift));
 
     return 1;
   } else {
@@ -605,6 +797,9 @@ static int wrap_key_event_t_set_prop(lua_State* L) {
   } else if (strcmp(name, "shift") == 0) {
     printf("shift is readonly\n");
     return 0;
+  } else if (strcmp(name, "caplock") == 0) {
+    printf("caplock is readonly\n");
+    return 0;
   } else {
     return wrap_event_t_set_prop(L);
   }
@@ -635,6 +830,10 @@ static int wrap_key_event_t_get_prop(lua_State* L) {
     return 1;
   } else if (strcmp(name, "shift") == 0) {
     lua_pushboolean(L, (lua_Integer)(obj->shift));
+
+    return 1;
+  } else if (strcmp(name, "caplock") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->caplock));
 
     return 1;
   } else {
@@ -1899,6 +2098,14 @@ static void widget_state_t_init(lua_State* L) {
   lua_pushstring(L, "STATE_UNCHECKED");
   lua_pushinteger(L, WIDGET_STATE_UNCHECKED);
   lua_settable(L, -3);
+
+  lua_pushstring(L, "STATE_EMPTY");
+  lua_pushinteger(L, WIDGET_STATE_EMPTY);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "STATE_ERROR");
+  lua_pushinteger(L, WIDGET_STATE_ERROR);
+  lua_settable(L, -3);
 }
 
 static void widget_type_t_init(lua_State* L) {
@@ -2518,6 +2725,8 @@ void luaL_openlftk(lua_State* L) {
   canvas_t_init(L);
   check_button_t_init(L);
   dialog_t_init(L);
+  input_type_t_init(L);
+  edit_t_init(L);
   event_type_t_init(L);
   event_t_init(L);
   pointer_event_t_init(L);

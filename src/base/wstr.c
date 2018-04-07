@@ -66,7 +66,7 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wstr_extend(str, strlen(text) + 1) == RET_OK, RET_OOM);
 
-  utf8_to_utf16(text, str->str, str->capacity-1);
+  utf8_to_utf16(text, str->str, str->capacity - 1);
   str->size = wcslen(str->str);
 
   return RET_OK;
@@ -155,11 +155,11 @@ ret_t wstr_from_float(wstr_t* str, float v) {
 ret_t wstr_from_value(wstr_t* str, value_t* v) {
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if(v->type == VALUE_TYPE_STRING) {
+  if (v->type == VALUE_TYPE_STRING) {
     return wstr_set_utf8(str, value_str(v));
-  } else if(v->type == VALUE_TYPE_WSTRING) {
+  } else if (v->type == VALUE_TYPE_WSTRING) {
     return wstr_set(str, value_wstr(v));
-  } else if(v->type == VALUE_TYPE_FLOAT) {
+  } else if (v->type == VALUE_TYPE_FLOAT) {
     return wstr_from_float(str, value_float(v));
   } else {
     return wstr_from_int(str, value_int(v));

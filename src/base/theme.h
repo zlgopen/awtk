@@ -89,6 +89,11 @@ typedef enum _style_id_t {
    */
   STYLE_ID_TEXT_COLOR,
   /**
+   * @const STYLE_ID_TIPS_TEXT_COLOR
+   * 提示文本颜色。
+   */
+  STYLE_ID_TIPS_TEXT_COLOR,
+  /**
    * @const STYLE_ID_TEXT_ALIGN_H
    * 文本水平对齐的方式。
    */

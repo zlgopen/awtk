@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/edit.h"
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/resource_manager.h"
@@ -51,6 +52,7 @@ static const key_type_value_t style_id_name_value[] = {
     {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},
     {"fg-color", TYPE_COLOR, STYLE_ID_FG_COLOR},
     {"text-color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
+    {"tips-text-color", TYPE_COLOR, STYLE_ID_TIPS_TEXT_COLOR},
     {"border-color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
     {"font-name", TYPE_STRING, STYLE_ID_FONT_NAME},
     {"font-size", TYPE_INT, STYLE_ID_FONT_SIZE},
@@ -65,13 +67,19 @@ static const key_type_value_t style_id_name_value[] = {
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
 static const key_type_value_t widget_state_name_value[] = {
-    {"normal", 0, WIDGET_STATE_NORMAL},      {"over", 0, WIDGET_STATE_OVER},
-    {"pressed", 0, WIDGET_STATE_PRESSED},    {"disable", 0, WIDGET_STATE_DISABLE},
-    {"focused", 0, WIDGET_STATE_FOCUSED},    {"checked", 0, WIDGET_STATE_CHECKED},
-    {"unchecked", 0, WIDGET_STATE_UNCHECKED}};
+    {"normal", 0, WIDGET_STATE_NORMAL},       {"over", 0, WIDGET_STATE_OVER},
+    {"pressed", 0, WIDGET_STATE_PRESSED},     {"disable", 0, WIDGET_STATE_DISABLE},
+    {"focused", 0, WIDGET_STATE_FOCUSED},     {"checked", 0, WIDGET_STATE_CHECKED},
+    {"unchecked", 0, WIDGET_STATE_UNCHECKED}, {"error", 0, WIDGET_STATE_ERROR},
+    {"empty", 0, WIDGET_STATE_EMPTY}};
 
 static const key_type_value_t align_v_name_value[] = {
     {"top", 0, ALIGN_V_TOP}, {"middle", 0, ALIGN_V_MIDDLE}, {"bottom", 0, ALIGN_V_BOTTOM}};
+
+static const key_type_value_t input_type_name_value[] = {
+    {"int", 0, INPUT_INT},     {"float", 0, INPUT_FLOAT}, {"text", 0, INPUT_TEXT},
+    {"email", 0, INPUT_EMAIL}, {"phone", 0, INPUT_PHONE},
+};
 
 static const key_type_value_t align_h_name_value[] = {
     {"left", 0, ALIGN_H_LEFT}, {"center", 0, ALIGN_H_CENTER}, {"right", 0, ALIGN_H_RIGHT}};
@@ -169,4 +177,8 @@ const key_type_value_t* image_draw_type_find(const char* name) {
 const key_type_value_t* image_draw_type_find_by_value(uint32_t value) {
   return find_item_by_value(image_draw_type_name_value, ARRAY_SIZE(image_draw_type_name_value),
                             value);
+}
+
+const key_type_value_t* input_type_find(const char* name) {
+  return find_item(input_type_name_value, ARRAY_SIZE(input_type_name_value), name);
 }

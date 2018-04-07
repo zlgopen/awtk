@@ -1,0 +1,6 @@
+<window name="main" x="0" y="0" w="320" h="480">
+  <edit input_type="float" x="center" y="10" w="80%" h="30" text="" min="0" max="100" tips="0-100 float"/>
+  <edit input_type="int" x="center" y="60" w="80%" h="30" text="-123"/>
+  <edit input_type="text" x="center" y="110" w="80%" h="30" text="abc" tips="name"/>
+  <edit input_type="text" x="center" y="160" w="80%" h="30" text="abc" min="3" max="10"/>
+</window>

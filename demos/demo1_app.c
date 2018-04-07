@@ -118,7 +118,7 @@ ret_t application_init() {
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
   widget_set_value(progress_bar, 40);
-  // timer_add(on_timer, progress_bar, 200);
+  timer_add(on_timer, progress_bar, 200);
 
 #ifndef WITH_STM32F103ZE_RAW
   progress_bar_set_show_text(progress_bar, TRUE);

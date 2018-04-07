@@ -6,11 +6,11 @@ function application_init()
   local win = Window.open("window1");
 
   win.inc:on(EventType.CLICK, function(evt) 
-    win.bar1:set_value(win.bar2.value + 10);
+    win.bar2:set_value(win.bar2.value + 10);
   end);
   
   win.dec:on(EventType.CLICK, function(evt) 
-    win.bar1:set_value(win.bar2.value - 10);
+    win.bar2:set_value(win.bar2.value - 10);
   end);
   
   Timer.add(function() 
