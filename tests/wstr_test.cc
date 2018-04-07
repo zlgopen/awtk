@@ -152,8 +152,8 @@ TEST(WStr, value) {
   value_t v1;
   int32_t vi;
   float vf;
-  ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(wstr_init(&str, 0), &str);
+  ASSERT_EQ(str.capacity, 0);
 
   value_set_int(&v1, 123);
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);

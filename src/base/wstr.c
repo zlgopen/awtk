@@ -64,7 +64,7 @@ ret_t wstr_set(wstr_t* str, const wchar_t* text) {
 
 ret_t wstr_set_utf8(wstr_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(wstr_extend(str, strlen(text) + 1) == RET_OK, RET_OOM);
+  return_value_if_fail(wstr_extend(str, strlen(text) + 2) == RET_OK, RET_OOM);
 
   utf8_to_utf16(text, str->str, str->capacity - 1);
   str->size = wcslen(str->str);
