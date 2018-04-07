@@ -35,9 +35,6 @@ typedef struct _main_loop_sdl2_t {
   canvas_t canvas;
   SDL_Window* sdl_window;
   SDL_Renderer* sdl_render;
-  uint16_t ctrl : 1;
-  uint16_t alt : 1;
-  uint16_t shift : 1;
   uint16_t pressed : 1;
 } main_loop_sdl2_t;
 
@@ -50,12 +47,12 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_sdl2_t* loop, SDL_Event
   switch (type) {
     case SDL_KEYDOWN: {
       event.e.type = EVT_KEY_DOWN;
-      widget_on_keydown(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     case SDL_KEYUP: {
       event.e.type = EVT_KEY_UP;
-      widget_on_keyup(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     default:
@@ -79,7 +76,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_sdl2_t* loop, SDL_Eve
       event.button = sdl_event->button.button;
       event.pressed = loop->pressed;
 
-      widget_on_pointer_down(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     case SDL_MOUSEBUTTONUP: {
@@ -89,7 +86,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_sdl2_t* loop, SDL_Eve
       event.button = sdl_event->button.button;
       event.pressed = loop->pressed;
 
-      widget_on_pointer_up(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
       loop->pressed = 0;
       break;
     }
@@ -100,7 +97,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_sdl2_t* loop, SDL_Eve
       event.button = 0;
       event.pressed = loop->pressed;
 
-      widget_on_pointer_move(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     default:

@@ -67,13 +67,13 @@ static void dispatch_touch_events(bool_t pressed, xy_t x, xy_t y) {
     loop.pressed = TRUE;
     event.pressed = loop.pressed;
 
-    widget_on_pointer_down(widget, &event);
+    window_manager_dispatch_input_event(widget, (event_t*)&event);
   } else {
     if (loop.pressed) {
       loop.pressed = FALSE;
       event.e.type = EVT_POINTER_UP;
       event.pressed = loop.pressed;
-      widget_on_pointer_up(widget, &event);
+      window_manager_dispatch_input_event(widget, (event_t*)&event);
     }
   }
 }
@@ -99,13 +99,13 @@ static ret_t main_loop_rtthread_dispatch(main_loop_rtthread_t* loop) {
           event.e.type = EVT_POINTER_DOWN;
           event.pressed = loop->pressed;
 
-          widget_on_pointer_down(widget, &event);
+          window_manager_dispatch_input_event(widget, (event_t*)&event);
         } else {
           printf("type=%d up\n", type);
           event.e.type = EVT_POINTER_UP;
           event.pressed = loop->pressed;
 
-          widget_on_pointer_up(widget, &event);
+          window_manager_dispatch_input_event(widget, (event_t*)&event);
           loop->pressed = 0;
         }
         break;

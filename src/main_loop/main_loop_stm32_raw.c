@@ -109,13 +109,13 @@ static ret_t main_loop_stm32_raw_dispatch(main_loop_stm32_raw_t* loop) {
   while (event_queue_recv(loop->queue, &event) == RET_OK) {
     switch (event.e.event.type) {
       case EVT_POINTER_DOWN:
-        widget_on_pointer_down(widget, &(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
         break;
       case EVT_POINTER_MOVE:
-        widget_on_pointer_move(widget, &(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
         break;
       case EVT_POINTER_UP:
-        widget_on_pointer_up(widget, &(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
         break;
       default:
         break;

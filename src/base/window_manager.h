@@ -37,6 +37,12 @@ typedef struct _window_manager_t {
   array_t graps;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
+
+  uint8_t ctrl : 1;
+  uint8_t alt : 1;
+  uint8_t shift : 1;
+  uint8_t caplock : 1;
+  point_t pointer;
 } window_manager_t;
 
 widget_t* default_wm(void);
@@ -48,6 +54,7 @@ ret_t window_manager_resize(widget_t* wm, wh_t w, wh_t h);
 ret_t window_manager_add_child(widget_t* wm, widget_t* window);
 ret_t window_manager_remove_child(widget_t* wm, widget_t* window);
 ret_t window_manager_paint(widget_t* wm, canvas_t* c);
+ret_t window_manager_dispatch_input_event(widget_t* wm, event_t* e);
 
 #define WINDOW_MANAGER(widget) (window_manager_t*)(widget)
 
