@@ -148,15 +148,27 @@
   </style>
 </image>
 
-<dialog_title>
+<dialog>
   <style name="default">
-    <normal bg-image="dialog_title"  bg-image-draw-type="3patch_x" icon="info"/>
+    <normal border-color="#606060" />
+  </style>
+</dialog>
+
+<dialog_title icon="info">
+  <style name="default">
+    <normal bg-color="#a9a9a0" />
+  </style>
+  <style name="1:default1">
+    <normal bg-image="dialog_title"  bg-image-draw-type="3patch_x"/>
   </style>
 </dialog_title>
 
 <dialog_client>
   <style name="default">
-    <normal bg-color="#ededed" border-color="#a9a9a0" />
+    <normal bg-color="#ededed" />
+  </style>
+  <style name="1:default1">
+    <normal bg-color="#ededed" border-color="gray" />
   </style>
 </dialog_client>
 

@@ -32,6 +32,8 @@ const char* ftk_itoa(char* str, int len, int n);
 const char* ftk_ftoa(char* str, int len, float_t f);
 long ftk_strtol(const char* str, const char** end, int base);
 
+#define str_equal(s1, s2) (*(s1) == *(s2) && strcmp((s1), (s2)) == 0)
+
 END_C_DECLS
 
 #endif /*LFTK_UTILS_H*/

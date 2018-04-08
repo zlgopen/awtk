@@ -122,23 +122,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
 static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name,
                                                const char* value) {
   value_t v;
-  if (strcmp(name, "align_v") == 0) {
-    const key_type_value_t* item = align_v_type_find(value);
-    if (item != NULL) {
-      value_set_int(&v, item->value);
-      widget_set_prop(b->widget, name, &v);
-    } else {
-      log_debug("%s %s is invalid.\n", __func__, value);
-    }
-  } else if (strcmp(name, "align_h") == 0) {
-    const key_type_value_t* item = align_h_type_find(value);
-    if (item != NULL) {
-      value_set_int(&v, item->value);
-      widget_set_prop(b->widget, name, &v);
-    } else {
-      log_debug("%s %s is invalid.\n", __func__, value);
-    }
-  } else if (strcmp(name, "layout") == 0) {
+  if (strcmp(name, "layout") == 0) {
     /*2 2 5 10 10*/
     children_layout_t cl;
     children_layout_parser(&cl, value);

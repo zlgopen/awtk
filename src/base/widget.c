@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/utf8.h"
+#include "base/utils.h"
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/widget_vtable.h"
@@ -467,58 +468,38 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (name[1] == '\0') {
-    switch (name[0]) {
-      case 'x':
-        widget->x = (wh_t)value_int(v);
-        break;
-      case 'y':
-        widget->y = (wh_t)value_int(v);
-        break;
-      case 'w':
-        widget->w = (wh_t)value_int(v);
-        break;
-      case 'h':
-        widget->h = (wh_t)value_int(v);
-        break;
-      case 'v': /*visible*/
-        widget->visible = !!value_int(v);
-        break;
-      case 'e': /*enable*/
-        widget->enable = !!value_int(v);
-        break;
-      default: {
-        if (widget->vt->set_prop) {
-          ret = widget->vt->set_prop(widget, name, v);
-        } else {
-          ret = RET_NOT_FOUND;
-        }
-      }
-    }
-  } else if (strcmp(name, "visible") == 0) {
+  if (str_equal(name, "x")) {
+    widget->x = (wh_t)value_int(v);
+  } else if (str_equal(name, "y")) {
+    widget->y = (wh_t)value_int(v);
+  } else if (str_equal(name, "w")) {
+    widget->w = (wh_t)value_int(v);
+  } else if (str_equal(name, "h")) {
+    widget->h = (wh_t)value_int(v);
+  } else if (str_equal(name, "visible")) {
     widget->visible = !!value_int(v);
-  } else if (strcmp(name, "style") == 0 || strcmp(name, "style_type") == 0) {
+  } else if (str_equal(name, "style")) {
     widget->style_type = value_int(v);
     widget_update_style(widget);
-  } else if (strcmp(name, "enable") == 0) {
+  } else if (str_equal(name, "enable")) {
     widget->enable = !!value_int(v);
-  } else if (strcmp(name, "name") == 0) {
-    const char* str = value_str(v);
-    if (str != NULL) {
-      strncpy(widget->name, str, NAME_LEN);
-    }
+  } else if (str_equal(name, "name")) {
+    widget_set_name(widget, value_str(v));
+  } else if (str_equal(name, "text")) {
+    wstr_from_value(&(widget->text), v);
   } else {
-    if (widget->vt->set_prop) {
-      ret = widget->vt->set_prop(widget, name, v);
-    } else {
-      ret = RET_NOT_FOUND;
+    ret = RET_NOT_FOUND;
+  }
+
+  if (widget->vt->set_prop) {
+    ret_t ret1 = widget->vt->set_prop(widget, name, v);
+    if (ret == RET_NOT_FOUND) {
+      ret = ret1;
     }
   }
 
   if (ret != RET_NOT_FOUND) {
     widget_dispatch(widget, &e);
-  } else if (strcmp(name, "text") == 0) {
-    ret = wstr_from_value(&(widget->text), v);
   }
 
   return ret;
@@ -529,47 +510,27 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (name[1] == '\0') {
-    switch (name[0]) {
-      case 'x':
-        value_set_int32(v, widget->x);
-        break;
-      case 'y':
-        value_set_int32(v, widget->y);
-        break;
-      case 'w':
-        value_set_int32(v, widget->w);
-        break;
-      case 'h':
-        value_set_int32(v, widget->h);
-        break;
-      case 'v': /*visible*/
-        value_set_bool(v, widget->visible);
-        break;
-      case 'e': /*enable*/
-        value_set_bool(v, widget->enable);
-        break;
-      default: {
-        if (widget->vt->get_prop) {
-          ret = widget->vt->get_prop(widget, name, v);
-        } else {
-          ret = RET_NOT_FOUND;
-        }
-      }
-    }
-  } else if (strcmp(name, "visible") == 0) {
+  if (str_equal(name, "x")) {
+    value_set_int32(v, widget->x);
+  } else if (str_equal(name, "y")) {
+    value_set_int32(v, widget->y);
+  } else if (str_equal(name, "w")) {
+    value_set_int32(v, widget->w);
+  } else if (str_equal(name, "h")) {
+    value_set_int32(v, widget->h);
+  } else if (str_equal(name, "visible")) {
     value_set_bool(v, widget->visible);
-  } else if (strcmp(name, "style") == 0 || strcmp(name, "style_type") == 0) {
+  } else if (str_equal(name, "style")) {
     value_set_int(v, widget->style_type);
-  } else if (strcmp(name, "enable") == 0) {
+  } else if (str_equal(name, "enable")) {
     value_set_bool(v, widget->enable);
-  } else if (strcmp(name, "name") == 0) {
+  } else if (str_equal(name, "name")) {
     value_set_str(v, widget->name);
+  } else if (str_equal(name, "text")) {
+    value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {
       ret = widget->vt->get_prop(widget, name, v);
-    } else if (strcmp(name, "text") == 0) {
-      value_set_wstr(v, widget->text.str);
     } else {
       ret = RET_NOT_FOUND;
     }

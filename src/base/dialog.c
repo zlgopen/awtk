@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/label.h"
+#include "base/utils.h"
 #include "base/dialog.h"
 #include "base/group_box.h"
 #include "base/main_loop.h"
@@ -29,30 +30,62 @@
 
 enum { TITLE_H = 30 };
 
+static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
+  if (widget->style.data != NULL) {
+    return widget_paint_helper(widget, c, NULL, NULL);
+  }
+
+  return RET_OK;
+}
+
 static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "text") == 0) {
+  if (str_equal(name, "text")) {
     return widget_get_prop(dialog->title, name, v);
+  } else if (str_equal(name, "margin")) {
+    value_set_int(v, dialog->margin);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
+}
+
+static ret_t dialog_relayout_children(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  uint32_t margin = dialog->margin;
+  wh_t w = widget->w - 2 * margin;
+  wh_t h = widget->h - 2 * margin;
+
+  widget_move_resize(dialog->title, margin, margin, w, TITLE_H);
+  widget_move_resize(dialog->client, margin, margin + TITLE_H, w, h - TITLE_H);
+
+  return RET_OK;
 }
 
 static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "text") == 0) {
+  if (str_equal(name, "text")) {
     return widget_set_prop(dialog->title, name, v);
+  } else if (str_equal(name, "style")) {
+    widget_set_prop(dialog->title, name, v);
+    widget_set_prop(dialog->client, name, v);
+    return RET_OK;
+  } else if (str_equal(name, "margin")) {
+    dialog->margin = value_int(v);
+    dialog_relayout_children(widget);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
 }
 
 static const widget_vtable_t s_dialog_vtable = {.get_prop = dialog_get_prop,
-                                                .set_prop = dialog_set_prop};
+                                                .set_prop = dialog_set_prop,
+                                                .on_paint_self = dialog_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = label_create(parent, x, y, w, h);
@@ -90,8 +123,10 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
 
-  dialog->title = dialog_title_create(widget, 0, 0, widget->w, TITLE_H);
-  dialog->client = dialog_client_create(widget, 0, TITLE_H, widget->w, widget->h - TITLE_H);
+  dialog->margin = 1;
+  dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
+  dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
+  dialog_relayout_children(widget);
 
   return widget;
 }

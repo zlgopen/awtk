@@ -9,7 +9,7 @@ BIN_DIR=os.path.join(LFTK_ROOT, 'bin')
 LIB_DIR=os.path.join(LFTK_ROOT, 'lib')
 
 if os.name == 'posix':
-  OS_FLAGS='-g -Wall -DLUA_USE_POSIX -DLUA_COMPAT_MODULE -DHAS_STD_MALLOC -DFAST_MODE'
+  OS_FLAGS='-g -Wall -DLUA_USE_POSIX -DLUA_COMPAT_MODULE -DHAS_STD_MALLOC'
   OS_LINKFLAGS=''
   OS_LIBPATH=[]
   OS_CPPPATH=[]

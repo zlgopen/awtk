@@ -37,6 +37,7 @@ typedef struct _dialog_t {
   widget_t widget;
   widget_t* title;
   widget_t* client;
+  uint32_t margin;
   uint32_t quit_code;
 } dialog_t;
 

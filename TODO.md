@@ -35,6 +35,7 @@
 * image support draw\_type
 * theme support image\_draw\_type 
 * 矢量图绘图函数接口。
+* slider
 
 ## 短期计划(顺序不定)
 
@@ -48,7 +49,6 @@
 * listbox
 * tableview
 * edit
-* slider
 * spinbox
 * drag & drop
 * tab控件
