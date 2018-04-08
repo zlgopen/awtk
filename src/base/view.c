@@ -15,14 +15,14 @@
 /**
  * History:
  * ================================================================
- * 2018-02-11 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-04-05 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
 #include "base/mem.h"
 #include "base/view.h"
 
-static const widget_vtable_t s_view_vtable = {};
+static const widget_vtable_t s_view_vtable;
 
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

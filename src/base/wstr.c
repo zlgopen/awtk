@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   wstr.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  width char
@@ -152,7 +152,7 @@ ret_t wstr_from_float(wstr_t* str, float v) {
   return wstr_set_utf8(str, ftk_ftoa(buff, sizeof(buff), v));
 }
 
-ret_t wstr_from_value(wstr_t* str, value_t* v) {
+ret_t wstr_from_value(wstr_t* str, const value_t* v) {
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (v->type == VALUE_TYPE_STRING) {

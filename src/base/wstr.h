@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   wstr.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  width char
@@ -46,7 +46,7 @@ ret_t wstr_pop(wstr_t* str);
 
 ret_t wstr_from_int(wstr_t* str, int32_t v);
 ret_t wstr_from_float(wstr_t* str, float v);
-ret_t wstr_from_value(wstr_t* str, value_t* v);
+ret_t wstr_from_value(wstr_t* str, const value_t* v);
 
 ret_t wstr_to_int(wstr_t* str, int32_t* v);
 ret_t wstr_to_float(wstr_t* str, float* v);

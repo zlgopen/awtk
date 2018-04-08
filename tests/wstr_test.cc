@@ -1,4 +1,4 @@
-#include "base/wstr.h"
+﻿#include "base/wstr.h"
 #include "gtest/gtest.h"
 
 static void testSetWStr(const char* utf8, const wchar_t* cstr) {
