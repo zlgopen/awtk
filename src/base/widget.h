@@ -49,47 +49,47 @@ typedef enum _widget_state_t {
    * @const WIDGET_STATE_NORMAL
    * 正常状态。
    */
-  WIDGET_STATE_NORMAL,
+  WIDGET_STATE_NORMAL = 1,
   /**
    * @const WIDGET_STATE_PRESSED
    * 指针按下状态。
    */
-  WIDGET_STATE_PRESSED,
+  WIDGET_STATE_PRESSED = 2,
   /**
    * @const WIDGET_STATE_OVER
    * 指针悬浮状态。
    */
-  WIDGET_STATE_OVER,
+  WIDGET_STATE_OVER = 3,
   /**
    * @const WIDGET_STATE_DISABLE
    * 禁用状态。
    */
-  WIDGET_STATE_DISABLE,
+  WIDGET_STATE_DISABLE = 4,
   /**
    * @const WIDGET_STATE_FOCUSED
    * 聚焦状态。
    */
-  WIDGET_STATE_FOCUSED,
+  WIDGET_STATE_FOCUSED = 5,
   /**
    * @const WIDGET_STATE_CHECKED
    * 勾选状态。
    */
-  WIDGET_STATE_CHECKED,
+  WIDGET_STATE_CHECKED = 6,
   /**
    * @const WIDGET_STATE_UNCHECKED
    * 没勾选状态。
    */
-  WIDGET_STATE_UNCHECKED,
+  WIDGET_STATE_UNCHECKED = 7,
   /**
    * @const WIDGET_STATE_EMPTY
    * 编辑器无内容状态。
    */
-  WIDGET_STATE_EMPTY,
+  WIDGET_STATE_EMPTY = 8,
   /**
    * @const WIDGET_STATE_ERROR
    * 输入错误状态。
    */
-  WIDGET_STATE_ERROR
+  WIDGET_STATE_ERROR = 9
 } widget_state_t;
 
 /**
@@ -293,7 +293,7 @@ struct _widget_t {
    * @readonly
    * 控件的状态。
    */
-  uint8_t state : 4;
+  uint8_t state;
   /**
    * @property {bool_t} enable
    * @readonly

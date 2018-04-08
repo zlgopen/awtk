@@ -22,24 +22,87 @@
 #include "base/mem.h"
 #include "base/edit.h"
 #include "base/keys.h"
+#include "base/timer.h"
 #include "base/enums.h"
 #include "base/events.h"
 
+static ret_t edit_update_status(widget_t* widget);
+
+static ret_t edit_update_carent(const timer_info_t* timer) {
+  rect_t r;
+  edit_t* edit = EDIT(timer->ctx);
+  widget_t* widget = WIDGETP(timer->ctx);
+
+  rect_init(r, edit->caret_x, 0, 1, widget->h);
+  widget_invalidate(widget, &r);
+  edit->caret_visible = !edit->caret_visible;
+
+  if (widget->focused) {
+    return RET_REPEAT;
+  } else {
+    edit->timer_id = 0;
+    return RET_REMOVE;
+  }
+}
+
 static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
+  int32_t i = 0;
+  wstr_t text;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
-  if (str->size == 0) {
+  style_t* style = &(widget->style);
+  int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 4);
+  wh_t caret_x = margin;
+
+  if (!str->size && !widget->focused) {
     str = &(edit->tips);
-    widget_set_state(widget, WIDGET_STATE_EMPTY);
   }
 
-  return widget_paint_helper(widget, c, NULL, str);
+  if (str->size > 0) {
+    wh_t cw = 0;
+    wh_t w = widget->w - 2 * margin;
+    color_t trans = color_init(0, 0, 0, 0);
+    color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+
+    canvas_set_text_color(c, tc);
+    canvas_set_font(c, font_name, font_size);
+
+    i = str->size - 1;
+    while (w > 0 && i >= 0) {
+      cw = canvas_measure_text(c, str->str + i, 1);
+      caret_x += cw;
+      w -= cw;
+      if (w > cw && i > 0) {
+        i--;
+      } else {
+        break;
+      }
+    }
+
+    text.str = str->str + i;
+    text.size = wcslen(text.str);
+    text.capacity = text.size;
+  } else {
+    text.str = NULL;
+    text.size = 0;
+  }
+
+  widget_paint_helper(widget, c, NULL, &text);
+
+  if (widget->focused && !edit->readonly && edit->caret_visible) {
+    canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
+    canvas_draw_vline(c, caret_x, margin, widget->h - 2 * margin);
+  }
+  edit->caret_x = caret_x;
+
+  return RET_OK;
 }
 
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   edit_t* edit = EDIT(widget);
-  widget_state_t state = WIDGET_STATE_FOCUSED;
   input_type_t input_type = edit->limit.type;
 
   if (isprint(key)) {
@@ -70,31 +133,60 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
   }
 
-  if (widget->text.size == 0) {
-    state = WIDGET_STATE_EMPTY;
-  } else if (input_type == INPUT_TEXT && edit->limit.t.min > widget->text.size) {
-    state = WIDGET_STATE_ERROR;
-  }
-
+  edit_update_status(widget);
   widget_invalidate(widget, NULL);
-  widget_set_state(widget, state);
 
   return RET_OK;
 }
 
 static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) { return RET_OK; }
 
-static ret_t edit_on_blur(edit_t* edit) {
-  widget_set_state(WIDGETP(edit), WIDGET_STATE_NORMAL);
+static bool_t edit_is_valid_value(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  switch (edit->limit.type) {
+    case INPUT_TEXT: {
+      return edit->limit.t.min <= widget->text.size;
+    }
+    case INPUT_INT: {
+      /*TODO*/
+    }
+    case INPUT_FLOAT: {
+      /*TODO*/
+    }
+    case INPUT_EMAIL: {
+      /*TODO*/
+    }
+    default:
+      break;
+  }
+
+  return TRUE;
+}
+
+static ret_t edit_update_status(widget_t* widget) {
+  if (widget->focused) {
+    widget_set_state(widget, WIDGET_STATE_FOCUSED);
+  } else if (widget->text.size == 0) {
+    widget_set_state(widget, WIDGET_STATE_EMPTY);
+  } else if (!edit_is_valid_value(widget)) {
+    widget_set_state(widget, WIDGET_STATE_ERROR);
+  } else {
+    widget_set_state(widget, WIDGET_STATE_NORMAL);
+  }
+
   return RET_OK;
 }
 
 static ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
+  edit_t* edit = EDIT(widget);
 
   switch (type) {
     case EVT_POINTER_DOWN:
-      widget_set_state(widget, WIDGET_STATE_FOCUSED);
+      if (edit->timer_id == 0) {
+        edit->timer_id = timer_add(edit_update_carent, widget, 600);
+      }
+      edit_update_status(widget);
       break;
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
@@ -107,7 +199,7 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
-      edit_on_blur(EDIT(widget));
+      edit_update_status(widget);
       break;
     }
     default:
@@ -279,6 +371,7 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
     }
     return RET_BAD_PARAMS;
   }
+  edit_update_status(widget);
 
   return RET_NOT_FOUND;
 }

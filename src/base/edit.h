@@ -59,6 +59,11 @@ typedef enum _input_type_t {
    */
   INPUT_EMAIL,
   /**
+   * @const INPUT_PASSWORD
+   * 密码。
+   */
+  INPUT_PASSWORD,
+  /**
    * @const INPUT_PHONE
    * 电话号码。
    */
@@ -96,11 +101,12 @@ typedef struct _edit_t {
   uint16_t visible_start;
   uint16_t selected_start;
   uint16_t selected_end;
-  point_t caret;
+  xy_t caret_x;
   bool_t caret_visible;
   bool_t readonly;
 
   wstr_t tips;
+  uint32_t timer_id;
   input_limit_t limit;
 } edit_t;
 

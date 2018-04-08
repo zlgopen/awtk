@@ -34,7 +34,7 @@
 <edit>
   <style name="default" border-color="#a0a0a0"  text-color="black" text-align-h="left" margin="4">
     <normal     bg-color="#f0f0f0" />
-    <focused    bg-color="#f0f0f0" border-color="gold"/>
+    <focused    bg-color="#f0f0f0" border-color="black"/>
     <disable    bg-color="gray" text-color="#d0d0d0" />
     <error      bg-color="#f0f0f0" text-color="red" />
     <empty      bg-color="#f0f0f0" text-color="#a0a0a0" />

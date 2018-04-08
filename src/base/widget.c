@@ -634,11 +634,13 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
     if (widget->key_target) {
       event_t blur = {EVT_BLUR, widget->key_target};
+      widget->key_target->focused = FALSE;
       widget_dispatch(widget->key_target, &blur);
     }
 
     widget->target = target;
     widget->key_target = target;
+    widget->key_target->focused = TRUE;
     widget_dispatch(widget->key_target, &focus);
   }
 
