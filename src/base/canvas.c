@@ -80,7 +80,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, rect_t* r) {
 ret_t canvas_set_fill_color(canvas_t* c, color_t color) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  c->lcd->fill_color = color;
+  lcd_set_fill_color(c->lcd, color);;
 
   return RET_OK;
 }
@@ -88,7 +88,7 @@ ret_t canvas_set_fill_color(canvas_t* c, color_t color) {
 ret_t canvas_set_text_color(canvas_t* c, color_t color) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  c->lcd->text_color = color;
+  lcd_set_text_color(c->lcd, color);
 
   return RET_OK;
 }
@@ -96,7 +96,7 @@ ret_t canvas_set_text_color(canvas_t* c, color_t color) {
 ret_t canvas_set_stroke_color(canvas_t* c, color_t color) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  c->lcd->stroke_color = color;
+  lcd_set_stroke_color(c->lcd, color);
 
   return RET_OK;
 }
@@ -104,7 +104,7 @@ ret_t canvas_set_stroke_color(canvas_t* c, color_t color) {
 ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  c->lcd->global_alpha = alpha;
+  lcd_set_global_alpha(c->lcd, alpha);
 
   return RET_OK;
 }
@@ -189,37 +189,6 @@ ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   return canvas_draw_vline_impl(c, c->ox + x, c->oy + y, h);
-}
-
-typedef int OutCode;
-
-const int INSIDE = 0;  // 0000
-const int LEFT = 1;    // 0001
-const int RIGHT = 2;   // 0010
-const int BOTTOM = 4;  // 0100
-const int TOP = 8;     // 1000
-
-// Compute the bit code for a point (x, y) using the clip rectangle
-// bounded diagonally by (xmin, ymin), and (xmax, ymax)
-
-// ASSUME THAT xmax, xmin, ymax and ymin are global constants.
-
-OutCode ComputeOutCode(float_t x, float_t y, float_t xmin, float_t ymin, float_t xmax,
-                       float_t ymax) {
-  OutCode code;
-
-  code = INSIDE;  // initialised as being inside of [[clip window]]
-
-  if (x < xmin)  // to the left of clip window
-    code |= LEFT;
-  else if (x > xmax)  // to the right of clip window
-    code |= RIGHT;
-  if (y < ymin)  // below the clip window
-    code |= BOTTOM;
-  else if (y > ymax)  // above the clip window
-    code |= TOP;
-
-  return code;
 }
 
 static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {

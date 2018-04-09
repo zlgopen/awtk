@@ -4,7 +4,7 @@ LFTK可以直接加载XML格式的和二进制格式的界面描述数据，从�
 
 ![](images/ui_desc.png)
 
-> LFTK的UI Builder还在意淫之中，打算用LFTK本身来开发，可能需要等到2018年底了，目前可以使用Qt Designer或微软的VC来做界面(主要生成各个控件的坐标)，再转换成LFTK XML UI文件，适当的编辑之后，转换成LFKT二进制的UI数据。
+> LFTK的UI Builder还在意淫之中，打算用LFTK本身来开发，可能需要等到2018年底了，目前可以使用Qt Designer或微软的VC来做界面(主要生成各个控件的坐标)，再转换成LFTK XML UI文件，适当的编辑之后，转换成LFTK二进制的UI数据。
 
 ## 一、界面描述数据的使用方法
 

@@ -27,6 +27,50 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return lcd->begin_frame(lcd, dirty_rect);
 }
 
+ret_t lcd_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  lcd->global_alpha = alpha;
+  if(lcd->set_global_alpha != NULL) {
+    lcd->set_global_alpha(lcd, alpha);
+  }
+
+  return RET_OK;
+}
+
+ret_t lcd_set_text_color(lcd_t* lcd, color_t color) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  lcd->text_color = color;
+  if(lcd->set_text_color != NULL) {
+    lcd->set_text_color(lcd, color);
+  }
+
+  return RET_OK;
+}
+
+ret_t lcd_set_stroke_color(lcd_t* lcd, color_t color) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  
+  lcd->stroke_color = color;
+  if(lcd->set_stroke_color != NULL) {
+    lcd->set_stroke_color(lcd, color);
+  }
+
+  return RET_OK;
+}
+
+ret_t lcd_set_fill_color(lcd_t* lcd, color_t color) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  
+  lcd->fill_color = color;
+  if(lcd->set_fill_color != NULL) {
+    lcd->set_fill_color(lcd, color);
+  }
+ 
+  return RET_OK;
+}
+
 ret_t lcd_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   return_value_if_fail(lcd != NULL && lcd->draw_vline != NULL, RET_BAD_PARAMS);
 
