@@ -793,8 +793,6 @@ ret_t widget_update_style(widget_t* widget) {
   state = widget->state;
   if (!widget->enable) {
     state = WIDGET_STATE_DISABLE;
-  } else if (widget->focused) {
-    state = WIDGET_STATE_FOCUSED;
   }
 
   widget->style.data =
