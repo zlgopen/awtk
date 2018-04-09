@@ -244,8 +244,7 @@ static ret_t vgcanvas_agg_fill_text(vgcanvas_t* vg, const char* text, float_t x,
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
-                                      float_t max_width) {
+static ret_t vgcanvas_agg_measure_text(vgcanvas_t* vg, const char* text, uint32_t* width) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
   /*TODO*/
@@ -369,7 +368,7 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
                                      vgcanvas_agg_set_text_align,
                                      vgcanvas_agg_set_text_baseline,
                                      vgcanvas_agg_fill_text,
-                                     vgcanvas_agg_stroke_text,
+                                     vgcanvas_agg_measure_text,
                                      vgcanvas_agg_draw_image,
 
                                      vgcanvas_agg_set_antialias,

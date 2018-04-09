@@ -126,8 +126,8 @@ lcd_t* lcd_log_init(wh_t w, wh_t h) {
   base->end_frame = lcd_log_end_frame;
   base->destroy = lcd_log_destroy;
 
-  base->width = w;
-  base->height = h;
+  base->w = w;
+  base->h = h;
 
   return base;
 }

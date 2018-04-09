@@ -177,8 +177,8 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd = MEM_ZALLOC(lcd_t);
   return_value_if_fail(lcd != NULL, NULL);
 
-  lcd->width = w;
-  lcd->height = h;
+  lcd->w = w;
+  lcd->h = h;
 
   lcd->begin_frame = lcd_reg_begin_frame;
   lcd->draw_vline = lcd_reg_draw_vline;

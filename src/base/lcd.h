@@ -72,17 +72,17 @@ struct _lcd_t {
   lcd_destroy_t destroy;
 
   /**
-   * @property {wh_t} width
+   * @property {wh_t} w
    * @readonly
    * 屏幕的宽度
    */
-  wh_t width; 
+  wh_t w; 
   /**
    * @property {wh_t} height
    * @readonly
    * 屏幕的高度
    */
-  wh_t height; 
+  wh_t h; 
   /**
    * @property {uint8_t} global_alpha
    * @readonly

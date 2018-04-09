@@ -136,8 +136,8 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
 
   SDL_GetRendererOutputSize(render, &w, &h);
 
-  base->width = (wh_t)w;
-  base->height = (wh_t)h;
+  base->w = (wh_t)w;
+  base->h = (wh_t)h;
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(w, h, FALSE);
   lcd.texture =
       SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);

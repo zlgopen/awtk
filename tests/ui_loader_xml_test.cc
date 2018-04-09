@@ -44,7 +44,7 @@ TEST(UILoaderXML, attr) {
   ui_loader_t* loader = xml_ui_loader();
   ui_builder_t* builder = ui_builder_default();
   const char* str =
-      "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
+      "<dialog margin=\"0\" x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
        <button name=\"b1\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
        <button name=\"b2\" x=\"10%\" y=\"10%\" w=\"80%\" h=\"20%\" />\
        <button name=\"b3\" x=\"center\" y=\"middle\" w=\"80\" h=\"20\" />\

@@ -68,8 +68,7 @@ typedef ret_t (*vgcanvas_set_text_align_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_text_baseline_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
                                       float_t max_width);
-typedef ret_t (*vgcanvas_stroke_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
-                                        float_t max_width);
+typedef ret_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text, uint32_t* width);
 typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                        float_t dh);
@@ -119,7 +118,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_text_align_t set_text_align;
   vgcanvas_set_text_baseline_t set_text_baseline;
   vgcanvas_fill_text_t fill_text;
-  vgcanvas_stroke_text_t stroke_text;
+  vgcanvas_measure_text_t measure_text;
   vgcanvas_draw_image_t draw_image;
 
   vgcanvas_set_antialias_t set_antialias;
@@ -137,6 +136,10 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
 
+/**
+ * @class vgcanvas_t
+ * 矢量图画布抽象基类。
+ */
 struct _vgcanvas_t {
   uint32_t w;
   uint32_t h;
@@ -197,8 +200,7 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* value);
 /*top|middle|bottom*/
 ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* value);
 ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width);
-ret_t vgcanvas_stroke_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
-                           float_t max_width);
+ret_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text, uint32_t* width);
 ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
                           float_t sh, float_t dx, float_t dy, float_t dw, float_t dh);
 ret_t vgcanvas_set_antialias(vgcanvas_t* vg, bool_t value);

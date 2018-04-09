@@ -29,7 +29,7 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
 
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;
-  wh_t width = lcd->width;
+  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
   color_t stroke_color = lcd->stroke_color;
@@ -45,7 +45,7 @@ static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
 
 static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
-  wh_t width = lcd->width;
+  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
   color_t stroke_color = lcd->stroke_color;
@@ -62,7 +62,7 @@ static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
 
 static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   wh_t i = 0;
-  wh_t width = lcd->width;
+  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
   color_t color = lcd->stroke_color;
@@ -101,7 +101,7 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   wh_t sy = src->y;
   wh_t sw = src->w;
   wh_t sh = src->h;
-  wh_t width = lcd->width;
+  wh_t width = lcd->w;
   color_t color = lcd->text_color;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
@@ -127,7 +127,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   wh_t j = 0;
   wh_t dw = dst->w;
   wh_t dh = dst->h;
-  wh_t width = lcd->width;
+  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* pixels = (pixel_t*)mem->pixels;
   pixel_t* dst_p = pixels + dst->y * width + dst->x;
@@ -176,7 +176,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   if (mem->vgcanvas == NULL) {
-    mem->vgcanvas = vgcanvas_create(lcd->width, lcd->height, (uint32_t*)(mem->pixels));
+    mem->vgcanvas = vgcanvas_create(lcd->w, lcd->h, (uint32_t*)(mem->pixels));
   }
 
   return mem->vgcanvas;
@@ -210,8 +210,8 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->end_frame = lcd_mem_end_frame;
   base->destroy = lcd_mem_destroy;
 
-  base->width = w;
-  base->height = h;
+  base->w = w;
+  base->h = h;
 
   return base;
 }
