@@ -244,11 +244,11 @@ static ret_t vgcanvas_agg_fill_text(vgcanvas_t* vg, const char* text, float_t x,
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_measure_text(vgcanvas_t* vg, const char* text, uint32_t* width) {
+static uint32_t vgcanvas_agg_measure_text(vgcanvas_t* vg, const char* text) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
   /*TODO*/
-  return RET_OK;
+  return 0;
 }
 
 static ret_t vgcanvas_agg_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,

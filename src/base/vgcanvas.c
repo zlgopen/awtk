@@ -202,10 +202,10 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
   return vg->vt->fill_text(vg, text, x, y, max_width);
 }
 
-ret_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text, uint32_t* width) {
+uint32_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text) {
   return_value_if_fail(vg != NULL && vg->vt->measure_text != NULL && text != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->measure_text(vg, text, width);
+  return vg->vt->measure_text(vg, text);
 }
 
 ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
