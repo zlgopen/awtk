@@ -34,21 +34,21 @@ OS_FLAGS='-g -Wall'
 OS_SUBSYSTEM_CONSOLE=''
 OS_SUBSYSTEM_WINDOWS=''
 OS_LINKFLAGS=''
-OS_LIBS=['SDL2', 'stdc++', 'pthread', 'm']
+OS_LIBS=['SDL2', 'glad', 'stdc++', 'pthread', 'm']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX '
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__'
   print("Macos"); 
 
 elif OS_NAME == 'Linux':
-  OS_LIBS = ['GL'] + OS_LIBS
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX '
+  OS_LIBS = ['GL'] + OS_LIBS + ['dl']
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -DLINUX'
   print("Linux"); 
 
 elif OS_NAME == 'Windows':
   OS_LIBS=[]
-  OS_FLAGS='-DWIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE'
+  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE'
   OS_LINKFLAGS='/MACHINE:X64 '
   OS_LIBPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
   OS_CPPPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/']
@@ -71,6 +71,7 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 SConscript([
   '3rd/agg-2.5/SConscript',
   '3rd/nanovg/SConscript',
+  '3rd/glad/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 

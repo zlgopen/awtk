@@ -19,13 +19,15 @@
  *
  */
 
-#define GL_GLEXT_PROTOTYPES
+//#define GL_GLEXT_PROTOTYPES
 #define NANOVG_GL2_IMPLEMENTATION
 
 #include "base/lcd.h"
 #include "base/utf8.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/resource_manager.h"
+
+#include "glad/glad.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -335,6 +337,7 @@ lcd_t* lcd_nanovg_init(SDL_Window* sdl_window) {
   base->w = (wh_t)w;
   base->h = (wh_t)h;
 
+  gladLoadGL();
   lcd.vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 
   return base;
