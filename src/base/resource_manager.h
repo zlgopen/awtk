@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   resource_manager.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  resource manager

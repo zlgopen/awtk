@@ -15,6 +15,7 @@ if OS_NAME == 'Windows':
 else:
   LCD='NANOVG'
 
+LCD='NANOVG'
 os.environ['LCD'] = LCD
 os.environ['BIN_DIR'] = BIN_DIR;
 os.environ['LIB_DIR'] = LIB_DIR;
@@ -47,9 +48,9 @@ elif OS_NAME == 'Linux':
   print("Linux"); 
 
 elif OS_NAME == 'Windows':
-  OS_LIBS=[]
-  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE'
-  OS_LINKFLAGS='/MACHINE:X64 '
+  OS_LIBS=['SDL2', 'glad']
+  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE /Od /ZI'
+  OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
   OS_LIBPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
   OS_CPPPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/']
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
@@ -78,9 +79,6 @@ SConscript([
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tools/res_gen/SConscript', 
-  'tools/ui_gen/xml_to_ui/SConscript', 
-  'tools/ui_gen/qt_to_xml/SConscript', 
-  'tools/ui_gen/rc_to_xml/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
   '3rd/lua/SConscript',

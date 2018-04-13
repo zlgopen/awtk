@@ -337,7 +337,6 @@ lcd_t* lcd_nanovg_init(SDL_Window* sdl_window) {
   base->w = (wh_t)w;
   base->h = (wh_t)h;
 
-  gladLoadGL();
   lcd.vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 
   return base;

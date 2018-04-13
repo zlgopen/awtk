@@ -19,7 +19,7 @@
  *
  */
 
-#define GL_GLEXT_PROTOTYPES
+//#define GL_GLEXT_PROTOTYPES
 
 #include "main_loop/main_loop_nanovg.h"
 #include "base/font_manager.h"
@@ -27,6 +27,7 @@
 #include "lcd/lcd_nanovg.h"
 #include "base/timer.h"
 
+#include "glad/glad.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_opengl_glext.h>
@@ -205,6 +206,8 @@ static ret_t main_loop_nanovg_create_window(main_loop_nanovg_t* l, font_manager_
   l->gl_context = SDL_GL_CreateContext(l->sdl_window);
   SDL_GL_MakeCurrent(l->sdl_window, l->gl_context);
   SDL_GL_SetSwapInterval(0);
+
+  gladLoadGL();
   glEnable(GL_ALPHA_TEST);
   glEnable(GL_STENCIL_TEST);
   glEnable(GL_DEPTH_TEST);
@@ -221,7 +224,7 @@ main_loop_t* main_loop_init(int w, int h) {
   main_loop_t* base = &(loop.base);
 
   memset(&loop, 0x00, sizeof(loop));
-
+  
   base->run = main_loop_nanovg_run;
   base->quit = main_loop_nanovg_quit;
   base->destroy = main_loop_nanovg_destroy;
