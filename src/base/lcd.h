@@ -33,17 +33,25 @@ struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
+typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 
 typedef ret_t (*lcd_set_global_alpha_t)(lcd_t* lcd, uint8_t alpha);
 typedef ret_t (*lcd_set_text_color_t)(lcd_t* lcd, color_t color);
 typedef ret_t (*lcd_set_stroke_color_t)(lcd_t* lcd, color_t color);
 typedef ret_t (*lcd_set_fill_color_t)(lcd_t* lcd, color_t color);
+typedef ret_t (*lcd_set_font_name_t)(lcd_t* lcd, const char* name);
+typedef ret_t (*lcd_set_font_size_t)(lcd_t* lcd, uint32_t size);
 
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
 typedef ret_t (*lcd_draw_hline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
 typedef ret_t (*lcd_draw_points_t)(lcd_t* lcd, point_t* points, uint32_t nr);
 typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
+typedef wh_t (*lcd_measure_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr);
+typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y);
+
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 
@@ -51,20 +59,26 @@ typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
 /**
- * @class lcd_t 
+ * @class lcd_t
  * 显示设备抽象基类。
  */
 struct _lcd_t {
   lcd_begin_frame_t begin_frame;
+  lcd_set_clip_rect_t set_clip_rect;
   lcd_set_global_alpha_t set_global_alpha;
   lcd_set_text_color_t set_text_color;
   lcd_set_stroke_color_t set_stroke_color;
   lcd_set_fill_color_t set_fill_color;
+  lcd_set_font_name_t set_font_name;
+  lcd_set_font_size_t set_font_size;
   lcd_draw_vline_t draw_vline;
   lcd_draw_hline_t draw_hline;
   lcd_fill_rect_t fill_rect;
+  lcd_stroke_rect_t stroke_rect;
   lcd_draw_image_t draw_image;
   lcd_draw_glyph_t draw_glyph;
+  lcd_draw_text_t draw_text;
+  lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
@@ -76,13 +90,13 @@ struct _lcd_t {
    * @readonly
    * 屏幕的宽度
    */
-  wh_t w; 
+  wh_t w;
   /**
    * @property {wh_t} height
    * @readonly
    * 屏幕的高度
    */
-  wh_t h; 
+  wh_t h;
   /**
    * @property {uint8_t} global_alpha
    * @readonly
@@ -107,6 +121,19 @@ struct _lcd_t {
    * 线条颜色
    */
   color_t stroke_color;
+  /**
+   * @property {char*} font_name
+   * @readonly
+   * 字体名称。
+   */
+  const char* font_name;
+  /**
+   * @property {uint32_t} font_size
+   * @readonly
+   * 字体大小。
+   */
+  uint32_t font_size;
+
   rect_t* dirty_rect;
 };
 
@@ -119,6 +146,16 @@ struct _lcd_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect);
+
+/**
+ * @method lcd_set_clip_rect
+ * 设置裁剪区域。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {rect_t*} rect 裁剪区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect);
 
 /**
  * @method lcd_set_global_alpha
@@ -159,6 +196,26 @@ ret_t lcd_set_stroke_color(lcd_t* lcd, color_t color);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_set_fill_color(lcd_t* lcd, color_t color);
+
+/**
+ * @method lcd_set_font_name
+ * 设置字体名称。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {const char*} name 字体名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_set_font_name(lcd_t* lcd, const char* name);
+
+/**
+ * @method lcd_set_font_size
+ * 设置字体大小。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {uint32_t} font_size 字体大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_set_font_size(lcd_t* lcd, uint32_t font_size);
 
 /**
  * @method lcd_draw_vline
@@ -209,8 +266,21 @@ ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr);
 ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method lcd_stroke_rect
+ * 绘制矩形。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
  * @method lcd_draw_glyph
- * 绘制字符。
+ * 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。
  * @param {lcd_t*} lcd lcd对象。
  * @param {glyph_t*} glyph 字模
  * @param {rect_t*} src 只绘制指定区域的部分。
@@ -222,10 +292,34 @@ ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 
 /**
+ * @method lcd_measure_text
+ * 测量字符串占用的宽度。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {wchar_t*} str 字符串。
+ * @param {int32_t} nr 字符数。
+ *
+ * @return {ret_t} 返回字符串占用的宽度。
+ */
+wh_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr);
+
+/**
+ * @method lcd_draw_text
+ * 绘制字符。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {wchar_t*} str 字符串。
+ * @param {int32_t} nr 字符数。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y);
+
+/**
  * @method lcd_draw_image
  * 绘制图片。
  * @param {lcd_t*} lcd lcd对象。
- * @param {bitmap_t*} img 图片。 
+ * @param {bitmap_t*} img 图片。
  * @param {rect_t*} src 只绘制指定区域的部分。
  * @param {rect_t*} dst 绘制到目标区域。
  *

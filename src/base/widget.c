@@ -329,7 +329,7 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
 }
 
-ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
+ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
   xy_t x = 0;
   xy_t y = 0;
   wh_t w = 0;
@@ -337,36 +337,14 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
   bitmap_t img;
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-  color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
-
-  if (icon == NULL) {
-    icon = style_get_str(style, STYLE_ID_ICON, NULL);
-  }
-
-  if (bg.rgba.a) {
-    canvas_set_fill_color(c, bg);
-    canvas_fill_rect(c, 0, 0, widget->w, widget->h);
-  }
-
-  if (bd.rgba.a) {
-    canvas_set_stroke_color(c, bd);
-    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
-  }
-
-  if (image_name != NULL) {
-    if (image_manager_load(default_im(), image_name, &img) == RET_OK) {
-      rect_init(dst, 0, 0, widget->w, widget->h);
-      image_draw_type_t draw_type =
-          (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
-      canvas_draw_image_ex(c, &img, draw_type, &dst);
-    }
-  }
 
   if (text == NULL) {
     text = &(widget->text);
+  }
+
+  if (icon == NULL) {
+    icon = style_get_str(style, STYLE_ID_ICON, NULL);
   }
 
   if (text != NULL && text->size > 0) {
@@ -435,6 +413,50 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
   return RET_OK;
 }
 
+ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
+  rect_t dst;
+  bitmap_t img;
+  style_t* style = &(widget->style);
+  color_t trans = color_init(0, 0, 0, 0);
+  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
+
+  if (bg.rgba.a) {
+    canvas_set_fill_color(c, bg);
+    canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+  }
+
+  if (image_name != NULL) {
+    if (image_manager_load(default_im(), image_name, &img) == RET_OK) {
+      rect_init(dst, 0, 0, widget->w, widget->h);
+      image_draw_type_t draw_type =
+          (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      canvas_draw_image_ex(c, &img, draw_type, &dst);
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
+  style_t* style = &(widget->style);
+  color_t trans = color_init(0, 0, 0, 0);
+  color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+
+  if (bd.rgba.a) {
+    canvas_set_stroke_color(c, bd);
+    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
+  widget_draw_icon_text(widget, c, icon, text);
+
+  return RET_OK;
+}
+
 ret_t widget_paint(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
@@ -450,12 +472,16 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     }
 
+    widget_on_paint_background(widget, c);
     widget_on_paint_self(widget, c);
   }
 #else
+  widget_on_paint_background(widget, c);
   widget_on_paint_self(widget, c);
 #endif
   widget_on_paint_children(widget, c);
+  widget_on_paint_done(widget, c);
+
   canvas_untranslate(c, widget->x, widget->y);
   widget->dirty = FALSE;
 
@@ -539,6 +565,22 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return ret;
 }
 
+ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->vt->on_paint_background) {
+    ret = widget->vt->on_paint_background(widget, c);
+  } else {
+    if (widget->style.data) {
+      widget_draw_background(widget, c);
+    }
+  }
+
+  return ret;
+}
+
 ret_t widget_on_paint_self(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
@@ -567,6 +609,22 @@ ret_t widget_on_paint_children(widget_t* widget, canvas_t* c) {
     ret = widget->vt->on_paint_children(widget, c);
   } else {
     ret = widget_on_paint_children_default(widget, c);
+  }
+
+  return ret;
+}
+
+ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->vt->on_paint_done) {
+    ret = widget->vt->on_paint_done(widget, c);
+  } else {
+    if (widget->style.data) {
+      ret = widget_draw_border(widget, c);
+    }
   }
 
   return ret;

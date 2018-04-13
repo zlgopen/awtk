@@ -23,6 +23,7 @@
 #include "base/rect.h"
 #include "base/utils.h"
 #include "base/slider.h"
+#include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
 static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype);
@@ -328,10 +329,13 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_slider_vtable = {.on_event = slider_on_event,
-                                                .on_paint_self = slider_on_paint_self,
-                                                .get_prop = slider_get_prop,
-                                                .set_prop = slider_set_prop};
+static const widget_vtable_t s_slider_vtable = {
+    .on_event = slider_on_event,
+    .on_paint_background = widget_on_paint_background_null,
+    .on_paint_self = slider_on_paint_self,
+    .on_paint_done = widget_on_paint_done_null,
+    .get_prop = slider_get_prop,
+    .set_prop = slider_set_prop};
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

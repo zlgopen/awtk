@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/font_manager.h"
 #include "base/mem.h"
+#include "base/font_manager.h"
 
 font_manager_t* font_manager_create() {
   font_manager_t* fm = MEM_ZALLOC(font_manager_t);

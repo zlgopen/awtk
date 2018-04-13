@@ -22,6 +22,7 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/progress_bar.h"
+#include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
@@ -194,9 +195,12 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_progress_bar_vtable = {.on_paint_self = progress_bar_on_paint_self,
-                                                      .get_prop = progress_bar_get_prop,
-                                                      .set_prop = progress_bar_set_prop};
+static const widget_vtable_t s_progress_bar_vtable = {
+    .on_paint_self = progress_bar_on_paint_self,
+    .on_paint_background = widget_on_paint_background_null,
+    .on_paint_done = widget_on_paint_done_null,
+    .get_prop = progress_bar_get_prop,
+    .set_prop = progress_bar_set_prop};
 
 widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

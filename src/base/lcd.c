@@ -27,11 +27,17 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return lcd->begin_frame(lcd, dirty_rect);
 }
 
+ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect) {
+  return_value_if_fail(lcd != NULL && lcd->set_clip_rect != NULL, RET_BAD_PARAMS);
+
+  return lcd->set_clip_rect(lcd, rect);
+}
+
 ret_t lcd_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
 
   lcd->global_alpha = alpha;
-  if(lcd->set_global_alpha != NULL) {
+  if (lcd->set_global_alpha != NULL) {
     lcd->set_global_alpha(lcd, alpha);
   }
 
@@ -42,7 +48,7 @@ ret_t lcd_set_text_color(lcd_t* lcd, color_t color) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
 
   lcd->text_color = color;
-  if(lcd->set_text_color != NULL) {
+  if (lcd->set_text_color != NULL) {
     lcd->set_text_color(lcd, color);
   }
 
@@ -51,9 +57,9 @@ ret_t lcd_set_text_color(lcd_t* lcd, color_t color) {
 
 ret_t lcd_set_stroke_color(lcd_t* lcd, color_t color) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
-  
+
   lcd->stroke_color = color;
-  if(lcd->set_stroke_color != NULL) {
+  if (lcd->set_stroke_color != NULL) {
     lcd->set_stroke_color(lcd, color);
   }
 
@@ -62,12 +68,34 @@ ret_t lcd_set_stroke_color(lcd_t* lcd, color_t color) {
 
 ret_t lcd_set_fill_color(lcd_t* lcd, color_t color) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
-  
+
   lcd->fill_color = color;
-  if(lcd->set_fill_color != NULL) {
+  if (lcd->set_fill_color != NULL) {
     lcd->set_fill_color(lcd, color);
   }
- 
+
+  return RET_OK;
+}
+
+ret_t lcd_set_font_name(lcd_t* lcd, const char* name) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  lcd->font_name = name;
+  if (lcd->set_font_name != NULL) {
+    lcd->set_font_name(lcd, name);
+  }
+
+  return RET_OK;
+}
+
+ret_t lcd_set_font_size(lcd_t* lcd, uint32_t size) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  lcd->font_size = size;
+  if (lcd->set_font_size != NULL) {
+    lcd->set_font_size(lcd, size);
+  }
+
   return RET_OK;
 }
 
@@ -89,6 +117,12 @@ ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return lcd->fill_rect(lcd, x, y, w, h);
 }
 
+ret_t lcd_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return_value_if_fail(lcd != NULL && lcd->stroke_rect != NULL, RET_BAD_PARAMS);
+
+  return lcd->stroke_rect(lcd, x, y, w, h);
+}
+
 ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   return_value_if_fail(lcd != NULL && lcd->draw_points != NULL && points != NULL, RET_BAD_PARAMS);
 
@@ -107,6 +141,18 @@ ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
                        RET_BAD_PARAMS);
 
   return lcd->draw_glyph(lcd, glyph, src, x, y);
+}
+
+wh_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
+  return_value_if_fail(lcd != NULL && lcd->measure_text != NULL && str != NULL, 0);
+
+  return lcd->measure_text(lcd, str, nr);
+}
+
+ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y) {
+  return_value_if_fail(lcd != NULL && lcd->draw_text != NULL && str != NULL, 0);
+
+  return lcd->draw_text(lcd, str, nr, x, y);
 }
 
 ret_t lcd_end_frame(lcd_t* lcd) {

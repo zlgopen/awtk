@@ -11,6 +11,7 @@ mkdir -p $SRC_DIR/fonts
 mkdir -p $SRC_DIR/ui
 
 $BIN_DIR/themegen $RAW_DIR/theme/theme.xml $SRC_DIR/theme/default.data
+$BIN_DIR/resgen $RAW_DIR/fonts/font.ttf $SRC_DIR/fonts/default_ttf.data
 $BIN_DIR/resgen $RAW_DIR/fonts/action_protocol.ttf $SRC_DIR/fonts/ap.data
 $BIN_DIR/fontgen $RAW_DIR/fonts/font.ttf  $RAW_DIR/fonts/text.txt $SRC_DIR/fonts/default.data 20
 

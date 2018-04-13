@@ -45,6 +45,9 @@ ret_t widget_grab_default(widget_t* widget, widget_t* child);
 ret_t widget_ungrab_default(widget_t* widget, widget_t* child);
 ret_t widget_destroy_default(widget_t* widget);
 
+ret_t widget_on_paint_background_null(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_done_null(widget_t* widget, canvas_t* c);
+
 END_C_DECLS
 
 #endif /*LFTK_WIDGET_VTABLE_H*/

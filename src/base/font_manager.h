@@ -43,8 +43,6 @@ font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size);
 ret_t font_manager_deinit(font_manager_t* fm);
 ret_t font_manager_destroy(font_manager_t* fm);
 
-#define STR_DEFAULT_FONT "default"
-
 END_C_DECLS
 
 #endif /*LFTK_FONT_MANAGER_H*/

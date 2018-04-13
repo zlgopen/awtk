@@ -190,4 +190,10 @@ enum { NAME_LEN = 15 };
 
 typedef float float_t;
 
+#ifdef WITH_NANOVG
+#define STR_DEFAULT_FONT "default_ttf"
+#else
+#define STR_DEFAULT_FONT "default"
+#endif /*WITH_NANOVG*/
+
 #endif /*TYPES_DEF_H*/

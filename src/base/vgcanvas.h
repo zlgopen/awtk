@@ -410,7 +410,7 @@ ret_t vgcanvas_reset(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_flush
- * flush 
+ * flush
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -429,11 +429,12 @@ ret_t vgcanvas_flush(vgcanvas_t* vg);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_clear_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, color_t color);
+ret_t vgcanvas_clear_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
+                          color_t color);
 
 /**
  * @method vgcanvas_rotate
- * rotate 
+ * rotate
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} rad 角度
  *
@@ -443,9 +444,9 @@ ret_t vgcanvas_rotate(vgcanvas_t* vg, float_t rad);
 
 /**
  * @method vgcanvas_scale
- * scale 
+ * scale
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} x x方向缩放比例。 
+ * @param {float_t} x x方向缩放比例。
  * @param {float_t} y y方向缩放比例。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -454,9 +455,9 @@ ret_t vgcanvas_scale(vgcanvas_t* vg, float_t x, float_t y);
 
 /**
  * @method vgcanvas_translate
- * scale 
+ * scale
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} x x方向偏移。 
+ * @param {float_t} x x方向偏移。
  * @param {float_t} y y方向偏移。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -476,7 +477,8 @@ ret_t vgcanvas_translate(vgcanvas_t* vg, float_t x, float_t y);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d, float_t e, float_t f);
+ret_t vgcanvas_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d, float_t e,
+                         float_t f);
 
 /**
  * @method vgcanvas_set_transform
@@ -505,7 +507,7 @@ ret_t vgcanvas_fill(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_clip
- * clip 
+ * clip
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -523,7 +525,7 @@ ret_t vgcanvas_stroke(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_set_font
- * set font 
+ * set font
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {char*} font 字体名称。
  *
@@ -579,11 +581,11 @@ uint32_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text);
  * draw image
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {bitmap_t*} img 图片。
- * @param {float_t} sx sx 
+ * @param {float_t} sx sx
  * @param {float_t} sy sy
  * @param {float_t} sw sw
  * @param {float_t} sh sh
- * @param {float_t} dx dx 
+ * @param {float_t} dx dx
  * @param {float_t} dy dy
  * @param {float_t} dw dw
  * @param {float_t} dh dh
@@ -703,4 +705,3 @@ ret_t vgcanvas_destroy(vgcanvas_t* vg);
 END_C_DECLS
 
 #endif /*LFTK_VG_CANVAS_H*/
-

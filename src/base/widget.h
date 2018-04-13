@@ -212,8 +212,10 @@ typedef struct _widget_t widget_t;
 
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
+typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_done_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_click_t)(widget_t* widget, pointer_event_t* e);
@@ -233,8 +235,10 @@ typedef struct _widget_vtable_t {
   widget_on_click_t on_click;
   widget_on_keyup_t on_keyup;
   widget_on_keydown_t on_keydown;
+  widget_on_paint_background_t on_paint_background;
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;
+  widget_on_paint_done_t on_paint_done;
   widget_on_pointer_down_t on_pointer_down;
   widget_on_pointer_move_t on_pointer_move;
   widget_on_pointer_up_t on_pointer_up;
@@ -736,9 +740,6 @@ ret_t widget_paint(widget_t* widget, canvas_t* c);
  */
 ret_t widget_dispatch(widget_t* widget, event_t* e);
 
-ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
-ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
-
 /**
  * @method widget_get_prop
  * 通用的获取控件属性的函数。
@@ -761,14 +762,6 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
  */
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 
-ret_t widget_on_paint(widget_t* widget, canvas_t* c);
-ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
-ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
-ret_t widget_on_click(widget_t* widget, pointer_event_t* e);
-ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
-ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
-ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
-
 /**
  * @method widget_grab
  * 让指定子控件抓住事件。抓住之后，事件由窗口直接分发给该控件。
@@ -788,6 +781,19 @@ ret_t widget_grab(widget_t* widget, widget_t* child);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_ungrab(widget_t* widget, widget_t* child);
+
+/*虚函数的包装*/
+ret_t widget_on_paint(widget_t* widget, canvas_t* c);
+ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
+ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
+ret_t widget_on_click(widget_t* widget, pointer_event_t* e);
+ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
+ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
+ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
+ret_t widget_on_paint_background(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
 /**
  * @method widget_destroy

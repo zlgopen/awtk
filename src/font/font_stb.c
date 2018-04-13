@@ -19,10 +19,10 @@
  *
  */
 
+#define STB_TRUETYPE_IMPLEMENTATION
+
 #include "base/mem.h"
 #include "font/font_stb.h"
-
-#define STB_TRUETYPE_IMPLEMENTATION
 #include "stb/stb_truetype.h"
 
 typedef struct _font_stb_t {

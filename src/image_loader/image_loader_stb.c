@@ -21,9 +21,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "image_loader/image_loader_stb.h"
 #include "base/mem.h"
 #include "stb/stb_image.h"
+#include "image_loader/image_loader_stb.h"
 
 static ret_t image_stb_destroy(bitmap_t* image) {
   stbi_image_free((uint8_t*)(image->data));

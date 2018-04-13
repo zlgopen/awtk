@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
   FILE* fp = fopen("ascii.txt", "wb+");
   if (fp != NULL) {
     for (c = 0; c < 128; c++) {
-      if (isprint(c)) {
+      if (isprint(c) && !isspace(c)) {
         printf("%c", c);
         fprintf(fp, "%c", c);
       }

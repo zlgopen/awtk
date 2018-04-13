@@ -51,11 +51,12 @@ int main(int argc, char** argv) {
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
   return_value_if_fail(ttf_buff != NULL, 0);
+  
+  font = font_stb_create("default", ttf_buff, size);
 
   str_buff = read_file(str_filename, &size);
   return_value_if_fail(str_buff != NULL, 0);
 
-  font = font_stb_create("default", ttf_buff, size);
   if (font != NULL) {
     font_gen(font, (uint16_t)font_size, str_buff, output_filename);
   }

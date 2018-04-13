@@ -29,6 +29,7 @@
 #include "base/image_manager.h"
 #include "base/resource_manager.h"
 
+#ifndef WITH_NANOVG
 #ifdef WITH_STB_FONT
 #include "font/font_stb.h"
 #endif /*WITH_STB_FONT*/
@@ -36,18 +37,26 @@
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"
 #endif /*WITH_STB_IMAGE*/
+#define WITH_BITMAP_FONT 1
+#else
+#undef WITH_NANOVG
+#undef WITH_STB_FONT
+#undef WITH_BITMAP_FONT
+#undef WITH_STB_IMAGE
+#endif /*WITH_NANOVG*/
 
 static ret_t lftk_add_font(const resource_info_t* res) {
   if (res->subtype == RESOURCE_TYPE_FONT_BMP) {
+#ifdef WITH_BITMAP_FONT
     font_manager_add(default_fm(), font_bitmap_create(res->name, res->data, res->size));
-#ifdef WITH_STB_FONT
+#endif
   } else if (res->subtype == RESOURCE_TYPE_FONT_TTF) {
+#ifdef WITH_STB_FONT
     font_manager_add(default_fm(), font_stb_create(res->name, res->data, res->size));
 #endif /*WITH_STB_FONT*/
   } else {
-    log_debug("not support font type\n");
+    log_debug("not support font type:%d\n", res->subtype);
   }
-
   return RET_OK;
 }
 

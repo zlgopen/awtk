@@ -63,10 +63,18 @@ wh_t canvas_get_height(canvas_t* c) {
 ret_t canvas_set_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (r) {
-    c->clip_left = r->x;
-    c->clip_top = r->y;
-    c->clip_right = r->x + r->w;
-    c->clip_bottom = r->y + r->h;
+    if (c->lcd->set_clip_rect != NULL) {
+      c->clip_left = 0;
+      c->clip_top = 0;
+      c->clip_right = c->lcd->w;
+      c->clip_bottom = c->lcd->h;
+      lcd_set_clip_rect(c->lcd, r);
+    } else {
+      c->clip_left = r->x;
+      c->clip_top = r->y;
+      c->clip_right = r->x + r->w;
+      c->clip_bottom = r->y + r->h;
+    }
   } else {
     c->clip_left = 0;
     c->clip_top = 0;
@@ -80,7 +88,8 @@ ret_t canvas_set_clip_rect(canvas_t* c, rect_t* r) {
 ret_t canvas_set_fill_color(canvas_t* c, color_t color) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  lcd_set_fill_color(c->lcd, color);;
+  lcd_set_fill_color(c->lcd, color);
+  ;
 
   return RET_OK;
 }
@@ -110,16 +119,21 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
 }
 
 ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size) {
-  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
   c->font_name = name;
   c->font_size = size;
-  c->font = font_manager_find(c->font_manager, name, size);
+  if (c->lcd->set_font_name != NULL) {
+    lcd_set_font_name(c->lcd, name);
+    lcd_set_font_size(c->lcd, size);
+  } else {
+    c->font = font_manager_find(c->font_manager, name, size);
+  }
 
   return RET_OK;
 }
 
-wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
+static wh_t canvas_measure_text_default(canvas_t* c, wchar_t* str, int32_t nr) {
   glyph_t g;
   wh_t w = 0;
   int32_t i = 0;
@@ -139,6 +153,16 @@ wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
   }
 
   return w;
+}
+
+wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
+  return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
+
+  if (c->lcd->measure_text) {
+    return lcd_measure_text(c->lcd, str, nr);
+  } else {
+    return canvas_measure_text_default(c, str, nr);
+  }
 }
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect) {
@@ -310,12 +334,16 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 static ret_t canvas_stroke_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return_value_if_fail(c != NULL && w > 0 && h > 0, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL && c->lcd != NULL && w > 0 && h > 0, RET_BAD_PARAMS);
 
-  canvas_draw_hline_impl(c, x, y, w);
-  canvas_draw_hline_impl(c, x, y + h - 1, w);
-  canvas_draw_vline_impl(c, x, y, h);
-  canvas_draw_vline_impl(c, x + w - 1, y, h);
+  if (c->lcd->stroke_rect != NULL) {
+    lcd_stroke_rect(c->lcd, x, y, w, h);
+  } else {
+    canvas_draw_hline_impl(c, x, y, w);
+    canvas_draw_hline_impl(c, x, y + h - 1, w);
+    canvas_draw_vline_impl(c, x, y, h);
+    canvas_draw_vline_impl(c, x + w - 1, y, h);
+  }
 
   return RET_OK;
 }
@@ -404,9 +432,12 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
 }
 
 ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y) {
-  return_value_if_fail(c != NULL && str != NULL, RET_BAD_PARAMS);
-
-  return canvas_draw_text_impl(c, str, nr, c->ox + x, c->oy + y);
+  return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, RET_BAD_PARAMS);
+  if (c->lcd->draw_text != NULL) {
+    return lcd_draw_text(c->lcd, str, nr, c->ox + x, c->oy + y);
+  } else {
+    return canvas_draw_text_impl(c, str, nr, c->ox + x, c->oy + y);
+  }
 }
 
 static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t* d) {

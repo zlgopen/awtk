@@ -19,6 +19,7 @@
  *
  */
 
+#include <wctype.h>
 #include "base/mem.h"
 #include "base/utf8.h"
 #include "common/utils.h"
@@ -78,6 +79,10 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
 
     iter->c = c;
     iter->offset = p - output_buff;
+
+    if(iswspace(c)) {
+      continue;
+    }
     printf("%d/%d: 0x%04x\n", i, size, c);
     if (font_find_glyph(font, c, &g, font_size) == RET_OK) {
       uint32_t data_size = g.w * g.h;
