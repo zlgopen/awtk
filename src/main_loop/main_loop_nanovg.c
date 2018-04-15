@@ -195,7 +195,7 @@ static ret_t main_loop_nanovg_create_window(main_loop_nanovg_t* l, font_manager_
   }
 
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-  //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  // SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
@@ -224,7 +224,7 @@ main_loop_t* main_loop_init(int w, int h) {
   main_loop_t* base = &(loop.base);
 
   memset(&loop, 0x00, sizeof(loop));
-  
+
   base->run = main_loop_nanovg_run;
   base->quit = main_loop_nanovg_quit;
   base->destroy = main_loop_nanovg_destroy;

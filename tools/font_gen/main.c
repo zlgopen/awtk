@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
   return_value_if_fail(ttf_buff != NULL, 0);
-  
+
   font = font_stb_create("default", ttf_buff, size);
 
   str_buff = read_file(str_filename, &size);

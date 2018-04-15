@@ -51,3 +51,4 @@ gladLoadGL();
 编译没有问题了，不过运行起来就崩掉了。调试时发现glGetString(GL\_VERSION)返回NULL，这个简单的函数居然会失败！后来在google搜索
 到glGetString(GL\_VERSION)失败的原因: gladLoadGL需要放在SDL\_GL\_CreateContext之后调用。而我把它放在了SDL\_Init和SDL\_GL\_CreateContext之间了。
 
+

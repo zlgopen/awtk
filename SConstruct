@@ -14,8 +14,10 @@ if OS_NAME == 'Windows':
   LCD='SDL'
 else:
   LCD='NANOVG'
-
+  
+LCD='SDL'
 LCD='NANOVG'
+
 os.environ['LCD'] = LCD
 os.environ['BIN_DIR'] = BIN_DIR;
 os.environ['LIB_DIR'] = LIB_DIR;
@@ -79,6 +81,7 @@ SConscript([
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tools/res_gen/SConscript', 
+  'tools/ui_gen/xml_to_ui/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
   '3rd/lua/SConscript',

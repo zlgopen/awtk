@@ -103,7 +103,7 @@ ret_t application_init() {
   widget_use_style(label, "2:left");
 
   label = label_create(win, 100, 40, 80, 30);
-  widget_set_text(label, L"Center");
+  widget_set_text(label, L"C enter");
 #ifdef WITH_STM32F103ZE_RAW
   widget_use_style(label, "3:center");
 #else

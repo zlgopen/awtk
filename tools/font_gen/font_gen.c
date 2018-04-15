@@ -80,7 +80,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
     iter->c = c;
     iter->offset = p - output_buff;
 
-    if(iswspace(c)) {
+    if (iswspace(c)) {
       continue;
     }
     printf("%d/%d: 0x%04x\n", i, size, c);

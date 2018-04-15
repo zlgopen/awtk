@@ -69,10 +69,10 @@ ret_t vgcanvas_translate(vgcanvas_t* vg, float_t x, float_t y) {
   return vg->vt->translate(vg, x, y);
 }
 
-ret_t vgcanvas_clip(vgcanvas_t* vg) {
-  return_value_if_fail(vg != NULL && vg->vt->clip != NULL, RET_BAD_PARAMS);
+ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
+  return_value_if_fail(vg != NULL && vg->vt->clip_rect != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->clip(vg);
+  return vg->vt->clip_rect(vg, x, y, w, h);
 }
 
 ret_t vgcanvas_fill(vgcanvas_t* vg) {
@@ -170,11 +170,23 @@ bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, float_t x, float_t y) {
 }
 
 ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
-  return_value_if_fail(vg != NULL && vg->vt->set_font != NULL && font != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(vg != NULL && vg->vt->set_font != NULL, RET_BAD_PARAMS);
+
+  if (font == NULL) {
+    font = STR_DEFAULT_FONT;
+  }
 
   vg->font = font;
 
   return vg->vt->set_font(vg, font);
+}
+
+ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size) {
+  return_value_if_fail(vg != NULL && vg->vt->set_font_size != NULL, RET_BAD_PARAMS);
+
+  vg->font_size = size;
+
+  return vg->vt->set_font_size(vg, size);
 }
 
 ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* text_align) {
@@ -192,7 +204,7 @@ ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
 
   vg->text_baseline = text_baseline;
 
-  return vg->vt->set_text_align(vg, text_baseline);
+  return vg->vt->set_text_baseline(vg, text_baseline);
 }
 
 ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
@@ -277,4 +289,28 @@ ret_t vgcanvas_set_miter_limit(vgcanvas_t* vg, float_t value) {
   vg->miter_limit = value;
 
   return vg->vt->set_miter_limit(vg, value);
+}
+
+ret_t vgcanvas_begin_frame(vgcanvas_t* vg, rect_t* dirty_rect) {
+  return_value_if_fail(vg != NULL && vg->vt->begin_frame != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->begin_frame(vg, dirty_rect);
+}
+
+ret_t vgcanvas_save(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt->save != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->save(vg);
+}
+
+ret_t vgcanvas_restore(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt->restore != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->restore(vg);
+}
+
+ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt->end_frame != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->end_frame(vg);
 }

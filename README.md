@@ -91,6 +91,10 @@ bin\demo1
 
 ## 最新动态
 
+* 2018/04/15
+    * 增加nanovg实现的vgcanvas。
+    * 增加基于vgcanvas实现的lcd。
+
 * 2018/04/14
     * PC环境缺省使用SDL2+nanovg渲染，解决在MacOS上文字模糊的问题。
     * 调整lcd的接口，使之具有更强的适应性。 

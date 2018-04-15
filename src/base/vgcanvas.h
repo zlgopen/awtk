@@ -22,12 +22,16 @@
 #ifndef LFTK_VG_CANVAS_H
 #define LFTK_VG_CANVAS_H
 
+#include "base/rect.h"
 #include "base/bitmap.h"
 
 BEGIN_C_DECLS
 
 struct _vgcanvas_t;
 typedef struct _vgcanvas_t vgcanvas_t;
+
+typedef ret_t (*vgcanvas_begin_frame_t)(vgcanvas_t* vg, rect_t* dirty_rect);
+typedef ret_t (*vgcanvas_end_frame_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_reset_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_flush_t)(vgcanvas_t* vg);
@@ -60,10 +64,11 @@ typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, 
                                           float_t d, float_t e, float_t f);
 
 typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
-typedef ret_t (*vgcanvas_clip_t)(vgcanvas_t* vg);
+typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 typedef ret_t (*vgcanvas_stroke_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_set_font_t)(vgcanvas_t* vg, const char* font);
+typedef ret_t (*vgcanvas_set_font_size_t)(vgcanvas_t* vg, float_t size);
 typedef ret_t (*vgcanvas_set_text_align_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_text_baseline_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
@@ -88,6 +93,7 @@ typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_destroy_t)(vgcanvas_t* vg);
 
 typedef struct _vgcanvas_vtable_t {
+  vgcanvas_begin_frame_t begin_frame;
   vgcanvas_reset_t reset;
   vgcanvas_flush_t flush;
   vgcanvas_clear_rect_t clear_rect;
@@ -111,10 +117,11 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_transform_t set_transform;
 
   vgcanvas_fill_t fill;
-  vgcanvas_clip_t clip;
+  vgcanvas_clip_rect_t clip_rect;
   vgcanvas_stroke_t stroke;
 
   vgcanvas_set_font_t set_font;
+  vgcanvas_set_font_size_t set_font_size;
   vgcanvas_set_text_align_t set_text_align;
   vgcanvas_set_text_baseline_t set_text_baseline;
   vgcanvas_fill_text_t fill_text;
@@ -132,6 +139,7 @@ typedef struct _vgcanvas_vtable_t {
 
   vgcanvas_save_t save;
   vgcanvas_restore_t restore;
+  vgcanvas_end_frame_t end_frame;
 
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
@@ -199,6 +207,12 @@ struct _vgcanvas_t {
    */
   const char* font;
   /**
+   * @property {float_t} font_size
+   * @readonly
+   * 字体大小。
+   */
+  float_t font_size;
+  /**
    * @property {char*} text_align
    * @readonly
    * text_align。
@@ -243,11 +257,11 @@ struct _vgcanvas_t {
  * @constructor
  * @param {uint32_t} w 宽度
  * @param {uint32_t} h 高度
- * @param {uint32_t*} buff framebuffer
+ * @param {void*} data framebuffer或其它ctx。
  *
  * @return {vgcanvas_t} 返回vgcanvas
  */
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff);
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* data);
 
 /**
  * @method vgcanvas_begin_path
@@ -257,6 +271,16 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_begin_path(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_begin_frame
+ * 开始绘制，系统内部调用。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {rect_t*} dirty_rect 需要绘制的区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_begin_frame(vgcanvas_t* vg, rect_t* dirty_rect);
 
 /**
  * @method vgcanvas_move_to
@@ -506,13 +530,17 @@ ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, fl
 ret_t vgcanvas_fill(vgcanvas_t* vg);
 
 /**
- * @method vgcanvas_clip
- * clip
+ * @method vgcanvas_clip_rect
+ * clip_rect
  * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} x x坐标。
+ * @param {float_t} y y坐标。
+ * @param {float_t} w 宽度。
+ * @param {float_t} h 高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_clip(vgcanvas_t* vg);
+ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 
 /**
  * @method vgcanvas_stroke
@@ -532,6 +560,16 @@ ret_t vgcanvas_stroke(vgcanvas_t* vg);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font);
+
+/**
+ * @method vgcanvas_set_font_size
+ * set font size
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} font 字体大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size);
 
 /**
  * @method vgcanvas_set_text_align
@@ -692,6 +730,15 @@ ret_t vgcanvas_save(vgcanvas_t* vg);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_restore(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_end_frame
+ * 结束绘制。系统内部调用。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_end_frame(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_destroy

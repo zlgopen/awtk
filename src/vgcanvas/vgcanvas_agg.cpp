@@ -28,6 +28,18 @@ typedef struct _vgcanvas_agg_t {
   tw::Drawing<tw::rgba32>* canvas;
 } vgcanvas_agg_t;
 
+ret_t vgcanvas_agg_begin_frame(vgcanvas_t* vg, rect_t* dirty_rect) {
+  (void)vg;
+  (void)dirty_rect;
+
+  return RET_OK;
+}
+
+ret_t vgcanvas_agg_end_frame(vgcanvas_t* vg) {
+  (void)vg;
+  return RET_OK;
+}
+
 static ret_t vgcanvas_agg_reset(vgcanvas_t* vg) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
@@ -200,7 +212,7 @@ static ret_t vgcanvas_agg_fill(vgcanvas_t* vg) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_clip(vgcanvas_t* vg) {
+static ret_t vgcanvas_agg_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
 
@@ -216,6 +228,13 @@ static ret_t vgcanvas_agg_stroke(vgcanvas_t* vg) {
 }
 
 static ret_t vgcanvas_agg_set_font(vgcanvas_t* vg, const char* font) {
+  vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
+  return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_set_font_size(vgcanvas_t* vg, float_t size) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
   /*TODO*/
@@ -340,7 +359,8 @@ static ret_t vgcanvas_agg_restore(vgcanvas_t* vg) {
 
 static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
 
-static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
+static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
+                                     vgcanvas_agg_reset,
                                      vgcanvas_agg_flush,
                                      vgcanvas_agg_clear_rect,
                                      vgcanvas_agg_begin_path,
@@ -354,23 +374,21 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
                                      vgcanvas_agg_ellipse,
                                      vgcanvas_agg_round_rect,
                                      vgcanvas_agg_close_path,
-
                                      vgcanvas_agg_scale,
                                      vgcanvas_agg_rotate,
                                      vgcanvas_agg_translate,
                                      vgcanvas_agg_transform,
                                      vgcanvas_agg_set_transform,
-
                                      vgcanvas_agg_fill,
-                                     vgcanvas_agg_clip,
+                                     vgcanvas_agg_clip_rect,
                                      vgcanvas_agg_stroke,
                                      vgcanvas_agg_set_font,
+                                     vgcanvas_agg_set_font_size,
                                      vgcanvas_agg_set_text_align,
                                      vgcanvas_agg_set_text_baseline,
                                      vgcanvas_agg_fill_text,
                                      vgcanvas_agg_measure_text,
                                      vgcanvas_agg_draw_image,
-
                                      vgcanvas_agg_set_antialias,
                                      vgcanvas_agg_set_global_alpha,
                                      vgcanvas_agg_set_line_width,
@@ -379,13 +397,12 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_reset,
                                      vgcanvas_agg_set_line_join,
                                      vgcanvas_agg_set_line_cap,
                                      vgcanvas_agg_set_miter_limit,
-
                                      vgcanvas_agg_save,
                                      vgcanvas_agg_restore,
-
+                                     vgcanvas_agg_end_frame,
                                      vgcanvas_agg_destroy};
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)MEM_ZALLOC(vgcanvas_agg_t);
   return_value_if_fail(agg != NULL, NULL);
 
@@ -393,7 +410,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t* buff) {
   agg->base.vt = &vt;
   agg->base.w = w;
   agg->base.h = h;
-  agg->base.buff = buff;
+  agg->base.buff = (uint32_t*)buff;
 
   return &(agg->base);
 }
