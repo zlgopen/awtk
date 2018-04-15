@@ -672,7 +672,8 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
-
+	(void)dst_w;
+	
   return RET_OK;
 }
 
@@ -845,6 +846,10 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_untranslate(c, dst->x, dst->y);
 
+	(void)x;
+	(void)y;
+	(void)dst_w;
+	
   return RET_OK;
 }
 
