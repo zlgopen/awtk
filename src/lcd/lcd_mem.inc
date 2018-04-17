@@ -81,6 +81,15 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   return RET_OK;
 }
 
+color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
+  wh_t width = lcd->w;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  pixel_t* pixels = (pixel_t*)mem->pixels;
+  pixel_t p = pixels[y * width + x];
+
+  return to_color(p);
+}
+
 static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   wh_t i = 0;
 

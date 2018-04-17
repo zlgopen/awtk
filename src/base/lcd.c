@@ -129,6 +129,17 @@ ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   return lcd->draw_points(lcd, points, nr);
 }
 
+color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
+  color_t c = color_init(0, 0, 0, 0);
+  return_value_if_fail(lcd != NULL && x >= 0 && y >= 0 && x < lcd->w && y < lcd->h, c);
+
+  if(lcd->get_point_color != NULL) {
+    return lcd->get_point_color(lcd, x, y);
+  } else {
+    return lcd->fill_color;
+  }
+}
+
 ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   return_value_if_fail(lcd != NULL && lcd->draw_image != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);

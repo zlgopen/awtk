@@ -45,6 +45,8 @@ typedef ret_t (*lcd_set_font_size_t)(lcd_t* lcd, uint32_t size);
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
 typedef ret_t (*lcd_draw_hline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
 typedef ret_t (*lcd_draw_points_t)(lcd_t* lcd, point_t* points, uint32_t nr);
+typedef color_t (*lcd_get_point_color_t)(lcd_t* lcd, xy_t x, xy_t y);
+
 typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -80,6 +82,7 @@ struct _lcd_t {
   lcd_draw_text_t draw_text;
   lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
+  lcd_get_point_color_t get_point_color;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
 
@@ -251,6 +254,17 @@ ret_t lcd_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr);
+
+/**
+ * @method lcd_get_point_color_t
+ * 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y);
 
 /**
  * @method lcd_fill_rect
