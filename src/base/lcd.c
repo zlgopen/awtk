@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  lcd interface
@@ -161,7 +161,7 @@ wh_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
 }
 
 ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y) {
-  return_value_if_fail(lcd != NULL && lcd->draw_text != NULL && str != NULL, 0);
+  return_value_if_fail(lcd != NULL && lcd->draw_text != NULL && str != NULL, RET_OK);
 
   return lcd->draw_text(lcd, str, nr, x, y);
 }
