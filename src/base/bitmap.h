@@ -31,35 +31,103 @@ typedef struct _bitmap_t bitmap_t;
 
 typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 
-enum { IMAGE_FMT_NONE = 0, IMAGE_FMT_RGBA, IMAGE_FTM_1555, IMAGE_FTM_565 };
+/**
+ * @enum bitmap_format_t
+ * @prefix BITMAP_FMT_ 
+ * 位图格式常量定义。
+ */
+typedef enum _bitmap_format_t {
+  /**
+   * @const BITMAP_FMT_NONE
+   * 无效格式。
+   */
+  BITMAP_FMT_NONE = 0,
+  /**
+   * @const BITMAP_FMT_RGBA
+   * 一个像素占用4个字节，RGBA四个通道占一个字节。
+   */
+  BITMAP_FMT_RGBA,
+  /**
+   * @const BITMAP_FMT_RGB565
+   * 一个像素占用2个字节，RGB分别占用5,6,5位。
+   */
+  BITMAP_FTM_RGB565
+} bitmap_format_t;
 
+/**
+ * @enum _bitmap_format_t
+ * @prefix BITMAP_FLAG_
+ * 位图标志常量定义。
+ */
+typedef enum _bitmap_flag_t {
+  /**
+   * @const BITMAP_FLAG_NONE
+   * 无特殊标志。
+   */
+  BITMAP_FLAG_NONE = 0,
+  /**
+   * @const BITMAP_FLAG_OPAQUE
+   * 不透明图片。
+   */
+  BITMAP_FLAG_OPAQUE = 1,
+  /**
+   * @const BITMAP_FLAG_IMMUTABLE
+   * 图片内容不会变化。
+   */
+  BITMAP_FLAG_IMMUTABLE = 2
+} bitmap_flag_t;
+
+/**
+ * @class bitmap_t 
+ * 位图。
+ */
 struct _bitmap_t {
+  /**
+   * @property {wh_t} w
+   * @readonly
+   * 宽度。
+   */
   wh_t w;
+  /**
+   * @property {wh_t} h
+   * @readonly
+   * 高度。
+   */
   wh_t h;
-  uint8_t flag;
-  uint8_t format;
-  uint16_t tex_id; /*texture id为opengl保留*/
+  /**
+   * @property {uint16_t} flags
+   * @readonly
+   * 标志。请参考{bitmap_flag_t}。
+   */
+  uint16_t flags;
+  /**
+   * @property {uint16_t} format 
+   * @readonly
+   * 格式。请参考{bitmap_format_t}。
+   */
+  uint16_t format;
+  /**
+   * @property {char*} name
+   * @readonly
+   * 名称。
+   */
   const char* name;
+  /**
+   * @property {uint8_t*} data
+   * @readonly
+   * 图片数据。
+   */
   const uint8_t* data;
+
   bitmap_destroy_t destroy;
 };
 
-struct _image_loader_t;
-typedef struct _image_loader_t image_loader_t;
-
-typedef bool_t (*image_loader_match_t)(image_loader_t* loader, uint16_t type);
-typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size,
-                                     bitmap_t* bitmap);
-
-struct _image_loader_t {
-  image_loader_match_t match;
-  image_loader_load_t load;
-};
-
-bool_t image_loader_match(image_loader_t* loader, uint16_t type);
-ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size,
-                        bitmap_t* bitmap);
-
+/**
+ * @method bitmap_destroy
+ * 销毁图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t bitmap_destroy(bitmap_t* bitmap);
 
 /**

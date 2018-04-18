@@ -1,7 +1,7 @@
-/**
- * File:   stb.h
+﻿/**
+ * File:   image_loader.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  stb image loader
+ * Brief:  image_loader interface
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -15,19 +15,17 @@
 /**
  * History:
  * ================================================================
- * 2018-01-21 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-04-18 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef LFTK_IMAGE_LOADER_STB_H
-#define LFTK_IMAGE_LOADER_STB_H
-
 #include "base/image_loader.h"
 
-BEGIN_C_DECLS
+ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size,
+                        bitmap_t* bitmap) {
+  return_value_if_fail(loader != NULL && loader->load != NULL && buff != NULL && bitmap != NULL,
+                       RET_BAD_PARAMS);
 
-image_loader_t* image_loader_stb();
+  return loader->load(loader, buff, size, bitmap);
+}
 
-END_C_DECLS
-
-#endif /*LFTK_IMAGE_LOADER_STB_H*/

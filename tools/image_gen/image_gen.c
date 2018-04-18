@@ -49,6 +49,7 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
 
   header->w = image->w;
   header->h = image->h;
+  header->flags = image->flags;
   header->format = image->format;
   memcpy(header->data, image->data, size);
 

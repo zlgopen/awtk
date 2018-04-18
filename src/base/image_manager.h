@@ -23,14 +23,15 @@
 #define LFTK_IMAGE_MANAGER_H
 
 #include "base/array.h"
-#include "base/bitmap.h"
+#include "base/image_loader.h"
 
 BEGIN_C_DECLS
 
 typedef struct _bitmap_header_t {
   uint16_t w;
   uint16_t h;
-  uint32_t format;
+  uint16_t flags;
+  uint16_t format;
   uint8_t data[4];
 } bitmap_header_t;
 

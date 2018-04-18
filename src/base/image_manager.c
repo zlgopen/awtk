@@ -57,6 +57,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     const bitmap_header_t* header = (const bitmap_header_t*)res->data;
     image->w = header->w;
     image->h = header->h;
+    image->flags = header->flags;
     image->format = header->format;
     image->name = res->name;
     image->data = header->data;

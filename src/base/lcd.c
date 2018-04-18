@@ -133,7 +133,7 @@ color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   color_t c = color_init(0, 0, 0, 0);
   return_value_if_fail(lcd != NULL && x >= 0 && y >= 0 && x < lcd->w && y < lcd->h, c);
 
-  if(lcd->get_point_color != NULL) {
+  if (lcd->get_point_color != NULL) {
     return lcd->get_point_color(lcd, x, y);
   } else {
     return lcd->fill_color;
