@@ -38,7 +38,10 @@ static inline pixel_t blend_color(color_t bg, color_t fg, uint8_t a) {
 
 static inline color_t to_color(pixel_t pixel) {
   color_t c;
-  c.color = pixel;
+  c.rgba.r = (pixel >> 24) & 0xff;
+  c.rgba.g = (pixel >> 16) & 0xff;
+  c.rgba.b = (pixel >> 8) & 0xff;
+  c.rgba.a = pixel & 0xff;
 
   return c;
 }
