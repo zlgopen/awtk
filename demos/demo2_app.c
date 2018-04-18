@@ -24,7 +24,6 @@
 #include "base/image_manager.h"
 
 static ret_t on_paint_9patch(void* ctx, event_t* e) {
-  rect_t s;
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -80,6 +79,21 @@ static ret_t on_paint_line(void* ctx, event_t* e) {
 
   return RET_OK;
 }
+
+static ret_t on_paint_points(void* ctx, event_t* e) {
+  point_t points[] = {{100, 100},{100, 101},{100, 102}, {100, 103}};
+  color_t fill_color = color_init(0xe0, 0xe0, 0xe0, 0xff);
+  color_t stroke_color = color_init(0x80, 0x80, 0x80, 0xff);
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  canvas_set_fill_color(c, fill_color);
+
+  canvas_set_stroke_color(c, stroke_color);
+  canvas_draw_points(c, points, ARRAY_SIZE(points));
+
+  return RET_OK;
+}
+
 
 static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   rect_t r;
@@ -259,8 +273,6 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
 }
 
 static ret_t on_paint_vg(void* ctx, event_t* e) {
-  rect_t r;
-  bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
@@ -287,7 +299,7 @@ ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
-  widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_points, NULL);
 
   return RET_OK;
 }

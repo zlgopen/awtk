@@ -166,7 +166,7 @@ wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
 }
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect) {
-  return_value_if_fail(c != NULL && dirty_rect != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   c->ox = 0;
   c->oy = 0;

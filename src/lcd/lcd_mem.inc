@@ -72,9 +72,9 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
     point_t* point = points + i;
     pixel_t* p = pixels + point->y * width + point->x;
     if (color.rgba.a == 0xff) {
-      p[i] = pixel;
+      p[0] = pixel;
     } else if (color.rgba.a) {
-      p[i] = blend_pixel(p[i], color);
+      p[0] = blend_pixel(p[i], color);
     }
   }
 
@@ -215,6 +215,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->draw_image = lcd_mem_draw_image;
   base->draw_glyph = lcd_mem_draw_glyph;
   base->draw_points = lcd_mem_draw_points;
+  base->get_point_color = lcd_mem_get_point_color;
   base->get_vgcanvas = lcd_mem_get_vgcanvas;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = lcd_mem_destroy;
