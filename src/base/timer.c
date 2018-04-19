@@ -19,9 +19,9 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/timer.h"
 #include "base/array.h"
-#include "base/mem.h"
 
 static uint32_t s_timer_id = 1;
 static array_t* s_timer_manager = NULL;
@@ -82,7 +82,8 @@ ret_t timer_remove(uint32_t timer_id) {
   ret = (timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
   return_value_if_fail(ret != NULL, RET_NOT_FOUND);
   if (array_remove(s_timer_manager, compare_timer, &timer)) {
-    MEM_FREE(ret);
+    memset(ret, 0x00, sizeof(timer_info_t));
+    /*will be removed on next check*/
   }
 
   return RET_OK;
@@ -113,8 +114,14 @@ ret_t timer_check() {
   now = s_get_time();
   timers = (timer_info_t**)s_timer_manager->elms;
   for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
+    uint32_t end = 0;
     timer_info_t* iter = timers[i];
-    uint32_t end = iter->start + iter->duration_ms;
+    if(iter->on_timer == NULL) {
+      /*it is removed*/
+      continue;
+    }
+
+    end = iter->start + iter->duration_ms;
     if (end <= now) {
       iter->repeat = RET_REPEAT == iter->on_timer(iter);
       if (iter->repeat) {
@@ -138,4 +145,21 @@ ret_t timer_check() {
   return RET_OK;
 }
 
-uint32_t timer_count() { return ensure_timer_manager() == RET_OK ? s_timer_manager->size : 0; }
+uint32_t timer_count() { 
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  uint32_t count = 0;
+
+  if(s_timer_manager && s_timer_manager->size > 0) {
+    timer_info_t** timers = (timer_info_t**)s_timer_manager->elms;
+    for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
+      timer_info_t* iter = timers[i];
+      if(iter->on_timer != NULL) {
+        count++;
+      } 
+    }
+  }
+
+  return count;
+}
+
