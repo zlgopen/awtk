@@ -26,6 +26,7 @@
 #include "base/window_manager.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/timer.h"
+#include "base/idle.h"
 
 #include "glad/glad.h"
 #include <SDL2/SDL.h>
@@ -153,6 +154,7 @@ static ret_t main_loop_nanovg_run(main_loop_t* l) {
     timer_check();
     main_loop_nanovg_dispatch(loop);
     main_loop_nanovg_paint(loop);
+    idle_dispatch();
     SDL_Delay(30);
   }
 

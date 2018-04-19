@@ -32,6 +32,7 @@
 #include "touch.h"
 #include "usart.h"
 
+#include "base/idle.h"
 #include "base/timer.h"
 #include "lcd/lcd_reg.h"
 #include "base/event_queue.h"
@@ -139,6 +140,8 @@ static ret_t main_loop_stm32_raw_run(main_loop_t* l) {
     timer_check();
     main_loop_stm32_raw_dispatch(loop);
     main_loop_stm32_raw_paint(loop);
+    idle_dispatch();
+
     delay_ms(100);
   }
 

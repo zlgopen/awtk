@@ -20,9 +20,10 @@
  */
 
 #include "main_loop/main_loop_sdl2.h"
-#include "base/font_manager.h"
 #include "base/window_manager.h"
+#include "base/font_manager.h"
 #include "lcd/lcd_sdl2.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include <SDL2/SDL.h>
 
@@ -147,6 +148,7 @@ static ret_t main_loop_sdl2_run(main_loop_t* l) {
     timer_check();
     main_loop_sdl2_dispatch(loop);
     main_loop_sdl2_paint(loop);
+    idle_dispatch();
   }
 
   return RET_OK;
