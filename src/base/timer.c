@@ -116,7 +116,7 @@ ret_t timer_check() {
   for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
     uint32_t end = 0;
     timer_info_t* iter = timers[i];
-    if(iter->on_timer == NULL) {
+    if (iter->on_timer == NULL) {
       /*it is removed*/
       continue;
     }
@@ -145,21 +145,20 @@ ret_t timer_check() {
   return RET_OK;
 }
 
-uint32_t timer_count() { 
+uint32_t timer_count() {
   uint32_t i = 0;
   uint32_t nr = 0;
   uint32_t count = 0;
 
-  if(s_timer_manager && s_timer_manager->size > 0) {
+  if (s_timer_manager && s_timer_manager->size > 0) {
     timer_info_t** timers = (timer_info_t**)s_timer_manager->elms;
     for (i = 0, nr = s_timer_manager->size; i < nr; i++) {
       timer_info_t* iter = timers[i];
-      if(iter->on_timer != NULL) {
+      if (iter->on_timer != NULL) {
         count++;
-      } 
+      }
     }
   }
 
   return count;
 }
-

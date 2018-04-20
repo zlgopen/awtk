@@ -167,13 +167,13 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (strcmp(name, WIDGET_PROP_VALUE) == 0) {
     value_set_uint8(v, progress_bar->value);
     return RET_OK;
-  } else if (strcmp(name, "vertical") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_VERTICAL) == 0) {
     value_set_bool(v, progress_bar->vertical);
     return RET_OK;
-  } else if (strcmp(name, "show_text") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_SHOW_TEXT) == 0) {
     value_set_bool(v, progress_bar->show_text);
     return RET_OK;
   }
@@ -184,11 +184,11 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
 static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (strcmp(name, WIDGET_PROP_VALUE) == 0) {
     return progress_bar_set_value(widget, value_int(v));
-  } else if (strcmp(name, "vertical") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_VERTICAL) == 0) {
     return progress_bar_set_vertical(widget, value_bool(v));
-  } else if (strcmp(name, "show_text") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_SHOW_TEXT) == 0) {
     return progress_bar_set_show_text(widget, value_bool(v));
   }
 

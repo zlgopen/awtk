@@ -17,8 +17,8 @@ TEST(Button, basic) {
   ASSERT_EQ(wcscmp(b->text.str, L"Cancel"), 0);
 
   value_set_wstr(&v1, L"button");
-  ASSERT_EQ(widget_set_prop(b, "text", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "text", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_TEXT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_TEXT, &v2), RET_OK);
   ASSERT_EQ(wcscmp(v1.value.wstr, v2.value.wstr), 0);
 
   widget_destroy(b);

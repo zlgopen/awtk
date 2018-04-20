@@ -27,6 +27,15 @@
 
 BEGIN_C_DECLS
 
+/*用于离线渲染*/
+typedef struct _framebuffer_object_t {
+  int w;
+  int h;
+  int id;
+  void* handle;
+  float_t ratio;
+} framebuffer_object_t;
+
 struct _vgcanvas_t;
 typedef struct _vgcanvas_t vgcanvas_t;
 
@@ -90,6 +99,11 @@ typedef ret_t (*vgcanvas_set_miter_limit_t)(vgcanvas_t* vg, float_t value);
 typedef ret_t (*vgcanvas_save_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
+typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+
 typedef ret_t (*vgcanvas_destroy_t)(vgcanvas_t* vg);
 
 typedef struct _vgcanvas_vtable_t {
@@ -141,6 +155,11 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_restore_t restore;
   vgcanvas_end_frame_t end_frame;
 
+  vgcanvas_create_fbo_t create_fbo;
+  vgcanvas_destroy_fbo_t destroy_fbo;
+  vgcanvas_bind_fbo_t bind_fbo;
+  vgcanvas_unbind_fbo_t unbind_fbo;
+
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
 
@@ -161,6 +180,12 @@ struct _vgcanvas_t {
    * canvas的高度
    */
   uint32_t h;
+  /**
+   * @property {float_t} ratio
+   * @readonly
+   * 显示比例。
+   */
+  uint32_t ratio;
   /**
    * @property {bool_t} anti_alias
    * @readonly
@@ -748,6 +773,11 @@ ret_t vgcanvas_end_frame(vgcanvas_t* vg);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_destroy(vgcanvas_t* vg);
+
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 
 END_C_DECLS
 

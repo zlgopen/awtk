@@ -22,6 +22,7 @@
 #ifndef TYPES_DEF_H
 #define TYPES_DEF_H
 
+#include <math.h>
 #include <ctype.h>
 #include <wchar.h>
 #include <assert.h>
@@ -79,6 +80,11 @@ typedef enum _ret_t {
    * 没找到。
    */
   RET_NOT_FOUND,
+  /**
+   * @const RET_DONE
+   * 操作完成。
+   */
+  RET_DONE,
   /**
    * @const RET_BAD_PARAMS
    * 无效参数。

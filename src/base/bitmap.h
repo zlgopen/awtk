@@ -33,7 +33,7 @@ typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 
 /**
  * @enum bitmap_format_t
- * @prefix BITMAP_FMT_ 
+ * @prefix BITMAP_FMT_
  * 位图格式常量定义。
  */
 typedef enum _bitmap_format_t {
@@ -74,11 +74,17 @@ typedef enum _bitmap_flag_t {
    * @const BITMAP_FLAG_IMMUTABLE
    * 图片内容不会变化。
    */
-  BITMAP_FLAG_IMMUTABLE = 2
+  BITMAP_FLAG_IMMUTABLE = 2,
+
+  /**
+   * @const BITMAP_FLAG_TEXTURE
+   * OpenGL Texture, bitmap的id是有效的texture id。
+   */
+  BITMAP_FLAG_TEXTURE = 4
 } bitmap_flag_t;
 
 /**
- * @class bitmap_t 
+ * @class bitmap_t
  * 位图。
  */
 struct _bitmap_t {
@@ -101,7 +107,7 @@ struct _bitmap_t {
    */
   uint16_t flags;
   /**
-   * @property {uint16_t} format 
+   * @property {uint16_t} format
    * @readonly
    * 格式。请参考{bitmap_format_t}。
    */
@@ -118,6 +124,13 @@ struct _bitmap_t {
    * 图片数据。
    */
   const uint8_t* data;
+
+  /**
+   * @property {int32_t} id
+   * @readonly
+   * opengl texture id。
+   */
+  int32_t id;
 
   bitmap_destroy_t destroy;
 };

@@ -97,4 +97,3 @@ uint32_t idle_count(void);
 END_C_DECLS
 
 #endif /*LFTK_IDEL_H*/
-

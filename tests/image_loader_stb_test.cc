@@ -6,9 +6,9 @@
 #include "tools/image_gen/image_gen.h"
 #include "image_loader/image_loader_stb.h"
 
-#define PNG_NAME LFTK_ROOT"/tests/testdata/test.png"
-#define JPG_NAME LFTK_ROOT"/tests/testdata/test.jpg"
-#define PNG_OPAQUE_NAME LFTK_ROOT"/tests/testdata/test_opaque.png"
+#define PNG_NAME LFTK_ROOT "/tests/testdata/test.png"
+#define JPG_NAME LFTK_ROOT "/tests/testdata/test.jpg"
+#define PNG_OPAQUE_NAME LFTK_ROOT "/tests/testdata/test_opaque.png"
 
 static ret_t load_image(const char* filename, bitmap_t* image) {
   uint32_t size = 0;
@@ -25,20 +25,20 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
 TEST(ImageLoaderStb, basic) {
   bitmap_t image;
   ret_t ret = load_image(PNG_NAME, &image);
-  
+
   ASSERT_EQ(ret, RET_OK);
   ASSERT_EQ(32, image.w);
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), false);
-  
+
   ret = load_image(JPG_NAME, &image);
   ASSERT_EQ(ret, RET_OK);
   ASSERT_EQ(32, image.w);
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
-  
+
   ret = load_image(PNG_OPAQUE_NAME, &image);
   ASSERT_EQ(ret, RET_OK);
   ASSERT_EQ(32, image.w);
@@ -57,7 +57,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
   strcpy(r->name, name);
   r->type = RESOURCE_TYPE_IMAGE;
   r->subtype = RESOURCE_TYPE_IMAGE_RAW;
-  r->size = image_gen_buff(&image, r->data, sizeof(buff)-sizeof(resource_info_t));
+  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(resource_info_t));
 
   return resource_manager_add(buff);
 }

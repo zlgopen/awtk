@@ -357,6 +357,23 @@ static ret_t vgcanvas_agg_restore(vgcanvas_t* vg) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_agg_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  /*TODO*/
+  return RET_OK;
+}
+
+static ret_t vgcanvas_agg_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) { return RET_OK; }
+
 static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
 
 static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
@@ -400,6 +417,10 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
                                      vgcanvas_agg_save,
                                      vgcanvas_agg_restore,
                                      vgcanvas_agg_end_frame,
+                                     vgcanvas_agg_create_fbo,
+                                     vgcanvas_agg_destroy_fbo,
+                                     vgcanvas_agg_bind_fbo,
+                                     vgcanvas_agg_unbind_fbo,
                                      vgcanvas_agg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
@@ -410,6 +431,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
   agg->base.vt = &vt;
   agg->base.w = w;
   agg->base.h = h;
+  agg->base.ratio = 1;
   agg->base.buff = (uint32_t*)buff;
 
   return &(agg->base);

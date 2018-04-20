@@ -23,7 +23,7 @@ TEST(Idle, basic) {
   ASSERT_EQ(idle_dispatch(), RET_OK);
   ASSERT_EQ(idle_count(), 0);
   ASSERT_EQ(s_log, "o:o:o:o:o:o:o:o:o:o:");
-  
+
   for (i = 0; i < nr; i++) {
     uint32_t id = idle_add(on_idle, NULL);
     ASSERT_EQ(id > 0, true);
@@ -31,4 +31,3 @@ TEST(Idle, basic) {
     ASSERT_EQ(idle_count(), 0);
   }
 }
-

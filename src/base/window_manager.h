@@ -23,6 +23,8 @@
 #define LFTK_WINDOW_MANAGER_H
 
 #include "base/widget.h"
+#include "base/canvas.h"
+#include "base/window_animator.h"
 
 BEGIN_C_DECLS
 
@@ -43,6 +45,10 @@ typedef struct _window_manager_t {
   uint8_t shift : 1;
   uint8_t caplock : 1;
   point_t pointer;
+
+  bool_t animating;
+  window_animator_t* animator;
+  canvas_t* canvas;
 } window_manager_t;
 
 widget_t* default_wm(void);
@@ -56,7 +62,9 @@ ret_t window_manager_remove_child(widget_t* wm, widget_t* window);
 ret_t window_manager_paint(widget_t* wm, canvas_t* c);
 ret_t window_manager_dispatch_input_event(widget_t* wm, event_t* e);
 
-#define WINDOW_MANAGER(widget) (window_manager_t*)(widget)
+ret_t window_manager_set_animating(widget_t* wm, bool_t animating);
+
+#define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 
 END_C_DECLS
 

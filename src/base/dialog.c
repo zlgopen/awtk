@@ -20,7 +20,9 @@
  */
 
 #include "base/mem.h"
+#include "base/idle.h"
 #include "base/label.h"
+#include "base/enums.h"
 #include "base/utils.h"
 #include "base/dialog.h"
 #include "base/group_box.h"
@@ -42,9 +44,12 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, "text")) {
+  if (str_equal(name, WIDGET_PROP_TEXT)) {
     return widget_get_prop(dialog->title, name, v);
-  } else if (str_equal(name, "margin")) {
+  } else if (str_equal(name, WIDGET_PROP_ANIM_HINT)) {
+    value_set_int(v, dialog->anim_hint);
+    return RET_OK;
+  } else if (str_equal(name, WIDGET_PROP_MARGIN)) {
     value_set_int(v, dialog->margin);
     return RET_OK;
   }
@@ -68,13 +73,21 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, "text")) {
+  if (str_equal(name, WIDGET_PROP_TEXT)) {
     return widget_set_prop(dialog->title, name, v);
-  } else if (str_equal(name, "style")) {
+  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
     widget_set_prop(dialog->title, name, v);
     widget_set_prop(dialog->client, name, v);
     return RET_OK;
-  } else if (str_equal(name, "margin")) {
+  } else if (str_equal(name, WIDGET_PROP_ANIM_HINT)) {
+    if (v->type == VALUE_TYPE_STRING) {
+      const key_type_value_t* kv = window_animator_type_find(value_str(v));
+      dialog->anim_hint = kv != NULL ? kv->value : WINDOW_ANIMATOR_NONE;
+    } else {
+      dialog->anim_hint = value_int(v);
+    }
+    return RET_OK;
+  } else if (str_equal(name, WIDGET_PROP_MARGIN)) {
     dialog->margin = value_int(v);
     dialog_relayout_children(widget);
     return RET_OK;
@@ -138,6 +151,14 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title) {
   return widget_set_text(dialog->title, title);
 }
 
+static ret_t dialog_close(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return window_manager_remove_child(widget->parent, widget);
+}
+
+static ret_t dialog_idle_close(const idle_info_t* info) { return dialog_close(WIDGETP(info->ctx)); }
+
 uint32_t dialog_modal(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
   bool_t running = main_loop_get_default()->running;
@@ -150,6 +171,7 @@ uint32_t dialog_modal(widget_t* widget) {
   main_loop_get_default()->running = running;
 
   log_debug("%s quit\n", __func__);
+  idle_add(dialog_idle_close, widget);
 
   return dialog->quit_code;
 }

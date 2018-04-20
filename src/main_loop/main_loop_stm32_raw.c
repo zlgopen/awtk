@@ -139,8 +139,9 @@ static ret_t main_loop_stm32_raw_run(main_loop_t* l) {
   while (l->running) {
     timer_check();
     main_loop_stm32_raw_dispatch(loop);
-    main_loop_stm32_raw_paint(loop);
     idle_dispatch();
+
+    main_loop_stm32_raw_paint(loop);
 
     delay_ms(100);
   }

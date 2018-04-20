@@ -272,7 +272,7 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "min") == 0) {
+  if (strcmp(name, WIDGET_PROP_MIN) == 0) {
     if (edit->limit.type == INPUT_INT) {
       value_set_int(v, edit->limit.i.min);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -283,7 +283,7 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, "max") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
     if (edit->limit.type == INPUT_INT) {
       value_set_int(v, edit->limit.i.max);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -294,14 +294,14 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, "step") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
     if (edit->limit.type == INPUT_FLOAT) {
       value_set_float(v, edit->limit.f.step);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;
     }
-  } else if (strcmp(name, "input_type") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_INPUT_TYPE) == 0) {
     value_set_uint32(v, edit->limit.type);
     return RET_OK;
   } else if (strcmp(name, "readonly") == 0) {
@@ -319,7 +319,7 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "min") == 0) {
+  if (strcmp(name, WIDGET_PROP_MIN) == 0) {
     if (edit->limit.type == INPUT_INT) {
       edit->limit.i.min = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -330,7 +330,7 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, "max") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
     if (edit->limit.type == INPUT_INT) {
       edit->limit.i.max = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -341,14 +341,14 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, "step") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
     if (edit->limit.type == INPUT_FLOAT) {
       edit->limit.f.step = value_float(v);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;
     }
-  } else if (strcmp(name, "input_type") == 0) {
+  } else if (strcmp(name, WIDGET_PROP_INPUT_TYPE) == 0) {
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = input_type_find(value_str(v));
       if (kv != NULL) {

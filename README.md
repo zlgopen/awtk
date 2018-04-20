@@ -91,6 +91,9 @@ bin\demo1
 
 ## 最新动态
 
+* 2018/04/20
+    * 实现窗口动画框架。
+
 * 2018/04/15
     * 增加nanovg实现的vgcanvas。
     * 增加基于vgcanvas实现的lcd。

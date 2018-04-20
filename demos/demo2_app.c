@@ -81,7 +81,7 @@ static ret_t on_paint_line(void* ctx, event_t* e) {
 }
 
 static ret_t on_paint_points(void* ctx, event_t* e) {
-  point_t points[] = {{100, 100},{100, 101},{100, 102}, {100, 103}};
+  point_t points[] = {{100, 100}, {100, 101}, {100, 102}, {100, 103}};
   color_t fill_color = color_init(0xe0, 0xe0, 0xe0, 0xff);
   color_t stroke_color = color_init(0x80, 0x80, 0x80, 0xff);
   paint_event_t* evt = (paint_event_t*)e;
@@ -93,7 +93,6 @@ static ret_t on_paint_points(void* ctx, event_t* e) {
 
   return RET_OK;
 }
-
 
 static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   rect_t r;

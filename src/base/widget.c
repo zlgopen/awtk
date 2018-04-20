@@ -24,6 +24,7 @@
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/widget.h"
+#include "base/prop_names.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
@@ -71,7 +72,7 @@ ret_t widget_set_value(widget_t* widget, uint32_t value) {
   value_t v;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop(widget, "value", value_set_uint32(&v, value));
+  return widget_set_prop(widget, WIDGET_PROP_VALUE, value_set_uint32(&v, value));
 }
 
 ret_t widget_use_style(widget_t* widget, const char* value) {
@@ -87,21 +88,21 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
   value_t v;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop(widget, "text", value_set_wstr(&v, text));
+  return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_wstr(&v, text));
 }
 
 uint32_t widget_get_value(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, 0);
 
-  return widget_get_prop(widget, "value", &v) == RET_OK ? value_int(&v) : 0;
+  return widget_get_prop(widget, WIDGET_PROP_VALUE, &v) == RET_OK ? value_int(&v) : 0;
 }
 
 const wchar_t* widget_get_text(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, 0);
 
-  return widget_get_prop(widget, "text", &v) == RET_OK ? value_wstr(&v) : 0;
+  return widget_get_prop(widget, WIDGET_PROP_TEXT, &v) == RET_OK ? value_wstr(&v) : 0;
 }
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
@@ -494,24 +495,24 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, "x")) {
+  if (str_equal(name, WIDGET_PROP_X)) {
     widget->x = (wh_t)value_int(v);
-  } else if (str_equal(name, "y")) {
+  } else if (str_equal(name, WIDGET_PROP_Y)) {
     widget->y = (wh_t)value_int(v);
-  } else if (str_equal(name, "w")) {
+  } else if (str_equal(name, WIDGET_PROP_W)) {
     widget->w = (wh_t)value_int(v);
-  } else if (str_equal(name, "h")) {
+  } else if (str_equal(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
-  } else if (str_equal(name, "visible")) {
+  } else if (str_equal(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = !!value_int(v);
-  } else if (str_equal(name, "style")) {
+  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
     widget->style_type = value_int(v);
     widget_update_style(widget);
-  } else if (str_equal(name, "enable")) {
+  } else if (str_equal(name, WIDGET_PROP_ENABLE)) {
     widget->enable = !!value_int(v);
-  } else if (str_equal(name, "name")) {
+  } else if (str_equal(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
-  } else if (str_equal(name, "text")) {
+  } else if (str_equal(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
   } else {
     ret = RET_NOT_FOUND;
@@ -536,23 +537,23 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, "x")) {
+  if (str_equal(name, WIDGET_PROP_X)) {
     value_set_int32(v, widget->x);
-  } else if (str_equal(name, "y")) {
+  } else if (str_equal(name, WIDGET_PROP_Y)) {
     value_set_int32(v, widget->y);
-  } else if (str_equal(name, "w")) {
+  } else if (str_equal(name, WIDGET_PROP_W)) {
     value_set_int32(v, widget->w);
-  } else if (str_equal(name, "h")) {
+  } else if (str_equal(name, WIDGET_PROP_H)) {
     value_set_int32(v, widget->h);
-  } else if (str_equal(name, "visible")) {
+  } else if (str_equal(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
-  } else if (str_equal(name, "style")) {
+  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
     value_set_int(v, widget->style_type);
-  } else if (str_equal(name, "enable")) {
+  } else if (str_equal(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
-  } else if (str_equal(name, "name")) {
+  } else if (str_equal(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name);
-  } else if (str_equal(name, "text")) {
+  } else if (str_equal(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {

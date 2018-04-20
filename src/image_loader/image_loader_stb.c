@@ -54,9 +54,9 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
   image->format = BITMAP_FMT_RGBA;
   image->flags = BITMAP_FLAG_IMMUTABLE;
 
-  if(n != 4) {
-    data4 = MEM_ALLOC(w*h*4);
-    if(data4 == NULL) {
+  if (n != 4) {
+    data4 = MEM_ALLOC(w * h * 4);
+    if (data4 == NULL) {
       stbi_image_free((uint8_t*)(data));
       return RET_FAIL;
     }
@@ -65,21 +65,21 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
     image->destroy = image_stb_destroy_free;
     image->flags |= BITMAP_FLAG_OPAQUE;
 
-    for(i = 0; i < w*h; i++) {
-      data4[0] = data[0];     
-      data4[1] = data[1];     
-      data4[2] = data[2];     
-      data4[3] = 0xff;     
+    for (i = 0; i < w * h; i++) {
+      data4[0] = data[0];
+      data4[1] = data[1];
+      data4[2] = data[2];
+      data4[3] = 0xff;
       data4 += 4;
-      data +=3;
+      data += 3;
     }
   } else {
     image->data = data;
     image->destroy = image_stb_destroy;
 
-    for(i = 0; i < w*h; i+=n) {
-      if(data[3] != 0xff) {
-        return RET_OK;  
+    for (i = 0; i < w * h; i += n) {
+      if (data[3] != 0xff) {
+        return RET_OK;
       }
       data += 4;
     }

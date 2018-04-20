@@ -29,7 +29,8 @@ BEGIN_C_DECLS
 struct _image_loader_t;
 typedef struct _image_loader_t image_loader_t;
 
-typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
+typedef ret_t (*image_loader_load_t)(image_loader_t* loader, const uint8_t* buff, uint32_t size,
+                                     bitmap_t* bitmap);
 
 /**
  * @class image_loader_t
@@ -48,9 +49,9 @@ struct _image_loader_t {
  * @param {bitmap_t*} bitmap 用于返回位图对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size, bitmap_t* bitmap);
+ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t size,
+                        bitmap_t* bitmap);
 
 END_C_DECLS
 
 #endif /*LFTK_IMAGE_LOADER_H*/
-

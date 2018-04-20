@@ -29,6 +29,7 @@
 #include "base/emitter.h"
 #include "base/canvas.h"
 #include "base/theme.h"
+#include "base/prop_names.h"
 #include "base/layout_def.h"
 
 BEGIN_C_DECLS

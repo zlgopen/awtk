@@ -147,8 +147,9 @@ static ret_t main_loop_sdl2_run(main_loop_t* l) {
   while (l->running) {
     timer_check();
     main_loop_sdl2_dispatch(loop);
-    main_loop_sdl2_paint(loop);
     idle_dispatch();
+
+    main_loop_sdl2_paint(loop);
   }
 
   return RET_OK;
@@ -183,8 +184,8 @@ static ret_t main_loop_sdl2_create_window(main_loop_sdl2_t* l, font_manager_t* f
   l->h = h;
   SDL_Init(SDL_INIT_VIDEO);
 
-  l->sdl_window = SDL_CreateWindow("LFTK Simulator", SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_RESIZABLE);
+  l->sdl_window =
+      SDL_CreateWindow("LFTK Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
   return_value_if_fail(l->sdl_window != NULL, RET_FAIL);
 
   l->sdl_render = SDL_CreateRenderer(l->sdl_window, -1, 0);

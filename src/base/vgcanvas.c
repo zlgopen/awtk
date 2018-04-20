@@ -314,3 +314,27 @@ ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
 
   return vg->vt->end_frame(vg);
 }
+
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  return_value_if_fail(vg != NULL && vg->vt->create_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->create_fbo(vg, fbo);
+}
+
+ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  return_value_if_fail(vg != NULL && vg->vt->destroy_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->destroy_fbo(vg, fbo);
+}
+
+ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  return_value_if_fail(vg != NULL && vg->vt->bind_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->bind_fbo(vg, fbo);
+}
+
+ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  return_value_if_fail(vg != NULL && vg->vt->unbind_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->unbind_fbo(vg, fbo);
+}

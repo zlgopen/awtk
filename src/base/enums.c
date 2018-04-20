@@ -22,6 +22,7 @@
 #include "base/edit.h"
 #include "base/enums.h"
 #include "base/widget.h"
+#include "base/window_animator.h"
 #include "base/resource_manager.h"
 
 static const key_type_value_t widget_type_value[] = {
@@ -105,6 +106,11 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"3patch_x_scale_y", 0, IMAGE_DRAW_3PATCH_X_SCALE_Y},
     {"3patch_y_scale_x", 0, IMAGE_DRAW_3PATCH_Y_SCALE_X}};
 
+static const key_type_value_t window_animator_type_name_value[] = {
+    {"center-scale", 0, WINDOW_ANIMATOR_CENTER_SCALE},
+    {"bottom-popup", 0, WINDOW_ANIMATOR_BOTTOM_POPUP},
+    {"htranslate", 0, WINDOW_ANIMATOR_HTRANSLATE}};
+
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;
   return_value_if_fail(items != NULL && name != NULL, NULL);
@@ -181,4 +187,14 @@ const key_type_value_t* image_draw_type_find_by_value(uint32_t value) {
 
 const key_type_value_t* input_type_find(const char* name) {
   return find_item(input_type_name_value, ARRAY_SIZE(input_type_name_value), name);
+}
+
+const key_type_value_t* window_animator_type_find(const char* name) {
+  return find_item(window_animator_type_name_value, ARRAY_SIZE(window_animator_type_name_value),
+                   name);
+}
+
+const key_type_value_t* window_animator_type_find_by_value(uint32_t value) {
+  return find_item_by_value(window_animator_type_name_value,
+                            ARRAY_SIZE(window_animator_type_name_value), value);
 }

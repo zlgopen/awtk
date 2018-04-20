@@ -19,7 +19,11 @@
  *
  */
 
+#ifdef WITH_GL2
 #define NANOVG_GL2_IMPLEMENTATION
+#elif defined(WITH_GL3)
+#define NANOVG_GL3_IMPLEMENTATION
+#endif
 
 #include "base/utf8.h"
 #include "base/resource_manager.h"
@@ -29,8 +33,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_opengl_glext.h>
+
 #include "nanovg.h"
 #include "nanovg_gl.h"
+#include "nanovg_gl_utils.h"
+
 #include "base/mem.h"
 #include "base/vgcanvas.h"
 #define MAX_IMAGE_NR 256
@@ -59,9 +66,10 @@ ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   SDL_GetWindowSize(sdl_window, &ww, &wh);
   SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
   canvas->ratio = (float)fw / (float)ww;
+  vgcanvas->ratio = canvas->ratio;
 
   glViewport(0, 0, fw, fh);
-  glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
   nvgBeginFrame(vg, ww, wh, canvas->ratio);
@@ -366,6 +374,10 @@ static uint32_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* t
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
+  if (img->flags & BITMAP_FLAG_TEXTURE) {
+    return img->id;
+  }
+
   for (i = 0; i < MAX_IMAGE_NR; i++) {
     if (canvas->images[i] == (img->data)) {
       return i;
@@ -499,8 +511,55 @@ static ret_t vgcanvas_nanovg_save(vgcanvas_t* vgcanvas) {
 static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  /*TODO*/
   nvgRestore(vg);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGLUframebuffer* handle = NULL;
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  handle = nvgluCreateFramebuffer(vg, (int)(vgcanvas->w * vgcanvas->ratio),
+                                  (int)(vgcanvas->h * vgcanvas->ratio), 0);
+  return_value_if_fail(handle != NULL, RET_FAIL);
+
+  fbo->w = vgcanvas->w;
+  fbo->h = vgcanvas->h;
+  fbo->handle = handle;
+  fbo->id = handle->image;
+  fbo->ratio = vgcanvas->ratio;
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+  nvgluDeleteFramebuffer(handle);
+  (void)vgcanvas;
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+
+  nvgluBindFramebuffer(handle);
+  glClearColor(0, 0, 0, 0);
+  glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
+  glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+
+  nvgEndFrame(vg);
+  nvgluBindFramebuffer(NULL);
 
   return RET_OK;
 }
@@ -548,6 +607,10 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_save,
                                      vgcanvas_nanovg_restore,
                                      vgcanvas_nanovg_end_frame,
+                                     vgcanvas_nanovg_create_fbo,
+                                     vgcanvas_nanovg_destroy_fbo,
+                                     vgcanvas_nanovg_bind_fbo,
+                                     vgcanvas_nanovg_unbind_fbo,
                                      vgcanvas_nanovg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* sdl_window) {
@@ -556,9 +619,13 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* sdl_window) {
 
   nanovg->base.w = w;
   nanovg->base.h = h;
+  nanovg->base.ratio = 1;
   nanovg->base.vt = &vt;
   nanovg->sdl_window = (SDL_Window*)sdl_window;
+#ifdef WITH_GL2
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-
+#elif defined(WITH_GL3)
+  nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+#endif
   return &(nanovg->base);
 }

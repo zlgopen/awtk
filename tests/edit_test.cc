@@ -12,23 +12,23 @@ TEST(Edit, int) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(edit_set_int_limit(b, 0, 100), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(0, value_int(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "input_type", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
   ASSERT_EQ(INPUT_INT, value_int(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(100, value_int(&v2));
 
   value_set_int(&v1, 10);
-  ASSERT_EQ(widget_set_prop(b, "min", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_int(&v1, 100);
-  ASSERT_EQ(widget_set_prop(b, "max", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   widget_destroy(b);
@@ -40,23 +40,23 @@ TEST(Edit, text) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(edit_set_text_limit(b, 0, 100), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(0, value_int(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "input_type", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
   ASSERT_EQ(INPUT_TEXT, value_int(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(100, value_int(&v2));
 
   value_set_int(&v1, 10);
-  ASSERT_EQ(widget_set_prop(b, "min", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   value_set_int(&v1, 100);
-  ASSERT_EQ(widget_set_prop(b, "max", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   widget_destroy(b);
@@ -68,26 +68,26 @@ TEST(Edit, float) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(edit_set_float_limit(b, 0, 100, 0.1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(0, value_float(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "input_type", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
   ASSERT_EQ(INPUT_FLOAT, value_int(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(100, value_float(&v2));
 
-  ASSERT_EQ(widget_get_prop(b, "step", &v2), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
   ASSERT_EQ(0.1 - value_float(&v2) < 0.001, true);
 
   value_set_int(&v1, 10);
-  ASSERT_EQ(widget_set_prop(b, "min", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "min", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
   ASSERT_EQ(value_float(&v1), value_float(&v2));
 
   value_set_int(&v1, 100);
-  ASSERT_EQ(widget_set_prop(b, "max", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "max", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
   ASSERT_EQ(value_float(&v1), value_float(&v2));
 
   widget_destroy(b);
@@ -102,8 +102,8 @@ TEST(Edit, basic) {
   ASSERT_EQ(EDIT(b)->readonly, TRUE);
 
   value_set_bool(&v1, FALSE);
-  ASSERT_EQ(widget_set_prop(b, "readonly", &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, "readonly", &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_READONLY, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_READONLY, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
   widget_destroy(b);

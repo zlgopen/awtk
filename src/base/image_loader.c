@@ -28,4 +28,3 @@ ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t si
 
   return loader->load(loader, buff, size, bitmap);
 }
-

@@ -21,11 +21,100 @@
 
 #include "base/keys.h"
 #include "base/mem.h"
+#include "base/idle.h"
+#include "base/platform.h"
+#include "base/prop_names.h"
 #include "base/window_manager.h"
+
+static widget_t* window_manager_find_prev_window(widget_t* widget) {
+  int32_t i = 0;
+  int32_t nr = 0;
+  return_value_if_fail(widget != NULL, NULL);
+
+  if (widget->children != NULL && widget->children->size > 0) {
+    nr = widget->children->size;
+    for (i = nr - 2; i >= 0; i--) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      if (iter->type == WIDGET_NORMAL_WINDOW) {
+        return iter;
+      }
+    }
+  }
+
+  return NULL;
+}
+
+static ret_t window_manager_check_if_need_open_animation(idle_info_t* info) {
+  value_t anim_hint;
+  widget_t* prev_win = NULL;
+  widget_t* curr_win = WIDGETP(info->ctx);
+  window_manager_t* wm = WINDOW_MANAGER(curr_win->parent);
+
+  if (wm->animator != NULL) {
+    return RET_OK;
+  }
+
+  prev_win = window_manager_find_prev_window((widget_t*)wm);
+  return_value_if_fail(prev_win != NULL, RET_FAIL);
+
+  if (widget_get_prop(curr_win, WIDGET_PROP_ANIM_HINT, &anim_hint) == RET_OK) {
+    uint32_t type = value_int(&anim_hint);
+    if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
+      wm->animator = window_animator_create_for_open(type, wm->canvas, prev_win, curr_win);
+      wm->animating = wm->animator != NULL;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
+                                                          widget_t* curr_win) {
+  value_t anim_hint;
+  widget_t* prev_win = NULL;
+
+  if (wm->animator != NULL) {
+    return RET_FAIL;
+  }
+
+  prev_win = window_manager_find_prev_window((widget_t*)wm);
+  return_value_if_fail(prev_win != NULL, RET_FAIL);
+
+  if (widget_get_prop(curr_win, WIDGET_PROP_ANIM_HINT, &anim_hint) == RET_OK) {
+    uint32_t type = value_int(&anim_hint);
+    if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
+      wm->animator = window_animator_create_for_close(type, wm->canvas, prev_win, curr_win);
+      wm->animating = wm->animator != NULL;
+
+      return wm->animator != NULL ? RET_OK : RET_FAIL;
+    }
+  }
+
+  return RET_FAIL;
+}
+
+static ret_t window_manager_remove_child_real(widget_t* wm, widget_t* window) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
+
+  ret = widget_remove_child(wm, window);
+  if (ret == RET_OK) {
+    widget_t* top = window_manager_get_top_window(wm);
+    if (top) {
+      rect_t r;
+      rect_init(r, window->x, window->y, window->w, window->h);
+      widget_invalidate(top, &r);
+    }
+  }
+
+  return ret;
+}
 
 static ret_t on_window_destroy(void* ctx, event_t* e) {
   widget_t* wm = WIDGETP(ctx);
-  window_manager_remove_child(wm, e->target);
+  if (array_find(wm->children, NULL, e->target)) {
+    window_manager_remove_child_real(wm, e->target);
+  }
 
   return RET_OK;
 }
@@ -44,6 +133,10 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   widget_invalidate(window, NULL);
   widget_on(window, EVT_DESTROY, on_window_destroy, wm);
 
+  if (wm->children != NULL && wm->children->size > 0) {
+    idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
+  }
+
   return widget_add_child(wm, window);
 }
 
@@ -51,14 +144,8 @@ ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
   ret_t ret = RET_OK;
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
-  ret = widget_remove_child(wm, window);
-  if (ret == RET_OK) {
-    widget_t* top = window_manager_get_top_window(wm);
-    if (top) {
-      rect_t r;
-      rect_init(r, window->x, window->y, window->w, window->h);
-      widget_invalidate(top, &r);
-    }
+  if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
+    widget_destroy(window);
   }
 
   return ret;
@@ -98,12 +185,11 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   return NULL;
 }
 
-ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
+static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   rect_t r;
   rect_t* dr = NULL;
   rect_t* ldr = NULL;
   window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
   dr = &(wm->dirty_rect);
 
@@ -125,6 +211,32 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   rectp_init(dr, widget->w, widget->h, 0, 0);
 
   return RET_OK;
+}
+
+static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
+  uint32_t time_ms = get_time_ms();
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  ret_t ret = window_animator_update(wm->animator, time_ms);
+  if (ret == RET_DONE) {
+    window_animator_destroy(wm->animator);
+    wm->animating = FALSE;
+    wm->animator = NULL;
+  }
+
+  return RET_OK;
+}
+
+ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
+
+  wm->canvas = c;
+  if (wm->animator != NULL) {
+    return window_manager_paint_animation(widget, c);
+  } else {
+    return window_manager_paint_normal(widget, c);
+  }
 }
 
 widget_t* default_wm() {
@@ -304,6 +416,11 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
+  if (wm->animator) {
+    log_debug("animating ignore input.\n");
+    return RET_OK;
+  }
+
   switch (e->type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
@@ -356,6 +473,15 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       break;
     }
   }
+
+  return RET_OK;
+}
+
+ret_t window_manager_set_animating(widget_t* widget, bool_t animating) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  wm->animating = animating;
 
   return RET_OK;
 }

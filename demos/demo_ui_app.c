@@ -42,7 +42,6 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
 
   code = dialog_modal(win);
-  widget_destroy(win);
 
   mem_info_dump();
   (void)e;
@@ -59,7 +58,7 @@ ret_t application_init() {
   widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
   widget_child_on(win, "dialog", EVT_CLICK, on_show_dialog, "dialog1");
   widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
-  timer_add(on_timer, bar1, 500);
+  //  timer_add(on_timer, bar1, 500);
 
   return RET_OK;
 }

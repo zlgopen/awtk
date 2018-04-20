@@ -23,6 +23,7 @@
 #define LFTK_WINDOW_H
 
 #include "base/widget.h"
+#include "base/window_animator.h"
 
 BEGIN_C_DECLS
 
@@ -34,6 +35,7 @@ BEGIN_C_DECLS
  */
 typedef struct _window_t {
   widget_t widget;
+  window_animator_type_t anim_hint;
 } window_t;
 
 /**
@@ -58,6 +60,8 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {widget_t*} 对象。
  */
+
+#define WINDOW(widget) ((window_t*)(widget))
 
 END_C_DECLS
 

@@ -24,6 +24,7 @@
 
 #include "base/wstr.h"
 #include "base/widget.h"
+#include "base/window_animator.h"
 
 BEGIN_C_DECLS
 
@@ -39,6 +40,7 @@ typedef struct _dialog_t {
   widget_t* client;
   uint32_t margin;
   uint32_t quit_code;
+  window_animator_type_t anim_hint;
 } dialog_t;
 
 /**
@@ -77,6 +79,7 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title);
 /**
  * @method dialog_modal
  * 模态显示对话框。
+ * dialog_modal返回后，dialog对象将在下一个idle函数中回收，也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
  * @param {widget_t*} widget dialog对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -103,7 +103,7 @@ ret_t idle_dispatch(void) {
   idles = (idle_info_t**)s_idle_manager->elms;
   for (i = 0, nr = s_idle_manager->size; i < nr; i++) {
     idle_info_t* iter = idles[i];
-    if(iter->on_idle) {
+    if (iter->on_idle) {
       iter->on_idle(iter);
     } else {
       /*it is removed*/
@@ -116,21 +116,20 @@ ret_t idle_dispatch(void) {
   return RET_OK;
 }
 
-uint32_t idle_count() { 
+uint32_t idle_count() {
   uint32_t i = 0;
   uint32_t nr = 0;
   uint32_t count = 0;
 
-  if(s_idle_manager && s_idle_manager->size > 0) {
+  if (s_idle_manager && s_idle_manager->size > 0) {
     idle_info_t** idles = (idle_info_t**)s_idle_manager->elms;
     for (i = 0, nr = s_idle_manager->size; i < nr; i++) {
       idle_info_t* iter = idles[i];
-      if(iter->on_idle != NULL) {
+      if (iter->on_idle != NULL) {
         count++;
-      } 
+      }
     }
   }
 
   return count;
 }
-

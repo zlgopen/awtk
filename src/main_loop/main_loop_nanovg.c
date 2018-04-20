@@ -153,9 +153,13 @@ static ret_t main_loop_nanovg_run(main_loop_t* l) {
   while (l->running) {
     timer_check();
     main_loop_nanovg_dispatch(loop);
-    main_loop_nanovg_paint(loop);
     idle_dispatch();
-    SDL_Delay(30);
+
+    main_loop_nanovg_paint(loop);
+
+    if (!WINDOW_MANAGER(loop->wm)->animating) {
+      SDL_Delay(30);
+    }
   }
 
   return RET_OK;
@@ -197,17 +201,25 @@ static ret_t main_loop_nanovg_create_window(main_loop_nanovg_t* l, font_manager_
   }
 
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-  // SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+#ifdef WITH_GL2
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+#elif defined(WITH_GL3)
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#endif
 
   l->sdl_window = SDL_CreateWindow("LFTK Simulator", x, y, w, h, flags);
   return_value_if_fail(l->sdl_window != NULL, RET_FAIL);
 
   l->gl_context = SDL_GL_CreateContext(l->sdl_window);
   SDL_GL_MakeCurrent(l->sdl_window, l->gl_context);
-  SDL_GL_SetSwapInterval(0);
+  SDL_GL_SetSwapInterval(1);
 
   gladLoadGL();
   glEnable(GL_ALPHA_TEST);
