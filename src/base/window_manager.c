@@ -44,7 +44,7 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
   return NULL;
 }
 
-static ret_t window_manager_check_if_need_open_animation(idle_info_t* info) {
+static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   value_t anim_hint;
   widget_t* prev_win = NULL;
   widget_t* curr_win = WIDGETP(info->ctx);
@@ -140,12 +140,20 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   return widget_add_child(wm, window);
 }
 
+static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
+  widget_t* win = WIDGETP(info->ctx);
+  widget_destroy(win);
+
+  return RET_OK;
+}
+
 ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
   ret_t ret = RET_OK;
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
-    widget_destroy(window);
+    window_manager_remove_child_real(wm, window); 
+    idle_add(window_manager_idle_destroy_window, window);
   }
 
   return ret;

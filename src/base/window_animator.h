@@ -52,10 +52,15 @@ typedef enum _window_animator_type_t {
    */
   WINDOW_ANIMATOR_CENTER_SCALE,
   /**
-   * @const WINDOW_ANIMATOR_BOTTOM_POPUP
-   * 底部弹出。适用于底部的对话框。
+   * @const WINDOW_ANIMATOR_TOP_TOP_BOTTOM
+   * 顶部部弹出。适用于对话框。
    */
-  WINDOW_ANIMATOR_BOTTOM_POPUP,
+  WINDOW_ANIMATOR_TOP_TOP_BOTTOM,
+  /**
+   * @const WINDOW_ANIMATOR_BOTTOM_TO_TOP
+   * 底部弹出。适用于对话框。
+   */
+  WINDOW_ANIMATOR_BOTTOM_TO_TOP,
   /**
    * @const WINDOW_ANIMATOR_HTRANSLATE
    * 水平平移。适用于窗口。
@@ -66,6 +71,7 @@ typedef enum _window_animator_type_t {
    * 垂直平移。适用于窗口。
    */
   WINDOW_ANIMATOR_VTRANSLATE,
+
   WINDOW_ANIMATOR_NR
 } window_animator_type_t;
 

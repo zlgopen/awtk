@@ -61,6 +61,16 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} 对象。
  */
 
+/**
+ * @method window_close
+ * @deconstructor
+ * 关闭窗口。
+ * @param {widget_t*} parent window对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_close(widget_t* parent);
+
 #define WINDOW(widget) ((window_t*)(widget))
 
 END_C_DECLS
