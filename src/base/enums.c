@@ -50,20 +50,20 @@ static const key_type_value_t widget_type_value[] = {
 };
 
 static const key_type_value_t style_id_name_value[] = {
-    {"bg-color", TYPE_COLOR, STYLE_ID_BG_COLOR},
-    {"fg-color", TYPE_COLOR, STYLE_ID_FG_COLOR},
-    {"text-color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
-    {"tips-text-color", TYPE_COLOR, STYLE_ID_TIPS_TEXT_COLOR},
-    {"border-color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
-    {"font-name", TYPE_STRING, STYLE_ID_FONT_NAME},
-    {"font-size", TYPE_INT, STYLE_ID_FONT_SIZE},
-    {"font-style", TYPE_INT, STYLE_ID_FONT_STYLE},
-    {"text-align-h", TYPE_INT, STYLE_ID_TEXT_ALIGN_H},
-    {"text-align-v", TYPE_INT, STYLE_ID_TEXT_ALIGN_V},
-    {"bg-image", TYPE_STRING, STYLE_ID_BG_IMAGE},
-    {"bg-image-draw-type", TYPE_INT, STYLE_ID_BG_IMAGE_DRAW_TYPE},
-    {"fg-image", TYPE_STRING, STYLE_ID_FG_IMAGE},
-    {"fg-image-draw-type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
+    {"bg_color", TYPE_COLOR, STYLE_ID_BG_COLOR},
+    {"fg_color", TYPE_COLOR, STYLE_ID_FG_COLOR},
+    {"text_color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
+    {"tips_text_color", TYPE_COLOR, STYLE_ID_TIPS_TEXT_COLOR},
+    {"border_color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
+    {"font_name", TYPE_STRING, STYLE_ID_FONT_NAME},
+    {"font_size", TYPE_INT, STYLE_ID_FONT_SIZE},
+    {"font_style", TYPE_INT, STYLE_ID_FONT_STYLE},
+    {"text_align_h", TYPE_INT, STYLE_ID_TEXT_ALIGN_H},
+    {"text_align_v", TYPE_INT, STYLE_ID_TEXT_ALIGN_V},
+    {"bg_image", TYPE_STRING, STYLE_ID_BG_IMAGE},
+    {"bg_image_draw_type", TYPE_INT, STYLE_ID_BG_IMAGE_DRAW_TYPE},
+    {"fg_image", TYPE_STRING, STYLE_ID_FG_IMAGE},
+    {"fg_image_draw_type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
     {"icon", TYPE_STRING, STYLE_ID_ICON},
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
@@ -107,9 +107,11 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"3patch_y_scale_x", 0, IMAGE_DRAW_3PATCH_Y_SCALE_X}};
 
 static const key_type_value_t window_animator_type_name_value[] = {
-    {"center-scale", 0, WINDOW_ANIMATOR_CENTER_SCALE},
-    {"bottom-popup", 0, WINDOW_ANIMATOR_BOTTOM_POPUP},
-    {"htranslate", 0, WINDOW_ANIMATOR_HTRANSLATE}};
+    {"center_scale", 0, WINDOW_ANIMATOR_CENTER_SCALE},
+    {"bottom_to_top", 0, WINDOW_ANIMATOR_BOTTOM_TO_TOP},
+    {"top_to_bottom", 0, WINDOW_ANIMATOR_TOP_TOP_BOTTOM},
+    {"htranslate", 0, WINDOW_ANIMATOR_HTRANSLATE},
+    {"vtranslate", 0, WINDOW_ANIMATOR_VTRANSLATE}};
 
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;

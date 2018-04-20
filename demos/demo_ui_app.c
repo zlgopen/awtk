@@ -50,14 +50,27 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_show_window(void* ctx, event_t* e) {
+  const char* name = (const char*)ctx;
+  widget_t* win = window_open(name);
+
+  widget_child_on(win, "close", EVT_CLICK, on_close, win);
+
+  (void)e;
+
+  return RET_OK;
+}
+
 ret_t application_init() {
-  widget_t* win = window_open("window1");
+  widget_t* win = window_open("window");
   widget_t* bar1 = widget_lookup(win, "bar1", TRUE);
   widget_t* bar2 = widget_lookup(win, "bar2", TRUE);
   widget_child_on(win, "inc", EVT_CLICK, on_inc, bar2);
   widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
-  widget_child_on(win, "dialog", EVT_CLICK, on_show_dialog, "dialog1");
+  widget_child_on(win, "dialog1", EVT_CLICK, on_show_dialog, "dialog1");
   widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
+  widget_child_on(win, "window1", EVT_CLICK, on_show_window, "window1");
+  widget_child_on(win, "window2", EVT_CLICK, on_show_window, "window2");
   //  timer_add(on_timer, bar1, 500);
 
   return RET_OK;

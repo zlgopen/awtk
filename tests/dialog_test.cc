@@ -16,7 +16,7 @@ TEST(Dialog, basic) {
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_TEXT, &v2), RET_OK);
   ASSERT_EQ(wcscmp(v1.value.wstr, v2.value.wstr), 0);
 
-  value_set_str(&v1, "center-scale");
+  value_set_str(&v1, "center_scale");
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_ANIM_HINT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(value_int(&v2), WINDOW_ANIMATOR_CENTER_SCALE);

@@ -57,13 +57,13 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
 
     const key_type_value_t* item = style_id_find(name);
     if (item != NULL) {
-      if (strcmp(name, "bg-image-draw-type") == 0 || strcmp(name, "fg-image-draw-type") == 0) {
+      if (strcmp(name, "bg_image_draw_type") == 0 || strcmp(name, "fg_image_draw_type") == 0) {
         const key_type_value_t* dt = image_draw_type_find(value);
         s.AddInt(item->value, dt->value);
-      } else if (strcmp(name, "text-align-h") == 0) {
+      } else if (strcmp(name, "text_align_h") == 0) {
         const key_type_value_t* dt = align_h_type_find(value);
         s.AddInt(item->value, dt->value);
-      } else if (strcmp(name, "text-align-v") == 0) {
+      } else if (strcmp(name, "text_align_v") == 0) {
         const key_type_value_t* dt = align_v_type_find(value);
         s.AddInt(item->value, dt->value);
       } else if (item->type == TYPE_INT) {

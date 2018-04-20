@@ -31,6 +31,12 @@ static ret_t on_ok(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_close(void* ctx, event_t* e) {
+  widget_t* win = (widget_t*)ctx;
+  (void)e;
+  return window_close(win);
+}
+
 static ret_t on_cancel(void* ctx, event_t* e) {
   widget_t* dialog = (widget_t*)ctx;
 

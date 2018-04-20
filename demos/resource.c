@@ -35,7 +35,10 @@
 #include "res/src/theme/default.data"
 #include "res/src/ui/dialog1.data"
 #include "res/src/ui/dialog2.data"
+#include "res/src/ui/popup.data"
+#include "res/src/ui/window.data"
 #include "res/src/ui/window1.data"
+#include "res/src/ui/window2.data"
 
 ret_t resource_init() {
   resource_manager_init(15);
@@ -75,7 +78,10 @@ ret_t resource_init() {
   resource_manager_add(theme_default);
   resource_manager_add(ui_dialog1);
   resource_manager_add(ui_dialog2);
+  resource_manager_add(ui_popup);
+  resource_manager_add(ui_window);
   resource_manager_add(ui_window1);
+  resource_manager_add(ui_window2);
 
   lftk_init_resources();
   return RET_OK;

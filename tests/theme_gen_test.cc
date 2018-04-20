@@ -14,8 +14,8 @@ TEST(ThemeGen, basic) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<widget><style><normal bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></widget>\
-       <progress_bar><style><normal bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" /></style></progress_bar>";
+      "<widget><style><normal bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></widget>\
+       <progress_bar><style><normal bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\" /></style></progress_bar>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -38,8 +38,8 @@ TEST(ThemeGen, state) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<button><style><over bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></button>\
-       <button><style><pressed bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\"/></style></button>";
+      "<button><style><over bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
+       <button><style><pressed bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\"/></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -62,8 +62,8 @@ TEST(ThemeGen, style_type) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<button><style name=\"1:yellow\"><over bg-color=\"yellow\" fg-color=\"#fafbfc\" font-name=\"sans\" font-size=\"12\" /></style></button>\
-       <button><style name=\"1:yellow\"><pressed bg-color=\"rgb(255,255,0)\" fg-color=\"rgba(255,255,0,0.5)\" border-color=\"#ff00ff\" /></style></button>";
+      "<button><style name=\"1:yellow\"><over bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
+       <button><style name=\"1:yellow\"><pressed bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\" /></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -80,8 +80,8 @@ TEST(ThemeGen, inher) {
   theme_t theme;
   style_t style;
   const char* str =
-      "<button font-size=\"12\"><style name=\"1:yellow\" font-name=\"sans\"><over bg-color=\"yellow\" fg-color=\"#fafbfc\" /></style>\
-       <style name=\"1:yellow\"><pressed bg-color=\"rgb(255,255,0)\" font-name=\"serif\" font-size=\"14\" /></style></button>";
+      "<button font_size=\"12\"><style name=\"1:yellow\" font_name=\"sans\"><over bg_color=\"yellow\" fg_color=\"#fafbfc\" /></style>\
+       <style name=\"1:yellow\"><pressed bg_color=\"rgb(255,255,0)\" font_name=\"serif\" font_size=\"14\" /></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
