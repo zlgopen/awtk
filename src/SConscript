@@ -13,7 +13,7 @@ sources=Glob('base/*.c') +\
 
 if os.environ['LCD'] == 'NANOVG':
   sources += Glob('vgcanvas/vgcanvas_nanovg.c')
-  sources += ['animator/window_animator_direct.c'];
+  sources += ['animator/window_animator_nanovg.c'];
   sources += ['lcd/lcd_nanovg.c', 'lcd/lcd_mem_rgba.c', 'main_loop/main_loop_nanovg.c'];
 else:
   sources += Glob('vgcanvas/vgcanvas_agg.cpp')

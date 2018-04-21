@@ -31,6 +31,7 @@
 #include "base/window_manager.h"
 
 enum { TITLE_H = 30 };
+static ret_t dialog_on_relayout_children(widget_t* widget);
 
 static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
   if (widget->style.data != NULL) {
@@ -57,18 +58,6 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t dialog_relayout_children(widget_t* widget) {
-  dialog_t* dialog = DIALOG(widget);
-  uint32_t margin = dialog->margin;
-  wh_t w = widget->w - 2 * margin;
-  wh_t h = widget->h - 2 * margin;
-
-  widget_move_resize(dialog->title, margin, margin, w, TITLE_H);
-  widget_move_resize(dialog->client, margin, margin + TITLE_H, w, h - TITLE_H);
-
-  return RET_OK;
-}
-
 static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -89,15 +78,32 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (str_equal(name, WIDGET_PROP_MARGIN)) {
     dialog->margin = value_int(v);
-    dialog_relayout_children(widget);
+    dialog_on_relayout_children(widget);
     return RET_OK;
   }
 
   return RET_NOT_FOUND;
 }
 
+static ret_t dialog_on_relayout_children(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  uint32_t margin = dialog->margin;
+  wh_t w = widget->w - 2 * margin;
+  wh_t h = widget->h - 2 * margin;
+
+  widget_move_resize(dialog->title, margin, margin, w, TITLE_H);
+  widget_move_resize(dialog->client, margin, margin + TITLE_H, w, h - TITLE_H);
+
+  widget_layout_children(dialog->title);
+  widget_layout_children(dialog->client);
+
+  return RET_OK;
+}
+
+
 static const widget_vtable_t s_dialog_vtable = {.get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,
+                                                .on_layout_children = dialog_on_relayout_children,
                                                 .on_paint_self = dialog_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -139,7 +145,6 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   dialog->margin = 0;
   dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
   dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
-  dialog_relayout_children(widget);
 
   return widget;
 }

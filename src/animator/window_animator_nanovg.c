@@ -86,82 +86,33 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
   return RET_OK;
 }
 
-static ret_t window_animator_open_scale_update_percent(window_animator_t* wa) {
-  if (wa->open) {
-    wa->percent = 0.9 + 0.1 * wa->easing(wa->time_percent);
-  } else {
-    wa->percent = 1.0 - 0.1 * wa->easing(wa->time_percent);
+#include "fade.inc"
+#include "htranslate.inc"
+#include "center_scale.inc"
+#include "bottom_to_top.inc"
+#include "top_to_bottom.inc"
+
+static window_animator_t* window_animator_create(window_animator_type_t type, bool_t open) {
+  window_animator_t* wa = NULL;
+
+  if(type == WINDOW_ANIMATOR_CENTER_SCALE) {
+    wa = window_animator_create_scale(open);
+  } else if(type == WINDOW_ANIMATOR_HTRANSLATE) {
+    wa = window_animator_create_htranslate(open);
+  } else if(type == WINDOW_ANIMATOR_BOTTOM_TO_TOP) {
+    wa = window_animator_create_bottom_to_top(open);
+  } else if(type == WINDOW_ANIMATOR_TOP_TO_BOTTOM) {
+    wa = window_animator_create_top_to_bottom(open);
+  } else if(type == WINDOW_ANIMATOR_FADE) {
+    wa = window_animator_create_fade(open);
   }
-
-  return RET_OK;
-}
-
-static ret_t window_animator_open_scale_draw_prev(window_animator_t* wa) {
-  widget_t* prev_win = wa->prev_win;
-  canvas_t* c = wa->canvas;
-  float_t ratio = wa->ratio;
-  xy_t x = prev_win->x * ratio;
-  xy_t y = prev_win->y * ratio;
-  wh_t w = prev_win->w * ratio;
-  wh_t h = prev_win->h * ratio;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-
-  vgcanvas_draw_image(vg, &(wa->prev_img), x, y, w, h, prev_win->x, prev_win->y, prev_win->w,
-                      prev_win->h);
-
-  return RET_OK;
-}
-
-static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
-  widget_t* curr_win = wa->curr_win;
-  canvas_t* c = wa->canvas;
-  float_t ratio = wa->ratio;
-  xy_t x = curr_win->x;
-  xy_t y = curr_win->y;
-  wh_t w = curr_win->w;
-  wh_t h = curr_win->h;
-  float_t scale = wa->percent;
-  float_t alpha = wa->open ? wa->time_percent : 1 - wa->time_percent;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-
-  vgcanvas_save(vg);
-
-  vgcanvas_translate(vg, x + (w >> 1), y + (h >> 1));
-
-  vgcanvas_scale(vg, scale, scale);
-  vgcanvas_translate(vg, -(w >> 1), -(h >> 1));
-
-  vgcanvas_set_global_alpha(vg, alpha);
-  vgcanvas_draw_image(vg, &(wa->curr_img), x * ratio, y * ratio, w * ratio, h * ratio, 0, 0,
-                      curr_win->w, curr_win->h);
-
-  vgcanvas_restore(vg);
-
-  return RET_OK;
-}
-
-static window_animator_t* window_animator_create_scale(bool_t open) {
-  window_animator_t* wa = MEM_ZALLOC(window_animator_t);
-  return_value_if_fail(wa != NULL, NULL);
-
-  if (open) {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
-    wa->destroy = window_animator_open_destroy;
-  } else {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
-    wa->destroy = window_animator_close_destroy;
-  }
-
-  wa->update_percent = window_animator_open_scale_update_percent;
-  wa->draw_prev_window = window_animator_open_scale_draw_prev;
-  wa->draw_curr_window = window_animator_open_scale_draw_curr;
 
   return wa;
 }
 
 window_animator_t* window_animator_create_for_open(window_animator_type_t type, canvas_t* c,
                                                    widget_t* prev_win, widget_t* curr_win) {
-  window_animator_t* wa = window_animator_create_scale(TRUE);
+  window_animator_t* wa = window_animator_create(type, TRUE);
   return_value_if_fail(wa != NULL, NULL);
 
   window_animator_prepare(wa, c, prev_win, curr_win, TRUE);
@@ -171,7 +122,7 @@ window_animator_t* window_animator_create_for_open(window_animator_type_t type, 
 
 window_animator_t* window_animator_create_for_close(window_animator_type_t type, canvas_t* c,
                                                     widget_t* prev_win, widget_t* curr_win) {
-  window_animator_t* wa = window_animator_create_scale(FALSE);
+  window_animator_t* wa = window_animator_create(type, FALSE);
   return_value_if_fail(wa != NULL, NULL);
 
   window_animator_prepare(wa, c, prev_win, curr_win, FALSE);

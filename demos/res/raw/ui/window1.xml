@@ -1,3 +1,5 @@
 <window name="main" anim_hint="htranslate" x="0" y="0" w="320" h="480">
-  <button name="close" x="center" y="middle" w="40%" h="30" text="Close"/>
+  <button name="bottom" x="10" y="middle" w="25%" h="30" text="Bottom"/>
+  <button name="top" x="center" y="middle" w="25%" h="30" text="Top"/>
+  <button name="close" x="right:10" y="middle" w="25%" h="30" text="Close"/>
 </window>

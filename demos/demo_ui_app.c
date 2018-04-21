@@ -50,10 +50,25 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_show_window(void* ctx, event_t* e) {
+static ret_t on_show_window1(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
   widget_t* win = window_open(name);
 
+  widget_child_on(win, "bottom", EVT_CLICK, on_show_dialog, "bottom");
+  widget_child_on(win, "top", EVT_CLICK, on_show_dialog, "top");
+  widget_child_on(win, "close", EVT_CLICK, on_close, win);
+
+  (void)e;
+
+  return RET_OK;
+}
+
+static ret_t on_show_window2(void* ctx, event_t* e) {
+  const char* name = (const char*)ctx;
+  widget_t* win = window_open(name);
+
+  widget_child_on(win, "fade", EVT_CLICK, on_show_dialog, "fade");
+  widget_child_on(win, "top", EVT_CLICK, on_show_dialog, "top");
   widget_child_on(win, "close", EVT_CLICK, on_close, win);
 
   (void)e;
@@ -69,8 +84,8 @@ ret_t application_init() {
   widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
   widget_child_on(win, "dialog1", EVT_CLICK, on_show_dialog, "dialog1");
   widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
-  widget_child_on(win, "window1", EVT_CLICK, on_show_window, "window1");
-  widget_child_on(win, "window2", EVT_CLICK, on_show_window, "window2");
+  widget_child_on(win, "window1", EVT_CLICK, on_show_window1, "window1");
+  widget_child_on(win, "window2", EVT_CLICK, on_show_window2, "window2");
   //  timer_add(on_timer, bar1, 500);
 
   return RET_OK;

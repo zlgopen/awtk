@@ -223,6 +223,7 @@ typedef ret_t (*widget_on_click_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_move_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_up_t)(widget_t* widget, pointer_event_t* e);
+typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
 typedef ret_t (*widget_grab_t)(widget_t* widget, widget_t* child);
@@ -243,6 +244,7 @@ typedef struct _widget_vtable_t {
   widget_on_pointer_down_t on_pointer_down;
   widget_on_pointer_move_t on_pointer_move;
   widget_on_pointer_up_t on_pointer_up;
+  widget_on_layout_children_t on_layout_children;
   widget_invalidate_t invalidate;
   widget_on_event_t on_event;
   widget_grab_t grab;

@@ -52,10 +52,15 @@ typedef enum _window_animator_type_t {
    */
   WINDOW_ANIMATOR_CENTER_SCALE,
   /**
+   * @const WINDOW_ANIMATOR_FADE,
+   * 淡入淡出。适用于toast之类的提示。
+   */
+  WINDOW_ANIMATOR_FADE,
+  /**
    * @const WINDOW_ANIMATOR_TOP_TOP_BOTTOM
    * 顶部部弹出。适用于对话框。
    */
-  WINDOW_ANIMATOR_TOP_TOP_BOTTOM,
+  WINDOW_ANIMATOR_TOP_TO_BOTTOM,
   /**
    * @const WINDOW_ANIMATOR_BOTTOM_TO_TOP
    * 底部弹出。适用于对话框。

@@ -108,8 +108,9 @@ static const key_type_value_t image_draw_type_name_value[] = {
 
 static const key_type_value_t window_animator_type_name_value[] = {
     {"center_scale", 0, WINDOW_ANIMATOR_CENTER_SCALE},
+    {"fade", 0, WINDOW_ANIMATOR_FADE},
     {"bottom_to_top", 0, WINDOW_ANIMATOR_BOTTOM_TO_TOP},
-    {"top_to_bottom", 0, WINDOW_ANIMATOR_TOP_TOP_BOTTOM},
+    {"top_to_bottom", 0, WINDOW_ANIMATOR_TOP_TO_BOTTOM},
     {"htranslate", 0, WINDOW_ANIMATOR_HTRANSLATE},
     {"vtranslate", 0, WINDOW_ANIMATOR_VTRANSLATE}};
 
