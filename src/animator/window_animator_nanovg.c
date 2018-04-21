@@ -88,6 +88,7 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
 
 #include "fade.inc"
 #include "htranslate.inc"
+#include "vtranslate.inc"
 #include "center_scale.inc"
 #include "bottom_to_top.inc"
 #include "top_to_bottom.inc"
@@ -99,6 +100,8 @@ static window_animator_t* window_animator_create(window_animator_type_t type, bo
     wa = window_animator_create_scale(open);
   } else if(type == WINDOW_ANIMATOR_HTRANSLATE) {
     wa = window_animator_create_htranslate(open);
+  } else if(type == WINDOW_ANIMATOR_VTRANSLATE) {
+    wa = window_animator_create_vtranslate(open);
   } else if(type == WINDOW_ANIMATOR_BOTTOM_TO_TOP) {
     wa = window_animator_create_bottom_to_top(open);
   } else if(type == WINDOW_ANIMATOR_TOP_TO_BOTTOM) {
