@@ -95,7 +95,10 @@ static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
   if (dr->w > 0 && dr->h > 0) {
     SDL_RenderCopy(sdl->render, sdl->texture, NULL, NULL);
   }
-  SDL_RenderPresent(sdl->render);
+
+  if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
+    SDL_RenderPresent(sdl->render);
+  }
 
   return RET_OK;
 }
@@ -105,6 +108,12 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   SDL_DestroyTexture(sdl->texture);
 
   return RET_OK;
+}
+
+static ret_t lcd_sdl_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+  lcd_sdl2_t* mem = (lcd_sdl2_t*)lcd;
+
+  return lcd_take_snapshot((lcd_t*)(mem->lcd_mem), img);
 }
 
 static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
@@ -132,6 +141,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->draw_points = lcd_sdl2_draw_points;
   base->end_frame = lcd_sdl2_end_frame;
   base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
+  base->take_snapshot = lcd_sdl_take_snapshot;
   base->destroy = lcd_sdl2_destroy;
 
   SDL_GetRendererOutputSize(render, &w, &h);

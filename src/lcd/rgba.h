@@ -21,6 +21,8 @@
 
 typedef uint32_t pixel_t;
 
+#define LCD_FORMAT BITMAP_FMT_RGBA
+
 #define rgb_to_pixel(r, g, b) ((r) << 24) | ((g) << 16) | ((b) << 8) | 0xff
 static inline pixel_t to_pixel(color_t c) { return rgb_to_pixel(c.rgba.r, c.rgba.g, c.rgba.b); }
 

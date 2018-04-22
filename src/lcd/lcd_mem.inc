@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/vgcanvas.h"
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
@@ -191,6 +192,52 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   return mem->vgcanvas;
 }
 
+static ret_t snapshot_destroy(bitmap_t* img) {
+  MEM_FREE((void*)(img->data));
+
+  return RET_OK;
+}
+
+static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+  uint32_t size = 0;
+  void* data = NULL;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  memset(img, 0x00, sizeof(bitmap_t));
+
+  img->w = lcd->w;
+  img->h = lcd->h;
+  img->format = LCD_FORMAT;
+  if (img->format == BITMAP_FMT_RGBA) {
+    uint32_t i = 0;
+    uint32_t* s = NULL;
+    uint32_t* d = NULL;
+    uint32_t nr = img->w * img->h;
+    size = img->w * img->h * 4;
+    data = MEM_ALLOC(size);
+
+    return_value_if_fail(data != NULL, RET_FAIL);
+
+    s = (uint32_t*)(mem->pixels);
+    d = (uint32_t*)data;
+
+    for (i = 0; i < nr; i++, s++, d++) {
+      uint8_t* ps = (uint8_t*)s;
+      uint8_t* pd = (uint8_t*)d;
+      pd[0] = ps[3];
+      pd[1] = ps[2];
+      pd[2] = ps[1];
+      pd[3] = ps[0];
+    }
+  } else {
+    return_value_if_fail(size > 0, RET_FAIL);
+  }
+
+  img->destroy = snapshot_destroy;
+  img->data = (uint8_t*)data;
+
+  return RET_OK;
+}
+
 static ret_t lcd_mem_end_frame(lcd_t* lcd) { return RET_OK; }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
@@ -217,6 +264,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->draw_points = lcd_mem_draw_points;
   base->get_point_color = lcd_mem_get_point_color;
   base->get_vgcanvas = lcd_mem_get_vgcanvas;
+  base->take_snapshot = lcd_mem_take_snapshot;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = lcd_mem_destroy;
 

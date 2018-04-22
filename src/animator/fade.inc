@@ -15,7 +15,7 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
-  
+
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
 

@@ -15,7 +15,7 @@ static ret_t window_animator_open_scale_draw_prev(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
-  
+
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
 
@@ -39,17 +39,17 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   rect_init(dst, 0, 0, win->w, win->h);
   vgcanvas_save(vg);
   vgcanvas_translate(vg, win->x, win->y);
-  vgcanvas_translate(vg, win->w>>1, win->h>>1);
+  vgcanvas_translate(vg, win->w >> 1, win->h >> 1);
   vgcanvas_scale(vg, scale, scale);
-  vgcanvas_translate(vg, -win->w>>1, -win->h>>1);
+  vgcanvas_translate(vg, -win->w >> 1, -win->h >> 1);
   vgcanvas_set_global_alpha(vg, alpha);
   vgcanvas_draw_image(vg, &(wa->curr_img), src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
   vgcanvas_restore(vg);
 #else
-  rect_init(dst, 0, 0, win->w*scale, win->h*scale);
-  dst.x = win->x + ((win->w-dst.w) >> 1);
-  dst.y = win->y + ((win->h-dst.h) >> 1);
-
+  rect_init(dst, 0, 0, win->w * scale, win->h * scale);
+  dst.x = win->x + ((win->w - dst.w) >> 1);
+  dst.y = win->y + ((win->h - dst.h) >> 1);
+  log_debug("%d %d %d %d\n", dst.x, dst.y, dst.w, dst.h);
   lcd_set_global_alpha(c->lcd, alpha * 0xff);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
 #endif

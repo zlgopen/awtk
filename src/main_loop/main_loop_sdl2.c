@@ -150,6 +150,9 @@ static ret_t main_loop_sdl2_run(main_loop_t* l) {
     idle_dispatch();
 
     main_loop_sdl2_paint(loop);
+    if (!WINDOW_MANAGER(loop->wm)->animating) {
+      SDL_Delay(30);
+    }
   }
 
   return RET_OK;

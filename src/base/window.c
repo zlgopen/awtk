@@ -87,4 +87,3 @@ ret_t window_close(widget_t* widget) {
 
   return window_manager_remove_child(widget->parent, widget);
 }
-

@@ -21,9 +21,10 @@
 
 #include "base/lcd.h"
 
-ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
+  lcd->draw_mode = draw_mode;
   return lcd->begin_frame(lcd, dirty_rect);
 }
 
@@ -182,4 +183,10 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL && lcd->get_vgcanvas != NULL, NULL);
 
   return lcd->get_vgcanvas(lcd);
+}
+
+ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+  return_value_if_fail(lcd != NULL && lcd->take_snapshot != NULL, RET_BAD_PARAMS);
+
+  return lcd->take_snapshot(lcd, img);
 }

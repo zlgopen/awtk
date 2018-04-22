@@ -45,7 +45,7 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
   }
 
   rect_init(r, wm->x, wm->y, wm->w, wm->h);
-  ENSURE(canvas_begin_frame(c, &r) == RET_OK);
+  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_ANIMATION) == RET_OK);
 
   if (wa->draw_prev_window != NULL) {
     wa->draw_prev_window(wa);

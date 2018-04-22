@@ -17,6 +17,7 @@ if os.environ['LCD'] == 'NANOVG':
   sources += ['lcd/lcd_nanovg.c', 'lcd/lcd_mem_rgba.c', 'main_loop/main_loop_nanovg.c'];
 else:
   sources += Glob('vgcanvas/vgcanvas_agg.cpp')
+  sources += ['animator/window_animator_fb.c'];
   sources += ['lcd/lcd_sdl2.c', 'lcd/lcd_mem_rgba.c', 'main_loop/main_loop_sdl2.c']
 
 env=DefaultEnvironment().Clone()

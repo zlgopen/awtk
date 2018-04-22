@@ -165,14 +165,14 @@ wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
   }
 }
 
-ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect) {
+ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   c->ox = 0;
   c->oy = 0;
   canvas_set_clip_rect(c, dirty_rect);
 
-  return lcd_begin_frame(c->lcd, dirty_rect);
+  return lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
 }
 
 static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {
@@ -863,7 +863,7 @@ ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y) {
   color_t bg = color_init(0xff, 0xff, 0, 0xff);
   color_t fg = color_init(0xff, 0, 0, 0xff);
 
-  canvas_begin_frame(c, NULL);
+  canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL);
   canvas_set_clip_rect(c, NULL);
   canvas_set_fill_color(c, bg);
   canvas_set_stroke_color(c, fg);

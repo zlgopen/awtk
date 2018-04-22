@@ -64,7 +64,7 @@ ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size);
 
 wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr);
 
-ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect);
+ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 
 ret_t canvas_translate(canvas_t* c, xy_t dx, xy_t dy);
 ret_t canvas_untranslate(canvas_t* c, xy_t dx, xy_t dy);

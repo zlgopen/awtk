@@ -66,7 +66,7 @@ TEST(LCDMem, basic) {
   canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
 
   ASSERT_EQ(c, &canvas);
-  ASSERT_EQ(canvas_begin_frame(c, NULL), RET_OK);
+  ASSERT_EQ(canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL), RET_OK);
 
   test_draw_points(c);
   test_fill_rect(c);

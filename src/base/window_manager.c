@@ -152,7 +152,7 @@ ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
-    window_manager_remove_child_real(wm, window); 
+    window_manager_remove_child_real(wm, window);
     idle_add(window_manager_idle_destroy_window, window);
   }
 
@@ -208,7 +208,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     rect_merge(&r, ldr);
 
     if (r.w > 0 && r.h > 0) {
-      ENSURE(canvas_begin_frame(c, &r) == RET_OK);
+      ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
       ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
     }

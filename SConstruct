@@ -10,8 +10,8 @@ GTEST_ROOT = os.path.join(LFTK_ROOT, '3rd/gtest/googletest')
 BIN_DIR=os.path.join(LFTK_ROOT, 'bin')
 LIB_DIR=os.path.join(LFTK_ROOT, 'lib')
 
-LCD='SDL'
 LCD='NANOVG'
+LCD='SDL'
 
 os.environ['LCD'] = LCD
 os.environ['BIN_DIR'] = BIN_DIR;

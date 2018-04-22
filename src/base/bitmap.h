@@ -51,7 +51,7 @@ typedef enum _bitmap_format_t {
    * @const BITMAP_FMT_RGB565
    * 一个像素占用2个字节，RGB分别占用5,6,5位。
    */
-  BITMAP_FTM_RGB565
+  BITMAP_FMT_RGB565
 } bitmap_format_t;
 
 /**

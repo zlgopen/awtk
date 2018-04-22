@@ -21,6 +21,8 @@
 
 typedef uint16_t pixel_t;
 
+#define LCD_FORMAT BITMAP_FMT_RGB565
+
 #define rgb_to_pixel(r, g, b) ((((r) >> 3) << 11) | (((g) >> 2) << 5) | ((b) >> 3))
 static inline pixel_t to_pixel(color_t c) { return rgb_to_pixel(c.rgba.r, c.rgba.g, c.rgba.b); }
 

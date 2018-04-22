@@ -1,7 +1,7 @@
 ﻿/**
- * File:   window_animator_nanovg
+ * File:   window_animator_fb
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  nanovg implemented window animator
+ * Brief:  fb implemented window animator
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-04-19 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-04-22 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
@@ -23,9 +23,8 @@
 #include "base/window_animator.h"
 
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
-  vgcanvas_t* vg = lcd_get_vgcanvas(wa->canvas->lcd);
-  vgcanvas_destroy_fbo(vg, &(wa->prev_fbo));
-  vgcanvas_destroy_fbo(vg, &(wa->curr_fbo));
+  bitmap_destroy(&(wa->prev_img));
+  bitmap_destroy(&(wa->curr_img));
 
   memset(wa, 0x00, sizeof(window_animator_t));
   MEM_FREE(wa);
@@ -39,43 +38,32 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
   return window_animator_open_destroy(wa);
 }
 
-static ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
-  return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
-
-  img->id = fbo->id;
-  img->w = fbo->w * fbo->ratio;
-  img->h = fbo->h * fbo->ratio;
-
-  img->flags = BITMAP_FLAG_TEXTURE;
-
-  return RET_OK;
-}
-
 static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                                      widget_t* curr_win, bool_t open) {
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  rect_t r;
+  lcd_t* lcd = c->lcd;
+  widget_t* wm = prev_win->parent;
 
+  wa->ratio = 1;
   wa->canvas = c;
   wa->open = open;
   wa->duration = 400;
   wa->prev_win = prev_win;
   wa->curr_win = curr_win;
+  rect_init(r, 0, 0, wm->w, wm->h);
 
-  ENSURE(vgcanvas_create_fbo(vg, &(wa->prev_fbo)) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
-  vgcanvas_scale(vg, 1, 1);
+  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
-  ENSURE(vgcanvas_unbind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
+  ENSURE(lcd_take_snapshot(lcd, &(wa->prev_img)) == RET_OK);
+  ENSURE(canvas_end_frame(c) == RET_OK);
 
-  ENSURE(vgcanvas_create_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-  vgcanvas_scale(vg, 1, 1);
+  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(vgcanvas_unbind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-
-  fbo_to_img(&(wa->prev_fbo), &(wa->prev_img));
-  fbo_to_img(&(wa->curr_fbo), &(wa->curr_img));
-  wa->ratio = wa->curr_fbo.ratio;
+  ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img)) == RET_OK);
+  ENSURE(canvas_end_frame(c) == RET_OK);
+  
+  wa->prev_img.flags = BITMAP_FLAG_OPAQUE;
+  wa->curr_img.flags = BITMAP_FLAG_OPAQUE;
 
   return RET_OK;
 }

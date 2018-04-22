@@ -56,9 +56,35 @@ typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, x
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
+typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img);
 
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
+
+/**
+ * @enum lcd_draw_mode_t
+ * @prefix LCD_DRAW_
+ * LCD绘制模式常量定义。
+ */
+typedef enum _lcd_draw_mode_t {
+  /**
+   * @const LCD_DRAW_NORMAL
+   * 正常绘制。
+   */
+  LCD_DRAW_NORMAL = 0,
+  /**
+   * @const LCD_DRAW_ANIMATION
+   * 绘制动画。
+   * 在该模式下，可以直接绘制到显存，不用绘制到framebuffer中。
+   */
+  LCD_DRAW_ANIMATION,
+  /**
+   * @const LCD_DRAW_OFFLINE
+   * 离线模式绘制(仅适用于framebuffer)。
+   * 在该模式下，绘制的内容不会显示出来，但可以用take_snapshot取出来，主要用于窗口动画。
+   */
+  LCD_DRAW_OFFLINE
+} lcd_draw_mode_t;
 
 /**
  * @class lcd_t
@@ -85,6 +111,7 @@ struct _lcd_t {
   lcd_get_point_color_t get_point_color;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
+  lcd_take_snapshot_t take_snapshot;
 
   lcd_destroy_t destroy;
 
@@ -137,6 +164,13 @@ struct _lcd_t {
    */
   uint32_t font_size;
 
+  /**
+   * @property {lcd_draw_mode_t} draw_mode
+   * @readonly
+   * 绘制模式。
+   */
+  lcd_draw_mode_t draw_mode;
+
   rect_t* dirty_rect;
 };
 
@@ -145,10 +179,11 @@ struct _lcd_t {
  * 准备绘制。
  * @param {lcd_t*} lcd lcd对象。
  * @param {rect_t*} dirty_rect 需要绘制的区域。
+ * @param {bool_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect);
+ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 
 /**
  * @method lcd_set_clip_rect
@@ -349,6 +384,16 @@ ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
  * @return {vgcanvas_t*} 返回矢量图canvas。
  */
 vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd);
+
+/**
+ * @method lcd_take_snapshot
+ * 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {bitmap_t*} img 返回快照图片。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img);
 
 /**
  * @method lcd_end_frame
