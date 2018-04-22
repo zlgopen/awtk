@@ -22,6 +22,7 @@
 #include "base/keys.h"
 #include "base/mem.h"
 #include "base/idle.h"
+#include "base/timer.h"
 #include "base/platform.h"
 #include "base/prop_names.h"
 #include "base/window_manager.h"
@@ -62,6 +63,10 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
     if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
       wm->animator = window_animator_create_for_open(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
+      if(wm->animating) {
+        wm->ignore_user_input = TRUE;
+        log_debug("ignore_user_input\n");
+      }
     }
   }
 
@@ -85,7 +90,10 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
     if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
       wm->animator = window_animator_create_for_close(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
-
+      if(wm->animating) {
+        wm->ignore_user_input = TRUE;
+        log_debug("ignore_user_input\n");
+      }
       return wm->animator != NULL ? RET_OK : RET_FAIL;
     }
   }
@@ -120,6 +128,7 @@ static ret_t on_window_destroy(void* ctx, event_t* e) {
 }
 
 ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
+  ret_t ret = RET_OK;
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window->type == WIDGET_NORMAL_WINDOW) {
@@ -137,7 +146,12 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
     idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
   }
 
-  return widget_add_child(wm, window);
+  ret = widget_add_child(wm, window);
+  if(ret == RET_OK) {
+    wm->target = window;
+  }
+
+  return ret;
 }
 
 static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
@@ -185,7 +199,7 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
       }
 
       if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG) {
-        break;
+        return iter;
       }
     }
   }
@@ -221,6 +235,15 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t timer_enable_user_input(const timer_info_t* timer) {
+  window_manager_t* wm = WINDOW_MANAGER(timer->ctx);
+ 
+  wm->ignore_user_input = FALSE;
+  log_debug("enable user input\n");
+
+  return RET_OK;
+}
+
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   uint32_t time_ms = get_time_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
@@ -228,8 +251,9 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   ret_t ret = window_animator_update(wm->animator, time_ms);
   if (ret == RET_DONE) {
     window_animator_destroy(wm->animator);
-    wm->animating = FALSE;
     wm->animator = NULL;
+    wm->animating = FALSE;
+    timer_add(timer_enable_user_input, wm, 500);
   }
 
   return RET_OK;
@@ -424,8 +448,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
-  if (wm->animator) {
-    log_debug("animating ignore input.\n");
+  if (wm->ignore_user_input) {
+    log_debug("animating ignore input\n");
     return RET_OK;
   }
 

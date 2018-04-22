@@ -3,7 +3,7 @@ function on_click(ctx, evt)
 end
 
 function application_init()
-  local win = Window.open("window1");
+  local win = Window.open("window");
 
   win.inc:on(EventType.CLICK, function(evt) 
     win.bar2:set_value(win.bar2.value + 10);
@@ -39,7 +39,7 @@ function application_init()
     dlg:destroy()
   end
 
-  win.dialog:on(EventType.CLICK, function(evt) 
+  win.dialog1:on(EventType.CLICK, function(evt) 
     show_dialog("dialog1");
   end);
   

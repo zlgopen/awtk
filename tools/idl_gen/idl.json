@@ -133,6 +133,97 @@
  {
   "type": "enum",
   "header": "base/bitmap.h",
+  "name": "bitmap_format_t",
+  "prefix": "BITMAP_FMT_",
+  "consts": [
+   {
+    "name": "BITMAP_FMT_NONE"
+   },
+   {
+    "name": "BITMAP_FMT_RGBA"
+   },
+   {
+    "name": "BITMAP_FMT_RGB565"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/bitmap.h",
+  "name": "_bitmap_format_t",
+  "prefix": "BITMAP_FLAG_",
+  "consts": [
+   {
+    "name": "BITMAP_FLAG_NONE"
+   },
+   {
+    "name": "BITMAP_FLAG_OPAQUE"
+   },
+   {
+    "name": "BITMAP_FLAG_IMMUTABLE"
+   },
+   {
+    "name": "BITMAP_FLAG_TEXTURE"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "bitmap_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "bitmap_t*",
+      "name": "bitmap"
+     }
+    ],
+    "name": "bitmap_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "wh_t",
+    "name": "w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "h",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "flags",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "format",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "name",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t*",
+    "name": "data",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "id",
+    "readonly": true
+   }
+  ],
+  "header": "base/bitmap.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/bitmap.h",
   "name": "image_draw_type_t",
   "prefix": "IMAGE_DRAW_",
   "consts": [
@@ -413,6 +504,9 @@
    },
    {
     "name": "INPUT_EMAIL"
+   },
+   {
+    "name": "INPUT_PASSWORD"
    },
    {
     "name": "INPUT_PHONE"
@@ -812,6 +906,80 @@
  },
  {
   "type": "class",
+  "name": "idle_t",
+  "scriptable": true,
+  "isFake": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "idle_func_t",
+      "name": "on_idle"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "idle_add",
+    "isStatic": true,
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "uint32_t",
+      "name": "idle_id"
+     }
+    ],
+    "name": "idle_remove",
+    "isStatic": true,
+    "isCustom": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "idle_count",
+    "isStatic": true,
+    "return": "uint32_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/idle.h"
+ },
+ {
+  "type": "class",
+  "name": "image_loader_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "image_loader_t*",
+      "name": "loader"
+     },
+     {
+      "type": "uint8_t*",
+      "name": "buff"
+     },
+     {
+      "type": "uint32_t",
+      "name": "size"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "bitmap"
+     }
+    ],
+    "name": "image_loader_load",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/image_loader.h"
+ },
+ {
+  "type": "class",
   "name": "image_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -911,6 +1079,451 @@
   ],
   "properties": [],
   "header": "base/label.h"
+ },
+ {
+  "type": "enum",
+  "header": "base/lcd.h",
+  "name": "lcd_draw_mode_t",
+  "prefix": "LCD_DRAW_",
+  "consts": [
+   {
+    "name": "LCD_DRAW_NORMAL"
+   },
+   {
+    "name": "LCD_DRAW_ANIMATION"
+   },
+   {
+    "name": "LCD_DRAW_OFFLINE"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "lcd_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "rect_t*",
+      "name": "dirty_rect"
+     },
+     {
+      "type": "bool_t",
+      "name": "anim_mode"
+     }
+    ],
+    "name": "lcd_begin_frame",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "rect_t*",
+      "name": "rect"
+     }
+    ],
+    "name": "lcd_set_clip_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "uint8_t",
+      "name": "alpha"
+     }
+    ],
+    "name": "lcd_set_global_alpha",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "color_t",
+      "name": "color"
+     }
+    ],
+    "name": "lcd_set_text_color",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "color_t",
+      "name": "color"
+     }
+    ],
+    "name": "lcd_set_stroke_color",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "color_t",
+      "name": "color"
+     }
+    ],
+    "name": "lcd_set_fill_color",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "const",
+      "name": "char*"
+     }
+    ],
+    "name": "lcd_set_font_name",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "uint32_t",
+      "name": "font_size"
+     }
+    ],
+    "name": "lcd_set_font_size",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "xy_t*",
+      "name": "x"
+     },
+     {
+      "type": "xy_t*",
+      "name": "y"
+     },
+     {
+      "type": "xy_t*",
+      "name": "h"
+     }
+    ],
+    "name": "lcd_draw_vline",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "xy_t*",
+      "name": "x"
+     },
+     {
+      "type": "xy_t*",
+      "name": "y"
+     },
+     {
+      "type": "xy_t*",
+      "name": "w"
+     }
+    ],
+    "name": "lcd_draw_hline",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "point_t*",
+      "name": "points"
+     },
+     {
+      "type": "uint32_t",
+      "name": "nr"
+     }
+    ],
+    "name": "lcd_draw_points",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     }
+    ],
+    "name": "lcd_get_point_color_t",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "lcd_fill_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "lcd_stroke_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "glyph_t*",
+      "name": "glyph"
+     },
+     {
+      "type": "rect_t*",
+      "name": "src"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     }
+    ],
+    "name": "lcd_draw_glyph",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t",
+      "name": "nr"
+     }
+    ],
+    "name": "lcd_measure_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t",
+      "name": "nr"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     }
+    ],
+    "name": "lcd_draw_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "img"
+     },
+     {
+      "type": "rect_t*",
+      "name": "src"
+     },
+     {
+      "type": "rect_t*",
+      "name": "dst"
+     }
+    ],
+    "name": "lcd_draw_image",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     }
+    ],
+    "name": "lcd_get_vgcanvas",
+    "return": "vgcanvas_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "img"
+     }
+    ],
+    "name": "lcd_take_snapshot",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     }
+    ],
+    "name": "lcd_end_frame",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "wh_t",
+    "name": "w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "height",
+    "readonly": true
+   },
+   {
+    "type": "uint8_t",
+    "name": "global_alpha",
+    "readonly": true
+   },
+   {
+    "type": "color_t",
+    "name": "text_color",
+    "readonly": true
+   },
+   {
+    "type": "color_t",
+    "name": "fill_color",
+    "readonly": true
+   },
+   {
+    "type": "color_t",
+    "name": "stroke_color",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "font_name",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "font_size",
+    "readonly": true
+   },
+   {
+    "type": "lcd_draw_mode_t",
+    "name": "draw_mode",
+    "readonly": true
+   }
+  ],
+  "header": "base/lcd.h"
  },
  {
   "type": "class",
@@ -1478,6 +2091,9 @@
     "name": "RET_NOT_FOUND"
    },
    {
+    "name": "RET_DONE"
+   },
+   {
     "name": "RET_BAD_PARAMS"
    }
   ]
@@ -1889,6 +2505,911 @@
    }
   ],
   "header": "base/value.h"
+ },
+ {
+  "type": "class",
+  "name": "vgcanvas_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "uint32_t",
+      "name": "w"
+     },
+     {
+      "type": "uint32_t",
+      "name": "h"
+     },
+     {
+      "type": "void*",
+      "name": "data"
+     }
+    ],
+    "name": "vgcanvas_create",
+    "isConstructor": true,
+    "return": "vgcanvas_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_begin_path",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "rect_t*",
+      "name": "dirty_rect"
+     }
+    ],
+    "name": "vgcanvas_begin_frame",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_move_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_line_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "cpx"
+     },
+     {
+      "type": "float_t",
+      "name": "cpy"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_quadratic_curve_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "cp1x"
+     },
+     {
+      "type": "float_t",
+      "name": "cp1y"
+     },
+     {
+      "type": "float_t",
+      "name": "cp2x"
+     },
+     {
+      "type": "float_t",
+      "name": "cp2y"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_bezier_curve_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x1"
+     },
+     {
+      "type": "float_t",
+      "name": "y1"
+     },
+     {
+      "type": "float_t",
+      "name": "x2"
+     },
+     {
+      "type": "float_t",
+      "name": "y2"
+     },
+     {
+      "type": "float_t",
+      "name": "r"
+     }
+    ],
+    "name": "vgcanvas_arc_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "r"
+     },
+     {
+      "type": "float_t",
+      "name": "start_angle"
+     },
+     {
+      "type": "float_t",
+      "name": "end_angle"
+     },
+     {
+      "type": "bool_t",
+      "name": "ccw"
+     }
+    ],
+    "name": "vgcanvas_arc",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_is_point_in_path",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "w"
+     },
+     {
+      "type": "float_t",
+      "name": "h"
+     }
+    ],
+    "name": "vgcanvas_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "w"
+     },
+     {
+      "type": "float_t",
+      "name": "h"
+     },
+     {
+      "type": "float_t",
+      "name": "r"
+     }
+    ],
+    "name": "vgcanvas_round_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "rx"
+     },
+     {
+      "type": "float_t",
+      "name": "ry"
+     }
+    ],
+    "name": "vgcanvas_ellipse",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_close_path",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_reset",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_flush",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "w"
+     },
+     {
+      "type": "float_t",
+      "name": "h"
+     },
+     {
+      "type": "color_t",
+      "name": "c"
+     }
+    ],
+    "name": "vgcanvas_clear_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "rad"
+     }
+    ],
+    "name": "vgcanvas_rotate",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_scale",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     }
+    ],
+    "name": "vgcanvas_translate",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "a"
+     },
+     {
+      "type": "float_t",
+      "name": "b"
+     },
+     {
+      "type": "float_t",
+      "name": "c"
+     },
+     {
+      "type": "float_t",
+      "name": "d"
+     },
+     {
+      "type": "float_t",
+      "name": "e"
+     },
+     {
+      "type": "float_t",
+      "name": "f"
+     }
+    ],
+    "name": "vgcanvas_transform",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "a"
+     },
+     {
+      "type": "float_t",
+      "name": "b"
+     },
+     {
+      "type": "float_t",
+      "name": "c"
+     },
+     {
+      "type": "float_t",
+      "name": "d"
+     },
+     {
+      "type": "float_t",
+      "name": "e"
+     },
+     {
+      "type": "float_t",
+      "name": "f"
+     }
+    ],
+    "name": "vgcanvas_set_transform",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_fill",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "w"
+     },
+     {
+      "type": "float_t",
+      "name": "h"
+     }
+    ],
+    "name": "vgcanvas_clip_rect",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_stroke",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "font"
+     }
+    ],
+    "name": "vgcanvas_set_font",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "font"
+     }
+    ],
+    "name": "vgcanvas_set_font_size",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_text_align",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_text_baseline",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     },
+     {
+      "type": "float_t",
+      "name": "x"
+     },
+     {
+      "type": "float_t",
+      "name": "y"
+     },
+     {
+      "type": "float_t",
+      "name": "max_width"
+     }
+    ],
+    "name": "vgcanvas_fill_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "vgcanvas_measure_text",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "img"
+     },
+     {
+      "type": "float_t",
+      "name": "sx"
+     },
+     {
+      "type": "float_t",
+      "name": "sy"
+     },
+     {
+      "type": "float_t",
+      "name": "sw"
+     },
+     {
+      "type": "float_t",
+      "name": "sh"
+     },
+     {
+      "type": "float_t",
+      "name": "dx"
+     },
+     {
+      "type": "float_t",
+      "name": "dy"
+     },
+     {
+      "type": "float_t",
+      "name": "dw"
+     },
+     {
+      "type": "float_t",
+      "name": "dh"
+     }
+    ],
+    "name": "vgcanvas_draw_image",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "bool_t",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_antialias",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "alpha"
+     }
+    ],
+    "name": "vgcanvas_set_global_alpha",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_line_width",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "color_t",
+      "name": "color"
+     }
+    ],
+    "name": "vgcanvas_set_fill_color",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "color_t",
+      "name": "color"
+     }
+    ],
+    "name": "vgcanvas_set_stroke_color",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_line_cap",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "char*",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_line_join",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
+      "type": "float_t",
+      "name": "value"
+     }
+    ],
+    "name": "vgcanvas_set_miter_limit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_save",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_restore",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_end_frame",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     }
+    ],
+    "name": "vgcanvas_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "wh_t",
+    "name": "w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "height",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "ratio",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "anti_alias",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "line_width",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "global_alpha",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "miter_limit",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "line_cap",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "line_join",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "font",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "font_size",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "text_align",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "text_baseline",
+    "readonly": true
+   },
+   {
+    "type": "color_t",
+    "name": "fill_color",
+    "readonly": true
+   },
+   {
+    "type": "color_t",
+    "name": "stroke_color",
+    "readonly": true
+   }
+  ],
+  "header": "base/vgcanvas.h"
  },
  {
   "type": "class",
@@ -2564,6 +4085,117 @@
   "header": "base/widget.h"
  },
  {
+  "type": "enum",
+  "header": "base/window_animator.h",
+  "name": "window_animator_type_t",
+  "prefix": "WINDOW_ANIMATOR_",
+  "consts": [
+   {
+    "name": "WINDOW_ANIMATOR_NONE"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_CENTER_SCALE"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_FADE"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_TOP_TOP_BOTTOM"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_BOTTOM_TO_TOP"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_HTRANSLATE"
+   },
+   {
+    "name": "WINDOW_ANIMATOR_VTRANSLATE"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "window_animator_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "window_animator_type_t",
+      "name": "type"
+     },
+     {
+      "type": "canvas_t*",
+      "name": "c"
+     },
+     {
+      "type": "widget_t*",
+      "name": "prev_win"
+     },
+     {
+      "type": "widget_t*",
+      "name": "curr_win"
+     }
+    ],
+    "name": "window_animator_create_for_open",
+    "isConstructor": true,
+    "return": "window_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "window_animator_type_t",
+      "name": "type"
+     },
+     {
+      "type": "canvas_t*",
+      "name": "c"
+     },
+     {
+      "type": "widget_t*",
+      "name": "prev_win"
+     },
+     {
+      "type": "widget_t*",
+      "name": "curr_win"
+     }
+    ],
+    "name": "window_animator_create_for_close",
+    "isConstructor": true,
+    "return": "window_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "window_animator_t*",
+      "name": "wa"
+     },
+     {
+      "type": "canvas_t*",
+      "name": "canvas"
+     },
+     {
+      "type": "uint32_t",
+      "name": "time_ms"
+     }
+    ],
+    "name": "window_animator_update",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "window_animator_t*",
+      "name": "wa"
+     }
+    ],
+    "name": "window_animator_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/window_animator.h"
+ },
+ {
   "type": "class",
   "name": "window_manager_t",
   "parent": "widget_t",
@@ -2614,6 +4246,17 @@
     "name": "window_open",
     "isConstructor": true,
     "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     }
+    ],
+    "name": "window_close",
+    "isDeconstructor": true,
+    "return": "ret_t"
    }
   ],
   "properties": [],

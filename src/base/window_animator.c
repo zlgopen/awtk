@@ -55,7 +55,7 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
     wa->draw_curr_window(wa);
   }
 
-  log_debug("percent=%f time_percent=%f time=%u\n", wa->percent, wa->time_percent, time_ms);
+  //log_debug("percent=%f time_percent=%f time=%u\n", wa->percent, wa->time_percent, time_ms);
   ENSURE(canvas_end_frame(c) == RET_OK);
 
   return wa->time_percent >= 1 ? RET_DONE : RET_OK;

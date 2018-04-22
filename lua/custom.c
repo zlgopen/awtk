@@ -181,3 +181,50 @@ static int wrap_timer_remove(lua_State* L) {
 
   return 1;
 }
+
+static ret_t call_on_idle(const idle_info_t* idle) {
+  ret_t ret = RET_REMOVE;
+  lua_State* L = (lua_State*)s_current_L;
+  int func_id = (char*)(idle->ctx) - (char*)NULL;
+
+  lua_settop(L, 0);
+  lua_rawgeti(L, LUA_REGISTRYINDEX, func_id);
+
+  lua_pcall(L, 0, 1, 0);
+
+  ret = (ret_t)lua_tonumber(L, -1);
+
+  return ret;
+}
+
+static int wrap_idle_add(lua_State* L) {
+  uint32_t id = 0;
+  if (lua_isfunction(L, 1)) {
+    int func_id = 0;
+    lua_pushvalue(L, 1);
+    func_id = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    id = idle_add(call_on_idle, (char*)NULL + func_id);
+    lua_pushnumber(L, (lua_Number)id);
+
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+static int wrap_idle_remove(lua_State* L) {
+  ret_t ret = 0;
+  uint32_t id = (uint32_t)luaL_checkinteger(L, 1);
+  const idle_info_t* idle = idle_find(id);
+
+  if (idle) {
+    uint32_t func_id = (char*)(idle->ctx) - (char*)NULL;
+    luaL_unref(L, LUA_REGISTRYINDEX, func_id);
+    ret = (ret_t)idle_remove(id);
+  }
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}

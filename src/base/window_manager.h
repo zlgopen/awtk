@@ -47,6 +47,7 @@ typedef struct _window_manager_t {
   point_t pointer;
 
   bool_t animating;
+  bool_t ignore_user_input;
   window_animator_t* animator;
   canvas_t* canvas;
 } window_manager_t;
