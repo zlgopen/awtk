@@ -10,8 +10,8 @@ GTEST_ROOT = os.path.join(LFTK_ROOT, '3rd/gtest/googletest')
 BIN_DIR=os.path.join(LFTK_ROOT, 'bin')
 LIB_DIR=os.path.join(LFTK_ROOT, 'lib')
 
-LCD='SDL'
 LCD='NANOVG'
+LCD='SDL'
 
 os.environ['LCD'] = LCD
 os.environ['BIN_DIR'] = BIN_DIR;
@@ -46,7 +46,7 @@ elif OS_NAME == 'Linux':
 
 elif OS_NAME == 'Windows':
   OS_LIBS=['SDL2', 'glad']
-  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /INCREMENTA -DUNICODE -D_UNICODE /Od /ZI'
+  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG -DUNICODE -D_UNICODE /Od /ZI'
   OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
   OS_LIBPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
   OS_CPPPATH=[LFTK_3RD_ROOT+'/SDL2-2.0.7/']

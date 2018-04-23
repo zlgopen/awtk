@@ -63,6 +63,13 @@ static ret_t lcd_sdl2_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   return lcd_draw_points(mem, points, nr);
 }
 
+static color_t lcd_sdl2_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
+
+  return lcd_get_point_color(mem, x, y);
+}
+
 static ret_t lcd_sdl2_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
   lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
@@ -139,6 +146,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->draw_image = lcd_sdl2_draw_image;
   base->draw_glyph = lcd_sdl2_draw_glyph;
   base->draw_points = lcd_sdl2_draw_points;
+  base->get_point_color = lcd_sdl2_get_point_color;
   base->end_frame = lcd_sdl2_end_frame;
   base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
   base->take_snapshot = lcd_sdl_take_snapshot;

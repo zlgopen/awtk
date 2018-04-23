@@ -31,17 +31,18 @@ static ret_t window_animator_open_bottom_to_top_draw_curr(window_animator_t* wa)
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
-  float_t h = win->h * percent;
-  float_t wm_h = win->parent->h;
-  float_t y = wm_h - h;
   float_t alpha = percent;
 
 #ifdef WITH_NANOVG
+  float_t h = win->h * percent;
+  float_t y = win->parent->h - h;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   vgcanvas_set_global_alpha(vg, alpha);
   vgcanvas_draw_image(vg, &(wa->curr_img), win->x * ratio, win->y * ratio, win->w * ratio,
                       h * ratio, win->x, y, win->w, h);
 #else
+  int32_t h = win->h * percent;
+  int32_t y = win->parent->h - h;
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, h * ratio);
   rect_init(dst, win->x, y, win->w, h);
   lcd_set_global_alpha(c->lcd, alpha * 0xff);
