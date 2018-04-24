@@ -36,15 +36,14 @@
 * theme support image\_draw\_type 
 * 矢量图绘图函数接口。
 * slider
+* nanovg实现vgcanvas接口
+* 支持窗口动画
 
 ## 短期计划(顺序不定)
 
 * agg实现vgcanvas接口
-* nanovg实现vgcanvas接口
 * API doc到PDF转换工具
-* image support 565/index
 * image value
-* image button
 * combobox
 * listbox
 * tableview
@@ -54,7 +53,6 @@
 * tab控件
 * python binging 
 * jerryscript binging 
-* remote client
 * 软键盘
 * 中文输入法
 * 键盘导航
@@ -63,8 +61,8 @@
 * djyos移植
 * 嵌入式linux移植
 * 用LFTK实现界面编辑器
+* remote client
 * 支持tween动画
-* 支持窗口动画
 
 ## 长期计划
 * 支持粒子产生器

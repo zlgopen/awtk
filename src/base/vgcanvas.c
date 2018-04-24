@@ -99,16 +99,16 @@ ret_t vgcanvas_begin_path(vgcanvas_t* vg) {
   return vg->vt->begin_path(vg);
 }
 
-ret_t vgcanvas_round_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r) {
-  return_value_if_fail(vg != NULL && vg->vt->round_rect != NULL, RET_BAD_PARAMS);
+ret_t vgcanvas_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r) {
+  return_value_if_fail(vg != NULL && vg->vt->rounded_rect != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->round_rect(vg, x, y, w, h, r);
+  return vg->vt->rounded_rect(vg, x, y, w, h, r);
 }
 
 ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
 
-  return vgcanvas_round_rect(vg, x, y, w, h, 0);
+  return vgcanvas_rounded_rect(vg, x, y, w, h, 0);
 }
 
 ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry) {
@@ -137,17 +137,17 @@ ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, fl
   return vg->vt->set_transform(vg, a, b, c, d, e, f);
 }
 
-ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y) {
-  return_value_if_fail(vg != NULL && vg->vt->quadratic_curve_to != NULL, RET_BAD_PARAMS);
+ret_t vgcanvas_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y) {
+  return_value_if_fail(vg != NULL && vg->vt->quad_to != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->quadratic_curve_to(vg, cpx, cpy, x, y);
+  return vg->vt->quad_to(vg, cpx, cpy, x, y);
 }
 
-ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
                                float_t cp2y, float_t x, float_t y) {
-  return_value_if_fail(vg != NULL && vg->vt->bezier_curve_to != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(vg != NULL && vg->vt->bezier_to != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->bezier_curve_to(vg, cp1x, cp1y, cp2x, cp2y, x, y);
+  return vg->vt->bezier_to(vg, cp1x, cp1y, cp2x, cp2y, x, y);
 }
 
 ret_t vgcanvas_arc_to(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2, float_t r) {

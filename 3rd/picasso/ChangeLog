@@ -1,0 +1,24 @@
+2011-05-20: Version 1.2.0 
+    This is the first version under GPL-v2 license.
+
+2011-12-31: Version 1.2.1
+    Fix default font object mem leak bug.
+
+2012-12-31: Version 1.2.5
+    Add context thread safe or shared support.
+
+2013-02-12: Version 2.0.0
+    Update code version 2.0.0 alpha.
+
+2014-07-16: Version 2.0.1
+    Fix font glyph advance_x bug.
+
+2014-08-13:
+    Fix crash bug for path clip.
+
+2014-10-22:
+    Fix gyp build on linux system.
+
+2015-03-04: Version 2.1.5
+    Porting to android system (version<=4.4).
+

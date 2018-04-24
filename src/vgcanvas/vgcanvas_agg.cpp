@@ -93,7 +93,7 @@ static ret_t vgcanvas_agg_line_to(vgcanvas_t* vg, float_t x, float_t y) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
+static ret_t vgcanvas_agg_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
                                              float_t y) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
@@ -102,7 +102,7 @@ static ret_t vgcanvas_agg_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+static ret_t vgcanvas_agg_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
                                           float_t cp2y, float_t x, float_t y) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   return_value_if_fail(agg->canvas != NULL, RET_BAD_PARAMS);
@@ -181,7 +181,7 @@ static ret_t vgcanvas_agg_set_transform(vgcanvas_t* vg, float_t a, float_t b, fl
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_round_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
+static ret_t vgcanvas_agg_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
                                      float_t r) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)vg;
   agg->canvas->rect(x, y, x + w, y + h, r);
@@ -385,11 +385,11 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
                                      vgcanvas_agg_line_to,
                                      vgcanvas_agg_arc,
                                      vgcanvas_agg_arc_to,
-                                     vgcanvas_agg_bezier_curve_to,
-                                     vgcanvas_agg_quadratic_curve_to,
+                                     vgcanvas_agg_bezier_to,
+                                     vgcanvas_agg_quad_to,
                                      vgcanvas_agg_is_point_in_path,
                                      vgcanvas_agg_ellipse,
-                                     vgcanvas_agg_round_rect,
+                                     vgcanvas_agg_rounded_rect,
                                      vgcanvas_agg_close_path,
                                      vgcanvas_agg_scale,
                                      vgcanvas_agg_rotate,

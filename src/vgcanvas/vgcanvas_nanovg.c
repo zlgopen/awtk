@@ -109,7 +109,6 @@ static ret_t vgcanvas_nanovg_clear_rect(vgcanvas_t* vgcanvas, float_t x, float_t
   nvgRect(vg, x, y, w, h);
   nvgClosePath(vg);
   nvgFill(vg);
-  nvgBeginPath(vg);
   vgcanvas_set_fill_color(vgcanvas, fill_color);
 
   return RET_OK;
@@ -139,7 +138,7 @@ static ret_t vgcanvas_nanovg_line_to(vgcanvas_t* vgcanvas, float_t x, float_t y)
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_quadratic_curve_to(vgcanvas_t* vgcanvas, float_t cpx, float_t cpy,
+static ret_t vgcanvas_nanovg_quad_to(vgcanvas_t* vgcanvas, float_t cpx, float_t cpy,
                                                 float_t x, float_t y) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
@@ -148,7 +147,7 @@ static ret_t vgcanvas_nanovg_quadratic_curve_to(vgcanvas_t* vgcanvas, float_t cp
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_bezier_curve_to(vgcanvas_t* vgcanvas, float_t cp1x, float_t cp1y,
+static ret_t vgcanvas_nanovg_bezier_to(vgcanvas_t* vgcanvas, float_t cp1x, float_t cp1y,
                                              float_t cp2x, float_t cp2y, float_t x, float_t y) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
@@ -170,7 +169,7 @@ static ret_t vgcanvas_nanovg_arc(vgcanvas_t* vgcanvas, float_t x, float_t y, flo
                                  float_t start, float_t end, bool_t ccw) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  nvgArc(vg, x, y, r, start, end, ccw);
+  nvgArc(vg, x, y, r, start, end, ccw ? NVG_CCW : NVG_CW);
 
   return RET_OK;
 }
@@ -229,7 +228,7 @@ static ret_t vgcanvas_nanovg_set_transform(vgcanvas_t* vgcanvas, float_t a, floa
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_round_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
+static ret_t vgcanvas_nanovg_rounded_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                         float_t h, float_t r) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
@@ -259,6 +258,7 @@ static ret_t vgcanvas_nanovg_fill(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgFill(vg);
+  nvgBeginPath(vg);
 
   return RET_OK;
 }
@@ -276,6 +276,7 @@ static ret_t vgcanvas_nanovg_stroke(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgStroke(vg);
+  nvgBeginPath(vg);
 
   return RET_OK;
 }
@@ -575,11 +576,11 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_line_to,
                                      vgcanvas_nanovg_arc,
                                      vgcanvas_nanovg_arc_to,
-                                     vgcanvas_nanovg_bezier_curve_to,
-                                     vgcanvas_nanovg_quadratic_curve_to,
+                                     vgcanvas_nanovg_bezier_to,
+                                     vgcanvas_nanovg_quad_to,
                                      vgcanvas_nanovg_is_point_in_path,
                                      vgcanvas_nanovg_ellipse,
-                                     vgcanvas_nanovg_round_rect,
+                                     vgcanvas_nanovg_rounded_rect,
                                      vgcanvas_nanovg_close_path,
                                      vgcanvas_nanovg_scale,
                                      vgcanvas_nanovg_rotate,

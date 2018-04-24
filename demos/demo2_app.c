@@ -271,25 +271,61 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
+  vgcanvas_save(vg);
+
+  vgcanvas_translate(vg, 5, 5);
+  vgcanvas_rounded_rect(vg, 0, 0, 60, 40, 5);
+  if(stroke) vgcanvas_stroke(vg); else vgcanvas_fill(vg);
+  
+  vgcanvas_translate(vg, 65, 0);
+  vgcanvas_rounded_rect(vg, 0, 0, 60, 40, 1);
+  if(stroke) vgcanvas_stroke(vg); else vgcanvas_fill(vg);
+  
+  vgcanvas_translate(vg, 65, 0);
+  vgcanvas_ellipse(vg, 30, 20, 30, 20);
+  if(stroke) vgcanvas_stroke(vg); else vgcanvas_fill(vg);
+
+  vgcanvas_translate(vg, 65, 0);
+  vgcanvas_arc(vg, 20, 20, 20, 0, 2*3.15, FALSE);
+  if(stroke) vgcanvas_stroke(vg); else vgcanvas_fill(vg);
+  
+  vgcanvas_translate(vg, 50, 0);
+  vgcanvas_move_to(vg, 0, 0);
+  vgcanvas_line_to(vg, 40, 0);
+  vgcanvas_line_to(vg, 40, 40);
+  vgcanvas_close_path(vg);
+  if(stroke) vgcanvas_stroke(vg); else vgcanvas_fill(vg);
+
+  vgcanvas_restore(vg);
+}
+
+static void stroke_lines(vgcanvas_t* vg) {
+  vgcanvas_save(vg);
+  vgcanvas_move_to(vg, 0, 0);
+  vgcanvas_line_to(vg, 40, 40);
+  vgcanvas_translate(vg, 40, 0);
+  vgcanvas_quad_to(vg, 40, 40, 40, 0);
+  vgcanvas_translate(vg, 40, 0);
+  vgcanvas_bezier_to(vg, 20, 0, 20, 40, 40, 40);
+  vgcanvas_stroke(vg);
+  vgcanvas_restore(vg);
+}
+
 static ret_t on_paint_vg(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
 
-  vgcanvas_set_line_width(vg, 2);
-  vgcanvas_set_fill_color(vg, color_init(0xff, 0xff, 0, 0xff));
+  vgcanvas_set_line_width(vg, 1);
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
+  vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
 
-  vgcanvas_clear_rect(vg, 0, 0, vg->w, vg->h, color_init(0xf0, 0xf0, 0xf0, 0xff));
-
-  vgcanvas_begin_path(vg);
-  vgcanvas_round_rect(vg, 10, 10, 100, 20, 5);
-  vgcanvas_stroke(vg);
-
-  vgcanvas_set_fill_color(vg, color_init(0xff, 0xff, 0, 0xff));
-  vgcanvas_begin_path(vg);
-  vgcanvas_rect(vg, 128, 10, 100, 20);
-  vgcanvas_fill(vg);
+  draw_basic_shapes(vg, FALSE);
+  vgcanvas_translate(vg, 0, 50);
+  draw_basic_shapes(vg, TRUE);
+  vgcanvas_translate(vg, 0, 50);
+  //stroke_lines(vg);
 
   return RET_OK;
 }
@@ -298,7 +334,7 @@ ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
-  widget_on(canvas, EVT_PAINT, on_paint_points, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
 
   return RET_OK;
 }

@@ -50,16 +50,16 @@ typedef ret_t (*vgcanvas_clear_rect_t)(vgcanvas_t* vg, float_t x, float_t y, flo
 typedef ret_t (*vgcanvas_begin_path_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_move_to_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_line_to_t)(vgcanvas_t* vg, float_t x, float_t y);
-typedef ret_t (*vgcanvas_quadratic_curve_to_t)(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
+typedef ret_t (*vgcanvas_quad_to_t)(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
                                                float_t y);
-typedef ret_t (*vgcanvas_bezier_curve_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y,
+typedef ret_t (*vgcanvas_bezier_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y,
                                             float_t cp2x, float_t cp2y, float_t x, float_t y);
 typedef ret_t (*vgcanvas_arc_to_t)(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2,
                                    float_t r);
 typedef ret_t (*vgcanvas_arc_t)(vgcanvas_t* vg, float_t x, float_t y, float_t r,
                                 float_t start_angle, float_t end_angle, bool_t ccw);
 typedef bool_t (*vgcanvas_is_point_in_path_t)(vgcanvas_t* vg, float_t x, float_t y);
-typedef ret_t (*vgcanvas_round_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
+typedef ret_t (*vgcanvas_rounded_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
                                        float_t r);
 typedef ret_t (*vgcanvas_ellipse_t)(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry);
 typedef ret_t (*vgcanvas_close_path_t)(vgcanvas_t* vg);
@@ -117,11 +117,11 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_line_to_t line_to;
   vgcanvas_arc_t arc;
   vgcanvas_arc_to_t arc_to;
-  vgcanvas_bezier_curve_to_t bezier_curve_to;
-  vgcanvas_quadratic_curve_to_t quadratic_curve_to;
+  vgcanvas_bezier_to_t bezier_to;
+  vgcanvas_quad_to_t quad_to;
   vgcanvas_is_point_in_path_t is_point_in_path;
   vgcanvas_ellipse_t ellipse;
-  vgcanvas_round_rect_t round_rect;
+  vgcanvas_rounded_rect_t rounded_rect;
   vgcanvas_close_path_t close_path;
 
   vgcanvas_scale_t scale;
@@ -330,7 +330,7 @@ ret_t vgcanvas_move_to(vgcanvas_t* vg, float_t x, float_t y);
 ret_t vgcanvas_line_to(vgcanvas_t* vg, float_t x, float_t y);
 
 /**
- * @method vgcanvas_quadratic_curve_to
+ * @method vgcanvas_quad_to
  * quadratic curve to
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} cpx 控制点x坐标。
@@ -340,10 +340,10 @@ ret_t vgcanvas_line_to(vgcanvas_t* vg, float_t x, float_t y);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y);
+ret_t vgcanvas_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y);
 
 /**
- * @method vgcanvas_bezier_curve_to
+ * @method vgcanvas_bezier_to
  * bezier curve to
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} cp1x 控制点1x坐标。
@@ -355,7 +355,7 @@ ret_t vgcanvas_quadratic_curve_to(vgcanvas_t* vg, float_t cpx, float_t cpy, floa
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_bezier_curve_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
                                float_t cp2y, float_t x, float_t y);
 
 /**
@@ -413,7 +413,7 @@ bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, float_t x, float_t y);
 ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 
 /**
- * @method vgcanvas_round_rect
+ * @method vgcanvas_rounded_rect
  * round rect
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} x x坐标。
@@ -424,7 +424,7 @@ ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_round_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r);
+ret_t vgcanvas_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r);
 
 /**
  * @method vgcanvas_ellipse
@@ -547,7 +547,7 @@ ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, fl
 
 /**
  * @method vgcanvas_fill
- * fill
+ * fill。为了让不同实现上的效果一致，自动清除之前的path。
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -569,7 +569,7 @@ ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_
 
 /**
  * @method vgcanvas_stroke
- * stroke
+ * stroke。为了让不同实现上的效果一致，自动清除之前的path。
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -1,0 +1,7 @@
+import os
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+SOURCES=Glob('src/*.cpp') + Glob('src/core/*.cpp') + Glob('src/gfx/*.cpp')
+env.Library(os.path.join(LIB_DIR, 'picasso'), SOURCES)
+

@@ -13,18 +13,23 @@ LIB_DIR=os.path.join(LFTK_ROOT, 'lib')
 LCD='NANOVG'
 LCD='SDL'
 
-os.environ['LCD'] = LCD
-os.environ['BIN_DIR'] = BIN_DIR;
-os.environ['LIB_DIR'] = LIB_DIR;
-os.environ['LFTK_ROOT'] = LFTK_ROOT;
-os.environ['GTEST_ROOT'] = GTEST_ROOT;
+VGCANVAS='AGG'
+VGCANVAS='PICASSO'
 
 COMMON_CCFLAGS=' -DLFTK_ROOT=\\\"'+LFTK_ROOT+'\\\" -DLUA_COMPAT_MODULE -DHAS_STD_MALLOC -DSTBTT_STATIC -DSTB_IMAGE_STATIC'
 
 if LCD == 'NANOVG':
+  VGCANVAS='NANOVG'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_GL3'
 else:
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_STB_IMAGE -DWITH_STB_FONT -DSDL2'
+
+os.environ['LCD'] = LCD
+os.environ['VGCANVAS'] =VGCANVAS 
+os.environ['BIN_DIR'] = BIN_DIR;
+os.environ['LIB_DIR'] = LIB_DIR;
+os.environ['LFTK_ROOT'] = LFTK_ROOT;
+os.environ['GTEST_ROOT'] = GTEST_ROOT;
 
 OS_LIBPATH=[]
 OS_CPPPATH=[]
@@ -53,10 +58,20 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['lftk', 'agg', 'nanovg'] + OS_LIBS
+LIBS=['lftk', 'picasso', 'agg', 'nanovg'] + OS_LIBS
 
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
-CPPPATH=[LFTK_ROOT, LFTK_SRC, LFTK_3RD_ROOT, os.path.join(LFTK_3RD_ROOT, 'nanovg/src'), os.path.join(LFTK_3RD_ROOT, 'agg-2.5/include'), LFTK_TOOLS_ROOT] + OS_CPPPATH
+CPPPATH=[LFTK_ROOT, 
+  LFTK_SRC, 
+  LFTK_3RD_ROOT, 
+  os.path.join(LFTK_3RD_ROOT, 'nanovg/src'), 
+  os.path.join(LFTK_3RD_ROOT, 'agg-2.5/include'), 
+  os.path.join(LFTK_3RD_ROOT, 'picasso/src'), 
+  os.path.join(LFTK_3RD_ROOT, 'picasso/build'), 
+  os.path.join(LFTK_3RD_ROOT, 'picasso/include'), 
+  os.path.join(LFTK_3RD_ROOT, 'picasso/src/gfx'), 
+  os.path.join(LFTK_3RD_ROOT, 'picasso/src/include'), 
+  LFTK_TOOLS_ROOT] + OS_CPPPATH
 
 DefaultEnvironment(CCFLAGS = CCFLAGS, 
   CPPPATH = CPPPATH,
@@ -69,6 +84,7 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 SConscript([
   '3rd/agg-2.5/SConscript',
   '3rd/nanovg/SConscript',
+  '3rd/picasso/SConscript',
   '3rd/glad/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 
