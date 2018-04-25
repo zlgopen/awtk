@@ -1,5 +1,7 @@
 #!/bin/bash
 
+scons
+
 BIN_DIR=./bin
 RAW_DIR=demos/res/raw
 SRC_DIR=demos/res/src
@@ -15,12 +17,13 @@ $BIN_DIR/resgen $RAW_DIR/fonts/font.ttf $SRC_DIR/fonts/default_ttf.data
 $BIN_DIR/resgen $RAW_DIR/fonts/action_protocol.ttf $SRC_DIR/fonts/ap.data
 $BIN_DIR/fontgen $RAW_DIR/fonts/font.ttf  $RAW_DIR/fonts/text.txt $SRC_DIR/fonts/default.data 20
 
-for f in $RAW_DIR/images/*.png; 
+for f in $RAW_DIR/images/*.*; 
 do 
   F1=${f/raw/src}; 
   F2=${F1/\.png/.data};
   F3=${F2/\.jpg/.data};
 
+  echo $BIN_DIR/imagegen $f $F3
   $BIN_DIR/imagegen $f $F3
 done
 
@@ -29,6 +32,7 @@ do
   F1=${f/raw/src}; 
   F2=${F1/\.xml/.data};
 
+  echo $BIN_DIR/xml_to_ui $f $F2
   $BIN_DIR/xml_to_ui $f $F2
 done
 
@@ -50,4 +54,4 @@ function gen_res_c() {
 
 gen_res_c > demos/resource.c
 
-
+scons

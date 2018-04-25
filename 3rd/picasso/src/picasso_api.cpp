@@ -18,6 +18,31 @@
 
 namespace picasso {
 
+/**
+ * Jim: picasso原始实现中，矩阵变化最后时刻才生效，后面的矩阵变换会影响前面已经生成的路径。
+ * 现在改为加入path时，矩阵立即生效。
+ */
+static inline void ps_add_path(ps_context* ctx, vertex_source& vs) {
+  conv_transform cvs(vs, ctx->state->world_matrix);
+
+  if (picasso::_is_closed_path(ctx->path))
+      ctx->path.concat_path(cvs, 0);
+  else
+      ctx->path.join_path(cvs, 0);
+}
+
+static inline void ps_last_point(ps_context* ctx, ps_point* pt) {
+  ps_point p = {0, 0};
+
+  p.x = ctx->path.last_x();
+  p.y = ctx->path.last_y();
+  ps_viewport_to_world(ctx, &p);
+
+  *pt = p;
+
+  return;
+}
+
 static inline void _clip_path(context_state* state, const graphic_path& p, filling_rule r)
 {
     if (!state->clip.path.total_vertices()) {
@@ -345,12 +370,19 @@ void PICAPI ps_stroke(ps_context* ctx)
         global_status = STATUS_INVALID_ARGUMENT;
         return;
     }
+    
+    ps_matrix m;
+    ps_get_matrix(ctx, &m);
+    ps_identity(ctx);
 
     ctx->canvas->p->render_shadow(ctx->state, ctx->path, false, true);
     ctx->canvas->p->render_stroke(ctx->state, ctx->raster, ctx->path);
     ctx->canvas->p->render_blur(ctx->state);
     ctx->path.free_all();
     ctx->raster.reset();
+    
+    ps_set_matrix(ctx, &m);
+    
     global_status = STATUS_SUCCEED;
 }
 
@@ -366,11 +398,18 @@ void PICAPI ps_fill(ps_context* ctx)
         return;
     }
 
+    ps_matrix m;
+    ps_get_matrix(ctx, &m);
+    ps_identity(ctx);
+
     ctx->canvas->p->render_shadow(ctx->state, ctx->path, true, false);
     ctx->canvas->p->render_fill(ctx->state, ctx->raster, ctx->path);
     ctx->canvas->p->render_blur(ctx->state);
     ctx->path.free_all();
     ctx->raster.reset();
+
+    ps_set_matrix(ctx, &m);
+
     global_status = STATUS_SUCCEED;
 }
 
@@ -804,6 +843,8 @@ void PICAPI ps_new_sub_path(ps_context* ctx)
 
 void PICAPI ps_rectangle(ps_context* ctx, const ps_rect* pr)
 {
+    ps_rect r;
+    ps_point pt = {pr->x, pr->y};
     if (!picasso::is_valid_system_device()) {
         global_status = STATUS_DEVICE_ERROR;
         return;
@@ -813,6 +854,13 @@ void PICAPI ps_rectangle(ps_context* ctx, const ps_rect* pr)
         global_status = STATUS_INVALID_ARGUMENT;
         return;
     }
+
+    ps_world_to_viewport(ctx, &pt);
+    r.x = pt.x;
+    r.y = pt.y;
+    r.w = pr->w;
+    r.h = pr->h;
+    pr = &r;
 
     ctx->path.set_shape(picasso::graphic_path::shape_rectangle); //It is because boder edge.
     ctx->path.move_to(FLT_TO_SCALAR(floor(pr->x)), FLT_TO_SCALAR(floor(pr->y)));
@@ -843,10 +891,7 @@ void PICAPI ps_rounded_rect(ps_context* ctx, const ps_rect* r, float ltx, float 
     rr.radius(FLT_TO_SCALAR(ltx), FLT_TO_SCALAR(lty), FLT_TO_SCALAR(rtx), FLT_TO_SCALAR(rty), 
                     FLT_TO_SCALAR(rbx), FLT_TO_SCALAR(rby), FLT_TO_SCALAR(lbx), FLT_TO_SCALAR(lby));
     rr.normalize_radius();
-    if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(rr, 0);
-    else
-        ctx->path.join_path(rr, 0);
+    ps_add_path(ctx, rr);
     global_status = STATUS_SUCCEED;
 }
 
@@ -864,10 +909,7 @@ void PICAPI ps_ellipse(ps_context* ctx, const ps_rect* r)
 
     picasso::ellipse e(FLT_TO_SCALAR(floor(r->x)+r->w/2), FLT_TO_SCALAR(floor(r->y)+r->h/2), 
                                                 FLT_TO_SCALAR(r->w/2), FLT_TO_SCALAR(r->h/2));
-    if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(e, 0);
-    else
-        ctx->path.join_path(e, 0);
+    ps_add_path(ctx, e);
     global_status = STATUS_SUCCEED;
 }
 
@@ -900,6 +942,10 @@ void PICAPI ps_move_to(ps_context* ctx, const ps_point* pt)
         return;
     }
 
+    ps_point p = {pt->x, pt->y};
+    ps_world_to_viewport(ctx, &p);
+    pt = &p;
+    
     ctx->path.move_to(FLT_TO_SCALAR(floor(pt->x)), FLT_TO_SCALAR(floor(pt->y)));
     global_status = STATUS_SUCCEED;
 }
@@ -915,6 +961,10 @@ void PICAPI ps_line_to(ps_context* ctx, const ps_point* pt)
         global_status = STATUS_INVALID_ARGUMENT;
         return;
     }
+
+    ps_point p = {pt->x, pt->y};
+    ps_world_to_viewport(ctx, &p);
+    pt = &p;
 
     ctx->path.line_to(FLT_TO_SCALAR(floor(pt->x)), FLT_TO_SCALAR(floor(pt->y)));
     global_status = STATUS_SUCCEED;
@@ -933,14 +983,13 @@ void PICAPI ps_bezier_curve_to(ps_context* ctx, const ps_point* fcp,
         return;
     }
 
-    picasso::curve4 c(FLT_TO_SCALAR(floor(ctx->path.last_x())), FLT_TO_SCALAR(floor(ctx->path.last_y())), 
+    ps_point lp;
+    ps_last_point(ctx, &lp);
+    picasso::curve4 c(FLT_TO_SCALAR(floor(lp.x)), FLT_TO_SCALAR(floor(lp.y)), 
             FLT_TO_SCALAR(floor(fcp->x)), FLT_TO_SCALAR(floor(fcp->y)), FLT_TO_SCALAR(floor(scp->x)), 
             FLT_TO_SCALAR(floor(scp->y)), FLT_TO_SCALAR(floor(ep->x)), FLT_TO_SCALAR(floor(ep->y)));
 
-    if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(c, 0);
-    else
-        ctx->path.join_path(c, 0);
+    ps_add_path(ctx, c);
     global_status = STATUS_SUCCEED;
 }
 
@@ -956,14 +1005,33 @@ void PICAPI ps_quad_curve_to(ps_context* ctx, const ps_point* cp, const ps_point
         return;
     }
 
-    picasso::curve3 c(FLT_TO_SCALAR(floor(ctx->path.last_x())), FLT_TO_SCALAR(floor(ctx->path.last_y())), 
+    ps_point lp;
+    ps_last_point(ctx, &lp);
+    picasso::curve3 c(FLT_TO_SCALAR(floor(lp.x)), FLT_TO_SCALAR(floor(lp.y)), 
                                         FLT_TO_SCALAR(floor(cp->x)), FLT_TO_SCALAR(floor(cp->y)), 
                                         FLT_TO_SCALAR(floor(ep->x)), FLT_TO_SCALAR(floor(ep->y)));
 
+    ps_add_path(ctx, c);
+    global_status = STATUS_SUCCEED;
+}
+
+void PICAPI ps_arc_to(ps_context* ctx, float r, const ps_point* tp, const ps_point* ep) {
+    ps_path* path = ps_path_create();
+
+    ps_point startp = {tp->x, tp->y};
+    ps_world_to_viewport(ctx, &startp);
+
+    ps_point endp = {ep->x, ep->y};
+    ps_world_to_viewport(ctx, &endp);
+
+    ps_path_tangent_arc_to(path, r, &startp, &endp);
+    
     if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(c, 0);
+        ctx->path.concat_path(path->path, 0);
     else
-        ctx->path.join_path(c, 0);
+        ctx->path.join_path(path->path, 0);
+    ps_path_unref(path);
+
     global_status = STATUS_SUCCEED;
 }
 
@@ -983,10 +1051,7 @@ void PICAPI ps_arc(ps_context* ctx, const ps_point* cp, float r,
     picasso::arc a(FLT_TO_SCALAR(floor(cp->x)), FLT_TO_SCALAR(floor(cp->y)), 
             FLT_TO_SCALAR(r), FLT_TO_SCALAR(r), FLT_TO_SCALAR(sa), FLT_TO_SCALAR(ea), (clockwise ? true : false));
 
-    if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(a, 0);
-    else
-        ctx->path.join_path(a, 0);
+    ps_add_path(ctx, a);
     global_status = STATUS_SUCCEED;
 }
 
@@ -1010,10 +1075,7 @@ void PICAPI ps_tangent_arc(ps_context* ctx, const ps_rect* r, float sa, float sw
     picasso::bezier_arc ba(Floor(cx), Floor(cy), xr, yr, FLT_TO_SCALAR(sa), FLT_TO_SCALAR(sw));
     picasso::conv_curve cr(ba);
 
-    if (picasso::_is_closed_path(ctx->path))
-        ctx->path.concat_path(cr, 0);
-    else
-        ctx->path.join_path(cr, 0);
+    ps_add_path(ctx, cr);
     global_status = STATUS_SUCCEED;
 }
 

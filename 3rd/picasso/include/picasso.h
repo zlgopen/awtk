@@ -2940,6 +2940,7 @@ PEXPORT void PICAPI ps_quad_curve_to(ps_context* ctx, const ps_point* cp, const 
  */
 PEXPORT void PICAPI ps_arc(ps_context* ctx, const ps_point* cp, float radius,
                                            float sangle, float eangle, ps_bool clockwise);
+PEXPORT void PICAPI ps_arc_to(ps_context* ctx, float r, const ps_point* tp, const ps_point* ep);
 
 /**
  * \fn void ps_tangent_arc(ps_context* ctx, const ps_rect* rect, float sangle, float sweep)

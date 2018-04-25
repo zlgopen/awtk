@@ -302,14 +302,52 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
 
 static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_save(vg);
+
   vgcanvas_move_to(vg, 0, 0);
   vgcanvas_line_to(vg, 40, 40);
+
   vgcanvas_translate(vg, 40, 0);
-  vgcanvas_quad_to(vg, 40, 40, 40, 0);
+  vgcanvas_move_to(vg, 0, 0);
+  vgcanvas_quad_to(vg, 40, 0, 40, 40);
+
   vgcanvas_translate(vg, 40, 0);
+  vgcanvas_move_to(vg, 0, 0);
   vgcanvas_bezier_to(vg, 20, 0, 20, 40, 40, 40);
+
+  vgcanvas_translate(vg, 40, 0);
+
+  vgcanvas_stroke(vg);
+  vgcanvas_set_line_width(vg, 2);
+  vgcanvas_arc(vg, 20, 20, 15, 0, 3.14, FALSE);
+  vgcanvas_arc(vg, 20, 20, 15, 0, 3.14/2, TRUE);
+  vgcanvas_stroke(vg);
+
   vgcanvas_stroke(vg);
   vgcanvas_restore(vg);
+}
+
+static void draw_image(vgcanvas_t* vg) {
+  bitmap_t img;
+
+  vgcanvas_translate(vg, 10, 0);
+  image_manager_load(default_im(), "earth", &img);
+  vgcanvas_draw_image(vg, &img, 5, 5, img.w-10, img.h-10, 0, 0, img.w * 2, img.h * 2);
+  
+  vgcanvas_translate(vg, 100, 0);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+
+  image_manager_load(default_im(), "bricks", &img);
+
+  vgcanvas_translate(vg, 50, 0);
+
+  vgcanvas_translate(vg, img.w >> 1, img.h >> 1);
+  vgcanvas_rotate(vg, 3.14/4);
+  vgcanvas_translate(vg, -img.w >> 1, -img.h >> 1);
+  
+  vgcanvas_scale(vg, 1.5, 1.5);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+
+  return;
 }
 
 static ret_t on_paint_vg(void* ctx, event_t* e) {
@@ -325,8 +363,10 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_translate(vg, 0, 50);
   draw_basic_shapes(vg, TRUE);
   vgcanvas_translate(vg, 0, 50);
-  //stroke_lines(vg);
-
+  stroke_lines(vg);
+  vgcanvas_translate(vg, 0, 50);
+  draw_image(vg);
+  
   return RET_OK;
 }
 

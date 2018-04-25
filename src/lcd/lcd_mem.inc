@@ -75,7 +75,7 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
     if (color.rgba.a == 0xff) {
       p[0] = pixel;
     } else if (color.rgba.a) {
-      p[0] = blend_pixel(p[i], color);
+      p[0] = blend_pixel(p[0], color);
     }
   }
 

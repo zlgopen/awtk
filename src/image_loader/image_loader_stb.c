@@ -39,6 +39,25 @@ static ret_t image_stb_destroy(bitmap_t* image) {
   return RET_OK;
 }
 
+static ret_t image_to_abgr32(bitmap_t* image) {
+  int i = 0;
+  uint8_t* p = image->data;
+  int n = image->w * image->h;
+
+  for(i = 0; i < n; i++) {
+    uint8_t t = p[0];
+    p[0] = p[3];
+    p[3] = t;
+    t = p[1];
+    p[1] = p[2];
+    p[2] = t;
+
+    p+=4;
+  }
+
+  return RET_OK;
+}
+
 static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint32_t buff_size,
                                    bitmap_t* image) {
   int i = 0;
@@ -73,17 +92,26 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
       data4 += 4;
       data += 3;
     }
+#ifdef WITH_PICASSO
+    image_to_abgr32(image);
+#endif
   } else {
     image->data = data;
     image->destroy = image_stb_destroy;
 
     for (i = 0; i < w * h; i += n) {
       if (data[3] != 0xff) {
+#ifdef WITH_PICASSO
+        image_to_abgr32(image);
+#endif
         return RET_OK;
       }
       data += 4;
     }
     image->flags |= BITMAP_FLAG_OPAQUE;
+#ifdef WITH_PICASSO
+    image_to_abgr32(image);
+#endif
   }
 
   return RET_OK;

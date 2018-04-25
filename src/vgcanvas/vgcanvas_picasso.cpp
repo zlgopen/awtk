@@ -23,7 +23,12 @@
 #include "base/mem.h"
 #include "base/utf8.h"
 #include "base/vgcanvas.h"
+#include "picasso_objects.h"
 #include "base/resource_manager.h"
+
+#define MAX_IMAGE_NR 256
+#define format COLOR_FORMAT_ABGR
+//#define format COLOR_FORMAT_RGBA
 
 typedef struct _vgcanvas_picasso_t {
   vgcanvas_t base;
@@ -35,6 +40,7 @@ typedef struct _vgcanvas_picasso_t {
   ps_path* path;
   ps_context* vg;
   ps_canvas* canvas;
+  ps_image* images[MAX_IMAGE_NR];
 } vgcanvas_picasso_t;
 
 static ps_point ps_point_init(float_t x, float_t y) {
@@ -51,6 +57,29 @@ static ps_color ps_color_init(color_t color) {
   c.a = color.rgba.a/255.0;
   
   return c;
+}
+
+static ps_image* vgcanvas_picasso_ensure_image(vgcanvas_picasso_t* canvas, bitmap_t* img) {
+  int32_t i = 0;
+  ps_image* pimg = NULL;
+  for (i = 0; i < MAX_IMAGE_NR; i++) {
+    ps_image* iter = canvas->images[i];
+    if (iter && iter->buffer.buffer() == (img->data)) {
+      return iter;
+    }
+  }
+
+  pimg = ps_image_create_with_data((ps_byte*)img->data, format, img->w, img->h, img->w * 4);
+  pimg->buffer.set_transparent(!(img->flags & BITMAP_FLAG_OPAQUE));
+
+  for (i = 0; i < MAX_IMAGE_NR; i++) {
+    if (canvas->images[i] == NULL) {
+      canvas->images[i] = pimg;
+      return pimg;
+    }
+  }
+
+  return NULL;
 }
 
 ret_t vgcanvas_picasso_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
@@ -161,11 +190,12 @@ static ret_t vgcanvas_picasso_arc_to(vgcanvas_t* vgcanvas, float_t x1, float_t y
   ps_point p2 = ps_point_init(x2, y2);
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 
+  /*TODO:
+   * ps_arc_to(vg, r, &p1, &p2);
+   */
   (void)p1;
   (void)p2;
   (void)vg;
-
-  /*TODO*/
 
   return RET_OK;
 }
@@ -383,19 +413,28 @@ static uint32_t vgcanvas_picasso_measure_text(vgcanvas_t* vgcanvas, const char* 
 static ret_t vgcanvas_picasso_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
+  float_t x = 0;
+  float_t y = 0;
+  float_t w = 0;
+  float_t h = 0;
+  float_t scale_x = dw/sw;
+  float_t scale_y = dh/sh;
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+  ps_image* pimg = vgcanvas_picasso_ensure_image((vgcanvas_picasso_t*)vgcanvas, img);
 
-  (void)vg;
-  (void)sx;
-  (void)sy;
-  (void)sw;
-  (void)sh;
-  (void)dx;
-  (void)dy;
-  (void)dw;
-  (void)dh;
-  (void)img;
-  /*TODO*/
+  vgcanvas_clip_rect(vgcanvas, dx, dy, dw, dh);
+
+  ps_set_source_image(vg, pimg);
+  ps_set_filter(vg, FILTER_NEAREST);
+  vgcanvas_begin_path(vgcanvas);
+
+  x = dx - scale_x * sx;
+  y = dy - scale_y * sy;
+  w = img->w * scale_x;
+  h = img->h * scale_y;
+
+  vgcanvas_rect(vgcanvas, x, y, w, h);
+  vgcanvas_fill(vgcanvas);
 
   return RET_OK;
 }
@@ -586,7 +625,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
   picasso->base.vt = &vt;
 
   ps_initialize();
-  picasso->canvas = ps_canvas_create_with_data((ps_byte*)buff, COLOR_FORMAT_ABGR, w, h, w*4);
+  picasso->canvas = ps_canvas_create_with_data((ps_byte*)buff, format, w, h, w*4);
   picasso->vg = ps_context_create(picasso->canvas, 0);
 
   return &(picasso->base);
