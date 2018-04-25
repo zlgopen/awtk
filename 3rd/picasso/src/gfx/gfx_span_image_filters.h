@@ -4,6 +4,9 @@
  * Contact: onecoolx@gmail.com
  */
 
+/**
+ * Jim: 在AWTK中，图片的格式始终用RGBA，如果定义了IMAGE_RGBA，则按固定RGBA格式采用。
+ */
 #ifndef _GFX_SPAN_IMAGE_FILTERS_H_
 #define _GFX_SPAN_IMAGE_FILTERS_H_
 
@@ -77,7 +80,11 @@ class gfx_span_image_filter_rgba : public gfx_span_image_filter<ColorType, Sourc
 public:
     typedef ColorType color_type;
     typedef Source source_type;
+#ifdef IMAGE_RGBA
+    typedef order_rgba order_type;
+#else    
     typedef typename source_type::order_type order_type;
+#endif
     typedef Interpolator interpolator_type;
     typedef gfx_span_image_filter<color_type, source_type, interpolator_type> base_type;
     typedef typename color_type::value_type value_type;
@@ -190,7 +197,11 @@ class gfx_span_image_filter_rgba_nb : public gfx_span_image_filter<ColorType, So
 public:
     typedef ColorType color_type;
     typedef Source source_type;
+#ifdef IMAGE_RGBA
+    typedef order_rgba order_type;
+#else    
     typedef typename source_type::order_type order_type;
+#endif
     typedef Interpolator interpolator_type;
     typedef gfx_span_image_filter<color_type, source_type, interpolator_type> base_type;
     typedef typename color_type::value_type value_type;
@@ -298,7 +309,11 @@ class gfx_span_image_filter_rgba_nn : public gfx_span_image_filter<ColorType, So
 public:
     typedef ColorType color_type;
     typedef Source source_type;
+#ifdef IMAGE_RGBA
+    typedef order_rgba order_type;
+#else    
     typedef typename source_type::order_type order_type;
+#endif
     typedef Interpolator interpolator_type;
     typedef gfx_span_image_filter<color_type, source_type, interpolator_type> base_type;
     typedef typename color_type::value_type value_type;
@@ -342,7 +357,11 @@ class gfx_span_image_filter_rgba_nn_nb : public gfx_span_image_filter<ColorType,
 public:
     typedef ColorType color_type;
     typedef Source source_type;
+#ifdef IMAGE_RGBA
+    typedef order_rgba order_type;
+#else    
     typedef typename source_type::order_type order_type;
+#endif
     typedef Interpolator interpolator_type;
     typedef gfx_span_image_filter<color_type, source_type, interpolator_type> base_type;
     typedef typename color_type::value_type value_type;

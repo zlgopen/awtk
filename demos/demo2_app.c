@@ -314,12 +314,16 @@ static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_move_to(vg, 0, 0);
   vgcanvas_bezier_to(vg, 20, 0, 20, 40, 40, 40);
 
-  vgcanvas_translate(vg, 40, 0);
-
   vgcanvas_stroke(vg);
-  vgcanvas_set_line_width(vg, 2);
-  vgcanvas_arc(vg, 20, 20, 15, 0, 3.14, FALSE);
-  vgcanvas_arc(vg, 20, 20, 15, 0, 3.14/2, TRUE);
+
+  vgcanvas_translate(vg, 40, 0);
+  vgcanvas_arc(vg, 20, 20, 20, 0, 3.14, TRUE);
+  vgcanvas_stroke(vg);
+
+  vgcanvas_translate(vg, 40, 0);
+  vgcanvas_set_line_width(vg, 5);
+  vgcanvas_set_line_cap(vg, "round");
+  vgcanvas_arc(vg, 20, 20, 20, 0, 3.14/2, FALSE);
   vgcanvas_stroke(vg);
 
   vgcanvas_stroke(vg);
@@ -329,6 +333,7 @@ static void stroke_lines(vgcanvas_t* vg) {
 static void draw_image(vgcanvas_t* vg) {
   bitmap_t img;
 
+  vgcanvas_save(vg);
   vgcanvas_translate(vg, 10, 0);
   image_manager_load(default_im(), "earth", &img);
   vgcanvas_draw_image(vg, &img, 5, 5, img.w-10, img.h-10, 0, 0, img.w * 2, img.h * 2);
@@ -346,8 +351,21 @@ static void draw_image(vgcanvas_t* vg) {
   
   vgcanvas_scale(vg, 1.5, 1.5);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+  vgcanvas_restore(vg);
 
   return;
+}
+
+static void draw_matrix(vgcanvas_t* vg) {
+  float_t w = 50;
+  float_t h = 50;
+
+  vgcanvas_translate(vg, w/2, h/2);
+  vgcanvas_rotate(vg, 3.14/4);
+  vgcanvas_translate(vg, -w/2, -h/2);
+
+  vgcanvas_rect(vg, 0, 0, w, h);
+  vgcanvas_fill(vg);
 }
 
 static ret_t on_paint_vg(void* ctx, event_t* e) {
@@ -358,7 +376,8 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_set_line_width(vg, 1);
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
-
+  
+  
   draw_basic_shapes(vg, FALSE);
   vgcanvas_translate(vg, 0, 50);
   draw_basic_shapes(vg, TRUE);
@@ -366,7 +385,10 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   stroke_lines(vg);
   vgcanvas_translate(vg, 0, 50);
   draw_image(vg);
-  
+
+  vgcanvas_translate(vg, 50, 100);
+  draw_matrix(vg);
+
   return RET_OK;
 }
 

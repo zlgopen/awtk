@@ -22,13 +22,13 @@
 #include "picasso.h"
 #include "base/mem.h"
 #include "base/utf8.h"
+#include "base/matrix.h"
 #include "base/vgcanvas.h"
 #include "picasso_objects.h"
 #include "base/resource_manager.h"
 
 #define MAX_IMAGE_NR 256
 #define format COLOR_FORMAT_ABGR
-//#define format COLOR_FORMAT_RGBA
 
 typedef struct _vgcanvas_picasso_t {
   vgcanvas_t base;
@@ -40,6 +40,7 @@ typedef struct _vgcanvas_picasso_t {
   ps_path* path;
   ps_context* vg;
   ps_canvas* canvas;
+  matrix_t matrix;
   ps_image* images[MAX_IMAGE_NR];
 } vgcanvas_picasso_t;
 
@@ -221,48 +222,81 @@ static bool_t vgcanvas_picasso_is_point_in_path(vgcanvas_t* vgcanvas, float_t x,
   return FALSE;
 }
 
-static ret_t vgcanvas_picasso_rotate(vgcanvas_t* vgcanvas, float_t rad) {
-  ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+static ret_t sync_ps_matrix_to(vgcanvas_picasso_t* picasso) {
+  ps_context* vg = picasso->vg;
+  matrix_t* m = &(picasso->matrix);
 
-  ps_rotate(vg, rad);
+  ps_matrix* pm = ps_matrix_create_init(m->a0, m->a1, m->a2, m->a3, m->a4, m->a5);
+  ps_set_matrix(vg, pm);
+  ps_matrix_unref(pm);
+
+  return RET_OK;
+}
+
+static ret_t sync_ps_matrix_from(vgcanvas_picasso_t* picasso) {
+  ps_context* vg = picasso->vg;
+  matrix_t* m = &(picasso->matrix);
+  ps_matrix* pm = ps_matrix_create_init(1, 0, 0, 1, 0, 0);
+
+  ps_get_matrix(vg, pm);
+
+  m->a0 = pm->matrix.sx();
+  m->a1 = pm->matrix.shy();
+  m->a2 = pm->matrix.shx();
+  m->a3 = pm->matrix.sy();
+  m->a4 = pm->matrix.tx();
+  m->a5 = pm->matrix.ty();
+
+  ps_matrix_unref(pm);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_picasso_rotate(vgcanvas_t* vgcanvas, float_t rad) {
+  vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)vgcanvas;
+
+  matrix_rotate(&(picasso->matrix), rad);
+  sync_ps_matrix_to(picasso);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_picasso_scale(vgcanvas_t* vgcanvas, float_t x, float_t y) {
-  ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+  vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)vgcanvas;
 
-  ps_scale(vg, x, y);
+  matrix_scale(&(picasso->matrix), x, y);
+  sync_ps_matrix_to(picasso);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_picasso_translate(vgcanvas_t* vgcanvas, float_t x, float_t y) {
-  ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+  vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)vgcanvas;
 
-  ps_translate(vg, x, y);
+  matrix_translate(&(picasso->matrix), x, y);
+  sync_ps_matrix_to(picasso);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_picasso_transform(vgcanvas_t* vgcanvas, float_t a, float_t b, float_t c,
                                        float_t d, float_t e, float_t f) {
-  ps_matrix* m = ps_matrix_create_init(a, b, c, d, e, f);                                    
-  ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+  matrix_t mb;
+  vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)vgcanvas;
 
-  ps_transform(vg, m);
-  ps_matrix_unref(m);
+  matrix_set(&mb, a, b, c, d, e, f);
+  matrix_multiply(&(picasso->matrix), &mb);
+  sync_ps_matrix_to(picasso);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_picasso_set_transform(vgcanvas_t* vgcanvas, float_t a, float_t b, float_t c,
                                            float_t d, float_t e, float_t f) {
-  ps_matrix* m = ps_matrix_create_init(a, b, c, d, e, f);                                    
-  ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
+  vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)vgcanvas;
 
-  ps_set_matrix(vg, m);
-  ps_matrix_unref(m);
+  matrix_set(&(picasso->matrix), a, b, c, d, e, f);
+  sync_ps_matrix_to(picasso);
 
   return RET_OK;
 }
@@ -422,7 +456,7 @@ static ret_t vgcanvas_picasso_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, fl
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
   ps_image* pimg = vgcanvas_picasso_ensure_image((vgcanvas_picasso_t*)vgcanvas, img);
 
-  vgcanvas_clip_rect(vgcanvas, dx, dy, dw, dh);
+  vgcanvas_save(vgcanvas);
 
   ps_set_source_image(vg, pimg);
   ps_set_filter(vg, FILTER_NEAREST);
@@ -433,8 +467,10 @@ static ret_t vgcanvas_picasso_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, fl
   w = img->w * scale_x;
   h = img->h * scale_y;
 
+  vgcanvas_clip_rect(vgcanvas, dx, dy, dw, dh);
   vgcanvas_rect(vgcanvas, x, y, w, h);
   vgcanvas_fill(vgcanvas);
+  vgcanvas_restore(vgcanvas);
 
   return RET_OK;
 }
@@ -522,6 +558,7 @@ static ret_t vgcanvas_picasso_set_miter_limit(vgcanvas_t* vgcanvas, float_t valu
 static ret_t vgcanvas_picasso_save(vgcanvas_t* vgcanvas) {
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 
+  sync_ps_matrix_to((vgcanvas_picasso_t*)vgcanvas);
   ps_save(vg);
 
   return RET_OK;
@@ -531,6 +568,7 @@ static ret_t vgcanvas_picasso_restore(vgcanvas_t* vgcanvas) {
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 
   ps_restore(vg);
+  sync_ps_matrix_from((vgcanvas_picasso_t*)vgcanvas);
 
   return RET_OK;
 }
@@ -625,6 +663,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
   picasso->base.vt = &vt;
 
   ps_initialize();
+  matrix_init(&(picasso->matrix));
   picasso->canvas = ps_canvas_create_with_data((ps_byte*)buff, format, w, h, w*4);
   picasso->vg = ps_context_create(picasso->canvas, 0);
 

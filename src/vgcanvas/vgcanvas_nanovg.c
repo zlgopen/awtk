@@ -418,6 +418,7 @@ static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, flo
   nvgFillPaint(vg, imgPaint);
   nvgClosePath(vg);
   nvgFill(vg);
+  nvgBeginPath(vg);
   nvgRestore(vg);
 
   return RET_OK;
