@@ -24,7 +24,6 @@ elif os.environ['VGCANVAS'] == 'AGG':
   sources += Glob('vgcanvas/vgcanvas_agg.cpp')
 else:
   sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
-  sources += Glob('vgcanvas/picasso_font.cpp')
 
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'lftk'), sources)

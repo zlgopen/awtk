@@ -360,12 +360,34 @@ static void draw_matrix(vgcanvas_t* vg) {
   float_t w = 50;
   float_t h = 50;
 
+  vgcanvas_save(vg);
   vgcanvas_translate(vg, w/2, h/2);
   vgcanvas_rotate(vg, 3.14/4);
   vgcanvas_translate(vg, -w/2, -h/2);
 
   vgcanvas_rect(vg, 0, 0, w, h);
   vgcanvas_fill(vg);
+  vgcanvas_restore(vg);
+}
+
+static void draw_text(vgcanvas_t* vg) {
+  float_t h = 20;
+  const char* text = "Hello World";
+  float_t w = 100;
+
+  vgcanvas_set_font_size(vg, 20);
+  vgcanvas_set_font(vg, STR_DEFAULT_FONT);
+  w = vgcanvas_measure_text(vg, text);
+  
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, w/2, h/2);
+  vgcanvas_rotate(vg, 3.14/4);
+  vgcanvas_translate(vg, -w/2, -h/2);
+
+
+  vgcanvas_fill_text(vg, text, 10, 10, 100);
+  log_debug("text=%s w=%u\n", text, w);
+  vgcanvas_restore(vg);
 }
 
 static ret_t on_paint_vg(void* ctx, event_t* e) {
@@ -377,7 +399,6 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
   
-  
   draw_basic_shapes(vg, FALSE);
   vgcanvas_translate(vg, 0, 50);
   draw_basic_shapes(vg, TRUE);
@@ -388,6 +409,9 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
 
   vgcanvas_translate(vg, 50, 100);
   draw_matrix(vg);
+  vgcanvas_translate(vg, 0, 100);
+
+  draw_text(vg);
 
   return RET_OK;
 }

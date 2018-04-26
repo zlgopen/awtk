@@ -18,6 +18,8 @@
 #include "graphic_helper.h"
 #include "graphic_base.h"
 
+#ifndef ENABLE_FREE_TYPE2
+
 namespace gfx {
 
 class font_adapter_impl
@@ -215,3 +217,4 @@ void platform_font_shutdown(void)
     // win32 do nothing
 }
 
+#endif

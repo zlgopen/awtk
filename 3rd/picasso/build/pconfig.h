@@ -3,7 +3,6 @@
 //#define ENABLE_LOW_MEMORY 1
 
 #define ENABLE_SYSTEM_MALLOC 1
-
 //#define ENABLE_FAST_COPY 1
 
 #define ENABLE_FORMAT_RGBA 1

@@ -333,6 +333,9 @@ bool _load_fonts(void)
     load_font_from_fontconfig();
 #elif defined(__ANDROID__)
     load_font_from_android();
+#elif defined(FONT_FILE_NAME)
+    font_item* uni_font = get_font_item("sans", FONT_FILE_NAME);
+    g_font_map.add(uni_font);
 #else
     FILE *pf = 0;
 

@@ -206,7 +206,7 @@ static ret_t vgcanvas_picasso_arc(vgcanvas_t* vgcanvas, float_t x, float_t y, fl
   ps_point cp = ps_point_init(x, y);
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 
-  ps_arc(vg, &cp, r, start, end, ccw);
+  ps_arc(vg, &cp, r, start, end, !ccw);
 
   return RET_OK;
 }
@@ -422,26 +422,24 @@ static ret_t vgcanvas_picasso_set_text_baseline(vgcanvas_t* vgcanvas, const char
 
 static ret_t vgcanvas_picasso_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x, float_t y,
                                        float_t max_width) {
+  ps_color color = ps_color_init(vgcanvas->fill_color);
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
-  (void)vg;
-  (void)text;
-  (void)x;
-  (void)y;
-  (void)max_width;
 
-  /*TODO*/
+  ps_set_text_color(vg, &color);
+  ps_text_out_length(vg, x, y, text, strlen(text));
+
+  (void)max_width;
 
   return RET_OK;
 }
 
 static uint32_t vgcanvas_picasso_measure_text(vgcanvas_t* vgcanvas, const char* text) {
+  ps_size size = {0, 0};
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
-  (void)vg;
-  (void)text;
+  
+  ps_get_text_extent(vg, text, strlen(text), &size);
 
-  /*TODO*/
-
-  return RET_OK;
+  return size.w;
 }
 
 static ret_t vgcanvas_picasso_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,

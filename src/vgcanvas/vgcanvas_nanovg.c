@@ -312,13 +312,14 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     }
 
     if (r != NULL && r->subtype == RESOURCE_TYPE_FONT_TTF) {
-      canvas->font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
-      /*TODO*/
+      font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
     }
-  } else {
-    canvas->font_id = font_id;
   }
+
+  return_value_if_fail(font_id >= 0, RET_FAIL);
+
   vgcanvas->font = name;
+  canvas->font_id = font_id;
   nvgFontFaceId(vg, font_id);
 
   return RET_OK;
@@ -558,7 +559,6 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
 
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
 
   nvgEndFrame(vg);
   nvgluBindFramebuffer(NULL);
