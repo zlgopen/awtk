@@ -49,7 +49,7 @@ static void draw_wave(ps_context* gc, int h)
         cr.w = pic->width; 
         cr.h = 1;
 
-        ps_clip_fast_rect(gc, &cr);
+        ps_clip_device_rect(gc, &cr);
 
         cr.x = r.x;
         cr.y = r.y+n - h+1+(n<<1)+offset;

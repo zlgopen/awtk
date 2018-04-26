@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ÷–Œƒ(÷–ª™»À√Òπ≤∫Õπ˙) resources
+// ‰∏≠Êñá(‰∏≠Âçé‰∫∫Ê∞ëÂÖ±ÂíåÂõΩ) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,0,1
- PRODUCTVERSION 2,0,0,1
+ FILEVERSION 2,3,0,1
+ PRODUCTVERSION 2,3,0,1
  FILEFLAGSMASK 0x1fL
 #ifdef _DEBUG
  FILEFLAGS 0x9L
@@ -70,15 +70,15 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "Comments", "Vector Graphic library"
-            VALUE "CompanyName", "ZNCSoft.com"
-            VALUE "FileDescription", "picasso2 ∂ØÃ¨¡¥Ω”ø‚"
-            VALUE "FileVersion", "2, 0, 0, 1"
+            VALUE "CompanyName", "picasso.inc"
+            VALUE "FileDescription", "picasso2 Âä®ÊÄÅÈìæÊé•Â∫ì"
+            VALUE "FileVersion", "2, 3, 0, 1"
             VALUE "InternalName", "picasso2"
-            VALUE "LegalCopyright", "Copyright (C) 2013"
+            VALUE "LegalCopyright", "Copyright (C) 2017"
             VALUE "OriginalFilename", "picasso2.dll"
             VALUE "PrivateBuild", "2257"
-            VALUE "ProductName", "picasso2 ∂ØÃ¨¡¥Ω”ø‚"
-            VALUE "ProductVersion", "2, 0, 0, 1"
+            VALUE "ProductName", "picasso2 Âä®ÊÄÅÈìæÊé•Â∫ì"
+            VALUE "ProductVersion", "2, 3, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -87,7 +87,7 @@ BEGIN
     END
 END
 
-#endif    // ÷–Œƒ(÷–ª™»À√Òπ≤∫Õπ˙) resources
+#endif    // ‰∏≠Êñá(‰∏≠Âçé‰∫∫Ê∞ëÂÖ±ÂíåÂõΩ) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

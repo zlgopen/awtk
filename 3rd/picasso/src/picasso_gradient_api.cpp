@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -59,7 +59,7 @@ ps_gradient* PICAPI ps_gradient_create_linear(ps_gradient_spread sp, const ps_po
     }
 }
 
-ps_gradient* PICAPI ps_gradient_create_radial(ps_gradient_spread sp, const ps_point* s, float sr, 
+ps_gradient* PICAPI ps_gradient_create_radial(ps_gradient_spread sp, const ps_point* s, float sr,
                                                                             const ps_point* e, float er)
 {
     if (!picasso::is_valid_system_device()) {
@@ -87,10 +87,10 @@ ps_gradient* PICAPI ps_gradient_create_radial(ps_gradient_spread sp, const ps_po
 
     scalar x1 = FLT_TO_SCALAR(s->x);
     scalar y1 = FLT_TO_SCALAR(s->y);
-    scalar r1 = FLT_TO_SCALAR(sr); 
+    scalar r1 = FLT_TO_SCALAR(sr);
     scalar x2 = FLT_TO_SCALAR(e->x);
     scalar y2 = FLT_TO_SCALAR(e->y);
-    scalar r2 = FLT_TO_SCALAR(er); 
+    scalar r2 = FLT_TO_SCALAR(er);
 
     ps_gradient *p = (ps_gradient*)mem_malloc(sizeof(ps_gradient));
     if (p) {
@@ -212,12 +212,12 @@ void PICAPI ps_gradient_add_color_stop(ps_gradient* g, float off, const ps_color
         return;
     }
 
-    if (off < 0) 
+    if (off < 0)
         off = 0.0f;
     else if (off > 1)
         off = 1.0f;
 
-    g->gradient.add_color_stop(FLT_TO_SCALAR(off), 
+    g->gradient.add_color_stop(FLT_TO_SCALAR(off),
                 picasso::rgba(FLT_TO_SCALAR(c->r), FLT_TO_SCALAR(c->g), FLT_TO_SCALAR(c->b), FLT_TO_SCALAR(c->a)));
     global_status = STATUS_SUCCEED;
 }

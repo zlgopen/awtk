@@ -51,7 +51,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    return msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -185,16 +185,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_ERASEBKGND:
         break;
     case WM_LBUTTONDOWN:
-            on_mouse_event(LEFT_BUTTON_DOWN, wParam, LOWORD(lParam), HIWORD(lParam));
+            on_mouse_event(LEFT_BUTTON_DOWN, (int)wParam, LOWORD(lParam), HIWORD(lParam));
         break;
     case WM_MOUSEMOVE:
-            on_mouse_event(MOUSE_MOVE, wParam, LOWORD(lParam), HIWORD(lParam));
+            on_mouse_event(MOUSE_MOVE, (int)wParam, LOWORD(lParam), HIWORD(lParam));
         break;
     case WM_KEYDOWN:
-            on_key_event(KEY_EVENT_DOWN, wParam);
+            on_key_event(KEY_EVENT_DOWN, (int)wParam);
         break;
     case WM_KEYUP:
-            on_key_event(KEY_EVENT_UP, wParam);
+            on_key_event(KEY_EVENT_UP, (int)wParam);
         break;
     case WM_DESTROY:
         {

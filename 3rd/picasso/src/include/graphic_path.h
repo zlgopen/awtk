@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -37,10 +37,10 @@ public:
 
     //Make path functions
     unsigned int start_new_path(void);
-    
+
     void move_to(scalar x, scalar y);
     void move_rel(scalar dx, scalar dy);
-    
+
     void line_to(scalar x, scalar y);
     void line_rel(scalar dx, scalar dy);
 
@@ -93,11 +93,11 @@ public:
     unsigned int arrange_orientations(unsigned int start, unsigned int flag_orientation);
     void arrange_orientations_all_paths(unsigned int flag_orientation);
     void invert_polygon(unsigned int start);
-        
+
     void flip_x(scalar x1, scalar x2);
     void flip_y(scalar y1, scalar y2);
-        
-    void translate(scalar dx, scalar dy, unsigned int id = 0);    
+
+    void translate(scalar dx, scalar dy, unsigned int id = 0);
     void translate_all_paths(scalar dx, scalar dy);
 
     void transform(const trans_affine& trans, unsigned int id = 0);
@@ -131,11 +131,11 @@ private:
 inline bool operator != (const graphic_path& a, const graphic_path& b)
 {
     if (a.total_vertices() != b.total_vertices())
-        return true;  // total vertices is not same , the path is not same 
+        return true;  // total vertices is not same , the path is not same
 
     unsigned int num = a.total_vertices(); //because a total_vertices is same to b total_vertices.
     scalar x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-    const_cast<graphic_path&>(a).rewind(); 
+    const_cast<graphic_path&>(a).rewind();
     const_cast<graphic_path&>(b).rewind();
     for (unsigned int i = 0; i < num; i++) {
         unsigned int cmd1 = a.vertex(i, &x1, &y1);

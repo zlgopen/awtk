@@ -9,13 +9,13 @@
 
 namespace picasso {
 
-template <typename T> class refptr 
+template <typename T> class refptr
 {
 public:
     refptr()
         :m_ptr(0)
     {
-        
+
     }
 
     explicit refptr(T * ptr)
@@ -82,13 +82,13 @@ private:
 };
 
 template <typename T> inline bool operator!=(const refptr<T>& a, const refptr<T>& b)
-{ 
-    return a.getptr() != b.getptr(); 
+{
+    return a.getptr() != b.getptr();
 }
 
 template <typename T> inline bool operator==(const refptr<T>& a, const refptr<T>& b)
-{ 
-    return a.getptr() == b.getptr(); 
+{
+    return a.getptr() == b.getptr();
 }
 
 }

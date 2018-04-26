@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -12,9 +12,9 @@
 
 namespace gfx {
 
-// graphics renderer with clip. 
+// graphics renderer with clip.
 template <typename PixelFormat>
-class gfx_renderer
+class gfx_renderer : public gfx_rendering_buffer::gfx_buffer_observer
 {
 public:
     typedef PixelFormat pixfmt_type;
@@ -34,9 +34,15 @@ public:
     {
     }
 
-    ~gfx_renderer()
+    virtual ~gfx_renderer()
     {
         m_clip_path.reset();
+    }
+
+    virtual void buffer_notify(void)
+    {
+        // reset clip_rect
+        reset_clipping(true);
     }
 
     void attach(pixfmt_type& fmt)
@@ -121,7 +127,7 @@ public:
     {
         rect rsrc(0, 0, from.width(), from.height());
         if (rect_src_ptr) {
-            rsrc.x1 = rect_src_ptr->x1; 
+            rsrc.x1 = rect_src_ptr->x1;
             rsrc.y1 = rect_src_ptr->y1;
             rsrc.x2 = rect_src_ptr->x2 + 1;
             rsrc.y2 = rect_src_ptr->y2 + 1;
@@ -148,13 +154,16 @@ public:
                 }
 
                 while (rc.x2 > 0) {
-                    while (rc.y2 > 0) {
-                        if (pixel_in_path(rdst.x1, rdst.y1))
-                            m_pixfmt->copy_point_from(from, rdst.x1, rdst.y1, rsrc.x1, rsrc.y1);
-
-                        rdst.y1 += incy;
-                        rsrc.y1 += incy;
-                        --rc.y2;
+                    int y2 = rc.y2;
+                    int dy1 = rdst.y1;
+                    int sy1 = rsrc.y1;
+                    while (y2 > 0) {
+                        if (pixel_in_path(rdst.x1, dy1)) {
+                            m_pixfmt->copy_point_from(from, rdst.x1, dy1, rsrc.x1, sy1);
+                        }
+                        dy1 += incy;
+                        sy1 += incy;
+                        --y2;
                     }
                     rdst.x1 += incx;
                     rsrc.x1 += incx;
@@ -183,13 +192,13 @@ public:
     }
 
     template <typename SrcPixelFormatRenderer>
-    void blend_from(const SrcPixelFormatRenderer& from, 
+    void blend_from(const SrcPixelFormatRenderer& from,
                     const rect* rect_src_ptr = 0, int dx = 0, int dy = 0,
                     cover_type cover = cover_full)
     {
         rect rsrc(0, 0, from.width(), from.height());
         if (rect_src_ptr) {
-            rsrc.x1 = rect_src_ptr->x1; 
+            rsrc.x1 = rect_src_ptr->x1;
             rsrc.y1 = rect_src_ptr->y1;
             rsrc.x2 = rect_src_ptr->x2 + 1;
             rsrc.y2 = rect_src_ptr->y2 + 1;
@@ -216,13 +225,16 @@ public:
                 }
 
                 while (rc.x2 > 0) {
-                    while (rc.y2 > 0) {
-                        if (pixel_in_path(rdst.x1, rdst.y1))
-                            m_pixfmt->blend_point_from(from, rdst.x1, rdst.y1, rsrc.x1, rsrc.y1, cover);
-
-                        rdst.y1 += incy;
-                        rsrc.y1 += incy;
-                        --rc.y2;
+                    int y2 = rc.y2;
+                    int dy1 = rdst.y1;
+                    int sy1 = rsrc.y1;
+                    while (y2 > 0) {
+                        if (pixel_in_path(rdst.x1, dy1)) {
+                            m_pixfmt->blend_point_from(from, rdst.x1, dy1, rsrc.x1, sy1, cover);
+                        }
+                        dy1 += incy;
+                        sy1 += incy;
+                        --y2;
                     }
                     rdst.x1 += incx;
                     rsrc.x1 += incx;

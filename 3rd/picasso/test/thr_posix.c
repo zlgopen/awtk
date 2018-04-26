@@ -42,8 +42,6 @@ void stop_worker_threads(void)
     thr_run2 = 0;
     pthread_join(th1, 0);
     pthread_join(th2, 0);
-    pthread_join(th1, 0);
-    pthread_join(th2, 0);
 }
 
 void loop_wait(int ms)

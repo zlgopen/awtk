@@ -1873,6 +1873,13 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
       # Install all shared libs into a common directory (per toolset) for
       # convenient access with LD_LIBRARY_PATH.
       return '$(builddir)/lib.%s/%s' % (self.toolset, self.alias)
+
+    # picasso added!
+    if (self.type == 'loadable_module' and
+        (self.flavor != 'mac' or self.toolset != 'target')):
+      # Install all shared libs into a common directory (per toolset) for
+      # convenient access with LD_LIBRARY_PATH.
+      return '$(builddir)/lib.%s/%s/%s' % (self.toolset, 'modules', self.alias)
     return '$(builddir)/' + self.alias
 
 

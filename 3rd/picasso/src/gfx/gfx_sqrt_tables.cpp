@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -95,5 +95,5 @@ int8_t g_elder_bit_table[256] = {
     7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
     7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
 };
- 
+
 }

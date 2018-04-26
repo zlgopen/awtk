@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -16,24 +16,24 @@ namespace gfx {
 
 static inline bool operator == (const rgba8& a, const rgba8& b)
 {
-    return (a.r==b.r) && (a.g==b.g) && (a.b==b.b) && (a.a==b.a); 
+    return (a.r==b.r) && (a.g==b.g) && (a.b==b.b) && (a.a==b.a);
 }
 
 // for color key compare
 static inline bool operator == (const rgba8* a, const rgba8& b)
 {
     //Note : for color key only, not compare alpha value.
-    return (a->r==b.r) && (a->g==b.g) && (a->b==b.b); 
+    return (a->r==b.r) && (a->g==b.g) && (a->b==b.b);
 }
 
 static inline bool operator != (const rgba8* a, const rgba8& b)
 {
     //Note : for color key only, not compare alpha value.
-    return (a->r!=b.r) || (a->g!=b.g) || (a->b!=b.b); 
+    return (a->r!=b.r) || (a->g!=b.g) || (a->b!=b.b);
 }
 
 //pixfmt wrapper
-template<typename Pixfmt, typename AlphaMask>
+template <typename Pixfmt, typename AlphaMask>
 class gfx_pixfmt_wrapper
 {
 public:
@@ -55,11 +55,11 @@ public:
     };
 public:
     gfx_pixfmt_wrapper()
-        : use_mask(false), m_colorkey(0), m_fmt(), m_filter(), m_mask(m_fmt, m_filter), m_colors(0) 
+        : use_mask(false), m_colorkey(0), m_fmt(), m_filter(), m_mask(m_fmt, m_filter), m_colors(0)
     {
     }
     explicit gfx_pixfmt_wrapper(gfx_rendering_buffer& rb)
-        : use_mask(false), m_colorkey(0), m_fmt(rb), m_filter(), m_mask(m_fmt, m_filter), m_colors(0) 
+        : use_mask(false), m_colorkey(0), m_fmt(rb), m_filter(), m_mask(m_fmt, m_filter), m_colors(0)
     {
     }
 
@@ -117,6 +117,11 @@ public:
     const byte* row_ptr(int y) const { return m_fmt.row_ptr(y); }
     row_data row(int y) const { return m_fmt.row(y); }
 
+    byte* pix_zero(void) const
+    {
+        return m_fmt.pix_zero();
+    }
+
     byte* pix_ptr(int x, int y)
     {
         return m_fmt.pix_ptr(x, y);
@@ -149,7 +154,7 @@ public:
             return;
 
         if (unlikely(use_mask)) {
-            if (is_color_mask()) { 
+            if (is_color_mask()) {
                 if (has_color(c))
                     m_mask.copy_pixel(x, y, c);
                 else
@@ -257,7 +262,7 @@ public:
         }
     }
 
-    void blend_solid_hspan(int x, int y, unsigned int len, 
+    void blend_solid_hspan(int x, int y, unsigned int len,
                                const color_type& c, const cover_type* covers)
     {
         if (m_colorkey && m_colorkey == c)
@@ -277,7 +282,7 @@ public:
         }
     }
 
-    void blend_solid_vspan(int x, int y, unsigned int len, 
+    void blend_solid_vspan(int x, int y, unsigned int len,
                                const color_type& c, const cover_type* covers)
     {
         if (m_colorkey && m_colorkey == c)
@@ -312,13 +317,13 @@ public:
                     }
                 } else {
                     for (unsigned int i = 0; i < len; i++) {
-                        if (m_colorkey != colors[i]) 
+                        if (m_colorkey != colors[i])
                             m_mask.copy_pixel(x+i, y, colors[i]);
                     }
                 }
             } else {
                 for (unsigned int i = 0; i < len; i++) {
-                    if (m_colorkey != colors[i]) 
+                    if (m_colorkey != colors[i])
                         m_fmt.copy_pixel(x+i, y, colors[i]);
                 }
             }
@@ -384,7 +389,7 @@ public:
     }
 
     void blend_color_hspan(int x, int y, unsigned int len, const color_type* colors,
-            const cover_type* covers, cover_type cover)
+                                            const cover_type* covers, cover_type cover)
     {
         if (m_colorkey) {
             if (unlikely(use_mask)) {
@@ -399,13 +404,13 @@ public:
                     }
                 } else {
                     for (unsigned int i = 0; i < len; i++) {
-                        if (m_colorkey != colors[i]) 
+                        if (m_colorkey != colors[i])
                             m_mask.blend_pixel(x+i, y, colors[i], covers[i]);
                     }
                 }
             } else {
                 for (unsigned int i = 0; i < len; i++) {
-                    if (m_colorkey != colors[i]) 
+                    if (m_colorkey != colors[i])
                         m_fmt.blend_pixel(x+i, y, colors[i], covers[i]);
                 }
             }
@@ -428,7 +433,7 @@ public:
     }
 
     void blend_color_vspan(int x, int y, unsigned int len, const color_type* colors,
-            const cover_type* covers, cover_type cover)
+                                            const cover_type* covers, cover_type cover)
     {
         if (m_colorkey) {
             if (unlikely(use_mask)) {
@@ -443,13 +448,13 @@ public:
                     }
                 } else {
                     for (unsigned int i = 0; i < len; i++) {
-                        if (m_colorkey != colors[i]) 
+                        if (m_colorkey != colors[i])
                             m_mask.blend_pixel(x, y+i, colors[i], covers[i]);
                     }
                 }
             } else {
                 for (unsigned int i = 0; i < len; i++) {
-                    if (m_colorkey != colors[i]) 
+                    if (m_colorkey != colors[i])
                         m_fmt.blend_pixel(x, y+i, colors[i], covers[i]);
                 }
             }
@@ -471,37 +476,28 @@ public:
         }
     }
 
-    template<class RenBuf2> void copy_from(const RenBuf2& from, 
-            int xdst, int ydst,
-            int xsrc, int ysrc,
-            unsigned int len)
+    template <class RenBuf2>
+    void copy_from(const RenBuf2& from, int xdst, int ydst, int xsrc, int ysrc, unsigned int len)
     {
         m_fmt.copy_from(from, xdst, ydst, xsrc, ysrc, len);
     }
 
-    template<class RenBuf2>
-        void copy_point_from(const RenBuf2& from, 
-                int xdst, int ydst,
-                int xsrc, int ysrc)
+    template <class RenBuf2>
+    void copy_point_from(const RenBuf2& from, int xdst, int ydst, int xsrc, int ysrc)
     {
         m_fmt.copy_point_from(from, xdst, ydst, xsrc, ysrc);
     }
 
-    template<class SrcPixelFormatRenderer> 
-        void blend_from(const SrcPixelFormatRenderer& from, 
-                int xdst, int ydst,
-                int xsrc, int ysrc,
-                unsigned int len,
-                cover_type cover)
+    template <class SrcPixelFormatRenderer>
+    void blend_from(const SrcPixelFormatRenderer& from,
+                int xdst, int ydst, int xsrc, int ysrc, unsigned int len, cover_type cover)
     {
         m_fmt.blend_from(from, xdst, ydst, xsrc, ysrc, len, cover);
     }
 
-    template<class SrcPixelFormatRenderer> 
-        void blend_point_from(const SrcPixelFormatRenderer& from, 
-                int xdst, int ydst,
-                int xsrc, int ysrc,
-                cover_type cover)
+    template <class SrcPixelFormatRenderer>
+    void blend_point_from(const SrcPixelFormatRenderer& from,
+                int xdst, int ydst, int xsrc, int ysrc, cover_type cover)
     {
         m_fmt.blend_point_from(from, xdst, ydst, xsrc, ysrc, cover);
     }
@@ -516,7 +512,7 @@ private:
 };
 
 //pattern wrapper
-template<typename Pixfmt>
+template <typename Pixfmt>
 class pattern_wrapper
 {
 public:
@@ -534,7 +530,7 @@ public:
     virtual const byte* next_y() = 0;
 };
 
-template<typename Pixfmt, typename Wrap_X, typename Wrap_Y>
+template <typename Pixfmt, typename Wrap_X, typename Wrap_Y>
 class pattern_wrapper_adaptor : public pattern_wrapper<Pixfmt>
 {
 public:
@@ -560,7 +556,6 @@ public:
 private:
     image_accessor_wrap<Pixfmt, Wrap_X, Wrap_Y> m_wrap;
 };
-
 
 }
 #endif /*_PIXFMT_WRAPPER_H_*/

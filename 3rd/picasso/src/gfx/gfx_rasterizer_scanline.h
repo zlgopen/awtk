@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -12,7 +12,7 @@
 
 namespace gfx {
 
-// A pixel cell. There're no constructors defined and it was done 
+// A pixel cell. There're no constructors defined and it was done
 // intentionally in order to avoid extra overhead when allocating an array of cells.
 struct cell {
     int x;
@@ -89,7 +89,7 @@ public:
     template <typename Rasterizer>
     void line_to(Rasterizer& ras, int x2, int y2)
     {
-        ras.line(m_x1, m_y1, x2, y2); 
+        ras.line(m_x1, m_y1, x2, y2);
         m_x1 = x2;
         m_y1 = y2;
     }
@@ -103,35 +103,33 @@ private:
 };
 
 // rasterizer scanline antialias
-// Polygon rasterizer that is used to render filled polygons with 
-// high-quality Anti-Aliasing. Internally, by default, the class uses 
-// integer coordinates in format 24.8, i.e. 24 bits for integer part 
-// and 8 bits for fractional - see poly_subpixel_shift. This class can be 
+// Polygon rasterizer that is used to render filled polygons with
+// high-quality Anti-Aliasing. Internally, by default, the class uses
+// integer coordinates in format 24.8, i.e. 24 bits for integer part
+// and 8 bits for fractional - see poly_subpixel_shift. This class can be
 // used in the following  way:
 //
 // 1. filling_rule(filling_rule ft) - optional.
 //
-// 2. gamma() - optional.
-//
 // 3. reset()
 //
-// 4. move_to(x, y) / line_to(x, y) - make the polygon. One can create 
+// 4. move_to(x, y) / line_to(x, y) - make the polygon. One can create
 //    more than one contour, but each contour must consist of at least 3
 //    vertices, i.e. move_to(x1, y1); line_to(x2, y2); line_to(x3, y3);
 //    is the absolute minimum of vertices that define a triangle.
 //    The algorithm does not check either the number of vertices nor
-//    coincidence of their coordinates, but in the worst case it just 
+//    coincidence of their coordinates, but in the worst case it just
 //    won't draw anything.
-//    The orger of the vertices (clockwise or counterclockwise) 
+//    The orger of the vertices (clockwise or counterclockwise)
 //    is important when using the non-zero filling rule (fill_non_zero).
 //    In this case the vertex order of all the contours must be the same
 //    if you want your intersecting polygons to be without "holes".
-//    You actually can use different vertices order. If the contours do not 
-//    intersect each other the order is not important anyway. If they do, 
-//    contours with the same vertex order will be rendered without "holes" 
+//    You actually can use different vertices order. If the contours do not
+//    intersect each other the order is not important anyway. If they do,
+//    contours with the same vertex order will be rendered without "holes"
 //    while the intersecting contours with different orders will have "holes".
 //
-// filling_rule() and gamma() can be called anytime before "sweeping".
+// filling_rule() can be called anytime before "sweeping".
 
 template <typename Gen=scanline_generator>
 class gfx_rasterizer_scanline_aa
@@ -155,27 +153,32 @@ public:
         aa_mask2  = aa_scale2 - 1
     };
 
-    gfx_rasterizer_scanline_aa()
-        : m_filling_rule(fill_non_zero)
+    gfx_rasterizer_scanline_aa(int * gamma_table = 0)
+        : m_gamma(gamma_table)
+        , m_filling_rule(fill_non_zero)
         , m_start_x(0)
         , m_start_y(0)
         , m_status(status_initial)
         , m_scan_y(0)
         , m_auto_close(true)
     {
-        for (int i = 0; i < aa_scale; i++)
-            m_gamma[i] = i;
+        if (!m_gamma) {
+            for (int i = 0; i < aa_scale; i++)
+                m_gamma_table[i] = i;
+
+            m_gamma = m_gamma_table;
+        }
     }
 
     void reset(void)
     {
-        m_outline.reset(); 
+        m_outline.reset();
         m_status = status_initial;
     }
 
     void filling(filling_rule rule)
     {
-        m_filling_rule = rule; 
+        m_filling_rule = rule;
     }
 
     void auto_close(bool flag)
@@ -188,16 +191,9 @@ public:
         return m_status == status_initial;
     }
 
-    template <typename GammaFunc> void gamma(const GammaFunc& gamma_function)
-    { 
-        for (int i = 0; i < aa_scale; i++) {
-            m_gamma[i] = uround(gamma_function(INT_TO_SCALAR(i) / aa_mask) * aa_mask);
-        }
-    }
-
-    unsigned int apply_gamma(unsigned int cover) const 
-    { 
-        return m_gamma[cover]; 
+    unsigned int apply_gamma(unsigned int cover) const
+    {
+        return m_gamma[cover];
     }
 
     void move_to(int x, int y)
@@ -207,14 +203,14 @@ public:
         if (m_auto_close)
             close_polygon();
 
-        m_gen.move_to(m_start_x = gen_type::downscale(x), 
+        m_gen.move_to(m_start_x = gen_type::downscale(x),
                 m_start_y = gen_type::downscale(y));
         m_status = status_move_to;
     }
 
     void line_to(int x, int y)
     {
-        m_gen.line_to(m_outline, gen_type::downscale(x), 
+        m_gen.line_to(m_outline, gen_type::downscale(x),
                                      gen_type::downscale(y));
         m_status = status_line_to;
     }
@@ -226,15 +222,15 @@ public:
         if (m_auto_close)
             close_polygon();
 
-        m_gen.move_to(m_start_x = gen_type::upscale(x), 
-                          m_start_y = gen_type::upscale(y)); 
+        m_gen.move_to(m_start_x = gen_type::upscale(x),
+                          m_start_y = gen_type::upscale(y));
         m_status = status_move_to;
     }
 
     void line_to_d(scalar x, scalar y)
     {
-        m_gen.line_to(m_outline, gen_type::upscale(x), 
-                                     gen_type::upscale(y)); 
+        m_gen.line_to(m_outline, gen_type::upscale(x),
+                                     gen_type::upscale(y));
         m_status = status_line_to;
     }
 
@@ -272,8 +268,8 @@ public:
         if (m_outline.sorted())
             reset();
 
-        m_gen.move_to(gen_type::upscale(x1), gen_type::upscale(y1)); 
-        m_gen.line_to(m_outline, gen_type::upscale(x2), gen_type::upscale(y2)); 
+        m_gen.move_to(gen_type::upscale(x1), gen_type::upscale(y1));
+        m_gen.line_to(m_outline, gen_type::upscale(x2), gen_type::upscale(y2));
         m_status = status_move_to;
     }
 
@@ -292,7 +288,7 @@ public:
             add_vertex(x, y, cmd);
         }
     }
-    
+
     int min_x(void) const { return m_outline.min_x(); }
     int min_y(void) const { return m_outline.min_y(); }
     int max_x(void) const { return m_outline.max_x(); }
@@ -312,7 +308,7 @@ public:
             close_polygon();
 
         m_outline.sort_cells();
-        if (m_outline.total_cells() == 0) 
+        if (m_outline.total_cells() == 0)
             return false;
 
         m_scan_y = m_outline.min_y();
@@ -327,7 +323,7 @@ public:
         m_outline.sort_cells();
         if (m_outline.total_cells() == 0
            || y < m_outline.min_y()
-           || y > m_outline.max_y()) 
+           || y > m_outline.max_y())
         {
             return false;
         }
@@ -399,7 +395,7 @@ public:
                     }
                 }
             }
-    
+
             if (sl.num_spans())
                 break;
             ++m_scan_y;
@@ -484,7 +480,8 @@ private:
 private:
     gfx_rasterizer_cells_aa<cell> m_outline;
     gen_type     m_gen;
-    int          m_gamma[aa_scale];
+    int          m_gamma_table[aa_scale];
+    int*         m_gamma;
     filling_rule m_filling_rule;
     coord_type   m_start_x;
     coord_type   m_start_y;

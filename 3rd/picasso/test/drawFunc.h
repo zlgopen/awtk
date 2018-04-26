@@ -14,7 +14,8 @@ void set_image_data(unsigned char* data, ps_color_format fmt, int w, int h, int 
 void set_pattern_data(unsigned char* data, ps_color_format fmt, int w, int h, int p);
 void timer_action(ps_context* gc);
 
-
+int argc(void);
+const char** argv(void);
 
 extern int thr_run1;
 extern int thr_run2;

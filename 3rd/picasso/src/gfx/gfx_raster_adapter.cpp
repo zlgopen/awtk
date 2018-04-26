@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -18,6 +18,12 @@ namespace gfx {
 class gfx_raster_adapter_impl
 {
 public:
+    enum {
+        aa_shift = 8,
+        aa_scale = 1 << aa_shift,
+        aa_mask  = aa_scale - 1,
+    };
+
     gfx_raster_adapter_impl()
         : m_source(0)
         , m_transform(0)
@@ -34,6 +40,8 @@ public:
         , m_inner_join(inner_miter)
         , m_filling_rule(fill_non_zero)
     {
+        for (int i = 0; i < aa_scale; i++)
+            m_gamma[i] = i;
     }
 
     ~gfx_raster_adapter_impl()
@@ -59,6 +67,14 @@ public:
         m_filling_rule = fill_non_zero;
     }
 
+    template <typename GammaFunc>
+    void gamma(const GammaFunc& gamma_function)
+    {
+        for (int i = 0; i < aa_scale; i++) {
+            m_gamma[i] = uround(gamma_function(INT_TO_SCALAR(i) / aa_mask) * aa_mask);
+        }
+    }
+
     const vertex_source* m_source;
     const gfx_trans_affine* m_transform;
     unsigned int m_method;
@@ -75,11 +91,14 @@ public:
     inner_join m_inner_join;
     //fill attributes
     filling_rule m_filling_rule;
+    // gamma table
+    int m_gamma[aa_scale];
 };
-
 
 gfx_raster_adapter::gfx_raster_adapter()
     : m_impl(new gfx_raster_adapter_impl)
+    , m_sraster(m_impl->m_gamma)
+    , m_fraster(m_impl->m_gamma)
 {
 }
 
@@ -91,11 +110,9 @@ gfx_raster_adapter::~gfx_raster_adapter()
 void gfx_raster_adapter::set_gamma_power(scalar g)
 {
     if (m_impl->m_antialias) {
-        m_sraster.gamma(gamma_power(SCALAR_TO_FLT(g)));
-        m_fraster.gamma(gamma_power(SCALAR_TO_FLT(g)));
+        m_impl->gamma(gamma_power(SCALAR_TO_FLT(g)));
     } else {
-        m_sraster.gamma(gamma_threshold(0.5f));
-        m_fraster.gamma(gamma_threshold(0.5f));
+        m_impl->gamma(gamma_threshold(0.5f));
     }
 }
 
@@ -129,7 +146,7 @@ unsigned int gfx_raster_adapter::raster_method(void) const
 
 void gfx_raster_adapter::reset(void)
 {
-    m_impl->reset(); 
+    m_impl->reset();
     m_sraster.reset();
     m_fraster.reset();
 }
@@ -199,7 +216,7 @@ void gfx_raster_adapter::setup_stroke_raster(void)
 
         c.dash_start(m_impl->m_dash_start);
 
-        picasso::conv_stroke p(c); 
+        picasso::conv_stroke p(c);
 
         gfx_trans_affine adjmtx = stable_matrix(*const_cast<gfx_trans_affine*>(m_impl->m_transform));
         adjmtx *= gfx_trans_affine_translation(FLT_TO_SCALAR(0.5f), FLT_TO_SCALAR(0.5f)); //adjust edge
@@ -215,7 +232,7 @@ void gfx_raster_adapter::setup_stroke_raster(void)
         m_sraster.add_path(t);
     } else {
         picasso::conv_curve c(*const_cast<vertex_source*>(m_impl->m_source));
-        picasso::conv_stroke p(c); 
+        picasso::conv_stroke p(c);
 
         gfx_trans_affine adjmtx = stable_matrix(*const_cast<gfx_trans_affine*>(m_impl->m_transform));
         adjmtx *= gfx_trans_affine_translation(FLT_TO_SCALAR(0.5f), FLT_TO_SCALAR(0.5f)); //adjust edge

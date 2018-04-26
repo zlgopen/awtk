@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -35,8 +35,8 @@ public:
     virtual scalar ty(void) const = 0;
 
     virtual void translate(scalar x, scalar y) = 0;
-    virtual void scale(scalar x, scalar y) = 0; 
-    virtual void rotate(scalar a) = 0; 
+    virtual void scale(scalar x, scalar y) = 0;
+    virtual void rotate(scalar a) = 0;
     virtual void shear(scalar x, scalar y) = 0;
 
     virtual void invert(void) = 0;
@@ -66,10 +66,11 @@ protected:
 // Rendering buffer interface
 class abstract_rendering_buffer
 {
-public: 
+public:
     virtual ~abstract_rendering_buffer() {}
 
     virtual void init(byte* ptr, unsigned int width, unsigned int height, int stride) = 0;
+    virtual void replace(byte* ptr, unsigned int width, unsigned int height, int stride) = 0;
 
     virtual unsigned int width(void) const = 0;
     virtual unsigned int height(void) const = 0;
@@ -142,8 +143,8 @@ public:
     virtual ~abstract_gradient_adapter() {}
 
     virtual void init_linear(int spread, scalar x1, scalar y1, scalar x2, scalar y2) = 0;
-    virtual void init_radial(int spread, scalar x1, scalar y1, scalar radius1, 
-                                               scalar x2, scalar y2, scalar radius2) = 0; 
+    virtual void init_radial(int spread, scalar x1, scalar y1, scalar radius1,
+                                               scalar x2, scalar y2, scalar radius2) = 0;
     virtual void init_conic(int spread, scalar x, scalar y, scalar angle) = 0;
 
     virtual void add_color_stop(scalar offset, const rgba& c) = 0;
@@ -168,11 +169,18 @@ public:
 
     virtual void set_alpha(scalar a) = 0;
     virtual void set_composite(comp_op op) = 0;
+    // stroke
     virtual void set_stroke_color(const rgba& c) = 0;
+    virtual void set_stroke_image(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc) = 0;
+    virtual void set_stroke_canvas(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc) = 0;
+    virtual void set_stroke_pattern(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc,
+                                    int xtype, int ytype, const abstract_trans_affine* mtx) = 0;
+    virtual void set_stroke_gradient(const abstract_gradient_adapter* g) = 0;
+    // fill
     virtual void set_fill_color(const rgba& c) = 0;
-    virtual void set_fill_image(const abstract_rendering_buffer* img, int filter, const rect_s& rc) = 0;
-    virtual void set_fill_canvas(const abstract_rendering_buffer* img, int filter, const rect_s& rc) = 0;
-    virtual void set_fill_pattern(const abstract_rendering_buffer* img, int filter, const rect_s& rc, 
+    virtual void set_fill_image(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc) = 0;
+    virtual void set_fill_canvas(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc) = 0;
+    virtual void set_fill_pattern(const abstract_rendering_buffer* img, pix_fmt format, int filter, const rect_s& rc,
                                     int xtype, int ytype, const abstract_trans_affine* mtx) = 0;
     virtual void set_fill_gradient(const abstract_gradient_adapter* g) = 0;
     virtual void set_font_fill_color(const rgba& c) = 0;
@@ -202,7 +210,7 @@ public:
 
     // shadow
     virtual bool begin_shadow(const rect_s& rc) = 0;
-    virtual void apply_shadow(abstract_raster_adapter* rs, const rect_s& r, 
+    virtual void apply_shadow(abstract_raster_adapter* rs, const rect_s& r,
                                                 const rgba& c, scalar x, scalar y, scalar b) = 0;
 
     //data copy
@@ -234,11 +242,11 @@ public:
     virtual void write_glyph_to(byte* buffer) = 0;
     virtual void add_kerning(unsigned int first, unsigned int second, scalar* x, scalar* y) = 0;
 
-    virtual unsigned int glyph_index(void) const = 0; 
+    virtual unsigned int glyph_index(void) const = 0;
     virtual unsigned int data_size(void) const = 0;
     virtual glyph_type data_type(void) const = 0;
     virtual const rect& bounds(void) const = 0;
-    virtual scalar advance_x(void) const = 0; 
+    virtual scalar advance_x(void) const = 0;
     virtual scalar advance_y(void) const = 0;
 
 public:

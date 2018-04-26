@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -30,10 +30,18 @@ public:
         }
     } row_data;
 
+    class gfx_buffer_observer
+    {
+    public:
+        virtual ~gfx_buffer_observer() {}
+        virtual void buffer_notify(void) = 0;
+    };
+
     gfx_rendering_buffer();
     gfx_rendering_buffer(byte* ptr, unsigned int width, unsigned int height, int stride);
 
     virtual void init(byte* ptr, unsigned int width, unsigned int height, int stride);
+    virtual void replace(byte* ptr, unsigned int width, unsigned int height, int stride);
 
     virtual unsigned int width(void) const { return m_width; }
     virtual unsigned int height(void) const { return m_height; }
@@ -66,11 +74,14 @@ public:
     unsigned int internal_height(void) const { return m_height; }
     int internal_stride(void) const { return m_stride; }
 
+    void set_buffer_observer(gfx_buffer_observer* o) { m_observer = o; }
+    void notify_buffer_changed(void) { if (m_observer) m_observer->buffer_notify(); }
 private:
     gfx_rendering_buffer(const gfx_rendering_buffer&);
     gfx_rendering_buffer& operator=(const gfx_rendering_buffer&);
 
     byte* m_buffer;
+    gfx_buffer_observer*  m_observer;
     pod_array<byte*> m_rows;
     unsigned int m_width; // width in pixels
     unsigned int m_height; // height in pixels

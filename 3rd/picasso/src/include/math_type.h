@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -17,9 +17,10 @@ typedef float scalar;
 #define SCALAR_TO_INT(v)  ((int)(v))
 //math PI value
 #define PI      3.14159265358979323846f
-#define _2PI    6.28318530717958647692f     
+#define _2PI    6.28318530717958647692f
 #define _PIdiv2 1.57079632679489661923f
 #define _1divPI 0.31830988618379069f
+#define _1div2PI 0.1591549432737563f
 
 #define Fabs(x) fabsf(x)
 #define Fmod(x, y) fmodf((x), (y))

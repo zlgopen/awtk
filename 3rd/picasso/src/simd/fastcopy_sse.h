@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2015 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -14,7 +14,7 @@
 
 inline void fastcopy_sse2_32(uint8_t* __restrict dest, const uint8_t* __restrict src, int n)
 {
-    for (; ((long)dest & 15) && (n > 0); n--) {
+    for (; ((intptr_t)dest & 15) && (n > 0); n--) {
         *dest++ = *src++;
     }
 
@@ -39,7 +39,7 @@ inline void fastcopy_sse2_32(uint8_t* __restrict dest, const uint8_t* __restrict
 
 inline void fastcopy_sse2_16(uint8_t* __restrict dest, const uint8_t* __restrict src, int n)
 {
-    for (; ((long)dest & 15) && (n > 0); n--) {
+    for (; ((intptr_t)dest & 15) && (n > 0); n--) {
         *dest++ = *src++;
     }
 

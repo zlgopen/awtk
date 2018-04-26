@@ -14,7 +14,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -53,7 +53,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+	    '../build',
         './'
       ],
       'sources': [
@@ -92,7 +92,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -131,7 +131,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+	    '../build',
         './'
       ],
       'sources': [

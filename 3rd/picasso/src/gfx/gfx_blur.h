@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -54,9 +54,9 @@ struct stack_blur_calc_rgba
     value_type b;
     value_type a;
 
-    void clear(void) 
-    { 
-        r = g = b = a = 0; 
+    void clear(void)
+    {
+        r = g = b = a = 0;
     }
 
     template <typename T> void add(const T& v)
@@ -170,7 +170,7 @@ public:
             for (x = 0; x < w; x++) {
                 sum.calc_pix(m_buffer[x], mul_sum, shr_sum);
                 sum.sub(sum_out);
-       
+
                 stack_start = stack_ptr + div - radius;
 
                 if (stack_start >= div)
@@ -194,12 +194,12 @@ public:
                     pix.b = m_shading.b;
                     pix.a = m_shading.a;
                 }
-        
+
                 *stack_pix = pix;
-        
+
                 sum_in.add(pix);
                 sum.add(sum_in);
-        
+
                 ++stack_ptr;
 
                 if (stack_ptr >= div)

@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -31,7 +31,7 @@ void gradient_adapter::init_linear(int spread, scalar x1, scalar y1, scalar x2, 
         m_impl->init_linear(spread, x1, y1, x2, y2);
 }
 
-void gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar radius1, 
+void gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar radius1,
                                                             scalar x2, scalar y2, scalar radius2)
 {
     if (m_impl)

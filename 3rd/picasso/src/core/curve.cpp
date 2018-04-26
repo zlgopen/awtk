@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -14,7 +14,7 @@ const scalar curve_distance_epsilon          = FLT_TO_SCALAR(1e-30f);
 const scalar curve_collinearity_epsilon      = FLT_TO_SCALAR(1e-30f);
 const scalar curve_angle_tolerance_epsilon   = FLT_TO_SCALAR(0.01f);
 
-enum curve_recursion_limit 
+enum curve_recursion_limit
 {
     curve_recursion_limit = 32,
 };
@@ -32,12 +32,12 @@ void curve3_inc::init(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, sca
     scalar dx2 = x3 - x2;
     scalar dy2 = y3 - y2;
 
-    scalar len = Sqrt(dx1 * dx1 + dy1 * dy1) + Sqrt(dx2 * dx2 + dy2 * dy2); 
+    scalar len = Sqrt(dx1 * dx1 + dy1 * dy1) + Sqrt(dx2 * dx2 + dy2 * dy2);
 
     m_num_steps = uround(len * FLT_TO_SCALAR(0.25f) * m_scale);
 
     if (m_num_steps < 4) {
-        m_num_steps = 4;   
+        m_num_steps = 4;
     }
 
     scalar subdivide_step  = FLT_TO_SCALAR(1.0f) / m_num_steps;
@@ -48,7 +48,7 @@ void curve3_inc::init(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, sca
 
     m_saved_fx = m_fx = x1;
     m_saved_fy = m_fy = y1;
-    
+
     m_saved_dfx = m_dfx = tmpx + (x2 - x1) * (FLT_TO_SCALAR(2.0f) * subdivide_step);
     m_saved_dfy = m_dfy = tmpy + (y2 - y1) * (FLT_TO_SCALAR(2.0f) * subdivide_step);
 
@@ -73,7 +73,7 @@ void curve3_inc::rewind(unsigned int)
 
 unsigned int curve3_inc::vertex(scalar* x, scalar* y)
 {
-    if (m_step < 0) 
+    if (m_step < 0)
         return path_cmd_stop;
 
     if (m_step == m_num_steps) {
@@ -90,10 +90,10 @@ unsigned int curve3_inc::vertex(scalar* x, scalar* y)
         return path_cmd_line_to;
     }
 
-    m_fx  += m_dfx; 
+    m_fx  += m_dfx;
     m_fy  += m_dfy;
-    m_dfx += m_ddfx; 
-    m_dfy += m_ddfy; 
+    m_dfx += m_ddfx;
+    m_dfy += m_ddfy;
     *x = m_fx;
     *y = m_fy;
     --m_step;
@@ -120,7 +120,7 @@ void curve3_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
 
     // Calculate all the mid-points of the line segments
     //----------------------
-    scalar x12   = (x1 + x2) / 2;                
+    scalar x12   = (x1 + x2) / 2;
     scalar y12   = (y1 + y2) / 2;
     scalar x23   = (x2 + x3) / 2;
     scalar y23   = (y2 + y3) / 2;
@@ -132,7 +132,7 @@ void curve3_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
     scalar d = Fabs(((x2 - x3) * dy - (y2 - y3) * dx));
     scalar da;
 
-    if (d > curve_collinearity_epsilon) { 
+    if (d > curve_collinearity_epsilon) {
         // Regular case
         //-----------------
         if (d * d <= m_distance_tolerance_square * (dx*dx + dy*dy)) {
@@ -147,14 +147,14 @@ void curve3_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
             // Angle & Cusp Condition
             //----------------------
             da = Fabs(Atan2(y3 - y2, x3 - x2) - Atan2(y2 - y1, x2 - x1));
-            if (da >= PI) 
+            if (da >= PI)
                 da = _2PI - da;
 
             if (da < m_angle_tolerance) {
                 // Finally we can stop the recursion
                 //----------------------
                 m_points.add(vertex_s(x123, y123));
-                return;                 
+                return;
             }
         }
     } else {
@@ -171,11 +171,11 @@ void curve3_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
                 return;
             }
 
-            if (d <= 0) 
+            if (d <= 0)
                 d = calc_sq_distance(x2, y2, x1, y1);
-            else if (d >= 1) 
+            else if (d >= 1)
                 d = calc_sq_distance(x2, y2, x3, y3);
-            else            
+            else
                 d = calc_sq_distance(x2, y2, x1 + d*dx, y1 + d*dy);
         }
 
@@ -187,8 +187,8 @@ void curve3_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
 
     // Continue subdivision
     //----------------------
-    recursive_bezier(x1, y1, x12, y12, x123, y123, level + 1); 
-    recursive_bezier(x123, y123, x23, y23, x3, y3, level + 1); 
+    recursive_bezier(x1, y1, x12, y12, x123, y123, level + 1);
+    recursive_bezier(x123, y123, x23, y23, x3, y3, level + 1);
 }
 
 //------------------------------------------------------------------------
@@ -214,14 +214,14 @@ void curve4_inc::init(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, sca
     scalar dx3 = x4 - x3;
     scalar dy3 = y4 - y3;
 
-    scalar len = (Sqrt(dx1 * dx1 + dy1 * dy1) + 
-                  Sqrt(dx2 * dx2 + dy2 * dy2) + 
+    scalar len = (Sqrt(dx1 * dx1 + dy1 * dy1) +
+                  Sqrt(dx2 * dx2 + dy2 * dy2) +
                   Sqrt(dx3 * dx3 + dy3 * dy3)) * FLT_TO_SCALAR(0.25f) * m_scale;
 
     m_num_steps = uround(len);
 
     if (m_num_steps < 4) {
-        m_num_steps = 4;   
+        m_num_steps = 4;
     }
 
     scalar subdivide_step  = FLT_TO_SCALAR(1.0f) / m_num_steps;
@@ -271,7 +271,7 @@ void curve4_inc::rewind(unsigned int)
 
 unsigned int curve4_inc::vertex(scalar* x, scalar* y)
 {
-    if (m_step < 0) 
+    if (m_step < 0)
         return path_cmd_stop;
 
     if (m_step == m_num_steps) {
@@ -290,10 +290,10 @@ unsigned int curve4_inc::vertex(scalar* x, scalar* y)
 
     m_fx   += m_dfx;
     m_fy   += m_dfy;
-    m_dfx  += m_ddfx; 
-    m_dfy  += m_ddfy; 
-    m_ddfx += m_dddfx; 
-    m_ddfy += m_dddfy; 
+    m_dfx  += m_ddfx;
+    m_dfy  += m_ddfy;
+    m_ddfx += m_dddfx;
+    m_ddfy += m_dddfy;
 
     *x = m_fx;
     *y = m_fy;
@@ -302,8 +302,8 @@ unsigned int curve4_inc::vertex(scalar* x, scalar* y)
 }
 
 //curve4_div
-void curve4_div::init(scalar x1, scalar y1, 
-        scalar x2, scalar y2, 
+void curve4_div::init(scalar x1, scalar y1,
+        scalar x2, scalar y2,
         scalar x3, scalar y3,
         scalar x4, scalar y4)
 {
@@ -368,18 +368,18 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
                 return;
             }
 
-            if (d2 <= 0) 
+            if (d2 <= 0)
                 d2 = calc_sq_distance(x2, y2, x1, y1);
-            else if(d2 >= 1) 
+            else if(d2 >= 1)
                 d2 = calc_sq_distance(x2, y2, x4, y4);
-            else             
+            else
                 d2 = calc_sq_distance(x2, y2, x1 + d2*dx, y1 + d2*dy);
 
-            if (d3 <= 0) 
+            if (d3 <= 0)
                 d3 = calc_sq_distance(x3, y3, x1, y1);
-            else if(d3 >= 1) 
+            else if(d3 >= 1)
                 d3 = calc_sq_distance(x3, y3, x4, y4);
-            else             
+            else
                 d3 = calc_sq_distance(x3, y3, x1 + d3*dx, y1 + d3*dy);
         }
 
@@ -408,7 +408,7 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
             // Angle Condition
             //----------------------
             da1 = Fabs(Atan2(y4 - y3, x4 - x3) - Atan2(y3 - y2, x3 - x2));
-            if (da1 >= PI) 
+            if (da1 >= PI)
                 da1 = _2PI - da1;
 
             if (da1 < m_angle_tolerance) {
@@ -438,7 +438,7 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
             // Angle Condition
             //----------------------
             da1 = Fabs(Atan2(y3 - y2, x3 - x2) - Atan2(y2 - y1, x2 - x1));
-            if (da1 >= PI) 
+            if (da1 >= PI)
                 da1 = _2PI - da1;
 
             if (da1 < m_angle_tolerance) {
@@ -456,7 +456,7 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
         }
         break;
 
-    case 3: 
+    case 3:
         // Regular case
         //-----------------
         if ((d2 + d3)*(d2 + d3) <= m_distance_tolerance_square * (dx*dx + dy*dy)) {
@@ -473,9 +473,9 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
             k   = Atan2(y3 - y2, x3 - x2);
             da1 = Fabs(k - Atan2(y2 - y1, x2 - x1));
             da2 = Fabs(Atan2(y4 - y3, x4 - x3) - k);
-            if (da1 >= PI) 
+            if (da1 >= PI)
                 da1 = _2PI - da1;
-            if (da2 >= PI) 
+            if (da2 >= PI)
                 da2 = _2PI - da2;
 
             if (da1 + da2 < m_angle_tolerance) {
@@ -502,8 +502,8 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
 
     // Continue subdivision
     //----------------------
-    recursive_bezier(x1, y1, x12, y12, x123, y123, x1234, y1234, level + 1); 
-    recursive_bezier(x1234, y1234, x234, y234, x34, y34, x4, y4, level + 1); 
+    recursive_bezier(x1, y1, x12, y12, x123, y123, x1234, y1234, level + 1);
+    recursive_bezier(x1234, y1234, x234, y234, x34, y34, x4, y4, level + 1);
 }
 
 void curve4_div::bezier(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, scalar y3, scalar x4, scalar y4)

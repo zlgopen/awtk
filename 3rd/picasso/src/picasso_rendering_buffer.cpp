@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -43,7 +43,7 @@ void rendering_buffer::attach(byte* buf, unsigned int width, unsigned int height
 
 void rendering_buffer::replace(byte* buf, unsigned int width, unsigned int height, int stride)
 {
-    m_impl->init(buf, width, height, stride);
+    m_impl->replace(buf, width, height, stride);
 }
 
 bool rendering_buffer::is_empty(void)
@@ -51,26 +51,26 @@ bool rendering_buffer::is_empty(void)
     return !m_impl;
 }
 
-unsigned int rendering_buffer::width(void) const 
-{ 
+unsigned int rendering_buffer::width(void) const
+{
     if (m_impl)
-        return m_impl->width(); 
+        return m_impl->width();
 
     return 0;
 }
 
-unsigned int rendering_buffer::height(void) const 
-{ 
+unsigned int rendering_buffer::height(void) const
+{
     if (m_impl)
-        return m_impl->height(); 
+        return m_impl->height();
 
     return 0;
 }
 
-int rendering_buffer::stride(void) const 
-{ 
+int rendering_buffer::stride(void) const
+{
     if (m_impl)
-        return m_impl->stride(); 
+        return m_impl->stride();
 
     return 0;
 }
@@ -78,51 +78,51 @@ int rendering_buffer::stride(void) const
 byte * rendering_buffer::buffer(void) const
 {
     if (m_impl)
-        return m_impl->buffer(); 
+        return m_impl->buffer();
 
     return 0;
 }
 
-bool rendering_buffer::is_transparent(void) const 
-{ 
+bool rendering_buffer::is_transparent(void) const
+{
     if (m_impl)
         return m_impl->is_transparent();
 
     return false; // defalt false
-} 
+}
 
-void rendering_buffer::set_transparent(bool b) 
+void rendering_buffer::set_transparent(bool b)
 {
     if (m_impl)
         m_impl->set_transparent(b);
 }
 
-bool rendering_buffer::has_color_channel(void) const 
+bool rendering_buffer::has_color_channel(void) const
 {
     if (m_impl)
         return m_impl->has_color_channel();
 
     return false; // default false
-} 
+}
 
-void rendering_buffer::clear_color_channel(void) 
+void rendering_buffer::clear_color_channel(void)
 {
     if (m_impl)
         m_impl->clear_color_channel();
 }
 
-void rendering_buffer::set_color_channel(const rgba& c) 
+void rendering_buffer::set_color_channel(const rgba& c)
 {
     if (m_impl)
         m_impl->set_color_channel(c);
 }
 
-rgba rendering_buffer::get_color_channel(void) const 
-{ 
+rgba rendering_buffer::get_color_channel(void) const
+{
     if (m_impl)
         return m_impl->get_color_channel();
 
-    return rgba(0,0,0,0); 
+    return rgba(0,0,0,0);
 }
 
 }

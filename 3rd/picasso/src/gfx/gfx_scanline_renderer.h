@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -33,7 +33,7 @@ public:
     {
         m_ren = &ren;
     }
-    
+
     void color(const color_type& c) { m_color = c; }
     const color_type& color() const { return m_color; }
 
@@ -45,7 +45,7 @@ public:
         unsigned int num_spans = sl.num_spans();
         typename Scanline::const_iterator span = sl.begin();
         for (;;) {
-            m_ren->blend_hline(span->x, sl.y(), 
+            m_ren->blend_hline(span->x, sl.y(),
                    span->x - 1 + ((span->len < 0) ? -span->len : span->len), m_color, cover_full);
 
             if (--num_spans == 0)
@@ -54,7 +54,7 @@ public:
             ++span;
         }
     }
-    
+
 private:
     ren_type* m_ren;
     color_type m_color;
@@ -83,7 +83,7 @@ public:
     {
         m_ren = &ren;
     }
-    
+
     void color(const color_type& c) { m_color = c; }
     const color_type& color(void) const { return m_color; }
 
@@ -111,14 +111,14 @@ public:
             ++span;
         }
     }
-    
+
 private:
     ren_type* m_ren;
     color_type m_color;
 };
 
 
-// render scanlines 
+// render scanlines
 template <typename Rasterizer, typename Scanline, typename Renderer>
 void gfx_render_scanlines(Rasterizer& ras, Scanline& sl, Renderer& ren)
 {
@@ -133,9 +133,9 @@ void gfx_render_scanlines(Rasterizer& ras, Scanline& sl, Renderer& ren)
 
 
 // render scanlines antialias
-template <typename Rasterizer, typename Scanline, typename Renderer, 
+template <typename Rasterizer, typename Scanline, typename Renderer,
           typename SpanAllocator, typename SpanGenerator>
-void gfx_render_scanlines_aa(Rasterizer& ras, Scanline& sl, Renderer& ren, 
+void gfx_render_scanlines_aa(Rasterizer& ras, Scanline& sl, Renderer& ren,
                          SpanAllocator& alloc, SpanGenerator& span_gen)
 {
     if (ras.rewind_scanlines()) {

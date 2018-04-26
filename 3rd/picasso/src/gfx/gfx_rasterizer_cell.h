@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -27,7 +27,7 @@ template <typename Cell>
 void qsort_cells(Cell** start, unsigned int num)
 {
     Cell** stack[80];
-    Cell*** top; 
+    Cell*** top;
     Cell** limit;
     Cell** base;
 
@@ -50,7 +50,7 @@ void qsort_cells(Cell** start, unsigned int num)
             i = base + 1;
             j = limit - 1;
 
-            // now ensure that *i <= *base <= *j 
+            // now ensure that *i <= *base <= *j
             if ((*j)->x < (*i)->x) {
                 swap_cells(i, j);
             }
@@ -170,7 +170,7 @@ public:
 
     void reset(void)
     {
-        m_num_cells = 0; 
+        m_num_cells = 0;
         m_curr_block = 0;
         m_curr_cell.initial();
         m_style_cell.initial();
@@ -183,7 +183,7 @@ public:
 
     void style(const cell_type& style_cell)
     {
-        m_style_cell.style(style_cell); 
+        m_style_cell.style(style_cell);
     }
 
     void line(int x1, int y1, int x2, int y2)
@@ -227,7 +227,7 @@ public:
 
         //Vertical line - we have to calculate start and end cells,
         //and then - the common values of the area and coverage for
-        //all cells of the line. We know exactly there's only one 
+        //all cells of the line. We know exactly there's only one
         //cell, so, we don't have to call render_hline().
         incr = 1;
         if (dx == 0) {
@@ -407,19 +407,19 @@ public:
         m_sorted = true;
     }
 
-    unsigned int total_cells(void) const 
+    unsigned int total_cells(void) const
     {
         return m_num_cells;
     }
 
-    unsigned int scanline_num_cells(unsigned int y) const 
-    { 
-        return m_sorted_y[y - m_min_y].num; 
+    unsigned int scanline_num_cells(unsigned int y) const
+    {
+        return m_sorted_y[y - m_min_y].num;
     }
 
     const cell_type* const* scanline_cells(unsigned int y) const
-    { 
-        return m_sorted_cells.data() + m_sorted_y[y - m_min_y].start; 
+    {
+        return m_sorted_cells.data() + m_sorted_y[y - m_min_y].start;
     }
 
     bool sorted(void) const { return m_sorted; }
@@ -554,7 +554,7 @@ private:
         }
         m_curr_cell_ptr = m_cells[m_curr_block++];
     }
-    
+
 private:
     gfx_rasterizer_cells_aa(const gfx_rasterizer_cells_aa<Cell>&);
     const gfx_rasterizer_cells_aa<Cell>& operator = (const gfx_rasterizer_cells_aa<Cell>&);

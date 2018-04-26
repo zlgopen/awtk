@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -22,6 +22,7 @@ gfx_rendering_buffer::gfx_rendering_buffer()
 
 gfx_rendering_buffer::gfx_rendering_buffer(byte* ptr, unsigned int width, unsigned int height, int stride)
     : m_buffer(0)
+    , m_observer(0)
     , m_width(0)
     , m_height(0)
     , m_stride(0)
@@ -30,6 +31,12 @@ gfx_rendering_buffer::gfx_rendering_buffer(byte* ptr, unsigned int width, unsign
     , m_colorkey(0,0,0,0)
 {
     init(ptr, width, height, stride);
+}
+
+void gfx_rendering_buffer::replace(byte* ptr, unsigned int width, unsigned int height, int stride)
+{
+    init(ptr, width, height, stride);
+    notify_buffer_changed();
 }
 
 void gfx_rendering_buffer::init(byte* ptr, unsigned int width, unsigned int height, int stride)

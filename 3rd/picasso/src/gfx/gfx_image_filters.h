@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -41,7 +41,7 @@ public:
         unsigned int end = (diameter() << image_subpixel_shift) - 1;
         m_weight_array[0] = m_weight_array[end];
 
-        if (normalization) 
+        if (normalization)
             normalize();
     }
 
@@ -68,7 +68,7 @@ public:
                 scalar k = INT_TO_SCALAR(image_filter_scale) / INT_TO_SCALAR(sum);
                 sum = 0;
                 for (j = 0; j < m_diameter; j++) {
-                    sum += m_weight_array[j * image_subpixel_scale + i] = 
+                    sum += m_weight_array[j * image_subpixel_scale + i] =
                         iround(m_weight_array[j * image_subpixel_scale + i] * k);
                 }
 

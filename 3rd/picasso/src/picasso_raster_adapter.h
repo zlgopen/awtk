@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -41,13 +41,14 @@ public:
     void set_stroke_attr_val(int idx, scalar val);
     void set_fill_attr(int idx, int val);
 
-    void add_shape(const vertex_source& vs, unsigned int id=0);    
+    void add_shape(const vertex_source& vs, unsigned int id = 0);
     void reset(void);
     void commit(void);
 
     bool is_empty(void);
 public:
     static bool fill_contents_point(const vertex_source& vs, scalar x, scalar y, filling_rule rule);
+    static bool stroke_contents_point(const vertex_source& vs, scalar x, scalar y, scalar w);
 public:
     abstract_raster_adapter* impl(void) const { return m_impl; }
 private:

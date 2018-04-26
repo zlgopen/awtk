@@ -96,12 +96,27 @@ static int LoadBmpWinProc(HWND hWnd, int message, WPARAM wParam, LPARAM lParam)
     return DefaultMainWinProc(hWnd, message, wParam, lParam);
 }
 
+static int __argc = 0;
+static const char** __argv = NULL;
+
+int argc(void)
+{
+    return __argc;
+}
+
+const char** argv(void)
+{
+    return __argv;
+}
+
 int MiniGUIMain (int argc, const char* argv[])
 {
     MSG Msg;
     HWND hMainWnd;
     MAINWINCREATE CreateInfo;
 
+    __argc = argc;
+    __argv = argv;
 #ifdef _MGRM_PROCESSES
     JoinLayer(NAME_DEF_LAYER , "loadbmp" , 0 , 0);
 #endif

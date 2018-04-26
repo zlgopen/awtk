@@ -69,10 +69,26 @@ static void init_pixbuf()
                                  gdk_pixbuf_get_height(pixb), gdk_pixbuf_get_rowstride(pixb));
 }
 
+static int __argc = 0;
+static const char** __argv = NULL;
+
+int argc(void)
+{
+    return __argc;
+}
+
+const char** argv(void)
+{
+    return __argv;
+}
+
 int main(int argc, char* argv[])
 {
     GtkWidget *window;
     GtkWidget *drawarea;
+
+    __argc = argc;
+    __argv = argv;
 
     gtk_init(&argc, &argv);
 

@@ -14,7 +14,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -54,7 +54,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -94,7 +94,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -134,7 +134,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -174,7 +174,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -213,7 +213,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -252,7 +252,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -292,7 +292,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -331,7 +331,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -371,7 +371,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -411,7 +411,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -450,7 +450,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -490,7 +490,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -530,7 +530,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -570,7 +570,7 @@
       ],
       'include_dirs': [
         '../include',
-	'../build',
+        '../build',
         './'
       ],
       'sources': [
@@ -593,7 +593,83 @@
           ],
           'libraries': [
             '-lfreetype',
-            '-lz -lpthread `pkg-config --libs gtk+-2.0`',
+            '-lz `pkg-config --libs gtk+-2.0`',
+          ],
+        }],
+      ],
+      'includes':[
+        '../build/configs.gypi',
+        '../build/defines.gypi',
+        'copy.gypi',
+      ],
+    },
+    {
+      # image info
+      'target_name': 'image_info',
+      'type': 'executable',
+      'dependencies': [
+        'picasso2_sw',
+        'psx_image',
+      ],
+      'include_dirs': [
+        '../include',
+        '../build',
+        './'
+      ],
+      'sources': [
+        'image_info.c',
+      ],
+      'conditions': [
+        ['OS=="linux"', {
+          'cflags': [
+            '`pkg-config --cflags gtk+-2.0`',
+          ],
+          'libraries': [
+            '-lfreetype',
+            '-lfontconfig',
+            '-ldl',
+            '-lz `pkg-config --libs gtk+-2.0`',
+          ],
+        }],
+      ],
+      'includes':[
+        '../build/configs.gypi',
+        '../build/defines.gypi',
+        'copy.gypi',
+      ],
+    },
+    {
+      # image view
+      'target_name': 'image_view',
+      'type': 'executable',
+      'dependencies': [
+        'picasso2_sw',
+        'psx_image',
+      ],
+      'include_dirs': [
+        '../include',
+        '../build',
+        './'
+      ],
+      'sources': [
+        'image_view.c',
+      ],
+      'conditions': [
+        ['OS=="win"', {
+          'sources': [
+            'testWin.c',
+          ],
+        }],
+        ['OS=="linux"', {
+          'sources': [
+            'testGtk2.c',
+          ],
+          'cflags': [
+            '`pkg-config --cflags gtk+-2.0`',
+          ],
+          'libraries': [
+            '-lfreetype',
+            '-lz `pkg-config --libs gtk+-2.0`',
           ],
         }],
       ],

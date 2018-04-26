@@ -5,7 +5,7 @@ CC=gcc -O3
 INC=-I../include -I../build
 CFLAGS=${DLL} -DUNICODE -D_UNICODE
 
-SYSTEM_LIBS = -lgdi32 -lstdc++ -lfreetype
+SYSTEM_LIBS = -lgdi32 -lstdc++
 
 flowers_objs = platform.o flowers.o
 

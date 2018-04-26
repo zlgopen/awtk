@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -17,7 +17,7 @@ namespace picasso {
 class arc : public vertex_source
 {
 public:
-    arc() 
+    arc()
         : m_x(FLT_TO_SCALAR(0)), m_y(FLT_TO_SCALAR(0))
         , m_rx(FLT_TO_SCALAR(0)), m_ry(FLT_TO_SCALAR(0))
         , m_start(FLT_TO_SCALAR(0)), m_end(FLT_TO_SCALAR(0))
@@ -38,7 +38,7 @@ public:
     void init(scalar x,  scalar y, scalar rx, scalar ry, scalar a1, scalar a2, bool ccw = true)
     {
         m_x = x;  m_y = y;
-        m_rx = rx; m_ry = ry; 
+        m_rx = rx; m_ry = ry;
         normalize(a1, a2, ccw);
     }
 
@@ -50,20 +50,20 @@ public:
         }
     }
 
-    scalar approximation_scale(void) const 
+    scalar approximation_scale(void) const
     {
-        return m_scale;  
+        return m_scale;
     }
 
     virtual void rewind(unsigned int id)
     {
-        m_path_cmd = path_cmd_move_to; 
+        m_path_cmd = path_cmd_move_to;
         m_angle = m_start;
     }
 
     virtual unsigned int vertex(scalar* x, scalar* y)
-    { 
-        if (is_stop(m_path_cmd)) 
+    {
+        if (is_stop(m_path_cmd))
             return path_cmd_stop;
 
         if ((m_angle < (m_end - m_da/4)) != m_ccw) {
@@ -122,23 +122,23 @@ public:
         vertex_max_num = 26,
     };
 
-    bezier_arc() 
-        : m_vertex(vertex_max_num), m_num_vertices(0), m_cmd(path_cmd_line_to) 
+    bezier_arc()
+        : m_vertex(vertex_max_num), m_num_vertices(0), m_cmd(path_cmd_line_to)
     {
     }
 
-    bezier_arc(scalar x,  scalar y, scalar rx, scalar ry, scalar start_angle, scalar sweep_angle) 
+    bezier_arc(scalar x,  scalar y, scalar rx, scalar ry, scalar start_angle, scalar sweep_angle)
     {
         init(x, y, rx, ry, start_angle, sweep_angle);
     }
 
-    void init(scalar x,  scalar y, scalar rx, scalar ry, scalar start_angle, scalar sweep_angle) 
+    void init(scalar x,  scalar y, scalar rx, scalar ry, scalar start_angle, scalar sweep_angle)
     {
         start_angle = Fmod(start_angle, _2PI);
-        if (sweep_angle >= _2PI) 
+        if (sweep_angle >= _2PI)
             sweep_angle = _2PI;
 
-        if (sweep_angle <= -_2PI) 
+        if (sweep_angle <= -_2PI)
             sweep_angle = -_2PI;
 
         if (Fabs(sweep_angle) < FLT_TO_SCALAR(1e-10f)) {
@@ -193,8 +193,8 @@ public:
     }
 
     virtual unsigned int vertex(scalar* x, scalar* y)
-    { 
-        if (m_vertex >= m_num_vertices) 
+    {
+        if (m_vertex >= m_num_vertices)
             return path_cmd_stop;
 
         *x = m_vertices[m_vertex];
@@ -240,21 +240,21 @@ private:
 class bezier_arc_svg : public vertex_source
 {
 public:
-    bezier_arc_svg() 
-        : m_radii_ok(false) 
+    bezier_arc_svg()
+        : m_radii_ok(false)
     {
     }
 
-    bezier_arc_svg(scalar x1, scalar y1, scalar rx, scalar ry, 
+    bezier_arc_svg(scalar x1, scalar y1, scalar rx, scalar ry,
             scalar angle, bool large_arc_flag, bool sweep_flag, scalar x2, scalar y2)
-        : m_radii_ok(false) 
+        : m_radii_ok(false)
     {
         init(x1, y1, rx, ry, angle, large_arc_flag, sweep_flag, x2, y2);
     }
 
     bool radii_ok(void) const { return m_radii_ok; }
 
-    void init(scalar x0, scalar y0, scalar rx, scalar ry, 
+    void init(scalar x0, scalar y0, scalar rx, scalar ry,
             scalar angle, bool large_arc_flag, bool sweep_flag, scalar x2, scalar y2)
     {
         m_radii_ok = true;
@@ -262,7 +262,7 @@ public:
         if (rx < FLT_TO_SCALAR(0.0f)) rx = -rx;
         if (ry < FLT_TO_SCALAR(0.0f)) ry = -rx;
 
-        // Calculate the middle point between 
+        // Calculate the middle point between
         // the current and the final points
         //------------------------
         scalar dx2 = (x0 - x2) / FLT_TO_SCALAR(2.0f);
@@ -339,7 +339,7 @@ public:
         scalar sweep_angle = sign * Acos(v);
         if (!sweep_flag && sweep_angle > 0) {
             sweep_angle -= _2PI;
-        } else { 
+        } else {
             if (sweep_flag && sweep_angle < 0) {
                 sweep_angle += _2PI;
             }
@@ -386,7 +386,7 @@ public:
     }
 
     virtual unsigned int vertex(scalar* x, scalar* y)
-    { 
+    {
         return m_arc.vertex(x, y);
     }
 
@@ -399,9 +399,9 @@ private:
 class rounded_rect : public vertex_source
 {
 public:
-    rounded_rect() 
+    rounded_rect()
         : m_x1(0), m_y1(0), m_x2(0), m_y2(0)
-        , m_rx1(0), m_ry1(0), m_rx2(0), m_ry2(0) 
+        , m_rx1(0), m_ry1(0), m_rx2(0), m_ry2(0)
         , m_rx3(0), m_ry3(0), m_rx4(0), m_ry4(0)
         , m_status(0)
     {
@@ -409,18 +409,18 @@ public:
 
     rounded_rect(scalar x1, scalar y1, scalar x2, scalar y2, scalar r)
         : m_x1(x1), m_y1(y1), m_x2(x2), m_y2(y2)
-        , m_rx1(r), m_ry1(r), m_rx2(r), m_ry2(r) 
+        , m_rx1(r), m_ry1(r), m_rx2(r), m_ry2(r)
         , m_rx3(r), m_ry3(r), m_rx4(r), m_ry4(r)
         , m_status(0)
     {
-        if (x1 > x2) { 
-            m_x1 = x2; 
-            m_x2 = x1; 
+        if (x1 > x2) {
+            m_x1 = x2;
+            m_x2 = x1;
         }
 
-        if (y1 > y2) { 
-            m_y1 = y2; 
-            m_y2 = y1; 
+        if (y1 > y2) {
+            m_y1 = y2;
+            m_y2 = y1;
         }
     }
 
@@ -431,21 +431,21 @@ public:
         m_x2 = x2;
         m_y2 = y2;
 
-        if (x1 > x2) { 
-            m_x1 = x2; 
-            m_x2 = x1; 
+        if (x1 > x2) {
+            m_x1 = x2;
+            m_x2 = x1;
         }
 
-        if (y1 > y2) { 
-            m_y1 = y2; 
-            m_y2 = y1; 
+        if (y1 > y2) {
+            m_y1 = y2;
+            m_y2 = y1;
         }
     }
 
-    void radius(scalar rx1, scalar ry1, scalar rx2, scalar ry2, 
+    void radius(scalar rx1, scalar ry1, scalar rx2, scalar ry2,
                 scalar rx3, scalar ry3, scalar rx4, scalar ry4)
     {
-        m_rx1 = rx1; m_ry1 = ry1; m_rx2 = rx2; m_ry2 = ry2; 
+        m_rx1 = rx1; m_ry1 = ry1; m_rx2 = rx2; m_ry2 = ry2;
         m_rx3 = rx3; m_ry3 = ry3; m_rx4 = rx4; m_ry4 = ry4;
     }
 
@@ -456,10 +456,10 @@ public:
 
         scalar k = FLT_TO_SCALAR(1.0f);
         scalar t;
-        t = dx / (m_rx1 + m_rx2); if(t < k) k = t; 
-        t = dx / (m_rx3 + m_rx4); if(t < k) k = t; 
-        t = dy / (m_ry1 + m_ry2); if(t < k) k = t; 
-        t = dy / (m_ry3 + m_ry4); if(t < k) k = t; 
+        t = dx / (m_rx1 + m_rx2); if(t < k) k = t;
+        t = dx / (m_rx3 + m_rx4); if(t < k) k = t;
+        t = dy / (m_ry1 + m_ry2); if(t < k) k = t;
+        t = dy / (m_ry3 + m_ry4); if(t < k) k = t;
 
         if (k < FLT_TO_SCALAR(1.0f)) {
             m_rx1 *= k; m_ry1 *= k; m_rx2 *= k; m_ry2 *= k;
@@ -467,14 +467,14 @@ public:
         }
     }
 
-    void approximation_scale(scalar s) 
-    { 
-        m_arc.approximation_scale(s); 
+    void approximation_scale(scalar s)
+    {
+        m_arc.approximation_scale(s);
     }
 
-    scalar approximation_scale(void) const 
-    { 
-        return m_arc.approximation_scale(); 
+    scalar approximation_scale(void) const
+    {
+        return m_arc.approximation_scale();
     }
 
     virtual void rewind(unsigned int id)
@@ -483,7 +483,7 @@ public:
     }
 
     virtual unsigned int vertex(scalar* x, scalar* y)
-    { 
+    {
         unsigned int cmd = path_cmd_stop;
         switch(m_status)
         {
@@ -494,9 +494,9 @@ public:
 
             case 1:
                 cmd = m_arc.vertex(x, y);
-                if (is_stop(cmd)) 
+                if (is_stop(cmd))
                     m_status++;
-                else 
+                else
                     return cmd;
 
             case 2:
@@ -506,9 +506,9 @@ public:
 
             case 3:
                 cmd = m_arc.vertex(x, y);
-                if (is_stop(cmd)) 
+                if (is_stop(cmd))
                     m_status++;
-                else 
+                else
                     return path_cmd_line_to;
 
             case 4:
@@ -518,9 +518,9 @@ public:
 
             case 5:
                 cmd = m_arc.vertex(x, y);
-                if (is_stop(cmd)) 
+                if (is_stop(cmd))
                     m_status++;
-                else 
+                else
                     return path_cmd_line_to;
 
             case 6:
@@ -530,9 +530,9 @@ public:
 
             case 7:
                 cmd = m_arc.vertex(x, y);
-                if (is_stop(cmd)) 
+                if (is_stop(cmd))
                     m_status++;
-                else 
+                else
                     return path_cmd_line_to;
 
             case 8:
@@ -564,21 +564,21 @@ private:
 class ellipse : public vertex_source
 {
 public:
-    ellipse() 
+    ellipse()
         : m_x(FLT_TO_SCALAR(0.0f)), m_y(FLT_TO_SCALAR(0.0f)), m_rx(FLT_TO_SCALAR(1.0f)), m_ry(FLT_TO_SCALAR(1.0f))
-        , m_scale(FLT_TO_SCALAR(1.0f)), m_num(4), m_step(0), m_cw(false) 
+        , m_scale(FLT_TO_SCALAR(1.0f)), m_num(4), m_step(0), m_cw(false)
     {
     }
 
-    ellipse(scalar x, scalar y, scalar rx, scalar ry, unsigned int num_steps = 0, bool cw = false) 
-        : m_x(x), m_y(y), m_rx(rx), m_ry(ry), m_scale(FLT_TO_SCALAR(1.0f)) 
-        , m_num(num_steps), m_step(0), m_cw(cw) 
+    ellipse(scalar x, scalar y, scalar rx, scalar ry, unsigned int num_steps = 0, bool cw = false)
+        : m_x(x), m_y(y), m_rx(rx), m_ry(ry), m_scale(FLT_TO_SCALAR(1.0f))
+        , m_num(num_steps), m_step(0), m_cw(cw)
     {
-        if (0 == m_num) 
+        if (0 == m_num)
             calc_num_steps();
     }
 
-    void init(scalar x, scalar y, scalar rx, scalar ry, unsigned int num_steps = 0, bool cw = false) 
+    void init(scalar x, scalar y, scalar rx, scalar ry, unsigned int num_steps = 0, bool cw = false)
     {
         m_x = x;
         m_y = y;
@@ -587,7 +587,7 @@ public:
         m_num = num_steps;
         m_step = 0;
         m_cw = cw;
-        if (0 == m_num) 
+        if (0 == m_num)
             calc_num_steps();
     }
 
@@ -597,7 +597,7 @@ public:
         calc_num_steps();
     }
 
-    scalar approximation_scale(void) const 
+    scalar approximation_scale(void) const
     {
         return m_scale;
     }
@@ -614,12 +614,12 @@ public:
             return path_cmd_end_poly | path_flags_close | path_flags_ccw;
         }
 
-        if (m_step > m_num) 
+        if (m_step > m_num)
             return path_cmd_stop;
 
         scalar angle = scalar(m_step) / scalar(m_num) * _2PI;
 
-        if (m_cw) 
+        if (m_cw)
             angle = _2PI - angle;
 
         *x = m_x + Cos(angle) * m_rx;
@@ -651,14 +651,14 @@ class curve3 : public vertex_source
 {
 public:
     curve3() : m_approximation_method(curve_div) {}
-    curve3(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, scalar y3) 
+    curve3(scalar x1, scalar y1, scalar x2, scalar y2, scalar x3, scalar y3)
         : m_approximation_method(curve_div)
     {
         init(x1, y1, x2, y2, x3, y3);
     }
 
-    void reset(void) 
-    { 
+    void reset(void)
+    {
         m_curve_inc.reset();
         m_curve_div.reset();
     }
@@ -672,45 +672,45 @@ public:
         }
     }
 
-    void approximation_method(curve_approximation_method v) 
-    { 
-        m_approximation_method = v; 
+    void approximation_method(curve_approximation_method v)
+    {
+        m_approximation_method = v;
     }
 
-    curve_approximation_method approximation_method(void) const 
-    { 
-        return m_approximation_method; 
+    curve_approximation_method approximation_method(void) const
+    {
+        return m_approximation_method;
     }
 
-    void approximation_scale(scalar s) 
-    { 
+    void approximation_scale(scalar s)
+    {
         m_curve_inc.approximation_scale(s);
         m_curve_div.approximation_scale(s);
     }
 
-    scalar approximation_scale(void) const 
+    scalar approximation_scale(void) const
     {
-           return m_curve_inc.approximation_scale(); 
+           return m_curve_inc.approximation_scale();
     }
 
-    void angle_tolerance(scalar v) 
-    { 
-        m_curve_div.angle_tolerance(v); 
+    void angle_tolerance(scalar v)
+    {
+        m_curve_div.angle_tolerance(v);
     }
 
-    scalar angle_tolerance() const 
-    { 
-        return m_curve_div.angle_tolerance();  
+    scalar angle_tolerance() const
+    {
+        return m_curve_div.angle_tolerance();
     }
 
-    void cusp_limit(scalar v) 
-    { 
-        m_curve_div.cusp_limit(v); 
+    void cusp_limit(scalar v)
+    {
+        m_curve_div.cusp_limit(v);
     }
 
-    scalar cusp_limit() const 
-    { 
-        return m_curve_div.cusp_limit();  
+    scalar cusp_limit() const
+    {
+        return m_curve_div.cusp_limit();
     }
 
     virtual void rewind(unsigned int id)
@@ -743,20 +743,20 @@ class curve4 : public vertex_source
 public:
     curve4() : m_approximation_method(curve_div) {}
 
-    curve4(scalar x1, scalar y1, scalar x2, scalar y2, 
+    curve4(scalar x1, scalar y1, scalar x2, scalar y2,
                 scalar x3, scalar y3, scalar x4, scalar y4)
         : m_approximation_method(curve_div)
     {
         init(x1, y1, x2, y2, x3, y3, x4, y4);
-    } 
+    }
 
-    void reset(void) 
-    { 
+    void reset(void)
+    {
         m_curve_inc.reset();
         m_curve_div.reset();
     }
 
-    void init(scalar x1, scalar y1, scalar x2, scalar y2, 
+    void init(scalar x1, scalar y1, scalar x2, scalar y2,
                             scalar x3, scalar y3, scalar x4, scalar y4)
     {
         if (m_approximation_method == curve_inc) {
@@ -766,45 +766,45 @@ public:
         }
     }
 
-    void approximation_method(curve_approximation_method v) 
-    { 
-        m_approximation_method = v; 
+    void approximation_method(curve_approximation_method v)
+    {
+        m_approximation_method = v;
     }
 
-    curve_approximation_method approximation_method(void) const 
-    { 
-        return m_approximation_method; 
+    curve_approximation_method approximation_method(void) const
+    {
+        return m_approximation_method;
     }
 
-    void approximation_scale(scalar s) 
-    { 
+    void approximation_scale(scalar s)
+    {
         m_curve_inc.approximation_scale(s);
         m_curve_div.approximation_scale(s);
     }
 
-    scalar approximation_scale(void) const 
+    scalar approximation_scale(void) const
     {
-           return m_curve_inc.approximation_scale(); 
+           return m_curve_inc.approximation_scale();
     }
 
-    void angle_tolerance(scalar v) 
-    { 
-        m_curve_div.angle_tolerance(v); 
+    void angle_tolerance(scalar v)
+    {
+        m_curve_div.angle_tolerance(v);
     }
 
-    scalar angle_tolerance() const 
-    { 
-        return m_curve_div.angle_tolerance();  
+    scalar angle_tolerance() const
+    {
+        return m_curve_div.angle_tolerance();
     }
 
-    void cusp_limit(scalar v) 
-    { 
-        m_curve_div.cusp_limit(v); 
+    void cusp_limit(scalar v)
+    {
+        m_curve_div.cusp_limit(v);
     }
 
-    scalar cusp_limit() const 
-    { 
-        return m_curve_div.cusp_limit();  
+    scalar cusp_limit() const
+    {
+        return m_curve_div.cusp_limit();
     }
 
     virtual void rewind(unsigned int id)

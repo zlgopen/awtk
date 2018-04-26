@@ -34,6 +34,16 @@ HBITMAP tbmp;
 static ps_context *context;
 static ps_canvas *canvas;
 
+int argc(void)
+{
+    return __argc;
+}
+
+const char** argv(void)
+{
+    return (const char**)__argv;
+}
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPSTR     lpCmdLine,
@@ -52,10 +62,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    return msg.wParam;
+    return (int)msg.wParam;
 }
-
-
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
@@ -147,6 +155,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 fmt = COLOR_FORMAT_BGR;
             else if (CBYTE == 2)
                 fmt = COLOR_FORMAT_RGB565;
+            else
+                fmt = COLOR_FORMAT_BGRA;
 
             ps_initialize();
             

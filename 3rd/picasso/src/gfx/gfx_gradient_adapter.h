@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -19,13 +19,13 @@
 namespace gfx {
 
 // gradient wrapper interface
-class gfx_gradient_wrapper 
+class gfx_gradient_wrapper
 {
 public:
     gfx_gradient_wrapper() { }
     virtual ~gfx_gradient_wrapper() { }
     virtual void init(scalar r, scalar x, scalar y) = 0;
-    virtual int calculate(int x, int y, int d) const = 0; 
+    virtual int calculate(int x, int y, int d) const = 0;
 };
 
 // gradient table
@@ -34,7 +34,7 @@ class gfx_gradient_table
 public:
     typedef rgba8 color_type;
 
-    enum { 
+    enum {
         color_table_size = 256,
     };
 private:
@@ -74,7 +74,7 @@ public:
 
     void remove_all(void)
     {
-        m_color_profile.clear(); 
+        m_color_profile.clear();
     }
 
     void add_color(scalar offset, const color_type& color)
@@ -83,13 +83,13 @@ public:
     }
 
     static unsigned int size(void)
-    { 
-        return color_table_size; 
+    {
+        return color_table_size;
     }
 
-    const color_type& operator [] (unsigned int i) const 
-    { 
-        return m_color_table[i]; 
+    const color_type& operator [] (unsigned int i) const
+    {
+        return m_color_table[i];
     }
 
 private:
@@ -130,7 +130,7 @@ public:
     }
 
     void generate(color_type* span, int x, int y, unsigned int len)
-    {   
+    {
         int dd = m_d2 - m_d1;
         if (dd < 1)
             dd = 1;
@@ -139,7 +139,7 @@ public:
                               INT_TO_SCALAR(y)+FLT_TO_SCALAR(0.5f), len);
         do {
             m_interpolator->coordinates(&x, &y);
-            int d = m_gradient_function->calculate(x >> downscale_shift, 
+            int d = m_gradient_function->calculate(x >> downscale_shift,
                     y >> downscale_shift, m_d2);
             d = ((d - m_d1) * (int)m_color_function->size()) / dd;
 
@@ -182,7 +182,7 @@ public:
 
     virtual void init_linear(int spread, scalar x1, scalar y1, scalar x2, scalar y2);
 
-    virtual void init_radial(int spread, scalar x1, scalar y1, scalar radius1, 
+    virtual void init_radial(int spread, scalar x1, scalar y1, scalar radius1,
                                                scalar x2, scalar y2, scalar radius2);
 
     virtual void init_conic(int spread, scalar x, scalar y, scalar angle);
@@ -205,7 +205,7 @@ public:
         m_matrix *= (*const_cast<gfx_trans_affine*>(m));
     }
 
-    void build(void) 
+    void build(void)
     {
         if (!m_build) {
             m_colors.build_table();
@@ -216,7 +216,7 @@ public:
     gfx_gradient_wrapper* wrapper(void) { return m_wrapper; }
     scalar start(void) { return m_start; }
     scalar length(void) { return m_length; }
-    gfx_gradient_table& colors(void) { return m_colors; } 
+    gfx_gradient_table& colors(void) { return m_colors; }
     gfx_trans_affine& matrix(void) { return m_matrix; }
 private:
     gfx_gradient_wrapper* m_wrapper;

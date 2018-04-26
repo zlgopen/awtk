@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -28,7 +28,7 @@ public:
     ~gradient_adapter();
 
     void init_linear(int spread, scalar x1, scalar y1, scalar x2, scalar y2);
-    void init_radial(int spread, scalar x1, scalar y1, scalar radius1, scalar x2, scalar y2, scalar radius2); 
+    void init_radial(int spread, scalar x1, scalar y1, scalar radius1, scalar x2, scalar y2, scalar radius2);
     void init_conic(int spread, scalar x, scalar y, scalar angle);
 
     void add_color_stop(scalar offset, const rgba& c);
@@ -44,4 +44,4 @@ private:
 };
 
 }
-#endif /*_PICASSO_GRADIENT_H_*/ 
+#endif /*_PICASSO_GRADIENT_H_*/

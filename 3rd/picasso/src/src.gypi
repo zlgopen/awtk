@@ -11,7 +11,7 @@
       'dependencies': [
       ],
       'defines':[
-        'EXPORT'
+        'EXPORT',
       ],
       'include_dirs': [
         '../include',
@@ -20,7 +20,6 @@
         './include',
         './simd',
         './gfx',
-        './gfx/include'
       ],
       'sources': [
         '../build/pconfig.h',
@@ -28,6 +27,7 @@
         'core/curve.cpp',
         'core/device.cpp',
         'core/graphic_path.cpp',
+        'core/clipper.cpp',
         'gfx/gfx_blur.cpp',
         'gfx/gfx_blur.h',
         'gfx/gfx_device.cpp',
@@ -65,11 +65,12 @@
         'gfx/gfx_image_filters.h',
         'gfx/gfx_line_generator.h',
         'gfx/gfx_pixfmt_rgba.h',
-        'gfx/pixfmt_wrapper.h',
+        'gfx/gfx_pixfmt_wrapper.h',
         'include/color_type.h',
         'include/common.h',
         'include/convert.h',
         'include/curve.h',
+        'include/clipper.h',
         'include/data_vector.h',
         'include/device.h',
         'include/fastcopy.h',
@@ -93,8 +94,6 @@
         'picasso_font.h',
         'picasso_font_cache.h',
         'picasso_global.h',
-        'picasso_gpc.cpp',
-        'picasso_gpc.h',
         'picasso_gradient_api.cpp',
         'picasso_gradient.cpp',
         'picasso_gradient.h',
@@ -120,7 +119,14 @@
         ['OS=="win"', {
           'sources': [
             'picasso.rc',
+            'picasso.def',
             'resource.h',
+          ],
+        }],
+        ['OS=="linux"', {
+          'libraries': [
+            '-lfreetype',
+            '-lfontconfig',
           ],
         }],
       ],
@@ -129,6 +135,6 @@
         '../build/defines.gypi',
       ],
     },
-  ]
+  ],
 }
 

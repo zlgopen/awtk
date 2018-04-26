@@ -2,11 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(picasso, 2.1, onecoolx@gmail.com)
+AC_INIT(picasso, 2.3, onecoolx@gmail.com)
 
 VERSION_MAJOR=2
-VERSION_MINOR=1
-VERSION_MICRO=5
+VERSION_MINOR=3
+VERSION_MICRO=0
 VERSION=$VERSION_MAJOR.$VERSION_MINOR.$VERSION_MICRO
 AC_SUBST(VERSION_MAJOR)
 AC_SUBST(VERSION_MINOR)
@@ -28,7 +28,10 @@ AC_PREFIX_DEFAULT(/usr/local)
 # User define macro.
 build_freetype2="yes"
 build_fontconfig="yes"
+build_fastcopy="yes"
+build_sysmalloc="no"
 build_lowmem="no"
+
 format_rgba="yes"
 format_argb="yes"
 format_abgr="yes"
@@ -50,6 +53,15 @@ build_fontconfig=$enableval)
 AC_ARG_ENABLE(lowmem,
 [  --enable-lowmem     Build Low Memory used support  <default=no>],
 build_lowmem=$enableval)
+
+AC_ARG_ENABLE(fastcopy,
+[  --enable-fastcopy     Build Fast Memory Copy used support  <default=yes>],
+build_fastcopy=$enableval)
+
+AC_ARG_ENABLE(sysmalloc,
+[  --enable-sysmalloc     Build System Memory Allocator
+                         (new/delete/malloc/free/realloc/calloc) used support  <default=no>],
+build_sysmalloc=$enableval)
 
 AC_ARG_ENABLE(rgba,
 [  --enable-rgba     Pixel format RGBA support  <default=yes>],
@@ -120,6 +132,14 @@ if test "x$build_lowmem" = "xyes"; then
     AC_DEFINE(ENABLE_LOW_MEMORY, 1, [Define if Low memory is supported.])
 fi
 
+if test "x$build_fastcopy" = "xyes"; then
+    AC_DEFINE(ENABLE_FAST_COPY, 1, [Define if Fast memory copy is supported.])
+fi
+
+if test "x$build_sysmalloc" = "xyes"; then
+    AC_DEFINE(ENABLE_SYSTEM_MALLOC, 1, [Define if System memory allocator is supported.])
+fi
+
 if test "x$format_rgba" = "xyes"; then
     AC_DEFINE(ENABLE_FORMAT_RGBA, 1, [Define if RGBA color format is supported.])
 fi
@@ -152,12 +172,19 @@ if test "x$format_rgb555" = "xyes"; then
     AC_DEFINE(ENABLE_FORMAT_RGB555, 1, [Define if RGB555 color format is supported.])
 fi
 
-EXTRA_FLAGS="-fvisibility=hidden -fvisibility-inlines-hidden"
-CFLAGS="$CFLAGS -Wall -DDLL_EXPORT=1 $EXTRA_FLAGS" 
-CXXFLAGS="$CXXFLAGS -Wall -fno-rtti -fno-exceptions -DDLL_EXPORT=1 $EXTRA_FLAGS"
+CFLAGS="$CFLAGS -Wall -DDLL_EXPORT=1 -DEXPORT=1 -fvisibility=hidden" 
+CXXFLAGS="$CXXFLAGS -Wall -fno-rtti -fno-exceptions -DDLL_EXPORT=1 -DEXPORT=1 -fvisibility=hidden -fvisibility-inlines-hidden"
 
 AC_OUTPUT(
 Makefile
 include/Makefile
 src/Makefile
+ext/Makefile
+ext/image_loader/Makefile
+ext/image_loader/png/Makefile
+ext/image_loader/jpeg/Makefile
+ext/image_loader/gif/Makefile
+ext/image_loader/webp/Makefile
+test/Makefile
+demos/Makefile
 )

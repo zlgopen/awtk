@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -41,8 +41,8 @@ public:
     virtual bool contains(scalar x, scalar y);
 
     unsigned int raster_method(void) const;
-    gfx_rasterizer_scanline_aa<>& stroke_impl(void) { return m_sraster; } 
-    gfx_rasterizer_scanline_aa<>& fill_impl(void) { return m_fraster; } 
+    gfx_rasterizer_scanline_aa<>& stroke_impl(void) { return m_sraster; }
+    gfx_rasterizer_scanline_aa<>& fill_impl(void) { return m_fraster; }
     gfx_trans_affine transformation(void) const;
 private:
     void setup_stroke_raster(void);

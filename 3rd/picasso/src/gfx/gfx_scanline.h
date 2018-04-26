@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -71,9 +71,9 @@ public:
         add_span(x, len, 0);
     }
 
-    void finalize(int y) 
-    { 
-        m_y = y; 
+    void finalize(int y)
+    {
+        m_y = y;
     }
 
     void reset_spans(void)
@@ -180,9 +180,9 @@ public:
         m_last_x = x + len - 1;
     }
 
-    void finalize(int y) 
-    { 
-        m_y = y; 
+    void finalize(int y)
+    {
+        m_y = y;
     }
 
     void reset_spans(void)
@@ -291,9 +291,9 @@ public:
         m_last_x = x + len - 1;
     }
 
-    void finalize(int y) 
-    { 
-        m_y = y; 
+    void finalize(int y)
+    {
+        m_y = y;
     }
 
     void reset_spans(void)

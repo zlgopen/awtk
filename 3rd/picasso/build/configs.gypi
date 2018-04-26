@@ -9,8 +9,9 @@
       'conditions': [
         ['OS=="win"', {
           'defines': [
-            '_DEBUG'
-            'ENABLE_FAST_COPY=1'
+            '_DEBUG',
+            'ENABLE_FAST_COPY=1',
+            'ENABLE_SYSTEM_MALLOC=1',
           ],
           'msvs_configuration_attributes': {
             'ConfigurationType': '2',
@@ -28,7 +29,7 @@
 			  'WarningLevel': '3',
 			  'WarnAsError': 'true',
 			  'SuppressStartupBanner': 'true',
-			  'DebugInformationFormat': '3'
+			  'DebugInformationFormat': '3',
             },
             'VCLinkerTool': {
 				'LinkIncremental': '1',
@@ -36,16 +37,15 @@
 				'GenerateDebugInformation': 'true',
 				'RandomizedBaseAddress': '1',
 				'DataExecutionPrevention': '0',
-				'TargetMachine': '1'
+				'TargetMachine': '1',
             },
           },
         }],
         ['OS=="linux"', {
           'defines': [
             '_DEBUG',
-            'ENABLE_FREE_TYPE2=1'
-            'ENABLE_FONT_CONFIG=1'
-            'ENABLE_FAST_COPY=1'
+            'ENABLE_FREE_TYPE2=1',
+            'ENABLE_FONT_CONFIG=1',
           ],
           'cflags_cc': [
             '-O0',
@@ -63,8 +63,9 @@
       'conditions': [
         ['OS=="win"', {
           'defines': [
-            'NDEBUG'
-            'ENABLE_FAST_COPY=1'
+            'NDEBUG',
+            'ENABLE_FAST_COPY=1',
+            'ENABLE_SYSTEM_MALLOC=1',
           ],
           'msvs_configuration_attributes': {
             'ConfigurationType': '2',
@@ -87,7 +88,7 @@
 			  'WarningLevel': '3',
 			  'WarnAsError': 'true',
 			  'SuppressStartupBanner': 'true',
-			  'DebugInformationFormat': '3'
+			  'DebugInformationFormat': '3',
             },
             'VCLinkerTool': {
 				'LinkIncremental': '1',
@@ -97,16 +98,15 @@
 				'LinkTimeCodeGeneration': '1',
 				'RandomizedBaseAddress': '1',
 				'DataExecutionPrevention': '0',
-				'TargetMachine': '1'
+				'TargetMachine': '1',
             },
           },
         }],
         ['OS=="linux"', {
           'defines': [
             'NDEBUG',
-            'ENABLE_FREE_TYPE2=1'
-            'ENABLE_FONT_CONFIG=1'
-            'ENABLE_FAST_COPY=1'
+            'ENABLE_FREE_TYPE2=1',
+            'ENABLE_FONT_CONFIG=1',
           ],
           'cflags_cc': [
             '-O3',

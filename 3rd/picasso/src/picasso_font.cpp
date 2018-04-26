@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -36,9 +36,9 @@ font_engine::~font_engine()
     if (m_signature)
         mem_free(m_signature);
 
-    for (unsigned int i = 0; i < m_num_fonts; ++i) 
+    for (unsigned int i = 0; i < m_num_fonts; ++i)
         delete m_fonts[i];
-    
+
     pod_allocator<font_adapter*>::deallocate(m_fonts, m_max_fonts);
 }
 
@@ -50,7 +50,7 @@ void font_engine::set_antialias(bool b)
     }
 }
 
-void font_engine::set_transform(const trans_affine& mtx) 
+void font_engine::set_transform(const trans_affine& mtx)
 {
     if (m_affine != mtx){
         m_affine = mtx;
@@ -61,7 +61,7 @@ void font_engine::set_transform(const trans_affine& mtx)
 int font_engine::find_font(const char* font_signature)
 {
     for (unsigned int i = 0; i < m_num_fonts; i++) {
-        if(strcmp(m_fonts[i]->signature(), font_signature) == 0) 
+        if(strcmp(m_fonts[i]->signature(), font_signature) == 0)
             return (int)i;
     }
     return -1;
@@ -81,7 +81,7 @@ bool font_engine::create_font(const font_desc& desc)
     } else {
         if (m_num_fonts >= m_max_fonts) {
             delete m_fonts[0];
-            mem_copy(m_fonts, m_fonts + 1, (m_max_fonts - 1) * sizeof(font_adapter*)); 
+            mem_copy(m_fonts, m_fonts + 1, (m_max_fonts - 1) * sizeof(font_adapter*));
             m_num_fonts = m_max_fonts - 1;
         }
 
@@ -112,7 +112,7 @@ bool font_adapter::create_signature(const font_desc& desc, const trans_affine& m
         return false; //out of memory.
 
     recv_sig[0] = 0;
-    
+
     sprintf(recv_sig,
             "%s,%d,%d,%d,%d,%d,%d,%d-",
             desc.name(),
@@ -127,11 +127,11 @@ bool font_adapter::create_signature(const font_desc& desc, const trans_affine& m
     char mbuf[64] = {0};
     sprintf(mbuf,
             "%08X%08X%08X%08X%08X%08X",
-            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.sx())), 
-            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.sy())), 
-            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.shx())), 
-            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.shy())), 
-            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.tx())), 
+            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.sx())),
+            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.sy())),
+            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.shx())),
+            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.shy())),
+            fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.tx())),
             fxmath::flt_to_fixed(SCALAR_TO_FLT(mtx.ty())));
 
     strcat(recv_sig, mbuf);
@@ -140,7 +140,7 @@ bool font_adapter::create_signature(const font_desc& desc, const trans_affine& m
 
 void font_adapter::active(void)
 {
-    m_impl->active(); 
+    m_impl->active();
     m_prev_glyph = m_last_glyph = 0;
 }
 
@@ -173,7 +173,7 @@ const glyph* font_adapter::get_glyph(unsigned int code)
                                  m_impl->bounds(),
                                  m_impl->height(),
                                  m_impl->advance_x(),
-                                 m_impl->advance_y());  
+                                 m_impl->advance_y());
             m_impl->write_glyph_to(gl->data);
             m_last_glyph = gl;
             return gl;

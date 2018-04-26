@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -23,8 +23,7 @@
 #define mem_deep_copy(d, s, l)    memmove(d, s, l)
 #define mem_copy(d, s, l)         fastcopy(d, s, l)
 
-
-#if 0
+#if !ENABLE(SYSTEM_MALLOC)
 #undef new
 #undef delete
 
@@ -32,6 +31,7 @@ inline void* operator new (size_t size) { return mem_malloc(size); }
 inline void* operator new[] (size_t size) { return mem_malloc(size); }
 inline void operator delete (void* p) { mem_free(p); }
 inline void operator delete[] (void* p) { mem_free(p); }
-#endif
+
+#endif /*ENABLE(SYSTEM_MALLOC)*/
 
 #endif/*_MEMORY_MANAGER_H_*/

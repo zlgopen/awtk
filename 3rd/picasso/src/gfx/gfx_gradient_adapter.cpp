@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -27,11 +27,24 @@ class gradient_conic
 {
 public:
     void init(scalar, scalar, scalar) { }
-    static int calculate(int x, int y, int d) 
-    { 
+    static int calculate(int x, int y, int d)
+    {
         return uround(Fabs(Atan2(INT_TO_SCALAR(y), INT_TO_SCALAR(x))) * INT_TO_SCALAR(d) * _1divPI);
     }
 };
+
+class gradient_conic_vg
+{
+public:
+    void init(scalar, scalar, scalar) { }
+    static int calculate(int x, int y, int d)
+    {
+        scalar a = Atan2(INT_TO_SCALAR(y), INT_TO_SCALAR(x));
+        if (a < 0) a = _2PI + a;
+        return iround(a * INT_TO_SCALAR(d) * _1div2PI);
+    }
+};
+
 
 // gradient_radial
 class gradient_radial
@@ -81,7 +94,7 @@ private:
         // into zero. In this case we just move the focal center by
         // one subpixel unit possibly in the direction to the origin (0,0)
         // and calculate the values again.
-        
+
         m_r2 = INT_TO_SCALAR(m_r) * INT_TO_SCALAR(m_r);
         m_fx2 = INT_TO_SCALAR(m_fx) * INT_TO_SCALAR(m_fx);
         m_fy2 = INT_TO_SCALAR(m_fy) * INT_TO_SCALAR(m_fy);
@@ -194,8 +207,8 @@ class gfx_gradient : public gfx_gradient_wrapper
 public:
     gfx_gradient()
         : m_gradient()
-        , m_adaptor(m_gradient) 
-    { 
+        , m_adaptor(m_gradient)
+    {
     }
 
     virtual void init(scalar r, scalar x, scalar y)
@@ -203,7 +216,7 @@ public:
         m_gradient.init(r, x, y);
     }
 
-    virtual int calculate(int x, int y, int d) const 
+    virtual int calculate(int x, int y, int d) const
     {
         return m_adaptor.calculate(x, y, d);
     }
@@ -263,7 +276,7 @@ void gfx_gradient_table::build_table(void)
 
         for (i = 1; i < m_color_profile.size(); i++) {
             end  = uround(m_color_profile[i].offset * color_table_size);
-            color_interpolator ci(m_color_profile[i-1].color, 
+            color_interpolator ci(m_color_profile[i-1].color,
                                   m_color_profile[i].color, end - start + 1);
             while (start < end) {
                 m_color_table[start] = ci.color();
@@ -298,7 +311,7 @@ void gfx_gradient_adapter::init_linear(int spread, scalar x1, scalar y1, scalar 
 
         if (!m_wrapper)
             return;
-        
+
         scalar len = calc_distance(x1, y1, x2, y2);
 
         gfx_trans_affine mtx;
@@ -318,37 +331,37 @@ void gfx_gradient_adapter::init_linear(int spread, scalar x1, scalar y1, scalar 
     }
 }
 
-void gfx_gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar radius1, 
+void gfx_gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar radius1,
                                            scalar x2, scalar y2, scalar radius2)
 {
     if (!m_wrapper) {
         if ((x1 == x2) && (y1 == y2)) {
             switch (spread) {
                 case SPREAD_PAD:
-                    m_wrapper = new gfx_gradient<gradient_radial, 
+                    m_wrapper = new gfx_gradient<gradient_radial,
                                              gradient_pad_adaptor<gradient_radial> >;
                     break;
                 case SPREAD_REPEAT:
-                    m_wrapper = new gfx_gradient<gradient_radial, 
+                    m_wrapper = new gfx_gradient<gradient_radial,
                                              gradient_repeat_adaptor<gradient_radial> >;
                     break;
                 case SPREAD_REFLECT:
-                    m_wrapper = new gfx_gradient<gradient_radial, 
+                    m_wrapper = new gfx_gradient<gradient_radial,
                                              gradient_reflect_adaptor<gradient_radial> >;
                     break;
             }
         } else {
             switch (spread) {
                 case SPREAD_PAD:
-                    m_wrapper = new gfx_gradient<gradient_radial_focus, 
+                    m_wrapper = new gfx_gradient<gradient_radial_focus,
                                              gradient_pad_adaptor<gradient_radial_focus> >;
                     break;
                 case SPREAD_REPEAT:
-                    m_wrapper = new gfx_gradient<gradient_radial_focus, 
+                    m_wrapper = new gfx_gradient<gradient_radial_focus,
                                              gradient_repeat_adaptor<gradient_radial_focus> >;
                     break;
                 case SPREAD_REFLECT:
-                    m_wrapper = new gfx_gradient<gradient_radial_focus, 
+                    m_wrapper = new gfx_gradient<gradient_radial_focus,
                                              gradient_reflect_adaptor<gradient_radial_focus> >;
                     break;
             }
@@ -364,7 +377,7 @@ void gfx_gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar 
 
         m_wrapper->init(len, fx, fy);
 
-        if (!len) 
+        if (!len)
             len = FLT_TO_SCALAR(2.0f); // len can not be zero
 
         gfx_trans_affine mtx;
@@ -380,10 +393,13 @@ void gfx_gradient_adapter::init_radial(int spread, scalar x1, scalar y1, scalar 
 void gfx_gradient_adapter::init_conic(int spread, scalar x, scalar y, scalar angle)
 {
     if (!m_wrapper) {
-        // only support reflect 
-        m_wrapper = new gfx_gradient<gradient_conic, gradient_reflect_adaptor<gradient_conic> >;
+        if (spread == SPREAD_REFLECT) {
+            m_wrapper = new gfx_gradient<gradient_conic, gradient_reflect_adaptor<gradient_conic> >;
+        } else {
+            m_wrapper = new gfx_gradient<gradient_conic_vg, gradient_pad_adaptor<gradient_conic_vg> >;
+        }
 
-        if (!m_wrapper) 
+        if (!m_wrapper)
             return;
 
         gfx_trans_affine mtx;

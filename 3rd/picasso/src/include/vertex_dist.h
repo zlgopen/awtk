@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -20,7 +20,7 @@ struct vertex_dist
     scalar d;
 
     vertex_dist() : x(0), y(0), d(FLT_TO_SCALAR(0.0f)) { }
-    vertex_dist(scalar _x, scalar _y) : x(_x), y(_y), d(FLT_TO_SCALAR(0.0f)) { }  
+    vertex_dist(scalar _x, scalar _y) : x(_x), y(_y), d(FLT_TO_SCALAR(0.0f)) { }
 
     bool operator() (const vertex_dist& t)
     {
@@ -31,7 +31,7 @@ struct vertex_dist
     }
 };
 
-// vertex_sequence 
+// vertex_sequence
 template <typename T, unsigned int S = 6>
 class vertex_sequence : public pod_bvector<T, S>
 {
@@ -77,7 +77,7 @@ public:
 };
 
 // shorten_path
-template<class VertexSequence> 
+template<class VertexSequence>
 void shorten_path(VertexSequence& vs, scalar s, unsigned int closed = 0)
 {
     typedef typename VertexSequence::value_type vertex_type;

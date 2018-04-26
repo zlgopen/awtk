@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2012 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -21,7 +21,7 @@ class gfx_alpha_mask_u8
 {
 public:
     typedef uint8_t cover_type;
-    enum { 
+    enum {
         cover_shift = 8,
         cover_none  = 0,
         cover_full  = 255,
@@ -46,8 +46,8 @@ public:
 
     cover_type pixel(int x, int y) const
     {
-        if (x >= 0 && y >= 0 && 
-            x < (int)m_buffer->internal_width() && 
+        if (x >= 0 && y >= 0 &&
+            x < (int)m_buffer->internal_width() &&
             y < (int)m_buffer->internal_height())
         {
             return (cover_type)calculate(m_buffer->row_ptr(y) + x * step + offset);
@@ -57,8 +57,8 @@ public:
 
     cover_type combine_pixel(int x, int y, cover_type val) const
     {
-        if (x >= 0 && y >= 0 && 
-            x < (int)m_buffer->internal_width() && 
+        if (x >= 0 && y >= 0 &&
+            x < (int)m_buffer->internal_width() &&
             y < (int)m_buffer->internal_height())
         {
             return (cover_type)((cover_full + val * calculate(
@@ -144,7 +144,7 @@ public:
 
         const uint8_t* mask = m_buffer->row_ptr(y) + x * step + offset;
         do {
-            *covers = (cover_type)((cover_full + (*covers) * 
+            *covers = (cover_type)((cover_full + (*covers) *
                                    calculate(mask)) >> cover_shift);
             ++covers;
             mask += step;
@@ -228,7 +228,7 @@ public:
 
         const uint8_t* mask = m_buffer->row_ptr(y) + x * step + offset;
         do {
-            *covers = (cover_type)((cover_full + (*covers) * 
+            *covers = (cover_type)((cover_full + (*covers) *
                                    calculate(mask)) >> cover_shift);
             ++covers;
             mask += m_buffer->internal_stride();
@@ -242,7 +242,7 @@ private:
 
     gfx_rendering_buffer* m_buffer;
 };
-    
+
 // pixfmt alpha mask adaptor
 template <typename PixFmt, typename AlphaMask>
 class gfx_pixfmt_amask_adaptor
@@ -327,7 +327,7 @@ public:
         m_pixfmt->blend_solid_vspan(x, y, len, c, &m_span[0]);
     }
 
-    void blend_vline(int x, int y, unsigned int len, 
+    void blend_vline(int x, int y, unsigned int len,
                      const color_type& c, cover_type cover)
     {
         init_span(len);
@@ -335,14 +335,14 @@ public:
         m_pixfmt->blend_solid_vspan(x, y, len, c, &m_span[0]);
     }
 
-    void copy_from(const gfx_rendering_buffer& from, 
+    void copy_from(const gfx_rendering_buffer& from,
                    int xdst, int ydst, int xsrc, int ysrc, unsigned int len)
     {
         m_pixfmt->copy_from(from, xdst, ydst, xsrc, ysrc, len);
     }
 
 
-    void blend_solid_hspan(int x, int y, unsigned int len, 
+    void blend_solid_hspan(int x, int y, unsigned int len,
                            const color_type& c, const cover_type* covers)
     {
         init_span(len, covers);
@@ -351,7 +351,7 @@ public:
     }
 
 
-    void blend_solid_vspan(int x, int y, unsigned int len, 
+    void blend_solid_vspan(int x, int y, unsigned int len,
                            const color_type& c, const cover_type* covers)
     {
         init_span(len, covers);
@@ -406,17 +406,17 @@ private:
 };
 
 
-// mask layer 
+// mask layer
 class gfx_mask_layer : public abstract_mask_layer
 {
 public:
-    gfx_mask_layer(byte* buf, unsigned int width, unsigned int height, int stride) 
+    gfx_mask_layer(byte* buf, unsigned int width, unsigned int height, int stride)
         : m_type(MASK_ALPHA)
     {
         attach(buf, width, height, stride);
     }
 
-    virtual ~gfx_mask_layer() 
+    virtual ~gfx_mask_layer()
     {
         m_colors.clear();
     }
@@ -442,7 +442,7 @@ public:
     }
 
     int type(void) const { return m_type; }
-    gfx_rendering_buffer& buffer(void) { return m_buffer; } 
+    gfx_rendering_buffer& buffer(void) { return m_buffer; }
     pod_bvector<rgba8>& colors(void) { return m_colors; }
 private:
     int m_type;

@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -12,19 +12,13 @@
 #include "device.h"
 #include "interfaces.h"
 
-#if ENABLE(LOW_MEMORY)
-#define MAX_CACHE 256
-#else
-#define MAX_CACHE 512
-#endif
-
 namespace picasso {
 
-class glyph_cache_manager 
+class glyph_cache_manager
 {
-    enum { 
+    enum {
         block_size = 16384-16
-    };  
+    };
 
 public:
     glyph_cache_manager()
@@ -41,13 +35,13 @@ public:
 
     void set_signature(const char* font_signature)
     {
-        m_signature = (char*)m_allocator.allocate(strlen(font_signature)+1);
+        m_signature = (char*)m_allocator.allocate((unsigned int)strlen(font_signature)+1);
         strcpy(m_signature, font_signature);
     }
 
-    const char* signature(void) const 
-    { 
-        return m_signature; 
+    const char* signature(void) const
+    {
+        return m_signature;
     }
 
     const glyph* find_glyph(unsigned int code) const
@@ -65,12 +59,12 @@ public:
         unsigned int msb = (code >> 8) & 0xFF;
         if (m_glyphs[msb] == 0) { // cache row is empty.
             // alloc cache row.
-            m_glyphs[msb] = (glyph**)m_allocator.allocate(sizeof(glyph*) * MAX_CACHE, sizeof(glyph*));
-            memset(m_glyphs[msb], 0, sizeof(glyph*) * MAX_CACHE);
+            m_glyphs[msb] = (glyph**)m_allocator.allocate(sizeof(glyph*) * 256, sizeof(glyph*));
+            memset(m_glyphs[msb], 0, sizeof(glyph*) * 256);
         }
 
         unsigned int lsb = code & 0xFF;
-        if (m_glyphs[msb][lsb]) 
+        if (m_glyphs[msb][lsb])
             return 0; // already exists.
 
         glyph* g = (glyph*)m_allocator.allocate(sizeof(glyph), sizeof(int));
@@ -92,7 +86,7 @@ private:
     glyph_cache_manager& operator=(const glyph_cache_manager&);
 
     block_allocator m_allocator;
-    glyph**         m_glyphs[MAX_CACHE];
+    glyph**         m_glyphs[256];
     char*           m_signature;
 };
 

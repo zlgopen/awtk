@@ -17,7 +17,7 @@
 #include "picasso.h"
 #include "interface.h"
 
-#define ps_text_out(gc, x, y, text) ps_text_out_length(gc, x, y, text, strlen(text))
+#define ps_text_out(gc, x, y, text) ps_text_out_length(gc, x, y, text, (unsigned int)strlen(text))
 
 static int width;
 static int height;

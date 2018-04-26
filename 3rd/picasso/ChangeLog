@@ -22,3 +22,13 @@
 2015-03-04: Version 2.1.5
     Porting to android system (version<=4.4).
 
+2015-04-24: Version 2.1.8
+    Optimization for android system.
+
+2016-02-16: Version 2.2.0
+    Update code version 2.2.0.
+    Support image encode and decode api at external modules. 
+
+2017-12-30: Version 2.3.0
+    Update code version 2.3.0.
+    Fix gif transparent frame bug.

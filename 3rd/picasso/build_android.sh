@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export NDK_ROOT=/d/android-ndk-r8b-windows/android-ndk-r8b
+export NDK_ROOT=/d/android-ndk-r10b
 
 export PROJECT_ROOT=`pwd`
 

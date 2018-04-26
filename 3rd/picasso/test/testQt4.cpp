@@ -11,6 +11,7 @@
 
 #include "picasso.h"
 #include "drawFunc.h"
+#include "timeuse.h"
 
 QImage * buffer;
 QImage * img1;
@@ -27,17 +28,17 @@ public:
         , QTimer(parent)
     {
         buffer = new QImage(640, 480, QImage::Format_RGB32);
-        img1 = new QImage(QString("selt2.png")); 
-        img2 = new QImage(QString("pat.png")); 
+        img1 = new QImage(QString("selt2.png"));
+        img2 = new QImage(QString("pat.png"));
 
-        canvas = ps_canvas_create_with_data(buffer->bits(), COLOR_FORMAT_BGRA, 
+        canvas = ps_canvas_create_with_data(buffer->bits(), COLOR_FORMAT_BGRA,
                                                     640, 480, buffer->bytesPerLine());
         context = ps_context_create(canvas, 0);
-        init_context(context, canvas, buffer->bits());    
+        init_context(context, canvas, buffer->bits());
 
-        set_image_data(img1->bits(), COLOR_FORMAT_BGRA, img1->width(), 
+        set_image_data(img1->bits(), COLOR_FORMAT_BGRA, img1->width(),
                                                 img1->height(), img1->bytesPerLine());
-        set_pattern_data(img2->bits(), COLOR_FORMAT_BGRA, img2->width(), 
+        set_pattern_data(img2->bits(), COLOR_FORMAT_BGRA, img2->width(),
                                                 img2->height(), img2->bytesPerLine());
         start(100);
     }
@@ -65,15 +66,35 @@ inline void PWindow::timerEvent(QTimerEvent * timer)
 
 inline void PWindow::paintEvent(QPaintEvent *event)
 {
+    suseconds_t t1, t2;
     QPainter painter(this);
     buffer->fill(0xFFFFFFFF);
+    t1 = get_time();
     draw_test(0, context);
+    t2 = get_time();
+    fprintf(stderr, "draw frame use %.4f ms --- %.4f fps\n", (t2-t1)/1000.0, 1000.0/((t2-t1)/1000.0));
     QRect rect(0, 0, 640, 480);
     painter.drawImage(rect, *buffer);
 }
 
+static int __argc = 0;
+static const char** __argv = NULL;
+
+extern "C" int argc(void)
+{
+    return __argc;
+}
+
+extern "C" const char** argv(void)
+{
+    return __argv;
+}
+
 int main(int argc, char* argv[])
 {
+    __argc = argc;
+    __argv = (const char**)argv;
+
     ps_initialize();
 
     QApplication app(argc, argv);

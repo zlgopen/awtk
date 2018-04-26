@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -52,7 +52,7 @@ public:
 
     ~font_desc()
     {
-        if (m_name) 
+        if (m_name)
             mem_free(m_name);
     }
 
@@ -75,7 +75,7 @@ public:
         if (this == &o)
             return *this;
 
-        if (m_name) 
+        if (m_name)
             mem_free(m_name);
 
         size_t len = strlen(o.m_name)+1;
@@ -160,7 +160,7 @@ public:
     void serialize_from(byte* data, unsigned int size, scalar x, scalar y)
     {
         if (font) {
-            if (storage) 
+            if (storage)
                 font->destroy_storage(storage);
 
             storage = font->create_storage(data, size, x, y);

@@ -5,10 +5,10 @@ CC=gcc -O2
 CXX=g++ -O2
 INCPATH=-I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4
 INC=${INCPATH} -I../include -I../build
-CFLAGS=-DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -D_REENTRANT 
-CXXFLAGS=-DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -D_REENTRANT 
+CFLAGS=-DLINUX -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -D_REENTRANT 
+CXXFLAGS=-DLINUX -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -D_REENTRANT 
 
-SYSTEM_LIBS = -lpicasso -lQtGui -lQtCore -lfreetype -lpthread -lstdc++
+SYSTEM_LIBS = -lpicasso -lpsx_image -lpng -lz -lQtGui -lQtCore -lfreetype -lpthread -lstdc++
 
 gamma_objs = test.o gamma_func.o
 
@@ -38,8 +38,12 @@ bitblt_objs = test.o bitblt_func.o
 
 path_objs = test.o path_func.o
 
-all: gamma.exe alpha.exe gradient.exe composite.exe clip.exe gcstate.exe text.exe pattern.exe shadow.exe blur.exe mask.exe part.exe bitblt.exe path.exe
+image_view_objs = test.o image_view.o
 
+all: gamma.exe alpha.exe gradient.exe composite.exe clip.exe gcstate.exe text.exe pattern.exe shadow.exe blur.exe mask.exe part.exe bitblt.exe path.exe \
+     image_info.exe image_view.exe
+
+# test 
 alpha.exe : ${alpha_objs}
 	${CC} ${alpha_objs} -o $@ ${INC} ${SYSTEM_LIBS}
 
@@ -126,6 +130,16 @@ path_func.o : path_func.c
 
 test.o : testQt4.cpp
 	${CXX} ${CXXFLAGS} -c $< -o $@ ${INC}
+
+# ext test
+image_info.exe : image_info.c
+	${CC} ${CFLAGS} $< -o $@ ${INC} ${SYSTEM_LIBS}
+
+image_info.o : image_info.c
+	${CC} ${CFLAGS} -c $< -o $@ ${INC}
+
+image_view.exe : ${image_view_objs}
+	${CC} ${image_view_objs} -o $@ ${INC} ${SYSTEM_LIBS}
 
 clean:
 	rm *.o *.exe *.out

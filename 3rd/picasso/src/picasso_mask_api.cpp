@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -27,7 +27,7 @@ ps_mask* PICAPI ps_mask_create_with_data(ps_byte* data, int w, int h)
         global_status = STATUS_INVALID_ARGUMENT;
         return 0;
     }
-    
+
     ps_mask *p = (ps_mask*)mem_malloc(sizeof(ps_mask));
     if (p) {
         p->refcount = 1;
@@ -90,8 +90,8 @@ void PICAPI ps_mask_add_color_filter(ps_mask* mask, const ps_color* c)
     }
 
     mask->mask.set_mask_type(MASK_COLORS);
-    mask->mask.add_filter_color(picasso::rgba(FLT_TO_SCALAR(c->r), 
-                FLT_TO_SCALAR(c->g), FLT_TO_SCALAR(c->b), FLT_TO_SCALAR(c->a))); 
+    mask->mask.add_filter_color(picasso::rgba(FLT_TO_SCALAR(c->r),
+                FLT_TO_SCALAR(c->g), FLT_TO_SCALAR(c->b), FLT_TO_SCALAR(c->a)));
     global_status = STATUS_SUCCEED;
 }
 

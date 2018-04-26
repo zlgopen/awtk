@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */

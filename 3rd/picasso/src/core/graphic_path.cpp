@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -20,11 +20,11 @@ namespace picasso {
 class graphic_path_impl
 {
 public:
-    graphic_path_impl() 
+    graphic_path_impl()
     {
     }
 
-    graphic_path_impl(unsigned int size) 
+    graphic_path_impl(unsigned int size)
         : m_vertices(size)
         , m_cmds(size)
     {
@@ -61,12 +61,12 @@ public:
         v.y = y;
         m_cmds[idx] = cmd;
     }
-        
+
     void modify_command(unsigned int idx, unsigned int cmd)
     {
         m_cmds[idx] = cmd;
     }
-    
+
     void swap_vertices(unsigned int v1, unsigned int v2)
     {
         vertex_s t = m_vertices[v1];
@@ -92,7 +92,7 @@ public:
         }
         return vertex(m_vertices.size() - 1, x, y);
     }
-    
+
     unsigned int prev_vertex(scalar* x, scalar* y) const
     {
         if (m_vertices.size() < 2) {
@@ -104,12 +104,12 @@ public:
 
     scalar last_x(void) const
     {
-        return m_vertices.size() ? m_vertices[m_vertices.size() - 1].x : FLT_TO_SCALAR(0.0f); 
+        return m_vertices.size() ? m_vertices[m_vertices.size() - 1].x : FLT_TO_SCALAR(0.0f);
     }
 
     scalar last_y(void) const
     {
-        return m_vertices.size() ? m_vertices[m_vertices.size() - 1].y : FLT_TO_SCALAR(0.0f); 
+        return m_vertices.size() ? m_vertices[m_vertices.size() - 1].y : FLT_TO_SCALAR(0.0f);
     }
 
     unsigned int total_vertices(void) const
@@ -304,7 +304,7 @@ void graphic_path::curve3(scalar x_to, scalar y_to)
     scalar y0;
     if (is_vertex(m_impl->last_vertex(&x0, &y0))) {
         scalar x_ctrl;
-        scalar y_ctrl; 
+        scalar y_ctrl;
         unsigned int cmd = m_impl->prev_vertex(&x_ctrl, &y_ctrl);
         if (is_curve(cmd)) {
             x_ctrl = x0 + x0 - x_ctrl;
@@ -330,7 +330,7 @@ void graphic_path::curve4(scalar x_ctrl1, scalar y_ctrl1, scalar x_ctrl2, scalar
     m_impl->add_vertex(x_to, y_to, path_cmd_curve4);
 }
 
-void graphic_path::curve4_rel(scalar dx_ctrl1, scalar dy_ctrl1, scalar dx_ctrl2, 
+void graphic_path::curve4_rel(scalar dx_ctrl1, scalar dy_ctrl1, scalar dx_ctrl2,
                                                         scalar dy_ctrl2, scalar dx_to, scalar dy_to)
 {
     rel_to_abs(&dx_ctrl1, &dy_ctrl1);
@@ -347,7 +347,7 @@ void graphic_path::curve4(scalar x_ctrl2, scalar y_ctrl2, scalar x_to, scalar y_
     scalar y0;
     if (is_vertex(last_vertex(&x0, &y0))) {
         scalar x_ctrl1;
-        scalar y_ctrl1; 
+        scalar y_ctrl1;
         unsigned int cmd = prev_vertex(&x_ctrl1, &y_ctrl1);
         if (is_curve(cmd)) {
             x_ctrl1 = x0 + x0 - x_ctrl1;
@@ -446,12 +446,12 @@ void graphic_path::modify_command(unsigned int idx, unsigned int cmd)
     m_impl->modify_command(idx, cmd);
 }
 
-void graphic_path::rewind(unsigned int id) 
+void graphic_path::rewind(unsigned int id)
 {
     m_iterator = id;
 }
 
-unsigned int graphic_path::vertex(scalar* x, scalar* y) 
+unsigned int graphic_path::vertex(scalar* x, scalar* y)
 {
     if (m_iterator >= m_impl->total_vertices())
         return path_cmd_stop;
@@ -465,21 +465,21 @@ void graphic_path::add_vertex(scalar x, scalar y, unsigned int cmd)
 
 unsigned int graphic_path::arrange_polygon_orientation(unsigned int start, unsigned int flag_orientation)
 {
-    if (flag_orientation == path_flags_none) 
+    if (flag_orientation == path_flags_none)
         return start;
 
     // Skip all non-vertices at the beginning
-    while (start < m_impl->total_vertices() && 
+    while (start < m_impl->total_vertices() &&
             !is_vertex(m_impl->command(start))) ++start;
 
     // Skip all insignificant move_to
-    while (start+1 < m_impl->total_vertices() && 
+    while (start+1 < m_impl->total_vertices() &&
             is_move_to(m_impl->command(start)) &&
             is_move_to(m_impl->command(start+1))) ++start;
 
     // Find the last vertex
     unsigned int end = start + 1;
-    while (end < m_impl->total_vertices() && 
+    while (end < m_impl->total_vertices() &&
             !is_next_poly(m_impl->command(end))) ++end;
 
     if (end - start > 2) {
@@ -487,7 +487,7 @@ unsigned int graphic_path::arrange_polygon_orientation(unsigned int start, unsig
             // Invert polygon, set orientation flag, and skip all end_poly
             invert_polygon(start, end);
             unsigned int cmd;
-            while (end < m_impl->total_vertices() && 
+            while (end < m_impl->total_vertices() &&
                     is_end_poly(cmd = m_impl->command(end)))
             {
                 m_impl->modify_command(end++, set_orientation(cmd, flag_orientation));
@@ -561,17 +561,17 @@ void graphic_path::invert_polygon(unsigned int start, unsigned int end)
 void graphic_path::invert_polygon(unsigned int start)
 {
     // Skip all non-vertices at the beginning
-    while(start < m_impl->total_vertices() && 
+    while(start < m_impl->total_vertices() &&
             !is_vertex(m_impl->command(start))) ++start;
 
     // Skip all insignificant move_to
-    while(start+1 < m_impl->total_vertices() && 
+    while(start+1 < m_impl->total_vertices() &&
             is_move_to(m_impl->command(start)) &&
             is_move_to(m_impl->command(start+1))) ++start;
 
     // Find the last vertex
     unsigned int end = start + 1;
-    while (end < m_impl->total_vertices() && 
+    while (end < m_impl->total_vertices() &&
             !is_next_poly(m_impl->command(end))) ++end;
 
     invert_polygon(start, end);
@@ -605,7 +605,7 @@ void graphic_path::translate(scalar dx, scalar dy, unsigned int id)
     for(unsigned int path_id = id; path_id < num_ver; path_id++) {
         scalar x, y;
         unsigned int cmd = m_impl->vertex(path_id, &x, &y);
-        if (is_stop(cmd)) 
+        if (is_stop(cmd))
             break;
 
         if (is_vertex(cmd)) {
@@ -636,7 +636,7 @@ void graphic_path::transform(const trans_affine& trans, unsigned int id)
     for (unsigned int path_id = id; path_id < num_ver; path_id++) {
         scalar x, y;
         unsigned int cmd = m_impl->vertex(path_id, &x, &y);
-        if (is_stop(cmd)) 
+        if (is_stop(cmd))
             break;
 
         if (is_vertex(cmd)) {
@@ -671,7 +671,7 @@ void graphic_path::join_path(vertex_source& vs, unsigned int id)
             unsigned int cmd0 = last_vertex(&x0, &y0);
             if (is_vertex(cmd0)) {
                 if (calc_distance(x, y, x0, y0) > FLT_TO_SCALAR(vertex_dist_epsilon)) {
-                    if (is_move_to(cmd)) { 
+                    if (is_move_to(cmd)) {
                         cmd = path_cmd_line_to;
                     }
                     m_impl->add_vertex(x, y, cmd);
@@ -680,7 +680,7 @@ void graphic_path::join_path(vertex_source& vs, unsigned int id)
                 if (is_stop(cmd0)) {
                     cmd = path_cmd_move_to;
                 } else {
-                    if (is_move_to(cmd)) 
+                    if (is_move_to(cmd))
                         cmd = path_cmd_line_to;
                 }
                 m_impl->add_vertex(x, y, cmd);

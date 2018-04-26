@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -64,7 +64,7 @@ class gfx_dda2_line_interpolator
 {
 public:
     typedef int save_data_type;
-    enum { 
+    enum {
         save_size = 2,
     };
 

@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2014 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -40,7 +40,7 @@ public:
         copy_extra_storage(v);
     }
 
-    const gfx_scanline_cell_storage<T>& 
+    const gfx_scanline_cell_storage<T>&
     operator = (const gfx_scanline_cell_storage<T>& v)
     {
         if (this == &v)
@@ -374,7 +374,7 @@ public:
 
         for (unsigned int i = 0; i < m_scanlines.size(); ++i) {
             const scanline_data& sl_this = m_scanlines[i];
-            
+
             uint8_t* size_ptr = data;
             data += sizeof(int32_t);  // reserve space for scanline size in bytes
 
@@ -459,7 +459,7 @@ public:
             typedef struct {
                 int32_t x;
                 int32_t len; // If negative, it's a solid span, "covers" is valid
-                const T* covers; 
+                const T* covers;
             } span;
 
             const_iterator() : m_ptr(0), m_dx(0) { }
@@ -603,14 +603,14 @@ private:
         ((uint8_t*)&val)[3] = *m_ptr++;
         return val;
     }
-    
+
 public:
     // iterate scanlines interface
     bool rewind_scanlines(void)
     {
         m_ptr = m_data;
         if (m_ptr < m_end) {
-            m_min_x = read_int32() + m_dx; 
+            m_min_x = read_int32() + m_dx;
             m_min_y = read_int32() + m_dy;
             m_max_x = read_int32() + m_dx;
             m_max_y = read_int32() + m_dy;
@@ -1082,14 +1082,14 @@ private:
         ((uint8_t*)&val)[3] = *m_ptr++;
         return val;
     }
-   
+
 public:
     // iterate scanlines interface
     bool rewind_scanlines(void)
     {
         m_ptr = m_data;
         if (m_ptr < m_end) {
-            m_min_x = read_int32() + m_dx; 
+            m_min_x = read_int32() + m_dx;
             m_min_y = read_int32() + m_dy;
             m_max_x = read_int32() + m_dx;
             m_max_y = read_int32() + m_dy;

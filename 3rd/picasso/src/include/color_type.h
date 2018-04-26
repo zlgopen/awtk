@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -35,6 +35,7 @@ typedef enum {
     pix_fmt_bgr,
     pix_fmt_rgb565,
     pix_fmt_rgb555,
+    pix_fmt_unknown,
 } pix_fmt;
 
 // color rgba 0 ~ 1
@@ -45,8 +46,8 @@ struct rgba
     scalar b;
     scalar a;
 
-    rgba() 
-        : r(0), g(0), b(0), a(0)  
+    rgba()
+        : r(0), g(0), b(0), a(0)
     {
     }
 
@@ -74,25 +75,95 @@ struct rgba8
     value_type b;
     value_type a;
 
-    rgba8() 
+    rgba8()
         : r(0), g(0), b(0), a(0)
     {
     }
 
     rgba8(unsigned int _r, unsigned int _g, unsigned int _b, unsigned int _a = base_mask)
-        : r(_r), g(_g), b(_b), a(_a) 
+        : r(_r), g(_g), b(_b), a(_a)
     {
     }
 
-    rgba8(const rgba& c) 
-        : r((value_type)uround(c.r * scalar(base_mask))) 
-        , g((value_type)uround(c.g * scalar(base_mask))) 
-        , b((value_type)uround(c.b * scalar(base_mask))) 
-        , a((value_type)uround(c.a * scalar(base_mask))) 
+    rgba8(const rgba& c)
+        : r((value_type)uround(c.r * scalar(base_mask)))
+        , g((value_type)uround(c.g * scalar(base_mask)))
+        , b((value_type)uround(c.b * scalar(base_mask)))
+        , a((value_type)uround(c.a * scalar(base_mask)))
     {
     }
-
 };
+
+
+#define C_MIN(r, g, b) ((r) < (g) ? ((r) < (b) ? (r) : (b)) : ((g) < (b) ? (g) : (b)))
+#define C_MAX(r, g, b) ((r) > (g) ? ((r) > (b) ? (r) : (b)) : ((g) > (b) ? (g) : (b)))
+#define C_SAT(r, g, b) (C_MAX(r, g, b) - C_MIN(r, g, b))
+
+// lum = red * 0.3 + green * 0.59 + blue * 0.11
+#define C_LUM(r, g, b, type) ((r) * (type)(0.3f) + (g) * (type)(0.59f) + (b) * (type)(0.11f))
+
+template <typename T>
+static _FORCE_INLINE_ void _set_sat_real(T * cmin, T * cmid, T * cmax, T sat)
+{
+    if (*cmax > *cmin) {
+        *cmid = ((*cmid - *cmin) * sat) / (*cmax - *cmin);
+        *cmax = sat;
+    } else {
+        *cmax = 0;
+        *cmid = 0;
+    }
+    *cmin = 0;
+}
+
+template <typename T>
+static _FORCE_INLINE_ void color_set_sat(T * sr, T * sg, T * sb, T sat)
+{
+    if (*sr <= *sg) {
+        if (*sg <= *sb) {
+            _set_sat_real<T>(sr, sg, sb, sat);
+        } else if (*sr <= *sb) {
+            _set_sat_real<T>(sr, sb, sg, sat);
+        } else {
+            _set_sat_real<T>(sb, sr, sg, sat);
+        }
+    } else if (*sr <= *sb) {
+        _set_sat_real<T>(sg, sr, sb, sat);
+    } else if (*sg <= *sb) {
+        _set_sat_real<T>(sg, sb, sr, sat);
+    } else {
+        _set_sat_real<T>(sb, sg, sr, sat);
+    }
+}
+
+template <typename T>
+static _FORCE_INLINE_ void _clip_color(T * sr, T * sg, T * sb, T sa)
+{
+    register T L = C_LUM(*sr, *sg, *sb, T);
+    T n = C_MIN(*sr, *sg, *sb);
+    T x = C_MAX(*sr, *sg, *sb);
+
+    if (n < 0) {
+        T ln = T(1.0f) / (L - n);
+        *sr = L + (((*sr - L) * L) * ln);
+        *sg = L + (((*sg - L) * L) * ln);
+        *sb = L + (((*sb - L) * L) * ln);
+    }
+
+    if (x > sa) {
+        T xl = T(1.0f) / (x - L);
+        *sr = L + (((*sr - L) * (sa - L)) * xl);
+        *sg = L + (((*sg - L) * (sa - L)) * xl);
+        *sb = L + (((*sb - L) * (sa - L)) * xl);
+    }
+}
+
+template <typename T>
+static _FORCE_INLINE_ void color_set_lum(T * sr, T * sg, T * sb, T sa, T lum)
+{
+    register T d = lum - C_LUM(*sr, *sg, *sb, T);
+    *sr += d; *sg += d; *sb += d;
+    _clip_color(sr, sg, sb, sa);
+}
 
 }
 

@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -14,7 +14,7 @@
 
 namespace gfx {
 
-const scalar affine_epsilon = FLT_TO_SCALAR(1e-14f); 
+const scalar affine_epsilon = FLT_TO_SCALAR(1e-14f);
 
 class gfx_trans_affine : public abstract_trans_affine
 {
@@ -51,13 +51,13 @@ public:
     virtual void translate(scalar x, scalar y)
     {
         m_tx += x;
-        m_ty += y; 
+        m_ty += y;
     }
 
     virtual void scale(scalar x, scalar y)
     {
         scalar m0 = x;
-        scalar m1 = y; 
+        scalar m1 = y;
         m_sx  *= m0;
         m_shx *= m0;
         m_tx  *= m0;
@@ -68,13 +68,13 @@ public:
 
     virtual void rotate(scalar a)
     {
-        scalar ca = Cos(a); 
+        scalar ca = Cos(a);
         scalar sa = Sin(a);
         scalar t0 = m_sx  * ca - m_shy * sa;
         scalar t2 = m_shx * ca - m_sy * sa;
         scalar t4 = m_tx  * ca - m_ty * sa;
         m_shy = m_sx  * sa + m_shy * ca;
-        m_sy  = m_shx * sa + m_sy * ca; 
+        m_sy  = m_shx * sa + m_sy * ca;
         m_ty  = m_tx  * sa + m_ty * ca;
         m_sx  = t0;
         m_shx = t2;
@@ -126,7 +126,7 @@ public:
 
     virtual void reset(void)
     {
-        m_sx = m_sy = FLT_TO_SCALAR(1.0f); 
+        m_sx = m_sy = FLT_TO_SCALAR(1.0f);
         m_shy = m_shx = m_tx = m_ty = FLT_TO_SCALAR(0.0f);
     }
 
@@ -147,7 +147,7 @@ public:
     {
         return is_equal_eps(m_sx,  FLT_TO_SCALAR(1.0f), affine_epsilon) &&
                is_equal_eps(m_shy, FLT_TO_SCALAR(0.0f), affine_epsilon) &&
-               is_equal_eps(m_shx, FLT_TO_SCALAR(0.0f), affine_epsilon) && 
+               is_equal_eps(m_shx, FLT_TO_SCALAR(0.0f), affine_epsilon) &&
                is_equal_eps(m_sy,  FLT_TO_SCALAR(1.0f), affine_epsilon) &&
                is_equal_eps(m_tx,  FLT_TO_SCALAR(0.0f), affine_epsilon) &&
                is_equal_eps(m_ty,  FLT_TO_SCALAR(0.0f), affine_epsilon);
@@ -198,7 +198,7 @@ public:
     {
         return is_equal_eps(m_sx,  o->sx(),  affine_epsilon) &&
                is_equal_eps(m_shy, o->shy(), affine_epsilon) &&
-               is_equal_eps(m_shx, o->shx(), affine_epsilon) && 
+               is_equal_eps(m_shx, o->shx(), affine_epsilon) &&
                is_equal_eps(m_sy,  o->sy(),  affine_epsilon) &&
                is_equal_eps(m_tx,  o->tx(),  affine_epsilon) &&
                is_equal_eps(m_ty,  o->ty(),  affine_epsilon);

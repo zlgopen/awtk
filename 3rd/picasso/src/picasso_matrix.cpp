@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -46,7 +46,7 @@ trans_affine::~trans_affine()
     get_system_device()->destroy_trans_affine(m_impl);
 }
 
-void trans_affine::sx(scalar v) 
+void trans_affine::sx(scalar v)
 {
     m_impl->sx(v);
 }
@@ -71,7 +71,7 @@ void trans_affine::shx(scalar v)
     m_impl->shx(v);
 }
 
-void trans_affine::shy(scalar v) 
+void trans_affine::shy(scalar v)
 {
     m_impl->shy(v);
 }
@@ -127,13 +127,13 @@ const trans_affine& trans_affine::translate(scalar x, scalar y)
     return *this;
 }
 
-const trans_affine& trans_affine::scale(scalar x, scalar y) 
+const trans_affine& trans_affine::scale(scalar x, scalar y)
 {
     m_impl->scale(x, y);
     return *this;
 }
 
-const trans_affine& trans_affine::rotate(scalar a) 
+const trans_affine& trans_affine::rotate(scalar a)
 {
     m_impl->rotate(a);
     return *this;
@@ -199,7 +199,7 @@ void trans_affine::scaling(scalar* x, scalar* y) const
 {
     m_impl->scaling(x, y);
 }
-    
+
 void trans_affine::shearing(scalar* x, scalar* y) const
 {
     m_impl->shearing(x, y);

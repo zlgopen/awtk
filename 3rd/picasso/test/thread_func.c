@@ -84,13 +84,17 @@ void timer_action(ps_context* gc)
 
 void thread_func1(void* data)
 {
-    unsigned char* pb = (unsigned char*)data;
-    ps_canvas* canvas = ps_canvas_create_with_data((ps_byte*)pb,
-                        ps_canvas_get_format(cv), (int)ps_canvas_get_size(cv).w, (int)ps_canvas_get_size(cv).h,
-                        bytes_pre_line(ps_canvas_get_format(cv), (int)ps_canvas_get_size(cv).w));
-    ps_context * context = ps_context_create(canvas, 0);
-
+    ps_size rs;
+    ps_canvas* canvas;
+    ps_context* context;
     ps_rect cr = {2.7f , 3.4f, 272.4f, 261.3f};
+    unsigned char* pb = (unsigned char*)data;
+    ps_canvas_get_size(cv, &rs);
+    canvas = ps_canvas_create_with_data((ps_byte*)pb,
+                        ps_canvas_get_format(cv), (int)rs.w, (int)rs.h,
+                        bytes_pre_line(ps_canvas_get_format(cv), (int)rs.w));
+    context = ps_context_create(canvas, 0);
+
 
     while(thr_run1) {
         ps_rectangle(context, &cr);
@@ -106,14 +110,18 @@ void thread_func1(void* data)
 
 void thread_func2(void* data)
 {
-    unsigned char* pb = (unsigned char*)data;
-    ps_canvas* canvas = ps_canvas_create_with_data((ps_byte*)pb,
-                        ps_canvas_get_format(cv), (int)ps_canvas_get_size(cv).w, (int)ps_canvas_get_size(cv).h,
-                        bytes_pre_line(ps_canvas_get_format(cv), (int)ps_canvas_get_size(cv).w));
-    ps_context * context = ps_context_create(canvas, 0);
-
-
+    ps_size rs;
+    ps_canvas* canvas;
+    ps_context* context;
     ps_rect cr = {102.7f , 123.4f, 272.4f, 261.3f};
+    unsigned char* pb = (unsigned char*)data;
+    ps_canvas_get_size(cv, &rs);
+    canvas = ps_canvas_create_with_data((ps_byte*)pb,
+                        ps_canvas_get_format(cv), (int)rs.w, (int)rs.h,
+                        bytes_pre_line(ps_canvas_get_format(cv), (int)rs.w));
+    context = ps_context_create(canvas, 0);
+
+
 
     while(thr_run2) {
         ps_ellipse(context, &cr);

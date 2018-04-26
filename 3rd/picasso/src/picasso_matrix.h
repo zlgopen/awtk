@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -38,8 +38,8 @@ public:
     scalar ty(void) const;
 public:
     const trans_affine& translate(scalar x, scalar y);
-    const trans_affine& scale(scalar x, scalar y); 
-    const trans_affine& rotate(scalar a); 
+    const trans_affine& scale(scalar x, scalar y);
+    const trans_affine& rotate(scalar a);
     const trans_affine& shear(scalar x, scalar y);
 
     const trans_affine& invert(void);

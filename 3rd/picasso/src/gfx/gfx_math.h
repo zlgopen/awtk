@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2013 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -23,8 +23,8 @@ extern int8_t g_elder_bit_table[256];
 inline unsigned int fast_sqrt(unsigned int val)
 {
 #if defined(_M_IX86) && defined(_MSC_VER)
-    //For Ix86 family processors this assembler code is used. 
-    //The key command here is bsr - determination the number of the most 
+    //For Ix86 family processors this assembler code is used.
+    //The key command here is bsr - determination the number of the most
     //significant bit of the value. For other processors
     //(and maybe compilers) the pure C "#else" section is used.
     __asm {
@@ -46,15 +46,15 @@ less_than_9_bits:
     }
 #else
 
-    //This code is actually pure C and portable to most 
-    //arcitectures including 64bit ones. 
+    //This code is actually pure C and portable to most
+    //arcitectures including 64bit ones.
     unsigned int t = val;
     unsigned int shift = 11;
     int bit = 0;
 
     //The following piece of code is just an emulation of the
     //Ix86 assembler command "bsr" (see above). However on old
-    //Intels (like Intel MMX 233MHz) this code is about twice 
+    //Intels (like Intel MMX 233MHz) this code is about twice
     //faster (sic!) then just one "bsr". On PIII and PIV the
     //bsr is optimized quite well.
     bit = t >> 24;

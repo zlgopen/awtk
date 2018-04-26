@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2011 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -18,7 +18,7 @@ template <typename T> struct pod_allocator
     static void deallocate(T* ptr, unsigned int) { delete [] ptr;      }
 };
 
-// pod array 
+// pod array
 template <typename T> class pod_array
 {
 public:
@@ -30,19 +30,19 @@ public:
     }
 
     ~pod_array()
-    { 
+    {
         pod_allocator<T>::deallocate(m_array, m_capacity);
     }
 
     pod_array(unsigned int size)
-        : m_size(size) 
+        : m_size(size)
         , m_capacity(size)
-        , m_array(pod_allocator<T>::allocate(m_capacity)) 
+        , m_array(pod_allocator<T>::allocate(m_capacity))
     {
     }
 
     pod_array(const pod_array<T>& o)
-        : m_size(o.m_size) 
+        : m_size(o.m_size)
         , m_capacity(o.m_size) // copy constrcut size == capacity
         , m_array(pod_allocator<T>::allocate(o.m_size))
     {
@@ -99,15 +99,15 @@ public:
        max_limit = 16384,
     };
 
-    pod_vector() 
+    pod_vector()
         : m_size(0)
         , m_capacity(0)
-        , m_array(0) 
+        , m_array(0)
     {
     }
 
-    ~pod_vector() 
-    { 
+    ~pod_vector()
+    {
         pod_allocator<T>::deallocate(m_array, m_capacity);
     }
 
@@ -123,13 +123,13 @@ public:
     unsigned int capacity(void) const { return m_capacity; }
     unsigned int size(void) const { return m_size; }
 
-    // Allocate n elements. All data is lost, 
-    // but elements can be accessed in range 0...size-1. 
+    // Allocate n elements. All data is lost,
+    // but elements can be accessed in range 0...size-1.
     void allocate(unsigned int size);
     // Resize keeping the content.
     void resize(unsigned int new_size);
 
-    bool push_back(const T& v);   
+    bool push_back(const T& v);
 
     void zero(void) { memset(m_array, 0, sizeof(T) * m_size); }
 
@@ -158,7 +158,7 @@ protected:
 template <typename T> pod_vector<T>::pod_vector(unsigned int cap)
     : m_size(0)
     , m_capacity(cap)
-    , m_array(pod_allocator<T>::allocate(m_capacity)) 
+    , m_array(pod_allocator<T>::allocate(m_capacity))
 {
 }
 
@@ -171,7 +171,7 @@ template <typename T> pod_vector<T>::pod_vector(const pod_vector<T>& v)
         mem_copy(m_array, v.m_array, sizeof(T) * v.m_size);
 }
 
-template <typename T> 
+template <typename T>
 inline void pod_vector<T>::capacity(unsigned int cap)
 {
     m_size = 0;
@@ -182,7 +182,7 @@ inline void pod_vector<T>::capacity(unsigned int cap)
     }
 }
 
-template <typename T> 
+template <typename T>
 inline void pod_vector<T>::resize(unsigned int new_size)
 {
     if (new_size > m_size) {
@@ -205,7 +205,7 @@ inline void pod_vector<T>::allocate(unsigned int new_size)
     m_size = new_size;
 }
 
-template <typename T> 
+template <typename T>
 inline const pod_vector<T>& pod_vector<T>::operator = (const pod_vector<T>& v)
 {
     if (this == &v)
@@ -225,14 +225,14 @@ inline const pod_vector<T>& pod_vector<T>::operator = (const pod_vector<T>& v)
         m_size = v.m_size;
     }
 
-    if (m_size) 
+    if (m_size)
         mem_copy(m_array, v.m_array, sizeof(T) * v.m_size);
 
     return *this;
 }
 
-template <typename T> 
-inline bool pod_vector<T>::push_back(const T& v)   
+template <typename T>
+inline bool pod_vector<T>::push_back(const T& v)
 {
     if (unlikely(m_size >= m_capacity))
         return false;
@@ -241,7 +241,7 @@ inline bool pod_vector<T>::push_back(const T& v)
     return true;
 }
 
-template <typename T> 
+template <typename T>
 inline bool pod_vector<T>::insert_at(unsigned int pos, const T& val)
 {
     if (pos >= m_capacity)
@@ -257,7 +257,7 @@ inline bool pod_vector<T>::insert_at(unsigned int pos, const T& val)
     return true;
 }
 
-template <typename T> 
+template <typename T>
 inline bool pod_vector<T>::set_data(unsigned int num, T* data)
 {
     if (!num || !data)
@@ -295,8 +295,8 @@ public:
     void modify_last(const T& v);
     void remove_all(void);
 
-    T& at(unsigned int i) 
-    { 
+    T& at(unsigned int i)
+    {
         return m_blocks[i >> block_shift][i & block_mask];
     }
 
@@ -397,8 +397,8 @@ template <typename T, unsigned int S> pod_bvector<T, S>::pod_bvector(unsigned in
 {
 }
 
-template <typename T, unsigned int S> 
-pod_bvector<T, S>::pod_bvector(const pod_bvector<T, S>& o) 
+template <typename T, unsigned int S>
+pod_bvector<T, S>::pod_bvector(const pod_bvector<T, S>& o)
     : m_size(o.m_size)
     , m_num_blocks(o.m_num_blocks)
     , m_max_blocks(o.m_max_blocks)
@@ -411,7 +411,7 @@ pod_bvector<T, S>::pod_bvector(const pod_bvector<T, S>& o)
     }
 }
 
-template <typename T, unsigned int S> 
+template <typename T, unsigned int S>
 const pod_bvector<T, S>& pod_bvector<T, S>::operator = (const pod_bvector<T, S>& o)
 {
     if (this == &o)
@@ -433,7 +433,7 @@ const pod_bvector<T, S>& pod_bvector<T, S>::operator = (const pod_bvector<T, S>&
     return *this;
 }
 
-template <typename T, unsigned int S> 
+template <typename T, unsigned int S>
 inline void pod_bvector<T, S>::add(const T& v)
 {
     register unsigned int nb = m_size >> block_shift;
@@ -464,7 +464,7 @@ inline void pod_bvector<T, S>::allocate_block(unsigned int nb)
     m_num_blocks++;
 }
 
-template <typename T, unsigned int S> 
+template <typename T, unsigned int S>
 inline void pod_bvector<T, S>::modify_last(const T& v)
 {
     register unsigned int idx = m_size - 1;
@@ -472,7 +472,7 @@ inline void pod_bvector<T, S>::modify_last(const T& v)
     val = v;
 }
 
-template <typename T, unsigned int S> 
+template <typename T, unsigned int S>
 inline void pod_bvector<T, S>::remove_all(void)
 {
     if (m_num_blocks) {
@@ -489,7 +489,7 @@ inline void pod_bvector<T, S>::remove_all(void)
 
 
 // block_allocator
-class block_allocator 
+class block_allocator
 {
     typedef struct {
         byte*        data;
@@ -498,7 +498,7 @@ class block_allocator
 
 public:
 
-    block_allocator(unsigned block_size, unsigned block_ptr_inc = 256-8) 
+    block_allocator(unsigned block_size, unsigned block_ptr_inc = 256-8)
         : m_block_size(block_size)
         , m_block_ptr_inc(block_ptr_inc)
         , m_num_blocks(0)
@@ -519,13 +519,13 @@ public:
 
     byte* allocate(unsigned int size, unsigned int alignment = 1)
     {
-        if (!size) 
+        if (!size)
             return 0;
 
         if (size <= m_remain_size) {
             byte* ptr = m_buf_ptr;
             if (alignment > 1) {
-                unsigned int align = (alignment - ((unsigned int)(ptr-(byte*)NULL)) % alignment) % alignment;
+                unsigned int align = (unsigned int)((alignment - ((intptr_t)(ptr)) % alignment) % alignment);
 
                 size += align;
                 ptr += align;
@@ -579,7 +579,7 @@ private:
 
     void allocate_block(unsigned int size)
     {
-        if (size < m_block_size) 
+        if (size < m_block_size)
             size = m_block_size;
 
         if (m_num_blocks >= m_max_blocks) {
@@ -624,7 +624,7 @@ private:
 
     //------------------------------------------------------------------------
 
-    
+
 // swap_elements
 template <typename T> inline void swap_elements(T& a, T& b)
 {
@@ -646,7 +646,7 @@ void quick_sort(Array& array, LessFunc less)
     typename Array::value_type* e2;
 
     int stack[80];
-    int* top = stack; 
+    int* top = stack;
     int limit = array.size();
     int base = 0;
 
@@ -665,18 +665,18 @@ void quick_sort(Array& array, LessFunc less)
             i = base + 1;
             j = limit - 1;
 
-            // now ensure that *i <= *base <= *j 
-            e1 = &(array[j]); 
+            // now ensure that *i <= *base <= *j
+            e1 = &(array[j]);
             e2 = &(array[i]);
             if (less(*e1, *e2))
                 swap_elements(*e1, *e2);
 
-            e1 = &(array[base]); 
+            e1 = &(array[base]);
             e2 = &(array[i]);
             if (less(*e1, *e2))
                 swap_elements(*e1, *e2);
 
-            e1 = &(array[j]); 
+            e1 = &(array[j]);
             e2 = &(array[base]);
             if (less(*e1, *e2))
                 swap_elements(*e1, *e2);
@@ -731,7 +731,7 @@ void quick_sort(Array& array, LessFunc less)
 }
 
 // remove_duplicates
-// Remove duplicates from a sorted array. It doesn't cut the 
+// Remove duplicates from a sorted array. It doesn't cut the
 // tail of the array, it just returns the number of remaining elements.
 template <typename Array, typename EqualFunc>
 unsigned remove_duplicates(Array& array, EqualFunc equal)

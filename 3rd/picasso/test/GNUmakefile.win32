@@ -1,12 +1,12 @@
 
 #CC=gcc -g -pg
-CC=gcc -Wall -O3
+CC=gcc -Wall -O3 -g
 #CC=gcc -g -fprofile-arcs -ftest-coverage
 #CC=gcc -O2
 INC=-I../include -I../build
 CFLAGS= -DUNICODE -D_UNICODE
 
-SYSTEM_LIBS = -lgdi32 -lstdc++ -lfreetype -lm
+SYSTEM_LIBS = -lgdi32 -lstdc++ -lm
 
 gamma_objs = test.o gamma_func.o
 
@@ -40,6 +40,7 @@ thread_objs = test.o thread_func.o thr_win32.o
 
 all: gamma.exe alpha.exe gradient.exe composite.exe clip.exe gcstate.exe text.exe pattern.exe shadow.exe blur.exe mask.exe part.exe bitblt.exe path.exe thread.exe
 
+# test 
 alpha.exe : ${alpha_objs}
 	${CC} ${alpha_objs} ../src/libpicasso.a -o $@ ${INC} ${SYSTEM_LIBS}
 

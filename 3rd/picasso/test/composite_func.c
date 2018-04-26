@@ -67,6 +67,6 @@ void timer_action(ps_context* gc)
         step = 0;
     }
 
-    if (op > 27) op = 0;
+    if (op > 31) op = 0;
 }
 

@@ -1,5 +1,5 @@
 /* Picasso - a vector graphics library
- * 
+ *
  * Copyright (C) 2008 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
  */
@@ -34,7 +34,7 @@ gfx_device::~gfx_device()
 {
 }
 
-abstract_trans_affine* gfx_device::create_trans_affine(scalar sx, scalar shy, 
+abstract_trans_affine* gfx_device::create_trans_affine(scalar sx, scalar shy,
                                                         scalar shx, scalar sy, scalar tx, scalar ty)
 {
     return new gfx_trans_affine(sx, shy, shx, sy, tx, ty);
@@ -47,7 +47,7 @@ void gfx_device::destroy_trans_affine(abstract_trans_affine* m)
 
 abstract_painter* gfx_device::create_painter(pix_fmt fmt)
 {
-    switch (fmt) 
+    switch (fmt)
     {
 #if ENABLE(FORMAT_RGBA)
         case pix_fmt_rgba:
@@ -101,7 +101,7 @@ void gfx_device::destroy_raster_adapter(abstract_raster_adapter* d)
     delete d;
 }
 
-abstract_rendering_buffer* gfx_device::create_rendering_buffer(byte* buf, 
+abstract_rendering_buffer* gfx_device::create_rendering_buffer(byte* buf,
                                         unsigned int width, unsigned int height, int stride)
 {
     return new gfx_rendering_buffer(buf, width, height, stride);
@@ -133,7 +133,7 @@ void gfx_device::destroy_gradient_adapter(abstract_gradient_adapter* g)
     delete g;
 }
 
-abstract_font_adapter* gfx_device::create_font_adapter(const char* name, int charset, scalar height, scalar weight, 
+abstract_font_adapter* gfx_device::create_font_adapter(const char* name, int charset, scalar height, scalar weight,
                                 bool italic, bool hint, bool flip, bool antialias, const abstract_trans_affine* mtx)
 {
     return new gfx_font_adapter(name, charset, height, weight, italic, hint, flip, antialias, mtx);

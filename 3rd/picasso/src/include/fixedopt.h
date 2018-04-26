@@ -1,4 +1,4 @@
-/* Fixed mathematics 
+/* Fixed mathematics
  *
  * Copyright (C) 2010 Zhang Ji Peng
  * Contact: onecoolx@gmail.com
@@ -7,17 +7,7 @@
 #ifndef _FIXED_MATH_H_
 #define _FIXED_MATH_H_
 
-//32 bit system value define
-typedef int int32_t;
-#if defined(__GNUC__)
-typedef long long int64_t;
-#elif defined(_MSC_VER)
-typedef __int64 int64_t;
-#elif defined(__WATCOMC__)
-typedef __int64 int64_t;
-#else
-#error no define 64 bit integer.
-#endif
+#include "common.h"
 
 namespace fxmath {
 
@@ -26,7 +16,7 @@ typedef int32_t fixed_type;
 typedef int64_t fixed_type64;
 
 
-// Fixed point specialed 
+// Fixed point specialed
 
 // Fixed point bits
 #define FIXED_BITS    (sizeof(fixed_type) * 8)
@@ -46,7 +36,7 @@ typedef int64_t fixed_type64;
 // The smallest number representable
 #define FIXED_MIN    ((fixed_type)((fixed_type)1) << (FIXED_BITS - 1))
 
-// The biggest float number 
+// The biggest float number
 #define FLOAT_F_MAX    (((fixed_type)FIXED_MAX) / (double)FIXED_1)
 
 // The smallest float number
@@ -111,31 +101,31 @@ inline bool operator < (const fixed& a, const fixed& b)
     return (a.m_data < b.m_data) ? true : false;
 }
 
-// a > b 
+// a > b
 inline bool operator > (const fixed& a, const fixed& b)
 {
     return (a.m_data > b.m_data) ? true : false;
 }
 
-// a >= b 
+// a >= b
 inline bool operator >= (const fixed& a, const fixed& b)
 {
     return (a.m_data >= b.m_data) ? true : false;
 }
 
-// a <= b 
+// a <= b
 inline bool operator <= (const fixed& a, const fixed& b)
 {
     return (a.m_data <= b.m_data) ? true : false;
 }
 
-// a == b 
+// a == b
 inline bool operator == (const fixed& a, const fixed& b)
 {
     return (a.m_data == b.m_data) ? true : false;
 }
 
-// a != b 
+// a != b
 inline bool operator != (const fixed& a, const fixed& b)
 {
     return (a.m_data != b.m_data) ? true : false;
@@ -155,7 +145,7 @@ inline fixed operator - (const fixed& a, const fixed& b)
     return fixed(r, 0);
 }
 
-#if defined(__GNUC__) && defined(__arm__) && (__SIZEOF_INT__ == 4) 
+#if defined(__GNUC__) && defined(__arm__) && (__SIZEOF_INT__ == 4)
 //integer 12% speed up
 inline fixed_type arm_fixmul (fixed_type a, fixed_type b)
 {

@@ -38,7 +38,7 @@ public:
         return m_refCount;
     }
 protected:
-    virtual void removeThis(void) 
+    virtual void removeThis(void)
     {
         //can be extend in sub classa for more clean up code
         delete this;
