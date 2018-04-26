@@ -22,6 +22,7 @@
 #include "base/lcd.h"
 #include "base/utf8.h"
 #include "base/vgcanvas.h"
+#include "base/system_info.h"
 
 typedef struct _lcd_vgcanvas_t {
   lcd_t base;
@@ -185,8 +186,8 @@ vgcanvas_t* lcd_vgcanvas_get_vgcanvas(lcd_t* lcd) {
 
 lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   static lcd_vgcanvas_t lcd;
-
   lcd_t* base = &(lcd.base);
+  system_info_t* info = system_info();
   return_value_if_fail(canvas != NULL, NULL);
 
   memset(&lcd, 0x00, sizeof(lcd_vgcanvas_t));
@@ -210,6 +211,13 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
 
   base->w = (wh_t)w;
   base->h = (wh_t)h;
+  base->type = LCD_VGCANVAS;
+
+  info->lcd_w = base->w;
+  info->lcd_h = base->h;
+  info->lcd_type = base->type;
+  info->device_pixel_ratio = canvas->ratio;
+
   lcd.canvas = canvas;
 
   return base;

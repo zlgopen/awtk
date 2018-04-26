@@ -46,7 +46,6 @@ typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
 
   int font_id;
-  float_t ratio;
   NVGcontext* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;
@@ -65,14 +64,12 @@ ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
 
   SDL_GetWindowSize(sdl_window, &ww, &wh);
   SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
-  canvas->ratio = (float)fw / (float)ww;
-  vgcanvas->ratio = canvas->ratio;
 
   glViewport(0, 0, fw, fh);
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-  nvgBeginFrame(vg, ww, wh, canvas->ratio);
+  nvgBeginFrame(vg, ww, wh, vgcanvas->ratio);
 
   return RET_OK;
 }
@@ -616,18 +613,26 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_destroy};
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* sdl_window) {
+  int ww = 0;
+  int wh = 0;
+  int fw = 0;
+  int fh = 0;
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)MEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
+  
+  SDL_GetWindowSize((SDL_Window*)sdl_window, &ww, &wh);
+  SDL_GL_GetDrawableSize((SDL_Window*)sdl_window, &fw, &fh);
 
   nanovg->base.w = w;
   nanovg->base.h = h;
-  nanovg->base.ratio = 1;
   nanovg->base.vt = &vt;
+  nanovg->base.ratio = (float)fw / (float)ww;
   nanovg->sdl_window = (SDL_Window*)sdl_window;
 #ifdef WITH_GL2
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #elif defined(WITH_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #endif
+
   return &(nanovg->base);
 }

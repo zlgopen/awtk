@@ -19,8 +19,9 @@
  *
  */
 
-#include "resource.h"
 #include "lftk.h"
+#include "resource.h"
+#include "base/system_info.h"
 
 ret_t application_init(void);
 
@@ -58,9 +59,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 #include "base/mem.h"
 int main(void) {
 #endif
+  system_info_t* info = system_info();
 
   lftk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
 
+  log_debug("system_info: lcd_w=%d lcd_h=%d lcd_type=%d device_pixel_ratio=%f\n", 
+    info->lcd_w, info->lcd_h, info->lcd_type, info->device_pixel_ratio);
   resource_init();
   application_init();
 

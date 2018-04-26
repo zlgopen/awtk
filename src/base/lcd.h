@@ -87,6 +87,28 @@ typedef enum _lcd_draw_mode_t {
 } lcd_draw_mode_t;
 
 /**
+ * @enum lcd_type_t
+ * @prefix LCD_
+ * LCD类型常量定义。
+ */
+typedef enum _lcd_type_t {
+  /**
+   * @const LCD_FRAMEBUFFER
+   * 基于FrameBuffer的LCD。
+   */
+  LCD_FRAMEBUFFER = 0,
+  /**
+   * @const LCD_REGISTER
+   * 基于寄存器的LCD。
+   */
+  LCD_REGISTER,
+  /**
+   * @const LCD_VGCANVAS
+   * 基于VGCANVS的LCD。仅在支持OpenGL时，用nanovg实现。
+   */
+  LCD_VGCANVAS
+} lcd_type_t;
+/**
  * @class lcd_t
  * 显示设备抽象基类。
  */
@@ -170,6 +192,13 @@ struct _lcd_t {
    * 绘制模式。
    */
   lcd_draw_mode_t draw_mode;
+
+  /**
+   * @property {lcd_type_t} type 
+   * @readonly
+   * LCD的类型。
+   */
+  lcd_type_t type;
 
   rect_t* dirty_rect;
 };

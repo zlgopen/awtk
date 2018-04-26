@@ -19,6 +19,8 @@
  *
  */
 
+#include "base/system_info.h"
+
 static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd->dirty_rect = dirty_rect;
 
@@ -173,12 +175,17 @@ static ret_t lcd_reg_destroy(lcd_t* lcd) {
 }
 
 lcd_t* lcd_reg_create(wh_t w, wh_t h) {
-  lcd_t* lcd = NULL;
-  lcd = MEM_ZALLOC(lcd_t);
+  lcd_t* lcd = MEM_ZALLOC(lcd_t);
+  system_info_t* info = system_info();
   return_value_if_fail(lcd != NULL, NULL);
 
   lcd->w = w;
   lcd->h = h;
+  lcd->type = LCD_REGISTER;
+  info->lcd_w = lcd->w;
+  info->lcd_h = lcd->h;
+  info->lcd_type = lcd->type;
+  info->device_pixel_ratio = 1;
 
   lcd->begin_frame = lcd_reg_begin_frame;
   lcd->draw_vline = lcd_reg_draw_vline;

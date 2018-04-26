@@ -386,7 +386,7 @@ static void draw_text(vgcanvas_t* vg) {
 
 
   vgcanvas_fill_text(vg, text, 10, 10, 100);
-  log_debug("text=%s w=%u\n", text, w);
+  log_debug("text=%s w=%f\n", text, w);
   vgcanvas_restore(vg);
 }
 

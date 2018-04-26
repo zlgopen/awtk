@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/vgcanvas.h"
+#include "base/system_info.h"
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd->dirty_rect = dirty_rect;
@@ -247,6 +248,8 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
 }
 
 lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
+  system_info_t* info = system_info();
+
   lcd_mem_t* lcd = MEM_ZALLOC(lcd_mem_t);
   lcd_t* base = &(lcd->base);
 
@@ -270,6 +273,12 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
 
   base->w = w;
   base->h = h;
+  base->type = LCD_FRAMEBUFFER;
+
+  info->lcd_w = base->w;
+  info->lcd_h = base->h;
+  info->lcd_type = base->type;
+  info->device_pixel_ratio = 1;
 
   return base;
 }
