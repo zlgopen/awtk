@@ -40,6 +40,7 @@ typedef struct _image_manager_t {
 } image_manager_t;
 
 image_manager_t* image_manager(void);
+ret_t image_manager_set(image_manager_t* imm);
 
 image_manager_t* image_manager_create(void);
 image_manager_t* image_manager_init(image_manager_t* im, image_loader_t* loader);

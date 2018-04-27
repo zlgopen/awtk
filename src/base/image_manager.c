@@ -23,13 +23,15 @@
 #include "base/image_manager.h"
 #include "base/resource_manager.h"
 
+static image_manager_t* s_imm = NULL;
 image_manager_t* image_manager() {
-  static image_manager_t* imm = NULL;
-  if (imm == NULL) {
-    imm = image_manager_create();
-  }
+  return s_imm;
+}
 
-  return imm;
+ret_t image_manager_set(image_manager_t* imm) {
+   s_imm = imm;
+
+   return RET_OK;
 }
 
 image_manager_t* image_manager_create() {
@@ -50,7 +52,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
   const resource_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
-  res = resource_manager_ref(RESOURCE_TYPE_IMAGE, name);
+  res = resource_manager_ref(resource_manager(), RESOURCE_TYPE_IMAGE, name);
   return_value_if_fail(res != NULL, RET_NOT_FOUND);
 
   if (res->subtype == RESOURCE_TYPE_IMAGE_RAW) {
@@ -61,9 +63,13 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     image->format = header->format;
     image->name = res->name;
     image->data = header->data;
+
     return RET_OK;
   } else if (imm->loader != NULL) {
-    return image_loader_load(imm->loader, res->data, res->size, image);
+    ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
+    resource_manager_unref(resource_manager(), res);
+
+    return ret;
   } else {
     return RET_NOT_FOUND;
   }

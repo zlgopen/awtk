@@ -55,11 +55,12 @@ static ret_t add_image_res(const char* filename, const char* name) {
   return_value_if_fail(ret == RET_OK, RET_FAIL);
 
   strcpy(r->name, name);
+  r->is_in_rom = TRUE;
   r->type = RESOURCE_TYPE_IMAGE;
   r->subtype = RESOURCE_TYPE_IMAGE_RAW;
   r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(resource_info_t));
 
-  return resource_manager_add(buff);
+  return resource_manager_add(resource_manager(), buff);
 }
 
 TEST(ImageLoaderStb, gen) {

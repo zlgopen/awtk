@@ -170,11 +170,11 @@ ui_builder_t* ui_builder_default() {
 widget_t* window_open(const char* name) {
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default();
-  const resource_info_t* ui = resource_manager_ref(RESOURCE_TYPE_UI, name);
+  const resource_info_t* ui = resource_manager_ref(resource_manager(), RESOURCE_TYPE_UI, name);
   return_value_if_fail(ui != NULL, NULL);
 
   ui_loader_load(loader, ui->data, ui->size, builder);
-  resource_manager_unref(ui);
+  resource_manager_unref(resource_manager(), ui);
 
   return builder->root;
 }

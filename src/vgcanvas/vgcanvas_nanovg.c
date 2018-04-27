@@ -296,7 +296,7 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
 
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
-    const resource_info_t* r = resource_manager_ref(RESOURCE_TYPE_FONT, name);
+    const resource_info_t* r = resource_manager_ref(resource_manager(), RESOURCE_TYPE_FONT, name);
     if (r == NULL || r->subtype != RESOURCE_TYPE_FONT_TTF) {
       name = STR_DEFAULT_FONT;
       font_id = nvgFindFont(vg, name);
@@ -305,7 +305,7 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
         return RET_OK;
       }
 
-      r = resource_manager_ref(RESOURCE_TYPE_FONT, name);
+      r = resource_manager_ref(resource_manager(), RESOURCE_TYPE_FONT, name);
     }
 
     if (r != NULL && r->subtype == RESOURCE_TYPE_FONT_TTF) {

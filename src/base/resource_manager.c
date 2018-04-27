@@ -1,5 +1,5 @@
 ﻿/**
- * File:   resource_manager.c
+ * File:   resource_manager.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  resource manager
  *
@@ -19,53 +19,210 @@
  *
  */
 
-#include "base/array.h"
+#include "base/mem.h"
+#include "base/system_info.h"
 #include "base/resource_manager.h"
 
-static array_t s_resources;
+static resource_manager_t* s_resource_manager = NULL;
 
-ret_t resource_manager_init(uint32_t init_res_nr) {
-  return array_init(&(s_resources), init_res_nr) ? RET_OK : RET_FAIL;
+#ifdef WITH_FS_RES
+#include "base/fs.h"
+
+#ifndef RES_ROOT
+#define RES_ROOT TK_ROOT"/demos/res/raw"
+#endif
+
+static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t size, const char* path, const char* name) {
+  resource_info_t* info = MEM_ALLOC(sizeof(resource_info_t) + size);
+  return_value_if_fail(info != NULL, NULL);
+
+  memset(info, 0x00, sizeof(resource_info_t));
+  info->size = size;
+  info->type = type;
+  info->subtype = subtype;
+  info->is_in_rom = FALSE;
+  strncpy(info->name, name, NAME_LEN);
+
+  ENSURE(fs_read_file_part(path, info->data, size, 0) == size);
+
+  return info;
 }
 
-const resource_info_t* resource_manager_ref(resource_type_t type, const char* name) {
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name) {
+  int32_t size = 0;
+  char path[MAX_PATH+1];
+  resource_info_t* info = NULL;
+  system_info_t* sysinfo = system_info();
+  float_t dpr = sysinfo->device_pixel_ratio;
+
+  switch(type) {
+    case RESOURCE_TYPE_FONT: {
+      snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_FONT_TTF, size, path, name);
+        break;  
+      }
+      
+      snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_FONT_BMP, size, path, name);
+        break;  
+      }
+
+      break;
+    }
+    case RESOURCE_TYPE_THEME: {
+      snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_THEME, size, path, name);
+        break;  
+      }
+     break;
+    }
+    case RESOURCE_TYPE_IMAGE: {
+      const char* ratio = "x1";
+      if(dpr >= 3) {
+        ratio = "x3";
+      } else if(dpr >= 2) { 
+        ratio = "x2";
+      }
+      ratio = "x1";
+
+      snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_IMAGE_PNG, size, path, name);
+        break;  
+      }
+     break;
+    }
+    case RESOURCE_TYPE_UI: {
+      snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_UI_BIN, size, path, name);
+        break;  
+      }
+     break;
+    }
+    case RESOURCE_TYPE_XML: {
+      snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_XML, size, path, name);
+        break;  
+      }
+     break;
+    }
+    case RESOURCE_TYPE_DATA: {
+      snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name); 
+      size = fs_file_size(path);
+      if(size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_DATA, size, path, name);
+        break;  
+      }
+     break;
+    }
+    default:break;
+  }
+
+  if(info != NULL) {
+    resource_manager_add(rm, info);
+  }
+
+  return info;
+}
+#else
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name) {
+  (void)type;
+  (void)name;
+  return NULL;
+}
+#endif/*WITH_FS_RES*/
+
+resource_manager_t* resource_manager(void) {
+  return s_resource_manager;
+}
+
+ret_t resource_manager_set(resource_manager_t* rm) {
+  s_resource_manager = rm;
+
+  return RET_OK;
+}
+
+resource_manager_t* resource_manager_create(uint32_t init_res_nr) {
+  resource_manager_t* rm = MEM_ZALLOC(resource_manager_t);
+
+  return resource_manager_init(rm, init_res_nr);
+}
+
+resource_manager_t* resource_manager_init(resource_manager_t* rm, uint32_t init_res_nr) {
+  return_value_if_fail(rm != NULL, NULL);
+
+  array_init(&(rm->resources), init_res_nr);
+
+  return rm;
+}
+
+ret_t resource_manager_add(resource_manager_t* rm, const void* info) {
+  return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
+
+  return array_push(&(rm->resources), (void*)info) ? RET_OK : RET_FAIL;
+}
+
+const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type, const char* name) {
   uint32_t i = 0;
   const resource_info_t* iter = NULL;
-  const resource_info_t** all = (const resource_info_t**)s_resources.elms;
-  return_value_if_fail(name != NULL, NULL);
+  const resource_info_t** all = NULL;
+  return_value_if_fail(rm != NULL && name != NULL, NULL);
 
-  for (i = 0; i < s_resources.size; i++) {
+  all = (const resource_info_t**)(rm->resources.elms);
+
+  for (i = 0; i < rm->resources.size; i++) {
     iter = all[i];
     if (type == iter->type && strcmp(name, iter->name) == 0) {
       return iter;
     }
   }
 
-  return NULL;
+  return resource_manager_load(rm, type, name);
 }
 
-ret_t resource_manager_unref(const resource_info_t* info) {
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
+  return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
   return RET_OK;
 }
 
-ret_t resource_manager_add(const void* data) {
-  const resource_info_t* info = (const resource_info_t*)data;
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+ret_t resource_manager_deinit(resource_manager_t* rm) {
+  uint32_t i = 0;
+  resource_info_t* iter = NULL;
+  resource_info_t** all = NULL;
+  return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
-  return array_push(&s_resources, (void*)info) ? RET_OK : RET_FAIL;
-}
+  all = (resource_info_t**)(rm->resources.elms);
 
-ret_t resource_manager_deinit() {
-  array_deinit(&(s_resources));
-  return RET_OK;
-}
-
-const resource_info_t** resource_manager_get_all(uint32_t* size) {
-  if (size != NULL) {
-    *size = s_resources.size;
+  for (i = 0; i < rm->resources.size; i++) {
+    iter = all[i];
+    if(!iter->is_in_rom) {
+      MEM_FREE(iter);
+    }
   }
 
-  return (const resource_info_t**)s_resources.elms;
+  array_deinit(&(rm->resources));
+
+  return RET_OK;
 }
+
+ret_t resource_manager_destroy(resource_manager_t* rm) {
+  return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
+  resource_manager_deinit(rm);
+
+  MEM_FREE(rm);
+
+  return RET_OK;
+}
+

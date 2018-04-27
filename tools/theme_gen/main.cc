@@ -23,15 +23,17 @@
 #include "xml_theme_gen.h"
 
 int main(int argc, char* argv[]) {
+  bool_t output_bin = argc > 3;
   static uint32_t s_heap_mem[1024 * 1024];
+
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
-  if (argc != 3) {
-    printf("Usage: %s input output\n", argv[0]);
+  if (argc < 3) {
+    printf("Usage: %s input output [bin]\n", argv[0]);
     return 0;
   }
 
-  xml_gen(argv[1], argv[2]);
+  xml_gen(argv[1], argv[2], output_bin);
 
   return 0;
 }

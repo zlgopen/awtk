@@ -1,7 +1,7 @@
-/**
- * File:   xml_gen.h
+﻿/**
+ * File:   fs.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  generate theme date from xml
+ * Brief:  simple fs api
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -15,16 +15,23 @@
 /**
  * History:
  * ================================================================
- * 2018-01-19 Li XianJing <xianjimli@hotmail.com> adapted from ftk.
+ * 2018-04-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
+#ifndef TK_FS_H
+#define TK_FS_H
+
 #include "base/types_def.h"
 
-#ifndef XML_THEME_GEN_H
-#define XML_THEME_GEN_H
+BEGIN_C_DECLS
 
-bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin);
-uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size);
+ret_t fs_unlink(const char* name);
+int32_t fs_file_size(const char* name);
+void* fs_read_file(const char* name, uint32_t* size);
+int32_t fs_read_file_part(const char* name, void* buff, uint32_t size, uint32_t offset);
+ret_t fs_write_file(const char* name, const void* buff, uint32_t size);
 
-#endif /*XML_THEME_GEN_H*/
+END_C_DECLS
+
+#endif /*TK_FS_H*/

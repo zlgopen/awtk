@@ -26,24 +26,17 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "base/fs.h"
 #include "base/mem.h"
 #include "base/enums.h"
 #include "base/resource_manager.h"
 
 char* read_file(const char* file_name, uint32_t* length) {
-  struct stat st = {0};
-  if (stat(file_name, &st)) {
-    return NULL;
-  } else {
-    char* buffer = (char*)MEM_ALLOC(st.st_size + 1);
-    FILE* fp = fopen(file_name, "rb");
-    fread(buffer, 1, st.st_size, fp);
-    fclose(fp);
-    buffer[st.st_size] = '\0';
-    *length = st.st_size;
+  return fs_read_file(file_name, length);
+}
 
-    return buffer;
-  }
+ret_t write_file(const char* file_name, const void* buff, uint32_t length) {
+  return fs_write_file(file_name, buff, length);
 }
 
 int unique(wchar_t* str, int size) {
@@ -130,6 +123,7 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
   memset(res, 0x00, sizeof(resource_info_t));
   res->size = size;
   res->type = type;
+  res->is_in_rom = TRUE;
   res->subtype = subtype;
   memcpy(res->data, buff, size);
   filename_to_name(filename, res->name, sizeof(res->name));

@@ -202,4 +202,8 @@ typedef float float_t;
 #define STR_DEFAULT_FONT "default"
 #endif /*WITH_NANOVG*/
 
+#ifndef MAX_PATH
+#define MAX_PATH 255
+#endif/*MAX_PATH*/
+
 #endif /*TYPES_DEF_H*/

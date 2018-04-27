@@ -40,7 +40,12 @@ def prepare():
   os.makedirs(joinPath(OUTPUT_DIR, 'ui'));
 
 def themegen(raw, inc):
+  print(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
   os.system(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+
+def themegen_bin(raw, bin):
+  print(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+  os.system(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
 
 def resgen(raw, inc):
   os.system(joinPath(BIN_DIR, 'resgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
@@ -55,11 +60,15 @@ def imagegen(raw, inc):
 def xml_to_ui(raw, inc):
   os.system(joinPath(BIN_DIR, 'xml_to_ui') + ' ' + raw + ' ' + inc)
 
+def xml_to_ui_bin(raw, bin):
+  os.system(joinPath(BIN_DIR, 'xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
+
 def gen_all():
   themegen('theme/theme.xml', 'theme/default.data');
-  resgen('fonts/font.ttf', 'fonts/default_ttf.data');
-  resgen('fonts/action_protocol.ttf', 'fonts/ap.data');
-  fontgen('fonts/font.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
+  themegen_bin('theme/theme.xml', 'theme/default.bin');
+  resgen('fonts/default_ttf.ttf', 'fonts/default_ttf.data');
+  resgen('fonts/ap.ttf', 'fonts/ap.data');
+  fontgen('fonts/default_ttf.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);
@@ -73,9 +82,12 @@ def gen_all():
   for f in glob.glob(joinPath(INPUT_DIR, 'ui/*.xml')):
     inc=copy.copy(f);
     raw=copy.copy(f);
+    bin=copy.copy(f);
     inc=inc.replace('.xml', '.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
     xml_to_ui(raw, inc)
+    bin=bin.replace('.xml', '.bin')
+    xml_to_ui_bin(raw, bin)
 
 def writeResult(str):
   fd = os.open(RESOURCE_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)
@@ -86,6 +98,7 @@ def gen_res_c():
   result = '#include "tk.h"\n'
   result += '#include "base/resource_manager.h"\n'
 
+  result += '#ifndef WITH_FS_RES\n'
   files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
   for f in files:
     incf = copy.copy(f);
@@ -93,12 +106,17 @@ def gen_res_c():
     incf=incf.replace('\\', '/');
     incf=incf.replace('./', '');
     result += '#include "'+incf+'"\n'
+  result += '#endif\n'
 
   result += '\n';
   result += 'ret_t resource_init(void) {\n'
-  result += '  resource_manager_init(30);\n\n'
+  result += '  resource_manager_t* rm = resource_manager();\n\n'
   result += ''
 
+  result += '#ifdef WITH_FS_RES\n'
+  result += '  resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");\n'
+  result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");\n'
+  result += '#else\n'
   for f in files:
     incf = copy.copy(f);
     basename = incf.replace(OUTPUT_DIR, '.');
@@ -108,7 +126,8 @@ def gen_res_c():
     basename = basename.replace('fonts', 'font');
     basename = basename.replace('images', 'image');
     basename = basename.replace('.data', '');
-    result += '  resource_manager_add('+basename+');\n'
+    result += '  resource_manager_add(rm, '+basename+');\n'
+  result += '#endif\n'
 
   result += '\n'
   result += '  tk_init_resources();\n'

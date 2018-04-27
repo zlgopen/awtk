@@ -218,7 +218,7 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   return size;
 }
 
-bool xml_gen(const char* input_file, const char* output_file) {
+bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin) {
   xml_builder_t b;
   uint8_t buff[1024 * 1024];
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
@@ -231,7 +231,12 @@ bool xml_gen(const char* input_file, const char* output_file) {
   return_value_if_fail(end != NULL, false);
 
   uint32_t size = end - buff;
-  output_res_c_source(output_file, RESOURCE_TYPE_THEME, 0, buff, size);
+
+  if(output_bin) {
+    write_file(output_file, buff, size);
+  } else {
+    output_res_c_source(output_file, RESOURCE_TYPE_THEME, 0, buff, size);
+  }
 
   xml_parser_destroy(parser);
 

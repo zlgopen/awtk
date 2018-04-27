@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
   wbuffer_t wbuffer;
   char* content = NULL;
   uint8_t data[10 * 1024];
+  bool_t output_bin = argc > 3;
   const char* in_filename = NULL;
   const char* out_filename = NULL;
   ui_loader_t* loader = xml_ui_loader();
@@ -37,8 +38,8 @@ int main(int argc, char** argv) {
   static uint32_t s_heap_mem[1024 * 1024];
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
-  if (argc != 3) {
-    printf("Usage: in_filename out_filename\n");
+  if (argc < 3) {
+    printf("Usage: %s in_filename out_filename [bin]\n", argv[0]);
 
     return 0;
   }
@@ -51,8 +52,12 @@ int main(int argc, char** argv) {
 
   ui_loader_load(loader, (const uint8_t*)content, size, builder);
 
-  output_res_c_source(out_filename, RESOURCE_TYPE_UI, RESOURCE_TYPE_UI_BIN, wbuffer.data,
+  if(output_bin) {
+    write_file(out_filename, wbuffer.data, wbuffer.cursor);
+  } else {
+    output_res_c_source(out_filename, RESOURCE_TYPE_UI, RESOURCE_TYPE_UI_BIN, wbuffer.data,
                       wbuffer.cursor);
+  }
 
   MEM_FREE(content);
 

@@ -33,7 +33,16 @@
 #include "gtest/gtest.h"
 #include "demos/resource.h"
 #include "base/font_manager.h"
+#include "base/image_manager.h"
 #include "base/resource_manager.h"
+
+#ifdef WITH_STB_FONT
+#include "font/font_stb.h"
+#endif /*WITH_STB_FONT*/
+
+#ifdef WITH_STB_IMAGE
+#include "image_loader/image_loader_stb.h"
+#endif /*WITH_STB_IMAGE*/
 
 static uint32_t s_heap_mem[4 * 1024 * 1024];
 
@@ -41,13 +50,20 @@ GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
+  
+  image_manager_set(image_manager_create());
+  resource_manager_set(resource_manager_create(10));
+
+#ifdef WITH_STB_IMAGE
+  image_manager_init(image_manager(), image_loader_stb());
+#endif /*WITH_STB_IMAGE*/
 
   resource_init();
   tk_init_resources();
   RUN_ALL_TESTS();
 
   font_manager_destroy(font_manager());
-  resource_manager_deinit();
+  resource_manager_destroy(resource_manager());
 
   return 0;
 }

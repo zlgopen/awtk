@@ -159,7 +159,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(w, h, FALSE);
   lcd.texture =
   SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  lcd.type = lcd.lcd_mem.type;
+  base->type = lcd.lcd_mem->base.type;
 
   //SDL_CreateTexture(render, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, w, h);
   // SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
