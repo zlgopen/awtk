@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_PLATFORM_H
-#define LFTK_PLATFORM_H
+#ifndef TK_PLATFORM_H
+#define TK_PLATFORM_H
 
 #include "base/types_def.h"
 
@@ -31,4 +31,4 @@ uint32_t get_time_ms(void);
 
 END_C_DECLS
 
-#endif /*LFTK_PLATFORM_H*/
+#endif /*TK_PLATFORM_H*/

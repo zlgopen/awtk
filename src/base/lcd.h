@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_LCD_H
-#define LFTK_LCD_H
+#ifndef TK_LCD_H
+#define TK_LCD_H
 
 #include "base/rect.h"
 #include "base/font.h"
@@ -437,4 +437,4 @@ ret_t lcd_destroy(lcd_t* lcd);
 
 END_C_DECLS
 
-#endif /*LFTK_LCD_H*/
+#endif /*TK_LCD_H*/

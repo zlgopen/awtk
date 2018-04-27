@@ -1098,6 +1098,23 @@
   ]
  },
  {
+  "type": "enum",
+  "header": "base/lcd.h",
+  "name": "lcd_type_t",
+  "prefix": "LCD_",
+  "consts": [
+   {
+    "name": "LCD_FRAMEBUFFER"
+   },
+   {
+    "name": "LCD_REGISTER"
+   },
+   {
+    "name": "LCD_VGCANVAS"
+   }
+  ]
+ },
+ {
   "type": "class",
   "name": "lcd_t",
   "methods": [
@@ -1520,6 +1537,11 @@
    {
     "type": "lcd_draw_mode_t",
     "name": "draw_mode",
+    "readonly": true
+   },
+   {
+    "type": "lcd_type_t",
+    "name": "type",
     "readonly": true
    }
   ],
@@ -2612,7 +2634,7 @@
       "name": "y"
      }
     ],
-    "name": "vgcanvas_quadratic_curve_to",
+    "name": "vgcanvas_quad_to",
     "return": "ret_t"
    },
    {
@@ -2646,7 +2668,7 @@
       "name": "y"
      }
     ],
-    "name": "vgcanvas_bezier_curve_to",
+    "name": "vgcanvas_bezier_to",
     "return": "ret_t"
    },
    {
@@ -2784,7 +2806,7 @@
       "name": "r"
      }
     ],
-    "name": "vgcanvas_round_rect",
+    "name": "vgcanvas_rounded_rect",
     "return": "ret_t"
    },
    {
@@ -4264,10 +4286,10 @@
  },
  {
   "params": [],
-  "name": "lftk_quit",
+  "name": "tk_quit",
   "isGlobal": true,
   "return": "ret_t",
   "type": "method",
-  "header": "src/lftk.h"
+  "header": "src/tk.h"
  }
 ]

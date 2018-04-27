@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UI_LOADER_H
-#define LFTK_UI_LOADER_H
+#ifndef TK_UI_LOADER_H
+#define TK_UI_LOADER_H
 
 #include "ui_loader/ui_builder.h"
 
@@ -40,4 +40,4 @@ ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui
 
 END_C_DECLS
 
-#endif /*LFTK_UI_LOADER_H*/
+#endif /*TK_UI_LOADER_H*/

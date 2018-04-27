@@ -34,7 +34,7 @@ typedef struct _key_value_t {
   const char* value;
 } key_value_t;
 
-static const key_value_t qt_lftk_map[] = {{"QLabel", "label"},
+static const key_value_t qt_tk_map[] = {{"QLabel", "label"},
                                           {"QPushButton", "button"},
                                           {"QLineEdit", "label"},
                                           {"QWidget", "group_box"},
@@ -48,8 +48,8 @@ static const key_value_t qt_lftk_map[] = {{"QLabel", "label"},
 static string map_type(const string& type) {
   uint32_t i = 0;
 
-  for (i = 0; i < sizeof(qt_lftk_map) / sizeof(qt_lftk_map[0]); i++) {
-    const key_value_t* iter = qt_lftk_map + i;
+  for (i = 0; i < sizeof(qt_tk_map) / sizeof(qt_tk_map[0]); i++) {
+    const key_value_t* iter = qt_tk_map + i;
     if (iter->key == NULL) {
       break;
     }

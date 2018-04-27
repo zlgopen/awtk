@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_ARRAY_H
-#define LFTK_ARRAY_H
+#ifndef TK_ARRAY_H
+#define TK_ARRAY_H
 
 #include "base/types_def.h"
 
@@ -128,4 +128,4 @@ void array_destroy(array_t* array);
 
 END_C_DECLS
 
-#endif /*LFTK_ARRAY_H*/
+#endif /*TK_ARRAY_H*/

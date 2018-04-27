@@ -29,7 +29,7 @@ static ret_t on_paint_9patch(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
 
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 200, 30);
   canvas_draw_image_9patch(c, &img, &r);
@@ -49,7 +49,7 @@ static ret_t on_paint_default(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "earth", &img);
+  image_manager_load(image_manager(), "earth", &img);
 
   rect_init(s, 0, 0, img.w, img.h);
   rect_init(r, 10, 220, img.w / 2, img.h / 2);
@@ -99,7 +99,7 @@ static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 100, 60);
   canvas_draw_image_3patch_x(c, &img, &r);
@@ -121,7 +121,7 @@ static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 60, 100);
   canvas_draw_image_3patch_x(c, &img, &r);
@@ -143,7 +143,7 @@ static ret_t on_paint_repeat_x(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, 10, img.h);
   canvas_draw_image_repeat_x(c, &img, &r);
@@ -162,7 +162,7 @@ static ret_t on_paint_repeat_y(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w, 10);
   canvas_draw_image_repeat_y(c, &img, &r);
@@ -181,7 +181,7 @@ static ret_t on_paint_repeat(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h / 2);
   canvas_draw_image_repeat(c, &img, &r);
@@ -200,7 +200,7 @@ static ret_t on_paint_scale_x(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w, img.h / 2);
   canvas_draw_image_scale_w(c, &img, &r);
@@ -219,7 +219,7 @@ static ret_t on_paint_scale_y(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h);
   canvas_draw_image_scale_h(c, &img, &r);
@@ -238,7 +238,7 @@ static ret_t on_paint_scale(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h);
   canvas_draw_image_scale(c, &img, &r);
@@ -257,7 +257,7 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  image_manager_load(default_im(), "btn_blue_n", &img);
+  image_manager_load(image_manager(), "btn_blue_n", &img);
 
   rect_init(r, 10, 10, img.w / 2, img.h);
   canvas_draw_image_center(c, &img, &r);
@@ -335,13 +335,13 @@ static void draw_image(vgcanvas_t* vg) {
 
   vgcanvas_save(vg);
   vgcanvas_translate(vg, 10, 0);
-  image_manager_load(default_im(), "earth", &img);
+  image_manager_load(image_manager(), "earth", &img);
   vgcanvas_draw_image(vg, &img, 5, 5, img.w-10, img.h-10, 0, 0, img.w * 2, img.h * 2);
   
   vgcanvas_translate(vg, 100, 0);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
 
-  image_manager_load(default_im(), "bricks", &img);
+  image_manager_load(image_manager(), "bricks", &img);
 
   vgcanvas_translate(vg, 50, 0);
 

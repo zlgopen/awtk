@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_EVENTS_H
-#define LFTK_EVENTS_H
+#ifndef TK_EVENTS_H
+#define TK_EVENTS_H
 
 #include "types_def.h"
 #include "canvas.h"
@@ -308,4 +308,4 @@ typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 
 END_C_DECLS
 
-#endif /**LFTK_EVENTS_H*/
+#endif /**TK_EVENTS_H*/

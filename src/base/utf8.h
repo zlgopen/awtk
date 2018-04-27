@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UTF8_H
-#define LFTK_UTF8_H
+#ifndef TK_UTF8_H
+#define TK_UTF8_H
 
 #include "base/types_def.h"
 
@@ -31,4 +31,4 @@ wchar_t* utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
 
 END_C_DECLS
 
-#endif /*LFTK_UTF8_H*/
+#endif /*TK_UTF8_H*/

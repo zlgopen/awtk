@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_LAYOUT_DEF_H
-#define LFTK_LAYOUT_DEF_H
+#ifndef TK_LAYOUT_DEF_H
+#define TK_LAYOUT_DEF_H
 
 #include "base/types_def.h"
 
@@ -64,4 +64,4 @@ typedef struct _layout_params_t {
 
 END_C_DECLS
 
-#endif /*LFTK_LAYOUT_DEF_H*/
+#endif /*TK_LAYOUT_DEF_H*/

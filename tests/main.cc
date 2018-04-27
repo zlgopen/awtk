@@ -28,7 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
-#include "lftk.h"
+#include "tk.h"
 #include "base/mem.h"
 #include "gtest/gtest.h"
 #include "demos/resource.h"
@@ -43,10 +43,10 @@ GTEST_API_ int main(int argc, char** argv) {
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
   resource_init();
-  lftk_init_resources();
+  tk_init_resources();
   RUN_ALL_TESTS();
 
-  font_manager_destroy(default_fm());
+  font_manager_destroy(font_manager());
   resource_manager_deinit();
 
   return 0;

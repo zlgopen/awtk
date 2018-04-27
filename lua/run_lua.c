@@ -1,7 +1,7 @@
 #include <lua/lua.h>
 #include <lua/lauxlib.h>
 #include <lua/lualib.h>
-#include "lftk.h"
+#include "tk.h"
 #include "demos/resource.h"
 
 extern void luaL_openlftk(lua_State* L);
@@ -14,14 +14,14 @@ int main(int argc, char* argv[]) {
   luaL_openlibs(L);
   luaL_openlftk(L);
 
-  lftk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
+  tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
   resource_init();
 
   if (luaL_dofile(L, lua_file)) {
     fprintf(stderr, "%s\n", lua_tostring(L, -1));
     lua_pop(L, 1);
   } else {
-    lftk_run();
+    tk_run();
   }
 
   lua_close(L);

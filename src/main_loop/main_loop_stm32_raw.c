@@ -161,7 +161,7 @@ static ret_t main_loop_stm32_raw_destroy(main_loop_t* l) {
 main_loop_t* main_loop_init(int w, int h) {
   lcd_t* lcd = NULL;
   event_queue_t* queue = NULL;
-  widget_t* wm = default_wm();
+  widget_t* wm = window_manager();
   main_loop_t* base = &(loop.base);
   queue = event_queue_create(20);
   return_value_if_fail(queue != NULL, NULL);
@@ -177,7 +177,7 @@ main_loop_t* main_loop_init(int w, int h) {
   window_manager_resize(wm, w, h);
 
   lcd = lcd_reg_create(w, h);
-  canvas_init(&(loop.canvas), lcd, default_fm());
+  canvas_init(&(loop.canvas), lcd, font_manager());
   main_loop_set_default(base);
 
   return base;

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_LAYOUT_H
-#define LFTK_LAYOUT_H
+#ifndef TK_LAYOUT_H
+#define TK_LAYOUT_H
 
 #include "base/rect.h"
 #include "base/widget.h"
@@ -45,4 +45,4 @@ ret_t widget_layout_children(widget_t* widget);
 
 END_C_DECLS
 
-#endif /*LFTK_LAYOUT_H*/
+#endif /*TK_LAYOUT_H*/

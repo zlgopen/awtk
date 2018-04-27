@@ -73,7 +73,7 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_window_vtable;
 
   if (parent == NULL) {
-    parent = default_wm();
+    parent = window_manager();
   }
 
   widget_move_resize(widget, x, y, w, h);

@@ -11,8 +11,8 @@ int main() {
   mem_stat_t st;
   mem_init(heap, sizeof(heap));
 
-  str = (char*)lftk_alloc(100);
-  lftk_free(str);
+  str = (char*)tk_alloc(100);
+  tk_free(str);
 
   for (i = 0; i < ARRAY_SIZE(p); i++) {
     p[i] = (char*)MEM_ALLOC(i);

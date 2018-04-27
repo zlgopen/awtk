@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_WINDOW_MANAGER_H
-#define LFTK_WINDOW_MANAGER_H
+#ifndef TK_WINDOW_MANAGER_H
+#define TK_WINDOW_MANAGER_H
 
 #include "base/widget.h"
 #include "base/canvas.h"
@@ -52,7 +52,7 @@ typedef struct _window_manager_t {
   canvas_t* canvas;
 } window_manager_t;
 
-widget_t* default_wm(void);
+widget_t* window_manager(void);
 
 widget_t* window_manager_init(window_manager_t* wm);
 
@@ -69,4 +69,4 @@ ret_t window_manager_set_animating(widget_t* wm, bool_t animating);
 
 END_C_DECLS
 
-#endif /*LFTK_WINDOW_MANAGER_H*/
+#endif /*TK_WINDOW_MANAGER_H*/

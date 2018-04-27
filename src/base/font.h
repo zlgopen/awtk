@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_FONT_H
-#define LFTK_FONT_H
+#ifndef TK_FONT_H
+#define TK_FONT_H
 
 #include "base/types_def.h"
 
@@ -54,4 +54,4 @@ ret_t font_destroy(font_t* f);
 
 END_C_DECLS
 
-#endif /*LFTK_FONT_H*/
+#endif /*TK_FONT_H*/

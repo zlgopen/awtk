@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_TIMER_H
-#define LFTK_TIMER_H
+#ifndef TK_TIMER_H
+#define TK_TIMER_H
 
 #include "base/types_def.h"
 
@@ -112,4 +112,4 @@ uint32_t timer_count(void);
 
 END_C_DECLS
 
-#endif /*LFTK_TIMER_H*/
+#endif /*TK_TIMER_H*/

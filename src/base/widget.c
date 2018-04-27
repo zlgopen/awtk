@@ -356,7 +356,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     canvas_set_font(c, font_name, font_size);
   }
 
-  if (icon != NULL && image_manager_load(default_im(), icon, &img) == RET_OK) {
+  if (icon != NULL && image_manager_load(image_manager(), icon, &img) == RET_OK) {
     if (text != NULL && text->size > 0) {
       if (widget->h > (img.h + font_size)) {
         rect_init(dst, 0, 0, widget->w, widget->h - font_size);
@@ -428,7 +428,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   }
 
   if (image_name != NULL) {
-    if (image_manager_load(default_im(), image_name, &img) == RET_OK) {
+    if (image_manager_load(image_manager(), image_name, &img) == RET_OK) {
       rect_init(dst, 0, 0, widget->w, widget->h);
       image_draw_type_t draw_type =
           (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
@@ -855,7 +855,7 @@ ret_t widget_update_style(widget_t* widget) {
   }
 
   widget->style.data =
-      theme_find_style(theme_get_default(), widget->type, widget->style_type, state);
+      theme_find_style(theme(), widget->type, widget->style_type, state);
 
   return RET_OK;
 }

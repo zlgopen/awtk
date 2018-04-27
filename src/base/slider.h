@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_SLIDER_H
-#define LFTK_SLIDER_H
+#ifndef TK_SLIDER_H
+#define TK_SLIDER_H
 
 #include "base/widget.h"
 
@@ -140,4 +140,4 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
 
 END_C_DECLS
 
-#endif /*LFTK_SLIDER_H*/
+#endif /*TK_SLIDER_H*/

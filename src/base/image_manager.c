@@ -23,7 +23,7 @@
 #include "base/image_manager.h"
 #include "base/resource_manager.h"
 
-image_manager_t* default_im() {
+image_manager_t* image_manager() {
   static image_manager_t* imm = NULL;
   if (imm == NULL) {
     imm = image_manager_create();

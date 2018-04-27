@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_KEYS_H
-#define LFTK_KEYS_H
+#ifndef TK_KEYS_H
+#define TK_KEYS_H
 
 #ifdef SDL2
 #include <SDL2/SDL_keycode.h>
@@ -324,4 +324,4 @@ typedef enum _key_code_t {
 
 END_C_DECLS
 
-#endif /*LFTK_KEYS_H*/
+#endif /*TK_KEYS_H*/

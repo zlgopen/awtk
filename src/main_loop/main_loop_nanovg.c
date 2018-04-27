@@ -232,8 +232,8 @@ static ret_t main_loop_nanovg_create_window(main_loop_nanovg_t* l, font_manager_
 
 static main_loop_nanovg_t loop;
 main_loop_t* main_loop_init(int w, int h) {
-  widget_t* wm = default_wm();
-  font_manager_t* fm = default_fm();
+  widget_t* wm = window_manager();
+  font_manager_t* fm = font_manager();
   main_loop_t* base = &(loop.base);
 
   memset(&loop, 0x00, sizeof(loop));

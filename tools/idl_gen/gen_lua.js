@@ -64,7 +64,7 @@ function genAll(json) {
         }
       } else if (type.indexOf('*') >= 0) {
         const type_name = type.replace(/\*/g, '');
-        str += `(${type})lftk_checkudata(L, ${index+1}, "${type_name}");\n`;
+        str += `(${type})tk_checkudata(L, ${index+1}, "${type_name}");\n`;
       } else if (type.indexOf('float') >= 0 || type.indexOf('double') >= 0) {
         str += `(${type})luaL_checknumber(L, ${index+1});\n`;
       } else if (type.indexOf('bool_t') >= 0) {
@@ -102,7 +102,7 @@ function genAll(json) {
       str += '  return 1;\n';
     } else if (type.indexOf('*') >= 0) {
       const typeName = type.replace(/\*/g, "");
-      str += `  return lftk_newuserdata(L, ${name}, "${genClassChain(typeName)}", "lftk.${typeName}");\n`;
+      str += `  return tk_newuserdata(L, ${name}, "${genClassChain(typeName)}", "lftk.${typeName}");\n`;
     } else if (type.indexOf('int') >= 0) {
       str = `  lua_pushinteger(L,(lua_Integer)(${name}));\n\n`;
       str += '  return 1;\n';
@@ -256,7 +256,7 @@ function genAll(json) {
       if(cls.name === 'widget_t') {
         str += `    widget_t* child = widget_lookup(obj, name, FALSE);\n`;
         str += `    if(child != NULL) {\n`;
-        str += `      return lftk_newuserdata(L, child, "/widget_t", "lftk.widget_t");\n`;
+        str += `      return tk_newuserdata(L, child, "/widget_t", "lftk.widget_t");\n`;
         str += `    }\n`;
       }
       str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
@@ -479,7 +479,7 @@ function genAll(json) {
 }
 
 function run() {
-  fs.writeFileSync('../../lua/lftk_lua.c', genAll(JSON.parse(fs.readFileSync('idl.json').toString())));
+  fs.writeFileSync('../../lua/tk_lua.c', genAll(JSON.parse(fs.readFileSync('idl.json').toString())));
 }
 
 run();

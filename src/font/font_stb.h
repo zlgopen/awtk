@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_FONT_STB_H
-#define LFTK_FONT_STB_H
+#ifndef TK_FONT_STB_H
+#define TK_FONT_STB_H
 
 #include "base/font.h"
 
@@ -30,4 +30,4 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
 
 END_C_DECLS
 
-#endif /*LFTK_FONT_STB_H*/
+#endif /*TK_FONT_STB_H*/

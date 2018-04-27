@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_CANVAS_H
-#define LFTK_CANVAS_H
+#ifndef TK_CANVAS_H
+#define TK_CANVAS_H
 
 #include "base/lcd.h"
 #include "base/font_manager.h"
@@ -106,4 +106,4 @@ ret_t canvas_end_frame(canvas_t* c);
 
 END_C_DECLS
 
-#endif /*LFTK_CANVAS_H*/
+#endif /*TK_CANVAS_H*/

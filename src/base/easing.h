@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_EASING_H
-#define LFTK_EASING_H
+#ifndef TK_EASING_H
+#define TK_EASING_H
 
 #include "base/types_def.h"
 
@@ -60,4 +60,4 @@ easing_func_t easing_get(easing_type_t type);
 
 END_C_DECLS
 
-#endif /*LFTK_EASING_H*/
+#endif /*TK_EASING_H*/

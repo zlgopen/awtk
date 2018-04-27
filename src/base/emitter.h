@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_EMITTER_H
-#define LFTK_EMITTER_H
+#ifndef TK_EMITTER_H
+#define TK_EMITTER_H
 
 #include "base/events.h"
 
@@ -60,4 +60,4 @@ ret_t emitter_destroy(emitter_t* emitter);
 
 END_C_DECLS
 
-#endif /*LFTK_EMITTER_H*/
+#endif /*TK_EMITTER_H*/

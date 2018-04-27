@@ -6,9 +6,9 @@
 #include "tools/image_gen/image_gen.h"
 #include "image_loader/image_loader_stb.h"
 
-#define PNG_NAME LFTK_ROOT "/tests/testdata/test.png"
-#define JPG_NAME LFTK_ROOT "/tests/testdata/test.jpg"
-#define PNG_OPAQUE_NAME LFTK_ROOT "/tests/testdata/test_opaque.png"
+#define PNG_NAME TK_ROOT "/tests/testdata/test.png"
+#define JPG_NAME TK_ROOT "/tests/testdata/test.jpg"
+#define PNG_OPAQUE_NAME TK_ROOT "/tests/testdata/test_opaque.png"
 
 static ret_t load_image(const char* filename, bitmap_t* image) {
   uint32_t size = 0;
@@ -65,7 +65,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
 TEST(ImageLoaderStb, gen) {
   bitmap_t image;
   ASSERT_EQ(add_image_res(PNG_OPAQUE_NAME, "test.png"), RET_OK);
-  ASSERT_EQ(image_manager_load(default_im(), "test.png", &image), RET_OK);
+  ASSERT_EQ(image_manager_load(image_manager(), "test.png", &image), RET_OK);
 
   ASSERT_EQ(32, image.w);
   ASSERT_EQ(32, image.h);

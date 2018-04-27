@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_FONT_MANAGER_H
-#define LFTK_FONT_MANAGER_H
+#ifndef TK_FONT_MANAGER_H
+#define TK_FONT_MANAGER_H
 
 #include "base/font.h"
 #include "base/array.h"
@@ -31,7 +31,7 @@ typedef struct _font_manager_t {
   array_t fonts;
 } font_manager_t;
 
-font_manager_t* default_fm(void);
+font_manager_t* font_manager(void);
 
 font_manager_t* font_manager_create(void);
 font_manager_t* font_manager_init(font_manager_t* fm);
@@ -45,4 +45,4 @@ ret_t font_manager_destroy(font_manager_t* fm);
 
 END_C_DECLS
 
-#endif /*LFTK_FONT_MANAGER_H*/
+#endif /*TK_FONT_MANAGER_H*/

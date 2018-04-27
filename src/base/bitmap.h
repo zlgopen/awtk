@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_BITMAP_H
-#define LFTK_BITMAP_H
+#ifndef TK_BITMAP_H
+#define TK_BITMAP_H
 
 #include "base/color.h"
 
@@ -239,4 +239,4 @@ typedef enum _image_draw_type_t {
 
 END_C_DECLS
 
-#endif /*LFTK_BITMAP_H*/
+#endif /*TK_BITMAP_H*/

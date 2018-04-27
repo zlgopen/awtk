@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_PROP_NAMES_H
-#define LFTK_PROP_NAMES_H
+#ifndef TK_PROP_NAMES_H
+#define TK_PROP_NAMES_H
 
 #include "base/types_def.h"
 
@@ -50,4 +50,4 @@ BEGIN_C_DECLS
 
 END_C_DECLS
 
-#endif /*LFTK_PROP_NAMES_H*/
+#endif /*TK_PROP_NAMES_H*/

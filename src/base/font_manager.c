@@ -92,7 +92,7 @@ ret_t font_manager_destroy(font_manager_t* fm) {
   return RET_OK;
 }
 
-font_manager_t* default_fm() {
+font_manager_t* font_manager() {
   static font_manager_t* afm = NULL;
   if (afm == NULL) {
     afm = MEM_ZALLOC(font_manager_t);

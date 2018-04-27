@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_THEME_H
-#define LFTK_THEME_H
+#ifndef TK_THEME_H
+#define TK_THEME_H
 
 #include "base/color.h"
 
@@ -46,7 +46,7 @@ typedef struct _theme_t {
   const uint8_t* data;
 } theme_t;
 
-theme_t* theme_get_default(void);
+theme_t* theme(void);
 theme_t* theme_init(const uint8_t* data);
 
 const uint8_t* theme_find_style(theme_t* t, uint16_t widget_type, uint8_t style_type,
@@ -200,4 +200,4 @@ typedef enum _align_h_t {
 
 END_C_DECLS
 
-#endif /*LFTK_THEME_H*/
+#endif /*TK_THEME_H*/

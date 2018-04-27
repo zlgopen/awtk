@@ -118,12 +118,12 @@ const uint8_t* theme_find_style(theme_t* t, uint16_t widget_type, uint8_t style_
 }
 
 static theme_t s_theme;
-theme_t* theme_get_default() { return &s_theme; }
+theme_t* theme() { return &s_theme; }
 
 theme_t* theme_init(const uint8_t* data) {
   return_value_if_fail(data != NULL, NULL);
 
   s_theme.data = data;
 
-  return theme_get_default();
+  return theme();
 }

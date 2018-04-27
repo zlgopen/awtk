@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_MATRIX_H
-#define LFTK_MATRIX_H
+#ifndef TK_MATRIX_H
+#define TK_MATRIX_H
 
 #include "base/types_def.h"
 
@@ -49,4 +49,4 @@ matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t*
 
 END_C_DECLS
 
-#endif /*LFTK_MATRIX_H*/
+#endif /*TK_MATRIX_H*/

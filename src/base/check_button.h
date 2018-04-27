@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_CHECK_BUTTON_H
-#define LFTK_CHECK_BUTTON_H
+#ifndef TK_CHECK_BUTTON_H
+#define TK_CHECK_BUTTON_H
 
 #include "base/widget.h"
 
@@ -85,4 +85,4 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
 
 END_C_DECLS
 
-#endif /*LFTK_CHECK_BUTTON_H*/
+#endif /*TK_CHECK_BUTTON_H*/

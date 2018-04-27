@@ -1,5 +1,5 @@
-#ifndef LFTK_FONT_DUMMY_H
-#define LFTK_FONT_DUMMY_H
+#ifndef TK_FONT_DUMMY_H
+#define TK_FONT_DUMMY_H
 
 #include "base/font.h"
 
@@ -12,4 +12,4 @@ font_t* font_dummy_2(const char* name, uint16_t size);
 
 END_C_DECLS
 
-#endif /*LFTK_FONT_DUMMY_H*/
+#endif /*TK_FONT_DUMMY_H*/

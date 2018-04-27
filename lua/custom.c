@@ -9,7 +9,7 @@ typedef struct _userdata_info_t {
 static lua_State* s_current_L = NULL;
 extern void luaL_openlib(lua_State* L, const char* libname, const luaL_Reg* l, int nup);
 
-static int lftk_newuserdata(lua_State* L, void* data, const char* info, const char* metatable) {
+static int tk_newuserdata(lua_State* L, void* data, const char* info, const char* metatable) {
   char str[48];
   userdata_info_t* udata = NULL;
   return_value_if_fail(data != NULL, 0);
@@ -54,7 +54,7 @@ static const luaL_Reg* find_member(const luaL_Reg* funcs, const char* name) {
   return NULL;
 }
 
-static void* lftk_checkudata(lua_State* L, int idx, const char* name) {
+static void* tk_checkudata(lua_State* L, int idx, const char* name) {
   userdata_info_t* udata = (userdata_info_t*)lua_touserdata(L, idx);
   if (udata) {
     // assert(strstr(udata->info, name) != NULL);
@@ -70,7 +70,7 @@ static ret_t call_on_event(void* ctx, event_t* e) {
 
   lua_settop(L, 0);
   lua_rawgeti(L, LUA_REGISTRYINDEX, func_id);
-  lftk_newuserdata(L, e, "event_t", NULL);
+  tk_newuserdata(L, e, "event_t", NULL);
 
   lua_pcall(L, 1, 1, 0);
 
@@ -79,7 +79,7 @@ static ret_t call_on_event(void* ctx, event_t* e) {
 
 static int wrap_widget_on(lua_State* L) {
   ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
   event_type_t type = (event_type_t)luaL_checkinteger(L, 2);
 
   if (lua_isfunction(L, 3)) {
@@ -97,7 +97,7 @@ static int wrap_widget_on(lua_State* L) {
 
 static int wrap_widget_off(lua_State* L) {
   ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
   uint32_t id = (uint32_t)luaL_checkinteger(L, 2);
   emitter_item_t* item = emitter_find(widget->emitter, id);
 

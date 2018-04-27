@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UI_BUILDER_H
-#define LFTK_UI_BUILDER_H
+#ifndef TK_UI_BUILDER_H
+#define TK_UI_BUILDER_H
 
 #include "base/widget.h"
 #include "base/layout.h"
@@ -65,4 +65,4 @@ ret_t ui_builder_on_end(ui_builder_t* b);
 
 END_C_DECLS
 
-#endif /*LFTK_UI_BUILDER_H*/
+#endif /*TK_UI_BUILDER_H*/

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_BUFFER_H
-#define LFTK_BUFFER_H
+#ifndef TK_BUFFER_H
+#define TK_BUFFER_H
 
 #include "base/types_def.h"
 
@@ -61,4 +61,4 @@ ret_t rbuffer_peek_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
 END_C_DECLS
 
-#endif /*LFTK_BUFFER_H*/
+#endif /*TK_BUFFER_H*/

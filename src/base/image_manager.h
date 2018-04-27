@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_IMAGE_MANAGER_H
-#define LFTK_IMAGE_MANAGER_H
+#ifndef TK_IMAGE_MANAGER_H
+#define TK_IMAGE_MANAGER_H
 
 #include "base/array.h"
 #include "base/image_loader.h"
@@ -39,7 +39,7 @@ typedef struct _image_manager_t {
   image_loader_t* loader;
 } image_manager_t;
 
-image_manager_t* default_im(void);
+image_manager_t* image_manager(void);
 
 image_manager_t* image_manager_create(void);
 image_manager_t* image_manager_init(image_manager_t* im, image_loader_t* loader);
@@ -49,4 +49,4 @@ ret_t image_manager_destroy(image_manager_t* im);
 
 END_C_DECLS
 
-#endif /*LFTK_IMAGE_MANAGER_H*/
+#endif /*TK_IMAGE_MANAGER_H*/

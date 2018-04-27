@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_VIEW_H
-#define LFTK_VIEW_H
+#ifndef TK_VIEW_H
+#define TK_VIEW_H
 
 #include "base/widget.h"
 
@@ -52,4 +52,4 @@ widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif /*LFTK_VIEW_H*/
+#endif /*TK_VIEW_H*/

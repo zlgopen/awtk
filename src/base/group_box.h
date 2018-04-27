@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_GROUP_BOX_H
-#define LFTK_GROUP_BOX_H
+#ifndef TK_GROUP_BOX_H
+#define TK_GROUP_BOX_H
 
 #include "base/widget.h"
 
@@ -52,4 +52,4 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif /*LFTK_GROUP_BOX_H*/
+#endif /*TK_GROUP_BOX_H*/

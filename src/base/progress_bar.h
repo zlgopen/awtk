@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_PROGRESS_BAR_H
-#define LFTK_PROGRESS_BAR_H
+#ifndef TK_PROGRESS_BAR_H
+#define TK_PROGRESS_BAR_H
 
 #include "base/widget.h"
 
@@ -102,4 +102,4 @@ ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text);
 
 END_C_DECLS
 
-#endif /*LFTK_PROGRESS_BAR_H*/
+#endif /*TK_PROGRESS_BAR_H*/

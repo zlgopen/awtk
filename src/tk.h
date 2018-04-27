@@ -19,16 +19,16 @@
  *
  */
 
-#ifndef LFTK_MAIN_H
-#define LFTK_MAIN_H
+#ifndef TK_MAIN_H
+#define TK_MAIN_H
 
 #include "base/types_def.h"
 
 BEGIN_C_DECLS
 
 /**
- * @method lftk_init
- * 初始化LFTK。
+ * @method tk_init
+ * 初始化TK。
  * @global
  * @scriptable no
  * @param {wh_t} w LCD宽度。
@@ -38,29 +38,29 @@ BEGIN_C_DECLS
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lftk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size);
+ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size);
 
 /**
- * @method lftk_run
- * 进入LFTK事件主循环。
+ * @method tk_run
+ * 进入TK事件主循环。
  * @global
  * @scriptable no
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lftk_run(void);
+ret_t tk_run(void);
 
 /**
- * @method lftk_quit
- * 退出LFTK事件主循环。
+ * @method tk_quit
+ * 退出TK事件主循环。
  * @global
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lftk_quit(void);
+ret_t tk_quit(void);
 
-ret_t lftk_init_resources(void);
+ret_t tk_init_resources(void);
 
 END_C_DECLS
 
-#endif /*LFTK_MAIN_H*/
+#endif /*TK_MAIN_H*/

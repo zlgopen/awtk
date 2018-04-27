@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_THEME_GEN_H
-#define LFTK_THEME_GEN_H
+#ifndef TK_THEME_GEN_H
+#define TK_THEME_GEN_H
 
 #include <string>
 #include <vector>
@@ -82,4 +82,4 @@ class ThemeGen {
   vector<Style> styles;
 };
 
-#endif /*LFTK_THEME_GEN_H*/
+#endif /*TK_THEME_GEN_H*/

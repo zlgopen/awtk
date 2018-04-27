@@ -135,7 +135,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_dialog_vtable;
 
   if (parent == NULL) {
-    parent = default_wm();
+    parent = window_manager();
   }
 
   widget_move_resize(widget, x, y, w, h);
@@ -166,14 +166,14 @@ static ret_t dialog_idle_close(const idle_info_t* info) { return dialog_close(WI
 
 uint32_t dialog_modal(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  bool_t running = main_loop_get_default()->running;
+  bool_t running = main_loop()->running;
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   log_debug("%s run\n", __func__);
 
   widget_invalidate(widget, NULL);
-  main_loop_run(main_loop_get_default());
-  main_loop_get_default()->running = running;
+  main_loop_run(main_loop());
+  main_loop()->running = running;
 
   log_debug("%s quit\n", __func__);
   idle_add(dialog_idle_close, widget);
@@ -186,7 +186,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   dialog->quit_code = code;
-  main_loop_quit(main_loop_get_default());
+  main_loop_quit(main_loop());
 
   return RET_OK;
 }

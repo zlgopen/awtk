@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_RECT_H
-#define LFTK_RECT_H
+#ifndef TK_RECT_H
+#define TK_RECT_H
 
 #include "base/types_def.h"
 
@@ -94,4 +94,4 @@ bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
 
 END_C_DECLS
 
-#endif /*LFTK_RECT_H*/
+#endif /*TK_RECT_H*/

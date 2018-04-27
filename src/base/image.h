@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_IMAGE_H
-#define LFTK_IMAGE_H
+#ifndef TK_IMAGE_H
+#define TK_IMAGE_H
 
 #include "base/wstr.h"
 #include "base/image.h"
@@ -78,4 +78,4 @@ ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
 
 END_C_DECLS
 
-#endif /*LFTK_IMAGE_H*/
+#endif /*TK_IMAGE_H*/

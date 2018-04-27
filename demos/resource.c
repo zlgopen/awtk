@@ -1,4 +1,4 @@
-#include "lftk.h"
+#include "tk.h"
 #include "base/resource_manager.h"
 #include "res/inc/fonts/ap.data"
 #include "res/inc/fonts/default.data"
@@ -87,6 +87,6 @@ ret_t resource_init(void) {
   resource_manager_add(ui_window1);
   resource_manager_add(ui_window2);
 
-  lftk_init_resources();
+  tk_init_resources();
   return RET_OK;
 }

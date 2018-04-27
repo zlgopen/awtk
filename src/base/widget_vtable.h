@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_WIDGET_VTABLE_H
-#define LFTK_WIDGET_VTABLE_H
+#ifndef TK_WIDGET_VTABLE_H
+#define TK_WIDGET_VTABLE_H
 
 #include "base/widget.h"
 
@@ -50,4 +50,4 @@ ret_t widget_on_paint_done_null(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 
-#endif /*LFTK_WIDGET_VTABLE_H*/
+#endif /*TK_WIDGET_VTABLE_H*/

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_LABEL_H
-#define LFTK_LABEL_H
+#ifndef TK_LABEL_H
+#define TK_LABEL_H
 
 #include "base/widget.h"
 
@@ -54,4 +54,4 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif /*LFTK_LABEL_H*/
+#endif /*TK_LABEL_H*/

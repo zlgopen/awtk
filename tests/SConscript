@@ -1,15 +1,15 @@
 import os
 import sys
 
-LFTK_ROOT=os.environ['LFTK_ROOT'];
+TK_ROOT=os.environ['TK_ROOT'];
 GTEST_ROOT=os.environ['GTEST_ROOT'];
 BIN_DIR=os.environ['BIN_DIR'];
 
 env=DefaultEnvironment().Clone();
 
-INCLUDE_PATH = [LFTK_ROOT, 
+INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
-  os.path.join(LFTK_ROOT, 'src'),  
+  os.path.join(TK_ROOT, 'src'),  
   os.path.join(GTEST_ROOT, 'src'),
   os.path.join(GTEST_ROOT, 'include'),
   os.path.join(GTEST_ROOT, 'make')]

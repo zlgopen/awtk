@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_BUTTON_H
-#define LFTK_BUTTON_H
+#ifndef TK_BUTTON_H
+#define TK_BUTTON_H
 
 #include "base/widget.h"
 
@@ -54,4 +54,4 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 END_C_DECLS
 
-#endif /*LFTK_BUTTON_H*/
+#endif /*TK_BUTTON_H*/

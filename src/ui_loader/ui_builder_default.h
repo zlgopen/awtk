@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UI_BUILDER_DEFAULT_H
-#define LFTK_UI_BUILDER_DEFAULT_H
+#ifndef TK_UI_BUILDER_DEFAULT_H
+#define TK_UI_BUILDER_DEFAULT_H
 
 #include "ui_loader/ui_builder.h"
 
@@ -33,4 +33,4 @@ widget_t* dialog_open(const char* name);
 
 END_C_DECLS
 
-#endif /*LFTK_UI_BUILDER_DEFAULT_H*/
+#endif /*TK_UI_BUILDER_DEFAULT_H*/

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_COLOR_H
-#define LFTK_COLOR_H
+#ifndef TK_COLOR_H
+#define TK_COLOR_H
 
 #include "base/types_def.h"
 
@@ -46,4 +46,4 @@ color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 END_C_DECLS
 
-#endif /*LFTK_COLOR_H*/
+#endif /*TK_COLOR_H*/

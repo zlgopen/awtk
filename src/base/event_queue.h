@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_EVENT_QUEUE_H
-#define LFTK_EVENT_QUEUE_H
+#ifndef TK_EVENT_QUEUE_H
+#define TK_EVENT_QUEUE_H
 
 #include "base/events.h"
 
@@ -50,4 +50,4 @@ ret_t event_queue_destroy(event_queue_t* q);
 
 END_C_DECLS
 
-#endif /*LFTK_EVENT_QUEUE_H*/
+#endif /*TK_EVENT_QUEUE_H*/

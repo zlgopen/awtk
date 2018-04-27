@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_FONT_BITMAP_H
-#define LFTK_FONT_BITMAP_H
+#ifndef TK_FONT_BITMAP_H
+#define TK_FONT_BITMAP_H
 
 #include "base/font.h"
 
@@ -41,4 +41,4 @@ font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_
 
 END_C_DECLS
 
-#endif /*LFTK_FONT_BITMAP_H*/
+#endif /*TK_FONT_BITMAP_H*/

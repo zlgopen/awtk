@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UI_LOADER_DEFAULT_H
-#define LFTK_UI_LOADER_DEFAULT_H
+#ifndef TK_UI_LOADER_DEFAULT_H
+#define TK_UI_LOADER_DEFAULT_H
 
 #include "ui_loader/ui_loader.h"
 
@@ -30,4 +30,4 @@ ui_loader_t* default_ui_loader();
 
 END_C_DECLS
 
-#endif /*LFTK_UI_LOADER_DEFAULT_H*/
+#endif /*TK_UI_LOADER_DEFAULT_H*/

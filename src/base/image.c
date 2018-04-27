@@ -122,7 +122,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 ret_t image_set_image_name(widget_t* widget, const char* name) {
   bitmap_t bitmap;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(image_manager_load(default_im(), name, &bitmap) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(image_manager_load(image_manager(), name, &bitmap) == RET_OK, RET_BAD_PARAMS);
 
   return image_set_image(widget, &bitmap);
 }

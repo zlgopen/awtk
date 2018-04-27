@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_WINDOW_H
-#define LFTK_WINDOW_H
+#ifndef TK_WINDOW_H
+#define TK_WINDOW_H
 
 #include "base/widget.h"
 #include "base/window_animator.h"
@@ -75,4 +75,4 @@ ret_t window_close(widget_t* parent);
 
 END_C_DECLS
 
-#endif /*LFTK_WINDOW_H*/
+#endif /*TK_WINDOW_H*/

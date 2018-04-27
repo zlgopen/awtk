@@ -126,9 +126,9 @@ typedef enum _align_v_t {
 * 1.实现wrap函数
 
 ```
-static int wrap_lftk_quit(lua_State* L) {
+static int wrap_tk_quit(lua_State* L) {
   ret_t ret = 0;
-  ret = (ret_t)lftk_quit();
+  ret = (ret_t)tk_quit();
 
   lua_pushnumber(L,(lua_Number)(ret));
 
@@ -139,8 +139,8 @@ static int wrap_lftk_quit(lua_State* L) {
 * 2.注册
 
 ```
-  lua_pushcfunction(L, wrap_lftk_quit);
-  lua_setglobal(L, "lftk_quit");
+  lua_pushcfunction(L, wrap_tk_quit);
+  lua_setglobal(L, "tk_quit");
 ```
 
 ### 二、构造函数的绑定
@@ -150,14 +150,14 @@ static int wrap_lftk_quit(lua_State* L) {
 ```
 static int wrap_button_create(lua_State* L) {
   widget_t* ret = NULL;
-  widget_t* parent = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* parent = (widget_t*)tk_checkudata(L, 1, "widget_t");
   xy_t x = (xy_t)luaL_checkinteger(L, 2);
   xy_t y = (xy_t)luaL_checkinteger(L, 3);
   wh_t w = (wh_t)luaL_checkinteger(L, 4);
   wh_t h = (wh_t)luaL_checkinteger(L, 5);
   ret = (widget_t*)button_create(parent, x, y, w, h);
 
-  return lftk_newuserdata(L, ret, "/button_t/widget_t", "lftk.button_t");
+  return tk_newuserdata(L, ret, "/button_t/widget_t", "lftk.button_t");
 }
 ```
 
@@ -181,7 +181,7 @@ static void button_t_init(lua_State* L) {
 ```
 static int wrap_check_button_set_value(lua_State* L) { 
   ret_t ret = 0; 
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
   uint32_t value = (uint32_t)luaL_checkinteger(L, 2);
   ret = (ret_t)check_button_set_value(widget, value);
 
@@ -207,7 +207,7 @@ static const struct luaL_Reg check_button_t_member_funcs[] = {
 
 ```
 static int wrap_check_button_t_get_prop(lua_State* L) {
-  check_button_t* obj = (check_button_t*)lftk_checkudata(L, 1, "check_button_t");
+  check_button_t* obj = (check_button_t*)tk_checkudata(L, 1, "check_button_t");
   const char* name = (const char*)luaL_checkstring(L, 2);
   const luaL_Reg* ret = find_member(check_button_t_member_funcs, name);
 
@@ -250,7 +250,7 @@ static int wrap_check_button_t_get_prop(lua_State* L) {
 
 ```
 static int wrap_check_button_t_set_prop(lua_State* L) {
-  check_button_t* obj = (check_button_t*)lftk_checkudata(L, 1, "check_button_t");
+  check_button_t* obj = (check_button_t*)tk_checkudata(L, 1, "check_button_t");
   const char* name = (const char*)luaL_checkstring(L, 2);
 (void)obj;
 (void)name;
@@ -291,7 +291,7 @@ static ret_t call_on_event(void* ctx, event_t* e) {
 
   lua_settop(L, 0); 
   lua_rawgeti(L, LUA_REGISTRYINDEX, func_id);
-  lftk_newuserdata(L, e, "event_t", NULL);
+  tk_newuserdata(L, e, "event_t", NULL);
 
   lua_pcall(L,1,1,0);
 
@@ -300,7 +300,7 @@ static ret_t call_on_event(void* ctx, event_t* e) {
 
 static int wrap_widget_on(lua_State* L) {
   ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
   event_type_t type = (event_type_t)luaL_checkinteger(L, 2); 
 
   if(lua_isfunction(L, 3)) {
@@ -318,7 +318,7 @@ static int wrap_widget_on(lua_State* L) {
 
 static int wrap_widget_off(lua_State* L) {
   ret_t ret = 0;
-  widget_t* widget = (widget_t*)lftk_checkudata(L, 1, "widget_t");
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
   uint32_t id = (uint32_t)luaL_checkinteger(L, 2); 
   emitter_item_t* item = emitter_find(widget->emitter, id);
 

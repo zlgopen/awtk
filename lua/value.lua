@@ -20,5 +20,5 @@ print(ValueType.FLOAT);
 
 v:destroy();
 
-lftk_quit();
+tk_quit();
 

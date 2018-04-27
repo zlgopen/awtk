@@ -271,7 +271,7 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   }
 }
 
-widget_t* default_wm() {
+widget_t* window_manager() {
   static window_manager_t* wm = NULL;
   if (wm == NULL) {
     wm = MEM_ZALLOC(window_manager_t);

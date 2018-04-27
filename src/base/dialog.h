@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_DIALOG_H
-#define LFTK_DIALOG_H
+#ifndef TK_DIALOG_H
+#define TK_DIALOG_H
 
 #include "base/wstr.h"
 #include "base/widget.h"
@@ -100,4 +100,4 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 
 END_C_DECLS
 
-#endif /*LFTK_DIALOG_H*/
+#endif /*TK_DIALOG_H*/

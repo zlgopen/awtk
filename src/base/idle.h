@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_IDEL_H
-#define LFTK_IDEL_H
+#ifndef TK_IDEL_H
+#define TK_IDEL_H
 
 #include "base/types_def.h"
 
@@ -96,4 +96,4 @@ uint32_t idle_count(void);
 
 END_C_DECLS
 
-#endif /*LFTK_IDEL_H*/
+#endif /*TK_IDEL_H*/

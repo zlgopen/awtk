@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_ENUMS_H
-#define LFTK_ENUMS_H
+#ifndef TK_ENUMS_H
+#define TK_ENUMS_H
 
 #include "base/types_def.h"
 
@@ -58,4 +58,4 @@ const key_type_value_t* window_animator_type_find_by_value(uint32_t value);
 
 END_C_DECLS
 
-#endif /*LFTK_ENUMS_H*/
+#endif /*TK_ENUMS_H*/

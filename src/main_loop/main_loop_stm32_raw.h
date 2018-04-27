@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_MAIN_LOOP_STM32_RAW_H
-#define LFTK_MAIN_LOOP_STM32_RAW_H
+#ifndef TK_MAIN_LOOP_STM32_RAW_H
+#define TK_MAIN_LOOP_STM32_RAW_H
 
 #include "base/main_loop.h"
 
@@ -30,4 +30,4 @@ main_loop_t* main_loop_init(int w, int h);
 
 END_C_DECLS
 
-#endif /*LFTK_MAIN_LOOP_STM32_RAW_H*/
+#endif /*TK_MAIN_LOOP_STM32_RAW_H*/

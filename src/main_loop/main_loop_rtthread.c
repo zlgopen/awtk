@@ -165,7 +165,7 @@ rt_bool_t on_event(struct rtgui_object* object, rtgui_event_t* event) {
 
 main_loop_t* main_loop_init(int w, int h) {
   lcd_t* lcd = NULL;
-  widget_t* wm = default_wm();
+  widget_t* wm = window_manager();
   main_loop_t* base = &(loop.base);
   struct rtgui_graphic_driver* driver = rtgui_graphic_driver_get_default();
   return_value_if_fail(driver != NULL, NULL);
@@ -181,7 +181,7 @@ main_loop_t* main_loop_init(int w, int h) {
   window_manager_resize(wm, driver->width, driver->height);
 
   lcd = lcd_rtthread_init(driver);
-  canvas_init(&(loop.canvas), lcd, default_fm());
+  canvas_init(&(loop.canvas), lcd, font_manager());
 
   // DebugBreak();
   loop.main_win = rtgui_mainwin_create(RT_NULL, "UiWindow", RTGUI_WIN_STYLE_NO_TITLE);

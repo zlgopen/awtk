@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_VG_CANVAS_H
-#define LFTK_VG_CANVAS_H
+#ifndef TK_VG_CANVAS_H
+#define TK_VG_CANVAS_H
 
 #include "base/rect.h"
 #include "base/bitmap.h"
@@ -781,4 +781,4 @@ ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 
 END_C_DECLS
 
-#endif /*LFTK_VG_CANVAS_H*/
+#endif /*TK_VG_CANVAS_H*/

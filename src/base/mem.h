@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_MEM_MANAGER_H
-#define LFTK_MEM_MANAGER_H
+#ifndef TK_MEM_MANAGER_H
+#define TK_MEM_MANAGER_H
 
 #include "base/types_def.h"
 
@@ -47,17 +47,17 @@ void mem_info_dump(void);
 #define MEM_REALLOC(type, p, n) (type*)realloc(p, (n) * sizeof(type))
 #define MEM_FREE(p) free(p)
 #else
-void* lftk_calloc(uint32_t nmemb, uint32_t size);
-void* lftk_realloc(void* ptr, uint32_t size);
-void lftk_free(void* ptr);
-void* lftk_alloc(uint32_t size);
+void* tk_calloc(uint32_t nmemb, uint32_t size);
+void* tk_realloc(void* ptr, uint32_t size);
+void tk_free(void* ptr);
+void* tk_alloc(uint32_t size);
 
-#define MEM_ALLOC(size) lftk_alloc(size)
-#define MEM_ZALLOC(type) (type*)lftk_calloc(1, sizeof(type))
-#define MEM_ZALLOCN(type, n) (type*)lftk_calloc(n, sizeof(type))
-#define MEM_REALLOC(type, p, n) (type*)lftk_realloc(p, (n) * sizeof(type))
-#define MEM_FREE(p) lftk_free(p)
+#define MEM_ALLOC(size) tk_alloc(size)
+#define MEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type))
+#define MEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type))
+#define MEM_REALLOC(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type))
+#define MEM_FREE(p) tk_free(p)
 #endif
 
 END_C_DECLS
-#endif /*LFTK_MEM_MANAGER_H*/
+#endif /*TK_MEM_MANAGER_H*/

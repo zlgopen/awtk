@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UI_BUILDER_WRITER_H
-#define LFTK_UI_BUILDER_WRITER_H
+#ifndef TK_UI_BUILDER_WRITER_H
+#define TK_UI_BUILDER_WRITER_H
 
 #include "base/buffer.h"
 #include "ui_loader/ui_builder.h"
@@ -31,4 +31,4 @@ ui_builder_t* ui_builder_writer(wbuffer_t* wbuffer);
 
 END_C_DECLS
 
-#endif /*LFTK_UI_BUILDER_WRITER_H*/
+#endif /*TK_UI_BUILDER_WRITER_H*/

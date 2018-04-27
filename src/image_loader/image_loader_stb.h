@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_IMAGE_LOADER_STB_H
-#define LFTK_IMAGE_LOADER_STB_H
+#ifndef TK_IMAGE_LOADER_STB_H
+#define TK_IMAGE_LOADER_STB_H
 
 #include "base/image_loader.h"
 
@@ -30,4 +30,4 @@ image_loader_t* image_loader_stb();
 
 END_C_DECLS
 
-#endif /*LFTK_IMAGE_LOADER_STB_H*/
+#endif /*TK_IMAGE_LOADER_STB_H*/

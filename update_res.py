@@ -83,7 +83,7 @@ def writeResult(str):
   os.close(fd)
 
 def gen_res_c():
-  result = '#include "lftk.h"\n'
+  result = '#include "tk.h"\n'
   result += '#include "base/resource_manager.h"\n'
 
   files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
@@ -111,7 +111,7 @@ def gen_res_c():
     result += '  resource_manager_add('+basename+');\n'
 
   result += '\n'
-  result += '  lftk_init_resources();\n'
+  result += '  tk_init_resources();\n'
   result += '  return RET_OK;\n'
   result += '}\n'
   writeResult(result);

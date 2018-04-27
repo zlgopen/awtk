@@ -25,7 +25,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "resource.h"
-#include "lftk.h"
+#include "tk.h"
 #include "base/mem.h"
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_builder_default.h"
@@ -73,10 +73,10 @@ int main(int argc, char* argv[]) {
 #endif
   widget_t* win = NULL;
 
-  lftk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
+  tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
   resource_init();
   win = prefix_xml_ui(filename);
-  lftk_run();
+  tk_run();
   widget_destroy(win);
 
   return 0;

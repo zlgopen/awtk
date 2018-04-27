@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_WINDOW_ANIMATOR_H
-#define LFTK_WINDOW_ANIMATOR_H
+#ifndef TK_WINDOW_ANIMATOR_H
+#define TK_WINDOW_ANIMATOR_H
 
 #include "base/widget.h"
 #include "base/easing.h"
@@ -160,4 +160,4 @@ ret_t window_animator_destroy(window_animator_t* wa);
 
 END_C_DECLS
 
-#endif /*LFTK_WINDOW_ANIMATOR_H*/
+#endif /*TK_WINDOW_ANIMATOR_H*/

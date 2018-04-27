@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_WIDGET_H
-#define LFTK_WIDGET_H
+#ifndef TK_WIDGET_H
+#define TK_WIDGET_H
 
 #include "base/wstr.h"
 #include "base/value.h"
@@ -831,4 +831,4 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
 
 END_C_DECLS
 
-#endif /*LFTK_WIDGET_H*/
+#endif /*TK_WIDGET_H*/

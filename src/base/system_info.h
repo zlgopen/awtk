@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_SYSTEM_INFO_H
-#define LFTK_SYSTEM_INFO_H
+#ifndef TK_SYSTEM_INFO_H
+#define TK_SYSTEM_INFO_H
 
 #include "base/lcd.h"
 
@@ -37,4 +37,4 @@ system_info_t* system_info();
 
 END_C_DECLS
 
-#endif /*LFTK_SYSTEM_INFO_H*/
+#endif /*TK_SYSTEM_INFO_H*/

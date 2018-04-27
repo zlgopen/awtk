@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_IMAGE_LOADER_H
-#define LFTK_IMAGE_LOADER_H
+#ifndef TK_IMAGE_LOADER_H
+#define TK_IMAGE_LOADER_H
 
 #include "base/bitmap.h"
 
@@ -54,4 +54,4 @@ ret_t image_loader_load(image_loader_t* loader, const uint8_t* buff, uint32_t si
 
 END_C_DECLS
 
-#endif /*LFTK_IMAGE_LOADER_H*/
+#endif /*TK_IMAGE_LOADER_H*/

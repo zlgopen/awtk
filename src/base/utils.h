@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_UTILS_H
-#define LFTK_UTILS_H
+#ifndef TK_UTILS_H
+#define TK_UTILS_H
 
 #include "base/types_def.h"
 
@@ -36,4 +36,4 @@ long ftk_strtol(const char* str, const char** end, int base);
 
 END_C_DECLS
 
-#endif /*LFTK_UTILS_H*/
+#endif /*TK_UTILS_H*/

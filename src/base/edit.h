@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_EDIT_H
-#define LFTK_EDIT_H
+#ifndef TK_EDIT_H
+#define TK_EDIT_H
 
 #include "base/widget.h"
 
@@ -192,4 +192,4 @@ ret_t edit_set_input_tips(widget_t* widget, const wchar_t* tips);
 
 END_C_DECLS
 
-#endif /*LFTK_EDIT_H*/
+#endif /*TK_EDIT_H*/

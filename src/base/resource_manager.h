@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LFTK_RESOURCE_MANAGER_H
-#define LFTK_RESOURCE_MANAGER_H
+#ifndef TK_RESOURCE_MANAGER_H
+#define TK_RESOURCE_MANAGER_H
 
 #include "base/types_def.h"
 
@@ -145,4 +145,4 @@ const resource_info_t** resource_manager_get_all(uint32_t* size);
 
 END_C_DECLS
 
-#endif /*LFTK_RESOURCE_MANAGER_H*/
+#endif /*TK_RESOURCE_MANAGER_H*/
