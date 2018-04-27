@@ -25,8 +25,6 @@ static ret_t window_animator_open_top_to_bottom_draw_prev(window_animator_t* wa)
 }
 
 static ret_t window_animator_open_top_to_bottom_draw_curr(window_animator_t* wa) {
-  rect_t src;
-  rect_t dst;
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
@@ -41,6 +39,8 @@ static ret_t window_animator_open_top_to_bottom_draw_curr(window_animator_t* wa)
   vgcanvas_draw_image(vg, &(wa->curr_img), win->x * ratio, y * ratio, win->w * ratio, h * ratio,
                       win->x, 0, win->w, h);
 #else
+  rect_t src;
+  rect_t dst;
   int32_t h = win->h * percent;
   int32_t y = win->h - h;
 

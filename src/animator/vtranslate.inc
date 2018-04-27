@@ -11,8 +11,6 @@ static ret_t window_animator_open_vtranslate_update_percent(window_animator_t* w
 }
 
 static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
-  rect_t src;
-  rect_t dst;
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
@@ -25,6 +23,8 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
   vgcanvas_draw_image(vg, &(wa->prev_img), win->x * ratio, y * ratio, win->w * ratio, h * ratio,
                       win->x, 0, win->w, h);
 #else
+  rect_t src;
+  rect_t dst;
   rect_init(src, win->x * ratio, y * ratio, win->w * ratio, h * ratio);
   rect_init(dst, win->x, 0, win->w, h);
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
@@ -34,8 +34,6 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
 }
 
 static ret_t window_animator_open_vtranslate_draw_curr(window_animator_t* wa) {
-  rect_t src;
-  rect_t dst;
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
@@ -48,6 +46,8 @@ static ret_t window_animator_open_vtranslate_draw_curr(window_animator_t* wa) {
   vgcanvas_draw_image(vg, &(wa->curr_img), win->x, 0, win->w * ratio, h * ratio, win->x, y, win->w,
                       h);
 #else
+  rect_t src;
+  rect_t dst;
   rect_init(src, win->x, 0, win->w * ratio, h * ratio);
   rect_init(dst, win->x, y, win->w, h);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
