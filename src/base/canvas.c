@@ -1015,3 +1015,27 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
     }
   }
 }
+
+ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
+  rect_t src;
+  rect_t dst;
+  vgcanvas_t* vg = NULL;
+  wh_t hw = 0;
+  wh_t hh = 0;
+  return_value_if_fail(c != NULL && img != NULL, RET_BAD_PARAMS);
+
+  rect_init(src, 0, 0, img->w, img->h);
+  vg = lcd_get_vgcanvas(c->lcd);
+  if(vg && vg->ratio  > 1) {
+    float_t ratio = 1.0f/vg->ratio;
+    hw = img->w*ratio*0.5;
+    hh = img->h*ratio*0.5;
+    rect_init(dst, cx-hw, cy-hh, 2*hw, 2*hh);
+  } else {
+    hw = img->w>>1;
+    hh = img->h>>1;
+    rect_init(dst, cx-hw, cy-hh, img->w, img->h);
+  }
+  
+  return canvas_draw_image(c, img, &src, &dst);
+}

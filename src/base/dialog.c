@@ -25,6 +25,7 @@
 #include "base/enums.h"
 #include "base/utils.h"
 #include "base/dialog.h"
+#include "base/layout.h"
 #include "base/group_box.h"
 #include "base/main_loop.h"
 #include "base/image_manager.h"

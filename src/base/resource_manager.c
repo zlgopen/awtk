@@ -89,7 +89,6 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       } else if(dpr >= 2) { 
         ratio = "x2";
       }
-      ratio = "x1";
 
       snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name); 
       size = fs_file_size(path);

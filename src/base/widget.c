@@ -357,10 +357,15 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   }
 
   if (icon != NULL && image_manager_load(image_manager(), icon, &img) == RET_OK) {
+    xy_t cx = 0;
+    xy_t cy = 0;
+
     if (text != NULL && text->size > 0) {
       if (widget->h > (img.h + font_size)) {
         rect_init(dst, 0, 0, widget->w, widget->h - font_size);
-        canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+        cx = dst.w >> 1;
+        cy = dst.h >> 1;
+        canvas_draw_icon(c, &img, cx, cy);
 
         w = canvas_measure_text(c, text->str, text->size);
         x = (widget->w - w) >> 1;
@@ -368,7 +373,9 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
         canvas_draw_text(c, text->str, text->size, x, y);
       } else {
         rect_init(dst, 0, 0, widget->h, widget->h);
-        canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+        cx = dst.w >> 1;
+        cy = dst.h >> 1;
+        canvas_draw_icon(c, &img, cx, cy);
 
         x = widget->h + 2;
         y = (widget->h - font_size) >> 1;
@@ -376,7 +383,9 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
       }
     } else {
       rect_init(dst, 0, 0, widget->w, widget->h);
-      canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &dst);
+      cx = dst.w >> 1;
+      cy = dst.h >> 1;
+      canvas_draw_icon(c, &img, cx, cy);
     }
   } else if (text != NULL && text->size > 0) {
     int32_t align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);

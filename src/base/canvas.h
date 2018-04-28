@@ -82,6 +82,7 @@ ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
+ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy);
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst);

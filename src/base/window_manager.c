@@ -22,8 +22,8 @@
 #include "base/keys.h"
 #include "base/mem.h"
 #include "base/idle.h"
+#include "base/time.h"
 #include "base/timer.h"
-#include "base/platform.h"
 #include "base/prop_names.h"
 #include "base/window_manager.h"
 
@@ -245,7 +245,7 @@ static ret_t timer_enable_user_input(const timer_info_t* timer) {
 }
 
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
-  uint32_t time_ms = get_time_ms();
+  uint32_t time_ms = time_now_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
   ret_t ret = window_animator_update(wm->animator, time_ms);
