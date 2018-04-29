@@ -37,6 +37,7 @@ typedef enum _resource_type_t {
   RESOURCE_TYPE_THEME,
   RESOURCE_TYPE_UI,
   RESOURCE_TYPE_XML,
+  RESOURCE_TYPE_STRINGS,
   RESOURCE_TYPE_DATA
 } resource_type_t;
 
@@ -94,7 +95,6 @@ typedef struct _resource_manager_t {
   array_t resources;
 } resource_manager_t;
 
-
 /**
  * @method resource_manager
  * 获取缺省资源管理器。
@@ -122,8 +122,6 @@ ret_t resource_manager_set(resource_manager_t* rm);
  * @return {resource_manager_t*} 返回resource manager对象。
  */
 resource_manager_t* resource_manager_create(uint32_t init_res_nr);
-
-resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name);
 
 /**
  * @method resource_manager_init
@@ -153,9 +151,20 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info);
  * @param {resource_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
  *
- * @return {ret_t} 返回资源。
+ * @return {resource_info_t*} 返回资源。
  */
 const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type, const char* name);
+
+/**
+ * @method resource_manager_load
+ * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。
+ * @param {resource_manager_t*} rm resource manager对象。
+ * @param {resource_type_t} type 资源的类型。
+ * @param {char*} name 资源的名称。
+ *
+ * @return {resource_info_t*} 返回资源。
+ */
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name);
 
 /**
  * @method resource_manager_unref
@@ -188,3 +197,4 @@ ret_t resource_manager_destroy(resource_manager_t* rm);
 END_C_DECLS
 
 #endif /*TK_RESOURCE_MANAGER_H*/
+

@@ -37,17 +37,21 @@
 * 矢量图绘图函数接口。
 * slider
 * nanovg实现vgcanvas接口
+* picasso实现vgcanvas接口
 * 支持窗口动画
+* 资源管理器支持从ROM和文件中加载。
 
 ## 短期计划(顺序不定)
-
 * agg实现vgcanvas接口
+* 国际化支持
 * API doc到PDF转换工具
 * image value
 * combobox
 * listbox
 * tableview
 * edit
+* menu
+* chart
 * spinbox
 * drag & drop
 * tab控件
@@ -60,16 +64,16 @@
 * sylixos移植
 * djyos移植
 * 嵌入式linux移植
-* 用LFTK实现界面编辑器
 * remote client
 * 支持tween动画
 
 ## 长期计划
+* 用LFTK实现界面编辑器
 * 支持粒子产生器
 * 支持骨骼动画
 * flash播放器支持
-* android移植
 * ios移植
+* android移植
 * 在浏览器中运行
 * 微信小程序类的开发方法
 

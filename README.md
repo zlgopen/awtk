@@ -85,6 +85,7 @@ bin\demo1
 * [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
 * [LFTK中的事件处理函数](docs/event_listener.md)
 * [LFTK中的主题](docs/theme.md)
+* [LFTK中的资源管理器](docs/resource_manager.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
