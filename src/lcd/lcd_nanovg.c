@@ -31,9 +31,12 @@
 lcd_t* lcd_nanovg_init(SDL_Window* sdl_window) {
   int w = 0;
   int h = 0;
+  vgcanvas_t* vg = NULL;
   return_value_if_fail(sdl_window != NULL, NULL);
 
   SDL_GetWindowSize(sdl_window, &w, &h);
+  vg = vgcanvas_create(w, h, sdl_window);
+  return_value_if_fail(vg != NULL, NULL);
 
-  return lcd_vgcanvas_init(w, h, vgcanvas_create(w, h, sdl_window));
+  return lcd_vgcanvas_init(w, h, vg);
 }

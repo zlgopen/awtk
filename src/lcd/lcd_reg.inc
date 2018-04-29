@@ -181,6 +181,7 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
 
   lcd->w = w;
   lcd->h = h;
+  lcd->ratio = 1;
   lcd->type = LCD_REGISTER;
   info->lcd_w = lcd->w;
   info->lcd_h = lcd->h;
