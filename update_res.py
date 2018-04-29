@@ -17,12 +17,26 @@ INPUT_DIR=joinPath(APP_DIR, 'res/raw')
 OUTPUT_DIR=joinPath(APP_DIR, 'res/inc')
 RESOURCE_C=joinPath(APP_DIR, 'resource.c')
 
+OS_NAME=platform.system()
+
+def toTarget(name):
+  if OS_NAME == 'Windows':
+    return 'bin\\'+name+'.exe'
+  else:
+    return 'bin/'+name;
+  
+def toExe(name):
+  if OS_NAME == 'Windows':
+    return joinPath(BIN_DIR, name+'.exe')
+  else:
+    return joinPath(BIN_DIR, name)
+	
 def buildTools():
-  os.system('scons bin/resgen')
-  os.system('scons bin/fontgen')
-  os.system('scons bin/themegen')
-  os.system('scons bin/imagegen')
-  os.system('scons bin/xml_to_ui')
+  os.system('scons '+toTarget('resgen'))
+  os.system('scons '+toTarget('themegen'))
+  os.system('scons '+toTarget('imagegen'))
+  os.system('scons '+toTarget('xml_to_ui'))
+
 
 def buildAll():
   os.system('scons')
@@ -40,28 +54,28 @@ def prepare():
   os.makedirs(joinPath(OUTPUT_DIR, 'ui'));
 
 def themegen(raw, inc):
-  print(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
-  os.system(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+  print(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+  os.system(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
 
 def themegen_bin(raw, bin):
-  print(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
-  os.system(joinPath(BIN_DIR, 'themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+  print(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+  os.system(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
 
 def resgen(raw, inc):
-  os.system(joinPath(BIN_DIR, 'resgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+  os.system(toExe('resgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
 
 def fontgen(raw, text, inc, size):
-  os.system(joinPath(BIN_DIR, 'fontgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, text) +' ' + joinPath(OUTPUT_DIR, inc) + ' ' + str(size))
+  os.system(toExe('fontgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, text) +' ' + joinPath(OUTPUT_DIR, inc) + ' ' + str(size))
 
 def imagegen(raw, inc):
-  print(joinPath(BIN_DIR, 'imagegen') + ' ' + raw + ' ' + inc)
-  os.system(joinPath(BIN_DIR, 'imagegen') + ' ' + raw + ' ' + inc)
+  print(toExe('imagegen') + ' ' + raw + ' ' + inc)
+  os.system(toExe('imagegen') + ' ' + raw + ' ' + inc)
 
 def xml_to_ui(raw, inc):
-  os.system(joinPath(BIN_DIR, 'xml_to_ui') + ' ' + raw + ' ' + inc)
+  os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
 
 def xml_to_ui_bin(raw, bin):
-  os.system(joinPath(BIN_DIR, 'xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
+  os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
 
 def gen_all():
   themegen('theme/theme.xml', 'theme/default.data');
