@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   system_info.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  system info
@@ -33,7 +33,7 @@ typedef struct _system_info_t {
   float_t device_pixel_ratio;
 } system_info_t;
 
-system_info_t* system_info();
+system_info_t* system_info(void);
 
 END_C_DECLS
 

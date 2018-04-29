@@ -43,7 +43,7 @@ static inline color_t to_color(pixel_t pixel) {
   uint16_t g = (0xff & ((pixel >> 5) << 2));
   uint16_t b = (0xff & (pixel << 3));
 
-  return color_init(r, g, b, a);
+  return color_init(r, g, b, 0xff);
 }
 
 static inline pixel_t blend_pixel(pixel_t pixel, color_t c) {
