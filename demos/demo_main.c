@@ -63,8 +63,8 @@ int main(void) {
 
   tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
 
-  log_debug("system_info: lcd_w=%d lcd_h=%d lcd_type=%d device_pixel_ratio=%f\n", 
-    info->lcd_w, info->lcd_h, info->lcd_type, info->device_pixel_ratio);
+  log_debug("system_info: lcd_w=%d lcd_h=%d lcd_type=%d device_pixel_ratio=%f\n", info->lcd_w,
+            info->lcd_h, info->lcd_type, info->device_pixel_ratio);
   resource_init();
   application_init();
 

@@ -204,6 +204,6 @@ typedef float float_t;
 
 #ifndef MAX_PATH
 #define MAX_PATH 255
-#endif/*MAX_PATH*/
+#endif /*MAX_PATH*/
 
 #endif /*TYPES_DEF_H*/

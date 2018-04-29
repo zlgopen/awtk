@@ -809,12 +809,12 @@ ret_t widget_destroy(widget_t* widget) {
   }
 
   if (widget->layout_params != NULL) {
-    MEM_FREE(widget->layout_params);
+    TKMEM_FREE(widget->layout_params);
   }
 
   wstr_reset(&(widget->text));
   memset(widget, 0x00, sizeof(widget_t));
-  MEM_FREE(widget);
+  TKMEM_FREE(widget);
 
   return RET_OK;
 }
@@ -863,8 +863,7 @@ ret_t widget_update_style(widget_t* widget) {
     state = WIDGET_STATE_DISABLE;
   }
 
-  widget->style.data =
-      theme_find_style(theme(), widget->type, widget->style_type, state);
+  widget->style.data = theme_find_style(theme(), widget->type, widget->style_type, state);
 
   return RET_OK;
 }

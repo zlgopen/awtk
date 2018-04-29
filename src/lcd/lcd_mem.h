@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LCD_MEM_H
-#define LCD_MEM_H
+#ifndef LCD_TKMEM_H
+#define LCD_TKMEM_H
 
 #include "base/lcd.h"
 
@@ -36,4 +36,4 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc);
 
 END_C_DECLS
 
-#endif /*LCD_MEM_H*/
+#endif /*LCD_TKMEM_H*/

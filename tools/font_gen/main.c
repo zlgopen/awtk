@@ -61,8 +61,8 @@ int main(int argc, char** argv) {
     font_gen(font, (uint16_t)font_size, str_buff, output_filename);
   }
 
-  MEM_FREE(ttf_buff);
-  MEM_FREE(str_buff);
+  TKMEM_FREE(ttf_buff);
+  TKMEM_FREE(str_buff);
 
   printf("done\n");
 

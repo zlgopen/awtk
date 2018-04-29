@@ -30,7 +30,7 @@ static const widget_vtable_t s_label_vtable = {.on_paint_self = label_on_paint_s
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  label_t* label = MEM_ZALLOC(label_t);
+  label_t* label = TKMEM_ZALLOC(label_t);
   return_value_if_fail(label != NULL, NULL);
 
   widget = WIDGETP(label);

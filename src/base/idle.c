@@ -41,7 +41,7 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx) {
   return_value_if_fail(on_idle != NULL, 0);
   return_value_if_fail(ensure_idle_manager() == RET_OK, 0);
 
-  idle = MEM_ZALLOC(idle_info_t);
+  idle = TKMEM_ZALLOC(idle_info_t);
   return_value_if_fail(idle != NULL, 0);
 
   idle->ctx = ctx;
@@ -108,7 +108,7 @@ ret_t idle_dispatch(void) {
     } else {
       /*it is removed*/
     }
-    MEM_FREE(iter);
+    TKMEM_FREE(iter);
   }
 
   s_idle_manager->size = 0;

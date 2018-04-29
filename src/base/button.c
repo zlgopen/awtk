@@ -59,7 +59,7 @@ static const widget_vtable_t s_button_vtable = {.on_event = button_on_event,
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  button_t* button = MEM_ZALLOC(button_t);
+  button_t* button = TKMEM_ZALLOC(button_t);
   return_value_if_fail(button != NULL, NULL);
 
   widget = WIDGETP(button);

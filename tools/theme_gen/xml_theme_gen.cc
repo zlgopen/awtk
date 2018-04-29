@@ -232,7 +232,7 @@ bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin)
 
   uint32_t size = end - buff;
 
-  if(output_bin) {
+  if (output_bin) {
     write_file(output_file, buff, size);
   } else {
     output_res_c_source(output_file, RESOURCE_TYPE_THEME, 0, buff, size);

@@ -161,7 +161,7 @@ ret_t widget_layout_calc(const widget_layout_t* layout, rect_t* r, wh_t parent_w
 ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout_t* layout) {
   return_value_if_fail(widget != NULL && layout != NULL, RET_BAD_PARAMS);
   if (widget->layout_params == NULL) {
-    widget->layout_params = MEM_ZALLOC(layout_params_t);
+    widget->layout_params = TKMEM_ZALLOC(layout_params_t);
   }
   return_value_if_fail(widget->layout_params != NULL, RET_OOM);
   memcpy(&(widget->layout_params->self), layout, sizeof(*layout));
@@ -185,7 +185,7 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->layout_params == NULL) {
-    widget->layout_params = MEM_ZALLOC(layout_params_t);
+    widget->layout_params = TKMEM_ZALLOC(layout_params_t);
   }
   return_value_if_fail(widget->layout_params != NULL, RET_OOM);
   layout = &(widget->layout_params->children);

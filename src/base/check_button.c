@@ -123,7 +123,7 @@ static const widget_vtable_t s_check_button_vtable = {
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  check_button_t* check_button = MEM_ZALLOC(check_button_t);
+  check_button_t* check_button = TKMEM_ZALLOC(check_button_t);
   return_value_if_fail(check_button != NULL, NULL);
 
   widget = WIDGETP(check_button);

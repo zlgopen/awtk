@@ -30,7 +30,7 @@ static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {
   }
 
   if (capacity > 0) {
-    wchar_t* s = MEM_REALLOC(wchar_t, str->str, capacity + 1);
+    wchar_t* s = TKMEM_REALLOC(wchar_t, str->str, capacity + 1);
     return_value_if_fail(s != NULL, RET_FAIL);
 
     s[capacity] = 0;
@@ -186,7 +186,7 @@ ret_t wstr_to_float(wstr_t* str, float* v) {
 
 ret_t wstr_reset(wstr_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
-  MEM_FREE(str->str);
+  TKMEM_FREE(str->str);
 
   return RET_OK;
 }

@@ -35,15 +35,15 @@ typedef struct _key_value_t {
 } key_value_t;
 
 static const key_value_t qt_tk_map[] = {{"QLabel", "label"},
-                                          {"QPushButton", "button"},
-                                          {"QLineEdit", "label"},
-                                          {"QWidget", "group_box"},
-                                          {"QCheckBox", "check_button"},
-                                          {"QRadioButton", "radio_button"},
-                                          {"QProgressBar", "progress_bar"},
-                                          {"QDialog", "dialog"},
-                                          {"QMainWindow", "window"},
-                                          {NULL, NULL}};
+                                        {"QPushButton", "button"},
+                                        {"QLineEdit", "label"},
+                                        {"QWidget", "group_box"},
+                                        {"QCheckBox", "check_button"},
+                                        {"QRadioButton", "radio_button"},
+                                        {"QProgressBar", "progress_bar"},
+                                        {"QDialog", "dialog"},
+                                        {"QMainWindow", "window"},
+                                        {NULL, NULL}};
 
 static string map_type(const string& type) {
   uint32_t i = 0;

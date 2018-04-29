@@ -28,7 +28,7 @@ static ret_t window_animator_open_destroy(window_animator_t* wa) {
   vgcanvas_destroy_fbo(vg, &(wa->curr_fbo));
 
   memset(wa, 0x00, sizeof(window_animator_t));
-  MEM_FREE(wa);
+  TKMEM_FREE(wa);
 
   return RET_OK;
 }

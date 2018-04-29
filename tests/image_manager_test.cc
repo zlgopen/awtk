@@ -8,7 +8,7 @@ TEST(ImageManager, basic) {
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_OK);
   ASSERT_EQ(image_manager_load(image_manager(), "not found", &bmp), RET_NOT_FOUND);
   ASSERT_EQ(image_manager_lookup(image_manager(), "unchecked", &bmp), RET_NOT_FOUND);
-  
+
   ASSERT_EQ(image_manager_unload_unused(image_manager(), 0), RET_OK);
 }
 
@@ -19,7 +19,7 @@ TEST(ImageManager, unload) {
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_OK);
   ASSERT_EQ(image_manager_unload_unused(image_manager(), 0), RET_OK);
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_NOT_FOUND);
-  
+
   ASSERT_EQ(image_manager_unload_unused(image_manager(), 0), RET_OK);
 }
 

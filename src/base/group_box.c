@@ -30,7 +30,7 @@ static const widget_vtable_t s_group_box_vtable = {.on_paint_self = group_box_on
 
 widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  group_box_t* group_box = MEM_ZALLOC(group_box_t);
+  group_box_t* group_box = TKMEM_ZALLOC(group_box_t);
   return_value_if_fail(group_box != NULL, NULL);
 
   widget = WIDGETP(group_box);

@@ -49,7 +49,7 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms) {
   return_value_if_fail(on_timer != NULL, 0);
   return_value_if_fail(s_get_time != NULL && ensure_timer_manager() == RET_OK, 0);
 
-  timer = MEM_ZALLOC(timer_info_t);
+  timer = TKMEM_ZALLOC(timer_info_t);
   return_value_if_fail(timer != NULL, 0);
 
   timer->ctx = ctx;
@@ -137,7 +137,7 @@ ret_t timer_check() {
     if (iter->repeat) {
       timers[k++] = timers[i];
     } else {
-      MEM_FREE(timers[i]);
+      TKMEM_FREE(timers[i]);
     }
   }
   s_timer_manager->size = k;

@@ -76,7 +76,7 @@ ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size) {
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   return_value_if_fail(mem_init(heap, size) == RET_OK, RET_FAIL);
   return_value_if_fail(main_loop_init(w, h) != NULL, RET_FAIL);
- 
+
   image_manager_set(image_manager_create());
   resource_manager_set(resource_manager_create(30));
 
@@ -95,9 +95,7 @@ ret_t tk_run() {
   return RET_OK;
 }
 
-static ret_t tk_quit_idle(const timer_info_t* timer) {
-  return main_loop_quit(main_loop());
-}
+static ret_t tk_quit_idle(const timer_info_t* timer) { return main_loop_quit(main_loop()); }
 
 ret_t tk_quit() {
   timer_add(tk_quit_idle, NULL, 0);

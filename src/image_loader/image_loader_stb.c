@@ -26,7 +26,7 @@
 #include "image_loader/image_loader_stb.h"
 
 static ret_t image_stb_destroy_free(bitmap_t* image) {
-  MEM_FREE((uint8_t*)(image->data));
+  TKMEM_FREE((uint8_t*)(image->data));
   image->data = NULL;
 
   return RET_OK;
@@ -55,7 +55,7 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
   image->flags = BITMAP_FLAG_IMMUTABLE;
 
   if (n != 4) {
-    data4 = MEM_ALLOC(w * h * 4);
+    data4 = TKMEM_ALLOC(w * h * 4);
     if (data4 == NULL) {
       stbi_image_free((uint8_t*)(data));
       return RET_FAIL;

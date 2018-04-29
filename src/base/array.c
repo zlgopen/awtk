@@ -23,12 +23,12 @@
 #include "base/mem.h"
 
 array_t* array_create(uint16_t capacity) {
-  array_t* array = MEM_ZALLOC(array_t);
+  array_t* array = TKMEM_ZALLOC(array_t);
 
   if (array_init(array, capacity)) {
     return array;
   } else {
-    MEM_FREE(array);
+    TKMEM_FREE(array);
 
     return NULL;
   }
@@ -40,7 +40,7 @@ array_t* array_init(array_t* array, uint16_t capacity) {
   array->size = 0;
   array->capacity = capacity;
   if (capacity > 0) {
-    array->elms = MEM_ZALLOCN(void*, capacity);
+    array->elms = TKMEM_ZALLOCN(void*, capacity);
     return_value_if_fail(array->elms != NULL, NULL);
   } else {
     array->elms = NULL;
@@ -56,7 +56,7 @@ static bool_t array_extend(array_t* array) {
     void* elms = NULL;
     uint16_t capacity = (array->capacity >> 1) + array->capacity + 1;
 
-    elms = MEM_REALLOC(void*, array->elms, capacity);
+    elms = TKMEM_REALLOC(void*, array->elms, capacity);
     if (elms) {
       array->elms = elms;
       array->capacity = capacity;
@@ -144,7 +144,7 @@ bool_t array_push(array_t* array, void* data) {
 
 void array_deinit(array_t* array) {
   return_if_fail(array != NULL && array->elms != NULL);
-  MEM_FREE(array->elms);
+  TKMEM_FREE(array->elms);
   memset(array, 0x00, sizeof(array_t));
 
   return;
@@ -153,7 +153,7 @@ void array_deinit(array_t* array) {
 void array_destroy(array_t* array) {
   return_if_fail(array != NULL && array->elms != NULL);
   array_deinit(array);
-  MEM_FREE(array);
+  TKMEM_FREE(array);
 
   return;
 }

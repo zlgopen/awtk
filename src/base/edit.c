@@ -383,7 +383,7 @@ static const widget_vtable_t s_edit_vtable = {.on_paint_self = edit_on_paint_sel
 
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  edit_t* edit = MEM_ZALLOC(edit_t);
+  edit_t* edit = TKMEM_ZALLOC(edit_t);
   return_value_if_fail(edit != NULL, NULL);
 
   widget = WIDGETP(edit);

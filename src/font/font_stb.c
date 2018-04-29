@@ -54,7 +54,7 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
 }
 
 static ret_t font_stb_destroy(font_t* f) {
-  MEM_FREE(f);
+  TKMEM_FREE(f);
 
   return RET_OK;
 }
@@ -63,7 +63,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   font_stb_t* f = NULL;
   return_value_if_fail(buff != NULL && name != NULL, NULL);
 
-  f = MEM_ZALLOC(font_stb_t);
+  f = TKMEM_ZALLOC(font_stb_t);
   return_value_if_fail(f != NULL, NULL);
 
   f->base.name = name;

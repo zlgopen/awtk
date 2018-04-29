@@ -14,6 +14,5 @@ TEST(Fs, basic) {
   ASSERT_EQ(strcmp(ret, str), 0);
   ASSERT_EQ(size, strlen(str));
   fs_unlink(filename);
-  MEM_FREE(ret);
+  TKMEM_FREE(ret);
 }
-

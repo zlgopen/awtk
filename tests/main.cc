@@ -50,7 +50,7 @@ GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
-  
+
   image_manager_set(image_manager_create());
   resource_manager_set(resource_manager_create(10));
 

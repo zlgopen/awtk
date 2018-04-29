@@ -28,7 +28,7 @@ event_queue_t* event_queue_create(uint16_t capacity) {
   return_value_if_fail(capacity > 1, NULL);
 
   size = sizeof(event_queue_t) + (capacity - 1) * sizeof(event_all_t);
-  q = (event_queue_t*)MEM_ALLOC(size);
+  q = (event_queue_t*)TKMEM_ALLOC(size);
   return_value_if_fail(q != NULL, NULL);
 
   memset(q, 0x00, size);
@@ -86,7 +86,7 @@ ret_t event_queue_replace_last(event_queue_t* q, const event_all_t* e) {
 
 ret_t event_queue_destroy(event_queue_t* q) {
   return_value_if_fail(q != NULL, RET_BAD_PARAMS);
-  MEM_FREE(q);
+  TKMEM_FREE(q);
 
   return RET_OK;
 }

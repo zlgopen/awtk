@@ -27,7 +27,7 @@ static ret_t window_animator_open_destroy(window_animator_t* wa) {
   bitmap_destroy(&(wa->curr_img));
 
   memset(wa, 0x00, sizeof(window_animator_t));
-  MEM_FREE(wa);
+  TKMEM_FREE(wa);
 
   return RET_OK;
 }
@@ -61,7 +61,7 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
   ENSURE(widget_paint(curr_win, c) == RET_OK);
   ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img)) == RET_OK);
   ENSURE(canvas_end_frame(c) == RET_OK);
-  
+
   wa->prev_img.flags = BITMAP_FLAG_OPAQUE;
   wa->curr_img.flags = BITMAP_FLAG_OPAQUE;
 

@@ -15,7 +15,8 @@
 /**
  * History:
  * ================================================================
- * 2018-03-23 Li XianJing <xianjimli@hotmail.com> created. adapted from:https://github.com/toji/gl-matrix/tree/master/src/gl-matrix
+ * 2018-03-23 Li XianJing <xianjimli@hotmail.com> created. adapted
+ * from:https://github.com/toji/gl-matrix/tree/master/src/gl-matrix
  *
  */
 
@@ -46,7 +47,7 @@ matrix_t* matrix_invert(matrix_t* m) {
   float atx = m->a4, aty = m->a5;
   float det = aa * ad - ab * ac;
 
-  if(!det){
+  if (!det) {
     return NULL;
   }
 
@@ -86,7 +87,6 @@ matrix_t* matrix_multiply(matrix_t* m, matrix_t* b) {
 
   return m;
 }
-
 
 matrix_t* matrix_translate(matrix_t* m, xy_t x, xy_t y) {
   float a0 = m->a0, a1 = m->a1, a2 = m->a2, a3 = m->a3, a4 = m->a4, a5 = m->a5;

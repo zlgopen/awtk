@@ -107,7 +107,7 @@ static const widget_vtable_t s_image_vtable = {
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  image_t* image = MEM_ZALLOC(image_t);
+  image_t* image = TKMEM_ZALLOC(image_t);
   return_value_if_fail(image != NULL, NULL);
 
   widget = WIDGETP(image);
@@ -122,7 +122,8 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 ret_t image_set_image_name(widget_t* widget, const char* name) {
   bitmap_t bitmap;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(image_manager_load(image_manager(), name, &bitmap) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(image_manager_load(image_manager(), name, &bitmap) == RET_OK,
+                       RET_BAD_PARAMS);
 
   return image_set_image(widget, &bitmap);
 }

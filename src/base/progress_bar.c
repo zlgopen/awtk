@@ -204,7 +204,7 @@ static const widget_vtable_t s_progress_bar_vtable = {
 
 widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  progress_bar_t* progress_bar = MEM_ZALLOC(progress_bar_t);
+  progress_bar_t* progress_bar = TKMEM_ZALLOC(progress_bar_t);
   return_value_if_fail(progress_bar != NULL, NULL);
 
   widget = WIDGETP(progress_bar);

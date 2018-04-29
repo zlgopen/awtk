@@ -80,8 +80,8 @@ typedef enum _resource_ui_type_t {
  */
 typedef struct _resource_info_t {
   uint16_t type;
-  uint8_t  subtype;
-  uint8_t  is_in_rom;
+  uint8_t subtype;
+  uint8_t is_in_rom;
   uint32_t size;
   char name[NAME_LEN + 1];
   uint8_t data[4];
@@ -153,7 +153,8 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info);
  *
  * @return {resource_info_t*} 返回资源。
  */
-const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type, const char* name);
+const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
+                                            const char* name);
 
 /**
  * @method resource_manager_load
@@ -164,7 +165,8 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
  *
  * @return {resource_info_t*} 返回资源。
  */
-resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name);
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type,
+                                       const char* name);
 
 /**
  * @method resource_manager_unref
@@ -197,4 +199,3 @@ ret_t resource_manager_destroy(resource_manager_t* rm);
 END_C_DECLS
 
 #endif /*TK_RESOURCE_MANAGER_H*/
-

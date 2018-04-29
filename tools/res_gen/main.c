@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     printf("Not supported file type!\n");
   }
 
-  MEM_FREE(input_buff);
+  TKMEM_FREE(input_buff);
 
   printf("done\n");
 

@@ -365,6 +365,6 @@ int value_int(const value_t* v) {
 
 value_t* value_set_int(value_t* v, int32_t value) { return value_set_int32(v, value); }
 
-value_t* value_create() { return MEM_ZALLOC(value_t); }
+value_t* value_create() { return TKMEM_ZALLOC(value_t); }
 
-void value_destroy(value_t* v) { MEM_FREE(v); }
+void value_destroy(value_t* v) { TKMEM_FREE(v); }

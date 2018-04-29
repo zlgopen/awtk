@@ -23,7 +23,7 @@
 #include "base/mem.h"
 
 emitter_t* emitter_create() {
-  emitter_t* emitter = (emitter_t*)MEM_ZALLOC(emitter_t);
+  emitter_t* emitter = (emitter_t*)TKMEM_ZALLOC(emitter_t);
 
   return emitter_init(emitter);
 }
@@ -69,7 +69,7 @@ static ret_t emitter_extends(emitter_t* emitter, uint32_t nr) {
   }
 
   if (emitter->items == NULL) {
-    emitter->items = MEM_ZALLOC(emitter_item_t);
+    emitter->items = TKMEM_ZALLOC(emitter_item_t);
     return_value_if_fail(emitter->items != NULL, RET_FAIL);
 
     emitter->size = 0;
@@ -79,7 +79,7 @@ static ret_t emitter_extends(emitter_t* emitter, uint32_t nr) {
   }
 
   capacity = emitter->capacity + 5;
-  items = MEM_REALLOC(emitter_item_t, emitter->items, capacity);
+  items = TKMEM_REALLOC(emitter_item_t, emitter->items, capacity);
   return_value_if_fail(items != NULL, RET_FAIL);
 
   emitter->items = items;
@@ -195,7 +195,7 @@ ret_t emitter_disable(emitter_t* emitter) {
 ret_t emitter_deinit(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
   if (emitter->items) {
-    MEM_FREE(emitter->items);
+    TKMEM_FREE(emitter->items);
   }
 
   return RET_OK;
@@ -204,7 +204,7 @@ ret_t emitter_deinit(emitter_t* emitter) {
 ret_t emitter_destroy(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
   emitter_deinit(emitter);
-  MEM_FREE(emitter);
+  TKMEM_FREE(emitter);
 
   return RET_OK;
 }

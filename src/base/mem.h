@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_MEM_MANAGER_H
-#define TK_MEM_MANAGER_H
+#ifndef TK_TKMEM_MANAGER_H
+#define TK_TKMEM_MANAGER_H
 
 #include "base/types_def.h"
 
@@ -41,23 +41,23 @@ mem_stat_t mem_stat(void);
 void mem_info_dump(void);
 
 #ifdef HAS_STD_MALLOC
-#define MEM_ALLOC(size) malloc(size)
-#define MEM_ZALLOC(type) (type*)calloc(1, sizeof(type))
-#define MEM_ZALLOCN(type, n) (type*)calloc(n, sizeof(type))
-#define MEM_REALLOC(type, p, n) (type*)realloc(p, (n) * sizeof(type))
-#define MEM_FREE(p) free(p)
+#define TKMEM_ALLOC(size) malloc(size)
+#define TKMEM_ZALLOC(type) (type*)calloc(1, sizeof(type))
+#define TKMEM_ZALLOCN(type, n) (type*)calloc(n, sizeof(type))
+#define TKMEM_REALLOC(type, p, n) (type*)realloc(p, (n) * sizeof(type))
+#define TKMEM_FREE(p) free(p)
 #else
 void* tk_calloc(uint32_t nmemb, uint32_t size);
 void* tk_realloc(void* ptr, uint32_t size);
 void tk_free(void* ptr);
 void* tk_alloc(uint32_t size);
 
-#define MEM_ALLOC(size) tk_alloc(size)
-#define MEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type))
-#define MEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type))
-#define MEM_REALLOC(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type))
-#define MEM_FREE(p) tk_free(p)
+#define TKMEM_ALLOC(size) tk_alloc(size)
+#define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type))
+#define TKMEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type))
+#define TKMEM_REALLOC(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type))
+#define TKMEM_FREE(p) tk_free(p)
 #endif
 
 END_C_DECLS
-#endif /*TK_MEM_MANAGER_H*/
+#endif /*TK_TKMEM_MANAGER_H*/

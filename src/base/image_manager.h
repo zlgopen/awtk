@@ -33,7 +33,7 @@ BEGIN_C_DECLS
 typedef struct _bitmap_header_t {
   uint16_t w;
   uint16_t h;
-  uint16_t flags; /*bitmap_flag_t*/
+  uint16_t flags;  /*bitmap_flag_t*/
   uint16_t format; /*bitmap_format_t*/
   uint8_t data[4];
 } bitmap_header_t;
@@ -44,7 +44,7 @@ typedef struct _bitmap_header_t {
  */
 typedef struct _image_manager_t {
   /**
-   * @property {array_t} images 
+   * @property {array_t} images
    * @private
    * 缓存的图片。
    */
@@ -158,4 +158,3 @@ ret_t image_manager_destroy(image_manager_t* im);
 END_C_DECLS
 
 #endif /*TK_IMAGE_MANAGER_H*/
-

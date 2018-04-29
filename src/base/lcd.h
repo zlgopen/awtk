@@ -194,7 +194,7 @@ struct _lcd_t {
   lcd_draw_mode_t draw_mode;
 
   /**
-   * @property {lcd_type_t} type 
+   * @property {lcd_type_t} type
    * @readonly
    * LCD的类型。
    */

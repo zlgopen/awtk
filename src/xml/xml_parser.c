@@ -46,7 +46,7 @@ static void xml_parser_parse_pi(XmlParser* thiz);
 static void xml_parser_parse_text(XmlParser* thiz);
 static void xml_parser_reset_buffer(XmlParser* thiz);
 
-XmlParser* xml_parser_create(void) { return MEM_ZALLOC(XmlParser); }
+XmlParser* xml_parser_create(void) { return TKMEM_ZALLOC(XmlParser); }
 
 void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder) {
   thiz->builder = builder;
@@ -162,7 +162,7 @@ static int xml_parser_strdup(XmlParser* thiz, const char* start, int length) {
 
   if ((thiz->buffer_used + length) >= thiz->buffer_total) {
     int length = thiz->buffer_total + (thiz->buffer_total >> 1) + 128;
-    char* buffer = (char*)MEM_REALLOC(char, thiz->buffer, length);
+    char* buffer = (char*)TKMEM_REALLOC(char, thiz->buffer, length);
     if (buffer != NULL) {
       thiz->buffer = buffer;
       thiz->buffer_total = length;
@@ -424,8 +424,8 @@ static void xml_parser_parse_entity(XmlParser* thiz) {
 
 void xml_parser_destroy(XmlParser* thiz) {
   if (thiz != NULL) {
-    MEM_FREE(thiz->buffer);
-    MEM_FREE(thiz);
+    TKMEM_FREE(thiz->buffer);
+    TKMEM_FREE(thiz);
   }
 
   return;
@@ -470,7 +470,7 @@ static char* read_text_file(const char* filename) {
   fp = fopen(filename, "r");
   return_value_if_fail(fp != NULL, NULL);
   return_value_if_fail(stat(filename, &st) == 0, NULL);
-  buff = MEM_ALLOC(st.st_size + 1);
+  buff = TKMEM_ALLOC(st.st_size + 1);
   return_value_if_fail(buff != NULL, NULL);
   fread(buff, st.st_size, 1, fp);
   buff[st.st_size] = '\0';
@@ -482,7 +482,7 @@ void xml_parser_parse_file(XmlParser* thiz, const char* filename) {
   char* buff = read_text_file(filename);
   return_if_fail(buff != NULL);
   xml_parser_parse(thiz, buff, strlen(buff));
-  MEM_FREE(buff);
+  TKMEM_FREE(buff);
 
   return;
 }

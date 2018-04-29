@@ -29,11 +29,12 @@ static resource_manager_t* s_resource_manager = NULL;
 #include "base/fs.h"
 
 #ifndef RES_ROOT
-#define RES_ROOT TK_ROOT"/demos/res/raw"
+#define RES_ROOT TK_ROOT "/demos/res/raw"
 #endif
 
-static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t size, const char* path, const char* name) {
-  resource_info_t* info = MEM_ALLOC(sizeof(resource_info_t) + size);
+static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t size,
+                                      const char* path, const char* name) {
+  resource_info_t* info = TKMEM_ALLOC(sizeof(resource_info_t) + size);
   return_value_if_fail(info != NULL, NULL);
 
   memset(info, 0x00, sizeof(resource_info_t));
@@ -48,103 +49,104 @@ static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t 
   return info;
 }
 
-resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name) {
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type,
+                                       const char* name) {
   int32_t size = 0;
-  char path[MAX_PATH+1];
+  char path[MAX_PATH + 1];
   resource_info_t* info = NULL;
   system_info_t* sysinfo = system_info();
   float_t dpr = sysinfo->device_pixel_ratio;
 
-  switch(type) {
+  switch (type) {
     case RESOURCE_TYPE_FONT: {
-      snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name); 
+      snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_TTF, size, path, name);
-        break;  
+        break;
       }
-      
-      snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name); 
+
+      snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_BMP, size, path, name);
-        break;  
+        break;
       }
 
       break;
     }
     case RESOURCE_TYPE_THEME: {
-      snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name); 
+      snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_THEME, size, path, name);
-        break;  
+        break;
       }
-     break;
+      break;
     }
     case RESOURCE_TYPE_IMAGE: {
       const char* ratio = "x1";
-      if(dpr >= 3) {
+      if (dpr >= 3) {
         ratio = "x3";
-      } else if(dpr >= 2) { 
+      } else if (dpr >= 2) {
         ratio = "x2";
       }
 
-      snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name); 
+      snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_PNG, size, path, name);
-        break;  
+        break;
       }
-     break;
+      break;
     }
     case RESOURCE_TYPE_UI: {
-      snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name); 
+      snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_UI_BIN, size, path, name);
-        break;  
+        break;
       }
-     break;
+      break;
     }
     case RESOURCE_TYPE_XML: {
-      snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name); 
+      snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_XML, size, path, name);
-        break;  
+        break;
       }
-     break;
+      break;
     }
     case RESOURCE_TYPE_DATA: {
-      snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name); 
+      snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
-      if(size > 0) {
+      if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_DATA, size, path, name);
-        break;  
+        break;
       }
-     break;
+      break;
     }
-    default:break;
+    default:
+      break;
   }
 
-  if(info != NULL) {
+  if (info != NULL) {
     resource_manager_add(rm, info);
   }
 
   return info;
 }
 #else
-resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type, const char* name) {
+resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t type,
+                                       const char* name) {
   (void)type;
   (void)name;
   return NULL;
 }
-#endif/*WITH_FS_RES*/
+#endif /*WITH_FS_RES*/
 
-resource_manager_t* resource_manager(void) {
-  return s_resource_manager;
-}
+resource_manager_t* resource_manager(void) { return s_resource_manager; }
 
 ret_t resource_manager_set(resource_manager_t* rm) {
   s_resource_manager = rm;
@@ -153,7 +155,7 @@ ret_t resource_manager_set(resource_manager_t* rm) {
 }
 
 resource_manager_t* resource_manager_create(uint32_t init_res_nr) {
-  resource_manager_t* rm = MEM_ZALLOC(resource_manager_t);
+  resource_manager_t* rm = TKMEM_ZALLOC(resource_manager_t);
 
   return resource_manager_init(rm, init_res_nr);
 }
@@ -172,7 +174,8 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info) {
   return array_push(&(rm->resources), (void*)info) ? RET_OK : RET_FAIL;
 }
 
-const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type, const char* name) {
+const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
+                                            const char* name) {
   uint32_t i = 0;
   const resource_info_t* iter = NULL;
   const resource_info_t** all = NULL;
@@ -206,8 +209,8 @@ ret_t resource_manager_deinit(resource_manager_t* rm) {
 
   for (i = 0; i < rm->resources.size; i++) {
     iter = all[i];
-    if(!iter->is_in_rom) {
-      MEM_FREE(iter);
+    if (!iter->is_in_rom) {
+      TKMEM_FREE(iter);
     }
   }
 
@@ -220,8 +223,7 @@ ret_t resource_manager_destroy(resource_manager_t* rm) {
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
   resource_manager_deinit(rm);
 
-  MEM_FREE(rm);
+  TKMEM_FREE(rm);
 
   return RET_OK;
 }
-

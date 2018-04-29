@@ -26,7 +26,7 @@ static const widget_vtable_t s_view_vtable;
 
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  view_t* view = MEM_ZALLOC(view_t);
+  view_t* view = TKMEM_ZALLOC(view_t);
   return_value_if_fail(view != NULL, NULL);
 
   widget = WIDGETP(view);

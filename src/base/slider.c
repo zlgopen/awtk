@@ -339,7 +339,7 @@ static const widget_vtable_t s_slider_vtable = {
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  slider_t* slider = MEM_ZALLOC(slider_t);
+  slider_t* slider = TKMEM_ZALLOC(slider_t);
   return_value_if_fail(slider != NULL, NULL);
 
   widget = WIDGETP(slider);

@@ -65,7 +65,7 @@ static const widget_vtable_t s_window_vtable = {.on_paint_self = window_on_paint
 
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  window_t* win = MEM_ZALLOC(window_t);
+  window_t* win = TKMEM_ZALLOC(window_t);
   return_value_if_fail(win != NULL, NULL);
 
   widget = WIDGETP(win);

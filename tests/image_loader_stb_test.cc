@@ -17,7 +17,7 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
   printf("%s\n", filename);
   uint8_t* buff = (uint8_t*)read_file(filename, &size);
   ret = image_loader_load(loader, buff, size, image);
-  MEM_FREE(buff);
+  TKMEM_FREE(buff);
 
   return ret;
 }

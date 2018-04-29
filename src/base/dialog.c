@@ -128,7 +128,7 @@ widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
-  dialog_t* dialog = MEM_ZALLOC(dialog_t);
+  dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
   return_value_if_fail(dialog != NULL, NULL);
 
   widget = WIDGETP(dialog);

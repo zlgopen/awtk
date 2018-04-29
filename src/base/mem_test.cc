@@ -15,7 +15,7 @@ int main() {
   tk_free(str);
 
   for (i = 0; i < ARRAY_SIZE(p); i++) {
-    p[i] = (char*)MEM_ALLOC(i);
+    p[i] = (char*)TKMEM_ALLOC(i);
     log_debug("%p\n", p[i]);
     st = mem_stat();
     assert(st.used_block_nr == (i + 1));
@@ -23,7 +23,7 @@ int main() {
   }
 
   for (i = 0; i < ARRAY_SIZE(p); i++) {
-    MEM_FREE(p[i]);
+    TKMEM_FREE(p[i]);
     st = mem_stat();
     assert(st.used_block_nr == (ARRAY_SIZE(p) - i - 1));
     if (st.used_block_nr) {

@@ -143,8 +143,8 @@ ret_t vgcanvas_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, floa
   return vg->vt->quad_to(vg, cpx, cpy, x, y);
 }
 
-ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
-                               float_t cp2y, float_t x, float_t y) {
+ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x, float_t cp2y,
+                         float_t x, float_t y) {
   return_value_if_fail(vg != NULL && vg->vt->bezier_to != NULL, RET_BAD_PARAMS);
 
   return vg->vt->bezier_to(vg, cp1x, cp1y, cp2x, cp2y, x, y);

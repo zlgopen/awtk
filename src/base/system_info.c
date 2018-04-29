@@ -23,6 +23,4 @@
 
 static system_info_t info;
 
-system_info_t* system_info() {
-  return &info;
-}
+system_info_t* system_info() { return &info; }

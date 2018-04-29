@@ -63,7 +63,7 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
     if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
       wm->animator = window_animator_create_for_open(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
-      if(wm->animating) {
+      if (wm->animating) {
         wm->ignore_user_input = TRUE;
         log_debug("ignore_user_input\n");
       }
@@ -90,7 +90,7 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
     if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
       wm->animator = window_animator_create_for_close(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
-      if(wm->animating) {
+      if (wm->animating) {
         wm->ignore_user_input = TRUE;
         log_debug("ignore_user_input\n");
       }
@@ -147,7 +147,7 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   }
 
   ret = widget_add_child(wm, window);
-  if(ret == RET_OK) {
+  if (ret == RET_OK) {
     wm->target = window;
   }
 
@@ -237,7 +237,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
 static ret_t timer_enable_user_input(const timer_info_t* timer) {
   window_manager_t* wm = WINDOW_MANAGER(timer->ctx);
- 
+
   wm->ignore_user_input = FALSE;
   log_debug("enable user input\n");
 
@@ -274,7 +274,7 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
 widget_t* window_manager() {
   static window_manager_t* wm = NULL;
   if (wm == NULL) {
-    wm = MEM_ZALLOC(window_manager_t);
+    wm = TKMEM_ZALLOC(window_manager_t);
     window_manager_init(wm);
   }
 

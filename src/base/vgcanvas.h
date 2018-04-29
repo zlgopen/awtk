@@ -50,17 +50,16 @@ typedef ret_t (*vgcanvas_clear_rect_t)(vgcanvas_t* vg, float_t x, float_t y, flo
 typedef ret_t (*vgcanvas_begin_path_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_move_to_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_line_to_t)(vgcanvas_t* vg, float_t x, float_t y);
-typedef ret_t (*vgcanvas_quad_to_t)(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x,
-                                               float_t y);
-typedef ret_t (*vgcanvas_bezier_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y,
-                                            float_t cp2x, float_t cp2y, float_t x, float_t y);
+typedef ret_t (*vgcanvas_quad_to_t)(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, float_t y);
+typedef ret_t (*vgcanvas_bezier_to_t)(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
+                                      float_t cp2y, float_t x, float_t y);
 typedef ret_t (*vgcanvas_arc_to_t)(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_t y2,
                                    float_t r);
 typedef ret_t (*vgcanvas_arc_t)(vgcanvas_t* vg, float_t x, float_t y, float_t r,
                                 float_t start_angle, float_t end_angle, bool_t ccw);
 typedef bool_t (*vgcanvas_is_point_in_path_t)(vgcanvas_t* vg, float_t x, float_t y);
 typedef ret_t (*vgcanvas_rounded_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
-                                       float_t r);
+                                         float_t r);
 typedef ret_t (*vgcanvas_ellipse_t)(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry);
 typedef ret_t (*vgcanvas_close_path_t)(vgcanvas_t* vg);
 
@@ -355,8 +354,8 @@ ret_t vgcanvas_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, floa
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x,
-                               float_t cp2y, float_t x, float_t y);
+ret_t vgcanvas_bezier_to(vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp2x, float_t cp2y,
+                         float_t x, float_t y);
 
 /**
  * @method vgcanvas_arc_to

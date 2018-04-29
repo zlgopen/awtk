@@ -30,12 +30,12 @@
 
 ret_t image_gen(bitmap_t* image, const char* output_filename) {
   uint32_t size = 0;
-  uint8_t* buff = (uint8_t*)MEM_ALLOC(MAX_BUFF_SIZE);
+  uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
   return_value_if_fail(buff != NULL, RET_FAIL);
 
   size = image_gen_buff(image, buff, MAX_BUFF_SIZE);
   output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_RAW, buff, size);
-  MEM_FREE(buff);
+  TKMEM_FREE(buff);
 
   return RET_OK;
 }

@@ -76,7 +76,7 @@ static bool_t font_bitmap_match(font_t* f, const char* name, uint16_t font_size)
 }
 
 static ret_t font_bitmap_destroy(font_t* f) {
-  MEM_FREE(f);
+  TKMEM_FREE(f);
   return RET_OK;
 }
 
@@ -98,7 +98,7 @@ font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_
   font_bitmap_t* font = NULL;
   return_value_if_fail(buff != NULL && name != NULL && buff_size > 0, NULL);
 
-  font = MEM_ZALLOC(font_bitmap_t);
+  font = TKMEM_ZALLOC(font_bitmap_t);
   return_value_if_fail(font != NULL, NULL);
 
   return font_bitmap_init(font, name, buff, buff_size);

@@ -53,7 +53,7 @@ static ret_t window_animator_open_bottom_to_top_draw_curr(window_animator_t* wa)
 }
 
 static window_animator_t* window_animator_create_bottom_to_top(bool_t open) {
-  window_animator_t* wa = MEM_ZALLOC(window_animator_t);
+  window_animator_t* wa = TKMEM_ZALLOC(window_animator_t);
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {

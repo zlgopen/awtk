@@ -194,7 +194,7 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
 }
 
 static ret_t snapshot_destroy(bitmap_t* img) {
-  MEM_FREE((void*)(img->data));
+  TKMEM_FREE((void*)(img->data));
 
   return RET_OK;
 }
@@ -214,7 +214,7 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
     uint32_t* d = NULL;
     uint32_t nr = img->w * img->h;
     size = img->w * img->h * 4;
-    data = MEM_ALLOC(size);
+    data = TKMEM_ALLOC(size);
 
     return_value_if_fail(data != NULL, RET_FAIL);
 
@@ -242,7 +242,7 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
 static ret_t lcd_mem_end_frame(lcd_t* lcd) { return RET_OK; }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
-  MEM_FREE(lcd);
+  TKMEM_FREE(lcd);
 
   return RET_OK;
 }
@@ -250,11 +250,11 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
 lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   system_info_t* info = system_info();
 
-  lcd_mem_t* lcd = MEM_ZALLOC(lcd_mem_t);
+  lcd_mem_t* lcd = TKMEM_ZALLOC(lcd_mem_t);
   lcd_t* base = &(lcd->base);
 
   if (alloc) {
-    lcd->pixels = (uint8_t*)MEM_ALLOC(w * h * sizeof(pixel_t));
+    lcd->pixels = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
     return_value_if_fail(lcd->pixels != NULL, NULL);
   }
 

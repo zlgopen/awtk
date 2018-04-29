@@ -37,7 +37,7 @@ char* read_file(const char* file_name, uint32_t* length) {
   if (stat(file_name, &st)) {
     return NULL;
   } else {
-    char* buffer = (char*)MEM_ALLOC(st.st_size + 1);
+    char* buffer = (char*)TKMEM_ALLOC(st.st_size + 1);
     FILE* fp = fopen(file_name, "rb");
     fread(buffer, 1, st.st_size, fp);
     fclose(fp);

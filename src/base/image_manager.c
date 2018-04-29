@@ -26,25 +26,23 @@
 
 typedef struct _bitmap_cache_t {
   bitmap_t image;
-  char name[NAME_LEN+1];
+  char name[NAME_LEN + 1];
   uint32_t access_count;
   uint32_t created_time;
   uint32_t last_access_time;
-}bitmap_cache_t;
+} bitmap_cache_t;
 
 static image_manager_t* s_imm = NULL;
-image_manager_t* image_manager() {
-  return s_imm;
-}
+image_manager_t* image_manager() { return s_imm; }
 
 ret_t image_manager_set(image_manager_t* imm) {
-   s_imm = imm;
+  s_imm = imm;
 
-   return RET_OK;
+  return RET_OK;
 }
 
 image_manager_t* image_manager_create() {
-  image_manager_t* imm = MEM_ZALLOC(image_manager_t);
+  image_manager_t* imm = TKMEM_ZALLOC(image_manager_t);
 
   return imm;
 }
@@ -62,7 +60,7 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   bitmap_cache_t* cache = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
-  cache = MEM_ZALLOC(bitmap_cache_t);
+  cache = TKMEM_ZALLOC(bitmap_cache_t);
   return_value_if_fail(cache != NULL, RET_OOM);
 
   cache->image = *image;
@@ -83,11 +81,11 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
   bitmap_cache_t* iter = NULL;
   bitmap_cache_t** all = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
-  
+
   all = (bitmap_cache_t**)(imm->images.elms);
-  for(i = 0, nr = imm->images.size; i < nr; i++) {
+  for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
-    if(strcmp(name, iter->name) == 0) {
+    if (strcmp(name, iter->name) == 0) {
       *image = iter->image;
       iter->access_count++;
       iter->last_access_time = time_now_s();
@@ -102,8 +100,8 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
 ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
   const resource_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
-  
-  if(image_manager_lookup(imm, name, image) == RET_OK) {
+
+  if (image_manager_lookup(imm, name, image) == RET_OK) {
     return RET_OK;
   }
 
@@ -143,14 +141,14 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
   all = (bitmap_cache_t**)(imm->images.elms);
-  for(i = 0, nr = imm->images.size; i < nr; i++) {
+  for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
-    if((iter->last_access_time + time_delta_s) <= now) {
-      bitmap_destroy(&(iter->image)); 
-      MEM_FREE(iter);
+    if ((iter->last_access_time + time_delta_s) <= now) {
+      bitmap_destroy(&(iter->image));
+      TKMEM_FREE(iter);
       all[i] = NULL;
     } else {
-      if(j != i) {
+      if (j != i) {
         all[j] = all[i];
       }
       j++;
@@ -170,9 +168,9 @@ ret_t image_manager_deinit(image_manager_t* imm) {
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
   all = (bitmap_cache_t**)(imm->images.elms);
-  for(i = 0, nr = imm->images.size; i < nr; i++) {
+  for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
-    MEM_FREE(iter);
+    TKMEM_FREE(iter);
   }
 
   array_deinit(&(imm->images));
@@ -185,7 +183,7 @@ ret_t image_manager_destroy(image_manager_t* imm) {
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
   image_manager_deinit(imm);
-  MEM_FREE(imm);
+  TKMEM_FREE(imm);
 
   return RET_OK;
 }

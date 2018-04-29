@@ -19,7 +19,7 @@ using std::string;
 TEST(FontGen, basic) {
   uint32_t size = 0;
   uint16_t font_size = 20;
-  uint8_t* bmp_buff = (uint8_t*)MEM_ALLOC(BUFF_SIZE);
+  uint8_t* bmp_buff = (uint8_t*)TKMEM_ALLOC(BUFF_SIZE);
   uint8_t* ttf_buff = (uint8_t*)read_file(TTF_FILE, &size);
   font_t* ttf_font = font_stb_create("default", ttf_buff, size);
   const char* str = "helloworldHELLOWORLD1243541helloworldHELLOWORLD1243541";
@@ -45,6 +45,6 @@ TEST(FontGen, basic) {
   ASSERT_EQ(ret > 0, true);
   font_destroy(ttf_font);
   font_destroy(bmp_font);
-  MEM_FREE(bmp_buff);
-  MEM_FREE(ttf_buff);
+  TKMEM_FREE(bmp_buff);
+  TKMEM_FREE(ttf_buff);
 }

@@ -52,14 +52,14 @@ int main(int argc, char** argv) {
 
   ui_loader_load(loader, (const uint8_t*)content, size, builder);
 
-  if(output_bin) {
+  if (output_bin) {
     write_file(out_filename, wbuffer.data, wbuffer.cursor);
   } else {
     output_res_c_source(out_filename, RESOURCE_TYPE_UI, RESOURCE_TYPE_UI_BIN, wbuffer.data,
-                      wbuffer.cursor);
+                        wbuffer.cursor);
   }
 
-  MEM_FREE(content);
+  TKMEM_FREE(content);
 
   return 0;
 }

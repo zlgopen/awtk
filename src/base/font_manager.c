@@ -23,7 +23,7 @@
 #include "base/font_manager.h"
 
 font_manager_t* font_manager_create() {
-  font_manager_t* fm = MEM_ZALLOC(font_manager_t);
+  font_manager_t* fm = TKMEM_ZALLOC(font_manager_t);
 
   return fm;
 }
@@ -87,7 +87,7 @@ ret_t font_manager_deinit(font_manager_t* fm) {
 ret_t font_manager_destroy(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
   font_manager_deinit(fm);
-  MEM_FREE(fm);
+  TKMEM_FREE(fm);
 
   return RET_OK;
 }
@@ -95,7 +95,7 @@ ret_t font_manager_destroy(font_manager_t* fm) {
 font_manager_t* font_manager() {
   static font_manager_t* afm = NULL;
   if (afm == NULL) {
-    afm = MEM_ZALLOC(font_manager_t);
+    afm = TKMEM_ZALLOC(font_manager_t);
     font_manager_init(afm);
   }
 

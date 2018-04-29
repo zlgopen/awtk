@@ -135,8 +135,8 @@ static ret_t vgcanvas_nanovg_line_to(vgcanvas_t* vgcanvas, float_t x, float_t y)
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_quad_to(vgcanvas_t* vgcanvas, float_t cpx, float_t cpy,
-                                                float_t x, float_t y) {
+static ret_t vgcanvas_nanovg_quad_to(vgcanvas_t* vgcanvas, float_t cpx, float_t cpy, float_t x,
+                                     float_t y) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgQuadTo(vg, cpx, cpy, x, y);
@@ -145,7 +145,7 @@ static ret_t vgcanvas_nanovg_quad_to(vgcanvas_t* vgcanvas, float_t cpx, float_t 
 }
 
 static ret_t vgcanvas_nanovg_bezier_to(vgcanvas_t* vgcanvas, float_t cp1x, float_t cp1y,
-                                             float_t cp2x, float_t cp2y, float_t x, float_t y) {
+                                       float_t cp2x, float_t cp2y, float_t x, float_t y) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgBezierTo(vg, cp1x, cp1y, cp2x, cp2y, x, y);
@@ -226,7 +226,7 @@ static ret_t vgcanvas_nanovg_set_transform(vgcanvas_t* vgcanvas, float_t a, floa
 }
 
 static ret_t vgcanvas_nanovg_rounded_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
-                                        float_t h, float_t r) {
+                                          float_t h, float_t r) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgRoundedRect(vg, x, y, w, h, r);
@@ -617,9 +617,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* sdl_window) {
   int wh = 0;
   int fw = 0;
   int fh = 0;
-  vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)MEM_ZALLOC(vgcanvas_nanovg_t);
+  vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
-  
+
   SDL_GetWindowSize((SDL_Window*)sdl_window, &ww, &wh);
   SDL_GL_GetDrawableSize((SDL_Window*)sdl_window, &fw, &fh);
 

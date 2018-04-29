@@ -169,13 +169,13 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 static ret_t lcd_reg_end_frame(lcd_t* lcd) { return RET_OK; }
 
 static ret_t lcd_reg_destroy(lcd_t* lcd) {
-  MEM_FREE(lcd);
+  TKMEM_FREE(lcd);
 
   return RET_OK;
 }
 
 lcd_t* lcd_reg_create(wh_t w, wh_t h) {
-  lcd_t* lcd = MEM_ZALLOC(lcd_t);
+  lcd_t* lcd = TKMEM_ZALLOC(lcd_t);
   system_info_t* info = system_info();
   return_value_if_fail(lcd != NULL, NULL);
 
