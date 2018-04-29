@@ -169,9 +169,10 @@ resource_manager_t* resource_manager_init(resource_manager_t* rm, uint32_t init_
 }
 
 ret_t resource_manager_add(resource_manager_t* rm, const void* info) {
+  const resource_info_t* r = (const resource_info_t*)info;
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
-  return array_push(&(rm->resources), (void*)info) ? RET_OK : RET_FAIL;
+  return array_push(&(rm->resources), (void*)r) ? RET_OK : RET_FAIL;
 }
 
 const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
