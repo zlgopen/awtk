@@ -273,6 +273,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
 
   base->w = w;
   base->h = h;
+  base->ratio = 1;
   base->type = LCD_FRAMEBUFFER;
 
   info->lcd_w = base->w;

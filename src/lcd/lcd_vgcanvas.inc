@@ -211,6 +211,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
 
   base->w = (wh_t)w;
   base->h = (wh_t)h;
+  base->ratio = canvas->ratio;
   base->type = LCD_VGCANVAS;
 
   info->lcd_w = base->w;

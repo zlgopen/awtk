@@ -200,6 +200,13 @@ struct _lcd_t {
    */
   lcd_type_t type;
 
+  /**
+   * @property {float_t} ratio
+   * @readonly
+   * 屏幕密度。
+   */
+  float_t ratio;
+
   rect_t* dirty_rect;
 };
 

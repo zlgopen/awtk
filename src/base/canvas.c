@@ -478,17 +478,6 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
   return lcd_draw_image(c->lcd, img, &src, &dst);
 }
 
-ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
-  rect_t src;
-  rect_t dst;
-  return_value_if_fail(c != NULL && img != NULL, RET_BAD_PARAMS);
-
-  rect_init(src, 0, 0, img->w, img->h);
-  rect_init(dst, x, y, img->w, img->h);
-
-  return canvas_do_draw_image(c, img, &src, &dst);
-}
-
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
   rect_t d;
   return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -959,25 +948,6 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
-  rect_t s;
-  rect_t d;
-  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
-
-  s.x = 0;
-  s.y = 0;
-  s.h = img->h;
-  s.w = img->w;
-
-  d = *dst;
-  d.x = dst->x + ((dst->w - s.w) >> 1);
-  d.y = dst->y + ((dst->h - s.h) >> 1);
-  d.w = s.w;
-  d.h = s.h;
-
-  return canvas_draw_image(c, img, &s, &d);
-}
-
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* dst) {
   rect_t src;
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1019,18 +989,20 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
 ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
   rect_t src;
   rect_t dst;
-  vgcanvas_t* vg = NULL;
   wh_t hw = 0;
   wh_t hh = 0;
-  return_value_if_fail(c != NULL && img != NULL, RET_BAD_PARAMS);
+  float_t ratio = 0;
+  return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL, RET_BAD_PARAMS);
 
+  ratio = c->lcd->ratio;
   rect_init(src, 0, 0, img->w, img->h);
-  vg = lcd_get_vgcanvas(c->lcd);
-  if (vg && vg->ratio > 1) {
-    float_t ratio = 1.0f / vg->ratio;
-    hw = img->w * ratio * 0.5;
-    hh = img->h * ratio * 0.5;
-    rect_init(dst, cx - hw, cy - hh, 2 * hw, 2 * hh);
+  if (ratio > 1) {
+    float_t w = (img->w / ratio);
+    float_t h = (img->h / ratio);
+    float_t hw = w * 0.5;
+    float_t hh = h * 0.5;
+
+    rect_init(dst, cx - hw, cy - hh, w, h);
   } else {
     hw = img->w >> 1;
     hh = img->h >> 1;
@@ -1039,3 +1011,34 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
 
   return canvas_draw_image(c, img, &src, &dst);
 }
+
+ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
+  xy_t cx = 0;
+  xy_t cy = 0;
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  cx = dst->x + (dst->w >> 1);
+  cy = dst->y + (dst->h >> 1);
+
+  return canvas_draw_icon(c, img, cx, cy);
+}
+
+
+ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
+  rect_t src;
+  rect_t dst;
+  float_t ratio = 0;
+  return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL, RET_BAD_PARAMS);
+
+  ratio = c->lcd->ratio;
+  rect_init(src, 0, 0, img->w, img->h);
+  
+  if (ratio > 1) {
+    rect_init(dst, x, y, img->w / ratio, img->h / ratio);
+  } else {
+    rect_init(dst, x, y, img->w, img->h);
+  }
+
+  return canvas_do_draw_image(c, img, &src, &dst);
+}
+
