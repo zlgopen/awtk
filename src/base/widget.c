@@ -478,8 +478,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
       color_t trans = color_init(0, 0, 0, 0);
       style_t* style = &(parent->style);
       color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-      canvas_set_fill_color(c, bg);
-      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+      if(bg.rgba.a != 0) {
+        canvas_set_fill_color(c, bg);
+        canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+      }
     }
 
     widget_on_paint_background(widget, c);
