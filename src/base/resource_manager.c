@@ -96,8 +96,18 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_PNG, size, path, name);
-        break;
+        /*not cache png file raw data*/
+        return info;
       }
+      
+      snprintf(path, MAX_PATH, "%s/images/%s/%s.jpg", RES_ROOT, ratio, name);
+      size = fs_file_size(path);
+      if (size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_IMAGE_JPG, size, path, name);
+        /*not cache png file jpg data*/
+        return info;
+      }
+
       break;
     }
     case RESOURCE_TYPE_UI: {
@@ -105,7 +115,8 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_UI_BIN, size, path, name);
-        break;
+        /*not cache ui*/
+        return info;
       }
       break;
     }
@@ -114,7 +125,8 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_XML, size, path, name);
-        break;
+        /*not cache xml*/
+        return info;
       }
       break;
     }
@@ -196,6 +208,11 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
 
 ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
+
+  array_remove(&(rm->resources), NULL, info);
+  if(!(info->is_in_rom)) {
+    TKMEM_FREE((void*)info);
+  }
 
   return RET_OK;
 }

@@ -24,3 +24,15 @@ TEST(ResourceManager, basic) {
 
   resource_manager_destroy(rm);
 }
+
+TEST(ResourceManager, file) {
+  const resource_info_t* r = NULL;
+  resource_manager_t* rm = resource_manager_create(10);
+
+  r = resource_manager_ref(rm, RESOURCE_TYPE_IMAGE, "earth");
+  ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(resource_manager_unref(rm, r), RET_OK);
+
+  resource_manager_destroy(rm);
+}
+
