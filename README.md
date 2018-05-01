@@ -86,11 +86,15 @@ bin\demo1
 * [LFTK中的事件处理函数](docs/event_listener.md)
 * [LFTK中的主题](docs/theme.md)
 * [LFTK中的资源管理器](docs/resource_manager.md)
+* [LFTK中的窗口动画](docs/window_animator.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/05/01
+    * 更新文档。
 
 * 2018/04/30
     * 窗口动画的anim\_hint用字符串表示，方便附加参数。 
