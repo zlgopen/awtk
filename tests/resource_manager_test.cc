@@ -35,4 +35,3 @@ TEST(ResourceManager, file) {
 
   resource_manager_destroy(rm);
 }
-

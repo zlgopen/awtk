@@ -35,7 +35,7 @@ BEGIN_C_DECLS
  */
 typedef struct _window_t {
   widget_t widget;
-  window_animator_type_t anim_hint;
+  str_t anim_hint;
 } window_t;
 
 /**

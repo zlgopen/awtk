@@ -1,5 +1,5 @@
 #include "color_parser.h"
-#include "str.h"
+#include "base/str.h"
 
 typedef struct _color_map_t {
   const char* name;
@@ -209,7 +209,8 @@ static bool_t color_parse_hex(const char* color, uint8_t* r, uint8_t* g, uint8_t
 }
 
 bool_t color_parse(const char* color, uint8_t* r, uint8_t* g, uint8_t* b, uint8_t* a) {
-  str_t* str = NULL;
+  str_t s;
+  str_t* str;
   bool_t ret = FALSE;
   return_value_if_fail(color != NULL && r != NULL && g != NULL && b != NULL && a != NULL, FALSE);
 
@@ -218,7 +219,9 @@ bool_t color_parse(const char* color, uint8_t* r, uint8_t* g, uint8_t* b, uint8_
   *g = 0;
   *a = 0;
 
-  str = str_create(color, strlen(color), 0);
+  str = str_init(&s, 10);
+  str_set(str, color);
+
   if (str_start_with(str, "rgb")) {
     str_to_lower(str);
     str_replace(str, " ", "");
@@ -228,13 +231,12 @@ bool_t color_parse(const char* color, uint8_t* r, uint8_t* g, uint8_t* b, uint8_
     const char* value = color[0] == '#' ? color : map_name_to_value(color);
 
     if (value) {
-      str_set(str, value, strlen(value));
+      str_set(str, value);
       str_to_lower(str);
 
       ret = color_parse_hex(str->str, r, g, b, a);
     }
   }
-  str_unref(str);
 
   return ret;
 }

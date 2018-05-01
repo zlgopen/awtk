@@ -107,7 +107,7 @@ const wchar_t* widget_get_text(widget_t* widget) {
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
-  strncpy(widget->name, name, NAME_LEN);
+  str_set(&(widget->name), name);
 
   return RET_OK;
 }
@@ -197,7 +197,7 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
   if (widget->children != NULL) {
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (strcmp(iter->name, name) == 0) {
+      if (str_eq(&(iter->name), name)) {
         return iter;
       }
     }
@@ -214,7 +214,7 @@ static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
   if (widget->children != NULL) {
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (strcmp(iter->name, name) == 0) {
+      if (str_eq(&(iter->name), name)) {
         return iter;
       } else {
         iter = widget_lookup_all(iter, name);
@@ -478,7 +478,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
       color_t trans = color_init(0, 0, 0, 0);
       style_t* style = &(parent->style);
       color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-      if(bg.rgba.a != 0) {
+      if (bg.rgba.a != 0) {
         canvas_set_fill_color(c, bg);
         canvas_fill_rect(c, 0, 0, widget->w, widget->h);
       }
@@ -506,24 +506,24 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, WIDGET_PROP_X)) {
+  if (str_fast_equal(name, WIDGET_PROP_X)) {
     widget->x = (wh_t)value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_Y)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_Y)) {
     widget->y = (wh_t)value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_W)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_W)) {
     widget->w = (wh_t)value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_H)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_VISIBLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = !!value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
     widget->style_type = value_int(v);
     widget_update_style(widget);
-  } else if (str_equal(name, WIDGET_PROP_ENABLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_ENABLE)) {
     widget->enable = !!value_int(v);
-  } else if (str_equal(name, WIDGET_PROP_NAME)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
-  } else if (str_equal(name, WIDGET_PROP_TEXT)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
   } else {
     ret = RET_NOT_FOUND;
@@ -548,23 +548,23 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, WIDGET_PROP_X)) {
+  if (str_fast_equal(name, WIDGET_PROP_X)) {
     value_set_int32(v, widget->x);
-  } else if (str_equal(name, WIDGET_PROP_Y)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_Y)) {
     value_set_int32(v, widget->y);
-  } else if (str_equal(name, WIDGET_PROP_W)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_W)) {
     value_set_int32(v, widget->w);
-  } else if (str_equal(name, WIDGET_PROP_H)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_H)) {
     value_set_int32(v, widget->h);
-  } else if (str_equal(name, WIDGET_PROP_VISIBLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
-  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
     value_set_int(v, widget->style_type);
-  } else if (str_equal(name, WIDGET_PROP_ENABLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
-  } else if (str_equal(name, WIDGET_PROP_NAME)) {
-    value_set_str(v, widget->name);
-  } else if (str_equal(name, WIDGET_PROP_TEXT)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_NAME)) {
+    value_set_str(v, widget->name.str);
+  } else if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {
@@ -814,6 +814,7 @@ ret_t widget_destroy(widget_t* widget) {
     TKMEM_FREE(widget->layout_params);
   }
 
+  str_reset(&(widget->name));
   wstr_reset(&(widget->text));
   memset(widget, 0x00, sizeof(widget_t));
   TKMEM_FREE(widget);
@@ -886,6 +887,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
     widget_add_child(parent, widget);
   }
 
+  str_init(&(widget->name), 0);
   wstr_init(&(widget->text), 0);
   if (!widget->vt) {
     widget->vt = widget_vtable_default();
@@ -943,7 +945,7 @@ ret_t widget_to_xml(widget_t* widget) {
   const wchar_t* text = NULL;
   const key_type_value_t* kv = widget_type_find_by_value(widget->type);
 
-  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name,
+  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name.str,
             widget->x, widget->y, widget->w, widget->h);
   text = widget_get_text(widget);
   if (text) {

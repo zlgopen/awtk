@@ -32,53 +32,45 @@ typedef struct _window_animator_t window_animator_t;
 
 typedef ret_t (*window_animator_update_percent_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_window_t)(window_animator_t* wa);
-
 typedef ret_t (*window_animator_destroy_t)(window_animator_t* wa);
 
 /**
  * @enum window_animator_type_t
  * @prefix WINDOW_ANIMATOR_
+ * @type string
  * 窗口动画常量定义。
  */
-typedef enum _window_animator_type_t {
-  /**
-   * @const WINDOW_ANIMATOR_NONE
-   * 无动画。
-   */
-  WINDOW_ANIMATOR_NONE = 0,
-  /**
-   * @const WINDOW_ANIMATOR_CENTER_SCALE
-   * 中心缩放。适用于居中的对话框。
-   */
-  WINDOW_ANIMATOR_CENTER_SCALE,
-  /**
-   * @const WINDOW_ANIMATOR_FADE,
-   * 淡入淡出。适用于toast之类的提示。
-   */
-  WINDOW_ANIMATOR_FADE,
-  /**
-   * @const WINDOW_ANIMATOR_TOP_TOP_BOTTOM
-   * 顶部部弹出。适用于对话框。
-   */
-  WINDOW_ANIMATOR_TOP_TO_BOTTOM,
-  /**
-   * @const WINDOW_ANIMATOR_BOTTOM_TO_TOP
-   * 底部弹出。适用于对话框。
-   */
-  WINDOW_ANIMATOR_BOTTOM_TO_TOP,
-  /**
-   * @const WINDOW_ANIMATOR_HTRANSLATE
-   * 水平平移。适用于窗口。
-   */
-  WINDOW_ANIMATOR_HTRANSLATE,
-  /**
-   * @const WINDOW_ANIMATOR_VTRANSLATE
-   * 垂直平移。适用于窗口。
-   */
-  WINDOW_ANIMATOR_VTRANSLATE,
 
-  WINDOW_ANIMATOR_NR
-} window_animator_type_t;
+/**
+ * @const WINDOW_ANIMATOR_CENTER_SCALE
+ * 中心缩放。适用于居中的对话框。
+ */
+#define WINDOW_ANIMATOR_CENTER_SCALE "center_scale"
+/**
+ * @const WINDOW_ANIMATOR_FADE,
+ * 淡入淡出。适用于toast之类的提示。
+ */
+#define WINDOW_ANIMATOR_FADE "fade"
+/**
+ * @const WINDOW_ANIMATOR_TOP_TOP_BOTTOM
+ * 顶部部弹出。适用于对话框。
+ */
+#define WINDOW_ANIMATOR_TOP_TO_BOTTOM "top_to_bottom"
+/**
+ * @const WINDOW_ANIMATOR_BOTTOM_TO_TOP
+ * 底部弹出。适用于对话框。
+ */
+#define WINDOW_ANIMATOR_BOTTOM_TO_TOP "bottom_to_top"
+/**
+ * @const WINDOW_ANIMATOR_HTRANSLATE
+ * 水平平移。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_HTRANSLATE "htranslate"
+/**
+ * @const WINDOW_ANIMATOR_VTRANSLATE
+ * 垂直平移。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_VTRANSLATE "vtranslate"
 
 /**
  * @class window_animator_t
@@ -114,28 +106,28 @@ typedef struct _window_animator_t {
  * @method window_animator_create_for_open
  * @constructor
  * 为打开窗口创建动画。
- * @param {window_animator_type_t} type 动画类型。
+ * @param {char*} type 动画类型。
  * @param {canvas_t*} c canvas。
  * @param {widget_t*} prev_win 前一窗口。
  * @param {widget_t*} curr_win 当前窗口。
  *
  * @return {window_animator_t*} 窗口动画对象。
  */
-window_animator_t* window_animator_create_for_open(window_animator_type_t type, canvas_t* c,
+window_animator_t* window_animator_create_for_open(const char* type, canvas_t* c,
                                                    widget_t* prev_win, widget_t* curr_win);
 
 /**
  * @method window_animator_create_for_close
  * @constructor
  * 为关闭窗口创建动画。
- * @param {window_animator_type_t} type 动画类型。
+ * @param {char*} type 动画类型。
  * @param {canvas_t*} c canvas。
  * @param {widget_t*} prev_win 前一窗口。
  * @param {widget_t*} curr_win 当前窗口。
  *
  * @return {window_animator_t*} 窗口动画对象。
  */
-window_animator_t* window_animator_create_for_close(window_animator_type_t type, canvas_t* c,
+window_animator_t* window_animator_create_for_close(const char* type, canvas_t* c,
                                                     widget_t* prev_win, widget_t* curr_win);
 
 /**

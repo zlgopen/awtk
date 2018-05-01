@@ -19,7 +19,7 @@ TEST(Dialog, basic) {
   value_set_str(&v1, "center_scale");
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_ANIM_HINT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
-  ASSERT_EQ(value_int(&v2), WINDOW_ANIMATOR_CENTER_SCALE);
+  ASSERT_EQ(strcmp(value_str(&v2), "center_scale"), 0);
 
   value_set_int(&v1, 5);
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MARGIN, &v1), RET_OK);

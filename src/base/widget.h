@@ -22,6 +22,7 @@
 #ifndef TK_WIDGET_H
 #define TK_WIDGET_H
 
+#include "base/str.h"
 #include "base/wstr.h"
 #include "base/value.h"
 #include "base/rect.h"
@@ -336,11 +337,12 @@ struct _widget_t {
   uint8_t dirty : 1;
 
   /**
-   * @property {char*} name
-   * @readonly
-   * 控件名字
+   * @property {str_t} name
+   * @private
+   * 控件名字(暂时不允许脚本访问)
    */
-  char name[NAME_LEN + 1];
+  str_t name;
+
   /**
    * @property {widget_t*} parent
    * @readonly

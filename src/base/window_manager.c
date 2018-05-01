@@ -59,8 +59,8 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   return_value_if_fail(prev_win != NULL, RET_FAIL);
 
   if (widget_get_prop(curr_win, WIDGET_PROP_ANIM_HINT, &anim_hint) == RET_OK) {
-    uint32_t type = value_int(&anim_hint);
-    if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
+    const char* type = value_str(&anim_hint);
+    if (type != NULL && *type != '\0') {
       wm->animator = window_animator_create_for_open(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
       if (wm->animating) {
@@ -86,8 +86,8 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
   return_value_if_fail(prev_win != NULL, RET_FAIL);
 
   if (widget_get_prop(curr_win, WIDGET_PROP_ANIM_HINT, &anim_hint) == RET_OK) {
-    uint32_t type = value_int(&anim_hint);
-    if (type > WINDOW_ANIMATOR_NONE && type < WINDOW_ANIMATOR_NR) {
+    const char* type = value_str(&anim_hint);
+    if (type != NULL && *type != '\0') {
       wm->animator = window_animator_create_for_close(type, wm->canvas, prev_win, curr_win);
       wm->animating = wm->animator != NULL;
       if (wm->animating) {
@@ -253,7 +253,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     window_animator_destroy(wm->animator);
     wm->animator = NULL;
     wm->animating = FALSE;
-    timer_add(timer_enable_user_input, wm, 500);
+    timer_add(timer_enable_user_input, wm, 300);
   }
 
   return RET_OK;

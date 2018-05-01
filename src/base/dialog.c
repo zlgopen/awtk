@@ -46,12 +46,12 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, WIDGET_PROP_TEXT)) {
+  if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
     return widget_get_prop(dialog->title, name, v);
-  } else if (str_equal(name, WIDGET_PROP_ANIM_HINT)) {
-    value_set_int(v, dialog->anim_hint);
+  } else if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+    value_set_str(v, dialog->anim_hint.str);
     return RET_OK;
-  } else if (str_equal(name, WIDGET_PROP_MARGIN)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_MARGIN)) {
     value_set_int(v, dialog->margin);
     return RET_OK;
   }
@@ -63,21 +63,16 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_equal(name, WIDGET_PROP_TEXT)) {
+  if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
     return widget_set_prop(dialog->title, name, v);
-  } else if (str_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
     widget_set_prop(dialog->title, name, v);
     widget_set_prop(dialog->client, name, v);
     return RET_OK;
-  } else if (str_equal(name, WIDGET_PROP_ANIM_HINT)) {
-    if (v->type == VALUE_TYPE_STRING) {
-      const key_type_value_t* kv = window_animator_type_find(value_str(v));
-      dialog->anim_hint = kv != NULL ? kv->value : WINDOW_ANIMATOR_NONE;
-    } else {
-      dialog->anim_hint = value_int(v);
-    }
+  } else if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+    str_from_value(&(dialog->anim_hint), v);
     return RET_OK;
-  } else if (str_equal(name, WIDGET_PROP_MARGIN)) {
+  } else if (str_fast_equal(name, WIDGET_PROP_MARGIN)) {
     dialog->margin = value_int(v);
     dialog_on_relayout_children(widget);
     return RET_OK;
@@ -101,9 +96,18 @@ static ret_t dialog_on_relayout_children(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t dialog_destroy(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+
+  str_reset(&(dialog->anim_hint));
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_dialog_vtable = {.get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,
                                                 .on_layout_children = dialog_on_relayout_children,
+                                                .destroy = dialog_destroy,
                                                 .on_paint_self = dialog_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -143,6 +147,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
 
   dialog->margin = 0;
+  str_init(&(dialog->anim_hint), 0);
   dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
   dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
   dialog_on_relayout_children(widget);

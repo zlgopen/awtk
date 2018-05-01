@@ -99,7 +99,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
         /*not cache png file raw data*/
         return info;
       }
-      
+
       snprintf(path, MAX_PATH, "%s/images/%s/%s.jpg", RES_ROOT, ratio, name);
       size = fs_file_size(path);
       if (size > 0) {
@@ -209,8 +209,8 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
 ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
-  array_remove(&(rm->resources), NULL, info);
-  if(!(info->is_in_rom)) {
+  array_remove(&(rm->resources), NULL, (void*)info);
+  if (!(info->is_in_rom)) {
     TKMEM_FREE((void*)info);
   }
 

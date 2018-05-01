@@ -218,7 +218,6 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   return size;
 }
 
-
 bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin) {
   xml_builder_t b;
   uint8_t buff[100 * 1024];

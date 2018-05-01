@@ -980,6 +980,139 @@
  },
  {
   "type": "class",
+  "name": "image_manager_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "image_manager",
+    "isConstructor": true,
+    "return": "image_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     }
+    ],
+    "name": "image_manager_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "image_manager_create",
+    "isConstructor": true,
+    "return": "image_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "image_loader_t*",
+      "name": "loader"
+     }
+    ],
+    "name": "image_manager_init",
+    "isConstructor": true,
+    "return": "image_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "image"
+     }
+    ],
+    "name": "image_manager_load",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "uint32_t",
+      "name": "time_delta_s"
+     }
+    ],
+    "name": "image_manager_unload_unused",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "image"
+     }
+    ],
+    "name": "image_manager_add",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "image"
+     }
+    ],
+    "name": "image_manager_lookup",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     }
+    ],
+    "name": "image_manager_deinit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     }
+    ],
+    "name": "image_manager_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/image_manager.h"
+ },
+ {
+  "type": "class",
   "name": "image_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -1543,6 +1676,11 @@
     "type": "lcd_type_t",
     "name": "type",
     "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "ratio",
+    "readonly": true
    }
   ],
   "header": "base/lcd.h"
@@ -1728,8 +1866,23 @@
  {
   "type": "class",
   "name": "resource_manager_t",
-  "isFake": true,
   "methods": [
+   {
+    "params": [],
+    "name": "resource_manager",
+    "isConstructor": true,
+    "return": "resource_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     }
+    ],
+    "name": "resource_manager_set",
+    "return": "ret_t"
+   },
    {
     "params": [
      {
@@ -1737,23 +1890,45 @@
       "name": "init_res_nr"
      }
     ],
-    "name": "resource_manager_init",
-    "isStatic": true,
-    "return": "ret_t"
+    "name": "resource_manager_create",
+    "isConstructor": true,
+    "return": "resource_manager_t*"
    },
    {
     "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
+     {
+      "type": "uint32_t",
+      "name": "init_res_nr"
+     }
+    ],
+    "name": "resource_manager_init",
+    "isConstructor": true,
+    "return": "resource_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
      {
       "type": "resource_info_t",
       "name": "info"
      }
     ],
     "name": "resource_manager_add",
-    "isStatic": true,
     "return": "ret_t"
    },
    {
     "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
      {
       "type": "resource_type_t",
       "name": "type"
@@ -1764,24 +1939,58 @@
      }
     ],
     "name": "resource_manager_ref",
-    "isStatic": true,
-    "return": "ret_t"
+    "return": "resource_info_t*"
    },
    {
     "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
+     {
+      "type": "resource_type_t",
+      "name": "type"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "resource_manager_load",
+    "return": "resource_info_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
      {
       "type": "resource_info_t",
       "name": "info"
      }
     ],
     "name": "resource_manager_unref",
-    "isStatic": true,
     "return": "ret_t"
    },
    {
-    "params": [],
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     }
+    ],
     "name": "resource_manager_deinit",
-    "isStatic": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     }
+    ],
+    "name": "resource_manager_destroy",
     "return": "ret_t"
    }
   ],
@@ -4094,11 +4303,6 @@
     "readonly": true
    },
    {
-    "type": "char*",
-    "name": "name",
-    "readonly": true
-   },
-   {
     "type": "widget_t*",
     "name": "parent",
     "readonly": true
@@ -4112,9 +4316,6 @@
   "name": "window_animator_type_t",
   "prefix": "WINDOW_ANIMATOR_",
   "consts": [
-   {
-    "name": "WINDOW_ANIMATOR_NONE"
-   },
    {
     "name": "WINDOW_ANIMATOR_CENTER_SCALE"
    },
@@ -4142,7 +4343,7 @@
    {
     "params": [
      {
-      "type": "window_animator_type_t",
+      "type": "char*",
       "name": "type"
      },
      {
@@ -4165,7 +4366,7 @@
    {
     "params": [
      {
-      "type": "window_animator_type_t",
+      "type": "char*",
       "name": "type"
      },
      {

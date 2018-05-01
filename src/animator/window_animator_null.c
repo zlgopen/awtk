@@ -22,12 +22,12 @@
 #include "base/mem.h"
 #include "base/window_animator.h"
 
-window_animator_t* window_animator_create_for_open(window_animator_type_t type, canvas_t* c,
+window_animator_t* window_animator_create_for_open(const char* type, canvas_t* c,
                                                    widget_t* prev_win, widget_t* curr_win) {
   return NULL;
 }
 
-window_animator_t* window_animator_create_for_close(window_animator_type_t type, canvas_t* c,
+window_animator_t* window_animator_create_for_close(const char* type, canvas_t* c,
                                                     widget_t* prev_win, widget_t* curr_win) {
   return NULL;
 }

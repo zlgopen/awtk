@@ -1023,7 +1023,6 @@ ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_icon(c, img, cx, cy);
 }
 
-
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
   rect_t src;
   rect_t dst;
@@ -1032,7 +1031,7 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
 
   ratio = c->lcd->ratio;
   rect_init(src, 0, 0, img->w, img->h);
-  
+
   if (ratio > 1) {
     rect_init(dst, x, y, img->w / ratio, img->h / ratio);
   } else {
@@ -1041,4 +1040,3 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
 
   return canvas_do_draw_image(c, img, &src, &dst);
 }
-
