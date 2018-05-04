@@ -90,6 +90,18 @@ int array_find_index(array_t* array, compare_t cmp, void* ctx);
 bool_t array_remove(array_t* array, compare_t cmp, void* ctx);
 
 /**
+ * @method array_remove_all
+ * 删除全部满足条件的元素。
+ * @param {array_t*} array 数组对象。
+ * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {void*} ctx 比较函数的上下文。
+ * @param {destroy_t} destroy 销毁元素的回调函数。
+ *
+ * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ */
+bool_t array_remove_all(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
+
+/**
  * @method array_pop
  * 弹出最后一个元素。
  * @param {array_t*} array 数组对象。

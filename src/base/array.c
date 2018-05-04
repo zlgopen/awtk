@@ -118,6 +118,36 @@ bool_t array_remove(array_t* array, compare_t cmp, void* data) {
   return TRUE;
 }
 
+bool_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
+  int32_t i = 0;
+  int32_t k = 0;
+  int32_t size = 0;
+  void** elms = NULL;
+
+  return_value_if_fail(array != NULL, FALSE);
+  elms = array->elms;
+  size = array->size;
+
+  for (i = 0, k = 0; i < size; i++) {
+    void* iter = elms[i];
+    if ((cmp && cmp(iter, data) == 0) || iter == data) {
+      if (destroy != NULL) {
+        destroy(iter);
+      }
+      elms[i] = NULL;
+    } else {
+      if (k != i) {
+        elms[k] = elms[i];
+      }
+
+      k++;
+    }
+  }
+  array->size = k;
+
+  return TRUE;
+}
+
 void* array_find(array_t* array, compare_t cmp, void* data) {
   int pos = array_find_index(array, cmp, data);
   if (pos >= 0) {

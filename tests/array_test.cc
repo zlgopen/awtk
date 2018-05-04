@@ -119,3 +119,43 @@ TEST(OArrayTest, dec) {
 
   array_deinit(&array);
 }
+
+TEST(OArrayTest, removeAll) {
+  uint32_t i = 0;
+  char* p = NULL;
+  array_t array;
+  int cases[] = {1, 2, 2, 2, 13, 14, 12, 41, 34, 34, 5, 563, 12, 1, 2, 33};
+  array_init(&array, 10);
+
+  for (i = 0; i < ARRAY_SIZE(cases); i++) {
+    ASSERT_EQ(TRUE, array_push(&array, p + cases[i]));
+    ASSERT_EQ(i + 1, array.size);
+  }
+
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases));
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 2, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 1, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 12, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 13, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 14, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 33, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 34, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
+
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 0, NULL), TRUE);
+  ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
+
+  array_deinit(&array);
+}
