@@ -122,6 +122,7 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
   res->size = size;
   res->type = type;
   res->is_in_rom = TRUE;
+  res->refcount = 0;
   res->subtype = subtype;
   memcpy(res->data, buff, size);
   filename_to_name(filename, res->name, sizeof(res->name));
