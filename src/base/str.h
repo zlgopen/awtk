@@ -73,7 +73,7 @@ str_t* str_init(str_t* str, uint16_t capacity);
 bool_t str_eq(str_t* str, const char* text);
 
 /**
- * @method str_set 
+ * @method str_set
  * 设置字符串。
  * @param {str_t*} str str对象。
  * @param {char*} text 要设置的字符串。
@@ -81,6 +81,17 @@ bool_t str_eq(str_t* str, const char* text);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_set(str_t* str, const char* text);
+
+/**
+ * @method str_set_with_len
+ * 设置字符串。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要设置的字符串。
+ * @param {uint16_t} len 长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_set_with_len(str_t* str, const char* text, uint16_t len);
 
 /**
  * @method str_append
@@ -173,7 +184,7 @@ bool_t str_start_with(str_t* str, const char* text);
 ret_t str_trim(str_t* str, const char* text);
 
 /**
- * @method str_trim
+ * @method str_trim_left
  * 去除首部指定的字符。
  * @param {str_t*} str str对象。
  * @param {char*} text 要去除的字符集合。
@@ -183,7 +194,7 @@ ret_t str_trim(str_t* str, const char* text);
 ret_t str_trim_left(str_t* str, const char* text);
 
 /**
- * @method str_trim
+ * @method str_trim_right
  * 去除尾部指定的字符。
  * @param {str_t*} str str对象。
  * @param {char*} text 要去除的字符集合。
@@ -233,4 +244,3 @@ ret_t str_reset(str_t* str);
 END_C_DECLS
 
 #endif /*TK_STR_H*/
-

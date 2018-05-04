@@ -33,7 +33,7 @@ static ret_t str_extend(str_t* str, uint16_t capacity) {
     char* s = TKMEM_REALLOC(char, str->str, capacity + 1);
     return_value_if_fail(s != NULL, RET_FAIL);
 
-    s[capacity] = 0;
+    s[capacity] = '\0';
     str->str = s;
     str->capacity = capacity;
   }
@@ -49,14 +49,20 @@ str_t* str_init(str_t* str, uint16_t capacity) {
   return str_extend(str, capacity) == RET_OK ? str : NULL;
 }
 
-ret_t str_set(str_t* str, const char* text) {
+ret_t str_set(str_t* str, const char* text) { return str_set_with_len(str, text, 0xffff); }
+
+ret_t str_set_with_len(str_t* str, const char* text, uint16_t len) {
   uint16_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
   size = strlen(text);
+  if (len <= size) {
+    size = len;
+  }
   return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_BAD_PARAMS);
 
-  strcpy(str->str, text);
+  strncpy(str->str, text, size);
+  str->str[size] = '\0';
   str->size = size;
 
   return RET_OK;
@@ -88,14 +94,6 @@ bool_t str_eq(str_t* str, const char* text) {
   return strcmp(str->str, text) == 0;
 }
 
-ret_t str_pop(str_t* str) {
-  return_value_if_fail(str != NULL && str->size > 0, RET_BAD_PARAMS);
-  str->size--;
-  str->str[str->size] = '\0';
-
-  return RET_OK;
-}
-
 ret_t str_from_int(str_t* str, int32_t v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
@@ -116,6 +114,7 @@ ret_t str_from_value(str_t* str, const value_t* v) {
   if (v->type == VALUE_TYPE_STRING) {
     return str_set(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
+    /*TODO*/
     return RET_FAIL;
   } else if (v->type == VALUE_TYPE_FLOAT) {
     return str_from_float(str, value_float(v));

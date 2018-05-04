@@ -44,3 +44,20 @@ TEST(Str, basic) {
 
   str_reset(s);
 }
+
+TEST(Str, set_with_len) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set_with_len(s, "hello world", 0), RET_OK);
+  ASSERT_EQ(str_eq(s, ""), TRUE);
+  
+  ASSERT_EQ(str_set_with_len(s, "hello world", 1), RET_OK);
+  ASSERT_EQ(str_eq(s, "h"), TRUE);
+
+  ASSERT_EQ(str_set_with_len(s, "hello world", 5), RET_OK);
+  ASSERT_EQ(str_eq(s, "hello"), TRUE);
+
+  str_reset(s);
+}
