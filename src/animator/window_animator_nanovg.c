@@ -42,7 +42,9 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
 static ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
 
-  img->id = fbo->id;
+  img->specific = (char*)NULL + fbo->id;
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
   img->w = fbo->w * fbo->ratio;
   img->h = fbo->h * fbo->ratio;
 

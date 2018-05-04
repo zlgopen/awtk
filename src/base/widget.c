@@ -111,6 +111,7 @@ ret_t widget_re_translate_text(widget_t* widget) {
     value_t v;
     const char* tr_text = locale_tr(locale(), widget->tr_key.str);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+    widget_invalidate(widget, NULL);
   }
 
   if (widget->children != NULL) {
@@ -121,6 +122,8 @@ ret_t widget_re_translate_text(widget_t* widget) {
       widget_re_translate_text(iter);
     }
   }
+
+  return RET_OK;
 #else
   return RET_FAIL;
 #endif /*WITH_DYNAMIC_TR*/

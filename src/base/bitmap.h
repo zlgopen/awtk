@@ -126,11 +126,13 @@ struct _bitmap_t {
   const uint8_t* data;
 
   /**
-   * @property {int32_t} id
+   * @property {void*} specfic
    * @readonly
-   * opengl texture id。
+   * 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。
    */
-  int32_t id;
+  void* specific;
+  void* specific_ctx;
+  bitmap_destroy_t specific_destroy;
 
   bitmap_destroy_t destroy;
 };

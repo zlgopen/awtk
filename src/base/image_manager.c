@@ -96,10 +96,34 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
   return RET_NOT_FOUND;
 }
 
+ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  bitmap_cache_t* iter = NULL;
+  bitmap_cache_t** all = NULL;
+  return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
+
+  all = (bitmap_cache_t**)(imm->images.elms);
+  for (i = 0, nr = imm->images.size; i < nr; i++) {
+    iter = all[i];
+    if(image->data == iter->image.data) {
+      iter->image.flags = image->flags;
+      iter->image.specific = image->specific;
+      iter->image.specific_ctx = image->specific_ctx;
+      iter->image.specific_destroy = image->specific_destroy;
+
+      return RET_OK;
+    }
+  }
+
+  return RET_NOT_FOUND;
+}
+
 ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
   const resource_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
+  memset(image, 0x00, sizeof(bitmap_t));
   if (image_manager_lookup(imm, name, image) == RET_OK) {
     return RET_OK;
   }
@@ -118,6 +142,9 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     image->name = res->name;
     image->data = header->data;
 
+#if defined(WITH_AGG) || defined(WITH_PICASSO) || defined(WITH_NANOVG)
+    image_manager_add(imm, name, image);
+#endif
     return RET_OK;
   } else if (imm->loader != NULL) {
     ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
@@ -138,7 +165,7 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   bitmap_cache_t* iter = NULL;
   bitmap_cache_t** all = NULL;
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
-
+  /*FIXME:*/
   all = (bitmap_cache_t**)(imm->images.elms);
   for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
@@ -169,6 +196,7 @@ ret_t image_manager_deinit(image_manager_t* imm) {
   all = (bitmap_cache_t**)(imm->images.elms);
   for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
+    bitmap_destroy(&(iter->image));
     TKMEM_FREE(iter);
   }
 

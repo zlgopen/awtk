@@ -26,6 +26,7 @@
 #endif
 
 #include "base/utf8.h"
+#include "base/image_manager.h"
 #include "base/resource_manager.h"
 
 #include "glad/glad.h"
@@ -40,7 +41,6 @@
 
 #include "base/mem.h"
 #include "base/vgcanvas.h"
-#define MAX_IMAGE_NR 256
 
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
@@ -50,7 +50,6 @@ typedef struct _vgcanvas_nanovg_t {
   uint32_t text_align_v;
   uint32_t text_align_h;
   SDL_Window* sdl_window;
-  const uint8_t* images[MAX_IMAGE_NR];
 } vgcanvas_nanovg_t;
 
 ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
@@ -371,22 +370,33 @@ static uint32_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* t
   return nvgTextBounds(vg, 0, 0, text, text + strlen(text), bounds);
 }
 
+static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
+  int32_t id = (char*)(img->specific) - (char*)NULL;
+  NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
+
+  if(vg != NULL && id >= 0) {
+    nvgDeleteImage(vg, id);
+  }
+  img->specific = NULL;
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
+
+  return RET_OK;
+}
+
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    return img->id;
-  }
-
-  for (i = 0; i < MAX_IMAGE_NR; i++) {
-    if (canvas->images[i] == (img->data)) {
-      return i;
-    }
+    return (char*)(img->specific)-(char*)NULL;
   }
 
   i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);
   if (i >= 0) {
-    assert(i < MAX_IMAGE_NR);
-    canvas->images[i] = img->data;
+    img->flags |= BITMAP_FLAG_TEXTURE;
+    img->specific = (char*)NULL + i;
+    img->specific_ctx = canvas->vg;
+    img->specific_destroy = nanovg_on_bitmap_destroy;
+    image_manager_update_specific(image_manager(), img);
   }
 
   return i;

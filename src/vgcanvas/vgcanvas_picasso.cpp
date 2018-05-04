@@ -27,7 +27,6 @@
 #include "picasso_objects.h"
 #include "base/resource_manager.h"
 
-#define MAX_IMAGE_NR 256
 #define format COLOR_FORMAT_ABGR
 
 typedef struct _vgcanvas_picasso_t {
@@ -41,7 +40,6 @@ typedef struct _vgcanvas_picasso_t {
   ps_context* vg;
   ps_canvas* canvas;
   matrix_t matrix;
-  ps_image* images[MAX_IMAGE_NR];
 } vgcanvas_picasso_t;
 
 static ps_point ps_point_init(float_t x, float_t y) {
@@ -60,27 +58,35 @@ static ps_color ps_color_init(color_t color) {
   return c;
 }
 
+static ret_t picasso_on_bitmap_destroy(bitmap_t* img) {
+  ps_image* pimg = (ps_image*)img->specific;
+
+  if(pimg != NULL) {
+    ps_image_unref(pimg);
+  }
+
+  img->specific = NULL;
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
+
+  return RET_OK;
+}
+
 static ps_image* vgcanvas_picasso_ensure_image(vgcanvas_picasso_t* canvas, bitmap_t* img) {
-  int32_t i = 0;
-  ps_image* pimg = NULL;
-  for (i = 0; i < MAX_IMAGE_NR; i++) {
-    ps_image* iter = canvas->images[i];
-    if (iter && iter->buffer.buffer() == (img->data)) {
-      return iter;
+  ps_image* pimg = (ps_image*)img->specific;
+
+  if(pimg == NULL) {
+    pimg = ps_image_create_with_data((ps_byte*)img->data, format, img->w, img->h, img->w * 4);
+    pimg->buffer.set_transparent(!(img->flags & BITMAP_FLAG_OPAQUE));
+
+    if(pimg != NULL) {
+      img->specific = pimg;
+      img->specific_ctx = NULL;
+      img->specific_destroy = picasso_on_bitmap_destroy;
     }
   }
 
-  pimg = ps_image_create_with_data((ps_byte*)img->data, format, img->w, img->h, img->w * 4);
-  pimg->buffer.set_transparent(!(img->flags & BITMAP_FLAG_OPAQUE));
-
-  for (i = 0; i < MAX_IMAGE_NR; i++) {
-    if (canvas->images[i] == NULL) {
-      canvas->images[i] = pimg;
-      return pimg;
-    }
-  }
-
-  return NULL;
+  return pimg;
 }
 
 ret_t vgcanvas_picasso_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {

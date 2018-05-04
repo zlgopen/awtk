@@ -24,5 +24,9 @@
 ret_t bitmap_destroy(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL && bitmap->destroy != NULL, RET_BAD_PARAMS);
 
+  if(bitmap->specific_destroy != NULL) {
+    bitmap->specific_destroy(bitmap);
+  }
+
   return bitmap->destroy(bitmap);
 }
