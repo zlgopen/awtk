@@ -86,9 +86,10 @@ static const key_type_value_t align_h_name_value[] = {
     {"left", 0, ALIGN_H_LEFT}, {"center", 0, ALIGN_H_CENTER}, {"right", 0, ALIGN_H_RIGHT}};
 
 static const key_type_value_t resource_type_value[] = {
-    {"font", 0, RESOURCE_TYPE_FONT},   {"image", 0, RESOURCE_TYPE_IMAGE},
-    {"theme", 0, RESOURCE_TYPE_THEME}, {"ui", 0, RESOURCE_TYPE_UI},
-    {"xml", 0, RESOURCE_TYPE_XML},     {"data", 0, RESOURCE_TYPE_DATA},
+    {"font", 0, RESOURCE_TYPE_FONT},       {"image", 0, RESOURCE_TYPE_IMAGE},
+    {"theme", 0, RESOURCE_TYPE_THEME},     {"ui", 0, RESOURCE_TYPE_UI},
+    {"strings", 0, RESOURCE_TYPE_STRINGS}, {"xml", 0, RESOURCE_TYPE_XML},
+    {"data", 0, RESOURCE_TYPE_DATA},
 };
 
 static const key_type_value_t image_draw_type_name_value[] = {
