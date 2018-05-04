@@ -51,6 +51,7 @@ def prepare():
   os.makedirs(joinPath(OUTPUT_DIR, 'theme'));
   os.makedirs(joinPath(OUTPUT_DIR, 'images'));
   os.makedirs(joinPath(OUTPUT_DIR, 'fonts'));
+  os.makedirs(joinPath(OUTPUT_DIR, 'strings'));
   os.makedirs(joinPath(OUTPUT_DIR, 'ui'));
 
 def themegen(raw, inc):
@@ -60,6 +61,14 @@ def themegen(raw, inc):
 def themegen_bin(raw, bin):
   print(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
   os.system(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+
+def strgen(raw, inc):
+  print(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+  os.system(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
+
+def strgen_bin(raw, bin):
+  print(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+  os.system(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, bin) + ' bin')
 
 def resgen(raw, inc):
   os.system(toExe('resgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(OUTPUT_DIR, inc))
@@ -80,6 +89,8 @@ def xml_to_ui_bin(raw, bin):
 def gen_all():
   themegen('theme/theme.xml', 'theme/default.data');
   themegen_bin('theme/theme.xml', 'theme/default.bin');
+  strgen('strings/strings.xml', 'strings');
+  strgen_bin('strings/strings.xml', 'strings');
   resgen('fonts/default_ttf.ttf', 'fonts/default_ttf.data');
   resgen('fonts/ap.ttf', 'fonts/ap.data');
   fontgen('fonts/default_ttf.ttf', 'fonts/text.txt', 'fonts/default.data', 20);

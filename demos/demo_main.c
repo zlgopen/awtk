@@ -65,6 +65,7 @@ int main(void) {
 
   log_debug("system_info: lcd_w=%d lcd_h=%d lcd_type=%d device_pixel_ratio=%f\n", info->lcd_w,
             info->lcd_h, info->lcd_type, info->device_pixel_ratio);
+
   resource_init();
   application_init();
 

@@ -34,6 +34,7 @@
 #include "demos/resource.h"
 #include "base/font_manager.h"
 #include "base/image_manager.h"
+#include "base/window_manager.h"
 #include "base/resource_manager.h"
 
 #ifdef WITH_STB_FONT
@@ -51,12 +52,14 @@ GTEST_API_ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
-  image_manager_set(image_manager_create());
   resource_manager_set(resource_manager_create(10));
 
 #ifdef WITH_STB_IMAGE
-  image_manager_init(image_manager(), image_loader_stb());
+  image_manager_set(image_manager_create(image_loader_stb()));
+#else
+  image_manager_set(image_manager_create(NULL));
 #endif /*WITH_STB_IMAGE*/
+  window_manager_set(window_manager_create());
 
   resource_init();
   tk_init_resources();

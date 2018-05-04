@@ -1,0 +1,9 @@
+<string name="ok">
+<language name="en_US">OK</language>
+<language name="zh_CN">确定</language>
+</string>
+
+<string name="cancel">
+<language name="en_US">Cancel</language>
+<language name="zh_CN">取消</language>
+</string>

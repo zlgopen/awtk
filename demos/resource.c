@@ -2,6 +2,7 @@
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
 #include "res/inc/fonts/ap.data"
+#include "res/inc/fonts/default.data"
 #include "res/inc/fonts/default_ttf.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
@@ -51,6 +52,7 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");
 #else
   resource_manager_add(rm, font_ap);
+  resource_manager_add(rm, font_default);
   resource_manager_add(rm, font_default_ttf);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);

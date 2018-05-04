@@ -12,6 +12,7 @@ env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
 env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo_main.c', 'demo1_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo2'), ['demo_main.c', 'demo2_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_app.c', 'demo_main.c']);
+env.Program(os.path.join(BIN_DIR, 'demotr'), ['demo_tr_app.c', 'demo_main.c']);
 
 env.Program(os.path.join(BIN_DIR, 'prefix_xml_ui'), ['prefix_xml_ui.c']);
 

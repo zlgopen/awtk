@@ -19,7 +19,7 @@ else:
   VGCANVAS='AGG'
 
 COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DSDL2'
-COMMON_CCFLAGS=COMMON_CCFLAGS+' -DLUA_COMPAT_MODULE -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT'
+COMMON_CCFLAGS=COMMON_CCFLAGS+' -DLUA_COMPAT_MODULE -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_DYNAMIC_TR'
 
 if LCD == 'NANOVG':
   VGCANVAS='NANOVG'
@@ -104,6 +104,7 @@ SConscript([
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tools/res_gen/SConscript', 
+  'tools/str_gen/SConscript', 
   'tools/ui_gen/xml_to_ui/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
