@@ -58,7 +58,7 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms) {
   timer->on_timer = on_timer;
   timer->duration_ms = duration_ms;
 
-  return array_push(s_timer_manager, timer) ? timer->id : 0;
+  return array_push(s_timer_manager, timer) == RET_OK ? timer->id : 0;
 }
 
 static int compare_timer(const void* a, const void* b) {
@@ -81,7 +81,7 @@ ret_t timer_remove(uint32_t timer_id) {
   timer.id = timer_id;
   ret = (timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
   return_value_if_fail(ret != NULL, RET_NOT_FOUND);
-  if (array_remove(s_timer_manager, compare_timer, &timer)) {
+  if (array_remove(s_timer_manager, compare_timer, &timer) == RET_OK) {
     memset(ret, 0x00, sizeof(timer_info_t));
     /*will be removed on next check*/
   }

@@ -85,9 +85,9 @@ int array_find_index(array_t* array, compare_t cmp, void* ctx);
  * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
  *
- * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-bool_t array_remove(array_t* array, compare_t cmp, void* ctx);
+ret_t array_remove(array_t* array, compare_t cmp, void* ctx);
 
 /**
  * @method array_remove_all
@@ -97,9 +97,9 @@ bool_t array_remove(array_t* array, compare_t cmp, void* ctx);
  * @param {void*} ctx 比较函数的上下文。
  * @param {destroy_t} destroy 销毁元素的回调函数。
  *
- * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-bool_t array_remove_all(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
+ret_t array_remove_all(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
 
 /**
  * @method array_pop
@@ -116,9 +116,9 @@ void* array_pop(array_t* array);
  * @param {array_t*} array 数组对象。
  * @param {void*} data 待追加的元素。
  *
- * @return {bool_t} 成功返回TRUE，失败返回FALSE。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-bool_t array_push(array_t* array, void* data);
+ret_t array_push(array_t* array, void* data);
 
 /**
  * @method array_deinit

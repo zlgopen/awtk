@@ -49,9 +49,8 @@ font_manager_t* font_manager_init(font_manager_t* fm) {
 
 ret_t font_manager_add(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
-  array_push(&(fm->fonts), font);
-
-  return RET_OK;
+  
+  return array_push(&(fm->fonts), font);
 }
 
 font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {

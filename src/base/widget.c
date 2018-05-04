@@ -207,7 +207,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     widget->children = array_create(4);
   }
 
-  return array_push(widget->children, child) ? RET_OK : RET_FAIL;
+  return array_push(widget->children, child);
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
@@ -221,7 +221,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  return array_remove(widget->children, NULL, child) ? RET_OK : RET_NOT_FOUND;
+  return array_remove(widget->children, NULL, child);
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {

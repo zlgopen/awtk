@@ -48,7 +48,7 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx) {
   idle->id = s_idle_id++;
   idle->on_idle = on_idle;
 
-  return array_push(s_idle_manager, idle) ? idle->id : 0;
+  return array_push(s_idle_manager, idle) == RET_OK ? idle->id : 0;
 }
 
 static int compare_idle(const void* a, const void* b) {
@@ -72,7 +72,7 @@ ret_t idle_remove(uint32_t idle_id) {
   ret = (idle_info_t*)array_find(s_idle_manager, compare_idle, &idle);
   return_value_if_fail(ret != NULL, RET_NOT_FOUND);
 
-  if (array_remove(s_idle_manager, compare_idle, &idle)) {
+  if (array_remove(s_idle_manager, compare_idle, &idle) == RET_OK) {
     memset(ret, 0x00, sizeof(idle_info_t));
     /*remove it when dispatch*/
   }

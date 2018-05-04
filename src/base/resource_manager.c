@@ -232,7 +232,7 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info) {
 
   resource_info_ref((resource_info_t*)r);
 
-  return array_push(&(rm->resources), (void*)r) ? RET_OK : RET_FAIL;
+  return array_push(&(rm->resources), (void*)r);
 }
 
 const resource_info_t* resource_manager_find_in_cache(resource_manager_t* rm, resource_type_t type,
@@ -290,9 +290,7 @@ ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type)
   resource_type_t res = {type};
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
-  return array_remove_all(&(rm->resources), res_cmp_type, &res, (destroy_t)resource_info_unref)
-             ? RET_OK
-             : RET_FAIL;
+  return array_remove_all(&(rm->resources), res_cmp_type, &res, (destroy_t)resource_info_unref);
 }
 
 ret_t resource_manager_deinit(resource_manager_t* rm) {

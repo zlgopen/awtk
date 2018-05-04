@@ -292,17 +292,15 @@ widget_t* window_manager_create(void) {
 static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
-  array_push(&(wm->graps), child);
-
-  return RET_OK;
+  
+  return array_push(&(wm->graps), child);
 }
 
 static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
-  array_remove(&(wm->graps), NULL, child);
 
-  return RET_OK;
+  return array_remove(&(wm->graps), NULL, child);
 }
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {

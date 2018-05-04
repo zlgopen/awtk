@@ -19,7 +19,7 @@ static int pointer_cmp(const void* p1, const void* p2) {
 }
 
 static void test_add(array_t* array, void* pv) {
-  ASSERT_EQ(TRUE, array_push(array, pv));
+  ASSERT_EQ(RET_OK, array_push(array, pv));
   ASSERT_EQ(pv, array_find(array, pointer_cmp, pv));
 }
 
@@ -31,7 +31,7 @@ TEST(OArrayTest, popPush) {
   array_init(&array, 10);
 
   for (i = 0; i < ARRAY_SIZE(cases); i++) {
-    ASSERT_EQ(TRUE, array_push(&array, p + cases[i]));
+    ASSERT_EQ(RET_OK, array_push(&array, p + cases[i]));
     ASSERT_EQ(i + 1, array.size);
   }
 
@@ -63,7 +63,7 @@ TEST(OArrayTest, random) {
     long k = random() % array.size;
     void* pv = array.elms[k];
 
-    ASSERT_EQ(TRUE, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
   }
   ASSERT_EQ(array.size, 0);
 
@@ -87,7 +87,7 @@ TEST(OArrayTest, inc) {
     long k = random() % array.size;
     void* pv = array.elms[k];
 
-    ASSERT_EQ(TRUE, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
   }
   ASSERT_EQ(array.size, 0);
 
@@ -112,7 +112,7 @@ TEST(OArrayTest, dec) {
     void* pv = array.elms[k];
 
     ASSERT_EQ(pv, array_find(&array, pointer_cmp, pv));
-    ASSERT_EQ(TRUE, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
     ASSERT_EQ(NULL, array_find(&array, pointer_cmp, pv));
   }
   ASSERT_EQ(array.size, 0);
@@ -128,33 +128,33 @@ TEST(OArrayTest, removeAll) {
   array_init(&array, 10);
 
   for (i = 0; i < ARRAY_SIZE(cases); i++) {
-    ASSERT_EQ(TRUE, array_push(&array, p + cases[i]));
+    ASSERT_EQ(RET_OK, array_push(&array, p + cases[i]));
     ASSERT_EQ(i + 1, array.size);
   }
 
   ASSERT_EQ(array.size, ARRAY_SIZE(cases));
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 2, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 2, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 1, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 1, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 12, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 12, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 13, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 13, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 14, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 14, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 33, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 33, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 34, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 34, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
 
-  ASSERT_EQ(array_remove_all(&array, NULL, p + 0, NULL), TRUE);
+  ASSERT_EQ(array_remove_all(&array, NULL, p + 0, NULL), RET_OK);
   ASSERT_EQ(array.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
 
   array_deinit(&array);

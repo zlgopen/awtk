@@ -95,16 +95,16 @@ int array_find_index(array_t* array, compare_t cmp, void* data) {
   return -1;
 }
 
-bool_t array_remove(array_t* array, compare_t cmp, void* data) {
+ret_t array_remove(array_t* array, compare_t cmp, void* data) {
   int32_t i = 0;
   int32_t pos = 0;
   int32_t size = 0;
   void** elms = NULL;
 
-  return_value_if_fail(array != NULL, FALSE);
+  return_value_if_fail(array != NULL, RET_BAD_PARAMS);
   pos = array_find_index(array, cmp, data);
   if (pos < 0) {
-    return FALSE;
+    return RET_NOT_FOUND;
   }
 
   elms = array->elms;
@@ -115,16 +115,16 @@ bool_t array_remove(array_t* array, compare_t cmp, void* data) {
   elms[i] = NULL;
   array->size--;
 
-  return TRUE;
+  return RET_OK;
 }
 
-bool_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
+ret_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
   int32_t i = 0;
   int32_t k = 0;
   int32_t size = 0;
   void** elms = NULL;
 
-  return_value_if_fail(array != NULL, FALSE);
+  return_value_if_fail(array != NULL, RET_BAD_PARAMS);
   elms = array->elms;
   size = array->size;
 
@@ -145,7 +145,7 @@ bool_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t des
   }
   array->size = k;
 
-  return TRUE;
+  return RET_OK;
 }
 
 void* array_find(array_t* array, compare_t cmp, void* data) {
@@ -163,13 +163,13 @@ void* array_pop(array_t* array) {
   return array->elms[--array->size];
 }
 
-bool_t array_push(array_t* array, void* data) {
-  return_value_if_fail(array != NULL, FALSE);
-  return_value_if_fail(array_extend(array), FALSE);
+ret_t array_push(array_t* array, void* data) {
+  return_value_if_fail(array != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(array_extend(array), RET_OOM);
 
   array->elms[array->size++] = data;
 
-  return TRUE;
+  return RET_OK;
 }
 
 void array_deinit(array_t* array) {

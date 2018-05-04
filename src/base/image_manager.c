@@ -71,9 +71,7 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->last_access_time = cache->created_time;
   cache->image.name = cache->name;
 
-  array_push(&(imm->images), cache);
-
-  return RET_OK;
+  return array_push(&(imm->images), cache);
 }
 
 ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* image) {
