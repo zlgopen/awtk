@@ -41,6 +41,7 @@ static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t 
   info->size = size;
   info->type = type;
   info->subtype = subtype;
+  info->refcount = 1;
   info->is_in_rom = FALSE;
   strncpy(info->name, name, NAME_LEN);
 
@@ -81,6 +82,14 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_THEME, size, path, name);
         break;
+      }
+      break;
+    }
+    case RESOURCE_TYPE_STRINGS: {
+      snprintf(path, MAX_PATH, "%s/strings/%s.bin", RES_ROOT, name);
+      size = fs_file_size(path);
+      if (size > 0) {
+        info = load_resource(type, RESOURCE_TYPE_STRINGS, size, path, name);
       }
       break;
     }
@@ -160,6 +169,43 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
 
 resource_manager_t* resource_manager(void) { return s_resource_manager; }
 
+static ret_t resource_info_destroy(resource_info_t* info) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  if (!(info->is_in_rom)) {
+    memset(info, 0x00, sizeof(resource_info_t));
+
+    TKMEM_FREE((void*)info);
+  }
+
+  return RET_OK;
+}
+
+static ret_t resource_info_unref(resource_info_t* info) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  if (!(info->is_in_rom)) {
+    if (info->refcount > 0) {
+      info->refcount--;
+      if (info->refcount == 0) {
+        resource_info_destroy(info);
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t resource_info_ref(resource_info_t* info) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  if (!(info->is_in_rom)) {
+    info->refcount++;
+  }
+
+  return RET_OK;
+}
+
 ret_t resource_manager_set(resource_manager_t* rm) {
   s_resource_manager = rm;
 
@@ -184,11 +230,13 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info) {
   const resource_info_t* r = (const resource_info_t*)info;
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
+  resource_info_ref((resource_info_t*)r);
+
   return array_push(&(rm->resources), (void*)r) ? RET_OK : RET_FAIL;
 }
 
-const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
-                                            const char* name) {
+const resource_info_t* resource_manager_find_in_cache(resource_manager_t* rm, resource_type_t type,
+                                                      const char* name) {
   uint32_t i = 0;
   const resource_info_t* iter = NULL;
   const resource_info_t** all = NULL;
@@ -203,18 +251,48 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
     }
   }
 
-  return resource_manager_load(rm, type, name);
+  return NULL;
+}
+
+const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
+                                            const char* name) {
+  const resource_info_t* info = resource_manager_find_in_cache(rm, type, name);
+
+  if (info == NULL) {
+    info = resource_manager_load(rm, type, name);
+    /*加载时初始计数为1，缓存时自动增加引用计数，此处不需要引用*/
+  } else {
+    resource_info_ref((resource_info_t*)info);
+  }
+
+  return info;
 }
 
 ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
-  array_remove(&(rm->resources), NULL, (void*)info);
-  if (!(info->is_in_rom)) {
-    TKMEM_FREE((void*)info);
+  resource_info_unref((resource_info_t*)info);
+  if (!(info->is_in_rom) && info->refcount < 1) {
+    array_remove(&(rm->resources), NULL, (void*)info);
   }
 
   return RET_OK;
+}
+
+static int res_cmp_type(const void* a, const void* b) {
+  const resource_info_t* aa = (const resource_info_t*)a;
+  const resource_info_t* bb = (const resource_info_t*)b;
+
+  return aa->type - bb->type;
+}
+
+ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type) {
+  resource_type_t res = {type};
+  return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
+
+  return array_remove_all(&(rm->resources), res_cmp_type, &res, (destroy_t)resource_info_unref)
+             ? RET_OK
+             : RET_FAIL;
 }
 
 ret_t resource_manager_deinit(resource_manager_t* rm) {
@@ -227,9 +305,7 @@ ret_t resource_manager_deinit(resource_manager_t* rm) {
 
   for (i = 0; i < rm->resources.size; i++) {
     iter = all[i];
-    if (!iter->is_in_rom) {
-      TKMEM_FREE(iter);
-    }
+    resource_info_destroy(iter);
   }
 
   array_deinit(&(rm->resources));

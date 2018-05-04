@@ -83,6 +83,7 @@ typedef struct _resource_info_t {
   uint8_t subtype;
   uint8_t is_in_rom;
   uint32_t size;
+  uint32_t refcount; /*is_in_rom == FALSE,才有效*/
   char name[NAME_LEN + 1];
   uint8_t data[4];
 } resource_info_t;
@@ -146,7 +147,7 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info);
 
 /**
  * @method resource_manager_ref
- * 在资源管理器中查找指定的资源并引用它。
+ * 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
  * @param {resource_manager_t*} rm resource manager对象。
  * @param {resource_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
@@ -156,6 +157,27 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info);
 const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_type_t type,
                                             const char* name);
 
+/**
+ * @method resource_manager_unref
+ * 释放指定的资源。
+ * @param {resource_manager_t*} rm resource manager对象。
+ * @param {resource_info_t} info 资源。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info);
+
+/**
+ * @method resource_manager_find_in_cache
+ * 在资源管理器的缓存中查找指定的资源(不引用)。
+ * @param {resource_manager_t*} rm resource manager对象。
+ * @param {resource_type_t} type 资源的类型。
+ * @param {char*} name 资源的名称。
+ *
+ * @return {resource_info_t*} 返回资源。
+ */
+const resource_info_t* resource_manager_find_in_cache(resource_manager_t* rm, resource_type_t type,
+                                                      const char* name);
 /**
  * @method resource_manager_load
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。
@@ -169,14 +191,14 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
                                        const char* name);
 
 /**
- * @method resource_manager_unref
- * 释放指定的资源。
+ * @method resource_manager_clear_cache
+ * 清除指定类型的缓存。
  * @param {resource_manager_t*} rm resource manager对象。
- * @param {resource_info_t} info 资源。
+ * @param {resource_type_t} type 资源的类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info);
+ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type);
 
 /**
  * @method resource_manager_deinit
