@@ -18,8 +18,9 @@
  * 2018-01-19 Li XianJing <xianjimli@hotmail.com> adapted from ftk.
  *
  */
-#include "xml/xml_parser.h"
+#include "base/fs.h"
 #include "base/mem.h"
+#include "xml/xml_parser.h"
 
 #define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
 #define isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))
@@ -458,24 +459,10 @@ static const char* strtrim(char* str) {
   return str;
 }
 
-#include <stdio.h>
-#include <sys/stat.h>
-
 static char* read_text_file(const char* filename) {
-  struct stat st;
-  FILE* fp = NULL;
-  char* buff = NULL;
-  return_value_if_fail(filename != NULL, NULL);
+  uint32_t size = 0;
 
-  fp = fopen(filename, "r");
-  return_value_if_fail(fp != NULL, NULL);
-  return_value_if_fail(stat(filename, &st) == 0, NULL);
-  buff = TKMEM_ALLOC(st.st_size + 1);
-  return_value_if_fail(buff != NULL, NULL);
-  fread(buff, st.st_size, 1, fp);
-  buff[st.st_size] = '\0';
-
-  return buff;
+  return (char*)fs_read_file(filename, &size);
 }
 
 void xml_parser_parse_file(XmlParser* thiz, const char* filename) {
