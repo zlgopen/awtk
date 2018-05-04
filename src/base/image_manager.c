@@ -41,10 +41,11 @@ ret_t image_manager_set(image_manager_t* imm) {
   return RET_OK;
 }
 
-image_manager_t* image_manager_create() {
+image_manager_t* image_manager_create(image_loader_t* loader) {
   image_manager_t* imm = TKMEM_ZALLOC(image_manager_t);
+  return_value_if_fail(imm != NULL, NULL);
 
-  return imm;
+  return image_manager_init(imm, loader);
 }
 
 image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader) {

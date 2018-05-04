@@ -79,10 +79,11 @@ ret_t image_manager_set(image_manager_t* imm);
  * @method image_manager_create
  * 创建图片管理器。
  * @constructor
+ * @param {image_loader_t*} loader 图片加载器。
  *
  * @return {image_manager_t*} 返回图片管理器对象。
  */
-image_manager_t* image_manager_create(void);
+image_manager_t* image_manager_create(image_loader_t* loader);
 
 /**
  * @method image_manager_init
