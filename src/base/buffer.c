@@ -31,6 +31,16 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity) {
   return wbuffer;
 }
 
+ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t offset) {
+  return_value_if_fail(wbuffer != NULL && wbuffer->data != NULL, RET_BAD_PARAMS);
+  return_value_if_fail((wbuffer->cursor + offset) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail((wbuffer->cursor + offset) < wbuffer->capacity, RET_BAD_PARAMS);
+
+  wbuffer->cursor += offset;
+
+  return RET_OK;
+}
+
 ret_t wbuffer_write_uint8(wbuffer_t* wbuffer, uint8_t value) {
   return_value_if_fail(wbuffer != NULL && wbuffer->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail((wbuffer->cursor + sizeof(value)) < wbuffer->capacity, RET_BAD_PARAMS);
@@ -90,6 +100,16 @@ bool_t rbuffer_has_more(rbuffer_t* rbuffer) {
   return_value_if_fail(rbuffer != NULL, FALSE);
 
   return (rbuffer->cursor + 1) < rbuffer->capacity;
+}
+
+ret_t rbuffer_skip(rbuffer_t* rbuffer, int32_t offset) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL, RET_BAD_PARAMS);
+  return_value_if_fail((rbuffer->cursor + offset) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail((rbuffer->cursor + offset) < rbuffer->capacity, RET_BAD_PARAMS);
+
+  rbuffer->cursor += offset;
+
+  return RET_OK;
 }
 
 ret_t rbuffer_read_uint8(rbuffer_t* rbuffer, uint8_t* value) {
