@@ -144,7 +144,13 @@ typedef enum _event_type_t {
    * @const EVT_AFTER_PAINT
    * 绘制事件名。
    */
-  EVT_AFTER_PAINT
+  EVT_AFTER_PAINT,
+
+  /**
+   * @const EVT_LOCALE_CHANGED
+   * locale改变的事件。
+   */
+  EVT_LOCALE_CHANGED
 } event_type_t;
 
 /**
