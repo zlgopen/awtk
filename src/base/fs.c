@@ -72,11 +72,16 @@ void* fs_read_file(const char* name, uint32_t* size) {
   return_value_if_fail(buff != NULL, NULL);
 
   if (fs_read_file_part(name, buff, len, 0) == len) {
-    *size = len;
+    if (size != NULL) {
+      *size = len;
+    }
     buff[len] = '\0';
+
     return buff;
   } else {
-    *size = 0;
+    if (size != NULL) {
+      *size = 0;
+    }
     TKMEM_FREE(buff);
 
     return NULL;
