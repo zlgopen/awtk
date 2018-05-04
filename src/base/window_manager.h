@@ -53,17 +53,19 @@ typedef struct _window_manager_t {
 } window_manager_t;
 
 widget_t* window_manager(void);
+ret_t window_manager_set(widget_t* widget);
 
+widget_t* window_manager_create(void);
 widget_t* window_manager_init(window_manager_t* wm);
 
 widget_t* window_manager_get_top_window(widget_t* widget);
-ret_t window_manager_resize(widget_t* wm, wh_t w, wh_t h);
-ret_t window_manager_add_child(widget_t* wm, widget_t* window);
-ret_t window_manager_remove_child(widget_t* wm, widget_t* window);
-ret_t window_manager_paint(widget_t* wm, canvas_t* c);
-ret_t window_manager_dispatch_input_event(widget_t* wm, event_t* e);
+ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
+ret_t window_manager_add_child(widget_t* widget, widget_t* window);
+ret_t window_manager_remove_child(widget_t* widget, widget_t* window);
+ret_t window_manager_paint(widget_t* widget, canvas_t* c);
+ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
 
-ret_t window_manager_set_animating(widget_t* wm, bool_t animating);
+ret_t window_manager_set_animating(widget_t* widget, bool_t animating);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

@@ -24,6 +24,7 @@
 #include "base/idle.h"
 #include "base/time.h"
 #include "base/timer.h"
+#include "base/locale.h"
 #include "base/prop_names.h"
 #include "base/window_manager.h"
 
@@ -271,14 +272,21 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   }
 }
 
-widget_t* window_manager() {
-  static window_manager_t* wm = NULL;
-  if (wm == NULL) {
-    wm = TKMEM_ZALLOC(window_manager_t);
-    window_manager_init(wm);
-  }
+static widget_t* s_window_manager = NULL;
 
-  return WIDGETP(wm);
+widget_t* window_manager(void) { return s_window_manager; }
+
+ret_t window_manager_set(widget_t* widget) {
+  s_window_manager = widget;
+
+  return RET_OK;
+}
+
+widget_t* window_manager_create(void) {
+  window_manager_t* wm = TKMEM_ZALLOC(window_manager_t);
+  return_value_if_fail(wm != NULL, NULL);
+
+  return window_manager_init(wm);
 }
 
 static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
@@ -366,6 +374,13 @@ static const widget_vtable_t s_wm_vtable = {.invalidate = window_manager_invalid
                                             .find_target = window_manager_find_target,
                                             .ungrab = window_manager_ungrab};
 
+static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGETP(ctx);
+  widget_re_translate_text(widget);
+
+  return RET_OK;
+}
+
 widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);
   return_value_if_fail(wm != NULL, NULL);
@@ -373,6 +388,10 @@ widget_t* window_manager_init(window_manager_t* wm) {
   widget_init(w, NULL, WIDGET_WINDOW_MANAGER);
   array_init(&(wm->graps), 5);
   w->vt = &s_wm_vtable;
+
+#ifdef WITH_DYNAMIC_TR
+  locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
+#endif /*WITH_DYNAMIC_TR*/
 
   return w;
 }

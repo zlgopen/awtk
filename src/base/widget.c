@@ -23,6 +23,7 @@
 #include "base/utf8.h"
 #include "base/utils.h"
 #include "base/enums.h"
+#include "base/locale.h"
 #include "base/widget.h"
 #include "base/prop_names.h"
 #include "base/widget_vtable.h"
@@ -89,6 +90,40 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_wstr(&v, text));
+}
+
+ret_t widget_set_tr_text(widget_t* widget, const char* text) {
+  value_t v;
+  const char* tr_text = NULL;
+  return_value_if_fail(widget != NULL && text != NULL, RET_OK);
+
+  tr_text = locale_tr(locale(), text);
+#ifdef WITH_DYNAMIC_TR
+  str_set(&(widget->tr_key), text);
+#endif /*WITH_DYNAMIC_TR*/
+
+  return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+}
+
+ret_t widget_re_translate_text(widget_t* widget) {
+#ifdef WITH_DYNAMIC_TR
+  if (widget->tr_key.size) {
+    value_t v;
+    const char* tr_text = locale_tr(locale(), widget->tr_key.str);
+    widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+  }
+
+  if (widget->children != NULL) {
+    uint32_t i = 0;
+    uint32_t n = 0;
+    for (i = 0, n = widget->children->size; i < n; i++) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      widget_re_translate_text(iter);
+    }
+  }
+#else
+  return RET_FAIL;
+#endif /*WITH_DYNAMIC_TR*/
 }
 
 uint32_t widget_get_value(widget_t* widget) {
@@ -815,6 +850,9 @@ ret_t widget_destroy(widget_t* widget) {
   }
 
   str_reset(&(widget->name));
+#ifdef WITH_DYNAMIC_TR
+  str_reset(&(widget->tr_key));
+#endif /*WITH_DYNAMIC_TR*/
   wstr_reset(&(widget->text));
   memset(widget, 0x00, sizeof(widget_t));
   TKMEM_FREE(widget);
@@ -888,6 +926,9 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
   }
 
   str_init(&(widget->name), 0);
+#ifdef WITH_DYNAMIC_TR
+  str_init(&(widget->tr_key), 0);
+#endif /*WITH_DYNAMIC_TR*/
   wstr_init(&(widget->text), 0);
   if (!widget->vt) {
     widget->vt = widget_vtable_default();

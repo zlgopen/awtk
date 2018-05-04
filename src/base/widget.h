@@ -388,6 +388,15 @@ struct _widget_t {
    * 文本。用途视具体情况而定。
    */
   wstr_t text;
+#ifdef WITH_DYNAMIC_TR
+  /**
+   * @property {str_t} tr_key
+   * @private
+   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_key。
+   */
+  str_t tr_key;
+#endif /*WITH_DYNAMIC_TR*/
+
   /**
    * @property {layout_params_t*} layout_params
    * @private
@@ -507,6 +516,25 @@ ret_t widget_use_style(widget_t* widget, const char* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_text(widget_t* widget, const wchar_t* text);
+
+/**
+ * @method widget_set_tr_text
+ * 获取翻译之后的文本，然后调用widget_set_text。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*}  text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_tr_text(widget_t* widget, const char* text);
+
+/**
+ * @method widget_re_translate_text
+ * 语言改变后，重新翻译控件上的文本(包括子控件)。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_re_translate_text(widget_t* widget);
 
 /**
  * @method widget_get_value
