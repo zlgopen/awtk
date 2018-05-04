@@ -196,7 +196,8 @@ typedef void* pointer_t;
   p += 1;
 
 typedef int (*compare_t)(const void* a, const void* b);
-typedef bool_t (*visit_t)(void* ctx, void* data);
+typedef ret_t (*visit_t)(void* ctx, void* data);
+typedef ret_t (*destroy_t)(void* data);
 
 enum { NAME_LEN = 15 };
 
