@@ -55,6 +55,7 @@ typedef struct _wstr_t {
 /**
  * @method wstr_init
  * 初始化字符串对象。
+ * @constructor
  * @param {wstr_t*} str str对象。
  * @param {uint16_t} capacity 初始容量。
  *
@@ -63,7 +64,7 @@ typedef struct _wstr_t {
 wstr_t* wstr_init(wstr_t* str, uint16_t capacity);
 
 /**
- * @method wstr_set 
+ * @method wstr_set
  * 设置字符串。
  * @param {wstr_t*} str str对象。
  * @param {wchar_t*} text 要设置的字符串。
@@ -73,7 +74,7 @@ wstr_t* wstr_init(wstr_t* str, uint16_t capacity);
 ret_t wstr_set(wstr_t* str, const wchar_t* text);
 
 /**
- * @method wstr_set_utf8 
+ * @method wstr_set_utf8
  * 设置UTF8字符串。
  * @param {wstr_t*} str str对象。
  * @param {char*} text 要设置的字符串。
@@ -83,7 +84,7 @@ ret_t wstr_set(wstr_t* str, const wchar_t* text);
 ret_t wstr_set_utf8(wstr_t* str, const char* text);
 
 /**
- * @method wstr_get_utf8 
+ * @method wstr_get_utf8
  * 获取UTF8字符串。
  * @param {wstr_t*} str str对象。
  * @param {char*} text 返回的字符串。
@@ -196,5 +197,4 @@ ret_t wstr_reset(wstr_t* str);
 
 END_C_DECLS
 
-#endif/*WSTR_H*/
-
+#endif /*WSTR_H*/

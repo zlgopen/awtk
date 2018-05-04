@@ -55,6 +55,7 @@ typedef struct _str_t {
 /**
  * @method str_init
  * 初始化字符串对象。
+ * @constructor
  * @param {str_t*} str str对象。
  * @param {uint16_t} capacity 初始容量。
  *
