@@ -154,7 +154,7 @@
   </style>
 </dialog>
 
-<dialog_title icon="info">
+<dialog_title icon="info" text_color="black">
   <style name="default">
     <normal bg_color="#a9a9a0" />
   </style>

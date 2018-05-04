@@ -373,6 +373,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   bitmap_t img;
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
+  color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
 
   if (text == NULL) {
@@ -384,7 +385,6 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   }
 
   if (text != NULL && text->size > 0) {
-    color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
     canvas_set_text_color(c, tc);

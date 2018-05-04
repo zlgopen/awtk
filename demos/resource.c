@@ -17,6 +17,7 @@
 #include "res/inc/images/middle_off.data"
 #include "res/inc/images/middle_on.data"
 #include "res/inc/images/muted.data"
+#include "res/inc/images/question.data"
 #include "res/inc/images/radio_checked.data"
 #include "res/inc/images/radio_unchecked.data"
 #include "res/inc/images/red_btn_n.data"
@@ -33,6 +34,7 @@
 #include "res/inc/images/slider_v_fg.data"
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
+#include "res/inc/images/warn.data"
 #include "res/inc/theme/default.data"
 #include "res/inc/ui/bottom.data"
 #include "res/inc/ui/dialog1.data"
@@ -67,6 +69,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_middle_off);
   resource_manager_add(rm, image_middle_on);
   resource_manager_add(rm, image_muted);
+  resource_manager_add(rm, image_question);
   resource_manager_add(rm, image_radio_checked);
   resource_manager_add(rm, image_radio_unchecked);
   resource_manager_add(rm, image_red_btn_n);
@@ -83,6 +86,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_slider_v_fg);
   resource_manager_add(rm, image_unchecked);
   resource_manager_add(rm, image_unmuted);
+  resource_manager_add(rm, image_warn);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, ui_bottom);
   resource_manager_add(rm, ui_dialog1);
