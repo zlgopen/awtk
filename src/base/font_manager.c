@@ -22,10 +22,22 @@
 #include "base/mem.h"
 #include "base/font_manager.h"
 
-font_manager_t* font_manager_create() {
+static font_manager_t* s_font_manager = NULL;
+
+font_manager_t* font_manager(void) {
+  return s_font_manager;
+}
+
+ret_t font_manager_set(font_manager_t* fm) {
+  s_font_manager = fm;
+
+  return RET_OK;
+}
+
+font_manager_t* font_manager_create(void) {
   font_manager_t* fm = TKMEM_ZALLOC(font_manager_t);
 
-  return fm;
+  return font_manager_init(fm);
 }
 
 font_manager_t* font_manager_init(font_manager_t* fm) {
@@ -92,12 +104,3 @@ ret_t font_manager_destroy(font_manager_t* fm) {
   return RET_OK;
 }
 
-font_manager_t* font_manager() {
-  static font_manager_t* afm = NULL;
-  if (afm == NULL) {
-    afm = TKMEM_ZALLOC(font_manager_t);
-    font_manager_init(afm);
-  }
-
-  return afm;
-}

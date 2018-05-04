@@ -82,23 +82,30 @@ ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size) {
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   return_value_if_fail(mem_init(heap, size) == RET_OK, RET_FAIL);
+
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
+  return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
 
   return main_loop_init(w, h);
 }
 
-ret_t tk_run() {
-  main_loop_run(main_loop());
+static ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
-
+  font_manager_destroy(font_manager());
   image_manager_destroy(image_manager());
   resource_manager_destroy(resource_manager());
   locale_destroy(locale());
 
   return RET_OK;
+}
+
+ret_t tk_run() {
+  main_loop_run(main_loop());
+
+  return tk_exit();
 }
 
 static ret_t tk_quit_idle(const timer_info_t* timer) { return main_loop_quit(main_loop()); }

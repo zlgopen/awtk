@@ -40,10 +40,10 @@
 * picasso实现vgcanvas接口
 * 支持窗口动画
 * 资源管理器支持从ROM和文件中加载。
+* 国际化支持字符串翻译。
 
 ## 短期计划(顺序不定)
 * agg实现vgcanvas接口
-* 国际化支持
 * API doc到PDF转换工具
 * image value
 * combobox

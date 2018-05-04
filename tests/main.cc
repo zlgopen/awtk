@@ -59,6 +59,7 @@ GTEST_API_ int main(int argc, char** argv) {
 #else
   image_manager_set(image_manager_create(NULL));
 #endif /*WITH_STB_IMAGE*/
+  font_manager_set(font_manager_create());
   window_manager_set(window_manager_create());
 
   resource_init();

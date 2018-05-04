@@ -138,6 +138,7 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* image);
+
 /**
  * @method image_manager_deinit
  * 析构图片管理器。

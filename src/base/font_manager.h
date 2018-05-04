@@ -27,20 +27,89 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class font_manager_t
+ * 字体管理器。
+ * (如果使用nanovg，字体由nanovg内部管理)
+ */
 typedef struct _font_manager_t {
   array_t fonts;
 } font_manager_t;
 
+/**
+ * @method font_manager
+ * 获取缺省的字体管理器。
+ * @constructor
+ * @return {font_manager_t*} 返回字体管理器对象。
+ */
 font_manager_t* font_manager(void);
 
+/**
+ * @method font_manager_set
+ * 设置缺省的字体管理器。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_manager_set(font_manager_t* fm);
+
+/**
+ * @method font_manager_create
+ * 创建字体管理器。
+ * @constructor
+ *
+ * @return {font_manager_t*} 返回字体管理器对象。
+ */
 font_manager_t* font_manager_create(void);
+
+/**
+ * @method font_manager_init
+ * 初始化字体管理器。
+ * @constructor
+ * @param {font_manager_t*} fm 字体管理器对象。
+ *
+ * @return {font_manager_t*} 返回字体管理器对象。
+ */
 font_manager_t* font_manager_init(font_manager_t* fm);
 
+/**
+ * @method font_manager_add
+ * 向缓存中加入字体。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ * @param {char*} name 字体名。
+ * @param {font_t*} font 字体。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t font_manager_add(font_manager_t* fm, font_t* font);
 
+/**
+ * @method font_manager_find
+ * 从缓存中查找字体。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ * @param {char*} name 字体名，为NULL时使用STR_DEFAULT_FONT。
+ * @param {uint16_t} size 字体的大小。
+ *
+ * @return {font_t*} 返回字体对象。
+ */
 font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size);
 
+/**
+ * @method font_manager_deinit
+ * 析构字体管理器。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t font_manager_deinit(font_manager_t* fm);
+
+/**
+ * @method font_manager_destroy
+ * 析构并释放字体管理器。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t font_manager_destroy(font_manager_t* fm);
 
 END_C_DECLS
