@@ -33,8 +33,7 @@ int main(int argc, char** argv) {
   const char* out_filename = NULL;
   image_loader_t* loader = NULL;
 
-  static uint32_t s_heap_mem[1024 * 1024];
-  mem_init(s_heap_mem, sizeof(s_heap_mem));
+  TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc != 3) {
     printf("Usage: %s in_filename out_filename\n", argv[0]);

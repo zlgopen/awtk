@@ -41,6 +41,7 @@ mem_stat_t mem_stat(void);
 void mem_info_dump(void);
 
 #ifdef HAS_STD_MALLOC
+#define TKMEM_INIT(size)
 #define TKMEM_ALLOC(size) malloc(size)
 #define TKMEM_ZALLOC(type) (type*)calloc(1, sizeof(type))
 #define TKMEM_ZALLOCN(type, n) (type*)calloc(n, sizeof(type))
@@ -51,6 +52,12 @@ void* tk_calloc(uint32_t nmemb, uint32_t size);
 void* tk_realloc(void* ptr, uint32_t size);
 void tk_free(void* ptr);
 void* tk_alloc(uint32_t size);
+
+#define TKMEM_INIT(size)                      \
+  {                                           \
+    static uint32_t s_heap_mem[size >> 2];    \
+    mem_init(s_heap_mem, sizeof(s_heap_mem)); \
+  }
 
 #define TKMEM_ALLOC(size) tk_alloc(size)
 #define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type))

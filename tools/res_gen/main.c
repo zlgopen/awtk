@@ -23,14 +23,13 @@
 #include "common/utils.h"
 #include "base/resource_manager.h"
 
-static uint32_t s_heap_mem[4 * 1024 * 1024];
 int main(int argc, char** argv) {
   uint32_t size = 0;
   uint8_t* input_buff = NULL;
   const char* input_filename = NULL;
   const char* output_filename = NULL;
 
-  mem_init(s_heap_mem, sizeof(s_heap_mem));
+  TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc != 3) {
     printf("Usage: %s input_filename output_filename\n", argv[0]);
