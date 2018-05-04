@@ -69,6 +69,8 @@ void xml_builder_on_error(XmlBuilder* thiz, int line, int row, const char* messa
   return_if_fail(thiz != NULL);
   if (thiz->on_error != NULL) {
     thiz->on_error(thiz, line, row, message);
+  } else {
+    log_debug("%d:%d %s\n", line, row, message);
   }
 
   return;
@@ -80,4 +82,22 @@ void xml_builder_destroy(XmlBuilder* thiz) {
   }
 
   return;
+}
+
+const char* xml_builder_get_attr(const char** attrs, const char* attr) {
+  uint32_t i = 0;
+  return_value_if_fail(attrs != NULL && attr != NULL, NULL);
+
+  while (attrs[i]) {
+    const char* name = attrs[i];
+    const char* value = attrs[i + 1];
+
+    if (strcmp(name, attr) == 0) {
+      return value;
+    }
+
+    i += 2;
+  }
+
+  return NULL;
 }

@@ -55,6 +55,8 @@ void xml_builder_on_pi(XmlBuilder* thiz, const char* tag, const char** attrs);
 void xml_builder_on_error(XmlBuilder* thiz, int line, int row, const char* message);
 void xml_builder_destroy(XmlBuilder* thiz);
 
+const char* xml_builder_get_attr(const char** attrs, const char* attr);
+
 END_C_DECLS
 
 #endif /*XML_BUILDER_H*/
