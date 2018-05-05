@@ -56,7 +56,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,68,90,50,30
     PUSHBUTTON      "取消",IDCANCEL,142,90,50,30
-    LTEXT           "LFTK is cool!",IDC_STATIC,50,38,138,23
+    LTEXT           "AWTK is cool!",IDC_STATIC,50,38,138,23
 END
 
 IDD_DIALOG2 DIALOGEX 0, 0, 216, 122
@@ -71,7 +71,7 @@ BEGIN
     CONTROL         "",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,16,93,80,30
     CONTROL         "Radio1",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,151,16,37,30
     CONTROL         "Radio2",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,151,52,37,30
-    LTEXT           "LFTK is cool!",IDC_STATIC,116,160,63,30
+    LTEXT           "AWTK is cool!",IDC_STATIC,116,160,63,30
 END
 
 

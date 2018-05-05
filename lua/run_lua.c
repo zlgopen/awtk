@@ -4,7 +4,7 @@
 #include "tk.h"
 #include "demos/resource.h"
 
-extern void luaL_openlftk(lua_State* L);
+extern void luaL_openawtk(lua_State* L);
 
 int main(int argc, char* argv[]) {
   lua_State* L = luaL_newstate();
@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
   const char* lua_file = argc == 2 ? argv[1] : "./demo2.lua";
 
   luaL_openlibs(L);
-  luaL_openlftk(L);
+  luaL_openawtk(L);
 
   tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
   resource_init();

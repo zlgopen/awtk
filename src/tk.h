@@ -1,7 +1,7 @@
 ﻿/**
- * File:   lftk.h
+ * File:   awtk.h
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  lftk
+ * Brief:  awtk
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *

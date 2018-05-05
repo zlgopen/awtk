@@ -26,5 +26,5 @@ else:
   sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
 
 env=DefaultEnvironment().Clone()
-env.Library(os.path.join(LIB_DIR, 'lftk'), sources)
+env.Library(os.path.join(LIB_DIR, 'awtk'), sources)
 env.Program(os.path.join(BIN_DIR, 'mem_test'), ["base/mem_test.cc"])

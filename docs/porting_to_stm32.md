@@ -1,10 +1,10 @@
-## 将LFTK移植到STM32裸系统
+## 将AWTK移植到STM32裸系统
 
-LFTK的可移植性很高，在移植时需要实现平台初始化、lcd和mainloop三个方面的东西。本文以STM32为例介绍移植LFTK到新平台的过程。
+AWTK的可移植性很高，在移植时需要实现平台初始化、lcd和mainloop三个方面的东西。本文以STM32为例介绍移植AWTK到新平台的过程。
 
 ### 一、平台初始化
 
-除了基本的libc函数外，LFTK对平台没有特别要求，在stm32上需要实现一个获取当前时间的函数get\_time\_ms。
+除了基本的libc函数外，AWTK对平台没有特别要求，在stm32上需要实现一个获取当前时间的函数get\_time\_ms。
 
 ```
  31 #include "stdlib.h"
@@ -40,7 +40,7 @@ LFTK的可移植性很高，在移植时需要实现平台初始化、lcd和main
 
 ### 二、实现lcd
 
-lcd\_t接口提供基本的显示功能，实现lcd_t接口是很容易的。LFTK提供基于寄存器和基于framebuffer两种缺省实现，在此基础上实现自己的lcd\_t接口就更方便了。stm32使用基于寄存器的lcd的缺省实现，只需要提供set\_window\_func和write\_data\_func两个函数/宏即可。这里直接使用TFT\_SetWindow和TFT\_WriteData两个函数。
+lcd\_t接口提供基本的显示功能，实现lcd_t接口是很容易的。AWTK提供基于寄存器和基于framebuffer两种缺省实现，在此基础上实现自己的lcd\_t接口就更方便了。stm32使用基于寄存器的lcd的缺省实现，只需要提供set\_window\_func和write\_data\_func两个函数/宏即可。这里直接使用TFT\_SetWindow和TFT\_WriteData两个函数。
 
 ```
 #include "gui.h"

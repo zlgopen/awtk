@@ -1,6 +1,6 @@
-# LFTK脚本绑定的实现原理 - lua绑定
+# AWTK脚本绑定的实现原理 - lua绑定
 
-脚本化是[LFTK](https://github.com/xianjimli/lftk)的一个基本功能。[LFTK](https://github.com/xianjimli/lftk)计划支持嵌入式系统中常用的脚本，如lua、python和jerryscript。脚本绑定说简单也简单，说复杂也复杂，采用FFI(calling external C functions)和SWIG绑定一些简单的函数是很方便的，但绑定一个复杂的GUI系统还是很有挑战的。之所以不采用通用的工具，而是实现自己的代码产生器，主要有以下考虑：
+脚本化是[AWTK](https://github.com/xianjimli/awtk)的一个基本功能。[AWTK](https://github.com/xianjimli/awtk)计划支持嵌入式系统中常用的脚本，如lua、python和jerryscript。脚本绑定说简单也简单，说复杂也复杂，采用FFI(calling external C functions)和SWIG绑定一些简单的函数是很方便的，但绑定一个复杂的GUI系统还是很有挑战的。之所以不采用通用的工具，而是实现自己的代码产生器，主要有以下考虑：
 
 * 我使用FFI和SWIG的经验很有限，觉得有些功能不太好实现，至少目前我还不知道实现这些功能的方法和思路。
 
@@ -10,11 +10,11 @@
 
 * 代码风格。不同语言有不同的代码风格，特别是命名风格，直接把C言语的风格映射过去，对于开发者不太友好。FFI和SWIG都需要做额外的工作才能实现这个功能。
 
-* LFTK采用面向对象设计，并用C实现面向对象编程的。而通用的绑定机制对此并不友好，实现起来非常困难。
+* AWTK采用面向对象设计，并用C实现面向对象编程的。而通用的绑定机制对此并不友好，实现起来非常困难。
  
 * 自定义的代码产生器并不复杂，而且具有更大的灵活性。 
 
-基于以上这些原因，我决定自己实现[LFTK](https://github.com/xianjimli/lftk)的脚本绑定机制。它的实现原理如下：用特定格式的API注释来描述要脚本化的API，用一个名为gen_idl的工具把注释提取出来生成JSON的接口描述文件，然后用不同的代码产生器生成对应语言的绑定：
+基于以上这些原因，我决定自己实现[AWTK](https://github.com/xianjimli/awtk)的脚本绑定机制。它的实现原理如下：用特定格式的API注释来描述要脚本化的API，用一个名为gen_idl的工具把注释提取出来生成JSON的接口描述文件，然后用不同的代码产生器生成对应语言的绑定：
 
 ![1](images/script_binding.png) 
 
@@ -145,7 +145,7 @@ static int wrap_tk_quit(lua_State* L) {
 
 ### 二、构造函数的绑定
 
-* 1.实现wrap函数。构造函数的wrap函数和普通函数的wrap差不多，只是最后要调用lftk\_newuserdata创建一个userdata对象，并关联metatable。我开始用的lua\_pushlightuserdata函数，后来发现lua里全部的ligthuserdata用的是一个metatable，修改一个对象的metatable，其它类型的对象的metatable也被修改了(我感觉这种做法并不合理)。
+* 1.实现wrap函数。构造函数的wrap函数和普通函数的wrap差不多，只是最后要调用awtk\_newuserdata创建一个userdata对象，并关联metatable。我开始用的lua\_pushlightuserdata函数，后来发现lua里全部的ligthuserdata用的是一个metatable，修改一个对象的metatable，其它类型的对象的metatable也被修改了(我感觉这种做法并不合理)。
 
 ```
 static int wrap_button_create(lua_State* L) {
@@ -157,7 +157,7 @@ static int wrap_button_create(lua_State* L) {
   wh_t h = (wh_t)luaL_checkinteger(L, 5);
   ret = (widget_t*)button_create(parent, x, y, w, h);
 
-  return tk_newuserdata(L, ret, "/button_t/widget_t", "lftk.button_t");
+  return tk_newuserdata(L, ret, "/button_t/widget_t", "awtk.button_t");
 }
 ```
 
@@ -238,7 +238,7 @@ static int wrap_check_button_t_get_prop(lua_State* L) {
     {NULL, NULL}
   };
   
-  luaL_newmetatable(L, "lftk.check_button_t");
+  luaL_newmetatable(L, "awtk.check_button_t");
   lua_pushstring(L, "__index");
   lua_pushvalue(L, -2);
   lua_settable(L, -3);

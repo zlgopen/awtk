@@ -213,7 +213,7 @@ static ret_t main_loop_nanovg_create_window(main_loop_nanovg_t* l, font_manager_
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 #endif
 
-  l->sdl_window = SDL_CreateWindow("LFTK Simulator", x, y, w, h, flags);
+  l->sdl_window = SDL_CreateWindow("AWTK Simulator", x, y, w, h, flags);
   return_value_if_fail(l->sdl_window != NULL, RET_FAIL);
 
   l->gl_context = SDL_GL_CreateContext(l->sdl_window);

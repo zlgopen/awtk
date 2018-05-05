@@ -188,7 +188,7 @@ static ret_t main_loop_sdl2_create_window(main_loop_sdl2_t* l, font_manager_t* f
   SDL_Init(SDL_INIT_VIDEO);
 
   l->sdl_window =
-      SDL_CreateWindow("LFTK Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+      SDL_CreateWindow("AWTK Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
   return_value_if_fail(l->sdl_window != NULL, RET_FAIL);
 
   l->sdl_render =

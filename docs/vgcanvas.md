@@ -1,4 +1,4 @@
-# LFTK中的矢量图绘图函数
+# AWTK中的矢量图绘图函数
 
 ### 一、工作模式
 
@@ -11,7 +11,7 @@
 * [nanovg](https://github.com/memononen/nanovg)
 * [agg](http://www.antigrain.com/)
 
-其中最后4个是开源的，skia和cairo很强但也很大，不太适合嵌入式环境。nanovg是最简洁最优雅的，可惜它只支持OpenGL。agg是用纯软件实现的，速度相对来说也很快，虽然使用起来有点复杂，但也不失为一个好的选择。经过一番考虑之后，LFTK的canvas根据硬件环境分为三个层次：
+其中最后4个是开源的，skia和cairo很强但也很大，不太适合嵌入式环境。nanovg是最简洁最优雅的，可惜它只支持OpenGL。agg是用纯软件实现的，速度相对来说也很快，虽然使用起来有点复杂，但也不失为一个好的选择。经过一番考虑之后，AWTK的canvas根据硬件环境分为三个层次：
 
 * 简约模式。支持基本的绘图函数，但不支持Vector graphics绘图函数，能实现GUI常见功能。适用于低端的硬件环境，如CPU主频小余100M，RAM小余1M的情况。
 
@@ -25,7 +25,7 @@
 
 ### 二、接口函数
 
-vgcanvas的接口如何定义呢，nanovg和agg的接口差异极大，必须为LFTK上层提供统一的接口。LFTK采用了[HTML5 canvas](http://www.w3school.com.cn/tags/html_ref_canvas.asp)类似的接口，这套接口非常好用，但由于底层的agg和nanovg的限制，在有GPU和无GPU时，效果可能不太一样，甚至不兼容，所以在使用时尽量保守一点:)
+vgcanvas的接口如何定义呢，nanovg和agg的接口差异极大，必须为AWTK上层提供统一的接口。AWTK采用了[HTML5 canvas](http://www.w3school.com.cn/tags/html_ref_canvas.asp)类似的接口，这套接口非常好用，但由于底层的agg和nanovg的限制，在有GPU和无GPU时，效果可能不太一样，甚至不兼容，所以在使用时尽量保守一点:)
 
 ```
 

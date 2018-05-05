@@ -102,7 +102,7 @@ function genAll(json) {
       str += '  return 1;\n';
     } else if (type.indexOf('*') >= 0) {
       const typeName = type.replace(/\*/g, "");
-      str += `  return tk_newuserdata(L, ${name}, "${genClassChain(typeName)}", "lftk.${typeName}");\n`;
+      str += `  return tk_newuserdata(L, ${name}, "${genClassChain(typeName)}", "awtk.${typeName}");\n`;
     } else if (type.indexOf('int') >= 0) {
       str = `  lua_pushinteger(L,(lua_Integer)(${name}));\n\n`;
       str += '  return 1;\n';
@@ -256,7 +256,7 @@ function genAll(json) {
       if(cls.name === 'widget_t') {
         str += `    widget_t* child = widget_lookup(obj, name, FALSE);\n`;
         str += `    if(child != NULL) {\n`;
-        str += `      return tk_newuserdata(L, child, "/widget_t", "lftk.widget_t");\n`;
+        str += `      return tk_newuserdata(L, child, "/widget_t", "awtk.widget_t");\n`;
         str += `    }\n`;
       }
       str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
@@ -293,7 +293,7 @@ function genAll(json) {
       str += `    {NULL, NULL}\n`;
       str += '  };\n\n'
 
-      str += `  luaL_newmetatable(L, "lftk.${cls.name}");\n`;
+      str += `  luaL_newmetatable(L, "awtk.${cls.name}");\n`;
       str += `  lua_pushstring(L, "__index");\n`;
       str += '  lua_pushvalue(L, -2);\n';
       str += '  lua_settable(L, -3);\n';
@@ -418,7 +418,7 @@ function genAll(json) {
   function genInit(json) {
     let result = '';
 
-    result += `\nvoid luaL_openlftk(lua_State* L) {\n`;
+    result += `\nvoid luaL_openawtk(lua_State* L) {\n`;
     result += `  globals_init(L);\n`;
     json.forEach(iter => {
       if (iter.type === 'class' || iter.type === 'enum') {

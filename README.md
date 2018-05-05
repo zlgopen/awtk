@@ -1,10 +1,27 @@
-# LFTK = Light Funny Toolkit
+# AWTK = Toolkit AnyWhere
 
-[FTK](https://github.com/xianjimli/ftk)是一个嵌入式GUI库，而[LFTK](https://github.com/xianjimli/lftk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，针对低端嵌入式设备，重新开发的嵌入式GUI库。其主要特色有：
+[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的通用GUI，计划分以下几个阶段实施：
+
+* 第一阶段专注于嵌入式系统，到达并超越TouchGfx/Embedded Wizard的功能。计划在2018/9前完成。
+* 第二阶段用AWTK本身开发界面编辑器(或组态软件IDE)，从而验证AWTK支持PC软件开发的能力。计划在2018年底完成。
+* 第三阶段支持Mobile应用程序开发，这一步比较容易，因为在第一阶段就是要把手机上的现代GUI推广到传统嵌入式系统中去。计划在2019/3完成。
+* 第四阶段支持2D游戏开发，把以前开发游戏引擎的经验融合到AWTK中，方便开发交互式的多媒体应用。计划在2019/6完成。 
+
+最终目标：
+
+* 支持开发嵌入式软件。
+* 支持开发Linux应用程序。
+* 支持开发MacOS应用程序。
+* 支持开发Windows应用程序。
+* 支持开发Android应用程序。
+* 支持开发iOS应用程序。
+* 支持开发2D游戏。
+
+[FTK](https://github.com/xianjimli/ftk)是一个嵌入式GUI库，而[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，针对低端嵌入式设备，重新开发的嵌入式GUI库。其主要特色有：
 
 1. 小巧。在精简配置下，不依赖第三方软件包，仅需要8K RAM+32K FLASH即可开发一些简单的图形应用程序。
 
-2. 高效。采用脏矩形裁剪算法，每次只绘制和更新变化的部分，极大提高运行效率和能源利用率。
+2. 高效。采用脏矩形裁剪算法，每次只绘制和更新变化的部分，极大提高运行效率和能源利用率
 
 3. 稳定。通过良好的架构设计和编程风格、单元测试、动态(valgrind)检查和Code Review保证其运行的稳定性。
 
@@ -20,7 +37,7 @@
 
 9. 支持裸系统，无需OS和文件系统。字体、图片、主题和界面描述数据都编译到代码中，以常量数据的形式存放，运行时无需加载到内存。
 
-10. 可移植。支持移植到各种RTOS和嵌入式Linux系统，并通过SDL在各种流行的PC系统上运行。
+10. 可移植。支持移植到各种RTOS和嵌入式Linux系统，并通过SDL在各种流行的PC/手机系统上运行。
 
 11. 脚本化。从API注释中提取API的描述信息，通过这些信息可以自动生成各种脚本的绑定代码。
 
@@ -73,25 +90,28 @@ bin\demo1
 
 ## 各个平台的移植
 
-[stm32f103ze](https://github.com/xianjimli/lftk-stm32f103ze-raw.git)
+[stm32f103ze](https://github.com/xianjimli/awtk-stm32f103ze-raw.git)
 
 ## 文档
 
-* [LFTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
-* [LFTK控件的布局参数介绍](docs/layout.md)
-* [LFTK界面描述文件介绍](docs/ui_desc.md)
-* [LFTK移植到STM32裸系统](docs/porting_to_stm32.md)
-* [LFTK中的图片显示方式](docs/image_draw_type.md)
-* [LFTK中的矢量图绘图函数](docs/vgcanvas.md)
-* [LFTK中的事件处理函数](docs/event_listener.md)
-* [LFTK中的主题](docs/theme.md)
-* [LFTK中的资源管理器](docs/resource_manager.md)
-* [LFTK中的窗口动画](docs/window_animator.md)
+* [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+* [AWTK控件的布局参数介绍](docs/layout.md)
+* [AWTK界面描述文件介绍](docs/ui_desc.md)
+* [AWTK移植到STM32裸系统](docs/porting_to_stm32.md)
+* [AWTK中的图片显示方式](docs/image_draw_type.md)
+* [AWTK中的矢量图绘图函数](docs/vgcanvas.md)
+* [AWTK中的事件处理函数](docs/event_listener.md)
+* [AWTK中的主题](docs/theme.md)
+* [AWTK中的资源管理器](docs/resource_manager.md)
+* [AWTK中的窗口动画](docs/window_animator.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/05/05
+    * lftk改名为awtk。
 
 * 2018/05/03
     * 增加locale，支持多国语言字符串翻译。
@@ -156,7 +176,7 @@ bin\demo1
     * 重构window/button/label/check\_buton，使用同一个绘制函数。
 
 * 2018/03/27
-    * [Luncher](https://github.com/Luncher) 加入LFTK核心团队。
+    * [Luncher](https://github.com/Luncher) 加入AWTK核心团队。
     * 完善文档。
 
 * 2018/03/26
@@ -173,9 +193,9 @@ bin\demo1
     * 重新设计资源管理器。
 
 * 2018/03/17
-    * 支持将Qt的UI文件转成LFTK的UI文件。
-    * 支持将VC的RC文件转成LFTK的UI文件。
-    * 编写LFTK UI界面描述的文档。
+    * 支持将Qt的UI文件转成AWTK的UI文件。
+    * 支持将VC的RC文件转成AWTK的UI文件。
+    * 编写AWTK UI界面描述的文档。
     * 增加事件队列，解决在触屏中断中分发事件的问题。
     * 编写STM32移植文档。
 

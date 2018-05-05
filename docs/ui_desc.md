@@ -1,16 +1,16 @@
-# LFTK中的界面描述数据
+# AWTK中的界面描述数据
 
-LFTK可以直接加载XML格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，LFTK提供了工具将XML格式转换成二进制格式的界面描述数据，也提供了将QT的UI文件和微软的RC文件转换成LFTK XML格式的界面描述文件的工具，其工作流程如下：
+AWTK可以直接加载XML格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，AWTK提供了工具将XML格式转换成二进制格式的界面描述数据，也提供了将QT的UI文件和微软的RC文件转换成AWTK XML格式的界面描述文件的工具，其工作流程如下：
 
 ![](images/ui_desc.png)
 
-> LFTK的UI Builder还在意淫之中，打算用LFTK本身来开发，可能需要等到2018年底了，目前可以使用Qt Designer或微软的VC来做界面(主要生成各个控件的坐标)，再转换成LFTK XML UI文件，适当的编辑之后，转换成LFTK二进制的UI数据。
+> AWTK的UI Builder还在意淫之中，打算用AWTK本身来开发，可能需要等到2018年底了，目前可以使用Qt Designer或微软的VC来做界面(主要生成各个控件的坐标)，再转换成AWTK XML UI文件，适当的编辑之后，转换成AWTK二进制的UI数据。
 
 ## 一、界面描述数据的使用方法
 
 ### 1.创建XML格式的界面描述文件
 
-LFTK XML界面描述数据非常紧凑和直观：
+AWTK XML界面描述数据非常紧凑和直观：
 
 * name 是控件的名称，创建完成之后可以用widget\_look\_up函数找到指定名称的控件。
 * x x坐标
@@ -20,7 +20,7 @@ LFTK XML界面描述数据非常紧凑和直观：
 * text 文本
 * value 值
 
-x/y/w/h 可以使用[LFTK的layout参数](layout.md)。
+x/y/w/h 可以使用[AWTK的layout参数](layout.md)。
 
 ```
 <window name="main" x="0" y="0" w="320" h="480">
