@@ -170,7 +170,7 @@ ret_t str_trim_left(str_t* s, const char* str) {
   return_value_if_fail(s != NULL && s->str != NULL, RET_BAD_PARAMS);
 
   if (!s->size) {
-    return TRUE;
+    return RET_OK;
   }
 
   if (str == NULL) {
@@ -200,7 +200,7 @@ ret_t str_trim_right(str_t* s, const char* str) {
   return_value_if_fail(s != NULL && s->str != NULL, RET_BAD_PARAMS);
 
   if (!s->size) {
-    return TRUE;
+    return RET_OK;
   }
 
   if (str == NULL) {
@@ -222,7 +222,7 @@ ret_t str_trim_right(str_t* s, const char* str) {
 
 ret_t str_trim(str_t* s, const char* str) {
   if (!s->size) {
-    return TRUE;
+    return RET_OK;
   }
 
   str_trim_left(s, str);
@@ -263,7 +263,7 @@ ret_t str_replace(str_t* s, const char* str, const char* new_str) {
 
     char* temp_str = (char*)TKMEM_ALLOC(capacity);
     char* dst = temp_str;
-    return_value_if_fail(temp_str != NULL, FALSE);
+    return_value_if_fail(temp_str != NULL, RET_OOM);
     do {
       uint32_t size = 0;
       p = strstr(src, str);
