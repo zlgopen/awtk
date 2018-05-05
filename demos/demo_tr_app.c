@@ -36,7 +36,7 @@
 #include "base/slider.h"
 #include "base/group_box.h"
 
-static ret_t on_change_locale(void* ctx, event_t* e) {
+static ret_t change_locale(void* ctx, event_t* e) {
   char country[3];
   char language[3];
   const char* str = (const char*)ctx;
@@ -44,9 +44,17 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
   widget_t* widget = WIDGETP(e->target);
   if (widget_get_value(widget)) {
     strncpy(language, str, 2);
-    strncpy(country, str+3, 2);
+    strncpy(country, str + 3, 2);
     locale_change(locale(), language, country);
   }
+
+  return RET_OK;
+}
+
+static ret_t on_locale_changed(void* ctx, event_t* e) {
+  (void)ctx;
+  (void)e;
+  log_debug("localed change: %s_%s\n", locale()->language, locale()->country);
 
   return RET_OK;
 }
@@ -57,6 +65,8 @@ ret_t application_init() {
   widget_t* radio_button = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
 
+  widget_on(win, EVT_LOCALE_CHANGED, on_locale_changed, win);
+
   ok = button_create(win, 10, 5, 80, 30);
   widget_set_tr_text(ok, "ok");
 
@@ -65,13 +75,12 @@ ret_t application_init() {
 
   radio_button = check_button_create_radio(win, 10, 200, 80, 30);
   widget_set_tr_text(radio_button, "English");
-  widget_on(radio_button, EVT_VALUE_CHANGED, on_change_locale, "en_US");
+  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, "en_US");
   widget_set_value(radio_button, 1);
 
   radio_button = check_button_create_radio(win, 100, 200, 80, 30);
   widget_set_tr_text(radio_button, "Chinese");
-  widget_on(radio_button, EVT_VALUE_CHANGED, on_change_locale, "zh_CN");
+  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, "zh_CN");
 
   return RET_OK;
 }
-

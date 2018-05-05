@@ -104,7 +104,7 @@ bin\demo1
 * [AWTK中的主题](docs/theme.md)
 * [AWTK中的资源管理器](docs/resource_manager.md)
 * [AWTK中的窗口动画](docs/window_animator.md)
-
+* [AWTK中的国际化之字符串翻译](docs/locale.md)
 ## 任务完成情况
 [TODO.md](TODO.md)
 
