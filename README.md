@@ -1,6 +1,6 @@
 # AWTK = Toolkit AnyWhere
 
-[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的通用GUI，计划分以下几个阶段实施：
+[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的GUI，计划分以下几个阶段实施：
 
 * 第一阶段专注于嵌入式系统，到达并超越TouchGfx/Embedded Wizard的功能。计划在2018/9前完成。
 * 第二阶段用AWTK本身开发界面编辑器(或组态软件IDE)，从而验证AWTK支持PC软件开发的能力。计划在2018年底完成。
@@ -17,7 +17,7 @@
 * 支持开发iOS应用程序。
 * 支持开发2D游戏。
 
-[FTK](https://github.com/xianjimli/ftk)是一个嵌入式GUI库，而[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，针对低端嵌入式设备，重新开发的嵌入式GUI库。其主要特色有：
+其主要特色有：
 
 1. 小巧。在精简配置下，不依赖第三方软件包，仅需要8K RAM+32K FLASH即可开发一些简单的图形应用程序。
 
