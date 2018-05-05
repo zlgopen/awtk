@@ -292,7 +292,7 @@ widget_t* window_manager_create(void) {
 static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
-  
+
   return array_push(&(wm->graps), child);
 }
 
@@ -373,8 +373,21 @@ static const widget_vtable_t s_wm_vtable = {.invalidate = window_manager_invalid
                                             .ungrab = window_manager_ungrab};
 
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
+  int32_t i = 0;
+  int32_t nr = 0;
   widget_t* widget = WIDGETP(ctx);
-  widget_re_translate_text(widget);
+  return_value_if_fail(widget != NULL, NULL);
+
+  if (widget->children != NULL && widget->children->size > 0) {
+    widget_re_translate_text(widget);
+
+    nr = widget->children->size;
+    for (i = 0; i < nr; i++) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+
+      widget_dispatch(iter, e);
+    }
+  }
 
   return RET_OK;
 }

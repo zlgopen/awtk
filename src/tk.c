@@ -89,7 +89,7 @@ ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size) {
   return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
 
-  return main_loop_init(w, h);
+  return main_loop_init(w, h) != NULL ? RET_OK : RET_FAIL;
 }
 
 static ret_t tk_exit(void) {

@@ -32,11 +32,11 @@ typedef struct _bitmap_cache_t {
   uint32_t last_access_time;
 } bitmap_cache_t;
 
-static image_manager_t* s_imm = NULL;
-image_manager_t* image_manager() { return s_imm; }
+static image_manager_t* s_image_manager = NULL;
+image_manager_t* image_manager() { return s_image_manager; }
 
 ret_t image_manager_set(image_manager_t* imm) {
-  s_imm = imm;
+  s_image_manager = imm;
 
   return RET_OK;
 }
@@ -106,7 +106,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   all = (bitmap_cache_t**)(imm->images.elms);
   for (i = 0, nr = imm->images.size; i < nr; i++) {
     iter = all[i];
-    if(image->data == iter->image.data) {
+    if (image->data == iter->image.data) {
       iter->image.flags = image->flags;
       iter->image.specific = image->specific;
       iter->image.specific_ctx = image->specific_ctx;
@@ -157,47 +157,37 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
   }
 }
 
-ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  uint32_t nr = 0;
-  uint32_t now = time_now_s();
-  bitmap_cache_t* iter = NULL;
-  bitmap_cache_t** all = NULL;
-  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
-  /*FIXME:*/
-  all = (bitmap_cache_t**)(imm->images.elms);
-  for (i = 0, nr = imm->images.size; i < nr; i++) {
-    iter = all[i];
-    if ((iter->last_access_time + time_delta_s) <= now) {
-      bitmap_destroy(&(iter->image));
-      TKMEM_FREE(iter);
-      all[i] = NULL;
-    } else {
-      if (j != i) {
-        all[j] = all[i];
-      }
-      j++;
-    }
-  }
+static int bitmap_cache_cmp_time(bitmap_cache_t* a, bitmap_cache_t* b) {
+  return (a->last_access_time <= b->last_access_time) ? 0 : -1;
+}
 
-  imm->images.size = j;
+static ret_t bitmap_cache_destroy(bitmap_cache_t* cache) {
+  return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
+
+  bitmap_destroy(&(cache->image));
+  TKMEM_FREE(cache);
 
   return RET_OK;
+}
+
+ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
+  bitmap_cache_t b;
+  b.last_access_time = time_now_s() - time_delta_s;
+  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
+
+  return array_remove_all(&(imm->images), (compare_t)bitmap_cache_cmp_time, &b,
+                          (destroy_t)bitmap_cache_destroy);
 }
 
 ret_t image_manager_deinit(image_manager_t* imm) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  bitmap_cache_t* iter = NULL;
   bitmap_cache_t** all = NULL;
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
   all = (bitmap_cache_t**)(imm->images.elms);
   for (i = 0, nr = imm->images.size; i < nr; i++) {
-    iter = all[i];
-    bitmap_destroy(&(iter->image));
-    TKMEM_FREE(iter);
+    bitmap_cache_destroy(all[i]);
   }
 
   array_deinit(&(imm->images));
