@@ -24,9 +24,7 @@
 
 static font_manager_t* s_font_manager = NULL;
 
-font_manager_t* font_manager(void) {
-  return s_font_manager;
-}
+font_manager_t* font_manager(void) { return s_font_manager; }
 
 ret_t font_manager_set(font_manager_t* fm) {
   s_font_manager = fm;
@@ -49,7 +47,7 @@ font_manager_t* font_manager_init(font_manager_t* fm) {
 
 ret_t font_manager_add(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
-  
+
   return array_push(&(fm->fonts), font);
 }
 
@@ -102,4 +100,3 @@ ret_t font_manager_destroy(font_manager_t* fm) {
 
   return RET_OK;
 }
-

@@ -999,8 +999,8 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
   if (ratio > 1) {
     float_t w = (img->w / ratio);
     float_t h = (img->h / ratio);
-    float_t hw = w/2;
-    float_t hh = h/2;
+    float_t hw = w / 2;
+    float_t hh = h / 2;
 
     rect_init(dst, cx - hw, cy - hh, w, h);
   } else {

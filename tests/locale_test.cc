@@ -35,4 +35,3 @@ TEST(Locale, basic) {
 
   locale_destroy(locale);
 }
-

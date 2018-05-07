@@ -61,7 +61,7 @@ static ps_color ps_color_init(color_t color) {
 static ret_t picasso_on_bitmap_destroy(bitmap_t* img) {
   ps_image* pimg = (ps_image*)img->specific;
 
-  if(pimg != NULL) {
+  if (pimg != NULL) {
     ps_image_unref(pimg);
   }
 
@@ -75,11 +75,11 @@ static ret_t picasso_on_bitmap_destroy(bitmap_t* img) {
 static ps_image* vgcanvas_picasso_ensure_image(vgcanvas_picasso_t* canvas, bitmap_t* img) {
   ps_image* pimg = (ps_image*)img->specific;
 
-  if(pimg == NULL) {
+  if (pimg == NULL) {
     pimg = ps_image_create_with_data((ps_byte*)img->data, format, img->w, img->h, img->w * 4);
     pimg->buffer.set_transparent(!(img->flags & BITMAP_FLAG_OPAQUE));
 
-    if(pimg != NULL) {
+    if (pimg != NULL) {
       img->specific = pimg;
       img->specific_ctx = NULL;
       img->specific_destroy = picasso_on_bitmap_destroy;

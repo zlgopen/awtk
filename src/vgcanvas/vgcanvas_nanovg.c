@@ -374,7 +374,7 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   int32_t id = (char*)(img->specific) - (char*)NULL;
   NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
 
-  if(vg != NULL && id >= 0) {
+  if (vg != NULL && id >= 0) {
     nvgDeleteImage(vg, id);
   }
   img->specific = NULL;
@@ -387,7 +387,7 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    return (char*)(img->specific)-(char*)NULL;
+    return (char*)(img->specific) - (char*)NULL;
   }
 
   i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);

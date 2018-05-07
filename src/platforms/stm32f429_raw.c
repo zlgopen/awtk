@@ -24,7 +24,6 @@
 #include "stm32f4xx_hal.h"
 
 ret_t platform_prepare() {
-
   timer_init(get_time_ms);
 
   return RET_OK;

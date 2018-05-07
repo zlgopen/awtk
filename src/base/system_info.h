@@ -37,7 +37,7 @@ typedef struct _system_info_t {
    * 显示屏的宽度。
    */
   uint32_t lcd_w;
-  
+
   /**
    * @property {uint32_t} lcd_h
    * @readonly
@@ -71,4 +71,3 @@ system_info_t* system_info(void);
 END_C_DECLS
 
 #endif /*TK_SYSTEM_INFO_H*/
-

@@ -52,7 +52,7 @@ TEST(Str, set_with_len) {
 
   ASSERT_EQ(str_set_with_len(s, "hello world", 0), RET_OK);
   ASSERT_EQ(str_eq(s, ""), TRUE);
-  
+
   ASSERT_EQ(str_set_with_len(s, "hello world", 1), RET_OK);
   ASSERT_EQ(str_eq(s, "h"), TRUE);
 

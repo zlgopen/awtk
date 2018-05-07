@@ -265,7 +265,7 @@ bool qt_to_xml(const char* input_file, const char* output_file) {
 int main(int argc, char** argv) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
-  
+
   TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc != 3) {
