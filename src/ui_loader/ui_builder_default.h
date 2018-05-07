@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-ui_builder_t* ui_builder_default();
+ui_builder_t* ui_builder_default(void);
 
 widget_t* window_open(const char* name);
 widget_t* dialog_open(const char* name);

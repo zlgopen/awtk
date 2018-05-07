@@ -37,7 +37,7 @@
 #include "lcd/lcd_reg.h"
 #include "base/event_queue.h"
 #include "base/font_manager.h"
-#include "base/window_manager.h"
+#include "base/window_manager.h"8
 #include "main_loop/main_loop_stm32_raw.h"
 
 typedef struct _main_loop_stm32_raw_t {

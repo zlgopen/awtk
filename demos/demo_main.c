@@ -49,7 +49,7 @@ static uint32_t s_heap_mem[2048];
 static uint32_t s_heap_mem[2048];
 #endif
 
-#ifdef WITH_RT_THREAD
+#ifdef USE_GUI_MAIN 
 #include "base/mem.h"
 int gui_app_start(void* params) {
 #elif defined(WIN32)

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   locale.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  locale
@@ -57,7 +57,7 @@ typedef struct _locale_t {
  *
  * @return {tklocale_t*} 返回locale对象。
  */
-tklocale_t* locale();
+tklocale_t* locale(void);
 
 /**
  * @method locale_set

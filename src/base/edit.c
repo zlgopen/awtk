@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   edit.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  edit
@@ -352,10 +352,10 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = input_type_find(value_str(v));
       if (kv != NULL) {
-        edit->limit.type = kv->value;
+        edit->limit.type = (input_type_t)(kv->value);
       }
     } else {
-      edit->limit.type = value_int(v);
+      edit->limit.type = (input_type_t)value_int(v);
     }
     return RET_OK;
   } else if (strcmp(name, "readonly") == 0) {

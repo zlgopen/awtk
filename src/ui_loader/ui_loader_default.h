@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-ui_loader_t* default_ui_loader();
+ui_loader_t* default_ui_loader(void);
 
 END_C_DECLS
 

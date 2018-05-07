@@ -1,7 +1,7 @@
 /**
- * File:   ui_loader_xml.h
+ * File:   stm32f103ze_raw.c
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  xml ui_loader
+ * Brief:  stm32f103ze-raw platforma
  *
  * Copyright (c) 2018 - 2018  Li XianJing <xianjimli@hotmail.com>
  *
@@ -15,19 +15,19 @@
 /**
  * History:
  * ================================================================
- * 2018-02-15 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-05-07 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_UI_LOADER_XML_H
-#define TK_UI_LOADER_XML_H
+#include "base/timer.h"
+#include "base/platform.h"
+#include "stm32f4xx_hal.h"
 
-#include "ui_loader/ui_loader.h"
+ret_t platform_prepare() {
 
-BEGIN_C_DECLS
+  timer_init(get_time_ms);
 
-ui_loader_t* xml_ui_loader(void);
+  return RET_OK;
+}
 
-END_C_DECLS
-
-#endif /*TK_UI_LOADER_XML_H*/
+uint32_t get_time_ms() { return HAL_GetTick(); }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   buffer.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  buffer
@@ -33,8 +33,8 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity) {
 
 ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t offset) {
   return_value_if_fail(wbuffer != NULL && wbuffer->data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail((wbuffer->cursor + offset) >= 0, RET_BAD_PARAMS);
-  return_value_if_fail((wbuffer->cursor + offset) < wbuffer->capacity, RET_BAD_PARAMS);
+  return_value_if_fail(((int32_t)(wbuffer->cursor) + offset) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(((int32_t)(wbuffer->cursor) + offset) < wbuffer->capacity, RET_BAD_PARAMS);
 
   wbuffer->cursor += offset;
 
@@ -104,8 +104,8 @@ bool_t rbuffer_has_more(rbuffer_t* rbuffer) {
 
 ret_t rbuffer_skip(rbuffer_t* rbuffer, int32_t offset) {
   return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail((rbuffer->cursor + offset) >= 0, RET_BAD_PARAMS);
-  return_value_if_fail((rbuffer->cursor + offset) < rbuffer->capacity, RET_BAD_PARAMS);
+  return_value_if_fail(((int32_t)(rbuffer->cursor) + offset) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(((int32_t)(rbuffer->cursor) + offset) < rbuffer->capacity, RET_BAD_PARAMS);
 
   rbuffer->cursor += offset;
 

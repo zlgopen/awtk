@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   color.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  color structs.
@@ -33,11 +33,9 @@ typedef struct _rgba_t {
   uint8_t a;
 } rgba_t;
 
-typedef struct _color_t {
-  union {
-    rgba_t rgba;
-    uint32_t color;
-  };
+typedef union _color_t {
+  rgba_t rgba;
+  uint32_t color;
 } color_t;
 
 typedef uint8_t gray_t;

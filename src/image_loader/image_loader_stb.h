@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-image_loader_t* image_loader_stb();
+image_loader_t* image_loader_stb(void);
 
 END_C_DECLS
 

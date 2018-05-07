@@ -21,9 +21,12 @@
 #include "base/fs.h"
 #include "base/mem.h"
 #include "xml/xml_parser.h"
-
+#ifndef isspace
 #define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+#endif
+#ifndef isalpha
 #define isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))
+#endif
 
 struct _XmlParser {
   const char* read_ptr;

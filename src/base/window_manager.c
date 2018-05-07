@@ -376,7 +376,7 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   int32_t i = 0;
   int32_t nr = 0;
   widget_t* widget = WIDGETP(ctx);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->children != NULL && widget->children->size > 0) {
     widget_re_translate_text(widget);
