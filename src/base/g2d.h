@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 ret_t g2d_fill_rect(bitmap_t* fb, xy_t x, xy_t y, wh_t w, wh_t h, color_t c);
 ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy, uint8_t alpha);
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
 
 END_C_DECLS
 

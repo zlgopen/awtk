@@ -93,7 +93,6 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   uint16_t w = 0;
   uint16_t h = 0;
   uint16_t iw = 0;
-  uint16_t ih = 0;
 
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
@@ -107,7 +106,6 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   w = src->w;
   h = src->h;
   iw = img->w;
-  ih = img->h;
 
   if (fb->format == BITMAP_FMT_RGB565) {
     o_pixsize = 2;
@@ -155,6 +153,77 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy, uint8_t alpha) {
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
+  uint32_t o_addr = 0;
+  uint16_t o_offline = 0;
+  uint16_t o_format = 0;
+  uint16_t o_pixsize = 0;
+  uint32_t fg_addr = 0;
+  uint16_t fg_offline = 0;
+  uint16_t fg_format = 0;
+  uint16_t fg_pixsize = 0;
+  uint16_t sx = 0;
+  uint16_t sy = 0;
+  uint16_t w = 0;
+  uint16_t h = 0;
+  uint16_t iw = 0;
+
+  return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+                       RET_BAD_PARAMS);
+  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA,
+                       RET_BAD_PARAMS);
+
+  sx = src->x;
+  sy = src->y;
+  w = src->w;
+  h = src->h;
+  iw = img->w;
+
+  if (fb->format == BITMAP_FMT_RGB565) {
+    o_pixsize = 2;
+    o_format = PIXEL_FORMAT_RGB565;
+  } else {
+    o_pixsize = 4;
+    o_format = PIXEL_FORMAT_ARGB8888;
+  }
+
+  if (img->format == BITMAP_FMT_RGB565) {
+    fg_pixsize = 2;
+    fg_format = PIXEL_FORMAT_RGB565;
+  } else {
+    fg_pixsize = 4;
+    fg_format = PIXEL_FORMAT_ARGB8888;
+  }
+
+  o_offline = fb->w - w;
+  o_addr = ((uint32_t)fb->data + o_pixsize * (fb->w * y + x));
+  fg_offline = iw - w;
+  fg_addr = ((uint32_t)img->data + fg_pixsize * (img->w * sy + sx));
+
+  __HAL_RCC_DMA2D_CLK_ENABLE();
+
+  DMA2D->CR &= ~(DMA2D_CR_START);
+  DMA2D->CR = DMA2D_M2M_BLEND;
+
+  DMA2D->OPFCCR = o_format;
+  DMA2D->OOR = o_offline;
+  DMA2D->OMAR = o_addr;
+  
+  DMA2D->BGPFCCR = o_format;
+  DMA2D->BGOR = o_offline;
+  DMA2D->BGMAR = o_addr;
+
+  DMA2D->FGPFCCR = fg_format;
+  DMA2D->FGOR = fg_offline;
+  DMA2D->FGMAR = fg_addr;
+
+  DMA2D->NLR = h | (w << 16);
+
+  DMA2D->CR |= DMA2D_CR_START;
+  DMA2D_WAIT
+
   return RET_OK;
 }
+
