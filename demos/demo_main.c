@@ -20,45 +20,30 @@
  */
 
 #include "tk.h"
+#include "base/mem.h"
 #include "resource.h"
 #include "base/system_info.h"
 
 ret_t application_init(void);
 
-#ifdef WITH_STM32F103ZE_RAW
-#include "button.h"
-#include "delay.h"
-#include "flash.h"
-#include "gui.h"
-#include "lcd_driver.h"
-#include "led.h"
-#include "rtc.h"
-#include "stdlib.h"
-#include "sys.h"
-#include "tim.h"
-#include "touch.h"
-#include "usart.h"
-#include "main_loop/main_loop_stm32_raw.h"
-
-static __align(8) uint32_t s_heap_mem[2048];
-#elif defined(WITH_RT_THREAD)
-#include "main_loop/main_loop_rtthread.h"
-static uint32_t s_heap_mem[2048];
+#ifndef HAS_STD_MALLOC
+#ifndef GUI_HEAP_SIZE
+#define GUI_HEAP_SIZE 2048
+#endif/*GUI_HEAP_SIZE*/
+static uint32_t s_heap_mem[GUI_HEAP_SIZE];
 #else
-#include "main_loop/main_loop_sdl2.h"
-static uint32_t s_heap_mem[2048];
-#endif
+static uint32_t s_heap_mem[1];
+#endif/*HAS_STD_MALLOC*/
 
 #ifdef USE_GUI_MAIN
-#include "base/mem.h"
 int gui_app_start(void* params) {
 #elif defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
 #else
-#include "base/mem.h"
 int main(void) {
 #endif
+
   tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
 
   resource_init();

@@ -103,7 +103,7 @@ ret_t application_init() {
 
   label = label_create(win, 100, 40, 80, 30);
   widget_set_text(label, L"C enter");
-#ifdef WITH_STM32F103ZE_RAW
+#ifdef WITH_STB_FONT
   widget_use_style(label, "3:center");
 #else
   widget_use_style(label, "5:center-ap");
@@ -117,7 +117,7 @@ ret_t application_init() {
   widget_set_value(progress_bar, 40);
   //  timer_add(on_timer, progress_bar, 1000);
 
-#ifndef WITH_STM32F103ZE_RAW
+#ifndef WITH_STB_FONT
   progress_bar_set_show_text(progress_bar, TRUE);
 #endif
 

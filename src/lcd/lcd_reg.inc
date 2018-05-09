@@ -29,7 +29,7 @@ static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
 
 static ret_t lcd_reg_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;
-  pixel_t color = to_pixel(lcd->stroke_color);
+  pixel_t color = color_to_pixel(lcd->stroke_color);
 
   set_window_func(x, y, x + w, y);
   for (i = 0; i < w; i++) {
@@ -41,7 +41,7 @@ static ret_t lcd_reg_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
 
 static ret_t lcd_reg_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
-  pixel_t color = to_pixel(lcd->stroke_color);
+  pixel_t color = color_to_pixel(lcd->stroke_color);
 
   set_window_func(x, y, x, y + h);
   for (i = 0; i < h; i++) {
@@ -53,7 +53,7 @@ static ret_t lcd_reg_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
 
 static ret_t lcd_reg_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   wh_t i = 0;
-  pixel_t color = to_pixel(lcd->stroke_color);
+  pixel_t color = color_to_pixel(lcd->stroke_color);
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
@@ -67,7 +67,7 @@ static ret_t lcd_reg_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 static ret_t lcd_reg_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   uint32_t i = 0;
   uint32_t size = w * h;
-  pixel_t color = to_pixel(lcd->fill_color);
+  pixel_t color = color_to_pixel(lcd->fill_color);
 
   set_window_func(x, y, x + w - 1, y + h - 1);
 
@@ -97,7 +97,7 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
         pixel_t color = blend_color(fill_color, text_color, alpha);
         write_data_func(color);
       } else {
-        write_data_func(to_pixel(fill_color));
+        write_data_func(color_to_pixel(fill_color));
       }
     }
     src_p += glyph->w;
@@ -114,7 +114,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   wh_t dw = dst->w;
   wh_t dh = dst->h;
   color_t fill_color = lcd->fill_color;
-  pixel_t fill_pixel = to_pixel(fill_color);
+  pixel_t fill_pixel = color_to_pixel(fill_color);
   const color_t* data = (color_t*)img->data;
 
   if (src->w == dst->w && src->h == dst->h) {
@@ -129,7 +129,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
         if (src_color.rgba.a > 7) {
           pixel_t color = src_color.rgba.a < 0xfe
                               ? blend_color(fill_color, src_color, src_color.rgba.a)
-                              : to_pixel(src_color);
+                              : color_to_pixel(src_color);
           write_data_func(color);
         } else {
           write_data_func(fill_pixel);
@@ -154,7 +154,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
         if (src_color.rgba.a > 7) {
           pixel_t color = src_color.rgba.a < 0xfe
                               ? blend_color(fill_color, src_color, src_color.rgba.a)
-                              : to_pixel(src_color);
+                              : color_to_pixel(src_color);
 
           set_window_func(x, y, x, y);
           write_data_func(color);
