@@ -422,10 +422,10 @@ static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
                                      vgcanvas_agg_unbind_fbo,
                                      vgcanvas_agg_destroy};
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* buff) {
   vgcanvas_agg_t* agg = (vgcanvas_agg_t*)TKMEM_ZALLOC(vgcanvas_agg_t);
   return_value_if_fail(agg != NULL, NULL);
-
+  /*FIXME: use format to create Drawing*/
   agg->canvas = new tw::Drawing<tw::rgba32>(w, h, 4, (uint8_t*)buff);
   agg->base.vt = &vt;
   agg->base.w = w;

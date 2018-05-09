@@ -34,7 +34,7 @@ static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
   lcd->dirty_rect = dr;
-  SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->pixels), &pitch);
+  SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->fbuff), &pitch);
 
   return RET_OK;
 }
@@ -117,16 +117,26 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
-static ret_t lcd_sdl_take_snapshot(lcd_t* lcd, bitmap_t* img) {
-  lcd_sdl2_t* mem = (lcd_sdl2_t*)lcd;
+static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
-  return lcd_take_snapshot((lcd_t*)(mem->lcd_mem), img);
+  return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img);
 }
 
 static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
-  lcd_sdl2_t* mem = (lcd_sdl2_t*)lcd;
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
-  return lcd_get_vgcanvas((lcd_t*)(mem->lcd_mem));
+  return lcd_get_vgcanvas((lcd_t*)(sdl->lcd_mem));
+}
+
+static ret_t lcd_sdl2_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
+
+  lcd->global_alpha = alpha;
+  mem->global_alpha = alpha;
+
+  return RET_OK;
 }
 
 lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
@@ -149,7 +159,8 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->get_point_color = lcd_sdl2_get_point_color;
   base->end_frame = lcd_sdl2_end_frame;
   base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
-  base->take_snapshot = lcd_sdl_take_snapshot;
+  base->take_snapshot = lcd_sdl2_take_snapshot;
+  base->set_global_alpha = lcd_sdl2_set_global_alpha;
   base->destroy = lcd_sdl2_destroy;
 
   SDL_GetRendererOutputSize(render, &w, &h);
@@ -157,12 +168,15 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->w = (wh_t)w;
   base->h = (wh_t)h;
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(w, h, FALSE);
-  lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
   base->type = lcd.lcd_mem->base.type;
-
-  // SDL_CreateTexture(render, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  // SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
+  lcd.texture =
+#ifdef WITH_FB_8888
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB=8888\n");
+#else
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB=565\n");
+#endif
 
   return base;
 }

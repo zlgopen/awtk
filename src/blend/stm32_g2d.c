@@ -19,8 +19,6 @@
  *
  */
 
-//#include "lcd.h"
-//#include "ltdc.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_dma2d.h"
@@ -210,7 +208,7 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
   DMA2D->OPFCCR = o_format;
   DMA2D->OOR = o_offline;
   DMA2D->OMAR = o_addr;
-  
+
   DMA2D->BGPFCCR = o_format;
   DMA2D->BGOR = o_offline;
   DMA2D->BGMAR = o_addr;
@@ -226,4 +224,3 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
 
   return RET_OK;
 }
-

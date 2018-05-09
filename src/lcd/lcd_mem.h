@@ -28,8 +28,9 @@ BEGIN_C_DECLS
 
 typedef struct _lcd_mem_t {
   lcd_t base;
-  uint8_t* pixels;
+  uint8_t* fbuff;
   vgcanvas_t* vgcanvas;
+  bitmap_format_t format;
 } lcd_mem_t;
 
 lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc);

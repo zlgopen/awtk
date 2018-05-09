@@ -27,6 +27,7 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
 static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   rect_t src;
   rect_t dst;
+  uint8_t global_alpha = 0;
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
@@ -41,7 +42,8 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   vgcanvas_draw_image(vg, &(wa->curr_img), src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
   vgcanvas_restore(vg);
 #else
-  lcd_set_global_alpha(c->lcd, alpha * 0xff);
+  global_alpha = alpha * 0xff;
+  lcd_set_global_alpha(c->lcd, global_alpha);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
 #endif
 

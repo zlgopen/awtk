@@ -20,8 +20,23 @@
  */
 
 #include "base/mem.h"
+#include "blend/blend.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
+#ifdef WITH_G2D
+#include "base/g2d.h"
+#endif /*WITH_G2D*/
+
+static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  fb->format = LCD_FORMAT;
+  fb->w = lcd->w;
+  fb->h = lcd->h;
+  fb->data = mem->fbuff;
+
+  return RET_OK;
+}
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd->dirty_rect = dirty_rect;
@@ -31,15 +46,17 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
 
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;
-  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  color_t stroke_color = lcd->stroke_color;
-  pixel_t color = to_pixel(stroke_color);
-  pixel_t* p = pixels + y * width + x;
+  color_t c = lcd->stroke_color;
+  pixel_t* fbuff = (pixel_t*)mem->fbuff;
+  pixel_t* p = fbuff + y * lcd->w + x;
+  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
-  for (i = 0; i < w; i++) {
-    p[i] = color;
+  if (a == 0xff) {
+    pixel_t pixel = color_to_pixel(c);
+    for (i = 0; i < w; i++) p[i] = pixel;
+  } else {
+    for (i = 0; i < w; i++) p[i] = blend_pixel(p[i], c);
   }
 
   return RET_OK;
@@ -47,16 +64,23 @@ static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
 
 static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
-  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  color_t stroke_color = lcd->stroke_color;
-  pixel_t color = to_pixel(stroke_color);
-  pixel_t* p = pixels + y * width + x;
+  color_t c = lcd->stroke_color;
+  pixel_t* fbuff = (pixel_t*)mem->fbuff;
+  pixel_t* p = fbuff + y * lcd->w + x;
+  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
-  for (i = 0; i < h; i++) {
-    *p = color;
-    p += width;
+  if (a == 0xff) {
+    pixel_t pixel = color_to_pixel(c);
+    for (i = 0; i < h; i++) {
+      *p = pixel;
+      p += lcd->w;
+    }
+  } else {
+    for (i = 0; i < h; i++) {
+      *p = blend_pixel(*p, c);
+      p += lcd->w;
+    }
   }
 
   return RET_OK;
@@ -66,17 +90,17 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   wh_t i = 0;
   wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  color_t color = lcd->stroke_color;
-  pixel_t pixel = to_pixel(color);
+  pixel_t* fbuff = (pixel_t*)mem->fbuff;
+  color_t c = lcd->stroke_color;
+  pixel_t pixel = color_to_pixel(c);
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
-    pixel_t* p = pixels + point->y * width + point->x;
-    if (color.rgba.a == 0xff) {
-      p[0] = pixel;
-    } else if (color.rgba.a) {
-      p[0] = blend_pixel(p[0], color);
+    pixel_t* p = fbuff + point->y * width + point->x;
+    if (c.rgba.a == 0xff) {
+      *p = pixel;
+    } else if (c.rgba.a) {
+      *p = blend_pixel(*p, c);
     }
   }
 
@@ -84,23 +108,27 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 }
 
 color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
-  wh_t width = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  pixel_t p = pixels[y * width + x];
+  pixel_t* fbuff = (pixel_t*)mem->fbuff;
+  pixel_t p = fbuff[y * lcd->w + x];
 
   return to_color(p);
 }
 
 static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+#ifdef WITH_G2D
+  bitmap_t fb;
+  lcd_mem_to_bitmap(lcd, &fb);
+  g2d_fill_rect(&fb, x, y, w, h, lcd->fill_color);
+#else
   wh_t i = 0;
-
   color_t c = lcd->stroke_color;
   lcd->stroke_color = lcd->fill_color;
   for (i = 0; i < h; i++) {
     lcd_mem_draw_hline(lcd, x, y + i, w);
   }
   lcd->stroke_color = c;
+#endif /*WITH_G2D*/
 
   return RET_OK;
 }
@@ -115,13 +143,16 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   wh_t width = lcd->w;
   color_t color = lcd->text_color;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  pixel_t* dst_p = pixels + y * width + x;
+  pixel_t* fbuff = (pixel_t*)mem->fbuff;
+  pixel_t* dst_p = fbuff + y * width + x;
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
+
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
       uint8_t alpha = src_p[i];
-      if (alpha) {
+      if (alpha == 0xff) {
+        dst_p[i] = color_to_pixel(color);
+      } else if (alpha) {
         color.rgba.a = alpha;
         dst_p[i] = blend_pixel(dst_p[i], color);
       }
@@ -134,60 +165,26 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 }
 
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  wh_t i = 0;
-  wh_t j = 0;
-  wh_t dw = dst->w;
-  wh_t dh = dst->h;
-  wh_t width = lcd->w;
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  pixel_t* pixels = (pixel_t*)mem->pixels;
-  pixel_t* dst_p = pixels + dst->y * width + dst->x;
-  const color_t* data = (color_t*)img->data;
+  bitmap_t fb;
+  lcd_mem_to_bitmap(lcd, &fb);
 
-  if (src->w == dst->w && src->h == dst->h) {
-    const color_t* src_p = data + img->w * src->y + src->x;
-    for (j = 0; j < dh; j++) {
-      for (i = 0; i < dw; i++) {
-        color_t c = src_p[i];
-        if (c.rgba.a > 5) {
-          if (c.rgba.a > 0xfe) {
-            dst_p[i] = to_pixel(c);
-          } else {
-            dst_p[i] = blend_pixel(dst_p[i], c);
-          }
-        }
-      }
-      src_p += img->w;
-      dst_p += width;
-    }
-  } else {
-    xy_t sx = src->x;
-    xy_t sy = src->y;
-    xy_t sw = src->w;
-    xy_t sh = src->h;
-    for (j = 0; j < dh; j++) {
-      const color_t* src_p = data + img->w * (sy + (j * sh / dh)) + sx;
-      for (i = 0; i < dw; i++) {
-        color_t c = src_p[i * sw / dw];
-        if (c.rgba.a > 5) {
-          if (c.rgba.a > 0xfe) {
-            dst_p[i] = to_pixel(c);
-          } else {
-            dst_p[i] = blend_pixel(dst_p[i], c);
-          }
-        }
-      }
-      dst_p += width;
+#ifdef WITH_G2D
+  if (src->w == dst->w && src->h == dst->h && lcd->global_alpha == 0xff) {
+    if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
+      g2d_copy_image(&fb, img, src, dst->x, dst->y);
+    } else {
+      g2d_blend_image(&fb, img, src, dst->x, dst->y);
     }
   }
+#endif /*WITH_G2D*/
 
-  return RET_OK;
+  return blend_image(&fb, img, dst, src, lcd->global_alpha);
 }
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   if (mem->vgcanvas == NULL) {
-    mem->vgcanvas = vgcanvas_create(lcd->w, lcd->h, (uint32_t*)(mem->pixels));
+    mem->vgcanvas = vgcanvas_create(lcd->w, lcd->h, mem->format, (uint32_t*)(mem->fbuff));
   }
 
   return mem->vgcanvas;
@@ -207,7 +204,8 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
 
   img->w = lcd->w;
   img->h = lcd->h;
-  img->format = LCD_FORMAT;
+  img->format = mem->format;
+
   if (img->format == BITMAP_FMT_RGBA) {
     uint32_t i = 0;
     uint32_t* s = NULL;
@@ -218,7 +216,7 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
 
     return_value_if_fail(data != NULL, RET_FAIL);
 
-    s = (uint32_t*)(mem->pixels);
+    s = (uint32_t*)(mem->fbuff);
     d = (uint32_t*)data;
 
     for (i = 0; i < nr; i++, s++, d++) {
@@ -229,6 +227,11 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
       pd[2] = ps[1];
       pd[3] = ps[0];
     }
+  } else if (img->format == BITMAP_FMT_RGB565) {
+    size = img->w * img->h * 2;
+    data = TKMEM_ALLOC(size);
+    return_value_if_fail(data != NULL, RET_FAIL);
+    memcpy(data, mem->fbuff, size);
   } else {
     return_value_if_fail(size > 0, RET_FAIL);
   }
@@ -251,11 +254,14 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   system_info_t* info = system_info();
 
   lcd_mem_t* lcd = TKMEM_ZALLOC(lcd_mem_t);
+  return_value_if_fail(lcd != NULL, NULL);
+
+  lcd->format = LCD_FORMAT;
   lcd_t* base = &(lcd->base);
 
   if (alloc) {
-    lcd->pixels = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
-    return_value_if_fail(lcd->pixels != NULL, NULL);
+    lcd->fbuff = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
+    return_value_if_fail(lcd->fbuff != NULL, NULL);
   }
 
   base->begin_frame = lcd_mem_begin_frame;
@@ -275,6 +281,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->h = h;
   base->ratio = 1;
   base->type = LCD_FRAMEBUFFER;
+  base->global_alpha = 0xff;
 
   info->lcd_w = base->w;
   info->lcd_h = base->h;

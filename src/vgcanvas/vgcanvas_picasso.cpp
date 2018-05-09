@@ -27,8 +27,6 @@
 #include "picasso_objects.h"
 #include "base/resource_manager.h"
 
-#define format COLOR_FORMAT_ABGR
-
 typedef struct _vgcanvas_picasso_t {
   vgcanvas_t base;
 
@@ -41,6 +39,20 @@ typedef struct _vgcanvas_picasso_t {
   ps_canvas* canvas;
   matrix_t matrix;
 } vgcanvas_picasso_t;
+
+static ps_color_format to_ps_color_format(uint16_t format) {
+  ps_color_format fmt = COLOR_FORMAT_ABGR;
+
+  if (format == BITMAP_FMT_RGBA) {
+    fmt = COLOR_FORMAT_ABGR;
+  } else if (format == BITMAP_FMT_RGB565) {
+    fmt = COLOR_FORMAT_RGB565;
+  } else {
+    assert(!"not supported format!");
+  }
+
+  return fmt;
+}
 
 static ps_point ps_point_init(float_t x, float_t y) {
   ps_point p = {x, y};
@@ -76,7 +88,8 @@ static ps_image* vgcanvas_picasso_ensure_image(vgcanvas_picasso_t* canvas, bitma
   ps_image* pimg = (ps_image*)img->specific;
 
   if (pimg == NULL) {
-    pimg = ps_image_create_with_data((ps_byte*)img->data, format, img->w, img->h, img->w * 4);
+    pimg = ps_image_create_with_data((ps_byte*)img->data, to_ps_color_format(img->format), img->w,
+                                     img->h, img->w * 4);
     pimg->buffer.set_transparent(!(img->flags & BITMAP_FLAG_OPAQUE));
 
     if (pimg != NULL) {
@@ -657,19 +670,29 @@ static const vgcanvas_vtable_t vt = {vgcanvas_picasso_begin_frame,
                                      vgcanvas_picasso_unbind_fbo,
                                      vgcanvas_picasso_destroy};
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* buff) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* buff) {
+  int pitch = 0;
+  ps_color_format fmt = to_ps_color_format(format);
   vgcanvas_picasso_t* picasso = (vgcanvas_picasso_t*)TKMEM_ZALLOC(vgcanvas_picasso_t);
   return_value_if_fail(picasso != NULL && buff != NULL, NULL);
+  return_value_if_fail(format == BITMAP_FMT_RGBA || format == BITMAP_FMT_RGB565, NULL);
 
   picasso->base.w = w;
   picasso->base.h = h;
   picasso->base.ratio = 1;
   picasso->base.vt = &vt;
 
+  if (format == BITMAP_FMT_RGBA) {
+    pitch = w * 4;
+  } else {
+    pitch = w * 2;
+  }
+
   ps_initialize();
   matrix_init(&(picasso->matrix));
-  picasso->canvas = ps_canvas_create_with_data((ps_byte*)buff, format, w, h, w * 4);
+  picasso->canvas = ps_canvas_create_with_data((ps_byte*)buff, fmt, w, h, pitch);
   picasso->vg = ps_context_create(picasso->canvas, 0);
+  assert(picasso->canvas != NULL);
 
   return &(picasso->base);
 }

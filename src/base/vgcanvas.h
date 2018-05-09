@@ -281,11 +281,12 @@ struct _vgcanvas_t {
  * @constructor
  * @param {uint32_t} w 宽度
  * @param {uint32_t} h 高度
+ * @param {bitmap_format_t} format 如果data是framebuffer，format指定data的格式。
  * @param {void*} data framebuffer或其它ctx。
  *
  * @return {vgcanvas_t} 返回vgcanvas
  */
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* data);
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data);
 
 /**
  * @method vgcanvas_begin_path

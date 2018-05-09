@@ -265,6 +265,7 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
   wm->canvas = c;
+  canvas_set_global_alpha(c, 0xff);
   if (wm->animator != NULL) {
     return window_manager_paint_animation(widget, c);
   } else {
@@ -371,7 +372,7 @@ static const widget_vtable_t s_wm_vtable = {.invalidate = window_manager_invalid
                                             .grab = window_manager_grab,
                                             .find_target = window_manager_find_target,
                                             .ungrab = window_manager_ungrab};
-
+#ifdef WITH_DYNAMIC_TR
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   int32_t i = 0;
   int32_t nr = 0;
@@ -391,6 +392,7 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
 
   return RET_OK;
 }
+#endif /*WITH_DYNAMIC_TR*/
 
 widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);

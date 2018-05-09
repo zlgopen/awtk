@@ -622,13 +622,15 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_unbind_fbo,
                                      vgcanvas_nanovg_destroy};
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, void* sdl_window) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* sdl_window) {
   int ww = 0;
   int wh = 0;
   int fw = 0;
   int fh = 0;
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
+
+  (void)format;
 
   SDL_GetWindowSize((SDL_Window*)sdl_window, &ww, &wh);
   SDL_GL_GetDrawableSize((SDL_Window*)sdl_window, &fw, &fh);

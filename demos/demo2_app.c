@@ -23,6 +23,18 @@
 #include "base/view.h"
 #include "base/image_manager.h"
 
+static ret_t on_paint_rect(void* ctx, event_t* e) {
+  rect_t r;
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  canvas_set_fill_color(c, color_init(0, 0, 0xff, 0));
+  // canvas_set_fill_color(c, color_init(0, 0, 0, 0xff));
+  canvas_fill_rect(c, 10, 10, 100, 100);
+
+  return RET_OK;
+}
+
 static ret_t on_paint_9patch(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;

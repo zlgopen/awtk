@@ -19,7 +19,12 @@
  *
  */
 
+#define LCD_FORMAT BITMAP_FMT_RGBA
+
 #include "base/mem.h"
 #include "lcd/lcd_mem.h"
-#include "lcd/rgb565.h"
+
+typedef uint32_t pixel_t;
+#include "blend/rgba8888.inc"
+#include "blend/pixel_ops.inc"
 #include "lcd/lcd_mem.inc"
