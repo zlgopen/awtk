@@ -21,9 +21,9 @@
 
 #include "tk.h"
 #include "base/mem.h"
+#include "base/time.h"
 #include "base/timer.h"
 #include "base/locale.h"
-#include "base/platform.h"
 #include "base/main_loop.h"
 #include "font/font_bitmap.h"
 #include "base/font_manager.h"
@@ -80,8 +80,8 @@ ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size) {
   loader = image_loader_stb();
 #endif /*WITH_STB_IMAGE*/
 
-  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   return_value_if_fail(mem_init(heap, size) == RET_OK, RET_FAIL);
+  return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
 
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);

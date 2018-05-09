@@ -19,10 +19,12 @@
  *
  */
 
+#ifdef WITH_G2D
+
+#include "base/g2d.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_dma2d.h"
-#include "base/g2d.h"
 
 #define DMA2D_WORKING ((DMA2D->CR & DMA2D_CR_START))
 #define DMA2D_WAIT                  \
@@ -224,3 +226,4 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
 
   return RET_OK;
 }
+#endif/*WITH_G2D*/

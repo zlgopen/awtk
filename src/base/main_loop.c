@@ -46,7 +46,7 @@ static main_loop_t* s_default_main_loop = NULL;
 
 main_loop_t* main_loop(void) { return s_default_main_loop; }
 
-ret_t main_loop_set_default(main_loop_t* loop) {
+ret_t main_loop_set(main_loop_t* loop) {
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
   s_default_main_loop = loop;
 

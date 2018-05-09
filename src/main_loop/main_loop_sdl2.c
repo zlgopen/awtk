@@ -215,7 +215,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop.wm = wm;
   window_manager_resize(wm, w, h);
   main_loop_sdl2_create_window(&loop, fm, w, h);
-  main_loop_set_default(base);
+  main_loop_set(base);
 
   log_debug("%s:%s\n", __FILE__, __func__);
 

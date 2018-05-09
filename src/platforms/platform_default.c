@@ -22,12 +22,6 @@
 #include "base/timer.h"
 #include "base/platform.h"
 
-ret_t platform_prepare() {
-  timer_init(get_time_ms);
-
-  return RET_OK;
-}
-
 #ifdef WIN32
 #include <time.h>
 #include <stdio.h>
