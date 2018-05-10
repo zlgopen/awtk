@@ -93,13 +93,13 @@ ret_t timer_remove(uint32_t timer_id);
 const timer_info_t* timer_find(uint32_t timer_id);
 
 /**
- * @method timer_check
+ * @method timer_dispatch
  * 检查定时器，并调用到期定时器的函数。
  * @private
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t timer_check(void);
+ret_t timer_dispatch(void);
 
 /**
  * @method timer_count

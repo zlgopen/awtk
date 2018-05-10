@@ -145,7 +145,7 @@ static ret_t main_loop_sdl2_run(main_loop_t* l) {
   main_loop_sdl2_t* loop = (main_loop_sdl2_t*)l;
 
   while (l->running) {
-    timer_check();
+    timer_dispatch();
     main_loop_sdl2_dispatch(loop);
     idle_dispatch();
 

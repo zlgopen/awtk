@@ -99,7 +99,7 @@ const timer_info_t* timer_find(uint32_t timer_id) {
   return (const timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
 }
 
-ret_t timer_check() {
+ret_t timer_dispatch() {
   uint32_t i = 0;
   uint32_t k = 0;
   uint32_t nr = 0;

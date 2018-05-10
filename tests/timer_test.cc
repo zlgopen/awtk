@@ -29,13 +29,13 @@ TEST(Timer, once) {
     ASSERT_EQ(timer_add(timer_once, NULL, 100) > 0, true);
     ASSERT_EQ(timer_count(), i + 1);
   }
-  ASSERT_EQ(timer_check(), RET_OK);
+  ASSERT_EQ(timer_dispatch(), RET_OK);
   ASSERT_EQ(timer_count(), nr);
   ASSERT_EQ(s_log, "");
 
   now = 100;
 
-  ASSERT_EQ(timer_check(), RET_OK);
+  ASSERT_EQ(timer_dispatch(), RET_OK);
   ASSERT_EQ(timer_count(), 0);
   ASSERT_EQ(s_log, "o:o:o:o:o:o:o:o:o:o:");
 }
@@ -53,13 +53,13 @@ TEST(Timer, repeat) {
     ASSERT_EQ(ids[i] > 0, true);
     ASSERT_EQ(timer_count(), i + 1);
   }
-  ASSERT_EQ(timer_check(), RET_OK);
+  ASSERT_EQ(timer_dispatch(), RET_OK);
   ASSERT_EQ(timer_count(), nr);
   ASSERT_EQ(s_log, "");
 
   now = 100;
   s_log = "";
-  ASSERT_EQ(timer_check(), RET_OK);
+  ASSERT_EQ(timer_dispatch(), RET_OK);
   ASSERT_EQ(timer_count(), nr);
   ASSERT_EQ(s_log, "r:r:r:r:r:r:r:r:r:r:");
 

@@ -55,3 +55,11 @@ uint32_t get_time_ms() {
 
   return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
+
+void sleep_ms(uint32_t ms) {
+#ifdef WIN32
+  Sleep(ms);
+#else
+  usleep(ms*1000);
+#endif
+}

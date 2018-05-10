@@ -78,7 +78,6 @@ static ret_t main_loop_raw_dispatch(main_loop_raw_t* loop) {
 static ret_t main_loop_raw_paint(main_loop_raw_t* loop) {
   canvas_t* c = &(loop->canvas);
 
-  // return canvas_test_paint(c, loop->pressed, loop->touch_x, loop->touch_y);
   return window_manager_paint(loop->wm, c);
 }
 
@@ -86,13 +85,13 @@ static ret_t main_loop_raw_run(main_loop_t* l) {
   main_loop_raw_t* loop = (main_loop_raw_t*)l;
 
   while (l->running) {
-    timer_check();
+    timer_dispatch();
     main_loop_raw_dispatch(loop);
     idle_dispatch();
 
     main_loop_raw_paint(loop);
     if (!WINDOW_MANAGER(loop->wm)->animating) {
-      platform_delay_ms(30);
+      sleep_ms(30);
     }
   }
 

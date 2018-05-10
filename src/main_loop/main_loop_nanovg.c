@@ -151,7 +151,7 @@ static ret_t main_loop_nanovg_run(main_loop_t* l) {
   main_loop_nanovg_t* loop = (main_loop_nanovg_t*)l;
 
   while (l->running) {
-    timer_check();
+    timer_dispatch();
     main_loop_nanovg_dispatch(loop);
     idle_dispatch();
 
