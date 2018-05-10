@@ -36,7 +36,7 @@ static uint32_t s_heap_mem[1];
 #endif/*HAS_STD_MALLOC*/
 
 #ifdef USE_GUI_MAIN
-int gui_app_start(void* params) {
+int gui_app_start(void) {
 #elif defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
