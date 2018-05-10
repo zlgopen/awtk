@@ -107,6 +107,9 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 SConscriptFiles=[
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
+  '3rd/lua/SConscript',
+  '3rd/agg-2.5/SConscript', 
+  '3rd/picasso/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 
@@ -117,12 +120,8 @@ SConscriptFiles=[
   'tools/ui_gen/xml_to_ui/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
-  '3rd/lua/SConscript',
   'lua/SConscript'
   ]
   
-if OS_NAME == 'Darwin':
-  SConscriptFiles = SConscriptFiles + ['3rd/agg-2.5/SConscript', '3rd/picasso/SConscript']
-
 SConscript(SConscriptFiles)
 

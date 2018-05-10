@@ -1,7 +1,24 @@
 import os
+import platform
 
 env=DefaultEnvironment().Clone()
 LIB_DIR=os.environ['LIB_DIR'];
-SOURCES=Glob('src/*.cpp') + Glob('src/core/*.cpp') + Glob('src/gfx/*.cpp')
-env.Library(os.path.join(LIB_DIR, 'picasso'), SOURCES)
+SOURCES=Glob('src/*.cpp') + Glob('src/core/*.cpp') 
 
+SOURCES += [
+  'src/gfx/gfx_blur.cpp',
+  'src/gfx/gfx_gradient_adapter.cpp',
+  'src/gfx/gfx_rendering_buffer.cpp',
+  'src/gfx/gfx_device.cpp',			
+  'src/gfx/gfx_image_filters.cpp',		
+  'src/gfx/gfx_sqrt_tables.cpp',
+  'src/gfx/gfx_raster_adapter.cpp'
+]
+
+OS_NAME=platform.system()
+if OS_NAME == 'Windows':
+  SOURCES += ['src/gfx/gfx_font_adapter_win32.cpp'];
+else:
+  SOURCES += ['src/gfx/gfx_font_adapter_freetype2.cpp', 'src/gfx/gfx_font_load_freetype2.cpp'];	
+
+env.Library(os.path.join(LIB_DIR, 'picasso'), SOURCES)
