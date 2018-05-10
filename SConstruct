@@ -12,6 +12,8 @@ LIB_DIR=os.path.join(TK_ROOT, 'lib')
 
 if OS_NAME == 'Windows':
   LCD='NANOVG'
+  TK_ROOT=TK_ROOT.replace('\\', '\\\\');
+  print(TK_ROOT)
 else:
   LCD='SDL'
   LCD='NANOVG'
@@ -21,7 +23,7 @@ else:
 FRAME_BUFFER_FORMAT='rgb565'
 FRAME_BUFFER_FORMAT='rgba8888'
 
-COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DSDL2'
+COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DSDL2 -DWITH_FS_RES'
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DLUA_COMPAT_MODULE -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_DYNAMIC_TR'
 
 if FRAME_BUFFER_FORMAT=='rgba8888':
@@ -57,7 +59,7 @@ OS_LIBS=['SDL2', 'glad', 'stdc++', 'pthread', 'm']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ -DWITH_FS_RES'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ '
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
@@ -102,10 +104,8 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
   OS_SUBSYSTEM_WINDOWS=OS_SUBSYSTEM_WINDOWS,
   LIBPATH=[os.path.join(TK_ROOT, 'lib')] + OS_LIBPATH)
 
-SConscript([
-  '3rd/agg-2.5/SConscript',
+SConscriptFiles=[
   '3rd/nanovg/SConscript',
-  '3rd/picasso/SConscript',
   '3rd/glad/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 
@@ -119,4 +119,10 @@ SConscript([
   'tests/SConscript',
   '3rd/lua/SConscript',
   'lua/SConscript'
-  ])
+  ]
+  
+if OS_NAME == 'Darwin':
+  SConscriptFiles = SConscriptFiles + ['3rd/agg-2.5/SConscript', '3rd/picasso/SConscript']
+
+SConscript(SConscriptFiles)
+

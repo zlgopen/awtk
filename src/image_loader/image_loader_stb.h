@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   stb.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  stb image loader

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widget.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  basic class of all widget

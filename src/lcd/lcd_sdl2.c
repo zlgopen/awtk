@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_sdl2.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  sdl2 implemented lcd interface/

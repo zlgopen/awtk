@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  mem implemented lcd interface/

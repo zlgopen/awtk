@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_bitmap.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  font bitmap font loader

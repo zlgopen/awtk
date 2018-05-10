@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   locale.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  locale
@@ -32,7 +32,7 @@ BEGIN_C_DECLS
  * @scriptable
  * locale
  */
-typedef struct _locale_t {
+typedef struct _tklocale_t {
   /**
    * @property {char*} country;
    * @readonly

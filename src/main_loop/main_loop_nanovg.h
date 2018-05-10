@@ -1,4 +1,4 @@
-/**
+﻿/**
  * file:   main_loop_nanovg.h
  * author: li xianjing <xianjimli@hotmail.com>
  * brief:  nanovg implemented main_loop interface

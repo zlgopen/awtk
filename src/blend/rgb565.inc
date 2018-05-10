@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   rgb565.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  rgb565

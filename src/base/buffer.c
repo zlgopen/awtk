@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   buffer.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  buffer

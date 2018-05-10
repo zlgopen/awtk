@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   system_info.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  system info

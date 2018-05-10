@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   str.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  string

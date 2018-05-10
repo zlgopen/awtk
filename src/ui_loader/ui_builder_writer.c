@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ui_builder_writer.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  ui_builder write widget info into buffer.

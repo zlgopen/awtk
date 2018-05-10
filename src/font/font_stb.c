@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_stb.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  stb truetype font loader

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   locale.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  locale

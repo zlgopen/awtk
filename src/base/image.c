@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  image

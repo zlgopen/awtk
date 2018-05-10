@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   pixel_ops.inc
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  pixel operations

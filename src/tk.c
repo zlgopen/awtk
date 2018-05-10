@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   awtk.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  awtk

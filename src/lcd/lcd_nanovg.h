@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_nanovg.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  nanovg implemented lcd interface

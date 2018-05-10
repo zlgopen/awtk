@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   platform_default.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  default platform

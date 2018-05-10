@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   xml_builder.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  xml builder interface

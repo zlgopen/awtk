@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   xml_parse.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  simple xml parser

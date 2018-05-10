@@ -1,4 +1,4 @@
-
+﻿
 static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r) {
   wh_t i = 0;
   wh_t j = 0;

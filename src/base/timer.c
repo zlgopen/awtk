@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   timer.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  timer manager

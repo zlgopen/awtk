@@ -1,4 +1,4 @@
-#include "base/rect.h"
+﻿#include "base/rect.h"
 #include "base/bitmap.h"
 #include "blend/pixel_pack_unpack.h"
 

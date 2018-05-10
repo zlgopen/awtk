@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   types_def.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  basic types definitions.
@@ -93,6 +93,7 @@ typedef enum _ret_t {
 } ret_t;
 
 #ifdef WIN32
+#include <windows.h>
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
@@ -102,6 +103,9 @@ typedef enum _ret_t {
 #define log_info(format, args...) printf(format, ##args)
 #define log_warn(format, args...) printf(format, ##args)
 #define log_error(format, args...) printf(format, ##args)
+#ifndef MAX_PATH
+#define MAX_PATH 255
+#endif /*MAX_PATH*/
 #endif
 
 #ifdef NDEBUG
@@ -208,9 +212,5 @@ typedef float float_t;
 #else
 #define STR_DEFAULT_FONT "default"
 #endif /*WITH_NANOVG*/
-
-#ifndef MAX_PATH
-#define MAX_PATH 255
-#endif /*MAX_PATH*/
 
 #endif /*TYPES_DEF_H*/

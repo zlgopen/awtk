@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_reg.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  register based implemented lcd interface

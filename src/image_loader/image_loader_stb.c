@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_loader.h
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  image_loader interface

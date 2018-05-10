@@ -1,4 +1,4 @@
-/**
+﻿/**
  * file:   main_loop_sdl2.h
  * author: li xianjing <xianjimli@hotmail.com>
  * brief:  sdl2 implemented main_loop interface

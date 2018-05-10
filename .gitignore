@@ -2,6 +2,10 @@
 *.a
 *.so
 *.swp
+*.pdb 
+*.ilk 
+*.idb
+*.obj
 .sconsign.dblite
 lua/demo1
 lua/lftk_run
