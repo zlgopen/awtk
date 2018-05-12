@@ -33,12 +33,10 @@ BEGIN_C_DECLS
  * @scriptable no
  * @param {wh_t} w LCD宽度。
  * @param {wh_t} h LCD高度。
- * @param {uint32_t*} heap 动态内存空间。
- * @param {uint32_t} size 动态内存空间的大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_init(wh_t w, wh_t h, uint32_t* heap, uint32_t size);
+ret_t tk_init(wh_t w, wh_t h);
 
 /**
  * @method tk_run

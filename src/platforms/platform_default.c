@@ -63,3 +63,10 @@ void sleep_ms(uint32_t ms) {
   usleep(ms*1000);
 #endif
 }
+
+ret_t platform_prepare(void) {
+  timer_init(get_time_ms);
+
+  return RET_OK;
+}
+

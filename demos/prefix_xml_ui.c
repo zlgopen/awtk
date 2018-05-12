@@ -30,8 +30,6 @@
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_builder_default.h"
 
-static uint32_t s_heap_mem[2048];
-
 char* read_file(const char* file_name, uint32_t* length) {
   struct stat st = {0};
   if (stat(file_name, &st)) {
@@ -73,7 +71,7 @@ int main(int argc, char* argv[]) {
 #endif
   widget_t* win = NULL;
 
-  tk_init(320, 480, s_heap_mem, sizeof(s_heap_mem));
+  tk_init(320, 480);
   resource_init();
   win = prefix_xml_ui(filename);
   tk_run();

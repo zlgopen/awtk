@@ -31,7 +31,7 @@
 #include "base/utils.h"
 #include "base/window.h"
 #include "ui_loader/ui_builder_default.h"
-#include "common.c"
+#include "common.inc"
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;

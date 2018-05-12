@@ -1,4 +1,4 @@
-﻿
+
 typedef struct _main_loop_raw_t {
   main_loop_t base;
 
@@ -10,15 +10,18 @@ typedef struct _main_loop_raw_t {
   xy_t touch_x;
   xy_t touch_y;
   bool_t pressed;
+  
+  uint8_t key;
+  bool_t key_pressed;
   event_queue_t* queue;
 } main_loop_raw_t;
 
 static main_loop_raw_t s_main_loop;
 
-static void dispatch_touch_events(bool_t pressed, xy_t x, xy_t y) {
+static void post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   event_all_t any;
   pointer_event_t event;
-  main_loop_raw_t* loop = &s_main_loop;
+  main_loop_raw_t* loop = (main_loop_raw_t*)l;
 
   loop->touch_x = x;
   loop->touch_y = y;
@@ -50,12 +53,36 @@ static void dispatch_touch_events(bool_t pressed, xy_t x, xy_t y) {
   }
 }
 
+static void post_key_events(main_loop_t* l, bool_t pressed, uint8_t key) {
+  event_all_t any;
+  key_event_t event;
+  main_loop_raw_t* loop = (main_loop_raw_t*)l;
+
+  loop->key = key;
+  event.key = key;
+  
+  if (pressed) {
+    loop->key_pressed = TRUE;
+	event.e.type = EVT_KEY_DOWN;
+	
+    any.e.key_event = event;
+    event_queue_send(loop->queue, &any);
+  } else {
+    if (loop->key_pressed) {
+      loop->key_pressed = FALSE;
+	  event.e.type = EVT_KEY_UP;
+
+      any.e.key_event = event;
+      event_queue_send(loop->queue, &any);
+    }
+  }
+}
+
 static ret_t main_loop_raw_dispatch(main_loop_raw_t* loop) {
   event_all_t event;
   widget_t* widget = loop->wm;
-  uint8_t key = platform_scan_key();
+  platform_disaptch_input((main_loop_t*)loop);
 
-  /*TODO dispatch key*/
   while (event_queue_recv(loop->queue, &event) == RET_OK) {
     switch (event.e.event.type) {
       case EVT_POINTER_DOWN:
@@ -121,7 +148,7 @@ main_loop_t* main_loop_init(int w, int h) {
   lcd = platform_create_lcd(w, h);
   return_value_if_fail(lcd != NULL, NULL);
 
-  memset(&loop, 0x00, sizeof(loop));
+  memset(loop, 0x00, sizeof(main_loop_raw_t));
 
   base->run = main_loop_raw_run;
   base->quit = main_loop_raw_quit;

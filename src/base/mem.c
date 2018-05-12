@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  simple memory manager
@@ -228,6 +228,7 @@ void* tk_realloc(void* ptr, uint32_t size) {
 ret_t mem_init(void* buffer, uint32_t length) {
   return_value_if_fail(buffer != NULL && length > MIN_SIZE, RET_BAD_PARAMS);
 
+	memset(buffer, 0x00, length);
   mem_info.buffer = buffer;
   mem_info.length = length;
   mem_info.free_list = (free_node_t*)buffer;

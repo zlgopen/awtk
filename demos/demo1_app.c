@@ -34,7 +34,7 @@
 #include "base/window.h"
 #include "base/slider.h"
 #include "base/group_box.h"
-#include "common.c"
+#include "common.inc"
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;

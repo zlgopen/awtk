@@ -1,4 +1,4 @@
-﻿/**
+/**
  * file:   stm32_g2d.h
  * author: li xianjing <xianjimli@hotmail.com>
  * brief:  stm32 dma2d implemented hardware 2d

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  mem implemented lcd interface/
@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "blend/blend.h"
+#include "lcd/lcd_mem.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
 #ifdef WITH_G2D
@@ -33,7 +34,12 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   fb->format = LCD_FORMAT;
   fb->w = lcd->w;
   fb->h = lcd->h;
-  fb->data = mem->fbuff;
+
+  if(lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff != NULL) {
+    fb->data = mem->online_fbuff;
+  } else {
+    fb->data = mem->fbuff;
+  }
 
   return RET_OK;
 }
@@ -242,7 +248,65 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
   return RET_OK;
 }
 
-static ret_t lcd_mem_end_frame(lcd_t* lcd) { return RET_OK; }
+static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  fb->flags = 0;
+  fb->w = lcd->w;
+  fb->h = lcd->w;
+  fb->format = mem->format;
+  fb->data = mem->online_fbuff;
+	
+  return fb;
+}
+
+static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  fb->flags = 0;
+  fb->w = lcd->w;
+  fb->h = lcd->w;
+  fb->format = mem->format;
+  fb->data = mem->fbuff;
+	
+  return fb;
+}
+
+
+static ret_t lcd_mem_end_frame(lcd_t* lcd) { rect_t rect;
+  bitmap_t online_fb;
+  bitmap_t offline_fb;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  
+  rect_t* r = lcd->dirty_rect;
+	
+  if(lcd->draw_mode != LCD_DRAW_NORMAL) {
+    return RET_OK;
+  }
+
+  if(mem->online_fbuff == NULL) {
+    return RET_OK;
+  }
+
+  if(r == NULL) {
+    r = &rect;
+    r->x = 0;
+    r->y = 0;
+    r->w = lcd->w;
+    r->h = lcd->h;
+  }
+
+  lcd_mem_init_online_fb(lcd, &online_fb);
+  lcd_mem_init_offline_fb(lcd, &offline_fb);
+
+#ifdef WITH_G2D
+  g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y);	
+#else
+  blend_image(&online_fb, &offline_fb, r, r, 0xff);
+#endif /*WITH_G2D*/
+
+  return RET_OK; 
+}
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
   TKMEM_FREE(lcd);
@@ -290,3 +354,14 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
 
   return base;
 }
+
+lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb) {
+  lcd_t* lcd = lcd_mem_create(w, h, FALSE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  mem->fbuff = offline_fb;
+  mem->online_fbuff = online_fb;
+
+  return lcd;
+}
+
