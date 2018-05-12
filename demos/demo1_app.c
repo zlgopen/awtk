@@ -22,18 +22,19 @@
 #include "base/timer.h"
 #include "base/enums.h"
 #include "base/button.h"
-#include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/image.h"
-#include "base/image_manager.h"
 #include "base/label.h"
 #include "base/mem.h"
-#include "base/progress_bar.h"
 #include "base/utils.h"
 #include "base/utf8.h"
 #include "base/window.h"
 #include "base/slider.h"
 #include "base/group_box.h"
+#include "base/check_button.h"
+#include "base/image_manager.h"
+#include "base/progress_bar.h"
+
 #include "common.inc"
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
@@ -117,7 +118,7 @@ ret_t application_init() {
   widget_set_value(progress_bar, 40);
   //  timer_add(on_timer, progress_bar, 1000);
 
-#ifndef WITH_STB_FONT
+#ifdef WITH_STB_FONT
   progress_bar_set_show_text(progress_bar, TRUE);
 #endif
 

@@ -18,11 +18,13 @@ typedef struct _main_loop_raw_t {
 
 static main_loop_raw_t s_main_loop;
 
-static void post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
+static ret_t post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   event_all_t any;
   pointer_event_t event;
   main_loop_raw_t* loop = (main_loop_raw_t*)l;
 
+  return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
+  
   loop->touch_x = x;
   loop->touch_y = y;
 
@@ -51,6 +53,8 @@ static void post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
       event_queue_send(loop->queue, &any);
     }
   }
+  
+  return RET_OK;
 }
 
 static void post_key_events(main_loop_t* l, bool_t pressed, uint8_t key) {
