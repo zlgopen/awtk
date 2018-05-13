@@ -91,13 +91,15 @@ bin\demo1
 ## 各个平台的移植
 
 [stm32f103ze](https://github.com/xianjimli/awtk-stm32f103ze-raw.git)
+[stm32f429igtx](https://github.com/xianjimli/awtk-stm32f429igtx-raw.git)
 
 ## 文档
 
 * [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 * [AWTK控件的布局参数介绍](docs/layout.md)
 * [AWTK界面描述文件介绍](docs/ui_desc.md)
-* [AWTK移植到STM32裸系统](docs/porting_to_stm32.md)
+* [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
+* [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
 * [AWTK中的图片显示方式](docs/image_draw_type.md)
 * [AWTK中的矢量图绘图函数](docs/vgcanvas.md)
 * [AWTK中的事件处理函数](docs/event_listener.md)
@@ -105,10 +107,14 @@ bin\demo1
 * [AWTK中的资源管理器](docs/resource_manager.md)
 * [AWTK中的窗口动画](docs/window_animator.md)
 * [AWTK中的国际化之字符串翻译](docs/locale.md)
+
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/05/13
+    * 编写stm32f429igtx移植文档。
 
 * 2018/05/12
     * lcd 支持double framebuffer，移植到stm32429igtx裸系统。
