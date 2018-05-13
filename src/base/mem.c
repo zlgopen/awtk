@@ -56,6 +56,45 @@ typedef struct _mem_info_t {
 
 static mem_info_t mem_info;
 
+#ifdef MEM_DEBUG
+static void check_node(free_node_t* node) {
+  if(node->prev) { 
+    assert(node->prev->next == node);
+  }
+
+  if(node->next) {
+    assert(node->next->prev == node);
+  }
+}
+
+static void check_all_nodes() {
+  free_node_t* iter = NULL;
+  for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
+    check_node(iter);
+  }
+}
+
+#define END_MARK 0xefefefef
+#define END_MARK_SIZE sizeof(uint32_t);
+static void mem_check_end_mark(free_node_t* iter) {
+  char* mark_addr = (char*)iter + iter->length - sizeof(uint32_t);
+  uint32_t mark = *((uint32_t*)mark_addr);
+  assert(mark == END_MARK);
+}
+
+static void mem_set_end_mark(free_node_t* iter) {
+  char* mem_addr = (char*)iter + sizeof(uint32_t);
+  char* mark_addr = (char*)iter + iter->length - sizeof(uint32_t);
+  *((uint32_t*)mark_addr) = END_MARK;
+  mem_check_end_mark(iter);
+}
+#else
+#define END_MARK_SIZE sizeof(uint32_t)
+#define mem_check_end_mark(iter) (void)iter;
+#define mem_set_end_mark(iter) (void)iter;
+#define check_all_nodes()
+#endif/**/
+
 void* tk_calloc(uint32_t nmemb, uint32_t size) {
   uint32_t length = nmemb * size;
   char* ptr = tk_alloc(length);
@@ -70,6 +109,8 @@ void* tk_calloc(uint32_t nmemb, uint32_t size) {
 void* tk_alloc(uint32_t size) {
   free_node_t* iter = NULL;
   uint32_t length = REAL_SIZE(size);
+  
+  length += END_MARK_SIZE;
 
   /*查找第一个满足条件的空闲块*/
   for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
@@ -119,6 +160,9 @@ void* tk_alloc(uint32_t size) {
   }
   /*返回可用的内存*/
   mem_info.used_block_nr++;
+  
+  check_all_nodes();
+  mem_set_end_mark(iter);
 
   return (char*)iter + sizeof(uint32_t);
 }
@@ -146,9 +190,7 @@ static void node_merge(free_node_t* iter) {
   if (prev != NULL && ((char*)prev + prev->length) == (char*)iter) {
     node_merge2(prev, iter);
     node_merge(prev);
-  }
-
-  if (next != NULL && ((char*)iter + iter->length) == (char*)next) {
+  } else if (next != NULL && ((char*)iter + iter->length) == (char*)next) {
     node_merge2(iter, next);
     node_merge(iter);
   }
@@ -166,6 +208,9 @@ void tk_free(void* ptr) {
 
   free_iter->prev = NULL;
   free_iter->next = NULL;
+
+  check_all_nodes();
+  mem_check_end_mark(free_iter);
 
   if (mem_info.free_list == NULL) {
     mem_info.free_list = free_iter;
@@ -200,6 +245,7 @@ void tk_free(void* ptr) {
   /*对相邻居的内存进行合并*/
   node_merge(free_iter);
   mem_info.used_block_nr--;
+  check_all_nodes();
 
   return;
 }
