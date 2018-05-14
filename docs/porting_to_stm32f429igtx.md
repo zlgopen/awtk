@@ -8,8 +8,7 @@ AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和m
 
 ```
 uint32_t get_time_ms() {
-  /*TODO*/
-  return 0;  
+  return HAL_GetTick();
 }
 
 void sleep_ms(uint32_t ms) {
@@ -26,9 +25,7 @@ ret_t platform_prepare(void) {
   return RET_OK;
 }
 ```
-
-> get\_time\_ms暂未实现，所以定时器和窗口动画无法工作。
-> 
+ 
 > 参考：awtk-port/platform.c
 
 ### 二、实现lcd
