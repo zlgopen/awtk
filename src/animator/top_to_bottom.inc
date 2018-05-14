@@ -46,7 +46,7 @@ static ret_t window_animator_open_top_to_bottom_draw_curr(window_animator_t* wa)
 
   rect_init(src, win->x * ratio, y, win->w * ratio, h);
   rect_init(dst, win->x, 0, win->w, h);
-  lcd_set_global_alpha(c->lcd, alpha * 0xff);
+  lcd_set_global_alpha(c->lcd, 0xff);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
 #endif
 

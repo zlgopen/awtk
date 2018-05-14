@@ -116,7 +116,7 @@ ret_t application_init() {
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
   widget_set_value(progress_bar, 40);
-  //  timer_add(on_timer, progress_bar, 1000);
+  timer_add(on_timer, progress_bar, 500);
 
 #ifdef WITH_STB_FONT
   progress_bar_set_show_text(progress_bar, TRUE);

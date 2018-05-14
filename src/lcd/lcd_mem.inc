@@ -32,14 +32,9 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   fb->format = LCD_FORMAT;
+  fb->data = mem->fbuff;
   fb->w = lcd->w;
   fb->h = lcd->h;
-
-  if(lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff != NULL) {
-    fb->data = mem->online_fbuff;
-  } else {
-    fb->data = mem->fbuff;
-  }
 
   return RET_OK;
 }
@@ -280,7 +275,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) { rect_t rect;
   
   rect_t* r = lcd->dirty_rect;
 	
-  if(lcd->draw_mode != LCD_DRAW_NORMAL) {
+  if(lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }
 
