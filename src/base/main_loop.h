@@ -31,11 +31,13 @@ typedef struct _main_loop_t main_loop_t;
 
 typedef ret_t (*main_loop_run_t)(main_loop_t* l);
 typedef ret_t (*main_loop_quit_t)(main_loop_t* l);
+typedef ret_t (*main_loop_wakeup_t)(main_loop_t* l);
 typedef ret_t (*main_loop_destroy_t)(main_loop_t* l);
 
 struct _main_loop_t {
   main_loop_run_t run;
   main_loop_quit_t quit;
+  main_loop_wakeup_t wakeup;
   main_loop_destroy_t destroy;
 
   bool_t running;
@@ -47,6 +49,7 @@ main_loop_t* main_loop(void);
 ret_t main_loop_set(main_loop_t* loop);
 
 ret_t main_loop_run(main_loop_t* l);
+ret_t main_loop_wakeup(main_loop_t* l);
 ret_t main_loop_quit(main_loop_t* l);
 ret_t main_loop_destroy(main_loop_t* l);
 

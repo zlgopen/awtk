@@ -10,13 +10,14 @@ sources=Glob('base/*.c') +\
   Glob('font/*.c') + \
   Glob('blend/*.c') + \
   Glob('image_loader/*.c') + \
+  Glob('widget_animators/*.c') + \
   ['platforms/platform_default.c', 'tk.c'];
 
 if os.environ['LCD'] == 'NANOVG':
-  sources += ['animator/window_animator_nanovg.c'];
+  sources += ['window_animators/window_animator_nanovg.c'];
   sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_nanovg.c'];
 else:
-  sources += ['animator/window_animator_fb.c'];
+  sources += ['window_animators/window_animator_fb.c'];
   sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl2.c']
 
 if os.environ['FRAME_BUFFER_FORMAT'] =='rgba8888':
