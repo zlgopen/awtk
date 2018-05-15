@@ -1,6 +1,7 @@
 ﻿#include "base/mem.h"
 #include <assert.h>
 
+#ifndef HAS_STD_MALLOC
 #define STACK_SIZE 1000
 uint32_t s_heap_mem[1024 * 100];
 
@@ -37,7 +38,6 @@ void mem_stack_free_n(mem_stack_t* s, uint32_t nr) {
 }
 
 int main() {
-#ifndef HAS_STD_MALLOC
   mem_stack_t s;
   uint32_t i = 0;
   uint32_t nr = 10000*10000;
@@ -65,8 +65,12 @@ int main() {
 
   mem_stack_free_n(&s, s.top);
   mem_info_dump();
-#endif
 
   return 0;
 }
-
+#else
+int main() {
+  printf("HAS_STD_MALLOC defined, no test.\n");
+  return 0;
+}
+#endif

@@ -36,6 +36,7 @@ typedef struct timer_info_t {
   timer_func_t on_timer;
   void* ctx;
   uint32_t id;
+  uint32_t now;
   uint32_t start;
   uint32_t duration_ms;
   bool_t repeat;

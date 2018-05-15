@@ -123,6 +123,7 @@ ret_t timer_dispatch() {
 
     end = iter->start + iter->duration_ms;
     if (end <= now) {
+      iter->now = now;
       iter->repeat = RET_REPEAT == iter->on_timer(iter);
       if (iter->repeat) {
         iter->start = now;
