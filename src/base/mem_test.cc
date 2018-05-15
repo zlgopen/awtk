@@ -1,39 +1,72 @@
 ﻿#include "base/mem.h"
 #include <assert.h>
 
-uint32_t heap[1024];
+#define STACK_SIZE 1000
+uint32_t s_heap_mem[1024 * 100];
+
+typedef struct _mem_stack_t {
+  void* ptr[1000];
+  uint32_t top;
+  uint32_t max;
+}mem_stack_t;
+
+void mem_stack_init(mem_stack_t* s) {
+  memset(s, 0x00, sizeof(mem_stack_t));
+  s->max = ARRAY_SIZE(s->ptr);
+}
+
+void mem_stack_push(mem_stack_t* s, void* ptr) {
+  assert(s->top < s->max);
+  s->ptr[s->top++] = ptr;
+}
+
+bool_t mem_stack_has_space(mem_stack_t* s) {
+  return s->top < s->max;
+}
+
+void* mem_stack_pop(mem_stack_t* s) {
+  assert(s->top > 0);
+  s->top--;
+  return s->ptr[s->top];
+}
+
+void mem_stack_free_n(mem_stack_t* s, uint32_t nr) {
+  for(uint32_t i = 0; i < nr && s->top > 0; i++) {
+    tk_free(mem_stack_pop(s));   
+  }
+}
 
 int main() {
 #ifndef HAS_STD_MALLOC
-  char* str = NULL;
-  char* p[32];
+  mem_stack_t s;
   uint32_t i = 0;
-  mem_stat_t st;
-  mem_init(heap, sizeof(heap));
+  uint32_t nr = 10000*10000;
 
-  str = (char*)tk_alloc(100);
-  tk_free(str);
+  srand(time(0));
+  mem_stack_init(&s);
+  mem_init(s_heap_mem, sizeof(s_heap_mem));
 
-  for (i = 0; i < ARRAY_SIZE(p); i++) {
-    p[i] = (char*)TKMEM_ALLOC(i);
-    log_debug("%p\n", p[i]);
-    st = mem_stat();
-    assert(st.used_block_nr == (i + 1));
-    assert(st.free_block_nr == 1);
-  }
+  tk_free(tk_alloc(100));
 
-  for (i = 0; i < ARRAY_SIZE(p); i++) {
-    TKMEM_FREE(p[i]);
-    st = mem_stat();
-    assert(st.used_block_nr == (ARRAY_SIZE(p) - i - 1));
-    if (st.used_block_nr) {
-      assert(st.free_block_nr == 2);
+  for(i = 0; i < nr ; i++) {
+    uint32_t size = rand()%100;
+    void* ptr = tk_calloc(size, 1);
+
+    if(ptr != NULL) {
+      if(mem_stack_has_space(&s)) {
+        mem_stack_push(&s, ptr);
+      } else {
+        tk_free(ptr);
+      }
     } else {
-      assert(st.free_block_nr == 1);
+      mem_stack_free_n(&s, s.top >> 1);
     }
   }
 
+  mem_stack_free_n(&s, s.top);
   mem_info_dump();
 #endif
+
   return 0;
 }
+

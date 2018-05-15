@@ -54,7 +54,7 @@ typedef struct _mem_info_t {
 #define MIN_SIZE R8B(sizeof(free_node_t))
 #define REAL_SIZE(size) R8B((size > sizeof(free_node_t) ? size : MIN_SIZE) + sizeof(uint32_t));
 
-static mem_info_t mem_info;
+static mem_info_t s_mem_info;
 
 #ifdef MEM_DEBUG
 static void check_node(free_node_t* node) {
@@ -69,7 +69,7 @@ static void check_node(free_node_t* node) {
 
 static void check_all_nodes() {
   free_node_t* iter = NULL;
-  for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
+  for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next) {
     check_node(iter);
   }
 }
@@ -83,7 +83,6 @@ static void mem_check_end_mark(free_node_t* iter) {
 }
 
 static void mem_set_end_mark(free_node_t* iter) {
-  char* mem_addr = (char*)iter + sizeof(uint32_t);
   char* mark_addr = (char*)iter + iter->length - sizeof(uint32_t);
   *((uint32_t*)mark_addr) = END_MARK;
   mem_check_end_mark(iter);
@@ -113,7 +112,7 @@ void* tk_alloc(uint32_t size) {
   length += END_MARK_SIZE;
 
   /*查找第一个满足条件的空闲块*/
-  for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
+  for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next) {
     if (iter->length > length) {
       break;
     }
@@ -128,8 +127,8 @@ void* tk_alloc(uint32_t size) {
 
   /*如果找到的空闲块刚好满足需求，就从空闲块链表中移出它*/
   if (iter->length < (length + MIN_SIZE)) {
-    if (mem_info.free_list == iter) {
-      mem_info.free_list = iter->next;
+    if (s_mem_info.free_list == iter) {
+      s_mem_info.free_list = iter->next;
     }
 
     if (iter->prev != NULL) {
@@ -153,13 +152,13 @@ void* tk_alloc(uint32_t size) {
       iter->next->prev = new_iter;
     }
 
-    if (mem_info.free_list == iter) {
-      mem_info.free_list = new_iter;
+    if (s_mem_info.free_list == iter) {
+      s_mem_info.free_list = new_iter;
     }
     iter->length = length;
   }
   /*返回可用的内存*/
-  mem_info.used_block_nr++;
+  s_mem_info.used_block_nr++;
   
   check_all_nodes();
   mem_set_end_mark(iter);
@@ -176,8 +175,8 @@ static void node_merge2(free_node_t* prev, free_node_t* next) {
   }
   prev->length += next->length;
 
-  if (mem_info.free_list == next) {
-    mem_info.free_list = prev;
+  if (s_mem_info.free_list == next) {
+    s_mem_info.free_list = prev;
   }
 
   return;
@@ -212,13 +211,13 @@ void tk_free(void* ptr) {
   check_all_nodes();
   mem_check_end_mark(free_iter);
 
-  if (mem_info.free_list == NULL) {
-    mem_info.free_list = free_iter;
+  if (s_mem_info.free_list == NULL) {
+    s_mem_info.free_list = free_iter;
 
     return;
   }
   /*根据内存块地址的大小，把它插入到适当的位置。*/
-  for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
+  for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next) {
     if ((char*)iter > (char*)free_iter) {
       free_iter->next = iter;
       free_iter->prev = iter->prev;
@@ -227,8 +226,8 @@ void tk_free(void* ptr) {
       }
       iter->prev = free_iter;
 
-      if (mem_info.free_list == iter) {
-        mem_info.free_list = free_iter;
+      if (s_mem_info.free_list == iter) {
+        s_mem_info.free_list = free_iter;
       }
 
       break;
@@ -244,7 +243,7 @@ void tk_free(void* ptr) {
 
   /*对相邻居的内存进行合并*/
   node_merge(free_iter);
-  mem_info.used_block_nr--;
+  s_mem_info.used_block_nr--;
   check_all_nodes();
 
   return;
@@ -275,13 +274,13 @@ ret_t mem_init(void* buffer, uint32_t length) {
   return_value_if_fail(buffer != NULL && length > MIN_SIZE, RET_BAD_PARAMS);
 
 	memset(buffer, 0x00, length);
-  mem_info.buffer = buffer;
-  mem_info.length = length;
-  mem_info.free_list = (free_node_t*)buffer;
-  mem_info.free_list->prev = NULL;
-  mem_info.free_list->next = NULL;
-  mem_info.free_list->length = length;
-  mem_info.used_block_nr = 0;
+  s_mem_info.buffer = buffer;
+  s_mem_info.length = length;
+  s_mem_info.free_list = (free_node_t*)buffer;
+  s_mem_info.free_list->prev = NULL;
+  s_mem_info.free_list->next = NULL;
+  s_mem_info.free_list->length = length;
+  s_mem_info.used_block_nr = 0;
 
   return RET_OK;
 }
@@ -291,7 +290,7 @@ void mem_info_dump() {
   free_node_t* iter = NULL;
   mem_stat_t st = mem_stat();
 
-  for (iter = mem_info.free_list; iter != NULL; iter = iter->next, i++) {
+  for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next, i++) {
     log_debug("[%d] %p %d\n", i, iter, iter->length);
   }
 
@@ -306,15 +305,15 @@ mem_stat_t mem_stat() {
 
   memset(&st, 0x00, sizeof(st));
 
-  st.total = mem_info.length;
-  for (iter = mem_info.free_list; iter != NULL; iter = iter->next) {
+  st.total = s_mem_info.length;
+  for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next) {
     st.free += iter->length;
     st.free_block_nr++;
   }
 
   st.used = st.total - st.free;
-  st.used_block_nr = mem_info.used_block_nr;
+  st.used_block_nr = s_mem_info.used_block_nr;
 
   return st;
 }
-#endif
+#endif/*HAS_STD_MALLOC*/
