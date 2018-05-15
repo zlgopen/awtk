@@ -269,12 +269,17 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
 }
 
 ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
-  return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
-  resource_info_unref((resource_info_t*)info);
+  if(rm == NULL) {
+    /*resource manager was destroied*/
+    return RET_OK;
+  }
+
   if (!(info->is_in_rom) && info->refcount < 1) {
     array_remove(&(rm->resources), NULL, (void*)info);
   }
+  resource_info_unref((resource_info_t*)info);
 
   return RET_OK;
 }
@@ -315,6 +320,9 @@ ret_t resource_manager_destroy(resource_manager_t* rm) {
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
   resource_manager_deinit(rm);
 
+  if(rm == resource_manager()) {
+    resource_manager_set(NULL);
+  }
   TKMEM_FREE(rm);
 
   return RET_OK;

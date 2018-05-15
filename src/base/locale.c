@@ -117,6 +117,8 @@ ret_t locale_off(tklocale_t* locale, uint32_t id) {
 
 ret_t locale_deinit(tklocale_t* locale) {
   return_value_if_fail(locale != NULL, RET_OK);
+
+  emitter_deinit(&(locale->emitter));
   if (locale->strs != NULL) {
     resource_manager_unref(resource_manager(), locale->strs);
   }
