@@ -224,7 +224,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  return array_remove(widget->children, NULL, child);
+  return array_remove(widget->children, NULL, child, NULL);
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {

@@ -301,7 +301,7 @@ static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  return array_remove(&(wm->graps), NULL, child);
+  return array_remove(&(wm->graps), NULL, child, NULL);
 }
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {

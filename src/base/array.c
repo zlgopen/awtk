@@ -95,7 +95,7 @@ int array_find_index(array_t* array, compare_t cmp, void* data) {
   return -1;
 }
 
-ret_t array_remove(array_t* array, compare_t cmp, void* data) {
+ret_t array_remove(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
   int32_t i = 0;
   int32_t pos = 0;
   int32_t size = 0;
@@ -108,6 +108,12 @@ ret_t array_remove(array_t* array, compare_t cmp, void* data) {
   }
 
   elms = array->elms;
+
+  if(destroy != NULL) {
+    destroy(elms[pos]);
+    elms[pos] = NULL;
+  }
+
   for (size = array->size - 1, i = pos; i < size; i++) {
     elms[i] = elms[i + 1];
   }

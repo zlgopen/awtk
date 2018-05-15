@@ -63,7 +63,7 @@ TEST(OArrayTest, random) {
     long k = random() % array.size;
     void* pv = array.elms[k];
 
-    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv, NULL));
   }
   ASSERT_EQ(array.size, 0);
 
@@ -87,7 +87,7 @@ TEST(OArrayTest, inc) {
     long k = random() % array.size;
     void* pv = array.elms[k];
 
-    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv, NULL));
   }
   ASSERT_EQ(array.size, 0);
 
@@ -112,7 +112,7 @@ TEST(OArrayTest, dec) {
     void* pv = array.elms[k];
 
     ASSERT_EQ(pv, array_find(&array, pointer_cmp, pv));
-    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv));
+    ASSERT_EQ(RET_OK, array_remove(&array, pointer_cmp, pv, NULL));
     ASSERT_EQ(NULL, array_find(&array, pointer_cmp, pv));
   }
   ASSERT_EQ(array.size, 0);

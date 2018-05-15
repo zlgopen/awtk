@@ -81,7 +81,7 @@ ret_t timer_remove(uint32_t timer_id) {
   timer.id = timer_id;
   ret = (timer_info_t*)array_find(s_timer_manager, compare_timer, &timer);
   return_value_if_fail(ret != NULL, RET_NOT_FOUND);
-  if (array_remove(s_timer_manager, compare_timer, &timer) == RET_OK) {
+  if (array_remove(s_timer_manager, compare_timer, &timer, NULL) == RET_OK) {
     memset(ret, 0x00, sizeof(timer_info_t));
     /*will be removed on next check*/
   }

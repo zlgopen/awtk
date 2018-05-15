@@ -84,10 +84,11 @@ int array_find_index(array_t* array, compare_t cmp, void* ctx);
  * @param {array_t*} array 数组对象。
  * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
+ * @param {destroy_t} destroy 销毁元素的回调函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t array_remove(array_t* array, compare_t cmp, void* ctx);
+ret_t array_remove(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
 
 /**
  * @method array_remove_all

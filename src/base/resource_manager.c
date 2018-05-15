@@ -277,9 +277,8 @@ ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info
   }
 
   if (!(info->is_in_rom) && info->refcount < 1) {
-    array_remove(&(rm->resources), NULL, (void*)info);
+    array_remove(&(rm->resources), NULL, (void*)info, (destroy_t)resource_info_unref);
   }
-  resource_info_unref((resource_info_t*)info);
 
   return RET_OK;
 }
