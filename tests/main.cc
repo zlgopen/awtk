@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include "tk.h"
 #include "base/mem.h"
+#include "base/idle.h"
 #include "gtest/gtest.h"
 #include "demos/resource.h"
 #include "base/font_manager.h"
@@ -52,8 +53,8 @@ GTEST_API_ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 
+  idle_manager_set(idle_manager_create());
   resource_manager_set(resource_manager_create(10));
-
 #ifdef WITH_STB_IMAGE
   image_manager_set(image_manager_create(image_loader_stb()));
 #else

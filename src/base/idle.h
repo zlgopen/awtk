@@ -22,7 +22,7 @@
 #ifndef TK_IDEL_H
 #define TK_IDEL_H
 
-#include "base/types_def.h"
+#include "base/array.h"
 
 BEGIN_C_DECLS
 
@@ -36,6 +36,25 @@ typedef struct idle_info_t {
   void* ctx;
   uint32_t id;
 } idle_info_t;
+
+typedef struct _idle_manager_t {
+  array_t idles[2];
+  uint32_t active;
+  uint32_t next_idle_id;
+} idle_manager_t;
+
+idle_manager_t* idle_manager(void);
+ret_t idle_manager_set(idle_manager_t* idle_manager);
+
+idle_manager_t* idle_manager_create(void);
+idle_manager_t* idle_manager_init(idle_manager_t* idle_manager);
+ret_t idle_manager_deinit(idle_manager_t* idle_manager);
+ret_t idle_manager_destroy(idle_manager_t* idle_manager);
+
+uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
+ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id);
+const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id);
+ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 
 /**
  * @class idle_t
@@ -97,3 +116,4 @@ uint32_t idle_count(void);
 END_C_DECLS
 
 #endif /*TK_IDEL_H*/
+

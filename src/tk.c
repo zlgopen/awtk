@@ -21,6 +21,7 @@
 
 #include "tk.h"
 #include "base/mem.h"
+#include "base/idle.h"
 #include "base/time.h"
 #include "base/timer.h"
 #include "base/locale.h"
@@ -83,6 +84,7 @@ ret_t tk_init(wh_t w, wh_t h) {
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
 
+  return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);
