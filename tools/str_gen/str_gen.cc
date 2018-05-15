@@ -1,6 +1,6 @@
 /**
  * File:   str_gen.cc
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  str_gen
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

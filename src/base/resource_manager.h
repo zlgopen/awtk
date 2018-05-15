@@ -1,6 +1,6 @@
 ﻿/**
  * File:   resource_manager.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  resource manager
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

@@ -1,6 +1,6 @@
 /**
  * File:   qt to xml
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  qt to xml
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

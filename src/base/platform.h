@@ -1,6 +1,6 @@
 ﻿/**
  * File:   platform.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  platform struct and utils functions.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

@@ -1,6 +1,6 @@
 ﻿/**
  * File:   widget.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  basic class of all widget
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

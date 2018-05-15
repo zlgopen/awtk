@@ -1,6 +1,6 @@
 ﻿/**
  * File:   font_bitmap.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  font bitmap font loader
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

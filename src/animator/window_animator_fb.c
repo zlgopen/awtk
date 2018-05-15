@@ -1,6 +1,6 @@
 ﻿/**
  * File:   window_animator_fb
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  fb implemented window animator
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

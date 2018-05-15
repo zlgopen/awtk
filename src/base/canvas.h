@@ -1,6 +1,6 @@
 ﻿/**
  * File:   canvas.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  canvas provides basic drawings functions.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.

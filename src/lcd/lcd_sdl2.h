@@ -1,6 +1,6 @@
 ﻿/**
  * File:   lcd_sdl2.h
- * Author: Li XianJing <xianjimli@hotmail.com>
+ * Author: AWTK Develop Team
  * Brief:  sdl2 implemented lcd interface/
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
