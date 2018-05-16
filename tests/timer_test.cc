@@ -67,6 +67,7 @@ TEST(Timer, once) {
   timer_set_time(0);
   for (i = 0; i < NR; i++) {
     ids[i] = timer_manager_add(tm, timer_once, NULL, i+1);
+    ASSERT_EQ(timer_manager_next_time(tm), 1);
     ASSERT_EQ(ids[i] > 0, true);
     ASSERT_EQ(timer_manager_find(tm, ids[i])->id, ids[i]);
     ASSERT_EQ(timer_manager_count(tm), i + 1);
@@ -93,6 +94,7 @@ TEST(Timer, repeat) {
   timer_set_time(0);
   for (i = 0; i < NR; i++) {
     ids[i] = timer_manager_add(tm, timer_repeat, NULL, i+1);
+    ASSERT_EQ(timer_manager_next_time(tm), 1);
     ASSERT_EQ(timer_manager_find(tm, ids[i])->id, ids[i]);
     ASSERT_EQ(ids[i] > 0, true);
     ASSERT_EQ(timer_manager_count(tm), i + 1);
@@ -140,6 +142,7 @@ TEST(Timer, addInTimer) {
 
   timer_set_time(0);
   timer_manager_add(tm, timer_add_in_timer, NULL, 100);
+  ASSERT_EQ(timer_manager_next_time(tm), 100);
 
   timer_clear_log();
   timer_set_time(100);

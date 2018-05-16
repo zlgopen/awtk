@@ -179,8 +179,10 @@ ret_t array_push(array_t* array, void* data) {
 }
 
 void array_deinit(array_t* array) {
-  return_if_fail(array != NULL && array->elms != NULL);
-  TKMEM_FREE(array->elms);
+  return_if_fail(array != NULL);
+  if(array->elms != NULL) {
+    TKMEM_FREE(array->elms);
+  }
   memset(array, 0x00, sizeof(array_t));
 
   return;

@@ -71,7 +71,9 @@ ret_t timer_manager_deinit(timer_manager_t* timer_manager) {
     timer_info_t* iter = timers[i];
     TKMEM_FREE(iter);
   }
-
+  array_deinit(timer_manager->timers+0);
+  array_deinit(timer_manager->timers+1);
+  
   return RET_OK;
 }
 
@@ -137,12 +139,18 @@ ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {
 
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id) {
   timer_info_t timer;
+  const timer_info_t* ret = NULL;
   return_value_if_fail(timer_id > 0, NULL);
   return_value_if_fail(timer_manager != NULL, NULL);
 
   timer.id = timer_id;
 
-  return (const timer_info_t*)array_find(ACTIVE_TIMERS(timer_manager), timer_info_compare_id, &timer);
+  ret = (const timer_info_t*)array_find(ACTIVE_TIMERS(timer_manager), timer_info_compare_id, &timer);
+  if(ret == NULL) {
+    ret = (const timer_info_t*)array_find(OFFLINE_TIMERS(timer_manager), timer_info_compare_id, &timer);
+  }
+
+  return ret;
 }
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
@@ -179,7 +187,24 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
 uint32_t timer_manager_count(timer_manager_t* timer_manager) {
   return_value_if_fail(timer_manager != NULL, 0);
 
-  return ACTIVE_TIMERS(timer_manager)->size;
+  return ACTIVE_TIMERS(timer_manager)->size + OFFLINE_TIMERS(timer_manager)->size;
+}
+
+uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
+  uint32_t i = 0;
+  uint32_t t = 0xffffffff;
+  array_t* active = NULL;
+  return_value_if_fail(timer_manager != NULL, t);
+  active = ACTIVE_TIMERS(timer_manager);
+
+  for(i = 0; i < active->size; i++) {
+    timer_info_t* iter = (timer_info_t*)(active->elms[i]); 
+    if((iter->start + iter->duration_ms) < t) {
+      t = iter->start + iter->duration_ms;
+    }
+  }
+
+  return t;
 }
 
 ret_t timer_init(timer_get_time_t get_time) {
@@ -209,3 +234,6 @@ uint32_t timer_count(void) {
   return ACTIVE_TIMERS(timer_manager())->size;
 }
 
+uint32_t timer_next_time(void) {
+  return timer_manager_next_time(timer_manager());
+}

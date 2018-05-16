@@ -63,6 +63,7 @@ ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
 uint32_t timer_manager_count(timer_manager_t* timer_manager);
+uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
 
 /**
  * @class timer_t
@@ -132,6 +133,15 @@ ret_t timer_dispatch(void);
  * @return {uint32_t} 返回timer的个数。
  */
 uint32_t timer_count(void);
+
+/**
+ * @method timer_next_time
+ * 返回最近的timer到期时间。
+ * @static
+ *
+ * @return {uint32_t} 返回最近的timer到期时间。
+ */
+uint32_t timer_next_time(void);
 
 END_C_DECLS
 

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_IDEL_H
-#define TK_IDEL_H
+#ifndef TK_IDLE_H
+#define TK_IDLE_H
 
 #include "base/array.h"
 
@@ -115,5 +115,5 @@ uint32_t idle_count(void);
 
 END_C_DECLS
 
-#endif /*TK_IDEL_H*/
+#endif /*TK_IDLE_H*/
 

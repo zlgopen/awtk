@@ -53,6 +53,8 @@ ret_t main_loop_wakeup(main_loop_t* l);
 ret_t main_loop_quit(main_loop_t* l);
 ret_t main_loop_destroy(main_loop_t* l);
 
+ret_t main_loop_sleep(main_loop_t* l);
+
 END_C_DECLS
 
 #endif /*TK_MAIN_LOOP_H*/

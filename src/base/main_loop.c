@@ -62,3 +62,25 @@ ret_t main_loop_set(main_loop_t* loop) {
 
   return RET_OK;
 }
+
+#include "base/idle.h"
+#include "base/timer.h"
+#include "base/window_manager.h"
+
+ret_t main_loop_sleep(main_loop_t* l) {
+  window_manager_t* wm = window_manager();
+
+  if (!wm->animating) {
+    uint32_t sleep_time = 0;
+    int32_t next_timer = timer_next_time() - time_now_ms();
+
+    if(next_timer < 0) {
+      next_timer = 0;
+    }
+    
+    sleep_time = next_timer > 30 ? 30 : next_timer;
+    sleep_ms(sleep_time);
+  }
+
+  return RET_OK;
+}
