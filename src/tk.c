@@ -76,7 +76,8 @@ ret_t tk_init_resources() {
   return RET_OK;
 }
 
-ret_t tk_init(wh_t w, wh_t h) {
+
+ret_t tk_init_internal(void) {
   image_loader_t* loader = NULL;
 #ifdef WITH_STB_IMAGE
   loader = image_loader_stb();
@@ -84,6 +85,7 @@ ret_t tk_init(wh_t w, wh_t h) {
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
 
+  return_value_if_fail(timer_manager_set(timer_manager_create(time_now_ms)) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
@@ -91,17 +93,30 @@ ret_t tk_init(wh_t w, wh_t h) {
   return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
 
+  return RET_OK;
+}
+
+ret_t tk_init(wh_t w, wh_t h) {
+  return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
+
   return main_loop_init(w, h) != NULL ? RET_OK : RET_FAIL;
+}
+
+ret_t tk_deinit_internal(void) {
+  image_manager_destroy(image_manager());
+  font_manager_destroy(font_manager());
+  locale_destroy(locale());
+  resource_manager_destroy(resource_manager());
+  idle_manager_destroy(idle_manager());
+  timer_manager_destroy(timer_manager());
+
+  return RET_OK;
 }
 
 static ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
-  font_manager_destroy(font_manager());
-  image_manager_destroy(image_manager());
-  resource_manager_destroy(resource_manager());
-  locale_destroy(locale());
 
-  return RET_OK;
+  return tk_deinit_internal();
 }
 
 ret_t tk_run() {

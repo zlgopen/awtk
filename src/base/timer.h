@@ -22,7 +22,7 @@
 #ifndef TK_TIMER_H
 #define TK_TIMER_H
 
-#include "base/types_def.h"
+#include "base/array.h"
 
 BEGIN_C_DECLS
 
@@ -32,6 +32,13 @@ typedef struct timer_info_t timer_info_t;
 typedef uint32_t (*timer_get_time_t)();
 typedef ret_t (*timer_func_t)(const timer_info_t* timer);
 
+typedef struct _timer_manager_t {
+  array_t timers[2];
+  uint32_t active;
+  uint32_t next_timer_id;
+  timer_get_time_t get_time;
+} timer_manager_t;
+
 typedef struct timer_info_t {
   timer_func_t on_timer;
   void* ctx;
@@ -39,14 +46,29 @@ typedef struct timer_info_t {
   uint32_t now;
   uint32_t start;
   uint32_t duration_ms;
-  bool_t repeat;
+  timer_manager_t* timer_manager;
 } timer_info_t;
+
+
+timer_manager_t* timer_manager(void);
+ret_t timer_manager_set(timer_manager_t* timer_manager);
+
+timer_manager_t* timer_manager_create(timer_get_time_t get_time);
+timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_time_t get_time);
+ret_t timer_manager_deinit(timer_manager_t* timer_manager);
+ret_t timer_manager_destroy(timer_manager_t* timer_manager);
+
+uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
+const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
+ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
+uint32_t timer_manager_count(timer_manager_t* timer_manager);
 
 /**
  * @class timer_t
  * @scriptable
  * @fake
- * 定时器。
+ * timer函数在paint之后执行。
  */
 
 /**
@@ -62,23 +84,23 @@ ret_t timer_init(timer_get_time_t get_time);
 
 /**
  * @method timer_add
- * 增加一个定时器。
+ * 增加一个timer。
  * @static
  * @scriptable custom
- * @param {timer_func_t} on_timer 定时器回调函数。
- * @param {void*} ctx 定时器回调函数的上下文。
+ * @param {timer_func_t} on_timer timer回调函数。
+ * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
  *
- * @return {uint32_t} 返回定时器的ID，0表示失败。
+ * @return {uint32_t} 返回timer的ID，0表示失败。
  */
 uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 
 /**
  * @method timer_remove
- * 删除指定的定时器。
+ * 删除指定的timer。
  * @static
  * @scriptable custom
- * @param {uint32_t} timer_id 定时器ID。
+ * @param {uint32_t} timer_id timerID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -86,7 +108,7 @@ ret_t timer_remove(uint32_t timer_id);
 
 /**
  * @method timer_find
- * 查找指定ID的定时器。
+ * 查找指定ID的timer。
  * @private
  *
  * @return {timer_info_t*} 返回timer的信息。
@@ -95,7 +117,7 @@ const timer_info_t* timer_find(uint32_t timer_id);
 
 /**
  * @method timer_dispatch
- * 检查定时器，并调用到期定时器的函数。
+ * 检查全部timer的函数，如果时间到期，调用相应的timer函数。
  * @private
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -104,13 +126,14 @@ ret_t timer_dispatch(void);
 
 /**
  * @method timer_count
- * 返回定时器的个数。
+ * 返回timer的个数。
  * @static
  *
- * @return {uint32_t} 返回定时器的个数。
+ * @return {uint32_t} 返回timer的个数。
  */
 uint32_t timer_count(void);
 
 END_C_DECLS
 
 #endif /*TK_TIMER_H*/
+

@@ -69,8 +69,6 @@ static uint32_t s_heap_mem[1024 * 1024];
 #endif/*HAS_STD_MALLOC*/
 
 ret_t platform_prepare(void) {
-  timer_init(get_time_ms);
-
 #ifndef HAS_STD_MALLOC
   mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif/*HAS_STD_MALLOC*/
