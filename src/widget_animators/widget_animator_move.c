@@ -1,7 +1,7 @@
 ﻿/**
  * File:   widget_animator_move.h
  * Author: AWTK Develop Team
- * Brief:  widget animator move
+ * Brief:  animate widget by change its position.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

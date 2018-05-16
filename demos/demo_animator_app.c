@@ -34,16 +34,26 @@
 #include "base/check_button.h"
 #include "base/image_manager.h"
 #include "base/progress_bar.h"
+#include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_move.h"
 
+static uint32_t animators_nr = 0;
+static widget_animator_t* animators[10];
+
 static ret_t on_start(void* ctx, event_t* e) {
-  widget_animator_start((widget_animator_t*)ctx);
+  uint32_t i = 0;
+  for( i = 0; i < animators_nr; i++) {
+    widget_animator_start(animators[i]);
+  }
 
   return RET_OK;
 }
 
 static ret_t on_stop(void* ctx, event_t* e) {
-  widget_animator_stop((widget_animator_t*)ctx);
+  uint32_t i = 0;
+  for( i = 0; i < animators_nr; i++) {
+    widget_animator_stop(animators[i]);
+  }
 
   return RET_OK;
 }
@@ -73,9 +83,15 @@ ret_t application_init() {
   animator = widget_animator_move_create(image, 1000, easing_get(EASING_SIN_INOUT));
   widget_animator_move_set_params(animator, image->x, image->y, image->x + 100, image->y + 100);
   widget_animator_set_yoyo(animator, TRUE);
+  animators[animators_nr++] = animator;
 
-  widget_on(start, EVT_CLICK, on_start, animator);
-  widget_on(stop, EVT_CLICK, on_stop, animator);
+  animator = widget_animator_value_create(progress_bar, 1000, easing_get(EASING_SIN_INOUT));
+  widget_animator_value_set_params(animator, 50, 100);
+  widget_animator_set_yoyo(animator, TRUE);
+  animators[animators_nr++] = animator;
+
+  widget_on(start, EVT_CLICK, on_start, NULL);
+  widget_on(stop, EVT_CLICK, on_stop, NULL);
 
   return RET_OK;
 }
