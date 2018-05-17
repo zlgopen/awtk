@@ -22,7 +22,7 @@
 #include "main_loop/main_loop_simple.h"
 
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
-  event_all_t any;
+  event_queue_req_t r;
   pointer_event_t event;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
@@ -44,16 +44,16 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
     loop->pressed = TRUE;
     event.pressed = loop->pressed;
 
-    any.e.pointer_event = event;
-    event_queue_send(loop->queue, &any);
+    r.pointer_event = event;
+    event_queue_send(loop->queue, &r);
   } else {
     if (loop->pressed) {
       loop->pressed = FALSE;
       event.e.type = EVT_POINTER_UP;
       event.pressed = loop->pressed;
 
-      any.e.pointer_event = event;
-      event_queue_send(loop->queue, &any);
+      r.pointer_event = event;
+      event_queue_send(loop->queue, &r);
     }
   }
 
@@ -61,7 +61,7 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
 }
 
 ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
-  event_all_t any;
+  event_queue_req_t r;
   key_event_t event;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
@@ -73,15 +73,15 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
     loop->key_pressed = TRUE;
     event.e.type = EVT_KEY_DOWN;
 
-    any.e.key_event = event;
-    event_queue_send(loop->queue, &any);
+    r.key_event = event;
+    event_queue_send(loop->queue, &r);
   } else {
     if (loop->key_pressed) {
       loop->key_pressed = FALSE;
       event.e.type = EVT_KEY_UP;
 
-      any.e.key_event = event;
-      event_queue_send(loop->queue, &any);
+      r.key_event = event;
+      event_queue_send(loop->queue, &r);
     }
   }
 
@@ -90,20 +90,28 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
 
 
 static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
-  event_all_t event;
+  event_queue_req_t r;
   widget_t* widget = loop->wm;
 
-  while (event_queue_recv(loop->queue, &event) == RET_OK) {
-    switch (event.e.event.type) {
+  while (event_queue_recv(loop->queue, &r) == RET_OK) {
+    switch (r.event.type) {
       case EVT_POINTER_DOWN:
-        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
         break;
       case EVT_POINTER_MOVE:
-        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
         break;
       case EVT_POINTER_UP:
-        window_manager_dispatch_input_event(widget, (event_t*)&(event.e.pointer_event));
+        window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
         break;
+      case REQ_ADD_IDLE: {
+        idle_add(r.add_idle.func, r.add_idle.e.target);
+        break;
+      }
+      case REQ_ADD_TIMER: {
+        timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
+        break;
+      }
       default:
         break;
     }
@@ -137,6 +145,12 @@ static ret_t main_loop_simple_run(main_loop_t* l) {
   return RET_OK;
 }
 
+static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* e) {
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
+
+  return event_queue_send(loop->queue, e);
+}
+
 main_loop_simple_t* main_loop_simple_init(int w, int h) {
   static main_loop_simple_t s_main_loop_simple;
   main_loop_simple_t* loop = &s_main_loop_simple;
@@ -152,6 +166,8 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   return_value_if_fail(loop->queue != NULL, NULL);
 
   loop->base.run = main_loop_simple_run;
+  loop->base.queue_event = main_loop_simple_queue_event;
+
   window_manager_resize(loop->wm, w, h);
   main_loop_set((main_loop_t*)loop);
 

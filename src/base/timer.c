@@ -235,3 +235,16 @@ uint32_t timer_count(void) { return ACTIVE_TIMERS(timer_manager())->size; }
 uint32_t timer_next_time(void) { return timer_manager_next_time(timer_manager()); }
 
 uint32_t timer_now(void) { return timer_manager()->get_time(); }
+
+#include "base/main_loop.h"
+
+ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
+  event_queue_req_t r;
+  r.add_timer.func = on_timer;
+  r.add_timer.duration = duration;
+  r.add_timer.e.target = ctx;
+  r.add_timer.e.type = REQ_ADD_TIMER;
+
+  return main_loop_queue_event(main_loop(), &r);
+}
+

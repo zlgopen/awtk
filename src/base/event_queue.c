@@ -27,7 +27,7 @@ event_queue_t* event_queue_create(uint16_t capacity) {
   event_queue_t* q = NULL;
   return_value_if_fail(capacity > 1, NULL);
 
-  size = sizeof(event_queue_t) + (capacity - 1) * sizeof(event_all_t);
+  size = sizeof(event_queue_t) + (capacity - 1) * sizeof(event_queue_req_t);
   q = (event_queue_t*)TKMEM_ALLOC(size);
   return_value_if_fail(q != NULL, NULL);
 
@@ -37,10 +37,10 @@ event_queue_t* event_queue_create(uint16_t capacity) {
   return q;
 }
 
-ret_t event_queue_recv(event_queue_t* q, event_all_t* e) {
-  return_value_if_fail(q != NULL && e != NULL, RET_BAD_PARAMS);
+ret_t event_queue_recv(event_queue_t* q, event_queue_req_t* r) {
+  return_value_if_fail(q != NULL && r != NULL, RET_BAD_PARAMS);
   if (q->r != q->w || q->full) {
-    memcpy(e, q->events + q->r, sizeof(*e));
+    memcpy(r, q->events + q->r, sizeof(*r));
     if ((q->r + 1) < q->capacity) {
       q->r++;
     } else {
@@ -54,10 +54,10 @@ ret_t event_queue_recv(event_queue_t* q, event_all_t* e) {
   return RET_FAIL;
 }
 
-ret_t event_queue_send(event_queue_t* q, const event_all_t* e) {
-  return_value_if_fail(q != NULL && e != NULL, RET_BAD_PARAMS);
+ret_t event_queue_send(event_queue_t* q, const event_queue_req_t* r) {
+  return_value_if_fail(q != NULL && r != NULL, RET_BAD_PARAMS);
   if (q->r != q->w || !q->full) {
-    memcpy(q->events + q->w, e, sizeof(*e));
+    memcpy(q->events + q->w, r, sizeof(*r));
     if ((q->w + 1) < q->capacity) {
       q->w++;
     } else {
@@ -73,12 +73,12 @@ ret_t event_queue_send(event_queue_t* q, const event_all_t* e) {
   return RET_FAIL;
 }
 
-ret_t event_queue_replace_last(event_queue_t* q, const event_all_t* e) {
-  return_value_if_fail(q != NULL && e != NULL, RET_BAD_PARAMS);
+ret_t event_queue_replace_last(event_queue_t* q, const event_queue_req_t* r) {
+  return_value_if_fail(q != NULL && r != NULL, RET_BAD_PARAMS);
   if (q->w > 0) {
-    memcpy(q->events + q->w - 1, e, sizeof(*e));
+    memcpy(q->events + q->w - 1, r, sizeof(*r));
   } else {
-    memcpy(q->events + q->capacity - 1, e, sizeof(*e));
+    memcpy(q->events + q->capacity - 1, r, sizeof(*r));
   }
 
   return RET_OK;

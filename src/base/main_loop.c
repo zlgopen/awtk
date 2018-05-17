@@ -70,6 +70,12 @@ ret_t main_loop_set(main_loop_t* loop) {
   return RET_OK;
 }
 
+ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
+  return_value_if_fail(l != NULL && l->queue_event != NULL && e != NULL, RET_BAD_PARAMS);
+
+  return l->queue_event(l, e);
+}
+
 #include "base/idle.h"
 #include "base/timer.h"
 #include "base/window_manager.h"

@@ -183,3 +183,15 @@ ret_t idle_dispatch(void) { return idle_manager_dispatch(idle_manager()); }
 uint32_t idle_count(void) {
   return ACTIVE_IDLES(idle_manager())->size + OFFLINE_IDLES(idle_manager())->size;
 }
+
+#include "base/main_loop.h"
+
+ret_t idle_queue(idle_func_t on_idle, void* ctx) {
+  event_queue_req_t r;
+  r.add_idle.func = on_idle;
+  r.add_idle.e.target = ctx;
+  r.add_idle.e.type = REQ_ADD_IDLE;
+
+  return main_loop_queue_event(main_loop(), &r);
+}
+

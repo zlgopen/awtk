@@ -169,7 +169,19 @@ typedef enum _event_type_t {
    * @const EVT_ANIM_END
    * 控件动画完成事件。
    */
-  EVT_ANIM_END
+  EVT_ANIM_END,
+
+  /**
+   * @const EVT_REQ_START
+   * event queue其它请求编号起始值。
+   */
+  EVT_REQ_START = 100,
+
+  /**
+   * @const EVT_USER_START
+   * 用户定义事件起始值。
+   */
+  EVT_USER_START = 128
 } event_type_t;
 
 /**
@@ -179,11 +191,11 @@ typedef enum _event_type_t {
  */
 typedef struct _event_t {
   /**
-   * @property {int16_t} type
+   * @property {int32_t} type
    * @readonly
    * 类型。
    */
-  uint16_t type;
+  uint32_t type;
   void* target;
 } event_t;
 
@@ -193,7 +205,6 @@ typedef struct _event_t {
  * @parent event_t
  * 指针事件。
  */
-
 typedef struct _pointer_event_t {
   event_t e;
   /**
