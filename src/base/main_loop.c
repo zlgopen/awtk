@@ -19,7 +19,10 @@
  *
  */
 
+#include "base/time.h"
+#include "base/platform.h"
 #include "base/main_loop.h"
+#include "base/window_manager.h"
 
 ret_t main_loop_run(main_loop_t* l) {
   return_value_if_fail(l != NULL && l->run != NULL, RET_BAD_PARAMS);
@@ -68,7 +71,7 @@ ret_t main_loop_set(main_loop_t* loop) {
 #include "base/window_manager.h"
 
 ret_t main_loop_sleep(main_loop_t* l) {
-  window_manager_t* wm = window_manager();
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
 
   if (!wm->animating) {
     uint32_t sleep_time = 0;

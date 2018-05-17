@@ -74,20 +74,16 @@ ret_t application_init() {
 
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
-  
-  animator = widget_animator_move_create(image, 1000, NULL);
-  widget_animator_set_yoyo(animator, TRUE);
-
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
   
   animator = widget_animator_move_create(image, 1000, easing_get(EASING_SIN_INOUT));
   widget_animator_move_set_params(animator, image->x, image->y, image->x + 100, image->y + 100);
-  widget_animator_set_yoyo(animator, TRUE);
+  widget_animator_set_repeat(animator, 10);
   animators[animators_nr++] = animator;
 
   animator = widget_animator_value_create(progress_bar, 1000, easing_get(EASING_SIN_INOUT));
   widget_animator_value_set_params(animator, 50, 100);
-  widget_animator_set_yoyo(animator, TRUE);
+  widget_animator_set_yoyo(animator, 10);
   animators[animators_nr++] = animator;
 
   widget_on(start, EVT_CLICK, on_start, NULL);

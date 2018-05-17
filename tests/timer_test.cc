@@ -6,7 +6,6 @@ using std::string;
 
 static string s_log;
 static uint32_t s_now = 0;
-
 static uint32_t timer_get_time() { 
   return s_now; 
 }
