@@ -6,17 +6,11 @@ using std::string;
 
 static string s_log;
 static uint32_t s_now = 0;
-static uint32_t timer_get_time() { 
-  return s_now; 
-}
+static uint32_t timer_get_time() { return s_now; }
 
-static void timer_set_time(uint32_t now) { 
-  s_now = now;
-}
+static void timer_set_time(uint32_t now) { s_now = now; }
 
-static void timer_clear_log(void) {
-  s_log = "";
-}
+static void timer_clear_log(void) { s_log = ""; }
 
 static ret_t timer_once(const timer_info_t* timer) {
   s_log += "o:";
@@ -48,7 +42,7 @@ static ret_t timer_add_in_timer(const timer_info_t* timer) {
 
 static string repeat_str(const string& substr, uint32_t nr) {
   string str;
-  while(nr > 0) {
+  while (nr > 0) {
     str += substr;
     nr--;
   }
@@ -65,7 +59,7 @@ TEST(Timer, once) {
 
   timer_set_time(0);
   for (i = 0; i < NR; i++) {
-    ids[i] = timer_manager_add(tm, timer_once, NULL, i+1);
+    ids[i] = timer_manager_add(tm, timer_once, NULL, i + 1);
     ASSERT_EQ(timer_manager_next_time(tm), 1);
     ASSERT_EQ(ids[i] > 0, true);
     ASSERT_EQ(timer_manager_find(tm, ids[i])->id, ids[i]);
@@ -92,13 +86,13 @@ TEST(Timer, repeat) {
 
   timer_set_time(0);
   for (i = 0; i < NR; i++) {
-    ids[i] = timer_manager_add(tm, timer_repeat, NULL, i+1);
+    ids[i] = timer_manager_add(tm, timer_repeat, NULL, i + 1);
     ASSERT_EQ(timer_manager_next_time(tm), 1);
     ASSERT_EQ(timer_manager_find(tm, ids[i])->id, ids[i]);
     ASSERT_EQ(ids[i] > 0, true);
     ASSERT_EQ(timer_manager_count(tm), i + 1);
   }
-  
+
   timer_clear_log();
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), NR);
@@ -125,7 +119,7 @@ TEST(Timer, removeInTimer) {
 
   timer_set_time(0);
   uint32_t id1 = timer_manager_add(tm, timer_repeat, NULL, 200);
-  timer_manager_add(tm, timer_remove_in_timer, (char*)NULL+id1, 100);
+  timer_manager_add(tm, timer_remove_in_timer, (char*)NULL + id1, 100);
 
   timer_clear_log();
   timer_set_time(100);
@@ -148,7 +142,6 @@ TEST(Timer, addInTimer) {
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), 3);
   ASSERT_EQ(s_log, "a:r:");
-  
+
   timer_manager_destroy(tm);
 }
-

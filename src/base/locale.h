@@ -29,7 +29,6 @@ BEGIN_C_DECLS
 
 /**
  * @class locale_t
- * @scriptable
  * locale
  */
 typedef struct _tklocale_t {

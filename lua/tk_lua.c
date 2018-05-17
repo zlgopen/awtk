@@ -5,12 +5,14 @@
 #include "base/utf8.h"
 #include "base/array.h"
 #include "base/bitmap.h"
+#include "base/buffer.h"
 #include "base/button.h"
 #include "base/canvas.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/edit.h"
 #include "base/events.h"
+#include "base/font_manager.h"
 #include "base/group_box.h"
 #include "base/idle.h"
 #include "base/image_loader.h"
@@ -18,21 +20,28 @@
 #include "base/image.h"
 #include "base/label.h"
 #include "base/lcd.h"
+#include "base/locale.h"
 #include "base/progress_bar.h"
 #include "base/rect.h"
 #include "base/resource_manager.h"
 #include "base/slider.h"
+#include "base/str.h"
+#include "base/system_info.h"
 #include "base/theme.h"
 #include "base/timer.h"
 #include "base/types_def.h"
 #include "base/value.h"
 #include "base/vgcanvas.h"
 #include "base/view.h"
+#include "base/widget_animator.h"
 #include "base/widget.h"
 #include "base/window_animator.h"
 #include "base/window_manager.h"
 #include "base/window.h"
+#include "base/wstr.h"
 #include "src/tk.h"
+#include "widget_animators/widget_animator_move.h"
+#include "widget_animators/widget_animator_value.h"
 
 #include "custom.c"
 
@@ -626,6 +635,26 @@ static void event_type_t_init(lua_State* L) {
 
   lua_pushstring(L, "AFTER_PAINT");
   lua_pushinteger(L, EVT_AFTER_PAINT);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "LOCALE_CHANGED");
+  lua_pushinteger(L, EVT_LOCALE_CHANGED);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "ANIM_START");
+  lua_pushinteger(L, EVT_ANIM_START);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "ANIM_STOP");
+  lua_pushinteger(L, EVT_ANIM_STOP);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "ANIM_ONCE");
+  lua_pushinteger(L, EVT_ANIM_ONCE);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "ANIM_END");
+  lua_pushinteger(L, EVT_ANIM_END);
   lua_settable(L, -3);
 }
 
@@ -1571,11 +1600,29 @@ static int wrap_timer_count(lua_State* L) {
   return 1;
 }
 
+static int wrap_timer_next_time(lua_State* L) {
+  uint32_t ret = 0;
+  ret = (uint32_t)timer_next_time();
+
+  lua_pushinteger(L, (lua_Integer)(ret));
+
+  return 1;
+}
+
+static int wrap_timer_now(lua_State* L) {
+  uint32_t ret = 0;
+  ret = (uint32_t)timer_now();
+
+  lua_pushinteger(L, (lua_Integer)(ret));
+
+  return 1;
+}
+
 static void timer_t_init(lua_State* L) {
-  static const struct luaL_Reg static_funcs[] = {{"add", wrap_timer_add},
-                                                 {"remove", wrap_timer_remove},
-                                                 {"count", wrap_timer_count},
-                                                 {NULL, NULL}};
+  static const struct luaL_Reg static_funcs[] = {
+      {"add", wrap_timer_add},     {"remove", wrap_timer_remove},
+      {"count", wrap_timer_count}, {"next_time", wrap_timer_next_time},
+      {"now", wrap_timer_now},     {NULL, NULL}};
 
   luaL_openlib(L, "Timer", static_funcs, 0);
   lua_settop(L, 0);
@@ -2320,6 +2367,27 @@ static int wrap_widget_set_text(lua_State* L) {
   return 1;
 }
 
+static int wrap_widget_set_tr_text(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
+  char* text = (char*)luaL_checkstring(L, 2);
+  ret = (ret_t)widget_set_tr_text(widget, text);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_widget_re_translate_text(lua_State* L) {
+  ret_t ret = 0;
+  widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
+  ret = (ret_t)widget_re_translate_text(widget);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
 static int wrap_widget_get_value(lua_State* L) {
   uint32_t ret = 0;
   widget_t* widget = (widget_t*)tk_checkudata(L, 1, "widget_t");
@@ -2536,6 +2604,8 @@ static const struct luaL_Reg widget_t_member_funcs[] = {
     {"set_value", wrap_widget_set_value},
     {"use_style", wrap_widget_use_style},
     {"set_text", wrap_widget_set_text},
+    {"set_tr_text", wrap_widget_set_tr_text},
+    {"re_translate_text", wrap_widget_re_translate_text},
     {"get_value", wrap_widget_get_value},
     {"get_text", wrap_widget_get_text},
     {"to_local", wrap_widget_to_local},

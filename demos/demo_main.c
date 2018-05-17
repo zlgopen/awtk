@@ -28,11 +28,11 @@ ret_t application_init(void);
 
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
-	tk_init(lcd_w, lcd_h);
+  tk_init(lcd_w, lcd_h);
 #elif defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-	tk_init(320, 480);
+  tk_init(320, 480);
 #else
 int main(void) {
   tk_init(320, 480);

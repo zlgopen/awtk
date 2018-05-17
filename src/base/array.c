@@ -109,7 +109,7 @@ ret_t array_remove(array_t* array, compare_t cmp, void* data, destroy_t destroy)
 
   elms = array->elms;
 
-  if(destroy != NULL) {
+  if (destroy != NULL) {
     destroy(elms[pos]);
     elms[pos] = NULL;
   }
@@ -180,7 +180,7 @@ ret_t array_push(array_t* array, void* data) {
 
 void array_deinit(array_t* array) {
   return_if_fail(array != NULL);
-  if(array->elms != NULL) {
+  if (array->elms != NULL) {
     TKMEM_FREE(array->elms);
   }
   memset(array, 0x00, sizeof(array_t));

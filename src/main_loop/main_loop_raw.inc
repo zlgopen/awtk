@@ -10,7 +10,7 @@ typedef struct _main_loop_raw_t {
   xy_t touch_x;
   xy_t touch_y;
   bool_t pressed;
-  
+
   uint8_t key;
   bool_t key_pressed;
   event_queue_t* queue;
@@ -24,7 +24,7 @@ static ret_t post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   main_loop_raw_t* loop = (main_loop_raw_t*)l;
 
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
-  
+
   loop->touch_x = x;
   loop->touch_y = y;
 
@@ -53,7 +53,7 @@ static ret_t post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
       event_queue_send(loop->queue, &any);
     }
   }
-  
+
   return RET_OK;
 }
 
@@ -64,17 +64,17 @@ static void post_key_events(main_loop_t* l, bool_t pressed, uint8_t key) {
 
   loop->key = key;
   event.key = key;
-  
+
   if (pressed) {
     loop->key_pressed = TRUE;
-	event.e.type = EVT_KEY_DOWN;
-	
+    event.e.type = EVT_KEY_DOWN;
+
     any.e.key_event = event;
     event_queue_send(loop->queue, &any);
   } else {
     if (loop->key_pressed) {
       loop->key_pressed = FALSE;
-	  event.e.type = EVT_KEY_UP;
+      event.e.type = EVT_KEY_UP;
 
       any.e.key_event = event;
       event_queue_send(loop->queue, &any);
@@ -161,7 +161,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop->wm = wm;
   loop->queue = queue;
   window_manager_resize(wm, w, h);
-  
+
   main_loop_set(base);
   canvas_init(&(loop->canvas), lcd, font_manager());
 

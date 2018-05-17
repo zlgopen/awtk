@@ -58,11 +58,11 @@ static mem_info_t s_mem_info;
 
 #ifdef MEM_DEBUG
 static void check_node(free_node_t* node) {
-  if(node->prev) { 
+  if (node->prev) {
     assert(node->prev->next == node);
   }
 
-  if(node->next) {
+  if (node->next) {
     assert(node->next->prev == node);
   }
 }
@@ -92,7 +92,7 @@ static void mem_set_end_mark(free_node_t* iter) {
 #define mem_check_end_mark(iter) (void)iter;
 #define mem_set_end_mark(iter) (void)iter;
 #define check_all_nodes()
-#endif/**/
+#endif /**/
 
 void* tk_calloc(uint32_t nmemb, uint32_t size) {
   uint32_t length = nmemb * size;
@@ -108,7 +108,7 @@ void* tk_calloc(uint32_t nmemb, uint32_t size) {
 void* tk_alloc(uint32_t size) {
   free_node_t* iter = NULL;
   uint32_t length = REAL_SIZE(size);
-  
+
   length += END_MARK_SIZE;
 
   /*查找第一个满足条件的空闲块*/
@@ -159,7 +159,7 @@ void* tk_alloc(uint32_t size) {
   }
   /*返回可用的内存*/
   s_mem_info.used_block_nr++;
-  
+
   check_all_nodes();
   mem_set_end_mark(iter);
 
@@ -273,7 +273,7 @@ void* tk_realloc(void* ptr, uint32_t size) {
 ret_t mem_init(void* buffer, uint32_t length) {
   return_value_if_fail(buffer != NULL && length > MIN_SIZE, RET_BAD_PARAMS);
 
-	memset(buffer, 0x00, length);
+  memset(buffer, 0x00, length);
   s_mem_info.buffer = buffer;
   s_mem_info.length = length;
   s_mem_info.free_list = (free_node_t*)buffer;
@@ -316,4 +316,4 @@ mem_stat_t mem_stat() {
 
   return st;
 }
-#endif/*HAS_STD_MALLOC*/
+#endif /*HAS_STD_MALLOC*/

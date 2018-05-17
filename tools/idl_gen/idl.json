@@ -77,10 +77,36 @@
      {
       "type": "void*",
       "name": "ctx"
+     },
+     {
+      "type": "destroy_t",
+      "name": "destroy"
      }
     ],
     "name": "array_remove",
-    "return": "bool_t"
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "array_t*",
+      "name": "array"
+     },
+     {
+      "type": "compare_t",
+      "name": "cmp"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     },
+     {
+      "type": "destroy_t",
+      "name": "destroy"
+     }
+    ],
+    "name": "array_remove_all",
+    "return": "ret_t"
    },
    {
     "params": [
@@ -104,7 +130,7 @@
      }
     ],
     "name": "array_push",
-    "return": "bool_t"
+    "return": "ret_t"
    },
    {
     "params": [
@@ -214,8 +240,8 @@
     "readonly": true
    },
    {
-    "type": "int32_t",
-    "name": "id",
+    "type": "void*",
+    "name": "specfic",
     "readonly": true
    }
   ],
@@ -267,6 +293,320 @@
     "name": "IMAGE_DRAW_3PATCH_Y_SCALE_X"
    }
   ]
+ },
+ {
+  "type": "class",
+  "name": "wbuffer_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "uint8_t*",
+      "name": "data"
+     },
+     {
+      "type": "uint16_t",
+      "name": "capacity"
+     }
+    ],
+    "name": "wbuffer_init",
+    "isConstructor": true,
+    "return": "wbuffer_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "int32_t",
+      "name": "offset"
+     }
+    ],
+    "name": "wbuffer_skip",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "uint8_t",
+      "name": "value"
+     }
+    ],
+    "name": "wbuffer_write_uint8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "uint16_t",
+      "name": "value"
+     }
+    ],
+    "name": "wbuffer_write_uint16",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "uint32_t",
+      "name": "value"
+     }
+    ],
+    "name": "wbuffer_write_uint32",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "void*",
+      "name": "data"
+     },
+     {
+      "type": "uint32_t",
+      "name": "size"
+     }
+    ],
+    "name": "wbuffer_write_binary",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wbuffer_t*",
+      "name": "wbuffer"
+     },
+     {
+      "type": "char*",
+      "name": "data"
+     }
+    ],
+    "name": "wbuffer_write_string",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint8_t*",
+    "name": "data",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "cursor",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "capacity",
+    "readonly": true
+   }
+  ],
+  "header": "base/buffer.h"
+ },
+ {
+  "type": "class",
+  "name": "rbuffer_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint8_t*",
+      "name": "data"
+     },
+     {
+      "type": "uint16_t",
+      "name": "capacity"
+     }
+    ],
+    "name": "rbuffer_init",
+    "isConstructor": true,
+    "return": "rbuffer_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     }
+    ],
+    "name": "rbuffer_has_more",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "int32_t",
+      "name": "offset"
+     }
+    ],
+    "name": "rbuffer_skip",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint8_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_read_uint8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint16_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_read_uint16",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint32_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_read_uint32",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "void*",
+      "name": "data"
+     },
+     {
+      "type": "uint32_t",
+      "name": "size"
+     }
+    ],
+    "name": "rbuffer_read_binary",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "char**",
+      "name": "str"
+     }
+    ],
+    "name": "rbuffer_read_string",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint8_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_peek_uint8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint16_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_peek_uint16",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "rbuffer_t*",
+      "name": "rbuffer"
+     },
+     {
+      "type": "uint32_t*",
+      "name": "value"
+     }
+    ],
+    "name": "rbuffer_peek_uint32",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint8_t*",
+    "name": "data",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "cursor",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "capacity",
+    "readonly": true
+   }
+  ],
+  "header": "base/buffer.h"
  },
  {
   "type": "class",
@@ -719,6 +1059,21 @@
    },
    {
     "name": "EVT_AFTER_PAINT"
+   },
+   {
+    "name": "EVT_LOCALE_CHANGED"
+   },
+   {
+    "name": "EVT_ANIM_START"
+   },
+   {
+    "name": "EVT_ANIM_STOP"
+   },
+   {
+    "name": "EVT_ANIM_ONCE"
+   },
+   {
+    "name": "EVT_ANIM_END"
    }
   ]
  },
@@ -869,6 +1224,103 @@
  },
  {
   "type": "class",
+  "name": "font_manager_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "font_manager",
+    "isConstructor": true,
+    "return": "font_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     }
+    ],
+    "name": "font_manager_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "font_manager_create",
+    "isConstructor": true,
+    "return": "font_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     }
+    ],
+    "name": "font_manager_init",
+    "isConstructor": true,
+    "return": "font_manager_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "font_t*",
+      "name": "font"
+     }
+    ],
+    "name": "font_manager_add",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "uint16_t",
+      "name": "size"
+     }
+    ],
+    "name": "font_manager_find",
+    "return": "font_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     }
+    ],
+    "name": "font_manager_deinit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "font_manager_t*",
+      "name": "fm"
+     }
+    ],
+    "name": "font_manager_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/font_manager.h"
+ },
+ {
+  "type": "class",
   "name": "group_box_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -999,7 +1451,12 @@
     "return": "ret_t"
    },
    {
-    "params": [],
+    "params": [
+     {
+      "type": "image_loader_t*",
+      "name": "loader"
+     }
+    ],
     "name": "image_manager_create",
     "isConstructor": true,
     "return": "image_manager_t*"
@@ -1085,6 +1542,20 @@
      }
     ],
     "name": "image_manager_lookup",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "image_manager_t*",
+      "name": "imm"
+     },
+     {
+      "type": "bitmap_t*",
+      "name": "image"
+     }
+    ],
+    "name": "image_manager_update_specific",
     "return": "ret_t"
    },
    {
@@ -1687,6 +2158,165 @@
  },
  {
   "type": "class",
+  "name": "locale_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "locale",
+    "isConstructor": true,
+    "return": "tklocale_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     }
+    ],
+    "name": "locale_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "char*",
+      "name": "language"
+     },
+     {
+      "type": "char*",
+      "name": "country"
+     }
+    ],
+    "name": "locale_create",
+    "isConstructor": true,
+    "return": "tklocale_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     },
+     {
+      "type": "char*",
+      "name": "language"
+     },
+     {
+      "type": "char*",
+      "name": "country"
+     }
+    ],
+    "name": "locale_init",
+    "isConstructor": true,
+    "return": "tklocale_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "locale_tr",
+    "return": "char*"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     },
+     {
+      "type": "char*",
+      "name": "language"
+     },
+     {
+      "type": "char*",
+      "name": "country"
+     }
+    ],
+    "name": "locale_change",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "locale_on",
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "locale_off",
+    "isCustom": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     }
+    ],
+    "name": "locale_deinit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tklocale_t*",
+      "name": "locale"
+     }
+    ],
+    "name": "locale_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "country",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "language",
+    "readonly": true
+   }
+  ],
+  "header": "base/locale.h"
+ },
+ {
+  "type": "class",
   "name": "progress_bar_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -1948,6 +2578,38 @@
       "name": "rm"
      },
      {
+      "type": "resource_info_t",
+      "name": "info"
+     }
+    ],
+    "name": "resource_manager_unref",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
+     {
+      "type": "resource_type_t",
+      "name": "type"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "resource_manager_find_in_cache",
+    "return": "resource_info_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "resource_manager_t*",
+      "name": "rm"
+     },
+     {
       "type": "resource_type_t",
       "name": "type"
      },
@@ -1966,11 +2628,11 @@
       "name": "rm"
      },
      {
-      "type": "resource_info_t",
-      "name": "info"
+      "type": "resource_type_t",
+      "name": "type"
      }
     ],
-    "name": "resource_manager_unref",
+    "name": "resource_manager_clear_cache",
     "return": "ret_t"
    },
    {
@@ -2132,6 +2794,328 @@
  },
  {
   "type": "class",
+  "name": "str_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "uint16_t",
+      "name": "capacity"
+     }
+    ],
+    "name": "str_init",
+    "isConstructor": true,
+    "return": "str_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_eq",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     },
+     {
+      "type": "uint16_t",
+      "name": "len"
+     }
+    ],
+    "name": "str_set_with_len",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_append",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t",
+      "name": "v"
+     }
+    ],
+    "name": "str_from_int",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "float",
+      "name": "v"
+     }
+    ],
+    "name": "str_from_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "value_t",
+      "name": "v"
+     }
+    ],
+    "name": "str_from_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t*",
+      "name": "v"
+     }
+    ],
+    "name": "str_to_int",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "float*",
+      "name": "v"
+     }
+    ],
+    "name": "str_to_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_end_with",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_start_with",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_trim",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_trim_left",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_trim_right",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     },
+     {
+      "type": "char*",
+      "name": "new_text"
+     }
+    ],
+    "name": "str_replace",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     }
+    ],
+    "name": "str_to_lower",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     }
+    ],
+    "name": "str_to_upper",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     }
+    ],
+    "name": "str_reset",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint16_t",
+    "name": "size",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "capacity",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "str",
+    "readonly": true
+   }
+  ],
+  "header": "base/str.h"
+ },
+ {
+  "type": "class",
+  "name": "system_info_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "system_info",
+    "isConstructor": true,
+    "return": "system_info_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint32_t",
+    "name": "lcd_w",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "lcd_h",
+    "readonly": true
+   },
+   {
+    "type": "lcd_type_t",
+    "name": "lcd_type",
+    "readonly": true
+   },
+   {
+    "type": "float_t",
+    "name": "device_pixel_ratio",
+    "readonly": true
+   }
+  ],
+  "header": "base/system_info.h"
+ },
+ {
+  "type": "class",
   "name": "style_t",
   "methods": [],
   "properties": [],
@@ -2283,6 +3267,18 @@
    {
     "params": [],
     "name": "timer_count",
+    "isStatic": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [],
+    "name": "timer_next_time",
+    "isStatic": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [],
+    "name": "timer_now",
     "isStatic": true,
     "return": "uint32_t"
    }
@@ -2750,6 +3746,10 @@
      {
       "type": "uint32_t",
       "name": "h"
+     },
+     {
+      "type": "bitmap_format_t",
+      "name": "format"
      },
      {
       "type": "void*",
@@ -3680,6 +4680,13 @@
   "header": "base/view.h"
  },
  {
+  "type": "class",
+  "name": "widget_animator_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/widget_animator.h"
+ },
+ {
   "type": "enum",
   "header": "base/widget.h",
   "name": "widget_state_t",
@@ -3921,6 +4928,30 @@
      }
     ],
     "name": "widget_set_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "widget_set_tr_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_re_translate_text",
     "return": "ret_t"
    },
    {
@@ -4486,11 +5517,254 @@
   "header": "base/window.h"
  },
  {
+  "type": "class",
+  "name": "wstr_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "uint16_t",
+      "name": "capacity"
+     }
+    ],
+    "name": "wstr_init",
+    "isConstructor": true,
+    "return": "wstr_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "wstr_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "wstr_set_utf8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     },
+     {
+      "type": "uint16_t",
+      "name": "size"
+     }
+    ],
+    "name": "wstr_get_utf8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "uint16_t",
+      "name": "offset"
+     },
+     {
+      "type": "uint16_t",
+      "name": "nr"
+     }
+    ],
+    "name": "wstr_remove",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "uint16_t",
+      "name": "offset"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     },
+     {
+      "type": "uint16_t",
+      "name": "nr"
+     }
+    ],
+    "name": "wstr_insert",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "wchar_t",
+      "name": "c"
+     }
+    ],
+    "name": "wstr_push",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     }
+    ],
+    "name": "wstr_pop",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t",
+      "name": "v"
+     }
+    ],
+    "name": "wstr_from_int",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "float",
+      "name": "v"
+     }
+    ],
+    "name": "wstr_from_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "value_t",
+      "name": "v"
+     }
+    ],
+    "name": "wstr_from_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "int32_t*",
+      "name": "v"
+     }
+    ],
+    "name": "wstr_to_int",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "float*",
+      "name": "v"
+     }
+    ],
+    "name": "wstr_to_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     }
+    ],
+    "name": "wstr_reset",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint16_t",
+    "name": "size",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "capacity",
+    "readonly": true
+   },
+   {
+    "type": "wchar_t*",
+    "name": "str",
+    "readonly": true
+   }
+  ],
+  "header": "base/wstr.h"
+ },
+ {
   "params": [],
   "name": "tk_quit",
   "isGlobal": true,
   "return": "ret_t",
   "type": "method",
   "header": "src/tk.h"
+ },
+ {
+  "type": "class",
+  "name": "widget_animator_move_t",
+  "methods": [],
+  "properties": [],
+  "header": "widget_animators/widget_animator_move.h"
+ },
+ {
+  "type": "class",
+  "name": "widget_animator_value_t",
+  "methods": [],
+  "properties": [],
+  "header": "widget_animators/widget_animator_value.h"
  }
 ]

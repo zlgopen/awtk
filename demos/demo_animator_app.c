@@ -42,7 +42,7 @@ static widget_animator_t* animators[10];
 
 static ret_t on_start(void* ctx, event_t* e) {
   uint32_t i = 0;
-  for( i = 0; i < animators_nr; i++) {
+  for (i = 0; i < animators_nr; i++) {
     widget_animator_start(animators[i]);
   }
 
@@ -51,7 +51,7 @@ static ret_t on_start(void* ctx, event_t* e) {
 
 static ret_t on_stop(void* ctx, event_t* e) {
   uint32_t i = 0;
-  for( i = 0; i < animators_nr; i++) {
+  for (i = 0; i < animators_nr; i++) {
     widget_animator_stop(animators[i]);
   }
 
@@ -65,17 +65,17 @@ ret_t application_init() {
   widget_t* progress_bar = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_animator_t* animator = NULL;
-  
+
   start = button_create(win, 10, 5, 80, 30);
   widget_set_text(start, L"Start");
-  
+
   stop = button_create(win, 128, 5, 80, 30);
   widget_set_text(stop, L"Stop");
 
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
-  
+
   animator = widget_animator_move_create(image, 1000, easing_get(EASING_SIN_INOUT));
   widget_animator_move_set_params(animator, image->x, image->y, image->x + 100, image->y + 100);
   widget_animator_set_repeat(animator, 10);

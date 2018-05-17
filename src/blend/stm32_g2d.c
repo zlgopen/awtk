@@ -226,4 +226,4 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
 
   return RET_OK;
 }
-#endif/*WITH_G2D*/
+#endif /*WITH_G2D*/

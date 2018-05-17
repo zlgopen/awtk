@@ -24,9 +24,10 @@
 #include "base/timer.h"
 #include "base/widget_animator.h"
 
-ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration, easing_func_t easing) {
+ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration,
+                           easing_func_t easing) {
   return_value_if_fail(animator != NULL && widget != NULL, RET_BAD_PARAMS);
- 
+
   animator->widget = widget;
   animator->duration = duration;
   emitter_init(&(animator->emitter));
@@ -39,26 +40,26 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
   uint32_t now = timer->now;
   widget_animator_t* animator = (widget_animator_t*)(timer->ctx);
   uint32_t end_time = animator->start_time + animator->duration;
-  float_t time_percent = ((float_t)(now - animator->start_time))/animator->duration;
+  float_t time_percent = ((float_t)(now - animator->start_time)) / animator->duration;
 
-  if(time_percent > 1) {
+  if (time_percent > 1) {
     time_percent = 1;
   }
 
-  if(animator->reversed) {
+  if (animator->reversed) {
     time_percent = 1 - time_percent;
   }
 
   widget_animator_update(animator, animator->easing(time_percent));
 
-  if(now >= end_time) {
-    if(animator->repeat_times > 0) {
+  if (now >= end_time) {
+    if (animator->repeat_times > 0) {
       event_t e = {EVT_ANIM_ONCE, animator};
       animator->start_time = now;
       animator->repeat_times--;
 
       emitter_dispatch(&(animator->emitter), &e);
-    } else if(animator->yoyo_times > 0) {
+    } else if (animator->yoyo_times > 0) {
       event_t e = {EVT_ANIM_ONCE, animator};
       animator->start_time = now;
       animator->reversed = !animator->reversed;
@@ -82,7 +83,7 @@ ret_t widget_animator_start(widget_animator_t* animator) {
 
   emitter_dispatch(&(animator->emitter), &e);
   animator->start_time = timer_now();
-  animator->timer_id = timer_add(widget_animator_on_timer, animator, 0); 
+  animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
 
   return RET_OK;
 }
@@ -128,7 +129,8 @@ ret_t widget_animator_set_reversed(widget_animator_t* animator, bool_t value) {
   return RET_OK;
 }
 
-uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, event_func_t on_event, void* ctx) {
+uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, event_func_t on_event,
+                            void* ctx) {
   return_value_if_fail(animator != NULL && on_event != NULL, 0);
 
   return emitter_on(&(animator->emitter), type, on_event, ctx);
@@ -144,7 +146,7 @@ ret_t widget_animator_destroy(widget_animator_t* animator) {
   return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
 
   emitter_deinit(&(animator->emitter));
-  if(animator->destroy != NULL) {
+  if (animator->destroy != NULL) {
     return animator->destroy(animator);
   } else {
     TKMEM_FREE(animator);
@@ -152,4 +154,3 @@ ret_t widget_animator_destroy(widget_animator_t* animator) {
 
   return RET_OK;
 }
-

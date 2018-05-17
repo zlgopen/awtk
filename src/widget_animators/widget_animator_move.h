@@ -39,10 +39,11 @@ typedef struct _widget_animator_move_t {
   xy_t y_from;
 } widget_animator_move_t;
 
-widget_animator_t* widget_animator_move_create(widget_t* widget, uint32_t duration, easing_func_t easing);
-ret_t widget_animator_move_set_params(widget_animator_t* animator, xy_t x_from, xy_t y_from, xy_t x_to, xy_t y_to);
+widget_animator_t* widget_animator_move_create(widget_t* widget, uint32_t duration,
+                                               easing_func_t easing);
+ret_t widget_animator_move_set_params(widget_animator_t* animator, xy_t x_from, xy_t y_from,
+                                      xy_t x_to, xy_t y_to);
 
 END_C_DECLS
 
-#endif/*TK_WIDGET_ANIMATOR_MOVE_H*/
-
+#endif /*TK_WIDGET_ANIMATOR_MOVE_H*/

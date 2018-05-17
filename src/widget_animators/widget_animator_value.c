@@ -26,7 +26,7 @@ static ret_t widget_animator_value_update(widget_animator_t* animator, float_t p
   int32_t new_value = 0;
   widget_animator_value_t* value = (widget_animator_value_t*)animator;
   return_value_if_fail(value != NULL, RET_BAD_PARAMS);
-  
+
   new_value = value->from + (value->to - value->from) * percent;
 
   widget_set_value(animator->widget, new_value);
@@ -35,7 +35,8 @@ static ret_t widget_animator_value_update(widget_animator_t* animator, float_t p
   return RET_OK;
 }
 
-widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration, easing_func_t easing) {
+widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration,
+                                                easing_func_t easing) {
   widget_animator_t* animator = NULL;
   return_value_if_fail(widget != NULL && duration > 0, NULL);
 
@@ -49,10 +50,9 @@ widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t durat
 ret_t widget_animator_value_set_params(widget_animator_t* animator, int32_t from, int32_t to) {
   widget_animator_value_t* value = (widget_animator_value_t*)animator;
   return_value_if_fail(value != NULL, RET_BAD_PARAMS);
-  
+
   value->to = to;
   value->from = from;
-  
+
   return RET_OK;
 }
-

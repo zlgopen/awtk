@@ -251,7 +251,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb) {
   fb->h = lcd->w;
   fb->format = mem->format;
   fb->data = mem->online_fbuff;
-	
+
   return fb;
 }
 
@@ -263,27 +263,27 @@ static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
   fb->h = lcd->w;
   fb->format = mem->format;
   fb->data = mem->fbuff;
-	
+
   return fb;
 }
 
-
-static ret_t lcd_mem_end_frame(lcd_t* lcd) { rect_t rect;
+static ret_t lcd_mem_end_frame(lcd_t* lcd) {
+  rect_t rect;
   bitmap_t online_fb;
   bitmap_t offline_fb;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  
+
   rect_t* r = lcd->dirty_rect;
-	
-  if(lcd->draw_mode == LCD_DRAW_OFFLINE) {
+
+  if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }
 
-  if(mem->online_fbuff == NULL) {
+  if (mem->online_fbuff == NULL) {
     return RET_OK;
   }
 
-  if(r == NULL) {
+  if (r == NULL) {
     r = &rect;
     r->x = 0;
     r->y = 0;
@@ -295,12 +295,12 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) { rect_t rect;
   lcd_mem_init_offline_fb(lcd, &offline_fb);
 
 #ifdef WITH_G2D
-  g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y);	
+  g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
 #else
   blend_image(&online_fb, &offline_fb, r, r, 0xff);
 #endif /*WITH_G2D*/
 
-  return RET_OK; 
+  return RET_OK;
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
@@ -359,4 +359,3 @@ lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* off
 
   return lcd;
 }
-

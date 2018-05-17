@@ -53,9 +53,9 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");
 #else
-//  resource_manager_add(rm, font_ap);
+  //  resource_manager_add(rm, font_ap);
   resource_manager_add(rm, font_default);
-  //resource_manager_add(rm, font_default_ttf);
+  // resource_manager_add(rm, font_default_ttf);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);
   resource_manager_add(rm, image_dialog_title);

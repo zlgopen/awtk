@@ -271,7 +271,7 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
 ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
-  if(rm == NULL) {
+  if (rm == NULL) {
     /*resource manager was destroied*/
     return RET_OK;
   }
@@ -319,7 +319,7 @@ ret_t resource_manager_destroy(resource_manager_t* rm) {
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
   resource_manager_deinit(rm);
 
-  if(rm == resource_manager()) {
+  if (rm == resource_manager()) {
     resource_manager_set(NULL);
   }
   TKMEM_FREE(rm);

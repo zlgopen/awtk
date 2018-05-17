@@ -41,7 +41,7 @@ ret_t main_loop_quit(main_loop_t* l) {
 ret_t main_loop_wakeup(main_loop_t* l) {
   return_value_if_fail(l != NULL, RET_BAD_PARAMS);
 
-  if(l->wakeup != NULL) {
+  if (l->wakeup != NULL) {
     l->wakeup(l);
   }
 
@@ -77,10 +77,10 @@ ret_t main_loop_sleep(main_loop_t* l) {
     uint32_t sleep_time = 0;
     int32_t next_timer = timer_next_time() - time_now_ms();
 
-    if(next_timer < 0) {
+    if (next_timer < 0) {
       next_timer = 0;
     }
-    
+
     sleep_time = next_timer > 30 ? 30 : next_timer;
     sleep_ms(sleep_time);
   }

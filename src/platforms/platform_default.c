@@ -60,19 +60,18 @@ void sleep_ms(uint32_t ms) {
 #ifdef WIN32
   Sleep(ms);
 #else
-  usleep(ms*1000);
+  usleep(ms * 1000);
 #endif
 }
 
 #ifndef HAS_STD_MALLOC
 static uint32_t s_heap_mem[1024 * 1024];
-#endif/*HAS_STD_MALLOC*/
+#endif /*HAS_STD_MALLOC*/
 
 ret_t platform_prepare(void) {
 #ifndef HAS_STD_MALLOC
   mem_init(s_heap_mem, sizeof(s_heap_mem));
-#endif/*HAS_STD_MALLOC*/
+#endif /*HAS_STD_MALLOC*/
 
   return RET_OK;
 }
-

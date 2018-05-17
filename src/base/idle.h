@@ -116,4 +116,3 @@ uint32_t idle_count(void);
 END_C_DECLS
 
 #endif /*TK_IDLE_H*/
-

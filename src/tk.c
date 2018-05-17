@@ -76,7 +76,6 @@ ret_t tk_init_resources() {
   return RET_OK;
 }
 
-
 ret_t tk_init_internal(void) {
   image_loader_t* loader = NULL;
 #ifdef WITH_STB_IMAGE

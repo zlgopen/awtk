@@ -49,7 +49,6 @@ typedef struct timer_info_t {
   timer_manager_t* timer_manager;
 } timer_info_t;
 
-
 timer_manager_t* timer_manager(void);
 ret_t timer_manager_set(timer_manager_t* timer_manager);
 
@@ -58,7 +57,8 @@ timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_ti
 ret_t timer_manager_deinit(timer_manager_t* timer_manager);
 ret_t timer_manager_destroy(timer_manager_t* timer_manager);
 
-uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
+                           uint32_t duration_ms);
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
@@ -155,4 +155,3 @@ uint32_t timer_now(void);
 END_C_DECLS
 
 #endif /*TK_TIMER_H*/
-

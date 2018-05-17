@@ -9,35 +9,30 @@ using std::string;
 TEST(AnimatorMove, basic) {
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, NULL);
-  
+
   ASSERT_EQ(wa->yoyo_times, 0);
   ASSERT_EQ(widget_animator_set_yoyo(wa, 12), RET_OK);
   ASSERT_EQ(wa->yoyo_times, 12);
-  
+
   ASSERT_EQ(wa->repeat_times, 0);
   ASSERT_EQ(widget_animator_set_repeat(wa, 10), RET_OK);
   ASSERT_EQ(wa->repeat_times, 10);
-  
+
   ASSERT_EQ(wa->reversed, FALSE);
   ASSERT_EQ(widget_animator_set_reversed(wa, TRUE), RET_OK);
   ASSERT_EQ(wa->reversed, TRUE);
 
-  widget_animator_destroy(wa); 
+  widget_animator_destroy(wa);
 }
-
 
 static uint32_t s_now = 0;
-static uint32_t timer_get_time() { 
-  return s_now; 
-}
+static uint32_t timer_get_time() { return s_now; }
 
-static void timer_set_time(uint32_t now) { 
-  s_now = now;
-}
+static void timer_set_time(uint32_t now) { s_now = now; }
 
 static string s_log;
 static ret_t on_animator_event(void* ctx, event_t* e) {
-  switch(e->type) {
+  switch (e->type) {
     case EVT_ANIM_START: {
       s_log += "start:";
       break;
@@ -79,12 +74,12 @@ TEST(AnimatorMove, once) {
   ASSERT_EQ(s_log, "start:");
   ASSERT_EQ(button->x, 0);
   ASSERT_EQ(button->y, 0);
-  
+
   timer_set_time(500);
   timer_dispatch();
   ASSERT_EQ(button->x, 50);
   ASSERT_EQ(button->y, 100);
-  
+
   timer_set_time(1000);
   timer_dispatch();
   ASSERT_EQ(button->x, 100);
@@ -116,12 +111,12 @@ TEST(AnimatorMove, reversed) {
   ASSERT_EQ(s_log, "start:");
   ASSERT_EQ(button->x, 100);
   ASSERT_EQ(button->y, 200);
-  
+
   timer_set_time(500);
   timer_dispatch();
   ASSERT_EQ(button->x, 50);
   ASSERT_EQ(button->y, 100);
-  
+
   timer_set_time(1000);
   timer_dispatch();
   ASSERT_EQ(button->x, 0);
@@ -150,21 +145,21 @@ TEST(AnimatorMove, repeat) {
 
   s_log = "";
   string log = "start:";
-  
+
   timer_set_time(now);
   widget_animator_start(wa);
 
-  for( i = 0; i < nr; i++) {
+  for (i = 0; i < nr; i++) {
     timer_dispatch();
     ASSERT_EQ(button->x, 0);
     ASSERT_EQ(button->y, 0);
-    
+
     now += 500;
     timer_set_time(now);
     timer_dispatch();
     ASSERT_EQ(button->x, 50);
     ASSERT_EQ(button->y, 100);
-    
+
     now += 500;
     timer_set_time(now);
     timer_dispatch();
@@ -178,4 +173,3 @@ TEST(AnimatorMove, repeat) {
   timer_manager_destroy(timer_manager());
   timer_manager_set(tm);
 }
-

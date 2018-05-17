@@ -9,7 +9,7 @@ typedef struct _mem_stack_t {
   void* ptr[1000];
   uint32_t top;
   uint32_t max;
-}mem_stack_t;
+} mem_stack_t;
 
 void mem_stack_init(mem_stack_t* s) {
   memset(s, 0x00, sizeof(mem_stack_t));
@@ -21,9 +21,7 @@ void mem_stack_push(mem_stack_t* s, void* ptr) {
   s->ptr[s->top++] = ptr;
 }
 
-bool_t mem_stack_has_space(mem_stack_t* s) {
-  return s->top < s->max;
-}
+bool_t mem_stack_has_space(mem_stack_t* s) { return s->top < s->max; }
 
 void* mem_stack_pop(mem_stack_t* s) {
   assert(s->top > 0);
@@ -32,15 +30,15 @@ void* mem_stack_pop(mem_stack_t* s) {
 }
 
 void mem_stack_free_n(mem_stack_t* s, uint32_t nr) {
-  for(uint32_t i = 0; i < nr && s->top > 0; i++) {
-    tk_free(mem_stack_pop(s));   
+  for (uint32_t i = 0; i < nr && s->top > 0; i++) {
+    tk_free(mem_stack_pop(s));
   }
 }
 
 int main() {
   mem_stack_t s;
   uint32_t i = 0;
-  uint32_t nr = 10000*10000;
+  uint32_t nr = 10000 * 10000;
 
   srand(time(0));
   mem_stack_init(&s);
@@ -48,12 +46,12 @@ int main() {
 
   tk_free(tk_alloc(100));
 
-  for(i = 0; i < nr ; i++) {
-    uint32_t size = rand()%100;
+  for (i = 0; i < nr; i++) {
+    uint32_t size = rand() % 100;
     void* ptr = tk_calloc(size, 1);
 
-    if(ptr != NULL) {
-      if(mem_stack_has_space(&s)) {
+    if (ptr != NULL) {
+      if (mem_stack_has_space(&s)) {
         mem_stack_push(&s, ptr);
       } else {
         tk_free(ptr);

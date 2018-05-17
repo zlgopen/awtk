@@ -43,10 +43,10 @@ typedef struct _widget_animator_t {
   bool_t reversed;
   uint32_t yoyo_times;
   uint32_t repeat_times;
-  uint32_t now; 
-  uint32_t start_time; 
-  uint32_t duration; 
-  uint32_t timer_id; 
+  uint32_t now;
+  uint32_t start_time;
+  uint32_t duration;
+  uint32_t timer_id;
   emitter_t emitter;
 
   easing_func_t easing;
@@ -54,7 +54,8 @@ typedef struct _widget_animator_t {
   widget_animator_destroy_t destroy;
 } widget_animator_t;
 
-ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration, easing_func_t easing);
+ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration,
+                           easing_func_t easing);
 ret_t widget_animator_update(widget_animator_t* animator, float_t percent);
 ret_t widget_animator_start(widget_animator_t* animator);
 ret_t widget_animator_stop(widget_animator_t* animator);
@@ -63,12 +64,12 @@ ret_t widget_animator_set_yoyo(widget_animator_t* animator, uint32_t yoyo_times)
 ret_t widget_animator_set_repeat(widget_animator_t* animator, uint32_t repeat_times);
 ret_t widget_animator_set_reversed(widget_animator_t* animator, bool_t value);
 
-uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, event_func_t on_event,
+                            void* ctx);
 ret_t widget_animator_off(widget_animator_t* animator, uint32_t id);
 
 ret_t widget_animator_destroy(widget_animator_t* animator);
 
 END_C_DECLS
 
-#endif/*TK_WIDGET_ANIMATOR_H*/
-
+#endif /*TK_WIDGET_ANIMATOR_H*/
