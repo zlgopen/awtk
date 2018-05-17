@@ -32,10 +32,14 @@ ret_t main_loop_run(main_loop_t* l) {
 }
 
 ret_t main_loop_quit(main_loop_t* l) {
-  return_value_if_fail(l != NULL && l->destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   l->running = FALSE;
 
-  return l->quit(l);
+  if(l->quit != NULL) {
+    l->quit(l);
+  }
+
+  return RET_OK;
 }
 
 ret_t main_loop_wakeup(main_loop_t* l) {

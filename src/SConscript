@@ -13,6 +13,7 @@ sources=Glob('base/*.c') +\
   Glob('widget_animators/*.c') + \
   ['platforms/platform_default.c', 'tk.c'];
 
+sources += ['main_loop/main_loop_simple.c'];
 if os.environ['LCD'] == 'NANOVG':
   sources += ['window_animators/window_animator_nanovg.c'];
   sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_nanovg.c'];
