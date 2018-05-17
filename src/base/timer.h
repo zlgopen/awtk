@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   timer.h
  * Author: AWTK Develop Team
  * Brief:  timer manager
@@ -105,9 +105,9 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
  *
- * @return {uint32_t} 返回timer的ID，0表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-uint32_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 
 /**
  * @method timer_remove
