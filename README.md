@@ -37,11 +37,15 @@
 
 9. 支持裸系统，无需OS和文件系统。字体、图片、主题和界面描述数据都编译到代码中，以常量数据的形式存放，运行时无需加载到内存。
 
-10. 可移植。支持移植到各种RTOS和嵌入式Linux系统，并通过SDL在各种流行的PC/手机系统上运行。
+10. 内置agg/picasso/nanovg实现高质量的矢量动画。
 
-11. 脚本化。从API注释中提取API的描述信息，通过这些信息可以自动生成各种脚本的绑定代码。
+11. 支持窗口动画、控件动画和滑动动画等现代GUI常见特性。
 
-12. 采用LGPL协议发布，在商业软件中使用时无需付费。
+12. 可移植。支持移植到各种RTOS和嵌入式Linux系统，并通过SDL在各种流行的PC/手机系统上运行。
+
+13. 脚本化。从API注释中提取API的描述信息，通过这些信息可以自动生成各种脚本的绑定代码。
+
+14. 采用LGPL协议发布，在商业软件中使用时无需付费。
 
 目前核心功能已经完成(还不具备应用到产品的水平)，欢迎有兴趣的朋友移植到各个RTOS。
 
@@ -96,11 +100,9 @@ bin\demo1
 
 ## 文档
 
-* [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+### 1.使用文档
 * [AWTK控件的布局参数介绍](docs/layout.md)
 * [AWTK界面描述文件介绍](docs/ui_desc.md)
-* [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
-* [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
 * [AWTK中的图片显示方式](docs/image_draw_type.md)
 * [AWTK中的矢量图绘图函数](docs/vgcanvas.md)
 * [AWTK中的事件处理函数](docs/event_listener.md)
@@ -109,10 +111,27 @@ bin\demo1
 * [AWTK中的窗口动画](docs/window_animator.md)
 * [AWTK中的国际化之字符串翻译](docs/locale.md)
 
+### 2.内部原理
+* [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+
+### 3.移植文档
+* [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
+* [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
+
+### 4.技术笔记
+* [FrameBuffer的几种使用方式](docs/framebuffer.md)
+
+
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/05/18
+    * 编写framebuffer的文档。
+
+* 2018/05/17
+    * 支持非GUI线程添加idle/timer到GUI线程执行。
 
 * 2018/05/16
     * 实现控件动画框架。
