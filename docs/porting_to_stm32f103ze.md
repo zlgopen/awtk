@@ -81,5 +81,5 @@ void TIM3_IRQHandler(void) {
 
 注：目前以[普中科技STM32F103ZET6开发实验板](https://item.taobao.com/item.htm?spm=a230r.1.14.1.50a130e8TMKYMC&id=558855281660&ns=1&abbucket=5#detail) 为载体移植，其它开发板应该差不多。
 
-完整项目和源码请参考：[awtk-stm32f103ze-raw](https://github.com/xianjimli/awtk-stm32f103ze-raw)
+完整项目和源码请参考：[awtk-stm32f103ze-raw](https://github.com/zlgopen/awtk-stm32f103ze-raw)
 

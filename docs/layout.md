@@ -8,7 +8,7 @@
 * 需要适应不同大小的屏幕。
 * 界面上的元素是动态的，需要用程序创建界面。
 
-[AWTK](https://github.com/xianjimli/awtk)提供了简单而又强大的布局参数。
+[AWTK](https://github.com/zlgopen/awtk)提供了简单而又强大的布局参数。
 
 ## 二、控件自身的布局参数
 

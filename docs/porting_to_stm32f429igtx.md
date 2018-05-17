@@ -82,5 +82,5 @@ uint8_t platform_disaptch_input(main_loop_t* loop) {
 
 注：[正点原子的开发实验板](https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w11877762-18401048725.10.145a2276IsywTF&id=534585837612)为载体移植，其它开发板应该差不多。
 
-完整项目和源码请参考：[awtk-stm32f429igtx-raw](https://github.com/xianjimli/awtk-stm32f429igtx-raw)
+完整项目和源码请参考：[awtk-stm32f429igtx-raw](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
 

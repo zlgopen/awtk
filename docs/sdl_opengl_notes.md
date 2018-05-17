@@ -1,6 +1,6 @@
 #SDL + OpenGL使用笔记
 
-[AWTK](https://github.com/xianjimli/awtk) 是一个嵌入式GUI，为了开发方便，需要提供PC运行环境。我选择了[SDL2](https://www.libsdl.org)+OpenGL+[nanovg](https://github.com/memononen/nanovg)来实现底层的渲染，让[AWTK](https://github.com/xianjimli/awtk)可以运行在各个平台上。[GLFW](http://www.glfw.org/)+OpenGL也是一个不错的选择，但是GLFW没有Android和iOS的移植，而且没有提供原生输入法的支持。[AWTK](https://github.com/xianjimli/awtk)虽然最初是为嵌入式系统而生，但也有一个小目标：可以用于开发嵌入式系统，也可以开发PC软件和移动APP，所以最后选择了SDL2+OpenGL+nanovg。在使用SDL2+OpenGL+nanovg的过程中，踩了一些坑，这里做个笔记，给需要的朋友参考：
+[AWTK](https://github.com/zlgopen/awtk) 是一个嵌入式GUI，为了开发方便，需要提供PC运行环境。我选择了[SDL2](https://www.libsdl.org)+OpenGL+[nanovg](https://github.com/memononen/nanovg)来实现底层的渲染，让[AWTK](https://github.com/zlgopen/awtk)可以运行在各个平台上。[GLFW](http://www.glfw.org/)+OpenGL也是一个不错的选择，但是GLFW没有Android和iOS的移植，而且没有提供原生输入法的支持。[AWTK](https://github.com/zlgopen/awtk)虽然最初是为嵌入式系统而生，但也有一个小目标：可以用于开发嵌入式系统，也可以开发PC软件和移动APP，所以最后选择了SDL2+OpenGL+nanovg。在使用SDL2+OpenGL+nanovg的过程中，踩了一些坑，这里做个笔记，给需要的朋友参考：
 
 ## 一、在MacPro上显示模糊的问题。
 
@@ -26,7 +26,7 @@ ratio = (float)fw / (float)ww;
 
 ## 二、nanovg裁剪算法无效。
 
-使用低级的OpenGL去绘图是一个比较麻烦的事情。在[AWTK](https://github.com/xianjimli/awtk)中，采用了[nanovg](https://github.com/memononen/nanovg)矢量图绘图函数库，nanovg缺省使用的[GLFW](http://www.glfw.org/)，要移植到[SDL2](https://www.libsdl.org)上也不难。但是我发现nanovg的示例在SDL上和在GLFW上的效果有些差异，仔细观察后，初步判断与用stencil进行裁剪有关，以为是没有启用stencil测试引起的，于是加了下面的代码：
+使用低级的OpenGL去绘图是一个比较麻烦的事情。在[AWTK](https://github.com/zlgopen/awtk)中，采用了[nanovg](https://github.com/memononen/nanovg)矢量图绘图函数库，nanovg缺省使用的[GLFW](http://www.glfw.org/)，要移植到[SDL2](https://www.libsdl.org)上也不难。但是我发现nanovg的示例在SDL上和在GLFW上的效果有些差异，仔细观察后，初步判断与用stencil进行裁剪有关，以为是没有启用stencil测试引起的，于是加了下面的代码：
 
 ```
 glEnable(GL_STENCIL_TEST);

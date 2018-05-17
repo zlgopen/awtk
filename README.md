@@ -1,6 +1,6 @@
 # AWTK = Toolkit AnyWhere
 
-[AWTK](https://github.com/xianjimli/awtk)是吸取了[FTK](https://github.com/xianjimli/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的GUI，计划分以下几个阶段实施：
+[AWTK](https://github.com/zlgopen/awtk)是吸取了[FTK](https://github.com/zlgopen/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的GUI，计划分以下几个阶段实施：
 
 * 第一阶段专注于嵌入式系统，到达并超越TouchGfx/Embedded Wizard的功能。计划在2018/9前完成。
 * 第二阶段用AWTK本身开发界面编辑器(或组态软件IDE)，从而验证AWTK支持PC软件开发的能力。计划在2018年底完成。
@@ -90,9 +90,9 @@ bin\demo1
 
 ## 各个平台的移植
 
-[stm32f103ze](https://github.com/xianjimli/awtk-stm32f103ze-raw.git)
+[stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw.git)
 
-[stm32f429igtx](https://github.com/xianjimli/awtk-stm32f429igtx-raw.git)
+[stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw.git)
 
 ## 文档
 
