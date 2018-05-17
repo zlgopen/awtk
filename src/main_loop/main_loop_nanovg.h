@@ -1,9 +1,9 @@
 ﻿/**
- * file:   main_loop_nanovg.h
- * author: li xianjing <xianjimli@hotmail.com>
- * brief:  nanovg implemented main_loop interface
+ * File:   main_loop_nanovg.h
+ * Author: AWTK Develop Team
+ * Brief:  nanovg implemented main_loop interface
  *
- * copyright (c) 2018 - 2018  li xianjing <xianjimli@hotmail.com>
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of

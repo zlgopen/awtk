@@ -1,9 +1,9 @@
 /**
- * file:   lcd_log.cc
- * author: li xianjing <xianjimli@hotmail.com>
- * brief:  log lcd commands
+ * File:   lcd_log.cc
+ * Author: AWTK Develop Team
+ * Brief:  log lcd commands
  *
- * copyright (c) 2018 - 2018  li xianjing <xianjimli@hotmail.com>
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of

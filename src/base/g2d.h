@@ -1,9 +1,9 @@
 /**
- * file:   g2d.h
- * author: li xianjing <xianjimli@hotmail.com>
- * brief:  hardware 2d
+ * File:   g2d.h
+ * Author: AWTK Develop Team
+ * Brief:  hardware 2d
  *
- * copyright (c) 2018 - 2018  li xianjing <xianjimli@hotmail.com>
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of
