@@ -145,12 +145,31 @@ typedef enum _event_type_t {
    * 绘制事件名。
    */
   EVT_AFTER_PAINT,
-
   /**
    * @const EVT_LOCALE_CHANGED
    * locale改变的事件。
    */
-  EVT_LOCALE_CHANGED
+  EVT_LOCALE_CHANGED,
+  /**
+   * @const EVT_ANIM_START
+   * 控件动画开始事件。
+   */
+  EVT_ANIM_START,
+  /**
+   * @const EVT_ANIM_STOP
+   * 控件动画被主动停止的事件。
+   */
+  EVT_ANIM_STOP,
+  /**
+   * @const EVT_ANIM_ONCE
+   * 控件动画yoyo/repeat时，完成一次的事件。
+   */
+  EVT_ANIM_ONCE,
+  /**
+   * @const EVT_ANIM_END
+   * 控件动画完成事件。
+   */
+  EVT_ANIM_END
 } event_type_t;
 
 /**
