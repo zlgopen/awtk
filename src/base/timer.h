@@ -143,6 +143,15 @@ uint32_t timer_count(void);
  */
 uint32_t timer_next_time(void);
 
+/**
+ * @method timer_now
+ * 获取当前时间(ms)。
+ * @static
+ *
+ * @return {uint32_t} 返回获取当前时间(ms)。
+ */
+uint32_t timer_now(void);
+
 END_C_DECLS
 
 #endif /*TK_TIMER_H*/

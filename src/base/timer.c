@@ -237,3 +237,7 @@ uint32_t timer_count(void) {
 uint32_t timer_next_time(void) {
   return timer_manager_next_time(timer_manager());
 }
+
+uint32_t timer_now(void) {
+  return timer_manager()->get_time();
+}
