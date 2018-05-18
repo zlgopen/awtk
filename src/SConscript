@@ -11,7 +11,7 @@ sources=Glob('base/*.c') +\
   Glob('blend/*.c') + \
   Glob('image_loader/*.c') + \
   Glob('widget_animators/*.c') + \
-  Glob('platforms/*.c') + \
+  Glob('platforms/pc/*.c') + \
   ['tk.c'];
 
 sources += ['main_loop/main_loop_simple.c'];
