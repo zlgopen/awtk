@@ -39,7 +39,7 @@ typedef struct _mutex_t mutex_t;
  *
  * @return {mutex_t*} mutex对象。
  */
-mutex_t* mutex_create();
+mutex_t* mutex_create(void);
 
 /**
  * @method mutex_lock
