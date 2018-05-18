@@ -21,6 +21,27 @@
 
 #include "main_loop/main_loop_simple.h"
 
+static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* r) {
+  ret_t ret =  RET_FAIL;
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
+
+  mutex_lock(loop->mutex);
+  ret = event_queue_send(loop->queue, r);
+  mutex_unlock(loop->mutex);
+
+  return ret;
+}
+
+static ret_t main_loop_simple_recv_event(main_loop_simple_t* loop, event_queue_req_t* r) {
+  ret_t ret =  RET_FAIL;
+
+  mutex_lock(loop->mutex);
+  ret = event_queue_recv(loop->queue, r);
+  mutex_unlock(loop->mutex);
+  
+  return ret;
+}
+
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   event_queue_req_t r;
   pointer_event_t event;
@@ -45,7 +66,8 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
     event.pressed = loop->pressed;
 
     r.pointer_event = event;
-    event_queue_send(loop->queue, &r);
+
+    return main_loop_queue_event(l, &r);
   } else {
     if (loop->pressed) {
       loop->pressed = FALSE;
@@ -53,7 +75,7 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
       event.pressed = loop->pressed;
 
       r.pointer_event = event;
-      event_queue_send(loop->queue, &r);
+      return main_loop_queue_event(l, &r);
     }
   }
 
@@ -74,14 +96,14 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
     event.e.type = EVT_KEY_DOWN;
 
     r.key_event = event;
-    event_queue_send(loop->queue, &r);
+    return main_loop_queue_event(l, &r);
   } else {
     if (loop->key_pressed) {
       loop->key_pressed = FALSE;
       event.e.type = EVT_KEY_UP;
 
       r.key_event = event;
-      event_queue_send(loop->queue, &r);
+      return main_loop_queue_event(l, &r);
     }
   }
 
@@ -93,7 +115,7 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   event_queue_req_t r;
   widget_t* widget = loop->wm;
 
-  while (event_queue_recv(loop->queue, &r) == RET_OK) {
+  while ( main_loop_simple_recv_event(loop, &r) == RET_OK) {
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
@@ -145,12 +167,6 @@ static ret_t main_loop_simple_run(main_loop_t* l) {
   return RET_OK;
 }
 
-static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* e) {
-  main_loop_simple_t* loop = (main_loop_simple_t*)l;
-
-  return event_queue_send(loop->queue, e);
-}
-
 main_loop_simple_t* main_loop_simple_init(int w, int h) {
   static main_loop_simple_t s_main_loop_simple;
   main_loop_simple_t* loop = &s_main_loop_simple;
@@ -165,6 +181,9 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   loop->queue = event_queue_create(20);
   return_value_if_fail(loop->queue != NULL, NULL);
 
+  loop->mutex = mutex_create();
+  return_value_if_fail(loop->mutex != NULL, NULL);
+
   loop->base.run = main_loop_simple_run;
   loop->base.queue_event = main_loop_simple_queue_event;
 
@@ -177,6 +196,8 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
 ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
   event_queue_destroy(loop->queue);
+  mutex_destroy(loop->mutex);
+
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 
   return RET_OK;

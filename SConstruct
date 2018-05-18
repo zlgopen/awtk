@@ -59,14 +59,14 @@ OS_LIBS=['SDL2', 'glad', 'stdc++', 'pthread', 'm']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ '
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ -DHAS_PTHREAD'
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Linux':
   OS_LIBS = ['GL'] + OS_LIBS + ['dl']
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -DLINUX'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -DLINUX -DHAS_PTHREAD'
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'

@@ -139,7 +139,7 @@ bin\demo1
     * 实现控件修改值的动画。
 
 * 2018/05/15
-    * 重新实现timer/idle，支持timer/idle处理函数内部操作timer/idel。
+    * 重新实现timer/idle，支持timer/idle处理函数内部操作timer/idle。
 
 * 2018/05/14
     * 修改内存管理器的BUG，完善内存管理器的测试程序。

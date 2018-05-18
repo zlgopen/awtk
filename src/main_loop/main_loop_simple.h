@@ -25,6 +25,7 @@
 #include "base/idle.h"
 #include "base/time.h"
 #include "base/timer.h"
+#include "base/mutex.h"
 #include "base/main_loop.h"
 #include "base/event_queue.h"
 #include "base/font_manager.h"
@@ -50,7 +51,7 @@ typedef struct _main_loop_simple_t {
   xy_t last_x;
   xy_t last_y;
   uint8_t last_key;
-
+  mutex_t* mutex;
   void* user1;
   void* user2;
   void* user3;
