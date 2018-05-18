@@ -28,6 +28,8 @@
 #elif defined(HAS_PTHREAD)
 #include "pthread.h"
 #define mutex_handle_t pthread_mutex_t
+#else
+#define mutex_handle_t int
 #endif
 
 struct _mutex_t {

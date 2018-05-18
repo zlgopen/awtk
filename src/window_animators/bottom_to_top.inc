@@ -15,9 +15,20 @@ static ret_t window_animator_open_bottom_to_top_draw_prev(window_animator_t* wa)
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
+  float_t percent = wa->percent;
 
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
+  
+#ifdef WITH_NANOVG
+  (void)percent;
+#else
+  if(percent > 0) {
+    win = wa->curr_win;
+    rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+    rect_init(dst, win->x, win->y, win->w, win->h);
+  }
+#endif
 
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
@@ -47,6 +58,7 @@ static ret_t window_animator_open_bottom_to_top_draw_curr(window_animator_t* wa)
   rect_init(dst, win->x, y, win->w, h);
   lcd_set_global_alpha(c->lcd, 0xff);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
+  (void)alpha;
 #endif
 
   return RET_OK;

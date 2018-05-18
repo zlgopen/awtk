@@ -29,11 +29,13 @@
 #elif defined(HAS_PTHREAD)
 #include "pthread.h"
 #define thread_handle_t pthread_t
+#else
+#define thread_handle_t int
 #endif
 
 struct _thread_t {
   void* args;
-  ret_t running;
+  bool_t running;
   thread_handle_t thread;
   thread_entry_t entry;
 };
@@ -55,6 +57,8 @@ thread_t* thread_create(thread_entry_t entry, void* args) {
 static unsigned __stdcall entry(void* arg) {
 #elif defined(HAS_PTHREAD)
 static void* entry(void* arg) {
+#else
+static void* entry(void* arg) {
 #endif
   thread_t* thread = (thread_t*)arg;
 
@@ -64,6 +68,8 @@ static void* entry(void* arg) {
   return 0;
 #elif defined(HAS_PTHREAD)
   return NULL;
+#else
+	return NULL;
 #endif
 }
 
@@ -81,9 +87,12 @@ ret_t thread_start(thread_t* thread) {
 
   int ret = pthread_create(&(thread->thread), NULL, entry, thread);
   thread->running = ret == 0;
+#else
+	entry(thread);
+	thread->running = FALSE;
 #endif
 
-  return thread->running;
+  return thread->running ? RET_OK : RET_FAIL;
 }
 
 ret_t thread_join(thread_t* thread) {
