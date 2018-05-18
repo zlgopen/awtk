@@ -111,14 +111,17 @@ bin\demo1
 * [AWTK中的窗口动画](docs/window_animator.md)
 * [AWTK中的国际化之字符串翻译](docs/locale.md)
 
-### 2.内部原理
+### 2.HowTos
+* [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
+
+### 3.内部原理
 * [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 
-### 3.移植文档
+### 4.移植文档
 * [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
 * [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
 
-### 4.技术笔记
+### 5.技术笔记
 * [FrameBuffer的几种使用方式](docs/framebuffer.md)
 
 
