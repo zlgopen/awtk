@@ -18,7 +18,13 @@ static ret_t window_animator_open_scale_draw_prev(window_animator_t* wa) {
 
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
-
+#ifndef WITH_NANOVG
+  if(wa->percent > 0) {
+    win = wa->curr_win;
+    rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+    rect_init(dst, win->x, win->y, win->w, win->h);
+  }
+#endif/**/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
   return RET_OK;
@@ -46,6 +52,7 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   vgcanvas_draw_image(vg, &(wa->curr_img), src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
   vgcanvas_restore(vg);
 #else
+  (void)alpha;
   rect_init(dst, 0, 0, win->w * scale, win->h * scale);
   dst.x = win->x + ((win->w - dst.w) >> 1);
   dst.y = win->y + ((win->h - dst.h) >> 1);

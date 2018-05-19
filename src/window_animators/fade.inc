@@ -18,7 +18,13 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
 
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
-
+#ifndef WITH_NANOVG
+  if(wa->percent > 0) {
+    win = wa->curr_win;
+    rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+    rect_init(dst, win->x, win->y, win->w, win->h);
+  }
+#endif/**/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
   return RET_OK;
