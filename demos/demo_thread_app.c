@@ -37,15 +37,15 @@ static ret_t update_progress_bar(widget_t* progress_bar) {
   static bool_t inc = TRUE;
   int value = widget_get_value(progress_bar);
 
-  if(inc) {
+  if (inc) {
     widget_set_value(progress_bar, ++value);
   } else {
     widget_set_value(progress_bar, --value);
   }
-  
-  if(value > 99) {
+
+  if (value > 99) {
     inc = FALSE;
-  } else if(value < 1) {
+  } else if (value < 1) {
     inc = TRUE;
   }
 
@@ -56,13 +56,11 @@ static ret_t on_timer(const timer_info_t* timer) {
   return update_progress_bar(WIDGETP(timer->ctx));
 }
 
-static ret_t on_idle(const idle_info_t* idle) {
-  return update_progress_bar(WIDGETP(idle->ctx));
-}
+static ret_t on_idle(const idle_info_t* idle) { return update_progress_bar(WIDGETP(idle->ctx)); }
 
 void* thread_entry(void* args) {
   int nr = 500;
-  while(nr-- > 0) {
+  while (nr-- > 0) {
     idle_queue(on_idle, args);
     timer_queue(on_timer, args, 30);
     sleep_ms(30);

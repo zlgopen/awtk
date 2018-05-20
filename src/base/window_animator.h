@@ -31,7 +31,9 @@ struct _window_animator_t;
 typedef struct _window_animator_t window_animator_t;
 
 typedef ret_t (*window_animator_update_percent_t)(window_animator_t* wa);
+typedef ret_t (*window_animator_begin_frame_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_window_t)(window_animator_t* wa);
+typedef ret_t (*window_animator_end_frame_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_destroy_t)(window_animator_t* wa);
 
 /**
@@ -78,8 +80,11 @@ typedef ret_t (*window_animator_destroy_t)(window_animator_t* wa);
  */
 typedef struct _window_animator_t {
   window_animator_update_percent_t update_percent;
+
+  window_animator_begin_frame_t begin_frame;
   window_animator_draw_window_t draw_prev_window;
   window_animator_draw_window_t draw_curr_window;
+  window_animator_end_frame_t end_frame;
   window_animator_destroy_t destroy;
 
   uint32_t duration;
@@ -149,6 +154,9 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_animator_destroy(window_animator_t* wa);
+
+/*public for implementation*/
+ret_t window_animator_begin_frame_overlap(window_animator_t* wa);
 
 END_C_DECLS
 

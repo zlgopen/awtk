@@ -207,7 +207,7 @@ struct _lcd_t {
    */
   float_t ratio;
 
-  rect_t* dirty_rect;
+  rect_t dirty_rect;
 };
 
 /**

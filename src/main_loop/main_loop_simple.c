@@ -22,7 +22,7 @@
 #include "main_loop/main_loop_simple.h"
 
 static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* r) {
-  ret_t ret =  RET_FAIL;
+  ret_t ret = RET_FAIL;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
   mutex_lock(loop->mutex);
@@ -33,12 +33,12 @@ static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_
 }
 
 static ret_t main_loop_simple_recv_event(main_loop_simple_t* loop, event_queue_req_t* r) {
-  ret_t ret =  RET_FAIL;
+  ret_t ret = RET_FAIL;
 
   mutex_lock(loop->mutex);
   ret = event_queue_recv(loop->queue, r);
   mutex_unlock(loop->mutex);
-  
+
   return ret;
 }
 
@@ -110,12 +110,11 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
   return RET_OK;
 }
 
-
 static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   event_queue_req_t r;
   widget_t* widget = loop->wm;
 
-  while ( main_loop_simple_recv_event(loop, &r) == RET_OK) {
+  while (main_loop_simple_recv_event(loop, &r) == RET_OK) {
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
@@ -144,7 +143,7 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
 }
 
 static ret_t main_loop_dispatch_input(main_loop_simple_t* loop) {
-  if(loop->dispatch_input) {
+  if (loop->dispatch_input) {
     loop->dispatch_input(loop);
   }
 
@@ -170,7 +169,7 @@ static ret_t main_loop_simple_run(main_loop_t* l) {
 main_loop_simple_t* main_loop_simple_init(int w, int h) {
   static main_loop_simple_t s_main_loop_simple;
   main_loop_simple_t* loop = &s_main_loop_simple;
-  
+
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 
   loop->w = w;

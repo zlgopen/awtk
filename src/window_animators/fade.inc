@@ -19,12 +19,12 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
 #ifndef WITH_NANOVG
-  if(wa->percent > 0) {
+  if (wa->percent > 0) {
     win = wa->curr_win;
     rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
     rect_init(dst, win->x, win->y, win->w, win->h);
   }
-#endif/**/
+#endif /**/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
   return RET_OK;
@@ -71,6 +71,7 @@ static window_animator_t* window_animator_create_fade(bool_t open) {
   wa->update_percent = window_animator_open_fade_update_percent;
   wa->draw_prev_window = window_animator_open_fade_draw_prev;
   wa->draw_curr_window = window_animator_open_fade_draw_curr;
+  wa->begin_frame = window_animator_begin_frame_overlap;
 
   return wa;
 }

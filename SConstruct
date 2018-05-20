@@ -15,8 +15,8 @@ if OS_NAME == 'Windows':
   TK_ROOT=TK_ROOT.replace('\\', '\\\\');
   print(TK_ROOT)
 else:
-  LCD='SDL'
   LCD='NANOVG'
+  LCD='SDL'
   VGCANVAS='AGG'
   VGCANVAS='PICASSO'
 

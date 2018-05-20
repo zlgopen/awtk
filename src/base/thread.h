@@ -73,4 +73,3 @@ ret_t thread_destroy(thread_t* thread);
 END_C_DECLS
 
 #endif /*TK_THREAD_H*/
-

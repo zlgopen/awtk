@@ -94,4 +94,3 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
 
   return ret;
 }
-

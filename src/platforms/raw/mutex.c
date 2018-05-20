@@ -28,9 +28,7 @@ struct _mutex_t {
 
 static mutex_t s_mutex_null;
 
-mutex_t* mutex_create() {
-  return &s_mutex_null;
-}
+mutex_t* mutex_create() { return &s_mutex_null; }
 
 ret_t mutex_lock(mutex_t* mutex) {
   (void)mutex;

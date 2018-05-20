@@ -19,11 +19,11 @@ static ret_t window_animator_open_top_to_bottom_draw_prev(window_animator_t* wa)
   rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   rect_init(dst, win->x, win->y, win->w, win->h);
 #ifndef WITH_NANOVG
-  if(wa->percent > 0) {
+  if (wa->percent > 0) {
     wh_t y = wa->percent * wa->curr_win->h;
     wh_t h = wa->curr_win->h - y;
-    
-    if(h == 0) {
+
+    if (h == 0) {
       return RET_OK;
     }
 
@@ -82,6 +82,7 @@ static window_animator_t* window_animator_create_top_to_bottom(bool_t open) {
   wa->update_percent = window_animator_open_top_to_bottom_update_percent;
   wa->draw_prev_window = window_animator_open_top_to_bottom_draw_prev;
   wa->draw_curr_window = window_animator_open_top_to_bottom_draw_curr;
+  wa->begin_frame = window_animator_begin_frame_overlap;
 
   return wa;
 }

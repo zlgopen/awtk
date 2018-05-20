@@ -33,7 +33,6 @@ static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
   int pitch = 0;
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
-  lcd->dirty_rect = dr;
   SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->fbuff), &pitch);
 
   return RET_OK;
@@ -96,7 +95,7 @@ static ret_t lcd_sdl2_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t*
 
 static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  rect_t* dr = lcd->dirty_rect;
+  rect_t* dr = &(lcd->dirty_rect);
 
   SDL_UnlockTexture(sdl->texture);
   if (dr->w > 0 && dr->h > 0) {

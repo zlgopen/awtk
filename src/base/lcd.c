@@ -25,6 +25,15 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode)
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
   lcd->draw_mode = draw_mode;
+  if (dirty_rect == NULL) {
+    lcd->dirty_rect.x = 0;
+    lcd->dirty_rect.y = 0;
+    lcd->dirty_rect.w = lcd->w;
+    lcd->dirty_rect.h = lcd->h;
+  } else {
+    lcd->dirty_rect = *dirty_rect;
+  }
+
   return lcd->begin_frame(lcd, dirty_rect);
 }
 

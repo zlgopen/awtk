@@ -36,14 +36,14 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   fb->w = lcd->w;
   fb->h = lcd->h;
 
-  return RET_OK;
-}
-
-static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
-  lcd->dirty_rect = dirty_rect;
+  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
+    fb->data = mem->online_fbuff;
+  }
 
   return RET_OK;
 }
+
+static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) { return RET_OK; }
 
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;
@@ -172,9 +172,9 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 #ifdef WITH_G2D
   if (src->w == dst->w && src->h == dst->h && lcd->global_alpha == 0xff) {
     if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
-      g2d_copy_image(&fb, img, src, dst->x, dst->y);
-    } else {
-      g2d_blend_image(&fb, img, src, dst->x, dst->y);
+      return g2d_copy_image(&fb, img, src, dst->x, dst->y);
+    //} else {
+    //  return g2d_blend_image(&fb, img, src, dst->x, dst->y);
     }
   }
 #endif /*WITH_G2D*/
@@ -273,13 +273,17 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   bitmap_t offline_fb;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  rect_t* r = lcd->dirty_rect;
+  rect_t* r = &(lcd->dirty_rect);
 
   if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }
 
   if (mem->online_fbuff == NULL) {
+    return RET_OK;
+  }
+
+  if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
     return RET_OK;
   }
 

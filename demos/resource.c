@@ -1,9 +1,9 @@
 #include "tk.h"
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
-//#include "res/inc/fonts/ap.data"
+#include "res/inc/fonts/ap.data"
 #include "res/inc/fonts/default.data"
-//#include "res/inc/fonts/default_ttf.data"
+#include "res/inc/fonts/default_ttf.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
 #include "res/inc/images/dialog_title.data"
@@ -23,6 +23,7 @@
 #include "res/inc/images/red_btn_n.data"
 #include "res/inc/images/red_btn_o.data"
 #include "res/inc/images/red_btn_p.data"
+#include "res/inc/images/rgb.data"
 #include "res/inc/images/right_off.data"
 #include "res/inc/images/right_on.data"
 #include "res/inc/images/slider_bg.data"
@@ -53,9 +54,9 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");
 #else
-  //  resource_manager_add(rm, font_ap);
+  resource_manager_add(rm, font_ap);
   resource_manager_add(rm, font_default);
-  // resource_manager_add(rm, font_default_ttf);
+  resource_manager_add(rm, font_default_ttf);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);
   resource_manager_add(rm, image_dialog_title);
@@ -75,6 +76,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_red_btn_n);
   resource_manager_add(rm, image_red_btn_o);
   resource_manager_add(rm, image_red_btn_p);
+  resource_manager_add(rm, image_rgb);
   resource_manager_add(rm, image_right_off);
   resource_manager_add(rm, image_right_on);
   resource_manager_add(rm, image_slider_bg);

@@ -1,7 +1,6 @@
 <window name="main" x="0" y="0" w="320" h="480">
   <button name="inc" x="10" y="5" w="40%" h="30" text="Inc"/>
   <button name="dec" x="right:10" y="5" w="40%" h="30" text="Dec"/>
-  <image name="img" x="10" y="230" w="100" h="100"/>
   <label name="" x="10" y="40" w="80" h="30" text="Left"/>
   <label name="" x="100" y="40" w="80" h="30" text="Center"/>
   <label name="" x="200" y="40" w="80" h="30" text="Right"/>
@@ -17,4 +16,5 @@
   <button name="dialog2" x="right:10" y="260" w="40%" h="30" text="Dialog2"/>
   <button name="window1" x="10" y="320" w="40%" h="30" text="Window1"/>
   <button name="window2" x="right:10" y="320" w="40%" h="30" text="Window2"/>
+  <image name="img" image="earth" x="10" y="360" w="100" h="100"/>
 </window>

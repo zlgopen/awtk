@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_animator.c
  * Author: AWTK Develop Team
  * Brief:  window_animator
@@ -22,7 +22,6 @@
 #include "base/window_animator.h"
 
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
-  rect_t r;
   widget_t* wm = NULL;
   canvas_t* c = NULL;
   return_value_if_fail(wa != NULL, RET_FAIL);
@@ -44,8 +43,13 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
     wa->percent = wa->time_percent;
   }
 
-  rect_init(r, wm->x, wm->y, wm->w, wm->h);
-  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_ANIMATION) == RET_OK);
+  if (wa->begin_frame) {
+    wa->begin_frame(wa);
+  } else {
+    rect_t r;
+    rect_init(r, wm->x, wm->y, wm->w, wm->h);
+    ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_ANIMATION) == RET_OK);
+  }
 
   if (wa->draw_prev_window != NULL) {
     wa->draw_prev_window(wa);
@@ -55,7 +59,11 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
     wa->draw_curr_window(wa);
   }
 
-  ENSURE(canvas_end_frame(c) == RET_OK);
+  if (wa->end_frame) {
+    wa->end_frame(wa);
+  } else {
+    ENSURE(canvas_end_frame(c) == RET_OK);
+  }
 
   return wa->time_percent >= 1 ? RET_DONE : RET_OK;
 }
@@ -64,4 +72,24 @@ ret_t window_animator_destroy(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->destroy != NULL, RET_FAIL);
 
   return wa->destroy(wa);
+}
+
+ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
+#ifdef WITH_NANOVG
+  (void)wa;
+#else
+  rect_t r;
+  widget_t* w = NULL;
+
+  if (wa->percent > 0) {
+    w = wa->curr_win;
+  } else {
+    w = wa->curr_win->parent;
+  }
+
+  rect_init(r, w->x, w->y, w->w, w->h);
+  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_NORMAL) == RET_OK);
+#endif
+
+  return RET_OK;
 }

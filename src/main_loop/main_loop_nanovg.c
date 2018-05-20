@@ -78,7 +78,7 @@ static ret_t main_loop_nanovg_create_window(main_loop_simple_t* l) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 #endif
 
-  LOOP_SDL_WINDOW_SET(l,  SDL_CreateWindow("AWTK Simulator", x, y, l->w, l->h, flags));
+  LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow("AWTK Simulator", x, y, l->w, l->h, flags));
   return_value_if_fail(LOOP_SDL_WINDOW(l) != NULL, RET_FAIL);
 
   LOOP_SDL_GLCONTEXT_SET(l, SDL_GL_CreateContext(LOOP_SDL_WINDOW(l)));
@@ -105,4 +105,3 @@ main_loop_t* main_loop_init(int w, int h) {
 
   return (main_loop_t*)loop;
 }
-

@@ -194,4 +194,3 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx) {
 
   return main_loop_queue_event(main_loop(), &r);
 }
-

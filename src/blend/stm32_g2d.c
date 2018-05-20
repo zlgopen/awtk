@@ -205,15 +205,19 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
   DMA2D->CR &= ~(DMA2D_CR_START);
-  DMA2D->CR = DMA2D_M2M_BLEND;
-
+  if (o_format == fg_format) {
+    DMA2D->CR = DMA2D_M2M;
+  } else {
+    DMA2D->CR = DMA2D_M2M_BLEND;
+  }
+  
+	DMA2D->BGPFCCR = o_format;
+  DMA2D->BGOR = o_offline;
+  DMA2D->BGMAR = o_addr;
+	
   DMA2D->OPFCCR = o_format;
   DMA2D->OOR = o_offline;
   DMA2D->OMAR = o_addr;
-
-  DMA2D->BGPFCCR = o_format;
-  DMA2D->BGOR = o_offline;
-  DMA2D->BGMAR = o_addr;
 
   DMA2D->FGPFCCR = fg_format;
   DMA2D->FGOR = fg_offline;

@@ -247,4 +247,3 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
 
   return main_loop_queue_event(main_loop(), &r);
 }
-

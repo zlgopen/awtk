@@ -69,7 +69,7 @@ static void* entry(void* arg) {
 #elif defined(HAS_PTHREAD)
   return NULL;
 #else
-	return NULL;
+  return NULL;
 #endif
 }
 
@@ -88,8 +88,8 @@ ret_t thread_start(thread_t* thread) {
   int ret = pthread_create(&(thread->thread), NULL, entry, thread);
   thread->running = ret == 0;
 #else
-	entry(thread);
-	thread->running = FALSE;
+  entry(thread);
+  thread->running = FALSE;
 #endif
 
   return thread->running ? RET_OK : RET_FAIL;

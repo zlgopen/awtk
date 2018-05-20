@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -246,10 +246,12 @@ static ret_t timer_enable_user_input(const timer_info_t* timer) {
 }
 
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
-  uint32_t time_ms = time_now_ms();
+  uint32_t start_time = time_now_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
-  ret_t ret = window_animator_update(wm->animator, time_ms);
+  ret_t ret = window_animator_update(wm->animator, start_time);
+  uint32_t cost = time_now_ms() - start_time;
+
   if (ret == RET_DONE) {
     window_animator_destroy(wm->animator);
     wm->animator = NULL;

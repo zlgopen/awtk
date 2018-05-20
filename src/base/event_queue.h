@@ -28,10 +28,7 @@
 
 BEGIN_C_DECLS
 
-enum {
-  REQ_ADD_IDLE = EVT_REQ_START,
-  REQ_ADD_TIMER 
-};
+enum { REQ_ADD_IDLE = EVT_REQ_START, REQ_ADD_TIMER };
 
 typedef struct _add_idle_t {
   event_t e;

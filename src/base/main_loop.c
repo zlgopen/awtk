@@ -35,7 +35,7 @@ ret_t main_loop_quit(main_loop_t* l) {
   return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   l->running = FALSE;
 
-  if(l->quit != NULL) {
+  if (l->quit != NULL) {
     l->quit(l);
   }
 
