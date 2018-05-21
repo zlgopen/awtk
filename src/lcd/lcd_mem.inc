@@ -172,9 +172,13 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 #ifdef WITH_G2D
   if (src->w == dst->w && src->h == dst->h && lcd->global_alpha == 0xff) {
     if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
-      return g2d_copy_image(&fb, img, src, dst->x, dst->y);
-    //} else {
-    //  return g2d_blend_image(&fb, img, src, dst->x, dst->y);
+      if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
+        return RET_OK;
+      }
+    } else {
+      if (g2d_blend_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
+        return RET_OK;
+      }
     }
   }
 #endif /*WITH_G2D*/

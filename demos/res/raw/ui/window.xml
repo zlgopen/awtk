@@ -17,4 +17,5 @@
   <button name="window1" x="10" y="320" w="40%" h="30" text="Window1"/>
   <button name="window2" x="right:10" y="320" w="40%" h="30" text="Window2"/>
   <image name="img" image="earth" x="10" y="360" w="100" h="100"/>
+  <image name="img" image="rgb" x="200" y="360" w="100" h="100"/>
 </window>

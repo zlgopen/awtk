@@ -45,7 +45,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {
   uint16_t o_pixsize = 0;
 
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
 
   if (fb->format == BITMAP_FMT_RGB565) {
@@ -96,9 +96,9 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
 
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
 
   sx = src->x;
@@ -170,9 +170,9 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
 
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
 
   sx = src->x;
@@ -210,11 +210,11 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) 
   } else {
     DMA2D->CR = DMA2D_M2M_BLEND;
   }
-  
-	DMA2D->BGPFCCR = o_format;
+
+  DMA2D->BGPFCCR = o_format;
   DMA2D->BGOR = o_offline;
   DMA2D->BGMAR = o_addr;
-	
+
   DMA2D->OPFCCR = o_format;
   DMA2D->OOR = o_offline;
   DMA2D->OMAR = o_addr;
