@@ -56,6 +56,11 @@ typedef enum _ret_t {
    */
   RET_FAIL,
   /**
+   * @const RET_NOT_IMPL
+   * 没有实现/不支持。
+   */
+  RET_NOT_IMPL,
+  /**
    * @const RET_QUIT
    * 退出。通常用于主循环。
    */

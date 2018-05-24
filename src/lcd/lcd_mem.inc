@@ -20,10 +20,11 @@
  */
 
 #include "base/mem.h"
-#include "blend/blend.h"
 #include "lcd/lcd_mem.h"
 #include "base/vgcanvas.h"
+#include "blend/soft_g2d.h"
 #include "base/system_info.h"
+
 #ifdef WITH_G2D
 #include "base/g2d.h"
 #endif /*WITH_G2D*/
@@ -117,21 +118,19 @@ color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
 }
 
 static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
-#ifdef WITH_G2D
+  rect_t r;
   bitmap_t fb;
+
+  rect_init(r, x, y, w, h);
   lcd_mem_to_bitmap(lcd, &fb);
-  g2d_fill_rect(&fb, x, y, w, h, lcd->fill_color);
-#else
-  wh_t i = 0;
-  color_t c = lcd->stroke_color;
-  lcd->stroke_color = lcd->fill_color;
-  for (i = 0; i < h; i++) {
-    lcd_mem_draw_hline(lcd, x, y + i, w);
+
+#ifdef WITH_G2D
+  if(g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
+    return RET_OK;
   }
-  lcd->stroke_color = c;
 #endif /*WITH_G2D*/
 
-  return RET_OK;
+  return soft_fill_rect(&fb, &r, lcd->fill_color);
 }
 
 static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
@@ -169,21 +168,21 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   bitmap_t fb;
   lcd_mem_to_bitmap(lcd, &fb);
 
+  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
 #ifdef WITH_G2D
-  if (src->w == dst->w && src->h == dst->h && lcd->global_alpha == 0xff) {
-    if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
-      if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
-        return RET_OK;
-      }
-    } else {
-      if (g2d_blend_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
-        return RET_OK;
-      }
+    if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
+      return RET_OK;
     }
-  }
 #endif /*WITH_G2D*/
-
-  return blend_image(&fb, img, dst, src, lcd->global_alpha);
+    return soft_copy_image(&fb, img, src, dst->x, dst->y);
+  } else {
+#ifdef WITH_G2D
+    if (g2d_blend_image(&fb, img, dst, src, lcd->global_alpha) == RET_OK) {
+      return RET_OK;
+    }
+#endif /*WITH_G2D*/
+    return soft_blend_image(&fb, img, dst, src, lcd->global_alpha);
+  }
 }
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
@@ -303,12 +302,12 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   lcd_mem_init_offline_fb(lcd, &offline_fb);
 
 #ifdef WITH_G2D
-  g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
-#else
-  blend_image(&online_fb, &offline_fb, r, r, 0xff);
+  if(g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
+    return RET_OK;
+  }
 #endif /*WITH_G2D*/
 
-  return RET_OK;
+  return soft_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {

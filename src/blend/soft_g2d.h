@@ -1,5 +1,5 @@
 ﻿/**
- * File:   blend.h
+ * File:   soft_g2d.h
  * Author: AWTK Develop Team
  * Brief:  image blend
  *
@@ -27,7 +27,9 @@
 
 BEGIN_C_DECLS
 
-ret_t blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t alpha);
+ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c);
+ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
+ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, rect_t* dst, uint8_t global_alpha);
 
 ret_t blend_image_8888_565(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
 ret_t blend_image_8888_8888(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
