@@ -53,9 +53,9 @@ void* tk_realloc(void* ptr, uint32_t size);
 void tk_free(void* ptr);
 void* tk_alloc(uint32_t size);
 
-#define TKMEM_INIT(size)                      \
-  {                                           \
-    static uint32_t s_heap_mem[size >> 2];    \
+#define TKMEM_INIT(size)                         \
+  {                                              \
+    static uint32_t s_heap_mem[size >> 2];       \
     tk_mem_init(s_heap_mem, sizeof(s_heap_mem)); \
   }
 

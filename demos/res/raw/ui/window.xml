@@ -4,18 +4,18 @@
   <label name="" x="10" y="40" w="80" h="30" text="Left"/>
   <label name="" x="100" y="40" w="80" h="30" text="Center"/>
   <label name="" x="200" y="40" w="80" h="30" text="Right"/>
-  <progress_bar name="bar1" x="10" y="80" w="168" h="30" value="40"/>
-  <progress_bar name="bar2" x="260" y="80" w="30" h="118" value="20" vertical="true"/>
-  <check_button name="c1" x="10" y="150" w="80" h="30" text="Book"/>
-  <check_button name="c2" x="100" y="150" w="80" h="30" text="Food"/>
-  <radio_button name="r1" x="10" y="200" w="80" h="30" text="Book"/>
-  <radio_button name="r2" x="100" y="200" w="80" h="30" text="Food"/>
-  <radio_button name="r3" x="190" y="200" w="80" h="30" text="Pencil" value="true"/>
+  <progress_bar name="bar1" x="10" y="70" w="240" h="30" value="40"/>
+  <progress_bar name="bar2" x="280" y="70" w="30" h="118" value="20" vertical="true"/>
+  <check_button name="c1" x="10" y="110" w="80" h="30" text="Book"/>
+  <check_button name="c2" x="100" y="110" w="80" h="30" text="Food"/>
+  <radio_button name="r1" x="10" y="150" w="80" h="30" text="Book"/>
+  <radio_button name="r2" x="100" y="150" w="80" h="30" text="Food"/>
+  <radio_button name="r3" x="190" y="150" w="80" h="30" text="Pencil" value="true"/>
 
-  <button name="dialog1" x="10" y="260" w="40%" h="30" text="Dialog1"/>
-  <button name="dialog2" x="right:10" y="260" w="40%" h="30" text="Dialog2"/>
-  <button name="window1" x="10" y="320" w="40%" h="30" text="Window1"/>
-  <button name="window2" x="right:10" y="320" w="40%" h="30" text="Window2"/>
+  <button name="dialog1" x="10" y="210" w="40%" h="30" text="Dialog1"/>
+  <button name="dialog2" x="right:10" y="210" w="40%" h="30" text="Dialog2"/>
+  <button name="window1" x="10" y="250" w="40%" h="30" text="Window1"/>
+  <button name="window2" x="right:10" y="250" w="40%" h="30" text="Window2"/>
   <image name="img" image="earth" x="10" y="360" w="100" h="100"/>
   <image name="img" image="rgb" x="200" y="360" w="100" h="100"/>
 </window>

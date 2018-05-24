@@ -159,7 +159,7 @@ typedef enum _ret_t {
 
 #ifndef bool_t
 #define bool_t uint8_t
-#endif/*bool_t*/
+#endif /*bool_t*/
 
 typedef void* pointer_t;
 

@@ -32,7 +32,7 @@
 #define tk_mutex_handle_t int
 #endif
 
-struct _mutex_t {
+struct _tk_mutex_t {
   ret_t created;
   tk_mutex_handle_t mutex;
 };

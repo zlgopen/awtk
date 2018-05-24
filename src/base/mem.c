@@ -294,9 +294,8 @@ void tk_mem_info_dump() {
     log_debug("[%d] %p %d\n", (int)i, iter, (int)(iter->length));
   }
 
-  log_debug("total=%d used=%d free=%d free_block_nr=%d used_block_nr=%d\n",
-		  (int)(st.total), (int)(st.used),
-            (int)(st.free), (int)(st.free_block_nr), (int)(st.used_block_nr));
+  log_debug("total=%d used=%d free=%d free_block_nr=%d used_block_nr=%d\n", (int)(st.total),
+            (int)(st.used), (int)(st.free), (int)(st.free_block_nr), (int)(st.used_block_nr));
   return;
 }
 
