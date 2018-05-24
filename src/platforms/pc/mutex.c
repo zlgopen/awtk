@@ -24,21 +24,21 @@
 
 #ifdef WIN32
 #include "Windows.h"
-#define mutex_handle_t HANDLE
+#define tk_mutex_handle_t HANDLE
 #elif defined(HAS_PTHREAD)
 #include "pthread.h"
-#define mutex_handle_t pthread_mutex_t
+#define tk_mutex_handle_t pthread_mutex_t
 #else
-#define mutex_handle_t int
+#define tk_mutex_handle_t int
 #endif
 
 struct _mutex_t {
   ret_t created;
-  mutex_handle_t mutex;
+  tk_mutex_handle_t mutex;
 };
 
-mutex_t* mutex_create() {
-  mutex_t* mutex = (mutex_t*)TKMEM_ZALLOC(mutex_t);
+tk_mutex_t* tk_mutex_create() {
+  tk_mutex_t* mutex = (tk_mutex_t*)TKMEM_ZALLOC(tk_mutex_t);
   return_value_if_fail(mutex != NULL, NULL);
 #ifdef WIN32
   mutex->mutex = CreateMutex(NULL, RET_BAD_PARAMS, NULL);
@@ -50,7 +50,7 @@ mutex_t* mutex_create() {
   return mutex;
 }
 
-ret_t mutex_lock(mutex_t* mutex) {
+ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL && mutex->created, RET_BAD_PARAMS);
 
 #ifdef WIN32
@@ -62,7 +62,7 @@ ret_t mutex_lock(mutex_t* mutex) {
   return RET_OK;
 }
 
-ret_t mutex_unlock(mutex_t* mutex) {
+ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL && mutex->created, RET_BAD_PARAMS);
 
 #ifdef WIN32
@@ -74,7 +74,7 @@ ret_t mutex_unlock(mutex_t* mutex) {
   return RET_OK;
 }
 
-ret_t mutex_destroy(mutex_t* mutex) {
+ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL && mutex->created, RET_BAD_PARAMS);
 
 #ifdef WIN32

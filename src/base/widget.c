@@ -990,7 +990,7 @@ ret_t widget_to_xml(widget_t* widget) {
   const key_type_value_t* kv = widget_type_find_by_value(widget->type);
 
   log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name.str,
-            widget->x, widget->y, widget->w, widget->h);
+           (int)(widget->x), (int)(widget->y), (int)(widget->w), (int)(widget->h));
   text = widget_get_text(widget);
   if (text) {
     char str[128];

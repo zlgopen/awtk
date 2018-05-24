@@ -27,46 +27,46 @@
 BEGIN_C_DECLS
 
 /**
- * @class mutex_t
+ * @class tk_mutex_t
  * 互斥锁。
  */
-struct _mutex_t;
-typedef struct _mutex_t mutex_t;
+struct _tk_mutex_t;
+typedef struct _tk_mutex_t tk_mutex_t;
 
 /**
- * @method mutex_create
+ * @method tk_mutex_create
  * 创建mutex。
  *
- * @return {mutex_t*} mutex对象。
+ * @return {tk_mutex_t*} mutex对象。
  */
-mutex_t* mutex_create(void);
+tk_mutex_t* tk_mutex_create(void);
 
 /**
- * @method mutex_lock
+ * @method tk_mutex_lock
  * 加锁。
- * @param {mutex_t*}    mutex mutex对象。
+ * @param {tk_mutex_t*}    mutex mutex对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t mutex_lock(mutex_t* mutex);
+ret_t tk_mutex_lock(tk_mutex_t* mutex);
 
 /**
- * @method mutex_unlock
+ * @method tk_mutex_unlock
  * 解锁。
- * @param {mutex_t*}    mutex mutex对象。
+ * @param {tk_mutex_t*}    mutex mutex对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t mutex_unlock(mutex_t* mutex);
+ret_t tk_mutex_unlock(tk_mutex_t* mutex);
 
 /**
- * @method mutex_destroy
+ * @method tk_mutex_destroy
  * 销毁mutex对象。
- * @param {mutex_t*}    mutex mutex对象。
+ * @param {tk_mutex_t*}    mutex mutex对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t mutex_destroy(mutex_t* mutex);
+ret_t tk_mutex_destroy(tk_mutex_t* mutex);
 
 END_C_DECLS
 

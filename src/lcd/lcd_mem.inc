@@ -367,3 +367,12 @@ lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* off
 
   return lcd;
 }
+
+lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
+  lcd_t* lcd = lcd_mem_create(w, h, FALSE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  mem->fbuff = fbuff;
+
+  return lcd;
+}

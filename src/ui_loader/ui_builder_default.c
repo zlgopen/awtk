@@ -114,7 +114,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     b->root = widget;
   }
 
-  log_debug("%d %d %d %d %d\n", type, x, y, w, h);
+  log_debug("%d %d %d %d %d\n", (int)(type), (int)(x), (int)(y), (int)(w), (int)(h));
 
   return RET_OK;
 }

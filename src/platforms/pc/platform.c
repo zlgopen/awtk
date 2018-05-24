@@ -70,7 +70,7 @@ static uint32_t s_heap_mem[1024 * 1024];
 
 ret_t platform_prepare(void) {
 #ifndef HAS_STD_MALLOC
-  mem_init(s_heap_mem, sizeof(s_heap_mem));
+  tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif /*HAS_STD_MALLOC*/
 
   return RET_OK;

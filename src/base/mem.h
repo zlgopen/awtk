@@ -34,11 +34,11 @@ typedef struct _mem_stat_t {
   uint32_t used_block_nr;
 } mem_stat_t;
 
-ret_t mem_init(void* buffer, uint32_t length);
+ret_t tk_mem_init(void* buffer, uint32_t length);
 
-mem_stat_t mem_stat(void);
+mem_stat_t tk_mem_stat(void);
 
-void mem_info_dump(void);
+void tk_mem_info_dump(void);
 
 #ifdef HAS_STD_MALLOC
 #define TKMEM_INIT(size)
@@ -56,7 +56,7 @@ void* tk_alloc(uint32_t size);
 #define TKMEM_INIT(size)                      \
   {                                           \
     static uint32_t s_heap_mem[size >> 2];    \
-    mem_init(s_heap_mem, sizeof(s_heap_mem)); \
+    tk_mem_init(s_heap_mem, sizeof(s_heap_mem)); \
   }
 
 #define TKMEM_ALLOC(size) tk_alloc(size)

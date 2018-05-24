@@ -35,6 +35,7 @@ typedef struct _lcd_mem_t {
 } lcd_mem_t;
 
 lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc);
+lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff);
 lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb);
 
 END_C_DECLS

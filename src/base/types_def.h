@@ -157,7 +157,10 @@ typedef enum _ret_t {
 #define FALSE 0
 #endif /*FALSE*/
 
-typedef int8_t bool_t;
+#ifndef bool_t
+#define bool_t uint8_t
+#endif/*bool_t*/
+
 typedef void* pointer_t;
 
 #ifndef ftk_min

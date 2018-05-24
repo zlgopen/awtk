@@ -51,7 +51,7 @@ typedef struct _main_loop_simple_t {
   xy_t last_x;
   xy_t last_y;
   uint8_t last_key;
-  mutex_t* mutex;
+  tk_mutex_t* mutex;
   void* user1;
   void* user2;
   void* user3;

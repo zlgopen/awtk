@@ -43,7 +43,7 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
 
   code = dialog_modal(win);
 
-  mem_info_dump();
+  tk_mem_info_dump();
   (void)e;
   (void)code;
 

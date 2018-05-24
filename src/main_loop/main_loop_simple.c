@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   main_loop_simple.c
  * Author: AWTK Develop Team
  * Brief:  a simple main loop
@@ -25,9 +25,9 @@ static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_
   ret_t ret = RET_FAIL;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
-  mutex_lock(loop->mutex);
+  tk_mutex_lock(loop->mutex);
   ret = event_queue_send(loop->queue, r);
-  mutex_unlock(loop->mutex);
+  tk_mutex_unlock(loop->mutex);
 
   return ret;
 }
@@ -35,9 +35,9 @@ static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_
 static ret_t main_loop_simple_recv_event(main_loop_simple_t* loop, event_queue_req_t* r) {
   ret_t ret = RET_FAIL;
 
-  mutex_lock(loop->mutex);
+  tk_mutex_lock(loop->mutex);
   ret = event_queue_recv(loop->queue, r);
-  mutex_unlock(loop->mutex);
+  tk_mutex_unlock(loop->mutex);
 
   return ret;
 }
@@ -180,7 +180,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   loop->queue = event_queue_create(20);
   return_value_if_fail(loop->queue != NULL, NULL);
 
-  loop->mutex = mutex_create();
+  loop->mutex = tk_mutex_create();
   return_value_if_fail(loop->mutex != NULL, NULL);
 
   loop->base.run = main_loop_simple_run;
@@ -195,7 +195,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
 ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
   event_queue_destroy(loop->queue);
-  mutex_destroy(loop->mutex);
+  tk_mutex_destroy(loop->mutex);
 
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 

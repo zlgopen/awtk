@@ -61,9 +61,9 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
 
   widget_to_xml(win);
   code = dialog_modal(win);
-  log_debug("code=%d\n", code);
+  log_debug("code=%d\n", (int)code);
 
-  mem_info_dump();
+  tk_mem_info_dump();
   (void)e;
 
   return RET_OK;

@@ -42,7 +42,7 @@ int main() {
 
   srand(time(0));
   mem_stack_init(&s);
-  mem_init(s_heap_mem, sizeof(s_heap_mem));
+  tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 
   tk_free(tk_alloc(100));
 
@@ -62,7 +62,7 @@ int main() {
   }
 
   mem_stack_free_n(&s, s.top);
-  mem_info_dump();
+  tk_mem_info_dump();
 
   return 0;
 }

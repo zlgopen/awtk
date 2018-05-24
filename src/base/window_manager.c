@@ -227,7 +227,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
     }
-    log_debug("%s x=%d y=%d w=%d h=%d\n", __func__, r.x, r.y, r.w, r.h);
+    log_debug("%s x=%d y=%d w=%d h=%d\n", __func__, (int)(r.x), (int)(r.y), (int)(r.w), (int)(r.h));
   }
 
   wm->last_dirty_rect = wm->dirty_rect;
@@ -251,6 +251,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
 
   ret_t ret = window_animator_update(wm->animator, start_time);
   uint32_t cost = time_now_ms() - start_time;
+  (void)cost;
 
   if (ret == RET_DONE) {
     window_animator_destroy(wm->animator);

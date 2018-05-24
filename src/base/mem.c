@@ -22,19 +22,19 @@
 #include "base/mem.h"
 
 #ifdef HAS_STD_MALLOC
-ret_t mem_init(void* buffer, uint32_t length) {
+ret_t tk_mem_init(void* buffer, uint32_t length) {
   (void)buffer;
   (void)length;
   return RET_OK;
 }
 
-mem_stat_t mem_stat(void) {
+mem_stat_t tk_mem_stat(void) {
   mem_stat_t stat;
   memset(&stat, 0x00, sizeof(stat));
   return stat;
 }
 
-void mem_info_dump(void) {}
+void tk_mem_info_dump(void) {}
 
 #else
 typedef struct _free_node_t {
@@ -119,8 +119,8 @@ void* tk_alloc(uint32_t size) {
   }
 
   if (iter == NULL) {
-    log_debug("%s: Out of memory(%d):\n", __func__, size);
-    mem_info_dump();
+    log_debug("%s: Out of memory(%d):\n", __func__, (int)size);
+    tk_mem_info_dump();
   }
 
   return_value_if_fail(iter != NULL, NULL);
@@ -270,7 +270,7 @@ void* tk_realloc(void* ptr, uint32_t size) {
   return new_ptr;
 }
 
-ret_t mem_init(void* buffer, uint32_t length) {
+ret_t tk_mem_init(void* buffer, uint32_t length) {
   return_value_if_fail(buffer != NULL && length > MIN_SIZE, RET_BAD_PARAMS);
 
   memset(buffer, 0x00, length);
@@ -285,21 +285,22 @@ ret_t mem_init(void* buffer, uint32_t length) {
   return RET_OK;
 }
 
-void mem_info_dump() {
+void tk_mem_info_dump() {
   int32_t i = 0;
   free_node_t* iter = NULL;
-  mem_stat_t st = mem_stat();
+  mem_stat_t st = tk_mem_stat();
 
   for (iter = s_mem_info.free_list; iter != NULL; iter = iter->next, i++) {
-    log_debug("[%d] %p %d\n", i, iter, iter->length);
+    log_debug("[%d] %p %d\n", (int)i, iter, (int)(iter->length));
   }
 
-  log_debug("total=%d used=%d free=%d free_block_nr=%d used_block_nr=%d\n", st.total, st.used,
-            st.free, st.free_block_nr, st.used_block_nr);
+  log_debug("total=%d used=%d free=%d free_block_nr=%d used_block_nr=%d\n",
+		  (int)(st.total), (int)(st.used),
+            (int)(st.free), (int)(st.free_block_nr), (int)(st.used_block_nr));
   return;
 }
 
-mem_stat_t mem_stat() {
+mem_stat_t tk_mem_stat() {
   mem_stat_t st;
   free_node_t* iter = NULL;
 
