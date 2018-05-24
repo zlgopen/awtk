@@ -22,6 +22,6 @@ SOURCES = [
 ] + Glob('*.cc') + Glob('*.c')
 
 env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
-
+env.Program(os.path.join(BIN_DIR, 'mem_test'), ["mem_test.cpp"])
 
 
