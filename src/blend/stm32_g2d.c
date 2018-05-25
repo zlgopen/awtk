@@ -179,7 +179,7 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, rect_t* dst, uin
   uint16_t x = 0;
   uint16_t y = 0;
 
-  return_value_if_fail(global_alpha != 0xff, RET_NOT_IMPL); /*not support global_alpha*/
+  return_value_if_fail(global_alpha > 0xf0, RET_NOT_IMPL); /*not support global_alpha*/
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
