@@ -168,7 +168,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   bitmap_t fb;
   lcd_mem_to_bitmap(lcd, &fb);
 
-  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565) {
+  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w && src->h == dst->h && lcd->global_alpha > 0xf0) {
 #ifdef WITH_G2D
     if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
       return RET_OK;
