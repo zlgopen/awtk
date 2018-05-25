@@ -56,7 +56,7 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   rect_init(dst, 0, 0, win->w * scale, win->h * scale);
   dst.x = win->x + ((win->w - dst.w) >> 1);
   dst.y = win->y + ((win->h - dst.h) >> 1);
-  if(alpha > 0) {
+  if (alpha > 0) {
     lcd_set_global_alpha(c->lcd, alpha * 0xff);
     lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
   }

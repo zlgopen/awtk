@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @method g2d_fill_rect
- * 用颜色填充指定的区域。 
+ * 用颜色填充指定的区域。
  * @param {bitmap_t*} fb framebuffer对象。
  * @param {rect_t*} dst 要填充的目标区域。
  * @param {color_t} c 颜色。
@@ -69,4 +69,3 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, rect_t* dst, uin
 END_C_DECLS
 
 #endif /*TK_G2D_H*/
-

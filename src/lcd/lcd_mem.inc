@@ -125,7 +125,7 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   lcd_mem_to_bitmap(lcd, &fb);
 
 #ifdef WITH_G2D
-  if(g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
+  if (g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
@@ -168,7 +168,8 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   bitmap_t fb;
   lcd_mem_to_bitmap(lcd, &fb);
 
-  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w && src->h == dst->h && lcd->global_alpha > 0xf0) {
+  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w &&
+      src->h == dst->h && lcd->global_alpha > 0xf0) {
 #ifdef WITH_G2D
     if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
       return RET_OK;
@@ -302,7 +303,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   lcd_mem_init_offline_fb(lcd, &offline_fb);
 
 #ifdef WITH_G2D
-  if(g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
+  if (g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
