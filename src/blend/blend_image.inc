@@ -45,12 +45,16 @@ static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst
       srcp += src_line_offset;
     }
   } else {
+    uint32_t src_bpp_shift = src_bpp >> 1;
+    uint32_t scale_x = (((sw+1) << 16) / dw);
+    uint32_t scale_y = (((sh+1) << 16) / dh);
+
     dstp += dst_bpp * (dy * dst_iw + dx);
     for (j = 0; j < dh; j++) {
-      uint8_t* srcp_start = (uint8_t*)(src->data) + (src_iw * (sy + (j * sh / dh))) * src_bpp;
+      uint8_t* srcp_start = (uint8_t*)(src->data) + ((src_iw * (sy + ((j * scale_y) >> 16)) + sx) << src_bpp_shift);
 
       for (i = 0; i < dw; i++) {
-        srcp = srcp_start + src_bpp * (sx + i * sw / dw);
+        srcp = srcp_start + (((i * scale_x) >> 16) << src_bpp_shift);
         blend(dstp, srcp);
         dstp += dst_bpp;
       }
@@ -108,12 +112,16 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
       srcp += src_line_offset;
     }
   } else {
+    uint32_t src_bpp_shift = src_bpp >> 1;
+    uint32_t scale_x = (((sw+1) << 16) / dw);
+    uint32_t scale_y = (((sh+1) << 16) / dh);
+
     dstp += dst_bpp * (dy * dst_iw + dx);
     for (j = 0; j < dh; j++) {
-      uint8_t* srcp_start = (uint8_t*)(src->data) + (src_iw * (sy + (j * sh / dh))) * src_bpp;
+      uint8_t* srcp_start = (uint8_t*)(src->data) + ((src_iw * (sy + ((j * scale_y) >> 16)) + sx) << src_bpp_shift);
 
       for (i = 0; i < dw; i++) {
-        srcp = srcp_start + src_bpp * (sx + i * sw / dw);
+        srcp = srcp_start + (((i * scale_x) >> 16) << src_bpp_shift);
         blend_a(dstp, srcp, a);
         dstp += dst_bpp;
       }

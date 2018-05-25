@@ -1,9 +1,9 @@
 
 static ret_t window_animator_open_top_to_bottom_update_percent(window_animator_t* wa) {
   if (wa->open) {
-    wa->percent = 0.5 + 0.5 * wa->easing(wa->time_percent);
+    wa->percent = 0.5f + 0.5f * wa->easing(wa->time_percent);
   } else {
-    wa->percent = 1.0 - 0.5 * wa->easing(wa->time_percent);
+    wa->percent = 1.0f - 0.5f * wa->easing(wa->time_percent);
   }
 
   return RET_OK;

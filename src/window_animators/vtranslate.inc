@@ -1,10 +1,10 @@
 
 static ret_t window_animator_open_vtranslate_update_percent(window_animator_t* wa) {
-  float_t percent = 0.2 + 0.8 * wa->easing(wa->time_percent);
+  float_t percent = 0.2f + 0.8f * wa->easing(wa->time_percent);
   if (wa->open) {
     wa->percent = percent;
   } else {
-    wa->percent = 1.0 - percent;
+    wa->percent = 1.0f - percent;
   }
 
   return RET_OK;
