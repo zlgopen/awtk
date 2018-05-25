@@ -2,4 +2,8 @@
   <button name="bottom" x="10" y="middle" w="25%" h="30" text="Bottom"/>
   <button name="top" x="center" y="middle" w="25%" h="30" text="Top"/>
   <button name="close" x="right:10" y="middle" w="25%" h="30" text="Close"/>
+  
+  <slider x="center" y="10" w="80%" h="20" value="10"/>
+  <slider style="1:img" x="center" y="50" w="80%" h="30" value="20" />
+  <slider style="1:img" x="center" y="90" w="80%" h="30" value="30" min="5" max="50" step="5"/>
 </window>
