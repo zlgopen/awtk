@@ -22,6 +22,24 @@
 #include "blend/soft_g2d.h"
 #include "blend/pixel_pack_unpack.h"
 
+//#define TEST_MEMCPY 1
+
+#ifdef TEST_MEMCPY
+static void* safe_memcpy(void *restrict dst, const void *restrict src, size_t n) {
+  uint8_t* d = (uint8_t*)dst;
+  uint8_t* s = (uint8_t*)src;
+
+  while(n-- > 0) {
+    *d++ = *s++;
+  }
+
+  return dst;
+}
+#define PIXEL_COPY safe_memcpy
+#else 
+#define PIXEL_COPY memcpy
+#endif/*TEST_MEMCPY*/
+
 ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   int x = 0;
   int y = 0;
@@ -53,35 +71,6 @@ ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
     }
 
     return RET_OK;
-    /*
-        bool_t pre_pad = dst->x % 2 == 1;
-        bool_t append_pad = pre_pad ? ((dst->w % 2) == 0) : ((dst->w % 2) == 1);
-
-        data = rgb_to_565(c.rgba.r, c.rgba.g, c.rgba.b);
-        data = (data << 16) | data;
-        for(y = 0; y < h; y++) {
-          uint32_t ww = w >> 1;
-          uint32_t* pend = (uint32_t*)((uint16_t*)p + (append_pad ? (w-1) : w));
-
-          if(pre_pad) {
-            *((uint16_t*)p++) = (uint16_t)data;
-          }
-
-          for(x = 0; x < ww; x++) {
-            *p++ = data;
-            if(p >= pend) {
-              break;
-            }
-          }
-
-          if(append_pad) {
-            *((uint16_t*)p++) = (uint16_t)data;
-          }
-
-          p = (uint32_t*)((uint16_t*)p + offset);
-        }
-    */
-
   } else if (fb->format == BITMAP_FMT_RGBA) {
     data = rgb_to_rgba8888(c.rgba.r, c.rgba.g, c.rgba.b);
   } else {
@@ -116,13 +105,13 @@ ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
 
   if (fb->w == img->w && fb->h == img->h && src->w == img->w && src->x == 0) {
     size = bpp * (img->w * src->h);
-    memcpy(dst_p, src_p, size);
+    PIXEL_COPY(dst_p, src_p, size);
 
     return RET_OK;
   } else {
     size = bpp * src->w;
     for (i = 0; i < src->h; i++) {
-      memcpy(dst_p, src_p, size);
+      PIXEL_COPY(dst_p, src_p, size);
       dst_p += bpp * fb->w;
       src_p += bpp * img->w;
     }
