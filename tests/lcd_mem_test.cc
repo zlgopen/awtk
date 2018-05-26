@@ -2,6 +2,7 @@
 #include "base/canvas.h"
 #include "gtest/gtest.h"
 
+#ifdef WITH_FB_8888
 static void test_draw_points(canvas_t* c) {
   int i = 0;
   color_t color;
@@ -67,10 +68,10 @@ TEST(LCDMem, basic) {
 
   ASSERT_EQ(c, &canvas);
   ASSERT_EQ(canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL), RET_OK);
-
   test_draw_points(c);
   test_fill_rect(c);
   test_stroke_rect(c);
 
   lcd_destroy(lcd);
 }
+#endif/*WITH_FB_8888*/
