@@ -1,7 +1,7 @@
 ﻿/**
- * File:   lcd_mem.h
+ * File:   lcd_mem_rgb565.h 
  * Author: AWTK Develop Team
- * Brief:  memory implemented lcd interface/
+ * Brief:  rgb565 mem lcd.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,25 +15,21 @@
 /**
  * history:
  * ================================================================
- * 2018-01-13 li xianjing <xianjimli@hotmail.com> created
+ * 2018-05-27 li xianjing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_LCD_MEM_H
-#define TK_LCD_MEM_H
+#ifndef TK_LCD_MEM565_H
+#define TK_LCD_MEM565_H
 
-#include "base/lcd.h"
+#include "lcd/lcd_mem.h"
 
 BEGIN_C_DECLS
 
-typedef struct _lcd_mem_t {
-  lcd_t base;
-  uint8_t* fbuff;
-  uint8_t* online_fbuff;
-  vgcanvas_t* vgcanvas;
-  bitmap_format_t format;
-} lcd_mem_t;
+lcd_t* lcd_mem_rgb565_create(wh_t w, wh_t h, bool_t alloc);
+lcd_t* lcd_mem_rgb565_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff);
+lcd_t* lcd_mem_rgb565_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb);
 
 END_C_DECLS
 
-#endif /*TK_LCD_MEM_H*/
+#endif /*TK_LCD_MEM565_H*/

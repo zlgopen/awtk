@@ -2,7 +2,7 @@
 
 [AWTK](https://github.com/zlgopen/awtk)是吸取了[FTK](https://github.com/zlgopen/ftk)和[CanTK](https://github.com/drawapp8/cantk)的精华，重新开发的GUI，计划分以下几个阶段实施：
 
-* 第一阶段专注于嵌入式系统，到达并超越TouchGfx/Embedded Wizard的功能。计划在2018/9前完成。
+* 第一阶段专注于嵌入式系统，到达并超越TouchGfx/Embedded Wizard的功能。计划在2018/9底完成。
 * 第二阶段用AWTK本身开发界面编辑器(或组态软件IDE)，从而验证AWTK支持PC软件开发的能力。计划在2018年底完成。
 * 第三阶段支持Mobile应用程序开发，这一步比较容易，因为在第一阶段就是要把手机上的现代GUI推广到传统嵌入式系统中去。计划在2019/3完成。
 * 第四阶段支持2D游戏开发，把以前开发游戏引擎的经验融合到AWTK中，方便开发交互式的多媒体应用。计划在2019/6完成。 

@@ -20,7 +20,8 @@
  */
 
 #include "lcd/lcd_sdl2.h"
-#include "lcd/lcd_mem.h"
+#include "lcd/lcd_mem_rgb565.h"
+#include "lcd/lcd_mem_rgba8888.h"
 
 typedef struct _lcd_sdl2_t {
   lcd_t base;
@@ -166,16 +167,20 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
 
   base->w = (wh_t)w;
   base->h = (wh_t)h;
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_create(w, h, FALSE);
-  base->type = lcd.lcd_mem->base.type;
-  lcd.texture =
+
 #ifdef WITH_FB_8888
+  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgba8888_create(w, h, FALSE);
+  lcd.texture =
       SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
   log_debug("WITH_FB=8888\n");
 #else
+  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgb565_create(w, h, FALSE);
+  lcd.texture =
       SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
   log_debug("WITH_FB=565\n");
 #endif
+  
+  base->type = lcd.lcd_mem->base.type;
 
   return base;
 }

@@ -1,8 +1,7 @@
-#include "lcd/lcd_mem.h"
 #include "base/canvas.h"
 #include "gtest/gtest.h"
+#include "lcd/lcd_mem_rgba8888.h"
 
-#ifdef WITH_FB_8888
 static void test_draw_points(canvas_t* c) {
   int i = 0;
   color_t color;
@@ -63,7 +62,7 @@ TEST(LCDMem, basic) {
   canvas_t canvas;
   font_manager_t font_manager;
   font_manager_init(&font_manager);
-  lcd_t* lcd = lcd_mem_create(200, 200, TRUE);
+  lcd_t* lcd = lcd_mem_rgba8888_create(200, 200, TRUE);
   canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
 
   ASSERT_EQ(c, &canvas);
@@ -74,4 +73,3 @@ TEST(LCDMem, basic) {
 
   lcd_destroy(lcd);
 }
-#endif/*WITH_FB_8888*/

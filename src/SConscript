@@ -22,10 +22,8 @@ else:
   sources += ['window_animators/window_animator_fb.c'];
   sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl2.c']
 
-if os.environ['FRAME_BUFFER_FORMAT'] =='rgba8888':
-  sources += ['lcd/lcd_mem_rgba8888.c'];
-else:
-  sources += ['lcd/lcd_mem_rgb565.c'];
+sources += ['lcd/lcd_mem_rgba8888.c'];
+sources += ['lcd/lcd_mem_rgb565.c'];
 
 if os.environ['VGCANVAS'] == 'NANOVG':
   sources += Glob('vgcanvas/vgcanvas_nanovg.c')

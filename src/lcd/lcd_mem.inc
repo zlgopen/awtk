@@ -109,7 +109,7 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   return RET_OK;
 }
 
-color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
+static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* fbuff = (pixel_t*)mem->fbuff;
   pixel_t p = fbuff[y * lcd->w + x];
@@ -317,7 +317,7 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
-lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
+static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   system_info_t* info = system_info();
 
   lcd_mem_t* lcd = TKMEM_ZALLOC(lcd_mem_t);
@@ -358,7 +358,7 @@ lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   return base;
 }
 
-lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb) {
+static lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
@@ -368,7 +368,7 @@ lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* off
   return lcd;
 }
 
-lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
+static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
