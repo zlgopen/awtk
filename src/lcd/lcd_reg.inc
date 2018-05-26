@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd_reg.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  register based implemented lcd interface
@@ -22,7 +22,7 @@
 #include "base/system_info.h"
 
 static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
-  lcd->dirty_rect = dirty_rect;
+  lcd->dirty_rect = *dirty_rect;
 
   return RET_OK;
 }
