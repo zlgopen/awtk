@@ -221,40 +221,39 @@ char* tk_strcpy(char* dst, const char* src) { return strcpy(dst, src); }
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   return_value_if_fail(buff != NULL, NULL);
 
-  if(size < 8) {
+  if (size < 8) {
     uint32_t i = 0;
 
-    for(i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
       buff[i] = val;
-    }   
+    }
 
     return buff;
   } else {
     uint32_t* p = NULL;
     uint32_t* end = NULL;
     uint32_t val32 = (val << 16) | val;
-    uint8_t pad1 = ((size_t)buff) & 0x03; 
+    uint8_t pad1 = ((size_t)buff) & 0x03;
     uint8_t pad2 = pad1 ? (size & 0x01) == 0 : (size & 0x01) == 1;
 
-    if(pad1) {
+    if (pad1) {
       buff[0] = val;
-      p = (uint32_t*)(buff+1);
+      p = (uint32_t*)(buff + 1);
     } else {
       p = (uint32_t*)(buff);
-    }   
-        
-    if(pad2) {
-      buff[size-1] = val;
-      end = (uint32_t*)(buff + size - 1); 
+    }
+
+    if (pad2) {
+      buff[size - 1] = val;
+      end = (uint32_t*)(buff + size - 1);
     } else {
       end = (uint32_t*)(buff + size);
-    }   
+    }
 
-    while(p < end) {
+    while (p < end) {
       *p++ = val32;
-    }   
+    }
   }
 
   return buff;
 }
-

@@ -1,5 +1,5 @@
 ﻿/**
- * File:   lcd_mem_rgb565.h 
+ * File:   lcd_mem_rgb565.h
  * Author: AWTK Develop Team
  * Brief:  rgb565 mem lcd.
  *

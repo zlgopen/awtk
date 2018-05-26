@@ -23,7 +23,7 @@ static inline void blend_a(uint8_t* d, uint8_t* s, uint8_t alpha) {
 
     *((uint32_t*)d) = rgb_to_rgba8888(r, g, b);
   }
-	(void)da;
+  (void)da;
 }
 
 #include "blend_image.inc"

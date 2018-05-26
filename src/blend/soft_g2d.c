@@ -26,20 +26,20 @@
 //#define TEST_MEMCPY 1
 
 #ifdef TEST_MEMCPY
-static void* safe_memcpy(void *restrict dst, const void *restrict src, size_t n) {
+static void* safe_memcpy(void* restrict dst, const void* restrict src, size_t n) {
   uint8_t* d = (uint8_t*)dst;
   uint8_t* s = (uint8_t*)src;
 
-  while(n-- > 0) {
+  while (n-- > 0) {
     *d++ = *s++;
   }
 
   return dst;
 }
 #define PIXEL_COPY safe_memcpy
-#else 
+#else
 #define PIXEL_COPY memcpy
-#endif/*TEST_MEMCPY*/
+#endif /*TEST_MEMCPY*/
 
 ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   int x = 0;

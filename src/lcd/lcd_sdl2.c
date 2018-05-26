@@ -179,7 +179,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
       SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
   log_debug("WITH_FB=565\n");
 #endif
-  
+
   base->type = lcd.lcd_mem->base.type;
 
   return base;

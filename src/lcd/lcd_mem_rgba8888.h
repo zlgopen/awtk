@@ -1,5 +1,5 @@
 ﻿/**
- * File:   lcd_mem_rgba8888.h 
+ * File:   lcd_mem_rgba8888.h
  * Author: AWTK Develop Team
  * Brief:  rgba8888 mem lcd.
  *

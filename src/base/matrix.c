@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   matrix.c
  * Author: AWTK Develop Team
  * Brief:  matrix
@@ -51,7 +51,7 @@ matrix_t* matrix_invert(matrix_t* m) {
     return NULL;
   }
 
-  det = 1.0 / det;
+  det = 1.0f / det;
 
   m->a0 = ad * det;
   m->a1 = -ab * det;
@@ -131,8 +131,8 @@ matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* ox, xy_t* oy
   float x1 = m->a0 * x + m->a2 * y + m->a4;
   float y1 = m->a1 * x + m->a3 * y + m->a5;
 
-  *ox = x1 > 0 ? x1 + 0.5 : x1 - 0.5;
-  *oy = y1 > 0 ? y1 + 0.5 : y1 - 0.5;
+  *ox = x1 > 0 ? x1 + 0.5f : x1 - 0.5f;
+  *oy = y1 > 0 ? y1 + 0.5f : y1 - 0.5f;
 
   return m;
 }
