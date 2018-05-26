@@ -112,7 +112,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
-    ftk_itoa(s, sizeof(s), progress_bar->value);
+    tk_itoa(s, sizeof(s), progress_bar->value);
     len = strlen(s);
     s[len] = '%';
     s[len + 1] = '\0';

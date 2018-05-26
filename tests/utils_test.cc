@@ -4,8 +4,8 @@
 TEST(Utils, basic) {
   char str[32];
 
-  ASSERT_EQ(ftk_atoi("100"), 100);
-  ASSERT_EQ(strcmp(ftk_itoa(str, sizeof(str), ftk_atoi("100")), "100"), 0);
+  ASSERT_EQ(tk_atoi("100"), 100);
+  ASSERT_EQ(strcmp(tk_itoa(str, sizeof(str), tk_atoi("100")), "100"), 0);
 }
 
 static void check_buff(uint16_t* buff, uint16_t val, uint32_t size) {

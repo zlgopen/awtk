@@ -26,11 +26,11 @@
 
 BEGIN_C_DECLS
 
-int ftk_atoi(const char* str);
-float_t ftk_atof(const char* str);
-const char* ftk_itoa(char* str, int len, int n);
-const char* ftk_ftoa(char* str, int len, float_t f);
-long ftk_strtol(const char* str, const char** end, int base);
+int tk_atoi(const char* str);
+float_t tk_atof(const char* str);
+const char* tk_itoa(char* str, int len, int n);
+const char* tk_ftoa(char* str, int len, float_t f);
+long tk_strtol(const char* str, const char** end, int base);
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
 

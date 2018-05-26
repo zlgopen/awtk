@@ -142,14 +142,14 @@ ret_t wstr_from_int(wstr_t* str, int32_t v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return wstr_set_utf8(str, ftk_itoa(buff, sizeof(buff), v));
+  return wstr_set_utf8(str, tk_itoa(buff, sizeof(buff), v));
 }
 
 ret_t wstr_from_float(wstr_t* str, float v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return wstr_set_utf8(str, ftk_ftoa(buff, sizeof(buff), v));
+  return wstr_set_utf8(str, tk_ftoa(buff, sizeof(buff), v));
 }
 
 ret_t wstr_from_value(wstr_t* str, const value_t* v) {
@@ -170,7 +170,7 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
   char buff[32];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   wstr_get_utf8(str, buff, sizeof(buff));
-  *v = ftk_atoi(buff);
+  *v = tk_atoi(buff);
 
   return RET_OK;
 }
@@ -179,7 +179,7 @@ ret_t wstr_to_float(wstr_t* str, float* v) {
   char buff[32];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   wstr_get_utf8(str, buff, sizeof(buff));
-  *v = ftk_atof(buff);
+  *v = tk_atof(buff);
 
   return RET_OK;
 }

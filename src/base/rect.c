@@ -25,10 +25,10 @@ ret_t rect_merge(rect_t* dr, rect_t* r) {
 
   if (r->w > 0 && r->h > 0) {
     if (dr->w > 0 && dr->h > 0) {
-      xy_t x = ftk_min(dr->x, r->x);
-      xy_t y = ftk_min(dr->y, r->y);
-      wh_t right = ftk_max((r->x + r->w), (dr->x + dr->w));
-      wh_t bottom = ftk_max((r->y + r->h), (dr->y + dr->h));
+      xy_t x = tk_min(dr->x, r->x);
+      xy_t y = tk_min(dr->y, r->y);
+      wh_t right = tk_max((r->x + r->w), (dr->x + dr->w));
+      wh_t bottom = tk_max((r->y + r->h), (dr->y + dr->h));
 
       dr->x = x;
       dr->y = y;

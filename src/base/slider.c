@@ -35,7 +35,7 @@ static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   float fvalue = (float)value / (float)range;
   return_value_if_fail(r != NULL, RET_BAD_PARAMS);
 
-  r->w = ftk_min(widget->w, widget->h);
+  r->w = tk_min(widget->w, widget->h);
   r->h = r->w;
   if (slider->vertical) {
     r->x = 0;
@@ -229,7 +229,7 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   step = slider->step;
-  value = ftk_max(ftk_min(value, slider->max), slider->min);
+  value = tk_max(tk_min(value, slider->max), slider->min);
 
   if (step > 1) {
     offset = value - slider->min;

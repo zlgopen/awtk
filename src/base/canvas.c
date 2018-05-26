@@ -182,8 +182,8 @@ static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {
     return RET_OK;
   }
 
-  x = ftk_max(x, c->clip_left);
-  x2 = ftk_min(x2, c->clip_right);
+  x = tk_max(x, c->clip_left);
+  x2 = tk_min(x2, c->clip_right);
   w = x2 - x;
 
   return lcd_draw_hline(c->lcd, x, y, w);
@@ -202,8 +202,8 @@ static ret_t canvas_draw_vline_impl(canvas_t* c, xy_t x, xy_t y, wh_t h) {
     return RET_OK;
   }
 
-  y = ftk_max(y, c->clip_top);
-  y2 = ftk_min(y2, c->clip_bottom);
+  y = tk_max(y, c->clip_top);
+  y2 = tk_min(y2, c->clip_bottom);
   h = y2 - y;
 
   return lcd_draw_vline(c->lcd, x, y, h);
@@ -222,9 +222,9 @@ static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t 
   }
 
   if (x1 == x2) {
-    return canvas_draw_vline_impl(c, x1, y1, ftk_abs(y2 - y1) + 1);
+    return canvas_draw_vline_impl(c, x1, y1, tk_abs(y2 - y1) + 1);
   } else if (y1 == y2) {
-    return canvas_draw_hline_impl(c, x1, y1, ftk_abs(x2 - x1) + 1);
+    return canvas_draw_hline_impl(c, x1, y1, tk_abs(x2 - x1) + 1);
   } else {
     draw_line(c, x1, y1, x2, y2);
     return RET_OK;
@@ -317,10 +317,10 @@ static ret_t canvas_fill_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) 
     return RET_OK;
   }
 
-  x = ftk_max(x, c->clip_left);
-  y = ftk_max(y, c->clip_top);
-  x2 = ftk_min(x2, c->clip_right);
-  y2 = ftk_min(y2, c->clip_bottom);
+  x = tk_max(x, c->clip_left);
+  y = tk_max(y, c->clip_top);
+  x2 = tk_min(x2, c->clip_right);
+  y2 = tk_min(y2, c->clip_bottom);
   w = x2 - x;
   h = y2 - y;
 
@@ -364,10 +364,10 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
     return RET_OK;
   }
 
-  dst.x = ftk_max(x, c->clip_left);
-  dst.y = ftk_max(y, c->clip_top);
-  dst.w = ftk_min(x2, c->clip_right) - dst.x;
-  dst.h = ftk_min(y2, c->clip_bottom) - dst.y;
+  dst.x = tk_max(x, c->clip_left);
+  dst.y = tk_max(y, c->clip_top);
+  dst.w = tk_min(x2, c->clip_right) - dst.x;
+  dst.h = tk_min(y2, c->clip_bottom) - dst.y;
 
   src.x = dst.x - x;
   src.y = dst.y - y;
@@ -454,10 +454,10 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
     return RET_OK;
   }
 
-  dst.x = ftk_max(x, c->clip_left);
-  dst.y = ftk_max(y, c->clip_top);
-  dst.w = ftk_min(x2, c->clip_right) - dst.x;
-  dst.h = ftk_min(y2, c->clip_bottom) - dst.y;
+  dst.x = tk_max(x, c->clip_left);
+  dst.y = tk_max(y, c->clip_top);
+  dst.w = tk_min(x2, c->clip_right) - dst.x;
+  dst.h = tk_min(y2, c->clip_bottom) - dst.y;
 
   src.x = s->x + (dst.x - x) * s->w / d->w;
   src.y = s->y + (dst.y - y) * s->h / d->h;
@@ -468,8 +468,8 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
     return RET_OK;
   }
 
-  src.w = ftk_min((img->w - src.x), src.w);
-  src.h = ftk_min((img->h - src.y), src.h);
+  src.w = tk_min((img->w - src.x), src.w);
+  src.h = tk_min((img->h - src.y), src.h);
 
   if (src.w == 0 || src.h == 0 || dst.w == 0 || dst.h == 0) {
     return RET_OK;
@@ -507,9 +507,9 @@ ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst) {
   d = *dst;
 
   while (y < dst->h) {
-    h = ftk_min(img->h, dst->h - y);
+    h = tk_min(img->h, dst->h - y);
     while (x < dst->w) {
-      w = ftk_min(img->w, dst->w - x);
+      w = tk_min(img->w, dst->w - x);
       s.w = w;
       s.h = h;
 
@@ -542,7 +542,7 @@ ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   d = *dst;
 
   while (x < dst->w) {
-    w = ftk_min(img->w, dst->w - x);
+    w = tk_min(img->w, dst->w - x);
     s.w = w;
     d.x = x;
     d.w = w;
@@ -568,7 +568,7 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   d = *dst;
 
   while (y < dst->h) {
-    h = ftk_min(img->h, dst->h - y);
+    h = tk_min(img->h, dst->h - y);
     s.h = h;
     d.y = y;
     d.h = h;
@@ -598,7 +598,7 @@ ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst
 
   canvas_translate(c, dst->x, dst->y);
 
-  h = ftk_min(img_h, dst_h) / 3;
+  h = tk_min(img_h, dst_h) / 3;
   h_h = dst_h - h * 2;
 
   /*top*/
@@ -641,7 +641,7 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  h = ftk_min(img_h, dst_h) / 3;
+  h = tk_min(img_h, dst_h) / 3;
   h_h = dst_h - h * 2;
 
   x = (dst->w - img->w) >> 1;
@@ -685,7 +685,7 @@ ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst
 
   canvas_translate(c, dst->x, dst->y);
 
-  w = ftk_min(img_w, dst_w) / 3;
+  w = tk_min(img_w, dst_w) / 3;
   w_w = dst_w - w * 2;
 
   /*left*/
@@ -728,7 +728,7 @@ ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  w = ftk_min(img_w, dst_w) / 3;
+  w = tk_min(img_w, dst_w) / 3;
   w_w = dst_w - w * 2;
 
   y = (dst_h - img_h) >> 1;
@@ -775,8 +775,8 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   canvas_translate(c, dst->x, dst->y);
 
-  w = ftk_min(img_w, dst_w) / 3;
-  h = ftk_min(img_h, dst_h) / 3;
+  w = tk_min(img_w, dst_w) / 3;
+  h = tk_min(img_h, dst_h) / 3;
 
   w_w = dst_w - w * 2;
   h_h = dst_h - h * 2;
@@ -886,8 +886,8 @@ ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
   scale = (float)(dst->w) / img->w;
-  dst_h = ftk_min(img->h * scale, dst->h);
-  src_h = ftk_min(img->h, dst_h / scale);
+  dst_h = tk_min(img->h * scale, dst->h);
+  src_h = tk_min(img->h, dst_h / scale);
 
   s.x = 0;
   s.y = 0;
@@ -909,8 +909,8 @@ ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
   scale = (float)(dst->h) / img->h;
-  dst_w = ftk_min(img->w * scale, dst->w);
-  src_w = ftk_min(img->w, dst_w / scale);
+  dst_w = tk_min(img->w * scale, dst->w);
+  src_w = tk_min(img->w, dst_w / scale);
 
   s.x = 0;
   s.y = 0;
@@ -938,7 +938,7 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   scalex = (float)(dst->w) / img->w;
   scaley = (float)(dst->h) / img->h;
-  scale = ftk_min(scalex, scaley);
+  scale = tk_min(scalex, scaley);
 
   d.w = img->w * scale;
   d.h = img->h * scale;

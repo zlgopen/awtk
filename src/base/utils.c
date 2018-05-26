@@ -21,7 +21,7 @@
 
 #include "base/utils.h"
 
-int ftk_str2bool(const char* str) {
+int tk_str2bool(const char* str) {
   if (str == NULL || str[0] == '0' || strcmp(str, "false") == 0 || strcmp(str, "no") == 0) {
     return 0;
   }
@@ -29,7 +29,7 @@ int ftk_str2bool(const char* str) {
   return 1;
 }
 
-static long ftk_strtol_internal(const char* str, const char** end, int base) {
+static long tk_strtol_internal(const char* str, const char** end, int base) {
   int i = 0;
   long n = 0;
   char c = 0;
@@ -80,7 +80,7 @@ static long ftk_strtol_internal(const char* str, const char** end, int base) {
   return n;
 }
 
-long ftk_strtol(const char* str, const char** end, int base) {
+long tk_strtol(const char* str, const char** end, int base) {
   long n = 0;
   int neg = 0;
   return_value_if_fail(str != NULL, 0);
@@ -92,14 +92,14 @@ long ftk_strtol(const char* str, const char** end, int base) {
     str++;
   }
 
-  n = ftk_strtol_internal(str, end, base);
+  n = tk_strtol_internal(str, end, base);
 
   return neg ? -n : n;
 }
 
-int ftk_atoi(const char* str) { return ftk_strtol(str, NULL, 10); }
+int tk_atoi(const char* str) { return tk_strtol(str, NULL, 10); }
 
-float_t ftk_atof(const char* str) {
+float_t tk_atof(const char* str) {
   int n = 0;
   unsigned int f = 0;
   int neg = 0;
@@ -112,10 +112,10 @@ float_t ftk_atof(const char* str) {
     str++;
   }
 
-  n = ftk_strtol_internal(str, &p, 10);
+  n = tk_strtol_internal(str, &p, 10);
 
   if (p != NULL && *p == '.') {
-    f = ftk_strtol_internal(p + 1, NULL, 10);
+    f = tk_strtol_internal(p + 1, NULL, 10);
   }
 
   result = f;
@@ -128,7 +128,7 @@ float_t ftk_atof(const char* str) {
   return neg ? -result : result;
 }
 
-static const char* ftk_itoa_simple(char* str, int len, int n, const char** end) {
+static const char* tk_itoa_simple(char* str, int len, int n, const char** end) {
   int i = 0;
   int value = n;
   int need_len = 0;
@@ -175,17 +175,17 @@ static const char* ftk_itoa_simple(char* str, int len, int n, const char** end) 
   return str;
 }
 
-const char* ftk_itoa(char* str, int len, int n) { return ftk_itoa_simple(str, len, n, NULL); }
+const char* tk_itoa(char* str, int len, int n) { return tk_itoa_simple(str, len, n, NULL); }
 
-const char* ftk_ftoa(char* str, int len, float_t value) {
+const char* tk_ftoa(char* str, int len, float_t value) {
   int i = 0;
   char str_n[32] = {0};
   char str_f[32] = {0};
   int n = (int)value;
   int f = (int)((value - n) * 1000000000);
 
-  ftk_itoa(str_n, sizeof(str_n), n);
-  ftk_itoa(str_f, sizeof(str_f), f > 0 ? f : -f);
+  tk_itoa(str_n, sizeof(str_n), n);
+  tk_itoa(str_f, sizeof(str_f), f > 0 ? f : -f);
 
   if (f == 0) {
     strncpy(str, str_n, len);
@@ -216,7 +216,7 @@ const char* ftk_ftoa(char* str, int len, float_t value) {
   return NULL;
 }
 
-char* ftk_strcpy(char* dst, const char* src) { return strcpy(dst, src); }
+char* tk_strcpy(char* dst, const char* src) { return strcpy(dst, src); }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   return_value_if_fail(buff != NULL, NULL);

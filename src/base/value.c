@@ -255,7 +255,7 @@ float value_float(const value_t* v) {
       return (float)v->value.f64;
     }
     case VALUE_TYPE_STRING: {
-      return ftk_atof(v->value.str);
+      return tk_atof(v->value.str);
     }
     default:
       break;
@@ -354,7 +354,7 @@ int value_int(const value_t* v) {
       return (int)v->value.f64;
     }
     case VALUE_TYPE_STRING: {
-      return ftk_atoi(v->value.str);
+      return tk_atoi(v->value.str);
     }
     default:
       break;

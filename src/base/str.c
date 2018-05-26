@@ -98,14 +98,14 @@ ret_t str_from_int(str_t* str, int32_t v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return str_set(str, ftk_itoa(buff, sizeof(buff), v));
+  return str_set(str, tk_itoa(buff, sizeof(buff), v));
 }
 
 ret_t str_from_float(str_t* str, float v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return str_set(str, ftk_ftoa(buff, sizeof(buff), v));
+  return str_set(str, tk_ftoa(buff, sizeof(buff), v));
 }
 
 ret_t str_from_value(str_t* str, const value_t* v) {
@@ -125,14 +125,14 @@ ret_t str_from_value(str_t* str, const value_t* v) {
 
 ret_t str_to_int(str_t* str, int32_t* v) {
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
-  *v = ftk_atoi(str->str);
+  *v = tk_atoi(str->str);
 
   return RET_OK;
 }
 
 ret_t str_to_float(str_t* str, float* v) {
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
-  *v = ftk_atof(str->str);
+  *v = tk_atof(str->str);
 
   return RET_OK;
 }

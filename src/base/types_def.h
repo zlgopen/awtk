@@ -168,17 +168,17 @@ typedef enum _ret_t {
 
 typedef void* pointer_t;
 
-#ifndef ftk_min
-#define ftk_min(a, b) ((a) < (b) ? (a) : (b))
-#endif /*ftk_min*/
+#ifndef tk_min
+#define tk_min(a, b) ((a) < (b) ? (a) : (b))
+#endif /*tk_min*/
 
-#ifndef ftk_abs
-#define ftk_abs(a) ((a) < (0) ? (-a) : (a))
-#endif /*ftk_abs*/
+#ifndef tk_abs
+#define tk_abs(a) ((a) < (0) ? (-a) : (a))
+#endif /*tk_abs*/
 
-#ifndef ftk_max
-#define ftk_max(a, b) ((a) > (b) ? (a) : (b))
-#endif /*ftk_max*/
+#ifndef tk_max
+#define tk_max(a, b) ((a) > (b) ? (a) : (b))
+#endif /*tk_max*/
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
