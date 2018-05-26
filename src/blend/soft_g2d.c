@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/utils.h"
 #include "blend/soft_g2d.h"
 #include "blend/pixel_pack_unpack.h"
 
@@ -60,14 +61,13 @@ ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   bpp = fb->format == BITMAP_FMT_RGB565 ? 2 : 4;
   p = (uint32_t*)((fb->data) + (dst->y * fb->w + dst->x) * bpp);
   if (fb->format == BITMAP_FMT_RGB565) {
+    uint32_t fbw = fb->w;
     uint16_t* p16 = (uint16_t*)p;
     uint16_t d16 = rgb_to_565(c.rgba.r, c.rgba.g, c.rgba.b);
 
     for (y = 0; y < h; y++) {
-      for (x = 0; x < w; x++) {
-        *p16++ = d16;
-      }
-      p16 += offset;
+      tk_memset16(p16, d16, w);
+      p16 += fbw;
     }
 
     return RET_OK;

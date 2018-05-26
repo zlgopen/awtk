@@ -32,6 +32,8 @@ const char* ftk_itoa(char* str, int len, int n);
 const char* ftk_ftoa(char* str, int len, float_t f);
 long ftk_strtol(const char* str, const char** end, int base);
 
+uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
+
 #define str_fast_equal(s1, s2) (*(s1) == *(s2) && strcmp((s1), (s2)) == 0)
 
 END_C_DECLS
