@@ -123,12 +123,16 @@ bin\demo1
 
 ### 5.技术笔记
 * [FrameBuffer的几种使用方式](docs/framebuffer.md)
+* [LCD接口的三种实现方式](docs/lcd.md)
 
 
 ## 任务完成情况
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/05/27
+    * 改进lcd\_mem的实现，编写部分文档。
 
 * 2018/05/26
     * 优化图片缩放算法。
