@@ -94,9 +94,9 @@ bin\demo1
 
 ## 各个平台的移植
 
-[stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw.git)
+* [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw.git)
 
-[stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw.git)
+* [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw.git)
 
 ## 文档
 
@@ -118,6 +118,7 @@ bin\demo1
 * [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
 
 ### 4.移植文档
+* [嵌入式平台移植注意事项](docs/porting_common.md)
 * [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
 * [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
 

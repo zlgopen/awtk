@@ -7,6 +7,10 @@ AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和m
 除了基本的libc函数外，AWTK对平台没有特别要求，在stm32f103ze上没有函数gettimeofday，所以要实现一个获取当前时间的函数get\_time\_ms。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
 
 ```
+#include "delay.h"
+#include "base/mem.h"
+#include "base/timer.h"
+
 uint32_t get_time_ms() {
   return RTC_GetCounter();
 }
@@ -34,14 +38,16 @@ stm32f103ze使用基于寄存器的lcd的缺省实现，只需要提供set\_wind
 ```
 #include "gui.h"
 #include "lcd_driver.h"
+
+#include "base/mem.h"
 #include "lcd/lcd_reg.h"
 
+typedef uint16_t pixel_t;
 #define set_window_func TFT_SetWindow
 #define write_data_func TFT_WriteData
 
-#include "base/color.h"
-#include "base/mem.h"
-#include "lcd/rgb565.h"
+#include "blend/rgb565.inc"
+#include "blend/pixel_ops.inc"
 #include "lcd/lcd_reg.inc"
 ```
 
@@ -52,12 +58,16 @@ stm32f103ze使用基于寄存器的lcd的缺省实现，只需要提供set\_wind
 main\_loop主要负责事件分发和绘制这个不断循环的过程。main\_loop\_raw.inc里实现了裸系统main\_loop的基本功能，在移植时加上输入事件的的分发即可：
 
 ```
-static ret_t post_touch_events(main_loop_t* l, bool_t pressed, xy_t x, xy_t y); 
+#include "base/idle.h"
+#include "base/timer.h"
+#include "lcd/lcd_reg.h"
+#include "base/main_loop.h"
+#include "base/platform.h"
+#include "base/event_queue.h"
+#include "base/font_manager.h"
+#include "main_loop/main_loop_simple.h"
 
-ret_t platform_disaptch_input(main_loop_t* l) { 
-  /*TODO：按键处理*/
-  return RET_OK; 
-}
+ret_t platform_disaptch_input(main_loop_t* l) { return RET_OK; }
 
 static lcd_t* platform_create_lcd(wh_t w, wh_t h) { return lcd_reg_create(w, h); }
 
@@ -66,9 +76,9 @@ void TIM3_IRQHandler(void) {
     TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
     if (TOUCH_Scan() == 0) {
-      post_touch_events(main_loop(), TRUE, TouchData.lcdx, TouchData.lcdy);
+      main_loop_post_pointer_event(main_loop(), TRUE, TouchData.lcdx, TouchData.lcdy);
     } else {
-      post_touch_events(main_loop(), FALSE, TouchData.lcdx, TouchData.lcdy);
+      main_loop_post_pointer_event(main_loop(), FALSE, TouchData.lcdx, TouchData.lcdy);
     }   
   }
 }
@@ -76,7 +86,7 @@ void TIM3_IRQHandler(void) {
 #include "main_loop/main_loop_raw.inc"
 ```
 
-> 参考 main\_loop/main\_loop\_stm32\_raw.c
+> 参考 awtk-port/main\_loop\_stm32\_raw.c
 
 
 注：目前以[普中科技STM32F103ZET6开发实验板](https://item.taobao.com/item.htm?spm=a230r.1.14.1.50a130e8TMKYMC&id=558855281660&ns=1&abbucket=5#detail) 为载体移植，其它开发板应该差不多。

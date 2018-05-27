@@ -52,7 +52,15 @@ lcd_t* platform_create_lcd(wh_t w, wh_t h) {
 main\_loop主要负责事件分发和绘制这个不断循环的过程。main\_loop\_raw.inc里实现了裸系统main\_loop的基本功能，在移植时加上输入事件的的分发即可：
 
 ```
-static ret_t post_touch_events(main_loop_t* loop, bool_t pressed, xy_t x, xy_t y); 
+#include "base/g2d.h"
+#include "base/idle.h"
+#include "base/timer.h"
+#include "lcd/lcd_mem_rgb565.h"
+#include "main_loop/main_loop_simple.h"
+
+extern u32 *ltdc_framebuf[2];
+#define online_fb_addr (uint8_t*)ltdc_framebuf[0]
+#define offline_fb_addr (uint8_t*)ltdc_framebuf[1]
 
 uint8_t platform_disaptch_input(main_loop_t* loop) {
   int x = 0;
@@ -64,20 +72,27 @@ uint8_t platform_disaptch_input(main_loop_t* loop) {
   x = tp_dev.x[0];
   y = tp_dev.y[0]; 
 
-  y = 480 - tp_dev.x[0];
+  y = lcdltdc.pheight - tp_dev.x[0];
   x = tp_dev.y[0]; 
   
   if(tp_dev.sta&TP_PRES_DOWN){    
-    post_touch_events(loop, TRUE, x, y); 
+    main_loop_post_pointer_event(loop, TRUE, x, y); 
   } else {
-    post_touch_events(loop, FALSE, x, y); 
+    main_loop_post_pointer_event(loop, FALSE, x, y); 
   }
   
   return 0;
 }
+
+lcd_t* platform_create_lcd(wh_t w, wh_t h) {
+  return lcd_mem_rgb565_create_double_fb(w, h, online_fb_addr, offline_fb_addr);
+}
+
+#include "main_loop/main_loop_raw.inc"
+
 ```
 
-> 参考 main\_loop/main\_loop\_stm32\_raw.c
+> 参考 awtk-port/main\_loop\_stm32\_raw.c
 
 
 注：[正点原子的开发实验板](https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w11877762-18401048725.10.145a2276IsywTF&id=534585837612)为载体移植，其它开发板应该差不多。
