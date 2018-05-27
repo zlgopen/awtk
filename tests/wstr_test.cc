@@ -175,3 +175,28 @@ TEST(WStr, value) {
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
+
+TEST(WStr, wcs_len) {
+  ASSERT_EQ(wcs_len(L""), 0);
+  ASSERT_EQ(wcs_len(L"a"), 1);
+  ASSERT_EQ(wcs_len(L"abc中文测试123"), 10);
+}
+
+TEST(WStr, wcs_cpy) {
+  wchar_t str[100];
+
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"")), 0);
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"a")), 1);
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10);
+}
+
+TEST(WStr, wcs_chr) {
+  size_t i = 0;
+  const wchar_t* str = L"abc中文测试123";
+  size_t nr = wcslen(str);
+
+  ASSERT_EQ(nr, wcs_len(str));
+  for (i = 0; i < nr; i++) {
+    ASSERT_EQ(wcs_chr(str, str[i]), wcschr(str, str[i]));
+  }
+}

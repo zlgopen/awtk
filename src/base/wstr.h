@@ -195,6 +195,10 @@ ret_t wstr_to_float(wstr_t* str, float* v);
  */
 ret_t wstr_reset(wstr_t* str);
 
+wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
+wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
+size_t wcs_len(const wchar_t* s);
+
 END_C_DECLS
 
 #endif /*WSTR_H*/

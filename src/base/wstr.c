@@ -24,6 +24,48 @@
 #include "base/wstr.h"
 #include "base/utils.h"
 
+wchar_t* wcs_chr(const wchar_t* s, wchar_t c) {
+  const wchar_t* p = s;
+  return_value_if_fail(s != NULL, NULL);
+
+  while (*p && *p != c) p++;
+
+  return *p ? p : NULL;
+}
+
+wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
+  wchar_t* d = s1;
+  const wchar_t* s = s2;
+  return_value_if_fail(s1 != NULL && s2 != NULL, NULL);
+
+  while (*s) {
+    *d++ = *s++;
+  }
+  *d = '\0';
+
+  return s1;
+}
+
+size_t wcs_len(const wchar_t* s) {
+  size_t size = 0;
+  const wchar_t* p = s;
+  return_value_if_fail(s != NULL, 0);
+
+  while (*p++) {
+    size++;
+  }
+
+  return size;
+}
+
+#ifdef WITH_WCSXXX
+size_t wcslen(const wchar_t* s) { return wcs_len(s); }
+
+wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) { return wcs_cpy(s1, s2); }
+
+wchar_t* wcschr(const wchar_t* s, wchar_t c) { return wcs_chr(s, c); }
+#endif /*WITH_WCSXXX*/
+
 static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {
   if (capacity < str->capacity) {
     return RET_OK;

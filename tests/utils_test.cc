@@ -86,7 +86,7 @@ TEST(Utils, tk_memcpy16) {
   uint16_t src[100];
 
   tk_memset16(src, 0x1234, ARRAY_SIZE(src));
-  for(i = 1; i < ARRAY_SIZE(src); i++) {
+  for (i = 1; i < ARRAY_SIZE(src); i++) {
     tk_memcpy16(dst, src, i);
     ASSERT_EQ(memcmp(dst, src, i * 2), 0);
   }
@@ -98,9 +98,8 @@ TEST(Utils, tk_memcpy32) {
   uint32_t src[100];
 
   tk_memset32(src, 0x12345678, ARRAY_SIZE(src));
-  for(i = 1; i < ARRAY_SIZE(src); i++) {
+  for (i = 1; i < ARRAY_SIZE(src); i++) {
     tk_memcpy32(dst, src, i);
     ASSERT_EQ(memcmp(dst, src, i * 4), 0);
   }
 }
-

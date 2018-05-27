@@ -261,8 +261,8 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
 uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size) {
   uint32_t* p = buff;
   return_value_if_fail(buff != NULL, NULL);
-  
-  while(size-- > 0) {
+
+  while (size-- > 0) {
     *p++ = val;
   }
 
@@ -274,7 +274,7 @@ uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size) {
   uint16_t* s = src;
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 
-  while(size-- > 0) {
+  while (size-- > 0) {
     *d++ = *s++;
   }
 
@@ -286,7 +286,7 @@ uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size) {
   uint32_t* s = src;
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 
-  while(size-- > 0) {
+  while (size-- > 0) {
     *d++ = *s++;
   }
 
@@ -298,16 +298,15 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
 
 #ifdef HAS_FAST_MEMCPY
   memcpy(dst, src, size * bpp);
-#else 
-  if(bpp == 2) {
+#else
+  if (bpp == 2) {
     tk_memcpy16((uint16_t*)dst, (uint16_t*)src, size);
-  } else if(bpp == 4) {
+  } else if (bpp == 4) {
     tk_memcpy32((uint32_t*)dst, (uint32_t*)src, size);
   } else {
     assert(!"not supported yet.");
   }
-#endif/*HAS_FAST_MEMCPY*/
+#endif /*HAS_FAST_MEMCPY*/
 
   return dst;
 }
-

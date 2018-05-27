@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -180,7 +180,9 @@ typedef void* pointer_t;
 #define tk_max(a, b) ((a) > (b) ? (a) : (b))
 #endif /*tk_max*/
 
+#ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+#endif /*ARRAY_SIZE*/
 
 #define load_uint32(p, v)                                   \
   (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \
