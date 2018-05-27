@@ -20,8 +20,8 @@ else:
   VGCANVAS='AGG'
   VGCANVAS='PICASSO'
 
-FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
+FRAME_BUFFER_FORMAT='rgba8888'
 
 COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DSDL2 -DWITH_FS_RES'
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DLUA_COMPAT_MODULE -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_DYNAMIC_TR'
@@ -87,7 +87,7 @@ CPPPATH=[TK_ROOT,
   TK_SRC, 
   TK_3RD_ROOT, 
   os.path.join(TK_3RD_ROOT, 'nanovg/src'), 
-  os.path.join(TK_3RD_ROOT, 'agg-2.5/include'), 
+  os.path.join(TK_3RD_ROOT, 'agg/include'), 
   os.path.join(TK_3RD_ROOT, 'picasso/src'), 
   os.path.join(TK_3RD_ROOT, 'picasso/build'), 
   os.path.join(TK_3RD_ROOT, 'picasso/include'), 
@@ -108,7 +108,7 @@ SConscriptFiles=[
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
   '3rd/lua/SConscript',
-  '3rd/agg-2.5/SConscript', 
+  '3rd/agg/SConscript', 
   '3rd/picasso/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 

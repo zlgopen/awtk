@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+
+
+<body>
+
+<h1><youros>Cmake to generate projects files or makefile.</youros></h1>
+
+<youros><br>
+
+You start with downloading and installing Cmake &nbsp;<a href="http:://www.cmake.org">http:://www.cmake.org </a><br>
+<br>
+</youros>
+<ul>
+  <li><a href="#On_windows">On Windows</a></li>
+  <li><a href="#On_Unix_alikes">On Unix alikes</a></li>
+  <li><a href="#My_Own_Application">My Own Application</a></li>
+  <li><a href="#Cpack_to_make_distributions">Cpack for making distribution</a></li>
+</ul>
+<youros>
+</youros>
+<h2 style="font-style: italic; text-decoration: underline;">On windows</h2>
+
+<youros>On windows call the program CmakeSetup.exe, distributed with
+Cmake.<br>
+
+This has a graphical interface used to generate your project files or
+makefiles.<br>
+
+<br>
+
+Asumming Agg is installed at </youros>C:\agg\agg-2.4<br>
+
+<youros><br>
+
+</youros>In CmakeSetup.exe choose:<br>
+
+<youros><br>
+
+Where is the source code: </youros>C:\agg\agg-2.4<br>
+
+Where to build the binaries: C:\agg\agg-2.4_Build<br>
+
+<br>
+
+The options:<br>
+<ul>
+  <li>
+agg_USE_EXPAT</li>
+  <ul>
+    <li>At <a href="http://expat.sourceforge.net/">http://expat.sourceforge.net/&nbsp;</a></li>
+    <li>you will find&nbsp;<a href="http://garr.dl.sourceforge.net/sourceforge/expat/expat-win32bin-2.0.1.exe">expat-win32bin-2.0.1.exe</a> &nbsp;</li>
+    <li>This will add a key to your registry, which is searched for by Cmake, if not oke, use next step.</li>
+    <li><span style="font-family: monospace;">Do set EXPAT_DIR in your environment to the location where you installed the above.</span></li>
+  </ul>
+  <li>
+agg_USE_FREETYPE</li>
+  <ul>
+    <li>Get the library + headers from: <a href="http://gnuwin32.sourceforge.net/packages/freetype.htm">http://gnuwin32.sourceforge.net/packages/freetype.htm</a></li>
+    <li>tested with the download called: "Complete package, except sources"&nbsp;</li>
+    <li>This will add a key to your registry, which is searched for by Cmake, if not oke, use next step.</li>
+    <li><span style="font-family: monospace;">Do set FREETYPE_DIR in your environment to the location where you installed the above.<br>
+      </span></li>
+  </ul>
+  <li>
+agg_USE_GPC</li>
+  <ul>
+    <li>Internal files, but GPL, so an option.</li>
+  </ul>
+  <li>
+agg_USE_SDL_PLATFORM</li>
+  <ul>
+    <li>Todo</li>
+  </ul>
+  <li>agg_USE_PACK</li>
+  <ul>
+    <li><a href="cmake_install.html#Cpack_to_make_distributions">See Cpack for making distribution</a></li>
+  </ul>
+</ul>
+For windows the routines to find expat and freetype are script found in
+C:\agg\agg-2.4\bin. They are available in Cmake itself, but the ones
+here are better.<br>
+In case of problem, un-comment the MESSAGE statements in those script, to see what is going on. 
+
+<h2 style="font-style: italic; text-decoration: underline;">On Unix alikes</h2>
+
+Asumming Agg is installed at /home/me/agg/agg-2.4<br>
+
+<youros><br>
+
+</youros><span style="font-family: monospace; font-weight: bold;">cd /home/me/agg</span><br style="font-family: monospace; font-weight: bold;">
+<span style="font-family: monospace; font-weight: bold;">
+mkdir agg_build</span><br style="font-family: monospace; font-weight: bold;">
+<span style="font-family: monospace; font-weight: bold;">
+cd /home/me/agg/agg_build</span><br>
+<br>
+Here you generate makefiles with a GUI with:<br>
+<br>
+<span style="font-family: monospace; font-weight: bold;">ccmake ../agg-2.4</span><br>
+<br>
+OR using commandline for example:<br>
+<br>
+<span style="font-family: monospace; font-weight: bold;">cmake &nbsp;-Dagg_USE_FREETYPE:BOOL=ON -Dagg_USE_EXPAT:BOOL=ON ../agg-2.4</span><br style="font-family: monospace;">
+<br>
+
+The options:<br>
+<ul>
+  <li>
+agg_USE_EXPAT</li>
+  <ul>
+    <li>Requires expat to be installed.</li>
+  </ul>
+  <li>
+agg_USE_FREETYPE</li>
+  <ul>
+    <li>Requires freetype-devel to be installed. (e.g. on Fedora:&nbsp; yum install freetype-devel&nbsp;)</li>
+  </ul>
+  <li>
+agg_USE_GPC</li>
+  <ul>
+    <li>Part of Agg for the moment, but GPL, that is why its optional.</li>
+  </ul>
+  <li>
+agg_USE_SDL_PLATFORM</li>
+  <ul>
+    <li>SDL needs to be installed.</li>
+  </ul>
+  <li>agg_USE_PACK</li>
+  <ul>
+    <li><a href="cmake_install.html#Cpack_to_make_distributions">See Cpack for making distribution</a></li>
+  </ul>
+</ul>
+After generating the makefiles, you just type:<br>
+<span style="font-weight: bold; font-family: monospace;">make</span>
+You can also build directly in the agg checkout dircetory, but that is bad habit.<br>
+<br>
+When all is compiled, you can execute the samples already from the examples directory in your build tree.<br>
+Now you can login as root and install Agg as you compiled it.<br>
+So you type:<br>
+<br>
+<span style="font-weight: bold;">make install</span><br>
+<br>
+This installes your file in <span style="font-weight: bold;">/usr/local.</span><br>
+<h2><span style="font-weight: bold;"></span><span style="font-style: italic; text-decoration: underline;">My Own Application</span></h2>
+Nice but what if i want to detect Agg libraries and headers etc. for
+use in &nbsp;my own application. For that you find in the resulting
+build directory created by Cmake, &nbsp;a template directory called
+myapp, containing a simple application. This show you how to do it for
+your own application. In there you see CMakeLists.txt, this file you
+can use in CMakeSetup.exe/ccmake as the&nbsp;source directory. Again
+choose your build directory, and configure.<br>
+This will result in project/make files for the demo application contained in my_demo.cpp.<br>
+<br>
+In principle this is needed ( see myapp/CMakeLists.txt ):<br>
+<br>
+FIND_PACKAGE( Agg )<br>
+IF( AGG_FOUND )<br>
+&nbsp;&nbsp;&nbsp; INCLUDE_DIRECTORIES(${AGG_INCLUDE_DIRS})<br>
+&nbsp;&nbsp;&nbsp; LINK_LIBRARIES(${AGG_LIBRARIES})<br>
+&nbsp;&nbsp;&nbsp; INCLUDE(${AGG_USE_FILE})<br>
+ELSE( AGG_FOUND )<br>
+&nbsp;&nbsp;&nbsp; MESSAGE( "AGG library was not found" )<br>
+ENDIF( AGG_FOUND )<br>
+<br>
+If you look in your&nbsp;C:\agg\agg-2.4_Build you will see that <span style="font-weight: bold;">AggConfig.cmake</span> and <span style="font-weight: bold;">UseAgg.cmake</span>, they contain all the information you need to have to use Agg in your application. Study <span style="font-weight: bold;">FindAgg.cmake</span> to know who Agg install dir is found.<br>
+Also be aware &nbsp;that the file C:\agg\agg-2.4_Build\bin\<span style="font-weight: bold;">AggConfigOutBuild.cmake</span> is installed as&nbsp;<span style="font-weight: bold;">AggConfig.cmake</span> by <span style="font-weight: bold;">make install</span> are inside the packages.<br>
+The file C:\agg\agg-2.4_Build<span style="font-weight: bold;">\AggConfig.cmake </span>is setup such that you can use it from with in the build directory itself, using the Agg header files from the source directory.<br>
+This is the same as when building the agg libraries itself.<br>
+Only when packaging and/or doing a <span style="font-weight: bold;">make install</span>, the headers will be really installed. <br>
+On windows you need to set the environment variable AGG_DIR, if
+automatic detection via the registry fails. But if you use a package
+like <span style="font-weight: bold;">antigrain-0.1.1-win32.exe </span>to install on windows<span style="font-weight: bold;">, </span>a registry key<span style="font-weight: bold;">&nbsp; "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Agg\\antigrain 0.1.1]/bin" </span>is generated, which is used by FindAgg.cmake to find the installation.<br>
+<br>
+On Unix you can, after installing Agg, go to <span style="font-family: monospace; font-weight: bold;">/home/me/agg/agg_build/myapp </span><span style="font-family: monospace;">and type this for an inside build:<br>
+<br>
+</span><span style="font-family: monospace; font-weight: bold;">cmake .<br>
+</span><span style="font-family: monospace;"><br>
+or for an outside build:<br>
+<br>
+</span><span style="font-family: monospace; font-weight: bold;">mkdir ../buildmyapp<br>
+cd </span><span style="font-family: monospace; font-weight: bold;">../buildmyapp</span><br>
+<span style="font-family: monospace; font-weight: bold;">cmake ../myapp</span><span style="font-weight: bold;"><br>
+</span><br>
+If you do not want to install, you can set<span style="font-weight: bold;"> </span>AGG_DIR first, to use the build without installing, like:<br>
+<br>
+<span style="font-weight: bold;">export AGG_DIR=</span><span style="font-family: monospace; font-weight: bold;">/home/me/agg/agg_build<br>
+<br>
+</span>
+<h2 style="font-style: italic; text-decoration: underline;">Cpack to make distributions</h2>
+If enabled agg_USE_PACK, you get an extra target.<br>
+On windows have gzip and nsis installed, they are used to generate the
+setup/installer script and zip files, and found automatically:<br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">http://nsis.sourceforge.net</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">http://www.7-zip.org</span><br>
+<br>
+Parts of the Cmake system &nbsp;is Cpack. After a build of Agg,
+&nbsp;you get an extra target to PACKAGE, but you can do it by hand
+also.<br>
+Calling the Cmake tool:&nbsp;<span style="font-weight: bold;">cpack.exe -C debug </span>or<span style="font-weight: bold;"> </span><span style="font-weight: bold;">cpack.exe -C &nbsp;release </span>on the command line, will result in files like:<br>
+<br style="font-weight: bold;">
+<span style="font-weight: bold;">antigrain-0.1.1-win32.exe &nbsp; &nbsp; </span>&nbsp;# this is the installers script for Agg on windows.<br style="font-weight: bold;">
+<span style="font-weight: bold;">antigrain-0.1.1-win32.zip &nbsp; &nbsp; &nbsp; </span>#contains the same, and can be installed by hand<span style="font-weight: bold;"><br>
+<br>
+</span><span style="font-weight: bold;"></span>The first gives you a
+registery key like this: [HKEY_LOCAL_MACHINE\SOFTWARE\Agg\antigrain
+0.1.1] And that is used to detect Agg in <span style="font-weight: bold;">FindAgg.cmake</span>, if you use the zip file, you will need to set AGG_DIR in your environment to reach the same.<br>
+<br>
+On unix you type:<br>
+<br>
+<span style="font-weight: bold;">cpack -C debug</span> on the&nbsp;line, and this gives you files like:<br>
+<br>
+<span style="font-weight: bold;">antigrain-0.1.1-Linux.sh</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">antigrain-0.1.1-Linux.tar.gz</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">antigrain-0.1.1-Linux.tar.Z</span><br style="font-weight: bold;">
+<span style="font-weight: bold;">antigrain-0.1.1-Linux.tar.bz2</span><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<youros><br>
+
+</youros>
+</body>
+</html>

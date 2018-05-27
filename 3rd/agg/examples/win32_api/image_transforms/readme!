@@ -1,0 +1,189 @@
+//----------------------------------------------------------------------------
+// Anti-Grain Geometry - Version 2.4 
+// Copyright (C) 2002-2005 Maxim Shemanarev (McSeem)
+//
+// Permission to copy, use, modify, sell and distribute this software 
+// is granted provided this copyright notice appears in all copies. 
+// This software is provided "as is" without express or implied
+// warranty, and with no claim as to its suitability for any purpose.
+//
+//----------------------------------------------------------------------------
+// Contact: mcseem@antigrain.com
+//          mcseemagg@yahoo.com
+//          http://www.antigrain.com
+//----------------------------------------------------------------------------
+
+IMPORTANT!
+Download http://www.antigrain.com/spheres.bmp before running this example.
+
+
+Using affine transformations for images looks tricky, but it's not, especially 
+when you understand the main idea. You can apply any affine transformations 
+to images of any size and draw any part of the image.
+
+This example demonstrates the ideas of constructing affine matrices for 
+images. The example contains 6 variants of scaling/rotation/translation 
+matrices. Also, there are the following important variables:
+
+m_polygon_angle;
+m_polygon_scale;
+
+m_image_angle;
+m_image_scale;
+
+m_image_center_x;
+m_image_center_y;
+
+m_polygon_cx;
+m_polygon_cy;
+
+m_image_cx;
+m_image_cy;
+
+
+Variables m_polygon_... refer to the source path (star) that will be used to 
+transform the image, variables m_image_... refer to the image parametres. 
+Actually, different variants of transformations use different variables 
+(in some cases m_polygon_... is used to create the image affine matrix). 
+The meaning of the variables is the following:
+
+m_polygon_angle;
+m_polygon_scale; 
+
+Are actually two slider controls on the left. 
+
+m_polygon_cx;
+m_polygon_cy; 
+
+Are the center of the "star", that is the geometric center of the source path. 
+You can drag the "star" with the left mouse button.
+
+m_image_angle;
+m_image_scale;
+
+are two respective sliders on the right.
+
+m_image_cx;
+m_image_cy;
+
+are the coordinates of the green marker. The marker can also be dragged.
+
+m_image_center_x;
+m_image_center_y;
+
+are the center of the image. You can consider them as constants.  
+In certain cases it's easier to understand the idea when we have some 
+"reference point", like the center or the origin of the axes.
+
+The image transformation matrix doesn't depend on anything else.
+It means that the code above the line "// --------------(Example 0)":
+
+    polygon_mtx *= agg::trans_affine_translation(-m_polygon_cx, -m_polygon_cy);
+    polygon_mtx *= agg::trans_affine_rotation(m_polygon_angle.value() * agg::pi / 180.0);
+    polygon_mtx *= agg::trans_affine_scaling(m_polygon_scale.value());
+    polygon_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
+
+affects only the drawn path. So, the only way to shift, rotate, or scale the
+image is to use the image affine matrix (image_mtx in this example).
+
+Another important thing is that due to the nature of the algorithm you 
+have to use the inverse transformations. The algorithm takes the 
+coordinates of every destination pixel, applies the transformations and 
+obtains the coordinates of the pixel to pick it up from the source image. 
+The coordinates of the destination pixels are always known and they have 
+regular, pixel accuracy. After transforming they usually fall somewhere "
+between" pixels. This fact allows us to apply anti-aliasing filters like 
+bilinear, bicubic, sinc, blackman, etc. After filtering we know the value of the 
+destination pixel and we can put it in its place. This is why the algorithm 
+uses the inverse affine matrix. In other words you prepare the transformation 
+matrix as usual and then invret it before using:
+
+    image_mtx *= agg::trans_affine_translation(-m_image_center_x, -m_image_center_y);
+    image_mtx *= agg::trans_affine_rotation(m_polygon_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_polygon_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
+    image_mtx.invert();
+
+This code illustrates the behaviour when we have synchronous transformations
+of the source path and the image. 
+
+Well, let us return to example 0. Here we have a "star" that can be dragged with 
+the left mouse button, a small round green marker, and four sliders. 
+The marker and the sliders on the right don't affect anything. As it was said, 
+this example simply copies pixels from the source image to the destination canvas. 
+
+Example 1. The marker and the image sliders on the right still
+don't work, but now the image is moved, scaled, and rotated syncronously with
+the "star". We simply take the reference point, which is m_image_center_x(y), 
+rotate and scale the image around it, and then, translate the image to 
+m_polygon_cx(cy). 
+
+
+Example 2 is the same as 1 but instead of using "m_polygon_..." parameters we 
+use "m_image_..." ones, so the marker and the sliders on the right now work 
+independently. In other words you can control the image and the "star" separately.
+    image_mtx *= agg::trans_affine_translation(-m_image_center_x, -m_image_center_y);
+    image_mtx *= agg::trans_affine_rotation(m_image_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_image_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_image_cx, m_image_cy);
+    image_mtx.invert();
+
+
+Example 3 is the same as the above but instead of using "m_image_cx(cy)" we use 
+m_polygon_cx(cy). So that, the image is rotated and scaled around its center, 
+but the marker doesn't have any effect.
+    image_mtx *= agg::trans_affine_translation(-m_image_center_x, -m_image_center_y);
+    image_mtx *= agg::trans_affine_rotation(m_image_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_image_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
+    image_mtx.invert();
+
+
+Example 4 is the same as 1, but we use m_image_cx(cy) as the source point 
+in the image. So, the image sliders don't work, the image is transformed 
+synchronously with the path, but we are able to choose the source point for 
+image transformations. That is the idea: we take the source point in the 
+image, perform the transformations around it and then move this source
+point to the center of the "star".
+    image_mtx *= agg::trans_affine_translation(-m_image_cx, -m_image_cy);
+    image_mtx *= agg::trans_affine_rotation(m_polygon_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_polygon_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_polygon_cx, m_polygon_cy);
+    image_mtx.invert();
+
+
+Example 5 is the same as 2, but there we have a combination of the scaling 
+and rotation of the "star" and the image.
+    image_mtx *= agg::trans_affine_translation(-m_image_center_x, -m_image_center_y);
+    image_mtx *= agg::trans_affine_rotation(m_image_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_rotation(m_polygon_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_image_scale.value());
+    image_mtx *= agg::trans_affine_scaling(m_polygon_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_image_cx, m_image_cy);
+    image_mtx.invert();
+BTW, code above can be simplified like this:
+    image_mtx *= agg::trans_affine_translation(-m_image_center_x, -m_image_center_y);
+    image_mtx *= agg::trans_affine_rotation(m_image_angle.value() * agg::pi / 180.0 + 
+                                            m_polygon_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_image_scale.value() * m_polygon_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_image_cx, m_image_cy);
+    image_mtx.invert();
+
+
+Finally, example 5 is probably not very interesting in practice, but still, it 
+can simplify understanding of the idea. This example uses only m_image_... 
+parameters. It shifts the image from m_image_cx(cy) to the origin (0,0), then 
+applies rotation and scaling, and finally, shifts the image back. So that, 
+point m_image_cx(cy) is simply the center of the transformations. When the 
+image angle is 0.0 and the scale is 1.0 dragging this point doesn't have any
+effect.
+    image_mtx *= agg::trans_affine_translation(-m_image_cx, -m_image_cy);
+    image_mtx *= agg::trans_affine_rotation(m_image_angle.value() * agg::pi / 180.0);
+    image_mtx *= agg::trans_affine_scaling(m_image_scale.value());
+    image_mtx *= agg::trans_affine_translation(m_image_cx, m_image_cy);
+    image_mtx.invert();
+
+
+Many thank to you if you read it and many special thanks if you could understand
+something. :-)
+

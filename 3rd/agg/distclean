@@ -1,0 +1,24 @@
+#! /bin/sh
+
+find . -iname '*.[oa]' -exec \rm -f {} \;
+find . -iname '*.ppm' -exec \rm -f {} \;
+find . -iname '*~' -exec \rm -f {} \;
+find . -iname 'gamma.*' -exec \rm -f {} \;
+find . -iname Debug -exec \rm -rf {} \;
+find . -iname Release -exec \rm -rf {} \;
+find . -iname '*.exe' -exec \rm -rf {} \;
+find . -iname '*.lib' -exec \rm -rf {} \;
+find . -iname '*.dll' -exec \rm -rf {} \;
+find . -iname '*.obj' -exec \rm -rf {} \;
+find . -iname '*.aps' -exec \rm -rf {} \;
+find . -iname '*.clw' -exec \rm -rf {} \;
+find . -iname '*.ilk' -exec \rm -rf {} \;
+find . -iname '*.ncb' -exec \rm -rf {} \;
+find . -iname '*.opt' -exec \rm -rf {} \;
+find . -iname '*.plg' -exec \rm -rf {} \;
+find . -iname '*.pch' -exec \rm -rf {} \;
+find . -iname '*.idb' -exec \rm -rf {} \;
+find . -iname '*.pdb' -exec \rm -rf {} \;
+find . -iname '*.res' -exec \rm -rf {} \;
+
+
