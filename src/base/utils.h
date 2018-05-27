@@ -33,6 +33,10 @@ const char* tk_ftoa(char* str, int len, float_t f);
 long tk_strtol(const char* str, const char** end, int base);
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
+uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size);
+uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size);
+uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);
+void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp);
 
 #define str_fast_equal(s1, s2) (*(s1) == *(s2) && strcmp((s1), (s2)) == 0)
 

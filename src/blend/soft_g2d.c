@@ -23,24 +23,7 @@
 #include "blend/soft_g2d.h"
 #include "blend/pixel_pack_unpack.h"
 
-//#define TEST_MEMCPY 1
-
-#ifdef TEST_MEMCPY
-static void* safe_memcpy(void* restrict dst, const void* restrict src, size_t n) {
-  uint8_t* d = (uint8_t*)dst;
-  uint8_t* s = (uint8_t*)src;
-
-  while (n-- > 0) {
-    *d++ = *s++;
-  }
-
-  return dst;
-}
-#define PIXEL_COPY safe_memcpy
-#else
-#define PIXEL_COPY memcpy
-#endif /*TEST_MEMCPY*/
-
+#define PIXEL_COPY 
 ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   int x = 0;
   int y = 0;
@@ -104,14 +87,14 @@ ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
   dst_p = (uint8_t*)(fb->data) + (dy * fb->w + dx) * bpp;
 
   if (fb->w == img->w && fb->h == img->h && src->w == img->w && src->x == 0) {
-    size = bpp * (img->w * src->h);
-    PIXEL_COPY(dst_p, src_p, size);
+    size = (img->w * src->h);
+    tk_pixel_copy(dst_p, src_p, size, bpp);
 
     return RET_OK;
   } else {
-    size = bpp * src->w;
+    size = src->w;
     for (i = 0; i < src->h; i++) {
-      PIXEL_COPY(dst_p, src_p, size);
+      tk_pixel_copy(dst_p, src_p, size, bpp);
       dst_p += bpp * fb->w;
       src_p += bpp * img->w;
     }
