@@ -30,10 +30,7 @@ ret_t platform_prepare(void) {
 
 ### 二、实现lcd
 
-lcd\_t接口提供基本的显示功能，AWTK提供基于寄存器和基于framebuffer两种缺省实现，在此基础上实现自己的lcd\_t接口非常方便。
-
 stm32f429igtx使用基于framebuffer的lcd的缺省实现，只需要调用函数lcd\_mem\_create\_double\_fb即可。
-
 
 ```
 extern u32 *ltdc_framebuf[2];
@@ -45,7 +42,7 @@ lcd_t* platform_create_lcd(wh_t w, wh_t h) {
 }
 ```
 
-> 参考 main\_loop/main\_loop\_stm32\_raw.c
+> 参考 awtk-port/main\_loop\_stm32\_raw.c
 
 ### 三、实现main\_loop
 

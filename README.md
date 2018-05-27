@@ -94,9 +94,11 @@ bin\demo1
 
 ## 各个平台的移植
 
-* [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw.git)
+* [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
 
-* [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw.git)
+* [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
+
+* [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
 ## 文档
 
@@ -121,6 +123,7 @@ bin\demo1
 * [嵌入式平台移植注意事项](docs/porting_common.md)
 * [将AWTK移植到STM32f103ze裸系统](docs/porting_to_stm32f103ze.md)
 * [将AWTK移植到STM32f429igtx裸系统](docs/porting_to_stm32f429igtx.md)
+* [将AWTK移植到AWorks平台](docs/porting_to_awtk_aworks_rt1052.md)
 
 ### 5.技术笔记
 * [FrameBuffer的几种使用方式](docs/framebuffer.md)
