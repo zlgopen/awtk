@@ -103,15 +103,21 @@ typedef enum _ret_t {
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
-#else
+#elif defined(HAS_PRINTF)
 #define log_debug(format, args...) printf(format, ##args)
 #define log_info(format, args...) printf(format, ##args)
 #define log_warn(format, args...) printf(format, ##args)
 #define log_error(format, args...) printf(format, ##args)
-#ifndef MAX_PATH
+#else 
+#define log_debug(format, args...)
+#define log_info(format, args...)
+#define log_warn(format, args...) 
+#define log_error(format, args...) 
+#endif
+
+#if !defined(WIN32) && !defined(MAX_PATH)
 #define MAX_PATH 255
 #endif /*MAX_PATH*/
-#endif
 
 #ifdef NDEBUG
 #define ENSURE(p) p

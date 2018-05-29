@@ -213,7 +213,7 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
 
 ret_t timer_init(timer_get_time_t get_time) {
   return_value_if_fail(get_time != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(s_timer_manager != NULL, RET_FAIL);
+  return_value_if_fail(s_timer_manager == NULL, RET_FAIL);
 
   return timer_manager_set(timer_manager_create(get_time));
 }

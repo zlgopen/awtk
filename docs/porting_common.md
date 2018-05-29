@@ -11,6 +11,7 @@
 
 * 4.WITH\_FS\_RES 如果支持从文件系统中加载资源请定义该宏。需要有兼容POSIX标准的FS接口，如果没有则需要自己实现src/base/fs.c中的函数。
 
+* 5.USE\_GUI\_MAIN 嵌入式系统有自己的main函数时请定义该宏。
 
 ### 二、include路径
 

@@ -26,7 +26,6 @@ ret_t platform_prepare(void) {
   uint32_t* mem = (uint32_t*) aw_mem_alloc(TK_MEM_SIZE);
   return_value_if_fail(mem != NULL, RET_OOM);
 
-  timer_init(get_time_ms);
   tk_mem_init(mem, TK_MEM_SIZE);
 
   return RET_OK;
