@@ -13,6 +13,8 @@
 
 * 5.USE\_GUI\_MAIN 嵌入式系统有自己的main函数时请定义该宏。
 
+* 6.WITH\_WCSXXX 如果出现wcsxxx之类的函数没有定义时请定义该宏。
+
 ### 二、include路径
 
 * 1.基本路径
@@ -61,6 +63,5 @@ awtk\3rd\picasso\build
 ### 四、其它
 
 > 使用keil编译时，请在C/C++ -> Misc Controls中加上**--gnu**标志。
-
 
 

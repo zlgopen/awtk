@@ -33,6 +33,7 @@
   4   <button name="close" x="right:10" y="middle" w="25%" h="30" text="Close"/>
   5 </window>
 ```
+> anim\_hint的可选值，请参考src/base/window\_animator.h中的定义。
 
 ## 示例
 
