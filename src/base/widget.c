@@ -506,7 +506,15 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
 }
 
 ret_t widget_paint(widget_t* widget, canvas_t* c) {
+  uint8_t save_alpha = 0;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  save_alpha = c->lcd->global_alpha;
+
+  if (widget->opacity < TK_OPACITY_ALPHA) {
+    uint8_t alpha = (widget->opacity * save_alpha) / 0xff;
+    canvas_set_global_alpha(c, alpha);
+  }
 
   canvas_translate(c, widget->x, widget->y);
 #ifdef FAST_MODE
@@ -534,6 +542,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
   canvas_untranslate(c, widget->x, widget->y);
   widget->dirty = FALSE;
+
+  if (widget->opacity < 0xff) {
+    canvas_set_global_alpha(c, save_alpha);
+  }
 
   return RET_OK;
 }
@@ -917,6 +929,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
 
   widget->dirty = TRUE;
   widget->type = type;
+  widget->opacity = 0xff;
   widget->style_type = 0;
   widget->enable = TRUE;
   widget->visible = TRUE;

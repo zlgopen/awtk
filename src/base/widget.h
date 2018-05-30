@@ -337,6 +337,14 @@ struct _widget_t {
   uint8_t dirty : 1;
 
   /**
+   * @property {uint8_t} opacity;
+   * @private
+   * @scriptable no
+   * 不透明度(0-255)，0完全透明，255完全不透明。
+   */
+  uint8_t opacity;
+
+  /**
    * @property {str_t} name
    * @private
    * 控件名字(暂时不允许脚本访问)

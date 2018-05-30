@@ -29,13 +29,14 @@
 #include "base/g2d.h"
 #endif /*WITH_G2D*/
 
+
 static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  fb->format = LCD_FORMAT;
-  fb->data = mem->fbuff;
   fb->w = lcd->w;
   fb->h = lcd->h;
+  fb->data = mem->fbuff;
+  fb->format = LCD_FORMAT;
 
   if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
     fb->data = mem->online_fbuff;
@@ -54,10 +55,11 @@ static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   pixel_t* p = fbuff + y * lcd->w + x;
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
-  if (a == 0xff) {
+  if (a >= TK_OPACITY_ALPHA) {
     pixel_t pixel = color_to_pixel(c);
     for (i = 0; i < w; i++) p[i] = pixel;
-  } else {
+  } else if (a >= TK_TRANSPARENT_ALPHA) {
+    c.rgba.a = a;
     for (i = 0; i < w; i++) p[i] = blend_pixel(p[i], c);
   }
 
@@ -66,22 +68,24 @@ static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
 
 static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
+  wh_t w = lcd->w;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   color_t c = lcd->stroke_color;
   pixel_t* fbuff = (pixel_t*)mem->fbuff;
   pixel_t* p = fbuff + y * lcd->w + x;
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
-  if (a == 0xff) {
+  if (a >= TK_OPACITY_ALPHA) {
     pixel_t pixel = color_to_pixel(c);
     for (i = 0; i < h; i++) {
       *p = pixel;
-      p += lcd->w;
+      p += w;
     }
-  } else {
+  } else if (a >= TK_TRANSPARENT_ALPHA) {
+    c.rgba.a = a;
     for (i = 0; i < h; i++) {
       *p = blend_pixel(*p, c);
-      p += lcd->w;
+      p += w;
     }
   }
 
@@ -120,17 +124,31 @@ static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
 static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   rect_t r;
   bitmap_t fb;
+  color_t c = lcd->fill_color;
+  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
-  rect_init(r, x, y, w, h);
-  lcd_mem_to_bitmap(lcd, &fb);
+  if (a >= TK_OPACITY_ALPHA) {
+    rect_init(r, x, y, w, h);
+    lcd_mem_to_bitmap(lcd, &fb);
 
 #ifdef WITH_G2D
-  if (g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
-    return RET_OK;
-  }
+    if (g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
+      return RET_OK;
+    }
 #endif /*WITH_G2D*/
 
-  return soft_fill_rect(&fb, &r, lcd->fill_color);
+    return soft_fill_rect(&fb, &r, lcd->fill_color);
+  } else if (a >= TK_TRANSPARENT_ALPHA) {
+    uint32_t i = 0;
+    color_t stroke_color = lcd->stroke_color;
+    lcd->stroke_color = c;
+    for (i = 0; i < h; i++) {
+      lcd_draw_hline(lcd, x, y + i, w);
+    }
+    lcd->stroke_color = stroke_color;
+  }
+
+  return RET_OK;
 }
 
 static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
@@ -145,15 +163,16 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   pixel_t* fbuff = (pixel_t*)mem->fbuff;
   pixel_t* dst_p = fbuff + y * width + x;
+  uint8_t global_alpha = lcd->global_alpha;
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
 
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
-      uint8_t alpha = src_p[i];
-      if (alpha == 0xff) {
+      uint8_t a = src_p[i] * global_alpha / 255;
+      if (a >= TK_OPACITY_ALPHA) {
         dst_p[i] = color_to_pixel(color);
-      } else if (alpha) {
-        color.rgba.a = alpha;
+      } else if (a >= TK_TRANSPARENT_ALPHA) {
+        color.rgba.a = a;
         dst_p[i] = blend_pixel(dst_p[i], color);
       }
     }
@@ -169,7 +188,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   lcd_mem_to_bitmap(lcd, &fb);
 
   if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w &&
-      src->h == dst->h && lcd->global_alpha > 0xf0) {
+      src->h == dst->h && lcd->global_alpha >= TK_OPACITY_ALPHA) {
 #ifdef WITH_G2D
     if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
       return RET_OK;

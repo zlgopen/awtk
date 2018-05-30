@@ -108,11 +108,11 @@ typedef enum _ret_t {
 #define log_info(format, args...) printf(format, ##args)
 #define log_warn(format, args...) printf(format, ##args)
 #define log_error(format, args...) printf(format, ##args)
-#else 
+#else
 #define log_debug(format, args...)
 #define log_info(format, args...)
-#define log_warn(format, args...) 
-#define log_error(format, args...) 
+#define log_warn(format, args...)
+#define log_error(format, args...)
 #endif
 
 #if !defined(WIN32) && !defined(MAX_PATH)
@@ -228,5 +228,8 @@ typedef float float_t;
 #else
 #define STR_DEFAULT_FONT "default"
 #endif /*WITH_NANOVG*/
+
+#define TK_OPACITY_ALPHA     0xfa
+#define TK_TRANSPARENT_ALPHA 0x05
 
 #endif /*TYPES_DEF_H*/
