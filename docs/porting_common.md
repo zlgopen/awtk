@@ -15,6 +15,8 @@
 
 * 6.WITH\_WCSXXX 如果出现wcsxxx之类的函数没有定义时请定义该宏。
 
+* 7.HAS\_FAST\_MEMCPY 如果有高效的memcpy函数请定义该宏。
+
 ### 二、include路径
 
 * 1.基本路径
