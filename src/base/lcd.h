@@ -58,6 +58,7 @@ typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img);
 
+typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
@@ -131,6 +132,7 @@ struct _lcd_t {
   lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
   lcd_get_point_color_t get_point_color;
+  lcd_flush_t flush;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;

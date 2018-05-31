@@ -179,7 +179,13 @@ ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y) {
 ret_t lcd_end_frame(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL && lcd->end_frame != NULL, RET_BAD_PARAMS);
 
-  return lcd->end_frame(lcd);
+  return_value_if_fail(lcd->end_frame(lcd) == RET_OK, RET_FAIL);
+
+  if(lcd->flush) {
+    lcd->flush(lcd);
+  }
+
+  return RET_OK;
 }
 
 ret_t lcd_destroy(lcd_t* lcd) {
