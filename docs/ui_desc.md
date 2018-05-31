@@ -122,7 +122,7 @@ resource_manager_add((const resource_info_t*)ui_window1);
   widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
 ```
 
-## 二、将Qt的UI文件转成
+## 二、将Qt的UI文件转成AWTK UI XML文件(目前不成熟)。
 
 转换工具在bin/qt\_to\_xml目录下，使用方法：
 
@@ -131,7 +131,7 @@ Usage: ./bin/qt_to_xml in_filename out_filename
    Ex: ./bin/qt_to_xml demo1.ui demo1.xml
 ```
 
-## 三、将Qt的UI文件转成
+## 三、将微软RC文件转成AWTK UI XML文件(目前不成熟)。
 
 转换工具在bin/rc\_to\_xml目录下，使用方法：
 
