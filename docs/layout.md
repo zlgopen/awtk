@@ -136,7 +136,7 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
 
 ### 0. 缺省
 
-在没有设置子控件布局参数或者rows/cols都为0时，采用缺省的布局方式，父控件啥事也不做，完全有子控件自己的布局参数决定。
+在没有设置子控件布局参数或者rows/cols都为0时，采用缺省的布局方式，父控件啥事也不做，完全由子控件自己的布局参数决定。
 
 ### 1. hbox
 
