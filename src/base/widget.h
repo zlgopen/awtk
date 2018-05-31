@@ -343,6 +343,47 @@ struct _widget_t {
    * 不透明度(0-255)，0完全透明，255完全不透明。
    */
   uint8_t opacity;
+#ifdef WITH_VGCANVAS_LCD
+  /**
+   * @property {float_t} anchor_x
+   * @private
+   * @scriptable no
+   * 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。
+   */
+  float_t anchor_x;
+
+  /**
+   * @property {float_t} anchor_y
+   * @private
+   * @scriptable no
+   * 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。
+   */
+  float_t anchor_y;
+
+  /**
+   * @property {float_t} scale_x
+   * @private
+   * @scriptable no
+   * 控件在X方向上的缩放比例。
+   */
+  float_t scale_x;
+  
+  /**
+   * @property {float_t} scale_y
+   * @private
+   * @scriptable no
+   * 控件在Y方向上的缩放比例。
+   */
+  float_t scale_y;
+
+  /**
+   * @property {float_t} rotation
+   * @private
+   * @scriptable no
+   * 控件的旋转角度。
+   */
+  float_t rotation;
+#endif/*WITH_VGCANVAS_LCD*/
 
   /**
    * @property {str_t} name
@@ -621,6 +662,48 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_state(widget_t* widget, widget_state_t state);
+
+/**
+ * @method widget_set_opacity
+ * 设置控件的不透明度。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint8_t} opacity 不透明度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_opacity(widget_t* widget, uint8_t opacity);
+
+/**
+ * @method widget_set_rotation
+ * 设置控件的旋转角度(仅在WITH_VGCANVAS_LCD定义时生效)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} rotation 旋转角度(幅度)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_rotation(widget_t* widget, float_t rotation);
+
+/**
+ * @method widget_set_scale
+ * 设置控件的缩放比例(仅在WITH_VGCANVAS_LCD定义时生效)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} scale_x X方向缩放比例。
+ * @param {float_t} scale_y Y方向缩放比例。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_scale(widget_t* widget, float_t scale_x, float_t scale_y);
+
+/**
+ * @method widget_set_anchor
+ * 设置控件的锚点(仅在WITH_VGCANVAS_LCD定义时生效)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} anchor_x 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。
+ * @param {float_t} anchor_y 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y);
 
 /**
  * @method widget_destroy_children

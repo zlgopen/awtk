@@ -28,9 +28,7 @@ static ret_t widget_animator_opacity_update(widget_animator_t* animator, float_t
   return_value_if_fail(opacity != NULL, RET_BAD_PARAMS);
 
   new_opacity = opacity->from + (opacity->to - opacity->from) * percent;
-
-  animator->widget->opacity = new_opacity;
-  widget_invalidate(animator->widget, NULL);
+  widget_set_opacity(animator->widget, new_opacity);
 
   return RET_OK;
 }

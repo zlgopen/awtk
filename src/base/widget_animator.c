@@ -24,6 +24,15 @@
 #include "base/timer.h"
 #include "base/widget_animator.h"
 
+static ret_t widget_animator_on_widget_destroy(void* ctx, event_t* e) {
+  widget_animator_t* animator = (widget_animator_t*)ctx;
+
+  animator->widget_destroy_id = 0;
+  widget_animator_destroy(animator);
+
+  return RET_OK;
+}
+
 ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration, uint32_t delay,
                            easing_func_t easing) {
   return_value_if_fail(animator != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -33,6 +42,7 @@ ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32
   animator->duration = duration;
   emitter_init(&(animator->emitter));
   animator->easing = easing != NULL ? easing : easing_get(EASING_LINEAR);
+  animator->widget_destroy_id = widget_on(widget, EVT_DESTROY, widget_animator_on_widget_destroy, animator);
 
   return RET_OK;
 }
@@ -81,6 +91,7 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
 static ret_t widget_animator_on_delay_timer(const timer_info_t* timer) {
   widget_animator_t* animator = (widget_animator_t*)timer->ctx;
 
+  animator->start_time = timer_now();
   animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
 
   return RET_REMOVE;
@@ -91,11 +102,12 @@ ret_t widget_animator_start(widget_animator_t* animator) {
   return_value_if_fail(animator != NULL && animator->timer_id == 0, RET_BAD_PARAMS);
 
   emitter_dispatch(&(animator->emitter), &e);
-  animator->start_time = timer_now();
 
   if(animator->delay) {
+    animator->start_time = timer_now() + animator->delay;
     animator->timer_id = timer_add(widget_animator_on_delay_timer, animator, animator->delay);
   } else {
+    animator->start_time = timer_now();
     animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
   }
 
@@ -158,6 +170,16 @@ ret_t widget_animator_off(widget_animator_t* animator, uint32_t id) {
 
 ret_t widget_animator_destroy(widget_animator_t* animator) {
   return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
+
+  if(animator->widget_destroy_id) {
+    widget_off(animator->widget, animator->widget_destroy_id);
+    animator->widget_destroy_id = 0;
+  }
+
+  if(animator->timer_id) {
+    widget_animator_stop(animator);
+    animator->timer_id = 0;
+  }
 
   emitter_deinit(&(animator->emitter));
   if (animator->destroy != NULL) {

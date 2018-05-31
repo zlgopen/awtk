@@ -48,6 +48,7 @@ typedef struct _widget_animator_t {
   uint32_t delay;
   uint32_t duration;
   uint32_t timer_id;
+  uint32_t widget_destroy_id;
   emitter_t emitter;
 
   easing_func_t easing;

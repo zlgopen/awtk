@@ -108,6 +108,7 @@ ret_t tk_deinit_internal(void) {
   resource_manager_destroy(resource_manager());
   idle_manager_destroy(idle_manager());
   timer_manager_destroy(timer_manager());
+  widget_destroy(window_manager());
 
   return RET_OK;
 }

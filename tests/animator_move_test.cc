@@ -25,10 +25,7 @@ TEST(AnimatorMove, basic) {
   widget_animator_destroy(wa);
 }
 
-static uint32_t s_now = 0;
-static uint32_t timer_get_time() { return s_now; }
-
-static void timer_set_time(uint32_t now) { s_now = now; }
+#include "get_time.inc"
 
 static string s_log;
 static ret_t on_animator_event(void* ctx, event_t* e) {

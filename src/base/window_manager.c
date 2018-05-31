@@ -336,6 +336,7 @@ int32_t window_manager_find_top_window_index(widget_t* widget) {
 
 widget_t* window_manager_get_top_window(widget_t* widget) {
   int32_t index = window_manager_find_top_window_index(widget);
+  return_value_if_fail(index >= 0, NULL);
 
   return widget_get_child(widget, index);
 }

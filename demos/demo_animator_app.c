@@ -37,9 +37,11 @@
 #include "widget_animators/widget_animator_opacity.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_move.h"
+#include "widget_animators/widget_animator_scale.h"
+#include "widget_animators/widget_animator_rotation.h"
 
 static uint32_t animators_nr = 0;
-static widget_animator_t* animators[10];
+static widget_animator_t* animators[50];
 
 static ret_t on_start(void* ctx, event_t* e) {
   uint32_t i = 0;
@@ -63,6 +65,9 @@ ret_t application_init() {
   int yoyo = 100;
   widget_t* image = NULL;
   widget_t* image1 = NULL;
+  widget_t* image2 = NULL;
+  widget_t* image3 = NULL;
+  widget_t* image4 = NULL;
   widget_t* stop = NULL;
   widget_t* start = NULL;
   widget_t* opacity = NULL;
@@ -83,6 +88,15 @@ ret_t application_init() {
 
   image1 = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image1, "earth");
+  
+  image2 = image_create(win, 10, 118, 32, 32);
+  image_set_image_name(image2, "earth");
+  
+  image3 = image_create(win, 50, 118, 32, 32);
+  image_set_image_name(image3, "earth");
+  
+  image4 = image_create(win, 100, 118, 32, 32);
+  image_set_image_name(image4, "earth");
 
   image_opacity = image_create(win, 10, 150, 32, 32);
   image_set_image_name(image_opacity, "earth");
@@ -100,6 +114,24 @@ ret_t application_init() {
   delay += 1000;
   animator = widget_animator_move_create(image1, 1000, delay, easing_get(EASING_SIN_INOUT));
   widget_animator_move_set_params(animator, image1->x, image1->y, image1->x + 100, image->y);
+  widget_animator_set_yoyo(animator, yoyo);
+  animators[animators_nr++] = animator;
+  
+  delay += 1000;
+  animator = widget_animator_rotation_create(image2, 1000, delay, easing_get(EASING_SIN_INOUT));
+  widget_animator_rotation_set_params(animator, 0, 3.14 * 2);
+  widget_animator_set_yoyo(animator, yoyo);
+  animators[animators_nr++] = animator;
+  
+  delay += 1000;
+  animator = widget_animator_scale_create(image3, 1000, delay, easing_get(EASING_SIN_INOUT));
+  widget_animator_scale_set_params(animator, 0.5f, 0.5f, 2.0f, 2.0f);
+  widget_animator_set_yoyo(animator, yoyo);
+  animators[animators_nr++] = animator;
+  
+  delay += 1000;
+  animator = widget_animator_scale_create(image4, 2000, delay, easing_get(EASING_SIN_IN));
+  widget_animator_scale_set_params(animator, 1.0f, 1.0f, -1.0f, 1.0f);
   widget_animator_set_yoyo(animator, yoyo);
   animators[animators_nr++] = animator;
 
