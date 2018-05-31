@@ -24,7 +24,7 @@
 #include "base/wstr.h"
 #include "base/utils.h"
 
-wchar_t* wcs_chr(const wchar_t* s, wchar_t c) {
+const wchar_t* wcs_chr(const wchar_t* s, wchar_t c) {
   const wchar_t* p = s;
   return_value_if_fail(s != NULL, NULL);
 
