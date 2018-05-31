@@ -108,10 +108,11 @@ bin\demo1
 * [AWTK中的图片显示方式](docs/image_draw_type.md)
 * [AWTK中的矢量图绘图函数](docs/vgcanvas.md)
 * [AWTK中的事件处理函数](docs/event_listener.md)
+* [AWTK中的国际化之字符串翻译](docs/locale.md)
 * [AWTK中的主题](docs/theme.md)
 * [AWTK中的资源管理器](docs/resource_manager.md)
 * [AWTK中的窗口动画](docs/window_animator.md)
-* [AWTK中的国际化之字符串翻译](docs/locale.md)
+* [AWTK中的控件动画](docs/widget_animator.md)
 
 ### 2.HowTos
 * [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
