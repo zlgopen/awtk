@@ -157,4 +157,4 @@ TEST(Widget, anchor) {
 
   widget_destroy(w);
 }
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/

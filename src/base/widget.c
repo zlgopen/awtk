@@ -188,7 +188,7 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
 
 ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  
+
   widget->opacity = opacity;
   widget_invalidate(widget, NULL);
 
@@ -197,19 +197,19 @@ ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
 
 ret_t widget_set_rotation(widget_t* widget, float_t rotation) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-#ifdef WITH_VGCANVAS_LCD  
+#ifdef WITH_VGCANVAS_LCD
   widget->rotation = rotation;
   widget_invalidate(widget, NULL);
   return RET_OK;
 #else
   (void)rotation;
   return RET_NOT_IMPL;
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 }
 
 ret_t widget_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-#ifdef WITH_VGCANVAS_LCD  
+#ifdef WITH_VGCANVAS_LCD
   widget->scale_x = scale_x;
   widget->scale_y = scale_y;
   widget_invalidate(widget, NULL);
@@ -218,21 +218,21 @@ ret_t widget_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
   (void)scale_x;
   (void)scale_y;
   return RET_NOT_IMPL;
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 }
 
 ret_t widget_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-#ifdef WITH_VGCANVAS_LCD  
-  widget->anchor_x  = anchor_x;
-  widget->anchor_y  = anchor_y;
+#ifdef WITH_VGCANVAS_LCD
+  widget->anchor_x = anchor_x;
+  widget->anchor_y = anchor_y;
   widget_invalidate(widget, NULL);
   return RET_OK;
 #else
   (void)anchor_x;
   (void)anchor_y;
   return RET_NOT_IMPL;
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 }
 
 ret_t widget_destroy_children(widget_t* widget) {
@@ -568,32 +568,33 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   }
 
 #ifdef WITH_VGCANVAS_LCD
-{
-  need_transform = !fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1) || !fequal(widget->rotation, 0);
+  {
+    need_transform =
+        !fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1) || !fequal(widget->rotation, 0);
 
-  if(need_transform) {
-    float_t anchor_x = widget->anchor_x * widget->w;
-    float_t anchor_y = widget->anchor_y * widget->h;
-    
-    vg = lcd_get_vgcanvas(c->lcd);  
-    vgcanvas_save(vg);
-    vgcanvas_translate(vg, widget->x, widget->y);
-    vgcanvas_translate(vg, anchor_x, anchor_y);
-    if(!fequal(widget->rotation, 0)) {
-      vgcanvas_rotate(vg, widget->rotation);
+    if (need_transform) {
+      float_t anchor_x = widget->anchor_x * widget->w;
+      float_t anchor_y = widget->anchor_y * widget->h;
+
+      vg = lcd_get_vgcanvas(c->lcd);
+      vgcanvas_save(vg);
+      vgcanvas_translate(vg, widget->x, widget->y);
+      vgcanvas_translate(vg, anchor_x, anchor_y);
+      if (!fequal(widget->rotation, 0)) {
+        vgcanvas_rotate(vg, widget->rotation);
+      }
+
+      if (!fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1)) {
+        vgcanvas_scale(vg, widget->scale_x, widget->scale_y);
+      }
+      vgcanvas_translate(vg, -anchor_x, -anchor_y);
+    } else {
+      canvas_translate(c, widget->x, widget->y);
     }
-    
-    if(!fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1)) {
-      vgcanvas_scale(vg, widget->scale_x, widget->scale_y);
-    }
-    vgcanvas_translate(vg, -anchor_x, -anchor_y);
-  } else {
-    canvas_translate(c, widget->x, widget->y);
   }
-}
 #else
   canvas_translate(c, widget->x, widget->y);
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 
 #ifdef FAST_MODE
   if (widget->dirty) {
@@ -624,14 +625,14 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   }
 
 #ifdef WITH_VGCANVAS_LCD
-  if(need_transform) {
+  if (need_transform) {
     vgcanvas_restore(vg);
   } else {
     canvas_untranslate(c, widget->x, widget->y);
   }
 #else
   canvas_untranslate(c, widget->x, widget->y);
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 
   return RET_OK;
 }
@@ -1046,7 +1047,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
   widget->rotation = 0;
   widget->anchor_x = 0.5;
   widget->anchor_y = 0.5;
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 
   return widget;
 }

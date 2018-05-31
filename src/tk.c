@@ -103,12 +103,25 @@ ret_t tk_init(wh_t w, wh_t h) {
 
 ret_t tk_deinit_internal(void) {
   image_manager_destroy(image_manager());
+  image_manager_set(NULL);
+
   font_manager_destroy(font_manager());
+  font_manager_set(NULL);
+
   locale_destroy(locale());
+  locale_set(NULL);
+
   resource_manager_destroy(resource_manager());
+  resource_manager_set(NULL);
+
   idle_manager_destroy(idle_manager());
+  idle_manager_set(NULL);
+
   timer_manager_destroy(timer_manager());
+  timer_manager_set(NULL);
+
   widget_destroy(window_manager());
+  window_manager_set(NULL);
 
   return RET_OK;
 }

@@ -11,7 +11,7 @@ TEST(AnimatorOpacity, once) {
   timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* progress_bar = progress_bar_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_opacity_create(progress_bar, 1000, 0, NULL);
+  widget_animator_t* wa = widget_animator_opacity_create(progress_bar, 1000, 0, EASING_LINEAR);
   widget_animator_opacity_set_params(wa, 0, 100);
 
   timer_set_time(0);
@@ -27,7 +27,7 @@ TEST(AnimatorOpacity, once) {
   timer_dispatch();
   ASSERT_EQ(progress_bar->opacity, 100);
 
+  widget_destroy(progress_bar);
   timer_manager_destroy(timer_manager());
   timer_manager_set(tm);
 }
-

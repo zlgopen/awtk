@@ -229,7 +229,7 @@ typedef float float_t;
 #define STR_DEFAULT_FONT "default"
 #endif /*WITH_NANOVG*/
 
-#define TK_OPACITY_ALPHA     0xfa
+#define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05
 
 #endif /*TYPES_DEF_H*/

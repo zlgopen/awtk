@@ -367,7 +367,7 @@ struct _widget_t {
    * 控件在X方向上的缩放比例。
    */
   float_t scale_x;
-  
+
   /**
    * @property {float_t} scale_y
    * @private
@@ -383,7 +383,7 @@ struct _widget_t {
    * 控件的旋转角度。
    */
   float_t rotation;
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/
 
   /**
    * @property {str_t} name

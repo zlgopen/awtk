@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class widget_animator_value_t
- * animate widget by change its value。
+ * 改变控件值的动画。
  */
 typedef struct _widget_animator_value_t {
   widget_animator_t base;
@@ -37,8 +37,28 @@ typedef struct _widget_animator_value_t {
   int32_t from;
 } widget_animator_value_t;
 
+/**
+ * @method widget_animator_value_create
+ * 创建动画对象。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} duration 动画持续时间。
+ * @param {uint32_t} delay 动画执行时间。
+ * @param {easing_type_t} easing 插值函数类型。
+ *
+ * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
+ */
 widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration, uint32_t delay,
-                                                easing_func_t easing);
+                                                easing_type_t easing);
+
+/**
+ * @method widget_animator_value_set_params
+ * 设置动画对象的参数。
+ * @param {widget_animator_t*} animator 动画对象本身。
+ * @param {int32_t} from value起始值。
+ * @param {int32_t} to value结束值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t widget_animator_value_set_params(widget_animator_t* animator, int32_t from, int32_t to);
 
 END_C_DECLS

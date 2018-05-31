@@ -12,7 +12,7 @@ TEST(AnimatorScale, once) {
   timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* progress_bar = progress_bar_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_scale_create(progress_bar, 1000, 0, NULL);
+  widget_animator_t* wa = widget_animator_scale_create(progress_bar, 1000, 0, EASING_LINEAR);
   widget_animator_scale_set_params(wa, 0, 100, 100, 200);
 
   timer_set_time(0);
@@ -31,7 +31,8 @@ TEST(AnimatorScale, once) {
   ASSERT_EQ(progress_bar->scale_x, 100);
   ASSERT_EQ(progress_bar->scale_y, 200);
 
+  widget_destroy(progress_bar);
   timer_manager_destroy(timer_manager());
   timer_manager_set(tm);
 }
-#endif/*WITH_VGCANVAS_LCD*/
+#endif /*WITH_VGCANVAS_LCD*/

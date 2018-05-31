@@ -36,19 +36,20 @@ static ret_t widget_animator_scale_update(widget_animator_t* animator, float_t p
 }
 
 widget_animator_t* widget_animator_scale_create(widget_t* widget, uint32_t duration, uint32_t delay,
-                                               easing_func_t easing) {
+                                                easing_type_t easing) {
   widget_animator_t* animator = NULL;
   return_value_if_fail(widget != NULL && duration > 0, NULL);
 
   animator = (widget_animator_t*)TKMEM_ZALLOC(widget_animator_scale_t);
-  return_value_if_fail(widget_animator_init(animator, widget, duration, delay, easing) == RET_OK, NULL);
+  return_value_if_fail(
+      widget_animator_init(animator, widget, duration, delay, easing_get(easing)) == RET_OK, NULL);
   animator->update = widget_animator_scale_update;
 
   return animator;
 }
 
 ret_t widget_animator_scale_set_params(widget_animator_t* animator, float_t x_from, float_t y_from,
-                                      float_t x_to, float_t y_to) {
+                                       float_t x_to, float_t y_to) {
   widget_animator_scale_t* scale = (widget_animator_scale_t*)animator;
   return_value_if_fail(scale != NULL, RET_BAD_PARAMS);
 

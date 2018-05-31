@@ -29,7 +29,6 @@
 #include "base/g2d.h"
 #endif /*WITH_G2D*/
 
-
 static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 

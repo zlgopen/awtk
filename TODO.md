@@ -53,9 +53,10 @@
 * edit
 * menu
 * chart
+* guage
 * spinbox
 * drag & drop
-* tab控件
+* tab
 * python binging 
 * jerryscript binging 
 * 软键盘
@@ -67,6 +68,7 @@
 * 嵌入式linux移植
 * remote client
 * 支持tween动画
+* 音频接口。
 
 ## 长期计划
 * 用AWTK实现界面编辑器
@@ -76,5 +78,5 @@
 * ios移植
 * android移植
 * 在浏览器中运行
-* 微信小程序类的开发方法
+* 微信小程序类似的开发方法
 
