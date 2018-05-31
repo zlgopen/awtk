@@ -24,11 +24,12 @@
 #include "base/timer.h"
 #include "base/widget_animator.h"
 
-ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration,
+ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration, uint32_t delay,
                            easing_func_t easing) {
   return_value_if_fail(animator != NULL && widget != NULL, RET_BAD_PARAMS);
 
   animator->widget = widget;
+  animator->delay = delay;
   animator->duration = duration;
   emitter_init(&(animator->emitter));
   animator->easing = easing != NULL ? easing : easing_get(EASING_LINEAR);
@@ -77,13 +78,26 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
   return RET_REPEAT;
 }
 
+static ret_t widget_animator_on_delay_timer(const timer_info_t* timer) {
+  widget_animator_t* animator = (widget_animator_t*)timer->ctx;
+
+  animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
+
+  return RET_REMOVE;
+}
+
 ret_t widget_animator_start(widget_animator_t* animator) {
   event_t e = {EVT_ANIM_START, animator};
   return_value_if_fail(animator != NULL && animator->timer_id == 0, RET_BAD_PARAMS);
 
   emitter_dispatch(&(animator->emitter), &e);
   animator->start_time = timer_now();
-  animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
+
+  if(animator->delay) {
+    animator->timer_id = timer_add(widget_animator_on_delay_timer, animator, animator->delay);
+  } else {
+    animator->timer_id = timer_add(widget_animator_on_timer, animator, 0);
+  }
 
   return RET_OK;
 }

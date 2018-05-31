@@ -35,13 +35,13 @@ static ret_t widget_animator_value_update(widget_animator_t* animator, float_t p
   return RET_OK;
 }
 
-widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration,
+widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration, uint32_t delay,
                                                 easing_func_t easing) {
   widget_animator_t* animator = NULL;
   return_value_if_fail(widget != NULL && duration > 0, NULL);
 
   animator = (widget_animator_t*)TKMEM_ZALLOC(widget_animator_value_t);
-  return_value_if_fail(widget_animator_init(animator, widget, duration, easing) == RET_OK, NULL);
+  return_value_if_fail(widget_animator_init(animator, widget, duration, delay, easing) == RET_OK, NULL);
   animator->update = widget_animator_value_update;
 
   return animator;

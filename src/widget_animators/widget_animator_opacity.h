@@ -37,7 +37,7 @@ typedef struct _widget_animator_opacity_t {
   uint8_t from;
 } widget_animator_opacity_t;
 
-widget_animator_t* widget_animator_opacity_create(widget_t* widget, uint32_t duration,
+widget_animator_t* widget_animator_opacity_create(widget_t* widget, uint32_t duration, uint32_t delay,
                                                   easing_func_t easing);
 ret_t widget_animator_opacity_set_params(widget_animator_t* animator, uint8_t from, uint8_t to);
 

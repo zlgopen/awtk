@@ -37,7 +37,7 @@ typedef struct _widget_animator_value_t {
   int32_t from;
 } widget_animator_value_t;
 
-widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration,
+widget_animator_t* widget_animator_value_create(widget_t* widget, uint32_t duration, uint32_t delay,
                                                 easing_func_t easing);
 ret_t widget_animator_value_set_params(widget_animator_t* animator, int32_t from, int32_t to);
 

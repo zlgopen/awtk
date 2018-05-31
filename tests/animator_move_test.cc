@@ -8,7 +8,7 @@ using std::string;
 
 TEST(AnimatorMove, basic) {
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_move_create(button, 1000, NULL);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, NULL);
 
   ASSERT_EQ(wa->yoyo_times, 0);
   ASSERT_EQ(widget_animator_set_yoyo(wa, 12), RET_OK);
@@ -59,7 +59,7 @@ TEST(AnimatorMove, once) {
   timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_move_create(button, 1000, NULL);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, NULL);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
   widget_animator_on(wa, EVT_ANIM_START, on_animator_event, NULL);
   widget_animator_on(wa, EVT_ANIM_ONCE, on_animator_event, NULL);
@@ -95,7 +95,7 @@ TEST(AnimatorMove, reversed) {
   timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_move_create(button, 1000, NULL);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, NULL);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
   widget_animator_on(wa, EVT_ANIM_START, on_animator_event, NULL);
   widget_animator_on(wa, EVT_ANIM_ONCE, on_animator_event, NULL);
@@ -135,7 +135,7 @@ TEST(AnimatorMove, repeat) {
   timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
-  widget_animator_t* wa = widget_animator_move_create(button, 1000, NULL);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, NULL);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
   widget_animator_set_repeat(wa, 3);
   widget_animator_on(wa, EVT_ANIM_START, on_animator_event, NULL);

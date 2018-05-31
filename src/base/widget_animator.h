@@ -45,6 +45,7 @@ typedef struct _widget_animator_t {
   uint32_t repeat_times;
   uint32_t now;
   uint32_t start_time;
+  uint32_t delay;
   uint32_t duration;
   uint32_t timer_id;
   emitter_t emitter;
@@ -54,7 +55,7 @@ typedef struct _widget_animator_t {
   widget_animator_destroy_t destroy;
 } widget_animator_t;
 
-ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration,
+ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32_t duration, uint32_t delay,
                            easing_func_t easing);
 ret_t widget_animator_update(widget_animator_t* animator, float_t percent);
 ret_t widget_animator_start(widget_animator_t* animator);
