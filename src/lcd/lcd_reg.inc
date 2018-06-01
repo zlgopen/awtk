@@ -88,16 +88,20 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   color_t text_color = lcd->text_color;
   color_t fill_color = lcd->fill_color;
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
-
+  pixel_t fill_pixel = color_to_pixel(fill_color);
+  pixel_t text_pixel = color_to_pixel(text_color);
   set_window_func(x, y, x + sw - 1, y + sh - 1);
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
-      uint8_t alpha = src_p[i];
-      if (alpha) {
-        pixel_t color = blend_color(fill_color, text_color, alpha);
+      uint8_t a = src_p[i];
+
+      if (a >= TK_OPACITY_ALPHA) {
+        write_data_func(text_pixel);
+      } else if (a >= TK_TRANSPARENT_ALPHA) {
+        pixel_t color = blend_color(fill_color, text_color, a);
         write_data_func(color);
       } else {
-        write_data_func(color_to_pixel(fill_color));
+        write_data_func(fill_pixel);
       }
     }
     src_p += glyph->w;
@@ -107,30 +111,29 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 }
 
 static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  xy_t x = 0;
-  xy_t y = 0;
   wh_t i = 0;
   wh_t j = 0;
+  xy_t x = dst->x;
+  xy_t y = dst->y;
   wh_t dw = dst->w;
   wh_t dh = dst->h;
   color_t fill_color = lcd->fill_color;
   pixel_t fill_pixel = color_to_pixel(fill_color);
   const color_t* data = (color_t*)img->data;
 
+  set_window_func(x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
-    x = dst->x;
-    y = dst->y;
     const color_t* src_p = data + img->w * src->y + src->x;
 
-    set_window_func(x, y, x + dst->w - 1, y + dst->h - 1);
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         color_t src_color = src_p[i];
-        if (src_color.rgba.a > 7) {
-          pixel_t color = src_color.rgba.a < 0xfe
-                              ? blend_color(fill_color, src_color, src_color.rgba.a)
-                              : color_to_pixel(src_color);
-          write_data_func(color);
+        uint8_t a = src_color.rgba.a;
+
+        if (a >= TK_OPACITY_ALPHA) {
+          write_data_func(color_to_pixel(src_color));
+        } else if (a >= TK_TRANSPARENT_ALPHA) {
+          write_data_func(blend_color(fill_color, src_color, a));
         } else {
           write_data_func(fill_pixel);
         }
@@ -145,19 +148,22 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     wh_t iw = img->w;
     xy_t r = dst->x + dst->w;
     xy_t b = dst->y + dst->h;
+    uint32_t scale_x = (((sw + 1) << 16) / dw);
+    uint32_t scale_y = (((sh + 1) << 16) / dh);
 
     for (j = 0, y = dst->y; y < b; j++, y++) {
-      const color_t* src_p = data + iw * (sy + (j * sh / dh)) + sx;
+      const color_t* src_p = data + iw * (sy + ((j * scale_y) >> 16)) + sx;
       for (i = 0, x = dst->x; x < r; i++, x++) {
-        uint32_t s = (i * sw) / dw;
+        uint32_t s = (i * scale_x) >> 16;
         color_t src_color = src_p[s];
-        if (src_color.rgba.a > 7) {
-          pixel_t color = src_color.rgba.a < 0xfe
-                              ? blend_color(fill_color, src_color, src_color.rgba.a)
-                              : color_to_pixel(src_color);
+        uint8_t a = src_color.rgba.a;
 
-          set_window_func(x, y, x, y);
-          write_data_func(color);
+        if (a >= TK_OPACITY_ALPHA) {
+          write_data_func(color_to_pixel(src_color));
+        } else if (a >= TK_TRANSPARENT_ALPHA) {
+          write_data_func(blend_color(fill_color, src_color, a));
+        } else {
+          write_data_func(fill_pixel);
         }
       }
     }

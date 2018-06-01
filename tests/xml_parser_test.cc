@@ -54,11 +54,10 @@ TEST(XmlParser, basic) {
   XmlBuilder b;
   XmlParser* p = xml_parser_create();
   xml_parser_set_builder(p, builder_init(b));
- 
+
   test_str(p, "<a>test</a>");
   test_str(p, "<a><b>test</b></a>");
   test_str(p, "<a><b>test</b><c>test1</c></a>");
 
   xml_parser_destroy(p);
 }
-

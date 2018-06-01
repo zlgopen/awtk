@@ -181,7 +181,7 @@ ret_t lcd_end_frame(lcd_t* lcd) {
 
   return_value_if_fail(lcd->end_frame(lcd) == RET_OK, RET_FAIL);
 
-  if(lcd->flush) {
+  if (lcd->flush) {
     lcd->flush(lcd);
   }
 
