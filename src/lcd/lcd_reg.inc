@@ -148,8 +148,8 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     wh_t iw = img->w;
     xy_t r = dst->x + dst->w;
     xy_t b = dst->y + dst->h;
-    uint32_t scale_x = (((sw + 1) << 16) / dw);
-    uint32_t scale_y = (((sh + 1) << 16) / dh);
+    uint32_t scale_x = (((sw) << 16) / dw);
+    uint32_t scale_y = (((sh) << 16) / dh);
 
     for (j = 0, y = dst->y; y < b; j++, y++) {
       const color_t* src_p = data + iw * (sy + ((j * scale_y) >> 16)) + sx;
