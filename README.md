@@ -135,6 +135,12 @@ bin\demo1
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/06/01
+    * 修改STM F103ZE JTAG无法下载的问题。
+    * 优化lcd\_reg.inc
+    * STM F103ZE实现获取时间的函数。
+
 * 2018/05/31
     * 控件支持缩放动画(目前需要OpenGL)。
     * 控件支持旋转动画(目前需要OpenGL)。
