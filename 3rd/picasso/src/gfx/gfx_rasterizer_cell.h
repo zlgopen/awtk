@@ -189,8 +189,9 @@ public:
     void line(int x1, int y1, int x2, int y2)
     {
         int dx = x2 - x1;
+        int dxlimit = dx_limit;
 
-        if (dx >= dx_limit || dx <= -dx_limit) {
+        if (dx >= dxlimit || dx <= -dxlimit) {
             int cx = (x1 + x2) >> 1;
             int cy = (y1 + y2) >> 1;
             line(x1, y1, cx, cy);

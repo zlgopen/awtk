@@ -1,24 +1,17 @@
 #ifndef TK_NEW_H
 #define TK_NEW_H
 
+#include <new>
 #include <cstddef>
 #include "base/mem.h"
 
-inline void* operator new(std::size_t size) {
-  return TKMEM_ALLOC(size);
-}
+void* operator new(std::size_t size) throw(std::bad_alloc);
 
-inline void* operator new[](std::size_t size) {
-  return TKMEM_ALLOC(size);
-}
+void* operator new[](std::size_t size) throw(std::bad_alloc);
 
-inline void  operator delete(void* obj) {
-  TKMEM_FREE(obj);
-}
+void  operator delete(void* obj) throw();
 
-inline void  operator delete[](void* obj) {
-  TKMEM_FREE(obj);
-}
+void  operator delete[](void* obj) throw();
 
 #endif/*TK_NEW_H*/
 
