@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -27,7 +27,11 @@
 #include <wchar.h>
 #include <assert.h>
 #include <stdint.h>
+
+#ifdef HAS_STDIO
 #include <stdio.h>
+#endif/*HAS_STDIO*/
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -103,7 +107,7 @@ typedef enum _ret_t {
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
-#elif defined(HAS_PRINTF)
+#elif defined(HAS_STDIO)
 #define log_debug(format, args...) printf(format, ##args)
 #define log_info(format, args...) printf(format, ##args)
 #define log_warn(format, args...) printf(format, ##args)
@@ -137,17 +141,17 @@ typedef enum _ret_t {
 #define ENSURE(p) assert(p)
 #define break_if_fail(p)                              \
   if (!(p)) {                                         \
-    printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     break;                                            \
   }
 #define return_if_fail(p)                             \
   if (!(p)) {                                         \
-    printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return;                                           \
   }
 #define return_value_if_fail(p, value)                \
   if (!(p)) {                                         \
-    printf("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return (value);                                   \
   }
 #endif

@@ -300,6 +300,9 @@ RECENT REVISION HISTORY:
 //     want the zlib decoder to be available, #define STBI_SUPPORT_ZLIB
 //
 
+#ifndef HAS_STDIO
+#define STBI_NO_STDIO 1
+#endif/**/
 
 #ifndef STBI_NO_STDIO
 #include <stdio.h>

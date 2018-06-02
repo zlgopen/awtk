@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utils.h"
 #include "base/system_info.h"
 #include "base/resource_manager.h"
 
@@ -60,14 +61,14 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
 
   switch (type) {
     case RESOURCE_TYPE_FONT: {
-      snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_TTF, size, path, name);
         break;
       }
 
-      snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_BMP, size, path, name);
@@ -77,7 +78,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_THEME: {
-      snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_THEME, size, path, name);
@@ -86,7 +87,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_STRINGS: {
-      snprintf(path, MAX_PATH, "%s/strings/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/strings/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_STRINGS, size, path, name);
@@ -101,7 +102,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
         ratio = "x2";
       }
 
-      snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name);
+      tk_snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_PNG, size, path, name);
@@ -109,7 +110,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
         return info;
       }
 
-      snprintf(path, MAX_PATH, "%s/images/%s/%s.jpg", RES_ROOT, ratio, name);
+      tk_snprintf(path, MAX_PATH, "%s/images/%s/%s.jpg", RES_ROOT, ratio, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_JPG, size, path, name);
@@ -120,7 +121,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_UI: {
-      snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_UI_BIN, size, path, name);
@@ -130,7 +131,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_XML: {
-      snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_XML, size, path, name);
@@ -140,7 +141,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_DATA: {
-      snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_DATA, size, path, name);

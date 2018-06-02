@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utils.h"
 #include "base/locale.h"
 
 static tklocale_t* s_locale = NULL;
@@ -88,7 +89,7 @@ ret_t locale_change(tklocale_t* locale, const char* language, const char* countr
       resource_manager_clear_cache(resource_manager(), RESOURCE_TYPE_STRINGS);
     }
 
-    snprintf(name, sizeof(name) - 1, "%s_%s", locale->language, locale->country);
+    tk_snprintf(name, sizeof(name) - 1, "%s_%s", locale->language, locale->country);
     locale->strs = resource_manager_ref(resource_manager(), RESOURCE_TYPE_STRINGS, name);
     if (locale->strs == NULL) {
       locale->strs =
