@@ -122,7 +122,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
         break;
       }
       default: {
-        if (widget->text.size < edit->limit.t.max) {
+        if (widget->text.size < edit->limit.u.t.max) {
           wstr_push(&(widget->text), key);
         }
       }
@@ -145,7 +145,7 @@ static bool_t edit_is_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   switch (edit->limit.type) {
     case INPUT_TEXT: {
-      return edit->limit.t.min <= widget->text.size;
+      return edit->limit.u.t.min <= widget->text.size;
     }
     case INPUT_INT: {
       /*TODO*/
@@ -213,8 +213,8 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  edit->limit.t.min = min;
-  edit->limit.t.max = max;
+  edit->limit.u.t.min = min;
+  edit->limit.u.t.max = max;
   edit->limit.type = INPUT_TEXT;
 
   return RET_OK;
@@ -224,8 +224,8 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  edit->limit.i.min = min;
-  edit->limit.i.max = max;
+  edit->limit.u.i.min = min;
+  edit->limit.u.i.max = max;
   edit->limit.type = INPUT_INT;
 
   return RET_OK;
@@ -235,9 +235,9 @@ ret_t edit_set_float_limit(widget_t* widget, float min, float max, float step) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  edit->limit.f.min = min;
-  edit->limit.f.max = max;
-  edit->limit.f.step = step;
+  edit->limit.u.f.min = min;
+  edit->limit.u.f.max = max;
+  edit->limit.u.f.step = step;
   edit->limit.type = INPUT_FLOAT;
 
   return RET_OK;
@@ -274,29 +274,29 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (strcmp(name, WIDGET_PROP_MIN) == 0) {
     if (edit->limit.type == INPUT_INT) {
-      value_set_int(v, edit->limit.i.min);
+      value_set_int(v, edit->limit.u.i.min);
     } else if (edit->limit.type == INPUT_TEXT) {
-      value_set_uint32(v, edit->limit.t.min);
+      value_set_uint32(v, edit->limit.u.t.min);
     } else if (edit->limit.type == INPUT_FLOAT) {
-      value_set_float(v, edit->limit.f.min);
+      value_set_float(v, edit->limit.u.f.min);
     } else {
       return RET_NOT_FOUND;
     }
     return RET_OK;
   } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
     if (edit->limit.type == INPUT_INT) {
-      value_set_int(v, edit->limit.i.max);
+      value_set_int(v, edit->limit.u.i.max);
     } else if (edit->limit.type == INPUT_TEXT) {
-      value_set_uint32(v, edit->limit.t.max);
+      value_set_uint32(v, edit->limit.u.t.max);
     } else if (edit->limit.type == INPUT_FLOAT) {
-      value_set_float(v, edit->limit.f.max);
+      value_set_float(v, edit->limit.u.f.max);
     } else {
       return RET_NOT_FOUND;
     }
     return RET_OK;
   } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
     if (edit->limit.type == INPUT_FLOAT) {
-      value_set_float(v, edit->limit.f.step);
+      value_set_float(v, edit->limit.u.f.step);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;
@@ -321,29 +321,29 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
 
   if (strcmp(name, WIDGET_PROP_MIN) == 0) {
     if (edit->limit.type == INPUT_INT) {
-      edit->limit.i.min = value_int(v);
+      edit->limit.u.i.min = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
-      edit->limit.t.min = value_uint32(v);
+      edit->limit.u.t.min = value_uint32(v);
     } else if (edit->limit.type == INPUT_FLOAT) {
-      edit->limit.f.min = value_float(v);
+      edit->limit.u.f.min = value_float(v);
     } else {
       return RET_NOT_FOUND;
     }
     return RET_OK;
   } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
     if (edit->limit.type == INPUT_INT) {
-      edit->limit.i.max = value_int(v);
+      edit->limit.u.i.max = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
-      edit->limit.t.max = value_uint32(v);
+      edit->limit.u.t.max = value_uint32(v);
     } else if (edit->limit.type == INPUT_FLOAT) {
-      edit->limit.f.max = value_float(v);
+      edit->limit.u.f.max = value_float(v);
     } else {
       return RET_NOT_FOUND;
     }
     return RET_OK;
   } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
     if (edit->limit.type == INPUT_FLOAT) {
-      edit->limit.f.step = value_float(v);
+      edit->limit.u.f.step = value_float(v);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;

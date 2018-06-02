@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   edit.h
  * Author: AWTK Develop Team
  * Brief:  edit
@@ -86,7 +86,7 @@ typedef struct _input_limit_t {
       float max;
       float step;
     } f;
-  };
+  }u;
 } input_limit_t;
 
 /**
