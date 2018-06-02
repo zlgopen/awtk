@@ -17,6 +17,8 @@
 
 * 7.HAS\_FAST\_MEMCPY 如果有高效的memcpy函数请定义该宏。
 
+一般推荐定义：WITH\_BITMAP\_FONT,WITH\_STB\_FONT,WITH\_STB\_IMAGE,USE\_GUI\_MAIN,HAS\_FAST\_MEMCPY
+
 ### 二、include路径
 
 * 1.基本路径
