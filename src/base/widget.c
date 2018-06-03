@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -593,6 +593,8 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     }
   }
 #else
+	(void)vg;
+	(void)need_transform;
   canvas_translate(c, widget->x, widget->y);
 #endif /*WITH_VGCANVAS_LCD*/
 

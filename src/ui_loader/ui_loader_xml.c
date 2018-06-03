@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_loader_xml.h
  * Author: AWTK Develop Team
  * Brief:  default ui_loader
@@ -126,7 +126,7 @@ static void xml_loader_on_pi(XmlBuilder* thiz, const char* tag, const char** att
 
 static void xml_loader_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
   (void)thiz;
-  printf("parse error: %d:%d %s\n", line, row, message);
+  log_debug("parse error: %d:%d %s\n", line, row, message);
   return;
 }
 
