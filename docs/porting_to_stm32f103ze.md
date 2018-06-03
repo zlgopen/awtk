@@ -4,10 +4,15 @@ AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和m
 
 ### 一、平台初始化
 
-除了基本的libc函数外，AWTK对平台没有特别要求，在stm32f103ze上没有函数gettimeofday，所以要实现一个获取当前时间的函数get\_time\_ms。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
+除了基本的libc函数外，AWTK对平台没有特别要求，只需要get\_time\_ms和sleep\_ms两个函数以及一块内存。我们使用systick来实现get\_time\_ms和sleep\_ms两个函数，裸系统上只需加入src/platforms/raw/sys\_tick.c并初始化sys\_tick即可。
+
 
 ```
-void sys_tick_init() {
+#include "sys.h"
+#include "base/mem.h"
+#include "base/timer.h"
+
+void systick_init(void) {
   u8 fac_us = 0;
   u16 fac_ms = 0;
 
@@ -21,24 +26,8 @@ void sys_tick_init() {
   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
-static uint32_t g_sys_tick;
-void SysTick_Handler(void) { g_sys_tick++; }
-uint32_t get_time_ms() { return g_sys_tick; }
-
-void sleep_ms(uint32_t ms) {
-  uint32_t count = 0;
-  uint32_t start = get_time_ms();
-
-  while (get_time_ms() < (start + ms)) {
-    count++;
-  }
-}
-
-void delay_ms(uint32_t ms) { sleep_ms(ms); }
-
 static uint32_t s_heam_mem[2048];
 ret_t platform_prepare(void) {
-  sys_tick_init();
   tk_mem_init(s_heam_mem, sizeof(s_heam_mem));
 
   return RET_OK;
