@@ -139,7 +139,9 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   return RET_OK;
 }
 
-static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) { return RET_OK; }
+static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
+  return RET_OK;
+}
 
 static bool_t edit_is_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);

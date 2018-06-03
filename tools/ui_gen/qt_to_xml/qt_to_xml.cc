@@ -74,7 +74,8 @@ class WidgetInfo {
     }
   }
 
-  ~WidgetInfo() {}
+  ~WidgetInfo() {
+  }
 
  public:
   string type;

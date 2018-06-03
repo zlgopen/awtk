@@ -24,7 +24,8 @@
 #include "base/theme.h"
 #include "base/types_def.h"
 
-Style::Style() {}
+Style::Style() {
+}
 
 Style::Style(uint16_t widget_type, uint8_t style_type, uint8_t state) {
   this->widget_type = widget_type;
@@ -32,7 +33,8 @@ Style::Style(uint16_t widget_type, uint8_t style_type, uint8_t state) {
   this->state = state;
 }
 
-Style::~Style() {}
+Style::~Style() {
+}
 
 bool Style::AddInt(uint32_t name, int32_t value) {
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();

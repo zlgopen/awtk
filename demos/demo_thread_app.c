@@ -56,7 +56,9 @@ static ret_t on_timer(const timer_info_t* timer) {
   return update_progress_bar(WIDGETP(timer->ctx));
 }
 
-static ret_t on_idle(const idle_info_t* idle) { return update_progress_bar(WIDGETP(idle->ctx)); }
+static ret_t on_idle(const idle_info_t* idle) {
+  return update_progress_bar(WIDGETP(idle->ctx));
+}
 
 void* thread_entry(void* args) {
   int nr = 500;

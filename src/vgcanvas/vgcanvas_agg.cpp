@@ -371,9 +371,13 @@ static ret_t vgcanvas_agg_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_agg_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) { return RET_OK; }
+static ret_t vgcanvas_agg_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+  return RET_OK;
+}
 
-static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) { return RET_OK; }
+static ret_t vgcanvas_agg_destroy(vgcanvas_t* vg) {
+  return RET_OK;
+}
 
 static const vgcanvas_vtable_t vt = {vgcanvas_agg_begin_frame,
                                      vgcanvas_agg_reset,

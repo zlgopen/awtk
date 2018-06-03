@@ -38,7 +38,7 @@ uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size);
 uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);
 void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp);
 
-int tk_snprintf(char * str, size_t size, const char * format, ...);
+int tk_snprintf(char* str, size_t size, const char* format, ...);
 
 #define str_fast_equal(s1, s2) (*(s1) == *(s2) && strcmp((s1), (s2)) == 0)
 #define fequal(f1, f2) (fabs((f1) - (f2)) < 0.00001)

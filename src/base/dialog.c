@@ -168,7 +168,9 @@ static ret_t dialog_close(widget_t* widget) {
   return window_manager_remove_child(widget->parent, widget);
 }
 
-static ret_t dialog_idle_close(const idle_info_t* info) { return dialog_close(WIDGETP(info->ctx)); }
+static ret_t dialog_idle_close(const idle_info_t* info) {
+  return dialog_close(WIDGETP(info->ctx));
+}
 
 uint32_t dialog_modal(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);

@@ -193,4 +193,6 @@ static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default
                                          .find_target = widget_find_target_default,
                                          .destroy = widget_destroy_default};
 
-const widget_vtable_t* widget_vtable_default() { return &s_vtable; }
+const widget_vtable_t* widget_vtable_default() {
+  return &s_vtable;
+}

@@ -29,7 +29,9 @@ typedef uint16_t pixel_t;
 #include "blend/pixel_ops.inc"
 #include "lcd/lcd_mem.inc"
 
-lcd_t* lcd_mem_rgb565_create(wh_t w, wh_t h, bool_t alloc) { return lcd_mem_create(w, h, alloc); }
+lcd_t* lcd_mem_rgb565_create(wh_t w, wh_t h, bool_t alloc) {
+  return lcd_mem_create(w, h, alloc);
+}
 
 lcd_t* lcd_mem_rgb565_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
   return lcd_mem_create_single_fb(w, h, fbuff);

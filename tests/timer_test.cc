@@ -6,11 +6,17 @@ using std::string;
 
 static string s_log;
 static uint32_t s_now = 0;
-static uint32_t timer_get_time() { return s_now; }
+static uint32_t timer_get_time() {
+  return s_now;
+}
 
-static void timer_set_time(uint32_t now) { s_now = now; }
+static void timer_set_time(uint32_t now) {
+  s_now = now;
+}
 
-static void timer_clear_log(void) { s_log = ""; }
+static void timer_clear_log(void) {
+  s_log = "";
+}
 
 static ret_t timer_once(const timer_info_t* timer) {
   s_log += "o:";

@@ -21,7 +21,9 @@ void mem_stack_push(mem_stack_t* s, void* ptr) {
   s->ptr[s->top++] = ptr;
 }
 
-bool_t mem_stack_has_space(mem_stack_t* s) { return s->top < s->max; }
+bool_t mem_stack_has_space(mem_stack_t* s) {
+  return s->top < s->max;
+}
 
 void* mem_stack_pop(mem_stack_t* s) {
   assert(s->top > 0);

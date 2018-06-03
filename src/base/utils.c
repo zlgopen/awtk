@@ -97,7 +97,9 @@ long tk_strtol(const char* str, const char** end, int base) {
   return neg ? -n : n;
 }
 
-int tk_atoi(const char* str) { return tk_strtol(str, NULL, 10); }
+int tk_atoi(const char* str) {
+  return tk_strtol(str, NULL, 10);
+}
 
 float_t tk_atof(const char* str) {
   int n = 0;
@@ -175,7 +177,9 @@ static const char* tk_itoa_simple(char* str, int len, int n, const char** end) {
   return str;
 }
 
-const char* tk_itoa(char* str, int len, int n) { return tk_itoa_simple(str, len, n, NULL); }
+const char* tk_itoa(char* str, int len, int n) {
+  return tk_itoa_simple(str, len, n, NULL);
+}
 
 const char* tk_ftoa(char* str, int len, float_t value) {
   int i = 0;
@@ -216,7 +220,9 @@ const char* tk_ftoa(char* str, int len, float_t value) {
   return NULL;
 }
 
-char* tk_strcpy(char* dst, const char* src) { return strcpy(dst, src); }
+char* tk_strcpy(char* dst, const char* src) {
+  return strcpy(dst, src);
+}
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   return_value_if_fail(buff != NULL, NULL);
@@ -315,11 +321,11 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
 #define STB_SPRINTF_IMPLEMENTATION 1
 #include "stb/stb_sprintf.h"
 
-int tk_snprintf(char * str, size_t size, const char * format, ...) {
+int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
   va_list va;
   va_start(va, format);
-  ret = stbsp_vsnprintf(str, size, format, va); 
+  ret = stbsp_vsnprintf(str, size, format, va);
   va_end(va);
 
   return ret;

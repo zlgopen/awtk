@@ -25,11 +25,17 @@
 #define PI 3.1415926
 #include "base/easing.h"
 
-static float_t easing_linear(float_t k) { return k; }
+static float_t easing_linear(float_t k) {
+  return k;
+}
 
-static float_t easing_quadratic_in(float_t k) { return k * k; }
+static float_t easing_quadratic_in(float_t k) {
+  return k * k;
+}
 
-static float_t easing_quadratic_out(float_t k) { return k * (2 - k); }
+static float_t easing_quadratic_out(float_t k) {
+  return k * (2 - k);
+}
 
 static float_t easing_quadratic_inout(float_t k) {
   if ((k *= 2) < 1) {
@@ -40,7 +46,9 @@ static float_t easing_quadratic_inout(float_t k) {
   return -0.5f * (k * (k - 2) - 1);
 }
 
-static float_t easing_cubic_in(float_t k) { return k * k * k; }
+static float_t easing_cubic_in(float_t k) {
+  return k * k * k;
+}
 
 static float_t easing_cubic_out(float_t k) {
   k -= 1;
@@ -61,11 +69,17 @@ static float_t easing_sin_out(float_t k) {
   return 1 - (float_t)cos((float_t)(k * (float_t)PI / 2));
 }
 
-static float_t easing_sin_inout(float_t k) { return (float_t)sin((float_t)(k * (float_t)PI / 2)); }
+static float_t easing_sin_inout(float_t k) {
+  return (float_t)sin((float_t)(k * (float_t)PI / 2));
+}
 
-static float_t easing_pow_in(float_t k) { return k == 0 ? 0 : pow(1024, k - 1); }
+static float_t easing_pow_in(float_t k) {
+  return k == 0 ? 0 : pow(1024, k - 1);
+}
 
-static float_t easing_pow_out(float_t k) { return k == 1 ? 1 : 1 - pow(2, -10 * k); }
+static float_t easing_pow_out(float_t k) {
+  return k == 1 ? 1 : 1 - pow(2, -10 * k);
+}
 
 static float_t easing_pow_inout(float_t k) {
   if (k == 0) {
@@ -83,7 +97,9 @@ static float_t easing_pow_inout(float_t k) {
   return 0.5 * (-pow(2, -10 * (k - 1)) + 2);
 }
 
-static float_t easing_circular_in(float_t k) { return 1 - sqrt(1 - k * k); }
+static float_t easing_circular_in(float_t k) {
+  return 1 - sqrt(1 - k * k);
+}
 
 static float_t easing_circular_out(float_t k) {
   k -= 1;
@@ -166,7 +182,9 @@ static float_t easing_back_inout(float_t k) {
 }
 
 static float_t easing_bounce_out(float_t k);
-static float_t easing_bounce_in(float_t k) { return 1 - easing_bounce_out(1 - k); }
+static float_t easing_bounce_in(float_t k) {
+  return 1 - easing_bounce_out(1 - k);
+}
 
 static float_t easing_bounce_out(float_t k) {
   if (k < (1 / 2.75f)) {

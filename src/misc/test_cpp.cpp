@@ -6,12 +6,20 @@
 class Test {
  public:
   int count;
-  Test() { this->count = 0; }
-  ~Test() { this->count = 0; }
+  Test() {
+    this->count = 0;
+  }
+  ~Test() {
+    this->count = 0;
+  }
 
-  void inc() { this->count++; }
+  void inc() {
+    this->count++;
+  }
 
-  void dec() { this->count--; }
+  void dec() {
+    this->count--;
+  }
 };
 
 extern "C" void runCppTest() {

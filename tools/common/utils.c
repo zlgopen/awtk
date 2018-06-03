@@ -31,7 +31,9 @@
 #include "base/enums.h"
 #include "base/resource_manager.h"
 
-char* read_file(const char* file_name, uint32_t* length) { return fs_read_file(file_name, length); }
+char* read_file(const char* file_name, uint32_t* length) {
+  return fs_read_file(file_name, length);
+}
 
 ret_t write_file(const char* file_name, const void* buff, uint32_t length) {
   return fs_write_file(file_name, buff, length);

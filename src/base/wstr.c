@@ -59,11 +59,17 @@ size_t wcs_len(const wchar_t* s) {
 }
 
 #ifdef WITH_WCSXXX
-size_t wcslen(const wchar_t* s) { return wcs_len(s); }
+size_t wcslen(const wchar_t* s) {
+  return wcs_len(s);
+}
 
-wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) { return wcs_cpy(s1, s2); }
+wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
+  return wcs_cpy(s1, s2);
+}
 
-wchar_t* wcschr(const wchar_t* s, wchar_t c) { return wcs_chr(s, c); }
+wchar_t* wcschr(const wchar_t* s, wchar_t c) {
+  return wcs_chr(s, c);
+}
 #endif /*WITH_WCSXXX*/
 
 static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {

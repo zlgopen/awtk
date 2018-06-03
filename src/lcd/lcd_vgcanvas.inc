@@ -170,7 +170,9 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x
   return vgcanvas_fill_text(canvas, text, x, y, 0xffff);
 }
 
-static ret_t lcd_vgcanvas_end_frame(lcd_t* lcd) { return vgcanvas_end_frame(LCD(lcd)->canvas); }
+static ret_t lcd_vgcanvas_end_frame(lcd_t* lcd) {
+  return vgcanvas_end_frame(LCD(lcd)->canvas);
+}
 
 static ret_t lcd_vgcanvas_destroy(lcd_t* lcd) {
   (void)lcd;

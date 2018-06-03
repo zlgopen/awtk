@@ -317,7 +317,9 @@ void value_copy(value_t* dst, const value_t* src) {
   memcpy(dst, src, sizeof(value_t));
 }
 
-bool_t value_is_null(value_t* v) { return v->type == VALUE_TYPE_INVALID; }
+bool_t value_is_null(value_t* v) {
+  return v->type == VALUE_TYPE_INVALID;
+}
 
 int value_int(const value_t* v) {
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
@@ -363,8 +365,14 @@ int value_int(const value_t* v) {
   return 0;
 }
 
-value_t* value_set_int(value_t* v, int32_t value) { return value_set_int32(v, value); }
+value_t* value_set_int(value_t* v, int32_t value) {
+  return value_set_int32(v, value);
+}
 
-value_t* value_create() { return TKMEM_ZALLOC(value_t); }
+value_t* value_create() {
+  return TKMEM_ZALLOC(value_t);
+}
 
-void value_destroy(value_t* v) { TKMEM_FREE(v); }
+void value_destroy(value_t* v) {
+  TKMEM_FREE(v);
+}

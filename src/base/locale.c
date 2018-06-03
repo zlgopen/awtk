@@ -25,7 +25,9 @@
 
 static tklocale_t* s_locale = NULL;
 
-tklocale_t* locale() { return s_locale; }
+tklocale_t* locale() {
+  return s_locale;
+}
 
 ret_t locale_set(tklocale_t* locale) {
   s_locale = locale;

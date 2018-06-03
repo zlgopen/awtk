@@ -24,7 +24,9 @@
 
 static font_manager_t* s_font_manager = NULL;
 
-font_manager_t* font_manager(void) { return s_font_manager; }
+font_manager_t* font_manager(void) {
+  return s_font_manager;
+}
 
 ret_t font_manager_set(font_manager_t* fm) {
   s_font_manager = fm;

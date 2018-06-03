@@ -172,7 +172,9 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   return RET_OK;
 }
 
-static ret_t lcd_reg_end_frame(lcd_t* lcd) { return RET_OK; }
+static ret_t lcd_reg_end_frame(lcd_t* lcd) {
+  return RET_OK;
+}
 
 static ret_t lcd_reg_destroy(lcd_t* lcd) {
   TKMEM_FREE(lcd);

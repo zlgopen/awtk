@@ -44,7 +44,9 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   return RET_OK;
 }
 
-static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) { return RET_OK; }
+static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+  return RET_OK;
+}
 
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;

@@ -28,7 +28,9 @@ static timer_manager_t* s_timer_manager;
 #define OFFLINE_TIMERS(timer_manager) \
   (((timer_manager)->timers) + ((timer_manager)->active ? 0 : 1))
 
-timer_manager_t* timer_manager(void) { return s_timer_manager; }
+timer_manager_t* timer_manager(void) {
+  return s_timer_manager;
+}
 
 ret_t timer_manager_set(timer_manager_t* timer_manager) {
   s_timer_manager = timer_manager;
@@ -222,19 +224,29 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms) {
   return timer_manager_add(timer_manager(), on_timer, ctx, duration_ms);
 }
 
-ret_t timer_remove(uint32_t timer_id) { return timer_manager_remove(timer_manager(), timer_id); }
+ret_t timer_remove(uint32_t timer_id) {
+  return timer_manager_remove(timer_manager(), timer_id);
+}
 
 const timer_info_t* timer_find(uint32_t timer_id) {
   return timer_manager_find(timer_manager(), timer_id);
 }
 
-ret_t timer_dispatch(void) { return timer_manager_dispatch(timer_manager()); }
+ret_t timer_dispatch(void) {
+  return timer_manager_dispatch(timer_manager());
+}
 
-uint32_t timer_count(void) { return ACTIVE_TIMERS(timer_manager())->size; }
+uint32_t timer_count(void) {
+  return ACTIVE_TIMERS(timer_manager())->size;
+}
 
-uint32_t timer_next_time(void) { return timer_manager_next_time(timer_manager()); }
+uint32_t timer_next_time(void) {
+  return timer_manager_next_time(timer_manager());
+}
 
-uint32_t timer_now(void) { return timer_manager()->get_time(); }
+uint32_t timer_now(void) {
+  return timer_manager()->get_time();
+}
 
 #include "base/main_loop.h"
 

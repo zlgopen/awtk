@@ -27,7 +27,9 @@ static idle_manager_t* s_idle_manager;
 #define ACTIVE_IDLES(idle_manager) (((idle_manager)->idles) + (idle_manager)->active)
 #define OFFLINE_IDLES(idle_manager) (((idle_manager)->idles) + ((idle_manager)->active ? 0 : 1))
 
-idle_manager_t* idle_manager(void) { return s_idle_manager; }
+idle_manager_t* idle_manager(void) {
+  return s_idle_manager;
+}
 
 ret_t idle_manager_set(idle_manager_t* idle_manager) {
   s_idle_manager = idle_manager;
@@ -172,13 +174,17 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx) {
   return idle_manager_add(idle_manager(), on_idle, ctx);
 }
 
-ret_t idle_remove(uint32_t idle_id) { return idle_manager_remove(idle_manager(), idle_id); }
+ret_t idle_remove(uint32_t idle_id) {
+  return idle_manager_remove(idle_manager(), idle_id);
+}
 
 const idle_info_t* idle_find(uint32_t idle_id) {
   return idle_manager_find(idle_manager(), idle_id);
 }
 
-ret_t idle_dispatch(void) { return idle_manager_dispatch(idle_manager()); }
+ret_t idle_dispatch(void) {
+  return idle_manager_dispatch(idle_manager());
+}
 
 uint32_t idle_count(void) {
   return ACTIVE_IDLES(idle_manager())->size + OFFLINE_IDLES(idle_manager())->size;

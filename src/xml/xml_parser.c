@@ -50,7 +50,9 @@ static void xml_parser_parse_pi(XmlParser* thiz);
 static void xml_parser_parse_text(XmlParser* thiz);
 static void xml_parser_reset_buffer(XmlParser* thiz);
 
-XmlParser* xml_parser_create(void) { return TKMEM_ZALLOC(XmlParser); }
+XmlParser* xml_parser_create(void) {
+  return TKMEM_ZALLOC(XmlParser);
+}
 
 void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder) {
   thiz->builder = builder;

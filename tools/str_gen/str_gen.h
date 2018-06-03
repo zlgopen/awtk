@@ -40,7 +40,9 @@ class Sentence {
     this->value = value;
   }
 
-  bool operator<(const Sentence& other) const { return this->key < other.key; }
+  bool operator<(const Sentence& other) const {
+    return this->key < other.key;
+  }
 
   string key;
   string value;
@@ -48,9 +50,13 @@ class Sentence {
 
 class Sentences {
  public:
-  void Add(const Sentence& s) { this->sentences.push_back(s); }
+  void Add(const Sentence& s) {
+    this->sentences.push_back(s);
+  }
 
-  void Sort() { std::sort(this->sentences.begin(), this->sentences.end()); }
+  void Sort() {
+    std::sort(this->sentences.begin(), this->sentences.end());
+  }
 
   vector<Sentence> sentences;
 };

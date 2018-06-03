@@ -138,7 +138,9 @@ ret_t tk_run() {
   return tk_exit();
 }
 
-static ret_t tk_quit_idle(const timer_info_t* timer) { return main_loop_quit(main_loop()); }
+static ret_t tk_quit_idle(const timer_info_t* timer) {
+  return main_loop_quit(main_loop());
+}
 
 ret_t tk_quit() {
   timer_add(tk_quit_idle, NULL, 0);

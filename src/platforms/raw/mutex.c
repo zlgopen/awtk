@@ -28,7 +28,9 @@ struct _tk_mutex_t {
 
 static tk_mutex_t s_tk_mutex_null;
 
-tk_mutex_t* tk_mutex_create() { return &s_tk_mutex_null; }
+tk_mutex_t* tk_mutex_create() {
+  return &s_tk_mutex_null;
+}
 
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   (void)mutex;

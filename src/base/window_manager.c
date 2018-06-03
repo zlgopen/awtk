@@ -278,7 +278,9 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
 
 static widget_t* s_window_manager = NULL;
 
-widget_t* window_manager(void) { return s_window_manager; }
+widget_t* window_manager(void) {
+  return s_window_manager;
+}
 
 ret_t window_manager_set(widget_t* widget) {
   s_window_manager = widget;

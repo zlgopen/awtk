@@ -33,7 +33,9 @@ typedef struct _bitmap_cache_t {
 } bitmap_cache_t;
 
 static image_manager_t* s_image_manager = NULL;
-image_manager_t* image_manager() { return s_image_manager; }
+image_manager_t* image_manager() {
+  return s_image_manager;
+}
 
 ret_t image_manager_set(image_manager_t* imm) {
   s_image_manager = imm;

@@ -34,7 +34,8 @@ mem_stat_t tk_mem_stat(void) {
   return stat;
 }
 
-void tk_mem_info_dump(void) {}
+void tk_mem_info_dump(void) {
+}
 
 #else
 typedef struct _free_node_t {

@@ -22,6 +22,10 @@
 #include "base/time.h"
 #include "base/platform.h"
 
-uint32_t time_now_ms(void) { return get_time_ms(); }
+uint32_t time_now_ms(void) {
+  return get_time_ms();
+}
 
-uint32_t time_now_s(void) { return get_time_ms() / 1000; }
+uint32_t time_now_s(void) {
+  return get_time_ms() / 1000;
+}

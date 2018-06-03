@@ -86,7 +86,7 @@ typedef struct _input_limit_t {
       float max;
       float step;
     } f;
-  }u;
+  } u;
 } input_limit_t;
 
 /**

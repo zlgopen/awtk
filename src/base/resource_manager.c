@@ -168,7 +168,9 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
 }
 #endif /*WITH_FS_RES*/
 
-resource_manager_t* resource_manager(void) { return s_resource_manager; }
+resource_manager_t* resource_manager(void) {
+  return s_resource_manager;
+}
 
 static ret_t resource_info_destroy(resource_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);

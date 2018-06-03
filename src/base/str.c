@@ -49,7 +49,9 @@ str_t* str_init(str_t* str, uint16_t capacity) {
   return str_extend(str, capacity) == RET_OK ? str : NULL;
 }
 
-ret_t str_set(str_t* str, const char* text) { return str_set_with_len(str, text, 0xffff); }
+ret_t str_set(str_t* str, const char* text) {
+  return str_set_with_len(str, text, 0xffff);
+}
 
 ret_t str_set_with_len(str_t* str, const char* text, uint16_t len) {
   uint16_t size = 0;

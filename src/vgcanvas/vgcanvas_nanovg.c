@@ -573,7 +573,9 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) { return RET_OK; }
+static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
+  return RET_OK;
+}
 
 static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_reset,

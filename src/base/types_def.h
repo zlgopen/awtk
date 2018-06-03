@@ -30,7 +30,7 @@
 
 #ifdef HAS_STDIO
 #include <stdio.h>
-#endif/*HAS_STDIO*/
+#endif /*HAS_STDIO*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -139,20 +139,20 @@ typedef enum _ret_t {
   }
 #else
 #define ENSURE(p) assert(p)
-#define break_if_fail(p)                              \
-  if (!(p)) {                                         \
+#define break_if_fail(p)                                \
+  if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
-    break;                                            \
+    break;                                              \
   }
-#define return_if_fail(p)                             \
-  if (!(p)) {                                         \
+#define return_if_fail(p)                               \
+  if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
-    return;                                           \
+    return;                                             \
   }
-#define return_value_if_fail(p, value)                \
-  if (!(p)) {                                         \
+#define return_value_if_fail(p, value)                  \
+  if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
-    return (value);                                   \
+    return (value);                                     \
   }
 #endif
 
