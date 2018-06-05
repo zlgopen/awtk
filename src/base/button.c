@@ -35,8 +35,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_UP: {
       pointer_event_t evt = *(pointer_event_t*)e;
-      evt.e.type = EVT_CLICK;
-      evt.e.target = widget;
+      evt.e = event_init(EVT_CLICK, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
       break;

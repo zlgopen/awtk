@@ -27,38 +27,46 @@ static ret_t slide_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static ret_t slide_view_on_pointer_down(widget_t* widget, event_t* e) {
+static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_t* e) {
+  slide_view->down.x = e->x;
+  slide_view->down.y = e->y;
+  
+  return RET_OK;
+}
+
+static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
+  int dx = e->x - slide_view->down.x;
+  int dy = e->y - slide_view->down.y;
+
+  return RET_OK;
+}
+
+static ret_t slide_view_on_pointer_move(slide_view_t* slide_view, pointer_event_t* e) {
+  if(slide_view->vertical) {
+  } else {
+  }
+  
+  return RET_OK;
 }
 
 static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  pointer_event_t* evt = (pointer_event_t*)e;
-  int dx = evt->x - slide_view->down.x;
-  int dy = evt->y - slide_view->down.y;
-
   switch (type) {
     case EVT_POINTER_DOWN:
-      slide_view->down.x = evt->x;
-      slide_view->down.y = evt->y;
+      slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      if(dx > 10) {
-        slide_view_set_active(slide_view, slide_view->active--);
-      } else if(dx < -10){
-        slide_view_set_active(slide_view, slide_view->active++);
+      slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
+      break;
+    }
+    case EVT_POINTER_MOVE: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      if(evt->pressed) {
+        slide_view_on_pointer_move(slide_view, evt);
       }
       break;
     }
-    case EVT_POINTER_MOVE:
-      if(!evt->pressed) {
-        return RET_OK;
-      }
-
-      if(slide_view->vertical) {
-      } else {
-      }
-      break;
     default:
       break;
   }

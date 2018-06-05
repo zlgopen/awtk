@@ -40,6 +40,10 @@ emitter_t* emitter_init(emitter_t* emitter) {
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   return_value_if_fail(emitter != NULL && e != NULL, RET_BAD_PARAMS);
 
+  if(!(e->time)) {
+    e->time = time_now_ms();
+  }
+
   if (emitter->enable && emitter->items) {
     uint32_t i = 0;
     uint32_t size = emitter->size;

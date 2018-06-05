@@ -30,7 +30,7 @@
 #include "base/image_manager.h"
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
-  event_t e = {EVT_MOVE, widget};
+  event_t e = event_init(EVT_MOVE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->x = x;
@@ -43,7 +43,7 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
 }
 
 ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
-  event_t e = {EVT_RESIZE, widget};
+  event_t e = event_init(EVT_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->w = w;
@@ -56,7 +56,7 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
 }
 
 ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
-  event_t e = {EVT_MOVE_RESIZE, widget};
+  event_t e = event_init(EVT_MOVE_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->x = x;
@@ -643,7 +643,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
-  event_t e = {EVT_PROP_CHANGED, widget};
+  event_t e = event_init(EVT_PROP_CHANGED, widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -841,10 +841,10 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    event_t focus = {EVT_FOCUS, target};
+    event_t focus = event_init(EVT_FOCUS, target);
 
     if (widget->key_target) {
-      event_t blur = {EVT_BLUR, widget->key_target};
+      event_t blur = event_init(EVT_BLUR, widget->key_target);
       widget->key_target->focused = FALSE;
       widget_dispatch(widget->key_target, &blur);
     }
@@ -876,12 +876,12 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   target = widget_find_target(widget, e->x, e->y);
   if (target != widget->target) {
     if (widget->target != NULL) {
-      event_t leave = {EVT_POINTER_LEAVE, widget->target};
+      event_t leave = event_init(EVT_POINTER_LEAVE, widget->target);
       widget_dispatch(widget->target, &leave);
     }
 
     if (target != NULL) {
-      event_t enter = {EVT_POINTER_ENTER, widget->target};
+      event_t enter = event_init(EVT_POINTER_ENTER, widget->target);
       widget_dispatch(target, &enter);
     }
     widget->target = target;
@@ -934,7 +934,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
 }
 
 ret_t widget_destroy(widget_t* widget) {
-  event_t e = {EVT_DESTROY, widget};
+  event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (widget->emitter != NULL) {

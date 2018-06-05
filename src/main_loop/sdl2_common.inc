@@ -4,6 +4,7 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
   int type = sdl_event->type;
   widget_t* widget = loop->wm;
 
+  event.e.time = time_now_ms();
   event.key = sdl_event->key.keysym.sym;
   switch (type) {
     case SDL_KEYDOWN: {
@@ -28,6 +29,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   int type = sdl_event->type;
   widget_t* widget = loop->wm;
 
+  event.e.time = time_now_ms();
   switch (type) {
     case SDL_MOUSEBUTTONDOWN: {
       loop->pressed = 1;

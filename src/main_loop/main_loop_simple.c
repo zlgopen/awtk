@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/time.h"
 #include "main_loop/main_loop_simple.h"
 
 static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* r) {
@@ -55,6 +56,7 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
   event.x = x;
   event.y = y;
   event.button = 0;
+  event.e.time = time_now_ms();
 
   if (pressed) {
     if (loop->pressed) {

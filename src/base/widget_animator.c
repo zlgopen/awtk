@@ -70,20 +70,20 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
 
   if (now >= end_time) {
     if (animator->repeat_times > 0) {
-      event_t e = {EVT_ANIM_ONCE, animator};
+      event_t e = event_init(EVT_ANIM_ONCE, animator);
       animator->start_time = now;
       animator->repeat_times--;
 
       emitter_dispatch(&(animator->emitter), &e);
     } else if (animator->yoyo_times > 0) {
-      event_t e = {EVT_ANIM_ONCE, animator};
+      event_t e = event_init(EVT_ANIM_ONCE, animator);
       animator->start_time = now;
       animator->reversed = !animator->reversed;
       animator->yoyo_times--;
 
       emitter_dispatch(&(animator->emitter), &e);
     } else {
-      event_t e = {EVT_ANIM_END, animator};
+      event_t e = event_init(EVT_ANIM_END, animator);
       emitter_dispatch(&(animator->emitter), &e);
 
       animator->timer_id = 0;
@@ -106,7 +106,7 @@ static ret_t widget_animator_on_delay_timer(const timer_info_t* timer) {
 }
 
 ret_t widget_animator_start(widget_animator_t* animator) {
-  event_t e = {EVT_ANIM_START, animator};
+  event_t e = event_init(EVT_ANIM_START, animator);
   return_value_if_fail(animator != NULL && animator->timer_id == 0, RET_BAD_PARAMS);
 
   emitter_dispatch(&(animator->emitter), &e);
@@ -123,7 +123,7 @@ ret_t widget_animator_start(widget_animator_t* animator) {
 }
 
 ret_t widget_animator_stop(widget_animator_t* animator) {
-  event_t e = {EVT_ANIM_STOP, animator};
+  event_t e = event_init(EVT_ANIM_STOP, animator);
   return_value_if_fail(animator != NULL && animator->timer_id > 0, RET_BAD_PARAMS);
 
   timer_remove(animator->timer_id);

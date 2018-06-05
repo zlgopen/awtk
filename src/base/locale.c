@@ -78,7 +78,7 @@ ret_t locale_change(tklocale_t* locale, const char* language, const char* countr
 
   if (strcmp(locale->country, country) != 0 || strcmp(locale->language, language) != 0) {
     char name[16];
-    event_t e = {EVT_LOCALE_CHANGED, locale};
+    event_t e = event_init(EVT_LOCALE_CHANGED, locale);
 
     strncpy(locale->country, country, sizeof(locale->country) - 1);
     strncpy(locale->language, language, sizeof(locale->language) - 1);

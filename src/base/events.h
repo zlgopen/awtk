@@ -196,6 +196,13 @@ typedef struct _event_t {
    * 类型。
    */
   uint32_t type;
+  /**
+   * @property {int32_t} time
+   * @readonly
+   * 事件发生的时间。
+   */
+  uint32_t time;
+  
   void* target;
 } event_t;
 
@@ -339,6 +346,8 @@ typedef struct _paint_event_t {
  * @return {paint_event_t*} 对象。
  */
 paint_event_t* paint_event_cast(event_t* event);
+
+event_t event_init(event_type_t type, void* target);
 
 typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 

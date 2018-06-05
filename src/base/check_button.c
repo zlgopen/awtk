@@ -55,7 +55,7 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (check_button->value != value) {
-    event_t e = {EVT_VALUE_CHANGED, widget};
+    event_t e = event_init(EVT_VALUE_CHANGED, widget);
     check_button->value = value;
     widget_dispatch(widget, &e);
   }
