@@ -27,26 +27,37 @@ static ret_t slide_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
+static ret_t slide_view_on_pointer_down(widget_t* widget, event_t* e) {
+}
+
 static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  pointer_event_t* evt = (pointer_event_t*)e;
+  int dx = evt->x - slide_view->down.x;
+  int dy = evt->y - slide_view->down.y;
 
   switch (type) {
     case EVT_POINTER_DOWN:
-      widget_set_state(widget, WIDGET_STATE_PRESSED);
+      slide_view->down.x = evt->x;
+      slide_view->down.y = evt->y;
       break;
     case EVT_POINTER_UP: {
-      pointer_event_t evt = *(pointer_event_t*)e;
-      evt.e.type = EVT_CLICK;
-      evt.e.target = widget;
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
-      widget_dispatch(widget, (event_t*)&evt);
+      if(dx > 10) {
+        slide_view_set_active(slide_view, slide_view->active--);
+      } else if(dx < -10){
+        slide_view_set_active(slide_view, slide_view->active++);
+      }
       break;
     }
-    case EVT_POINTER_LEAVE:
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
-      break;
-    case EVT_POINTER_ENTER:
-      widget_set_state(widget, WIDGET_STATE_OVER);
+    case EVT_POINTER_MOVE:
+      if(!evt->pressed) {
+        return RET_OK;
+      }
+
+      if(slide_view->vertical) {
+      } else {
+      }
       break;
     default:
       break;
@@ -57,9 +68,8 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
 
 static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  widget_t* active = widget_get_child(widget, slide_view->active);
 
-  return active;
+  return widget_get_child(widget, slide_view->active);
 }
 
 static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v) {

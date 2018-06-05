@@ -23,6 +23,7 @@
 #define TK_SLIDE_VIEW_H
 
 #include "base/widget.h"
+#include "base/velocity.h"
 
 BEGIN_C_DECLS
 
@@ -37,6 +38,9 @@ typedef struct _slide_view_t {
   bool_t vertical;
   int32_t offset;
   uint32_t active;
+  point_t down;
+
+  velocity_t velocity;
   bitmap_t prev_image;
   bitmap_t active_image;
   bitmap_t next_image;
