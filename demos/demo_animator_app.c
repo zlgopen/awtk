@@ -125,6 +125,7 @@ ret_t application_init() {
   widget_animator_set_yoyo(animator, yoyo);
   animators[animators_nr++] = animator;
 
+#ifdef WITH_VGCANVAS_LCD
   delay += 1000;
   animator = widget_animator_rotation_create(image2, 1000, delay, EASING_SIN_INOUT);
   widget_animator_rotation_set_params(animator, 0, 3.14 * 2);
@@ -152,6 +153,7 @@ ret_t application_init() {
   animator = widget_animator_scale_create(image5, 1000, delay, EASING_SIN_IN);
   widget_animator_scale_set_params(animator, 0, 0, 1.0f, 1.0f);
   animators[animators_nr++] = animator;
+#endif
 
   animator = widget_animator_move_create(image5, 1000, delay, EASING_SIN_IN);
   widget_animator_move_set_params(animator, image5->x, image5->y, image5->x, image5->y + 100);
