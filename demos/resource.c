@@ -14,6 +14,7 @@
 #include "res/inc/images/info.data"
 #include "res/inc/images/left_off.data"
 #include "res/inc/images/left_on.data"
+#include "res/inc/images/message.data"
 #include "res/inc/images/middle_off.data"
 #include "res/inc/images/middle_on.data"
 #include "res/inc/images/muted.data"
@@ -67,6 +68,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_info);
   resource_manager_add(rm, image_left_off);
   resource_manager_add(rm, image_left_on);
+  resource_manager_add(rm, image_message);
   resource_manager_add(rm, image_middle_off);
   resource_manager_add(rm, image_middle_on);
   resource_manager_add(rm, image_muted);

@@ -549,7 +549,9 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
 }
 
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
-  widget_draw_icon_text(widget, c, icon, text);
+  if (widget->style.data) {
+    widget_draw_icon_text(widget, c, icon, text);
+  }
 
   return RET_OK;
 }

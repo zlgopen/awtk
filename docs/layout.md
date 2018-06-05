@@ -132,6 +132,15 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
   </group_box>
 ```
 
+> layout的值，依次为rows cols margin cell\_spacing，由单个空格分开。
+
+有时指定子控件的高度和宽度更方便，可以加上前缀：
+
+* rows前加**h**前缀表示指定子控件的高度，rows由子控件的高度计算而来。
+* cols前加**w**前缀表示指定子控件的宽度，cols由子控件的宽度计算而来。
+
+如: layout="h100 w128 10 5" 表示子控件的高度为100像素，宽度为128像素。 
+
 下面我们看看，如何调整rows/cols两个参数，来实现不同的布局方式。
 
 ### 0. 缺省

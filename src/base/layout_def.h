@@ -51,10 +51,12 @@ typedef struct _widget_layout_t {
 } widget_layout_t;
 
 typedef struct _children_layout_t {
-  uint8_t rows;
-  uint8_t cols;
+  uint16_t rows;
+  uint16_t cols;
   uint8_t margin;
   uint8_t cell_spacing;
+  uint16_t cols_is_width : 1;
+  uint16_t rows_is_height : 1;
 } children_layout_t;
 
 typedef struct _layout_params_t {

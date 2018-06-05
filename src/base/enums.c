@@ -37,6 +37,8 @@ static const key_type_value_t widget_type_value[] = {
     {"dragger", 0, WIDGET_DRAGGER},
     {"label", 0, WIDGET_LABEL},
     {"button", 0, WIDGET_BUTTON},
+    {"view", 0, WIDGET_VIEW},
+    {"slide_view", 0, WIDGET_SLIDE_VIEW},
     {"image", 0, WIDGET_IMAGE},
     {"edit", 0, WIDGET_EDIT},
     {"slider", 0, WIDGET_SLIDER},

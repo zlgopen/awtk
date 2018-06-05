@@ -31,6 +31,7 @@
 #include "base/slider.h"
 #include "base/edit.h"
 #include "base/group_box.h"
+#include "base/slide_view.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
 #include "base/resource_manager.h"
@@ -99,6 +100,9 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     case WIDGET_RADIO_BUTTON:
       widget = check_button_create_radio(parent, x, y, w, h);
       break;
+    case WIDGET_SLIDE_VIEW:
+      widget = slide_view_create(parent, x, y, w, h);
+      break;
     default:
       log_debug("%s: not supported type %d\n", __func__, type);
       break;
@@ -123,10 +127,10 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
                                                const char* value) {
   value_t v;
   if (strcmp(name, "layout") == 0) {
-    /*2 2 5 10 10*/
+    /*2 2 5 10*/
     children_layout_t cl;
     children_layout_parser(&cl, value);
-    widget_set_children_layout_params(b->widget, cl.rows, cl.cols, cl.margin, cl.cell_spacing);
+    widget_set_children_layout(b->widget, &cl);
   } else {
     value_set_str(&v, value);
     widget_set_prop(b->widget, name, &v);

@@ -206,6 +206,12 @@ typedef enum _widget_type_t {
    */
   WIDGET_VIEW,
 
+  /**
+   * @const WIDGET_SLIDE_VIEW
+   * Slide View。
+   */
+  WIDGET_SLIDE_VIEW,
+
   WIDGET_NR
 } widget_type_t;
 

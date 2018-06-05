@@ -45,6 +45,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_INPUT_TYPE "input_type"
 #define WIDGET_PROP_READONLY "readonly"
 
+#define WIDGET_PROP_ACTIVE "active"
 #define WIDGET_PROP_VERTICAL "vertical"
 #define WIDGET_PROP_SHOW_TEXT "show_text"
 

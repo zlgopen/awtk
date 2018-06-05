@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utils.h"
 #include "base/layout.h"
 
 widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, const char* y,
@@ -30,19 +31,19 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   if (x != NULL) {
     if (x[0] == 'c') {
       if (x[6] == ':') {
-        layout->x = atoi(x + 7);
+        layout->x = tk_atoi(x + 7);
       }
       layout->x_attr = X_ATTR_CENTER;
     } else if (x[0] == 'r') {
       if (x[5] == ':') {
-        layout->x = atoi(x + 6);
+        layout->x = tk_atoi(x + 6);
       }
       layout->x_attr = X_ATTR_RIGHT;
     } else if (strstr(x, "%") != NULL) {
-      layout->x = atoi(x);
+      layout->x = tk_atoi(x);
       layout->x_attr = X_ATTR_PERCENT;
     } else {
-      layout->x = atoi(x);
+      layout->x = tk_atoi(x);
       layout->x_attr = X_ATTR_DEFAULT;
     }
   } else {
@@ -52,19 +53,19 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   if (y != NULL) {
     if (y[0] == 'm') {
       if (y[6] == ':') {
-        layout->y = atoi(y + 7);
+        layout->y = tk_atoi(y + 7);
       }
       layout->y_attr = Y_ATTR_MIDDLE;
     } else if (y[0] == 'b') {
       if (y[6] == ':') {
-        layout->y = atoi(y + 7);
+        layout->y = tk_atoi(y + 7);
       }
       layout->y_attr = Y_ATTR_BOTTOM;
     } else if (strstr(y, "%") != NULL) {
-      layout->y = atoi(y);
+      layout->y = tk_atoi(y);
       layout->y_attr = Y_ATTR_PERCENT;
     } else {
-      layout->y = atoi(y);
+      layout->y = tk_atoi(y);
       layout->y_attr = Y_ATTR_DEFAULT;
     }
   } else {
@@ -72,7 +73,7 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   }
 
   if (w != NULL) {
-    layout->w = atoi(w);
+    layout->w = tk_atoi(w);
     layout->w_attr = W_ATTR_PIXEL;
     if (w != NULL) {
       if (strchr(w, '%') != NULL) {
@@ -86,7 +87,7 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   }
 
   if (h != NULL) {
-    layout->h = atoi(h);
+    layout->h = tk_atoi(h);
     layout->h_attr = H_ATTR_PIXEL;
     if (h != NULL) {
       if (strchr(h, '%') != NULL) {
@@ -181,18 +182,21 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
 
 ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
                                         uint8_t margin, uint8_t cell_spacing) {
+  children_layout_t cl = {rows, cols, margin, cell_spacing, 0, 0};
+
+  return widget_set_children_layout(widget, &cl);
+}
+
+ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl) {
   children_layout_t* layout = NULL;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && cl != NULL, RET_BAD_PARAMS);
 
   if (widget->layout_params == NULL) {
     widget->layout_params = TKMEM_ZALLOC(layout_params_t);
   }
   return_value_if_fail(widget->layout_params != NULL, RET_OOM);
   layout = &(widget->layout_params->children);
-  layout->rows = rows;
-  layout->cols = cols;
-  layout->margin = margin;
-  layout->cell_spacing = cell_spacing;
+  *layout = *cl;
 
   return RET_OK;
 }
@@ -243,8 +247,12 @@ ret_t widget_layout_children(widget_t* widget) {
 
   if (widget->layout_params) {
     children_layout_t* layout = &(widget->layout_params->children);
-    uint8_t rows = layout->rows;
-    uint8_t cols = layout->cols;
+    uint8_t rows = layout->rows_is_height
+                       ? (widget->h - 2 * margin) / (layout->rows + layout->cell_spacing)
+                       : layout->rows;
+    uint8_t cols = layout->cols_is_width
+                       ? (widget->w - 2 * margin) / (layout->cols + layout->cell_spacing)
+                       : layout->cols;
 
     x = layout->margin;
     y = layout->margin;
@@ -395,26 +403,39 @@ children_layout_t* children_layout_parser(children_layout_t* layout, const char*
 
   memset(layout, 0x00, sizeof(*layout));
 
-  layout->rows = atoi(p);
+  if (*p == 'w') {
+    layout->rows = tk_atoi(p + 1);
+    layout->rows_is_height = TRUE;
+  } else {
+    layout->rows = tk_atoi(p);
+    layout->rows_is_height = FALSE;
+  }
+
   p = strchr(p, ' ');
   if (p != NULL) {
     while (*p == ' ') p++;
     if (*p) {
-      layout->cols = atoi(p);
+      if (*p == 'h') {
+        layout->cols = tk_atoi(p + 1);
+        layout->cols_is_width = TRUE;
+      } else {
+        layout->cols = tk_atoi(p);
+        layout->cols_is_width = FALSE;
+      }
     }
 
     p = strchr(p, ' ');
     if (p != NULL) {
       while (*p == ' ') p++;
       if (*p) {
-        layout->margin = atoi(p);
+        layout->margin = tk_atoi(p);
       }
 
       p = strchr(p, ' ');
       if (p != NULL) {
         while (*p == ' ') p++;
         if (*p) {
-          layout->cell_spacing = atoi(p);
+          layout->cell_spacing = tk_atoi(p);
         }
       }
     }
