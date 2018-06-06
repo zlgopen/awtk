@@ -49,8 +49,8 @@ typedef struct _widget_animator_scroll_t {
  *
  * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
  */
-widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t duration, uint32_t delay,
-                                               easing_type_t easing);
+widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t duration,
+                                                 uint32_t delay, easing_type_t easing);
 
 /**
  * @method widget_animator_scroll_set_params
@@ -64,7 +64,7 @@ widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t dura
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_animator_scroll_set_params(widget_animator_t* animator, xy_t x_from, xy_t y_from,
-                                      xy_t x_to, xy_t y_to);
+                                        xy_t x_to, xy_t y_to);
 
 END_C_DECLS
 

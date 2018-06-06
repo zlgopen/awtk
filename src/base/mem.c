@@ -320,7 +320,8 @@ mem_stat_t tk_mem_stat() {
 }
 #endif /*HAS_STD_MALLOC*/
 
-uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed, uint32_t* pmemset_speed) {
+uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,
+                           uint32_t* pmemset_speed) {
   uint32_t i = 0;
   uint32_t cost = 0;
   uint32_t total_cost = 0;
@@ -336,7 +337,7 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   cost = time_now_ms() - start;
   total_cost = cost;
   if (cost) {
-    memset_speed = ((max_size * 1000)/cost)/1024;
+    memset_speed = ((max_size / cost) * 1000) / 1024;
   }
 
   start = time_now_ms();
@@ -349,17 +350,16 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   total_cost += cost;
 
   if (cost) {
-    memcpy_speed = ((max_size * 1000)/cost)/1024;
+    memcpy_speed = ((max_size / cost) * 1000) / 1024;
   }
 
-  if(pmemset_speed != NULL) {
+  if (pmemset_speed != NULL) {
     *pmemset_speed = memset_speed;
   }
 
-  if(pmemcpy_speed != NULL) {
-    *pmemcpy_speed = memcpy_speed; 
+  if (pmemcpy_speed != NULL) {
+    *pmemcpy_speed = memcpy_speed;
   }
 
   return total_cost;
 }
-

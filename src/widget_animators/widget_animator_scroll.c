@@ -30,13 +30,13 @@ static ret_t widget_animator_scroll_update(widget_animator_t* animator, float_t 
   widget_animator_scroll_t* scroll = (widget_animator_scroll_t*)animator;
   return_value_if_fail(scroll != NULL, RET_BAD_PARAMS);
 
-  if(scroll->x_to != scroll->x_from) {
+  if (scroll->x_to != scroll->x_from) {
     xoffset = scroll->x_from + (scroll->x_to - scroll->x_from) * percent;
     value_set_int(&v, xoffset);
     widget_set_prop(animator->widget, WIDGET_PROP_XOFFSET, &v);
   }
 
-  if(scroll->y_to != scroll->y_from) {
+  if (scroll->y_to != scroll->y_from) {
     yoffset = scroll->y_from + (scroll->y_to - scroll->y_from) * percent;
     value_set_int(&v, yoffset);
     widget_set_prop(animator->widget, WIDGET_PROP_YOFFSET, &v);
@@ -45,8 +45,8 @@ static ret_t widget_animator_scroll_update(widget_animator_t* animator, float_t 
   return RET_OK;
 }
 
-widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t duration, uint32_t delay,
-                                               easing_type_t easing) {
+widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t duration,
+                                                 uint32_t delay, easing_type_t easing) {
   widget_animator_t* animator = NULL;
   return_value_if_fail(widget != NULL && duration > 0, NULL);
 
@@ -59,7 +59,7 @@ widget_animator_t* widget_animator_scroll_create(widget_t* widget, uint32_t dura
 }
 
 ret_t widget_animator_scroll_set_params(widget_animator_t* animator, xy_t x_from, xy_t y_from,
-                                      xy_t x_to, xy_t y_to) {
+                                        xy_t x_to, xy_t y_to) {
   widget_animator_scroll_t* scroll = (widget_animator_scroll_t*)animator;
   return_value_if_fail(scroll != NULL, RET_BAD_PARAMS);
 

@@ -44,14 +44,14 @@ static ret_t slide_view_activate_next(slide_view_t* slide_view) {
   widget_t* widget = WIDGETP(slide_view);
   return_value_if_fail((slide_view->active + 1) < widget_count_children(widget), RET_BAD_PARAMS);
 
-  return slide_view_set_active(widget, slide_view->active+1);
+  return slide_view_set_active(widget, slide_view->active + 1);
 }
 
 static ret_t slide_view_activate_prev(slide_view_t* slide_view) {
   widget_t* widget = WIDGETP(slide_view);
   return_value_if_fail(slide_view->active > 0, RET_BAD_PARAMS);
 
-  return slide_view_set_active(widget, slide_view->active-1);
+  return slide_view_set_active(widget, slide_view->active - 1);
 }
 static ret_t slide_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
@@ -69,18 +69,17 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_scroll_event(void* ctx, event_t* e) {
-  if(e->type == EVT_ANIM_END) {
+  if (e->type == EVT_ANIM_END) {
     slide_view_t* slide_view = SLIDE_VIEW(ctx);
-    if(slide_view->vertical) {
-
+    if (slide_view->vertical) {
     } else {
-      if(slide_view->xoffset > 0) {
+      if (slide_view->xoffset > 0) {
         slide_view_activate_prev(slide_view);
-      } else if(slide_view->xoffset < 0) {
+      } else if (slide_view->xoffset < 0) {
         slide_view_activate_next(slide_view);
       }
     }
-      
+
     slide_view->xoffset = 0;
     slide_view->yoffset = 0;
   }
@@ -93,13 +92,12 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
   velocity_t* v = &(slide_view->velocity);
 
   velocity_update(v, e->e.time, e->x, e->y);
-  if(slide_view->vertical) {
-
+  if (slide_view->vertical) {
   } else {
     int xoffset = slide_view->xoffset;
     int xoffset_end = xoffset > 0 ? widget->w : -widget->w;
     widget_animator_t* animator = widget_animator_scroll_create(widget, 500, 0, EASING_SIN_INOUT);
-    widget_animator_scroll_set_params(animator, xoffset, 0, xoffset_end, 0); 
+    widget_animator_scroll_set_params(animator, xoffset, 0, xoffset_end, 0);
     widget_animator_on(animator, EVT_ANIM_END, slide_view_on_scroll_event, slide_view);
     widget_animator_start(animator);
   }
@@ -125,7 +123,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      if(slide_view->xoffset || slide_view->yoffset) {
+      if (slide_view->xoffset || slide_view->yoffset) {
         slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
       }
       break;

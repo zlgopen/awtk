@@ -36,7 +36,7 @@
 #ifdef TK_MEM_SPEED_TEST
 extern uint32_t g_memcpy_speed;
 extern uint32_t g_memset_speed;
-#endif/*TK_MEM_SPEED_TEST*/
+#endif /*TK_MEM_SPEED_TEST*/
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;
@@ -96,10 +96,10 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 
   tk_snprintf(text, sizeof(text), "set:%uk/s", memset_speed);
   widget_set_text_utf8(left, text);
-  
+
   tk_snprintf(text, sizeof(text), "%ums", cost);
   widget_set_text_utf8(center, text);
-  
+
   tk_snprintf(text, sizeof(text), "cpy:%uk/s", memcpy_speed);
   widget_set_text_utf8(right, text);
 
