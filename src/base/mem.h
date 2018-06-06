@@ -66,5 +66,7 @@ void* tk_alloc(uint32_t size);
 #define TKMEM_FREE(p) tk_free(p)
 #endif
 
+uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed, uint32_t* pmemset_speed);
+
 END_C_DECLS
 #endif /*TK_TKMEM_MANAGER_H*/

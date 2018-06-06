@@ -272,47 +272,8 @@ void* tk_realloc(void* ptr, uint32_t size) {
   return new_ptr;
 }
 
-#ifdef TK_MEM_SPEED_TEST
-uint32_t g_memcpy_speed;
-uint32_t g_memset_speed;
-static void tk_mem_speed_test(void* buffer, uint32_t length) {
-  uint32_t i = 0;
-  uint32_t cost = 0;
-  uint32_t max_size = 100 * 1024 * 1024;
-  uint32_t start = time_now_ms();
-  uint32_t nr = max_size / length;
-
-  for (i = 0; i < nr; i++) {
-    memset(buffer, 0x00, length);
-  }
-  cost = time_now_ms() - start;
-  if (cost) {
-    g_memset_speed = (max_size * 1000) / (cost * 1024);
-  }
-
-  start = time_now_ms();
-  for (i = 0; i < nr; i++) {
-    uint32_t half = length >> 1;
-    memcpy(buffer, (char*)buffer + half, half);
-    memcpy((char*)buffer + half, buffer, half);
-  }
-  cost = time_now_ms() - start;
-  if (cost) {
-    g_memcpy_speed = (max_size * 1000) / (cost * 1024);
-  }
-
-  log_debug("g_memset_speed=%uK g_memcpy_speed=%uK cost=%ums", g_memset_speed, g_memcpy_speed,
-            cost);
-
-  return;
-}
-#endif/*TK_MEM_SPEED_TEST*/  
-
 ret_t tk_mem_init(void* buffer, uint32_t length) {
   return_value_if_fail(buffer != NULL && length > MIN_SIZE, RET_BAD_PARAMS);
-#ifdef TK_MEM_SPEED_TEST
-  tk_mem_speed_test(buffer, length);
-#endif/*TK_MEM_SPEED_TEST*/  
 
   memset(buffer, 0x00, length);
   s_mem_info.buffer = buffer;
@@ -358,3 +319,47 @@ mem_stat_t tk_mem_stat() {
   return st;
 }
 #endif /*HAS_STD_MALLOC*/
+
+uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed, uint32_t* pmemset_speed) {
+  uint32_t i = 0;
+  uint32_t cost = 0;
+  uint32_t total_cost = 0;
+  uint32_t memcpy_speed;
+  uint32_t memset_speed;
+  uint32_t max_size = 100 * 1024 * 1024;
+  uint32_t start = time_now_ms();
+  uint32_t nr = max_size / length;
+
+  for (i = 0; i < nr; i++) {
+    memset(buffer, 0x00, length);
+  }
+  cost = time_now_ms() - start;
+  total_cost = cost;
+  if (cost) {
+    memset_speed = ((max_size * 1000)/cost)/1024;
+  }
+
+  start = time_now_ms();
+  for (i = 0; i < nr; i++) {
+    uint32_t half = length >> 1;
+    memcpy(buffer, (char*)buffer + half, half);
+    memcpy((char*)buffer + half, buffer, half);
+  }
+  cost = time_now_ms() - start;
+  total_cost += cost;
+
+  if (cost) {
+    memcpy_speed = ((max_size * 1000)/cost)/1024;
+  }
+
+  if(pmemset_speed != NULL) {
+    *pmemset_speed = memset_speed;
+  }
+
+  if(pmemcpy_speed != NULL) {
+    *pmemcpy_speed = memcpy_speed; 
+  }
+
+  return total_cost;
+}
+
