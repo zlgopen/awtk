@@ -49,6 +49,9 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VERTICAL "vertical"
 #define WIDGET_PROP_SHOW_TEXT "show_text"
 
+#define WIDGET_PROP_XOFFSET "xoffset"
+#define WIDGET_PROP_YOFFSET "yoffset"
+
 END_C_DECLS
 
 #endif /*TK_PROP_NAMES_H*/

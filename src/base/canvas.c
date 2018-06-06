@@ -60,7 +60,18 @@ wh_t canvas_get_height(canvas_t* c) {
   return c->lcd->h;
 }
 
-ret_t canvas_set_clip_rect(canvas_t* c, rect_t* r) {
+ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
+  return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
+
+  r->x = c->clip_left;
+  r->y = c->clip_top;
+  r->w = c->clip_right - c->clip_left;
+  r->h = c->clip_bottom - c->clip_top;
+
+  return RET_OK;
+}
+
+ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (r) {
     if (c->lcd->set_clip_rect != NULL) {

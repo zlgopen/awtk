@@ -13,4 +13,3 @@ TEST(Velocity, basic) {
   ASSERT_EQ(round(v->xv), 1000);
   ASSERT_EQ(round(v->yv), 2000);
 }
-

@@ -53,4 +53,3 @@ event_t event_init(event_type_t type, void* target) {
 
   return e;
 }
-

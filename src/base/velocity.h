@@ -49,4 +49,3 @@ ret_t velocity_update(velocity_t* v, uint32_t time, xy_t x, xy_t y);
 END_C_DECLS
 
 #endif /*TK_VELOCITY_H*/
-

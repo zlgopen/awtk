@@ -54,7 +54,7 @@ widget_t* prefix_xml_ui(const char* filename) {
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
-  free(content);
+  TKMEM_FREE(content);
 
   return builder->root;
 }

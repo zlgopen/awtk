@@ -36,7 +36,8 @@ BEGIN_C_DECLS
 typedef struct _slide_view_t {
   widget_t widget;
   bool_t vertical;
-  int32_t offset;
+  int32_t xoffset;
+  int32_t yoffset;
   uint32_t active;
   point_t down;
 

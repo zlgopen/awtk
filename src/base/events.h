@@ -202,7 +202,7 @@ typedef struct _event_t {
    * 事件发生的时间。
    */
   uint32_t time;
-  
+
   void* target;
 } event_t;
 

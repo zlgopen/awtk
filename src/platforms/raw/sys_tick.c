@@ -21,7 +21,7 @@
 
 #include "base/types_def.h"
 
-static uint32_t g_sys_tick;
+static volatile uint32_t g_sys_tick;
 
 void SysTick_Handler(void) {
   g_sys_tick++;
