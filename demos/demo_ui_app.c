@@ -33,6 +33,11 @@
 #include "ui_loader/ui_builder_default.h"
 #include "common.inc"
 
+#ifdef TK_MEM_SPEED_TEST
+uint32_t g_memcpy_speed;
+uint32_t g_memset_speed;
+#endif/*TK_MEM_SPEED_TEST*/
+
 static ret_t on_show_dialog(void* ctx, event_t* e) {
   uint32_t code = 0;
   const char* name = (const char*)ctx;
@@ -77,16 +82,28 @@ static ret_t on_show_window2(void* ctx, event_t* e) {
 }
 
 ret_t application_init() {
+  char text[32];
   widget_t* win = window_open("window");
   widget_t* bar1 = widget_lookup(win, "bar1", TRUE);
   widget_t* bar2 = widget_lookup(win, "bar2", TRUE);
+#ifdef TK_MEM_SPEED_TEST
+  widget_t* left = widget_lookup(win, "left", TRUE);
+  widget_t* right = widget_lookup(win, "right", TRUE);
+
+  tk_snprintf(text, sizeof(text), "set:%uK", g_memset_speed);
+  widget_set_text_utf8(left, text);
+  
+  tk_snprintf(text, sizeof(text), "cpy:%uK", g_memcpy_speed);
+  widget_set_text_utf8(right, text);
+#endif/*TK_MEM_SPEED_TEST*/
+
   widget_child_on(win, "inc", EVT_CLICK, on_inc, bar2);
   widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
   widget_child_on(win, "dialog1", EVT_CLICK, on_show_dialog, "dialog1");
   widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
   widget_child_on(win, "window1", EVT_CLICK, on_show_window1, "window1");
   widget_child_on(win, "window2", EVT_CLICK, on_show_window2, "window2");
-  //  timer_add(on_timer, bar1, 500);
+  timer_add(on_timer, bar1, 500);
 
   return RET_OK;
 }

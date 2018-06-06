@@ -1,9 +1,10 @@
 <window name="main" x="0" y="0" w="320" h="480">
   <button name="inc" x="10" y="5" w="40%" h="30" text="Inc"/>
   <button name="dec" x="right:10" y="5" w="40%" h="30" text="Dec"/>
-  <label name="" x="10" y="40" w="80" h="30" text="Left"/>
-  <label name="" x="100" y="40" w="80" h="30" text="Center"/>
-  <label name="" x="200" y="40" w="80" h="30" text="Right"/>
+  <label name="left" x="10" y="40" w="80" h="30" text="Left"/>
+  <label name="center" x="100" y="40" w="80" h="30" text="Center"/>
+  <label name="right" x="200" y="40" w="80" h="30" text="Right"/>
+
   <progress_bar name="bar1" x="10" y="70" w="240" h="30" value="40"/>
   <progress_bar name="bar2" x="280" y="70" w="30" h="118" value="20" vertical="true"/>
   <check_button name="c1" x="10" y="110" w="80" h="30" text="Book"/>

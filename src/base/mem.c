@@ -273,8 +273,8 @@ void* tk_realloc(void* ptr, uint32_t size) {
 }
 
 #ifdef TK_MEM_SPEED_TEST
-static uint32_t s_memcpy_speed;
-static uint32_t s_memset_speed;
+uint32_t g_memcpy_speed;
+uint32_t g_memset_speed;
 static void tk_mem_speed_test(void* buffer, uint32_t length) {
   uint32_t i = 0;
   uint32_t cost = 0;
@@ -287,7 +287,7 @@ static void tk_mem_speed_test(void* buffer, uint32_t length) {
   }
   cost = time_now_ms() - start;
   if (cost) {
-    s_memset_speed = (max_size * 1000) / (cost * 1024);
+    g_memset_speed = (max_size * 1000) / (cost * 1024);
   }
 
   start = time_now_ms();
@@ -298,10 +298,10 @@ static void tk_mem_speed_test(void* buffer, uint32_t length) {
   }
   cost = time_now_ms() - start;
   if (cost) {
-    s_memcpy_speed = (max_size * 1000) / (cost * 1024);
+    g_memcpy_speed = (max_size * 1000) / (cost * 1024);
   }
 
-  log_debug("s_memset_speed=%uK s_memcpy_speed=%uK cost=%ums", s_memset_speed, s_memcpy_speed,
+  log_debug("g_memset_speed=%uK g_memcpy_speed=%uK cost=%ums", g_memset_speed, g_memcpy_speed,
             cost);
 
   return;
