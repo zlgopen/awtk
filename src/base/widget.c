@@ -92,6 +92,13 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_wstr(&v, text));
 }
 
+ret_t widget_set_text_utf8(widget_t* widget, const char* text) {
+  value_t v;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
+}
+
 ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   value_t v;
   const char* tr_text = NULL;

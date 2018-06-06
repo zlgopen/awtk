@@ -573,6 +573,16 @@ ret_t widget_use_style(widget_t* widget, const char* value);
 ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 
 /**
+ * @method widget_set_text_utf8
+ * 设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*}  text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_text_utf8(widget_t* widget, const char* text);
+
+/**
  * @method widget_set_tr_text
  * 获取翻译之后的文本，然后调用widget_set_text。
  * @param {widget_t*} widget 控件对象。
