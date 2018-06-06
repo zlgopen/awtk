@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   canvas.c
  * Author: AWTK Develop Team
  * Brief:  canvas provides basic drawings functions.
@@ -79,7 +79,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
       c->clip_top = 0;
       c->clip_right = c->lcd->w;
       c->clip_bottom = c->lcd->h;
-      lcd_set_clip_rect(c->lcd, r);
+      lcd_set_clip_rect(c->lcd, (rect_t*)r);
     } else {
       c->clip_left = r->x;
       c->clip_top = r->y;

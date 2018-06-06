@@ -34,8 +34,8 @@
 #include "common.inc"
 
 #ifdef TK_MEM_SPEED_TEST
-uint32_t g_memcpy_speed;
-uint32_t g_memset_speed;
+extern uint32_t g_memcpy_speed;
+extern uint32_t g_memset_speed;
 #endif/*TK_MEM_SPEED_TEST*/
 
 static ret_t on_show_dialog(void* ctx, event_t* e) {
