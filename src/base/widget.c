@@ -688,6 +688,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_dispatch(widget, &e);
   }
 
+  widget_invalidate(widget, NULL);
+
   return ret;
 }
 
