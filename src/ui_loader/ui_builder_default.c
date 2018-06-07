@@ -34,6 +34,7 @@
 #include "base/slide_view.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
+#include "base/window_manager.h"
 #include "base/resource_manager.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_default.h"

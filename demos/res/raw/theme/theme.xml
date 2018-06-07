@@ -6,6 +6,10 @@
   <style name="1:bricks">
     <normal bg_image="bricks"  bg_image_draw_type="repeat"/>
   </style>
+
+  <style name="2:sky">
+    <normal bg_image="bg800x480"/>
+  </style>
 </window>
 
 <button>
@@ -14,6 +18,10 @@
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="10:grid_item" border_color="#a0a0a0"  text_color="black">
+    <pressed    bg_color="#c0c0c0" />
   </style>
 </button>
 

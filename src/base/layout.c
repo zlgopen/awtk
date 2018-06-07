@@ -166,6 +166,7 @@ ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout
   }
   return_value_if_fail(widget->layout_params != NULL, RET_OOM);
   memcpy(&(widget->layout_params->self), layout, sizeof(*layout));
+  widget->layout_params->self.inited = TRUE;
 
   return RET_OK;
 }
@@ -197,6 +198,7 @@ ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl) 
   return_value_if_fail(widget->layout_params != NULL, RET_OOM);
   layout = &(widget->layout_params->children);
   *layout = *cl;
+  layout->inited = TRUE;
 
   return RET_OK;
 }
@@ -214,8 +216,10 @@ ret_t widget_layout_self(widget_t* widget) {
 
   if (widget->parent != NULL && widget->layout_params != NULL) {
     widget_layout_t* layout = &(widget->layout_params->self);
-    widget_layout_calc(layout, &r, widget->parent->w, widget->parent->h);
-    widget_move_resize(widget, r.x, r.y, r.w, r.h);
+    if(layout->inited) {
+      widget_layout_calc(layout, &r, widget->parent->w, widget->parent->h);
+      widget_move_resize(widget, r.x, r.y, r.w, r.h);
+    }
   }
 
   return RET_OK;
@@ -245,7 +249,7 @@ ret_t widget_layout_children(widget_t* widget) {
   n = widget->children->size;
   children = (widget_t**)(widget->children->elms);
 
-  if (widget->layout_params) {
+  if (widget->layout_params && widget->layout_params->children.inited) {
     children_layout_t* layout = &(widget->layout_params->children);
     uint8_t rows = layout->rows_is_height
                        ? (widget->h - 2 * margin) / (layout->rows + layout->cell_spacing)
@@ -403,9 +407,12 @@ children_layout_t* children_layout_parser(children_layout_t* layout, const char*
 
   memset(layout, 0x00, sizeof(*layout));
 
-  if (*p == 'w') {
+  if (*p == 'h') {
     layout->rows = tk_atoi(p + 1);
     layout->rows_is_height = TRUE;
+  } else if(*p == 'w') {
+    layout->cols = tk_atoi(p + 1);
+    layout->cols_is_width = TRUE;
   } else {
     layout->rows = tk_atoi(p);
     layout->rows_is_height = FALSE;
@@ -415,9 +422,12 @@ children_layout_t* children_layout_parser(children_layout_t* layout, const char*
   if (p != NULL) {
     while (*p == ' ') p++;
     if (*p) {
-      if (*p == 'h') {
+      if (*p == 'w') {
         layout->cols = tk_atoi(p + 1);
         layout->cols_is_width = TRUE;
+      } else if (*p == 'h') {
+        layout->rows = tk_atoi(p + 1);
+        layout->rows_is_height = TRUE;
       } else {
         layout->cols = tk_atoi(p);
         layout->cols_is_width = FALSE;

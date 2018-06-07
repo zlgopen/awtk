@@ -319,6 +319,12 @@ TEST(Layuout, layout_children_22) {
 
   widget_set_children_layout_params(win, 2, 2, 5, 10);
   widget_layout(win);
+
+  ASSERT_EQ(win->x, 0);
+  ASSERT_EQ(win->y, 0);
+  ASSERT_EQ(win->w, 200);
+  ASSERT_EQ(win->h, 200);
+
   ASSERT_EQ(g1->x, 5);
   ASSERT_EQ(g1->y, 5);
   ASSERT_EQ(g1->h, 90);

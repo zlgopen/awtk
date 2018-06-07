@@ -1,0 +1,5 @@
+<window name="main" x="0" y="0" w="320" h="480" layout="w80 h30 5 10">
+    <button name="inc" x="10" y="5" w="25%" h="30" text="Inc"/>
+    <button name="test" x="center" y="5" w="25%" h="30" text="MemTest"/>
+    <button name="dec" x="right:10" y="5" w="25%" h="30" text="Dec"/>
+</window>

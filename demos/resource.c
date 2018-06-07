@@ -4,6 +4,7 @@
 #include "res/inc/fonts/ap.data"
 #include "res/inc/fonts/default.data"
 #include "res/inc/fonts/default_ttf.data"
+#include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
 #include "res/inc/images/dialog_title.data"
@@ -42,6 +43,7 @@
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
 #include "res/inc/ui/fade.data"
+#include "res/inc/ui/slide_view_h.data"
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/window.data"
 #include "res/inc/ui/window1.data"
@@ -58,6 +60,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, font_ap);
   resource_manager_add(rm, font_default);
   resource_manager_add(rm, font_default_ttf);
+  resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);
   resource_manager_add(rm, image_dialog_title);
@@ -96,6 +99,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
   resource_manager_add(rm, ui_fade);
+  resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_top);
   resource_manager_add(rm, ui_window);
   resource_manager_add(rm, ui_window1);
