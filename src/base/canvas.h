@@ -57,6 +57,7 @@ wh_t canvas_get_height(canvas_t* c);
 
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r);
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r);
+ret_t canvas_set_clip_rect_ex(canvas_t* c, const rect_t* r, bool_t translate);
 ret_t canvas_set_fill_color(canvas_t* c, color_t color);
 ret_t canvas_set_text_color(canvas_t* c, color_t color);
 ret_t canvas_set_stroke_color(canvas_t* c, color_t color);

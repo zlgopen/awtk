@@ -1002,6 +1002,10 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   return_value_if_fail(r->x >= 0 && r->y >= 0, RET_BAD_PARAMS);
   return_value_if_fail((r->x + r->w) <= widget->w && (r->y + r->h) <= widget->h, RET_BAD_PARAMS);
 
+  if (widget->dirty) {
+    return RET_OK;
+  }
+
   widget_set_dirty(widget);
   if (widget->vt && widget->vt->invalidate) {
     return widget->vt->invalidate(widget, r);

@@ -73,6 +73,7 @@ ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
 
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
   if (r) {
     if (c->lcd->set_clip_rect != NULL) {
       c->clip_left = 0;
@@ -94,6 +95,20 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
   }
 
   return RET_OK;
+}
+
+ret_t canvas_set_clip_rect_ex(canvas_t* c, const rect_t* r, bool_t translate) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  if (r != NULL && translate) {
+    rect_t rr = *r;
+
+    rr.x += c->ox;
+    rr.y += c->oy;
+    return canvas_set_clip_rect(c, &rr);
+  } else {
+    return canvas_set_clip_rect(c, r);
+  }
 }
 
 ret_t canvas_set_fill_color(canvas_t* c, color_t color) {

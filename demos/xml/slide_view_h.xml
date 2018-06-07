@@ -1,0 +1,22 @@
+<window>
+  <slide_view x="10%" y="10%" w="80%" h="80%">
+    <view x="0" y="0" w="100%" h="100%" layout="w100 h100 5 10">
+      <button name="0-1" text="0-1" />
+      <button name="0-2" text="0-2" />
+      <button name="0-3" text="0-3" />
+    </view>
+    
+    <view x="0" y="0" w="100%" h="100%" layout="3 3 5 10">
+      <image name="1-1" image="message" />
+      <image name="1-1" image="message" />
+      <image name="1-1" image="message" />
+      <image name="1-1" image="message" />
+    </view>
+    
+    <view x="0" y="0" w="100%" h="100%" layout="5 3 5 10">
+      <button name="2-1" text="2-1" />
+      <button name="2-2" text="2-2" />
+      <button name="2-3" text="2-3" />
+    </view>
+  </slide_view>
+</window>

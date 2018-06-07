@@ -52,6 +52,8 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_XOFFSET "xoffset"
 #define WIDGET_PROP_YOFFSET "yoffset"
 
+#define WIDGET_PROP_AUTO_PLAY "auto_play"
+
 END_C_DECLS
 
 #endif /*TK_PROP_NAMES_H*/
