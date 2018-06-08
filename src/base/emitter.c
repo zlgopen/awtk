@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   emitter.c
  * Author: AWTK Develop Team
  * Brief:  emitter dispatcher
@@ -19,8 +19,9 @@
  *
  */
 
-#include "base/emitter.h"
 #include "base/mem.h"
+#include "base/time.h"
+#include "base/emitter.h"
 
 emitter_t* emitter_create() {
   emitter_t* emitter = (emitter_t*)TKMEM_ZALLOC(emitter_t);

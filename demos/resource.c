@@ -4,6 +4,61 @@
 #include "res/inc/fonts/ap.data"
 #include "res/inc/fonts/default.data"
 #include "res/inc/fonts/default_ttf.data"
+#include "res/inc/strings/en_US.data"
+#include "res/inc/strings/zh_CN.data"
+#include "res/inc/theme/default.data"
+#include "res/inc/ui/animation.data"
+#include "res/inc/ui/animator.data"
+#include "res/inc/ui/auto_play.data"
+#include "res/inc/ui/basic.data"
+#include "res/inc/ui/bottom.data"
+#include "res/inc/ui/dialog1.data"
+#include "res/inc/ui/dialog2.data"
+#include "res/inc/ui/fade.data"
+#include "res/inc/ui/htranslate.data"
+#include "res/inc/ui/main.data"
+#include "res/inc/ui/memtest.data"
+#include "res/inc/ui/slide_view.data"
+#include "res/inc/ui/slide_view_h.data"
+#include "res/inc/ui/slide_view_v.data"
+#include "res/inc/ui/top.data"
+#include "res/inc/ui/vtranslate.data"
+#ifdef WITH_STB_IMAGE
+#include "res/inc/images/bg800x480.res"
+#include "res/inc/images/bricks.res"
+#include "res/inc/images/checked.res"
+#include "res/inc/images/dialog_title.res"
+#include "res/inc/images/earth.res"
+#include "res/inc/images/green_btn_n.res"
+#include "res/inc/images/green_btn_o.res"
+#include "res/inc/images/green_btn_p.res"
+#include "res/inc/images/info.res"
+#include "res/inc/images/left_off.res"
+#include "res/inc/images/left_on.res"
+#include "res/inc/images/message.res"
+#include "res/inc/images/middle_off.res"
+#include "res/inc/images/middle_on.res"
+#include "res/inc/images/muted.res"
+#include "res/inc/images/question.res"
+#include "res/inc/images/radio_checked.res"
+#include "res/inc/images/radio_unchecked.res"
+#include "res/inc/images/red_btn_n.res"
+#include "res/inc/images/red_btn_o.res"
+#include "res/inc/images/red_btn_p.res"
+#include "res/inc/images/rgb.res"
+#include "res/inc/images/right_off.res"
+#include "res/inc/images/right_on.res"
+#include "res/inc/images/slider_bg.res"
+#include "res/inc/images/slider_drag.res"
+#include "res/inc/images/slider_drag_o.res"
+#include "res/inc/images/slider_drag_p.res"
+#include "res/inc/images/slider_fg.res"
+#include "res/inc/images/slider_v_bg.res"
+#include "res/inc/images/slider_v_fg.res"
+#include "res/inc/images/unchecked.res"
+#include "res/inc/images/unmuted.res"
+#include "res/inc/images/warn.res"
+#else
 #include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
@@ -38,24 +93,8 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#include "res/inc/theme/default.data"
-#include "res/inc/ui/animation.data"
-#include "res/inc/ui/animator.data"
-#include "res/inc/ui/basic.data"
-#include "res/inc/ui/bottom.data"
-#include "res/inc/ui/dialog1.data"
-#include "res/inc/ui/dialog2.data"
-#include "res/inc/ui/fade.data"
-#include "res/inc/ui/htranslate.data"
-#include "res/inc/ui/main.data"
-#include "res/inc/ui/memtest.data"
-#include "res/inc/ui/slide_view.data"
-#include "res/inc/ui/slide_view_auto_play.data"
-#include "res/inc/ui/slide_view_h.data"
-#include "res/inc/ui/slide_view_v.data"
-#include "res/inc/ui/top.data"
-#include "res/inc/ui/vtranslate.data"
-#endif
+#endif /*WITH_STB_IMAGE*/
+#endif /*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -101,9 +140,12 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unchecked);
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
+  resource_manager_add(rm, strings_en_US);
+  resource_manager_add(rm, strings_zh_CN);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
+  resource_manager_add(rm, ui_auto_play);
   resource_manager_add(rm, ui_basic);
   resource_manager_add(rm, ui_bottom);
   resource_manager_add(rm, ui_dialog1);
@@ -113,7 +155,6 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_slide_view);
-  resource_manager_add(rm, ui_slide_view_auto_play);
   resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_slide_view_v);
   resource_manager_add(rm, ui_top);

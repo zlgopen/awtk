@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   events.c
  * Author: AWTK Develop Team
  * Brief:  events structs
@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/time.h"
 #include "base/events.h"
 
 pointer_event_t* pointer_event_cast(event_t* event) {

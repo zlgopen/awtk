@@ -66,7 +66,7 @@ int32_t fs_read_file_part(const char* name, void* buff, uint32_t size, uint32_t 
 void* fs_read_file(const char* name, uint32_t* size) {
   uint8_t* buff = NULL;
   int32_t len = fs_file_size(name);
-  return_value_if_fail(name != NULL && size != NULL && len > 0, NULL);
+  return_value_if_fail(name != NULL && len > 0, NULL);
 
   buff = (uint8_t*)TKMEM_ALLOC(len + 1);
   return_value_if_fail(buff != NULL, NULL);

@@ -1,6 +1,6 @@
 <window name="main" anim_hint="htranslate" x="0" y="0" w="320" h="480" layout="3 3 5 10">
     <button name="open:slide_view_h" text="slide_view_h"/>
     <button name="open:slide_view_v" text="slide_view_v"/>
-    <button name="open:slide_view_auto_play" text="auto_play"/>
+    <button name="open:auto_play" text="auto_play"/>
     <button name="close" text="Close"/>
 </window>

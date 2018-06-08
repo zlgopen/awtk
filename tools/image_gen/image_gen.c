@@ -26,7 +26,7 @@
 #include "base/resource_manager.h"
 #include "image_loader/image_loader_stb.h"
 
-#define MAX_BUFF_SIZE 1 * 1024 * 1024
+#define MAX_BUFF_SIZE 2 * 1024 * 1024
 
 ret_t image_gen(bitmap_t* image, const char* output_filename) {
   uint32_t size = 0;
@@ -40,10 +40,13 @@ ret_t image_gen(bitmap_t* image, const char* output_filename) {
   return RET_OK;
 }
 
+#include "blend/pixel_pack_unpack.h"
+
 uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_size) {
   size_t size = 0;
   bitmap_header_t* header = (bitmap_header_t*)output_buff;
   return_value_if_fail(image != NULL && output_buff != NULL, 0);
+
   size = sizeof(uint32_t) * image->w * image->h;
   return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, RET_BAD_PARAMS);
 
@@ -51,7 +54,31 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
   header->h = image->h;
   header->flags = image->flags;
   header->format = image->format;
-  memcpy(header->data, image->data, size);
+
+  if (image->flags & BITMAP_FLAG_OPAQUE) {
+    if (image->format == BITMAP_FMT_RGBA) {
+      uint32_t i = 0;
+      uint32_t nr = image->w * image->h;
+      uint16_t* d = (uint16_t*)(header->data);
+      uint32_t* s = (uint32_t*)(image->data);
+
+      for (i = 0; i < nr; i++, d++, s++) {
+        color_t c;
+        c.color = *s;
+        *d = rgb_to_565(c.rgba.r, c.rgba.g, c.rgba.b);
+      }
+      header->format = BITMAP_FMT_RGB565;
+      size = sizeof(uint16_t) * image->w * image->h;
+    } else if (image->format == BITMAP_FMT_RGB565) {
+      size = sizeof(uint16_t) * image->w * image->h;
+      memcpy(header->data, image->data, size);
+    } else {
+      assert(!"not supported");
+    }
+  } else {
+    size = sizeof(uint32_t) * image->w * image->h;
+    memcpy(header->data, image->data, size);
+  }
 
   return size + sizeof(bitmap_header_t);
 }

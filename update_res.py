@@ -79,6 +79,8 @@ def fontgen(raw, text, inc, size):
 def imagegen(raw, inc):
   print(toExe('imagegen') + ' ' + raw + ' ' + inc)
   os.system(toExe('imagegen') + ' ' + raw + ' ' + inc)
+  inc=inc.replace('.data', '.res')
+  resgen(raw, inc)
 
 def xml_to_ui(raw, inc):
   os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
@@ -119,19 +121,39 @@ def writeResult(str):
   os.write(fd, str)
   os.close(fd)
 
-def gen_res_c():
-  result = '#include "tk.h"\n'
-  result += '#include "base/resource_manager.h"\n'
-
-  result += '#ifndef WITH_FS_RES\n'
-  files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
+def genIncludes(files):
+  str1 = ""
   for f in files:
     incf = copy.copy(f);
     incf=incf.replace(APP_DIR, ".");
     incf=incf.replace('\\', '/');
     incf=incf.replace('./', '');
-    result += '#include "'+incf+'"\n'
-  result += '#endif\n'
+    str1 += '#include "'+incf+'"\n'
+
+  return str1
+
+def gen_res_c():
+  result = '#include "tk.h"\n'
+  result += '#include "base/resource_manager.h"\n'
+
+  result += '#ifndef WITH_FS_RES\n'
+  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'theme/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) 
+
+  result += genIncludes(files);
+
+  result += "#ifdef WITH_STB_IMAGE\n"
+  
+  files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.res')) 
+  result += genIncludes(files)
+  result += "#else\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.data')) 
+  result += genIncludes(files)
+  result += '#endif/*WITH_STB_IMAGE*/\n'
+
+  result += '#endif/*WITH_FS_RES*/\n'
 
   result += '\n';
   result += 'ret_t resource_init(void) {\n'
@@ -142,6 +164,8 @@ def gen_res_c():
   result += '  resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");\n'
   result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");\n'
   result += '#else\n'
+
+  files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
   for f in files:
     incf = copy.copy(f);
     basename = incf.replace(OUTPUT_DIR, '.');
