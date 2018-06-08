@@ -106,6 +106,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
       break;
     default:
       log_debug("%s: not supported type %d\n", __func__, type);
+      assert(!"not supported");
       break;
   }
 

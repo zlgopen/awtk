@@ -52,9 +52,12 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
     ui_builder_on_widget_prop_end(b);
 
     return_value_if_fail(rbuffer_peek_uint8(&rbuffer, &widget_end_mark) == RET_OK, RET_BAD_PARAMS);
-    if (widget_end_mark == 0) {
+    while (widget_end_mark == 0) {
       rbuffer_read_uint8(&rbuffer, &widget_end_mark);
       ui_builder_on_widget_end(b);
+      if (rbuffer_peek_uint8(&rbuffer, &widget_end_mark) != RET_OK) {
+        break;
+      }
     }
   }
   ui_builder_on_end(b);
