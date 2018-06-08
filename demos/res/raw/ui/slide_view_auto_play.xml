@@ -1,5 +1,5 @@
 <window style="1:bricks">
-  <slide_view x="0" y="0" w="100%" h="100%">
+  <slide_view x="0" y="0" w="100%" h="100%" auto_play="2000">
     <view x="0" y="0" w="100%" h="100%" layout="w60 h60 5 10">
       <button name="close" style="10:grid_item"> 
         <image x="center" y="top" w="100%" h="80%" image="message" />

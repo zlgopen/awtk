@@ -181,5 +181,5 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
 > demos/layouts中有演示各种布局参数的示例，可以用下面的命令运行起来看看：
 
 ```
-./bin/prefix_xml_ui demos/xml/layouts/demo1.xml
+./bin/preview_ui demos/xml/layouts/demo1.xml
 ```

@@ -216,7 +216,7 @@ ret_t widget_layout_self(widget_t* widget) {
 
   if (widget->parent != NULL && widget->layout_params != NULL) {
     widget_layout_t* layout = &(widget->layout_params->self);
-    if(layout->inited) {
+    if (layout->inited) {
       widget_layout_calc(layout, &r, widget->parent->w, widget->parent->h);
       widget_move_resize(widget, r.x, r.y, r.w, r.h);
     }
@@ -410,7 +410,7 @@ children_layout_t* children_layout_parser(children_layout_t* layout, const char*
   if (*p == 'h') {
     layout->rows = tk_atoi(p + 1);
     layout->rows_is_height = TRUE;
-  } else if(*p == 'w') {
+  } else if (*p == 'w') {
     layout->cols = tk_atoi(p + 1);
     layout->cols_is_width = TRUE;
   } else {

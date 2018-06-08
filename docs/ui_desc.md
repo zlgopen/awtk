@@ -47,7 +47,7 @@ x/y/w/h 可以使用[AWTK的layout参数](layout.md)。
 XML UI文件写好后，可以用预览工具预览。如：
 
 ```
-./bin/prefix_xml_ui tools/ui_gen/xml_to_ui/window1.xml
+./bin/preview_ui tools/ui_gen/xml_to_ui/window1.xml
 ```
 
 ### 3.转换成二进制格式的界面描述文件

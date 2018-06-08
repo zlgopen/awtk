@@ -44,10 +44,10 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 
 ## 五、查看实际效果
 
-demos/xml/draw_type目录下有一些XML界面描述文件，这些文件演示了各种显示方式的效果。可以用prefix\_xml\_ui来预览，如：
+demos/xml/draw_type目录下有一些XML界面描述文件，这些文件演示了各种显示方式的效果。可以用preview\_ui来预览，如：
 
 ```
-./bin/prefix_xml_ui demos/xml/draw_type/bg.xml
+./bin/preview_ui demos/xml/draw_type/bg.xml
 ```
 效果图：
 

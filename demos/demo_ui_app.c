@@ -31,53 +31,37 @@
 #include "base/utils.h"
 #include "base/window.h"
 #include "ui_loader/ui_builder_default.h"
-#include "common.inc"
 
-#ifdef TK_MEM_SPEED_TEST
-extern uint32_t g_memcpy_speed;
-extern uint32_t g_memset_speed;
-#endif /*TK_MEM_SPEED_TEST*/
+static void install_click_hander(widget_t* widget);
 
-static ret_t on_show_dialog(void* ctx, event_t* e) {
-  uint32_t code = 0;
-  const char* name = (const char*)ctx;
+static void open_window(const char* name) {
   widget_t* win = window_open(name);
 
-  widget_child_on(win, "ok", EVT_CLICK, on_ok, win);
-  widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
+  install_click_hander(win);
 
-  code = dialog_modal(win);
-
-  tk_mem_info_dump();
-  (void)e;
-  (void)code;
-
-  return RET_OK;
+  if (win->type == WIDGET_DIALOG) {
+    dialog_modal(win);
+  }
 }
 
-static ret_t on_show_window1(void* ctx, event_t* e) {
-  const char* name = (const char*)ctx;
-  widget_t* win = window_open(name);
-
-  widget_child_on(win, "bottom", EVT_CLICK, on_show_dialog, "bottom");
-  widget_child_on(win, "top", EVT_CLICK, on_show_dialog, "top");
-  widget_child_on(win, "close", EVT_CLICK, on_close, win);
-
+static ret_t on_open_window(void* ctx, event_t* e) {
+  open_window((const char*)ctx);
   (void)e;
 
   return RET_OK;
 }
 
-static ret_t on_show_window2(void* ctx, event_t* e) {
-  const char* name = (const char*)ctx;
-  widget_t* win = window_open(name);
-
-  widget_child_on(win, "fade", EVT_CLICK, on_show_dialog, "fade");
-  widget_child_on(win, "top", EVT_CLICK, on_show_dialog, "top");
-  widget_child_on(win, "close", EVT_CLICK, on_close, win);
-
+static ret_t on_close(void* ctx, event_t* e) {
+  widget_t* win = (widget_t*)ctx;
   (void)e;
+  return window_close(win);
+}
 
+static ret_t on_quit(void* ctx, event_t* e) {
+  widget_t* dialog = (widget_t*)ctx;
+
+  dialog_quit(dialog, 0);
+  (void)e;
   return RET_OK;
 }
 
@@ -87,38 +71,82 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
   uint32_t memset_speed = 0;
   uint32_t memcpy_speed = 0;
   widget_t* win = WIDGETP(ctx);
-  widget_t* left = widget_lookup(win, "left", TRUE);
-  widget_t* center = widget_lookup(win, "center", TRUE);
-  widget_t* right = widget_lookup(win, "right", TRUE);
+  widget_t* label_memset = widget_lookup(win, "memset", TRUE);
+  widget_t* label_cost = widget_lookup(win, "cost", TRUE);
+  widget_t* label_memcpy = widget_lookup(win, "memcpy", TRUE);
   void* buff = TKMEM_ALLOC(size);
   uint32_t cost = tk_mem_speed_test(buff, size, &memcpy_speed, &memset_speed);
   TKMEM_FREE(buff);
 
-  tk_snprintf(text, sizeof(text), "set:%uk/s", memset_speed);
-  widget_set_text_utf8(left, text);
-
   tk_snprintf(text, sizeof(text), "%ums", cost);
-  widget_set_text_utf8(center, text);
+  widget_set_text_utf8(label_cost, text);
 
-  tk_snprintf(text, sizeof(text), "cpy:%uk/s", memcpy_speed);
-  widget_set_text_utf8(right, text);
+  tk_snprintf(text, sizeof(text), "memset: %uK/s", memset_speed);
+  widget_set_text_utf8(label_memset, text);
+
+  tk_snprintf(text, sizeof(text), "memcpy: %uK/s", memcpy_speed);
+  widget_set_text_utf8(label_memcpy, text);
 
   return RET_OK;
 }
 
-ret_t application_init() {
-  widget_t* win = window_open("window");
-  widget_t* bar1 = widget_lookup(win, "bar1", TRUE);
-  widget_t* bar2 = widget_lookup(win, "bar2", TRUE);
+static ret_t on_inc(void* ctx, event_t* e) {
+  widget_t* win = WIDGETP(ctx);
+  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
+  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
+  progress_bar_set_value(progress_bar, value);
 
-  widget_child_on(win, "inc", EVT_CLICK, on_inc, bar2);
-  widget_child_on(win, "test", EVT_CLICK, on_mem_test, win);
-  widget_child_on(win, "dec", EVT_CLICK, on_dec, bar2);
-  widget_child_on(win, "dialog1", EVT_CLICK, on_show_dialog, "dialog1");
-  widget_child_on(win, "dialog2", EVT_CLICK, on_show_dialog, "dialog2");
-  widget_child_on(win, "window1", EVT_CLICK, on_show_window1, "window1");
-  widget_child_on(win, "window2", EVT_CLICK, on_show_window2, "window2");
-  timer_add(on_timer, bar1, 500);
+  (void)e;
+  return RET_OK;
+}
+
+static ret_t on_dec(void* ctx, event_t* e) {
+  widget_t* win = WIDGETP(ctx);
+  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
+  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 90) % 100;
+  progress_bar_set_value(progress_bar, value);
+
+  (void)e;
+  return RET_OK;
+}
+
+static void install_click_hander(widget_t* widget) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  if (widget->name.size && widget->type == WIDGET_BUTTON) {
+    const char* name = widget->name.str;
+    if (strstr(name, "open:") != NULL) {
+      widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
+    } else if (strstr(name, "memtest") != NULL) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_mem_test, win);
+    } else if (strstr(name, "inc") != NULL) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_inc, win);
+    } else if (strstr(name, "dec") != NULL) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_dec, win);
+    } else if (strstr(name, "close") != NULL) {
+      widget_t* win = widget_get_window(widget);
+      if (win) {
+        widget_on(widget, EVT_CLICK, on_close, win);
+      }
+    } else if (strstr(name, "quit") != NULL) {
+      widget_t* win = widget_get_window(widget);
+      if (win) {
+        widget_on(widget, EVT_CLICK, on_quit, win);
+      }
+    }
+  }
+
+  nr = widget_count_children(widget);
+  for (i = 0; i < nr; i++) {
+    install_click_hander(widget_get_child(widget, i));
+  }
+}
+
+ret_t application_init() {
+  open_window("main");
 
   return RET_OK;
 }

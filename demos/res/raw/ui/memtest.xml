@@ -1,0 +1,7 @@
+<window name="main" anim_hint="htranslate" x="0" y="0" w="320" h="480">
+    <button name="memtest" x="center" y="bottom:100" w="50%" h="30" text="Start"/>
+    <button name="close" x="center" y="bottom:50" w="50%" h="30" text="Close"/>
+    <label name="cost" x="center" y="10" w="100%" h="30" text="n/a"/>
+    <label name="memset" x="center" y="50" w="100%" h="30" text="n/a"/>
+    <label name="memcpy" x="center" y="90" w="100%" h="30" text="n/a"/>
+</window>

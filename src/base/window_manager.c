@@ -140,9 +140,6 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
     widget_move_resize(window, x, y, window->w, window->h);
   }
 
-  widget_invalidate(window, NULL);
-  widget_on(window, EVT_DESTROY, on_window_destroy, wm);
-
   if (wm->children != NULL && wm->children->size > 0) {
     idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
   }
@@ -151,6 +148,10 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   if (ret == RET_OK) {
     wm->target = window;
   }
+
+  window->dirty = FALSE;
+  widget_invalidate(window, NULL);
+  widget_on(window, EVT_DESTROY, on_window_destroy, wm);
 
   return ret;
 }

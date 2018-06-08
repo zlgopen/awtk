@@ -1,0 +1,10 @@
+<window name="main" x="0" y="0" w="320" h="480" layout="4 2 10 10">
+  <button name="open:dialog2" text="none"/>
+  <button name="open:dialog1" text="center scale"/>
+  <button name="open:fade" text="fade"/>
+  <button name="open:htranslate" text="htranslate"/>
+  <button name="open:vtranslate" text="vtranslate"/>
+  <button name="open:top" text="top"/>
+  <button name="open:bottom" text="bottom"/>
+  <button name="close" text="Close"/>
+</window>

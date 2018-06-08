@@ -1,0 +1,3 @@
+<window name="main" x="0" y="0" w="320" h="480" layout="w100 h30 5 10">
+    <button name="close" x="10" y="5" w="25%" h="30" text="Close"/>
+</window>

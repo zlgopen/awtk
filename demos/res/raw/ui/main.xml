@@ -1,5 +1,7 @@
-<window name="main" x="0" y="0" w="320" h="480" layout="w80 h30 5 10">
-    <button name="inc" x="10" y="5" w="25%" h="30" text="Inc"/>
-    <button name="test" x="center" y="5" w="25%" h="30" text="MemTest"/>
-    <button name="dec" x="right:10" y="5" w="25%" h="30" text="Dec"/>
+<window name="main" x="0" y="0" w="320" h="480" layout="w100 h30 5 10">
+    <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
+    <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
+    <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
+    <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
+    <button name="open:animator" x="right:10" y="5" w="25%" h="30" text="Animate Widget"/>
 </window>

@@ -26,30 +26,17 @@
 #include <sys/types.h>
 #include "resource.h"
 #include "tk.h"
+#include "base/fs.h"
 #include "base/mem.h"
 #include "ui_loader/ui_loader_xml.h"
+#include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
 
-char* read_file(const char* file_name, uint32_t* length) {
-  struct stat st = {0};
-  if (stat(file_name, &st)) {
-    return NULL;
-  } else {
-    char* buffer = (char*)TKMEM_ALLOC(st.st_size + 1);
-    FILE* fp = fopen(file_name, "rb");
-    fread(buffer, 1, st.st_size, fp);
-    fclose(fp);
-    buffer[st.st_size] = '\0';
-    *length = st.st_size;
-
-    return buffer;
-  }
-}
-
-widget_t* prefix_xml_ui(const char* filename) {
+widget_t* preview_ui(const char* filename) {
   uint32_t size = 0;
-  uint8_t* content = (uint8_t*)read_file(filename, &size);
-  ui_loader_t* loader = xml_ui_loader();
+  uint8_t* content = (uint8_t*)fs_read_file(filename, &size);
+  ui_loader_t* loader = strstr(filename, ".bin") != NULL ? default_ui_loader() : xml_ui_loader();
+
   ui_builder_t* builder = ui_builder_default();
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
@@ -73,7 +60,7 @@ int main(int argc, char* argv[]) {
 
   tk_init(320, 480);
   resource_init();
-  win = prefix_xml_ui(filename);
+  win = preview_ui(filename);
   tk_run();
   widget_destroy(win);
 

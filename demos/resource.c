@@ -39,15 +39,22 @@
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
 #include "res/inc/theme/default.data"
+#include "res/inc/ui/animation.data"
+#include "res/inc/ui/animator.data"
+#include "res/inc/ui/basic.data"
 #include "res/inc/ui/bottom.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
 #include "res/inc/ui/fade.data"
+#include "res/inc/ui/htranslate.data"
+#include "res/inc/ui/main.data"
+#include "res/inc/ui/memtest.data"
+#include "res/inc/ui/slide_view.data"
+#include "res/inc/ui/slide_view_auto_play.data"
 #include "res/inc/ui/slide_view_h.data"
+#include "res/inc/ui/slide_view_v.data"
 #include "res/inc/ui/top.data"
-#include "res/inc/ui/window.data"
-#include "res/inc/ui/window1.data"
-#include "res/inc/ui/window2.data"
+#include "res/inc/ui/vtranslate.data"
 #endif
 
 ret_t resource_init(void) {
@@ -95,15 +102,22 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
   resource_manager_add(rm, theme_default);
+  resource_manager_add(rm, ui_animation);
+  resource_manager_add(rm, ui_animator);
+  resource_manager_add(rm, ui_basic);
   resource_manager_add(rm, ui_bottom);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
   resource_manager_add(rm, ui_fade);
+  resource_manager_add(rm, ui_htranslate);
+  resource_manager_add(rm, ui_main);
+  resource_manager_add(rm, ui_memtest);
+  resource_manager_add(rm, ui_slide_view);
+  resource_manager_add(rm, ui_slide_view_auto_play);
   resource_manager_add(rm, ui_slide_view_h);
+  resource_manager_add(rm, ui_slide_view_v);
   resource_manager_add(rm, ui_top);
-  resource_manager_add(rm, ui_window);
-  resource_manager_add(rm, ui_window1);
-  resource_manager_add(rm, ui_window2);
+  resource_manager_add(rm, ui_vtranslate);
 #endif
 
   tk_init_resources();
