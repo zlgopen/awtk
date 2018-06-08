@@ -922,6 +922,15 @@ ret_t widget_grab(widget_t* widget, widget_t* child);
  */
 ret_t widget_ungrab(widget_t* widget, widget_t* child);
 
+/**
+ * @method widget_get_window
+ * 获取当前控件所在的窗口。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {widget*} 窗口对象。
+ */
+widget_t* widget_get_window(widget_t* widget);
+
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);

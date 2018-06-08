@@ -942,6 +942,20 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return ret;
 }
 
+widget_t* widget_get_window(widget_t* widget) {
+  widget_t* iter = widget;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, NULL);
+
+  while (iter) {
+    if (iter->parent && iter->parent->type == WIDGET_WINDOW_MANAGER) {
+      return iter;
+    }
+    iter = iter->parent;
+  }
+
+  return iter;
+}
+
 ret_t widget_destroy(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
