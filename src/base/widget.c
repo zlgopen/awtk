@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/time.h"
 #include "base/mem.h"
 #include "base/utf8.h"
 #include "base/utils.h"

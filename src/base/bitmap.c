@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bitmap.c
  * Author: AWTK Develop Team
  * Brief:  bitmap interface
@@ -52,7 +52,7 @@ ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output) {
 ret_t bitmap_rgba_to_bgra(bitmap_t* image) {
   int i = 0;
   int nr = image->w * image->h;
-  uint8_t* data = image->data;
+  uint8_t* data = (uint8_t*)(image->data);
 
   /*default format is rgba, some sys need bgra*/
   for (i = 0; i < nr; i += 4) {

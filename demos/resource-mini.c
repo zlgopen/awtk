@@ -34,14 +34,6 @@
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
 #include "res/inc/theme/default.data"
-#include "res/inc/ui/bottom.data"
-#include "res/inc/ui/dialog1.data"
-#include "res/inc/ui/dialog2.data"
-#include "res/inc/ui/fade.data"
-#include "res/inc/ui/top.data"
-#include "res/inc/ui/window.data"
-#include "res/inc/ui/window1.data"
-#include "res/inc/ui/window2.data"
 #endif
 
 ret_t resource_init(void) {
@@ -84,14 +76,6 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
   resource_manager_add(rm, theme_default);
-  resource_manager_add(rm, ui_bottom);
-  resource_manager_add(rm, ui_dialog1);
-  resource_manager_add(rm, ui_dialog2);
-  resource_manager_add(rm, ui_fade);
-  resource_manager_add(rm, ui_top);
-  resource_manager_add(rm, ui_window);
-  resource_manager_add(rm, ui_window1);
-  resource_manager_add(rm, ui_window2);
 #endif
 
   tk_init_resources();

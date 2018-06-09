@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/time.h"
 #include "base/canvas.h"
 #include "base/wuxiaolin.inc"
 
