@@ -535,7 +535,9 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
       rect_init(dst, 0, 0, widget->w, widget->h);
       image_draw_type_t draw_type =
           (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      uint32_t start_time = time_now_ms();
       canvas_draw_image_ex(c, &img, draw_type, &dst);
+      dst.w = time_now_ms() - start_time;
     }
   }
 

@@ -46,13 +46,13 @@ static ret_t image_stb_destroy(bitmap_t* image) {
 
 static ret_t normalize_image(bitmap_t* image) {
 #ifdef WITH_BITMAP_RGB565
-  if(image->flags & BITMAP_FLAG_OPAQUE) {
+  if (image->flags & BITMAP_FLAG_OPAQUE) {
     uint32_t size = image->w * image->h * 2;
-    uint16_t* data = (uint16_t*)TKMEM_ALLOC(size); 
-    if(data != NULL) {
+    uint16_t* data = (uint16_t*)TKMEM_ALLOC(size);
+    if (data != NULL) {
       bitmap_rgba_to_rgb565(image, data);
       stbi_image_free((uint8_t*)(image->data));
-      image->data = data;
+      image->data = (uint8_t*)data;
       image->destroy = image_stb_destroy_free;
     } else {
       bitmap_rgba_to_rgb565(image, (uint16_t*)(image->data));
@@ -61,10 +61,10 @@ static ret_t normalize_image(bitmap_t* image) {
 
     return RET_OK;
   }
-#endif/*WITH_BITMAP_RGB565*/
+#endif /*WITH_BITMAP_RGB565*/
 
 #ifdef WITH_BITMAP_BGRA
- bitmap_rgba_to_bgra(image); 
+  bitmap_rgba_to_bgra(image);
 #else
   (void)image;
 #endif /*WITH_BITMAP_BGRA*/
@@ -127,6 +127,5 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
 static const image_loader_t stb_loader = {.load = image_loader_stb_load};
 
 image_loader_t* image_loader_stb() {
-  
-  return &stb_loader;
+  return (image_loader_t*)&stb_loader;
 }

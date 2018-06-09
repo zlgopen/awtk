@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.h
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -50,6 +50,7 @@ typedef struct _window_manager_t {
   bool_t ignore_user_input;
   window_animator_t* animator;
   canvas_t* canvas;
+  uint32_t last_paint_cost;
 } window_manager_t;
 
 widget_t* window_manager(void);

@@ -57,7 +57,7 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
 
   if (image->flags & BITMAP_FLAG_OPAQUE) {
     if (image->format == BITMAP_FMT_RGBA) {
-      if(bitmap_rgba_to_rgb565(image, header->data) == RET_OK) {
+      if (bitmap_rgba_to_rgb565(image, header->data) == RET_OK) {
         header->format = BITMAP_FMT_RGB565;
         size = sizeof(uint16_t) * image->w * image->h;
       } else {

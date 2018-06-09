@@ -166,15 +166,19 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   pixel_t* dst_p = fbuff + y * width + x;
   uint8_t global_alpha = lcd->global_alpha;
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
+  pixel_t pixel = color_to_pixel(color);
 
   for (j = 0; j < sh; j++) {
-    for (i = 0; i < sw; i++) {
-      uint8_t a = src_p[i] * global_alpha / 255;
-      if (a >= TK_OPACITY_ALPHA) {
-        dst_p[i] = color_to_pixel(color);
+    pixel_t* d = dst_p;
+    const uint8_t* s = src_p;
+    for (i = 0; i < sw; i++, d++, s++) {
+      uint8_t a = global_alpha > TK_OPACITY_ALPHA ? *s : ((*s * global_alpha) >> 8);
+
+      if (a >= 128) {
+        *d = pixel;
       } else if (a >= TK_TRANSPARENT_ALPHA) {
         color.rgba.a = a;
-        dst_p[i] = blend_pixel(dst_p[i], color);
+        *d = blend_pixel(*d, color);
       }
     }
     src_p += glyph->w;

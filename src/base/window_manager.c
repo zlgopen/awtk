@@ -218,6 +218,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   dr = &(wm->dirty_rect);
 
   if (dr->w && dr->h) {
+    uint32_t start_time = time_now_ms();
+
     ldr = &(wm->last_dirty_rect);
 
     r = *dr;
@@ -227,8 +229,11 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
       ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
+      wm->last_paint_cost = time_now_ms() - start_time;
+
+      log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __func__, (int)(r.x), (int)(r.y), (int)(r.w),
+                (int)(r.h), (int)wm->last_paint_cost);
     }
-    log_debug("%s x=%d y=%d w=%d h=%d\n", __func__, (int)(r.x), (int)(r.y), (int)(r.w), (int)(r.h));
   }
 
   wm->last_dirty_rect = wm->dirty_rect;
@@ -251,8 +256,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
   ret_t ret = window_animator_update(wm->animator, start_time);
-  uint32_t cost = time_now_ms() - start_time;
-  (void)cost;
+  wm->last_paint_cost = time_now_ms() - start_time;
 
   if (ret == RET_DONE) {
     window_animator_destroy(wm->animator);

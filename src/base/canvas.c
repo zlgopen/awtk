@@ -424,6 +424,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
   glyph_t g;
   int32_t i = 0;
   xy_t left = x;
+  uint32_t start_time = time_now_ms();
   uint16_t font_size = c->font_size;
 
   if (nr < 0) {
@@ -453,6 +454,8 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
       x += 4;
     }
   }
+
+  y = time_now_ms() - start_time;
 
   return RET_OK;
 }

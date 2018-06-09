@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_manager.c
  * Author: AWTK Develop Team
  * Brief:  bitmap manager
@@ -150,8 +150,10 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     return RET_OK;
   } else if (imm->loader != NULL) {
     ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
-    image_manager_add(imm, name, image);
-    resource_manager_unref(resource_manager(), res);
+    if (ret == RET_OK) {
+      image_manager_add(imm, name, image);
+      resource_manager_unref(resource_manager(), res);
+    }
 
     return ret;
   } else {
