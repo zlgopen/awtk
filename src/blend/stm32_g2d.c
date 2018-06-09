@@ -162,7 +162,7 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, rect_t* dst, uint8_t global_alpha) {
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha) {
   uint32_t o_addr = 0;
   uint16_t o_offline = 0;
   uint16_t o_format = 0;
@@ -189,6 +189,8 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* src, rect_t* dst, uin
                        RET_BAD_PARAMS);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL); /*not support scale*/
 
+	x = dst->x;
+	y = dst->y;
   sx = src->x;
   sy = src->y;
   w = src->w;
