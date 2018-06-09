@@ -1,9 +1,6 @@
 #include "tk.h"
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
-#include "res/inc/fonts/ap.data"
-#include "res/inc/fonts/default.data"
-#include "res/inc/fonts/default_ttf.data"
 #include "res/inc/strings/en_US.data"
 #include "res/inc/strings/zh_CN.data"
 #include "res/inc/theme/default.data"
@@ -93,8 +90,13 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_IMAGE*/
+#ifdef WITH_STB_FONT
+#include "res/inc/fonts/default.res"
+#else
+#include "res/inc/fonts/default.data"
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -103,9 +105,7 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");
 #else
-  resource_manager_add(rm, font_ap);
   resource_manager_add(rm, font_default);
-  resource_manager_add(rm, font_default_ttf);
   resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);

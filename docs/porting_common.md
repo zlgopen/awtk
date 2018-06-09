@@ -4,9 +4,9 @@
 
 * 1.WITH\_BITMAP\_FONT 如果需要使用位图字体请定义该宏。
 
-* 2.WITH\_STB\_FONT 如果需要使用truetype字体请定义该宏。
+* 2.WITH\_STB\_FONT 如果需要使用truetype字体请定义该宏(请确保stack不小于16KB)。一般WITH\_STB\_FONT和WITH\_BITMAP\_FONT任选一个。
 
-* 3.WITH\_STB\_IMAGE 如果需要使用png/jpg图片请定义该宏。由于解码图片需要较大内存，所以在内存较
+* 3.WITH\_STB\_IMAGE 如果需要使用png/jpg图片请定义该宏(请确保stack不小于16KB)。由于解码图片需要较大内存，所以在内存较
 少的情况下，我们直接把png/jpg转换成位图数据，当作常量编译到代码中，此时不需要定义该宏。 
 
 * 4.WITH\_FS\_RES 如果支持从文件系统中加载资源请定义该宏。需要有兼容POSIX标准的FS接口，如果没有则需要自己实现src/base/fs.c中的函数。
@@ -17,7 +17,12 @@
 
 * 7.HAS\_FAST\_MEMCPY 如果有高效的memcpy函数请定义该宏。
 
-一般推荐定义：WITH\_BITMAP\_FONT,WITH\_STB\_FONT,WITH\_STB\_IMAGE,USE\_GUI\_MAIN,HAS\_FAST\_MEMCPY
+* 8.WITH\_BITMAP\_RGB565 如果支持rgb565格式请定义该宏。除了使用nanovg渲染，一般情况都可以定义该宏。
+
+* 9.WITH\_BITMAP\_BGRA 缺省图片加载之后的格式为RGBA，但有的硬件加速需要使用BGRA格式(如stm32 dma2d)，此时需要定义该宏。
+
+系统内存小余8M时，推荐定义：WITH\_BITMAP\_FONT,USE\_GUI\_MAIN,HAS\_FAST\_MEMCPY,WITH\_BITMAP\_RGB565
+系统内存超过8M时，推荐定义：WITH\_STB\_FONT,WITH\_STB\_IMAGE,USE\_GUI\_MAIN,HAS\_FAST\_MEMCPY,WITH\_BITMAP\_RGB565
 
 ### 二、include路径
 

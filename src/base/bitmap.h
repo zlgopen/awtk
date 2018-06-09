@@ -246,4 +246,7 @@ typedef enum _image_draw_type_t {
 
 END_C_DECLS
 
+ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output);
+ret_t bitmap_rgba_to_bgra(bitmap_t* image);
+
 #endif /*TK_BITMAP_H*/

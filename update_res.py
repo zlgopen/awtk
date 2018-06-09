@@ -93,8 +93,7 @@ def gen_all():
   themegen_bin('theme/theme.xml', 'theme/default.bin');
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
-  resgen('fonts/default_ttf.ttf', 'fonts/default_ttf.data');
-  resgen('fonts/ap.ttf', 'fonts/ap.data');
+  resgen('fonts/default_ttf.ttf', 'fonts/default.res');
   fontgen('fonts/default_ttf.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
@@ -137,21 +136,27 @@ def gen_res_c():
   result += '#include "base/resource_manager.h"\n'
 
   result += '#ifndef WITH_FS_RES\n'
-  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data')) \
-    + glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
+  files=glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
     + glob.glob(joinPath(OUTPUT_DIR, 'theme/*.data')) \
     + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) 
 
   result += genIncludes(files);
 
   result += "#ifdef WITH_STB_IMAGE\n"
-  
   files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.res')) 
   result += genIncludes(files)
   result += "#else\n"
   files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.data')) 
   result += genIncludes(files)
   result += '#endif/*WITH_STB_IMAGE*/\n'
+
+  result += "#ifdef WITH_STB_FONT\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.res')) 
+  result += genIncludes(files)
+  result += "#else\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data')) 
+  result += genIncludes(files)
+  result += '#endif/*WITH_STB_FONT*/\n'
 
   result += '#endif/*WITH_FS_RES*/\n'
 

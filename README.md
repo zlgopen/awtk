@@ -137,6 +137,11 @@ bin\demo1
 ## 最新动态
 
 * 2018/06/08
+    * 修改stb\_image/stb\_truetype在开发板不工作的问题(内存分配/stack大小)。
+    * 图片加载支持bgra/rgb565格式。
+    * 修stm32\_g2d中blend\_image的BUG。
+
+* 2018/06/08
     * 修改几个BUG。
     * 完善demos。
 
