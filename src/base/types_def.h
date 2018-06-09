@@ -227,11 +227,7 @@ enum { NAME_LEN = 15 };
 
 typedef float float_t;
 
-#ifdef WITH_NANOVG
-#define STR_DEFAULT_FONT "default_ttf"
-#else
 #define STR_DEFAULT_FONT "default"
-#endif /*WITH_NANOVG*/
 
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05

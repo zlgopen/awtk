@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   font_stb.h
  * Author: AWTK Develop Team
  * Brief:  stb truetype font loader
@@ -22,6 +22,10 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 
 #include "base/mem.h"
+
+#define STBTT_free(p, u) TKMEM_FREE(p)
+#define STBTT_malloc(s, u) TKMEM_ALLOC(s)
+
 #include "font/font_stb.h"
 #include "stb/stb_truetype.h"
 

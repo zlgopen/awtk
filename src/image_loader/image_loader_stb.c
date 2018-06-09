@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_loader.h
  * Author: AWTK Develop Team
  * Brief:  image_loader interface
@@ -22,6 +22,11 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "base/mem.h"
+
+#define STBI_FREE TKMEM_FREE
+#define STBI_MALLOC TKMEM_ALLOC
+#define STBI_REALLOC(p, s) TKMEM_REALLOC(char, p, s)
+
 #include "stb/stb_image.h"
 #include "image_loader/image_loader_stb.h"
 
@@ -40,24 +45,26 @@ static ret_t image_stb_destroy(bitmap_t* image) {
 }
 
 static ret_t normalize_image(bitmap_t* image) {
-#ifdef WITH_BITMAP_BGRA
-  int i = 0;
-  int nr = image->w * image->h;
-  uint8_t* data = image->data;
-  /*default format is rgba, some sys need bgra*/
-  for (i = 0; i < nr; i += 4) {
-    uint8_t r = data[0];
-    uint8_t g = data[1];
-    uint8_t b = data[2];
-    uint8_t a = data[3];
-    data[0] = b;
-    data[1] = g;
-    data[2] = r;
-    data[3] = a;
+#ifdef WITH_BITMAP_RGB565
+  if(image->flags & BITMAP_FLAG_OPAQUE) {
+    uint32_t size = image->w * image->h * 2;
+    uint16_t* data = (uint16_t*)TKMEM_ALLOC(size); 
+    if(data != NULL) {
+      bitmap_rgba_to_rgb565(image, data);
+      stbi_image_free((uint8_t*)(image->data));
+      image->data = data;
+      image->destroy = image_stb_destroy_free;
+    } else {
+      bitmap_rgba_to_rgb565(image, (uint16_t*)(image->data));
+    }
+    image->format = BITMAP_FMT_RGB565;
 
-    data += 4;
+    return RET_OK;
   }
-  image->format = BITMAP_FMT_BGRA;
+#endif/*WITH_BITMAP_RGB565*/
+
+#ifdef WITH_BITMAP_BGRA
+ bitmap_rgba_to_bgra(image); 
 #else
   (void)image;
 #endif /*WITH_BITMAP_BGRA*/
@@ -117,10 +124,9 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
   return normalize_image(image);
 }
 
+static const image_loader_t stb_loader = {.load = image_loader_stb_load};
+
 image_loader_t* image_loader_stb() {
-  static image_loader_t stb_loader;
-
-  stb_loader.load = image_loader_stb_load;
-
+  
   return &stb_loader;
 }
