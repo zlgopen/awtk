@@ -39,15 +39,6 @@ typedef uint8_t byte;
 #define ALIGNED(x)
 #endif
 
-// force inline
-#if COMPILER(MSVC)
-#define _FORCE_INLINE_  __forceinline
-#elif COMPILER(GCC)
-#if __GNUC__ == 2 && __GNUC_MINOR__ < 96
 #define _FORCE_INLINE_  inline
-#else
-#define _FORCE_INLINE_  __attribute__((always_inline))
-#endif
-#endif
 
 #endif /*_COMMON_H_*/

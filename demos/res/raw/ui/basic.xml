@@ -15,6 +15,9 @@
   <radio_button name="r2" x="100" y="150" w="80" h="30" text="Food"/>
   <radio_button name="r3" x="190" y="150" w="80" h="30" text="Pencil" value="true"/>
 
-  <image name="img" image="earth" x="10" y="360" w="100" h="100"/>
-  <image name="img" image="rgb" x="200" y="360" w="100" h="100"/>
+  <image image="earth" x="10" y="360" w="40" h="40"/>
+  <image image="rgba" x="60" y="360" w="40" h="40"/>
+  <image image="rgb" x="110" y="360" w="40" h="40"/>
+  <image image="message" x="160" y="360" w="40" h="40"/>
+  <image image="red_btn_n" x="210" y="360" w="40" h="40"/>
 </window>

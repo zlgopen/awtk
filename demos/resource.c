@@ -43,6 +43,7 @@
 #include "res/inc/images/red_btn_o.res"
 #include "res/inc/images/red_btn_p.res"
 #include "res/inc/images/rgb.res"
+#include "res/inc/images/rgba.res"
 #include "res/inc/images/right_off.res"
 #include "res/inc/images/right_on.res"
 #include "res/inc/images/slider_bg.res"
@@ -78,6 +79,7 @@
 #include "res/inc/images/red_btn_o.data"
 #include "res/inc/images/red_btn_p.data"
 #include "res/inc/images/rgb.data"
+#include "res/inc/images/rgba.data"
 #include "res/inc/images/right_off.data"
 #include "res/inc/images/right_on.data"
 #include "res/inc/images/slider_bg.data"
@@ -128,6 +130,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_red_btn_o);
   resource_manager_add(rm, image_red_btn_p);
   resource_manager_add(rm, image_rgb);
+  resource_manager_add(rm, image_rgba);
   resource_manager_add(rm, image_right_off);
   resource_manager_add(rm, image_right_on);
   resource_manager_add(rm, image_slider_bg);
