@@ -1,9 +1,9 @@
 
 static ret_t window_animator_open_bottom_to_top_update_percent(window_animator_t* wa) {
   if (wa->open) {
-    wa->percent = 0.5f + 0.5f * wa->easing(wa->time_percent);
+    wa->percent = wa->easing(wa->time_percent);
   } else {
-    wa->percent = 1.0f - 0.5f * wa->easing(wa->time_percent);
+    wa->percent = 1.0f - wa->easing(wa->time_percent);
   }
 
   return RET_OK;
@@ -72,10 +72,10 @@ static window_animator_t* window_animator_create_bottom_to_top(bool_t open) {
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_CUBIC_OUT);
     wa->destroy = window_animator_open_destroy;
   } else {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_CUBIC_IN);
     wa->destroy = window_animator_close_destroy;
   }
 

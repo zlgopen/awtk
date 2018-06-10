@@ -105,7 +105,7 @@ ret_t resource_init(void) {
 
 #ifdef WITH_FS_RES
   resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
-  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");
+  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
   resource_manager_add(rm, font_default);
   resource_manager_add(rm, image_bg800x480);

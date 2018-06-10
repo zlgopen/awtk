@@ -37,6 +37,10 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   fb->data = mem->fbuff;
   fb->format = LCD_FORMAT;
 
+  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
+    fb->data = mem->online_fbuff;
+  }
+  
   return RET_OK;
 }
 
@@ -287,10 +291,6 @@ static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
   fb->h = lcd->w;
   fb->format = mem->format;
   fb->data = mem->fbuff;
-
-  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
-    fb->data = mem->online_fbuff;
-  }
 
   return fb;
 }

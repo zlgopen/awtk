@@ -167,7 +167,7 @@ def gen_res_c():
 
   result += '#ifdef WITH_FS_RES\n'
   result += '  resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");\n'
-  result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default_ttf");\n'
+  result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");\n'
   result += '#else\n'
 
   files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))

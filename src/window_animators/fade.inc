@@ -47,6 +47,7 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   vgcanvas_set_global_alpha(vg, alpha);
   vgcanvas_draw_image(vg, &(wa->curr_img), src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
   vgcanvas_restore(vg);
+  (void)global_alpha;
 #else
   global_alpha = alpha * 0xff;
   lcd_set_global_alpha(c->lcd, global_alpha);
