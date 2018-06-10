@@ -93,8 +93,8 @@ def gen_all():
   themegen_bin('theme/theme.xml', 'theme/default.bin');
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
-  resgen('fonts/default_ttf.ttf', 'fonts/default.res');
-  fontgen('fonts/default_ttf.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
+  resgen('fonts/default.ttf', 'fonts/default.res');
+  fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);

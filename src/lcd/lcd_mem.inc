@@ -37,10 +37,6 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   fb->data = mem->fbuff;
   fb->format = LCD_FORMAT;
 
-  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
-    fb->data = mem->online_fbuff;
-  }
-
   return RET_OK;
 }
 
@@ -292,36 +288,17 @@ static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
   fb->format = mem->format;
   fb->data = mem->fbuff;
 
+  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
+    fb->data = mem->online_fbuff;
+  }
+
   return fb;
 }
 
-static ret_t lcd_mem_end_frame(lcd_t* lcd) {
-  rect_t rect;
+static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
   rect_t* r = &(lcd->dirty_rect);
-
-  if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
-    return RET_OK;
-  }
-
-  if (mem->online_fbuff == NULL) {
-    return RET_OK;
-  }
-
-  if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
-    return RET_OK;
-  }
-
-  if (r == NULL) {
-    r = &rect;
-    r->x = 0;
-    r->y = 0;
-    r->w = lcd->w;
-    r->h = lcd->h;
-  }
 
   lcd_mem_init_online_fb(lcd, &online_fb);
   lcd_mem_init_offline_fb(lcd, &offline_fb);
@@ -333,6 +310,30 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
 #endif /*WITH_G2D*/
 
   return soft_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
+}
+
+static ret_t lcd_mem_end_frame(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  if (mem->online_fbuff == NULL) {
+    return lcd->commit != NULL ? lcd_commit(lcd) : RET_OK;
+  }
+
+  if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
+    return RET_OK;
+  }
+
+  if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
+    return RET_OK;
+  }
+
+  if (lcd->draw_mode == LCD_DRAW_SWAP) {
+    if (lcd_swap(lcd) == RET_OK) {
+      return RET_OK;
+    }
+  }
+
+  return lcd_mem_flush(lcd);
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {

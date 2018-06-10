@@ -72,10 +72,10 @@ static window_animator_t* window_animator_create_top_to_bottom(bool_t open) {
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_LINEAR);
     wa->destroy = window_animator_open_destroy;
   } else {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_LINEAR);
     wa->destroy = window_animator_close_destroy;
   }
 

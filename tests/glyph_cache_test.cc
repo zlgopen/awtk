@@ -9,7 +9,7 @@ TEST(GlyphCache, basic) {
   glyph_t g;
   glyph_cache_t* c = glyph_cache_init(&cache, 64, NULL);
 
-  for(i = 0; i < nr; i++) {
+  for (i = 0; i < nr; i++) {
     ASSERT_EQ(glyph_cache_lookup(c, i, size, &g) == RET_NOT_FOUND, true);
     ASSERT_EQ(glyph_cache_add(c, i, size, &g) == RET_OK, true);
     ASSERT_EQ(glyph_cache_lookup(c, i, size, &g) == RET_OK, true);
@@ -17,4 +17,3 @@ TEST(GlyphCache, basic) {
 
   glyph_cache_deinit(c);
 }
-

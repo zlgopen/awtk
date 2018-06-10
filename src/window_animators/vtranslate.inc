@@ -71,6 +71,7 @@ static window_animator_t* window_animator_create_vtranslate(bool_t open) {
   wa->update_percent = window_animator_open_vtranslate_update_percent;
   wa->draw_prev_window = window_animator_open_vtranslate_draw_prev;
   wa->draw_curr_window = window_animator_open_vtranslate_draw_curr;
+  wa->begin_frame = window_animator_begin_frame;
 
   return wa;
 }

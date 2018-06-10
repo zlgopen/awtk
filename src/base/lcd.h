@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd.h
  * Author: AWTK Develop Team
  * Brief:  lcd interface
@@ -58,7 +58,8 @@ typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img);
 
-typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
+typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
+typedef ret_t (*lcd_commit_t)(lcd_t* lcd);
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
@@ -73,12 +74,27 @@ typedef enum _lcd_draw_mode_t {
    * 正常绘制。
    */
   LCD_DRAW_NORMAL = 0,
+
   /**
    * @const LCD_DRAW_ANIMATION
-   * 绘制动画。
+   * 绘制窗口动画，两个窗口无重叠。
    * 在该模式下，可以直接绘制到显存，不用绘制到framebuffer中。
    */
   LCD_DRAW_ANIMATION,
+
+  /**
+   * @const LCD_DRAW_ANIMATION_OVERLAP
+   * 绘制窗口动画，两个窗口有重叠。
+   * (目前无特殊用途)。
+   */
+  LCD_DRAW_ANIMATION_OVERLAP,
+
+  /**
+   * @const LCD_DRAW_SWAP
+   * 如果lcd支持swap操作，在特殊情况下，可以使用该模式提速。
+   */
+  LCD_DRAW_SWAP,
+
   /**
    * @const LCD_DRAW_OFFLINE
    * 离线模式绘制(仅适用于framebuffer)。
@@ -132,7 +148,8 @@ struct _lcd_t {
   lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
   lcd_get_point_color_t get_point_color;
-  lcd_flush_t flush;
+  lcd_swap_t swap;     /*适用于double fb，可选*/
+  lcd_commit_t commit; /*适用于single fb，可选*/
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;
@@ -432,6 +449,26 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img);
+
+/**
+ * @method lcd_swap
+ * 对于double fb，如果硬件支持swap，在LCD_DRAW_SWAP模式下，该函数用于切换fb。
+ * @private
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_swap(lcd_t* lcd);
+
+/**
+ * @method lcd_commit
+ * 对于single fb，该函数用于通知底层绘制完成可以提交显示了。
+ * @private
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_commit(lcd_t* lcd);
 
 /**
  * @method lcd_end_frame

@@ -156,6 +156,7 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms);
 ret_t window_animator_destroy(window_animator_t* wa);
 
 /*public for implementation*/
+ret_t window_animator_begin_frame(window_animator_t* wa);
 ret_t window_animator_begin_frame_overlap(window_animator_t* wa);
 
 END_C_DECLS

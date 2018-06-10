@@ -61,16 +61,17 @@ static window_animator_t* window_animator_create_htranslate(bool_t open) {
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_SIN_OUT);
     wa->destroy = window_animator_open_destroy;
   } else {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_SIN_IN);
     wa->destroy = window_animator_close_destroy;
   }
 
   wa->update_percent = window_animator_open_htranslate_update_percent;
   wa->draw_prev_window = window_animator_open_htranslate_draw_prev;
   wa->draw_curr_window = window_animator_open_htranslate_draw_curr;
+  wa->begin_frame = window_animator_begin_frame;
 
   return wa;
 }

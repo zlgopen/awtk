@@ -43,13 +43,7 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
     wa->percent = wa->time_percent;
   }
 
-  if (wa->begin_frame) {
-    wa->begin_frame(wa);
-  } else {
-    rect_t r;
-    rect_init(r, wm->x, wm->y, wm->w, wm->h);
-    ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_ANIMATION) == RET_OK);
-  }
+  wa->begin_frame(wa);
 
   if (wa->draw_prev_window != NULL) {
     wa->draw_prev_window(wa);
@@ -74,6 +68,19 @@ ret_t window_animator_destroy(window_animator_t* wa) {
   return wa->destroy(wa);
 }
 
+ret_t window_animator_begin_frame(window_animator_t* wa) {
+#ifdef WITH_NANOVG
+  (void)wa;
+#else
+  rect_t r;
+  widget_t* wm = wa->curr_win->parent;
+  rect_init(r, wm->x, wm->y, wm->w, wm->h);
+  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION) == RET_OK);
+#endif
+
+  return RET_OK;
+}
+
 ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
 #ifdef WITH_NANOVG
   (void)wa;
@@ -88,7 +95,7 @@ ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   }
 
   rect_init(r, w->x, w->y, w->w, w->h);
-  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_NORMAL) == RET_OK);
+  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
 #endif
 
   return RET_OK;

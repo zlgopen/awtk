@@ -50,7 +50,7 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
 
-  if(glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
+  if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
     return RET_OK;
   }
 
@@ -60,7 +60,7 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   g->w = w;
   g->h = h;
   glyph_cache_add(&(font->cache), c, font_size, g);
-  
+
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
@@ -75,7 +75,7 @@ static ret_t font_stb_destroy(font_t* f) {
 
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
-  if(g->data) {
+  if (g->data) {
     STBTT_free((void*)(g->data), NULL);
   }
 

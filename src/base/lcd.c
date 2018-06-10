@@ -181,11 +181,27 @@ ret_t lcd_end_frame(lcd_t* lcd) {
 
   return_value_if_fail(lcd->end_frame(lcd) == RET_OK, RET_FAIL);
 
-  if (lcd->flush) {
-    lcd->flush(lcd);
+  return RET_OK;
+}
+
+ret_t lcd_swap(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  if (lcd->swap != NULL) {
+    return lcd->swap(lcd);
   }
 
-  return RET_OK;
+  return RET_NOT_IMPL;
+}
+
+ret_t lcd_commit(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  if (lcd->commit != NULL) {
+    return lcd->commit(lcd);
+  }
+
+  return RET_NOT_IMPL;
 }
 
 ret_t lcd_destroy(lcd_t* lcd) {
