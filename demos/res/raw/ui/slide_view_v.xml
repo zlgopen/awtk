@@ -1,4 +1,4 @@
-<window style="2:sky" anim_hint="htranslate">
+<window anim_hint="htranslate">
   <slide_view x="0" y="0" w="100%" h="100%" vertical="true">
     <view x="0" y="0" w="100%" h="100%" layout="w60 h60 5 10">
       <button name="close" style="10:grid_item"> 

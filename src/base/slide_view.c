@@ -28,6 +28,8 @@
 
 #define ANIMATING_TIME 500
 
+static ret_t slide_view_invalidate(slide_view_t* slide_view);
+
 static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int ox, int oy) {
   rect_t rr = *r;
   rr.x += ox;
@@ -217,7 +219,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (evt->pressed) {
         slide_view_on_pointer_move(slide_view, evt);
-        widget_invalidate(widget, NULL);
+        slide_view_invalidate(slide_view);
       }
       break;
     }
@@ -261,6 +263,104 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   return RET_NOT_FOUND;
 }
 
+static ret_t widget_calc_children_rect(widget_t* widget, rect_t* r) {
+  uint32_t i = 0;
+  uint32_t nr = widget != NULL ? widget_count_children(widget) : 0; 
+
+  memset(r, 0x0, sizeof(rect_t));
+
+  for(i = 0; i < nr; i++) {
+    rect_t rc;
+    widget_t* iter = widget_get_child(widget, i);
+    rect_init(rc, iter->x, iter->y, iter->w, iter->h);
+    rect_merge(r, &rc);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
+  rect_t r_next;
+  rect_t r_prev;
+  rect_t r_active;
+  int xoffset = slide_view->xoffset;
+  int yoffset = slide_view->yoffset;
+  widget_t* widget = WIDGETP(slide_view);
+  widget_t* active = widget_get_child(widget, slide_view->active);
+  widget_t* next = slide_view_get_next(slide_view);
+  widget_t* prev = slide_view_get_prev(slide_view);
+
+  memset(r, 0x00, sizeof(rect_t));
+  widget_calc_children_rect(active, &r_active);
+  widget_calc_children_rect(next, &r_next);
+  widget_calc_children_rect(prev, &r_prev);
+  
+  if(xoffset == 0 && yoffset == 0) {
+    *r = r_active;
+  } else if(xoffset) {
+    /*FIXME: optimize*/
+    r_active.x = 0;
+    r_active.w = widget->w;
+
+    rect_merge(r, &r_active);
+    if(xoffset < 0) {
+      if(next) {
+        r_next.x = 0;
+        r_next.w = widget->w;
+        rect_merge(r, &r_next);
+      }
+    } else {
+      if(prev) {
+        r_prev.x = 0;
+        r_prev.w = widget->w;
+        rect_merge(r, &r_prev);
+      }
+    }
+  } else if(yoffset) {
+    r_active.y = 0;
+    r_active.h = widget->h;
+
+    rect_merge(r, &r_active);
+    rect_merge(r, &r_next);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_invalidate(slide_view_t* slide_view) {
+  rect_t r;
+  widget_t* widget = WIDGETP(slide_view);
+  slide_view_calc_dirty_rect(slide_view, &r);
+  
+  if(r.x < 0) {
+    r.x = 0;
+  }
+
+  if(r.x >= widget->w) {
+    r.x = 0;
+    r.w = 0;
+  }
+
+  if(r.y < 0) {
+    r.y = 0;
+  }
+
+  if(r.y >= widget->h) {
+    r.y = 0;
+    r.h = 0;
+  }
+
+  if((r.x + r.w) > widget->w) {
+      r.w = widget->w - r.x;  
+  }
+  
+  if((r.y + r.h) > widget->h) {
+      r.h = widget->h - r.y;  
+  }
+
+  return widget_invalidate(widget, &r);
+}
+
 static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -271,11 +371,13 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     return slide_view_set_vertical(widget, value_bool(v));
   } else if (str_fast_equal(name, WIDGET_PROP_XOFFSET)) {
     slide_view->xoffset = value_int(v);
+    slide_view_invalidate(slide_view);
     return RET_OK;
   } else if (str_fast_equal(name, WIDGET_PROP_AUTO_PLAY)) {
     return slide_view_set_auto_play(widget, value_int(v));
   } else if (str_fast_equal(name, WIDGET_PROP_YOFFSET)) {
     slide_view->yoffset = value_int(v);
+    slide_view_invalidate(slide_view);
     return RET_OK;
   }
 
