@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -229,6 +229,7 @@ typedef float float_t;
 
 #define STR_DEFAULT_FONT "default"
 
+#define TK_MAX_FPS 60
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05
 

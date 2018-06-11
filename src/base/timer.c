@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   timer.c
  * Author: AWTK Develop Team
  * Brief:  timer manager
@@ -198,8 +198,8 @@ uint32_t timer_manager_count(timer_manager_t* timer_manager) {
 
 uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
   uint32_t i = 0;
-  uint32_t t = 0xffffffff;
   array_t* active = NULL;
+  uint32_t t = timer_manager->get_time() + 0xffff;
   return_value_if_fail(timer_manager != NULL, t);
   active = ACTIVE_TIMERS(timer_manager);
 

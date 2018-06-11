@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   main_loop.h
  * Author: AWTK Develop Team
  * Brief:  main_loop interface
@@ -44,6 +44,7 @@ struct _main_loop_t {
   main_loop_destroy_t destroy;
 
   bool_t running;
+  uint32_t last_loop_time;
 };
 
 main_loop_t* main_loop_init(int w, int h);

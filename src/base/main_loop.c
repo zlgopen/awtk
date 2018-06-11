@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   main_loop.c
  * Author: AWTK Develop Team
  * Brief:  main_loop interface
@@ -82,20 +82,30 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
 #include "base/timer.h"
 #include "base/window_manager.h"
 
+#define TK_MAX_SLEEP_TIME (1000 / MAX_FPS)
+
 ret_t main_loop_sleep(main_loop_t* l) {
+  uint32_t sleep_time = 0;
+  uint32_t now = time_now_ms();
+  uint32_t gap = now - l->last_loop_time;
+  int32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
   window_manager_t* wm = WINDOW_MANAGER(window_manager());
 
   if (!wm->animating) {
-    uint32_t sleep_time = 0;
     int32_t next_timer = timer_next_time() - time_now_ms();
 
     if (next_timer < 0) {
       next_timer = 0;
     }
 
-    sleep_time = next_timer > 30 ? 30 : next_timer;
+    sleep_time = tk_min(next_timer, TK_MAX_SLEEP_TIME);
+  }
+
+  sleep_time = tk_max(least_sleep_time, sleep_time);
+  if (sleep_ms >= 0) {
     sleep_ms(sleep_time);
   }
+  l->last_loop_time = time_now_ms();
 
   return RET_OK;
 }

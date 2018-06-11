@@ -275,7 +275,7 @@ ret_t window_manager_update_fps(widget_t* widget) {
 
   wm->fps_count++;
   elapse = now - wm->fps_time;
-  if (elapse >= 500) {
+  if (elapse >= 200) {
     wm->fps = wm->fps_count * 1000 / elapse;
 
     log_debug("fps=%d\n", wm->fps);
