@@ -82,7 +82,7 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
 #include "base/timer.h"
 #include "base/window_manager.h"
 
-#define TK_MAX_SLEEP_TIME (1000 / MAX_FPS)
+#define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
 
 ret_t main_loop_sleep(main_loop_t* l) {
   uint32_t sleep_time = 0;
