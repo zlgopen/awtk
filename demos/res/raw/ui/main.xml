@@ -4,4 +4,5 @@
     <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
     <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
     <button name="open:animator" x="right:10" y="5" w="25%" h="30" text="Animate Widget"/>
+    <button name="show_fps" x="right:10" y="5" w="25%" h="30" text="Show FPS"/>
 </window>

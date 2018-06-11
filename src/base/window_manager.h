@@ -51,6 +51,11 @@ typedef struct _window_manager_t {
   window_animator_t* animator;
   canvas_t* canvas;
   uint32_t last_paint_cost;
+
+  uint32_t fps;
+  uint32_t fps_time;
+  uint32_t fps_count;
+  bool_t show_fps;
 } window_manager_t;
 
 widget_t* window_manager(void);
@@ -66,6 +71,7 @@ ret_t window_manager_remove_child(widget_t* widget, widget_t* window);
 ret_t window_manager_paint(widget_t* widget, canvas_t* c);
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
 
+ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps);
 ret_t window_manager_set_animating(widget_t* widget, bool_t animating);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))

@@ -92,13 +92,13 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #include "res/inc/fonts/default.res"
 #else
 #include "res/inc/fonts/default.data"
-#endif/*WITH_STB_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_STB_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();

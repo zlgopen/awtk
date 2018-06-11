@@ -20,8 +20,11 @@
  */
 
 #include "base/time.h"
+#include "base/utils.h"
 #include "base/canvas.h"
 #include "base/wuxiaolin.inc"
+
+static ret_t canvas_draw_fps(canvas_t* c);
 
 ret_t canvas_translate(canvas_t* c, xy_t dx, xy_t dy) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
@@ -874,6 +877,7 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
 ret_t canvas_end_frame(canvas_t* c) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+  canvas_draw_fps(c);
 
   return lcd_end_frame(c->lcd);
 }
@@ -1069,4 +1073,38 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
   }
 
   return canvas_do_draw_image(c, img, &src, &dst);
+}
+
+ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+  c->show_fps = show_fps;
+  c->fps = fps;
+
+  return RET_OK;
+}
+
+static ret_t canvas_draw_fps(canvas_t* c) {
+  char fps[10];
+  uint32_t i = 0;
+  wchar_t wfps[10];
+
+  if (c->show_fps && c->lcd->draw_mode != LCD_DRAW_OFFLINE) {
+    int x = 8;
+    int y = 8;
+    int w = 60;
+    int h = 30;
+    tk_snprintf(fps, sizeof(fps), "%ufps", c->fps);
+    for (i = 0; fps[i]; i++) {
+      wfps[i] = fps[i];
+    }
+
+    wfps[i] = 0;
+    canvas_set_font(c, NULL, 16);
+    canvas_set_text_color(c, color_init(0, 0, 0, 0xff));
+    canvas_set_fill_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
+    canvas_fill_rect(c, 0, 0, w, h);
+    canvas_draw_text(c, wfps, i, x, y);
+  }
+
+  return RET_OK;
 }

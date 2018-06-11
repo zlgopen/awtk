@@ -265,11 +265,11 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
 
 static ret_t widget_calc_children_rect(widget_t* widget, rect_t* r) {
   uint32_t i = 0;
-  uint32_t nr = widget != NULL ? widget_count_children(widget) : 0; 
+  uint32_t nr = widget != NULL ? widget_count_children(widget) : 0;
 
   memset(r, 0x0, sizeof(rect_t));
 
-  for(i = 0; i < nr; i++) {
+  for (i = 0; i < nr; i++) {
     rect_t rc;
     widget_t* iter = widget_get_child(widget, i);
     rect_init(rc, iter->x, iter->y, iter->w, iter->h);
@@ -294,29 +294,29 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
   widget_calc_children_rect(active, &r_active);
   widget_calc_children_rect(next, &r_next);
   widget_calc_children_rect(prev, &r_prev);
-  
-  if(xoffset == 0 && yoffset == 0) {
+
+  if (xoffset == 0 && yoffset == 0) {
     *r = r_active;
-  } else if(xoffset) {
+  } else if (xoffset) {
     /*FIXME: optimize*/
     r_active.x = 0;
     r_active.w = widget->w;
 
     rect_merge(r, &r_active);
-    if(xoffset < 0) {
-      if(next) {
+    if (xoffset < 0) {
+      if (next) {
         r_next.x = 0;
         r_next.w = widget->w;
         rect_merge(r, &r_next);
       }
     } else {
-      if(prev) {
+      if (prev) {
         r_prev.x = 0;
         r_prev.w = widget->w;
         rect_merge(r, &r_prev);
       }
     }
-  } else if(yoffset) {
+  } else if (yoffset) {
     r_active.y = 0;
     r_active.h = widget->h;
 
@@ -331,31 +331,31 @@ static ret_t slide_view_invalidate(slide_view_t* slide_view) {
   rect_t r;
   widget_t* widget = WIDGETP(slide_view);
   slide_view_calc_dirty_rect(slide_view, &r);
-  
-  if(r.x < 0) {
+
+  if (r.x < 0) {
     r.x = 0;
   }
 
-  if(r.x >= widget->w) {
+  if (r.x >= widget->w) {
     r.x = 0;
     r.w = 0;
   }
 
-  if(r.y < 0) {
+  if (r.y < 0) {
     r.y = 0;
   }
 
-  if(r.y >= widget->h) {
+  if (r.y >= widget->h) {
     r.y = 0;
     r.h = 0;
   }
 
-  if((r.x + r.w) > widget->w) {
-      r.w = widget->w - r.x;  
+  if ((r.x + r.w) > widget->w) {
+    r.w = widget->w - r.x;
   }
-  
-  if((r.y + r.h) > widget->h) {
-      r.h = widget->h - r.y;  
+
+  if ((r.y + r.h) > widget->h) {
+    r.h = widget->h - r.y;
   }
 
   return widget_invalidate(widget, &r);

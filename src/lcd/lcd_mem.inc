@@ -40,7 +40,7 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fbuff) {
     fb->data = mem->online_fbuff;
   }
-  
+
   return RET_OK;
 }
 

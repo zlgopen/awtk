@@ -42,6 +42,8 @@ struct _canvas_t {
   xy_t clip_top;
   xy_t clip_right;
   xy_t clip_bottom;
+  uint32_t fps;
+  bool_t show_fps;
 
   lcd_t* lcd;
   font_t* font;
@@ -104,6 +106,8 @@ ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* dst);
 
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
+
+ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);
 
 ret_t canvas_end_frame(canvas_t* c);
 

@@ -19,17 +19,18 @@
  *
  */
 
+#include "base/mem.h"
+#include "base/label.h"
 #include "base/timer.h"
 #include "base/button.h"
-#include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/image.h"
-#include "base/image_manager.h"
-#include "base/label.h"
-#include "base/mem.h"
-#include "base/progress_bar.h"
 #include "base/utils.h"
 #include "base/window.h"
+#include "base/check_button.h"
+#include "base/progress_bar.h"
+#include "base/image_manager.h"
+#include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
 static void install_click_hander(widget_t* widget);
@@ -62,6 +63,16 @@ static ret_t on_quit(void* ctx, event_t* e) {
 
   dialog_quit(dialog, 0);
   (void)e;
+  return RET_OK;
+}
+
+static ret_t on_show_fps(void* ctx, event_t* e) {
+  (void)e;
+  (void)ctx;
+  widget_t* wm = window_manager();
+
+  window_manager_set_show_fps(wm, TRUE);
+
   return RET_OK;
 }
 
@@ -123,6 +134,8 @@ static void install_click_hander(widget_t* widget) {
     } else if (strstr(name, "inc") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_inc, win);
+    } else if (strstr(name, "show_fps") != NULL) {
+      widget_on(widget, EVT_CLICK, on_show_fps, NULL);
     } else if (strstr(name, "dec") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);

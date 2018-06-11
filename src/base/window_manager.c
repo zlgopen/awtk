@@ -23,6 +23,7 @@
 #include "base/mem.h"
 #include "base/idle.h"
 #include "base/time.h"
+#include "base/utils.h"
 #include "base/timer.h"
 #include "base/locale.h"
 #include "base/prop_names.h"
@@ -230,7 +231,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
-
       log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __func__, (int)(r.x), (int)(r.y), (int)(r.w),
                 (int)(r.h), (int)wm->last_paint_cost);
     }
@@ -268,17 +268,47 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+ret_t window_manager_update_fps(widget_t* widget) {
+  uint32_t elapse = 0;
+  uint32_t now = time_now_ms();
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  wm->fps_count++;
+  elapse = now - wm->fps_time;
+  if (elapse >= 500) {
+    wm->fps = wm->fps_count * 1000 / elapse;
+
+    log_debug("fps=%d\n", wm->fps);
+    wm->fps_time = now;
+    wm->fps_count = 0;
+  }
+
+  canvas_set_fps(wm->canvas, wm->show_fps, wm->fps);
+  if (wm->show_fps) {
+    rect_t r;
+    rect_init(r, 0, 0, 80, 30);
+    widget_invalidate(widget, &r);
+  }
+
+  return RET_OK;
+}
+
 ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_OK;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
   wm->canvas = c;
+  window_manager_update_fps(widget);
+
   canvas_set_global_alpha(c, 0xff);
   if (wm->animator != NULL) {
-    return window_manager_paint_animation(widget, c);
+    ret = window_manager_paint_animation(widget, c);
   } else {
-    return window_manager_paint_normal(widget, c);
+    ret = window_manager_paint_normal(widget, c);
   }
+
+  return ret;
 }
 
 static widget_t* s_window_manager = NULL;
@@ -557,6 +587,15 @@ ret_t window_manager_set_animating(widget_t* widget, bool_t animating) {
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   wm->animating = animating;
+
+  return RET_OK;
+}
+
+ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  wm->show_fps = show_fps;
 
   return RET_OK;
 }
