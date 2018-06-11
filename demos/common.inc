@@ -1,3 +1,5 @@
+#include "base/timer.h"
+
 static ret_t on_timer(const timer_info_t* timer) {
   widget_t* progress_bar = (widget_t*)timer->ctx;
   uint8_t value = (PROGRESS_BAR(progress_bar)->value + 5) % 100;

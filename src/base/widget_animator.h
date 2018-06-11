@@ -38,7 +38,7 @@ typedef ret_t (*widget_animator_destroy_t)(widget_animator_t* animator);
  * @class widget_animator_t
  * 控件动画接口。
  */
-typedef struct _widget_animator_t {
+struct _widget_animator_t {
   /**
    * @property {widget_t*} widget
    * @private
@@ -150,7 +150,7 @@ typedef struct _widget_animator_t {
    * destroy函数，子类需要实现。
    */
   widget_animator_destroy_t destroy;
-} widget_animator_t;
+} ;
 
 /**
  * @method widget_animator_init

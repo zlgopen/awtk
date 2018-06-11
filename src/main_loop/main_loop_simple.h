@@ -38,7 +38,7 @@ typedef struct _main_loop_simple_t main_loop_simple_t;
 
 typedef ret_t (*main_loop_dispatch_input_t)(main_loop_simple_t* loop);
 
-typedef struct _main_loop_simple_t {
+struct _main_loop_simple_t {
   main_loop_t base;
   canvas_t canvas;
   event_queue_t* queue;
@@ -57,7 +57,7 @@ typedef struct _main_loop_simple_t {
   void* user3;
   void* user4;
   main_loop_dispatch_input_t dispatch_input;
-} main_loop_simple_t;
+};
 
 main_loop_simple_t* main_loop_simple_init(int w, int h);
 

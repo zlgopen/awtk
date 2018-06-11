@@ -26,8 +26,8 @@
 
 BEGIN_C_DECLS
 
-struct timer_info_t;
-typedef struct timer_info_t timer_info_t;
+struct _timer_info_t;
+typedef struct _timer_info_t timer_info_t;
 
 typedef uint32_t (*timer_get_time_t)();
 typedef ret_t (*timer_func_t)(const timer_info_t* timer);
@@ -39,7 +39,7 @@ typedef struct _timer_manager_t {
   timer_get_time_t get_time;
 } timer_manager_t;
 
-typedef struct timer_info_t {
+struct _timer_info_t {
   timer_func_t on_timer;
   void* ctx;
   uint32_t id;
@@ -47,7 +47,7 @@ typedef struct timer_info_t {
   uint32_t start;
   uint32_t duration_ms;
   timer_manager_t* timer_manager;
-} timer_info_t;
+};
 
 timer_manager_t* timer_manager(void);
 ret_t timer_manager_set(timer_manager_t* timer_manager);

@@ -78,7 +78,7 @@ typedef ret_t (*window_animator_destroy_t)(window_animator_t* wa);
  * @class window_animator_t
  * 窗口动画。
  */
-typedef struct _window_animator_t {
+struct _window_animator_t {
   window_animator_update_percent_t update_percent;
 
   window_animator_begin_frame_t begin_frame;
@@ -105,7 +105,7 @@ typedef struct _window_animator_t {
   float_t percent;
   canvas_t* canvas;
   float_t time_percent;
-} window_animator_t;
+};
 
 /**
  * @method window_animator_create_for_open

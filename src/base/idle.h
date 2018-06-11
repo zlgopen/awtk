@@ -26,16 +26,16 @@
 
 BEGIN_C_DECLS
 
-struct idle_info_t;
-typedef struct idle_info_t idle_info_t;
+struct _idle_info_t;
+typedef struct _idle_info_t idle_info_t;
 
 typedef ret_t (*idle_func_t)(const idle_info_t* idle);
 
-typedef struct idle_info_t {
+struct _idle_info_t {
   idle_func_t on_idle;
   void* ctx;
   uint32_t id;
-} idle_info_t;
+};
 
 typedef struct _idle_manager_t {
   array_t idles[2];
