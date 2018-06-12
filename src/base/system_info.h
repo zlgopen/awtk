@@ -58,6 +58,13 @@ typedef struct _system_info_t {
    * 显示屏的密度。
    */
   float_t device_pixel_ratio;
+
+  /**
+   * @property {lcd_orientation_t} lcd_orientation
+   * @readonly
+   * 显示屏的旋转角度。
+   */
+  lcd_orientation_t lcd_orientation;
 } system_info_t;
 
 /**

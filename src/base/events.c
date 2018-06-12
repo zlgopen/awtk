@@ -54,3 +54,31 @@ event_t event_init(event_type_t type, void* target) {
 
   return e;
 }
+
+ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
+  xy_t x = evt->x;
+  xy_t y = evt->y;
+  return_value_if_fail(evt != NULL && info != NULL, RET_BAD_PARAMS);
+
+  switch (info->lcd_orientation) {
+    case LCD_ORIENTATION_90: {
+      evt->x = y;
+      evt->y = info->lcd_w - x;
+      break;
+    }
+    case LCD_ORIENTATION_180: {
+      evt->x = info->lcd_w - x;
+      evt->y = info->lcd_h - y;
+      break;
+    }
+    case LCD_ORIENTATION_270: {
+      evt->x = info->lcd_h - y;
+      evt->y = x;
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}

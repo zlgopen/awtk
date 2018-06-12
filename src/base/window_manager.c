@@ -25,8 +25,10 @@
 #include "base/time.h"
 #include "base/utils.h"
 #include "base/timer.h"
+#include "base/layout.h"
 #include "base/locale.h"
 #include "base/prop_names.h"
+#include "base/system_info.h"
 #include "base/window_manager.h"
 
 static widget_t* window_manager_find_prev_window(widget_t* widget) {
@@ -278,7 +280,6 @@ ret_t window_manager_update_fps(widget_t* widget) {
   if (elapse >= 200) {
     wm->fps = wm->fps_count * 1000 / elapse;
 
-    log_debug("fps=%d\n", wm->fps);
     wm->fps_time = now;
     wm->fps_count = 0;
   }
@@ -450,6 +451,40 @@ widget_t* window_manager_init(window_manager_t* wm) {
   return w;
 }
 
+static ret_t window_manger_layout_child(widget_t* widget, widget_t* child) {
+  wh_t w = widget->w;
+  wh_t h = widget->h;
+
+  switch (child->type) {
+    case WIDGET_NORMAL_WINDOW: {
+      child->w = w;
+      child->h = h;
+      widget_layout(child);
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_manger_layout_children(widget_t* widget) {
+  int32_t i = 0;
+  int32_t nr = 0;
+
+  if (widget->children != NULL && widget->children->size > 0) {
+    nr = widget->children->size;
+
+    for (; i < nr; i++) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      window_manger_layout_child(widget, iter);
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
@@ -461,7 +496,7 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
   wm->last_dirty_rect = wm->dirty_rect;
   widget_move_resize(widget, 0, 0, w, h);
 
-  return RET_OK;
+  return window_manger_layout_children(widget);
 }
 
 static ret_t window_manager_update_key_status(window_manager_t* wm, uint32_t key, bool_t down) {
@@ -529,6 +564,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   switch (e->type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
+
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
@@ -537,6 +574,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
+
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
@@ -545,6 +584,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
+
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;

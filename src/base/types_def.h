@@ -101,6 +101,33 @@ typedef enum _ret_t {
   RET_BAD_PARAMS
 } ret_t;
 
+/**
+ * @enum lcd_orientation_t
+ * LCD旋转角度。
+ */
+typedef enum _lcd_orientation_t {
+  /**
+   * @const LCD_ORIENTATION_0
+   * LCD没有旋转。
+   */
+  LCD_ORIENTATION_0,
+  /**
+   * @const LCD_ORIENTATION_90
+   * LCD旋转90度。
+   */
+  LCD_ORIENTATION_90,
+  /**
+   * @const LCD_ORIENTATION_180
+   * LCD旋转180度。
+   */
+  LCD_ORIENTATION_180,
+  /**
+   * @const LCD_ORIENTATION_270
+   * LCD旋转270度。
+   */
+  LCD_ORIENTATION_270
+} lcd_orientation_t;
+
 #ifdef WIN32
 #include <windows.h>
 #define log_debug(format, ...) printf(format, __VA_ARGS__)

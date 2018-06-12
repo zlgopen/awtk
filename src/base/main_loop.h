@@ -45,6 +45,8 @@ struct _main_loop_t {
 
   bool_t running;
   uint32_t last_loop_time;
+  widget_t* wm;
+  canvas_t canvas;
 };
 
 main_loop_t* main_loop_init(int w, int h);

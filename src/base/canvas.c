@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/utf8.h"
 #include "base/time.h"
 #include "base/utils.h"
 #include "base/canvas.h"
@@ -1084,26 +1085,23 @@ ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
 }
 
 static ret_t canvas_draw_fps(canvas_t* c) {
-  char fps[10];
-  uint32_t i = 0;
-  wchar_t wfps[10];
+  char fps[20];
+  wchar_t wfps[20];
 
   if (c->show_fps && c->lcd->draw_mode != LCD_DRAW_OFFLINE) {
     int x = 8;
     int y = 8;
     int w = 60;
     int h = 30;
-    tk_snprintf(fps, sizeof(fps), "%ufps", c->fps);
-    for (i = 0; fps[i]; i++) {
-      wfps[i] = fps[i];
-    }
 
-    wfps[i] = 0;
     canvas_set_font(c, NULL, 16);
     canvas_set_text_color(c, color_init(0, 0, 0, 0xff));
     canvas_set_fill_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
     canvas_fill_rect(c, 0, 0, w, h);
-    canvas_draw_text(c, wfps, i, x, y);
+
+    tk_snprintf(fps, sizeof(fps), "%dfps", (int)(c->fps));
+    utf8_to_utf16(fps, wfps, strlen(fps) + 1);
+    canvas_draw_text(c, wfps, wcslen(wfps), x, y);
   }
 
   return RET_OK;

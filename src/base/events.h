@@ -22,8 +22,8 @@
 #ifndef TK_EVENTS_H
 #define TK_EVENTS_H
 
-#include "types_def.h"
-#include "canvas.h"
+#include "base/canvas.h"
+#include "base/system_info.h"
 
 BEGIN_C_DECLS
 
@@ -348,6 +348,8 @@ typedef struct _paint_event_t {
 paint_event_t* paint_event_cast(event_t* event);
 
 event_t event_init(event_type_t type, void* target);
+
+ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info);
 
 typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 

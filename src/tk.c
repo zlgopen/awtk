@@ -146,3 +146,27 @@ ret_t tk_quit() {
   timer_add(tk_quit_idle, NULL, 0);
   return RET_OK;
 }
+
+ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
+  main_loop_t* loop = main_loop();
+  system_info_t* info = system_info();
+  return_value_if_fail(loop != NULL && info != NULL, RET_OK);
+
+  if (info->lcd_orientation != orientation) {
+    wh_t w = info->lcd_w;
+    wh_t h = info->lcd_h;
+    lcd_t* lcd = loop->canvas.lcd;
+
+    info->lcd_orientation = orientation;
+    if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+      w = info->lcd_h;
+      h = info->lcd_w;
+    }
+
+    lcd->w = w;
+    lcd->h = h;
+    window_manager_resize(window_manager(), w, h);
+  }
+
+  return RET_OK;
+}

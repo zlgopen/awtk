@@ -59,6 +59,8 @@ ret_t tk_quit(void);
 
 ret_t tk_init_resources(void);
 
+ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
+
 /*public for test program*/
 ret_t tk_init_internal(void);
 ret_t tk_deinit_internal(void);

@@ -150,7 +150,7 @@ struct _widget_animator_t {
    * destroy函数，子类需要实现。
    */
   widget_animator_destroy_t destroy;
-} ;
+};
 
 /**
  * @method widget_animator_init
