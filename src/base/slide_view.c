@@ -112,6 +112,7 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
+  widget_t* widget = WIDGETP(ctx);
   slide_view_t* slide_view = SLIDE_VIEW(ctx);
 
   if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
@@ -123,6 +124,9 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   slide_view->xoffset = 0;
   slide_view->yoffset = 0;
   slide_view->animating = FALSE;
+
+  widget->dirty = FALSE;
+  widget_invalidate(widget, NULL);
 
   return RET_OK;
 }
