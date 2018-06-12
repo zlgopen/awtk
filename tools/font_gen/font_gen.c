@@ -22,6 +22,7 @@
 #include <wctype.h>
 #include "base/mem.h"
 #include "base/utf8.h"
+#include "base/buffer.h"
 #include "common/utils.h"
 #include "font/font_stb.h"
 #include "font/font_bitmap.h"

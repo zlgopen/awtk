@@ -194,31 +194,6 @@ typedef void* pointer_t;
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #endif /*ARRAY_SIZE*/
 
-#define load_uint32(p, v)                                   \
-  (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \
-  p += 4;
-#define save_uint32(p, v)  \
-  p[0] = (v & 0xff);       \
-  p[1] = (v >> 8) & 0xff;  \
-  p[2] = (v >> 16) & 0xff; \
-  p[3] = (v >> 24) & 0xff; \
-  p += 4;
-
-#define load_uint16(p, v)     \
-  (v) = (p[0] | (p[1] << 8)); \
-  p += 2;
-#define save_uint16(p, v) \
-  p[0] = (v & 0xff);      \
-  p[1] = (v >> 8) & 0xff; \
-  p += 2;
-
-#define load_uint8(p, v) \
-  (v) = p[0];            \
-  p += 1;
-#define save_uint8(p, v) \
-  p[0] = v;              \
-  p += 1;
-
 typedef int (*compare_t)(const void* a, const void* b);
 typedef ret_t (*visit_t)(void* ctx, void* data);
 typedef ret_t (*destroy_t)(void* data);

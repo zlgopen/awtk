@@ -20,6 +20,7 @@
  */
 
 #include "base/theme.h"
+#include "base/buffer.h"
 
 color_t style_get_color(style_t* s, uint32_t name, color_t defval) {
   defval.color = style_get_int(s, name, defval.color);

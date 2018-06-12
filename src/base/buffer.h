@@ -261,6 +261,31 @@ ret_t rbuffer_peek_uint16(rbuffer_t* rbuffer, uint16_t* value);
  */
 ret_t rbuffer_peek_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
+#define load_uint32(p, v)                                   \
+  (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \
+  p += 4;
+#define save_uint32(p, v)  \
+  p[0] = (v & 0xff);       \
+  p[1] = (v >> 8) & 0xff;  \
+  p[2] = (v >> 16) & 0xff; \
+  p[3] = (v >> 24) & 0xff; \
+  p += 4;
+
+#define load_uint16(p, v)     \
+  (v) = (p[0] | (p[1] << 8)); \
+  p += 2;
+#define save_uint16(p, v) \
+  p[0] = (v & 0xff);      \
+  p[1] = (v >> 8) & 0xff; \
+  p += 2;
+
+#define load_uint8(p, v) \
+  (v) = p[0];            \
+  p += 1;
+#define save_uint8(p, v) \
+  p[0] = v;              \
+  p += 1;
+
 END_C_DECLS
 
 #endif /*TK_BUFFER_H*/

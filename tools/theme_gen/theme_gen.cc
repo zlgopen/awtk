@@ -22,6 +22,7 @@
 #include "theme_gen.h"
 #include "base/enums.h"
 #include "base/theme.h"
+#include "base/buffer.h"
 #include "base/types_def.h"
 
 Style::Style() {
