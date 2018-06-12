@@ -16,7 +16,7 @@ static ret_t main_loop_raw_init_canvas(main_loop_simple_t* loop) {
   lcd_t* lcd = platform_create_lcd(loop->w, loop->h);
 
   return_value_if_fail(lcd != NULL, RET_OOM);
-  canvas_init(&(loop->canvas), lcd, font_manager());
+  canvas_init(&(loop->base.canvas), lcd, font_manager());
 
   return RET_OK;
 }

@@ -2,7 +2,7 @@
 static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   key_event_t event;
   int type = sdl_event->type;
-  widget_t* widget = loop->wm;
+  widget_t* widget = loop->base.wm;
 
   event.e.time = time_now_ms();
   event.key = sdl_event->key.keysym.sym;
@@ -27,7 +27,7 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
 static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   pointer_event_t event;
   int type = sdl_event->type;
-  widget_t* widget = loop->wm;
+  widget_t* widget = loop->base.wm;
 
   event.e.time = time_now_ms();
   switch (type) {

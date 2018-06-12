@@ -40,9 +40,7 @@ typedef ret_t (*main_loop_dispatch_input_t)(main_loop_simple_t* loop);
 
 struct _main_loop_simple_t {
   main_loop_t base;
-  canvas_t canvas;
   event_queue_t* queue;
-  widget_t* wm;
 
   wh_t w;
   wh_t h;

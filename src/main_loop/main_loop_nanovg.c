@@ -90,7 +90,7 @@ static ret_t main_loop_nanovg_create_window(main_loop_simple_t* l) {
   glEnable(GL_STENCIL_TEST);
   glEnable(GL_DEPTH_TEST);
 
-  canvas_init(&(l->canvas), lcd_nanovg_init(LOOP_SDL_WINDOW(l)), font_manager());
+  canvas_init(&(l->base.canvas), lcd_nanovg_init(LOOP_SDL_WINDOW(l)), font_manager());
 
   return RET_OK;
 }

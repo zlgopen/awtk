@@ -114,7 +114,7 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
 
 static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   event_queue_req_t r;
-  widget_t* widget = loop->wm;
+  widget_t* widget = loop->base.wm;
 
   while (main_loop_simple_recv_event(loop, &r) == RET_OK) {
     switch (r.event.type) {
@@ -161,7 +161,7 @@ static ret_t main_loop_simple_run(main_loop_t* l) {
     main_loop_dispatch_events(loop);
     idle_dispatch();
 
-    window_manager_paint(loop->wm, &(loop->canvas));
+    window_manager_paint(loop->base.wm, &(loop->base.canvas));
     main_loop_sleep(l);
   }
 
@@ -176,8 +176,8 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
 
   loop->w = w;
   loop->h = h;
-  loop->wm = window_manager();
-  return_value_if_fail(loop->wm != NULL, NULL);
+  loop->base.wm = window_manager();
+  return_value_if_fail(loop->base.wm != NULL, NULL);
 
   loop->queue = event_queue_create(20);
   return_value_if_fail(loop->queue != NULL, NULL);
@@ -188,7 +188,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   loop->base.run = main_loop_simple_run;
   loop->base.queue_event = main_loop_simple_queue_event;
 
-  window_manager_resize(loop->wm, w, h);
+  window_manager_resize(loop->base.wm, w, h);
   main_loop_set((main_loop_t*)loop);
 
   return loop;
