@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   g2d.h
  * Author: AWTK Develop Team
  * Brief:  hardware 2d
