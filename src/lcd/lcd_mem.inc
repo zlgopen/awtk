@@ -22,12 +22,10 @@
 #include "base/mem.h"
 #include "lcd/lcd_mem.h"
 #include "base/vgcanvas.h"
-#include "blend/soft_g2d.h"
+#include "blend/image_g2d.h"
 #include "base/system_info.h"
 
-#ifdef WITH_G2D
-#include "base/g2d.h"
-#endif /*WITH_G2D*/
+static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb);
 
 static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
@@ -132,13 +130,7 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
     rect_init(r, x, y, w, h);
     lcd_mem_to_bitmap(lcd, &fb);
 
-#ifdef WITH_G2D
-    if (g2d_fill_rect(&fb, &r, lcd->fill_color) == RET_OK) {
-      return RET_OK;
-    }
-#endif /*WITH_G2D*/
-
-    return soft_fill_rect(&fb, &r, lcd->fill_color);
+    return image_fill(&fb, &r, lcd->fill_color);
   } else if (a >= TK_TRANSPARENT_ALPHA) {
     uint32_t i = 0;
     color_t stroke_color = lcd->stroke_color;
@@ -190,23 +182,37 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   bitmap_t fb;
+  system_info_t* info = system_info();
+  lcd_orientation_t o = info->lcd_orientation;
+
   lcd_mem_to_bitmap(lcd, &fb);
 
   if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w &&
       src->h == dst->h && lcd->global_alpha >= TK_OPACITY_ALPHA) {
-#ifdef WITH_G2D
-    if (g2d_copy_image(&fb, img, src, dst->x, dst->y) == RET_OK) {
-      return RET_OK;
+    rect_t r;
+    xy_t dx = 0;
+    xy_t dy = 0;
+
+    if (o == LCD_ORIENTATION_90 && lcd->draw_mode == LCD_DRAW_ANIMATION) {
+      fb.w = lcd->h;
+      fb.h = lcd->w;
+
+      r.w = src->h;
+      r.h = src->w;
+      r.x = src->y;
+      r.y = img->h - src->x - src->w;
+
+      dx = dst->y;
+      dy = fb.h - dst->x - dst->w;
+    } else {
+      r = *src;
+      dx = dst->x;
+      dy = dst->y;
     }
-#endif /*WITH_G2D*/
-    return soft_copy_image(&fb, img, src, dst->x, dst->y);
+
+    return image_copy(&fb, img, &r, dx, dy);
   } else {
-#ifdef WITH_G2D
-    if (g2d_blend_image(&fb, img, dst, src, lcd->global_alpha) == RET_OK) {
-      return RET_OK;
-    }
-#endif /*WITH_G2D*/
-    return soft_blend_image(&fb, img, dst, src, lcd->global_alpha);
+    return image_blend(&fb, img, dst, src, lcd->global_alpha);
   }
 }
 
@@ -225,48 +231,45 @@ static ret_t snapshot_destroy(bitmap_t* img) {
   return RET_OK;
 }
 
-static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
+  bitmap_t fb;
   uint32_t size = 0;
   void* data = NULL;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  system_info_t* info = system_info();
+  lcd_orientation_t o = info->lcd_orientation;
+
   memset(img, 0x00, sizeof(bitmap_t));
 
-  img->w = lcd->w;
-  img->h = lcd->h;
   img->format = mem->format;
 
   if (img->format == BITMAP_FMT_RGBA) {
-    uint32_t i = 0;
-    uint32_t* s = NULL;
-    uint32_t* d = NULL;
-    uint32_t nr = img->w * img->h;
-    size = img->w * img->h * 4;
-    data = TKMEM_ALLOC(size);
-
-    return_value_if_fail(data != NULL, RET_FAIL);
-
-    s = (uint32_t*)(mem->fbuff);
-    d = (uint32_t*)data;
-
-    for (i = 0; i < nr; i++, s++, d++) {
-      uint8_t* ps = (uint8_t*)s;
-      uint8_t* pd = (uint8_t*)d;
-      pd[0] = ps[3];
-      pd[1] = ps[2];
-      pd[2] = ps[1];
-      pd[3] = ps[0];
-    }
+    size = lcd->w * lcd->h * 4;
   } else if (img->format == BITMAP_FMT_RGB565) {
-    size = img->w * img->h * 2;
-    data = TKMEM_ALLOC(size);
-    return_value_if_fail(data != NULL, RET_FAIL);
-    memcpy(data, mem->fbuff, size);
+    size = lcd->w * lcd->h * 2;
   } else {
     return_value_if_fail(size > 0, RET_FAIL);
   }
+  data = TKMEM_ALLOC(size);
+  return_value_if_fail(data != NULL, RET_FAIL);
 
-  img->destroy = snapshot_destroy;
   img->data = (uint8_t*)data;
+  img->destroy = snapshot_destroy;
+
+  if (auto_rotate && o == LCD_ORIENTATION_90) {
+    rect_t r;
+    img->w = lcd->h;
+    img->h = lcd->w;
+    lcd_mem_init_offline_fb(lcd, &fb);
+    rect_init(r, 0, 0, fb.w, fb.h);
+
+    image_rotate(img, &fb, &r, o);
+  } else {
+    img->w = lcd->w;
+    img->h = lcd->h;
+
+    memcpy((void*)(img->data), (void*)(mem->fbuff), size);
+  }
 
   return RET_OK;
 }
@@ -288,7 +291,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
-static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
+static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   fb->flags = 0;
@@ -310,25 +313,13 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
   assert(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90);
   return_value_if_fail(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90, RET_NOT_IMPL);
 
+  lcd_mem_init_offline_fb(lcd, &offline_fb);
   lcd_mem_init_online_fb(lcd, &online_fb, o);
-  lcd_mem_init_offline_fb(lcd, &offline_fb, o);
-
-#ifdef WITH_G2D
-  if (o == LCD_ORIENTATION_0) {
-    if (g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
-      return RET_OK;
-    }
-  } else {
-    if (g2d_rotate_image(&online_fb, &offline_fb, r, o) == RET_OK) {
-      return RET_OK;
-    }
-  }
-#endif /*WITH_G2D*/
 
   if (o == LCD_ORIENTATION_0) {
-    return soft_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
+    return image_copy(&online_fb, &offline_fb, r, r->x, r->y);
   } else {
-    return soft_rotate_image(&online_fb, &offline_fb, r, o);
+    return image_rotate(&online_fb, &offline_fb, r, o);
   }
 }
 

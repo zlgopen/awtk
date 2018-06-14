@@ -216,8 +216,8 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd) {
   return lcd->get_vgcanvas(lcd);
 }
 
-ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   return_value_if_fail(lcd != NULL && lcd->take_snapshot != NULL, RET_BAD_PARAMS);
 
-  return lcd->take_snapshot(lcd, img);
+  return lcd->take_snapshot(lcd, img, auto_rotate);
 }

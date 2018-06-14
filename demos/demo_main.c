@@ -38,17 +38,18 @@ int main(void) {
   tk_init(320, 480);
 #endif
 
+#define WITH_LCD_PORTRAIT 1
 #ifdef WITH_LCD_PORTRAIT
-  if(w > h) {
+  if (lcd_w > lcd_h) {
     tk_set_lcd_orientation(LCD_ORIENTATION_90);
   }
-#endif/*WITH_LCD_PORTRAIT*/
+#endif /*WITH_LCD_PORTRAIT*/
 
 #ifdef WITH_LCD_LANDSCAPE
-  if(w < h) {
+  if (lcd_w < lcd_h) {
     tk_set_lcd_orientation(LCD_ORIENTATION_90);
   }
-#endif/*WITH_LCD_PORTRAIT*/
+#endif /*WITH_LCD_PORTRAIT*/
 
   resource_init();
   application_init();

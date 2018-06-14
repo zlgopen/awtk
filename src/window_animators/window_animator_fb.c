@@ -42,6 +42,7 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
                                      widget_t* curr_win, bool_t open) {
   rect_t r;
   lcd_t* lcd = c->lcd;
+  bool_t auto_rotate = FALSE;
   widget_t* wm = prev_win->parent;
 
   wa->ratio = 1;
@@ -52,14 +53,18 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
   wa->curr_win = curr_win;
   rect_init(r, 0, 0, wm->w, wm->h);
 
+  if (wa->begin_frame == window_animator_begin_frame) {
+    auto_rotate = TRUE;
+  }
+
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
-  ENSURE(lcd_take_snapshot(lcd, &(wa->prev_img)) == RET_OK);
+  ENSURE(lcd_take_snapshot(lcd, &(wa->prev_img), auto_rotate) == RET_OK);
   ENSURE(canvas_end_frame(c) == RET_OK);
 
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img)) == RET_OK);
+  ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img), auto_rotate) == RET_OK);
   ENSURE(canvas_end_frame(c) == RET_OK);
 
   wa->prev_img.flags = BITMAP_FLAG_OPAQUE;

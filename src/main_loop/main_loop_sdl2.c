@@ -69,7 +69,7 @@ static ret_t main_loop_sdl2_create_window(main_loop_simple_t* l) {
   LOOP_SDL_RENDER_SET(l, SDL_CreateRenderer(LOOP_SDL_WINDOW(l), -1, flags));
   return_value_if_fail(LOOP_SDL_RENDER(l) != NULL, RET_FAIL);
 
-  canvas_init(&(l->canvas), lcd_sdl2_init(LOOP_SDL_RENDER(l)), font_manager());
+  canvas_init(&(l->base.canvas), lcd_sdl2_init(LOOP_SDL_RENDER(l)), font_manager());
 
   return RET_OK;
 }

@@ -56,7 +56,7 @@ typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, x
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
-typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img);
+typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
 typedef ret_t (*lcd_commit_t)(lcd_t* lcd);
@@ -445,10 +445,11 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd);
  * 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。
  * @param {lcd_t*} lcd lcd对象。
  * @param {bitmap_t*} img 返回快照图片。
+ * @param {bool_t} auto_rotate 是否根据LCD实际方向自动旋转。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img);
+ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 
 /**
  * @method lcd_swap

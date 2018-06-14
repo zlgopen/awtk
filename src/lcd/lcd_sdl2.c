@@ -117,10 +117,10 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
-static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img) {
+static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
-  return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img);
+  return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img, auto_rotate);
 }
 
 static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
