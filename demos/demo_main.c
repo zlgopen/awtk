@@ -38,7 +38,7 @@ int main(void) {
   tk_init(320, 480);
 #endif
 
-#define WITH_LCD_PORTRAIT 1
+//#define WITH_LCD_PORTRAIT 1
 #ifdef WITH_LCD_PORTRAIT
   if (lcd_w > lcd_h) {
     tk_set_lcd_orientation(LCD_ORIENTATION_90);
