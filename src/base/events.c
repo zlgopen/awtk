@@ -62,18 +62,8 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 
   switch (info->lcd_orientation) {
     case LCD_ORIENTATION_90: {
-      evt->x = y;
-      evt->y = info->lcd_w - x - 1;
-      break;
-    }
-    case LCD_ORIENTATION_180: {
-      evt->x = info->lcd_w - x - 1;
-      evt->y = info->lcd_h - y - 1;
-      break;
-    }
-    case LCD_ORIENTATION_270: {
-      evt->x = info->lcd_h - y - 1;
       evt->y = x;
+      evt->x = info->lcd_h - y - 1;
       break;
     }
     default:

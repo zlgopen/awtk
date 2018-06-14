@@ -52,6 +52,18 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c);
 ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
 
 /**
+ * @method g2d_copy_image
+ * 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。
+ * @param {bitmap_t*} fb framebuffer对象。
+ * @param {bitmap_t*} img 图片对象。
+ * @param {rect_t*} src 要旋转并拷贝的区域。
+ * @param {lcd_orientation_t} o 旋转角度(一般支持90度即可)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
+ */
+ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
+
+/**
  * @method g2d_blend_image
  * 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。
  * 1.硬件不支持缩放，则返回NOT_IMPL。

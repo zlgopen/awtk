@@ -57,9 +57,24 @@ ret_t tk_run(void);
  */
 ret_t tk_quit(void);
 
-ret_t tk_init_resources(void);
-
+/**
+ * @method tk_set_lcd_orientation
+ * 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
+ * @global
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
+
+/**
+ * @method tk_init_resources
+ * 初始化资源。
+ * @global
+ * @private
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_init_resources(void);
 
 /*public for test program*/
 ret_t tk_init_internal(void);

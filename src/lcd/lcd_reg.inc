@@ -22,37 +22,6 @@
 #include "base/system_info.h"
 
 static ret_t lcd_reg_set_window(int sx, int sy, int ex, int ey) {
-  system_info_t* info = system_info();
-  int w = info->lcd_w;
-  int h = info->lcd_h;
-
-  switch (info->lcd_orientation) {
-    case LCD_ORIENTATION_90: {
-      sx = sy;
-      sy = w - sx;
-
-      ex = ey;
-      ey = w - ex;
-      break;
-    }
-    case LCD_ORIENTATION_180: {
-      sx = w - sx;
-      sy = h - sy;
-
-      ex = w - ex;
-      ey = h - ey;
-      break;
-    }
-    case LCD_ORIENTATION_270: {
-      sx = h - sy;
-      sy = sx;
-
-      ex = h - ey;
-      ey = ex;
-      break;
-    }
-  }
-
   set_window_func(sx, sy, ex, ey);
 
   return RET_OK;

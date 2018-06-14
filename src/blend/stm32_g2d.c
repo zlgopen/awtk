@@ -162,6 +162,15 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   return RET_OK;
 }
 
+ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+  (void)fb;
+  (void)img;
+  (void)src;
+  (void)o;
+
+  return RET_NOT_IMPL;
+}
+
 ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha) {
   uint32_t o_addr = 0;
   uint16_t o_offline = 0;

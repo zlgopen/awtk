@@ -103,29 +103,29 @@ typedef enum _ret_t {
 
 /**
  * @enum lcd_orientation_t
- * LCD旋转角度。
+ * LCD旋转角度(XXX:目前仅支持0度和90度)。
  */
 typedef enum _lcd_orientation_t {
   /**
    * @const LCD_ORIENTATION_0
    * LCD没有旋转。
    */
-  LCD_ORIENTATION_0,
+  LCD_ORIENTATION_0 = 0,
   /**
    * @const LCD_ORIENTATION_90
    * LCD旋转90度。
    */
-  LCD_ORIENTATION_90,
+  LCD_ORIENTATION_90 = 90,
   /**
    * @const LCD_ORIENTATION_180
    * LCD旋转180度。
    */
-  LCD_ORIENTATION_180,
+  LCD_ORIENTATION_180 = 180,
   /**
    * @const LCD_ORIENTATION_270
    * LCD旋转270度。
    */
-  LCD_ORIENTATION_270
+  LCD_ORIENTATION_270 = 270
 } lcd_orientation_t;
 
 #ifdef WIN32
@@ -231,7 +231,7 @@ typedef float float_t;
 
 #define STR_DEFAULT_FONT "default"
 
-#define TK_MAX_FPS 60
+#define TK_MAX_FPS 100
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05
 

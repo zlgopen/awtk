@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   soft_g2d.c
  * Author: AWTK Develop Team
  * Brief:  soft g2d
@@ -100,6 +100,99 @@ ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
   }
 
   return RET_OK;
+}
+
+static ret_t soft_rotate_image16(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+  xy_t dx = 0;
+  xy_t dy = 0;
+  uint32_t i = 0;
+  uint32_t k = 0;
+  uint32_t w = 0;
+  uint32_t h = 0;
+  uint32_t fb_w = 0;
+  uint32_t img_w = 0;
+  uint16_t* src_p = NULL;
+  uint16_t* dst_p = NULL;
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565, RET_BAD_PARAMS);
+
+  dx = src->y;
+  dy = img->w - src->x - src->w;
+  dst_p = ((uint16_t*)(fb->data)) + (dy * fb->w + dx);
+  src_p = ((uint16_t*)(img->data)) + (src->y * img->w + src->x);
+
+  w = src->w;
+  h = src->h;
+  fb_w = fb->w;
+  img_w = img->w;
+
+  for (i = 0; i < h; i++) {
+    uint16_t* s = src_p + w;
+    uint16_t* d = dst_p;
+
+    for (k = 0; k < w; k++) {
+      *d = *s--;
+      d += fb_w;
+    }
+
+    dst_p++;
+    src_p += img_w;
+  }
+
+  return RET_OK;
+}
+
+static ret_t soft_rotate_image32(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+  xy_t dx = 0;
+  xy_t dy = 0;
+  uint32_t i = 0;
+  uint32_t k = 0;
+  uint32_t w = 0;
+  uint32_t h = 0;
+  uint32_t fb_w = 0;
+  uint32_t img_w = 0;
+  uint32_t* src_p = NULL;
+  uint32_t* dst_p = NULL;
+  return_value_if_fail(fb->format == BITMAP_FMT_RGBA, RET_BAD_PARAMS);
+
+  dx = src->y;
+  dy = img->w - src->x - src->w;
+  dst_p = ((uint32_t*)(fb->data)) + (dy * fb->w + dx);
+  src_p = ((uint32_t*)(img->data)) + (src->y * img->w + src->x);
+
+  w = src->w;
+  h = src->h;
+  fb_w = fb->w;
+  img_w = img->w;
+
+  for (i = 0; i < h; i++) {
+    uint32_t* s = src_p + w;
+    uint32_t* d = dst_p;
+
+    for (k = 0; k < w; k++) {
+      *d = *s--;
+      d += fb_w;
+    }
+
+    dst_p++;
+    src_p += img_w;
+  }
+
+  return RET_OK;
+}
+
+ret_t soft_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+  return_value_if_fail(o == LCD_ORIENTATION_90, RET_NOT_IMPL);
+  return_value_if_fail(fb != NULL && img != NULL && src != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb->format == img->format, RET_BAD_PARAMS);
+  return_value_if_fail(fb->w == img->h && fb->h == img->w, RET_BAD_PARAMS);
+  return_value_if_fail(fb->format == BITMAP_FMT_RGBA || fb->format == BITMAP_FMT_RGB565,
+                       RET_NOT_IMPL);
+
+  if (fb->format == BITMAP_FMT_RGBA) {
+    return soft_rotate_image32(fb, img, src, o);
+  } else {
+    return soft_rotate_image16(fb, img, src, o);
+  }
 }
 
 ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t alpha) {

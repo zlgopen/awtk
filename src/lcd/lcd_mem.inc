@@ -271,26 +271,31 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img) {
   return RET_OK;
 }
 
-static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb) {
+static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   fb->flags = 0;
-  fb->w = lcd->w;
-  fb->h = lcd->w;
   fb->format = mem->format;
   fb->data = mem->online_fbuff;
+  if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
+    fb->w = lcd->w;
+    fb->h = lcd->h;
+  } else {
+    fb->h = lcd->w;
+    fb->w = lcd->h;
+  }
 
   return fb;
 }
 
-static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
+static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   fb->flags = 0;
   fb->w = lcd->w;
-  fb->h = lcd->w;
-  fb->format = mem->format;
+  fb->h = lcd->h;
   fb->data = mem->fbuff;
+  fb->format = mem->format;
 
   return fb;
 }
@@ -299,17 +304,32 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
   rect_t* r = &(lcd->dirty_rect);
+  system_info_t* info = system_info();
+  lcd_orientation_t o = info->lcd_orientation;
 
-  lcd_mem_init_online_fb(lcd, &online_fb);
-  lcd_mem_init_offline_fb(lcd, &offline_fb);
+  assert(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90);
+  return_value_if_fail(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90, RET_NOT_IMPL);
+
+  lcd_mem_init_online_fb(lcd, &online_fb, o);
+  lcd_mem_init_offline_fb(lcd, &offline_fb, o);
 
 #ifdef WITH_G2D
-  if (g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
-    return RET_OK;
+  if (o == LCD_ORIENTATION_0) {
+    if (g2d_copy_image(&online_fb, &offline_fb, r, r->x, r->y) == RET_OK) {
+      return RET_OK;
+    }
+  } else {
+    if (g2d_rotate_image(&online_fb, &offline_fb, r, o) == RET_OK) {
+      return RET_OK;
+    }
   }
 #endif /*WITH_G2D*/
 
-  return soft_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
+  if (o == LCD_ORIENTATION_0) {
+    return soft_copy_image(&online_fb, &offline_fb, r, r->x, r->y);
+  } else {
+    return soft_rotate_image(&online_fb, &offline_fb, r, o);
+  }
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
