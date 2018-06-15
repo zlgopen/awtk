@@ -22,12 +22,10 @@
 #include "base/window_animator.h"
 
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
-  widget_t* wm = NULL;
   canvas_t* c = NULL;
   return_value_if_fail(wa != NULL, RET_FAIL);
 
   c = wa->canvas;
-  wm = wa->curr_win->parent;
   if (wa->start_time == 0) {
     wa->start_time = time_ms;
   }

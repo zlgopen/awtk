@@ -55,7 +55,7 @@ ret_t bitmap_rgba_to_bgra(bitmap_t* image) {
   uint8_t* data = (uint8_t*)(image->data);
 
   /*default format is rgba, some sys need bgra*/
-  for (i = 0; i < nr; i += 4) {
+  for (i = 0; i < nr; i++) {
     uint8_t r = data[0];
     uint8_t g = data[1];
     uint8_t b = data[2];

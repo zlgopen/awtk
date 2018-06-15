@@ -199,7 +199,8 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
   return_value_if_fail(fb != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA ||
+                           img->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
 
   if (fb->format == BITMAP_FMT_RGB565) {

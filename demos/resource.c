@@ -13,6 +13,7 @@
 #include "res/inc/ui/dialog2.data"
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
+#include "res/inc/ui/image.data"
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/slide_view.data"
@@ -155,6 +156,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_dialog2);
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);
+  resource_manager_add(rm, ui_image);
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_slide_view);

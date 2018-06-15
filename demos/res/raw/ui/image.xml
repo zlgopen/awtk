@@ -1,0 +1,5 @@
+<window name="main" anim_hint="htranslate"  x="0" y="0" w="320" h="480">
+  <image image="rgba" x="60" y="160" w="40" h="40"/>
+  <image image="rgb" x="110" y="160" w="40" h="40"/>
+  <button name="close" x="center" y="240" w="25%" h="30" text="Close"/>
+</window>

@@ -1,5 +1,6 @@
 <window name="main" x="0" y="0" w="320" h="480" layout="w128 h30 5 10">
     <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
+    <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
     <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
     <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
     <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>

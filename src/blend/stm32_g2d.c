@@ -188,13 +188,15 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
   uint16_t x = 0;
   uint16_t y = 0;
 
+  //	return RET_NOT_IMPL;
+
   return_value_if_fail(global_alpha > 0xf0, RET_NOT_IMPL); /*not support global_alpha*/
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL); /*not support scale*/
 
