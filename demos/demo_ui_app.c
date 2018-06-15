@@ -67,11 +67,13 @@ static ret_t on_quit(void* ctx, event_t* e) {
 }
 
 static ret_t on_show_fps(void* ctx, event_t* e) {
-  (void)e;
-  (void)ctx;
-  widget_t* wm = window_manager();
+  widget_t* button = WIDGETP(ctx);
+  widget_t* widget = window_manager();
+  window_manager_t* wm = WINDOW_MANAGER(widget);
 
-  window_manager_set_show_fps(wm, TRUE);
+  widget_invalidate(widget, NULL);
+  window_manager_set_show_fps(widget, !wm->show_fps);
+  widget_set_text(button, wm->show_fps ? L"Hide FPS" : L"Show FPS");
 
   return RET_OK;
 }
@@ -135,7 +137,7 @@ static void install_click_hander(widget_t* widget) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_inc, win);
     } else if (strstr(name, "show_fps") != NULL) {
-      widget_on(widget, EVT_CLICK, on_show_fps, NULL);
+      widget_on(widget, EVT_CLICK, on_show_fps, widget);
     } else if (strstr(name, "dec") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);

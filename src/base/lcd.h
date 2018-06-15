@@ -226,6 +226,7 @@ struct _lcd_t {
    */
   float_t ratio;
 
+  rect_t fps_rect;
   rect_t dirty_rect;
 };
 

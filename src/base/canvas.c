@@ -1085,23 +1085,28 @@ ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
 }
 
 static ret_t canvas_draw_fps(canvas_t* c) {
-  char fps[20];
-  wchar_t wfps[20];
+  lcd_t* lcd = c->lcd;
 
   if (c->show_fps && c->lcd->draw_mode != LCD_DRAW_OFFLINE) {
-    int x = 8;
-    int y = 8;
-    int w = 60;
-    int h = 30;
+    rect_t r;
+    char fps[20];
+    wchar_t wfps[20];
 
+    rect_init(r, 0, 0, 60, 30);
     canvas_set_font(c, NULL, 16);
-    canvas_set_text_color(c, color_init(0, 0, 0, 0xff));
+    canvas_set_clip_rect(c, NULL);
+    canvas_set_text_color(c, color_init(0xff, 0xff, 0, 0xff));
     canvas_set_fill_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
-    canvas_fill_rect(c, 0, 0, w, h);
 
+    lcd->fps_rect = r;
     tk_snprintf(fps, sizeof(fps), "%dfps", (int)(c->fps));
     utf8_to_utf16(fps, wfps, strlen(fps) + 1);
-    canvas_draw_text(c, wfps, wcslen(wfps), x, y);
+
+    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+    canvas_draw_text(c, wfps, wcslen(wfps), r.x + 8, r.y + 8);
+  } else {
+    lcd->fps_rect.w = 0;
+    lcd->fps_rect.h = 0;
   }
 
   return RET_OK;

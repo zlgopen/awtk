@@ -97,9 +97,10 @@ static ret_t lcd_sdl2_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t*
 static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
   rect_t* dr = &(lcd->dirty_rect);
+  rect_t* fps_r = &(lcd->fps_rect);
 
   SDL_UnlockTexture(sdl->texture);
-  if (dr->w > 0 && dr->h > 0) {
+  if ((dr->w > 0 && dr->h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
     SDL_RenderCopy(sdl->render, sdl->texture, NULL, NULL);
   }
 

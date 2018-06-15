@@ -25,9 +25,9 @@
 #include "blend/image_g2d.h"
 #include "base/system_info.h"
 
-static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb);
+static ret_t lcd_mem_flush_fps(lcd_t* lcd);
 
-static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
+static ret_t lcd_mem_init_auto_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   fb->w = lcd->w;
@@ -40,6 +40,35 @@ static ret_t lcd_mem_to_bitmap(lcd_t* lcd, bitmap_t* fb) {
   }
 
   return RET_OK;
+}
+
+static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  fb->flags = 0;
+  fb->format = mem->format;
+  fb->data = mem->online_fbuff;
+  if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
+    fb->w = lcd->w;
+    fb->h = lcd->h;
+  } else {
+    fb->h = lcd->w;
+    fb->w = lcd->h;
+  }
+
+  return fb;
+}
+
+static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  fb->flags = 0;
+  fb->w = lcd->w;
+  fb->h = lcd->h;
+  fb->data = mem->fbuff;
+  fb->format = mem->format;
+
+  return fb;
 }
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
@@ -128,7 +157,7 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   if (a >= TK_OPACITY_ALPHA) {
     rect_init(r, x, y, w, h);
-    lcd_mem_to_bitmap(lcd, &fb);
+    lcd_mem_init_offline_fb(lcd, &fb);
 
     return image_fill(&fb, &r, lcd->fill_color);
   } else if (a >= TK_TRANSPARENT_ALPHA) {
@@ -166,7 +195,7 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
     for (i = 0; i < sw; i++, d++, s++) {
       uint8_t a = global_alpha > TK_OPACITY_ALPHA ? *s : ((*s * global_alpha) >> 8);
 
-      if (a >= 128) {
+      if (a >= 200) {
         *d = pixel;
       } else if (a >= TK_TRANSPARENT_ALPHA) {
         color.rgba.a = a;
@@ -182,10 +211,11 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   bitmap_t fb;
+  ret_t ret = RET_OK;
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
 
-  lcd_mem_to_bitmap(lcd, &fb);
+  lcd_mem_init_auto_fb(lcd, &fb);
 
   if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w &&
       src->h == dst->h && lcd->global_alpha >= TK_OPACITY_ALPHA) {
@@ -210,10 +240,12 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
       dy = dst->y;
     }
 
-    return image_copy(&fb, img, &r, dx, dy);
+    ret = image_copy(&fb, img, &r, dx, dy);
   } else {
-    return image_blend(&fb, img, dst, src, lcd->global_alpha);
+    ret = image_blend(&fb, img, dst, src, lcd->global_alpha);
   }
+
+  return ret;
 }
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
@@ -274,33 +306,26 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
   return RET_OK;
 }
 
-static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+static ret_t lcd_mem_flush_fps(lcd_t* lcd) {
+  bitmap_t online_fb;
+  bitmap_t offline_fb;
+  rect_t* r = &(lcd->fps_rect);
+  system_info_t* info = system_info();
+  lcd_orientation_t o = info->lcd_orientation;
 
-  fb->flags = 0;
-  fb->format = mem->format;
-  fb->data = mem->online_fbuff;
-  if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
-    fb->w = lcd->w;
-    fb->h = lcd->h;
-  } else {
-    fb->h = lcd->w;
-    fb->w = lcd->h;
+  assert(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90);
+  return_value_if_fail(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90, RET_NOT_IMPL);
+  if (r->w && r->h) {
+    lcd_mem_init_offline_fb(lcd, &offline_fb);
+    lcd_mem_init_online_fb(lcd, &online_fb, o);
+    if (o == LCD_ORIENTATION_0) {
+      image_copy(&online_fb, &offline_fb, r, r->x, r->y);
+    } else {
+      image_rotate(&online_fb, &offline_fb, r, o);
+    }
   }
 
-  return fb;
-}
-
-static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
-  fb->flags = 0;
-  fb->w = lcd->w;
-  fb->h = lcd->h;
-  fb->data = mem->fbuff;
-  fb->format = mem->format;
-
-  return fb;
+  return RET_OK;
 }
 
 static ret_t lcd_mem_flush(lcd_t* lcd) {
@@ -335,6 +360,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   }
 
   if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
+    lcd_mem_flush_fps(lcd);
     return RET_OK;
   }
 
@@ -344,6 +370,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
     }
   }
 
+  lcd_mem_flush_fps(lcd);
   return lcd_mem_flush(lcd);
 }
 

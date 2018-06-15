@@ -31,6 +31,9 @@
 #include "base/system_info.h"
 #include "base/window_manager.h"
 
+static ret_t window_manager_inc_fps(widget_t* widget);
+static ret_t window_manager_update_fps(widget_t* widget);
+
 static widget_t* window_manager_find_prev_window(widget_t* widget) {
   int32_t i = 0;
   int32_t nr = 0;
@@ -220,7 +223,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   dr = &(wm->dirty_rect);
 
-  if (dr->w && dr->h) {
+  window_manager_inc_fps(widget);
+  if ((dr->w && dr->h) || wm->show_fps) {
     uint32_t start_time = time_now_ms();
 
     ldr = &(wm->last_dirty_rect);
@@ -228,7 +232,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     r = *dr;
     rect_merge(&r, ldr);
 
-    if (r.w > 0 && r.h > 0) {
+    if ((r.w > 0 && r.h > 0) || wm->show_fps) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
       ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
@@ -259,6 +263,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
 
   ret_t ret = window_animator_update(wm->animator, start_time);
   wm->last_paint_cost = time_now_ms() - start_time;
+  window_manager_inc_fps(widget);
 
   if (ret == RET_DONE) {
     window_animator_destroy(wm->animator);
@@ -270,12 +275,19 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-ret_t window_manager_update_fps(widget_t* widget) {
+static ret_t window_manager_inc_fps(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  wm->fps_count++;
+
+  return RET_OK;
+}
+
+static ret_t window_manager_update_fps(widget_t* widget) {
   uint32_t elapse = 0;
   uint32_t now = time_now_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
-  wm->fps_count++;
   elapse = now - wm->fps_time;
   if (elapse >= 200) {
     wm->fps = wm->fps_count * 1000 / elapse;
@@ -285,11 +297,6 @@ ret_t window_manager_update_fps(widget_t* widget) {
   }
 
   canvas_set_fps(wm->canvas, wm->show_fps, wm->fps);
-  if (wm->show_fps) {
-    rect_t r;
-    rect_init(r, 0, 0, 80, 30);
-    widget_invalidate(widget, &r);
-  }
 
   return RET_OK;
 }
@@ -300,9 +307,9 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
   wm->canvas = c;
+  canvas_set_global_alpha(c, 0xff);
   window_manager_update_fps(widget);
 
-  canvas_set_global_alpha(c, 0xff);
   if (wm->animator != NULL) {
     ret = window_manager_paint_animation(widget, c);
   } else {
