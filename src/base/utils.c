@@ -330,3 +330,29 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
 
   return ret;
 }
+
+ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
+  char* p = NULL;
+  const char* name = filename;
+  return_value_if_fail(filename != NULL && str != NULL, RET_BAD_PARAMS);
+
+  name = strrchr(filename, '/');
+  if (name == NULL) {
+    name = strrchr(filename, '\\');
+  }
+
+  if (name == NULL) {
+    name = filename;
+  } else {
+    name += 1;
+  }
+
+  strncpy(str, name, size);
+  str[size - 1] = '\0';
+  p = strchr(str, '.');
+  if (p != NULL) {
+    *p = '\0';
+  }
+
+  return RET_OK;
+}

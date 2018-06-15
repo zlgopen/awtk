@@ -118,6 +118,10 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   b->widget = widget;
   if (b->root == NULL) {
     b->root = widget;
+    if (widget && widget->name.size == 0) {
+      widget_set_name(widget, b->name);
+    }
+    widget_update_style(widget);
   }
 
   log_debug("%d %d %d %d %d\n", (int)(type), (int)(x), (int)(y), (int)(w), (int)(h));
@@ -161,7 +165,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
 
 static ui_builder_t s_ui_builder;
 
-ui_builder_t* ui_builder_default() {
+ui_builder_t* ui_builder_default(const char* name) {
   memset(&s_ui_builder, 0x00, sizeof(ui_builder_t));
 
   s_ui_builder.on_widget_start = ui_builder_default_on_widget_start;
@@ -169,13 +173,14 @@ ui_builder_t* ui_builder_default() {
   s_ui_builder.on_widget_prop_end = ui_builder_default_on_widget_prop_end;
   s_ui_builder.on_widget_end = ui_builder_default_on_widget_end;
   s_ui_builder.on_end = ui_builder_default_on_end;
+  s_ui_builder.name = name;
 
   return &s_ui_builder;
 }
 
 widget_t* window_open(const char* name) {
   ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default();
+  ui_builder_t* builder = ui_builder_default(name);
   const resource_info_t* ui = resource_manager_ref(resource_manager(), RESOURCE_TYPE_UI, name);
   return_value_if_fail(ui != NULL, NULL);
 

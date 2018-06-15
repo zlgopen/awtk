@@ -25,20 +25,6 @@
   </style>
 </button>
 
-<button bg_image_draw_type="3patch_x" text_color="blue">
-  <style name="1:green_btn" >
-    <normal   bg_image="green_btn_n" />
-    <pressed  bg_image="green_btn_p" />
-    <over     bg_image="green_btn_o" />
-  </style>
-
-  <style name="2:red_btn">
-    <normal   bg_image="red_btn_n" />
-    <pressed  bg_image="red_btn_p" />
-    <over     bg_image="red_btn_o" />
-  </style>
-</button>
-
 <edit>
   <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin="4">
     <normal     bg_color="#f0f0f0" />

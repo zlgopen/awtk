@@ -19,7 +19,7 @@ TEST(UILoader, basic) {
   widget_t* cancel = NULL;
   widget_desc_t desc;
   ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default();
+  ui_builder_t* builder = ui_builder_default("");
   ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));
@@ -71,7 +71,7 @@ TEST(UILoader, ext) {
   widget_t* cancel = NULL;
   widget_desc_t desc;
   ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default();
+  ui_builder_t* builder = ui_builder_default("");
   ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));

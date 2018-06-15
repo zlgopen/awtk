@@ -1031,6 +1031,38 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 }
 
+const void* widget_get_window_theme(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, NULL);
+
+  if (win->name.size) {
+    const char* name = win->name.str;
+    const resource_info_t* res =
+        resource_manager_ref(resource_manager(), RESOURCE_TYPE_THEME, name);
+    if (res != NULL) {
+      return res->data;
+    }
+  }
+
+  return NULL;
+}
+
+static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
+  theme_t t;
+  const void* data = NULL;
+  t.data = (const uint8_t*)widget_get_window_theme(widget);
+
+  if (t.data != NULL) {
+    data = theme_find_style(&t, widget->type, widget->style_type, state);
+  }
+
+  if (data == NULL) {
+    data = theme_find_style(theme(), widget->type, widget->style_type, state);
+  }
+
+  return data;
+}
+
 ret_t widget_update_style(widget_t* widget) {
   uint8_t state = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -1040,7 +1072,7 @@ ret_t widget_update_style(widget_t* widget) {
     state = WIDGET_STATE_DISABLE;
   }
 
-  widget->style.data = theme_find_style(theme(), widget->type, widget->style_type, state);
+  widget->style.data = widget_get_style_data(widget, state);
 
   return RET_OK;
 }
@@ -1071,7 +1103,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
     widget->vt = widget_vtable_default();
   }
 
-  if (type != WIDGET_WINDOW_MANAGER) {
+  if (parent != NULL) {
     widget_update_style(widget);
   }
 

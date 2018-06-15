@@ -52,6 +52,7 @@ struct _ui_builder_t {
   ui_builder_on_end_t on_end;
   widget_t* root;
   widget_t* widget;
+  const char* name;
 };
 
 ret_t ui_builder_on_widget_start(ui_builder_t* b, const widget_desc_t* desc);

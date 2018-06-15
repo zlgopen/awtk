@@ -89,12 +89,20 @@ def xml_to_ui_bin(raw, bin):
   os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
 
 def gen_all():
-  themegen('theme/theme.xml', 'theme/default.data');
-  themegen_bin('theme/theme.xml', 'theme/default.bin');
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
   resgen('fonts/default.ttf', 'fonts/default.res');
   fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
+  
+  for f in glob.glob(joinPath(INPUT_DIR, 'theme/*.xml')):
+    inc=copy.copy(f);
+    raw=copy.copy(f);
+    bin=copy.copy(f);
+    inc=inc.replace('.xml', '.data')
+    inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    themegen(raw, inc)
+    bin=bin.replace('.xml', '.bin')
+    themegen_bin(raw, bin)
 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);

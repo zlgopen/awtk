@@ -4,6 +4,7 @@
 #include "res/inc/strings/en_US.data"
 #include "res/inc/strings/zh_CN.data"
 #include "res/inc/theme/default.data"
+#include "res/inc/theme/dialog1.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -147,6 +148,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, strings_en_US);
   resource_manager_add(rm, strings_zh_CN);
   resource_manager_add(rm, theme_default);
+  resource_manager_add(rm, theme_dialog1);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);

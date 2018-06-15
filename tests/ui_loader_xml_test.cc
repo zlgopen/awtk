@@ -8,7 +8,7 @@ TEST(UILoaderXML, basic) {
   widget_t* ok = NULL;
   widget_t* cancel = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default();
+  ui_builder_t* builder = ui_builder_default("");
   const char* str =
       "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
                      <button x=\"0\" y=\"0\" w=\"80\" h=\"30\" name=\"ok\" text=\"ok\" />\
@@ -42,7 +42,7 @@ TEST(UILoaderXML, attr) {
   widget_t* b3 = NULL;
   widget_t* b4 = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default();
+  ui_builder_t* builder = ui_builder_default("");
   const char* str =
       "<dialog margin=\"0\" x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
        <button name=\"b1\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
