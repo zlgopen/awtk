@@ -22,19 +22,8 @@
 #include "base/view.h"
 #include "base/utf8.h"
 #include "base/enums.h"
-#include "base/image.h"
-#include "base/label.h"
-#include "base/value.h"
-#include "base/window.h"
-#include "base/button.h"
 #include "base/dialog.h"
-#include "base/slider.h"
-#include "base/edit.h"
-#include "base/group_box.h"
-#include "base/slide_view.h"
-#include "base/check_button.h"
-#include "base/progress_bar.h"
-#include "base/window_manager.h"
+#include "base/widget_factory.h"
 #include "base/resource_manager.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_default.h"
@@ -48,8 +37,8 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   wh_t w = layout->w;
   wh_t h = layout->h;
   widget_t* widget = NULL;
-  uint16_t type = desc->type;
   widget_t* parent = b->widget;
+  const char* type = desc->type;
 
   if (parent != NULL) {
     widget_layout_calc(layout, &r, parent->w, parent->h);
@@ -64,50 +53,10 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     parent = dlg->client;
   }
 
-  switch (type) {
-    case WIDGET_DIALOG:
-      widget = dialog_create(parent, x, y, w, h);
-      break;
-    case WIDGET_NORMAL_WINDOW:
-      widget = window_create(parent, x, y, w, h);
-      break;
-    case WIDGET_IMAGE:
-      widget = image_create(parent, x, y, w, h);
-      break;
-    case WIDGET_BUTTON:
-      widget = button_create(parent, x, y, w, h);
-      break;
-    case WIDGET_LABEL:
-      widget = label_create(parent, x, y, w, h);
-      break;
-    case WIDGET_EDIT:
-      widget = edit_create(parent, x, y, w, h);
-      break;
-    case WIDGET_PROGRESS_BAR:
-      widget = progress_bar_create(parent, x, y, w, h);
-      break;
-    case WIDGET_SLIDER:
-      widget = slider_create(parent, x, y, w, h);
-      break;
-    case WIDGET_GROUP_BOX:
-      widget = group_box_create(parent, x, y, w, h);
-      break;
-    case WIDGET_VIEW:
-      widget = view_create(parent, x, y, w, h);
-      break;
-    case WIDGET_CHECK_BUTTON:
-      widget = check_button_create(parent, x, y, w, h);
-      break;
-    case WIDGET_RADIO_BUTTON:
-      widget = check_button_create_radio(parent, x, y, w, h);
-      break;
-    case WIDGET_SLIDE_VIEW:
-      widget = slide_view_create(parent, x, y, w, h);
-      break;
-    default:
-      log_debug("%s: not supported type %d\n", __func__, type);
-      assert(!"not supported");
-      break;
+  widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
+  if (widget == NULL) {
+    log_debug("%s: not supported type %s\n", __func__, type);
+    assert(!"not supported");
   }
 
   if (layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT ||
@@ -124,7 +73,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     widget_update_style(widget);
   }
 
-  log_debug("%d %d %d %d %d\n", (int)(type), (int)(x), (int)(y), (int)(w), (int)(h));
+  log_debug("%s %d %d %d %d\n", type, (int)(x), (int)(y), (int)(w), (int)(h));
 
   return RET_OK;
 }

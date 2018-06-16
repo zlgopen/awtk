@@ -31,6 +31,7 @@
 #include "base/font_manager.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
+#include "base/widget_factory.h"
 #include "base/resource_manager.h"
 
 #ifdef WITH_STB_FONT
@@ -88,6 +89,7 @@ ret_t tk_init_internal(void) {
 
   return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);

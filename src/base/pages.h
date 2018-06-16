@@ -1,7 +1,7 @@
 ﻿/**
- * File:   window.h
+ * File:   pages.h
  * Author: AWTK Develop Team
- * Brief:  window
+ * Brief:  pages
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,33 +15,37 @@
 /**
  * History:
  * ================================================================
- * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-06-16 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_WINDOW_H
-#define TK_WINDOW_H
+#ifndef TK_PAGES_H
+#define TK_PAGES_H
 
 #include "base/widget.h"
-#include "base/window_animator.h"
 
 BEGIN_C_DECLS
 
 /**
- * @class window_t
+ * @class pages_t
  * @parent widget_t
  * @scriptable
- * 窗口。
+ * Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
  */
-typedef struct _window_t {
+typedef struct _pages_t {
   widget_t widget;
-  str_t anim_hint;
-} window_t;
+  /**
+   * @property {uint32_t} active
+   * @readonly
+   * 当前活跃的page。
+   */
+  uint32_t active;
+} pages_t;
 
 /**
- * @method window_create
+ * @method pages_create
  * @constructor
- * 创建window对象
+ * 创建pages对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -50,29 +54,20 @@ typedef struct _window_t {
  *
  * @return {widget_t*} 对象。
  */
-widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
- * @method window_open
- * @constructor
- * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
- * @param {char*} name window的名称。
- *
- * @return {widget_t*} 对象。
- */
-
-/**
- * @method window_close
- * @deconstructor
- * 关闭窗口。
- * @param {widget_t*} widget window对象。
+ * @method pages_set_active
+ * 设置进度条的进度。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 当Page的序号。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t window_close(widget_t* widget);
+ret_t pages_set_active(widget_t* widget, uint32_t index);
 
-#define WINDOW(widget) ((window_t*)(widget))
+#define PAGES(widget) ((pages_t*)(widget))
 
 END_C_DECLS
 
-#endif /*TK_WINDOW_H*/
+#endif /*TK_PAGES_H*/

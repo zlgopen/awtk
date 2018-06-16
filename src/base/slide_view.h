@@ -92,7 +92,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slide_view_set_active(widget_t* widget, uint32_t active);
+ret_t slide_view_set_active(widget_t* widget, uint32_t index);
 
 /**
  * @method slide_view_set_vertical

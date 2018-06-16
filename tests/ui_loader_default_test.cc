@@ -5,12 +5,11 @@
 #include "gtest/gtest.h"
 
 #define INIT_DESC(tt, xx, yy, ww, hh) \
-  desc.version = 1;                   \
   desc.layout.x = xx;                 \
   desc.layout.y = yy;                 \
   desc.layout.w = ww;                 \
   desc.layout.h = hh;                 \
-  desc.type = tt
+  strncpy(desc.type, tt, NAME_LEN);
 
 TEST(UILoader, basic) {
   uint8_t data[1024];
@@ -23,18 +22,18 @@ TEST(UILoader, basic) {
   ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));
-  INIT_DESC(WIDGET_DIALOG, 0, 0, 400, 300);
+  INIT_DESC("dialog", 0, 0, 400, 300);
   ASSERT_EQ(ui_builder_on_widget_start(writer, &desc), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop_end(writer), RET_OK);
 
-  INIT_DESC(WIDGET_BUTTON, 0, 0, 80, 30);
+  INIT_DESC("button", 0, 0, 80, 30);
   ASSERT_EQ(ui_builder_on_widget_start(writer, &desc), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop(writer, "text", "ok"), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop(writer, "name", "ok"), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop_end(writer), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
-  INIT_DESC(WIDGET_LABEL, 128, 0, 80, 30);
+  INIT_DESC("label", 128, 0, 80, 30);
   ASSERT_EQ(ui_builder_on_widget_start(writer, &desc), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop(writer, "text", "cancel"), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop(writer, "name", "cancel"), RET_OK);
@@ -42,7 +41,7 @@ TEST(UILoader, basic) {
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 134);
+  ASSERT_EQ(wbuffer.cursor, 170);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
   ASSERT_EQ(builder->root->type == WIDGET_DIALOG, TRUE);
@@ -75,11 +74,11 @@ TEST(UILoader, ext) {
   ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));
-  INIT_DESC(WIDGET_GROUP_BOX, 0, 0, 100, 200);
+  INIT_DESC("group_box", 0, 0, 100, 200);
   ASSERT_EQ(ui_builder_on_widget_start(writer, &desc), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_prop_end(writer), RET_OK);
 
-  INIT_DESC(WIDGET_BUTTON, 10, 20, 30, 40);
+  INIT_DESC("button", 10, 20, 30, 40);
   desc.layout.x_attr = X_ATTR_PERCENT;
   desc.layout.y_attr = Y_ATTR_PERCENT;
   desc.layout.w_attr = W_ATTR_PERCENT;
@@ -90,7 +89,7 @@ TEST(UILoader, ext) {
   ASSERT_EQ(ui_builder_on_widget_prop_end(writer), RET_OK);
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
-  INIT_DESC(WIDGET_LABEL, 1, 2, 30, 40);
+  INIT_DESC("label", 1, 2, 30, 40);
   desc.layout.x_attr = X_ATTR_CENTER;
   desc.layout.y_attr = Y_ATTR_MIDDLE;
   desc.layout.w_attr = W_ATTR_PIXEL;
@@ -102,7 +101,7 @@ TEST(UILoader, ext) {
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 134);
+  ASSERT_EQ(wbuffer.cursor, 170);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
   ASSERT_EQ(builder->root->type == WIDGET_GROUP_BOX, TRUE);

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   main_loop.h
  * Author: AWTK Develop Team
  * Brief:  main_loop interface

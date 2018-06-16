@@ -41,13 +41,9 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   const char* key = NULL;
   const char* value = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
-  const key_type_value_t* widget_item = widget_type_find(tag);
-  assert(widget_item != NULL);
-  return_if_fail(widget_item != NULL);
 
   memset(&desc, 0x00, sizeof(desc));
 
-  desc.version = 0x01;
   while (attrs[i] != NULL) {
     key = attrs[i];
     value = attrs[i + 1];
@@ -68,7 +64,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     i += 2;
   }
 
-  desc.type = widget_item->value;
+  strncpy(desc.type, tag, NAME_LEN);
   widget_layout_parse(&(desc.layout), x, y, w, h);
   ui_builder_on_widget_start(b->ui_builder, &desc);
 

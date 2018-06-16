@@ -205,14 +205,20 @@ typedef enum _widget_type_t {
    * 通用容器和自绘控件。
    */
   WIDGET_VIEW,
-
   /**
    * @const WIDGET_SLIDE_VIEW
    * Slide View。
    */
   WIDGET_SLIDE_VIEW,
+  /**
+   * @const WIDGET_PAGES
+   * Slide View。
+   */
+  WIDGET_PAGES,
 
-  WIDGET_NR
+  WIDGET_NR,
+  WIDGET_USER_START = 100
+
 } widget_type_t;
 
 struct _widget_t;

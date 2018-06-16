@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd.h
  * Author: AWTK Develop Team
  * Brief:  lcd interface

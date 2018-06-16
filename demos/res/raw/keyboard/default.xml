@@ -1,0 +1,13 @@
+<window name="main" anim_hint="htranslate" layout="w128 h30 5 10">
+  <pages>
+    <view>
+      <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
+      <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
+      <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
+      <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
+      <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
+      <button name="open:animator" x="right:10" y="5" w="25%" h="30" text="Animate Widget"/>
+      <button name="show_fps" x="right:10" y="5" w="25%" h="30" text="Show FPS"/>
+    </view>
+  <pages>
+</window>
