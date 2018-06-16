@@ -1,13 +1,46 @@
-<window name="main" anim_hint="htranslate" layout="w128 h30 5 10">
-  <pages>
-    <view>
-      <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
-      <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
-      <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
-      <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
-      <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
-      <button name="open:animator" x="right:10" y="5" w="25%" h="30" text="Animate Widget"/>
-      <button name="show_fps" x="right:10" y="5" w="25%" h="30" text="Show FPS"/>
+<window name="keyboard" x="0" y="0" w="100%" h="30%">
+  <pages x="0" y="0" w="100%" h="100%" active="0">
+    <view x="0" y="0" w="100%" h="100%" layout="4 1 5 2">
+      <group_box layout="1 10 2 2">
+        <button name="Q" text="Q"/>
+        <button name="W" text="W"/>
+        <button name="E" text="E"/>
+        <button name="R" text="R"/>
+        <button name="T" text="T"/>
+        <button name="Y" text="Y"/>
+        <button name="U" text="U"/>
+        <button name="I" text="I"/>
+        <button name="O" text="O"/>
+        <button name="P" text="P"/>
+      </group_box>
+      <group_box layout="1 9 2 2">
+        <button name="A" text="A"/>
+        <button name="S" text="S"/>
+        <button name="D" text="D"/>
+        <button name="F" text="F"/>
+        <button name="G" text="G"/>
+        <button name="H" text="H"/>
+        <button name="J" text="J"/>
+        <button name="K" text="K"/>
+        <button name="L" text="L"/>
+      </group_box>
+      <group_box layout="1 9 2 2">
+        <button name="Shift"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="Z" text="A"/>
+        <button name="X" text="S"/>
+        <button name="C" text="D"/>
+        <button name="V" text="F"/>
+        <button name="B" text="G"/>
+        <button name="N" text="H"/>
+        <button name="M" text="J"/>
+        <button name="Backspace"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box layout="1 0 2 2">
+        <button name="page:number" w="10%" text="123"/>
+        <button name="shift" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="60%" text="Space"/>
+        <button name="action" w="20%" text="Send"/>
+      </group_box>
     </view>
   <pages>
 </window>

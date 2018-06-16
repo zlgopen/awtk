@@ -62,7 +62,7 @@ static const creator_item_t s_builtin_creators[] = {
     {"pages", pages_create},
 #ifndef WITH_LOW_RES
     {"slide_view", slide_view_create},
-#endif/*WITH_LOW_RES*/
+#endif /*WITH_LOW_RES*/
 };
 
 static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {
