@@ -110,7 +110,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   image_t* image = TKMEM_ZALLOC(image_t);
   return_value_if_fail(image != NULL, NULL);
 
-  widget = WIDGETP(image);
+  widget = WIDGET(image);
   widget_init(widget, parent, WIDGET_IMAGE);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_image_vtable;

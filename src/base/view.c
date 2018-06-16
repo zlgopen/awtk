@@ -29,7 +29,7 @@ widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   view_t* view = TKMEM_ZALLOC(view_t);
   return_value_if_fail(view != NULL, NULL);
 
-  widget = WIDGETP(view);
+  widget = WIDGET(view);
   widget_init(widget, parent, WIDGET_VIEW);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_view_vtable;

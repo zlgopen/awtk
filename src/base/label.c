@@ -33,7 +33,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   label_t* label = TKMEM_ZALLOC(label_t);
   return_value_if_fail(label != NULL, NULL);
 
-  widget = WIDGETP(label);
+  widget = WIDGET(label);
   widget_init(widget, parent, WIDGET_LABEL);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_label_vtable;

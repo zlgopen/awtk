@@ -55,7 +55,7 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   value_t anim_hint;
   widget_t* prev_win = NULL;
-  widget_t* curr_win = WIDGETP(info->ctx);
+  widget_t* curr_win = WIDGET(info->ctx);
   window_manager_t* wm = WINDOW_MANAGER(curr_win->parent);
 
   if (wm->animator != NULL) {
@@ -126,7 +126,7 @@ static ret_t window_manager_remove_child_real(widget_t* wm, widget_t* window) {
 }
 
 static ret_t on_window_destroy(void* ctx, event_t* e) {
-  widget_t* wm = WIDGETP(ctx);
+  widget_t* wm = WIDGET(ctx);
   if (array_find(wm->children, NULL, e->target)) {
     window_manager_remove_child_real(wm, e->target);
   }
@@ -163,7 +163,7 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
 }
 
 static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
-  widget_t* win = WIDGETP(info->ctx);
+  widget_t* win = WIDGET(info->ctx);
   widget_destroy(win);
 
   return RET_OK;
@@ -234,7 +234,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
     if ((r.w > 0 && r.h > 0) || wm->show_fps) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
-      ENSURE(widget_paint(WIDGETP(wm), c) == RET_OK);
+      ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
       log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __func__, (int)(r.x), (int)(r.y), (int)(r.w),
@@ -425,7 +425,7 @@ static const widget_vtable_t s_wm_vtable = {.invalidate = window_manager_invalid
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   int32_t i = 0;
   int32_t nr = 0;
-  widget_t* widget = WIDGETP(ctx);
+  widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->children != NULL && widget->children->size > 0) {

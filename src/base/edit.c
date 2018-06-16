@@ -31,7 +31,7 @@ static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_update_carent(const timer_info_t* timer) {
   rect_t r;
   edit_t* edit = EDIT(timer->ctx);
-  widget_t* widget = WIDGETP(timer->ctx);
+  widget_t* widget = WIDGET(timer->ctx);
 
   rect_init(r, edit->caret_x, 0, 1, widget->h);
   widget_invalidate(widget, &r);
@@ -388,7 +388,7 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   edit_t* edit = TKMEM_ZALLOC(edit_t);
   return_value_if_fail(edit != NULL, NULL);
 
-  widget = WIDGETP(edit);
+  widget = WIDGET(edit);
   widget_init(widget, parent, WIDGET_EDIT);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_edit_vtable;

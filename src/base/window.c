@@ -72,7 +72,7 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   window_t* win = TKMEM_ZALLOC(window_t);
   return_value_if_fail(win != NULL, NULL);
 
-  widget = WIDGETP(win);
+  widget = WIDGET(win);
   widget_init(widget, NULL, WIDGET_NORMAL_WINDOW);
   widget->vt = &s_window_vtable;
 

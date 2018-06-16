@@ -67,7 +67,7 @@ static ret_t on_quit(void* ctx, event_t* e) {
 }
 
 static ret_t on_show_fps(void* ctx, event_t* e) {
-  widget_t* button = WIDGETP(ctx);
+  widget_t* button = WIDGET(ctx);
   widget_t* widget = window_manager();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
@@ -83,7 +83,7 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
   uint32_t size = 100 * 1024;
   uint32_t memset_speed = 0;
   uint32_t memcpy_speed = 0;
-  widget_t* win = WIDGETP(ctx);
+  widget_t* win = WIDGET(ctx);
   widget_t* label_memset = widget_lookup(win, "memset", TRUE);
   widget_t* label_cost = widget_lookup(win, "cost", TRUE);
   widget_t* label_memcpy = widget_lookup(win, "memcpy", TRUE);
@@ -104,7 +104,7 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 }
 
 static ret_t on_inc(void* ctx, event_t* e) {
-  widget_t* win = WIDGETP(ctx);
+  widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
   uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
   progress_bar_set_value(progress_bar, value);
@@ -114,7 +114,7 @@ static ret_t on_inc(void* ctx, event_t* e) {
 }
 
 static ret_t on_dec(void* ctx, event_t* e) {
-  widget_t* win = WIDGETP(ctx);
+  widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
   uint8_t value = (PROGRESS_BAR(progress_bar)->value + 90) % 100;
   progress_bar_set_value(progress_bar, value);
@@ -172,7 +172,7 @@ static const preload_res_t s_preload_res[] = {{RESOURCE_TYPE_IMAGE, "bg800x480"}
 
 static ret_t timer_preload(const timer_info_t* timer) {
   char text[64];
-  widget_t* win = WIDGETP(timer->ctx);
+  widget_t* win = WIDGET(timer->ctx);
   uint32_t total = ARRAY_SIZE(s_preload_res);
   widget_t* bar = widget_lookup(win, "bar", TRUE);
   widget_t* status = widget_lookup(win, "status", TRUE);

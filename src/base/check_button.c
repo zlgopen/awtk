@@ -126,7 +126,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   check_button_t* check_button = TKMEM_ZALLOC(check_button_t);
   return_value_if_fail(check_button != NULL, NULL);
 
-  widget = WIDGETP(check_button);
+  widget = WIDGET(check_button);
   widget_init(widget, parent, WIDGET_CHECK_BUTTON);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_check_button_vtable;

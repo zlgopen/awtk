@@ -955,8 +955,7 @@ ret_t widget_destroy(widget_t* widget);
 
 ret_t widget_to_xml(widget_t* widget);
 
-#define WIDGET(w) (&(w.widget))
-#define WIDGETP(w) ((widget_t*)(w))
+#define WIDGET(w) ((widget_t*)(w))
 
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 

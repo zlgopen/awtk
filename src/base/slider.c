@@ -342,7 +342,7 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slider_t* slider = TKMEM_ZALLOC(slider_t);
   return_value_if_fail(slider != NULL, NULL);
 
-  widget = WIDGETP(slider);
+  widget = WIDGET(slider);
   widget_init(widget, parent, WIDGET_SLIDER);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_slider_vtable;

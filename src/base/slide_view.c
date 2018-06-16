@@ -41,7 +41,7 @@ static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int ox, in
 }
 
 widget_t* slide_view_get_prev(slide_view_t* slide_view) {
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   uint32_t active = slide_view->active;
   uint32_t nr = widget_count_children(widget);
 
@@ -55,7 +55,7 @@ widget_t* slide_view_get_prev(slide_view_t* slide_view) {
 }
 
 widget_t* slide_view_get_next(slide_view_t* slide_view) {
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   uint32_t active = slide_view->active;
   uint32_t nr = widget_count_children(widget);
 
@@ -69,7 +69,7 @@ widget_t* slide_view_get_next(slide_view_t* slide_view) {
 }
 
 ret_t slide_view_activate_prev(slide_view_t* slide_view) {
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   uint32_t active = slide_view->active;
   uint32_t nr = widget_count_children(widget);
 
@@ -83,7 +83,7 @@ ret_t slide_view_activate_prev(slide_view_t* slide_view) {
 }
 
 ret_t slide_view_activate_next(slide_view_t* slide_view) {
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   uint32_t active = slide_view->active;
   uint32_t nr = widget_count_children(widget);
 
@@ -112,7 +112,7 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
-  widget_t* widget = WIDGETP(ctx);
+  widget_t* widget = WIDGET(ctx);
   slide_view_t* slide_view = SLIDE_VIEW(ctx);
 
   if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
@@ -133,7 +133,7 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
 
 static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
   uint32_t v_threshhold = 100;
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   velocity_t* v = &(slide_view->velocity);
   widget_animator_t* animator =
       widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
@@ -289,7 +289,7 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
   rect_t r_active;
   int xoffset = slide_view->xoffset;
   int yoffset = slide_view->yoffset;
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   widget_t* active = widget_get_child(widget, slide_view->active);
   widget_t* next = slide_view_get_next(slide_view);
   widget_t* prev = slide_view_get_prev(slide_view);
@@ -333,7 +333,7 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
 
 static ret_t slide_view_invalidate(slide_view_t* slide_view) {
   rect_t r;
-  widget_t* widget = WIDGETP(slide_view);
+  widget_t* widget = WIDGET(slide_view);
   slide_view_calc_dirty_rect(slide_view, &r);
 
   if (r.x < 0) {
@@ -392,12 +392,12 @@ static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* 
   rect_t r;
   int ox = c->ox;
   int oy = c->oy;
-  xy_t w = WIDGETP(slide_view)->w;
-  xy_t h = WIDGETP(slide_view)->h;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
   int yoffset = slide_view->yoffset;
   int r_yoffset = h - slide_view->yoffset;
   widget_t* prev = slide_view_get_prev(slide_view);
-  widget_t* active = widget_get_child(WIDGETP(slide_view), slide_view->active);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   rect_init(r, 0, 0, w, yoffset);
   if (prev) {
@@ -422,12 +422,12 @@ static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* 
   rect_t r;
   int ox = c->ox;
   int oy = c->oy;
-  xy_t w = WIDGETP(slide_view)->w;
-  xy_t h = WIDGETP(slide_view)->h;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
   int yoffset = tk_abs(slide_view->yoffset);
   int r_yoffset = h - tk_abs(slide_view->yoffset);
   widget_t* next = slide_view_get_next(slide_view);
-  widget_t* active = widget_get_child(WIDGETP(slide_view), slide_view->active);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   canvas_translate(c, 0, -yoffset);
   rect_init(r, 0, 0, w, r_yoffset);
@@ -452,12 +452,12 @@ static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* 
   rect_t r;
   int ox = c->ox;
   int oy = c->oy;
-  xy_t w = WIDGETP(slide_view)->w;
-  xy_t h = WIDGETP(slide_view)->h;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
   int xoffset = slide_view->xoffset;
   int r_xoffset = w - slide_view->xoffset;
   widget_t* prev = slide_view_get_prev(slide_view);
-  widget_t* active = widget_get_child(WIDGETP(slide_view), slide_view->active);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   rect_init(r, 0, 0, xoffset, h);
   if (prev) {
@@ -482,12 +482,12 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
   rect_t r;
   int ox = c->ox;
   int oy = c->oy;
-  xy_t w = WIDGETP(slide_view)->w;
-  xy_t h = WIDGETP(slide_view)->h;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
   int xoffset = tk_abs(slide_view->xoffset);
   int r_xoffset = w - tk_abs(slide_view->xoffset);
   widget_t* next = slide_view_get_next(slide_view);
-  widget_t* active = widget_get_child(WIDGETP(slide_view), slide_view->active);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   canvas_translate(c, -xoffset, 0);
   rect_init(r, 0, 0, r_xoffset, h);
@@ -632,7 +632,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view_t* slide_view = TKMEM_ZALLOC(slide_view_t);
   return_value_if_fail(slide_view != NULL, NULL);
 
-  widget = WIDGETP(slide_view);
+  widget = WIDGET(slide_view);
   widget_init(widget, parent, WIDGET_SLIDE_VIEW);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_slide_view_vtable;
@@ -643,7 +643,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
-  widget_t* widget = WIDGETP(timer->ctx);
+  widget_t* widget = WIDGET(timer->ctx);
   slide_view_t* slide_view = SLIDE_VIEW(timer->ctx);
 
   widget_animator_t* animator =

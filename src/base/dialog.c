@@ -135,7 +135,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
   return_value_if_fail(dialog != NULL, NULL);
 
-  widget = WIDGETP(dialog);
+  widget = WIDGET(dialog);
   widget_init(widget, NULL, WIDGET_DIALOG);
   widget->vt = &s_dialog_vtable;
 
@@ -169,7 +169,7 @@ static ret_t dialog_close(widget_t* widget) {
 }
 
 static ret_t dialog_idle_close(const idle_info_t* info) {
-  return dialog_close(WIDGETP(info->ctx));
+  return dialog_close(WIDGET(info->ctx));
 }
 
 uint32_t dialog_modal(widget_t* widget) {

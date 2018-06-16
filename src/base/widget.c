@@ -1160,7 +1160,7 @@ widget_t* widget_get_child(widget_t* widget, uint32_t index) {
   return_value_if_fail(widget != NULL && widget->children != NULL, NULL);
   return_value_if_fail(index < widget->children->size, NULL);
 
-  return WIDGETP(widget->children->elms[index]);
+  return WIDGET(widget->children->elms[index]);
 }
 
 ret_t widget_to_xml(widget_t* widget) {

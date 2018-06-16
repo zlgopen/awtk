@@ -33,7 +33,7 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   group_box_t* group_box = TKMEM_ZALLOC(group_box_t);
   return_value_if_fail(group_box != NULL, NULL);
 
-  widget = WIDGETP(group_box);
+  widget = WIDGET(group_box);
   widget_init(widget, parent, WIDGET_GROUP_BOX);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_group_box_vtable;

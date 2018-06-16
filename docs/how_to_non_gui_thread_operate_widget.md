@@ -12,11 +12,11 @@ GUI控件只能在GUI线程进行操作，非GUI线程想操作GUI控件，必�
 
 ```
 static ret_t on_timer(const timer_info_t* timer) {
-  return update_progress_bar(WIDGETP(timer->ctx));
+  return update_progress_bar(WIDGET(timer->ctx));
 }
 
 static ret_t on_idle(const idle_info_t* idle) {
-  return update_progress_bar(WIDGETP(idle->ctx));
+  return update_progress_bar(WIDGET(idle->ctx));
 }
 
 void* thread_entry(void* args) {

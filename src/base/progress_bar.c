@@ -207,7 +207,7 @@ widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   progress_bar_t* progress_bar = TKMEM_ZALLOC(progress_bar_t);
   return_value_if_fail(progress_bar != NULL, NULL);
 
-  widget = WIDGETP(progress_bar);
+  widget = WIDGET(progress_bar);
   widget_init(widget, parent, WIDGET_PROGRESS_BAR);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_progress_bar_vtable;

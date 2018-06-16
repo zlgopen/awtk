@@ -41,7 +41,7 @@ static ret_t change_locale(void* ctx, event_t* e) {
   char language[3];
   const char* str = (const char*)ctx;
 
-  widget_t* widget = WIDGETP(e->target);
+  widget_t* widget = WIDGET(e->target);
   if (widget_get_value(widget)) {
     strncpy(language, str, 2);
     strncpy(country, str + 3, 2);

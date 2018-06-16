@@ -61,7 +61,7 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   button_t* button = TKMEM_ZALLOC(button_t);
   return_value_if_fail(button != NULL, NULL);
 
-  widget = WIDGETP(button);
+  widget = WIDGET(button);
   widget_init(widget, parent, WIDGET_BUTTON);
   widget_move_resize(widget, x, y, w, h);
   widget->vt = &s_button_vtable;

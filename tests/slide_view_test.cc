@@ -16,7 +16,7 @@ TEST(SlideView, basic) {
 
   slide_view_set_active(w, 0);
   ASSERT_EQ(slide_view->active, 0);
-  ASSERT_EQ(slide_view_get_prev(slide_view), WIDGETP(NULL));
+  ASSERT_EQ(slide_view_get_prev(slide_view), WIDGET(NULL));
   ASSERT_EQ(slide_view_get_next(slide_view), b2);
 
   ASSERT_EQ(slide_view_activate_prev(slide_view), RET_FAIL);
@@ -30,15 +30,15 @@ TEST(SlideView, basic) {
   ASSERT_EQ(slide_view->active, 2);
 
   ASSERT_EQ(slide_view_get_prev(slide_view), b2);
-  ASSERT_EQ(slide_view_get_next(slide_view), WIDGETP(NULL));
+  ASSERT_EQ(slide_view_get_next(slide_view), WIDGET(NULL));
 
   ASSERT_EQ(slide_view_set_auto_play(w, 1000), RET_OK);
   ASSERT_EQ(slide_view->auto_play, 1000);
   slide_view_set_active(w, 0);
-  ASSERT_EQ(slide_view_get_prev(slide_view), WIDGETP(b3));
+  ASSERT_EQ(slide_view_get_prev(slide_view), WIDGET(b3));
 
   slide_view_set_active(w, 2);
-  ASSERT_EQ(slide_view_get_next(slide_view), WIDGETP(b1));
+  ASSERT_EQ(slide_view_get_next(slide_view), WIDGET(b1));
 
   widget_destroy(w);
 }

@@ -53,11 +53,11 @@ static ret_t update_progress_bar(widget_t* progress_bar) {
 }
 
 static ret_t on_timer(const timer_info_t* timer) {
-  return update_progress_bar(WIDGETP(timer->ctx));
+  return update_progress_bar(WIDGET(timer->ctx));
 }
 
 static ret_t on_idle(const idle_info_t* idle) {
-  return update_progress_bar(WIDGETP(idle->ctx));
+  return update_progress_bar(WIDGET(idle->ctx));
 }
 
 void* thread_entry(void* args) {
