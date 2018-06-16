@@ -83,6 +83,7 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   str_init(&(win->anim_hint), 0);
   widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
+  widget_update_style(widget);
 
   return widget;
 }

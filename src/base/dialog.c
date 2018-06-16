@@ -147,6 +147,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
 
   dialog->margin = 0;
+  widget_update_style(widget);
   str_init(&(dialog->anim_hint), 0);
   dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
   dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
