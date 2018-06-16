@@ -1,0 +1,8 @@
+<button >
+  <style name="1:cross" icon="cross">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#e0e0e0" />
+  </style>
+</button>
+

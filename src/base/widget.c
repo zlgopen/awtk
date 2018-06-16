@@ -292,6 +292,10 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
   if (widget->children != NULL) {
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      if (iter->name.str == NULL) {
+        continue;
+      }
+
       if (str_eq(&(iter->name), name)) {
         return iter;
       }

@@ -88,7 +88,10 @@ bool_t str_eq(str_t* str, const char* text) {
     return TRUE;
   }
 
-  return_value_if_fail(str != NULL && text != NULL, FALSE);
+  if (str == NULL || text == NULL || str->str == NULL) {
+    return FALSE;
+  }
+
   if (str->str[0] != text[0]) {
     return FALSE;
   }

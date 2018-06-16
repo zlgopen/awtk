@@ -160,8 +160,59 @@ static void install_click_hander(widget_t* widget) {
   }
 }
 
-ret_t application_init() {
-  open_window("main");
+#include "base/idle.h"
+#include "base/resource_manager.h"
+
+static uint32_t s_preload_nr = 0;
+static const preload_res_t s_preload_res[] = {{RESOURCE_TYPE_IMAGE, "bg800x480"},
+                                              {RESOURCE_TYPE_IMAGE, "earth"},
+                                              {RESOURCE_TYPE_IMAGE, "dialog_title"},
+                                              {RESOURCE_TYPE_IMAGE, "rgb"},
+                                              {RESOURCE_TYPE_IMAGE, "rgba"}};
+
+static ret_t timer_preload(const timer_info_t* timer) {
+  char text[64];
+  widget_t* win = WIDGETP(timer->ctx);
+  uint32_t total = ARRAY_SIZE(s_preload_res);
+  widget_t* bar = widget_lookup(win, "bar", TRUE);
+  widget_t* status = widget_lookup(win, "status", TRUE);
+
+  if (s_preload_nr == total) {
+    open_window("main");
+
+    return RET_REMOVE;
+  } else {
+    uint32_t value = 0;
+    const preload_res_t* iter = s_preload_res + s_preload_nr++;
+    switch (iter->type) {
+      case RESOURCE_TYPE_IMAGE: {
+        bitmap_t img;
+        image_manager_load(image_manager(), iter->name, &img);
+        break;
+      }
+      default: {
+        resource_manager_ref(resource_manager(), iter->type, iter->name);
+        break;
+      }
+    }
+
+    value = (s_preload_nr * 100) / total;
+    tk_snprintf(text, sizeof(text), "Load: %s(%u/%u)", iter->name, s_preload_nr, total);
+    widget_set_value(bar, value);
+    widget_set_text_utf8(status, text);
+
+    return RET_REPEAT;
+  }
+}
+
+static ret_t show_preload_res_window() {
+  uint32_t interval = 2000 / ARRAY_SIZE(s_preload_res);
+  widget_t* win = window_open("preload");
+  timer_add(timer_preload, win, interval);
 
   return RET_OK;
+}
+
+ret_t application_init() {
+  return show_preload_res_window();
 }

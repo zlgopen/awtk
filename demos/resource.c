@@ -3,6 +3,7 @@
 #ifndef WITH_FS_RES
 #include "res/inc/strings/en_US.data"
 #include "res/inc/strings/zh_CN.data"
+#include "res/inc/theme/calibration.data"
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog1.data"
 #include "res/inc/ui/animation.data"
@@ -10,6 +11,7 @@
 #include "res/inc/ui/auto_play.data"
 #include "res/inc/ui/basic.data"
 #include "res/inc/ui/bottom.data"
+#include "res/inc/ui/calibration.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
 #include "res/inc/ui/fade.data"
@@ -17,6 +19,7 @@
 #include "res/inc/ui/image.data"
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
+#include "res/inc/ui/preload.data"
 #include "res/inc/ui/slide_view.data"
 #include "res/inc/ui/slide_view_h.data"
 #include "res/inc/ui/slide_view_v.data"
@@ -26,6 +29,7 @@
 #include "res/inc/images/bg800x480.res"
 #include "res/inc/images/bricks.res"
 #include "res/inc/images/checked.res"
+#include "res/inc/images/cross.res"
 #include "res/inc/images/dialog_title.res"
 #include "res/inc/images/earth.res"
 #include "res/inc/images/green_btn_n.res"
@@ -34,6 +38,7 @@
 #include "res/inc/images/info.res"
 #include "res/inc/images/left_off.res"
 #include "res/inc/images/left_on.res"
+#include "res/inc/images/logo.res"
 #include "res/inc/images/message.res"
 #include "res/inc/images/middle_off.res"
 #include "res/inc/images/middle_on.res"
@@ -62,6 +67,7 @@
 #include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
+#include "res/inc/images/cross.data"
 #include "res/inc/images/dialog_title.data"
 #include "res/inc/images/earth.data"
 #include "res/inc/images/green_btn_n.data"
@@ -70,6 +76,7 @@
 #include "res/inc/images/info.data"
 #include "res/inc/images/left_off.data"
 #include "res/inc/images/left_on.data"
+#include "res/inc/images/logo.data"
 #include "res/inc/images/message.data"
 #include "res/inc/images/middle_off.data"
 #include "res/inc/images/middle_on.data"
@@ -113,6 +120,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);
+  resource_manager_add(rm, image_cross);
   resource_manager_add(rm, image_dialog_title);
   resource_manager_add(rm, image_earth);
   resource_manager_add(rm, image_green_btn_n);
@@ -121,6 +129,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_info);
   resource_manager_add(rm, image_left_off);
   resource_manager_add(rm, image_left_on);
+  resource_manager_add(rm, image_logo);
   resource_manager_add(rm, image_message);
   resource_manager_add(rm, image_middle_off);
   resource_manager_add(rm, image_middle_on);
@@ -147,6 +156,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_warn);
   resource_manager_add(rm, strings_en_US);
   resource_manager_add(rm, strings_zh_CN);
+  resource_manager_add(rm, theme_calibration);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog1);
   resource_manager_add(rm, ui_animation);
@@ -154,6 +164,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_auto_play);
   resource_manager_add(rm, ui_basic);
   resource_manager_add(rm, ui_bottom);
+  resource_manager_add(rm, ui_calibration);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
   resource_manager_add(rm, ui_fade);
@@ -161,6 +172,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_image);
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
+  resource_manager_add(rm, ui_preload);
   resource_manager_add(rm, ui_slide_view);
   resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_slide_view_v);

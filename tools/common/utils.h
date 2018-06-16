@@ -22,14 +22,13 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "base/types_def.h"
+#include "base/utils.h"
 
 BEGIN_C_DECLS
 
 int unique(wchar_t* str, int size);
 char* read_file(const char* file_name, uint32_t* length);
 ret_t write_file(const char* file_name, const void* buff, uint32_t length);
-ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
                       uint32_t size);
 

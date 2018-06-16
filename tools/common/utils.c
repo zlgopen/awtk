@@ -54,32 +54,6 @@ int unique(wchar_t* str, int size) {
   return d - str;
 }
 
-ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
-  char* p = NULL;
-  const char* name = filename;
-  return_value_if_fail(filename != NULL && str != NULL, RET_BAD_PARAMS);
-
-  name = strrchr(filename, '/');
-  if (name == NULL) {
-    name = strrchr(filename, '\\');
-  }
-
-  if (name == NULL) {
-    name = filename;
-  } else {
-    name += 1;
-  }
-
-  strncpy(str, name, size);
-  str[size - 1] = '\0';
-  p = strchr(str, '.');
-  if (p != NULL) {
-    *p = '\0';
-  }
-
-  return RET_OK;
-}
-
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
                       uint32_t size) {
   uint32_t i = 0;
