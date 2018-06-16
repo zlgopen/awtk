@@ -1,5 +1,5 @@
 <window>
-    <image image="logo" x="right" y="0" w="100" h="60"/>
+    <image image="logo" x="right:40" y="10" w="100" h="60"/>
     <label name="status" x="center" y="middle:-30" w="90" h="30" text="loading..."/>
-    <progress_bar name="bar" value="10" x="center" y="middle" w="90%" h="20"/>
+    <progress_bar name="bar" value="0" x="center" y="middle" w="90%" h="20"/>
 </window>

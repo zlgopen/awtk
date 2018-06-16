@@ -68,7 +68,9 @@ ret_t tk_init_resources() {
         tk_add_font(iter);
         break;
       case RESOURCE_TYPE_THEME:
-        theme_init(iter->data);
+        if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
+          theme_init(iter->data);
+        }
         break;
     }
   }
