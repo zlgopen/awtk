@@ -97,7 +97,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
                        RET_BAD_PARAMS);
   return_value_if_fail(dst->format == BITMAP_FMT_RGBA || dst->format == BITMAP_FMT_RGB565,
                        RET_BAD_PARAMS);
-  return_value_if_fail(src->format == BITMAP_FMT_RGBA || src->format == BITMAP_FMT_RGBA ||
+  return_value_if_fail(src->format == BITMAP_FMT_RGBA || src->format == BITMAP_FMT_BGRA ||
                            src->format == BITMAP_FMT_RGB565,
                        RET_BAD_PARAMS);
 
