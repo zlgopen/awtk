@@ -1,3 +1,7 @@
-<window name="main" x="0" y="0" w="320" h="480" layout="w100 h30 5 10">
-    <button name="close" x="10" y="5" w="25%" h="30" text="Close"/>
+<window>
+  <image name="fade" image="logo" x="center" y="10" w="200" h="60"/>
+  <image name="fade" image="logo" x="center" y="80" w="200" h="60"/>
+  <image name="move" image="logo" x="0" y="middle:-40" w="200" h="60"/>
+  <progress_bar name="value" x="center" y="middle" w="90%" h="40"/>
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

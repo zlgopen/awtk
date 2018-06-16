@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget_factory.c
  * Author: AWTK Develop Team
  * Brief:  widget factory
@@ -66,7 +66,7 @@ static const creator_item_t s_builtin_creators[] = {
 static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {
   uint32_t i = 0;
   for (i = 0; i < ARRAY_SIZE(s_builtin_creators); i++) {
-    creator_item_t* iter = s_builtin_creators + i;
+    const creator_item_t* iter = s_builtin_creators + i;
     if (str_fast_equal(iter->type, type)) {
       return iter;
     }

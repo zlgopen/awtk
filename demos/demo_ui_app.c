@@ -123,10 +123,37 @@ static ret_t on_dec(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+#include "widget_animators/widget_animator_opacity.h"
+#include "widget_animators/widget_animator_value.h"
+#include "widget_animators/widget_animator_move.h"
+#include "widget_animators/widget_animator_scale.h"
+#include "widget_animators/widget_animator_rotation.h"
+
+static void on_move_animator(widget_t* widget) {
+  widget_animator_t* animator = widget_animator_move_create(widget, 1000, 0, EASING_SIN_INOUT);
+  widget_animator_move_set_params(animator, widget->x, widget->y, widget->x + 200, widget->y);
+  widget_animator_set_repeat(animator, 1000);
+  widget_animator_start(animator);
+}
+
+static void on_fade_animator(widget_t* widget) {
+  widget_animator_t* animator = widget_animator_opacity_create(widget, 1000, 0, EASING_SIN_OUT);
+  widget_animator_opacity_set_params(animator, 50, 255);
+  widget_animator_set_yoyo(animator, 1000);
+  widget_animator_start(animator);
+}
+
+static void on_value_animator(widget_t* widget) {
+  widget_animator_t* animator = widget_animator_value_create(widget, 1000, 0, EASING_SIN_INOUT);
+  widget_animator_value_set_params(animator, 50, 100);
+  widget_animator_set_yoyo(animator, 1000);
+  widget_animator_start(animator);
+}
+
 static void install_click_hander(widget_t* widget) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  if (widget->name.size && widget->type == WIDGET_BUTTON) {
+  if (widget->name.size) {
     const char* name = widget->name.str;
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
@@ -151,6 +178,12 @@ static void install_click_hander(widget_t* widget) {
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit, win);
       }
+    } else if (strcmp(name, "move") == 0) {
+      on_move_animator(widget);
+    } else if (strcmp(name, "fade") == 0) {
+      on_fade_animator(widget);
+    } else if (strcmp(name, "value") == 0) {
+      on_value_animator(widget);
     }
   }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   resource_manager.h
  * Author: AWTK Develop Team
  * Brief:  resource manager
@@ -79,7 +79,7 @@ typedef enum _resource_ui_type_t {
  * 预加载资源的描述信息。
  */
 typedef struct _preload_res_t {
-  uint16_t type;
+  resource_type_t type;
   const char* name;
 } preload_res_t;
 
