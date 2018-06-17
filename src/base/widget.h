@@ -929,6 +929,18 @@ ret_t widget_grab(widget_t* widget, widget_t* child);
 ret_t widget_ungrab(widget_t* widget, widget_t* child);
 
 /**
+ * @method widget_foreach
+ * 遍历当前控件及子控件。
+ * @scriptable no
+ * @param {widget_t*} widget 控件对象。
+ * @param {visit_t} visit 遍历的回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_foreach(widget_t* widget, visit_t visit, void* ctx);
+
+/**
  * @method widget_get_window
  * 获取当前控件所在的窗口。
  * @param {widget_t*} widget 控件对象。

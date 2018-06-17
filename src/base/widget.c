@@ -949,6 +949,29 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return ret;
 }
 
+ret_t widget_foreach(widget_t* widget, visit_t visit, void* ctx) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  widget_t** children = NULL;
+  return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
+
+  if (visit(ctx, widget) != RET_OK) {
+    return RET_DONE;
+  }
+
+  if (widget->children && widget->children->elms) {
+    nr = widget->children->size;
+    children = (widget_t**)(widget->children->elms);
+
+    for (i = 0; i < nr; i++) {
+      widget_t* iter = children[i];
+      widget_foreach(iter, visit, ctx);
+    }
+  }
+
+  return RET_OK;
+}
+
 widget_t* widget_get_window(widget_t* widget) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && widget->parent != NULL, NULL);
