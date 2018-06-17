@@ -26,6 +26,7 @@
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
+#include "res/inc/images/backspace.res"
 #include "res/inc/images/bg800x480.res"
 #include "res/inc/images/bricks.res"
 #include "res/inc/images/checked.res"
@@ -53,6 +54,8 @@
 #include "res/inc/images/rgba.res"
 #include "res/inc/images/right_off.res"
 #include "res/inc/images/right_on.res"
+#include "res/inc/images/shift.res"
+#include "res/inc/images/shifton.res"
 #include "res/inc/images/slider_bg.res"
 #include "res/inc/images/slider_drag.res"
 #include "res/inc/images/slider_drag_o.res"
@@ -64,6 +67,7 @@
 #include "res/inc/images/unmuted.res"
 #include "res/inc/images/warn.res"
 #else
+#include "res/inc/images/backspace.data"
 #include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/checked.data"
@@ -91,6 +95,8 @@
 #include "res/inc/images/rgba.data"
 #include "res/inc/images/right_off.data"
 #include "res/inc/images/right_on.data"
+#include "res/inc/images/shift.data"
+#include "res/inc/images/shifton.data"
 #include "res/inc/images/slider_bg.data"
 #include "res/inc/images/slider_drag.data"
 #include "res/inc/images/slider_drag_o.data"
@@ -101,13 +107,13 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #include "res/inc/fonts/default.res"
 #else
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -117,6 +123,7 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
   resource_manager_add(rm, font_default);
+  resource_manager_add(rm, image_backspace);
   resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_checked);
@@ -144,6 +151,8 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_rgba);
   resource_manager_add(rm, image_right_off);
   resource_manager_add(rm, image_right_on);
+  resource_manager_add(rm, image_shift);
+  resource_manager_add(rm, image_shifton);
   resource_manager_add(rm, image_slider_bg);
   resource_manager_add(rm, image_slider_drag);
   resource_manager_add(rm, image_slider_drag_o);

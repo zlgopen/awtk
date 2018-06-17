@@ -1,6 +1,6 @@
 <window name="keyboard" x="0" y="0" w="100%" h="30%">
-  <pages x="0" y="0" w="100%" h="100%" active="0">
-    <view x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 x_margin:2 y_margin:2">
+  <pages x="0" y="0" w="100%" h="100%" active="3">
+    <view name="upper" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 x_margin:2 y_margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 x_margin:2 y_margin:2">
         <button name="Q" text="Q"/>
         <button name="W" text="W"/>
@@ -25,7 +25,7 @@
         <button name="L" text="L"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 x_margin:2 y_margin:2">
-        <button name="Shift"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="Shift"><image image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="Z" text="A"/>
         <button name="X" text="S"/>
         <button name="C" text="D"/>
@@ -33,7 +33,135 @@
         <button name="B" text="G"/>
         <button name="N" text="H"/>
         <button name="M" text="J"/>
-        <button name="Backspace"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="Backspace"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box layout="rows:1 cols:0 spacing:2 x_margin:2 y_margin:2">
+        <button name="page:number" w="15%" text="123"/>
+        <button name="shift" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" text="Space"/>
+        <button name="action" w="20%" text="Send"/>
+      </group_box>
+    </view>
+    <view name="lower" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 x_margin:2 y_margin:2">
+      <group_box layout="rows:1 cols:10 spacing:2 x_margin:2 y_margin:2">
+        <button name="q" text="q"/>
+        <button name="w" text="w"/>
+        <button name="e" text="e"/>
+        <button name="r" text="r"/>
+        <button name="t" text="t"/>
+        <button name="y" text="y"/>
+        <button name="u" text="u"/>
+        <button name="i" text="i"/>
+        <button name="o" text="o"/>
+        <button name="p" text="p"/>
+      </group_box>
+      <group_box layout="rows:1 cols:9 spacing:2 x_margin:10 y_margin:2">
+        <button name="a" text="a"/>
+        <button name="s" text="s"/>
+        <button name="d" text="d"/>
+        <button name="f" text="f"/>
+        <button name="g" text="g"/>
+        <button name="h" text="h"/>
+        <button name="j" text="j"/>
+        <button name="k" text="k"/>
+        <button name="l" text="l"/>
+      </group_box>
+      <group_box layout="rows:1 cols:9 spacing:2 x_margin:2 y_margin:2">
+        <button name="Shift"><image image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="z" text="a"/>
+        <button name="x" text="s"/>
+        <button name="c" text="d"/>
+        <button name="v" text="f"/>
+        <button name="b" text="g"/>
+        <button name="n" text="h"/>
+        <button name="m" text="j"/>
+        <button name="Backspace"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box layout="rows:1 cols:0 spacing:2 x_margin:2 y_margin:2">
+        <button name="page:number" w="15%" text="123"/>
+        <button name="shift" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" text="Space"/>
+        <button name="action" w="20%" text="Send"/>
+      </group_box>
+    </view>
+    <view name="symnum" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 x_margin:2 y_margin:2">
+      <group_box layout="rows:1 cols:10 spacing:2 x_margin:2 y_margin:2">
+        <button name="1" text="1"/>
+        <button name="2" text="2"/>
+        <button name="3" text="3"/>
+        <button name="4" text="4"/>
+        <button name="5" text="5"/>
+        <button name="6" text="6"/>
+        <button name="7" text="7"/>
+        <button name="8" text="8"/>
+        <button name="9" text="9"/>
+        <button name="0" text="0"/>
+      </group_box>
+      <group_box layout="rows:1 cols:10 spacing:2 x_margin:10 y_margin:2">
+        <button name="-" text="-"/>
+        <button name="/" text="/"/>
+        <button name=":" text=":"/>
+        <button name=";" text=";"/>
+        <button name="(" text="("/>
+        <button name=")" text=")"/>
+        <button name="$" text="$"/>
+        <button name="@" text="@"/>
+        <button name="'" text="'"/>
+        <button name="quota" text="q"/>
+      </group_box>
+      <group_box layout="rows:1 cols:10 spacing:2 x_margin:2 y_margin:2">
+        <button name="#+="/>
+        <button name="." text="."/>
+        <button name="," text=","/>
+        <button name="\" text="\"/>
+        <button name="?" text="?"/>
+        <button name="!" text="!"/>
+        <button name="<" text="<"/>
+        <button name=">" text=">"/>
+        <button name="#" text="#"/>
+        <button name="Backspace"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box layout="rows:1 cols:0 spacing:2 x_margin:2 y_margin:2">
+        <button name="page:number" w="15%" text="123"/>
+        <button name="shift" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" text="Space"/>
+        <button name="action" w="20%" text="Send"/>
+      </group_box>
+    </view>
+    <view name="chinese" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 x_margin:2 y_margin:2">
+      <group_box layout="rows:1 cols:10 spacing:2 x_margin:2 y_margin:2">
+        <button name="q" text="q"/>
+        <button name="w" text="w"/>
+        <button name="e" text="e"/>
+        <button name="r" text="r"/>
+        <button name="t" text="t"/>
+        <button name="y" text="y"/>
+        <button name="u" text="u"/>
+        <button name="i" text="i"/>
+        <button name="o" text="o"/>
+        <button name="p" text="p"/>
+      </group_box>
+      <group_box layout="rows:1 cols:9 spacing:2 x_margin:10 y_margin:2">
+        <button name="a" text="a"/>
+        <button name="s" text="s"/>
+        <button name="d" text="d"/>
+        <button name="f" text="f"/>
+        <button name="g" text="g"/>
+        <button name="h" text="h"/>
+        <button name="j" text="j"/>
+        <button name="k" text="k"/>
+        <button name="l" text="l"/>
+      </group_box>
+      <group_box layout="rows:1 cols:9 spacing:2 x_margin:2 y_margin:2">
+        <button name="Shift"><image image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="z" text="a"/>
+        <button name="x" text="s"/>
+        <button name="c" text="d"/>
+        <button name="v" text="f"/>
+        <button name="b" text="g"/>
+        <button name="n" text="h"/>
+        <button name="m" text="j"/>
+        <button name="Backspace"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 x_margin:2 y_margin:2">
         <button name="page:number" w="15%" text="123"/>
