@@ -58,13 +58,23 @@ widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method pages_set_active
- * 设置进度条的进度。
+ * 设置当前的Page。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} index 当Page的序号。
+ * @param {uint32_t} index 当前Page的序号。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t pages_set_active(widget_t* widget, uint32_t index);
+
+/**
+ * @method pages_set_active_by_name
+ * 通过页面的名字设置当前的Page。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 当前Page的名字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t pages_set_active_by_name(widget_t* widget, const char* name);
 
 #define PAGES(widget) ((pages_t*)(widget))
 
