@@ -22,6 +22,7 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/layout.h"
+#include "base/tokenizer.h"
 
 widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, const char* y,
                                      const char* w, const char* h) {
@@ -182,8 +183,8 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
 }
 
 ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t margin, uint8_t cell_spacing) {
-  children_layout_t cl = {rows, cols, margin, cell_spacing, 0, 0};
+                                        uint8_t x_margin, uint8_t y_margin, uint8_t spacing) {
+  children_layout_t cl = {rows, cols, x_margin, y_margin, spacing, 0, 0};
 
   return widget_set_children_layout(widget, &cl);
 }
@@ -210,19 +211,25 @@ ret_t widget_layout(widget_t* widget) {
   return widget_layout_children(widget);
 }
 
-ret_t widget_layout_self(widget_t* widget) {
+ret_t widget_layout_self_with_wh(widget_t* widget, wh_t w, wh_t h) {
   rect_t r;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->parent != NULL && widget->layout_params != NULL) {
     widget_layout_t* layout = &(widget->layout_params->self);
     if (layout->inited) {
-      widget_layout_calc(layout, &r, widget->parent->w, widget->parent->h);
+      widget_layout_calc(layout, &r, w, h);
       widget_move_resize(widget, r.x, r.y, r.w, r.h);
     }
   }
 
   return RET_OK;
+}
+
+ret_t widget_layout_self(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
+
+  return widget_layout_self_with_wh(widget, widget->parent->w, widget->parent->h);
 }
 
 ret_t widget_layout_children(widget_t* widget) {
@@ -232,9 +239,12 @@ ret_t widget_layout_children(widget_t* widget) {
   xy_t y = 0;
   uint32_t i = 0;
   uint32_t n = 0;
-  uint8_t margin = 0;
+  uint32_t rows = 0;
+  uint32_t cols = 0;
+  uint8_t x_margin = 0;
+  uint8_t y_margin = 0;
   widget_t* iter = NULL;
-  uint8_t cell_spacing = 0;
+  uint8_t spacing = 0;
   widget_t** children = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -251,31 +261,40 @@ ret_t widget_layout_children(widget_t* widget) {
 
   if (widget->layout_params && widget->layout_params->children.inited) {
     children_layout_t* layout = &(widget->layout_params->children);
-    uint8_t rows = layout->rows_is_height
-                       ? (widget->h - 2 * margin) / (layout->rows + layout->cell_spacing)
-                       : layout->rows;
-    uint8_t cols = layout->cols_is_width
-                       ? (widget->w - 2 * margin) / (layout->cols + layout->cell_spacing)
-                       : layout->cols;
 
-    x = layout->margin;
-    y = layout->margin;
-    margin = layout->margin;
-    cell_spacing = layout->cell_spacing;
+    x = layout->x_margin;
+    y = layout->y_margin;
+    x_margin = layout->x_margin;
+    y_margin = layout->y_margin;
+    spacing = layout->spacing;
+
+    if (layout->rows_is_height) {
+      rows = (widget->h - 2 * y_margin) / (layout->rows + spacing);
+    } else {
+      rows = layout->rows;
+    }
+
+    if (layout->cols_is_width) {
+      cols = (widget->w - 2 * x_margin) / (layout->cols + spacing);
+    } else {
+      cols = layout->cols;
+    }
 
     if (rows == 1 && cols == 0) { /*hbox*/
-      h = widget->h - 2 * margin;
-      return_value_if_fail(h > 0, RET_BAD_PARAMS);
+      h = widget->h - 2 * y_margin;
+      w = widget->w - 2 * x_margin - (n - 1) * spacing;
+
+      return_value_if_fail(h > 0 && w > 0, RET_BAD_PARAMS);
 
       for (i = 0; i < n; i++) {
         iter = children[i];
-        widget_layout_self(iter);
+        widget_layout_self_with_wh(iter, w, h);
       }
 
       for (i = 0; i < n; i++) {
         iter = children[i];
         widget_move_resize(iter, x, y, iter->w, h);
-        x += iter->w + cell_spacing;
+        x += iter->w + spacing;
         return_value_if_fail(x <= widget->w, RET_BAD_PARAMS);
       }
 
@@ -285,19 +304,20 @@ ret_t widget_layout_children(widget_t* widget) {
 
       return RET_OK;
     } else if (cols == 1 && rows == 0) { /*vbox*/
-      w = widget->w - 2 * margin;
-      return_value_if_fail(w > 0, RET_BAD_PARAMS);
+      w = widget->w - 2 * x_margin;
+      h = widget->h - 2 * y_margin - (n - 1) * spacing;
+      return_value_if_fail(w > 0 && h > 0, RET_BAD_PARAMS);
 
       for (i = 0; i < n; i++) {
         iter = children[i];
-        widget_layout_self(iter);
+        widget_layout_self_with_wh(iter, w, h);
       }
 
       for (i = 0; i < n; i++) {
         iter = children[i];
         return_value_if_fail(y <= widget->h, RET_BAD_PARAMS);
         widget_move_resize(iter, x, y, w, iter->h);
-        y += iter->h + cell_spacing;
+        y += iter->h + spacing;
       }
 
       for (i = 0; i < n; i++) {
@@ -310,11 +330,17 @@ ret_t widget_layout_children(widget_t* widget) {
       uint8_t c = 0;
       wh_t item_w = 0;
       wh_t item_h = 0;
-      w = widget->w - 2 * margin - (cols - 1) * cell_spacing;
-      h = widget->h - 2 * margin - (rows - 1) * cell_spacing;
+      w = widget->w - 2 * x_margin - (cols - 1) * spacing;
+      h = widget->h - 2 * y_margin - (rows - 1) * spacing;
       item_w = w / cols;
       item_h = h / rows;
       return_value_if_fail(item_w > 0 && item_h > 0, RET_BAD_PARAMS);
+
+      w = (cols - 1) * spacing + cols * item_w;
+      h = (rows - 1) * spacing + rows * item_h;
+
+      x = x_margin = (widget->w - w) >> 1;
+      y = y_margin = (widget->h - h) >> 1;
 
       for (i = 0; i < n; i++) {
         iter = children[i];
@@ -324,11 +350,11 @@ ret_t widget_layout_children(widget_t* widget) {
         c++;
         if (c == cols) {
           r++;
-          y += item_h + cell_spacing;
+          y += item_h + spacing;
           c = 0;
-          x = margin;
+          x = x_margin;
         } else {
-          x += item_w + cell_spacing;
+          x += item_w + spacing;
         }
       }
 
@@ -361,30 +387,31 @@ ret_t widget_layout_children(widget_t* widget) {
       if (l->w_attr == W_ATTR_FILL || l->h_attr == H_ATTR_FILL) {
         widget_t* prev = i > 0 ? widget_get_child(widget, i - 1) : NULL;
         widget_t* next = (i + 1) == widget->children->size ? NULL : widget_get_child(widget, i + 1);
+
         if (l->w_attr == W_ATTR_FILL) {
           if (prev) {
-            x = prev->x + prev->w + cell_spacing;
+            x = prev->x + prev->w + spacing;
           } else {
-            x = margin;
+            x = x_margin;
           }
           if (next) {
-            w = (next->x - cell_spacing) - x;
+            w = next->x - spacing - x;
           } else {
-            w = widget->w - margin - x;
+            w = widget->w - x_margin - x;
           }
         }
 
         if (l->h_attr == H_ATTR_FILL) {
           if (prev != NULL) {
-            y = prev->y + prev->h + cell_spacing;
+            y = prev->y + prev->h + spacing;
           } else {
-            y = margin;
+            y = y_margin;
           }
 
           if (next != NULL) {
-            h = next->y - cell_spacing - y;
+            h = next->y - spacing - y;
           } else {
-            h = widget->h - margin - y;
+            h = widget->h - y_margin - y;
           }
         }
 
@@ -402,54 +429,60 @@ ret_t widget_layout_children(widget_t* widget) {
 }
 
 children_layout_t* children_layout_parser(children_layout_t* layout, const char* params) {
-  const char* p = params;
+  tokenizer_t tokenizer;
+  tokenizer_t* t = &tokenizer;
   return_value_if_fail(layout != NULL && params != NULL, NULL);
 
   memset(layout, 0x00, sizeof(*layout));
+  tokenizer_init(t, params, strlen(params), " ,");
 
-  if (*p == 'h') {
-    layout->rows = tk_atoi(p + 1);
-    layout->rows_is_height = TRUE;
-  } else if (*p == 'w') {
-    layout->cols = tk_atoi(p + 1);
-    layout->cols_is_width = TRUE;
-  } else {
-    layout->rows = tk_atoi(p);
-    layout->rows_is_height = FALSE;
-  }
+  while (tokenizer_has_more(t)) {
+    const char* token = tokenizer_next(t);
+    int val = tk_atoi(tk_skip_to_num(token));
 
-  p = strchr(p, ' ');
-  if (p != NULL) {
-    while (*p == ' ') p++;
-    if (*p) {
-      if (*p == 'w') {
-        layout->cols = tk_atoi(p + 1);
+    switch (*token) {
+      case 'w': {
+        layout->cols = val;
         layout->cols_is_width = TRUE;
-      } else if (*p == 'h') {
-        layout->rows = tk_atoi(p + 1);
+        break;
+      }
+      case 'h': {
+        layout->rows = val;
         layout->rows_is_height = TRUE;
-      } else {
-        layout->cols = tk_atoi(p);
+        break;
+      }
+      case 'c': {
+        layout->cols = val;
         layout->cols_is_width = FALSE;
+        break;
       }
-    }
-
-    p = strchr(p, ' ');
-    if (p != NULL) {
-      while (*p == ' ') p++;
-      if (*p) {
-        layout->margin = tk_atoi(p);
+      case 'r': {
+        layout->rows = val;
+        layout->rows_is_height = FALSE;
+        break;
       }
-
-      p = strchr(p, ' ');
-      if (p != NULL) {
-        while (*p == ' ') p++;
-        if (*p) {
-          layout->cell_spacing = tk_atoi(p);
-        }
+      case 'x': {
+        layout->x_margin = val;
+        break;
       }
+      case 'y': {
+        layout->y_margin = val;
+        break;
+      }
+      case 'm': {
+        layout->x_margin = val;
+        layout->y_margin = val;
+        break;
+      }
+      case 's': {
+        layout->spacing = val;
+        break;
+      }
+      default:
+        break;
     }
   }
+  tokenizer_deinit(t);
 
   return layout;
 }

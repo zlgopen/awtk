@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate" layout="w128 h30 5 10">
+<window name="main" anim_hint="htranslate" layout="w128 h30 m5 s10">
     <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
     <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
     <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>

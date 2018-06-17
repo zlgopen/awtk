@@ -112,13 +112,13 @@ int tokenizer_next_int(tokenizer_t* tokenizer, int defval);
 float tokenizer_next_float(tokenizer_t* tokenizer, float defval);
 
 /**
- * @method tokenizer_reset
+ * @method tokenizer_deinit
  * 重置tokenizer。
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tokenizer_reset(tokenizer_t* tokenizer);
+ret_t tokenizer_deinit(tokenizer_t* tokenizer);
 
 END_C_DECLS
 

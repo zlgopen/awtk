@@ -37,7 +37,7 @@ ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h);
 ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t margin, uint8_t cell_spacing);
+                                        uint8_t x_margin, uint8_t y_margin, uint8_t spacing);
 ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl);
 
 ret_t widget_layout(widget_t* widget);

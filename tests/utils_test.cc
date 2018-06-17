@@ -103,3 +103,9 @@ TEST(Utils, tk_memcpy32) {
     ASSERT_EQ(memcmp(dst, src, i * 4), 0);
   }
 }
+
+TEST(Utils, tk_skip_to_num) {
+  ASSERT_EQ(tk_atoi(tk_skip_to_num("123")), 123);
+  ASSERT_EQ(tk_atoi(tk_skip_to_num("abc123")), 123);
+  ASSERT_EQ(tk_atoi(tk_skip_to_num("abc:@#123")), 123);
+}

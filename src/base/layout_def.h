@@ -54,8 +54,9 @@ typedef struct _widget_layout_t {
 typedef struct _children_layout_t {
   uint16_t rows;
   uint16_t cols;
-  uint8_t margin;
-  uint8_t cell_spacing;
+  uint8_t x_margin;
+  uint8_t y_margin;
+  uint8_t spacing;
   uint16_t cols_is_width : 1;
   uint16_t rows_is_height : 1;
   bool_t inited;

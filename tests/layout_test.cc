@@ -151,7 +151,7 @@ TEST(Layuout, layout_children_00) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 0, 0, 10, 10);
+  widget_set_children_layout_params(win, 0, 0, 10, 10, 10);
   widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "10", "4"));
   widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "fill", "4"));
   widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "0", "3", "4"));
@@ -176,7 +176,7 @@ TEST(Layuout, layout_children_10) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 0, 10, 5);
+  widget_set_children_layout_params(win, 1, 0, 10, 10, 5);
   widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20", "4"));
   widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "30", "4"));
   widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "0", "20%", "4"));
@@ -193,7 +193,7 @@ TEST(Layuout, layout_children_10) {
 
   ASSERT_EQ(g3->x, 70);
   ASSERT_EQ(g3->y, 10);
-  ASSERT_EQ(g3->w, 40);
+  ASSERT_EQ(g3->w, 34);
   ASSERT_EQ(g3->h, 180);
 
   widget_destroy(win);
@@ -206,7 +206,7 @@ TEST(Layuout, layout_children_01) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 0, 1, 10, 10);
+  widget_set_children_layout_params(win, 0, 1, 10, 10, 10);
   widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20", "20"));
   widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "30", "30"));
   widget_set_parsed_self_layout_params(g3,
@@ -225,7 +225,7 @@ TEST(Layuout, layout_children_01) {
   ASSERT_EQ(g3->x, 10);
   ASSERT_EQ(g3->y, 80);
   ASSERT_EQ(g3->w, 180);
-  ASSERT_EQ(g3->h, 40);
+  ASSERT_EQ(g3->h, 32);
 
   widget_destroy(win);
 }
@@ -235,7 +235,7 @@ TEST(Layuout, layout_children_11) {
   widget_t* win = group_box_create(NULL, 0, 0, 200, 200);
   widget_t* g1 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 1, 10, 5);
+  widget_set_children_layout_params(win, 1, 1, 10, 10, 5);
   widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20%", "20%"));
   widget_layout(win);
   ASSERT_EQ(g1->x, 10);
@@ -253,27 +253,27 @@ TEST(Layuout, layout_children_14) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 4, 5, 10);
+  widget_set_children_layout_params(win, 1, 4, 5, 10, 10);
   widget_layout(win);
   ASSERT_EQ(g1->x, 5);
-  ASSERT_EQ(g1->y, 5);
+  ASSERT_EQ(g1->y, 10);
   ASSERT_EQ(g1->w, 40);
-  ASSERT_EQ(g1->h, 190);
+  ASSERT_EQ(g1->h, 180);
 
   ASSERT_EQ(g2->x, 55);
-  ASSERT_EQ(g2->y, 5);
+  ASSERT_EQ(g2->y, 10);
   ASSERT_EQ(g2->w, 40);
-  ASSERT_EQ(g2->h, 190);
+  ASSERT_EQ(g2->h, 180);
 
   ASSERT_EQ(g3->x, 105);
-  ASSERT_EQ(g3->y, 5);
+  ASSERT_EQ(g3->y, 10);
   ASSERT_EQ(g3->w, 40);
-  ASSERT_EQ(g3->h, 190);
+  ASSERT_EQ(g3->h, 180);
 
   ASSERT_EQ(g4->x, 155);
-  ASSERT_EQ(g4->y, 5);
+  ASSERT_EQ(g4->y, 10);
   ASSERT_EQ(g4->w, 40);
-  ASSERT_EQ(g4->h, 190);
+  ASSERT_EQ(g4->h, 180);
 
   widget_destroy(win);
 }
@@ -285,27 +285,27 @@ TEST(Layuout, layout_children_41) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 4, 1, 5, 10);
+  widget_set_children_layout_params(win, 4, 1, 10, 5, 10);
   widget_layout(win);
-  ASSERT_EQ(g1->x, 5);
+  ASSERT_EQ(g1->x, 10);
   ASSERT_EQ(g1->y, 5);
   ASSERT_EQ(g1->h, 40);
-  ASSERT_EQ(g1->w, 190);
+  ASSERT_EQ(g1->w, 180);
 
   ASSERT_EQ(g2->y, 55);
-  ASSERT_EQ(g2->x, 5);
+  ASSERT_EQ(g2->x, 10);
   ASSERT_EQ(g2->h, 40);
-  ASSERT_EQ(g2->w, 190);
+  ASSERT_EQ(g2->w, 180);
 
   ASSERT_EQ(g3->y, 105);
-  ASSERT_EQ(g3->x, 5);
+  ASSERT_EQ(g3->x, 10);
   ASSERT_EQ(g3->h, 40);
-  ASSERT_EQ(g3->w, 190);
+  ASSERT_EQ(g3->w, 180);
 
   ASSERT_EQ(g4->y, 155);
-  ASSERT_EQ(g4->x, 5);
+  ASSERT_EQ(g4->x, 10);
   ASSERT_EQ(g4->h, 40);
-  ASSERT_EQ(g4->w, 190);
+  ASSERT_EQ(g4->w, 180);
 
   widget_destroy(win);
 }
@@ -317,7 +317,7 @@ TEST(Layuout, layout_children_22) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 2, 2, 5, 10);
+  widget_set_children_layout_params(win, 2, 2, 5, 5, 10);
   widget_layout(win);
 
   ASSERT_EQ(win->x, 0);
@@ -350,27 +350,37 @@ TEST(Layuout, layout_children_22) {
 
 TEST(Layuout, layout_children_parse) {
   children_layout_t layout;
-  children_layout_parser(&layout, "1");
+  children_layout_parser(&layout, "r:1");
   ASSERT_EQ(layout.rows, 1);
   ASSERT_EQ(layout.cols, 0);
-  ASSERT_EQ(layout.margin, 0);
-  ASSERT_EQ(layout.cell_spacing, 0);
+  ASSERT_EQ(layout.x_margin, 0);
+  ASSERT_EQ(layout.y_margin, 0);
+  ASSERT_EQ(layout.spacing, 0);
 
-  children_layout_parser(&layout, "1 2");
+  children_layout_parser(&layout, "r:1 c:2");
   ASSERT_EQ(layout.rows, 1);
   ASSERT_EQ(layout.cols, 2);
-  ASSERT_EQ(layout.margin, 0);
-  ASSERT_EQ(layout.cell_spacing, 0);
+  ASSERT_EQ(layout.x_margin, 0);
+  ASSERT_EQ(layout.y_margin, 0);
+  ASSERT_EQ(layout.spacing, 0);
 
-  children_layout_parser(&layout, "1 2 3");
+  children_layout_parser(&layout, "r:1 c:2 x:3");
   ASSERT_EQ(layout.rows, 1);
   ASSERT_EQ(layout.cols, 2);
-  ASSERT_EQ(layout.margin, 3);
-  ASSERT_EQ(layout.cell_spacing, 0);
+  ASSERT_EQ(layout.x_margin, 3);
+  ASSERT_EQ(layout.y_margin, 0);
+  ASSERT_EQ(layout.spacing, 0);
 
-  children_layout_parser(&layout, "1 2 3 4");
+  children_layout_parser(&layout, "r:1 c:2 x:3 s:4");
   ASSERT_EQ(layout.rows, 1);
   ASSERT_EQ(layout.cols, 2);
-  ASSERT_EQ(layout.margin, 3);
-  ASSERT_EQ(layout.cell_spacing, 4);
+  ASSERT_EQ(layout.x_margin, 3);
+  ASSERT_EQ(layout.spacing, 4);
+
+  children_layout_parser(&layout, "r:1 c:2 x:3 y:10 spacing:4");
+  ASSERT_EQ(layout.rows, 1);
+  ASSERT_EQ(layout.cols, 2);
+  ASSERT_EQ(layout.x_margin, 3);
+  ASSERT_EQ(layout.y_margin, 10);
+  ASSERT_EQ(layout.spacing, 4);
 }

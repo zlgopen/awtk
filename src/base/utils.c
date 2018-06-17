@@ -21,6 +21,15 @@
 
 #include "base/utils.h"
 
+const char* tk_skip_to_num(const char* str) {
+  const char* p = str;
+  return_value_if_fail(str != NULL, NULL);
+
+  while (*p && (*p < '0' || *p > '9')) p++;
+
+  return p;
+}
+
 int tk_str2bool(const char* str) {
   if (str == NULL || str[0] == '0' || strcmp(str, "false") == 0 || strcmp(str, "no") == 0) {
     return 0;

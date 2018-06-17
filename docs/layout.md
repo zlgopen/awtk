@@ -108,23 +108,27 @@ widget_layout(btn);
 
 ## 三、子控件的布局参数
 
-为了方便父控件布局子控件，AWTK提供了下面4个参数：
+为了方便父控件布局子控件，AWTK提供了下面几个参数：
 
-* rows 行数
-* cols 列数
-* margin 边距
-* cell_spacing 子控件之间的间距
+* rows 行数，UI描述文件中可简写为r。
+* cols 列数，UI描述文件中可简写为c。
+* width 子控件的宽度(可以用来计算列数，与cols互斥)，UI描述文件中可简写为w。
+* height 子控件的高度(可以用来计算行数，与rows互斥)，UI描述文件中可简写为h。
+* x_margin 水平方向的边距，UI描述文件中可简写为x。
+* y_margin 垂直方向的边距，UI描述文件中可简写为y。
+* margin 边距(相当于同时设置x\_maring/y\_margin)，UI描述文件中可简写为m。
+* spacing 子控件之间的间距。UI描述文件中可简写为s。
 
 在代码中，可以通过下面的函数设置这几个参数：
 
 ```
-ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols, uint8_t margin, uint8_t cell_spacing);
+ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols, uint8_t x_margin, uint8_t y_margin, uint8_t cell_spacing);
 ```
 
-在XML中，可以通过layout设置这几个参数:
+在XML中，可以通过layout设置这几个参数(参数的顺序无关，重复以后者为准):
 
 ```
-  <group_box x="0" y="140" w="100%" h="90" layout="2 2 10 5">
+  <group_box x="0" y="140" w="100%" h="90" layout="rows:2 cols:2 spacing:10 maring:5">
     <button x="0" y="0" w="0" h="0" text="button"/>
     <button x="0" y="0" w="0" h="0" text="button"/>
     <button x="0" y="0" w="0" h="0" text="button"/>
@@ -132,14 +136,11 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
   </group_box>
 ```
 
-> layout的值，依次为rows cols margin cell\_spacing，由单个空格分开。
+上面的layout值也可以简写为：
 
-有时指定子控件的高度和宽度更方便，可以加上前缀：
-
-* rows前加**h**前缀表示指定子控件的高度，rows由子控件的高度计算而来。
-* cols前加**w**前缀表示指定子控件的宽度，cols由子控件的宽度计算而来。
-
-如: layout="h100 w128 10 5" 表示子控件的高度为100像素，宽度为128像素。 
+```
+layout="r2 c2 s10 m5"
+```
 
 下面我们看看，如何调整rows/cols两个参数，来实现不同的布局方式。
 
@@ -152,26 +153,26 @@ ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t 
 当rows=1,cols=0时，所有子控件在水平方向排成一行，可以实现其它GUI中hbox的功能。子控件的参数：
 
 * x 从左到右排列，由布局参数计算而出。
-* y 为margin
+* y 为y\_margin
 * w 由子控件自己决定。
-* h 为父控件的高度-2*margin
+* h 为父控件的高度-2*y\_margin
 
 ### 2. vbox
 
 当cols=1,rows=0时，所有子控件在垂直方向排成一列，可以实现其它GUI中vbox的功能。子控件的参数：
 
-* x 为margin
+* x 为x\_margin
 * y 从上到下排列，由布局参数计算而出。
-* w 为父控件的宽度-2*margin
+* w 为父控件的宽度-2*x\_margin
 * h 由子控件自己决定。
 
 ### 3. listbox
 
 当cols=1,rows=N时，所有子控件在垂直方向排成一列，可以实现其它GUI中listbox的功能。子控件的参数：
 
-* x 为margin
+* x 为x\_margin
 * y 从上到下排列，由布局参数计算而出。
-* w 为父控件的宽度-2*margin
+* w 为父控件的宽度-2*x\_margin
 * h 为父控件的高度(减去边距和间距)分成成N等分。
 
 ### 4. grid

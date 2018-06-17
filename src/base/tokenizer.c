@@ -111,7 +111,7 @@ float tokenizer_next_float(tokenizer_t* tokenizer, float defval) {
   }
 }
 
-ret_t tokenizer_reset(tokenizer_t* tokenizer) {
+ret_t tokenizer_deinit(tokenizer_t* tokenizer) {
   return_value_if_fail(tokenizer != NULL, RET_BAD_PARAMS);
   str_reset(&(tokenizer->token));
   memset(tokenizer, 0x00, sizeof(tokenizer_t));
