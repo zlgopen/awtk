@@ -150,9 +150,9 @@ static void on_value_animator(widget_t* widget) {
   widget_animator_start(animator);
 }
 
-static void install_click_hander(widget_t* widget) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
+static ret_t install_one(void* ctx, void* iter) {
+  widget_t* widget = WIDGET(iter);
+
   if (widget->name.size) {
     const char* name = widget->name.str;
     if (strstr(name, "open:") != NULL) {
@@ -186,11 +186,13 @@ static void install_click_hander(widget_t* widget) {
       on_value_animator(widget);
     }
   }
+  (void)ctx;
 
-  nr = widget_count_children(widget);
-  for (i = 0; i < nr; i++) {
-    install_click_hander(widget_get_child(widget, i));
-  }
+  return RET_OK;
+}
+
+static void install_click_hander(widget_t* widget) {
+  widget_foreach(widget, install_one, widget);
 }
 
 #include "base/idle.h"

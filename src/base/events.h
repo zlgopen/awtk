@@ -170,12 +170,16 @@ typedef enum _event_type_t {
    * 控件动画完成事件。
    */
   EVT_ANIM_END,
-
   /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
   EVT_REQ_START = 100,
+  /**
+   * @const EVT_WINDOW_LOAD
+   * 窗口加载完成事件。
+   */
+  EVT_WINDOW_LOAD = 100,
 
   /**
    * @const EVT_USER_START

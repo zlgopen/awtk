@@ -62,7 +62,7 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method keyboard_close
  * @deconstructor
- * 关闭窗口。
+ * 关闭keyboard窗口。
  * @param {widget_t*} parent keyboard对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

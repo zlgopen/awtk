@@ -106,7 +106,11 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
 
 static ret_t ui_builder_default_on_end(ui_builder_t* b) {
   if (b->root != NULL) {
-    widget_layout(b->root);
+    widget_t* win = b->root;
+    event_t e = event_init(EVT_WINDOW_LOAD, win);
+
+    widget_layout(win);
+    widget_dispatch(win, &e);
   }
 
   return RET_OK;
