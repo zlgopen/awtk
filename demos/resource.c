@@ -6,6 +6,7 @@
 #include "res/inc/theme/calibration.data"
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog1.data"
+#include "res/inc/theme/keyboard.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -168,6 +169,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, theme_calibration);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog1);
+  resource_manager_add(rm, theme_keyboard);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);
