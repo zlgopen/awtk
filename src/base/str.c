@@ -83,6 +83,40 @@ ret_t str_append(str_t* str, const char* text) {
   return RET_OK;
 }
 
+ret_t str_decode_xml_entity(str_t* str, const char* text) {
+  char* d = NULL;
+  const char* s = text;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, strlen(text) + 1) == RET_OK, RET_OOM);
+
+  d = str->str;
+  str->size = 0;
+
+  while (*s) {
+    char c = *s++;
+    if (c == '&') {
+      if (strncmp(s, "lt;", 3) == 0) {
+        c = '<';
+        s += 3;
+      } else if (strncmp(s, "gt;", 3) == 0) {
+        c = '>';
+        s += 3;
+      } else if (strncmp(s, "amp;", 4) == 0) {
+        c = '&';
+        s += 4;
+      } else if (strncmp(s, "quota;", 6) == 0) {
+        c = '\"';
+        s += 6;
+      }
+    }
+    *d++ = c;
+  }
+  *d = '\0';
+  str->size = d - str->str;
+
+  return RET_OK;
+}
+
 bool_t str_eq(str_t* str, const char* text) {
   if ((str == NULL && text == NULL) || (str != NULL && str->str == NULL && text == NULL)) {
     return TRUE;

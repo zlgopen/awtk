@@ -105,6 +105,16 @@ ret_t str_set_with_len(str_t* str, const char* text, uint16_t len);
 ret_t str_append(str_t* str, const char* text);
 
 /**
+ * @method str_decode_xml_entity
+ * 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要解码的XML文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_decode_xml_entity(str_t* str, const char* text);
+
+/**
  * @method str_from_int
  * 用整数初始化字符串。
  * @param {str_t*} str str对象。

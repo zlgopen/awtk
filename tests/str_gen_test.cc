@@ -72,6 +72,10 @@ TEST(StrGen, xml1) {
     <language name=\"en_US\">OK</language> \
     <language name=\"zh_CN\">确定</language> \
     </string> \
+    <string name=\"abc\"> \
+    <language name=\"en_US\">a&lt;b&gt;c</language> \
+    <language name=\"zh_CN\">a&quota;b&amp;c</language> \
+    </string> \
     <string name=\"cancel\"> \
     <language name=\"en_US\">Cancel</language> \
     <language name=\"zh_CN\">取消</language> \
@@ -85,9 +89,11 @@ TEST(StrGen, xml1) {
   sg.Output("en_US", buff, sizeof(buff));
   ASSERT_EQ(string("OK"), str_table_lookup(table, "ok"));
   ASSERT_EQ(string("Cancel"), str_table_lookup(table, "cancel"));
+  ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
 
   sg.Output("zh_CN", buff, sizeof(buff));
   ASSERT_EQ(string("确定"), str_table_lookup(table, "ok"));
   ASSERT_EQ(string("取消"), str_table_lookup(table, "cancel"));
+  ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));
 }

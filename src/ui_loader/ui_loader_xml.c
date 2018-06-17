@@ -21,6 +21,7 @@
 
 #include "base/enums.h"
 #include "base/mem.h"
+#include "base/str.h"
 #include "base/layout.h"
 #include "xml/xml_parser.h"
 #include "ui_loader/ui_loader_xml.h"
@@ -28,6 +29,7 @@
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ui_builder_t* ui_builder;
+  str_t str;
 } xml_builder_t;
 
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
@@ -81,7 +83,8 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
       }
     }
 
-    ui_builder_on_widget_prop(b->ui_builder, key, value);
+    ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
+    ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
 
     i += 2;
   }
@@ -141,6 +144,7 @@ static XmlBuilder* builder_init(xml_builder_t* b, ui_builder_t* ui_builder) {
   b->builder.on_pi = xml_loader_on_pi;
   b->builder.destroy = xml_loader_destroy;
   b->ui_builder = ui_builder;
+  str_init(&(b->str), 100);
 
   return &(b->builder);
 }
@@ -157,6 +161,7 @@ ret_t ui_loader_load_xml(ui_loader_t* loader, const uint8_t* data, uint32_t size
   xml_parser_parse(parser, (const char*)data, size);
   ui_builder_on_end(ui_builder);
   xml_parser_destroy(parser);
+  str_reset(&(b.str));
 
   return RET_OK;
 }

@@ -45,7 +45,7 @@ TEST(UILoaderXML, attr) {
   ui_builder_t* builder = ui_builder_default("");
   const char* str =
       "<dialog margin=\"0\" x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
-       <button name=\"b1\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
+       <button name=\"b1\" text=\"a&lt;b&gt;c&quota;&amp;\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
        <button name=\"b2\" x=\"10%\" y=\"10%\" w=\"80%\" h=\"20%\" />\
        <button name=\"b3\" x=\"center\" y=\"middle\" w=\"80\" h=\"20\" />\
        <button name=\"b4\" x=\"right\" y=\"bottom\" w=\"80\" h=\"20\" />\
@@ -60,6 +60,8 @@ TEST(UILoaderXML, attr) {
   ASSERT_EQ(b1->y, 10);
   ASSERT_EQ(b1->w, 80);
   ASSERT_EQ(b1->h, 20);
+  ASSERT_EQ(wcscmp(b1->text.str, L"a<b>c\"&"), 0);
+
   wh_t parent_w = b1->parent->w;
   wh_t parent_h = b1->parent->h;
 

@@ -67,10 +67,15 @@ static void xml_str_gen_on_text(XmlBuilder* thiz, const char* text, size_t lengt
   xml_str_builder_t* b = (xml_str_builder_t*)thiz;
 
   if (b->level == 2) {
+    str_t str;
     str_t tr_str;
+    str_init(&(str), length);
     str_init(&(tr_str), length);
     str_set_with_len(&tr_str, text, length);
-    b->sg->Add(b->language, Sentence(b->str, tr_str.str));
+    str_decode_xml_entity(&str, tr_str.str);
+
+    b->sg->Add(b->language, Sentence(b->str, str.str));
+    str_reset(&(str));
     str_reset(&(tr_str));
   }
 

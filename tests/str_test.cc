@@ -61,3 +61,23 @@ TEST(Str, set_with_len) {
 
   str_reset(s);
 }
+
+TEST(Str, decode_xml_entity) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(str_decode_xml_entity(s, "a&lt;b"), RET_OK);
+  ASSERT_EQ(str_eq(s, "a<b"), TRUE);
+
+  ASSERT_EQ(str_decode_xml_entity(s, "a&lt;b&gt;c"), RET_OK);
+  ASSERT_EQ(str_eq(s, "a<b>c"), TRUE);
+
+  ASSERT_EQ(str_decode_xml_entity(s, "&quota;a&lt;b&gt;c&quota;"), RET_OK);
+  ASSERT_EQ(str_eq(s, "\"a<b>c\""), TRUE);
+
+  ASSERT_EQ(str_decode_xml_entity(s, "&quota;a&lt;b&gt;c&quota;&amp;&amp;"), RET_OK);
+  ASSERT_EQ(str_eq(s, "\"a<b>c\"&&"), TRUE);
+
+  str_reset(s);
+}
