@@ -122,10 +122,10 @@ ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id) {
 
   idle.id = idle_id;
   ret = array_remove(ACTIVE_IDLES(idle_manager), idle_info_compare_id, &idle,
-                     (destroy_t)idle_info_destroy);
+                     (tk_destroy_t)idle_info_destroy);
   if (ret != RET_OK) {
     ret = array_remove(OFFLINE_IDLES(idle_manager), idle_info_compare_id, &idle,
-                       (destroy_t)idle_info_destroy);
+                       (tk_destroy_t)idle_info_destroy);
   }
 
   return ret;

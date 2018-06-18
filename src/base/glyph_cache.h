@@ -37,10 +37,11 @@ typedef struct _glyph_cache_t {
   uint16_t size;
   uint16_t capacity;
   glyph_cache_item_t* items;
-  destroy_t destroy_glyph;
+  tk_destroy_t destroy_glyph;
 } glyph_cache_t;
 
-glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity, destroy_t destroy_glyph);
+glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity,
+                                tk_destroy_t destroy_glyph);
 ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, uint16_t size, glyph_t* g);
 ret_t glyph_cache_lookup(glyph_cache_t* cache, wchar_t code, uint16_t size, glyph_t* g);
 ret_t glyph_cache_deinit(glyph_cache_t* cache);

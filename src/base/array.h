@@ -60,47 +60,47 @@ array_t* array_init(array_t* array, uint16_t capacity);
  * @method array_find
  * 查找第一个满足条件的元素。
  * @param {array_t*} array 数组对象。
- * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {tk_compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
  *
  * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
  */
-void* array_find(array_t* array, compare_t cmp, void* ctx);
+void* array_find(array_t* array, tk_compare_t cmp, void* ctx);
 
 /**
  * @method array_find_index
  * 查找第一个满足条件的元素，并返回位置。
  * @param {array_t*} array 数组对象。
- * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {tk_compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
  *
  * @return {int} 如果找到，返回满足条件的对象的位置，否则返回-1。
  */
-int array_find_index(array_t* array, compare_t cmp, void* ctx);
+int array_find_index(array_t* array, tk_compare_t cmp, void* ctx);
 
 /**
  * @method array_remove
  * 删除第一个满足条件的元素。
  * @param {array_t*} array 数组对象。
- * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {tk_compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
- * @param {destroy_t} destroy 销毁元素的回调函数。
+ * @param {tk_destroy_t} destroy 销毁元素的回调函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t array_remove(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
+ret_t array_remove(array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_t destroy);
 
 /**
  * @method array_remove_all
  * 删除全部满足条件的元素。
  * @param {array_t*} array 数组对象。
- * @param {compare_t} cmp 比较函数，为NULL时直接比较指针。
+ * @param {tk_compare_t} cmp 比较函数，为NULL时直接比较指针。
  * @param {void*} ctx 比较函数的上下文。
- * @param {destroy_t} destroy 销毁元素的回调函数。
+ * @param {tk_destroy_t} destroy 销毁元素的回调函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t array_remove_all(array_t* array, compare_t cmp, void* ctx, destroy_t destroy);
+ret_t array_remove_all(array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_t destroy);
 
 /**
  * @method array_pop

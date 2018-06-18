@@ -157,7 +157,7 @@ static const char* map_name_to_value(const char* name) {
   color_map.value = NULL;
 
   color_map_t* ret = (color_map_t*)bsearch(&color_map, colors_map, ARRAY_SIZE(colors_map),
-                                           sizeof(color_map_t), (compare_t)compare_color);
+                                           sizeof(color_map_t), (tk_compare_t)compare_color);
 
   return ret ? ret->value : NULL;
 }

@@ -179,8 +179,8 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   b.last_access_time = time_now_s() - time_delta_s;
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
-  return array_remove_all(&(imm->images), (compare_t)bitmap_cache_cmp_time, &b,
-                          (destroy_t)bitmap_cache_destroy);
+  return array_remove_all(&(imm->images), (tk_compare_t)bitmap_cache_cmp_time, &b,
+                          (tk_destroy_t)bitmap_cache_destroy);
 }
 
 ret_t image_manager_deinit(image_manager_t* imm) {

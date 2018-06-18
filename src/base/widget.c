@@ -949,7 +949,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return ret;
 }
 
-ret_t widget_foreach(widget_t* widget, visit_t visit, void* ctx) {
+ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
   uint32_t i = 0;
   uint32_t nr = 0;
   widget_t** children = NULL;

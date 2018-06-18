@@ -68,7 +68,7 @@ static bool_t array_extend(array_t* array) {
   }
 }
 
-int array_find_index(array_t* array, compare_t cmp, void* data) {
+int array_find_index(array_t* array, tk_compare_t cmp, void* data) {
   int32_t i = 0;
   int32_t size = 0;
   void** elms = NULL;
@@ -95,7 +95,7 @@ int array_find_index(array_t* array, compare_t cmp, void* data) {
   return -1;
 }
 
-ret_t array_remove(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
+ret_t array_remove(array_t* array, tk_compare_t cmp, void* data, tk_destroy_t destroy) {
   int32_t i = 0;
   int32_t pos = 0;
   int32_t size = 0;
@@ -124,7 +124,7 @@ ret_t array_remove(array_t* array, compare_t cmp, void* data, destroy_t destroy)
   return RET_OK;
 }
 
-ret_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t destroy) {
+ret_t array_remove_all(array_t* array, tk_compare_t cmp, void* data, tk_destroy_t destroy) {
   int32_t i = 0;
   int32_t k = 0;
   int32_t size = 0;
@@ -154,7 +154,7 @@ ret_t array_remove_all(array_t* array, compare_t cmp, void* data, destroy_t dest
   return RET_OK;
 }
 
-void* array_find(array_t* array, compare_t cmp, void* data) {
+void* array_find(array_t* array, tk_compare_t cmp, void* data) {
   int pos = array_find_index(array, cmp, data);
   if (pos >= 0) {
     return array->elms[pos];

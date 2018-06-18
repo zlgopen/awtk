@@ -132,10 +132,10 @@ ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {
   timer.id = timer_id;
 
   ret = array_remove(ACTIVE_TIMERS(timer_manager), timer_info_compare_id, &timer,
-                     (destroy_t)timer_info_destroy);
+                     (tk_destroy_t)timer_info_destroy);
   if (ret != RET_OK) {
     ret = array_remove(OFFLINE_TIMERS(timer_manager), timer_info_compare_id, &timer,
-                       (destroy_t)timer_info_destroy);
+                       (tk_destroy_t)timer_info_destroy);
   }
 
   return ret;

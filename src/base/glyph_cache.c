@@ -23,7 +23,8 @@
 #include "base/time.h"
 #include "base/glyph_cache.h"
 
-glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity, destroy_t destroy_glyph) {
+glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity,
+                                tk_destroy_t destroy_glyph) {
   return_value_if_fail(cache != NULL && capacity > 10, NULL);
 
   cache->items = TKMEM_ZALLOCN(glyph_cache_item_t, capacity);
