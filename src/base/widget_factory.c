@@ -69,7 +69,7 @@ static const creator_item_t* widget_factory_find_builtin_creator(const char* typ
   uint32_t i = 0;
   for (i = 0; i < ARRAY_SIZE(s_builtin_creators); i++) {
     const creator_item_t* iter = s_builtin_creators + i;
-    if (str_fast_equal(iter->type, type)) {
+    if (tk_str_eq(iter->type, type)) {
       return iter;
     }
   }
@@ -128,7 +128,7 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
 
   for (i = 0, nr = factory->creators.size; i < nr; i++) {
     iter = items[i];
-    if (str_fast_equal(iter->type, type)) {
+    if (tk_str_eq(iter->type, type)) {
       return iter->create(parent, x, y, w, h);
     }
   }

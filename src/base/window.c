@@ -34,7 +34,7 @@ static ret_t window_get_prop(widget_t* widget, const char* name, value_t* v) {
   window_t* window = WINDOW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+  if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
     value_set_str(v, window->anim_hint.str);
     return RET_OK;
   }
@@ -46,7 +46,7 @@ static ret_t window_set_prop(widget_t* widget, const char* name, const value_t* 
   window_t* window = WINDOW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+  if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
     str_from_value(&(window->anim_hint), v);
     return RET_OK;
   }

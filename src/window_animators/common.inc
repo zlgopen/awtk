@@ -4,17 +4,17 @@ static window_animator_t* window_animator_create(const char* type, bool_t open) 
   window_animator_t* wa = NULL;
   if (type == NULL || *type == '\0') {
     return NULL;
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_CENTER_SCALE)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_CENTER_SCALE)) {
     wa = window_animator_create_scale(open);
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_HTRANSLATE)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_HTRANSLATE)) {
     wa = window_animator_create_htranslate(open);
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_VTRANSLATE)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_VTRANSLATE)) {
     wa = window_animator_create_vtranslate(open);
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_BOTTOM_TO_TOP)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_BOTTOM_TO_TOP)) {
     wa = window_animator_create_bottom_to_top(open);
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_TOP_TO_BOTTOM)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_TOP_TO_BOTTOM)) {
     wa = window_animator_create_top_to_bottom(open);
-  } else if (str_fast_equal(type, WINDOW_ANIMATOR_FADE)) {
+  } else if (tk_str_eq(type, WINDOW_ANIMATOR_FADE)) {
     wa = window_animator_create_fade(open);
   }
 

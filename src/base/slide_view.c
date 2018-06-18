@@ -247,19 +247,19 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_VALUE) || str_fast_equal(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     value_set_int(v, slide_view->active);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_VERTICAL)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, slide_view->vertical);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_AUTO_PLAY)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_PLAY)) {
     value_set_int(v, slide_view->auto_play);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_XOFFSET)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, slide_view->xoffset);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_YOFFSET)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     value_set_int(v, slide_view->yoffset);
     return RET_OK;
   }
@@ -369,17 +369,17 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_VALUE) || str_fast_equal(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     return slide_view_set_active(widget, value_int(v));
-  } else if (str_fast_equal(name, WIDGET_PROP_VERTICAL)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slide_view_set_vertical(widget, value_bool(v));
-  } else if (str_fast_equal(name, WIDGET_PROP_XOFFSET)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     slide_view->xoffset = value_int(v);
     slide_view_invalidate(slide_view);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_AUTO_PLAY)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_PLAY)) {
     return slide_view_set_auto_play(widget, value_int(v));
-  } else if (str_fast_equal(name, WIDGET_PROP_YOFFSET)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     slide_view->yoffset = value_int(v);
     slide_view_invalidate(slide_view);
     return RET_OK;

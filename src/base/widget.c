@@ -585,8 +585,8 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
 #ifdef WITH_VGCANVAS_LCD
   {
-    need_transform =
-        !fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1) || !fequal(widget->rotation, 0);
+    need_transform = !tk_fequal(widget->scale_x, 1) || !tk_fequal(widget->scale_y, 1) ||
+                     !tk_fequal(widget->rotation, 0);
 
     if (need_transform) {
       float_t anchor_x = widget->anchor_x * widget->w;
@@ -596,11 +596,11 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
       vgcanvas_save(vg);
       vgcanvas_translate(vg, widget->x, widget->y);
       vgcanvas_translate(vg, anchor_x, anchor_y);
-      if (!fequal(widget->rotation, 0)) {
+      if (!tk_fequal(widget->rotation, 0)) {
         vgcanvas_rotate(vg, widget->rotation);
       }
 
-      if (!fequal(widget->scale_x, 1) || !fequal(widget->scale_y, 1)) {
+      if (!tk_fequal(widget->scale_x, 1) || !tk_fequal(widget->scale_y, 1)) {
         vgcanvas_scale(vg, widget->scale_x, widget->scale_y);
       }
       vgcanvas_translate(vg, -anchor_x, -anchor_y);
@@ -661,24 +661,24 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_X)) {
+  if (tk_str_eq(name, WIDGET_PROP_X)) {
     widget->x = (wh_t)value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_Y)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_Y)) {
     widget->y = (wh_t)value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_W)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_W)) {
     widget->w = (wh_t)value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_H)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_VISIBLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = !!value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     widget->style_type = value_int(v);
     widget_update_style(widget);
-  } else if (str_fast_equal(name, WIDGET_PROP_ENABLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     widget->enable = !!value_int(v);
-  } else if (str_fast_equal(name, WIDGET_PROP_NAME)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
-  } else if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
   } else {
     ret = RET_NOT_FOUND;
@@ -705,23 +705,23 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_X)) {
+  if (tk_str_eq(name, WIDGET_PROP_X)) {
     value_set_int32(v, widget->x);
-  } else if (str_fast_equal(name, WIDGET_PROP_Y)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_Y)) {
     value_set_int32(v, widget->y);
-  } else if (str_fast_equal(name, WIDGET_PROP_W)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_W)) {
     value_set_int32(v, widget->w);
-  } else if (str_fast_equal(name, WIDGET_PROP_H)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     value_set_int32(v, widget->h);
-  } else if (str_fast_equal(name, WIDGET_PROP_VISIBLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
-  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_int(v, widget->style_type);
-  } else if (str_fast_equal(name, WIDGET_PROP_ENABLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
-  } else if (str_fast_equal(name, WIDGET_PROP_NAME)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name.str);
-  } else if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, widget->text.str);
   } else {
     if (widget->vt->get_prop) {

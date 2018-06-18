@@ -49,7 +49,7 @@ ret_t pages_set_active_by_name(widget_t* widget, const char* name) {
 
     for (i = 0; i < nr; i++) {
       widget_t* iter = children[i];
-      if (iter->name.str && str_fast_equal(iter->name.str, name)) {
+      if (iter->name.str && tk_str_eq(iter->name.str, name)) {
         return pages_set_active(widget, i);
       }
     }
@@ -78,7 +78,7 @@ static ret_t pages_get_prop(widget_t* widget, const char* name, value_t* v) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_VALUE) || str_fast_equal(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     value_set_uint32(v, pages->active);
     return RET_OK;
   }
@@ -89,7 +89,7 @@ static ret_t pages_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_VALUE) || str_fast_equal(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     return pages_set_active(widget, value_int(v));
   }
 

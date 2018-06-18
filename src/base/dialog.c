@@ -46,12 +46,12 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
+  if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return widget_get_prop(dialog->title, name, v);
-  } else if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
     value_set_str(v, dialog->anim_hint.str);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_MARGIN)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     value_set_int(v, dialog->margin);
     return RET_OK;
   }
@@ -63,16 +63,16 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (str_fast_equal(name, WIDGET_PROP_TEXT)) {
+  if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return widget_set_prop(dialog->title, name, v);
-  } else if (str_fast_equal(name, WIDGET_PROP_STYLE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     widget_set_prop(dialog->title, name, v);
     widget_set_prop(dialog->client, name, v);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_ANIM_HINT)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
     str_from_value(&(dialog->anim_hint), v);
     return RET_OK;
-  } else if (str_fast_equal(name, WIDGET_PROP_MARGIN)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     dialog->margin = value_int(v);
     dialog_on_relayout_children(widget);
     return RET_OK;
