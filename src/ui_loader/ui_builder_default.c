@@ -112,6 +112,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
     widget_update_style(win);
     widget_layout(win);
     widget_dispatch(win, &e);
+    widget_invalidate_force(win);
   }
 
   return RET_OK;

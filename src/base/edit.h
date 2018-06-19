@@ -59,8 +59,9 @@ typedef struct _edit_t {
   uint16_t selected_start;
   uint16_t selected_end;
   xy_t caret_x;
-  bool_t caret_visible;
   bool_t readonly;
+  bool_t caret_visible;
+  bool_t password_visible;
 
   wstr_t tips;
   uint32_t timer_id;
@@ -144,6 +145,16 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_input_tips(widget_t* widget, const wchar_t* tips);
+
+/**
+ * @method edit_set_password_visible
+ * 当编辑器输入类型为密码时，设置密码是否可见。
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} password_visible 密码是否可见。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
 
 #define EDIT(widget) ((edit_t*)(widget))
 

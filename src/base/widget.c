@@ -1082,6 +1082,13 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 }
 
+ret_t widget_invalidate_force(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget->dirty = FALSE;
+
+  return widget_invalidate(widget, NULL);
+}
+
 const void* widget_get_window_theme(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, NULL);

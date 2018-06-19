@@ -30,7 +30,7 @@
 
 static ret_t edit_update_status(widget_t* widget);
 
-static ret_t edit_update_carent(const timer_info_t* timer) {
+static ret_t edit_update_caret(const timer_info_t* timer) {
   rect_t r;
   edit_t* edit = EDIT(timer->ctx);
   widget_t* widget = WIDGET(timer->ctx);
@@ -47,14 +47,18 @@ static ret_t edit_update_carent(const timer_info_t* timer) {
   }
 }
 
+#define MAX_PASSWORD_LEN 31
 static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
-  int32_t i = 0;
   wstr_t text;
+  int32_t i = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
   style_t* style = &(widget->style);
+  wchar_t password[MAX_PASSWORD_LEN + 1];
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 4);
   wh_t caret_x = margin;
+  wchar_t invisible_char = '*';
+  bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
     str = &(edit->tips);
@@ -73,7 +77,9 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
 
     i = str->size - 1;
     while (w > 0 && i >= 0) {
-      cw = canvas_measure_text(c, str->str + i, 1);
+      wchar_t chr = invisible ? invisible_char : str->str[i];
+
+      cw = canvas_measure_text(c, &chr, 1);
       caret_x += cw;
       w -= cw;
       if (w > cw && i > 0) {
@@ -89,6 +95,17 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   } else {
     text.str = NULL;
     text.size = 0;
+  }
+
+  if (invisible) {
+    uint32_t i = 0;
+    uint32_t size = tk_min(text.size, MAX_PASSWORD_LEN);
+    for (i = 0; i < size; i++) {
+      password[i] = invisible_char;
+    }
+    password[size] = '\0';
+    text.str = password;
+    text.size = size;
   }
 
   widget_paint_helper(widget, c, NULL, &text);
@@ -120,18 +137,68 @@ static ret_t edit_delete_next_char(widget_t* widget) {
 
 static ret_t edit_input_char(widget_t* widget, wchar_t c) {
   edit_t* edit = EDIT(widget);
+  wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
 
   switch (input_type) {
     case INPUT_INT:
-    case INPUT_FLOAT: {
+    case INPUT_UINT: {
+      if (c == '0') {
+        if (text->size > 0) {
+          wstr_push(text, c);
+        }
+        break;
+      } else if (c >= '1' && c <= '9') {
+        wstr_push(text, c);
+        break;
+      } else if (c == '+' || (c == '-' && input_type == INPUT_INT)) {
+        if (text->size == 0) {
+          wstr_push(text, c);
+        }
+        break;
+      }
+      break;
+    }
+    case INPUT_FLOAT:
+    case INPUT_UFLOAT: {
+      if (c == '0') {
+        if (text->size > 0) {
+          wstr_push(text, c);
+        }
+        break;
+      } else if (c >= '1' && c <= '9') {
+        wstr_push(text, c);
+        break;
+      } else if (c == '+' || (c == '-' && input_type == INPUT_FLOAT)) {
+        if (text->size == 0) {
+          wstr_push(text, c);
+        }
+        break;
+      } else if (c == '.' || c == 'e') {
+        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
+          wstr_push(text, c);
+        }
+      }
+      break;
+    }
+    case INPUT_EMAIL: {
+      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' ||
+          c == '.' || c == '_') {
+        wstr_push(text, c);
+      } else if (c == '@') {
+        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
+          wstr_push(text, c);
+        }
+      }
+      break;
+    }
+    case INPUT_PHONE: {
       if (c >= '0' && c <= '9') {
-        wstr_push(&(widget->text), c);
-      } else if (widget->text.size == 0 && (c == '-' || c == '+')) {
-        wstr_push(&(widget->text), c);
-      } else if (input_type == INPUT_FLOAT && c == '.') {
-        if (wcschr(widget->text.str, '.') == NULL) {
-          wstr_push(&(widget->text), c);
+        wstr_push(text, c);
+        break;
+      } else if (c == '-') {
+        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
+          wstr_push(text, c);
         }
       }
       break;
@@ -142,9 +209,6 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
       }
     }
   }
-
-  edit_update_status(widget);
-  widget_invalidate(widget, NULL);
 
   return RET_OK;
 }
@@ -220,23 +284,26 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN:
       if (edit->timer_id == 0) {
-        edit->timer_id = timer_add(edit_update_carent, widget, 600);
+        edit->timer_id = timer_add(edit_update_caret, widget, 600);
       }
       edit_update_status(widget);
       break;
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
       edit_on_key_down(widget, evt);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
       edit_commit_str(widget, evt->str);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
       edit_on_key_up(widget, evt);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_BLUR: {
@@ -420,6 +487,15 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
   edit_update_status(widget);
 
   return RET_NOT_FOUND;
+}
+
+ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  edit->password_visible = password_visible;
+
+  return RET_OK;
 }
 
 static const widget_vtable_t s_edit_vtable = {.on_paint_self = edit_on_paint_self,

@@ -70,7 +70,7 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
     }
   }
 
-  im->keyboard = window_open(keyboard);
+  im->keyboard = keyboard_open(keyboard);
 
   return RET_OK;
 }

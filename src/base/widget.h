@@ -856,13 +856,22 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
 
 /**
  * @method widget_invalidate
- * 请求重绘指定的区域。
+ * 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。
  * @param {widget_t*} widget 控件对象。
  * @param {rect_t*} r 矩形对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_invalidate(widget_t* widget, rect_t* r);
+
+/**
+ * @method widget_invalidate_force
+ * 强制重绘控件。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_invalidate_force(widget_t* widget);
 
 /**
  * @method widget_paint

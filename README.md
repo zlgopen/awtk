@@ -59,7 +59,7 @@
 brew install scons sdl2
 ```
 
-编译运行：
+编译运行(在终端下，进入awtk所在的目录，并运行下列命令)：
 
 ```
 scons
@@ -74,7 +74,7 @@ scons
 sudo apt-get install scons libsdl2-dev
 ```
 
-编译运行：
+编译运行(在终端下，进入awtk所在的目录，并运行下列命令)：
 
 ```
 scons
@@ -83,9 +83,9 @@ scons
 
 ### Windows
 
-(请先安装scons和Visual Studio C++)
+(请先安装scons和Visual Studio C++(版本>=2012)
 
-编译运行：
+编译运行(在命令行模式下，进入awtk所在的目录，并运行下列命令)：
 
 ```
 scons
@@ -136,6 +136,10 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/06/19
+    * 实现输入法框架。
+    * 实现软键盘基本功能。
+
 * 2018/06/18
     * 实现软键盘部分功能。
     * 完善现有代码。
