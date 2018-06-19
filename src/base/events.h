@@ -171,15 +171,35 @@ typedef enum _event_type_t {
    */
   EVT_ANIM_END,
   /**
+   * @const EVT_WINDOW_LOAD
+   * 窗口加载完成事件。
+   */
+  EVT_WINDOW_LOAD,
+  /**
+   * @const EVT_IM_COMMIT
+   * 输入法提交输入的文本事件。
+   */
+  EVT_IM_COMMIT,
+  /**
+   * @const EVT_IM_SHOW_CANDIDATES
+   * 输入法请求显示候选字事件。
+   */
+  EVT_IM_SHOW_CANDIDATES,
+  /**
+   * @const EVT_IM_DONE
+   * 输入法输入完成事件。
+   */
+  EVT_IM_DONE,
+  /**
+   * @const EVT_IM_DONE_INFO
+   * 请求更新软键盘上的Done按钮的信息。
+   */
+  EVT_IM_DONE_INFO,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
   EVT_REQ_START = 100,
-  /**
-   * @const EVT_WINDOW_LOAD
-   * 窗口加载完成事件。
-   */
-  EVT_WINDOW_LOAD = 100,
 
   /**
    * @const EVT_USER_START
@@ -279,7 +299,6 @@ pointer_event_t* pointer_event_cast(event_t* event);
  * @parent event_t
  * 按键事件。
  */
-
 typedef struct _key_event_t {
   event_t e;
   /**

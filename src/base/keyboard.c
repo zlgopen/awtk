@@ -20,11 +20,13 @@
  */
 
 #include "base/mem.h"
+#include "base/keys.h"
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/pages.h"
 #include "base/keyboard.h"
 #include "base/prop_names.h"
+#include "base/input_method.h"
 #include "base/window_manager.h"
 
 static ret_t keyboard_on_load(void* ctx, event_t* e);
@@ -70,9 +72,33 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   widget_t* button = WIDGET(e->target);
   const char* name = button->name.str;
   const char* page_name = strstr(name, "page:");
+  const char* key = strstr(name, "key:");
 
   if (page_name != NULL) {
     keyboard_set_active_page(button, page_name + 5);
+  } else if (key != NULL) {
+    key_event_t e;
+
+    key += 4;
+    memset(&e, 0x00, sizeof(e));
+
+    if (tk_str_eq(key, "backspace")) {
+      e.key = FKEY_BACKSPACE;
+    } else {
+      e.key = *key;
+    }
+
+    e.e.type = EVT_KEY_DOWN;
+    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+    e.e.type = EVT_KEY_UP;
+    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+  } else {
+    im_commit_event_t e;
+    memset(&e, 0x00, sizeof(e));
+
+    e.e.type = EVT_IM_COMMIT;
+    e.str = name;
+    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
   }
 
   log_debug("%s clicked\n", button->name.str);

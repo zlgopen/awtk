@@ -60,6 +60,15 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 
 /**
+ * @method keyboard_open
+ * @constructor
+ * 从资源文件中加载并创建keyboard对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name keyboard的名称。
+ *
+ * @return {widget_t*} 对象。
+ */
+
+/**
  * @method keyboard_close
  * @deconstructor
  * 关闭keyboard窗口。

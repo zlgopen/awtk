@@ -42,6 +42,7 @@ BEGIN_C_DECLS
 
 #define WIDGET_PROP_MIN "min"
 #define WIDGET_PROP_MAX "max"
+#define WIDGET_PROP_TIPS "tips"
 #define WIDGET_PROP_INPUT_TYPE "input_type"
 #define WIDGET_PROP_READONLY "readonly"
 

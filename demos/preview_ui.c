@@ -19,15 +19,16 @@
  *
  */
 
+#include "tk.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "resource.h"
-#include "tk.h"
 #include "base/fs.h"
 #include "base/mem.h"
+#include "base/utils.h"
+#include "resource.h"
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
@@ -65,7 +66,6 @@ int main(int argc, char* argv[]) {
   resource_init();
   win = preview_ui(filename);
   tk_run();
-  widget_destroy(win);
 
   return 0;
 }

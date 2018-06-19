@@ -20,9 +20,11 @@
  */
 
 #include "base/mem.h"
+#include "base/utf8.h"
 #include "base/edit.h"
 #include "base/keys.h"
 #include "base/timer.h"
+#include "base/utils.h"
 #include "base/enums.h"
 #include "base/events.h"
 
@@ -100,36 +102,44 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
-  uint32_t key = e->key;
+static ret_t edit_delete_prev_char(widget_t* widget) {
+  if (widget->text.size > 0) {
+    wstr_pop(&(widget->text));
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_delete_next_char(widget_t* widget) {
+  if (widget->text.size > 0) {
+    wstr_pop(&(widget->text));
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_input_char(widget_t* widget, wchar_t c) {
   edit_t* edit = EDIT(widget);
   input_type_t input_type = edit->limit.type;
 
-  if (isprint(key)) {
-    switch (input_type) {
-      case INPUT_INT:
-      case INPUT_FLOAT: {
-        if (key >= FKEY_0 && key <= FKEY_9) {
-          wstr_push(&(widget->text), key);
-        } else if (widget->text.size == 0 && (key == '-' || key == '+')) {
-          wstr_push(&(widget->text), key);
-        } else if (input_type == INPUT_FLOAT && key == '.') {
-          if (wcschr(widget->text.str, '.') == NULL) {
-            wstr_push(&(widget->text), key);
-          }
-        }
-
-        break;
-      }
-      default: {
-        if (widget->text.size < edit->limit.u.t.max) {
-          wstr_push(&(widget->text), key);
+  switch (input_type) {
+    case INPUT_INT:
+    case INPUT_FLOAT: {
+      if (c >= '0' && c <= '9') {
+        wstr_push(&(widget->text), c);
+      } else if (widget->text.size == 0 && (c == '-' || c == '+')) {
+        wstr_push(&(widget->text), c);
+      } else if (input_type == INPUT_FLOAT && c == '.') {
+        if (wcschr(widget->text.str, '.') == NULL) {
+          wstr_push(&(widget->text), c);
         }
       }
+      break;
     }
-  } else if (key == FKEY_BACKSPACE) {
-    if (widget->text.size > 0) {
-      wstr_pop(&(widget->text));
+    default: {
+      if (widget->text.size < edit->limit.u.t.max) {
+        wstr_push(&(widget->text), c);
+      }
     }
   }
 
@@ -137,6 +147,30 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   widget_invalidate(widget, NULL);
 
   return RET_OK;
+}
+
+static ret_t edit_commit_str(widget_t* widget, const char* str) {
+  uint32_t i = 0;
+  wchar_t wstr[32];
+  utf8_to_utf16(str, wstr, ARRAY_SIZE(wstr));
+
+  while (wstr[i]) {
+    edit_input_char(widget, wstr[i]);
+    i++;
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
+  uint32_t key = e->key;
+  if (key == FKEY_BACKSPACE) {
+    return edit_delete_prev_char(widget);
+  } else if (key == FKEY_DELETE) {
+    return edit_delete_next_char(widget);
+  } else {
+    return edit_input_char(widget, (wchar_t)key);
+  }
 }
 
 static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
@@ -195,13 +229,23 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_on_key_down(widget, evt);
       break;
     }
+    case EVT_IM_COMMIT: {
+      im_commit_event_t* evt = (im_commit_event_t*)e;
+      edit_commit_str(widget, evt->str);
+      break;
+    }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
       edit_on_key_up(widget, evt);
       break;
     }
     case EVT_BLUR: {
+      input_method_request(input_method(), NULL);
       edit_update_status(widget);
+      break;
+    }
+    case EVT_FOCUS: {
+      input_method_request(input_method(), widget);
       break;
     }
     default:
@@ -274,7 +318,7 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, WIDGET_PROP_MIN) == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     if (edit->limit.type == INPUT_INT) {
       value_set_int(v, edit->limit.u.i.min);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -285,7 +329,7 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     if (edit->limit.type == INPUT_INT) {
       value_set_int(v, edit->limit.u.i.max);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -296,20 +340,20 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     if (edit->limit.type == INPUT_FLOAT) {
       value_set_float(v, edit->limit.u.f.step);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;
     }
-  } else if (strcmp(name, WIDGET_PROP_INPUT_TYPE) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_INPUT_TYPE)) {
     value_set_uint32(v, edit->limit.type);
     return RET_OK;
-  } else if (strcmp(name, "readonly") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     value_set_bool(v, edit->readonly);
     return RET_OK;
-  } else if (strcmp(name, "tips") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_TIPS) == 0) {
     value_set_wstr(v, edit->tips.str);
     return RET_OK;
   }
@@ -321,7 +365,7 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, WIDGET_PROP_MIN) == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     if (edit->limit.type == INPUT_INT) {
       edit->limit.u.i.min = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -332,7 +376,7 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, WIDGET_PROP_MAX) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     if (edit->limit.type == INPUT_INT) {
       edit->limit.u.i.max = value_int(v);
     } else if (edit->limit.type == INPUT_TEXT) {
@@ -343,14 +387,14 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
       return RET_NOT_FOUND;
     }
     return RET_OK;
-  } else if (strcmp(name, WIDGET_PROP_STEP) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     if (edit->limit.type == INPUT_FLOAT) {
       edit->limit.u.f.step = value_float(v);
       return RET_OK;
     } else {
       return RET_NOT_FOUND;
     }
-  } else if (strcmp(name, WIDGET_PROP_INPUT_TYPE) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_INPUT_TYPE)) {
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = input_type_find(value_str(v));
       if (kv != NULL) {
@@ -360,10 +404,10 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
       edit->limit.type = (input_type_t)value_int(v);
     }
     return RET_OK;
-  } else if (strcmp(name, "readonly") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     edit->readonly = value_bool(v);
     return RET_OK;
-  } else if (strcmp(name, "tips") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     if (v->type == VALUE_TYPE_STRING) {
       wstr_set_utf8(&(edit->tips), value_str(v));
       return RET_OK;

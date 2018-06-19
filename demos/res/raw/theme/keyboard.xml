@@ -6,3 +6,9 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
 </button>
+
+<keyboard>
+  <style name="default">
+    <normal bg_color="#cfd4da"/>
+  </style>
+</keyboard>

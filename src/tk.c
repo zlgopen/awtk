@@ -29,6 +29,7 @@
 #include "base/main_loop.h"
 #include "font/font_bitmap.h"
 #include "base/font_manager.h"
+#include "base/input_method.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
@@ -89,6 +90,7 @@ ret_t tk_init_internal(void) {
 
   return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
@@ -123,6 +125,9 @@ ret_t tk_deinit_internal(void) {
 
   timer_manager_destroy(timer_manager());
   timer_manager_set(NULL);
+
+  input_method_destroy(input_method());
+  input_method_set(NULL);
 
   widget_destroy(window_manager());
   window_manager_set(NULL);

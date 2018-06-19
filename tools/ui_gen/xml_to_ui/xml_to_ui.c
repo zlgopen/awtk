@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
   uint32_t size = 0;
   wbuffer_t wbuffer;
   char* content = NULL;
-  uint8_t data[10 * 1024];
+  uint8_t data[100 * 1024];
   bool_t output_bin = argc > 3;
   const char* in_filename = NULL;
   const char* out_filename = NULL;

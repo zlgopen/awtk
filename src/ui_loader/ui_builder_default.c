@@ -67,10 +67,6 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   b->widget = widget;
   if (b->root == NULL) {
     b->root = widget;
-    if (widget && widget->name.size == 0) {
-      widget_set_name(widget, b->name);
-    }
-    widget_update_style(widget);
   }
 
   log_debug("%s %d %d %d %d\n", type, (int)(x), (int)(y), (int)(w), (int)(h));
@@ -109,6 +105,11 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
     widget_t* win = b->root;
     event_t e = event_init(EVT_WINDOW_LOAD, win);
 
+    if (win && win->name.size == 0) {
+      widget_set_name(win, b->name);
+    }
+
+    widget_update_style(win);
     widget_layout(win);
     widget_dispatch(win, &e);
   }
@@ -131,16 +132,24 @@ ui_builder_t* ui_builder_default(const char* name) {
   return &s_ui_builder;
 }
 
-widget_t* window_open(const char* name) {
+static widget_t* window_open_impl(const char* name, int res_type) {
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default(name);
-  const resource_info_t* ui = resource_manager_ref(resource_manager(), RESOURCE_TYPE_UI, name);
+  const resource_info_t* ui = resource_manager_ref(resource_manager(), res_type, name);
   return_value_if_fail(ui != NULL, NULL);
 
   ui_loader_load(loader, ui->data, ui->size, builder);
   resource_manager_unref(resource_manager(), ui);
 
   return builder->root;
+}
+
+widget_t* window_open(const char* name) {
+  return window_open_impl(name, RESOURCE_TYPE_UI);
+}
+
+widget_t* keyboard_open(const char* name) {
+  return window_open_impl(name, RESOURCE_TYPE_UI);
 }
 
 widget_t* dialog_open(const char* name) {

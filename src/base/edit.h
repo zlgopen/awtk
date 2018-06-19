@@ -23,52 +23,9 @@
 #define TK_EDIT_H
 
 #include "base/widget.h"
+#include "base/input_method.h"
 
 BEGIN_C_DECLS
-
-/**
- * @enum input_type_t
- * @scriptable
- * @prefix INPUT_
- * 输入类型常量定义。
- */
-typedef enum _input_type_t {
-  /**
-   * @const INPUT_TEXT
-   * 文本。
-   */
-  INPUT_TEXT = 0,
-  /**
-   * @const INPUT_INT
-   * 整数。
-   */
-  INPUT_INT,
-  /**
-   * @const INPUT_HEX
-   * 16进制整数。
-   */
-  INPUT_HEX,
-  /**
-   * @const INPUT_FLOAT
-   * 浮点数。
-   */
-  INPUT_FLOAT,
-  /**
-   * @const INPUT_EMAIL
-   * 邮件地址。
-   */
-  INPUT_EMAIL,
-  /**
-   * @const INPUT_PASSWORD
-   * 密码。
-   */
-  INPUT_PASSWORD,
-  /**
-   * @const INPUT_PHONE
-   * 电话号码。
-   */
-  INPUT_PHONE
-} input_type_t;
 
 typedef struct _input_limit_t {
   input_type_t type;

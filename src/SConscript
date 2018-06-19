@@ -30,10 +30,13 @@ sources += ['lcd/lcd_mem_rgb565.c'];
 
 if os.environ['VGCANVAS'] == 'NANOVG':
   sources += Glob('vgcanvas/vgcanvas_nanovg.c')
+  sources += Glob('input_methods/input_method_default.c')
 elif os.environ['VGCANVAS'] == 'AGG':
   sources += Glob('vgcanvas/vgcanvas_agg.cpp')
+  sources += Glob('input_methods/input_method_null.c')
 else:
   sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
+  sources += Glob('input_methods/input_method_null.c')
 
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'awtk'), sources)

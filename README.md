@@ -63,7 +63,7 @@ brew install scons sdl2
 
 ```
 scons
-./bin/demo1
+./bin/demoui
 ```
 
 ### Ubuntu
@@ -78,7 +78,7 @@ sudo apt-get install scons libsdl2-dev
 
 ```
 scons
-./bin/demo1
+./bin/demoui
 ```
 
 ### Windows
@@ -89,7 +89,7 @@ scons
 
 ```
 scons
-bin\demo1
+bin\demoui
 ```
 
 ## 各个平台的移植

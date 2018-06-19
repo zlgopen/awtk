@@ -1,0 +1,18 @@
+<keyboard name="keyboard" x="0" y="bottom" w="100%" h="30%">
+  <pages x="0" y="0" w="100%" h="100%" active="0">
+    <view name="upper" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:3 spacing:2 margin:4">
+        <button name="1" text="1"/>
+        <button name="2" text="2"/>
+        <button name="3" text="3"/>
+        <button name="4" text="4"/>
+        <button name="5" text="5"/>
+        <button name="6" text="6"/>
+        <button name="7" text="7"/>
+        <button name="8" text="8"/>
+        <button name="9" text="9"/>
+        <button name="." style="1:highlight" text="."/>
+        <button name="0" text="0"/>
+        <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+    </view>
+  </pages>
+</keyboard>

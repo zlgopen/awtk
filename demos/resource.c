@@ -18,6 +18,15 @@
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
 #include "res/inc/ui/image.data"
+#include "res/inc/ui/kb_ascii.data"
+#include "res/inc/ui/kb_default.data"
+#include "res/inc/ui/kb_float.data"
+#include "res/inc/ui/kb_hex.data"
+#include "res/inc/ui/kb_int.data"
+#include "res/inc/ui/kb_phone.data"
+#include "res/inc/ui/kb_ufloat.data"
+#include "res/inc/ui/kb_uint.data"
+#include "res/inc/ui/keyboard.data"
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/preload.data"
@@ -108,13 +117,13 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #include "res/inc/fonts/default.res"
 #else
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -181,6 +190,15 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);
   resource_manager_add(rm, ui_image);
+  resource_manager_add(rm, ui_kb_ascii);
+  resource_manager_add(rm, ui_kb_default);
+  resource_manager_add(rm, ui_kb_float);
+  resource_manager_add(rm, ui_kb_hex);
+  resource_manager_add(rm, ui_kb_int);
+  resource_manager_add(rm, ui_kb_phone);
+  resource_manager_add(rm, ui_kb_ufloat);
+  resource_manager_add(rm, ui_kb_uint);
+  resource_manager_add(rm, ui_keyboard);
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_preload);

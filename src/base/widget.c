@@ -844,6 +844,33 @@ ret_t widget_on_click(widget_t* widget, pointer_event_t* e) {
   return ret;
 }
 
+static ret_t widget_dispatch_leave_event(widget_t* widget) {
+  widget_t* target = widget;
+
+  while (target != NULL) {
+    event_t e = event_init(EVT_POINTER_LEAVE, target);
+
+    widget_dispatch(target, &e);
+    target = target->target;
+  }
+
+  return RET_OK;
+}
+
+static ret_t widget_dispatch_blur_event(widget_t* widget) {
+  widget_t* target = widget;
+
+  while (target != NULL) {
+    event_t e = event_init(EVT_BLUR, target);
+
+    target->focused = FALSE;
+    widget_dispatch(target, &e);
+    target = target->key_target;
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = NULL;
@@ -859,10 +886,8 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   if (target != NULL && target->enable) {
     event_t focus = event_init(EVT_FOCUS, target);
 
-    if (widget->key_target) {
-      event_t blur = event_init(EVT_BLUR, widget->key_target);
-      widget->key_target->focused = FALSE;
-      widget_dispatch(widget->key_target, &blur);
+    if (target->type != WIDGET_KEYBOARD && widget->key_target) {
+      widget_dispatch_blur_event(widget->key_target);
     }
 
     widget->target = target;
@@ -892,8 +917,7 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   target = widget_find_target(widget, e->x, e->y);
   if (target != widget->target) {
     if (widget->target != NULL) {
-      event_t leave = event_init(EVT_POINTER_LEAVE, widget->target);
-      widget_dispatch(widget->target, &leave);
+      widget_dispatch_leave_event(widget->target);
     }
 
     if (target != NULL) {
