@@ -178,13 +178,13 @@ uint32_t dialog_modal(widget_t* widget) {
   bool_t running = main_loop()->running;
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
-  log_debug("%s run\n", __func__);
+  log_debug("%s run\n", __FUNCTION__);
 
   widget_invalidate(widget, NULL);
   main_loop_run(main_loop());
   main_loop()->running = running;
 
-  log_debug("%s quit\n", __func__);
+  log_debug("%s quit\n", __FUNCTION__);
   idle_add(dialog_idle_close, widget);
 
   return dialog->quit_code;

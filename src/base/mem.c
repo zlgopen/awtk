@@ -121,7 +121,7 @@ void* tk_alloc(uint32_t size) {
   }
 
   if (iter == NULL) {
-    log_debug("%s: Out of memory(%d):\n", __func__, (int)size);
+    log_debug("%s: Out of memory(%d):\n", __FUNCTION__, (int)size);
     tk_mem_info_dump();
   }
 
