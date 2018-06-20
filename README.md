@@ -83,7 +83,7 @@ scons
 
 ### Windows
 
-(请先安装scons和Visual Studio C++(版本>=2012)
+(请先安装scons和Visual Studio C++(版本>2012)
 
 编译运行(在命令行模式下，进入awtk所在的目录，并运行下列命令)：
 
