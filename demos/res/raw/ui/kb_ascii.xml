@@ -38,7 +38,7 @@
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
         <button name="space" w="65%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -79,7 +79,7 @@
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
         <button name="space" w="65%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -122,7 +122,7 @@
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
         <button name="space" w="65%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -162,7 +162,7 @@
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
         <button name="space" w="65%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
   </pages>

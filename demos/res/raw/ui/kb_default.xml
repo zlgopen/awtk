@@ -39,7 +39,7 @@
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
         <button name="page:chinese" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -81,7 +81,7 @@
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
         <button name="page:chinese" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -125,7 +125,7 @@
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
         <button name="page:chinese" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -166,7 +166,7 @@
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
         <button name="page:chinese" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="chinese" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -208,7 +208,7 @@
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
         <button name="page:lower" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Send"/>
+        <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
   </pages>
