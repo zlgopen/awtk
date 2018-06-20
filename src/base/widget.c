@@ -862,9 +862,10 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
 
   while (target != NULL) {
     event_t e = event_init(EVT_BLUR, target);
-
-    target->focused = FALSE;
-    widget_dispatch(target, &e);
+    if (target->focused) {
+      target->focused = FALSE;
+      widget_dispatch(target, &e);
+    }
     target = target->key_target;
   }
 
@@ -883,17 +884,18 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   }
 
   target = widget_find_target(widget, e->x, e->y);
-  if (target != NULL && target->enable) {
-    event_t focus = event_init(EVT_FOCUS, target);
-
-    if (target->type != WIDGET_KEYBOARD && widget->key_target) {
-      widget_dispatch_blur_event(widget->key_target);
+  if (target != NULL && target->enable && target->type != WIDGET_KEYBOARD) {
+    if (!target->focused) {
+      event_t focus = event_init(EVT_FOCUS, target);
+      if (widget->key_target) {
+        widget_dispatch_blur_event(widget->key_target);
+      }
+      widget_dispatch(target, &focus);
     }
 
     widget->target = target;
     widget->key_target = target;
     widget->key_target->focused = TRUE;
-    widget_dispatch(widget->key_target, &focus);
   }
 
   if (widget->target != NULL) {

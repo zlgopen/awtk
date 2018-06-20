@@ -35,7 +35,43 @@ static ret_t keyboard_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_keyboard_vtable = {.on_paint_self = keyboard_on_paint_self};
+static ret_t keyboard_get_prop(widget_t* widget, const char* name, value_t* v) {
+  keyboard_t* keyboard = KEYBOARD(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
+    value_set_str(v, keyboard->open_anim_hint.str);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
+    value_set_str(v, keyboard->close_anim_hint.str);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t keyboard_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  keyboard_t* keyboard = KEYBOARD(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
+    str_from_value(&(keyboard->open_anim_hint), v);
+    str_from_value(&(keyboard->close_anim_hint), v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
+    str_from_value(&(keyboard->open_anim_hint), v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
+    str_from_value(&(keyboard->close_anim_hint), v);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static const widget_vtable_t s_keyboard_vtable = {.on_paint_self = keyboard_on_paint_self,
+                                                  .set_prop = keyboard_set_prop,
+                                                  .get_prop = keyboard_get_prop};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

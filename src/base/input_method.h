@@ -32,26 +32,6 @@ typedef struct _input_method_t input_method_t;
 typedef ret_t (*input_method_request_t)(input_method_t* im, widget_t* widget);
 
 /**
- * @class input_method_t
- * @scriptable no
- * 输入法接口。
- */
-typedef struct _input_method_t {
-  /**
-   * @property {widget_t*} widget;
-   * @readonly
-   * 当前焦点控件。
-   */
-  widget_t* widget;
-
-  widget_t* keyboard;
-
-  emitter_t emitter;
-
-  input_method_request_t request;
-} input_method_t;
-
-/**
  * @enum input_type_t
  * @scriptable
  * @prefix INPUT_
@@ -105,6 +85,25 @@ typedef enum _input_type_t {
   INPUT_PHONE
 } input_type_t;
 
+/**
+ * @class input_method_t
+ * @scriptable no
+ * 输入法接口。
+ */
+typedef struct _input_method_t {
+  /**
+   * @property {widget_t*} widget;
+   * @readonly
+   * 当前焦点控件。
+   */
+  widget_t* widget;
+
+  widget_t* keyboard;
+
+  emitter_t emitter;
+  input_type_t input_type;
+  input_method_request_t request;
+} input_method_t;
 /**
  * @class im_commit_event_t
  * @scriptable no

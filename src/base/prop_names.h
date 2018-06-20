@@ -39,6 +39,8 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_STEP "step"
 #define WIDGET_PROP_VISIBLE "visible"
 #define WIDGET_PROP_ANIM_HINT "anim_hint"
+#define WIDGET_PROP_OPEN_ANIM_HINT "open_anim_hint"
+#define WIDGET_PROP_CLOSE_ANIM_HINT "opne_anim_hint"
 
 #define WIDGET_PROP_MIN "min"
 #define WIDGET_PROP_MAX "max"

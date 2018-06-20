@@ -309,9 +309,11 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_BLUR: {
       input_method_request(input_method(), NULL);
       edit_update_status(widget);
+      log_debug("edit blur: %p\n", edit);
       break;
     }
     case EVT_FOCUS: {
+      log_debug("edit focus: %p\n", edit);
       input_method_request(input_method(), widget);
       break;
     }

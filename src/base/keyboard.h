@@ -34,6 +34,8 @@ BEGIN_C_DECLS
  */
 typedef struct _keyboard_t {
   widget_t widget;
+  str_t open_anim_hint;
+  str_t close_anim_hint;
 } keyboard_t;
 
 /**

@@ -130,7 +130,7 @@ typedef enum _key_code_t {
   FKEY_X = 'X',
   FKEY_Y = 'Y',
   FKEY_Z = 'Z',
-  FKEY_DELETE = '\177',	
+  FKEY_DELETE = '\177',
 #ifdef SDL2
   FKEY_CAPSLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CAPSLOCK),
 

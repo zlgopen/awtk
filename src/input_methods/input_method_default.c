@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/idle.h"
 #include "base/window.h"
 #include "base/keyboard.h"
 #include "base/input_method.h"
@@ -29,6 +30,8 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
   value_t v;
   int32_t input_type = 0;
   const char* keyboard = NULL;
+  const char* open_anim_hint = "";
+  const char* close_anim_hint = "";
 
   value_set_int(&v, 0);
   widget_get_prop(im->widget, WIDGET_PROP_INPUT_TYPE, &v);
@@ -70,19 +73,78 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
     }
   }
 
+  if (im->keyboard != NULL) {
+    if (im->input_type == input_type) {
+      return RET_OK;
+    } else {
+      value_set_str(&v, "");
+      widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
+      widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+
+      keyboard_close(im->keyboard);
+      im->keyboard = NULL;
+
+      close_anim_hint = "bottom_to_top";
+    }
+  } else {
+    open_anim_hint = "bottom_to_top";
+    close_anim_hint = "bottom_to_top";
+  }
+
+  im->input_type = input_type;
   im->keyboard = keyboard_open(keyboard);
+
+  value_set_str(&v, open_anim_hint);
+  widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
+
+  value_set_str(&v, close_anim_hint);
+  widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+
+  return RET_OK;
+}
+
+typedef struct _idle_close_info_t {
+  widget_t* widget;
+  widget_t* keyboard;
+  input_method_t* im;
+} idle_close_info_t;
+
+static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
+  idle_close_info_t* info = (idle_close_info_t*)(idle->ctx);
+  input_method_t* im = info->im;
+
+  if (im->keyboard == info->keyboard && im->widget == info->widget) {
+    keyboard_close(im->keyboard);
+    im->keyboard = NULL;
+    im->widget = NULL;
+  }
 
   return RET_OK;
 }
 
 static ret_t input_method_default_request(input_method_t* im, widget_t* widget) {
-  im->widget = widget;
+  if (im->widget == widget) {
+    return RET_OK;
+  }
+
   if (widget != NULL) {
+    im->widget = widget;
     input_method_default_show_keyboard(im);
   } else {
     if (im->keyboard != NULL) {
-      keyboard_close(im->keyboard);
-      im->keyboard = NULL;
+      idle_close_info_t* info = TKMEM_ZALLOC(idle_close_info_t);
+
+      if (info != NULL) {
+        info->im = im;
+        info->widget = im->widget;
+        info->keyboard = im->keyboard;
+
+        idle_add(on_idle_close_keyboard, info);
+      } else {
+        keyboard_close(im->keyboard);
+        im->keyboard = NULL;
+        im->widget = NULL;
+      }
     }
   }
 
