@@ -124,7 +124,7 @@ static int wrap_button_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -165,7 +165,7 @@ static int wrap_canvas_t_set_prop(lua_State* L) {
   const char* name = (const char*)luaL_checkstring(L, 2);
   (void)obj;
   (void)name;
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -180,7 +180,7 @@ static int wrap_canvas_t_get_prop(lua_State* L) {
     lua_pushcfunction(L, ret->func);
     return 1;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -350,7 +350,7 @@ static int wrap_dialog_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -515,7 +515,7 @@ static int wrap_edit_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -669,7 +669,7 @@ static int wrap_event_t_set_prop(lua_State* L) {
     printf("type is readonly\n");
     return 0;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -690,7 +690,7 @@ static int wrap_event_t_get_prop(lua_State* L) {
 
     return 1;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -971,7 +971,7 @@ static int wrap_group_box_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -1068,7 +1068,7 @@ static int wrap_image_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -1121,7 +1121,7 @@ static int wrap_label_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -1283,7 +1283,7 @@ static int wrap_point_t_set_prop(lua_State* L) {
     printf("y is readonly\n");
     return 0;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -1308,7 +1308,7 @@ static int wrap_point_t_get_prop(lua_State* L) {
 
     return 1;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -1348,7 +1348,7 @@ static int wrap_rect_t_set_prop(lua_State* L) {
     printf("h is readonly\n");
     return 0;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -1381,7 +1381,7 @@ static int wrap_rect_t_get_prop(lua_State* L) {
 
     return 1;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -2048,7 +2048,7 @@ static int wrap_value_t_set_prop(lua_State* L) {
     printf("type is readonly\n");
     return 0;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -2069,7 +2069,7 @@ static int wrap_value_t_get_prop(lua_State* L) {
 
     return 1;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -2108,7 +2108,7 @@ static int wrap_view_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 
@@ -2669,7 +2669,7 @@ static int wrap_widget_t_set_prop(lua_State* L) {
     printf("parent is readonly\n");
     return 0;
   } else {
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -2732,7 +2732,7 @@ static int wrap_widget_t_get_prop(lua_State* L) {
     if (child != NULL) {
       return tk_newuserdata(L, child, "/widget_t", "awtk.widget_t");
     }
-    printf("%s: not supported %s\n", __func__, name);
+    printf("%s: not supported %s\n", __FUNCTION__, name);
     return 0;
   }
 }
@@ -2789,7 +2789,7 @@ static int wrap_window_t_set_prop(lua_State* L) {
   (void)obj;
   (void)name;
   return wrap_widget_t_set_prop(L);
-  printf("%s: not supported %s\n", __func__, name);
+  printf("%s: not supported %s\n", __FUNCTION__, name);
   return 0;
 }
 

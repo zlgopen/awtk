@@ -214,13 +214,13 @@ function genAll(json) {
     if (cls.parent) {
       str += `  return wrap_${cls.parent}_set_prop(L);\n`;
     } else if (hasSetProps) {
-      str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
+      str += `    printf("%s: not supported %s\\n", __FUNCTION__, name);\n`;
       str += `    return 0;\n`;
     }
     if (hasSetProps) {
       str += `  }\n`;
     } else {
-      str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
+      str += `    printf("%s: not supported %s\\n", __FUNCTION__, name);\n`;
       str += `    return 0;\n`;
     }
 
@@ -259,7 +259,7 @@ function genAll(json) {
         str += `      return tk_newuserdata(L, child, "/widget_t", "awtk.widget_t");\n`;
         str += `    }\n`;
       }
-      str += `    printf("%s: not supported %s\\n", __func__, name);\n`;
+      str += `    printf("%s: not supported %s\\n", __FUNCTION__, name);\n`;
       str += `    return 0;\n`;
     }
     str += `  }\n`;
