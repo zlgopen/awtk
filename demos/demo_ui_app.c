@@ -35,8 +35,8 @@
 
 static void install_click_hander(widget_t* widget);
 
-static void open_window(const char* name) {
-  widget_t* win = window_open(name);
+static void open_window(const char* name, widget_t* to_close) {
+  widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
 
   install_click_hander(win);
 
@@ -46,7 +46,8 @@ static void open_window(const char* name) {
 }
 
 static ret_t on_open_window(void* ctx, event_t* e) {
-  open_window((const char*)ctx);
+  open_window((const char*)ctx, NULL);
+
   (void)e;
 
   return RET_OK;
@@ -213,7 +214,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
   widget_t* status = widget_lookup(win, "status", TRUE);
 
   if (s_preload_nr == total) {
-    open_window("main");
+    open_window("main", win);
 
     return RET_REMOVE;
   } else {

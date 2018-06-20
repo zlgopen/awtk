@@ -3,7 +3,7 @@ function on_click(ctx, evt)
 end
 
 function application_init()
-  local win = Window.open("window");
+  local win = Window.open("lua");
 
   win.inc:on(EventType.CLICK, function(evt) 
     win.bar2:set_value(win.bar2.value + 10);
@@ -25,14 +25,9 @@ function application_init()
   function show_dialog(name)
     local dlg = Dialog.open(name)
 
-    dlg.client.ok:on(EventType.CLICK, function(evt)
+    dlg.client.quit:on(EventType.CLICK, function(evt)
       print("ok clicked");
       dlg:quit(0)
-    end);
-
-    dlg.client.cancel:on(EventType.CLICK, function(evt)
-      print("cancel clicked");
-      dlg:quit(1)
     end);
 
     dlg:modal()

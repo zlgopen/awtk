@@ -1,0 +1,24 @@
+<window name="main">
+  <button name="inc" x="10" y="5" w="25%" h="30" text="Inc"/>
+  <button name="dialog1" x="center:-35" y="5" w="60" h="30" text="Dialog1"/>
+  <button name="dialog2" x="center:35" y="5" w="60" h="30" text="Dilaog2"/>
+  <button name="dec" x="right:10" y="5" w="25%" h="30" text="Dec"/>
+
+  <label name="left" x="10" y="40" w="30%" h="30" text="Left"/>
+  <label name="center" x="center" y="40" w="25%" h="30" text="Center"/>
+  <label name="right" x="right:10" y="40" w="30%" h="30" text="Right"/>
+
+  <progress_bar name="bar1" x="10" y="70" w="240" h="30" value="40"/>
+  <progress_bar name="bar2" x="280" y="70" w="30" h="118" value="20" vertical="true"/>
+  <check_button name="c1" x="10" y="110" w="80" h="30" text="Book"/>
+  <check_button name="c2" x="100" y="110" w="80" h="30" text="Food"/>
+  <radio_button name="r1" x="10" y="150" w="80" h="30" text="Book"/>
+  <radio_button name="r2" x="100" y="150" w="80" h="30" text="Food"/>
+  <radio_button name="r3" x="190" y="150" w="80" h="30" text="Pencil" value="true"/>
+
+  <image image="earth" x="10" y="360" w="40" h="40"/>
+  <image image="rgba" x="60" y="360" w="40" h="40"/>
+  <image image="rgb" x="110" y="360" w="40" h="40"/>
+  <image image="message" x="160" y="360" w="40" h="40"/>
+  <image image="red_btn_n" x="210" y="360" w="40" h="40"/>
+</window>

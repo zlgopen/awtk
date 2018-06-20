@@ -30,7 +30,7 @@ ui_builder_t* ui_builder_default(const char* name);
 
 widget_t* window_open(const char* name);
 widget_t* dialog_open(const char* name);
-widget_t* keyboard_open(const char* name);
+widget_t* window_open_and_close(const char* name, widget_t* to_close);
 
 END_C_DECLS
 

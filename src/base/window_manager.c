@@ -93,8 +93,14 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_t* wm = WINDOW_MANAGER(curr_win->parent);
+  ret_t ret = window_manager_create_animator(wm, curr_win, TRUE);
 
-  return window_manager_create_animator(wm, curr_win, TRUE);
+  if (ret != RET_OK) {
+    event_t e = event_init(EVT_WINDOW_OPEN, curr_win);
+    widget_dispatch(curr_win, &e);
+  }
+
+  return ret;
 }
 
 static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
@@ -260,6 +266,12 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   window_manager_inc_fps(widget);
 
   if (ret == RET_DONE) {
+    if (wm->animator->open) {
+      widget_t* curr_win = wm->animator->curr_win;
+      event_t e = event_init(EVT_WINDOW_OPEN, curr_win);
+      widget_dispatch(curr_win, &e);
+    }
+
     window_animator_destroy(wm->animator);
     wm->animator = NULL;
     wm->animating = FALSE;

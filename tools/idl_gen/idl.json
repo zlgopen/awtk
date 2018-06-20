@@ -35,7 +35,7 @@
       "name": "array"
      },
      {
-      "type": "compare_t",
+      "type": "tk_compare_t",
       "name": "cmp"
      },
      {
@@ -53,7 +53,7 @@
       "name": "array"
      },
      {
-      "type": "compare_t",
+      "type": "tk_compare_t",
       "name": "cmp"
      },
      {
@@ -71,7 +71,7 @@
       "name": "array"
      },
      {
-      "type": "compare_t",
+      "type": "tk_compare_t",
       "name": "cmp"
      },
      {
@@ -79,7 +79,7 @@
       "name": "ctx"
      },
      {
-      "type": "destroy_t",
+      "type": "tk_destroy_t",
       "name": "destroy"
      }
     ],
@@ -93,7 +93,7 @@
       "name": "array"
      },
      {
-      "type": "compare_t",
+      "type": "tk_compare_t",
       "name": "cmp"
      },
      {
@@ -101,7 +101,7 @@
       "name": "ctx"
      },
      {
-      "type": "destroy_t",
+      "type": "tk_destroy_t",
       "name": "destroy"
      }
     ],
@@ -167,6 +167,9 @@
    },
    {
     "name": "BITMAP_FMT_RGBA"
+   },
+   {
+    "name": "BITMAP_FMT_BGRA"
    },
    {
     "name": "BITMAP_FMT_RGB565"
@@ -824,36 +827,6 @@
   "header": "base/dialog.h"
  },
  {
-  "type": "enum",
-  "header": "base/edit.h",
-  "name": "input_type_t",
-  "prefix": "INPUT_",
-  "scriptable": true,
-  "consts": [
-   {
-    "name": "INPUT_TEXT"
-   },
-   {
-    "name": "INPUT_INT"
-   },
-   {
-    "name": "INPUT_HEX"
-   },
-   {
-    "name": "INPUT_FLOAT"
-   },
-   {
-    "name": "INPUT_EMAIL"
-   },
-   {
-    "name": "INPUT_PASSWORD"
-   },
-   {
-    "name": "INPUT_PHONE"
-   }
-  ]
- },
- {
   "type": "class",
   "name": "edit_t",
   "parent": "widget_t",
@@ -985,6 +958,20 @@
     ],
     "name": "edit_set_input_tips",
     "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "password_visible"
+     }
+    ],
+    "name": "edit_set_password_visible",
+    "return": "ret_t"
    }
   ],
   "properties": [],
@@ -1074,6 +1061,30 @@
    },
    {
     "name": "EVT_ANIM_END"
+   },
+   {
+    "name": "EVT_WINDOW_LOAD"
+   },
+   {
+    "name": "EVT_WINDOW_OPEN"
+   },
+   {
+    "name": "EVT_IM_COMMIT"
+   },
+   {
+    "name": "EVT_IM_SHOW_CANDIDATES"
+   },
+   {
+    "name": "EVT_IM_DONE"
+   },
+   {
+    "name": "EVT_IM_DONE_INFO"
+   },
+   {
+    "name": "EVT_REQ_START"
+   },
+   {
+    "name": "EVT_USER_START"
    }
   ]
  },
@@ -1084,8 +1095,13 @@
   "methods": [],
   "properties": [
    {
-    "type": "int16_t",
+    "type": "int32_t",
     "name": "type",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "time",
     "readonly": true
    }
   ],
@@ -1648,6 +1664,268 @@
   "header": "base/image.h"
  },
  {
+  "type": "enum",
+  "header": "base/input_method.h",
+  "name": "input_type_t",
+  "prefix": "INPUT_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "INPUT_TEXT"
+   },
+   {
+    "name": "INPUT_INT"
+   },
+   {
+    "name": "INPUT_UINT"
+   },
+   {
+    "name": "INPUT_HEX"
+   },
+   {
+    "name": "INPUT_FLOAT"
+   },
+   {
+    "name": "INPUT_UFLOAT"
+   },
+   {
+    "name": "INPUT_EMAIL"
+   },
+   {
+    "name": "INPUT_PASSWORD"
+   },
+   {
+    "name": "INPUT_PHONE"
+   }
+  ]
+ },
+ {
+  "type": "class",
+  "name": "input_method_t",
+  "scriptable": true,
+  "methods": [],
+  "properties": [
+   {
+    "type": "widget_t*",
+    "name": "widget",
+    "readonly": true
+   }
+  ],
+  "header": "base/input_method.h"
+ },
+ {
+  "type": "class",
+  "name": "im_commit_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "str",
+    "readonly": true
+   }
+  ],
+  "header": "base/input_method.h"
+ },
+ {
+  "type": "class",
+  "name": "im_candidates_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "candidates",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "candidates_nr",
+    "readonly": true
+   }
+  ],
+  "header": "base/input_method.h"
+ },
+ {
+  "type": "class",
+  "name": "im_done_info_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "event_t*",
+      "name": "e"
+     }
+    ],
+    "name": "input_method_dispatch",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "event_t*",
+      "name": "e"
+     }
+    ],
+    "name": "input_method_dispatch_to_widget",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "input_method_on",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "input_method_off",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "input_method_request",
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "input_method_create",
+    "return": "input_method_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     }
+    ],
+    "name": "input_method_destroy",
+    "return": "ret_t"
+   },
+   {
+    "params": [],
+    "name": "input_method",
+    "return": "input_method_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     }
+    ],
+    "name": "input_method_set",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "text",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "enable",
+    "readonly": true
+   }
+  ],
+  "header": "base/input_method.h"
+ },
+ {
+  "type": "class",
+  "name": "keyboard_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "keyboard_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     }
+    ],
+    "name": "keyboard_close",
+    "isDeconstructor": true,
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/keyboard.h"
+ },
+ {
   "type": "class",
   "name": "label_t",
   "parent": "widget_t",
@@ -1695,6 +1973,12 @@
    },
    {
     "name": "LCD_DRAW_ANIMATION"
+   },
+   {
+    "name": "LCD_DRAW_ANIMATION_OVERLAP"
+   },
+   {
+    "name": "LCD_DRAW_SWAP"
    },
    {
     "name": "LCD_DRAW_OFFLINE"
@@ -2081,6 +2365,10 @@
      {
       "type": "bitmap_t*",
       "name": "img"
+     },
+     {
+      "type": "bool_t",
+      "name": "auto_rotate"
      }
     ],
     "name": "lcd_take_snapshot",
@@ -2317,6 +2605,120 @@
  },
  {
   "type": "class",
+  "name": "tk_mutex_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "tk_mutex_create",
+    "return": "tk_mutex_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "tk_mutex_t*",
+      "name": "mutex"
+     }
+    ],
+    "name": "tk_mutex_lock",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tk_mutex_t*",
+      "name": "mutex"
+     }
+    ],
+    "name": "tk_mutex_unlock",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tk_mutex_t*",
+      "name": "mutex"
+     }
+    ],
+    "name": "tk_mutex_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/mutex.h"
+ },
+ {
+  "type": "class",
+  "name": "pages_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "pages_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "index"
+     }
+    ],
+    "name": "pages_set_active",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "pages_set_active_by_name",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "uint32_t",
+    "name": "active",
+    "readonly": true
+   }
+  ],
+  "header": "base/pages.h"
+ },
+ {
+  "type": "class",
   "name": "progress_bar_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -2485,6 +2887,13 @@
   "name": "resource_ui_type_t",
   "prefix": "RESOURCE_UI_TYPE_",
   "consts": []
+ },
+ {
+  "type": "class",
+  "name": "preload_res_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/resource_manager.h"
  },
  {
   "type": "class",
@@ -2658,6 +3067,96 @@
   ],
   "properties": [],
   "header": "base/resource_manager.h"
+ },
+ {
+  "type": "class",
+  "name": "slide_view_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "slide_view_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint16_t",
+      "name": "auto_play"
+     }
+    ],
+    "name": "slide_view_set_auto_play",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "index"
+     }
+    ],
+    "name": "slide_view_set_active",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "vertical"
+     }
+    ],
+    "name": "slide_view_set_vertical",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "vertical",
+    "readonly": true
+   },
+   {
+    "type": "uint16_t",
+    "name": "auto_play",
+    "readonly": true
+   }
+  ],
+  "header": "base/slide_view.h"
  },
  {
   "type": "class",
@@ -2869,6 +3368,20 @@
      }
     ],
     "name": "str_append",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "str_decode_xml_entity",
     "return": "ret_t"
    },
    {
@@ -3110,6 +3623,11 @@
     "type": "float_t",
     "name": "device_pixel_ratio",
     "readonly": true
+   },
+   {
+    "type": "lcd_orientation_t",
+    "name": "lcd_orientation",
+    "readonly": true
    }
   ],
   "header": "base/system_info.h"
@@ -3228,6 +3746,49 @@
  },
  {
   "type": "class",
+  "name": "thread_t",
+  "methods": [
+   {
+    "params": [],
+    "name": "thread_create",
+    "return": "thread_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "thread_t*",
+      "name": "thread"
+     }
+    ],
+    "name": "thread_start",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "thread_t*",
+      "name": "thread"
+     }
+    ],
+    "name": "thread_join",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "thread_t*",
+      "name": "thread"
+     }
+    ],
+    "name": "thread_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/thread.h"
+ },
+ {
+  "type": "class",
   "name": "timer_t",
   "scriptable": true,
   "isFake": true,
@@ -3287,6 +3848,116 @@
   "header": "base/timer.h"
  },
  {
+  "type": "class",
+  "name": "tokenizer_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     },
+     {
+      "type": "char*",
+      "name": "str"
+     },
+     {
+      "type": "uint32_t",
+      "name": "size"
+     },
+     {
+      "type": "char*",
+      "name": "separtor"
+     }
+    ],
+    "name": "tokenizer_init",
+    "isConstructor": true,
+    "return": "tokenizer_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     }
+    ],
+    "name": "tokenizer_has_more",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     }
+    ],
+    "name": "tokenizer_next",
+    "return": "char*"
+   },
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     },
+     {
+      "type": "int",
+      "name": "defval"
+     }
+    ],
+    "name": "tokenizer_next_int",
+    "return": "char*"
+   },
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     },
+     {
+      "type": "float",
+      "name": "defval"
+     }
+    ],
+    "name": "tokenizer_next_float",
+    "return": "char*"
+   },
+   {
+    "params": [
+     {
+      "type": "tokenizer_t*",
+      "name": "tokenizer"
+     }
+    ],
+    "name": "tokenizer_deinit",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "str",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "size",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "cursor",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "separtor",
+    "readonly": true
+   }
+  ],
+  "header": "base/tokenizer.h"
+ },
+ {
   "type": "enum",
   "header": "base/types_def.h",
   "name": "ret_t",
@@ -3301,6 +3972,9 @@
    },
    {
     "name": "RET_FAIL"
+   },
+   {
+    "name": "RET_NOT_IMPL"
    },
    {
     "name": "RET_QUIT"
@@ -3322,6 +3996,26 @@
    },
    {
     "name": "RET_BAD_PARAMS"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "lcd_orientation_t",
+  "prefix": "LCD_ORIENTATION_",
+  "consts": [
+   {
+    "name": "LCD_ORIENTATION_0"
+   },
+   {
+    "name": "LCD_ORIENTATION_90"
+   },
+   {
+    "name": "LCD_ORIENTATION_180"
+   },
+   {
+    "name": "LCD_ORIENTATION_270"
    }
   ]
  },
@@ -3732,6 +4426,13 @@
    }
   ],
   "header": "base/value.h"
+ },
+ {
+  "type": "class",
+  "name": "velocity_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/velocity.h"
  },
  {
   "type": "class",
@@ -4682,7 +5383,133 @@
  {
   "type": "class",
   "name": "widget_animator_t",
-  "methods": [],
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_func_t"
+     }
+    ],
+    "name": "widget_animator_init",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     }
+    ],
+    "name": "widget_animator_start",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "uint32_t",
+      "name": "yoyo_times"
+     }
+    ],
+    "name": "widget_animator_set_yoyo",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "uint32_t",
+      "name": "repeat_times"
+     }
+    ],
+    "name": "widget_animator_set_repeat",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "bool_t",
+      "name": "value"
+     }
+    ],
+    "name": "widget_animator_set_reversed",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "widget_animator_on",
+    "isCustom": true,
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "widget_animator_off",
+    "isCustom": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     }
+    ],
+    "name": "widget_animator_destroy",
+    "return": "ret_t"
+   }
+  ],
   "properties": [],
   "header": "base/widget_animator.h"
  },
@@ -4794,6 +5621,12 @@
    },
    {
     "name": "WIDGET_VIEW"
+   },
+   {
+    "name": "WIDGET_SLIDE_VIEW"
+   },
+   {
+    "name": "WIDGET_PAGES"
    }
   ]
  },
@@ -4941,6 +5774,20 @@
       "name": "text"
      }
     ],
+    "name": "widget_set_text_utf8",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
     "name": "widget_set_tr_text",
     "return": "ret_t"
    },
@@ -5056,6 +5903,70 @@
      }
     ],
     "name": "widget_set_state",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint8_t",
+      "name": "opacity"
+     }
+    ],
+    "name": "widget_set_opacity",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "rotation"
+     }
+    ],
+    "name": "widget_set_rotation",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "scale_x"
+     },
+     {
+      "type": "float_t",
+      "name": "scale_y"
+     }
+    ],
+    "name": "widget_set_scale",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "anchor_x"
+     },
+     {
+      "type": "float_t",
+      "name": "anchor_y"
+     }
+    ],
+    "name": "widget_set_anchor",
     "return": "ret_t"
    },
    {
@@ -5212,6 +6123,16 @@
      {
       "type": "widget_t*",
       "name": "widget"
+     }
+    ],
+    "name": "widget_invalidate_force",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
      },
      {
       "type": "char*",
@@ -5270,6 +6191,16 @@
     ],
     "name": "widget_ungrab",
     "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_get_window",
+    "return": "widget_t*"
    },
    {
     "params": [
@@ -5505,7 +6436,7 @@
     "params": [
      {
       "type": "widget_t*",
-      "name": "parent"
+      "name": "widget"
      }
     ],
     "name": "window_close",
@@ -5754,16 +6685,327 @@
   "header": "src/tk.h"
  },
  {
+  "params": [
+   {
+    "type": "int",
+    "name": "orientation"
+   }
+  ],
+  "name": "tk_set_lcd_orientation",
+  "isGlobal": true,
+  "return": "ret_t",
+  "type": "method",
+  "header": "src/tk.h"
+ },
+ {
   "type": "class",
   "name": "widget_animator_move_t",
-  "methods": [],
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_move_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_to"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_to"
+     }
+    ],
+    "name": "widget_animator_move_set_params",
+    "return": "ret_t"
+   }
+  ],
   "properties": [],
   "header": "widget_animators/widget_animator_move.h"
  },
  {
   "type": "class",
+  "name": "widget_animator_opacity_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_opacity_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "uint8_t",
+      "name": "from"
+     },
+     {
+      "type": "uint8_t",
+      "name": "to"
+     }
+    ],
+    "name": "widget_animator_opacity_set_params",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "widget_animators/widget_animator_opacity.h"
+ },
+ {
+  "type": "class",
+  "name": "widget_animator_rotation_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_value_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "float_t",
+      "name": "from"
+     },
+     {
+      "type": "float_t",
+      "name": "to"
+     }
+    ],
+    "name": "widget_animator_rotation_set_params",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "widget_animators/widget_animator_rotation.h"
+ },
+ {
+  "type": "class",
+  "name": "widget_animator_scale_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_scale_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_to"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_to"
+     }
+    ],
+    "name": "widget_animator_scale_set_params",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "widget_animators/widget_animator_scale.h"
+ },
+ {
+  "type": "class",
+  "name": "widget_animator_scroll_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_scroll_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_from"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_to"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_to"
+     }
+    ],
+    "name": "widget_animator_scroll_set_params",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "widget_animators/widget_animator_scroll.h"
+ },
+ {
+  "type": "class",
   "name": "widget_animator_value_t",
-  "methods": [],
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "duration"
+     },
+     {
+      "type": "uint32_t",
+      "name": "delay"
+     },
+     {
+      "type": "easing_type_t",
+      "name": "easing"
+     }
+    ],
+    "name": "widget_animator_value_create",
+    "return": "widget_animator_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_animator_t*",
+      "name": "animator"
+     },
+     {
+      "type": "int32_t",
+      "name": "from"
+     },
+     {
+      "type": "int32_t",
+      "name": "to"
+     }
+    ],
+    "name": "widget_animator_value_set_params",
+    "return": "ret_t"
+   }
+  ],
   "properties": [],
   "header": "widget_animators/widget_animator_value.h"
  }

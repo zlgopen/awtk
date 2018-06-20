@@ -954,7 +954,7 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx);
  * 获取当前控件所在的窗口。
  * @param {widget_t*} widget 控件对象。
  *
- * @return {widget*} 窗口对象。
+ * @return {widget_t*} 窗口对象。
  */
 widget_t* widget_get_window(widget_t* widget);
 

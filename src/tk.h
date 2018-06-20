@@ -60,6 +60,7 @@ ret_t tk_quit(void);
 /**
  * @method tk_set_lcd_orientation
  * 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
+ * @param {int} orientation 旋转方向。
  * @global
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

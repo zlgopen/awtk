@@ -27,6 +27,7 @@
 #include "res/inc/ui/kb_ufloat.data"
 #include "res/inc/ui/kb_uint.data"
 #include "res/inc/ui/keyboard.data"
+#include "res/inc/ui/lua.data"
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/preload.data"
@@ -199,6 +200,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_kb_ufloat);
   resource_manager_add(rm, ui_kb_uint);
   resource_manager_add(rm, ui_keyboard);
+  resource_manager_add(rm, ui_lua);
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_preload);

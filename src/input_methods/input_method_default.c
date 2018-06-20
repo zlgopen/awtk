@@ -92,7 +92,7 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
   }
 
   im->input_type = input_type;
-  im->keyboard = keyboard_open(keyboard);
+  im->keyboard = window_open(keyboard);
 
   value_set_str(&v, open_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);

@@ -130,7 +130,7 @@ function extractIDL(result, filename, content) {
                 m.type = 'method';
                 m.header = filename;
                 result.push(m);
-              } else {
+              } else if(cls) {
                 cls.methods.push(m);
               }
             }
