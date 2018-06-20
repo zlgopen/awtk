@@ -14,9 +14,10 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
+  widget_t* curr_win = wa->curr_win;
   float_t percent = wa->percent;
-  float_t y = win->h * percent;
-  float_t h = win->h * (1 - percent);
+  float_t y = curr_win->h * percent;
+  float_t h = win->h - y;
 
 #ifdef WITH_NANOVG
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
@@ -25,7 +26,7 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
 #else
   rect_t src;
   rect_t dst;
-  rect_init(src, win->x * ratio, y * ratio, win->w * ratio, h * ratio);
+  rect_init(src, win->x, y, win->w, h);
   rect_init(dst, win->x, 0, win->w, h);
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 #endif
@@ -38,17 +39,17 @@ static ret_t window_animator_open_vtranslate_draw_curr(window_animator_t* wa) {
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
-  float_t y = win->h * (1 - percent);
   float_t h = win->h * percent;
+  float_t y = win->parent->h - h;
 
 #ifdef WITH_NANOVG
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-  vgcanvas_draw_image(vg, &(wa->curr_img), win->x, 0, win->w * ratio, h * ratio, win->x, y, win->w,
+  vgcanvas_draw_image(vg, &(wa->curr_img), win->x*ratio, win->y*ratio, win->w * ratio, h * ratio, win->x, y, win->w,
                       h);
 #else
   rect_t src;
   rect_t dst;
-  rect_init(src, win->x, 0, win->w * ratio, h * ratio);
+  rect_init(src, win->x, win->y, win->w, h);
   rect_init(dst, win->x, y, win->w, h);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
 #endif
@@ -61,7 +62,7 @@ static window_animator_t* window_animator_create_vtranslate(bool_t open) {
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {
-    wa->easing = easing_get(EASING_QUADRATIC_IN);
+    wa->easing = easing_get(EASING_QUADRATIC_OUT);
     wa->destroy = window_animator_open_destroy;
   } else {
     wa->easing = easing_get(EASING_QUADRATIC_IN);
