@@ -40,6 +40,9 @@
   <edit w="70%" text="" tips="password" input_type="password"/>
  </view>
  <view layout="r1 c0">
+  <label w="30%" text="Overlap"/>
+  <edit w="70%" text="" tips="name"/>
  </view>
-  <button name="close" text="Close"/>
+ <view/>
+ <button name="close" text="Close"/>
 </window>

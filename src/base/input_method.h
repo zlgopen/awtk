@@ -100,6 +100,9 @@ typedef struct _input_method_t {
 
   widget_t* keyboard;
 
+  widget_t* win;
+  int32_t win_delta_y;
+
   emitter_t emitter;
   input_type_t input_type;
   input_method_request_t request;

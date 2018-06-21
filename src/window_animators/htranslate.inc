@@ -61,10 +61,10 @@ static window_animator_t* window_animator_create_htranslate(bool_t open) {
   return_value_if_fail(wa != NULL, NULL);
 
   if (open) {
-    wa->easing = easing_get(EASING_SIN_OUT);
+    wa->easing = easing_get(EASING_CUBIC_OUT);
     wa->destroy = window_animator_open_destroy;
   } else {
-    wa->easing = easing_get(EASING_SIN_IN);
+    wa->easing = easing_get(EASING_CUBIC_OUT);
     wa->destroy = window_animator_close_destroy;
   }
 

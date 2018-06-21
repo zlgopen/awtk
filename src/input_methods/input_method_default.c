@@ -26,17 +26,9 @@
 #include "base/input_method.h"
 #include "ui_loader/ui_builder_default.h"
 
-static ret_t input_method_default_show_keyboard(input_method_t* im) {
-  value_t v;
-  int32_t input_type = 0;
+static const char* input_type_to_keyboard_name(int32_t input_type) {
   const char* keyboard = NULL;
-  const char* open_anim_hint = "";
-  const char* close_anim_hint = "";
 
-  value_set_int(&v, 0);
-  widget_get_prop(im->widget, WIDGET_PROP_INPUT_TYPE, &v);
-
-  input_type = value_int(&v);
   switch (input_type) {
     case INPUT_PHONE: {
       keyboard = "kb_phone";
@@ -73,6 +65,65 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
     }
   }
 
+  return keyboard;
+}
+
+static ret_t on_push_window(void* ctx, event_t* e) {
+  input_method_t* im = (input_method_t*)ctx;
+  im->win->y -= im->win_delta_y;
+  widget_invalidate_force(im->win);
+
+  return RET_REMOVE;
+}
+
+static ret_t input_method_default_restore_win(input_method_t* im) {
+  if (im->win != NULL) {
+    im->win->y += im->win_delta_y;
+    widget_invalidate_force(im->win);
+    im->win = NULL;
+  }
+
+  return RET_REMOVE;
+}
+
+static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bool_t open_anim) {
+  value_t v;
+  point_t p = {0, 0};
+  widget_t* widget = im->widget;
+  widget_t* win = widget_get_window(widget);
+  const char* close_anim_hint = "bottom_to_top";
+  const char* open_anim_hint = open_anim ? close_anim_hint : "";
+  const char* keyboard = input_type_to_keyboard_name(input_type);
+
+  widget_to_global(widget, &p);
+  im->keyboard = window_open(keyboard);
+
+  if ((p.y + widget->h) > im->keyboard->y) {
+    close_anim_hint = "vtranslate";
+    open_anim_hint = close_anim_hint;
+    im->win_delta_y = win->y + win->h - im->keyboard->y;
+
+    im->win = win;
+    widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
+  }
+
+  value_set_str(&v, open_anim_hint);
+  widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
+  value_set_str(&v, close_anim_hint);
+  widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+
+  return RET_OK;
+}
+
+static ret_t input_method_default_show_keyboard(input_method_t* im) {
+  value_t v;
+  int32_t input_type = 0;
+  bool_t open_anim = TRUE;
+
+  value_set_int(&v, 0);
+  widget_get_prop(im->widget, WIDGET_PROP_INPUT_TYPE, &v);
+  input_type = value_int(&v);
+
   if (im->keyboard != NULL) {
     if (im->input_type == input_type) {
       return RET_OK;
@@ -80,27 +131,15 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       value_set_str(&v, "");
       widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
       widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-
       keyboard_close(im->keyboard);
       im->keyboard = NULL;
 
-      close_anim_hint = "bottom_to_top";
+      open_anim = FALSE;
     }
-  } else {
-    open_anim_hint = "bottom_to_top";
-    close_anim_hint = "bottom_to_top";
   }
-
   im->input_type = input_type;
-  im->keyboard = window_open(keyboard);
 
-  value_set_str(&v, open_anim_hint);
-  widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
-
-  value_set_str(&v, close_anim_hint);
-  widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-
-  return RET_OK;
+  return input_type_open_keyboard(im, input_type, open_anim);
 }
 
 typedef struct _idle_close_info_t {
@@ -114,6 +153,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
   input_method_t* im = info->im;
 
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
+    input_method_default_restore_win(im);
     keyboard_close(im->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
