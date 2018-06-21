@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/label.h"
+#include "base/locale.h"
 #include "base/timer.h"
 #include "base/button.h"
 #include "base/dialog.h"
@@ -151,6 +152,18 @@ static void on_value_animator(widget_t* widget) {
   widget_animator_start(animator);
 }
 
+static ret_t on_change_locale(void* ctx, event_t* e) {
+  char country[3];
+  char language[3];
+  const char* str = (const char*)ctx;
+
+  tk_strncpy(language, str, 2);
+  tk_strncpy(country, str + 3, 2);
+  locale_change(locale(), language, country);
+
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, void* iter) {
   widget_t* widget = WIDGET(iter);
 
@@ -166,6 +179,10 @@ static ret_t install_one(void* ctx, void* iter) {
       widget_on(widget, EVT_CLICK, on_inc, win);
     } else if (strstr(name, "show_fps") != NULL) {
       widget_on(widget, EVT_CLICK, on_show_fps, widget);
+    } else if (strstr(name, "chinese") != NULL) {
+      widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
+    } else if (strstr(name, "english") != NULL) {
+      widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
     } else if (strstr(name, "dec") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);

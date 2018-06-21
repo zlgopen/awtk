@@ -1,0 +1,8 @@
+<window name="main" anim_hint="htranslate"  x="0" y="0" w="320" h="480">
+  <label name="ok" x="10" y="5" w="25%" h="30" tr_text="ok"/>
+  <label name="cancel" x="right:10" y="5" w="25%" h="30" tr_text="cancel"/>
+
+  <button name="chinese" x="10" y="m" w="25%" h="30" text="Chinese"/>
+  <button name="english" x="center" y="m" w="25%" h="30" text="English"/>
+  <button name="close" x="right:10" y="m" w="25%" h="30" text="Close"/>
+</window>

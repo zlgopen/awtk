@@ -1,5 +1,8 @@
+#include <string>
 #include "base/utils.h"
 #include "gtest/gtest.h"
+
+using std::string;
 
 TEST(Utils, basic) {
   char str[32];
@@ -102,6 +105,25 @@ TEST(Utils, tk_memcpy32) {
     tk_memcpy32(dst, src, i);
     ASSERT_EQ(memcmp(dst, src, i * 4), 0);
   }
+}
+
+TEST(Utils, tk_strncpy) {
+  char dst[32];
+  const char* str = "hello world";
+
+  ASSERT_EQ(string(tk_strncpy(dst, str, 1)), string("h"));
+  ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str))), string(str));
+  ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 1)), string(str));
+}
+
+TEST(Utils, filename_to_name) {
+  char name[NAME_LEN + 1];
+
+  filename_to_name("test.png", name, NAME_LEN);
+  ASSERT_EQ(string(name), string("test"));
+
+  filename_to_name("/a/test.png", name, NAME_LEN);
+  ASSERT_EQ(string(name), string("test"));
 }
 
 TEST(Utils, tk_skip_to_num) {
