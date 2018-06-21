@@ -132,8 +132,9 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
     im_commit_event_t e;
     memset(&e, 0x00, sizeof(e));
 
-    e.e.type = EVT_IM_COMMIT;
-    e.str = name;
+    e.e = event_init(EVT_IM_COMMIT, NULL);
+    e.text = name;
+
     input_method_dispatch_to_widget(input_method(), (event_t*)&e);
   }
 

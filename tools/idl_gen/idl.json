@@ -978,6 +978,174 @@
   "header": "base/edit.h"
  },
  {
+  "type": "class",
+  "name": "emitter_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [],
+    "name": "emitter_create",
+    "isConstructor": true,
+    "return": "emitter_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_init",
+    "isConstructor": true,
+    "return": "emitter_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     },
+     {
+      "type": "event_t*",
+      "name": "e"
+     }
+    ],
+    "name": "emitter_dispatch",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "emitter_on",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "emitter_off",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     },
+     {
+      "type": "event_type_t",
+      "name": "type"
+     },
+     {
+      "type": "event_func_t",
+      "name": "on_event"
+     },
+     {
+      "type": "void*",
+      "name": "ctx"
+     }
+    ],
+    "name": "emitter_off_by_func",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     },
+     {
+      "type": "uint32_t",
+      "name": "id"
+     }
+    ],
+    "name": "emitter_find",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_enable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_disable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_size",
+    "return": "uint32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_deinit",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "emitter_t*",
+      "name": "emitter"
+     }
+    ],
+    "name": "emitter_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "enable",
+    "readonly": true
+   }
+  ],
+  "header": "base/emitter.h"
+ },
+ {
   "type": "enum",
   "header": "base/events.h",
   "name": "event_type_t",
@@ -1722,7 +1890,7 @@
   "properties": [
    {
     "type": "char*",
-    "name": "str",
+    "name": "text",
     "readonly": true
    }
   ],
@@ -3993,6 +4161,9 @@
    },
    {
     "name": "RET_DONE"
+   },
+   {
+    "name": "RET_STOP"
    },
    {
     "name": "RET_BAD_PARAMS"

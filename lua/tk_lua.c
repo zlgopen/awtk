@@ -11,6 +11,7 @@
 #include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/edit.h"
+#include "base/emitter.h"
 #include "base/events.h"
 #include "base/font_manager.h"
 #include "base/group_box.h"
@@ -67,6 +68,8 @@ static int wrap_dialog_t_get_prop(lua_State* L);
 static int wrap_dialog_t_set_prop(lua_State* L);
 static int wrap_edit_t_get_prop(lua_State* L);
 static int wrap_edit_t_set_prop(lua_State* L);
+static int wrap_emitter_t_get_prop(lua_State* L);
+static int wrap_emitter_t_set_prop(lua_State* L);
 static int wrap_event_t_get_prop(lua_State* L);
 static int wrap_event_t_set_prop(lua_State* L);
 static int wrap_pointer_event_t_get_prop(lua_State* L);
@@ -562,6 +565,192 @@ static void edit_t_init(lua_State* L) {
   lua_settable(L, -3);
   luaL_openlib(L, NULL, index_funcs, 0);
   luaL_openlib(L, "Edit", static_funcs, 0);
+  lua_settop(L, 0);
+}
+static int wrap_emitter_create(lua_State* L) {
+  emitter_t* ret = NULL;
+  ret = (emitter_t*)emitter_create();
+
+  return tk_newuserdata(L, ret, "/emitter_t", "awtk.emitter_t");
+}
+
+static int wrap_emitter_init(lua_State* L) {
+  emitter_t* ret = NULL;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (emitter_t*)emitter_init(emitter);
+
+  return tk_newuserdata(L, ret, "/emitter_t", "awtk.emitter_t");
+}
+
+static int wrap_emitter_dispatch(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  event_t* e = (event_t*)tk_checkudata(L, 2, "event_t");
+  ret = (ret_t)emitter_dispatch(emitter, e);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_on(lua_State* L) {
+  uint32_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  event_type_t type = (event_type_t)luaL_checkinteger(L, 2);
+  event_func_t on_event = (event_func_t)lua_tocfunction(L, 3);
+  void* ctx = NULL;
+  ret = (uint32_t)emitter_on(emitter, type, on_event, ctx);
+
+  lua_pushinteger(L, (lua_Integer)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_off(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  uint32_t id = (uint32_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)emitter_off(emitter, id);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_off_by_func(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  event_type_t type = (event_type_t)luaL_checkinteger(L, 2);
+  event_func_t on_event = (event_func_t)lua_tocfunction(L, 3);
+  void* ctx = NULL;
+  ret = (ret_t)emitter_off_by_func(emitter, type, on_event, ctx);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_find(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  uint32_t id = (uint32_t)luaL_checkinteger(L, 2);
+  ret = (ret_t)emitter_find(emitter, id);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_enable(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (ret_t)emitter_enable(emitter);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_disable(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (ret_t)emitter_disable(emitter);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_size(lua_State* L) {
+  uint32_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (uint32_t)emitter_size(emitter);
+
+  lua_pushinteger(L, (lua_Integer)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_deinit(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (ret_t)emitter_deinit(emitter);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static int wrap_emitter_destroy(lua_State* L) {
+  ret_t ret = 0;
+  emitter_t* emitter = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  ret = (ret_t)emitter_destroy(emitter);
+
+  lua_pushnumber(L, (lua_Number)(ret));
+
+  return 1;
+}
+
+static const struct luaL_Reg emitter_t_member_funcs[] = {{"dispatch", wrap_emitter_dispatch},
+                                                         {"on", wrap_emitter_on},
+                                                         {"off", wrap_emitter_off},
+                                                         {"off_by_func", wrap_emitter_off_by_func},
+                                                         {"find", wrap_emitter_find},
+                                                         {"enable", wrap_emitter_enable},
+                                                         {"disable", wrap_emitter_disable},
+                                                         {"size", wrap_emitter_size},
+                                                         {"deinit", wrap_emitter_deinit},
+                                                         {"destroy", wrap_emitter_destroy},
+                                                         {NULL, NULL}};
+
+static int wrap_emitter_t_set_prop(lua_State* L) {
+  emitter_t* obj = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  (void)obj;
+  (void)name;
+  if (strcmp(name, "enable") == 0) {
+    printf("enable is readonly\n");
+    return 0;
+  } else {
+    printf("%s: not supported %s\n", __FUNCTION__, name);
+    return 0;
+  }
+}
+
+static int wrap_emitter_t_get_prop(lua_State* L) {
+  emitter_t* obj = (emitter_t*)tk_checkudata(L, 1, "emitter_t");
+  const char* name = (const char*)luaL_checkstring(L, 2);
+  const luaL_Reg* ret = find_member(emitter_t_member_funcs, name);
+
+  (void)obj;
+  (void)name;
+  if (ret) {
+    lua_pushcfunction(L, ret->func);
+    return 1;
+  }
+  if (strcmp(name, "enable") == 0) {
+    lua_pushboolean(L, (lua_Integer)(obj->enable));
+
+    return 1;
+  } else {
+    printf("%s: not supported %s\n", __FUNCTION__, name);
+    return 0;
+  }
+}
+
+static void emitter_t_init(lua_State* L) {
+  static const struct luaL_Reg static_funcs[] = {
+      {"create", wrap_emitter_create}, {"init", wrap_emitter_init}, {NULL, NULL}};
+
+  static const struct luaL_Reg index_funcs[] = {
+      {"__index", wrap_emitter_t_get_prop}, {"__newindex", wrap_emitter_t_set_prop}, {NULL, NULL}};
+
+  luaL_newmetatable(L, "awtk.emitter_t");
+  lua_pushstring(L, "__index");
+  lua_pushvalue(L, -2);
+  lua_settable(L, -3);
+  luaL_openlib(L, NULL, index_funcs, 0);
+  luaL_openlib(L, "Emitter", static_funcs, 0);
   lua_settop(L, 0);
 }
 static void event_type_t_init(lua_State* L) {
@@ -1256,8 +1445,8 @@ static int wrap_im_commit_event_t_set_prop(lua_State* L) {
   const char* name = (const char*)luaL_checkstring(L, 2);
   (void)obj;
   (void)name;
-  if (strcmp(name, "str") == 0) {
-    printf("str is readonly\n");
+  if (strcmp(name, "text") == 0) {
+    printf("text is readonly\n");
     return 0;
   } else {
     return wrap_event_t_set_prop(L);
@@ -1275,8 +1464,8 @@ static int wrap_im_commit_event_t_get_prop(lua_State* L) {
     lua_pushcfunction(L, ret->func);
     return 1;
   }
-  if (strcmp(name, "str") == 0) {
-    lua_pushstring(L, (char*)(obj->str));
+  if (strcmp(name, "text") == 0) {
+    lua_pushstring(L, (char*)(obj->text));
 
     return 1;
   } else {
@@ -2341,6 +2530,10 @@ static void ret_t_init(lua_State* L) {
 
   lua_pushstring(L, "DONE");
   lua_pushinteger(L, RET_DONE);
+  lua_settable(L, -3);
+
+  lua_pushstring(L, "STOP");
+  lua_pushinteger(L, RET_STOP);
   lua_settable(L, -3);
 
   lua_pushstring(L, "BAD_PARAMS");
@@ -3596,6 +3789,7 @@ void luaL_openawtk(lua_State* L) {
   check_button_t_init(L);
   dialog_t_init(L);
   edit_t_init(L);
+  emitter_t_init(L);
   event_type_t_init(L);
   event_t_init(L);
   pointer_event_t_init(L);

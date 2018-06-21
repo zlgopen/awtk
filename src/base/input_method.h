@@ -107,6 +107,7 @@ typedef struct _input_method_t {
   input_type_t input_type;
   input_method_request_t request;
 } input_method_t;
+
 /**
  * @class im_commit_event_t
  * @scriptable no
@@ -116,11 +117,11 @@ typedef struct _input_method_t {
 typedef struct _im_commit_event_t {
   event_t e;
   /**
-   * @property {char*} str
+   * @property {char*} text
    * @readonly
    * 提交的文本。
    */
-  const char* str;
+  const char* text;
 } im_commit_event_t;
 
 /**
@@ -137,6 +138,7 @@ typedef struct _im_candidates_event_t {
    * 可选的文本，多个文本以\0分隔。
    */
   const char* candidates;
+
   /**
    * @property {uint32_t} candidates_nr
    * @readonly

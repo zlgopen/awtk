@@ -296,7 +296,7 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
-      edit_commit_str(widget, evt->str);
+      edit_commit_str(widget, evt->text);
       widget_invalidate(widget, NULL);
       break;
     }

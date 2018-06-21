@@ -1,3 +1,18 @@
+#include "base/input_method.h"
+
+static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  im_commit_event_t e;
+  SDL_TextInputEvent* text_input_event = (SDL_TextInputEvent*)sdl_event;
+
+  e.e = event_init(EVT_IM_COMMIT, NULL);
+  e.text = text_input_event->text;
+
+  return input_method_dispatch_to_widget(input_method(), &(e.e));
+}
+
+static ret_t main_loop_sdl2_dispatch_text_editing(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  return RET_OK;
+}
 
 static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   key_event_t event;
@@ -85,6 +100,14 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       case SDL_MOUSEBUTTONDOWN:
       case SDL_MOUSEBUTTONUP: {
         ret = main_loop_sdl2_dispatch_mouse_event(loop, &event);
+        break;
+      }
+      case SDL_TEXTINPUT: {
+        ret = main_loop_sdl2_dispatch_text_input(loop, &event);
+        break;
+      }
+      case SDL_TEXTEDITING: {
+        ret = main_loop_sdl2_dispatch_text_editing(loop, &event);
         break;
       }
       case SDL_QUIT: {

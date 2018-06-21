@@ -105,19 +105,19 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
     c->clip_bottom = c->lcd->h;
   }
 
-  if(c->clip_left < 0) {
+  if (c->clip_left < 0) {
     c->clip_left = 0;
   }
 
-  if(c->clip_top < 0) {
+  if (c->clip_top < 0) {
     c->clip_top = 0;
   }
 
-  if(c->clip_right > lcd_w) {
+  if (c->clip_right > lcd_w) {
     c->clip_right = lcd_w;
   }
-  
-  if(c->clip_bottom > lcd_h) {
+
+  if (c->clip_bottom > lcd_h) {
     c->clip_bottom = lcd_h;
   }
 
