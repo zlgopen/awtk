@@ -286,9 +286,13 @@ ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info
   return RET_OK;
 }
 
-static int res_cmp_type(const void* a, const void* b) {
+static int res_cache_cmp_type(const void* a, const void* b) {
   const resource_info_t* aa = (const resource_info_t*)a;
   const resource_info_t* bb = (const resource_info_t*)b;
+
+  if(aa->is_in_rom) {
+    return -1;
+  }
 
   return aa->type - bb->type;
 }
@@ -297,7 +301,7 @@ ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type)
   resource_type_t res = {type};
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
-  return array_remove_all(&(rm->resources), res_cmp_type, &res, (tk_destroy_t)resource_info_unref);
+  return array_remove_all(&(rm->resources), res_cache_cmp_type, &res, (tk_destroy_t)resource_info_unref);
 }
 
 ret_t resource_manager_deinit(resource_manager_t* rm) {
