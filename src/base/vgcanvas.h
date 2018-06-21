@@ -81,7 +81,7 @@ typedef ret_t (*vgcanvas_set_text_align_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_text_baseline_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
                                       float_t max_width);
-typedef uint32_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text);
+typedef float_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text);
 typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                        float_t dh);
@@ -635,9 +635,9 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {char*} text text
  *
- * @return {uint32_t} 返回text的宽度。
+ * @return {float_t} 返回text的宽度。
  */
-uint32_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text);
+float_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text);
 
 /**
  * @method vgcanvas_draw_image

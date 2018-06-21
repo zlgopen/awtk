@@ -186,9 +186,9 @@ ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size) {
   return RET_OK;
 }
 
-static wh_t canvas_measure_text_default(canvas_t* c, wchar_t* str, int32_t nr) {
+static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, int32_t nr) {
   glyph_t g;
-  wh_t w = 0;
+  float_t w = 0;
   int32_t i = 0;
   return_value_if_fail(c != NULL && str != NULL && c->font != NULL, 0);
 
@@ -208,7 +208,7 @@ static wh_t canvas_measure_text_default(canvas_t* c, wchar_t* str, int32_t nr) {
   return w;
 }
 
-wh_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
+float_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr) {
   return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
 
   if (c->lcd->measure_text) {

@@ -214,7 +214,7 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
   return vg->vt->fill_text(vg, text, x, y, max_width);
 }
 
-uint32_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text) {
+float_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text) {
   return_value_if_fail(vg != NULL && vg->vt->measure_text != NULL && text != NULL, RET_BAD_PARAMS);
 
   return vg->vt->measure_text(vg, text);

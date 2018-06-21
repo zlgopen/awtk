@@ -51,7 +51,7 @@ typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
-typedef wh_t (*lcd_measure_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr);
+typedef float (*lcd_measure_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
@@ -403,9 +403,9 @@ ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
  * @param {wchar_t*} str 字符串。
  * @param {int32_t} nr 字符数。
  *
- * @return {ret_t} 返回字符串占用的宽度。
+ * @return {float_t} 返回字符串占用的宽度。
  */
-wh_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr);
+float_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr);
 
 /**
  * @method lcd_draw_text

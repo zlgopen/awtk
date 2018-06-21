@@ -134,7 +134,7 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
 }
 
 #define MAX_CHARS 256
-wh_t lcd_vgcanvas_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
+float_t lcd_vgcanvas_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
   wchar_t temp[MAX_CHARS + 1];
   char text[2 * MAX_CHARS + 1];
   vgcanvas_t* canvas = LCD(lcd)->canvas;

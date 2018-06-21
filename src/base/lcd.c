@@ -164,8 +164,8 @@ ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
   return lcd->draw_glyph(lcd, glyph, src, x, y);
 }
 
-wh_t lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
-  return_value_if_fail(lcd != NULL && lcd->measure_text != NULL && str != NULL, 0);
+float lcd_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
+  return_value_if_fail(lcd != NULL && lcd->measure_text != NULL && str != NULL, 0.0f);
 
   return lcd->measure_text(lcd, str, nr);
 }

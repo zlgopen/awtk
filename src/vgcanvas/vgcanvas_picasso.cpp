@@ -452,7 +452,7 @@ static ret_t vgcanvas_picasso_fill_text(vgcanvas_t* vgcanvas, const char* text, 
   return RET_OK;
 }
 
-static uint32_t vgcanvas_picasso_measure_text(vgcanvas_t* vgcanvas, const char* text) {
+static float_t vgcanvas_picasso_measure_text(vgcanvas_t* vgcanvas, const char* text) {
   ps_size size = {0, 0};
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 

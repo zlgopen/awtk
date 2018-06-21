@@ -56,7 +56,7 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   wchar_t password[MAX_PASSWORD_LEN + 1];
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 4);
-  wh_t caret_x = margin;
+  float_t caret_x = margin;
   wchar_t invisible_char = '*';
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
@@ -65,7 +65,7 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   if (str->size > 0) {
-    wh_t cw = 0;
+    float_t cw = 0;
     wh_t w = widget->w - 2 * margin;
     color_t trans = color_init(0, 0, 0, 0);
     color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
@@ -114,7 +114,7 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
     canvas_draw_vline(c, caret_x, margin, widget->h - 2 * margin);
   }
-  edit->caret_x = caret_x;
+  edit->caret_x = caret_x + 0.5;
 
   return RET_OK;
 }
@@ -233,7 +233,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
   } else {
-    if(isprint(key)) {
+    if (isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
     } else {
       return RET_OK;

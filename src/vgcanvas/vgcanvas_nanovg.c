@@ -360,7 +360,7 @@ static ret_t vgcanvas_nanovg_fill_text(vgcanvas_t* vgcanvas, const char* text, f
   return RET_OK;
 }
 
-static uint32_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* text) {
+static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* text) {
   float bounds[4];
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
