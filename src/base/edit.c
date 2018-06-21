@@ -233,7 +233,11 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
   } else {
-    return edit_input_char(widget, (wchar_t)key);
+    if(isprint(key)) {
+      return edit_input_char(widget, (wchar_t)key);
+    } else {
+      return RET_OK;
+    }
   }
 }
 
