@@ -77,14 +77,20 @@ ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
 }
 
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
+  wh_t lcd_w = 0;
+  wh_t lcd_h = 0;
+
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  lcd_w = c->lcd->w;
+  lcd_h = c->lcd->h;
 
   if (r) {
     if (c->lcd->set_clip_rect != NULL) {
       c->clip_left = 0;
       c->clip_top = 0;
-      c->clip_right = c->lcd->w;
-      c->clip_bottom = c->lcd->h;
+      c->clip_right = lcd_w;
+      c->clip_bottom = lcd_h;
       lcd_set_clip_rect(c->lcd, (rect_t*)r);
     } else {
       c->clip_left = r->x;
@@ -97,6 +103,22 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
     c->clip_top = 0;
     c->clip_right = c->lcd->w;
     c->clip_bottom = c->lcd->h;
+  }
+
+  if(c->clip_left < 0) {
+    c->clip_left = 0;
+  }
+
+  if(c->clip_top < 0) {
+    c->clip_top = 0;
+  }
+
+  if(c->clip_right > lcd_w) {
+    c->clip_right = lcd_w;
+  }
+  
+  if(c->clip_bottom > lcd_h) {
+    c->clip_bottom = lcd_h;
   }
 
   return RET_OK;
