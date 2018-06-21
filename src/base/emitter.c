@@ -76,14 +76,14 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
     emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
-      emitter_item_t* next = iter->next;
-
       emitter->curr_iter = iter;
       if (iter->type == e->type) {
         ret = iter->handler(iter->ctx, e);
         if (ret == RET_STOP) {
           return ret;
         } else if (ret == RET_REMOVE || emitter->remove_curr_iter) {
+          emitter_item_t* next = iter->next;
+
           emitter->curr_iter = NULL;
           emitter->remove_curr_iter = FALSE;
           emitter_remove(emitter, prev, iter);
@@ -94,7 +94,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
       }
 
       prev = iter;
-      iter = next;
+      iter = iter->next;
     }
   }
   emitter->curr_iter = NULL;

@@ -33,6 +33,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_NAME "name"
 #define WIDGET_PROP_VALUE "value"
 #define WIDGET_PROP_TEXT "text"
+#define WIDGET_PROP_TR_TEXT "tr_text"
 #define WIDGET_PROP_STYLE "style"
 #define WIDGET_PROP_ENABLE "enable"
 #define WIDGET_PROP_MARGIN "margin"

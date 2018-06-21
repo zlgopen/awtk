@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/time.h"
+#include "base/utils.h"
 #include "base/image_manager.h"
 #include "base/resource_manager.h"
 
@@ -69,7 +70,7 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->image = *image;
   cache->access_count = 1;
   cache->created_time = time_now_s();
-  strncpy(cache->name, name, NAME_LEN);
+  tk_strncpy(cache->name, name, NAME_LEN);
   cache->last_access_time = cache->created_time;
   cache->image.name = cache->name;
 

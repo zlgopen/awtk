@@ -201,7 +201,7 @@ const char* tk_ftoa(char* str, int len, float_t value) {
   tk_itoa(str_f, sizeof(str_f), f > 0 ? f : -f);
 
   if (f == 0) {
-    strncpy(str, str_n, len);
+    tk_strncpy(str, str_n, len);
 
     return str;
   }
@@ -231,6 +231,15 @@ const char* tk_ftoa(char* str, int len, float_t value) {
 
 char* tk_strcpy(char* dst, const char* src) {
   return strcpy(dst, src);
+}
+
+char* tk_strncpy(char* dst, const char* src, size_t len) {
+  return_value_if_fail(dst != NULL && src != NULL, dst);
+
+  strncpy(dst, src, len);
+  dst[len] = '\0';
+
+  return dst;
 }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
@@ -356,8 +365,7 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
     name += 1;
   }
 
-  strncpy(str, name, size);
-  str[size - 1] = '\0';
+  tk_strncpy(str, name, size - 1);
   p = strchr(str, '.');
   if (p != NULL) {
     *p = '\0';

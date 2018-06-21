@@ -63,8 +63,7 @@ ret_t str_set_with_len(str_t* str, const char* text, uint16_t len) {
   }
   return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_BAD_PARAMS);
 
-  strncpy(str->str, text, size);
-  str->str[size] = '\0';
+  tk_strncpy(str->str, text, size);
   str->size = size;
 
   return RET_OK;

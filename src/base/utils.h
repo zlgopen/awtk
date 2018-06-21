@@ -32,6 +32,7 @@ const char* tk_skip_to_num(const char* str);
 const char* tk_itoa(char* str, int len, int n);
 const char* tk_ftoa(char* str, int len, float_t f);
 long tk_strtol(const char* str, const char** end, int base);
+char* tk_strncpy(char* dst, const char* src, size_t len);
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
 uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size);

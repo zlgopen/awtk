@@ -104,7 +104,7 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
   return_value_if_fail(item != NULL, RET_OOM);
 
   item->create = create;
-  strncpy(item->type, type, NAME_LEN);
+  tk_strncpy(item->type, type, NAME_LEN);
   array_push(&(factory->creators), item);
 
   return RET_OK;

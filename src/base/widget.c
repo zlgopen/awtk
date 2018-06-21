@@ -680,6 +680,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
+    widget_set_tr_text(widget, value_str(v));
   } else {
     ret = RET_NOT_FOUND;
   }
