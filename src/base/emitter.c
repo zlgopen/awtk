@@ -53,6 +53,7 @@ static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_it
     prev->next = iter->next;
   }
 
+  memset(iter, 0x00, sizeof(emitter_item_t));
   TKMEM_FREE(iter);
 
   return RET_OK;
@@ -75,8 +76,9 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
     emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
-      emitter->curr_iter = iter;
+      emitter_item_t* next = iter->next;
 
+      emitter->curr_iter = iter;
       if (iter->type == e->type) {
         ret = iter->handler(iter->ctx, e);
         if (ret == RET_STOP) {
@@ -85,11 +87,14 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
           emitter->curr_iter = NULL;
           emitter->remove_curr_iter = FALSE;
           emitter_remove(emitter, prev, iter);
+          iter = next;
+
+          continue;
         }
       }
 
       prev = iter;
-      iter = iter->next;
+      iter = next;
     }
   }
   emitter->curr_iter = NULL;
