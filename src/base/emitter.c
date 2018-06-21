@@ -31,80 +31,86 @@ emitter_t* emitter_create() {
 
 emitter_t* emitter_init(emitter_t* emitter) {
   return_value_if_fail(emitter, NULL);
+
   memset(emitter, 0x00, sizeof(emitter_t));
   emitter->enable = TRUE;
-  emitter->curr_id = 1;
+  emitter->next_id = TK_INVALID_ID + 1;
 
   return emitter;
 }
 
+static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_item_t* iter) {
+  return_value_if_fail(emitter != NULL && iter != NULL, RET_BAD_PARAMS);
+
+  if (emitter->curr_iter == iter) {
+    emitter->remove_curr_iter = TRUE;
+    return RET_OK;
+  }
+
+  if (iter == emitter->items) {
+    emitter->items = iter->next;
+  } else {
+    prev->next = iter->next;
+  }
+
+  TKMEM_FREE(iter);
+
+  return RET_OK;
+}
+
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
+  ret_t ret = RET_OK;
   return_value_if_fail(emitter != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (!(e->time)) {
     e->time = time_now_ms();
   }
 
+  if (e->target == NULL) {
+    e->target = emitter;
+  }
+
   if (emitter->enable && emitter->items) {
-    uint32_t i = 0;
-    uint32_t size = emitter->size;
-    emitter_item_t* items = emitter->items;
+    emitter_item_t* iter = emitter->items;
+    emitter_item_t* prev = emitter->items;
 
-    emitter->stop = FALSE;
-    for (i = 0; i < size; i++) {
-      emitter_item_t* iter = items + i;
+    while (iter != NULL) {
+      emitter->curr_iter = iter;
+
       if (iter->type == e->type) {
-        iter->handler(iter->ctx, e);
+        ret = iter->handler(iter->ctx, e);
+        if (ret == RET_STOP) {
+          return ret;
+        } else if (ret == RET_REMOVE || emitter->remove_curr_iter) {
+          emitter->curr_iter = NULL;
+          emitter->remove_curr_iter = FALSE;
+          emitter_remove(emitter, prev, iter);
+        }
       }
 
-      if (emitter->stop) {
-        break;
-      }
+      prev = iter;
+      iter = iter->next;
     }
   }
+  emitter->curr_iter = NULL;
+  emitter->remove_curr_iter = FALSE;
 
   return RET_OK;
 }
 
-static ret_t emitter_extends(emitter_t* emitter, uint32_t nr) {
-  uint32_t capacity = 0;
-  emitter_item_t* items = NULL;
-  if (emitter->items && emitter->size < emitter->capacity) {
-    return RET_OK;
-  }
-
-  if (emitter->items == NULL) {
-    emitter->items = TKMEM_ZALLOC(emitter_item_t);
-    return_value_if_fail(emitter->items != NULL, RET_FAIL);
-
-    emitter->size = 0;
-    emitter->capacity = 1;
-
-    return RET_OK;
-  }
-
-  capacity = emitter->capacity + 5;
-  items = TKMEM_REALLOC(emitter_item_t, emitter->items, capacity);
-  return_value_if_fail(items != NULL, RET_FAIL);
-
-  emitter->items = items;
-  emitter->capacity = capacity;
-
-  return RET_OK;
-}
-
-uint32_t emitter_on(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx) {
+uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
   emitter_item_t* iter = NULL;
-  return_value_if_fail(emitter != NULL && handler != NULL, 0);
-  return_value_if_fail(emitter_extends(emitter, 1) == RET_OK, 0);
+  return_value_if_fail(emitter != NULL && handler != NULL, TK_INVALID_ID);
 
-  iter = emitter->items + emitter->size;
+  iter = TKMEM_ZALLOC(emitter_item_t);
+  return_value_if_fail(iter != NULL, TK_INVALID_ID);
+
   iter->type = etype;
   iter->ctx = ctx;
   iter->handler = handler;
-  iter->id = emitter->curr_id++;
-
-  emitter->size++;
+  iter->id = emitter->next_id++;
+  iter->next = emitter->items;
+  emitter->items = iter;
 
   return iter->id;
 }
@@ -113,74 +119,74 @@ emitter_item_t* emitter_find(emitter_t* emitter, uint32_t id) {
   return_value_if_fail(emitter != NULL, NULL);
 
   if (emitter->items) {
-    uint32_t i = 0;
-    uint32_t size = emitter->size;
-    emitter_item_t* items = emitter->items;
+    emitter_item_t* iter = emitter->items;
 
-    for (i = 0; i < size; i++) {
-      emitter_item_t* iter = items + i;
+    while (iter != NULL) {
       if (iter->id == id) {
         return iter;
       }
+
+      iter = iter->next;
     }
   }
 
   return NULL;
 }
 
+uint32_t emitter_size(emitter_t* emitter) {
+  uint32_t size = 0;
+  return_value_if_fail(emitter != NULL, size);
+
+  if (emitter->items) {
+    emitter_item_t* iter = emitter->items;
+
+    while (iter != NULL) {
+      size++;
+      iter = iter->next;
+    }
+  }
+
+  return size;
+}
+
 ret_t emitter_off(emitter_t* emitter, uint32_t id) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
 
   if (emitter->items) {
-    uint32_t i = 0;
-    uint32_t size = emitter->size;
-    emitter_item_t* items = emitter->items;
+    emitter_item_t* iter = emitter->items;
+    emitter_item_t* prev = emitter->items;
 
-    for (i = 0; i < size; i++) {
-      emitter_item_t* iter = items + i;
+    while (iter != NULL) {
       if (iter->id == id) {
-        for (; i < (size - 1); i++) {
-          items[i] = items[i + 1];
-        }
-        emitter->size--;
-
-        return RET_OK;
+        return emitter_remove(emitter, prev, iter);
       }
+
+      prev = iter;
+      iter = iter->next;
     }
   }
 
   return RET_FAIL;
 }
 
-ret_t emitter_off_by_func(emitter_t* emitter, uint16_t etype, event_func_t handler, void* ctx) {
+ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
   return_value_if_fail(emitter != NULL && handler != NULL, RET_BAD_PARAMS);
 
   if (emitter->items) {
-    uint32_t i = 0;
-    uint32_t size = emitter->size;
-    emitter_item_t* items = emitter->items;
+    emitter_item_t* iter = emitter->items;
+    emitter_item_t* prev = emitter->items;
 
-    for (i = 0; i < size; i++) {
-      emitter_item_t* iter = items + i;
+    while (iter != NULL) {
       if (iter->type == etype && iter->ctx == ctx && iter->handler == handler) {
-        for (; i < (size - 1); i++) {
-          items[i] = items[i + 1];
-        }
-        emitter->size--;
-
-        return RET_OK;
+        return emitter_remove(emitter, prev, iter);
       }
+
+      prev = iter;
+      iter = iter->next;
     }
   }
 
   return RET_FAIL;
-}
-
-ret_t emitter_stop(emitter_t* emitter) {
-  return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
-  emitter->stop = TRUE;
-
-  return RET_OK;
 }
 
 ret_t emitter_enable(emitter_t* emitter) {
@@ -200,7 +206,15 @@ ret_t emitter_disable(emitter_t* emitter) {
 ret_t emitter_deinit(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
   if (emitter->items) {
-    TKMEM_FREE(emitter->items);
+    emitter_item_t* iter = emitter->items;
+    emitter_item_t* next = emitter->items;
+
+    while (iter != NULL) {
+      next = iter->next;
+      TKMEM_FREE(iter);
+      iter = next;
+    }
+    emitter->items = NULL;
   }
 
   return RET_OK;

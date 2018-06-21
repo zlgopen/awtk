@@ -95,6 +95,11 @@ typedef enum _ret_t {
    */
   RET_DONE,
   /**
+   * @const RET_STOP
+   * 停止后续操作。
+   */
+  RET_STOP,
+  /**
    * @const RET_BAD_PARAMS
    * 无效参数。
    */
@@ -236,5 +241,6 @@ typedef float float_t;
 #define TK_MAX_FPS 100
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05
+#define TK_INVALID_ID 0
 
 #endif /*TYPES_DEF_H*/
