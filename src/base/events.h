@@ -192,15 +192,15 @@ typedef enum _event_type_t {
    */
   EVT_IM_SHOW_CANDIDATES,
   /**
-   * @const EVT_IM_DONE
-   * 输入法输入完成事件。
+   * @const EVT_IM_ACTION
+   * 软键盘Action点击事件。
    */
-  EVT_IM_DONE,
+  EVT_IM_ACTION,
   /**
-   * @const EVT_IM_DONE_INFO
-   * 请求更新软键盘上的Done按钮的信息。
+   * @const EVT_IM_ACTION_INFO
+   * 请求更新软键盘上的Action按钮的信息。
    */
-  EVT_IM_DONE_INFO,
+  EVT_IM_ACTION_INFO,
   /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。

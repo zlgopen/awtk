@@ -1243,10 +1243,10 @@
     "name": "EVT_IM_SHOW_CANDIDATES"
    },
    {
-    "name": "EVT_IM_DONE"
+    "name": "EVT_IM_ACTION"
    },
    {
-    "name": "EVT_IM_DONE_INFO"
+    "name": "EVT_IM_ACTION_INFO"
    },
    {
     "name": "EVT_REQ_START"
@@ -1898,19 +1898,19 @@
  },
  {
   "type": "class",
-  "name": "im_candidates_event_t",
+  "name": "im_action_button_info_event_t",
   "scriptable": true,
   "parent": "event_t",
   "methods": [],
   "properties": [
    {
     "type": "char*",
-    "name": "candidates",
+    "name": "text",
     "readonly": true
    },
    {
-    "type": "uint32_t",
-    "name": "candidates_nr",
+    "type": "bool_t",
+    "name": "enable",
     "readonly": true
    }
   ],
@@ -1918,7 +1918,7 @@
  },
  {
   "type": "class",
-  "name": "im_done_info_event_t",
+  "name": "im_candidates_event_t",
   "scriptable": true,
   "parent": "event_t",
   "methods": [
@@ -2001,6 +2001,62 @@
     "return": "ret_t"
    },
    {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     },
+     {
+      "type": "bool_t",
+      "name": "enable"
+     }
+    ],
+    "name": "input_method_update_action_button_info",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     }
+    ],
+    "name": "input_method_dispatch_action",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "input_method_commit_text",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "uint32_t",
+      "name": "key"
+     }
+    ],
+    "name": "input_method_dispatch_key",
+    "return": "ret_t"
+   },
+   {
     "params": [],
     "name": "input_method_create",
     "return": "input_method_t*"
@@ -2034,12 +2090,12 @@
   "properties": [
    {
     "type": "char*",
-    "name": "text",
+    "name": "candidates",
     "readonly": true
    },
    {
-    "type": "bool_t",
-    "name": "enable",
+    "type": "uint32_t",
+    "name": "candidates_nr",
     "readonly": true
    }
   ],
@@ -2464,7 +2520,7 @@
      }
     ],
     "name": "lcd_measure_text",
-    "return": "ret_t"
+    "return": "float_t"
    },
    {
     "params": [
@@ -5234,7 +5290,7 @@
      }
     ],
     "name": "vgcanvas_measure_text",
-    "return": "uint32_t"
+    "return": "float_t"
    },
    {
     "params": [

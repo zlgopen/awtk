@@ -76,7 +76,7 @@ static ret_t on_push_window(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static ret_t input_method_default_restore_win(input_method_t* im) {
+static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->win != NULL) {
     im->win->y += im->win_delta_y;
     widget_invalidate_force(im->win);
@@ -101,9 +101,9 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";
     open_anim_hint = close_anim_hint;
-    im->win_delta_y = win->y + win->h - im->keyboard->y;
 
     im->win = win;
+    im->win_delta_y = win->y + win->h - im->keyboard->y;
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
   }
 
@@ -126,8 +126,10 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
 
   if (im->keyboard != NULL) {
     if (im->input_type == input_type) {
+      /*old edit and new edit has same input type, reuse old keyboard*/
       return RET_OK;
     } else {
+      /*keyboard is open, close old one, disable open animation of new one*/
       value_set_str(&v, "");
       widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
       widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
@@ -153,7 +155,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
   input_method_t* im = info->im;
 
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
-    input_method_default_restore_win(im);
+    input_method_default_restore_win_position(im);
     keyboard_close(im->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
@@ -173,7 +175,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   } else {
     if (im->keyboard != NULL) {
       idle_close_info_t* info = TKMEM_ZALLOC(idle_close_info_t);
-
+      /*do not close immediately, so we have chance to reuse it.*/
       if (info != NULL) {
         info->im = im;
         info->widget = im->widget;
@@ -195,6 +197,7 @@ input_method_t* input_method_create(void) {
   input_method_t* im = TKMEM_ZALLOC(input_method_t);
   return_value_if_fail(im != NULL, NULL);
 
+  im->action_button_enable = TRUE;
   im->request = input_method_default_request;
   emitter_init(&(im->emitter));
 

@@ -62,3 +62,48 @@ ret_t input_method_set(input_method_t* im) {
 
   return RET_OK;
 }
+
+ret_t input_method_update_action_button_info(input_method_t* im, const char* text, bool_t enable) {
+  im_action_button_info_event_t e;
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+
+  e.text = text;
+  e.enable = enable;
+  e.e = event_init(EVT_IM_ACTION_INFO, im);
+
+  im->action_button_enable = enable;
+  tk_strncpy(im->action_buton_text, text ? text : "", NAME_LEN);
+
+  return input_method_dispatch(im, &e);
+}
+
+ret_t input_method_dispatch_action(input_method_t* im) {
+  event_t e = event_init(EVT_IM_ACTION, im);
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+
+  input_method_dispatch(im, &e);
+
+  return input_method_dispatch_to_widget(im, &e);
+}
+
+ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
+  key_event_t e;
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+
+  e.key = key;
+  e.e.type = EVT_KEY_DOWN;
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+
+  e.e.type = EVT_KEY_UP;
+  return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+}
+
+ret_t input_method_commit_text(input_method_t* im, const char* text) {
+  im_commit_event_t e;
+  return_value_if_fail(im != NULL && text != NULL, RET_BAD_PARAMS);
+
+  e.text = text;
+  e.e = event_init(EVT_IM_COMMIT, NULL);
+
+  return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+}

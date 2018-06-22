@@ -29,13 +29,16 @@ BEGIN_C_DECLS
 /**
  * @class keyboard_t
  * @parent widget_t
- * @scriptable
- * 窗口。
+ * @scriptable no
+ * 键盘。
  */
 typedef struct _keyboard_t {
   widget_t widget;
   str_t open_anim_hint;
   str_t close_anim_hint;
+
+  array_t action_buttons;
+  uint32_t action_info_id;
 } keyboard_t;
 
 /**

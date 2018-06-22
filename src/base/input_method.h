@@ -93,18 +93,63 @@ typedef enum _input_type_t {
 typedef struct _input_method_t {
   /**
    * @property {widget_t*} widget;
-   * @readonly
-   * 当前焦点控件。
+   * @private
+   * 当前的焦点控件。
    */
   widget_t* widget;
 
+  /**
+   * @property {widget_t*} keyboard
+   * @private
+   * 当前的软件键盘。
+   */
   widget_t* keyboard;
 
+  /**
+   * @property {widget_t*} win
+   * @private
+   * 当前的窗口。
+   */
   widget_t* win;
+
+  /**
+   * @property {int32_t} win_delta_y
+   * @private
+   * 由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。
+   */
   int32_t win_delta_y;
 
+  /**
+   * @property {bool_t} action_button_enable
+   * @readonly
+   * 软键盘的上的action按钮是否可用。
+   */
+  bool_t action_button_enable;
+
+  /**
+   * @property {bool_t} action_button_enable
+   * @readonly
+   * 软键盘的上的action按钮文本。
+   */
+  char action_buton_text[NAME_LEN + 1];
+
+  /**
+   * @property {emitter_t} emitter
+   * @private
+   * emitter。用于实现dispatch/on/off等功能。
+   */
   emitter_t emitter;
+
+  /**
+   * @property {input_type_t} input_type
+   * @readonly
+   * 当前输入的类型。
+   */
   input_type_t input_type;
+
+  /**
+   * 子类需要实现的函数。
+   */
   input_method_request_t request;
 } input_method_t;
 
@@ -125,17 +170,39 @@ typedef struct _im_commit_event_t {
 } im_commit_event_t;
 
 /**
+ * @class im_action_button_info_event_t
+ * @scriptable no
+ * @parent event_t
+ * 设置软键盘上的action按钮的信息事件。
+ */
+typedef struct _im_action_button_info_event_t {
+  event_t e;
+  /**
+   * @property {char*} text
+   * @readonly
+   * 软键盘上的action按钮显示的文本。
+   */
+  const char* text;
+  /**
+   * @property {bool_t} enable
+   * @readonly
+   * 软键盘上的action按钮启用。
+   */
+  bool_t enable;
+} im_action_button_info_event_t;
+
+/**
  * @class im_candidates_event_t
  * @scriptable no
  * @parent event_t
- * 输入法提交输入的文本事件。
+ * 输入法请求显示候选字的事件。
  */
 typedef struct _im_candidates_event_t {
   event_t e;
   /**
    * @property {char*} candidates
    * @readonly
-   * 可选的文本，多个文本以\0分隔。
+   * 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0
    */
   const char* candidates;
 
@@ -146,28 +213,6 @@ typedef struct _im_candidates_event_t {
    */
   uint32_t candidates_nr;
 } im_candidates_event_t;
-
-/**
- * @class im_done_info_event_t
- * @scriptable no
- * @parent event_t
- * 更新软键盘上Done按钮的信息事件。
- */
-typedef struct _im_done_info_event_t {
-  event_t e;
-  /**
-   * @property {char*} text
-   * @readonly
-   * Done按钮的文本。
-   */
-  const char* text;
-  /**
-   * @property {bool_t} enable
-   * @readonly
-   * Done是否可用。
-   */
-  bool_t enable;
-} im_done_info_event_t;
 
 /**
  * @method input_method_dispatch
@@ -213,7 +258,7 @@ ret_t input_method_off(input_method_t* im, uint32_t id);
 
 /**
  * @method input_method_request
- * 让指定的控件启用输入法。
+ * 请求指定的控件启用输入法。
  * @param {input_method_t*} im 输入法对象。
  * @param {widget_t*} widget 焦点控件。
  *
@@ -222,8 +267,48 @@ ret_t input_method_off(input_method_t* im, uint32_t id);
 ret_t input_method_request(input_method_t* im, widget_t* widget);
 
 /**
+ * @method input_method_update_action_button_info
+ * 设置软键盘上的action按钮的信息。
+ * @param {input_method_t*} im 输入法对象。
+ * @param {char*} text 按钮的文本。
+ * @param {bool_t} enable 按钮的是否可用。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_update_action_button_info(input_method_t* im, const char* text, bool_t enable);
+
+/**
+ * @method input_method_dispatch_action
+ * 软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。
+ * @param {input_method_t*} im 输入法对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_dispatch_action(input_method_t* im);
+
+/**
+ * @method input_method_commit_text
+ * 提交输入文本。
+ * @param {input_method_t*} im 输入法对象。
+ * @param {char*} text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_commit_text(input_method_t* im, const char* text);
+
+/**
+ * @method input_method_dispatch_key
+ * 提交按键。
+ * @param {input_method_t*} im 输入法对象。
+ * @param {uint32_t} key 键值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_dispatch_key(input_method_t* im, uint32_t key);
+
+/**
  * @method input_method_create
- * 创建输入法对象。
+ * 创建输入法对象。在具体实现中实现。
  *
  * @return {input_method_t*} 成功返回输入法对象，失败返回NULL。
  */
@@ -231,7 +316,7 @@ input_method_t* input_method_create(void);
 
 /**
  * @method input_method_destroy
- * 销毁输入法对象。
+ * 销毁输入法对象。在具体实现中实现。
  * @param {input_method_t*} im 输入法对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
