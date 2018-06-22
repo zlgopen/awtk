@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   input_method.h
  * Author: AWTK Develop Team
  * Brief:  input method interface.
@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/utils.h"
 #include "base/input_method.h"
 
 ret_t input_method_dispatch(input_method_t* im, event_t* e) {
@@ -74,7 +75,7 @@ ret_t input_method_update_action_button_info(input_method_t* im, const char* tex
   im->action_button_enable = enable;
   tk_strncpy(im->action_buton_text, text ? text : "", NAME_LEN);
 
-  return input_method_dispatch(im, &e);
+  return input_method_dispatch(im, (event_t*)(&e));
 }
 
 ret_t input_method_dispatch_action(input_method_t* im) {
