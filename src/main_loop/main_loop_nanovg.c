@@ -102,6 +102,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop->dispatch_input = main_loop_sdl2_dispatch;
 
   main_loop_nanovg_create_window(loop);
+  SDL_StopTextInput();
 
   return (main_loop_t*)loop;
 }
