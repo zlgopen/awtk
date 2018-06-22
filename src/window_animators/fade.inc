@@ -16,13 +16,13 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
 
-  rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
-  rect_init(dst, win->x, win->y, win->w, win->h);
+  src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+  dst = rect_init(win->x, win->y, win->w, win->h);
 #ifndef WITH_NANOVG
   if (wa->percent > 0) {
     win = wa->curr_win;
-    rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
-    rect_init(dst, win->x, win->y, win->w, win->h);
+    src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+    dst = rect_init(win->x, win->y, win->w, win->h);
   }
 #endif /**/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
@@ -38,8 +38,8 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   float_t ratio = wa->ratio;
   widget_t* win = wa->curr_win;
   float_t alpha = wa->percent;
-  rect_init(dst, win->x, win->y, win->w, win->h);
-  rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+  dst = rect_init(win->x, win->y, win->w, win->h);
+  src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
 
 #ifdef WITH_NANOVG
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);

@@ -72,7 +72,7 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
 #else
   rect_t r;
   widget_t* wm = wa->curr_win->parent;
-  rect_init(r, wm->x, wm->y, wm->w, wm->h);
+  r = rect_init(wm->x, wm->y, wm->w, wm->h);
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION) == RET_OK);
 #endif
 
@@ -92,7 +92,7 @@ ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
     w = wa->curr_win->parent;
   }
 
-  rect_init(r, w->x, w->y, w->w, w->h);
+  r = rect_init(w->x, w->y, w->w, w->h);
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
 #endif
 

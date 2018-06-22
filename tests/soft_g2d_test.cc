@@ -42,28 +42,28 @@ TEST(Soft2d, rotate16) {
   uint16_t* fb_buff = (uint16_t*)s_fb_buff;
 
   init_image16(&fb, &img);
-  rect_init(r, 0, 0, 1, 3);
+  r = rect_init(0, 0, 1, 3);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W + 1], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W + 2], (uint16_t)0xfefe);
 
   init_image16(&fb, &img);
-  rect_init(r, 1, 1, 1, 3);
+  r = rect_init(1, 1, 1, 3);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 2], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 3], (uint16_t)0xfefe);
 
   init_image16(&fb, &img);
-  rect_init(r, 1, 1, 3, 1);
+  r = rect_init(1, 1, 3, 1);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 3) * FB_W + 1], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 4) * FB_W + 1], (uint16_t)0xfefe);
 
   init_image16(&fb, &img);
-  rect_init(r, 1, 1, 2, 2);
+  r = rect_init(1, 1, 2, 2);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint16_t)0xfefe);
   ASSERT_EQ(fb_buff[(FB_H - 3) * FB_W + 1], (uint16_t)0xfefe);
@@ -78,28 +78,28 @@ TEST(Soft2d, rotate32) {
   uint32_t* fb_buff = (uint32_t*)s_fb_buff;
 
   init_image32(&fb, &img);
-  rect_init(r, 0, 0, 1, 3);
+  r = rect_init(0, 0, 1, 3);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W + 1], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 1) * FB_W + 2], (uint32_t)0xfefefefe);
 
   init_image32(&fb, &img);
-  rect_init(r, 1, 1, 1, 3);
+  r = rect_init(1, 1, 1, 3);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 2], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 3], (uint32_t)0xfefefefe);
 
   init_image32(&fb, &img);
-  rect_init(r, 1, 1, 3, 1);
+  r = rect_init(1, 1, 3, 1);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 3) * FB_W + 1], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 4) * FB_W + 1], (uint32_t)0xfefefefe);
 
   init_image32(&fb, &img);
-  rect_init(r, 1, 1, 2, 2);
+  r = rect_init(1, 1, 2, 2);
   soft_rotate_image(&fb, &img, &r, LCD_ORIENTATION_90);
   ASSERT_EQ(fb_buff[(FB_H - 2) * FB_W + 1], (uint32_t)0xfefefefe);
   ASSERT_EQ(fb_buff[(FB_H - 3) * FB_W + 1], (uint32_t)0xfefefefe);

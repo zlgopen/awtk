@@ -658,18 +658,18 @@ ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst
   h_h = dst_h - h * 2;
 
   /*top*/
-  rect_init(s, 0, 0, img_w, h);
-  rect_init(d, 0, 0, dst_w, h);
+  s = rect_init(0, 0, img_w, h);
+  d = rect_init(0, 0, dst_w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*middle*/
-  rect_init(s, 0, h, img_w, img_h - 2 * h);
-  rect_init(d, 0, h, dst_w, h_h);
+  s = rect_init(0, h, img_w, img_h - 2 * h);
+  d = rect_init(0, h, dst_w, h_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*bottom*/
-  rect_init(s, 0, img_h - h, img_w, h);
-  rect_init(d, 0, dst_h - h, dst_w, h);
+  s = rect_init(0, img_h - h, img_w, h);
+  d = rect_init(0, dst_h - h, dst_w, h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -702,18 +702,18 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   x = (dst->w - img->w) >> 1;
   /*top*/
-  rect_init(s, 0, 0, img_w, h);
-  rect_init(d, x, 0, img_w, h);
+  s = rect_init(0, 0, img_w, h);
+  d = rect_init(x, 0, img_w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*middle*/
-  rect_init(s, 0, h, img_w, img_h - 2 * h);
-  rect_init(d, x, h, img_w, h_h);
+  s = rect_init(0, h, img_w, img_h - 2 * h);
+  d = rect_init(x, h, img_w, h_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*bottom*/
-  rect_init(s, 0, img_h - h, img_w, h);
-  rect_init(d, x, dst_h - h, img_w, h);
+  s = rect_init(0, img_h - h, img_w, h);
+  d = rect_init(x, dst_h - h, img_w, h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -745,18 +745,18 @@ ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst
   w_w = dst_w - w * 2;
 
   /*left*/
-  rect_init(s, 0, 0, w, img_h);
-  rect_init(d, 0, 0, w, dst_h);
+  s = rect_init(0, 0, w, img_h);
+  d = rect_init(0, 0, w, dst_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*center*/
-  rect_init(s, w, 0, img_w - 2 * w, img_h);
-  rect_init(d, w, 0, w_w, dst_h);
+  s = rect_init(w, 0, img_w - 2 * w, img_h);
+  d = rect_init(w, 0, w_w, dst_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*right*/
-  rect_init(s, img_w - w, 0, w, img_h);
-  rect_init(d, dst_w - w, 0, w, dst_h);
+  s = rect_init(img_w - w, 0, w, img_h);
+  d = rect_init(dst_w - w, 0, w, dst_h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -789,18 +789,18 @@ ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   y = (dst_h - img_h) >> 1;
   /*left*/
-  rect_init(s, 0, 0, w, img_h);
-  rect_init(d, 0, y, w, img_h);
+  s = rect_init(0, 0, w, img_h);
+  d = rect_init(0, y, w, img_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*center*/
-  rect_init(s, w, 0, img_w - 2 * w, img_h);
-  rect_init(d, w, y, w_w, img_h);
+  s = rect_init(w, 0, img_w - 2 * w, img_h);
+  d = rect_init(w, y, w_w, img_h);
   canvas_draw_image(c, img, &s, &d);
 
   /*right*/
-  rect_init(s, img_w - w, 0, w, img_h);
-  rect_init(d, dst_w - w, y, w, img_h);
+  s = rect_init(img_w - w, 0, w, img_h);
+  d = rect_init(dst_w - w, y, w, img_h);
   canvas_draw_image(c, img, &s, &d);
 
   canvas_untranslate(c, dst->x, dst->y);
@@ -839,53 +839,53 @@ ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
 
   /*draw four corners*/
   /*left top*/
-  rect_init(s, 0, 0, w, h);
-  rect_init(d, 0, 0, w, h);
+  s = rect_init(0, 0, w, h);
+  d = rect_init(0, 0, w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*right top*/
-  rect_init(s, img_w - w, 0, w, h);
-  rect_init(d, dst_w - w, 0, w, h);
+  s = rect_init(img_w - w, 0, w, h);
+  d = rect_init(dst_w - w, 0, w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*left bottom*/
-  rect_init(s, 0, img_h - h, w, h);
-  rect_init(d, 0, dst_h - h, w, h);
+  s = rect_init(0, img_h - h, w, h);
+  d = rect_init(0, dst_h - h, w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*right bottom*/
-  rect_init(s, img_w - w, img_h - h, w, h);
-  rect_init(d, dst_w - w, dst_h - h, w, h);
+  s = rect_init(img_w - w, img_h - h, w, h);
+  d = rect_init(dst_w - w, dst_h - h, w, h);
   canvas_draw_image(c, img, &s, &d);
 
   /*fill center*/
   x = w;
   if (w_w > 0) {
-    rect_init(s, w, 0, img_w - 2 * w, h);
-    rect_init(d, w, 0, w_w, h);
+    s = rect_init(w, 0, img_w - 2 * w, h);
+    d = rect_init(w, 0, w_w, h);
     canvas_draw_image(c, img, &s, &d);
 
-    rect_init(s, w, img_h - h, img_w - 2 * w, h);
-    rect_init(d, w, h + h_h, w_w, h);
+    s = rect_init(w, img_h - h, img_w - 2 * w, h);
+    d = rect_init(w, h + h_h, w_w, h);
     canvas_draw_image(c, img, &s, &d);
   }
 
   /*fill middle*/
   y = h;
   if (h_h > 0) {
-    rect_init(s, 0, h, w, img_h - 2 * h);
-    rect_init(d, 0, h, w, h_h);
+    s = rect_init(0, h, w, img_h - 2 * h);
+    d = rect_init(0, h, w, h_h);
     canvas_draw_image(c, img, &s, &d);
 
-    rect_init(s, img_w - w, h, w, img_h - 2 * h);
-    rect_init(d, w + w_w, h, w, h_h);
+    s = rect_init(img_w - w, h, w, img_h - 2 * h);
+    d = rect_init(w + w_w, h, w, h_h);
     canvas_draw_image(c, img, &s, &d);
   }
 
   /*fill center/middle*/
   if (w_w > 0 && h_h > 0) {
-    rect_init(s, w, h, img_w - 2 * w, img_h - 2 * h);
-    rect_init(d, w, h, w_w, h_h);
+    s = rect_init(w, h, img_w - 2 * w, img_h - 2 * h);
+    d = rect_init(w, h, w_w, h_h);
     canvas_draw_image(c, img, &s, &d);
   }
 
@@ -1013,7 +1013,7 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
     case IMAGE_DRAW_CENTER:
       return canvas_draw_image_center(c, img, dst);
     case IMAGE_DRAW_SCALE:
-      rect_init(src, 0, 0, img->w, img->h);
+      src = rect_init(0, 0, img->w, img->h);
       return canvas_draw_image(c, img, &src, dst);
     case IMAGE_DRAW_SCALE_AUTO: {
       return canvas_draw_image_scale(c, img, dst);
@@ -1052,18 +1052,18 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL, RET_BAD_PARAMS);
 
   ratio = c->lcd->ratio;
-  rect_init(src, 0, 0, img->w, img->h);
+  src = rect_init(0, 0, img->w, img->h);
   if (ratio > 1) {
     float_t w = (img->w / ratio);
     float_t h = (img->h / ratio);
     float_t hw = w / 2;
     float_t hh = h / 2;
 
-    rect_init(dst, cx - hw, cy - hh, w, h);
+    dst = rect_init(cx - hw, cy - hh, w, h);
   } else {
     hw = img->w >> 1;
     hh = img->h >> 1;
-    rect_init(dst, cx - hw, cy - hh, img->w, img->h);
+    dst = rect_init(cx - hw, cy - hh, img->w, img->h);
   }
 
   return canvas_draw_image(c, img, &src, &dst);
@@ -1087,12 +1087,12 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL, RET_BAD_PARAMS);
 
   ratio = c->lcd->ratio;
-  rect_init(src, 0, 0, img->w, img->h);
+  src = rect_init(0, 0, img->w, img->h);
 
   if (ratio > 1) {
-    rect_init(dst, x, y, img->w / ratio, img->h / ratio);
+    dst = rect_init(x, y, img->w / ratio, img->h / ratio);
   } else {
-    rect_init(dst, x, y, img->w, img->h);
+    dst = rect_init(x, y, img->w, img->h);
   }
 
   return canvas_do_draw_image(c, img, &src, &dst);
@@ -1114,7 +1114,7 @@ static ret_t canvas_draw_fps(canvas_t* c) {
     char fps[20];
     wchar_t wfps[20];
 
-    rect_init(r, 0, 0, 60, 30);
+    r = rect_init(0, 0, 60, 30);
     canvas_set_font(c, NULL, 16);
     canvas_set_clip_rect(c, NULL);
     canvas_set_text_color(c, color_init(0xff, 0xff, 0, 0xff));

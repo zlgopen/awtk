@@ -47,3 +47,13 @@ bool_t rect_contains(rect_t* r, xy_t x, xy_t y) {
 
   return (x >= r->x && x < (r->x + r->w)) && (y >= r->y && y < (r->y + r->h));
 }
+
+rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t r;
+  r.x = x;
+  r.y = y;
+  r.w = w;
+  r.h = h;
+
+  return r;
+}

@@ -26,8 +26,8 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
 #else
   rect_t src;
   rect_t dst;
-  rect_init(src, win->x, y, win->w, h);
-  rect_init(dst, win->x, 0, win->w, h);
+  src = rect_init(win->x, y, win->w, h);
+  dst = rect_init(win->x, 0, win->w, h);
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 #endif
 
@@ -49,8 +49,8 @@ static ret_t window_animator_open_vtranslate_draw_curr(window_animator_t* wa) {
 #else
   rect_t src;
   rect_t dst;
-  rect_init(src, win->x, win->y, win->w, h);
-  rect_init(dst, win->x, y, win->w, h);
+  src = rect_init(win->x, win->y, win->w, h);
+  dst = rect_init(win->x, y, win->w, h);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
 #endif
 

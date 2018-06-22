@@ -43,13 +43,13 @@ static ret_t on_paint_9patch(void* ctx, event_t* e) {
 
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, 200, 30);
+  r = rect_init(10, 10, 200, 30);
   canvas_draw_image_9patch(c, &img, &r);
 
-  rect_init(r, 10, 70, 200, 60);
+  r = rect_init(10, 70, 200, 60);
   canvas_draw_image_9patch(c, &img, &r);
 
-  rect_init(r, 10, 150, 20, 60);
+  r = rect_init(10, 150, 20, 60);
   canvas_draw_image_9patch(c, &img, &r);
 
   return RET_OK;
@@ -63,16 +63,16 @@ static ret_t on_paint_default(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "earth", &img);
 
-  rect_init(s, 0, 0, img.w, img.h);
-  rect_init(r, 10, 220, img.w / 2, img.h / 2);
+  s = rect_init(0, 0, img.w, img.h);
+  r = rect_init(10, 220, img.w / 2, img.h / 2);
   canvas_draw_image(c, &img, &s, &r);
 
-  rect_init(s, 0, 0, img.w, img.h);
-  rect_init(r, 60, 220, img.w, img.h);
+  s = rect_init(0, 0, img.w, img.h);
+  r = rect_init(60, 220, img.w, img.h);
   canvas_draw_image(c, &img, &s, &r);
 
-  rect_init(s, 0, 0, img.w, img.h);
-  rect_init(r, 160, 220, img.w * 2, img.h * 2);
+  s = rect_init(0, 0, img.w, img.h);
+  r = rect_init(160, 220, img.w * 2, img.h * 2);
   canvas_draw_image(c, &img, &s, &r);
 
   return RET_OK;
@@ -113,16 +113,16 @@ static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, 100, 60);
+  r = rect_init(10, 10, 100, 60);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 10, 80, 10, 60);
+  r = rect_init(10, 80, 10, 60);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 10, 160, 300, 50);
+  r = rect_init(10, 160, 300, 50);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 10, 220, 300, 20);
+  r = rect_init(10, 220, 300, 20);
   canvas_draw_image_3patch_x(c, &img, &r);
 
   return RET_OK;
@@ -135,16 +135,16 @@ static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, 60, 100);
+  r = rect_init(10, 10, 60, 100);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 80, 10, 60, 10);
+  r = rect_init(80, 10, 60, 10);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 160, 10, 50, 300);
+  r = rect_init(160, 10, 50, 300);
   canvas_draw_image_3patch_x(c, &img, &r);
 
-  rect_init(r, 220, 10, 20, 300);
+  r = rect_init(220, 10, 20, 300);
   canvas_draw_image_3patch_x(c, &img, &r);
 
   return RET_OK;
@@ -157,13 +157,13 @@ static ret_t on_paint_repeat_x(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, 10, img.h);
+  r = rect_init(10, 10, 10, img.h);
   canvas_draw_image_repeat_x(c, &img, &r);
 
-  rect_init(r, 10, 60, img.w, img.h);
+  r = rect_init(10, 60, img.w, img.h);
   canvas_draw_image_repeat_x(c, &img, &r);
 
-  rect_init(r, 10, 160, img.w * 2, img.h * 2);
+  r = rect_init(10, 160, img.w * 2, img.h * 2);
   canvas_draw_image_repeat_x(c, &img, &r);
 
   return RET_OK;
@@ -176,13 +176,13 @@ static ret_t on_paint_repeat_y(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w, 10);
+  r = rect_init(10, 10, img.w, 10);
   canvas_draw_image_repeat_y(c, &img, &r);
 
-  rect_init(r, 90, 10, img.w, img.h);
+  r = rect_init(90, 10, img.w, img.h);
   canvas_draw_image_repeat_y(c, &img, &r);
 
-  rect_init(r, 160, 10, img.w * 2, img.h * 2);
+  r = rect_init(160, 10, img.w * 2, img.h * 2);
   canvas_draw_image_repeat_y(c, &img, &r);
 
   return RET_OK;
@@ -195,13 +195,13 @@ static ret_t on_paint_repeat(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w / 2, img.h / 2);
+  r = rect_init(10, 10, img.w / 2, img.h / 2);
   canvas_draw_image_repeat(c, &img, &r);
 
-  rect_init(r, 50, 50, img.w, img.h);
+  r = rect_init(50, 50, img.w, img.h);
   canvas_draw_image_repeat(c, &img, &r);
 
-  rect_init(r, 100, 100, img.w * 2 + 10, img.h * 2 + 10);
+  r = rect_init(100, 100, img.w * 2 + 10, img.h * 2 + 10);
   canvas_draw_image_repeat(c, &img, &r);
 
   return RET_OK;
@@ -214,13 +214,13 @@ static ret_t on_paint_scale_x(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w, img.h / 2);
+  r = rect_init(10, 10, img.w, img.h / 2);
   canvas_draw_image_scale_w(c, &img, &r);
 
-  rect_init(r, 50, 50, img.w, img.h);
+  r = rect_init(50, 50, img.w, img.h);
   canvas_draw_image_scale_w(c, &img, &r);
 
-  rect_init(r, 100, 100, img.w * 2, img.h);
+  r = rect_init(100, 100, img.w * 2, img.h);
   canvas_draw_image_scale_w(c, &img, &r);
 
   return RET_OK;
@@ -233,13 +233,13 @@ static ret_t on_paint_scale_y(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w / 2, img.h);
+  r = rect_init(10, 10, img.w / 2, img.h);
   canvas_draw_image_scale_h(c, &img, &r);
 
-  rect_init(r, 50, 50, img.w, img.h);
+  r = rect_init(50, 50, img.w, img.h);
   canvas_draw_image_scale_h(c, &img, &r);
 
-  rect_init(r, 100, 100, img.w, img.h * 2);
+  r = rect_init(100, 100, img.w, img.h * 2);
   canvas_draw_image_scale_h(c, &img, &r);
 
   return RET_OK;
@@ -252,13 +252,13 @@ static ret_t on_paint_scale(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w / 2, img.h);
+  r = rect_init(10, 10, img.w / 2, img.h);
   canvas_draw_image_scale(c, &img, &r);
 
-  rect_init(r, 50, 50, img.w, img.h);
+  r = rect_init(50, 50, img.w, img.h);
   canvas_draw_image_scale(c, &img, &r);
 
-  rect_init(r, 100, 100, img.w, img.h * 2);
+  r = rect_init(100, 100, img.w, img.h * 2);
   canvas_draw_image_scale(c, &img, &r);
 
   return RET_OK;
@@ -271,13 +271,13 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
-  rect_init(r, 10, 10, img.w / 2, img.h);
+  r = rect_init(10, 10, img.w / 2, img.h);
   canvas_draw_image_center(c, &img, &r);
 
-  rect_init(r, 50, 50, img.w, img.h);
+  r = rect_init(50, 50, img.w, img.h);
   canvas_draw_image_center(c, &img, &r);
 
-  rect_init(r, 100, 100, img.w, img.h * 2);
+  r = rect_init(100, 100, img.w, img.h * 2);
   canvas_draw_image_center(c, &img, &r);
 
   return RET_OK;

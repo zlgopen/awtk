@@ -156,7 +156,7 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
   if (a >= TK_OPACITY_ALPHA) {
-    rect_init(r, x, y, w, h);
+    r = rect_init(x, y, w, h);
     lcd_mem_init_offline_fb(lcd, &fb);
 
     return image_fill(&fb, &r, lcd->fill_color);
@@ -293,7 +293,7 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
     img->w = lcd->h;
     img->h = lcd->w;
     lcd_mem_init_offline_fb(lcd, &fb);
-    rect_init(r, 0, 0, fb.w, fb.h);
+    r = rect_init(0, 0, fb.w, fb.h);
 
     image_rotate(img, &fb, &r, o);
   } else {

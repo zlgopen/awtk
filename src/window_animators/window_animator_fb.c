@@ -51,7 +51,7 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
   wa->duration = 500;
   wa->prev_win = prev_win;
   wa->curr_win = curr_win;
-  rect_init(r, 0, 0, wm->w, wm->h);
+  r = rect_init(0, 0, wm->w, wm->h);
 
   if (wa->begin_frame == window_animator_begin_frame) {
     auto_rotate = TRUE;

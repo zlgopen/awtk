@@ -117,7 +117,7 @@ static ret_t window_manager_remove_child_real(widget_t* wm, widget_t* window) {
     widget_t* top = window_manager_get_top_window(wm);
     if (top) {
       rect_t r;
-      rect_init(r, window->x, window->y, window->w, window->h);
+      r = rect_init(window->x, window->y, window->w, window->h);
       widget_invalidate(top, &r);
     }
   }
@@ -243,7 +243,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   }
 
   wm->last_dirty_rect = wm->dirty_rect;
-  rectp_init(dr, widget->w, widget->h, 0, 0);
+  *dr = rect_init(widget->w, widget->h, 0, 0);
 
   return RET_OK;
 }

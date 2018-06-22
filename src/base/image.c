@@ -55,7 +55,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
       canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
     }
 
-    rect_init(dst, 0, 0, widget->w, widget->h);
+    dst = rect_init(0, 0, widget->w, widget->h);
     canvas_draw_image_ex(c, bitmap, image->draw_type, &dst);
   }
 

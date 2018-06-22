@@ -78,16 +78,7 @@ typedef struct _rect_t {
   wh_t h;
 } rect_t;
 
-#define rect_init(r, xx, yy, ww, hh) \
-  r.x = (xx);                        \
-  r.y = (yy);                        \
-  r.w = (ww);                        \
-  r.h = (hh);
-#define rectp_init(r, xx, yy, ww, hh) \
-  r->x = (xx);                        \
-  r->y = (yy);                        \
-  r->w = (ww);                        \
-  r->h = (hh);
+rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
 
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
 bool_t rect_contains(rect_t* r, xy_t x, xy_t y);

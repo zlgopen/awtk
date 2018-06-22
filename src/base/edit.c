@@ -35,7 +35,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
   edit_t* edit = EDIT(timer->ctx);
   widget_t* widget = WIDGET(timer->ctx);
 
-  rect_init(r, edit->caret_x, 0, 1, widget->h);
+  r = rect_init(edit->caret_x, 0, 1, widget->h);
   widget_invalidate(widget, &r);
   edit->caret_visible = !edit->caret_visible;
 
@@ -236,7 +236,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (isprint(key)) {
 #ifndef WITH_NATIVE_IM
       return edit_input_char(widget, (wchar_t)key);
-#endif/*WITH_NATIVE_IM*/
+#endif /*WITH_NATIVE_IM*/
     } else {
       return RET_OK;
     }

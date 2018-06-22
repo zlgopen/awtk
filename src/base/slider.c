@@ -84,7 +84,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     y = widget->h >> 2;
   }
 
-  rect_init(r, x, y, w, h);
+  r = rect_init(x, y, w, h);
   color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);
@@ -117,7 +117,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     y = widget->h >> 2;
   }
 
-  rect_init(r, x, y, w, h);
+  r = rect_init(x, y, w, h);
   color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);

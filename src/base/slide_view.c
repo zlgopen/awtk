@@ -276,7 +276,7 @@ static ret_t widget_calc_children_rect(widget_t* widget, rect_t* r) {
   for (i = 0; i < nr; i++) {
     rect_t rc;
     widget_t* iter = widget_get_child(widget, i);
-    rect_init(rc, iter->x, iter->y, iter->w, iter->h);
+    rc = rect_init(iter->x, iter->y, iter->w, iter->h);
     rect_merge(r, &rc);
   }
 
@@ -399,7 +399,7 @@ static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* 
   widget_t* prev = slide_view_get_prev(slide_view);
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
-  rect_init(r, 0, 0, w, yoffset);
+  r = rect_init(0, 0, w, yoffset);
   if (prev) {
     canvas_translate(c, 0, -r_yoffset);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
@@ -410,7 +410,7 @@ static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* 
   }
 
   canvas_translate(c, 0, yoffset);
-  rect_init(r, 0, yoffset, w, r_yoffset);
+  r = rect_init(0, yoffset, w, r_yoffset);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   widget_paint(active, c);
   canvas_untranslate(c, 0, yoffset);
@@ -430,12 +430,12 @@ static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* 
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   canvas_translate(c, 0, -yoffset);
-  rect_init(r, 0, 0, w, r_yoffset);
+  r = rect_init(0, 0, w, r_yoffset);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   widget_paint(active, c);
   canvas_untranslate(c, 0, -yoffset);
 
-  rect_init(r, 0, r_yoffset, w, yoffset);
+  r = rect_init(0, r_yoffset, w, yoffset);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   if (next) {
     canvas_translate(c, 0, r_yoffset);
@@ -459,7 +459,7 @@ static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* 
   widget_t* prev = slide_view_get_prev(slide_view);
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
-  rect_init(r, 0, 0, xoffset, h);
+  r = rect_init(0, 0, xoffset, h);
   if (prev) {
     canvas_translate(c, -r_xoffset, 0);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
@@ -470,7 +470,7 @@ static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* 
   }
 
   canvas_translate(c, xoffset, 0);
-  rect_init(r, xoffset, 0, r_xoffset, h);
+  r = rect_init(xoffset, 0, r_xoffset, h);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   widget_paint(active, c);
   canvas_untranslate(c, xoffset, 0);
@@ -490,12 +490,12 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   canvas_translate(c, -xoffset, 0);
-  rect_init(r, 0, 0, r_xoffset, h);
+  r = rect_init(0, 0, r_xoffset, h);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   widget_paint(active, c);
   canvas_untranslate(c, -xoffset, 0);
 
-  rect_init(r, r_xoffset, 0, xoffset, h);
+  r = rect_init(r_xoffset, 0, xoffset, h);
   canvas_set_clip_rect_with_offset(c, &r, ox, oy);
   if (next) {
     canvas_translate(c, r_xoffset, 0);
@@ -540,9 +540,9 @@ static ret_t slide_view_paint_indicator(widget_t* widget, canvas_t* c) {
   }
 
   if (slide_view->vertical) {
-    rect_init(r, tk_max(10, widget->w * 0.1), cy - offset, size, size);
+    r = rect_init(tk_max(10, widget->w * 0.1), cy - offset, size, size);
   } else {
-    rect_init(r, cx - offset, tk_min(widget->h - double_size, widget->h * 0.9), size, size);
+    r = rect_init(cx - offset, tk_min(widget->h - double_size, widget->h * 0.9), size, size);
   }
 
   for (i = 0; i < nr; i++) {

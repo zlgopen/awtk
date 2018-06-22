@@ -461,7 +461,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
 
     if (text != NULL && text->size > 0) {
       if (widget->h > (img.h + font_size)) {
-        rect_init(dst, 0, 0, widget->w, widget->h - font_size);
+        dst = rect_init(0, 0, widget->w, widget->h - font_size);
         cx = dst.w >> 1;
         cy = dst.h >> 1;
         canvas_draw_icon(c, &img, cx, cy);
@@ -471,7 +471,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
         y = widget->h - font_size;
         canvas_draw_text(c, text->str, text->size, x, y);
       } else {
-        rect_init(dst, 0, 0, widget->h, widget->h);
+        dst = rect_init(0, 0, widget->h, widget->h);
         cx = dst.w >> 1;
         cy = dst.h >> 1;
         canvas_draw_icon(c, &img, cx, cy);
@@ -481,7 +481,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
         canvas_draw_text(c, text->str, text->size, x, y);
       }
     } else {
-      rect_init(dst, 0, 0, widget->w, widget->h);
+      dst = rect_init(0, 0, widget->w, widget->h);
       cx = dst.w >> 1;
       cy = dst.h >> 1;
       canvas_draw_icon(c, &img, cx, cy);
@@ -537,7 +537,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
 
   if (image_name != NULL) {
     if (image_manager_load(image_manager(), image_name, &img) == RET_OK) {
-      rect_init(dst, 0, 0, widget->w, widget->h);
+      dst = rect_init(0, 0, widget->w, widget->h);
       image_draw_type_t draw_type =
           (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
       uint32_t start_time = time_now_ms();
@@ -1066,7 +1066,7 @@ static ret_t widget_set_dirty(widget_t* widget) {
 ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   rect_t rself;
   if (r == NULL) {
-    rect_init(rself, 0, 0, widget->w, widget->h);
+    rself = rect_init(0, 0, widget->w, widget->h);
     r = &rself;
   }
 

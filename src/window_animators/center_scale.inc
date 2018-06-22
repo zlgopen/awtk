@@ -16,13 +16,13 @@ static ret_t window_animator_open_scale_draw_prev(window_animator_t* wa) {
   float_t ratio = wa->ratio;
   widget_t* win = wa->prev_win;
 
-  rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
-  rect_init(dst, win->x, win->y, win->w, win->h);
+  src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+  dst = rect_init(win->x, win->y, win->w, win->h);
 #ifndef WITH_NANOVG
   if (wa->percent > 0) {
     win = wa->curr_win;
-    rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
-    rect_init(dst, win->x, win->y, win->w, win->h);
+    src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+    dst = rect_init(win->x, win->y, win->w, win->h);
   }
 #endif /**/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
@@ -38,11 +38,11 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   widget_t* win = wa->curr_win;
   float_t scale = wa->percent;
   float_t alpha = wa->open ? wa->time_percent : 1 - wa->time_percent;
-  rect_init(src, win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
+  src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
 
 #ifdef WITH_NANOVG
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-  rect_init(dst, 0, 0, win->w, win->h);
+  dst = rect_init(0, 0, win->w, win->h);
   vgcanvas_save(vg);
   vgcanvas_translate(vg, win->x, win->y);
   vgcanvas_translate(vg, win->w >> 1, win->h >> 1);
@@ -53,7 +53,7 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   vgcanvas_restore(vg);
 #else
   (void)alpha;
-  rect_init(dst, 0, 0, win->w * scale, win->h * scale);
+  dst = rect_init(0, 0, win->w * scale, win->h * scale);
   dst.x = win->x + ((win->w - dst.w) >> 1);
   dst.y = win->y + ((win->h - dst.h) >> 1);
   if (alpha > 0) {
