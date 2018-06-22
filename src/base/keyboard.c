@@ -132,6 +132,10 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
     im_commit_event_t e;
     memset(&e, 0x00, sizeof(e));
 
+    if(tk_str_eq(name, "space")) {
+      name = " ";
+    }
+
     e.e = event_init(EVT_IM_COMMIT, NULL);
     e.text = name;
 

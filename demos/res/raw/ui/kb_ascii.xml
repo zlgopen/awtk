@@ -26,13 +26,13 @@
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
         <button name="page:lower"><image image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
-        <button name="Z" text="A"/>
-        <button name="X" text="S"/>
-        <button name="C" text="D"/>
-        <button name="V" text="F"/>
-        <button name="B" text="G"/>
-        <button name="N" text="H"/>
-        <button name="M" text="J"/>
+        <button name="Z" text="Z"/>
+        <button name="X" text="X"/>
+        <button name="C" text="C"/>
+        <button name="V" text="V"/>
+        <button name="B" text="B"/>
+        <button name="N" text="N"/>
+        <button name="M" text="M"/>
         <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
@@ -67,13 +67,13 @@
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight"><image image="shift" x="center" y="middle" w="100%" h="100%"/></button>
-        <button name="z" text="a"/>
-        <button name="x" text="s"/>
-        <button name="c" text="d"/>
-        <button name="v" text="f"/>
-        <button name="b" text="g"/>
-        <button name="n" text="h"/>
-        <button name="m" text="j"/>
+        <button name="z" text="z"/>
+        <button name="x" text="x"/>
+        <button name="c" text="c"/>
+        <button name="v" text="v"/>
+        <button name="b" text="b"/>
+        <button name="n" text="n"/>
+        <button name="m" text="m"/>
         <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
@@ -155,7 +155,7 @@
         <button name="," text=","/>
         <button name="?" text="?"/>
         <button name="!" text="!"/>
-        <button name="'" text="<"/>
+        <button name="'" text="'"/>
         <button name="&quota;" text=">"/>
         <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
