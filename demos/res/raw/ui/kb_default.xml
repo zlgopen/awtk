@@ -206,8 +206,7 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
-        <button name="page:lower" style="1:highlight" w="10%"><image image="earth" x="center" y="middle" w="100%" h="100%"/></button>
-        <button name="space" w="55%" text="Space"/>
+        <button name="key:space" w="65%" text="Space"/>
         <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
