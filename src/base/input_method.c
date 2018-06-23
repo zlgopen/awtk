@@ -91,12 +91,32 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
   key_event_t e;
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
+  if (im->engine != NULL) {
+    if (input_engine_input(im->engine, (char)key) == RET_OK) {
+      input_method_dispatch_candidates(im, (const char*)(im->engine->candidates),
+                                       im->engine->candidates_nr);
+
+      return RET_OK;
+    }
+  }
+
   e.key = key;
   e.e.type = EVT_KEY_DOWN;
   input_method_dispatch_to_widget(input_method(), (event_t*)&e);
-
   e.e.type = EVT_KEY_UP;
-  return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+
+  return RET_OK;
+}
+
+ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr) {
+  im_candidates_event_t ce;
+
+  ce.e = event_init(EVT_IM_SHOW_CANDIDATES, im);
+  ce.candidates_nr = nr;
+  ce.candidates = strs;
+
+  return input_method_dispatch(im, (event_t*)(&ce));
 }
 
 ret_t input_method_commit_text(input_method_t* im, const char* text) {
@@ -105,6 +125,11 @@ ret_t input_method_commit_text(input_method_t* im, const char* text) {
 
   e.text = text;
   e.e = event_init(EVT_IM_COMMIT, NULL);
+
+  if (im->engine) {
+    input_engine_reset_input(im->engine);
+    input_method_dispatch_candidates(im, "", 0);
+  }
 
   return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
 }

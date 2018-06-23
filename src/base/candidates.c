@@ -1,0 +1,176 @@
+﻿/**
+ * File:   candidates.c
+ * Author: AWTK Develop Team
+ * Brief:  candidates
+ *
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2018-06-23 Li XianJing <xianjimli@hotmail.com> created
+ *
+ */
+
+#include "base/mem.h"
+#include "base/utf8.h"
+#include "base/utils.h"
+#include "base/button.h"
+#include "base/candidates.h"
+#include "base/input_method.h"
+#include "base/widget_vtable.h"
+
+static ret_t candidates_on_button_click(void* ctx, event_t* e) {
+  char str[32];
+  const char* p = utf8_from_utf16(WIDGET(ctx)->text.str, str, sizeof(str) - 1);
+
+  input_method_commit_text(input_method(), p);
+  (void)e;
+
+  return RET_OK;
+}
+
+static ret_t candidates_create_button(widget_t* widget) {
+  widget_t* button = button_create(widget, 0, 0, 0, 0);
+  return_value_if_fail(button != NULL, RET_BAD_PARAMS);
+
+  widget_on(button, EVT_CLICK, candidates_on_button_click, button);
+
+  return RET_OK;
+}
+
+static ret_t candidates_ensure_children(widget_t* widget, uint32_t nr) {
+  uint32_t i = 0;
+  uint32_t size = 0;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->children && nr <= widget->children->size) {
+    return RET_OK;
+  }
+
+  size = widget->children ? widget->children->size : 0;
+  for (i = size; i < nr; i++) {
+    candidates_create_button(widget);
+  }
+
+  return_value_if_fail(widget->children->size == nr, RET_OOM);
+
+  return RET_OK;
+}
+
+/*FIXME: */
+static uint32_t candidates_calc_child_width(widget_t* widget) {
+  uint32_t w = 8;
+  uint32_t i = 0;
+
+  wstr_t* str = &(widget->text);
+  for (i = 0; i < str->size; i++) {
+    wchar_t c = str->str[i];
+    if (c < 0x80) {
+      w += 8;
+    } else {
+      w += 16;
+    }
+  }
+
+  return w;
+}
+
+static ret_t candidates_relayout_children(widget_t* widget) {
+  uint32_t i = 0;
+  xy_t margin = 2;
+  wh_t child_w = 0;
+  wh_t w = widget->w;
+  xy_t child_x = margin;
+  xy_t child_y = margin;
+  widget_t* iter = NULL;
+  uint32_t nr = widget->children->size;
+  wh_t child_h = widget->h - margin * 2;
+  widget_t** children = (widget_t**)(widget->children->elms);
+
+  for (i = 0; i < nr; i++) {
+    iter = children[i];
+    child_w = candidates_calc_child_width(iter);
+    if ((child_x + child_w + margin) < w && iter->text.size > 0) {
+      widget_set_visible(iter, TRUE, FALSE);
+      widget_move_resize(iter, child_x, child_y, child_w, child_h);
+    } else {
+      widget_set_visible(iter, FALSE, FALSE);
+      widget_move_resize(iter, 0, 0, 0, 0);
+    }
+
+    child_x += child_w + margin;
+  }
+
+  return RET_OK;
+}
+
+static ret_t candidates_update_candidates(widget_t* widget, const char* strs, uint32_t nr) {
+  uint32_t i = 0;
+  widget_t* iter = NULL;
+  const char* text = strs;
+  widget_t** children = NULL;
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL && strs != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(candidates_ensure_children(widget, nr + 1) == RET_OK, RET_OOM);
+
+  children = (widget_t**)(widget->children->elms);
+
+  for (i = 0; i < nr; i++) {
+    iter = children[i];
+    widget_set_text_utf8(iter, text);
+    text += strlen(text) + 1;
+  }
+
+  for (; i < widget->children->size; i++) {
+    iter = children[i];
+    widget_set_text_utf8(iter, "");
+  }
+
+  candidates_relayout_children(widget);
+
+  return RET_OK;
+}
+
+static ret_t candidates_destroy_default(widget_t* widget) {
+  candidates_t* candidates = CANDIDATES(widget);
+  input_method_off(input_method(), candidates->event_id);
+
+  return RET_OK;
+}
+
+static const widget_vtable_t s_candidates_vtable = {
+    .on_paint_self = widget_on_paint_background_null,
+    .on_paint_background = widget_on_paint_background_null,
+    .on_paint_done = widget_on_paint_done_null,
+    .destroy = candidates_destroy_default};
+
+static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  im_candidates_event_t* evt = (im_candidates_event_t*)e;
+
+  return candidates_update_candidates(widget, evt->candidates, evt->candidates_nr);
+}
+
+widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = NULL;
+  candidates_t* candidates = TKMEM_ZALLOC(candidates_t);
+  return_value_if_fail(candidates != NULL, NULL);
+
+  widget = WIDGET(candidates);
+  widget_init(widget, parent, WIDGET_CANDIDATES);
+  widget_move_resize(widget, x, y, w, h);
+  widget->vt = &s_candidates_vtable;
+
+  candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
+                                         candidates_on_im_candidates_event, candidates);
+
+  return widget;
+}

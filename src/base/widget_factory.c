@@ -32,6 +32,7 @@
 #include "base/pages.h"
 #include "base/view.h"
 #include "base/keyboard.h"
+#include "base/candidates.h"
 #include "base/group_box.h"
 #include "base/slide_view.h"
 #include "base/check_button.h"
@@ -60,6 +61,7 @@ static const creator_item_t s_builtin_creators[] = {
     {"radio_button", check_button_create_radio},
     {"keyboard", keyboard_create},
     {"pages", pages_create},
+    {"candidates", candidates_create},
 #ifndef WITH_LOW_RES
     {"slide_view", slide_view_create},
 #endif /*WITH_LOW_RES*/

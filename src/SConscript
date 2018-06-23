@@ -40,5 +40,10 @@ if os.environ['INPUT_METHOD'] == 'native':
 else:
   sources += Glob('input_methods/input_method_default.c')
 
+if os.environ['INPUT_ENGINE'] == 'null':
+  sources += Glob('input_engines/input_engine_null.c')
+else:
+  sources += Glob('input_engines/input_engine_gpinyin.c')
+
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'awtk'), sources)

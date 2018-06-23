@@ -274,7 +274,7 @@ wchar_t* utf8_to_utf16(const char* str, wchar_t* out, uint32_t size) {
   const char* next = NULL;
   return_value_if_fail(str != NULL && out != NULL, NULL);
 
-  while (*p && (i + 1) < size) {
+  while (p != NULL && *p && (i + 1) < size) {
     out[i++] = utf8_get_char(p, &next);
     p = next;
   }

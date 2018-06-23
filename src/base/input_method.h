@@ -23,6 +23,7 @@
 #define TK_INPUT_METHOD_H
 
 #include "base/widget.h"
+#include "base/input_engine.h"
 
 BEGIN_C_DECLS
 
@@ -92,7 +93,7 @@ typedef enum _input_type_t {
  */
 typedef struct _input_method_t {
   /**
-   * @property {widget_t*} widget;
+   * @property {widget_t*} widget
    * @private
    * 当前的焦点控件。
    */
@@ -147,6 +148,7 @@ typedef struct _input_method_t {
    */
   input_type_t input_type;
 
+  input_engine_t* engine;
   /**
    * 子类需要实现的函数。
    */
@@ -305,6 +307,17 @@ ret_t input_method_commit_text(input_method_t* im, const char* text);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_method_dispatch_key(input_method_t* im, uint32_t key);
+
+/**
+ * @method input_method_dispatch_candidates
+ * 请求显示候选字。
+ * @param {input_method_t*} im 输入法对象。
+ * @param {char*} strs 候选字列表。
+ * @param {uint32_t} nr 候选字个数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr);
 
 /**
  * @method input_method_create

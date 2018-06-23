@@ -82,6 +82,14 @@ ret_t str_append(str_t* str, const char* text) {
   return RET_OK;
 }
 
+ret_t str_append_char(str_t* str, char c) {
+  char buff[2];
+  buff[1] = '\0';
+  buff[0] = c;
+
+  return str_append(str, buff);
+}
+
 ret_t str_decode_xml_entity(str_t* str, const char* text) {
   char* d = NULL;
   const char* s = text;

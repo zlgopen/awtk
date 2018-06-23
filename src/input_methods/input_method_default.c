@@ -200,6 +200,7 @@ input_method_t* input_method_create(void) {
   im->action_button_enable = TRUE;
   im->request = input_method_default_request;
   emitter_init(&(im->emitter));
+  im->engine = input_engine_create();
 
   return im;
 }
@@ -208,6 +209,7 @@ ret_t input_method_destroy(input_method_t* im) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
   emitter_deinit(&(im->emitter));
+  input_engine_destroy(im->engine);
   TKMEM_FREE(im);
 
   return RET_OK;

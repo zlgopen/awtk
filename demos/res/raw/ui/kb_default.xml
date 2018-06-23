@@ -1,5 +1,5 @@
-<keyboard name="keyboard" x="0" y="bottom" w="100%" h="30%">
-  <pages x="0" y="0" w="100%" h="100%" active="4">
+<keyboard name="keyboard" x="0" y="bottom" w="100%" h="40%">
+  <pages x="0" y="bottom" w="100%" h="80%" active="4">
     <view name="upper" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
         <button name="Q" text="Q"/>
@@ -212,4 +212,5 @@
       </group_box>
     </view>
   </pages>
+  <candidates x="0" y="0" w="100%" h="20%"/>
 </keyboard>

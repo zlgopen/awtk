@@ -38,7 +38,6 @@ static SDL_Rect* to_sdl_global(SDL_Rect* r) {
 }
 
 static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
-  
   im->widget = widget;
 
   if (widget != NULL) {
@@ -50,7 +49,7 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
     r.y = p.y;
     r.w = widget->w;
     r.h = widget->h;
-  
+
     /*FIXME:*/
     SDL_SetTextInputRect(to_sdl_global(&r));
     SDL_StartTextInput();

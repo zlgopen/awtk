@@ -576,6 +576,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   bool_t need_transform = FALSE;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
+  if (!widget->visible) {
+    return RET_OK;
+  }
+
   save_alpha = c->lcd->global_alpha;
 
   if (widget->opacity < TK_OPACITY_ALPHA) {

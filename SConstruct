@@ -22,6 +22,7 @@ else:
 
 INPUT_METHOD='native'
 INPUT_METHOD='default'
+INPUT_ENGINE='null'
 
 FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
@@ -49,7 +50,6 @@ else:
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_PICASSO -DIMAGE_RGBA'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_RGB565'
 
-
 os.environ['LCD'] = LCD
 os.environ['VGCANVAS'] =VGCANVAS 
 os.environ['BIN_DIR'] = BIN_DIR;
@@ -57,6 +57,7 @@ os.environ['LIB_DIR'] = LIB_DIR;
 os.environ['TK_ROOT'] = TK_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
 os.environ['INPUT_METHOD'] = INPUT_METHOD;
+os.environ['INPUT_ENGINE'] = INPUT_ENGINE;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 
 OS_LIBPATH=[]

@@ -102,7 +102,8 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   widget_update_style(widget);
   widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
-  keyboard->action_info_id = input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
+  keyboard->action_info_id =
+      input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
 
   return widget;
 }

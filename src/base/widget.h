@@ -215,6 +215,11 @@ typedef enum _widget_type_t {
    * Slide View。
    */
   WIDGET_PAGES,
+  /**
+   * @const WIDGET_CANDIDATES
+   * Input method words candidates。
+   */
+  WIDGET_CANDIDATES,
 
   WIDGET_NR,
   WIDGET_USER_START = 100
