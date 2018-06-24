@@ -92,6 +92,7 @@ def gen_all():
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
   resgen('fonts/default.ttf', 'fonts/default.res');
+  resgen('fonts/default.mini.ttf', 'fonts/default.mini.res');
   fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
   
   for f in glob.glob(joinPath(INPUT_DIR, 'theme/*.xml')):
@@ -159,9 +160,14 @@ def gen_res_c():
   result += '#endif/*WITH_STB_IMAGE*/\n'
 
   result += "#ifdef WITH_STB_FONT\n"
-  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.res')) 
+  result += "#ifdef WITH_MINI_FONT\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.mini.res')) 
   result += genIncludes(files)
-  result += "#else\n"
+  result += "#else/*WITH_MINI_FONT*/\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res')) 
+  result += genIncludes(files)
+  result += '#endif/*WITH_MINI_FONT*/\n'
+  result += "#else/*WITH_STB_FONT*/\n"
   files=glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data')) 
   result += genIncludes(files)
   result += '#endif/*WITH_STB_FONT*/\n'
