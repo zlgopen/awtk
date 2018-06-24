@@ -1,7 +1,7 @@
-﻿/**
+/**
  * File:   rom_file.c
  * Author: AWTK Develop Team
- * Brief:  rom_file struct and utils functions.
+ * Brief:  posix file api for rom data.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -18,6 +18,16 @@
  * 2018-06-23 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+
+#ifndef SEEK_SET
+#define SEEK_SET 0 /* set file offset to offset */
+#endif
+#ifndef SEEK_CUR
+#define SEEK_CUR 1 /* set file offset to current plus offset */
+#endif
+#ifndef SEEK_END
+#define SEEK_END 2 /* set file offset to EOF plus offset */
+#endif
 
 #include "base/mem.h"
 #include "base/rom_fs.h"

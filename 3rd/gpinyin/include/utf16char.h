@@ -25,32 +25,30 @@ namespace ime_pinyin {
 extern "C" {
 #endif
 
-  typedef unsigned short char16;
+typedef unsigned short char16;
 
-  // Get a token from utf16_str,
-  // Returned pointer is a '\0'-terminated utf16 string, or NULL
-  // *utf16_str_next returns the next part of the string for further tokenizing
-  char16* utf16_strtok(char16 *utf16_str, unsigned *token_size,
-                       char16 **utf16_str_next);
+// Get a token from utf16_str,
+// Returned pointer is a '\0'-terminated utf16 string, or NULL
+// *utf16_str_next returns the next part of the string for further tokenizing
+char16* utf16_strtok(char16* utf16_str, unsigned* token_size, char16** utf16_str_next);
 
-  int utf16_atoi(const char16 *utf16_str);
+int utf16_atoi(const char16* utf16_str);
 
-  float utf16_atof(const char16 *utf16_str);
+float utf16_atof(const char16* utf16_str);
 
-  unsigned utf16_strlen(const char16 *utf16_str);
+unsigned utf16_strlen(const char16* utf16_str);
 
-  int utf16_strcmp(const char16 *str1, const char16 *str2);
-  int utf16_strncmp(const char16 *str1, const char16 *str2, unsigned size);
+int utf16_strcmp(const char16* str1, const char16* str2);
+int utf16_strncmp(const char16* str1, const char16* str2, unsigned size);
 
-  char16* utf16_strcpy(char16 *dst, const char16 *src);
-  char16* utf16_strncpy(char16 *dst, const char16 *src, unsigned size);
+char16* utf16_strcpy(char16* dst, const char16* src);
+char16* utf16_strncpy(char16* dst, const char16* src, unsigned size);
 
-
-  char* utf16_strcpy_tochar(char *dst, const char16 *src);
+char* utf16_strcpy_tochar(char* dst, const char16* src);
 
 #ifdef __cplusplus
 }
 #endif
-}
+}  // namespace ime_pinyin
 
 #endif  // PINYINIME_INCLUDE_UTF16CHAR_H__

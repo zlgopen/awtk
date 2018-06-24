@@ -48,7 +48,8 @@
 namespace ime_pinyin {
 class AtomDictBase {
  public:
-  virtual ~AtomDictBase() {}
+  virtual ~AtomDictBase() {
+  }
 
   /**
    * Load an atom dictionary from a file.
@@ -61,8 +62,7 @@ class AtomDictBase {
    * parameter.
    * @return True if succeed.
    */
-  virtual bool load_dict(const char *file_name, LemmaIdType start_id,
-                         LemmaIdType end_id) = 0;
+  virtual bool load_dict(const char* file_name, LemmaIdType start_id, LemmaIdType end_id) = 0;
 
   /**
    * Close this atom dictionary.
@@ -106,8 +106,7 @@ class AtomDictBase {
    * objects should be reset.
    * @param from_handle The ealiest MileStoneHandle object for step from_step
    */
-  virtual void reset_milestones(uint16 from_step,
-                                MileStoneHandle from_handle) = 0;
+  virtual void reset_milestones(uint16 from_step, MileStoneHandle from_handle) = 0;
 
   /**
    * Used to extend in this dictionary. The handle returned should keep valid
@@ -121,10 +120,9 @@ class AtomDictBase {
    * @param lpi_num Used to return the newly added items.
    * @return The new mile stone for this extending. 0 if fail.
    */
-  virtual MileStoneHandle extend_dict(MileStoneHandle from_handle,
-                                      const DictExtPara *dep,
-                                      LmaPsbItem *lpi_items,
-                                      unsigned lpi_max, unsigned *lpi_num) = 0;
+  virtual MileStoneHandle extend_dict(MileStoneHandle from_handle, const DictExtPara* dep,
+                                      LmaPsbItem* lpi_items, unsigned lpi_max,
+                                      unsigned* lpi_num) = 0;
 
   /**
    * Get lemma items with scores according to a spelling id stream.
@@ -136,8 +134,8 @@ class AtomDictBase {
    * @param lpi_max The maximum size of the buffer to return result.
    * @return The number of matched items which have been filled in to lpi_items.
    */
-  virtual unsigned get_lpis(const uint16 *splid_str, uint16 splid_str_len,
-                          LmaPsbItem *lpi_items, unsigned lpi_max) = 0;
+  virtual unsigned get_lpis(const uint16* splid_str, uint16 splid_str_len, LmaPsbItem* lpi_items,
+                            unsigned lpi_max) = 0;
 
   /**
    * Get a lemma string (The Chinese string) by the given lemma id.
@@ -147,8 +145,7 @@ class AtomDictBase {
    * @param str_max The maximum size of the buffer.
    * @return The length of the string, 0 if fail.
    */
-  virtual uint16 get_lemma_str(LemmaIdType id_lemma, char16 *str_buf,
-                               uint16 str_max) = 0;
+  virtual uint16 get_lemma_str(LemmaIdType id_lemma, char16* str_buf, uint16 str_max) = 0;
 
   /**
    * Get the full spelling ids for the given lemma id.
@@ -162,8 +159,8 @@ class AtomDictBase {
    * case, splids_max is the number of valid ids in splids.
    * @return The number of ids in the buffer.
    */
-  virtual uint16 get_lemma_splids(LemmaIdType id_lemma, uint16 *splids,
-                                  uint16 splids_max, bool arg_valid) = 0;
+  virtual uint16 get_lemma_splids(LemmaIdType id_lemma, uint16* splids, uint16 splids_max,
+                                  bool arg_valid) = 0;
 
   /**
    * Function used for prediction.
@@ -178,9 +175,8 @@ class AtomDictBase {
    * from other atom dictionaries. A atom ditionary can just ignore it.
    * @return The number of prediction result from this atom dictionary.
    */
-  virtual unsigned predict(const char16 last_hzs[], uint16 hzs_len,
-                         NPredictItem *npre_items, unsigned npre_max,
-                         unsigned b4_used) = 0;
+  virtual unsigned predict(const char16 last_hzs[], uint16 hzs_len, NPredictItem* npre_items,
+                           unsigned npre_max, unsigned b4_used) = 0;
 
   /**
    * Add a lemma to the dictionary. If the dictionary allows to add new
@@ -191,8 +187,8 @@ class AtomDictBase {
    * @param lemma_len The length of the Chinese lemma.
    * @param count The frequency count for this lemma.
    */
-  virtual LemmaIdType put_lemma(char16 lemma_str[], uint16 splids[],
-                                uint16 lemma_len, uint16 count) = 0;
+  virtual LemmaIdType put_lemma(char16 lemma_str[], uint16 splids[], uint16 lemma_len,
+                                uint16 count) = 0;
 
   /**
    * Update a lemma's occuring count.
@@ -203,8 +199,7 @@ class AtomDictBase {
    * submitted to target edit box.
    * @return The id if succeed, 0 if fail.
    */
-  virtual LemmaIdType update_lemma(LemmaIdType lemma_id, int16 delta_count,
-                                   bool selected) = 0;
+  virtual LemmaIdType update_lemma(LemmaIdType lemma_id, int16 delta_count, bool selected) = 0;
 
   /**
    * Get the lemma id for the given lemma.
@@ -214,8 +209,7 @@ class AtomDictBase {
    * @param lemma_len The length of the lemma.
    * @return The matched lemma id, or 0 if fail.
    */
-  virtual LemmaIdType get_lemma_id(char16 lemma_str[], uint16 splids[],
-                                   uint16 lemma_len) = 0;
+  virtual LemmaIdType get_lemma_id(char16 lemma_str[], uint16 splids[], uint16 lemma_len) = 0;
 
   /**
    * Get the lemma score.
@@ -233,8 +227,7 @@ class AtomDictBase {
    * @param lemma_len The length of the lemma.
    * @return The score of the lamm, or 0 if fail.
    */
-  virtual LmaScoreType get_lemma_score(char16 lemma_str[], uint16 splids[],
-                                uint16 lemma_len) = 0;
+  virtual LmaScoreType get_lemma_score(char16 lemma_str[], uint16 splids[], uint16 lemma_len) = 0;
 
   /**
    * If the dictionary allowed, remove a lemma from it.
@@ -264,6 +257,6 @@ class AtomDictBase {
    */
   virtual void flush_cache() = 0;
 };
-}
+}  // namespace ime_pinyin
 
 #endif  // PINYINIME_INCLUDE_ATOMDICTBASE_H__

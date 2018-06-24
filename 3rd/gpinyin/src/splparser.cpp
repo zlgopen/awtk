@@ -27,23 +27,19 @@ bool SpellingParser::is_valid_to_parse(char ch) {
   return SpellingTrie::is_valid_spl_char(ch);
 }
 
-uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
-                                      uint16 spl_idx[], uint16 start_pos[],
-                                      uint16 max_size, bool &last_is_pre) {
-  if (NULL == splstr || 0 == max_size || 0 == str_len)
-    return 0;
+uint16 SpellingParser::splstr_to_idxs(const char* splstr, uint16 str_len, uint16 spl_idx[],
+                                      uint16 start_pos[], uint16 max_size, bool& last_is_pre) {
+  if (NULL == splstr || 0 == max_size || 0 == str_len) return 0;
 
-  if (!SpellingTrie::is_valid_spl_char(splstr[0]))
-    return 0;
+  if (!SpellingTrie::is_valid_spl_char(splstr[0])) return 0;
 
   last_is_pre = false;
 
-  const SpellingNode *node_this = spl_trie_->root_;
+  const SpellingNode* node_this = spl_trie_->root_;
 
   uint16 str_pos = 0;
   uint16 idx_num = 0;
-  if (NULL != start_pos)
-    start_pos[0] = 0;
+  if (NULL != start_pos) start_pos[0] = 0;
   bool last_is_splitter = false;
 
   while (str_pos < str_len) {
@@ -57,10 +53,8 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
 
         idx_num++;
         str_pos++;
-        if (NULL != start_pos)
-          start_pos[idx_num] = str_pos;
-        if (idx_num >= max_size)
-          return idx_num;
+        if (NULL != start_pos) start_pos[idx_num] = str_pos;
+        if (idx_num >= max_size) return idx_num;
 
         node_this = spl_trie_->root_;
         last_is_splitter = true;
@@ -68,8 +62,7 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
       } else {
         if (last_is_splitter) {
           str_pos++;
-          if (NULL != start_pos)
-            start_pos[idx_num] = str_pos;
+          if (NULL != start_pos) start_pos[idx_num] = str_pos;
           continue;
         } else {
           return idx_num;
@@ -79,7 +72,7 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
 
     last_is_splitter = false;
 
-    SpellingNode *found_son = NULL;
+    SpellingNode* found_son = NULL;
 
     if (0 == str_pos) {
       if (char_this >= 'a')
@@ -87,13 +80,12 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
       else
         found_son = spl_trie_->level1_sons_[char_this - 'A'];
     } else {
-      SpellingNode *first_son = node_this->first_son;
+      SpellingNode* first_son = node_this->first_son;
       // Because for Zh/Ch/Sh nodes, they are the last in the buffer and
       // frequently used, so we scan from the end.
       for (int i = 0; i < node_this->num_of_son; i++) {
-        SpellingNode *this_son = first_son + i;
-        if (SpellingTrie::is_same_spl_char(
-            this_son->char_this_node, char_this)) {
+        SpellingNode* this_son = first_son + i;
+        if (SpellingTrie::is_same_spl_char(this_son->char_this_node, char_this)) {
           found_son = this_son;
           break;
         }
@@ -111,10 +103,8 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
         spl_idx[idx_num] = id_this;
 
         idx_num++;
-        if (NULL != start_pos)
-          start_pos[idx_num] = str_pos;
-        if (idx_num >= max_size)
-          return idx_num;
+        if (NULL != start_pos) start_pos[idx_num] = str_pos;
+        if (idx_num >= max_size) return idx_num;
         node_this = spl_trie_->root_;
         continue;
       } else {
@@ -131,8 +121,7 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
     spl_idx[idx_num] = id_this;
 
     idx_num++;
-    if (NULL != start_pos)
-      start_pos[idx_num] = str_pos;
+    if (NULL != start_pos) start_pos[idx_num] = str_pos;
   }
 
   last_is_pre = !last_is_splitter;
@@ -140,11 +129,9 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
   return idx_num;
 }
 
-uint16 SpellingParser::splstr_to_idxs_f(const char *splstr, uint16 str_len,
-                                        uint16 spl_idx[], uint16 start_pos[],
-                                        uint16 max_size, bool &last_is_pre) {
-  uint16 idx_num = splstr_to_idxs(splstr, str_len, spl_idx, start_pos,
-                                  max_size, last_is_pre);
+uint16 SpellingParser::splstr_to_idxs_f(const char* splstr, uint16 str_len, uint16 spl_idx[],
+                                        uint16 start_pos[], uint16 max_size, bool& last_is_pre) {
+  uint16 idx_num = splstr_to_idxs(splstr, str_len, spl_idx, start_pos, max_size, last_is_pre);
   for (uint16 pos = 0; pos < idx_num; pos++) {
     if (spl_trie_->is_half_id_yunmu(spl_idx[pos])) {
       spl_trie_->half_to_full(spl_idx[pos], spl_idx + pos);
@@ -156,23 +143,19 @@ uint16 SpellingParser::splstr_to_idxs_f(const char *splstr, uint16 str_len,
   return idx_num;
 }
 
-uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
-                                        uint16 spl_idx[], uint16 start_pos[],
-                                        uint16 max_size, bool &last_is_pre) {
-  if (NULL == splstr || 0 == max_size || 0 == str_len)
-    return 0;
+uint16 SpellingParser::splstr16_to_idxs(const char16* splstr, uint16 str_len, uint16 spl_idx[],
+                                        uint16 start_pos[], uint16 max_size, bool& last_is_pre) {
+  if (NULL == splstr || 0 == max_size || 0 == str_len) return 0;
 
-  if (!SpellingTrie::is_valid_spl_char(splstr[0]))
-    return 0;
+  if (!SpellingTrie::is_valid_spl_char(splstr[0])) return 0;
 
   last_is_pre = false;
 
-  const SpellingNode *node_this = spl_trie_->root_;
+  const SpellingNode* node_this = spl_trie_->root_;
 
   uint16 str_pos = 0;
   uint16 idx_num = 0;
-  if (NULL != start_pos)
-    start_pos[0] = 0;
+  if (NULL != start_pos) start_pos[0] = 0;
   bool last_is_splitter = false;
 
   while (str_pos < str_len) {
@@ -186,10 +169,8 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
 
         idx_num++;
         str_pos++;
-        if (NULL != start_pos)
-          start_pos[idx_num] = str_pos;
-        if (idx_num >= max_size)
-          return idx_num;
+        if (NULL != start_pos) start_pos[idx_num] = str_pos;
+        if (idx_num >= max_size) return idx_num;
 
         node_this = spl_trie_->root_;
         last_is_splitter = true;
@@ -197,8 +178,7 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
       } else {
         if (last_is_splitter) {
           str_pos++;
-          if (NULL != start_pos)
-            start_pos[idx_num] = str_pos;
+          if (NULL != start_pos) start_pos[idx_num] = str_pos;
           continue;
         } else {
           return idx_num;
@@ -208,7 +188,7 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
 
     last_is_splitter = false;
 
-    SpellingNode *found_son = NULL;
+    SpellingNode* found_son = NULL;
 
     if (0 == str_pos) {
       if (char_this >= 'a')
@@ -216,13 +196,12 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
       else
         found_son = spl_trie_->level1_sons_[char_this - 'A'];
     } else {
-      SpellingNode *first_son = node_this->first_son;
+      SpellingNode* first_son = node_this->first_son;
       // Because for Zh/Ch/Sh nodes, they are the last in the buffer and
       // frequently used, so we scan from the end.
       for (int i = 0; i < node_this->num_of_son; i++) {
-        SpellingNode *this_son = first_son + i;
-        if (SpellingTrie::is_same_spl_char(
-            this_son->char_this_node, char_this)) {
+        SpellingNode* this_son = first_son + i;
+        if (SpellingTrie::is_same_spl_char(this_son->char_this_node, char_this)) {
           found_son = this_son;
           break;
         }
@@ -240,10 +219,8 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
         spl_idx[idx_num] = id_this;
 
         idx_num++;
-        if (NULL != start_pos)
-          start_pos[idx_num] = str_pos;
-        if (idx_num >= max_size)
-          return idx_num;
+        if (NULL != start_pos) start_pos[idx_num] = str_pos;
+        if (idx_num >= max_size) return idx_num;
         node_this = spl_trie_->root_;
         continue;
       } else {
@@ -260,8 +237,7 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
     spl_idx[idx_num] = id_this;
 
     idx_num++;
-    if (NULL != start_pos)
-      start_pos[idx_num] = str_pos;
+    if (NULL != start_pos) start_pos[idx_num] = str_pos;
   }
 
   last_is_pre = !last_is_splitter;
@@ -269,11 +245,9 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
   return idx_num;
 }
 
-uint16 SpellingParser::splstr16_to_idxs_f(const char16 *splstr, uint16 str_len,
-                                          uint16 spl_idx[], uint16 start_pos[],
-                                          uint16 max_size, bool &last_is_pre) {
-  uint16 idx_num = splstr16_to_idxs(splstr, str_len, spl_idx, start_pos,
-                                    max_size, last_is_pre);
+uint16 SpellingParser::splstr16_to_idxs_f(const char16* splstr, uint16 str_len, uint16 spl_idx[],
+                                          uint16 start_pos[], uint16 max_size, bool& last_is_pre) {
+  uint16 idx_num = splstr16_to_idxs(splstr, str_len, spl_idx, start_pos, max_size, last_is_pre);
   for (uint16 pos = 0; pos < idx_num; pos++) {
     if (spl_trie_->is_half_id_yunmu(spl_idx[pos])) {
       spl_trie_->half_to_full(spl_idx[pos], spl_idx + pos);
@@ -285,35 +259,27 @@ uint16 SpellingParser::splstr16_to_idxs_f(const char16 *splstr, uint16 str_len,
   return idx_num;
 }
 
-uint16 SpellingParser::get_splid_by_str(const char *splstr, uint16 str_len,
-                                        bool *is_pre) {
-  if (NULL == is_pre)
-    return 0;
+uint16 SpellingParser::get_splid_by_str(const char* splstr, uint16 str_len, bool* is_pre) {
+  if (NULL == is_pre) return 0;
 
   uint16 spl_idx[2];
   uint16 start_pos[3];
 
-  if (splstr_to_idxs(splstr, str_len, spl_idx, start_pos, 2, *is_pre) != 1)
-    return 0;
+  if (splstr_to_idxs(splstr, str_len, spl_idx, start_pos, 2, *is_pre) != 1) return 0;
 
-  if (start_pos[1] != str_len)
-    return 0;
+  if (start_pos[1] != str_len) return 0;
   return spl_idx[0];
 }
 
-uint16 SpellingParser::get_splid_by_str_f(const char *splstr, uint16 str_len,
-                                          bool *is_pre) {
-  if (NULL == is_pre)
-    return 0;
+uint16 SpellingParser::get_splid_by_str_f(const char* splstr, uint16 str_len, bool* is_pre) {
+  if (NULL == is_pre) return 0;
 
   uint16 spl_idx[2];
   uint16 start_pos[3];
 
-  if (splstr_to_idxs(splstr, str_len, spl_idx, start_pos, 2, *is_pre) != 1)
-    return 0;
+  if (splstr_to_idxs(splstr, str_len, spl_idx, start_pos, 2, *is_pre) != 1) return 0;
 
-  if (start_pos[1] != str_len)
-    return 0;
+  if (start_pos[1] != str_len) return 0;
   if (spl_trie_->is_half_id_yunmu(spl_idx[0])) {
     spl_trie_->half_to_full(spl_idx[0], spl_idx);
     *is_pre = false;
@@ -322,17 +288,14 @@ uint16 SpellingParser::get_splid_by_str_f(const char *splstr, uint16 str_len,
   return spl_idx[0];
 }
 
-uint16 SpellingParser::get_splids_parallel(const char *splstr, uint16 str_len,
-    uint16 splidx[], uint16 max_size,
-    uint16 &full_id_num, bool &is_pre) {
-  if (max_size <= 0 || !is_valid_to_parse(splstr[0]))
-    return 0;
+uint16 SpellingParser::get_splids_parallel(const char* splstr, uint16 str_len, uint16 splidx[],
+                                           uint16 max_size, uint16& full_id_num, bool& is_pre) {
+  if (max_size <= 0 || !is_valid_to_parse(splstr[0])) return 0;
 
   splidx[0] = get_splid_by_str(splstr, str_len, &is_pre);
   full_id_num = 0;
   if (0 != splidx[0]) {
-    if (splidx[0] >= kFullSplIdStart)
-      full_id_num = 1;
+    if (splidx[0] >= kFullSplIdStart) full_id_num = 1;
     return 1;
   }
   return 0;

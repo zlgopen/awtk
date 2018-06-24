@@ -25,14 +25,14 @@ namespace ime_pinyin {
 // Enable the following line when building the binary dictionary model.
 // #define ___BUILD_MODEL___
 
-typedef unsigned char      uint8;
-typedef unsigned short     uint16;
-typedef unsigned int       uint32;
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned int uint32;
 
-typedef signed char        int8;
-typedef short              int16;
-typedef int                int32;
-typedef long long          int64;
+typedef signed char int8;
+typedef short int16;
+typedef int int32;
+typedef long long int64;
 typedef unsigned long long uint64;
 
 const bool kPrintDebug0 = false;
@@ -87,10 +87,9 @@ const LemmaIdType kUserDictIdStart = 500001;
 const LemmaIdType kUserDictIdEnd = 600000;
 
 typedef struct {
-  uint16 half_splid:5;
-  uint16 full_splid:11;
+  uint16 half_splid : 5;
+  uint16 full_splid : 11;
 } SpellingId, *PSpellingId;
-
 
 /**
  * We use different node types for different layers
@@ -121,13 +120,13 @@ struct LmaNodeLE0 {
  * A node occupies 8 bytes.
  */
 struct LmaNodeGE1 {
-  uint16 son_1st_off_l;        // Low bits of the son_1st_off
-  uint16 homo_idx_buf_off_l;   // Low bits of the homo_idx_buf_off_1
+  uint16 son_1st_off_l;       // Low bits of the son_1st_off
+  uint16 homo_idx_buf_off_l;  // Low bits of the homo_idx_buf_off_1
   uint16 spl_idx;
-  unsigned char num_of_son;            // number of son nodes
-  unsigned char num_of_homo;           // number of homo words
-  unsigned char son_1st_off_h;         // high bits of the son_1st_off
-  unsigned char homo_idx_buf_off_h;    // high bits of the homo_idx_buf_off
+  unsigned char num_of_son;          // number of son nodes
+  unsigned char num_of_homo;         // number of homo words
+  unsigned char son_1st_off_h;       // high bits of the son_1st_off
+  unsigned char homo_idx_buf_off_h;  // high bits of the homo_idx_buf_off
 };
 
 #ifdef ___BUILD_MODEL___

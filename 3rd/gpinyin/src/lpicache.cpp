@@ -26,16 +26,13 @@ LpiCache::LpiCache() {
   lpi_cache_len_ = new uint16[kFullSplIdStart];
   assert(NULL != lpi_cache_);
   assert(NULL != lpi_cache_len_);
-  for (uint16 id = 0; id < kFullSplIdStart; id++)
-    lpi_cache_len_[id] = 0;
+  for (uint16 id = 0; id < kFullSplIdStart; id++) lpi_cache_len_[id] = 0;
 }
 
 LpiCache::~LpiCache() {
-  if (NULL != lpi_cache_)
-    delete [] lpi_cache_;
+  if (NULL != lpi_cache_) delete[] lpi_cache_;
 
-  if (NULL != lpi_cache_len_)
-    delete [] lpi_cache_len_;
+  if (NULL != lpi_cache_len_) delete[] lpi_cache_len_;
 }
 
 LpiCache& LpiCache::get_instance() {
@@ -47,31 +44,25 @@ LpiCache& LpiCache::get_instance() {
 }
 
 bool LpiCache::is_cached(uint16 splid) {
-  if (splid >= kFullSplIdStart)
-    return false;
+  if (splid >= kFullSplIdStart) return false;
   return lpi_cache_len_[splid] != 0;
 }
 
-unsigned LpiCache::put_cache(uint16 splid, LmaPsbItem lpi_items[],
-                           unsigned lpi_num) {
+unsigned LpiCache::put_cache(uint16 splid, LmaPsbItem lpi_items[], unsigned lpi_num) {
   uint16 num = kMaxLpiCachePerId;
-  if (num > lpi_num)
-    num = static_cast<uint16>(lpi_num);
+  if (num > lpi_num) num = static_cast<uint16>(lpi_num);
 
-  LmaPsbItem *lpi_cache_this = lpi_cache_ + splid * kMaxLpiCachePerId;
-  for (uint16 pos = 0; pos < num; pos++)
-    lpi_cache_this[pos] = lpi_items[pos];
+  LmaPsbItem* lpi_cache_this = lpi_cache_ + splid * kMaxLpiCachePerId;
+  for (uint16 pos = 0; pos < num; pos++) lpi_cache_this[pos] = lpi_items[pos];
 
   lpi_cache_len_[splid] = num;
   return num;
 }
 
-unsigned LpiCache::get_cache(uint16 splid, LmaPsbItem lpi_items[],
-                           unsigned lpi_max) {
-  if (lpi_max > lpi_cache_len_[splid])
-    lpi_max = lpi_cache_len_[splid];
+unsigned LpiCache::get_cache(uint16 splid, LmaPsbItem lpi_items[], unsigned lpi_max) {
+  if (lpi_max > lpi_cache_len_[splid]) lpi_max = lpi_cache_len_[splid];
 
-  LmaPsbItem *lpi_cache_this = lpi_cache_ + splid * kMaxLpiCachePerId;
+  LmaPsbItem* lpi_cache_this = lpi_cache_ + splid * kMaxLpiCachePerId;
   for (uint16 pos = 0; pos < lpi_max; pos++) {
     lpi_items[pos] = lpi_cache_this[pos];
   }

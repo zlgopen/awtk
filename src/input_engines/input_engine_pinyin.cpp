@@ -36,7 +36,8 @@ static ret_t input_engine_pinyin_reset_input(input_engine_t* engine) {
   return RET_OK;
 }
 
-static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t* wb, uint32_t index) {
+static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t* wb,
+                                               uint32_t index) {
   uint32_t i = 0;
   char str[MAX_WORD_LEN * 2 + 1];
   char16 str16[MAX_WORD_LEN + 1];
@@ -63,11 +64,11 @@ static ret_t input_engine_pinyin_input(input_engine_t* engine, int c) {
 
   wbuffer_write_string(&wb, engine->keys.str);
   engine->candidates_nr = 1;
-  
+
   for (i = 0; i < nr; i++) {
     if (input_engine_pinyin_add_candidate(engine, &wb, i) == RET_OK) {
       engine->candidates_nr++;
-    }else {
+    } else {
       break;
     }
   }

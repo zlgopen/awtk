@@ -30,8 +30,8 @@ typedef uint16 MileStoneHandle;
 
 // Type used to express a lemma and its probability score.
 typedef struct {
-  unsigned id:(kLemmaIdSize * 8);
-  unsigned lma_len:4;
+  unsigned id : (kLemmaIdSize * 8);
+  unsigned lma_len : 4;
   uint16 psb;  // The score, the lower psb, the higher possibility.
   // For single character items, we may also need Hanzi.
   // For multiple characer items, ignore it.
@@ -43,7 +43,6 @@ typedef struct {
   LmaPsbItem lpi;
   char16 str[kMaxLemmaSize + 1];
 } LmaPsbStrItem, *PLmaPsbStrItem;
-
 
 typedef struct {
   float psb;
@@ -106,37 +105,36 @@ typedef struct {
   // If the newly added id is a half id, id_num is the number of corresponding
   // ids; if it is a full id, id_num == 1.
   uint16 id_num;
-}DictExtPara, *PDictExtPara;
+} DictExtPara, *PDictExtPara;
 
 bool is_system_lemma(LemmaIdType lma_id);
 bool is_user_lemma(LemmaIdType lma_id);
 bool is_composing_lemma(LemmaIdType lma_id);
 
-int cmp_lpi_with_psb(const void *p1, const void *p2);
-int cmp_lpi_with_unified_psb(const void *p1, const void *p2);
-int cmp_lpi_with_id(const void *p1, const void *p2);
-int cmp_lpi_with_hanzi(const void *p1, const void *p2);
+int cmp_lpi_with_psb(const void* p1, const void* p2);
+int cmp_lpi_with_unified_psb(const void* p1, const void* p2);
+int cmp_lpi_with_id(const void* p1, const void* p2);
+int cmp_lpi_with_hanzi(const void* p1, const void* p2);
 
-int cmp_lpsi_with_str(const void *p1, const void *p2);
+int cmp_lpsi_with_str(const void* p1, const void* p2);
 
-int cmp_hanzis_1(const void *p1, const void *p2);
-int cmp_hanzis_2(const void *p1, const void *p2);
-int cmp_hanzis_3(const void *p1, const void *p2);
-int cmp_hanzis_4(const void *p1, const void *p2);
-int cmp_hanzis_5(const void *p1, const void *p2);
-int cmp_hanzis_6(const void *p1, const void *p2);
-int cmp_hanzis_7(const void *p1, const void *p2);
-int cmp_hanzis_8(const void *p1, const void *p2);
+int cmp_hanzis_1(const void* p1, const void* p2);
+int cmp_hanzis_2(const void* p1, const void* p2);
+int cmp_hanzis_3(const void* p1, const void* p2);
+int cmp_hanzis_4(const void* p1, const void* p2);
+int cmp_hanzis_5(const void* p1, const void* p2);
+int cmp_hanzis_6(const void* p1, const void* p2);
+int cmp_hanzis_7(const void* p1, const void* p2);
+int cmp_hanzis_8(const void* p1, const void* p2);
 
-int cmp_npre_by_score(const void *p1, const void *p2);
-int cmp_npre_by_hislen_score(const void *p1, const void *p2);
-int cmp_npre_by_hanzi_score(const void *p1, const void *p2);
+int cmp_npre_by_score(const void* p1, const void* p2);
+int cmp_npre_by_hislen_score(const void* p1, const void* p2);
+int cmp_npre_by_hanzi_score(const void* p1, const void* p2);
 
-
-unsigned remove_duplicate_npre(NPredictItem *npre_items, unsigned npre_num);
+unsigned remove_duplicate_npre(NPredictItem* npre_items, unsigned npre_num);
 
 unsigned align_to_unsigned(unsigned size);
 
-}  // namespace
+}  // namespace ime_pinyin
 
 #endif  // PINYINIME_ANDPY_INCLUDE_SEARCHCOMMON_H__

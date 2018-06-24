@@ -7,6 +7,7 @@
 #ifdef ___BUILD_MODEL___
 #include <stdio.h>
 #else
+#include "base/utils.h"
 #include "base/rom_fs.h"
 #define fopen rom_fopen
 #define fread rom_fread
@@ -15,9 +16,11 @@
 #define ftell rom_ftell
 #define ferror rom_ferror
 #define fseek rom_fseek
-#define feof rom_feof 
+#define feof rom_feof
 #define FILE rom_file_t
-#endif/*___BUILD_MODEL___*/
+#endif /*___BUILD_MODEL___*/
 
-#endif/*TK_FILE_H*/
+#define printf
+#define snprintf tk_snprintf
 
+#endif /*TK_FILE_H*/

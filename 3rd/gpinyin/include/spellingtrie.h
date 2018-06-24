@@ -27,11 +27,11 @@ static const unsigned short kFullSplIdStart = kHalfSpellingIdNum + 1;
 
 // Node used for the trie of spellings
 struct SpellingNode {
-  SpellingNode *first_son;
+  SpellingNode* first_son;
   // The spelling id for each node. If you need more bits to store
   // spelling id, please adjust this structure.
-  uint16 spelling_idx:11;
-  uint16  num_of_son:5;
+  uint16 spelling_idx : 11;
+  uint16 num_of_son : 5;
   char char_this_node;
   unsigned char score;
 };
@@ -56,7 +56,7 @@ class SpellingTrie {
   static SpellingTrie* instance_;
 
   // The spelling table
-  char *spelling_buf_;
+  char* spelling_buf_;
 
   // The size of longest spelling string, includes '\0' and an extra char to
   // store score. For example, "zhuang" is the longgest item in Pinyin list,
@@ -75,19 +75,19 @@ class SpellingTrie {
   // the Yunmu id is 0).
   // The length of the list is spelling_num_ + kFullSplIdStart,
   // so that spl_ym_ids_[splid] is the Yunmu id of the splid.
-  uint8 *spl_ym_ids_;
+  uint8* spl_ym_ids_;
 
   // The Yunmu table.
   // Each Yunmu will be assigned with Yunmu id from 1.
-  char *ym_buf_;
+  char* ym_buf_;
   unsigned ym_size_;  // The size of longest Yunmu string, '\0'included.
   unsigned ym_num_;
 
   // The spelling string just queried
-  char *splstr_queried_;
+  char* splstr_queried_;
 
   // The spelling string just queried
-  char16 *splstr16_queried_;
+  char16* splstr16_queried_;
 
   // The root node of the spelling tree
   SpellingNode* root_;
@@ -112,7 +112,7 @@ class SpellingTrie {
   uint16 h2f_num_[kFullSplIdStart];
 
   // Map from full id to half id.
-  uint16 *f2h_;
+  uint16* f2h_;
 
 #ifdef ___BUILD_MODEL___
   // How many node used to build the trie.
@@ -127,8 +127,8 @@ class SpellingTrie {
   // item_star to item_end).
   // Member spelliing_buf_ and spelling_size_ should be valid.
   // parent is used to update its num_of_son and score.
-  SpellingNode* construct_spellings_subset(unsigned item_start, unsigned item_end,
-                                           unsigned level, SpellingNode *parent);
+  SpellingNode* construct_spellings_subset(unsigned item_start, unsigned item_end, unsigned level,
+                                           SpellingNode* parent);
   bool build_f2h();
 
   // The caller should guarantee ch >= 'A' && ch <= 'Z'
@@ -140,7 +140,7 @@ class SpellingTrie {
 #ifdef ___BUILD_MODEL___
   // Given a spelling string, return its Yunmu string.
   // The caller guaratees spl_str is valid.
-  const char* get_ym_str(const char *spl_str);
+  const char* get_ym_str(const char* spl_str);
 
   // Build the Yunmu list, and the mapping relation between the full ids and the
   // Yunmu ids. This functin is called after the spelling trie is built.
@@ -176,7 +176,7 @@ class SpellingTrie {
   // When 'A' is not enabled in ShouZiMu mode, the parsing result for 'A' is
   // first given as a half id 1, but because 'A' is a one-char Yunmu and
   // it is a valid id, it needs to updated to its corresponding full id.
-  bool if_valid_id_update(uint16 *splid) const;
+  bool if_valid_id_update(uint16* splid) const;
 
   // Test if the given id is a half id.
   bool is_half_id(uint16 splid) const;
@@ -212,7 +212,7 @@ class SpellingTrie {
 
   // Return the number of full ids for the given half id, and fill spl_id_start
   // to return the first full id.
-  uint16 half_to_full(uint16 half_id, uint16 *spl_id_start) const;
+  uint16 half_to_full(uint16 half_id, uint16* spl_id_start) const;
 
   // Return the corresponding half id for the given full id.
   // Not frequently used, low efficient.
@@ -230,10 +230,10 @@ class SpellingTrie {
   static SpellingTrie& get_instance();
 
   // Save to the file stream
-  bool save_spl_trie(FILE *fp);
+  bool save_spl_trie(FILE* fp);
 
   // Load from the file stream
-  bool load_spl_trie(FILE *fp);
+  bool load_spl_trie(FILE* fp);
 
   // Get the number of spellings
   unsigned get_spelling_num();
@@ -250,9 +250,8 @@ class SpellingTrie {
 
   // Get Pinyin string for a given spelling id. Return the length of the
   // string, and fill-in '\0' at the end.
-  unsigned get_spelling_str16(uint16 splid, char16 *splstr16,
-                            unsigned splstr16_len);
+  unsigned get_spelling_str16(uint16 splid, char16* splstr16, unsigned splstr16_len);
 };
-}
+}  // namespace ime_pinyin
 
 #endif  // PINYINIME_INCLUDE_SPELLINGTRIE_H__

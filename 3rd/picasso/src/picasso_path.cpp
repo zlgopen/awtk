@@ -254,7 +254,7 @@ void PICAPI ps_path_arc_to(ps_path* path, float rx, float ry, float a, ps_bool l
         return;
     }
 
-    if (!path || !ep || rx <= 0.0 || ry <= 0.0) {
+    if (!path || !ep || rx <= 0.0f || ry <= 0.0f) {
         global_status = STATUS_INVALID_ARGUMENT;
         return;
     }

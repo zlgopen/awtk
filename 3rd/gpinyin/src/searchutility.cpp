@@ -32,19 +32,17 @@ bool is_composing_lemma(LemmaIdType lma_id) {
   return (kLemmaIdComposing == lma_id);
 }
 
-int cmp_lpi_with_psb(const void *p1, const void *p2) {
-  if ((static_cast<const LmaPsbItem*>(p1))->psb >
-      (static_cast<const LmaPsbItem*>(p2))->psb)
+int cmp_lpi_with_psb(const void* p1, const void* p2) {
+  if ((static_cast<const LmaPsbItem*>(p1))->psb > (static_cast<const LmaPsbItem*>(p2))->psb)
     return 1;
-  if ((static_cast<const LmaPsbItem*>(p1))->psb <
-      (static_cast<const LmaPsbItem*>(p2))->psb)
+  if ((static_cast<const LmaPsbItem*>(p1))->psb < (static_cast<const LmaPsbItem*>(p2))->psb)
     return -1;
   return 0;
 }
 
-int cmp_lpi_with_unified_psb(const void *p1, const void *p2) {
-  const LmaPsbItem *item1 = static_cast<const LmaPsbItem*>(p1);
-  const LmaPsbItem *item2 = static_cast<const LmaPsbItem*>(p2);
+int cmp_lpi_with_unified_psb(const void* p1, const void* p2) {
+  const LmaPsbItem* item1 = static_cast<const LmaPsbItem*>(p1);
+  const LmaPsbItem* item2 = static_cast<const LmaPsbItem*>(p2);
 
   // The real unified psb is psb1 / lma_len1 and psb2 * lma_len2
   // But we use psb1 * lma_len2 and psb2 * lma_len1 to get better
@@ -60,92 +58,73 @@ int cmp_lpi_with_unified_psb(const void *p1, const void *p2) {
   return 0;
 }
 
-int cmp_lpi_with_id(const void *p1, const void *p2) {
-  if ((static_cast<const LmaPsbItem*>(p1))->id <
-      (static_cast<const LmaPsbItem*>(p2))->id)
+int cmp_lpi_with_id(const void* p1, const void* p2) {
+  if ((static_cast<const LmaPsbItem*>(p1))->id < (static_cast<const LmaPsbItem*>(p2))->id)
     return -1;
-  if ((static_cast<const LmaPsbItem*>(p1))->id >
-      (static_cast<const LmaPsbItem*>(p2))->id)
-    return 1;
+  if ((static_cast<const LmaPsbItem*>(p1))->id > (static_cast<const LmaPsbItem*>(p2))->id) return 1;
   return 0;
 }
 
-int cmp_lpi_with_hanzi(const void *p1, const void *p2) {
-  if ((static_cast<const LmaPsbItem*>(p1))->hanzi <
-      (static_cast<const LmaPsbItem*>(p2))->hanzi)
+int cmp_lpi_with_hanzi(const void* p1, const void* p2) {
+  if ((static_cast<const LmaPsbItem*>(p1))->hanzi < (static_cast<const LmaPsbItem*>(p2))->hanzi)
     return -1;
-  if ((static_cast<const LmaPsbItem*>(p1))->hanzi >
-      (static_cast<const LmaPsbItem*>(p2))->hanzi)
+  if ((static_cast<const LmaPsbItem*>(p1))->hanzi > (static_cast<const LmaPsbItem*>(p2))->hanzi)
     return 1;
 
   return 0;
 }
 
-int cmp_lpsi_with_str(const void *p1, const void *p2) {
+int cmp_lpsi_with_str(const void* p1, const void* p2) {
   return utf16_strcmp((static_cast<const LmaPsbStrItem*>(p1))->str,
                       (static_cast<const LmaPsbStrItem*>(p2))->str);
 }
 
+int cmp_hanzis_1(const void* p1, const void* p2) {
+  if (*static_cast<const char16*>(p1) < *static_cast<const char16*>(p2)) return -1;
 
-int cmp_hanzis_1(const void *p1, const void *p2) {
-  if (*static_cast<const char16*>(p1) <
-      *static_cast<const char16*>(p2))
-    return -1;
-
-  if (*static_cast<const char16*>(p1) >
-      *static_cast<const char16*>(p2))
-    return 1;
+  if (*static_cast<const char16*>(p1) > *static_cast<const char16*>(p2)) return 1;
   return 0;
 }
 
-int cmp_hanzis_2(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 2);
+int cmp_hanzis_2(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 2);
 }
 
-int cmp_hanzis_3(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 3);
+int cmp_hanzis_3(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 3);
 }
 
-int cmp_hanzis_4(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 4);
+int cmp_hanzis_4(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 4);
 }
 
-int cmp_hanzis_5(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 5);
+int cmp_hanzis_5(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 5);
 }
 
-int cmp_hanzis_6(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 6);
+int cmp_hanzis_6(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 6);
 }
 
-int cmp_hanzis_7(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 7);
+int cmp_hanzis_7(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 7);
 }
 
-int cmp_hanzis_8(const void *p1, const void *p2) {
-  return  utf16_strncmp(static_cast<const char16*>(p1),
-                        static_cast<const char16*>(p2), 8);
+int cmp_hanzis_8(const void* p1, const void* p2) {
+  return utf16_strncmp(static_cast<const char16*>(p1), static_cast<const char16*>(p2), 8);
 }
 
-int cmp_npre_by_score(const void *p1, const void *p2) {
-  if ((static_cast<const NPredictItem*>(p1))->psb >
-      (static_cast<const NPredictItem*>(p2))->psb)
+int cmp_npre_by_score(const void* p1, const void* p2) {
+  if ((static_cast<const NPredictItem*>(p1))->psb > (static_cast<const NPredictItem*>(p2))->psb)
     return 1;
 
-  if ((static_cast<const NPredictItem*>(p1))->psb <
-      (static_cast<const NPredictItem*>(p2))->psb)
+  if ((static_cast<const NPredictItem*>(p1))->psb < (static_cast<const NPredictItem*>(p2))->psb)
     return -1;
 
   return 0;
 }
 
-int cmp_npre_by_hislen_score(const void *p1, const void *p2) {
+int cmp_npre_by_hislen_score(const void* p1, const void* p2) {
   if ((static_cast<const NPredictItem*>(p1))->his_len <
       (static_cast<const NPredictItem*>(p2))->his_len)
     return 1;
@@ -154,44 +133,37 @@ int cmp_npre_by_hislen_score(const void *p1, const void *p2) {
       (static_cast<const NPredictItem*>(p2))->his_len)
     return -1;
 
-  if ((static_cast<const NPredictItem*>(p1))->psb >
-      (static_cast<const NPredictItem*>(p2))->psb)
+  if ((static_cast<const NPredictItem*>(p1))->psb > (static_cast<const NPredictItem*>(p2))->psb)
     return 1;
 
-  if ((static_cast<const NPredictItem*>(p1))->psb <
-      (static_cast<const NPredictItem*>(p2))->psb)
+  if ((static_cast<const NPredictItem*>(p1))->psb < (static_cast<const NPredictItem*>(p2))->psb)
     return -1;
 
   return 0;
 }
 
-int cmp_npre_by_hanzi_score(const void *p1, const void *p2) {
+int cmp_npre_by_hanzi_score(const void* p1, const void* p2) {
   int ret_v = (utf16_strncmp((static_cast<const NPredictItem*>(p1))->pre_hzs,
-      (static_cast<const NPredictItem*>(p2))->pre_hzs, kMaxPredictSize));
-  if (0 != ret_v)
-    return ret_v;
+                             (static_cast<const NPredictItem*>(p2))->pre_hzs, kMaxPredictSize));
+  if (0 != ret_v) return ret_v;
 
-  if ((static_cast<const NPredictItem*>(p1))->psb >
-      (static_cast<const NPredictItem*>(p2))->psb)
+  if ((static_cast<const NPredictItem*>(p1))->psb > (static_cast<const NPredictItem*>(p2))->psb)
     return 1;
 
-  if ((static_cast<const NPredictItem*>(p1))->psb <
-      (static_cast<const NPredictItem*>(p2))->psb)
+  if ((static_cast<const NPredictItem*>(p1))->psb < (static_cast<const NPredictItem*>(p2))->psb)
     return -1;
 
   return 0;
 }
 
-unsigned remove_duplicate_npre(NPredictItem *npre_items, unsigned npre_num) {
-  if (NULL == npre_items || 0 == npre_num)
-    return 0;
+unsigned remove_duplicate_npre(NPredictItem* npre_items, unsigned npre_num) {
+  if (NULL == npre_items || 0 == npre_num) return 0;
 
   myqsort(npre_items, npre_num, sizeof(NPredictItem), cmp_npre_by_hanzi_score);
 
   unsigned remain_num = 1;  // The first one is reserved.
   for (unsigned pos = 1; pos < npre_num; pos++) {
-    if (utf16_strncmp(npre_items[pos].pre_hzs,
-                      npre_items[remain_num - 1].pre_hzs,
+    if (utf16_strncmp(npre_items[pos].pre_hzs, npre_items[remain_num - 1].pre_hzs,
                       kMaxPredictSize) != 0) {
       if (remain_num != pos) {
         npre_items[remain_num] = npre_items[pos];
@@ -204,7 +176,7 @@ unsigned remove_duplicate_npre(NPredictItem *npre_items, unsigned npre_num) {
 
 unsigned align_to_unsigned(unsigned size) {
   unsigned s = sizeof(unsigned);
-  return (size + s -1) / s * s;
+  return (size + s - 1) / s * s;
 }
 
 }  // namespace ime_pinyin

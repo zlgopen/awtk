@@ -1116,8 +1116,8 @@ private:
             //----------------
             scalar x2 = v1.x + dx1;
             scalar y2 = v1.y - dy1;
-            if ((cross_product(v0.x, v0.y, v1.x, v1.y, x2, y2) < 0.0) ==
-                (cross_product(v1.x, v1.y, v2.x, v2.y, x2, y2) < 0.0))
+            if ((cross_product(v0.x, v0.y, v1.x, v1.y, x2, y2) < 0.0f) ==
+                (cross_product(v1.x, v1.y, v2.x, v2.y, x2, y2) < 0.0f))
             {
                 // this case means that the next segment continues
                 // the previous one (straight line)

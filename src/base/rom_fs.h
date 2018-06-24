@@ -1,7 +1,7 @@
-﻿/**
+/**
  * File:   rom_file.h
  * Author: AWTK Develop Team
- * Brief:  file api for rom data
+ * Brief:  posix file api for rom data.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

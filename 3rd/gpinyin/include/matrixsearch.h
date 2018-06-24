@@ -39,25 +39,25 @@ typedef struct {
   uint16 spl_id;
   // What's the level of the dict node. Level of root is 0, but root is never
   // recorded by dict_node.
-  unsigned char dict_level:7;
+  unsigned char dict_level : 7;
   // If this node is for composing phrase, this bit is 1.
-  unsigned char c_phrase:1;
+  unsigned char c_phrase : 1;
   // Whether the spl_id is parsed with a split character at the end.
-  unsigned char splid_end_split:1;
+  unsigned char splid_end_split : 1;
   // What's the length of the spelling string for this match, for the whole
   // word.
-  unsigned char splstr_len:7;
+  unsigned char splstr_len : 7;
   // Used to indicate whether all spelling ids from the root are full spelling
   // ids. This information is useful for keymapping mode(not finished). Because
   // in this mode, there is no clear boundaries, we prefer those results which
   // have full spelling ids.
-  unsigned char all_full_id:1;
+  unsigned char all_full_id : 1;
 } DictMatchInfo, *PDictMatchInfo;
 
 typedef struct MatrixNode {
   LemmaIdType id;
   float score;
-  MatrixNode *from;
+  MatrixNode* from;
   // From which DMI node. Used to trace the spelling segmentation.
   PoolPosType dmi_fr;
   uint16 step;
@@ -69,7 +69,7 @@ typedef struct {
   // The DictMatchInfo position in the DictMatchInfo pool.
   PoolPosType dmi_pos;
   uint16 mtrx_nd_num;
-  uint16 dmi_num:15;
+  uint16 dmi_num : 15;
   // Used to indicate whether there are dmi nodes in this step with full
   // spelling id. This information is used to decide whether a substring of a
   // valid Pinyin should be extended.
@@ -95,10 +95,10 @@ typedef struct {
   // always be "xian"; but if the parser uses continue in the loop, "xi an" will
   // also be tried. This behaviour can be set via the function
   // set_xi_an_switch().
-  uint16 dmi_has_full_id:1;
+  uint16 dmi_has_full_id : 1;
   // Points to a MatrixNode of the current step to indicate which choice the
   // user selects.
-  MatrixNode *mtrx_nd_fixed;
+  MatrixNode* mtrx_nd_fixed;
 } MatrixRow, *PMatrixRow;
 
 // When user inputs and selects candidates, the fixed lemma ids are stored in
@@ -119,7 +119,7 @@ typedef struct {
   char16 chn_str[kMaxRowNum];       // Chinese string.
   uint16 sublma_start[kMaxRowNum];  // Counted in Chinese characters.
   unsigned sublma_num;
-  uint16 length;                    // Counted in Chinese characters.
+  uint16 length;  // Counted in Chinese characters.
 } ComposingPhrase, *TComposingPhrase;
 
 class MatrixSearch {
@@ -157,7 +157,7 @@ class MatrixSearch {
   bool inited_;
 
   // Spelling trie.
-  const SpellingTrie *spl_trie_;
+  const SpellingTrie* spl_trie_;
 
   // Used to indicate this switcher status: when "xian" is parseed, should
   // "xi an" also be extended. Default is false.
@@ -169,9 +169,6 @@ class MatrixSearch {
 
   // System dictionary.
   DictTrie* dict_trie_;
-
-  // User dictionary.
-  AtomDictBase* user_dict_;
 
   // Spelling parser.
   SpellingParser* spl_parser_;
@@ -189,23 +186,23 @@ class MatrixSearch {
   unsigned pys_decoded_len_;
 
   // Shared buffer for multiple purposes.
-  unsigned *share_buf_;
+  unsigned* share_buf_;
 
-  MatrixNode *mtrx_nd_pool_;
-  PoolPosType mtrx_nd_pool_used_;    // How many nodes used in the pool
-  DictMatchInfo *dmi_pool_;
-  PoolPosType dmi_pool_used_;        // How many items used in the pool
+  MatrixNode* mtrx_nd_pool_;
+  PoolPosType mtrx_nd_pool_used_;  // How many nodes used in the pool
+  DictMatchInfo* dmi_pool_;
+  PoolPosType dmi_pool_used_;  // How many items used in the pool
 
-  MatrixRow *matrix_;                // The first row is for starting
+  MatrixRow* matrix_;  // The first row is for starting
 
-  DictExtPara *dep_;                 // Parameter used to extend DMI nodes.
+  DictExtPara* dep_;  // Parameter used to extend DMI nodes.
 
-  NPredictItem *npre_items_;         // Used to do prediction
+  NPredictItem* npre_items_;  // Used to do prediction
   unsigned npre_items_len_;
 
   // The starting positions and lemma ids for the full sentence candidate.
   unsigned lma_id_num_;
-  uint16 lma_start_[kMaxRowNum];     // Counted in spelling ids.
+  uint16 lma_start_[kMaxRowNum];  // Counted in spelling ids.
   LemmaIdType lma_id_[kMaxRowNum];
   unsigned fixed_lmas_;
 
@@ -227,9 +224,9 @@ class MatrixSearch {
 
   // The starting positions and spelling ids for the first full sentence
   // candidate.
-  unsigned spl_id_num_;                // Number of splling ids
-  uint16 spl_start_[kMaxRowNum];     // Starting positions
-  uint16 spl_id_[kMaxRowNum];        // Spelling ids
+  unsigned spl_id_num_;           // Number of splling ids
+  uint16 spl_start_[kMaxRowNum];  // Starting positions
+  uint16 spl_id_[kMaxRowNum];     // Spelling ids
   // Used to remember the last fixed position, counted in Hanzi.
   unsigned fixed_hzs_;
 
@@ -262,8 +259,8 @@ class MatrixSearch {
   // The DMI nodes will be kept.
   //
   // Note: this function should not destroy content of pys_.
-  bool reset_search(unsigned ch_pos, bool clear_fixed_this_step,
-                    bool clear_dmi_this_step, bool clear_mtrx_this_step);
+  bool reset_search(unsigned ch_pos, bool clear_fixed_this_step, bool clear_dmi_this_step,
+                    bool clear_mtrx_this_step);
 
   // Delete a part of the content in pys_.
   void del_in_pys(unsigned start, unsigned len);
@@ -286,15 +283,12 @@ class MatrixSearch {
   // If pfullsent is not NULL, means the full sentence candidate may be the
   // same with the coming lemma string, if so, remove that lemma.
   // The result is sorted in descendant order by the frequency score.
-  unsigned get_lpis(const uint16* splid_str, unsigned splid_str_len,
-                  LmaPsbItem* lma_buf, unsigned max_lma_buf,
-                  const char16 *pfullsent, bool sort_by_psb);
+  unsigned get_lpis(const uint16* splid_str, unsigned splid_str_len, LmaPsbItem* lma_buf,
+                    unsigned max_lma_buf, const char16* pfullsent, bool sort_by_psb);
 
-  uint16 get_lemma_str(LemmaIdType id_lemma, char16 *str_buf, uint16 str_max);
+  uint16 get_lemma_str(LemmaIdType id_lemma, char16* str_buf, uint16 str_max);
 
-  uint16 get_lemma_splids(LemmaIdType id_lemma, uint16 *splids,
-                          uint16 splids_max, bool arg_valid);
-
+  uint16 get_lemma_splids(LemmaIdType id_lemma, uint16* splids, uint16 splids_max, bool arg_valid);
 
   // Extend a DMI node with a spelling id. ext_len is the length of the rows
   // to extend, actually, it is the size of the spelling string of splid.
@@ -315,19 +309,18 @@ class MatrixSearch {
   // calling this function if necessary.
   //
   // The caller should guarantees that NULL != dep.
-  unsigned extend_dmi(DictExtPara *dep, DictMatchInfo *dmi_s);
+  unsigned extend_dmi(DictExtPara* dep, DictMatchInfo* dmi_s);
 
   // Extend dmi for the composing phrase.
-  unsigned extend_dmi_c(DictExtPara *dep, DictMatchInfo *dmi_s);
+  unsigned extend_dmi_c(DictExtPara* dep, DictMatchInfo* dmi_s);
 
   // Extend a MatrixNode with the give LmaPsbItem list.
   // res_row is the destination row number.
   // This function does not change mtrx_nd_pool_used_. Please change it after
   // calling this function if necessary.
   // return 0 always.
-  unsigned extend_mtrx_nd(MatrixNode *mtrx_nd, LmaPsbItem lpi_items[],
-                        unsigned lpi_num, PoolPosType dmi_fr, unsigned res_row);
-
+  unsigned extend_mtrx_nd(MatrixNode* mtrx_nd, LmaPsbItem lpi_items[], unsigned lpi_num,
+                          PoolPosType dmi_fr, unsigned res_row);
 
   // Try to find a dmi node at step_to position, and the found dmi node should
   // match the given spelling id strings.
@@ -346,15 +339,12 @@ class MatrixSearch {
   // The caller guarantees that the position is valid.
   bool is_split_at(uint16 pos);
 
-  void fill_dmi(DictMatchInfo *dmi, MileStoneHandle *handles,
-                PoolPosType dmi_fr,
-                uint16 spl_id, uint16 node_num, unsigned char dict_level,
-                bool splid_end_split, unsigned char splstr_len,
-                unsigned char all_full_id);
+  void fill_dmi(DictMatchInfo* dmi, MileStoneHandle* handles, PoolPosType dmi_fr, uint16 spl_id,
+                uint16 node_num, unsigned char dict_level, bool splid_end_split,
+                unsigned char splstr_len, unsigned char all_full_id);
 
   unsigned inner_predict(const char16 fixed_scis_ids[], uint16 scis_num,
-                       char16 predict_buf[][kMaxPredictSize + 1],
-                       unsigned buf_len);
+                         char16 predict_buf[][kMaxPredictSize + 1], unsigned buf_len);
 
   // Add the first candidate to the user dictionary.
   bool try_add_cand0_to_userdict();
@@ -375,10 +365,9 @@ class MatrixSearch {
   MatrixSearch();
   ~MatrixSearch();
 
-  bool init(const char *fn_sys_dict, const char *fn_usr_dict);
+  bool init(const char* fn_sys_dict, const char* fn_usr_dict);
 
-  bool init_fd(int sys_fd, long start_offset, long length,
-               const char *fn_usr_dict);
+  bool init_fd(int sys_fd, long start_offset, long length, const char* fn_usr_dict);
 
   void set_max_lens(unsigned max_sps_len, unsigned max_hzs_len);
 
@@ -396,7 +385,7 @@ class MatrixSearch {
 
   // Search a Pinyin string.
   // Return value is the position successfully parsed.
-  unsigned search(const char *py, unsigned py_len);
+  unsigned search(const char* py, unsigned py_len);
 
   // Used to delete something in the Pinyin string kept by the engine, and do
   // a re-search.
@@ -411,32 +400,30 @@ class MatrixSearch {
   // If is_pos_in_splid is false, and pos-th character is in the range for the
   // fixed lemmas or composing string, this function will do nothing and just
   // return the result of the previous search.
-  unsigned delsearch(unsigned pos, bool is_pos_in_splid,
-                   bool clear_fixed_this_step);
+  unsigned delsearch(unsigned pos, bool is_pos_in_splid, bool clear_fixed_this_step);
 
   // Get the number of candiates, called after search().
   unsigned get_candidate_num();
 
   // Get the Pinyin string stored by the engine.
   // *decoded_len returns the length of the successfully decoded string.
-  const char* get_pystr(unsigned *decoded_len);
+  const char* get_pystr(unsigned* decoded_len);
 
   // Get the spelling boundaries for the first sentence candidate.
   // Number of spellings will be returned. The number of valid elements in
   // spl_start is one more than the return value because the last one is used
   // to indicate the beginning of the next un-input speling.
   // For a Pinyin "women", the returned value is 2, spl_start is [0, 2, 5] .
-  unsigned get_spl_start(const uint16 *&spl_start);
+  unsigned get_spl_start(const uint16*& spl_start);
 
   // Get one candiate string. If full sentence candidate is available, it will
   // be the first one.
-  char16* get_candidate(unsigned cand_id, char16 *cand_str, unsigned max_len);
+  char16* get_candidate(unsigned cand_id, char16* cand_str, unsigned max_len);
 
   // Get the first candiate, which is a "full sentence".
   // retstr_len is not NULL, it will be used to return the string length.
   // If only_unfixed is true, only unfixed part will be fetched.
-  char16* get_candidate0(char16* cand_str, unsigned max_len,
-                         uint16 *retstr_len, bool only_unfixed);
+  char16* get_candidate0(char16* cand_str, unsigned max_len, uint16* retstr_len, bool only_unfixed);
 
   // Choose a candidate. The decoder will do a search after the fixed position.
   unsigned choose(unsigned cand_id);
@@ -447,10 +434,9 @@ class MatrixSearch {
   // Get the length of fixed Hanzis.
   unsigned get_fixedlen();
 
-  unsigned get_predicts(const char16 fixed_buf[],
-                      char16 predict_buf[][kMaxPredictSize + 1],
-                      unsigned buf_len);
+  unsigned get_predicts(const char16 fixed_buf[], char16 predict_buf[][kMaxPredictSize + 1],
+                        unsigned buf_len);
 };
-}
+}  // namespace ime_pinyin
 
 #endif  // PINYINIME_ANDPY_INCLUDE_MATRIXSEARCH_H__
