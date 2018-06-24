@@ -116,11 +116,19 @@ ret_t widget_layout_calc(const widget_layout_t* layout, rect_t* r, wh_t parent_w
 
   if (parent_w > 0 && parent_h > 0) {
     if (w_attr == W_ATTR_PERCENT) {
-      w = (parent_w * layout->w) / 100;
+      w = (parent_w * w) / 100;
+    }
+
+    if (w < 0) {
+      w = parent_w + w;
     }
 
     if (h_attr == H_ATTR_PERCENT) {
-      h = (parent_h * layout->h) / 100;
+      h = (parent_h * h) / 100;
+    }
+
+    if (h < 0) {
+      h = parent_h + h;
     }
 
     switch (x_attr) {

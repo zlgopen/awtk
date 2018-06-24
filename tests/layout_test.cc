@@ -22,6 +22,46 @@ TEST(Layuout, basic) {
   ASSERT_EQ(r.h, 4);
 }
 
+TEST(Layuout, negetive) {
+  rect_t r;
+  widget_layout_t layout;
+  ASSERT_EQ(widget_layout_parse(&layout, "1", "2", "-10", "-40"), &layout);
+  ASSERT_EQ(layout.x, 1);
+  ASSERT_EQ(layout.y, 2);
+  ASSERT_EQ(layout.w, -10);
+  ASSERT_EQ(layout.h, -40);
+  ASSERT_EQ(layout.x_attr, X_ATTR_DEFAULT);
+  ASSERT_EQ(layout.y_attr, Y_ATTR_DEFAULT);
+  ASSERT_EQ(layout.w_attr, W_ATTR_PIXEL);
+  ASSERT_EQ(layout.h_attr, H_ATTR_PIXEL);
+
+  widget_layout_calc(&layout, &r, 100, 200);
+  ASSERT_EQ(r.x, 1);
+  ASSERT_EQ(r.y, 2);
+  ASSERT_EQ(r.w, 100 - 10);
+  ASSERT_EQ(r.h, 200 - 40);
+}
+
+TEST(Layuout, negetivepercent) {
+  rect_t r;
+  widget_layout_t layout;
+  ASSERT_EQ(widget_layout_parse(&layout, "1", "2", "-10%", "-40%"), &layout);
+  ASSERT_EQ(layout.x, 1);
+  ASSERT_EQ(layout.y, 2);
+  ASSERT_EQ(layout.w, -10);
+  ASSERT_EQ(layout.h, -40);
+  ASSERT_EQ(layout.x_attr, X_ATTR_DEFAULT);
+  ASSERT_EQ(layout.y_attr, Y_ATTR_DEFAULT);
+  ASSERT_EQ(layout.w_attr, W_ATTR_PERCENT);
+  ASSERT_EQ(layout.h_attr, H_ATTR_PERCENT);
+
+  widget_layout_calc(&layout, &r, 100, 200);
+  ASSERT_EQ(r.x, 1);
+  ASSERT_EQ(r.y, 2);
+  ASSERT_EQ(r.w, 90);
+  ASSERT_EQ(r.h, 120);
+}
+
 TEST(Layuout, fill) {
   widget_layout_t layout;
   ASSERT_EQ(widget_layout_parse(&layout, "1", "2", "fill", "fill"), &layout);
