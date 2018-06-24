@@ -19,6 +19,7 @@
 #include "../include/dicttrie.h"
 #include "../include/matrixsearch.h"
 #include "../include/spellingtrie.h"
+#include "gpinyin.inc"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,18 @@ extern "C" {
   MatrixSearch* matrix_search = NULL;
 
   char16 predict_buf[kMaxPredictNum][kMaxPredictSize + 1];
+  
+  bool im_open_decoder_rom(void) {
+    if (NULL != matrix_search)
+      delete matrix_search;
+
+    matrix_search = new MatrixSearch();
+    if (NULL == matrix_search) {
+      return false;
+    }
+
+    return matrix_search->init((const char*)data_gpinyin, "/userdata.dat");
+  }
 
   bool im_open_decoder(const char *fn_sys_dict, const char *fn_usr_dict) {
     if (NULL != matrix_search)

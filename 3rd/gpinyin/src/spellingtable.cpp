@@ -16,9 +16,10 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+#include "file.h"
 #include "../include/spellingtable.h"
 
 namespace ime_pinyin {

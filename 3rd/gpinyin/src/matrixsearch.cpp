@@ -16,8 +16,9 @@
 
 #include <assert.h>
 #include <math.h>
-#include <stdio.h>
 #include <string.h>
+
+#include "file.h"
 #include "../include/lpicache.h"
 #include "../include/matrixsearch.h"
 #include "../include/mystdlib.h"
@@ -71,7 +72,6 @@ bool MatrixSearch::alloc_resource() {
   free_resource();
 
   dict_trie_ = new DictTrie();
-  user_dict_ = static_cast<AtomDictBase*>(new UserDict());
   spl_parser_ = new SpellingParser();
 
   unsigned mtrx_nd_size = sizeof(MatrixNode) * kMtrxNdPoolSize;
@@ -86,7 +86,7 @@ bool MatrixSearch::alloc_resource() {
   // share_buf's size is determined by the buffers for search.
   share_buf_ = new unsigned[mtrx_nd_size + dmi_size + matrix_size + dep_size];
 
-  if (NULL == dict_trie_ || NULL == user_dict_ || NULL == spl_parser_ ||
+  if (NULL == dict_trie_ || NULL == spl_parser_ ||
       NULL == share_buf_)
     return false;
 
@@ -130,15 +130,6 @@ bool MatrixSearch::init(const char *fn_sys_dict, const char *fn_usr_dict) {
   if (!dict_trie_->load_dict(fn_sys_dict, 1, kSysDictIdEnd))
     return false;
 
-  // If engine fails to load the user dictionary, reset the user dictionary
-  // to NULL.
-  if (!user_dict_->load_dict(fn_usr_dict, kUserDictIdStart, kUserDictIdEnd)) {
-    delete user_dict_;
-    user_dict_ = NULL;
-  } else{
-    user_dict_->set_total_lemma_count_of_others(NGram::kSysDictTotalFreq);
-  }
-
   reset_search0();
 
   inited_ = true;
@@ -155,13 +146,6 @@ bool MatrixSearch::init_fd(int sys_fd, long start_offset, long length,
 
   if (!dict_trie_->load_dict_fd(sys_fd, start_offset, length, 1, kSysDictIdEnd))
     return false;
-
-  if (!user_dict_->load_dict(fn_usr_dict, kUserDictIdStart, kUserDictIdEnd)) {
-    delete user_dict_;
-    user_dict_ = NULL;
-  } else {
-    user_dict_->set_total_lemma_count_of_others(NGram::kSysDictTotalFreq);
-  }
 
   reset_search0();
 

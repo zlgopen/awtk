@@ -49,18 +49,18 @@ DictList::~DictList() {
 
 bool DictList::alloc_resource(unsigned buf_size, unsigned scis_num) {
   // Allocate memory
-  buf_ = static_cast<char16*>(malloc(buf_size * sizeof(char16)));
+  buf_ = static_cast<char16*>(TKMEM_ALLOC(buf_size * sizeof(char16)));
   if (NULL == buf_)
     return false;
 
   scis_num_ = scis_num;
 
-  scis_hz_ = static_cast<char16*>(malloc(scis_num_ * sizeof(char16)));
+  scis_hz_ = static_cast<char16*>(TKMEM_ALLOC(scis_num_ * sizeof(char16)));
   if (NULL == scis_hz_)
     return false;
 
   scis_splid_ = static_cast<SpellingId*>
-      (malloc(scis_num_ * sizeof(SpellingId)));
+      (TKMEM_ALLOC(scis_num_ * sizeof(SpellingId)));
 
   if (NULL == scis_splid_)
     return false;
@@ -70,15 +70,15 @@ bool DictList::alloc_resource(unsigned buf_size, unsigned scis_num) {
 
 void DictList::free_resource() {
   if (NULL != buf_)
-    free(buf_);
+    TKMEM_FREE(buf_);
   buf_ = NULL;
 
   if (NULL != scis_hz_)
-    free(scis_hz_);
+    TKMEM_FREE(scis_hz_);
   scis_hz_ = NULL;
 
   if (NULL != scis_splid_)
-    free(scis_splid_);
+    TKMEM_FREE(scis_splid_);
   scis_splid_ = NULL;
 }
 
@@ -91,7 +91,7 @@ bool DictList::init_list(const SingleCharItem *scis, unsigned scis_num,
   initialized_ = false;
 
   if (NULL != buf_)
-    free(buf_);
+    TKMEM_FREE(buf_);
 
   // calculate the size
   unsigned buf_size = calculate_size(lemma_arr, lemma_num);

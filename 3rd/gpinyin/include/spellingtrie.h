@@ -17,7 +17,7 @@
 #ifndef PINYINIME_INCLUDE_SPELLINGTRIE_H__
 #define PINYINIME_INCLUDE_SPELLINGTRIE_H__
 
-#include <stdio.h>
+#include "file.h"
 #include <stdlib.h>
 #include "./dictdef.h"
 

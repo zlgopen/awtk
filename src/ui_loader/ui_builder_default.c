@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_builder_default.c
  * Author: AWTK Develop Team
  * Brief:  ui_builder default
@@ -148,7 +148,7 @@ static ret_t on_window_open(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static widget_t* window_open_impl(const char* name, int res_type, widget_t* to_close) {
+static widget_t* window_open_impl(const char* name, resource_type_t res_type, widget_t* to_close) {
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default(name);
   const resource_info_t* ui = resource_manager_ref(resource_manager(), res_type, name);

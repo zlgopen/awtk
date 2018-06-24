@@ -16,9 +16,10 @@
 
 #include <assert.h>
 #include <math.h>
-#include <stdio.h>
 #include <string.h>
 #include <time.h>
+
+#include "file.h"
 #include "../include/mystdlib.h"
 #include "../include/ngram.h"
 
@@ -140,15 +141,15 @@ NGram::NGram() {
 
 NGram::~NGram() {
   if (NULL != lma_freq_idx_)
-    free(lma_freq_idx_);
+    TKMEM_FREE(lma_freq_idx_);
 
 #ifdef ___BUILD_MODEL___
   if (NULL != freq_codes_df_)
-    free(freq_codes_df_);
+    TKMEM_FREE(freq_codes_df_);
 #endif
 
   if (NULL != freq_codes_)
-    free(freq_codes_);
+    TKMEM_FREE(freq_codes_);
 }
 
 NGram& NGram::get_instance() {
@@ -187,15 +188,15 @@ bool NGram::load_ngram(FILE *fp) {
     return false;
 
   if (NULL != lma_freq_idx_)
-    free(lma_freq_idx_);
+    TKMEM_FREE(lma_freq_idx_);
 
   if (NULL != freq_codes_)
-    free(freq_codes_);
+    TKMEM_FREE(freq_codes_);
 
   lma_freq_idx_ = static_cast<CODEBOOK_TYPE*>
-                  (malloc(idx_num_ * sizeof(CODEBOOK_TYPE)));
+                  (TKMEM_ALLOC(idx_num_ * sizeof(CODEBOOK_TYPE)));
   freq_codes_ = static_cast<LmaScoreType*>
-      (malloc(kCodeBookSize * sizeof(LmaScoreType)));
+      (TKMEM_ALLOC(kCodeBookSize * sizeof(LmaScoreType)));
 
   if (NULL == lma_freq_idx_ || NULL == freq_codes_)
     return false;

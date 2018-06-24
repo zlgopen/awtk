@@ -23,6 +23,7 @@ else:
 INPUT_METHOD='native'
 INPUT_METHOD='default'
 INPUT_ENGINE='null'
+INPUT_ENGINE='pinyin'
 
 FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
@@ -91,7 +92,7 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['awtk', 'picasso', 'agg', 'nanovg'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'picasso', 'agg', 'nanovg'] + OS_LIBS
 
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
 CPPPATH=[TK_ROOT, 
@@ -99,6 +100,7 @@ CPPPATH=[TK_ROOT,
   TK_3RD_ROOT, 
   os.path.join(TK_3RD_ROOT, 'nanovg/src'), 
   os.path.join(TK_3RD_ROOT, 'agg/include'), 
+  os.path.join(TK_3RD_ROOT, 'gpinyin/include'), 
   os.path.join(TK_3RD_ROOT, 'picasso/src'), 
   os.path.join(TK_3RD_ROOT, 'picasso/build'), 
   os.path.join(TK_3RD_ROOT, 'picasso/include'), 
@@ -120,6 +122,7 @@ SConscriptFiles=[
   '3rd/glad/SConscript',
   '3rd/lua/SConscript',
   '3rd/agg/SConscript', 
+  '3rd/gpinyin/SConscript', 
   '3rd/picasso/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 

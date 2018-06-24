@@ -15,10 +15,10 @@
  */
 
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "file.h"
 #include "../include/dictbuilder.h"
 #include "../include/dicttrie.h"
 #include "../include/mystdlib.h"

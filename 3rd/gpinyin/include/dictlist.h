@@ -17,8 +17,8 @@
 #ifndef PINYINIME_INCLUDE_DICTLIST_H__
 #define PINYINIME_INCLUDE_DICTLIST_H__
 
+#include "file.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include "./dictdef.h"
 #include "./searchutility.h"
 #include "./spellingtrie.h"

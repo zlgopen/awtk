@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
+#include "file.h"
 #include <string.h>
 #include <assert.h>
 #include "../include/dictdef.h"

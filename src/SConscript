@@ -43,7 +43,7 @@ else:
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')
 else:
-  sources += Glob('input_engines/input_engine_gpinyin.c')
+  sources += Glob('input_engines/input_engine_pinyin.cpp')
 
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'awtk'), sources)

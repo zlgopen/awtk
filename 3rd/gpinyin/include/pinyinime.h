@@ -35,6 +35,8 @@ extern "C" {
    */
   bool im_open_decoder(const char *fn_sys_dict, const char *fn_usr_dict);
 
+  bool im_open_decoder_rom(void);
+
   /**
    * Open the decoder engine via the system dictionary FD and user dictionary
    * file name. Because on Android, the system dictionary is embedded in the

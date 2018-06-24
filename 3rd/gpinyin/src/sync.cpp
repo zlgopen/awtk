@@ -48,7 +48,7 @@ bool Sync::begin(const char * filename) {
 
   userdict_ = new UserDict();
   if (!userdict_) {
-    free(dictfile_);
+    TKMEM_FREE(dictfile_);
     dictfile_ = NULL;
     return false;
   }
@@ -57,7 +57,7 @@ bool Sync::begin(const char * filename) {
                            kUserDictIdEnd) == false) {
     delete userdict_;
     userdict_ = NULL;
-    free(dictfile_);
+    TKMEM_FREE(dictfile_);
     dictfile_ = NULL;
     return false;
   }
@@ -96,7 +96,7 @@ void Sync::finish() {
     userdict_->close_dict();
     delete userdict_;
     userdict_ = NULL;
-    free(dictfile_);
+    TKMEM_FREE(dictfile_);
     dictfile_ = NULL;
     last_count_ = 0;
   }

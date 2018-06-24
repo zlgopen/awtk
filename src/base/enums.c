@@ -43,6 +43,7 @@ static const key_type_value_t widget_type_value[] = {
     {"slider", 0, WIDGET_SLIDER},
     {"pages", 0, WIDGET_PAGES},
     {"keyboard", 0, WIDGET_KEYBOARD},
+    {"candidates", 0, WIDGET_CANDIDATES},
     {"slide_view", 0, WIDGET_SLIDE_VIEW},
     {"progress_bar", 0, WIDGET_PROGRESS_BAR},
     {"group_box", 0, WIDGET_GROUP_BOX},

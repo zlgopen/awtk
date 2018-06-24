@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+#include "file.h"
 #include <assert.h>
-#include <stdio.h>
 #include <string.h>
 #include "../include/dicttrie.h"
 #include "../include/dictbuilder.h"
@@ -50,19 +50,19 @@ DictTrie::~DictTrie() {
 
 void DictTrie::free_resource(bool free_dict_list) {
   if (NULL != root_)
-    free(root_);
+    TKMEM_FREE(root_);
   root_ = NULL;
 
   if (NULL != splid_le0_index_)
-    free(splid_le0_index_);
+    TKMEM_FREE(splid_le0_index_);
   splid_le0_index_ = NULL;
 
   if (NULL != nodes_ge1_)
-    free(nodes_ge1_);
+    TKMEM_FREE(nodes_ge1_);
   nodes_ge1_ = NULL;
 
   if (NULL != nodes_ge1_)
-    free(nodes_ge1_);
+    TKMEM_FREE(nodes_ge1_);
   nodes_ge1_ = NULL;
 
   if (free_dict_list) {
@@ -185,15 +185,15 @@ bool DictTrie::load_dict(FILE *fp) {
   free_resource(false);
 
   root_ = static_cast<LmaNodeLE0*>
-          (malloc(lma_node_num_le0_ * sizeof(LmaNodeLE0)));
+          (TKMEM_ALLOC(lma_node_num_le0_ * sizeof(LmaNodeLE0)));
   nodes_ge1_ = static_cast<LmaNodeGE1*>
-               (malloc(lma_node_num_ge1_ * sizeof(LmaNodeGE1)));
-  lma_idx_buf_ = (unsigned char*)malloc(lma_idx_buf_len_);
+               (TKMEM_ALLOC(lma_node_num_ge1_ * sizeof(LmaNodeGE1)));
+  lma_idx_buf_ = (unsigned char*)TKMEM_ALLOC(lma_idx_buf_len_);
   total_lma_num_ = lma_idx_buf_len_ / kLemmaIdSize;
 
   unsigned buf_size = SpellingTrie::get_instance().get_spelling_num() + 1;
   assert(lma_node_num_le0_ <= buf_size);
-  splid_le0_index_ = static_cast<uint16*>(malloc(buf_size * sizeof(uint16)));
+  splid_le0_index_ = static_cast<uint16*>(TKMEM_ALLOC(buf_size * sizeof(uint16)));
 
   // Init the space for parsing.
   parsing_marks_ = new ParsingMark[kMaxParsingMark];
@@ -279,7 +279,7 @@ bool DictTrie::load_dict_fd(int sys_fd, long start_offset,
   if (start_offset < 0 || length <= 0 || end_id <= start_id)
     return false;
 
-  FILE *fp = fdopen(sys_fd, "rb");
+  FILE *fp = NULL;
   if (NULL == fp)
     return false;
 

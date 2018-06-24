@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   keyboard.h
  * Author: AWTK Develop Team
  * Brief:  keyboard
@@ -171,7 +171,6 @@ static ret_t keyboard_on_action_info(void* ctx, event_t* e) {
   keyboard_t* keyboard = KEYBOARD(ctx);
   uint32_t nr = keyboard->action_buttons.size;
   widget_t** buttons = (widget_t**)keyboard->action_buttons.elms;
-  im_action_button_info_event_t* info = (im_action_button_info_event_t*)e;
 
   for (i = 0; i < nr; i++) {
     keyboard_update_action_buton_info(buttons[i], im->action_buton_text, im->action_button_enable);

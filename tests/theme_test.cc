@@ -52,7 +52,7 @@ TEST(Theme, saveLoad) {
 }
 
 TEST(Theme, basic) {
-  uint8_t buff[10240];
+  uint8_t buff[4*10240];
   uint32_t type_nr = WIDGET_NR;
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;

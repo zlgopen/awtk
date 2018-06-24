@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   edit.h
  * Author: AWTK Develop Team
  * Brief:  edit
@@ -114,7 +114,7 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
     canvas_draw_vline(c, caret_x, margin, widget->h - 2 * margin);
   }
-  edit->caret_x = caret_x + 0.5;
+  edit->caret_x = caret_x + 0.5f;
 
   return RET_OK;
 }
