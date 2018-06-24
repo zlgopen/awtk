@@ -173,7 +173,7 @@ ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
   return_value_if_fail(vg != NULL && vg->vt->set_font != NULL, RET_BAD_PARAMS);
 
   if (font == NULL) {
-    font = STR_DEFAULT_FONT;
+    font = TK_DEFAULT_FONT;
   }
 
   vg->font = font;

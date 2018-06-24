@@ -41,6 +41,7 @@ static ret_t candidates_create_button(widget_t* widget) {
   widget_t* button = button_create(widget, 0, 0, 0, 0);
   return_value_if_fail(button != NULL, RET_BAD_PARAMS);
 
+  widget_use_style(button, "2:candidates");
   widget_on(button, EVT_CLICK, candidates_on_button_click, button);
 
   return RET_OK;
@@ -65,22 +66,10 @@ static ret_t candidates_ensure_children(widget_t* widget, uint32_t nr) {
   return RET_OK;
 }
 
-/*FIXME: */
-static uint32_t candidates_calc_child_width(widget_t* widget) {
-  uint32_t w = 8;
-  uint32_t i = 0;
-
+static uint32_t candidates_calc_child_width(canvas_t* c, widget_t* widget) {
   wstr_t* str = &(widget->text);
-  for (i = 0; i < str->size; i++) {
-    wchar_t c = str->str[i];
-    if (c < 0x80) {
-      w += 8;
-    } else {
-      w += 16;
-    }
-  }
 
-  return w;
+  return canvas_measure_text(c, str->str, str->size) + 8;
 }
 
 static ret_t candidates_relayout_children(widget_t* widget) {
@@ -93,11 +82,16 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   widget_t* iter = NULL;
   uint32_t nr = widget->children->size;
   wh_t child_h = widget->h - margin * 2;
+  candidates_t* candidates = CANDIDATES(widget);
   widget_t** children = (widget_t**)(widget->children->elms);
+  canvas_t* c = candidates->canvas;
+  style_t* style = &(children[0]->style);
+  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
+  canvas_set_font(c, TK_DEFAULT_FONT, font_size);
   for (i = 0; i < nr; i++) {
     iter = children[i];
-    child_w = candidates_calc_child_width(iter);
+    child_w = candidates_calc_child_width(candidates->canvas, iter);
     if ((child_x + child_w + margin) < w && iter->text.size > 0) {
       widget_set_visible(iter, TRUE, FALSE);
       widget_move_resize(iter, child_x, child_y, child_w, child_h);
@@ -146,11 +140,14 @@ static ret_t candidates_destroy_default(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_candidates_vtable = {
-    .on_paint_self = widget_on_paint_background_null,
-    .on_paint_background = widget_on_paint_background_null,
-    .on_paint_done = widget_on_paint_done_null,
-    .destroy = candidates_destroy_default};
+static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
+  candidates_t* candidates = CANDIDATES(widget);
+  candidates->canvas = c;
+  return widget_paint_helper(widget, c, NULL, NULL);
+}
+
+static const widget_vtable_t s_candidates_vtable = {.on_paint_self = candidates_on_paint_self,
+                                                    .destroy = candidates_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);

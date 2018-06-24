@@ -87,7 +87,7 @@ ret_t font_manager_add(font_manager_t* fm, font_t* font);
  * @method font_manager_find
  * 从缓存中查找字体。
  * @param {font_manager_t*} fm 字体管理器对象。
- * @param {char*} name 字体名，为NULL时使用STR_DEFAULT_FONT。
+ * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
  * @param {uint16_t} size 字体的大小。
  *
  * @return {font_t*} 返回字体对象。

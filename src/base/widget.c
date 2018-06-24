@@ -438,7 +438,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
   color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
-  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
+  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
   if (text == NULL) {
     text = &(widget->text);

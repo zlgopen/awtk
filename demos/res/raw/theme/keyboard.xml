@@ -5,7 +5,19 @@
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
+  
+  <style name="2:candidates" text_color="black">
+    <normal  />
+    <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
+    <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
+  </style>
 </button>
+
+<candidates>
+  <style name="0:default">
+    <normal     bg_color="#fafafa" />
+  </style>
+</candidates>
 
 <keyboard>
   <style name="default">

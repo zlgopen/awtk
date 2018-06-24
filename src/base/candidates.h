@@ -53,6 +53,8 @@ typedef struct _candidates_t {
    * 用于注销事件。
    */
   uint32_t event_id;
+
+  canvas_t* canvas;
 } candidates_t;
 
 /**

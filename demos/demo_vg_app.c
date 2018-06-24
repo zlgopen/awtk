@@ -403,7 +403,7 @@ static void draw_text(vgcanvas_t* vg) {
   float_t w = 100;
 
   vgcanvas_set_font_size(vg, 20);
-  vgcanvas_set_font(vg, STR_DEFAULT_FONT);
+  vgcanvas_set_font(vg, TK_DEFAULT_FONT);
   w = vgcanvas_measure_text(vg, text);
 
   vgcanvas_save(vg);

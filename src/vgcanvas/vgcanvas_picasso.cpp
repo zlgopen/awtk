@@ -401,7 +401,7 @@ static ret_t vgcanvas_picasso_set_font(vgcanvas_t* vgcanvas, const char* name) {
   ps_context* vg = ((vgcanvas_picasso_t*)vgcanvas)->vg;
 
   if (name == NULL) {
-    name = STR_DEFAULT_FONT;
+    name = TK_DEFAULT_FONT;
   }
 
   (void)vg;

@@ -290,14 +290,14 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
   if (name == NULL) {
-    name = STR_DEFAULT_FONT;
+    name = TK_DEFAULT_FONT;
   }
 
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
     const resource_info_t* r = resource_manager_ref(resource_manager(), RESOURCE_TYPE_FONT, name);
     if (r == NULL || r->subtype != RESOURCE_TYPE_FONT_TTF) {
-      name = STR_DEFAULT_FONT;
+      name = TK_DEFAULT_FONT;
       font_id = nvgFindFont(vg, name);
       if (font_id >= 0) {
         canvas->font_id = font_id;
