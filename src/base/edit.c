@@ -192,6 +192,19 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
       }
       break;
     }
+    case INPUT_HEX: {
+      if(text->size > 10) {
+        break;
+      }
+      if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
+        wstr_push(text, c);
+      } else if (c == 'X' || c == 'x') {
+        if (text->size == 1 && text->str[0] == '0') {
+          wstr_push(text, c);
+        }
+      }
+      break;
+    }
     case INPUT_PHONE: {
       if (c >= '0' && c <= '9') {
         wstr_push(text, c);
