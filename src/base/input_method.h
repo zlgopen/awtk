@@ -260,9 +260,9 @@ ret_t input_method_off(input_method_t* im, uint32_t id);
 
 /**
  * @method input_method_request
- * 请求指定的控件启用输入法。
+ * 打开或关闭输入法。
  * @param {input_method_t*} im 输入法对象。
- * @param {widget_t*} widget 焦点控件。
+ * @param {widget_t*} widget 焦点控件，为NULL时关闭输入法，非NULL时打开输入法。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -114,6 +114,7 @@ bin\demoui
 * [AWTK中的窗口动画](docs/window_animator.md)
 * [AWTK中的控件动画](docs/widget_animator.md)
 * [LCD旋转(横屏与竖屏)](docs/lcd_rotation.md)
+* [AWTK中的输入法](docs/input_method.md)
 
 ### 2.HowTos
 * [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
@@ -136,6 +137,14 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/06/25
+    * 完善候选字控件。
+    * 编写输入法文档。
+
+* 2018/06/24
+    * 集成google拼音输入法(输入法字体和完整的字体，需要4M的flash空间)。
+
 * 2018/06/23
     * 引入输入法引擎接口。
     * 增加候选字控件。
