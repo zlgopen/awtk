@@ -330,6 +330,7 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
 }
 
 static const widget_vtable_t s_slider_vtable = {
+    .type_name = WIDGET_TYPE_SLIDER,
     .on_event = slider_on_event,
     .on_paint_background = widget_on_paint_background_null,
     .on_paint_self = slider_on_paint_self,

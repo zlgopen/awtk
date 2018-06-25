@@ -27,7 +27,6 @@
 #include "base/timer.h"
 #include "base/layout.h"
 #include "base/locale.h"
-#include "base/prop_names.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 

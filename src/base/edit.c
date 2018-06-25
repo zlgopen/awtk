@@ -193,7 +193,7 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
       break;
     }
     case INPUT_HEX: {
-      if(text->size > 10) {
+      if (text->size > 10) {
         break;
       }
       if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
@@ -519,7 +519,8 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_edit_vtable = {.on_paint_self = edit_on_paint_self,
+static const widget_vtable_t s_edit_vtable = {.type_name = WIDGET_TYPE_EDIT,
+                                              .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,
                                               .get_prop = edit_get_prop,
                                               .on_event = edit_on_event};

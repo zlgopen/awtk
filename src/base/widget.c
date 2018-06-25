@@ -26,7 +26,6 @@
 #include "base/enums.h"
 #include "base/locale.h"
 #include "base/widget.h"
-#include "base/prop_names.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 

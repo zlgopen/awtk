@@ -97,6 +97,7 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
 }
 
 static const widget_vtable_t s_pages_vtable = {
+    .type_name = WIDGET_TYPE_PAGES,
     .on_paint_self = widget_on_paint_background_null,
     .find_target = pages_find_target,
     .on_paint_children = pages_on_paint_children,

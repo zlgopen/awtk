@@ -20,7 +20,6 @@
  */
 
 #include "base/mem.h"
-#include "base/prop_names.h"
 #include "widget_animators/widget_animator_scroll.h"
 
 static ret_t widget_animator_scroll_update(widget_animator_t* animator, float_t percent) {

@@ -30,8 +30,8 @@
 #include "base/emitter.h"
 #include "base/canvas.h"
 #include "base/theme.h"
-#include "base/prop_names.h"
 #include "base/layout_def.h"
+#include "base/widget_consts.h"
 
 BEGIN_C_DECLS
 
@@ -94,138 +94,6 @@ typedef enum _widget_state_t {
   WIDGET_STATE_ERROR = 9
 } widget_state_t;
 
-/**
- * @enum widget_type_t
- * @scriptable
- * 控件类型常量定义。
- */
-typedef enum _widget_type_t {
-  /**
-   * @const WIDGET_NONE
-   * 无效类型。
-   */
-  WIDGET_NONE = 0,
-  /**
-   * @const WIDGET_WINDOW_MANAGER
-   * 窗口管理器。
-   */
-  WIDGET_WINDOW_MANAGER,
-  /**
-   * @const WIDGET_NORMAL_WINDOW
-   * 窗口。
-   */
-  WIDGET_NORMAL_WINDOW,
-  /**
-   * @const WIDGET_TOOL_BAR
-   * 工具条。
-   */
-  WIDGET_TOOL_BAR,
-  /**
-   * @const WIDGET_DIALOG
-   * 对话框。
-   */
-  WIDGET_DIALOG,
-  /**
-   * @const WIDGET_POPUP
-   * 弹出框。
-   */
-  WIDGET_POPUP,
-  /**
-   * @const WIDGET_SPRITE
-   * 精灵窗口如鼠标指针。
-   */
-  WIDGET_SPRITE,
-  /**
-   * @const WIDGET_KEYBOARD
-   * 软键盘。
-   */
-  WIDGET_KEYBOARD,
-  /**
-   * @const WIDGET_DRAGGER
-   * drag & drop icon。
-   */
-  WIDGET_DRAGGER,
-  /**
-   * @const WIDGET_LABEL
-   * 简单文本。
-   */
-  WIDGET_LABEL,
-  /**
-   * @const WIDGET_BUTTON
-   * 按钮。
-   */
-  WIDGET_BUTTON,
-  /**
-   * @const WIDGET_IMAGE
-   * 图片。
-   */
-  WIDGET_IMAGE,
-  /**
-   * @const WIDGET_EDIT
-   * 文本编辑器。
-   */
-  WIDGET_EDIT,
-  /**
-   * @const WIDGET_PROGRESS_BAR
-   * 进度条。
-   */
-  WIDGET_PROGRESS_BAR,
-  /**
-   * @const WIDGET_GROUP_BOX
-   * 分组框。
-   */
-  WIDGET_GROUP_BOX,
-  /**
-   * @const WIDGET_CHECK_BUTTON
-   * 多选按钮。
-   */
-  WIDGET_CHECK_BUTTON,
-  /**
-   * @const WIDGET_RADIO_BUTTON
-   * 单选按钮。
-   */
-  WIDGET_RADIO_BUTTON,
-  /**
-   * @const WIDGET_DIALOG_TITLE
-   * 对话框的标题。
-   */
-  WIDGET_DIALOG_TITLE,
-  /**
-   * @const WIDGET_DIALOG_CLIENT
-   * 对话框的客户区。
-   */
-  WIDGET_DIALOG_CLIENT,
-  /**
-   * @const WIDGET_SLIDER
-   * 滑块。
-   */
-  WIDGET_SLIDER,
-  /**
-   * @const WIDGET_VIEW
-   * 通用容器和自绘控件。
-   */
-  WIDGET_VIEW,
-  /**
-   * @const WIDGET_SLIDE_VIEW
-   * Slide View。
-   */
-  WIDGET_SLIDE_VIEW,
-  /**
-   * @const WIDGET_PAGES
-   * Slide View。
-   */
-  WIDGET_PAGES,
-  /**
-   * @const WIDGET_CANDIDATES
-   * Input method words candidates。
-   */
-  WIDGET_CANDIDATES,
-
-  WIDGET_NR,
-  WIDGET_USER_START = 100
-
-} widget_type_t;
-
 struct _widget_t;
 typedef struct _widget_t widget_t;
 
@@ -250,6 +118,8 @@ typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef ret_t (*widget_destroy_t)(widget_t* widget);
 
 typedef struct _widget_vtable_t {
+  const char* type_name;
+
   widget_get_prop_t get_prop;
   widget_set_prop_t set_prop;
   widget_on_click_t on_click;

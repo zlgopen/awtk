@@ -53,7 +53,8 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_button_vtable = {.on_event = button_on_event,
+static const widget_vtable_t s_button_vtable = {.type_name = WIDGET_TYPE_BUTTON,
+                                                .on_event = button_on_event,
                                                 .on_paint_self = button_on_paint_self};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

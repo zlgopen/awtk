@@ -26,7 +26,8 @@ static ret_t group_box_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_group_box_vtable = {.on_paint_self = group_box_on_paint_self};
+static const widget_vtable_t s_group_box_vtable = {.type_name = WIDGET_TYPE_GROUP_BOX,
+                                                   .on_paint_self = group_box_on_paint_self};
 
 widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

@@ -196,6 +196,7 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
 }
 
 static const widget_vtable_t s_progress_bar_vtable = {
+    .type_name = WIDGET_TYPE_PROGRESS_BAR,
     .on_paint_self = progress_bar_on_paint_self,
     .on_paint_background = widget_on_paint_background_null,
     .on_paint_done = widget_on_paint_done_null,

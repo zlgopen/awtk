@@ -26,7 +26,8 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_label_vtable = {.on_paint_self = label_on_paint_self};
+static const widget_vtable_t s_label_vtable = {.type_name = WIDGET_TYPE_LABEL,
+                                               .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

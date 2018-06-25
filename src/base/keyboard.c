@@ -26,7 +26,6 @@
 #include "base/pages.h"
 #include "base/locale.h"
 #include "base/keyboard.h"
-#include "base/prop_names.h"
 #include "base/input_method.h"
 #include "base/window_manager.h"
 
@@ -78,7 +77,8 @@ static ret_t keyboard_destroy_default(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_keyboard_vtable = {.on_paint_self = keyboard_on_paint_self,
+static const widget_vtable_t s_keyboard_vtable = {.type_name = WIDGET_TYPE_KEYBOARD,
+                                                  .on_paint_self = keyboard_on_paint_self,
                                                   .set_prop = keyboard_set_prop,
                                                   .get_prop = keyboard_get_prop,
                                                   .destroy = keyboard_destroy_default};

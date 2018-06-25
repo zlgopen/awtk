@@ -102,8 +102,10 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_image_vtable = {
-    .on_paint_self = image_on_paint_self, .set_prop = image_set_prop, .get_prop = image_get_prop};
+static const widget_vtable_t s_image_vtable = {.type_name = WIDGET_TYPE_IMAGE,
+                                               .on_paint_self = image_on_paint_self,
+                                               .set_prop = image_set_prop,
+                                               .get_prop = image_get_prop};
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

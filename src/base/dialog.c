@@ -104,7 +104,8 @@ static ret_t dialog_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_dialog_vtable = {.get_prop = dialog_get_prop,
+static const widget_vtable_t s_dialog_vtable = {.type_name = WIDGET_TYPE_DIALOG,
+                                                .get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,
                                                 .on_layout_children = dialog_on_relayout_children,
                                                 .destroy = dialog_destroy,

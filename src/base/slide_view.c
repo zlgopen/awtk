@@ -599,6 +599,7 @@ static ret_t slide_view_destroy(widget_t* widget) {
 }
 
 static const widget_vtable_t s_slide_view_vtable = {
+    .type_name = WIDGET_TYPE_SLIDE_VIEW,
     .on_event = slide_view_on_event,
     .get_prop = slide_view_get_prop,
     .set_prop = slide_view_set_prop,

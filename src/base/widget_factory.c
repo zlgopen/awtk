@@ -47,23 +47,23 @@ typedef struct _creator_item_t {
 } creator_item_t;
 
 static const creator_item_t s_builtin_creators[] = {
-    {"dialog", dialog_create},
-    {"window", window_create},
-    {"image", image_create},
-    {"button", button_create},
-    {"label", label_create},
-    {"edit", edit_create},
-    {"progress_bar", progress_bar_create},
-    {"slider", slider_create},
-    {"group_box", group_box_create},
-    {"view", view_create},
-    {"check_button", check_button_create},
-    {"radio_button", check_button_create_radio},
-    {"keyboard", keyboard_create},
-    {"pages", pages_create},
-    {"candidates", candidates_create},
+    {WIDGET_TYPE_DIALOG, dialog_create},
+    {WIDGET_TYPE_NORMAL_WINDOW, window_create},
+    {WIDGET_TYPE_IMAGE, image_create},
+    {WIDGET_TYPE_BUTTON, button_create},
+    {WIDGET_TYPE_LABEL, label_create},
+    {WIDGET_TYPE_EDIT, edit_create},
+    {WIDGET_TYPE_PROGRESS_BAR, progress_bar_create},
+    {WIDGET_TYPE_SLIDER, slider_create},
+    {WIDGET_TYPE_GROUP_BOX, group_box_create},
+    {WIDGET_TYPE_VIEW, view_create},
+    {WIDGET_TYPE_CHECK_BUTTON, check_button_create},
+    {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
+    {WIDGET_TYPE_KEYBOARD, keyboard_create},
+    {WIDGET_TYPE_PAGES, pages_create},
+    {WIDGET_TYPE_CANDIDATES, candidates_create},
 #ifndef WITH_LOW_RES
-    {"slide_view", slide_view_create},
+    {WIDGET_TYPE_SLIDE_VIEW, slide_view_create},
 #endif /*WITH_LOW_RES*/
 };
 

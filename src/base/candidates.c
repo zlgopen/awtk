@@ -146,7 +146,8 @@ static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_candidates_vtable = {.on_paint_self = candidates_on_paint_self,
+static const widget_vtable_t s_candidates_vtable = {.type_name = WIDGET_TYPE_CANDIDATES,
+                                                    .on_paint_self = candidates_on_paint_self,
                                                     .destroy = candidates_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {

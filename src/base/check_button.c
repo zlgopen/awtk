@@ -115,6 +115,15 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 }
 
 static const widget_vtable_t s_check_button_vtable = {
+    .type_name = WIDGET_TYPE_CHECK_BUTTON,
+    .on_event = check_button_on_event,
+    .on_paint_self = check_button_on_paint_self,
+    .get_prop = check_button_get_prop,
+    .set_prop = check_button_set_prop,
+};
+
+static const widget_vtable_t s_radio_button_vtable = {
+    .type_name = WIDGET_TYPE_RADIO_BUTTON,
     .on_event = check_button_on_event,
     .on_paint_self = check_button_on_paint_self,
     .get_prop = check_button_get_prop,
@@ -143,6 +152,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   check_button->radio = TRUE;
   widget->type = WIDGET_RADIO_BUTTON;
   widget->state = WIDGET_STATE_NORMAL;
+  widget->vt = &s_radio_button_vtable;
   check_button_set_value_only(widget, FALSE);
 
   return widget;
