@@ -421,7 +421,8 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_wm_vtable = {.invalidate = window_manager_invalidate,
+static const widget_vtable_t s_wm_vtable = {.type_name = WIDGET_TYPE_WINDOW_MANAGER,
+                                            .invalidate = window_manager_invalidate,
                                             .on_paint_children = window_manager_on_paint_children,
                                             .grab = window_manager_grab,
                                             .find_target = window_manager_find_target,
@@ -452,9 +453,9 @@ widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);
   return_value_if_fail(wm != NULL, NULL);
 
+  w->vt = &s_wm_vtable;
   widget_init(w, NULL, WIDGET_WINDOW_MANAGER);
   array_init(&(wm->graps), 5);
-  w->vt = &s_wm_vtable;
 
 #ifdef WITH_DYNAMIC_TR
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);

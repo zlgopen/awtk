@@ -163,9 +163,9 @@ widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(candidates != NULL, NULL);
 
   widget = WIDGET(candidates);
+  widget->vt = &s_candidates_vtable;
   widget_init(widget, parent, WIDGET_CANDIDATES);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_candidates_vtable;
 
   candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
                                          candidates_on_im_candidates_event, candidates);

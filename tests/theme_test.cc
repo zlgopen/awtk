@@ -1,5 +1,6 @@
 
 #include "base/array.h"
+#include "base/enums.h"
 #include "base/theme.h"
 #include "base/widget.h"
 #include "base/buffer.h"
@@ -15,7 +16,9 @@ void GenThemeData(uint8_t* buff, uint32_t size, uint32_t type_nr, uint32_t state
   ThemeGen g;
   for (uint32_t type = 0; type < type_nr; type++) {
     for (uint32_t state = 0; state < state_nr; state++) {
-      Style s(type, 0, state);
+      const key_type_value_t* kv = widget_type_find_by_value(type);
+
+      Style s(kv->name, 0, state);
       for (uint32_t name = 0; name < name_nr; name++) {
         char str[32];
         snprintf(str, sizeof(str), "%d", name);
@@ -64,7 +67,9 @@ TEST(Theme, basic) {
 
   for (uint32_t type = WIDGET_NONE + 1; type < WIDGET_NR; type++) {
     for (uint32_t state = 0; state < state_nr; state++) {
-      s.data = theme_find_style(&t, type, 0, state);
+      const key_type_value_t* kv = widget_type_find_by_value(type);
+
+      s.data = theme_find_style(&t, kv->name, 0, state);
       ASSERT_EQ(s.data != NULL, true);
       for (uint32_t name = 0; name < name_nr; name++) {
         uint32_t v = style_get_int(&s, name, 0);

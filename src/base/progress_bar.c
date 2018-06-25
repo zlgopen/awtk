@@ -209,9 +209,9 @@ widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   return_value_if_fail(progress_bar != NULL, NULL);
 
   widget = WIDGET(progress_bar);
+  widget->vt = &s_progress_bar_vtable;
   widget_init(widget, parent, WIDGET_PROGRESS_BAR);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_progress_bar_vtable;
 
   return widget;
 }

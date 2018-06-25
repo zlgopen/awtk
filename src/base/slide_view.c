@@ -634,9 +634,9 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(slide_view != NULL, NULL);
 
   widget = WIDGET(slide_view);
+  widget->vt = &s_slide_view_vtable;
   widget_init(widget, parent, WIDGET_SLIDE_VIEW);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_slide_view_vtable;
 
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

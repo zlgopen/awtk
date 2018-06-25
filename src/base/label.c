@@ -35,9 +35,9 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(label != NULL, NULL);
 
   widget = WIDGET(label);
+  widget->vt = &s_label_vtable;
   widget_init(widget, parent, WIDGET_LABEL);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_label_vtable;
 
   return widget;
 }

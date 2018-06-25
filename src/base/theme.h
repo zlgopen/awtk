@@ -49,8 +49,21 @@ typedef struct _theme_t {
 theme_t* theme(void);
 theme_t* theme_init(const uint8_t* data);
 
-const uint8_t* theme_find_style(theme_t* t, uint16_t widget_type, uint8_t style_type,
-                                uint8_t state);
+typedef struct _theme_header_t {
+  uint32_t magic;
+  uint32_t version;
+  uint32_t nr;
+} theme_header_t;
+
+typedef struct _theme_item_t {
+  uint32_t offset;
+  uint16_t state;
+  uint16_t style_type;
+  char widget_type[NAME_LEN + 1];
+} theme_item_t;
+
+const uint8_t* theme_find_style(theme_t* t, const char* widget_type, uint16_t style_type,
+                                uint16_t state);
 
 /**
  * @enum style_type_t

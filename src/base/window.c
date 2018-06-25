@@ -61,7 +61,8 @@ static ret_t window_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_window_vtable = {.on_paint_self = window_on_paint_self,
+static const widget_vtable_t s_window_vtable = {.type_name = WIDGET_TYPE_NORMAL_WINDOW,
+                                                .on_paint_self = window_on_paint_self,
                                                 .set_prop = window_set_prop,
                                                 .get_prop = window_get_prop,
                                                 .destroy = window_destroy};
@@ -72,8 +73,8 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(win != NULL, NULL);
 
   widget = WIDGET(win);
-  widget_init(widget, NULL, WIDGET_NORMAL_WINDOW);
   widget->vt = &s_window_vtable;
+  widget_init(widget, NULL, WIDGET_NORMAL_WINDOW);
 
   if (parent == NULL) {
     parent = window_manager();

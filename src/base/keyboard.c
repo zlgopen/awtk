@@ -89,8 +89,8 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(keyboard != NULL, NULL);
 
   widget = WIDGET(keyboard);
-  widget_init(widget, NULL, WIDGET_KEYBOARD);
   widget->vt = &s_keyboard_vtable;
+  widget_init(widget, NULL, WIDGET_KEYBOARD);
   array_init(&(keyboard->action_buttons), 0);
 
   if (parent == NULL) {

@@ -344,9 +344,9 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(slider != NULL, NULL);
 
   widget = WIDGET(slider);
+  widget->vt = &s_slider_vtable;
   widget_init(widget, parent, WIDGET_SLIDER);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_slider_vtable;
   slider->min = 0;
   slider->max = 100;
   slider->step = 1;

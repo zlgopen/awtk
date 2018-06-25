@@ -20,6 +20,7 @@
  */
 
 #include "theme_gen.h"
+#include "base/utils.h"
 #include "base/enums.h"
 #include "base/theme.h"
 #include "base/buffer.h"
@@ -28,7 +29,7 @@
 Style::Style() {
 }
 
-Style::Style(uint16_t widget_type, uint8_t style_type, uint8_t state) {
+Style::Style(const string& widget_type, uint8_t style_type, uint8_t state) {
   this->widget_type = widget_type;
   this->style_type = style_type;
   this->state = state;
@@ -90,13 +91,12 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
   uint32_t size = 0;
   uint8_t* p = buff;
   uint8_t* end = buff + max_size;
-  const key_type_value_t* witem = widget_type_find_by_value(this->widget_type);
   return_value_if_fail(buff != NULL && max_size > 32, NULL);
 
   size = this->int_values.size();
   save_uint32(p, size);
-  printf("  size=%d widget_type=%s style_type=%d state=%d\n", size, witem->name, this->style_type,
-         this->state);
+  printf("  size=%d widget_type=%s style_type=%d state=%d\n", size, this->widget_type.c_str(),
+         this->style_type, this->state);
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     uint32_t name = i->name;
@@ -144,27 +144,29 @@ bool ThemeGen::AddStyle(const Style& style) {
 }
 
 uint8_t* ThemeGen::Output(uint8_t* buff, uint32_t max_size) {
-  uint8_t* p = buff;
-  uint32_t version = 0x0;
-  uint32_t size = this->styles.size();
+  uint32_t nr = this->styles.size();
   uint8_t* end = buff + max_size;
+  theme_header_t* header = (theme_header_t*)buff;
+  uint32_t data_start = sizeof(theme_header_t) + nr * sizeof(theme_item_t);
+  theme_item_t* item = (theme_item_t*)(buff + sizeof(theme_header_t));
+  uint8_t* p = buff + data_start;
 
-  return_value_if_fail(p != NULL && max_size > 128, NULL);
+  return_value_if_fail(p != NULL && max_size > data_start + 128, NULL);
 
-  save_uint32(p, THEME_MAGIC);
-  save_uint32(p, version);
-  save_uint32(p, size);
+  memset(buff, 0x00, max_size);
 
-  uint8_t* index = p;
-  p += size * 8;
-  printf("size=%d\n", size);
+  header->magic = THEME_MAGIC;
+  header->version = 0;
+  header->nr = nr;
+
   for (vector<Style>::iterator iter = this->styles.begin(); iter != this->styles.end(); iter++) {
-    uint32_t v = (iter->widget_type << 16) | (iter->style_type << 8) | iter->state;
-    uint32_t offset = p - buff;
-    save_uint32(index, v);
-    save_uint32(index, offset);
+    item->state = iter->state;
+    item->style_type = iter->style_type;
+    item->offset = p - buff;
+    tk_strncpy(item->widget_type, iter->widget_type.c_str(), NAME_LEN);
 
     p = iter->Output(p, end - p);
+    item++;
   }
 
   return p;

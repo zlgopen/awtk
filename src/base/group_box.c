@@ -35,9 +35,9 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(group_box != NULL, NULL);
 
   widget = WIDGET(group_box);
+  widget->vt = &s_group_box_vtable;
   widget_init(widget, parent, WIDGET_GROUP_BOX);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_group_box_vtable;
 
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

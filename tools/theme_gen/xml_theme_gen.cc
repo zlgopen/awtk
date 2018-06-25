@@ -36,8 +36,8 @@ typedef struct _xml_builder_t {
   Style share_style;
 
   uint16_t level;
-  uint16_t widget_type;
   uint16_t style_name;
+  string widget_type;
 } xml_builder_t;
 
 static color_t parse_color(const char* name) {
@@ -82,13 +82,10 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
 }
 
 static void xml_gen_on_widget(xml_builder_t* b, const char* tag, const char** attrs) {
-  const key_type_value_t* item = widget_type_find(tag);
-  assert(item != NULL);
-
   b->widget_style.Reset();
   xml_gen_style(b, b->widget_style, attrs);
 
-  b->widget_type = item->value;
+  b->widget_type = tag;
   b->style_name = 0;
 }
 
@@ -195,7 +192,7 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
   b.builder.destroy = xml_gen_destroy;
   b.level = 0;
   b.style_name = 0;
-  b.widget_type = 0;
+  b.widget_type = "";
 
   return &(b.builder);
 }

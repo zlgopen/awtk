@@ -1115,14 +1115,17 @@ const void* widget_get_window_theme(widget_t* widget) {
 static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
   theme_t t;
   const void* data = NULL;
-  t.data = (const uint8_t*)widget_get_window_theme(widget);
+  const char* type_name = widget->vt ? widget->vt->type_name : NULL;
 
+  return_value_if_fail(type_name != NULL, NULL);
+
+  t.data = (const uint8_t*)widget_get_window_theme(widget);
   if (t.data != NULL) {
-    data = theme_find_style(&t, widget->type, widget->style_type, state);
+    data = theme_find_style(&t, type_name, widget->style_type, state);
   }
 
   if (data == NULL) {
-    data = theme_find_style(theme(), widget->type, widget->style_type, state);
+    data = theme_find_style(theme(), type_name, widget->style_type, state);
   }
 
   return data;

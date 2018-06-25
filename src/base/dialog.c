@@ -31,6 +31,53 @@
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 
+typedef struct _dialog_title_t {
+  widget_t widget;
+} dialog_title_t;
+
+typedef struct _dialog_client_t {
+  widget_t widget;
+} dialog_client_t;
+
+static const widget_vtable_t s_dialog_client_vtable = {.type_name = WIDGET_TYPE_DIALOG_CLIENT};
+
+widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = NULL;
+  dialog_client_t* dialog_client = TKMEM_ZALLOC(dialog_client_t);
+  return_value_if_fail(dialog_client != NULL, NULL);
+
+  widget = WIDGET(dialog_client);
+  widget->vt = &s_dialog_client_vtable;
+  widget_init(widget, parent, WIDGET_DIALOG_CLIENT);
+  widget_move_resize(widget, x, y, w, h);
+
+  widget_set_name(widget, "client");
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+
+  return widget;
+}
+
+static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
+  return widget_paint_helper(widget, c, NULL, NULL);
+}
+
+static const widget_vtable_t s_dialog_title_vtable = {.type_name = WIDGET_TYPE_DIALOG_TITLE,
+                                                      .on_paint_self = dialog_title_on_paint_self};
+
+widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = NULL;
+  dialog_title_t* dialog_title = TKMEM_ZALLOC(dialog_title_t);
+  return_value_if_fail(dialog_title != NULL, NULL);
+
+  widget = WIDGET(dialog_title);
+  widget->vt = &s_dialog_title_vtable;
+  widget_init(widget, parent, WIDGET_DIALOG_TITLE);
+  widget_move_resize(widget, x, y, w, h);
+  widget_set_name(widget, "title");
+
+  return widget;
+}
+
 enum { TITLE_H = 30 };
 static ret_t dialog_on_relayout_children(widget_t* widget);
 
@@ -111,34 +158,14 @@ static const widget_vtable_t s_dialog_vtable = {.type_name = WIDGET_TYPE_DIALOG,
                                                 .destroy = dialog_destroy,
                                                 .on_paint_self = dialog_on_paint_self};
 
-widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = label_create(parent, x, y, w, h);
-  return_value_if_fail(widget != NULL, NULL);
-  widget->type = WIDGET_DIALOG_TITLE;
-  widget_update_style(widget);
-  widget_set_name(widget, "title");
-
-  return widget;
-}
-
-widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = group_box_create(parent, x, y, w, h);
-  return_value_if_fail(widget != NULL, NULL);
-  widget->type = WIDGET_DIALOG_CLIENT;
-  widget_update_style(widget);
-  widget_set_name(widget, "client");
-
-  return widget;
-}
-
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
   dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
   return_value_if_fail(dialog != NULL, NULL);
 
   widget = WIDGET(dialog);
-  widget_init(widget, NULL, WIDGET_DIALOG);
   widget->vt = &s_dialog_vtable;
+  widget_init(widget, NULL, WIDGET_DIALOG);
 
   if (parent == NULL) {
     parent = window_manager();

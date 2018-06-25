@@ -20,14 +20,14 @@ TEST(ThemeGen, basic) {
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
-  style.data = theme_find_style(&theme, WIDGET_NONE, 0, WIDGET_STATE_NORMAL);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_NONE, 0, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
   ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
 
-  style.data = theme_find_style(&theme, WIDGET_PROGRESS_BAR, 0, WIDGET_STATE_NORMAL);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_PROGRESS_BAR, 0, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
@@ -44,14 +44,14 @@ TEST(ThemeGen, state) {
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 0, WIDGET_STATE_OVER);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_OVER);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
   ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 0, WIDGET_STATE_PRESSED);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
@@ -68,10 +68,10 @@ TEST(ThemeGen, style_type) {
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_OVER);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 1, WIDGET_STATE_OVER);
   ASSERT_EQ(style.data != NULL, true);
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_PRESSED);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 1, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style.data != NULL, true);
 }
 
@@ -86,12 +86,12 @@ TEST(ThemeGen, inher) {
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_OVER);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 1, WIDGET_STATE_OVER);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("sans"));
 
-  style.data = theme_find_style(&theme, WIDGET_BUTTON, 1, WIDGET_STATE_PRESSED);
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 1, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style.data != NULL, true);
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 14);
   ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("serif"));

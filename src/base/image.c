@@ -113,9 +113,9 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(image != NULL, NULL);
 
   widget = WIDGET(image);
+  widget->vt = &s_image_vtable;
   widget_init(widget, parent, WIDGET_IMAGE);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_image_vtable;
   image->draw_type = IMAGE_DRAW_CENTER;
 
   return widget;

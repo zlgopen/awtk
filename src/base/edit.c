@@ -531,9 +531,9 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(edit != NULL, NULL);
 
   widget = WIDGET(edit);
+  widget->vt = &s_edit_vtable;
   widget_init(widget, parent, WIDGET_EDIT);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_edit_vtable;
   edit_set_text_limit(widget, 0, 1204);
 
   return widget;

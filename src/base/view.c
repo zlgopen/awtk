@@ -22,9 +22,7 @@
 #include "base/mem.h"
 #include "base/view.h"
 
-static const widget_vtable_t s_view_vtable = {
-    .type_name = WIDGET_TYPE_VIEW
-};
+static const widget_vtable_t s_view_vtable = {.type_name = WIDGET_TYPE_VIEW};
 
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
@@ -32,9 +30,9 @@ widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(view != NULL, NULL);
 
   widget = WIDGET(view);
+  widget->vt = &s_view_vtable;
   widget_init(widget, parent, WIDGET_VIEW);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_view_vtable;
 
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

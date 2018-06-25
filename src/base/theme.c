@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/utils.h"
 #include "base/theme.h"
 #include "base/buffer.h"
 
@@ -83,36 +84,20 @@ const char* style_get_str(style_t* s, uint32_t name, const char* defval) {
   return defval;
 }
 
-const uint8_t* theme_find_style(theme_t* t, uint16_t widget_type, uint8_t style_type,
-                                uint8_t state) {
+const uint8_t* theme_find_style(theme_t* t, const char* widget_type, uint16_t style_type,
+                                uint16_t state) {
   uint32_t i = 0;
-  uint32_t nr = 0;
-  uint32_t iter = 0;
-  uint32_t magic = 0;
-  uint32_t version = 0;
-  uint32_t offset = 0;
-  const uint8_t* p = NULL;
-  uint32_t name = (widget_type << 16) | (style_type << 8) | state;
-
+  const theme_item_t* iter = NULL;
+  const theme_header_t* header = (const theme_header_t*)(t->data);
   return_value_if_fail(t != NULL && t->data != NULL, NULL);
 
-  p = t->data;
-  load_uint32(p, magic);
-  return_value_if_fail(magic == THEME_MAGIC, NULL);
-
-  load_uint32(p, version);
-  load_uint32(p, nr);
-  return_value_if_fail(version == 0, NULL);
-
-  for (i = 0; i < nr; i++) {
-    load_uint32(p, iter);
-    if (iter == name) {
-      load_uint32(p, offset);
-
-      return t->data + offset;
-    } else {
-      p += 4;
+  iter = (const theme_item_t*)(t->data + sizeof(theme_header_t));
+  for (i = 0; i < header->nr; i++) {
+    if (iter->state == state && iter->style_type == style_type &&
+        tk_str_eq(widget_type, iter->widget_type)) {
+      return t->data + iter->offset;
     }
+    iter++;
   }
 
   return NULL;

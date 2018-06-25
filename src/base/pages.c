@@ -112,9 +112,9 @@ widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(pages != NULL, NULL);
 
   widget = WIDGET(pages);
+  widget->vt = &s_pages_vtable;
   widget_init(widget, parent, WIDGET_PAGES);
   widget_move_resize(widget, x, y, w, h);
-  widget->vt = &s_pages_vtable;
 
   return widget;
 }
