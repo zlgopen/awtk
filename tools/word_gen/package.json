@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "crawler": "^1.1.4",
-    "segment": "^0.1.3"
+    "segment": "^0.1.3",
+    "url": "^0.11.0"
   }
 }

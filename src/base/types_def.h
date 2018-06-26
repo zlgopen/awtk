@@ -237,7 +237,7 @@ enum { NAME_LEN = 15 };
 typedef float float_t;
 
 #define TK_DEFAULT_FONT "default"
-#define TK_DEFAULT_FONT_SIZE 20
+#define TK_DEFAULT_FONT_SIZE 18
 #define TK_MAX_FPS 100
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x05

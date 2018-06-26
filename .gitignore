@@ -24,3 +24,4 @@ bin/resgen
 bin/runLua
 bin/runTest
 bin/strgen
+.vscode
