@@ -59,11 +59,12 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_VIEW, view_create},
     {WIDGET_TYPE_CHECK_BUTTON, check_button_create},
     {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
-    {WIDGET_TYPE_KEYBOARD, keyboard_create},
     {WIDGET_TYPE_PAGES, pages_create},
-    {WIDGET_TYPE_CANDIDATES, candidates_create},
+
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SLIDE_VIEW, slide_view_create},
+    {WIDGET_TYPE_KEYBOARD, keyboard_create},
+    {WIDGET_TYPE_CANDIDATES, candidates_create},
 #endif /*WITH_LOW_RES*/
 };
 
