@@ -24,6 +24,7 @@
 
 #include "base/widget.h"
 #include "base/input_engine.h"
+#include "base/suggest_words.h"
 
 BEGIN_C_DECLS
 
@@ -149,6 +150,7 @@ typedef struct _input_method_t {
   input_type_t input_type;
 
   input_engine_t* engine;
+  suggest_words_t* suggest_words;
   /**
    * 子类需要实现的函数。
    */

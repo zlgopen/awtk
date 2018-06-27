@@ -1,4 +1,4 @@
-#include "base/enums.h"
+﻿#include "base/enums.h"
 #include "gtest/gtest.h"
 #include "base/resource_manager.h"
 

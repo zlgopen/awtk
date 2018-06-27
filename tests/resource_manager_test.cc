@@ -1,4 +1,4 @@
-#include "base/resource_manager.h"
+﻿#include "base/resource_manager.h"
 #include "gtest/gtest.h"
 
 TEST(ResourceManager, basic) {

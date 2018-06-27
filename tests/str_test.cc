@@ -1,4 +1,4 @@
-#include "base/str.h"
+﻿#include "base/str.h"
 #include "gtest/gtest.h"
 
 TEST(Str, basic) {

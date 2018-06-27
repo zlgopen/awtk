@@ -1,4 +1,4 @@
-#include "base/progress_bar.h"
+﻿#include "base/progress_bar.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"

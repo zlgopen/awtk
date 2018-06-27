@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+﻿#include "gtest/gtest.h"
 #include "base/locale.h"
 #include "tools/str_gen/str_gen.h"
 #include "tools/str_gen/xml_str_gen.h"

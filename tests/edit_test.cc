@@ -1,4 +1,4 @@
-#include "base/edit.h"
+﻿#include "base/edit.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"

@@ -29,9 +29,19 @@
 
 static ret_t candidates_on_button_click(void* ctx, event_t* e) {
   char str[32];
-  const char* p = utf8_from_utf16(WIDGET(ctx)->text.str, str, sizeof(str) - 1);
+  input_method_t* im = input_method();
+  wstr_t* text = &(WIDGET(ctx)->text);
+  wchar_t c = text->str[text->size - 1];
+  return_value_if_fail(im != NULL && text->size > 0, RET_FAIL);
 
-  input_method_commit_text(input_method(), p);
+  utf8_from_utf16(text->str, str, sizeof(str) - 1);
+  if (input_method_commit_text(im, str) == RET_OK) {
+    suggest_words_t* suggest_words = im->suggest_words;
+    if (suggest_words && suggest_words_find(suggest_words, c) == RET_OK) {
+      input_method_dispatch_candidates(im, suggest_words->words, suggest_words->words_nr);
+    }
+  }
+
   (void)e;
 
   return RET_OK;

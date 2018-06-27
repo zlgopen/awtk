@@ -1,4 +1,4 @@
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include "gtest/gtest.h"
 #include "base/image_manager.h"
 

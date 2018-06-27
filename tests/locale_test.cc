@@ -1,4 +1,4 @@
-#include "base/locale.h"
+﻿#include "base/locale.h"
 #include "gtest/gtest.h"
 
 #include <string>

@@ -1,4 +1,4 @@
-#include "base/rect.h"
+﻿#include "base/rect.h"
 #include "gtest/gtest.h"
 
 TEST(Rect, merge) {

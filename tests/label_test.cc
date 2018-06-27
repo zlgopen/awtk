@@ -1,4 +1,4 @@
-#include "base/canvas.h"
+﻿#include "base/canvas.h"
 #include "base/label.h"
 #include "base/widget.h"
 #include "font_dummy.h"

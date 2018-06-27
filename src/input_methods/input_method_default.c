@@ -23,6 +23,7 @@
 #include "base/idle.h"
 #include "base/window.h"
 #include "base/keyboard.h"
+#include "suggest_words.inc"
 #include "base/input_method.h"
 #include "ui_loader/ui_builder_default.h"
 
@@ -201,6 +202,7 @@ input_method_t* input_method_create(void) {
   im->request = input_method_default_request;
   emitter_init(&(im->emitter));
   im->engine = input_engine_create();
+  im->suggest_words = suggest_words_create((const resource_info_t*)(data_suggest_words));
 
   return im;
 }
@@ -210,6 +212,8 @@ ret_t input_method_destroy(input_method_t* im) {
 
   emitter_deinit(&(im->emitter));
   input_engine_destroy(im->engine);
+  suggest_words_destroy(im->suggest_words);
+
   TKMEM_FREE(im);
 
   return RET_OK;

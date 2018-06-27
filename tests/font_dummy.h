@@ -1,4 +1,4 @@
-#ifndef TK_FONT_DUMMY_H
+﻿#ifndef TK_FONT_DUMMY_H
 #define TK_FONT_DUMMY_H
 
 #include "base/font.h"

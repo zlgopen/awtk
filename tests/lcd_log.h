@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_log.h
  * Author: AWTK Develop Team
  * Brief:  log lcd commands.

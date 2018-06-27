@@ -1,4 +1,4 @@
-#include "base/image.h"
+﻿#include "base/image.h"
 #include "gtest/gtest.h"
 #include "base/canvas.h"
 #include "base/font_manager.h"

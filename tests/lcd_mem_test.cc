@@ -1,4 +1,4 @@
-#include "base/canvas.h"
+﻿#include "base/canvas.h"
 #include "gtest/gtest.h"
 #include "lcd/lcd_mem_rgba8888.h"
 

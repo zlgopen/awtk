@@ -9,10 +9,10 @@ segment.useDefault();
 
 let allWords = {};
 let doneURLS = {};
-let maxURLS = 10;
+let maxURLS = 40;
 let maxPages = maxURLS;
 const maxWordsPerChar = 10;
-let rootURL = ['https://blog.csdn.net/'];
+let rootURL = ['http://www.sina.com.cn/', 'https://blog.csdn.net/'];
 
 function bufferWriteWord(buff, word, start) {
   let offset = start;
@@ -90,10 +90,10 @@ function tidyResult() {
   }
 
   arr.sort((a, b) => {
-    return a.c - b.c;
+    return a.c.charCodeAt(0) - b.c.charCodeAt(0);
   })
 
-  console.log(JSON.stringify(arr, null, '\t'));
+  console.log(JSON.stringify(arr, null, ' '));
 
   return arr;
 }
@@ -144,7 +144,11 @@ function addUrls(requestUrl, urls, c) {
     const href = iter.attribs.href;
     const url = URL.resolve(requestUrl, href);
 
-    if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('css') >= 0 || url.indexOf('ico') >= 0) {
+    if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
+      continue
+    }
+
+    if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('ico') >= 0) {
       continue;
     }
 

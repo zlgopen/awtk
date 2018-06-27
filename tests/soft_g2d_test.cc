@@ -1,4 +1,4 @@
-#include "blend/soft_g2d.h"
+﻿#include "blend/soft_g2d.h"
 #include "gtest/gtest.h"
 
 #define FB_W 8
