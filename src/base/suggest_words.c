@@ -41,11 +41,10 @@ static const uint8_t* suggest_words_find_data(const resource_info_t* res, wchar_
   int mid = 0;
   int high = 0;
   int result = 0;
+  uint32_t header_size = sizeof(suggest_words_header_t);
   const suggest_words_header_t* header = (suggest_words_header_t*)(res->data);
-  const suggest_words_index_t* index =
-      (suggest_words_index_t*)(res->data + sizeof(suggest_words_header_t));
-  uint32_t data_offset =
-      sizeof(suggest_words_header_t) + header->nr * sizeof(suggest_words_index_t);
+  const suggest_words_index_t* index = (suggest_words_index_t*)(res->data + header_size);
+  uint32_t data_offset = header_size + header->nr * sizeof(suggest_words_index_t);
 
   high = header->nr - 1;
   while (low <= high) {
@@ -105,7 +104,7 @@ static ret_t suggest_words_update(suggest_words_t* suggest_words, const uint8_t*
     suggest_words->words_nr++;
   }
 
-  if(suggest_words->words_nr < 5) {
+  if (suggest_words->words_nr < 5) {
     if (wbuffer_write_string(&wb, "的") == RET_OK) {
       suggest_words->words_nr++;
     }

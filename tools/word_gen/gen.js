@@ -3,16 +3,12 @@ const URL = require('url')
 const Crawler = require("crawler");
 const Segment = require('segment');
 
-const segment = new Segment()
-
-segment.useDefault();
-
 let allWords = {};
 let doneURLS = {};
-let maxURLS = 40;
-let maxPages = maxURLS;
+let maxURLS = 1000;
+let reservedPages = maxURLS;
 const maxWordsPerChar = 10;
-let rootURL = ['http://www.sina.com.cn/', 'https://blog.csdn.net/'];
+let rootURL = ['http://auto.sina.com.cn/guide/', 'http://auto.sina.com.cn', 'http://www.sina.com.cn/', 'https://blog.csdn.net/'];
 
 function bufferWriteWord(buff, word, start) {
   let offset = start;
@@ -138,64 +134,84 @@ function addWord(w) {
   }
 }
 
+function isValidURL(url) {
+  if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
+     return false; 
+  }
+
+  if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('ico') >= 0) {
+    return false;
+  }
+
+  if(url.indexOf('api.') >= 0 || url.indexOf('download') >= 0 ) {
+    return false;
+  }
+
+  return true;
+}
+
 function addUrls(requestUrl, urls, c) {
   for (let i = 0; i < urls.length; i++) {
     const iter = urls[i];
     const href = iter.attribs.href;
     const url = URL.resolve(requestUrl, href);
 
-    if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
-      continue
-    }
 
-    if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('ico') >= 0) {
-      continue;
-    }
-
-    maxURLS--;
-    if (maxURLS >= 0) {
-      console.log(`fetching: ${maxURLS} ${url}`);
-      doneURLS[url] = true;
-      c.queue(url);
+    if(isValidURL(url)) {
+      maxURLS--;
+      if (maxURLS >= 0) {
+        console.log(`fetching: ${maxURLS} ${url}`);
+        doneURLS[url] = true;
+        c.queue(url);
+      }
+    } else {
+      console.log(`skip: ${url}`);
     }
   }
 }
 
-var c = new Crawler({
-  rateLimit: 100,
-  callback: function (err, res, done) {
-    if (maxPages <= 0) {
-      outputAndQuit();
-    }
+function addWords(text) {
+  const segment = new Segment()
+  segment.useDefault();
 
-    if (err) {
-      console.log(err);
-      done();
-      return;
-    }
+  const words = segment.doSegment(text);
+  words.forEach(element => {
+    addWord(element.w);
+  });
+}
 
-    const contentType = res.headers['content-type'];
-    if (!contentType || contentType.indexOf('html') < 0) {
-      done();
-      return;
-    }
-
-    const urls = res.$("[href]");
-    const text = res.$("body").text();
-    const requestUrl = res.request.uri.href;
-    const words = segment.doSegment(text);
-
-    console.log(`${maxPages} ${requestUrl}`);
-
-    words.forEach(element => {
-      addWord(element.w);
-    });
-
-    maxPages--;
-    addUrls(requestUrl, urls, c);
-
+function onTaskDone(err, res, done) {
+  if (reservedPages <= 0 || err) {
+    outputAndQuit();
+    
     done();
+    return;
   }
+
+  const contentType = res.headers['content-type'];
+  if (!contentType || contentType.indexOf('html') < 0) {
+    done();
+    return;
+  }
+
+  addWords(res.$("body").text());
+
+  reservedPages--;
+  addUrls(res.request.uri.href, res.$("[href]"), c);
+
+  console.log(`${reservedPages} ${res.request.uri.href}`);
+
+  res = null;
+
+  done();
+}
+
+var c = new Crawler({
+  retries: 1,
+  rateLimit: 10,
+  forceUTF8: false,
+  callback: onTaskDone 
 });
 
 c.queue(rootURL);
+

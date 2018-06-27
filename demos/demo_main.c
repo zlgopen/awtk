@@ -39,7 +39,7 @@ int main(void) {
 #endif
 
 //#define WITH_LCD_PORTRAIT 1
-#ifdef WITH_LCD_PORTRAIT
+#if defined(USE_GUI_MAIN) && defined(WITH_LCD_PORTRAIT)
   if (lcd_w > lcd_h) {
     tk_set_lcd_orientation(LCD_ORIENTATION_90);
   }
