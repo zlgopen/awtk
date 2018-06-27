@@ -69,7 +69,7 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
     wh_t w = widget->w - 2 * margin;
     color_t trans = color_init(0, 0, 0, 0);
     color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
-    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, 20);
+    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
     canvas_set_text_color(c, tc);

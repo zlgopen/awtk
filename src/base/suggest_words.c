@@ -117,6 +117,7 @@ ret_t suggest_words_find(suggest_words_t* suggest_words, wchar_t c) {
   const uint8_t* data = NULL;
   return_value_if_fail(suggest_words != NULL && c != 0, RET_BAD_PARAMS);
 
+  suggest_words->words_nr = 0;
   data = suggest_words_find_data(suggest_words->res, c);
   return_value_if_fail(data != NULL, RET_FAIL);
 
