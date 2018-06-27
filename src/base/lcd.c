@@ -32,6 +32,7 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode)
     lcd->dirty_rect.h = lcd->h;
   } else {
     lcd->dirty_rect = *dirty_rect;
+    rect_fix(&(lcd->dirty_rect), lcd->w, lcd->h);
   }
 
   return lcd->begin_frame(lcd, dirty_rect);

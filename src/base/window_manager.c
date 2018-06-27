@@ -214,22 +214,25 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   return NULL;
 }
 
-static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
-  rect_t r;
-  rect_t* dr = NULL;
-  rect_t* ldr = NULL;
-  window_manager_t* wm = WINDOW_MANAGER(widget);
+static rect_t window_manager_calc_dirty_rect(window_manager_t* wm) {
+  rect_t r = wm->dirty_rect;
+  widget_t* widget = WIDGET(wm);
+  rect_t* ldr = &(wm->last_dirty_rect);
 
-  dr = &(wm->dirty_rect);
+  rect_merge(&r, ldr);
+
+  return rect_fix(&r, widget->w, widget->h);
+}
+
+static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  rect_t* dr = &(wm->dirty_rect);
 
   window_manager_inc_fps(widget);
+
   if ((dr->w && dr->h) || wm->show_fps) {
     uint32_t start_time = time_now_ms();
-
-    ldr = &(wm->last_dirty_rect);
-
-    r = *dr;
-    rect_merge(&r, ldr);
+    rect_t r = window_manager_calc_dirty_rect(wm);
 
     if ((r.w > 0 && r.h > 0) || wm->show_fps) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
@@ -242,7 +245,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   }
 
   wm->last_dirty_rect = wm->dirty_rect;
-  *dr = rect_init(widget->w, widget->h, 0, 0);
+  wm->dirty_rect = rect_init(widget->w, widget->h, 0, 0);
 
   return RET_OK;
 }
