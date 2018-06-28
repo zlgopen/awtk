@@ -62,6 +62,8 @@ typedef struct _edit_t {
   bool_t readonly;
   bool_t caret_visible;
   bool_t password_visible;
+  uint32_t left_margin;
+  uint32_t right_margin;
 
   wstr_t tips;
   uint32_t timer_id;

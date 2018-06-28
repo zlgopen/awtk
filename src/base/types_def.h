@@ -235,6 +235,62 @@ typedef bool_t (*tk_is_valid_t)(void* data);
 /*NAME_LEN+1 must aligned to 4*/
 enum { NAME_LEN = 15 };
 
+/**
+ * @enum align_v_t
+ * @scriptable
+ * 垂直对齐的常量定义。
+ */
+typedef enum _align_v_t {
+  /**
+   * @const ALIGN_V_NONE
+   * 无效对齐方式。
+   */
+  ALIGN_V_NONE = 0,
+  /**
+   * @const ALIGN_V_MIDDLE
+   * 居中对齐。
+   */
+  ALIGN_V_MIDDLE,
+  /**
+   * @const ALIGN_V_TOP
+   * 顶部对齐。
+   */
+  ALIGN_V_TOP,
+  /**
+   * @const ALIGN_V_BOTTOM
+   * 底部对齐。
+   */
+  ALIGN_V_BOTTOM
+} align_v_t;
+
+/**
+ * @enum align_h_t
+ * @scriptable
+ * 水平对齐的常量定义。
+ */
+typedef enum _align_h_t {
+  /**
+   * @const ALIGN_H_NONE
+   * 无效对齐方式。
+   */
+  ALIGN_H_NONE = 0,
+  /**
+   * @const ALIGN_H_CENTER
+   * 居中对齐。
+   */
+  ALIGN_H_CENTER,
+  /**
+   * @const ALIGN_H_LEFT
+   * 左边对齐。
+   */
+  ALIGN_H_LEFT,
+  /**
+   * @const ALIGN_H_RIGHT
+   * 右边对齐。
+   */
+  ALIGN_H_RIGHT
+} align_h_t;
+
 typedef float float_t;
 
 #define TK_DEFAULT_FONT "default"

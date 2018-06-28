@@ -48,16 +48,16 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 }
 
 #define MAX_PASSWORD_LEN 31
-static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
-  wstr_t text;
+#define INVISIBLE_CHAR '*'
+
+static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text) {
   int32_t i = 0;
+  float_t cw = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
-  style_t* style = &(widget->style);
+  float_t caret_x = edit->left_margin;
   wchar_t password[MAX_PASSWORD_LEN + 1];
-  int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 4);
-  float_t caret_x = margin;
-  wchar_t invisible_char = '*';
+  wh_t w = widget->w - edit->left_margin - edit->right_margin;
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
@@ -65,23 +65,14 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   if (str->size > 0) {
-    float_t cw = 0;
-    wh_t w = widget->w - 2 * margin;
-    color_t trans = color_init(0, 0, 0, 0);
-    color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
-    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
-
-    canvas_set_text_color(c, tc);
-    canvas_set_font(c, font_name, font_size);
-
     i = str->size - 1;
     while (w > 0 && i >= 0) {
-      wchar_t chr = invisible ? invisible_char : str->str[i];
+      wchar_t chr = invisible ? INVISIBLE_CHAR : str->str[i];
 
       cw = canvas_measure_text(c, &chr, 1);
       caret_x += cw;
       w -= cw;
+
       if (w > cw && i > 0) {
         i--;
       } else {
@@ -89,32 +80,49 @@ static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
       }
     }
 
-    text.str = str->str + i;
-    text.size = wcslen(text.str);
-    text.capacity = text.size;
+    text->str = str->str + i;
+    text->size = wcslen(text->str);
+    text->capacity = text->size;
   } else {
-    text.str = NULL;
-    text.size = 0;
+    text->str = NULL;
+    text->size = 0;
   }
 
   if (invisible) {
-    uint32_t i = 0;
-    uint32_t size = tk_min(text.size, MAX_PASSWORD_LEN);
+    uint32_t size = tk_min(text->size, MAX_PASSWORD_LEN);
     for (i = 0; i < size; i++) {
-      password[i] = invisible_char;
+      password[i] = INVISIBLE_CHAR;
     }
     password[size] = '\0';
-    text.str = password;
-    text.size = size;
+    text->str = password;
+    text->size = size;
   }
+  edit->caret_x = caret_x + 0.5f;
 
-  widget_paint_helper(widget, c, NULL, &text);
+  return RET_OK;
+}
+
+static ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
+  wstr_t text;
+  uint32_t v_margin = 4;
+  edit_t* edit = EDIT(widget);
+  uint32_t left_margin = edit->left_margin;
+  uint32_t right_margin = edit->right_margin;
+  wh_t w = widget->w - left_margin - right_margin;
+  wh_t h = widget->h - 2 * v_margin;
+
+  return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
+  return_value_if_fail(edit_get_display_text(widget, c, &text) == RET_OK, RET_FAIL);
+
+  if (text.size > 0) {
+    rect_t r = rect_init(left_margin, v_margin, w, h);
+    canvas_draw_text_in_rect(c, text.str, text.size, &r);
+  }
 
   if (widget->focused && !edit->readonly && edit->caret_visible) {
     canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
-    canvas_draw_vline(c, caret_x, margin, widget->h - 2 * margin);
+    canvas_draw_vline(c, edit->caret_x, v_margin, h);
   }
-  edit->caret_x = caret_x + 0.5f;
 
   return RET_OK;
 }
@@ -300,6 +308,10 @@ static ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   edit_t* edit = EDIT(widget);
 
+  if (edit->readonly) {
+    return RET_OK;
+  }
+
   switch (type) {
     case EVT_POINTER_DOWN:
       if (edit->timer_id == 0) {
@@ -441,6 +453,12 @@ static ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     value_set_bool(v, edit->readonly);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
+    value_set_int(v, edit->left_margin);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
+    value_set_int(v, edit->right_margin);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS) == 0) {
     value_set_wstr(v, edit->tips.str);
     return RET_OK;
@@ -495,6 +513,12 @@ static ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     edit->readonly = value_bool(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
+    edit->left_margin = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
+    edit->right_margin = value_int(v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     if (v->type == VALUE_TYPE_STRING) {
       wstr_set_utf8(&(edit->tips), value_str(v));
@@ -535,6 +559,8 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_init(widget, parent, WIDGET_EDIT);
   widget_move_resize(widget, x, y, w, h);
   edit_set_text_limit(widget, 0, 1204);
+  edit->left_margin = 2;
+  edit->right_margin = 2;
 
   return widget;
 }

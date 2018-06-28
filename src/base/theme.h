@@ -153,62 +153,6 @@ typedef enum _style_id_t {
   STYLE_ID_MARGIN
 } style_id_t;
 
-/**
- * @enum align_v_t
- * @scriptable
- * 垂直对齐的常量定义。
- */
-typedef enum _align_v_t {
-  /**
-   * @const ALIGN_V_NONE
-   * 无效对齐方式。
-   */
-  ALIGN_V_NONE = 0,
-  /**
-   * @const ALIGN_V_MIDDLE
-   * 居中对齐。
-   */
-  ALIGN_V_MIDDLE,
-  /**
-   * @const ALIGN_V_TOP
-   * 顶部对齐。
-   */
-  ALIGN_V_TOP,
-  /**
-   * @const ALIGN_V_BOTTOM
-   * 底部对齐。
-   */
-  ALIGN_V_BOTTOM
-} align_v_t;
-
-/**
- * @enum align_h_t
- * @scriptable
- * 水平对齐的常量定义。
- */
-typedef enum _align_h_t {
-  /**
-   * @const ALIGN_H_NONE
-   * 无效对齐方式。
-   */
-  ALIGN_H_NONE = 0,
-  /**
-   * @const ALIGN_H_CENTER
-   * 居中对齐。
-   */
-  ALIGN_H_CENTER,
-  /**
-   * @const ALIGN_H_LEFT
-   * 左边对齐。
-   */
-  ALIGN_H_LEFT,
-  /**
-   * @const ALIGN_H_RIGHT
-   * 右边对齐。
-   */
-  ALIGN_H_RIGHT
-} align_h_t;
-
 #define THEME_MAGIC 0xFAFBFCFD
 
 END_C_DECLS

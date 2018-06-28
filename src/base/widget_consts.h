@@ -38,6 +38,10 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_STYLE "style"
 #define WIDGET_PROP_ENABLE "enable"
 #define WIDGET_PROP_MARGIN "margin"
+#define WIDGET_PROP_LEFT_MARGIN "left_magin"
+#define WIDGET_PROP_RIGHT_MARGIN "right_magin"
+#define WIDGET_PROP_TOP_MARGIN "top_magin"
+#define WIDGET_PROP_BOTTOM_MARGIN "bottom_magin"
 #define WIDGET_PROP_STEP "step"
 #define WIDGET_PROP_VISIBLE "visible"
 #define WIDGET_PROP_ANIM_HINT "anim_hint"
@@ -54,7 +58,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_XOFFSET "xoffset"
 #define WIDGET_PROP_YOFFSET "yoffset"
 #define WIDGET_PROP_AUTO_PLAY "auto_play"
-
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
 #define WIDGET_TYPE_WINDOW_MANAGER "window_manager"
