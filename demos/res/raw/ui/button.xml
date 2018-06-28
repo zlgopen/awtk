@@ -1,0 +1,15 @@
+<window name="button" anim_hint="htranslate">
+  <button x="c" y="10" w="128" h="30" text="Text"/>
+  <button style="101:red_btn" x="c" y="50" w="128" h="30" text="Text"/>
+  <button style="100:earth" x="c" y="90" w="128" h="30" text="Text"/>
+  <button x="c" y="130" w="128" h="30">
+    <label y="0" x="0" w="100%" h="100%" text="Text"/>
+    <image image="earth" y="0" x="right" w="30" h="100%"/>
+  </button>
+  
+  <button style="100:earth" x="c" y="170" w="60" h="60" text="Text"/>
+  <button style="100:earth" x="c" y="240" w="60" h="60"/>
+  <button style="102:image" x="c" y="310" w="30" h="30"/>
+
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>

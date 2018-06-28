@@ -3,6 +3,7 @@
 #ifndef WITH_FS_RES
 #include "res/inc/strings/en_US.data"
 #include "res/inc/strings/zh_CN.data"
+#include "res/inc/theme/button.data"
 #include "res/inc/theme/calibration.data"
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog1.data"
@@ -12,6 +13,7 @@
 #include "res/inc/ui/auto_play.data"
 #include "res/inc/ui/basic.data"
 #include "res/inc/ui/bottom.data"
+#include "res/inc/ui/button.data"
 #include "res/inc/ui/calibration.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
@@ -56,6 +58,9 @@
 #include "res/inc/images/middle_off.res"
 #include "res/inc/images/middle_on.res"
 #include "res/inc/images/muted.res"
+#include "res/inc/images/play_n.res"
+#include "res/inc/images/play_o.res"
+#include "res/inc/images/play_p.res"
 #include "res/inc/images/question.res"
 #include "res/inc/images/radio_checked.res"
 #include "res/inc/images/radio_unchecked.res"
@@ -97,6 +102,9 @@
 #include "res/inc/images/middle_off.data"
 #include "res/inc/images/middle_on.data"
 #include "res/inc/images/muted.data"
+#include "res/inc/images/play_n.data"
+#include "res/inc/images/play_o.data"
+#include "res/inc/images/play_p.data"
 #include "res/inc/images/question.data"
 #include "res/inc/images/radio_checked.data"
 #include "res/inc/images/radio_unchecked.data"
@@ -157,6 +165,9 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_middle_off);
   resource_manager_add(rm, image_middle_on);
   resource_manager_add(rm, image_muted);
+  resource_manager_add(rm, image_play_n);
+  resource_manager_add(rm, image_play_o);
+  resource_manager_add(rm, image_play_p);
   resource_manager_add(rm, image_question);
   resource_manager_add(rm, image_radio_checked);
   resource_manager_add(rm, image_radio_unchecked);
@@ -181,6 +192,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_warn);
   resource_manager_add(rm, strings_en_US);
   resource_manager_add(rm, strings_zh_CN);
+  resource_manager_add(rm, theme_button);
   resource_manager_add(rm, theme_calibration);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog1);
@@ -190,6 +202,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_auto_play);
   resource_manager_add(rm, ui_basic);
   resource_manager_add(rm, ui_bottom);
+  resource_manager_add(rm, ui_button);
   resource_manager_add(rm, ui_calibration);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);

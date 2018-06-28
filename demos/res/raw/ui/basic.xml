@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate"  x="0" y="0" w="320" h="480">
+<window name="main" anim_hint="htranslate">
   <button name="inc" x="10" y="5" w="25%" h="30" text="Inc"/>
   <button name="close" x="center" y="5" w="25%" h="30" text="Close"/>
   <button name="dec" x="right:10" y="5" w="25%" h="30" text="Dec"/>

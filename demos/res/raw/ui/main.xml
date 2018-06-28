@@ -1,7 +1,8 @@
-<window name="main" anim_hint="htranslate" layout="w128 h30 m5 s10">
+<window name="main" anim_hint="htranslate" layout="w100 h30 m5 s5">
     <button name="open:memtest" x="10" y="5" w="25%" h="30" text="MemTest"/>
     <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
     <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
+    <button name="open:button" x="10" y="5" w="25%" h="30" text="Buttons"/>
     <button name="open:keyboard" x="10" y="5" w="25%" h="30" text="KeyBoard"/>
     <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
     <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
