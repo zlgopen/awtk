@@ -508,7 +508,7 @@ public:
         , m_closed(0)
         , m_src_vertex(0)
     {
-        memset(m_dashes, 0, max_dashes);
+        memset(m_dashes, 0, sizeof(m_dashes));
     }
 
     void dash_start(scalar start)
