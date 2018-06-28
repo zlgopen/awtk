@@ -876,6 +876,17 @@ typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, w
  */
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text);
 
+/**
+ * @method widget_prepare_text_style
+ * 从widget的style中取出字体名称、大小和颜色数据，设置到canvas中。
+ * @private
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/
