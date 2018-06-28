@@ -186,6 +186,15 @@ ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size) {
   return RET_OK;
 }
 
+ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+  c->text_align_h = align_h;
+  c->text_align_v = align_v;
+
+  return RET_OK;
+}
+
 static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, int32_t nr) {
   glyph_t g;
   float_t w = 0;
@@ -1069,6 +1078,12 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
   return canvas_draw_image(c, img, &src, &dst);
 }
 
+ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r) {
+  return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL && r != NULL, RET_BAD_PARAMS);
+
+  return canvas_draw_icon(c, img, r->x + (r->w >> 1), r->y + (r->h >> 1));
+}
+
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
   xy_t cx = 0;
   xy_t cy = 0;
@@ -1132,4 +1147,41 @@ static ret_t canvas_draw_fps(canvas_t* c) {
   }
 
   return RET_OK;
+}
+
+ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect_t* r) {
+  int x = 0;
+  int y = 0;
+  int32_t text_w = 0;
+  int32_t font_size = 0;
+  return_value_if_fail(c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
+
+  font_size = c->font_size;
+  text_w = canvas_measure_text(c, str, nr);
+
+  switch (c->text_align_v) {
+    case ALIGN_V_TOP:
+      y = r->y;
+      break;
+    case ALIGN_V_BOTTOM:
+      y = r->y + (r->h - font_size);
+      break;
+    default:
+      y = r->y + ((r->h - font_size) >> 1);
+      break;
+  }
+
+  switch (c->text_align_h) {
+    case ALIGN_H_LEFT:
+      x = r->x;
+      break;
+    case ALIGN_H_RIGHT:
+      x = r->x + (r->w - text_w);
+      break;
+    default:
+      x = r->x + ((r->w - text_w) >> 1);
+      break;
+  }
+
+  return canvas_draw_text(c, str, nr, x, y);
 }

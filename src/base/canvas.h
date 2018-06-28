@@ -49,6 +49,9 @@ struct _canvas_t {
   font_t* font;
   uint16_t font_size;
   const char* font_name;
+
+  align_v_t text_align_v;
+  align_h_t text_align_h;
   font_manager_t* font_manager;
 };
 
@@ -65,6 +68,7 @@ ret_t canvas_set_text_color(canvas_t* c, color_t color);
 ret_t canvas_set_stroke_color(canvas_t* c, color_t color);
 ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha);
 ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size);
+ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v);
 
 float_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr);
 
@@ -83,10 +87,12 @@ ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
+ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect_t* r);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
 ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy);
+ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r);
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst);
