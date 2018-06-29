@@ -171,36 +171,36 @@ static ret_t install_one(void* ctx, void* iter) {
     const char* name = widget->name.str;
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
-    } else if (strstr(name, "memtest") != NULL) {
+    } else if (tk_str_eq(name, "memtest")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_mem_test, win);
-    } else if (strstr(name, "inc") != NULL) {
+    } else if (tk_str_eq(name, "show_fps")) {
+      widget_on(widget, EVT_CLICK, on_show_fps, widget);
+    } else if (tk_str_eq(name, "chinese")) {
+      widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
+    } else if (tk_str_eq(name, "english")) {
+      widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
+    } else if (tk_str_eq(name, "inc_value")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_inc, win);
-    } else if (strstr(name, "show_fps") != NULL) {
-      widget_on(widget, EVT_CLICK, on_show_fps, widget);
-    } else if (strstr(name, "chinese") != NULL) {
-      widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
-    } else if (strstr(name, "english") != NULL) {
-      widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
-    } else if (strstr(name, "dec") != NULL) {
+    } else if (strstr(name, "dec_value") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);
-    } else if (strstr(name, "close") != NULL) {
+    } else if (tk_str_eq(name, "close")) {
       widget_t* win = widget_get_window(widget);
       if (win) {
         widget_on(widget, EVT_CLICK, on_close, win);
       }
-    } else if (strstr(name, "quit") != NULL) {
+    } else if (tk_str_eq(name, "quit")) {
       widget_t* win = widget_get_window(widget);
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit, win);
       }
-    } else if (strcmp(name, "move") == 0) {
+    } else if (tk_str_eq(name, "move")) {
       on_move_animator(widget);
-    } else if (strcmp(name, "fade") == 0) {
+    } else if (tk_str_eq(name, "fade")) {
       on_fade_animator(widget);
-    } else if (strcmp(name, "value") == 0) {
+    } else if (tk_str_eq(name, "value")) {
       on_value_animator(widget);
     }
   }

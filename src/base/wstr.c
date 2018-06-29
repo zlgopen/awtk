@@ -193,7 +193,7 @@ ret_t wstr_from_int(wstr_t* str, int32_t v) {
   return wstr_set_utf8(str, tk_itoa(buff, sizeof(buff), v));
 }
 
-ret_t wstr_from_float(wstr_t* str, float v) {
+ret_t wstr_from_float(wstr_t* str, double v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
@@ -227,7 +227,7 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
   return RET_OK;
 }
 
-ret_t wstr_to_float(wstr_t* str, float* v) {
+ret_t wstr_to_float(wstr_t* str, double* v) {
   char buff[32];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   if (str->size > 0) {

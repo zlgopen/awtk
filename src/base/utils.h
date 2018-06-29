@@ -27,10 +27,10 @@
 BEGIN_C_DECLS
 
 int tk_atoi(const char* str);
-float_t tk_atof(const char* str);
+double tk_atof(const char* str);
 const char* tk_skip_to_num(const char* str);
 const char* tk_itoa(char* str, int len, int n);
-const char* tk_ftoa(char* str, int len, float_t f);
+const char* tk_ftoa(char* str, int len, double f);
 long tk_strtol(const char* str, const char** end, int base);
 char* tk_strncpy(char* dst, const char* src, size_t len);
 

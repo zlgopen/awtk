@@ -305,9 +305,9 @@ bool_t edit_is_valid_value(widget_t* widget) {
     }
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float v = 0;
-      float min = edit->limit.u.f.min;
-      float max = edit->limit.u.f.max;
+      double v = 0;
+      double min = edit->limit.u.f.min;
+      double max = edit->limit.u.f.max;
 
       if (text->size == 0) {
         return FALSE;
@@ -366,9 +366,9 @@ static ret_t edit_auto_fix(widget_t* widget) {
     }
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float v = 0;
-      float min = edit->limit.u.f.min;
-      float max = edit->limit.u.f.max;
+      double v = 0;
+      double min = edit->limit.u.f.min;
+      double max = edit->limit.u.f.max;
 
       wstr_to_float(text, &v);
       if (v < min) {
@@ -485,7 +485,7 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
   return RET_OK;
 }
 
-ret_t edit_set_float_limit(widget_t* widget, float min, float max, float step) {
+ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -694,8 +694,8 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   return RET_OK;
 }
 
-static ret_t edit_add_float(edit_t* edit, float delta) {
-  float v = 0;
+static ret_t edit_add_float(edit_t* edit, double delta) {
+  double v = 0;
   widget_t* widget = WIDGET(edit);
   wstr_t* text = &(widget->text);
 

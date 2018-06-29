@@ -133,10 +133,10 @@ TEST(WStr, int) {
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 
-TEST(WStr, float) {
+TEST(WStr, double) {
   wstr_t str;
-  float v1 = 123;
-  float v2 = 0;
+  double v1 = 123;
+  double v2 = 0;
   ASSERT_EQ(wstr_init(&str, 100), &str);
   ASSERT_EQ(str.capacity, 100);
 
@@ -151,7 +151,7 @@ TEST(WStr, value) {
   wstr_t str;
   value_t v1;
   int32_t vi;
-  float vf;
+  double vf;
   ASSERT_EQ(wstr_init(&str, 0), &str);
   ASSERT_EQ(str.capacity, 0);
 

@@ -17,7 +17,6 @@
 #include "res/inc/ui/calibration.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
-#include "res/inc/ui/e.data"
 #include "res/inc/ui/edit.data"
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
@@ -256,7 +255,6 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_calibration);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
-  resource_manager_add(rm, ui_e);
   resource_manager_add(rm, ui_edit);
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);

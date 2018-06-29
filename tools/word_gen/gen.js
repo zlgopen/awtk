@@ -209,7 +209,7 @@ function onTaskDone(err, res, done) {
 var c = new Crawler({
   retries: 1,
   forceUTF8: false,
-  timeout:                1500,
+  timeout:                5000,
   callback: onTaskDone 
 });
 

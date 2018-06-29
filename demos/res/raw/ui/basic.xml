@@ -1,7 +1,7 @@
 <window name="main" anim_hint="htranslate">
-  <button name="inc" x="10" y="5" w="25%" h="30" text="Inc"/>
+  <button name="inc_value" x="10" y="5" w="25%" h="30" text="Inc"/>
   <button name="close" x="center" y="5" w="25%" h="30" text="Close"/>
-  <button name="dec" x="right:10" y="5" w="25%" h="30" text="Dec"/>
+  <button name="dec_value" x="right:10" y="5" w="25%" h="30" text="Dec"/>
 
   <label name="left" x="10" y="40" w="30%" h="30" text="Left"/>
   <label name="center" x="center" y="40" w="25%" h="30" text="Center"/>

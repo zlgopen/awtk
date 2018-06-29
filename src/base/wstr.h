@@ -150,11 +150,11 @@ ret_t wstr_from_int(wstr_t* str, int32_t v);
  * @method wstr_from_float
  * 用浮点数初始化字符串。
  * @param {wstr_t*} str str对象。
- * @param {float} v 浮点数。
+ * @param {double} v 浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wstr_from_float(wstr_t* str, float v);
+ret_t wstr_from_float(wstr_t* str, double v);
 
 /**
  * @method wstr_from_value
@@ -180,11 +180,11 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v);
  * @method wstr_to_float
  * 将字符串转成浮点数。
  * @param {wstr_t*} str str对象。
- * @param {float*} v 用于返回浮点数。
+ * @param {double*} v 用于返回浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wstr_to_float(wstr_t* str, float* v);
+ret_t wstr_to_float(wstr_t* str, double* v);
 
 /**
  * @method wstr_reset

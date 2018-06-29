@@ -40,9 +40,9 @@ typedef struct _input_limit_t {
       uint32_t step;
     } i;
     struct {
-      float min;
-      float max;
-      float step;
+      double min;
+      double max;
+      double step;
     } f;
   } u;
 } input_limit_t;
@@ -116,13 +116,13 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
  * @method edit_set_float_limit
  * 设置为浮点数输入及取值范围。
  * @param {widget_t*} widget widget对象。
- * @param {float} min 最小值。
- * @param {float} max 最大值。
- * @param {float} step 步长。
+ * @param {double} min 最小值。
+ * @param {double} max 最大值。
+ * @param {double} step 步长。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t edit_set_float_limit(widget_t* widget, float min, float max, float step);
+ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step);
 
 /**
  * @method edit_set_readonly

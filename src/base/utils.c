@@ -110,11 +110,11 @@ int tk_atoi(const char* str) {
   return tk_strtol(str, NULL, 10);
 }
 
-float_t tk_atof(const char* str) {
+double tk_atof(const char* str) {
   int n = 0;
   unsigned int f = 0;
   int neg = 0;
-  float_t result = 0;
+  double result = 0;
   const char* p = NULL;
   return_value_if_fail(str != NULL, 0);
 
@@ -190,7 +190,7 @@ const char* tk_itoa(char* str, int len, int n) {
   return tk_itoa_simple(str, len, n, NULL);
 }
 
-const char* tk_ftoa(char* str, int len, float_t value) {
+const char* tk_ftoa(char* str, int len, double value) {
   int i = 0;
   char str_n[32] = {0};
   char str_f[32] = {0};
