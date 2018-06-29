@@ -650,6 +650,59 @@
  },
  {
   "type": "class",
+  "name": "candidates_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "candidates_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "expanded",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "normal_h",
+    "readonly": true
+   },
+   {
+    "type": "uint32_t",
+    "name": "event_id",
+    "readonly": true
+   }
+  ],
+  "header": "base/candidates.h"
+ },
+ {
+  "type": "class",
   "name": "canvas_t",
   "scriptable": true,
   "methods": [],
@@ -890,6 +943,10 @@
      {
       "type": "int32_t",
       "name": "max"
+     },
+     {
+      "type": "int32_t",
+      "name": "step"
      }
     ],
     "name": "edit_set_int_limit",
@@ -1832,6 +1889,56 @@
   "header": "base/image.h"
  },
  {
+  "type": "class",
+  "name": "input_engine_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [],
+    "name": "input_engine_create",
+    "isConstructor": true,
+    "return": "input_engine_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "input_engine_t*",
+      "name": "engine"
+     }
+    ],
+    "name": "input_engine_destroy",
+    "isDeconstructor": true,
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_engine_t*",
+      "name": "engine"
+     }
+    ],
+    "name": "input_engine_reset_input",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_engine_t*",
+      "name": "engine"
+     },
+     {
+      "type": "int",
+      "name": "key"
+     }
+    ],
+    "name": "input_engine_input",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/input_engine.h"
+ },
+ {
   "type": "enum",
   "header": "base/input_method.h",
   "name": "input_type_t",
@@ -1874,8 +1981,18 @@
   "methods": [],
   "properties": [
    {
-    "type": "widget_t*",
-    "name": "widget",
+    "type": "bool_t",
+    "name": "action_button_enable",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "action_button_enable",
+    "readonly": true
+   },
+   {
+    "type": "input_type_t",
+    "name": "input_type",
     "readonly": true
    }
   ],
@@ -2054,6 +2171,24 @@
      }
     ],
     "name": "input_method_dispatch_key",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "input_method_t*",
+      "name": "im"
+     },
+     {
+      "type": "char*",
+      "name": "strs"
+     },
+     {
+      "type": "uint32_t",
+      "name": "nr"
+     }
+    ],
+    "name": "input_method_dispatch_candidates",
     "return": "ret_t"
    },
    {
@@ -3601,6 +3736,20 @@
       "name": "str"
      },
      {
+      "type": "char",
+      "name": "c"
+     }
+    ],
+    "name": "str_append_char",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
       "type": "char*",
       "name": "text"
      }
@@ -3818,6 +3967,51 @@
  },
  {
   "type": "class",
+  "name": "suggest_words_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "resource_info_t*",
+      "name": "res"
+     }
+    ],
+    "name": "suggest_words_create",
+    "isConstructor": true,
+    "return": "suggest_words_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "suggest_words_t*",
+      "name": "suggest_words"
+     },
+     {
+      "type": "wchar_t",
+      "name": "c"
+     }
+    ],
+    "name": "suggest_words_find",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "suggest_words_t*",
+      "name": "suggest_words"
+     }
+    ],
+    "name": "suggest_words_destroy",
+    "isDeconstructor": true,
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/suggest_words.h"
+ },
+ {
+  "type": "class",
   "name": "system_info_t",
   "methods": [
    {
@@ -3923,48 +4117,6 @@
    },
    {
     "name": "STYLE_ID_MARGIN"
-   }
-  ]
- },
- {
-  "type": "enum",
-  "header": "base/theme.h",
-  "name": "align_v_t",
-  "prefix": "ALIGN_V_",
-  "scriptable": true,
-  "consts": [
-   {
-    "name": "ALIGN_V_NONE"
-   },
-   {
-    "name": "ALIGN_V_MIDDLE"
-   },
-   {
-    "name": "ALIGN_V_TOP"
-   },
-   {
-    "name": "ALIGN_V_BOTTOM"
-   }
-  ]
- },
- {
-  "type": "enum",
-  "header": "base/theme.h",
-  "name": "align_h_t",
-  "prefix": "ALIGN_H_",
-  "scriptable": true,
-  "consts": [
-   {
-    "name": "ALIGN_H_NONE"
-   },
-   {
-    "name": "ALIGN_H_CENTER"
-   },
-   {
-    "name": "ALIGN_H_LEFT"
-   },
-   {
-    "name": "ALIGN_H_RIGHT"
    }
   ]
  },
@@ -4243,6 +4395,48 @@
    },
    {
     "name": "LCD_ORIENTATION_270"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "align_v_t",
+  "prefix": "ALIGN_V_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "ALIGN_V_NONE"
+   },
+   {
+    "name": "ALIGN_V_MIDDLE"
+   },
+   {
+    "name": "ALIGN_V_TOP"
+   },
+   {
+    "name": "ALIGN_V_BOTTOM"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "align_h_t",
+  "prefix": "ALIGN_H_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "ALIGN_H_NONE"
+   },
+   {
+    "name": "ALIGN_H_CENTER"
+   },
+   {
+    "name": "ALIGN_H_LEFT"
+   },
+   {
+    "name": "ALIGN_H_RIGHT"
    }
   ]
  },
@@ -5742,46 +5936,7 @@
  },
  {
   "type": "enum",
-  "header": "base/widget.h",
-  "name": "widget_state_t",
-  "prefix": "WIDGET_",
-  "scriptable": true,
-  "consts": [
-   {
-    "name": "WIDGET_STATE_NONE"
-   },
-   {
-    "name": "WIDGET_STATE_NORMAL"
-   },
-   {
-    "name": "WIDGET_STATE_PRESSED"
-   },
-   {
-    "name": "WIDGET_STATE_OVER"
-   },
-   {
-    "name": "WIDGET_STATE_DISABLE"
-   },
-   {
-    "name": "WIDGET_STATE_FOCUSED"
-   },
-   {
-    "name": "WIDGET_STATE_CHECKED"
-   },
-   {
-    "name": "WIDGET_STATE_UNCHECKED"
-   },
-   {
-    "name": "WIDGET_STATE_EMPTY"
-   },
-   {
-    "name": "WIDGET_STATE_ERROR"
-   }
-  ]
- },
- {
-  "type": "enum",
-  "header": "base/widget.h",
+  "header": "base/widget_consts.h",
   "name": "widget_type_t",
   "prefix": "WIDGET_TYPE_",
   "scriptable": true,
@@ -5854,6 +6009,48 @@
    },
    {
     "name": "WIDGET_PAGES"
+   },
+   {
+    "name": "WIDGET_CANDIDATES"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/widget.h",
+  "name": "widget_state_t",
+  "prefix": "WIDGET_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "WIDGET_STATE_NONE"
+   },
+   {
+    "name": "WIDGET_STATE_NORMAL"
+   },
+   {
+    "name": "WIDGET_STATE_PRESSED"
+   },
+   {
+    "name": "WIDGET_STATE_OVER"
+   },
+   {
+    "name": "WIDGET_STATE_DISABLE"
+   },
+   {
+    "name": "WIDGET_STATE_FOCUSED"
+   },
+   {
+    "name": "WIDGET_STATE_CHECKED"
+   },
+   {
+    "name": "WIDGET_STATE_UNCHECKED"
+   },
+   {
+    "name": "WIDGET_STATE_EMPTY"
+   },
+   {
+    "name": "WIDGET_STATE_ERROR"
    }
   ]
  },

@@ -28,4 +28,4 @@ void operator delete[](void* obj) throw() {
   TKMEM_FREE(obj);
 }
 
-#endif/*HAS_STD_MALLOC*/
+#endif /*HAS_STD_MALLOC*/

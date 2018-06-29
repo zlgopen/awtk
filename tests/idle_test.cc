@@ -15,6 +15,8 @@ TEST(Idle, basic) {
   uint32_t i = 0;
   uint32_t nr = 10;
 
+  idle_manager_remove_all(idle_manager());
+
   for (i = 0; i < nr; i++) {
     ASSERT_EQ(idle_add(on_idle, NULL) > 0, true);
     ASSERT_EQ(idle_count(), i + 1);

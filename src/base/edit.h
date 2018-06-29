@@ -35,8 +35,9 @@ typedef struct _input_limit_t {
       uint32_t max;
     } t;
     struct {
-      uint32_t min;
-      uint32_t max;
+      int32_t min;
+      int32_t max;
+      uint32_t step;
     } i;
     struct {
       float min;
@@ -58,12 +59,16 @@ typedef struct _edit_t {
   uint16_t visible_start;
   uint16_t selected_start;
   uint16_t selected_end;
+
   xy_t caret_x;
   bool_t readonly;
   bool_t caret_visible;
   bool_t password_visible;
-  uint32_t left_margin;
-  uint32_t right_margin;
+  bool_t auto_fix;
+  uint8_t top_margin;
+  uint8_t bottom_margin;
+  uint8_t left_margin;
+  uint8_t right_margin;
 
   wstr_t tips;
   uint32_t timer_id;
@@ -101,10 +106,11 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max);
  * @param {widget_t*} widget widget对象。
  * @param {int32_t} min 最小值。
  * @param {int32_t} max 最大值。
+ * @param {int32_t} step 步长。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max);
+ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t step);
 
 /**
  * @method edit_set_float_limit
@@ -127,6 +133,16 @@ ret_t edit_set_float_limit(widget_t* widget, float min, float max, float step);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_readonly(widget_t* widget, bool_t readonly);
+
+/**
+ * @method edit_set_auto_fix
+ * 设置编辑器是否为自动改正。
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} auto_fix 自动改正。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix);
 
 /**
  * @method edit_set_input_type
@@ -159,6 +175,18 @@ ret_t edit_set_input_tips(widget_t* widget, const wchar_t* tips);
 ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
 
 #define EDIT(widget) ((edit_t*)(widget))
+
+/*public for spinbox and other controls*/
+ret_t edit_on_paint_self(widget_t* widget, canvas_t* c);
+ret_t edit_on_event(widget_t* widget, event_t* e);
+ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v);
+ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v);
+
+/*public for test*/
+ret_t edit_inc(edit_t* edit);
+ret_t edit_dec(edit_t* edit);
+ret_t edit_clear(edit_t* edit);
+bool_t edit_is_valid_value(widget_t* widget);
 
 END_C_DECLS
 
