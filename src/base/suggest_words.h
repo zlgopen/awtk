@@ -57,6 +57,7 @@ struct _suggest_words_t {
  * @method suggest_words_create
  * @constructor
  * 创建联想字对象。
+ * @param {resource_info_t*} res 数据资源。
  *
  * @return {suggest_words_t*} 返回联想字对象。
  */
