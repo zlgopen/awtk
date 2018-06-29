@@ -42,6 +42,9 @@
 * 资源管理器支持从ROM和文件中加载。
 * 国际化支持字符串翻译。
 * 实现控件动画。
+* 软键盘
+* 中文输入法
+* edit
 
 ## 短期计划(顺序不定)
 * agg实现vgcanvas接口
@@ -50,7 +53,6 @@
 * combobox
 * listbox
 * tableview
-* edit
 * menu
 * chart
 * guage
@@ -59,8 +61,6 @@
 * tab
 * python binging 
 * jerryscript binging 
-* 软键盘
-* 中文输入法
 * 键盘导航
 * rtthread移植
 * sylixos移植

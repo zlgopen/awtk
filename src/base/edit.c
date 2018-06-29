@@ -292,6 +292,10 @@ bool_t edit_is_valid_value(widget_t* widget) {
       int32_t min = edit->limit.u.i.min;
       int32_t max = edit->limit.u.i.max;
 
+      if(text->size == 0) {
+        return FALSE;
+      }
+
       if (min == max) {
         return TRUE;
       }
@@ -304,6 +308,10 @@ bool_t edit_is_valid_value(widget_t* widget) {
       float v = 0;
       float min = edit->limit.u.f.min;
       float max = edit->limit.u.f.max;
+      
+      if(text->size == 0) {
+        return FALSE;
+      }
 
       if (min == max) {
         return TRUE;
@@ -436,7 +444,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       if (!edit_is_valid_value(widget)) {
         if (edit->auto_fix) {
           edit_auto_fix(widget);
-        } else {
+        } else if(widget->text.size > 0) {
           widget_set_state(widget, WIDGET_STATE_ERROR);
         }
       }
