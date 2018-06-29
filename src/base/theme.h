@@ -122,6 +122,11 @@ typedef enum _style_id_t {
    */
   STYLE_ID_BORDER_COLOR,
   /**
+   * @const STYLE_ID_BORDER
+   * 边框类型。
+   */
+  STYLE_ID_BORDER,
+  /**
    * @const STYLE_ID_BG_IMAGE
    * 图片的名称。
    */

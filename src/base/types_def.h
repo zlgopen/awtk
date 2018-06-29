@@ -291,6 +291,44 @@ typedef enum _align_h_t {
   ALIGN_H_RIGHT
 } align_h_t;
 
+/**
+ * @enum border_type_t
+ * @scriptable no
+ * 控件边框类型。
+ */
+typedef enum _border_type_t {
+  /**
+   * @const BORDER_NONE
+   * 无边框。
+   */
+  BORDER_NONE = 0,
+  /**
+   * @const BORDER_LEFT
+   * 左边框线。
+   */
+  BORDER_LEFT = 1,
+  /**
+   * @const BORDER_RIGHT
+   * 右边框线。
+   */
+  BORDER_RIGHT = 2,
+  /**
+   * @const BORDER_TOP
+   * 上边框线。
+   */
+  BORDER_TOP = 4,
+  /**
+   * @const BORDER_BOTTOM
+   * 下边框线。
+   */
+  BORDER_BOTTOM = 8,
+  /**
+   * @const BORDER_ALL
+   * 全边框线。
+   */
+  BORDER_ALL = 0xffff
+} border_type_t;
+
 typedef float float_t;
 
 #define TK_DEFAULT_FONT "default"

@@ -96,3 +96,39 @@ TEST(ThemeGen, inher) {
   ASSERT_EQ(style_get_int(&style, STYLE_ID_FONT_SIZE, 0), 14);
   ASSERT_EQ(style_get_str(&style, STYLE_ID_FONT_NAME, ""), string("serif"));
 }
+
+TEST(ThemeGen, border) {
+  uint8_t buff[1024];
+  theme_t theme;
+  style_t style;
+  const char* str = "<button><style><normal border=\"left\" /></style></button>";
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BORDER, 0), BORDER_LEFT);
+
+  str = "<button><style><normal border=\"right\" /></style></button>";
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BORDER, 0), BORDER_RIGHT);
+
+  str = "<button><style><normal border=\"top\" /></style></button>";
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BORDER, 0), BORDER_TOP);
+
+  str = "<button><style><normal border=\"bottom\" /></style></button>";
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BORDER, 0), BORDER_BOTTOM);
+
+  str = "<button><style><normal border=\"all\" /></style></button>";
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+  style.data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, 0, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_get_int(&style, STYLE_ID_BORDER, 0), BORDER_ALL);
+}

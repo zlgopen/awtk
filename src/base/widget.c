@@ -524,10 +524,26 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+  uint32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
 
   if (bd.rgba.a) {
+    wh_t w = widget->w;
+    wh_t h = widget->h;
+
     canvas_set_stroke_color(c, bd);
-    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+    if (border == BORDER_ALL) {
+      canvas_stroke_rect(c, 0, 0, w, h);
+    } else {
+      if (border & BORDER_TOP) {
+        canvas_draw_hline(c, 0, 0, w);
+      } else if (border & BORDER_BOTTOM) {
+        canvas_draw_hline(c, 0, h - 1, w);
+      } else if (border & BORDER_LEFT) {
+        canvas_draw_hline(c, 0, 0, h);
+      } else if (border & BORDER_RIGHT) {
+        canvas_draw_hline(c, w - 1, 0, h);
+      }
+    }
   }
 
   return RET_OK;

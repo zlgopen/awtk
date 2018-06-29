@@ -59,5 +59,9 @@
   <label w="30%" text="Text"/>
   <edit w="70%" text="readonly" readonly="true"/>
  </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Text"/>
+  <edit w="70%" style="1:line" tips="underline" text="" />
+ </view>
   <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

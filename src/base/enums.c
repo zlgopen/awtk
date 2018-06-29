@@ -59,6 +59,7 @@ static const key_type_value_t style_id_name_value[] = {
     {"text_color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
     {"tips_text_color", TYPE_COLOR, STYLE_ID_TIPS_TEXT_COLOR},
     {"border_color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
+    {"border", TYPE_COLOR, STYLE_ID_BORDER},
     {"font_name", TYPE_STRING, STYLE_ID_FONT_NAME},
     {"font_size", TYPE_INT, STYLE_ID_FONT_SIZE},
     {"font_style", TYPE_INT, STYLE_ID_FONT_STYLE},

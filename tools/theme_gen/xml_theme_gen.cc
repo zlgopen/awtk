@@ -48,6 +48,27 @@ static color_t parse_color(const char* name) {
   return c;
 }
 
+static uint32_t to_border(const char* value) {
+  uint32_t border = 0;
+  if (strstr(value, "left")) {
+    border |= BORDER_LEFT;
+  }
+  if (strstr(value, "right")) {
+    border |= BORDER_RIGHT;
+  }
+  if (strstr(value, "top")) {
+    border |= BORDER_TOP;
+  }
+  if (strstr(value, "bottom")) {
+    border |= BORDER_BOTTOM;
+  }
+  if (strstr(value, "all")) {
+    border |= BORDER_ALL;
+  }
+
+  return border;
+}
+
 static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
   uint32_t i = 0;
 
@@ -66,6 +87,9 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
       } else if (strcmp(name, "text_align_v") == 0) {
         const key_type_value_t* dt = align_v_type_find(value);
         s.AddInt(item->value, dt->value);
+      } else if (strcmp(name, "border") == 0) {
+        uint32_t border = to_border(value);
+        s.AddInt(item->value, border);
       } else if (item->type == TYPE_INT) {
         s.AddInt(item->value, atoi(value));
       } else if (item->type == TYPE_COLOR) {
