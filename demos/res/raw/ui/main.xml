@@ -3,6 +3,7 @@
     <button name="open:image" x="right:10" y="5" w="25%" h="30" text="Image"/>
     <button name="open:basic" x="10" y="5" w="25%" h="30" text="Basic"/>
     <button name="open:button" x="10" y="5" w="25%" h="30" text="Buttons"/>
+    <button name="open:edit" x="10" y="5" w="25%" h="30" text="Edits"/>
     <button name="open:keyboard" x="10" y="5" w="25%" h="30" text="KeyBoard"/>
     <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
     <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>

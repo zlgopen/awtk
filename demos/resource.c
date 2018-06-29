@@ -17,6 +17,7 @@
 #include "res/inc/ui/calibration.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
+#include "res/inc/ui/edit.data"
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
 #include "res/inc/ui/image.data"
@@ -40,6 +41,18 @@
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
+#include "res/inc/images/arrow_down_n.res"
+#include "res/inc/images/arrow_down_o.res"
+#include "res/inc/images/arrow_down_p.res"
+#include "res/inc/images/arrow_left_n.res"
+#include "res/inc/images/arrow_left_o.res"
+#include "res/inc/images/arrow_left_p.res"
+#include "res/inc/images/arrow_right_n.res"
+#include "res/inc/images/arrow_right_o.res"
+#include "res/inc/images/arrow_right_p.res"
+#include "res/inc/images/arrow_up_n.res"
+#include "res/inc/images/arrow_up_o.res"
+#include "res/inc/images/arrow_up_p.res"
 #include "res/inc/images/backspace.res"
 #include "res/inc/images/bg800x480.res"
 #include "res/inc/images/bricks.res"
@@ -47,6 +60,10 @@
 #include "res/inc/images/cross.res"
 #include "res/inc/images/dialog_title.res"
 #include "res/inc/images/earth.res"
+#include "res/inc/images/edit_clear_n.res"
+#include "res/inc/images/edit_clear_o.res"
+#include "res/inc/images/edit_clear_p.res"
+#include "res/inc/images/find.res"
 #include "res/inc/images/green_btn_n.res"
 #include "res/inc/images/green_btn_o.res"
 #include "res/inc/images/green_btn_p.res"
@@ -84,6 +101,18 @@
 #include "res/inc/images/unmuted.res"
 #include "res/inc/images/warn.res"
 #else
+#include "res/inc/images/arrow_down_n.data"
+#include "res/inc/images/arrow_down_o.data"
+#include "res/inc/images/arrow_down_p.data"
+#include "res/inc/images/arrow_left_n.data"
+#include "res/inc/images/arrow_left_o.data"
+#include "res/inc/images/arrow_left_p.data"
+#include "res/inc/images/arrow_right_n.data"
+#include "res/inc/images/arrow_right_o.data"
+#include "res/inc/images/arrow_right_p.data"
+#include "res/inc/images/arrow_up_n.data"
+#include "res/inc/images/arrow_up_o.data"
+#include "res/inc/images/arrow_up_p.data"
 #include "res/inc/images/backspace.data"
 #include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
@@ -91,6 +120,10 @@
 #include "res/inc/images/cross.data"
 #include "res/inc/images/dialog_title.data"
 #include "res/inc/images/earth.data"
+#include "res/inc/images/edit_clear_n.data"
+#include "res/inc/images/edit_clear_o.data"
+#include "res/inc/images/edit_clear_p.data"
+#include "res/inc/images/find.data"
 #include "res/inc/images/green_btn_n.data"
 #include "res/inc/images/green_btn_o.data"
 #include "res/inc/images/green_btn_p.data"
@@ -127,17 +160,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -147,6 +180,18 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
   resource_manager_add(rm, font_default);
+  resource_manager_add(rm, image_arrow_down_n);
+  resource_manager_add(rm, image_arrow_down_o);
+  resource_manager_add(rm, image_arrow_down_p);
+  resource_manager_add(rm, image_arrow_left_n);
+  resource_manager_add(rm, image_arrow_left_o);
+  resource_manager_add(rm, image_arrow_left_p);
+  resource_manager_add(rm, image_arrow_right_n);
+  resource_manager_add(rm, image_arrow_right_o);
+  resource_manager_add(rm, image_arrow_right_p);
+  resource_manager_add(rm, image_arrow_up_n);
+  resource_manager_add(rm, image_arrow_up_o);
+  resource_manager_add(rm, image_arrow_up_p);
   resource_manager_add(rm, image_backspace);
   resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
@@ -154,6 +199,10 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_cross);
   resource_manager_add(rm, image_dialog_title);
   resource_manager_add(rm, image_earth);
+  resource_manager_add(rm, image_edit_clear_n);
+  resource_manager_add(rm, image_edit_clear_o);
+  resource_manager_add(rm, image_edit_clear_p);
+  resource_manager_add(rm, image_find);
   resource_manager_add(rm, image_green_btn_n);
   resource_manager_add(rm, image_green_btn_o);
   resource_manager_add(rm, image_green_btn_p);
@@ -206,6 +255,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_calibration);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
+  resource_manager_add(rm, ui_edit);
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);
   resource_manager_add(rm, ui_image);

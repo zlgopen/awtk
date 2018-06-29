@@ -267,8 +267,8 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     widget->children = array_create(4);
   }
 
-  if(widget->vt->add_child) {
-    if(widget->vt->add_child(widget, child) == RET_OK) {
+  if (widget->vt->add_child) {
+    if (widget->vt->add_child(widget, child) == RET_OK) {
       return RET_OK;
     }
   }
@@ -287,8 +287,8 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  if(widget->vt->remove_child) {
-    if(widget->vt->remove_child(widget, child) == RET_OK) {
+  if (widget->vt->remove_child) {
+    if (widget->vt->remove_child(widget, child) == RET_OK) {
       return RET_OK;
     }
   }

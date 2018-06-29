@@ -286,7 +286,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
 
       return min <= size && size <= max;
     }
-    case INPUT_INT: 
+    case INPUT_INT:
     case INPUT_UINT: {
       int32_t v = 0;
       int32_t min = edit->limit.u.i.min;
@@ -299,7 +299,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
 
       return min <= v && v <= max;
     }
-    case INPUT_FLOAT: 
+    case INPUT_FLOAT:
     case INPUT_UFLOAT: {
       float v = 0;
       float min = edit->limit.u.f.min;
@@ -339,12 +339,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
       break;
     }
-    case INPUT_INT: 
+    case INPUT_INT:
     case INPUT_UINT: {
       int32_t v = 0;
       int32_t min = edit->limit.u.i.min;
       int32_t max = edit->limit.u.i.max;
-      
+
       wstr_to_int(text, &v);
       if (v < min) {
         v = min;
@@ -356,7 +356,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_from_int(text, v);
       break;
     }
-    case INPUT_FLOAT: 
+    case INPUT_FLOAT:
     case INPUT_UFLOAT: {
       float v = 0;
       float min = edit->limit.u.f.min;
@@ -512,9 +512,9 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   edit->limit.type = type;
-  if(type == INPUT_INT || type == INPUT_UINT) {
+  if (type == INPUT_INT || type == INPUT_UINT) {
     edit->limit.u.i.step = 1;
-  } else if(type == INPUT_FLOAT || type == INPUT_UFLOAT) {
+  } else if (type == INPUT_FLOAT || type == INPUT_UFLOAT) {
     edit->limit.u.f.step = 1.0f;
   }
 
@@ -652,8 +652,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
     edit->left_margin = margin;
-    edit->right_margin = margin; 
-    edit->top_margin = margin; 
+    edit->right_margin = margin;
+    edit->top_margin = margin;
     edit->bottom_margin = margin;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     edit->left_margin = value_int(v);
@@ -843,9 +843,9 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   edit->bottom_margin = 2;
   widget_move_resize(widget, x, y, w, h);
   edit_set_text_limit(widget, 0, 1024);
+  edit_update_status(widget);
 
   widget_on(win, EVT_WINDOW_OPEN, edit_hook_children_button, edit);
 
   return widget;
 }
-

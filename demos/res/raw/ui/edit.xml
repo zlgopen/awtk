@@ -1,16 +1,63 @@
 <window anim_hint="htranslate" layout="h30 c1 m:2 s:2">
  <view layout="r1 c0">
   <label w="30%" text="Age"/>
-  <edit w="70%" right_margin="30" text="20" tips="age" input_type="uint" min="0" max="150" step="1" auto_fix="true">
-    <button name="inc" x="right" y="1" w="30" h="14" />
-    <button name="dec" x="right" y="bottom:1" w="30" h="14" />
+  <edit w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true">
+    <button name="inc" style="3:spinbox_down" x="right" y="0" w="15" h="16" />
+    <button name="dec" style="2:spinbox_down" x="right" y="bottom" w="15" h="16" />
   </edit>
  </view>
  <view layout="r1 c0">
   <label w="30%" text="Weight"/>
-  <edit w="70%" right_margin="30" text="50" tips="weight" input_type="ufloat" min="0" max="150" step="0.1">
-    <button name="inc" x="right" y="1" w="30" h="14" />
-    <button name="dec" x="right" y="bottom:1" w="30" h="14" />
+  <edit w="70%" right_margin="16" tips="ufloat(0-150) auto_fix" input_type="ufloat" min="10" max="150" step="0.1" auto_fix="true">
+    <button name="inc" style="3:spinbox_down" x="right" y="0" w="15" h="16" />
+    <button name="dec" style="2:spinbox_down" x="right" y="bottom" w="15" h="16" />
   </edit>
  </view>
+ 
+ <view layout="r1 c0">
+  <label w="30%" text="Age"/>
+  <edit w="70%" right_margin="16" tips="uint(0-150)" input_type="uint" min="0" max="150" step="1">
+    <button name="inc" style="3:spinbox_down" x="right" y="0" w="15" h="16" />
+    <button name="dec" style="2:spinbox_down" x="right" y="bottom" w="15" h="16" />
+  </edit>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Weight"/>
+  <edit w="70%" right_margin="16" tips="ufloat(10-150)" input_type="ufloat" min="10" max="150" step="0.1">
+    <button name="inc" style="3:spinbox_down" x="right" y="0" w="15" h="16" />
+    <button name="dec" style="2:spinbox_down" x="right" y="bottom" w="15" h="16" />
+  </edit>
+ </view>
+
+ <view layout="r1 c0">
+  <label w="30%" text="Age"/>
+  <edit w="70%" left_margin="34" right_margin="34" tips="uint(0-150)" input_type="uint" min="0" max="150" step="1" auto_fix="true">
+    <button name="dec" style="4:spinbox_left" x="0" y="0" w="30" h="100%" />
+    <button name="inc" style="5:spinbox_right" x="right" y="bottom" w="30" h="100%" />
+  </edit>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Weight"/>
+  <edit w="70%" left_margin="34" right_margin="34"  tips="ufloat(0-150)" input_type="ufloat" min="0" max="150" step="0.1">
+    <button name="dec" style="4:spinbox_left" x="0" y="0" w="30" h="100%" />
+    <button name="inc" style="5:spinbox_right" x="right" y="bottom" w="30" h="100%" />
+  </edit>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Text"/>
+  <edit w="70%" left_margin="34" tips="searth" min="0" max="150" step="0.1">
+    <image image="find" x="0" y="0" w="30" h="100%" />
+  </edit>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Text"/>
+  <edit w="70%" right_margin="34" tips="searth" min="0" max="150" step="0.1">
+    <button name="clear" style="6:edit_clear" x="right" y="bottom" w="30" h="100%" />
+  </edit>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Text"/>
+  <edit w="70%" text="readonly" readonly="true"/>
+ </view>
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

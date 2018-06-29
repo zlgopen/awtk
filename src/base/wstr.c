@@ -217,8 +217,12 @@ ret_t wstr_from_value(wstr_t* str, const value_t* v) {
 ret_t wstr_to_int(wstr_t* str, int32_t* v) {
   char buff[32];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
-  wstr_get_utf8(str, buff, sizeof(buff));
-  *v = tk_atoi(buff);
+  if (str->size > 0) {
+    wstr_get_utf8(str, buff, sizeof(buff));
+    *v = tk_atoi(buff);
+  } else {
+    *v = 0;
+  }
 
   return RET_OK;
 }
@@ -226,8 +230,12 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
 ret_t wstr_to_float(wstr_t* str, float* v) {
   char buff[32];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
-  wstr_get_utf8(str, buff, sizeof(buff));
-  *v = tk_atof(buff);
+  if (str->size > 0) {
+    wstr_get_utf8(str, buff, sizeof(buff));
+    *v = tk_atof(buff);
+  } else {
+    *v = 0.0f;
+  }
 
   return RET_OK;
 }

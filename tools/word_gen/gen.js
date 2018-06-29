@@ -5,9 +5,9 @@ const Segment = require('segment');
 
 let allWords = {};
 let doneURLS = {};
-let maxURLS = 1000;
+let maxURLS = 10000;
 let reservedPages = maxURLS;
-const maxWordsPerChar = 10;
+const maxWordsPerChar = 15;
 let rootURL = ['http://auto.sina.com.cn/guide/', 'http://auto.sina.com.cn', 'http://www.sina.com.cn/', 'https://blog.csdn.net/'];
 
 function bufferWriteWord(buff, word, start) {

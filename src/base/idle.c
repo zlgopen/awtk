@@ -72,7 +72,7 @@ ret_t idle_manager_remove_all(idle_manager_t* idle_manager) {
 }
 
 ret_t idle_manager_deinit(idle_manager_t* idle_manager) {
-  if(idle_manager_remove_all(idle_manager) == RET_OK) {
+  if (idle_manager_remove_all(idle_manager) == RET_OK) {
     array_deinit(idle_manager->idles + 0);
     array_deinit(idle_manager->idles + 1);
   }

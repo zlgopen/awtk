@@ -20,6 +20,36 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
+  <style name="2:spinbox_down" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
+  </style>
+
+  <style name="3:spinbox_up" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_up_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_up_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
+  </style>
+  
+  <style name="4:spinbox_left" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_left_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_left_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_left_o"/>
+  </style>
+  
+  <style name="5:spinbox_right" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_right_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_right_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_right_o"/>
+  </style>
+
+  <style name="6:edit_clear">
+    <normal     icon="edit_clear_n"/>
+    <pressed    icon="edit_clear_p"/>
+    <over       icon="edit_clear_o"/>
+  </style>
+
   <style name="10:grid_item" border_color="#a0a0a0"  text_color="black">
     <pressed    bg_color="#c0c0c0" />
   </style>
