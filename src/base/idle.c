@@ -53,7 +53,7 @@ idle_manager_t* idle_manager_init(idle_manager_t* idle_manager) {
   return idle_manager;
 }
 
-ret_t idle_manager_deinit(idle_manager_t* idle_manager) {
+ret_t idle_manager_remove_all(idle_manager_t* idle_manager) {
   uint32_t i = 0;
   uint32_t nr = 0;
   idle_info_t** idles = NULL;
@@ -66,9 +66,16 @@ ret_t idle_manager_deinit(idle_manager_t* idle_manager) {
     idle_info_t* iter = idles[i];
     TKMEM_FREE(iter);
   }
+  ACTIVE_IDLES(idle_manager)->size = 0;
 
-  array_deinit(idle_manager->idles + 0);
-  array_deinit(idle_manager->idles + 1);
+  return RET_OK;
+}
+
+ret_t idle_manager_deinit(idle_manager_t* idle_manager) {
+  if(idle_manager_remove_all(idle_manager) == RET_OK) {
+    array_deinit(idle_manager->idles + 0);
+    array_deinit(idle_manager->idles + 1);
+  }
 
   return RET_OK;
 }

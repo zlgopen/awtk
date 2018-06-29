@@ -53,6 +53,7 @@ ret_t idle_manager_destroy(idle_manager_t* idle_manager);
 
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id);
+ret_t idle_manager_remove_all(idle_manager_t* idle_manager);
 const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id);
 ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 
