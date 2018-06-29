@@ -99,7 +99,16 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
     widget_dispatch(curr_win, &e);
   }
 
-  return ret;
+  return RET_REMOVE;
+}
+
+static ret_t window_manager_idle_dispatch_window_open(const idle_info_t* info) {
+  widget_t* curr_win = WIDGET(info->ctx);
+
+  event_t e = event_init(EVT_WINDOW_OPEN, curr_win);
+  widget_dispatch(curr_win, &e);
+
+  return RET_REMOVE;
 }
 
 static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
@@ -147,6 +156,8 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
 
   if (wm->children != NULL && wm->children->size > 0) {
     idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
+  } else {
+    idle_add((idle_func_t)window_manager_idle_dispatch_window_open, window);
   }
 
   ret = widget_add_child(wm, window);
