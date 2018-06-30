@@ -240,6 +240,93 @@ ret_t wstr_to_float(wstr_t* str, double* v) {
   return RET_OK;
 }
 
+static uint32_t double_fraction_nr(double v) {
+  uint32_t nr = 0;
+  double d = v - floor(v);
+  if (tk_fequal(v, floor(v))) {
+    return nr;
+  }
+
+  d = d * 10;
+  nr++;
+  while (d < 1 || d > floor(d)) {
+    d = d * 10;
+    nr++;
+  }
+
+  return nr;
+}
+
+static uint32_t wstr_fraction_nr(wstr_t* str) {
+  uint32_t nr = 0;
+  wchar_t* p = NULL;
+  return_value_if_fail(str != NULL && str->str != NULL, 0);
+
+  p = wcschr(str->str, '.');
+  if (p != NULL) {
+    nr = wcslen(p + 1);
+  }
+
+  return nr;
+}
+
+ret_t wstr_trim_float_zero(wstr_t* str) {
+  wchar_t* p = NULL;
+
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+  if (wcschr(str->str, '.') == NULL) {
+    return RET_OK;
+  }
+
+  p = str->str + str->size - 1;
+  while (p > str->str) {
+    if (*p != '0') {
+      if (*p == '.') {
+        p--;
+      }
+      break;
+    }
+
+    p--;
+  }
+
+  str->size = p - str->str + 1;
+  str->str[str->size] = 0;
+
+  return RET_OK;
+}
+
+ret_t wstr_to_fix(wstr_t* str, uint32_t fraction_nr) {
+  wchar_t* p = NULL;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+
+  p = wcschr(str->str, '.');
+  if (p) {
+    p++;
+    uint32_t nr = wcslen(p);
+    if (nr > fraction_nr) {
+      str->size = p - str->str + fraction_nr;
+      str->str[str->size] = 0;
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t wstr_add_float(wstr_t* str, double delta) {
+  double v = 0;
+  uint32_t fraction_nr1 = double_fraction_nr(delta);
+  uint32_t fraction_nr2 = wstr_fraction_nr(str);
+  uint32_t fraction_nr = tk_max(fraction_nr1, fraction_nr2);
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+
+  wstr_to_float(str, &v);
+  v = v + delta;
+  wstr_from_float(str, v);
+
+  return wstr_to_fix(str, fraction_nr);
+}
+
 ret_t wstr_reset(wstr_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
   TKMEM_FREE(str->str);

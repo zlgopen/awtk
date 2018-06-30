@@ -187,6 +187,25 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v);
 ret_t wstr_to_float(wstr_t* str, double* v);
 
 /**
+ * @method wstr_add_float
+ * 将字符串转成浮点数，加上delta，再转换回来。
+ * @param {wstr_t*} str str对象。
+ * @param {double} delta 要加上的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_add_float(wstr_t* str, double delta);
+
+/**
+ * @method wstr_trim_float_zero
+ * 去掉浮点数小数点尾部的零。
+ * @param {wstr_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_trim_float_zero(wstr_t* str);
+
+/**
  * @method wstr_reset
  * 重置字符串为空。
  * @param {wstr_t*} str str对象。

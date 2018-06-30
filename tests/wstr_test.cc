@@ -144,6 +144,54 @@ TEST(WStr, double) {
   ASSERT_EQ(wstr_to_float(&str, &v2), RET_OK);
   ASSERT_EQ(v1, v2);
 
+  ASSERT_EQ(wstr_set(&str, L"1.01"), RET_OK);
+  ASSERT_EQ(wstr_add_float(&str, 0.01), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.02"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, 0.001), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.021"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, 0.1), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.121"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, 1), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"2.121"), 0);
+
+  ASSERT_EQ(wstr_set(&str, L"1.01"), RET_OK);
+  ASSERT_EQ(wstr_add_float(&str, -0.01), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.00"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, -0.001), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"0.999"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, -0.1), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"0.899"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, 1), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.899"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, -1), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"0.899"), 0);
+
+  ASSERT_EQ(wstr_add_float(&str, 123), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"123.899"), 0);
+
+  ASSERT_EQ(wstr_set(&str, L"1.010"), RET_OK);
+  ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1.01"), 0);
+
+  ASSERT_EQ(wstr_set(&str, L"1.00"), RET_OK);
+  ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"1"), 0);
+
+  ASSERT_EQ(wstr_set(&str, L"100"), RET_OK);
+  ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"100"), 0);
+
+  ASSERT_EQ(wstr_set(&str, L"100.00000000"), RET_OK);
+  ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
+  ASSERT_EQ(wcscmp(str.str, L"100"), 0);
+
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 

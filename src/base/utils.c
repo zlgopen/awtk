@@ -112,6 +112,7 @@ int tk_atoi(const char* str) {
 
 double tk_atof(const char* str) {
   int n = 0;
+  uint32_t zero = 0;
   unsigned int f = 0;
   int neg = 0;
   double result = 0;
@@ -126,12 +127,21 @@ double tk_atof(const char* str) {
   n = tk_strtol_internal(str, &p, 10);
 
   if (p != NULL && *p == '.') {
-    f = tk_strtol_internal(p + 1, NULL, 10);
+    p++;
+    while (*p && *p == '0') {
+      p++;
+      zero++;
+    }
+    f = tk_strtol_internal(p, NULL, 10);
   }
 
   result = f;
   while (result >= 1) {
     result = result / 10;
+  }
+  while (zero > 0) {
+    result = result / 10;
+    zero--;
   }
 
   result = n + result;
@@ -191,42 +201,9 @@ const char* tk_itoa(char* str, int len, int n) {
 }
 
 const char* tk_ftoa(char* str, int len, double value) {
-  int i = 0;
-  char str_n[32] = {0};
-  char str_f[32] = {0};
-  int n = (int)value;
-  int f = (int)((value - n) * 1000000000);
+  tk_snprintf(str, len, "%lf", value);
 
-  tk_itoa(str_n, sizeof(str_n), n);
-  tk_itoa(str_f, sizeof(str_f), f > 0 ? f : -f);
-
-  if (f == 0) {
-    tk_strncpy(str, str_n, len);
-
-    return str;
-  }
-
-  i = strlen(str_f) - 1;
-  i = i > 6 ? 6 : i;
-  str_f[i] = '\0';
-
-  while (i > 0) {
-    if (str_f[i] == '0') {
-      str_f[i] = '\0';
-    }
-    i--;
-  }
-  return_value_if_fail(len > (strlen(str_n) + 1 + i), NULL);
-
-  if (len > (strlen(str_n) + strlen(str_f) + 2)) {
-    strcpy(str, str_n);
-    strcpy(str + strlen(str), ".");
-    strcpy(str + strlen(str), str_f);
-
-    return str;
-  }
-
-  return NULL;
+  return str;
 }
 
 char* tk_strcpy(char* dst, const char* src) {

@@ -44,7 +44,7 @@ int tk_snprintf(char* str, size_t size, const char* format, ...);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 
 #define tk_str_eq(s1, s2) (*(s1) == *(s2) && strcmp((s1), (s2)) == 0)
-#define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.00001)
+#define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 END_C_DECLS
 

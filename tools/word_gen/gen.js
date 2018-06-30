@@ -8,7 +8,30 @@ let doneURLS = {};
 let maxURLS = 10000;
 let reservedPages = maxURLS;
 const maxWordsPerChar = 15;
-let rootURL = ['http://auto.sina.com.cn/guide/', 'http://auto.sina.com.cn', 'http://www.sina.com.cn/', 'https://blog.csdn.net/'];
+let rootURL = ['http://blog.sina.com.cn/', 'https://blog.csdn.net/'];
+
+function isValidURL(url) {
+  if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
+    return false;
+  }
+
+  if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('ico') >= 0) {
+    return false;
+  }
+
+  if (url.indexOf('api.') >= 0 || url.indexOf('download') >= 0) {
+    return false;
+  }
+
+  for (let i = 0; i < rootURL.length; i++) {
+    let iter = rootURL[i];
+    if (url.indexOf(iter) >= 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 function bufferWriteWord(buff, word, start) {
   let offset = start;
@@ -134,22 +157,6 @@ function addWord(w) {
   }
 }
 
-function isValidURL(url) {
-  if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
-     return false; 
-  }
-
-  if (doneURLS[url] || url.indexOf('#') >= 0 || url.indexOf('ico') >= 0) {
-    return false;
-  }
-
-  if(url.indexOf('api.') >= 0 || url.indexOf('download') >= 0 ) {
-    return false;
-  }
-
-  return true;
-}
-
 function addUrls(requestUrl, urls, c) {
   for (let i = 0; i < urls.length; i++) {
     const iter = urls[i];
@@ -157,7 +164,7 @@ function addUrls(requestUrl, urls, c) {
     const url = URL.resolve(requestUrl, href);
 
 
-    if(isValidURL(url)) {
+    if (isValidURL(url)) {
       maxURLS--;
       if (maxURLS >= 0) {
         console.log(`fetching: ${maxURLS} ${url}`);
@@ -174,16 +181,25 @@ function addWords(text) {
   const segment = new Segment()
   segment.useDefault();
 
-  const words = segment.doSegment(text);
-  words.forEach(element => {
-    addWord(element.w);
-  });
+  try {
+    const words = segment.doSegment(text);
+    words.forEach(element => {
+      addWord(element.w);
+    });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function onTaskDone(err, res, done) {
   if (reservedPages <= 0 || err) {
     outputAndQuit();
-    
+
+    done();
+    return;
+  }
+
+  if (res.body.indexOf("UTF-8") < 0 && res.body.indexOf("utf-8") < 0) {
     done();
     return;
   }
@@ -209,9 +225,9 @@ function onTaskDone(err, res, done) {
 var c = new Crawler({
   retries: 1,
   forceUTF8: false,
-  timeout:                5000,
-  callback: onTaskDone 
+  timeout: 5000,
+  skipDuplicates: true,
+  callback: onTaskDone
 });
 
 c.queue(rootURL);
-

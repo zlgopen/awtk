@@ -712,7 +712,9 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
     }
   }
 
-  return wstr_from_float(text, v);
+  wstr_add_float(text, delta);
+
+  return wstr_trim_float_zero(text);
 }
 
 static ret_t edit_add_int(edit_t* edit, int delta) {
