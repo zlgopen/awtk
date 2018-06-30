@@ -153,12 +153,7 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
   switch (input_type) {
     case INPUT_INT:
     case INPUT_UINT: {
-      if (c == '0') {
-        if (text->size > 0) {
-          wstr_push(text, c);
-        }
-        break;
-      } else if (c >= '1' && c <= '9') {
+      if (c >= '0' && c <= '9') {
         wstr_push(text, c);
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_INT)) {
@@ -171,12 +166,7 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     }
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      if (c == '0') {
-        if (text->size > 0) {
-          wstr_push(text, c);
-        }
-        break;
-      } else if (c >= '1' && c <= '9') {
+      if (c >= '0' && c <= '9') {
         wstr_push(text, c);
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_FLOAT)) {
@@ -379,6 +369,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
         v = max;
       }
       wstr_from_float(text, v);
+      wstr_trim_float_zero(text);
       break;
     }
     default:
@@ -412,6 +403,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN:
       if (edit->timer_id == 0) {
         edit->timer_id = timer_add(edit_update_caret, widget, 600);
+      }
+
+      if (widget->target == NULL) {
+        input_method_request(input_method(), widget);
       }
       edit_update_status(widget);
 
@@ -452,7 +447,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
-      input_method_request(input_method(), widget);
+      if (widget->target == NULL) {
+        input_method_request(input_method(), widget);
+      }
       break;
     }
     default:
@@ -702,17 +699,21 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
   return_value_if_fail(wstr_to_float(text, &v) == RET_OK, RET_FAIL);
 
   v += delta;
-  if (edit->auto_fix && edit->limit.u.f.min < edit->limit.u.f.max) {
+  if (edit->limit.u.f.min < edit->limit.u.f.max) {
     if (v < edit->limit.u.f.min) {
-      v = edit->limit.u.f.min;
+      wstr_from_float(text, edit->limit.u.f.min);
+    } else {
+      wstr_add_float(text, delta);
     }
 
     if (v > edit->limit.u.f.max) {
-      v = edit->limit.u.f.max;
+      wstr_from_float(text, edit->limit.u.f.max);
+    } else {
+      wstr_add_float(text, delta);
     }
+  } else {
+    wstr_add_float(text, delta);
   }
-
-  wstr_add_float(text, delta);
 
   return wstr_trim_float_zero(text);
 }
@@ -740,16 +741,24 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
 
 ret_t edit_inc(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
+  wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
 
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      if (text->size == 0) {
+        wstr_from_float(text, edit->limit.u.f.min);
+        wstr_trim_float_zero(text);
+      }
       edit_add_float(edit, edit->limit.u.f.step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      if (text->size == 0) {
+        wstr_from_int(text, edit->limit.u.i.min);
+      }
       edit_add_int(edit, edit->limit.u.i.step);
       break;
     }
@@ -762,16 +771,24 @@ ret_t edit_inc(edit_t* edit) {
 
 ret_t edit_dec(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
+  wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
 
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      if (text->size == 0) {
+        wstr_from_float(text, edit->limit.u.f.max);
+        wstr_trim_float_zero(text);
+      }
       edit_add_float(edit, -edit->limit.u.f.step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      if (text->size == 0) {
+        wstr_from_int(text, edit->limit.u.i.max);
+      }
       edit_add_int(edit, -edit->limit.u.i.step);
       break;
     }
@@ -836,7 +853,8 @@ static const widget_vtable_t s_edit_vtable = {.type_name = WIDGET_TYPE_EDIT,
                                               .get_prop = edit_get_prop,
                                               .on_event = edit_on_event};
 
-widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
+                         const widget_vtable_t* vt) {
   widget_t* widget = NULL;
   edit_t* edit = TKMEM_ZALLOC(edit_t);
   widget_t* win = widget_get_window(parent);
@@ -844,7 +862,7 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(edit != NULL, NULL);
 
   widget = WIDGET(edit);
-  widget->vt = &s_edit_vtable;
+  widget->vt = vt;
   widget_init(widget, parent, WIDGET_EDIT);
 
   edit->left_margin = 2;
@@ -858,4 +876,8 @@ widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_on(win, EVT_WINDOW_OPEN, edit_hook_children_button, edit);
 
   return widget;
+}
+
+widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return edit_create_ex(parent, x, y, w, h, &s_edit_vtable);
 }

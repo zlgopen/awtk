@@ -1,0 +1,24 @@
+<window anim_hint="htranslate" layout="h30 c1 m:2 s:2">
+ <view layout="r1 c0">
+  <label w="30%" text="Uint"/>
+  <spin_box w="70%" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true">
+  </spin_box>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="UFloat"/>
+  <spin_box w="70%" tips="ufloat(10-150) auto_fix" input_type="ufloat" min="10" max="150" step="0.1" auto_fix="true">
+  </spin_box>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Int"/>
+  <spin_box w="70%" tips="int(-100-+100) auto_fix" input_type="int" min="-100" max="100" step="5">
+  </spin_box>
+ </view>
+ <view layout="r1 c0">
+  <label w="30%" text="Float"/>
+  <spin_box w="70%" tips="float(-10-+10) auto_fix" input_type="float" min="-10" max="10" step="0.1">
+  </spin_box>
+ </view>
+ 
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>

@@ -140,6 +140,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/06/30
+    * 实现spinbox
+
 * 2018/06/29
     * 改进edit。
     * 增加edit的demo。

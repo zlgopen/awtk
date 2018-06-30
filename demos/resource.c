@@ -38,6 +38,7 @@
 #include "res/inc/ui/slide_view.data"
 #include "res/inc/ui/slide_view_h.data"
 #include "res/inc/ui/slide_view_v.data"
+#include "res/inc/ui/spinbox.data"
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
@@ -276,6 +277,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_slide_view);
   resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_slide_view_v);
+  resource_manager_add(rm, ui_spinbox);
   resource_manager_add(rm, ui_top);
   resource_manager_add(rm, ui_vtranslate);
 #endif

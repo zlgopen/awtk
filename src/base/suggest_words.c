@@ -85,23 +85,25 @@ static ret_t suggest_words_update(suggest_words_t* suggest_words, const uint8_t*
   uint32_t nr = 0;
   char sword[64];
   wchar_t word[16];
-  const uint8_t* p = data;
-  const uint16_t* p16 = (const uint16_t*)(data + 4);
 
+  suggest_words->words_nr = 0;
   wbuffer_init(&wb, (uint8_t*)(suggest_words->words), sizeof(suggest_words->words));
 
-  load_uint32(p, nr);
-  suggest_words->words_nr = 0;
+  if (data != NULL) {
+    const uint8_t* p = data;
+    const uint16_t* p16 = (const uint16_t*)(data + 4);
 
-  for (i = 0; i < nr; i++) {
-    memset(word, 0x00, sizeof(word));
-    p16 = get_str(p16, word, ARRAY_SIZE(word) - 1);
+    load_uint32(p, nr);
+    for (i = 0; i < nr; i++) {
+      memset(word, 0x00, sizeof(word));
+      p16 = get_str(p16, word, ARRAY_SIZE(word) - 1);
 
-    utf8_from_utf16(word, sword, sizeof(sword));
-    if (wbuffer_write_string(&wb, sword) != RET_OK) {
-      break;
+      utf8_from_utf16(word, sword, sizeof(sword));
+      if (wbuffer_write_string(&wb, sword) != RET_OK) {
+        break;
+      }
+      suggest_words->words_nr++;
     }
-    suggest_words->words_nr++;
   }
 
   if (suggest_words->words_nr < 5) {
@@ -119,7 +121,6 @@ ret_t suggest_words_find(suggest_words_t* suggest_words, wchar_t c) {
 
   suggest_words->words_nr = 0;
   data = suggest_words_find_data(suggest_words->res, c);
-  return_value_if_fail(data != NULL, RET_FAIL);
 
   return suggest_words_update(suggest_words, data);
 }

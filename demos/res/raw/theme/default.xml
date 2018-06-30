@@ -56,14 +56,14 @@
 </button>
 
 <edit>
-  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin="4">
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
   </style>
-  <style name="1:line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin="4">
+  <style name="1:line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" text_align_v="bottom">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />
@@ -71,6 +71,16 @@
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
   </style>
 </edit>
+
+<spin_box>
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+  </style>
+</spin_box>
 
 <label>
   <style name="default">

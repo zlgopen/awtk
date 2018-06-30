@@ -85,6 +85,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 #define WIDGET_TYPE_PAGES "pages"
 #define WIDGET_TYPE_CANDIDATES "candidates"
+#define WIDGET_TYPE_SPIN_BOX "spin_box"
 
 /**
  * @enum widget_type_t
@@ -212,6 +213,11 @@ typedef enum _widget_type_t {
    * Input method words candidates。
    */
   WIDGET_CANDIDATES,
+  /**
+   * @const WIDGET_SPIN_BOX
+   * Spin Box。
+   */
+  WIDGET_SPIN_BOX,
 
   WIDGET_NR,
   WIDGET_USER_START = 100
