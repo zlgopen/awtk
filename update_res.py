@@ -93,7 +93,7 @@ def gen_all():
   strgen_bin('strings/strings.xml', 'strings');
   resgen('fonts/default.ttf', 'fonts/default.res');
   resgen('fonts/default.mini.ttf', 'fonts/default.mini.res');
-  fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 20);
+  fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
   
   for f in glob.glob(joinPath(INPUT_DIR, 'theme/*.xml')):
     inc=copy.copy(f);
