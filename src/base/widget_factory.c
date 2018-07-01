@@ -31,6 +31,7 @@
 #include "base/edit.h"
 #include "base/pages.h"
 #include "base/view.h"
+#include "base/dragger.h"
 #include "base/keyboard.h"
 #include "base/candidates.h"
 #include "base/spin_box.h"
@@ -62,6 +63,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
     {WIDGET_TYPE_PAGES, pages_create},
     {WIDGET_TYPE_SPIN_BOX, spin_box_create},
+    {WIDGET_TYPE_DRAGGER, dragger_create},
 
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SLIDE_VIEW, slide_view_create},

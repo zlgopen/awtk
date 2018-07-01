@@ -202,6 +202,22 @@ typedef enum _event_type_t {
    */
   EVT_IM_ACTION_INFO,
   /**
+   * @const EVT_DRAG_START
+   * 开始拖动。
+   */
+  EVT_DRAG_START,
+  /**
+   * @const EVT_DRAG
+   * 拖动。
+   */
+  EVT_DRAG,
+  /**
+   * @const EVT_DRAG_END
+   * 结束拖动。
+   */
+  EVT_DRAG_END,
+
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

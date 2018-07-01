@@ -59,6 +59,10 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_YOFFSET "yoffset"
 #define WIDGET_PROP_AUTO_PLAY "auto_play"
 #define WIDGET_PROP_AUTO_FIX "auto_fix"
+#define WIDGET_PROP_X_MIN "x_min"
+#define WIDGET_PROP_X_MAX "x_max"
+#define WIDGET_PROP_Y_MIN "y_min"
+#define WIDGET_PROP_Y_MAX "y_max"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -69,7 +73,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_POPUP "popup"
 #define WIDGET_TYPE_SPRITE "sprite"
 #define WIDGET_TYPE_KEYBOARD "keyboard"
-#define WIDGET_TYPE_DRAGGER "dragger"
+#define WIDGET_TYPE_DND "dnd"
 #define WIDGET_TYPE_LABEL "label"
 #define WIDGET_TYPE_BUTTON "button"
 #define WIDGET_TYPE_IMAGE "image"
@@ -86,6 +90,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_PAGES "pages"
 #define WIDGET_TYPE_CANDIDATES "candidates"
 #define WIDGET_TYPE_SPIN_BOX "spin_box"
+#define WIDGET_TYPE_DRAGGER "dragger"
 
 /**
  * @enum widget_type_t
@@ -134,10 +139,10 @@ typedef enum _widget_type_t {
    */
   WIDGET_KEYBOARD,
   /**
-   * @const WIDGET_DRAGGER
+   * @const WIDGET_DND
    * drag & drop icon。
    */
-  WIDGET_DRAGGER,
+  WIDGET_DND,
   /**
    * @const WIDGET_LABEL
    * 简单文本。
@@ -218,6 +223,11 @@ typedef enum _widget_type_t {
    * Spin Box。
    */
   WIDGET_SPIN_BOX,
+  /**
+   * @const WIDGET_DRAGGER
+   * DRAGGER。
+   */
+  WIDGET_DRAGGER,
 
   WIDGET_NR,
   WIDGET_USER_START = 100

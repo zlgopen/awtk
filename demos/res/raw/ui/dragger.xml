@@ -1,0 +1,11 @@
+<window name="main" anim_hint="htranslate">
+  <dragger x="0" y="5" w="20" h="20" x_min="0" x_max="200" y_min="5" y_max="5">
+    <image image="earth" x="center" y="middle" w="100%" h="100%"/>
+  </dragger>
+  <dragger x="0" y="50" w="20" h="20" x_min="0" x_max="0" y_min="50" y_max="200">
+    <image image="earth" x="center" y="middle" w="100%" h="100%"/>
+  </dragger>
+  <dragger x="50" y="50" w="20" h="20" x_min="0" x_max="200" y_min="0" y_max="200">
+    <image image="earth" x="center" y="middle" w="100%" h="100%"/>
+  </dragger>
+</window>
