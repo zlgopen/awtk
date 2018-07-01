@@ -30,10 +30,11 @@ var getChunks = function (wordpos, pos, text) {
   // debug(words);
   // throw new Error();
   var ret = [];
-  getChunksCallsNr++;
-  if(getChunksCallsNr > 100) {
+  if(getChunksCallsNr > 150) {
     throw "get Chunks error";
   }
+  
+  getChunksCallsNr++;
   for (var i = 0; i < words.length; i++) {
     var word = words[i];
     //debug(word);

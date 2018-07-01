@@ -6,9 +6,10 @@ const Segment = require('segment');
 let allWords = {};
 let doneURLS = {};
 let maxURLS = 10000;
+let errorPages = 0;
 let reservedPages = maxURLS;
 const maxWordsPerChar = 15;
-let rootURL = ['http://blog.sina.com.cn/', 'https://blog.csdn.net/'];
+let rootURL = ['https://www.qisuu.la/du/', 'http://blog.sina.com.cn/', 'https://blog.csdn.net/'];
 
 function isValidURL(url) {
   if (url.indexOf('javascript:') >= 0 || url.indexOf('css') >= 0 || url.indexOf(':') > 8) {
@@ -119,7 +120,7 @@ function tidyResult() {
 
 function outputAndQuit() {
   outputWords(tidyResult());
-
+  console.log(`errorPages=${errorPages}`);
   process.exit(0);
 }
 
@@ -188,6 +189,7 @@ function addWords(text) {
     });
   } catch (e) {
     console.log(e);
+    errorPages++;
   }
 }
 
