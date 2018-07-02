@@ -949,8 +949,8 @@ ret_t widget_grab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && widget->vt != NULL, RET_BAD_PARAMS);
   if (widget->vt->grab) {
     ret = widget->vt->grab(widget, child);
-  } else {
-    ret = widget_grab_default(widget, child);
+  } else if (widget->parent) {
+    ret = widget_grab(widget->parent, child);
   }
 
   return ret;
@@ -961,8 +961,8 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
   if (widget->vt->ungrab) {
     ret = widget->vt->ungrab(widget, child);
-  } else {
-    ret = widget_ungrab_default(widget, child);
+  } else if (widget->parent) {
+    ret = widget_ungrab(widget->parent, child);
   }
 
   return ret;
