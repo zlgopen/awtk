@@ -1,0 +1,7 @@
+<window name="main" anim_hint="htranslate">
+  <scroll_bar_m x="0" y="0" w="6" h="100%" max="800" row="20" value="100"/>
+  <scroll_bar_m x="40" y="0" w="6" h="100%" max="4000" row="20" value="100"/>
+
+  <scroll_bar_d x="80" y="0" w="12" h="100%" max="800" row="20" value="100"/>
+  <scroll_bar_d x="120" y="0" w="12" h="100%" max="4000" row="20" value="100"/>
+</window>

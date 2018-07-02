@@ -1,0 +1,521 @@
+/**
+ * File:   scroll_bar.h
+ * Author: AWTK Develop Team
+ * Brief:  scroll_bar
+ *
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2018-01-28 Li XianJing <xianjimli@hotmail.com> created
+ *
+ */
+
+#include "base/mem.h"
+#include "base/utils.h"
+#include "base/button.h"
+#include "base/layout.h"
+#include "base/dragger.h"
+#include "base/scroll_bar.h"
+#include "widget_animators/widget_animator_value.h"
+#include "widget_animators/widget_animator_opacity.h"
+
+static bool_t scroll_bar_is_mobile(widget_t* widget);
+static ret_t scroll_bar_update_dragger(widget_t* widget);
+static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t delta);
+
+/*destkop*/
+
+static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
+  int32_t x = 0;
+  int32_t y = 0;
+  int32_t w = 0;
+  int32_t h = 0;
+  int32_t max = 0;
+  int32_t value = 0;
+  int32_t widget_w = widget->w;
+  int32_t widget_h = widget->h;
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+
+  max = scroll_bar->max;
+  value = scroll_bar->value;
+  if (widget_w > widget_h) {
+    /*horizon*/
+    return_value_if_fail(max >= widget_w, RET_BAD_PARAMS);
+    y = 1;
+    h = widget_h - 2;
+    w = (widget_w * widget_w) / max;
+    w = tk_max(w, 20);
+    x = (widget_w - w) * value / max;
+  } else {
+    /*vertical*/
+    return_value_if_fail(max >= widget_h, RET_BAD_PARAMS);
+    x = 1;
+    w = widget_w - 2;
+    h = (widget_h * widget_h) / max;
+    h = tk_max(h, 20);
+    y = (widget_h - h) * value / max;
+  }
+
+  r->x = x;
+  r->y = y;
+  r->w = w;
+  r->h = h;
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_mobile_on_paint_self(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  style_t* style = &(widget->style);
+  color_t trans = color_init(80, 80, 80, 0xff);
+  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+
+  return_value_if_fail(scroll_bar_mobile_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
+
+  canvas_set_fill_color(c, fg);
+  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_mobile_on_event(widget_t* widget, event_t* e) {
+  /*
+    uint16_t type = e->type;
+    scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+
+    switch (type) {
+      case EVT_POINTER_DOWN: {
+        widget_set_opacity(widget, 0xff);
+        widget_set_visible(widget, TRUE, FALSE);
+        widget_invalidate_force(widget);
+        break;
+      }
+      case EVT_POINTER_UP: {
+        pointer_event_t* pointer_event = (pointer_event_t*)(e);
+        if (pointer_event->y > 200) {
+          scroll_bar_scroll_to(widget, scroll_bar->value + 200, 1000);
+        } else {
+          scroll_bar_scroll_to(widget, scroll_bar->value - 200, 1000);
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  */
+  (void)widget;
+  (void)e;
+  return RET_OK;
+}
+
+/*destkop*/
+
+static ret_t scroll_bar_desktop_on_paint_self(widget_t* widget, canvas_t* c) {
+  (void)widget;
+  (void)c;
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
+  point_t p = {e->x, e->y};
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+
+  if (widget->target != NULL) {
+    return RET_OK;
+  }
+
+  widget_to_local(widget, &p);
+  if (widget->w > widget->h) {
+    if (p.x < scroll_bar->dragger->x) {
+      scroll_bar_add_delta(scroll_bar, -widget->w);
+    } else {
+      scroll_bar_add_delta(scroll_bar, widget->w);
+    }
+  } else {
+    if (p.y < scroll_bar->dragger->y) {
+      scroll_bar_add_delta(scroll_bar, -widget->h);
+    } else {
+      scroll_bar_add_delta(scroll_bar, widget->h);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
+  uint16_t type = e->type;
+
+  switch (type) {
+    case EVT_POINTER_UP: {
+      scroll_bar_desktop_on_click(widget, (pointer_event_t*)e);
+      break;
+    }
+    case EVT_POINTER_LEAVE:
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      break;
+    case EVT_POINTER_ENTER:
+      widget_set_state(widget, WIDGET_STATE_OVER);
+      break;
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
+  int32_t x = 0;
+  int32_t y = 0;
+  int32_t w = 0;
+  int32_t h = 0;
+  int32_t max = 0;
+  int32_t value = 0;
+  int32_t widget_w = widget->w;
+  int32_t widget_h = widget->h;
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+
+  max = scroll_bar->max;
+  value = scroll_bar->value;
+  if (widget_w > widget_h) {
+    int32_t max_bar_w = widget_w - 2 * widget_h;
+    /*horizon*/
+    return_value_if_fail(max >= widget_w, RET_BAD_PARAMS);
+    y = 1;
+    h = widget_h - 2;
+    w = (widget_w * max_bar_w) / max;
+    w = tk_max(w, 20);
+    x = (widget_w - w - 2 * widget_h) * value / max + widget_h;
+  } else {
+    /*vertical*/
+    int32_t max_bar_h = widget_h - 2 * widget_w;
+    return_value_if_fail(max >= widget_h, RET_BAD_PARAMS);
+    x = 1;
+    w = widget_w - 2;
+    h = (widget_h * max_bar_h) / max;
+    h = tk_max(h, 20);
+    y = (widget_h - h - 2 * widget_w) * value / max + widget_w;
+  }
+
+  r->x = x;
+  r->y = y;
+  r->w = w;
+  r->h = h;
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t delta) {
+  widget_t* widget = WIDGET(scroll_bar);
+  int32_t new_value = scroll_bar->value + delta;
+
+  new_value = tk_max(new_value, 0);
+  new_value = tk_min(new_value, scroll_bar->max);
+
+  delta = tk_abs((int)(scroll_bar->value) - new_value);
+
+  if (delta > scroll_bar->row) {
+    scroll_bar_scroll_to(widget, new_value, 500);
+  } else {
+    scroll_bar_set_value(widget, new_value);
+    scroll_bar_update_dragger(widget);
+  }
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_on_up_button_clicked(void* ctx, event_t* e) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+
+  scroll_bar_add_delta(scroll_bar, -scroll_bar->row);
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_on_down_button_clicked(void* ctx, event_t* e) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+
+  scroll_bar_add_delta(scroll_bar, scroll_bar->row);
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
+  int32_t value = 0;
+  widget_t* widget = WIDGET(ctx);
+  int32_t widget_w = widget->w;
+  int32_t widget_h = widget->h;
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  widget_t* dragger = scroll_bar->dragger;
+
+  if (widget_w > widget_h) {
+    int32_t x = scroll_bar->dragger->x;
+    int32_t max_x = (widget_w - 2 * widget_h - dragger->w);
+    value = (x - widget_h) * scroll_bar->max / max_x;
+  } else {
+    int32_t y = scroll_bar->dragger->y;
+    int32_t max_y = (widget_h - 2 * widget_w - dragger->h);
+    value = (y - widget_w) * scroll_bar->max / max_y;
+  }
+  scroll_bar_set_value(widget, value);
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_create_children(widget_t* widget) {
+  rect_t r;
+  char str[16];
+  widget_t* up = NULL;
+  widget_t* down = NULL;
+  widget_t* dragger = NULL;
+  int32_t widget_w = widget->w;
+  int32_t widget_h = widget->h;
+
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
+
+  up = button_create(widget, 0, 0, 0, 0);
+  widget_set_name(up, "up");
+  widget_on(up, EVT_CLICK, scroll_bar_on_up_button_clicked, widget);
+
+  down = button_create(widget, 0, 0, 0, 0);
+  widget_set_name(down, "down");
+  widget_on(down, EVT_CLICK, scroll_bar_on_down_button_clicked, widget);
+
+  dragger = dragger_create(widget, r.x, r.y, r.w, r.h);
+  widget_set_name(dragger, "dragger");
+  widget_use_style(dragger, "1:scroll_bar");
+  widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
+
+  if (widget->w > widget->h) {
+    int32_t max_x = widget_h + (widget_w - 2 * widget_h - r.w);
+
+    tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->h));
+
+    widget_use_style(up, "13:scroll_left");
+    widget_set_self_layout_params(up, "0", "0", str, "100%");
+
+    widget_use_style(down, "14:scroll_right");
+    widget_set_self_layout_params(down, "right", "0", str, "100%");
+
+    dragger_set_range(dragger, widget_h, r.y, max_x, r.y);
+  } else {
+    int32_t max_y = widget_w + (widget_h - 2 * widget_w - r.h);
+
+    widget_use_style(up, "12:scroll_up");
+    tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->w));
+    widget_set_self_layout_params(up, "0", "0", "100%", str);
+
+    widget_use_style(down, "11:scroll_down");
+    widget_set_self_layout_params(down, "0", "bottom", "100%", str);
+
+    dragger_set_range(dragger, r.x, widget_w, r.x, max_y);
+  }
+  scroll_bar->dragger = dragger;
+  widget_layout(widget);
+  widget_invalidate_force(widget);
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_on_window_open(void* ctx, event_t* e) {
+  scroll_bar_create_children(WIDGET(ctx));
+  (void)e;
+
+  return RET_REMOVE;
+}
+
+/*share*/
+ret_t scroll_bar_set_params(widget_t* widget, uint32_t max, uint32_t row) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  scroll_bar->max = max;
+  scroll_bar->row = row;
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    value_set_int(v, scroll_bar->max);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ROW)) {
+    value_set_int(v, scroll_bar->row);
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_int(v, scroll_bar->value);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    scroll_bar->max = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ROW)) {
+    scroll_bar->row = value_int(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    scroll_bar_set_value(widget, value_int(v));
+    scroll_bar_update_dragger(widget);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static const widget_vtable_t s_scroll_bar_mobile_vtable = {
+    .type_name = WIDGET_TYPE_SCROLL_BAR,
+    .on_event = scroll_bar_mobile_on_event,
+    .set_prop = scroll_bar_set_prop,
+    .get_prop = scroll_bar_get_prop,
+    .on_paint_self = scroll_bar_mobile_on_paint_self};
+
+static const widget_vtable_t s_scroll_bar_desktop_vtable = {
+    .type_name = WIDGET_TYPE_SCROLL_BAR,
+    .on_event = scroll_bar_desktop_on_event,
+    .set_prop = scroll_bar_set_prop,
+    .get_prop = scroll_bar_get_prop,
+    .on_paint_self = scroll_bar_desktop_on_paint_self};
+
+static bool_t scroll_bar_is_mobile(widget_t* widget) {
+  return widget->vt == &s_scroll_bar_mobile_vtable;
+}
+
+static ret_t scroll_bar_on_animate_end(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+
+  scroll_bar->wa_value = NULL;
+  scroll_bar->wa_opactiy = NULL;
+
+  if (scroll_bar_is_mobile(widget)) {
+    widget_set_visible(widget, FALSE, FALSE);
+  }
+
+  return RET_REMOVE;
+}
+
+ret_t scroll_bar_scroll_to(widget_t* widget, uint32_t value, uint32_t duration) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (scroll_bar->value == value) {
+    return RET_OK;
+  }
+
+  widget_set_opacity(widget, 0xff);
+  widget_set_visible(widget, TRUE, FALSE);
+  widget_invalidate_force(widget);
+
+  if (scroll_bar->wa_value != NULL) {
+    widget_animator_destroy(scroll_bar->wa_value);
+    scroll_bar->wa_value = NULL;
+  }
+
+  if (scroll_bar->wa_opactiy != NULL) {
+    widget_animator_destroy(scroll_bar->wa_opactiy);
+    scroll_bar->wa_value = NULL;
+  }
+
+  scroll_bar->wa_value = widget_animator_value_create(widget, duration, 0, EASING_SIN_INOUT);
+  return_value_if_fail(scroll_bar->wa_value != NULL, RET_OOM);
+  widget_animator_value_set_params(scroll_bar->wa_value, scroll_bar->value, value);
+  widget_animator_start(scroll_bar->wa_value);
+  widget_animator_on(scroll_bar->wa_value, EVT_ANIM_END, scroll_bar_on_animate_end, scroll_bar);
+
+  if (scroll_bar_is_mobile(widget)) {
+    scroll_bar->wa_opactiy = widget_animator_opacity_create(widget, duration, 0, EASING_SIN_INOUT);
+    widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
+    widget_animator_start(scroll_bar->wa_opactiy);
+  } else {
+    scroll_bar->wa_opactiy = NULL;
+  }
+
+  return RET_OK;
+}
+
+static ret_t scroll_bar_update_dragger(widget_t* widget) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+
+  if (!scroll_bar_is_mobile(widget)) {
+    rect_t r;
+    return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
+    widget_move_resize(scroll_bar->dragger, r.x, r.y, r.w, r.h);
+  }
+
+  return RET_OK;
+}
+
+ret_t scroll_bar_set_value(widget_t* widget, int32_t value) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (value < 0) {
+    value = 0;
+  }
+
+  if (value > scroll_bar->max) {
+    value = scroll_bar->max;
+  }
+
+  if (scroll_bar->value != value) {
+    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+
+    scroll_bar->value = value;
+    widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+/*create*/
+
+static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
+                                            const widget_vtable_t* vt) {
+  scroll_bar_t* scroll_bar = TKMEM_ZALLOC(scroll_bar_t);
+  widget_t* widget = WIDGET(scroll_bar);
+  return_value_if_fail(scroll_bar != NULL, NULL);
+
+  widget->vt = vt;
+  widget_init(widget, parent, WIDGET_SCROLL_BAR);
+  widget_move_resize(widget, x, y, w, h);
+
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+
+  return widget;
+}
+
+widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return scroll_bar_create_internal(parent, x, y, w, h, &s_scroll_bar_mobile_vtable);
+}
+
+widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* win = widget_get_window(parent);
+  widget_t* widget = scroll_bar_create_internal(parent, x, y, w, h, &s_scroll_bar_desktop_vtable);
+  widget_on(win, EVT_WINDOW_OPEN, scroll_bar_on_window_open, widget);
+  widget_use_style(widget, "1:destkop");
+
+  return widget;
+}
+
+widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return scroll_bar_create_mobile(parent, x, y, w, h);
+}

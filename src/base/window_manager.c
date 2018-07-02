@@ -198,8 +198,10 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL, NULL);
 
-  if (wm->graps.size > 0) {
-    return (widget_t*)(wm->graps.elms[wm->graps.size - 1]);
+  if (wm->grab_widgets.size > 0) {
+    widget_t* target = WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
+    log_debug("target:%s\n", target->name.str);
+    return target;
   }
 
   widget_to_local(widget, &p);
@@ -361,14 +363,14 @@ static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  return array_push(&(wm->graps), child);
+  return array_push(&(wm->grab_widgets), child);
 }
 
 static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  return array_remove(&(wm->graps), NULL, child, NULL);
+  return array_remove(&(wm->grab_widgets), NULL, child, NULL);
 }
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
@@ -469,7 +471,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   w->vt = &s_wm_vtable;
   widget_init(w, NULL, WIDGET_WINDOW_MANAGER);
-  array_init(&(wm->graps), 5);
+  array_init(&(wm->grab_widgets), 5);
 
 #ifdef WITH_DYNAMIC_TR
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);

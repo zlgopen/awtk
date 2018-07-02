@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   input_method_default.c
  * Author: AWTK Develop Team
  * Brief:  input method default
@@ -140,7 +140,7 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       open_anim = FALSE;
     }
   }
-  im->input_type = input_type;
+  im->input_type = (input_type_t)input_type;
 
   return input_type_open_keyboard(im, input_type, open_anim);
 }

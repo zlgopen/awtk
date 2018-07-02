@@ -53,6 +53,30 @@
   <style name="10:grid_item" border_color="#a0a0a0"  text_color="black">
     <pressed    bg_color="#c0c0c0" />
   </style>
+  
+  <style name="11:scroll_down" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
+  </style>
+
+  <style name="12:scroll_up" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_up_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_up_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
+  </style>
+  
+  <style name="13:scroll_left" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_left_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_left_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_left_o"/>
+  </style>
+  
+  <style name="14:scroll_right" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_right_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_right_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_right_o"/>
+  </style>
 </button>
 
 <edit>
@@ -213,3 +237,23 @@
   </style>
 </dialog_client>
 
+<scroll_bar>
+  <style name="default">
+    <normal bg_color="#c0c0c0" fg_color="#808080"/>
+    <over bg_color="#c0c0c0" fg_color="#808080"/>
+    <pressed bg_color="#c0c0c0" fg_color="#808080"/>
+  </style>
+  <style name="1:destkop" border_color="gray">
+    <normal bg_color="#f0f0f0"/>
+    <over bg_color="#f0f0f0" />
+    <pressed bg_color="#f0f0f0" />
+  </style>
+</scroll_bar>
+
+<dragger>
+  <style name="1:scroll_bar" >
+    <normal     bg_color="#c0c0c0" />
+    <pressed    bg_color="#b0b0b0" />
+    <over       bg_color="#a0a0a0" />
+  </style>
+<dragger>

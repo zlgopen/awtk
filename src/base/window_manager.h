@@ -36,7 +36,7 @@ BEGIN_C_DECLS
 typedef struct _window_manager_t {
   widget_t widget;
 
-  array_t graps;
+  array_t grab_widgets;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
 

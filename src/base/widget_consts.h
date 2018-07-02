@@ -63,6 +63,8 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_X_MAX "x_max"
 #define WIDGET_PROP_Y_MIN "y_min"
 #define WIDGET_PROP_Y_MAX "y_max"
+#define WIDGET_PROP_MAX "max"
+#define WIDGET_PROP_ROW "row"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -91,6 +93,9 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_CANDIDATES "candidates"
 #define WIDGET_TYPE_SPIN_BOX "spin_box"
 #define WIDGET_TYPE_DRAGGER "dragger"
+#define WIDGET_TYPE_SCROLL_BAR "scroll_bar"
+#define WIDGET_TYPE_SCROLL_BAR_DESKTOP "scroll_bar_d"
+#define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
 
 /**
  * @enum widget_type_t
@@ -225,9 +230,14 @@ typedef enum _widget_type_t {
   WIDGET_SPIN_BOX,
   /**
    * @const WIDGET_DRAGGER
-   * DRAGGER。
+   * Dragger。
    */
   WIDGET_DRAGGER,
+  /**
+   * @const WIDGET_SCROLL_BAR
+   * Dragger。
+   */
+  WIDGET_SCROLL_BAR,
 
   WIDGET_NR,
   WIDGET_USER_START = 100
