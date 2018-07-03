@@ -608,7 +608,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (input_type == INPUT_INT || input_type == INPUT_UINT) {
       edit->limit.u.i.min = value_int(v);
     } else if (input_type == INPUT_TEXT) {
-      edit->limit.u.t.min = value_uint32(v);
+      edit->limit.u.t.min = value_int(v);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->limit.u.f.min = value_float(v);
     } else {
@@ -619,7 +619,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (input_type == INPUT_INT || input_type == INPUT_UINT) {
       edit->limit.u.i.max = value_int(v);
     } else if (input_type == INPUT_TEXT) {
-      edit->limit.u.t.max = value_uint32(v);
+      edit->limit.u.t.max = value_int(v);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->limit.u.f.max = value_float(v);
     } else {
