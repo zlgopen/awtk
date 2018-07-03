@@ -352,7 +352,11 @@ ret_t widget_layout_children(widget_t* widget) {
 
       for (i = 0; i < n; i++) {
         iter = children[i];
-        return_value_if_fail(y <= widget->h, RET_BAD_PARAMS);
+
+        if(y >= widget->h || x >= widget->w) {
+          widget_set_visible(iter, FALSE, FALSE);
+          continue;
+        }
 
         widget_move_resize(iter, x, y, item_w, item_h);
         c++;
@@ -364,9 +368,7 @@ ret_t widget_layout_children(widget_t* widget) {
         } else {
           x += item_w + spacing;
         }
-      }
-
-      for (i = 0; i < n; i++) {
+        
         widget_layout_children(children[i]);
       }
 
