@@ -4,7 +4,7 @@
 
 #ifndef HAS_STD_MALLOC
 
-void* operator new(std::size_t size)  {
+void* operator new(std::size_t size) {
   if (size >= MAX_SIZE) {
     size = size;
     throw std::bad_alloc();

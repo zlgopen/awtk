@@ -101,6 +101,12 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     value_set_int(v, dialog->margin);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
+    value_set_str(v, dialog->theme.str);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
+    value_set_str(v, dialog->script.str);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -122,6 +128,12 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     dialog->margin = value_int(v);
     dialog_on_relayout_children(widget);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
+    str_from_value(&(dialog->theme), v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
+    str_from_value(&(dialog->script), v);
     return RET_OK;
   }
 
@@ -146,6 +158,8 @@ static ret_t dialog_on_relayout_children(widget_t* widget) {
 static ret_t dialog_destroy(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
 
+  str_reset(&(dialog->theme));
+  str_reset(&(dialog->script));
   str_reset(&(dialog->anim_hint));
 
   return RET_OK;
@@ -177,6 +191,8 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   dialog->margin = 0;
   widget_update_style(widget);
   str_init(&(dialog->anim_hint), 0);
+  str_init(&(dialog->theme), 0);
+  str_init(&(dialog->script), 0);
   dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
   dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
   dialog_on_relayout_children(widget);

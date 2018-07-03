@@ -65,6 +65,8 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_Y_MAX "y_max"
 #define WIDGET_PROP_MAX "max"
 #define WIDGET_PROP_ROW "row"
+#define WIDGET_PROP_THEME "theme"
+#define WIDGET_PROP_SCRIPT "script"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"

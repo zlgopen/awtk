@@ -1,4 +1,4 @@
-<keyboard name="keyboard" x="0" y="bottom" w="100%" h="30%">
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="30%">
   <pages x="0" y="0" w="100%" h="100%" active="0">
     <view name="upper" x="0" y="0" w="100%" h="100%" layout="rows:3 cols:6 spacing:2 margin:4">
         <button name="0" text="0"/>

@@ -1085,11 +1085,17 @@ ret_t widget_invalidate_force(widget_t* widget) {
 }
 
 const void* widget_get_window_theme(widget_t* widget) {
+  value_t v;
+  const char* name = NULL;
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, NULL);
 
-  if (win->name.size) {
-    const char* name = win->name.str;
+  name = win->name.str;
+  if (widget_get_prop(win, WIDGET_PROP_THEME, &v) == RET_OK && value_str(&v) != NULL) {
+    name = value_str(&v);
+  }
+
+  if (name != NULL) {
     const resource_info_t* res =
         resource_manager_ref(resource_manager(), RESOURCE_TYPE_THEME, name);
     if (res != NULL) {

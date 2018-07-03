@@ -199,9 +199,7 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   return_value_if_fail(widget != NULL, NULL);
 
   if (wm->grab_widgets.size > 0) {
-    widget_t* target = WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
-    log_debug("target:%s\n", target->name.str);
-    return target;
+    return WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
   }
 
   widget_to_local(widget, &p);

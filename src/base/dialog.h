@@ -41,6 +41,8 @@ typedef struct _dialog_t {
   uint32_t margin;
   uint32_t quit_code;
   str_t anim_hint;
+  str_t theme;
+  str_t script;
 } dialog_t;
 
 /**

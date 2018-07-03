@@ -46,6 +46,9 @@ static ret_t keyboard_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
     value_set_str(v, keyboard->close_anim_hint.str);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
+    value_set_str(v, keyboard->theme.str);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -65,6 +68,9 @@ static ret_t keyboard_set_prop(widget_t* widget, const char* name, const value_t
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
     str_from_value(&(keyboard->close_anim_hint), v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
+    str_from_value(&(keyboard->theme), v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -73,6 +79,10 @@ static ret_t keyboard_set_prop(widget_t* widget, const char* name, const value_t
 static ret_t keyboard_destroy_default(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   input_method_off(input_method(), keyboard->action_info_id);
+
+  str_reset(&(keyboard->open_anim_hint));
+  str_reset(&(keyboard->close_anim_hint));
+  str_reset(&(keyboard->theme));
 
   return RET_OK;
 }
@@ -97,6 +107,9 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
     parent = window_manager();
   }
 
+  str_init(&(keyboard->theme), 0);
+  str_init(&(keyboard->open_anim_hint), 0);
+  str_init(&(keyboard->close_anim_hint), 0);
   widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
 
