@@ -1,5 +1,5 @@
 <window name="main" anim_hint="htranslate">
-  <scroll_view x="20"  y="20" w="200" h="200" virtual_w="200" virtual_h="400" yoffset="100" layout="h30 c1 m:2 s:2">
+  <scroll_view x="0"  y="20" w="100%" h="200" virtual_w="200" virtual_h="400" yoffset="100" layout="h30 c1 m:2 s:2">
     <button text="0" />
     <button text="1" />
     <button text="2" />

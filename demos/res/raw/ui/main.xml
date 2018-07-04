@@ -5,6 +5,7 @@
     <button name="open:button" x="10" y="5" w="25%" h="30" text="Buttons"/>
     <button name="open:edit" x="10" y="5" w="25%" h="30" text="Edits"/>
     <button name="open:keyboard" x="10" y="5" w="25%" h="30" text="KeyBoard"/>
+    <button name="open:scroll_view_v" x="10" y="5" w="25%" h="30" text="ScrollView"/>
     <button name="open:slide_view" x="center" y="5" w="25%" h="30" text="SlideView"/>
     <button name="open:animation" x="right:10" y="5" w="25%" h="30" text="Animate Window"/>
     <button name="open:animator" x="right:10" y="5" w="25%" h="30" text="Animate Widget"/>

@@ -205,10 +205,10 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W) || tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
-    value_set_int(v, scroll_view->virtual_w);
+    value_set_int(v, tk_max(widget->w, scroll_view->virtual_w));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H) || tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
-    value_set_int(v, scroll_view->virtual_h);
+    value_set_int(v, tk_max(widget->h, scroll_view->virtual_h));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, scroll_view->xoffset);
