@@ -109,8 +109,8 @@ typedef ret_t (*widget_on_click_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_move_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_up_t)(widget_t* widget, pointer_event_t* e);
-typedef ret_t (*widget_on_add_child)(widget_t* widget, widget_t* child);
-typedef ret_t (*widget_on_remove_child)(widget_t* widget, widget_t* child);
+typedef ret_t (*widget_on_add_child_t)(widget_t* widget, widget_t* child);
+typedef ret_t (*widget_on_remove_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
@@ -136,8 +136,8 @@ typedef struct _widget_vtable_t {
   widget_on_pointer_up_t on_pointer_up;
   widget_on_layout_children_t on_layout_children;
   widget_invalidate_t invalidate;
-  widget_on_add_child add_child;
-  widget_on_remove_child remove_child;
+  widget_on_add_child_t on_add_child;
+  widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
   widget_grab_t grab;
   widget_ungrab_t ungrab;
@@ -378,19 +378,19 @@ ret_t widget_update_style(widget_t* widget);
  * 获取子控件的个数。
  * @param {widget_t*} widget 控件对象。
  *
- * @return {uint32_t} 子控件的个数。
+ * @return {int32_t} 子控件的个数。
  */
-uint32_t widget_count_children(widget_t* widget);
+int32_t widget_count_children(widget_t* widget);
 
 /**
  * @method widget_get_child
  * 获取指定索引的子控件。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t}  index 索引
+ * @param {int32_t}  index 索引
  *
  * @return {widget_t*} 子控件。
  */
-widget_t* widget_get_child(widget_t* widget, uint32_t index);
+widget_t* widget_get_child(widget_t* widget, int32_t index);
 
 /**
  * @method widget_move
@@ -431,11 +431,11 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * @method widget_set_value
  * 设置控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t}  value 值
+ * @param {int32_t}  value 值
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_value(widget_t* widget, uint32_t value);
+ret_t widget_set_value(widget_t* widget, int32_t value);
 
 /**
  * @method widget_use_style
@@ -491,9 +491,9 @@ ret_t widget_re_translate_text(widget_t* widget);
  * 获取控件的值。只是对widget_get_prop的包装，值的意义由子类控件决定。
  * @param {widget_t*} widget 控件对象。
  *
- * @return {uint32_t} 返回值。
+ * @return {int32_t} 返回值。
  */
-uint32_t widget_get_value(widget_t* widget);
+int32_t widget_get_value(widget_t* widget);
 
 /**
  * @method widget_get_text
@@ -678,20 +678,20 @@ ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
- * @return {uint32_t} 返回id，用于widget_off。
+ * @return {int32_t} 返回id，用于widget_off。
  */
-uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_off
  * 注销指定事件的处理函数。
  * @scriptable custom
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} id widget_on返回的ID。
+ * @param {int32_t} id widget_on返回的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_off(widget_t* widget, uint32_t id);
+ret_t widget_off(widget_t* widget, int32_t id);
 
 /**
  * @method widget_child_on
@@ -703,10 +703,10 @@ ret_t widget_off(widget_t* widget, uint32_t id);
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
- * @return {uint32_t} 返回id，用于widget_off。
+ * @return {int32_t} 返回id，用于widget_off。
  */
-uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
-                         event_func_t on_event, void* ctx);
+int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
+                        event_func_t on_event, void* ctx);
 
 /**
  * @method widget_on
@@ -717,9 +717,9 @@ uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
- * @return {uint32_t} 返回id，用于widget_off。
+ * @return {int32_t} 返回id，用于widget_off。
  */
-uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 /**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。

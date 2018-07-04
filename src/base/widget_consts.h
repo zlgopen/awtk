@@ -71,6 +71,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ROW "row"
 #define WIDGET_PROP_THEME "theme"
 #define WIDGET_PROP_SCRIPT "script"
+#define WIDGET_PROP_ITEM_HEIGHT "item_height"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -103,6 +104,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SCROLL_BAR_DESKTOP "scroll_bar_d"
 #define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
 #define WIDGET_TYPE_SCROLL_VIEW "scroll_view"
+#define WIDGET_TYPE_LIST_VIEW "list_view"
 
 /**
  * @enum widget_type_t
@@ -250,6 +252,11 @@ typedef enum _widget_type_t {
    * Scroll View。
    */
   WIDGET_SCROLL_VIEW,
+  /**
+   * @const WIDGET_LIST_VIEW
+   * Scroll View。
+   */
+  WIDGET_LIST_VIEW,
 
   WIDGET_NR,
   WIDGET_USER_START = 100

@@ -38,6 +38,7 @@
 #include "base/group_box.h"
 #include "base/scroll_bar.h"
 #include "base/scroll_view.h"
+#include "base/list_view.h"
 #include "base/slide_view.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
@@ -68,6 +69,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_DRAGGER, dragger_create},
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SCROLL_VIEW, scroll_view_create},
+    {WIDGET_TYPE_LIST_VIEW, list_view_create},
     {WIDGET_TYPE_SCROLL_BAR, scroll_bar_create},
     {WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop},
     {WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile},

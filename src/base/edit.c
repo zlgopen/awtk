@@ -591,7 +591,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     value_set_int(v, edit->bottom_margin);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_TIPS) == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_wstr(v, edit->tips.str);
     return RET_OK;
   }

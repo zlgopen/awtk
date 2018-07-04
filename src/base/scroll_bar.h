@@ -35,9 +35,24 @@ BEGIN_C_DECLS
  */
 typedef struct _scroll_bar_t {
   widget_t widget;
-  uint32_t max;
-  uint32_t value;
-  uint32_t row;
+  /**
+   * @property {int32_t} max
+   * @readonly
+   * 最大值。
+   */
+  int32_t max;
+  /**
+   * @property {int32_t} value
+   * @readonly
+   * 当前的值。
+   */
+  int32_t value;
+  /**
+   * @property {int32_t} row
+   * @readonly
+   * 行的高度。
+   */
+  int32_t row;
   widget_t* dragger;
   widget_animator_t* wa_value;
   widget_animator_t* wa_opactiy;
@@ -56,22 +71,76 @@ typedef struct _scroll_bar_t {
  * @return {widget_t*} 对象。
  */
 widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
- * @method scroll_bar_set_range
- * 创建scroll_bar对象
- * @param {widget_t*} widget scroll_bar控件。
- * @param {uint32_t} max 最大值。
- * @param {uint32_t} row 每一行的高度。
+ * @method scroll_bar_create_mobile
+ * @constructor
+ * 创建mobile风格的scroll_bar对象
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
  *
  * @return {widget_t*} 对象。
  */
-ret_t scroll_bar_set_params(widget_t* widget, uint32_t max, uint32_t row);
+widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
-ret_t scroll_bar_scroll_to(widget_t* widget, uint32_t value, uint32_t duration);
+/**
+ * @method scroll_bar_create_desktop
+ * @constructor
+ * 创建desktop风格的scroll_bar对象
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method scroll_bar_set_params
+ * 设置参数。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} max 最大值。
+ * @param {int32_t} row 每一行的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_params(widget_t* widget, int32_t max, int32_t row);
+
+/**
+ * @method scroll_bar_scroll_to
+ * 滚动到指定的值。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} value 值。
+ * @param {int32_t} duration 时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration);
+
+/**
+ * @method scroll_bar_set_value
+ * 设置值，并触发EVT_VALUE_CHANGED事件。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t scroll_bar_set_value(widget_t* widget, int32_t value);
+
+/**
+ * @method scroll_bar_set_value_only
+ * 设置值，但不触发EVT_VALUE_CHANGED事件。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
 
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(widget))
 

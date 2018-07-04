@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/utils.h"
+#include "base/layout.h"
 #include "base/velocity.h"
 #include "base/scroll_view.h"
 #include "base/widget_vtable.h"
@@ -50,6 +51,47 @@ ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
   }
 
   return RET_OK;
+}
+
+static ret_t scroll_view_update_virtual_size(widget_t* widget) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  int32_t virtual_w = tk_max(scroll_view->virtual_w, widget->w);
+  int32_t virtual_h = tk_max(scroll_view->virtual_h, widget->h);
+
+  if (widget->children != NULL) {
+    int32_t i = 0;
+    int32_t n = 0;
+    for (i = 0, n = widget->children->size; i < n; i++) {
+      widget_t* iter = (widget_t*)(widget->children->elms[i]);
+      int32_t r = iter->x + iter->w;
+      int32_t b = iter->y + iter->h;
+      if (r > virtual_w) {
+        virtual_w = r;
+      }
+
+      if (b > virtual_h) {
+        virtual_h = b;
+      }
+    }
+  }
+
+  scroll_view->virtual_w = virtual_w;
+  scroll_view->virtual_h = virtual_h;
+
+  return RET_OK;
+}
+
+static ret_t scroll_view_on_layout_children(widget_t* widget) {
+  ret_t ret = RET_OK;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+
+  if (scroll_view->on_layout_children) {
+    ret = scroll_view->on_layout_children(widget);
+  } else {
+    ret = widget_layout_children_default(widget);
+  }
+
+  return scroll_view_update_virtual_size(widget);
 }
 
 ret_t scroll_view_invalidate_self(widget_t* widget) {
@@ -83,6 +125,30 @@ static ret_t scroll_view_on_scroll_done(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t scroll_view_fix_end_offset_default(widget_t* widget) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  int32_t xoffset_end = scroll_view->xoffset_end;
+  int32_t yoffset_end = scroll_view->yoffset_end;
+
+  xoffset_end = tk_max(xoffset_end, 0);
+  yoffset_end = tk_max(yoffset_end, 0);
+  xoffset_end = tk_min(xoffset_end, (scroll_view->virtual_w - widget->w));
+  yoffset_end = tk_min(yoffset_end, (scroll_view->virtual_h - widget->h));
+
+  if (scroll_view->virtual_w <= widget->w) {
+    xoffset_end = 0;
+  }
+
+  if (scroll_view->virtual_h <= widget->h) {
+    yoffset_end = 0;
+  }
+
+  scroll_view->xoffset_end = xoffset_end;
+  scroll_view->yoffset_end = yoffset_end;
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -93,8 +159,8 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
     int xv = v->xv;
     int32_t xoffset = scroll_view->xoffset;
     int32_t yoffset = scroll_view->yoffset;
-    int32_t xoffset_end = xoffset - xv;
-    int32_t yoffset_end = yoffset - yv;
+    scroll_view->xoffset_end = xoffset - xv;
+    scroll_view->yoffset_end = yoffset - yv;
 
     if (scroll_view->wa != NULL) {
       widget_animator_destroy(scroll_view->wa);
@@ -102,23 +168,14 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
     }
 
     scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
-
     return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
 
-    xoffset_end = tk_max(xoffset_end, 0);
-    yoffset_end = tk_max(yoffset_end, 0);
-    xoffset_end = tk_min(xoffset_end, (scroll_view->virtual_w - widget->w));
-    yoffset_end = tk_min(yoffset_end, (scroll_view->virtual_h - widget->h));
-
-    if (scroll_view->virtual_w <= widget->w) {
-      xoffset_end = 0;
+    if (scroll_view->fix_end_offset) {
+      scroll_view->fix_end_offset(widget);
     }
 
-    if (scroll_view->virtual_h <= widget->h) {
-      yoffset_end = 0;
-    }
-
-    widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, xoffset_end, yoffset_end);
+    widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, scroll_view->xoffset_end,
+                                      scroll_view->yoffset_end);
     widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
     widget_animator_start(scroll_view->wa);
   }
@@ -248,6 +305,7 @@ static const widget_vtable_t s_scroll_view_vtable = {
     .type_name = WIDGET_TYPE_SCROLL_VIEW,
     .on_event = scroll_view_on_event,
     .invalidate = scroll_view_invalidate,
+    .on_layout_children = scroll_view_on_layout_children,
     .on_paint_children = scroll_view_on_paint_children,
     .get_prop = scroll_view_get_prop,
     .set_prop = scroll_view_set_prop};
@@ -261,6 +319,7 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_scroll_view_vtable;
   widget_init(widget, parent, WIDGET_SCROLL_VIEW);
   widget_move_resize(widget, x, y, w, h);
+  scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
 
   return widget;
 }
@@ -279,6 +338,17 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_h = h;
+
+  return RET_OK;
+}
+
+ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+
+  scroll_view->xoffset = xoffset;
+  scroll_view->yoffset = yoffset;
+
+  scroll_view_invalidate_self(widget);
 
   return RET_OK;
 }

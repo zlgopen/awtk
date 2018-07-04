@@ -293,10 +293,6 @@ ret_t widget_layout_children_default(widget_t* widget) {
     layout_h = widget->h;
   }
 
-  if (widget->vt->on_layout_children != NULL) {
-    return widget->vt->on_layout_children(widget);
-  }
-
   n = widget->children->size;
   children = (widget_t**)(widget->children->elms);
 

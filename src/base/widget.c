@@ -70,7 +70,7 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
   return RET_OK;
 }
 
-ret_t widget_set_value(widget_t* widget, uint32_t value) {
+ret_t widget_set_value(widget_t* widget, int32_t value) {
   value_t v;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -123,8 +123,8 @@ ret_t widget_re_translate_text(widget_t* widget) {
   }
 
   if (widget->children != NULL) {
-    uint32_t i = 0;
-    uint32_t n = 0;
+    int32_t i = 0;
+    int32_t n = 0;
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
       widget_re_translate_text(iter);
@@ -137,7 +137,7 @@ ret_t widget_re_translate_text(widget_t* widget) {
 #endif /*WITH_DYNAMIC_TR*/
 }
 
-uint32_t widget_get_value(widget_t* widget) {
+int32_t widget_get_value(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, 0);
 
@@ -244,8 +244,8 @@ ret_t widget_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
 }
 
 ret_t widget_destroy_children(widget_t* widget) {
-  uint32_t i = 0;
-  uint32_t n = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->children != NULL) {
@@ -267,8 +267,8 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     widget->children = array_create(4);
   }
 
-  if (widget->vt->add_child) {
-    if (widget->vt->add_child(widget, child) == RET_OK) {
+  if (widget->vt->on_add_child) {
+    if (widget->vt->on_add_child(widget, child) == RET_OK) {
       return RET_OK;
     }
   }
@@ -287,8 +287,8 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  if (widget->vt->remove_child) {
-    if (widget->vt->remove_child(widget, child) == RET_OK) {
+  if (widget->vt->on_remove_child) {
+    if (widget->vt->on_remove_child(widget, child) == RET_OK) {
       return RET_OK;
     }
   }
@@ -297,8 +297,8 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
-  uint32_t i = 0;
-  uint32_t n = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   if (widget->children != NULL) {
@@ -318,8 +318,8 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
 }
 
 static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
-  uint32_t i = 0;
-  uint32_t n = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   if (widget->children != NULL) {
@@ -360,8 +360,8 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
 }
 
 static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
-  uint32_t i = 0;
-  uint32_t n = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->visible = visible;
@@ -413,7 +413,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return ret;
 }
 
-uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
+int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   if (widget->emitter == NULL) {
     widget->emitter = emitter_create();
@@ -422,12 +422,12 @@ uint32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, v
   return emitter_on(widget->emitter, type, on_event, ctx);
 }
 
-uint32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
-                         event_func_t on_event, void* ctx) {
+int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
+                        event_func_t on_event, void* ctx) {
   return widget_on(widget_lookup(widget, name, TRUE), type, on_event, ctx);
 }
 
-ret_t widget_off(widget_t* widget, uint32_t id) {
+ret_t widget_off(widget_t* widget, int32_t id) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
@@ -511,7 +511,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
       dst = rect_init(0, 0, widget->w, widget->h);
       image_draw_type_t draw_type =
           (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
-      uint32_t start_time = time_now_ms();
+      int32_t start_time = time_now_ms();
       canvas_draw_image_ex(c, &img, draw_type, &dst);
       dst.w = time_now_ms() - start_time;
     }
@@ -524,7 +524,7 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
-  uint32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
+  int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
 
   if (bd.rgba.a) {
     wh_t w = widget->w;
@@ -993,8 +993,8 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
 }
 
 ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
+  int32_t i = 0;
+  int32_t nr = 0;
   widget_t** children = NULL;
   return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
 
@@ -1063,8 +1063,8 @@ ret_t widget_destroy(widget_t* widget) {
 }
 
 static ret_t widget_set_dirty(widget_t* widget) {
-  uint32_t i = 0;
-  uint32_t n = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->dirty = TRUE;
@@ -1230,13 +1230,13 @@ ret_t widget_to_global(widget_t* widget, point_t* p) {
   return RET_OK;
 }
 
-uint32_t widget_count_children(widget_t* widget) {
+int32_t widget_count_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, 0);
 
   return widget->children != NULL ? widget->children->size : 0;
 }
 
-widget_t* widget_get_child(widget_t* widget, uint32_t index) {
+widget_t* widget_get_child(widget_t* widget, int32_t index) {
   return_value_if_fail(widget != NULL && widget->children != NULL, NULL);
   return_value_if_fail(index < widget->children->size, NULL);
 
@@ -1257,7 +1257,7 @@ ret_t widget_to_xml(widget_t* widget) {
   }
 
   if (widget->children) {
-    uint32_t i = 0;
+    int32_t i = 0;
     log_debug(">\n");
     for (i = 0; i < widget_count_children(widget); i++) {
       widget_t* iter = widget_get_child(widget, i);

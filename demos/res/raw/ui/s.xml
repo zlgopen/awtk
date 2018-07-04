@@ -1,0 +1,3 @@
+<window anim_hint="htranslate" layout="h30 c1 m:2 s:2">
+  <spin_box x="0" y="0" h="30" w="70%" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" />
+</window>
