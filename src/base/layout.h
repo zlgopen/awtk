@@ -42,7 +42,7 @@ ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl);
 
 ret_t widget_layout(widget_t* widget);
 ret_t widget_layout_self(widget_t* widget);
-ret_t widget_layout_children(widget_t* widget);
+ret_t widget_layout_children_default(widget_t* widget);
 
 END_C_DECLS
 

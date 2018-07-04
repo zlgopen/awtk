@@ -797,6 +797,15 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 
 /**
+ * @method widget_layout_children
+ * layout子控件。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_layout_children(widget_t* widget);
+
+/**
  * @method widget_grab
  * 让指定子控件抓住事件。抓住之后，事件由窗口直接分发给该控件。
  * @param {widget_t*} widget 控件对象。

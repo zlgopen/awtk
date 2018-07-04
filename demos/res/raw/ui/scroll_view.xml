@@ -1,0 +1,16 @@
+<window name="main" anim_hint="htranslate">
+  <button x="0" y="0" w="20" h="20" />
+  <scroll_view x="20"  y="20" w="200" h="200" virtual_w="400" virtual_h="400" xoffset="10" yoffset="10">
+  <image image="earth" x="1" y="1" w="30" h="30" text="1"/>
+  <image image="earth" x="1" y="100" w="30" h="30" text="2"/>
+  <image image="earth" x="1" y="200" w="30" h="30" text="3"/>
+  <image image="earth" x="1" y="300" w="30" h="30" text="4"/>
+  <image image="earth" x="1" y="400" w="30" h="30" text="4"/>
+  <image image="earth" x="1" y="1" w="30" h="30" text="1"/>
+  <image image="earth" x="100" y="100" w="30" h="30" text="2"/>
+  <image image="earth" x="200" y="200" w="30" h="30" text="3"/>
+  <image image="earth" x="300" y="300" w="30" h="30" text="4"/>
+  <image image="earth" x="370" y="370" w="30" h="30" text="4"/>
+  <image image="earth" x="400" y="400" w="30" h="30" text="4"/>
+  </scroll>
+</window>

@@ -235,12 +235,30 @@ ret_t widget_layout_self_with_wh(widget_t* widget, wh_t w, wh_t h) {
 }
 
 ret_t widget_layout_self(widget_t* widget) {
+  value_t v;
+  int32_t layout_w = 0;
+  int32_t layout_h = 0;
+  widget_t* parent = NULL;
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
 
-  return widget_layout_self_with_wh(widget, widget->parent->w, widget->parent->h);
+  parent = widget->parent;
+  if (widget_get_prop(parent, WIDGET_PROP_LAYOUT_W, &v) == RET_OK) {
+    layout_w = value_int(&v);
+  } else {
+    layout_w = parent->w;
+  }
+
+  if (widget_get_prop(parent, WIDGET_PROP_LAYOUT_H, &v) == RET_OK) {
+    layout_h = value_int(&v);
+  } else {
+    layout_h = parent->h;
+  }
+
+  return widget_layout_self_with_wh(widget, layout_w, layout_h);
 }
 
-ret_t widget_layout_children(widget_t* widget) {
+ret_t widget_layout_children_default(widget_t* widget) {
+  value_t v;
   wh_t w = 0;
   wh_t h = 0;
   xy_t x = 0;
@@ -249,15 +267,30 @@ ret_t widget_layout_children(widget_t* widget) {
   uint32_t n = 0;
   uint32_t rows = 0;
   uint32_t cols = 0;
+  int32_t layout_w = 0;
+  int32_t layout_h = 0;
   uint8_t x_margin = 0;
   uint8_t y_margin = 0;
   widget_t* iter = NULL;
   uint8_t spacing = 0;
   widget_t** children = NULL;
+
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->children == NULL) {
     return RET_OK;
+  }
+
+  if (widget_get_prop(widget, WIDGET_PROP_LAYOUT_W, &v) == RET_OK) {
+    layout_w = value_int(&v);
+  } else {
+    layout_w = widget->w;
+  }
+
+  if (widget_get_prop(widget, WIDGET_PROP_LAYOUT_H, &v) == RET_OK) {
+    layout_h = value_int(&v);
+  } else {
+    layout_h = widget->h;
   }
 
   if (widget->vt->on_layout_children != NULL) {
@@ -277,20 +310,20 @@ ret_t widget_layout_children(widget_t* widget) {
     spacing = layout->spacing;
 
     if (layout->rows_is_height) {
-      rows = (widget->h - 2 * y_margin) / (layout->rows + spacing);
+      rows = (layout_h - 2 * y_margin) / (layout->rows + spacing);
     } else {
       rows = layout->rows;
     }
 
     if (layout->cols_is_width) {
-      cols = (widget->w - 2 * x_margin) / (layout->cols + spacing);
+      cols = (layout_w - 2 * x_margin) / (layout->cols + spacing);
     } else {
       cols = layout->cols;
     }
 
     if (rows == 1 && cols == 0) { /*hbox*/
-      h = widget->h - 2 * y_margin;
-      w = widget->w - 2 * x_margin - (n - 1) * spacing;
+      h = layout_h - 2 * y_margin;
+      w = layout_w - 2 * x_margin - (n - 1) * spacing;
 
       return_value_if_fail(h > 0 && w > 0, RET_BAD_PARAMS);
 
@@ -303,7 +336,7 @@ ret_t widget_layout_children(widget_t* widget) {
         iter = children[i];
         widget_move_resize(iter, x, y, iter->w, h);
         x += iter->w + spacing;
-        return_value_if_fail(x <= widget->w, RET_BAD_PARAMS);
+        return_value_if_fail(x <= layout_w, RET_BAD_PARAMS);
       }
 
       for (i = 0; i < n; i++) {
@@ -312,8 +345,8 @@ ret_t widget_layout_children(widget_t* widget) {
 
       return RET_OK;
     } else if (cols == 1 && rows == 0) { /*vbox*/
-      w = widget->w - 2 * x_margin;
-      h = widget->h - 2 * y_margin - (n - 1) * spacing;
+      w = layout_w - 2 * x_margin;
+      h = layout_h - 2 * y_margin - (n - 1) * spacing;
       return_value_if_fail(w > 0 && h > 0, RET_BAD_PARAMS);
 
       for (i = 0; i < n; i++) {
@@ -323,7 +356,7 @@ ret_t widget_layout_children(widget_t* widget) {
 
       for (i = 0; i < n; i++) {
         iter = children[i];
-        return_value_if_fail(y <= widget->h, RET_BAD_PARAMS);
+        return_value_if_fail(y <= layout_h, RET_BAD_PARAMS);
         widget_move_resize(iter, x, y, w, iter->h);
         y += iter->h + spacing;
       }
@@ -338,8 +371,8 @@ ret_t widget_layout_children(widget_t* widget) {
       uint8_t c = 0;
       wh_t item_w = 0;
       wh_t item_h = 0;
-      w = widget->w - 2 * x_margin - (cols - 1) * spacing;
-      h = widget->h - 2 * y_margin - (rows - 1) * spacing;
+      w = layout_w - 2 * x_margin - (cols - 1) * spacing;
+      h = layout_h - 2 * y_margin - (rows - 1) * spacing;
       item_w = w / cols;
       item_h = h / rows;
       return_value_if_fail(item_w > 0 && item_h > 0, RET_BAD_PARAMS);
@@ -347,14 +380,14 @@ ret_t widget_layout_children(widget_t* widget) {
       w = (cols - 1) * spacing + cols * item_w;
       h = (rows - 1) * spacing + rows * item_h;
 
-      x = x_margin = (widget->w - w) >> 1;
-      y = y_margin = (widget->h - h) >> 1;
+      x = x_margin = (layout_w - w) >> 1;
+      y = y_margin = (layout_h - h) >> 1;
 
       for (i = 0; i < n; i++) {
         iter = children[i];
 
-        if (y >= widget->h || x >= widget->w) {
-          widget_set_visible(iter, FALSE, FALSE);
+        if (y >= layout_h || x >= layout_w) {
+          widget_move_resize(iter, 0, 0, 0, 0);
           continue;
         }
 
@@ -407,7 +440,7 @@ ret_t widget_layout_children(widget_t* widget) {
           if (next) {
             w = next->x - spacing - x;
           } else {
-            w = widget->w - x_margin - x;
+            w = layout_w - x_margin - x;
           }
         }
 
@@ -421,7 +454,7 @@ ret_t widget_layout_children(widget_t* widget) {
           if (next != NULL) {
             h = next->y - spacing - y;
           } else {
-            h = widget->h - y_margin - y;
+            h = layout_h - y_margin - y;
           }
         }
 

@@ -23,8 +23,17 @@
 #include "base/mem.h"
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
+  rect_t r1 = *r;
+  rect_t r2 = rect_init(0, 0, widget->w, widget->h);
+
+  *r = rect_intersect(&r1, &r2);
+  if (r->w <= 0 || r->h <= 0) {
+    return RET_OK;
+  }
+
   r->x += widget->x;
   r->y += widget->y;
+
   if (widget->parent) {
     widget_t* parent = widget->parent;
     if (parent->vt && parent->vt->invalidate) {
@@ -57,9 +66,23 @@ ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c) {
   if (widget->children != NULL) {
     for (i = 0, nr = widget->children->size; i < nr; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->visible) {
-        widget_paint(iter, c);
+      int32_t left = c->ox + iter->x;
+      int32_t top = c->oy + iter->y;
+      int32_t bottom = top + iter->h;
+      int32_t right = left + iter->w;
+
+      if (!iter->visible) {
+        iter->dirty = FALSE;
+        continue;
       }
+
+      if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
+          bottom < c->clip_top) {
+        iter->dirty = FALSE;
+        continue;
+      }
+
+      widget_paint(iter, c);
     }
   }
 
@@ -134,13 +157,35 @@ ret_t widget_ungrab_default(widget_t* widget, widget_t* child) {
   return RET_OK;
 }
 
+static ret_t point_to_local(widget_t* widget, point_t* p) {
+  value_t v;
+  widget_t* iter = widget;
+  return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
+
+  while (iter != NULL) {
+    p->x -= iter->x;
+    p->y -= iter->y;
+
+    if (widget_get_prop(iter, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
+      p->x += value_int(&v);
+    }
+
+    if (widget_get_prop(iter, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
+      p->y += value_int(&v);
+    }
+
+    iter = iter->parent;
+  }
+
+  return RET_OK;
+}
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   uint32_t i = 0;
   uint32_t n = 0;
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
 
-  widget_to_local(widget, &p);
+  point_to_local(widget, &p);
   if (widget->children != NULL && widget->children->size > 0) {
     xy_t xx = p.x;
     xy_t yy = p.y;
@@ -150,7 +195,7 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
       xy_t r = iter->x + iter->w;
       xy_t b = iter->y + iter->h;
 
-      if (xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
+      if (iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
         return iter;
       }
     }

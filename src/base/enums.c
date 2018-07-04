@@ -53,6 +53,8 @@ static const key_type_value_t widget_type_value[] = {
     {WIDGET_TYPE_RADIO_BUTTON, 0, WIDGET_RADIO_BUTTON},
     {WIDGET_TYPE_DIALOG_TITLE, 0, WIDGET_DIALOG_TITLE},
     {WIDGET_TYPE_VIEW, 0, WIDGET_VIEW},
+    {WIDGET_TYPE_SCROLL_BAR, 0, WIDGET_SCROLL_BAR},
+    {WIDGET_TYPE_SCROLL_VIEW, 0, WIDGET_SCROLL_VIEW},
     {WIDGET_TYPE_DIALOG_CLIENT, 0, WIDGET_DIALOG_CLIENT}};
 
 static const key_type_value_t style_id_name_value[] = {

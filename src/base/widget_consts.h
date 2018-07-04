@@ -31,6 +31,10 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_Y "y"
 #define WIDGET_PROP_W "w"
 #define WIDGET_PROP_H "h"
+#define WIDGET_PROP_LAYOUT_W "layout_w"
+#define WIDGET_PROP_LAYOUT_H "layout_h"
+#define WIDGET_PROP_VIRTUAL_W "virtual_w"
+#define WIDGET_PROP_VIRTUAL_H "virtual_h"
 #define WIDGET_PROP_NAME "name"
 #define WIDGET_PROP_VALUE "value"
 #define WIDGET_PROP_TEXT "text"
@@ -98,6 +102,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SCROLL_BAR "scroll_bar"
 #define WIDGET_TYPE_SCROLL_BAR_DESKTOP "scroll_bar_d"
 #define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
+#define WIDGET_TYPE_SCROLL_VIEW "scroll_view"
 
 /**
  * @enum widget_type_t
@@ -237,9 +242,14 @@ typedef enum _widget_type_t {
   WIDGET_DRAGGER,
   /**
    * @const WIDGET_SCROLL_BAR
-   * Dragger。
+   * Scroll Bar。
    */
   WIDGET_SCROLL_BAR,
+  /**
+   * @const WIDGET_SCROLL_VIEW
+   * Scroll View。
+   */
+  WIDGET_SCROLL_VIEW,
 
   WIDGET_NR,
   WIDGET_USER_START = 100

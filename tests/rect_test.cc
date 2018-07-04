@@ -22,3 +22,33 @@ TEST(Rect, contains) {
   ASSERT_EQ(rect_contains(&r, 5, 24), FALSE);
   ASSERT_EQ(rect_contains(&r, 5, 240), FALSE);
 }
+
+TEST(Rect, intersect) {
+  rect_t r;
+  rect_t r1;
+  rect_t r2;
+
+  r1 = rect_init(0, 0, 10, 10);
+  r2 = rect_init(10, 10, 10, 10);
+  r = rect_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10);
+  ASSERT_EQ(r.y, 10);
+  ASSERT_EQ(r.w, 0);
+  ASSERT_EQ(r.h, 0);
+
+  r1 = rect_init(0, 0, 11, 11);
+  r2 = rect_init(10, 10, 10, 10);
+  r = rect_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10);
+  ASSERT_EQ(r.y, 10);
+  ASSERT_EQ(r.w, 1);
+  ASSERT_EQ(r.h, 1);
+
+  r1 = rect_init(0, 0, 14, 14);
+  r2 = rect_init(10, 10, 10, 10);
+  r = rect_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10);
+  ASSERT_EQ(r.y, 10);
+  ASSERT_EQ(r.w, 4);
+  ASSERT_EQ(r.h, 4);
+}

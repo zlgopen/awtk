@@ -188,7 +188,7 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
   if (widget->state != state) {
     widget->state = state;
     widget_update_style(widget);
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget);
   }
 
   return RET_OK;
@@ -563,7 +563,8 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   bool_t need_transform = FALSE;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (!widget->visible) {
+  if (!widget->visible || widget->w <= 0 || widget->h <= 0) {
+    widget->dirty = FALSE;
     return RET_OK;
   }
 
@@ -721,6 +722,17 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = widget->vt->get_prop(widget, name, v);
     } else {
       ret = RET_NOT_FOUND;
+    }
+  }
+
+  /*default*/
+  if (ret == RET_NOT_FOUND) {
+    if (tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
+      value_set_int32(v, widget->w);
+      ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
+      value_set_int32(v, widget->h);
+      ret = RET_OK;
     }
   }
 
@@ -916,11 +928,13 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
     }
 
     if (target != NULL) {
-      event_t enter = event_init(EVT_POINTER_ENTER, widget->target);
+      event_t enter = event_init(EVT_POINTER_ENTER, target);
       widget_dispatch(target, &enter);
     }
     widget->target = target;
-  } else if (widget->target != NULL) {
+  }
+
+  if (widget->target != NULL) {
     widget_on_pointer_move(widget->target, e);
   }
 
@@ -942,6 +956,16 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   }
 
   return ret;
+}
+
+ret_t widget_layout_children(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->vt->on_layout_children != NULL) {
+    return widget->vt->on_layout_children(widget);
+  } else {
+    return widget_layout_children_default(widget);
+  }
 }
 
 ret_t widget_grab(widget_t* widget, widget_t* child) {
@@ -1062,8 +1086,6 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 
   return_value_if_fail(widget != NULL && r != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(r->x >= 0 && r->y >= 0, RET_BAD_PARAMS);
-  return_value_if_fail((r->x + r->w) <= widget->w && (r->y + r->h) <= widget->h, RET_BAD_PARAMS);
 
   if (widget->dirty) {
     return RET_OK;

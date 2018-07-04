@@ -140,6 +140,12 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/04
+    * 增加ScrollView。
+
+* 2018/07/03
+    * 更新awtk on aworks rt1052，集成硬件加速。
+
 * 2018/07/02
     * 实现scrollbar控件。
 
