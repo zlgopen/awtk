@@ -88,13 +88,7 @@ def xml_to_ui(raw, inc):
 def xml_to_ui_bin(raw, bin):
   os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
 
-def gen_all():
-  strgen('strings/strings.xml', 'strings');
-  strgen_bin('strings/strings.xml', 'strings');
-  resgen('fonts/default.ttf', 'fonts/default.res');
-  resgen('fonts/default.mini.ttf', 'fonts/default.mini.res');
-  fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
-  
+def gen_all_theme():
   for f in glob.glob(joinPath(INPUT_DIR, 'theme/*.xml')):
     inc=copy.copy(f);
     raw=copy.copy(f);
@@ -105,6 +99,8 @@ def gen_all():
     bin=bin.replace('.xml', '.bin')
     themegen_bin(raw, bin)
 
+
+def gen_all_image(): 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);
     raw=copy.copy(f);
@@ -114,6 +110,7 @@ def gen_all():
     inc=inc.replace('.jpg', '.data')
     imagegen(raw, inc)
 
+def gen_all_ui():
   for f in glob.glob(joinPath(INPUT_DIR, 'ui/*.xml')):
     inc=copy.copy(f);
     raw=copy.copy(f);
@@ -123,6 +120,22 @@ def gen_all():
     xml_to_ui(raw, inc)
     bin=bin.replace('.xml', '.bin')
     xml_to_ui_bin(raw, bin)
+
+def gen_all_font():
+  resgen('fonts/default.ttf', 'fonts/default.res');
+  resgen('fonts/default.mini.ttf', 'fonts/default.mini.res');
+  fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
+
+def gen_all_string():
+  strgen('strings/strings.xml', 'strings');
+  strgen_bin('strings/strings.xml', 'strings');
+
+def gen_all():
+  gen_all_string()
+  gen_all_font()
+  gen_all_image()
+  gen_all_ui()
+  gen_all_theme()
 
 def writeResult(str):
   fd = os.open(RESOURCE_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)

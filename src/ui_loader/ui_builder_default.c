@@ -60,7 +60,8 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   }
 
   if (layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT ||
-      layout->w_attr != W_ATTR_PIXEL || layout->h_attr != H_ATTR_PIXEL) {
+      layout->w_attr != W_ATTR_PIXEL || layout->h_attr != H_ATTR_PIXEL || widget->w < 0 ||
+      widget->h < 0) {
     widget_set_parsed_self_layout_params(widget, layout);
   }
 

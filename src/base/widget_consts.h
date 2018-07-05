@@ -108,6 +108,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
 #define WIDGET_TYPE_SCROLL_VIEW "scroll_view"
 #define WIDGET_TYPE_LIST_VIEW "list_view"
+#define WIDGET_TYPE_LIST_ITEM "list_item"
 
 /**
  * @enum widget_type_t
@@ -257,9 +258,14 @@ typedef enum _widget_type_t {
   WIDGET_SCROLL_VIEW,
   /**
    * @const WIDGET_LIST_VIEW
-   * Scroll View。
+   * List View。
    */
   WIDGET_LIST_VIEW,
+  /**
+   * @const WIDGET_LIST_ITEM
+   * List Item。
+   */
+  WIDGET_LIST_ITEM,
 
   WIDGET_NR,
   WIDGET_USER_START = 100

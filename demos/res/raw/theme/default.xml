@@ -252,8 +252,36 @@
 
 <dragger>
   <style name="1:scroll_bar" >
-    <normal     bg_color="#c0c0c0" />
-    <pressed    bg_color="#b0b0b0" />
-    <over       bg_color="#a0a0a0" />
+    <normal     bg_color="#d0d0d0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#c0c0c0" />
   </style>
-<dragger>
+</dragger>
+
+<list_item>
+  <style name="default" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#118bd6" />
+  </style>
+  <style name="1:odd_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <normal     bg_color="#f5f5f5" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#118bd6" />
+  </style>
+  <style name="2:even_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <normal     bg_color="#eaeaea" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#118bd6" />
+  </style>
+  <style name="3:odd" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <normal     bg_color="#f5f5f5" />
+    <pressed    bg_color="#f5f5f5" />
+    <over       bg_color="#f5f5f5" />
+  </style>
+  <style name="4:even" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <normal     bg_color="#eaeaea" />
+    <pressed    bg_color="#eaeaea" />
+    <over       bg_color="#eaeaea" />
+  </style>
+</list_item>

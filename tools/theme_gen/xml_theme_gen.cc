@@ -138,6 +138,9 @@ static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** att
 
 static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** attrs) {
   const key_type_value_t* state_item = widget_state_find(tag);
+  if (state_item == NULL) {
+    log_debug("not find state %s\n", tag);
+  }
   assert(state_item != NULL);
   Style s(b->widget_type, b->style_name, state_item->value);
 

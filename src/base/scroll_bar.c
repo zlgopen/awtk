@@ -152,12 +152,12 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   int32_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
-  virtual_size = scroll_bar->virtual_size;
   value = scroll_bar->value;
   if (widget_w > widget_h) {
     int32_t max_bar_w = widget_w - 2 * widget_h;
     /*horizon*/
-    return_value_if_fail(virtual_size >= widget_w, RET_BAD_PARAMS);
+    virtual_size = tk_max(widget_w, scroll_bar->virtual_size);
+
     y = 1;
     h = widget_h - 2;
     w = (widget_w * max_bar_w) / virtual_size;
@@ -166,7 +166,8 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   } else {
     /*vertical*/
     int32_t max_bar_h = widget_h - 2 * widget_w;
-    return_value_if_fail(virtual_size >= widget_h, RET_BAD_PARAMS);
+    virtual_size = tk_max(widget_h, scroll_bar->virtual_size);
+
     x = 1;
     w = widget_w - 2;
     h = (widget_h * max_bar_h) / virtual_size;
@@ -391,14 +392,6 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (scroll_bar->value == value) {
-    return RET_OK;
-  }
-
-  widget_set_opacity(widget, 0xff);
-  widget_set_visible(widget, TRUE, FALSE);
-  widget_invalidate_force(widget);
-
   if (scroll_bar->wa_value != NULL) {
     widget_animator_destroy(scroll_bar->wa_value);
     scroll_bar->wa_value = NULL;
@@ -407,6 +400,23 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   if (scroll_bar->wa_opactiy != NULL) {
     widget_animator_destroy(scroll_bar->wa_opactiy);
     scroll_bar->wa_value = NULL;
+  }
+
+  widget_set_opacity(widget, 0xff);
+  widget_set_visible(widget, TRUE, FALSE);
+  widget_invalidate_force(widget);
+
+  if (scroll_bar->value == value) {
+    if (scroll_bar_is_mobile(widget)) {
+      scroll_bar->wa_opactiy =
+          widget_animator_opacity_create(widget, duration, 0, EASING_SIN_INOUT);
+      widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_animate_end,
+                         scroll_bar);
+      widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
+      widget_animator_start(scroll_bar->wa_opactiy);
+    }
+
+    return RET_OK;
   }
 
   scroll_bar->wa_value = widget_animator_value_create(widget, duration, 0, EASING_SIN_INOUT);

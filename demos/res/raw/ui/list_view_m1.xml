@@ -1,0 +1,16 @@
+<window name="main" anim_hint="htranslate">
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="40">
+    <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
+      <list_item style="3:odd" layout="r1 c0">
+        <label w="30%" text="Text"/>
+        <edit w="70%" style="1:line" tips="text" text="" />
+      </list_item>
+      <list_item style="4:even" layout="r1 c0">
+        <label w="30%" text="Text"/>
+        <edit w="70%" style="1:line" tips="text" text="" />
+      </list_item>
+    </scroll_view>
+    <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>
