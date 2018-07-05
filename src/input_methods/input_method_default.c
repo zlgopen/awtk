@@ -96,7 +96,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
   const char* keyboard = input_type_to_keyboard_name(input_type);
 
-  widget_to_global(widget, &p);
+  widget_to_screen(widget, &p);
   im->keyboard = window_open(keyboard);
 
   if ((p.y + widget->h) > im->keyboard->y) {

@@ -140,6 +140,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/05
+    * 增加ListView和ListView Demo。
+
 * 2018/07/04
     * 增加ScrollView。
 

@@ -43,7 +43,7 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
   if (widget != NULL) {
     SDL_Rect r;
     point_t p = {0, 0};
-    widget_to_global(widget, &p);
+    widget_to_screen(widget, &p);
 
     r.x = p.x;
     r.y = p.y;

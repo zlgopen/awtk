@@ -525,6 +525,16 @@ ret_t widget_to_local(widget_t* widget, point_t* p);
 ret_t widget_to_global(widget_t* widget, point_t* p);
 
 /**
+ * @method widget_to_screen
+ * 将控件内的本地坐标转换成屏幕上的坐标。
+ * @param {widget_t*} widget 控件对象。
+ * @param {point_t*} p 坐标点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_to_screen(widget_t* widget, point_t* p);
+
+/**
  * @method widget_set_name
  * 设置控件的名称。
  * @param {widget_t*} widget 控件对象。

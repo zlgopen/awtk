@@ -26,6 +26,7 @@
 #include "base/enums.h"
 #include "base/locale.h"
 #include "base/widget.h"
+#include "base/layout.h"
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -1202,6 +1203,29 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
 #endif /*WITH_VGCANVAS_LCD*/
 
   return widget;
+}
+
+ret_t widget_to_screen(widget_t* widget, point_t* p) {
+  value_t v;
+  widget_t* iter = widget;
+  return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
+
+  while (iter != NULL) {
+    p->x += iter->x;
+    p->y += iter->y;
+
+    if (widget_get_prop(iter, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
+      p->x -= value_int(&v);
+    }
+
+    if (widget_get_prop(iter, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
+      p->y -= value_int(&v);
+    }
+
+    iter = iter->parent;
+  }
+
+  return RET_OK;
 }
 
 ret_t widget_to_local(widget_t* widget, point_t* p) {

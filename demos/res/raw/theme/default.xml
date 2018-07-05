@@ -284,4 +284,9 @@
     <pressed    bg_color="#eaeaea" />
     <over       bg_color="#eaeaea" />
   </style>
+  <style name="5:empty" >
+    <normal  />
+    <pressed />
+    <over  />
+  </style>
 </list_item>
