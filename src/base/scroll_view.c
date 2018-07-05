@@ -174,6 +174,10 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
       scroll_view->fix_end_offset(widget);
     }
 
+    if(scroll_view->on_scroll_to) {
+      scroll_view->on_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end, ANIMATING_TIME);
+    }
+
     widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, scroll_view->xoffset_end,
                                       scroll_view->yoffset_end);
     widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
@@ -200,6 +204,10 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
     scroll_view->yoffset = scroll_view->yoffset_save - dy;
   } else {
     scroll_view->yoffset = 0;
+  }
+    
+  if(scroll_view->on_scroll) {
+    scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
   }
 
   return RET_OK;

@@ -62,7 +62,23 @@ static const widget_vtable_t s_list_view_vtable = {.type_name = WIDGET_TYPE_LIST
                                                    .on_add_child = list_view_on_add_child,
                                                    .on_paint_self = list_view_on_paint_self};
 
-static ret_t list_view_on_layout_children(widget_t* widget) {
+static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, int32_t yoffset) {
+  list_view_t* list_view = LIST_VIEW(widget->parent);
+ 
+  scroll_bar_set_value_only(list_view->scroll_bar, yoffset+widget->h);
+
+  return RET_OK;
+}
+
+static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffset_end, int32_t duration) {
+  list_view_t* list_view = LIST_VIEW(widget->parent);
+
+ // scroll_bar_scroll_to(list_view->scroll_bar, yoffset_end, duration);
+
+  return RET_OK;
+}
+
+static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
   list_view_t* list_view = LIST_VIEW(widget->parent);
   int32_t virtual_h = widget->h;
   int32_t item_height = list_view->item_height;
@@ -118,7 +134,9 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);
 
     list_view->scroll_view = child;
-    scroll_view->on_layout_children = list_view_on_layout_children;
+    scroll_view->on_scroll = list_view_on_scroll_view_scroll;
+    scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
+    scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
   } else if (child->type == WIDGET_SCROLL_BAR) {
     list_view->scroll_bar = child;
     widget_on(list_view->scroll_bar, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed,

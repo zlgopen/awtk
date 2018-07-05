@@ -88,6 +88,7 @@ static ret_t scroll_bar_mobile_on_paint_self(widget_t* widget, canvas_t* c) {
 
 /*destkop*/
 static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
+  int32_t delta = 0;
   point_t p = {e->x, e->y};
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
@@ -98,17 +99,24 @@ static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
   widget_to_local(widget, &p);
   if (widget->w > widget->h) {
     if (p.x < scroll_bar->dragger->x) {
-      scroll_bar_add_delta(scroll_bar, -widget->w);
+      delta = -widget->w;
     } else {
-      scroll_bar_add_delta(scroll_bar, widget->w);
+      delta = widget->w;
     }
   } else {
     if (p.y < scroll_bar->dragger->y) {
-      scroll_bar_add_delta(scroll_bar, -widget->h);
+      delta = -widget->h;
     } else {
-      scroll_bar_add_delta(scroll_bar, widget->h);
+      delta = widget->h;
     }
   }
+ 
+  if(delta > 0) {
+    delta -= scroll_bar->row;
+  } else {
+    delta += scroll_bar->row;
+  }
+  scroll_bar_add_delta(scroll_bar, delta);
 
   return RET_OK;
 }
@@ -180,14 +188,14 @@ static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
   int32_t new_value = 0;
   widget_t* widget = WIDGET(scroll_bar);
 
-  if (scroll_bar->max > 0) {
-    if (widget->w > widget->h) {
-      delta = d * (widget->w + scroll_bar->max) / scroll_bar->max;
-    } else {
-      delta = d * (widget->h + scroll_bar->max) / scroll_bar->max;
+  if (widget->w > widget->h) {
+    if(scroll_bar->max > widget->w) {
+      delta = d * scroll_bar->max / (scroll_bar->max - widget->w);
     }
   } else {
-    delta = 0;
+    if(scroll_bar->max > widget->h) {
+      delta = d * scroll_bar->max / (scroll_bar->max - widget->h);
+    }
   }
 
   new_value = scroll_bar->value + delta;

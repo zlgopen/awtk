@@ -29,6 +29,8 @@
 BEGIN_C_DECLS
 
 typedef ret_t (*scroll_view_fix_end_offset_t)(widget_t* widget);
+typedef ret_t (*scroll_view_on_scroll_t)(widget_t* widget, int32_t xoffset, int32_t yoffset);
+typedef ret_t (*scroll_view_on_scroll_to_t)(widget_t* widget, int32_t xoffset_end, int32_t yoffset_end, int32_t duration);
 
 /**
  * @class scroll_view_t
@@ -75,6 +77,8 @@ typedef struct _scroll_view_t {
   widget_animator_t* wa;
   scroll_view_fix_end_offset_t fix_end_offset;
   widget_on_layout_children_t on_layout_children;
+  scroll_view_on_scroll_t on_scroll;
+  scroll_view_on_scroll_to_t on_scroll_to;
 } scroll_view_t;
 
 /**
