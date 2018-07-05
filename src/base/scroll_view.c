@@ -53,6 +53,13 @@ ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
   return RET_OK;
 }
 
+ret_t scroll_view_invalidate_self(widget_t* widget) {
+  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+
+  widget->dirty = FALSE;
+  return widget_invalidate(widget->parent, &r);
+}
+
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   int32_t virtual_w = tk_max(scroll_view->virtual_w, widget->w);
@@ -61,10 +68,12 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   if (widget->children != NULL) {
     int32_t i = 0;
     int32_t n = 0;
+
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
       int32_t r = iter->x + iter->w;
       int32_t b = iter->y + iter->h;
+
       if (r > virtual_w) {
         virtual_w = r;
       }
@@ -92,13 +101,6 @@ static ret_t scroll_view_on_layout_children(widget_t* widget) {
   }
 
   return scroll_view_update_virtual_size(widget);
-}
-
-ret_t scroll_view_invalidate_self(widget_t* widget) {
-  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
-
-  widget->dirty = FALSE;
-  return widget_invalidate(widget->parent, &r);
 }
 
 static ret_t scroll_view_on_pointer_down(scroll_view_t* scroll_view, pointer_event_t* e) {
@@ -149,39 +151,69 @@ static ret_t scroll_view_fix_end_offset_default(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffset_end,
+                            int32_t duration) {
+  int32_t xoffset = 0;
+  int32_t yoffset = 0;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  xoffset = scroll_view->xoffset;
+  yoffset = scroll_view->yoffset;
+  if (xoffset == xoffset_end && yoffset == yoffset_end) {
+    return RET_OK;
+  }
+
+  if (scroll_view->wa != NULL) {
+    widget_animator_destroy(scroll_view->wa);
+    scroll_view->wa = NULL;
+  }
+
+  scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
+
+  scroll_view->xoffset_end = xoffset_end;
+  scroll_view->yoffset_end = yoffset_end;
+  if (scroll_view->fix_end_offset) {
+    scroll_view->fix_end_offset(widget);
+    xoffset_end = scroll_view->xoffset_end;
+    yoffset_end = scroll_view->yoffset_end;
+  }
+
+  if (scroll_view->on_scroll_to) {
+    scroll_view->on_scroll_to(widget, xoffset_end, yoffset_end, duration);
+  }
+
+  widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, xoffset_end, yoffset_end);
+  widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
+  widget_animator_start(scroll_view->wa);
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
 
   velocity_update(v, e->e.time, e->x, e->y);
-  if (scroll_view->virtual_w > widget->w || scroll_view->virtual_h > widget->h) {
+  if (scroll_view->xslidable || scroll_view->yslidable) {
     int yv = v->yv;
     int xv = v->xv;
-    int32_t xoffset = scroll_view->xoffset;
-    int32_t yoffset = scroll_view->yoffset;
-    scroll_view->xoffset_end = xoffset - xv;
-    scroll_view->yoffset_end = yoffset - yv;
 
-    if (scroll_view->wa != NULL) {
-      widget_animator_destroy(scroll_view->wa);
-      scroll_view->wa = NULL;
+    if (scroll_view->xslidable) {
+      scroll_view->xoffset_end = scroll_view->xoffset - xv;
+    } else {
+      scroll_view->xoffset_end = scroll_view->xoffset;
     }
 
-    scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
-    return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
-
-    if (scroll_view->fix_end_offset) {
-      scroll_view->fix_end_offset(widget);
+    if (scroll_view->yslidable) {
+      scroll_view->yoffset_end = scroll_view->yoffset - yv;
+    } else {
+      scroll_view->yoffset_end = scroll_view->yoffset;
     }
 
-    if(scroll_view->on_scroll_to) {
-      scroll_view->on_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end, ANIMATING_TIME);
-    }
-
-    widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, scroll_view->xoffset_end,
-                                      scroll_view->yoffset_end);
-    widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
-    widget_animator_start(scroll_view->wa);
+    scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
+                          ANIMATING_TIME);
   }
 
   return RET_OK;
@@ -194,19 +226,19 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   int32_t dy = e->y - scroll_view->down.y;
   velocity_update(v, e->e.time, e->x, e->y);
 
-  if (scroll_view->virtual_w > widget->w) {
+  if (scroll_view->xslidable) {
     scroll_view->xoffset = scroll_view->xoffset_save - dx;
   } else {
     scroll_view->xoffset = 0;
   }
 
-  if (scroll_view->virtual_h > widget->h) {
+  if (scroll_view->yslidable) {
     scroll_view->yoffset = scroll_view->yoffset_save - dy;
   } else {
     scroll_view->yoffset = 0;
   }
-    
-  if(scroll_view->on_scroll) {
+
+  if (scroll_view->on_scroll) {
     scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
   }
 
@@ -352,11 +384,30 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
 
 ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
 
   scroll_view->xoffset = xoffset;
   scroll_view->yoffset = yoffset;
 
   scroll_view_invalidate_self(widget);
+
+  return RET_OK;
+}
+
+ret_t scroll_view_set_xslidable(widget_t* widget, bool_t xslidable) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  scroll_view->xslidable = xslidable;
+
+  return RET_OK;
+}
+
+ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  scroll_view->yslidable = yslidable;
 
   return RET_OK;
 }

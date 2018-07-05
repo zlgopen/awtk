@@ -31,6 +31,9 @@
 #include "res/inc/ui/kb_ufloat.data"
 #include "res/inc/ui/kb_uint.data"
 #include "res/inc/ui/keyboard.data"
+#include "res/inc/ui/list_view.data"
+#include "res/inc/ui/list_view1.data"
+#include "res/inc/ui/list_view_m.data"
 #include "res/inc/ui/locale.data"
 #include "res/inc/ui/lua.data"
 #include "res/inc/ui/main.data"
@@ -167,17 +170,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -276,6 +279,9 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_kb_ufloat);
   resource_manager_add(rm, ui_kb_uint);
   resource_manager_add(rm, ui_keyboard);
+  resource_manager_add(rm, ui_list_view);
+  resource_manager_add(rm, ui_list_view1);
+  resource_manager_add(rm, ui_list_view_m);
   resource_manager_add(rm, ui_locale);
   resource_manager_add(rm, ui_lua);
   resource_manager_add(rm, ui_main);

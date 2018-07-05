@@ -37,13 +37,20 @@ TEST(ScrollView, basic) {
   ASSERT_EQ(widget_set_prop(widget, WIDGET_PROP_YOFFSET, &v1), RET_OK);
   ASSERT_EQ(scroll_view->yoffset, value_int(&v1));
 
+  value_set_bool(&v1, TRUE);
+  ASSERT_EQ(widget_set_prop(widget, WIDGET_PROP_XSLIDABLE, &v1), RET_OK);
+  ASSERT_EQ(scroll_view->xslidable, value_bool(&v1));
+
+  value_set_bool(&v1, TRUE);
+  ASSERT_EQ(widget_set_prop(widget, WIDGET_PROP_YSLIDABLE, &v1), RET_OK);
+  ASSERT_EQ(scroll_view->yslidable, value_bool(&v1));
+
   widget_destroy(widget);
 }
 
 TEST(ScrollView, layout) {
   widget_t* widget = scroll_view_create(NULL, 0, 0, 200, 400);
   widget_t* button = button_create(widget, 0, 0, 0, 0);
-  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
 
   ASSERT_EQ(scroll_view_set_virtual_w(widget, 400), RET_OK);
   ASSERT_EQ(scroll_view_set_virtual_h(widget, 800), RET_OK);

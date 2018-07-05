@@ -37,8 +37,8 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   uint32_t i = 0;
   const char* x = "0";
   const char* y = "0";
-  const char* w = "100";
-  const char* h = "30";
+  const char* w = "0";
+  const char* h = "0";
   widget_desc_t desc;
   const char* key = NULL;
   const char* value = NULL;

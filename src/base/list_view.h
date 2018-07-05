@@ -37,9 +37,16 @@ typedef struct _list_view_t {
   /**
    * @property {int32_t} item_height
    * @readonly
-   * 列表项的高度。
+   * 列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。
    */
   int32_t item_height;
+
+  /**
+   * @property {int32_t} default_item_height
+   * @readonly
+   * 列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。
+   */
+  int32_t default_item_height;
 
   /*private*/
   widget_t* scroll_view;
@@ -69,6 +76,16 @@ widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t list_view_set_item_height(widget_t* widget, int32_t item_height);
+
+/**
+ * @method list_view_set_default_item_height
+ * 设置列表项的缺省高度。
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t} default_item_height 列表项的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_height);
 
 #define LIST_VIEW(widget) ((list_view_t*)(widget))
 

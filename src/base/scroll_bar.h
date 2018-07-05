@@ -36,11 +36,11 @@ BEGIN_C_DECLS
 typedef struct _scroll_bar_t {
   widget_t widget;
   /**
-   * @property {int32_t} max
+   * @property {int32_t} virtual_size
    * @readonly
-   * 最大值。
+   * 虚拟宽度或高度。
    */
-  int32_t max;
+  int32_t virtual_size;
   /**
    * @property {int32_t} value
    * @readonly
@@ -53,6 +53,8 @@ typedef struct _scroll_bar_t {
    * 行的高度。
    */
   int32_t row;
+
+  /*private*/
   widget_t* dragger;
   widget_animator_t* wa_value;
   widget_animator_t* wa_opactiy;
@@ -61,7 +63,7 @@ typedef struct _scroll_bar_t {
 /**
  * @method scroll_bar_create
  * @constructor
- * 创建scroll_bar对象
+ * 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -104,12 +106,12 @@ widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  * @method scroll_bar_set_params
  * 设置参数。
  * @param {widget_t*} widget scroll_bar控件。
- * @param {int32_t} max 最大值。
+ * @param {int32_t} virtual_size 最大值。
  * @param {int32_t} row 每一行的高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t scroll_bar_set_params(widget_t* widget, int32_t max, int32_t row);
+ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row);
 
 /**
  * @method scroll_bar_scroll_to
@@ -141,6 +143,15 @@ ret_t scroll_bar_set_value(widget_t* widget, int32_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
+
+/**
+ * @method scroll_bar_is_mobile
+ * 判断是否是mobile风格的滚动条。
+ * @param {widget_t*} widget scroll_bar控件。
+ *
+ * @return {bool_t} 返回TRUE表示是mobile风格的，否则表示不是mobile风格的。
+ */
+bool_t scroll_bar_is_mobile(widget_t* widget);
 
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(widget))
 

@@ -72,6 +72,9 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_THEME "theme"
 #define WIDGET_PROP_SCRIPT "script"
 #define WIDGET_PROP_ITEM_HEIGHT "item_height"
+#define WIDGET_PROP_DEFAULT_ITEM_HEIGHT "default_item_height"
+#define WIDGET_PROP_XSLIDABLE "xslidable"
+#define WIDGET_PROP_YSLIDABLE "yslidable"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"

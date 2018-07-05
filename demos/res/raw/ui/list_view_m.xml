@@ -1,6 +1,6 @@
 <window name="main" anim_hint="htranslate">
   <list_view x="0"  y="0" w="100%" h="-40" item_height="60">
-    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+    <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
       <button text="0" />
       <button text="1" />
       <button text="2" />
@@ -17,7 +17,7 @@
       <button text="13" />
       <button text="14" />
     </scroll_view>
-    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+    <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
   </list_view>
   <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
 </window>
