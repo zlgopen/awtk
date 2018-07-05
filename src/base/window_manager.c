@@ -199,7 +199,9 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   return_value_if_fail(widget != NULL, NULL);
 
   if (wm->grab_widgets.size > 0) {
-    return WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
+    widget_t* target = WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
+    /*log_debug("target=%s\n", target->vt->type_name);*/
+    return target;
   }
 
   widget_to_local(widget, &p);
@@ -361,6 +363,7 @@ static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
+  log_debug("grab: %s\n", child->vt->type_name);
   return array_push(&(wm->grab_widgets), child);
 }
 
@@ -368,6 +371,7 @@ static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
+  log_debug("ungrab: %s\n", child->vt->type_name);
   return array_remove(&(wm->grab_widgets), NULL, child, NULL);
 }
 
@@ -584,8 +588,12 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (wm->ignore_user_input) {
-    log_debug("animating ignore input\n");
-    return RET_OK;
+    if (wm->pressed && e->type == EVT_POINTER_UP) {
+      log_debug("animating ignore input, but it is last pointer_up\n");
+    } else {
+      log_debug("animating ignore input\n");
+      return RET_OK;
+    }
   }
 
   switch (e->type) {
@@ -596,6 +604,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
+      wm->pressed = TRUE;
       widget_on_pointer_down(widget, evt);
       break;
     }
@@ -617,6 +626,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
       widget_on_pointer_up(widget, evt);
+      wm->pressed = FALSE;
       break;
     }
     case EVT_KEY_DOWN: {

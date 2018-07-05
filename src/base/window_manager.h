@@ -56,6 +56,7 @@ typedef struct _window_manager_t {
   uint32_t fps_time;
   uint32_t fps_count;
   bool_t show_fps;
+  bool_t pressed;
 } window_manager_t;
 
 widget_t* window_manager(void);

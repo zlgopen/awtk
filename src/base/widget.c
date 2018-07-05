@@ -943,6 +943,7 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
 
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
+  widget_t* target = NULL;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -951,8 +952,9 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
     ret = widget->vt->on_pointer_up(widget, e);
   }
 
-  if (widget->target != NULL) {
-    widget_on_pointer_up(widget->target, e);
+  target = widget_find_target(widget, e->x, e->y);
+  if (target != NULL) {
+    widget_on_pointer_up(target, e);
   }
 
   return ret;
