@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view
@@ -91,13 +91,12 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
 }
 
 static ret_t scroll_view_on_layout_children(widget_t* widget) {
-  ret_t ret = RET_OK;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
 
   if (scroll_view->on_layout_children) {
-    ret = scroll_view->on_layout_children(widget);
+    scroll_view->on_layout_children(widget);
   } else {
-    ret = widget_layout_children_default(widget);
+    widget_layout_children_default(widget);
   }
 
   return scroll_view_update_virtual_size(widget);
