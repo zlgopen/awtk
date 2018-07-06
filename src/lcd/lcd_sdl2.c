@@ -34,7 +34,7 @@ static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
   int pitch = 0;
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
-  SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->fbuff), &pitch);
+  SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->offline_fb), &pitch);
 
   return RET_OK;
 }

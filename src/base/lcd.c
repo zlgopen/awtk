@@ -20,6 +20,7 @@
  */
 
 #include "base/lcd.h"
+#include "base/system_info.h"
 
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
@@ -195,14 +196,14 @@ ret_t lcd_swap(lcd_t* lcd) {
   return RET_NOT_IMPL;
 }
 
-ret_t lcd_commit(lcd_t* lcd) {
-  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+bool_t lcd_is_swappable(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, FALSE);
 
-  if (lcd->commit != NULL) {
-    return lcd->commit(lcd);
+  if (lcd->swap != NULL) {
+    return system_info()->lcd_orientation == LCD_ORIENTATION_0;
   }
 
-  return RET_NOT_IMPL;
+  return FALSE;
 }
 
 ret_t lcd_destroy(lcd_t* lcd) {

@@ -19,7 +19,7 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   dst = rect_init(win->x, win->y, win->w, win->h);
 #ifndef WITH_NANOVG
-  if (wa->percent > 0) {
+  if (wa->percent > 0 && !lcd_is_swappable(c->lcd)) {
     win = wa->curr_win;
     src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
     dst = rect_init(win->x, win->y, win->w, win->h);

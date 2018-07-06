@@ -28,8 +28,8 @@ BEGIN_C_DECLS
 
 typedef struct _lcd_mem_t {
   lcd_t base;
-  uint8_t* fbuff;
-  uint8_t* online_fbuff;
+  uint8_t* offline_fb;
+  uint8_t* online_fb;
   vgcanvas_t* vgcanvas;
   bitmap_format_t format;
 } lcd_mem_t;

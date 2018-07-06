@@ -59,7 +59,6 @@ typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
-typedef ret_t (*lcd_commit_t)(lcd_t* lcd);
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
@@ -148,8 +147,7 @@ struct _lcd_t {
   lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
   lcd_get_point_color_t get_point_color;
-  lcd_swap_t swap;     /*适用于double fb，可选*/
-  lcd_commit_t commit; /*适用于single fb，可选*/
+  lcd_swap_t swap; /*适用于double fb，可选*/
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;
@@ -463,14 +461,13 @@ ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 ret_t lcd_swap(lcd_t* lcd);
 
 /**
- * @method lcd_commit
- * 对于single fb，该函数用于通知底层绘制完成可以提交显示了。
- * @private
+ * @method lcd_is_swappable
+ * 判读lcd是否支持swap。
  * @param {lcd_t*} lcd lcd对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {bool_t} 返回是否支持swap。
  */
-ret_t lcd_commit(lcd_t* lcd);
+bool_t lcd_is_swappable(lcd_t* lcd);
 
 /**
  * @method lcd_end_frame
