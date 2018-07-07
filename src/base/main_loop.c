@@ -101,7 +101,7 @@ ret_t main_loop_sleep(main_loop_t* l) {
     sleep_time = tk_min(next_timer, TK_MAX_SLEEP_TIME);
   }
 
-  sleep_time = tk_max(least_sleep_time, sleep_time);
+  sleep_time = tk_min(least_sleep_time, sleep_time);
   if (sleep_ms >= 0) {
     sleep_ms(sleep_time);
   }

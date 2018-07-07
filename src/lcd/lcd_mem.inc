@@ -398,6 +398,17 @@ static lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
   return lcd;
 }
 
+static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb, uint8_t* next_fb) {
+  lcd_t* lcd = lcd_mem_create(w, h, FALSE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  mem->offline_fb = offline_fb;
+  mem->online_fb = online_fb;
+  mem->next_fb = next_fb;
+
+  return lcd;
+}
+
 static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;

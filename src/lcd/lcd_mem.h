@@ -30,6 +30,7 @@ typedef struct _lcd_mem_t {
   lcd_t base;
   uint8_t* offline_fb;
   uint8_t* online_fb;
+  uint8_t* next_fb;
   vgcanvas_t* vgcanvas;
   bitmap_format_t format;
 } lcd_mem_t;

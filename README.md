@@ -139,6 +139,11 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/07/07
+    * 支持online framebuffer, offline framebuffer和next framebuffer三个framebuffer的工作方式。
+
+* 2018/07/06
+    * 支持双framebuffer交换。
 
 * 2018/07/05
     * 增加ListView和ListView Demo。

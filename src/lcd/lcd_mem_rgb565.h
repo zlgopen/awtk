@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 lcd_t* lcd_mem_rgb565_create(wh_t w, wh_t h, bool_t alloc);
 lcd_t* lcd_mem_rgb565_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff);
 lcd_t* lcd_mem_rgb565_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb);
+lcd_t* lcd_mem_rgb565_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb, uint8_t* next_fb);
 
 END_C_DECLS
 
