@@ -213,11 +213,12 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   ret_t ret = RET_OK;
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
+  bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565);
 
   lcd_mem_init_drawing_fb(lcd, &fb);
 
-  if (img->format == fb.format && img->format == BITMAP_FMT_RGB565 && src->w == dst->w &&
-      src->h == dst->h && lcd->global_alpha >= TK_OPACITY_ALPHA) {
+  if (img->format == fb.format && is_opaque && src->w == dst->w && src->h == dst->h &&
+      lcd->global_alpha >= TK_OPACITY_ALPHA) {
     rect_t r;
     xy_t dx = 0;
     xy_t dy = 0;
@@ -275,8 +276,9 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
 
   memset(img, 0x00, sizeof(bitmap_t));
   img->format = fb.format;
+  img->flags = BITMAP_FLAG_OPAQUE;
 
-  if (img->format == BITMAP_FMT_RGBA) {
+  if (img->format == BITMAP_FMT_RGBA || img->format == BITMAP_FMT_BGRA) {
     size = lcd->w * lcd->h * 4;
   } else if (img->format == BITMAP_FMT_RGB565) {
     size = lcd->w * lcd->h * 2;
@@ -398,7 +400,8 @@ static lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
   return lcd;
 }
 
-static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb, uint8_t* next_fb) {
+static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
+                                      uint8_t* next_fb) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 

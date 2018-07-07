@@ -41,6 +41,7 @@ lcd_t* lcd_mem_rgb565_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
   return lcd_mem_create_double_fb(w, h, online_fb, offline_fb);
 }
 
-lcd_t* lcd_mem_rgb565_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb, uint8_t* next_fb) {
+lcd_t* lcd_mem_rgb565_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
+                                      uint8_t* next_fb) {
   return lcd_mem_create_three_fb(w, h, online_fb, offline_fb, next_fb);
 }
