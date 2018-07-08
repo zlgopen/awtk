@@ -32,7 +32,7 @@
 
 * GUI每次都需要进行完整的绘制，不能只绘制变化的部分。
 
-### 三、双framebuffer，一个固定online供LCD显示，一个规定offline供GUI绘制。
+### 三、双framebuffer，一个固定online供LCD显示，一个固定offline供GUI绘制。
 
 ![3](images/fb3.png)
 
@@ -44,8 +44,25 @@
 
 * 窗口动画时，可能整个屏幕都在变化，所以拷贝的量比较大。优化方法：对于平移的动画，可以让GUI直接往online的framebuffer上绘制，减少一次内存拷贝，而且不会出现闪烁。
 
-> 以上方式各有优缺点，请根据具体情况进行选择。AWTK中缺省使用第三种方式，要改用其它方式也是非常简单的。
+### 四、三个framebuffer，一个online供LCD显示，一个offline供GUI绘制，一个为下一个要显示的framebuffer。
 
+![4](images/fb4.png)
+
+第二种方式的双缓冲切换方法有一个重要的性能问题：因为并不是在任意时刻都可以切换切换缓冲区，而是只有在当前帧显示完成后才能切换，否则就会出现刚显示一部分就切换到下一帧的情况，这会导致闪烁。所以每次切换都需要等待显示完成，按每秒刷新60帧算，这需要等待16ms左右，如果绘制本身需要16ms，那帧率就只有30FPS了。如果使三个framebuffer，就不用等待切换完成了，帧率一下可以到达60FPS了。
+
+* 1.GUI选取不是online和next的framebuffer作为offline的framebuffer，在offline的framebuffer上绘制。
+* 2.GUI绘制完成后，把offline设置为next作为即将显示的framebuffer。
+* 3.LCD在显示完成中断里，将next设置为online的framebuffer，并将next设置为空闲。
+
+#### 优点：
+
+* 显示速度大幅提升。
+
+#### 缺点：
+
+* 多一些内存开销。
+
+> 以上方式各有优缺点，请根据具体情况进行选择，建议使用最后一种方式。
 
 
 
