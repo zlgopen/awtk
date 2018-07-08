@@ -312,6 +312,12 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     value_set_int(v, scroll_view->yoffset);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_XSLIDABLE)) {
+    value_set_int(v, scroll_view->xslidable);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
+    value_set_int(v, scroll_view->yslidable);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -326,6 +332,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H)) {
     scroll_view->virtual_h = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_XSLIDABLE)) {
+    scroll_view->xslidable = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
+    scroll_view->yslidable = value_int(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     scroll_view->xoffset = value_int(v);
