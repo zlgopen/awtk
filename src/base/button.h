@@ -34,6 +34,16 @@ BEGIN_C_DECLS
  */
 typedef struct _button_t {
   widget_t widget;
+  /**
+   * @property {int32_t} repeat
+   * @readonly
+   * 重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+   */
+  int32_t repeat;
+
+  /*private*/
+  int32_t timer_id;
+  bool_t pressed;
 } button_t;
 
 /**
@@ -49,6 +59,16 @@ typedef struct _button_t {
  * @return {widget_t*} 对象。
  */
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method button_set_repeat
+ * 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  repeat 释放EVT_CLICK事件的时间间隔(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t button_set_repeat(widget_t* widget, int32_t repeat);
 
 #define BUTTON(widget) ((button_t*)(widget))
 

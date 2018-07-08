@@ -139,6 +139,9 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/07/08
+    * 更新文档，修改三个framebuffer的旋转时的BUG。
+
 * 2018/07/07
     * 支持online framebuffer, offline framebuffer和next framebuffer三个framebuffer的工作方式。
 

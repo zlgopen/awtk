@@ -339,9 +339,9 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   if (lcd_is_swappable(lcd)) {
     return lcd_swap(lcd);
   } else {
-	if(lcd->draw_mode == LCD_DRAW_ANIMATION) {
+    if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
       return RET_OK;
-	}
+    }
     return lcd_mem_flush(lcd);
   }
 }

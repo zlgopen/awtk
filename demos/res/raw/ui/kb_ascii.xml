@@ -2,166 +2,166 @@
   <pages x="0" y="0" w="100%" h="100%" active="0">
     <view name="upper" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
-        <button name="Q" text="Q"/>
-        <button name="W" text="W"/>
-        <button name="E" text="E"/>
-        <button name="R" text="R"/>
-        <button name="T" text="T"/>
-        <button name="Y" text="Y"/>
-        <button name="U" text="U"/>
-        <button name="I" text="I"/>
-        <button name="O" text="O"/>
-        <button name="P" text="P"/>
+        <button repeat="300" name="Q" text="Q"/>
+        <button repeat="300" name="W" text="W"/>
+        <button repeat="300" name="E" text="E"/>
+        <button repeat="300" name="R" text="R"/>
+        <button repeat="300" name="T" text="T"/>
+        <button repeat="300" name="Y" text="Y"/>
+        <button repeat="300" name="U" text="U"/>
+        <button repeat="300" name="I" text="I"/>
+        <button repeat="300" name="O" text="O"/>
+        <button repeat="300" name="P" text="P"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 x_margin:10 y_margin:2">
-        <button name="A" text="A"/>
-        <button name="S" text="S"/>
-        <button name="D" text="D"/>
-        <button name="F" text="F"/>
-        <button name="G" text="G"/>
-        <button name="H" text="H"/>
-        <button name="J" text="J"/>
-        <button name="K" text="K"/>
-        <button name="L" text="L"/>
+        <button repeat="300" name="A" text="A"/>
+        <button repeat="300" name="S" text="S"/>
+        <button repeat="300" name="D" text="D"/>
+        <button repeat="300" name="F" text="F"/>
+        <button repeat="300" name="G" text="G"/>
+        <button repeat="300" name="H" text="H"/>
+        <button repeat="300" name="J" text="J"/>
+        <button repeat="300" name="K" text="K"/>
+        <button repeat="300" name="L" text="L"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
         <button name="page:lower"><image image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
-        <button name="Z" text="Z"/>
-        <button name="X" text="X"/>
-        <button name="C" text="C"/>
-        <button name="V" text="V"/>
-        <button name="B" text="B"/>
-        <button name="N" text="N"/>
-        <button name="M" text="M"/>
-        <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="Z" text="Z"/>
+        <button repeat="300" name="X" text="X"/>
+        <button repeat="300" name="C" text="C"/>
+        <button repeat="300" name="V" text="V"/>
+        <button repeat="300" name="B" text="B"/>
+        <button repeat="300" name="N" text="N"/>
+        <button repeat="300" name="M" text="M"/>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
-        <button name="space" w="65%" text="Space"/>
+        <button repeat="300" name="space" w="65%" text="Space"/>
         <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
-        <button name="q" text="q"/>
-        <button name="w" text="w"/>
-        <button name="e" text="e"/>
-        <button name="r" text="r"/>
-        <button name="t" text="t"/>
-        <button name="y" text="y"/>
-        <button name="u" text="u"/>
-        <button name="i" text="i"/>
-        <button name="o" text="o"/>
-        <button name="p" text="p"/>
+        <button repeat="300" name="q" text="q"/>
+        <button repeat="300" name="w" text="w"/>
+        <button repeat="300" name="e" text="e"/>
+        <button repeat="300" name="r" text="r"/>
+        <button repeat="300" name="t" text="t"/>
+        <button repeat="300" name="y" text="y"/>
+        <button repeat="300" name="u" text="u"/>
+        <button repeat="300" name="i" text="i"/>
+        <button repeat="300" name="o" text="o"/>
+        <button repeat="300" name="p" text="p"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 x_margin:10 y_margin:2">
-        <button name="a" text="a"/>
-        <button name="s" text="s"/>
-        <button name="d" text="d"/>
-        <button name="f" text="f"/>
-        <button name="g" text="g"/>
-        <button name="h" text="h"/>
-        <button name="j" text="j"/>
-        <button name="k" text="k"/>
-        <button name="l" text="l"/>
+        <button repeat="300" name="a" text="a"/>
+        <button repeat="300" name="s" text="s"/>
+        <button repeat="300" name="d" text="d"/>
+        <button repeat="300" name="f" text="f"/>
+        <button repeat="300" name="g" text="g"/>
+        <button repeat="300" name="h" text="h"/>
+        <button repeat="300" name="j" text="j"/>
+        <button repeat="300" name="k" text="k"/>
+        <button repeat="300" name="l" text="l"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight"><image image="shift" x="center" y="middle" w="100%" h="100%"/></button>
-        <button name="z" text="z"/>
-        <button name="x" text="x"/>
-        <button name="c" text="c"/>
-        <button name="v" text="v"/>
-        <button name="b" text="b"/>
-        <button name="n" text="n"/>
-        <button name="m" text="m"/>
-        <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="z" text="z"/>
+        <button repeat="300" name="x" text="x"/>
+        <button repeat="300" name="c" text="c"/>
+        <button repeat="300" name="v" text="v"/>
+        <button repeat="300" name="b" text="b"/>
+        <button repeat="300" name="n" text="n"/>
+        <button repeat="300" name="m" text="m"/>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
-        <button name="space" w="65%" text="Space"/>
+        <button repeat="300" name="space" w="65%" text="Space"/>
         <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
-        <button name="1" text="1"/>
-        <button name="2" text="2"/>
-        <button name="3" text="3"/>
-        <button name="4" text="4"/>
-        <button name="5" text="5"/>
-        <button name="6" text="6"/>
-        <button name="7" text="7"/>
-        <button name="8" text="8"/>
-        <button name="9" text="9"/>
-        <button name="0" text="0"/>
+        <button repeat="300" name="1" text="1"/>
+        <button repeat="300" name="2" text="2"/>
+        <button repeat="300" name="3" text="3"/>
+        <button repeat="300" name="4" text="4"/>
+        <button repeat="300" name="5" text="5"/>
+        <button repeat="300" name="6" text="6"/>
+        <button repeat="300" name="7" text="7"/>
+        <button repeat="300" name="8" text="8"/>
+        <button repeat="300" name="9" text="9"/>
+        <button repeat="300" name="0" text="0"/>
       </group_box>
       <group_box layout="rows:1 cols:10 spacing:2 x_margin:10 y_margin:2">
-        <button name="-" text="-"/>
-        <button name="/" text="/"/>
-        <button name=":" text=":"/>
-        <button name=";" text=";"/>
-        <button name="(" text="("/>
-        <button name=")" text=")"/>
-        <button name="$" text="$"/>
-        <button name="@" text="@"/>
-        <button name="'" text="'"/>
-        <button name="quota" text="&quota;"/>
+        <button repeat="300" name="-" text="-"/>
+        <button repeat="300" name="/" text="/"/>
+        <button repeat="300" name=":" text=":"/>
+        <button repeat="300" name=";" text=";"/>
+        <button repeat="300" name="(" text="("/>
+        <button repeat="300" name=")" text=")"/>
+        <button repeat="300" name="$" text="$"/>
+        <button repeat="300" name="@" text="@"/>
+        <button repeat="300" name="'" text="'"/>
+        <button repeat="300" name="quota" text="&quota;"/>
       </group_box>
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
         <button name="page:symbol" style="1:highlight" text="#+="/>
-        <button name="." text="."/>
-        <button name="," text=","/>
-        <button name="\" text="\"/>
-        <button name="?" text="?"/>
-        <button name="!" text="!"/>
-        <button name="<" text="<"/>
-        <button name=">" text=">"/>
-        <button name="#" text="#"/>
-        <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="." text="."/>
+        <button repeat="300" name="," text=","/>
+        <button repeat="300" name="\" text="\"/>
+        <button repeat="300" name="?" text="?"/>
+        <button repeat="300" name="!" text="!"/>
+        <button repeat="300" name="<" text="<"/>
+        <button repeat="300" name=">" text=">"/>
+        <button repeat="300" name="#" text="#"/>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
-        <button name="space" w="65%" text="Space"/>
+        <button repeat="300" name="space" w="65%" text="Space"/>
         <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
-        <button name="[" text="["/>
-        <button name="]" text="]"/>
-        <button name="{" text="{"/>
-        <button name="}" text="}"/>
-        <button name="#" text="#"/>
-        <button name="%" text="%"/>
-        <button name="^" text="^"/>
-        <button name="*" text="*"/>
-        <button name="+" text="+"/>
-        <button name="=" text="="/>
+        <button repeat="300" name="[" text="["/>
+        <button repeat="300" name="]" text="]"/>
+        <button repeat="300" name="{" text="{"/>
+        <button repeat="300" name="}" text="}"/>
+        <button repeat="300" name="#" text="#"/>
+        <button repeat="300" name="%" text="%"/>
+        <button repeat="300" name="^" text="^"/>
+        <button repeat="300" name="*" text="*"/>
+        <button repeat="300" name="+" text="+"/>
+        <button repeat="300" name="=" text="="/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 x_margin:10 y_margin:2">
-        <button name="_" text="_"/>
-        <button name="\" text="\"/>
-        <button name="|" text="|"/>
-        <button name="~" text="~"/>
-        <button name="<" text="<"/>
-        <button name=">" text=">"/>
-        <button name="$" text="$"/>
-        <button name="@" text="@"/>
-        <button name="`" text="`"/>
+        <button repeat="300" name="_" text="_"/>
+        <button repeat="300" name="\" text="\"/>
+        <button repeat="300" name="|" text="|"/>
+        <button repeat="300" name="~" text="~"/>
+        <button repeat="300" name="<" text="<"/>
+        <button repeat="300" name=">" text=">"/>
+        <button repeat="300" name="$" text="$"/>
+        <button repeat="300" name="@" text="@"/>
+        <button repeat="300" name="`" text="`"/>
       </group_box>
       <group_box layout="rows:1 cols:8 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" text="123"/>
-        <button name="." text="."/>
-        <button name="," text=","/>
-        <button name="?" text="?"/>
-        <button name="!" text="!"/>
-        <button name="'" text="'"/>
-        <button name="&quota;" text=">"/>
-        <button name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="." text="."/>
+        <button repeat="300" name="," text=","/>
+        <button repeat="300" name="?" text="?"/>
+        <button repeat="300" name="!" text="!"/>
+        <button repeat="300" name="'" text="'"/>
+        <button repeat="300" name="&quota;" text=">"/>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
-        <button name="space" w="65%" text="Space"/>
+        <button repeat="300" name="space" w="65%" text="Space"/>
         <button name="action" style="1:highlight" w="20%" text="Return"/>
       </group_box>
     </view>

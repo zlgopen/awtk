@@ -50,13 +50,12 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 #define INVISIBLE_CHAR '*'
 #define MAX_PASSWORD_LEN 31
 
-static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text) {
+static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* password) {
   int32_t i = 0;
   float_t cw = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
   float_t caret_x = edit->left_margin;
-  wchar_t password[MAX_PASSWORD_LEN + 1];
   wh_t w = widget->w - edit->left_margin - edit->right_margin;
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
@@ -105,6 +104,7 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text) 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wstr_t text;
   edit_t* edit = EDIT(widget);
+  wchar_t password[MAX_PASSWORD_LEN + 1];
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;
   uint8_t top_margin = edit->top_margin;
@@ -113,7 +113,7 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t h = widget->h - top_margin - bottom_margin;
 
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
-  return_value_if_fail(edit_get_display_text(widget, c, &text) == RET_OK, RET_FAIL);
+  return_value_if_fail(edit_get_display_text(widget, c, &text, password) == RET_OK, RET_FAIL);
 
   if (text.size > 0) {
     rect_t r = rect_init(left_margin, top_margin, w, h);
