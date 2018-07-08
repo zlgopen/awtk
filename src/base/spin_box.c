@@ -38,11 +38,13 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   edit->right_margin = 21;
   inc = button_create(spin_box, 0, 0, 0, 0);
+  button_set_repeat(inc, 300);
   widget_set_name(inc, "inc");
   widget_use_style(inc, "3:spinbox_up");
   widget_set_self_layout_params(inc, "right", "0", "20", "50%");
 
   dec = button_create(spin_box, 0, 0, 0, 0);
+  button_set_repeat(dec, 300);
   widget_set_name(dec, "dec");
   widget_use_style(dec, "2:spinbox_down");
   widget_set_self_layout_params(dec, "right", "bottom", "20", "50%");
