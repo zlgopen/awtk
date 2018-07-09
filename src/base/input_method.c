@@ -86,6 +86,12 @@ ret_t input_method_dispatch_action(input_method_t* im) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
   input_method_dispatch(im, &e);
+  
+  if (im->engine != NULL && im->action_buton_text[0] == '\0') {
+    char text[64];
+    tk_strncpy(text, im->engine->keys.str, sizeof(text)-1);
+    input_method_commit_text(im, text); 
+  }
 
   return input_method_dispatch_to_widget(im, &e);
 }
