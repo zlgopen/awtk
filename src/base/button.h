@@ -44,6 +44,7 @@ typedef struct _button_t {
   /*private*/
   int32_t timer_id;
   bool_t pressed;
+  int32_t repeat_nr;
 } button_t;
 
 /**

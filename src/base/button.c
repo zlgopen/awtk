@@ -30,13 +30,19 @@ static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t button_on_repeat(const timer_info_t* info) {
   pointer_event_t evt;
+  button_t* button = BUTTON(info->ctx);
   widget_t* widget = WIDGET(info->ctx);
 
   evt.x = 0;
   evt.y = 0;
   evt.e = event_init(EVT_CLICK, widget);
-
+  button->repeat_nr++;
   widget_dispatch(widget, (event_t*)&evt);
+
+  if (button->repeat_nr == 4) {
+    evt.e = event_init(EVT_LONG_PRESS, widget);
+    widget_dispatch(widget, (event_t*)&evt);
+  }
 
   return RET_REPEAT;
 }
@@ -47,6 +53,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      button->repeat_nr = 0;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
@@ -57,6 +64,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       evt.e = event_init(EVT_CLICK, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
+      button->repeat_nr = 0;
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
       }

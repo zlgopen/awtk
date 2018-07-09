@@ -203,7 +203,7 @@ static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
   new_value = tk_min(new_value, scroll_bar->virtual_size);
 
   if (scroll_bar->value != new_value) {
-    if(scroll_bar->animatable) {
+    if (scroll_bar->animatable) {
       scroll_bar_scroll_to(widget, new_value, 500);
     } else {
       scroll_bar_set_value(widget, new_value);

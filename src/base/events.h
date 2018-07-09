@@ -70,6 +70,11 @@ typedef enum _event_type_t {
    */
   EVT_CLICK,
   /**
+   * @const EVT_LONG_PRESS
+   * 长按事件名。
+   */
+  EVT_LONG_PRESS,
+  /**
    * @const EVT_FOCUS
    * 得到焦点事件名。
    */
