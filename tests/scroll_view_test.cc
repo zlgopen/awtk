@@ -44,7 +44,7 @@ TEST(ScrollView, basic) {
   value_set_bool(&v1, TRUE);
   ASSERT_EQ(widget_set_prop(widget, WIDGET_PROP_YSLIDABLE, &v1), RET_OK);
   ASSERT_EQ(scroll_view->yslidable, value_bool(&v1));
-
+  
   widget_destroy(widget);
 }
 

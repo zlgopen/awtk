@@ -53,6 +53,12 @@ typedef struct _scroll_bar_t {
    * 行的高度。
    */
   int32_t row;
+  /**
+   * @property {bool_t} animatable;
+   * @readonly
+   * 滚动时是否启用动画。
+   */
+  bool_t animatable;
 
   /*private*/
   widget_t* dragger;

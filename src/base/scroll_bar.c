@@ -203,7 +203,11 @@ static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
   new_value = tk_min(new_value, scroll_bar->virtual_size);
 
   if (scroll_bar->value != new_value) {
-    scroll_bar_scroll_to(widget, new_value, 500);
+    if(scroll_bar->animatable) {
+      scroll_bar_scroll_to(widget, new_value, 500);
+    } else {
+      scroll_bar_set_value(widget, new_value);
+    }
   }
 
   return RET_OK;
@@ -276,10 +280,12 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   }
 
   up = button_create(widget, 0, 0, 0, 0);
+  button_set_repeat(up, 300);
   widget_set_name(up, "up");
   widget_on(up, EVT_CLICK, scroll_bar_on_up_button_clicked, widget);
 
   down = button_create(widget, 0, 0, 0, 0);
+  button_set_repeat(down, 300);
   widget_set_name(down, "down");
   widget_on(down, EVT_CLICK, scroll_bar_on_down_button_clicked, widget);
 
@@ -333,6 +339,10 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ROW)) {
     value_set_int(v, scroll_bar->row);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATABLE)) {
+    value_set_bool(v, scroll_bar->animatable);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, scroll_bar->value);
     return RET_OK;
@@ -350,6 +360,10 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ROW)) {
     scroll_bar->row = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATABLE)) {
+    scroll_bar->animatable = value_bool(v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     scroll_bar_set_value(widget, value_int(v));
     scroll_bar_update_dragger(widget);
@@ -495,7 +509,7 @@ static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh
   widget->vt = vt;
   widget_init(widget, parent, WIDGET_SCROLL_BAR);
   widget_move_resize(widget, x, y, w, h);
-
+  scroll_bar->animatable = TRUE;
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return widget;
