@@ -139,6 +139,13 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/07/09
+    * 按钮支持repeat触发click事件，键盘和滚动条支持repeat触发。
+    * keyboard点击return时提交之前输入的键值。
+    * 滚动条支持禁止滚动效果。
+    * ListView支持自动隐藏滚动条。
+
 * 2018/07/08
     * 更新文档，修改三个framebuffer的旋转时的BUG。
 

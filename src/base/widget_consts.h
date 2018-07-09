@@ -77,6 +77,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_YSLIDABLE "yslidable"
 #define WIDGET_PROP_REPEAT "repeat"
 #define WIDGET_PROP_ANIMATABLE "animatable"
+#define WIDGET_PROP_AUTO_HIDE_SCROLL_BAR "auto_hide_scroll_bar"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"

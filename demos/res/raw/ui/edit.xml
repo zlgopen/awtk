@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" >
-  <list_view x="0"  y="0" w="100%" h="-50" item_height="36">
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="36" auto_hide_scroll_bar="true">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="5:empty" layout="r1 c0">
       <label w="30%" text="Age"/>

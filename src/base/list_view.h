@@ -47,6 +47,12 @@ typedef struct _list_view_t {
    * 列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。
    */
   int32_t default_item_height;
+  /**
+   * @property {bool_t} auto_hide_scroll_bar
+   * @readonly
+   * 如果不需要滚动条时，自动隐藏滚动条。
+   */
+  bool_t auto_hide_scroll_bar;
 
   /*private*/
   widget_t* scroll_view;
@@ -86,6 +92,16 @@ ret_t list_view_set_item_height(widget_t* widget, int32_t item_height);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_height);
+
+/**
+ * @method list_view_set_auto_hide_scroll_bar
+ * 设置是否自动隐藏滚动条。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} auto_hide_scroll_bar 列表项的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scroll_bar);
 
 #define LIST_VIEW(widget) ((list_view_t*)(widget))
 

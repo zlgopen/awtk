@@ -42,6 +42,9 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_DEFAULT_ITEM_HEIGHT)) {
     value_set_int(v, list_view->default_item_height);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR)) {
+    value_set_bool(v, list_view->auto_hide_scroll_bar);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -56,6 +59,9 @@ static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DEFAULT_ITEM_HEIGHT)) {
     list_view->default_item_height = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR)) {
+    list_view->auto_hide_scroll_bar = value_bool(v);
     return RET_OK;
   }
 
@@ -98,11 +104,14 @@ static int32_t scroll_view_to_scroll_bar(list_view_t* list_view, int32_t v) {
 
 static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, int32_t yoffset) {
   list_view_t* list_view = LIST_VIEW(widget->parent);
-  int32_t value = scroll_view_to_scroll_bar(list_view, yoffset);
 
-  scroll_bar_set_value_only(list_view->scroll_bar, value);
-  widget_set_opacity(list_view->scroll_bar, 0xff);
-  widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+    int32_t value = scroll_view_to_scroll_bar(list_view, yoffset);
+
+    scroll_bar_set_value_only(list_view->scroll_bar, value);
+    widget_set_opacity(list_view->scroll_bar, 0xff);
+    widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+  }
 
   return RET_OK;
 }
@@ -110,20 +119,24 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
 static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end,
                                                 int32_t yoffset_end, int32_t duration) {
   list_view_t* list_view = LIST_VIEW(widget->parent);
-  int32_t value = scroll_view_to_scroll_bar(list_view, yoffset_end);
+  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+    int32_t value = scroll_view_to_scroll_bar(list_view, yoffset_end);
 
-  emitter_disable(list_view->scroll_bar->emitter);
-  scroll_bar_scroll_to(list_view->scroll_bar, value, duration);
-  emitter_enable(list_view->scroll_bar->emitter);
+    emitter_disable(list_view->scroll_bar->emitter);
+    scroll_bar_scroll_to(list_view->scroll_bar, value, duration);
+    emitter_enable(list_view->scroll_bar->emitter);
 
-  (void)xoffset_end;
+    (void)xoffset_end;
+  }
 
   return RET_OK;
 }
 
 static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
   int32_t virtual_h = widget->h;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   list_view_t* list_view = LIST_VIEW(widget->parent);
+  widget_t* scroll_bar = list_view->scroll_bar;
   int32_t item_height = list_view->item_height;
   int32_t default_item_height = list_view->default_item_height;
 
@@ -135,7 +148,41 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
     int32_t w = widget->w;
     int32_t h = item_height;
     widget_t** children = (widget_t**)(widget->children->elms);
-    for (i = 0, n = widget->children->size; i < n; i++) {
+
+    n = widget->children->size;
+    for (i = 0; i < n; i++) {
+      widget_t* iter = children[i];
+
+      if (item_height <= 0) {
+        h = iter->h;
+      }
+
+      if (h <= 0) {
+        h = default_item_height;
+      }
+
+      y = y + (h > 0 ? h : iter->h);
+      if (y > virtual_h) {
+        virtual_h = y;
+      }
+    }
+
+    if (!scroll_bar_is_mobile(scroll_bar) && list_view->auto_hide_scroll_bar) {
+      if (virtual_h <= widget->h) {
+        scroll_view->widget.w = list_view->widget.w;
+        widget_set_visible(scroll_bar, FALSE, FALSE);
+        widget_set_enable(scroll_bar, FALSE);
+      } else {
+        scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
+        widget_set_visible(scroll_bar, TRUE, FALSE);
+        widget_set_enable(scroll_bar, TRUE);
+      }
+
+      w = scroll_view->widget.w;
+    }
+
+    y = 0;
+    for (i = 0; i < n; i++) {
       widget_t* iter = children[i];
 
       if (item_height <= 0) {
@@ -150,9 +197,6 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
       widget_layout(iter);
 
       y = iter->y + iter->h;
-      if (y > virtual_h) {
-        virtual_h = y;
-      }
     }
   }
 
@@ -217,6 +261,15 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view->default_item_height = default_item_height;
+
+  return RET_OK;
+}
+
+ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scroll_bar) {
+  list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  list_view->auto_hide_scroll_bar = auto_hide_scroll_bar;
 
   return RET_OK;
 }
