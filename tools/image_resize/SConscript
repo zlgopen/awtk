@@ -1,0 +1,13 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+env['LIBS'] = ['m'];
+env.Program(os.path.join(BIN_DIR, 'image_resize'), ["resize.c"])
+env.Program(os.path.join(BIN_DIR, 'image_info'), ["info.c"])
+
+
+

@@ -130,6 +130,7 @@ SConscriptFiles=[
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
+  'tools/image_resize/SConscript', 
   'tools/res_gen/SConscript', 
   'tools/str_gen/SConscript', 
   'tools/ui_gen/xml_to_ui/SConscript',
