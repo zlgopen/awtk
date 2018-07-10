@@ -32,41 +32,52 @@
 #include "base/image_manager.h"
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
-  event_t e = event_init(EVT_MOVE, widget);
+  event_t e = event_init(EVT_WILL_MOVE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->x = x;
-  widget->y = y;
-
-  widget_invalidate(widget, NULL);
-  widget_dispatch(widget, &e);
+  if (widget->x != x || widget->y != y) {
+    widget_dispatch(widget, &e);
+    widget->x = x;
+    widget->y = y;
+    e.type = EVT_MOVE;
+    widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
 
 ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
-  event_t e = event_init(EVT_RESIZE, widget);
+  event_t e = event_init(EVT_WILL_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->w = w;
-  widget->h = h;
+  if (widget->w != w || widget->h != h) {
+    widget_dispatch(widget, &e);
+    widget->w = w;
+    widget->h = h;
 
-  widget_invalidate(widget, NULL);
-  widget_dispatch(widget, &e);
+    e.type = EVT_RESIZE;
+    widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
 
 ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
-  event_t e = event_init(EVT_MOVE_RESIZE, widget);
+  event_t e = event_init(EVT_WILL_MOVE_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->x = x;
-  widget->y = y;
-  widget->w = w;
-  widget->h = h;
-  widget_invalidate(widget, NULL);
-  widget_dispatch(widget, &e);
+  if (widget->x != x || widget->y != y || widget->w != w || widget->h != h) {
+    widget_dispatch(widget, &e);
+    widget->x = x;
+    widget->y = y;
+    widget->w = w;
+    widget->h = h;
+    e.type = EVT_MOVE_RESIZE;
+    widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
@@ -81,7 +92,7 @@ ret_t widget_set_value(widget_t* widget, int32_t value) {
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL && value != NULL, RET_BAD_PARAMS);
 
-  widget->style_type = (uint8_t)atoi(value);
+  widget->style_type = atoi(value);
   widget_update_style(widget);
 
   return RET_OK;
@@ -650,9 +661,14 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
-  event_t e = event_init(EVT_PROP_CHANGED, widget);
+  prop_change_event_t e;
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  e.value = v;
+  e.name = name;
+  e.e = event_init(EVT_PROP_WILL_CHANGE, widget);
+  widget_dispatch(widget, (event_t*)&e);
 
   if (tk_str_eq(name, WIDGET_PROP_X)) {
     widget->x = (wh_t)value_int(v);
@@ -687,10 +703,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   }
 
   if (ret != RET_NOT_FOUND) {
-    widget_dispatch(widget, &e);
+    e.e.type = EVT_PROP_CHANGED;
+    widget_dispatch(widget, (event_t*)&e);
+    widget_invalidate(widget, NULL);
   }
-
-  widget_invalidate(widget, NULL);
 
   return ret;
 }

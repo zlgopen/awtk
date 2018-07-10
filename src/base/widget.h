@@ -176,17 +176,17 @@ struct _widget_t {
    */
   wh_t h;
   /**
-   * @property {uint8_t} type
+   * @property {uint16_t} type
    * @readonly
    * 类型。
    */
-  uint8_t type;
+  uint16_t type;
   /**
-   * @property {uint8_t} style_type
+   * @property {uint16_t} style_type
    * @readonly
-   * 子类型，仅用于控制控件的Style。
+   * Style Type。
    */
-  uint8_t style_type;
+  uint16_t style_type;
   /**
    * @property {uint8_t} state
    * @readonly

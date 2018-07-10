@@ -7,7 +7,10 @@
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include <stdlib.h>
+#include <string.h>
 #include "gtest/gtest.h"
+
+using std::string;
 
 TEST(Widget, moveresize) {
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
@@ -171,3 +174,116 @@ TEST(Widget, anchor) {
   widget_destroy(w);
 }
 #endif /*WITH_VGCANVAS_LCD*/
+
+static string s_event_log;
+
+static ret_t on_button_events(void* ctx, event_t* e) {
+  (void)ctx;
+  switch (e->type) {
+    case EVT_MOVE: {
+      s_event_log += "move ";
+      break;
+    }
+    case EVT_WILL_MOVE: {
+      s_event_log += "will_move ";
+      break;
+    }
+    case EVT_RESIZE: {
+      s_event_log += "resize ";
+      break;
+    }
+    case EVT_WILL_RESIZE: {
+      s_event_log += "will_resize ";
+      break;
+    }
+    case EVT_MOVE_RESIZE: {
+      s_event_log += "move_resize ";
+      break;
+    }
+    case EVT_WILL_MOVE_RESIZE: {
+      s_event_log += "will_move_resize ";
+      break;
+    }
+    case EVT_PROP_WILL_CHANGE: {
+      prop_change_event_t* evt = (prop_change_event_t*)e;
+
+      s_event_log += "prop_will_change ";
+      s_event_log += evt->name;
+      s_event_log += value_str(evt->value);
+      s_event_log += " ";
+      break;
+    }
+    case EVT_PROP_CHANGED: {
+      prop_change_event_t* evt = (prop_change_event_t*)e;
+
+      s_event_log += "prop_changed ";
+      s_event_log += evt->name;
+      s_event_log += value_str(evt->value);
+      s_event_log += " ";
+      break;
+    } break;
+  }
+  return RET_OK;
+}
+
+TEST(Widget, move) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  widget_on(w, EVT_MOVE, on_button_events, NULL);
+  widget_on(w, EVT_WILL_MOVE, on_button_events, NULL);
+
+  widget_move(w, 100, 200);
+  ASSERT_EQ(w->x, 100);
+  ASSERT_EQ(w->y, 200);
+  ASSERT_EQ(s_event_log, string("will_move move "));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, resize) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  widget_on(w, EVT_RESIZE, on_button_events, NULL);
+  widget_on(w, EVT_WILL_RESIZE, on_button_events, NULL);
+
+  widget_resize(w, 100, 200);
+  ASSERT_EQ(w->w, 100);
+  ASSERT_EQ(w->h, 200);
+  ASSERT_EQ(s_event_log, string("will_resize resize "));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_resize) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  widget_on(w, EVT_MOVE_RESIZE, on_button_events, NULL);
+  widget_on(w, EVT_WILL_MOVE_RESIZE, on_button_events, NULL);
+
+  widget_move_resize(w, 100, 200, 300, 400);
+  ASSERT_EQ(w->x, 100);
+  ASSERT_EQ(w->y, 200);
+  ASSERT_EQ(w->w, 300);
+  ASSERT_EQ(w->h, 400);
+  ASSERT_EQ(s_event_log, string("will_move_resize move_resize "));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, prop) {
+  value_t v;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  widget_on(w, EVT_PROP_WILL_CHANGE, on_button_events, NULL);
+  widget_on(w, EVT_PROP_CHANGED, on_button_events, NULL);
+
+  s_event_log = "";
+  value_set_str(&v, "123");
+  ASSERT_EQ(widget_set_prop(w, "name", &v), RET_OK);
+  ASSERT_EQ(s_event_log, string("prop_will_change name123 prop_changed name123"));
+
+  widget_destroy(w);
+}
