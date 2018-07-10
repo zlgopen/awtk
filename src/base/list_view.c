@@ -68,9 +68,31 @@ static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_
   return RET_NOT_FOUND;
 }
 
+static ret_t list_view_on_event(widget_t* widget, event_t* e) {
+  list_view_t* list_view = LIST_VIEW(widget);
+  switch (e->type) {
+    case EVT_WHEEL: {
+      wheel_event_t* evt = (wheel_event_t*)e;
+      int32_t delta = evt->dy;
+      if (list_view->scroll_bar != NULL) {
+#ifdef MACOS
+        delta = -delta;
+#endif /*MACOS*/
+        scroll_bar_add_delta(list_view->scroll_bar, delta);
+        log_debug("wheel: %d\n", delta);
+      }
+      break;
+    }
+    default:
+      break;
+  }
+  return RET_OK;
+}
+
 static const widget_vtable_t s_list_view_vtable = {.type_name = WIDGET_TYPE_LIST_VIEW,
                                                    .set_prop = list_view_set_prop,
                                                    .get_prop = list_view_get_prop,
+                                                   .on_event = list_view_on_event,
                                                    .on_add_child = list_view_on_add_child,
                                                    .on_paint_self = list_view_on_paint_self};
 

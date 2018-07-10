@@ -29,7 +29,6 @@
 #include "widget_animators/widget_animator_opacity.h"
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
-static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t delta);
 
 /*mobile*/
 static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
@@ -115,7 +114,7 @@ static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
   } else {
     delta += scroll_bar->row;
   }
-  scroll_bar_add_delta(scroll_bar, delta);
+  scroll_bar_scroll_delta(widget, delta);
 
   return RET_OK;
 }
@@ -183,10 +182,10 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   return RET_OK;
 }
 
-static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
+ret_t scroll_bar_add_delta_ex(widget_t* widget, int32_t d, bool_t animatable) {
   int32_t delta = 0;
   int32_t new_value = 0;
-  widget_t* widget = WIDGET(scroll_bar);
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
   if (widget->w > widget->h) {
     if (scroll_bar->virtual_size > widget->w) {
@@ -203,7 +202,7 @@ static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
   new_value = tk_min(new_value, scroll_bar->virtual_size);
 
   if (scroll_bar->value != new_value) {
-    if (scroll_bar->animatable) {
+    if (scroll_bar->animatable && animatable) {
       scroll_bar_scroll_to(widget, new_value, 500);
     } else {
       scroll_bar_set_value(widget, new_value);
@@ -213,12 +212,20 @@ static ret_t scroll_bar_add_delta(scroll_bar_t* scroll_bar, int32_t d) {
   return RET_OK;
 }
 
+ret_t scroll_bar_scroll_delta(widget_t* widget, int32_t delta) {
+  return scroll_bar_add_delta_ex(widget, delta, TRUE);
+}
+
+ret_t scroll_bar_add_delta(widget_t* widget, int32_t delta) {
+  return scroll_bar_add_delta_ex(widget, delta, FALSE);
+}
+
 static ret_t scroll_bar_on_up_button_clicked(void* ctx, event_t* e) {
-  return scroll_bar_add_delta(SCROLL_BAR(ctx), -SCROLL_BAR(ctx)->row);
+  return scroll_bar_scroll_delta(WIDGET(ctx), -SCROLL_BAR(ctx)->row);
 }
 
 static ret_t scroll_bar_on_down_button_clicked(void* ctx, event_t* e) {
-  return scroll_bar_add_delta(SCROLL_BAR(ctx), SCROLL_BAR(ctx)->row);
+  return scroll_bar_scroll_delta(WIDGET(ctx), SCROLL_BAR(ctx)->row);
 }
 
 static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {

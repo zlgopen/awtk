@@ -283,7 +283,7 @@ TEST(Widget, prop) {
   s_event_log = "";
   value_set_str(&v, "123");
   ASSERT_EQ(widget_set_prop(w, "name", &v), RET_OK);
-  ASSERT_EQ(s_event_log, string("prop_will_change name123 prop_changed name123"));
+  ASSERT_EQ(s_event_log, string("prop_will_change name123 prop_changed name123 "));
 
   widget_destroy(w);
 }

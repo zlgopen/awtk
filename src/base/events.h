@@ -302,11 +302,17 @@ typedef struct _event_t {
 typedef struct _wheel_event_t {
   event_t e;
   /**
-   * @property {xy_t} y
+   * @property {int32_t} dx
    * @readonly
-   * 滚轮的值。
+   * 滚轮的x值。
    */
-  int32_t delta;
+  int32_t dx;
+  /**
+   * @property {int32_t} dy
+   * @readonly
+   * 滚轮的x值。
+   */
+  int32_t dy;
   /**
    * @property {bool_t} alt
    * @readonly

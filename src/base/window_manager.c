@@ -655,6 +655,27 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       window_manager_update_key_status(wm, evt->key, FALSE);
       break;
     }
+    case EVT_CONTEXT_MENU: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
+
+      evt->alt = wm->alt;
+      evt->ctrl = wm->ctrl;
+      evt->shift = wm->shift;
+      widget_dispatch_to_target(wm, e);
+      break;
+    }
+    case EVT_WHEEL: {
+      wheel_event_t* evt = (wheel_event_t*)e;
+
+      evt->alt = wm->alt;
+      evt->ctrl = wm->ctrl;
+      evt->shift = wm->shift;
+      widget_dispatch_to_target(wm, e);
+      break;
+    }
+    default:
+      break;
   }
 
   return RET_OK;

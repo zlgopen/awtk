@@ -821,6 +821,21 @@ ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
+ret_t widget_dispatch_to_target(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  e->target = widget;
+  widget_dispatch(widget, e);
+
+  if (widget->target) {
+    widget_dispatch_to_target(widget->target, e);
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);

@@ -392,7 +392,7 @@ static ret_t edit_update_status(widget_t* widget) {
 }
 
 ret_t edit_on_event(widget_t* widget, event_t* e) {
-  uint16_t type = e->type;
+  uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
 
   if (edit->readonly) {

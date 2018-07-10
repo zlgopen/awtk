@@ -39,6 +39,25 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
   return RET_OK;
 }
 
+#define MIN_WHEEL_DELTA 12
+static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  wheel_event_t event;
+  widget_t* widget = loop->base.wm;
+
+  event.e = event_init(EVT_WHEEL, widget);
+  event.dx = sdl_event->wheel.x;
+  event.dy = sdl_event->wheel.y;
+
+  if (event.dy > 0) {
+    event.dy = tk_max(MIN_WHEEL_DELTA, event.dy);
+  } else if (event.dy < 0) {
+    event.dy = tk_min(-MIN_WHEEL_DELTA, event.dy);
+  }
+  window_manager_dispatch_input_event(widget, (event_t*)&event);
+
+  return RET_OK;
+}
+
 static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   pointer_event_t event;
   int type = sdl_event->type;
@@ -112,6 +131,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       }
       case SDL_QUIT: {
         ret = main_loop_quit(&(loop->base));
+        break;
+      }
+      case SDL_MOUSEWHEEL: {
+        ret = main_loop_sdl2_dispatch_wheel_event(loop, &event);
         break;
       }
     }

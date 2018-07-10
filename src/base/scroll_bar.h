@@ -141,6 +141,26 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration);
 ret_t scroll_bar_set_value(widget_t* widget, int32_t value);
 
 /**
+ * @method scroll_bar_set_value
+ * 在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} delta 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_add_delta(widget_t* widget, int32_t delta);
+
+/**
+ * @method scroll_bar_scroll_delta
+ * 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} delta 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_scroll_delta(widget_t* widget, int32_t delta);
+
+/**
  * @method scroll_bar_set_value_only
  * 设置值，但不触发EVT_VALUE_CHANGED事件。
  * @param {widget_t*} widget scroll_bar控件。

@@ -71,10 +71,11 @@ OS_LIBS=['SDL2', 'glad', 'stdc++', 'pthread', 'm']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ -DHAS_PTHREAD'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLUA_USE_POSIX -D__APPLE__ -DHAS_PTHREAD -DMACOS'
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
+  OS_LIBS = ['picasso', 'agg'] + OS_LIBS
 
 elif OS_NAME == 'Linux':
   OS_LIBS = ['GL'] + OS_LIBS + ['dl']
@@ -92,7 +93,7 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['awtk', 'gpinyin', 'awtk', 'picasso', 'agg', 'nanovg'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'nanovg'] + OS_LIBS
 
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
 CPPPATH=[TK_ROOT, 

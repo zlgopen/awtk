@@ -856,6 +856,17 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx);
  */
 widget_t* widget_get_window(widget_t* widget);
 
+/**
+ * @method widget_dispatch_to_target
+ * 递归的分发一个事件到所有target子控件。
+ * @private
+ * @param {widget_t*} widget 控件对象。
+ * @param {event_t*} e 事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_dispatch_to_target(widget_t* widget, event_t* e);
+
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
