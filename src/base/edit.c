@@ -452,6 +452,15 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_WHEEL: {
+      wheel_event_t* evt = (wheel_event_t*)e;
+      if (evt->dy > 0) {
+        edit_dec(edit);
+      } else if (evt->dy < 0) {
+        edit_inc(edit);
+      }
+      break;
+    }
     default:
       break;
   }

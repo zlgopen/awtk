@@ -671,7 +671,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
-      widget_dispatch_to_target(wm, e);
+      widget_dispatch_to_key_target(wm, e);
       break;
     }
     default:
