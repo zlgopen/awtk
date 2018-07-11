@@ -67,6 +67,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       button->repeat_nr = 0;
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
+        button->timer_id = TK_INVALID_ID;
       }
       break;
     }
@@ -114,10 +115,21 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
   return RET_NOT_FOUND;
 }
 
+static ret_t button_destroy(widget_t* widget) {
+  button_t* button = BUTTON(widget);
+  if (button->timer_id != TK_INVALID_ID) {
+    timer_remove(button->timer_id);
+    button->timer_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_button_vtable = {.type_name = WIDGET_TYPE_BUTTON,
                                                 .on_event = button_on_event,
                                                 .set_prop = button_set_prop,
                                                 .get_prop = button_get_prop,
+                                                .destroy = button_destroy,
                                                 .on_paint_self = button_on_paint_self};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -129,6 +141,7 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_button_vtable;
   widget_init(widget, parent, WIDGET_BUTTON);
   widget_move_resize(widget, x, y, w, h);
+  button->timer_id = TK_INVALID_ID;
 
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

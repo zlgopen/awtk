@@ -848,6 +848,17 @@ static ret_t edit_hook_button(void* ctx, void* iter) {
   return RET_OK;
 }
 
+static ret_t edit_destroy(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  if (edit->timer_id != TK_INVALID_ID) {
+    timer_remove(edit->timer_id);
+    edit->timer_id = TK_INVALID_ID;
+  }
+  wstr_reset(&(edit->tips));
+
+  return RET_OK;
+}
+
 static ret_t edit_hook_children_button(void* ctx, event_t* e) {
   widget_t* edit = WIDGET(ctx);
 
@@ -860,6 +871,7 @@ static const widget_vtable_t s_edit_vtable = {.type_name = WIDGET_TYPE_EDIT,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,
                                               .get_prop = edit_get_prop,
+                                              .destroy = edit_destroy,
                                               .on_event = edit_on_event};
 
 widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
@@ -881,6 +893,7 @@ widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
   widget_move_resize(widget, x, y, w, h);
   edit_set_text_limit(widget, 0, 1024);
   edit_update_status(widget);
+  edit->timer_id = TK_INVALID_ID;
 
   widget_on(win, EVT_WINDOW_OPEN, edit_hook_children_button, edit);
 
