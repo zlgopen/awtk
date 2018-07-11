@@ -60,7 +60,7 @@ paint_event_t* paint_event_cast(event_t* event) {
   return (paint_event_t*)event;
 }
 
-event_t event_init(event_type_t type, void* target) {
+event_t event_init(uint32_t type, void* target) {
   event_t e;
 
   e.type = type;

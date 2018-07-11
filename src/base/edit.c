@@ -728,7 +728,7 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
 }
 
 static ret_t edit_add_int(edit_t* edit, int delta) {
-  int v = 0;
+  int32_t v = 0;
   widget_t* widget = WIDGET(edit);
   wstr_t* text = &(widget->text);
 

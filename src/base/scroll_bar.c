@@ -392,7 +392,7 @@ static const widget_vtable_t s_scroll_bar_desktop_vtable = {.type_name = WIDGET_
                                                             .get_prop = scroll_bar_get_prop};
 
 bool_t scroll_bar_is_mobile(widget_t* widget) {
-  return widget->vt == &s_scroll_bar_mobile_vtable;
+  return widget && widget->vt == &s_scroll_bar_mobile_vtable;
 }
 
 static ret_t scroll_bar_on_animate_end(void* ctx, event_t* e) {
