@@ -646,7 +646,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #elif defined(WITH_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+  if(nanovg->vg == NULL) {
+    assert(!"OpenGL3 is not supported!");
+  }
 #endif
-
   return &(nanovg->base);
 }
