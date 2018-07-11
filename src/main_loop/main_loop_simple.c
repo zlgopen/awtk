@@ -50,15 +50,15 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
 
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
 
-  loop->last_x = x;
-  loop->last_y = y;
-
   event.x = x;
   event.y = y;
   event.button = 0;
   event.e.time = time_now_ms();
 
   if (pressed) {
+	loop->last_x = x;
+	loop->last_y = y;
+
     if (loop->pressed) {
       event.e.type = EVT_POINTER_MOVE;
     } else {
@@ -75,8 +75,10 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
       loop->pressed = FALSE;
       event.e.type = EVT_POINTER_UP;
       event.pressed = loop->pressed;
-
+      event.x = loop->last_x;
+      event.y = loop->last_y;
       r.pointer_event = event;
+
       return main_loop_queue_event(l, &r);
     }
   }
