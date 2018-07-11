@@ -105,6 +105,8 @@ static const key_type_value_t resource_type_value[] = {
 };
 
 static const key_type_value_t image_draw_type_name_value[] = {
+    {"default", 0, IMAGE_DRAW_DEFAULT},
+    {"icon", 0, IMAGE_DRAW_ICON},
     {"center", 0, IMAGE_DRAW_CENTER},
     {"scale", 0, IMAGE_DRAW_SCALE},
     {"scale_auto", 0, IMAGE_DRAW_SCALE_AUTO},

@@ -1,0 +1,43 @@
+<window anim_hint="htranslate" >
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="80" auto_hide_scroll_bar="true">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+     <list_item style="5:empty" layout="r1 c3 s2 m2">
+      <image style="1:border" image="1" draw_type="scale_auto"><label w="100%" h="100%" text="auto" /></image>
+      <image style="1:border" image="2" draw_type="scale_auto"><label w="100%" h="100%" text="auto" /></image>
+      <image style="1:border" image="3" draw_type="scale_auto"><label w="100%" h="100%" text="auto" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c3 s2 m2">
+      <image style="1:border" image="rgb" draw_type="default"><label w="100%" h="100%" text="default" /></image>
+      <image style="1:border" image="rgb" draw_type="icon"><label w="100%" h="100%" text="icon" /></image>
+      <image style="1:border" image="rgb" draw_type="center"><label w="100%" h="100%" text="center" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c3">
+      <image style="1:border" image="1" draw_type="scale_w"><label w="100%" h="100%" text="scale_w" /></image>
+      <image style="1:border" image="1" draw_type="scale_h"><label w="100%" h="100%" text="scale_h" /></image>
+      <image style="1:border" image="1" draw_type="scale"><label w="100%" h="100%" text="scale" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c3 s2 m2">
+      <image style="1:border" image="rgb" draw_type="repeat"><label w="100%" h="100%" text="repeat" /></image>
+      <image style="1:border" image="rgb" draw_type="repeat_x"><label w="100%" h="100%" text="repeat_x" /></image>
+      <image style="1:border" image="rgb" draw_type="repeat_y"><label w="100%" h="100%" text="repeat_y" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c3 s2 m2">
+      <image style="1:border" image="green_btn_n" draw_type="9patch"><label w="100%" h="100%" text="9patch" /></image>
+      <image style="1:border" image="green_btn_n" draw_type="3patch_x"><label w="100%" h="100%" text="3patch_x" /></image>
+      <image style="1:border" image="green_btn_n" draw_type="3patch_y"><label w="100%" h="100%" text="3patch_y" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c1">
+      <image style="1:border" image="green_btn_n" draw_type="3patch_x_scale_y"><label w="100%" h="100%" text="3patch_x_scale_y" /></image>
+     </list_item>
+     <list_item style="5:empty" layout="r1 c10">
+      <label/>
+      <label/>
+      <label/>
+      <label/>
+      <image style="1:border" image="green_btn_n" draw_type="3patch_y_scale_x"><label w="100%" h="100%" text="3patch_y_scale_x" /></image>
+     </list_item>
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>

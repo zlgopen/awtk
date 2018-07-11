@@ -56,8 +56,8 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
   event.e.time = time_now_ms();
 
   if (pressed) {
-	loop->last_x = x;
-	loop->last_y = y;
+    loop->last_x = x;
+    loop->last_y = y;
 
     if (loop->pressed) {
       event.e.type = EVT_POINTER_MOVE;

@@ -25,7 +25,7 @@
         <button repeat="300" name="L" text="L"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
-        <button name="page:lower"><image image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:lower"><image draw_type="icon" image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="Z" text="Z"/>
         <button repeat="300" name="X" text="X"/>
         <button repeat="300" name="C" text="C"/>
@@ -33,7 +33,7 @@
         <button repeat="300" name="B" text="B"/>
         <button repeat="300" name="N" text="N"/>
         <button repeat="300" name="M" text="M"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
@@ -66,7 +66,7 @@
         <button repeat="300" name="l" text="l"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
-        <button name="page:upper" style="1:highlight"><image image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:upper" style="1:highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="z" text="z"/>
         <button repeat="300" name="x" text="x"/>
         <button repeat="300" name="c" text="c"/>
@@ -74,7 +74,7 @@
         <button repeat="300" name="b" text="b"/>
         <button repeat="300" name="n" text="n"/>
         <button repeat="300" name="m" text="m"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
@@ -117,7 +117,7 @@
         <button repeat="300" name="<" text="<"/>
         <button repeat="300" name=">" text=">"/>
         <button repeat="300" name="#" text="#"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
@@ -157,7 +157,7 @@
         <button repeat="300" name="!" text="!"/>
         <button repeat="300" name="'" text="'"/>
         <button repeat="300" name="&quota;" text=">"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>

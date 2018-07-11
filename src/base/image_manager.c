@@ -156,7 +156,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
       resource_manager_unref(resource_manager(), res);
     }
 
-    return ret;
+    return image_manager_lookup(imm, name, image);
   } else {
     return RET_NOT_FOUND;
   }

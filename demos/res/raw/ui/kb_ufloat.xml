@@ -12,7 +12,7 @@
         <button repeat="300" name="9" text="9"/>
         <button repeat="300" name="." style="1:highlight" text="."/>
         <button repeat="300" name="0" text="0"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
     </view>
   </pages>
 </keyboard>

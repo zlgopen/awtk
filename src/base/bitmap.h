@@ -157,11 +157,25 @@ ret_t bitmap_destroy(bitmap_t* bitmap);
  */
 typedef enum _image_draw_type_t {
   /**
+   * @const IMAGE_DRAW_DEFAULT
+   * 居中显示。
+   * 将图片按原大小显示在目标矩形的左上角。
+   */
+  IMAGE_DRAW_DEFAULT = 0,
+
+  /**
    * @const IMAGE_DRAW_CENTER
    * 居中显示。
    * 将图片按原大小显示在目标矩形的中央。
    */
-  IMAGE_DRAW_CENTER = 0,
+  IMAGE_DRAW_CENTER,
+
+  /**
+   * @const IMAGE_DRAW_ICON
+   * 居中显示，但会根据屏幕密度调整大小。
+   * 将图片按原大小显示在目标矩形的中央。
+   */
+  IMAGE_DRAW_ICON,
 
   /**
    * @const IMAGE_DRAW_SCALE

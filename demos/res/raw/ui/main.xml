@@ -1,6 +1,6 @@
 <window name="main" anim_hint="htranslate" layout="c2 h30 m5 s5">
     <button name="open:memtest" text="MemTest"/>
-    <button name="open:image" text="Image"/>
+    <button name="open:images" text="Image"/>
     <button name="open:basic" text="Basic"/>
     <button name="open:button" text="Buttons"/>
     <button name="open:edit" text="Edits"/>

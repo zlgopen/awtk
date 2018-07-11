@@ -209,7 +209,7 @@
 
 <image>
   <style name="1:border">
-    <normal border_color="#000000" bg_color="#e0e0e0"/>
+    <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
   </style>
 </image>
 

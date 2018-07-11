@@ -1024,6 +1024,16 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
   switch (draw_type) {
+    case IMAGE_DRAW_DEFAULT:
+      src = rect_init(0, 0, tk_min(dst->w, img->w), tk_min(dst->h, img->h));
+      dst->w = src.w;
+      dst->h = src.h;
+      return canvas_draw_image(c, img, &src, dst);
+    case IMAGE_DRAW_ICON: {
+      xy_t cx = dst->x + (dst->w >> 1);
+      xy_t cy = dst->y + (dst->h >> 1);
+      return canvas_draw_icon(c, img, cx, cy);
+    }
     case IMAGE_DRAW_CENTER:
       return canvas_draw_image_center(c, img, dst);
     case IMAGE_DRAW_SCALE:
@@ -1090,14 +1100,38 @@ ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r) {
 }
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst) {
-  xy_t cx = 0;
-  xy_t cy = 0;
+  xy_t dx = 0;
+  xy_t dy = 0;
+  xy_t sx = 0;
+  xy_t sy = 0;
+  wh_t sw = 0;
+  wh_t sh = 0;
+  rect_t src;
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
-  cx = dst->x + (dst->w >> 1);
-  cy = dst->y + (dst->h >> 1);
+  dx = dst->x + ((dst->w - img->w) >> 1);
+  dy = dst->y + ((dst->h - img->h) >> 1);
 
-  return canvas_draw_icon(c, img, cx, cy);
+  if (dx < 0) {
+    sx = -dx;
+    dx = 0;
+    sw = img->w - 2 * sx;
+  } else {
+    sw = img->w;
+  }
+
+  if (dy < 0) {
+    sy = -dy;
+    dy = 0;
+    sh = img->h - 2 * sy;
+  } else {
+    sh = img->h;
+  }
+
+  src = rect_init(sx, sy, sw, sh);
+  *dst = rect_init(dx, dy, sw, sh);
+
+  return canvas_draw_image(c, img, &src, dst);
 }
 
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {

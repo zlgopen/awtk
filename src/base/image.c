@@ -22,6 +22,7 @@
 #include "base/mem.h"
 #include "base/enums.h"
 #include "base/image.h"
+#include "base/utils.h"
 #include "base/image_manager.h"
 
 static ret_t image_set_image(widget_t* widget, bitmap_t* image);
@@ -66,11 +67,13 @@ static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
   image_t* image = IMAGE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "image") == 0) {
-    value_set_pointer(v, &(image->bitmap));
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
+    value_set_str(v, image->bitmap.name);
     return RET_OK;
-  } else if (strcmp(name, "draw_type") == 0) {
-    value_set_int(v, image->draw_type);
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAW_TYPE)) {
+    const key_type_value_t* kv = image_draw_type_find_by_value(image->draw_type);
+    const char* draw_type = kv != NULL ? kv->name : "default";
+    value_set_str(v, draw_type);
     return RET_OK;
   }
 
@@ -80,13 +83,13 @@ static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "image") == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     if (v->type == VALUE_TYPE_STRING) {
       return image_set_image_name(widget, value_str(v));
     } else if (v->type == VALUE_TYPE_POINTER) {
       return image_set_image(widget, (bitmap_t*)value_pointer(v));
     }
-  } else if (strcmp(name, "draw_type") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAW_TYPE)) {
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = image_draw_type_find(value_str(v));
       if (kv != NULL) {
@@ -116,7 +119,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget->vt = &s_image_vtable;
   widget_init(widget, parent, WIDGET_IMAGE);
   widget_move_resize(widget, x, y, w, h);
-  image->draw_type = IMAGE_DRAW_CENTER;
+  image->draw_type = IMAGE_DRAW_DEFAULT;
 
   return widget;
 }

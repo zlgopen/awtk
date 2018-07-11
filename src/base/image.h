@@ -36,6 +36,19 @@ BEGIN_C_DECLS
  */
 typedef struct _image_t {
   widget_t widget;
+  /**
+   * @property {char*} image
+   * @fake
+   * 图片的名称。
+   */
+
+  /**
+   * @property {char*} draw_type
+   * @fake
+   * 图片的绘制方式。
+   */
+
+  /*private*/
   bitmap_t bitmap;
   image_draw_type_t draw_type;
 } image_t;

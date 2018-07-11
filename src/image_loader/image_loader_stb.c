@@ -80,7 +80,7 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
   int n = 0;
   int nr = 0;
   uint8_t* data4 = NULL;
-  uint8_t* data = stbi_load_from_memory(buff, buff_size, &w, &h, &n, 4);
+  uint8_t* data = stbi_load_from_memory(buff, buff_size, &w, &h, &n, 0);
   return_value_if_fail(data != NULL, RET_FAIL);
 
   image->w = w;
