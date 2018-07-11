@@ -141,6 +141,9 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/07/10
+    * 框架支持滚轮事件。
+    * ListView和SpinBox支持滚轮事件。
 
 * 2018/07/09
     * 按钮支持repeat触发click事件，键盘和滚动条支持repeat触发。

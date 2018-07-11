@@ -52,6 +52,9 @@
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
+#include "res/inc/images/1.res"
+#include "res/inc/images/2.res"
+#include "res/inc/images/3.res"
 #include "res/inc/images/arrow_down_n.res"
 #include "res/inc/images/arrow_down_o.res"
 #include "res/inc/images/arrow_down_p.res"
@@ -112,6 +115,9 @@
 #include "res/inc/images/unmuted.res"
 #include "res/inc/images/warn.res"
 #else
+#include "res/inc/images/1.data"
+#include "res/inc/images/2.data"
+#include "res/inc/images/3.data"
 #include "res/inc/images/arrow_down_n.data"
 #include "res/inc/images/arrow_down_o.data"
 #include "res/inc/images/arrow_down_p.data"
@@ -171,17 +177,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -191,6 +197,9 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
   resource_manager_add(rm, font_default);
+  resource_manager_add(rm, image_1);
+  resource_manager_add(rm, image_2);
+  resource_manager_add(rm, image_3);
   resource_manager_add(rm, image_arrow_down_n);
   resource_manager_add(rm, image_arrow_down_o);
   resource_manager_add(rm, image_arrow_down_p);
