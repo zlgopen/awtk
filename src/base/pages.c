@@ -38,22 +38,13 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
 }
 
 ret_t pages_set_active_by_name(widget_t* widget, const char* name) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  widget_t** children = NULL;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
-  if (widget->children && widget->children->elms) {
-    nr = widget->children->size;
-    children = (widget_t**)(widget->children->elms);
-
-    for (i = 0; i < nr; i++) {
-      widget_t* iter = children[i];
-      if (iter->name.str && tk_str_eq(iter->name.str, name)) {
-        return pages_set_active(widget, i);
-      }
-    }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (tk_str_eq(iter->name.str, name)) {
+    return pages_set_active(widget, i);
   }
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_NOT_FOUND;
 }

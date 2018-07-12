@@ -159,17 +159,6 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   return RET_OK;
 }
 
-static int compare_win(void* a, void* b) {
-  widget_t* win = WIDGET(b);
-  widget_t* widget = WIDGET(a);
-
-  if (widget_get_window(widget) == win) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
-
 ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
   window_manager_t* wm = WINDOW_MANAGER(widget);
@@ -182,7 +171,11 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   if (widget->key_target == window) {
     widget->key_target = NULL;
   }
-  array_remove_all(&(wm->grab_widgets), compare_win, window, NULL);
+  if (wm->grab_widget != NULL) {
+    if (widget_get_window(wm->grab_widget) == window) {
+      wm->grab_widget = NULL;
+    }
+  }
 
   if (wm->animator) {
     wm->pending_close_window = window;
@@ -199,37 +192,29 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
 }
 
 widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
-  uint32_t i = 0;
-  uint32_t n = 0;
   point_t p = {x, y};
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL, NULL);
 
-  if (wm->grab_widgets.size > 0) {
-    widget_t* target = WIDGET(wm->grab_widgets.elms[wm->grab_widgets.size - 1]);
+  if (wm->grab_widget != NULL) {
+    widget_t* target = wm->grab_widget;
     /*log_debug("target=%s\n", target->vt->type_name);*/
     return target;
   }
 
   widget_to_local(widget, &p);
-  if (widget->children != NULL && widget->children->size > 0) {
-    xy_t xx = p.x;
-    xy_t yy = p.y;
-    n = widget->children->size;
-    for (i = n; i > 0; i--) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i - 1]);
-      xy_t r = iter->x + iter->w;
-      xy_t b = iter->y + iter->h;
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  xy_t r = iter->x + iter->w;
+  xy_t b = iter->y + iter->h;
 
-      if (xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
-        return iter;
-      }
-
-      if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG) {
-        return iter;
-      }
-    }
+  if (p.x >= iter->x && p.y >= iter->y && p.x <= r && p.y <= b) {
+    return iter;
   }
+
+  if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG) {
+    return iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END()
 
   return NULL;
 }
@@ -371,16 +356,21 @@ static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  log_debug("grab: %s\n", child->vt->type_name);
-  return array_push(&(wm->grab_widgets), child);
+  wm->grab_widget = child;
+
+  return RET_OK;
 }
 
 static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  log_debug("ungrab: %s\n", child->vt->type_name);
-  return array_remove_all(&(wm->grab_widgets), NULL, child, NULL);
+  if (wm->grab_widget == child) {
+    wm->grab_widget = NULL;
+    log_debug("ungrab: %s\n", child->vt->type_name);
+  }
+
+  return RET_OK;
 }
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
@@ -393,19 +383,13 @@ static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
 }
 
 int32_t window_manager_find_top_window_index(widget_t* widget) {
-  int32_t i = 0;
-  int32_t nr = 0;
   return_value_if_fail(widget != NULL, -1);
 
-  if (widget->children != NULL && widget->children->size > 0) {
-    nr = widget->children->size;
-    for (i = nr - 1; i >= 0; i--) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->type == WIDGET_NORMAL_WINDOW) {
-        return i;
-      }
-    }
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter->type == WIDGET_NORMAL_WINDOW) {
+    return i;
   }
+  WIDGET_FOR_EACH_CHILD_END();
 
   return -1;
 }
@@ -476,7 +460,6 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   w->vt = &s_wm_vtable;
   widget_init(w, NULL, WIDGET_WINDOW_MANAGER);
-  array_init(&(wm->grab_widgets), 5);
 
 #ifdef WITH_DYNAMIC_TR
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);

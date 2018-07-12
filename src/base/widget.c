@@ -136,14 +136,9 @@ ret_t widget_re_translate_text(widget_t* widget) {
     widget_invalidate(widget, NULL);
   }
 
-  if (widget->children != NULL) {
-    int32_t i = 0;
-    int32_t n = 0;
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      widget_re_translate_text(iter);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_re_translate_text(iter);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 #else
@@ -258,17 +253,12 @@ ret_t widget_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
 }
 
 ret_t widget_destroy_children(widget_t* widget) {
-  int32_t i = 0;
-  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (widget->children != NULL) {
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      widget_destroy_only(iter);
-    }
-    widget->children->size = 0;
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_destroy_only(iter);
+  WIDGET_FOR_EACH_CHILD_END();
+  widget->children->size = 0;
 
   return RET_OK;
 }
@@ -301,55 +291,41 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  child->parent = NULL;
   if (widget->vt->on_remove_child) {
     if (widget->vt->on_remove_child(widget, child) == RET_OK) {
       return RET_OK;
     }
   }
 
+  child->parent = NULL;
   return array_remove(widget->children, NULL, child, NULL);
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
-  int32_t i = 0;
-  int32_t n = 0;
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
-  if (widget->children != NULL) {
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->name.str == NULL) {
-        continue;
-      }
-
-      if (str_eq(&(iter->name), name)) {
-        return iter;
-      }
-    }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter->name.str != NULL && str_eq(&(iter->name), name)) {
+    return iter;
   }
+  WIDGET_FOR_EACH_CHILD_END()
 
   return NULL;
 }
 
 static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
-  int32_t i = 0;
-  int32_t n = 0;
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
-  if (widget->children != NULL) {
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (str_eq(&(iter->name), name)) {
-        return iter;
-      } else {
-        iter = widget_lookup_all(iter, name);
-        if (iter != NULL) {
-          return iter;
-        }
-      }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter->name.str != NULL && str_eq(&(iter->name), name)) {
+    return iter;
+  } else {
+    iter = widget_lookup_all(iter, name);
+    if (iter != NULL) {
+      return iter;
     }
   }
+  WIDGET_FOR_EACH_CHILD_END();
 
   return NULL;
 }
@@ -375,17 +351,12 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
 }
 
 static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
-  int32_t i = 0;
-  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->visible = visible;
-  if (widget->children != NULL) {
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      widget_set_visible_recursive(iter, visible);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_set_visible_recursive(iter, visible);
+  WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
 }
@@ -1045,24 +1016,15 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
 }
 
 ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
-  int32_t i = 0;
-  int32_t nr = 0;
-  widget_t** children = NULL;
   return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
 
   if (visit(ctx, widget) != RET_OK) {
     return RET_DONE;
   }
 
-  if (widget->children && widget->children->elms) {
-    nr = widget->children->size;
-    children = (widget_t**)(widget->children->elms);
-
-    for (i = 0; i < nr; i++) {
-      widget_t* iter = children[i];
-      widget_foreach(iter, visit, ctx);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_foreach(iter, visit, ctx);
+  WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
 }
@@ -1125,17 +1087,12 @@ ret_t widget_destroy(widget_t* widget) {
 }
 
 static ret_t widget_set_dirty(widget_t* widget) {
-  int32_t i = 0;
-  int32_t n = 0;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->dirty = TRUE;
-  if (widget->children != NULL) {
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      widget_set_dirty(iter);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_set_dirty(iter);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 }

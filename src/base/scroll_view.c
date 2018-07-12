@@ -65,24 +65,16 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   int32_t virtual_w = tk_max(scroll_view->virtual_w, widget->w);
   int32_t virtual_h = tk_max(scroll_view->virtual_h, widget->h);
 
-  if (widget->children != NULL) {
-    int32_t i = 0;
-    int32_t n = 0;
-
-    for (i = 0, n = widget->children->size; i < n; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      int32_t r = iter->x + iter->w;
-      int32_t b = iter->y + iter->h;
-
-      if (r > virtual_w) {
-        virtual_w = r;
-      }
-
-      if (b > virtual_h) {
-        virtual_h = b;
-      }
-    }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  int32_t r = iter->x + iter->w;
+  int32_t b = iter->y + iter->h;
+  if (r > virtual_w) {
+    virtual_w = r;
   }
+  if (b > virtual_h) {
+    virtual_h = b;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
 
   scroll_view->virtual_w = virtual_w;
   scroll_view->virtual_h = virtual_h;

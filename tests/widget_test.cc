@@ -287,3 +287,15 @@ TEST(Widget, prop) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, dirty) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 100, 100);
+  widget_invalidate(w, NULL);
+  ASSERT_EQ(w->dirty, TRUE);
+  ASSERT_EQ(b1->dirty, TRUE);
+  widget_destroy_children(w);
+  ASSERT_EQ(w->children->size, 0);
+
+  widget_destroy(w);
+}

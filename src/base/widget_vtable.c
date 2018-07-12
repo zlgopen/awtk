@@ -59,32 +59,27 @@ ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c) {
 }
 
 ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (widget->children != NULL) {
-    for (i = 0, nr = widget->children->size; i < nr; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      int32_t left = c->ox + iter->x;
-      int32_t top = c->oy + iter->y;
-      int32_t bottom = top + iter->h;
-      int32_t right = left + iter->w;
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  int32_t left = c->ox + iter->x;
+  int32_t top = c->oy + iter->y;
+  int32_t bottom = top + iter->h;
+  int32_t right = left + iter->w;
 
-      if (!iter->visible) {
-        iter->dirty = FALSE;
-        continue;
-      }
-
-      if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
-          bottom < c->clip_top) {
-        iter->dirty = FALSE;
-        continue;
-      }
-
-      widget_paint(iter, c);
-    }
+  if (!iter->visible) {
+    iter->dirty = FALSE;
+    continue;
   }
+
+  if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
+      bottom < c->clip_top) {
+    iter->dirty = FALSE;
+    continue;
+  }
+
+  widget_paint(iter, c);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 }
@@ -180,26 +175,20 @@ static ret_t point_to_local(widget_t* widget, point_t* p) {
   return RET_OK;
 }
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
-  uint32_t i = 0;
-  uint32_t n = 0;
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
 
   point_to_local(widget, &p);
-  if (widget->children != NULL && widget->children->size > 0) {
-    xy_t xx = p.x;
-    xy_t yy = p.y;
-    n = widget->children->size;
-    for (i = n; i > 0; i--) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i - 1]);
-      xy_t r = iter->x + iter->w;
-      xy_t b = iter->y + iter->h;
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  xy_t xx = p.x;
+  xy_t yy = p.y;
+  xy_t r = iter->x + iter->w;
+  xy_t b = iter->y + iter->h;
 
-      if (iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
-        return iter;
-      }
-    }
+  if (iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
+    return iter;
   }
+  WIDGET_FOR_EACH_CHILD_END();
 
   return NULL;
 }
