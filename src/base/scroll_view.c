@@ -227,14 +227,10 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 
   if (scroll_view->xslidable) {
     scroll_view->xoffset = scroll_view->xoffset_save - dx;
-  } else {
-    scroll_view->xoffset = 0;
   }
 
   if (scroll_view->yslidable) {
     scroll_view->yoffset = scroll_view->yoffset_save - dy;
-  } else {
-    scroll_view->yoffset = 0;
   }
 
   if (scroll_view->on_scroll) {
@@ -265,7 +261,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed) {
+      if (evt->pressed && (scroll_view->xslidable || scroll_view->yslidable)) {
         scroll_view_on_pointer_move(scroll_view, evt);
         scroll_view_invalidate_self(widget);
       }
