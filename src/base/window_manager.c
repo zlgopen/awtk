@@ -33,6 +33,7 @@
 static ret_t window_manager_inc_fps(widget_t* widget);
 static ret_t window_manager_update_fps(widget_t* widget);
 static ret_t window_manager_do_open_window(widget_t* wm, widget_t* window);
+static ret_t window_manger_layout_child(widget_t* widget, widget_t* window);
 
 static widget_t* window_manager_find_prev_window(widget_t* widget) {
   int32_t i = 0;
@@ -127,18 +128,12 @@ static ret_t window_manager_do_open_window(widget_t* widget, widget_t* window) {
   return RET_OK;
 }
 
-ret_t window_manager_add_child(widget_t* widget, widget_t* window) {
+ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
-  if (window->type == WIDGET_NORMAL_WINDOW) {
-    widget_move_resize(window, 0, 0, widget->w, widget->h);
-  } else if (window->type == WIDGET_DIALOG) {
-    xy_t x = (widget->w - window->w) >> 1;
-    xy_t y = (widget->h - window->h) >> 1;
-    widget_move_resize(window, x, y, window->w, window->h);
-  }
+  window_manger_layout_child(widget, window);
 
   if (wm->animator != NULL) {
     wm->pending_open_window = window;
@@ -164,11 +159,30 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   return RET_OK;
 }
 
+static int compare_win(void* a, void* b) {
+  widget_t* win = WIDGET(b);
+  widget_t* widget = WIDGET(a);
+
+  if (widget_get_window(widget) == win) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   event_t e = event_init(EVT_WINDOW_CLOSE, window);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  if (widget->target == window) {
+    widget->target = NULL;
+  }
+  if (widget->key_target == window) {
+    widget->key_target = NULL;
+  }
+  array_remove_all(&(wm->grab_widgets), compare_win, window, NULL);
 
   if (wm->animator) {
     wm->pending_close_window = window;
@@ -252,15 +266,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   wm->last_dirty_rect = wm->dirty_rect;
   wm->dirty_rect = rect_init(widget->w, widget->h, 0, 0);
-
-  return RET_OK;
-}
-
-static ret_t timer_enable_user_input(const timer_info_t* timer) {
-  window_manager_t* wm = WINDOW_MANAGER(timer->ctx);
-
-  wm->ignore_user_input = FALSE;
-  log_debug("enable user input\n");
 
   return RET_OK;
 }
@@ -413,31 +418,21 @@ widget_t* window_manager_get_top_window(widget_t* widget) {
 }
 
 ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
-  int32_t i = 0;
-  int32_t nr = 0;
+  int32_t start = 0;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (widget->children != NULL && widget->children->size > 0) {
-    nr = widget->children->size;
-
-    for (i = nr - 1; i >= 0; i--) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->type == WIDGET_NORMAL_WINDOW) {
-        break;
-      }
-    }
-
-    if (i < 0) {
-      i = 0;
-    }
-
-    for (; i < nr; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->visible) {
-        widget_paint(iter, c);
-      }
-    }
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter->type == WIDGET_NORMAL_WINDOW) {
+    start = i;
+    break;
   }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (i >= start && iter->visible) {
+    widget_paint(iter, c);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
 }
@@ -463,21 +458,13 @@ static const widget_vtable_t s_wm_vtable = {.type_name = WIDGET_TYPE_WINDOW_MANA
                                             .ungrab = window_manager_ungrab};
 #ifdef WITH_DYNAMIC_TR
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
-  int32_t i = 0;
-  int32_t nr = 0;
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (widget->children != NULL && widget->children->size > 0) {
-    widget_re_translate_text(widget);
-
-    nr = widget->children->size;
-    for (i = 0; i < nr; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-
-      widget_dispatch(iter, e);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_re_translate_text(iter);
+  widget_dispatch(iter, e);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 }
@@ -498,36 +485,41 @@ widget_t* window_manager_init(window_manager_t* wm) {
   return w;
 }
 
-static ret_t window_manger_layout_child(widget_t* widget, widget_t* child) {
-  wh_t w = widget->w;
-  wh_t h = widget->h;
+static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
+  xy_t x = window->x;
+  xy_t y = window->y;
+  wh_t w = window->w;
+  wh_t h = window->h;
 
-  switch (child->type) {
+  switch (window->type) {
     case WIDGET_NORMAL_WINDOW: {
-      child->w = w;
-      child->h = h;
-      widget_layout(child);
+      x = 0;
+      y = 0;
+      w = widget->w;
+      h = widget->h;
+      break;
+    }
+    case WIDGET_DIALOG: {
+      x = (widget->w - window->w) >> 1;
+      y = (widget->h - window->h) >> 1;
       break;
     }
     default:
       break;
   }
 
+  widget_move_resize(window, x, y, w, h);
+  widget_layout(window);
+
   return RET_OK;
 }
 
 static ret_t window_manger_layout_children(widget_t* widget) {
-  int32_t i = 0;
-  int32_t nr = 0;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (widget->children != NULL && widget->children->size > 0) {
-    nr = widget->children->size;
-
-    for (; i < nr; i++) {
-      widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      window_manger_layout_child(widget, iter);
-    }
-  }
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  window_manger_layout_child(widget, iter);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 }

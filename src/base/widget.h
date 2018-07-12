@@ -932,6 +932,26 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
  */
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
 
+#define WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)            \
+  if (widget->children != NULL && widget->children->size > 0) { \
+    int32_t i = 0;                                              \
+    int32_t nr = widget->children->size;                        \
+    widget_t** children = (widget_t**)(widget->children->elms); \
+    for (i = 0; i < nr; i++) {                                  \
+      widget_t* iter = children[i];
+
+#define WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)          \
+  if (widget->children != NULL && widget->children->size > 0) { \
+    int32_t i = 0;                                              \
+    int32_t nr = widget->children->size;                        \
+    widget_t** children = (widget_t**)(widget->children->elms); \
+    for (i = nr - 1; i >= 0; i--) {                             \
+      widget_t* iter = children[i];
+
+#define WIDGET_FOR_EACH_CHILD_END() \
+  }                                 \
+  }
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/

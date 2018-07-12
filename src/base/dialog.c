@@ -186,7 +186,7 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   }
 
   widget_move_resize(widget, x, y, w, h);
-  return_value_if_fail(window_manager_add_child(parent, widget) == RET_OK, NULL);
+  return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
 
   dialog->margin = 0;
   widget_update_style(widget);
