@@ -287,6 +287,10 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->target = NULL;
   }
 
+  if (widget->grab_widget == child) {
+    widget->grab_widget = NULL;
+  }
+
   if (widget->key_target == child) {
     widget->key_target = NULL;
   }
@@ -910,20 +914,22 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   }
 
   target = widget_find_target(widget, e->x, e->y);
-  if (target != NULL && target->enable && target->type != WIDGET_KEYBOARD) {
-    if (!target->focused) {
-      event_t focus = event_init(EVT_FOCUS, target);
-      if (widget->key_target) {
-        widget_dispatch_blur_event(widget->key_target);
+  if (target != NULL && target->enable) {
+    if (target->type != WIDGET_KEYBOARD) {
+      if (!target->focused) {
+        event_t focus = event_init(EVT_FOCUS, target);
+        if (widget->key_target) {
+          widget_dispatch_blur_event(widget->key_target);
+        }
+        widget_dispatch(target, &focus);
       }
-      widget_dispatch(target, &focus);
-    }
 
-    widget->target = target;
-    widget->key_target = target;
-    widget->key_target->focused = TRUE;
+      widget->key_target = target;
+      widget->key_target->focused = TRUE;
+    }
   }
 
+  widget->target = target;
   if (widget->target != NULL) {
     ret = widget_on_pointer_down(widget->target, e);
   }
@@ -992,27 +998,27 @@ ret_t widget_layout_children(widget_t* widget) {
 }
 
 ret_t widget_grab(widget_t* widget, widget_t* child) {
-  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && child != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  if (widget->vt->grab) {
-    ret = widget->vt->grab(widget, child);
-  } else if (widget->parent) {
-    ret = widget_grab(widget->parent, child);
+  widget->grab_widget = child;
+
+  if (widget->parent) {
+    widget_grab(widget->parent, widget);
   }
 
-  return ret;
+  return RET_OK;
 }
 
 ret_t widget_ungrab(widget_t* widget, widget_t* child) {
-  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  if (widget->vt->ungrab) {
-    ret = widget->vt->ungrab(widget, child);
-  } else if (widget->parent) {
-    ret = widget_ungrab(widget->parent, child);
+
+  if (widget->grab_widget == child) {
+    if (widget->parent) {
+      widget_ungrab(widget->parent, widget);
+    }
+    widget->grab_widget = NULL;
   }
 
-  return ret;
+  return RET_OK;
 }
 
 ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {

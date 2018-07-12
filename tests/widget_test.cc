@@ -2,6 +2,7 @@
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "base/button.h"
+#include "base/label.h"
 #include "base/group_box.h"
 #include "base/window.h"
 #include "font_dummy.h"
@@ -296,6 +297,25 @@ TEST(Widget, dirty) {
   ASSERT_EQ(b1->dirty, TRUE);
   widget_destroy_children(w);
   ASSERT_EQ(w->children->size, 0);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, grab) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 100, 100);
+  widget_t* l1 = label_create(w, 0, 0, 10, 10);
+  widget_t* l2 = label_create(w, 0, 0, 10, 10);
+  widget_grab(b1, l1);
+  ASSERT_EQ(b1->grab_widget, l1);
+  ASSERT_EQ(w->grab_widget, b1);
+  widget_ungrab(b1, l2);
+  ASSERT_EQ(b1->grab_widget, l1);
+  ASSERT_EQ(w->grab_widget, b1);
+  
+  widget_grab(b1, l2);
+  ASSERT_EQ(b1->grab_widget, l2);
+  ASSERT_EQ(w->grab_widget, b1);
 
   widget_destroy(w);
 }

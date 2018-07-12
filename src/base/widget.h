@@ -114,8 +114,6 @@ typedef ret_t (*widget_on_remove_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
-typedef ret_t (*widget_grab_t)(widget_t* widget, widget_t* child);
-typedef ret_t (*widget_ungrab_t)(widget_t* widget, widget_t* child);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef ret_t (*widget_destroy_t)(widget_t* widget);
 
@@ -139,8 +137,6 @@ typedef struct _widget_vtable_t {
   widget_on_add_child_t on_add_child;
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
-  widget_grab_t grab;
-  widget_ungrab_t ungrab;
   widget_find_target_t find_target;
   widget_destroy_t destroy;
 } widget_vtable_t;
@@ -296,6 +292,13 @@ struct _widget_t {
    * 接收事件的子控件。
    */
   widget_t* target;
+  /**
+   * @property {widget_t*} grab_widget
+   * @readonly
+   * @scriptable no
+   * grab事件的子控件。
+   */
+  widget_t* grab_widget;
   /**
    * @property {widget_t*} key_target
    * @readonly

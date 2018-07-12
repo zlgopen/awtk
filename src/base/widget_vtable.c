@@ -132,26 +132,6 @@ ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t*
   return RET_NOT_FOUND;
 }
 
-ret_t widget_grab_default(widget_t* widget, widget_t* child) {
-  widget_t* parent = widget->parent;
-
-  if (parent != NULL && parent->vt != NULL && parent->vt->grab != NULL) {
-    parent->vt->grab(parent, child);
-  }
-
-  return RET_OK;
-}
-
-ret_t widget_ungrab_default(widget_t* widget, widget_t* child) {
-  widget_t* parent = widget->parent;
-
-  if (parent != NULL && parent->vt != NULL && parent->vt->ungrab != NULL) {
-    parent->vt->ungrab(parent, child);
-  }
-
-  return RET_OK;
-}
-
 static ret_t point_to_local(widget_t* widget, point_t* p) {
   value_t v;
   widget_t* iter = widget;
@@ -177,6 +157,10 @@ static ret_t point_to_local(widget_t* widget, point_t* p) {
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
+
+  if (widget->grab_widget != NULL) {
+    return widget->grab_widget;
+  }
 
   point_to_local(widget, &p);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
@@ -222,8 +206,6 @@ static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default
                                          .on_pointer_up = widget_on_pointer_up_default,
                                          .get_prop = widget_get_prop_default,
                                          .set_prop = widget_set_prop_default,
-                                         .grab = widget_grab_default,
-                                         .ungrab = widget_ungrab_default,
                                          .find_target = widget_find_target_default,
                                          .destroy = widget_destroy_default};
 

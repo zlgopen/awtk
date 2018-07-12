@@ -172,7 +172,7 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
     widget->key_target = NULL;
   }
   if (wm->grab_widget != NULL) {
-    if (widget_get_window(wm->grab_widget) == window) {
+    if (wm->grab_widget == window) {
       wm->grab_widget = NULL;
     }
   }
@@ -197,9 +197,7 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   return_value_if_fail(widget != NULL, NULL);
 
   if (wm->grab_widget != NULL) {
-    widget_t* target = wm->grab_widget;
-    /*log_debug("target=%s\n", target->vt->type_name);*/
-    return target;
+    return wm->grab_widget;
   }
 
   widget_to_local(widget, &p);
@@ -352,27 +350,6 @@ widget_t* window_manager_create(void) {
   return window_manager_init(wm);
 }
 
-static ret_t window_manager_grab(widget_t* widget, widget_t* child) {
-  window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
-
-  wm->grab_widget = child;
-
-  return RET_OK;
-}
-
-static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
-  window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
-
-  if (wm->grab_widget == child) {
-    wm->grab_widget = NULL;
-    log_debug("ungrab: %s\n", child->vt->type_name);
-  }
-
-  return RET_OK;
-}
-
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   rect_t* dr = &(wm->dirty_rect);
@@ -433,13 +410,13 @@ static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
   return RET_FAIL;
 }
 
-static const widget_vtable_t s_wm_vtable = {.type_name = WIDGET_TYPE_WINDOW_MANAGER,
-                                            .invalidate = window_manager_invalidate,
-                                            .on_paint_children = window_manager_on_paint_children,
-                                            .grab = window_manager_grab,
-                                            .on_remove_child = wm_on_remove_child,
-                                            .find_target = window_manager_find_target,
-                                            .ungrab = window_manager_ungrab};
+static const widget_vtable_t s_wm_vtable = {
+    .type_name = WIDGET_TYPE_WINDOW_MANAGER,
+    .invalidate = window_manager_invalidate,
+    .on_paint_children = window_manager_on_paint_children,
+    .on_remove_child = wm_on_remove_child,
+    .find_target = window_manager_find_target,
+};
 #ifdef WITH_DYNAMIC_TR
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
