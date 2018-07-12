@@ -32,6 +32,7 @@
 
 static ret_t window_manager_inc_fps(widget_t* widget);
 static ret_t window_manager_update_fps(widget_t* widget);
+static ret_t window_manager_do_open_window(widget_t* wm, widget_t* window);
 
 static widget_t* window_manager_find_prev_window(widget_t* widget) {
   int32_t i = 0;
@@ -116,27 +117,38 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
   return window_manager_create_animator(wm, curr_win, FALSE);
 }
 
-ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
-
-  if (window->type == WIDGET_NORMAL_WINDOW) {
-    widget_move_resize(window, 0, 0, wm->w, wm->h);
-  } else if (window->type == WIDGET_DIALOG) {
-    xy_t x = (wm->w - window->w) >> 1;
-    xy_t y = (wm->h - window->h) >> 1;
-    widget_move_resize(window, x, y, window->w, window->h);
-  }
-
-  if (wm->children != NULL && wm->children->size > 0) {
+static ret_t window_manager_do_open_window(widget_t* widget, widget_t* window) {
+  if (widget->children != NULL && widget->children->size > 0) {
     idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
   } else {
     idle_add((idle_func_t)window_manager_idle_dispatch_window_open, window);
   }
 
-  ret = widget_add_child(wm, window);
+  return RET_OK;
+}
+
+ret_t window_manager_add_child(widget_t* widget, widget_t* window) {
+  ret_t ret = RET_OK;
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  if (window->type == WIDGET_NORMAL_WINDOW) {
+    widget_move_resize(window, 0, 0, widget->w, widget->h);
+  } else if (window->type == WIDGET_DIALOG) {
+    xy_t x = (widget->w - window->w) >> 1;
+    xy_t y = (widget->h - window->h) >> 1;
+    widget_move_resize(window, x, y, window->w, window->h);
+  }
+
+  if (wm->animator != NULL) {
+    wm->pending_open_window = window;
+  } else {
+    window_manager_do_open_window(widget, window);
+  }
+
+  ret = widget_add_child(widget, window);
   if (ret == RET_OK) {
-    wm->target = window;
+    widget->target = window;
   }
 
   window->dirty = FALSE;
@@ -152,14 +164,20 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   return RET_OK;
 }
 
-ret_t window_manager_close_window(widget_t* wm, widget_t* window) {
+ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
+  window_manager_t* wm = WINDOW_MANAGER(widget);
   event_t e = event_init(EVT_WINDOW_CLOSE, window);
-  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  if (wm->animator) {
+    wm->pending_close_window = window;
+    return RET_OK;
+  }
 
   widget_dispatch(window, &e);
-  if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
-    widget_remove_child(wm, window);
+  if (window_manager_check_if_need_close_animation(wm, window) != RET_OK) {
+    widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
   }
 
@@ -265,7 +283,17 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     window_animator_destroy(wm->animator);
     wm->animator = NULL;
     wm->animating = FALSE;
-    timer_add(timer_enable_user_input, wm, 100);
+    wm->ignore_user_input = FALSE;
+
+    if (wm->pending_close_window != NULL) {
+      widget_t* window = wm->pending_close_window;
+      wm->pending_close_window = NULL;
+      window_manager_close_window(widget, window);
+    } else if (wm->pending_open_window != NULL) {
+      widget_t* window = wm->pending_open_window;
+      wm->pending_open_window = NULL;
+      window_manager_do_open_window(widget, window);
+    }
   }
 
   return RET_OK;
