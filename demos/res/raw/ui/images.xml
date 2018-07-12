@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" >
-  <list_view x="0"  y="0" w="100%" h="-50" item_height="80" auto_hide_scroll_bar="true">
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="128" auto_hide_scroll_bar="true">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="5:empty" layout="r1 c3 s2 m2">
       <image style="1:border" image="1" draw_type="scale_auto"><label w="100%" h="100%" text="auto" /></image>
@@ -7,9 +7,9 @@
       <image style="1:border" image="3" draw_type="scale_auto"><label w="100%" h="100%" text="auto" /></image>
      </list_item>
      <list_item style="5:empty" layout="r1 c3 s2 m2">
-      <image style="1:border" image="rgb" draw_type="default"><label w="100%" h="100%" text="default" /></image>
-      <image style="1:border" image="rgb" draw_type="icon"><label w="100%" h="100%" text="icon" /></image>
-      <image style="1:border" image="rgb" draw_type="center"><label w="100%" h="100%" text="center" /></image>
+      <image style="1:border" image="earth" draw_type="default"><label w="100%" h="100%" text="default" /></image>
+      <image style="1:border" image="earth" draw_type="icon"><label w="100%" h="100%" text="icon" /></image>
+      <image style="1:border" image="earth" draw_type="center"><label w="100%" h="100%" text="center" /></image>
      </list_item>
      <list_item style="5:empty" layout="r1 c3">
       <image style="1:border" image="1" draw_type="scale_w"><label w="100%" h="100%" text="scale_w" /></image>
@@ -17,9 +17,9 @@
       <image style="1:border" image="1" draw_type="scale"><label w="100%" h="100%" text="scale" /></image>
      </list_item>
      <list_item style="5:empty" layout="r1 c3 s2 m2">
-      <image style="1:border" image="rgb" draw_type="repeat"><label w="100%" h="100%" text="repeat" /></image>
-      <image style="1:border" image="rgb" draw_type="repeat_x"><label w="100%" h="100%" text="repeat_x" /></image>
-      <image style="1:border" image="rgb" draw_type="repeat_y"><label w="100%" h="100%" text="repeat_y" /></image>
+      <image style="1:border" image="bricks" draw_type="repeat"><label w="100%" h="100%" text="repeat" /></image>
+      <image style="1:border" image="bricks" draw_type="repeat_x"><label w="100%" h="100%" text="repeat_x" /></image>
+      <image style="1:border" image="bricks" draw_type="repeat_y"><label w="100%" h="100%" text="repeat_y" /></image>
      </list_item>
      <list_item style="5:empty" layout="r1 c3 s2 m2">
       <image style="1:border" image="green_btn_n" draw_type="9patch"><label w="100%" h="100%" text="9patch" /></image>

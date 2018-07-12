@@ -202,10 +202,10 @@ def gen_res_c():
     incf = copy.copy(f);
     basename = incf.replace(OUTPUT_DIR, '.');
     basename = basename.replace('\\', '/');
+    basename = basename.replace('/fonts/', '/font/');
+    basename = basename.replace('/images/', '/image/');
     basename = basename.replace('./', '');
     basename = basename.replace('/', '_');
-    basename = basename.replace('fonts', 'font');
-    basename = basename.replace('images', 'image');
     basename = basename.replace('.data', '');
     result += '  resource_manager_add(rm, '+basename+');\n'
   result += '#endif\n'

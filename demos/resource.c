@@ -21,7 +21,6 @@
 #include "res/inc/ui/edit.data"
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
-#include "res/inc/ui/image.data"
 #include "res/inc/ui/images.data"
 #include "res/inc/ui/kb_ascii.data"
 #include "res/inc/ui/kb_default.data"
@@ -280,8 +279,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_edit);
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);
-  resource_manager_add(rm, ui_image);
-  resource_manager_add(rm, ui_image);
+  resource_manager_add(rm, ui_images);
   resource_manager_add(rm, ui_kb_ascii);
   resource_manager_add(rm, ui_kb_default);
   resource_manager_add(rm, ui_kb_float);

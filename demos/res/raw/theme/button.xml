@@ -10,7 +10,7 @@
     <pressed  bg_image="red_btn_p" />
     <over     bg_image="red_btn_o" />
   </style>
-  <style name="102:image" bg_image_draw_type="center" text_color="blue">
+  <style name="102:image" bg_image_draw_type="icon" text_color="blue">
     <normal   bg_image="play_n" />
     <pressed  bg_image="play_p" />
     <over     bg_image="play_o" />
