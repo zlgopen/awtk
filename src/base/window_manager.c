@@ -154,8 +154,10 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
 
 ret_t window_manager_close_window(widget_t* wm, widget_t* window) {
   ret_t ret = RET_OK;
+  event_t e = event_init(EVT_WINDOW_CLOSE, window);
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
+  widget_dispatch(window, &e);
   if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
     widget_remove_child(wm, window);
     idle_add(window_manager_idle_destroy_window, window);

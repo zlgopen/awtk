@@ -221,6 +221,11 @@ typedef enum _event_type_t {
    */
   EVT_WINDOW_OPEN,
   /**
+   * @const EVT_WINDOW_CLOSE
+   * 窗口关闭事件。
+   */
+  EVT_WINDOW_CLOSE,
+  /**
    * @const EVT_IM_COMMIT
    * 输入法提交输入的文本事件(im_commit_event_t)。
    */
