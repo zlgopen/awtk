@@ -55,12 +55,19 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN:
       button->repeat_nr = 0;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
+      if (button->timer_id != TK_INVALID_ID) {
+        timer_remove(button->timer_id);
+        button->timer_id = TK_INVALID_ID;
+      }
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
       }
+      widget_grab(widget->parent, widget);
       break;
     case EVT_POINTER_UP: {
       pointer_event_t evt = *(pointer_event_t*)e;
+
+      widget_ungrab(widget->parent, widget);
       evt.e = event_init(EVT_CLICK, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);

@@ -31,6 +31,8 @@
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
+static ret_t widget_destroy_only(widget_t* widget);
+
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   event_t e = event_init(EVT_WILL_MOVE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -263,7 +265,7 @@ ret_t widget_destroy_children(widget_t* widget) {
   if (widget->children != NULL) {
     for (i = 0, n = widget->children->size; i < n; i++) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      widget_destroy(iter);
+      widget_destroy_only(iter);
     }
     widget->children->size = 0;
   }
@@ -299,6 +301,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
+  child->parent = NULL;
   if (widget->vt->on_remove_child) {
     if (widget->vt->on_remove_child(widget, child) == RET_OK) {
       return RET_OK;
@@ -830,10 +833,10 @@ ret_t widget_dispatch_to_target(widget_t* widget, event_t* e) {
   widget_dispatch(widget, e);
 
   if (widget->target) {
-    widget_dispatch_to_target(widget->target, e);
+    ret = widget_dispatch_to_target(widget->target, e);
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e) {
@@ -845,10 +848,10 @@ ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e) {
   widget_dispatch(widget, e);
 
   if (widget->key_target) {
-    widget_dispatch_to_target(widget->key_target, e);
+    ret = widget_dispatch_to_target(widget->key_target, e);
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
@@ -1078,7 +1081,7 @@ widget_t* widget_get_window(widget_t* widget) {
   return iter;
 }
 
-ret_t widget_destroy(widget_t* widget) {
+static ret_t widget_destroy_only(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1109,6 +1112,16 @@ ret_t widget_destroy(widget_t* widget) {
   TKMEM_FREE(widget);
 
   return RET_OK;
+}
+
+ret_t widget_destroy(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->parent != NULL) {
+    widget_remove_child(widget->parent, widget);
+  }
+
+  return widget_destroy_only(widget);
 }
 
 static ret_t widget_set_dirty(widget_t* widget) {

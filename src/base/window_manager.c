@@ -116,32 +116,6 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
   return window_manager_create_animator(wm, curr_win, FALSE);
 }
 
-static ret_t window_manager_remove_child_real(widget_t* wm, widget_t* window) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
-
-  ret = widget_remove_child(wm, window);
-  if (ret == RET_OK) {
-    widget_t* top = window_manager_get_top_window(wm);
-    if (top) {
-      rect_t r;
-      r = rect_init(window->x, window->y, window->w, window->h);
-      widget_invalidate(top, &r);
-    }
-  }
-
-  return ret;
-}
-
-static ret_t on_window_destroy(void* ctx, event_t* e) {
-  widget_t* wm = WIDGET(ctx);
-  if (array_find(wm->children, NULL, e->target)) {
-    window_manager_remove_child_real(wm, e->target);
-  }
-
-  return RET_OK;
-}
-
 ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
   ret_t ret = RET_OK;
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
@@ -167,7 +141,6 @@ ret_t window_manager_add_child(widget_t* wm, widget_t* window) {
 
   window->dirty = FALSE;
   widget_invalidate(window, NULL);
-  widget_on(window, EVT_DESTROY, on_window_destroy, wm);
 
   return ret;
 }
@@ -179,12 +152,12 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   return RET_OK;
 }
 
-ret_t window_manager_remove_child(widget_t* wm, widget_t* window) {
+ret_t window_manager_close_window(widget_t* wm, widget_t* window) {
   ret_t ret = RET_OK;
   return_value_if_fail(wm != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (window_manager_check_if_need_close_animation(WINDOW_MANAGER(wm), window) != RET_OK) {
-    window_manager_remove_child_real(wm, window);
+    widget_remove_child(wm, window);
     idle_add(window_manager_idle_destroy_window, window);
   }
 
@@ -372,7 +345,7 @@ static ret_t window_manager_ungrab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   log_debug("ungrab: %s\n", child->vt->type_name);
-  return array_remove(&(wm->grab_widgets), NULL, child, NULL);
+  return array_remove_all(&(wm->grab_widgets), NULL, child, NULL);
 }
 
 static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
@@ -439,10 +412,23 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
+  widget_t* top = window_manager_get_top_window(widget);
+
+  if (top != NULL) {
+    rect_t r;
+    r = rect_init(window->x, window->y, window->w, window->h);
+    widget_invalidate(top, &r);
+  }
+
+  return RET_FAIL;
+}
+
 static const widget_vtable_t s_wm_vtable = {.type_name = WIDGET_TYPE_WINDOW_MANAGER,
                                             .invalidate = window_manager_invalidate,
                                             .on_paint_children = window_manager_on_paint_children,
                                             .grab = window_manager_grab,
+                                            .on_remove_child = wm_on_remove_child,
                                             .find_target = window_manager_find_target,
                                             .ungrab = window_manager_ungrab};
 #ifdef WITH_DYNAMIC_TR
@@ -662,7 +648,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
-      widget_dispatch_to_target(wm, e);
+      widget_dispatch_to_target(widget, e);
       break;
     }
     case EVT_WHEEL: {
@@ -671,7 +657,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
-      widget_dispatch_to_key_target(wm, e);
+      widget_dispatch_to_key_target(widget, e);
       break;
     }
     default:

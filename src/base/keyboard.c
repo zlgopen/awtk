@@ -222,5 +222,5 @@ static ret_t keyboard_on_load(void* ctx, event_t* e) {
 ret_t keyboard_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return window_manager_remove_child(widget->parent, widget);
+  return window_manager_close_window(widget->parent, widget);
 }

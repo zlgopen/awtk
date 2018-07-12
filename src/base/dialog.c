@@ -210,7 +210,7 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title) {
 static ret_t dialog_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return window_manager_remove_child(widget->parent, widget);
+  return window_manager_close_window(widget->parent, widget);
 }
 
 static ret_t dialog_idle_close(const idle_info_t* info) {

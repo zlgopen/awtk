@@ -107,5 +107,5 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 ret_t window_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return window_manager_remove_child(widget->parent, widget);
+  return window_manager_close_window(widget->parent, widget);
 }
