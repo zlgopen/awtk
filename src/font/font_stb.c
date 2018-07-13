@@ -76,7 +76,7 @@ static ret_t font_stb_destroy(font_t* f) {
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
   if (g->data) {
-    STBTT_free((void*)(g->data), NULL);
+    STBTT_free(g->data, NULL);
   }
 
   return RET_OK;

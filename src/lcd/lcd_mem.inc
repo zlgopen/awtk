@@ -261,7 +261,7 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
 }
 
 static ret_t snapshot_destroy(bitmap_t* img) {
-  TKMEM_FREE((void*)(img->data));
+  TKMEM_FREE(img->data);
 
   return RET_OK;
 }

@@ -31,7 +31,7 @@
 #include "image_loader/image_loader_stb.h"
 
 static ret_t image_stb_destroy_free(bitmap_t* image) {
-  TKMEM_FREE((uint8_t*)(image->data));
+  TKMEM_FREE(image->data);
   image->data = NULL;
 
   return RET_OK;

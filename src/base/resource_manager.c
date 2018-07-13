@@ -178,7 +178,7 @@ static ret_t resource_info_destroy(resource_info_t* info) {
   if (!(info->is_in_rom)) {
     memset(info, 0x00, sizeof(resource_info_t));
 
-    TKMEM_FREE((void*)info);
+    TKMEM_FREE(info);
   }
 
   return RET_OK;
