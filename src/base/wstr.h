@@ -137,6 +137,16 @@ ret_t wstr_push(wstr_t* str, const wchar_t c);
 ret_t wstr_pop(wstr_t* str);
 
 /**
+ * @method wstr_equal
+ * 判断两个字符是否相同。
+ * @param {wstr_t*} str str对象。
+ * @param {wstr_t*} other str对象。
+ *
+ * @return {bool_t} 返回TRUE表示相同，否则表示不同。
+ */
+bool_t wstr_equal(wstr_t* str, wstr_t* other);
+
+/**
  * @method wstr_from_int
  * 用整数初始化字符串。
  * @param {wstr_t*} str str对象。

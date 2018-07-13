@@ -365,6 +365,62 @@ int value_int(const value_t* v) {
   return 0;
 }
 
+bool_t value_equal(const value_t* v, const value_t* other) {
+  return_value_if_fail(v != NULL && other != NULL, FALSE);
+  if (v->type != other->type) {
+    return FALSE;
+  }
+
+  switch (v->type) {
+    case VALUE_TYPE_INT8: {
+      return v->value.i8 == other->value.i8;
+    }
+    case VALUE_TYPE_UINT8: {
+      return v->value.u8 == other->value.u8;
+    }
+    case VALUE_TYPE_INT16: {
+      return v->value.i16 == other->value.i16;
+    }
+    case VALUE_TYPE_UINT16: {
+      return v->value.u16 == other->value.u16;
+    }
+    case VALUE_TYPE_INT32: {
+      return v->value.i32 == other->value.i32;
+    }
+    case VALUE_TYPE_UINT32: {
+      return v->value.u32 == other->value.u32;
+    }
+    case VALUE_TYPE_INT64: {
+      return v->value.i64 == other->value.i64;
+    }
+    case VALUE_TYPE_BOOL: {
+      return v->value.b == other->value.b;
+    }
+    case VALUE_TYPE_POINTER: {
+      return v->value.ptr == other->value.ptr;
+    }
+    case VALUE_TYPE_UINT64: {
+      return v->value.u64 == other->value.u64;
+    }
+    case VALUE_TYPE_FLOAT: {
+      return tk_fequal(v->value.f32, other->value.f32);
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return tk_fequal(v->value.f64, other->value.f64);
+    }
+    case VALUE_TYPE_STRING: {
+      return (v->value.str == other->value.str) || tk_str_eq(v->value.str, other->value.str);
+    }
+    case VALUE_TYPE_WSTRING: {
+      return (v->value.wstr == other->value.wstr) || tk_wstr_eq(v->value.wstr, other->value.wstr);
+    }
+    default:
+      break;
+  }
+
+  return FALSE;
+}
+
 value_t* value_set_int(value_t* v, int32_t value) {
   return value_set_int32(v, value);
 }

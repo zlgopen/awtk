@@ -46,7 +46,11 @@ void tk_mem_info_dump(void);
 #define TKMEM_ZALLOC(type) (type*)calloc(1, sizeof(type))
 #define TKMEM_ZALLOCN(type, n) (type*)calloc(n, sizeof(type))
 #define TKMEM_REALLOC(type, p, n) (type*)realloc(p, (n) * sizeof(type))
-#define TKMEM_FREE(p) if(p) {free((void*)p); p = NULL;}
+#define TKMEM_FREE(p) \
+  if (p) {            \
+    free((void*)p);   \
+    p = NULL;         \
+  }
 #else
 void* tk_calloc(uint32_t nmemb, uint32_t size);
 void* tk_realloc(void* ptr, uint32_t size);
@@ -63,7 +67,11 @@ void* tk_alloc(uint32_t size);
 #define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type))
 #define TKMEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type))
 #define TKMEM_REALLOC(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type))
-#define TKMEM_FREE(p) if(p) {tk_free((void*)p); p = NULL;}
+#define TKMEM_FREE(p)  \
+  if (p) {             \
+    tk_free((void*)p); \
+    p = NULL;          \
+  }
 #endif
 
 uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,

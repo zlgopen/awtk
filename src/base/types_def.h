@@ -340,6 +340,8 @@ typedef float float_t;
 
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
+#define tk_wstr_eq(s1, s2) \
+  (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 #endif /*TYPES_DEF_H*/

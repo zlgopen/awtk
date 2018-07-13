@@ -23,3 +23,19 @@ TEST(Label, basic) {
 
   widget_destroy(l);
 }
+
+TEST(Label, clone) {
+  value_t v1;
+  widget_t* w1 = label_create(NULL, 10, 20, 30, 40);
+
+  widget_set_name(w1, "label");
+  value_set_wstr(&v1, L"label");
+  ASSERT_EQ(widget_set_prop(w1, WIDGET_PROP_TEXT, &v1), RET_OK);
+
+  widget_t* w2 = widget_clone(w1, NULL);
+
+  ASSERT_EQ(widget_equal(w1, w2), TRUE);
+
+  widget_destroy(w1);
+  widget_destroy(w2);
+}

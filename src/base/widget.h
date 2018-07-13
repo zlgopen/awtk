@@ -337,11 +337,11 @@ struct _widget_t {
   wstr_t text;
 #ifdef WITH_DYNAMIC_TR
   /**
-   * @property {str_t} tr_key
+   * @property {char*} tr_key
    * @private
    * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_key。
    */
-  str_t tr_key;
+  char* tr_key;
 #endif /*WITH_DYNAMIC_TR*/
 
   /**
@@ -936,6 +936,26 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
+
+/**
+ * @method widget_clone
+ * clone。
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} parent clone新控件的parent对象。
+ *
+ * @return {widget_t*} 返回clone的对象。
+ */
+widget_t* widget_clone(widget_t* widget, widget_t* parent);
+
+/**
+ * @method widget_equal
+ * 判断两个widget是否相同。
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} other 要比较的控件对象。
+ *
+ * @return {bool_t} 返回TRUE表示相同，否则表示不同。
+ */
+bool_t widget_equal(widget_t* widget, widget_t* other);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)            \
   if (widget->children != NULL && widget->children->size > 0) { \

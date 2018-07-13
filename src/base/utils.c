@@ -226,8 +226,8 @@ char* tk_strdup(const char* str) {
   return_value_if_fail(str != NULL, NULL);
 
   len = strlen(str);
-  s = TKMEM_ALLOC(len+1);
-  if(s != NULL) {
+  s = TKMEM_ALLOC(len + 1);
+  if (s != NULL) {
     memcpy(s, str, len);
     s[len] = '\0';
   }

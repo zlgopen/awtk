@@ -173,19 +173,20 @@ static ret_t dialog_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+widget_t* dialog_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_MARGIN,
                                             WIDGET_PROP_THEME, WIDGET_PROP_SCRIPT, NULL};
 static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .type_name = WIDGET_TYPE_DIALOG,
                                                 .properties = s_dialog_properties,
-                                                .create = dialog_create,
+                                                .create = dialog_create_self,
                                                 .get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,
                                                 .on_layout_children = dialog_on_relayout_children,
                                                 .destroy = dialog_destroy,
                                                 .on_paint_self = dialog_on_paint_self};
 
-widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+widget_t* dialog_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
   dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
   return_value_if_fail(dialog != NULL, NULL);
@@ -206,11 +207,20 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   str_init(&(dialog->anim_hint), 0);
   str_init(&(dialog->theme), 0);
   str_init(&(dialog->script), 0);
+
+  return widget;
+}
+
+widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = dialog_create_self(parent, x, y, w, h);
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, NULL);
+
   dialog->title = dialog_title_create(widget, 0, 0, 0, 0);
   dialog->client = dialog_client_create(widget, 0, 0, 0, 0);
   dialog_on_relayout_children(widget);
 
-  return widget;
+  return WIDGET(dialog);
 }
 
 ret_t dialog_set_title(widget_t* widget, const wchar_t* title) {

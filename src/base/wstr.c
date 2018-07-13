@@ -186,6 +186,22 @@ ret_t wstr_pop(wstr_t* str) {
   return RET_OK;
 }
 
+bool_t wstr_equal(wstr_t* str, wstr_t* other) {
+  if (str == other) {
+    return TRUE;
+  }
+
+  if (str == NULL || other == NULL) {
+    return FALSE;
+  }
+
+  if (str->str == other->str) {
+    return TRUE;
+  }
+
+  return wcscmp(str->str, other->str) == 0;
+}
+
 ret_t wstr_from_int(wstr_t* str, int32_t v) {
   char buff[32];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
