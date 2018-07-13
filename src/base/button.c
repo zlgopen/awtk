@@ -132,7 +132,11 @@ static ret_t button_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_button_vtable = {.type_name = WIDGET_TYPE_BUTTON,
+static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
+static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
+                                                .type_name = WIDGET_TYPE_BUTTON,
+                                                .create = button_create,
+                                                .properties = s_button_properties,
                                                 .on_event = button_on_event,
                                                 .set_prop = button_set_prop,
                                                 .get_prop = button_get_prop,

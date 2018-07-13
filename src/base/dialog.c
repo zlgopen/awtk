@@ -39,7 +39,11 @@ typedef struct _dialog_client_t {
   widget_t widget;
 } dialog_client_t;
 
-static const widget_vtable_t s_dialog_client_vtable = {.type_name = WIDGET_TYPE_DIALOG_CLIENT};
+widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+static const widget_vtable_t s_dialog_client_vtable = {.size = sizeof(dialog_client_t),
+                                                       .type_name = WIDGET_TYPE_DIALOG_CLIENT,
+                                                       .create = dialog_client_create};
 
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;
@@ -61,7 +65,11 @@ static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_dialog_title_vtable = {.type_name = WIDGET_TYPE_DIALOG_TITLE,
+widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+static const widget_vtable_t s_dialog_title_vtable = {.size = sizeof(dialog_title_t),
+                                                      .type_name = WIDGET_TYPE_DIALOG_TITLE,
+                                                      .create = dialog_title_create,
                                                       .on_paint_self = dialog_title_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -165,7 +173,12 @@ static ret_t dialog_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_dialog_vtable = {.type_name = WIDGET_TYPE_DIALOG,
+static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_MARGIN,
+                                            WIDGET_PROP_THEME, WIDGET_PROP_SCRIPT, NULL};
+static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
+                                                .type_name = WIDGET_TYPE_DIALOG,
+                                                .properties = s_dialog_properties,
+                                                .create = dialog_create,
                                                 .get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,
                                                 .on_layout_children = dialog_on_relayout_children,

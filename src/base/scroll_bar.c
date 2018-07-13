@@ -380,16 +380,25 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
+static const char* s_scroll_bar_properties[] = {WIDGET_PROP_MAX, WIDGET_PROP_ROW,
+                                                WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_scroll_bar_mobile_vtable = {
-    .type_name = WIDGET_TYPE_SCROLL_BAR,
+    .size = sizeof(scroll_bar_t),
+    .type_name = WIDGET_TYPE_SCROLL_BAR_MOBILE,
+    .properties = s_scroll_bar_properties,
+    .create = scroll_bar_create_mobile,
     .set_prop = scroll_bar_set_prop,
     .get_prop = scroll_bar_get_prop,
     .on_paint_self = scroll_bar_mobile_on_paint_self};
 
-static const widget_vtable_t s_scroll_bar_desktop_vtable = {.type_name = WIDGET_TYPE_SCROLL_BAR,
-                                                            .on_event = scroll_bar_desktop_on_event,
-                                                            .set_prop = scroll_bar_set_prop,
-                                                            .get_prop = scroll_bar_get_prop};
+static const widget_vtable_t s_scroll_bar_desktop_vtable = {
+    .size = sizeof(scroll_bar_t),
+    .type_name = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
+    .properties = s_scroll_bar_properties,
+    .create = scroll_bar_create_desktop,
+    .on_event = scroll_bar_desktop_on_event,
+    .set_prop = scroll_bar_set_prop,
+    .get_prop = scroll_bar_get_prop};
 
 bool_t scroll_bar_is_mobile(widget_t* widget) {
   return widget && widget->vt == &s_scroll_bar_mobile_vtable;

@@ -598,8 +598,14 @@ static ret_t slide_view_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_VERTICAL,
+                                                WIDGET_PROP_XOFFSET,   WIDGET_PROP_YOFFSET,
+                                                WIDGET_PROP_AUTO_PLAY, NULL};
 static const widget_vtable_t s_slide_view_vtable = {
+    .size = sizeof(slide_view_t),
     .type_name = WIDGET_TYPE_SLIDE_VIEW,
+    .properties = s_slide_view_properties,
+    .create = slide_view_create,
     .on_event = slide_view_on_event,
     .get_prop = slide_view_get_prop,
     .set_prop = slide_view_set_prop,

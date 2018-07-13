@@ -157,7 +157,9 @@ static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_candidates_vtable = {.type_name = WIDGET_TYPE_CANDIDATES,
+static const widget_vtable_t s_candidates_vtable = {.size = sizeof(candidates_t),
+                                                    .type_name = WIDGET_TYPE_CANDIDATES,
+                                                    .create = candidates_create,
                                                     .on_paint_self = candidates_on_paint_self,
                                                     .destroy = candidates_destroy_default};
 

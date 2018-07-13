@@ -96,7 +96,7 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_uint8(v, check_button->value);
     return RET_OK;
   }
@@ -107,15 +107,19 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
 static ret_t check_button_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return check_button_set_value(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
 }
 
+static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_check_button_vtable = {
+    .size = sizeof(check_button_t),
     .type_name = WIDGET_TYPE_CHECK_BUTTON,
+    .properties = s_check_button_properties,
+    .create = check_button_create,
     .on_event = check_button_on_event,
     .on_paint_self = check_button_on_paint_self,
     .get_prop = check_button_get_prop,
@@ -123,7 +127,10 @@ static const widget_vtable_t s_check_button_vtable = {
 };
 
 static const widget_vtable_t s_radio_button_vtable = {
+    .size = sizeof(check_button_t),
     .type_name = WIDGET_TYPE_RADIO_BUTTON,
+    .properties = s_check_button_properties,
+    .create = check_button_create_radio,
     .on_event = check_button_on_event,
     .on_paint_self = check_button_on_paint_self,
     .get_prop = check_button_get_prop,

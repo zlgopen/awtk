@@ -257,6 +257,16 @@ typedef enum _widget_type_t {
    */
   WIDGET_SCROLL_BAR,
   /**
+   * @const WIDGET_SCROLL_BAR_DESKTOP
+   * Scroll Bar Desktop。
+   */
+  WIDGET_SCROLL_BAR_DESKTOP,
+  /**
+   * @const WIDGET_SCROLL_BAR_MOBILE
+   * Scroll Bar Mobile。
+   */
+  WIDGET_SCROLL_BAR_MOBILE,
+  /**
    * @const WIDGET_SCROLL_VIEW
    * Scroll View。
    */

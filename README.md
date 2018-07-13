@@ -141,6 +141,18 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+* 2018/07/13
+    * 在widget vtable中增加create/properies方便实现clone。
+
+* 2018/07/12
+    * 重新整理grab/ungrab的流程。
+    * 修改关闭窗口的BUG。
+
+* 2018/07/11
+    * LCD 增加flush接口。
+    * 完善图片绘制接口，增加相应demo。
+    * 在Windows 7上，如果显卡太旧不支持OpenGL3时，触发assert。
+
 * 2018/07/10
     * 框架支持滚轮事件。
     * ListView和SpinBox支持滚轮事件。

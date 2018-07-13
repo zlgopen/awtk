@@ -105,7 +105,11 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_image_vtable = {.type_name = WIDGET_TYPE_IMAGE,
+static const char* s_image_properties[] = {WIDGET_PROP_IMAGE, WIDGET_PROP_DRAW_TYPE, NULL};
+static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
+                                               .type_name = WIDGET_TYPE_IMAGE,
+                                               .properties = s_image_properties,
+                                               .create = image_create,
                                                .on_paint_self = image_on_paint_self,
                                                .set_prop = image_set_prop,
                                                .get_prop = image_get_prop};

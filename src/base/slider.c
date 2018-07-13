@@ -291,19 +291,19 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, slider->value);
     return RET_OK;
-  } else if (strcmp(name, "vertical") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, slider->vertical);
     return RET_OK;
-  } else if (strcmp(name, "min") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     value_set_int(v, slider->min);
     return RET_OK;
-  } else if (strcmp(name, "max") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     value_set_int(v, slider->max);
     return RET_OK;
-  } else if (strcmp(name, "step") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     value_set_int(v, slider->step);
     return RET_OK;
   }
@@ -314,23 +314,29 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (strcmp(name, "value") == 0) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return slider_set_value(widget, value_int(v));
-  } else if (strcmp(name, "vertical") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slider_set_vertical(widget, value_bool(v));
-  } else if (strcmp(name, "min") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     return slider_set_min(widget, value_int(v));
-  } else if (strcmp(name, "max") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     return slider_set_max(widget, value_int(v));
-  } else if (strcmp(name, "step") == 0) {
+  } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     return slider_set_step(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;
 }
 
+static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
+                                            WIDGET_PROP_MIN,   WIDGET_PROP_MAX,
+                                            WIDGET_PROP_STEP,  NULL};
 static const widget_vtable_t s_slider_vtable = {
+    .size = sizeof(slider_t),
     .type_name = WIDGET_TYPE_SLIDER,
+    .properties = s_slider_properties,
+    .create = slider_create,
     .on_event = slider_on_event,
     .on_paint_background = widget_on_paint_background_null,
     .on_paint_self = slider_on_paint_self,

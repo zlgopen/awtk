@@ -312,7 +312,7 @@ TEST(Widget, grab) {
   widget_ungrab(b1, l2);
   ASSERT_EQ(b1->grab_widget, l1);
   ASSERT_EQ(w->grab_widget, b1);
-  
+
   widget_grab(b1, l2);
   ASSERT_EQ(b1->grab_widget, l2);
   ASSERT_EQ(w->grab_widget, b1);

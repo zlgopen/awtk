@@ -23,7 +23,12 @@
 #include "base/layout.h"
 #include "base/spin_box.h"
 
-static const widget_vtable_t s_edit_vtable = {.type_name = WIDGET_TYPE_SPIN_BOX,
+extern const char* s_edit_properties[];
+
+static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
+                                              .type_name = WIDGET_TYPE_SPIN_BOX,
+                                              .properties = s_edit_properties,
+                                              .create = spin_box_create,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,
                                               .get_prop = edit_get_prop,

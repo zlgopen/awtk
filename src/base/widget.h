@@ -115,10 +115,14 @@ typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
+typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_destroy_t)(widget_t* widget);
 
 typedef struct _widget_vtable_t {
+  uint32_t size;
   const char* type_name;
+  const char** properties;
+  widget_create_t create;
 
   widget_get_prop_t get_prop;
   widget_set_prop_t set_prop;
@@ -906,8 +910,6 @@ ret_t widget_destroy(widget_t* widget);
 ret_t widget_to_xml(widget_t* widget);
 
 #define WIDGET(w) ((widget_t*)(w))
-
-typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /*简化控件实现的函数*/
 

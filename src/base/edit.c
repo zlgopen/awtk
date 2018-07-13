@@ -867,7 +867,23 @@ static ret_t edit_hook_children_button(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static const widget_vtable_t s_edit_vtable = {.type_name = WIDGET_TYPE_EDIT,
+const char* s_edit_properties[] = {WIDGET_PROP_MIN,
+                                   WIDGET_PROP_MAX,
+                                   WIDGET_PROP_STEP,
+                                   WIDGET_PROP_INPUT_TYPE,
+                                   WIDGET_PROP_READONLY,
+                                   WIDGET_PROP_AUTO_FIX,
+                                   WIDGET_PROP_MARGIN,
+                                   WIDGET_PROP_LEFT_MARGIN,
+                                   WIDGET_PROP_RIGHT_MARGIN,
+                                   WIDGET_PROP_TOP_MARGIN,
+                                   WIDGET_PROP_BOTTOM_MARGIN,
+                                   WIDGET_PROP_TIPS,
+                                   NULL};
+static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
+                                              .type_name = WIDGET_TYPE_EDIT,
+                                              .properties = s_edit_properties,
+                                              .create = edit_create,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,
                                               .get_prop = edit_get_prop,
