@@ -121,15 +121,15 @@ widget_layout(btn);
 * cols 列数，UI描述文件中可简写为c。
 * width 子控件的宽度(可以用来计算列数，与cols互斥)，UI描述文件中可简写为w。
 * height 子控件的高度(可以用来计算行数，与rows互斥)，UI描述文件中可简写为h。
-* x_margin 水平方向的边距，UI描述文件中可简写为x。
-* y_margin 垂直方向的边距，UI描述文件中可简写为y。
+* x\_margin 水平方向的边距，UI描述文件中可简写为x。
+* y\_margin 垂直方向的边距，UI描述文件中可简写为y。
 * margin 边距(相当于同时设置x\_maring/y\_margin)，UI描述文件中可简写为m。
 * spacing 子控件之间的间距。UI描述文件中可简写为s。
 
 在代码中，可以通过下面的函数设置这几个参数：
 
 ```
-ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols, uint8_t x_margin, uint8_t y_margin, uint8_t cell_spacing);
+ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
 ```
 
 在XML中，可以通过layout设置这几个参数(参数的顺序无关，重复以后者为准):

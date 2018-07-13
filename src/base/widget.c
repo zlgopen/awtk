@@ -1372,7 +1372,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
     }
   }
 
-  if(widget->layout_params != NULL) {
+  if (widget->layout_params != NULL) {
     clone->layout_params = TKMEM_ZALLOC(layout_params_t);
     return_value_if_fail(clone->layout_params != NULL, clone);
 
@@ -1435,14 +1435,15 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
     }
   }
 
-  if(widget->layout_params != NULL || other->layout_params != NULL) {
-    if(widget->layout_params && other->layout_params) {
-      ret = ret && memcmp(widget->layout_params, other->layout_params, sizeof(layout_params_t)) == 0;
+  if (widget->layout_params != NULL || other->layout_params != NULL) {
+    if (widget->layout_params && other->layout_params) {
+      ret =
+          ret && memcmp(widget->layout_params, other->layout_params, sizeof(layout_params_t)) == 0;
     } else {
       return FALSE;
     }
   }
-  
+
   if (!ret) {
     return ret;
   }

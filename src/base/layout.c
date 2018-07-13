@@ -168,7 +168,7 @@ ret_t widget_layout_calc(const widget_layout_t* layout, rect_t* r, wh_t parent_w
   return RET_OK;
 }
 
-ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout_t* layout) {
+ret_t widget_set_self_layout(widget_t* widget, const widget_layout_t* layout) {
   return_value_if_fail(widget != NULL && layout != NULL, RET_BAD_PARAMS);
   if (widget->layout_params == NULL) {
     widget->layout_params = TKMEM_ZALLOC(layout_params_t);
@@ -187,14 +187,14 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
                        RET_BAD_PARAMS);
   widget_layout_parse(&layout, x, y, w, h);
 
-  return widget_set_parsed_self_layout_params(widget, &layout);
+  return widget_set_self_layout(widget, &layout);
 }
 
-ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t x_margin, uint8_t y_margin, uint8_t spacing) {
-  children_layout_t cl = {rows, cols, x_margin, y_margin, spacing, 0, 0};
+ret_t widget_set_children_layout_params(widget_t* widget, const char* params) {
+  children_layout_t cl;
+  return_value_if_fail(widget != NULL && params != NULL, RET_BAD_PARAMS);
 
-  return widget_set_children_layout(widget, &cl);
+  return widget_set_children_layout(widget, children_layout_parser(&cl, params));
 }
 
 ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl) {

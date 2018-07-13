@@ -1,6 +1,7 @@
 ﻿#include "base/button.h"
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "base/layout.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
@@ -31,10 +32,13 @@ TEST(Button, basic) {
 
 TEST(Button, clone) {
   value_t v1;
+
   widget_t* w1 = button_create(NULL, 10, 20, 30, 40);
 
   value_set_int(&v1, 200);
   ASSERT_EQ(widget_set_prop(w1, WIDGET_PROP_REPEAT, &v1), RET_OK);
+  widget_set_self_layout_params(w1, "1", "2", "3", "4");
+  widget_set_children_layout_params(w1, "r0 c0 x10, y10, s10");
 
   widget_t* w2 = widget_clone(w1, NULL);
   ASSERT_EQ(widget_equal(w1, w2), TRUE);

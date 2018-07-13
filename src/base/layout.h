@@ -33,12 +33,12 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
                                      const char* w, const char* h);
 children_layout_t* children_layout_parser(children_layout_t* layout, const char* params);
 
-ret_t widget_set_parsed_self_layout_params(widget_t* widget, const widget_layout_t* layout);
+ret_t widget_set_self_layout(widget_t* widget, const widget_layout_t* layout);
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h);
-ret_t widget_set_children_layout_params(widget_t* widget, uint8_t rows, uint8_t cols,
-                                        uint8_t x_margin, uint8_t y_margin, uint8_t spacing);
+
 ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl);
+ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
 
 ret_t widget_layout(widget_t* widget);
 ret_t widget_layout_self(widget_t* widget);

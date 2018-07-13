@@ -160,23 +160,23 @@ TEST(Layuout, layout_children_null) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "1", "2", "3", "4"));
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "1", "2", "3", "4"));
   widget_layout(win);
   ASSERT_EQ(g1->x, 1);
   ASSERT_EQ(g1->y, 2);
   ASSERT_EQ(g1->w, 3);
   ASSERT_EQ(g1->h, 4);
 
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "10", "4"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "fill", "4"));
-  widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "0", "3", "4"));
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "10", "4"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "fill", "4"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "0", "3", "4"));
   widget_layout(win);
   ASSERT_EQ(g2->x, 10);
   ASSERT_EQ(g2->w, 90);
 
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "10", "20"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "4", "fill"));
-  widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "160", "3", "4"));
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "10", "20"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "4", "fill"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "160", "3", "4"));
   widget_layout(win);
   ASSERT_EQ(g2->y, 20);
   ASSERT_EQ(g2->h, 140);
@@ -191,17 +191,17 @@ TEST(Layuout, layout_children_00) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 0, 0, 10, 10, 10);
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "10", "4"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "fill", "4"));
-  widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "0", "3", "4"));
+  widget_set_children_layout_params(win, "r0 c0 x10, y10, s10");
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "10", "4"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "fill", "4"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "0", "3", "4"));
   widget_layout(win);
   ASSERT_EQ(g2->x, 20);
   ASSERT_EQ(g2->w, 70);
 
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "10", "20"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "4", "fill"));
-  widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "160", "3", "4"));
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "10", "20"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "4", "fill"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "160", "3", "4"));
   widget_layout(win);
   ASSERT_EQ(g2->y, 30);
   ASSERT_EQ(g2->h, 120);
@@ -216,10 +216,10 @@ TEST(Layuout, layout_children_10) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 0, 10, 10, 5);
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20", "4"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "30", "4"));
-  widget_set_parsed_self_layout_params(g3, widget_layout_parse(&layout, "100", "0", "20%", "4"));
+  widget_set_children_layout_params(win, "r1 c0 x10 y10 s5");
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "20", "4"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "30", "4"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "0", "20%", "4"));
   widget_layout(win);
   ASSERT_EQ(g1->x, 10);
   ASSERT_EQ(g1->y, 10);
@@ -246,11 +246,10 @@ TEST(Layuout, layout_children_01) {
   widget_t* g2 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 0, 1, 10, 10, 10);
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20", "20"));
-  widget_set_parsed_self_layout_params(g2, widget_layout_parse(&layout, "0", "0", "30", "30"));
-  widget_set_parsed_self_layout_params(g3,
-                                       widget_layout_parse(&layout, "100", "100", "20%", "20%"));
+  widget_set_children_layout_params(win, "r0 c1 x10 y10 s10");
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "20", "20"));
+  widget_set_self_layout(g2, widget_layout_parse(&layout, "0", "0", "30", "30"));
+  widget_set_self_layout(g3, widget_layout_parse(&layout, "100", "100", "20%", "20%"));
   widget_layout(win);
   ASSERT_EQ(g1->x, 10);
   ASSERT_EQ(g1->y, 10);
@@ -275,8 +274,8 @@ TEST(Layuout, layout_children_11) {
   widget_t* win = group_box_create(NULL, 0, 0, 200, 200);
   widget_t* g1 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 1, 10, 10, 5);
-  widget_set_parsed_self_layout_params(g1, widget_layout_parse(&layout, "0", "0", "20%", "20%"));
+  widget_set_children_layout_params(win, "r1 c1 x10 y10 s5");
+  widget_set_self_layout(g1, widget_layout_parse(&layout, "0", "0", "20%", "20%"));
   widget_layout(win);
   ASSERT_EQ(g1->x, 10);
   ASSERT_EQ(g1->y, 10);
@@ -293,7 +292,7 @@ TEST(Layuout, layout_children_14) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 1, 4, 5, 10, 10);
+  widget_set_children_layout_params(win, "r1 c4 x5 y10 s10");
   widget_layout(win);
   ASSERT_EQ(g1->x, 5);
   ASSERT_EQ(g1->y, 10);
@@ -325,7 +324,7 @@ TEST(Layuout, layout_children_41) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 4, 1, 10, 5, 10);
+  widget_set_children_layout_params(win, "r4 c1 x10 y5 s10");
   widget_layout(win);
   ASSERT_EQ(g1->x, 10);
   ASSERT_EQ(g1->y, 5);
@@ -357,7 +356,7 @@ TEST(Layuout, layout_children_22) {
   widget_t* g3 = group_box_create(win, 0, 0, 0, 0);
   widget_t* g4 = group_box_create(win, 0, 0, 0, 0);
 
-  widget_set_children_layout_params(win, 2, 2, 5, 5, 10);
+  widget_set_children_layout_params(win, "r2 c2, x5 y5 s10");
   widget_layout(win);
 
   ASSERT_EQ(win->x, 0);
