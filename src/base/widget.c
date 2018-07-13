@@ -162,7 +162,11 @@ const wchar_t* widget_get_text(widget_t* widget) {
 
 ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
-  str_set(&(widget->name), name);
+
+  if(widget->name != NULL) {
+    TKMEM_FREE(widget->name);
+  }
+  widget->name = tk_strdup(name);
 
   return RET_OK;
 }
@@ -309,7 +313,7 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (iter->name.str != NULL && str_eq(&(iter->name), name)) {
+  if (iter->name != NULL && tk_str_eq(iter->name, name)) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -321,7 +325,7 @@ static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (iter->name.str != NULL && str_eq(&(iter->name), name)) {
+  if (iter->name != NULL && tk_str_eq(iter->name, name)) {
     return iter;
   } else {
     iter = widget_lookup_all(iter, name);
@@ -709,7 +713,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
-    value_set_str(v, widget->name.str);
+    value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, widget->text.str);
   } else {
@@ -1071,7 +1075,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
     TKMEM_FREE(widget->layout_params);
   }
 
-  str_reset(&(widget->name));
+  TKMEM_FREE(widget->name);
 #ifdef WITH_DYNAMIC_TR
   str_reset(&(widget->tr_key));
 #endif /*WITH_DYNAMIC_TR*/
@@ -1137,7 +1141,7 @@ const void* widget_get_window_theme(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, NULL);
 
-  name = win->name.str;
+  name = win->name;
   if (widget_get_prop(win, WIDGET_PROP_THEME, &v) == RET_OK && value_str(&v) != NULL) {
     name = value_str(&v);
   }
@@ -1203,7 +1207,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
     widget_add_child(parent, widget);
   }
 
-  str_init(&(widget->name), 0);
 #ifdef WITH_DYNAMIC_TR
   str_init(&(widget->tr_key), 0);
 #endif /*WITH_DYNAMIC_TR*/
@@ -1295,7 +1298,7 @@ ret_t widget_to_xml(widget_t* widget) {
   const wchar_t* text = NULL;
   const key_type_value_t* kv = widget_type_find_by_value(widget->type);
 
-  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name.str,
+  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name,
             (int)(widget->x), (int)(widget->y), (int)(widget->w), (int)(widget->h));
   text = widget_get_text(widget);
   if (text) {

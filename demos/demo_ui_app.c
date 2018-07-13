@@ -167,8 +167,8 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
 static ret_t install_one(void* ctx, void* iter) {
   widget_t* widget = WIDGET(iter);
 
-  if (widget->name.size) {
-    const char* name = widget->name.str;
+  if (widget->name != NULL) {
+    const char* name = widget->name;
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
     } else if (tk_str_eq(name, "memtest")) {

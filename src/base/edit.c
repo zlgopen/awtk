@@ -834,8 +834,8 @@ static ret_t edit_hook_button(void* ctx, void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* edit = WIDGET(ctx);
 
-  if (widget->name.size && widget != edit) {
-    const char* name = widget->name.str;
+  if (widget->name && widget != edit) {
+    const char* name = widget->name;
     if (tk_str_eq(name, "inc")) {
       widget_on(widget, EVT_CLICK, edit_on_inc, edit);
     } else if (tk_str_eq(name, "dec")) {

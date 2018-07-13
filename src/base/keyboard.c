@@ -146,7 +146,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   uint32_t code = 0;
   input_method_t* im = input_method();
   widget_t* button = WIDGET(e->target);
-  const char* name = button->name.str;
+  const char* name = button->name;
   const char* key = strstr(name, STR_KEY_PREFIX);
   const char* page_name = strstr(name, STR_PAGE_PREFIX);
 
@@ -201,7 +201,7 @@ static ret_t keyboard_hook_buttons(void* ctx, void* iter) {
   widget_t* widget = WIDGET(iter);
   input_method_t* im = input_method();
   keyboard_t* keyboard = KEYBOARD(ctx);
-  const char* name = widget->name.str;
+  const char* name = widget->name;
 
   if (widget->type == WIDGET_BUTTON && name != NULL) {
     widget_on(widget, EVT_CLICK, keyboard_on_button_click, keyboard);

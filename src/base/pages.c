@@ -41,7 +41,7 @@ ret_t pages_set_active_by_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (tk_str_eq(iter->name.str, name)) {
+  if (tk_str_eq(iter->name, name)) {
     return pages_set_active(widget, i);
   }
   WIDGET_FOR_EACH_CHILD_END();

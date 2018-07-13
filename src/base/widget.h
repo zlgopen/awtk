@@ -277,11 +277,11 @@ struct _widget_t {
 #endif /*WITH_VGCANVAS_LCD*/
 
   /**
-   * @property {str_t} name
-   * @private
-   * 控件名字(暂时不允许脚本访问)
+   * @property {char*} name
+   * @readonly
+   * 控件名字。
    */
-  str_t name;
+  char* name;
 
   /**
    * @property {widget_t*} parent

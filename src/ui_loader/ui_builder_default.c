@@ -106,7 +106,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
     widget_t* win = b->root;
     event_t e = event_init(EVT_WINDOW_LOAD, win);
 
-    if (win && win->name.size == 0) {
+    if (win && win->name == NULL) {
       widget_set_name(win, b->name);
     }
 
@@ -138,12 +138,12 @@ static ret_t on_window_open(void* ctx, event_t* e) {
   widget_t* to_close = WIDGET(ctx);
   widget_t* open = WIDGET(e->target);
 
-  if (open != NULL && open->name.str != NULL) {
-    log_debug("window %s open\n", open->name.str);
+  if (open != NULL && open->name != NULL) {
+    log_debug("window %s open\n", open->name);
   }
 
-  if (to_close != NULL && to_close->name.str != NULL) {
-    log_debug("window %s close\n", to_close->name.str);
+  if (to_close != NULL && to_close->name != NULL) {
+    log_debug("window %s close\n", to_close->name);
   }
 
   return RET_REMOVE;

@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/utils.h"
 
 const char* tk_skip_to_num(const char* str) {
@@ -217,6 +218,21 @@ char* tk_strncpy(char* dst, const char* src, size_t len) {
   dst[len] = '\0';
 
   return dst;
+}
+
+char* tk_strdup(const char* str) {
+  char* s = NULL;
+  uint32_t len = 0;
+  return_value_if_fail(str != NULL, NULL);
+
+  len = strlen(str);
+  s = TKMEM_ALLOC(len+1);
+  if(s != NULL) {
+    memcpy(s, str, len);
+    s[len] = '\0';
+  }
+
+  return s;
 }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
