@@ -41,6 +41,8 @@
 #include "base/list_item.h"
 #include "base/list_view.h"
 #include "base/slide_view.h"
+#include "base/dialog_title.h"
+#include "base/dialog_client.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
 #include "base/window_manager.h"
@@ -54,6 +56,8 @@ typedef struct _creator_item_t {
 
 static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_DIALOG, dialog_create},
+    {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
+    {WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create},
     {WIDGET_TYPE_NORMAL_WINDOW, window_create},
     {WIDGET_TYPE_IMAGE, image_create},
     {WIDGET_TYPE_BUTTON, button_create},

@@ -42,10 +42,10 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   widget_t* ok = NULL;
   widget_t* label = NULL;
   widget_t* cancel = NULL;
-  widget_t* win = dialog_create(NULL, 0, 0, 240, 160);
+  widget_t* win = dialog_create_simple(NULL, 0, 0, 240, 160);
   dialog_t* dialog = DIALOG(win);
 
-  widget_set_text(win, L"Dialog");
+  widget_set_text(dialog->title, L"Dialog");
 
   ok = button_create(dialog->client, 20, 80, 80, 30);
   widget_set_text(ok, L"Go");

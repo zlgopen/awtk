@@ -38,7 +38,6 @@ typedef struct _dialog_t {
   widget_t widget;
   widget_t* title;
   widget_t* client;
-  uint32_t margin;
   uint32_t quit_code;
   str_t anim_hint;
   str_t theme;
@@ -48,16 +47,30 @@ typedef struct _dialog_t {
 /**
  * @method dialog_create
  * @constructor
- * 创建dialog对象
+ * 创建dialog对象。
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
  * @param {wh_t} w 宽度
  * @param {wh_t} h 高度
  *
- * @return {widget_t*} 对象。
+ * @return {widget_t*} dialog对象。
  */
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method dialog_create_simple
+ * @constructor
+ * 创建dialog对象，同时创建title/client。
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ *
+ * @return {widget_t*} dialog对象。
+ */
+widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method dialog_open

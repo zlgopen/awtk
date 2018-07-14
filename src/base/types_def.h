@@ -100,6 +100,11 @@ typedef enum _ret_t {
    */
   RET_STOP,
   /**
+   * @const RET_CONTINUE
+   * 继续后续操作。
+   */
+  RET_CONTINUE,
+  /**
    * @const RET_BAD_PARAMS
    * 无效参数。
    */

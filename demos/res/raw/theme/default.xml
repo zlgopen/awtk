@@ -223,17 +223,11 @@
   <style name="default">
     <normal bg_color="#a9a9a0" />
   </style>
-  <style name="1:default1">
-    <normal bg_image="dialog_title"  bg_image_draw_type="3patch_x"/>
-  </style>
 </dialog_title>
 
 <dialog_client>
   <style name="default">
     <normal bg_color="#ededed" />
-  </style>
-  <style name="1:default1">
-    <normal bg_color="#ededed" border_color="gray" />
   </style>
 </dialog_client>
 

@@ -347,6 +347,43 @@ widget_t* widget_lookup(widget_t* widget, const char* name, bool_t recursive) {
   }
 }
 
+static widget_t* widget_lookup_by_type_child(widget_t* widget, const char* type_name) {
+  return_value_if_fail(widget != NULL && type_name != NULL, NULL);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (tk_str_eq(iter->vt->type_name, type_name)) {
+    return iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return NULL;
+}
+
+static widget_t* widget_lookup_by_type_all(widget_t* widget, const char* type_name) {
+  return_value_if_fail(widget != NULL && type_name != NULL, NULL);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (tk_str_eq(iter->vt->type_name, type_name)) {
+    return iter;
+  } else {
+    iter = widget_lookup_by_type_all(iter, type_name);
+    if (iter != NULL) {
+      return iter;
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return NULL;
+}
+
+widget_t* widget_lookup_by_type(widget_t* widget, const char* type_name, bool_t recursive) {
+  if (recursive) {
+    return widget_lookup_by_type_all(widget, type_name);
+  } else {
+    return widget_lookup_by_type_child(widget, type_name);
+  }
+}
+
 static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

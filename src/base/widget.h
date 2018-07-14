@@ -676,6 +676,17 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
 widget_t* widget_lookup(widget_t* widget, const char* name, bool_t recursive);
 
 /**
+ * @method widget_lookup_by_type
+ * 查找指定类型的子控件(返回第一个)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} type_name 子控件的名称。
+ * @param {bool_t} recursive 是否递归查找全部子控件。
+ *
+ * @return {widget_t*} 子控件或NULL。
+ */
+widget_t* widget_lookup_by_type(widget_t* widget, const char* type_name, bool_t recursive);
+
+/**
  * @method widget_set_visible
  * 设置控件的可见性。
  * @param {widget_t*} widget 控件对象。

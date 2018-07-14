@@ -12,3 +12,21 @@
   </style>
 </button>
 
+<dialog>
+  <style name="100:custom">
+    <normal />
+  </style>
+</dialog>
+
+<dialog_title icon="info" text_color="black">
+  <style name="100:custom">
+    <normal bg_image="dialog_title"  bg_image_draw_type="3patch_x"/>
+  </style>
+</dialog_title>
+
+<dialog_client>
+  <style name="100:custom">
+    <normal bg_color="#ededed" border_color="gray" />
+  </style>
+</dialog_client>
+

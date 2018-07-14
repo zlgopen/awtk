@@ -45,6 +45,6 @@ TEST(CheckButton, radio) {
 
   ASSERT_EQ(CHECK_BUTTON(button)->radio, TRUE);
   ASSERT_EQ(CHECK_BUTTON(button)->value, FALSE);
-  
+
   widget_destroy(button);
 }

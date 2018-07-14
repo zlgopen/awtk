@@ -22,11 +22,6 @@ TEST(Dialog, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), "center_scale"), 0);
 
-  value_set_int(&v1, 5);
-  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_MARGIN, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_MARGIN, &v2), RET_OK);
-  ASSERT_EQ(value_int(&v2), 5);
-
   w1 = widget_clone(w, NULL);
   ASSERT_EQ(widget_equal(w, w1), TRUE);
 

@@ -250,8 +250,7 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
     widget_on(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
   }
 
-  /*return RET_FAIL let widget_add_child do its job*/
-  return RET_FAIL;
+  return RET_CONTINUE;
 }
 
 widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
