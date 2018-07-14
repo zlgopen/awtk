@@ -1,5 +1,5 @@
 ﻿/**
- * File:   ui_builder_writer.h
+ * File:   ui_binary_writer.h
  * Author: AWTK Develop Team
  * Brief:  ui_builder write widget info into buffer.
  *
@@ -19,16 +19,21 @@
  *
  */
 
-#ifndef TK_UI_BUILDER_WRITER_H
-#define TK_UI_BUILDER_WRITER_H
+#ifndef TK_UI_BINARY_WRITER_H
+#define TK_UI_BINARY_WRITER_H
 
 #include "base/buffer.h"
 #include "ui_loader/ui_builder.h"
 
 BEGIN_C_DECLS
 
-ui_builder_t* ui_builder_writer(wbuffer_t* wbuffer);
+typedef struct _ui_binary_writer_t {
+  ui_builder_t builder;
+  wbuffer_t* wbuffer;
+} ui_binary_writer_t;
+
+ui_builder_t* ui_binary_writer_init(ui_binary_writer_t* writer, wbuffer_t* wbuffer);
 
 END_C_DECLS
 
-#endif /*TK_UI_BUILDER_WRITER_H*/
+#endif /*TK_UI_BINARY_WRITER_H*/

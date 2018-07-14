@@ -22,7 +22,7 @@
 #include "base/mem.h"
 #include "common/utils.h"
 #include "base/resource_manager.h"
-#include "ui_loader/ui_builder_writer.h"
+#include "ui_loader/ui_binary_writer.h"
 #include "ui_loader/ui_loader_xml.h"
 
 int main(int argc, char** argv) {
@@ -33,8 +33,10 @@ int main(int argc, char** argv) {
   bool_t output_bin = argc > 3;
   const char* in_filename = NULL;
   const char* out_filename = NULL;
+  ui_binary_writer_t ui_binary_writer;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
+  ui_builder_t* builder =
+      ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
 
   TKMEM_INIT(4 * 1024 * 1024);
 

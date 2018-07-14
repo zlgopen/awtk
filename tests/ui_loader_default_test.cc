@@ -1,6 +1,6 @@
 ﻿#include "base/dialog.h"
 #include "ui_loader/ui_builder_default.h"
-#include "ui_loader/ui_builder_writer.h"
+#include "ui_loader/ui_binary_writer.h"
 #include "ui_loader/ui_loader_default.h"
 #include "gtest/gtest.h"
 
@@ -17,9 +17,11 @@ TEST(UILoader, basic) {
   widget_t* ok = NULL;
   widget_t* cancel = NULL;
   widget_desc_t desc;
+  ui_binary_writer_t ui_binary_writer;
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default("");
-  ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
+  ui_builder_t* writer =
+      ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));
   INIT_DESC("dialog", 0, 0, 400, 300);
@@ -80,9 +82,11 @@ TEST(UILoader, ext) {
   widget_t* ok = NULL;
   widget_t* cancel = NULL;
   widget_desc_t desc;
+  ui_binary_writer_t ui_binary_writer;
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default("");
-  ui_builder_t* writer = ui_builder_writer(wbuffer_init(&wbuffer, data, sizeof(data)));
+  ui_builder_t* writer =
+      ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
 
   memset(&desc, 0x00, sizeof(desc));
   INIT_DESC("group_box", 0, 0, 100, 200);
