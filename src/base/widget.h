@@ -918,8 +918,6 @@ ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
  */
 ret_t widget_destroy(widget_t* widget);
 
-ret_t widget_to_xml(widget_t* widget);
-
 #define WIDGET(w) ((widget_t*)(w))
 
 /*简化控件实现的函数*/

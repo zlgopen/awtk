@@ -83,11 +83,13 @@ ret_t str_append(str_t* str, const char* text) {
 }
 
 ret_t str_append_char(str_t* str, char c) {
-  char buff[2];
-  buff[1] = '\0';
-  buff[0] = c;
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, str->size + 2) == RET_OK, RET_BAD_PARAMS);
 
-  return str_append(str, buff);
+  str->str[str->size++] = c;
+  str->str[str->size] = '\0';
+
+  return RET_OK;
 }
 
 ret_t str_decode_xml_entity(str_t* str, const char* text) {
@@ -160,8 +162,15 @@ ret_t str_from_value(str_t* str, const value_t* v) {
   if (v->type == VALUE_TYPE_STRING) {
     return str_set(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
-    /*TODO*/
-    return RET_FAIL;
+    wchar_t* wcs = value_wstr(v);
+    str->size = 0;
+    if (wcs != NULL) {
+      uint32_t size = wcslen(wcs) * 3;
+      return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
+      utf8_from_utf16(wcs, str->str, size);
+      str->size = strlen(str->str);
+    }
+    return RET_OK;
   } else if (v->type == VALUE_TYPE_FLOAT) {
     return str_from_float(str, value_float(v));
   } else {
@@ -186,6 +195,7 @@ ret_t str_to_float(str_t* str, float* v) {
 ret_t str_reset(str_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
   TKMEM_FREE(str->str);
+  memset(str, 0x00, sizeof(str_t));
 
   return RET_OK;
 }

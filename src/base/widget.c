@@ -1329,35 +1329,6 @@ widget_t* widget_get_child(widget_t* widget, int32_t index) {
   return WIDGET(widget->children->elms[index]);
 }
 
-ret_t widget_to_xml(widget_t* widget) {
-  const wchar_t* text = NULL;
-  const key_type_value_t* kv = widget_type_find_by_value(widget->type);
-
-  log_debug("<%s name=\"%s\" x=\"%d\" y=\"%d\" w=\"%d\" h=\"%d\"", kv->name, widget->name,
-            (int)(widget->x), (int)(widget->y), (int)(widget->w), (int)(widget->h));
-  text = widget_get_text(widget);
-  if (text) {
-    char str[128];
-    utf8_from_utf16(text, str, sizeof(str));
-    log_debug(" text=\"%s\"", str);
-  }
-
-  if (widget->children) {
-    int32_t i = 0;
-    log_debug(">\n");
-    for (i = 0; i < widget_count_children(widget); i++) {
-      widget_t* iter = widget_get_child(widget, i);
-      widget_to_xml(iter);
-    }
-
-    log_debug("</%s>\n", kv->name);
-  } else {
-    log_debug("/>\n");
-  }
-
-  return RET_OK;
-}
-
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);

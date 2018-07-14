@@ -59,7 +59,6 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   widget_on(ok, EVT_CLICK, on_ok, dialog);
   widget_on(cancel, EVT_CLICK, on_cancel, dialog);
 
-  widget_to_xml(win);
   code = dialog_modal(win);
   log_debug("code=%d\n", (int)code);
 
@@ -164,8 +163,6 @@ ret_t application_init() {
 
   check_button = check_button_create(win, 108, 300, 32, 32);
   widget_use_style(check_button, "1:mute");
-
-  widget_to_xml(win);
 
   return RET_OK;
 }

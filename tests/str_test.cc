@@ -1,5 +1,8 @@
 ﻿#include "base/str.h"
 #include "gtest/gtest.h"
+#include <string>
+
+using std::string;
 
 TEST(Str, basic) {
   str_t str;
@@ -78,6 +81,26 @@ TEST(Str, decode_xml_entity) {
 
   ASSERT_EQ(str_decode_xml_entity(s, "&quota;a&lt;b&gt;c&quota;&amp;&amp;"), RET_OK);
   ASSERT_EQ(str_eq(s, "\"a<b>c\"&&"), TRUE);
+
+  str_reset(s);
+}
+
+TEST(Str, value) {
+  str_t str;
+  value_t v;
+  str_t* s = str_init(&str, 0);
+
+  value_set_int(&v, 100);
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("100"));
+
+  value_set_str(&v, "123");
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("123"));
+
+  value_set_wstr(&v, L"abc");
+  ASSERT_EQ(str_from_value(s, &v), RET_OK);
+  ASSERT_EQ(string(s->str), string("abc"));
 
   str_reset(s);
 }
