@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-ret_t ui_widget_to_xml(widget_t* widget, str_t* str);
+ret_t widget_to_xml(widget_t* widget, str_t* str);
 
 END_C_DECLS
 

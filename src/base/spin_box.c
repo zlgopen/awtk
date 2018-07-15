@@ -53,12 +53,14 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(spin_box != NULL, NULL);
 
   inc = button_create(spin_box, 0, 0, 0, 0);
+  inc->auto_created = TRUE;
   button_set_repeat(inc, 300);
   widget_set_name(inc, "inc");
   widget_use_style(inc, "3:spinbox_up");
   widget_set_self_layout_params(inc, "right", "0", "20", "50%");
 
   dec = button_create(spin_box, 0, 0, 0, 0);
+  dec->auto_created = TRUE;
   button_set_repeat(dec, 300);
   widget_set_name(dec, "dec");
   widget_use_style(dec, "2:spinbox_down");

@@ -122,6 +122,8 @@ typedef struct _widget_vtable_t {
   uint32_t size;
   const char* type_name;
   const char** properties;
+  const char** persistent_properties;
+
   widget_create_t create;
 
   widget_get_prop_t get_prop;
@@ -199,6 +201,12 @@ struct _widget_t {
    * 启用/禁用状态。
    */
   uint8_t enable : 1;
+  /**
+   * @property {bool_t} auto_created
+   * @readonly
+   * 是否有父控件自动创建。
+   */
+  uint8_t auto_created : 1;
   /**
    * @property {bool_t} visible
    * @readonly

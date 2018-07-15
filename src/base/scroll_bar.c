@@ -29,6 +29,7 @@
 #include "widget_animators/widget_animator_opacity.h"
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
+widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /*mobile*/
 static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
@@ -287,16 +288,19 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   }
 
   up = button_create(widget, 0, 0, 0, 0);
+  up->auto_created = TRUE;
   button_set_repeat(up, 300);
   widget_set_name(up, "up");
   widget_on(up, EVT_CLICK, scroll_bar_on_up_button_clicked, widget);
 
   down = button_create(widget, 0, 0, 0, 0);
+  down->auto_created = TRUE;
   button_set_repeat(down, 300);
   widget_set_name(down, "down");
   widget_on(down, EVT_CLICK, scroll_bar_on_down_button_clicked, widget);
 
   dragger = dragger_create(widget, 0, 0, 0, 0);
+  dragger->auto_created = TRUE;
   widget_set_name(dragger, "dragger");
   widget_use_style(dragger, "1:scroll_bar");
   widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
@@ -382,6 +386,8 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
 
 static const char* s_scroll_bar_properties[] = {WIDGET_PROP_MAX, WIDGET_PROP_ROW,
                                                 WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, NULL};
+static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
+
 static const widget_vtable_t s_scroll_bar_mobile_vtable = {
     .size = sizeof(scroll_bar_t),
     .type_name = WIDGET_TYPE_SCROLL_BAR_MOBILE,
@@ -395,7 +401,8 @@ static const widget_vtable_t s_scroll_bar_desktop_vtable = {
     .size = sizeof(scroll_bar_t),
     .type_name = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
     .properties = s_scroll_bar_properties,
-    .create = scroll_bar_create_desktop,
+    .persistent_properties = s_scroll_bar_persitent_properties,
+    .create = scroll_bar_create_desktop_self,
     .on_event = scroll_bar_desktop_on_event,
     .set_prop = scroll_bar_set_prop,
     .get_prop = scroll_bar_get_prop};
@@ -535,10 +542,15 @@ widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
   return scroll_bar_create_internal(parent, x, y, w, h, &s_scroll_bar_mobile_vtable);
 }
 
-widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = scroll_bar_create_internal(parent, x, y, w, h, &s_scroll_bar_desktop_vtable);
-  scroll_bar_create_children(widget);
+widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return scroll_bar_create_internal(parent, x, y, w, h, &s_scroll_bar_desktop_vtable);
+}
 
+widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = scroll_bar_create_desktop_self(parent, x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
+
+  scroll_bar_create_children(widget);
   widget_use_style(widget, "1:destkop");
 
   return widget;

@@ -141,8 +141,18 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/07/15
+    * 实现widget\_to\_xml。
+
+* 2018/07/14
+    * 增加ui\_xml\_writer
+    * 增加ui\_binary\_writer
+    * 实现widget\_clone/widget\_equal。
+
 * 2018/07/13
     * 在widget vtable中增加create/properies方便实现clone。
+    * 重构widget
 
 * 2018/07/12
     * 重新整理grab/ungrab的流程。

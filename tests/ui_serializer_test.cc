@@ -15,7 +15,7 @@ TEST(UISerializer, basic) {
   widget_t* w = button_create(NULL, 10, 20, 30, 40);
 
   str_init(&str, 1024);
-  ui_widget_to_xml(w, &str);
+  widget_to_xml(w, &str);
 
   ASSERT_EQ(string(str.str),
             "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"0\">\n</button>\n");
@@ -29,7 +29,7 @@ TEST(UISerializer, layout_self) {
 
   widget_set_self_layout_params(w, "right:100", "middle:10", "fill", "10%");
   str_init(&str, 1024);
-  ui_widget_to_xml(w, &str);
+  widget_to_xml(w, &str);
 
   ASSERT_EQ(
       string(str.str),
@@ -44,7 +44,7 @@ TEST(UISerializer, layout_self1) {
 
   widget_set_self_layout_params(w, "center:100", "bottom:10", "fill", "10%");
   str_init(&str, 1024);
-  ui_widget_to_xml(w, &str);
+  widget_to_xml(w, &str);
 
   ASSERT_EQ(
       string(str.str),

@@ -73,6 +73,10 @@ ret_t ui_widget_serialize_children_layout(ui_builder_t* writer, children_layout_
 ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   widget_desc_t desc;
 
+  if (widget->auto_created) {
+    return RET_OK;
+  }
+
   memset(&desc, 0x00, sizeof(desc));
   tk_strncpy(desc.type, widget->vt->type_name, NAME_LEN);
 
@@ -101,10 +105,13 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
     TKMEM_FREE(text);
   }
 
-  if (widget->vt->properties) {
+  if (widget->vt->properties || widget->vt->persistent_properties) {
     value_t v;
     uint32_t i = 0;
-    const char** properties = widget->vt->properties;
+    const char** properties = widget->vt->persistent_properties;
+    if (properties == NULL) {
+      properties = widget->vt->properties;
+    }
     for (i = 0; properties[i] != NULL; i++) {
       const char* prop = properties[i];
       if (widget_get_prop(widget, prop, &v) == RET_OK) {
@@ -126,7 +133,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   return RET_OK;
 }
 
-ret_t ui_widget_to_xml(widget_t* widget, str_t* str) {
+ret_t widget_to_xml(widget_t* widget, str_t* str) {
   ui_xml_writer_t ui_xml_writer;
   return_value_if_fail(widget != NULL && str != NULL, RET_BAD_PARAMS);
 
