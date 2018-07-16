@@ -22,7 +22,7 @@
 #ifndef TK_UI_LOADER_H
 #define TK_UI_LOADER_H
 
-#include "ui_loader/ui_builder.h"
+#include "base/ui_builder.h"
 
 BEGIN_C_DECLS
 

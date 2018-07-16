@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   view.h
  * Author: AWTK Develop Team
  * Brief:  view
@@ -23,7 +23,7 @@
 #include "base/view.h"
 
 static const widget_vtable_t s_view_vtable = {
-    .size = sizeof(view_t), .type_name = WIDGET_TYPE_VIEW, .properties = view_create};
+    .size = sizeof(view_t), .type_name = WIDGET_TYPE_VIEW, .create = view_create};
 
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

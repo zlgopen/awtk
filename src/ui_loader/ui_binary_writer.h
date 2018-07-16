@@ -23,7 +23,7 @@
 #define TK_UI_BINARY_WRITER_H
 
 #include "base/buffer.h"
-#include "ui_loader/ui_builder.h"
+#include "base/ui_builder.h"
 
 BEGIN_C_DECLS
 

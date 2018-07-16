@@ -19,7 +19,7 @@
  *
  */
 
-#include "ui_loader/ui_builder.h"
+#include "base/ui_builder.h"
 
 ret_t ui_builder_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
   return_value_if_fail(b != NULL && b->on_widget_start != NULL && desc != NULL, RET_BAD_PARAMS);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_xml_writer.c
  * Author: AWTK Develop Team
  * Brief:  ui_builder write widget info into buffer.
@@ -20,7 +20,7 @@
  */
 
 #include "base/utils.h"
-#include "ui_loader/ui_builder.h"
+#include "base/ui_builder.h"
 #include "ui_loader/ui_xml_writer.h"
 
 static ret_t str_write_n_char(str_t* str, char c, uint32_t nr) {
@@ -137,7 +137,7 @@ static ret_t ui_xml_writer_on_widget_start(ui_builder_t* b, const widget_desc_t*
   return_value_if_fail(str_append(str, "<") == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, tag) == RET_OK, RET_OOM);
 
-  return ui_xml_writer_write_widget_layout(str, &(desc->layout));
+  return ui_xml_writer_write_widget_layout(str, (widget_layout_t*)&(desc->layout));
 }
 
 static ret_t ui_xml_writer_on_widget_prop(ui_builder_t* b, const char* name, const char* value) {
