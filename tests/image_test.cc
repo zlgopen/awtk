@@ -10,7 +10,7 @@ TEST(Image, basic) {
   value_t v1;
   widget_t* img = image_create(NULL, 0, 0, 100, 100);
   value_set_str(&v, "repeat");
-  ASSERT_EQ(widget_set_prop(img, "not exist", &v), RET_NOT_FOUND);
+
   ASSERT_EQ(widget_set_prop(img, WIDGET_PROP_DRAW_TYPE, &v), RET_OK);
   ASSERT_EQ(IMAGE(img)->draw_type, IMAGE_DRAW_REPEAT);
 

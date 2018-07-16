@@ -1,4 +1,5 @@
 ﻿#include "base/wstr.h"
+#include "base/mem.h"
 #include "gtest/gtest.h"
 
 static void testSetWStr(const char* utf8, const wchar_t* cstr) {
@@ -9,7 +10,7 @@ static void testSetWStr(const char* utf8, const wchar_t* cstr) {
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
-  ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
   ASSERT_EQ(strcmp(utf8, sutf8), 0);
@@ -30,7 +31,7 @@ static void testSetUtf8(const char* utf8, const wchar_t* cstr) {
 
   ASSERT_EQ(wstr_set_utf8(&str, utf8), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
-  ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
   ASSERT_EQ(strcmp(utf8, sutf8), 0);
@@ -51,11 +52,11 @@ static void testRemove(const wchar_t* cstr, uint16_t offset, uint16_t nr, ret_t 
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
-  ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_remove(&str, offset, nr), ret);
   if (ret == RET_OK) {
-    ASSERT_EQ(wcscmp(str.str, expected), 0);
+    ASSERT_EQ(wcs_cmp(str.str, expected), 0);
   }
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
@@ -85,11 +86,11 @@ static void testInsert(const wchar_t* cstr, const wchar_t* insert, uint16_t offs
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
-  ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_insert(&str, offset, insert, wcslen(insert)), ret);
   if (ret == RET_OK) {
-    ASSERT_EQ(wcscmp(str.str, expected), 0);
+    ASSERT_EQ(wcs_cmp(str.str, expected), 0);
   }
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
@@ -110,7 +111,7 @@ TEST(WStr, poppush) {
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr));
-  ASSERT_EQ(wcscmp(str.str, cstr), 0);
+  ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_push(&str, 'a'), RET_OK);
   ASSERT_EQ(str.size, wcslen(cstr) + 1);
@@ -146,51 +147,51 @@ TEST(WStr, double) {
 
   ASSERT_EQ(wstr_set(&str, L"1.01"), RET_OK);
   ASSERT_EQ(wstr_add_float(&str, 0.01), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.02"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.02"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, 0.001), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.021"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.021"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, 0.1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.121"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.121"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, 1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"2.121"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"2.121"), 0);
 
   ASSERT_EQ(wstr_set(&str, L"1.01"), RET_OK);
   ASSERT_EQ(wstr_add_float(&str, -0.01), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.00"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.00"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, -0.001), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"0.999"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"0.999"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, -0.1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"0.899"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"0.899"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, 1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.899"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.899"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, -1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"0.899"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"0.899"), 0);
 
   ASSERT_EQ(wstr_add_float(&str, 123), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"123.899"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"123.899"), 0);
 
   ASSERT_EQ(wstr_set(&str, L"1.010"), RET_OK);
   ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1.01"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1.01"), 0);
 
   ASSERT_EQ(wstr_set(&str, L"1.00"), RET_OK);
   ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"1"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"1"), 0);
 
   ASSERT_EQ(wstr_set(&str, L"100"), RET_OK);
   ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"100"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"100"), 0);
 
   ASSERT_EQ(wstr_set(&str, L"100.00000000"), RET_OK);
   ASSERT_EQ(wstr_trim_float_zero(&str), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"100"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"100"), 0);
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
@@ -215,11 +216,11 @@ TEST(WStr, value) {
 
   value_set_str(&v1, "a12345");
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"a12345"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"a12345"), 0);
 
   value_set_wstr(&v1, L"b12345");
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
-  ASSERT_EQ(wcscmp(str.str, L"b12345"), 0);
+  ASSERT_EQ(wcs_cmp(str.str, L"b12345"), 0);
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
@@ -247,4 +248,20 @@ TEST(WStr, wcs_chr) {
   for (i = 0; i < nr; i++) {
     ASSERT_EQ(wcs_chr(str, str[i]), wcschr(str, str[i]));
   }
+}
+
+TEST(WStr, wcs_dup) {
+  wchar_t* str = NULL;
+
+  str = wcs_dup(L"");
+  ASSERT_EQ(wcs_cmp(str, L""), 0);
+  TKMEM_FREE(str);
+
+  str = wcs_dup(L"123");
+  ASSERT_EQ(wcs_cmp(str, L"123"), 0);
+  TKMEM_FREE(str);
+
+  str = wcs_dup(L"abc中文测试123");
+  ASSERT_EQ(wcs_cmp(str, L"abc中文测试123"), 0);
+  TKMEM_FREE(str);
 }

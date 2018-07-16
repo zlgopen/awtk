@@ -46,6 +46,26 @@ wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
   return s1;
 }
 
+int wcs_cmp(wchar_t* s1, const wchar_t* s2) {
+  uint32_t i = 0;
+  return_value_if_fail(s1 != NULL && s2 != NULL, -1);
+
+  for (i = 0; s1[i] && s2[i]; i++) {
+    int ret = s1[i] - s2[i];
+    if (ret) {
+      return ret;
+    }
+  }
+
+  return s1[i] - s2[i];
+}
+
+wchar_t* wcs_dup(const wchar_t* s) {
+  wchar_t* s1 = TKMEM_ZALLOCN(wchar_t, wcslen(s) + 1);
+
+  return wcs_cpy(s1, s);
+}
+
 size_t wcs_len(const wchar_t* s) {
   size_t size = 0;
   const wchar_t* p = s;
@@ -63,6 +83,10 @@ size_t wcslen(const wchar_t* s) {
   return wcs_len(s);
 }
 
+int wcscmp(wchar_t* s1, const wchar_t* s2) {
+  return wcs_cmp(s1, s2);
+}
+
 wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
   return wcs_cpy(s1, s2);
 }
@@ -70,6 +94,11 @@ wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
 wchar_t* wcschr(const wchar_t* s, wchar_t c) {
   return wcs_chr(s, c);
 }
+
+wchar_t* wcsdup(const wchar_t* s) {
+  return wcs_dup(s);
+}
+
 #endif /*WITH_WCSXXX*/
 
 static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {

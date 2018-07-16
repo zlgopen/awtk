@@ -82,8 +82,36 @@ TEST(Widget, props) {
   ASSERT_EQ(v1.type, v2.type);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
-  ASSERT_EQ(widget_set_prop(w, "hh", &v1), RET_NOT_FOUND);
+  widget_destroy(w);
+}
+
+TEST(Widget, custom_props) {
+  value_t v1;
+  value_t v2;
+  widget_t* w = button_create(NULL, 0, 0, 400, 300);
+
+  value_set_int(&v1, 123);
+  ASSERT_EQ(widget_set_prop(w, "binding.value", &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, "binding.value", &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  value_set_int(&v1, 1234);
+  ASSERT_EQ(widget_set_prop(w, "binding.value", &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, "binding.value", &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  value_set_str(&v1, "1234");
+  ASSERT_EQ(widget_set_prop(w, "binding.value", &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, "binding.value", &v2), RET_OK);
+  ASSERT_EQ(strcmp(value_str(&v1), value_str(&v2)), 0);
+
+  value_set_str(&v1, "1234");
+  ASSERT_EQ(widget_set_prop(w, "binding.text", &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, "binding.text", &v2), RET_OK);
+  ASSERT_EQ(strcmp(value_str(&v1), value_str(&v2)), 0);
+
   ASSERT_EQ(widget_get_prop(w, "hh", &v2), RET_NOT_FOUND);
+
   widget_destroy(w);
 }
 

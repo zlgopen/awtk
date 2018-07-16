@@ -722,6 +722,13 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     }
   }
 
+  if (ret == RET_NOT_FOUND) {
+    if (widget->custom_props == NULL) {
+      widget->custom_props = custom_props_create(3);
+    }
+    ret = custom_props_set(widget->custom_props, name, v);
+  }
+
   if (ret != RET_NOT_FOUND) {
     e.e.type = EVT_PROP_CHANGED;
     widget_dispatch(widget, (event_t*)&e);
@@ -770,6 +777,12 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       value_set_int32(v, widget->h);
       ret = RET_OK;
+    }
+  }
+
+  if (ret == RET_NOT_FOUND) {
+    if (widget->custom_props != NULL) {
+      ret = custom_props_get(widget->custom_props, name, v);
     }
   }
 
@@ -1118,6 +1131,11 @@ static ret_t widget_destroy_only(widget_t* widget) {
   TKMEM_FREE(widget->tr_key);
 #endif /*WITH_DYNAMIC_TR*/
   wstr_reset(&(widget->text));
+
+  if (widget->custom_props != NULL) {
+    custom_props_destroy(widget->custom_props);
+  }
+
   memset(widget, 0x00, sizeof(widget_t));
   TKMEM_FREE(widget);
 

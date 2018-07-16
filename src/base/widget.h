@@ -32,6 +32,7 @@
 #include "base/theme.h"
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
+#include "base/custom_props.h"
 
 BEGIN_C_DECLS
 
@@ -358,6 +359,14 @@ struct _widget_t {
    * 布局参数。
    */
   layout_params_t* layout_params;
+
+  /**
+   * @property {custom_props_t*} custom_props
+   * @private
+   * 自定义属性。
+   */
+  custom_props_t* custom_props;
+
   /**
    * @property {widget_vtable_t} vt
    * @private
