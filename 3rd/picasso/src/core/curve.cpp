@@ -485,7 +485,7 @@ void curve4_div::recursive_bezier(scalar x1, scalar y1, scalar x2, scalar y2, sc
                 return;
             }
 
-            if (m_cusp_limit != 0.0) {
+            if (m_cusp_limit != 0.0f) {
                 if (da1 > m_cusp_limit) {
                     m_points.add(vertex_s(x2, y2));
                     return;

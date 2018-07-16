@@ -3905,9 +3905,9 @@ static int stbtt__ray_intersect_bezier(float orig[2], float ray[2], float q0[2],
    float s0 = 0., s1 = 0.;
    int num_s = 0;
 
-   if (a != 0.0) {
+   if (a != 0.0f) {
       float discr = b*b - a*c;
-      if (discr > 0.0) {
+      if (discr > 0.0f) {
          float rcpna = -1 / a;
          float d = (float) sqrt(discr);
          s0 = (b+d) * rcpna;
@@ -4187,12 +4187,12 @@ STBTT_DEF unsigned char * stbtt_GetGlyphSDF(const stbtt_fontinfo *info, float sc
                      float mx = x0 - sx, my = y0 - sy;
                      float res[3],px,py,t,it;
                      float a_inv = precompute[i];
-                     if (a_inv == 0.0) { // if a_inv is 0, it's 2nd degree so use quadratic formula
+                     if (a_inv == 0.0f) { // if a_inv is 0, it's 2nd degree so use quadratic formula
                         float a = 3*(ax*bx + ay*by);
                         float b = 2*(ax*ax + ay*ay) + (mx*bx+my*by);
                         float c = mx*ax+my*ay;
-                        if (a == 0.0) { // if a is 0, it's linear
-                           if (b != 0.0) {
+                        if (a == 0.0f) { // if a is 0, it's linear
+                           if (b != 0.0f) {
                               res[num++] = -c/b;
                            }
                         } else {
