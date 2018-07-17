@@ -57,6 +57,8 @@ function parseProperty(comment) {
       property.readonly = true;
     } else if (iter.indexOf(' @private') >= 0) {
       property.isPrivate = true;
+    } else if (iter.indexOf(' @fake') >= 0) {
+      property.isFake= true;
     } else if (iter.indexOf(' @scriptable') >= 0 && iter.indexOf('no') >= 0) {
       property.isPrivate = true;
     }

@@ -257,7 +257,13 @@
   "prefix": "IMAGE_DRAW_",
   "consts": [
    {
+    "name": "IMAGE_DRAW_DEFAULT"
+   },
+   {
     "name": "IMAGE_DRAW_CENTER"
+   },
+   {
+    "name": "IMAGE_DRAW_ICON"
    },
    {
     "name": "IMAGE_DRAW_SCALE"
@@ -643,9 +649,29 @@
     "name": "button_create",
     "isConstructor": true,
     "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "repeat"
+     }
+    ],
+    "name": "button_set_repeat",
+    "return": "ret_t"
    }
   ],
-  "properties": [],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "repeat",
+    "readonly": true
+   }
+  ],
   "header": "base/button.h"
  },
  {
@@ -795,6 +821,152 @@
  },
  {
   "type": "class",
+  "name": "custom_prop_t",
+  "methods": [],
+  "properties": [],
+  "header": "base/custom_props.h"
+ },
+ {
+  "type": "class",
+  "name": "custom_props_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "uint32_t",
+      "name": "capacity"
+     }
+    ],
+    "name": "custom_props_create",
+    "isConstructor": true,
+    "return": "custom_props_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "custom_props_t",
+      "name": "props"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "custom_props_get",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "custom_props_t",
+      "name": "props"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     },
+     {
+      "type": "value_t*",
+      "name": "v"
+     }
+    ],
+    "name": "custom_props_set",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "custom_props_t",
+      "name": "props"
+     }
+    ],
+    "name": "custom_props_destroy",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "base/custom_props.h"
+ },
+ {
+  "type": "class",
+  "name": "dialog_client_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "dialog_client_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/dialog_client.h"
+ },
+ {
+  "type": "class",
+  "name": "dialog_title_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "dialog_title_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/dialog_title.h"
+ },
+ {
+  "type": "class",
   "name": "dialog_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -823,6 +995,33 @@
      }
     ],
     "name": "dialog_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "dialog_create_simple",
     "isConstructor": true,
     "return": "widget_t*"
    },
@@ -878,6 +1077,69 @@
   ],
   "properties": [],
   "header": "base/dialog.h"
+ },
+ {
+  "type": "class",
+  "name": "dragger_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "dragger_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_min"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_min"
+     },
+     {
+      "type": "xy_t",
+      "name": "x_max"
+     },
+     {
+      "type": "xy_t",
+      "name": "y_max"
+     }
+    ],
+    "name": "dragger_set_range",
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/dragger.h"
  },
  {
   "type": "class",
@@ -959,15 +1221,15 @@
       "name": "widget"
      },
      {
-      "type": "float",
+      "type": "double",
       "name": "min"
      },
      {
-      "type": "float",
+      "type": "double",
       "name": "max"
      },
      {
-      "type": "float",
+      "type": "double",
       "name": "step"
      }
     ],
@@ -986,6 +1248,20 @@
      }
     ],
     "name": "edit_set_readonly",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "auto_fix"
+     }
+    ],
+    "name": "edit_set_auto_fix",
     "return": "ret_t"
    },
    {
@@ -1222,10 +1498,19 @@
     "name": "EVT_POINTER_UP"
    },
    {
+    "name": "EVT_WHEEL"
+   },
+   {
+    "name": "EVT_CONTEXT_MENU"
+   },
+   {
     "name": "EVT_POINTER_ENTER"
    },
    {
     "name": "EVT_POINTER_LEAVE"
+   },
+   {
+    "name": "EVT_LONG_PRESS"
    },
    {
     "name": "EVT_CLICK"
@@ -1240,22 +1525,40 @@
     "name": "EVT_KEY_DOWN"
    },
    {
+    "name": "EVT_KEY_REPEAT"
+   },
+   {
     "name": "EVT_KEY_UP"
+   },
+   {
+    "name": "EVT_DESTROY"
+   },
+   {
+    "name": "EVT_WILL_MOVE"
    },
    {
     "name": "EVT_MOVE"
    },
    {
+    "name": "EVT_WILL_RESIZE"
+   },
+   {
     "name": "EVT_RESIZE"
    },
    {
-    "name": "EVT_DESTROY"
+    "name": "EVT_WILL_MOVE_RESIZE"
    },
    {
     "name": "EVT_MOVE_RESIZE"
    },
    {
     "name": "EVT_PROP_CHANGED"
+   },
+   {
+    "name": "EVT_PROP_CHANGED"
+   },
+   {
+    "name": "EVT_VALUE_WILL_CHANGE"
    },
    {
     "name": "EVT_VALUE_CHANGED"
@@ -1294,6 +1597,9 @@
     "name": "EVT_WINDOW_OPEN"
    },
    {
+    "name": "EVT_WINDOW_CLOSE"
+   },
+   {
     "name": "EVT_IM_COMMIT"
    },
    {
@@ -1304,6 +1610,15 @@
    },
    {
     "name": "EVT_IM_ACTION_INFO"
+   },
+   {
+    "name": "EVT_DRAG_START"
+   },
+   {
+    "name": "EVT_DRAG"
+   },
+   {
+    "name": "EVT_DRAG_END"
    },
    {
     "name": "EVT_REQ_START"
@@ -1327,6 +1642,90 @@
    {
     "type": "int32_t",
     "name": "time",
+    "readonly": true
+   },
+   {
+    "type": "void*",
+    "name": "target",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
+  "name": "wheel_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "event_t*",
+      "name": "event"
+     }
+    ],
+    "name": "wheel_event_cast",
+    "isConstructor": true,
+    "return": "wheel_event_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "dx",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "dy",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "alt",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "ctrl",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "shift",
+    "readonly": true
+   }
+  ],
+  "header": "base/events.h"
+ },
+ {
+  "type": "class",
+  "name": "prop_change_event_t",
+  "scriptable": true,
+  "parent": "event_t",
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "event_t*",
+      "name": "event"
+     }
+    ],
+    "name": "prop_change_event_cast",
+    "isConstructor": true,
+    "return": "prop_change_event_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "name",
+    "readonly": true
+   },
+   {
+    "type": "value_t*",
+    "name": "value",
     "readonly": true
    }
   ],
@@ -1885,7 +2284,18 @@
     "return": "ret_t"
    }
   ],
-  "properties": [],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "image",
+    "isFake": true
+   },
+   {
+    "type": "char*",
+    "name": "draw_type",
+    "isFake": true
+   }
+  ],
   "header": "base/image.h"
  },
  {
@@ -2740,6 +3150,16 @@
       "name": "lcd"
      }
     ],
+    "name": "lcd_is_swappable",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "lcd_t*",
+      "name": "lcd"
+     }
+    ],
     "name": "lcd_end_frame",
     "return": "ret_t"
    }
@@ -2802,6 +3222,138 @@
    }
   ],
   "header": "base/lcd.h"
+ },
+ {
+  "type": "class",
+  "name": "list_item_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "list_item_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/list_item.h"
+ },
+ {
+  "type": "class",
+  "name": "list_view_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "list_view_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "item_height"
+     }
+    ],
+    "name": "list_view_set_item_height",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "default_item_height"
+     }
+    ],
+    "name": "list_view_set_default_item_height",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "auto_hide_scroll_bar"
+     }
+    ],
+    "name": "list_view_set_auto_hide_scroll_bar",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "item_height",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "default_item_height",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "auto_hide_scroll_bar",
+    "readonly": true
+   }
+  ],
+  "header": "base/list_view.h"
  },
  {
   "type": "class",
@@ -3429,6 +3981,384 @@
  },
  {
   "type": "class",
+  "name": "scroll_bar_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "scroll_bar_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "scroll_bar_create_mobile",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "scroll_bar_create_desktop",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "virtual_size"
+     },
+     {
+      "type": "int32_t",
+      "name": "row"
+     }
+    ],
+    "name": "scroll_bar_set_params",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     },
+     {
+      "type": "int32_t",
+      "name": "duration"
+     }
+    ],
+    "name": "scroll_bar_scroll_to",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     }
+    ],
+    "name": "scroll_bar_set_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "delta"
+     }
+    ],
+    "name": "scroll_bar_add_delta",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "delta"
+     }
+    ],
+    "name": "scroll_bar_scroll_delta",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     }
+    ],
+    "name": "scroll_bar_set_value_only",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "scroll_bar_is_mobile",
+    "return": "bool_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "virtual_size",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "row",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "animatable",
+    "readonly": true
+   }
+  ],
+  "header": "base/scroll_bar.h"
+ },
+ {
+  "type": "class",
+  "name": "scroll_view_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "scroll_view_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     }
+    ],
+    "name": "scroll_view_set_virtual_w",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "scroll_view_set_virtual_h",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "xslidable"
+     }
+    ],
+    "name": "scroll_view_set_xslidable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "yslidable"
+     }
+    ],
+    "name": "scroll_view_set_yslidable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "xoffset"
+     },
+     {
+      "type": "int32_t",
+      "name": "yoffset"
+     }
+    ],
+    "name": "scroll_view_set_offset",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "xoffset_end"
+     },
+     {
+      "type": "int32_t",
+      "name": "yoffset_end"
+     },
+     {
+      "type": "int32_t",
+      "name": "duration"
+     }
+    ],
+    "name": "scroll_view_scroll_to",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "wh_t",
+    "name": "virtual_w",
+    "readonly": true
+   },
+   {
+    "type": "wh_t",
+    "name": "virtual_h",
+    "readonly": true
+   },
+   {
+    "type": "int32_t_t",
+    "name": "xoffset",
+    "readonly": true
+   },
+   {
+    "type": "int32_t_t",
+    "name": "yoffset",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "xslidable",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "yslidable",
+    "readonly": true
+   }
+  ],
+  "header": "base/scroll_view.h"
+ },
+ {
+  "type": "class",
   "name": "slide_view_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -3649,6 +4579,43 @@
    }
   ],
   "header": "base/slider.h"
+ },
+ {
+  "type": "class",
+  "name": "spin_box_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "spin_box_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/spin_box.h"
  },
  {
   "type": "class",
@@ -4101,6 +5068,9 @@
     "name": "STYLE_ID_BORDER_COLOR"
    },
    {
+    "name": "STYLE_ID_BORDER"
+   },
+   {
     "name": "STYLE_ID_BG_IMAGE"
    },
    {
@@ -4374,6 +5344,9 @@
     "name": "RET_STOP"
    },
    {
+    "name": "RET_CONTINUE"
+   },
+   {
     "name": "RET_BAD_PARAMS"
    }
   ]
@@ -4437,6 +5410,33 @@
    },
    {
     "name": "ALIGN_H_RIGHT"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "border_type_t",
+  "prefix": "BORDER_TYPE_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "BORDER_NONE"
+   },
+   {
+    "name": "BORDER_LEFT"
+   },
+   {
+    "name": "BORDER_RIGHT"
+   },
+   {
+    "name": "BORDER_TOP"
+   },
+   {
+    "name": "BORDER_BOTTOM"
+   },
+   {
+    "name": "BORDER_ALL"
    }
   ]
  },
@@ -4795,6 +5795,20 @@
      }
     ],
     "name": "value_is_null",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "value_t*",
+      "name": "value"
+     },
+     {
+      "type": "value_t*",
+      "name": "other"
+     }
+    ],
+    "name": "value_equal",
     "return": "bool_t"
    },
    {
@@ -5966,7 +6980,7 @@
     "name": "WIDGET_KEYBOARD"
    },
    {
-    "name": "WIDGET_DRAGGER"
+    "name": "WIDGET_DND"
    },
    {
     "name": "WIDGET_LABEL"
@@ -6012,6 +7026,30 @@
    },
    {
     "name": "WIDGET_CANDIDATES"
+   },
+   {
+    "name": "WIDGET_SPIN_BOX"
+   },
+   {
+    "name": "WIDGET_DRAGGER"
+   },
+   {
+    "name": "WIDGET_SCROLL_BAR"
+   },
+   {
+    "name": "WIDGET_SCROLL_BAR_DESKTOP"
+   },
+   {
+    "name": "WIDGET_SCROLL_BAR_MOBILE"
+   },
+   {
+    "name": "WIDGET_SCROLL_VIEW"
+   },
+   {
+    "name": "WIDGET_LIST_VIEW"
+   },
+   {
+    "name": "WIDGET_LIST_ITEM"
    }
   ]
  },
@@ -6067,7 +7105,7 @@
      }
     ],
     "name": "widget_count_children",
-    "return": "uint32_t"
+    "return": "int32_t"
    },
    {
     "params": [
@@ -6076,7 +7114,7 @@
       "name": "widget"
      },
      {
-      "type": "uint32_t",
+      "type": "int32_t",
       "name": "index"
      }
     ],
@@ -6152,7 +7190,7 @@
       "name": "widget"
      },
      {
-      "type": "uint32_t",
+      "type": "int32_t",
       "name": "value"
      }
     ],
@@ -6233,7 +7271,7 @@
      }
     ],
     "name": "widget_get_value",
-    "return": "uint32_t"
+    "return": "int32_t"
    },
    {
     "params": [
@@ -6271,6 +7309,20 @@
      }
     ],
     "name": "widget_to_global",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "point_t*",
+      "name": "p"
+     }
+    ],
+    "name": "widget_to_screen",
     "return": "ret_t"
    },
    {
@@ -6456,6 +7508,24 @@
       "name": "widget"
      },
      {
+      "type": "char*",
+      "name": "type_name"
+     },
+     {
+      "type": "bool_t",
+      "name": "recursive"
+     }
+    ],
+    "name": "widget_lookup_by_type",
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
       "type": "bool_t",
       "name": "visible"
      },
@@ -6488,7 +7558,7 @@
     ],
     "name": "widget_on",
     "isCustom": true,
-    "return": "uint32_t"
+    "return": "int32_t"
    },
    {
     "params": [
@@ -6497,7 +7567,7 @@
       "name": "widget"
      },
      {
-      "type": "uint32_t",
+      "type": "int32_t",
       "name": "id"
      }
     ],
@@ -6526,7 +7596,7 @@
     ],
     "name": "widget_on",
     "isCustom": true,
-    "return": "uint32_t"
+    "return": "int32_t"
    },
    {
     "params": [
@@ -6593,6 +7663,16 @@
      {
       "type": "widget_t*",
       "name": "widget"
+     }
+    ],
+    "name": "widget_layout_children",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
      },
      {
       "type": "widget_t*",
@@ -6635,6 +7715,34 @@
     ],
     "name": "widget_destroy",
     "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     }
+    ],
+    "name": "widget_clone",
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "widget_t*",
+      "name": "other"
+     }
+    ],
+    "name": "widget_equal",
+    "return": "bool_t"
    }
   ],
   "properties": [
@@ -6659,13 +7767,13 @@
     "readonly": true
    },
    {
-    "type": "uint8_t",
+    "type": "uint16_t",
     "name": "type",
     "readonly": true
    },
    {
-    "type": "uint8_t",
-    "name": "style_type",
+    "type": "char*",
+    "name": "style_name",
     "readonly": true
    },
    {
@@ -6680,12 +7788,22 @@
    },
    {
     "type": "bool_t",
+    "name": "auto_created",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
     "name": "visible",
     "readonly": true
    },
    {
     "type": "bool_t",
     "name": "focused",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "name",
     "readonly": true
    },
    {
@@ -7007,6 +8125,20 @@
       "name": "str"
      },
      {
+      "type": "wstr_t*",
+      "name": "other"
+     }
+    ],
+    "name": "wstr_equal",
+    "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
       "type": "int32_t",
       "name": "v"
      }
@@ -7021,7 +8153,7 @@
       "name": "str"
      },
      {
-      "type": "float",
+      "type": "double",
       "name": "v"
      }
     ],
@@ -7063,11 +8195,35 @@
       "name": "str"
      },
      {
-      "type": "float*",
+      "type": "double*",
       "name": "v"
      }
     ],
     "name": "wstr_to_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     },
+     {
+      "type": "double",
+      "name": "delta"
+     }
+    ],
+    "name": "wstr_add_float",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "wstr_t*",
+      "name": "str"
+     }
+    ],
+    "name": "wstr_trim_float_zero",
     "return": "ret_t"
    },
    {

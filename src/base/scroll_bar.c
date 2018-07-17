@@ -302,24 +302,24 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   dragger = dragger_create(widget, 0, 0, 0, 0);
   dragger->auto_created = TRUE;
   widget_set_name(dragger, "dragger");
-  widget_use_style(dragger, "1:scroll_bar");
+  widget_use_style(dragger, "scroll_bar");
   widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
 
   if (widget->w > widget->h) {
     tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->h));
 
-    widget_use_style(up, "13:scroll_left");
+    widget_use_style(up, "scroll_left");
     widget_set_self_layout_params(up, "0", "0", str, "100%");
 
-    widget_use_style(down, "14:scroll_right");
+    widget_use_style(down, "scroll_right");
     widget_set_self_layout_params(down, "right", "0", str, "100%");
   } else {
     tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->w));
 
-    widget_use_style(up, "12:scroll_up");
+    widget_use_style(up, "scroll_up");
     widget_set_self_layout_params(up, "0", "0", "100%", str);
 
-    widget_use_style(down, "11:scroll_down");
+    widget_use_style(down, "scroll_down");
     widget_set_self_layout_params(down, "0", "bottom", "100%", str);
   }
 
@@ -551,7 +551,7 @@ widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   return_value_if_fail(widget != NULL, NULL);
 
   scroll_bar_create_children(widget);
-  widget_use_style(widget, "1:destkop");
+  widget_use_style(widget, "destkop");
 
   return widget;
 }

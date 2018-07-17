@@ -92,9 +92,10 @@ ret_t widget_set_value(widget_t* widget, int32_t value) {
 }
 
 ret_t widget_use_style(widget_t* widget, const char* value) {
-  return_value_if_fail(widget != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->style_type = atoi(value);
+  TKMEM_FREE(widget->style_name);
+  widget->style_name = tk_strdup(value);
   widget_update_style(widget);
 
   return RET_OK;
@@ -701,8 +702,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = !!value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
-    widget->style_type = value_int(v);
-    widget_update_style(widget);
+    const char* name = value_str(v);
+    return widget_use_style(widget, name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     widget->enable = !!value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
@@ -754,7 +755,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
-    value_set_int(v, widget->style_type);
+    value_set_str(v, widget->style_name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
@@ -1127,6 +1128,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
   }
 
   TKMEM_FREE(widget->name);
+  TKMEM_FREE(widget->style_name);
 #ifdef WITH_DYNAMIC_TR
   TKMEM_FREE(widget->tr_key);
 #endif /*WITH_DYNAMIC_TR*/
@@ -1222,11 +1224,11 @@ static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
 
   t.data = (const uint8_t*)widget_get_window_theme(widget);
   if (t.data != NULL) {
-    data = theme_find_style(&t, type_name, widget->style_type, state);
+    data = theme_find_style(&t, type_name, widget->style_name, state);
   }
 
   if (data == NULL) {
-    data = theme_find_style(theme(), type_name, widget->style_type, state);
+    data = theme_find_style(theme(), type_name, widget->style_name, state);
   }
 
   return data;
@@ -1252,7 +1254,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
   widget->dirty = TRUE;
   widget->type = type;
   widget->opacity = 0xff;
-  widget->style_type = 0;
   widget->enable = TRUE;
   widget->visible = TRUE;
   widget->emitter = NULL;
@@ -1375,9 +1376,9 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   ASSIGN_PROP(opacity);
   ASSIGN_PROP(enable);
   ASSIGN_PROP(visible);
-  ASSIGN_PROP(style_type);
 
   clone->name = tk_strdup(widget->name);
+  clone->style_name = tk_strdup(widget->style_name);
 #ifdef WITH_DYNAMIC_TR
   clone->tr_key = tk_strdup(widget->tr_key);
 #endif /*WITH_DYNAMIC_TR*/
@@ -1418,10 +1419,14 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   const char** properties = NULL;
   return_value_if_fail(widget != NULL && other != NULL, FALSE);
 
-  ret = PROP_EQ(opacity) && PROP_EQ(enable) && PROP_EQ(visible) && PROP_EQ(style_type) &&
-        PROP_EQ(vt) && PROP_EQ(x) && PROP_EQ(y) && PROP_EQ(w) && PROP_EQ(h);
+  ret = PROP_EQ(opacity) && PROP_EQ(enable) && PROP_EQ(visible) && PROP_EQ(vt) && PROP_EQ(x) &&
+        PROP_EQ(y) && PROP_EQ(w) && PROP_EQ(h);
   if (widget->name != NULL || other->name != NULL) {
     ret = ret && (tk_str_eq(widget->name, other->name) || PROP_EQ(name));
+  }
+
+  if (widget->style_name != NULL || other->style_name != NULL) {
+    ret = ret && tk_str_eq(widget->style_name, other->style_name);
   }
 
   if (!ret) {

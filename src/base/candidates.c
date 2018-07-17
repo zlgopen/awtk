@@ -51,7 +51,7 @@ static ret_t candidates_create_button(widget_t* widget) {
   widget_t* button = button_create(widget, 0, 0, 0, 0);
   return_value_if_fail(button != NULL, RET_BAD_PARAMS);
 
-  widget_use_style(button, "2:candidates");
+  widget_use_style(button, "candidates");
   widget_on(button, EVT_CLICK, candidates_on_button_click, button);
 
   return RET_OK;

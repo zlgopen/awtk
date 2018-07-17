@@ -185,11 +185,11 @@ struct _widget_t {
    */
   uint16_t type;
   /**
-   * @property {uint16_t} style_type
+   * @property {char*} style_name
    * @readonly
    * Style Type。
    */
-  uint16_t style_type;
+  const char* style_name;
   /**
    * @property {uint8_t} state
    * @readonly

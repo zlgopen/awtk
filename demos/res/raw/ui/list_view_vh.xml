@@ -1,59 +1,59 @@
 <window name="main" anim_hint="htranslate">
   <list_view x="0"  y="0" w="100%" h="-50" default_item_height="60">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
-      <list_item h="128" style="1:odd_clickable" layout="r1 c0">
+      <list_item h="128" style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="1.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="2.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="3.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="4.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="5.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="6.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="7.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="8.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="9.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="10.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="11.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="12.Hello AWTK !"/>
       </list_item>
-      <list_item style="1:odd_clickable" layout="r1 c0">
+      <list_item style="odd_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="13.Hello AWTK !"/>
       </list_item>
-      <list_item style="2:even_clickable" layout="r1 c0">
+      <list_item style="even_clickable" layout="r1 c0">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="14.Hello AWTK !"/>
       </list_item>

@@ -102,7 +102,7 @@ function genAll(json) {
       str += '  return 1;\n';
     } else if (type.indexOf('*') >= 0) {
       const typeName = type.replace(/\*/g, "");
-      str += `  return tk_newuserdata(L, ${name}, "${genClassChain(typeName)}", "awtk.${typeName}");\n`;
+      str += `  return tk_newuserdata(L, (void*)${name}, "${genClassChain(typeName)}", "awtk.${typeName}");\n`;
     } else if (type.indexOf('int') >= 0) {
       str = `  lua_pushinteger(L,(lua_Integer)(${name}));\n\n`;
       str += '  return 1;\n';
@@ -203,9 +203,11 @@ function genAll(json) {
     str += '  (void)name;\n';
 
     let hasSetProps = false;
-    cls.properties.forEach((m, index) => {
-      str += genSetProperty(index, cls, m);
-      hasSetProps = true;
+    cls.properties.forEach((p, index) => {
+      if(!p.readonly && !p.isFake) {
+        str += genSetProperty(index, cls, p);
+        hasSetProps = true;
+      }
     });
 
     if (hasSetProps) {
@@ -245,8 +247,10 @@ function genAll(json) {
     str += '    return 1;\n';
     str += '  }\n';
 
-    cls.properties.forEach((m, index) => {
-      str += genGetProperty(index, cls, m);
+    cls.properties.forEach((p, index) => {
+      if(!p.isFake) {
+        str += genGetProperty(index, cls, p);
+      }
     });
 
     str += `  else {\n`;
@@ -256,7 +260,7 @@ function genAll(json) {
       if(cls.name === 'widget_t') {
         str += `    widget_t* child = widget_lookup(obj, name, FALSE);\n`;
         str += `    if(child != NULL) {\n`;
-        str += `      return tk_newuserdata(L, child, "/widget_t", "awtk.widget_t");\n`;
+        str += `      return tk_newuserdata(L, (void*)child, "/widget_t", "awtk.widget_t");\n`;
         str += `    }\n`;
       }
       str += `    printf("%s: not supported %s\\n", __FUNCTION__, name);\n`;

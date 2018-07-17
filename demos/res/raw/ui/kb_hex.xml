@@ -18,7 +18,7 @@
         <button repeat="300" name="E" text="E"/>
         <button repeat="300" name="F" text="F"/>
         <button repeat="300" name="X" text="X"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
     </view>
   </pages>
 </keyboard>

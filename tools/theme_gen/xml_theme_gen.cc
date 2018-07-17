@@ -36,7 +36,7 @@ typedef struct _xml_builder_t {
   Style share_style;
 
   uint16_t level;
-  uint16_t style_name;
+  string style_name;
   string widget_type;
 } xml_builder_t;
 
@@ -110,23 +110,19 @@ static void xml_gen_on_widget(xml_builder_t* b, const char* tag, const char** at
   xml_gen_style(b, b->widget_style, attrs);
 
   b->widget_type = tag;
-  b->style_name = 0;
+  b->style_name = TK_DEFAULT_STYLE;
 }
 
 static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** attrs) {
   uint32_t i = 0;
-  b->style_name = 0;
+  b->style_name = TK_DEFAULT_STYLE;
 
   while (attrs[i]) {
     const char* name = attrs[i];
     const char* value = attrs[i + 1];
 
     if (strcmp(name, "name") == 0) {
-      if (strcmp(value, "default") == 0 || strcmp(value, "0:default") == 0) {
-        b->style_name = 0;
-      } else {
-        b->style_name = atoi(value);
-      }
+      b->style_name = value;
     }
 
     i += 2;
@@ -218,7 +214,7 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
   b.builder.on_pi = xml_gen_on_pi;
   b.builder.destroy = xml_gen_destroy;
   b.level = 0;
-  b.style_name = 0;
+  b.style_name = TK_DEFAULT_STYLE;
   b.widget_type = "";
 
   return &(b.builder);

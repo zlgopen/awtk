@@ -3,11 +3,11 @@
     <normal bg_color="#f0f0f0"/>
   </style>
 
-  <style name="1:bricks">
+  <style name="bricks">
     <normal bg_image="bricks"  bg_image_draw_type="repeat"/>
   </style>
 
-  <style name="2:sky">
+  <style name="sky">
     <normal bg_image="bg800x480"/>
   </style>
 </window>
@@ -20,59 +20,59 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
-  <style name="2:spinbox_down" border_color="#a0a0a0">
+  <style name="spinbox_down" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
   </style>
 
-  <style name="3:spinbox_up" border_color="#a0a0a0">
+  <style name="spinbox_up" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_up_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_up_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
   </style>
   
-  <style name="4:spinbox_left" border_color="#a0a0a0">
+  <style name="spinbox_left" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_left_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_left_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_left_o"/>
   </style>
   
-  <style name="5:spinbox_right" border_color="#a0a0a0">
+  <style name="spinbox_right" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_right_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_right_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_right_o"/>
   </style>
 
-  <style name="6:edit_clear">
+  <style name="edit_clear">
     <normal     icon="edit_clear_n"/>
     <pressed    icon="edit_clear_p"/>
     <over       icon="edit_clear_o"/>
   </style>
 
-  <style name="10:grid_item" border_color="#a0a0a0"  text_color="black">
+  <style name="grid_item" border_color="#a0a0a0"  text_color="black">
     <pressed    bg_color="#c0c0c0" />
   </style>
   
-  <style name="11:scroll_down" border_color="#a0a0a0">
+  <style name="scroll_down" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
   </style>
 
-  <style name="12:scroll_up" border_color="#a0a0a0">
+  <style name="scroll_up" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_up_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_up_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
   </style>
   
-  <style name="13:scroll_left" border_color="#a0a0a0">
+  <style name="scroll_left" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_left_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_left_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_left_o"/>
   </style>
   
-  <style name="14:scroll_right" border_color="#a0a0a0">
+  <style name="scroll_right" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_right_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_right_p"/>
     <over       bg_color="#e0e0e0" icon="arrow_right_o"/>
@@ -87,7 +87,7 @@
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
   </style>
-  <style name="1:line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" text_align_v="bottom">
+  <style name="line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" text_align_v="bottom">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />
@@ -111,23 +111,23 @@
     <normal text_color="black" />
   </style>
 
-  <style name="1:green">
+  <style name="green">
     <normal text_color="green" />
   </style>
 
-  <style name="2:left">
+  <style name="left">
     <normal text_color="red" text_align_h="left" border_color="#a0a0a0" margin="4" />
   </style>
 
-  <style name="3:center">
+  <style name="center">
     <normal text_color="green" text_align_h="center" border_color="#a0a0a0"/>
   </style>
   
-  <style name="4:right">
+  <style name="right">
     <normal text_color="blue" text_align_h="right" border_color="#a0a0a0" margin="4"/>
   </style>
   
-  <style name="5:center_ap">
+  <style name="center_ap">
     <normal text_color="green" text_align_h="center" border_color="#a0a0a0" font_name="ap" font_size="12"/>
   </style>
 
@@ -138,11 +138,11 @@
     <normal bg_color="#f0f0f0" text_color="gold" fg_color="#c0c0c0" border_color="#a0a0a0" />
   </style>
   
-  <style name="1:img" bg_image="slider_bg" fg_image="slider_fg">
+  <style name="img" bg_image="slider_bg" fg_image="slider_fg">
     <normal icon="slider_drag"/>
   </style>
 
-  <style name="2:img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="3patch_y" fg_image_draw_type="3patch_y">
+  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="3patch_y" fg_image_draw_type="3patch_y">
     <normal icon="slider_drag"/>
   </style>
 </progress_bar>
@@ -154,13 +154,13 @@
     <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>
   </style>
 
-  <style name="1:img" bg_image="slider_bg" fg_image="slider_fg">
+  <style name="img" bg_image="slider_bg" fg_image="slider_fg">
     <normal icon="slider_drag"/>
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="2:img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="3patch_y" fg_image_draw_type="3patch_y">
+  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="3patch_y" fg_image_draw_type="3patch_y">
     <normal icon="slider_drag"/>
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>
@@ -172,7 +172,7 @@
     <normal />
   </style>
 
-  <style name="1:box">
+  <style name="box">
     <normal bg_color="#f0f0f0" border_color="#a0a0a0" />
   </style>
 </group_box>
@@ -182,7 +182,7 @@
     <checked   icon="checked" />
     <unchecked icon="unchecked" />
   </style>
-  <style name="1:mute" >
+  <style name="mute" >
     <checked   icon="unmuted" />
     <unchecked icon="muted" />
   </style>
@@ -193,22 +193,22 @@
     <checked   icon="radio_checked" />
     <unchecked icon="radio_unchecked" />
   </style>
-  <style name="2:left">
+  <style name="left">
     <checked   icon="left_on" />
     <unchecked icon="left_off" />
   </style>
-  <style name="3:middle">
+  <style name="middle">
     <checked   icon="middle_on" />
     <unchecked icon="middle_off" />
   </style>
-  <style name="4:right">
+  <style name="right">
     <checked   icon="right_on" />
     <unchecked icon="right_off" />
   </style>
 </radio_button>
 
 <image>
-  <style name="1:border">
+  <style name="border">
     <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
   </style>
 </image>
@@ -237,7 +237,7 @@
     <over bg_color="#c0c0c0" fg_color="#808080"/>
     <pressed bg_color="#c0c0c0" fg_color="#808080"/>
   </style>
-  <style name="1:destkop" border_color="gray">
+  <style name="destkop" border_color="gray">
     <normal bg_color="#f0f0f0"/>
     <over bg_color="#f0f0f0" />
     <pressed bg_color="#f0f0f0" />
@@ -245,7 +245,7 @@
 </scroll_bar>
 
 <dragger>
-  <style name="1:scroll_bar" >
+  <style name="scroll_bar" >
     <normal     bg_color="#d0d0d0" />
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#c0c0c0" />
@@ -258,27 +258,27 @@
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#118bd6" />
   </style>
-  <style name="1:odd_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+  <style name="odd_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#f5f5f5" />
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#118bd6" />
   </style>
-  <style name="2:even_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+  <style name="even_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#eaeaea" />
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#118bd6" />
   </style>
-  <style name="3:odd" border_color="#a0a0a0"  border="bottom" text_color="black">
+  <style name="odd" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#f5f5f5" />
     <pressed    bg_color="#f5f5f5" />
     <over       bg_color="#f5f5f5" />
   </style>
-  <style name="4:even" border_color="#a0a0a0"  border="bottom" text_color="black">
+  <style name="even" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#eaeaea" />
     <pressed    bg_color="#eaeaea" />
     <over       bg_color="#eaeaea" />
   </style>
-  <style name="5:empty" >
+  <style name="empty" >
     <normal  />
     <pressed />
     <over  />

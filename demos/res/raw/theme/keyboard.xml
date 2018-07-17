@@ -1,12 +1,12 @@
 <button>
-  <style name="1:highlight" border_color="#a0a0a0"  text_color="black">
+  <style name="highlight" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#a8b0b0" />
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
-  <style name="2:candidates" text_color="black">
+  <style name="candidates" text_color="black">
     <normal  />
     <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
     <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
@@ -14,7 +14,7 @@
 </button>
 
 <candidates>
-  <style name="0:default">
+  <style name="default">
     <normal     bg_color="#fafafa" />
   </style>
 </candidates>

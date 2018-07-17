@@ -18,7 +18,7 @@ void GenThemeData(uint8_t* buff, uint32_t size, uint32_t type_nr, uint32_t state
     for (uint32_t state = 0; state < state_nr; state++) {
       const key_type_value_t* kv = widget_type_find_by_value(type);
 
-      Style s(kv->name, 0, state);
+      Style s(kv->name, TK_DEFAULT_STYLE, state);
       for (uint32_t name = 0; name < name_nr; name++) {
         char str[32];
         snprintf(str, sizeof(str), "%d", name);

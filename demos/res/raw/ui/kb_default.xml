@@ -33,13 +33,13 @@
         <button repeat="300" name="B" text="B"/>
         <button repeat="300" name="N" text="N"/>
         <button repeat="300" name="M" text="M"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
-        <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
-        <button name="page:chinese" style="1:highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Return"/>
+        <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -67,7 +67,7 @@
         <button repeat="300" name="l" text="l"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
-        <button name="page:upper" style="1:highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:upper" style="highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="z" text="z"/>
         <button repeat="300" name="x" text="x"/>
         <button repeat="300" name="c" text="c"/>
@@ -75,13 +75,13 @@
         <button repeat="300" name="b" text="b"/>
         <button repeat="300" name="n" text="n"/>
         <button repeat="300" name="m" text="m"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
-        <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
-        <button name="page:chinese" style="1:highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Return"/>
+        <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -110,7 +110,7 @@
         <button repeat="300" name="quota" text="&quota;"/>
       </group_box>
       <group_box layout="rows:1 cols:10 spacing:2 margin:2">
-        <button name="page:symbol" style="1:highlight" text="#+="/>
+        <button name="page:symbol" style="highlight" text="#+="/>
         <button repeat="300" name="." text="."/>
         <button repeat="300" name="," text=","/>
         <button repeat="300" name="\" text="\"/>
@@ -119,13 +119,13 @@
         <button repeat="300" name="<" text="<"/>
         <button repeat="300" name=">" text=">"/>
         <button repeat="300" name="#" text="#"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
-        <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="page:chinese" style="1:highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
+        <button repeat="300" name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Return"/>
+        <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -153,20 +153,20 @@
         <button repeat="300" name="`" text="`"/>
       </group_box>
       <group_box layout="rows:1 cols:8 spacing:2 margin:2">
-        <button name="page:symnum" style="1:highlight" text="123"/>
+        <button name="page:symnum" style="highlight" text="123"/>
         <button repeat="300" name="." text="."/>
         <button repeat="300" name="," text=","/>
         <button repeat="300" name="?" text="?"/>
         <button repeat="300" name="!" text="!"/>
         <button repeat="300" name="'" text="'"/>
         <button repeat="300" name="&quota;" text="&quota;"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
-        <button name="page:upper" style="1:highlight" w="15%" text="ABC"/>
-        <button name="page:chinese" style="1:highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Return"/>
+        <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
     <view name="chinese" x="0" y="0" w="100%" h="100%" layout="rows:4 cols:1 spacing:2 margin:2">
@@ -194,7 +194,7 @@
         <button repeat="300" name="key:l" text="l"/>
       </group_box>
       <group_box layout="rows:1 cols:9 spacing:2 margin:2">
-        <button name="page:upper" style="1:highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:upper" style="highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="key:z" text="z"/>
         <button repeat="300" name="key:x" text="x"/>
         <button repeat="300" name="key:c" text="c"/>
@@ -202,12 +202,12 @@
         <button repeat="300" name="key:b" text="b"/>
         <button repeat="300" name="key:n" text="n"/>
         <button repeat="300" name="key:m" text="m"/>
-        <button repeat="300" name="key:backspace" style="1:highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
-        <button name="page:symnum" style="1:highlight" w="15%" text="123"/>
+        <button name="page:symnum" style="highlight" w="15%" text="123"/>
         <button repeat="300" name="key:space" w="65%" text="Space"/>
-        <button name="action" style="1:highlight" w="20%" text="Return"/>
+        <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
   </pages>

@@ -58,11 +58,11 @@ typedef struct _theme_header_t {
 typedef struct _theme_item_t {
   uint32_t offset;
   uint16_t state;
-  uint16_t style_type;
+  char name[NAME_LEN + 1];
   char widget_type[NAME_LEN + 1];
 } theme_item_t;
 
-const uint8_t* theme_find_style(theme_t* t, const char* widget_type, uint16_t style_type,
+const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
                                 uint16_t state);
 
 /**
@@ -159,6 +159,7 @@ typedef enum _style_id_t {
 } style_id_t;
 
 #define THEME_MAGIC 0xFAFBFCFD
+#define TK_DEFAULT_STYLE "default"
 
 END_C_DECLS
 

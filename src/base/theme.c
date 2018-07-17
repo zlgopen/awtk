@@ -84,16 +84,20 @@ const char* style_get_str(style_t* s, uint32_t name, const char* defval) {
   return defval;
 }
 
-const uint8_t* theme_find_style(theme_t* t, const char* widget_type, uint16_t style_type,
+const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
                                 uint16_t state) {
   uint32_t i = 0;
   const theme_item_t* iter = NULL;
   const theme_header_t* header = (const theme_header_t*)(t->data);
   return_value_if_fail(t != NULL && t->data != NULL, NULL);
 
+  if (name == NULL) {
+    name = TK_DEFAULT_STYLE;
+  }
+
   iter = (const theme_item_t*)(t->data + sizeof(theme_header_t));
   for (i = 0; i < header->nr; i++) {
-    if (iter->state == state && iter->style_type == style_type &&
+    if (iter->state == state && tk_str_eq(iter->name, name) &&
         tk_str_eq(widget_type, iter->widget_type)) {
       return t->data + iter->offset;
     }

@@ -92,6 +92,7 @@ ret_t application_init() {
 
   image = image_create(win, 10, 230, 100, 100);
   image_set_image_name(image, "earth");
+  image_set_draw_type(image, IMAGE_DRAW_ICON);
 
   image = image_create(win, 100, 230, 60, 60);
   image_set_image_name(image, "earth");
@@ -99,19 +100,19 @@ ret_t application_init() {
 
   label = label_create(win, 10, 40, 80, 30);
   widget_set_text(label, L"Left");
-  widget_use_style(label, "2:left");
+  widget_use_style(label, "left");
 
   label = label_create(win, 100, 40, 80, 30);
   widget_set_text(label, L"C enter");
 #ifdef WITH_STB_FONT
-  widget_use_style(label, "3:center");
+  widget_use_style(label, "center");
 #else
-  widget_use_style(label, "5:center-ap");
+  widget_use_style(label, "center-ap");
 #endif
 
   label = label_create(win, 190, 40, 80, 30);
   widget_set_text(label, L"Right");
-  widget_use_style(label, "4:right");
+  widget_use_style(label, "right");
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
   widget_set_value(progress_bar, 40);
@@ -153,16 +154,16 @@ ret_t application_init() {
   widget_set_value(radio_button, TRUE);
 
   group_box = group_box_create(win, 10, 300, 32 * 3, 32);
-  widget_use_style(group_box, "1:box");
+  widget_use_style(group_box, "box");
   radio_button = check_button_create_radio(group_box, 0, 0, 32, 32);
-  widget_use_style(radio_button, "2:left");
+  widget_use_style(radio_button, "left");
   radio_button = check_button_create_radio(group_box, 32, 0, 32, 32);
-  widget_use_style(radio_button, "3:middle");
+  widget_use_style(radio_button, "middle");
   radio_button = check_button_create_radio(group_box, 64, 0, 32, 32);
-  widget_use_style(radio_button, "4:right");
+  widget_use_style(radio_button, "right");
 
   check_button = check_button_create(win, 108, 300, 32, 32);
-  widget_use_style(check_button, "1:mute");
+  widget_use_style(check_button, "mute");
 
   return RET_OK;
 }

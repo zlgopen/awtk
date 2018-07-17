@@ -144,6 +144,7 @@ bin\demoui
 
 * 2018/07/17
     * widget支持自定义属性。
+    * 出于易用性考虑，style\_name改为字符串格式。
 
 * 2018/07/15
     * 实现widget\_to\_xml。
