@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   custom_props.c
  * Author: AWTK Develop Team
  * Brief:  custom_props
@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/utils.h"
+#include "base/wstr.h"
 #include "base/custom_props.h"
 
 custom_props_t* custom_props_create(uint32_t capacity) {
@@ -73,7 +74,7 @@ static ret_t value_assign(value_t* v, const value_t* other) {
   *v = *other;
   if (v->type == VALUE_TYPE_WSTRING) {
     if (v->value.wstr != NULL) {
-      v->value.wstr = wcsdup(v->value.wstr);
+      v->value.wstr = wcs_dup(v->value.wstr);
       return_value_if_fail(v->value.wstr != NULL, RET_OOM);
     }
   } else if (v->type == VALUE_TYPE_STRING) {
