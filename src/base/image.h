@@ -67,6 +67,24 @@ typedef struct _image_t {
    */
   float_t rotation;
   /**
+   * @property {bool_t} clickable
+   * @realonly
+   * 点击时，是否触发EVT_CLICK事件。
+   */
+  bool_t clickable;
+  /**
+   * @property {bool_t} selectable
+   * @realonly
+   * 是否设置选中状态。
+   */
+  bool_t selectable;
+  /**
+   * @property {bool_t} selected
+   * @realonly
+   * 当前是否被选中。
+   */
+  bool_t selected;
+  /**
    * @property {char*} image
    * @fake
    * 图片的名称(只能通过widget_get_prop/set_prop访问)。
@@ -75,7 +93,7 @@ typedef struct _image_t {
   /**
    * @property {char*} draw_type
    * @fake
-   * 图片的绘制方式(只能通过widget_get_prop/set_prop访问)。
+   * 图片的绘制方式(只能通过widget_get_prop/set_prop访问，仅在没有旋转和缩放时生效)。
    */
 
   /*private*/
@@ -111,7 +129,7 @@ ret_t image_set_image_name(widget_t* widget, const char* name);
  * @method image_set_draw_type
  * 设置图片的显示方式。
  * @param {widget_t*} widget image对象。
- * @param {image_draw_type_t}  draw_type 显示方式。
+ * @param {image_draw_type_t}  draw_type 显示方式(仅在没有旋转和缩放时生效)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -148,6 +166,36 @@ ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y);
+
+/**
+ * @method image_set_selected
+ * 设置控件的选中状态。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} selected 是否被选中。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_set_selected(widget_t* widget, bool_t selected);
+
+/**
+ * @method image_set_selectable
+ * 设置控件是否可以被选中。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} selectable 是否可以被选中。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_set_selectable(widget_t* widget, bool_t selectable);
+
+/**
+ * @method image_set_clickable
+ * 设置控件是否可以被点击。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} clickable 是否可以被点击。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_set_clickable(widget_t* widget, bool_t clickable);
 
 #define IMAGE(widget) ((image_t*)(widget))
 

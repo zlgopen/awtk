@@ -211,6 +211,11 @@
   <style name="border">
     <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
   </style>
+  <style name="selectable">
+    <normal text_color="black"/>
+    <pressed border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
+    <selected icon="check" border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
+  </style>
 </image>
 
 <dialog>

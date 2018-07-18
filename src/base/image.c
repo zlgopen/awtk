@@ -27,6 +27,41 @@
 
 static ret_t image_set_image(widget_t* widget, bitmap_t* image);
 
+static ret_t image_on_event(widget_t* widget, event_t* e) {
+  uint16_t type = e->type;
+  image_t* image = IMAGE(widget);
+
+  switch (type) {
+    case EVT_POINTER_DOWN:
+      widget_set_state(widget, WIDGET_STATE_PRESSED);
+      widget_invalidate(widget, NULL);
+      break;
+    case EVT_POINTER_UP: {
+      if (image->clickable) {
+        pointer_event_t evt = *(pointer_event_t*)e;
+        evt.e = event_init(EVT_CLICK, widget);
+        widget_dispatch(widget, (event_t*)&evt);
+      }
+
+      if (image->selectable) {
+        image->selected = !image->selected;
+      }
+
+      if (image->selected) {
+        widget_set_state(widget, WIDGET_STATE_SELECTED);
+      } else {
+        widget_set_state(widget, WIDGET_STATE_NORMAL);
+      }
+      widget_invalidate(widget, NULL);
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
+
 static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t dst;
   bitmap_t* bitmap = NULL;
@@ -34,6 +69,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   bitmap = &(image->bitmap);
+
 #ifdef WITH_VGCANVAS
   {
     vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
@@ -55,7 +91,6 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
         vgcanvas_scale(vg, image->scale_x, image->scale_y);
       }
       vgcanvas_translate(vg, -anchor_x, -anchor_y);
-
       if (bitmap->data != NULL) {
         vgcanvas_draw_icon(vg, bitmap, 0, 0, bitmap->w, bitmap->h, 0, 0, widget->w, widget->h);
       }
@@ -124,6 +159,12 @@ static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_ROTATION)) {
     value_set_float(v, image->rotation);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECTABLE)) {
+    value_set_bool(v, image->selectable);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLICKABLE)) {
+    value_set_bool(v, image->clickable);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -165,16 +206,27 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   } else if (tk_str_eq(name, WIDGET_PROP_ROTATION)) {
     image->rotation = value_float(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECTABLE)) {
+    image->selectable = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLICKABLE)) {
+    image->clickable = value_bool(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
 }
 
-static const char* s_image_properties[] = {WIDGET_PROP_IMAGE, WIDGET_PROP_DRAW_TYPE, NULL};
+static const char* s_image_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
+                                           WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
+                                           WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
+                                           WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
+                                           WIDGET_PROP_SELECTABLE, NULL};
 static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
                                                .type_name = WIDGET_TYPE_IMAGE,
                                                .properties = s_image_properties,
                                                .create = image_create,
+                                               .on_event = image_on_event,
                                                .on_paint_self = image_on_paint_self,
                                                .set_prop = image_set_prop,
                                                .get_prop = image_get_prop};
@@ -255,6 +307,33 @@ ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
 
   image->anchor_x = anchor_x;
   image->anchor_y = anchor_y;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t image_set_selected(widget_t* widget, bool_t selected) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->selected = selected;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t image_set_selectable(widget_t* widget, bool_t selectable) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->selectable = selectable;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t image_set_clickable(widget_t* widget, bool_t clickable) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->clickable = clickable;
 
   return widget_invalidate(widget, NULL);
 }

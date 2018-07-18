@@ -21,6 +21,7 @@
 #include "res/inc/ui/edit.data"
 #include "res/inc/ui/fade.data"
 #include "res/inc/ui/htranslate.data"
+#include "res/inc/ui/image_list.data"
 #include "res/inc/ui/images.data"
 #include "res/inc/ui/kb_ascii.data"
 #include "res/inc/ui/kb_default.data"
@@ -71,6 +72,7 @@
 #include "res/inc/images/backspace.res"
 #include "res/inc/images/bg800x480.res"
 #include "res/inc/images/bricks.res"
+#include "res/inc/images/check.res"
 #include "res/inc/images/checked.res"
 #include "res/inc/images/cross.res"
 #include "res/inc/images/dialog_title.res"
@@ -134,6 +136,7 @@
 #include "res/inc/images/backspace.data"
 #include "res/inc/images/bg800x480.data"
 #include "res/inc/images/bricks.data"
+#include "res/inc/images/check.data"
 #include "res/inc/images/checked.data"
 #include "res/inc/images/cross.data"
 #include "res/inc/images/dialog_title.data"
@@ -178,17 +181,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -216,6 +219,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_backspace);
   resource_manager_add(rm, image_bg800x480);
   resource_manager_add(rm, image_bricks);
+  resource_manager_add(rm, image_check);
   resource_manager_add(rm, image_checked);
   resource_manager_add(rm, image_cross);
   resource_manager_add(rm, image_dialog_title);
@@ -280,6 +284,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_edit);
   resource_manager_add(rm, ui_fade);
   resource_manager_add(rm, ui_htranslate);
+  resource_manager_add(rm, ui_image_list);
   resource_manager_add(rm, ui_images);
   resource_manager_add(rm, ui_kb_ascii);
   resource_manager_add(rm, ui_kb_default);

@@ -92,7 +92,12 @@ typedef enum _widget_state_t {
    * @const WIDGET_STATE_ERROR
    * 输入错误状态。
    */
-  WIDGET_STATE_ERROR = 9
+  WIDGET_STATE_ERROR = 9,
+  /**
+   * @const WIDGET_STATE_ERROR
+   * 输入错误状态。
+   */
+  WIDGET_STATE_SELECTED = 10
 } widget_state_t;
 
 struct _widget_t;

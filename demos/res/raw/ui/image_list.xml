@@ -1,0 +1,58 @@
+<window anim_hint="htranslate">
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="60">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+      <list_item style="empty" layout="r1 c3 s2 m2">
+        <image selectable="true" style="selectable" draw_type="auto" image="1" />
+        <image selectable="true" style="selectable" draw_type="auto" image="2" />
+        <image selectable="true" style="selectable" draw_type="auto" image="3" />
+      </list_item>
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

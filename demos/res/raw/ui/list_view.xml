@@ -3,5 +3,6 @@
     <button name="open:list_view_m" text="Mobile Style"/>
     <button name="open:list_view_vh" text="Variable Height"/>
     <button name="open:list_view_h" text="Horizontal"/>
+    <button name="open:image_list" text="Image List"/>
     <button name="close" text="Close"/>
 </window>

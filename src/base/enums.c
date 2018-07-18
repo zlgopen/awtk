@@ -86,7 +86,7 @@ static const key_type_value_t widget_state_name_value[] = {
     {"pressed", 0, WIDGET_STATE_PRESSED},     {"disable", 0, WIDGET_STATE_DISABLE},
     {"focused", 0, WIDGET_STATE_FOCUSED},     {"checked", 0, WIDGET_STATE_CHECKED},
     {"unchecked", 0, WIDGET_STATE_UNCHECKED}, {"error", 0, WIDGET_STATE_ERROR},
-    {"empty", 0, WIDGET_STATE_EMPTY}};
+    {"selected", 0, WIDGET_STATE_SELECTED},   {"empty", 0, WIDGET_STATE_EMPTY}};
 
 static const key_type_value_t align_v_name_value[] = {
     {"top", 0, ALIGN_V_TOP}, {"middle", 0, ALIGN_V_MIDDLE}, {"bottom", 0, ALIGN_V_BOTTOM}};
