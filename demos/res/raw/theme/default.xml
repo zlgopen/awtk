@@ -256,17 +256,17 @@
   <style name="default" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#c0c0c0" />
-    <over       bg_color="#118bd6" />
+    <over       bg_color="#f0f0f0" />
   </style>
   <style name="odd_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#f5f5f5" />
     <pressed    bg_color="#c0c0c0" />
-    <over       bg_color="#118bd6" />
+    <over       bg_color="#f5f5f5" />
   </style>
   <style name="even_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#eaeaea" />
     <pressed    bg_color="#c0c0c0" />
-    <over       bg_color="#118bd6" />
+    <over       bg_color="#eaeaea" />
   </style>
   <style name="odd" border_color="#a0a0a0"  border="bottom" text_color="black">
     <normal     bg_color="#f5f5f5" />

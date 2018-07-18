@@ -33,6 +33,7 @@
 #include "res/inc/ui/keyboard.data"
 #include "res/inc/ui/list_view.data"
 #include "res/inc/ui/list_view_d.data"
+#include "res/inc/ui/list_view_h.data"
 #include "res/inc/ui/list_view_m.data"
 #include "res/inc/ui/list_view_vh.data"
 #include "res/inc/ui/locale.data"
@@ -291,6 +292,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_keyboard);
   resource_manager_add(rm, ui_list_view);
   resource_manager_add(rm, ui_list_view_d);
+  resource_manager_add(rm, ui_list_view_h);
   resource_manager_add(rm, ui_list_view_m);
   resource_manager_add(rm, ui_list_view_vh);
   resource_manager_add(rm, ui_locale);

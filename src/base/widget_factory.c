@@ -40,6 +40,7 @@
 #include "base/scroll_view.h"
 #include "base/list_item.h"
 #include "base/list_view.h"
+#include "base/list_view_h.h"
 #include "base/slide_view.h"
 #include "base/dialog_title.h"
 #include "base/dialog_client.h"
@@ -75,6 +76,7 @@ static const creator_item_t s_builtin_creators[] = {
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SCROLL_VIEW, scroll_view_create},
     {WIDGET_TYPE_LIST_VIEW, list_view_create},
+    {WIDGET_TYPE_LIST_VIEW_H, list_view_h_create},
     {WIDGET_TYPE_LIST_ITEM, list_item_create},
     {WIDGET_TYPE_SCROLL_BAR, scroll_bar_create},
     {WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop},

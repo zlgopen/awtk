@@ -59,8 +59,8 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     dst = rect_init(0, 0, widget->w, widget->h);
     canvas_draw_image_ex(c, bitmap, image->draw_type, &dst);
   }
-
-  return RET_OK;
+  
+  return widget_paint_helper(widget, c, NULL, NULL);
 }
 
 static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {

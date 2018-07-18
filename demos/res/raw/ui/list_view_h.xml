@@ -1,0 +1,25 @@
+<window name="main" anim_hint="htranslate">
+  <list_view_h x="center"  y="10" w="90%" h="100" item_width="200" spacing="5">
+    <scroll_view name="view" w="100%" h="100%">
+      <image style="border" draw_type="auto" image="1" text="1"/>
+      <image style="border" draw_type="auto" image="2" text="2"/>
+      <image style="border" draw_type="auto" image="3" text="3"/>
+      <image style="border" draw_type="auto" image="1" text="4"/>
+      <image style="border" draw_type="auto" image="2" text="5"/>
+      <image style="border" draw_type="auto" image="3" text="6"/>
+      <image style="border" draw_type="auto" image="1" text="7"/>
+      <image style="border" draw_type="auto" image="2" text="8"/>
+      <image style="border" draw_type="auto" image="3" text="9"/>
+      <image style="border" draw_type="auto" image="1" text="10"/>
+      <image style="border" draw_type="auto" image="2" text="11"/>
+      <image style="border" draw_type="auto" image="3" text="12"/>
+      <image style="border" draw_type="auto" image="1" text="13"/>
+      <image style="border" draw_type="auto" image="2" text="14"/>
+      <image style="border" draw_type="auto" image="3" text="15"/>
+      <image style="border" draw_type="auto" image="1" text="16"/>
+      <image style="border" draw_type="auto" image="2" text="17"/>
+      <image style="border" draw_type="auto" image="3" text="18"/>
+    </scroll_view>
+  </list_view_h>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

@@ -133,8 +133,6 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
-  window_manger_layout_child(widget, window);
-
   if (wm->animator != NULL) {
     wm->pending_open_window = window;
   } else {
@@ -142,6 +140,8 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
   }
 
   ret = widget_add_child(widget, window);
+  window_manger_layout_child(widget, window);
+
   if (ret == RET_OK) {
     widget->target = window;
   }

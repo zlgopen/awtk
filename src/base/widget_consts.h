@@ -42,6 +42,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_STYLE "style"
 #define WIDGET_PROP_ENABLE "enable"
 #define WIDGET_PROP_MARGIN "margin"
+#define WIDGET_PROP_SPACING "spacing"
 #define WIDGET_PROP_LEFT_MARGIN "left_margin"
 #define WIDGET_PROP_RIGHT_MARGIN "right_margin"
 #define WIDGET_PROP_TOP_MARGIN "top_margin"
@@ -71,6 +72,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ROW "row"
 #define WIDGET_PROP_THEME "theme"
 #define WIDGET_PROP_SCRIPT "script"
+#define WIDGET_PROP_ITEM_WIDTH "item_width"
 #define WIDGET_PROP_ITEM_HEIGHT "item_height"
 #define WIDGET_PROP_DEFAULT_ITEM_HEIGHT "default_item_height"
 #define WIDGET_PROP_XSLIDABLE "xslidable"
@@ -113,6 +115,7 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
 #define WIDGET_TYPE_SCROLL_VIEW "scroll_view"
 #define WIDGET_TYPE_LIST_VIEW "list_view"
+#define WIDGET_TYPE_LIST_VIEW_H "list_view_h"
 #define WIDGET_TYPE_LIST_ITEM "list_item"
 
 /**
@@ -276,6 +279,11 @@ typedef enum _widget_type_t {
    * List View。
    */
   WIDGET_LIST_VIEW,
+  /**
+   * @const WIDGET_LIST_VIEW_H
+   * List View Horizontal。
+   */
+  WIDGET_LIST_VIEW_H,
   /**
    * @const WIDGET_LIST_ITEM
    * List Item。

@@ -2,5 +2,6 @@
     <button name="open:list_view_d" text="Desktop Style"/>
     <button name="open:list_view_m" text="Mobile Style"/>
     <button name="open:list_view_vh" text="Variable Height"/>
+    <button name="open:list_view_h" text="Horizontal"/>
     <button name="close" text="Close"/>
 </window>

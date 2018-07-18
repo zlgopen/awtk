@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/time.h"
 #include "base/utils.h"
 #include "base/layout.h"
 #include "base/velocity.h"
@@ -155,14 +156,6 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
     return RET_OK;
   }
 
-  if (scroll_view->wa != NULL) {
-    widget_animator_destroy(scroll_view->wa);
-    scroll_view->wa = NULL;
-  }
-
-  scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
-  return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
-
   scroll_view->xoffset_end = xoffset_end;
   scroll_view->yoffset_end = yoffset_end;
   if (scroll_view->fix_end_offset) {
@@ -175,9 +168,31 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
     scroll_view->on_scroll_to(widget, xoffset_end, yoffset_end, duration);
   }
 
-  widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, xoffset_end, yoffset_end);
-  widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
-  widget_animator_start(scroll_view->wa);
+  if (scroll_view->wa != NULL) {
+    widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
+    if(scroll_view->xslidable) {
+      if(wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w)) {
+        wa->x_to = xoffset_end;
+        wa->x_from = scroll_view->xoffset;
+      }
+    }
+
+    if(scroll_view->yslidable) {
+      if(wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h)) {
+        wa->y_to = yoffset_end;
+        wa->y_from = scroll_view->yoffset;
+      }
+    }
+
+    wa->base.start_time = time_now_ms();
+  } else {
+    scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+    return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
+
+    widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, xoffset_end, yoffset_end);
+    widget_animator_on(scroll_view->wa, EVT_ANIM_END, scroll_view_on_scroll_done, scroll_view);
+    widget_animator_start(scroll_view->wa);
+  }
 
   return RET_OK;
 }
@@ -190,14 +205,25 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
   if (scroll_view->xslidable || scroll_view->yslidable) {
     int yv = v->yv;
     int xv = v->xv;
+  
+    if (scroll_view->wa != NULL) {
+      widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
+      int32_t dx = wa->x_to - scroll_view->xoffset;
+      int32_t dy = wa->y_to - scroll_view->yoffset;
+      xv -= dx;
+      yv -= dy;
+      log_debug("dx=%d xv=%d\n", dx, xv);
+    }
 
-    if (scroll_view->xslidable) {
+    if (scroll_view->xslidable && xv) {
+      xv = xv < 0 ? tk_min(xv, -widget->w) : tk_max(xv, widget->w);
       scroll_view->xoffset_end = scroll_view->xoffset - xv;
     } else {
       scroll_view->xoffset_end = scroll_view->xoffset;
     }
 
     if (scroll_view->yslidable) {
+      yv = yv < 0 ? tk_min(yv, -widget->h) : tk_max(yv, widget->h);
       scroll_view->yoffset_end = scroll_view->yoffset - yv;
     } else {
       scroll_view->yoffset_end = scroll_view->yoffset;
@@ -217,16 +243,18 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   int32_t dy = e->y - scroll_view->down.y;
   velocity_update(v, e->e.time, e->x, e->y);
 
-  if (scroll_view->xslidable) {
-    scroll_view->xoffset = scroll_view->xoffset_save - dx;
-  }
+  if(scroll_view->wa == NULL) {
+    if (scroll_view->xslidable) {
+      scroll_view->xoffset = scroll_view->xoffset_save - dx;
+    }
 
-  if (scroll_view->yslidable) {
-    scroll_view->yoffset = scroll_view->yoffset_save - dy;
-  }
+    if (scroll_view->yslidable) {
+      scroll_view->yoffset = scroll_view->yoffset_save - dy;
+    }
 
-  if (scroll_view->on_scroll) {
-    scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+    if (scroll_view->on_scroll) {
+      scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+    }
   }
 
   return RET_OK;
