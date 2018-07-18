@@ -28,3 +28,35 @@ TEST(Image, basic) {
 
   widget_destroy(img);
 }
+
+TEST(Widget, rotation) {
+  image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
+  ASSERT_EQ(w->rotation, 0);
+  ASSERT_EQ(image_set_rotation(WIDGET(w), 0.4), RET_OK);
+  ASSERT_EQ(w->rotation, 0.4f);
+  widget_destroy(WIDGET(w));
+}
+
+TEST(Widget, scale) {
+  image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
+  ASSERT_EQ(w->scale_x, 1.0f);
+  ASSERT_EQ(w->scale_y, 1.0f);
+
+  ASSERT_EQ(image_set_scale(WIDGET(w), 0.4, 4.0), RET_OK);
+  ASSERT_EQ(w->scale_x, 0.4f);
+  ASSERT_EQ(w->scale_y, 4.0f);
+
+  widget_destroy(WIDGET(w));
+}
+
+TEST(Widget, anchor) {
+  image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
+  ASSERT_EQ(w->anchor_x, 0.5f);
+  ASSERT_EQ(w->anchor_y, 0.5f);
+
+  ASSERT_EQ(image_set_anchor(WIDGET(w), 0.1f, 1.0f), RET_OK);
+  ASSERT_EQ(w->anchor_x, 0.1f);
+  ASSERT_EQ(w->anchor_y, 1.0f);
+
+  widget_destroy(WIDGET(w));
+}

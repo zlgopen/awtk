@@ -34,6 +34,38 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   bitmap = &(image->bitmap);
+#ifdef WITH_VGCANVAS
+  {
+    vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+    bool_t need_transform = !tk_fequal(image->scale_x, 1) || !tk_fequal(image->scale_y, 1) ||
+                            !tk_fequal(image->rotation, 0);
+
+    if (need_transform) {
+      float_t anchor_x = image->anchor_x * widget->w;
+      float_t anchor_y = image->anchor_y * widget->h;
+
+      vgcanvas_save(vg);
+      vgcanvas_translate(vg, c->ox, c->oy);
+      vgcanvas_translate(vg, anchor_x, anchor_y);
+      if (!tk_fequal(image->rotation, 0)) {
+        vgcanvas_rotate(vg, image->rotation);
+      }
+
+      if (!tk_fequal(image->scale_x, 1) || !tk_fequal(image->scale_y, 1)) {
+        vgcanvas_scale(vg, image->scale_x, image->scale_y);
+      }
+      vgcanvas_translate(vg, -anchor_x, -anchor_y);
+
+      if (bitmap->data != NULL) {
+        vgcanvas_draw_icon(vg, bitmap, 0, 0, bitmap->w, bitmap->h, 0, 0, widget->w, widget->h);
+      }
+      vgcanvas_restore(vg);
+
+      return RET_OK;
+    }
+  }
+#endif /*WITH_VGCANVAS*/
+
   if (bitmap->data != NULL) {
     color_t trans = color_init(0x00, 0x00, 0x00, 0x00);
     color_t bg = style_get_color(&(widget->style), STYLE_ID_BG_COLOR, trans);
@@ -59,8 +91,10 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     dst = rect_init(0, 0, widget->w, widget->h);
     canvas_draw_image_ex(c, bitmap, image->draw_type, &dst);
   }
-  
-  return widget_paint_helper(widget, c, NULL, NULL);
+
+  widget_paint_helper(widget, c, NULL, NULL);
+
+  return RET_OK;
 }
 
 static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -75,12 +109,28 @@ static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
     const char* draw_type = kv != NULL ? kv->name : "default";
     value_set_str(v, draw_type);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCALE_X)) {
+    value_set_float(v, image->scale_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCALE_Y)) {
+    value_set_float(v, image->scale_y);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
+    value_set_float(v, image->anchor_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
+    value_set_float(v, image->anchor_y);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ROTATION)) {
+    value_set_float(v, image->rotation);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
 }
 
 static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  image_t* image = IMAGE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
@@ -99,6 +149,21 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
       return image_set_draw_type(widget, (image_draw_type_t)value_int(v));
     }
 
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCALE_X)) {
+    image->scale_x = value_float(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCALE_Y)) {
+    image->scale_y = value_float(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
+    image->anchor_x = value_float(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
+    image->anchor_y = value_float(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ROTATION)) {
+    image->rotation = value_float(v);
     return RET_OK;
   }
 
@@ -124,6 +189,12 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_init(widget, parent, WIDGET_IMAGE);
   widget_move_resize(widget, x, y, w, h);
   image->draw_type = IMAGE_DRAW_DEFAULT;
+
+  image->scale_x = 1;
+  image->scale_y = 1;
+  image->rotation = 0;
+  image->anchor_x = 0.5;
+  image->anchor_y = 0.5;
 
   return widget;
 }
@@ -157,4 +228,33 @@ ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
   image->draw_type = draw_type;
 
   return RET_OK;
+}
+
+ret_t image_set_rotation(widget_t* widget, float_t rotation) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->rotation = rotation;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->scale_x = scale_x;
+  image->scale_y = scale_y;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image->anchor_x = anchor_x;
+  image->anchor_y = anchor_y;
+
+  return widget_invalidate(widget, NULL);
 }

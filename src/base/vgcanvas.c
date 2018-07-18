@@ -338,3 +338,17 @@ ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
 
   return vg->vt->unbind_fbo(vg, fbo);
 }
+
+ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
+                         float_t sh, float_t dx, float_t dy, float_t dw, float_t dh) {
+  float_t x = 0;
+  float_t y = 0;
+  float_t w = sw / vg->ratio;
+  float_t h = sh / vg->ratio;
+  return_value_if_fail(vg != NULL && img != NULL, RET_BAD_PARAMS);
+
+  x = (dw - w) * 0.5f + dx;
+  y = (dh - h) * 0.5f + dy;
+
+  return vgcanvas_draw_image(vg, img, sx, sy, sw, sh, x, y, w, h);
+}

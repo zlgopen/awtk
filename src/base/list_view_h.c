@@ -69,21 +69,22 @@ static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN:
       widget_layout(list_view->scroll_view);
       break;
-    case EVT_POINTER_UP: 
+    case EVT_POINTER_UP:
       widget_layout(list_view->scroll_view);
       break;
-    default:break;
+    default:
+      break;
   }
 
   return RET_OK;
 }
 
 static const widget_vtable_t s_list_view_h_vtable = {.type_name = WIDGET_TYPE_LIST_VIEW_H,
-                                                   .set_prop = list_view_h_set_prop,
-                                                   .get_prop = list_view_h_get_prop,
-                                                   .on_event = list_view_h_on_event,
-                                                   .on_add_child = list_view_h_on_add_child,
-                                                   .on_paint_self = list_view_h_on_paint_self};
+                                                     .set_prop = list_view_h_set_prop,
+                                                     .get_prop = list_view_h_get_prop,
+                                                     .on_event = list_view_h_on_event,
+                                                     .on_add_child = list_view_h_on_add_child,
+                                                     .on_paint_self = list_view_h_on_paint_self};
 
 static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
   int32_t virtual_w = widget->w;
@@ -102,14 +103,14 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
 
     for (i = 0; i < n; i++) {
       widget_t* iter = children[i];
-       
+
       widget_move_resize(iter, x, y, w, h);
       widget_layout(iter);
 
       x = iter->x + iter->w + spacing;
     }
 
-    if(x > virtual_w) {
+    if (x > virtual_w) {
       virtual_w = x;
     }
   }

@@ -170,40 +170,6 @@ TEST(Widget, children) {
   widget_destroy(w);
 }
 
-#ifdef WITH_VGCANVAS_LCD
-TEST(Widget, rotation) {
-  widget_t* w = button_create(NULL, 0, 0, 400, 300);
-  ASSERT_EQ(w->rotation, 0);
-  ASSERT_EQ(widget_set_rotation(w, 0.4), RET_OK);
-  ASSERT_EQ(w->rotation, 0.4f);
-  widget_destroy(w);
-}
-
-TEST(Widget, scale) {
-  widget_t* w = button_create(NULL, 0, 0, 400, 300);
-  ASSERT_EQ(w->scale_x, 1.0f);
-  ASSERT_EQ(w->scale_y, 1.0f);
-
-  ASSERT_EQ(widget_set_scale(w, 0.4, 4.0), RET_OK);
-  ASSERT_EQ(w->scale_x, 0.4f);
-  ASSERT_EQ(w->scale_y, 4.0f);
-
-  widget_destroy(w);
-}
-
-TEST(Widget, anchor) {
-  widget_t* w = button_create(NULL, 0, 0, 400, 300);
-  ASSERT_EQ(w->anchor_x, 0.5f);
-  ASSERT_EQ(w->anchor_y, 0.5f);
-
-  ASSERT_EQ(widget_set_anchor(w, 0.1f, 1.0f), RET_OK);
-  ASSERT_EQ(w->anchor_x, 0.1f);
-  ASSERT_EQ(w->anchor_y, 1.0f);
-
-  widget_destroy(w);
-}
-#endif /*WITH_VGCANVAS_LCD*/
-
 static string s_event_log;
 
 static ret_t on_button_events(void* ctx, event_t* e) {

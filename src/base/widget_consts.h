@@ -82,6 +82,13 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_AUTO_HIDE_SCROLL_BAR "auto_hide_scroll_bar"
 #define WIDGET_PROP_IMAGE "image"
 #define WIDGET_PROP_DRAW_TYPE "draw_type"
+#define WIDGET_PROP_SELECTABLE "selectable"
+#define WIDGET_PROP_CLICKABLE "clickable"
+#define WIDGET_PROP_SCALE_X "scale_x"
+#define WIDGET_PROP_SCALE_Y "scale_y"
+#define WIDGET_PROP_ANCHOR_X "anchor_x"
+#define WIDGET_PROP_ANCHOR_Y "anchor_y"
+#define WIDGET_PROP_ROTATION "rotation"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"

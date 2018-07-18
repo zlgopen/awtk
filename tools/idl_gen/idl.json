@@ -2282,9 +2282,79 @@
     ],
     "name": "image_set_draw_type",
     "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "rotation"
+     }
+    ],
+    "name": "image_set_rotation",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "scale_x"
+     },
+     {
+      "type": "float_t",
+      "name": "scale_y"
+     }
+    ],
+    "name": "image_set_scale",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "float_t",
+      "name": "anchor_x"
+     },
+     {
+      "type": "float_t",
+      "name": "anchor_y"
+     }
+    ],
+    "name": "image_set_anchor",
+    "return": "ret_t"
    }
   ],
   "properties": [
+   {
+    "type": "float_t",
+    "name": "anchor_x"
+   },
+   {
+    "type": "float_t",
+    "name": "anchor_y"
+   },
+   {
+    "type": "float_t",
+    "name": "scale_x"
+   },
+   {
+    "type": "float_t",
+    "name": "scale_y"
+   },
+   {
+    "type": "float_t",
+    "name": "rotation"
+   },
    {
     "type": "char*",
     "name": "image",
@@ -3259,6 +3329,82 @@
   ],
   "properties": [],
   "header": "base/list_item.h"
+ },
+ {
+  "type": "class",
+  "name": "list_view_h_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "list_view_h_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "item_width"
+     }
+    ],
+    "name": "list_view_h_set_item_width",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "spacing"
+     }
+    ],
+    "name": "list_view_h_set_spacing",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "item_width",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "spacing",
+    "readonly": true
+   }
+  ],
+  "header": "base/list_view_h.h"
  },
  {
   "type": "class",
@@ -7049,6 +7195,9 @@
     "name": "WIDGET_LIST_VIEW"
    },
    {
+    "name": "WIDGET_LIST_VIEW_H"
+   },
+   {
     "name": "WIDGET_LIST_ITEM"
    }
   ]
@@ -7393,56 +7542,6 @@
      }
     ],
     "name": "widget_set_opacity",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "float_t",
-      "name": "rotation"
-     }
-    ],
-    "name": "widget_set_rotation",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "float_t",
-      "name": "scale_x"
-     },
-     {
-      "type": "float_t",
-      "name": "scale_y"
-     }
-    ],
-    "name": "widget_set_scale",
-    "return": "ret_t"
-   },
-   {
-    "params": [
-     {
-      "type": "widget_t*",
-      "name": "widget"
-     },
-     {
-      "type": "float_t",
-      "name": "anchor_x"
-     },
-     {
-      "type": "float_t",
-      "name": "anchor_y"
-     }
-    ],
-    "name": "widget_set_anchor",
     "return": "ret_t"
    },
    {

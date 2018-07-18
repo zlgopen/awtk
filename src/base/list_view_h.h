@@ -76,16 +76,6 @@ widget_t* list_view_h_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width);
 
 /**
- * @method list_view_h_set_margin
- * 设置列表项的边距。
- * @param {widget_t*} widget 控件对象。
- * @param {int32_t} margin 列表项的边距。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t list_view_h_set_margin(widget_t* widget, int32_t margin);
-
-/**
  * @method list_view_h_set_spacing
  * 设置列表项的间距。
  * @param {widget_t*} widget 控件对象。

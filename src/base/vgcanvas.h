@@ -659,6 +659,24 @@ ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
                           float_t sh, float_t dx, float_t dy, float_t dw, float_t dh);
 
 /**
+ * @method vgcanvas_draw_icon
+ * draw icon
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {bitmap_t*} img 图片。
+ * @param {float_t} sx sx
+ * @param {float_t} sy sy
+ * @param {float_t} sw sw
+ * @param {float_t} sh sh
+ * @param {float_t} dx dx
+ * @param {float_t} dy dy
+ * @param {float_t} dw dw
+ * @param {float_t} dh dh
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
+                         float_t sh, float_t dx, float_t dy, float_t dw, float_t dh);
+/**
  * @method vgcanvas_set_antialias
  * set antialias
  * @param {vgcanvas_t*} vg vgcanvas对象。

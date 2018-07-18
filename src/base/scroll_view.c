@@ -170,15 +170,15 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
 
   if (scroll_view->wa != NULL) {
     widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
-    if(scroll_view->xslidable) {
-      if(wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w)) {
+    if (scroll_view->xslidable) {
+      if (wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w)) {
         wa->x_to = xoffset_end;
         wa->x_from = scroll_view->xoffset;
       }
     }
 
-    if(scroll_view->yslidable) {
-      if(wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h)) {
+    if (scroll_view->yslidable) {
+      if (wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h)) {
         wa->y_to = yoffset_end;
         wa->y_from = scroll_view->yoffset;
       }
@@ -205,7 +205,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
   if (scroll_view->xslidable || scroll_view->yslidable) {
     int yv = v->yv;
     int xv = v->xv;
-  
+
     if (scroll_view->wa != NULL) {
       widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
       int32_t dx = wa->x_to - scroll_view->xoffset;
@@ -243,7 +243,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   int32_t dy = e->y - scroll_view->down.y;
   velocity_update(v, e->e.time, e->x, e->y);
 
-  if(scroll_view->wa == NULL) {
+  if (scroll_view->wa == NULL) {
     if (scroll_view->xslidable) {
       scroll_view->xoffset = scroll_view->xoffset_save - dx;
     }

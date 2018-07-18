@@ -23,6 +23,7 @@
 #include "widget_animators/widget_animator_scale.h"
 
 static ret_t widget_animator_scale_update(widget_animator_t* animator, float_t percent) {
+  value_t v;
   float_t scale_x = 0;
   float_t scale_y = 0;
   widget_animator_scale_t* scale = (widget_animator_scale_t*)animator;
@@ -30,7 +31,12 @@ static ret_t widget_animator_scale_update(widget_animator_t* animator, float_t p
 
   scale_x = scale->x_from + (scale->x_to - scale->x_from) * percent;
   scale_y = scale->y_from + (scale->y_to - scale->y_from) * percent;
-  widget_set_scale(animator->widget, scale_x, scale_y);
+
+  value_set_float(&v, scale_x);
+  widget_set_prop(animator->widget, WIDGET_PROP_SCALE_X, &v);
+
+  value_set_float(&v, scale_y);
+  widget_set_prop(animator->widget, WIDGET_PROP_SCALE_Y, &v);
 
   return RET_OK;
 }

@@ -76,24 +76,31 @@ ret_t application_init() {
 
   image = image_create(win, 10, 220, 32, 32);
   image_set_image_name(image, "earth");
+  image_set_draw_type(image, IMAGE_DRAW_ICON);
 
   image1 = image_create(win, 10, 220, 32, 32);
   image_set_image_name(image1, "earth");
+  image_set_draw_type(image1, IMAGE_DRAW_ICON);
 
   image2 = image_create(win, 10, 118, 32, 32);
-  image_set_image_name(image2, "earth");
+  image_set_image_name(image2, "bricks");
+  image_set_draw_type(image2, IMAGE_DRAW_ICON);
 
   image3 = image_create(win, 50, 118, 32, 32);
   image_set_image_name(image3, "earth");
+  image_set_draw_type(image3, IMAGE_DRAW_ICON);
 
   image4 = image_create(win, 100, 118, 32, 32);
   image_set_image_name(image4, "earth");
+  image_set_draw_type(image4, IMAGE_DRAW_ICON);
 
   image5 = image_create(win, 140, 118, 32, 32);
   image_set_image_name(image5, "earth");
+  image_set_draw_type(image5, IMAGE_DRAW_ICON);
 
   image6 = image_create(win, 180, 118, 32, 32);
   image_set_image_name(image6, "earth");
+  image_set_draw_type(image6, IMAGE_DRAW_ICON);
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
 
@@ -125,7 +132,6 @@ ret_t application_init() {
   widget_animator_set_yoyo(animator, yoyo);
   animators[animators_nr++] = animator;
 
-#ifdef WITH_VGCANVAS_LCD
   delay += 1000;
   animator = widget_animator_rotation_create(image2, 1000, delay, EASING_SIN_INOUT);
   widget_animator_rotation_set_params(animator, 0, 3.14 * 2);
@@ -153,7 +159,6 @@ ret_t application_init() {
   animator = widget_animator_scale_create(image5, 1000, delay, EASING_SIN_IN);
   widget_animator_scale_set_params(animator, 0, 0, 1.0f, 1.0f);
   animators[animators_nr++] = animator;
-#endif
 
   animator = widget_animator_move_create(image5, 1000, delay, EASING_SIN_IN);
   widget_animator_move_set_params(animator, image5->x, image5->y, image5->x, image5->y + 100);

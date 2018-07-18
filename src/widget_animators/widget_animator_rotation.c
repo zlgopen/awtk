@@ -23,12 +23,15 @@
 #include "widget_animators/widget_animator_rotation.h"
 
 static ret_t widget_animator_rotation_update(widget_animator_t* animator, float_t percent) {
+  value_t v;
   float_t new_rotation = 0;
   widget_animator_rotation_t* rotation = (widget_animator_rotation_t*)animator;
   return_value_if_fail(rotation != NULL, RET_BAD_PARAMS);
 
   new_rotation = rotation->from + (rotation->to - rotation->from) * percent;
-  widget_set_rotation(animator->widget, new_rotation);
+
+  value_set_float(&v, new_rotation);
+  widget_set_prop(animator->widget, WIDGET_PROP_ROTATION, &v);
 
   return RET_OK;
 }
