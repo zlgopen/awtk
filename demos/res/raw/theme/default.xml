@@ -186,6 +186,14 @@
     <checked   icon="unmuted" />
     <unchecked icon="muted" />
   </style>
+  <style name="odd_icon_right" text_color="black" margin="4">
+    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
+    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  </style>
+  <style name="even_icon_right" text_color="black" margin="4">
+    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
+    <unchecked bg_color="#eaeaea" icon_at="right" />
+  </style>
 </check_button>
 
 <radio_button>
@@ -204,6 +212,14 @@
   <style name="right">
     <checked   icon="right_on" />
     <unchecked icon="right_off" />
+  </style>
+  <style name="odd_icon_right" text_color="black" margin="4">
+    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
+    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  </style>
+  <style name="even_icon_right" text_color="black" margin="4">
+    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
+    <unchecked bg_color="#eaeaea" icon_at="right" />
   </style>
 </radio_button>
 
@@ -226,6 +242,12 @@
 
 <dialog_title icon="info" text_color="black">
   <style name="default">
+    <normal bg_color="#a9a9a0" />
+  </style>
+</dialog_title>
+
+<dialog_title>
+  <style name="empty">
     <normal bg_color="#a9a9a0" />
   </style>
 </dialog_title>

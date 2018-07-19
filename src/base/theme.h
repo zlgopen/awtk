@@ -155,7 +155,12 @@ typedef enum _style_id_t {
    * @const STYLE_ID_MARGIN
    * 边距。
    */
-  STYLE_ID_MARGIN
+  STYLE_ID_MARGIN,
+  /**
+   * @const STYLE_ID_ICON_AT
+   * 图标的位置。
+   */
+  STYLE_ID_ICON_AT
 } style_id_t;
 
 #define THEME_MAGIC 0xFAFBFCFD

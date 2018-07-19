@@ -69,6 +69,25 @@ static uint32_t to_border(const char* value) {
   return border;
 }
 
+static uint32_t to_icon_at(const char* value) {
+  uint32_t icon_at = ICON_AT_AUTO;
+
+  if (strstr(value, "left")) {
+    icon_at = ICON_AT_LEFT;
+  }
+  if (strstr(value, "right")) {
+    icon_at = ICON_AT_RIGHT;
+  }
+  if (strstr(value, "top")) {
+    icon_at = ICON_AT_TOP;
+  }
+  if (strstr(value, "bottom")) {
+    icon_at = ICON_AT_BOTTOM;
+  }
+
+  return icon_at;
+}
+
 static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
   uint32_t i = 0;
 
@@ -90,6 +109,9 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
       } else if (strcmp(name, "border") == 0) {
         uint32_t border = to_border(value);
         s.AddInt(item->value, border);
+      } else if (strcmp(name, "icon_at") == 0) {
+        uint32_t icon_at = to_icon_at(value);
+        s.AddInt(item->value, icon_at);
       } else if (item->type == TYPE_INT) {
         s.AddInt(item->value, atoi(value));
       } else if (item->type == TYPE_COLOR) {

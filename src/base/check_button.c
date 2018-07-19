@@ -31,7 +31,7 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   check_button_t* check_button = CHECK_BUTTON(widget);
 
   switch (type) {
-    case EVT_POINTER_DOWN: {
+    case EVT_POINTER_UP: {
       if (check_button->radio) {
         check_button_set_value(widget, TRUE);
       } else {

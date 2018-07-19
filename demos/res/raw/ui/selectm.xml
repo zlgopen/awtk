@@ -1,0 +1,18 @@
+<dialog anim_hint="bottom_to_top" x="0" y="bottom" w="100%" h="160">
+  <dialog_title style="empty" x="0" y="0" w="100%" h="30">
+    <button name="quit" x="5" y="middle" w="60" h="-4" text="Done"/>
+    <label x="center" y="middle" w="128" h="-4" text="Select multiple"/>
+    <button name="quit" x="right:5" y="middle" w="60" h="-4" text="Cancel"/>
+  </dialog_title>
+  <dialog_client x="0" y="bottom" w="100%" h="-30">
+  <list_view x="0"  y="0" w="100%" h="100%" item_height="30">
+    <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
+     <check_button style="odd_icon_right" name="c1" text="Book"/>
+     <check_button style="even_icon_right" name="c2" text="Pencil"/>
+     <check_button style="odd_icon_right" name="c1" text="Food"/>
+     <check_button style="even_icon_right" name="c2" text="Bike"/>
+    </scroll_view>
+    <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
+  </list_view>
+  </dialog_client>
+</dialog>

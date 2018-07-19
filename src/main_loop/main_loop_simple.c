@@ -157,6 +157,7 @@ static ret_t main_loop_dispatch_input(main_loop_simple_t* loop) {
 static ret_t main_loop_simple_run(main_loop_t* l) {
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
+  loop->pressed = FALSE;
   while (l->running) {
     timer_dispatch();
     main_loop_dispatch_input(loop);

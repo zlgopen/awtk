@@ -334,6 +334,39 @@ typedef enum _border_type_t {
   BORDER_ALL = 0xffff
 } border_type_t;
 
+/**
+ * @enum icon_at_type_t
+ * @scriptable no
+ * 图标所在的位置。
+ */
+typedef enum _icon_at_type_t {
+  /**
+   * @const ICON_AT_NONE
+   * 自动选择位置。
+   */
+  ICON_AT_AUTO = 0,
+  /**
+   * @const ICON_AT_LEFT
+   * 水平左边，垂直居中。
+   */
+  ICON_AT_LEFT = 1,
+  /**
+   * @const ICON_AT_RIGHT
+   * 水平右边，垂直居中(not used now)。
+   */
+  ICON_AT_RIGHT = 2,
+  /**
+   * @const ICON_AT_TOP
+   * 水平居中，垂直顶部(not used now)。
+   */
+  ICON_AT_TOP = 3,
+  /**
+   * @const ICON_AT_BOTTOM
+   * 水平居中，垂直低部(not used now)。
+   */
+  ICON_AT_BOTTOM = 4
+} icon_at_type_t;
+
 typedef float float_t;
 
 #define TK_DEFAULT_FONT "default"

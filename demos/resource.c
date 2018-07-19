@@ -47,6 +47,8 @@
 #include "res/inc/ui/scroll_view.data"
 #include "res/inc/ui/scroll_view_h.data"
 #include "res/inc/ui/scroll_view_v.data"
+#include "res/inc/ui/select1.data"
+#include "res/inc/ui/selectm.data"
 #include "res/inc/ui/slide_view.data"
 #include "res/inc/ui/slide_view_h.data"
 #include "res/inc/ui/slide_view_v.data"
@@ -310,6 +312,8 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_scroll_view);
   resource_manager_add(rm, ui_scroll_view_h);
   resource_manager_add(rm, ui_scroll_view_v);
+  resource_manager_add(rm, ui_select1);
+  resource_manager_add(rm, ui_selectm);
   resource_manager_add(rm, ui_slide_view);
   resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_slide_view_v);
