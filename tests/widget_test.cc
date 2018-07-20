@@ -313,3 +313,17 @@ TEST(Widget, grab) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, index_of) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 100, 100);
+  widget_t* l1 = label_create(w, 0, 0, 10, 10);
+  widget_t* l2 = label_create(w, 0, 0, 10, 10);
+  widget_t* l3 = label_create(w, 0, 0, 10, 10);
+  ASSERT_EQ(widget_index_of(b1), 0);
+  ASSERT_EQ(widget_index_of(l1), 1);
+  ASSERT_EQ(widget_index_of(l2), 2);
+  ASSERT_EQ(widget_index_of(l3), 3);
+
+  widget_destroy(w);
+}

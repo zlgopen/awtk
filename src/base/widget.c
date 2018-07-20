@@ -1274,6 +1274,20 @@ widget_t* widget_get_child(widget_t* widget, int32_t index) {
   return WIDGET(widget->children->elms[index]);
 }
 
+int32_t widget_index_of(widget_t* widget) {
+  widget_t* parent = NULL;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, -1);
+
+  parent = widget->parent;
+  WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
+  if (iter == widget) {
+    return i;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return -1;
+}
+
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);

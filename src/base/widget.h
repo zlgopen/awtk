@@ -380,6 +380,15 @@ int32_t widget_count_children(widget_t* widget);
 widget_t* widget_get_child(widget_t* widget, int32_t index);
 
 /**
+ * @method widget_index_of
+ * 获取控件在父控件中的索引编号。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {int32_t} 在父控件中的索引编号。
+ */
+int32_t widget_index_of(widget_t* widget);
+
+/**
  * @method widget_move
  * 移动控件。
  * @param {widget_t*} widget 控件对象。
@@ -914,20 +923,20 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
  */
 bool_t widget_equal(widget_t* widget, widget_t* other);
 
-#define WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)            \
-  if (widget->children != NULL && widget->children->size > 0) { \
-    int32_t i = 0;                                              \
-    int32_t nr = widget->children->size;                        \
-    widget_t** children = (widget_t**)(widget->children->elms); \
-    for (i = 0; i < nr; i++) {                                  \
+#define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
+  if (twidget->children != NULL && twidget->children->size > 0) { \
+    int32_t i = 0;                                                \
+    int32_t nr = twidget->children->size;                         \
+    widget_t** children = (widget_t**)(twidget->children->elms);  \
+    for (i = 0; i < nr; i++) {                                    \
       widget_t* iter = children[i];
 
-#define WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)          \
-  if (widget->children != NULL && widget->children->size > 0) { \
-    int32_t i = 0;                                              \
-    int32_t nr = widget->children->size;                        \
-    widget_t** children = (widget_t**)(widget->children->elms); \
-    for (i = nr - 1; i >= 0; i--) {                             \
+#define WIDGET_FOR_EACH_CHILD_BEGIN_R(twidget, iter, i)           \
+  if (twidget->children != NULL && twidget->children->size > 0) { \
+    int32_t i = 0;                                                \
+    int32_t nr = twidget->children->size;                         \
+    widget_t** children = (widget_t**)(twidget->children->elms);  \
+    for (i = nr - 1; i >= 0; i--) {                               \
       widget_t* iter = children[i];
 
 #define WIDGET_FOR_EACH_CHILD_END() \
