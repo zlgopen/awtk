@@ -92,6 +92,7 @@ typedef struct _scroll_view_t {
   widget_on_layout_children_t on_layout_children;
   scroll_view_on_scroll_t on_scroll;
   scroll_view_on_scroll_to_t on_scroll_to;
+  bool_t first_move_after_down;
 } scroll_view_t;
 
 /**

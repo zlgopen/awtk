@@ -46,6 +46,11 @@ typedef enum _event_type_t {
    */
   EVT_POINTER_DOWN,
   /**
+   * @const EVT_POINTER_DOWN_ABORT
+   * 取消前一个指针按下事件名(pointer_event_t)。
+   */
+  EVT_POINTER_DOWN_ABORT,
+  /**
    * @const EVT_POINTER_MOVE
    * 指针移动事件名(pointer_event_t)。
    */

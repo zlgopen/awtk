@@ -40,7 +40,9 @@ typedef struct _check_button_t {
    * 值。
    */
   bool_t value;
+  /*private*/
   bool_t radio;
+  bool_t point_down_aborted;
 } check_button_t;
 
 /**

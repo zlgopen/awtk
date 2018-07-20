@@ -142,6 +142,15 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/20
+    * 增加EVT\_POINTER\_DOWN\_ABORT，修改ScrollView中ListItem/CheckButton/Button在滚动时被误点的问题。
+
+* 2018/07/19
+    * 主题支持设置图标的位置，增加一些demo。
+
+* 2018/07/18
+    * image 支持可选中和可点击属性。
+
 * 2018/07/17
     * widget支持自定义属性。
     * 出于易用性考虑，style\_name改为字符串格式。

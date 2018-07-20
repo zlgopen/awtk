@@ -31,11 +31,21 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   check_button_t* check_button = CHECK_BUTTON(widget);
 
   switch (type) {
+    case EVT_POINTER_DOWN: {
+      check_button->point_down_aborted = FALSE;
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      check_button->point_down_aborted = TRUE;
+      break;
+    }
     case EVT_POINTER_UP: {
-      if (check_button->radio) {
-        check_button_set_value(widget, TRUE);
-      } else {
-        check_button_set_value(widget, !(check_button->value));
+      if (!check_button->point_down_aborted) {
+        if (check_button->radio) {
+          check_button_set_value(widget, TRUE);
+        } else {
+          check_button_set_value(widget, !(check_button->value));
+        }
       }
       break;
     }

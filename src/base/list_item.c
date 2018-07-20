@@ -46,9 +46,18 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
   list_item_t* list_item = LIST_ITEM(widget);
 
   switch (type) {
-    case EVT_POINTER_DOWN:
+    case EVT_POINTER_DOWN: {
       list_item->timer_id = timer_add(list_item_on_timer, widget, 50);
       break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      if (list_item->timer_id != TK_INVALID_ID) {
+        timer_remove(list_item->timer_id);
+        list_item->timer_id = TK_INVALID_ID;
+      }
+      break;
+    }
     case EVT_POINTER_UP: {
       if (!list_item->dragged) {
         pointer_event_t evt = *(pointer_event_t*)e;

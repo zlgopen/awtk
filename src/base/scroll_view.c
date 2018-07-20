@@ -236,6 +236,18 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
   return RET_OK;
 }
 
+static ret_t scroll_view_abort_pointer_down(scroll_view_t* scroll_view, pointer_event_t* e) {
+  widget_t* widget = WIDGET(scroll_view);
+  if (scroll_view->first_move_after_down && widget->target) {
+    pointer_event_t abort = *e;
+    abort.e.type = EVT_POINTER_DOWN_ABORT;
+    widget_dispatch(widget->target, (event_t*)(&abort));
+    scroll_view->first_move_after_down = FALSE;
+  }
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -244,18 +256,21 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   velocity_update(v, e->e.time, e->x, e->y);
 
   if (scroll_view->wa == NULL) {
-    if (scroll_view->xslidable) {
+    if (scroll_view->xslidable && dx) {
       scroll_view->xoffset = scroll_view->xoffset_save - dx;
+      scroll_view_abort_pointer_down(scroll_view, e);
     }
 
-    if (scroll_view->yslidable) {
+    if (scroll_view->yslidable && dy) {
       scroll_view->yoffset = scroll_view->yoffset_save - dy;
+      scroll_view_abort_pointer_down(scroll_view, e);
     }
 
     if (scroll_view->on_scroll) {
       scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
     }
   }
+  scroll_view->first_move_after_down = FALSE;
 
   return RET_OK;
 }
@@ -267,6 +282,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN:
       widget_grab(widget->parent, widget);
+      scroll_view->first_move_after_down = TRUE;
       scroll_view_on_pointer_down(scroll_view, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
