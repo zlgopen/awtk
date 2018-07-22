@@ -89,6 +89,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ANCHOR_X "anchor_x"
 #define WIDGET_PROP_ANCHOR_Y "anchor_y"
 #define WIDGET_PROP_ROTATION "rotation"
+#define WIDGET_PROP_SUB_THEME "sub_theme"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -114,6 +115,8 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_VIEW "view"
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 #define WIDGET_TYPE_PAGES "pages"
+#define WIDGET_TYPE_TAB_BUTTON "tab_button"
+#define WIDGET_TYPE_BUTTON_GROUP "button_group"
 #define WIDGET_TYPE_CANDIDATES "candidates"
 #define WIDGET_TYPE_SPIN_BOX "spin_box"
 #define WIDGET_TYPE_DRAGGER "dragger"
@@ -243,9 +246,19 @@ typedef enum _widget_type_t {
   WIDGET_SLIDE_VIEW,
   /**
    * @const WIDGET_PAGES
-   * Slide View。
+   * Pages。
    */
   WIDGET_PAGES,
+  /**
+   * @const WIDGET_TAB_BUTTON
+   * Tab Button。
+   */
+  WIDGET_TAB_BUTTON,
+  /**
+   * @const WIDGET_BUTTON_GROUP
+   * Tab Button Group。
+   */
+  WIDGET_BUTTON_GROUP,
   /**
    * @const WIDGET_CANDIDATES
    * Input method words candidates。

@@ -130,12 +130,18 @@ def gen_all_string():
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
 
+def gen_gpinyin():
+  os.system(toExe('resgen') + ' ' +joinPath('3rd', 'gpinyin/data/gpinyin.dat') + ' ' + joinPath('3rd', 'gpinyin/src/gpinyin.inc'))
+  os.system(toExe('resgen') + ' ' +joinPath('tools', 'word_gen/words.bin') + ' ' + joinPath('src', 'input_methods/suggest_words.inc'))
+  os.system(toExe('resgen') + ' ' +joinPath('tools', 'word_gen/words.bin') + ' ' + joinPath('tests', 'suggest_test.inc'))
+
 def gen_all():
   gen_all_string()
   gen_all_font()
   gen_all_image()
   gen_all_ui()
   gen_all_theme()
+  gen_gpinyin()
 
 def writeResult(str):
   fd = os.open(RESOURCE_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)

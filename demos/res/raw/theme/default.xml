@@ -311,3 +311,16 @@
     <over  />
   </style>
 </list_item>
+
+<tab_button>
+  <style name="default_active" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#f0f0f0" />
+    <over       bg_color="#f0f0f0" />
+  </style>
+  <style name="default_deactive" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#bcbcbc" />
+    <pressed    bg_color="#f0f0f0" />
+    <over       bg_color="#d0d0d0" />
+  </style>
+</tab_button>

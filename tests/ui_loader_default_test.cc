@@ -116,7 +116,7 @@ TEST(UILoader, ext) {
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 170);
+  ASSERT_EQ(wbuffer.cursor, 218);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
   ASSERT_EQ(builder->root->type == WIDGET_GROUP_BOX, TRUE);

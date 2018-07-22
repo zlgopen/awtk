@@ -24,8 +24,6 @@
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"
 
-enum { BORDER = 2 };
-
 static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   check_button_t* check_button = CHECK_BUTTON(widget);
@@ -87,16 +85,13 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
   check_button_set_value_only(widget, value);
 
   if (check_button->radio && widget->parent != NULL) {
-    uint32_t i = 0;
-    array_t* children = widget->parent->children;
+    widget_t* parent = widget->parent;
 
-    for (i = 0; i < children->size; i++) {
-      widget_t* iter = (widget_t*)(children->elms[i]);
-
-      if (iter != widget && iter->type == WIDGET_RADIO_BUTTON) {
-        check_button_set_value_only(iter, !value);
-      }
+    WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
+    if (iter != widget && iter->type == WIDGET_RADIO_BUTTON) {
+      check_button_set_value_only(iter, !value);
     }
+    WIDGET_FOR_EACH_CHILD_END();
   }
 
   return RET_OK;
@@ -107,7 +102,7 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_uint8(v, check_button->value);
+    value_set_bool(v, check_button->value);
     return RET_OK;
   }
 

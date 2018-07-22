@@ -1151,18 +1151,27 @@ const void* widget_get_window_theme(widget_t* widget) {
 
 static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
   theme_t t;
+  value_t v;
   const void* data = NULL;
+  char style_name[NAME_LEN + NAME_LEN + 1];
   const char* type_name = widget->vt ? widget->vt->type_name : NULL;
+  const char* name = widget->style_name != NULL ? widget->style_name : TK_DEFAULT_STYLE;
 
   return_value_if_fail(type_name != NULL, NULL);
 
+  if (widget_get_prop(widget, WIDGET_PROP_SUB_THEME, &v) == RET_OK && value_str(&v) != NULL) {
+    tk_snprintf(style_name, sizeof(style_name) - 1, "%s_%s", name, value_str(&v));
+  } else {
+    tk_strncpy(style_name, name, sizeof(style_name) - 1);
+  }
+
   t.data = (const uint8_t*)widget_get_window_theme(widget);
   if (t.data != NULL) {
-    data = theme_find_style(&t, type_name, widget->style_name, state);
+    data = theme_find_style(&t, type_name, style_name, state);
   }
 
   if (data == NULL) {
-    data = theme_find_style(theme(), type_name, widget->style_name, state);
+    data = theme_find_style(theme(), type_name, style_name, state);
   }
 
   return data;

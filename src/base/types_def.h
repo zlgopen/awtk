@@ -238,7 +238,7 @@ typedef ret_t (*tk_on_done_t)(void* data);
 typedef bool_t (*tk_is_valid_t)(void* data);
 
 /*NAME_LEN+1 must aligned to 4*/
-enum { NAME_LEN = 15 };
+enum { NAME_LEN = 31 };
 
 /**
  * @enum align_v_t
