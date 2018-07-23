@@ -142,6 +142,12 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/23
+    * 增加tab\_control的demo。
+
+* 2018/07/22
+    * 实现tab\_button/tab\_button\_group/tab\_control。
+
 * 2018/07/20
     * 增加EVT\_POINTER\_DOWN\_ABORT，修改ScrollView中ListItem/CheckButton/Button在滚动时被误点的问题。
 

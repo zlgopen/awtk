@@ -8,6 +8,9 @@
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog.data"
 #include "res/inc/theme/keyboard.data"
+#include "res/inc/theme/tab_control_bottom.data"
+#include "res/inc/theme/tab_control_top.data"
+#include "res/inc/theme/tab_list.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -53,8 +56,11 @@
 #include "res/inc/ui/slide_view_h.data"
 #include "res/inc/ui/slide_view_v.data"
 #include "res/inc/ui/spinbox.data"
-#include "res/inc/ui/t.data"
-#include "res/inc/ui/tab1.data"
+#include "res/inc/ui/tab_bottom.data"
+#include "res/inc/ui/tab_control.data"
+#include "res/inc/ui/tab_list.data"
+#include "res/inc/ui/tab_top.data"
+#include "res/inc/ui/tab_top_compact.data"
 #include "res/inc/ui/top.data"
 #include "res/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
@@ -185,17 +191,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -275,6 +281,9 @@ ret_t resource_init(void) {
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog);
   resource_manager_add(rm, theme_keyboard);
+  resource_manager_add(rm, theme_tab_control_bottom);
+  resource_manager_add(rm, theme_tab_control_top);
+  resource_manager_add(rm, theme_tab_list);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);
@@ -320,8 +329,11 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_slide_view_h);
   resource_manager_add(rm, ui_slide_view_v);
   resource_manager_add(rm, ui_spinbox);
-  resource_manager_add(rm, ui_t);
-  resource_manager_add(rm, ui_tab1);
+  resource_manager_add(rm, ui_tab_bottom);
+  resource_manager_add(rm, ui_tab_control);
+  resource_manager_add(rm, ui_tab_list);
+  resource_manager_add(rm, ui_tab_top);
+  resource_manager_add(rm, ui_tab_top_compact);
   resource_manager_add(rm, ui_top);
   resource_manager_add(rm, ui_vtranslate);
 #endif

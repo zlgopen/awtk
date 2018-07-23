@@ -324,3 +324,9 @@
     <over       bg_color="#d0d0d0" />
   </style>
 </tab_button>
+
+<tab_button_group>
+  <style name="default">
+    <normal/>
+  </style>
+</tab_button_group>

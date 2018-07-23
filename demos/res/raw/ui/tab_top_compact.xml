@@ -1,10 +1,10 @@
 <window anim_hint="htranslate">
-  <pages x="0" y="0" w="100%" h="-50" value="1">
+  <tab_button_group x="0" y="0" w="100%" h="50" compact="true" >
+    <tab_button text="General"/>
+    <tab_button text="NewWork" value="true" />
+  </tab_button_group>
+  <pages x="0" y="bottom" w="100%" h="-50" value="1">
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page1" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page2" /> </view>
   </pages>
-  <button_group x="0" y="bottom" w="100%" h="50" layout="r1 c2">
-    <tab_button text="General" />
-    <tab_button text="NewWork" />
-  </button_group>
 </window>

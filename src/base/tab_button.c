@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utils.h"
 #include "base/tab_button.h"
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"
@@ -50,7 +51,10 @@ static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t tab_button_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  const char* icon = tab_button->value ? tab_button->active_icon : tab_button->icon;
+
+  return widget_paint_helper(widget, c, icon, NULL);
 }
 
 static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
@@ -68,9 +72,15 @@ static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
 }
 
 static widget_t* tab_button_get_pages(widget_t* widget) {
+  widget_t* pages = NULL;
   return_value_if_fail(widget && widget->parent && widget->parent->parent, NULL);
 
-  return widget_lookup_by_type(widget->parent->parent, WIDGET_TYPE_PAGES, TRUE);
+  pages = widget_lookup_by_type(widget->parent->parent, WIDGET_TYPE_PAGES, TRUE);
+  if (pages == NULL) {
+    pages = widget_lookup_by_type(widget->parent->parent->parent, WIDGET_TYPE_PAGES, TRUE);
+  }
+
+  return pages;
 }
 
 ret_t tab_button_set_value(widget_t* widget, bool_t value) {
@@ -99,15 +109,28 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
   return RET_OK;
 }
 
+static int32_t tab_button_get_min_w(widget_t* widget) {
+  return 80;
+}
+
 static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_int(v, tab_button->value);
+    value_set_bool(v, tab_button->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SUB_THEME)) {
     value_set_str(v, tab_button->value ? "active" : "deactive");
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MIN_W)) {
+    value_set_int(v, tab_button_get_min_w(widget));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ICON)) {
+    value_set_str(v, tab_button->icon);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACTIVE_ICON)) {
+    value_set_str(v, tab_button->active_icon);
     return RET_OK;
   }
 
@@ -119,6 +142,10 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return tab_button_set_value(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ICON)) {
+    return tab_button_set_icon(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ACTIVE_ICON)) {
+    return tab_button_set_active_icon(widget, value_str(v));
   }
 
   return RET_NOT_FOUND;
@@ -135,6 +162,26 @@ static const widget_vtable_t s_tab_button_vtable = {
     .get_prop = tab_button_get_prop,
     .set_prop = tab_button_set_prop,
 };
+
+ret_t tab_button_set_icon(widget_t* widget, const char* name) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(tab_button->icon);
+  tab_button->icon = tk_strdup(name);
+
+  return RET_OK;
+}
+
+ret_t tab_button_set_active_icon(widget_t* widget, const char* name) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(tab_button->active_icon);
+  tab_button->active_icon = tk_strdup(name);
+
+  return RET_OK;
+}
 
 widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

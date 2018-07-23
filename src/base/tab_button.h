@@ -40,21 +40,16 @@ typedef struct _tab_button_t {
    * 值。
    */
   bool_t value;
-
   /**
    * @property {char*} active_icon
-   * @fake
-   * 当前项的图标的名称(只能通过widget_get_prop/set_prop访问)。
+   * 当前项的图标的名称。
    */
-
+  char* active_icon;
   /**
-   * @property {char*} deactive_icon
-   * @fake
-   * 非当前项的图标的名称(只能通过widget_get_prop/set_prop访问)。
+   * @property {char*} icon
+   * 非当前项的图标的名称。
    */
-  /*private*/
-  bitmap_t active_icon;
-  bitmap_t deactive_icon;
+  char* icon;
 } tab_button_t;
 
 /**
@@ -82,15 +77,24 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t tab_button_set_value(widget_t* widget, bool_t value);
 
 /**
- * @method tab_button_set_icons
+ * @method tab_button_set_icon
  * 设置控件的图标。
  * @param {widget_t*} widget tab_button对象。
- * @param {char*}  active 当前项的图标。
- * @param {char*}  deactive 非当前项的图标。
+ * @param {char*}  name 当前项的图标。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tab_button_set_icons(widget_t* widget, const char* active, const char* deactive);
+ret_t tab_button_set_icon(widget_t* widget, const char* name);
+
+/**
+ * @method tab_button_set_active_icon
+ * 设置控件的active图标。
+ * @param {widget_t*} widget tab_button对象。
+ * @param {char*}  name 当前项的图标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tab_button_set_active_icon(widget_t* widget, const char* name);
 
 #define TAB_BUTTON(widget) ((tab_button_t*)(widget))
 

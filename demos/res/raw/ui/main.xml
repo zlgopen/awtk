@@ -10,5 +10,6 @@
     <button name="open:animation" text="Animate Window"/>
     <button name="open:animator" text="Animate Widget"/>
     <button name="open:locale" text="Locale"/>
+    <button name="open:tab_control" text="Tab Control"/>
     <button name="show_fps" text="Show FPS"/>
 </window>

@@ -459,7 +459,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     float_t dpr = system_info()->device_pixel_ratio;
 
     if (text != NULL && text->size > 0) {
-      if (h > (img.h / dpr + font_size)) {
+      if (h > (img.h / dpr + font_size) || icon_at == ICON_AT_TOP) {
         int text_h = font_size + margin;
         int text_y = widget->h - text_h;
 
@@ -545,9 +545,9 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
       } else if (border & BORDER_BOTTOM) {
         canvas_draw_hline(c, 0, h - 1, w);
       } else if (border & BORDER_LEFT) {
-        canvas_draw_hline(c, 0, 0, h);
+        canvas_draw_vline(c, 0, 0, h);
       } else if (border & BORDER_RIGHT) {
-        canvas_draw_hline(c, w - 1, 0, h);
+        canvas_draw_vline(c, w - 1, 0, h);
       }
     }
   }

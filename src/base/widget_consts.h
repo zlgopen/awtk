@@ -31,6 +31,8 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_Y "y"
 #define WIDGET_PROP_W "w"
 #define WIDGET_PROP_H "h"
+#define WIDGET_PROP_MIN_W "min_w"
+#define WIDGET_PROP_MAX_W "max_w"
 #define WIDGET_PROP_LAYOUT_W "layout_w"
 #define WIDGET_PROP_LAYOUT_H "layout_h"
 #define WIDGET_PROP_VIRTUAL_W "virtual_w"
@@ -90,6 +92,9 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ANCHOR_Y "anchor_y"
 #define WIDGET_PROP_ROTATION "rotation"
 #define WIDGET_PROP_SUB_THEME "sub_theme"
+#define WIDGET_PROP_COMPACT "compact"
+#define WIDGET_PROP_ICON "icon"
+#define WIDGET_PROP_ACTIVE_ICON "active_icon"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -116,6 +121,8 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 #define WIDGET_TYPE_PAGES "pages"
 #define WIDGET_TYPE_TAB_BUTTON "tab_button"
+#define WIDGET_TYPE_TAB_CONTROL "tab_control"
+#define WIDGET_TYPE_TAB_BUTTON_GROUP "tab_button_group"
 #define WIDGET_TYPE_BUTTON_GROUP "button_group"
 #define WIDGET_TYPE_CANDIDATES "candidates"
 #define WIDGET_TYPE_SPIN_BOX "spin_box"
@@ -255,8 +262,18 @@ typedef enum _widget_type_t {
    */
   WIDGET_TAB_BUTTON,
   /**
-   * @const WIDGET_BUTTON_GROUP
+   * @const WIDGET_TAB_CONTROL
+   * Tab Control。
+   */
+  WIDGET_TAB_CONTROL,
+  /**
+   * @const WIDGET_TAB_BUTTON_GROUP
    * Tab Button Group。
+   */
+  WIDGET_TAB_BUTTON_GROUP,
+  /**
+   * @const WIDGET_BUTTON_GROUP
+   * Button Group。
    */
   WIDGET_BUTTON_GROUP,
   /**

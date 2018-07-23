@@ -1,0 +1,44 @@
+<window anim_hint="htranslate" theme="tab_list">
+  <pages x="right" y="0" w="70%" h="100%"> 
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="page1" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page2" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page3" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page4" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page4" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page5" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page6" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page7" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page8" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page9" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page10" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page11" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page12" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page13" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page14" /> </view>
+    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page15" /> </view>
+  </pages>
+
+  <list_view x="0" y="0" w="30%" h="100%" item_height="40" auto_hide_scroll_bar="true">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <tab_button text="page1" value="true"/>
+      <tab_button text="page2" />
+      <tab_button text="page3" />
+      <tab_button text="page4" />
+      <tab_button text="page5" />
+      <tab_button text="page6" />
+      <tab_button text="page7" />
+      <tab_button text="page8" />
+      <tab_button text="page9" />
+      <tab_button text="page10" />
+      <tab_button text="page11" />
+      <tab_button text="page12" />
+      <tab_button text="page13" />
+      <tab_button text="page14" />
+      <tab_button text="page15" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+</window>

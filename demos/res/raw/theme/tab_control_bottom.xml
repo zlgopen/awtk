@@ -1,0 +1,25 @@
+
+<tab_button_group>
+  <style name="highlight" border_color="#1296db">
+    <normal/>
+  </style>
+</tab_button_group>
+
+<tab_button>
+  <style name="default_active" margin="4" text_color="#00aa00" bg_color="#eeeeee">
+    <normal     />
+    <pressed    />
+    <over       />
+  </style>
+  <style name="default_deactive" margin="4" text_color="black" bg_color="#eeeeee">
+    <normal     />
+    <pressed    />
+    <over       />
+  </style>
+</tab_button>
+
+<pages>
+  <style name="at_top" border_color="#a0a0a0" border="bottom">
+    <normal />
+  </style>
+</pages>

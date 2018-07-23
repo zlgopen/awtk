@@ -30,10 +30,12 @@
 #include "base/slider.h"
 #include "base/edit.h"
 #include "base/pages.h"
-#include "base/tab_button.h"
-#include "base/button_group.h"
 #include "base/view.h"
 #include "base/dragger.h"
+#include "base/tab_button.h"
+#include "base/tab_control.h"
+#include "base/button_group.h"
+#include "base/tab_button_group.h"
 #include "base/keyboard.h"
 #include "base/candidates.h"
 #include "base/spin_box.h"
@@ -73,7 +75,9 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_CHECK_BUTTON, check_button_create},
     {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
     {WIDGET_TYPE_PAGES, pages_create},
+    {WIDGET_TYPE_TAB_CONTROL, tab_control_create},
     {WIDGET_TYPE_TAB_BUTTON, tab_button_create},
+    {WIDGET_TYPE_TAB_BUTTON_GROUP, tab_button_group_create},
     {WIDGET_TYPE_BUTTON_GROUP, button_group_create},
     {WIDGET_TYPE_SPIN_BOX, spin_box_create},
     {WIDGET_TYPE_DRAGGER, dragger_create},

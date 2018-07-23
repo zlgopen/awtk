@@ -89,18 +89,15 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
 
 static const char* s_pages_properties[] = {WIDGET_PROP_VALUE, NULL};
 
-static const widget_vtable_t s_pages_vtable = {
-    .size = sizeof(pages_t),
-    .type_name = WIDGET_TYPE_PAGES,
-    .properties = s_pages_properties,
-    .create = pages_create,
-    .on_paint_self = widget_on_paint_background_null,
-    .find_target = pages_find_target,
-    .on_paint_children = pages_on_paint_children,
-    .on_paint_background = widget_on_paint_background_null,
-    .on_paint_done = widget_on_paint_done_null,
-    .get_prop = pages_get_prop,
-    .set_prop = pages_set_prop};
+static const widget_vtable_t s_pages_vtable = {.size = sizeof(pages_t),
+                                               .type_name = WIDGET_TYPE_PAGES,
+                                               .properties = s_pages_properties,
+                                               .create = pages_create,
+                                               .on_paint_self = widget_on_paint_background_null,
+                                               .find_target = pages_find_target,
+                                               .on_paint_children = pages_on_paint_children,
+                                               .get_prop = pages_get_prop,
+                                               .set_prop = pages_set_prop};
 
 widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = NULL;

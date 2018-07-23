@@ -27,6 +27,9 @@ bool_t value_bool(const value_t* v) {
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
   switch (v->type) {
+    case VALUE_TYPE_BOOL: {
+      return v->value.b;
+    }
     case VALUE_TYPE_INT8: {
       return v->value.i8 ? TRUE : FALSE;
     }

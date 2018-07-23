@@ -30,7 +30,7 @@ BEGIN_C_DECLS
  * @class button_group_t
  * @parent widget_t
  * @scriptable
- * Tab Button Group控件。
+ * Button Group控件。
  */
 typedef struct _button_group_t {
   widget_t widget;
@@ -49,6 +49,8 @@ typedef struct _button_group_t {
  * @return {widget_t*} 对象。
  */
 widget_t* button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+#define BUTTON_GROUP(widget) ((button_group_t*)(widget))
 
 END_C_DECLS
 
