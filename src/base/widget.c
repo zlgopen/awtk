@@ -1473,5 +1473,5 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
 
   widget_prepare_text_style(widget, c);
 
-  return canvas_measure_text(c, text, wcslen(text));
+  return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
 }
