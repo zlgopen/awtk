@@ -1,6 +1,6 @@
 
 <tab_button_group>
-  <style name="highlight" border_color="#1296db">
+  <style name="highlight" border_color="#a0a0a0" fg_color="#1296db">
     <normal/>
   </style>
 </tab_button_group>

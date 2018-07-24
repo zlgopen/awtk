@@ -1,4 +1,4 @@
-<window anim_hint="htranslate" theme="tab_control_top">
+<window anim_hint="htranslate" theme="tab_top">
   <tab_button_group style="highlight" x="0" y="0" w="100%" h="50" >
     <tab_button text="General"/>
     <tab_button text="Network" value="true" />

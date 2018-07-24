@@ -1,4 +1,4 @@
-<window anim_hint="htranslate" theme="tab_control_bottom">
+<window anim_hint="htranslate" theme="tab_bottom">
   <pages x="0" y="0" w="100%" h="-60" style="at_top">
     <view w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="Message" /> 
