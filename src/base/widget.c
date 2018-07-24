@@ -27,6 +27,7 @@
 #include "base/locale.h"
 #include "base/widget.h"
 #include "base/layout.h"
+#include "base/main_loop.h"
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -542,11 +543,14 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
     } else {
       if (border & BORDER_TOP) {
         canvas_draw_hline(c, 0, 0, w);
-      } else if (border & BORDER_BOTTOM) {
+      }
+      if (border & BORDER_BOTTOM) {
         canvas_draw_hline(c, 0, h - 1, w);
-      } else if (border & BORDER_LEFT) {
+      }
+      if (border & BORDER_LEFT) {
         canvas_draw_vline(c, 0, 0, h);
-      } else if (border & BORDER_RIGHT) {
+      }
+      if (border & BORDER_RIGHT) {
         canvas_draw_vline(c, w - 1, 0, h);
       }
     }
@@ -602,6 +606,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   widget_on_paint_self(widget, c);
 #endif
   widget_on_paint_children(widget, c);
+  widget_on_paint_border(widget, c);
   widget_on_paint_done(widget, c);
 
   widget->dirty = FALSE;
@@ -773,6 +778,22 @@ ret_t widget_on_paint_children(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
+ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->vt->on_paint_border) {
+    ret = widget->vt->on_paint_border(widget, c);
+  } else {
+    if (widget->style.data) {
+      ret = widget_draw_border(widget, c);
+    }
+  }
+
+  return ret;
+}
+
 ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
@@ -780,10 +801,6 @@ ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
 
   if (widget->vt->on_paint_done) {
     ret = widget->vt->on_paint_done(widget, c);
-  } else {
-    if (widget->style.data) {
-      ret = widget_draw_border(widget, c);
-    }
   }
 
   return ret;
@@ -1448,4 +1465,13 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   WIDGET_FOR_EACH_CHILD_END();
 
   return TRUE;
+}
+
+float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
+  canvas_t* c = &(main_loop()->canvas);
+  return_value_if_fail(widget != NULL && text != NULL && c != NULL, 0);
+
+  widget_prepare_text_style(widget, c);
+
+  return canvas_measure_text(c, text, wcslen(text));
 }

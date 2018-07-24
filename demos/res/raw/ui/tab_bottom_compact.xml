@@ -1,0 +1,21 @@
+<window anim_hint="htranslate" theme="tab_bottom_compact">
+  <pages x="c" y="20" w="90%" h="-60" value="1">
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="General" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Network" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+  </pages>
+  <tab_button_group x="c" y="bottom:10" w="90%" h="30" compact="true" >
+    <tab_button text="General"/>
+    <tab_button text="Network" value="true" />
+    <tab_button text="Security"/>
+  </tab_button_group>
+</window>

@@ -8,9 +8,11 @@
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog.data"
 #include "res/inc/theme/keyboard.data"
+#include "res/inc/theme/tab_bottom_compact.data"
 #include "res/inc/theme/tab_control_bottom.data"
 #include "res/inc/theme/tab_control_top.data"
 #include "res/inc/theme/tab_list.data"
+#include "res/inc/theme/tab_top_compact.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -57,6 +59,7 @@
 #include "res/inc/ui/slide_view_v.data"
 #include "res/inc/ui/spinbox.data"
 #include "res/inc/ui/tab_bottom.data"
+#include "res/inc/ui/tab_bottom_compact.data"
 #include "res/inc/ui/tab_control.data"
 #include "res/inc/ui/tab_list.data"
 #include "res/inc/ui/tab_top.data"
@@ -84,8 +87,12 @@
 #include "res/inc/images/bricks.res"
 #include "res/inc/images/check.res"
 #include "res/inc/images/checked.res"
+#include "res/inc/images/contact.res"
+#include "res/inc/images/contact_active.res"
 #include "res/inc/images/cross.res"
 #include "res/inc/images/dialog_title.res"
+#include "res/inc/images/discovery.res"
+#include "res/inc/images/discovery_active.res"
 #include "res/inc/images/earth.res"
 #include "res/inc/images/edit_clear_n.res"
 #include "res/inc/images/edit_clear_o.res"
@@ -98,9 +105,13 @@
 #include "res/inc/images/left_off.res"
 #include "res/inc/images/left_on.res"
 #include "res/inc/images/logo.res"
+#include "res/inc/images/me.res"
+#include "res/inc/images/me_active.res"
 #include "res/inc/images/message.res"
 #include "res/inc/images/middle_off.res"
 #include "res/inc/images/middle_on.res"
+#include "res/inc/images/msg.res"
+#include "res/inc/images/msg_active.res"
 #include "res/inc/images/muted.res"
 #include "res/inc/images/play_n.res"
 #include "res/inc/images/play_o.res"
@@ -148,8 +159,12 @@
 #include "res/inc/images/bricks.data"
 #include "res/inc/images/check.data"
 #include "res/inc/images/checked.data"
+#include "res/inc/images/contact.data"
+#include "res/inc/images/contact_active.data"
 #include "res/inc/images/cross.data"
 #include "res/inc/images/dialog_title.data"
+#include "res/inc/images/discovery.data"
+#include "res/inc/images/discovery_active.data"
 #include "res/inc/images/earth.data"
 #include "res/inc/images/edit_clear_n.data"
 #include "res/inc/images/edit_clear_o.data"
@@ -162,9 +177,13 @@
 #include "res/inc/images/left_off.data"
 #include "res/inc/images/left_on.data"
 #include "res/inc/images/logo.data"
+#include "res/inc/images/me.data"
+#include "res/inc/images/me_active.data"
 #include "res/inc/images/message.data"
 #include "res/inc/images/middle_off.data"
 #include "res/inc/images/middle_on.data"
+#include "res/inc/images/msg.data"
+#include "res/inc/images/msg_active.data"
 #include "res/inc/images/muted.data"
 #include "res/inc/images/play_n.data"
 #include "res/inc/images/play_o.data"
@@ -191,17 +210,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else/*WITH_MINI_FONT*/
+#else /*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif/*WITH_MINI_FONT*/
-#else/*WITH_STB_FONT*/
+#endif /*WITH_MINI_FONT*/
+#else  /*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif/*WITH_STB_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_STB_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -231,8 +250,12 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_bricks);
   resource_manager_add(rm, image_check);
   resource_manager_add(rm, image_checked);
+  resource_manager_add(rm, image_contact);
+  resource_manager_add(rm, image_contact_active);
   resource_manager_add(rm, image_cross);
   resource_manager_add(rm, image_dialog_title);
+  resource_manager_add(rm, image_discovery);
+  resource_manager_add(rm, image_discovery_active);
   resource_manager_add(rm, image_earth);
   resource_manager_add(rm, image_edit_clear_n);
   resource_manager_add(rm, image_edit_clear_o);
@@ -245,9 +268,13 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_left_off);
   resource_manager_add(rm, image_left_on);
   resource_manager_add(rm, image_logo);
+  resource_manager_add(rm, image_me);
+  resource_manager_add(rm, image_me_active);
   resource_manager_add(rm, image_message);
   resource_manager_add(rm, image_middle_off);
   resource_manager_add(rm, image_middle_on);
+  resource_manager_add(rm, image_msg);
+  resource_manager_add(rm, image_msg_active);
   resource_manager_add(rm, image_muted);
   resource_manager_add(rm, image_play_n);
   resource_manager_add(rm, image_play_o);
@@ -281,9 +308,11 @@ ret_t resource_init(void) {
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog);
   resource_manager_add(rm, theme_keyboard);
+  resource_manager_add(rm, theme_tab_bottom_compact);
   resource_manager_add(rm, theme_tab_control_bottom);
   resource_manager_add(rm, theme_tab_control_top);
   resource_manager_add(rm, theme_tab_list);
+  resource_manager_add(rm, theme_tab_top_compact);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);
@@ -330,6 +359,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_slide_view_v);
   resource_manager_add(rm, ui_spinbox);
   resource_manager_add(rm, ui_tab_bottom);
+  resource_manager_add(rm, ui_tab_bottom_compact);
   resource_manager_add(rm, ui_tab_control);
   resource_manager_add(rm, ui_tab_list);
   resource_manager_add(rm, ui_tab_top);

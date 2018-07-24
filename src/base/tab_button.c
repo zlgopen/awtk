@@ -110,7 +110,14 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
 }
 
 static int32_t tab_button_get_min_w(widget_t* widget) {
-  return 80;
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  int32_t text_w = widget_measure_text(widget, widget->text.str) + widget->h / 2;
+
+  if (tab_button->icon != NULL || tab_button->active_icon != NULL) {
+    text_w += widget->h;
+  }
+
+  return text_w;
 }
 
 static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v) {

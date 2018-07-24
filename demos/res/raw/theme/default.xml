@@ -319,9 +319,9 @@
     <over       bg_color="#f0f0f0" />
   </style>
   <style name="default_deactive" border_color="#a0a0a0"  text_color="black">
-    <normal     bg_color="#bcbcbc" />
+    <normal     bg_color="#d0d0d0" />
     <pressed    bg_color="#f0f0f0" />
-    <over       bg_color="#d0d0d0" />
+    <over       bg_color="#e0e0e0" />
   </style>
 </tab_button>
 

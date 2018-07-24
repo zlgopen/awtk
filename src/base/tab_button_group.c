@@ -49,6 +49,7 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   int32_t h = widget->h;
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  iter->h = h;
   if (widget_get_prop(iter, WIDGET_PROP_MIN_W, &v) == RET_OK) {
     w = value_int(&v);
   } else {
@@ -88,20 +89,52 @@ static ret_t tab_button_group_on_paint_active_button(widget_t* widget, widget_t*
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   widget_t* pages = tab_button_group_get_pages(widget);
 
   if (pages != NULL) {
-    canvas_set_stroke_color(c, bd);
+    int32_t x = button->x;
+    int32_t w = button->w;
+    int32_t y = button->y;
 
     if ((pages->y + pages->h) <= widget->y) {
-      canvas_draw_hline(c, button->x, button->y, button->w);
-      canvas_draw_hline(c, button->x, button->y + 1, button->w);
+      if (fg.rgba.a) {
+        canvas_set_stroke_color(c, fg);
+        canvas_draw_hline(c, x, y, w);
+        canvas_draw_hline(c, x + 1, y + 1, w - 2);
+      }
+
+      canvas_set_stroke_color(c, bd);
+      if (x > 0) {
+        canvas_draw_hline(c, 0, y, x);
+      }
+      if (widget->w > (x + w)) {
+        canvas_draw_hline(c, x + w, y, widget->w - x - w);
+      }
     } else {
-      canvas_draw_hline(c, button->x, button->y + button->h, button->w);
-      canvas_draw_hline(c, button->x, button->y + button->h - 1, button->w);
+      y += button->h;
+      if (fg.rgba.a) {
+        canvas_set_stroke_color(c, fg);
+        canvas_draw_hline(c, x, y, w);
+        canvas_draw_hline(c, x + 1, y - 1, w - 2);
+      }
+
+      canvas_set_stroke_color(c, bd);
+      if (x > 0) {
+        canvas_draw_hline(c, 0, y, x);
+      }
+      if (widget->w > (x + w)) {
+        canvas_draw_hline(c, x + w, y, widget->w - x - w);
+      }
     }
   }
 
+  return RET_OK;
+}
+
+static ret_t tab_button_group_on_paint_border(widget_t* widget, canvas_t* c) {
+  (void)widget;
+  (void)c;
   return RET_OK;
 }
 
@@ -147,6 +180,7 @@ static const widget_vtable_t s_tab_button_group_vtable = {
     .set_prop = tab_button_group_set_prop,
     .get_prop = tab_button_group_get_prop,
     .on_layout_children = tab_button_group_on_layout_children,
+    .on_paint_border = tab_button_group_on_paint_border,
     .on_paint_done = tab_button_group_on_paint_done,
     .on_paint_self = tab_button_group_on_paint_self};
 

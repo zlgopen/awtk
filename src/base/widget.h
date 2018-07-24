@@ -108,6 +108,7 @@ typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_border_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_done_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
@@ -140,6 +141,7 @@ typedef struct _widget_vtable_t {
   widget_on_paint_background_t on_paint_background;
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;
+  widget_on_paint_border_t on_paint_border;
   widget_on_paint_done_t on_paint_done;
   widget_on_pointer_down_t on_pointer_down;
   widget_on_pointer_move_t on_pointer_move;
@@ -864,6 +866,7 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
 /**
@@ -922,6 +925,16 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
  * @return {bool_t} 返回TRUE表示相同，否则表示不同。
  */
 bool_t widget_equal(widget_t* widget, widget_t* other);
+
+/**
+ * @method widget_measure_text
+ * 计算文本的宽度。
+ * @param {widget_t*} widget 控件对象。
+ * @param {wchart*} text 文本。
+ *
+ * @return {float_t} 返回文本的宽度。
+ */
+float_t widget_measure_text(widget_t* widget, const wchar_t* text);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \

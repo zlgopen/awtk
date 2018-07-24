@@ -1,0 +1,14 @@
+
+<tab_button_group>
+  <style name="default" border_color="#a0a0a0" fg_color="#f0f0f0">
+    <normal/>
+  </style>
+</tab_button_group>
+
+<pages>
+  <style name="default" border_color="#a0a0a0" border="left|right|top">
+    <normal/>
+  </style>
+</pages>
+
+

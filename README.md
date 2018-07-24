@@ -142,6 +142,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/24
+    * 完善tab\_control及demo。
+
 * 2018/07/23
     * 增加tab\_control的demo。
 

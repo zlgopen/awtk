@@ -1,6 +1,8 @@
 <window name="main" anim_hint="htranslate" layout="c2 h30 m5 s5">
     <button name="open:tab_top" text="Top"/>
     <button name="open:tab_bottom" text="Bottom"/>
+    <button name="open:tab_top_compact" text="Top Compact"/>
+    <button name="open:tab_bottom_compact" text="Bottom Compact"/>
     <button name="open:tab_list" text="List"/>
     <button name="close" text="Close"/>
 </window>
