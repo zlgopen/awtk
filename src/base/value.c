@@ -358,6 +358,9 @@ int value_int(const value_t* v) {
     case VALUE_TYPE_DOUBLE: {
       return (int)v->value.f64;
     }
+    case VALUE_TYPE_BOOL: {
+      return (int)v->value.b;
+    }
     case VALUE_TYPE_STRING: {
       return tk_atoi(v->value.str);
     }

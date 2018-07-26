@@ -72,8 +72,8 @@ static ret_t tab_button_group_on_layout_children(widget_t* widget) {
       return tab_button_group_on_layout_children_non_compact(widget);
     }
   }
-	
-	return RET_OK;
+
+  return RET_OK;
 }
 
 static ret_t tab_button_group_on_paint_self(widget_t* widget, canvas_t* c) {

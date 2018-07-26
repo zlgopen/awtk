@@ -94,8 +94,8 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   if (widget->name != NULL) {
     ui_builder_on_widget_prop(writer, WIDGET_PROP_NAME, widget->name);
   }
-  if (widget->tr_key != NULL) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_key);
+  if (widget->tr_text != NULL) {
+    ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_text);
   }
   if (widget->text.size) {
     uint32_t size = widget->text.size * 3 + 1;

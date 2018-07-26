@@ -128,7 +128,7 @@ static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v)
     value_set_bool(v, tab_button->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SUB_THEME)) {
-    value_set_str(v, tab_button->value ? "active" : "deactive");
+    value_set_str(v, tab_button->value ? "_active" : "");
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MIN_W)) {
     value_set_int(v, tab_button_get_min_w(widget));

@@ -1,0 +1,14 @@
+<popup theme="color" close_when_click_outside="true" h="128" >
+  <list_view x="0"  y="0" w="100%" h="100%" item_height="30">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <combo_box_item tr_text="red"/>
+      <combo_box_item tr_text="green" />
+      <combo_box_item tr_text="blue" />
+      <combo_box_item tr_text="orange" />
+      <combo_box_item tr_text="gold" />
+      <combo_box_item tr_text="black" />
+      <combo_box_item tr_text="white" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+</popup>

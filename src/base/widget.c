@@ -123,8 +123,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 
   tr_text = locale_tr(locale(), text);
 #ifdef WITH_DYNAMIC_TR
-  TKMEM_FREE(widget->tr_key);
-  widget->tr_key = tk_strdup(text);
+  TKMEM_FREE(widget->tr_text);
+  widget->tr_text = tk_strdup(text);
 #endif /*WITH_DYNAMIC_TR*/
 
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
@@ -132,9 +132,9 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 
 ret_t widget_re_translate_text(widget_t* widget) {
 #ifdef WITH_DYNAMIC_TR
-  if (widget->tr_key != NULL) {
+  if (widget->tr_text != NULL) {
     value_t v;
-    const char* tr_text = locale_tr(locale(), widget->tr_key);
+    const char* tr_text = locale_tr(locale(), widget->tr_text);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
     widget_invalidate(widget, NULL);
   }
@@ -460,7 +460,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     float_t dpr = system_info()->device_pixel_ratio;
 
     if (text != NULL && text->size > 0) {
-      if (h > (img.h / dpr + font_size) || icon_at == ICON_AT_TOP) {
+      if ((h > (img.h / dpr + font_size) && icon_at == ICON_AT_AUTO) || icon_at == ICON_AT_TOP) {
         int text_h = font_size + margin;
         int text_y = widget->h - text_h;
 
@@ -1081,7 +1081,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
   TKMEM_FREE(widget->name);
   TKMEM_FREE(widget->style_name);
 #ifdef WITH_DYNAMIC_TR
-  TKMEM_FREE(widget->tr_key);
+  TKMEM_FREE(widget->tr_text);
 #endif /*WITH_DYNAMIC_TR*/
   wstr_reset(&(widget->text));
 
@@ -1177,7 +1177,7 @@ static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
   return_value_if_fail(type_name != NULL, NULL);
 
   if (widget_get_prop(widget, WIDGET_PROP_SUB_THEME, &v) == RET_OK && value_str(&v) != NULL) {
-    tk_snprintf(style_name, sizeof(style_name) - 1, "%s_%s", name, value_str(&v));
+    tk_snprintf(style_name, sizeof(style_name) - 1, "%s%s", name, value_str(&v));
   } else {
     tk_strncpy(style_name, name, sizeof(style_name) - 1);
   }
@@ -1346,7 +1346,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   clone->name = tk_strdup(widget->name);
   clone->style_name = tk_strdup(widget->style_name);
 #ifdef WITH_DYNAMIC_TR
-  clone->tr_key = tk_strdup(widget->tr_key);
+  clone->tr_text = tk_strdup(widget->tr_text);
 #endif /*WITH_DYNAMIC_TR*/
 
   if (widget->text.size) {
@@ -1402,8 +1402,8 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   ret = ret && wstr_equal(&(widget->text), &(other->text));
 
 #ifdef WITH_DYNAMIC_TR
-  if (widget->tr_key != NULL || other->tr_key != NULL) {
-    ret = ret && (tk_str_eq(widget->tr_key, other->tr_key) || PROP_EQ(tr_key));
+  if (widget->tr_text != NULL || other->tr_text != NULL) {
+    ret = ret && (tk_str_eq(widget->tr_text, other->tr_text) || PROP_EQ(tr_text));
   }
 
   if (!ret) {

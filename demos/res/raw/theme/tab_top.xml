@@ -6,12 +6,12 @@
 </tab_button_group>
 
 <tab_button>
-  <style name="default_active" margin="4" text_color="#1296db" bg_color="#eeeeee">
+  <style name="default" margin="4" text_color="black" bg_color="#eeeeee">
     <normal     />
     <pressed    />
     <over       />
   </style>
-  <style name="default_deactive" margin="4" text_color="black" bg_color="#eeeeee">
+  <style name="default_active" margin="4" text_color="#1296db" bg_color="#eeeeee">
     <normal     />
     <pressed    />
     <over       />

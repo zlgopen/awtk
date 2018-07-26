@@ -5,6 +5,7 @@
 #include "res/inc/strings/zh_CN.data"
 #include "res/inc/theme/button.data"
 #include "res/inc/theme/calibration.data"
+#include "res/inc/theme/color.data"
 #include "res/inc/theme/default.data"
 #include "res/inc/theme/dialog.data"
 #include "res/inc/theme/keyboard.data"
@@ -20,6 +21,8 @@
 #include "res/inc/ui/bottom.data"
 #include "res/inc/ui/button.data"
 #include "res/inc/ui/calibration.data"
+#include "res/inc/ui/color.data"
+#include "res/inc/ui/combo_box.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
 #include "res/inc/ui/dragger.data"
@@ -97,6 +100,7 @@
 #include "res/inc/images/edit_clear_n.res"
 #include "res/inc/images/edit_clear_o.res"
 #include "res/inc/images/edit_clear_p.res"
+#include "res/inc/images/empty.res"
 #include "res/inc/images/find.res"
 #include "res/inc/images/green_btn_n.res"
 #include "res/inc/images/green_btn_o.res"
@@ -169,6 +173,7 @@
 #include "res/inc/images/edit_clear_n.data"
 #include "res/inc/images/edit_clear_o.data"
 #include "res/inc/images/edit_clear_p.data"
+#include "res/inc/images/empty.data"
 #include "res/inc/images/find.data"
 #include "res/inc/images/green_btn_n.data"
 #include "res/inc/images/green_btn_o.data"
@@ -260,6 +265,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_edit_clear_n);
   resource_manager_add(rm, image_edit_clear_o);
   resource_manager_add(rm, image_edit_clear_p);
+  resource_manager_add(rm, image_empty);
   resource_manager_add(rm, image_find);
   resource_manager_add(rm, image_green_btn_n);
   resource_manager_add(rm, image_green_btn_o);
@@ -305,6 +311,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, strings_zh_CN);
   resource_manager_add(rm, theme_button);
   resource_manager_add(rm, theme_calibration);
+  resource_manager_add(rm, theme_color);
   resource_manager_add(rm, theme_default);
   resource_manager_add(rm, theme_dialog);
   resource_manager_add(rm, theme_keyboard);
@@ -320,6 +327,8 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_bottom);
   resource_manager_add(rm, ui_button);
   resource_manager_add(rm, ui_calibration);
+  resource_manager_add(rm, ui_color);
+  resource_manager_add(rm, ui_combo_box);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);
   resource_manager_add(rm, ui_dragger);

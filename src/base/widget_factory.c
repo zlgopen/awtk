@@ -50,6 +50,9 @@
 #include "base/dialog_client.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
+#include "base/popup.h"
+#include "base/combo_box.h"
+#include "base/combo_box_item.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 
@@ -81,6 +84,9 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_BUTTON_GROUP, button_group_create},
     {WIDGET_TYPE_SPIN_BOX, spin_box_create},
     {WIDGET_TYPE_DRAGGER, dragger_create},
+    {WIDGET_TYPE_COMBO_BOX, combo_box_create},
+    {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
+    {WIDGET_TYPE_POPUP, popup_create},
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SCROLL_VIEW, scroll_view_create},
     {WIDGET_TYPE_LIST_VIEW, list_view_create},

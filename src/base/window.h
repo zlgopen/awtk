@@ -62,6 +62,7 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {widget_t*} 对象。
  */
+widget_t* window_open(const char* name);
 
 /**
  * @method window_close

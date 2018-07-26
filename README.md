@@ -142,6 +142,12 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/26
+  * 增加combo\_box/combo\_box\_item控件和demo。
+
+* 2018/07/25
+  * 增加popup窗口。
+
 * 2018/07/24
     * 完善tab\_control及demo。
 

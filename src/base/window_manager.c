@@ -171,9 +171,9 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   if (widget->key_target == window) {
     widget->key_target = NULL;
   }
-  if (wm->grab_widget != NULL) {
-    if (wm->grab_widget == window) {
-      wm->grab_widget = NULL;
+  if (widget->grab_widget != NULL) {
+    if (widget->grab_widget == window) {
+      widget->grab_widget = NULL;
     }
   }
 
@@ -196,8 +196,8 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL, NULL);
 
-  if (wm->grab_widget != NULL) {
-    return wm->grab_widget;
+  if (widget->grab_widget != NULL) {
+    return widget->grab_widget;
   }
 
   widget_to_local(widget, &p);
@@ -209,7 +209,8 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
     return iter;
   }
 
-  if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG) {
+  if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG ||
+      iter->type == WIDGET_POPUP) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()

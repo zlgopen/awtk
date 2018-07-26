@@ -890,15 +890,13 @@ static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .destroy = edit_destroy,
                                               .on_event = edit_on_event};
 
-widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
-                         const widget_vtable_t* vt) {
-  widget_t* widget = NULL;
-  edit_t* edit = TKMEM_ZALLOC(edit_t);
+widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t h,
+                    const widget_vtable_t* vt) {
+  widget_t* widget = WIDGET(edit);
   widget_t* win = widget_get_window(parent);
 
   return_value_if_fail(edit != NULL, NULL);
 
-  widget = WIDGET(edit);
   widget->vt = vt;
   widget_init(widget, parent, WIDGET_EDIT);
 
@@ -914,6 +912,14 @@ widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
   widget_on(win, EVT_WINDOW_OPEN, edit_hook_children_button, edit);
 
   return widget;
+}
+
+widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
+                         const widget_vtable_t* vt) {
+  edit_t* edit = TKMEM_ZALLOC(edit_t);
+  return_value_if_fail(edit != NULL, NULL);
+
+  return edit_init(parent, edit, x, y, w, h, vt);
 }
 
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

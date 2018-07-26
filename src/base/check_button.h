@@ -77,7 +77,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  * @method check_button_set_value
  * 设置控件的值。
  * @param {widget_t*} widget check_button对象。
- * @param {uint32_t}  value 值
+ * @param {bool_t}  value 值
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

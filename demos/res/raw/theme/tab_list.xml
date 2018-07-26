@@ -1,10 +1,10 @@
 <tab_button>
-  <style name="default_active" text_align_h="left" margin="4" border_color="#cccccc" text_color="#1296db" bg_color="#eeeeee">
+  <style name="default" text_align_h="left" margin="4" border_color="#cccccc" text_color="black" bg_color="#eeeeee">
     <normal     />
     <pressed    />
     <over       />
   </style>
-  <style name="default_deactive" text_align_h="left" margin="4" border_color="#cccccc" text_color="black" bg_color="#eeeeee">
+  <style name="default_active" text_align_h="left" margin="4" border_color="#cccccc" text_color="#1296db" bg_color="#eeeeee">
     <normal     />
     <pressed    />
     <over       />

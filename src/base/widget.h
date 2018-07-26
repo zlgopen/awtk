@@ -311,11 +311,11 @@ struct _widget_t {
   wstr_t text;
 #ifdef WITH_DYNAMIC_TR
   /**
-   * @property {char*} tr_key
+   * @property {char*} tr_text
    * @private
-   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_key。
+   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。
    */
-  char* tr_key;
+  char* tr_text;
 #endif /*WITH_DYNAMIC_TR*/
 
   /**

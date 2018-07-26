@@ -94,7 +94,13 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_SUB_THEME "sub_theme"
 #define WIDGET_PROP_COMPACT "compact"
 #define WIDGET_PROP_ICON "icon"
+#define WIDGET_PROP_OPTIONS "options"
+#define WIDGET_PROP_SELECTED "selected"
 #define WIDGET_PROP_ACTIVE_ICON "active_icon"
+#define WIDGET_PROP_OPEN_WINDOW "open_window"
+#define WIDGET_PROP_SELECTED_INDEX "selected_index"
+#define WIDGET_PROP_CLOSE_WHEN_CLICK "close_when_click"
+#define WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE "close_when_click_outside"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
@@ -118,6 +124,8 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_DIALOG_CLIENT "dialog_client"
 #define WIDGET_TYPE_SLIDER "slider"
 #define WIDGET_TYPE_VIEW "view"
+#define WIDGET_TYPE_COMBO_BOX "combo_box"
+#define WIDGET_TYPE_COMBO_BOX_ITEM "combo_box_item"
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 #define WIDGET_TYPE_PAGES "pages"
 #define WIDGET_TYPE_TAB_BUTTON "tab_button"
@@ -326,6 +334,16 @@ typedef enum _widget_type_t {
    * List Item。
    */
   WIDGET_LIST_ITEM,
+  /**
+   * @const WIDGET_COMBO_BOX
+   * Combo Box。
+   */
+  WIDGET_COMBO_BOX,
+  /**
+   * @const WIDGET_COMBO_BOX_ITEM
+   * Combo Box Item。
+   */
+  WIDGET_COMBO_BOX_ITEM,
 
   WIDGET_NR,
   WIDGET_USER_START = 100

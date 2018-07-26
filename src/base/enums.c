@@ -64,6 +64,8 @@ static const key_type_value_t widget_type_value[] = {
     {WIDGET_TYPE_LIST_VIEW, 0, WIDGET_LIST_VIEW},
     {WIDGET_TYPE_LIST_VIEW_H, 0, WIDGET_LIST_VIEW_H},
     {WIDGET_TYPE_LIST_ITEM, 0, WIDGET_LIST_ITEM},
+    {WIDGET_TYPE_COMBO_BOX, 0, WIDGET_COMBO_BOX},
+    {WIDGET_TYPE_COMBO_BOX_ITEM, 0, WIDGET_COMBO_BOX_ITEM},
     {WIDGET_TYPE_DIALOG_CLIENT, 0, WIDGET_DIALOG_CLIENT}};
 
 static const key_type_value_t style_id_name_value[] = {

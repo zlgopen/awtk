@@ -24,6 +24,7 @@
 #include "base/str.h"
 #include "base/utils.h"
 #include "base/value.h"
+#include "base/tokenizer.h"
 
 static ret_t str_extend(str_t* str, uint16_t capacity) {
   if (capacity < str->capacity) {
@@ -163,19 +164,7 @@ ret_t str_from_value(str_t* str, const value_t* v) {
   if (v->type == VALUE_TYPE_STRING) {
     return str_set(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
-    const wchar_t* wcs = value_wstr(v);
-    str->size = 0;
-    if (str->str != NULL) {
-      str->str[0] = '\0';
-    }
-    if (wcs != NULL) {
-      uint32_t size = wcslen(wcs) * 3;
-      return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
-      utf8_from_utf16(wcs, str->str, size);
-      str->size = strlen(str->str);
-    }
-
-    return RET_OK;
+    return str_from_wstr(str, value_wstr(v));
   } else if (v->type == VALUE_TYPE_FLOAT) {
     return str_from_float(str, value_float(v));
   } else if (v->type == VALUE_TYPE_BOOL) {
@@ -183,6 +172,25 @@ ret_t str_from_value(str_t* str, const value_t* v) {
   } else {
     return str_from_int(str, value_int(v));
   }
+}
+
+ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  str->size = 0;
+  if (str->str != NULL) {
+    str->str[0] = '\0';
+  }
+
+  if (wstr != NULL) {
+    uint32_t size = wcslen(wstr) * 3;
+    return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
+
+    utf8_from_utf16(wstr, str->str, size);
+    str->size = strlen(str->str);
+  }
+
+  return RET_OK;
 }
 
 ret_t str_to_int(str_t* str, int32_t* v) {

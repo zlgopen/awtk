@@ -155,6 +155,16 @@ ret_t str_from_float(str_t* str, float v);
 ret_t str_from_value(str_t* str, const value_t* v);
 
 /**
+ * @method str_from_wstr
+ * 用value初始化字符串。
+ * @param {str_t*} str str对象。
+ * @param {wchar_t*} wstr wstr。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_from_wstr(str_t* str, const wchar_t* wstr);
+
+/**
  * @method str_to_int
  * 将字符串转成整数。
  * @param {str_t*} str str对象。

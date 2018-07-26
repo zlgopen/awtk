@@ -12,12 +12,24 @@
   </style>
 </window>
 
+<popup>
+  <style name="default" border_color="#a0a0a0">
+    <normal bg_color="#f0f0f0"/>
+  </style>
+</popup>
+
 <button>
   <style name="default" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="combobox_down" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
   </style>
   
   <style name="spinbox_down" border_color="#a0a0a0">
@@ -313,15 +325,15 @@
 </list_item>
 
 <tab_button>
+  <style name="default" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#d0d0d0" />
+    <pressed    bg_color="#f0f0f0" />
+    <over       bg_color="#e0e0e0" />
+  </style>
   <style name="default_active" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#f0f0f0" />
     <over       bg_color="#f0f0f0" />
-  </style>
-  <style name="default_deactive" border_color="#a0a0a0"  text_color="black">
-    <normal     bg_color="#d0d0d0" />
-    <pressed    bg_color="#f0f0f0" />
-    <over       bg_color="#e0e0e0" />
   </style>
 </tab_button>
 
@@ -330,3 +342,27 @@
     <normal/>
   </style>
 </tab_button_group>
+
+<combo_box>
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+  </style>
+</combo_box>
+
+<combo_box_item>
+  <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0" icon="empty">
+    <normal  />
+    <pressed bg_color="#1296db" text_color="white" />
+    <over    bg_color="#1296db" text_color="white" />
+  </style>
+  <style name="default_selected" icon_at="left" text_color="black" bg_color="#f0f0f0" icon="check">
+    <normal  />
+    <pressed bg_color="#1296db" text_color="white" />
+    <over    bg_color="#1296db" text_color="white" />
+  </style>
+</combo_box_item>
+
