@@ -142,6 +142,10 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/27
+  * 增加unicode linebreak。
+  * 增加rich\_text\_parser。
+
 * 2018/07/26
   * 增加combo\_box/combo\_box\_item控件和demo。
 

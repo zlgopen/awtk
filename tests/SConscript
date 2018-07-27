@@ -10,6 +10,7 @@ env=DefaultEnvironment().Clone();
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   os.path.join(TK_ROOT, 'src'),  
+  os.path.join(TK_ROOT, 'src/ext_widgets'),  
   os.path.join(TK_ROOT, '3rd/libunibreak/src'),
   os.path.join(GTEST_ROOT, 'src'),
   os.path.join(GTEST_ROOT, 'include'),

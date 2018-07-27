@@ -220,19 +220,23 @@ char* tk_strncpy(char* dst, const char* src, size_t len) {
   return dst;
 }
 
-char* tk_strdup(const char* str) {
+char* tk_strndup(const char* str, uint32_t len) {
   char* s = NULL;
-  uint32_t len = 0;
   return_value_if_fail(str != NULL, NULL);
 
-  len = strlen(str);
-  s = TKMEM_ALLOC(len + 1);
+  s = (char*)TKMEM_ALLOC(len + 1);
   if (s != NULL) {
     memcpy(s, str, len);
     s[len] = '\0';
   }
 
   return s;
+}
+
+char* tk_strdup(const char* str) {
+  return_value_if_fail(str != NULL, NULL);
+
+  return tk_strndup(str, strlen(str));
 }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {

@@ -3,16 +3,16 @@
 #include "wordbreak.h"
 #include "linebreak.h"
 
-void set_wordbreaks_wchar(const wchar_t* s, size_t len, const char* lang, char *brks) {
-  if(sizeof(wchar_t) == 2) {
+void set_wordbreaks_wchar(const wchar_t* s, size_t len, const char* lang, char* brks) {
+  if (sizeof(wchar_t) == 2) {
     set_wordbreaks_utf16((const utf16_t*)s, len, lang, brks);
   } else {
     set_wordbreaks_utf32((const utf32_t*)s, len, lang, brks);
   }
 }
 
-void set_linebreaks_wchar(const wchar_t* s, size_t len, const char* lang, char *brks) {
-  if(sizeof(wchar_t) == 2) {
+void set_linebreaks_wchar(const wchar_t* s, size_t len, const char* lang, char* brks) {
+  if (sizeof(wchar_t) == 2) {
     set_linebreaks_utf16((const utf16_t*)s, len, lang, brks);
   } else {
     set_linebreaks_utf32((const utf32_t*)s, len, lang, brks);
@@ -21,7 +21,7 @@ void set_linebreaks_wchar(const wchar_t* s, size_t len, const char* lang, char *
 
 static void dump_word_breaks(const wchar_t* s, char* brks, uint32_t size) {
   uint32_t i = 0;
-  for(i = 0; i < size; i++) {
+  for (i = 0; i < size; i++) {
     printf("break:%c: %d\n", (char)s[i], (int)brks[i]);
   }
 }
@@ -31,7 +31,7 @@ TEST(LineBreak, word) {
   char brks[128] = {0};
   const wchar_t* str = L"It is ok\nhello world";
 
-  set_wordbreaks_wchar(str, wcslen(str), "", brks); 
+  set_wordbreaks_wchar(str, wcslen(str), "", brks);
   dump_word_breaks(str, brks, wcslen(str));
 }
 
@@ -40,7 +40,7 @@ TEST(LineBreak, line) {
   char brks[128] = {0};
   const wchar_t* str = L"It is ok\nhello world";
 
-  set_linebreaks_wchar(str, wcslen(str), "", brks); 
+  set_linebreaks_wchar(str, wcslen(str), "", brks);
   dump_word_breaks(str, brks, wcslen(str));
 }
 
@@ -53,4 +53,3 @@ TEST(LineBreak, chars) {
   ASSERT_EQ(is_line_breakable(str[2], str[3], ""), LINEBREAK_ALLOWBREAK);
   ASSERT_EQ(is_line_breakable(str[4], str[5], ""), LINEBREAK_MUSTBREAK);
 }
-

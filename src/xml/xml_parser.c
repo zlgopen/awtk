@@ -419,6 +419,10 @@ static void xml_parser_parse_text(XmlParser* thiz) {
     }
   }
 
+  if (thiz->read_ptr > start) {
+    xml_builder_on_text(thiz->builder, start, thiz->read_ptr - start);
+  }
+
   return;
 }
 

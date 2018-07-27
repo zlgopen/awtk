@@ -99,6 +99,7 @@ CCFLAGS=OS_FLAGS + COMMON_CCFLAGS
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
   TK_3RD_ROOT, 
+  os.path.join(TK_SRC, 'ext_widgets'), 
   os.path.join(TK_3RD_ROOT, 'nanovg/src'), 
   os.path.join(TK_3RD_ROOT, 'agg/include'), 
   os.path.join(TK_3RD_ROOT, 'gpinyin/include'), 

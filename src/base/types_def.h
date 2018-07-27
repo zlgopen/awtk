@@ -162,35 +162,51 @@ typedef enum _lcd_orientation_t {
 
 #ifdef NDEBUG
 #define ENSURE(p) p
+#define goto_error_if_fail(p) \
+  if (!(p)) {                 \
+    goto error;               \
+  }
+
 #define return_if_fail(p) \
   if (!(p)) {             \
     return;               \
   }
+
 #define break_if_fail(p) \
   if (!(p)) {            \
     break;               \
   }
+
 #define return_value_if_fail(p, value) \
   if (!(p)) {                          \
     return (value);                    \
   }
 #else
 #define ENSURE(p) assert(p)
+#define goto_error_if_fail(p)                           \
+  if (!(p)) {                                           \
+    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    goto error;                                         \
+  }
+
 #define break_if_fail(p)                                \
   if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     break;                                              \
   }
+
 #define return_if_fail(p)                               \
   if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return;                                             \
   }
+
 #define return_value_if_fail(p, value)                  \
   if (!(p)) {                                           \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return (value);                                     \
   }
+
 #endif
 
 #ifdef __cplusplus
