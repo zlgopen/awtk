@@ -108,6 +108,7 @@ CPPPATH=[TK_ROOT,
   os.path.join(TK_3RD_ROOT, 'picasso/src/gfx'), 
   os.path.join(TK_3RD_ROOT, 'picasso/src/include'), 
   os.path.join(TK_3RD_ROOT, 'freetype2/include'), 
+  os.path.join(TK_3RD_ROOT, 'libunibreak/src'), 
   TK_TOOLS_ROOT] + OS_CPPPATH
 
 DefaultEnvironment(CCFLAGS = CCFLAGS, 
@@ -125,6 +126,7 @@ SConscriptFiles=[
   '3rd/agg/SConscript', 
   '3rd/gpinyin/SConscript', 
   '3rd/picasso/SConscript',
+  '3rd/libunibreak/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 

@@ -10,12 +10,13 @@ env=DefaultEnvironment().Clone();
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   os.path.join(TK_ROOT, 'src'),  
+  os.path.join(TK_ROOT, '3rd/libunibreak/src'),
   os.path.join(GTEST_ROOT, 'src'),
   os.path.join(GTEST_ROOT, 'include'),
   os.path.join(GTEST_ROOT, 'make')]
 
 env['CPPPATH'] = INCLUDE_PATH
-env['LIBS'] = ['resource', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common'] + env['LIBS']
+env['LIBS'] = ['linebreak', 'resource', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common'] + env['LIBS']
 
 SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
