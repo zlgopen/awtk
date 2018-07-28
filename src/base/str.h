@@ -123,6 +123,7 @@ ret_t str_append_char(str_t* str, char c);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_decode_xml_entity(str_t* str, const char* text);
+ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len);
 
 /**
  * @method str_from_int

@@ -1208,11 +1208,11 @@ ret_t widget_update_style(widget_t* widget) {
   return RET_OK;
 }
 
-widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type) {
+widget_t* widget_init(widget_t* widget, widget_t* parent, uint32_t type) {
   return_value_if_fail(widget != NULL, NULL);
 
   widget->dirty = TRUE;
-  widget->type = type;
+  widget->type = type ? type : (widget->vt->type_name - (const char*)NULL);
   widget->opacity = 0xff;
   widget->enable = TRUE;
   widget->visible = TRUE;

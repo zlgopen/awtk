@@ -186,11 +186,11 @@ struct _widget_t {
    */
   wh_t h;
   /**
-   * @property {uint16_t} type
+   * @property {uint32_t} type
    * @readonly
    * 类型。
    */
-  uint16_t type;
+  uint32_t type;
   /**
    * @property {char*} style_name
    * @readonly
@@ -346,11 +346,11 @@ struct _widget_t {
  * @private
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
- * @param {uint8_t} type 控件的类型。
+ * @param {uint32_t} type 控件的类型。
  *
  * @return {widget*} widget对象本身。
  */
-widget_t* widget_init(widget_t* widget, widget_t* parent, uint8_t type);
+widget_t* widget_init(widget_t* widget, widget_t* parent, uint32_t type);
 
 /**
  * @method widget_update_style

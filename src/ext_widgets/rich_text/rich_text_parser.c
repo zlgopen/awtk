@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/str.h"
 #include "base/utils.h"
 #include "xml/xml_parser.h"
 #include "base/color_parser.h"
@@ -34,6 +35,7 @@ typedef struct _xml_builder_t {
   rich_text_font_t fonts[MAX_FONT_LEVEL];
   rich_text_font_t* font;
   rich_text_node_t* node;
+  str_t temp;
 } xml_builder_t;
 
 static void xml_rich_text_push_font(xml_builder_t* b) {
@@ -126,7 +128,8 @@ static void xml_rich_text_on_text(XmlBuilder* thiz, const char* text, size_t len
   xml_builder_t* b = (xml_builder_t*)thiz;
   rich_text_font_t* font = b->font;
 
-  b->node = rich_text_node_append(b->node, rich_text_text_create_with_len(font, text, length));
+  str_decode_xml_entity_with_len(&(b->temp), text, length);
+  b->node = rich_text_node_append(b->node, rich_text_text_create(font, b->temp.str));
 
   return;
 }
@@ -159,6 +162,7 @@ static XmlBuilder* builder_init(xml_builder_t* b) {
     iter->size = TK_DEFAULT_FONT_SIZE;
     iter->color = color_init(0, 0, 0, 0xff);
   }
+  str_init(&(b->temp), 100);
 
   return &(b->builder);
 }

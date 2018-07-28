@@ -1,0 +1,4 @@
+<window anim_hint="htranslate" >
+    <rich_text x="0" y="0" w="100%" h="60" text="<font color=&quota;red&quota; size=&quota;24&quota;>hello</font><font color=&quota;green&quota; size=&quota;18&quota;>&amp;nbsp;world</font><image name=&quota;earth&quota; />" />
+    <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
+</window>

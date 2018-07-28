@@ -142,6 +142,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/07/28
+  * 增加rich\_text控件(未完成)。
+
 * 2018/07/27
   * 增加unicode linebreak。
   * 增加rich\_text\_parser。

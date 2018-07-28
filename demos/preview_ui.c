@@ -29,6 +29,8 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "resource.h"
+#include "base/widget_factory.h"
+#include "rich_text/rich_text.h"
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
@@ -50,6 +52,12 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
+static ret_t register_ext_widgets() {
+  widget_factory_register(widget_factory(), "rich_text", rich_text_create);
+
+  return RET_OK;
+}
+
 #if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
@@ -64,6 +72,8 @@ int main(int argc, char* argv[]) {
 
   tk_init(320, 480);
   resource_init();
+  register_ext_widgets();
+
   win = preview_ui(filename);
   tk_run();
 

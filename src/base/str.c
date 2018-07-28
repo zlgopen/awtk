@@ -94,16 +94,16 @@ ret_t str_append_char(str_t* str, char c) {
   return RET_OK;
 }
 
-ret_t str_decode_xml_entity(str_t* str, const char* text) {
+ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len) {
   char* d = NULL;
   const char* s = text;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(str_extend(str, strlen(text) + 1) == RET_OK, RET_OOM);
+  return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_OOM);
 
   d = str->str;
   str->size = 0;
 
-  while (*s) {
+  while (*s && (s - text) < len) {
     char c = *s++;
     if (c == '&') {
       if (strncmp(s, "lt;", 3) == 0) {
@@ -118,6 +118,9 @@ ret_t str_decode_xml_entity(str_t* str, const char* text) {
       } else if (strncmp(s, "quota;", 6) == 0) {
         c = '\"';
         s += 6;
+      } else if (strncmp(s, "nbsp;", 5) == 0) {
+        c = ' ';
+        s += 5;
       }
     }
     *d++ = c;
@@ -126,6 +129,12 @@ ret_t str_decode_xml_entity(str_t* str, const char* text) {
   str->size = d - str->str;
 
   return RET_OK;
+}
+
+ret_t str_decode_xml_entity(str_t* str, const char* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return str_decode_xml_entity_with_len(str, text, strlen(text));
 }
 
 bool_t str_eq(str_t* str, const char* text) {

@@ -21,6 +21,7 @@
 
 #include "base/str.h"
 #include "base/mem.h"
+#include "base/utf8.h"
 #include "base/utils.h"
 #include "rich_text/rich_text_node.h"
 
@@ -75,23 +76,6 @@ rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t 
   return node;
 }
 
-rich_text_node_t* rich_text_node_append(rich_text_node_t* node, rich_text_node_t* next) {
-  rich_text_node_t* iter = node;
-  return_value_if_fail(next != NULL, node);
-
-  if (node == NULL) {
-    return next;
-  }
-
-  while (iter->next != NULL) {
-    iter = iter->next;
-  }
-
-  iter->next = next;
-
-  return node;
-}
-
 ret_t rich_text_text_destroy(rich_text_node_t* node) {
   return_value_if_fail(node != NULL && node->type == RICH_TEXT_TEXT, RET_BAD_PARAMS);
 
@@ -111,6 +95,23 @@ ret_t rich_text_image_destroy(rich_text_node_t* node) {
   TKMEM_FREE(node);
 
   return RET_OK;
+}
+
+rich_text_node_t* rich_text_node_append(rich_text_node_t* node, rich_text_node_t* next) {
+  rich_text_node_t* iter = node;
+  return_value_if_fail(next != NULL, node);
+
+  if (node == NULL) {
+    return next;
+  }
+
+  while (iter->next != NULL) {
+    iter = iter->next;
+  }
+
+  iter->next = next;
+
+  return node;
 }
 
 ret_t rich_text_node_destroy(rich_text_node_t* node) {
