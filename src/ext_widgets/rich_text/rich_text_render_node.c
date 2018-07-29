@@ -39,11 +39,11 @@ rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node) {
 
 #define MOVE_TO_NEXT_ROW()                                 \
   x = margin;                                              \
-  y += row_h;                                              \
+  y += row_h + line_gap;                                              \
   if (row_first_node != NULL) {                            \
     rich_text_render_node_tune_row(row_first_node, row_h); \
     row_first_node = NULL;                                 \
-  }
+  } 
 
 rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node,
                                                         int32_t row_h) {
@@ -69,7 +69,7 @@ rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t*
 }
 
 rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
-                                                      int32_t w, int32_t h, int32_t margin) {
+                                                      int32_t w, int32_t h, int32_t margin, int32_t line_gap) {
   int32_t row_h = 0;
   int32_t x = margin;
   int32_t y = margin;
@@ -137,28 +137,28 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         if (row_h < font_size) {
           row_h = font_size;
         }
-
         canvas_set_font(c, iter->u.text.font.name, font_size);
 
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
           if ((x + tw + cw) > right) {
-            MOVE_TO_NEXT_ROW();
-
+            i = i - 1;
             new_node = rich_text_render_node_create(iter);
             return_value_if_fail(new_node != NULL, render_node);
 
             new_node->text = str + start;
             new_node->size = i - start + 1;
             new_node->rect = rect_init(x, y, tw, font_size);
-            x += tw + 1;
 
             render_node = rich_text_render_node_append(render_node, new_node);
             if (row_first_node == NULL) {
               row_first_node = new_node;
             }
 
+            tw = 0;
             start = i + 1;
+            MOVE_TO_NEXT_ROW();
+            row_h = font_size;
           } else {
             tw += cw;
           }

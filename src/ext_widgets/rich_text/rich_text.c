@@ -94,10 +94,11 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
   if (rich_text->render_node == NULL) {
     int32_t w = widget->w;
     int32_t h = widget->h;
+    int32_t line_gap = rich_text->line_gap;
     style_t* style = &(widget->style);
     int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
 
-    rich_text->render_node = rich_text_render_node_layout(rich_text->node, c, w, h, margin);
+    rich_text->render_node = rich_text_render_node_layout(rich_text->node, c, w, h, margin, line_gap);
   }
   return_value_if_fail(rich_text->render_node != NULL, RET_OOM);
 
@@ -137,10 +138,14 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return rich_text_set_text(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_GAP)) {
+    rich_text->line_gap = value_int(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

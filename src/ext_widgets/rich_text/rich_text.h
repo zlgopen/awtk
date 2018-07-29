@@ -36,6 +36,7 @@ BEGIN_C_DECLS
 typedef struct _rich_text_t {
   widget_t widget;
 
+  int32_t line_gap;
   rich_text_node_t* node;
   rich_text_render_node_t* render_node;
 } rich_text_t;

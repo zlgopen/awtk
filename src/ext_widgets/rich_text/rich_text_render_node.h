@@ -39,7 +39,7 @@ typedef struct _rich_text_render_node_t {
 
 rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node);
 rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
-                                                      int32_t w, int32_t h, int32_t margin);
+                             int32_t w, int32_t h, int32_t margin, int32_t line_gap);
 rich_text_render_node_t* rich_text_render_node_append(rich_text_render_node_t* node,
                                                       rich_text_render_node_t* next);
 

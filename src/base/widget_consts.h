@@ -101,6 +101,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_SELECTED_INDEX "selected_index"
 #define WIDGET_PROP_CLOSE_WHEN_CLICK "close_when_click"
 #define WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE "close_when_click_outside"
+#define WIDGET_PROP_LINE_GAP "line_gap"
 
 /*widget type name*/
 #define WIDGET_TYPE_NONE "widget"
