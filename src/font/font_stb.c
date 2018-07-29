@@ -45,6 +45,14 @@ static bool_t font_stb_match(font_t* f, const char* name, uint16_t font_size) {
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
+static int32_t font_stb_get_baseline(font_t* f, uint16_t font_size) {
+  font_stb_t* font = (font_stb_t*)f;
+  stbtt_fontinfo* sf = &(font->stb_font);
+  float scale = stbtt_ScaleForPixelHeight(sf, font_size);
+
+  return scale * font->ascent;
+}
+
 static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
   int x = 0;
   int y = 0;
@@ -54,10 +62,9 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   int y1 = 0;
   int x2 = 0;
   int y2 = 0;
-  int s = font_size;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
-  float scale = stbtt_ScaleForPixelHeight(sf, s);
+  float scale = stbtt_ScaleForPixelHeight(sf, font_size);
 
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
     return RET_OK;
@@ -103,6 +110,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f->base.name = name;
   f->base.match = font_stb_match;
   f->base.find_glyph = font_stb_find_glyph;
+  f->base.get_baseline = font_stb_get_baseline;
   f->base.destroy = font_stb_destroy;
 
   glyph_cache_init(&(f->cache), 256, destroy_glyph);

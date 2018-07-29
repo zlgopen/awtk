@@ -50,6 +50,7 @@
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/preload.data"
+#include "res/inc/ui/rich_text.data"
 #include "res/inc/ui/scroll_bar.data"
 #include "res/inc/ui/scroll_bar_h.data"
 #include "res/inc/ui/scroll_view.data"
@@ -215,17 +216,17 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -356,6 +357,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_preload);
+  resource_manager_add(rm, ui_rich_text);
   resource_manager_add(rm, ui_scroll_bar);
   resource_manager_add(rm, ui_scroll_bar_h);
   resource_manager_add(rm, ui_scroll_view);

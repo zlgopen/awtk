@@ -80,6 +80,13 @@ static ret_t font_bitmap_destroy(font_t* f) {
   return RET_OK;
 }
 
+static int32_t font_bitmap_get_baseline(font_t* f, uint16_t font_size) {
+  font_bitmap_t* font = (font_bitmap_t*)f;
+  font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
+
+  return header->baseline;
+}
+
 font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff,
                          uint32_t buff_size) {
   return_value_if_fail(f != NULL && buff != NULL, NULL);
@@ -88,6 +95,7 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   f->base.name = name;
   f->buff_size = buff_size;
   f->base.match = font_bitmap_match;
+  f->base.get_baseline = font_bitmap_get_baseline;
   f->base.find_glyph = font_bitmap_find_glyph;
   f->base.destroy = font_bitmap_destroy;
 

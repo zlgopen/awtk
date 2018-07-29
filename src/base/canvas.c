@@ -1192,10 +1192,13 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect
   int x = 0;
   int y = 0;
   int32_t text_w = 0;
+  int32_t baseline = 0;
   int32_t font_size = 0;
   return_value_if_fail(c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
 
   font_size = c->font_size;
+  baseline = font_get_baseline(c->font, font_size);
+
   text_w = canvas_measure_text(c, str, nr);
 
   switch (c->text_align_v) {
@@ -1203,10 +1206,10 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect
       y = r->y;
       break;
     case ALIGN_V_BOTTOM:
-      y = r->y + (r->h - font_size);
+      y = r->y + (r->h - baseline);
       break;
     default:
-      y = r->y + ((r->h - font_size) >> 1);
+      y = r->y + ((r->h - baseline) >> 1);
       break;
   }
 

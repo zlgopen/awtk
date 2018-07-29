@@ -33,7 +33,8 @@ typedef struct _font_bitmap_index_t {
 
 typedef struct _font_bitmap_header_t {
   uint16_t char_nr;
-  uint16_t font_size;
+  uint8_t font_size;
+  uint8_t baseline;
   font_bitmap_index_t index[1];
 } font_bitmap_header_t;
 

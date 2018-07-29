@@ -69,7 +69,8 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
   size = unique(wstr, size);
 
   header->char_nr = size;
-  header->font_size = font_size;
+  header->font_size = (uint8_t)font_size;
+  header->baseline = (uint8_t)font_get_baseline(font, font_size);
 
   p = (uint8_t*)(header->index + size);
   return_value_if_fail(buff_size > 512, 0);

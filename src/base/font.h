@@ -37,17 +37,21 @@ typedef struct _glyph_t {
   const uint8_t* data;
 } glyph_t;
 
+typedef int32_t (*font_get_baseline_t)(font_t* f, uint16_t font_size);
 typedef bool_t (*font_match_t)(font_t* f, const char* name, uint16_t font_size);
 typedef ret_t (*font_find_glyph_t)(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size);
+
 typedef ret_t (*font_destroy_t)(font_t* f);
 
 struct _font_t {
   const char* name;
   font_match_t match;
+  font_get_baseline_t get_baseline;
   font_find_glyph_t find_glyph;
   font_destroy_t destroy;
 };
 
+int32_t font_get_baseline(font_t* f, uint16_t font_size);
 bool_t font_match(font_t* f, const char* name, uint16_t font_size);
 ret_t font_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size);
 ret_t font_destroy(font_t* f);
