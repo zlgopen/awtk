@@ -68,6 +68,7 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
 
   if (tk_str_eq(tag, "font")) {
     xml_rich_text_push_font(b);
+    b->font->align_v = ALIGN_V_BOTTOM;
 
     while (attrs[i]) {
       const char* key = attrs[i];
@@ -76,6 +77,11 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
         b->font->size = tk_atoi(value);
       } else if (tk_str_eq(key, "color")) {
         b->font->color = color_parse_simple(value);
+      } else if (tk_str_eq(key, "align_v")) {
+        const key_type_value_t* kv = align_v_type_find(value);
+        if (kv != NULL) {
+          b->font->align_v = kv->value;
+        }
       } else if (tk_str_eq(key, "name")) {
         TKMEM_FREE(b->font->name);
         b->font->name = tk_strdup(value);

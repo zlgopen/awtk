@@ -123,6 +123,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         if (row_first_node == NULL) {
           row_first_node = new_node;
         }
+        x += new_node->rect.w + 1;
         break;
       }
       case RICH_TEXT_TEXT: {

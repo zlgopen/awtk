@@ -12,5 +12,6 @@
     <button name="open:locale" text="Locale"/>
     <button name="open:tab_control" text="Tab Control"/>
     <button name="open:combo_box" text="ComboBox"/>
+    <button name="open:rich_text" text="RichText"/>
     <button name="show_fps" text="Show FPS"/>
 </window>

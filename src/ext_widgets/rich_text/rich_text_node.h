@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 typedef struct _rich_text_font_t {
   char* name;
   color_t color;
+  uint8_t align_v;
   uint16_t size;
   uint16_t bold : 1;
   uint16_t italic : 1;
