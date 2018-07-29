@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-07-27 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
@@ -36,6 +36,7 @@ rich_text_node_t* rich_text_text_create_with_len(rich_text_font_t* font, const c
   node->next = NULL;
   node->type = RICH_TEXT_TEXT;
   node->u.text.font = *font;
+
   if (font->name != NULL) {
     node->u.text.font.name = tk_strdup(font->name);
     goto_error_if_fail(node->u.text.font.name != NULL);
@@ -60,7 +61,8 @@ rich_text_node_t* rich_text_text_create(rich_text_font_t* font, const char* text
   return rich_text_text_create_with_len(font, text, strlen(text));
 }
 
-rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t h) {
+rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t h,
+                                         uint32_t draw_type) {
   rich_text_node_t* node = NULL;
   return_value_if_fail(name != NULL, NULL);
 
@@ -69,11 +71,16 @@ rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t 
 
   node->next = NULL;
   node->type = RICH_TEXT_IMAGE;
-  node->u.image.name = tk_strdup(name);
   node->u.image.w = w;
   node->u.image.h = h;
+  node->u.image.draw_type = draw_type;
+  node->u.image.name = tk_strdup(name);
+  goto_error_if_fail(node->u.image.name != NULL);
 
   return node;
+error:
+  TKMEM_FREE(node);
+  return NULL;
 }
 
 ret_t rich_text_text_destroy(rich_text_node_t* node) {

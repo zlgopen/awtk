@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-07-27 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 

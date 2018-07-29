@@ -63,9 +63,11 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
       case RICH_TEXT_IMAGE: {
         bitmap_t bitmap;
         const char* name = iter->node->u.image.name;
+        image_draw_type_t draw_type = iter->node->u.image.draw_type;
 
         if (image_manager_load(image_manager(), name, &bitmap) == RET_OK) {
           canvas_draw_icon_in_rect(c, &bitmap, r);
+          canvas_draw_image_ex(c, &bitmap, draw_type, r);
         }
         break;
       }

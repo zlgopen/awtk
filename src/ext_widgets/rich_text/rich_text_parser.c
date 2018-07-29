@@ -15,13 +15,15 @@
 /**
  * History:
  * ================================================================
- * 2018-07-27 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
 #include "base/mem.h"
 #include "base/str.h"
 #include "base/utils.h"
+#include "base/enums.h"
+#include "base/bitmap.h"
 #include "xml/xml_parser.h"
 #include "base/color_parser.h"
 #include "rich_text/rich_text_node.h"
@@ -92,6 +94,7 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
   } else if (tk_str_eq(tag, "image")) {
     int32_t w = 0;
     int32_t h = 0;
+    int32_t draw_type = IMAGE_DRAW_CENTER;
     const char* image_name = NULL;
 
     while (attrs[i]) {
@@ -103,12 +106,17 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
         w = tk_atoi(value);
       } else if (tk_str_eq(key, "h")) {
         h = tk_atoi(value);
+      } else if (tk_str_eq(key, "draw_type")) {
+        const key_type_value_t* kv = image_draw_type_find(value);
+        if (kv != NULL) {
+          draw_type = kv->value;
+        }
       }
       i += 2;
     }
 
     if (image_name != NULL) {
-      b->node = rich_text_node_append(b->node, rich_text_image_create(image_name, w, h));
+      b->node = rich_text_node_append(b->node, rich_text_image_create(image_name, w, h, draw_type));
     }
   }
 

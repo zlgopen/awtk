@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-07-28 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-28 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
@@ -30,9 +30,9 @@ BEGIN_C_DECLS
 typedef struct _rich_text_render_node_t {
   rich_text_node_t* node;
 
+  rect_t rect;
   wchar_t* text;
   uint32_t size;
-  rect_t rect;
 
   struct _rich_text_render_node_t* next;
 } rich_text_render_node_t;

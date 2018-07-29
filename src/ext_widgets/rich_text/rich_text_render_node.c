@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-07-28 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-28 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
@@ -28,12 +28,44 @@
 rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node) {
   rich_text_render_node_t* render_node = NULL;
   return_value_if_fail(node != NULL, NULL);
+
   render_node = TKMEM_ZALLOC(rich_text_render_node_t);
   return_value_if_fail(render_node != NULL, NULL);
 
   render_node->node = node;
 
   return render_node;
+}
+
+#define MOVE_TO_NEXT_ROW()                                 \
+  x = margin;                                              \
+  y += row_h;                                              \
+  if (row_first_node != NULL) {                            \
+    rich_text_render_node_tune_row(row_first_node, row_h); \
+    row_first_node = NULL;                                 \
+  }
+
+rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node,
+                                                        int32_t row_h) {
+  rich_text_render_node_t* iter = row_first_node;
+
+  while (iter != NULL) {
+    iter->rect.h = row_h;
+    switch (iter->node->type) {
+      case RICH_TEXT_TEXT: {
+        break;
+      }
+      case RICH_TEXT_IMAGE: {
+        break;
+      }
+      default:
+        break;
+    }
+
+    iter = iter->next;
+  }
+
+  return NULL;
 }
 
 rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
@@ -49,48 +81,48 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
   rich_text_node_t* iter = node;
   rich_text_render_node_t* new_node = NULL;
   rich_text_render_node_t* render_node = NULL;
+  rich_text_render_node_t* row_first_node = NULL;
   return_value_if_fail(node != NULL && c != NULL && client_w > 0 && client_h > 0, NULL);
 
   while (iter != NULL) {
     switch (iter->type) {
       case RICH_TEXT_IMAGE: {
         bitmap_t bitmap;
-        const char* name = iter->u.image.name;
+        rich_text_image_t* image = &(iter->u.image);
+        const char* name = image->name;
         new_node = rich_text_render_node_create(iter);
         return_value_if_fail(new_node != NULL, render_node);
 
         if (image_manager_load(image_manager(), name, &bitmap) == RET_OK) {
-          if (iter->u.image.w == 0) {
-            iter->u.image.w = bitmap.w;
+          if (image->w == 0) {
+            image->w = bitmap.w;
           }
-          if (iter->u.image.h == 0) {
-            iter->u.image.h = bitmap.h;
+          if (image->h == 0) {
+            image->h = bitmap.h;
           }
         }
 
-        if (iter->u.image.w > client_w) {
-          iter->u.image.w = client_h;
-        }
-
-        if ((y + iter->u.image.h) > bottom) {
-          return render_node;
-        }
-
-        if (iter->u.image.w > ICON_SIZE || (x + iter->u.image.w) > right) {
-          x = margin;
-          y += row_h;
-        }
-
-        if (row_h < iter->u.image.h) {
-          row_h = iter->u.image.h;
+        if (image->w > ICON_SIZE || (x + image->w) > right) {
+          MOVE_TO_NEXT_ROW();
         }
 
         new_node->rect.x = x;
         new_node->rect.y = y;
-        new_node->rect.w = iter->u.image.w;
-        new_node->rect.h = iter->u.image.h;
+        new_node->rect.w = image->w;
+        new_node->rect.h = image->h;
+
+        if (image->w > ICON_SIZE) {
+          new_node->rect.w = client_w;
+        }
+
+        if (row_h < image->h) {
+          row_h = image->h;
+        }
 
         render_node = rich_text_render_node_append(render_node, new_node);
+        if (row_first_node == NULL) {
+          row_first_node = new_node;
+        }
         break;
       }
       case RICH_TEXT_TEXT: {
@@ -110,18 +142,20 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
           if ((x + tw + cw) > right) {
-            x = margin;
-            y += row_h;
+            MOVE_TO_NEXT_ROW();
 
             new_node = rich_text_render_node_create(iter);
             return_value_if_fail(new_node != NULL, render_node);
 
             new_node->text = str + start;
             new_node->size = i - start + 1;
-            new_node->rect = rect_init(x, y + row_h - font_size, tw, font_size);
-            x += tw;
+            new_node->rect = rect_init(x, y, tw, font_size);
+            x += tw + 1;
 
             render_node = rich_text_render_node_append(render_node, new_node);
+            if (row_first_node == NULL) {
+              row_first_node = new_node;
+            }
 
             start = i + 1;
           } else {
@@ -135,10 +169,13 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
           new_node->text = str + start;
           new_node->size = i - start;
-          new_node->rect = rect_init(x, y + row_h - font_size, tw, font_size);
-          x += tw;
+          new_node->rect = rect_init(x, y, tw, font_size);
+          x += tw + 1;
 
           render_node = rich_text_render_node_append(render_node, new_node);
+          if (row_first_node == NULL) {
+            row_first_node = new_node;
+          }
         }
 
         break;
@@ -149,6 +186,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
     iter = iter->next;
   }
+  MOVE_TO_NEXT_ROW();
 
   return render_node;
 }

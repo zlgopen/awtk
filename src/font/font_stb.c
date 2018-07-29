@@ -34,6 +34,10 @@ typedef struct _font_stb_t {
   font_t base;
   stbtt_fontinfo stb_font;
   glyph_cache_t cache;
+  int ascent;
+  int descent;
+  int lineGap;
+
 } font_stb_t;
 
 static bool_t font_stb_match(font_t* f, const char* name, uint16_t font_size) {
@@ -46,20 +50,27 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   int y = 0;
   int w = 0;
   int h = 0;
+  int x1 = 0;
+  int y1 = 0;
+  int x2 = 0;
+  int y2 = 0;
   int s = font_size;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
+  float scale = stbtt_ScaleForPixelHeight(sf, s);
 
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
     return RET_OK;
   }
 
-  g->data = stbtt_GetCodepointBitmap(sf, 0, stbtt_ScaleForPixelHeight(sf, s), c, &w, &h, &x, &y);
+  g->data = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
   g->x = x;
   g->y = y;
   g->w = w;
   g->h = h;
+
   glyph_cache_add(&(font->cache), c, font_size, g);
+  stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
@@ -96,6 +107,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
 
   glyph_cache_init(&(f->cache), 256, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
+  stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->lineGap));
 
   return &(f->base);
 }

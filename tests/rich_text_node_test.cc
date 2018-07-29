@@ -20,7 +20,7 @@ TEST(RichTextNode, text) {
 }
 
 TEST(RichTextNode, image) {
-  rich_text_node_t* image = rich_text_image_create("earth", 12, 24);
+  rich_text_node_t* image = rich_text_image_create("earth", 12, 24, 0);
 
   ASSERT_EQ(image->type, RICH_TEXT_IMAGE);
   ASSERT_EQ(string(image->u.image.name), string("earth"));
@@ -39,7 +39,7 @@ TEST(RichTextNode, basic) {
   ASSERT_EQ(rich_text_node_count(node), 1);
   node = rich_text_node_append(node, rich_text_text_create(&font, "good"));
   ASSERT_EQ(rich_text_node_count(node), 2);
-  node = rich_text_node_append(node, rich_text_image_create("earth", 12, 24));
+  node = rich_text_node_append(node, rich_text_image_create("earth", 12, 24, 0));
   ASSERT_EQ(rich_text_node_count(node), 3);
 
   rich_text_node_destroy(node);

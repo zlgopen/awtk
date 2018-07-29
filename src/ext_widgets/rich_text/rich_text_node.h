@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-07-27 Li XianJing <xianjimli@hotmail.com> adapt from uclib
+ * 2018-07-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
@@ -27,8 +27,8 @@
 BEGIN_C_DECLS
 
 typedef struct _rich_text_font_t {
-  color_t color;
   char* name;
+  color_t color;
   uint16_t size;
   uint16_t bold : 1;
   uint16_t italic : 1;
@@ -39,11 +39,12 @@ typedef struct _rich_text_image_t {
   char* name;
   uint32_t w;
   uint32_t h;
+  uint32_t draw_type;
 } rich_text_image_t;
 
 typedef struct _rich_text_text_t {
-  rich_text_font_t font;
   wchar_t* text;
+  rich_text_font_t font;
 } rich_text_text_t;
 
 typedef enum _rich_text_node_type_t {
@@ -63,7 +64,8 @@ typedef struct _rich_text_node_t {
 rich_text_node_t* rich_text_text_create(rich_text_font_t* font, const char* text);
 rich_text_node_t* rich_text_text_create_with_len(rich_text_font_t* font, const char* text,
                                                  uint32_t len);
-rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t h);
+rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t h,
+                                         uint32_t draw_type);
 rich_text_node_t* rich_text_node_append(rich_text_node_t* node, rich_text_node_t* next);
 
 int32_t rich_text_node_count(rich_text_node_t* node);
