@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/line_break.h"
 #include "base/image_manager.h"
 #include "rich_text/rich_text_render_node.h"
 
@@ -139,7 +140,9 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         float_t tw = 0;
         float_t cw = 0;
         int32_t start = 0;
+        int32_t last_breakable = 0;
         wchar_t* str = iter->u.text.text;
+        break_type_t break_type = LINE_BREAK_ALLOW;
         int32_t font_size = iter->u.text.font.size;
 
         if (row_h < font_size) {
@@ -149,26 +152,53 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
+          if(i > 0) {
+            break_type = line_break_check(str[i-1], str[i]);
+          }
 
-          if ((x + tw + cw) > right) {
-            i = i - 1;
+          if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
+            if(break_type != LINE_BREAK_MUST) {
+              if((i - last_breakable) < 10) {
+                i = last_breakable;
+              }
+            } 
+
             new_node = rich_text_render_node_create(iter);
             return_value_if_fail(new_node != NULL, render_node);
 
             new_node->text = str + start;
-            new_node->size = i - start + 1;
+            new_node->size = i - start;
             new_node->rect = rect_init(x, y, tw, font_size);
 
             render_node = rich_text_render_node_append(render_node, new_node);
             if (row_first_node == NULL) {
               row_first_node = new_node;
             }
+            
+            if(break_type == LINE_BREAK_MUST) {
+              while(str[i] == '\r' || str[i] == '\n') {
+                i++;
+              }
+              start = i;
+              y += font_size;
+            } else {
+              if(str[i] == ' ' || str[i] == '\t') {
+                i++;
+              }
+              start = i;
+            }
 
+            x += tw + 1;
             tw = 0;
-            start = i + 1;
             MOVE_TO_NEXT_ROW();
             row_h = font_size;
           } else {
+            if(i > 0) {
+              if(line_break_check(str[i-1], str[i]) == LINE_BREAK_ALLOW) {
+                last_breakable = i;
+              }
+            }
+
             tw += cw;
           }
         }
@@ -181,6 +211,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
           new_node->size = i - start;
           new_node->rect = rect_init(x, y, tw, font_size);
           x += tw + 1;
+          tw = 0;
 
           render_node = rich_text_render_node_append(render_node, new_node);
           if (row_first_node == NULL) {
