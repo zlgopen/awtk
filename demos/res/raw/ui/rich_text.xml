@@ -1,9 +1,8 @@
 <window anim_hint="htranslate" >
-    <rich_text x="0" y="0" w="100%" h="60" text="<image name=&quota;earth&quota;/><image draw_type=&quota;icon&quota; name=&quota;earth&quota;/>" />
-    <rich_text x="0" y="70" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font><font color=&quota;red&quota; size==&quota;32&quota;>ZLG</font>" />
-    <rich_text x="0" y="140" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;top&quota;>hello awtk!</font><font color=&quota;green&quota; size==&quota;32&quota;>ZLG</font>" />
-    <rich_text x="0" y="210" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size==&quota;32&quota;>ZLG</font>" />
-    <rich_text line_gap="5" x="0" y="280" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size==&quota;18&quota;>ProTip! The feed shows you events from people you follow and repositories you watch. 
-hello world</font>" />
+    <rich_text x="0" y="0" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font><font color=&quota;red&quota; size=&quota;32&quota;>ZLG</font>" />
+    <rich_text x="0" y="70" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;top&quota;>hello awtk!</font><font color=&quota;green&quota; size=&quota;32&quota;>ZLG</font>" />
+    <rich_text x="0" y="140" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size=&quota;32&quota;>ZLG</font>" />
+    <rich_text line_gap="5" x="0" y="210" w="100%" h="200" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;green&quota; size=&quota;20&quota;>ProTip! The feed shows you events from people you follow and repositories you watch. 
+hello world. 确定取消中文字符测试。确定。取消。中文字符测试。</font>" />
     <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
 </window>

@@ -51,6 +51,8 @@
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/preload.data"
 #include "res/inc/ui/rich_text.data"
+#include "res/inc/ui/rich_text1.data"
+#include "res/inc/ui/rich_text2.data"
 #include "res/inc/ui/scroll_bar.data"
 #include "res/inc/ui/scroll_bar_h.data"
 #include "res/inc/ui/scroll_view.data"
@@ -224,7 +226,6 @@
 #include "res/inc/fonts/default.res"
 #endif/*WITH_MINI_FONT*/
 #else/*WITH_STB_FONT*/
-#include "res/inc/fonts/default.data"
 #endif/*WITH_STB_FONT*/
 #endif/*WITH_FS_RES*/
 
@@ -235,7 +236,6 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
-  resource_manager_add(rm, font_default);
   resource_manager_add(rm, image_1);
   resource_manager_add(rm, image_2);
   resource_manager_add(rm, image_3);
@@ -358,6 +358,8 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_preload);
   resource_manager_add(rm, ui_rich_text);
+  resource_manager_add(rm, ui_rich_text1);
+  resource_manager_add(rm, ui_rich_text2);
   resource_manager_add(rm, ui_scroll_bar);
   resource_manager_add(rm, ui_scroll_bar_h);
   resource_manager_add(rm, ui_scroll_view);

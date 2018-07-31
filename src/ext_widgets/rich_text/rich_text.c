@@ -49,15 +49,39 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 
   while (iter != NULL) {
     rect_t* r = &(iter->rect);
+    if (r->y > widget->h) {
+      break;
+    }
+
     switch (iter->node->type) {
       case RICH_TEXT_TEXT: {
+        rect_t cr;
+        int32_t i = 0;
+        float_t x = r->x;
+        wchar_t* text = iter->text;
+        int32_t spacing = iter->spacing;
         rich_text_font_t* font = &(iter->node->u.text.font);
 
         canvas_set_text_color(c, font->color);
         canvas_set_font(c, font->name, font->size);
         canvas_set_text_align(c, ALIGN_H_LEFT, font->align_v);
 
-        canvas_draw_text_in_rect(c, iter->text, iter->size, r);
+        for (i = 0; i < iter->size; i++) {
+          float_t cw = canvas_measure_text(c, text + i, 1);
+          cr.x = x;
+          cr.y = r->y;
+          cr.h = r->h;
+          cr.w = cw + 1;
+
+          canvas_draw_text_in_rect(c, text + i, 1, &cr);
+          x += cw;
+          if (spacing > 0) {
+            if (rich_text_is_flexable_w_char(text[i])) {
+              x += iter->flexible_w_char_delta_w;
+              spacing -= iter->flexible_w_char_delta_w;
+            }
+          }
+        }
         break;
       }
       case RICH_TEXT_IMAGE: {
@@ -98,7 +122,8 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
     style_t* style = &(widget->style);
     int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
 
-    rich_text->render_node = rich_text_render_node_layout(rich_text->node, c, w, h, margin, line_gap);
+    rich_text->render_node =
+        rich_text_render_node_layout(rich_text->node, c, w, h, margin, line_gap);
   }
   return_value_if_fail(rich_text->render_node != NULL, RET_OOM);
 

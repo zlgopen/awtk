@@ -35,4 +35,3 @@ break_type_t word_break_check(wchar_t c1, wchar_t c2);
 END_C_DECLS
 
 #endif /*TK_LINE_BREAK_H*/
-

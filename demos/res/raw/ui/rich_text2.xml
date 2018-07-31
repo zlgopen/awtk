@@ -1,0 +1,4 @@
+<window anim_hint="htranslate" >
+    <rich_text line_gap="5" x="0" y="20" w="100%" h="400" text="<image draw_type=&quota;auto&quota; name=&quota;1&quota; /><image name=&quota;2&quota;/><image name=&quota;bricks&quota;/>Bricks<image name=&quota;earth&quota;/>Earth<font color=&quota;blue&quota; size==&quota;18&quota;>确定取消中文字符测试。</font>" />
+    <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
+</window>

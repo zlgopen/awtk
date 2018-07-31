@@ -29,7 +29,7 @@
 break_type_t line_break_check(wchar_t c1, wchar_t c2) {
   int ret = 0;
   static bool_t inited = FALSE;
-  if(!inited) {
+  if (!inited) {
     inited = TRUE;
     init_linebreak();
   }
@@ -55,8 +55,8 @@ break_type_t word_break_check(wchar_t c1, wchar_t c2) {
   utf32_t s[2];
   char brks[2];
   static bool_t inited = FALSE;
-  
-  if(!inited) {
+
+  if (!inited) {
     inited = TRUE;
     init_wordbreak();
   }
@@ -65,7 +65,7 @@ break_type_t word_break_check(wchar_t c1, wchar_t c2) {
   s[1] = c2;
   set_wordbreaks_utf32(s, 2, "", brks);
 
-  if(brks[0] == WORDBREAK_BREAK) {
+  if (brks[0] == WORDBREAK_BREAK) {
     return LINE_BREAK_ALLOW;
   } else {
     return LINE_BREAK_NO;
@@ -85,11 +85,10 @@ break_type_t line_break_check(wchar_t c1, wchar_t c2) {
 }
 
 break_type_t word_break_check(wchar_t c1, wchar_t c2) {
-  if(ispace(c1) || ispace(c2)) {
+  if (ispace(c1) || ispace(c2)) {
     return LINE_BREAK_ALLOW;
   }
 
   return LINE_BREAK_NO;
 }
 #endif /*WITH_UNICODE_BREAK*/
-

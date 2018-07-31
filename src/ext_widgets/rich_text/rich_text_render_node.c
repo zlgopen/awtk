@@ -38,14 +38,55 @@ rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node) {
   return render_node;
 }
 
-rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node,
-                                                        int32_t row_h) {
+bool_t rich_text_is_flexable_w_char(wchar_t c) {
+  static const wchar_t* s_flexable_w_chars = L" ,.?!;:>}]　，。？！；：》｝】』";
+
+  return wcschr(s_flexable_w_chars, c) != NULL;
+}
+
+ret_t rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node, int32_t row_h,
+                                     int32_t flexible_w) {
+  int32_t dx = 0;
+  int32_t flexible_w_chars = 0;
+  int32_t flexible_w_chars_w = 0;
   rich_text_render_node_t* iter = row_first_node;
 
   while (iter != NULL) {
+    if (iter->node->type == RICH_TEXT_TEXT) {
+      int32_t i = 0;
+
+      for (i = 0; i < iter->size; i++) {
+        if (rich_text_is_flexable_w_char(iter->text[i])) {
+          iter->flexible_w_chars++;
+          flexible_w_chars++;
+        }
+      }
+    }
+
+    iter = iter->next;
+  }
+
+  if (flexible_w_chars > 0) {
+    flexible_w_chars_w = tk_max(1, (flexible_w / flexible_w_chars));
+  } else {
+    flexible_w_chars_w = 0;
+  }
+
+  iter = row_first_node;
+  while (iter != NULL) {
     iter->rect.h = row_h;
+    iter->rect.x += dx;
+
     switch (iter->node->type) {
       case RICH_TEXT_TEXT: {
+        if (flexible_w > 0) {
+          int32_t spacing = iter->flexible_w_chars * flexible_w_chars_w;
+          iter->spacing = tk_min(spacing, flexible_w);
+          iter->flexible_w_char_delta_w = flexible_w_chars_w;
+
+          flexible_w -= iter->spacing;
+          dx += iter->spacing;
+        }
         break;
       }
       case RICH_TEXT_IMAGE: {
@@ -58,20 +99,21 @@ rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t*
     iter = iter->next;
   }
 
-  return NULL;
+  return RET_OK;
 }
 
-#define MOVE_TO_NEXT_ROW()                                 \
-  x = margin;                                              \
-  y += row_h + line_gap;                                   \
-  if (row_first_node != NULL) {                            \
-    rich_text_render_node_tune_row(row_first_node, row_h); \
-    row_first_node = NULL;                                 \
-  } \
+#define MOVE_TO_NEXT_ROW()                                             \
+  x = margin;                                                          \
+  y += row_h + line_gap;                                               \
+  if (row_first_node != NULL) {                                        \
+    rich_text_render_node_tune_row(row_first_node, row_h, flexible_w); \
+    row_first_node = NULL;                                             \
+  }                                                                    \
   row_h = 0;
 
 rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
-                                                      int32_t w, int32_t h, int32_t margin, int32_t line_gap) {
+                                                      int32_t w, int32_t h, int32_t margin,
+                                                      int32_t line_gap) {
   int32_t row_h = 0;
   int32_t x = margin;
   int32_t y = margin;
@@ -90,6 +132,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
     switch (iter->type) {
       case RICH_TEXT_IMAGE: {
         bitmap_t bitmap;
+        int32_t flexible_w = 0;
         rich_text_image_t* image = &(iter->u.image);
         const char* name = image->name;
         new_node = rich_text_render_node_create(iter);
@@ -132,7 +175,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
           }
           x += new_node->rect.w + 1;
         }
-        
+
         break;
       }
       case RICH_TEXT_TEXT: {
@@ -140,6 +183,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         float_t tw = 0;
         float_t cw = 0;
         int32_t start = 0;
+        int32_t flexible_w = 0;
         int32_t last_breakable = 0;
         wchar_t* str = iter->u.text.text;
         break_type_t break_type = LINE_BREAK_ALLOW;
@@ -152,16 +196,16 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
-          if(i > 0) {
-            break_type = line_break_check(str[i-1], str[i]);
+          if (i > 0) {
+            break_type = line_break_check(str[i - 1], str[i]);
           }
 
           if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
-            if(break_type != LINE_BREAK_MUST) {
-              if((i - last_breakable) < 10) {
+            if (break_type != LINE_BREAK_MUST) {
+              if ((i - last_breakable) < 10) {
                 i = last_breakable;
               }
-            } 
+            }
 
             new_node = rich_text_render_node_create(iter);
             return_value_if_fail(new_node != NULL, render_node);
@@ -174,18 +218,20 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
             if (row_first_node == NULL) {
               row_first_node = new_node;
             }
-            
-            if(break_type == LINE_BREAK_MUST) {
-              while(str[i] == '\r' || str[i] == '\n') {
+
+            if (break_type == LINE_BREAK_MUST) {
+              while (str[i] == '\r' || str[i] == '\n') {
                 i++;
               }
-              start = i;
               y += font_size;
+              start = i;
+              flexible_w = 0;
             } else {
-              if(str[i] == ' ' || str[i] == '\t') {
+              if (str[i] == ' ' || str[i] == '\t') {
                 i++;
               }
               start = i;
+              flexible_w = right - x - canvas_measure_text(c, new_node->text, new_node->size);
             }
 
             x += tw + 1;
@@ -193,8 +239,8 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
             MOVE_TO_NEXT_ROW();
             row_h = font_size;
           } else {
-            if(i > 0) {
-              if(line_break_check(str[i-1], str[i]) == LINE_BREAK_ALLOW) {
+            if (i > 0) {
+              if (line_break_check(str[i - 1], str[i]) == LINE_BREAK_ALLOW) {
                 last_breakable = i;
               }
             }
@@ -227,7 +273,10 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
     iter = iter->next;
   }
-  MOVE_TO_NEXT_ROW();
+
+  if (row_first_node != NULL) {
+    rich_text_render_node_tune_row(row_first_node, row_h, 0);
+  }
 
   return render_node;
 }
