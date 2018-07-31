@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "wordbreak.h"
 #include "linebreak.h"
+#include "base/line_break.h"
 
 void set_wordbreaks_wchar(const wchar_t* s, size_t len, const char* lang, char* brks) {
   if (sizeof(wchar_t) == 2) {
@@ -52,4 +53,10 @@ TEST(LineBreak, chars) {
   ASSERT_EQ(is_line_breakable(str[1], str[2], ""), LINEBREAK_NOBREAK);
   ASSERT_EQ(is_line_breakable(str[2], str[3], ""), LINEBREAK_ALLOWBREAK);
   ASSERT_EQ(is_line_breakable(str[4], str[5], ""), LINEBREAK_MUSTBREAK);
+}
+
+TEST(LineBreak, chars_word) {
+  ASSERT_EQ(word_break_check(' ', 'h'), LINE_BREAK_ALLOW);
+  ASSERT_EQ(word_break_check('k', ' '), LINE_BREAK_ALLOW);
+  ASSERT_EQ(word_break_check('k', 'o'), LINE_BREAK_NO);
 }

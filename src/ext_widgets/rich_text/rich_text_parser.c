@@ -175,6 +175,7 @@ static XmlBuilder* builder_init(xml_builder_t* b) {
 
     iter->size = TK_DEFAULT_FONT_SIZE;
     iter->color = color_init(0, 0, 0, 0xff);
+    iter->align_v = ALIGN_V_BOTTOM;
   }
   str_init(&(b->temp), 100);
 

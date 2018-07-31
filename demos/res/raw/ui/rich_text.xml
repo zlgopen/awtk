@@ -4,6 +4,6 @@
     <rich_text x="0" y="140" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;top&quota;>hello awtk!</font><font color=&quota;green&quota; size==&quota;32&quota;>ZLG</font>" />
     <rich_text x="0" y="210" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size==&quota;32&quota;>ZLG</font>" />
     <rich_text line_gap="5" x="0" y="280" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size==&quota;18&quota;>ProTip! The feed shows you events from people you follow and repositories you watch. 
-</font>" />
+ hello world</font>" />
     <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
 </window>

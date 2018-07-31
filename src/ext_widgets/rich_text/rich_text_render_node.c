@@ -37,14 +37,6 @@ rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node) {
   return render_node;
 }
 
-#define MOVE_TO_NEXT_ROW()                                 \
-  x = margin;                                              \
-  y += row_h + line_gap;                                              \
-  if (row_first_node != NULL) {                            \
-    rich_text_render_node_tune_row(row_first_node, row_h); \
-    row_first_node = NULL;                                 \
-  } 
-
 rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node,
                                                         int32_t row_h) {
   rich_text_render_node_t* iter = row_first_node;
@@ -67,6 +59,15 @@ rich_text_render_node_t* rich_text_render_node_tune_row(rich_text_render_node_t*
 
   return NULL;
 }
+
+#define MOVE_TO_NEXT_ROW()                                 \
+  x = margin;                                              \
+  y += row_h + line_gap;                                   \
+  if (row_first_node != NULL) {                            \
+    rich_text_render_node_tune_row(row_first_node, row_h); \
+    row_first_node = NULL;                                 \
+  } \
+  row_h = 0;
 
 rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
                                                       int32_t w, int32_t h, int32_t margin, int32_t line_gap) {
@@ -102,7 +103,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
           }
         }
 
-        if (image->w > ICON_SIZE || (x + image->w) > right) {
+        if ((image->w > ICON_SIZE && x > margin) || (x + image->w) > right) {
           MOVE_TO_NEXT_ROW();
         }
 
@@ -120,16 +121,23 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         }
 
         render_node = rich_text_render_node_append(render_node, new_node);
-        if (row_first_node == NULL) {
-          row_first_node = new_node;
+        if (image->w > ICON_SIZE) {
+          x = margin;
+          y += row_h + line_gap;
+          row_h = 0;
+        } else {
+          if (row_first_node == NULL) {
+            row_first_node = new_node;
+          }
+          x += new_node->rect.w + 1;
         }
-        x += new_node->rect.w + 1;
+        
         break;
       }
       case RICH_TEXT_TEXT: {
+        int32_t i = 0;
         float_t tw = 0;
         float_t cw = 0;
-        int32_t i = 0;
         int32_t start = 0;
         wchar_t* str = iter->u.text.text;
         int32_t font_size = iter->u.text.font.size;
@@ -141,6 +149,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
 
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
+
           if ((x + tw + cw) > right) {
             i = i - 1;
             new_node = rich_text_render_node_create(iter);

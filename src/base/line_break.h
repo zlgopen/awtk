@@ -1,7 +1,7 @@
 ﻿/**
  * File:   line_break.h
  * Author: AWTK Develop Team
- * Brief:  line_break struct and utils functions.
+ * Brief:  line break and work break algorithm.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -26,10 +26,13 @@
 
 BEGIN_C_DECLS
 
-typedef enum line_break_t { LINE_BREAK_MUST = 0, LINE_BREAK_ALLOW, LINE_BREAK_NO } line_break_t;
+typedef enum break_type_t { LINE_BREAK_MUST = 0, LINE_BREAK_ALLOW, LINE_BREAK_NO } break_type_t;
 
-line_break_t line_break_check(wchar_t c1, wchar_t c2);
+break_type_t line_break_check(wchar_t c1, wchar_t c2);
+
+break_type_t word_break_check(wchar_t c1, wchar_t c2);
 
 END_C_DECLS
 
 #endif /*TK_LINE_BREAK_H*/
+

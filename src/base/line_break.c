@@ -1,7 +1,7 @@
 ﻿/**
  * File:   line_break.c
  * Author: AWTK Develop Team
- * Brief:  line_break struct and utils functions.
+ * Brief:  line break and work break algorithm.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -22,9 +22,19 @@
 #include "base/line_break.h"
 
 #ifdef WITH_UNICODE_BREAK
+
 #include "linebreak.h"
-line_break_t line_break_check(wchar_t c1, wchar_t c2) {
-  int ret = is_line_breakable(c1, c2, "");
+#include "wordbreak.h"
+
+break_type_t line_break_check(wchar_t c1, wchar_t c2) {
+  int ret = 0;
+  static bool_t inited = FALSE;
+  if(!inited) {
+    inited = TRUE;
+    init_linebreak();
+  }
+
+  ret = is_line_breakable(c1, c2, "");
 
   switch (ret) {
     case LINEBREAK_MUSTBREAK: {
@@ -34,20 +44,52 @@ line_break_t line_break_check(wchar_t c1, wchar_t c2) {
       return LINE_BREAK_ALLOW;
     }
     case LINEBREAK_NOBREAK: {
-      return LINE_BREAK_NO;
+      return word_break_check(c1, c2);
     }
     default: { return LINE_BREAK_ALLOW; }
   }
 }
+
+break_type_t word_break_check(wchar_t c1, wchar_t c2) {
+  int ret = 0;
+  utf32_t s[2];
+  char brks[2];
+  static bool_t inited = FALSE;
+  
+  if(!inited) {
+    inited = TRUE;
+    init_wordbreak();
+  }
+
+  s[0] = c1;
+  s[1] = c2;
+  set_wordbreaks_utf32(s, 2, "", brks);
+
+  if(brks[0] == WORDBREAK_BREAK) {
+    return LINE_BREAK_ALLOW;
+  } else {
+    return LINE_BREAK_NO;
+  }
+}
 #else
+/*FIXME:*/
 static const wchar_t* no_start_symbols = L",.?!)>:;，。？！》）：；";
-line_break_t line_break_check(wchar_t c1, wchar_t c2) {
+break_type_t line_break_check(wchar_t c1, wchar_t c2) {
   if (wcschr(no_start_symbols, c2) != NULL) {
     return LINE_BREAK_NO;
   } else if (c1 == '\r' || c1 == '\n') {
     return LINE_BREAK_MUST;
   } else {
-    return LINE_BREAK_ALLOW;
+    return word_break_check(c1, c2);
   }
 }
+
+break_type_t word_break_check(wchar_t c1, wchar_t c2) {
+  if(ispace(c1) || ispace(c2)) {
+    return LINE_BREAK_ALLOW;
+  }
+
+  return LINE_BREAK_NO;
+}
 #endif /*WITH_UNICODE_BREAK*/
+
