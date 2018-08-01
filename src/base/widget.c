@@ -40,10 +40,13 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
 
   if (widget->x != x || widget->y != y) {
     widget_dispatch(widget, &e);
+
     widget->x = x;
     widget->y = y;
+
     e.type = EVT_MOVE;
     widget_dispatch(widget, &e);
+
     widget_invalidate(widget, NULL);
   }
 
@@ -56,11 +59,13 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
 
   if (widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
+
     widget->w = w;
     widget->h = h;
 
     e.type = EVT_RESIZE;
     widget_dispatch(widget, &e);
+
     widget_invalidate(widget, NULL);
   }
 
@@ -73,12 +78,15 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   if (widget->x != x || widget->y != y || widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
+
     widget->x = x;
     widget->y = y;
     widget->w = w;
     widget->h = h;
+
     e.type = EVT_MOVE_RESIZE;
     widget_dispatch(widget, &e);
+
     widget_invalidate(widget, NULL);
   }
 
@@ -122,16 +130,13 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
   tr_text = locale_tr(locale(), text);
-#ifdef WITH_DYNAMIC_TR
   TKMEM_FREE(widget->tr_text);
   widget->tr_text = tk_strdup(text);
-#endif /*WITH_DYNAMIC_TR*/
 
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
 }
 
 ret_t widget_re_translate_text(widget_t* widget) {
-#ifdef WITH_DYNAMIC_TR
   if (widget->tr_text != NULL) {
     value_t v;
     const char* tr_text = locale_tr(locale(), widget->tr_text);
@@ -144,9 +149,6 @@ ret_t widget_re_translate_text(widget_t* widget) {
   WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
-#else
-  return RET_FAIL;
-#endif /*WITH_DYNAMIC_TR*/
 }
 
 int32_t widget_get_value(widget_t* widget) {
@@ -166,9 +168,7 @@ const wchar_t* widget_get_text(widget_t* widget) {
 ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
-  if (widget->name != NULL) {
-    TKMEM_FREE(widget->name);
-  }
+  TKMEM_FREE(widget->name);
   widget->name = tk_strdup(name);
 
   return RET_OK;
@@ -729,6 +729,13 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   return ret;
 }
 
+ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* str) {
+  value_t v;
+  value_set_str(&v, str);
+
+  return widget_set_prop(widget, name, &v);
+}
+
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
@@ -1065,9 +1072,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
 
   TKMEM_FREE(widget->name);
   TKMEM_FREE(widget->style_name);
-#ifdef WITH_DYNAMIC_TR
   TKMEM_FREE(widget->tr_text);
-#endif /*WITH_DYNAMIC_TR*/
   wstr_reset(&(widget->text));
 
   if (widget->custom_props != NULL) {
@@ -1336,9 +1341,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
 
   clone->name = tk_strdup(widget->name);
   clone->style_name = tk_strdup(widget->style_name);
-#ifdef WITH_DYNAMIC_TR
   clone->tr_text = tk_strdup(widget->tr_text);
-#endif /*WITH_DYNAMIC_TR*/
 
   if (widget->text.size) {
     wstr_set(&(clone->text), widget->text.str);
@@ -1392,7 +1395,6 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
 
   ret = ret && wstr_equal(&(widget->text), &(other->text));
 
-#ifdef WITH_DYNAMIC_TR
   if (widget->tr_text != NULL || other->tr_text != NULL) {
     ret = ret && (tk_str_eq(widget->tr_text, other->tr_text) || PROP_EQ(tr_text));
   }
@@ -1400,7 +1402,6 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   if (!ret) {
     return ret;
   }
-#endif /*WITH_DYNAMIC_TR*/
 
   properties = widget->vt->clone_properties;
   if (properties != NULL) {

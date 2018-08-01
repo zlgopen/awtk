@@ -418,7 +418,7 @@ static const widget_vtable_t s_wm_vtable = {
     .on_remove_child = wm_on_remove_child,
     .find_target = window_manager_find_target,
 };
-#ifdef WITH_DYNAMIC_TR
+
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -430,7 +430,6 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
 
   return RET_OK;
 }
-#endif /*WITH_DYNAMIC_TR*/
 
 widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);
@@ -438,9 +437,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   widget_init(w, NULL, &s_wm_vtable, 0, 0, 0, 0);
 
-#ifdef WITH_DYNAMIC_TR
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
-#endif /*WITH_DYNAMIC_TR*/
 
   return w;
 }
