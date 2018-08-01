@@ -36,7 +36,7 @@ struct _XmlParser {
 
   char* buffer;
   int buffer_used;
-  int buffer_total;
+  int capacity;
 
   XmlBuilder* builder;
 };
@@ -166,16 +166,16 @@ static void xml_parser_reset_buffer(XmlParser* thiz) {
 static int xml_parser_strdup(XmlParser* thiz, const char* start, int length) {
   int offset = -1;
 
-  if ((thiz->buffer_used + length) >= thiz->buffer_total) {
-    int length = thiz->buffer_total + (thiz->buffer_total >> 1) + 128;
-    char* buffer = (char*)TKMEM_REALLOC(char, thiz->buffer, length);
+  if ((thiz->buffer_used + length) >= thiz->capacity) {
+    int new_capacity = thiz->capacity + (thiz->capacity >> 1) + length + 32;
+    char* buffer = (char*)TKMEM_REALLOC(char, thiz->buffer, new_capacity);
     if (buffer != NULL) {
       thiz->buffer = buffer;
-      thiz->buffer_total = length;
+      thiz->capacity = new_capacity;
     }
   }
 
-  if ((thiz->buffer_used + length) >= thiz->buffer_total) {
+  if ((thiz->buffer_used + length) >= thiz->capacity) {
     return offset;
   }
 

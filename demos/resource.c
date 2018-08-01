@@ -50,6 +50,7 @@
 #include "res/inc/ui/main.data"
 #include "res/inc/ui/memtest.data"
 #include "res/inc/ui/preload.data"
+#include "res/inc/ui/r.data"
 #include "res/inc/ui/rich_text.data"
 #include "res/inc/ui/rich_text1.data"
 #include "res/inc/ui/rich_text2.data"
@@ -359,6 +360,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_main);
   resource_manager_add(rm, ui_memtest);
   resource_manager_add(rm, ui_preload);
+  resource_manager_add(rm, ui_r);
   resource_manager_add(rm, ui_rich_text);
   resource_manager_add(rm, ui_rich_text1);
   resource_manager_add(rm, ui_rich_text2);
