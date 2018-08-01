@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   popup.c
  * Author: AWTK Develop Team
  * Brief:  popup
@@ -26,6 +26,7 @@
 #include "base/utils.h"
 #include "base/layout.h"
 #include "base/popup.h"
+#include "base/window.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 
@@ -150,6 +151,7 @@ static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .get_prop = popup_get_prop,
                                                .set_prop = popup_set_prop,
                                                .on_event = popup_on_event,
+                                               .destroy = popup_destroy,
                                                .on_paint_self = popup_on_paint_self};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

@@ -73,7 +73,7 @@ rich_text_node_t* rich_text_image_create(const char* name, uint32_t w, uint32_t 
   node->type = RICH_TEXT_IMAGE;
   node->u.image.w = w;
   node->u.image.h = h;
-  node->u.image.draw_type = draw_type;
+  node->u.image.draw_type = (image_draw_type_t)draw_type;
   node->u.image.name = tk_strdup(name);
   goto_error_if_fail(node->u.image.name != NULL);
 

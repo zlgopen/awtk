@@ -38,9 +38,9 @@ rich_text_render_node_t* rich_text_render_node_create(rich_text_node_t* node) {
   return render_node;
 }
 
-bool_t rich_text_is_flexable_w_char(wchar_t c) {
-  static const wchar_t* s_flexable_w_chars = L" ,.?!;:>}]　，。？！；：》｝】』";
+static const wchar_t* s_flexable_w_chars = L" ,.?!;:>}]　，。？！；：》｝】』";
 
+bool_t rich_text_is_flexable_w_char(wchar_t c) {
   return wcschr(s_flexable_w_chars, c) != NULL;
 }
 
@@ -118,7 +118,6 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
   int32_t x = margin;
   int32_t y = margin;
   int32_t right = w - margin;
-  int32_t bottom = h - margin;
   int32_t client_w = w - 2 * margin;
   int32_t client_h = h - 2 * margin;
 

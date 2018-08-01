@@ -23,13 +23,14 @@
 #define TK_RICH_TEXT_NODE_H
 
 #include "base/color.h"
+#include "base/bitmap.h"
 
 BEGIN_C_DECLS
 
 typedef struct _rich_text_font_t {
   char* name;
   color_t color;
-  uint8_t align_v;
+  align_v_t align_v;
   uint16_t size;
   uint16_t bold : 1;
   uint16_t italic : 1;
@@ -40,7 +41,7 @@ typedef struct _rich_text_image_t {
   char* name;
   uint32_t w;
   uint32_t h;
-  uint32_t draw_type;
+  image_draw_type_t draw_type;
 } rich_text_image_t;
 
 typedef struct _rich_text_text_t {

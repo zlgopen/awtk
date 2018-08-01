@@ -80,7 +80,7 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
       } else if (tk_str_eq(key, "align_v")) {
         const key_type_value_t* kv = align_v_type_find(value);
         if (kv != NULL) {
-          b->font->align_v = kv->value;
+          b->font->align_v = (align_v_t)(kv->value);
         }
       } else if (tk_str_eq(key, "name")) {
         TKMEM_FREE(b->font->name);
@@ -150,7 +150,7 @@ static void xml_rich_text_on_text(XmlBuilder* thiz, const char* text, size_t len
 
 static void xml_rich_text_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
   (void)thiz;
-  printf("parse error: %d:%d %s\n", line, row, message);
+  log_debug("parse error: %d:%d %s\n", line, row, message);
   return;
 }
 
