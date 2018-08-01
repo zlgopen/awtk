@@ -36,70 +36,6 @@
 
 BEGIN_C_DECLS
 
-/**
- * @enum widget_state_t
- * @scriptable
- * @prefix WIDGET_
- * 控件状态常量定义。
- */
-typedef enum _widget_state_t {
-  /**
-   * @const WIDGET_STATE_NONE
-   * 无效状态。
-   */
-  WIDGET_STATE_NONE,
-  /**
-   * @const WIDGET_STATE_NORMAL
-   * 正常状态。
-   */
-  WIDGET_STATE_NORMAL = 1,
-  /**
-   * @const WIDGET_STATE_PRESSED
-   * 指针按下状态。
-   */
-  WIDGET_STATE_PRESSED = 2,
-  /**
-   * @const WIDGET_STATE_OVER
-   * 指针悬浮状态。
-   */
-  WIDGET_STATE_OVER = 3,
-  /**
-   * @const WIDGET_STATE_DISABLE
-   * 禁用状态。
-   */
-  WIDGET_STATE_DISABLE = 4,
-  /**
-   * @const WIDGET_STATE_FOCUSED
-   * 聚焦状态。
-   */
-  WIDGET_STATE_FOCUSED = 5,
-  /**
-   * @const WIDGET_STATE_CHECKED
-   * 勾选状态。
-   */
-  WIDGET_STATE_CHECKED = 6,
-  /**
-   * @const WIDGET_STATE_UNCHECKED
-   * 没勾选状态。
-   */
-  WIDGET_STATE_UNCHECKED = 7,
-  /**
-   * @const WIDGET_STATE_EMPTY
-   * 编辑器无内容状态。
-   */
-  WIDGET_STATE_EMPTY = 8,
-  /**
-   * @const WIDGET_STATE_ERROR
-   * 输入错误状态。
-   */
-  WIDGET_STATE_ERROR = 9,
-  /**
-   * @const WIDGET_STATE_ERROR
-   * 输入错误状态。
-   */
-  WIDGET_STATE_SELECTED = 10
-} widget_state_t;
-
 struct _widget_t;
 typedef struct _widget_t widget_t;
 
@@ -112,7 +48,6 @@ typedef ret_t (*widget_on_paint_border_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_done_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
-typedef ret_t (*widget_on_click_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_move_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_up_t)(widget_t* widget, pointer_event_t* e);
@@ -135,7 +70,6 @@ typedef struct _widget_vtable_t {
 
   widget_get_prop_t get_prop;
   widget_set_prop_t set_prop;
-  widget_on_click_t on_click;
   widget_on_keyup_t on_keyup;
   widget_on_keydown_t on_keydown;
   widget_on_paint_background_t on_paint_background;
@@ -860,7 +794,6 @@ ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e);
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
 ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
-ret_t widget_on_click(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);

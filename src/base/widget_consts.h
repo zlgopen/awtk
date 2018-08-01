@@ -144,6 +144,69 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_LIST_VIEW_H "list_view_h"
 #define WIDGET_TYPE_LIST_ITEM "list_item"
 
+/**
+ * @enum widget_state_t
+ * @scriptable
+ * @prefix WIDGET_
+ * 控件状态常量定义。
+ */
+typedef enum _widget_state_t {
+  /**
+   * @const WIDGET_STATE_NONE
+   * 无效状态。
+   */
+  WIDGET_STATE_NONE,
+  /**
+   * @const WIDGET_STATE_NORMAL
+   * 正常状态。
+   */
+  WIDGET_STATE_NORMAL = 1,
+  /**
+   * @const WIDGET_STATE_PRESSED
+   * 指针按下状态。
+   */
+  WIDGET_STATE_PRESSED = 2,
+  /**
+   * @const WIDGET_STATE_OVER
+   * 指针悬浮状态。
+   */
+  WIDGET_STATE_OVER = 3,
+  /**
+   * @const WIDGET_STATE_DISABLE
+   * 禁用状态。
+   */
+  WIDGET_STATE_DISABLE = 4,
+  /**
+   * @const WIDGET_STATE_FOCUSED
+   * 聚焦状态。
+   */
+  WIDGET_STATE_FOCUSED = 5,
+  /**
+   * @const WIDGET_STATE_CHECKED
+   * 勾选状态。
+   */
+  WIDGET_STATE_CHECKED = 6,
+  /**
+   * @const WIDGET_STATE_UNCHECKED
+   * 没勾选状态。
+   */
+  WIDGET_STATE_UNCHECKED = 7,
+  /**
+   * @const WIDGET_STATE_EMPTY
+   * 编辑器无内容状态。
+   */
+  WIDGET_STATE_EMPTY = 8,
+  /**
+   * @const WIDGET_STATE_ERROR
+   * 输入错误状态。
+   */
+  WIDGET_STATE_ERROR = 9,
+  /**
+   * @const WIDGET_STATE_ERROR
+   * 输入错误状态。
+   */
+  WIDGET_STATE_SELECTED = 10
+} widget_state_t;
 END_C_DECLS
 
 #endif /*TK_WIDGET_CONSTS_H*/

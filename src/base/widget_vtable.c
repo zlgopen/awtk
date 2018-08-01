@@ -96,12 +96,6 @@ ret_t widget_on_keyup_default(widget_t* widget, key_event_t* e) {
   return RET_OK;
 }
 
-ret_t widget_on_click_default(widget_t* widget, pointer_event_t* e) {
-  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
-
-  return RET_OK;
-}
-
 ret_t widget_on_pointer_down_default(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
@@ -200,7 +194,6 @@ static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default
                                          .on_paint_children = widget_on_paint_children_default,
                                          .on_keydown = widget_on_keydown_default,
                                          .on_keyup = widget_on_keyup_default,
-                                         .on_click = widget_on_click_default,
                                          .on_pointer_down = widget_on_pointer_down_default,
                                          .on_pointer_move = widget_on_pointer_move_default,
                                          .on_pointer_up = widget_on_pointer_up_default,

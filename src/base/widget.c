@@ -866,21 +866,6 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return ret;
 }
 
-ret_t widget_on_click(widget_t* widget, pointer_event_t* e) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
-
-  widget_dispatch(widget, (event_t*)e);
-  if (widget->vt->on_click) {
-    ret = widget->vt->on_click(widget, e);
-  } else if (widget->target != NULL) {
-    widget_on_click(widget->target, e);
-  }
-
-  return ret;
-}
-
 static ret_t widget_dispatch_leave_event(widget_t* widget) {
   widget_t* target = widget;
 
