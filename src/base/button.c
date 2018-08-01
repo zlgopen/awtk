@@ -147,7 +147,7 @@ static const char* s_button_clone_properties[] = {WIDGET_PROP_REPEAT, NULL};
 static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
                                                 .type = WIDGET_TYPE_BUTTON,
                                                 .create = button_create,
-                                                .properties = s_button_clone_properties,
+                                                .clone_properties = s_button_clone_properties,
                                                 .on_event = button_on_event,
                                                 .set_prop = button_set_prop,
                                                 .get_prop = button_get_prop,

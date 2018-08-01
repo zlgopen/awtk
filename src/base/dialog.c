@@ -102,7 +102,7 @@ static const char* s_dialog_clone_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_
                                             WIDGET_PROP_SCRIPT, NULL};
 static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .type = WIDGET_TYPE_DIALOG,
-                                                .properties = s_dialog_clone_properties,
+                                                .clone_properties = s_dialog_clone_properties,
                                                 .create = dialog_create,
                                                 .get_prop = dialog_get_prop,
                                                 .set_prop = dialog_set_prop,

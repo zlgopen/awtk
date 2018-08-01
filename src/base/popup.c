@@ -146,7 +146,7 @@ static const char* s_popup_clone_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            NULL};
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .type = WIDGET_TYPE_POPUP,
-                                               .properties = s_popup_clone_properties,
+                                               .clone_properties = s_popup_clone_properties,
                                                .create = popup_create,
                                                .get_prop = popup_get_prop,
                                                .set_prop = popup_set_prop,

@@ -115,7 +115,7 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
 
 static const widget_vtable_t s_combo_box_vtable = {.size = sizeof(edit_t),
                                                    .type = WIDGET_TYPE_COMBO_BOX,
-                                                   .properties = s_combo_box_clone_properties,
+                                                   .clone_properties = s_combo_box_clone_properties,
                                                    .create = combo_box_create_self,
                                                    .on_paint_self = edit_on_paint_self,
                                                    .set_prop = combo_box_set_prop,

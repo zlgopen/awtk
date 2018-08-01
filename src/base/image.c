@@ -224,7 +224,7 @@ static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_
                                            WIDGET_PROP_SELECTABLE, NULL};
 static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
                                                .type = WIDGET_TYPE_IMAGE,
-                                               .properties = s_image_clone_properties,
+                                               .clone_properties = s_image_clone_properties,
                                                .create = image_create,
                                                .on_event = image_on_event,
                                                .on_paint_self = image_on_paint_self,

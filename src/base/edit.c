@@ -882,7 +882,7 @@ const char* s_edit_clone_properties[] = {WIDGET_PROP_MIN,
                                    NULL};
 static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .type = WIDGET_TYPE_EDIT,
-                                              .properties = s_edit_clone_properties,
+                                              .clone_properties = s_edit_clone_properties,
                                               .create = edit_create,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,

@@ -91,7 +91,7 @@ static const char* s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 
 static const widget_vtable_t s_pages_vtable = {.size = sizeof(pages_t),
                                                .type = WIDGET_TYPE_PAGES,
-                                               .properties = s_pages_clone_properties,
+                                               .clone_properties = s_pages_clone_properties,
                                                .create = pages_create,
                                                .on_paint_self = widget_on_paint_background_null,
                                                .find_target = pages_find_target,

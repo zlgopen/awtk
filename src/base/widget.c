@@ -1344,7 +1344,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
     wstr_set(&(clone->text), widget->text.str);
   }
 
-  properties = widget->vt->properties;
+  properties = widget->vt->clone_properties;
   if (properties != NULL) {
     value_t v;
     uint32_t i = 0;
@@ -1402,7 +1402,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   }
 #endif /*WITH_DYNAMIC_TR*/
 
-  properties = widget->vt->properties;
+  properties = widget->vt->clone_properties;
   if (properties != NULL) {
     value_t v1;
     value_t v2;

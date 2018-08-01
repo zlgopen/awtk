@@ -63,8 +63,8 @@ typedef ret_t (*widget_destroy_t)(widget_t* widget);
 typedef struct _widget_vtable_t {
   uint32_t size;
   const char* type;
-  const char** properties;
-  const char** persistent_clone_properties;
+  const char** clone_properties;
+  const char** persistent_properties;
 
   widget_create_t create;
 

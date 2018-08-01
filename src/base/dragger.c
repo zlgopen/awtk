@@ -155,7 +155,7 @@ static const char* s_dragger_clone_properties[] = {WIDGET_PROP_X_MIN, WIDGET_PRO
                                              WIDGET_PROP_Y_MIN, WIDGET_PROP_Y_MAX, NULL};
 static const widget_vtable_t s_dragger_vtable = {.size = sizeof(dragger_t),
                                                  .type = WIDGET_TYPE_DRAGGER,
-                                                 .properties = s_dragger_clone_properties,
+                                                 .clone_properties = s_dragger_clone_properties,
                                                  .create = dragger_create,
                                                  .set_prop = dragger_set_prop,
                                                  .get_prop = dragger_get_prop,
