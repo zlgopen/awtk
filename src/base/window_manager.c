@@ -412,7 +412,7 @@ static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
 }
 
 static const widget_vtable_t s_wm_vtable = {
-    .type_name = WIDGET_TYPE_WINDOW_MANAGER,
+    .type = WIDGET_TYPE_WINDOW_MANAGER,
     .invalidate = window_manager_invalidate,
     .on_paint_children = window_manager_on_paint_children,
     .on_remove_child = wm_on_remove_child,

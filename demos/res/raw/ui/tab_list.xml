@@ -7,7 +7,6 @@
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page2" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page3" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page4" /> </view>
-    <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page4" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page5" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page6" /> </view>
     <view w="100%" h="100%"><label x="c" y="m" w="100%" h="60" text="page7" /> </view>

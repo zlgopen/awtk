@@ -309,11 +309,11 @@ widget_t* widget_lookup(widget_t* widget, const char* name, bool_t recursive) {
   }
 }
 
-static widget_t* widget_lookup_by_type_child(widget_t* widget, const char* type_name) {
-  return_value_if_fail(widget != NULL && type_name != NULL, NULL);
+static widget_t* widget_lookup_by_type_child(widget_t* widget, const char* type) {
+  return_value_if_fail(widget != NULL && type != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (tk_str_eq(iter->vt->type_name, type_name)) {
+  if (tk_str_eq(iter->vt->type, type)) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -321,14 +321,14 @@ static widget_t* widget_lookup_by_type_child(widget_t* widget, const char* type_
   return NULL;
 }
 
-static widget_t* widget_lookup_by_type_all(widget_t* widget, const char* type_name) {
-  return_value_if_fail(widget != NULL && type_name != NULL, NULL);
+static widget_t* widget_lookup_by_type_all(widget_t* widget, const char* type) {
+  return_value_if_fail(widget != NULL && type != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (tk_str_eq(iter->vt->type_name, type_name)) {
+  if (tk_str_eq(iter->vt->type, type)) {
     return iter;
   } else {
-    iter = widget_lookup_by_type_all(iter, type_name);
+    iter = widget_lookup_by_type_all(iter, type);
     if (iter != NULL) {
       return iter;
     }
@@ -338,11 +338,11 @@ static widget_t* widget_lookup_by_type_all(widget_t* widget, const char* type_na
   return NULL;
 }
 
-widget_t* widget_lookup_by_type(widget_t* widget, const char* type_name, bool_t recursive) {
+widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recursive) {
   if (recursive) {
-    return widget_lookup_by_type_all(widget, type_name);
+    return widget_lookup_by_type_all(widget, type);
   } else {
-    return widget_lookup_by_type_child(widget, type_name);
+    return widget_lookup_by_type_child(widget, type);
   }
 }
 
@@ -1171,10 +1171,10 @@ static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
   value_t v;
   const void* data = NULL;
   char style_name[NAME_LEN + NAME_LEN + 1];
-  const char* type_name = widget->vt ? widget->vt->type_name : NULL;
+  const char* type = widget->vt ? widget->vt->type : NULL;
   const char* name = widget->style_name != NULL ? widget->style_name : TK_DEFAULT_STYLE;
 
-  return_value_if_fail(type_name != NULL, NULL);
+  return_value_if_fail(type != NULL, NULL);
 
   if (widget_get_prop(widget, WIDGET_PROP_SUB_THEME, &v) == RET_OK && value_str(&v) != NULL) {
     tk_snprintf(style_name, sizeof(style_name) - 1, "%s%s", name, value_str(&v));
@@ -1184,11 +1184,11 @@ static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
 
   t.data = (const uint8_t*)widget_get_window_theme(widget);
   if (t.data != NULL) {
-    data = theme_find_style(&t, type_name, style_name, state);
+    data = theme_find_style(&t, type, style_name, state);
   }
 
   if (data == NULL) {
-    data = theme_find_style(theme(), type_name, style_name, state);
+    data = theme_find_style(theme(), type, style_name, state);
   }
 
   return data;
@@ -1485,5 +1485,5 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
 const char* widget_get_type(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
 
-  return widget->vt->type_name;
+  return widget->vt->type;
 }

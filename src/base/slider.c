@@ -334,7 +334,7 @@ static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTI
                                             WIDGET_PROP_STEP,  NULL};
 static const widget_vtable_t s_slider_vtable = {
     .size = sizeof(slider_t),
-    .type_name = WIDGET_TYPE_SLIDER,
+    .type = WIDGET_TYPE_SLIDER,
     .properties = s_slider_properties,
     .create = slider_create,
     .on_event = slider_on_event,

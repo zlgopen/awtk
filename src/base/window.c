@@ -75,7 +75,7 @@ static ret_t window_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_window_vtable = {.type_name = WIDGET_TYPE_NORMAL_WINDOW,
+static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                                                 .on_paint_self = window_on_paint_self,
                                                 .set_prop = window_set_prop,
                                                 .get_prop = window_get_prop,

@@ -31,7 +31,7 @@ static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const widget_vtable_t s_dialog_title_vtable = {.size = sizeof(dialog_title_t),
-                                                      .type_name = WIDGET_TYPE_DIALOG_TITLE,
+                                                      .type = WIDGET_TYPE_DIALOG_TITLE,
                                                       .create = dialog_title_create,
                                                       .on_paint_self = dialog_title_on_paint_self};
 

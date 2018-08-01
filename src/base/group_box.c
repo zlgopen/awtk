@@ -27,7 +27,7 @@ static ret_t group_box_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const widget_vtable_t s_group_box_vtable = {.size = sizeof(group_box_t),
-                                                   .type_name = WIDGET_TYPE_GROUP_BOX,
+                                                   .type = WIDGET_TYPE_GROUP_BOX,
                                                    .create = group_box_create,
                                                    .on_paint_self = group_box_on_paint_self};
 

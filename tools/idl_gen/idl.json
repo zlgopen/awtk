@@ -8140,7 +8140,7 @@
      },
      {
       "type": "char*",
-      "name": "type_name"
+      "name": "type"
      },
      {
       "type": "bool_t",

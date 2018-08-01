@@ -28,7 +28,7 @@ extern const char* s_edit_properties[];
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
-                                              .type_name = WIDGET_TYPE_SPIN_BOX,
+                                              .type = WIDGET_TYPE_SPIN_BOX,
                                               .properties = s_edit_properties,
                                               .create = spin_box_create_self,
                                               .on_paint_self = edit_on_paint_self,

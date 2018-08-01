@@ -29,7 +29,7 @@ static ret_t dialog_client_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static const widget_vtable_t s_dialog_client_vtable = {
     .size = sizeof(dialog_client_t),
-    .type_name = WIDGET_TYPE_DIALOG_CLIENT,
+    .type = WIDGET_TYPE_DIALOG_CLIENT,
     .create = dialog_client_create,
     .on_paint_self = dialog_client_on_paint_self};
 

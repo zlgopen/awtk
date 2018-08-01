@@ -27,7 +27,7 @@ static ret_t tab_control_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const widget_vtable_t s_tab_control_vtable = {.size = sizeof(tab_control_t),
-                                                     .type_name = WIDGET_TYPE_TAB_CONTROL,
+                                                     .type = WIDGET_TYPE_TAB_CONTROL,
                                                      .create = tab_control_create,
                                                      .on_paint_self = tab_control_on_paint_self};
 

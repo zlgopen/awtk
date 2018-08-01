@@ -27,7 +27,7 @@ static ret_t button_group_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const widget_vtable_t s_button_group_vtable = {.size = sizeof(button_group_t),
-                                                      .type_name = WIDGET_TYPE_BUTTON_GROUP,
+                                                      .type = WIDGET_TYPE_BUTTON_GROUP,
                                                       .create = button_group_create,
                                                       .on_paint_self = button_group_on_paint_self};
 

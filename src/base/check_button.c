@@ -122,7 +122,7 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_check_button_vtable = {
     .size = sizeof(check_button_t),
-    .type_name = WIDGET_TYPE_CHECK_BUTTON,
+    .type = WIDGET_TYPE_CHECK_BUTTON,
     .properties = s_check_button_properties,
     .create = check_button_create,
     .on_event = check_button_on_event,
@@ -133,7 +133,7 @@ static const widget_vtable_t s_check_button_vtable = {
 
 static const widget_vtable_t s_radio_button_vtable = {
     .size = sizeof(check_button_t),
-    .type_name = WIDGET_TYPE_RADIO_BUTTON,
+    .type = WIDGET_TYPE_RADIO_BUTTON,
     .properties = s_check_button_properties,
     .create = check_button_create_radio,
     .on_event = check_button_on_event,

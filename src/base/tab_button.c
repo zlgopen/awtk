@@ -161,7 +161,7 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
 static const char* s_tab_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_tab_button_vtable = {
     .size = sizeof(tab_button_t),
-    .type_name = WIDGET_TYPE_TAB_BUTTON,
+    .type = WIDGET_TYPE_TAB_BUTTON,
     .properties = s_tab_button_properties,
     .create = tab_button_create,
     .on_event = tab_button_on_event,

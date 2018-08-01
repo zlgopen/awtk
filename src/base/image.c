@@ -223,7 +223,7 @@ static const char* s_image_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_D
                                            WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
                                            WIDGET_PROP_SELECTABLE, NULL};
 static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
-                                               .type_name = WIDGET_TYPE_IMAGE,
+                                               .type = WIDGET_TYPE_IMAGE,
                                                .properties = s_image_properties,
                                                .create = image_create,
                                                .on_event = image_on_event,

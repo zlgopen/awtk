@@ -145,7 +145,7 @@ static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
                                            NULL};
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
-                                               .type_name = WIDGET_TYPE_POPUP,
+                                               .type = WIDGET_TYPE_POPUP,
                                                .properties = s_popup_properties,
                                                .create = popup_create,
                                                .get_prop = popup_get_prop,

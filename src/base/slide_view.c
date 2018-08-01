@@ -603,7 +603,7 @@ static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PR
                                                 WIDGET_PROP_AUTO_PLAY, NULL};
 static const widget_vtable_t s_slide_view_vtable = {
     .size = sizeof(slide_view_t),
-    .type_name = WIDGET_TYPE_SLIDE_VIEW,
+    .type = WIDGET_TYPE_SLIDE_VIEW,
     .properties = s_slide_view_properties,
     .create = slide_view_create,
     .on_event = slide_view_on_event,

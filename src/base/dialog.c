@@ -89,9 +89,9 @@ static ret_t dialog_destroy(widget_t* widget) {
 static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
   dialog_t* dialog = DIALOG(widget);
 
-  if (tk_str_eq(child->vt->type_name, WIDGET_TYPE_DIALOG_TITLE)) {
+  if (tk_str_eq(child->vt->type, WIDGET_TYPE_DIALOG_TITLE)) {
     dialog->title = child;
-  } else if (tk_str_eq(child->vt->type_name, WIDGET_TYPE_DIALOG_CLIENT)) {
+  } else if (tk_str_eq(child->vt->type, WIDGET_TYPE_DIALOG_CLIENT)) {
     dialog->client = child;
   }
 
@@ -101,7 +101,7 @@ static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
 static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_THEME,
                                             WIDGET_PROP_SCRIPT, NULL};
 static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
-                                                .type_name = WIDGET_TYPE_DIALOG,
+                                                .type = WIDGET_TYPE_DIALOG,
                                                 .properties = s_dialog_properties,
                                                 .create = dialog_create,
                                                 .get_prop = dialog_get_prop,

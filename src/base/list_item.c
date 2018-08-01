@@ -93,7 +93,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
 }
 
 static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
-                                                   .type_name = WIDGET_TYPE_LIST_ITEM,
+                                                   .type = WIDGET_TYPE_LIST_ITEM,
                                                    .create = list_item_create,
                                                    .on_event = list_item_on_event,
                                                    .on_paint_self = list_item_on_paint_self};

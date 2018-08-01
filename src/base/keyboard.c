@@ -90,7 +90,7 @@ static ret_t keyboard_destroy_default(widget_t* widget) {
 static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                               WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
-                                                  .type_name = WIDGET_TYPE_KEYBOARD,
+                                                  .type = WIDGET_TYPE_KEYBOARD,
                                                   .properties = s_keyboard_properties,
                                                   .create = keyboard_create,
                                                   .on_paint_self = keyboard_on_paint_self,

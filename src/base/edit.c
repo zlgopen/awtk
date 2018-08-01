@@ -881,7 +881,7 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_TIPS,
                                    NULL};
 static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
-                                              .type_name = WIDGET_TYPE_EDIT,
+                                              .type = WIDGET_TYPE_EDIT,
                                               .properties = s_edit_properties,
                                               .create = edit_create,
                                               .on_paint_self = edit_on_paint_self,

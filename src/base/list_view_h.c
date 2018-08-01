@@ -79,7 +79,7 @@ static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_list_view_h_vtable = {.type_name = WIDGET_TYPE_LIST_VIEW_H,
+static const widget_vtable_t s_list_view_h_vtable = {.type = WIDGET_TYPE_LIST_VIEW_H,
                                                      .set_prop = list_view_h_set_prop,
                                                      .get_prop = list_view_h_get_prop,
                                                      .on_event = list_view_h_on_event,

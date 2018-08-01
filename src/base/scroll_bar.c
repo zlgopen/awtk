@@ -390,7 +390,7 @@ static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE
 
 static const widget_vtable_t s_scroll_bar_mobile_vtable = {
     .size = sizeof(scroll_bar_t),
-    .type_name = WIDGET_TYPE_SCROLL_BAR_MOBILE,
+    .type = WIDGET_TYPE_SCROLL_BAR_MOBILE,
     .properties = s_scroll_bar_properties,
     .create = scroll_bar_create_mobile,
     .set_prop = scroll_bar_set_prop,
@@ -399,7 +399,7 @@ static const widget_vtable_t s_scroll_bar_mobile_vtable = {
 
 static const widget_vtable_t s_scroll_bar_desktop_vtable = {
     .size = sizeof(scroll_bar_t),
-    .type_name = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
+    .type = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
     .properties = s_scroll_bar_properties,
     .persistent_properties = s_scroll_bar_persitent_properties,
     .create = scroll_bar_create_desktop_self,

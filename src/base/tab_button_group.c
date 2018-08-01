@@ -177,7 +177,7 @@ static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const
 
 static const widget_vtable_t s_tab_button_group_vtable = {
     .size = sizeof(tab_button_group_t),
-    .type_name = WIDGET_TYPE_TAB_BUTTON_GROUP,
+    .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
     .create = tab_button_group_create,
     .set_prop = tab_button_group_set_prop,
     .get_prop = tab_button_group_get_prop,

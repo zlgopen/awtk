@@ -182,7 +182,7 @@ static ret_t rich_text_destroy(widget_t* widget) {
 
 static const char* s_rich_text_properties[] = {NULL};
 static const widget_vtable_t s_rich_text_vtable = {.size = sizeof(rich_text_t),
-                                                   .type_name = "rich_text",
+                                                   .type = "rich_text",
                                                    .create = rich_text_create,
                                                    .properties = s_rich_text_properties,
                                                    .on_event = rich_text_on_event,

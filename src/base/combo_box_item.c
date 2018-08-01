@@ -97,7 +97,7 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
 
 static const widget_vtable_t s_combo_box_item_vtable = {
     .size = sizeof(combo_box_item_t),
-    .type_name = WIDGET_TYPE_COMBO_BOX_ITEM,
+    .type = WIDGET_TYPE_COMBO_BOX_ITEM,
     .on_paint_self = combo_box_item_on_paint_self,
     .on_event = combo_box_item_on_event,
     .get_prop = combo_box_item_get_prop,

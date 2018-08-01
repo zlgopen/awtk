@@ -78,7 +78,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   }
 
   memset(&desc, 0x00, sizeof(desc));
-  tk_strncpy(desc.type, widget->vt->type_name, NAME_LEN);
+  tk_strncpy(desc.type, widget->vt->type, NAME_LEN);
 
   if (widget->layout_params && widget->layout_params->self.inited) {
     desc.layout = widget->layout_params->self;

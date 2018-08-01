@@ -202,7 +202,7 @@ static const char* s_progress_bar_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP
                                                   WIDGET_PROP_SHOW_TEXT, NULL};
 static const widget_vtable_t s_progress_bar_vtable = {
     .size = sizeof(progress_bar_t),
-    .type_name = WIDGET_TYPE_PROGRESS_BAR,
+    .type = WIDGET_TYPE_PROGRESS_BAR,
     .properties = s_progress_bar_properties,
     .create = progress_bar_create,
     .on_paint_self = progress_bar_on_paint_self,

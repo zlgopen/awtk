@@ -27,7 +27,7 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
-                                               .type_name = WIDGET_TYPE_LABEL,
+                                               .type = WIDGET_TYPE_LABEL,
                                                .create = label_create,
                                                .on_paint_self = label_on_paint_self};
 
