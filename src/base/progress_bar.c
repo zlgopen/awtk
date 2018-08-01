@@ -198,12 +198,12 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-static const char* s_progress_bar_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
+static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
                                                   WIDGET_PROP_SHOW_TEXT, NULL};
 static const widget_vtable_t s_progress_bar_vtable = {
     .size = sizeof(progress_bar_t),
     .type = WIDGET_TYPE_PROGRESS_BAR,
-    .properties = s_progress_bar_properties,
+    .properties = s_progress_bar_clone_properties,
     .create = progress_bar_create,
     .on_paint_self = progress_bar_on_paint_self,
     .on_paint_background = widget_on_paint_background_null,

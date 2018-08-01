@@ -158,11 +158,11 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static const char* s_tab_button_properties[] = {WIDGET_PROP_VALUE, NULL};
+static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_tab_button_vtable = {
     .size = sizeof(tab_button_t),
     .type = WIDGET_TYPE_TAB_BUTTON,
-    .properties = s_tab_button_properties,
+    .properties = s_tab_button_clone_properties,
     .create = tab_button_create,
     .on_event = tab_button_on_event,
     .on_paint_self = tab_button_on_paint_self,

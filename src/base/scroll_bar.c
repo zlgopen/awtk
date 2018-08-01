@@ -384,14 +384,14 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static const char* s_scroll_bar_properties[] = {WIDGET_PROP_MAX, WIDGET_PROP_ROW,
+static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX, WIDGET_PROP_ROW,
                                                 WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, NULL};
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
 static const widget_vtable_t s_scroll_bar_mobile_vtable = {
     .size = sizeof(scroll_bar_t),
     .type = WIDGET_TYPE_SCROLL_BAR_MOBILE,
-    .properties = s_scroll_bar_properties,
+    .properties = s_scroll_bar_clone_properties,
     .create = scroll_bar_create_mobile,
     .set_prop = scroll_bar_set_prop,
     .get_prop = scroll_bar_get_prop,
@@ -400,8 +400,8 @@ static const widget_vtable_t s_scroll_bar_mobile_vtable = {
 static const widget_vtable_t s_scroll_bar_desktop_vtable = {
     .size = sizeof(scroll_bar_t),
     .type = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
-    .properties = s_scroll_bar_properties,
-    .persistent_properties = s_scroll_bar_persitent_properties,
+    .properties = s_scroll_bar_clone_properties,
+    .persistent_clone_properties = s_scroll_bar_persitent_properties,
     .create = scroll_bar_create_desktop_self,
     .on_event = scroll_bar_desktop_on_event,
     .set_prop = scroll_bar_set_prop,

@@ -64,7 +64,7 @@ typedef struct _widget_vtable_t {
   uint32_t size;
   const char* type;
   const char** properties;
-  const char** persistent_properties;
+  const char** persistent_clone_properties;
 
   widget_create_t create;
 

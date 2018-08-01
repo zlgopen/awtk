@@ -867,7 +867,7 @@ static ret_t edit_hook_children_button(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-const char* s_edit_properties[] = {WIDGET_PROP_MIN,
+const char* s_edit_clone_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_MAX,
                                    WIDGET_PROP_STEP,
                                    WIDGET_PROP_INPUT_TYPE,
@@ -882,7 +882,7 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    NULL};
 static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .type = WIDGET_TYPE_EDIT,
-                                              .properties = s_edit_properties,
+                                              .properties = s_edit_clone_properties,
                                               .create = edit_create,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,

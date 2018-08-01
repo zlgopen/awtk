@@ -384,7 +384,7 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
   return RET_NOT_FOUND;
 }
 
-static const char* s_scroll_view_properties[] = {WIDGET_PROP_VIRTUAL_W,
+static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
                                                  WIDGET_PROP_VIRTUAL_H,
                                                  WIDGET_PROP_XSLIDABLE,
                                                  WIDGET_PROP_YSLIDABLE,
@@ -394,7 +394,7 @@ static const char* s_scroll_view_properties[] = {WIDGET_PROP_VIRTUAL_W,
 static const widget_vtable_t s_scroll_view_vtable = {
     .size = sizeof(scroll_view_t),
     .type = WIDGET_TYPE_SCROLL_VIEW,
-    .properties = s_scroll_view_properties,
+    .properties = s_scroll_view_clone_properties,
     .create = scroll_view_create,
     .on_event = scroll_view_on_event,
     .invalidate = scroll_view_invalidate,

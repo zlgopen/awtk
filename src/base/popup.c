@@ -138,7 +138,7 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
+static const char* s_popup_clone_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            WIDGET_PROP_THEME,
                                            WIDGET_PROP_SCRIPT,
                                            WIDGET_PROP_CLOSE_WHEN_CLICK,
@@ -146,7 +146,7 @@ static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            NULL};
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .type = WIDGET_TYPE_POPUP,
-                                               .properties = s_popup_properties,
+                                               .properties = s_popup_clone_properties,
                                                .create = popup_create,
                                                .get_prop = popup_get_prop,
                                                .set_prop = popup_set_prop,

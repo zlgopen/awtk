@@ -105,10 +105,10 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
     TKMEM_FREE(text);
   }
 
-  if (widget->vt->properties || widget->vt->persistent_properties) {
+  if (widget->vt->properties || widget->vt->persistent_clone_properties) {
     value_t v;
     uint32_t i = 0;
-    const char** properties = widget->vt->persistent_properties;
+    const char** properties = widget->vt->persistent_clone_properties;
     if (properties == NULL) {
       properties = widget->vt->properties;
     }
