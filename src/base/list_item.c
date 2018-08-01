@@ -99,17 +99,12 @@ static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
                                                    .on_paint_self = list_item_on_paint_self};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   list_item_t* list_item = TKMEM_ZALLOC(list_item_t);
+  widget_t* widget = WIDGET(list_item);
   return_value_if_fail(list_item != NULL, NULL);
 
-  widget = WIDGET(list_item);
-  widget->vt = &s_list_item_vtable;
-  widget_init(widget, parent, WIDGET_LIST_ITEM);
-  widget_move_resize(widget, x, y, w, h);
-
+  widget_init(widget, parent, &s_list_item_vtable, x, y, w, h);
   list_item->timer_id = TK_INVALID_ID;
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return widget;
 }

@@ -619,6 +619,43 @@
  },
  {
   "type": "class",
+  "name": "button_group_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "button_group_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/button_group.h"
+ },
+ {
+  "type": "class",
   "name": "button_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -802,7 +839,7 @@
       "name": "widget"
      },
      {
-      "type": "uint32_t",
+      "type": "bool_t",
       "name": "value"
      }
     ],
@@ -818,6 +855,240 @@
    }
   ],
   "header": "base/check_button.h"
+ },
+ {
+  "type": "class",
+  "name": "combo_box_item_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "combo_box_item_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "selected"
+     }
+    ],
+    "name": "combo_box_item_set_selected",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     }
+    ],
+    "name": "combo_box_item_set_value",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "int32_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "bool_t",
+    "name": "selected",
+    "readonly": true
+   }
+  ],
+  "header": "base/combo_box_item.h"
+ },
+ {
+  "type": "class",
+  "name": "combo_box_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "combo_box_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "open_window"
+     }
+    ],
+    "name": "combo_box_set_open_window",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "combo_box_reset_options",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "combo_box_count_options",
+    "return": "int32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "index"
+     }
+    ],
+    "name": "combo_box_set_selected_index",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "int32_t",
+      "name": "value"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "combo_box_append_option",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "index"
+     }
+    ],
+    "name": "combo_box_get_option",
+    "return": "combo_box_option_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "combo_box_get_value",
+    "return": "int32_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "combo_box_get_text",
+    "return": "char*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "char*",
+    "name": "open_window",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "selected_index",
+    "readonly": true
+   },
+   {
+    "type": "int32_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "options",
+    "isFake": true
+   }
+  ],
+  "header": "base/combo_box.h"
  },
  {
   "type": "class",
@@ -1490,6 +1761,9 @@
    },
    {
     "name": "EVT_POINTER_DOWN"
+   },
+   {
+    "name": "EVT_POINTER_DOWN_ABORT"
    },
    {
     "name": "EVT_POINTER_MOVE"
@@ -2332,6 +2606,48 @@
     ],
     "name": "image_set_anchor",
     "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "selected"
+     }
+    ],
+    "name": "image_set_selected",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "selectable"
+     }
+    ],
+    "name": "image_set_selectable",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "bool_t",
+      "name": "clickable"
+     }
+    ],
+    "name": "image_set_clickable",
+    "return": "ret_t"
    }
   ],
   "properties": [
@@ -2354,6 +2670,18 @@
    {
     "type": "float_t",
     "name": "rotation"
+   },
+   {
+    "type": "bool_t",
+    "name": "clickable"
+   },
+   {
+    "type": "bool_t",
+    "name": "selectable"
+   },
+   {
+    "type": "bool_t",
+    "name": "selected"
    },
    {
     "type": "char*",
@@ -3776,6 +4104,43 @@
  },
  {
   "type": "class",
+  "name": "popup_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "popup_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/popup.h"
+ },
+ {
+  "type": "class",
   "name": "progress_bar_t",
   "parent": "widget_t",
   "scriptable": true,
@@ -4919,6 +5284,20 @@
       "name": "str"
      },
      {
+      "type": "wchar_t*",
+      "name": "wstr"
+     }
+    ],
+    "name": "str_from_wstr",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "str_t*",
+      "name": "str"
+     },
+     {
       "type": "int32_t*",
       "name": "v"
      }
@@ -5165,6 +5544,181 @@
  },
  {
   "type": "class",
+  "name": "tab_button_group_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "tab_button_group_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "compact",
+    "readonly": true
+   }
+  ],
+  "header": "base/tab_button_group.h"
+ },
+ {
+  "type": "class",
+  "name": "tab_button_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "tab_button_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "uint32_t",
+      "name": "value"
+     }
+    ],
+    "name": "tab_button_set_value",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "tab_button_set_icon",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "name"
+     }
+    ],
+    "name": "tab_button_set_active_icon",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [
+   {
+    "type": "bool_t",
+    "name": "value",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "active_icon",
+    "readonly": true
+   },
+   {
+    "type": "char*",
+    "name": "icon",
+    "readonly": true
+   }
+  ],
+  "header": "base/tab_button.h"
+ },
+ {
+  "type": "class",
+  "name": "tab_control_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "tab_control_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   }
+  ],
+  "properties": [],
+  "header": "base/tab_control.h"
+ },
+ {
+  "type": "class",
   "name": "style_t",
   "methods": [],
   "properties": [],
@@ -5233,6 +5787,9 @@
    },
    {
     "name": "STYLE_ID_MARGIN"
+   },
+   {
+    "name": "STYLE_ID_ICON_AT"
    }
   ]
  },
@@ -5583,6 +6140,30 @@
    },
    {
     "name": "BORDER_ALL"
+   }
+  ]
+ },
+ {
+  "type": "enum",
+  "header": "base/types_def.h",
+  "name": "icon_at_type_t",
+  "prefix": "ICON_AT_TYPE_",
+  "scriptable": true,
+  "consts": [
+   {
+    "name": "ICON_AT_AUTO"
+   },
+   {
+    "name": "ICON_AT_LEFT"
+   },
+   {
+    "name": "ICON_AT_RIGHT"
+   },
+   {
+    "name": "ICON_AT_TOP"
+   },
+   {
+    "name": "ICON_AT_BOTTOM"
    }
   ]
  },
@@ -6699,6 +7280,52 @@
       "name": "vg"
      },
      {
+      "type": "bitmap_t*",
+      "name": "img"
+     },
+     {
+      "type": "float_t",
+      "name": "sx"
+     },
+     {
+      "type": "float_t",
+      "name": "sy"
+     },
+     {
+      "type": "float_t",
+      "name": "sw"
+     },
+     {
+      "type": "float_t",
+      "name": "sh"
+     },
+     {
+      "type": "float_t",
+      "name": "dx"
+     },
+     {
+      "type": "float_t",
+      "name": "dy"
+     },
+     {
+      "type": "float_t",
+      "name": "dw"
+     },
+     {
+      "type": "float_t",
+      "name": "dh"
+     }
+    ],
+    "name": "vgcanvas_draw_icon",
+    "return": "ret_t"
+   },
+   {
+    "params": [
+     {
+      "type": "vgcanvas_t*",
+      "name": "vg"
+     },
+     {
       "type": "bool_t",
       "name": "value"
      }
@@ -7096,114 +7723,6 @@
  },
  {
   "type": "enum",
-  "header": "base/widget_consts.h",
-  "name": "widget_type_t",
-  "prefix": "WIDGET_TYPE_",
-  "scriptable": true,
-  "consts": [
-   {
-    "name": "WIDGET_NONE"
-   },
-   {
-    "name": "WIDGET_WINDOW_MANAGER"
-   },
-   {
-    "name": "WIDGET_NORMAL_WINDOW"
-   },
-   {
-    "name": "WIDGET_TOOL_BAR"
-   },
-   {
-    "name": "WIDGET_DIALOG"
-   },
-   {
-    "name": "WIDGET_POPUP"
-   },
-   {
-    "name": "WIDGET_SPRITE"
-   },
-   {
-    "name": "WIDGET_KEYBOARD"
-   },
-   {
-    "name": "WIDGET_DND"
-   },
-   {
-    "name": "WIDGET_LABEL"
-   },
-   {
-    "name": "WIDGET_BUTTON"
-   },
-   {
-    "name": "WIDGET_IMAGE"
-   },
-   {
-    "name": "WIDGET_EDIT"
-   },
-   {
-    "name": "WIDGET_PROGRESS_BAR"
-   },
-   {
-    "name": "WIDGET_GROUP_BOX"
-   },
-   {
-    "name": "WIDGET_CHECK_BUTTON"
-   },
-   {
-    "name": "WIDGET_RADIO_BUTTON"
-   },
-   {
-    "name": "WIDGET_DIALOG_TITLE"
-   },
-   {
-    "name": "WIDGET_DIALOG_CLIENT"
-   },
-   {
-    "name": "WIDGET_SLIDER"
-   },
-   {
-    "name": "WIDGET_VIEW"
-   },
-   {
-    "name": "WIDGET_SLIDE_VIEW"
-   },
-   {
-    "name": "WIDGET_PAGES"
-   },
-   {
-    "name": "WIDGET_CANDIDATES"
-   },
-   {
-    "name": "WIDGET_SPIN_BOX"
-   },
-   {
-    "name": "WIDGET_DRAGGER"
-   },
-   {
-    "name": "WIDGET_SCROLL_BAR"
-   },
-   {
-    "name": "WIDGET_SCROLL_BAR_DESKTOP"
-   },
-   {
-    "name": "WIDGET_SCROLL_BAR_MOBILE"
-   },
-   {
-    "name": "WIDGET_SCROLL_VIEW"
-   },
-   {
-    "name": "WIDGET_LIST_VIEW"
-   },
-   {
-    "name": "WIDGET_LIST_VIEW_H"
-   },
-   {
-    "name": "WIDGET_LIST_ITEM"
-   }
-  ]
- },
- {
-  "type": "enum",
   "header": "base/widget.h",
   "name": "widget_state_t",
   "prefix": "WIDGET_",
@@ -7238,6 +7757,9 @@
    },
    {
     "name": "WIDGET_STATE_ERROR"
+   },
+   {
+    "name": "WIDGET_STATE_ERROR"
    }
   ]
  },
@@ -7269,6 +7791,16 @@
     ],
     "name": "widget_get_child",
     "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     }
+    ],
+    "name": "widget_index_of",
+    "return": "int32_t"
    },
    {
     "params": [
@@ -7842,6 +8374,20 @@
     ],
     "name": "widget_equal",
     "return": "bool_t"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "wchar_t*",
+      "name": "text"
+     }
+    ],
+    "name": "widget_measure_text",
+    "return": "float_t"
    }
   ],
   "properties": [
@@ -7863,11 +8409,6 @@
    {
     "type": "wh_t",
     "name": "h",
-    "readonly": true
-   },
-   {
-    "type": "uint16_t",
-    "name": "type",
     "readonly": true
    },
    {
@@ -8354,6 +8895,57 @@
    }
   ],
   "header": "base/wstr.h"
+ },
+ {
+  "type": "class",
+  "name": "rich_text_t",
+  "parent": "widget_t",
+  "scriptable": true,
+  "methods": [
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "parent"
+     },
+     {
+      "type": "xy_t",
+      "name": "x"
+     },
+     {
+      "type": "xy_t",
+      "name": "y"
+     },
+     {
+      "type": "wh_t",
+      "name": "w"
+     },
+     {
+      "type": "wh_t",
+      "name": "h"
+     }
+    ],
+    "name": "rich_text_create",
+    "isConstructor": true,
+    "return": "widget_t*"
+   },
+   {
+    "params": [
+     {
+      "type": "widget_t*",
+      "name": "widget"
+     },
+     {
+      "type": "char*",
+      "name": "text"
+     }
+    ],
+    "name": "rich_text_set_text",
+    "return": "ret_t"
+   }
+  ],
+  "properties": [],
+  "header": "rich_text/rich_text.h"
  },
  {
   "params": [],

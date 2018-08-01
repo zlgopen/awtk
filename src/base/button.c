@@ -155,17 +155,12 @@ static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
                                                 .on_paint_self = button_on_paint_self};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   button_t* button = TKMEM_ZALLOC(button_t);
+  widget_t* widget = WIDGET(button);
   return_value_if_fail(button != NULL, NULL);
 
-  widget = WIDGET(button);
-  widget->vt = &s_button_vtable;
-  widget_init(widget, parent, WIDGET_BUTTON);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_button_vtable, x, y, w, h);
   button->timer_id = TK_INVALID_ID;
-
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return widget;
 }

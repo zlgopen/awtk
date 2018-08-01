@@ -922,7 +922,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    if (target->type != WIDGET_KEYBOARD) {
+    if (widget_get_type(target) != WIDGET_TYPE_KEYBOARD) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
@@ -1047,7 +1047,7 @@ widget_t* widget_get_window(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->parent != NULL, NULL);
 
   while (iter) {
-    if (iter->parent && iter->parent->type == WIDGET_WINDOW_MANAGER) {
+    if (iter->parent && widget_get_type(iter->parent) == WIDGET_TYPE_WINDOW_MANAGER) {
       return iter;
     }
     iter = iter->parent;
@@ -1208,11 +1208,16 @@ ret_t widget_update_style(widget_t* widget) {
   return RET_OK;
 }
 
-widget_t* widget_init(widget_t* widget, widget_t* parent, uint32_t type) {
-  return_value_if_fail(widget != NULL, NULL);
+widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
+                      wh_t w, wh_t h) {
+  return_value_if_fail(widget != NULL && vt != NULL, NULL);
 
+  widget->x = x;
+  widget->y = y;
+  widget->w = w;
+  widget->h = h;
+  widget->vt = vt;
   widget->dirty = TRUE;
-  widget->type = type ? type : (widget->vt->type_name - (const char*)NULL);
   widget->opacity = 0xff;
   widget->enable = TRUE;
   widget->visible = TRUE;
@@ -1232,6 +1237,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, uint32_t type) {
   if (parent != NULL) {
     widget_update_style(widget);
   }
+  widget_invalidate_force(widget);
 
   return widget;
 }
@@ -1474,4 +1480,10 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
   widget_prepare_text_style(widget, c);
 
   return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
+}
+
+const char* widget_get_type(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
+
+  return widget->vt->type_name;
 }

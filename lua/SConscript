@@ -4,7 +4,7 @@ import sys
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 
-env['LIBS'] = ['resource', 'lua'] + env['LIBS']
+env['LIBS'] = ['resource', 'linebreak', 'lua'] + env['LIBS']
 env.Program(os.path.join(BIN_DIR, 'runLua'), ["run_lua.c", 'tk_lua.c'])
 
 

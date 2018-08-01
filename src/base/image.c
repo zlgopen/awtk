@@ -232,14 +232,11 @@ static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
                                                .get_prop = image_get_prop};
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   image_t* image = TKMEM_ZALLOC(image_t);
+  widget_t* widget = WIDGET(image);
   return_value_if_fail(image != NULL, NULL);
 
-  widget = WIDGET(image);
-  widget->vt = &s_image_vtable;
-  widget_init(widget, parent, WIDGET_IMAGE);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_image_vtable, x, y, w, h);
   image->draw_type = IMAGE_DRAW_DEFAULT;
 
   image->scale_x = 1;

@@ -404,14 +404,11 @@ static const widget_vtable_t s_scroll_view_vtable = {
     .set_prop = scroll_view_set_prop};
 
 widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   scroll_view_t* scroll_view = TKMEM_ZALLOC(scroll_view_t);
+  widget_t* widget = WIDGET(scroll_view);
   return_value_if_fail(scroll_view != NULL, NULL);
 
-  widget = WIDGET(scroll_view);
-  widget->vt = &s_scroll_view_vtable;
-  widget_init(widget, parent, WIDGET_SCROLL_VIEW);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_scroll_view_vtable, x, y, w, h);
   scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
 
   return widget;

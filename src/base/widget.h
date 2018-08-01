@@ -186,12 +186,6 @@ struct _widget_t {
    */
   wh_t h;
   /**
-   * @property {uint32_t} type
-   * @readonly
-   * 类型。
-   */
-  uint32_t type;
-  /**
    * @property {char*} style_name
    * @readonly
    * Style Type。
@@ -346,11 +340,16 @@ struct _widget_t {
  * @private
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
- * @param {uint32_t} type 控件的类型。
+ * @param {widget_vtable_t*} vt 虚表。
+ * @param {xy_t}   x x坐标
+ * @param {xy_t}   y y坐标
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
  *
  * @return {widget*} widget对象本身。
  */
-widget_t* widget_init(widget_t* widget, widget_t* parent, uint32_t type);
+widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
+                      wh_t w, wh_t h);
 
 /**
  * @method widget_update_style
@@ -833,6 +832,8 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx);
  */
 widget_t* widget_get_window(widget_t* widget);
 
+const char* widget_get_type(widget_t* widget);
+
 /**
  * @method widget_dispatch_to_target
  * 递归的分发一个事件到所有target子控件。
@@ -930,7 +931,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
  * @method widget_measure_text
  * 计算文本的宽度。
  * @param {widget_t*} widget 控件对象。
- * @param {wchart*} text 文本。
+ * @param {wchar_t*} text 文本。
  *
  * @return {float_t} 返回文本的宽度。
  */

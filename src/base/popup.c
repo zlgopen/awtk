@@ -155,21 +155,16 @@ static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .on_paint_self = popup_on_paint_self};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   popup_t* popup = TKMEM_ZALLOC(popup_t);
+  widget_t* widget = WIDGET(popup);
   return_value_if_fail(popup != NULL, NULL);
 
-  widget = WIDGET(popup);
-  widget->vt = &s_popup_vtable;
-  widget_init(widget, NULL, WIDGET_POPUP);
-
+  widget_init(widget, NULL, &s_popup_vtable, x, y, w, h);
   if (parent == NULL) {
     parent = window_manager();
   }
 
-  widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
-
   widget_update_style(widget);
 
   return widget;

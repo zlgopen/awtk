@@ -125,7 +125,7 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
 static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
 
-  if (child->type == WIDGET_SCROLL_VIEW) {
+  if (widget_get_type(child) == WIDGET_TYPE_SCROLL_VIEW) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);
 
     list_view_h->scroll_view = child;
@@ -136,18 +136,11 @@ static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
 }
 
 widget_t* list_view_h_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   list_view_h_t* list_view_h = TKMEM_ZALLOC(list_view_h_t);
+  widget_t* widget = WIDGET(list_view_h);
   return_value_if_fail(list_view_h != NULL, NULL);
 
-  widget = WIDGET(list_view_h);
-  widget->vt = &s_list_view_h_vtable;
-  widget_init(widget, parent, WIDGET_LIST_VIEW_H);
-  widget_move_resize(widget, x, y, w, h);
-
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
-
-  return widget;
+  return widget_init(widget, parent, &s_list_view_h_vtable, x, y, w, h);
 }
 
 ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {

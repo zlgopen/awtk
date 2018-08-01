@@ -44,7 +44,7 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
     nr = widget->children->size;
     for (i = nr - 2; i >= 0; i--) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (iter->type == WIDGET_NORMAL_WINDOW) {
+      if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
         return iter;
       }
     }
@@ -203,13 +203,14 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   xy_t r = iter->x + iter->w;
   xy_t b = iter->y + iter->h;
+  const char* type = widget_get_type(iter);
 
   if (p.x >= iter->x && p.y >= iter->y && p.x <= r && p.y <= b) {
     return iter;
   }
 
-  if (iter->type == WIDGET_NORMAL_WINDOW || iter->type == WIDGET_DIALOG ||
-      iter->type == WIDGET_POPUP) {
+  if (type == WIDGET_TYPE_NORMAL_WINDOW || type == WIDGET_TYPE_DIALOG ||
+      type == WIDGET_TYPE_POPUP) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -363,7 +364,7 @@ int32_t window_manager_find_top_window_index(widget_t* widget) {
   return_value_if_fail(widget != NULL, -1);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (iter->type == WIDGET_NORMAL_WINDOW) {
+  if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
     return i;
   }
   WIDGET_FOR_EACH_CHILD_END();
@@ -383,7 +384,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (iter->type == WIDGET_NORMAL_WINDOW) {
+  if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
     start = i;
     break;
   }
@@ -435,8 +436,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);
   return_value_if_fail(wm != NULL, NULL);
 
-  w->vt = &s_wm_vtable;
-  widget_init(w, NULL, WIDGET_WINDOW_MANAGER);
+  widget_init(w, NULL, &s_wm_vtable, 0, 0, 0, 0);
 
 #ifdef WITH_DYNAMIC_TR
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
@@ -450,22 +450,16 @@ static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
   xy_t y = window->y;
   wh_t w = window->w;
   wh_t h = window->h;
+  const char* type = widget_get_type(window);
 
-  switch (window->type) {
-    case WIDGET_NORMAL_WINDOW: {
-      x = 0;
-      y = 0;
-      w = widget->w;
-      h = widget->h;
-      break;
-    }
-    case WIDGET_DIALOG: {
-      x = (widget->w - window->w) >> 1;
-      y = (widget->h - window->h) >> 1;
-      break;
-    }
-    default:
-      break;
+  if (type == WIDGET_TYPE_NORMAL_WINDOW) {
+    x = 0;
+    y = 0;
+    w = widget->w;
+    h = widget->h;
+  } else if (type == WIDGET_TYPE_DIALOG) {
+    x = (widget->w - window->w) >> 1;
+    y = (widget->h - window->h) >> 1;
   }
 
   widget_move_resize(window, x, y, w, h);

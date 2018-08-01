@@ -105,18 +105,11 @@ static const widget_vtable_t s_combo_box_item_vtable = {
     .create = combo_box_item_create};
 
 widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   combo_box_item_t* combo_box_item = TKMEM_ZALLOC(combo_box_item_t);
+  widget_t* widget = WIDGET(combo_box_item);
   return_value_if_fail(combo_box_item != NULL, NULL);
 
-  widget = WIDGET(combo_box_item);
-  widget->vt = &s_combo_box_item_vtable;
-  widget_init(widget, parent, WIDGET_COMBO_BOX_ITEM);
-  widget_move_resize(widget, x, y, w, h);
-
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
-
-  return widget;
+  return widget_init(widget, parent, &s_combo_box_item_vtable, x, y, w, h);
 }
 
 ret_t combo_box_item_set_value(widget_t* widget, int32_t value) {
@@ -144,7 +137,6 @@ static ret_t combo_box_item_set_selected_only(widget_t* widget, bool_t selected)
 }
 
 ret_t combo_box_item_set_selected(widget_t* widget, bool_t selected) {
-  combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   combo_box_item_set_selected_only(widget, selected);

@@ -82,14 +82,11 @@ static const widget_vtable_t s_window_vtable = {.type_name = WIDGET_TYPE_NORMAL_
                                                 .destroy = window_destroy};
 
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   window_t* win = TKMEM_ZALLOC(window_t);
+  widget_t* widget = WIDGET(win);
   return_value_if_fail(win != NULL, NULL);
 
-  widget = WIDGET(win);
-  widget->vt = &s_window_vtable;
-  widget_init(widget, NULL, WIDGET_NORMAL_WINDOW);
-
+  widget_init(widget, NULL, &s_window_vtable, x, y, w, h);
   if (parent == NULL) {
     parent = window_manager();
   }
@@ -97,7 +94,6 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   str_init(&(win->theme), 0);
   str_init(&(win->script), 0);
   str_init(&(win->anim_hint), 0);
-  widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
   widget_update_style(widget);
 

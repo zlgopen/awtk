@@ -99,13 +99,11 @@ static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .destroy = keyboard_destroy_default};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   keyboard_t* keyboard = TKMEM_ZALLOC(keyboard_t);
+  widget_t* widget = WIDGET(keyboard);
   return_value_if_fail(keyboard != NULL, NULL);
 
-  widget = WIDGET(keyboard);
-  widget->vt = &s_keyboard_vtable;
-  widget_init(widget, NULL, WIDGET_KEYBOARD);
+  widget_init(widget, NULL, &s_keyboard_vtable, x, y, w, h);
   array_init(&(keyboard->action_buttons), 0);
 
   if (parent == NULL) {
@@ -115,7 +113,6 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   str_init(&(keyboard->theme), 0);
   str_init(&(keyboard->open_anim_hint), 0);
   str_init(&(keyboard->close_anim_hint), 0);
-  widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
 
   widget_update_style(widget);
@@ -128,7 +125,7 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
   widget_t* parent = button;
-  while (parent != NULL && parent->type != WIDGET_PAGES) parent = parent->parent;
+  while (parent != NULL && widget_get_type(parent) != WIDGET_TYPE_PAGES) parent = parent->parent;
 
   return_value_if_fail(parent != NULL, RET_FAIL);
 
@@ -203,7 +200,7 @@ static ret_t keyboard_hook_buttons(void* ctx, void* iter) {
   keyboard_t* keyboard = KEYBOARD(ctx);
   const char* name = widget->name;
 
-  if (widget->type == WIDGET_BUTTON && name != NULL) {
+  if (widget_get_type(widget) == WIDGET_TYPE_BUTTON && name != NULL) {
     widget_on(widget, EVT_CLICK, keyboard_on_button_click, keyboard);
 
     if (tk_str_eq(name, STR_ACTION)) {

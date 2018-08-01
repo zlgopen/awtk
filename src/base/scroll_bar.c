@@ -529,9 +529,7 @@ static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh
   widget_t* widget = WIDGET(scroll_bar);
   return_value_if_fail(scroll_bar != NULL, NULL);
 
-  widget->vt = vt;
-  widget_init(widget, parent, WIDGET_SCROLL_BAR);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, vt, x, y, w, h);
   scroll_bar->animatable = TRUE;
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

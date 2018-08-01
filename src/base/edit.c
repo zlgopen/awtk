@@ -897,14 +897,12 @@ widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t
 
   return_value_if_fail(edit != NULL, NULL);
 
-  widget->vt = vt;
-  widget_init(widget, parent, WIDGET_EDIT);
+  widget_init(widget, parent, vt, x, y, w, h);
 
   edit->left_margin = 2;
   edit->right_margin = 2;
   edit->top_margin = 2;
   edit->bottom_margin = 2;
-  widget_move_resize(widget, x, y, w, h);
   edit_set_text_limit(widget, 0, 1024);
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;

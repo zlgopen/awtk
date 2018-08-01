@@ -11,14 +11,51 @@
 #include <string>
 using std::string;
 
-void GenThemeData(uint8_t* buff, uint32_t size, uint32_t type_nr, uint32_t state_nr,
-                  uint32_t name_nr) {
+static const char* widget_types[] = {WIDGET_TYPE_WINDOW_MANAGER,
+                                     WIDGET_TYPE_NORMAL_WINDOW,
+                                     WIDGET_TYPE_TOOL_BAR,
+                                     WIDGET_TYPE_DIALOG,
+                                     WIDGET_TYPE_POPUP,
+                                     WIDGET_TYPE_SPRITE,
+                                     WIDGET_TYPE_KEYBOARD,
+                                     WIDGET_TYPE_DND,
+                                     WIDGET_TYPE_LABEL,
+                                     WIDGET_TYPE_BUTTON,
+                                     WIDGET_TYPE_IMAGE,
+                                     WIDGET_TYPE_EDIT,
+                                     WIDGET_TYPE_PROGRESS_BAR,
+                                     WIDGET_TYPE_GROUP_BOX,
+                                     WIDGET_TYPE_CHECK_BUTTON,
+                                     WIDGET_TYPE_RADIO_BUTTON,
+                                     WIDGET_TYPE_DIALOG_TITLE,
+                                     WIDGET_TYPE_DIALOG_CLIENT,
+                                     WIDGET_TYPE_SLIDER,
+                                     WIDGET_TYPE_VIEW,
+                                     WIDGET_TYPE_COMBO_BOX,
+                                     WIDGET_TYPE_COMBO_BOX_ITEM,
+                                     WIDGET_TYPE_SLIDE_VIEW,
+                                     WIDGET_TYPE_PAGES,
+                                     WIDGET_TYPE_TAB_BUTTON,
+                                     WIDGET_TYPE_TAB_CONTROL,
+                                     WIDGET_TYPE_TAB_BUTTON_GROUP,
+                                     WIDGET_TYPE_BUTTON_GROUP,
+                                     WIDGET_TYPE_CANDIDATES,
+                                     WIDGET_TYPE_SPIN_BOX,
+                                     WIDGET_TYPE_DRAGGER,
+                                     WIDGET_TYPE_SCROLL_BAR,
+                                     WIDGET_TYPE_SCROLL_BAR_DESKTOP,
+                                     WIDGET_TYPE_SCROLL_BAR_MOBILE,
+                                     WIDGET_TYPE_SCROLL_VIEW,
+                                     WIDGET_TYPE_LIST_VIEW,
+                                     WIDGET_TYPE_LIST_VIEW_H,
+                                     WIDGET_TYPE_LIST_ITEM,
+                                     NULL};
+void GenThemeData(uint8_t* buff, uint32_t size, uint32_t state_nr, uint32_t name_nr) {
   ThemeGen g;
-  for (uint32_t type = 0; type < type_nr; type++) {
+  for (int32_t i = 0; widget_types[i]; i++) {
+    const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      const key_type_value_t* kv = widget_type_find_by_value(type);
-
-      Style s(kv->name, TK_DEFAULT_STYLE, state);
+      Style s(type, TK_DEFAULT_STYLE, state);
       for (uint32_t name = 0; name < name_nr; name++) {
         char str[32];
         snprintf(str, sizeof(str), "%d", name);
@@ -56,20 +93,18 @@ TEST(Theme, saveLoad) {
 
 TEST(Theme, basic) {
   uint8_t buff[4 * 10240];
-  uint32_t type_nr = WIDGET_NR;
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;
   theme_t t;
   style_t s;
 
-  GenThemeData(buff, sizeof(buff), type_nr, state_nr, name_nr);
+  GenThemeData(buff, sizeof(buff), state_nr, name_nr);
   t.data = buff;
 
-  for (uint32_t type = WIDGET_NONE + 1; type < WIDGET_NR; type++) {
+  for (int32_t i = 0; widget_types[i]; i++) {
+    const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      const key_type_value_t* kv = widget_type_find_by_value(type);
-
-      s.data = theme_find_style(&t, kv->name, 0, state);
+      s.data = theme_find_style(&t, type, 0, state);
       ASSERT_EQ(s.data != NULL, true);
       for (uint32_t name = 0; name < name_nr; name++) {
         uint32_t v = style_get_int(&s, name, 0);

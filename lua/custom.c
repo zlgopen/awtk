@@ -22,11 +22,9 @@ static int tk_newuserdata(lua_State* L, void* data, const char* info, const char
 
   if (strstr(info, "/widget_t") != NULL && strcmp(metatable, "awtk.widget_t") == 0) {
     widget_t* widget = (widget_t*)data;
-    const key_type_value_t* kv = widget_type_find_by_value(widget->type);
-    if (kv != NULL) {
-      snprintf(str, sizeof(str), "awtk.%s_t", kv->name);
-      metatable = str;
-    }
+    const char* type = widget_get_type(widget);
+    snprintf(str, sizeof(str), "awtk.%s_t", type);
+    metatable = str;
   }
 
   if (metatable != NULL) {

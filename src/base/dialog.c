@@ -111,19 +111,16 @@ static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .on_paint_self = dialog_on_paint_self};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
+  widget_t* widget = WIDGET(dialog);
   return_value_if_fail(dialog != NULL, NULL);
 
-  widget = WIDGET(dialog);
-  widget->vt = &s_dialog_vtable;
-  widget_init(widget, NULL, WIDGET_DIALOG);
+  widget_init(widget, NULL, &s_dialog_vtable, x, y, w, h);
 
   if (parent == NULL) {
     parent = window_manager();
   }
 
-  widget_move_resize(widget, x, y, w, h);
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
 
   widget_update_style(widget);

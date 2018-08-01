@@ -88,7 +88,7 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
     widget_t* parent = widget->parent;
 
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
-    if (iter != widget && iter->type == WIDGET_RADIO_BUTTON) {
+    if (iter != widget && iter->vt == widget->vt) {
       check_button_set_value_only(iter, !value);
     }
     WIDGET_FOR_EACH_CHILD_END();
@@ -143,14 +143,11 @@ static const widget_vtable_t s_radio_button_vtable = {
 };
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   check_button_t* check_button = TKMEM_ZALLOC(check_button_t);
+  widget_t* widget = WIDGET(check_button);
   return_value_if_fail(check_button != NULL, NULL);
 
-  widget = WIDGET(check_button);
-  widget->vt = &s_check_button_vtable;
-  widget_init(widget, parent, WIDGET_CHECK_BUTTON);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_check_button_vtable, x, y, w, h);
   check_button_set_value_only(widget, FALSE);
 
   return widget;
@@ -161,12 +158,9 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   widget_t* widget = WIDGET(check_button);
   return_value_if_fail(check_button != NULL, NULL);
 
-  widget->vt = &s_radio_button_vtable;
-  widget_init(widget, parent, WIDGET_CHECK_BUTTON);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_radio_button_vtable, x, y, w, h);
 
   check_button->radio = TRUE;
-  widget->type = WIDGET_RADIO_BUTTON;
   widget->state = WIDGET_STATE_NORMAL;
   check_button_set_value_only(widget, FALSE);
 

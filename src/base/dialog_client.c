@@ -34,14 +34,11 @@ static const widget_vtable_t s_dialog_client_vtable = {
     .on_paint_self = dialog_client_on_paint_self};
 
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   dialog_client_t* dialog_client = TKMEM_ZALLOC(dialog_client_t);
+  widget_t* widget = WIDGET(dialog_client);
   return_value_if_fail(dialog_client != NULL, NULL);
 
-  widget = WIDGET(dialog_client);
-  widget->vt = &s_dialog_client_vtable;
-  widget_init(widget, parent, WIDGET_DIALOG_CLIENT);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_dialog_client_vtable, x, y, w, h);
 
   widget_set_name(widget, "client");
   widget_set_state(widget, WIDGET_STATE_NORMAL);

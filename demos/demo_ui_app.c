@@ -43,7 +43,7 @@ static void open_window(const char* name, widget_t* to_close) {
 
   install_click_hander(win);
 
-  if (win->type == WIDGET_DIALOG) {
+  if (widget_get_type(win) == WIDGET_TYPE_DIALOG) {
     dialog_modal(win);
   }
 }

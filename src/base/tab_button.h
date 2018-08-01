@@ -41,12 +41,14 @@ typedef struct _tab_button_t {
    */
   bool_t value;
   /**
-   * @property {char*} active_icon
+   * @property {char*}active_icon
+   * @readonly
    * 当前项的图标的名称。
    */
   char* active_icon;
   /**
    * @property {char*} icon
+   * @readonly
    * 非当前项的图标的名称。
    */
   char* icon;

@@ -57,19 +57,23 @@ TEST(UILoader, basic) {
   // ASSERT_EQ(wbuffer.cursor, 170);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
-  ASSERT_EQ(builder->root->type == WIDGET_DIALOG, TRUE);
+  ASSERT_EQ(widget_get_type(builder->root) == WIDGET_TYPE_DIALOG, TRUE);
   ASSERT_EQ(widget_count_children(builder->root), 2);
 
   ok = widget_lookup(builder->root, "ok", TRUE);
   cancel = widget_lookup(builder->root, "cancel", TRUE);
 
   ASSERT_EQ(ok != NULL, true);
-  ASSERT_EQ(ok->type == WIDGET_BUTTON, true);
+  ASSERT_EQ(widget_get_type(ok) == WIDGET_TYPE_BUTTON, true);
   ASSERT_EQ(cancel != NULL, true);
-  ASSERT_EQ(cancel->type == WIDGET_LABEL, true);
+  ASSERT_EQ(widget_get_type(cancel) == WIDGET_TYPE_LABEL, true);
 
-  ASSERT_EQ(widget_get_child(DIALOG(builder->root)->client, 0)->type == WIDGET_BUTTON, true);
-  ASSERT_EQ(widget_get_child(DIALOG(builder->root)->client, 1)->type == WIDGET_LABEL, true);
+  ASSERT_EQ(
+      widget_get_type(widget_get_child(DIALOG(builder->root)->client, 0)) == WIDGET_TYPE_BUTTON,
+      true);
+  ASSERT_EQ(
+      widget_get_type(widget_get_child(DIALOG(builder->root)->client, 1)) == WIDGET_TYPE_LABEL,
+      true);
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 0)->name, "ok"), 0);
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 1)->name, "cancel"), 0);
 
@@ -119,16 +123,16 @@ TEST(UILoader, ext) {
   ASSERT_EQ(wbuffer.cursor, 218);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
-  ASSERT_EQ(builder->root->type == WIDGET_GROUP_BOX, TRUE);
+  ASSERT_EQ(widget_get_type(builder->root) == WIDGET_TYPE_GROUP_BOX, TRUE);
   ASSERT_EQ(widget_count_children(builder->root), 2);
 
   ok = widget_lookup(builder->root, "ok", TRUE);
   cancel = widget_lookup(builder->root, "cancel", TRUE);
 
   ASSERT_EQ(ok != NULL, true);
-  ASSERT_EQ(ok->type == WIDGET_BUTTON, true);
+  ASSERT_EQ(widget_get_type(ok) == WIDGET_TYPE_BUTTON, true);
   ASSERT_EQ(cancel != NULL, true);
-  ASSERT_EQ(cancel->type == WIDGET_LABEL, true);
+  ASSERT_EQ(widget_get_type(cancel) == WIDGET_TYPE_LABEL, true);
 
   ASSERT_EQ(ok->x, 10);
   ASSERT_EQ(ok->y, 40);

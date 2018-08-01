@@ -19,19 +19,17 @@ TEST(UILoaderXML, basic) {
 
   ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
 
-  ASSERT_EQ(builder->root->type == WIDGET_DIALOG, TRUE);
+  ASSERT_EQ(widget_get_type(builder->root) == WIDGET_TYPE_DIALOG, TRUE);
   ASSERT_EQ(widget_count_children(builder->root), 2);
 
   ok = widget_lookup(builder->root, "ok", TRUE);
   cancel = widget_lookup(builder->root, "cancel", TRUE);
 
   ASSERT_EQ(ok != NULL, true);
-  ASSERT_EQ(ok->type == WIDGET_BUTTON, true);
+  ASSERT_EQ(widget_get_type(ok) == WIDGET_TYPE_BUTTON, true);
   ASSERT_EQ(cancel != NULL, true);
-  ASSERT_EQ(cancel->type == WIDGET_LABEL, true);
+  ASSERT_EQ(widget_get_type(cancel) == WIDGET_TYPE_LABEL, true);
 
-  ASSERT_EQ(widget_get_child(DIALOG(builder->root)->client, 0)->type == WIDGET_BUTTON, true);
-  ASSERT_EQ(widget_get_child(DIALOG(builder->root)->client, 1)->type == WIDGET_LABEL, true);
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 0)->name, "ok"), 0);
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 1)->name, "cancel"), 0);
 

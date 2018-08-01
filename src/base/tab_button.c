@@ -191,14 +191,11 @@ ret_t tab_button_set_active_icon(widget_t* widget, const char* name) {
 }
 
 widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   tab_button_t* tab_button = TKMEM_ZALLOC(tab_button_t);
+  widget_t* widget = WIDGET(tab_button);
   return_value_if_fail(tab_button != NULL, NULL);
 
-  widget = WIDGET(tab_button);
-  widget->vt = &s_tab_button_vtable;
-  widget_init(widget, parent, WIDGET_TAB_BUTTON);
-  widget_move_resize(widget, x, y, w, h);
+  widget_init(widget, parent, &s_tab_button_vtable, x, y, w, h);
   tab_button_set_value_only(widget, FALSE);
 
   return widget;

@@ -32,14 +32,9 @@ static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
                                                .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   label_t* label = TKMEM_ZALLOC(label_t);
+  widget_t* widget = WIDGET(label);
   return_value_if_fail(label != NULL, NULL);
 
-  widget = WIDGET(label);
-  widget->vt = &s_label_vtable;
-  widget_init(widget, parent, WIDGET_LABEL);
-  widget_move_resize(widget, x, y, w, h);
-
-  return widget;
+  return widget_init(widget, parent, &s_label_vtable, x, y, w, h);
 }

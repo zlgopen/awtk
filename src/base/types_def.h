@@ -357,7 +357,7 @@ typedef enum _border_type_t {
  */
 typedef enum _icon_at_type_t {
   /**
-   * @const ICON_AT_NONE
+   * @const ICON_AT_AUTO
    * 自动选择位置。
    */
   ICON_AT_AUTO = 0,
