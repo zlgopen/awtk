@@ -7,7 +7,7 @@ using std::string;
 TEST(RichTextNode, text) {
   rich_text_font_t font;
   const char* str = "hello";
-  font.name = "default";
+  font.name = (char*)"default";
   font.size = 12;
 
   rich_text_node_t* text = rich_text_text_create(&font, str);
