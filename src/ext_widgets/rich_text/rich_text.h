@@ -36,15 +36,22 @@ BEGIN_C_DECLS
 typedef struct _rich_text_t {
   widget_t widget;
 
+  /**
+   * @property {int32_t} line_gap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 行间距。
+   */
   int32_t line_gap;
+
+  /*private*/
   rich_text_node_t* node;
   rich_text_render_node_t* render_node;
 } rich_text_t;
 
 /**
  * @method rich_text_create
- * @annotation ["constructor"]
  * 创建rich_text对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
