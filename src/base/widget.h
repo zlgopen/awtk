@@ -92,7 +92,7 @@ typedef struct _widget_vtable_t {
 
 /**
  * @class widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 窗口基类。
  */
 struct _widget_t {
@@ -251,7 +251,7 @@ struct _widget_t {
 /**
  * @method widget_init
  * 初始化控件。仅在子类控件构造函数中使用。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
  * @param {widget_vtable_t*} vt 虚表。
@@ -268,7 +268,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 /**
  * @method widget_update_style
  * 让控件根据自己当前状态更新style。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -278,7 +278,7 @@ ret_t widget_update_style(widget_t* widget);
 /**
  * @method widget_count_children
  * 获取子控件的个数。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {int32_t} 子控件的个数。
@@ -288,7 +288,7 @@ int32_t widget_count_children(widget_t* widget);
 /**
  * @method widget_get_child
  * 获取指定索引的子控件。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  index 索引
  *
@@ -299,7 +299,7 @@ widget_t* widget_get_child(widget_t* widget, int32_t index);
 /**
  * @method widget_index_of
  * 获取控件在父控件中的索引编号。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {int32_t} 在父控件中的索引编号。
@@ -309,7 +309,7 @@ int32_t widget_index_of(widget_t* widget);
 /**
  * @method widget_move
  * 移动控件。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {xy_t}   x x坐标
  * @param {xy_t}   y y坐标
@@ -321,7 +321,7 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y);
 /**
  * @method widget_resize
  * 调整控件的大小。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {wh_t}   w 宽度
  * @param {wh_t}   h 高度
@@ -333,7 +333,7 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h);
 /**
  * @method widget_move_resize
  * 移动控件并调整控件的大小。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {xy_t}   x x坐标
  * @param {xy_t}   y y坐标
@@ -347,7 +347,7 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method widget_set_value
  * 设置控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  value 值
  *
@@ -358,7 +358,7 @@ ret_t widget_set_value(widget_t* widget, int32_t value);
 /**
  * @method widget_set_text
  * 设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {wchar_t*}  text 文本。
  *
@@ -369,7 +369,7 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 /**
  * @method widget_use_style
  * 启用指定的主题。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*}  style style的名称。
  *
@@ -380,7 +380,7 @@ ret_t widget_use_style(widget_t* widget, const char* style);
 /**
  * @method widget_set_text_utf8
  * 设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*}  text 文本。
  *
@@ -391,7 +391,7 @@ ret_t widget_set_text_utf8(widget_t* widget, const char* text);
 /**
  * @method widget_set_tr_text
  * 获取翻译之后的文本，然后调用widget_set_text。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*}  text 文本。
  *
@@ -402,7 +402,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text);
 /**
  * @method widget_re_translate_text
  * 语言改变后，重新翻译控件上的文本(包括子控件)。
- * @scriptable
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -412,7 +412,7 @@ ret_t widget_re_translate_text(widget_t* widget);
 /**
  * @method widget_get_value
  * 获取控件的值。只是对widget_get_prop的包装，值的意义由子类控件决定。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {int32_t} 返回值。
@@ -422,7 +422,7 @@ int32_t widget_get_value(widget_t* widget);
 /**
  * @method widget_get_text
  * 获取控件的文本。只是对widget_get_prop的包装，文本的意义由子类控件决定。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {wchar_t*} 返回文本。
@@ -462,7 +462,7 @@ ret_t widget_to_screen(widget_t* widget, point_t* p);
 /**
  * @method widget_set_name
  * 设置控件的名称。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 名称。
  *
@@ -473,7 +473,7 @@ ret_t widget_set_name(widget_t* widget, const char* name);
 /**
  * @method widget_set_enable
  * 设置控件的可用性。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} enable 是否启动。
  *
@@ -484,7 +484,7 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable);
 /**
  * @method widget_set_focused
  * 设置控件的是否聚焦。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} focused 是否聚焦。
  *
@@ -544,7 +544,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child);
 /**
  * @method widget_find_target
  * 查找x/y坐标对应的子控件。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
@@ -556,7 +556,7 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
 /**
  * @method widget_lookup
  * 查找指定名称的子控件。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 子控件的名称。
  * @param {bool_t} recursive 是否递归查找全部子控件。
@@ -568,7 +568,7 @@ widget_t* widget_lookup(widget_t* widget, const char* name, bool_t recursive);
 /**
  * @method widget_lookup_by_type
  * 查找指定类型的子控件(返回第一个)。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} type 子控件的名称。
  * @param {bool_t} recursive 是否递归查找全部子控件。
@@ -580,7 +580,7 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
 /**
  * @method widget_set_visible
  * 设置控件的可见性。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} visible 是否可见。
  * @param {bool_t} recursive 是否递归设置全部子控件。
@@ -592,7 +592,7 @@ ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
 /**
  * @method widget_on
  * 注册指定事件的处理函数。
- * @scriptable custom
+ * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
@@ -605,7 +605,7 @@ int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, vo
 /**
  * @method widget_off
  * 注销指定事件的处理函数。
- * @scriptable custom
+ * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} id widget_on返回的ID。
  *
@@ -630,7 +630,7 @@ int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
 /**
  * @method widget_on
  * 注册指定事件的处理函数。
- * @scriptable custom
+ * @annotation ["scriptable"] custom
  * @param {widget_t*} widget 控件对象。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
@@ -643,7 +643,7 @@ int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, vo
 /**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @param {widget_t*} widget 控件对象。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
@@ -666,7 +666,7 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r);
 /**
  * @method widget_invalidate_force
  * 强制重绘控件。
- * @scriptable 
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -676,7 +676,7 @@ ret_t widget_invalidate_force(widget_t* widget);
 /**
  * @method widget_paint
  * 绘制控件到一个canvas上。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  *
@@ -687,7 +687,6 @@ ret_t widget_paint(widget_t* widget, canvas_t* c);
 /**
  * @method widget_dispatch
  * 分发一个事件。
- * @private
  * @param {widget_t*} widget 控件对象。
  * @param {event_t*} e 事件。
  *
@@ -720,6 +719,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 /**
  * @method widget_set_prop_str
  * 通用的设置控件属性的函数。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 属性的名称。
  * @param {char*} v 属性的值。
@@ -771,7 +771,7 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx);
 /**
  * @method widget_get_window
  * 获取当前控件所在的窗口。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {widget_t*} 窗口对象。
@@ -781,7 +781,7 @@ widget_t* widget_get_window(widget_t* widget);
 /**
  * @method widget_get_type
  * 获取当前控件的类型名称。
- * @scriptable
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {char*} 返回类型名。
@@ -791,7 +791,7 @@ const char* widget_get_type(widget_t* widget);
 /**
  * @method widget_dispatch_to_target
  * 递归的分发一个事件到所有target子控件。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {event_t*} e 事件。
  *
@@ -802,16 +802,18 @@ ret_t widget_dispatch_to_target(widget_t* widget, event_t* e);
 /**
  * @method widget_dispatch_to_key_target
  * 递归的分发一个事件到所有key_target子控件。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {event_t*} e 事件。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e);
+
 /**
  * @method widget_clone
  * clone。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {widget_t*} parent clone新控件的parent对象。
  *
@@ -822,6 +824,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
 /**
  * @method widget_equal
  * 判断两个widget是否相同。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {widget_t*} other 要比较的控件对象。
  *
@@ -829,10 +832,10 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
  */
 bool_t widget_equal(widget_t* widget, widget_t* other);
 
-
 /**
  * @method widget_destroy
  * 销毁控件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -846,7 +849,7 @@ ret_t widget_destroy(widget_t* widget);
 /**
  * @method widget_paint_helper
  * 帮助子控件实现自己的绘制函数。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  * @param {char*} icon 图标的名称。
@@ -859,7 +862,7 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
 /**
  * @method widget_prepare_text_style
  * 从widget的style中取出字体名称、大小和颜色数据，设置到canvas中。
- * @private
+ * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  *

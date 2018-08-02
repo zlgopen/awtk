@@ -33,19 +33,19 @@ BEGIN_C_DECLS
 typedef struct _wbuffer_t {
   /**
    * @property {uint8_t*} data
-   * @readonly
+   * @annotation ["readable"]
    * 缓存区。
    */
   uint8_t* data;
   /**
    * @property {uint32_t} cursor
-   * @readonly
+   * @annotation ["readable"]
    * 当前写入位置。
    */
   uint32_t cursor;
   /**
    * @property {uint32_t} capacity
-   * @readonly
+   * @annotation ["readable"]
    * 缓存区最大容量。
    */
   uint32_t capacity;
@@ -54,10 +54,10 @@ typedef struct _wbuffer_t {
 /**
  * @method wbuffer_init
  * 初始wbuffer对象。
- * @constructor
+ * @annotation ["constructor"]
  * @param {wbuffer_t*} wbuffer wbuffer对象。
  * @param {uint8_t*} data 缓冲区。
- * @param {uint16_t} capacity 缓冲区长度。
+ * @param {uint16_t} capacity 缓冲区的容量。
  *
  * @return {wbuffer_t*} wbuffer对象本身。
  */
@@ -131,19 +131,19 @@ ret_t wbuffer_write_string(wbuffer_t* wbuffer, const char* data);
 typedef struct _rbuffer_t {
   /**
    * @property {uint8_t*} data
-   * @readonly
+   * @annotation ["readable"]
    * 缓存区。
    */
   const uint8_t* data;
   /**
    * @property {uint32_t} cursor
-   * @readonly
+   * @annotation ["readable"]
    * 当前读取位置。
    */
   uint32_t cursor;
   /**
    * @property {uint32_t} capacity
-   * @readonly
+   * @annotation ["readable"]
    * 缓存区最大容量。
    */
   uint32_t capacity;
@@ -152,10 +152,10 @@ typedef struct _rbuffer_t {
 /**
  * @method rbuffer_init
  * 初始rbuffer对象。
- * @constructor
+ * @annotation ["constructor"]
  * @param {rbuffer_t*} rbuffer rbuffer对象。
  * @param {uint8_t*} data 缓冲区。
- * @param {uint16_t} capacity 缓冲区长度。
+ * @param {uint16_t} capacity 缓冲区的容量。
  *
  * @return {rbuffer_t*} rbuffer对象本身。
  */

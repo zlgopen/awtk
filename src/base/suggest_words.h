@@ -33,19 +33,19 @@ typedef struct _suggest_words_t suggest_words_t;
 
 /**
  * @class suggest_words_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 输入法联想字词。
  */
 struct _suggest_words_t {
   /**
    * @property {char*} words
-   * @private
+   * @annotation ["private"]
    * 联想字列表。find函数执行成功后会更新。
    */
   char words[TK_IM_MAX_SUGGEST_CHARS + 1];
   /**
    * @property {uint32_t} words_nr
-   * @private
+   * @annotation ["private"]
    * 联想字/词个数。find函数执行成功后会更新。
    */
   uint32_t words_nr;
@@ -55,7 +55,7 @@ struct _suggest_words_t {
 
 /**
  * @method suggest_words_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建联想字对象。
  * @param {resource_info_t*} res 数据资源。
  *

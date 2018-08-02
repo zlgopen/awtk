@@ -31,21 +31,41 @@ BEGIN_C_DECLS
 /**
  * @class popup_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * popup窗口。
  */
 typedef struct _popup_t {
   widget_t widget;
-  char* anim_hint;
+
+  /**
+   * @property {char*} theme
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 主题资源的名称。
+   */
   char* theme;
-  char* script;
+  /**
+   * @property {char*} anim_hint
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口动画名称。
+   */
+  char* anim_hint;
+  /**
+   * @property {bool_t} close_when_click
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 点击时是否关闭窗口。
+   */
   bool_t close_when_click;
+  /**
+   * @property {bool_t} close_when_click_outside
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 点击到窗口外时是否关闭窗口。
+   */
   bool_t close_when_click_outside;
 } popup_t;
 
 /**
  * @method popup_create
- * @constructor
+ * @annotation ["constructor", "scriptable"]
  * 创建popup对象。
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

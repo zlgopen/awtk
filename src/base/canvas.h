@@ -32,7 +32,7 @@ typedef struct _canvas_t canvas_t;
 
 /**
  * @class canvas_t
- * @scriptable
+ * @annotation ["scriptable"]
  * canvas类。
  */
 struct _canvas_t {

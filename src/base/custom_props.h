@@ -47,7 +47,7 @@ typedef struct _custom_props_t {
 
 /**
  * @method custom_props_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建custom_props对象
  * @param {uint32_t} capacity 初始容量。
  *

@@ -30,21 +30,21 @@ BEGIN_C_DECLS
 /**
  * @class slide_view_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * slide view。
  */
 typedef struct _slide_view_t {
   widget_t widget;
   /**
    * @property {bool_t} vertical
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否为上下滑动模式。
    */
   bool_t vertical;
 
   /**
    * @property {uint16_t} auto_play
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
    */
   uint16_t auto_play;
@@ -62,8 +62,8 @@ typedef struct _slide_view_t {
 
 /**
  * @method slide_view_create
- * @constructor
  * 创建slide_view对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -77,6 +77,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method slide_view_set_auto_play
  * 设置为自动播放模式。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
  * @param {uint16_t} auto_play 0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
  *
@@ -87,6 +88,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play);
 /**
  * @method slide_view_set_active
  * 设置当前页的序号。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
  * @param {uint32_t} index 当前页的序号。
  *
@@ -97,6 +99,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t index);
 /**
  * @method slide_view_set_vertical
  * 设置为上下滑动(缺省为左右滑动)。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
  * @param {bool_t} vertical TRUE表示上下滑动，FALSE表示左右滑动。
  *

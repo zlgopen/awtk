@@ -24,6 +24,7 @@
 
 array_t* array_create(uint16_t capacity) {
   array_t* array = TKMEM_ZALLOC(array_t);
+  return_value_if_fail(array != NULL, NULL);
 
   if (array_init(array, capacity)) {
     return array;
@@ -38,12 +39,12 @@ array_t* array_init(array_t* array, uint16_t capacity) {
   return_value_if_fail(array != NULL, NULL);
 
   array->size = 0;
-  array->capacity = capacity;
+  array->elms = NULL;
+
   if (capacity > 0) {
     array->elms = TKMEM_ZALLOCN(void*, capacity);
     return_value_if_fail(array->elms != NULL, NULL);
-  } else {
-    array->elms = NULL;
+    array->capacity = capacity;
   }
 
   return array;

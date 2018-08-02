@@ -80,7 +80,6 @@ typedef enum _bitmap_flag_t {
    * 图片内容不会变化。
    */
   BITMAP_FLAG_IMMUTABLE = 2,
-
   /**
    * @const BITMAP_FLAG_TEXTURE
    * OpenGL Texture, bitmap的id是有效的texture id。
@@ -95,50 +94,51 @@ typedef enum _bitmap_flag_t {
 struct _bitmap_t {
   /**
    * @property {wh_t} w
-   * @readonly
+   * @annotation ["readable"]
    * 宽度。
    */
   wh_t w;
   /**
    * @property {wh_t} h
-   * @readonly
+   * @annotation ["readable"]
    * 高度。
    */
   wh_t h;
   /**
    * @property {uint16_t} flags
-   * @readonly
+   * @annotation ["readable"]
    * 标志。请参考{bitmap_flag_t}。
    */
   uint16_t flags;
   /**
    * @property {uint16_t} format
-   * @readonly
+   * @annotation ["readable"]
    * 格式。请参考{bitmap_format_t}。
    */
   uint16_t format;
   /**
    * @property {char*} name
-   * @readonly
+   * @annotation ["readable"]
    * 名称。
    */
   const char* name;
   /**
    * @property {uint8_t*} data
-   * @readonly
+   * @annotation ["readable"]
    * 图片数据。
    */
   const uint8_t* data;
 
-  /**
-   * @property {void*} specfic
-   * @readonly
-   * 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。
-   */
+  /*private members*/
+
+  /* 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。*/
   void* specific;
+  /*specific_destroy的上下文*/
   void* specific_ctx;
+  /*用于销毁specific*/
   bitmap_destroy_t specific_destroy;
 
+  /*virtual functions*/
   bitmap_destroy_t destroy;
 };
 
@@ -153,55 +153,49 @@ ret_t bitmap_destroy(bitmap_t* bitmap);
 /**
  * @enum image_draw_type_t
  * @prefix IMAGE_DRAW_
+ * @annotation ["scriptable"]
  * 图片绘制方法常量定义。
  */
 typedef enum _image_draw_type_t {
   /**
    * @const IMAGE_DRAW_DEFAULT
-   * 居中显示。
-   * 将图片按原大小显示在目标矩形的左上角。
+   * 缺省显示。将图片按原大小显示在目标矩形的左上角。
    */
   IMAGE_DRAW_DEFAULT = 0,
 
   /**
    * @const IMAGE_DRAW_CENTER
-   * 居中显示。
-   * 将图片按原大小显示在目标矩形的中央。
+   * 居中显示。将图片按原大小显示在目标矩形的中央。
    */
   IMAGE_DRAW_CENTER,
 
   /**
    * @const IMAGE_DRAW_ICON
-   * 居中显示，但会根据屏幕密度调整大小。
-   * 将图片按原大小显示在目标矩形的中央。
+   * 图标显示。同居中显示，但会根据屏幕密度调整大小。
    */
   IMAGE_DRAW_ICON,
 
   /**
    * @const IMAGE_DRAW_SCALE
-   * 缩放显示。
-   * 将图片缩放至目标矩形的大小(不保证宽高成比例)。
+   * 缩放显示。将图片缩放至目标矩形的大小(不保证宽高成比例)。
    */
   IMAGE_DRAW_SCALE,
 
   /**
    * @const IMAGE_DRAW_SCALE_AUTO
-   * 自动缩放显示。
-   * 将图片缩放至目标矩形的宽度或高度(选取最小的比例)，并居中显示。
+   * 自动缩放显示。将图片缩放至目标矩形的宽度或高度(选取最小的比例)，并居中显示。
    */
   IMAGE_DRAW_SCALE_AUTO,
 
   /**
    * @const IMAGE_DRAW_SCALE_W
-   * 宽度缩放显示。
-   * 将图片缩放至目标矩形的宽度，高度按此比例进行缩放，超出不部分不显示。
+   * 宽度缩放显示。 将图片缩放至目标矩形的宽度，高度按此比例进行缩放，超出不部分不显示。
    */
   IMAGE_DRAW_SCALE_W,
 
   /**
    * @const IMAGE_DRAW_SCALE_H
-   * 高度缩放显示。
-   * 将图片缩放至目标矩形的高度，宽度按此比例进行缩放，超出不部分不显示。
+   * 高度缩放显示。将图片缩放至目标矩形的高度，宽度按此比例进行缩放，超出不部分不显示。
    */
   IMAGE_DRAW_SCALE_H,
 
@@ -258,9 +252,10 @@ typedef enum _image_draw_type_t {
   IMAGE_DRAW_3PATCH_Y_SCALE_X
 } image_draw_type_t;
 
-END_C_DECLS
-
 ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output);
+
 ret_t bitmap_rgba_to_bgra(bitmap_t* image);
+
+END_C_DECLS
 
 #endif /*TK_BITMAP_H*/

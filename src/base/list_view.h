@@ -29,27 +29,26 @@ BEGIN_C_DECLS
 /**
  * @class list_view_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * ListView控件。
  */
 typedef struct _list_view_t {
   widget_t widget;
   /**
    * @property {int32_t} item_height
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。
    */
   int32_t item_height;
-
   /**
    * @property {int32_t} default_item_height
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。
    */
   int32_t default_item_height;
   /**
    * @property {bool_t} auto_hide_scroll_bar
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 如果不需要滚动条时，自动隐藏滚动条。
    */
   bool_t auto_hide_scroll_bar;
@@ -61,8 +60,8 @@ typedef struct _list_view_t {
 
 /**
  * @method list_view_create
- * @constructor
  * 创建list_view对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -76,6 +75,7 @@ widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method list_view_set_item_height
  * 设置列表项的高度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} item_height 列表项的高度。
  *
@@ -86,6 +86,7 @@ ret_t list_view_set_item_height(widget_t* widget, int32_t item_height);
 /**
  * @method list_view_set_default_item_height
  * 设置列表项的缺省高度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} default_item_height 列表项的高度。
  *
@@ -96,6 +97,7 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
 /**
  * @method list_view_set_auto_hide_scroll_bar
  * 设置是否自动隐藏滚动条。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} auto_hide_scroll_bar 列表项的高度。
  *

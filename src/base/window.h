@@ -30,20 +30,29 @@ BEGIN_C_DECLS
 /**
  * @class window_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 窗口。
  */
 typedef struct _window_t {
   widget_t widget;
-  str_t anim_hint;
-  str_t theme;
-  str_t script;
+  /**
+   * @property {char*} theme
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 主题资源的名称。
+   */
+  char* theme;
+  /**
+   * @property {char*} anim_hint
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 动画的名称。
+   */
+  char* anim_hint;
 } window_t;
 
 /**
  * @method window_create
- * @constructor
  * 创建window对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -56,7 +65,7 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method window_open
- * @constructor
+ * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
  * @param {char*} name window的名称。
  *
@@ -66,8 +75,8 @@ widget_t* window_open(const char* name);
 
 /**
  * @method window_close
- * @deconstructor
  * 关闭窗口。
+ * @annotation ["deconstructor", "scriptable"]
  * @param {widget_t*} widget window对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

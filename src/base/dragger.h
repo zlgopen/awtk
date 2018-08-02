@@ -29,14 +29,34 @@ BEGIN_C_DECLS
 /**
  * @class dragger_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * dragger控件。
  */
 typedef struct _dragger_t {
   widget_t widget;
+  /**
+   * @property {xy_t} x_min
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * x坐标的最小值。
+   */
   xy_t x_min;
+  /**
+   * @property {xy_t} y_min
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * y坐标的最小值。
+   */
   xy_t y_min;
+  /**
+   * @property {xy_t} x_max
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * x坐标的最大值。
+   */
   xy_t x_max;
+  /**
+   * @property {xy_t} y_max
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * y坐标的最大值。
+   */
   xy_t y_max;
 
   xy_t save_x;
@@ -48,8 +68,8 @@ typedef struct _dragger_t {
 
 /**
  * @method dragger_create
- * @constructor
- * 创建dragger对象
+ * 创建dragger对象。
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -62,7 +82,8 @@ widget_t* dragger_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method dragger_set_range
- * 创建dragger对象
+ * 设置拖动的范围。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget dragger控件。
  * @param {xy_t} x_min x坐标最小值。
  * @param {xy_t} y_min y坐标最小值。

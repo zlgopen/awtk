@@ -108,7 +108,7 @@ typedef struct _resource_manager_t {
 /**
  * @method resource_manager
  * 获取缺省资源管理器。
- * @constructor
+ * @annotation ["constructor"]
  *
  * @return {resource_manager_t*} 返回resource manager对象。
  */
@@ -126,7 +126,7 @@ ret_t resource_manager_set(resource_manager_t* rm);
 /**
  * @method resource_manager_create
  * 创建资源管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @param {uint32_t} init_res_nr 预先分配资源的个数。
  *
  * @return {resource_manager_t*} 返回resource manager对象。
@@ -136,7 +136,7 @@ resource_manager_t* resource_manager_create(uint32_t init_res_nr);
 /**
  * @method resource_manager_init
  * 初始化资源管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @param {resource_manager_t*} rm resource manager对象。
  * @param {uint32_t} init_res_nr 预先分配资源的个数。
  *

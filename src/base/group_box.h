@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class group_box_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 分组控件。
  */
 typedef struct _group_box_t {
@@ -38,8 +38,8 @@ typedef struct _group_box_t {
 
 /**
  * @method group_box_create
- * @constructor
  * 创建group_box对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

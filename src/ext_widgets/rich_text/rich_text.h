@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class rich_text_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * rich_text控件，实现简单的图文混排。
  */
 typedef struct _rich_text_t {
@@ -43,7 +43,7 @@ typedef struct _rich_text_t {
 
 /**
  * @method rich_text_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建rich_text对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

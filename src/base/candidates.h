@@ -30,37 +30,22 @@ BEGIN_C_DECLS
 /**
  * @class candidates_t
  * @parent widget_t
- * @scriptable no
  * 输入法候选字词控件。
  */
 typedef struct _candidates_t {
   widget_t widget;
-  /**
-   * @property {bool_t} expanded
-   * @readonly
-   * 当前是否展开。
-   */
-  bool_t expanded;
-  /**
-   * @property {wh_t} normal_h
-   * @readonly
-   * 正常状态时的高度。
-   */
-  wh_t normal_h;
-  /**
-   * @property {uint32_t} event_id
-   * @readonly
-   * 用于注销事件。
-   */
-  uint32_t event_id;
 
+  /*private*/
+  bool_t expanded;
+  wh_t normal_h;
+  uint32_t event_id;
   canvas_t* canvas;
 } candidates_t;
 
 /**
  * @method candidates_create
- * @constructor
  * 创建candidates对象
+ * @annotation ["constructor"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

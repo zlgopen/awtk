@@ -34,19 +34,19 @@ BEGIN_C_DECLS
 typedef struct _wstr_t {
   /**
    * @property {uint16_t} size
-   * @readonly
+   * @annotation ["readable"]
    * 长度。
    */
   uint16_t size;
   /**
    * @property {uint16_t} capacity
-   * @readonly
+   * @annotation ["readable"]
    * 容量。
    */
   uint16_t capacity;
   /**
    * @property {wchar_t*} str
-   * @readonly
+   * @annotation ["readable"]
    * 字符串。
    */
   wchar_t* str;
@@ -55,7 +55,7 @@ typedef struct _wstr_t {
 /**
  * @method wstr_init
  * 初始化字符串对象。
- * @constructor
+ * @annotation ["constructor"]
  * @param {wstr_t*} str str对象。
  * @param {uint16_t} capacity 初始容量。
  *

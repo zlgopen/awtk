@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class tab_control_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 标签控件。
  */
 typedef struct _tab_control_t {
@@ -38,8 +38,8 @@ typedef struct _tab_control_t {
 
 /**
  * @method tab_control_create
- * @constructor
  * 创建tab_control对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

@@ -600,6 +600,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     value_set_int(v, edit->bottom_margin);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
+    value_set_bool(v, edit->password_visible);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_wstr(v, edit->tips.str);
     return RET_OK;
@@ -680,6 +683,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     edit->bottom_margin = value_int(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
+    edit_set_password_visible(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     wstr_from_value(&(edit->tips), v);
@@ -867,7 +873,7 @@ static ret_t edit_hook_children_button(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-const char* s_edit_clone_properties[] = {WIDGET_PROP_MIN,
+const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_MAX,
                                    WIDGET_PROP_STEP,
                                    WIDGET_PROP_INPUT_TYPE,
@@ -879,10 +885,12 @@ const char* s_edit_clone_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_TOP_MARGIN,
                                    WIDGET_PROP_BOTTOM_MARGIN,
                                    WIDGET_PROP_TIPS,
+                                   WIDGET_PROP_PASSWORD_VISIBLE,
                                    NULL};
 static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .type = WIDGET_TYPE_EDIT,
-                                              .clone_properties = s_edit_clone_properties,
+                                              .clone_properties = s_edit_properties,
+                                              .persistent_properties = s_edit_properties,
                                               .create = edit_create,
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,

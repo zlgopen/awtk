@@ -30,32 +30,32 @@ BEGIN_C_DECLS
 /**
  * @class scroll_bar_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * scroll_bar控件。
  */
 typedef struct _scroll_bar_t {
   widget_t widget;
   /**
    * @property {int32_t} virtual_size
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 虚拟宽度或高度。
    */
   int32_t virtual_size;
   /**
    * @property {int32_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 当前的值。
    */
   int32_t value;
   /**
    * @property {int32_t} row
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 行的高度。
    */
   int32_t row;
   /**
    * @property {bool_t} animatable;
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动时是否启用动画。
    */
   bool_t animatable;
@@ -68,8 +68,8 @@ typedef struct _scroll_bar_t {
 
 /**
  * @method scroll_bar_create
- * @constructor
  * 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -82,8 +82,8 @@ widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method scroll_bar_create_mobile
- * @constructor
  * 创建mobile风格的scroll_bar对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -96,8 +96,8 @@ widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
 
 /**
  * @method scroll_bar_create_desktop
- * @constructor
  * 创建desktop风格的scroll_bar对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -111,6 +111,7 @@ widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 /**
  * @method scroll_bar_set_params
  * 设置参数。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} virtual_size 最大值。
  * @param {int32_t} row 每一行的高度。
@@ -122,6 +123,7 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
 /**
  * @method scroll_bar_scroll_to
  * 滚动到指定的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} value 值。
  * @param {int32_t} duration 时间。
@@ -133,6 +135,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration);
 /**
  * @method scroll_bar_set_value
  * 设置值，并触发EVT_VALUE_CHANGED事件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} value 值。
  *
@@ -143,6 +146,7 @@ ret_t scroll_bar_set_value(widget_t* widget, int32_t value);
 /**
  * @method scroll_bar_add_delta
  * 在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} delta 值。
  *
@@ -153,6 +157,7 @@ ret_t scroll_bar_add_delta(widget_t* widget, int32_t delta);
 /**
  * @method scroll_bar_scroll_delta
  * 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} delta 值。
  *
@@ -163,6 +168,7 @@ ret_t scroll_bar_scroll_delta(widget_t* widget, int32_t delta);
 /**
  * @method scroll_bar_set_value_only
  * 设置值，但不触发EVT_VALUE_CHANGED事件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} value 值。
  *
@@ -173,6 +179,7 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
 /**
  * @method scroll_bar_is_mobile
  * 判断是否是mobile风格的滚动条。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  *
  * @return {bool_t} 返回TRUE表示是mobile风格的，否则表示不是mobile风格的。

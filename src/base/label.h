@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class label_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 文本控件。
  */
 typedef struct _label_t {
@@ -38,7 +38,7 @@ typedef struct _label_t {
 
 /**
  * @method label_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建label对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

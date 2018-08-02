@@ -29,7 +29,7 @@
 #include "base/tokenizer.h"
 #include "base/combo_box_item.h"
 
-const char* s_combo_box_clone_properties[] = {WIDGET_PROP_MIN,
+const char* s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                         WIDGET_PROP_MAX,
                                         WIDGET_PROP_STEP,
                                         WIDGET_PROP_INPUT_TYPE,
@@ -66,6 +66,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     value_set_int(v, combo_box->selected_index);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
+    value_set_str(v, combo_box->options);
+    return RET_OK;
   } else {
     return edit_get_prop(widget, name, v);
   }
@@ -74,7 +77,10 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
 ret_t combo_box_parse_options(widget_t* widget, const char* str) {
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+
   combo_box_reset_options(widget);
+  combo_box->options = tk_strdup(str);
   tokenizer_init(t, str, strlen(str), ";");
 
   while (tokenizer_has_more(t)) {
@@ -115,7 +121,8 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
 
 static const widget_vtable_t s_combo_box_vtable = {.size = sizeof(edit_t),
                                                    .type = WIDGET_TYPE_COMBO_BOX,
-                                                   .clone_properties = s_combo_box_clone_properties,
+                                                   .clone_properties = s_combo_box_properties,
+                                                   .persistent_properties = s_combo_box_properties,
                                                    .create = combo_box_create_self,
                                                    .on_paint_self = edit_on_paint_self,
                                                    .set_prop = combo_box_set_prop,
@@ -182,7 +189,7 @@ static ret_t combo_box_create_popup_items(combo_box_t* combo_box, widget_t* pare
   combo_box_option_t* iter = NULL;
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
-  iter = combo_box->options;
+  iter = combo_box->option_items;
   while (iter != NULL) {
     widget_t* item = combo_box_item_create(parent, 0, 0, 0, 0);
 
@@ -279,14 +286,15 @@ ret_t combo_box_reset_options(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
-  iter = combo_box->options;
+  iter = combo_box->option_items;
   while (iter != NULL) {
     next = iter->next;
     TKMEM_FREE(iter->text);
     TKMEM_FREE(iter);
     iter = next;
   }
-  combo_box->options = NULL;
+  combo_box->option_items = NULL;
+  TKMEM_FREE(combo_box->options);
 
   return RET_OK;
 }
@@ -318,12 +326,12 @@ ret_t combo_box_append_option(widget_t* widget, int32_t value, const char* text)
     return RET_OOM;
   }
 
-  if (combo_box->options != NULL) {
-    iter = combo_box->options;
+  if (combo_box->option_items != NULL) {
+    iter = combo_box->option_items;
     while (iter->next != NULL) iter = iter->next;
     iter->next = option;
   } else {
-    combo_box->options = option;
+    combo_box->option_items = option;
   }
 
   return RET_OK;
@@ -335,7 +343,7 @@ int32_t combo_box_count_options(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, nr);
 
-  iter = combo_box->options;
+  iter = combo_box->option_items;
   while (iter != NULL) {
     nr++;
     iter = iter->next;
@@ -350,7 +358,7 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, NULL);
 
-  iter = combo_box->options;
+  iter = combo_box->option_items;
   while (iter != NULL) {
     if (i == index) {
       return iter;
@@ -368,7 +376,7 @@ ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
   return_value_if_fail(combo_box != NULL, RET_OK);
 
   combo_box->selected_index = index;
-  if (combo_box->options != NULL) {
+  if (combo_box->option_items != NULL) {
     combo_box_option_t* option = combo_box_get_option(widget, index);
 
     if (option != NULL) {

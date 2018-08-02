@@ -40,38 +40,38 @@ struct _emitter_item_t {
 
 /**
  * @class emitter_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 事件分发器, 用于实现观察者模式。
  */
 typedef struct _emitter_t {
   /**
    * @property {emitter_item_t*} items
-   * @private
+   * @annotation ["private"]
    * 注册的回调函数集合。
    */
   emitter_item_t* items;
   /**
    * @property {uint32_t} next_id
-   * @private
+   * @annotation ["private"]
    * 下一次emitter_on返回的ID，emitter_on成功后会自动增加next_id。
    */
   uint32_t next_id;
   /**
    * @property {bool_t} enable
-   * @readonly
+   * @annotation ["readable"]
    * 禁用标志。禁用时dispatch无效。
    */
   bool_t enable;
   /**
    * @property {bool_t} remove_curr_iter
-   * @private
+   * @annotation ["private"]
    * 如果在回调函数中，emitter_off当前正在dispatch的回调函数，我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。
    * XXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。
    */
   bool_t remove_curr_iter;
   /**
    * @property {emitter_item_t*} curr_iter
-   * @private
+   * @annotation ["private"]
    * 当前正在dispatch的项。
    */
   emitter_item_t* curr_iter;
@@ -79,7 +79,7 @@ typedef struct _emitter_t {
 
 /**
  * @method emitter_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建emitter对象。
  *
  * @return {emitter_t*} 对象。
@@ -88,7 +88,7 @@ emitter_t* emitter_create(void);
 
 /**
  * @method emitter_init
- * @constructor
+ * @annotation ["constructor"]
  * 初始化emitter对象。
  * @param {emitter_t*} emitter emitter对象。
  *

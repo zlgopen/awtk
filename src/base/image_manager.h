@@ -45,14 +45,14 @@ typedef struct _bitmap_header_t {
 typedef struct _image_manager_t {
   /**
    * @property {array_t} images
-   * @private
+   * @annotation ["private"]
    * 缓存的图片。
    */
   array_t images;
 
   /**
    * @property {image_loader_t*} loader
-   * @private
+   * @annotation ["private"]
    * 图片加载器。
    */
   image_loader_t* loader;
@@ -61,7 +61,7 @@ typedef struct _image_manager_t {
 /**
  * @method image_manager
  * 获取缺省的图片管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @return {image_manager_t*} 返回图片管理器对象。
  */
 image_manager_t* image_manager(void);
@@ -78,7 +78,7 @@ ret_t image_manager_set(image_manager_t* imm);
 /**
  * @method image_manager_create
  * 创建图片管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @param {image_loader_t*} loader 图片加载器。
  *
  * @return {image_manager_t*} 返回图片管理器对象。
@@ -88,7 +88,7 @@ image_manager_t* image_manager_create(image_loader_t* loader);
 /**
  * @method image_manager_init
  * 初始化图片管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @param {image_manager_t*} imm 图片管理器对象。
  * @param {image_loader_t*} loader 图片加载器。
  *

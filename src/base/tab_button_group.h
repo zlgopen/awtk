@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class tab_button_group_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * Tab Button Group控件。
  */
 typedef struct _tab_button_group_t {
@@ -37,7 +37,7 @@ typedef struct _tab_button_group_t {
 
   /**
    * @property {bool_t} compact
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 紧凑型排版子控件。
    */
   bool_t compact;
@@ -45,8 +45,8 @@ typedef struct _tab_button_group_t {
 
 /**
  * @method tab_button_group_create
- * @constructor
  * 创建tab_button_group对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

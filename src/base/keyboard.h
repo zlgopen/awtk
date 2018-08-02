@@ -29,14 +29,29 @@ BEGIN_C_DECLS
 /**
  * @class keyboard_t
  * @parent widget_t
- * @scriptable no
  * 键盘。
  */
 typedef struct _keyboard_t {
   widget_t widget;
-  str_t theme;
-  str_t open_anim_hint;
-  str_t close_anim_hint;
+
+  /**
+   * @property {char*} theme
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 主题资源的名称。
+   */
+  char* theme;
+  /**
+   * @property {char*} open_anim_hint
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 打开时的动画名称。
+   */
+  char* open_anim_hint;
+  /**
+   * @property {char*} close_anim_hint
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 关闭时的动画名称。
+   */
+  char* close_anim_hint;
 
   array_t action_buttons;
   uint32_t action_info_id;
@@ -44,8 +59,8 @@ typedef struct _keyboard_t {
 
 /**
  * @method keyboard_create
- * @constructor
  * 创建keyboard对象
+ * @annotation ["constructor"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -58,8 +73,8 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method keyboard_close
- * @deconstructor
  * 关闭keyboard窗口。
+ * @annotation ["deconstructor"]
  * @param {widget_t*} parent keyboard对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

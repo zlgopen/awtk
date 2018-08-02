@@ -29,53 +29,54 @@ BEGIN_C_DECLS
 /**
  * @class slider_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 滑块控件。
  */
 typedef struct _slider_t {
   widget_t widget;
   /**
    * @property {uint16_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
   uint16_t value;
 
   /**
    * @property {uint16_t} min
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最小值。
    */
   uint16_t min;
 
   /**
    * @property {uint16_t} max
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值。
    */
   uint16_t max;
 
   /**
    * @property {uint16_t} step
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 拖动的最小单位。
    */
   uint16_t step;
 
   /**
    * @property {bool_t} vertical
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滑块的是否为垂直方向。
    */
   bool_t vertical;
 
+  /*private*/
   bool_t dragging;
 } slider_t;
 
 /**
  * @method slider_create
- * @constructor
  * 创建slider对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -89,6 +90,7 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method slider_set_value
  * 设置滑块的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint16_t}  value 值
  *
@@ -99,6 +101,7 @@ ret_t slider_set_value(widget_t* widget, uint16_t value);
 /**
  * @method slider_set_min
  * 设置滑块的最小值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint16_t}  min 最小值
  *
@@ -109,6 +112,7 @@ ret_t slider_set_min(widget_t* widget, uint16_t min);
 /**
  * @method slider_set_max
  * 设置滑块的最大值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint16_t}  max 最大值
  *
@@ -119,6 +123,7 @@ ret_t slider_set_max(widget_t* widget, uint16_t max);
 /**
  * @method slider_set_step
  * 设置滑块的拖动的最小单位。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint16_t}  step 拖动的最小单位。
  *
@@ -129,6 +134,7 @@ ret_t slider_set_step(widget_t* widget, uint16_t step);
 /**
  * @method slider_set_vertical
  * 设置滑块的方向。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t}  vertical 是否为垂直方向。
  *

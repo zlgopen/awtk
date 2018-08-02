@@ -34,19 +34,19 @@ BEGIN_C_DECLS
 typedef struct _str_t {
   /**
    * @property {uint16_t} size
-   * @readonly
+   * @annotation ["readable"]
    * 长度。
    */
   uint16_t size;
   /**
    * @property {uint16_t} capacity
-   * @readonly
+   * @annotation ["readable"]
    * 容量。
    */
   uint16_t capacity;
   /**
    * @property {char*} str
-   * @readonly
+   * @annotation ["readable"]
    * 字符串。
    */
   char* str;
@@ -55,7 +55,7 @@ typedef struct _str_t {
 /**
  * @method str_init
  * 初始化字符串对象。
- * @constructor
+ * @annotation ["constructor"]
  * @param {str_t*} str str对象。
  * @param {uint16_t} capacity 初始容量。
  *

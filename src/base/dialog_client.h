@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class dialog_client_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 对话框客户区控件。
  */
 typedef struct _dialog_client_t {
@@ -38,8 +38,8 @@ typedef struct _dialog_client_t {
 
 /**
  * @method dialog_client_create
- * @constructor
  * 创建dialog对象。
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

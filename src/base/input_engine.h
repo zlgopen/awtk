@@ -37,25 +37,25 @@ typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
 
 /**
  * @class input_engine_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 输入法引擎接口。
  */
 typedef struct _input_engine_t {
   /**
    * @property {str_t} keys
-   * @private
+   * @annotation ["private"]
    * 当前的按键组合。
    */
   str_t keys;
   /**
    * @property {char*} candidates
-   * @private
+   * @annotation ["private"]
    * 当前按键组合对应的候选字列表。
    */
   char candidates[TK_IM_MAX_CANDIDATE_CHARS + 1];
   /**
    * @property {uint32_t} candidates_nr
-   * @private
+   * @annotation ["private"]
    * 当前按键组合对应的候选字/词个数。
    */
   uint32_t candidates_nr;
@@ -67,7 +67,7 @@ typedef struct _input_engine_t {
 
 /**
  * @method input_engine_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建输入法引擎对象。
  *
  * @return {input_engine_t*} 返回输入法引擎对象。

@@ -40,7 +40,7 @@ typedef int32_t wh_t;
 
 /**
  * @enum ret_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 函数返回值常量定义。
  */
 typedef enum _ret_t {
@@ -258,7 +258,7 @@ enum { NAME_LEN = 31 };
 
 /**
  * @enum align_v_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 垂直对齐的常量定义。
  */
 typedef enum _align_v_t {
@@ -286,7 +286,7 @@ typedef enum _align_v_t {
 
 /**
  * @enum align_h_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 水平对齐的常量定义。
  */
 typedef enum _align_h_t {
@@ -314,7 +314,7 @@ typedef enum _align_h_t {
 
 /**
  * @enum border_type_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 控件边框类型。
  */
 typedef enum _border_type_t {
@@ -352,7 +352,7 @@ typedef enum _border_type_t {
 
 /**
  * @enum icon_at_type_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 图标所在的位置。
  */
 typedef enum _icon_at_type_t {

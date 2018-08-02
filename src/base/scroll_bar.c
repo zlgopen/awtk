@@ -384,8 +384,8 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX, WIDGET_PROP_ROW,
-                                                WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, NULL};
+static const char* s_scroll_bar_clone_properties[] = {
+    WIDGET_PROP_MAX, WIDGET_PROP_ROW, WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, NULL};
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
 static const widget_vtable_t s_scroll_bar_mobile_vtable = {

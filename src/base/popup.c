@@ -31,11 +31,7 @@
 #include "base/window_manager.h"
 
 static ret_t popup_on_paint_self(widget_t* widget, canvas_t* c) {
-  if (widget->style.data != NULL) {
-    return widget_paint_helper(widget, c, NULL, NULL);
-  }
-
-  return RET_OK;
+  return widget_paint_helper(widget, c, NULL, NULL);
 }
 
 static ret_t popup_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -47,9 +43,6 @@ static ret_t popup_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
     value_set_str(v, popup->theme);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
-    value_set_str(v, popup->script);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK)) {
     value_set_bool(v, popup->close_when_click);
@@ -74,10 +67,6 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
     TKMEM_FREE(popup->theme);
     popup->theme = tk_strdup(value_str(v));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
-    TKMEM_FREE(popup->script);
-    popup->script = tk_strdup(value_str(v));
-    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK)) {
     popup->close_when_click = value_bool(v);
     return RET_OK;
@@ -93,7 +82,6 @@ static ret_t popup_destroy(widget_t* widget) {
   popup_t* popup = POPUP(widget);
 
   TKMEM_FREE(popup->theme);
-  TKMEM_FREE(popup->script);
   TKMEM_FREE(popup->anim_hint);
 
   return RET_OK;
@@ -139,11 +127,11 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
 }
 
 static const char* s_popup_clone_properties[] = {WIDGET_PROP_ANIM_HINT,
-                                           WIDGET_PROP_THEME,
-                                           WIDGET_PROP_SCRIPT,
-                                           WIDGET_PROP_CLOSE_WHEN_CLICK,
-                                           WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
-                                           NULL};
+                                                 WIDGET_PROP_THEME,
+                                                 WIDGET_PROP_SCRIPT,
+                                                 WIDGET_PROP_CLOSE_WHEN_CLICK,
+                                                 WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
+                                                 NULL};
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .type = WIDGET_TYPE_POPUP,
                                                .clone_properties = s_popup_clone_properties,

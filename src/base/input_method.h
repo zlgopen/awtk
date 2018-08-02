@@ -35,7 +35,7 @@ typedef ret_t (*input_method_request_t)(input_method_t* im, widget_t* widget);
 
 /**
  * @enum input_type_t
- * @scriptable
+ * @annotation ["scriptable"]
  * @prefix INPUT_
  * 输入类型常量定义。
  */
@@ -89,62 +89,62 @@ typedef enum _input_type_t {
 
 /**
  * @class input_method_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * 输入法接口。
  */
 typedef struct _input_method_t {
   /**
    * @property {widget_t*} widget
-   * @private
+   * @annotation ["private"]
    * 当前的焦点控件。
    */
   widget_t* widget;
 
   /**
    * @property {widget_t*} keyboard
-   * @private
+   * @annotation ["private"]
    * 当前的软件键盘。
    */
   widget_t* keyboard;
 
   /**
    * @property {widget_t*} win
-   * @private
+   * @annotation ["private"]
    * 当前的窗口。
    */
   widget_t* win;
 
   /**
    * @property {int32_t} win_delta_y
-   * @private
+   * @annotation ["private"]
    * 由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。
    */
   int32_t win_delta_y;
 
   /**
    * @property {bool_t} action_button_enable
-   * @readonly
+   * @annotation ["readable"]
    * 软键盘的上的action按钮是否可用。
    */
   bool_t action_button_enable;
 
   /**
    * @property {bool_t} action_button_enable
-   * @readonly
+   * @annotation ["readable"]
    * 软键盘的上的action按钮文本。
    */
   char action_buton_text[NAME_LEN + 1];
 
   /**
    * @property {emitter_t} emitter
-   * @private
+   * @annotation ["private"]
    * emitter。用于实现dispatch/on/off等功能。
    */
   emitter_t emitter;
 
   /**
    * @property {input_type_t} input_type
-   * @readonly
+   * @annotation ["readable"]
    * 当前输入的类型。
    */
   input_type_t input_type;
@@ -159,7 +159,7 @@ typedef struct _input_method_t {
 
 /**
  * @class im_commit_event_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @parent event_t
  * 输入法提交输入的文本事件。
  */
@@ -167,7 +167,7 @@ typedef struct _im_commit_event_t {
   event_t e;
   /**
    * @property {char*} text
-   * @readonly
+   * @annotation ["readable"]
    * 提交的文本。
    */
   const char* text;
@@ -175,7 +175,7 @@ typedef struct _im_commit_event_t {
 
 /**
  * @class im_action_button_info_event_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @parent event_t
  * 设置软键盘上的action按钮的信息事件。
  */
@@ -183,13 +183,13 @@ typedef struct _im_action_button_info_event_t {
   event_t e;
   /**
    * @property {char*} text
-   * @readonly
+   * @annotation ["readable"]
    * 软键盘上的action按钮显示的文本。
    */
   const char* text;
   /**
    * @property {bool_t} enable
-   * @readonly
+   * @annotation ["readable"]
    * 软键盘上的action按钮启用。
    */
   bool_t enable;
@@ -197,7 +197,7 @@ typedef struct _im_action_button_info_event_t {
 
 /**
  * @class im_candidates_event_t
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @parent event_t
  * 输入法请求显示候选字的事件。
  */
@@ -205,14 +205,14 @@ typedef struct _im_candidates_event_t {
   event_t e;
   /**
    * @property {char*} candidates
-   * @readonly
+   * @annotation ["readable"]
    * 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0
    */
   const char* candidates;
 
   /**
    * @property {uint32_t} candidates_nr
-   * @readonly
+   * @annotation ["readable"]
    * 可选的文本的个数。
    */
   uint32_t candidates_nr;

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class view_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 一个通用的容器控件，也可以用作自绘。
  */
 typedef struct _view_t {
@@ -38,8 +38,8 @@ typedef struct _view_t {
 
 /**
  * @method view_create
- * @constructor
  * 创建view对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

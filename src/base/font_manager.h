@@ -39,7 +39,7 @@ typedef struct _font_manager_t {
 /**
  * @method font_manager
  * 获取缺省的字体管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @return {font_manager_t*} 返回字体管理器对象。
  */
 font_manager_t* font_manager(void);
@@ -56,7 +56,7 @@ ret_t font_manager_set(font_manager_t* fm);
 /**
  * @method font_manager_create
  * 创建字体管理器。
- * @constructor
+ * @annotation ["constructor"]
  *
  * @return {font_manager_t*} 返回字体管理器对象。
  */
@@ -65,7 +65,7 @@ font_manager_t* font_manager_create(void);
 /**
  * @method font_manager_init
  * 初始化字体管理器。
- * @constructor
+ * @annotation ["constructor"]
  * @param {font_manager_t*} fm 字体管理器对象。
  *
  * @return {font_manager_t*} 返回字体管理器对象。

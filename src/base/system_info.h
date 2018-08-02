@@ -33,35 +33,35 @@ BEGIN_C_DECLS
 typedef struct _system_info_t {
   /**
    * @property {uint32_t} lcd_w
-   * @readonly
+   * @annotation ["readable"]
    * 显示屏的宽度。
    */
   uint32_t lcd_w;
 
   /**
    * @property {uint32_t} lcd_h
-   * @readonly
+   * @annotation ["readable"]
    * 显示屏的高度。
    */
   uint32_t lcd_h;
 
   /**
    * @property {lcd_type_t} lcd_type
-   * @readonly
+   * @annotation ["readable"]
    * 显示屏的类型。
    */
   lcd_type_t lcd_type;
 
   /**
    * @property {float_t} device_pixel_ratio
-   * @readonly
+   * @annotation ["readable"]
    * 显示屏的密度。
    */
   float_t device_pixel_ratio;
 
   /**
    * @property {lcd_orientation_t} lcd_orientation
-   * @readonly
+   * @annotation ["readable"]
    * 显示屏的旋转角度。
    */
   lcd_orientation_t lcd_orientation;
@@ -70,7 +70,7 @@ typedef struct _system_info_t {
 /**
  * @method system_info
  * 获取system_info对象。
- * @constructor
+ * @annotation ["constructor"]
  * @return {system_info_t*} 返回system_info对象。
  */
 system_info_t* system_info(void);

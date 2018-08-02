@@ -29,14 +29,14 @@ BEGIN_C_DECLS
 /**
  * @class pages_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
  */
 typedef struct _pages_t {
   widget_t widget;
   /**
    * @property {uint32_t} active
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 当前活跃的page。
    */
   uint32_t active;
@@ -44,8 +44,8 @@ typedef struct _pages_t {
 
 /**
  * @method pages_create
- * @constructor
  * 创建pages对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -59,6 +59,7 @@ widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method pages_set_active
  * 设置当前的Page。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} index 当前Page的序号。
  *
@@ -69,6 +70,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index);
 /**
  * @method pages_set_active_by_name
  * 通过页面的名字设置当前的Page。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 当前Page的名字。
  *

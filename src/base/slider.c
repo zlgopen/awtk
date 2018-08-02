@@ -329,17 +329,19 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
   return RET_NOT_FOUND;
 }
 
-static const char* s_slider_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
+static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
                                             WIDGET_PROP_MIN,   WIDGET_PROP_MAX,
                                             WIDGET_PROP_STEP,  NULL};
 static const widget_vtable_t s_slider_vtable = {
     .size = sizeof(slider_t),
     .type = WIDGET_TYPE_SLIDER,
-    .clone_properties = s_slider_clone_properties,
+    .clone_properties = s_slider_properties,
+    .persistent_properties = s_slider_properties,
     .create = slider_create,
     .on_event = slider_on_event,
     .on_paint_background = widget_on_paint_background_null,
     .on_paint_self = slider_on_paint_self,
+    .on_paint_border = widget_on_paint_done_null,
     .on_paint_done = widget_on_paint_done_null,
     .get_prop = slider_get_prop,
     .set_prop = slider_set_prop};

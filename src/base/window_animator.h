@@ -109,7 +109,7 @@ struct _window_animator_t {
 
 /**
  * @method window_animator_create_for_open
- * @constructor
+ * @annotation ["constructor"]
  * 为打开窗口创建动画。
  * @param {char*} type 动画类型。
  * @param {canvas_t*} c canvas。
@@ -123,7 +123,7 @@ window_animator_t* window_animator_create_for_open(const char* type, canvas_t* c
 
 /**
  * @method window_animator_create_for_close
- * @constructor
+ * @annotation ["constructor"]
  * 为关闭窗口创建动画。
  * @param {char*} type 动画类型。
  * @param {canvas_t*} c canvas。

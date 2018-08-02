@@ -59,6 +59,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_TIPS "tips"
 #define WIDGET_PROP_INPUT_TYPE "input_type"
 #define WIDGET_PROP_READONLY "readonly"
+#define WIDGET_PROP_PASSWORD_VISIBLE "password_visible"
 #define WIDGET_PROP_ACTIVE "active"
 #define WIDGET_PROP_VERTICAL "vertical"
 #define WIDGET_PROP_SHOW_TEXT "show_text"
@@ -146,7 +147,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum widget_state_t
- * @scriptable
+ * @annotation ["scriptable"]
  * @prefix WIDGET_
  * 控件状态常量定义。
  */

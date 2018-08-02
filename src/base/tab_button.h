@@ -29,26 +29,26 @@ BEGIN_C_DECLS
 /**
  * @class tab_button_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 标签按钮控件。
  */
 typedef struct _tab_button_t {
   widget_t widget;
   /**
    * @property {bool_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
   bool_t value;
   /**
    * @property {char*}active_icon
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 当前项的图标的名称。
    */
   char* active_icon;
   /**
    * @property {char*} icon
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 非当前项的图标的名称。
    */
   char* icon;
@@ -56,8 +56,8 @@ typedef struct _tab_button_t {
 
 /**
  * @method tab_button_create
- * @constructor
  * 创建tab_button对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -71,6 +71,7 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method tab_button_set_value
  * 设置控件的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
  * @param {uint32_t}  value 值
  *
@@ -81,6 +82,7 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value);
 /**
  * @method tab_button_set_icon
  * 设置控件的图标。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
  * @param {char*}  name 当前项的图标。
  *
@@ -91,6 +93,7 @@ ret_t tab_button_set_icon(widget_t* widget, const char* name);
 /**
  * @method tab_button_set_active_icon
  * 设置控件的active图标。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
  * @param {char*}  name 当前项的图标。
  *

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class combo_box_item_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * ComboBox Item控件。
  */
 typedef struct _combo_box_item_t {
@@ -37,13 +37,13 @@ typedef struct _combo_box_item_t {
 
   /**
    * @property {int32_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
   int32_t value;
   /**
    * @property {bool_t} selected
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否被选中。
    */
   bool_t selected;
@@ -54,8 +54,8 @@ typedef struct _combo_box_item_t {
 
 /**
  * @method combo_box_item_create
- * @constructor
  * 创建combo_box_item对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -69,6 +69,7 @@ widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 /**
  * @method combo_box_item_set_selected
  * 设置控件是否被选中。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box_item对象。
  * @param {bool_t}  selected 是否被选中。
  *
@@ -79,6 +80,7 @@ ret_t combo_box_item_set_selected(widget_t* widget, bool_t selected);
 /**
  * @method combo_box_item_set_value
  * 设置控件的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box_item对象。
  * @param {int32_t}  value 值
  *

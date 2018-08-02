@@ -29,26 +29,26 @@ BEGIN_C_DECLS
 /**
  * @class progress_bar_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 进度条控件。
  */
 typedef struct _progress_bar_t {
   widget_t widget;
   /**
    * @property {uint8_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 进度条的值[0-100]。
    */
   uint8_t value;
   /**
    * @property {bool_t} vertical
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 进度条的是否为垂直方向。
    */
   bool_t vertical;
   /**
    * @property {bool_t} show_text
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否显示文本。
    */
   bool_t show_text;
@@ -56,7 +56,7 @@ typedef struct _progress_bar_t {
 
 /**
  * @method progress_bar_create
- * @constructor
+ * @annotation ["constructor", "scriptable"]
  * 创建progress_bar对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
@@ -71,6 +71,7 @@ widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method progress_bar_set_value
  * 设置进度条的进度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint8_t}  value 进度
  *
@@ -81,6 +82,7 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value);
 /**
  * @method progress_bar_set_vertical
  * 设置进度条的方向。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t}  vertical 是否为垂直方向。
  *
@@ -91,6 +93,7 @@ ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical);
 /**
  * @method progress_bar_set_show_text
  * 设置进度条的是否显示文本。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t}  show_text 是否显示文本。
  *

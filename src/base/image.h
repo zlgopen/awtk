@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class image_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 图片控件。
  */
 typedef struct _image_t {
@@ -103,7 +103,7 @@ typedef struct _image_t {
 
 /**
  * @method image_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建image对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

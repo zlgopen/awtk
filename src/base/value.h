@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum value_type_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 类型常量定义。
  */
 typedef enum _value_type_t {
@@ -111,7 +111,7 @@ typedef enum _value_type_t {
 
 /**
  * @class value_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 一个通用数据类型，用来存放整数、浮点数、obj_t、str_t和其它对象。
  */
 typedef struct _value_t {
@@ -136,7 +136,7 @@ typedef struct _value_t {
 
 /**
  * @property {int8_t} type
- * @readonly
+ * @annotation ["readable"]
  * 类型。
  */
 
@@ -314,7 +314,7 @@ uint64_t value_uint64(const value_t* v);
 /**
  * @method value_set_pointer
  * 设置类型为pointer的值。
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @param {value_t*}  v       value对象。
  * @param {pointer_t}     value   待设置的值。
  *
@@ -325,7 +325,7 @@ value_t* value_set_pointer(value_t* v, pointer_t value);
 /**
  * @method value_pointer
  * 获取类型为pointer的值。
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @param {value_t*} v value对象。
  *
  * @return {void*} 值。
@@ -435,7 +435,7 @@ value_t* value_set_int(value_t* v, int32_t value);
 
 /**
  * @method value_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建value对象
  *
  * @return {value_t*} 对象。

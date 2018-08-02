@@ -41,13 +41,13 @@ static ret_t keyboard_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    value_set_str(v, keyboard->open_anim_hint.str);
+    value_set_str(v, keyboard->open_anim_hint);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    value_set_str(v, keyboard->close_anim_hint.str);
+    value_set_str(v, keyboard->close_anim_hint);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
-    value_set_str(v, keyboard->theme.str);
+    value_set_str(v, keyboard->theme);
     return RET_OK;
   }
 
@@ -59,17 +59,26 @@ static ret_t keyboard_set_prop(widget_t* widget, const char* name, const value_t
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
-    str_from_value(&(keyboard->open_anim_hint), v);
-    str_from_value(&(keyboard->close_anim_hint), v);
+    const char* str = value_str(v);
+    TKMEM_FREE(keyboard->open_anim_hint);
+    TKMEM_FREE(keyboard->close_anim_hint);
+    keyboard->open_anim_hint = tk_strdup(str);
+    keyboard->close_anim_hint = tk_strdup(str);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    str_from_value(&(keyboard->open_anim_hint), v);
+    const char* str = value_str(v);
+    TKMEM_FREE(keyboard->open_anim_hint);
+    keyboard->open_anim_hint = tk_strdup(str);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    str_from_value(&(keyboard->close_anim_hint), v);
+    const char* str = value_str(v);
+    TKMEM_FREE(keyboard->close_anim_hint);
+    keyboard->close_anim_hint = tk_strdup(str);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
-    str_from_value(&(keyboard->theme), v);
+    const char* str = value_str(v);
+    TKMEM_FREE(keyboard->theme);
+    keyboard->theme = tk_strdup(str);
     return RET_OK;
   }
 
@@ -80,18 +89,19 @@ static ret_t keyboard_destroy_default(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   input_method_off(input_method(), keyboard->action_info_id);
 
-  str_reset(&(keyboard->open_anim_hint));
-  str_reset(&(keyboard->close_anim_hint));
-  str_reset(&(keyboard->theme));
+  TKMEM_FREE(keyboard->theme);
+  TKMEM_FREE(keyboard->open_anim_hint);
+  TKMEM_FREE(keyboard->close_anim_hint);
 
   return RET_OK;
 }
 
-static const char* s_keyboard_clone_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
+static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                               WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
-                                                  .clone_properties = s_keyboard_clone_properties,
+                                                  .clone_properties = s_keyboard_properties,
+                                                  .persistent_properties = s_keyboard_properties,
                                                   .create = keyboard_create,
                                                   .on_paint_self = keyboard_on_paint_self,
                                                   .set_prop = keyboard_set_prop,
@@ -110,9 +120,6 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
     parent = window_manager();
   }
 
-  str_init(&(keyboard->theme), 0);
-  str_init(&(keyboard->open_anim_hint), 0);
-  str_init(&(keyboard->close_anim_hint), 0);
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
 
   widget_update_style(widget);

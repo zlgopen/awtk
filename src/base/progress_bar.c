@@ -199,7 +199,7 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
 }
 
 static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
-                                                  WIDGET_PROP_SHOW_TEXT, NULL};
+                                                        WIDGET_PROP_SHOW_TEXT, NULL};
 static const widget_vtable_t s_progress_bar_vtable = {
     .size = sizeof(progress_bar_t),
     .type = WIDGET_TYPE_PROGRESS_BAR,

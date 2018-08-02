@@ -33,25 +33,25 @@ BEGIN_C_DECLS
 typedef struct _tokenizer_t {
   /**
    * @property {char*} str
-   * @readonly
+   * @annotation ["readable"]
    * 字符串。
    */
   const char* str;
   /**
    * @property {uint32_t} size
-   * @readonly
+   * @annotation ["readable"]
    * 字符串的长度。
    */
   uint32_t size;
   /**
    * @property {uint32_t} cursor
-   * @readonly
+   * @annotation ["readable"]
    * 当前位置。
    */
   uint32_t cursor;
   /**
    * @property {char*} separtor
-   * @readonly
+   * @annotation ["readable"]
    * 字符串。
    */
   const char* separtor;
@@ -62,7 +62,7 @@ typedef struct _tokenizer_t {
 /**
  * @method tokenizer_init
  * 初始化tokenizer对象。
- * @constructor
+ * @annotation ["constructor"]
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  * @param {char*} str 要解析的字符串。
  * @param {uint32_t} size 字符串长度。

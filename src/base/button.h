@@ -29,14 +29,14 @@ BEGIN_C_DECLS
 /**
  * @class button_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 按钮控件。
  */
 typedef struct _button_t {
   widget_t widget;
   /**
    * @property {int32_t} repeat
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
    */
   int32_t repeat;
@@ -50,8 +50,8 @@ typedef struct _button_t {
 
 /**
  * @method button_create
- * @constructor
  * 创建button对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -65,6 +65,7 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method button_set_repeat
  * 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  repeat 释放EVT_CLICK事件的时间间隔(毫秒)。
  *

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class button_group_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * Button Group控件。
  */
 typedef struct _button_group_t {
@@ -38,8 +38,8 @@ typedef struct _button_group_t {
 
 /**
  * @method button_group_create
- * @constructor
  * 创建button_group对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

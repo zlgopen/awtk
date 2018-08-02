@@ -34,13 +34,13 @@ BEGIN_C_DECLS
 typedef struct _tklocale_t {
   /**
    * @property {char*} country;
-   * @readonly
+   * @annotation ["readable"]
    * 国家或地区。如：CN
    */
   char country[3];
   /**
    * @property {char*} language
-   * @readonly
+   * @annotation ["readable"]
    * 语言。如：zh
    */
   char language[3];
@@ -52,7 +52,7 @@ typedef struct _tklocale_t {
 /**
  * @method locale
  * 获取缺省locale。
- * @constructor
+ * @annotation ["constructor"]
  *
  * @return {tklocale_t*} 返回locale对象。
  */
@@ -70,7 +70,7 @@ ret_t locale_set(tklocale_t* locale);
 /**
  * @method locale_create
  * 创建locale。
- * @constructor
+ * @annotation ["constructor"]
  * @param {char*} language 语言。
  * @param {char*} country 国家或地区。
  *
@@ -81,7 +81,7 @@ tklocale_t* locale_create(const char* language, const char* country);
 /**
  * @method locale_init
  * 初始化locale。
- * @constructor
+ * @annotation ["constructor"]
  * @param {tklocale_t*} locale locale对象。
  * @param {char*} language 语言。
  * @param {char*} country 国家或地区。
@@ -114,7 +114,7 @@ ret_t locale_change(tklocale_t* locale, const char* language, const char* countr
 /**
  * @method locale_on
  * 注册指定事件的处理函数。
- * @scriptable custom
+ * @annotation ["scriptable"] custom
  * @param {tklocale_t*} locale 控件对象。
  * @param {event_type_t} type 事件类型，目前固定为EVT_LOCALE_CHANGED。
  * @param {event_func_t} on_event 事件处理函数。
@@ -127,7 +127,7 @@ uint32_t locale_on(tklocale_t* locale, event_type_t type, event_func_t on_event,
 /**
  * @method locale_off
  * 注销指定事件的处理函数。
- * @scriptable custom
+ * @annotation ["scriptable"] custom
  * @param {tklocale_t*} locale 控件对象。
  * @param {uint32_t} id locale_on返回的ID。
  *

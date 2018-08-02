@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class dialog_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 对话框控件。
  */
 typedef struct _dialog_t {
@@ -46,8 +46,8 @@ typedef struct _dialog_t {
 
 /**
  * @method dialog_create
- * @constructor
  * 创建dialog对象。
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -60,8 +60,8 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method dialog_create_simple
- * @constructor
  * 创建dialog对象，同时创建title/client。
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -74,7 +74,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 /**
  * @method dialog_open
- * @constructor
+ * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。
  * @param {char*} name dialog的名称。
  *
@@ -84,6 +84,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 /**
  * @method dialog_set_title
  * 设置对话框的标题文本。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  * @param {wchar_t*}  title 标题。
  *
@@ -94,6 +95,7 @@ ret_t dialog_set_title(widget_t* widget, const wchar_t* title);
 /**
  * @method dialog_modal
  * 模态显示对话框。
+ * @annotation ["scriptable"]
  * dialog_modal返回后，dialog对象将在下一个idle函数中回收，也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
  * @param {widget_t*} widget dialog对象。
  *
@@ -104,6 +106,7 @@ uint32_t dialog_modal(widget_t* widget);
 /**
  * @method dialog_quit
  * 退出模态显示。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  * @param {uint32_t} code 退出码，作为dialog_modal的返回值。
  *

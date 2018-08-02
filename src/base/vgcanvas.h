@@ -169,103 +169,103 @@ typedef struct _vgcanvas_vtable_t {
 struct _vgcanvas_t {
   /**
    * @property {wh_t} w
-   * @readonly
+   * @annotation ["readable"]
    * canvas的宽度
    */
   uint32_t w;
   /**
    * @property {wh_t} height
-   * @readonly
+   * @annotation ["readable"]
    * canvas的高度
    */
   uint32_t h;
   /**
    * @property {float_t} ratio
-   * @readonly
+   * @annotation ["readable"]
    * 显示比例。
    */
   uint32_t ratio;
   /**
    * @property {bool_t} anti_alias
-   * @readonly
+   * @annotation ["readable"]
    * 是否启用反走样功能。
    */
   bool_t anti_alias;
   /**
    * @property {float_t} line_width
-   * @readonly
+   * @annotation ["readable"]
    * 线宽。
    */
   float_t line_width;
   /**
    * @property {float_t} global_alpha
-   * @readonly
+   * @annotation ["readable"]
    * 全局alpha。
    */
   float_t global_alpha;
   /**
    * @property {float_t} miter_limit
-   * @readonly
+   * @annotation ["readable"]
    * miter_limit。
    * @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
    */
   float_t miter_limit;
   /**
    * @property {char*} line_cap
-   * @readonly
+   * @annotation ["readable"]
    * line_cap。
    * @see http://www.w3school.com.cn/tags/canvas_linecap.asp
    */
   const char* line_cap;
   /**
    * @property {char*} line_join
-   * @readonly
+   * @annotation ["readable"]
    * line_join。
    * @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
    */
   const char* line_join;
   /**
    * @property {char*} font
-   * @readonly
+   * @annotation ["readable"]
    * 字体。
    */
   const char* font;
   /**
    * @property {float_t} font_size
-   * @readonly
+   * @annotation ["readable"]
    * 字体大小。
    */
   float_t font_size;
   /**
    * @property {char*} text_align
-   * @readonly
+   * @annotation ["readable"]
    * text_align。
    * @see http://www.w3school.com.cn/tags/canvas_textalign.asp
    */
   const char* text_align;
   /**
    * @property {char*} text_baseline
-   * @readonly
+   * @annotation ["readable"]
    * text_baseline。
    * @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
    */
   const char* text_baseline;
   /**
    * @property {color_t} fill_color
-   * @readonly
+   * @annotation ["readable"]
    * 填充颜色
    */
   color_t fill_color;
   /**
    * @property {color_t} stroke_color
-   * @readonly
+   * @annotation ["readable"]
    * 线条颜色
    */
   color_t stroke_color;
 
   /**
    * @property {uint32_t*} buff;
-   * @private
+   * @annotation ["private"]
    * frame buffer
    */
   uint32_t* buff;
@@ -278,7 +278,7 @@ struct _vgcanvas_t {
 /**
  * @method vgcanvas_create
  * 创建vgcanvas。
- * @constructor
+ * @annotation ["constructor"]
  * @param {uint32_t} w 宽度
  * @param {uint32_t} h 高度
  * @param {bitmap_format_t} format 如果data是framebuffer，format指定data的格式。

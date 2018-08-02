@@ -28,19 +28,34 @@ BEGIN_C_DECLS
 
 /**
  * @class array_t
- * 数组。
+ * 动态数组，根据元素个数动态调整数组的容量。
  */
 typedef struct _array_t {
-  void** elms;
+  /**
+   * @property {uint16_t} size
+   * @annotation ["readable"]
+   * 数组中元素的个数。
+   */
   uint16_t size;
+  /**
+   * @property {uint16_t} capacity
+   * @annotation ["readable"]
+   * 数组的容量大小。
+   */
   uint16_t capacity;
+  /**
+   * @property {void**} elms
+   * @annotation ["readable"]
+   * 数组中的元素。
+   */
+  void** elms;
 } array_t;
 
 /**
  * @method array_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建array对象
- * @param {uint16_t*} capacity 数组最大的容量。
+ * @param {uint16_t*} capacity 数组的初始容量。
  *
  * @return {array_t*} 数组对象。
  */
@@ -50,7 +65,7 @@ array_t* array_create(uint16_t capacity);
  * @method array_init
  * 初始化array对象
  * @param {array_t*} array 数组对象。
- * @param {uint16_t*} capacity 数组最大的容量。
+ * @param {uint16_t*} capacity 数组的初始容量。
  *
  * @return {array_t*} 数组对象。
  */

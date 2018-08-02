@@ -29,17 +29,18 @@ BEGIN_C_DECLS
 /**
  * @class check_button_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 勾选控件。
  */
 typedef struct _check_button_t {
   widget_t widget;
   /**
    * @property {bool_t} value
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
   bool_t value;
+
   /*private*/
   bool_t radio;
   bool_t point_down_aborted;
@@ -47,8 +48,8 @@ typedef struct _check_button_t {
 
 /**
  * @method check_button_create
- * @constructor
  * 创建check_button对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -61,8 +62,8 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method check_button_create_radio
- * @constructor
  * 创建check_button对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -76,6 +77,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 /**
  * @method check_button_set_value
  * 设置控件的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget check_button对象。
  * @param {bool_t}  value 值
  *

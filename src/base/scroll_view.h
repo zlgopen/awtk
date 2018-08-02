@@ -36,7 +36,7 @@ typedef ret_t (*scroll_view_on_scroll_to_t)(widget_t* widget, int32_t xoffset_en
 /**
  * @class scroll_view_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * 滚动视图。
  */
 typedef struct _scroll_view_t {
@@ -44,37 +44,37 @@ typedef struct _scroll_view_t {
 
   /**
    * @property {wh_t} virtual_w
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 虚拟宽度。
    */
   wh_t virtual_w;
   /**
    * @property {wh_t} virtual_h
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 虚拟高度。
    */
   wh_t virtual_h;
   /**
    * @property {int32_t_t} xoffset
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * x偏移量。
    */
   int32_t xoffset;
   /**
    * @property {int32_t_t} yoffset
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
    * y偏移量。
    */
   int32_t yoffset;
   /**
    * @property {bool_t} xslidable
-   * @readonly
-   * 是否允许y方向滑动。
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * 是否允许x方向滑动。
    */
   bool_t xslidable;
   /**
    * @property {bool_t} yslidable
-   * @readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否允许y方向滑动。
    */
   bool_t yslidable;
@@ -97,8 +97,8 @@ typedef struct _scroll_view_t {
 
 /**
  * @method scroll_view_create
- * @constructor
  * 创建scroll_view对象
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -112,6 +112,7 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method scroll_view_set_virtual_w
  * 设置虚拟宽度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {wh_t} w 虚拟宽度。
  *
@@ -122,6 +123,7 @@ ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w);
 /**
  * @method scroll_view_set_virtual_h
  * 设置虚拟高度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {wh_t} h 虚拟高度。
  *
@@ -132,6 +134,7 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h);
 /**
  * @method scroll_view_set_xslidable
  * 设置是否允许x方向滑动。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} xslidable 是否允许滑动。
  *
@@ -142,6 +145,7 @@ ret_t scroll_view_set_xslidable(widget_t* widget, bool_t xslidable);
 /**
  * @method scroll_view_set_yslidable
  * 设置是否允许y方向滑动。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} yslidable 是否允许滑动。
  *
@@ -152,6 +156,7 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable);
 /**
  * @method scroll_view_set_offset
  * 设置偏移量。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} xoffset x偏移量。
  * @param {int32_t} yoffset y偏移量。
@@ -163,6 +168,7 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
 /**
  * @method scroll_view_scroll_to
  * 滚动到指定的偏移量。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} xoffset_end x偏移量。
  * @param {int32_t} yoffset_end y偏移量。

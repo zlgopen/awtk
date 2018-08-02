@@ -59,7 +59,7 @@ ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 
 /**
  * @class idle_t
- * @scriptable
+ * @annotation ["scriptable"]
  * @fake
  * idle函数在paint之后执行。
  */
@@ -68,7 +68,7 @@ ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
  * @method idle_add
  * 增加一个idle。
  * @static
- * @scriptable custom
+ * @annotation ["scriptable"] custom
  * @param {idle_func_t} on_idle idle回调函数。
  * @param {void*} ctx idle回调函数的上下文。
  *
@@ -80,7 +80,7 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx);
  * @method idle_queue
  * 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。
  * @static
- * @scriptable no
+ * @annotation ["scriptable"] no
  * @param {idle_func_t} on_idle idle回调函数。
  * @param {void*} ctx idle回调函数的上下文。
  *
@@ -92,7 +92,7 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx);
  * @method idle_remove
  * 删除指定的idle。
  * @static
- * @scriptable custom
+ * @annotation ["scriptable"] custom
  * @param {uint32_t} idle_id idleID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -102,7 +102,7 @@ ret_t idle_remove(uint32_t idle_id);
 /**
  * @method idle_find
  * 查找指定ID的idle。
- * @private
+ * @annotation ["private"]
  *
  * @return {idle_info_t*} 返回idle的信息。
  */
@@ -111,7 +111,7 @@ const idle_info_t* idle_find(uint32_t idle_id);
 /**
  * @method idle_dispatch
  * 调用全部idle的函数。
- * @private
+ * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

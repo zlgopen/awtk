@@ -158,70 +158,70 @@ struct _lcd_t {
 
   /**
    * @property {wh_t} w
-   * @readonly
+   * @annotation ["readable"]
    * 屏幕的宽度
    */
   wh_t w;
   /**
    * @property {wh_t} height
-   * @readonly
+   * @annotation ["readable"]
    * 屏幕的高度
    */
   wh_t h;
   /**
    * @property {uint8_t} global_alpha
-   * @readonly
+   * @annotation ["readable"]
    * 全局alpha
    */
   uint8_t global_alpha;
   /**
    * @property {color_t} text_color
-   * @readonly
+   * @annotation ["readable"]
    * 文本颜色
    */
   color_t text_color;
   /**
    * @property {color_t} fill_color
-   * @readonly
+   * @annotation ["readable"]
    * 填充颜色
    */
   color_t fill_color;
   /**
    * @property {color_t} stroke_color
-   * @readonly
+   * @annotation ["readable"]
    * 线条颜色
    */
   color_t stroke_color;
   /**
    * @property {char*} font_name
-   * @readonly
+   * @annotation ["readable"]
    * 字体名称。
    */
   const char* font_name;
   /**
    * @property {uint32_t} font_size
-   * @readonly
+   * @annotation ["readable"]
    * 字体大小。
    */
   uint32_t font_size;
 
   /**
    * @property {lcd_draw_mode_t} draw_mode
-   * @readonly
+   * @annotation ["readable"]
    * 绘制模式。
    */
   lcd_draw_mode_t draw_mode;
 
   /**
    * @property {lcd_type_t} type
-   * @readonly
+   * @annotation ["readable"]
    * LCD的类型。
    */
   lcd_type_t type;
 
   /**
    * @property {float_t} ratio
-   * @readonly
+   * @annotation ["readable"]
    * 屏幕密度。
    */
   float_t ratio;
@@ -455,7 +455,7 @@ ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 /**
  * @method lcd_swap
  * 对于double fb，如果硬件支持swap，在LCD_DRAW_SWAP模式下，该函数用于切换fb。
- * @private
+ * @annotation ["private"]
  * @param {lcd_t*} lcd lcd对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

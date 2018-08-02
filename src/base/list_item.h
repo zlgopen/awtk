@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class list_item_t
  * @parent widget_t
- * @scriptable
+ * @annotation ["scriptable"]
  * list item控件。
  */
 typedef struct _list_item_t {
@@ -40,7 +40,7 @@ typedef struct _list_item_t {
 
 /**
  * @method list_item_create
- * @constructor
+ * @annotation ["constructor"]
  * 创建list_item对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
