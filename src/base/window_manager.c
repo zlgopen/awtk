@@ -44,7 +44,8 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
     nr = widget->children->size;
     for (i = nr - 2; i >= 0; i--) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
+      const char* type = widget_get_type(iter);
+      if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
         return iter;
       }
     }
@@ -209,8 +210,8 @@ widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
     return iter;
   }
 
-  if (type == WIDGET_TYPE_NORMAL_WINDOW || type == WIDGET_TYPE_DIALOG ||
-      type == WIDGET_TYPE_POPUP) {
+  if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW) || tk_str_eq(type, WIDGET_TYPE_DIALOG) ||
+      tk_str_eq(type, WIDGET_TYPE_POPUP)) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -364,7 +365,8 @@ int32_t window_manager_find_top_window_index(widget_t* widget) {
   return_value_if_fail(widget != NULL, -1);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
+  const char* type = widget_get_type(iter);
+  if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
     return i;
   }
   WIDGET_FOR_EACH_CHILD_END();
@@ -384,7 +386,8 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (widget_get_type(iter) == WIDGET_TYPE_NORMAL_WINDOW) {
+  const char* type = widget_get_type(iter);
+  if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
     start = i;
     break;
   }
@@ -449,12 +452,12 @@ static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
   wh_t h = window->h;
   const char* type = widget_get_type(window);
 
-  if (type == WIDGET_TYPE_NORMAL_WINDOW) {
+  if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
     x = 0;
     y = 0;
     w = widget->w;
     h = widget->h;
-  } else if (type == WIDGET_TYPE_DIALOG) {
+  } else if (tk_str_eq(type, WIDGET_TYPE_DIALOG)) {
     x = (widget->w - window->w) >> 1;
     y = (widget->h - window->h) >> 1;
   }

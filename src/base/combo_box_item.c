@@ -47,8 +47,8 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);
-        widget_dispatch(widget, (event_t*)&evt);
         combo_box_item_set_selected(widget, TRUE);
+        widget_dispatch(widget, (event_t*)&evt);
       }
       break;
     }

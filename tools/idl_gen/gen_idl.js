@@ -75,7 +75,7 @@ function parseMethod(comment) {
   comment.split('\n').forEach(iter => {
     if (iter.indexOf('@method') >= 0) {
       method.name = parseTokens(iter)[2];
-    } else if (iter.indexOf(' @deconstructor') >= 0) {
+    } else if (iter.indexOf(' @annotation') >= 0) {
       method.isDeconstructor = true;
     } else if (iter.indexOf(' @constructor') >= 0) {
       method.isConstructor = true;

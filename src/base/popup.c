@@ -113,8 +113,8 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       }
 
       if (close_window) {
-        window_close(widget);
         widget_ungrab(widget->parent, widget);
+        window_close(widget);
       }
 
       break;

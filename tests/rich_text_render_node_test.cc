@@ -7,6 +7,7 @@ using std::string;
 TEST(RichTextRenderNode, basic) {
   rich_text_font_t font;
   font.size = 12;
+  font.name = (char*)"default";
   rich_text_node_t* node = rich_text_text_create(&font, "good");
   rich_text_render_node_t* render_node =
       rich_text_render_node_append(NULL, rich_text_render_node_create(node));

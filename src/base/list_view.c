@@ -239,15 +239,16 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
   list_view_t* list_view = LIST_VIEW(widget);
   const char* type = widget_get_type(child);
 
-  if (type == WIDGET_TYPE_SCROLL_VIEW) {
+  if (tk_str_eq(type, WIDGET_TYPE_SCROLL_VIEW)) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);
 
     list_view->scroll_view = child;
     scroll_view->on_scroll = list_view_on_scroll_view_scroll;
     scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
     scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
-  } else if (type == WIDGET_TYPE_SCROLL_BAR || type == WIDGET_TYPE_SCROLL_BAR_DESKTOP ||
-             type == WIDGET_TYPE_SCROLL_BAR_MOBILE) {
+  } else if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR) ||
+             tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
+             tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_MOBILE)) {
     list_view->scroll_bar = child;
     widget_on(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
   }

@@ -34,6 +34,7 @@ TEST(RichTextNode, basic) {
   rich_text_font_t font;
   const char* str = "hello";
   font.size = 12;
+  font.name = (char*)"default";
   rich_text_node_t* node = rich_text_node_append(NULL, rich_text_text_create(&font, "good"));
 
   ASSERT_EQ(rich_text_node_count(node), 1);

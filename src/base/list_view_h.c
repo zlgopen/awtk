@@ -124,8 +124,9 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
 
 static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  const char* type = widget_get_type(child);
 
-  if (widget_get_type(child) == WIDGET_TYPE_SCROLL_VIEW) {
+  if (tk_str_eq(type, WIDGET_TYPE_SCROLL_VIEW)) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);
 
     list_view_h->scroll_view = child;

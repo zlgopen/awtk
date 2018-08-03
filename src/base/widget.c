@@ -914,7 +914,8 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    if (widget_get_type(target) != WIDGET_TYPE_KEYBOARD) {
+    const char* type = widget_get_type(target);
+    if (!tk_str_eq(type, WIDGET_TYPE_KEYBOARD)) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
@@ -1039,7 +1040,8 @@ widget_t* widget_get_window(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->parent != NULL, NULL);
 
   while (iter) {
-    if (iter->parent && widget_get_type(iter->parent) == WIDGET_TYPE_WINDOW_MANAGER) {
+    const char* type = widget_get_type(iter->parent);
+    if (iter->parent && tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
       return iter;
     }
     iter = iter->parent;

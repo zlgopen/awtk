@@ -47,6 +47,7 @@ int gettimeofday(struct timeval* tp, void* tzp) {
 }
 #else
 #include <sys/time.h>
+#include <unistd.h>
 #endif
 
 uint32_t get_time_ms() {

@@ -132,7 +132,13 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
   widget_t* parent = button;
-  while (parent != NULL && widget_get_type(parent) != WIDGET_TYPE_PAGES) parent = parent->parent;
+  while (parent != NULL) {
+    const char* type = widget_get_type(parent);
+    if (tk_str_eq(type, WIDGET_TYPE_PAGES)) {
+      break;
+    }
+    parent = parent->parent;
+  }
 
   return_value_if_fail(parent != NULL, RET_FAIL);
 
@@ -206,8 +212,9 @@ static ret_t keyboard_hook_buttons(void* ctx, void* iter) {
   input_method_t* im = input_method();
   keyboard_t* keyboard = KEYBOARD(ctx);
   const char* name = widget->name;
+  const char* type = widget_get_type(widget);
 
-  if (widget_get_type(widget) == WIDGET_TYPE_BUTTON && name != NULL) {
+  if (tk_str_eq(type, WIDGET_TYPE_BUTTON) && name != NULL) {
     widget_on(widget, EVT_CLICK, keyboard_on_button_click, keyboard);
 
     if (tk_str_eq(name, STR_ACTION)) {

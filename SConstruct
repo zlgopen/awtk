@@ -93,7 +93,7 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['awtk', 'gpinyin', 'awtk', 'nanovg'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'linebreak', 'nanovg'] + OS_LIBS
 
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
 CPPPATH=[TK_ROOT, 

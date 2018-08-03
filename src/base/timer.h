@@ -67,16 +67,14 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
 
 /**
  * @class timer_t
- * @annotation ["scriptable"]
- * @fake
+ * @annotation ["scriptable", "fake"]
  * timer函数在paint之后执行。
  */
 
 /**
  * @method timer_init
  * 初始化定时器系统。
- * @annotation ["private"]
- * @static
+ * @annotation ["private", "static"]
  * @param {timer_get_time_t} get_time 获取当前时间的函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -86,8 +84,7 @@ ret_t timer_init(timer_get_time_t get_time);
 /**
  * @method timer_add
  * 增加一个timer。
- * @static
- * @annotation ["scriptable"] custom
+ * @annotation ["scriptable:custom", "static"]
  * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
@@ -99,8 +96,7 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 /**
  * @method timer_queue
  * 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
- * @static
- * @annotation ["scriptable"] no
+ * @annotation ["static"]
  * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
@@ -112,8 +108,7 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 /**
  * @method timer_remove
  * 删除指定的timer。
- * @static
- * @annotation ["scriptable"] custom
+ * @annotation ["scriptable:custom", "static"]
  * @param {uint32_t} timer_id timerID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -141,7 +136,7 @@ ret_t timer_dispatch(void);
 /**
  * @method timer_count
  * 返回timer的个数。
- * @static
+ * @annotation ["static"]
  *
  * @return {uint32_t} 返回timer的个数。
  */
@@ -150,7 +145,7 @@ uint32_t timer_count(void);
 /**
  * @method timer_next_time
  * 返回最近的timer到期时间。
- * @static
+ * @annotation ["static"]
  *
  * @return {uint32_t} 返回最近的timer到期时间。
  */
@@ -159,7 +154,7 @@ uint32_t timer_next_time(void);
 /**
  * @method timer_now
  * 获取当前时间(ms)。
- * @static
+ * @annotation ["static"]
  *
  * @return {uint32_t} 返回获取当前时间(ms)。
  */

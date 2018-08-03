@@ -168,7 +168,7 @@ static ret_t combo_box_visit_item(void* ctx, void* data) {
   widget_t* iter = WIDGET(data);
   combo_box_t* combo_box = COMBO_BOX(ctx);
 
-  if (widget_get_type(iter) == WIDGET_TYPE_COMBO_BOX_ITEM) {
+  if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_COMBO_BOX_ITEM)) {
     int32_t index = widget_index_of(iter);
 
     widget_on(iter, EVT_CLICK, combo_box_on_item_click, combo_box);
