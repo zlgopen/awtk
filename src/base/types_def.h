@@ -203,7 +203,6 @@ typedef enum _lcd_orientation_t {
 
 #define return_value_if_fail(p, value)                  \
   if (!(p)) {                                           \
-    assert(!"return_value_if_fail"); \
     log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
     return (value);                                     \
   }

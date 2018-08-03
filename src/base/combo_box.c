@@ -216,6 +216,8 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
 
+  memset(&cl, 0x00, sizeof(cl));
+
   cl.inited = TRUE;
   cl.x_margin = margin;
   cl.y_margin = margin;
