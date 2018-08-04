@@ -352,6 +352,14 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
+static ret_t lcd_mem_destroy_offline_fb(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  TKMEM_FREE(mem->offline_fb);
+  TKMEM_FREE(lcd);
+
+  return RET_OK;
+}
+
 static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   lcd_t* base = NULL;
   system_info_t* info = system_info();
@@ -376,7 +384,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->get_vgcanvas = lcd_mem_get_vgcanvas;
   base->take_snapshot = lcd_mem_take_snapshot;
   base->end_frame = lcd_mem_end_frame;
-  base->destroy = lcd_mem_destroy;
+  base->destroy = alloc ? lcd_mem_destroy_offline_fb : lcd_mem_destroy;
 
   base->w = w;
   base->h = h;

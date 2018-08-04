@@ -23,6 +23,7 @@ TEST(AnimatorMove, basic) {
   ASSERT_EQ(wa->reversed, TRUE);
 
   widget_animator_destroy(wa);
+  widget_destroy(button);
 }
 
 #include "get_time.inc"

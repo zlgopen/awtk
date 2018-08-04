@@ -24,6 +24,8 @@
 #include "base/wstr.h"
 #include "base/custom_props.h"
 
+static ret_t value_free(value_t* v);
+
 custom_props_t* custom_props_create(uint32_t capacity) {
   custom_props_t* props = (custom_props_t*)TKMEM_ZALLOC(custom_props_t);
   return_value_if_fail(props != NULL, NULL);
@@ -69,8 +71,6 @@ static ret_t value_free(value_t* v) {
 }
 
 static ret_t value_assign(value_t* v, const value_t* other) {
-  value_free(v);
-
   *v = *other;
   if (v->type == VALUE_TYPE_WSTRING) {
     if (v->value.wstr != NULL) {
@@ -116,6 +116,7 @@ ret_t custom_props_set(custom_props_t* props, const char* name, const value_t* v
   for (i = 0, n = props->size; i < n; i++) {
     iter = props->props + i;
     if (tk_str_eq(iter->name, name)) {
+      value_free(&(iter->value));
       return value_assign(&(iter->value), v);
     }
   }
@@ -135,7 +136,7 @@ ret_t custom_props_destroy(custom_props_t* props) {
 
   if (props->props != NULL) {
     for (i = 0, n = props->size; i < n; i++) {
-      custom_prop_t* iter = props->props;
+      custom_prop_t* iter = props->props + i;
       value_free(&(iter->value));
     }
     TKMEM_FREE(props->props);

@@ -8,6 +8,9 @@ TEST(EventQueue, basic) {
   event_queue_req_t w;
   event_queue_t* q = event_queue_create(NR);
 
+  memset(&r, 0x00, sizeof(r));
+  memset(&w, 0x00, sizeof(w));
+
   ASSERT_EQ(q != NULL, true);
   ASSERT_EQ(q->r, 0);
   ASSERT_EQ(q->w, 0);

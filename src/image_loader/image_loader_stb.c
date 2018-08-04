@@ -90,6 +90,8 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
 
   nr = w * h;
   if (n != 4) {
+    void* org_data = data;
+
     data4 = TKMEM_ALLOC(w * h * 4);
     if (data4 == NULL) {
       stbi_image_free((uint8_t*)(data));
@@ -108,6 +110,7 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
       data4 += 4;
       data += 3;
     }
+    stbi_image_free((uint8_t*)(org_data));
   } else {
     image->data = data;
     image->destroy = image_stb_destroy;

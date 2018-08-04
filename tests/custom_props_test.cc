@@ -16,31 +16,43 @@ TEST(CustomProps, basic) {
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_TEXT, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_TEXT, &v2), RET_OK);
   ASSERT_EQ(wcscmp(v1.value.wstr, v2.value.wstr), 0);
+  ASSERT_EQ(obj->size, 1);
 
   value_set_wstr(&v1, L"custom_props1");
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_TEXT, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_TEXT, &v2), RET_OK);
   ASSERT_EQ(wcscmp(v1.value.wstr, v2.value.wstr), 0);
+  ASSERT_EQ(obj->size, 1);
 
   value_set_int(&v1, 200);
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_REPEAT, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_REPEAT, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
+  ASSERT_EQ(obj->size, 2);
 
   value_set_int(&v1, 201);
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_REPEAT, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_REPEAT, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
+  ASSERT_EQ(obj->size, 2);
 
   value_set_str(&v1, "name");
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_NAME, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_NAME, &v2), RET_OK);
   ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
+  ASSERT_EQ(obj->size, 3);
 
   value_set_str(&v1, "name1");
   ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_NAME, &v1), RET_OK);
   ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_NAME, &v2), RET_OK);
   ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
+  ASSERT_EQ(obj->size, 3);
+
+  value_set_str(&v1, "nametest");
+  ASSERT_EQ(custom_props_set(obj, WIDGET_PROP_NAME, &v1), RET_OK);
+  ASSERT_EQ(custom_props_get(obj, WIDGET_PROP_NAME, &v2), RET_OK);
+  ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
+  ASSERT_EQ(obj->size, 3);
 
   custom_props_destroy(obj);
 }

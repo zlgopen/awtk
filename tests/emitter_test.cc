@@ -46,7 +46,7 @@ TEST(Emitter, basic) {
   emitter_t emitter;
   emitter_init(&emitter);
   uint32_t type = 12;
-  e.type = type;
+  e = event_init(type, &emitter);
   ASSERT_EQ(emitter_on(NULL, type, on_event, NULL), 0);
   ASSERT_EQ(emitter_on(&emitter, type, NULL, NULL), 0);
 
@@ -83,7 +83,7 @@ TEST(Emitter, off) {
   uint32_t type = 12;
   emitter_t* emitter = emitter_create();
 
-  e.type = type;
+  e = event_init(type, emitter);
 
   id = emitter_on(emitter, type, on_event, &n);
   ASSERT_EQ(id > TK_INVALID_ID, true);
@@ -117,7 +117,7 @@ TEST(Emitter, remove) {
   uint32_t type = 12;
   emitter_t* emitter = emitter_create();
 
-  e.type = type;
+  e = event_init(type, emitter);
 
   id = emitter_on(emitter, type, on_remove, &n);
   id = emitter_on(emitter, type, on_remove, &n);
@@ -139,7 +139,7 @@ TEST(Emitter, stop) {
   uint32_t type = 12;
   emitter_t* emitter = emitter_create();
 
-  e.type = type;
+  e = event_init(type, emitter);
 
   id = emitter_on(emitter, type, on_stop, &n);
   id = emitter_on(emitter, type, on_stop, &n);
@@ -163,8 +163,7 @@ TEST(Emitter, remove_in_func) {
   uint32_t type = 12;
   emitter_t* emitter = emitter_create();
 
-  e.type = type;
-  e.target = emitter;
+  e = event_init(type, emitter);
 
   id1 = emitter_on(emitter, type, on_event, &n);
   id2 = emitter_on(emitter, type, on_remove_id, &id1);

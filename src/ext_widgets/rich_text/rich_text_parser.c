@@ -155,7 +155,8 @@ static void xml_rich_text_on_error(XmlBuilder* thiz, int line, int row, const ch
 }
 
 static void xml_rich_text_destroy(XmlBuilder* thiz) {
-  (void)thiz;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+  str_reset(&(b->temp));
   return;
 }
 
@@ -194,6 +195,7 @@ rich_text_node_t* rich_text_parse(const char* str, uint32_t size) {
 
   node = b.node;
   xml_parser_destroy(parser);
+  xml_builder_destroy(&(b.builder));
 
   return node;
 }

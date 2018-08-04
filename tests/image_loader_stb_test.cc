@@ -24,6 +24,8 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
 
 TEST(ImageLoaderStb, basic) {
   bitmap_t image;
+  memset(&image, 0x00, sizeof(image));
+
   ret_t ret = load_image(PNG_NAME, &image);
 
   ASSERT_EQ(ret, RET_OK);
@@ -31,6 +33,7 @@ TEST(ImageLoaderStb, basic) {
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), false);
+  bitmap_destroy(&image);
 
   ret = load_image(JPG_NAME, &image);
   ASSERT_EQ(ret, RET_OK);
@@ -38,6 +41,7 @@ TEST(ImageLoaderStb, basic) {
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
+  bitmap_destroy(&image);
 
   ret = load_image(PNG_OPAQUE_NAME, &image);
   ASSERT_EQ(ret, RET_OK);
@@ -45,11 +49,13 @@ TEST(ImageLoaderStb, basic) {
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
+  bitmap_destroy(&image);
 }
 
 static ret_t add_image_res(const char* filename, const char* name) {
   bitmap_t image;
   static uint8_t buff[8092];
+  memset(&image, 0x00, sizeof(image));
   ret_t ret = load_image(filename, &image);
   resource_info_t* r = (resource_info_t*)buff;
   return_value_if_fail(ret == RET_OK, RET_FAIL);
@@ -59,6 +65,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
   r->type = RESOURCE_TYPE_IMAGE;
   r->subtype = RESOURCE_TYPE_IMAGE_RAW;
   r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(resource_info_t));
+  bitmap_destroy(&image);
 
   return resource_manager_add(resource_manager(), buff);
 }
@@ -72,4 +79,5 @@ TEST(ImageLoaderStb, gen) {
   ASSERT_EQ(32, image.h);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
+  image_manager_unload_unused(image_manager(), 0);
 }

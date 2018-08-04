@@ -20,6 +20,7 @@ TEST(UISerializer, basic) {
   ASSERT_EQ(string(str.str),
             "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"0\">\n</button>\n");
 
+  str_reset(&str);
   widget_destroy(w);
 }
 
@@ -35,6 +36,7 @@ TEST(UISerializer, layout_self) {
       string(str.str),
       "<button x=\"right:100\" y=\"middle:10\" w=\"fill\" h=\"10%\" repeat=\"0\">\n</button>\n");
 
+  str_reset(&str);
   widget_destroy(w);
 }
 
@@ -50,5 +52,6 @@ TEST(UISerializer, layout_self1) {
       string(str.str),
       "<button x=\"center:100\" y=\"bottom:10\" w=\"fill\" h=\"10%\" repeat=\"0\">\n</button>\n");
 
+  str_reset(&str);
   widget_destroy(w);
 }

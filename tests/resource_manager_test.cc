@@ -52,6 +52,7 @@ TEST(ResourceManager, clearCache) {
 
   r = resource_manager_ref(rm, RESOURCE_TYPE_IMAGE, "earth");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(resource_manager_unref(rm, r), RET_OK);
 
   ASSERT_EQ(resource_manager_clear_cache(rm, RESOURCE_TYPE_IMAGE), RET_OK);
 

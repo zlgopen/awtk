@@ -19,5 +19,6 @@ TEST(RichTextRenderNode, basic) {
   render_node = rich_text_render_node_append(render_node, rich_text_render_node_create(node));
   ASSERT_EQ(rich_text_render_node_count(render_node), 3);
 
+  rich_text_node_destroy(node);
   rich_text_render_node_destroy(render_node);
 }

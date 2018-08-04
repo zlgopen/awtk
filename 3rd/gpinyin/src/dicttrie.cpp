@@ -45,6 +45,7 @@ DictTrie::DictTrie() {
 
 DictTrie::~DictTrie() {
   free_resource(true);
+  TKMEM_FREE(lma_idx_buf_);
 }
 
 void DictTrie::free_resource(bool free_dict_list) {

@@ -30,6 +30,7 @@ TEST(WidgetFactory, button) {
   ASSERT_EQ(button->w, 30);
   ASSERT_EQ(button->h, 40);
 
+  widget_destroy(button);
   widget_factory_destroy(factory);
 }
 
@@ -48,5 +49,6 @@ TEST(WidgetFactory, custom) {
   ASSERT_EQ(custom->w, 30);
   ASSERT_EQ(custom->h, 40);
 
+  widget_destroy(custom);
   widget_factory_destroy(factory);
 }

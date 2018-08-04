@@ -279,8 +279,13 @@ ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info
     return RET_OK;
   }
 
-  if (!(info->is_in_rom) && info->refcount < 1) {
-    array_remove(&(rm->resources), NULL, (void*)info, (tk_destroy_t)resource_info_unref);
+  if (!(info->is_in_rom)) {
+    bool_t remove = info->refcount <= 1;
+
+    resource_info_unref(info);
+    if (remove) {
+      array_remove(&(rm->resources), NULL, (void*)info, NULL);
+    }
   }
 
   return RET_OK;
@@ -302,7 +307,7 @@ ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type)
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
   return array_remove_all(&(rm->resources), res_cache_cmp_type, &res,
-                          (tk_destroy_t)resource_info_unref);
+                          (tk_destroy_t)resource_info_destroy);
 }
 
 ret_t resource_manager_deinit(resource_manager_t* rm) {

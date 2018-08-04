@@ -25,6 +25,7 @@
 
 static inline color_t to_color(pixel_t pixel) {
   color_t c;
+  c.color = 0;
   c.rgba.r = (pixel >> 24);
   c.rgba.g = (pixel >> 16);
   c.rgba.b = (pixel >> 8);
