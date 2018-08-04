@@ -307,7 +307,7 @@ ret_t resource_manager_clear_cache(resource_manager_t* rm, resource_type_t type)
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
   return array_remove_all(&(rm->resources), res_cache_cmp_type, &res,
-                          (tk_destroy_t)resource_info_destroy);
+                          (tk_destroy_t)resource_info_unref);
 }
 
 ret_t resource_manager_deinit(resource_manager_t* rm) {
