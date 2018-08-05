@@ -19,7 +19,7 @@
  *
  */
 
-#include "tk.h"
+#include "awtk.h"
 #include "base/mem.h"
 #include "resource.h"
 #include "base/system_info.h"

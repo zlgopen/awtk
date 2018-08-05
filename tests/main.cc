@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 
-#include "tk.h"
+#include "awtk.h"
 #include "base/mem.h"
 #include "base/idle.h"
 #include "gtest/gtest.h"

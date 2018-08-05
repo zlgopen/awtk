@@ -1,4 +1,4 @@
-#include "tk.h"
+#include "awtk.h"
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
 #include "res/inc/strings/en_US.data"

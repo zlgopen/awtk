@@ -251,6 +251,7 @@
         "name": "BITMAP_FMT_RGB565"
       }
     ],
+    "header": "base/bitmap.h",
     "name": "bitmap_format_t",
     "prefix": "BITMAP_FMT_"
   },
@@ -275,6 +276,7 @@
         "name": "BITMAP_FLAG_TEXTURE"
       }
     ],
+    "header": "base/bitmap.h",
     "name": "_bitmap_format_t",
     "prefix": "BITMAP_FLAG_"
   },
@@ -368,6 +370,7 @@
         "name": "IMAGE_DRAW_3PATCH_Y_SCALE_X"
       }
     ],
+    "header": "base/bitmap.h",
     "name": "image_draw_type_t",
     "prefix": "IMAGE_DRAW_",
     "annotation": {
@@ -2579,6 +2582,7 @@
         "name": "EVT_USER_START"
       }
     ],
+    "header": "base/events.h",
     "name": "event_type_t",
     "prefix": "EVT_",
     "annotation": {
@@ -3871,6 +3875,7 @@
         "name": "INPUT_PHONE"
       }
     ],
+    "header": "base/input_method.h",
     "name": "input_type_t",
     "prefix": "INPUT_",
     "annotation": {
@@ -4332,6 +4337,7 @@
         "name": "LCD_DRAW_OFFLINE"
       }
     ],
+    "header": "base/lcd.h",
     "name": "lcd_draw_mode_t",
     "prefix": "LCD_DRAW_"
   },
@@ -4352,6 +4358,7 @@
         "name": "LCD_VGCANVAS"
       }
     ],
+    "header": "base/lcd.h",
     "name": "lcd_type_t",
     "prefix": "LCD_"
   },
@@ -5801,6 +5808,7 @@
     "type": "enum",
     "desc": "资源类型常量定义。",
     "consts": [],
+    "header": "base/resource_manager.h",
     "name": "resource_type_t",
     "prefix": "RESOURCE_TYPE_"
   },
@@ -5808,6 +5816,7 @@
     "type": "enum",
     "desc": "字体资源类型定义。",
     "consts": [],
+    "header": "base/resource_manager.h",
     "name": "resource_font_type_t",
     "prefix": "RESOURCE_FONT_TYPE_"
   },
@@ -5815,6 +5824,7 @@
     "type": "enum",
     "desc": "图片资源类型定义。",
     "consts": [],
+    "header": "base/resource_manager.h",
     "name": "resource_image_type_t",
     "prefix": "RESOURCE_IMAGE_TYPE_"
   },
@@ -5822,6 +5832,7 @@
     "type": "enum",
     "desc": "UI资源类型定义。",
     "consts": [],
+    "header": "base/resource_manager.h",
     "name": "resource_ui_type_t",
     "prefix": "RESOURCE_UI_TYPE_"
   },
@@ -7803,6 +7814,7 @@
         "name": "STYLE_ID_ICON_AT"
       }
     ],
+    "header": "base/theme.h",
     "name": "style_type_t",
     "prefix": "STYLE"
   },
@@ -8230,6 +8242,7 @@
         "name": "RET_BAD_PARAMS"
       }
     ],
+    "header": "base/types_def.h",
     "name": "ret_t",
     "prefix": "RET_",
     "annotation": {
@@ -8257,6 +8270,7 @@
         "name": "LCD_ORIENTATION_270"
       }
     ],
+    "header": "base/types_def.h",
     "name": "lcd_orientation_t",
     "prefix": "LCD_ORIENTATION_"
   },
@@ -8281,6 +8295,7 @@
         "name": "ALIGN_V_BOTTOM"
       }
     ],
+    "header": "base/types_def.h",
     "name": "align_v_t",
     "prefix": "ALIGN_V_",
     "annotation": {
@@ -8308,6 +8323,7 @@
         "name": "ALIGN_H_RIGHT"
       }
     ],
+    "header": "base/types_def.h",
     "name": "align_h_t",
     "prefix": "ALIGN_H_",
     "annotation": {
@@ -8343,6 +8359,7 @@
         "name": "BORDER_ALL"
       }
     ],
+    "header": "base/types_def.h",
     "name": "border_type_t",
     "prefix": "BORDER_TYPE_"
   },
@@ -8371,6 +8388,7 @@
         "name": "ICON_AT_BOTTOM"
       }
     ],
+    "header": "base/types_def.h",
     "name": "icon_at_type_t",
     "prefix": "ICON_AT_TYPE_"
   },
@@ -8439,6 +8457,7 @@
         "name": "VALUE_TYPE_WSTRING"
       }
     ],
+    "header": "base/value.h",
     "name": "value_type_t",
     "prefix": "VALUE_TYPE_",
     "annotation": {
@@ -10601,6 +10620,7 @@
         "name": "WIDGET_STATE_ERROR"
       }
     ],
+    "header": "base/widget_consts.h",
     "name": "widget_state_t",
     "prefix": "WIDGET_",
     "annotation": {
@@ -12006,6 +12026,7 @@
         "name": "WINDOW_ANIMATOR_VTRANSLATE"
       }
     ],
+    "header": "base/window_animator.h",
     "name": "window_animator_type_t",
     "prefix": "WINDOW_ANIMATOR_"
   },
@@ -12656,73 +12677,6 @@
         "annotation": {},
         "desc": "设置文本。",
         "name": "rich_text_set_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "LCD宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "LCD高度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "初始化TK。@global@scriptable no",
-        "name": "tk_init",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "进入TK事件主循环。@global@scriptable no",
-        "name": "tk_run",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "退出TK事件主循环。@global",
-        "name": "tk_quit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "orientation",
-            "desc": "旋转方向。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。@global",
-        "name": "tk_set_lcd_orientation",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "初始化资源。@global@private",
-        "name": "tk_init_resources",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

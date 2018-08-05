@@ -123,6 +123,8 @@ class IDLGenerator {
 
     if (method.annotation.global) {
       method.type = 'method';
+      method.header = this.filename;
+
       this.result.push(method);
     } else if (this.cls) {
       this.cls.methods.push(method);
@@ -181,6 +183,8 @@ class IDLGenerator {
     cls.type = 'enum';
     cls.desc = '';
     cls.consts = [];
+    cls.header = this.filename;
+
     this.cls = cls;
 
     comment.split('\n').forEach(iter => {
