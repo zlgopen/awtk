@@ -4293,7 +4293,8 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "创建label对象",
         "name": "label_create",
@@ -11891,6 +11892,85 @@
         "return": {
           "type": "bool_t",
           "desc": "返回TRUE表示相同，否则表示不同。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "char*",
+            "name": "x",
+            "desc": "x布局参数"
+          },
+          {
+            "type": "char*",
+            "name": "y",
+            "desc": "y布局参数"
+          },
+          {
+            "type": "char*",
+            "name": "w",
+            "desc": "w布局参数"
+          },
+          {
+            "type": "char*",
+            "name": "h",
+            "desc": "h布局参数"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置widget自身的layout参数。",
+        "name": "widget_set_self_layout_params",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "char*",
+            "name": "params",
+            "desc": "子控件布局参数(参考docs/layout.md)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置widget子控件的layout参数。",
+        "name": "widget_set_children_layout_params",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "重新排版widget及其子控件。",
+        "name": "widget_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {

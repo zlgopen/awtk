@@ -38,7 +38,7 @@ typedef struct _label_t {
 
 /**
  * @method label_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * 创建label对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

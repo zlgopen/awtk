@@ -832,6 +832,42 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
 bool_t widget_equal(widget_t* widget, widget_t* other);
 
 /**
+ * @method widget_set_self_layout_params
+ * 设置widget自身的layout参数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} x x布局参数
+ * @param {char*} y y布局参数
+ * @param {char*} w w布局参数
+ * @param {char*} h h布局参数
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
+                                    const char* h);
+
+/**
+ * @method widget_set_children_layout_params
+ * 设置widget子控件的layout参数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} params 子控件布局参数(参考docs/layout.md)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
+
+/**
+ * @method widget_layout
+ * 重新排版widget及其子控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_layout(widget_t* widget);
+
+/**
  * @method widget_destroy
  * 销毁控件。
  * @annotation ["scriptable"]
