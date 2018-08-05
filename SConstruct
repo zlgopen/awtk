@@ -123,7 +123,6 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 SConscriptFiles=[
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
-  '3rd/lua/SConscript',
   '3rd/agg/SConscript', 
   '3rd/gpinyin/SConscript', 
   '3rd/picasso/SConscript',
@@ -138,8 +137,7 @@ SConscriptFiles=[
   'tools/str_gen/SConscript', 
   'tools/ui_gen/xml_to_ui/SConscript',
   'demos/SConscript', 
-  'tests/SConscript',
-  'lua/SConscript'
+  'tests/SConscript'
   ]
   
 SConscript(SConscriptFiles)
