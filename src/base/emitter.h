@@ -40,7 +40,6 @@ struct _emitter_item_t {
 
 /**
  * @class emitter_t
- * @annotation ["scriptable"] no
  * 事件分发器, 用于实现观察者模式。
  */
 typedef struct _emitter_t {

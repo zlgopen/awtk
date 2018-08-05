@@ -527,7 +527,6 @@ paint_event_t* paint_event_cast(event_t* event);
 /**
  * @method event_init
  * 初始化事件。
- * @annotation ["scriptable"] no
  * @param {uint32_t} type 事件类型。
  * @param {void*} target 目标对象。
  *
@@ -538,7 +537,6 @@ event_t event_init(uint32_t type, void* target);
 /**
  * @method pointer_event_rotate
  * 根据屏幕旋转方向修正pointer_event中的坐标。
- * @annotation ["scriptable"] no
  * @param {pointer_event_t*} evt 指针事件对象。
  * @param {system_info_t*} info 系统信息。
  *

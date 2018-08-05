@@ -260,7 +260,7 @@ struct _widget_t {
  * @param {wh_t}   w 宽度
  * @param {wh_t}   h 高度
  *
- * @return {widget*} widget对象本身。
+ * @return {widget_t*} widget对象本身。
  */
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h);
@@ -630,7 +630,7 @@ int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
 /**
  * @method widget_on
  * 注册指定事件的处理函数。
- * @annotation ["scriptable"] custom
+ * @annotation ["scriptable:custom"] 
  * @param {widget_t*} widget 控件对象。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
@@ -643,7 +643,6 @@ int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, vo
 /**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
- * @annotation ["scriptable"] no
  * @param {widget_t*} widget 控件对象。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。

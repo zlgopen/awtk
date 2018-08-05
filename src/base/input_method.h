@@ -89,7 +89,6 @@ typedef enum _input_type_t {
 
 /**
  * @class input_method_t
- * @annotation ["scriptable"] no
  * 输入法接口。
  */
 typedef struct _input_method_t {
@@ -159,7 +158,6 @@ typedef struct _input_method_t {
 
 /**
  * @class im_commit_event_t
- * @annotation ["scriptable"] no
  * @parent event_t
  * 输入法提交输入的文本事件。
  */
@@ -175,7 +173,6 @@ typedef struct _im_commit_event_t {
 
 /**
  * @class im_action_button_info_event_t
- * @annotation ["scriptable"] no
  * @parent event_t
  * 设置软键盘上的action按钮的信息事件。
  */
@@ -197,7 +194,6 @@ typedef struct _im_action_button_info_event_t {
 
 /**
  * @class im_candidates_event_t
- * @annotation ["scriptable"] no
  * @parent event_t
  * 输入法请求显示候选字的事件。
  */

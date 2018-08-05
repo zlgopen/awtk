@@ -7,14 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch gen_lua",
-            "program": "${workspaceFolder}/gen_lua.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch gen_idl",
-            "program": "${workspaceFolder}/gen_idl.js"
+            "name": "Launch gen idl",
+            "program": "${workspaceFolder}/index.js"
         }
     ]
 }

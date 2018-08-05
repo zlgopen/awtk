@@ -145,7 +145,6 @@ ret_t combo_box_append_option(widget_t* widget, int32_t value, const char* text)
 /**
  * @method combo_box_get_option
  * 获取第index个选项。
- * @annotation ["scriptable"] no
  * @param {widget_t*} widget combo_box对象。
  * @param {uint32_t} index 选项的索引。
  *

@@ -42,7 +42,6 @@ struct _widget_animator_t {
   /**
    * @property {widget_t*} widget
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 控件对象。
    */
   widget_t* widget;
@@ -50,7 +49,6 @@ struct _widget_animator_t {
   /**
    * @property {bool_t} reversed
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 逆向运行，在yoyo模式下自动设置。
    */
   bool_t reversed;
@@ -58,7 +56,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} yoyo_times
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * yoyo剩余次数。
    */
   uint32_t yoyo_times;
@@ -66,7 +63,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} repeat_times
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 重复剩余次数。
    */
   uint32_t repeat_times;
@@ -74,7 +70,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} now
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 当前时间(毫秒)。
    */
   uint32_t now;
@@ -82,7 +77,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} start_time
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 起始时间(毫秒)。
    */
   uint32_t start_time;
@@ -90,7 +84,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} delay
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 延迟执行时间(毫秒)。
    */
   uint32_t delay;
@@ -98,7 +91,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} duration
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 单次动画执行时间(毫秒)。
    */
   uint32_t duration;
@@ -106,7 +98,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} emitter
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * emitter
    */
   emitter_t emitter;
@@ -114,7 +105,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} timer_id
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 定时器ID。
    */
   uint32_t timer_id;
@@ -122,7 +112,6 @@ struct _widget_animator_t {
   /**
    * @property {uint32_t} widget_destroy_id
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * widget_destroy_id。
    */
   uint32_t widget_destroy_id;
@@ -130,7 +119,6 @@ struct _widget_animator_t {
   /**
    * @property {easing_func_t} easing
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * 插值函数。
    */
   easing_func_t easing;
@@ -138,7 +126,6 @@ struct _widget_animator_t {
   /**
    * @property {widget_animator_update_t} update
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * update函数，子类需要实现。
    */
   widget_animator_update_t update;
@@ -146,7 +133,6 @@ struct _widget_animator_t {
   /**
    * @property {widget_animator_destroy_t} destroy
    * @annotation ["private"]
-   * @annotation ["scriptable"] no
    * destroy函数，子类需要实现。
    */
   widget_animator_destroy_t destroy;
@@ -208,7 +194,7 @@ ret_t widget_animator_set_reversed(widget_animator_t* animator, bool_t value);
 /**
  * @method widget_animator_on
  * 注册指定事件的处理函数。
- * @annotation ["scriptable"] custom
+ * @annotation ["scriptable:custom"] 
  * @param {widget_animator_t*} animator 动画对象本身。
  * @param {event_type_t} type
  * 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_ONCE和EVT_ANIM_END。
@@ -223,7 +209,7 @@ uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, even
 /**
  * @method widget_animator_off
  * 注销指定事件的处理函数。
- * @annotation ["scriptable"] custom
+ * @annotation ["scriptable:custom"] 
  * @param {widget_animator_t*} animator 动画对象本身。
  * @param {uint32_t} id widget_animator_on返回的ID。
  *

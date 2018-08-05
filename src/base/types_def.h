@@ -314,7 +314,6 @@ typedef enum _align_h_t {
 
 /**
  * @enum border_type_t
- * @annotation ["scriptable"] no
  * 控件边框类型。
  */
 typedef enum _border_type_t {
@@ -352,7 +351,6 @@ typedef enum _border_type_t {
 
 /**
  * @enum icon_at_type_t
- * @annotation ["scriptable"] no
  * 图标所在的位置。
  */
 typedef enum _icon_at_type_t {

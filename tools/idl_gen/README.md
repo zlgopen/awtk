@@ -7,11 +7,5 @@
 ## 产生IDL文件
 
 ```
-node gen_idl.js
-```
-
-## 产生lua脚本绑定
-
-```
-node gen_lua.js
+node index.js
 ```

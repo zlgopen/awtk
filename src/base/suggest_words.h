@@ -33,7 +33,6 @@ typedef struct _suggest_words_t suggest_words_t;
 
 /**
  * @class suggest_words_t
- * @annotation ["scriptable"] no
  * 输入法联想字词。
  */
 struct _suggest_words_t {

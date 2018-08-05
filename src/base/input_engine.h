@@ -37,7 +37,6 @@ typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
 
 /**
  * @class input_engine_t
- * @annotation ["scriptable"] no
  * 输入法引擎接口。
  */
 typedef struct _input_engine_t {
