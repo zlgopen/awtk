@@ -48,12 +48,11 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 }
 
 #define INVISIBLE_CHAR '*'
-#define MAX_PASSWORD_LEN 31
+#define TEMP_STR_LEN 31
 
-static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* password) {
+static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* temp_str) {
   int32_t i = 0;
   float_t cw = 0;
-  wchar_t tips_wstr[64];
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
   float_t caret_x = edit->left_margin;
@@ -61,8 +60,7 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
-    memset(tips_wstr, 0x00, sizeof(tips_wstr));
-    utf8_to_utf16(edit->tips, tips_wstr, ARRAY_SIZE(tips_wstr));
+    utf8_to_utf16(edit->tips, temp_str, TEMP_STR_LEN);
   }
 
   if (str->size > 0) {
@@ -85,17 +83,17 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
     text->size = wcslen(text->str);
     text->capacity = text->size;
   } else {
-    text->str = NULL;
-    text->size = 0;
+    text->str = temp_str;
+    text->size = wcslen(temp_str);
   }
 
   if (invisible) {
-    uint32_t size = tk_min(text->size, MAX_PASSWORD_LEN);
+    uint32_t size = tk_min(text->size, TEMP_STR_LEN);
     for (i = 0; i < size; i++) {
-      password[i] = INVISIBLE_CHAR;
+      temp_str[i] = INVISIBLE_CHAR;
     }
-    password[size] = '\0';
-    text->str = password;
+    temp_str[size] = '\0';
+    text->str = temp_str;
     text->size = size;
   }
   edit->caret_x = caret_x + 0.5f;
@@ -106,7 +104,7 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wstr_t text;
   edit_t* edit = EDIT(widget);
-  wchar_t password[MAX_PASSWORD_LEN + 1];
+  wchar_t temp_str[TEMP_STR_LEN + 1];
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;
   uint8_t top_margin = edit->top_margin;
@@ -114,8 +112,9 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t w = widget->w - left_margin - right_margin;
   wh_t h = widget->h - top_margin - bottom_margin;
 
+  memset(temp_str, 0x00, sizeof(temp_str));
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
-  return_value_if_fail(edit_get_display_text(widget, c, &text, password) == RET_OK, RET_FAIL);
+  return_value_if_fail(edit_get_display_text(widget, c, &text, temp_str) == RET_OK, RET_FAIL);
 
   if (text.size > 0) {
     rect_t r = rect_init(left_margin, top_margin, w, h);
@@ -148,6 +147,7 @@ static ret_t edit_delete_next_char(widget_t* widget) {
 }
 
 static ret_t edit_input_char(widget_t* widget, wchar_t c) {
+  event_t evt;
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
@@ -224,6 +224,9 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
       }
     }
   }
+
+  evt = event_init(EVT_VALUE_CHANGING, widget);
+  widget_dispatch(widget, &evt);
 
   return RET_OK;
 }
@@ -435,6 +438,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
+      event_t evt = event_init(EVT_VALUE_CHANGED, widget);
       input_method_request(input_method(), NULL);
 
       edit_update_status(widget);
@@ -445,6 +449,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
           widget_set_state(widget, WIDGET_STATE_ERROR);
         }
       }
+      widget_dispatch(widget, &evt);
 
       break;
     }
