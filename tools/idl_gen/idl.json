@@ -225,7 +225,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "数组中元素的个数。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "数组的容量大小。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "elms",
+        "desc": "数组中的元素。",
+        "type": "void**",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/array.h",
     "desc": "动态数组，根据元素个数动态调整数组的容量。",
     "name": "array_t"
@@ -300,7 +325,56 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "w",
+        "desc": "宽度。",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "h",
+        "desc": "高度。",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "flags",
+        "desc": "标志。请参考{bitmap_flag_t}。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "format",
+        "desc": "格式。请参考{bitmap_format_t}。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "data",
+        "desc": "图片数据。",
+        "type": "uint8_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/bitmap.h",
     "desc": "位图。",
     "name": "bitmap_t"
@@ -540,7 +614,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "data",
+        "desc": "缓存区。",
+        "type": "uint8_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "cursor",
+        "desc": "当前写入位置。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "缓存区最大容量。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/buffer.h",
     "desc": "write buffer，用于数据打包。",
     "name": "wbuffer_t"
@@ -787,7 +886,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "data",
+        "desc": "缓存区。",
+        "type": "uint8_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "cursor",
+        "desc": "当前读取位置。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "缓存区最大容量。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/buffer.h",
     "desc": "read buffer，用于数据解包。",
     "name": "rbuffer_t"
@@ -910,7 +1034,21 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "repeat",
+        "desc": "重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/button.h",
     "desc": "按钮控件。",
     "name": "button_t",
@@ -1083,7 +1221,21 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/check_button.h",
     "desc": "勾选控件。",
     "name": "check_button_t",
@@ -1181,7 +1333,34 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": "是否被选中。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/combo_box_item.h",
     "desc": "ComboBox Item控件。",
     "name": "combo_box_item_t",
@@ -1400,7 +1579,60 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "open_window",
+        "desc": "为点击按钮时，要打开窗口的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected_index",
+        "desc": "当前选中的选项。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "options",
+        "desc": "设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/combo_box.h",
     "desc": "combobox控件。",
     "name": "combo_box_t",
@@ -1871,7 +2103,60 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "x_min",
+        "desc": "x坐标的最小值。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "y_min",
+        "desc": "y坐标的最小值。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "x_max",
+        "desc": "x坐标的最大值。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "y_max",
+        "desc": "y坐标的最大值。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/dragger.h",
     "desc": "dragger控件。",
     "name": "dragger_t",
@@ -2093,7 +2378,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "wchar_t*",
+            "type": "char*",
             "name": "tips",
             "desc": "输入提示。"
           }
@@ -2132,7 +2417,156 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "readonly",
+        "desc": "编辑器是否为只读。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "password_visible",
+        "desc": "密码是否可见。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_fix",
+        "desc": "输入无效时，是否自动改正。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "top_margin",
+        "desc": "上边距。",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "bottom_margin",
+        "desc": "下边距。",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "left_margin",
+        "desc": "左边距。",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "right_margin",
+        "desc": "右边距。",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "tips",
+        "desc": "输入提示。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "input_type",
+        "desc": "输入类型。",
+        "type": "input_type_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "min",
+        "desc": "最小值或最小长度。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": "最大值或最大长度。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "step",
+        "desc": "步长。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "persitent": true,
+          "design": true
+        }
+      }
+    ],
     "header": "base/edit.h",
     "desc": "文本控件。",
     "name": "edit_t",
@@ -2380,7 +2814,48 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "items",
+        "desc": "注册的回调函数集合。",
+        "type": "emitter_item_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "next_id",
+        "desc": "下一次emitter_on返回的ID，emitter_on成功后会自动增加next_id。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": "禁用标志。禁用时dispatch无效。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "remove_curr_iter",
+        "desc": "如果在回调函数中，emitter_off当前正在dispatch的回调函数，我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。XXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。",
+        "type": "bool_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "curr_iter",
+        "desc": "当前正在dispatch的项。",
+        "type": "emitter_item_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/emitter.h",
     "desc": "事件分发器, 用于实现观察者模式。",
     "name": "emitter_t"
@@ -2592,7 +3067,35 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "type",
+        "desc": "类型。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "time",
+        "desc": "事件发生的时间。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "target",
+        "desc": "事件发生的目标对象。",
+        "type": "void*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "事件基类。",
     "name": "event_t",
@@ -2612,7 +3115,9 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "static": true,
+          "scriptable": true
         },
         "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
         "name": "wheel_event_cast",
@@ -2622,7 +3127,53 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "dx",
+        "desc": "滚轮的x值。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "dy",
+        "desc": "滚轮的x值。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": "alt键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": "ctrl键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": "shift键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "滚轮事件。",
     "name": "wheel_event_t",
@@ -2643,7 +3194,9 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "static": true,
+          "scriptable": true
         },
         "desc": "把event对象转prop_change_event_t对象，主要给脚本语言使用。",
         "name": "prop_change_event_cast",
@@ -2653,7 +3206,26 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "name",
+        "desc": "属性的名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "属性的值。",
+        "type": "value_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "对象属性变化事件。",
     "name": "prop_change_event_t",
@@ -2674,7 +3246,9 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "static": true,
+          "scriptable": true
         },
         "desc": "把event对象转pointer_event_t对象，主要给脚本语言使用。",
         "name": "pointer_event_cast",
@@ -2684,7 +3258,71 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "x",
+        "desc": "x坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "y",
+        "desc": "y坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "button",
+        "desc": "button。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "pressed",
+        "desc": "指针是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": "alt键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": "ctrl键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": "shift键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "指针事件。",
     "name": "pointer_event_t",
@@ -2705,7 +3343,9 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "static": true,
+          "scriptable": true
         },
         "desc": "把event对象转key_event_t对象，主要给脚本语言使用。",
         "name": "key_event_cast",
@@ -2715,7 +3355,53 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "key",
+        "desc": "键值。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": "alt键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": "ctrl键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": "shift键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "caplock",
+        "desc": "caplock键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "按键事件。",
     "name": "key_event_t",
@@ -2736,7 +3422,9 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "static": true,
+          "scriptable": true
         },
         "desc": "把event对象转paint_event_t对象。主要给脚本语言使用。",
         "name": "paint_event_cast",
@@ -2788,7 +3476,17 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "c",
+        "desc": "canvas。",
+        "type": "canvas_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/events.h",
     "desc": "绘制事件。",
     "name": "paint_event_t",
@@ -3509,7 +4207,24 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "images",
+        "desc": "缓存的图片。",
+        "type": "array_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "loader",
+        "desc": "图片加载器。",
+        "type": "image_loader_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/image_manager.h",
     "desc": "图片管理器。负责加载，解码和缓存图片。",
     "name": "image_manager_t"
@@ -3751,7 +4466,82 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "anchor_x",
+        "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_y",
+        "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_x",
+        "desc": "控件在X方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_y",
+        "desc": "@realonly控件在Y方向上的缩放比例。",
+        "type": "float_t"
+      },
+      {
+        "name": "rotation",
+        "desc": "@realonly控件的旋转角度。",
+        "type": "float_t"
+      },
+      {
+        "name": "clickable",
+        "desc": "@realonly点击时，是否触发EVT_CLICK事件。",
+        "type": "bool_t"
+      },
+      {
+        "name": "selectable",
+        "desc": "@realonly是否设置选中状态。",
+        "type": "bool_t"
+      },
+      {
+        "name": "selected",
+        "desc": "@realonly当前是否被选中。",
+        "type": "bool_t"
+      },
+      {
+        "name": "image",
+        "desc": "@fake图片的名称(只能通过widget_get_prop/set_prop访问)。",
+        "type": "char*"
+      },
+      {
+        "name": "draw_type",
+        "desc": "@fake图片的绘制方式(只能通过widget_get_prop/set_prop访问，仅在没有旋转和缩放时生效)。",
+        "type": "char*"
+      }
+    ],
     "header": "base/image.h",
     "desc": "图片控件。",
     "name": "image_t",
@@ -3829,7 +4619,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "keys",
+        "desc": "当前的按键组合。",
+        "type": "str_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "candidates",
+        "desc": "当前按键组合对应的候选字列表。",
+        "type": "char*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "candidates_nr",
+        "desc": "当前按键组合对应的候选字/词个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/input_engine.h",
     "desc": "输入法引擎接口。",
     "name": "input_engine_t"
@@ -3885,7 +4700,72 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "widget",
+        "desc": "当前的焦点控件。",
+        "type": "widget_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "keyboard",
+        "desc": "当前的软件键盘。",
+        "type": "widget_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "win",
+        "desc": "当前的窗口。",
+        "type": "widget_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "win_delta_y",
+        "desc": "由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。",
+        "type": "int32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "action_button_enable",
+        "desc": "软键盘的上的action按钮是否可用。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "action_button_enable",
+        "desc": "软键盘的上的action按钮文本。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "emitter",
+        "desc": "emitter。用于实现dispatch/on/off等功能。",
+        "type": "emitter_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "input_type",
+        "desc": "当前输入的类型。",
+        "type": "input_type_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/input_method.h",
     "desc": "输入法接口。",
     "name": "input_method_t"
@@ -3893,7 +4773,16 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "text",
+        "desc": "提交的文本。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/input_method.h",
     "desc": "输入法提交输入的文本事件。",
     "name": "im_commit_event_t",
@@ -3902,7 +4791,24 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "text",
+        "desc": "软键盘上的action按钮显示的文本。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": "软键盘上的action按钮启用。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/input_method.h",
     "desc": "设置软键盘上的action按钮的信息事件。",
     "name": "im_action_button_info_event_t",
@@ -4189,7 +5095,24 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "candidates",
+        "desc": "可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "candidates_nr",
+        "desc": "可选的文本的个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/input_method.h",
     "desc": "输入法请求显示候选字的事件。",
     "name": "im_candidates_event_t",
@@ -4255,7 +5178,44 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "theme",
+        "desc": "主题资源的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "open_anim_hint",
+        "desc": "打开时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "close_anim_hint",
+        "desc": "关闭时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      }
+    ],
     "header": "base/keyboard.h",
     "desc": "键盘。",
     "name": "keyboard_t",
@@ -4947,7 +5907,96 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "w",
+        "desc": "屏幕的宽度",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "height",
+        "desc": "屏幕的高度",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "global_alpha",
+        "desc": "全局alpha",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_color",
+        "desc": "文本颜色",
+        "type": "color_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "fill_color",
+        "desc": "填充颜色",
+        "type": "color_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "stroke_color",
+        "desc": "线条颜色",
+        "type": "color_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_name",
+        "desc": "字体名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_size",
+        "desc": "字体大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "draw_mode",
+        "desc": "绘制模式。",
+        "type": "lcd_draw_mode_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "type",
+        "desc": "LCD的类型。",
+        "type": "lcd_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ratio",
+        "desc": "屏幕密度。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/lcd.h",
     "desc": "显示设备抽象基类。",
     "name": "lcd_t"
@@ -5092,7 +6141,34 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "item_width",
+        "desc": "列表项的宽度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "spacing",
+        "desc": "间距。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/list_view_h.h",
     "desc": "水平ListView控件。",
     "name": "list_view_h_t",
@@ -5213,7 +6289,47 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "item_height",
+        "desc": "列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "default_item_height",
+        "desc": "列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_hide_scroll_bar",
+        "desc": "如果不需要滚动条时，自动隐藏滚动条。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/list_view.h",
     "desc": "ListView控件。",
     "name": "list_view_t",
@@ -5440,7 +6556,24 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "country;",
+        "desc": "国家或地区。如：CN",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "language",
+        "desc": "语言。如：zh",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/locale.h",
     "desc": "locale",
     "name": "locale_t"
@@ -5601,7 +6734,21 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "active",
+        "desc": "当前活跃的page。",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/pages.h",
     "desc": "Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。",
     "name": "pages_t",
@@ -5653,7 +6800,60 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "theme",
+        "desc": "主题资源的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anim_hint",
+        "desc": "窗口动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "close_when_click",
+        "desc": "点击时是否关闭窗口。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "close_when_click_outside",
+        "desc": "点击到窗口外时是否关闭窗口。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/popup.h",
     "desc": "popup窗口。",
     "name": "popup_t",
@@ -5774,7 +6974,47 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "进度条的值[0-100]。",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "vertical",
+        "desc": "进度条的是否为垂直方向。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": "是否显示文本。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/progress_bar.h",
     "desc": "进度条控件。",
     "name": "progress_bar_t",
@@ -5786,7 +7026,24 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "x",
+        "desc": "x坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "y",
+        "desc": "y坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/rect.h",
     "desc": "点。包括一个x坐标和一个y坐标。",
     "name": "point_t",
@@ -5797,7 +7054,40 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "x",
+        "desc": "x坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "y",
+        "desc": "y坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "w",
+        "desc": "宽度。",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "h",
+        "desc": "高度。",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/rect.h",
     "desc": "矩形。包括一个x坐标、y坐标、宽度和高度。",
     "name": "rect_t",
@@ -6391,7 +7681,60 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "virtual_size",
+        "desc": "虚拟宽度或高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "当前的值。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "row",
+        "desc": "行的高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "animatable",
+        "desc": "滚动时是否启用动画。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/scroll_bar.h",
     "desc": "scroll_bar控件。",
     "name": "scroll_bar_t",
@@ -6596,7 +7939,82 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "virtual_w",
+        "desc": "虚拟宽度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "virtual_h",
+        "desc": "虚拟高度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "xoffset",
+        "desc": "x偏移量。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yoffset",
+        "desc": "y偏移量。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "xslidable",
+        "desc": "是否允许x方向滑动。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yslidable",
+        "desc": "是否允许y方向滑动。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/scroll_view.h",
     "desc": "滚动视图。",
     "name": "scroll_view_t",
@@ -6717,7 +8135,34 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "vertical",
+        "desc": "是否为上下滑动模式。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/slide_view.h",
     "desc": "slide view。",
     "name": "slide_view_t",
@@ -6884,7 +8329,73 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "min",
+        "desc": "最小值。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": "最大值。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "step",
+        "desc": "拖动的最小单位。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "vertical",
+        "desc": "滑块的是否为垂直方向。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/slider.h",
     "desc": "滑块控件。",
     "name": "slider_t",
@@ -7407,7 +8918,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "长度。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "容量。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "str",
+        "desc": "字符串。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/str.h",
     "desc": "可变长度的UTF8字符串。",
     "name": "str_t"
@@ -7471,7 +9007,24 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "words",
+        "desc": "联想字列表。find函数执行成功后会更新。",
+        "type": "char*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "words_nr",
+        "desc": "联想字/词个数。find函数执行成功后会更新。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/suggest_words.h",
     "desc": "输入法联想字词。",
     "name": "suggest_words_t"
@@ -7492,7 +9045,48 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "lcd_w",
+        "desc": "显示屏的宽度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_h",
+        "desc": "显示屏的高度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_type",
+        "desc": "显示屏的类型。",
+        "type": "lcd_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "device_pixel_ratio",
+        "desc": "显示屏的密度。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_orientation",
+        "desc": "显示屏的旋转角度。",
+        "type": "lcd_orientation_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/system_info.h",
     "desc": "当前系统的信息。",
     "name": "system_info_t"
@@ -7540,7 +9134,21 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "compact",
+        "desc": "紧凑型排版子控件。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/tab_button_group.h",
     "desc": "Tab Button Group控件。",
     "name": "tab_button_group_t",
@@ -7661,7 +9269,47 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "active_icon",
+        "desc": "当前项的图标的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "icon",
+        "desc": "非当前项的图标的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/tab_button.h",
     "desc": "标签按钮控件。",
     "name": "tab_button_t",
@@ -8181,7 +9829,40 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "str",
+        "desc": "字符串。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "字符串的长度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "cursor",
+        "desc": "当前位置。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "separtor",
+        "desc": "字符串。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/tokenizer.h",
     "desc": "从字符串中解析出一个一个的token。",
     "name": "tokenizer_t"
@@ -9052,7 +10733,16 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "type",
+        "desc": "类型。",
+        "type": "int8_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/value.h",
     "desc": "一个通用数据类型，用来存放整数、浮点数、obj_t、str_t和其它对象。",
     "name": "value_t",
@@ -10319,7 +12009,136 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "w",
+        "desc": "canvas的宽度",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "height",
+        "desc": "canvas的高度",
+        "type": "wh_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ratio",
+        "desc": "显示比例。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "anti_alias",
+        "desc": "是否启用反走样功能。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "line_width",
+        "desc": "线宽。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "global_alpha",
+        "desc": "全局alpha。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "miter_limit",
+        "desc": "miter_limit。@see http://www.w3school.com.cn/tags/canvas_miterlimit.asp",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "line_cap",
+        "desc": "line_cap。@see http://www.w3school.com.cn/tags/canvas_linecap.asp",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "line_join",
+        "desc": "line_join。@see http://www.w3school.com.cn/tags/canvas_linejoin.asp",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font",
+        "desc": "字体。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_size",
+        "desc": "字体大小。",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_align",
+        "desc": "text_align。@see http://www.w3school.com.cn/tags/canvas_textalign.asp",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_baseline",
+        "desc": "text_baseline。@see http://www.w3school.com.cn/tags/canvas_textbaseline.asp",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "fill_color",
+        "desc": "填充颜色",
+        "type": "color_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "stroke_color",
+        "desc": "线条颜色",
+        "type": "color_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "buff;",
+        "desc": "frame buffer",
+        "type": "uint32_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/vgcanvas.h",
     "desc": "矢量图画布抽象基类。",
     "name": "vgcanvas_t"
@@ -10567,7 +12386,120 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "widget",
+        "desc": "控件对象。",
+        "type": "widget_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "reversed",
+        "desc": "逆向运行，在yoyo模式下自动设置。",
+        "type": "bool_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "yoyo_times",
+        "desc": "yoyo剩余次数。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "repeat_times",
+        "desc": "重复剩余次数。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "now",
+        "desc": "当前时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "start_time",
+        "desc": "起始时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "delay",
+        "desc": "延迟执行时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "duration",
+        "desc": "单次动画执行时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "emitter",
+        "desc": "emitter",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "timer_id",
+        "desc": "定时器ID。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "widget_destroy_id",
+        "desc": "widget_destroy_id。",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "easing",
+        "desc": "插值函数。",
+        "type": "easing_func_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "update",
+        "desc": "update函数，子类需要实现。",
+        "type": "widget_animator_update_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "destroy",
+        "desc": "destroy函数，子类需要实现。",
+        "type": "widget_animator_destroy_t",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/widget_animator.h",
     "desc": "控件动画接口。",
     "name": "widget_animator_t"
@@ -11478,39 +13410,6 @@
             "desc": "事件处理函数上下文。"
           }
         ],
-        "annotation": {
-          "scriptable": "custom"
-        },
-        "desc": "注册指定事件的处理函数。",
-        "name": "widget_on",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回id，用于widget_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_type_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
         "annotation": {},
         "desc": "注销指定事件的处理函数。",
         "name": "widget_off_by_func",
@@ -12069,7 +13968,253 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "x",
+        "desc": "x坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "y",
+        "desc": "y坐标。",
+        "type": "xy_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "w",
+        "desc": "宽度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "h",
+        "desc": "高度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "style_name",
+        "desc": "Style Type。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": "启用/禁用状态。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "visible",
+        "desc": "是否可见。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "控件名字。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "tr_text",
+        "desc": "如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "focused",
+        "desc": "是否得到焦点。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "auto_created",
+        "desc": "是否有父控件自动创建。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "dirty",
+        "desc": "标识控件是否需要重绘。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "state",
+        "desc": "控件的状态。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "opacity;",
+        "desc": "不透明度(0-255)，0完全透明，255完全不透明。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text",
+        "desc": "文本。用途视具体情况而定。",
+        "type": "wstr_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "parent",
+        "desc": "父控件",
+        "type": "widget_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "target",
+        "desc": "接收事件的子控件。",
+        "type": "widget_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "grab_widget",
+        "desc": "grab事件的子控件。",
+        "type": "widget_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "key_target",
+        "desc": "接收按键事件的子控件。",
+        "type": "widget_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "children",
+        "desc": "全部子控件。",
+        "type": "array_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "emitter",
+        "desc": "事件发射器。",
+        "type": "emitter*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "style",
+        "desc": "Style数据。",
+        "type": "style_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "layout_params",
+        "desc": "布局参数。",
+        "type": "layout_params_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "custom_props",
+        "desc": "自定义属性。",
+        "type": "custom_props_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "vt",
+        "desc": "虚函数表。",
+        "type": "widget_vtable_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/widget.h",
     "desc": "窗口基类。",
     "name": "widget_t",
@@ -12317,7 +14462,34 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "theme",
+        "desc": "主题资源的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anim_hint",
+        "desc": "动画的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/window.h",
     "desc": "窗口。",
     "name": "window_t",
@@ -12694,7 +14866,32 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "长度。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "容量。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "str",
+        "desc": "字符串。",
+        "type": "wchar_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/wstr.h",
     "desc": "可变长度的宽字符字符串。",
     "name": "wstr_t"
@@ -12763,7 +14960,21 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "line_gap",
+        "desc": "行间距。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "rich_text/rich_text.h",
     "desc": "rich_text控件，实现简单的图文混排。",
     "name": "rich_text_t",

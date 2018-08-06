@@ -285,19 +285,19 @@ typedef enum _event_type_t {
 typedef struct _event_t {
   /**
    * @property {int32_t} type
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 类型。
    */
   uint32_t type;
   /**
    * @property {int32_t} time
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 事件发生的时间。
    */
   uint32_t time;
   /**
    * @property {void*} target
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 事件发生的目标对象。
    */
   void* target;
@@ -313,31 +313,31 @@ typedef struct _wheel_event_t {
   event_t e;
   /**
    * @property {int32_t} dx
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 滚轮的x值。
    */
   int32_t dx;
   /**
    * @property {int32_t} dy
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 滚轮的x值。
    */
   int32_t dy;
   /**
    * @property {bool_t} alt
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
   uint8_t alt : 1;
   /**
    * @property {bool_t} ctrl
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * ctrl键是否按下。
    */
   uint8_t ctrl : 1;
   /**
    * @property {bool_t} shift
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
   uint8_t shift : 1;
@@ -345,7 +345,7 @@ typedef struct _wheel_event_t {
 
 /**
  * @method wheel_event_cast
- * @annotation ["constructor"]
+ * @annotation ["constructor", "static", "scriptable"]
  * 把event对象转wheel_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -363,13 +363,13 @@ typedef struct _prop_change_event_t {
   event_t e;
   /**
    * @property {char*} name
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 属性的名称。
    */
   const char* name;
   /**
    * @property {value_t*} value
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 属性的值。
    */
   const value_t* value;
@@ -377,7 +377,7 @@ typedef struct _prop_change_event_t {
 
 /**
  * @method prop_change_event_cast
- * @annotation ["constructor"]
+ * @annotation ["constructor", "static", "scriptable"]
  * 把event对象转prop_change_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -395,44 +395,44 @@ typedef struct _pointer_event_t {
   event_t e;
   /**
    * @property {xy_t} x
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * x坐标。
    */
   xy_t x;
   /**
    * @property {xy_t} y
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * y坐标。
    */
   xy_t y;
   /**
    * @property {uint8_t} button
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * button。
    */
   xy_t button;
   /**
    * @property {bool_t} pressed
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 指针是否按下。
    */
   uint8_t pressed : 1;
 
   /**
    * @property {bool_t} alt
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
   uint8_t alt : 1;
   /**
    * @property {bool_t} ctrl
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * ctrl键是否按下。
    */
   uint8_t ctrl : 1;
   /**
    * @property {bool_t} shift
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
   uint8_t shift : 1;
@@ -440,7 +440,7 @@ typedef struct _pointer_event_t {
 
 /**
  * @method pointer_event_cast
- * @annotation ["constructor"]
+ * @annotation ["constructor", "static", "scriptable"]
  * 把event对象转pointer_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -458,31 +458,31 @@ typedef struct _key_event_t {
   event_t e;
   /**
    * @property {uint32_t} key
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 键值。
    */
   uint32_t key;
   /**
    * @property {bool_t} alt
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
   uint8_t alt : 1;
   /**
    * @property {bool_t} ctrl
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * ctrl键是否按下。
    */
   uint8_t ctrl : 1;
   /**
    * @property {bool_t} shift
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
   uint8_t shift : 1;
   /**
    * @property {bool_t} caplock
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * caplock键是否按下。
    */
   uint8_t caplock : 1;
@@ -490,7 +490,7 @@ typedef struct _key_event_t {
 
 /**
  * @method key_event_cast
- * @annotation ["constructor"]
+ * @annotation ["constructor", "static", "scriptable"]
  * 把event对象转key_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -508,7 +508,7 @@ typedef struct _paint_event_t {
   event_t e;
   /**
    * @property {canvas_t*} c
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * canvas。
    */
   canvas_t* c;
@@ -516,7 +516,7 @@ typedef struct _paint_event_t {
 
 /**
  * @method paint_event_cast
- * @annotation ["constructor"]
+ * @annotation ["constructor", "static", "scriptable"]
  * 把event对象转paint_event_t对象。主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *

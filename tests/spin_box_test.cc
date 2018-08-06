@@ -36,7 +36,7 @@ TEST(SpinBox, to_xml) {
   ASSERT_EQ(string(str.str),
             string("<spin_box x=\"10\" y=\"20\" w=\"30\" h=\"40\" min=\"0\" max=\"1024\" "
                    "input_type=\"0\" readonly=\"false\" auto_fix=\"false\" left_margin=\"2\" "
-                   "right_margin=\"21\" top_margin=\"2\" bottom_margin=\"2\" tips=\"\" "
+                   "right_margin=\"21\" top_margin=\"2\" bottom_margin=\"2\" "
                    "password_visible=\"false\">\n</spin_box>\n"));
 
   str_reset(&str);

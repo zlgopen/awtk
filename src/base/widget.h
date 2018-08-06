@@ -628,19 +628,6 @@ int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
                         event_func_t on_event, void* ctx);
 
 /**
- * @method widget_on
- * 注册指定事件的处理函数。
- * @annotation ["scriptable:custom"] 
- * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
- * @param {event_func_t} on_event 事件处理函数。
- * @param {void*} ctx 事件处理函数上下文。
- *
- * @return {int32_t} 返回id，用于widget_off。
- */
-int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
-
-/**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。

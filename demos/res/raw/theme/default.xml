@@ -142,6 +142,10 @@
   <style name="center_ap">
     <normal text_color="green" text_align_h="center" border_color="#a0a0a0" font_name="ap" font_size="12"/>
   </style>
+  
+  <style name="big_green">
+    <normal text_color="green" font_size="24" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
 
 </label>
 

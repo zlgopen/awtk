@@ -54,7 +54,7 @@ typedef struct _scroll_bar_t {
    */
   int32_t row;
   /**
-   * @property {bool_t} animatable;
+   * @property {bool_t} animatable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动时是否启用动画。
    */

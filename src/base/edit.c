@@ -53,6 +53,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* password) {
   int32_t i = 0;
   float_t cw = 0;
+  wchar_t tips_wstr[64];
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
   float_t caret_x = edit->left_margin;
@@ -60,7 +61,8 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
-    str = &(edit->tips);
+    memset(tips_wstr, 0x00, sizeof(tips_wstr));
+    utf8_to_utf16(edit->tips, tips_wstr, ARRAY_SIZE(tips_wstr));
   }
 
   if (str->size > 0) {
@@ -535,11 +537,14 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   return RET_OK;
 }
 
-ret_t edit_set_input_tips(widget_t* widget, const wchar_t* tips) {
+ret_t edit_set_input_tips(widget_t* widget, const char* tips) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && tips != NULL, RET_BAD_PARAMS);
 
-  return wstr_set(&(edit->tips), tips);
+  TKMEM_FREE(edit->tips);
+  edit->tips = tk_strdup(tips);
+
+  return RET_OK;
 }
 
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -604,7 +609,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, edit->password_visible);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
-    value_set_wstr(v, edit->tips.str);
+    value_set_str(v, edit->tips);
     return RET_OK;
   }
 
@@ -688,7 +693,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     edit_set_password_visible(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
-    wstr_from_value(&(edit->tips), v);
+    edit_set_input_tips(widget, value_str(v));
     return RET_OK;
   }
 
@@ -860,7 +865,7 @@ static ret_t edit_destroy(widget_t* widget) {
     timer_remove(edit->timer_id);
     edit->timer_id = TK_INVALID_ID;
   }
-  wstr_reset(&(edit->tips));
+  TKMEM_FREE(edit->tips);
 
   return RET_OK;
 }

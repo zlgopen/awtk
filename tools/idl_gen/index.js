@@ -135,6 +135,7 @@ class IDLGenerator {
 
   parseProperty(comment) {
     const property = {
+      name: '',
       desc: ''
     };
 
@@ -150,7 +151,11 @@ class IDLGenerator {
       }
     });
 
-    return property;
+    if(this.cls) {
+      this.cls.properties.push(property);
+    }
+
+    return;
   }
 
   parseClass(comment) {

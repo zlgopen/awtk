@@ -160,7 +160,7 @@ def genIncludes(files):
   return str1
 
 def gen_res_c():
-  result = '#include "tk.h"\n'
+  result = '#include "awtk.h"\n'
   result += '#include "base/resource_manager.h"\n'
 
   result += '#ifndef WITH_FS_RES\n'

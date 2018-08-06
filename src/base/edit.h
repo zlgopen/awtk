@@ -104,7 +104,7 @@ typedef struct _edit_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 输入提示。
    */
-  wstr_t tips;
+  char* tips;
 
   /**
    * @property {input_type_t} input_type
@@ -233,11 +233,11 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type);
  * 设置编辑器的输入提示。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {wchar_t*} tips 输入提示。
+ * @param {char*} tips 输入提示。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t edit_set_input_tips(widget_t* widget, const wchar_t* tips);
+ret_t edit_set_input_tips(widget_t* widget, const char* tips);
 
 /**
  * @method edit_set_password_visible

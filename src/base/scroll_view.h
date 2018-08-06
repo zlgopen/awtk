@@ -55,13 +55,13 @@ typedef struct _scroll_view_t {
    */
   wh_t virtual_h;
   /**
-   * @property {int32_t_t} xoffset
+   * @property {int32_t} xoffset
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * x偏移量。
    */
   int32_t xoffset;
   /**
-   * @property {int32_t_t} yoffset
+   * @property {int32_t} yoffset
    * @annotation ["set_prop","get_prop","readable","scriptable"]
    * y偏移量。
    */
