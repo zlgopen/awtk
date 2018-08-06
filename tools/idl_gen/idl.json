@@ -10162,7 +10162,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为bool的值。",
         "name": "value_set_bool",
         "return": {
@@ -10178,7 +10180,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为bool的值。",
         "name": "value_bool",
         "return": {
@@ -10199,7 +10203,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为int8的值。",
         "name": "value_set_int8",
         "return": {
@@ -10215,7 +10221,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为int8的值。",
         "name": "value_int8",
         "return": {
@@ -10236,7 +10244,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为uint8的值。",
         "name": "value_set_uint8",
         "return": {
@@ -10252,7 +10262,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为uint8的值。",
         "name": "value_uint8",
         "return": {
@@ -10273,7 +10285,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为int16的值。",
         "name": "value_set_int16",
         "return": {
@@ -10289,7 +10303,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为int16的值。",
         "name": "value_int16",
         "return": {
@@ -10310,7 +10326,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为uint16的值。",
         "name": "value_set_uint16",
         "return": {
@@ -10326,7 +10344,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为uint16的值。",
         "name": "value_uint16",
         "return": {
@@ -10347,7 +10367,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为int32的值。",
         "name": "value_set_int32",
         "return": {
@@ -10363,7 +10385,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为int32的值。",
         "name": "value_int32",
         "return": {
@@ -10384,7 +10408,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为uint32的值。",
         "name": "value_set_uint32",
         "return": {
@@ -10421,7 +10447,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为int64的值。",
         "name": "value_set_int64",
         "return": {
@@ -10437,7 +10465,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为int64的值。",
         "name": "value_int64",
         "return": {
@@ -10458,7 +10488,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为uint64的值。",
         "name": "value_set_uint64",
         "return": {
@@ -10474,7 +10506,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为uint64的值。",
         "name": "value_uint64",
         "return": {
@@ -10532,7 +10566,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为float的值。",
         "name": "value_set_float",
         "return": {
@@ -10548,7 +10584,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为float的值。",
         "name": "value_float",
         "return": {
@@ -10569,7 +10607,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为double的值。",
         "name": "value_set_double",
         "return": {
@@ -10585,7 +10625,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为double的值。",
         "name": "value_double",
         "return": {
@@ -10606,7 +10648,9 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置类型为char*的值。",
         "name": "value_set_str",
         "return": {
@@ -10622,7 +10666,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取类型为str_t的值。",
         "name": "value_str",
         "return": {
@@ -10638,7 +10684,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "判断value是否为空值。",
         "name": "value_is_null",
         "return": {
@@ -10675,7 +10723,9 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "转换为int的值。",
         "name": "value_int",
         "return": {
@@ -10705,9 +10755,33 @@
         }
       },
       {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "待设置的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置类型为int的值。",
+        "name": "value_set_int",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
         "params": [],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "创建value对象",
         "name": "value_create",
@@ -10724,7 +10798,10 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
         "desc": "@deconstructor销毁value对象",
         "name": "value_destroy",
         "return": {
@@ -10739,7 +10816,8 @@
         "desc": "类型。",
         "type": "int8_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       }
     ],

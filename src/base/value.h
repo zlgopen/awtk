@@ -136,13 +136,14 @@ typedef struct _value_t {
 
 /**
  * @property {int8_t} type
- * @annotation ["readable"]
+ * @annotation ["readable", "scriptable"]
  * 类型。
  */
 
 /**
  * @method value_set_bool
  * 设置类型为bool的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  * @param {bool_t}   value 待设置的值。
  *
@@ -153,6 +154,7 @@ value_t* value_set_bool(value_t* v, bool_t value);
 /**
  * @method value_bool
  * 获取类型为bool的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {bool_t} 值。
@@ -162,6 +164,7 @@ bool_t value_bool(const value_t* v);
 /**
  * @method value_set_int8
  * 设置类型为int8的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {int8_t}   value 待设置的值。
  *
@@ -172,6 +175,7 @@ value_t* value_set_int8(value_t* v, int8_t value);
 /**
  * @method value_int8
  * 获取类型为int8的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int8_t} 值。
@@ -181,6 +185,7 @@ int8_t value_int8(const value_t* v);
 /**
  * @method value_set_uint8
  * 设置类型为uint8的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {uint8_t}  value 待设置的值。
  *
@@ -191,6 +196,7 @@ value_t* value_set_uint8(value_t* v, uint8_t value);
 /**
  * @method value_uint8
  * 获取类型为uint8的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int8_t} 值。
@@ -200,6 +206,7 @@ uint8_t value_uint8(const value_t* v);
 /**
  * @method value_set_int16
  * 设置类型为int16的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {int16_t}  value 待设置的值。
  *
@@ -210,6 +217,7 @@ value_t* value_set_int16(value_t* v, int16_t value);
 /**
  * @method value_int16
  * 获取类型为int16的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int16_t} 值。
@@ -219,6 +227,7 @@ int16_t value_int16(const value_t* v);
 /**
  * @method value_set_uint16
  * 设置类型为uint16的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {uint16_t} value 待设置的值。
  *
@@ -229,6 +238,7 @@ value_t* value_set_uint16(value_t* v, uint16_t value);
 /**
  * @method value_uint16
  * 获取类型为uint16的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {uint16_t} 值。
@@ -238,6 +248,7 @@ uint16_t value_uint16(const value_t* v);
 /**
  * @method value_set_int32
  * 设置类型为int32的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {int32_t}  value 待设置的值。
  *
@@ -248,6 +259,7 @@ value_t* value_set_int32(value_t* v, int32_t value);
 /**
  * @method value_int32
  * 获取类型为int32的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int32_t} 值。
@@ -257,6 +269,7 @@ int32_t value_int32(const value_t* v);
 /**
  * @method value_set_uint32
  * 设置类型为uint32的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {uint32_t} value 待设置的值。
  *
@@ -276,6 +289,7 @@ uint32_t value_uint32(const value_t* v);
 /**
  * @method value_set_int64
  * 设置类型为int64的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {int64_t}  value 待设置的值。
  *
@@ -286,6 +300,7 @@ value_t* value_set_int64(value_t* v, int64_t value);
 /**
  * @method value_int64
  * 获取类型为int64的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int64_t} 值。
@@ -295,6 +310,7 @@ int64_t value_int64(const value_t* v);
 /**
  * @method value_set_uint64
  * 设置类型为uint64的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {uint64_t} value 待设置的值。
  *
@@ -305,6 +321,7 @@ value_t* value_set_uint64(value_t* v, uint64_t value);
 /**
  * @method value_uint64
  * 获取类型为uint64的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {uint64_t} 值。
@@ -333,6 +350,7 @@ pointer_t value_pointer(const value_t* v);
 /**
  * @method value_set_float
  * 设置类型为float的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {float}    value 待设置的值。
  *
@@ -343,6 +361,7 @@ value_t* value_set_float(value_t* v, float value);
 /**
  * @method value_float
  * 获取类型为float的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {float} 值。
@@ -352,6 +371,7 @@ float value_float(const value_t* v);
 /**
  * @method value_set_double
  * 设置类型为double的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {double}   value 待设置的值。
  *
@@ -362,6 +382,7 @@ value_t* value_set_double(value_t* v, double value);
 /**
  * @method value_double
  * 获取类型为double的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {double} 值。
@@ -371,6 +392,7 @@ double value_double(const value_t* v);
 /**
  * @method value_set_str
  * 设置类型为char*的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {char*}   value 待设置的值。
  *
@@ -383,6 +405,7 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value);
 /**
  * @method value_str
  * 获取类型为str_t的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {const char*} 值。
@@ -394,6 +417,7 @@ const wchar_t* value_wstr(const value_t* v);
 /**
  * @method value_is_null
  * 判断value是否为空值。
+ * @annotation ["scriptable"]
  * @param {value_t*} value value对象。
  *
  * @return {bool_t} 为空值返回TRUE，否则返回FALSE。
@@ -413,6 +437,7 @@ bool_t value_equal(const value_t* value, const value_t* other);
 /**
  * @method value_int
  * 转换为int的值。
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int} 值。
@@ -429,11 +454,20 @@ int value_int(const value_t* v);
  */
 void value_copy(value_t* dst, const value_t* src);
 
+/**
+ * @method value_set_int
+ * 设置类型为int的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v  value对象。
+ * @param {int32_t}  value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
 value_t* value_set_int(value_t* v, int32_t value);
 
 /**
  * @method value_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * 创建value对象
  *
  * @return {value_t*} 对象。
@@ -444,6 +478,7 @@ value_t* value_create(void);
  * @method value_destroy
  * @deconstructor
  * 销毁value对象
+ * @annotation ["deconstructor", "scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {void}
