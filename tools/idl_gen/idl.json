@@ -1529,6 +1529,29 @@
             "desc": "combo_box对象。"
           },
           {
+            "type": "char*",
+            "name": "options",
+            "desc": "选项。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置选项。",
+        "name": "combo_box_set_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "combo_box对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "index",
             "desc": "选项的索引。"

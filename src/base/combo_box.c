@@ -75,6 +75,7 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
 }
 
 ret_t combo_box_parse_options(widget_t* widget, const char* str) {
+  int32_t i = 0;
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
   combo_box_t* combo_box = COMBO_BOX(widget);
@@ -93,15 +94,20 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
         value = tk_atoi(token);
       } else {
         text = token;
-        value = 0;
+        value = i;
       }
 
       combo_box_append_option(widget, value, text);
+      i++;
     }
   }
   tokenizer_deinit(t);
 
   return RET_OK;
+}
+
+ret_t combo_box_set_options(widget_t* widget, const char* options) {
+  return combo_box_parse_options(widget, options);
 }
 
 static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_t* v) {
@@ -149,6 +155,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(combo_box);
   widget_t* item = WIDGET(e->target);
   int32_t index = widget_index_of(item);
+  int32_t old_index = combo_box->selected_index;
 
   combo_box->value = COMBO_BOX_ITEM(item)->value;
   combo_box_set_selected_index(WIDGET(combo_box), index);
@@ -157,6 +164,11 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
     widget_set_tr_text(widget, item->tr_text);
   } else {
     widget_set_text(widget, item->text.str);
+  }
+
+  if(old_index != index) {
+    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
   }
 
   window_close(widget_get_window(item));

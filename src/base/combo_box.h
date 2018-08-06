@@ -143,6 +143,17 @@ ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index);
 ret_t combo_box_append_option(widget_t* widget, int32_t value, const char* text);
 
 /**
+ * @method combo_box_set_options
+ * 设置选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {char*} options 选项。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_options(widget_t* widget, const char* options);
+
+/**
  * @method combo_box_get_option
  * 获取第index个选项。
  * @param {widget_t*} widget combo_box对象。
