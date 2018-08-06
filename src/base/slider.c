@@ -26,7 +26,8 @@
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
-static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype);
+static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
+                                       bool_t force);
 
 static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   slider_t* slider = SLIDER(widget);
@@ -191,9 +192,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
           fvalue = 1;
         }
         value = fvalue * (slider->max - slider->min) + slider->min;
-        if (value != slider->value) {
-          slider_set_value_internal(widget, value, EVT_VALUE_CHANGING);
-        }
+        slider_set_value_internal(widget, value, EVT_VALUE_CHANGING, FALSE);
       }
 
       break;
@@ -202,7 +201,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       if (slider->dragging) {
         slider->dragging = FALSE;
         widget_ungrab(widget->parent, widget);
-        slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED);
+        slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED, TRUE);
       }
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_invalidate(widget, NULL);
@@ -221,7 +220,8 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype) {
+static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
+                                       bool_t force) {
   event_t evt;
   uint16_t step = 0;
   uint16_t offset = 0;
@@ -236,7 +236,7 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
     value = slider->min + ((offset + (step >> 1) - 1) / step) * step;
   }
 
-  if (slider->value != value) {
+  if (slider->value != value || force) {
     evt.type = etype;
     evt.target = widget;
     slider->value = value;
@@ -248,7 +248,7 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
 }
 
 ret_t slider_set_value(widget_t* widget, uint16_t value) {
-  return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED);
+  return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
 }
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {

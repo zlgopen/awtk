@@ -194,7 +194,7 @@ ret_t widget_animator_set_reversed(widget_animator_t* animator, bool_t value);
 /**
  * @method widget_animator_on
  * 注册指定事件的处理函数。
- * @annotation ["scriptable:custom"] 
+ * @annotation ["scriptable:custom"]
  * @param {widget_animator_t*} animator 动画对象本身。
  * @param {event_type_t} type
  * 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_ONCE和EVT_ANIM_END。
@@ -209,7 +209,7 @@ uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, even
 /**
  * @method widget_animator_off
  * 注销指定事件的处理函数。
- * @annotation ["scriptable:custom"] 
+ * @annotation ["scriptable:custom"]
  * @param {widget_animator_t*} animator 动画对象本身。
  * @param {uint32_t} id widget_animator_on返回的ID。
  *

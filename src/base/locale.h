@@ -114,7 +114,7 @@ ret_t locale_change(tklocale_t* locale, const char* language, const char* countr
 /**
  * @method locale_on
  * 注册指定事件的处理函数。
- * @annotation ["scriptable:custom"] 
+ * @annotation ["scriptable:custom"]
  * @param {tklocale_t*} locale 控件对象。
  * @param {event_type_t} type 事件类型，目前固定为EVT_LOCALE_CHANGED。
  * @param {event_func_t} on_event 事件处理函数。
