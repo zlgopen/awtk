@@ -30,6 +30,13 @@
 
 static ret_t edit_update_status(widget_t* widget);
 
+static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
+  event_t evt = event_init(type, widget);
+  widget_dispatch(widget, &evt);
+
+  return RET_OK;
+}
+
 static ret_t edit_update_caret(const timer_info_t* timer) {
   rect_t r;
   edit_t* edit = EDIT(timer->ctx);
@@ -147,7 +154,6 @@ static ret_t edit_delete_next_char(widget_t* widget) {
 }
 
 static ret_t edit_input_char(widget_t* widget, wchar_t c) {
-  event_t evt;
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
@@ -225,8 +231,7 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     }
   }
 
-  evt = event_init(EVT_VALUE_CHANGING, widget);
-  widget_dispatch(widget, &evt);
+  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -438,7 +443,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
-      event_t evt = event_init(EVT_VALUE_CHANGED, widget);
       input_method_request(input_method(), NULL);
 
       edit_update_status(widget);
@@ -449,7 +453,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
           widget_set_state(widget, WIDGET_STATE_ERROR);
         }
       }
-      widget_dispatch(widget, &evt);
+      edit_dispatch_event(widget, EVT_VALUE_CHANGED);
 
       break;
     }
@@ -727,11 +731,7 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
   if (edit->limit.u.f.min < edit->limit.u.f.max) {
     if (v < edit->limit.u.f.min) {
       wstr_from_float(text, edit->limit.u.f.min);
-    } else {
-      wstr_add_float(text, delta);
-    }
-
-    if (v > edit->limit.u.f.max) {
+    } else if (v > edit->limit.u.f.max) {
       wstr_from_float(text, edit->limit.u.f.max);
     } else {
       wstr_add_float(text, delta);
@@ -740,7 +740,10 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
     wstr_add_float(text, delta);
   }
 
-  return wstr_trim_float_zero(text);
+  wstr_trim_float_zero(text);
+  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+
+  return RET_OK;
 }
 
 static ret_t edit_add_int(edit_t* edit, int delta) {
@@ -761,7 +764,28 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
     }
   }
 
-  return wstr_from_int(text, v);
+  wstr_from_int(text, v);
+  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+
+  return RET_OK;
+}
+
+int32_t edit_get_int(widget_t* widget) {
+  int32_t v = 0;
+  return_value_if_fail(widget != NULL, 0);
+
+  wstr_to_int(&(widget->text), &v);
+
+  return v;
+}
+
+double edit_get_double(widget_t* widget) {
+  double v = 0;
+  return_value_if_fail(widget != NULL, 0);
+
+  wstr_to_float(&(widget->text), &v);
+
+  return v;
 }
 
 ret_t edit_inc(edit_t* edit) {
@@ -941,3 +965,4 @@ widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return edit_create_ex(parent, x, y, w, h, &s_edit_vtable);
 }
+

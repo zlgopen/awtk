@@ -2236,6 +2236,42 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取int类型的值。",
+        "name": "edit_get_int",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回int的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取double类型的值。",
+        "name": "edit_get_double",
+        "return": {
+          "type": "double",
+          "desc": "返回double的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
           },
           {
             "type": "uint32_t",
@@ -8459,7 +8495,8 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "创建spin_box对象",
         "name": "spin_box_create",
@@ -8473,7 +8510,7 @@
     "header": "base/spin_box.h",
     "desc": "spinbox控件。",
     "name": "spin_box_t",
-    "parent": "widget_t",
+    "parent": "edit_t",
     "annotation": {
       "scriptable": true
     }

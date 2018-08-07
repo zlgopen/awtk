@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class spin_box_t
- * @parent widget_t
+ * @parent edit_t
  * @annotation ["scriptable"]
  * spinbox控件。
  */
@@ -36,7 +36,7 @@ typedef edit_t spin_box_t;
 
 /**
  * @method spin_box_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * 创建spin_box对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

@@ -158,6 +158,26 @@ typedef struct _edit_t {
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method edit_get_int
+ * 获取int类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {int32_t} 返回int的值。
+ */
+int32_t edit_get_int(widget_t* widget);
+
+/**
+ * @method edit_get_double
+ * 获取double类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {double} 返回double的值。
+ */
+double edit_get_double(widget_t* widget);
+
+/**
  * @method edit_set_text_limit
  * 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。
  * @annotation ["scriptable"]
