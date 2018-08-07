@@ -65,6 +65,7 @@ widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 /**
  * @method rich_text_set_text
  * 设置文本。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*}  text 文本。
  *

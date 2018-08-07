@@ -9,6 +9,7 @@ sources=Glob('base/*.c') +\
   Glob('xml/*.c') + \
   Glob('font/*.c') + \
   Glob('blend/*.c') + \
+  Glob('ext_widgets/*.c') + \
   Glob('ext_widgets/*/*.c') + \
   Glob('image_loader/*.c') + \
   Glob('widget_animators/*.c') + \

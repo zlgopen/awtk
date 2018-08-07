@@ -1,0 +1,40 @@
+﻿/**
+ * File:   ext_widgets.h
+ * Author: AWTK Develop Team
+ * Brief:  ext widgets
+ *
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2018-08-07 Li XianJing <xianjimli@hotmail.com> created
+ *
+ */
+
+#ifndef TK_EXT_WIDGETS_H
+#define TK_EXT_WIDGETS_H
+
+#include "base/types_def.h"
+
+BEGIN_C_DECLS
+
+/**
+ * @method tk_ext_widgets_init
+ * 初始化AWTK扩展控件。
+ * @annotation ["global", "scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_ext_widgets_init();
+
+END_C_DECLS
+
+#endif /*TK_EXT_WIDGETS_H*/

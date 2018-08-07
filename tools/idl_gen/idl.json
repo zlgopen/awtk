@@ -15035,6 +15035,21 @@
     "name": "wstr_t"
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true,
+      "scriptable": true
+    },
+    "desc": "初始化AWTK扩展控件。",
+    "name": "tk_ext_widgets_init",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "ext_widgets/ext_widgets.h"
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -15089,7 +15104,9 @@
             "desc": "文本。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置文本。",
         "name": "rich_text_set_text",
         "return": {
