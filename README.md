@@ -142,6 +142,14 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/08/07
+  * 完善API docs
+  * 完善awtk-lua。
+
+* 2018/08/06
+  * 完善API docs
+  * lua绑定放入独立的项目awtk-lua。
+
 * 2018/08/05
   * 重写IDL生成工具。
 

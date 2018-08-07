@@ -278,7 +278,10 @@
     ],
     "header": "base/bitmap.h",
     "name": "bitmap_format_t",
-    "prefix": "BITMAP_FMT_"
+    "prefix": "BITMAP_FMT_",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "enum",
@@ -303,11 +306,27 @@
     ],
     "header": "base/bitmap.h",
     "name": "_bitmap_format_t",
-    "prefix": "BITMAP_FLAG_"
+    "prefix": "BITMAP_FLAG_",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",
     "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建图片对象(一般供脚本语言中使用)。",
+        "name": "bitmap_create",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回bitmap对象。"
+        }
+      },
       {
         "params": [
           {
@@ -316,7 +335,10 @@
             "desc": "bitmap对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
         "desc": "销毁图片。",
         "name": "bitmap_destroy",
         "return": {
@@ -331,7 +353,8 @@
         "desc": "宽度。",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -339,7 +362,8 @@
         "desc": "高度。",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -347,7 +371,8 @@
         "desc": "标志。请参考{bitmap_flag_t}。",
         "type": "uint16_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -355,7 +380,8 @@
         "desc": "格式。请参考{bitmap_format_t}。",
         "type": "uint16_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -363,7 +389,8 @@
         "desc": "名称。",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -377,7 +404,10 @@
     ],
     "header": "base/bitmap.h",
     "desc": "位图。",
-    "name": "bitmap_t"
+    "name": "bitmap_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "enum",
@@ -4047,7 +4077,8 @@
       {
         "params": [],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "获取缺省的图片管理器。",
         "name": "image_manager",
@@ -4131,7 +4162,9 @@
             "desc": "用于返回图片。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "加载指定的图片。",
         "name": "image_manager_load",
         "return": {
@@ -4286,7 +4319,10 @@
     ],
     "header": "base/image_manager.h",
     "desc": "图片管理器。负责加载，解码和缓存图片。",
-    "name": "image_manager_t"
+    "name": "image_manager_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",
@@ -7157,10 +7193,46 @@
   {
     "type": "enum",
     "desc": "资源类型常量定义。",
-    "consts": [],
+    "consts": [
+      {
+        "desc": "无效资源。",
+        "name": "RESOURCE_TYPE_NONE"
+      },
+      {
+        "desc": "字体资源。",
+        "name": "RESOURCE_TYPE_FONT"
+      },
+      {
+        "desc": "图片资源。",
+        "name": "RESOURCE_TYPE_IMAGE"
+      },
+      {
+        "desc": "主题资源。",
+        "name": "RESOURCE_TYPE_THEME"
+      },
+      {
+        "desc": "UI数据资源。",
+        "name": "RESOURCE_TYPE_UI"
+      },
+      {
+        "desc": "XML数据资源。",
+        "name": "RESOURCE_TYPE_XML"
+      },
+      {
+        "desc": "字符串数据资源。",
+        "name": "RESOURCE_TYPE_STRINGS"
+      },
+      {
+        "desc": "其它数据资源。",
+        "name": "RESOURCE_TYPE_DATA"
+      }
+    ],
     "header": "base/resource_manager.h",
     "name": "resource_type_t",
-    "prefix": "RESOURCE_TYPE_"
+    "prefix": "RESOURCE_TYPE_",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "enum",
@@ -7197,10 +7269,42 @@
   {
     "type": "class",
     "methods": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "type",
+        "desc": "类型。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/resource_manager.h",
     "desc": "单个资源的描述信息。",
-    "name": "resource_info_t"
+    "name": "resource_info_t",
+    "annotation": {
+      "constructor": true,
+      "scriptable": true
+    }
   },
   {
     "type": "class",
@@ -7208,7 +7312,8 @@
       {
         "params": [],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "获取缺省资源管理器。",
         "name": "resource_manager",
@@ -7313,7 +7418,9 @@
             "desc": "资源的名称。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。",
         "name": "resource_manager_ref",
         "return": {
@@ -7329,12 +7436,14 @@
             "desc": "resource manager对象。"
           },
           {
-            "type": "resource_info_t",
+            "type": "resource_info_t*",
             "name": "info",
             "desc": "资源。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "释放指定的资源。",
         "name": "resource_manager_unref",
         "return": {
@@ -7451,7 +7560,10 @@
     "properties": [],
     "header": "base/resource_manager.h",
     "desc": "资源管理器。",
-    "name": "resource_manager_t"
+    "name": "resource_manager_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",

@@ -166,7 +166,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
     widget_set_text(widget, item->text.str);
   }
 
-  if(old_index != index) {
+  if (old_index != index) {
     event_t e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
   }

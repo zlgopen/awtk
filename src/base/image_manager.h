@@ -40,6 +40,7 @@ typedef struct _bitmap_header_t {
 
 /**
  * @class image_manager_t
+ * @annotation ["scriptable"]
  * 图片管理器。负责加载，解码和缓存图片。
  */
 typedef struct _image_manager_t {
@@ -61,7 +62,7 @@ typedef struct _image_manager_t {
 /**
  * @method image_manager
  * 获取缺省的图片管理器。
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @return {image_manager_t*} 返回图片管理器对象。
  */
 image_manager_t* image_manager(void);
@@ -99,6 +100,7 @@ image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader
 /**
  * @method image_manager_load
  * 加载指定的图片。
+ * @annotation ["scriptable"]
  * @param {image_manager_t*} imm 图片管理器对象。
  * @param {char*} name 图片名称。
  * @param {bitmap_t*} image 用于返回图片。

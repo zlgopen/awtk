@@ -19,7 +19,17 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/bitmap.h"
+
+bitmap_t* bitmap_create(void) {
+  bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
+  return_value_if_fail(bitmap != NULL, NULL);
+
+  bitmap->should_free_handle = TRUE;
+
+  return bitmap;
+}
 
 ret_t bitmap_destroy(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL && bitmap->destroy != NULL, RET_BAD_PARAMS);
@@ -28,7 +38,14 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
     bitmap->specific_destroy(bitmap);
   }
 
-  return bitmap->destroy(bitmap);
+  bitmap->destroy(bitmap);
+
+  if (bitmap->should_free_handle) {
+    memset(bitmap, 0x00, sizeof(bitmap_t));
+    TKMEM_FREE(bitmap);
+  }
+
+  return RET_OK;
 }
 
 #include "blend/pixel_pack_unpack.h"

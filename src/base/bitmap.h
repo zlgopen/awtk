@@ -34,6 +34,7 @@ typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 /**
  * @enum bitmap_format_t
  * @prefix BITMAP_FMT_
+ * @annotation ["scriptable"]
  * 位图格式常量定义。
  */
 typedef enum _bitmap_format_t {
@@ -61,6 +62,7 @@ typedef enum _bitmap_format_t {
 
 /**
  * @enum _bitmap_format_t
+ * @annotation ["scriptable"]
  * @prefix BITMAP_FLAG_
  * 位图标志常量定义。
  */
@@ -89,36 +91,37 @@ typedef enum _bitmap_flag_t {
 
 /**
  * @class bitmap_t
+ * @annotation ["scriptable"]
  * 位图。
  */
 struct _bitmap_t {
   /**
    * @property {wh_t} w
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 宽度。
    */
   wh_t w;
   /**
    * @property {wh_t} h
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 高度。
    */
   wh_t h;
   /**
    * @property {uint16_t} flags
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 标志。请参考{bitmap_flag_t}。
    */
   uint16_t flags;
   /**
    * @property {uint16_t} format
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 格式。请参考{bitmap_format_t}。
    */
   uint16_t format;
   /**
    * @property {char*} name
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 名称。
    */
   const char* name;
@@ -131,6 +134,7 @@ struct _bitmap_t {
 
   /*private members*/
 
+  bool_t should_free_handle;
   /* 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。*/
   void* specific;
   /*specific_destroy的上下文*/
@@ -143,8 +147,17 @@ struct _bitmap_t {
 };
 
 /**
+ * @method bitmap_create
+ * 创建图片对象(一般供脚本语言中使用)。
+ * @annotation ["constructor", "scriptable"]
+ * @return {bitmap_t*} 返回bitmap对象。
+ */
+bitmap_t* bitmap_create(void);
+
+/**
  * @method bitmap_destroy
  * 销毁图片。
+ * @annotation ["deconstructor", "scriptable"]
  * @param {bitmap_t*} bitmap bitmap对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

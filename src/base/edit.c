@@ -965,4 +965,3 @@ widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return edit_create_ex(parent, x, y, w, h, &s_edit_vtable);
 }
-

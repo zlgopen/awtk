@@ -28,16 +28,57 @@ BEGIN_C_DECLS
 
 /**
  * @enum resource_type_t
+ * @prefix RESOURCE_TYPE_
+ * @annotation ["scriptable"]
  * 资源类型常量定义。
  */
 typedef enum _resource_type_t {
+  /**
+   * @const RESOURCE_TYPE_NONE
+   * 无效资源。
+   */
   RESOURCE_TYPE_NONE,
+
+  /**
+   * @const RESOURCE_TYPE_FONT
+   * 字体资源。
+   */
   RESOURCE_TYPE_FONT,
+
+  /**
+   * @const RESOURCE_TYPE_IMAGE
+   * 图片资源。
+   */
   RESOURCE_TYPE_IMAGE,
+
+  /**
+   * @const RESOURCE_TYPE_THEME
+   * 主题资源。
+   */
   RESOURCE_TYPE_THEME,
+
+  /**
+   * @const RESOURCE_TYPE_UI
+   * UI数据资源。
+   */
   RESOURCE_TYPE_UI,
+
+  /**
+   * @const RESOURCE_TYPE_XML
+   * XML数据资源。
+   */
   RESOURCE_TYPE_XML,
+
+  /**
+   * @const RESOURCE_TYPE_STRINGS
+   * 字符串数据资源。
+   */
   RESOURCE_TYPE_STRINGS,
+
+  /**
+   * @const RESOURCE_TYPE_DATA
+   * 其它数据资源。
+   */
   RESOURCE_TYPE_DATA
 } resource_type_t;
 
@@ -85,20 +126,37 @@ typedef struct _preload_res_t {
 
 /**
  * @class resource_info_t
+ * @annotation ["constructor", "scriptable"]
  * 单个资源的描述信息。
  */
 typedef struct _resource_info_t {
+  /**
+   * @property {uint16_t} type
+   * @annotation ["readable","scriptable"]
+   * 类型。
+   */
   uint16_t type;
   uint8_t subtype;
   uint8_t is_in_rom;
+  /**
+   * @property {uint32_t} size
+   * @annotation ["readable","scriptable"]
+   * 大小。
+   */
   uint32_t size;
   uint32_t refcount; /*is_in_rom == FALSE,才有效*/
+  /**
+   * @property {char*} name
+   * @annotation ["readable","scriptable"]
+   * 名称。
+   */
   char name[NAME_LEN + 1];
   uint8_t data[4];
 } resource_info_t;
 
 /**
  * @class resource_manager_t
+ * @annotation ["scriptable"]
  * 资源管理器。
  */
 typedef struct _resource_manager_t {
@@ -108,7 +166,7 @@ typedef struct _resource_manager_t {
 /**
  * @method resource_manager
  * 获取缺省资源管理器。
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  *
  * @return {resource_manager_t*} 返回resource manager对象。
  */
@@ -157,6 +215,7 @@ ret_t resource_manager_add(resource_manager_t* rm, const void* info);
 /**
  * @method resource_manager_ref
  * 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
+ * @annotation ["scriptable"]
  * @param {resource_manager_t*} rm resource manager对象。
  * @param {resource_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
@@ -169,8 +228,9 @@ const resource_info_t* resource_manager_ref(resource_manager_t* rm, resource_typ
 /**
  * @method resource_manager_unref
  * 释放指定的资源。
+ * @annotation ["scriptable"]
  * @param {resource_manager_t*} rm resource manager对象。
- * @param {resource_info_t} info 资源。
+ * @param {resource_info_t*} info 资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
