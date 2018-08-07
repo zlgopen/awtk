@@ -12644,6 +12644,492 @@
   },
   {
     "type": "enum",
+    "desc": "控件的属性。",
+    "consts": [
+      {
+        "desc": "X坐标。",
+        "name": "WIDGET_PROP_X"
+      },
+      {
+        "desc": "Y坐标。",
+        "name": "WIDGET_PROP_Y"
+      },
+      {
+        "desc": "宽度。",
+        "name": "WIDGET_PROP_W"
+      },
+      {
+        "desc": "高度。",
+        "name": "WIDGET_PROP_H"
+      },
+      {
+        "desc": "最小宽度。",
+        "name": "WIDGET_PROP_MIN_W"
+      },
+      {
+        "desc": "最大宽度。",
+        "name": "WIDGET_PROP_MAX_W"
+      },
+      {
+        "desc": "layout宽度。",
+        "name": "WIDGET_PROP_LAYOUT_W"
+      },
+      {
+        "desc": "layout高度。",
+        "name": "WIDGET_PROP_LAYOUT_H"
+      },
+      {
+        "desc": "虚拟宽度。",
+        "name": "WIDGET_PROP_VIRTUAL_W"
+      },
+      {
+        "desc": "虚拟高度。",
+        "name": "WIDGET_PROP_VIRTUAL_H"
+      },
+      {
+        "desc": "名称。",
+        "name": "WIDGET_PROP_NAME"
+      },
+      {
+        "desc": "值。",
+        "name": "WIDGET_PROP_VALUE"
+      },
+      {
+        "desc": "文本。",
+        "name": "WIDGET_PROP_TEXT"
+      },
+      {
+        "desc": "待翻译文本。",
+        "name": "WIDGET_PROP_TR_TEXT"
+      },
+      {
+        "desc": "style。",
+        "name": "WIDGET_PROP_STYLE"
+      },
+      {
+        "desc": "是否启用。",
+        "name": "WIDGET_PROP_ENABLE"
+      },
+      {
+        "desc": "边距。",
+        "name": "WIDGET_PROP_MARGIN"
+      },
+      {
+        "desc": "间距。",
+        "name": "WIDGET_PROP_SPACING"
+      },
+      {
+        "desc": "左边距。",
+        "name": "WIDGET_PROP_LEFT_MARGIN"
+      },
+      {
+        "desc": "右边距。",
+        "name": "WIDGET_PROP_RIGHT_MARGIN"
+      },
+      {
+        "desc": "顶边距。",
+        "name": "WIDGET_PROP_TOP_MARGIN"
+      },
+      {
+        "desc": "底边距。",
+        "name": "WIDGET_PROP_BOTTOM_MARGIN"
+      },
+      {
+        "desc": "步长。",
+        "name": "WIDGET_PROP_STEP"
+      },
+      {
+        "desc": "是否可见。",
+        "name": "WIDGET_PROP_VISIBLE"
+      },
+      {
+        "desc": "窗口动画。",
+        "name": "WIDGET_PROP_VISIBLE"
+      },
+      {
+        "desc": "打开窗口动画。",
+        "name": "WIDGET_PROP_OPEN_ANIM_HINT"
+      },
+      {
+        "desc": "关闭窗口动画。",
+        "name": "WIDGET_PROP_CLOSE_ANIM_HINT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_MIN"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_MAX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_TIPS"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_INPUT_TYPE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_READONLY"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_PASSWORD_VISIBLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_ACTIVE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_VERTICAL"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_SHOW_TEXT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_XOFFSET"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_YOFFSET"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_AUTO_PLAY"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_AUTO_FIX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_X_MIN"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_X_MAX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_Y_MIN"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_Y_MAX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_MAX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_ROW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_THEME"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_SCRIPT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_ITEM_WIDTH"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_ITEM_HEIGHT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_DEFAULT_ITEM_HEIGHT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_XSLIDABLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_YSLIDABLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_REPEAT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_ANIMATABLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_AUTO_HIDE_SCROLL_BAR"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_IMAGE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_DRAW_TYPE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_SELECTABLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_CLICKABLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_SCALE_X"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_SCALE_Y"
+      },
+      {
+        "desc": "x锚点。",
+        "name": "WIDGET_PROP_ANCHOR_X"
+      },
+      {
+        "desc": "y锚点。",
+        "name": "WIDGET_PROP_ANCHOR_Y"
+      },
+      {
+        "desc": "选中角度(幅度)",
+        "name": "WIDGET_PROP_ROTATION"
+      },
+      {
+        "desc": "sub theme。",
+        "name": "WIDGET_PROP_SUB_THEME"
+      },
+      {
+        "desc": "紧凑模式。",
+        "name": "WIDGET_PROP_COMPACT"
+      },
+      {
+        "desc": "图标名称。",
+        "name": "WIDGET_PROP_ICON"
+      },
+      {
+        "desc": "选项集合。",
+        "name": "WIDGET_PROP_OPTIONS"
+      },
+      {
+        "desc": "是否被选中。",
+        "name": "WIDGET_PROP_SELECTED"
+      },
+      {
+        "desc": "active状态下的图标。",
+        "name": "WIDGET_PROP_ACTIVE_ICON"
+      },
+      {
+        "desc": "要打开窗口的名称。",
+        "name": "WIDGET_PROP_OPEN_WINDOW"
+      },
+      {
+        "desc": "被选中项的索引。",
+        "name": "WIDGET_PROP_SELECTED_INDEX"
+      },
+      {
+        "desc": "点击窗口时关闭窗口。",
+        "name": "WIDGET_PROP_CLOSE_WHEN_CLICK"
+      },
+      {
+        "desc": "点击窗口外部时关闭窗口。",
+        "name": "WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE"
+      },
+      {
+        "desc": "行间距。",
+        "name": "WIDGET_PROP_LINE_GAP"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "widget_prop_t",
+    "prefix": "WIDGET_PROP_",
+    "annotation": {
+      "scriptable": true,
+      "string": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": "控件的类型。",
+    "consts": [
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_NONE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_WINDOW_MANAGER"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_NORMAL_WINDOW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_TOOL_BAR"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_DIALOG"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_POPUP"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SPRITE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_KEYBOARD"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_DND"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_LABEL"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_BUTTON"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_IMAGE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_EDIT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_PROGRESS_BAR"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_GROUP_BOX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_CHECK_BUTTON"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_RADIO_BUTTON"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_DIALOG_TITLE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_DIALOG_CLIENT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SLIDER"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_VIEW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_COMBO_BOX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_COMBO_BOX_ITEM"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SLIDE_VIEW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_PAGES"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_TAB_BUTTON"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_TAB_CONTROL"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_TAB_BUTTON_GROUP"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_BUTTON_GROUP"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_CANDIDATES"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SPIN_BOX"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_DRAGGER"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SCROLL_BAR"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SCROLL_BAR_DESKTOP"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SCROLL_BAR_MOBILE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_SCROLL_VIEW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_LIST_VIEW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_LIST_VIEW_H"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_LIST_ITEM"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "widget_type_t",
+    "prefix": "WIDGET_TYPE_",
+    "annotation": {
+      "scriptable": true,
+      "string": true
+    }
+  },
+  {
+    "type": "enum",
     "desc": "控件状态常量定义。",
     "consts": [
       {
