@@ -48,6 +48,16 @@ typedef edit_t spin_box_t;
  */
 widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method spin_box_cast
+ * 转换为spin_box对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget spin_box对象。
+ *
+ * @return {widget_t*} spin_box对象。
+ */
+widget_t* spin_box_cast(widget_t* widget);
+
 #define SPIN_BOX(widget) ((spin_box_t*)(widget))
 
 END_C_DECLS

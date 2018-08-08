@@ -167,3 +167,11 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 
   return widget;
 }
+
+widget_t* check_button_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && (widget->vt == &s_check_button_vtable ||
+                                          widget->vt == &s_radio_button_vtable),
+                       NULL);
+
+  return widget;
+}

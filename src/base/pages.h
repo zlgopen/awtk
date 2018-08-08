@@ -57,6 +57,16 @@ typedef struct _pages_t {
 widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method pages_cast
+ * 转换为pages对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget pages对象。
+ *
+ * @return {widget_t*} pages对象。
+ */
+widget_t* pages_cast(widget_t* widget);
+
+/**
  * @method pages_set_active
  * 设置当前的Page。
  * @annotation ["scriptable"]

@@ -38,3 +38,9 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   return widget_init(widget, parent, &s_group_box_vtable, x, y, w, h);
 }
+
+widget_t* group_box_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_group_box_vtable, NULL);
+
+  return widget;
+}

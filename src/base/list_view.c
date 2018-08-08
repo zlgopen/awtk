@@ -290,3 +290,9 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
 
   return RET_OK;
 }
+
+widget_t* list_view_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_list_view_vtable, NULL);
+
+  return widget;
+}

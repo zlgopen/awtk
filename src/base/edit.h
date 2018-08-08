@@ -158,6 +158,16 @@ typedef struct _edit_t {
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method edit_cast
+ * 转换为edit对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget edit对象。
+ *
+ * @return {widget_t*} edit对象。
+ */
+widget_t* edit_cast(widget_t* widget);
+
+/**
  * @method edit_get_int
  * 获取int类型的值。
  * @annotation ["scriptable"]

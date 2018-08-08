@@ -561,3 +561,11 @@ widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return scroll_bar_create_mobile(parent, x, y, w, h);
 #endif /*WITH_DESKTOP_STYLE*/
 }
+
+widget_t* scroll_bar_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && (widget->vt == &s_scroll_bar_mobile_vtable ||
+                                          widget->vt == &s_scroll_bar_desktop_vtable),
+                       NULL);
+
+  return widget;
+}

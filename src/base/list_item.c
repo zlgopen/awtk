@@ -108,3 +108,9 @@ widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   return widget;
 }
+
+widget_t* list_item_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_list_item_vtable, NULL);
+
+  return widget;
+}

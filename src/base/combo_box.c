@@ -420,3 +420,9 @@ const char* combo_box_get_text(widget_t* widget) {
     return combo_box->text.str;
   }
 }
+
+widget_t* combo_box_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_combo_box_vtable, NULL);
+
+  return widget;
+}

@@ -50,6 +50,16 @@ typedef struct _group_box_t {
  */
 widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method group_box_cast
+ * 转换为group_box对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget group_box对象。
+ *
+ * @return {widget_t*} group_box对象。
+ */
+widget_t* group_box_cast(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_GROUP_BOX_H*/

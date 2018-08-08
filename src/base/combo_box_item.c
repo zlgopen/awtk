@@ -152,3 +152,9 @@ ret_t combo_box_item_set_selected(widget_t* widget, bool_t selected) {
 
   return RET_OK;
 }
+
+widget_t* combo_box_item_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_combo_box_item_vtable, NULL);
+
+  return widget;
+}

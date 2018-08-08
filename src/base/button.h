@@ -63,6 +63,16 @@ typedef struct _button_t {
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method button_cast
+ * 转换为button对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget button对象。
+ *
+ * @return {widget_t*} button对象。
+ */
+widget_t* button_cast(widget_t* widget);
+
+/**
  * @method button_set_repeat
  * 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
  * @annotation ["scriptable"]

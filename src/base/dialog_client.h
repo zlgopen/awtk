@@ -50,6 +50,16 @@ typedef struct _dialog_client_t {
  */
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method dialog_client_cast
+ * 转换为dialog_client对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget dialog_client对象。
+ *
+ * @return {widget_t*} dialog_client对象。
+ */
+widget_t* dialog_client_cast(widget_t* widget);
+
 #define DIALOG_CLIENT(widget) ((dialog_client_t*)(widget))
 
 END_C_DECLS

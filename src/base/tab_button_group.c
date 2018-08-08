@@ -193,3 +193,9 @@ widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 
   return widget_init(widget, parent, &s_tab_button_group_vtable, x, y, w, h);
 }
+
+widget_t* tab_button_group_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_tab_button_group_vtable, NULL);
+
+  return widget;
+}

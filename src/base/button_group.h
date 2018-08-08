@@ -50,6 +50,16 @@ typedef struct _button_group_t {
  */
 widget_t* button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method button_group_cast
+ * 转换为button_group对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget button_group对象。
+ *
+ * @return {widget_t*} button_group对象。
+ */
+widget_t* button_group_cast(widget_t* widget);
+
 #define BUTTON_GROUP(widget) ((button_group_t*)(widget))
 
 END_C_DECLS

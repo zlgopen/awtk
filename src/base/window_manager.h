@@ -76,6 +76,17 @@ typedef struct _window_manager_t {
  * @return {widget_t*} 对象。
  */
 widget_t* window_manager(void);
+
+/**
+ * @method window_manager_cast
+ * 转换为window_manager对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget window_manager对象。
+ *
+ * @return {widget_t*} window_manager对象。
+ */
+widget_t* window_manager_cast(widget_t* widget);
+
 ret_t window_manager_set(widget_t* widget);
 
 widget_t* window_manager_create(void);

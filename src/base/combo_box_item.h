@@ -67,6 +67,16 @@ typedef struct _combo_box_item_t {
 widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method combo_box_item_cast
+ * 转换combo_box_item对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget combo_box_item对象。
+ *
+ * @return {widget_t*} combo_box_item对象。
+ */
+widget_t* combo_box_item_cast(widget_t* widget);
+
+/**
  * @method combo_box_item_set_selected
  * 设置控件是否被选中。
  * @annotation ["scriptable"]

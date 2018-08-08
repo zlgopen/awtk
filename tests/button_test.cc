@@ -39,6 +39,7 @@ TEST(Button, clone) {
   ASSERT_EQ(widget_set_prop(w1, WIDGET_PROP_REPEAT, &v1), RET_OK);
   widget_set_self_layout_params(w1, "1", "2", "3", "4");
   widget_set_children_layout_params(w1, "r0 c0 x10, y10, s10");
+  ASSERT_EQ(button_cast(w1), w1);
 
   widget_t* w2 = widget_clone(w1, NULL);
   ASSERT_EQ(widget_equal(w1, w2), TRUE);

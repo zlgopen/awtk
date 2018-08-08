@@ -110,6 +110,16 @@ typedef struct _scroll_view_t {
 widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method scroll_view_cast
+ * 转换为scroll_view对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget scroll_view对象。
+ *
+ * @return {widget_t*} scroll_view对象。
+ */
+widget_t* scroll_view_cast(widget_t* widget);
+
+/**
  * @method scroll_view_set_virtual_w
  * 设置虚拟宽度。
  * @annotation ["scriptable"]

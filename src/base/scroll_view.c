@@ -461,3 +461,9 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable) {
 
   return RET_OK;
 }
+
+widget_t* scroll_view_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_scroll_view_vtable, NULL);
+
+  return widget;
+}

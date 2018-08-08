@@ -81,6 +81,16 @@ typedef struct _scroll_bar_t {
 widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method scroll_bar_cast
+ * 转换为scroll_bar对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget scroll_bar对象。
+ *
+ * @return {widget_t*} scroll_bar对象。
+ */
+widget_t* scroll_bar_cast(widget_t* widget);
+
+/**
  * @method scroll_bar_create_mobile
  * 创建mobile风格的scroll_bar对象
  * @annotation ["constructor", "scriptable"]

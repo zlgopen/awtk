@@ -89,6 +89,16 @@ typedef struct _combo_box_t {
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method combo_box_cast
+ * 转换combo_box对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ *
+ * @return {widget_t*} combo_box对象。
+ */
+widget_t* combo_box_cast(widget_t* widget);
+
+/**
  * @method combo_box_set_open_window
  * 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。
  * @annotation ["scriptable"]

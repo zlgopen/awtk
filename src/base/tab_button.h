@@ -69,6 +69,16 @@ typedef struct _tab_button_t {
 widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method tab_button_cast
+ * 转换tab_button对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget tab_button对象。
+ *
+ * @return {widget_t*} tab_button对象。
+ */
+widget_t* tab_button_cast(widget_t* widget);
+
+/**
  * @method tab_button_set_value
  * 设置控件的值。
  * @annotation ["scriptable"]

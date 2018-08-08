@@ -75,6 +75,16 @@ typedef struct _slide_view_t {
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method slide_view_cast
+ * 转换为slide_view对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ *
+ * @return {widget_t*} slide_view对象。
+ */
+widget_t* slide_view_cast(widget_t* widget);
+
+/**
  * @method slide_view_set_auto_play
  * 设置为自动播放模式。
  * @annotation ["scriptable"]

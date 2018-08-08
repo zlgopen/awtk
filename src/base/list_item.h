@@ -40,7 +40,7 @@ typedef struct _list_item_t {
 
 /**
  * @method list_item_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * 创建list_item对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
@@ -51,6 +51,16 @@ typedef struct _list_item_t {
  * @return {widget_t*} 对象。
  */
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method list_item_cast
+ * 转换为list_item对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget list_item对象。
+ *
+ * @return {widget_t*} list_item对象。
+ */
+widget_t* list_item_cast(widget_t* widget);
 
 #define LIST_ITEM(widget) ((list_item_t*)(widget))
 

@@ -80,6 +80,7 @@ TEST(ComboBox, props) {
   widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
 
   value_set_str(&v1, str);
+  ASSERT_EQ(combo_box_cast(w), w);
   ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_OPTIONS, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_OPTIONS, &v2), RET_OK);
   ASSERT_EQ(string(value_str(&v2)), string(str));

@@ -987,6 +987,25 @@
           "type": "widget_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "button_group对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为button_group对象(供脚本语言使用)。",
+        "name": "button_group_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "button_group对象。"
+        }
       }
     ],
     "properties": [],
@@ -1038,6 +1057,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "button对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为button对象(供脚本语言使用)。",
+        "name": "button_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "button对象。"
         }
       },
       {
@@ -1249,6 +1287,25 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "check_button对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换check_button对象(供脚本语言使用)。",
+        "name": "check_button_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "check_button对象。"
+        }
       }
     ],
     "properties": [
@@ -1314,6 +1371,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "combo_box_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换combo_box_item对象(供脚本语言使用)。",
+        "name": "combo_box_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "combo_box_item对象。"
         }
       },
       {
@@ -1439,6 +1515,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "combo_box对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换combo_box对象(供脚本语言使用)。",
+        "name": "combo_box_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "combo_box对象。"
         }
       },
       {
@@ -1838,6 +1933,25 @@
           "type": "widget_t*",
           "desc": "dialog对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog_client对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为dialog_client对象(供脚本语言使用)。",
+        "name": "dialog_client_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "dialog_client对象。"
+        }
       }
     ],
     "properties": [],
@@ -1889,6 +2003,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "dialog对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog_title对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为dialog_title对象(供脚本语言使用)。",
+        "name": "dialog_title_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "dialog_title对象。"
         }
       }
     ],
@@ -1986,12 +2119,12 @@
         "params": [
           {
             "type": "widget_t*",
-            "name": "dialog",
+            "name": "widget",
             "desc": "dialog对象。"
           }
         ],
         "annotation": {
-          "constructor": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "转换dialog对象(供脚本语言使用)。",
@@ -2141,6 +2274,25 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "dragger对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为dragger对象(供脚本语言使用)。",
+        "name": "dragger_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "dragger对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "dragger控件。"
           },
           {
@@ -2277,6 +2429,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "edit对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为edit对象(供脚本语言使用)。",
+        "name": "edit_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "edit对象。"
         }
       },
       {
@@ -3223,8 +3394,7 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "static": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
@@ -3302,8 +3472,7 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "static": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "把event对象转prop_change_event_t对象，主要给脚本语言使用。",
@@ -3354,8 +3523,7 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "static": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "把event对象转pointer_event_t对象，主要给脚本语言使用。",
@@ -3451,8 +3619,7 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "static": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "把event对象转key_event_t对象，主要给脚本语言使用。",
@@ -3530,8 +3697,7 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "static": true,
+          "cast": true,
           "scriptable": true
         },
         "desc": "把event对象转paint_event_t对象。主要给脚本语言使用。",
@@ -3923,6 +4089,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "group_box对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为group_box对象(供脚本语言使用)。",
+        "name": "group_box_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "group_box对象。"
         }
       }
     ],
@@ -6148,13 +6333,33 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "创建list_item对象",
         "name": "list_item_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_item对象(供脚本语言使用)。",
+        "name": "list_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_item对象。"
         }
       }
     ],
@@ -6253,6 +6458,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view_h对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_view_h对象(供脚本语言使用)。",
+        "name": "list_view_h_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_view_h对象。"
         }
       }
     ],
@@ -6401,6 +6625,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_view对象(供脚本语言使用)。",
+        "name": "list_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_view对象。"
         }
       }
     ],
@@ -6807,6 +7050,25 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "pages对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为pages对象(供脚本语言使用)。",
+        "name": "pages_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "pages对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           },
           {
@@ -6909,6 +7171,25 @@
         },
         "desc": "创建popup对象。",
         "name": "popup_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "popup对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "popup对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为popup对象(供脚本语言使用)。",
+        "name": "popup_cast",
         "return": {
           "type": "widget_t*",
           "desc": "popup对象。"
@@ -7017,6 +7298,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "progress_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为progress_bar对象(供脚本语言使用)。",
+        "name": "progress_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "progress_bar对象。"
         }
       },
       {
@@ -7632,6 +7932,25 @@
         "params": [
           {
             "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为scroll_bar对象(供脚本语言使用)。",
+        "name": "scroll_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "scroll_bar对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
           },
@@ -7982,6 +8301,25 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "scroll_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为scroll_view对象(供脚本语言使用)。",
+        "name": "scroll_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "scroll_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           },
           {
@@ -8263,6 +8601,25 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "slide_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为slide_view对象(供脚本语言使用)。",
+        "name": "slide_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "slide_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
           },
           {
             "type": "uint16_t",
@@ -8403,6 +8760,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slider对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为slider对象(供脚本语言使用)。",
+        "name": "slider_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "slider对象。"
         }
       },
       {
@@ -8636,6 +9012,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "spin_box对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为spin_box对象(供脚本语言使用)。",
+        "name": "spin_box_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "spin_box对象。"
         }
       }
     ],
@@ -9325,6 +9720,25 @@
           "type": "widget_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_button_group对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换tab_button_group对象(供脚本语言使用)。",
+        "name": "tab_button_group_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "tab_button_group对象。"
+        }
       }
     ],
     "properties": [
@@ -9390,6 +9804,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_button对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换tab_button对象(供脚本语言使用)。",
+        "name": "tab_button_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "tab_button对象。"
         }
       },
       {
@@ -9551,6 +9984,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_control对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换tab_control对象(供脚本语言使用)。",
+        "name": "tab_control_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "tab_control对象。"
         }
       }
     ],
@@ -12455,6 +12907,25 @@
           "type": "widget_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为view对象(供脚本语言使用)。",
+        "name": "view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "view对象。"
+        }
       }
     ],
     "properties": [],
@@ -15153,6 +15624,25 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "window_manager对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为window_manager对象(供脚本语言使用)。",
+        "name": "window_manager_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "window_manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           },
           {
@@ -15231,6 +15721,25 @@
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为window对象(供脚本语言使用)。",
+        "name": "window_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "window对象。"
         }
       },
       {

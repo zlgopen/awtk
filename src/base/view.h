@@ -50,6 +50,16 @@ typedef struct _view_t {
  */
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method view_cast
+ * 转换为view对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget view对象。
+ *
+ * @return {widget_t*} view对象。
+ */
+widget_t* view_cast(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_VIEW_H*/

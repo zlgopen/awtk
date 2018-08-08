@@ -85,6 +85,16 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  */
 ret_t check_button_set_value(widget_t* widget, bool_t value);
 
+/**
+ * @method check_button_cast
+ * 转换check_button对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget check_button对象。
+ *
+ * @return {widget_t*} check_button对象。
+ */
+widget_t* check_button_cast(widget_t* widget);
+
 #define CHECK_BUTTON(widget) ((check_button_t*)(widget))
 
 END_C_DECLS

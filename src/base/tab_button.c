@@ -200,3 +200,9 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   return widget;
 }
+
+widget_t* tab_button_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_tab_button_vtable, NULL);
+
+  return widget;
+}

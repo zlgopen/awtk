@@ -88,6 +88,16 @@ typedef struct _slider_t {
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method slider_cast
+ * 转换为slider对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget slider对象。
+ *
+ * @return {widget_t*} slider对象。
+ */
+widget_t* slider_cast(widget_t* widget);
+
+/**
  * @method slider_set_value
  * 设置滑块的值。
  * @annotation ["scriptable"]

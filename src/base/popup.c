@@ -157,3 +157,9 @@ widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   return widget;
 }
+
+widget_t* popup_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_popup_vtable, NULL);
+
+  return widget;
+}

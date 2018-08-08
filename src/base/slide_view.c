@@ -682,3 +682,9 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
 
   return RET_OK;
 }
+
+widget_t* slide_view_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_slide_view_vtable, NULL);
+
+  return widget;
+}

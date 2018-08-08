@@ -77,6 +77,16 @@ typedef struct _popup_t {
  */
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method popup_cast
+ * 转换为popup对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget popup对象。
+ *
+ * @return {widget_t*} popup对象。
+ */
+widget_t* popup_cast(widget_t* widget);
+
 #define POPUP(widget) ((popup_t*)(widget))
 
 END_C_DECLS

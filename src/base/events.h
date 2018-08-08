@@ -345,7 +345,7 @@ typedef struct _wheel_event_t {
 
 /**
  * @method wheel_event_cast
- * @annotation ["constructor", "static", "scriptable"]
+ * @annotation ["cast", "scriptable"]
  * 把event对象转wheel_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -377,7 +377,7 @@ typedef struct _prop_change_event_t {
 
 /**
  * @method prop_change_event_cast
- * @annotation ["constructor", "static", "scriptable"]
+ * @annotation ["cast", "scriptable"]
  * 把event对象转prop_change_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -440,7 +440,7 @@ typedef struct _pointer_event_t {
 
 /**
  * @method pointer_event_cast
- * @annotation ["constructor", "static", "scriptable"]
+ * @annotation ["cast", "scriptable"]
  * 把event对象转pointer_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -490,7 +490,7 @@ typedef struct _key_event_t {
 
 /**
  * @method key_event_cast
- * @annotation ["constructor", "static", "scriptable"]
+ * @annotation ["cast", "scriptable"]
  * 把event对象转key_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
@@ -516,7 +516,7 @@ typedef struct _paint_event_t {
 
 /**
  * @method paint_event_cast
- * @annotation ["constructor", "static", "scriptable"]
+ * @annotation ["cast", "scriptable"]
  * 把event对象转paint_event_t对象。主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *

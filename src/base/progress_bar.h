@@ -69,6 +69,16 @@ typedef struct _progress_bar_t {
 widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method progress_bar_cast
+ * 转换为progress_bar对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget progress_bar对象。
+ *
+ * @return {widget_t*} progress_bar对象。
+ */
+widget_t* progress_bar_cast(widget_t* widget);
+
+/**
  * @method progress_bar_set_value
  * 设置进度条的进度。
  * @annotation ["scriptable"]

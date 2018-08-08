@@ -87,6 +87,16 @@ ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width);
  */
 ret_t list_view_h_set_spacing(widget_t* widget, bool_t spacing);
 
+/**
+ * @method list_view_h_cast
+ * 转换为list_view_h对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget list_view_h对象。
+ *
+ * @return {widget_t*} list_view_h对象。
+ */
+widget_t* list_view_h_cast(widget_t* widget);
+
 #define LIST_VIEW_H(widget) ((list_view_h_t*)(widget))
 
 END_C_DECLS

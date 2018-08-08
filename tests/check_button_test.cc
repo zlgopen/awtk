@@ -43,6 +43,7 @@ TEST(CheckButton, basic) {
 TEST(CheckButton, radio) {
   widget_t* button = check_button_create_radio(NULL, 0, 0, 100, 100);
 
+  ASSERT_EQ(check_button_cast(button), button);
   ASSERT_EQ(CHECK_BUTTON(button)->radio, TRUE);
   ASSERT_EQ(CHECK_BUTTON(button)->value, FALSE);
 

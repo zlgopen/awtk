@@ -50,6 +50,16 @@ typedef struct _tab_control_t {
  */
 widget_t* tab_control_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method tab_control_cast
+ * 转换tab_control对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget tab_control对象。
+ *
+ * @return {widget_t*} tab_control对象。
+ */
+widget_t* tab_control_cast(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_TAB_CONTROL_H*/

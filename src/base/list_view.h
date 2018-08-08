@@ -105,6 +105,16 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
  */
 ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scroll_bar);
 
+/**
+ * @method list_view_cast
+ * 转换为list_view对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget list_view对象。
+ *
+ * @return {widget_t*} list_view对象。
+ */
+widget_t* list_view_cast(widget_t* widget);
+
 #define LIST_VIEW(widget) ((list_view_t*)(widget))
 
 END_C_DECLS

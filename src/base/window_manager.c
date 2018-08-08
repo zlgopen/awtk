@@ -414,7 +414,7 @@ static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
   return RET_FAIL;
 }
 
-static const widget_vtable_t s_wm_vtable = {
+static const widget_vtable_t s_window_manager_vtable = {
     .type = WIDGET_TYPE_WINDOW_MANAGER,
     .invalidate = window_manager_invalidate,
     .on_paint_children = window_manager_on_paint_children,
@@ -438,7 +438,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
   widget_t* w = &(wm->widget);
   return_value_if_fail(wm != NULL, NULL);
 
-  widget_init(w, NULL, &s_wm_vtable, 0, 0, 0, 0);
+  widget_init(w, NULL, &s_window_manager_vtable, 0, 0, 0, 0);
 
   locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
 
@@ -659,4 +659,10 @@ ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
   wm->show_fps = show_fps;
 
   return RET_OK;
+}
+
+widget_t* window_manager_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_window_manager_vtable, NULL);
+
+  return widget;
 }

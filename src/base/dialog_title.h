@@ -50,6 +50,16 @@ typedef struct _dialog_title_t {
  */
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method dialog_title_cast
+ * 转换为dialog_title对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget dialog_title对象。
+ *
+ * @return {widget_t*} dialog_title对象。
+ */
+widget_t* dialog_title_cast(widget_t* widget);
+
 #define DIALOG_TITLE(widget) ((dialog_title_t*)(widget))
 
 END_C_DECLS

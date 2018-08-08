@@ -81,6 +81,16 @@ typedef struct _dragger_t {
 widget_t* dragger_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method dragger_cast
+ * 转换为dragger对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget dragger对象。
+ *
+ * @return {widget_t*} dragger对象。
+ */
+widget_t* dragger_cast(widget_t* widget);
+
+/**
  * @method dragger_set_range
  * 设置拖动的范围。
  * @annotation ["scriptable"]

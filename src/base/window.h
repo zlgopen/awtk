@@ -64,6 +64,16 @@ typedef struct _window_t {
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method window_cast
+ * 转换为window对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget window对象。
+ *
+ * @return {widget_t*} window对象。
+ */
+widget_t* window_cast(widget_t* widget);
+
+/**
  * @method window_open
  * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。

@@ -161,3 +161,9 @@ ret_t list_view_h_set_spacing(widget_t* widget, bool_t spacing) {
 
   return RET_OK;
 }
+
+widget_t* list_view_h_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_list_view_h_vtable, NULL);
+
+  return widget;
+}

@@ -97,3 +97,9 @@ ret_t window_close(widget_t* widget) {
 
   return window_manager_close_window(widget->parent, widget);
 }
+
+widget_t* window_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_window_vtable, NULL);
+
+  return widget;
+}
