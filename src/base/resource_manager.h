@@ -166,6 +166,7 @@ typedef struct _resource_manager_t {
 /**
  * @method resource_manager
  * 获取缺省资源管理器。
+ * @alias resource_manager_instance
  * @annotation ["constructor", "scriptable"]
  *
  * @return {resource_manager_t*} 返回resource manager对象。

@@ -1985,6 +1985,25 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "dialog",
+            "desc": "dialog对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "转换dialog对象(供脚本语言使用)。",
+        "name": "dialog_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "dialog对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "char*",
             "name": "name",
             "desc": "dialog的名称。"
@@ -4082,6 +4101,7 @@
         },
         "desc": "获取缺省的图片管理器。",
         "name": "image_manager",
+        "alias": "image_manager_instance",
         "return": {
           "type": "image_manager_t*",
           "desc": "返回图片管理器对象。"
@@ -7317,6 +7337,7 @@
         },
         "desc": "获取缺省资源管理器。",
         "name": "resource_manager",
+        "alias": "resource_manager_instance",
         "return": {
           "type": "resource_manager_t*",
           "desc": "返回resource manager对象。"
@@ -14393,7 +14414,9 @@
             "desc": "回调函数的上下文。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": "custom"
+        },
         "desc": "遍历当前控件及子控件。",
         "name": "widget_foreach",
         "return": {
@@ -15110,12 +15133,63 @@
   },
   {
     "type": "class",
-    "methods": [],
-    "properties": [],
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "获取全局window_manager对象",
+        "name": "window_manager",
+        "alias": "window_manager_instance",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_fps",
+            "desc": "是否显示FPS。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否显示FPS。",
+        "name": "window_manager_set_show_fps",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "show_fps",
+        "desc": "是否显示fps。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/window_manager.h",
     "desc": "窗口管理器。",
     "name": "window_manager_t",
-    "parent": "widget_t"
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",
@@ -15173,6 +15247,30 @@
         },
         "desc": "从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。",
         "name": "window_open",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "window的名称。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "to_close",
+            "desc": "关闭该窗口。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。",
+        "name": "window_open_and_close",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"

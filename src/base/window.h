@@ -74,6 +74,17 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 widget_t* window_open(const char* name);
 
 /**
+ * @method window_open_and_close
+ * @annotation ["constructor", "scriptable"]
+ * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name window的名称。
+ * @param {widget_t*} to_close 关闭该窗口。
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* window_open_and_close(const char* name, widget_t* to_close);
+
+/**
  * @method window_close
  * 关闭窗口。
  * @annotation ["deconstructor", "scriptable"]

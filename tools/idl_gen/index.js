@@ -45,6 +45,10 @@ class IDLGenerator {
   parseName(str) {
     return this.getValue(str);
   }
+  
+  parseAlias(str) {
+    return this.getValue(str);
+  }
 
   parsePrefix(str) {
     return this.getValue(str);
@@ -110,6 +114,8 @@ class IDLGenerator {
     comment.split('\n').forEach(iter => {
       if (iter.indexOf('@method') >= 0) {
         method.name = this.parseName(iter);
+      }else if (iter.indexOf('@alias') >= 0) {
+        method.alias = this.parseAlias(iter);
       } else if (iter.indexOf(' @annotation') >= 0) {
         method.annotation = this.parseAnnotation(iter);
       } else if (iter.indexOf(' @param') >= 0) {

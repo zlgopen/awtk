@@ -31,11 +31,18 @@ BEGIN_C_DECLS
 /**
  * @class window_manager_t
  * @parent widget_t
+ * @annotation ["scriptable"]
  * 窗口管理器。
  */
 typedef struct _window_manager_t {
   widget_t widget;
 
+  /**
+   * @property {bool_t} show_fps
+   * @annotation ["readable", "scriptable"]
+   * 是否显示fps。
+   */
+  bool_t show_fps;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
 
@@ -54,13 +61,20 @@ typedef struct _window_manager_t {
   uint32_t fps;
   uint32_t fps_time;
   uint32_t fps_count;
-  bool_t show_fps;
   bool_t pressed;
 
   widget_t* pending_close_window;
   widget_t* pending_open_window;
 } window_manager_t;
 
+/**
+ * @method window_manager
+ * 获取全局window_manager对象
+ * @alias window_manager_instance
+ * @annotation ["constructor", "scriptable"]
+ *
+ * @return {widget_t*} 对象。
+ */
 widget_t* window_manager(void);
 ret_t window_manager_set(widget_t* widget);
 
@@ -74,7 +88,17 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window);
 ret_t window_manager_paint(widget_t* widget, canvas_t* c);
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
 
+/**
+ * @method window_manager_set_show_fps
+ * 设置是否显示FPS。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  show_fps 是否显示FPS。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps);
+
 ret_t window_manager_set_animating(widget_t* widget, bool_t animating);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))

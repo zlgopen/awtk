@@ -193,3 +193,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
 
   return RET_OK;
 }
+
+widget_t* dialog_cast(widget_t* dialog) {
+  return dialog;
+}

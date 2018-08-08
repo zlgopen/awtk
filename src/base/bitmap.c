@@ -32,13 +32,15 @@ bitmap_t* bitmap_create(void) {
 }
 
 ret_t bitmap_destroy(bitmap_t* bitmap) {
-  return_value_if_fail(bitmap != NULL && bitmap->destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
   if (bitmap->specific_destroy != NULL) {
     bitmap->specific_destroy(bitmap);
   }
 
-  bitmap->destroy(bitmap);
+  if (bitmap->destroy != NULL) {
+    bitmap->destroy(bitmap);
+  }
 
   if (bitmap->should_free_handle) {
     memset(bitmap, 0x00, sizeof(bitmap_t));

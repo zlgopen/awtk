@@ -70,6 +70,8 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->image = *image;
   cache->access_count = 1;
   cache->created_time = time_now_s();
+  cache->image.should_free_handle = FALSE;
+
   tk_strncpy(cache->name, name, NAME_LEN);
   cache->last_access_time = cache->created_time;
   cache->image.name = cache->name;
@@ -89,6 +91,9 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
     iter = all[i];
     if (strcmp(name, iter->name) == 0) {
       *image = iter->image;
+      image->destroy = NULL;
+      image->specific_destroy = NULL;
+
       iter->access_count++;
       iter->last_access_time = time_now_s();
 

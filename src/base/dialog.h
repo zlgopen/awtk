@@ -73,6 +73,16 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method dialog_cast
+ * 转换dialog对象(供脚本语言使用)。
+ * @annotation ["constructor", "scriptable"]
+ * @param {widget_t*} dialog dialog对象。
+ *
+ * @return {widget_t*} dialog对象。
+ */
+widget_t* dialog_cast(widget_t* dialog);
+
+/**
  * @method dialog_open
  * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。

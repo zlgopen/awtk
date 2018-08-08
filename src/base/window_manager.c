@@ -244,8 +244,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
-      log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __FUNCTION__, (int)(r.x), (int)(r.y),
-                (int)(r.w), (int)(r.h), (int)wm->last_paint_cost);
+      // log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __FUNCTION__, (int)(r.x), (int)(r.y),
+      //          (int)(r.w), (int)(r.h), (int)wm->last_paint_cost);
     }
   }
 

@@ -62,6 +62,7 @@ typedef struct _image_manager_t {
 /**
  * @method image_manager
  * 获取缺省的图片管理器。
+ * @alias image_manager_instance
  * @annotation ["constructor", "scriptable"]
  * @return {image_manager_t*} 返回图片管理器对象。
  */

@@ -746,6 +746,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child);
 /**
  * @method widget_foreach
  * 遍历当前控件及子控件。
+ * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
  * @param {tk_visit_t} visit 遍历的回调函数。
  * @param {void*} ctx 回调函数的上下文。
