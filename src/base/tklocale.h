@@ -1,7 +1,7 @@
 ﻿/**
- * File:   locale.h
+ * File:   tklocale.h
  * Author: AWTK Develop Team
- * Brief:  locale
+ * Brief:  tklocale
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -28,8 +28,9 @@
 BEGIN_C_DECLS
 
 /**
- * @class locale_t
- * locale
+ * @class tklocale_t
+ * @annotation ["scriptable"]
+ * tklocale
  */
 typedef struct _tklocale_t {
   /**
@@ -46,112 +47,116 @@ typedef struct _tklocale_t {
   char language[3];
 
   const resource_info_t* strs;
-  emitter_t emitter;
+
+  emitter_t* emitter;
 } tklocale_t;
 
 /**
- * @method locale
- * 获取缺省locale。
- * @annotation ["constructor"]
+ * @method tklocale
+ * 获取缺省tklocale。
+ * @alias tklocale_instance
+ * @annotation ["constructor", "scriptable"]
  *
- * @return {tklocale_t*} 返回locale对象。
+ * @return {tklocale_t*} 返回tklocale对象。
  */
-tklocale_t* locale(void);
+tklocale_t* tklocale(void);
 
 /**
- * @method locale_set
- * 设置缺省locale。
- * @param {tklocale_t*} locale locale对象。
+ * @method tklocale_set
+ * 设置缺省tklocale。
+ * @param {tklocale_t*} tklocale tklocale对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_set(tklocale_t* locale);
+ret_t tklocale_set(tklocale_t* tklocale);
 
 /**
- * @method locale_create
- * 创建locale。
+ * @method tklocale_create
+ * 创建tklocale。
  * @annotation ["constructor"]
  * @param {char*} language 语言。
  * @param {char*} country 国家或地区。
  *
- * @return {tklocale_t*} 返回locale对象。
+ * @return {tklocale_t*} 返回tklocale对象。
  */
-tklocale_t* locale_create(const char* language, const char* country);
+tklocale_t* tklocale_create(const char* language, const char* country);
 
 /**
- * @method locale_init
- * 初始化locale。
+ * @method tklocale_init
+ * 初始化tklocale。
  * @annotation ["constructor"]
- * @param {tklocale_t*} locale locale对象。
+ * @param {tklocale_t*} tklocale tklocale对象。
  * @param {char*} language 语言。
  * @param {char*} country 国家或地区。
  *
- * @return {tklocale_t*} 返回locale对象。
+ * @return {tklocale_t*} 返回tklocale对象。
  */
-tklocale_t* locale_init(tklocale_t* locale, const char* language, const char* country);
+tklocale_t* tklocale_init(tklocale_t* tklocale, const char* language, const char* country);
 
 /**
- * @method locale_tr
+ * @method tklocale_tr
  * 翻译字符串。
- * @param {tklocale_t*} locale locale对象。
+ * @annotation ["scriptable"]
+ * @param {tklocale_t*} tklocale tklocale对象。
  * @param {char*} text 待翻译的文本。
  *
  * @return {char*} 返回翻译之后的字符串。
  */
-const char* locale_tr(tklocale_t* locale, const char* text);
+const char* tklocale_tr(tklocale_t* tklocale, const char* text);
 
 /**
- * @method locale_change
+ * @method tklocale_change
  * 设置当前的国家和语言。
- * @param {tklocale_t*} locale locale对象。
+ * @annotation ["scriptable"]
+ * @param {tklocale_t*} tklocale tklocale对象。
  * @param {char*} language 语言。
  * @param {char*} country 国家或地区。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_change(tklocale_t* locale, const char* language, const char* country);
+ret_t tklocale_change(tklocale_t* tklocale, const char* language, const char* country);
 
 /**
- * @method locale_on
+ * @method tklocale_on
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
- * @param {tklocale_t*} locale 控件对象。
+ * @param {tklocale_t*} tklocale 控件对象。
  * @param {event_type_t} type 事件类型，目前固定为EVT_LOCALE_CHANGED。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
- * @return {uint32_t} 返回id，用于locale_off。
+ * @return {uint32_t} 返回id，用于tklocale_off。
  */
-uint32_t locale_on(tklocale_t* locale, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t tklocale_on(tklocale_t* tklocale, event_type_t type, event_func_t on_event, void* ctx);
 
 /**
- * @method locale_off
+ * @method tklocale_off
  * 注销指定事件的处理函数。
  * @annotation ["scriptable:custom"]
- * @param {tklocale_t*} locale 控件对象。
- * @param {uint32_t} id locale_on返回的ID。
+ * @param {tklocale_t*} tklocale 控件对象。
+ * @param {uint32_t} id tklocale_on返回的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_off(tklocale_t* locale, uint32_t id);
+ret_t tklocale_off(tklocale_t* tklocale, uint32_t id);
 
 /**
- * @method locale_deinit
- * @param {tklocale_t*} locale locale对象。
+ * @method tklocale_deinit
+ * @param {tklocale_t*} tklocale tklocale对象。
  * 释放全部资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_deinit(tklocale_t* locale);
+ret_t tklocale_deinit(tklocale_t* tklocale);
 
 /**
- * @method locale_destroy
- * @param {tklocale_t*} locale locale对象。
- * 释放全部资源并销毁locale对象。
+ * @method tklocale_destroy
+ * @param {tklocale_t*} tklocale tklocale对象。
+ * 释放全部资源并销毁tklocale对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_destroy(tklocale_t* locale);
+ret_t tklocale_destroy(tklocale_t* tklocale);
 
 typedef struct _str_pair_t {
   uint32_t key;

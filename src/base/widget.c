@@ -24,7 +24,7 @@
 #include "base/utf8.h"
 #include "base/utils.h"
 #include "base/enums.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
@@ -129,7 +129,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   const char* tr_text = NULL;
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
-  tr_text = locale_tr(locale(), text);
+  tr_text = tklocale_tr(tklocale(), text);
   TKMEM_FREE(widget->tr_text);
   widget->tr_text = tk_strdup(text);
 
@@ -139,7 +139,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 ret_t widget_re_translate_text(widget_t* widget) {
   if (widget->tr_text != NULL) {
     value_t v;
-    const char* tr_text = locale_tr(locale(), widget->tr_text);
+    const char* tr_text = tklocale_tr(tklocale(), widget->tr_text);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
     widget_invalidate(widget, NULL);
   }

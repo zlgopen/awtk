@@ -24,7 +24,7 @@
 #include "base/idle.h"
 #include "base/time.h"
 #include "base/timer.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 #include "base/platform.h"
 #include "base/main_loop.h"
 #include "font/font_bitmap.h"
@@ -93,7 +93,7 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
-  return_value_if_fail(locale_set(locale_create(NULL, NULL)) == RET_OK, RET_FAIL);
+  return_value_if_fail(tklocale_set(tklocale_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
@@ -114,8 +114,8 @@ ret_t tk_deinit_internal(void) {
   font_manager_destroy(font_manager());
   font_manager_set(NULL);
 
-  locale_destroy(locale());
-  locale_set(NULL);
+  tklocale_destroy(tklocale());
+  tklocale_set(NULL);
 
   resource_manager_destroy(resource_manager());
   resource_manager_set(NULL);

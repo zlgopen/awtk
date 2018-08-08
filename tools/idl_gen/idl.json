@@ -6701,246 +6701,6 @@
     "methods": [
       {
         "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取缺省locale。",
-        "name": "locale",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回locale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省locale。",
-        "name": "locale_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建locale。",
-        "name": "locale_create",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回locale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "初始化locale。",
-        "name": "locale_init",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回locale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "text",
-            "desc": "待翻译的文本。"
-          }
-        ],
-        "annotation": {},
-        "desc": "翻译字符串。",
-        "name": "locale_tr",
-        "return": {
-          "type": "char*",
-          "desc": "返回翻译之后的字符串。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置当前的国家和语言。",
-        "name": "locale_change",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_type_t",
-            "name": "type",
-            "desc": "事件类型，目前固定为EVT_LOCALE_CHANGED。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {
-          "scriptable": "custom"
-        },
-        "desc": "注册指定事件的处理函数。",
-        "name": "locale_on",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回id，用于locale_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "locale_on返回的ID。"
-          }
-        ],
-        "annotation": {
-          "scriptable": "custom"
-        },
-        "desc": "注销指定事件的处理函数。",
-        "name": "locale_off",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源。",
-        "name": "locale_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "locale",
-            "desc": "locale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源并销毁locale对象。",
-        "name": "locale_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "country;",
-        "desc": "国家或地区。如：CN",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "language",
-        "desc": "语言。如：zh",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/locale.h",
-    "desc": "locale",
-    "name": "locale_t"
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
         "annotation": {},
         "desc": "创建mutex。",
         "name": "tk_mutex_create",
@@ -10345,6 +10105,255 @@
     "annotation": {
       "scriptable": true,
       "fake": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "获取缺省tklocale。",
+        "name": "tklocale",
+        "alias": "tklocale_instance",
+        "return": {
+          "type": "tklocale_t*",
+          "desc": "返回tklocale对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省tklocale。",
+        "name": "tklocale_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建tklocale。",
+        "name": "tklocale_create",
+        "return": {
+          "type": "tklocale_t*",
+          "desc": "返回tklocale对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          },
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化tklocale。",
+        "name": "tklocale_init",
+        "return": {
+          "type": "tklocale_t*",
+          "desc": "返回tklocale对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "待翻译的文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "翻译字符串。",
+        "name": "tklocale_tr",
+        "return": {
+          "type": "char*",
+          "desc": "返回翻译之后的字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          },
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前的国家和语言。",
+        "name": "tklocale_change",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型，目前固定为EVT_LOCALE_CHANGED。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {
+          "scriptable": "custom"
+        },
+        "desc": "注册指定事件的处理函数。",
+        "name": "tklocale_on",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回id，用于tklocale_off。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "tklocale_on返回的ID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": "custom"
+        },
+        "desc": "注销指定事件的处理函数。",
+        "name": "tklocale_off",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源。",
+        "name": "tklocale_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tklocale_t*",
+            "name": "tklocale",
+            "desc": "tklocale对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源并销毁tklocale对象。",
+        "name": "tklocale_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "country;",
+        "desc": "国家或地区。如：CN",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "language",
+        "desc": "语言。如：zh",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/tklocale.h",
+    "desc": "tklocale",
+    "name": "tklocale_t",
+    "annotation": {
+      "scriptable": true
     }
   },
   {

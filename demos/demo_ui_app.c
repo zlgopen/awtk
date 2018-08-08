@@ -21,7 +21,7 @@
 
 #include "base/mem.h"
 #include "base/label.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 #include "base/timer.h"
 #include "base/button.h"
 #include "base/dialog.h"
@@ -161,7 +161,7 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
 
   tk_strncpy(language, str, 2);
   tk_strncpy(country, str + 3, 2);
-  locale_change(locale(), language, country);
+  tklocale_change(tklocale(), language, country);
 
   return RET_OK;
 }

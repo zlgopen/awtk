@@ -26,7 +26,7 @@
 #include "base/utils.h"
 #include "base/timer.h"
 #include "base/layout.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 
@@ -440,7 +440,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   widget_init(w, NULL, &s_window_manager_vtable, 0, 0, 0, 0);
 
-  locale_on(locale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
+  tklocale_on(tklocale(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
 
   return w;
 }

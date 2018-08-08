@@ -22,7 +22,7 @@
 #include "str_gen.h"
 #include "base/wstr.h"
 #include "base/buffer.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 
 void StrGen::Add(const string& language, const Sentence& sentence) {
   StrTable::iterator iter = this->str_table.find(language);

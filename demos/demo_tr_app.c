@@ -22,7 +22,7 @@
 #include "base/timer.h"
 #include "base/enums.h"
 #include "base/button.h"
-#include "base/locale.h"
+#include "base/tklocale.h"
 #include "base/check_button.h"
 #include "base/dialog.h"
 #include "base/image.h"
@@ -45,7 +45,7 @@ static ret_t change_locale(void* ctx, event_t* e) {
   if (widget_get_value(widget)) {
     strncpy(language, str, 2);
     strncpy(country, str + 3, 2);
-    locale_change(locale(), language, country);
+    tklocale_change(tklocale(), language, country);
   }
 
   return RET_OK;
@@ -54,7 +54,7 @@ static ret_t change_locale(void* ctx, event_t* e) {
 static ret_t on_locale_changed(void* ctx, event_t* e) {
   (void)ctx;
   (void)e;
-  log_debug("localed change: %s_%s\n", locale()->language, locale()->country);
+  log_debug("tklocaled change: %s_%s\n", tklocale()->language, tklocale()->country);
 
   return RET_OK;
 }
