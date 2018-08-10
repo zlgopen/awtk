@@ -151,7 +151,7 @@ typedef enum _event_type_t {
    */
   EVT_MOVE_RESIZE,
   /**
-   * @const EVT_PROP_CHANGED
+   * @const EVT_PROP_WILL_CHANGE
    * 对象的属性即将改变的事件名(prop_change_event_t)。
    */
   EVT_PROP_WILL_CHANGE,

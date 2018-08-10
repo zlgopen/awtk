@@ -180,7 +180,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VISIBLE "visible"
 
 /**
- * @const WIDGET_PROP_VISIBLE
+ * @const WIDGET_PROP_ANIM_HINT
  * 窗口动画。
  */
 #define WIDGET_PROP_ANIM_HINT "anim_hint"
@@ -202,12 +202,6 @@ BEGIN_C_DECLS
  *
  */
 #define WIDGET_PROP_MIN "min"
-
-/**
- * @const WIDGET_PROP_MAX
- *
- */
-#define WIDGET_PROP_MAX "max"
 
 /**
  * @const WIDGET_PROP_TIPS
@@ -790,7 +784,7 @@ typedef enum _widget_state_t {
    */
   WIDGET_STATE_ERROR = 9,
   /**
-   * @const WIDGET_STATE_ERROR
+   * @const WIDGET_STATE_SELECTED
    * 输入错误状态。
    */
   WIDGET_STATE_SELECTED = 10

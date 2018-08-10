@@ -305,7 +305,7 @@
       }
     ],
     "header": "base/bitmap.h",
-    "name": "_bitmap_format_t",
+    "name": "bitmap_flag_t",
     "prefix": "BITMAP_FLAG_",
     "annotation": {
       "scriptable": true
@@ -3237,7 +3237,7 @@
       },
       {
         "desc": "对象的属性即将改变的事件名(prop_change_event_t)。",
-        "name": "EVT_PROP_CHANGED"
+        "name": "EVT_PROP_WILL_CHANGE"
       },
       {
         "desc": "对象的属性改变的事件名(prop_change_event_t)。",
@@ -13357,7 +13357,7 @@
       },
       {
         "desc": "窗口动画。",
-        "name": "WIDGET_PROP_VISIBLE"
+        "name": "WIDGET_PROP_ANIM_HINT"
       },
       {
         "desc": "打开窗口动画。",
@@ -13370,10 +13370,6 @@
       {
         "desc": "",
         "name": "WIDGET_PROP_MIN"
-      },
-      {
-        "desc": "",
-        "name": "WIDGET_PROP_MAX"
       },
       {
         "desc": "",
@@ -13787,7 +13783,7 @@
       },
       {
         "desc": "输入错误状态。",
-        "name": "WIDGET_STATE_ERROR"
+        "name": "WIDGET_STATE_SELECTED"
       }
     ],
     "header": "base/widget_consts.h",
@@ -15294,6 +15290,7 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
+          "writable": true,
           "persitent": true,
           "design": true,
           "scriptable": true

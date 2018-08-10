@@ -61,7 +61,7 @@ typedef enum _bitmap_format_t {
 } bitmap_format_t;
 
 /**
- * @enum _bitmap_format_t
+ * @enum bitmap_flag_t
  * @annotation ["scriptable"]
  * @prefix BITMAP_FLAG_
  * 位图标志常量定义。

@@ -90,6 +90,7 @@ widget_t* dialog_cast(widget_t* widget);
  *
  * @return {widget_t*} 对象。
  */
+widget_t* dialog_open(const char* name);
 
 /**
  * @method dialog_set_title

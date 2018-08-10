@@ -134,7 +134,7 @@ struct _widget_t {
   uint8_t enable : 1;
   /**
    * @property {bool_t} visible
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
    * 是否可见。
    */
   uint8_t visible : 1;
