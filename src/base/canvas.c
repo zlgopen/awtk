@@ -649,7 +649,7 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t h = 0;
@@ -691,7 +691,7 @@ ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -736,7 +736,7 @@ ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   wh_t w = 0;
@@ -778,7 +778,7 @@ ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst
   return RET_OK;
 }
 
-ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   xy_t y = 0;
@@ -822,7 +822,7 @@ ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst) {
+ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, rect_t* dst) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -1051,16 +1051,16 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
         return canvas_draw_image_repeat_x(c, img, dst);
       case IMAGE_DRAW_REPEAT_Y:
         return canvas_draw_image_repeat_y(c, img, dst);
-      case IMAGE_DRAW_9PATCH:
-        return canvas_draw_image_9patch(c, img, dst);
-      case IMAGE_DRAW_3PATCH_X:
-        return canvas_draw_image_3patch_x(c, img, dst);
-      case IMAGE_DRAW_3PATCH_Y:
-        return canvas_draw_image_3patch_y(c, img, dst);
-      case IMAGE_DRAW_3PATCH_X_SCALE_Y:
-        return canvas_draw_image_3patch_x_scale_y(c, img, dst);
-      case IMAGE_DRAW_3PATCH_Y_SCALE_X:
-        return canvas_draw_image_3patch_y_scale_x(c, img, dst);
+      case IMAGE_DRAW_PATCH9:
+        return canvas_draw_image_patch9(c, img, dst);
+      case IMAGE_DRAW_PATCH3_X:
+        return canvas_draw_image_patch3_x(c, img, dst);
+      case IMAGE_DRAW_PATCH3_Y:
+        return canvas_draw_image_patch3_y(c, img, dst);
+      case IMAGE_DRAW_PATCH3_X_SCALE_Y:
+        return canvas_draw_image_patch3_x_scale_y(c, img, dst);
+      case IMAGE_DRAW_PATCH3_Y_SCALE_X:
+        return canvas_draw_image_patch3_y_scale_x(c, img, dst);
       default:
         return canvas_draw_image_center(c, img, dst);
     }

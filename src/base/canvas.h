@@ -95,13 +95,13 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy);
 ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r);
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_3patch_x(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_3patch_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst);
 
-ret_t canvas_draw_image_3patch_y(canvas_t* c, bitmap_t* img, rect_t* dst);
-ret_t canvas_draw_image_3patch_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst);
 
-ret_t canvas_draw_image_9patch(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst);

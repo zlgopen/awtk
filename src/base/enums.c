@@ -82,11 +82,11 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"repeat", 0, IMAGE_DRAW_REPEAT},
     {"repeat_x", 0, IMAGE_DRAW_REPEAT_X},
     {"repeat_y", 0, IMAGE_DRAW_REPEAT_Y},
-    {"9patch", 0, IMAGE_DRAW_9PATCH},
-    {"3patch_x", 0, IMAGE_DRAW_3PATCH_X},
-    {"3patch_y", 0, IMAGE_DRAW_3PATCH_Y},
-    {"3patch_x_scale_y", 0, IMAGE_DRAW_3PATCH_X_SCALE_Y},
-    {"3patch_y_scale_x", 0, IMAGE_DRAW_3PATCH_Y_SCALE_X}};
+    {"patch9", 0, IMAGE_DRAW_PATCH9},
+    {"patch3_x", 0, IMAGE_DRAW_PATCH3_X},
+    {"patch3_y", 0, IMAGE_DRAW_PATCH3_Y},
+    {"patch3_x_scale_y", 0, IMAGE_DRAW_PATCH3_X_SCALE_Y},
+    {"patch3_y_scale_x", 0, IMAGE_DRAW_PATCH3_Y_SCALE_X}};
 
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;

@@ -61,7 +61,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 
   image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
   if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
     if (progress_bar->vertical) {
       r.h += r.w;
@@ -92,7 +92,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 
   image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
   draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_3PATCH_X);
+      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
   if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
     canvas_draw_image_ex(c, &img, draw_type, &r);
   }
