@@ -14051,9 +14051,7 @@
             "desc": "文本。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。",
         "name": "widget_set_text",
         "return": {
@@ -14102,6 +14100,7 @@
         },
         "desc": "设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。",
         "name": "widget_set_text_utf8",
+        "alias": "set_text",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

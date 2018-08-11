@@ -358,7 +358,6 @@ ret_t widget_set_value(widget_t* widget, int32_t value);
 /**
  * @method widget_set_text
  * 设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {wchar_t*}  text 文本。
  *
@@ -381,6 +380,7 @@ ret_t widget_use_style(widget_t* widget, const char* style);
  * @method widget_set_text_utf8
  * 设置控件的文本。只是对widget_set_prop的包装，文本的意义由子类控件决定。
  * @annotation ["scriptable"]
+ * @alias set_text
  * @param {widget_t*} widget 控件对象。
  * @param {char*}  text 文本。
  *
