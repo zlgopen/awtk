@@ -44,7 +44,7 @@ tklocale_t* tklocale_create(const char* language, const char* country) {
 tklocale_t* tklocale_init(tklocale_t* tklocale, const char* language, const char* country) {
   return_value_if_fail(tklocale != NULL, NULL);
 
-  tklocale->emitter = emitter_create(); 
+  tklocale->emitter = emitter_create();
   tklocale_change(tklocale, language, country);
 
   return tklocale;

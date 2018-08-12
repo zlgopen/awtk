@@ -83,6 +83,26 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 widget_t* dialog_cast(widget_t* widget);
 
 /**
+ * @method dialog_get_title
+ * 获取title控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget dialog对象。
+ *
+ * @return {widget_t*} title对象。
+ */
+widget_t* dialog_get_title(widget_t* widget);
+
+/**
+ * @method dialog_get_client
+ * 获取client控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget dialog对象。
+ *
+ * @return {widget_t*} client对象。
+ */
+widget_t* dialog_get_client(widget_t* widget);
+
+/**
  * @method dialog_open
  * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。
@@ -97,11 +117,11 @@ widget_t* dialog_open(const char* name);
  * 设置对话框的标题文本。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
- * @param {wchar_t*}  title 标题。
+ * @param {char*}  title 标题。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_set_title(widget_t* widget, const wchar_t* title);
+ret_t dialog_set_title(widget_t* widget, const char* title);
 
 /**
  * @method dialog_modal

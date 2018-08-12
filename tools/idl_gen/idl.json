@@ -2137,6 +2137,42 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取title控件。",
+        "name": "dialog_get_title",
+        "return": {
+          "type": "widget_t*",
+          "desc": "title对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取client控件。",
+        "name": "dialog_get_client",
+        "return": {
+          "type": "widget_t*",
+          "desc": "client对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "char*",
             "name": "name",
             "desc": "dialog的名称。"
@@ -2161,7 +2197,7 @@
             "desc": "dialog对象。"
           },
           {
-            "type": "wchar_t*",
+            "type": "char*",
             "name": "title",
             "desc": "标题。"
           }
