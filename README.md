@@ -106,9 +106,9 @@ bin\demoui
 
 ## 各语言的绑定
 
-* [awtk-js](https://github.com/zlgopen/awtk-lua)
+* [awtk-lua](https://github.com/zlgopen/awtk-lua)
 
-* [awtk-lua](https://github.com/zlgopen/awtk-js)
+* [awtk-js](https://github.com/zlgopen/awtk-js)
 
 ## 文档
 
