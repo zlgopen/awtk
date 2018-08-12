@@ -87,3 +87,7 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 
   return RET_OK;
 }
+
+event_t* event_cast(event_t* event) {
+  return event;
+}

@@ -856,6 +856,16 @@ ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
 ret_t widget_layout(widget_t* widget);
 
 /**
+ * @method widget_cast
+ * 转换为widget对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {widget_t*} widget对象。
+ */
+widget_t* widget_cast(widget_t* widget);
+
+/**
  * @method widget_destroy
  * 销毁控件。
  * @annotation ["scriptable"]

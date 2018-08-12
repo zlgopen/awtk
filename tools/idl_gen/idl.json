@@ -3381,7 +3381,27 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
+        "name": "event_cast",
+        "return": {
+          "type": "event_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
     "properties": [
       {
         "name": "type",
@@ -15140,6 +15160,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为widget对象(供脚本语言使用)。",
+        "name": "widget_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "widget对象。"
         }
       },
       {

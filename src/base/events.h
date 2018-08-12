@@ -304,6 +304,16 @@ typedef struct _event_t {
 } event_t;
 
 /**
+ * @method event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转wheel_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {event_t*} 对象。
+ */
+event_t* event_cast(event_t* event);
+
+/**
  * @class wheel_event_t
  * @annotation ["scriptable"]
  * @parent event_t
