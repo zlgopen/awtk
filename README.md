@@ -104,6 +104,12 @@ bin\demoui
 
 * [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
+## 各语言的绑定
+
+* [awtk-js](https://github.com/zlgopen/awtk-lua)
+
+* [awtk-lua](https://github.com/zlgopen/awtk-js)
+
 ## 文档
 
 ### 1.使用文档
@@ -124,7 +130,7 @@ bin\demoui
 * [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
 
 ### 3.内部原理
-* [AWTK脚本绑定的实现原理 - lua绑定](docs/binding_lua.md)
+* [AWTK脚本绑定原理](docs/script_binding.md)
 
 ### 4.移植文档
 * [嵌入式平台移植注意事项](docs/porting_common.md)
