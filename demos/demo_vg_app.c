@@ -35,7 +35,7 @@ static ret_t on_paint_rect(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_paint_9patch(void* ctx, event_t* e) {
+static ret_t on_paint_patch9(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -44,13 +44,13 @@ static ret_t on_paint_9patch(void* ctx, event_t* e) {
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
   r = rect_init(10, 10, 200, 30);
-  canvas_draw_image_9patch(c, &img, &r);
+  canvas_draw_image_patch9(c, &img, &r);
 
   r = rect_init(10, 70, 200, 60);
-  canvas_draw_image_9patch(c, &img, &r);
+  canvas_draw_image_patch9(c, &img, &r);
 
   r = rect_init(10, 150, 20, 60);
-  canvas_draw_image_9patch(c, &img, &r);
+  canvas_draw_image_patch9(c, &img, &r);
 
   return RET_OK;
 }
@@ -106,7 +106,7 @@ static ret_t on_paint_points(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
+static ret_t on_paint_patch3_h(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -114,21 +114,21 @@ static ret_t on_paint_3patch_h(void* ctx, event_t* e) {
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
   r = rect_init(10, 10, 100, 60);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(10, 80, 10, 60);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(10, 160, 300, 50);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(10, 220, 300, 20);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   return RET_OK;
 }
 
-static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
+static ret_t on_paint_patch3_v(void* ctx, event_t* e) {
   rect_t r;
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -136,16 +136,16 @@ static ret_t on_paint_3patch_v(void* ctx, event_t* e) {
   image_manager_load(image_manager(), "btn_blue_n", &img);
 
   r = rect_init(10, 10, 60, 100);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(80, 10, 60, 10);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(160, 10, 50, 300);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   r = rect_init(220, 10, 20, 300);
-  canvas_draw_image_3patch_x(c, &img, &r);
+  canvas_draw_image_patch3_x(c, &img, &r);
 
   return RET_OK;
 }
