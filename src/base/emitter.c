@@ -39,6 +39,17 @@ emitter_t* emitter_init(emitter_t* emitter) {
   return emitter;
 }
 
+static ret_t emitter_item_destroy(emitter_item_t* iter) {
+  if (iter->on_destroy) {
+    iter->on_destroy(iter);
+  }
+
+  memset(iter, 0x00, sizeof(emitter_item_t));
+  TKMEM_FREE(iter);
+
+  return RET_OK;
+}
+
 static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_item_t* iter) {
   return_value_if_fail(emitter != NULL && iter != NULL, RET_BAD_PARAMS);
 
@@ -53,8 +64,7 @@ static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_it
     prev->next = iter->next;
   }
 
-  memset(iter, 0x00, sizeof(emitter_item_t));
-  TKMEM_FREE(iter);
+  emitter_item_destroy(iter);
 
   return RET_OK;
 }
@@ -216,7 +226,7 @@ ret_t emitter_deinit(emitter_t* emitter) {
 
     while (iter != NULL) {
       next = iter->next;
-      TKMEM_FREE(iter);
+      emitter_item_destroy(iter);
       iter = next;
     }
     emitter->items = NULL;
@@ -229,6 +239,17 @@ ret_t emitter_destroy(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
   emitter_deinit(emitter);
   TKMEM_FREE(emitter);
+
+  return RET_OK;
+}
+
+ret_t emitter_set_on_destroy(emitter_t* emitter, uint32_t id, tk_destroy_t on_destroy,
+                             void* on_destroy_ctx) {
+  emitter_item_t* item = emitter_find(emitter, id);
+  return_value_if_fail(item != NULL, RET_BAD_PARAMS);
+
+  item->on_destroy = on_destroy;
+  item->on_destroy_ctx = on_destroy_ctx;
 
   return RET_OK;
 }

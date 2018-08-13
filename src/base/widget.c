@@ -1479,4 +1479,3 @@ const char* widget_get_type(widget_t* widget) {
 widget_t* widget_cast(widget_t* widget) {
   return widget;
 }
-

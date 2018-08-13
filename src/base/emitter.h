@@ -35,6 +35,8 @@ struct _emitter_item_t {
   uint32_t type;
   event_func_t handler;
 
+  tk_destroy_t on_destroy;
+  void* on_destroy_ctx;
   emitter_item_t* next;
 };
 
@@ -140,6 +142,19 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
+
+/**
+ * @method emitter_set_on_destroy
+ * 用于给脚本语言一次释放资源(回调函数)的机会。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {uint32_t} id emitter_on返回的ID。
+ * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {void*} on_destroy_ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_set_on_destroy(emitter_t* emitter, uint32_t id, tk_destroy_t on_destroy,
+                             void* on_destroy_ctx);
 
 /**
  * @method emitter_find
