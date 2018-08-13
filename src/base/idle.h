@@ -35,6 +35,8 @@ struct _idle_info_t {
   idle_func_t on_idle;
   void* ctx;
   uint32_t id;
+  void* on_destroy_ctx;
+  tk_destroy_t on_destroy;
 };
 
 typedef struct _idle_manager_t {
@@ -55,6 +57,8 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
 ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id);
 ret_t idle_manager_remove_all(idle_manager_t* idle_manager);
 const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id);
+ret_t idle_manager_set_on_destroy(idle_manager_t* idle_manager, uint32_t idle_id,
+                                  tk_destroy_t on_destroy, void* on_destroy_ctx);
 ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 
 /**
@@ -88,7 +92,7 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx);
 /**
  * @method idle_remove
  * 删除指定的idle。
- * @annotation ["scriptable:custom", "static"]
+ * @annotation ["scriptable", "static"]
  * @param {uint32_t} idle_id idleID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -103,6 +107,17 @@ ret_t idle_remove(uint32_t idle_id);
  * @return {idle_info_t*} 返回idle的信息。
  */
 const idle_info_t* idle_find(uint32_t idle_id);
+
+/**
+ * @method idle_set_on_destroy
+ * 设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。
+ * @param {uint32_t} idle_id idleID。
+ * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {void*} on_destroy_ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_destroy_ctx);
 
 /**
  * @method idle_dispatch

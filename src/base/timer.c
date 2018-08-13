@@ -23,6 +23,13 @@
 #include "base/timer.h"
 #include "base/array.h"
 
+static ret_t timer_info_destroy(timer_info_t* info) {
+  memset(info, 0x00, sizeof(timer_info_t));
+  TKMEM_FREE(info);
+
+  return RET_OK;
+}
+
 static timer_manager_t* s_timer_manager;
 #define ACTIVE_TIMERS(timer_manager) (((timer_manager)->timers) + (timer_manager)->active)
 #define OFFLINE_TIMERS(timer_manager) \
@@ -70,7 +77,7 @@ ret_t timer_manager_deinit(timer_manager_t* timer_manager) {
 
   for (i = 0; i < nr; i++) {
     timer_info_t* iter = timers[i];
-    TKMEM_FREE(iter);
+    timer_info_destroy(iter);
   }
   array_deinit(timer_manager->timers + 0);
   array_deinit(timer_manager->timers + 1);
@@ -115,12 +122,6 @@ static int timer_info_compare_id(const void* a, const void* b) {
   }
 
   return -1;
-}
-
-static ret_t timer_info_destroy(timer_info_t* info) {
-  TKMEM_FREE(info);
-
-  return RET_OK;
 }
 
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {
@@ -174,8 +175,7 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
     if ((iter->start + iter->duration_ms) <= now) {
       iter->now = now;
       if (iter->on_timer(iter) != RET_REPEAT) {
-        memset(iter, 0x00, sizeof(timer_info_t));
-        TKMEM_FREE(iter);
+        timer_info_destroy(iter);
       } else {
         iter->start = now;
         array_push(offline, iter);
@@ -258,4 +258,14 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
   r.add_timer.e.type = REQ_ADD_TIMER;
 
   return main_loop_queue_event(main_loop(), &r);
+}
+
+ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {
+  timer_info_t* item = timer_find(timer_id);
+  return_value_if_fail(item != NULL, RET_BAD_PARAMS);
+
+  item->on_destroy = on_destroy;
+  item->on_destroy_ctx = on_destroy_ctx;
+
+  return RET_OK;
 }

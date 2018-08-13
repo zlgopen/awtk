@@ -145,7 +145,7 @@ ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handl
 
 /**
  * @method emitter_set_on_destroy
- * 用于给脚本语言一次释放资源(回调函数)的机会。
+ * 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {emitter_t*} emitter emitter对象。
  * @param {uint32_t} id emitter_on返回的ID。
  * @param {tk_destroy_t} on_destroy 回调函数。

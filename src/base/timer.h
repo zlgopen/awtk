@@ -46,6 +46,8 @@ struct _timer_info_t {
   uint32_t now;
   uint32_t start;
   uint32_t duration_ms;
+  void* on_destroy_ctx;
+  tk_destroy_t on_destroy;
   timer_manager_t* timer_manager;
 };
 
@@ -59,6 +61,8 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager);
 
 uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
                            uint32_t duration_ms);
+ret_t timer_manager_set_on_destroy(timer_manager_t* timer_manager, uint32_t timer_id,
+                                   tk_destroy_t on_destroy, void* on_destroy_ctx);
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
@@ -108,12 +112,23 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 /**
  * @method timer_remove
  * 删除指定的timer。
- * @annotation ["scriptable:custom", "static"]
+ * @annotation ["scriptable", "static"]
  * @param {uint32_t} timer_id timerID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t timer_remove(uint32_t timer_id);
+
+/**
+ * @method timer_set_on_destroy
+ * 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
+ * @param {uint32_t} timer_id timerID。
+ * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {void*} on_destroy_ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx);
 
 /**
  * @method timer_find

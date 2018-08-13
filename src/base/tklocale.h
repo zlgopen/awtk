@@ -132,7 +132,7 @@ uint32_t tklocale_on(tklocale_t* tklocale, event_type_t type, event_func_t on_ev
 /**
  * @method tklocale_off
  * 注销指定事件的处理函数。
- * @annotation ["scriptable:custom"]
+ * @annotation ["scriptable"]
  * @param {tklocale_t*} tklocale 控件对象。
  * @param {uint32_t} id tklocale_on返回的ID。
  *

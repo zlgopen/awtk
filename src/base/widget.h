@@ -605,7 +605,7 @@ int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, vo
 /**
  * @method widget_off
  * 注销指定事件的处理函数。
- * @annotation ["scriptable:custom"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} id widget_on返回的ID。
  *

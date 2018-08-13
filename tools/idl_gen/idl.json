@@ -3038,6 +3038,37 @@
             "type": "uint32_t",
             "name": "id",
             "desc": "emitter_on返回的ID。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "on_destroy",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "on_destroy_ctx",
+            "desc": "回调函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。",
+        "name": "emitter_set_on_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "emitter_on返回的ID。"
           }
         ],
         "annotation": {},
@@ -4235,7 +4266,7 @@
           }
         ],
         "annotation": {
-          "scriptable": "custom",
+          "scriptable": true,
           "static": true
         },
         "desc": "删除指定的idle。",
@@ -4255,6 +4286,32 @@
         "return": {
           "type": "idle_info_t*",
           "desc": "返回idle的信息。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "idle_id",
+            "desc": "idleID。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "on_destroy",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "on_destroy_ctx",
+            "desc": "回调函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。",
+        "name": "idle_set_on_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -10083,11 +10140,37 @@
           }
         ],
         "annotation": {
-          "scriptable": "custom",
+          "scriptable": true,
           "static": true
         },
         "desc": "删除指定的timer。",
         "name": "timer_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "on_destroy",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "on_destroy_ctx",
+            "desc": "回调函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。",
+        "name": "timer_set_on_destroy",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -10345,7 +10428,7 @@
           }
         ],
         "annotation": {
-          "scriptable": "custom"
+          "scriptable": true
         },
         "desc": "注销指定事件的处理函数。",
         "name": "tklocale_off",
@@ -14630,7 +14713,7 @@
           }
         ],
         "annotation": {
-          "scriptable": "custom"
+          "scriptable": true
         },
         "desc": "注销指定事件的处理函数。",
         "name": "widget_off",

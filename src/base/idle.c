@@ -27,6 +27,13 @@ static idle_manager_t* s_idle_manager;
 #define ACTIVE_IDLES(idle_manager) (((idle_manager)->idles) + (idle_manager)->active)
 #define OFFLINE_IDLES(idle_manager) (((idle_manager)->idles) + ((idle_manager)->active ? 0 : 1))
 
+static ret_t idle_info_destroy(idle_info_t* info) {
+  memset(info, 0x00, sizeof(idle_info_t));
+  TKMEM_FREE(info);
+
+  return RET_OK;
+}
+
 idle_manager_t* idle_manager(void) {
   return s_idle_manager;
 }
@@ -64,7 +71,7 @@ ret_t idle_manager_remove_all(idle_manager_t* idle_manager) {
 
   for (i = 0; i < nr; i++) {
     idle_info_t* iter = idles[i];
-    TKMEM_FREE(iter);
+    idle_info_destroy(iter);
   }
   ACTIVE_IDLES(idle_manager)->size = 0;
 
@@ -115,12 +122,6 @@ static int idle_info_compare_id(const void* a, const void* b) {
   return -1;
 }
 
-static ret_t idle_info_destroy(idle_info_t* info) {
-  TKMEM_FREE(info);
-
-  return RET_OK;
-}
-
 ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id) {
   idle_info_t idle;
   ret_t ret = RET_OK;
@@ -165,8 +166,7 @@ ret_t idle_manager_dispatch(idle_manager_t* idle_manager) {
   while (active->size > 0) {
     idle_info_t* iter = (idle_info_t*)array_pop(active);
     if (iter->on_idle(iter) != RET_REPEAT) {
-      memset(iter, 0x00, sizeof(idle_info_t));
-      TKMEM_FREE(iter);
+      idle_info_destroy(iter);
     } else {
       array_push(offline, iter);
     }
@@ -206,4 +206,14 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx) {
   r.add_idle.e.type = REQ_ADD_IDLE;
 
   return main_loop_queue_event(main_loop(), &r);
+}
+
+ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {
+  idle_info_t* item = idle_find(idle_id);
+  return_value_if_fail(item != NULL, RET_BAD_PARAMS);
+
+  item->on_destroy = on_destroy;
+  item->on_destroy_ctx = on_destroy_ctx;
+
+  return RET_OK;
 }
