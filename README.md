@@ -148,6 +148,16 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/08/15
+  * javascript绑定原理文档。
+
+* 2018/08/14
+  * 增加javascript demos。
+
+* 2018/08/13
+  * 增加javascript demos。
+  * 修改lua/javascript回调函数泄露的问题。
+
 * 2018/08/11
   * awtk.ts 代码产生器。
 
