@@ -67,7 +67,7 @@ OS_FLAGS='-g -Wall'
 OS_SUBSYSTEM_CONSOLE=''
 OS_SUBSYSTEM_WINDOWS=''
 OS_LINKFLAGS=''
-OS_LIBS=['SDL2', 'glad', 'stdc++', 'pthread', 'm']
+OS_LIBS=['SDL2', 'glad']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
@@ -75,13 +75,13 @@ if OS_NAME == 'Darwin':
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
-  OS_LIBS = ['picasso', 'agg'] + OS_LIBS
+  OS_LIBS = ['picasso', 'agg'] + OS_LIBS + ['stdc++', 'm', 'pthread']
 
 elif OS_NAME == 'Linux':
   OS_LIBS = ['GL'] + OS_LIBS + ['dl']
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
   if VGCANVAS == 'PICASSO':
-    OS_LIBS = ['freetype'] + OS_LIBS
+    OS_LIBS = ['freetype'] + OS_LIBS  + ['stdc++', 'm', 'pthread']
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Windows':
