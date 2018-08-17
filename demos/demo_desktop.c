@@ -22,17 +22,20 @@
 #include "awtk.h"
 #include "base/mem.h"
 #include "resource.h"
-#include "base/system_info.h"
 #include "base/window.h"
 #include "base/label.h"
+#include "base/edit.h"
+#include "base/system_info.h"
 
 ret_t application_init(void) {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* label = label_create(win, 0, 0, 0, 0);
+  widget_t* edit = edit_create(win, 0, 0, 0, 0);
 
-  widget_use_style(label, "big_green");
   widget_set_text(label, L"hello awtk!");
-  widget_set_self_layout_params(label, "center", "middle", "50%", "30");
+  widget_set_self_layout_params(label, "0", "middle", "30%", "30");
+
+  widget_set_self_layout_params(edit, "30%", "middle", "60%", "30");
 
   widget_layout(win);
 

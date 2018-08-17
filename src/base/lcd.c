@@ -227,3 +227,15 @@ ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
 
   return lcd->take_snapshot(lcd, img, auto_rotate);
 }
+
+ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  lcd->w = w;
+  lcd->h = h;
+
+  if (lcd->resize != NULL) {
+    lcd->resize(lcd, w, h);
+  }
+
+  return RET_OK;
+}

@@ -32,6 +32,13 @@ typedef struct _lcd_vgcanvas_t {
 
 #define LCD(lcd) ((lcd_vgcanvas_t*)lcd)
 
+static ret_t lcd_vgcanvas_resize(lcd_t* lcd, wh_t w, wh_t h) {
+  LCD(lcd)->canvas->w = w;
+  LCD(lcd)->canvas->h = h;
+
+  return RET_OK;
+}
+
 static ret_t lcd_vgcanvas_set_font_name(lcd_t* lcd, const char* name) {
   return vgcanvas_set_font(LCD(lcd)->canvas, name);
 }
@@ -209,6 +216,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->set_font_name = lcd_vgcanvas_set_font_name;
   base->set_font_size = lcd_vgcanvas_set_font_size;
   base->set_global_alpha = lcd_vgcanvas_set_global_alpha;
+  base->resize = lcd_vgcanvas_resize;
   base->destroy = lcd_vgcanvas_destroy;
 
   base->w = (wh_t)w;

@@ -107,13 +107,8 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
 
 static ret_t main_loop_sdl2_dispatch_window_resize(main_loop_simple_t* loop, uint32_t win_id, int w,
                                                    int h) {
-  widget_t* wm = loop->base.wm;
-  lcd_t* lcd = loop->base.canvas.lcd;
-
-  lcd->w = w;
-  lcd->h = h;
-
-  return window_manager_resize(wm, w, h);
+  lcd_resize(loop->base.canvas.lcd, w, h);
+  return window_manager_resize(loop->base.wm, w, h);
 }
 
 static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_Event* event) {

@@ -34,6 +34,7 @@ typedef struct _lcd_t lcd_t;
 
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
+typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h);
 
 typedef ret_t (*lcd_set_global_alpha_t)(lcd_t* lcd, uint8_t alpha);
 typedef ret_t (*lcd_set_text_color_t)(lcd_t* lcd, color_t color);
@@ -153,7 +154,7 @@ struct _lcd_t {
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;
-
+  lcd_resize_t resize;
   lcd_destroy_t destroy;
 
   /**
@@ -250,6 +251,17 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode)
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect);
+
+/**
+ * @method lcd_resize
+ * 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {wh_t} w 新的宽度。
+ * @param {wh_t} h 新的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h);
 
 /**
  * @method lcd_set_global_alpha
