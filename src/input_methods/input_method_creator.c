@@ -1,0 +1,46 @@
+﻿/**
+ * File:   input_method_creator.c
+ * Author: AWTK Develop Team
+ * Brief:  input method creator
+ *
+ * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2018-08-17 Li XianJing <xianjimli@hotmail.com> created
+ *
+ */
+
+#include "base/system_info.h"
+#include "input_method_default.inc"
+#include "input_method_null.inc"
+
+#if defined(WITH_SDL)
+#include "input_method_sdl.inc"
+#endif /*WITH_SDL*/
+
+input_method_t* input_method_create(void) {
+  input_method_t* im = NULL;
+
+#if defined(WITH_SDL)
+  if (system_info()->app_type == APP_DESKTOP) {
+    im = input_method_sdl_create();
+  } else {
+    im = input_method_default_create();
+  }
+#elif defined(WITH_NULL_IM)
+  im = input_method_null_create();
+#else
+  im = input_method_default_create();
+#endif /*WITH_SDL*/
+
+  return im;
+}

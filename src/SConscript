@@ -37,10 +37,7 @@ elif os.environ['VGCANVAS'] == 'AGG':
 else:
   sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
 
-if os.environ['INPUT_METHOD'] == 'native':
-  sources += Glob('input_methods/input_method_sdl.c')
-else:
-  sources += Glob('input_methods/input_method_default.c')
+sources += Glob('input_methods/input_method_creator.c')
 
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')

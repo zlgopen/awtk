@@ -194,20 +194,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   return RET_OK;
 }
 
-input_method_t* input_method_create(void) {
-  input_method_t* im = TKMEM_ZALLOC(input_method_t);
-  return_value_if_fail(im != NULL, NULL);
-
-  im->action_button_enable = TRUE;
-  im->request = input_method_default_request;
-  emitter_init(&(im->emitter));
-  im->engine = input_engine_create();
-  im->suggest_words = suggest_words_create((const resource_info_t*)(data_suggest_words));
-
-  return im;
-}
-
-ret_t input_method_destroy(input_method_t* im) {
+ret_t input_method_default_destroy(input_method_t* im) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
   emitter_deinit(&(im->emitter));
@@ -217,4 +204,19 @@ ret_t input_method_destroy(input_method_t* im) {
   TKMEM_FREE(im);
 
   return RET_OK;
+}
+
+input_method_t* input_method_default_create(void) {
+  input_method_t* im = TKMEM_ZALLOC(input_method_t);
+  return_value_if_fail(im != NULL, NULL);
+
+  im->action_button_enable = TRUE;
+  im->request = input_method_default_request;
+  im->destroy = input_method_default_destroy;
+
+  emitter_init(&(im->emitter));
+  im->engine = input_engine_create();
+  im->suggest_words = suggest_words_create((const resource_info_t*)(data_suggest_words));
+
+  return im;
 }

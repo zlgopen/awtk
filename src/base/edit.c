@@ -256,10 +256,8 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
   } else {
-    if (isprint(key)) {
-#ifndef WITH_NATIVE_IM
+    if (isprint(key) && system_info()->app_type != APP_DESKTOP) {
       return edit_input_char(widget, (wchar_t)key);
-#endif /*WITH_NATIVE_IM*/
     } else {
       return RET_OK;
     }

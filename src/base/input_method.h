@@ -32,6 +32,7 @@ struct _input_method_t;
 typedef struct _input_method_t input_method_t;
 
 typedef ret_t (*input_method_request_t)(input_method_t* im, widget_t* widget);
+typedef ret_t (*input_method_destroy_t)(input_method_t* im);
 
 /**
  * @enum input_type_t
@@ -154,6 +155,7 @@ typedef struct _input_method_t {
    * 子类需要实现的函数。
    */
   input_method_request_t request;
+  input_method_destroy_t destroy;
 } input_method_t;
 
 /**

@@ -22,7 +22,7 @@
 #ifndef TK_KEYS_H
 #define TK_KEYS_H
 
-#ifdef SDL2
+#ifdef WITH_SDL
 #include <SDL2/SDL_keycode.h>
 #endif
 #include "base/types_def.h"

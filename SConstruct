@@ -20,26 +20,19 @@ else:
   VGCANVAS='AGG'
   VGCANVAS='PICASSO'
 
-INPUT_METHOD='native'
-INPUT_METHOD='default'
 INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
 
 FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
 
-COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DSDL2 -DWITH_FS_RES -DHAS_STDIO -DWITH_DESKTOP_STYLE'
+COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DWITH_SDL -DWITH_FS_RES -DHAS_STDIO -DWITH_DESKTOP_STYLE'
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_VGCANVAS -DWITH_UNICODE_BREAK'
 
 if FRAME_BUFFER_FORMAT=='rgba8888':
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FB_8888=1';
 else:
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FB_565=1';
-
-if INPUT_METHOD == 'native':
-  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_NATIVE_IM=1';
-else:
-  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_DEFAULT_IM=1';
 
 if LCD == 'NANOVG':
   VGCANVAS='NANOVG'
@@ -57,7 +50,6 @@ os.environ['BIN_DIR'] = BIN_DIR;
 os.environ['LIB_DIR'] = LIB_DIR;
 os.environ['TK_ROOT'] = TK_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
-os.environ['INPUT_METHOD'] = INPUT_METHOD;
 os.environ['INPUT_ENGINE'] = INPUT_ENGINE;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 
@@ -72,16 +64,17 @@ OS_LIBS=['SDL2', 'glad']
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS'
+  OS_LIBS = OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
-  OS_LIBS = ['picasso', 'agg'] + OS_LIBS + ['stdc++', 'm', 'pthread']
+  OS_LIBS = ['picasso', 'agg'] + OS_LIBS
 
 elif OS_NAME == 'Linux':
-  OS_LIBS = ['GL'] + OS_LIBS + ['dl']
+  OS_LIBS = ['GL'] + OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
   if VGCANVAS == 'PICASSO':
-    OS_LIBS = ['freetype'] + OS_LIBS  + ['stdc++', 'm', 'pthread']
+    OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Windows':

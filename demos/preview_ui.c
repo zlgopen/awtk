@@ -58,13 +58,12 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 int main(int argc, char* argv[]) {
   const char* filename = argc == 1 ? "../tools/ui_gen/window1.xml" : argv[1];
 #endif
-  widget_t* win = NULL;
 
   tk_init(320, 480);
   resource_init();
   tk_ext_widgets_init();
 
-  win = preview_ui(filename);
+  preview_ui(filename);
   tk_run();
 
   return 0;

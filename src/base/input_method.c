@@ -142,3 +142,12 @@ ret_t input_method_commit_text(input_method_t* im, const char* text) {
 
   return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
 }
+
+ret_t input_method_destroy(input_method_t* im) {
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+  if (im->destroy) {
+    im->destroy(im);
+  }
+
+  return RET_OK;
+}
