@@ -351,6 +351,7 @@ typedef enum _border_type_t {
 
 /**
  * @enum icon_at_type_t
+ * @prefix ICON_AT
  * 图标所在的位置。
  */
 typedef enum _icon_at_type_t {
@@ -382,6 +383,29 @@ typedef enum _icon_at_type_t {
 } icon_at_type_t;
 
 typedef float float_t;
+
+/**
+ * @enum app_type_t
+ * @prefix APP_
+ * 应用程序类型。
+ */
+typedef enum _app_type_t {
+  /**
+   * @const APP_MOBILE
+   * 嵌入式或移动APP
+   */
+  APP_MOBILE = 0,
+  /**
+   * @const APP_SIMULATOR
+   * 模拟器。
+   */
+  APP_SIMULATOR,
+  /**
+   * @const APP_DESKTOP
+   * 桌面应用程序。
+   */
+  APP_DESKTOP
+} app_type_t;
 
 #define TK_DEFAULT_FONT "default"
 #define TK_DEFAULT_FONT_SIZE 18

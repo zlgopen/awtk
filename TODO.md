@@ -16,7 +16,6 @@
 * checkbox
 * groupbox
 * dialog
-* lua binging 
 * binarry ui loader
 * xml ui loader
 * api doc
@@ -45,30 +44,29 @@
 * 软键盘
 * 中文输入法
 * edit
-
-## 短期计划(顺序不定)
-* agg实现vgcanvas接口
-* API doc到PDF转换工具
-* image value
 * combobox
 * listbox
-* tableview
+* spinbox
+* tab
+* jerryscript binging 
+* lua binging 
+* 支持tween动画
+
+## 短期计划(顺序不定)
+* API doc到PDF转换工具
 * menu
 * chart
 * guage
-* spinbox
 * drag & drop
-* tab
+* tableview
 * python binging 
-* jerryscript binging 
-* 键盘导航
 * rtthread移植
 * sylixos移植
 * djyos移植
 * 嵌入式linux移植
 * remote client
-* 支持tween动画
 * 音频接口。
+* 键盘导航
 
 ## 长期计划
 * 用AWTK实现界面编辑器

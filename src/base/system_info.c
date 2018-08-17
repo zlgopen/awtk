@@ -26,3 +26,12 @@ static system_info_t info;
 system_info_t* system_info() {
   return &info;
 }
+
+ret_t system_info_init(app_type_t app_type, const char* app_name) {
+  memset(&info, 0x00, sizeof(info));
+
+  info.app_type = app_type;
+  info.app_name = app_name;
+
+  return RET_OK;
+}

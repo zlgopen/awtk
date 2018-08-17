@@ -65,6 +65,20 @@ typedef struct _system_info_t {
    * 显示屏的旋转角度。
    */
   lcd_orientation_t lcd_orientation;
+
+  /**
+   * @property {app_type_t} app_type
+   * @annotation ["readable"]
+   * 应用程序的类型。
+   */
+  app_type_t app_type;
+
+  /**
+   * @property {const char*} app_name
+   * @annotation ["readable"]
+   * 应用程序的名称。
+   */
+  const char* app_name;
 } system_info_t;
 
 /**
@@ -74,6 +88,16 @@ typedef struct _system_info_t {
  * @return {system_info_t*} 返回system_info对象。
  */
 system_info_t* system_info(void);
+
+/**
+ * @method system_info_init
+ * 初始化system_info对象(PC软件才需调用)。
+ * @param {app_type_t} app_type 应用程序的类型。
+ * @param {const char*} app_name 应用程序的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t system_info_init(app_type_t app_type, const char* app_name);
 
 END_C_DECLS
 

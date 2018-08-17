@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "base/input_method.h"
 
 static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Event* sdl_event) {
@@ -104,6 +105,82 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   return RET_OK;
 }
 
+static ret_t main_loop_sdl2_dispatch_window_resize(main_loop_simple_t* loop, uint32_t win_id, int w,
+                                                   int h) {
+  widget_t* wm = loop->base.wm;
+  lcd_t* lcd = loop->base.canvas.lcd;
+
+  lcd->w = w;
+  lcd->h = h;
+
+  return window_manager_resize(wm, w, h);
+}
+
+static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_Event* event) {
+  switch (event->window.event) {
+    case SDL_WINDOWEVENT_SHOWN:
+      log_debug("Window %d shown\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_HIDDEN:
+      log_debug("Window %d hidden\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_EXPOSED:
+      log_debug("Window %d exposed\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_MOVED:
+      log_debug("Window %d moved to %d,%d\n", event->window.windowID, event->window.data1,
+                event->window.data2);
+      break;
+    case SDL_WINDOWEVENT_RESIZED:
+      log_debug("Window %d resized to %dx%d\n", event->window.windowID, event->window.data1,
+                event->window.data2);
+      break;
+    case SDL_WINDOWEVENT_SIZE_CHANGED:
+      log_debug("Window %d size changed to %dx%d\n", event->window.windowID, event->window.data1,
+                event->window.data2);
+      main_loop_sdl2_dispatch_window_resize(loop, event->window.windowID, event->window.data1,
+                                            event->window.data2);
+      break;
+    case SDL_WINDOWEVENT_MINIMIZED:
+      log_debug("Window %d minimized\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_MAXIMIZED:
+      log_debug("Window %d maximized\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_RESTORED:
+      log_debug("Window %d restored\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_ENTER:
+      log_debug("Mouse entered window %d\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_LEAVE:
+      log_debug("Mouse left window %d\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_FOCUS_GAINED:
+      log_debug("Window %d gained keyboard focus\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_FOCUS_LOST:
+      log_debug("Window %d lost keyboard focus\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_CLOSE:
+      log_debug("Window %d closed\n", event->window.windowID);
+      break;
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+    case SDL_WINDOWEVENT_TAKE_FOCUS:
+      log_debug("Window %d is offered a focus\n", event->window.windowID);
+      break;
+    case SDL_WINDOWEVENT_HIT_TEST:
+      log_debug("Window %d has a special hit test\n", event->window.windowID);
+      break;
+#endif
+    default:
+      log_debug("Window %d got unknown event %d\n", event->window.windowID, event->window.event);
+      break;
+  }
+
+  return RET_OK;
+}
+
 static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
   SDL_Event event;
   ret_t ret = RET_OK;
@@ -135,6 +212,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       }
       case SDL_MOUSEWHEEL: {
         ret = main_loop_sdl2_dispatch_wheel_event(loop, &event);
+        break;
+      }
+      case SDL_WINDOWEVENT: {
+        main_loop_sdl2_dispatch_window_event(loop, &event);
         break;
       }
     }

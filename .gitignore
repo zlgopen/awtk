@@ -24,4 +24,5 @@ bin/runLua*
 bin/runTest*
 bin/strgen*
 bin/image*
+bin/demo*
 .vscode

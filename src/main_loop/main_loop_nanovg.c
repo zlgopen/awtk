@@ -58,6 +58,15 @@ static ret_t main_loop_nanovg_create_window(main_loop_simple_t* l) {
   int32_t x = SDL_WINDOWPOS_UNDEFINED;
   int32_t y = SDL_WINDOWPOS_UNDEFINED;
   uint32_t flags = SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+  const char* title = system_info()->app_name;
+
+  if (title == NULL) {
+    title = "AWTK Simulator";
+  }
+
+  if (system_info()->app_type == APP_DESKTOP) {
+    flags |= SDL_WINDOW_RESIZABLE;
+  }
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
     SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
@@ -78,7 +87,7 @@ static ret_t main_loop_nanovg_create_window(main_loop_simple_t* l) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 #endif
 
-  LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow("AWTK Simulator", x, y, l->w, l->h, flags));
+  LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow(title, x, y, l->w, l->h, flags));
   return_value_if_fail(LOOP_SDL_WINDOW(l) != NULL, RET_FAIL);
 
   LOOP_SDL_GLCONTEXT_SET(l, SDL_GL_CreateContext(LOOP_SDL_WINDOW(l)));
