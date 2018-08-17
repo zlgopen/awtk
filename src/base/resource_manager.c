@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   resource_manager.h
  * Author: AWTK Develop Team
  * Brief:  resource manager
@@ -282,7 +282,7 @@ ret_t resource_manager_unref(resource_manager_t* rm, const resource_info_t* info
   if (!(info->is_in_rom)) {
     bool_t remove = info->refcount <= 1;
 
-    resource_info_unref(info);
+    resource_info_unref((resource_info_t*)info);
     if (remove) {
       array_remove(&(rm->resources), NULL, (void*)info, NULL);
     }

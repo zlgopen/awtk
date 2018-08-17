@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   idle.c
  * Author: AWTK Develop Team
  * Brief:  idle manager
@@ -209,7 +209,7 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx) {
 }
 
 ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {
-  idle_info_t* item = idle_find(idle_id);
+  idle_info_t* item = (idle_info_t*)idle_find(idle_id);
   return_value_if_fail(item != NULL, RET_BAD_PARAMS);
 
   item->on_destroy = on_destroy;

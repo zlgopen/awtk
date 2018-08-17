@@ -261,7 +261,7 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
 }
 
 ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {
-  timer_info_t* item = timer_find(timer_id);
+  timer_info_t* item = (timer_info_t*)timer_find(timer_id);
   return_value_if_fail(item != NULL, RET_BAD_PARAMS);
 
   item->on_destroy = on_destroy;

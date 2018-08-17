@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   line_break.c
  * Author: AWTK Develop Team
  * Brief:  line break and work break algorithm.
@@ -51,7 +51,6 @@ break_type_t line_break_check(wchar_t c1, wchar_t c2) {
 }
 
 break_type_t word_break_check(wchar_t c1, wchar_t c2) {
-  int ret = 0;
   utf32_t s[2];
   char brks[2];
   static bool_t inited = FALSE;
