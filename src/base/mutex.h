@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mutex.h
  * Author: AWTK Develop Team
  * Brief:  mutex

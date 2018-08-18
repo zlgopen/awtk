@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   resource_manager.h
  * Author: AWTK Develop Team
  * Brief:  resource manager
