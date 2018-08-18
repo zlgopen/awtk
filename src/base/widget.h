@@ -349,11 +349,22 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * 设置控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  value 值
+ * @param {int32_t}  value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_value(widget_t* widget, int32_t value);
+
+/**
+ * @method widget_add_value
+ * 增加控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  delta 增量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_add_value(widget_t* widget, int32_t delta);
 
 /**
  * @method widget_set_text
@@ -552,6 +563,17 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child);
  * @return {widget*} 子控件或NULL。
  */
 widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
+
+/**
+ * @method widget_child
+ * 查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} 子控件的路径。
+ *
+ * @return {widget_t*} 子控件或NULL。
+ */
+widget_t* widget_child(widget_t* widget, const char* path);
 
 /**
  * @method widget_lookup

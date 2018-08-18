@@ -1,5 +1,94 @@
 [
   {
+    "params": [
+      {
+        "type": "wh_t",
+        "name": "w",
+        "desc": "LCD宽度。"
+      },
+      {
+        "type": "wh_t",
+        "name": "h",
+        "desc": "LCD高度。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "初始化TK。",
+    "name": "tk_init",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "src/awtk.h"
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "进入TK事件主循环。",
+    "name": "tk_run",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "src/awtk.h"
+  },
+  {
+    "params": [],
+    "annotation": {
+      "scriptable": true,
+      "global": true
+    },
+    "desc": "退出TK事件主循环。",
+    "name": "tk_quit",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "src/awtk.h"
+  },
+  {
+    "params": [
+      {
+        "type": "int",
+        "name": "orientation",
+        "desc": "旋转方向。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。",
+    "name": "tk_set_lcd_orientation",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "src/awtk.h"
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true,
+      "private": true
+    },
+    "desc": "初始化资源。",
+    "name": "tk_init_resources",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "src/awtk.h"
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -5794,6 +5883,32 @@
             "desc": "lcd对象。"
           },
           {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "新的宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "新的高度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。",
+        "name": "lcd_resize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          },
+          {
             "type": "uint8_t",
             "name": "alpha",
             "desc": "全局alpha。"
@@ -9504,6 +9619,27 @@
           "type": "system_info_t*",
           "desc": "返回system_info对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "app_type_t",
+            "name": "app_type",
+            "desc": "应用程序的类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_name",
+            "desc": "应用程序的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化system_info对象(PC软件才需调用)。",
+        "name": "system_info_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "properties": [
@@ -9543,6 +9679,22 @@
         "name": "lcd_orientation",
         "desc": "显示屏的旋转角度。",
         "type": "lcd_orientation_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "app_type",
+        "desc": "应用程序的类型。",
+        "type": "app_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "app_name",
+        "desc": "应用程序的名称。",
+        "type": "const char*",
         "annotation": {
           "readable": true
         }
@@ -10865,7 +11017,28 @@
     ],
     "header": "base/types_def.h",
     "name": "icon_at_type_t",
-    "prefix": "ICON_AT_TYPE_"
+    "prefix": "ICON_AT"
+  },
+  {
+    "type": "enum",
+    "desc": "应用程序类型。",
+    "consts": [
+      {
+        "desc": "嵌入式或移动APP",
+        "name": "APP_MOBILE"
+      },
+      {
+        "desc": "模拟器。",
+        "name": "APP_SIMULATOR"
+      },
+      {
+        "desc": "桌面应用程序。",
+        "name": "APP_DESKTOP"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "app_type_t",
+    "prefix": "APP_"
   },
   {
     "type": "enum",
@@ -14164,7 +14337,7 @@
           {
             "type": "int32_t",
             "name": "value",
-            "desc": "值"
+            "desc": "值。"
           }
         ],
         "annotation": {
@@ -14172,6 +14345,29 @@
         },
         "desc": "设置控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。",
         "name": "widget_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "delta",
+            "desc": "增量。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "增加控件的值。只是对widget_set_prop的包装，值的意义由子类控件决定。",
+        "name": "widget_add_value",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -14579,6 +14775,29 @@
         "name": "widget_find_target",
         "return": {
           "type": "widget*",
+          "desc": "子控件或NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "char*",
+            "name": "path",
+            "desc": "子控件的路径。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "查找指定名称的子控件。",
+        "name": "widget_child",
+        "return": {
+          "type": "widget_t*",
           "desc": "子控件或NULL。"
         }
       },

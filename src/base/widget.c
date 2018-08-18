@@ -100,6 +100,12 @@ ret_t widget_set_value(widget_t* widget, int32_t value) {
   return widget_set_prop(widget, WIDGET_PROP_VALUE, value_set_uint32(&v, value));
 }
 
+ret_t widget_add_value(widget_t* widget, int32_t delta) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_value(widget, widget_get_value(widget) + delta);
+}
+
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -282,6 +288,11 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
   WIDGET_FOR_EACH_CHILD_END()
 
   return NULL;
+}
+
+widget_t* widget_child(widget_t* widget, const char* path) {
+  /*TODO*/
+  return widget_lookup_child(widget, path);
 }
 
 static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
