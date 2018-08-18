@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   input_method_creator.c
  * Author: AWTK Develop Team
  * Brief:  input method creator
@@ -20,8 +20,11 @@
  */
 
 #include "base/system_info.h"
-#include "input_method_default.inc"
 #include "input_method_null.inc"
+
+#if !defined(WITH_NULL_IM)
+#include "input_method_default.inc"
+#endif/**/
 
 #if defined(WITH_SDL)
 #include "input_method_sdl.inc"
