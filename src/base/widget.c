@@ -1160,7 +1160,7 @@ const void* widget_get_window_theme(widget_t* widget) {
 
   if (name != NULL) {
     const resource_info_t* res =
-        resource_manager_ref(resource_manager(), RESOURCE_TYPE_THEME, name);
+        resource_manager_ref(resource_manager(), RESOURCE_TYPE_STYLE, name);
     if (res != NULL) {
       return res->data;
     }

@@ -52,10 +52,10 @@ typedef enum _resource_type_t {
   RESOURCE_TYPE_IMAGE,
 
   /**
-   * @const RESOURCE_TYPE_THEME
+   * @const RESOURCE_TYPE_STYLE
    * 主题资源。
    */
-  RESOURCE_TYPE_THEME,
+  RESOURCE_TYPE_STYLE,
 
   /**
    * @const RESOURCE_TYPE_UI

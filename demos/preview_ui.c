@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
   const char* filename = argc == 1 ? "../tools/ui_gen/window1.xml" : argv[1];
 #endif
 
-  tk_init(320, 480);
+  tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
   resource_init();
   tk_ext_widgets_init();
 

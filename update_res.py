@@ -89,7 +89,7 @@ def xml_to_ui_bin(raw, bin):
   os.system(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
 
 def gen_all_theme():
-  for f in glob.glob(joinPath(INPUT_DIR, 'theme/*.xml')):
+  for f in glob.glob(joinPath(INPUT_DIR, 'styles/*.xml')):
     inc=copy.copy(f);
     raw=copy.copy(f);
     bin=copy.copy(f);
@@ -165,7 +165,7 @@ def gen_res_c():
 
   result += '#ifndef WITH_FS_RES\n'
   files=glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
-    + glob.glob(joinPath(OUTPUT_DIR, 'theme/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'styles/*.data')) \
     + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) 
 
   result += genIncludes(files);
@@ -199,7 +199,7 @@ def gen_res_c():
   result += ''
 
   result += '#ifdef WITH_FS_RES\n'
-  result += '  resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");\n'
+  result += '  resource_manager_load(rm, RESOURCE_TYPE_STYLE, "default");\n'
   result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");\n'
   result += '#else\n'
 
@@ -210,6 +210,7 @@ def gen_res_c():
     basename = basename.replace('\\', '/');
     basename = basename.replace('/fonts/', '/font/');
     basename = basename.replace('/images/', '/image/');
+    basename = basename.replace('/styles/', '/style/');
     basename = basename.replace('./', '');
     basename = basename.replace('/', '_');
     basename = basename.replace('.data', '');

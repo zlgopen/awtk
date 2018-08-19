@@ -10,6 +10,21 @@
         "type": "wh_t",
         "name": "h",
         "desc": "LCD高度。"
+      },
+      {
+        "type": "app_type_t",
+        "name": "app_type",
+        "desc": "应用程序的类型。"
+      },
+      {
+        "type": "const char*",
+        "name": "app_name",
+        "desc": "应用程序的名称(必须为常量字符串)。"
+      },
+      {
+        "type": "const char*",
+        "name": "app_root",
+        "desc": "应用程序的根目录，用于定位资源文件(必须为常量字符串)。"
       }
     ],
     "annotation": {
@@ -7516,7 +7531,7 @@
       },
       {
         "desc": "主题资源。",
-        "name": "RESOURCE_TYPE_THEME"
+        "name": "RESOURCE_TYPE_STYLE"
       },
       {
         "desc": "UI数据资源。",
@@ -9631,6 +9646,11 @@
             "type": "const char*",
             "name": "app_name",
             "desc": "应用程序的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_root",
+            "desc": "应用程序的根目录，用于定位资源文件。"
           }
         ],
         "annotation": {},
@@ -9694,6 +9714,14 @@
       {
         "name": "app_name",
         "desc": "应用程序的名称。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "app_root",
+        "desc": "应用程序的根目录，用于定位资源文件。",
         "type": "const char*",
         "annotation": {
           "readable": true
@@ -14179,6 +14207,24 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": "让控件及其全部子控件根据自己当前状态更新style。",
+        "name": "widget_update_style_recursive",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           }
         ],
@@ -14787,14 +14833,14 @@
           },
           {
             "type": "char*",
-            "name": "path",
-            "desc": "子控件的路径。"
+            "name": "name",
+            "desc": "子控件的名称。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "查找指定名称的子控件。",
+        "desc": "查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。",
         "name": "widget_child",
         "return": {
           "type": "widget_t*",

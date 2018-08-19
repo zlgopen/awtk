@@ -3,17 +3,6 @@
 #ifndef WITH_FS_RES
 #include "res/inc/strings/en_US.data"
 #include "res/inc/strings/zh_CN.data"
-#include "res/inc/theme/button.data"
-#include "res/inc/theme/calibration.data"
-#include "res/inc/theme/color.data"
-#include "res/inc/theme/default.data"
-#include "res/inc/theme/dialog.data"
-#include "res/inc/theme/keyboard.data"
-#include "res/inc/theme/tab_bottom.data"
-#include "res/inc/theme/tab_bottom_compact.data"
-#include "res/inc/theme/tab_list.data"
-#include "res/inc/theme/tab_top.data"
-#include "res/inc/theme/tab_top_compact.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -234,7 +223,7 @@ ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
 
 #ifdef WITH_FS_RES
-  resource_manager_load(rm, RESOURCE_TYPE_THEME, "default");
+  resource_manager_load(rm, RESOURCE_TYPE_STYLE, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
   resource_manager_add(rm, font_default);
@@ -312,17 +301,6 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_warn);
   resource_manager_add(rm, strings_en_US);
   resource_manager_add(rm, strings_zh_CN);
-  resource_manager_add(rm, theme_button);
-  resource_manager_add(rm, theme_calibration);
-  resource_manager_add(rm, theme_color);
-  resource_manager_add(rm, theme_default);
-  resource_manager_add(rm, theme_dialog);
-  resource_manager_add(rm, theme_keyboard);
-  resource_manager_add(rm, theme_tab_bottom);
-  resource_manager_add(rm, theme_tab_bottom_compact);
-  resource_manager_add(rm, theme_tab_list);
-  resource_manager_add(rm, theme_tab_top);
-  resource_manager_add(rm, theme_tab_top_compact);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);

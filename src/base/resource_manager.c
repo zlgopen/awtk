@@ -29,10 +29,6 @@ static resource_manager_t* s_resource_manager = NULL;
 #ifdef WITH_FS_RES
 #include "base/fs.h"
 
-#ifndef RES_ROOT
-#define RES_ROOT TK_ROOT "/demos/res/raw"
-#endif
-
 static resource_info_t* load_resource(uint16_t type, uint16_t subtype, uint32_t size,
                                       const char* path, const char* name) {
   resource_info_t* info = TKMEM_ALLOC(sizeof(resource_info_t) + size);
@@ -58,17 +54,18 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
   resource_info_t* info = NULL;
   system_info_t* sysinfo = system_info();
   float_t dpr = sysinfo->device_pixel_ratio;
+  const char* app_root = sysinfo->app_root;
 
   switch (type) {
     case RESOURCE_TYPE_FONT: {
-      tk_snprintf(path, MAX_PATH, "%s/fonts/%s.ttf", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/fonts/%s.ttf", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_TTF, size, path, name);
         break;
       }
 
-      tk_snprintf(path, MAX_PATH, "%s/fonts/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/fonts/%s.bin", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_FONT_BMP, size, path, name);
@@ -77,17 +74,17 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
 
       break;
     }
-    case RESOURCE_TYPE_THEME: {
-      tk_snprintf(path, MAX_PATH, "%s/theme/%s.bin", RES_ROOT, name);
+    case RESOURCE_TYPE_STYLE: {
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/styles/%s.bin", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
-        info = load_resource(type, RESOURCE_TYPE_THEME, size, path, name);
+        info = load_resource(type, RESOURCE_TYPE_STYLE, size, path, name);
         break;
       }
       break;
     }
     case RESOURCE_TYPE_STRINGS: {
-      tk_snprintf(path, MAX_PATH, "%s/strings/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/strings/%s.bin", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_STRINGS, size, path, name);
@@ -102,7 +99,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
         ratio = "x2";
       }
 
-      tk_snprintf(path, MAX_PATH, "%s/images/%s/%s.png", RES_ROOT, ratio, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/images/%s/%s.png", app_root, ratio, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_PNG, size, path, name);
@@ -110,7 +107,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
         return info;
       }
 
-      tk_snprintf(path, MAX_PATH, "%s/images/%s/%s.jpg", RES_ROOT, ratio, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/images/%s/%s.jpg", app_root, ratio, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_IMAGE_JPG, size, path, name);
@@ -121,7 +118,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_UI: {
-      tk_snprintf(path, MAX_PATH, "%s/ui/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/ui/%s.bin", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_UI_BIN, size, path, name);
@@ -131,7 +128,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_XML: {
-      tk_snprintf(path, MAX_PATH, "%s/xml/%s.xml", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/xml/%s.xml", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_XML, size, path, name);
@@ -141,7 +138,7 @@ resource_info_t* resource_manager_load(resource_manager_t* rm, resource_type_t t
       break;
     }
     case RESOURCE_TYPE_DATA: {
-      tk_snprintf(path, MAX_PATH, "%s/data/%s.bin", RES_ROOT, name);
+      tk_snprintf(path, MAX_PATH, "%s/res/raw/data/%s.bin", app_root, name);
       size = fs_file_size(path);
       if (size > 0) {
         info = load_resource(type, RESOURCE_TYPE_DATA, size, path, name);

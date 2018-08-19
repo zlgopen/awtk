@@ -278,7 +278,7 @@ bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin)
   if (output_bin) {
     write_file(output_file, buff, size);
   } else {
-    output_res_c_source(output_file, RESOURCE_TYPE_THEME, 0, buff, size);
+    output_res_c_source(output_file, RESOURCE_TYPE_STYLE, 0, buff, size);
   }
 
   xml_parser_destroy(parser);

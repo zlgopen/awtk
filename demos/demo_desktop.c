@@ -49,8 +49,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 int main(void) {
 #endif
 
-  system_info_init(APP_DESKTOP, "AWTK Demo");
-  tk_init(800, 480);
+  tk_init(800, 480, APP_DESKTOP, "AWTK Demo", "./demos");
 
   resource_init();
   application_init();

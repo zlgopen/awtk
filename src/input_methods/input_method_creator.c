@@ -24,7 +24,7 @@
 
 #if !defined(WITH_NULL_IM)
 #include "input_method_default.inc"
-#endif/**/
+#endif /**/
 
 #if defined(WITH_SDL)
 #include "input_method_sdl.inc"

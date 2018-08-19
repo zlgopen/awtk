@@ -579,11 +579,11 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
  * 查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} 子控件的路径。
+ * @param {char*} name 子控件的名称。
  *
  * @return {widget_t*} 子控件或NULL。
  */
-widget_t* widget_child(widget_t* widget, const char* path);
+widget_t* widget_child(widget_t* widget, const char* name);
 
 /**
  * @method widget_lookup

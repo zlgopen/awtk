@@ -79,6 +79,13 @@ typedef struct _system_info_t {
    * 应用程序的名称。
    */
   const char* app_name;
+
+  /**
+   * @property {const char*} app_root
+   * @annotation ["readable"]
+   * 应用程序的根目录，用于定位资源文件。
+   */
+  const char* app_root;
 } system_info_t;
 
 /**
@@ -94,10 +101,11 @@ system_info_t* system_info(void);
  * 初始化system_info对象(PC软件才需调用)。
  * @param {app_type_t} app_type 应用程序的类型。
  * @param {const char*} app_name 应用程序的名称。
+ * @param {const char*} app_root 应用程序的根目录，用于定位资源文件。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t system_info_init(app_type_t app_type, const char* app_name);
+ret_t system_info_init(app_type_t app_type, const char* app_name, const char* app_root);
 
 END_C_DECLS
 

@@ -66,7 +66,7 @@ static const key_type_value_t align_h_name_value[] = {
 
 static const key_type_value_t resource_type_value[] = {
     {"font", 0, RESOURCE_TYPE_FONT},       {"image", 0, RESOURCE_TYPE_IMAGE},
-    {"theme", 0, RESOURCE_TYPE_THEME},     {"ui", 0, RESOURCE_TYPE_UI},
+    {"style", 0, RESOURCE_TYPE_STYLE},     {"ui", 0, RESOURCE_TYPE_UI},
     {"strings", 0, RESOURCE_TYPE_STRINGS}, {"xml", 0, RESOURCE_TYPE_XML},
     {"data", 0, RESOURCE_TYPE_DATA},
 };

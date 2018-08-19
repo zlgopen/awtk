@@ -69,7 +69,7 @@ ret_t tk_init_resources() {
       case RESOURCE_TYPE_FONT:
         tk_add_font(iter);
         break;
-      case RESOURCE_TYPE_THEME:
+      case RESOURCE_TYPE_STYLE:
         if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
           theme_init(iter->data);
         }
@@ -101,7 +101,8 @@ ret_t tk_init_internal(void) {
   return RET_OK;
 }
 
-ret_t tk_init(wh_t w, wh_t h) {
+ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
+  system_info_init(app_type, app_name, app_root);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
   return main_loop_init(w, h) != NULL ? RET_OK : RET_FAIL;

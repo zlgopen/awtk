@@ -32,10 +32,13 @@ BEGIN_C_DECLS
  * @annotation ["global"]
  * @param {wh_t} w LCD宽度。
  * @param {wh_t} h LCD高度。
+ * @param {app_type_t} app_type 应用程序的类型。
+ * @param {const char*} app_name 应用程序的名称(必须为常量字符串)。
+ * @param {const char*} app_root 应用程序的根目录，用于定位资源文件(必须为常量字符串)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_init(wh_t w, wh_t h);
+ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root);
 
 /**
  * @method tk_run
