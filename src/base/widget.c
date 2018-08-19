@@ -1211,6 +1211,17 @@ ret_t widget_update_style(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t widget_update_style_recursive(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget_update_style(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_update_style_recursive(iter);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h) {
   return_value_if_fail(widget != NULL && vt != NULL, NULL);
