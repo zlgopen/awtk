@@ -33,7 +33,7 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#include "res/inc/theme/default.data"
+#include "res/inc/styles/default.data"
 #endif
 
 ret_t resource_init(void) {
@@ -75,7 +75,7 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unchecked);
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
-  resource_manager_add(rm, theme_default);
+  resource_manager_add(rm, style_default);
 #endif
 
   tk_init_resources();

@@ -1,8 +1,17 @@
 #include "awtk.h"
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
-#include "res/inc/strings/en_US.data"
-#include "res/inc/strings/zh_CN.data"
+#include "res/inc/styles/button.data"
+#include "res/inc/styles/calibration.data"
+#include "res/inc/styles/color.data"
+#include "res/inc/styles/default.data"
+#include "res/inc/styles/dialog.data"
+#include "res/inc/styles/keyboard.data"
+#include "res/inc/styles/tab_bottom.data"
+#include "res/inc/styles/tab_bottom_compact.data"
+#include "res/inc/styles/tab_list.data"
+#include "res/inc/styles/tab_top.data"
+#include "res/inc/styles/tab_top_compact.data"
 #include "res/inc/ui/animation.data"
 #include "res/inc/ui/animator.data"
 #include "res/inc/ui/auto_play.data"
@@ -207,17 +216,16 @@
 #include "res/inc/images/unchecked.data"
 #include "res/inc/images/unmuted.data"
 #include "res/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "res/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "res/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
-#include "res/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t resource_init(void) {
   resource_manager_t* rm = resource_manager();
@@ -226,7 +234,6 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_STYLE, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
-  resource_manager_add(rm, font_default);
   resource_manager_add(rm, image_1);
   resource_manager_add(rm, image_2);
   resource_manager_add(rm, image_3);
@@ -299,8 +306,17 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unchecked);
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
-  resource_manager_add(rm, strings_en_US);
-  resource_manager_add(rm, strings_zh_CN);
+  resource_manager_add(rm, style_button);
+  resource_manager_add(rm, style_calibration);
+  resource_manager_add(rm, style_color);
+  resource_manager_add(rm, style_default);
+  resource_manager_add(rm, style_dialog);
+  resource_manager_add(rm, style_keyboard);
+  resource_manager_add(rm, style_tab_bottom);
+  resource_manager_add(rm, style_tab_bottom_compact);
+  resource_manager_add(rm, style_tab_list);
+  resource_manager_add(rm, style_tab_top);
+  resource_manager_add(rm, style_tab_top_compact);
   resource_manager_add(rm, ui_animation);
   resource_manager_add(rm, ui_animator);
   resource_manager_add(rm, ui_auto_play);

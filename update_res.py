@@ -48,7 +48,7 @@ def removeDir(path):
 
 def prepare():
   removeDir(OUTPUT_DIR)
-  os.makedirs(joinPath(OUTPUT_DIR, 'theme'));
+  os.makedirs(joinPath(OUTPUT_DIR, 'styles'));
   os.makedirs(joinPath(OUTPUT_DIR, 'images'));
   os.makedirs(joinPath(OUTPUT_DIR, 'fonts'));
   os.makedirs(joinPath(OUTPUT_DIR, 'strings'));
