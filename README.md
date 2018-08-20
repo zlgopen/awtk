@@ -110,6 +110,12 @@ bin\demoui
 
 * [awtk-js](https://github.com/zlgopen/awtk-js)
 
+## 相关工程
+
+* [模板工程](https://github.com/zlgopen/awtk-hello)
+
+* [C示例代码](https://github.com/zlgopen/awtk-c-demos)
+
 ## 文档
 
 ### 1.使用文档
@@ -147,6 +153,15 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/08/20
+  * 更新文档。
+
+* 2018/08/19
+  * 增加模板工程: https://github.com/zlgopen/awtk-hello。
+
+* 2018/08/18
+  * 更新stm32相关工程。
 
 * 2018/08/17
   * 修改AWTK开发桌面软件的一些问题。
