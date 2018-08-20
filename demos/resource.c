@@ -224,6 +224,7 @@
 #include "res/inc/fonts/default.res"
 #endif/*WITH_MINI_FONT*/
 #else/*WITH_STB_FONT*/
+#include "res/inc/fonts/default.data"
 #endif/*WITH_STB_FONT*/
 #endif/*WITH_FS_RES*/
 
@@ -234,6 +235,7 @@ ret_t resource_init(void) {
   resource_manager_load(rm, RESOURCE_TYPE_STYLE, "default");
   resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");
 #else
+  resource_manager_add(rm, font_default);
   resource_manager_add(rm, image_1);
   resource_manager_add(rm, image_2);
   resource_manager_add(rm, image_3);

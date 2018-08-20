@@ -35,6 +35,7 @@ def buildTools():
   os.system('scons '+toTarget('resgen'))
   os.system('scons '+toTarget('themegen'))
   os.system('scons '+toTarget('imagegen'))
+  os.system('scons '+toTarget('fontgen'))
   os.system('scons '+toTarget('xml_to_ui'))
 
 
