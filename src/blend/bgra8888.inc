@@ -19,7 +19,7 @@
  *
  */
 
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 #define rgb_to_pixel(r, g, b) rgb_to_rgba8888(r, g, b)
 

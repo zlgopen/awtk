@@ -1,6 +1,6 @@
 ﻿#include "base/rect.h"
 #include "base/bitmap.h"
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 #define blend(d, s) *((uint16_t*)d) = *((uint16_t*)s)
 

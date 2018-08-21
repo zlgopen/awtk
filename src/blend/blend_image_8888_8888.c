@@ -1,6 +1,6 @@
 #include "base/rect.h"
 #include "base/bitmap.h"
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 static inline void blend_a(uint8_t* d, uint8_t* s, uint8_t alpha) {
   uint8_t r, g, b, sr, sg, sb, sa, dr, dg, db, da, a, minus_a;

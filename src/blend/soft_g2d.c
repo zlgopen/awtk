@@ -21,7 +21,7 @@
 
 #include "base/utils.h"
 #include "blend/soft_g2d.h"
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   int x = 0;

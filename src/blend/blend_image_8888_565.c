@@ -1,6 +1,6 @@
 #include "base/rect.h"
 #include "base/bitmap.h"
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 #define blend(d, s) *((uint32_t*)d) = rgb565_to_8888(*((uint16_t*)s))
 

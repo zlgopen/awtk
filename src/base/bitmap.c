@@ -50,7 +50,7 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
   return RET_OK;
 }
 
-#include "blend/pixel_pack_unpack.h"
+#include "base/pixel_pack_unpack.h"
 
 ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output) {
   uint32_t i = 0;

@@ -727,6 +727,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_LIST_ITEM "list_item"
 
 /**
+ * @const WIDGET_TYPE_COLOR_PICKER
+ *
+ */
+#define WIDGET_TYPE_COLOR_PICKER "color_picker"
+
+/**
  * @enum widget_state_t
  * @annotation ["scriptable"]
  * @prefix WIDGET_
