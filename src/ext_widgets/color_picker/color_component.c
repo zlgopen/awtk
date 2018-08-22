@@ -25,17 +25,41 @@
 #include "base/pixel_pack_unpack.h"
 #include "color_picker/color_component.h"
 
+static ret_t color_component_update_h(widget_t* widget);
+static ret_t color_component_update_sv(widget_t* widget);
 static ret_t color_component_set_type(widget_t* widget, const char* type);
+
+static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) { 
+  point_t p = {e->x, e->y};
+  color_component_t* color_component = COLOR_COMPONENT(widget);
+
+  widget_to_local(widget, &p);
+  color_component->pressed_x = p.x;
+  color_component->pressed_y = p.y;
+  widget_invalidate_force(widget);
+
+  return RET_OK;
+}
 
 static ret_t color_component_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
 
   switch (type) {
-    case EVT_POINTER_DOWN:
+    case EVT_POINTER_DOWN: {
+        pointer_event_t* evt = (pointer_event_t*)e;
+        color_component_update_pressed(widget, evt);
+        widget_grab(widget->parent, widget);
+      }
       break;
-    case EVT_POINTER_MOVE:
+    case EVT_POINTER_MOVE: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      if(evt->pressed) {
+        color_component_update_pressed(widget, evt);
+      }
       break;
+    }
     case EVT_POINTER_UP: {
+      widget_ungrab(widget->parent, widget);
       break;
     }
     default:
@@ -64,6 +88,15 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
   dst = rect_init(0, 0, widget->w, widget->h);
 
   canvas_draw_image(c, image, &src, &dst);
+
+  if(color_component->update == color_component_update_sv) {
+    canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
+    canvas_draw_hline(c, 0, color_component->pressed_y, widget->w);
+    canvas_draw_vline(c, color_component->pressed_x, 0, widget->h);
+  } else {
+    canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
+    canvas_draw_hline(c, 0, color_component->pressed_y, widget->w);
+  }
 
   return RET_OK;
 }
@@ -207,7 +240,6 @@ static ret_t color_component_set_type(widget_t* widget, const char* type) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(widget != NULL && type != NULL, RET_BAD_PARAMS);
 
-  color_component->type = type;
   color_component->image.name = type; 
 
   if(tk_str_eq(type, "sv")) {

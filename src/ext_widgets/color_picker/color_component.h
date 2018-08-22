@@ -40,6 +40,9 @@ typedef ret_t (*color_component_update_t)(widget_t* widget);
 typedef struct _color_component_t {
   widget_t widget;
 
+  xy_t pressed_x;
+  xy_t pressed_y;
+
   color_t c;
   bitmap_t image;
   bool_t need_update;
