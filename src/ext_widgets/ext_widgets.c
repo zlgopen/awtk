@@ -22,9 +22,13 @@
 #include "ext_widgets.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
+#include "color_picker/color_picker.h"
+#include "color_picker/color_component.h"
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), "rich_text", rich_text_create);
+  widget_factory_register(widget_factory(), "color_picker", color_picker_create);
+  widget_factory_register(widget_factory(), "color_component", color_component_create);
 
   return RET_OK;
 }

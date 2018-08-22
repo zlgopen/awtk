@@ -1,0 +1,6 @@
+<window>
+    <color_picker x="center" y="middle" w="286" h="286">
+      <color_component x="0" y="0" w="256" h="256" name="sv"/>
+      <color_component x="right" y="0" w="20" h="256" name="h"/>
+    </color_picker>
+</window>

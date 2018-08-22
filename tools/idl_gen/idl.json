@@ -14067,6 +14067,10 @@
       {
         "desc": "",
         "name": "WIDGET_TYPE_LIST_ITEM"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_COLOR_PICKER"
       }
     ],
     "header": "base/widget_consts.h",

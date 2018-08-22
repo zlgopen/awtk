@@ -17,8 +17,7 @@
   aa = pixel & 0xff;
 
 #ifdef WITH_BITMAP_BGRA
-#define rgb_to_image8888(r, g, b) (((r) << 16) | ((g) << 8) | ((r)) | 0xff000000)
-#define rgba_to_image8888(r, g, b, a) (((r) << 16) | ((g) << 8) | ((r)) | (a))
+#define rgba_to_image8888(r, g, b, a) (((aa) << 24) | ((r) << 16) | ((g) << 8) | (b))
 #define rgba_from_image8888(rr, gg, bb, aa, pixel) \
   aa = (pixel >> 24);                              \
   rr = (pixel >> 16);                              \
@@ -26,8 +25,7 @@
   bb = pixel & 0xff;
 #define a_from_image8888(pixel) (pixel >> 24)
 #else
-#define rgb_to_image8888(r, g, b) (((b) << 16) | ((g) << 8) | ((r)) | 0xff000000)
-#define rgba_to_image8888(r, g, b, a) (((b) << 16) | ((g) << 8) | ((r)) | (a))
+#define rgba_to_image8888(r, g, b, a) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r))
 #define rgba_from_image8888(rr, gg, bb, aa, pixel) \
   aa = (pixel >> 24);                              \
   bb = (pixel >> 16);                              \
@@ -35,6 +33,7 @@
   rr = pixel & 0xff;
 #define a_from_image8888(pixel) (pixel >> 24)
 #endif /*WITH_BITMAP_BGRA*/
+#define rgb_to_image8888(r, g, b) rgba_to_image8888(r, g, b, 0xff)
 
 static inline uint32_t rgb565_to_8888(uint16_t pixel) {
   uint8_t r, g, b;

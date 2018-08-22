@@ -733,6 +733,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_COLOR_PICKER "color_picker"
 
 /**
+ * @const WIDGET_TYPE_COLOR_COMPONENT
+ *
+ */
+#define WIDGET_TYPE_COLOR_COMPONENT "color_component"
+
+/**
  * @enum widget_state_t
  * @annotation ["scriptable"]
  * @prefix WIDGET_
