@@ -32,10 +32,10 @@ typedef ret_t (*color_component_update_t)(widget_t* widget);
 /**
  * @class color_component_t
  * @parent widget_t
- * 颜色选择器的颜色分量。 
+ * 颜色选择器的颜色分量。
  * 控件的名称有严格规定：
  * sv: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。
- * h: 水平为同色，垂直为Hue(递减)。 
+ * h: 水平为同色，垂直为Hue(递减)。
  */
 typedef struct _color_component_t {
   widget_t widget;
@@ -91,4 +91,3 @@ widget_t* color_component_cast(widget_t* widget);
 END_C_DECLS
 
 #endif /*TK_COLOR_COMPONENT_H*/
-

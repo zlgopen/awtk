@@ -22,8 +22,9 @@
 #include "base/mem.h"
 #include "color_picker/color_picker.h"
 
-static const widget_vtable_t s_color_picker_vtable = {
-    .size = sizeof(color_picker_t), .type = WIDGET_TYPE_COLOR_PICKER, .create = color_picker_create};
+static const widget_vtable_t s_color_picker_vtable = {.size = sizeof(color_picker_t),
+                                                      .type = WIDGET_TYPE_COLOR_PICKER,
+                                                      .create = color_picker_create};
 
 widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   color_picker_t* color_picker = TKMEM_ZALLOC(color_picker_t);

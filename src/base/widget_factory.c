@@ -52,6 +52,7 @@
 #include "base/progress_bar.h"
 #include "base/popup.h"
 #include "base/combo_box.h"
+#include "base/color_tile.h"
 #include "base/combo_box_item.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
@@ -87,6 +88,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_COMBO_BOX, combo_box_create},
     {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
     {WIDGET_TYPE_POPUP, popup_create},
+    {WIDGET_TYPE_COLOR_TILE, color_tile_create},
 #ifndef WITH_LOW_RES
     {WIDGET_TYPE_SCROLL_VIEW, scroll_view_create},
     {WIDGET_TYPE_LIST_VIEW, list_view_create},

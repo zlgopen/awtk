@@ -78,4 +78,3 @@ widget_t* color_picker_cast(widget_t* widget);
 END_C_DECLS
 
 #endif /*TK_COLOR_PICKER_H*/
-

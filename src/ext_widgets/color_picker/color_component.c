@@ -29,14 +29,16 @@ static ret_t color_component_update_h(widget_t* widget);
 static ret_t color_component_update_sv(widget_t* widget);
 static ret_t color_component_set_type(widget_t* widget, const char* type);
 
-static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) { 
+static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) {
   point_t p = {e->x, e->y};
+  event_t evt = event_init(EVT_VALUE_CHANGING, widget);
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
   widget_to_local(widget, &p);
   color_component->pressed_x = p.x;
   color_component->pressed_y = p.y;
   widget_invalidate_force(widget);
+  widget_dispatch(widget, &evt);
 
   return RET_OK;
 }
@@ -46,20 +48,24 @@ static ret_t color_component_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN: {
-        pointer_event_t* evt = (pointer_event_t*)e;
-        color_component_update_pressed(widget, evt);
-        widget_grab(widget->parent, widget);
-      }
-      break;
+      pointer_event_t* evt = (pointer_event_t*)e;
+      color_component_update_pressed(widget, evt);
+      widget_grab(widget->parent, widget);
+    } break;
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if(evt->pressed) {
+      if (evt->pressed) {
         color_component_update_pressed(widget, evt);
       }
       break;
     }
     case EVT_POINTER_UP: {
+      pointer_event_t* evt = (pointer_event_t*)e;
       widget_ungrab(widget->parent, widget);
+      if (evt->pressed) {
+        event_t changed = event_init(EVT_VALUE_CHANGED, widget);
+        widget_dispatch(widget, &changed);
+      }
       break;
     }
     default:
@@ -72,30 +78,49 @@ static ret_t color_component_on_event(widget_t* widget, event_t* e) {
 static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t src;
   rect_t dst;
+  wh_t w = widget->w;
+  wh_t h = widget->h;
   color_component_t* color_component = COLOR_COMPONENT(widget);
+  xy_t x = tk_max(0, tk_min(color_component->pressed_x, (w - 1)));
+  xy_t y = tk_max(0, tk_min(color_component->pressed_y, (h - 1)));
   bitmap_t* image = &(color_component->image);
 
-  if(color_component->update == NULL) {
+  if (color_component->update == NULL) {
     color_component_set_type(widget, widget->name);
   }
 
-  if(color_component->need_update) {
+  if (color_component->need_update) {
     color_component->update(widget);
     color_component->need_update = FALSE;
   }
-  
-  src = rect_init(0, 0, image->w, image->h);
-  dst = rect_init(0, 0, widget->w, widget->h);
 
+  dst = rect_init(0, 0, w, h);
+  src = rect_init(0, 0, image->w, image->h);
   canvas_draw_image(c, image, &src, &dst);
 
-  if(color_component->update == color_component_update_sv) {
+  if (color_component->update == color_component_update_sv) {
     canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
-    canvas_draw_hline(c, 0, color_component->pressed_y, widget->w);
-    canvas_draw_vline(c, color_component->pressed_x, 0, widget->h);
+    canvas_draw_hline(c, 0, y, w);
+    canvas_set_stroke_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
+    if (y > 0) {
+      canvas_draw_hline(c, 0, y - 1, w);
+    }
+    if ((y + 1) < h) {
+      canvas_draw_hline(c, 0, y + 1, w);
+    }
+
+    canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
+    canvas_draw_vline(c, x, 0, h);
+    canvas_set_stroke_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
+    if (x > 0) {
+      canvas_draw_vline(c, x - 1, 0, h);
+    }
+    if ((x + 1) < w) {
+      canvas_draw_vline(c, x + 1, 0, h);
+    }
   } else {
     canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
-    canvas_draw_hline(c, 0, color_component->pressed_y, widget->w);
+    canvas_draw_hline(c, 0, y, w);
   }
 
   return RET_OK;
@@ -110,13 +135,12 @@ static ret_t color_component_destroy(widget_t* widget) {
 }
 
 static const widget_vtable_t s_color_component_vtable = {
-    .size = sizeof(color_component_t), 
-    .type = WIDGET_TYPE_COLOR_COMPONENT, 
+    .size = sizeof(color_component_t),
+    .type = WIDGET_TYPE_COLOR_COMPONENT,
     .create = color_component_create,
     .destroy = color_component_destroy,
     .on_event = color_component_on_event,
-    .on_paint_self = color_component_on_paint_self
-    };
+    .on_paint_self = color_component_on_paint_self};
 
 static ret_t bitmap_destroy_data(bitmap_t* bitmap) {
   void* data = (void*)bitmap->data;
@@ -131,13 +155,13 @@ static ret_t color_component_init_image(bitmap_t* image, const char* name, int32
 
   image->w = w;
   image->h = h;
-  image->flags = 0; 
+  image->flags = 0;
   image->name = name;
 #ifdef WITH_BITMAP_BGRA
   image->format = BITMAP_FMT_BGRA;
 #else
   image->format = BITMAP_FMT_RGBA;
-#endif/*WITH_BITMAP_BGRA*/
+#endif /*WITH_BITMAP_BGRA*/
   image->data = (uint8_t*)TKMEM_ALLOC(size);
   return_value_if_fail(image->data != NULL, RET_OOM);
   image->destroy = bitmap_destroy_data;
@@ -160,15 +184,15 @@ static ret_t color_component_update_sv(widget_t* widget) {
   uint8_t b = 0;
   int32_t x = 0;
   int32_t y = 0;
-  int32_t w =  image->w;
-  int32_t h =  image->h;
+  int32_t w = image->w;
+  int32_t h = image->h;
   uint32_t* dst = (uint32_t*)(image->data);
 
   convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
-  for(y = 0; y < h; y++) {
-    for(x = 0; x < w; x++) {
-      V = (float)x/(float)w;
-      S = 1 - (float)y/(float)h;
+  for (y = 0; y < h; y++) {
+    for (x = 0; x < w; x++) {
+      V = (float)x / (float)w;
+      S = 1 - (float)y / (float)h;
       convertHSVtoRGB(H, S, V, &r, &g, &b);
       *dst++ = rgb_to_image8888(r, g, b);
     }
@@ -191,15 +215,15 @@ static ret_t color_component_update_h(widget_t* widget) {
   int32_t x = 0;
   int32_t y = 0;
   uint32_t v = 0;
-  int32_t w =  image->w;
-  int32_t h =  image->h;
+  int32_t w = image->w;
+  int32_t h = image->h;
   uint32_t* dst = (uint32_t*)(image->data);
 
-  for(y = 0; y < h; y++) {
-    H = (1-(float)y/(float)h) * 360;
+  for (y = 0; y < h; y++) {
+    H = (1 - (float)y / (float)h) * 360;
     convertHSVtoRGB(H, S, V, &r, &g, &b);
     v = rgb_to_image8888(r, g, b);
-    for(x = 0; x < w; x++) {
+    for (x = 0; x < w; x++) {
       *dst++ = v;
     }
   }
@@ -240,11 +264,11 @@ static ret_t color_component_set_type(widget_t* widget, const char* type) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(widget != NULL && type != NULL, RET_BAD_PARAMS);
 
-  color_component->image.name = type; 
+  color_component->image.name = type;
 
-  if(tk_str_eq(type, "sv")) {
+  if (tk_str_eq(type, "sv")) {
     color_component->update = color_component_update_sv;
-  } else if(tk_str_eq(type, "h")) {
+  } else if (tk_str_eq(type, "h")) {
     color_component->update = color_component_update_h;
   } else {
     log_debug("not supported color type\n");

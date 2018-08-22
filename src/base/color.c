@@ -1,4 +1,5 @@
 ﻿#include "base/color.h"
+#include "base/utils.h"
 
 color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   color_t c;
@@ -10,4 +11,10 @@ color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   c.rgba.a = a;
 
   return c;
+}
+
+const char* color_hex_str(color_t c, char str[8]) {
+  tk_snprintf(str, sizeof(str), "#%2X%2X%2X", (int)(c.rgba.r), (int)(c.rgba.g), (int)(c.rgba.b));
+
+  return str;
 }

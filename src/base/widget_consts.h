@@ -486,6 +486,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_LINE_GAP "line_gap"
 
 /**
+ * @const WIDGET_PROP_BG_COLOR
+ * 背景颜色(仅仅使用于color tile)。
+ */
+#define WIDGET_PROP_BG_COLOR "bg_color"
+
+/**
+ * @const WIDGET_PROP_BORDER_COLOR
+ * 边框颜色(仅仅使用于color tile)。
+ */
+#define WIDGET_PROP_BORDER_COLOR "border_color"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_
@@ -737,6 +749,12 @@ BEGIN_C_DECLS
  *
  */
 #define WIDGET_TYPE_COLOR_COMPONENT "color_component"
+
+/**
+ * @const WIDGET_TYPE_COLOR_TILE
+ *
+ */
+#define WIDGET_TYPE_COLOR_TILE "color_tile"
 
 /**
  * @enum widget_state_t

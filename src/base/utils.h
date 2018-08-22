@@ -43,6 +43,7 @@ uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);
 void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp);
 
 int tk_snprintf(char* str, size_t size, const char* format, ...);
+int tk_sscanf(const char* str, const char* format, ...);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 
 END_C_DECLS

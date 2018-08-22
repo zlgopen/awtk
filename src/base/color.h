@@ -40,6 +40,7 @@ typedef union _color_t {
 
 typedef uint8_t gray_t;
 
+const char* color_hex_str(color_t c, char str[8]);
 color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 END_C_DECLS

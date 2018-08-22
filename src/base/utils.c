@@ -346,6 +346,16 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
   return ret;
 }
 
+int tk_sscanf(const char* str, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = vsscanf(str, format, va);
+  va_end(va);
+
+  return ret;
+}
+
 ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
   char* p = NULL;
   const char* name = filename;

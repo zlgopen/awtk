@@ -131,3 +131,14 @@ TEST(Utils, tk_skip_to_num) {
   ASSERT_EQ(tk_atoi(tk_skip_to_num("abc123")), 123);
   ASSERT_EQ(tk_atoi(tk_skip_to_num("abc:@#123")), 123);
 }
+
+TEST(Utils, sscanf) {
+  int r = 0;
+  int g = 0;
+  int b = 0;
+
+  tk_sscanf("#123456", "#%02x%02x%02x", &r, &g, &b);
+  ASSERT_EQ(r, 0x12);
+  ASSERT_EQ(g, 0x34);
+  ASSERT_EQ(b, 0x56);
+}

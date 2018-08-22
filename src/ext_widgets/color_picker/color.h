@@ -17,27 +17,27 @@
  *
  */
 
-/*  
+/*
  * color.h
  *
- * Portable, simple, compact, color conversion library between color spaces, most notibly RGB -> CYM(K) and HSV
- * Formulas derived from "Color Space Conversions" by Adrian Ford and Alan Roberts.
+ * Portable, simple, compact, color conversion library between color spaces, most notibly RGB ->
+ * CYM(K) and HSV Formulas derived from "Color Space Conversions" by Adrian Ford and Alan Roberts.
  *
  * Note: RGB values are 0-255 (unsigned char)
  *       CMY(K) values are 0.00-1.00 (0 to 100%) (float)
- *       HSV values are Hue: 0-360 (0 to 360 degrees) (float), Saturation: 0.00-1.00 (0 to 100%) (float), and Value: 0.00-1.00 (0 to 100%) (float)
+ *       HSV values are Hue: 0-360 (0 to 360 degrees) (float), Saturation: 0.00-1.00 (0 to 100%)
+ * (float), and Value: 0.00-1.00 (0 to 100%) (float)
  *
  */
 
-#ifndef COLOR_ 
+#ifndef COLOR_
 #define COLOR_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-/*  
+/*
  * Converts RGB values to CMY storing in given addresses
  *
  * @param r         Value of Red 0-255
@@ -49,9 +49,10 @@ extern "C"
  *
  * @return void
  */
-void convertRGBtoCMY(const unsigned char r, const unsigned char g, const unsigned char b, float * c, float * m, float * y);
+void convertRGBtoCMY(const unsigned char r, const unsigned char g, const unsigned char b, float* c,
+                     float* m, float* y);
 
-/*  
+/*
  * Converts CMY values to RGB storing in given addresses
  *
  * @param c         Value of Cyan 0.00-1.00
@@ -63,11 +64,13 @@ void convertRGBtoCMY(const unsigned char r, const unsigned char g, const unsigne
  *
  * @return void
  */
-void convertCMYtoRGB(const float c, const float m, const float y, unsigned char * r, unsigned char * g, unsigned char * b);
+void convertCMYtoRGB(const float c, const float m, const float y, unsigned char* r,
+                     unsigned char* g, unsigned char* b);
 
-/*  
+/*
  * Converts CMY values to CMYK storing in given addresses
- * Note: function overwrites input parameters, maybe can be changed later to accept some consts first
+ * Note: function overwrites input parameters, maybe can be changed later to accept some consts
+ * first
  *
  * @param c         Address of Cyan value 0.00-1.00
  * @param m         Address of Magenta Value 0.00-1.00
@@ -76,11 +79,12 @@ void convertCMYtoRGB(const float c, const float m, const float y, unsigned char 
  *
  * @return void
  */
-void convertCMYtoCMYK(float * c, float * m, float * y, float * k);
+void convertCMYtoCMYK(float* c, float* m, float* y, float* k);
 
-/*  
+/*
  * Converts CMYK values to CMY storing in given addresses
- * Note: function overwrites input parameters, maybe can be changed later to accept some consts first
+ * Note: function overwrites input parameters, maybe can be changed later to accept some consts
+ * first
  *
  * @param c         Address of Cyan value 0.00-1.00
  * @param m         Address of Magenta Value 0.00-1.00
@@ -89,9 +93,9 @@ void convertCMYtoCMYK(float * c, float * m, float * y, float * k);
  *
  * @return void
  */
-void convertCMYKtoCMY(float * c, float * m, float * y, const float k);
+void convertCMYKtoCMY(float* c, float* m, float* y, const float k);
 
-/*  
+/*
  * Converts RGB values to CMYK storing in given addresses
  *
  * @param r         Value of Red 0-255
@@ -104,9 +108,10 @@ void convertCMYKtoCMY(float * c, float * m, float * y, const float k);
  *
  * @return void
  */
-void convertRGBtoCMYK(const unsigned char r, const unsigned char g, const unsigned char b, float * c, float * m, float * y, float * k);
+void convertRGBtoCMYK(const unsigned char r, const unsigned char g, const unsigned char b, float* c,
+                      float* m, float* y, float* k);
 
-/*  
+/*
  * Converts CMYK values to RGB storing in given addresses
  *
  * @param c         Value of Cyan 0.00-1.00
@@ -119,9 +124,10 @@ void convertRGBtoCMYK(const unsigned char r, const unsigned char g, const unsign
  *
  * @return void
  */
-void convertCMYKtoRGB(const float c, const float m, const float y, const float k, unsigned char * r, unsigned char * g, unsigned char * b);
+void convertCMYKtoRGB(const float c, const float m, const float y, const float k, unsigned char* r,
+                      unsigned char* g, unsigned char* b);
 
-/*  
+/*
  * Converts RGB values to HSV storing in given addresses
  *
  * @param r         Value of Red 0-255
@@ -133,9 +139,10 @@ void convertCMYKtoRGB(const float c, const float m, const float y, const float k
  *
  * @return void
  */
-void convertRGBtoHSV(const unsigned char r, const unsigned char g, const unsigned char b, float * h, float * s, float * v);
+void convertRGBtoHSV(const unsigned char r, const unsigned char g, const unsigned char b, float* h,
+                     float* s, float* v);
 
-/*  
+/*
  * Converts HSV values to RGB storing in given addresses
  *
  * @param h         Value of Hue 0-360
@@ -147,7 +154,8 @@ void convertRGBtoHSV(const unsigned char r, const unsigned char g, const unsigne
  *
  * @return void
  */
-void convertHSVtoRGB(const float h, const float s, const float v, unsigned char * r, unsigned char * g, unsigned char * b);
+void convertHSVtoRGB(const float h, const float s, const float v, unsigned char* r,
+                     unsigned char* g, unsigned char* b);
 
 #ifdef __cplusplus
 }
