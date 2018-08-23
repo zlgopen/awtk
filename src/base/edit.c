@@ -258,7 +258,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
   } else {
-    if (isprint(key) && system_info()->app_type != APP_DESKTOP) {
+    if (system_info()->app_type != APP_DESKTOP && isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
     } else {
       return RET_OK;
