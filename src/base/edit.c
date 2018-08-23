@@ -67,7 +67,9 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
-    utf8_to_utf16(edit->tips, temp_str, TEMP_STR_LEN);
+    if (edit->tips != NULL) {
+      utf8_to_utf16(edit->tips, temp_str, TEMP_STR_LEN);
+    }
   }
 
   if (str->size > 0) {
@@ -784,6 +786,22 @@ double edit_get_double(widget_t* widget) {
   wstr_to_float(&(widget->text), &v);
 
   return v;
+}
+
+ret_t edit_set_int(widget_t* widget, int32_t value) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  wstr_from_int(&(widget->text), value);
+
+  return RET_OK;
+}
+
+ret_t edit_set_double(widget_t* widget, double value) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  wstr_from_float(&(widget->text), value);
+
+  return RET_OK;
 }
 
 ret_t edit_inc(edit_t* edit) {

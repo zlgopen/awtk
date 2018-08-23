@@ -154,6 +154,17 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/08/23
+  * 完善Color Picker控件。
+  * 增加Color Picker控件Demos。
+  * 支持mutable的图片。
+
+* 2018/08/22
+  * 增加Color Tile控件。
+
+* 2018/08/21
+  * 增加Color Picker控件。
+
 * 2018/08/20
   * 更新文档。
 

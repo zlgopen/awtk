@@ -78,8 +78,8 @@ void convertRGBtoCMYK(const unsigned char r, const unsigned char g, const unsign
   convertCMYtoCMYK(c, m, y, k);
 }
 
-void convertHSVtoRGB(const float h, const float s, const float v, unsigned char* r,
-                     unsigned char* g, unsigned char* b) {
+void convertHSVtoRGB_(const float h, const float s, const float v, unsigned char* r,
+                      unsigned char* g, unsigned char* b) {
   /* Convert hue back to 0-6 space, floor */
   const float hex = h / 60.0;
   const unsigned char primary = (int)hex;
@@ -121,6 +121,18 @@ void convertHSVtoRGB(const float h, const float s, const float v, unsigned char*
     *g = (x * 255.0) + 0.5;
     *b = (y * 255.0) + 0.5;
   }
+}
+
+void convertHSVtoRGB(const float h, const float s, const float v, unsigned char* r,
+                     unsigned char* g, unsigned char* b) {
+  float hh = h;
+  if (hh == 0) {
+    hh = 0.01f;
+  } else if (hh >= 360) {
+    hh = 359.99f;
+  }
+
+  convertHSVtoRGB_(hh, s, v, r, g, b);
 }
 
 void convertRGBtoHSV(const unsigned char r, const unsigned char g, const unsigned char b, float* h,

@@ -24,6 +24,7 @@
 
 #include "base/widget.h"
 #include "base/bitmap.h"
+#include "color_picker/color_picker_const.h"
 
 BEGIN_C_DECLS
 
@@ -34,17 +35,18 @@ typedef ret_t (*color_component_update_t)(widget_t* widget);
  * @parent widget_t
  * 颜色选择器的颜色分量。
  * 控件的名称有严格规定：
- * sv: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。
- * h: 水平为同色，垂直为Hue(递减)。
+ * COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。
+ * COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
  */
 typedef struct _color_component_t {
   widget_t widget;
 
-  xy_t pressed_x;
-  xy_t pressed_y;
+  xy_t color_x;
+  xy_t color_y;
 
   color_t c;
   bitmap_t image;
+  int32_t last_hue;
   bool_t need_update;
   color_component_update_t update;
 } color_component_t;
@@ -67,24 +69,38 @@ widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
  * @method color_component_set_color
  * 设置颜色。
  * @param {widget_t*} widget 控件对象。
- * @param {uint8_t}  r 红色分量。
- * @param {uint8_t}  g 绿色分量。
- * @param {uint8_t}  b 蓝色分量。
- * @param {uint8_t}  a alpha分量。
+ * @param {color_t}  c 颜色。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t color_component_set_color(widget_t* widget, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+ret_t color_component_set_color(widget_t* widget, color_t c);
 
 /**
- * @method color_component_cast
- * 转换为color_component对象(供脚本语言使用)。
- * @annotation ["cast"]
+ * @method color_component_get_h
+ * 获取h分量。
  * @param {widget_t*} widget color_component对象。
  *
- * @return {widget_t*} color_component对象。
+ * @return {float} 返回h分量。
  */
-widget_t* color_component_cast(widget_t* widget);
+float color_component_get_h(widget_t* widget);
+
+/**
+ * @method color_component_get_s
+ * 获取s分量。
+ * @param {widget_t*} widget color_component对象。
+ *
+ * @return {float} 返回s分量。
+ */
+float color_component_get_s(widget_t* widget);
+
+/**
+ * @method color_component_get_v
+ * 获取v分量。
+ * @param {widget_t*} widget color_component对象。
+ *
+ * @return {float} 返回v分量。
+ */
+float color_component_get_v(widget_t* widget);
 
 #define COLOR_COMPONENT(widget) ((color_component_t*)(widget))
 

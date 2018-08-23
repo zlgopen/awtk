@@ -1,6 +1,8 @@
 #include "awtk.h"
 #include "base/resource_manager.h"
 #ifndef WITH_FS_RES
+#include "res/inc/strings/en_US.data"
+#include "res/inc/strings/zh_CN.data"
 #include "res/inc/styles/button.data"
 #include "res/inc/styles/calibration.data"
 #include "res/inc/styles/color.data"
@@ -20,6 +22,11 @@
 #include "res/inc/ui/button.data"
 #include "res/inc/ui/calibration.data"
 #include "res/inc/ui/color.data"
+#include "res/inc/ui/color_picker.data"
+#include "res/inc/ui/color_picker_full.data"
+#include "res/inc/ui/color_picker_hsv.data"
+#include "res/inc/ui/color_picker_rgb.data"
+#include "res/inc/ui/color_picker_simple.data"
 #include "res/inc/ui/combo_box.data"
 #include "res/inc/ui/dialog1.data"
 #include "res/inc/ui/dialog2.data"
@@ -308,6 +315,8 @@ ret_t resource_init(void) {
   resource_manager_add(rm, image_unchecked);
   resource_manager_add(rm, image_unmuted);
   resource_manager_add(rm, image_warn);
+  resource_manager_add(rm, strings_en_US);
+  resource_manager_add(rm, strings_zh_CN);
   resource_manager_add(rm, style_button);
   resource_manager_add(rm, style_calibration);
   resource_manager_add(rm, style_color);
@@ -327,6 +336,11 @@ ret_t resource_init(void) {
   resource_manager_add(rm, ui_button);
   resource_manager_add(rm, ui_calibration);
   resource_manager_add(rm, ui_color);
+  resource_manager_add(rm, ui_color_picker);
+  resource_manager_add(rm, ui_color_picker_full);
+  resource_manager_add(rm, ui_color_picker_hsv);
+  resource_manager_add(rm, ui_color_picker_rgb);
+  resource_manager_add(rm, ui_color_picker_simple);
   resource_manager_add(rm, ui_combo_box);
   resource_manager_add(rm, ui_dialog1);
   resource_manager_add(rm, ui_dialog2);

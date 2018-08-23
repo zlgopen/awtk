@@ -86,7 +86,12 @@ typedef enum _bitmap_flag_t {
    * @const BITMAP_FLAG_TEXTURE
    * OpenGL Texture, bitmap的id是有效的texture id。
    */
-  BITMAP_FLAG_TEXTURE = 4
+  BITMAP_FLAG_TEXTURE = 4,
+  /**
+   * @const BITMAP_FLAG_CHANGED
+   * 如果是MUTABLE的图片，更新时需要设置此标志，底层可能会做特殊处理，比如更新图片到GPU。
+   */
+  BITMAP_FLAG_CHANGED = 8
 } bitmap_flag_t;
 
 /**

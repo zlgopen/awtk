@@ -387,7 +387,15 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    return (char*)(img->specific) - (char*)NULL;
+    i = (char*)(img->specific) - (char*)NULL;
+
+    if (img->flags & BITMAP_FLAG_CHANGED) {
+      img->flags &= (~(BITMAP_FLAG_CHANGED));
+      nvgUpdateImage(canvas->vg, i, img->data);
+      log_debug("nvgUpdateImage %d\n", i);
+    }
+
+    return i;
   }
 
   i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);

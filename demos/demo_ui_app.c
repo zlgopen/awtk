@@ -33,8 +33,8 @@
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
-#include "rich_text/rich_text.h"
 #include "ui_loader/ui_builder_default.h"
+#include "ext_widgets.h"
 
 static void install_click_hander(widget_t* widget);
 
@@ -268,14 +268,8 @@ static ret_t show_preload_res_window() {
   return RET_OK;
 }
 
-static ret_t register_ext_widgets() {
-  widget_factory_register(widget_factory(), "rich_text", rich_text_create);
-
-  return RET_OK;
-}
-
 ret_t application_init() {
-  register_ext_widgets();
+  tk_ext_widgets_init();
 
   return show_preload_res_window();
 }

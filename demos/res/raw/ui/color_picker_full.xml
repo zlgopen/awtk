@@ -1,0 +1,48 @@
+<window>
+  <color_picker x="0" y="0" w="100%" h="100%" value="orange">
+   <color_component x="0" y="0" w="200" h="200" name="sv"/>
+   <color_component x="210" y="0" w="20" h="200" name="h"/>
+   <color_tile x="0" y="210" w="50%" h="20" name="new" bg_color="green"/>
+   <color_tile x="right" y="210" w="50%" h="20" name="old" bg_color="blue"/>
+   <edit x="0" y="240" w="50%" h="20" name="new" input_type="hex"/>
+   <edit x="right" y="240" w="50%" h="20" name="old" readonly="true"/>
+   <view x="0" y="270" w="100%" h="-240" layout="h20 c1 s2">
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="R"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="255" step="1" auto_fix="true" name="r" />
+     <slider x="98" y="middle" w="-100" h="100%" name="r" />
+    </view>
+
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="G"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="255" step="1" auto_fix="true" name="g" />
+     <slider x="98" y="middle" w="-100" h="100%" name="g" />
+    </view>
+
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="B"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="255" step="1" auto_fix="true" name="b" />
+     <slider x="98" y="middle" w="-100" h="100%" name="b" />
+    </view>
+
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="H"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="360" step="1" auto_fix="true" name="h" />
+     <slider x="98" y="middle" w="-100" h="100%" name="h" />
+    </view>
+
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="S"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="100" step="1" auto_fix="true" name="s" />
+     <slider x="98" y="middle" w="-100" h="100%" name="s" />
+    </view>
+
+    <view >
+     <label x="0" y="middle" w="30" h="100%" text="V"/>
+     <spin_box x="40" y="middle" w="54" h="100%" min="0" input_type="int" max="100" step="1" auto_fix="true" name="v" />
+     <slider x="98" y="middle" w="-100" h="100%" name="v" />
+    </view>
+   </view>
+  </color_picker>
+  <button name="close" x="center" y="bottom:5" w="25%" h="30" text="Close"/>
+</window>

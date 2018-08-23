@@ -23,6 +23,7 @@
 #define TK_COLOR_PICKER_H
 
 #include "base/widget.h"
+#include "color_picker/color_picker_const.h"
 
 BEGIN_C_DECLS
 
@@ -30,12 +31,30 @@ BEGIN_C_DECLS
  * @class color_picker_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * 颜色选择器。
+ * 颜色选择器。 其中的控件必须按下列规则命名：
+ * COLOR_PICKER_CHILD_R 红色分量。可以是spin_box、edit和slider。
+ * COLOR_PICKER_CHILD_G 绿色分量。可以是spin_box、edit和slider。
+ * COLOR_PICKER_CHILD_B 蓝色分量。可以是spin_box、edit和slider。
+ * COLOR_PICKER_CHILD_H Hue分量。可以是spin_box、edit、slider和color_component。
+ * COLOR_PICKER_CHILD_S Saturation分量。可以是spin_box、edit和slider。
+ * COLOR_PICKER_CHILD_V Value/Brightness分量。可以是spin_box、edit和slider。
+ * COLOR_PICKER_CHILD_SV Saturation和Value/Brightness分量。可以是color_component。
+ * COLOR_PICKER_CHILD_OLD 旧的值。可以是spin_box、edit和color_tile。
+ * COLOR_PICKER_CHILD_NEW 新的值。可以是spin_box、edit和color_tile。
  */
 typedef struct _color_picker_t {
   widget_t widget;
 
-  color_t color;
+  /**
+   * @property {const char*} value
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 颜色。
+   */
+  char value[8];
+
+  color_t c;
+  color_t init_c;
+  widget_t* trigger_child;
 } color_picker_t;
 
 /**
@@ -54,14 +73,14 @@ widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method color_picker_set_color
- * 设置进度条的进度。
+ * 设置颜色。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint8_t}  value 进度
+ * @param {const char*} color 颜色。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t color_picker_set_color(widget_t* widget, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+ret_t color_picker_set_color(widget_t* widget, const char* color);
 
 /**
  * @method color_picker_cast

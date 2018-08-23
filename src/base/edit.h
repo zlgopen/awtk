@@ -188,6 +188,28 @@ int32_t edit_get_int(widget_t* widget);
 double edit_get_double(widget_t* widget);
 
 /**
+ * @method edit_set_int
+ * 设置int类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_int(widget_t* widget, int32_t value);
+
+/**
+ * @method edit_set_double
+ * 设置double类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {double} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_double(widget_t* widget, double value);
+
+/**
  * @method edit_set_text_limit
  * 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。
  * @annotation ["scriptable"]

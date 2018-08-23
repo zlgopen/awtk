@@ -221,8 +221,15 @@ typedef enum _event_type_t {
    */
   EVT_WINDOW_LOAD,
   /**
+   * @const EVT_WINDOW_WILL_OPEN
+   * 窗口即将打开事件(event_t)。
+   * 如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。
+   */
+  EVT_WINDOW_WILL_OPEN,
+  /**
    * @const EVT_WINDOW_OPEN
-   * 窗口打开事件。如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发(event_t)。
+   * 窗口打开事件(event_t)。
+   * 如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。
    */
   EVT_WINDOW_OPEN,
   /**

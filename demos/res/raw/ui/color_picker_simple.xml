@@ -1,0 +1,11 @@
+<window>
+  <color_picker x="0" y="0" w="100%" h="100%" value="orange">
+   <color_component x="0" y="0" w="200" h="200" name="sv"/>
+   <color_component x="210" y="0" w="20" h="200" name="h"/>
+   <color_tile x="0" y="210" w="50%" h="20" name="new" bg_color="green"/>
+   <color_tile x="right" y="210" w="50%" h="20" name="old" bg_color="blue"/>
+   <edit x="0" y="240" w="50%" h="20" name="new" input_type="hex"/>
+   <edit x="right" y="240" w="50%" h="20" name="old" readonly="true"/>
+  </color_picker>
+  <button name="close" x="center" y="bottom:5" w="25%" h="30" text="Close"/>
+</window>

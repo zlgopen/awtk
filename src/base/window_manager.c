@@ -95,10 +95,11 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_t* wm = WINDOW_MANAGER(curr_win->parent);
-  ret_t ret = window_manager_create_animator(wm, curr_win, TRUE);
+  event_t e = event_init(EVT_WINDOW_WILL_OPEN, curr_win);
 
-  if (ret != RET_OK) {
-    event_t e = event_init(EVT_WINDOW_OPEN, curr_win);
+  widget_dispatch(curr_win, &e);
+  if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
+    e = event_init(EVT_WINDOW_OPEN, curr_win);
     widget_dispatch(curr_win, &e);
   }
 
@@ -108,7 +109,10 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
 static ret_t window_manager_idle_dispatch_window_open(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
 
-  event_t e = event_init(EVT_WINDOW_OPEN, curr_win);
+  event_t e = event_init(EVT_WINDOW_WILL_OPEN, curr_win);
+  widget_dispatch(curr_win, &e);
+
+  e = event_init(EVT_WINDOW_OPEN, curr_win);
   widget_dispatch(curr_win, &e);
 
   return RET_REMOVE;
