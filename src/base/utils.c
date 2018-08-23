@@ -346,6 +346,8 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
   return ret;
 }
 
+extern int vsscanf(const char *restrict s, const char *restrict format, va_list arg);
+
 int tk_sscanf(const char* str, const char* format, ...) {
   int ret = 0;
   va_list va;

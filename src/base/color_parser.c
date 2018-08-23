@@ -1,5 +1,6 @@
 #include "color_parser.h"
 #include "base/str.h"
+#include "base/utils.h"
 
 typedef struct _color_map_t {
   const char* name;
@@ -172,9 +173,9 @@ static bool_t color_parse_rgba(const char* color, uint8_t* r, uint8_t* g, uint8_
   float fa = 1;
 
   if (strstr(color, "rgba") != NULL) {
-    sscanf(color, "rgba(%d,%d,%d,%f)", &ir, &ig, &ib, &fa);
+    tk_sscanf(color, "rgba(%d,%d,%d,%f)", &ir, &ig, &ib, &fa);
   } else {
-    sscanf(color, "rgb(%d,%d,%d)", &ir, &ig, &ib);
+    tk_sscanf(color, "rgb(%d,%d,%d)", &ir, &ig, &ib);
   }
 
   *r = ir & 0xff;
@@ -195,9 +196,9 @@ static bool_t color_parse_hex(const char* color, uint8_t* r, uint8_t* g, uint8_t
   int ia = 0xff;
 
   if (len > 8) {
-    sscanf(color, "#%02x%02x%02x", &ir, &ig, &ib);
+    tk_sscanf(color, "#%02x%02x%02x", &ir, &ig, &ib);
   } else {
-    sscanf(color, "#%02x%02x%02x%02x", &ir, &ig, &ib, &ia);
+    tk_sscanf(color, "#%02x%02x%02x%02x", &ir, &ig, &ib, &ia);
   }
 
   *r = ir & 0xff;
