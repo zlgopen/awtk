@@ -17,7 +17,7 @@
   aa = pixel & 0xff;
 
 #ifdef WITH_BITMAP_BGRA
-#define rgba_to_image8888(r, g, b, a) (((aa) << 24) | ((r) << 16) | ((g) << 8) | (b))
+#define rgba_to_image8888(r, g, b, aa) (((aa) << 24) | ((r) << 16) | ((g) << 8) | (b))
 #define rgba_from_image8888(rr, gg, bb, aa, pixel) \
   aa = (pixel >> 24);                              \
   rr = (pixel >> 16);                              \
