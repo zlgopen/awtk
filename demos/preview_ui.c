@@ -21,7 +21,7 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
-
+#include <sys/stat.h>
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/utils.h"
@@ -48,18 +48,27 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
+#define DEFAULT_UI "./demos/res/raw/ui/main.xml"
 #if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
   int argc = 1;
-  const char* filename = (lpcmdline && *lpcmdline) ? lpcmdline : "../tools/ui_gen/window1.xml";
+  struct stat st;
+  const char* filename = (lpcmdline && *lpcmdline) ? lpcmdline : DEFAULT_UI;
 #else
 #include "base/mem.h"
 int main(int argc, char* argv[]) {
-  const char* filename = argc == 1 ? "../tools/ui_gen/window1.xml" : argv[1];
+  struct stat st;
+  const char* filename = argc == 1 ? DEFAULT_UI : argv[1];
 #endif
 
-  tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
+  if(stat("./demos/res/raw", &st) == 0) {
+    tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
+  } else if(stat("./res/raw", &st) == 0) {
+    tk_init(320, 480, APP_SIMULATOR, NULL, "./");
+  } else {
+    assert(!"not found resources!");
+  }
   resource_init();
   tk_ext_widgets_init();
 
