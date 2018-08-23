@@ -20,9 +20,9 @@
  */
 
 #include "base/mem.h"
-#include "color_picker/color.h"
 #include "base/image_manager.h"
 #include "base/pixel_pack_unpack.h"
+#include "color_picker/rgb_and_hsv.h"
 #include "color_picker/color_component.h"
 
 static ret_t color_component_update_h(widget_t* widget);

@@ -24,7 +24,7 @@
 #include "base/slider.h"
 #include "base/color_tile.h"
 #include "base/color_parser.h"
-#include "color_picker/color.h"
+#include "color_picker/rgb_and_hsv.h"
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"
 
