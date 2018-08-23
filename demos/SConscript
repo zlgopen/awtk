@@ -4,9 +4,9 @@ env=DefaultEnvironment().Clone();
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library(os.path.join(LIB_DIR, 'resource'), ['resource.c']);
+env.Library(os.path.join(LIB_DIR, 'assets'), ['assets.c']);
 
-env['LIBS'] = ['resource'] + env['LIBS']
+env['LIBS'] = ['assets'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
 
 env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo_main.c', 'demo1_app.c']);

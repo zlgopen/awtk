@@ -36,7 +36,7 @@ typedef struct _suggest_words_header_t {
   uint32_t nr;
 } suggest_words_header_t;
 
-static const uint8_t* suggest_words_find_data(const resource_info_t* res, wchar_t c) {
+static const uint8_t* suggest_words_find_data(const asset_info_t* res, wchar_t c) {
   int low = 0;
   int mid = 0;
   int high = 0;
@@ -125,7 +125,7 @@ ret_t suggest_words_find(suggest_words_t* suggest_words, wchar_t c) {
   return suggest_words_update(suggest_words, data);
 }
 
-suggest_words_t* suggest_words_create(const resource_info_t* res) {
+suggest_words_t* suggest_words_create(const asset_info_t* res) {
   suggest_words_t* suggest_words = NULL;
   return_value_if_fail(res != NULL && res->data != NULL, NULL);
 

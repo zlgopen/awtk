@@ -1,4 +1,0 @@
-<window style="1:bricks" name="main" x="0" y="0" w="320" h="480">
-  <button style="1:blue_img" x="10" y="middle" w="40%" h="40" text="Left"/>
-  <button style="1:blue_img" x="right:10" y="middle" w="40%" h="40" text="Right"/>
-</window>

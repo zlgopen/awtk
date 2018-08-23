@@ -34,7 +34,7 @@
 #include "base/idle.h"
 #include "base/system_info.h"
 #include "gtest/gtest.h"
-#include "demos/resource.h"
+#include "demos/assets.h"
 
 GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
@@ -43,8 +43,8 @@ GTEST_API_ int main(int argc, char** argv) {
   system_info_init(APP_SIMULATOR, NULL, "./demos");
   tk_init_internal();
 
-  resource_init();
-  tk_init_resources();
+  assets_init();
+  tk_init_assets();
   RUN_ALL_TESTS();
 
   tk_deinit_internal();

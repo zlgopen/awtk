@@ -3,7 +3,7 @@
 #include "tests/suggest_test.inc"
 
 TEST(SuggestWords, basic) {
-  suggest_words_t* sw = suggest_words_create((const resource_info_t*)data_suggest_test);
+  suggest_words_t* sw = suggest_words_create((const asset_info_t*)data_suggest_test);
 
   ASSERT_EQ(suggest_words_find(sw, L"故"[0]), RET_OK);
   ASSERT_EQ(sw->words_nr, 8);

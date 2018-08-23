@@ -1,3 +1,0 @@
-<window name="main" x="0" y="0" w="320" h="480">
-  <image style="1:border" x="0" y="0" w="100%" h="100%" image="bg800x480" draw_type="center"/>
-</window>

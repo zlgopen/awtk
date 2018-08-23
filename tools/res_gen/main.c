@@ -21,7 +21,7 @@
 
 #include "base/mem.h"
 #include "common/utils.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 int main(int argc, char** argv) {
   uint32_t size = 0;
@@ -42,16 +42,13 @@ int main(int argc, char** argv) {
   input_buff = (uint8_t*)read_file(input_filename, &size);
   return_value_if_fail(input_buff != NULL, 0);
   if (end_with(input_filename, ".ttf")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_FONT, RESOURCE_TYPE_FONT_TTF, input_buff,
-                        size);
+    output_res_c_source(output_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff, size);
   } else if (end_with(input_filename, ".png")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_PNG, input_buff,
-                        size);
+    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff, size);
   } else if (end_with(input_filename, ".jpg")) {
-    output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_JPG, input_buff,
-                        size);
+    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else {
-    output_res_c_source(output_filename, RESOURCE_TYPE_DATA, 0, input_buff, size);
+    output_res_c_source(output_filename, ASSET_TYPE_DATA, 0, input_buff, size);
   }
 
   TKMEM_FREE(input_buff);

@@ -24,7 +24,7 @@
 #include "base/utf8.h"
 #include "base/utils.h"
 #include "base/enums.h"
-#include "base/tklocale.h"
+#include "base/locale_info.h"
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
@@ -135,7 +135,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   const char* tr_text = NULL;
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
-  tr_text = tklocale_tr(tklocale(), text);
+  tr_text = locale_info_tr(locale_info(), text);
   TKMEM_FREE(widget->tr_text);
   widget->tr_text = tk_strdup(text);
 
@@ -145,7 +145,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 ret_t widget_re_translate_text(widget_t* widget) {
   if (widget->tr_text != NULL) {
     value_t v;
-    const char* tr_text = tklocale_tr(tklocale(), widget->tr_text);
+    const char* tr_text = locale_info_tr(locale_info(), widget->tr_text);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
     widget_invalidate(widget, NULL);
   }
@@ -1159,8 +1159,7 @@ const void* widget_get_window_theme(widget_t* widget) {
   }
 
   if (name != NULL) {
-    const resource_info_t* res =
-        resource_manager_ref(resource_manager(), RESOURCE_TYPE_STYLE, name);
+    const asset_info_t* res = assets_manager_ref(assets_manager(), ASSET_TYPE_STYLE, name);
     if (res != NULL) {
       return res->data;
     }

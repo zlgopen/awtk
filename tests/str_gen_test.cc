@@ -1,5 +1,5 @@
 ﻿#include "gtest/gtest.h"
-#include "base/tklocale.h"
+#include "base/locale_info.h"
 #include "tools/str_gen/str_gen.h"
 #include "tools/str_gen/xml_str_gen.h"
 

@@ -24,7 +24,7 @@
 #include "base/idle.h"
 #include "base/time.h"
 #include "base/timer.h"
-#include "base/tklocale.h"
+#include "base/locale_info.h"
 #include "base/platform.h"
 #include "base/main_loop.h"
 #include "font/font_bitmap.h"
@@ -33,7 +33,7 @@
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 #ifdef WITH_STB_FONT
 #include "font/font_stb.h"
@@ -43,12 +43,12 @@
 #include "image_loader/image_loader_stb.h"
 #endif /*WITH_STB_IMAGE*/
 
-static ret_t tk_add_font(const resource_info_t* res) {
-  if (res->subtype == RESOURCE_TYPE_FONT_BMP) {
+static ret_t tk_add_font(const asset_info_t* res) {
+  if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
     font_manager_add(font_manager(), font_bitmap_create(res->name, res->data, res->size));
 #endif
-  } else if (res->subtype == RESOURCE_TYPE_FONT_TTF) {
+  } else if (res->subtype == ASSET_TYPE_FONT_TTF) {
 #ifdef WITH_STB_FONT
     font_manager_add(font_manager(), font_stb_create(res->name, res->data, res->size));
 #endif /*WITH_STB_FONT*/
@@ -58,18 +58,18 @@ static ret_t tk_add_font(const resource_info_t* res) {
   return RET_OK;
 }
 
-ret_t tk_init_resources() {
+ret_t tk_init_assets() {
   uint32_t i = 0;
-  uint32_t nr = resource_manager()->resources.size;
-  const resource_info_t** all = (const resource_info_t**)(resource_manager()->resources.elms);
+  uint32_t nr = assets_manager()->assets.size;
+  const asset_info_t** all = (const asset_info_t**)(assets_manager()->assets.elms);
 
   for (i = 0; i < nr; i++) {
-    const resource_info_t* iter = all[i];
+    const asset_info_t* iter = all[i];
     switch (iter->type) {
-      case RESOURCE_TYPE_FONT:
+      case ASSET_TYPE_FONT:
         tk_add_font(iter);
         break;
-      case RESOURCE_TYPE_STYLE:
+      case ASSET_TYPE_STYLE:
         if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
           theme_init(iter->data);
         }
@@ -92,8 +92,8 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
-  return_value_if_fail(resource_manager_set(resource_manager_create(30)) == RET_OK, RET_FAIL);
-  return_value_if_fail(tklocale_set(tklocale_create(NULL, NULL)) == RET_OK, RET_FAIL);
+  return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
+  return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
@@ -115,11 +115,11 @@ ret_t tk_deinit_internal(void) {
   font_manager_destroy(font_manager());
   font_manager_set(NULL);
 
-  tklocale_destroy(tklocale());
-  tklocale_set(NULL);
+  locale_info_destroy(locale_info());
+  locale_info_set(NULL);
 
-  resource_manager_destroy(resource_manager());
-  resource_manager_set(NULL);
+  assets_manager_destroy(assets_manager());
+  assets_manager_set(NULL);
 
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);

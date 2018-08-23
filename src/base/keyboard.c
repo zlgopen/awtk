@@ -24,7 +24,7 @@
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/pages.h"
-#include "base/tklocale.h"
+#include "base/locale_info.h"
 #include "base/keyboard.h"
 #include "base/input_method.h"
 #include "base/window_manager.h"
@@ -185,7 +185,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
 }
 
 static ret_t keyboard_update_action_buton_info(widget_t* button, const char* text, bool_t enable) {
-  text = tklocale_tr(tklocale(), ((text && *text) ? text : STR_RETURN));
+  text = locale_info_tr(locale_info(), ((text && *text) ? text : STR_RETURN));
 
   widget_set_text_utf8(button, text);
   widget_set_enable(button, enable);

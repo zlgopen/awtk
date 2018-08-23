@@ -23,7 +23,7 @@
 #include "common/utils.h"
 #include "image_gen/image_gen.h"
 #include "base/image_manager.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 #include "image_loader/image_loader_stb.h"
 
 #define MAX_BUFF_SIZE 2 * 1024 * 1024
@@ -34,7 +34,7 @@ ret_t image_gen(bitmap_t* image, const char* output_filename) {
   return_value_if_fail(buff != NULL, RET_FAIL);
 
   size = image_gen_buff(image, buff, MAX_BUFF_SIZE);
-  output_res_c_source(output_filename, RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_IMAGE_RAW, buff, size);
+  output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
   TKMEM_FREE(buff);
 
   return RET_OK;

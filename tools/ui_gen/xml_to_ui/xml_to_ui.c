@@ -21,7 +21,7 @@
 
 #include "base/mem.h"
 #include "common/utils.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 #include "ui_loader/ui_binary_writer.h"
 #include "ui_loader/ui_loader_xml.h"
 
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
   if (output_bin) {
     write_file(out_filename, wbuffer.data, wbuffer.cursor);
   } else {
-    output_res_c_source(out_filename, RESOURCE_TYPE_UI, RESOURCE_TYPE_UI_BIN, wbuffer.data,
+    output_res_c_source(out_filename, ASSET_TYPE_UI, ASSET_TYPE_UI_BIN, wbuffer.data,
                         wbuffer.cursor);
   }
 

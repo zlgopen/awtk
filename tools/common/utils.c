@@ -29,7 +29,7 @@
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/enums.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 char* read_file(const char* file_name, uint32_t* length) {
   return fs_read_file(file_name, length);
@@ -87,14 +87,14 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
 
 ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
                           uint32_t size) {
-  resource_info_t* res = NULL;
-  uint32_t total_size = sizeof(resource_info_t) + size;
-  const key_type_value_t* kv = resource_type_find_by_value(type);
+  asset_info_t* res = NULL;
+  uint32_t total_size = sizeof(asset_info_t) + size;
+  const key_type_value_t* kv = asset_type_find_by_value(type);
   return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
-  res = (resource_info_t*)malloc(total_size);
-  memset(res, 0x00, sizeof(resource_info_t));
+  res = (asset_info_t*)malloc(total_size);
+  memset(res, 0x00, sizeof(asset_info_t));
   res->size = size;
   res->type = type;
   res->is_in_rom = TRUE;

@@ -1,4 +1,4 @@
-﻿#include "base/tklocale.h"
+﻿#include "base/locale_info.h"
 #include "gtest/gtest.h"
 
 #include <string>
@@ -8,10 +8,10 @@ using std::string;
 static string s_locale;
 
 static ret_t test_on_locale_changed(void* ctx, event_t* e) {
-  tklocale_t* tklocale = (tklocale_t*)ctx;
+  locale_info_t* locale_info = (locale_info_t*)ctx;
 
   (void)e;
-  s_locale = string(tklocale->language) + "_" + string(tklocale->country);
+  s_locale = string(locale_info->language) + "_" + string(locale_info->country);
 
   return RET_OK;
 }
@@ -19,19 +19,19 @@ static ret_t test_on_locale_changed(void* ctx, event_t* e) {
 TEST(Locale, basic) {
   const char* str = "ok";
   uint32_t id = 0;
-  tklocale_t* tklocale = tklocale_create("en", "US");
-  ASSERT_EQ(string("OK"), string(tklocale_tr(tklocale, str)));
+  locale_info_t* locale_info = locale_info_create("en", "US");
+  ASSERT_EQ(string("OK"), string(locale_info_tr(locale_info, str)));
 
-  id = tklocale_on(tklocale, EVT_LOCALE_CHANGED, test_on_locale_changed, tklocale);
+  id = locale_info_on(locale_info, EVT_LOCALE_CHANGED, test_on_locale_changed, locale_info);
   ASSERT_EQ(id, 1);
-  ASSERT_EQ(tklocale_change(tklocale, "zh", "CN"), RET_OK);
+  ASSERT_EQ(locale_info_change(locale_info, "zh", "CN"), RET_OK);
   ASSERT_EQ(s_locale, "zh_CN");
-  ASSERT_EQ(string("确定"), string(tklocale_tr(tklocale, str)));
+  ASSERT_EQ(string("确定"), string(locale_info_tr(locale_info, str)));
 
-  ASSERT_EQ(tklocale_off(tklocale, id), RET_OK);
-  ASSERT_EQ(tklocale_change(tklocale, "en", "US"), RET_OK);
+  ASSERT_EQ(locale_info_off(locale_info, id), RET_OK);
+  ASSERT_EQ(locale_info_change(locale_info, "en", "US"), RET_OK);
   ASSERT_EQ(s_locale, "zh_CN");
-  ASSERT_EQ(string("OK"), string(tklocale_tr(tklocale, str)));
+  ASSERT_EQ(string("OK"), string(locale_info_tr(locale_info, str)));
 
-  tklocale_destroy(tklocale);
+  locale_info_destroy(locale_info);
 }

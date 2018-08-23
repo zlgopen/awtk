@@ -1,8 +1,8 @@
 ﻿#include "base/enums.h"
 #include "gtest/gtest.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 TEST(Enums, basic) {
-  ASSERT_EQ(resource_type_find("style"), resource_type_find_by_value(RESOURCE_TYPE_STYLE));
-  ASSERT_EQ(resource_type_find("xml"), resource_type_find_by_value(RESOURCE_TYPE_XML));
+  ASSERT_EQ(asset_type_find("style"), asset_type_find_by_value(ASSET_TYPE_STYLE));
+  ASSERT_EQ(asset_type_find("xml"), asset_type_find_by_value(ASSET_TYPE_XML));
 }

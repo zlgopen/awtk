@@ -27,7 +27,7 @@
 #include "common/utils.h"
 #include "xml_str_gen.h"
 #include "xml/xml_parser.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 typedef struct _xml_str_builder_t {
   XmlBuilder builder;
@@ -131,7 +131,7 @@ bool xml_to_str_gen(const char* input_file, const char* output_dir, bool bin) {
       fs_write_file(path, output_buff, size);
     } else {
       snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
-      output_res_c_source(path, RESOURCE_TYPE_STRINGS, 0, output_buff, size);
+      output_res_c_source(path, ASSET_TYPE_STRINGS, 0, output_buff, size);
     }
     log_debug("write %s\n", path);
   }

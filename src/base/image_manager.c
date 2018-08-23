@@ -23,7 +23,7 @@
 #include "base/time.h"
 #include "base/utils.h"
 #include "base/image_manager.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 typedef struct _bitmap_cache_t {
   bitmap_t image;
@@ -128,7 +128,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
 }
 
 ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
-  const resource_info_t* res = NULL;
+  const asset_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
   memset(image, 0x00, sizeof(bitmap_t));
@@ -136,11 +136,11 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     return RET_OK;
   }
 
-  res = resource_manager_ref(resource_manager(), RESOURCE_TYPE_IMAGE, name);
+  res = assets_manager_ref(assets_manager(), ASSET_TYPE_IMAGE, name);
   return_value_if_fail(res != NULL, RET_NOT_FOUND);
 
   memset(image, 0x00, sizeof(bitmap_t));
-  if (res->subtype == RESOURCE_TYPE_IMAGE_RAW) {
+  if (res->subtype == ASSET_TYPE_IMAGE_RAW) {
     const bitmap_header_t* header = (const bitmap_header_t*)res->data;
 
     image->w = header->w;
@@ -158,7 +158,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
     if (ret == RET_OK) {
       image_manager_add(imm, name, image);
-      resource_manager_unref(resource_manager(), res);
+      assets_manager_unref(assets_manager(), res);
     }
 
     return image_manager_lookup(imm, name, image);

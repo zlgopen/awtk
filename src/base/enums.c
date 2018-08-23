@@ -23,7 +23,7 @@
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/window_animator.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 static const key_type_value_t style_id_name_value[] = {
     {"bg_color", TYPE_COLOR, STYLE_ID_BG_COLOR},
@@ -64,11 +64,11 @@ static const key_type_value_t input_type_name_value[] = {
 static const key_type_value_t align_h_name_value[] = {
     {"left", 0, ALIGN_H_LEFT}, {"center", 0, ALIGN_H_CENTER}, {"right", 0, ALIGN_H_RIGHT}};
 
-static const key_type_value_t resource_type_value[] = {
-    {"font", 0, RESOURCE_TYPE_FONT},       {"image", 0, RESOURCE_TYPE_IMAGE},
-    {"style", 0, RESOURCE_TYPE_STYLE},     {"ui", 0, RESOURCE_TYPE_UI},
-    {"strings", 0, RESOURCE_TYPE_STRINGS}, {"xml", 0, RESOURCE_TYPE_XML},
-    {"data", 0, RESOURCE_TYPE_DATA},
+static const key_type_value_t asset_type_value[] = {
+    {"font", 0, ASSET_TYPE_FONT},       {"image", 0, ASSET_TYPE_IMAGE},
+    {"style", 0, ASSET_TYPE_STYLE},     {"ui", 0, ASSET_TYPE_UI},
+    {"strings", 0, ASSET_TYPE_STRINGS}, {"xml", 0, ASSET_TYPE_XML},
+    {"data", 0, ASSET_TYPE_DATA},
 };
 
 static const key_type_value_t image_draw_type_name_value[] = {
@@ -137,12 +137,12 @@ const key_type_value_t* align_h_type_find(const char* name) {
   return find_item(align_h_name_value, ARRAY_SIZE(align_h_name_value), name);
 }
 
-const key_type_value_t* resource_type_find(const char* name) {
-  return find_item(resource_type_value, ARRAY_SIZE(resource_type_value), name);
+const key_type_value_t* asset_type_find(const char* name) {
+  return find_item(asset_type_value, ARRAY_SIZE(asset_type_value), name);
 }
 
-const key_type_value_t* resource_type_find_by_value(uint32_t value) {
-  return find_item_by_value(resource_type_value, ARRAY_SIZE(resource_type_value), value);
+const key_type_value_t* asset_type_find_by_value(uint32_t value) {
+  return find_item_by_value(asset_type_value, ARRAY_SIZE(asset_type_value), value);
 }
 
 const key_type_value_t* image_draw_type_find(const char* name) {

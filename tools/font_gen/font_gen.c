@@ -27,7 +27,7 @@
 #include "font/font_stb.h"
 #include "font/font_bitmap.h"
 #include "font_gen/font_gen.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 #define MAX_CHARS 100 * 1024
 #define MAX_BUFF_SIZE 1 * 1024 * 1024
@@ -45,7 +45,7 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
   uint32_t size = font_gen_buff(font, font_size, str, buff, MAX_BUFF_SIZE);
 
   filename_to_name(output_filename, name, sizeof(name));
-  output_res_c_source(output_filename, RESOURCE_TYPE_FONT, RESOURCE_TYPE_FONT_BMP, buff, size);
+  output_res_c_source(output_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, buff, size);
 
   TKMEM_FREE(buff);
 

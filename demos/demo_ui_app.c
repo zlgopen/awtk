@@ -21,7 +21,7 @@
 
 #include "base/mem.h"
 #include "base/label.h"
-#include "base/tklocale.h"
+#include "base/locale_info.h"
 #include "base/timer.h"
 #include "base/button.h"
 #include "base/dialog.h"
@@ -161,7 +161,7 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
 
   tk_strncpy(language, str, 2);
   tk_strncpy(country, str + 3, 2);
-  tklocale_change(tklocale(), language, country);
+  locale_info_change(locale_info(), language, country);
 
   return RET_OK;
 }
@@ -216,14 +216,14 @@ static void install_click_hander(widget_t* widget) {
 }
 
 #include "base/idle.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 static uint32_t s_preload_nr = 0;
-static const preload_res_t s_preload_res[] = {{RESOURCE_TYPE_IMAGE, "bg800x480"},
-                                              {RESOURCE_TYPE_IMAGE, "earth"},
-                                              {RESOURCE_TYPE_IMAGE, "dialog_title"},
-                                              {RESOURCE_TYPE_IMAGE, "rgb"},
-                                              {RESOURCE_TYPE_IMAGE, "rgba"}};
+static const preload_res_t s_preload_res[] = {{ASSET_TYPE_IMAGE, "bg800x480"},
+                                              {ASSET_TYPE_IMAGE, "earth"},
+                                              {ASSET_TYPE_IMAGE, "dialog_title"},
+                                              {ASSET_TYPE_IMAGE, "rgb"},
+                                              {ASSET_TYPE_IMAGE, "rgba"}};
 
 static ret_t timer_preload(const timer_info_t* timer) {
   char text[64];
@@ -240,13 +240,13 @@ static ret_t timer_preload(const timer_info_t* timer) {
     uint32_t value = 0;
     const preload_res_t* iter = s_preload_res + s_preload_nr++;
     switch (iter->type) {
-      case RESOURCE_TYPE_IMAGE: {
+      case ASSET_TYPE_IMAGE: {
         bitmap_t img;
         image_manager_load(image_manager(), iter->name, &img);
         break;
       }
       default: {
-        resource_manager_ref(resource_manager(), iter->type, iter->name);
+        assets_manager_ref(assets_manager(), iter->type, iter->name);
         break;
       }
     }

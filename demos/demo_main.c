@@ -21,7 +21,7 @@
 
 #include "awtk.h"
 #include "base/mem.h"
-#include "resource.h"
+#include "assets.h"
 #include "base/system_info.h"
 
 ret_t application_init(void);
@@ -51,7 +51,7 @@ int main(void) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
-  resource_init();
+  assets_init();
   application_init();
 
   tk_run();

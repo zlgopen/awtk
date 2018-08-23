@@ -47,7 +47,7 @@ x/y/w/h 可以使用[AWTK的layout参数](layout.md)。
 XML UI文件写好后，可以用预览工具预览。如：
 
 ```
-./bin/preview_ui tools/ui_gen/xml_to_ui/window1.xml
+./bin/preview_ui demos/assets/raw/ui/main.xml
 ```
 
 ### 3.转换成二进制格式的界面描述文件
@@ -110,7 +110,7 @@ XML UI文件写好后，可以用预览工具预览。如：
 #include "res/ui/window1.data"
 ...
 
-resource_manager_add((const resource_info_t*)ui_window1);
+assets_manager_add((const asset_info_t*)ui_window1);
 ```
 
 在需要打开该窗口时，调用window\_open函数(对话框用dialog\_open):
@@ -130,13 +130,4 @@ resource_manager_add((const resource_info_t*)ui_window1);
 Usage: ./bin/qt_to_xml in_filename out_filename
    Ex: ./bin/qt_to_xml demo1.ui demo1.xml
 ```
-
-## 三、将微软RC文件转成AWTK UI XML文件(目前不成熟)。
-
-转换工具在bin/rc\_to\_xml目录下，使用方法：
-
-```
-Usage: ./bin/rc_to_xml rcfile
-```
-> RC文件需要先转换成UTF-8编码。
 

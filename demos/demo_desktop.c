@@ -21,7 +21,7 @@
 
 #include "awtk.h"
 #include "base/mem.h"
-#include "resource.h"
+#include "assets.h"
 #include "base/window.h"
 #include "base/label.h"
 #include "base/edit.h"
@@ -51,7 +51,7 @@ int main(void) {
 
   tk_init(800, 480, APP_DESKTOP, "AWTK Demo", "./demos");
 
-  resource_init();
+  assets_init();
   application_init();
 
   tk_run();

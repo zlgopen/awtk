@@ -27,7 +27,7 @@
 
 #include "base/utf8.h"
 #include "base/image_manager.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 #include "glad/glad.h"
 
@@ -295,8 +295,8 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
 
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
-    const resource_info_t* r = resource_manager_ref(resource_manager(), RESOURCE_TYPE_FONT, name);
-    if (r == NULL || r->subtype != RESOURCE_TYPE_FONT_TTF) {
+    const asset_info_t* r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+    if (r == NULL || r->subtype != ASSET_TYPE_FONT_TTF) {
       name = TK_DEFAULT_FONT;
       font_id = nvgFindFont(vg, name);
       if (font_id >= 0) {
@@ -304,10 +304,10 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
         return RET_OK;
       }
 
-      r = resource_manager_ref(resource_manager(), RESOURCE_TYPE_FONT, name);
+      r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
     }
 
-    if (r != NULL && r->subtype == RESOURCE_TYPE_FONT_TTF) {
+    if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
       font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
     }
   }

@@ -95,7 +95,7 @@
       "private": true
     },
     "desc": "初始化资源。",
-    "name": "tk_init_resources",
+    "name": "tk_init_assets",
     "return": {
       "type": "ret_t",
       "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -358,6 +358,382 @@
     "header": "base/array.h",
     "desc": "动态数组，根据元素个数动态调整数组的容量。",
     "name": "array_t"
+  },
+  {
+    "type": "enum",
+    "desc": "资源类型常量定义。",
+    "consts": [
+      {
+        "desc": "无效资源。",
+        "name": "ASSET_TYPE_NONE"
+      },
+      {
+        "desc": "字体资源。",
+        "name": "ASSET_TYPE_FONT"
+      },
+      {
+        "desc": "图片资源。",
+        "name": "ASSET_TYPE_IMAGE"
+      },
+      {
+        "desc": "主题资源。",
+        "name": "ASSET_TYPE_STYLE"
+      },
+      {
+        "desc": "UI数据资源。",
+        "name": "ASSET_TYPE_UI"
+      },
+      {
+        "desc": "XML数据资源。",
+        "name": "ASSET_TYPE_XML"
+      },
+      {
+        "desc": "字符串数据资源。",
+        "name": "ASSET_TYPE_STRINGS"
+      },
+      {
+        "desc": "其它数据资源。",
+        "name": "ASSET_TYPE_DATA"
+      }
+    ],
+    "header": "base/assets_manager.h",
+    "name": "asset_type_t",
+    "prefix": "ASSET_TYPE_",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": "字体资源类型定义。",
+    "consts": [],
+    "header": "base/assets_manager.h",
+    "name": "asset_font_type_t",
+    "prefix": "ASSET_FONT_TYPE_"
+  },
+  {
+    "type": "enum",
+    "desc": "图片资源类型定义。",
+    "consts": [],
+    "header": "base/assets_manager.h",
+    "name": "asset_image_type_t",
+    "prefix": "ASSET_IMAGE_TYPE_"
+  },
+  {
+    "type": "enum",
+    "desc": "UI资源类型定义。",
+    "consts": [],
+    "header": "base/assets_manager.h",
+    "name": "asset_ui_type_t",
+    "prefix": "ASSET_UI_TYPE_"
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "properties": [],
+    "header": "base/assets_manager.h",
+    "desc": "预加载资源的描述信息。",
+    "name": "preload_res_t"
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "properties": [
+      {
+        "name": "type",
+        "desc": "类型。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/assets_manager.h",
+    "desc": "单个资源的描述信息。",
+    "name": "asset_info_t",
+    "annotation": {
+      "constructor": true,
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "获取缺省资源管理器。",
+        "name": "assets_manager",
+        "alias": "assets_manager_instance",
+        "return": {
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省资源管理器。",
+        "name": "assets_manager_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "init_nr",
+            "desc": "预先分配资源的个数。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建资源管理器。",
+        "name": "assets_manager_create",
+        "return": {
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "init_nr",
+            "desc": "预先分配资源的个数。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化资源管理器。",
+        "name": "assets_manager_init",
+        "return": {
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_info_t",
+            "name": "info",
+            "desc": "待增加的资源。"
+          }
+        ],
+        "annotation": {},
+        "desc": "向资源管理器中增加一个资源。",
+        "name": "assets_manager_add",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。",
+        "name": "assets_manager_ref",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_info_t*",
+            "name": "info",
+            "desc": "资源。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "释放指定的资源。",
+        "name": "assets_manager_unref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在资源管理器的缓存中查找指定的资源(不引用)。",
+        "name": "assets_manager_find_in_cache",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。",
+        "name": "assets_manager_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除指定类型的缓存。",
+        "name": "assets_manager_clear_cache",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源。",
+        "name": "assets_manager_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源并销毁asset manager对象。",
+        "name": "assets_manager_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/assets_manager.h",
+    "desc": "资源管理器。",
+    "name": "assets_manager_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "enum",
@@ -7161,6 +7537,255 @@
     "methods": [
       {
         "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "获取缺省locale_info。",
+        "name": "locale_info",
+        "alias": "locale_info_instance",
+        "return": {
+          "type": "locale_info_t*",
+          "desc": "返回locale_info对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省locale_info。",
+        "name": "locale_info_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建locale_info。",
+        "name": "locale_info_create",
+        "return": {
+          "type": "locale_info_t*",
+          "desc": "返回locale_info对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          },
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化locale_info。",
+        "name": "locale_info_init",
+        "return": {
+          "type": "locale_info_t*",
+          "desc": "返回locale_info对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "待翻译的文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "翻译字符串。",
+        "name": "locale_info_tr",
+        "return": {
+          "type": "char*",
+          "desc": "返回翻译之后的字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          },
+          {
+            "type": "char*",
+            "name": "language",
+            "desc": "语言。"
+          },
+          {
+            "type": "char*",
+            "name": "country",
+            "desc": "国家或地区。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前的国家和语言。",
+        "name": "locale_info_change",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型，目前固定为EVT_LOCALE_CHANGED。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {
+          "scriptable": "custom"
+        },
+        "desc": "注册指定事件的处理函数。",
+        "name": "locale_info_on",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回id，用于locale_info_off。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "locale_info_on返回的ID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "注销指定事件的处理函数。",
+        "name": "locale_info_off",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源。",
+        "name": "locale_info_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源并销毁locale_info对象。",
+        "name": "locale_info_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "country;",
+        "desc": "国家或地区。如：CN",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "language",
+        "desc": "语言。如：zh",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/locale_info.h",
+    "desc": "locale_info",
+    "name": "locale_info_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
         "annotation": {},
         "desc": "创建mutex。",
         "name": "tk_mutex_create",
@@ -7726,382 +8351,6 @@
     "header": "base/rect.h",
     "desc": "矩形。包括一个x坐标、y坐标、宽度和高度。",
     "name": "rect_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "enum",
-    "desc": "资源类型常量定义。",
-    "consts": [
-      {
-        "desc": "无效资源。",
-        "name": "RESOURCE_TYPE_NONE"
-      },
-      {
-        "desc": "字体资源。",
-        "name": "RESOURCE_TYPE_FONT"
-      },
-      {
-        "desc": "图片资源。",
-        "name": "RESOURCE_TYPE_IMAGE"
-      },
-      {
-        "desc": "主题资源。",
-        "name": "RESOURCE_TYPE_STYLE"
-      },
-      {
-        "desc": "UI数据资源。",
-        "name": "RESOURCE_TYPE_UI"
-      },
-      {
-        "desc": "XML数据资源。",
-        "name": "RESOURCE_TYPE_XML"
-      },
-      {
-        "desc": "字符串数据资源。",
-        "name": "RESOURCE_TYPE_STRINGS"
-      },
-      {
-        "desc": "其它数据资源。",
-        "name": "RESOURCE_TYPE_DATA"
-      }
-    ],
-    "header": "base/resource_manager.h",
-    "name": "resource_type_t",
-    "prefix": "RESOURCE_TYPE_",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "enum",
-    "desc": "字体资源类型定义。",
-    "consts": [],
-    "header": "base/resource_manager.h",
-    "name": "resource_font_type_t",
-    "prefix": "RESOURCE_FONT_TYPE_"
-  },
-  {
-    "type": "enum",
-    "desc": "图片资源类型定义。",
-    "consts": [],
-    "header": "base/resource_manager.h",
-    "name": "resource_image_type_t",
-    "prefix": "RESOURCE_IMAGE_TYPE_"
-  },
-  {
-    "type": "enum",
-    "desc": "UI资源类型定义。",
-    "consts": [],
-    "header": "base/resource_manager.h",
-    "name": "resource_ui_type_t",
-    "prefix": "RESOURCE_UI_TYPE_"
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "properties": [],
-    "header": "base/resource_manager.h",
-    "desc": "预加载资源的描述信息。",
-    "name": "preload_res_t"
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "properties": [
-      {
-        "name": "type",
-        "desc": "类型。",
-        "type": "uint16_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "size",
-        "desc": "大小。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "name",
-        "desc": "名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/resource_manager.h",
-    "desc": "单个资源的描述信息。",
-    "name": "resource_info_t",
-    "annotation": {
-      "constructor": true,
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "获取缺省资源管理器。",
-        "name": "resource_manager",
-        "alias": "resource_manager_instance",
-        "return": {
-          "type": "resource_manager_t*",
-          "desc": "返回resource manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省资源管理器。",
-        "name": "resource_manager_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "init_res_nr",
-            "desc": "预先分配资源的个数。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建资源管理器。",
-        "name": "resource_manager_create",
-        "return": {
-          "type": "resource_manager_t*",
-          "desc": "返回resource manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "init_res_nr",
-            "desc": "预先分配资源的个数。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "初始化资源管理器。",
-        "name": "resource_manager_init",
-        "return": {
-          "type": "resource_manager_t*",
-          "desc": "返回resource manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_info_t",
-            "name": "info",
-            "desc": "待增加的资源。"
-          }
-        ],
-        "annotation": {},
-        "desc": "向资源管理器中增加一个资源。",
-        "name": "resource_manager_add",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。",
-        "name": "resource_manager_ref",
-        "return": {
-          "type": "resource_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_info_t*",
-            "name": "info",
-            "desc": "资源。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "释放指定的资源。",
-        "name": "resource_manager_unref",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在资源管理器的缓存中查找指定的资源(不引用)。",
-        "name": "resource_manager_find_in_cache",
-        "return": {
-          "type": "resource_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。",
-        "name": "resource_manager_load",
-        "return": {
-          "type": "resource_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          },
-          {
-            "type": "resource_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除指定类型的缓存。",
-        "name": "resource_manager_clear_cache",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源。",
-        "name": "resource_manager_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "resource_manager_t*",
-            "name": "rm",
-            "desc": "resource manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源并销毁resource manager对象。",
-        "name": "resource_manager_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [],
-    "header": "base/resource_manager.h",
-    "desc": "资源管理器。",
-    "name": "resource_manager_t",
     "annotation": {
       "scriptable": true
     }
@@ -9762,7 +10011,7 @@
       {
         "params": [
           {
-            "type": "resource_info_t*",
+            "type": "asset_info_t*",
             "name": "res",
             "desc": "数据资源。"
           }
@@ -10641,255 +10890,6 @@
     "annotation": {
       "scriptable": true,
       "fake": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "获取缺省tklocale。",
-        "name": "tklocale",
-        "alias": "tklocale_instance",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回tklocale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省tklocale。",
-        "name": "tklocale_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建tklocale。",
-        "name": "tklocale_create",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回tklocale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "初始化tklocale。",
-        "name": "tklocale_init",
-        "return": {
-          "type": "tklocale_t*",
-          "desc": "返回tklocale对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "text",
-            "desc": "待翻译的文本。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "翻译字符串。",
-        "name": "tklocale_tr",
-        "return": {
-          "type": "char*",
-          "desc": "返回翻译之后的字符串。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          },
-          {
-            "type": "char*",
-            "name": "language",
-            "desc": "语言。"
-          },
-          {
-            "type": "char*",
-            "name": "country",
-            "desc": "国家或地区。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置当前的国家和语言。",
-        "name": "tklocale_change",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_type_t",
-            "name": "type",
-            "desc": "事件类型，目前固定为EVT_LOCALE_CHANGED。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {
-          "scriptable": "custom"
-        },
-        "desc": "注册指定事件的处理函数。",
-        "name": "tklocale_on",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回id，用于tklocale_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "tklocale_on返回的ID。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "注销指定事件的处理函数。",
-        "name": "tklocale_off",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源。",
-        "name": "tklocale_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tklocale_t*",
-            "name": "tklocale",
-            "desc": "tklocale对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源并销毁tklocale对象。",
-        "name": "tklocale_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "country;",
-        "desc": "国家或地区。如：CN",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "language",
-        "desc": "语言。如：zh",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/tklocale.h",
-    "desc": "tklocale",
-    "name": "tklocale_t",
-    "annotation": {
-      "scriptable": true
     }
   },
   {

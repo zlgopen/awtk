@@ -1,4 +1,0 @@
-<window name="main" x="0" y="0" w="320" h="480">
-  <image style="1:border" x="0" y="0" w="50%" h="50%" image="earth" draw_type="center"/>
-  <image style="1:border" x="0" y="50%" w="50" h="50%" image="earth" draw_type="scale_w"/>
-</window>

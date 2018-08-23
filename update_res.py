@@ -13,9 +13,9 @@ DPI='x1'
 CWD=os.getcwd()
 BIN_DIR=joinPath(CWD, 'bin')
 APP_DIR=joinPath(CWD, 'demos')
-INPUT_DIR=joinPath(APP_DIR, 'res/raw')
-OUTPUT_DIR=joinPath(APP_DIR, 'res/inc')
-RESOURCE_C=joinPath(APP_DIR, 'resource.c')
+INPUT_DIR=joinPath(APP_DIR, 'assets/raw')
+OUTPUT_DIR=joinPath(APP_DIR, 'assets/inc')
+ASSET_C=joinPath(APP_DIR, 'assets.c')
 
 OS_NAME=platform.system()
 
@@ -145,7 +145,7 @@ def gen_all():
   gen_gpinyin()
 
 def writeResult(str):
-  fd = os.open(RESOURCE_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)
+  fd = os.open(ASSET_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)
   os.write(fd, str)
   os.close(fd)
 
@@ -162,7 +162,7 @@ def genIncludes(files):
 
 def gen_res_c():
   result = '#include "awtk.h"\n'
-  result += '#include "base/resource_manager.h"\n'
+  result += '#include "base/assets_manager.h"\n'
 
   result += '#ifndef WITH_FS_RES\n'
   files=glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
@@ -195,13 +195,13 @@ def gen_res_c():
   result += '#endif/*WITH_FS_RES*/\n'
 
   result += '\n';
-  result += 'ret_t resource_init(void) {\n'
-  result += '  resource_manager_t* rm = resource_manager();\n\n'
+  result += 'ret_t assets_init(void) {\n'
+  result += '  assets_manager_t* rm = assets_manager();\n\n'
   result += ''
 
   result += '#ifdef WITH_FS_RES\n'
-  result += '  resource_manager_load(rm, RESOURCE_TYPE_STYLE, "default");\n'
-  result += '  resource_manager_load(rm, RESOURCE_TYPE_FONT, "default");\n'
+  result += '  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");\n'
+  result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default");\n'
   result += '#else\n'
 
   files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
@@ -215,11 +215,11 @@ def gen_res_c():
     basename = basename.replace('./', '');
     basename = basename.replace('/', '_');
     basename = basename.replace('.data', '');
-    result += '  resource_manager_add(rm, '+basename+');\n'
+    result += '  assets_manager_add(rm, '+basename+');\n'
   result += '#endif\n'
 
   result += '\n'
-  result += '  tk_init_resources();\n'
+  result += '  tk_init_assets();\n'
   result += '  return RET_OK;\n'
   result += '}\n'
   writeResult(result);

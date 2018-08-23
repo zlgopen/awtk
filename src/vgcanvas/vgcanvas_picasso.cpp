@@ -25,7 +25,7 @@
 #include "base/matrix.h"
 #include "base/vgcanvas.h"
 #include "picasso_objects.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 typedef struct _vgcanvas_picasso_t {
   vgcanvas_t base;

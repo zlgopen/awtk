@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 #include "tools/common/utils.h"
 #include "base/image_manager.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 #include "tools/image_gen/image_gen.h"
 #include "image_loader/image_loader_stb.h"
 
@@ -57,17 +57,17 @@ static ret_t add_image_res(const char* filename, const char* name) {
   static uint8_t buff[8092];
   memset(&image, 0x00, sizeof(image));
   ret_t ret = load_image(filename, &image);
-  resource_info_t* r = (resource_info_t*)buff;
+  asset_info_t* r = (asset_info_t*)buff;
   return_value_if_fail(ret == RET_OK, RET_FAIL);
 
   strcpy(r->name, name);
   r->is_in_rom = TRUE;
-  r->type = RESOURCE_TYPE_IMAGE;
-  r->subtype = RESOURCE_TYPE_IMAGE_RAW;
-  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(resource_info_t));
+  r->type = ASSET_TYPE_IMAGE;
+  r->subtype = ASSET_TYPE_IMAGE_RAW;
+  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(asset_info_t));
   bitmap_destroy(&image);
 
-  return resource_manager_add(resource_manager(), buff);
+  return assets_manager_add(assets_manager(), buff);
 }
 
 TEST(ImageLoaderStb, gen) {

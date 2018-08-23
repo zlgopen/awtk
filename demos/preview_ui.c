@@ -25,7 +25,7 @@
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/utils.h"
-#include "resource.h"
+#include "assets.h"
 
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
@@ -48,7 +48,7 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
-#define DEFAULT_UI "./demos/res/raw/ui/main.xml"
+#define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
 #if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
@@ -62,14 +62,14 @@ int main(int argc, char* argv[]) {
   const char* filename = argc == 1 ? DEFAULT_UI : argv[1];
 #endif
 
-  if(stat("./demos/res/raw", &st) == 0) {
+  if (stat("./demos/assets/raw", &st) == 0) {
     tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
-  } else if(stat("./res/raw", &st) == 0) {
+  } else if (stat("./assets/raw", &st) == 0) {
     tk_init(320, 480, APP_SIMULATOR, NULL, "./");
   } else {
-    assert(!"not found resources!");
+    assert(!"not found assets!");
   }
-  resource_init();
+  assets_init();
   tk_ext_widgets_init();
 
   preview_ui(filename);

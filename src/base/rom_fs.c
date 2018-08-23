@@ -31,10 +31,10 @@
 
 #include "base/mem.h"
 #include "base/rom_fs.h"
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 rom_file_t* rom_fopen(const char* name, const char* mode) {
-  const resource_info_t* res = (const resource_info_t*)(name);
+  const asset_info_t* res = (const asset_info_t*)(name);
   return_value_if_fail(res != NULL && mode != NULL, NULL);
 
   return rom_fopen_buff(res->data, res->size);

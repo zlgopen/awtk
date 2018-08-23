@@ -22,7 +22,7 @@
 #ifndef TK_SUGGEST_WORDS_H
 #define TK_SUGGEST_WORDS_H
 
-#include "base/resource_manager.h"
+#include "base/assets_manager.h"
 
 BEGIN_C_DECLS
 
@@ -49,18 +49,18 @@ struct _suggest_words_t {
    */
   uint32_t words_nr;
 
-  const resource_info_t* res;
+  const asset_info_t* res;
 };
 
 /**
  * @method suggest_words_create
  * @annotation ["constructor"]
  * 创建联想字对象。
- * @param {resource_info_t*} res 数据资源。
+ * @param {asset_info_t*} res 数据资源。
  *
  * @return {suggest_words_t*} 返回联想字对象。
  */
-suggest_words_t* suggest_words_create(const resource_info_t* res);
+suggest_words_t* suggest_words_create(const asset_info_t* res);
 
 /**
  * @method suggest_words_find
