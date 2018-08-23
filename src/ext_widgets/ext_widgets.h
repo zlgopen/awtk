@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ext_widgets.h
  * Author: AWTK Develop Team
  * Brief:  ext widgets
@@ -33,7 +33,7 @@ BEGIN_C_DECLS
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_ext_widgets_init();
+ret_t tk_ext_widgets_init(void);
 
 END_C_DECLS
 
