@@ -33,7 +33,7 @@
   rr = pixel & 0xff;
 #define a_from_image8888(pixel) (pixel >> 24)
 #endif /*WITH_BITMAP_BGRA*/
-#define rgb_to_image8888(r, g, b) rgba_to_image8888(r, g, b, 0xff)
+#define rgb_to_image8888(r, g, b) rgba_to_image8888(r, g, b, (uint8_t)0xff)
 
 static inline uint32_t rgb565_to_8888(uint16_t pixel) {
   uint8_t r, g, b;
