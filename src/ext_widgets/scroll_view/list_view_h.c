@@ -22,8 +22,8 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/layout.h"
-#include "base/list_view_h.h"
-#include "base/scroll_view.h"
+#include "scroll_view/list_view_h.h"
+#include "scroll_view/scroll_view.h"
 
 static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child);
 

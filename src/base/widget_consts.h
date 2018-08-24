@@ -757,6 +757,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_COLOR_TILE "color_tile"
 
 /**
+ * @const WIDGET_TYPE_RICH_TEXT
+ *
+ */
+#define WIDGET_TYPE_RICH_TEXT "rich_text"
+
+/**
  * @enum widget_state_t
  * @annotation ["scriptable"]
  * @prefix WIDGET_

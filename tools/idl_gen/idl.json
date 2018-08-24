@@ -1611,54 +1611,6 @@
   },
   {
     "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建candidates对象",
-        "name": "candidates_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "properties": [],
-    "header": "base/candidates.h",
-    "desc": "输入法候选字词控件。",
-    "name": "candidates_t",
-    "parent": "widget_t"
-  },
-  {
-    "type": "class",
     "methods": [],
     "properties": [],
     "header": "base/canvas.h",
@@ -6260,109 +6212,6 @@
           }
         ],
         "annotation": {
-          "constructor": true
-        },
-        "desc": "创建keyboard对象",
-        "name": "keyboard_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": "关闭keyboard窗口。",
-        "name": "keyboard_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "theme",
-        "desc": "主题资源的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      },
-      {
-        "name": "open_anim_hint",
-        "desc": "打开时的动画名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      },
-      {
-        "name": "close_anim_hint",
-        "desc": "关闭时的动画名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      }
-    ],
-    "header": "base/keyboard.h",
-    "desc": "键盘。",
-    "name": "keyboard_t",
-    "parent": "widget_t"
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
           "constructor": true,
           "scriptable": true
         },
@@ -7136,401 +6985,6 @@
     "header": "base/lcd.h",
     "desc": "显示设备抽象基类。",
     "name": "lcd_t"
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建list_item对象",
-        "name": "list_item_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_item对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为list_item对象(供脚本语言使用)。",
-        "name": "list_item_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_item对象。"
-        }
-      }
-    ],
-    "properties": [],
-    "header": "base/list_item.h",
-    "desc": "list item控件。",
-    "name": "list_item_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建list_view_h对象",
-        "name": "list_view_h_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "item_width",
-            "desc": "列表项的宽度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置列表项的宽度。",
-        "name": "list_view_h_set_item_width",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "spacing",
-            "desc": "列表项的间距。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置列表项的间距。",
-        "name": "list_view_h_set_spacing",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_view_h对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为list_view_h对象(供脚本语言使用)。",
-        "name": "list_view_h_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_view_h对象。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "item_width",
-        "desc": "列表项的宽度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "spacing",
-        "desc": "间距。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/list_view_h.h",
-    "desc": "水平ListView控件。",
-    "name": "list_view_h_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建list_view对象",
-        "name": "list_view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "item_height",
-            "desc": "列表项的高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置列表项的高度。",
-        "name": "list_view_set_item_height",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "default_item_height",
-            "desc": "列表项的高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置列表项的缺省高度。",
-        "name": "list_view_set_default_item_height",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "auto_hide_scroll_bar",
-            "desc": "列表项的高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否自动隐藏滚动条。",
-        "name": "list_view_set_auto_hide_scroll_bar",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_view对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为list_view对象(供脚本语言使用)。",
-        "name": "list_view_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_view对象。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "item_height",
-        "desc": "列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "default_item_height",
-        "desc": "列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "auto_hide_scroll_bar",
-        "desc": "如果不需要滚动条时，自动隐藏滚动条。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/list_view.h",
-    "desc": "ListView控件。",
-    "name": "list_view_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    }
   },
   {
     "type": "class",
@@ -8351,840 +7805,6 @@
     "header": "base/rect.h",
     "desc": "矩形。包括一个x坐标、y坐标、宽度和高度。",
     "name": "rect_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)",
-        "name": "scroll_bar_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为scroll_bar对象(供脚本语言使用)。",
-        "name": "scroll_bar_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "scroll_bar对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建mobile风格的scroll_bar对象",
-        "name": "scroll_bar_create_mobile",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建desktop风格的scroll_bar对象",
-        "name": "scroll_bar_create_desktop",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "virtual_size",
-            "desc": "最大值。"
-          },
-          {
-            "type": "int32_t",
-            "name": "row",
-            "desc": "每一行的高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置参数。",
-        "name": "scroll_bar_set_params",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "value",
-            "desc": "值。"
-          },
-          {
-            "type": "int32_t",
-            "name": "duration",
-            "desc": "时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "滚动到指定的值。",
-        "name": "scroll_bar_scroll_to",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "value",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置值，并触发EVT_VALUE_CHANGED事件。",
-        "name": "scroll_bar_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "delta",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。",
-        "name": "scroll_bar_add_delta",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "delta",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。",
-        "name": "scroll_bar_scroll_delta",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          },
-          {
-            "type": "int32_t",
-            "name": "value",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置值，但不触发EVT_VALUE_CHANGED事件。",
-        "name": "scroll_bar_set_value_only",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_bar控件。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "判断是否是mobile风格的滚动条。",
-        "name": "scroll_bar_is_mobile",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示是mobile风格的，否则表示不是mobile风格的。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "virtual_size",
-        "desc": "虚拟宽度或高度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "value",
-        "desc": "当前的值。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "row",
-        "desc": "行的高度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "animatable",
-        "desc": "滚动时是否启用动画。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/scroll_bar.h",
-    "desc": "scroll_bar控件。",
-    "name": "scroll_bar_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建scroll_view对象",
-        "name": "scroll_view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "scroll_view对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为scroll_view对象(供脚本语言使用)。",
-        "name": "scroll_view_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "scroll_view对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "虚拟宽度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置虚拟宽度。",
-        "name": "scroll_view_set_virtual_w",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "虚拟高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置虚拟高度。",
-        "name": "scroll_view_set_virtual_h",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "xslidable",
-            "desc": "是否允许滑动。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否允许x方向滑动。",
-        "name": "scroll_view_set_xslidable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "yslidable",
-            "desc": "是否允许滑动。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否允许y方向滑动。",
-        "name": "scroll_view_set_yslidable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "xoffset",
-            "desc": "x偏移量。"
-          },
-          {
-            "type": "int32_t",
-            "name": "yoffset",
-            "desc": "y偏移量。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置偏移量。",
-        "name": "scroll_view_set_offset",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "xoffset_end",
-            "desc": "x偏移量。"
-          },
-          {
-            "type": "int32_t",
-            "name": "yoffset_end",
-            "desc": "y偏移量。"
-          },
-          {
-            "type": "int32_t",
-            "name": "duration",
-            "desc": "时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "滚动到指定的偏移量。",
-        "name": "scroll_view_scroll_to",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "virtual_w",
-        "desc": "虚拟宽度。",
-        "type": "wh_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "virtual_h",
-        "desc": "虚拟高度。",
-        "type": "wh_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "xoffset",
-        "desc": "x偏移量。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "yoffset",
-        "desc": "y偏移量。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "xslidable",
-        "desc": "是否允许x方向滑动。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "yslidable",
-        "desc": "是否允许y方向滑动。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/scroll_view.h",
-    "desc": "滚动视图。",
-    "name": "scroll_view_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建slide_view对象",
-        "name": "slide_view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为slide_view对象(供脚本语言使用)。",
-        "name": "slide_view_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "slide_view对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "auto_play",
-            "desc": "0表示禁止自动播放，非0表示自动播放时每一页播放的时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置为自动播放模式。",
-        "name": "slide_view_set_auto_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "index",
-            "desc": "当前页的序号。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置当前页的序号。",
-        "name": "slide_view_set_active",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "vertical",
-            "desc": "TRUE表示上下滑动，FALSE表示左右滑动。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置为上下滑动(缺省为左右滑动)。",
-        "name": "slide_view_set_vertical",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "properties": [
-      {
-        "name": "vertical",
-        "desc": "是否为上下滑动模式。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "auto_play",
-        "desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/slide_view.h",
-    "desc": "slide view。",
-    "name": "slide_view_t",
-    "parent": "widget_t",
     "annotation": {
       "scriptable": true
     }
@@ -14304,6 +12924,10 @@
       {
         "desc": "",
         "name": "WIDGET_TYPE_COLOR_TILE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_RICH_TEXT"
       }
     ],
     "header": "base/widget_consts.h",
@@ -17176,6 +15800,157 @@
           }
         ],
         "annotation": {
+          "constructor": true
+        },
+        "desc": "创建candidates对象",
+        "name": "candidates_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "keyboard/candidates.h",
+    "desc": "输入法候选字词控件。",
+    "name": "candidates_t",
+    "parent": "widget_t"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建keyboard对象",
+        "name": "keyboard_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "关闭keyboard窗口。",
+        "name": "keyboard_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "theme",
+        "desc": "主题资源的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "open_anim_hint",
+        "desc": "打开时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "close_anim_hint",
+        "desc": "关闭时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      }
+    ],
+    "header": "keyboard/keyboard.h",
+    "desc": "键盘。",
+    "name": "keyboard_t",
+    "parent": "widget_t"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
           "constructor": true,
           "scriptable": true
         },
@@ -17228,6 +16003,1235 @@
     "header": "rich_text/rich_text.h",
     "desc": "rich_text控件，实现简单的图文混排。",
     "name": "rich_text_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建list_item对象",
+        "name": "list_item_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_item对象(供脚本语言使用)。",
+        "name": "list_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_item对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "scroll_view/list_item.h",
+    "desc": "list item控件。",
+    "name": "list_item_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建list_view_h对象",
+        "name": "list_view_h_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "item_width",
+            "desc": "列表项的宽度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置列表项的宽度。",
+        "name": "list_view_h_set_item_width",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "spacing",
+            "desc": "列表项的间距。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置列表项的间距。",
+        "name": "list_view_h_set_spacing",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view_h对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_view_h对象(供脚本语言使用)。",
+        "name": "list_view_h_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_view_h对象。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "item_width",
+        "desc": "列表项的宽度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "spacing",
+        "desc": "间距。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "scroll_view/list_view_h.h",
+    "desc": "水平ListView控件。",
+    "name": "list_view_h_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建list_view对象",
+        "name": "list_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "item_height",
+            "desc": "列表项的高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置列表项的高度。",
+        "name": "list_view_set_item_height",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "default_item_height",
+            "desc": "列表项的高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置列表项的缺省高度。",
+        "name": "list_view_set_default_item_height",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "auto_hide_scroll_bar",
+            "desc": "列表项的高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否自动隐藏滚动条。",
+        "name": "list_view_set_auto_hide_scroll_bar",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_view对象(供脚本语言使用)。",
+        "name": "list_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_view对象。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "item_height",
+        "desc": "列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "default_item_height",
+        "desc": "列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_hide_scroll_bar",
+        "desc": "如果不需要滚动条时，自动隐藏滚动条。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "scroll_view/list_view.h",
+    "desc": "ListView控件。",
+    "name": "list_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)",
+        "name": "scroll_bar_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为scroll_bar对象(供脚本语言使用)。",
+        "name": "scroll_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "scroll_bar对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建mobile风格的scroll_bar对象",
+        "name": "scroll_bar_create_mobile",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建desktop风格的scroll_bar对象",
+        "name": "scroll_bar_create_desktop",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "virtual_size",
+            "desc": "最大值。"
+          },
+          {
+            "type": "int32_t",
+            "name": "row",
+            "desc": "每一行的高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置参数。",
+        "name": "scroll_bar_set_params",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          },
+          {
+            "type": "int32_t",
+            "name": "duration",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "滚动到指定的值。",
+        "name": "scroll_bar_scroll_to",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置值，并触发EVT_VALUE_CHANGED事件。",
+        "name": "scroll_bar_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "delta",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。",
+        "name": "scroll_bar_add_delta",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "delta",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。",
+        "name": "scroll_bar_scroll_delta",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置值，但不触发EVT_VALUE_CHANGED事件。",
+        "name": "scroll_bar_set_value_only",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_bar控件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断是否是mobile风格的滚动条。",
+        "name": "scroll_bar_is_mobile",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是mobile风格的，否则表示不是mobile风格的。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "virtual_size",
+        "desc": "虚拟宽度或高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "当前的值。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "row",
+        "desc": "行的高度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "animatable",
+        "desc": "滚动时是否启用动画。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "scroll_view/scroll_bar.h",
+    "desc": "scroll_bar控件。",
+    "name": "scroll_bar_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建scroll_view对象",
+        "name": "scroll_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "scroll_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为scroll_view对象(供脚本语言使用)。",
+        "name": "scroll_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "scroll_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "虚拟宽度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置虚拟宽度。",
+        "name": "scroll_view_set_virtual_w",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "虚拟高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置虚拟高度。",
+        "name": "scroll_view_set_virtual_h",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "xslidable",
+            "desc": "是否允许滑动。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否允许x方向滑动。",
+        "name": "scroll_view_set_xslidable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "yslidable",
+            "desc": "是否允许滑动。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否允许y方向滑动。",
+        "name": "scroll_view_set_yslidable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "xoffset",
+            "desc": "x偏移量。"
+          },
+          {
+            "type": "int32_t",
+            "name": "yoffset",
+            "desc": "y偏移量。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置偏移量。",
+        "name": "scroll_view_set_offset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "xoffset_end",
+            "desc": "x偏移量。"
+          },
+          {
+            "type": "int32_t",
+            "name": "yoffset_end",
+            "desc": "y偏移量。"
+          },
+          {
+            "type": "int32_t",
+            "name": "duration",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "滚动到指定的偏移量。",
+        "name": "scroll_view_scroll_to",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "virtual_w",
+        "desc": "虚拟宽度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "virtual_h",
+        "desc": "虚拟高度。",
+        "type": "wh_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "xoffset",
+        "desc": "x偏移量。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yoffset",
+        "desc": "y偏移量。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "xslidable",
+        "desc": "是否允许x方向滑动。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yslidable",
+        "desc": "是否允许y方向滑动。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "scroll_view/scroll_view.h",
+    "desc": "滚动视图。",
+    "name": "scroll_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建slide_view对象",
+        "name": "slide_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为slide_view对象(供脚本语言使用)。",
+        "name": "slide_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "slide_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "auto_play",
+            "desc": "0表示禁止自动播放，非0表示自动播放时每一页播放的时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置为自动播放模式。",
+        "name": "slide_view_set_auto_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "当前页的序号。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前页的序号。",
+        "name": "slide_view_set_active",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "vertical",
+            "desc": "TRUE表示上下滑动，FALSE表示左右滑动。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置为上下滑动(缺省为左右滑动)。",
+        "name": "slide_view_set_vertical",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "vertical",
+        "desc": "是否为上下滑动模式。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "slide_view/slide_view.h",
+    "desc": "slide view。",
+    "name": "slide_view_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true

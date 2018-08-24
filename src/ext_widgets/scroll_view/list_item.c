@@ -21,7 +21,7 @@
 
 #include "base/mem.h"
 #include "base/timer.h"
-#include "base/list_item.h"
+#include "scroll_view/list_item.h"
 
 static ret_t list_item_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);

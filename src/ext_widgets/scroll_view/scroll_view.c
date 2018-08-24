@@ -24,7 +24,7 @@
 #include "base/utils.h"
 #include "base/layout.h"
 #include "base/velocity.h"
-#include "base/scroll_view.h"
+#include "scroll_view/scroll_view.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "widget_animators/widget_animator_scroll.h"

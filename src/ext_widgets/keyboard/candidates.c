@@ -23,7 +23,7 @@
 #include "base/utf8.h"
 #include "base/utils.h"
 #include "base/button.h"
-#include "base/candidates.h"
+#include "keyboard/candidates.h"
 #include "base/input_method.h"
 #include "base/widget_vtable.h"
 

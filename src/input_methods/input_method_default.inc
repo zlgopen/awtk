@@ -22,7 +22,7 @@
 #include "base/mem.h"
 #include "base/idle.h"
 #include "base/window.h"
-#include "base/keyboard.h"
+#include "keyboard/keyboard.h"
 #include "suggest_words.inc"
 #include "base/input_method.h"
 #include "ui_loader/ui_builder_default.h"

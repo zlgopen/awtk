@@ -25,7 +25,7 @@
 #include "base/enums.h"
 #include "base/pages.h"
 #include "base/locale_info.h"
-#include "base/keyboard.h"
+#include "keyboard/keyboard.h"
 #include "base/input_method.h"
 #include "base/window_manager.h"
 

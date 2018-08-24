@@ -31,26 +31,18 @@
 #include "base/edit.h"
 #include "base/pages.h"
 #include "base/view.h"
+#include "base/popup.h"
 #include "base/dragger.h"
 #include "base/tab_button.h"
 #include "base/tab_control.h"
 #include "base/button_group.h"
 #include "base/tab_button_group.h"
-#include "base/keyboard.h"
-#include "base/candidates.h"
 #include "base/spin_box.h"
 #include "base/group_box.h"
-#include "base/scroll_bar.h"
-#include "base/scroll_view.h"
-#include "base/list_item.h"
-#include "base/list_view.h"
-#include "base/list_view_h.h"
-#include "base/slide_view.h"
 #include "base/dialog_title.h"
 #include "base/dialog_client.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
-#include "base/popup.h"
 #include "base/combo_box.h"
 #include "base/color_tile.h"
 #include "base/combo_box_item.h"
@@ -88,20 +80,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_COMBO_BOX, combo_box_create},
     {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
     {WIDGET_TYPE_POPUP, popup_create},
-    {WIDGET_TYPE_COLOR_TILE, color_tile_create},
-#ifndef WITH_LOW_RES
-    {WIDGET_TYPE_SCROLL_VIEW, scroll_view_create},
-    {WIDGET_TYPE_LIST_VIEW, list_view_create},
-    {WIDGET_TYPE_LIST_VIEW_H, list_view_h_create},
-    {WIDGET_TYPE_LIST_ITEM, list_item_create},
-    {WIDGET_TYPE_SCROLL_BAR, scroll_bar_create},
-    {WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop},
-    {WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile},
-
-    {WIDGET_TYPE_SLIDE_VIEW, slide_view_create},
-    {WIDGET_TYPE_KEYBOARD, keyboard_create},
-    {WIDGET_TYPE_CANDIDATES, candidates_create},
-#endif /*WITH_LOW_RES*/
+    {WIDGET_TYPE_COLOR_TILE, color_tile_create}
 };
 
 static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {

@@ -1,7 +1,7 @@
 ﻿#include <stdlib.h>
 #include "gtest/gtest.h"
 #include "base/button.h"
-#include "base/slide_view.h"
+#include "slide_view/slide_view.h"
 
 TEST(SlideView, basic) {
   widget_t* w = slide_view_create(NULL, 0, 0, 400, 300);

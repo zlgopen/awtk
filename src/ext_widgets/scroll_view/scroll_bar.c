@@ -24,7 +24,7 @@
 #include "base/button.h"
 #include "base/layout.h"
 #include "base/dragger.h"
-#include "base/scroll_bar.h"
+#include "scroll_view/scroll_bar.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"
 

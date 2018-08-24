@@ -23,7 +23,7 @@
 #include "base/utils.h"
 #include "base/timer.h"
 #include "base/easing.h"
-#include "base/slide_view.h"
+#include "slide_view/slide_view.h"
 #include "widget_animators/widget_animator_scroll.h"
 
 #define ANIMATING_TIME 500
