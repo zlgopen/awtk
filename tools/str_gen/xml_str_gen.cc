@@ -93,7 +93,7 @@ static XmlBuilder* builder_init(xml_str_builder_t& b, StrGen* sg) {
 }
 
 bool xml_to_str_gen(const char* input_file, StrGen* sg) {
-  return xml_buff_to_str_gen((char*)fs_read_file(input_file, NULL), sg);
+  return xml_buff_to_str_gen((char*)file_read(input_file, NULL), sg);
 }
 
 bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
@@ -128,7 +128,7 @@ bool xml_to_str_gen(const char* input_file, const char* output_dir, bool bin) {
 
     if (bin) {
       snprintf(path, MAX_PATH, "%s/%s.bin", output_dir, iter.c_str());
-      fs_write_file(path, output_buff, size);
+      file_write(path, output_buff, size);
     } else {
       snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
       output_res_c_source(path, ASSET_TYPE_STRINGS, 0, output_buff, size);

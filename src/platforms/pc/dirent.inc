@@ -17,7 +17,7 @@
 #define DT_REG 2
 
 #include "base/types_def.h"
- 
+
 struct dirent {
   long d_ino;
   uint8_t d_type;
@@ -103,14 +103,14 @@ struct dirent* readdir(DIR* d) {
   d->ret.d_namlen = strlen(d->ret.d_name);
 
   d->ret.d_type = 0;
-  if(fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
-	d->ret.d_type |= DT_REG;
+  if (fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+    d->ret.d_type |= DT_REG;
   }
-  
-  if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-	d->ret.d_type |= DT_DIR;
+
+  if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+    d->ret.d_type |= DT_DIR;
   }
-  
+
   return &d->ret;
 }
 

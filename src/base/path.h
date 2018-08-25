@@ -37,7 +37,7 @@ ret_t path_cwd(char* result, int32_t size);
 ret_t path_exe(char* result, int32_t size);
 ret_t path_app_root(char* result, int32_t size);
 
-ret_t path_exist(const char* path);
+bool_t path_exist(const char* path);
 ret_t path_create(const char* path);
 ret_t path_remove(const char* path);
 

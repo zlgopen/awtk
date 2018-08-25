@@ -8,11 +8,11 @@ TEST(Fs, basic) {
   const char* str = "hello world";
   const char* filename = "test.bin";
 
-  fs_write_file(filename, str, strlen(str));
-  char* ret = (char*)fs_read_file(filename, &size);
-  ASSERT_EQ(fs_read_file_part(filename, buff, sizeof(buff), 0), strlen(str));
+  file_write(filename, str, strlen(str));
+  char* ret = (char*)file_read(filename, &size);
+  ASSERT_EQ(file_read_part(filename, buff, sizeof(buff), 0), strlen(str));
   ASSERT_EQ(strcmp(ret, str), 0);
   ASSERT_EQ(size, strlen(str));
-  fs_unlink(filename);
+  file_remove(filename);
   TKMEM_FREE(ret);
 }

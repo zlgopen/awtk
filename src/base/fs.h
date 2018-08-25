@@ -127,11 +127,12 @@ ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]);
 fs_t* os_fs(void);
 
 /*wrapper*/
-ret_t fs_unlink(const char* name);
-int32_t fs_file_size(const char* name);
-void* fs_read_file(const char* name, uint32_t* size);
-int32_t fs_read_file_part(const char* name, void* buff, uint32_t size, uint32_t offset);
-ret_t fs_write_file(const char* name, const void* buff, uint32_t size);
+bool_t file_exist(const char* name);
+ret_t file_remove(const char* name);
+int32_t file_get_size(const char* name);
+void* file_read(const char* name, uint32_t* size);
+int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t offset);
+ret_t file_write(const char* name, const void* buff, uint32_t size);
 
 END_C_DECLS
 

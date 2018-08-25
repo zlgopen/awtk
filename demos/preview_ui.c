@@ -35,7 +35,7 @@ widget_t* preview_ui(const char* filename) {
   uint32_t size = 0;
   char name[NAME_LEN + 1];
   ui_builder_t* builder = NULL;
-  uint8_t* content = (uint8_t*)fs_read_file(filename, &size);
+  uint8_t* content = (uint8_t*)file_read(filename, &size);
   ui_loader_t* loader = strstr(filename, ".bin") != NULL ? default_ui_loader() : xml_ui_loader();
 
   filename_to_name(filename, name, NAME_LEN);

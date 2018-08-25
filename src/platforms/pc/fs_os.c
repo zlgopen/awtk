@@ -11,7 +11,7 @@
 
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
-#endif/*__APPLE__*/
+#endif /*__APPLE__*/
 
 #include <stdio.h>
 #include <sys/stat.h>

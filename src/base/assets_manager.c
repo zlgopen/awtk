@@ -42,7 +42,7 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   info->is_in_rom = FALSE;
   strncpy(info->name, name, NAME_LEN);
 
-  ENSURE(fs_read_file_part(path, info->data, size, 0) == size);
+  ENSURE(file_read_part(path, info->data, size, 0) == size);
 
   return info;
 }
@@ -58,15 +58,15 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
   switch (type) {
     case ASSET_TYPE_FONT: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/fonts/%s.ttf", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_FONT_TTF, size, path, name);
         break;
       }
 
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/fonts/%s.bin", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_FONT_BMP, size, path, name);
         break;
       }
@@ -75,8 +75,8 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_STYLE: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/styles/%s.bin", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_STYLE, size, path, name);
         break;
       }
@@ -84,8 +84,8 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_STRINGS: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/strings/%s.bin", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_STRINGS, size, path, name);
       }
       break;
@@ -99,16 +99,16 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       }
 
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/images/%s/%s.png", app_root, ratio, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_IMAGE_PNG, size, path, name);
         /*not cache png file raw data*/
         return info;
       }
 
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/images/%s/%s.jpg", app_root, ratio, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_IMAGE_JPG, size, path, name);
         /*not cache png file jpg data*/
         return info;
@@ -118,8 +118,8 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_UI: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/ui/%s.bin", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_UI_BIN, size, path, name);
         /*not cache ui*/
         return info;
@@ -128,8 +128,8 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_XML: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/xml/%s.xml", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_XML, size, path, name);
         /*not cache xml*/
         return info;
@@ -138,8 +138,8 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_DATA: {
       tk_snprintf(path, MAX_PATH, "%s/assets/raw/data/%s.bin", app_root, name);
-      size = fs_file_size(path);
-      if (size > 0) {
+      if (file_exist(path)) {
+        size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_DATA, size, path, name);
         break;
       }

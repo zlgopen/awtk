@@ -143,11 +143,11 @@ ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return fs->get_cwd(fs, path);
 }
 
-int32_t fs_file_size(const char* name) {
+int32_t file_get_size(const char* name) {
   return fs_get_file_size(os_fs(), name);
 }
 
-int32_t fs_read_file_part(const char* name, void* buff, uint32_t size, uint32_t offset) {
+int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t offset) {
   int32_t ret = 0;
   fs_file_t* fp = NULL;
   return_value_if_fail(name != NULL && buff != NULL, -1);
@@ -163,15 +163,15 @@ int32_t fs_read_file_part(const char* name, void* buff, uint32_t size, uint32_t 
   return ret;
 }
 
-void* fs_read_file(const char* name, uint32_t* size) {
+void* file_read(const char* name, uint32_t* size) {
   uint8_t* buff = NULL;
-  int32_t len = fs_file_size(name);
+  int32_t len = file_get_size(name);
   return_value_if_fail(name != NULL && len > 0, NULL);
 
   buff = (uint8_t*)TKMEM_ALLOC(len + 1);
   return_value_if_fail(buff != NULL, NULL);
 
-  if (fs_read_file_part(name, buff, len, 0) == len) {
+  if (file_read_part(name, buff, len, 0) == len) {
     if (size != NULL) {
       *size = len;
     }
@@ -188,7 +188,7 @@ void* fs_read_file(const char* name, uint32_t* size) {
   }
 }
 
-ret_t fs_write_file(const char* name, const void* buff, uint32_t size) {
+ret_t file_write(const char* name, const void* buff, uint32_t size) {
   ret_t ret = RET_OK;
   fs_file_t* fp = NULL;
   return_value_if_fail(name != NULL && buff != NULL, RET_BAD_PARAMS);
@@ -205,10 +205,14 @@ ret_t fs_write_file(const char* name, const void* buff, uint32_t size) {
   return RET_OK;
 }
 
-ret_t fs_unlink(const char* name) {
+ret_t file_remove(const char* name) {
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
-  fs_remove_file(os_fs(), name);
+  return fs_remove_file(os_fs(), name);
+}
 
-  return RET_OK;
+bool_t file_exist(const char* name) {
+  return_value_if_fail(name != NULL, FALSE);
+
+  return fs_file_exist(os_fs(), name);
 }

@@ -471,7 +471,7 @@ static const char* strtrim(char* str) {
 static char* read_text_file(const char* filename) {
   uint32_t size = 0;
 
-  return (char*)fs_read_file(filename, &size);
+  return (char*)file_read(filename, &size);
 }
 
 void xml_parser_parse_file(XmlParser* thiz, const char* filename) {
