@@ -13,8 +13,14 @@
  *-------------------------------------------------------------------------
  */
 
+#define DT_DIR 1
+#define DT_REG 2
+
+#include "base/types_def.h"
+ 
 struct dirent {
   long d_ino;
+  uint8_t d_type;
   unsigned short d_reclen;
   unsigned short d_namlen;
   char d_name[MAX_PATH];
@@ -70,6 +76,9 @@ DIR* opendir(const char* dirname) {
   return d;
 }
 
+void rewinddir(DIR* d) {
+}
+
 struct dirent* readdir(DIR* d) {
   WIN32_FIND_DATA fd;
 
@@ -86,7 +95,6 @@ struct dirent* readdir(DIR* d) {
         errno = 0;
         return NULL;
       }
-      _dosmaperr(GetLastError());
       return NULL;
     }
   }
@@ -94,6 +102,15 @@ struct dirent* readdir(DIR* d) {
                                         * long */
   d->ret.d_namlen = strlen(d->ret.d_name);
 
+  d->ret.d_type = 0;
+  if(fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+	d->ret.d_type |= DT_REG;
+  }
+  
+  if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+	d->ret.d_type |= DT_DIR;
+  }
+  
   return &d->ret;
 }
 

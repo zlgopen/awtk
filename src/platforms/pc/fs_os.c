@@ -4,7 +4,8 @@
 #elif defined(WIN32)
 #include <windows.h>
 #define unlink _unlink
-#define rename _rename
+#define rename MoveFileA
+#define ftruncate _chsize
 #include "./dirent.inc"
 #endif
 
@@ -195,12 +196,11 @@ ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
 #if defined(LINUX)
   readlink("/proc/self/exe", path, MAX_PATH);
 #elif defined(WIN32)
-  GetModuleFileNameA(GetModuleHandle(NULL), path, MAX_PATH)
+  GetModuleFileNameA(GetModuleHandle(NULL), path, MAX_PATH);
 #elif defined(__APPLE__)
   _NSGetExecutablePath(path, &size);
   assert(size <= MAX_PATH);
   path[size] = '\0';
-#else
 #endif
   (void)size;
 
