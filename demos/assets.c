@@ -1,6 +1,8 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
 #ifndef WITH_FS_RES
+#include "assets/inc/strings/en_US.data"
+#include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/styles/button.data"
 #include "assets/inc/styles/calibration.data"
 #include "assets/inc/styles/color.data"
@@ -313,6 +315,8 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_unchecked);
   assets_manager_add(rm, image_unmuted);
   assets_manager_add(rm, image_warn);
+  assets_manager_add(rm, strings_en_US);
+  assets_manager_add(rm, strings_zh_CN);
   assets_manager_add(rm, style_button);
   assets_manager_add(rm, style_calibration);
   assets_manager_add(rm, style_color);

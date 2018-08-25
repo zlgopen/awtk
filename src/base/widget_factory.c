@@ -80,8 +80,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_COMBO_BOX, combo_box_create},
     {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
     {WIDGET_TYPE_POPUP, popup_create},
-    {WIDGET_TYPE_COLOR_TILE, color_tile_create}
-};
+    {WIDGET_TYPE_COLOR_TILE, color_tile_create}};
 
 static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {
   uint32_t i = 0;
