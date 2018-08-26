@@ -160,6 +160,12 @@ typedef enum _lcd_orientation_t {
 #define MAX_PATH 255
 #endif /*MAX_PATH*/
 
+#if defined(WIN32)
+#define PATH_SEP '\\'
+#else
+#define PATH_SEP '/'
+#endif /*PATH_SEP*/
+
 #ifdef NDEBUG
 #define ENSURE(p) p
 #define goto_error_if_fail(p) \

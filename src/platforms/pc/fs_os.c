@@ -189,7 +189,7 @@ ret_t fs_os_get_disk_info(fs_t* fs, int32_t* free_kb, int32_t* total_kb) {
 }
 
 ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
-  uint32_t size = 0;
+  uint32_t size = MAX_PATH;
   (void)fs;
   *path = '\0';
 

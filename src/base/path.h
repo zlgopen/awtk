@@ -33,9 +33,9 @@ ret_t path_normalize(const char* path, char* result, int32_t size);
 ret_t path_abs(const char* path, char* result, int32_t size);
 ret_t path_build(char* result, int32_t size, ...);
 
-ret_t path_cwd(char* result, int32_t size);
-ret_t path_exe(char* result, int32_t size);
-ret_t path_app_root(char* result, int32_t size);
+ret_t path_cwd(char path[MAX_PATH + 1]);
+ret_t path_exe(char path[MAX_PATH + 1]);
+ret_t path_app_root(char path[MAX_PATH + 1]);
 
 bool_t path_exist(const char* path);
 ret_t path_create(const char* path);
