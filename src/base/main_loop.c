@@ -99,10 +99,14 @@ ret_t main_loop_sleep(main_loop_t* l) {
     }
 
     sleep_time = tk_min(next_timer, TK_MAX_SLEEP_TIME);
+#ifdef WITH_SDL
+  } else if (gap <= 8) {
+    sleep_time = 8;
+#endif /*WITH_SDL*/
   }
 
   sleep_time = tk_min(least_sleep_time, sleep_time);
-  if (sleep_ms >= 0) {
+  if (sleep_time >= 0) {
     sleep_ms(sleep_time);
   }
   l->last_loop_time = time_now_ms();
