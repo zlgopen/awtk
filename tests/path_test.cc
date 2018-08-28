@@ -65,6 +65,9 @@ TEST(Path, normalize) {
 
   ASSERT_EQ(path_normalize("/a/b", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/b"));
+  
+  ASSERT_EQ(path_normalize("/a/b.exe", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), normalPath("/a/b.exe"));
 
   ASSERT_EQ(path_normalize("/a/./b", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/b"));

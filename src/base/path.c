@@ -103,18 +103,17 @@ ret_t path_exe(char path[MAX_PATH + 1]) {
 }
 
 ret_t path_app_root(char path[MAX_PATH + 1]) {
-  if (fs_get_exe(os_fs(), path) == RET_OK) {
-    char* p = strrchr(path, PATH_SEP);
+  char* p = NULL;
+  char exe_path[MAX_PATH + 1];
+  if (fs_get_exe(os_fs(), exe_path) == RET_OK) {
+    path_normalize(exe_path, path, MAX_PATH + 1);
+    p = strrchr(path, PATH_SEP);
     if (p != NULL) {
       *p = '\0';
       p = strrchr(path, PATH_SEP);
-      if (strcmp(p, "/bin") == 0 || strcmp(p, "\\bin") == 0) {
-        *p = '\0';
-        p--;
-
-        while ((IS_PATH_SEP(*p) || *p == '.') && p > path) {
+      if (p != NULL) {
+        if (strcmp(p + 1, "bin") == 0) {
           *p = '\0';
-          p--;
         }
       }
 
@@ -157,6 +156,8 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
             d = result;
           }
           s += 3;
+        } else {
+          *d++ = *s++;
         }
         break;
       }
