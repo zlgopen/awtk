@@ -20,8 +20,9 @@
  */
 
 #include "awtk.h"
-#include "base/mem.h"
 #include "assets.h"
+#include "base/mem.h"
+#include "base/path.h"
 #include "base/system_info.h"
 
 ret_t application_init(void);
@@ -29,13 +30,21 @@ ret_t application_init(void);
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
   tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
-#elif defined(WIN32)
+#else
+
+#if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-  tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
 #else
 int main(void) {
-  tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
+#endif
+  char res_root[MAX_PATH + 1];
+  char app_root[MAX_PATH + 1];
+  path_app_root(app_root);
+  memset(res_root, 0x00, sizeof(res_root));
+
+  path_build(res_root, MAX_PATH, app_root, "demos", NULL);
+  tk_init(320, 480, APP_SIMULATOR, NULL, res_root);
 #endif
 
 //#define WITH_LCD_PORTRAIT 1
