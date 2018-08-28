@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ext_widgets.h
  * Author: AWTK Develop Team
  * Brief:  ext widgets

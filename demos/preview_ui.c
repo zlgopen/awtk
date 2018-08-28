@@ -21,7 +21,6 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
-#include <sys/stat.h>
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/utils.h"
@@ -48,27 +47,82 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
+#include "base/path.h"
+
 #define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
 #if defined(WIN32)
 #include <windows.h>
+
+#define MAX_ARGV 5
+void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* argc) {
+  int32_t i = 1;
+  char* p = lpcmdline;
+
+  argv[0] = "preview.exe";
+  for (i = 1; i < MAX_ARGV; i++) {
+    argv[i] = p;
+    p = strchr(p, ' ');
+    if (p == NULL) {
+      break;
+    }
+
+    while (*p == ' ') {
+      *p++ = '\0';
+    }
+  }
+  *argc = i + 1;
+
+  return;
+}
+
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
+  str_t str;
   int argc = 1;
-  struct stat st;
-  const char* filename = (lpcmdline && *lpcmdline) ? lpcmdline : DEFAULT_UI;
+  char* argv[MAX_ARGV];
+  str_init(&str, 1024);
+  str_set(&str, lpcmdline);
+  command_line_to_argv(str.str, argv, &argc);
 #else
 #include "base/mem.h"
 int main(int argc, char* argv[]) {
-  struct stat st;
-  const char* filename = argc == 1 ? DEFAULT_UI : argv[1];
 #endif
+  int32_t w = 320;
+  int32_t h = 480;
+  const char* filename = DEFAULT_UI;
 
-  if (stat("./demos/assets/raw", &st) == 0) {
-    tk_init(320, 480, APP_SIMULATOR, NULL, "./demos");
-  } else if (stat("./assets/raw", &st) == 0) {
-    tk_init(320, 480, APP_SIMULATOR, NULL, "./");
+  if (argc > 1) {
+    filename = argv[1];
+  } else {
+    log_debug("%s ui_file [w] [h]\n", argv[0]);
+#ifdef WIN32
+    assert(!"no ui file provided");
+#endif /*WIN32*/
+    exit(0);
+  }
+
+  if (argc > 2) {
+    int32_t ww = atoi(argv[2]);
+    if (ww > 0) {
+      w = ww;
+    }
+  }
+
+  if (argc > 3) {
+    int32_t hh = atoi(argv[3]);
+    if (h > 0) {
+      h = hh;
+    }
+  }
+
+  log_debug("%s %s %d %d\n", argv[0], argv[1], w, h);
+  if (path_exist("./demos/assets/raw")) {
+    tk_init(w, h, APP_SIMULATOR, NULL, "./demos");
+  } else if (path_exist("./assets/raw")) {
+    tk_init(w, h, APP_SIMULATOR, NULL, "./");
   } else {
     assert(!"not found assets!");
   }
+
   assets_init();
   tk_ext_widgets_init();
 
