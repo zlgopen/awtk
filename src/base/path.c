@@ -209,6 +209,18 @@ ret_t path_build(char* result, int32_t size, ...) {
   return RET_OK;
 }
 
+ret_t path_replace_basename(char* result, int32_t size, const char* filename,
+                            const char* basename) {
+  char dirname[MAX_PATH + 1];
+  return_value_if_fail(result != NULL && filename != NULL && basename != NULL, RET_BAD_PARAMS);
+
+  path_normalize(filename, result, size);
+  path_dirname(result, dirname, MAX_PATH);
+
+  dirname[MAX_PATH] = '\0';
+  return path_build(result, size, dirname, basename, NULL);
+}
+
 ret_t path_create(const char* path) {
   /*TODO*/
   return RET_FAIL;
