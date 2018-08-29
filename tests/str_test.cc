@@ -104,3 +104,48 @@ TEST(Str, value) {
 
   str_reset(s);
 }
+
+TEST(Str, insert) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_insert(s, 0, "abc"), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_insert(s, 0, "abc"), RET_OK);
+  ASSERT_EQ(string(s->str), "abcabc");
+
+  ASSERT_EQ(str_insert(s, 1, "A"), RET_OK);
+  ASSERT_EQ(string(s->str), "aAbcabc");
+
+  ASSERT_EQ(str_insert(s, 3, "B"), RET_OK);
+  ASSERT_EQ(string(s->str), "aAbBcabc");
+
+  ASSERT_EQ(str_insert(s, 8, "C"), RET_OK);
+  ASSERT_EQ(string(s->str), "aAbBcabcC");
+
+  str_reset(s);
+}
+
+TEST(Str, remove) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_remove(s, 0, 3), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_remove(s, 0, 1), RET_OK);
+  ASSERT_EQ(string(s->str), "bc");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_remove(s, 1, 1), RET_OK);
+  ASSERT_EQ(string(s->str), "ac");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_remove(s, 2, 1), RET_OK);
+  ASSERT_EQ(string(s->str), "ab");
+
+  str_reset(s);
+}

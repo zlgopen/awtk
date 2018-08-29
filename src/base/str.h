@@ -33,17 +33,17 @@ BEGIN_C_DECLS
  */
 typedef struct _str_t {
   /**
-   * @property {uint16_t} size
+   * @property {uint32_t} size
    * @annotation ["readable"]
    * 长度。
    */
-  uint16_t size;
+  uint32_t size;
   /**
-   * @property {uint16_t} capacity
+   * @property {uint32_t} capacity
    * @annotation ["readable"]
    * 容量。
    */
-  uint16_t capacity;
+  uint32_t capacity;
   /**
    * @property {char*} str
    * @annotation ["readable"]
@@ -57,11 +57,11 @@ typedef struct _str_t {
  * 初始化字符串对象。
  * @annotation ["constructor"]
  * @param {str_t*} str str对象。
- * @param {uint16_t} capacity 初始容量。
+ * @param {uint32_t} capacity 初始容量。
  *
  * @return {str_t*} str对象本身。
  */
-str_t* str_init(str_t* str, uint16_t capacity);
+str_t* str_init(str_t* str, uint32_t capacity);
 
 /**
  * @method str_eq
@@ -88,11 +88,11 @@ ret_t str_set(str_t* str, const char* text);
  * 设置字符串。
  * @param {str_t*} str str对象。
  * @param {char*} text 要设置的字符串。
- * @param {uint16_t} len 长度。
+ * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_set_with_len(str_t* str, const char* text, uint16_t len);
+ret_t str_set_with_len(str_t* str, const char* text, uint32_t len);
 
 /**
  * @method str_append
@@ -103,6 +103,51 @@ ret_t str_set_with_len(str_t* str, const char* text, uint16_t len);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_append(str_t* str, const char* text);
+
+/**
+ * @method str_append_with_len
+ * 追加字符串。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要追加的字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_with_len(str_t* str, const char* text, uint32_t len);
+
+/**
+ * @method str_insert
+ * 插入子字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} offset 偏移量。
+ * @param {char*} text 要插入的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_insert(str_t* str, uint32_t offset, const char* text);
+
+/**
+ * @method str_insert_with_len
+ * 插入子字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} offset 偏移量。
+ * @param {char*} text 要插入的字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_insert_with_len(str_t* str, uint32_t offset, const char* text, uint32_t len);
+
+/**
+ * @method str_remove
+ * 删除子字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} offset 偏移量。
+ * @param {uint32_t} len 长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_remove(str_t* str, uint32_t offset, uint32_t len);
 
 /**
  * @method str_append_char
@@ -123,6 +168,16 @@ ret_t str_append_char(str_t* str, char c);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_decode_xml_entity(str_t* str, const char* text);
+
+/**
+ * @method str_decode_xml_entity_with_len
+ * 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要解码的XML文本。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len);
 
 /**

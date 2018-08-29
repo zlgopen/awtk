@@ -26,7 +26,7 @@
 #include "base/value.h"
 #include "base/tokenizer.h"
 
-static ret_t str_extend(str_t* str, uint16_t capacity) {
+static ret_t str_extend(str_t* str, uint32_t capacity) {
   if (capacity < str->capacity) {
     return RET_OK;
   }
@@ -43,7 +43,7 @@ static ret_t str_extend(str_t* str, uint16_t capacity) {
   return RET_OK;
 }
 
-str_t* str_init(str_t* str, uint16_t capacity) {
+str_t* str_init(str_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, NULL);
 
   memset(str, 0x00, sizeof(str_t));
@@ -55,8 +55,8 @@ ret_t str_set(str_t* str, const char* text) {
   return str_set_with_len(str, text, 0xffff);
 }
 
-ret_t str_set_with_len(str_t* str, const char* text, uint16_t len) {
-  uint16_t size = 0;
+ret_t str_set_with_len(str_t* str, const char* text, uint32_t len) {
+  uint32_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
   size = strlen(text);
@@ -71,17 +71,22 @@ ret_t str_set_with_len(str_t* str, const char* text, uint16_t len) {
   return RET_OK;
 }
 
-ret_t str_append(str_t* str, const char* text) {
-  uint16_t size = 0;
+ret_t str_append_with_len(str_t* str, const char* text, uint32_t size) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  size = strlen(text);
   return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_BAD_PARAMS);
 
-  strcpy(str->str + str->size, text);
+  memcpy(str->str + str->size, text, size);
   str->size += size;
+  str->str[str->size] = '\0';
 
   return RET_OK;
+}
+
+ret_t str_append(str_t* str, const char* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return str_append_with_len(str, text, strlen(text));
 }
 
 ret_t str_append_char(str_t* str, char c) {
@@ -398,6 +403,34 @@ ret_t str_to_upper(str_t* s) {
   for (i = 0; i < n; i++) {
     p[i] = toupper(p[i]);
   }
+
+  return RET_OK;
+}
+
+ret_t str_insert_with_len(str_t* s, uint32_t offset, const char* text, uint32_t size) {
+  return_value_if_fail(s != NULL && offset <= s->size && text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(s, s->size + size + 1) == RET_OK, RET_OOM);
+
+  memmove(s->str + offset + size, s->str + offset, strlen(s->str + offset));
+  memcpy(s->str + offset, text, size);
+  s->size += size;
+  s->str[s->size] = '\0';
+
+  return RET_OK;
+}
+
+ret_t str_insert(str_t* s, uint32_t offset, const char* text) {
+  return_value_if_fail(s != NULL && offset <= s->size && text != NULL, RET_BAD_PARAMS);
+
+  return str_insert_with_len(s, offset, text, strlen(text));
+}
+
+ret_t str_remove(str_t* s, uint32_t offset, uint32_t size) {
+  return_value_if_fail(s != NULL && (offset + size) <= s->size && size > 0, RET_BAD_PARAMS);
+
+  memmove(s->str + offset, s->str + offset + size, strlen(s->str + offset + size));
+  s->size -= size;
+  s->str[s->size] = '\0';
 
   return RET_OK;
 }
