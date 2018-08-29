@@ -763,6 +763,30 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_RICH_TEXT "rich_text"
 
 /**
+ * @const WIDGET_TYPE_APP_BAR
+ *
+ */
+#define WIDGET_TYPE_APP_BAR "app_bar"
+
+/**
+ * @const WIDGET_TYPE_GRID
+ *
+ */
+#define WIDGET_TYPE_GRID "grid"
+
+/**
+ * @const WIDGET_TYPE_ROW
+ *
+ */
+#define WIDGET_TYPE_ROW "row"
+
+/**
+ * @const WIDGET_TYPE_COLUMN
+ *
+ */
+#define WIDGET_TYPE_COLUMN "column"
+
+/**
  * @enum widget_state_t
  * @annotation ["scriptable"]
  * @prefix WIDGET_

@@ -490,7 +490,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
         canvas_draw_icon_in_rect(c, &img, &r);
 
         canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
-        r = rect_init(widget->h, margin, widget->w - widget->h - margin, h);
+        r = rect_init(widget->h + margin, margin, widget->w - widget->h - 2 * margin, h);
       }
       canvas_draw_text_in_rect(c, text->str, text->size, &r);
     } else {

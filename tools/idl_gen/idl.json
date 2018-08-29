@@ -109,6 +109,77 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建app_bar对象",
+        "name": "app_bar_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "app_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为app_bar对象(供脚本语言使用)。",
+        "name": "app_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "app_bar对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/app_bar.h",
+    "desc": "app_bar。一个简单的容器控件，一般在窗口的顶部。它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。",
+    "name": "app_bar_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "uint16_t*",
             "name": "capacity",
             "desc": "数组的初始容量。"
@@ -1925,6 +1996,77 @@
     "header": "base/color_tile.h",
     "desc": "色块控件。",
     "name": "color_tile_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建column对象",
+        "name": "column_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "column对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为column对象(供脚本语言使用)。",
+        "name": "column_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "column对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/column.h",
+    "desc": "column。一个简单的容器控件，垂直排列一组控件。它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。",
+    "name": "column_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true
@@ -4784,6 +4926,77 @@
     "header": "base/font_manager.h",
     "desc": "字体管理器。(如果使用nanovg，字体由nanovg内部管理)",
     "name": "font_manager_t"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建grid对象",
+        "name": "grid_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "grid对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为grid对象(供脚本语言使用)。",
+        "name": "grid_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "grid对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/grid.h",
+    "desc": "grid。一个简单的容器控件，用于网格排列一组控件。它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。",
+    "name": "grid_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",
@@ -7844,6 +8057,77 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建row对象",
+        "name": "row_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "row对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为row对象(供脚本语言使用)。",
+        "name": "row_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "row对象。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/row.h",
+    "desc": "row。一个简单的容器控件，用于水平排列一组控件。它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。",
+    "name": "row_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建slider对象",
         "name": "slider_create",
         "return": {
@@ -8143,7 +8427,7 @@
             "desc": "str对象。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "capacity",
             "desc": "初始容量。"
           }
@@ -8213,9 +8497,9 @@
             "desc": "要设置的字符串。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "len",
-            "desc": "长度。"
+            "desc": "字符串长度。"
           }
         ],
         "annotation": {},
@@ -8242,6 +8526,115 @@
         "annotation": {},
         "desc": "追加字符串。",
         "name": "str_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "要追加的字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加字符串。",
+        "name": "str_append_with_len",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "要插入的字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "插入子字符串。",
+        "name": "str_insert",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "要插入的字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "插入子字符串。",
+        "name": "str_insert_with_len",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除子字符串。",
+        "name": "str_remove",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -8284,6 +8677,32 @@
         "annotation": {},
         "desc": "对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。",
         "name": "str_decode_xml_entity",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "要解码的XML文本。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。",
+        "name": "str_decode_xml_entity_with_len",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -8599,7 +9018,7 @@
       {
         "name": "size",
         "desc": "长度。",
-        "type": "uint16_t",
+        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
@@ -8607,7 +9026,7 @@
       {
         "name": "capacity",
         "desc": "容量。",
-        "type": "uint16_t",
+        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
@@ -12928,6 +13347,22 @@
       {
         "desc": "",
         "name": "WIDGET_TYPE_RICH_TEXT"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_APP_BAR"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_GRID"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_ROW"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_COLUMN"
       }
     ],
     "header": "base/widget_consts.h",
@@ -14540,6 +14975,32 @@
         }
       },
       {
+        "name": "name",
+        "desc": "控件名字。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "tr_text",
+        "desc": "如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
         "name": "style_name",
         "desc": "Style Type。",
         "type": "char*",
@@ -14574,32 +15035,6 @@
           "get_prop": true,
           "readable": true,
           "writable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "name",
-        "desc": "控件名字。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "tr_text",
-        "desc": "如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
           "persitent": true,
           "design": true,
           "scriptable": true

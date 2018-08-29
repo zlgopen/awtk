@@ -121,6 +121,18 @@ struct _widget_t {
    */
   wh_t h;
   /**
+   * @property {char*} name
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 控件名字。
+   */
+  char* name;
+  /**
+   * @property {char*} tr_text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。
+   */
+  char* tr_text;
+  /**
    * @property {char*} style_name
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * Style Type。
@@ -138,18 +150,6 @@ struct _widget_t {
    * 是否可见。
    */
   uint8_t visible : 1;
-  /**
-   * @property {char*} name
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 控件名字。
-   */
-  char* name;
-  /**
-   * @property {char*} tr_text
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。
-   */
-  char* tr_text;
   /**
    * @property {bool_t} focused
    * @annotation ["readable"]
