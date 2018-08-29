@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
@@ -21,6 +21,7 @@
 
 #include "base/fs.h"
 #include "base/mem.h"
+#include "base/path.h"
 #include "base/utils.h"
 
 const char* tk_skip_to_num(const char* str) {
@@ -388,7 +389,6 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
 
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_t ss;
-  char dirname[MAX_PATH + 1];
   char subfilename[MAX_PATH + 1];
 
   const char* start = data;

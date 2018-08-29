@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fs.h
  * Author: AWTK Develop Team
  * Brief:  simple fs api
@@ -202,7 +202,7 @@ ret_t file_write(const char* name, const void* buff, uint32_t size) {
 
   fs_file_close(fp);
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t file_remove(const char* name) {
