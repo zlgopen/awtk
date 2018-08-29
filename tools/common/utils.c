@@ -29,6 +29,7 @@
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/enums.h"
+#include "base/path.h"
 #include "base/assets_manager.h"
 
 char* read_file(const char* file_name, uint32_t* length) {

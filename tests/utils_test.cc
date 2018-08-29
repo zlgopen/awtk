@@ -142,3 +142,16 @@ TEST(Utils, sscanf) {
   ASSERT_EQ(g, 0x34);
   ASSERT_EQ(b, 0x56);
 }
+
+TEST(Utils, xml_file_expand_read) {
+  str_t s;
+  str_init(&s, 0);
+
+  ASSERT_EQ(xml_file_expand_read("./tests/testdata/main.xml", &s), RET_OK);
+  ASSERT_EQ(string(s.str), "<window><button />\n<label />\n</window>\n");
+
+  ASSERT_EQ(xml_file_expand_read("./tests/testdata/button.xml", &s), RET_OK);
+  ASSERT_EQ(string(s.str), "<button />\n");
+
+  str_reset(&s);
+}

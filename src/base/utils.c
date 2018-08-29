@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/fs.h"
 #include "base/mem.h"
 #include "base/utils.h"
 
@@ -379,6 +380,71 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
   if (p != NULL) {
     *p = '\0';
   }
+
+  return RET_OK;
+}
+
+#define INCLUDE_XML "<include"
+
+ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
+  str_t ss;
+  char dirname[MAX_PATH + 1];
+  char subfilename[MAX_PATH + 1];
+
+  const char* start = data;
+  const char* p = strstr(start, INCLUDE_XML);
+
+  str_init(&ss, 1024);
+  while (p != NULL) {
+    str_set(&ss, "");
+    str_append_with_len(s, start, p - start);
+
+    /*<include filename="subfilename">*/
+    while (*p != '\"' && *p != '\0') {
+      p++;
+    }
+    return_value_if_fail(*p == '\"', RET_FAIL);
+    p++;
+    while (*p != '\"' && *p != '\0') {
+      str_append_char(&ss, *p++);
+    }
+    return_value_if_fail(*p == '\"', RET_FAIL);
+    while (*p != '>' && *p != '\0') {
+      p++;
+    }
+    return_value_if_fail(*p == '>', RET_FAIL);
+    p++;
+
+    path_replace_basename(subfilename, MAX_PATH, filename, ss.str);
+    xml_file_expand_read(subfilename, &ss);
+
+    str_append(s, ss.str);
+
+    start = p;
+    p = strstr(start, INCLUDE_XML);
+  }
+
+  str_append(s, start);
+  str_reset(&ss);
+
+  return RET_OK;
+}
+
+ret_t xml_file_expand_read(const char* filename, str_t* s) {
+  uint32_t size = 0;
+  char* buff = NULL;
+  return_value_if_fail(filename != NULL && s != NULL, RET_BAD_PARAMS);
+
+  str_set(s, "");
+  buff = (char*)file_read(filename, &size);
+  return_value_if_fail(buff != NULL, RET_FAIL);
+
+  if (strstr(buff, INCLUDE_XML) != NULL) {
+    xml_file_expand(filename, s, buff);
+  } else {
+    str_set_with_len(s, (const char*)buff, size);
+  }
+  TKMEM_FREE(buff);
 
   return RET_OK;
 }
