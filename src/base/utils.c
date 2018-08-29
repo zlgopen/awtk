@@ -384,7 +384,7 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
   return RET_OK;
 }
 
-#define INCLUDE_XML "<include"
+#define INCLUDE_XML "<?include"
 
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_t ss;

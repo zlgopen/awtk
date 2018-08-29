@@ -46,6 +46,8 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp);
 int tk_snprintf(char* str, size_t size, const char* format, ...);
 int tk_sscanf(const char* str, const char* format, ...);
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
+
+/*expand include process instruction to file content: <?include filename="view_me.inc" ?>*/
 ret_t xml_file_expand_read(const char* filename, str_t* s);
 
 END_C_DECLS

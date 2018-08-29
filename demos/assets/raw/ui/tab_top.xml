@@ -1,21 +1,11 @@
 <window anim_hint="htranslate" theme="tab_top">
   <tab_button_group style="highlight" x="0" y="0" w="100%" h="50" >
-    <tab_button text="General"/>
-    <tab_button text="Network" value="true" />
-    <tab_button text="Security" />
+    <tab_button text="Message"/>
+    <tab_button text="Contact" value="true" />
+    <tab_button text="Discovery" />
+    <tab_button text="Me" />
   </tab_button_group>
   <pages x="0" y="bottom" w="100%" h="-50">
-    <view w="100%" h="100%">
-      <label x="c" y="m" w="100%" h="60" text="General" /> 
-      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
-    </view>
-    <view w="100%" h="100%">
-      <label x="c" y="m" w="100%" h="60" text="Network" /> 
-      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
-    </view>
-    <view w="100%" h="100%">
-      <label x="c" y="m" w="100%" h="60" text="Security" /> 
-      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
-    </view>
+    <?include filename="tab_views.inc" ?>
   </pages>
 </window>

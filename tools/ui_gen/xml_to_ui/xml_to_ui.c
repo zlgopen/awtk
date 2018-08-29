@@ -26,6 +26,7 @@
 #include "ui_loader/ui_loader_xml.h"
 
 int main(int argc, char** argv) {
+  str_t s;
   uint32_t size = 0;
   wbuffer_t wbuffer;
   char* content = NULL;
@@ -49,7 +50,12 @@ int main(int argc, char** argv) {
   in_filename = argv[1];
   out_filename = argv[2];
 
-  content = read_file(in_filename, &size);
+  str_init(&s, 0);
+
+  return_value_if_fail(xml_file_expand_read(in_filename, &s) == RET_OK, 0);
+
+  content = s.str;
+  size = s.size;
   return_value_if_fail(content != NULL, 0);
 
   ui_loader_load(loader, (const uint8_t*)content, size, builder);
@@ -61,7 +67,7 @@ int main(int argc, char** argv) {
                         wbuffer.cursor);
   }
 
-  TKMEM_FREE(content);
+  str_reset(&s);
 
   return 0;
 }

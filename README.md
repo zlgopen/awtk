@@ -155,6 +155,16 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/08/29
+  * 完善str类，增加str\_insert/str\_remove等函数。
+  * 完善path类，增加path\_replace\_basename等函数。
+  * ui描述文件支持include指令，方便包含公共组件(请参考：demos/assets/raw/ui/tab\_top.xml)。
+
+* 2018/08/28
+  * 完善demos，运行双击直接运行demos。
+  * 完善preview\_ui，支持在命令行指定宽度和高度。
+  * 增加文档。
+
 * 2018/08/27
   * 增加skia的编译脚本。
 

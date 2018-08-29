@@ -31,18 +31,34 @@
 #include "ui_loader/ui_builder_default.h"
 
 widget_t* preview_ui(const char* filename) {
+  str_t s;
   uint32_t size = 0;
   char name[NAME_LEN + 1];
   ui_builder_t* builder = NULL;
-  uint8_t* content = (uint8_t*)file_read(filename, &size);
-  ui_loader_t* loader = strstr(filename, ".bin") != NULL ? default_ui_loader() : xml_ui_loader();
+  uint8_t* content = NULL;
+  bool_t is_bin = strstr(filename, ".bin") != NULL;
+  ui_loader_t* loader = is_bin ? default_ui_loader() : xml_ui_loader();
+
+  str_init(&s, 0);
+  if (is_bin) {
+    content = (uint8_t*)file_read(filename, &size);
+  } else {
+    xml_file_expand_read(filename, &s);
+    content = (uint8_t*)s.str;
+    size = s.size;
+  }
 
   filename_to_name(filename, name, NAME_LEN);
   builder = ui_builder_default(name);
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
-  TKMEM_FREE(content);
+
+  if (is_bin) {
+    TKMEM_FREE(content);
+  } else {
+    str_reset(&s);
+  }
 
   return builder->root;
 }
