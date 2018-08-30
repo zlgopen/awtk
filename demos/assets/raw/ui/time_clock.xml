@@ -1,0 +1,5 @@
+<window anim_hint="htranslate" >
+  <time_clock x="c" y="m" w="300" h="300" hour="1" minute="45" second="55"
+    bg_image="clock_bg" image="clock" 
+    hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/>
+</window>

@@ -32,6 +32,7 @@
 #include "scroll_view/list_view_h.h"
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"
+#include "time_clock/time_clock.h"
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_RICH_TEXT, rich_text_create);
@@ -49,6 +50,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_VIEW, slide_view_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANDIDATES, candidates_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);
 
   return RET_OK;
 }

@@ -1019,8 +1019,10 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* dst) {
+ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, const rect_t* odst) {
   rect_t src;
+  rect_t d = *odst;
+  rect_t* dst = &d;
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
   switch (draw_type) {
