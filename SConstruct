@@ -11,14 +11,11 @@ BIN_DIR=os.path.join(TK_ROOT, 'bin')
 LIB_DIR=os.path.join(TK_ROOT, 'lib')
 
 if OS_NAME == 'Windows':
-  LCD='NANOVG'
   TK_ROOT=TK_ROOT.replace('\\', '\\\\');
-  print(TK_ROOT)
-else:
-  LCD='SDL'
-  LCD='NANOVG'
-  VGCANVAS='AGG'
-  VGCANVAS='PICASSO'
+
+LCD='SDL'
+LCD='NANOVG'
+VGCANVAS='PICASSO'
 
 INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
@@ -68,7 +65,6 @@ if OS_NAME == 'Darwin':
   if VGCANVAS == 'PICASSO':
     OS_LIBS = ['freetype'] + OS_LIBS
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
-  OS_LIBS = ['picasso', 'agg'] + OS_LIBS
 
 elif OS_NAME == 'Linux':
   OS_LIBS = ['GL'] + OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
@@ -78,7 +74,7 @@ elif OS_NAME == 'Linux':
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Windows':
-  OS_LIBS=['SDL2', 'glad']
+  OS_LIBS=['SDL2', 'glad', 'gdi32', 'user32']
   OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od /ZI'
   OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
   OS_LIBPATH=[TK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
@@ -86,7 +82,7 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['awtk', 'gpinyin', 'awtk', 'linebreak', 'nanovg'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'picasso', 'linebreak', 'nanovg'] + OS_LIBS
 
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
 CPPPATH=[TK_ROOT, 
@@ -116,7 +112,6 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 SConscriptFiles=[
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
-  '3rd/agg/SConscript', 
   '3rd/gpinyin/SConscript', 
   '3rd/picasso/SConscript',
   '3rd/libunibreak/SConscript',
