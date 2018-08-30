@@ -92,6 +92,13 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
   return wm->animating ? RET_OK : RET_FAIL;
 }
 
+static ret_t on_idle_invalidate(const timer_info_t* info) {
+  widget_t* curr_win = WIDGET(info->ctx);
+  widget_invalidate_force(curr_win);
+
+  return RET_REMOVE;
+}
+
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_t* wm = WINDOW_MANAGER(curr_win->parent);
@@ -101,6 +108,8 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     e = event_init(EVT_WINDOW_OPEN, curr_win);
     widget_dispatch(curr_win, &e);
+
+    timer_add(on_idle_invalidate, curr_win, 100);
   }
 
   return RET_REMOVE;
