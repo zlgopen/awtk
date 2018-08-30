@@ -426,4 +426,8 @@ typedef enum _app_type_t {
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
+#ifndef M_PI
+#define M_PI 3.1415926f
+#endif/*M_PI*/
+
 #endif /*TYPES_DEF_H*/
