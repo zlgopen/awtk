@@ -1,0 +1,9 @@
+import os
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources=Glob('pixman/*.c') 
+
+env=DefaultEnvironment().Clone()
+env.Library(os.path.join(LIB_DIR, 'pixman'), sources)

@@ -27,3 +27,4 @@ bin/image*
 bin/demo*
 .vscode
 .vs
+bin/cairo_stars

@@ -1,0 +1,12 @@
+import os
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources=Glob('cairo/*.c') 
+
+env=DefaultEnvironment().Clone()
+env.Library(os.path.join(LIB_DIR, 'cairo'), sources)
+
+env['LIBS'] = ['cairo', 'pixman'] + env['LIBS']
+env.Program(os.path.join(BIN_DIR, 'cairo_stars'), ['demos/stars.c']);
