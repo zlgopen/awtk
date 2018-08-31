@@ -3912,9 +3912,9 @@ static int stbtt__ray_intersect_bezier(float orig[2], float ray[2], float q0[2],
          float d = (float) sqrt(discr);
          s0 = (b+d) * rcpna;
          s1 = (b-d) * rcpna;
-         if (s0 >= 0.0 && s0 <= 1.0)
+         if (s0 >= 0.0f && s0 <= 1.0f)
             num_s = 1;
-         if (d > 0.0 && s1 >= 0.0 && s1 <= 1.0) {
+         if (d > 0.0f && s1 >= 0.0f && s1 <= 1.0f) {
             if (num_s == 0) s0 = s1;
             ++num_s;
          }
@@ -3923,7 +3923,7 @@ static int stbtt__ray_intersect_bezier(float orig[2], float ray[2], float q0[2],
       // 2*b*s + c = 0
       // s = -c / (2*b)
       s0 = c / (-2 * b);
-      if (s0 >= 0.0 && s0 <= 1.0)
+      if (s0 >= 0.0f && s0 <= 1.0f)
          num_s = 1;
    }
 
