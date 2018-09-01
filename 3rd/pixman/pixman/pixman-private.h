@@ -25,12 +25,11 @@
 #include "pixman.h"
 #include <time.h>
 #include <assert.h>
-#include <stdio.h>
 #include <string.h>
 #include <stddef.h>
 
 #include "pixman-compiler.h"
-
+#define pixman_debug
 /*
  * Images
  */
@@ -1013,9 +1012,9 @@ float pixman_unorm_to_float (uint16_t u, int n_bits);
 
 #undef DEBUG
 
-#define COMPILE_TIME_ASSERT(x)						\
+/*#define COMPILE_TIME_ASSERT(x)						\
     do { typedef int compile_time_assertion [(x)?1:-1]; } while (0)
-
+*/
 /* Turn on debugging depending on what type of release this is
  */
 #if (((PIXMAN_VERSION_MICRO % 2) == 0) && ((PIXMAN_VERSION_MINOR % 2) == 1))

@@ -641,48 +641,6 @@ _cairo_clip_contains_extents (const cairo_clip_t *clip,
     return _cairo_clip_contains_rectangle (clip, rect);
 }
 
-void
-_cairo_debug_print_clip (FILE *stream, const cairo_clip_t *clip)
-{
-    int i;
-
-    if (clip == NULL) {
-	fprintf (stream, "no clip\n");
-	return;
-    }
-
-    if (_cairo_clip_is_all_clipped (clip)) {
-	fprintf (stream, "clip: all-clipped\n");
-	return;
-    }
-
-    fprintf (stream, "clip:\n");
-    fprintf (stream, "  extents: (%d, %d) x (%d, %d), is-region? %d",
-	     clip->extents.x, clip->extents.y,
-	     clip->extents.width, clip->extents.height,
-	     clip->is_region);
-
-    fprintf (stream, "  num_boxes = %d\n", clip->num_boxes);
-    for (i = 0; i < clip->num_boxes; i++) {
-	fprintf (stream, "  [%d] = (%f, %f), (%f, %f)\n", i,
-		 _cairo_fixed_to_double (clip->boxes[i].p1.x),
-		 _cairo_fixed_to_double (clip->boxes[i].p1.y),
-		 _cairo_fixed_to_double (clip->boxes[i].p2.x),
-		 _cairo_fixed_to_double (clip->boxes[i].p2.y));
-    }
-
-    if (clip->path) {
-	cairo_clip_path_t *clip_path = clip->path;
-	do {
-	    fprintf (stream, "path: aa=%d, tolerance=%f, rule=%d: ",
-		     clip_path->antialias,
-		     clip_path->tolerance,
-		     clip_path->fill_rule);
-	    _cairo_debug_print_path (stream, &clip_path->path);
-	    fprintf (stream, "\n");
-	} while ((clip_path = clip_path->prev) != NULL);
-    }
-}
 
 const cairo_rectangle_int_t *
 _cairo_clip_get_extents (const cairo_clip_t *clip)

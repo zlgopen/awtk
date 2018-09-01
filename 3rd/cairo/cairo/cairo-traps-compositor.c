@@ -54,7 +54,6 @@
 #include "cairo-recording-surface-inline.h"
 #include "cairo-surface-subsurface-private.h"
 #include "cairo-surface-snapshot-inline.h"
-#include "cairo-surface-observer-private.h"
 #include "cairo-region-private.h"
 #include "cairo-spans-private.h"
 #include "cairo-traps-private.h"

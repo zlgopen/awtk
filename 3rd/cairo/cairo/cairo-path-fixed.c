@@ -707,43 +707,6 @@ _cairo_path_fixed_add (cairo_path_fixed_t   *path,
 	_cairo_path_fixed_add_buf (path, buf);
     }
 
-    if (WATCH_PATH) {
-	const char *op_str[] = {
-	    "move-to",
-	    "line-to",
-	    "curve-to",
-	    "close-path",
-	};
-	char buf[1024];
-	int len = 0;
-	int i;
-
-	len += snprintf (buf + len, sizeof (buf), "[");
-	for (i = 0; i < num_points; i++) {
-	    if (i != 0)
-		len += snprintf (buf + len, sizeof (buf), " ");
-	    len += snprintf (buf + len, sizeof (buf), "(%f, %f)",
-			     _cairo_fixed_to_double (points[i].x),
-			     _cairo_fixed_to_double (points[i].y));
-	}
-	len += snprintf (buf + len, sizeof (buf), "]");
-
-#define STRINGIFYFLAG(x)  (path->x ? #x " " : "")
-	fprintf (stderr,
-		 "_cairo_path_fixed_add (%s, %s) [%s%s%s%s%s%s%s%s]\n",
-		 op_str[(int) op], buf,
-		 STRINGIFYFLAG(has_current_point),
-		 STRINGIFYFLAG(needs_move_to),
-		 STRINGIFYFLAG(has_extents),
-		 STRINGIFYFLAG(has_curve_to),
-		 STRINGIFYFLAG(stroke_is_rectilinear),
-		 STRINGIFYFLAG(fill_is_rectilinear),
-		 STRINGIFYFLAG(fill_is_empty),
-		 STRINGIFYFLAG(fill_maybe_region)
-		 );
-#undef STRINGIFYFLAG
-    }
-
     _cairo_path_buf_add_op (buf, op);
     _cairo_path_buf_add_points (buf, points, num_points);
 

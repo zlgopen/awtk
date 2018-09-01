@@ -2992,7 +2992,7 @@ cairo_set_scaled_font (cairo_t                   *cr,
     if (unlikely (cr->status))
 	return;
 
-    if ((scaled_font == NULL)) {
+    if (scaled_font == NULL) {
 	_cairo_set_error (cr, _cairo_error (CAIRO_STATUS_NULL_POINTER));
 	return;
     }

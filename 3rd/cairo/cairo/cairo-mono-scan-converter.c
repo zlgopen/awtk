@@ -549,12 +549,6 @@ _cairo_mono_scan_converter_add_polygon (void		*converter,
     cairo_status_t status;
     int i;
 
-#if 0
-    FILE *file = fopen ("polygon.txt", "w");
-    _cairo_debug_print_polygon (file, polygon);
-    fclose (file);
-#endif
-
     status = mono_scan_converter_allocate_edges (self->converter,
 						 polygon->num_edges);
     if (unlikely (status))

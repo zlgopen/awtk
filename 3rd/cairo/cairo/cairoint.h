@@ -65,7 +65,6 @@
 #endif
 #include <math.h>
 #include <limits.h>
-#include <stdio.h>
 
 #include "cairo.h"
 #include <pixman.h>
@@ -94,12 +93,6 @@
 #endif
 
 CAIRO_BEGIN_DECLS
-
-#if _WIN32 && !_WIN32_WCE /* Permissions on WinCE? No worries! */
-cairo_private FILE *
-_cairo_win32_tmpfile (void);
-#define tmpfile() _cairo_win32_tmpfile()
-#endif
 
 #undef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -2058,18 +2051,6 @@ _cairo_debug_check_image_surface_is_defined (const cairo_surface_t *surface);
 #define _cairo_debug_check_image_surface_is_defined(X)
 
 #endif
-
-cairo_private void
-_cairo_debug_print_path (FILE *stream, cairo_path_fixed_t *path);
-
-cairo_private void
-_cairo_debug_print_polygon (FILE *stream, cairo_polygon_t *polygon);
-
-cairo_private void
-_cairo_debug_print_traps (FILE *file, const cairo_traps_t *traps);
-
-cairo_private void
-_cairo_debug_print_clip (FILE *stream, const cairo_clip_t *clip);
 
 #if 0
 #define TRACE(x) fprintf (stderr, "%s: ", __FILE__), fprintf x

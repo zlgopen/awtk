@@ -41,8 +41,6 @@
 #include "cairo-list-private.h"
 #include "cairo-surface-private.h"
 
-#include <stdio.h> /* FILE* */
-
 CAIRO_BEGIN_DECLS
 
 typedef struct _cairo_pattern_observer cairo_pattern_observer_t;
@@ -360,9 +358,6 @@ _cairo_raster_source_pattern_init_copy (cairo_pattern_t *pattern,
 
 cairo_private void
 _cairo_raster_source_pattern_finish (cairo_pattern_t *abstract_pattern);
-
-cairo_private void
-_cairo_debug_print_pattern (FILE *file, const cairo_pattern_t *pattern);
 
 CAIRO_END_DECLS
 

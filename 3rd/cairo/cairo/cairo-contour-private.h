@@ -41,8 +41,6 @@
 #include "cairo-error-private.h"
 #include "cairo-list-private.h"
 
-#include <stdio.h>
-
 CAIRO_BEGIN_DECLS
 
 /* A contour is simply a closed chain of points that divide the infinite plane
@@ -115,9 +113,6 @@ _cairo_contour_reset (cairo_contour_t *contour);
 
 cairo_private void
 _cairo_contour_fini (cairo_contour_t *contour);
-
-cairo_private void
-_cairo_debug_print_contour (FILE *file, cairo_contour_t *contour);
 
 CAIRO_END_DECLS
 

@@ -409,33 +409,6 @@ _cairo_contour_fini (cairo_contour_t *contour)
     }
 }
 
-void
-_cairo_debug_print_contour (FILE *file, cairo_contour_t *contour)
-{
-    cairo_contour_chain_t *chain;
-    int num_points, size_points;
-    int i;
-
-    num_points = 0;
-    size_points = 0;
-    for (chain = &contour->chain; chain; chain = chain->next) {
-	num_points += chain->num_points;
-	size_points += chain->size_points;
-    }
-
-    fprintf (file, "contour: direction=%d, num_points=%d / %d\n",
-	     contour->direction, num_points, size_points);
-
-    num_points = 0;
-    for (chain = &contour->chain; chain; chain = chain->next) {
-	for (i = 0; i < chain->num_points; i++) {
-	    fprintf (file, "  [%d] = (%f, %f)\n",
-		     num_points++,
-		     _cairo_fixed_to_double (chain->points[i].x),
-		     _cairo_fixed_to_double (chain->points[i].y));
-	}
-    }
-}
 
 void
 __cairo_contour_remove_last_chain (cairo_contour_t *contour)

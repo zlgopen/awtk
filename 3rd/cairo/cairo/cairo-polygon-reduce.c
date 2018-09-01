@@ -1382,11 +1382,6 @@ _cairo_polygon_reduce (cairo_polygon_t *polygon,
     if (unlikely (0 == num_events))
 	return CAIRO_STATUS_SUCCESS;
 
-    if (DEBUG_POLYGON) {
-	FILE *file = fopen ("reduce_in.txt", "w");
-	_cairo_debug_print_polygon (file, polygon);
-	fclose (file);
-    }
 
     events = stack_events;
     event_ptrs = stack_event_ptrs;
@@ -1427,12 +1422,6 @@ _cairo_polygon_reduce (cairo_polygon_t *polygon,
 
     if (events != stack_events)
 	free (events);
-
-    if (DEBUG_POLYGON) {
-	FILE *file = fopen ("reduce_out.txt", "w");
-	_cairo_debug_print_polygon (file, polygon);
-	fclose (file);
-    }
 
     return status;
 }

@@ -129,11 +129,9 @@
  *
  * <informalexample><programlisting>
  * ##if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1, 0, 0)
- * printf ("Compiling with suitable cairo version: %s\n", %CAIRO_VERSION_STRING);
  * ##endif
  *
  * if (cairo_version() >= CAIRO_VERSION_ENCODE(1, 0, 0))
- *     printf ("Running with suitable cairo version: %s\n", cairo_version_string ());
  * </programlisting></informalexample>
  *
  * </refsect2>

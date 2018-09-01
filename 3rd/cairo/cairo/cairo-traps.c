@@ -1026,41 +1026,6 @@ _cairo_traps_path (const cairo_traps_t *traps,
     return CAIRO_STATUS_SUCCESS;
 }
 
-void
-_cairo_debug_print_traps (FILE *file, const cairo_traps_t *traps)
-{
-    cairo_box_t extents;
-    int n;
-
-#if 0
-    if (traps->has_limits) {
-	printf ("%s: limits=(%d, %d, %d, %d)\n",
-		filename,
-		traps->limits.p1.x, traps->limits.p1.y,
-		traps->limits.p2.x, traps->limits.p2.y);
-    }
-#endif
-
-    _cairo_traps_extents (traps, &extents);
-    fprintf (file, "extents=(%d, %d, %d, %d)\n",
-	     extents.p1.x, extents.p1.y,
-	     extents.p2.x, extents.p2.y);
-
-    for (n = 0; n < traps->num_traps; n++) {
-	fprintf (file, "%d %d L:(%d, %d), (%d, %d) R:(%d, %d), (%d, %d)\n",
-		 traps->traps[n].top,
-		 traps->traps[n].bottom,
-		 traps->traps[n].left.p1.x,
-		 traps->traps[n].left.p1.y,
-		 traps->traps[n].left.p2.x,
-		 traps->traps[n].left.p2.y,
-		 traps->traps[n].right.p1.x,
-		 traps->traps[n].right.p1.y,
-		 traps->traps[n].right.p2.x,
-		 traps->traps[n].right.p2.y);
-    }
-}
-
 struct cairo_trap_renderer {
     cairo_span_renderer_t base;
     cairo_traps_t *traps;

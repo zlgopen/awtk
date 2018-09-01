@@ -51,7 +51,6 @@
 #include "cairo-pattern-inline.h"
 #include "cairo-paginated-private.h"
 #include "cairo-recording-surface-private.h"
-#include "cairo-surface-observer-private.h"
 #include "cairo-surface-snapshot-inline.h"
 #include "cairo-surface-subsurface-private.h"
 
@@ -86,7 +85,7 @@ _pixman_transparent_image (void)
 	if (unlikely (image == NULL))
 	    return NULL;
 
-	if (_cairo_atomic_ptr_cmpxchg (&__pixman_transparent_image,
+	if (_cairo_atomic_ptr_cmpxchg ((void**)&__pixman_transparent_image,
 				       NULL, image))
 	{
 	    pixman_image_ref (image);
@@ -118,7 +117,7 @@ _pixman_black_image (void)
 	if (unlikely (image == NULL))
 	    return NULL;
 
-	if (_cairo_atomic_ptr_cmpxchg (&__pixman_black_image,
+	if (_cairo_atomic_ptr_cmpxchg ((void**)&__pixman_black_image,
 				       NULL, image))
 	{
 	    pixman_image_ref (image);
@@ -150,7 +149,7 @@ _pixman_white_image (void)
 	if (unlikely (image == NULL))
 	    return NULL;
 
-	if (_cairo_atomic_ptr_cmpxchg (&__pixman_white_image,
+	if (_cairo_atomic_ptr_cmpxchg ((void**)&__pixman_white_image,
 				       NULL, image))
 	{
 	    pixman_image_ref (image);

@@ -1388,33 +1388,12 @@ _cairo_polygon_intersect (cairo_polygon_t *a, int winding_a,
     }
     assert (j == num_events);
 
-#if 0
-    {
-	FILE *file = fopen ("clip_a.txt", "w");
-	_cairo_debug_print_polygon (file, a);
-	fclose (file);
-    }
-    {
-	FILE *file = fopen ("clip_b.txt", "w");
-	_cairo_debug_print_polygon (file, b);
-	fclose (file);
-    }
-#endif
-
     a->num_edges = 0;
     status = intersection_sweep (event_ptrs, num_events, a);
     if (events != stack_events)
 	free (events);
 
-#if 0
-    {
-	FILE *file = fopen ("clip_result.txt", "w");
-	_cairo_debug_print_polygon (file, a);
-	fclose (file);
-    }
-#endif
-
-    return status;
+   return status;
 }
 
 cairo_status_t

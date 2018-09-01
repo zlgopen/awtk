@@ -182,10 +182,10 @@ _cairo_toy_font_face_init (cairo_toy_font_face_t *font_face,
 			   cairo_font_slant_t	  slant,
 			   cairo_font_weight_t	  weight)
 {
-    char *family_copy;
+    char *family_copy = malloc(strlen(family)+1);
     cairo_status_t status;
 
-    family_copy = strdup (family);
+    strcpy(family_copy, family);
     if (unlikely (family_copy == NULL))
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 

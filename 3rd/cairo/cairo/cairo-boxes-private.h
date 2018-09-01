@@ -37,7 +37,6 @@
 #include "cairo-types-private.h"
 #include "cairo-compiler-private.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 
 struct _cairo_boxes_t {
@@ -115,9 +114,5 @@ _cairo_rasterise_polygon_to_boxes (cairo_polygon_t			*polygon,
 
 cairo_private void
 _cairo_boxes_fini (cairo_boxes_t *boxes);
-
-cairo_private void
-_cairo_debug_print_boxes (FILE *stream,
-			  const cairo_boxes_t *boxes);
 
 #endif /* CAIRO_BOXES_H */

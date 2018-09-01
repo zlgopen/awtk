@@ -44,10 +44,6 @@
 #include "cairo-line-inline.h"
 #include "cairo-traps-private.h"
 
-#define DEBUG_PRINT_STATE 0
-#define DEBUG_EVENTS 0
-#define DEBUG_TRAPS 0
-
 typedef cairo_point_t cairo_bo_point32_t;
 
 typedef struct _cairo_bo_intersect_ordinate {
@@ -127,80 +123,6 @@ typedef struct _cairo_bo_sweep_line {
     int32_t current_y;
     cairo_bo_edge_t *current_edge;
 } cairo_bo_sweep_line_t;
-
-#if DEBUG_TRAPS
-static void
-dump_traps (cairo_traps_t *traps, const char *filename)
-{
-    FILE *file;
-    cairo_box_t extents;
-    int n;
-
-    if (getenv ("CAIRO_DEBUG_TRAPS") == NULL)
-	return;
-
-#if 0
-    if (traps->has_limits) {
-	printf ("%s: limits=(%d, %d, %d, %d)\n",
-		filename,
-		traps->limits.p1.x, traps->limits.p1.y,
-		traps->limits.p2.x, traps->limits.p2.y);
-    }
-#endif
-    _cairo_traps_extents (traps, &extents);
-    printf ("%s: extents=(%d, %d, %d, %d)\n",
-	    filename,
-	    extents.p1.x, extents.p1.y,
-	    extents.p2.x, extents.p2.y);
-
-    file = fopen (filename, "a");
-    if (file != NULL) {
-	for (n = 0; n < traps->num_traps; n++) {
-	    fprintf (file, "%d %d L:(%d, %d), (%d, %d) R:(%d, %d), (%d, %d)\n",
-		     traps->traps[n].top,
-		     traps->traps[n].bottom,
-		     traps->traps[n].left.p1.x,
-		     traps->traps[n].left.p1.y,
-		     traps->traps[n].left.p2.x,
-		     traps->traps[n].left.p2.y,
-		     traps->traps[n].right.p1.x,
-		     traps->traps[n].right.p1.y,
-		     traps->traps[n].right.p2.x,
-		     traps->traps[n].right.p2.y);
-	}
-	fprintf (file, "\n");
-	fclose (file);
-    }
-}
-
-static void
-dump_edges (cairo_bo_start_event_t *events,
-	    int num_edges,
-	    const char *filename)
-{
-    FILE *file;
-    int n;
-
-    if (getenv ("CAIRO_DEBUG_TRAPS") == NULL)
-	return;
-
-    file = fopen (filename, "a");
-    if (file != NULL) {
-	for (n = 0; n < num_edges; n++) {
-	    fprintf (file, "(%d, %d), (%d, %d) %d %d %d\n",
-		     events[n].edge.edge.line.p1.x,
-		     events[n].edge.edge.line.p1.y,
-		     events[n].edge.edge.line.p2.x,
-		     events[n].edge.edge.line.p2.y,
-		     events[n].edge.edge.top,
-		     events[n].edge.edge.bottom,
-		     events[n].edge.edge.dir);
-	}
-	fprintf (file, "\n");
-	fclose (file);
-    }
-}
-#endif
 
 static cairo_fixed_t
 _line_compute_intersection_x_for_y (const cairo_line_t *line,
@@ -996,101 +918,6 @@ _cairo_bo_sweep_line_swap (cairo_bo_sweep_line_t	*sweep_line,
     left->prev = right;
 }
 
-#if DEBUG_PRINT_STATE
-static void
-_cairo_bo_edge_print (cairo_bo_edge_t *edge)
-{
-    printf ("(0x%x, 0x%x)-(0x%x, 0x%x)",
-	    edge->edge.line.p1.x, edge->edge.line.p1.y,
-	    edge->edge.line.p2.x, edge->edge.line.p2.y);
-}
-
-static void
-_cairo_bo_event_print (cairo_bo_event_t *event)
-{
-    switch (event->type) {
-    case CAIRO_BO_EVENT_TYPE_START:
-	printf ("Start: ");
-	break;
-    case CAIRO_BO_EVENT_TYPE_STOP:
-	printf ("Stop: ");
-	break;
-    case CAIRO_BO_EVENT_TYPE_INTERSECTION:
-	printf ("Intersection: ");
-	break;
-    }
-    printf ("(%d, %d)\t", event->point.x, event->point.y);
-    _cairo_bo_edge_print (event->e1);
-    if (event->type == CAIRO_BO_EVENT_TYPE_INTERSECTION) {
-	printf (" X ");
-	_cairo_bo_edge_print (event->e2);
-    }
-    printf ("\n");
-}
-
-static void
-_cairo_bo_event_queue_print (cairo_bo_event_queue_t *event_queue)
-{
-    /* XXX: fixme to print the start/stop array too. */
-    printf ("Event queue:\n");
-}
-
-static void
-_cairo_bo_sweep_line_print (cairo_bo_sweep_line_t *sweep_line)
-{
-    cairo_bool_t first = TRUE;
-    cairo_bo_edge_t *edge;
-
-    printf ("Sweep line from edge list: ");
-    first = TRUE;
-    for (edge = sweep_line->head;
-	 edge;
-	 edge = edge->next)
-    {
-	if (!first)
-	    printf (", ");
-	_cairo_bo_edge_print (edge);
-	first = FALSE;
-    }
-    printf ("\n");
-}
-
-static void
-print_state (const char			*msg,
-	     cairo_bo_event_t		*event,
-	     cairo_bo_event_queue_t	*event_queue,
-	     cairo_bo_sweep_line_t	*sweep_line)
-{
-    printf ("%s ", msg);
-    _cairo_bo_event_print (event);
-    _cairo_bo_event_queue_print (event_queue);
-    _cairo_bo_sweep_line_print (sweep_line);
-    printf ("\n");
-}
-#endif
-
-#if DEBUG_EVENTS
-static void CAIRO_PRINTF_FORMAT (1, 2)
-event_log (const char *fmt, ...)
-{
-    FILE *file;
-
-    if (getenv ("CAIRO_DEBUG_EVENTS") == NULL)
-	return;
-
-    file = fopen ("bo-events.txt", "a");
-    if (file != NULL) {
-	va_list ap;
-
-	va_start (ap, fmt);
-	vfprintf (file, fmt, ap);
-	va_end (ap);
-
-	fclose (file);
-    }
-}
-#endif
-
 #define HAS_COLINEAR(a, b) ((cairo_bo_edge_t *)(((uintptr_t)(a))&~1) == (b))
 #define IS_COLINEAR(e) (((uintptr_t)(e))&1)
 #define MARK_COLINEAR(e, v) ((cairo_bo_edge_t *)(((uintptr_t)(e))|(v)))
@@ -1158,22 +985,6 @@ _cairo_bo_edge_end_trap (cairo_bo_edge_t	*left,
 			       trap->top, bot,
 			       &left->edge.line, &trap->right->edge.line);
 
-#if DEBUG_PRINT_STATE
-	printf ("Deferred trap: left=(%x, %x)-(%x,%x) "
-		"right=(%x,%x)-(%x,%x) top=%x, bot=%x\n",
-		left->edge.line.p1.x, left->edge.line.p1.y,
-		left->edge.line.p2.x, left->edge.line.p2.y,
-		trap->right->edge.line.p1.x, trap->right->edge.line.p1.y,
-		trap->right->edge.line.p2.x, trap->right->edge.line.p2.y,
-		trap->top, bot);
-#endif
-#if DEBUG_EVENTS
-	event_log ("end trap: %lu %lu %d %d\n",
-		   (long) left,
-		   (long) trap->right,
-		   trap->top,
-		   bot);
-#endif
     }
 
     trap->right = NULL;
@@ -1210,12 +1021,6 @@ _cairo_bo_edge_start_or_continue_trap (cairo_bo_edge_t	*left,
 	left->deferred_trap.top = top;
 	left->deferred_trap.right = right;
 
-#if DEBUG_EVENTS
-	event_log ("begin trap: %lu %lu %d\n",
-		   (long) left,
-		   (long) right,
-		   top);
-#endif
     }
 }
 
@@ -1228,10 +1033,6 @@ _active_edges_to_traps (cairo_bo_edge_t	*pos,
     cairo_bo_edge_t *left;
     int in_out;
 
-
-#if DEBUG_PRINT_STATE
-    printf ("Processing active edges for %x\n", top);
-#endif
 
     in_out = 0;
     left = pos;
@@ -1290,26 +1091,6 @@ _cairo_bentley_ottmann_tessellate_bo_edges (cairo_bo_event_t   **start_events,
     else
 	fill_rule = 1;
 
-#if DEBUG_EVENTS
-    {
-	int i;
-
-	for (i = 0; i < num_events; i++) {
-	    cairo_bo_start_event_t *event =
-		((cairo_bo_start_event_t **) start_events)[i];
-	    event_log ("edge: %lu (%d, %d) (%d, %d) (%d, %d) %d\n",
-		       (long) &events[i].edge,
-		       event->edge.edge.line.p1.x,
-		       event->edge.edge.line.p1.y,
-		       event->edge.edge.line.p2.x,
-		       event->edge.edge.line.p2.y,
-		       event->edge.top,
-		       event->edge.bottom,
-		       event->edge.edge.dir);
-	}
-    }
-#endif
-
     _cairo_bo_event_queue_init (&event_queue, start_events, num_events);
     _cairo_bo_sweep_line_init (&sweep_line);
 
@@ -1330,15 +1111,6 @@ _cairo_bentley_ottmann_tessellate_bo_edges (cairo_bo_event_t   **start_events,
 
 	    sweep_line.current_y = event->point.y;
 	}
-
-#if DEBUG_EVENTS
-	event_log ("event: %d (%ld, %ld) %lu, %lu\n",
-		   event->type,
-		   (long) event->point.x,
-		   (long) event->point.y,
-		   (long) event->e1,
-		   (long) event->e2);
-#endif
 
 	switch (event->type) {
 	case CAIRO_BO_EVENT_TYPE_START:
@@ -1454,10 +1226,6 @@ _cairo_bentley_ottmann_tessellate_bo_edges (cairo_bo_event_t   **start_events,
  unwind:
     _cairo_bo_event_queue_fini (&event_queue);
 
-#if DEBUG_EVENTS
-    event_log ("\n");
-#endif
-
     return status;
 }
 
@@ -1540,10 +1308,6 @@ _cairo_bentley_ottmann_tessellate_polygon (cairo_traps_t	 *traps,
 	_cairo_bo_event_queue_sort (event_ptrs, i);
     event_ptrs[i] = NULL;
 
-#if DEBUG_TRAPS
-    dump_edges (events, num_events, "bo-polygon-edges.txt");
-#endif
-
     /* XXX: This would be the convenient place to throw in multiple
      * passes of the Bentley-Ottmann algorithm. It would merely
      * require storing the results of each pass into a temporary
@@ -1551,9 +1315,6 @@ _cairo_bentley_ottmann_tessellate_polygon (cairo_traps_t	 *traps,
     status = _cairo_bentley_ottmann_tessellate_bo_edges (event_ptrs, num_events,
 							 fill_rule, traps,
 							 &intersections);
-#if DEBUG_TRAPS
-    dump_traps (traps, "bo-polygon-out.txt");
-#endif
 
     if (events != stack_events)
 	free (events);
@@ -1571,10 +1332,6 @@ _cairo_bentley_ottmann_tessellate_traps (cairo_traps_t *traps,
 
     if (unlikely (0 == traps->num_traps))
 	return CAIRO_STATUS_SUCCESS;
-
-#if DEBUG_TRAPS
-    dump_traps (traps, "bo-traps-in.txt");
-#endif
 
     _cairo_polygon_init (&polygon, traps->limits, traps->num_limits);
 
@@ -1601,309 +1358,9 @@ _cairo_bentley_ottmann_tessellate_traps (cairo_traps_t *traps,
 							&polygon,
 							fill_rule);
 
-#if DEBUG_TRAPS
-    dump_traps (traps, "bo-traps-out.txt");
-#endif
-
   CLEANUP:
     _cairo_polygon_fini (&polygon);
 
     return status;
 }
 
-#if 0
-static cairo_bool_t
-edges_have_an_intersection_quadratic (cairo_bo_edge_t	*edges,
-				      int		 num_edges)
-
-{
-    int i, j;
-    cairo_bo_edge_t *a, *b;
-    cairo_bo_point32_t intersection;
-
-    /* We must not be given any upside-down edges. */
-    for (i = 0; i < num_edges; i++) {
-	assert (_cairo_bo_point32_compare (&edges[i].top, &edges[i].bottom) < 0);
-	edges[i].line.p1.x <<= CAIRO_BO_GUARD_BITS;
-	edges[i].line.p1.y <<= CAIRO_BO_GUARD_BITS;
-	edges[i].line.p2.x <<= CAIRO_BO_GUARD_BITS;
-	edges[i].line.p2.y <<= CAIRO_BO_GUARD_BITS;
-    }
-
-    for (i = 0; i < num_edges; i++) {
-	for (j = 0; j < num_edges; j++) {
-	    if (i == j)
-		continue;
-
-	    a = &edges[i];
-	    b = &edges[j];
-
-	    if (! _cairo_bo_edge_intersect (a, b, &intersection))
-		continue;
-
-	    printf ("Found intersection (%d,%d) between (%d,%d)-(%d,%d) and (%d,%d)-(%d,%d)\n",
-		    intersection.x,
-		    intersection.y,
-		    a->line.p1.x, a->line.p1.y,
-		    a->line.p2.x, a->line.p2.y,
-		    b->line.p1.x, b->line.p1.y,
-		    b->line.p2.x, b->line.p2.y);
-
-	    return TRUE;
-	}
-    }
-    return FALSE;
-}
-
-#define TEST_MAX_EDGES 10
-
-typedef struct test {
-    const char *name;
-    const char *description;
-    int num_edges;
-    cairo_bo_edge_t edges[TEST_MAX_EDGES];
-} test_t;
-
-static test_t
-tests[] = {
-    {
-	"3 near misses",
-	"3 edges all intersecting very close to each other",
-	3,
-	{
-	    { { 4, 2}, {0, 0}, { 9, 9}, NULL, NULL },
-	    { { 7, 2}, {0, 0}, { 2, 3}, NULL, NULL },
-	    { { 5, 2}, {0, 0}, { 1, 7}, NULL, NULL }
-	}
-    },
-    {
-	"inconsistent data",
-	"Derived from random testing---was leading to skip list and edge list disagreeing.",
-	2,
-	{
-	    { { 2, 3}, {0, 0}, { 8, 9}, NULL, NULL },
-	    { { 2, 3}, {0, 0}, { 6, 7}, NULL, NULL }
-	}
-    },
-    {
-	"failed sort",
-	"A test derived from random testing that leads to an inconsistent sort --- looks like we just can't attempt to validate the sweep line with edge_compare?",
-	3,
-	{
-	    { { 6, 2}, {0, 0}, { 6, 5}, NULL, NULL },
-	    { { 3, 5}, {0, 0}, { 5, 6}, NULL, NULL },
-	    { { 9, 2}, {0, 0}, { 5, 6}, NULL, NULL },
-	}
-    },
-    {
-	"minimal-intersection",
-	"Intersection of a two from among the smallest possible edges.",
-	2,
-	{
-	    { { 0, 0}, {0, 0}, { 1, 1}, NULL, NULL },
-	    { { 1, 0}, {0, 0}, { 0, 1}, NULL, NULL }
-	}
-    },
-    {
-	"simple",
-	"A simple intersection of two edges at an integer (2,2).",
-	2,
-	{
-	    { { 1, 1}, {0, 0}, { 3, 3}, NULL, NULL },
-	    { { 2, 1}, {0, 0}, { 2, 3}, NULL, NULL }
-	}
-    },
-    {
-	"bend-to-horizontal",
-	"With intersection truncation one edge bends to horizontal",
-	2,
-	{
-	    { { 9, 1}, {0, 0}, {3, 7}, NULL, NULL },
-	    { { 3, 5}, {0, 0}, {9, 9}, NULL, NULL }
-	}
-    }
-};
-
-/*
-    {
-	"endpoint",
-	"An intersection that occurs at the endpoint of a segment.",
-	{
-	    { { 4, 6}, { 5, 6}, NULL, { { NULL }} },
-	    { { 4, 5}, { 5, 7}, NULL, { { NULL }} },
-	    { { 0, 0}, { 0, 0}, NULL, { { NULL }} },
-	}
-    }
-    {
-	name = "overlapping",
-	desc = "Parallel segments that share an endpoint, with different slopes.",
-	edges = {
-	    { top = { x = 2, y = 0}, bottom = { x = 1, y = 1}},
-	    { top = { x = 2, y = 0}, bottom = { x = 0, y = 2}},
-	    { top = { x = 0, y = 3}, bottom = { x = 1, y = 3}},
-	    { top = { x = 0, y = 3}, bottom = { x = 2, y = 3}},
-	    { top = { x = 0, y = 4}, bottom = { x = 0, y = 6}},
-	    { top = { x = 0, y = 5}, bottom = { x = 0, y = 6}}
-	}
-    },
-    {
-	name = "hobby_stage_3",
-	desc = "A particularly tricky part of the 3rd stage of the 'hobby' test below.",
-	edges = {
-	    { top = { x = -1, y = -2}, bottom = { x =  4, y = 2}},
-	    { top = { x =  5, y =  3}, bottom = { x =  9, y = 5}},
-	    { top = { x =  5, y =  3}, bottom = { x =  6, y = 3}},
-	}
-    },
-    {
-	name = "hobby",
-	desc = "Example from John Hobby's paper. Requires 3 passes of the iterative algorithm.",
-	edges = {
-	    { top = { x =   0, y =   0}, bottom = { x =   9, y =   5}},
-	    { top = { x =   0, y =   0}, bottom = { x =  13, y =   6}},
-	    { top = { x =  -1, y =  -2}, bottom = { x =   9, y =   5}}
-	}
-    },
-    {
-	name = "slope",
-	desc = "Edges with same start/stop points but different slopes",
-	edges = {
-	    { top = { x = 4, y = 1}, bottom = { x = 6, y = 3}},
-	    { top = { x = 4, y = 1}, bottom = { x = 2, y = 3}},
-	    { top = { x = 2, y = 4}, bottom = { x = 4, y = 6}},
-	    { top = { x = 6, y = 4}, bottom = { x = 4, y = 6}}
-	}
-    },
-    {
-	name = "horizontal",
-	desc = "Test of a horizontal edge",
-	edges = {
-	    { top = { x = 1, y = 1}, bottom = { x = 6, y = 6}},
-	    { top = { x = 2, y = 3}, bottom = { x = 5, y = 3}}
-	}
-    },
-    {
-	name = "vertical",
-	desc = "Test of a vertical edge",
-	edges = {
-	    { top = { x = 5, y = 1}, bottom = { x = 5, y = 7}},
-	    { top = { x = 2, y = 4}, bottom = { x = 8, y = 5}}
-	}
-    },
-    {
-	name = "congruent",
-	desc = "Two overlapping edges with the same slope",
-	edges = {
-	    { top = { x = 5, y = 1}, bottom = { x = 5, y = 7}},
-	    { top = { x = 5, y = 2}, bottom = { x = 5, y = 6}},
-	    { top = { x = 2, y = 4}, bottom = { x = 8, y = 5}}
-	}
-    },
-    {
-	name = "multi",
-	desc = "Several segments with a common intersection point",
-	edges = {
-	    { top = { x = 1, y = 2}, bottom = { x = 5, y = 4} },
-	    { top = { x = 1, y = 1}, bottom = { x = 5, y = 5} },
-	    { top = { x = 2, y = 1}, bottom = { x = 4, y = 5} },
-	    { top = { x = 4, y = 1}, bottom = { x = 2, y = 5} },
-	    { top = { x = 5, y = 1}, bottom = { x = 1, y = 5} },
-	    { top = { x = 5, y = 2}, bottom = { x = 1, y = 4} }
-	}
-    }
-};
-*/
-
-static int
-run_test (const char		*test_name,
-          cairo_bo_edge_t	*test_edges,
-          int			 num_edges)
-{
-    int i, intersections, passes;
-    cairo_bo_edge_t *edges;
-    cairo_array_t intersected_edges;
-
-    printf ("Testing: %s\n", test_name);
-
-    _cairo_array_init (&intersected_edges, sizeof (cairo_bo_edge_t));
-
-    intersections = _cairo_bentley_ottmann_intersect_edges (test_edges, num_edges, &intersected_edges);
-    if (intersections)
-	printf ("Pass 1 found %d intersections:\n", intersections);
-
-
-    /* XXX: Multi-pass Bentley-Ottmmann. Preferable would be to add a
-     * pass of Hobby's tolerance-square algorithm instead. */
-    passes = 1;
-    while (intersections) {
-	int num_edges = _cairo_array_num_elements (&intersected_edges);
-	passes++;
-	edges = _cairo_malloc_ab (num_edges, sizeof (cairo_bo_edge_t));
-	assert (edges != NULL);
-	memcpy (edges, _cairo_array_index (&intersected_edges, 0), num_edges * sizeof (cairo_bo_edge_t));
-	_cairo_array_fini (&intersected_edges);
-	_cairo_array_init (&intersected_edges, sizeof (cairo_bo_edge_t));
-	intersections = _cairo_bentley_ottmann_intersect_edges (edges, num_edges, &intersected_edges);
-	free (edges);
-
-	if (intersections){
-	    printf ("Pass %d found %d remaining intersections:\n", passes, intersections);
-	} else {
-	    if (passes > 3)
-		for (i = 0; i < passes; i++)
-		    printf ("*");
-	    printf ("No remainining intersections found after pass %d\n", passes);
-	}
-    }
-
-    if (edges_have_an_intersection_quadratic (_cairo_array_index (&intersected_edges, 0),
-					      _cairo_array_num_elements (&intersected_edges)))
-	printf ("*** FAIL ***\n");
-    else
-	printf ("PASS\n");
-
-    _cairo_array_fini (&intersected_edges);
-
-    return 0;
-}
-
-#define MAX_RANDOM 300
-
-int
-main (void)
-{
-    char random_name[] = "random-XX";
-    cairo_bo_edge_t random_edges[MAX_RANDOM], *edge;
-    unsigned int i, num_random;
-    test_t *test;
-
-    for (i = 0; i < ARRAY_LENGTH (tests); i++) {
-	test = &tests[i];
-	run_test (test->name, test->edges, test->num_edges);
-    }
-
-    for (num_random = 0; num_random < MAX_RANDOM; num_random++) {
-	srand (0);
-	for (i = 0; i < num_random; i++) {
-	    do {
-		edge = &random_edges[i];
-		edge->line.p1.x = (int32_t) (10.0 * (rand() / (RAND_MAX + 1.0)));
-		edge->line.p1.y = (int32_t) (10.0 * (rand() / (RAND_MAX + 1.0)));
-		edge->line.p2.x = (int32_t) (10.0 * (rand() / (RAND_MAX + 1.0)));
-		edge->line.p2.y = (int32_t) (10.0 * (rand() / (RAND_MAX + 1.0)));
-		if (edge->line.p1.y > edge->line.p2.y) {
-		    int32_t tmp = edge->line.p1.y;
-		    edge->line.p1.y = edge->line.p2.y;
-		    edge->line.p2.y = tmp;
-		}
-	    } while (edge->line.p1.y == edge->line.p2.y);
-	}
-
-	sprintf (random_name, "random-%02d", num_random);
-
-	run_test (random_name, random_edges, num_random);
-    }
-
-    return 0;
-}
-#endif

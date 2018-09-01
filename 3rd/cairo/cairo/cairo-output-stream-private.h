@@ -40,7 +40,6 @@
 #include "cairo-types-private.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
 
 typedef cairo_status_t
@@ -164,9 +163,6 @@ _cairo_output_stream_create_for_filename (const char *filename);
  * The caller still "owns" file and is responsible for calling fclose
  * on it when finished. The stream will not do this itself.
  */
-cairo_private cairo_output_stream_t *
-_cairo_output_stream_create_for_file (FILE *file);
-
 cairo_private cairo_output_stream_t *
 _cairo_memory_stream_create (void);
 

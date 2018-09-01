@@ -947,17 +947,6 @@ add_caps (struct stroker *stroker)
 	if (stroker->has_current_face)
 	    add_trailing_cap (stroker, &stroker->current_face, &stroker->ccw);
 
-#if DEBUG
-	{
-	    FILE *file = fopen ("contours.txt", "a");
-	    _cairo_debug_print_contour (file, &stroker->path);
-	    _cairo_debug_print_contour (file, &stroker->cw.contour);
-	    _cairo_debug_print_contour (file, &stroker->ccw.contour);
-	    fclose (file);
-	    _cairo_contour_reset (&stroker->path);
-	}
-#endif
-
 	_cairo_polygon_add_contour (stroker->polygon, &stroker->ccw.contour);
 	_cairo_contour_reset (&stroker->ccw.contour);
 
@@ -965,13 +954,6 @@ add_caps (struct stroker *stroker)
 	    _cairo_contour_add_point (&stroker->ccw.contour,
 				      &stroker->first_face.cw);
 	    add_leading_cap (stroker, &stroker->first_face, &stroker->ccw);
-#if DEBUG
-	    {
-		FILE *file = fopen ("contours.txt", "a");
-		_cairo_debug_print_contour (file, &stroker->ccw.contour);
-		fclose (file);
-	    }
-#endif
 
 	    _cairo_polygon_add_contour (stroker->polygon,
 					&stroker->ccw.contour);
@@ -1216,17 +1198,6 @@ close_path (void *closure)
 	_cairo_polygon_add_contour (stroker->polygon, &stroker->cw.contour);
 	_cairo_polygon_add_contour (stroker->polygon, &stroker->ccw.contour);
 
-#if DEBUG
-	{
-	    FILE *file = fopen ("contours.txt", "a");
-	    _cairo_debug_print_contour (file, &stroker->path);
-	    _cairo_debug_print_contour (file, &stroker->cw.contour);
-	    _cairo_debug_print_contour (file, &stroker->ccw.contour);
-	    fclose (file);
-
-	    _cairo_contour_reset (&stroker->path);
-	}
-#endif
 	_cairo_contour_reset (&stroker->cw.contour);
 	_cairo_contour_reset (&stroker->ccw.contour);
     } else {
@@ -1351,14 +1322,6 @@ _cairo_path_fixed_stroke_to_polygon (const cairo_path_fixed_t	*path,
     _cairo_contour_fini (&stroker.ccw.contour);
     if (stroker.pen.num_vertices)
 	_cairo_pen_fini (&stroker.pen);
-
-#if DEBUG
-    {
-	FILE *file = fopen ("polygons.txt", "a");
-	_cairo_debug_print_polygon (file, polygon);
-	fclose (file);
-    }
-#endif
 
     return status;
 }

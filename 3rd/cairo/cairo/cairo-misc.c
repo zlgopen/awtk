@@ -792,58 +792,6 @@ cairo_get_locale_decimal_point (void)
 #include <windows.h>
 #include <io.h>
 
-#if !_WIN32_WCE
-/* tmpfile() replacement for Windows.
- *
- * On Windows tmpfile() creates the file in the root directory. This
- * may fail due to unsufficient privileges. However, this isn't a
- * problem on Windows CE so we don't use it there.
- */
-FILE *
-_cairo_win32_tmpfile (void)
-{
-    DWORD path_len;
-    WCHAR path_name[MAX_PATH + 1];
-    WCHAR file_name[MAX_PATH + 1];
-    HANDLE handle;
-    int fd;
-    FILE *fp;
-
-    path_len = GetTempPathW (MAX_PATH, path_name);
-    if (path_len <= 0 || path_len >= MAX_PATH)
-	return NULL;
-
-    if (GetTempFileNameW (path_name, L"ps_", 0, file_name) == 0)
-	return NULL;
-
-    handle = CreateFileW (file_name,
-			 GENERIC_READ | GENERIC_WRITE,
-			 0,
-			 NULL,
-			 CREATE_ALWAYS,
-			 FILE_ATTRIBUTE_NORMAL | FILE_FLAG_DELETE_ON_CLOSE,
-			 NULL);
-    if (handle == INVALID_HANDLE_VALUE) {
-	DeleteFileW (file_name);
-	return NULL;
-    }
-
-    fd = _open_osfhandle((intptr_t) handle, 0);
-    if (fd < 0) {
-	CloseHandle (handle);
-	return NULL;
-    }
-
-    fp = fdopen(fd, "w+b");
-    if (fp == NULL) {
-	_close(fd);
-	return NULL;
-    }
-
-    return fp;
-}
-#endif /* !_WIN32_WCE */
-
 #endif /* _WIN32 */
 
 typedef struct _cairo_intern_string {

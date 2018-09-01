@@ -1642,12 +1642,6 @@ _cairo_tor22_scan_converter_add_polygon (void		*converter,
     cairo_tor22_scan_converter_t *self = converter;
     int i;
 
-#if 0
-    FILE *file = fopen ("polygon.txt", "w");
-    _cairo_debug_print_polygon (file, polygon);
-    fclose (file);
-#endif
-
     for (i = 0; i < polygon->num_edges; i++)
 	 glitter_scan_converter_add_edge (self->converter, &polygon->edges[i]);
 

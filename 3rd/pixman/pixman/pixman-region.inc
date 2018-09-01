@@ -66,7 +66,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <string.h>
-#include <stdio.h>
 #include "pixman-private.h"
 
 #define PIXREGION_NIL(reg) ((reg)->data && !(reg)->data->numRects)
@@ -337,30 +336,7 @@ PREFIX (_equal) (region_type_t *reg1, region_type_t *reg2)
 int
 PREFIX (_print) (region_type_t *rgn)
 {
-    int num, size;
-    int i;
-    box_type_t * rects;
-
-    num = PIXREGION_NUMRECTS (rgn);
-    size = PIXREGION_SIZE (rgn);
-    rects = PIXREGION_RECTS (rgn);
-
-    fprintf (stderr, "num: %d size: %d\n", num, size);
-    fprintf (stderr, "extents: %d %d %d %d\n",
-             rgn->extents.x1,
-	     rgn->extents.y1,
-	     rgn->extents.x2,
-	     rgn->extents.y2);
-    
-    for (i = 0; i < num; i++)
-    {
-	fprintf (stderr, "%d %d %d %d \n",
-	         rects[i].x1, rects[i].y1, rects[i].x2, rects[i].y2);
-    }
-    
-    fprintf (stderr, "\n");
-
-    return(num);
+  return 0;
 }
 
 

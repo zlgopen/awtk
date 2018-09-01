@@ -52,7 +52,6 @@
 #include "cairo-spans-compositor-private.h"
 #include "cairo-surface-subsurface-private.h"
 #include "cairo-surface-snapshot-private.h"
-#include "cairo-surface-observer-private.h"
 
 typedef struct {
     cairo_polygon_t	*polygon;

@@ -89,40 +89,8 @@ typedef struct _sweep_line {
     jmp_buf unwind;
 } sweep_line_t;
 
-#define DEBUG_TRAPS 0
 
-#if DEBUG_TRAPS
-static void
-dump_traps (cairo_traps_t *traps, const char *filename)
-{
-    FILE *file;
-    int n;
-
-    if (getenv ("CAIRO_DEBUG_TRAPS") == NULL)
-	return;
-
-    file = fopen (filename, "a");
-    if (file != NULL) {
-	for (n = 0; n < traps->num_traps; n++) {
-	    fprintf (file, "%d %d L:(%d, %d), (%d, %d) R:(%d, %d), (%d, %d)\n",
-		     traps->traps[n].top,
-		     traps->traps[n].bottom,
-		     traps->traps[n].left.p1.x,
-		     traps->traps[n].left.p1.y,
-		     traps->traps[n].left.p2.x,
-		     traps->traps[n].left.p2.y,
-		     traps->traps[n].right.p1.x,
-		     traps->traps[n].right.p1.y,
-		     traps->traps[n].right.p2.x,
-		     traps->traps[n].right.p2.y);
-	}
-	fprintf (file, "\n");
-	fclose (file);
-    }
-}
-#else
 #define dump_traps(traps, filename)
-#endif
 
 static inline int
 rectangle_compare_start (const rectangle_t *a,

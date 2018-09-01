@@ -433,28 +433,3 @@ cleanup_converter:
     return status;
 }
 
-void
-_cairo_debug_print_boxes (FILE *stream, const cairo_boxes_t *boxes)
-{
-    const struct _cairo_boxes_chunk *chunk;
-    cairo_box_t extents;
-    int i;
-
-    _cairo_boxes_extents (boxes, &extents);
-    fprintf (stream, "boxes x %d: (%f, %f) x (%f, %f)\n",
-	     boxes->num_boxes,
-	     _cairo_fixed_to_double (extents.p1.x),
-	     _cairo_fixed_to_double (extents.p1.y),
-	     _cairo_fixed_to_double (extents.p2.x),
-	     _cairo_fixed_to_double (extents.p2.y));
-
-    for (chunk = &boxes->chunks; chunk != NULL; chunk = chunk->next) {
-	for (i = 0; i < chunk->count; i++) {
-	    fprintf (stderr, "  box[%d]: (%f, %f), (%f, %f)\n", i,
-		     _cairo_fixed_to_double (chunk->base[i].p1.x),
-		     _cairo_fixed_to_double (chunk->base[i].p1.y),
-		     _cairo_fixed_to_double (chunk->base[i].p2.x),
-		     _cairo_fixed_to_double (chunk->base[i].p2.y));
-	}
-    }
-}

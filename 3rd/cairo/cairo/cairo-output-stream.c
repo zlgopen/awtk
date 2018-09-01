@@ -42,7 +42,6 @@
 #include "cairo-error-private.h"
 #include "cairo-compiler-private.h"
 
-#include <stdio.h>
 #include <errno.h>
 
 /* Numbers printed with %f are printed with this number of significant
@@ -585,106 +584,10 @@ _cairo_output_stream_get_status (cairo_output_stream_t *stream)
 /* Maybe this should be a configure time option, so embedded targets
  * don't have to pull in stdio. */
 
-
-typedef struct _stdio_stream {
-    cairo_output_stream_t	 base;
-    FILE			*file;
-} stdio_stream_t;
-
-static cairo_status_t
-stdio_write (cairo_output_stream_t *base,
-	     const unsigned char *data, unsigned int length)
-{
-    stdio_stream_t *stream = (stdio_stream_t *) base;
-
-    if (fwrite (data, 1, length, stream->file) != length)
-	return _cairo_error (CAIRO_STATUS_WRITE_ERROR);
-
-    return CAIRO_STATUS_SUCCESS;
-}
-
-static cairo_status_t
-stdio_flush (cairo_output_stream_t *base)
-{
-    stdio_stream_t *stream = (stdio_stream_t *) base;
-
-    fflush (stream->file);
-
-    if (ferror (stream->file))
-	return _cairo_error (CAIRO_STATUS_WRITE_ERROR);
-    else
-	return CAIRO_STATUS_SUCCESS;
-}
-
-static cairo_status_t
-stdio_close (cairo_output_stream_t *base)
-{
-    cairo_status_t status;
-    stdio_stream_t *stream = (stdio_stream_t *) base;
-
-    status = stdio_flush (base);
-
-    fclose (stream->file);
-
-    return status;
-}
-
-cairo_output_stream_t *
-_cairo_output_stream_create_for_file (FILE *file)
-{
-    stdio_stream_t *stream;
-
-    if (file == NULL) {
-	_cairo_error_throw (CAIRO_STATUS_WRITE_ERROR);
-	return (cairo_output_stream_t *) &_cairo_output_stream_nil_write_error;
-    }
-
-    stream = malloc (sizeof *stream);
-    if (unlikely (stream == NULL)) {
-	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
-	return (cairo_output_stream_t *) &_cairo_output_stream_nil;
-    }
-
-    _cairo_output_stream_init (&stream->base,
-			       stdio_write, stdio_flush, stdio_flush);
-    stream->file = file;
-
-    return &stream->base;
-}
-
 cairo_output_stream_t *
 _cairo_output_stream_create_for_filename (const char *filename)
 {
-    stdio_stream_t *stream;
-    FILE *file;
-
-    if (filename == NULL)
-	return _cairo_null_stream_create ();
-
-    file = fopen (filename, "wb");
-    if (file == NULL) {
-	switch (errno) {
-	case ENOMEM:
-	    _cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
-	    return (cairo_output_stream_t *) &_cairo_output_stream_nil;
-	default:
-	    _cairo_error_throw (CAIRO_STATUS_WRITE_ERROR);
-	    return (cairo_output_stream_t *) &_cairo_output_stream_nil_write_error;
-	}
-    }
-
-    stream = malloc (sizeof *stream);
-    if (unlikely (stream == NULL)) {
-	fclose (file);
-	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
-	return (cairo_output_stream_t *) &_cairo_output_stream_nil;
-    }
-
-    _cairo_output_stream_init (&stream->base,
-			       stdio_write, stdio_flush, stdio_close);
-    stream->file = file;
-
-    return &stream->base;
+  return NULL;
 }
 
 
