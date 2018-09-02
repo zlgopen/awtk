@@ -34,6 +34,8 @@ if os.environ['VGCANVAS'] == 'NANOVG':
   sources += Glob('vgcanvas/vgcanvas_nanovg.c')
 elif os.environ['VGCANVAS'] == 'AGG':
   sources += Glob('vgcanvas/vgcanvas_agg.cpp')
+elif os.environ['VGCANVAS'] == 'CAIRO':
+  sources += Glob('vgcanvas/vgcanvas_cairo.c')
 else:
   sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
 

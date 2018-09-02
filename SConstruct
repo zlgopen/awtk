@@ -1,21 +1,23 @@
 import os
 import platform
 
+def joinPath(root, subdir):
+  return os.path.normpath(os.path.join(root, subdir))
+
 OS_NAME=platform.system()
 TK_ROOT = os.path.normpath(os.getcwd())
-TK_SRC = os.path.join(TK_ROOT, 'src')
-TK_3RD_ROOT = os.path.join(TK_ROOT, '3rd')
-TK_TOOLS_ROOT = os.path.join(TK_ROOT, 'tools')
-GTEST_ROOT = os.path.join(TK_ROOT, '3rd/gtest/googletest')
-BIN_DIR=os.path.join(TK_ROOT, 'bin')
-LIB_DIR=os.path.join(TK_ROOT, 'lib')
+TK_SRC = joinPath(TK_ROOT, 'src')
+TK_3RD_ROOT = joinPath(TK_ROOT, '3rd')
+TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
+GTEST_ROOT = joinPath(TK_ROOT, '3rd/gtest/googletest')
+BIN_DIR=joinPath(TK_ROOT, 'bin')
+LIB_DIR=joinPath(TK_ROOT, 'lib')
 
 if OS_NAME == 'Windows':
   TK_ROOT=TK_ROOT.replace('\\', '\\\\');
 
 LCD='SDL'
 LCD='NANOVG'
-VGCANVAS='PICASSO'
 
 INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
@@ -23,8 +25,8 @@ INPUT_ENGINE='pinyin'
 FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
 
-COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DWITH_SDL -DWITH_FS_RES -DHAS_STDIO -DWITH_DESKTOP_STYLE'
-COMMON_CCFLAGS=COMMON_CCFLAGS+' -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_VGCANVAS -DWITH_UNICODE_BREAK'
+COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DWITH_SDL -DWITH_FS_RES -DHAS_STDIO -DWITH_DESKTOP_STYLE '
+COMMON_CCFLAGS=COMMON_CCFLAGS+' -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_VGCANVAS -DWITH_UNICODE_BREAK '
 
 if FRAME_BUFFER_FORMAT=='rgba8888':
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FB_8888=1';
@@ -35,11 +37,8 @@ if LCD == 'NANOVG':
   VGCANVAS='NANOVG'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_GL3 -DWITH_VGCANVAS_LCD'
 else:
-  if VGCANVAS == 'AGG':
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_AGG'
-  elif VGCANVAS == 'PICASSO':
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_PICASSO -DIMAGE_RGBA'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_RGB565'
+  VGCANVAS='CAIRO'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_BGRA -DCAIRO_WIN32_STATIC_BUILD'
 
 os.environ['LCD'] = LCD
 os.environ['VGCANVAS'] =VGCANVAS 
@@ -50,31 +49,25 @@ os.environ['GTEST_ROOT'] = GTEST_ROOT;
 os.environ['INPUT_ENGINE'] = INPUT_ENGINE;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 
+OS_LIBS=[]
 OS_LIBPATH=[]
 OS_CPPPATH=[]
+OS_LINKFLAGS=''
 OS_FLAGS='-g -Wall'
 OS_SUBSYSTEM_CONSOLE=''
 OS_SUBSYSTEM_WINDOWS=''
-OS_LINKFLAGS=''
-OS_LIBS=['SDL2', 'glad']
 
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS '
   OS_LIBS = OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
-  if VGCANVAS == 'PICASSO':
-    OS_LIBS = ['freetype'] + OS_LIBS
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Linux':
   OS_LIBS = ['GL'] + OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
-  if VGCANVAS == 'PICASSO':
-    OS_LIBS = ['freetype'] + OS_LIBS
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DENABLE_FREE_TYPE2=1 -DFONT_FILE_NAME=\\\"'+TK_ROOT+'/demos/res/raw/fonts/default_ttf.ttf\\\"'
 
 elif OS_NAME == 'Windows':
-  OS_LIBS=['SDL2', 'glad', 'gdi32', 'user32']
+  OS_LIBS=['gdi32', 'user32']
   OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od /ZI'
   OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
   OS_LIBPATH=[TK_3RD_ROOT+'/SDL2-2.0.7/lib/x64']
@@ -82,38 +75,37 @@ elif OS_NAME == 'Windows':
   OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
   OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
   
-LIBS=['awtk', 'gpinyin', 'awtk', 'picasso', 'linebreak', 'nanovg'] + OS_LIBS
-
+LINKFLAGS=OS_LINKFLAGS;
+LIBPATH=[LIB_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
+LIBS=['awtk', 'gpinyin', 'awtk', 'cairo', 'pixman', 'linebreak', 'nanovg', 'SDL2', 'glad'] + OS_LIBS
+
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
   TK_3RD_ROOT, 
-  os.path.join(TK_SRC, 'ext_widgets'), 
-  os.path.join(TK_3RD_ROOT, 'nanovg/src'), 
-  os.path.join(TK_3RD_ROOT, 'agg/include'), 
-  os.path.join(TK_3RD_ROOT, 'gpinyin/include'), 
-  os.path.join(TK_3RD_ROOT, 'picasso/src'), 
-  os.path.join(TK_3RD_ROOT, 'picasso/build'), 
-  os.path.join(TK_3RD_ROOT, 'picasso/include'), 
-  os.path.join(TK_3RD_ROOT, 'picasso/src/gfx'), 
-  os.path.join(TK_3RD_ROOT, 'picasso/src/include'), 
-  os.path.join(TK_3RD_ROOT, 'freetype2/include'), 
-  os.path.join(TK_3RD_ROOT, 'libunibreak/src'), 
+  joinPath(TK_SRC, 'ext_widgets'), 
+  joinPath(TK_3RD_ROOT, 'nanovg/src'), 
+  joinPath(TK_3RD_ROOT, 'cairo/cairo'), 
+  joinPath(TK_3RD_ROOT, 'pixman/pixman'), 
+  joinPath(TK_3RD_ROOT, 'gpinyin/include'), 
+  joinPath(TK_3RD_ROOT, 'libunibreak/src'), 
   TK_TOOLS_ROOT] + OS_CPPPATH
 
 DefaultEnvironment(CCFLAGS = CCFLAGS, 
+  LIBS = LIBS,
+  LIBPATH = LIBPATH,
   CPPPATH = CPPPATH,
-  LIBS=LIBS,
-  LINKFLAGS=OS_LINKFLAGS,
+  LINKFLAGS = LINKFLAGS,
   OS_SUBSYSTEM_CONSOLE=OS_SUBSYSTEM_CONSOLE,
-  OS_SUBSYSTEM_WINDOWS=OS_SUBSYSTEM_WINDOWS,
-  LIBPATH=[os.path.join(TK_ROOT, 'lib')] + OS_LIBPATH)
+  OS_SUBSYSTEM_WINDOWS=OS_SUBSYSTEM_WINDOWS
+)
 
 SConscriptFiles=[
+  '3rd/pixman/SConscript',
+  '3rd/cairo/SConscript',
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
   '3rd/gpinyin/SConscript', 
-  '3rd/picasso/SConscript',
   '3rd/libunibreak/SConscript',
   'src/SConscript',
   'tools/common/SConscript', 

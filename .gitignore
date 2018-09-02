@@ -6,6 +6,8 @@
 *.ilk 
 *.idb
 *.obj
+*.lib
+*.exp
 *.exe
 .sconsign.dblite
 lua/demo1
@@ -28,3 +30,4 @@ bin/demo*
 .vscode
 .vs
 bin/cairo_stars
+.lo
