@@ -687,7 +687,7 @@ pixman_composite_triangles (pixman_op_t			op,
 				     x_src, y_src, x_dst, y_dst,
 				     n_tris * 2, traps);
 	
-	free (traps);
+	px_free (traps);
     }
 }
 
@@ -705,6 +705,6 @@ pixman_add_triangles (pixman_image_t          *image,
 	pixman_add_trapezoids (image, x_off, y_off,
 			       n_tris * 2, traps);
 
-	free (traps);
+	px_free (traps);
     }
 }

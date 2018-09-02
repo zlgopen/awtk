@@ -229,7 +229,7 @@ _cairo_hull_compute (cairo_pen_vertex_t *vertices, int *num_vertices)
     _cairo_hull_to_pen (hull, vertices, num_vertices);
 
     if (hull != hull_stack)
-	free (hull);
+	cr_free (hull);
 
     return CAIRO_STATUS_SUCCESS;
 }

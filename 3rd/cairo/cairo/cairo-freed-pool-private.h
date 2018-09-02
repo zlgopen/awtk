@@ -129,7 +129,7 @@ _freed_pool_reset (freed_pool_t *pool);
 typedef int freed_pool_t;
 
 #define _freed_pool_get(pool) NULL
-#define _freed_pool_put(pool, ptr) free(ptr)
+#define _freed_pool_put(pool, ptr) cr_free(ptr)
 #define _freed_pool_reset(ptr)
 
 #endif

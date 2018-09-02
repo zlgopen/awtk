@@ -498,7 +498,7 @@ _cairo_bentley_ottmann_tessellate_rectilinear_polygon_to_boxes (const cairo_poly
 							    fill_rule,
 							    FALSE, boxes);
     if (events != stack_events)
-	free (events);
+	cr_free (events);
 
     return status;
 }
@@ -594,7 +594,7 @@ _cairo_bentley_ottmann_tessellate_rectilinear_traps (cairo_traps_t *traps,
     traps->is_rectilinear = TRUE;
 
     if (events != stack_events)
-	free (events);
+	cr_free (events);
 
     return status;
 }

@@ -52,7 +52,7 @@ struct _cairo_mempool {
 	int bits;
 	cairo_list_t link;
     } *blocks;
-    cairo_list_t free[32];
+    cairo_list_t cr_free[32];
     unsigned char *map;
 
     unsigned int num_blocks;

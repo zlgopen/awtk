@@ -52,7 +52,7 @@
  * stored objects.
  *
  * When finished using the array, _cairo_array_fini() should be
- * called to free resources allocated during use of the array.
+ * called to cr_free resources allocated during use of the array.
  **/
 void
 _cairo_array_init (cairo_array_t *array, unsigned int element_size)
@@ -74,7 +74,7 @@ _cairo_array_init (cairo_array_t *array, unsigned int element_size)
 void
 _cairo_array_fini (cairo_array_t *array)
 {
-    free (array->elements);
+    cr_free (array->elements);
 }
 
 /**
@@ -82,7 +82,7 @@ _cairo_array_fini (cairo_array_t *array)
  * @array: a #cairo_array_t
  *
  * Increase the size of @array (if needed) so that there are at least
- * @additional free spaces in the array. The actual size of the array
+ * @additional cr_free spaces in the array. The actual size of the array
  * is always increased by doubling as many times as necessary.
  **/
 cairo_status_t
@@ -360,7 +360,7 @@ _cairo_array_size (const cairo_array_t *array)
  *
  * Initializes a #cairo_user_data_array_t structure for future
  * use. After initialization, the array has no keys. Call
- * _cairo_user_data_array_fini() to free any allocated memory
+ * _cairo_user_data_array_fini() to cr_free any allocated memory
  * when done using the array.
  **/
 void

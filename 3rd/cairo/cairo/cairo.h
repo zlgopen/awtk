@@ -225,7 +225,7 @@ typedef struct _cairo_pattern cairo_pattern_t;
  *
  * #cairo_destroy_func_t the type of function which is called when a
  * data element is destroyed. It is passed the pointer to the data
- * element and should free any memory and resources allocated for it.
+ * element and should cr_free any memory and resources allocated for it.
  *
  * Since: 1.0
  **/
@@ -1779,8 +1779,8 @@ typedef cairo_status_t (*cairo_user_scaled_font_render_glyph_func_t) (cairo_scal
  * the conversion (or for convenience), a new glyph array may be allocated
  * using cairo_glyph_allocate() and placed in @glyphs.  Upon return,
  * @num_glyphs should contain the number of generated glyphs.  If the value
- * @glyphs points at has changed after the call, the caller will free the
- * allocated glyph array using cairo_glyph_free().  The caller will also free
+ * @glyphs points at has changed after the call, the caller will cr_free the
+ * allocated glyph array using cairo_glyph_free().  The caller will also cr_free
  * the original value of @glyphs, so the callback shouldn't do so.
  * The callback should populate the glyph indices and positions (in font space)
  * assuming that the text is to be shown at the origin.
@@ -1796,7 +1796,7 @@ typedef cairo_status_t (*cairo_user_scaled_font_render_glyph_func_t) (cairo_scal
  * the original value of @clusters will still be freed by the caller.  Upon
  * return, @num_clusters should contain the number of generated clusters.
  * If the value @clusters points at has changed after the call, the caller
- * will free the allocated cluster array using cairo_text_cluster_free().
+ * will cr_free the allocated cluster array using cairo_text_cluster_free().
  *
  * The callback is optional.  If @num_glyphs is negative upon
  * the callback returning or if the return value

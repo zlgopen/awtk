@@ -42,7 +42,7 @@ _cairo_freelist_fini (cairo_freelist_t *freelist)
 	VG (VALGRIND_MAKE_MEM_DEFINED (node, sizeof (node->next)));
 	next = node->next;
 
-	free (node);
+	cr_free (node);
 	node = next;
     }
 }
@@ -61,7 +61,7 @@ _cairo_freelist_alloc (cairo_freelist_t *freelist)
 	return node;
     }
 
-    return malloc (freelist->nodesize);
+    return cr_malloc (freelist->nodesize);
 }
 
 void *
@@ -108,14 +108,14 @@ _cairo_freepool_fini (cairo_freepool_t *freepool)
     pool = freepool->pools;
     while (pool != &freepool->embedded_pool) {
 	cairo_freelist_pool_t *next = pool->next;
-	free (pool);
+	cr_free (pool);
 	pool = next;
     }
 
     pool = freepool->freepools;
     while (pool != NULL) {
 	cairo_freelist_pool_t *next = pool->next;
-	free (pool);
+	cr_free (pool);
 	pool = next;
     }
 
@@ -139,7 +139,7 @@ _cairo_freepool_alloc_from_new_pool (cairo_freepool_t *freepool)
 	else
 	    poolsize = (128 * freepool->nodesize + 8191) & -8192;
 
-	pool = malloc (sizeof (cairo_freelist_pool_t) + poolsize);
+	pool = cr_malloc (sizeof (cairo_freelist_pool_t) + poolsize);
 	if (unlikely (pool == NULL))
 	    return pool;
 

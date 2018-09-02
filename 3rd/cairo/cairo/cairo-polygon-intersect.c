@@ -743,7 +743,7 @@ static inline void
 _pqueue_fini (pqueue_t *pq)
 {
     if (pq->elements != pq->elements_embedded)
-	free (pq->elements);
+	cr_free (pq->elements);
 }
 
 static cairo_status_t
@@ -1391,7 +1391,7 @@ _cairo_polygon_intersect (cairo_polygon_t *a, int winding_a,
     a->num_edges = 0;
     status = intersection_sweep (event_ptrs, num_events, a);
     if (events != stack_events)
-	free (events);
+	cr_free (events);
 
    return status;
 }

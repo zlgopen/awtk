@@ -188,7 +188,7 @@ cairo_font_face_destroy (cairo_font_face_t *font_face)
 
     _cairo_user_data_array_fini (&font_face->user_data);
 
-    free (font_face);
+    cr_free (font_face);
 }
 slim_hidden_def (cairo_font_face_destroy);
 
@@ -341,5 +341,5 @@ _cairo_unscaled_font_destroy (cairo_unscaled_font_t *unscaled_font)
     if (! unscaled_font->backend->destroy (unscaled_font))
 	return;
 
-    free (unscaled_font);
+    cr_free (unscaled_font);
 }

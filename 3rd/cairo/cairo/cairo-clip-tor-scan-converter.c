@@ -242,7 +242,7 @@ struct _pool_chunk {
 /* A memory pool.  This is supposed to be embedded on the stack or
  * within some other structure.	 It may optionally be followed by an
  * embedded array from which requests are fulfilled until
- * malloc needs to be called to allocate a first real chunk. */
+ * cr_malloc needs to be called to allocate a first real chunk. */
 struct pool {
     /* Chunk we're allocating from. */
     struct _pool_chunk *current;
@@ -465,7 +465,7 @@ _pool_chunk_create(struct pool *pool, size_t size)
 {
     struct _pool_chunk *p;
 
-    p = malloc(size + sizeof(struct _pool_chunk));
+    p = cr_malloc(size + sizeof(struct _pool_chunk));
     if (unlikely (NULL == p))
 	longjmp (*pool->jmp, _cairo_error (CAIRO_STATUS_NO_MEMORY));
 
@@ -493,7 +493,7 @@ pool_fini(struct pool *pool)
 	while (NULL != p) {
 	    struct _pool_chunk *prev = p->prev_chunk;
 	    if (p != pool->sentinel)
-		free(p);
+		cr_free(p);
 	    p = prev;
 	}
 	p = pool->first_free;
@@ -515,7 +515,7 @@ _pool_alloc_from_new_chunk(
     size_t capacity;
 
     /* If the allocation is smaller than the default chunk size then
-     * try getting a chunk off the free list.  Force alloc of a new
+     * try getting a chunk off the cr_free list.  Force alloc of a new
      * chunk for large requests. */
     capacity = size;
     chunk = NULL;
@@ -561,7 +561,7 @@ pool_alloc (struct pool *pool, size_t size)
 static void
 pool_reset (struct pool *pool)
 {
-    /* Transfer all used chunks to the chunk free list. */
+    /* Transfer all used chunks to the chunk cr_free list. */
     struct _pool_chunk *chunk = pool->current;
     if (chunk != pool->sentinel) {
 	while (chunk->prev_chunk != pool->sentinel) {
@@ -889,7 +889,7 @@ static void
 polygon_fini (struct polygon *polygon)
 {
     if (polygon->y_buckets != polygon->y_buckets_embedded)
-	free (polygon->y_buckets);
+	cr_free (polygon->y_buckets);
 
     pool_fini (polygon->edge_pool.base);
 }
@@ -912,7 +912,7 @@ polygon_reset (struct polygon *polygon,
 	goto bail_no_mem; /* even if you could, you wouldn't want to. */
 
     if (polygon->y_buckets != polygon->y_buckets_embedded)
-	free (polygon->y_buckets);
+	cr_free (polygon->y_buckets);
 
     polygon->y_buckets =  polygon->y_buckets_embedded;
     if (num_buckets > ARRAY_LENGTH (polygon->y_buckets_embedded)) {
@@ -1763,7 +1763,7 @@ _cairo_clip_tor_scan_converter_destroy (void *converter)
     }
     _glitter_scan_converter_fini (self->converter);
     pool_fini (self->span_pool.base);
-    free(self);
+    cr_free(self);
 }
 
 static cairo_status_t
@@ -1794,7 +1794,7 @@ _cairo_clip_tor_scan_converter_create (cairo_clip_t *clip,
     cairo_status_t status;
     int i;
 
-    self = calloc (1, sizeof(struct _cairo_clip_tor_scan_converter));
+    self = cr_calloc (1, sizeof(struct _cairo_clip_tor_scan_converter));
     if (unlikely (self == NULL)) {
 	status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	goto bail_nomem;

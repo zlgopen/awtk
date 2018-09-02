@@ -99,7 +99,7 @@ _cairo_surface_snapshot_acquire_source_image (void                    *abstract_
     struct snapshot_extra *extra;
     cairo_status_t status;
 
-    extra = malloc (sizeof (*extra));
+    extra = cr_malloc (sizeof (*extra));
     if (unlikely (extra == NULL))
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 
@@ -107,7 +107,7 @@ _cairo_surface_snapshot_acquire_source_image (void                    *abstract_
     status =  _cairo_surface_acquire_source_image (extra->target, image_out, &extra->extra);
     if (unlikely (status)) {
 	cairo_surface_destroy (extra->target);
-	free (extra);
+	cr_free (extra);
     }
 
     *extra_out = extra;
@@ -123,7 +123,7 @@ _cairo_surface_snapshot_release_source_image (void                   *abstract_s
 
     _cairo_surface_release_source_image (extra->target, image, extra->extra);
     cairo_surface_destroy (extra->target);
-    free (extra);
+    cr_free (extra);
 }
 
 static cairo_bool_t
@@ -258,7 +258,7 @@ _cairo_surface_snapshot (cairo_surface_t *surface)
     if (snapshot != NULL)
 	return cairo_surface_reference (&snapshot->base);
 
-    snapshot = malloc (sizeof (cairo_surface_snapshot_t));
+    snapshot = cr_malloc (sizeof (cairo_surface_snapshot_t));
     if (unlikely (snapshot == NULL))
 	return _cairo_surface_create_in_error (_cairo_error (CAIRO_STATUS_SURFACE_FINISHED));
 

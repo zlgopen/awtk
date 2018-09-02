@@ -407,6 +407,19 @@
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifdef HAS_STD_MALLOC
+#include <stdlib.h>
+#define cr_malloc  malloc
+#define cr_realloc realloc
+#define cr_calloc  calloc
+#define cr_free    free
+#else
+#include "base/mem.h"
+#define cr_malloc  tk_malloc
+#define cr_realloc tk_realloc
+#define cr_calloc  tk_calloc
+#define cr_free    tk_free
+#endif/*HAS_STD_MALLOC*/
 #ifndef __cplusplus
 /* #undef inline */
 #endif

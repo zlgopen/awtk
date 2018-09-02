@@ -51,16 +51,16 @@
  * _cairo_malloc:
  * @size: size in bytes
  *
- * Allocate @size memory using malloc().
- * The memory should be freed using free().
- * malloc is skipped, if 0 bytes are requested, and %NULL will be returned.
+ * Allocate @size memory using cr_malloc().
+ * The memory should be freed using cr_free().
+ * cr_malloc is skipped, if 0 bytes are requested, and %NULL will be returned.
  *
  * Return value: A pointer to the newly allocated memory, or %NULL in
- * case of malloc() failure or size is 0.
+ * case of cr_malloc() failure or size is 0.
  **/
 
 #define _cairo_malloc(size) \
-   ((size) ? malloc((unsigned) (size)) : NULL)
+   ((size) ? cr_malloc((unsigned) (size)) : NULL)
 
 /**
  * _cairo_malloc_ab:
@@ -69,14 +69,14 @@
  *
  * Allocates @a*@size memory using _cairo_malloc(), taking care to not
  * overflow when doing the multiplication.  Behaves much like
- * calloc(), except that the returned memory is not set to zero.
- * The memory should be freed using free().
+ * cr_calloc(), except that the returned memory is not set to zero.
+ * The memory should be freed using cr_free().
  *
  * @size should be a constant so that the compiler can optimize
  * out a constant division.
  *
  * Return value: A pointer to the newly allocated memory, or %NULL in
- * case of malloc() failure or overflow.
+ * case of cr_malloc() failure or overflow.
  **/
 
 #define _cairo_malloc_ab(a, size) \
@@ -89,21 +89,21 @@
  * @a: number of elements to allocate
  * @size: size of each element
  *
- * Reallocates @ptr a block of @a*@size memory using realloc(), taking
+ * Reallocates @ptr a block of @a*@size memory using cr_realloc(), taking
  * care to not overflow when doing the multiplication.  The memory
- * should be freed using free().
+ * should be freed using cr_free().
  *
  * @size should be a constant so that the compiler can optimize
  * out a constant division.
  *
  * Return value: A pointer to the newly allocated memory, or %NULL in
- * case of realloc() failure or overflow (whereupon the original block
+ * case of cr_realloc() failure or overflow (whereupon the original block
  * of memory * is left untouched).
  **/
 
 #define _cairo_realloc_ab(ptr, a, size) \
   ((size) && (unsigned) (a) >= INT32_MAX / (unsigned) (size) ? NULL : \
-   realloc(ptr, (unsigned) (a) * (unsigned) (size)))
+   cr_realloc(ptr, (unsigned) (a) * (unsigned) (size)))
 
 /**
  * _cairo_malloc_abc:
@@ -113,13 +113,13 @@
  *
  * Allocates @a*@b*@size memory using _cairo_malloc(), taking care to not
  * overflow when doing the multiplication.  Behaves like
- * _cairo_malloc_ab().  The memory should be freed using free().
+ * _cairo_malloc_ab().  The memory should be freed using cr_free().
  *
  * @size should be a constant so that the compiler can optimize
  * out a constant division.
  *
  * Return value: A pointer to the newly allocated memory, or %NULL in
- * case of malloc() failure or overflow.
+ * case of cr_malloc() failure or overflow.
  **/
 
 #define _cairo_malloc_abc(a, b, size) \
@@ -135,10 +135,10 @@
  *
  * Allocates @a*@size+@c memory using _cairo_malloc(), taking care to not
  * overflow when doing the arithmetic.  Behaves similar to
- * _cairo_malloc_ab().  The memory should be freed using free().
+ * _cairo_malloc_ab().  The memory should be freed using cr_free().
  *
  * Return value: A pointer to the newly allocated memory, or %NULL in
- * case of malloc() failure or overflow.
+ * case of cr_malloc() failure or overflow.
  **/
 
 #define _cairo_malloc_ab_plus_c(a, size, c) \

@@ -604,7 +604,7 @@ static inline void
 _pqueue_fini (pqueue_t *pq)
 {
     if (pq->elements != pq->elements_embedded)
-	free (pq->elements);
+	cr_free (pq->elements);
 }
 
 static cairo_status_t
@@ -1303,7 +1303,7 @@ _cairo_bentley_ottmann_tessellate_polygon (cairo_traps_t	 *traps,
 		_cairo_bo_event_queue_sort (event_ptrs+j, i-j);
 	}
 	if (event_y != stack_event_y)
-	    free (event_y);
+	    cr_free (event_y);
     } else
 	_cairo_bo_event_queue_sort (event_ptrs, i);
     event_ptrs[i] = NULL;
@@ -1317,7 +1317,7 @@ _cairo_bentley_ottmann_tessellate_polygon (cairo_traps_t	 *traps,
 							 &intersections);
 
     if (events != stack_events)
-	free (events);
+	cr_free (events);
 
     return status;
 }

@@ -2,7 +2,7 @@
  * Copyright 2010, 2012, Soren Sandmann <sandmann@cs.au.dk>
  * Copyright 2010, 2011, 2012, Red Hat, Inc
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted, px_free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -67,7 +67,7 @@ free_glyph (glyph_t *glyph)
 {
     pixman_list_unlink (&glyph->mru_link);
     pixman_image_unref (glyph->image);
-    free (glyph);
+    px_free (glyph);
 }
 
 static unsigned int
@@ -187,7 +187,7 @@ pixman_glyph_cache_create (void)
 {
     pixman_glyph_cache_t *cache;
 
-    if (!(cache = malloc (sizeof *cache)))
+    if (!(cache = px_malloc (sizeof *cache)))
 	return NULL;
 
     memset (cache->glyphs, 0, sizeof (cache->glyphs));
@@ -207,7 +207,7 @@ pixman_glyph_cache_destroy (pixman_glyph_cache_t *cache)
 
     clear_table (cache);
 
-    free (cache);
+    px_free (cache);
 }
 
 PIXMAN_EXPORT void
@@ -268,7 +268,7 @@ pixman_glyph_cache_insert (pixman_glyph_cache_t  *cache,
     if (cache->n_glyphs >= HASH_SIZE)
 	return NULL;
 
-    if (!(glyph = malloc (sizeof *glyph)))
+    if (!(glyph = px_malloc (sizeof *glyph)))
 	return NULL;
 
     glyph->font_key = font_key;
@@ -279,7 +279,7 @@ pixman_glyph_cache_insert (pixman_glyph_cache_t  *cache,
     if (!(glyph->image = pixman_image_create_bits (
 	      image->bits.format, width, height, NULL, -1)))
     {
-	free (glyph);
+	px_free (glyph);
 	return NULL;
     }
 

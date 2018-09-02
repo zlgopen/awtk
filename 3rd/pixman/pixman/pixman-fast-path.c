@@ -2432,7 +2432,7 @@ fast_fetch_bilinear_cover (pixman_iter_t *iter, const uint32_t *mask)
 static void
 bilinear_cover_iter_fini (pixman_iter_t *iter)
 {
-    free (iter->data);
+    px_free (iter->data);
 }
 
 static void
@@ -2450,7 +2450,7 @@ fast_bilinear_cover_iter_init (pixman_iter_t *iter, const pixman_iter_info_t *it
     if (!pixman_transform_point_3d (iter->image->common.transform, &v))
 	goto fail;
 
-    info = malloc (sizeof (*info) + (2 * width - 1) * sizeof (uint64_t));
+    info = px_malloc (sizeof (*info) + (2 * width - 1) * sizeof (uint64_t));
     if (!info)
 	goto fail;
 

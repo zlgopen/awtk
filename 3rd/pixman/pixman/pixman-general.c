@@ -232,7 +232,7 @@ general_composite_rect  (pixman_implementation_t *imp,
 	dest_iter.fini (&dest_iter);
     
     if (scanline_buffer != (uint8_t *) stack_scanline_buffer)
-	free (scanline_buffer);
+	px_free (scanline_buffer);
 }
 
 static const pixman_fast_path_t general_fast_path[] =

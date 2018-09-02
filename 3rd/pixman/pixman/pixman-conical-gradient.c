@@ -196,7 +196,7 @@ pixman_image_create_conical_gradient (const pixman_point_fixed_t *  center,
 
     if (!_pixman_init_gradient (&conical->common, stops, n_stops))
     {
-	free (image);
+	px_free (image);
 	return NULL;
     }
 

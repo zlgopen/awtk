@@ -809,7 +809,7 @@ static void
 pqueue_fini (pqueue_t *pq)
 {
     if (pq->elements != pq->elements_embedded)
-	free (pq->elements);
+	cr_free (pq->elements);
 }
 
 static cairo_bool_t
@@ -1429,7 +1429,7 @@ render_rows (cairo_botor_scan_converter_t *self,
     status = renderer->render_rows (renderer, y, height, spans, num_spans);
 
     if (unlikely (spans != spans_stack))
-	free (spans);
+	cr_free (spans);
 
     coverage_reset (&sweep_line->coverage);
 
@@ -2040,7 +2040,7 @@ _cairo_botor_scan_converter_generate (void			*converter,
     status = botor_generate (self, event_ptrs, renderer);
 
     if (events != stack_events)
-	free (events);
+	cr_free (events);
 
     return status;
 }
@@ -2136,7 +2136,7 @@ _cairo_botor_scan_converter_destroy (void *converter)
 
     for (chunk = self->chunks.next; chunk != NULL; chunk = next) {
 	next = chunk->next;
-	free (chunk);
+	cr_free (chunk);
     }
 }
 

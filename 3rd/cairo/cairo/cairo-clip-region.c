@@ -84,7 +84,7 @@ _cairo_clip_extract_region (cairo_clip_t *clip)
     clip->region = cairo_region_create_rectangles (r, i);
 
     if (r != stack_rects)
-	free (r);
+	cr_free (r);
 }
 
 cairo_region_t *

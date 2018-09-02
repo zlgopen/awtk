@@ -67,10 +67,10 @@
  * permutation of table indices.
  *
  * Hash tables are rehashed in order to keep between 12.5% and 50%
- * entries in the hash table alive and at least 25% free. When table
+ * entries in the hash table alive and at least 25% cr_free. When table
  * size is changed, the new table has about 25% live elements.
  *
- * The free entries guarantee an expected constant-time lookup.
+ * The cr_free entries guarantee an expected constant-time lookup.
  * Doubling/halving the table in the described fashion guarantees
  * amortized O(1) insertion/removal.
  *
@@ -164,7 +164,7 @@ _cairo_hash_table_create (cairo_hash_keys_equal_func_t keys_equal)
 {
     cairo_hash_table_t *hash_table;
 
-    hash_table = malloc (sizeof (cairo_hash_table_t));
+    hash_table = cr_malloc (sizeof (cairo_hash_table_t));
     if (unlikely (hash_table == NULL)) {
 	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
 	return NULL;
@@ -178,11 +178,11 @@ _cairo_hash_table_create (cairo_hash_keys_equal_func_t keys_equal)
     memset (&hash_table->cache, 0, sizeof (hash_table->cache));
     hash_table->table_size = &hash_table_sizes[0];
 
-    hash_table->entries = calloc (*hash_table->table_size,
+    hash_table->entries = cr_calloc (*hash_table->table_size,
 				  sizeof (cairo_hash_entry_t *));
     if (unlikely (hash_table->entries == NULL)) {
 	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
-	free (hash_table);
+	cr_free (hash_table);
 	return NULL;
     }
 
@@ -218,8 +218,8 @@ _cairo_hash_table_destroy (cairo_hash_table_t *hash_table)
     /* No iterators can be running. Otherwise, halt. */
     assert (hash_table->iterating == 0);
 
-    free (hash_table->entries);
-    free (hash_table);
+    cr_free (hash_table->entries);
+    cr_free (hash_table);
 }
 
 static cairo_hash_entry_t **
@@ -258,7 +258,7 @@ _cairo_hash_table_lookup_unique_key (cairo_hash_table_t *hash_table,
  *
  * Resize the hash table if the number of entries has gotten much
  * bigger or smaller than the ideal number of entries for the current
- * size and guarantee some free entries to be used as lookup
+ * size and guarantee some cr_free entries to be used as lookup
  * termination points.
  *
  * Return value: %CAIRO_STATUS_SUCCESS if successful or
@@ -271,7 +271,7 @@ _cairo_hash_table_manage (cairo_hash_table_t *hash_table)
     unsigned long new_size, i;
 
     /* Keep between 12.5% and 50% entries in the hash table alive and
-     * at least 25% free. */
+     * at least 25% cr_free. */
     unsigned long live_high = *hash_table->table_size >> 1;
     unsigned long live_low = live_high >> 2;
     unsigned long free_low = live_high >> 1;
@@ -299,12 +299,12 @@ _cairo_hash_table_manage (cairo_hash_table_t *hash_table)
     {
 	/* The number of live entries is within the desired bounds
 	 * (we're not going to resize the table) and we have enough
-	 * free entries. Do nothing. */
+	 * cr_free entries. Do nothing. */
 	return CAIRO_STATUS_SUCCESS;
     }
 
     new_size = *tmp.table_size;
-    tmp.entries = calloc (new_size, sizeof (cairo_hash_entry_t*));
+    tmp.entries = cr_calloc (new_size, sizeof (cairo_hash_entry_t*));
     if (unlikely (tmp.entries == NULL))
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 
@@ -315,7 +315,7 @@ _cairo_hash_table_manage (cairo_hash_table_t *hash_table)
 	}
     }
 
-    free (hash_table->entries);
+    cr_free (hash_table->entries);
     hash_table->entries = tmp.entries;
     hash_table->table_size = tmp.table_size;
     hash_table->free_entries = new_size - hash_table->live_entries;

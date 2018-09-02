@@ -181,7 +181,7 @@ _cairo_image_surface_create_for_pixman_image (pixman_image_t		*pixman_image,
 {
     cairo_image_surface_t *surface;
 
-    surface = malloc (sizeof (cairo_image_surface_t));
+    surface = cr_malloc (sizeof (cairo_image_surface_t));
     if (unlikely (surface == NULL))
 	return _cairo_surface_create_in_error (_cairo_error (CAIRO_STATUS_NO_MEMORY));
 
@@ -425,7 +425,7 @@ _cairo_image_surface_create_with_content (cairo_content_t	content,
  * cairo_surface_t *surface;
  *
  * stride = cairo_format_stride_for_width (format, width);
- * data = malloc (stride * height);
+ * data = cr_malloc (stride * height);
  * surface = cairo_image_surface_create_for_data (data, format,
  *						  width, height,
  *						  stride);
@@ -460,7 +460,7 @@ slim_hidden_def (cairo_format_stride_for_width);
  * cairo_image_surface_create_for_data:
  * @data: a pointer to a buffer supplied by the application in which
  *     to write contents. This pointer must be suitably aligned for any
- *     kind of variable, (for example, a pointer returned by malloc).
+ *     kind of variable, (for example, a pointer returned by cr_malloc).
  * @format: the format of pixels in the buffer
  * @width: the width of the image to be stored in the buffer
  * @height: the height of the image to be stored in the buffer
@@ -846,7 +846,7 @@ _cairo_image_surface_finish (void *abstract_surface)
     }
 
     if (surface->owns_data) {
-	free (surface->data);
+	cr_free (surface->data);
 	surface->data = NULL;
     }
 
@@ -1147,7 +1147,7 @@ _cairo_image_surface_create_from_image (cairo_image_surface_t *other,
 cleanup_image:
     pixman_image_unref (image);
 cleanup_mem:
-    free (mem);
+    cr_free (mem);
 cleanup:
     return (cairo_image_surface_t *) _cairo_surface_create_in_error (status);
 }

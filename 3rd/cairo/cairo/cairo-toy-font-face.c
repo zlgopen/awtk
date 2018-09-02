@@ -182,7 +182,7 @@ _cairo_toy_font_face_init (cairo_toy_font_face_t *font_face,
 			   cairo_font_slant_t	  slant,
 			   cairo_font_weight_t	  weight)
 {
-    char *family_copy = malloc(strlen(family)+1);
+    char *family_copy = cr_malloc(strlen(family)+1);
     cairo_status_t status;
 
     strcpy(family_copy, family);
@@ -197,7 +197,7 @@ _cairo_toy_font_face_init (cairo_toy_font_face_t *font_face,
     status = _cairo_toy_font_face_create_impl_face (font_face,
 						    &font_face->impl_face);
     if (unlikely (status)) {
-	free (family_copy);
+	cr_free (family_copy);
 	return status;
     }
 
@@ -210,7 +210,7 @@ _cairo_toy_font_face_fini (cairo_toy_font_face_t *font_face)
     /* We assert here that we own font_face->family before casting
      * away the const qualifer. */
     assert (font_face->owns_family);
-    free ((char*) font_face->family);
+    cr_free ((char*) font_face->family);
 
     if (font_face->impl_face)
 	cairo_font_face_destroy (font_face->impl_face);
@@ -312,7 +312,7 @@ cairo_toy_font_face_create (const char          *family,
     }
 
     /* Otherwise create it and insert into hash table. */
-    font_face = malloc (sizeof (cairo_toy_font_face_t));
+    font_face = cr_malloc (sizeof (cairo_toy_font_face_t));
     if (unlikely (font_face == NULL)) {
 	status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	goto UNWIND_HASH_TABLE_LOCK;
@@ -334,7 +334,7 @@ cairo_toy_font_face_create (const char          *family,
  UNWIND_FONT_FACE_INIT:
     _cairo_toy_font_face_fini (font_face);
  UNWIND_FONT_FACE_MALLOC:
-    free (font_face);
+    cr_free (font_face);
  UNWIND_HASH_TABLE_LOCK:
     _cairo_toy_font_face_hash_table_unlock ();
  UNWIND:

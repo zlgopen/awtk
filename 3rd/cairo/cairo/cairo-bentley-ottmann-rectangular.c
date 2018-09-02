@@ -699,7 +699,7 @@ _cairo_bentley_ottmann_tessellate_rectangular_traps (cairo_traps_t *traps,
     traps->is_rectangular = TRUE;
 
     if (rectangles != stack_rectangles)
-	free (rectangles);
+	cr_free (rectangles);
 
     dump_traps (traps, "bo-rects-traps-out.txt");
 
@@ -783,7 +783,7 @@ _cairo_bentley_ottmann_tessellate_boxes (const cairo_boxes_t *in,
 					      3*sizeof (rectangle_t *));
 	if (unlikely (rectangles == NULL)) {
 	    if (rectangles_chain != stack_rectangles_chain)
-		free (rectangles_chain);
+		cr_free (rectangles_chain);
 	    return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	}
 
@@ -839,7 +839,7 @@ _cairo_bentley_ottmann_tessellate_boxes (const cairo_boxes_t *in,
 	}
 
 	if (rectangles_chain != stack_rectangles_chain)
-	    free (rectangles_chain);
+	    cr_free (rectangles_chain);
 
 	j -= 2;
     } else {
@@ -851,7 +851,7 @@ _cairo_bentley_ottmann_tessellate_boxes (const cairo_boxes_t *in,
 							    fill_rule,
 							    FALSE, out);
     if (rectangles != stack_rectangles)
-	free (rectangles);
+	cr_free (rectangles);
 
     return status;
 }

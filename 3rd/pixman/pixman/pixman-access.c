@@ -1117,7 +1117,7 @@ store_scanline_generic_float (bits_image_t *  image,
 
     image->store_scanline_32 (image, x, y, width, argb8_pixels);
 
-    free (argb8_pixels);
+    px_free (argb8_pixels);
 }
 
 static void

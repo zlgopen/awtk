@@ -251,7 +251,7 @@ cairo_region_create_rectangles (const cairo_rectangle_int_t *rects,
     if (count > ARRAY_LENGTH (stack_pboxes)) {
 	pboxes = _cairo_malloc_ab (count, sizeof (pixman_box32_t));
 	if (unlikely (pboxes == NULL)) {
-	    free (region);
+	    cr_free (region);
 	    return _cairo_region_create_in_error (_cairo_error (CAIRO_STATUS_NO_MEMORY));
 	}
     }
@@ -266,10 +266,10 @@ cairo_region_create_rectangles (const cairo_rectangle_int_t *rects,
     i = pixman_region32_init_rects (&region->rgn, pboxes, count);
 
     if (pboxes != stack_pboxes)
-	free (pboxes);
+	cr_free (pboxes);
 
     if (unlikely (i == 0)) {
-	free (region);
+	cr_free (region);
 	return _cairo_region_create_in_error (_cairo_error (CAIRO_STATUS_NO_MEMORY));
     }
 
@@ -291,7 +291,7 @@ _cairo_region_create_from_boxes (const cairo_box_t *boxes, int count)
 
     if (! pixman_region32_init_rects (&region->rgn,
 				      (pixman_box32_t *)boxes, count)) {
-	free (region);
+	cr_free (region);
 	return _cairo_region_create_in_error (_cairo_error (CAIRO_STATUS_NO_MEMORY));
     }
 
@@ -427,7 +427,7 @@ cairo_region_destroy (cairo_region_t *region)
 	return;
 
     _cairo_region_fini (region);
-    free (region);
+    cr_free (region);
 }
 slim_hidden_def (cairo_region_destroy);
 

@@ -139,10 +139,10 @@ static void
 polygon_fini (struct polygon *polygon)
 {
     if (polygon->y_buckets != polygon->y_buckets_embedded)
-	free (polygon->y_buckets);
+	cr_free (polygon->y_buckets);
 
     if (polygon->edges != polygon->edges_embedded)
-	free (polygon->edges);
+	cr_free (polygon->edges);
 }
 
 static void
@@ -433,7 +433,7 @@ static void
 _mono_scan_converter_fini(struct mono_scan_converter *self)
 {
     if (self->spans != self->spans_embedded)
-	free (self->spans);
+	cr_free (self->spans);
 
     polygon_fini(self->polygon);
 }
@@ -538,7 +538,7 @@ _cairo_mono_scan_converter_destroy (void *converter)
 {
     cairo_mono_scan_converter_t *self = converter;
     _mono_scan_converter_fini (self->converter);
-    free(self);
+    cr_free(self);
 }
 
 cairo_status_t
@@ -581,7 +581,7 @@ _cairo_mono_scan_converter_create (int			xmin,
     cairo_mono_scan_converter_t *self;
     cairo_status_t status;
 
-    self = malloc (sizeof(struct _cairo_mono_scan_converter));
+    self = cr_malloc (sizeof(struct _cairo_mono_scan_converter));
     if (unlikely (self == NULL)) {
 	status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	goto bail_nomem;

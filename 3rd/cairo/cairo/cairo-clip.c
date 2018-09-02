@@ -62,7 +62,7 @@ _cairo_clip_path_create (cairo_clip_t *clip)
 
     clip_path = _freed_pool_get (&clip_path_pool);
     if (unlikely (clip_path == NULL)) {
-	clip_path = malloc (sizeof (cairo_clip_path_t));
+	clip_path = cr_malloc (sizeof (cairo_clip_path_t));
 	if (unlikely (clip_path == NULL))
 	    return NULL;
     }
@@ -108,7 +108,7 @@ _cairo_clip_create (void)
 
     clip = _freed_pool_get (&clip_pool);
     if (unlikely (clip == NULL)) {
-	clip = malloc (sizeof (cairo_clip_t));
+	clip = cr_malloc (sizeof (cairo_clip_t));
 	if (unlikely (clip == NULL))
 	    return NULL;
     }
@@ -134,7 +134,7 @@ _cairo_clip_destroy (cairo_clip_t *clip)
 	_cairo_clip_path_destroy (clip->path);
 
     if (clip->boxes != &clip->embedded_box)
-	free (clip->boxes);
+	cr_free (clip->boxes);
     cairo_region_destroy (clip->region);
 
     _freed_pool_put (&clip_pool, clip);
@@ -693,7 +693,7 @@ _cairo_rectangle_list_create_in_error (cairo_status_t status)
     if (status == CAIRO_STATUS_CLIP_NOT_REPRESENTABLE)
 	return (cairo_rectangle_list_t*) &_cairo_rectangles_not_representable;
 
-    list = malloc (sizeof (*list));
+    list = cr_malloc (sizeof (*list));
     if (unlikely (list == NULL)) {
 	status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	return (cairo_rectangle_list_t*) &_cairo_rectangles_nil;
@@ -746,16 +746,16 @@ _cairo_clip_copy_rectangle_list (cairo_clip_t *clip, cairo_gstate_t *gstate)
 						&clip_rect,
 						&rectangles[i]))
 	    {
-		free (rectangles);
+		cr_free (rectangles);
 		return ERROR_LIST (CAIRO_STATUS_CLIP_NOT_REPRESENTABLE);
 	    }
 	}
     }
 
  DONE:
-    list = malloc (sizeof (cairo_rectangle_list_t));
+    list = cr_malloc (sizeof (cairo_rectangle_list_t));
     if (unlikely (list == NULL)) {
-        free (rectangles);
+        cr_free (rectangles);
 	return ERROR_LIST (CAIRO_STATUS_NO_MEMORY);
     }
 
@@ -784,8 +784,8 @@ cairo_rectangle_list_destroy (cairo_rectangle_list_t *rectangle_list)
         rectangle_list == &_cairo_rectangles_not_representable)
         return;
 
-    free (rectangle_list->rectangles);
-    free (rectangle_list);
+    cr_free (rectangle_list->rectangles);
+    cr_free (rectangle_list);
 }
 
 void

@@ -246,7 +246,7 @@ void
 _cairo_polygon_fini (cairo_polygon_t *polygon)
 {
     if (polygon->edges != polygon->edges_embedded)
-	free (polygon->edges);
+	cr_free (polygon->edges);
 
     VG (VALGRIND_MAKE_MEM_NOACCESS (polygon, sizeof (cairo_polygon_t)));
 }

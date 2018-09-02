@@ -273,7 +273,7 @@ pixman_image_create_linear_gradient (const pixman_point_fixed_t *  p1,
 
     if (!_pixman_init_gradient (&linear->common, stops, n_stops))
     {
-	free (image);
+	px_free (image);
 	return NULL;
     }
 

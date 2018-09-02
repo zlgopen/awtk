@@ -302,7 +302,7 @@ _cairo_surface_offset_glyphs (cairo_surface_t		*surface,
 
     if (dev_clip != clip)
 	_cairo_clip_destroy (dev_clip);
-    free (dev_glyphs);
+    cr_free (dev_glyphs);
 
     return status;
 }

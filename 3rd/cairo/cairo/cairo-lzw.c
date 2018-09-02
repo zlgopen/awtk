@@ -73,7 +73,7 @@ _lzw_buf_init (lzw_buf_t *buf, int size)
     buf->pending = 0;
     buf->pending_bits = 0;
 
-    buf->data = malloc (size);
+    buf->data = cr_malloc (size);
     if (unlikely (buf->data == NULL)) {
 	buf->data_size = 0;
 	buf->status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
@@ -97,10 +97,10 @@ _lzw_buf_grow (lzw_buf_t *buf)
     new_data = NULL;
     /* check for integer overflow */
     if (new_size / 2 == buf->data_size)
-	new_data = realloc (buf->data, new_size);
+	new_data = cr_realloc (buf->data, new_size);
 
     if (unlikely (new_data == NULL)) {
-	free (buf->data);
+	cr_free (buf->data);
 	buf->data_size = 0;
 	buf->status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	return buf->status;
@@ -201,10 +201,10 @@ typedef uint32_t lzw_symbol_t;
 #define LZW_SYMBOL_KEY_MASK	0x000fffff
 
 /* Since code values are only stored starting with 258 we can safely
- * use a zero value to represent free slots in the hash table. */
+ * use a zero value to represent cr_free slots in the hash table. */
 #define LZW_SYMBOL_FREE		0x00000000
 
-/* These really aren't very free for modifying. First, the PostScript
+/* These really aren't very cr_free for modifying. First, the PostScript
  * specification sets the 9-12 bit range. Second, the encoding of
  * lzw_symbol_t above also relies on 2 of LZW_BITS_MAX plus one byte
  * fitting within 32 bits.
@@ -308,7 +308,7 @@ _lzw_symbol_table_lookup (lzw_symbol_table_t	 *table,
  *
  * This is an original implementation based on reading the
  * specification of the LZWDecode filter in the PostScript Language
- * Reference. The free parameters in the LZW algorithm are set to the
+ * Reference. The cr_free parameters in the LZW algorithm are set to the
  * values mandated by PostScript, (symbols encoded with widths from 9
  * to 12 bits).
  *

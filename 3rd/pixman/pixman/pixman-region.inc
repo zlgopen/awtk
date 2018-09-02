@@ -209,10 +209,10 @@ alloc_data (size_t n)
     if (!sz)
 	return NULL;
 
-    return malloc (sz);
+    return px_malloc (sz);
 }
 
-#define FREE_DATA(reg) if ((reg)->data && (reg)->data->size) free ((reg)->data)
+#define FREE_DATA(reg) if ((reg)->data && (reg)->data->size) px_free ((reg)->data)
 
 #define RECTALLOC_BAIL(region, n, bail)					\
     do									\
@@ -279,7 +279,7 @@ alloc_data (size_t n)
 	    else							\
 	    {								\
 		new_data = (region_data_type_t *)			\
-		    realloc ((reg)->data, data_size);			\
+		    px_realloc ((reg)->data, data_size);			\
 	    }								\
 									\
 	    if (new_data)						\
@@ -466,7 +466,7 @@ pixman_rect_alloc (region_type_t * region,
 	else
 	{
 	    data = (region_data_type_t *)
-		realloc (region->data, PIXREGION_SZOF (n));
+		px_realloc (region->data, PIXREGION_SZOF (n));
 	}
 	
 	if (!data)
@@ -803,7 +803,7 @@ pixman_op (region_type_t *  new_reg,               /* Place to store result	    
     {
         if (!pixman_rect_alloc (new_reg, new_size))
         {
-            free (old_data);
+            px_free (old_data);
             return FALSE;
 	}
     }
@@ -978,7 +978,7 @@ pixman_op (region_type_t *  new_reg,               /* Place to store result	    
         APPEND_REGIONS (new_reg, r2_band_end, r2_end);
     }
 
-    free (old_data);
+    px_free (old_data);
 
     if (!(numRects = new_reg->data->numRects))
     {
@@ -999,7 +999,7 @@ pixman_op (region_type_t *  new_reg,               /* Place to store result	    
     return TRUE;
 
 bail:
-    free (old_data);
+    px_free (old_data);
 
     return pixman_break (new_reg);
 }
@@ -1685,14 +1685,14 @@ validate (region_type_t * badreg)
 
             if (ri == stack_regions)
             {
-                rit = malloc (data_size);
+                rit = px_malloc (data_size);
                 if (!rit)
 		    goto bail;
                 memcpy (rit, ri, num_ri * sizeof (region_info_t));
 	    }
             else
             {
-                rit = (region_info_t *) realloc (ri, data_size);
+                rit = (region_info_t *) px_realloc (ri, data_size);
                 if (!rit)
 		    goto bail;
 	    }
@@ -1769,7 +1769,7 @@ validate (region_type_t * badreg)
     *badreg = ri[0].reg;
 
     if (ri != stack_regions)
-	free (ri);
+	px_free (ri);
 
     GOOD (badreg);
     return ret;
@@ -1779,7 +1779,7 @@ bail:
 	FREE_DATA (&ri[i].reg);
 
     if (ri != stack_regions)
-	free (ri);
+	px_free (ri);
 
     return pixman_break (badreg);
 }
@@ -2758,7 +2758,7 @@ PREFIX (_init_from_image) (region_type_t *region,
         region->extents.y2 = PIXREGION_END(region)->y2;
         if (region->data->numRects == 1)
         {
-            free (region->data);
+            px_free (region->data);
             region->data = NULL;
         }
     }

@@ -172,7 +172,7 @@ cairo_status_to_string (cairo_status_t status)
  * Allocates an array of #cairo_glyph_t's.
  * This function is only useful in implementations of
  * #cairo_user_scaled_font_text_to_glyphs_func_t where the user
- * needs to allocate an array of glyphs that cairo will free.
+ * needs to allocate an array of glyphs that cairo will cr_free.
  * For all other uses, user can use their own allocation method
  * for glyphs.
  *
@@ -197,12 +197,12 @@ slim_hidden_def (cairo_glyph_allocate);
 
 /**
  * cairo_glyph_free:
- * @glyphs: array of glyphs to free, or %NULL
+ * @glyphs: array of glyphs to cr_free, or %NULL
  *
  * Frees an array of #cairo_glyph_t's allocated using cairo_glyph_allocate().
- * This function is only useful to free glyph array returned
+ * This function is only useful to cr_free glyph array returned
  * by cairo_scaled_font_text_to_glyphs() where cairo returns
- * an array of glyphs that the user will free.
+ * an array of glyphs that the user will cr_free.
  * For all other uses, user can use their own allocation method
  * for glyphs.
  *
@@ -211,7 +211,7 @@ slim_hidden_def (cairo_glyph_allocate);
 void
 cairo_glyph_free (cairo_glyph_t *glyphs)
 {
-    free (glyphs);
+    cr_free (glyphs);
 }
 slim_hidden_def (cairo_glyph_free);
 
@@ -222,7 +222,7 @@ slim_hidden_def (cairo_glyph_free);
  * Allocates an array of #cairo_text_cluster_t's.
  * This function is only useful in implementations of
  * #cairo_user_scaled_font_text_to_glyphs_func_t where the user
- * needs to allocate an array of text clusters that cairo will free.
+ * needs to allocate an array of text clusters that cairo will cr_free.
  * For all other uses, user can use their own allocation method
  * for text clusters.
  *
@@ -247,12 +247,12 @@ slim_hidden_def (cairo_text_cluster_allocate);
 
 /**
  * cairo_text_cluster_free:
- * @clusters: array of text clusters to free, or %NULL
+ * @clusters: array of text clusters to cr_free, or %NULL
  *
  * Frees an array of #cairo_text_cluster's allocated using cairo_text_cluster_allocate().
- * This function is only useful to free text cluster array returned
+ * This function is only useful to cr_free text cluster array returned
  * by cairo_scaled_font_text_to_glyphs() where cairo returns
- * an array of text clusters that the user will free.
+ * an array of text clusters that the user will cr_free.
  * For all other uses, user can use their own allocation method
  * for text clusters.
  *
@@ -261,7 +261,7 @@ slim_hidden_def (cairo_text_cluster_allocate);
 void
 cairo_text_cluster_free (cairo_text_cluster_t *clusters)
 {
-    free (clusters);
+    cr_free (clusters);
 }
 slim_hidden_def (cairo_text_cluster_free);
 
@@ -854,7 +854,7 @@ _cairo_intern_string (const char **str_inout, int len)
     istring = _cairo_hash_table_lookup (_cairo_intern_string_ht,
 					&tmpl.hash_entry);
     if (istring == NULL) {
-	istring = malloc (sizeof (cairo_intern_string_t) + len + 1);
+	istring = cr_malloc (sizeof (cairo_intern_string_t) + len + 1);
 	if (likely (istring != NULL)) {
 	    istring->hash_entry.hash = tmpl.hash_entry.hash;
 	    istring->len = tmpl.len;
@@ -865,7 +865,7 @@ _cairo_intern_string (const char **str_inout, int len)
 	    status = _cairo_hash_table_insert (_cairo_intern_string_ht,
 					       &istring->hash_entry);
 	    if (unlikely (status)) {
-		free (istring);
+		cr_free (istring);
 		goto BAIL;
 	    }
 	} else {
@@ -885,7 +885,7 @@ static void
 _intern_string_pluck (void *entry, void *closure)
 {
     _cairo_hash_table_remove (closure, entry);
-    free (entry);
+    cr_free (entry);
 }
 
 void

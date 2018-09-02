@@ -53,7 +53,7 @@ pixman_malloc_ab_plus_c (unsigned int a, unsigned int b, unsigned int c)
     if (!b || a >= INT32_MAX / b || (a * b) > INT32_MAX - c)
 	return NULL;
 
-    return malloc (a * b + c);
+    return px_malloc (a * b + c);
 }
 
 void *
@@ -63,7 +63,7 @@ pixman_malloc_ab (unsigned int a,
     if (a >= INT32_MAX / b)
 	return NULL;
 
-    return malloc (a * b);
+    return px_malloc (a * b);
 }
 
 void *
@@ -76,7 +76,7 @@ pixman_malloc_abc (unsigned int a,
     else if (a * b >= INT32_MAX / c)
 	return NULL;
     else
-	return malloc (a * b * c);
+	return px_malloc (a * b * c);
 }
 
 static force_inline uint16_t
@@ -261,7 +261,7 @@ pixman_region16_copy_from_region32 (pixman_region16_t *dst,
 
     pixman_region_fini (dst);
     retval = pixman_region_init_rects (dst, boxes16, n_boxes);
-    free (boxes16);
+    px_free (boxes16);
     return retval;
 }
 
@@ -297,7 +297,7 @@ pixman_region32_copy_from_region16 (pixman_region32_t *dst,
     retval = pixman_region32_init_rects (dst, boxes32, n_boxes);
 
     if (boxes32 != tmp_boxes)
-	free (boxes32);
+	px_free (boxes32);
 
     return retval;
 }

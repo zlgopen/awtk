@@ -765,7 +765,7 @@ dest_get_scanline_narrow (pixman_iter_t *iter, const uint32_t *mask)
     {
 	uint32_t *alpha;
 
-	if ((alpha = malloc (width * sizeof (uint32_t))))
+	if ((alpha = px_malloc (width * sizeof (uint32_t))))
 	{
 	    int i;
 
@@ -781,7 +781,7 @@ dest_get_scanline_narrow (pixman_iter_t *iter, const uint32_t *mask)
 		buffer[i] |= (alpha[i] & 0xff000000);
 	    }
 
-	    free (alpha);
+	    px_free (alpha);
 	}
     }
 
@@ -803,7 +803,7 @@ dest_get_scanline_wide (pixman_iter_t *iter, const uint32_t *mask)
     {
 	argb_t *alpha;
 
-	if ((alpha = malloc (width * sizeof (argb_t))))
+	if ((alpha = px_malloc (width * sizeof (argb_t))))
 	{
 	    int i;
 
@@ -816,7 +816,7 @@ dest_get_scanline_wide (pixman_iter_t *iter, const uint32_t *mask)
 	    for (i = 0; i < width; ++i)
 		buffer[i].a = alpha[i].a;
 
-	    free (alpha);
+	    px_free (alpha);
 	}
     }
 
@@ -931,9 +931,9 @@ create_bits (pixman_format_code_t format,
 	*rowstride_bytes = stride;
 
     if (clear)
-	return calloc (buf_size, 1);
+	return px_calloc (buf_size, 1);
     else
-	return malloc (buf_size);
+	return px_malloc (buf_size);
 }
 
 pixman_bool_t
@@ -1005,7 +1005,7 @@ create_bits_image_internal (pixman_format_code_t format,
 				  rowstride_bytes / (int) sizeof (uint32_t),
 				  clear))
     {
-	free (image);
+	px_free (image);
 	return NULL;
     }
 

@@ -353,12 +353,12 @@ _tessellate_fan (cairo_stroker_t *stroker,
     }
 
     if (points != stack_points)
-	free (points);
+	cr_free (points);
 
     return status;
 
 BEVEL:
-    /* Ensure a leak free connection... */
+    /* Ensure a leak cr_free connection... */
     if (stroker->add_external_edge != NULL) {
 	if (clockwise)
 	    return stroker->add_external_edge (stroker->closure, inpt, outpt);

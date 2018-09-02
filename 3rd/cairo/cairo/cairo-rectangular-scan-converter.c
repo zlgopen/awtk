@@ -124,7 +124,7 @@ static inline void
 pqueue_fini (pqueue_t *pq)
 {
     if (pq->elements != pq->elements_embedded)
-	free (pq->elements);
+	cr_free (pq->elements);
 }
 
 static cairo_bool_t
@@ -247,7 +247,7 @@ sweep_line_fini (sweep_line_t *sweep)
     pqueue_fini (&sweep->stop);
 
     if (sweep->spans != sweep->spans_stack)
-	free (sweep->spans);
+	cr_free (sweep->spans);
 }
 
 static inline void
@@ -365,7 +365,7 @@ _active_edges_to_spans (sweep_line_t	*sweep)
 	    size <<= 1;
 
 	if (sweep->spans != sweep->spans_stack)
-	    free (sweep->spans);
+	    cr_free (sweep->spans);
 
 	sweep->spans = _cairo_malloc_ab (size, sizeof (cairo_half_open_span_t));
 	if (unlikely (sweep->spans == NULL))
@@ -694,7 +694,7 @@ _cairo_rectangular_scan_converter_generate (void			*converter,
     status = generate (self, renderer, rectangles);
 
     if (rectangles != rectangles_stack)
-	free (rectangles);
+	cr_free (rectangles);
 
     return status;
 }
@@ -768,7 +768,7 @@ _cairo_rectangular_scan_converter_destroy (void *converter)
 
     for (chunk = self->chunks.next; chunk != NULL; chunk = next) {
 	next = chunk->next;
-	free (chunk);
+	cr_free (chunk);
     }
 }
 

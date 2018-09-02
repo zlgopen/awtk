@@ -40,7 +40,7 @@
 #include "cairo-list-inline.h"
 
 /* a simple buddy allocator for memory pools
- * XXX fragmentation? use Doug Lea's malloc?
+ * XXX fragmentation? use Doug Lea's cr_malloc?
  */
 
 #define BITTEST(p, n)  ((p)->map[(n) >> 3] &   (128 >> ((n) & 7)))
@@ -83,14 +83,14 @@ free_bits (cairo_mempool_t *pool, size_t start, int bits, cairo_bool_t clear)
     block = pool->blocks + start;
     block->bits = bits;
 
-    cairo_list_add (&block->link, &pool->free[bits]);
+    cairo_list_add (&block->link, &pool->cr_free[bits]);
 
     pool->free_bytes += 1 << (bits + pool->min_bits);
     if (bits > pool->max_free_bits)
 	pool->max_free_bits = bits;
 }
 
-/* Add a chunk to the free list */
+/* Add a chunk to the cr_free list */
 static void
 free_blocks (cairo_mempool_t *pool,
 	     size_t first,
@@ -197,7 +197,7 @@ merge_buddies (cairo_mempool_t *pool,
 
     block = pool->blocks + block_offset;
     block->bits = bits;
-    cairo_list_add (&block->link, &pool->free[bits]);
+    cairo_list_add (&block->link, &pool->cr_free[bits]);
 
     if (bits > pool->max_free_bits)
 	pool->max_free_bits = bits;
@@ -213,7 +213,7 @@ merge_bits (cairo_mempool_t *pool, int max_bits)
     for (bits = 0; bits < max_bits - 1; bits++) {
 	cairo_list_foreach_entry_safe (block, next,
 				       struct _cairo_memblock,
-				       &pool->free[bits],
+				       &pool->cr_free[bits],
 				       link)
 	{
 	    size_t buddy_offset = (block - pool->blocks) ^ (1 << bits);
@@ -250,8 +250,8 @@ buddy_malloc (cairo_mempool_t *pool, int bits)
     /* Find a list with blocks big enough on it */
     block = NULL;
     for (b = bits; b <= pool->max_free_bits; b++) {
-	if (! cairo_list_is_empty (&pool->free[b])) {
-	    block = cairo_list_first_entry (&pool->free[b],
+	if (! cairo_list_is_empty (&pool->cr_free[b])) {
+	    block = cairo_list_first_entry (&pool->cr_free[b],
 					    struct _cairo_memblock,
 					    link);
 	    break;
@@ -261,7 +261,7 @@ buddy_malloc (cairo_mempool_t *pool, int bits)
 
     cairo_list_del (&block->link);
 
-    while (cairo_list_is_empty (&pool->free[pool->max_free_bits])) {
+    while (cairo_list_is_empty (&pool->cr_free[pool->max_free_bits])) {
 	if (--pool->max_free_bits == -1)
 	    break;
     }
@@ -272,7 +272,7 @@ buddy_malloc (cairo_mempool_t *pool, int bits)
     BITSET (pool, past - 1);
     block->bits = bits;
 
-    /* If we used a larger free block than we needed, free the rest */
+    /* If we used a larger cr_free block than we needed, cr_free the rest */
     pool->free_bytes -= 1 << (b + pool->min_bits);
     free_blocks (pool, past, offset + (1 << b), 0);
 
@@ -297,7 +297,7 @@ _cairo_mempool_init (cairo_mempool_t *pool,
     }
 
     assert ((((unsigned long) base) & ((1 << min_bits) - 1)) == 0);
-    assert (num_sizes < ARRAY_LENGTH (pool->free));
+    assert (num_sizes < ARRAY_LENGTH (pool->cr_free));
 
     pool->base = base;
     pool->free_bytes = 0;
@@ -305,7 +305,7 @@ _cairo_mempool_init (cairo_mempool_t *pool,
     pool->max_free_bits = -1;
 
     num_blocks = bytes >> min_bits;
-    pool->blocks = calloc (num_blocks, sizeof (struct _cairo_memblock));
+    pool->blocks = cr_calloc (num_blocks, sizeof (struct _cairo_memblock));
     if (pool->blocks == NULL)
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 
@@ -313,19 +313,19 @@ _cairo_mempool_init (cairo_mempool_t *pool,
     pool->min_bits = min_bits;
     pool->num_sizes = num_sizes;
 
-    for (i = 0; i < ARRAY_LENGTH (pool->free); i++)
-	cairo_list_init (&pool->free[i]);
+    for (i = 0; i < ARRAY_LENGTH (pool->cr_free); i++)
+	cairo_list_init (&pool->cr_free[i]);
 
-    pool->map = malloc ((num_blocks + 7) >> 3);
+    pool->map = cr_malloc ((num_blocks + 7) >> 3);
     if (pool->map == NULL) {
-	free (pool->blocks);
+	cr_free (pool->blocks);
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
     }
 
     memset (pool->map, -1, (num_blocks + 7) >> 3);
     clear_bits (pool, 0, num_blocks);
 
-    /* Now add all blocks to the free list */
+    /* Now add all blocks to the cr_free list */
     free_blocks (pool, 0, num_blocks, 1);
 
     return CAIRO_STATUS_SUCCESS;
@@ -364,6 +364,6 @@ _cairo_mempool_free (cairo_mempool_t *pool, void *storage)
 void
 _cairo_mempool_fini (cairo_mempool_t *pool)
 {
-    free (pool->map);
-    free (pool->blocks);
+    cr_free (pool->map);
+    cr_free (pool->blocks);
 }

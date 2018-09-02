@@ -103,7 +103,7 @@ void
 _cairo_pen_fini (cairo_pen_t *pen)
 {
     if (pen->vertices != pen->vertices_embedded)
-	free (pen->vertices);
+	cr_free (pen->vertices);
 
 
     VG (VALGRIND_MAKE_MEM_NOACCESS (pen, sizeof (cairo_pen_t)));

@@ -985,7 +985,7 @@ cairo_surface_destroy (cairo_surface_t *surface)
     /* paranoid check that nobody took a reference whilst finishing */
     assert (! CAIRO_REFERENCE_COUNT_HAS_REFERENCE (&surface->ref_count));
 
-    free (surface);
+    cr_free (surface);
 }
 slim_hidden_def(cairo_surface_destroy);
 
@@ -1222,7 +1222,7 @@ _cairo_mime_data_destroy (void *ptr)
     if (mime_data->destroy && mime_data->closure)
 	mime_data->destroy (mime_data->closure);
 
-    free (mime_data);
+    cr_free (mime_data);
 }
 
 /**
@@ -1364,7 +1364,7 @@ cairo_surface_set_mime_data (cairo_surface_t		*surface,
 	return _cairo_surface_set_error (surface, status);
 
     if (data != NULL) {
-	mime_data = malloc (sizeof (cairo_mime_data_t));
+	mime_data = cr_malloc (sizeof (cairo_mime_data_t));
 	if (unlikely (mime_data == NULL))
 	    return _cairo_surface_set_error (surface, _cairo_error (CAIRO_STATUS_NO_MEMORY));
 
@@ -1382,7 +1382,7 @@ cairo_surface_set_mime_data (cairo_surface_t		*surface,
 					      mime_data,
 					      _cairo_mime_data_destroy);
     if (unlikely (status)) {
-	free (mime_data);
+	cr_free (mime_data);
 
 	return _cairo_surface_set_error (surface, status);
     }
@@ -2521,7 +2521,7 @@ slim_hidden_def (cairo_surface_has_show_text_glyphs);
 /* Note: the backends may modify the contents of the glyph array as long as
  * they do not return %CAIRO_INT_STATUS_UNSUPPORTED. This makes it possible to
  * avoid copying the array again and again, and edit it in-place.
- * Backends are in fact free to use the array as a generic buffer as they
+ * Backends are in fact cr_free to use the array as a generic buffer as they
  * see fit.
  *
  * For show_glyphs backend method, and NOT for show_text_glyphs method,

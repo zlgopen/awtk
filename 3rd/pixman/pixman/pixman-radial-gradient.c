@@ -440,7 +440,7 @@ pixman_image_create_radial_gradient (const pixman_point_fixed_t *  inner,
 
     if (!_pixman_init_gradient (&radial->common, stops, n_stops))
     {
-	free (image);
+	px_free (image);
 	return NULL;
     }
 

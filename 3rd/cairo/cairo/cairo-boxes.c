@@ -304,7 +304,7 @@ _cairo_boxes_clear (cairo_boxes_t *boxes)
 
     for (chunk = boxes->chunks.next; chunk != NULL; chunk = next) {
 	next = chunk->next;
-	free (chunk);
+	cr_free (chunk);
     }
 
     boxes->tail = &boxes->chunks;
@@ -352,7 +352,7 @@ _cairo_boxes_fini (cairo_boxes_t *boxes)
 
     for (chunk = boxes->chunks.next; chunk != NULL; chunk = next) {
 	next = chunk->next;
-	free (chunk);
+	cr_free (chunk);
     }
 }
 

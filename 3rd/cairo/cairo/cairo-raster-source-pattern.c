@@ -168,7 +168,7 @@ cairo_pattern_create_raster_source (void *user_data,
     if (! CAIRO_CONTENT_VALID (content))
 	return _cairo_pattern_create_in_error (CAIRO_STATUS_INVALID_CONTENT);
 
-    pattern = calloc (1, sizeof (*pattern));
+    pattern = cr_calloc (1, sizeof (*pattern));
     if (unlikely (pattern == NULL))
 	return _cairo_pattern_create_in_error (CAIRO_STATUS_NO_MEMORY);
 

@@ -2,7 +2,7 @@
  * Copyright 2012, Red Hat, Inc.
  * Copyright 2012, Soren Sandmann
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted, px_free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -231,7 +231,7 @@ create_1d_filter (int             *width,
     size = scale * filters[sample].width + filters[reconstruct].width;
     *width = ceil (size);
 
-    p = params = malloc (*width * n_phases * sizeof (pixman_fixed_t));
+    p = params = px_malloc (*width * n_phases * sizeof (pixman_fixed_t));
     if (!params)
         return NULL;
 
@@ -327,7 +327,7 @@ pixman_filter_create_separable_convolution (int             *n_values,
     
     *n_values = 4 + width * subsample_x + height * subsample_y;
     
-    params = malloc (*n_values * sizeof (pixman_fixed_t));
+    params = px_malloc (*n_values * sizeof (pixman_fixed_t));
     if (!params)
         goto out;
 
@@ -342,8 +342,8 @@ pixman_filter_create_separable_convolution (int             *n_values,
 	    height * subsample_y * sizeof (pixman_fixed_t));
 
 out:
-    free (horz);
-    free (vert);
+    px_free (horz);
+    px_free (vert);
 
     return params;
 }

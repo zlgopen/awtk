@@ -938,7 +938,7 @@ out_thaw:
     pixman_glyph_cache_thaw (glyph_cache);
 
     if (pglyphs != pglyphs_stack)
-	free(pglyphs);
+	cr_free(pglyphs);
 
 out_unlock:
     CAIRO_MUTEX_UNLOCK (_cairo_glyph_cache_mutex);
@@ -2780,7 +2780,7 @@ _inplace_src_opacity_spans (void *abstract_renderer, int y, int h,
 
 static void free_pixels (pixman_image_t *image, void *data)
 {
-	free (data);
+	cr_free (data);
 }
 
 static cairo_int_status_t
@@ -2911,7 +2911,7 @@ inplace_renderer_init (cairo_image_span_renderer_t	*r,
 	/* Create an effectively unbounded mask by repeating the single line */
 	buf = r->_buf;
 	if (width > SZ_BUF) {
-	    buf = malloc (width);
+	    buf = cr_malloc (width);
 	    if (unlikely (buf == NULL)) {
 		pixman_image_unref (r->src);
 		return _cairo_error (CAIRO_STATUS_NO_MEMORY);
@@ -2923,7 +2923,7 @@ inplace_renderer_init (cairo_image_span_renderer_t	*r,
 	if (unlikely (r->mask == NULL)) {
 	    pixman_image_unref (r->src);
 	    if (buf != r->_buf)
-		free (buf);
+		cr_free (buf);
 	    return _cairo_error(CAIRO_STATUS_NO_MEMORY);
 	}
 

@@ -35,7 +35,7 @@ _pixman_implementation_create (pixman_implementation_t *fallback,
 
     assert (fast_paths);
 
-    if ((imp = malloc (sizeof (pixman_implementation_t))))
+    if ((imp = px_malloc (sizeof (pixman_implementation_t))))
     {
 	pixman_implementation_t *d;
 

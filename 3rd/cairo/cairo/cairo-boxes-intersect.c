@@ -120,7 +120,7 @@ static inline void
 pqueue_fini (pqueue_t *pq)
 {
     if (pq->elements != pq->elements_embedded)
-	free (pq->elements);
+	cr_free (pq->elements);
 }
 
 static cairo_bool_t
@@ -652,7 +652,7 @@ _cairo_boxes_intersect (const cairo_boxes_t *a,
     _cairo_boxes_clear (out);
     status = intersect (rectangles_ptrs, j, out);
     if (rectangles != stack_rectangles)
-	free (rectangles);
+	cr_free (rectangles);
 
     return status;
 }

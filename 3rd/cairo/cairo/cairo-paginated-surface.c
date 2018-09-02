@@ -98,7 +98,7 @@ _cairo_paginated_surface_create (cairo_surface_t				*target,
     cairo_paginated_surface_t *surface;
     cairo_status_t status;
 
-    surface = malloc (sizeof (cairo_paginated_surface_t));
+    surface = cr_malloc (sizeof (cairo_paginated_surface_t));
     if (unlikely (surface == NULL)) {
 	status = _cairo_error (CAIRO_STATUS_NO_MEMORY);
 	goto FAIL;
@@ -130,7 +130,7 @@ _cairo_paginated_surface_create (cairo_surface_t				*target,
 
   FAIL_CLEANUP_SURFACE:
     cairo_surface_destroy (target);
-    free (surface);
+    cr_free (surface);
   FAIL:
     return _cairo_surface_create_in_error (status);
 }

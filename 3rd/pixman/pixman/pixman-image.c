@@ -144,8 +144,8 @@ _pixman_image_fini (pixman_image_t *image)
 
 	pixman_region32_fini (&common->clip_region);
 
-	free (common->transform);
-	free (common->filter_params);
+	px_free (common->transform);
+	px_free (common->filter_params);
 
 	if (common->alpha_map)
 	    pixman_image_unref ((pixman_image_t *)common->alpha_map);
@@ -157,7 +157,7 @@ _pixman_image_fini (pixman_image_t *image)
 	    if (image->gradient.stops)
 	    {
 		/* See _pixman_init_gradient() for an explanation of the - 1 */
-		free (image->gradient.stops - 1);
+		px_free (image->gradient.stops - 1);
 	    }
 
 	    /* This will trigger if someone adds a property_changed
@@ -169,7 +169,7 @@ _pixman_image_fini (pixman_image_t *image)
 	}
 
 	if (image->type == BITS && image->bits.free_me)
-	    free (image->bits.free_me);
+	    px_free (image->bits.free_me);
 
 	return TRUE;
     }
@@ -180,7 +180,7 @@ _pixman_image_fini (pixman_image_t *image)
 pixman_image_t *
 _pixman_image_allocate (void)
 {
-    pixman_image_t *image = malloc (sizeof (pixman_image_t));
+    pixman_image_t *image = px_malloc (sizeof (pixman_image_t));
 
     if (image)
 	_pixman_image_init (image);
@@ -209,7 +209,7 @@ pixman_image_unref (pixman_image_t *image)
 {
     if (_pixman_image_fini (image))
     {
-	free (image);
+	px_free (image);
 	return TRUE;
     }
 
@@ -628,7 +628,7 @@ pixman_image_set_transform (pixman_image_t *          image,
 
     if (!transform || memcmp (&id, transform, sizeof (pixman_transform_t)) == 0)
     {
-	free (common->transform);
+	px_free (common->transform);
 	common->transform = NULL;
 	result = TRUE;
 
@@ -642,7 +642,7 @@ pixman_image_set_transform (pixman_image_t *          image,
     }
 
     if (common->transform == NULL)
-	common->transform = malloc (sizeof (pixman_transform_t));
+	common->transform = px_malloc (sizeof (pixman_transform_t));
 
     if (common->transform == NULL)
     {
@@ -712,7 +712,7 @@ pixman_image_set_filter (pixman_image_t *      image,
     common->filter = filter;
 
     if (common->filter_params)
-	free (common->filter_params);
+	px_free (common->filter_params);
 
     common->filter_params = new_params;
     common->n_filter_params = n_params;

@@ -154,7 +154,7 @@ static void
 _cairo_rectilinear_stroker_fini (cairo_rectilinear_stroker_t	*stroker)
 {
     if (stroker->segments != stroker->segments_embedded)
-	free (stroker->segments);
+	cr_free (stroker->segments);
 }
 
 static cairo_status_t

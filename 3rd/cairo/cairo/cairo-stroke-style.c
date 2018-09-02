@@ -86,7 +86,7 @@ _cairo_stroke_style_init_copy (cairo_stroke_style_t *style,
 void
 _cairo_stroke_style_fini (cairo_stroke_style_t *style)
 {
-    free (style->dash);
+    cr_free (style->dash);
     style->dash = NULL;
 
     style->num_dashes = 0;

@@ -131,7 +131,7 @@
     static type *							\
     tls_ ## name ## _alloc (void)					\
     {									\
-        type *value = calloc (1, sizeof (type));			\
+        type *value = px_calloc (1, sizeof (type));			\
         if (value)							\
             TlsSetValue (tls_ ## name ## _index, value);		\
         return value;							\
@@ -189,7 +189,7 @@
     static void								\
     tls_ ## name ## _destroy_value (void *value)			\
     {									\
-	free (value);							\
+	px_free (value);							\
     }									\
 									\
     static void								\
@@ -202,7 +202,7 @@
     static type *							\
     tls_ ## name ## _alloc (void)					\
     {									\
-	type *value = calloc (1, sizeof (type));			\
+	type *value = px_calloc (1, sizeof (type));			\
 	if (value)							\
 	    pthread_setspecific (tls_ ## name ## _key, value);		\
 	return value;							\

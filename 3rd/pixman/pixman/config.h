@@ -185,5 +185,18 @@
 #define COMPILE_TIME_ASSERT(p) 
 #endif
 
+#ifdef HAS_STD_MALLOC
+#include <stdlib.h>
+#define px_malloc  malloc
+#define px_realloc realloc
+#define px_calloc  calloc
+#define px_free    free
+#else
+#include "base/mem.h"
+#define px_malloc  tk_malloc
+#define px_realloc tk_realloc
+#define px_calloc  tk_calloc
+#define px_free    tk_free
+#endif/*HAS_STD_MALLOC*/
 /* Define to sqrt if you do not have the `sqrtf' function. */
 /* #undef sqrtf */

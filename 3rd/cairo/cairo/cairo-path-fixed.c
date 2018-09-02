@@ -325,7 +325,7 @@ _cairo_path_fixed_create (void)
 {
     cairo_path_fixed_t	*path;
 
-    path = malloc (sizeof (cairo_path_fixed_t));
+    path = cr_malloc (sizeof (cairo_path_fixed_t));
     if (!path) {
 	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
 	return NULL;
@@ -354,7 +354,7 @@ void
 _cairo_path_fixed_destroy (cairo_path_fixed_t *path)
 {
     _cairo_path_fixed_fini (path);
-    free (path);
+    cr_free (path);
 }
 
 static cairo_path_op_t
@@ -745,7 +745,7 @@ _cairo_path_buf_create (int size_ops, int size_points)
 static void
 _cairo_path_buf_destroy (cairo_path_buf_t *buf)
 {
-    free (buf);
+    cr_free (buf);
 }
 
 static void

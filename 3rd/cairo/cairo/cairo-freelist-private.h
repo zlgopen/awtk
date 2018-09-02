@@ -45,15 +45,15 @@ cairo_private void
 _cairo_freelist_fini (cairo_freelist_t *freelist);
 
 /* Allocate a new node from the freelist.  If the freelist contains no
- * nodes, a new one will be allocated using malloc().  The caller is
- * responsible for calling _cairo_freelist_free() or free() on the
+ * nodes, a new one will be allocated using cr_malloc().  The caller is
+ * responsible for calling _cairo_freelist_free() or cr_free() on the
  * returned node.  Returns %NULL on memory allocation error. */
 cairo_private void *
 _cairo_freelist_alloc (cairo_freelist_t *freelist);
 
 /* Allocate a new node from the freelist.  If the freelist contains no
- * nodes, a new one will be allocated using calloc().  The caller is
- * responsible for calling _cairo_freelist_free() or free() on the
+ * nodes, a new one will be allocated using cr_calloc().  The caller is
+ * responsible for calling _cairo_freelist_free() or cr_free() on the
  * returned node.  Returns %NULL on memory allocation error. */
 cairo_private void *
 _cairo_freelist_calloc (cairo_freelist_t *freelist);

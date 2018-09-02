@@ -402,7 +402,7 @@ _cairo_user_font_face_scaled_font_create (void                        *abstract_
 
     font_face->immutable = TRUE;
 
-    user_scaled_font = malloc (sizeof (cairo_user_scaled_font_t));
+    user_scaled_font = cr_malloc (sizeof (cairo_user_scaled_font_t));
     if (unlikely (user_scaled_font == NULL))
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 
@@ -412,7 +412,7 @@ _cairo_user_font_face_scaled_font_create (void                        *abstract_
 				      &_cairo_user_scaled_font_backend);
 
     if (unlikely (status)) {
-	free (user_scaled_font);
+	cr_free (user_scaled_font);
 	return status;
     }
 
@@ -489,7 +489,7 @@ _cairo_user_font_face_scaled_font_create (void                        *abstract_
 
     if (status != CAIRO_STATUS_SUCCESS) {
         _cairo_scaled_font_fini (&user_scaled_font->base);
-	free (user_scaled_font);
+	cr_free (user_scaled_font);
     } else {
         user_scaled_font->default_glyph_extents.x_bearing = 0.;
         user_scaled_font->default_glyph_extents.y_bearing = -font_extents.ascent;
@@ -544,7 +544,7 @@ cairo_user_font_face_create (void)
 {
     cairo_user_font_face_t *font_face;
 
-    font_face = malloc (sizeof (cairo_user_font_face_t));
+    font_face = cr_malloc (sizeof (cairo_user_font_face_t));
     if (!font_face) {
 	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
 	return (cairo_font_face_t *)&_cairo_font_face_nil;

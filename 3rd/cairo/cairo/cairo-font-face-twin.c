@@ -288,7 +288,7 @@ twin_font_face_create_properties (cairo_font_face_t *twin_face)
 {
     twin_face_properties_t *props;
 
-    props = malloc (sizeof (twin_face_properties_t));
+    props = cr_malloc (sizeof (twin_face_properties_t));
     if (unlikely (props == NULL))
 	return NULL;
 
@@ -300,8 +300,8 @@ twin_font_face_create_properties (cairo_font_face_t *twin_face)
 
     if (unlikely (cairo_font_face_set_user_data (twin_face,
 					    &twin_properties_key,
-					    props, free))) {
-	free (props);
+					    props, cr_free))) {
+	cr_free (props);
 	return NULL;
     }
 
@@ -412,7 +412,7 @@ twin_scaled_font_compute_properties (cairo_scaled_font_t *scaled_font,
     cairo_status_t status;
     twin_scaled_properties_t *props;
 
-    props = malloc (sizeof (twin_scaled_properties_t));
+    props = cr_malloc (sizeof (twin_scaled_properties_t));
     if (unlikely (props == NULL))
 	return _cairo_error (CAIRO_STATUS_NO_MEMORY);
 
@@ -440,14 +440,14 @@ twin_scaled_font_compute_properties (cairo_scaled_font_t *scaled_font,
     /* Save it */
     status = cairo_scaled_font_set_user_data (scaled_font,
 					      &twin_properties_key,
-					      props, free);
+					      props, cr_free);
     if (unlikely (status))
 	goto FREE_PROPS;
 
     return CAIRO_STATUS_SUCCESS;
 
 FREE_PROPS:
-    free (props);
+    cr_free (props);
     return status;
 }
 
