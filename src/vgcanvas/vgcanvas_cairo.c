@@ -336,7 +336,7 @@ static float_t vgcanvas_cairo_measure_text(vgcanvas_t* vgcanvas, const char* tex
   return 0;
 }
 
-cairo_surface_t* create_surface(uint32_t w, uint32_t h, bitmap_format_t format, void* fbuff) {
+static cairo_surface_t* create_surface(uint32_t w, uint32_t h, bitmap_format_t format, void* fbuff) {
   int32_t bpp = 0;
   cairo_format_t cairo_format = CAIRO_FORMAT_ARGB32;
   switch(format) {
@@ -364,6 +364,36 @@ cairo_surface_t* create_surface(uint32_t w, uint32_t h, bitmap_format_t format, 
   return cairo_image_surface_create_for_data (fbuff, cairo_format, w, h, w * bpp);
 }
 
+static ret_t cairo_on_bitmap_destroy(bitmap_t* img) {
+  cairo_surface_t* surface = (cairo_surface_t*)img->specific;
+
+  if (surface != NULL) {
+    cairo_surface_destroy(surface);
+  }
+
+  img->specific = NULL;
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
+
+  return RET_OK;
+}
+
+static cairo_surface_t* vgcanvas_cairo_ensure_image(bitmap_t* img) {
+  cairo_surface_t* surface = (cairo_surface_t*)img->specific;
+
+  if (surface == NULL) {
+    surface = create_surface(img->w, img->h, img->format, (void*)(img->data));
+
+    if (surface != NULL) {
+      img->specific = surface;
+      img->specific_ctx = NULL;
+      img->specific_destroy = cairo_on_bitmap_destroy;
+    }
+  }
+
+  return surface;
+}
+
 static ret_t vgcanvas_cairo_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
@@ -374,7 +404,7 @@ static ret_t vgcanvas_cairo_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, floa
 	float_t global_alpha = 1;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-  cairo_surface_t* surface = create_surface(img->w, img->h, img->format, (void*)(img->data));
+  cairo_surface_t* surface = vgcanvas_cairo_ensure_image(img);
 
   cairo_save(vg);
 

@@ -155,6 +155,21 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/09/03
+  * 移植cairo到arm平台(基本绘图功能正常，图片和字体还不行)。
+
+* 2018/09/02
+  * 基于cairo实现vgcanvas.
+
+* 2018/09/01
+  * 移植cairo。
+
+* 2018/08/31
+  * 移植pixman。
+
+* 2018/08/30
+  * 更新stm32相关工程。
+
 * 2018/08/29
   * 完善str类，增加str\_insert/str\_remove等函数。
   * 完善path类，增加path\_replace\_basename等函数。
