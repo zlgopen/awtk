@@ -415,7 +415,7 @@
 #define cr_free    free
 #else
 #include "base/mem.h"
-#define cr_malloc  tk_malloc
+#define cr_malloc  tk_alloc
 #define cr_realloc tk_realloc
 #define cr_calloc  tk_calloc
 #define cr_free    tk_free

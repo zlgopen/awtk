@@ -24,9 +24,7 @@
  * Author: Soren Sandmann <sandmann@cs.au.dk>
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 #include "pixman-private.h"
 
 #include <stdlib.h>

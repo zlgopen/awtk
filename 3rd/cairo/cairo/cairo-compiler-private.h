@@ -39,10 +39,7 @@
 #define CAIRO_COMPILER_PRIVATE_H
 
 #include "cairo.h"
-
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #define CAIRO_NO_MUTEX 1
 

@@ -19,10 +19,7 @@
  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "pixman-private.h"
 
 #if defined(USE_X86_MMX) || defined (USE_SSE2) || defined (USE_SSSE3)

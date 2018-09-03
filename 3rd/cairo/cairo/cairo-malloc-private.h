@@ -37,6 +37,7 @@
 #ifndef CAIRO_MALLOC_PRIVATE_H
 #define CAIRO_MALLOC_PRIVATE_H
 
+#include "config.h"
 #include "cairo-wideint-private.h"
 #include <stdlib.h>
 

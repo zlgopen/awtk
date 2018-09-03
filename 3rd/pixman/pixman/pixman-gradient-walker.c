@@ -23,9 +23,7 @@
  * SOFTWARE.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 #include "pixman-private.h"
 
 void

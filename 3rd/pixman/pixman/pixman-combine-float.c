@@ -25,10 +25,7 @@
  * Author: Soren Sandmann Pedersen (sandmann@cs.au.dk)
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include <math.h>
 #include <string.h>
 #include <float.h>

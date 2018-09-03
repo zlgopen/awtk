@@ -41,9 +41,7 @@
 
 # include "cairo-compiler-private.h"
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 /* The autoconf on OpenBSD 4.5 produces the malformed constant name
  * SIZEOF_VOID__ rather than SIZEOF_VOID_P.  Work around that here. */

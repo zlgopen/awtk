@@ -193,7 +193,7 @@
 #define px_free    free
 #else
 #include "base/mem.h"
-#define px_malloc  tk_malloc
+#define px_malloc  tk_alloc
 #define px_realloc tk_realloc
 #define px_calloc  tk_calloc
 #define px_free    tk_free
