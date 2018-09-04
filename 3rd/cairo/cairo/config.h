@@ -289,44 +289,21 @@
 /* Define to 1 if shared memory segments are released deferred. */
 /* #undef IPC_RMID_DEFERRED_RELEASE */
 
-/* Define to the sub-directory where libtool stores uninstalled libraries. */
-#define LT_OBJDIR ".libs/"
-
-/* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://bugs.freedesktop.org/enter_bug.cgi?product=cairo"
-
-/* Define to the full name of this package. */
-#define PACKAGE_NAME USE_cairo_INSTEAD
-
-/* Define to the full name and version of this package. */
-#define PACKAGE_STRING USE_cairo_version_OR_cairo_version_string_INSTEAD
-
-/* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME USE_cairo_INSTEAD
-
-/* Define to the home page for this package. */
-#define PACKAGE_URL "http://cairographics.org/"
-
-/* Define to the version of this package. */
-#define PACKAGE_VERSION USE_cairo_version_OR_cairo_version_string_INSTEAD
-
-/* Shared library file extension */
-#define SHARED_LIB_EXT "so"
-
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4
-
-/* The size of `long', as computed by sizeof. */
-#define SIZEOF_LONG 8
 
 /* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
 
-/* The size of `size_t', as computed by sizeof. */
+#ifdef WITH_64BIT_CPU
+#define SIZEOF_LONG   8
 #define SIZEOF_SIZE_T 8
-
-/* The size of `void *', as computed by sizeof. */
 #define SIZEOF_VOID_P 8
+#else
+#define SIZEOF_LONG   4
+#define SIZEOF_SIZE_T 4
+#define SIZEOF_VOID_P 4
+#endif/*WITH_64BIT_CPU*/
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
