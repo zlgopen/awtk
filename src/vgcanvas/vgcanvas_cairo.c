@@ -38,11 +38,13 @@ ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   rect_t* r = dirty_rect;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = canvas->vg;
+
 	cairo_new_path(vg);
   cairo_rectangle(vg, r->x, r->y, r->w, r->h);
   cairo_clip(vg);
 	cairo_new_path(vg);
   cairo_save(vg);
+  vgcanvas->global_alpha = 0xff;
 
   return RET_OK;
 }
@@ -59,6 +61,7 @@ static ret_t vgcanvas_cairo_reset(vgcanvas_t* vgcanvas) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = canvas->vg;
 	cairo_new_path(vg);
+  vgcanvas->global_alpha = 0xff;
 
   return RET_OK;
 }
@@ -285,15 +288,12 @@ static ret_t vgcanvas_cairo_stroke(vgcanvas_t* vgcanvas) {
 
 static ret_t vgcanvas_cairo_set_font_size(vgcanvas_t* vgcanvas, float_t size) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-  /*TODO*/
-  (void)vgcanvas;
-  (void)size;
+  cairo_set_font_size(vg, size);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_set_font(vgcanvas_t* vgcanvas, const char* name) {
-  int font_id = 0;
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
@@ -301,7 +301,7 @@ static ret_t vgcanvas_cairo_set_font(vgcanvas_t* vgcanvas, const char* name) {
     name = TK_DEFAULT_FONT;
   }
 
-  /*TODO*/
+  cairo_select_font_face(vg, name, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 
   return RET_OK;
 }
@@ -313,24 +313,28 @@ static ret_t vgcanvas_cairo_set_text_align(vgcanvas_t* vgcanvas, const char* tex
 }
 
 static ret_t vgcanvas_cairo_set_text_baseline(vgcanvas_t* vgcanvas, const char* text_baseline) {
-  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
-
+  (void)text_baseline;
+  (void)vgcanvas;
+  /*TODO*/
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_cairo_fill_text(vgcanvas_t* vgcanvas, const char* text, float_t x, float_t y,
                                        float_t max_width) {
-  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
-  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  (void)vgcanvas;
+  (void)text;
+  (void)x;
+  (void)y;
+  (void)max_width;
 
   /*TODO*/
   return RET_OK;
 }
 
 static float_t vgcanvas_cairo_measure_text(vgcanvas_t* vgcanvas, const char* text) {
-  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
-  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  (void)vgcanvas;
+  (void)text;
   /*TODO*/
 
   return 0;
@@ -462,7 +466,6 @@ static ret_t vgcanvas_cairo_set_fill_color(vgcanvas_t* vgcanvas, color_t c) {
 static ret_t vgcanvas_cairo_set_stroke_color(vgcanvas_t* vgcanvas, color_t c) {
   (void)vgcanvas;
   (void)c;
-
   return RET_OK;
 }
 
@@ -521,25 +524,25 @@ static ret_t vgcanvas_cairo_restore(vgcanvas_t* vgcanvas) {
 static ret_t vgcanvas_cairo_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
-  return RET_FAIL;
+  return RET_NOT_IMPL;
 }
 
 static ret_t vgcanvas_cairo_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
-  return RET_FAIL;
+  return RET_NOT_IMPL;
 }
 
 static ret_t vgcanvas_cairo_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
-  return RET_FAIL;
+  return RET_NOT_IMPL;
 }
 
 static ret_t vgcanvas_cairo_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
-  return RET_FAIL;
+  return RET_NOT_IMPL;
 }
 
 static ret_t vgcanvas_cairo_destroy(vgcanvas_t* vgcanvas) {
