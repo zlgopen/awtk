@@ -271,7 +271,8 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   pixman_image_t* s_img = to_pixman_image(img->data, img->format, img->w, img->h);
   pixman_transform_init_identity(&t);
   pixman_image_set_transform(s_img, &t);
-  pixman_image_composite(PIXMAN_OP_SRC, s_img, NULL, d_img, s->x, s->y, 0, 0, d->x, d->y, d->w, d->h);
+  pixman_image_composite(PIXMAN_OP_SRC, s_img, NULL, d_img, s->x, s->y, 0, 0, d->x, d->y, d->w,
+  d->h);
 
   pixman_image_unref(d_img);
   pixman_image_unref(s_img);

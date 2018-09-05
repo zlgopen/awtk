@@ -20,6 +20,7 @@
  */
 
 #include "ext_widgets.h"
+#include "guage/guage.h"
 #include "keyboard/keyboard.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
@@ -51,6 +52,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_GUAGE, guage_create);
 
   return RET_OK;
 }

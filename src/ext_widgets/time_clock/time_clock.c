@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/timer.h"
 #include "base/utils.h"
 #include "base/matrix.h"
 #include "base/image_manager.h"
@@ -159,6 +160,27 @@ static ret_t time_clock_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
+static ret_t time_clock_on_timer(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  time_clock_t* time_clock = TIME_CLOCK(widget);
+
+  time_clock->second++;
+  if (time_clock->second >= 60) {
+    time_clock->second = 0;
+    time_clock->minute++;
+    if (time_clock->minute >= 60) {
+      time_clock->minute = 0;
+      time_clock->hour++;
+      if (time_clock->hour >= 12) {
+        time_clock->hour = 0;
+      }
+    }
+  }
+  widget_invalidate(widget, NULL);
+
+  return RET_REPEAT;
+}
+
 static ret_t time_clock_destroy(widget_t* widget) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
 
@@ -167,6 +189,10 @@ static ret_t time_clock_destroy(widget_t* widget) {
   TKMEM_FREE(time_clock->hour_image);
   TKMEM_FREE(time_clock->minute_image);
   TKMEM_FREE(time_clock->minute_image);
+  if (time_clock->timer_id != TK_INVALID_ID) {
+    timer_remove(time_clock->timer_id);
+    time_clock->timer_id = TK_INVALID_ID;
+  }
 
   return RET_OK;
 }
@@ -196,8 +222,9 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   if (time_clock_load_image(time_clock->hour_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
+    float_t hour = time_clock->hour + time_clock->minute / 60.0f;
 
-    rotation = (2 * M_PI * time_clock->hour) / 12.0f;
+    rotation = (2 * M_PI * hour) / 12.0f;
     anchor_x = bitmap.w / 2;
     anchor_y = bitmap.h - bitmap.w / 2;
 
@@ -213,8 +240,9 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   if (time_clock_load_image(time_clock->minute_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
+    float_t minute = time_clock->minute + time_clock->second / 60.0f;
 
-    rotation = (2 * M_PI * time_clock->minute) / 60.0f;
+    rotation = (2 * M_PI * minute) / 60.0f;
     anchor_x = bitmap.w / 2;
     anchor_y = bitmap.h - bitmap.w / 2;
 
@@ -251,7 +279,10 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_time_clock_properties[] = {WIDGET_PROP_REPEAT, NULL};
+static const char* s_time_clock_properties[] = {
+    TIME_CLOCK_PROP_HOUR,         TIME_CLOCK_PROP_MINUTE,       TIME_CLOCK_PROP_SECOND,
+    TIME_CLOCK_PROP_IMAGE,        TIME_CLOCK_PROP_BG_IMAGE,     TIME_CLOCK_PROP_HOUR_IMAGE,
+    TIME_CLOCK_PROP_MINUTE_IMAGE, TIME_CLOCK_PROP_SECOND_IMAGE, NULL};
 
 static const widget_vtable_t s_time_clock_vtable = {
     .size = sizeof(time_clock_t),
@@ -268,6 +299,7 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   time_clock_t* time_clock = TKMEM_ZALLOC(time_clock_t);
   widget_t* widget = WIDGET(time_clock);
   return_value_if_fail(time_clock != NULL, NULL);
+  time_clock->timer_id = timer_add(time_clock_on_timer, widget, 1000);
 
   return widget_init(widget, parent, &s_time_clock_vtable, x, y, w, h);
 }

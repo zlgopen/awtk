@@ -14,5 +14,7 @@
     <button name="open:combo_box" text="ComboBox"/>
     <button name="open:rich_text" text="RichText"/>
     <button name="open:color_picker" text="Color Picker"/>
+    <button name="open:time_clock" text="Time Clock"/>
+    <button name="open:guage" text="Guage"/>
     <button name="show_fps" text="Show FPS"/>
 </window>

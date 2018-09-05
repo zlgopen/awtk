@@ -33,6 +33,7 @@
 #include "assets/inc/ui/dragger.data"
 #include "assets/inc/ui/edit.data"
 #include "assets/inc/ui/fade.data"
+#include "assets/inc/ui/guage.data"
 #include "assets/inc/ui/htranslate.data"
 #include "assets/inc/ui/image_list.data"
 #include "assets/inc/ui/images.data"
@@ -75,6 +76,7 @@
 #include "assets/inc/ui/tab_list.data"
 #include "assets/inc/ui/tab_top.data"
 #include "assets/inc/ui/tab_top_compact.data"
+#include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/top.data"
 #include "assets/inc/ui/vtranslate.data"
 #ifdef WITH_STB_IMAGE
@@ -98,6 +100,11 @@
 #include "assets/inc/images/bricks.res"
 #include "assets/inc/images/check.res"
 #include "assets/inc/images/checked.res"
+#include "assets/inc/images/clock.res"
+#include "assets/inc/images/clock_bg.res"
+#include "assets/inc/images/clock_hour.res"
+#include "assets/inc/images/clock_minute.res"
+#include "assets/inc/images/clock_second.res"
 #include "assets/inc/images/contact.res"
 #include "assets/inc/images/contact_active.res"
 #include "assets/inc/images/cross.res"
@@ -113,6 +120,8 @@
 #include "assets/inc/images/green_btn_n.res"
 #include "assets/inc/images/green_btn_o.res"
 #include "assets/inc/images/green_btn_p.res"
+#include "assets/inc/images/guage_bg.res"
+#include "assets/inc/images/guage_pointer.res"
 #include "assets/inc/images/info.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/left_on.res"
@@ -171,6 +180,11 @@
 #include "assets/inc/images/bricks.data"
 #include "assets/inc/images/check.data"
 #include "assets/inc/images/checked.data"
+#include "assets/inc/images/clock.data"
+#include "assets/inc/images/clock_bg.data"
+#include "assets/inc/images/clock_hour.data"
+#include "assets/inc/images/clock_minute.data"
+#include "assets/inc/images/clock_second.data"
 #include "assets/inc/images/contact.data"
 #include "assets/inc/images/contact_active.data"
 #include "assets/inc/images/cross.data"
@@ -186,6 +200,8 @@
 #include "assets/inc/images/green_btn_n.data"
 #include "assets/inc/images/green_btn_o.data"
 #include "assets/inc/images/green_btn_p.data"
+#include "assets/inc/images/guage_bg.data"
+#include "assets/inc/images/guage_pointer.data"
 #include "assets/inc/images/info.data"
 #include "assets/inc/images/left_off.data"
 #include "assets/inc/images/left_on.data"
@@ -263,6 +279,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_bricks);
   assets_manager_add(rm, image_check);
   assets_manager_add(rm, image_checked);
+  assets_manager_add(rm, image_clock);
+  assets_manager_add(rm, image_clock_bg);
+  assets_manager_add(rm, image_clock_hour);
+  assets_manager_add(rm, image_clock_minute);
+  assets_manager_add(rm, image_clock_second);
   assets_manager_add(rm, image_contact);
   assets_manager_add(rm, image_contact_active);
   assets_manager_add(rm, image_cross);
@@ -278,6 +299,8 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_green_btn_n);
   assets_manager_add(rm, image_green_btn_o);
   assets_manager_add(rm, image_green_btn_p);
+  assets_manager_add(rm, image_guage_bg);
+  assets_manager_add(rm, image_guage_pointer);
   assets_manager_add(rm, image_info);
   assets_manager_add(rm, image_left_off);
   assets_manager_add(rm, image_left_on);
@@ -347,6 +370,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_dragger);
   assets_manager_add(rm, ui_edit);
   assets_manager_add(rm, ui_fade);
+  assets_manager_add(rm, ui_guage);
   assets_manager_add(rm, ui_htranslate);
   assets_manager_add(rm, ui_image_list);
   assets_manager_add(rm, ui_images);
@@ -389,6 +413,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_tab_list);
   assets_manager_add(rm, ui_tab_top);
   assets_manager_add(rm, ui_tab_top_compact);
+  assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_top);
   assets_manager_add(rm, ui_vtranslate);
 #endif

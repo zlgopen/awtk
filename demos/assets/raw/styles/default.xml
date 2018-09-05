@@ -2,6 +2,10 @@
   <style name="default">
     <normal bg_color="#f0f0f0"/>
   </style>
+  
+  <style name="dark">
+    <normal bg_color="#664d74"/>
+  </style>
 
   <style name="bricks">
     <normal bg_image="bricks"  bg_image_draw_type="repeat"/>

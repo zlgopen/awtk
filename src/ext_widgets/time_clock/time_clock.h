@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_TIMER_CLOCK_H
-#define TK_TIMER_CLOCK_H
+#ifndef TK_TIME_CLOCK_H
+#define TK_TIME_CLOCK_H
 
 #include "base/widget.h"
 
@@ -54,12 +54,39 @@ typedef struct _time_clock_t {
    */
   int32_t second;
 
+  /**
+   * @property {char*} image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 中心图片。
+   */
   char* image;
+  /**
+   * @property {char*} bg_image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 背景图片。
+   */
   char* bg_image;
+  /**
+   * @property {char*} hour_image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 时针图片。
+   */
   char* hour_image;
+  /**
+   * @property {char*} minute_image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 分针图片。
+   */
   char* minute_image;
+  /**
+   * @property {char*} second_image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 秒针图片。
+   */
   char* second_image;
 
+  /*private*/
+  uint32_t timer_id;
 } time_clock_t;
 
 /**
@@ -190,4 +217,4 @@ ret_t time_clock_set_image(widget_t* widget, const char* image);
 
 END_C_DECLS
 
-#endif /*TK_TIMER_CLOCK_H*/
+#endif /*TK_TIME_CLOCK_H*/

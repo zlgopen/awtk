@@ -1,5 +1,6 @@
 <window anim_hint="htranslate" >
-  <time_clock x="c" y="m" w="300" h="300" hour="1" minute="45" second="55"
+  <time_clock x="c" y="m" w="300" h="300" hour="11" minute="59" second="55"
     bg_image="clock_bg" image="clock" 
     hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/>
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

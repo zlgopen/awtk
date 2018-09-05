@@ -1,0 +1,4 @@
+<window style="dark" anim_hint="htranslate" >
+  <guage x="c" y="m" w="300" h="300" value="30" bg_image="guage_bg"  pointer_image="guage_pointer" />
+  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>
