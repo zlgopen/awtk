@@ -278,10 +278,9 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   pixman_image_unref(s_img);
 */
 #else
-  (void)s;
-  (void)d;
-  (void)m;
   (void)lcd;
+  (void)info;
+	  
   return RET_NOT_IMPL;
 #endif /*WITH_PIXMAN*/
 }
