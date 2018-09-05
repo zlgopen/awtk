@@ -428,6 +428,6 @@ typedef enum _app_type_t {
 
 #ifndef M_PI
 #define M_PI 3.1415926f
-#endif/*M_PI*/
+#endif /*M_PI*/
 
 #endif /*TYPES_DEF_H*/

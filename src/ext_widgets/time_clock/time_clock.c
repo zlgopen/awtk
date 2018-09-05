@@ -21,6 +21,7 @@
 
 #include "base/mem.h"
 #include "base/utils.h"
+#include "base/matrix.h"
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 
@@ -171,7 +172,7 @@ static ret_t time_clock_destroy(widget_t* widget) {
 }
 
 static ret_t time_clock_load_image(const char* name, bitmap_t* bitmap) {
-  if(name != NULL && bitmap != NULL) {
+  if (name != NULL && bitmap != NULL) {
     return image_manager_load(image_manager(), name, bitmap);
   }
 
@@ -183,69 +184,69 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   float_t rotation = 0;
   float_t anchor_x = 0;
   float_t anchor_y = 0;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  matrix_t matrix;
+  matrix_t* m = matrix_init(&matrix);
   time_clock_t* time_clock = TIME_CLOCK(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
-  if(time_clock_load_image(time_clock->bg_image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(time_clock->bg_image, &bitmap) == RET_OK) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
-  
-  if(time_clock_load_image(time_clock->hour_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w-bitmap.w)/2;
-    float_t dy = dst.h/2+bitmap.w/2 - bitmap.h;
 
-    rotation = (2 * M_PI * time_clock->hour)/12.0f;
-    anchor_x = bitmap.w/2;
-    anchor_y = bitmap.h-bitmap.w/2;
-    vgcanvas_save(vg);
-    vgcanvas_translate(vg, c->ox+dx, c->oy+dy);
-    vgcanvas_translate(vg, anchor_x, anchor_y);
-    vgcanvas_rotate(vg, rotation);
-    vgcanvas_translate(vg, -anchor_x, -anchor_y);
-    vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, bitmap.w, bitmap.h);
+  if (time_clock_load_image(time_clock->hour_image, &bitmap) == RET_OK) {
+    float_t dx = (dst.w - bitmap.w) / 2;
+    float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
 
-    vgcanvas_restore(vg);
+    rotation = (2 * M_PI * time_clock->hour) / 12.0f;
+    anchor_x = bitmap.w / 2;
+    anchor_y = bitmap.h - bitmap.w / 2;
+
+    matrix_identity(m);
+    matrix_translate(m, c->ox + dx, c->oy + dy);
+    matrix_translate(m, anchor_x, anchor_y);
+    matrix_rotate(m, rotation);
+    matrix_translate(m, -anchor_x, -anchor_y);
+
+    canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
-  
-  if(time_clock_load_image(time_clock->minute_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w-bitmap.w)/2;
-    float_t dy = dst.h/2+bitmap.w/2 - bitmap.h;
 
-    rotation = (2 * M_PI * time_clock->minute)/60.0f;
-    anchor_x = bitmap.w/2;
-    anchor_y = bitmap.h-bitmap.w/2;
-    vgcanvas_save(vg);
-    vgcanvas_translate(vg, c->ox+dx, c->oy+dy);
-    vgcanvas_translate(vg, anchor_x, anchor_y);
-    vgcanvas_rotate(vg, rotation);
-    vgcanvas_translate(vg, -anchor_x, -anchor_y);
-    vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, bitmap.w, bitmap.h);
+  if (time_clock_load_image(time_clock->minute_image, &bitmap) == RET_OK) {
+    float_t dx = (dst.w - bitmap.w) / 2;
+    float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
 
-    vgcanvas_restore(vg);
+    rotation = (2 * M_PI * time_clock->minute) / 60.0f;
+    anchor_x = bitmap.w / 2;
+    anchor_y = bitmap.h - bitmap.w / 2;
+
+    matrix_identity(m);
+    matrix_translate(m, c->ox + dx, c->oy + dy);
+    matrix_translate(m, anchor_x, anchor_y);
+    matrix_rotate(m, rotation);
+    matrix_translate(m, -anchor_x, -anchor_y);
+
+    canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
-  
-  if(time_clock_load_image(time_clock->second_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w-bitmap.w)/2;
+
+  if (time_clock_load_image(time_clock->second_image, &bitmap) == RET_OK) {
+    float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = 2;
 
-    rotation = (2 * M_PI * time_clock->second)/60.0f;
-    anchor_x = bitmap.w/2;
-    anchor_y = dst.h/2 - 2;
-    vgcanvas_save(vg);
-    vgcanvas_translate(vg, c->ox+dx, c->oy+dy);
-    vgcanvas_translate(vg, anchor_x, anchor_y);
-    vgcanvas_rotate(vg, rotation);
-    vgcanvas_translate(vg, -anchor_x, -anchor_y);
-    vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, bitmap.w, bitmap.h);
+    rotation = (2 * M_PI * time_clock->second) / 60.0f;
+    anchor_x = bitmap.w / 2;
+    anchor_y = dst.h / 2 - 2;
 
-    vgcanvas_restore(vg);
+    matrix_identity(m);
+    matrix_translate(m, c->ox + dx, c->oy + dy);
+    matrix_translate(m, anchor_x, anchor_y);
+    matrix_rotate(m, rotation);
+    matrix_translate(m, -anchor_x, -anchor_y);
+
+    canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
 
-  if(time_clock_load_image(time_clock->image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(time_clock->image, &bitmap) == RET_OK) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
-  
 
   return RET_OK;
 }
@@ -261,8 +262,7 @@ static const widget_vtable_t s_time_clock_vtable = {
     .on_paint_self = time_clock_on_paint_self,
     .set_prop = time_clock_set_prop,
     .get_prop = time_clock_get_prop,
-    .destroy = time_clock_destroy
-};
+    .destroy = time_clock_destroy};
 
 widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   time_clock_t* time_clock = TKMEM_ZALLOC(time_clock_t);

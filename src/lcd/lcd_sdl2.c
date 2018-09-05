@@ -87,6 +87,13 @@ static ret_t lcd_sdl2_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x
   return lcd_draw_glyph(mem, glyph, src, x, y);
 }
 
+static ret_t lcd_sdl2_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
+
+  return lcd_draw_image_matrix(mem, info);
+}
+
 static ret_t lcd_sdl2_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
   lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
@@ -155,6 +162,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->draw_hline = lcd_sdl2_draw_hline;
   base->fill_rect = lcd_sdl2_fill_rect;
   base->draw_image = lcd_sdl2_draw_image;
+  base->draw_image_matrix = lcd_sdl2_draw_image_matrix;
   base->draw_glyph = lcd_sdl2_draw_glyph;
   base->draw_points = lcd_sdl2_draw_points;
   base->get_point_color = lcd_sdl2_get_point_color;

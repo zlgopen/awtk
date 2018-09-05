@@ -159,6 +159,16 @@ ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   return lcd->draw_image(lcd, img, src, dst);
 }
 
+ret_t lcd_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
+  return_value_if_fail(lcd != NULL && info != NULL, RET_BAD_PARAMS);
+
+  if (lcd->draw_image_matrix != NULL) {
+    return lcd->draw_image_matrix(lcd, info);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
   return_value_if_fail(lcd != NULL && lcd->draw_glyph != NULL && glyph != NULL && src != NULL,
                        RET_BAD_PARAMS);

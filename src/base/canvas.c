@@ -1019,7 +1019,23 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, const rect_t* odst) {
+ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix) {
+  draw_image_info_t info;
+  return_value_if_fail(c != NULL && img != NULL && matrix != NULL && c->lcd != NULL,
+                       RET_BAD_PARAMS);
+
+  info.img = img;
+  info.matrix = *matrix;
+  info.src = rect_init(0, 0, img->w, img->h);
+  info.dst = rect_init(0, 0, img->w, img->h);
+  info.clip = rect_init(c->clip_left, c->clip_top, c->clip_right - c->clip_left,
+                        c->clip_bottom - c->clip_top);
+
+  return lcd_draw_image_matrix(c->lcd, &info);
+}
+
+ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
+                           const rect_t* odst) {
   rect_t src;
   rect_t d = *odst;
   rect_t* dst = &d;

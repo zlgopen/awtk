@@ -24,10 +24,19 @@
 
 #include "base/rect.h"
 #include "base/font.h"
+#include "base/matrix.h"
 #include "base/bitmap.h"
 #include "base/vgcanvas.h"
 
 BEGIN_C_DECLS
+
+typedef struct _draw_image_info_t {
+  bitmap_t* img;
+  rect_t src;
+  rect_t dst;
+  rect_t clip;
+  matrix_t matrix;
+} draw_image_info_t;
 
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
@@ -56,6 +65,7 @@ typedef float (*lcd_measure_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y);
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+typedef ret_t (*lcd_draw_image_matrix_t)(lcd_t* lcd, draw_image_info_t* info);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 
@@ -144,6 +154,7 @@ struct _lcd_t {
   lcd_fill_rect_t fill_rect;
   lcd_stroke_rect_t stroke_rect;
   lcd_draw_image_t draw_image;
+  lcd_draw_image_matrix_t draw_image_matrix;
   lcd_draw_glyph_t draw_glyph;
   lcd_draw_text_t draw_text;
   lcd_measure_text_t measure_text;
@@ -443,6 +454,16 @@ ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, int32_t nr, xy_t x, xy_t y);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+
+/**
+ * @method lcd_draw_image_matrix
+ * 绘制图片。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {draw_image_info_t*} info 绘制参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info);
 
 /**
  * @method lcd_get_vgcanvas

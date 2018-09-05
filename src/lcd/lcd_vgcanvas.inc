@@ -140,6 +140,19 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
   return vgcanvas_draw_image(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh);
 }
 
+static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
+  matrix_t* m = &(info->matrix);
+  rect_t* s = &(info->src);
+  rect_t* d = &(info->dst);
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  vgcanvas_save(canvas);
+  vgcanvas_set_transform(canvas, m->a0, m->a1, m->a2, m->a3, m->a4, m->a5);
+  vgcanvas_draw_image(canvas, info->img, s->x, s->y, s->w, s->h, d->x, d->y, d->w, d->h);
+  vgcanvas_restore(canvas);
+
+  return RET_OK;
+}
+
 #define MAX_CHARS 256
 float_t lcd_vgcanvas_measure_text(lcd_t* lcd, wchar_t* str, int32_t nr) {
   wchar_t temp[MAX_CHARS + 1];
@@ -208,6 +221,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->fill_rect = lcd_vgcanvas_fill_rect;
   base->stroke_rect = lcd_vgcanvas_stroke_rect;
   base->draw_image = lcd_vgcanvas_draw_image;
+  base->draw_image_matrix = lcd_vgcanvas_draw_image_matrix;
   base->draw_points = lcd_vgcanvas_draw_points;
   base->draw_text = lcd_vgcanvas_draw_text;
   base->measure_text = lcd_vgcanvas_measure_text;
