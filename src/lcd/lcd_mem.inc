@@ -280,7 +280,7 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
 #else
   (void)lcd;
   (void)info;
-	  
+
   return RET_NOT_IMPL;
 #endif /*WITH_PIXMAN*/
 }

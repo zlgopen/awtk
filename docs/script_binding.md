@@ -23,6 +23,6 @@
 
 1.[API注释格式](api_doc.md)
 
-2.[JS绑定](https://github.com/zlgopen/awtk-lua)
+2.[JS绑定](https://github.com/zlgopen/awtk-js)
 
-3.[Lua绑定](https://github.com/zlgopen/awtk-js)
+3.[Lua绑定](https://github.com/zlgopen/awtk-lua)
