@@ -84,7 +84,7 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
 
 #define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
 
-ret_t main_loop_sleep(main_loop_t* l) {
+ret_t main_loop_sleep_default(main_loop_t* l) {
   uint32_t sleep_time = 0;
   uint32_t now = time_now_ms();
   uint32_t gap = now - l->last_loop_time;
@@ -113,3 +113,12 @@ ret_t main_loop_sleep(main_loop_t* l) {
 
   return RET_OK;
 }
+
+ret_t main_loop_sleep(main_loop_t* l) {
+  if(l->sleep != NULL) {
+    return l->sleep(l);
+  } 
+
+  return main_loop_sleep_default(l);
+}
+

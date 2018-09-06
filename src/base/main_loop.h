@@ -34,11 +34,13 @@ typedef ret_t (*main_loop_run_t)(main_loop_t* l);
 typedef ret_t (*main_loop_quit_t)(main_loop_t* l);
 typedef ret_t (*main_loop_queue_event_t)(main_loop_t* l, const event_queue_req_t* e);
 typedef ret_t (*main_loop_wakeup_t)(main_loop_t* l);
+typedef ret_t (*main_loop_sleep_t)(main_loop_t* l);
 typedef ret_t (*main_loop_destroy_t)(main_loop_t* l);
 
 struct _main_loop_t {
   main_loop_run_t run;
   main_loop_quit_t quit;
+  main_loop_sleep_t sleep;
   main_loop_wakeup_t wakeup;
   main_loop_queue_event_t queue_event;
   main_loop_destroy_t destroy;
