@@ -96,11 +96,9 @@ scons
 bin\demoui
 ```
 
-## 视频
+## 演示视频
 
-1.基本控件演示
-
-<iframe frameborder="0" src="https://v.qq.com/txp/iframe/player.html?vid=n07811pocfx" allowFullScreen="true"></iframe>
+1.[基本控件演示](https://v.qq.com/txp/iframe/player.html?vid=n07811pocfx)
 
 ## 各个平台的移植
 
