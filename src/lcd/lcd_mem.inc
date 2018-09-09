@@ -419,7 +419,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
     if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
       return RET_OK;
     }
-    return lcd_mem_flush(lcd);
+    return lcd_flush(lcd);
   }
 }
 
@@ -463,7 +463,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->take_snapshot = lcd_mem_take_snapshot;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = alloc ? lcd_mem_destroy_offline_fb : lcd_mem_destroy;
-
+  base->flush = lcd_mem_flush;
   base->w = w;
   base->h = h;
   base->ratio = 1;

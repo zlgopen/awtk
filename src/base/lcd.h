@@ -496,6 +496,16 @@ ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 ret_t lcd_swap(lcd_t* lcd);
 
 /**
+ * @method lcd_flush
+ * flush。
+ * @annotation ["private"]
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_flush(lcd_t* lcd);
+
+/**
  * @method lcd_is_swappable
  * 判读lcd是否支持swap。
  * @param {lcd_t*} lcd lcd对象。

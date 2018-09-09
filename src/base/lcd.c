@@ -210,6 +210,16 @@ ret_t lcd_swap(lcd_t* lcd) {
   return RET_NOT_IMPL;
 }
 
+ret_t lcd_flush(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+
+  if (lcd->flush != NULL) {
+    return lcd->flush(lcd);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 bool_t lcd_is_swappable(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL, FALSE);
 

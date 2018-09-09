@@ -92,7 +92,7 @@ typedef enum _input_type_t {
  * @class input_method_t
  * 输入法接口。
  */
-typedef struct _input_method_t {
+struct _input_method_t {
   /**
    * @property {widget_t*} widget
    * @annotation ["private"]
@@ -156,7 +156,7 @@ typedef struct _input_method_t {
    */
   input_method_request_t request;
   input_method_destroy_t destroy;
-} input_method_t;
+};
 
 /**
  * @class im_commit_event_t

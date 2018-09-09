@@ -39,7 +39,7 @@ typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
  * @class input_engine_t
  * 输入法引擎接口。
  */
-typedef struct _input_engine_t {
+struct _input_engine_t {
   /**
    * @property {str_t} keys
    * @annotation ["private"]
@@ -62,7 +62,7 @@ typedef struct _input_engine_t {
   /*具体实现需要实现的函数*/
   input_engine_input_t input;
   input_engine_reset_input_t reset_input;
-} input_engine_t;
+};
 
 /**
  * @method input_engine_create

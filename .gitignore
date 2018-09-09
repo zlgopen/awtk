@@ -27,6 +27,7 @@ bin/runTest*
 bin/strgen*
 bin/image*
 bin/demo*
+bin/*test
 .vscode
 .vs
 bin/cairo_stars

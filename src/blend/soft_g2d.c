@@ -33,7 +33,8 @@ ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint32_t offset = 0;
   uint32_t* p = NULL;
   return_value_if_fail(fb != NULL && dst != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA,
+  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_RGBA ||
+                           fb->format == BITMAP_FMT_BGRA,
                        RET_BAD_PARAMS);
 
   w = dst->w;
