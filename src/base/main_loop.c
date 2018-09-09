@@ -115,10 +115,9 @@ ret_t main_loop_sleep_default(main_loop_t* l) {
 }
 
 ret_t main_loop_sleep(main_loop_t* l) {
-  if(l->sleep != NULL) {
+  if (l->sleep != NULL) {
     return l->sleep(l);
-  } 
+  }
 
   return main_loop_sleep_default(l);
 }
-

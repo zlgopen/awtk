@@ -65,7 +65,7 @@ typedef enum _key_code_t {
   FKEY_COLON = ':',
   FKEY_SEMICOLON = ';',
   FKEY_LESS = '<',
-  FKEY_EQUALS = '=',
+  FKEY_EQUAL = '=',
   FKEY_GREATER = '>',
   FKEY_QUESTION = '?',
   FKEY_AT = '@',
@@ -131,6 +131,8 @@ typedef enum _key_code_t {
   FKEY_Y = 'Y',
   FKEY_Z = 'Z',
   FKEY_DELETE = '\177',
+  FKEY_LEFTBRACE = '(',
+  FKEY_RIGHTBRACE = ')',
 #ifdef SDL2
   FKEY_CAPSLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CAPSLOCK),
 
@@ -311,6 +313,8 @@ typedef enum _key_code_t {
   FKEY_APP2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APP2),
 
 #else
+  /*FIXME*/
+  FKEY_DOT = '.',
   FKEY_LSHIFT = 0,
   FKEY_RSHIFT = 0,
   FKEY_LCTRL = 0,
@@ -318,6 +322,26 @@ typedef enum _key_code_t {
   FKEY_LALT = 0,
   FKEY_RALT = 0,
   FKEY_CAPSLOCK = 0,
+  FKEY_HOME = 0,
+  FKEY_UP = 0,
+  FKEY_DOWN = 0,
+  FKEY_LEFT = 0,
+  FKEY_RIGHT = 0,
+  FKEY_PAGEUP = 0,
+  FKEY_PAGEDOWN = 0,
+  FKEY_F1 = 0,
+  FKEY_F2 = 0,
+  FKEY_F3 = 0,
+  FKEY_F4 = 0,
+  FKEY_F5 = 0,
+  FKEY_F6 = 0,
+  FKEY_F7 = 0,
+  FKEY_F8 = 0,
+  FKEY_F9 = 0,
+  FKEY_F10 = 0,
+  FKEY_ENTER = 0,
+  FKEY_END = 0,
+  FKEY_INSERT = 0,
 #endif
 
 } key_code_t;
