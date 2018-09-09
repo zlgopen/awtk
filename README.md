@@ -96,6 +96,12 @@ scons
 bin\demoui
 ```
 
+## 视频
+
+1.基本控件演示
+
+<iframe frameborder="0" src="https://v.qq.com/txp/iframe/player.html?vid=n07811pocfx" allowFullScreen="true"></iframe>
+
 ## 各个平台的移植
 
 * [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
@@ -154,6 +160,12 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/09/07
+  * 录了一些演示视频，给不方便编译的朋友了解AWTK。
+
+* 2018/09/06
+  * 移植到linux framebuffer
 
 * 2018/09/05
   * 增加guage控件。
