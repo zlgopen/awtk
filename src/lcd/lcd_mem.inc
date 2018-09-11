@@ -29,9 +29,11 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   uint8_t* fbuff = mem->offline_fb;
 
+#if !defined(LINUX)
   if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fb && !lcd_is_swappable(lcd)) {
     fbuff = mem->online_fb;
   }
+#endif /*LINUX*/
 
   if (fb != NULL) {
     fb->w = lcd->w;
@@ -416,9 +418,11 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   if (lcd_is_swappable(lcd)) {
     return lcd_swap(lcd);
   } else {
+#if !defined(LINUX)
     if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
       return RET_OK;
     }
+#endif /*LINUX*/
     return lcd_flush(lcd);
   }
 }

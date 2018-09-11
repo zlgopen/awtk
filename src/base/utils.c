@@ -338,6 +338,12 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
 
 #include <stdio.h>
 #include <stdarg.h>
+
+#if defined(WINDOWS)
+#include <windows.h>
+#define vsnprintf _vsnprintf
+#endif/*defined(WINDOWS)*/
+
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
   va_list va;
@@ -360,7 +366,7 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
 
   return ret;
 }
-#endif/*defined(LINUX) || defined(WINDOWS) || defined(APPLE) || defined(HAS_STDIO)*/
+#endif /*defined(LINUX) || defined(WINDOWS) || defined(APPLE) || defined(HAS_STDIO)*/
 
 extern int vsscanf(const char* s, const char* format, va_list arg);
 
