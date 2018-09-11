@@ -108,6 +108,8 @@ bin\demoui
 
 * [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
+* [linux-framebuffer(嵌入式Linux请用本项目)](https://github.com/zlgopen/awtk-linux-fb)
+
 ## 各语言的绑定
 
 * [awtk-lua](https://github.com/zlgopen/awtk-lua)
@@ -158,6 +160,18 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/09/11
+  * awtk-linux-fb在IM287A上测试通过。
+
+* 2018/09/10
+  * awtk-linux-fb支持linux fb设备.
+
+* 2018/09/09
+  * awtk-linux-fb支持linux tslib设备.
+
+* 2018/09/08
+  * awtk-linux-fb支持linux input设备.
 
 * 2018/09/07
   * 录了一些演示视频，给不方便编译的朋友了解AWTK。
