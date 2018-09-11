@@ -334,10 +334,23 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
   return dst;
 }
 
+#if defined(LINUX) || defined(APPLE) || defined(HAS_STDIO)
+
+#include <stdio.h>
+#include <stdarg.h>
+int tk_snprintf(char* str, size_t size, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = vsnprintf(str, size, format, va);
+  va_end(va);
+
+  return ret;
+}
+#else
 #define STB_SPRINTF_STATIC 1
 #define STB_SPRINTF_IMPLEMENTATION 1
 #include "stb/stb_sprintf.h"
-
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
   va_list va;
@@ -347,6 +360,7 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
 
   return ret;
 }
+#endif/*defined(LINUX) || defined(WINDOWS) || defined(APPLE) || defined(HAS_STDIO)*/
 
 extern int vsscanf(const char* s, const char* format, va_list arg);
 
