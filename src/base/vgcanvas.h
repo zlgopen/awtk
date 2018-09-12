@@ -184,7 +184,7 @@ struct _vgcanvas_t {
    * @annotation ["readable"]
    * 显示比例。
    */
-  uint32_t ratio;
+  float_t ratio;
   /**
    * @property {bool_t} anti_alias
    * @annotation ["readable"]
