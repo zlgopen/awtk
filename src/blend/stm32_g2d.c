@@ -19,7 +19,7 @@
  *
  */
 
-#ifdef WITH_G2D
+#ifdef WITH_STM32_G2D
 
 #include "base/g2d.h"
 #include "stm32f4xx.h"
@@ -257,4 +257,4 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
 
   return RET_OK;
 }
-#endif /*WITH_G2D*/
+#endif /*WITH_STM32_G2D*/

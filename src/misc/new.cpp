@@ -6,7 +6,7 @@
 
 void* operator new(std::size_t size) {
   if (size >= MAX_SIZE) {
-    size = size;
+    log_debug("size is too large\n");
   }
 
   return TKMEM_ALLOC(size);
@@ -14,7 +14,7 @@ void* operator new(std::size_t size) {
 
 void* operator new[](std::size_t size) {
   if (size >= MAX_SIZE) {
-    size = size;
+    log_debug("size is too large\n");
   }
 
   return TKMEM_ALLOC(size);
