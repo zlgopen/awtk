@@ -106,11 +106,11 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     color_t bg = style_get_color(&(widget->style), STYLE_ID_BG_COLOR, trans);
     color_t border = style_get_color(&(widget->style), STYLE_ID_BORDER_COLOR, trans);
     if (bg.rgba.a == 0) {
-#ifdef FAST_MODE
+#ifdef USE_FAST_MODE
       if (widget->parent != NULL) {
         bg = style_get_color(&(widget->parent->style), STYLE_ID_BG_COLOR, trans);
       }
-#endif /*FAST_MODE*/
+#endif /*USE_FAST_MODE*/
     }
 
     if (bg.rgba.a) {

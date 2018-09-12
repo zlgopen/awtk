@@ -28,6 +28,10 @@
 #include <assert.h>
 #include <stdint.h>
 
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#endif/*HAS_AWTK_CONFIG*/
+
 #ifdef HAS_STDIO
 #include <stdio.h>
 #endif /*HAS_STDIO*/

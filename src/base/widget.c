@@ -596,7 +596,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
   canvas_translate(c, widget->x, widget->y);
 
-#ifdef FAST_MODE
+#ifdef USE_FAST_MODE
   if (widget->dirty) {
     widget_t* parent = widget->parent;
     if (parent != NULL && !(parent->dirty)) {
