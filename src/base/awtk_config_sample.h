@@ -82,4 +82,22 @@
  * #define USE_FAST_MODE 1
  */
 
+/**
+ * 如果FLASH空间较小，不足以放大字体文件时，请定义本宏
+ *
+ * #define WITH_MINI_FONT 1
+ */
+
+/**
+ * 如果有标准的malloc/free/calloc等函数，请定义本宏
+ *
+ * #define HAS_STD_MALLOC 1
+ */
+
+/**
+ * 如果有优化版本的memcpy函数，请定义本宏
+ *
+ * #define HAS_FAST_MEMCPY 1
+ */
+
 #endif/*AWTK_CONFIG_H*/
