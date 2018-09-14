@@ -19,9 +19,10 @@
  *
  */
 
+#include "base/g2d.h"
+
 #ifdef WITH_STM32_G2D
 
-#include "base/g2d.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_dma2d.h"
