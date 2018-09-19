@@ -1,1 +1,0 @@
-Copy stdint.h to <root>/build/ , the project will be build successful on Visual Studio 2008.

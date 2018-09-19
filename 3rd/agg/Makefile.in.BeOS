@@ -1,7 +1,0 @@
-AGGLIBS= -lagg 
-AGGCXXFLAGS = -O1
-CXX = g++
-C = cc
-LIB = ar -cru
-
-.PHONY : clean

@@ -27,18 +27,12 @@ elif os.environ['LCD'] == 'SDL':
 else:
   sources += ['window_animators/window_animator_fb.c'];
 
-sources += ['lcd/lcd_mem_rgba8888.c', 'lcd/lcd_mem_bgra8888.c', 'lcd/lcd_mem_rgb565.c'];
-
-if os.environ['VGCANVAS'] == 'NANOVG':
-  sources += Glob('vgcanvas/vgcanvas_nanovg.c')
-elif os.environ['VGCANVAS'] == 'AGG':
-  sources += Glob('vgcanvas/vgcanvas_agg.cpp')
-elif os.environ['VGCANVAS'] == 'CAIRO':
-  sources += Glob('vgcanvas/vgcanvas_cairo.c')
-else:
-  sources += Glob('vgcanvas/vgcanvas_picasso.cpp')
-
-sources += Glob('input_methods/input_method_creator.c')
+sources += ['lcd/lcd_mem_rgba8888.c', 
+  'lcd/lcd_mem_bgra8888.c', 
+  'lcd/lcd_mem_rgb565.c',
+  'vgcanvas/vgcanvas_nanovg.c',
+  'input_methods/input_method_creator.c'
+  ];
 
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')

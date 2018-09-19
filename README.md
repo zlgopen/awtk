@@ -37,7 +37,7 @@
 
 9. 支持裸系统，无需OS和文件系统。字体、图片、主题和界面描述数据都编译到代码中，以常量数据的形式存放，运行时无需加载到内存。
 
-10. 内置agg/picasso/nanovg实现高质量的矢量动画。
+10. 内置nanovg实现高质量的矢量动画。
 
 11. 支持窗口动画、控件动画和滑动动画等现代GUI常见特性。
 
@@ -160,6 +160,10 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/09/12-19
+  * 基于agge用纯软件实现nanovg的渲染接口，去掉对cairo/agg/piccaso的依赖，以最少的代码实现vgcanvas的接口。
+  * 完善vgcanvas-nanovg支持基于OpenGL和纯软件两种实现。
 
 * 2018/09/11
   * awtk-linux-fb在IM287A上测试通过。
