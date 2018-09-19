@@ -1,8 +1,5 @@
 <window name="main" anim_hint="htranslate" layout="c2 h30 m5 s5">
-    <button name="open:memtest" text="MemTest"/>
-    <button name="open:images" text="Image"/>
     <button name="open:basic" text="Basic"/>
-    <button name="open:button" text="Buttons"/>
     <button name="open:edit" text="Edits"/>
     <button name="open:keyboard" text="KeyBoard"/>
     <button name="open:list_view" text="ListView"/>
@@ -16,5 +13,8 @@
     <button name="open:color_picker" text="Color Picker"/>
     <button name="open:time_clock" text="Time Clock"/>
     <button name="open:guage" text="Guage"/>
+    <button name="open:button" text="Buttons"/>
+    <button name="open:images" text="Image"/>
+    <button name="open:memtest" text="MemTest"/>
     <button name="show_fps" text="Show FPS"/>
 </window>

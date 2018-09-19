@@ -40,7 +40,6 @@ class rasterizer : private vector_rasterizer {
  private:
   ClipperT _clipper;
   coord_type _start_x, _start_y;
-
 };
 
 template <>
