@@ -9,12 +9,12 @@
   g = (dg * minus_a + sg * a) >> 8; \
   b = (db * minus_a + sb * a) >> 8;
 
-#define rgb_to_rgba8888(r, g, b) (((r) << 24) | ((g) << 16) | ((b) << 8) | 0xff)
+#define rgb_to_rgba8888(r, g, b) ((r) | ((g) << 8) | ((b) << 16) | 0xff000000)
 #define rgba_from_rgba8888(rr, gg, bb, aa, pixel) \
-  rr = (pixel >> 24);                             \
-  gg = (pixel >> 16);                             \
-  bb = (pixel >> 8);                              \
-  aa = pixel & 0xff;
+  aa = (pixel >> 24);                             \
+  bb = (pixel >> 16);                             \
+  gg = (pixel >> 8);                              \
+  rr = pixel & 0xff;
 
 #ifdef WITH_BITMAP_BGRA
 #define rgba_to_image8888(r, g, b, a) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))

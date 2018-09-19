@@ -442,10 +442,66 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  image_manager_load(image_manager(), "rgba", &img);
+
+  canvas_set_fill_color(c, color_init(0x11, 0x22, 0x33, 0xff));
+  canvas_fill_rect(c, 0, 0, 10, 10);
+
+  rect_t s = rect_init(0, 0, img.w, img.h);
+  rect_t r = rect_init(10, 10, img.w, img.h);
+  canvas_draw_image(c, &img, &s, &r);
+
+  vgcanvas_translate(vg, 0, 100);
+
+  vgcanvas_save(vg);
+  vgcanvas_set_line_width(vg, 1);
+  vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
+  vgcanvas_rect(vg, 5, 5, 100, 100);
+  vgcanvas_fill(vg);
+
+  /*
+   */
+  vgcanvas_set_fill_color(vg, color_init(0, 0xff, 0, 0xff));
+  vgcanvas_rect(vg, 110, 5, 100, 100);
+  vgcanvas_fill(vg);
+
+  vgcanvas_set_fill_color(vg, color_init(0, 0, 0xff, 0xff));
+  vgcanvas_rect(vg, 215, 5, 100, 100);
+  vgcanvas_fill(vg);
+
+  vgcanvas_translate(vg, 0, 105);
+  vgcanvas_set_stroke_color(vg, color_init(0xff, 0, 0, 0xff));
+  vgcanvas_rect(vg, 5, 5, 100, 100);
+  vgcanvas_stroke(vg);
+
+  vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
+  vgcanvas_rect(vg, 110, 5, 100, 100);
+  vgcanvas_stroke(vg);
+  vgcanvas_set_stroke_color(vg, color_init(0, 0, 0xff, 0xff));
+  vgcanvas_rect(vg, 215, 5, 100, 100);
+  vgcanvas_stroke(vg);
+  vgcanvas_translate(vg, 0, 105);
+  image_manager_load(image_manager(), "rgb", &img);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+
+  image_manager_load(image_manager(), "rgba", &img);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 100, 0, img.w, img.h);
+
+  vgcanvas_restore(vg);
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
+  // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
 
   return RET_OK;

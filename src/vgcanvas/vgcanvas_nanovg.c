@@ -19,28 +19,37 @@
  *
  */
 
-#ifdef WITH_GL2
-#define NANOVG_GL2_IMPLEMENTATION
-#elif defined(WITH_GL3)
+#if defined(WITH_NANOVG_GL3)
 #define NANOVG_GL3_IMPLEMENTATION
 #endif
 
+#if defined(WITH_NANOVG_GLES2)
+#define NANOVG_GLES2_IMPLEMENTATION
+#endif
+
+#if defined(WITH_NANOVG_GLES3)
+#define NANOVG_GLES3_IMPLEMENTATION
+#endif
+
 #include "base/utf8.h"
+#include "base/mem.h"
+#include "base/vgcanvas.h"
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
 
+#include "nanovg.h"
+
+#ifdef WITH_NANOVG_AGGE
+#include "agge/nanovg_agge.h"
+#else /*OpenGL*/
 #include "glad/glad.h"
+#include "nanovg_gl.h"
+#include "nanovg_gl_utils.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_opengl_glext.h>
-
-#include "nanovg.h"
-#include "nanovg_gl.h"
-#include "nanovg_gl_utils.h"
-
-#include "base/mem.h"
-#include "base/vgcanvas.h"
+#endif /*WITH_NANOVG_AGGE*/
 
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
@@ -49,40 +58,13 @@ typedef struct _vgcanvas_nanovg_t {
   NVGcontext* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;
+#ifdef WITH_NANOVG_AGGE
+#else
   SDL_Window* sdl_window;
+#endif /*WITH_NANOVG_AGGE*/
 } vgcanvas_nanovg_t;
 
-ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
-  int ww = 0;
-  int wh = 0;
-  int fw = 0;
-  int fh = 0;
-  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-  SDL_Window* sdl_window = canvas->sdl_window;
-  NVGcontext* vg = canvas->vg;
-
-  SDL_GetWindowSize(sdl_window, &ww, &wh);
-  SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
-
-  glViewport(0, 0, fw, fh);
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-  nvgBeginFrame(vg, ww, wh, vgcanvas->ratio);
-
-  return RET_OK;
-}
-
-ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
-  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-  SDL_Window* sdl_window = canvas->sdl_window;
-  NVGcontext* vg = canvas->vg;
-
-  nvgEndFrame(vg);
-  SDL_GL_SwapWindow(sdl_window);
-
-  return RET_OK;
-}
+static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img);
 
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   (void)vgcanvas;
@@ -384,32 +366,6 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   return RET_OK;
 }
 
-static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
-  int32_t i = 0;
-  if (img->flags & BITMAP_FLAG_TEXTURE) {
-    i = (char*)(img->specific) - (char*)NULL;
-
-    if (img->flags & BITMAP_FLAG_CHANGED) {
-      img->flags &= (~(BITMAP_FLAG_CHANGED));
-      nvgUpdateImage(canvas->vg, i, img->data);
-      log_debug("nvgUpdateImage %d\n", i);
-    }
-
-    return i;
-  }
-
-  i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);
-  if (i >= 0) {
-    img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = (char*)NULL + i;
-    img->specific_ctx = canvas->vg;
-    img->specific_destroy = nanovg_on_bitmap_destroy;
-    image_manager_update_specific(image_manager(), img);
-  }
-
-  return i;
-}
-
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
@@ -534,6 +490,115 @@ static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+#if defined(WITH_NANOVG_AGGE)
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  return RET_NOT_IMPL;
+}
+
+static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  return RET_NOT_IMPL;
+}
+
+static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  return RET_NOT_IMPL;
+}
+
+static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  return RET_NOT_IMPL;
+}
+
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = canvas->vg;
+
+  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = canvas->vg;
+
+  nvgEndFrame(vg);
+
+  return RET_OK;
+}
+
+static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
+  int32_t i = 0;
+  int32_t f = 0;
+  if (img->flags & BITMAP_FLAG_TEXTURE) {
+    i = (char*)(img->specific) - (char*)NULL;
+
+    return i;
+  }
+
+  switch (img->format) {
+    case BITMAP_FMT_RGBA: {
+      f = NVG_TEXTURE_RGBA;
+      break;
+    }
+    case BITMAP_FMT_BGRA: {
+      f = NVG_TEXTURE_BGRA;
+      break;
+    }
+    case BITMAP_FMT_RGB565: {
+      f = NVG_TEXTURE_RGB565;
+      break;
+    }
+    case BITMAP_FMT_RGB: {
+      f = NVG_TEXTURE_RGB;
+      break;
+    }
+    default: { assert(!"not supported format"); }
+  }
+
+  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, NVG_IMAGE_NEAREST, img->data);
+
+  if (i >= 0) {
+    img->flags |= BITMAP_FLAG_TEXTURE;
+    img->specific = (char*)NULL + i;
+    image_manager_update_specific(image_manager(), img);
+  }
+
+  return i;
+}
+#else
+
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
+  int ww = 0;
+  int wh = 0;
+  int fw = 0;
+  int fh = 0;
+
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  SDL_Window* sdl_window = canvas->sdl_window;
+  NVGcontext* vg = canvas->vg;
+
+  SDL_GetWindowSize(sdl_window, &ww, &wh);
+  SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
+
+  glViewport(0, 0, fw, fh);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+  nvgBeginFrame(vg, ww, wh, vgcanvas->ratio);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  SDL_Window* sdl_window = canvas->sdl_window;
+  NVGcontext* vg = canvas->vg;
+
+  nvgEndFrame(vg);
+  SDL_GL_SwapWindow(sdl_window);
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
@@ -581,7 +646,47 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_OK;
 }
 
+static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
+  int32_t i = 0;
+  if (img->flags & BITMAP_FLAG_TEXTURE) {
+    i = (char*)(img->specific) - (char*)NULL;
+
+    if (img->flags & BITMAP_FLAG_CHANGED) {
+      img->flags &= (~(BITMAP_FLAG_CHANGED));
+      nvgUpdateImage(canvas->vg, i, img->data);
+      log_debug("nvgUpdateImage %d\n", i);
+    }
+
+    return i;
+  }
+
+  i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);
+
+  if (i >= 0) {
+    img->flags |= BITMAP_FLAG_TEXTURE;
+    img->specific = (char*)NULL + i;
+    img->specific_ctx = canvas->vg;
+    img->specific_destroy = nanovg_on_bitmap_destroy;
+    image_manager_update_specific(image_manager(), img);
+  }
+
+  return i;
+}
+
+#endif /*WITH_NANOVG_AGGE*/
+
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+#if defined(WITH_NANOVG_GL3)
+  nvgDeleteGL3(vg);
+#elif defined(WITH_NANOVG_GLES2)
+  nvgDeleteGLES2(vg);
+#elif defined(WITH_NANOVG_GLES3)
+  nvgDeleteGLES3(vg);
+#elif defined(WITH_NANOVG_AGGE)
+  nvgDeleteAGGE(vg);
+#endif
+
   return RET_OK;
 }
 
@@ -632,6 +737,40 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_unbind_fbo,
                                      vgcanvas_nanovg_destroy};
 
+#if defined(WITH_NANOVG_AGGE)
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data) {
+  agge_bitmap_format_t f = AGGE_RGBA8888;
+  vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
+  return_value_if_fail(nanovg != NULL, NULL);
+
+  switch (format) {
+    case BITMAP_FMT_RGBA: {
+      f = AGGE_RGBA8888;
+      break;
+    }
+    case BITMAP_FMT_BGRA: {
+      f = AGGE_BGRA8888;
+      break;
+    }
+    case BITMAP_FMT_RGB565: {
+      f = AGGE_RGB565;
+      break;
+    }
+    default: {
+      assert(!"not supported format");
+      break;
+    }
+  }
+
+  nanovg->base.w = w;
+  nanovg->base.h = h;
+  nanovg->base.vt = &vt;
+  nanovg->base.ratio = 1;
+  nanovg->vg = nvgCreateAGGE(w, h, f, (uint8_t*)data);
+
+  return &(nanovg->base);
+}
+#else /*OpenGL*/
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* sdl_window) {
   int ww = 0;
   int wh = 0;
@@ -650,13 +789,18 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   nanovg->base.vt = &vt;
   nanovg->base.ratio = (float)fw / (float)ww;
   nanovg->sdl_window = (SDL_Window*)sdl_window;
-#ifdef WITH_GL2
-  nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-#elif defined(WITH_GL3)
+#if defined(WITH_NANOVG_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-  if (nanovg->vg == NULL) {
-    assert(!"OpenGL3 is not supported!");
-  }
+#elif defined(WITH_NANOVG_GLES2)
+  nanovg->vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+#elif defined(WITH_NANOVG_GLES3)
+  nanovg->vg = nvgCreateGLES3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #endif
+
+  if (nanovg->vg == NULL) {
+    assert(!"OpenGL is not supported!");
+  }
+
   return &(nanovg->base);
 }
+#endif

@@ -342,7 +342,7 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
 #if defined(WINDOWS)
 #include <windows.h>
 #define vsnprintf _vsnprintf
-#endif/*defined(WINDOWS)*/
+#endif /*defined(WINDOWS)*/
 
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;

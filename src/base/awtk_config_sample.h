@@ -76,7 +76,7 @@
  * #define WITH_NULL_IM 1
  */
 
- /**
+/**
  * 如果支持极速模式，请定义本宏。极速模式不支持控件透明半透明效果，只有在CPU配置极低时启用。
  *
  * #define USE_FAST_MODE 1
@@ -112,4 +112,4 @@
  * #define WITH_PXP_G2D 1
  */
 
-#endif/*AWTK_CONFIG_H*/
+#endif /*AWTK_CONFIG_H*/

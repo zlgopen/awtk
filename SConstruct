@@ -22,8 +22,8 @@ LCD='NANOVG'
 INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
 
-FRAME_BUFFER_FORMAT='rgba8888'
 FRAME_BUFFER_FORMAT='rgb565'
+FRAME_BUFFER_FORMAT='rgba8888'
 
 COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DWITH_SDL -DWITH_FS_RES -DHAS_STDIO -DWITH_DESKTOP_STYLE '
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_VGCANVAS -DWITH_UNICODE_BREAK '
@@ -36,13 +36,13 @@ else:
 
 if LCD == 'NANOVG':
   VGCANVAS='NANOVG'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_GL3 -DWITH_VGCANVAS_LCD'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_NANOVG_GL3 -DWITH_VGCANVAS_LCD'
 else:
-  VGCANVAS='CAIRO'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_BGRA -DCAIRO_WIN32_STATIC_BUILD'
+  VGCANVAS='NANOVG'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_BGRA1 -DCAIRO_WIN32_STATIC_BUILD -DWITH_NANOVG_AGGE'
 
 os.environ['LCD'] = LCD
-os.environ['VGCANVAS'] =VGCANVAS 
+os.environ['VGCANVAS'] = VGCANVAS 
 os.environ['BIN_DIR'] = BIN_DIR;
 os.environ['LIB_DIR'] = LIB_DIR;
 os.environ['TK_ROOT'] = TK_ROOT;
@@ -79,15 +79,15 @@ elif OS_NAME == 'Windows':
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[LIB_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
-LIBS=['awtk', 'gpinyin', 'awtk', 'cairo', 'pixman', 'linebreak', 'nanovg', 'SDL2', 'glad'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'agge', 'linebreak', 'nanovg', 'SDL2', 'glad'] + OS_LIBS
 
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
   TK_3RD_ROOT, 
   joinPath(TK_SRC, 'ext_widgets'), 
   joinPath(TK_3RD_ROOT, 'nanovg/src'), 
-  joinPath(TK_3RD_ROOT, 'cairo/cairo'), 
-  joinPath(TK_3RD_ROOT, 'pixman/pixman'), 
+  joinPath(TK_3RD_ROOT, 'agge/src'), 
+  joinPath(TK_3RD_ROOT, 'agge/include'), 
   joinPath(TK_3RD_ROOT, 'gpinyin/include'), 
   joinPath(TK_3RD_ROOT, 'libunibreak/src'), 
   TK_TOOLS_ROOT] + OS_CPPPATH
@@ -102,8 +102,7 @@ DefaultEnvironment(CCFLAGS = CCFLAGS,
 )
 
 SConscriptFiles=[
-  '3rd/pixman/SConscript',
-  '3rd/cairo/SConscript',
+  '3rd/agge/SConscript',
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
   '3rd/gpinyin/SConscript', 

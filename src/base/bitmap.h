@@ -45,19 +45,24 @@ typedef enum _bitmap_format_t {
   BITMAP_FMT_NONE = 0,
   /**
    * @const BITMAP_FMT_RGBA
-   * 一个像素占用4个字节，RGBA四个通道占一个字节，按内存地址递增。
+   * 一个像素占用4个字节，RGBA占一个字节，按内存地址递增。
    */
   BITMAP_FMT_RGBA,
   /**
    * @const BITMAP_FMT_BGRA
-   * 一个像素占用4个字节，BGRA四个通道占一个字节，按内存地址递增。
+   * 一个像素占用4个字节，BGRA占一个字节，按内存地址递增。
    */
   BITMAP_FMT_BGRA,
   /**
    * @const BITMAP_FMT_RGB565
    * 一个像素占用2个字节，RGB分别占用5,6,5位。
    */
-  BITMAP_FMT_RGB565
+  BITMAP_FMT_RGB565,
+  /**
+   * @const BITMAP_FMT_RGB
+   * 一个像素占用3个字节，RGB占一个字节，按内存地址递增。
+   */
+  BITMAP_FMT_RGB,
 } bitmap_format_t;
 
 /**

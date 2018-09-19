@@ -822,6 +822,11 @@ int nvgCreateImageRGBA(NVGcontext* ctx, int w, int h, int imageFlags, const unsi
 	return ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_RGBA, w, h, imageFlags, data);
 }
 
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags, const unsigned char* data)
+{
+	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, imageFlags, data);
+}
+
 void nvgUpdateImage(NVGcontext* ctx, int image, const unsigned char* data)
 {
 	int w, h;
@@ -1711,7 +1716,7 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 	}
 }
 
-
+#ifndef WITH_NANOVG_AGGE
 static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin, float miterLimit)
 {
 	NVGpathCache* cache = ctx->cache;
@@ -1826,6 +1831,62 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin
 
 	return 1;
 }
+
+#else
+
+static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin, float miterLimit)
+{
+	NVGpathCache* cache = ctx->cache;
+	NVGvertex* verts;
+	NVGvertex* dst;
+	int cverts, i, j;
+	float aa = ctx->fringeWidth;
+	int ncap = nvg__curveDivs(w, NVG_PI, ctx->tessTol);	// Calculate divisions per half circle.
+
+	nvg__calculateJoins(ctx, w, lineJoin, miterLimit);
+
+	// Calculate max vertex usage.
+	cverts = 0;
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		cverts += path->count + 1;
+	}
+
+	verts = nvg__allocTempVerts(ctx, cverts);
+	if (verts == NULL) return 0;
+
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		NVGpoint* pts = &cache->points[path->first];
+		int loop = (path->closed == 0) ? 0 : 1;
+
+		path->fill = 0;
+		path->nfill = 0;
+
+		dst = verts;
+
+    for(j = 0; j < path->count; j++, dst++) {
+		  NVGpoint* p = pts+j;
+      dst->x = p->x;
+      dst->y = p->y;
+    }
+
+    if(loop) {
+		  NVGpoint* p = pts;
+
+      dst->x = p->x;
+      dst->y = p->y;
+      dst++;
+    }
+
+		path->stroke = verts;
+		path->nstroke = (int)(dst - verts);
+		verts = dst;
+	}
+
+	return 1;
+}
+#endif/*WITH_NANOVG_AGGE*/
 
 static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLimit)
 {
@@ -2407,6 +2468,10 @@ static void nvg__renderText(NVGcontext* ctx, NVGvertex* verts, int nverts)
 	// Apply global alpha
 	paint.innerColor.a *= state->alpha;
 	paint.outerColor.a *= state->alpha;
+
+#ifdef WITH_NANOVG_AGGE
+  memcpy(paint.xform, state->xform, sizeof(state->xform));
+#endif/*WITH_NANOVG_AGGE*/
 
 	ctx->params.renderTriangles(ctx->params.userPtr, &paint, state->compositeOperation, &state->scissor, verts, nverts);
 

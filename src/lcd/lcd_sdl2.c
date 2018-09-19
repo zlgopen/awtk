@@ -178,9 +178,10 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->h = (wh_t)h;
 
 #ifdef WITH_FB_8888
+  /*SDL ABGR is rgba from low address to high address*/
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgba8888_create(w, h, FALSE);
   lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, w, h);
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, w, h);
   log_debug("WITH_FB=8888\n");
 #else
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgb565_create(w, h, FALSE);

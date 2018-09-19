@@ -30,7 +30,7 @@
 
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"
-#endif/*HAS_AWTK_CONFIG*/
+#endif /*HAS_AWTK_CONFIG*/
 
 #ifdef HAS_STDIO
 #include <stdio.h>
@@ -436,6 +436,6 @@ typedef enum _app_type_t {
 
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
 #define WITH_G2D 1
-#endif/*WITH_PXP_G2D*/
+#endif /*WITH_PXP_G2D*/
 
 #endif /*TYPES_DEF_H*/
