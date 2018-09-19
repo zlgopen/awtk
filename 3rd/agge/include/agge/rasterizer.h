@@ -31,18 +31,16 @@ class rasterizer : private vector_rasterizer {
   using vector_rasterizer::min_y;
   using vector_rasterizer::width;
 
- private:
+ public:
   typedef typename ClipperT::coord_type coord_type;
 
- private:
+ public:
   void line(coord_type x1, coord_type y1, coord_type x2, coord_type y2);
 
  private:
   ClipperT _clipper;
   coord_type _start_x, _start_y;
 
- private:
-  friend ClipperT;
 };
 
 template <>

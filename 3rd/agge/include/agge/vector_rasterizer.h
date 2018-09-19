@@ -80,7 +80,7 @@ inline bool vector_rasterizer::sorted() const {
 inline vector_rasterizer::scanline_cells vector_rasterizer::operator[](int y) const {
   histogram::const_iterator offset = _histogram_y.begin() + y - _min_y;
   const const_cells_iterator start = _cells.begin();
-  const scanline_cells sc = {start + *offset++, start + *offset};
+  const scanline_cells sc = {start + offset[0], start + offset[1]};
 
   return sc;
 }
