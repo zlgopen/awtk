@@ -161,6 +161,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/09/20
+  * 移植nanovg-agge到stm32和aworks。
+
 * 2018/09/12-19
   * 基于agge用纯软件实现nanovg的渲染接口，去掉对cairo/agg/piccaso的依赖，以最少的代码实现vgcanvas的接口。
   * 完善vgcanvas-nanovg支持基于OpenGL和纯软件两种实现。

@@ -768,6 +768,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   nanovg->base.h = h;
   nanovg->base.vt = &vt;
   nanovg->base.ratio = 1;
+  nanovg->base.buff = (uint32_t*)data;
+
   nanovg->vg = nvgCreateAGGE(w, h, f, (uint8_t*)data);
 
   return &(nanovg->base);

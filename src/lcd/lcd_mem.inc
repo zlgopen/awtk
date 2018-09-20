@@ -381,11 +381,18 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
   if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }
 
   /*FIXME: Handle ROTATE*/
+
+  if(mem->vgcanvas) {
+    vgcanvas_destroy(mem->vgcanvas);
+    mem->vgcanvas = NULL;
+  }
 
   if (lcd_is_swappable(lcd)) {
     return lcd_swap(lcd);
@@ -400,6 +407,12 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  if(mem->vgcanvas) {
+    vgcanvas_destroy(mem->vgcanvas);
+    mem->vgcanvas = NULL;
+  }
   TKMEM_FREE(lcd);
 
   return RET_OK;
