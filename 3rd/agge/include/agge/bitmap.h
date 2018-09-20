@@ -55,6 +55,11 @@ struct pixel_bpp<pixel16_rgb565> {
 };
 
 template <>
+struct pixel_bpp<pixel16_bgr565> {
+  static const bits_per_pixel bpp = bpp16;
+};
+
+template <>
 struct pixel_bpp<uint8_t> {
   static const bits_per_pixel bpp = bpp8;
 };

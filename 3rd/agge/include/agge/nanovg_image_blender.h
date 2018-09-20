@@ -42,15 +42,24 @@ inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
   int lx = (int)(ox + 0.5f);
   int ly = (int)(oy + 0.5f);
 
-  if (ly >= 0 && ly < this->h && lx >= 0 && lx < this->w) {
-    typename BitmapT::pixel p = _bitmap->row_ptr(ly)[lx];
-
-    pixel_convert<pixel32_rgba, typename BitmapT::pixel>(ref, p);
-
-    return true;
+  if (lx < 0) {
+    lx = 0;
+  }
+  if (lx >= this->w) {
+    lx = this->w - 1;
   }
 
-  return false;
+  if (ly < 0) {
+    ly = 0;
+  }
+  if (ly >= this->h) {
+    ly = this->h - 1;
+  }
+
+  typename BitmapT::pixel p = _bitmap->row_ptr(ly)[lx];
+  pixel_convert<pixel32_rgba, typename BitmapT::pixel>(ref, p);
+
+  return true;
 }
 
 template <typename PixelT, typename BitmapT>

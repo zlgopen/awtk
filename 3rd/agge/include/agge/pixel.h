@@ -71,6 +71,17 @@ struct pixel24_bgr {
   }
 };
 
+struct pixel16_bgr565 {
+  uint16_t b : 5;
+  uint16_t g : 6;
+  uint16_t r : 5;
+
+  pixel16_bgr565() : b(0), g(0), r(0) {
+  }
+  pixel16_bgr565(uint8_t rr, uint8_t gg, uint8_t bb) : b(bb), g(gg), r(rr) {
+  }
+};
+
 struct pixel16_rgb565 {
   uint16_t r : 5;
   uint16_t g : 6;
@@ -95,17 +106,59 @@ struct pixel8 {
 #include "pixel_set_a.h"
 #include "pixel_convert.h"
 
-template <typename PixelSrcT, typename PixelTargetT>
-inline void pixel_blend(PixelSrcT& t, const PixelTargetT& s, uint8_t a) {
+template <typename PixelTargetT, typename PixelSrcT>
+inline void pixel_blend(PixelTargetT& t, const PixelSrcT& s, uint8_t a) {
   if (a > 0xf4) {
-    t.r = s.r;
-    t.g = s.g;
-    t.b = s.b;
+    if (sizeof(t) == sizeof(s) || sizeof(t) == 4) {
+      t.r = s.r;
+      t.g = s.g;
+      t.b = s.b;
+    } else {
+      t.r = s.r >> 3;
+      t.g = s.g >> 2;
+      t.b = s.b >> 3;
+    }
   } else if (a > 0x08) {
     uint8_t m_a = 0xff - a;
-    t.r = (s.r * a + t.r * m_a) >> 8;
-    t.g = (s.g * a + t.g * m_a) >> 8;
-    t.b = (s.b * a + t.b * m_a) >> 8;
+    if (sizeof(t) == 2) {
+      if (sizeof(s) == 2) {
+        t.r = s.r;
+        t.g = s.g;
+        t.b = s.b;
+      } else {
+        t.r = (s.r * a + (t.r << 3) * m_a) >> 11;
+        t.g = (s.g * a + (t.g << 2) * m_a) >> 10;
+        t.b = (s.b * a + (t.b << 3) * m_a) >> 11;
+      }
+    } else if (sizeof(s) == 2) {
+      if (sizeof(t) == 2) {
+        t.r = s.r;
+        t.g = s.g;
+        t.b = s.b;
+      } else {
+        t.r = ((s.r << 3) * a + t.r * m_a) >> 11;
+        t.g = ((s.g << 2) * a + t.g * m_a) >> 10;
+        t.b = ((s.b << 3) * a + t.b * m_a) >> 11;
+      }
+    } else {
+      t.r = (s.r * a + t.r * m_a) >> 8;
+      t.g = (s.g * a + t.g * m_a) >> 8;
+      t.b = (s.b * a + t.b * m_a) >> 8;
+    }
+  }
+}
+
+template <>
+inline void pixel_blend(pixel16_bgr565& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r >> 3;
+    t.g = s.g >> 2;
+    t.b = s.b >> 3;
+  } else if (a > 0x08) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + (t.r << 3) * m_a) >> 11;
+    t.g = (s.g * a + (t.g << 2) * m_a) >> 10;
+    t.b = (s.b * a + (t.b << 3) * m_a) >> 11;
   }
 }
 
