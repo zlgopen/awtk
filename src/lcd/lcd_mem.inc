@@ -242,12 +242,9 @@ static pixman_image_t* to_pixman_image(const uint8_t* data, bitmap_format_t form
 #endif /*WITH_PXIMAN*/
 
 static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
-#if defined(WITH_VGCANVAS)
   matrix_t* m = &(info->matrix);
   rect_t* s = &(info->src);
   rect_t* d = &(info->dst);
-  rect_t* clip = &(info->clip);
-  bitmap_t* img = info->img;
   vgcanvas_t* canvas = lcd_get_vgcanvas(lcd);
 
   if (canvas != NULL) {
@@ -258,33 +255,8 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
 
     return RET_OK;
   }
-#elif defined(WITH_PXIMAN)
-/*
-  matrix_t* m = &(info->matrix);
-  rect_t* s = &(info->src);
-  rect_t* d = &(info->dst);
-  rect_t* clip = &(info->clip);
-  bitmap_t* img = info->img;
-
-  bitmap_t fb;
-  pixman_transform_t t;
-  lcd_mem_init_drawing_fb(lcd, &fb);
-  pixman_image_t* d_img = to_pixman_image(fb.data, fb.format, fb.w, fb.h);
-  pixman_image_t* s_img = to_pixman_image(img->data, img->format, img->w, img->h);
-  pixman_transform_init_identity(&t);
-  pixman_image_set_transform(s_img, &t);
-  pixman_image_composite(PIXMAN_OP_SRC, s_img, NULL, d_img, s->x, s->y, 0, 0, d->x, d->y, d->w,
-  d->h);
-
-  pixman_image_unref(d_img);
-  pixman_image_unref(s_img);
-*/
-#else
-  (void)lcd;
-  (void)info;
 
   return RET_NOT_IMPL;
-#endif /*WITH_PIXMAN*/
 }
 
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {

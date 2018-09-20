@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   vgcanvas.c
  * Author: AWTK Develop Team
  * Brief:  vector graphics canvas base on nanovg
@@ -352,6 +352,7 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
   return nvgTextBounds(vg, 0, 0, text, text + strlen(text), bounds);
 }
 
+#ifndef WITH_NANOVG_AGGE
 static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   int32_t id = (char*)(img->specific) - (char*)NULL;
   NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
@@ -365,6 +366,7 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 
   return RET_OK;
 }
+#endif /*WITH_NANOVG_AGGE*/
 
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,

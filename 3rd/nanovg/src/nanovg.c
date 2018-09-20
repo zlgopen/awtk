@@ -16,16 +16,24 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
+
+#ifdef HAS_AWTK_CONFIG
+#include "base/types_def.h"
+#else
 #include <math.h>
-#include <memory.h>
+#include <stdlib.h>
+#include <string.h>
+#endif/*HAS_AWTK_CONFIG*/
 
 #include "nanovg.h"
+
+#ifndef WITH_NANOVG_AGGE
+#include <stdio.h>
 #define FONTSTASH_IMPLEMENTATION
-#include "fontstash.h"
 #define STB_IMAGE_IMPLEMENTATION
+#include "fontstash.h"
 #include "stb_image.h"
+#endif/*WITH_NANOVG_AGGE*/
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4100)  // unreferenced formal parameter
@@ -285,7 +293,10 @@ static NVGstate* nvg__getState(NVGcontext* ctx)
 
 NVGcontext* nvgCreateInternal(NVGparams* params)
 {
+#ifndef WITH_NANOVG_AGGE
 	FONSparams fontParams;
+#endif/*WITH_NANOVG_AGGE*/
+
 	NVGcontext* ctx = (NVGcontext*)malloc(sizeof(NVGcontext));
 	int i;
 	if (ctx == NULL) goto error;
@@ -310,6 +321,7 @@ NVGcontext* nvgCreateInternal(NVGparams* params)
 
 	if (ctx->params.renderCreate(ctx->params.userPtr) == 0) goto error;
 
+#ifndef WITH_NANOVG_AGGE
 	// Init font rendering
 	memset(&fontParams, 0, sizeof(fontParams));
 	fontParams.width = NVG_INIT_FONTIMAGE_SIZE;
@@ -327,6 +339,7 @@ NVGcontext* nvgCreateInternal(NVGparams* params)
 	ctx->fontImages[0] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, fontParams.width, fontParams.height, 0, NULL);
 	if (ctx->fontImages[0] == 0) goto error;
 	ctx->fontImageIdx = 0;
+#endif/*WITH_NANOVG_AGGE*/
 
 	return ctx;
 
@@ -346,7 +359,7 @@ void nvgDeleteInternal(NVGcontext* ctx)
 	if (ctx == NULL) return;
 	if (ctx->commands != NULL) free(ctx->commands);
 	if (ctx->cache != NULL) nvg__deletePathCache(ctx->cache);
-
+#ifndef WITH_NANOVG_AGGE
 	if (ctx->fs)
 		fonsDeleteInternal(ctx->fs);
 
@@ -356,6 +369,7 @@ void nvgDeleteInternal(NVGcontext* ctx)
 			ctx->fontImages[i] = 0;
 		}
 	}
+#endif/*WITH_NANOVG_AGGE*/
 
 	if (ctx->params.renderDelete != NULL)
 		ctx->params.renderDelete(ctx->params.userPtr);
@@ -788,6 +802,17 @@ void nvgFillPaint(NVGcontext* ctx, NVGpaint paint)
 	nvgTransformMultiply(state->fill.xform, state->xform);
 }
 
+#ifdef WITH_NANOVG_AGGE
+int nvgCreateImage(NVGcontext* ctx, const char* filename, int imageFlags)
+{
+  return -1;
+}
+
+int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int ndata)
+{
+  return -1;
+}
+#else
 int nvgCreateImage(NVGcontext* ctx, const char* filename, int imageFlags)
 {
 	int w, h, n, image;
@@ -816,6 +841,7 @@ int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int 
 	stbi_image_free(img);
 	return image;
 }
+#endif/*WITH_NANOVG_AGGE*/
 
 int nvgCreateImageRGBA(NVGcontext* ctx, int w, int h, int imageFlags, const unsigned char* data)
 {
@@ -1428,6 +1454,7 @@ static int nvg__curveDivs(float r, float arc, float tol)
 	return nvg__maxi(2, (int)ceilf(arc / da));
 }
 
+#ifndef WITH_NANOVG_AGGE
 static void nvg__chooseBevel(int bevel, NVGpoint* p0, NVGpoint* p1, float w,
 							float* x0, float* y0, float* x1, float* y1)
 {
@@ -1716,7 +1743,6 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 	}
 }
 
-#ifndef WITH_NANOVG_AGGE
 static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin, float miterLimit)
 {
 	NVGpathCache* cache = ctx->cache;
@@ -1831,62 +1857,6 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin
 
 	return 1;
 }
-
-#else
-
-static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin, float miterLimit)
-{
-	NVGpathCache* cache = ctx->cache;
-	NVGvertex* verts;
-	NVGvertex* dst;
-	int cverts, i, j;
-	float aa = ctx->fringeWidth;
-	int ncap = nvg__curveDivs(w, NVG_PI, ctx->tessTol);	// Calculate divisions per half circle.
-
-	nvg__calculateJoins(ctx, w, lineJoin, miterLimit);
-
-	// Calculate max vertex usage.
-	cverts = 0;
-	for (i = 0; i < cache->npaths; i++) {
-		NVGpath* path = &cache->paths[i];
-		cverts += path->count + 1;
-	}
-
-	verts = nvg__allocTempVerts(ctx, cverts);
-	if (verts == NULL) return 0;
-
-	for (i = 0; i < cache->npaths; i++) {
-		NVGpath* path = &cache->paths[i];
-		NVGpoint* pts = &cache->points[path->first];
-		int loop = (path->closed == 0) ? 0 : 1;
-
-		path->fill = 0;
-		path->nfill = 0;
-
-		dst = verts;
-
-    for(j = 0; j < path->count; j++, dst++) {
-		  NVGpoint* p = pts+j;
-      dst->x = p->x;
-      dst->y = p->y;
-    }
-
-    if(loop) {
-		  NVGpoint* p = pts;
-
-      dst->x = p->x;
-      dst->y = p->y;
-      dst++;
-    }
-
-		path->stroke = verts;
-		path->nstroke = (int)(dst - verts);
-		verts = dst;
-	}
-
-	return 1;
-}
-#endif/*WITH_NANOVG_AGGE*/
 
 static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLimit)
 {
@@ -2007,6 +1977,141 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 
 	return 1;
 }
+
+#else
+
+static int nvg__expandStroke(NVGcontext* ctx, float w, int lineCap, int lineJoin, float miterLimit)
+{
+	NVGpathCache* cache = ctx->cache;
+	NVGvertex* verts;
+	NVGvertex* dst;
+	int cverts, i, j;
+	float aa = ctx->fringeWidth;
+	int ncap = nvg__curveDivs(w, NVG_PI, ctx->tessTol);	// Calculate divisions per half circle.
+
+	// Calculate max vertex usage.
+	cverts = 0;
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		cverts += path->count + 1;
+	}
+
+	verts = nvg__allocTempVerts(ctx, cverts);
+	if (verts == NULL) return 0;
+
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		NVGpoint* pts = &cache->points[path->first];
+		int loop = (path->closed == 0) ? 0 : 1;
+
+		path->fill = 0;
+		path->nfill = 0;
+
+		dst = verts;
+
+		for(j = 0; j < path->count; j++, dst++) {
+			  NVGpoint* p = pts+j;
+		  dst->x = p->x;
+		  dst->y = p->y;
+		}
+
+		if(loop) {
+			  NVGpoint* p = pts;
+
+		  dst->x = p->x;
+		  dst->y = p->y;
+		  dst++;
+		}
+
+		path->stroke = verts;
+		path->nstroke = (int)(dst - verts);
+		verts = dst;
+	}
+
+	return 1;
+}
+
+static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLimit)
+{
+	NVGpathCache* cache = ctx->cache;
+	NVGvertex* verts;
+	NVGvertex* dst;
+	int cverts, convex, i, j;
+	float aa = ctx->fringeWidth;
+	int fringe = w > 0.0f;
+
+	// Calculate max vertex usage.
+	cverts = 0;
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		cverts += path->count + path->nbevel + 1;
+		if (fringe)
+			cverts += (path->count + path->nbevel*5 + 1) * 2; // plus one for loop
+	}
+
+	verts = nvg__allocTempVerts(ctx, cverts);
+	if (verts == NULL) return 0;
+
+	convex = cache->npaths == 1 && cache->paths[0].convex;
+
+	for (i = 0; i < cache->npaths; i++) {
+		NVGpath* path = &cache->paths[i];
+		NVGpoint* pts = &cache->points[path->first];
+		NVGpoint* p0;
+		NVGpoint* p1;
+		float rw, lw, woff;
+		float ru, lu;
+
+		// Calculate shape vertices.
+		woff = 0.5f*aa;
+		dst = verts;
+		path->fill = dst;
+
+		if (fringe) {
+			// Looping
+			p0 = &pts[path->count-1];
+			p1 = &pts[0];
+			for (j = 0; j < path->count; ++j) {
+				if (p1->flags & NVG_PT_BEVEL) {
+					float dlx0 = p0->dy;
+					float dly0 = -p0->dx;
+					float dlx1 = p1->dy;
+					float dly1 = -p1->dx;
+					if (p1->flags & NVG_PT_LEFT) {
+						float lx = p1->x + p1->dmx * woff;
+						float ly = p1->y + p1->dmy * woff;
+						nvg__vset(dst, lx, ly, 0.5f,1); dst++;
+					} else {
+						float lx0 = p1->x + dlx0 * woff;
+						float ly0 = p1->y + dly0 * woff;
+						float lx1 = p1->x + dlx1 * woff;
+						float ly1 = p1->y + dly1 * woff;
+						nvg__vset(dst, lx0, ly0, 0.5f,1); dst++;
+						nvg__vset(dst, lx1, ly1, 0.5f,1); dst++;
+					}
+				} else {
+					nvg__vset(dst, p1->x + (p1->dmx * woff), p1->y + (p1->dmy * woff), 0.5f,1); dst++;
+				}
+				p0 = p1++;
+			}
+		} else {
+			for (j = 0; j < path->count; ++j) {
+				nvg__vset(dst, pts[j].x, pts[j].y, 0.5f,1);
+				dst++;
+			}
+		}
+
+		path->nfill = (int)(dst - verts);
+		verts = dst;
+
+		path->stroke = NULL;
+		path->nstroke = 0;
+	}
+
+	return 1;
+}
+
+#endif/*WITH_NANOVG_AGGE*/
 
 
 // Draw
@@ -2241,28 +2346,6 @@ void nvgCircle(NVGcontext* ctx, float cx, float cy, float r)
 	nvgEllipse(ctx, cx,cy, r,r);
 }
 
-void nvgDebugDumpPathCache(NVGcontext* ctx)
-{
-	const NVGpath* path;
-	int i, j;
-
-	printf("Dumping %d cached paths\n", ctx->cache->npaths);
-	for (i = 0; i < ctx->cache->npaths; i++) {
-		path = &ctx->cache->paths[i];
-		printf(" - Path %d\n", i);
-		if (path->nfill) {
-			printf("   - fill: %d\n", path->nfill);
-			for (j = 0; j < path->nfill; j++)
-				printf("%f\t%f\n", path->fill[j].x, path->fill[j].y);
-		}
-		if (path->nstroke) {
-			printf("   - stroke: %d\n", path->nstroke);
-			for (j = 0; j < path->nstroke; j++)
-				printf("%f\t%f\n", path->stroke[j].x, path->stroke[j].y);
-		}
-	}
-}
-
 void nvgFill(NVGcontext* ctx)
 {
 	NVGstate* state = nvg__getState(ctx);
@@ -2332,35 +2415,6 @@ void nvgStroke(NVGcontext* ctx)
 	}
 }
 
-// Add fonts
-int nvgCreateFont(NVGcontext* ctx, const char* name, const char* path)
-{
-	return fonsAddFont(ctx->fs, name, path);
-}
-
-int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData)
-{
-	return fonsAddFontMem(ctx->fs, name, data, ndata, freeData);
-}
-
-int nvgFindFont(NVGcontext* ctx, const char* name)
-{
-	if (name == NULL) return -1;
-	return fonsGetFontByName(ctx->fs, name);
-}
-
-
-int nvgAddFallbackFontId(NVGcontext* ctx, int baseFont, int fallbackFont)
-{
-	if(baseFont == -1 || fallbackFont == -1) return 0;
-	return fonsAddFallbackFont(ctx->fs, baseFont, fallbackFont);
-}
-
-int nvgAddFallbackFont(NVGcontext* ctx, const char* baseFont, const char* fallbackFont)
-{
-	return nvgAddFallbackFontId(ctx, nvgFindFont(ctx, baseFont), nvgFindFont(ctx, fallbackFont));
-}
-
 // State setting
 void nvgFontSize(NVGcontext* ctx, float size)
 {
@@ -2396,6 +2450,66 @@ void nvgFontFaceId(NVGcontext* ctx, int font)
 {
 	NVGstate* state = nvg__getState(ctx);
 	state->fontId = font;
+}
+
+
+#ifdef WITH_NANOVG_AGGE
+float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char* end)
+{
+  return 0;
+}
+
+void nvgDebugDumpPathCache(NVGcontext* ctx) 
+{
+}
+
+int nvgCreateFont(NVGcontext* ctx, const char* name, const char* path) 
+{
+  return -1;
+}
+
+int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData)
+{
+  return -1;
+}
+
+int nvgFindFont(NVGcontext* ctx, const char* name)
+{
+  return -1;
+}
+
+float nvgTextBounds(NVGcontext* ctx, float x, float y, const char* string, const char* end, float* bounds)
+{
+  return 0;
+}
+#else
+// Add fonts
+int nvgCreateFont(NVGcontext* ctx, const char* name, const char* path)
+{
+	return fonsAddFont(ctx->fs, name, path);
+}
+
+int nvgCreateFontMem(NVGcontext* ctx, const char* name, unsigned char* data, int ndata, int freeData)
+{
+	return fonsAddFontMem(ctx->fs, name, data, ndata, freeData);
+}
+
+int nvgFindFont(NVGcontext* ctx, const char* name)
+{
+	if (name == NULL) return -1;
+	return fonsGetFontByName(ctx->fs, name);
+}
+
+
+int nvgAddFallbackFontId(NVGcontext* ctx, int baseFont, int fallbackFont)
+{
+	if(baseFont == -1 || fallbackFont == -1) return 0;
+	return fonsAddFallbackFont(ctx->fs, baseFont, fallbackFont);
+}
+
+int nvgAddFallbackFont(NVGcontext* ctx, const char* baseFont, const char* fallbackFont)
+{
+	return nvgAddFallbackFontId(ctx, nvgFindFont(ctx, baseFont), nvgFindFont(ctx, fallbackFont));
 }
 
 void nvgFontFace(NVGcontext* ctx, const char* font)
@@ -2468,10 +2582,6 @@ static void nvg__renderText(NVGcontext* ctx, NVGvertex* verts, int nverts)
 	// Apply global alpha
 	paint.innerColor.a *= state->alpha;
 	paint.outerColor.a *= state->alpha;
-
-#ifdef WITH_NANOVG_AGGE
-  memcpy(paint.xform, state->xform, sizeof(state->xform));
-#endif/*WITH_NANOVG_AGGE*/
 
 	ctx->params.renderTriangles(ctx->params.userPtr, &paint, state->compositeOperation, &state->scissor, verts, nverts);
 
@@ -2953,4 +3063,27 @@ void nvgTextMetrics(NVGcontext* ctx, float* ascender, float* descender, float* l
 	if (lineh != NULL)
 		*lineh *= invscale;
 }
+void nvgDebugDumpPathCache(NVGcontext* ctx)
+{
+	const NVGpath* path;
+	int i, j;
+
+	printf("Dumping %d cached paths\n", ctx->cache->npaths);
+	for (i = 0; i < ctx->cache->npaths; i++) {
+		path = &ctx->cache->paths[i];
+		printf(" - Path %d\n", i);
+		if (path->nfill) {
+			printf("   - fill: %d\n", path->nfill);
+			for (j = 0; j < path->nfill; j++)
+				printf("%f\t%f\n", path->fill[j].x, path->fill[j].y);
+		}
+		if (path->nstroke) {
+			printf("   - stroke: %d\n", path->nstroke);
+			for (j = 0; j < path->nstroke; j++)
+				printf("%f\t%f\n", path->stroke[j].x, path->stroke[j].y);
+		}
+	}
+}
+
+#endif/*WITH_NANOVG_AGGE*/
 // vim: ft=c nu noet ts=4

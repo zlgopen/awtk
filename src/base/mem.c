@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mem.c
  * Author: AWTK Develop Team
  * Brief:  simple memory manager
@@ -317,6 +317,29 @@ mem_stat_t tk_mem_stat() {
   st.used_block_nr = s_mem_info.used_block_nr;
 
   return st;
+}
+
+/*export std malloc*/
+void* calloc(size_t count, size_t size) {
+  size_t s = count * size;
+  void* p = tk_alloc(s);
+  if (p != NULL) {
+    memset(p, 0x00, s);
+  }
+
+  return p;
+}
+
+void free(void* ptr) {
+  tk_free(free);
+}
+
+void* malloc(size_t size) {
+  return tk_alloc(size);
+}
+
+void* realloc(void* ptr, size_t size) {
+  return tk_realloc(ptr, size);
 }
 #endif /*HAS_STD_MALLOC*/
 

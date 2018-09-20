@@ -6,13 +6,13 @@
   t.b = s.b;
 
 #define PIXEL_CONVERT_FROM_565(t, s) \
-  t.r = s.r << 3;                     \
-  t.g = s.g << 2;                     \
+  t.r = s.r << 3;                    \
+  t.g = s.g << 2;                    \
   t.b = s.b << 3;
 
 #define PIXEL_CONVERT_TO_565(t, s) \
-  t.r = s.r >> 3;                     \
-  t.g = s.g >> 2;                     \
+  t.r = s.r >> 3;                  \
+  t.g = s.g >> 2;                  \
   t.b = s.b >> 3;
 
 #define PIXEL_CONVERT_A(t, s) \
