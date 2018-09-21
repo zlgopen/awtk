@@ -222,7 +222,6 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
 
 static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
                                        bool_t force) {
-  event_t evt;
   uint16_t step = 0;
   uint16_t offset = 0;
   slider_t* slider = SLIDER(widget);
@@ -237,8 +236,8 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
   }
 
   if (slider->value != value || force) {
-    evt.type = etype;
-    evt.target = widget;
+    event_t evt = event_init(etype, widget);
+
     slider->value = value;
     widget_invalidate(widget, NULL);
     widget_dispatch(widget, &evt);

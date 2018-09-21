@@ -109,6 +109,7 @@ TEST(Path, abs) {
 TEST(Path, approot) {
   char result[MAX_PATH + 1];
   char app_root[MAX_PATH + 1];
+  memset(app_root, 0x00, sizeof(app_root));
   ASSERT_EQ(path_app_root(app_root), RET_OK);
   ASSERT_EQ(path_build(result, sizeof(result), app_root, "bin", NULL), RET_OK);
   ASSERT_EQ(path_exist(result), TRUE);

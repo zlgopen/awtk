@@ -105,6 +105,8 @@ ret_t path_exe(char path[MAX_PATH + 1]) {
 ret_t path_app_root(char path[MAX_PATH + 1]) {
   char* p = NULL;
   char exe_path[MAX_PATH + 1];
+  memset(exe_path, 0x00, sizeof(exe_path));
+
   if (fs_get_exe(os_fs(), exe_path) == RET_OK) {
     path_normalize(exe_path, path, MAX_PATH + 1);
     p = strrchr(path, PATH_SEP);
