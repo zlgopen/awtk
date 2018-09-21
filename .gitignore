@@ -26,7 +26,7 @@ bin/runLua*
 bin/runTest*
 bin/strgen*
 bin/image*
-bin/demo*
+bin/*demo*
 bin/*test
 .vscode
 .vs

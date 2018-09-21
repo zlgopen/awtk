@@ -38,7 +38,7 @@ static ret_t str_extend(str_t* str, uint32_t capacity) {
     s[capacity] = '\0';
     str->str = s;
     str->capacity = capacity;
-    memset(s+str->size, 0x00, capacity+1-str->size);
+    memset(s + str->size, 0x00, capacity + 1 - str->size);
   }
 
   return RET_OK;

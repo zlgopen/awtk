@@ -58,6 +58,10 @@ inline int clipping(T x, T y, const rect<T>& window) {
 
 template <typename T>
 inline clipper<T>::clipper() : _enabled(false) {
+  _f1 = 0;
+  _x1 = 0;
+  _y1 = 0;
+  memset(&_window, 0x00, sizeof(_window));
 }
 
 template <typename T>

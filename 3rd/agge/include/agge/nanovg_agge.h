@@ -1,8 +1,15 @@
 #ifndef NANOVG_AGGE_H
 #define NANOVG_AGGE_H
 
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include "nanovg.h"
+
+#ifndef M_PI
+#define M_PI 3.1415926f
+#endif /*M_PI*/
 
 #ifdef __cplusplus
 extern "C" {

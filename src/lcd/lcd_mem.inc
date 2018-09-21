@@ -389,7 +389,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
 
   /*FIXME: Handle ROTATE*/
 
-  if(mem->vgcanvas) {
+  if (mem->vgcanvas) {
     vgcanvas_destroy(mem->vgcanvas);
     mem->vgcanvas = NULL;
   }
@@ -409,7 +409,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  if(mem->vgcanvas) {
+  if (mem->vgcanvas) {
     vgcanvas_destroy(mem->vgcanvas);
     mem->vgcanvas = NULL;
   }
