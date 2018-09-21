@@ -306,6 +306,8 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
 
   if (mem->vgcanvas == NULL) {
     mem->vgcanvas = vgcanvas_create(fb.w, fb.h, (bitmap_format_t)(fb.format), (uint32_t*)(fb.data));
+  } else {
+    vgcanvas_reinit(mem->vgcanvas, fb.w, fb.h, (bitmap_format_t)(fb.format), (uint32_t*)(fb.data));
   }
 
   return mem->vgcanvas;
@@ -388,11 +390,6 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   }
 
   /*FIXME: Handle ROTATE*/
-
-  if (mem->vgcanvas) {
-    vgcanvas_destroy(mem->vgcanvas);
-    mem->vgcanvas = NULL;
-  }
 
   if (lcd_is_swappable(lcd)) {
     return lcd_swap(lcd);

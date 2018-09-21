@@ -509,6 +509,19 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_NOT_IMPL;
 }
 
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bitmap_format_t format,
+                                    void* data) {
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = canvas->vg;
+
+  vgcanvas->w = w;
+  vgcanvas->h = h;
+  vgcanvas->buff = (uint32_t*)data;
+  nvgReinitAgge(vg, w, h, format, data);
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
@@ -567,6 +580,15 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   return i;
 }
 #else
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, bitmap_format_t format,
+                                    void* data) {
+  (void)vg;
+  (void)w;
+  (void)h;
+  (void)format;
+  (void)data;
+  return RET_OK;
+}
 
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   int ww = 0;
@@ -692,7 +714,8 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_begin_frame,
+static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
+                                     vgcanvas_nanovg_begin_frame,
                                      vgcanvas_nanovg_reset,
                                      vgcanvas_nanovg_flush,
                                      vgcanvas_nanovg_clear_rect,

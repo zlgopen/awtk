@@ -33,6 +33,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "fontstash.h"
 #include "stb_image.h"
+#else
+struct FONScontext {
+  uint8_t unused;
+};
 #endif/*WITH_NANOVG_AGGE*/
 
 #ifdef _MSC_VER
@@ -3086,4 +3090,9 @@ void nvgDebugDumpPathCache(NVGcontext* ctx)
 }
 
 #endif/*WITH_NANOVG_AGGE*/
+
+NVGparams* nvgGetParams(NVGcontext* ctx) {
+  return &(ctx->params);
+}
+
 // vim: ft=c nu noet ts=4

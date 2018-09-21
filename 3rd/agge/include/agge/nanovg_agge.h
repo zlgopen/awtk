@@ -23,6 +23,8 @@ typedef enum _agge_bitmap_format_t {
 } agge_bitmap_format_t;
 
 NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, agge_bitmap_format_t format, uint8_t* data);
+void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, agge_bitmap_format_t format,
+                   uint8_t* data);
 void nvgDeleteAGGE(NVGcontext* ctx);
 
 #ifdef __cplusplus

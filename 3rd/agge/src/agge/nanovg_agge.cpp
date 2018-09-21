@@ -364,17 +364,59 @@ static void aggenvg__renderDelete(void* uptr) {
   delete agge;
 }
 
+static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int32_t h,
+                        agge_bitmap_format_t format, uint8_t* data) {
+  agge->w = w;
+  agge->h = h;
+  agge->data = data;
+  agge->format = format;
+
+  switch (agge->format) {
+    case AGGE_RGBA8888: {
+      params->renderTriangles = renderTriangles<agge::pixel32_rgba>;
+      params->renderStroke = renderStroke<agge::pixel32_rgba>;
+      params->renderFill = renderFill<agge::pixel32_rgba>;
+      break;
+    }
+    case AGGE_BGRA8888: {
+      params->renderTriangles = renderTriangles<agge::pixel32_bgra>;
+      params->renderStroke = renderStroke<agge::pixel32_bgra>;
+      params->renderFill = renderFill<agge::pixel32_bgra>;
+      break;
+    }
+    case AGGE_RGB888: {
+      params->renderTriangles = renderTriangles<agge::pixel24_rgb>;
+      params->renderStroke = renderStroke<agge::pixel24_rgb>;
+      params->renderFill = renderFill<agge::pixel24_rgb>;
+      break;
+    }
+    case AGGE_RGB565: {
+      params->renderTriangles = renderTriangles<agge::pixel16_bgr565>;
+      params->renderStroke = renderStroke<agge::pixel16_bgr565>;
+      params->renderFill = renderFill<agge::pixel16_bgr565>;
+      break;
+    }
+    default: {
+      assert(!"not supported format");
+      break;
+    }
+  }
+}
+
+void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, agge_bitmap_format_t format,
+                   uint8_t* data) {
+  NVGparams* params = nvgGetParams(ctx);
+  AGGENVGcontext* agge = (AGGENVGcontext*)(params->userPtr);
+
+  nvgInitAGGE(agge, params, w, h, format, data);
+}
+
 NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, agge_bitmap_format_t format, uint8_t* data) {
   NVGparams params;
   NVGcontext* ctx = NULL;
   AGGENVGcontext* agge = new AGGENVGcontext();
 
   if (agge == NULL) goto error;
-
-  agge->w = w;
-  agge->h = h;
-  agge->data = data;
-  agge->format = format;
 
   memset(&params, 0, sizeof(params));
   params.renderCreate = aggenvg__renderCreate;
@@ -389,36 +431,7 @@ NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, agge_bitmap_format_t format, uin
   params.userPtr = agge;
   params.edgeAntiAlias = 1;
 
-  switch (agge->format) {
-    case AGGE_RGBA8888: {
-      params.renderTriangles = renderTriangles<agge::pixel32_rgba>;
-      params.renderStroke = renderStroke<agge::pixel32_rgba>;
-      params.renderFill = renderFill<agge::pixel32_rgba>;
-      break;
-    }
-    case AGGE_BGRA8888: {
-      params.renderTriangles = renderTriangles<agge::pixel32_bgra>;
-      params.renderStroke = renderStroke<agge::pixel32_bgra>;
-      params.renderFill = renderFill<agge::pixel32_bgra>;
-      break;
-    }
-    case AGGE_RGB888: {
-      params.renderTriangles = renderTriangles<agge::pixel24_rgb>;
-      params.renderStroke = renderStroke<agge::pixel24_rgb>;
-      params.renderFill = renderFill<agge::pixel24_rgb>;
-      break;
-    }
-    case AGGE_RGB565: {
-      params.renderTriangles = renderTriangles<agge::pixel16_bgr565>;
-      params.renderStroke = renderStroke<agge::pixel16_bgr565>;
-      params.renderFill = renderFill<agge::pixel16_bgr565>;
-      break;
-    }
-    default: {
-      assert(!"not supported format");
-      break;
-    }
-  }
+  nvgInitAGGE(agge, &params, w, h, format, data);
 
   ctx = nvgCreateInternal(&params);
   if (ctx == NULL) goto error;
