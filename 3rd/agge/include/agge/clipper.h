@@ -2,6 +2,7 @@
 
 #include "math.h"
 #include "types.h"
+#include <cstring>
 
 namespace agge {
 enum clipping_flags {
@@ -61,7 +62,7 @@ inline clipper<T>::clipper() : _enabled(false) {
   _f1 = 0;
   _x1 = 0;
   _y1 = 0;
-  memset(&_window, 0x00, sizeof(_window));
+  ::memset(&_window, 0x00, sizeof(_window));
 }
 
 template <typename T>

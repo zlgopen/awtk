@@ -20,7 +20,9 @@
 #define FILE rom_file_t
 #endif /*___BUILD_MODEL___*/
 
+#if !defined(WINDOWS) && !defined(LINUX) && !defined(APPLE) && !defined(HAS_STDIO)
 #define printf
 #define snprintf tk_snprintf
+#endif
 
 #endif /*TK_FILE_H*/
