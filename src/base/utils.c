@@ -334,15 +334,12 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
   return dst;
 }
 
-#if defined(LINUX) || defined(APPLE) || defined(HAS_STDIO)
-
+#if defined(LINUX) || defined(APPLE) || defined(HAS_STDIO) || defined(WINDOWS)
 #include <stdio.h>
-#include <stdarg.h>
-
-#if defined(WINDOWS)
-#include <windows.h>
-#define vsnprintf _vsnprintf
-#endif /*defined(WINDOWS)*/
+#else
+extern int vsscanf(const char* s, const char* format, va_list arg);
+extern int vsnprintf(char*  str, size_t size, const char*  format, va_list ap);
+#endif/*LINUX || APPLE || HAS_STDIO || WINDOWS*/
 
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
@@ -353,22 +350,6 @@ int tk_snprintf(char* str, size_t size, const char* format, ...) {
 
   return ret;
 }
-#else
-#define STB_SPRINTF_STATIC 1
-#define STB_SPRINTF_IMPLEMENTATION 1
-#include "stb/stb_sprintf.h"
-int tk_snprintf(char* str, size_t size, const char* format, ...) {
-  int ret = 0;
-  va_list va;
-  va_start(va, format);
-  ret = stbsp_vsnprintf(str, size, format, va);
-  va_end(va);
-
-  return ret;
-}
-#endif /*defined(LINUX) || defined(WINDOWS) || defined(APPLE) || defined(HAS_STDIO)*/
-
-extern int vsscanf(const char* s, const char* format, va_list arg);
 
 int tk_sscanf(const char* str, const char* format, ...) {
   int ret = 0;

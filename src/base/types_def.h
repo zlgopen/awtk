@@ -26,6 +26,7 @@
 #include <ctype.h>
 #include <wchar.h>
 #include <assert.h>
+#include <stdarg.h>
 #include <stdint.h>
 
 #if defined(HAS_AWTK_CONFIG)
@@ -148,6 +149,7 @@ typedef enum _lcd_orientation_t {
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
+#define snprintf _snprintf
 #elif defined(HAS_STDIO)
 #define log_debug(format, args...) printf(format, ##args)
 #define log_info(format, args...) printf(format, ##args)
