@@ -106,6 +106,8 @@ bin\demoui
 
 * [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
 
+* [stm32f767igtx](https://github.com/zlgopen/awtk-stm32f767igtx-raw)
+
 * [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
 * [linux-framebuffer(嵌入式Linux请用本项目)](https://github.com/zlgopen/awtk-linux-fb)
@@ -160,6 +162,9 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/09/21-22
+  * 移植awtk到stm32f767开发板。
 
 * 2018/09/20
   * 移植nanovg-agge到stm32和aworks。
