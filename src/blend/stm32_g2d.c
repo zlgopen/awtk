@@ -23,9 +23,15 @@
 
 #ifdef WITH_STM32_G2D
 
+#ifdef ARM_MATH_CM7
+#include "stm32f7xx_hal.h"
+#include "stm32f7xx_hal_rcc.h"
+#include "stm32f7xx_hal_dma2d.h"
+#else
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_dma2d.h"
+#endif/*ARM_MATH_CM7*/
 
 #define DMA2D_WORKING ((DMA2D->CR & DMA2D_CR_START))
 #define DMA2D_WAIT                  \
