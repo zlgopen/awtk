@@ -47,7 +47,8 @@ static void runTest(int32_t w, int32_t h, int32_t bpp) {
 }
 
 int main() {
-  for (int i = 0; i < 100; i++) {
+  int i = 0;
+  for (i = 0; i < 100; i++) {
     runTest(400, 400, 2);
     runTest(400, 400, 4);
   }
