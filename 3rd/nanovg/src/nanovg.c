@@ -35,7 +35,7 @@
 #include "stb_image.h"
 #else
 struct FONScontext {
-  uint8_t unused;
+  int unused;
 };
 #endif/*WITH_NANOVG_AGGE*/
 
