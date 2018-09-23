@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_RESOURCE_MANAGER_H
-#define TK_RESOURCE_MANAGER_H
+#ifndef TK_ASSETS_MANAGER_H
+#define TK_ASSETS_MANAGER_H
 
 #include "base/array.h"
 
@@ -136,7 +136,17 @@ typedef struct _asset_info_t {
    * 类型。
    */
   uint16_t type;
+  /**
+   * @property {uint8_t} subtype
+   * @annotation ["readable", "scriptable"]
+   * 子类型。
+   */
   uint8_t subtype;
+  /**
+   * @property {uint8_t} is_in_rom
+   * @annotation ["readable", "scriptable"]
+   * 资源是否在ROM中。
+   */
   uint8_t is_in_rom;
   /**
    * @property {uint32_t} size
@@ -144,7 +154,12 @@ typedef struct _asset_info_t {
    * 大小。
    */
   uint32_t size;
-  uint32_t refcount; /*is_in_rom == FALSE,才有效*/
+  /**
+   * @property {uint32_t} refcount
+   * @annotation ["readable","scriptable"]
+   * 引用计数。is_in_rom == FALSE时才有效。
+   */
+  uint32_t refcount;
   /**
    * @property {char*} name
    * @annotation ["readable","scriptable"]
@@ -288,4 +303,4 @@ ret_t assets_manager_destroy(assets_manager_t* rm);
 
 END_C_DECLS
 
-#endif /*TK_RESOURCE_MANAGER_H*/
+#endif /*TK_ASSETS_MANAGER_H*/

@@ -36,6 +36,7 @@ long tk_strtol(const char* str, const char** end, int base);
 char* tk_strncpy(char* dst, const char* src, size_t len);
 char* tk_strdup(const char* str);
 char* tk_strndup(const char* str, uint32_t len);
+ret_t tk_str_append(char* str, uint32_t max_len, const char* s);
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
 uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size);

@@ -155,3 +155,25 @@ TEST(Utils, xml_file_expand_read) {
 
   str_reset(&s);
 }
+
+TEST(Utils, str_append) {
+  char str[6];
+  memset(str, 0x00, sizeof(str));
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "1"), RET_OK);
+  ASSERT_EQ(string(str), string("1"));
+
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "2"), RET_OK);
+  ASSERT_EQ(string(str), string("12"));
+
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "3"), RET_OK);
+  ASSERT_EQ(string(str), string("123"));
+
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "4"), RET_OK);
+  ASSERT_EQ(string(str), string("1234"));
+
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "5"), RET_OK);
+  ASSERT_EQ(string(str), string("12345"));
+
+  ASSERT_EQ(tk_str_append(str, sizeof(str), "6"), RET_FAIL);
+  ASSERT_EQ(string(str), string("12345"));
+}

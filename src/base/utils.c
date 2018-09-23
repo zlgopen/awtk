@@ -338,8 +338,8 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
 #include <stdio.h>
 #else
 extern int vsscanf(const char* s, const char* format, va_list arg);
-extern int vsnprintf(char*  str, size_t size, const char*  format, va_list ap);
-#endif/*LINUX || APPLE || HAS_STDIO || WINDOWS*/
+extern int vsnprintf(char* str, size_t size, const char* format, va_list ap);
+#endif /*LINUX || APPLE || HAS_STDIO || WINDOWS*/
 
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
@@ -446,6 +446,21 @@ ret_t xml_file_expand_read(const char* filename, str_t* s) {
     str_set_with_len(s, (const char*)buff, size);
   }
   TKMEM_FREE(buff);
+
+  return RET_OK;
+}
+
+ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
+  uint32_t len = 0;
+  uint32_t org_len = 0;
+  return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
+
+  len = strlen(s);
+  org_len = strlen(str);
+
+  return_value_if_fail(max_len > (len + org_len), RET_FAIL);
+  memcpy(str + org_len, s, len);
+  str[org_len + len] = '\0';
 
   return RET_OK;
 }

@@ -31,7 +31,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rcc.h"
 #include "stm32f4xx_hal_dma2d.h"
-#endif/*ARM_MATH_CM7*/
+#endif /*ARM_MATH_CM7*/
 
 #define DMA2D_WORKING ((DMA2D->CR & DMA2D_CR_START))
 #define DMA2D_WAIT                  \
