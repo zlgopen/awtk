@@ -101,6 +101,12 @@
  */
 
 /**
+ * 如果出现wcsxxx之类的函数没有定义时，请定义该宏
+ *
+ * #define WITH_WCSXXX 1
+ */
+
+/**
  * 如果启用STM32 G2D硬件加速，请定义本宏
  *
  * #define WITH_STM32_G2D 1

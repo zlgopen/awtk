@@ -22,7 +22,6 @@
 * 基本layout功能
 * 极速模式
 * Qt界面文件转换器
-* 微软Rc界面文件转换器 
 * stm32 移植
 * draw 9patch image
 * draw 3patch\_h image
@@ -48,33 +47,50 @@
 * listbox
 * spinbox
 * tab
+* row
+* app\_bar
+* col
 * jerryscript binging 
 * lua binging 
 * 支持tween动画
+* guage
+* 时钟控件
+* color picker
+* 移植到嵌入式linux
+* 移植到STM32F103
+* 移植到STM32F429
+* 移植到STM32F767
+* nanovg基于agge用纯软件实现的矢量图库。
 
 ## 短期计划(顺序不定)
-* API doc到PDF转换工具
+* text select
+* switch
+* text editor
+* port code editor
 * menu
 * chart
-* guage
+* property sheet
+* file browser
+* calendar
 * drag & drop
 * tableview
 * python binging 
 * rtthread移植
 * sylixos移植
 * djyos移植
-* 嵌入式linux移植
 * remote client
 * 音频接口。
 * 键盘导航
+* API doc到PDF转换工具
 
 ## 长期计划
+* ios移植
+* android移植
+* 支持vue.js
 * 用AWTK实现界面编辑器
 * 支持粒子产生器
 * 支持骨骼动画
 * flash播放器支持
-* ios移植
-* android移植
 * 在浏览器中运行
 * 微信小程序类似的开发方法
 
