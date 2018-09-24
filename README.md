@@ -157,6 +157,8 @@ bin\demoui
 * [FrameBuffer的几种使用方式](docs/framebuffer.md)
 * [LCD接口的三种实现方式](docs/lcd.md)
 
+### 6.其它
+* [修改AWTK的代码风格](docs/code_style.md)
 
 ## 任务完成情况
 [TODO.md](TODO.md)
