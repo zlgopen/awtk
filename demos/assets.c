@@ -76,6 +76,7 @@
 #include "assets/inc/ui/tab_list.data"
 #include "assets/inc/ui/tab_top.data"
 #include "assets/inc/ui/tab_top_compact.data"
+#include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/top.data"
 #include "assets/inc/ui/vtranslate.data"
@@ -239,17 +240,17 @@
 #include "assets/inc/images/unchecked.data"
 #include "assets/inc/images/unmuted.data"
 #include "assets/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -413,6 +414,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_tab_list);
   assets_manager_add(rm, ui_tab_top);
   assets_manager_add(rm, ui_tab_top_compact);
+  assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_top);
   assets_manager_add(rm, ui_vtranslate);

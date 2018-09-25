@@ -25,6 +25,7 @@
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
 #include "keyboard/candidates.h"
+#include "time_clock/time_clock.h"
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
@@ -32,8 +33,8 @@
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
 #include "color_picker/color_picker.h"
+#include "text_selector/text_selector.h"
 #include "color_picker/color_component.h"
-#include "time_clock/time_clock.h"
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_RICH_TEXT, rich_text_create);
@@ -53,6 +54,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_GUAGE, guage_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);
 
   return RET_OK;
 }

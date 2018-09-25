@@ -374,3 +374,8 @@
   </style>
 </combo_box_item>
 
+<text_selector>
+  <style name="default" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
+    <normal     bg_color="#f0f0f0" />
+  </style>
+</text_selector>

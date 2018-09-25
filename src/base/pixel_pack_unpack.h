@@ -41,3 +41,4 @@ static inline uint32_t rgb565_to_8888(uint16_t pixel) {
 
   return rgb_to_rgba8888(r, g, b);
 }
+

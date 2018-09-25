@@ -1,0 +1,6 @@
+<window name="text_selector" anim_hint="htranslate">
+  <text_selector x="10" y="30" w="80" h="150" options="2015;2016;2017;2018;2019;2020" text="2018"/>
+  <text_selector x="10" y="bottom:30" w="80" h="90" options="2015;2016;2017;2018;2019;2020" text="2018" visible_nr="3"/>
+
+  <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
+</window>
