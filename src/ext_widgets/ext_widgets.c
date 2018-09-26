@@ -21,6 +21,7 @@
 
 #include "ext_widgets.h"
 #include "guage/guage.h"
+#include "switch/switch.h"
 #include "keyboard/keyboard.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
@@ -55,6 +56,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_GUAGE, guage_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_SWITCH, switch_create);
 
   return RET_OK;
 }
