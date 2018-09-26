@@ -82,9 +82,12 @@ static ret_t text_selector_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
 
   canvas_get_clip_rect(c, &r_save);
-  canvas_set_clip_rect(c, &r);
-  text_selector_paint_self(widget, c);
-  canvas_set_clip_rect(c, &r_save);
+  r = rect_intersect(&r_save, &r);
+  if(r.w > 0 && r.h > 0) {
+    canvas_set_clip_rect(c, &r);
+    text_selector_paint_self(widget, c);
+    canvas_set_clip_rect(c, &r_save);
+  }
 
   return RET_OK;
 }
