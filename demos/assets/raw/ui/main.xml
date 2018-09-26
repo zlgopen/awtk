@@ -14,6 +14,7 @@
     <button name="open:time_clock" text="Time Clock"/>
     <button name="open:guage" text="Guage"/>
     <button name="open:button" text="Buttons"/>
+    <button name="open:text_selector" text="Selector"/>
     <button name="open:images" text="Image"/>
     <button name="open:memtest" text="MemTest"/>
     <button name="show_fps" text="Show FPS"/>

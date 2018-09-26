@@ -39,6 +39,7 @@ typedef struct _text_selector_option_t {
  * @parent widget_t
  * @annotation ["scriptable"]
  * 文本选择器控件，通常用于选择年月日等。
+ * XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
  */
 typedef struct _text_selector_t {
   widget_t widget;
@@ -61,6 +62,7 @@ typedef struct _text_selector_t {
    * @property {char*} options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
+   * 对于数值选项，也可以指定一个范围，用『-』分隔起始值和结束值，如："1-7"表示1到7。
    */
   char* options;
 
@@ -140,6 +142,19 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_selector_set_options(widget_t* widget, const char* options);
+
+/**
+ * @method text_selector_set_range_options
+ * 设置一系列的整数选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget text_selector对象。
+ * @param {int32_t} start 起始值。
+ * @param {uint32_t} nr 个数。
+ * @param {int32_t} step 步长。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_range_options(widget_t* widget, int32_t start, uint32_t nr, int32_t step);
 
 /**
  * @method text_selector_get_option

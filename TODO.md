@@ -61,9 +61,9 @@
 * 移植到STM32F429
 * 移植到STM32F767
 * nanovg基于agge用纯软件实现的矢量图库。
+* text select
 
 ## 短期计划(顺序不定)
-* text select
 * switch
 * text editor
 * port code editor

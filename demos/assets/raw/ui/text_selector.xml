@@ -1,6 +1,13 @@
 <window name="text_selector" anim_hint="htranslate">
-  <text_selector x="10" y="30" w="80" h="150" options="2015;2016;2017;2018;2019;2020" text="2018"/>
-  <text_selector x="10" y="bottom:30" w="80" h="90" options="2015;2016;2017;2018;2019;2020" text="2018" visible_nr="3"/>
-
+  <row  x="10" y="30" w="100%" h="150" layout="row:1 col:3">
+    <text_selector options="2000-2050" text="2018"/>
+    <text_selector options="1-12" text="1"/>
+    <text_selector options="1-31" text="1"/>
+  </row>
   <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
+  <row  x="10" y="bottom:30" w="100%" h="90" layout="row:1 col:3">
+    <text_selector options="2000-2050" visible_nr="3" text="2018"/>
+    <text_selector options="1-12" visible_nr="3" text="1"/>
+    <text_selector options="red;green;blue;gold;orange" visible_nr="3" text="1"/>
+  </row>
 </window>

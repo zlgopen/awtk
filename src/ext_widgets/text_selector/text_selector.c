@@ -33,12 +33,9 @@
 #define ANIMATING_TIME 500
 
 const char* s_text_selector_properties[] = {
-                                        WIDGET_PROP_TEXT,
-                                        WIDGET_PROP_VALUE,
-                                        TEXT_SELECTOR_PROP_VISIBLE_NR,
-                                        WIDGET_PROP_SELECTED_INDEX,
-                                        NULL};
-
+    WIDGET_PROP_TEXT,           WIDGET_PROP_VALUE,
+    WIDGET_PROP_OPTIONS,        TEXT_SELECTOR_PROP_VISIBLE_NR,
+    WIDGET_PROP_SELECTED_INDEX, NULL};
 
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   text_selector_option_t* iter = NULL;
@@ -49,16 +46,16 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   style_t* style = &(widget->style);
   color_t trans = color_init(0, 0, 0, 0);
   int32_t yoffset = text_selector->yoffset;
-  int32_t item_height = widget->h / text_selector->visible_nr; 
+  int32_t item_height = widget->h / text_selector->visible_nr;
   color_t fc = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   rect_t r = rect_init(0, 0, widget->w, item_height);
 
   widget_prepare_text_style(widget, c);
   iter = text_selector->option_items;
 
-  if(fc.rgba.a) {
+  if (fc.rgba.a) {
     canvas_set_stroke_color(c, fc);
-    for(i = 1; i < text_selector->visible_nr; i++) {
+    for (i = 1; i < text_selector->visible_nr; i++) {
       y = i * item_height;
       canvas_draw_hline(c, 0, y, widget->w);
     }
@@ -67,11 +64,11 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   while (iter != NULL) {
-    r.y = y - yoffset; 
-    if((r.y + item_height) >= 0 && r.y < widget->h) {
+    r.y = y - yoffset;
+    if ((r.y + item_height) >= 0 && r.y < widget->h) {
       canvas_draw_text_in_rect(c, iter->text, wcslen(iter->text), &r);
     }
-    
+
     i++;
     iter = iter->next;
     y += item_height;
@@ -134,7 +131,30 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
 }
 
 ret_t text_selector_set_options(widget_t* widget, const char* options) {
-  return text_selector_parse_options(widget, options);
+  return_value_if_fail(widget != NULL && options != NULL, RET_BAD_PARAMS);
+
+  if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
+    int start = 0;
+    int end = 0;
+    tk_sscanf(options, "%d-%d", &start, &end);
+    return text_selector_set_range_options(widget, start, end - start + 1, 1);
+  } else {
+    return text_selector_parse_options(widget, options);
+  }
+}
+
+ret_t text_selector_set_range_options(widget_t* widget, int32_t start, uint32_t nr, int32_t step) {
+  char text[32];
+  uint32_t i = 0;
+  return_value_if_fail(widget != NULL && nr < 300, RET_BAD_PARAMS);
+
+  for (i = 0; i < nr; i++) {
+    int32_t value = start + i * step;
+    tk_itoa(text, sizeof(text), value);
+    text_selector_append_option(widget, value, text);
+  }
+
+  return RET_OK;
 }
 
 static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -187,7 +207,7 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
-    text_selector_parse_options(widget, value_str(v));
+    text_selector_set_options(widget, value_str(v));
     return RET_OK;
   }
 
@@ -217,12 +237,44 @@ static ret_t text_selector_on_pointer_move(text_selector_t* text_selector, point
   return RET_OK;
 }
 
+static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* text_selector) {
+  widget_t* widget = WIDGET(text_selector);
+  int32_t mid_index = text_selector->visible_nr / 2;
+  int32_t item_height = widget->h / text_selector->visible_nr;
+
+  text_selector->selected_index = text_selector->yoffset / item_height + mid_index;
+
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
+static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector) {
+  widget_t* widget = WIDGET(text_selector);
+  int32_t mid_index = text_selector->visible_nr / 2;
+  int32_t item_height = widget->h / text_selector->visible_nr;
+
+  text_selector->yoffset = (text_selector->selected_index - mid_index) * item_height;
+
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
 static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   text_selector_t* text_selector = TEXT_SELECTOR(ctx);
+  int32_t selected_index = text_selector->selected_index;
 
   text_selector->wa = NULL;
-  widget_invalidate(widget, NULL);
+  text_selector_sync_selected_index_with_yoffset(text_selector);
+
+  if (selected_index != text_selector->selected_index) {
+    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
+    log_debug("selected_index: %d => %d %s\n", selected_index, text_selector->selected_index,
+              text_selector_get_text(widget));
+  }
 
   return RET_REMOVE;
 }
@@ -254,34 +306,34 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   velocity_update(v, e->e.time, e->x, e->y);
   yoffset_end = text_selector->yoffset - v->yv;
   int32_t options_nr = text_selector_count_options(widget);
-  int32_t item_height = widget->h / text_selector->visible_nr; 
-  int32_t empty_item_height = (text_selector->visible_nr/2) * item_height;
+  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
   int32_t min_yoffset = -empty_item_height;
   int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
-  
-  if(e->y == text_selector->ydown) {
+
+  if (e->y == text_selector->ydown) {
     /*click*/
     int32_t index = 0;
-    int32_t mid_index = text_selector->visible_nr/2;
-    point_t p = {e->x, e->y};  
+    int32_t mid_index = text_selector->visible_nr / 2;
+    point_t p = {e->x, e->y};
     widget_to_local(widget, &p);
-    index = p.y/item_height; 
-    if(index == mid_index) {
+    index = p.y / item_height;
+    if (index == mid_index) {
       return RET_OK;
     } else {
       yoffset_end = text_selector->yoffset + item_height * (index - mid_index);
     }
   }
 
-  if(yoffset_end < min_yoffset) {
+  if (yoffset_end < min_yoffset) {
     yoffset_end = min_yoffset;
   }
 
-  if(yoffset_end > (max_yoffset)) {
-    yoffset_end = max_yoffset; 
+  if (yoffset_end > (max_yoffset)) {
+    yoffset_end = max_yoffset;
   }
 
-  yoffset_end = (yoffset_end/item_height) * item_height;
+  yoffset_end = (yoffset_end / item_height) * item_height;
   text_selector_scroll_to(widget, yoffset_end);
 
   return RET_OK;
@@ -297,7 +349,6 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
       text_selector_on_pointer_down(text_selector, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      pointer_event_t* evt = (pointer_event_t*)e;
       text_selector_on_pointer_up(text_selector, (pointer_event_t*)e);
       widget_ungrab(widget->parent, widget);
       break;
@@ -317,16 +368,17 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_text_selector_vtable = {.size = sizeof(text_selector_t),
-                                                   .type = WIDGET_TYPE_TEXT_SELECTOR,
-                                                   .clone_properties = s_text_selector_properties,
-                                                   .persistent_properties = s_text_selector_properties,
-                                                   .create = text_selector_create,
-                                                   .on_paint_self = text_selector_on_paint_self,
-                                                   .set_prop = text_selector_set_prop,
-                                                   .get_prop = text_selector_get_prop,
-                                                   .destroy = text_selector_destroy,
-                                                   .on_event = text_selector_on_event};
+static const widget_vtable_t s_text_selector_vtable = {
+    .size = sizeof(text_selector_t),
+    .type = WIDGET_TYPE_TEXT_SELECTOR,
+    .clone_properties = s_text_selector_properties,
+    .persistent_properties = s_text_selector_properties,
+    .create = text_selector_create,
+    .on_paint_self = text_selector_on_paint_self,
+    .set_prop = text_selector_set_prop,
+    .get_prop = text_selector_get_prop,
+    .destroy = text_selector_destroy,
+    .on_event = text_selector_on_event};
 
 widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   text_selector_t* text_selector = TKMEM_ZALLOC(text_selector_t);
@@ -363,7 +415,7 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   return_value_if_fail(text_selector != NULL && text != NULL, RET_BAD_PARAMS);
-  size = sizeof(text_selector_option_t) + (strlen(text)+1) * sizeof(wchar_t);
+  size = sizeof(text_selector_option_t) + (strlen(text) + 1) * sizeof(wchar_t);
 
   option = (text_selector_option_t*)TKMEM_ALLOC(size);
   return_value_if_fail(option != NULL, RET_OOM);
@@ -371,7 +423,7 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
   memset(option, 0x00, size);
 
   option->value = value;
-  utf8_to_utf16(text, option->text, strlen(text)+1);
+  utf8_to_utf16(text, option->text, strlen(text) + 1);
 
   if (text_selector->option_items != NULL) {
     iter = text_selector->option_items;
@@ -429,7 +481,7 @@ int32_t text_selector_get_option_by_text(widget_t* widget, const char* text) {
   wstr_set_utf8(&str, text);
   iter = text_selector->option_items;
   while (iter != NULL) {
-    if (wcscmp(str.str, iter->text)) {
+    if (wcscmp(str.str, iter->text) == 0) {
       wstr_reset(&str);
       return i;
     }
@@ -468,6 +520,7 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
   return_value_if_fail(option != NULL, RET_BAD_PARAMS);
 
   text_selector->selected_index = index;
+  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return RET_OK;
 }
@@ -477,6 +530,7 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
+  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return RET_OK;
 }
@@ -485,7 +539,7 @@ int32_t text_selector_get_value(widget_t* widget) {
   text_selector_option_t* option = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, -1);
-  
+
   option = text_selector_get_option(widget, text_selector->selected_index);
 
   return option != NULL ? option->value : -1;
@@ -503,10 +557,10 @@ const char* text_selector_get_text(widget_t* widget) {
   text_selector_option_t* option = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, NULL);
-  
+
   option = text_selector_get_option(widget, text_selector->selected_index);
 
-  if(option != NULL) {
+  if (option != NULL) {
     str_from_wstr(&(text_selector->text), option->text);
 
     return text_selector->text.str;

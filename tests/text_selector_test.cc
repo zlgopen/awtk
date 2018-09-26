@@ -16,7 +16,6 @@ TEST(TextSelector, basic) {
   ASSERT_EQ(text_selector_append_option(w, 222, "222"), RET_OK);
   ASSERT_EQ(text_selector_append_option(w, 233, "333"), RET_OK);
 
-
   value_set_int(&v1, 1);
   ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_SELECTED_INDEX, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_SELECTED_INDEX, &v2), RET_OK);
@@ -24,20 +23,20 @@ TEST(TextSelector, basic) {
   ASSERT_EQ(value_int(&v1), text_selector->selected_index);
   ASSERT_EQ(text_selector_get_value(w), 111);
   ASSERT_EQ(string(text_selector_get_text(w)), string("111"));
-  
+
   value_set_int(&v1, 3);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
   ASSERT_EQ(value_int(&v1), text_selector->visible_nr);
- 
+
   /*not eq 3, set it to 5*/
   value_set_int(&v1, 4);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
   ASSERT_EQ(5, text_selector->visible_nr);
-  
+
   value_set_int(&v1, 5);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
   ASSERT_EQ(value_int(&v1), text_selector->visible_nr);
-  
+
   widget_destroy(w);
 }
 

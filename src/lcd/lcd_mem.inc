@@ -62,18 +62,6 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
-static bitmap_t* lcd_mem_init_offline_fb(lcd_t* lcd, bitmap_t* fb) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
-  fb->flags = 0;
-  fb->w = lcd->w;
-  fb->h = lcd->h;
-  fb->data = mem->offline_fb;
-  fb->format = mem->format;
-
-  return fb;
-}
-
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return RET_OK;
 }
@@ -383,13 +371,9 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
   if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }
-
-  /*FIXME: Handle ROTATE*/
 
   if (lcd_is_swappable(lcd)) {
     return lcd_swap(lcd);
