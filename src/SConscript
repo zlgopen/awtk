@@ -18,7 +18,7 @@ sources=Glob('base/*.c') +\
   ['awtk.c'];
 
 sources += ['main_loop/main_loop_simple.c'];
-if os.environ['LCD'] == 'NANOVG':
+if os.environ['LCD'] == 'GL':
   sources += ['window_animators/window_animator_opengl.c'];
   sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_nanovg.c'];
 elif os.environ['LCD'] == 'SDL':
