@@ -218,30 +218,10 @@ static void prepareRasterizer(AGGENVGcontext* agge, NVGscissor* scissor, NVGpain
 }
 
 template <typename PixelT>
-void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
-                NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths,
-                int npaths) {
-  AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
   agge::renderer& ren = agge->ren;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
   agge::bitmap<PixelT, agge::raw_bitmap> surface(agge->w, agge->h, agge->data);
-
-  prepareRasterizer(agge, scissor, paint);
-
-  for (int i = 0; i < npaths; i++) {
-    const NVGpath* p = paths + i;
-    for (int j = 0; j < p->nfill; j++) {
-      const NVGvertex* v = p->fill + j;
-      if (j == 0) {
-        ras.move_to(v->x, v->y);
-      } else {
-        ras.line_to(v->x, v->y);
-      }
-    }
-    ras.close_polygon();
-  }
-
-  ras.sort();
 
   if (paint->image > 0) {
     float invxform[6];
@@ -290,18 +270,41 @@ void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState composit
 }
 
 template <typename PixelT>
+void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
+                NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths,
+                int npaths) {
+  AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+  agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
+
+  prepareRasterizer(agge, scissor, paint);
+
+  for (int i = 0; i < npaths; i++) {
+    const NVGpath* p = paths + i;
+    for (int j = 0; j < p->nfill; j++) {
+      const NVGvertex* v = p->fill + j;
+      if (j == 0) {
+        ras.move_to(v->x, v->y);
+      } else {
+        ras.line_to(v->x, v->y);
+      }
+    }
+    ras.close_polygon();
+  }
+
+  ras.sort();
+  renderPaint<PixelT>(agge, paint);
+}
+
+template <typename PixelT>
 void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                   NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths,
                   int npaths) {
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
-  agge::renderer& ren = agge->ren;
   agge::stroke& line_style = agge->line_style;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
 
   line_style.width(strokeWidth);
   prepareRasterizer(agge, scissor, paint);
-  agge::bitmap<PixelT, agge::raw_bitmap> surface(agge->w, agge->h, agge->data);
-  agge::blender_solid_color_rgb<PixelT> color(agge->r, agge->g, agge->b, agge->a);
 
   for (int i = 0; i < npaths; i++) {
     const NVGpath* p = paths + i;
@@ -312,12 +315,13 @@ void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compos
   }
 
   ras.sort();
-  ren(surface, 0, ras, color, agge::winding<>());
+  renderPaint<PixelT>(agge, paint);
 }
 
 template <typename PixelT>
 void renderTriangles(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                      NVGscissor* scissor, const NVGvertex* verts, int nverts) {
+  /*XXX: not used yet*/
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::renderer& ren = agge->ren;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
@@ -347,12 +351,8 @@ void renderTriangles(void* uptr, NVGpaint* paint, NVGcompositeOperationState com
     agge::nanovg_text_blender<PixelT, source_bitmap_t> color(&src, (float*)invxform, 255, 0, 0,
                                                              255);
     ren(surface, 0, ras, color, agge::winding<>());
-
-    // agge::blender_solid_color_rgb<PixelT> color(255, 0, 0, 255);
-    // ren(surface, 0, ras, color, agge::winding<>());
   } else {
     agge::blender_solid_color_rgb<PixelT> color(agge->r, agge->g, agge->b, agge->a);
-
     ren(surface, 0, ras, color, agge::winding<>());
   }
 }

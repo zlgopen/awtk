@@ -73,9 +73,10 @@ typedef ret_t (*vgcanvas_transform_t)(vgcanvas_t* vg, float_t a, float_t b, floa
 typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, float_t c,
                                           float_t d, float_t e, float_t f);
 
-typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_stroke_t)(vgcanvas_t* vg);
+typedef ret_t (*vgcanvas_paint_t)(vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
 
 typedef ret_t (*vgcanvas_set_font_t)(vgcanvas_t* vg, const char* font);
 typedef ret_t (*vgcanvas_set_font_size_t)(vgcanvas_t* vg, float_t size);
@@ -133,9 +134,10 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_transform_t transform;
   vgcanvas_set_transform_t set_transform;
 
-  vgcanvas_fill_t fill;
   vgcanvas_clip_rect_t clip_rect;
+  vgcanvas_fill_t fill;
   vgcanvas_stroke_t stroke;
+  vgcanvas_paint_t paint;
 
   vgcanvas_set_font_t set_font;
   vgcanvas_set_font_size_t set_font_size;
@@ -563,15 +565,6 @@ ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, fl
                              float_t f);
 
 /**
- * @method vgcanvas_fill
- * fill。为了让不同实现上的效果一致，自动清除之前的path。
- * @param {vgcanvas_t*} vg vgcanvas对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vgcanvas_fill(vgcanvas_t* vg);
-
-/**
  * @method vgcanvas_clip_rect
  * clip_rect
  * @param {vgcanvas_t*} vg vgcanvas对象。
@@ -585,13 +578,34 @@ ret_t vgcanvas_fill(vgcanvas_t* vg);
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 
 /**
+ * @method vgcanvas_fill
+ * 填充多边形。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_fill(vgcanvas_t* vg);
+
+/**
  * @method vgcanvas_stroke
- * stroke。为了让不同实现上的效果一致，自动清除之前的path。
+ * 画线。
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_stroke(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_paint
+ * 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。
+ * 多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {bool_t} stroke TRUE表示画线FALSE表示填充。
+ * @param {bitmap_t*} img 图片。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_paint(vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
 
 /**
  * @method vgcanvas_set_font

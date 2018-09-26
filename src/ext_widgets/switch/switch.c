@@ -120,8 +120,7 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* switch_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && (widget->vt == &s_switch_vtable),
-                       NULL);
+  return_value_if_fail(widget != NULL && (widget->vt == &s_switch_vtable), NULL);
 
   return widget;
 }

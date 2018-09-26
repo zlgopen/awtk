@@ -87,6 +87,12 @@ ret_t vgcanvas_stroke(vgcanvas_t* vg) {
   return vg->vt->stroke(vg);
 }
 
+ret_t vgcanvas_paint(vgcanvas_t* vg, bool_t stroke, bitmap_t* img) {
+  return_value_if_fail(vg != NULL && vg->vt->paint != NULL && img != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->paint(vg, stroke, img);
+}
+
 ret_t vgcanvas_destroy(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->destroy != NULL, RET_BAD_PARAMS);
 
@@ -102,6 +108,7 @@ ret_t vgcanvas_begin_path(vgcanvas_t* vg) {
 ret_t vgcanvas_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r) {
   return_value_if_fail(vg != NULL && vg->vt->rounded_rect != NULL, RET_BAD_PARAMS);
 
+  vgcanvas_begin_path(vg);
   return vg->vt->rounded_rect(vg, x, y, w, h, r);
 }
 
@@ -114,6 +121,7 @@ ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) 
 ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry) {
   return_value_if_fail(vg != NULL && vg->vt->ellipse != NULL, RET_BAD_PARAMS);
 
+  vgcanvas_begin_path(vg);
   return vg->vt->ellipse(vg, x, y, rx, ry);
 }
 

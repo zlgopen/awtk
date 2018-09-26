@@ -307,6 +307,7 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
   else
     vgcanvas_fill(vg);
 
+  vgcanvas_begin_path(vg);
   vgcanvas_translate(vg, 65, 0);
   vgcanvas_arc(vg, 20, 20, 20, 0, 2 * 3.15, FALSE);
   if (stroke)
@@ -314,6 +315,7 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
   else
     vgcanvas_fill(vg);
 
+  vgcanvas_begin_path(vg);
   vgcanvas_translate(vg, 50, 0);
   vgcanvas_move_to(vg, 0, 0);
   vgcanvas_line_to(vg, 40, 0);
@@ -324,6 +326,7 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
   else
     vgcanvas_fill(vg);
 
+  vgcanvas_begin_path(vg);
   vgcanvas_restore(vg);
 }
 
@@ -464,8 +467,6 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   vgcanvas_rect(vg, 5, 5, 100, 100);
   vgcanvas_fill(vg);
 
-  /*
-   */
   vgcanvas_set_fill_color(vg, color_init(0, 0xff, 0, 0xff));
   vgcanvas_rect(vg, 110, 5, 100, 100);
   vgcanvas_fill(vg);
@@ -482,9 +483,11 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
   vgcanvas_rect(vg, 110, 5, 100, 100);
   vgcanvas_stroke(vg);
+
   vgcanvas_set_stroke_color(vg, color_init(0, 0, 0xff, 0xff));
   vgcanvas_rect(vg, 215, 5, 100, 100);
   vgcanvas_stroke(vg);
+
   vgcanvas_translate(vg, 0, 105);
   image_manager_load(image_manager(), "rgb", &img);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
@@ -497,12 +500,36 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_paint_vg_paint(void* ctx, event_t* e) {
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  image_manager_load(image_manager(), "1", &img);
+
+  vgcanvas_save(vg);
+
+  vgcanvas_set_line_width(vg, 10);
+  vgcanvas_translate(vg, 100, 100);
+  vgcanvas_rounded_rect(vg, 0, 0, 200, 30, 15);
+  vgcanvas_paint(vg, TRUE, &img);
+
+  vgcanvas_translate(vg, 0, 200);
+  vgcanvas_rounded_rect(vg, 0, 0, 200, 30, 15);
+  vgcanvas_paint(vg, FALSE, &img);
+
+  vgcanvas_restore(vg);
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
-  // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
-  widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
+  // widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+  // widget_on(canvas, EVT_PAINT, on_paint_vg_paint, NULL);
 
   return RET_OK;
 }

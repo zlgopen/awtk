@@ -232,15 +232,6 @@ static ret_t vgcanvas_nanovg_close_path(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_fill(vgcanvas_t* vgcanvas) {
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-
-  nvgFill(vg);
-  nvgBeginPath(vg);
-
-  return RET_OK;
-}
-
 static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                        float_t h) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
@@ -250,11 +241,41 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
   return RET_OK;
 }
 
+static ret_t vgcanvas_nanovg_fill(vgcanvas_t* vgcanvas) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  nvgFill(vg);
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_stroke(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgStroke(vg);
-  nvgBeginPath(vg);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t* img) {
+  int iw = img->w;
+  int ih = img->h;
+  NVGpaint imgPaint;
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  int id = vgcanvas_nanovg_ensure_image(canvas, img);
+  return_value_if_fail(id >= 0, RET_BAD_PARAMS);
+
+  imgPaint = nvgImagePattern(vg, 0, 0, iw, ih, 0, id, 1);
+
+  if (stroke) {
+    nvgStrokePaint(vg, imgPaint);
+    nvgStroke(vg);
+  } else {
+    nvgFillPaint(vg, imgPaint);
+    nvgClosePath(vg);
+    nvgFill(vg);
+  }
 
   return RET_OK;
 }
@@ -735,9 +756,10 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
                                      vgcanvas_nanovg_translate,
                                      vgcanvas_nanovg_transform,
                                      vgcanvas_nanovg_set_transform,
-                                     vgcanvas_nanovg_fill,
                                      vgcanvas_nanovg_clip_rect,
+                                     vgcanvas_nanovg_fill,
                                      vgcanvas_nanovg_stroke,
+                                     vgcanvas_nanovg_paint,
                                      vgcanvas_nanovg_set_font,
                                      vgcanvas_nanovg_set_font_size,
                                      vgcanvas_nanovg_set_text_align,
