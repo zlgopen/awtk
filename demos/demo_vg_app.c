@@ -422,7 +422,7 @@ static void draw_text(vgcanvas_t* vg) {
 static ret_t on_paint_vg(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
   vgcanvas_set_line_width(vg, 1);
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
@@ -449,7 +449,7 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   image_manager_load(image_manager(), "rgba", &img);
 
   canvas_set_fill_color(c, color_init(0x11, 0x22, 0x33, 0xff));
@@ -494,42 +494,16 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
 
   image_manager_load(image_manager(), "rgba", &img);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 100, 0, img.w, img.h);
-  
+
   image_manager_load(image_manager(), "switch", &img);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 200, 0, img.w, img.h);
-  
+
   vgcanvas_translate(vg, 0, 60);
   vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
   vgcanvas_paint(vg, FALSE, &img);
-  
-  vgcanvas_translate(vg,  160, 0);
-  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
-  vgcanvas_paint(vg, FALSE, &img);
 
-  vgcanvas_restore(vg);
-
-  return RET_OK;
-}
-
-static ret_t on_paint_vg_paint(void* ctx, event_t* e) {
-  bitmap_t img;
-  paint_event_t* evt = (paint_event_t*)e;
-  canvas_t* c = evt->c;
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-  image_manager_load(image_manager(), "1", &img);
-
-  vgcanvas_save(vg);
-
-  vgcanvas_set_line_width(vg, 10);
-  vgcanvas_translate(vg, 100, 100);
-  vgcanvas_rounded_rect(vg, 0, 0, 200, 30, 15);
-  vgcanvas_paint(vg, TRUE, &img);
-
-  vgcanvas_translate(vg, 0, 200);
-  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
-  vgcanvas_paint(vg, FALSE, &img);
-  
-  vgcanvas_translate(vg, 200, 0);
+  vg = canvas_get_vgcanvas(c);
+  vgcanvas_translate(vg, 160, 0);
   vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
   vgcanvas_paint(vg, FALSE, &img);
 
@@ -544,7 +518,6 @@ ret_t application_init() {
 
   widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
   // widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
-  // widget_on(canvas, EVT_PAINT, on_paint_vg_paint, NULL);
 
   return RET_OK;
 }

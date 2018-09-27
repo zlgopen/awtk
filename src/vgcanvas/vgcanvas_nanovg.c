@@ -514,6 +514,31 @@ static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
 }
 
 #if defined(WITH_NANOVG_AGGE)
+static agge_bitmap_format_t bitmap_format_to_agge(bitmap_format_t format) {
+  agge_bitmap_format_t f = AGGE_RGBA8888;
+
+  switch (format) {
+    case BITMAP_FMT_RGBA: {
+      f = AGGE_RGBA8888;
+      break;
+    }
+    case BITMAP_FMT_BGRA: {
+      f = AGGE_BGRA8888;
+      break;
+    }
+    case BITMAP_FMT_RGB565: {
+      f = AGGE_RGB565;
+      break;
+    }
+    default: {
+      assert(!"not supported format");
+      break;
+    }
+  }
+
+  return f;
+}
+
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   return RET_NOT_IMPL;
 }
@@ -538,7 +563,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
   vgcanvas->w = w;
   vgcanvas->h = h;
   vgcanvas->buff = (uint32_t*)data;
-  nvgReinitAgge(vg, w, h, format, data);
+  nvgReinitAgge(vg, w, h, bitmap_format_to_agge(format), data);
 
   return RET_OK;
 }
@@ -786,28 +811,9 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
 
 #if defined(WITH_NANOVG_AGGE)
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data) {
-  agge_bitmap_format_t f = AGGE_RGBA8888;
+  agge_bitmap_format_t f = bitmap_format_to_agge(format);
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
-
-  switch (format) {
-    case BITMAP_FMT_RGBA: {
-      f = AGGE_RGBA8888;
-      break;
-    }
-    case BITMAP_FMT_BGRA: {
-      f = AGGE_BGRA8888;
-      break;
-    }
-    case BITMAP_FMT_RGB565: {
-      f = AGGE_RGB565;
-      break;
-    }
-    default: {
-      assert(!"not supported format");
-      break;
-    }
-  }
 
   nanovg->base.w = w;
   nanovg->base.h = h;
