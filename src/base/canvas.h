@@ -113,6 +113,8 @@ ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix);
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
                            const rect_t* dst);
 
+vgcanvas_t* canvas_get_vgcanvas(canvas_t* c);
+
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
 
 ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);

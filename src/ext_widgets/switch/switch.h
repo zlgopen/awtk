@@ -23,6 +23,8 @@
 #define TK_SWITCH_H
 
 #include "base/widget.h"
+#include "base/velocity.h"
+#include "base/widget_animator.h"
 
 BEGIN_C_DECLS
 
@@ -41,7 +43,26 @@ typedef struct _switch_t {
    */
   bool_t value;
 
+  /**
+   * @property {float_t} max_xoffset_ratio
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。
+   */
+  float_t max_xoffset_ratio;
+
+  /**
+   * @property {int32_t} 圆角半径。
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 图片的圆角半径。
+   */
+  int32_t round_radius;
+
   /*private*/
+  int32_t xdown;
+  int32_t xoffset;
+  int32_t xoffset_save;
+  velocity_t velocity;
+  widget_animator_t* wa;
   bool_t point_down_aborted;
 } switch_t;
 
@@ -79,6 +100,9 @@ ret_t switch_set_value(widget_t* widget, bool_t value);
  * @return {widget_t*} switch对象。
  */
 widget_t* switch_cast(widget_t* widget);
+
+#define SWITCH_PROP_ROUND_RADIUS "round_radius"
+#define SWITCH_PROP_MAX_XOFFSET_RATIO "max_xoffset_ratio"
 
 #define WIDGET_TYPE_SWITCH "switch"
 #define SWITCH(widget) ((switch_t*)(widget))

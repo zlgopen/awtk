@@ -306,13 +306,14 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   int32_t yoffset_end = 0;
   widget_t* widget = WIDGET(text_selector);
   velocity_t* v = &(text_selector->velocity);
-  velocity_update(v, e->e.time, e->x, e->y);
-  yoffset_end = text_selector->yoffset - v->yv;
   int32_t options_nr = text_selector_count_options(widget);
   int32_t item_height = widget->h / text_selector->visible_nr;
   int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
   int32_t min_yoffset = -empty_item_height;
   int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
+
+  velocity_update(v, e->e.time, e->x, e->y);
+  yoffset_end = text_selector->yoffset - v->yv;
 
   if (e->y == text_selector->ydown) {
     /*click*/
@@ -336,7 +337,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     yoffset_end = max_yoffset;
   }
 
-  yoffset_end = (yoffset_end / item_height) * item_height;
+  yoffset_end = round((float)yoffset_end / (float)item_height) * item_height;
   text_selector_scroll_to(widget, yoffset_end);
 
   return RET_OK;

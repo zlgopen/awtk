@@ -70,6 +70,7 @@
 #include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/slide_view_v.data"
 #include "assets/inc/ui/spinbox.data"
+#include "assets/inc/ui/switch.data"
 #include "assets/inc/ui/tab_bottom.data"
 #include "assets/inc/ui/tab_bottom_compact.data"
 #include "assets/inc/ui/tab_control.data"
@@ -157,6 +158,7 @@
 #include "assets/inc/images/slider_fg.res"
 #include "assets/inc/images/slider_v_bg.res"
 #include "assets/inc/images/slider_v_fg.res"
+#include "assets/inc/images/switch.res"
 #include "assets/inc/images/unchecked.res"
 #include "assets/inc/images/unmuted.res"
 #include "assets/inc/images/warn.res"
@@ -237,20 +239,21 @@
 #include "assets/inc/images/slider_fg.data"
 #include "assets/inc/images/slider_v_bg.data"
 #include "assets/inc/images/slider_v_fg.data"
+#include "assets/inc/images/switch.data"
 #include "assets/inc/images/unchecked.data"
 #include "assets/inc/images/unmuted.data"
 #include "assets/inc/images/warn.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -336,6 +339,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_slider_fg);
   assets_manager_add(rm, image_slider_v_bg);
   assets_manager_add(rm, image_slider_v_fg);
+  assets_manager_add(rm, image_switch);
   assets_manager_add(rm, image_unchecked);
   assets_manager_add(rm, image_unmuted);
   assets_manager_add(rm, image_warn);
@@ -408,6 +412,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_slide_view_v);
   assets_manager_add(rm, ui_spinbox);
+  assets_manager_add(rm, ui_switch);
   assets_manager_add(rm, ui_tab_bottom);
   assets_manager_add(rm, ui_tab_bottom_compact);
   assets_manager_add(rm, ui_tab_control);

@@ -1245,3 +1245,17 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect
 
   return canvas_draw_text(c, str, nr, x, y);
 }
+
+vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
+  vgcanvas_t* vg = NULL;
+  return_value_if_fail(c != NULL && c->lcd != NULL, NULL);
+
+  vg = lcd_get_vgcanvas(c->lcd);
+  if (vg != NULL) {
+    rect_t r;
+    canvas_get_clip_rect(c, &r);
+    vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
+  }
+
+  return vg;
+}

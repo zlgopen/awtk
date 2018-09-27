@@ -165,8 +165,12 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/09/27
+  * 实现开关控件并增加demo。
+
 * 2018/09/26
   * 完善text\_selector控件并增加demo。
+  * 完善vgcanvas，增加paint接口。
 
 * 2018/09/25
   * 完成text\_selector控件基本功能。
