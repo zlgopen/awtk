@@ -488,12 +488,23 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   vgcanvas_rect(vg, 215, 5, 100, 100);
   vgcanvas_stroke(vg);
 
-  vgcanvas_translate(vg, 0, 105);
+  vgcanvas_translate(vg, 0, 128);
   image_manager_load(image_manager(), "rgb", &img);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
 
   image_manager_load(image_manager(), "rgba", &img);
   vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 100, 0, img.w, img.h);
+  
+  image_manager_load(image_manager(), "switch", &img);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 200, 0, img.w, img.h);
+  
+  vgcanvas_translate(vg, 0, 60);
+  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
+  vgcanvas_paint(vg, FALSE, &img);
+  
+  vgcanvas_translate(vg,  160, 0);
+  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
+  vgcanvas_paint(vg, FALSE, &img);
 
   vgcanvas_restore(vg);
 
@@ -515,7 +526,11 @@ static ret_t on_paint_vg_paint(void* ctx, event_t* e) {
   vgcanvas_paint(vg, TRUE, &img);
 
   vgcanvas_translate(vg, 0, 200);
-  vgcanvas_rounded_rect(vg, 0, 0, 200, 30, 15);
+  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
+  vgcanvas_paint(vg, FALSE, &img);
+  
+  vgcanvas_translate(vg, 200, 0);
+  vgcanvas_rounded_rect(vg, 0, 0, img.w, img.h, 5);
   vgcanvas_paint(vg, FALSE, &img);
 
   vgcanvas_restore(vg);
