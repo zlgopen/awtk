@@ -79,9 +79,13 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       widget_ungrab(widget->parent, widget);
       if (!button->point_down_aborted) {
         pointer_event_t evt = *(pointer_event_t*)e;
-        evt.e = event_init(EVT_CLICK, widget);
+        point_t p = {evt.x, evt.y};
+        widget_to_local(widget, &p);
+        if (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h) {
+          evt.e = event_init(EVT_CLICK, widget);
+          widget_dispatch(widget, (event_t*)&evt);
+        }
         widget_set_state(widget, WIDGET_STATE_NORMAL);
-        widget_dispatch(widget, (event_t*)&evt);
       }
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
