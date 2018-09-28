@@ -36,6 +36,7 @@
 #include "color_picker/color_picker.h"
 #include "text_selector/text_selector.h"
 #include "color_picker/color_component.h"
+#include "image_animation/image_animation.h"
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_RICH_TEXT, rich_text_create);
@@ -57,6 +58,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_GUAGE, guage_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SWITCH, switch_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_ANIMATION, image_animation_create);
 
   return RET_OK;
 }

@@ -1,0 +1,5 @@
+<window name="switch" anim_hint="htranslate">
+  <image_animation x="100" y="100" w="90" h="90" image="" sequence="123" auto_play="true" interval="100"/>
+
+  <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
+</window>

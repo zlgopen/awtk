@@ -165,6 +165,9 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/09/28
+  * 实现image\_animation控件并增加demo。
+
 * 2018/09/27
   * 实现开关控件并增加demo。
 
