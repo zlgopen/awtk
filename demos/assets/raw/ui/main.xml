@@ -17,6 +17,7 @@
     <button name="open:images" text="Image"/>
     <button name="open:switch" text="Switch"/>
     <button name="open:text_selector" text="Selector"/>
+    <button name="open:image_animation" text="Image Animation"/>
     <button name="open:memtest" text="MemTest"/>
     <button name="show_fps" text="Show FPS"/>
 </window>

@@ -60,11 +60,17 @@ typedef struct _image_animation_t {
    */
   bool_t auto_play;
   /**
-   * @property {bool_t} interval
+   * @property {uint32_t} interval
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 每张图片播放的时间(毫秒)。
    */
   uint32_t interval;
+  /**
+   * @property {uint32_t} delay
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 自动播放时延迟播放的时间(毫秒)。
+   */
+  uint32_t delay;
 
   /*private*/
   int32_t index;
@@ -119,6 +125,17 @@ ret_t image_animation_set_image(widget_t* widget, const char* image);
 ret_t image_animation_set_interval(widget_t* widget, uint32_t interval);
 
 /**
+ * @method image_animation_set_delay
+ * 设置延迟播放时间(仅适用于自动播放)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_animation对象。
+ * @param {uint32_t} delay 延迟播放时间(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_animation_set_delay(widget_t* widget, uint32_t delay);
+
+/**
  * @method image_animation_set_auto_play
  * 设置是否自动播放。
  * @annotation ["scriptable"]
@@ -158,7 +175,7 @@ ret_t image_animation_play(widget_t* widget);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_animation_stop(widget_t* widget);
+ret_t image_animation_play(widget_t* widget);
 
 /**
  * @method image_animation_pause

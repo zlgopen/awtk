@@ -35,6 +35,7 @@
 #include "assets/inc/ui/fade.data"
 #include "assets/inc/ui/guage.data"
 #include "assets/inc/ui/htranslate.data"
+#include "assets/inc/ui/image_animation.data"
 #include "assets/inc/ui/image_list.data"
 #include "assets/inc/ui/images.data"
 #include "assets/inc/ui/kb_ascii.data"
@@ -85,6 +86,18 @@
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/2.res"
 #include "assets/inc/images/3.res"
+#include "assets/inc/images/ani1.res"
+#include "assets/inc/images/ani2.res"
+#include "assets/inc/images/ani3.res"
+#include "assets/inc/images/ani4.res"
+#include "assets/inc/images/ani5.res"
+#include "assets/inc/images/ani6.res"
+#include "assets/inc/images/ani7.res"
+#include "assets/inc/images/ani8.res"
+#include "assets/inc/images/ani9.res"
+#include "assets/inc/images/ania.res"
+#include "assets/inc/images/anib.res"
+#include "assets/inc/images/anic.res"
 #include "assets/inc/images/arrow_down_n.res"
 #include "assets/inc/images/arrow_down_o.res"
 #include "assets/inc/images/arrow_down_p.res"
@@ -166,6 +179,18 @@
 #include "assets/inc/images/1.data"
 #include "assets/inc/images/2.data"
 #include "assets/inc/images/3.data"
+#include "assets/inc/images/ani1.data"
+#include "assets/inc/images/ani2.data"
+#include "assets/inc/images/ani3.data"
+#include "assets/inc/images/ani4.data"
+#include "assets/inc/images/ani5.data"
+#include "assets/inc/images/ani6.data"
+#include "assets/inc/images/ani7.data"
+#include "assets/inc/images/ani8.data"
+#include "assets/inc/images/ani9.data"
+#include "assets/inc/images/ania.data"
+#include "assets/inc/images/anib.data"
+#include "assets/inc/images/anic.data"
 #include "assets/inc/images/arrow_down_n.data"
 #include "assets/inc/images/arrow_down_o.data"
 #include "assets/inc/images/arrow_down_p.data"
@@ -266,6 +291,18 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_2);
   assets_manager_add(rm, image_3);
+  assets_manager_add(rm, image_ani1);
+  assets_manager_add(rm, image_ani2);
+  assets_manager_add(rm, image_ani3);
+  assets_manager_add(rm, image_ani4);
+  assets_manager_add(rm, image_ani5);
+  assets_manager_add(rm, image_ani6);
+  assets_manager_add(rm, image_ani7);
+  assets_manager_add(rm, image_ani8);
+  assets_manager_add(rm, image_ani9);
+  assets_manager_add(rm, image_ania);
+  assets_manager_add(rm, image_anib);
+  assets_manager_add(rm, image_anic);
   assets_manager_add(rm, image_arrow_down_n);
   assets_manager_add(rm, image_arrow_down_o);
   assets_manager_add(rm, image_arrow_down_p);
@@ -377,6 +414,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_fade);
   assets_manager_add(rm, ui_guage);
   assets_manager_add(rm, ui_htranslate);
+  assets_manager_add(rm, ui_image_animation);
   assets_manager_add(rm, ui_image_list);
   assets_manager_add(rm, ui_images);
   assets_manager_add(rm, ui_kb_ascii);

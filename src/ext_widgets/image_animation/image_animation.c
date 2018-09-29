@@ -64,6 +64,9 @@ static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_INTERVAL)) {
     value_set_int(v, image_animation->interval);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DELAY)) {
+    value_set_int(v, image_animation->delay);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -82,6 +85,8 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
     return image_animation_set_auto_play(widget, value_bool(v));
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_INTERVAL)) {
     return image_animation_set_interval(widget, value_int(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_DELAY)) {
+    return image_animation_set_delay(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;
@@ -105,12 +110,25 @@ static const widget_vtable_t s_image_animation_vtable = {
     .set_prop = image_animation_set_prop,
     .on_paint_self = image_animation_on_paint_self};
 
+static ret_t image_animation_delay_play(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+
+  image_animation_play(widget);
+
+  return RET_REMOVE;
+}
+
 static ret_t image_animation_on_open(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
   if (image_animation->auto_play) {
-    image_animation_play(widget);
+    if (image_animation->delay > 0) {
+      timer_add(image_animation_delay_play, widget, image_animation->delay);
+    } else {
+      image_animation_play(widget);
+    }
   }
 
   return RET_REMOVE;
@@ -127,7 +145,7 @@ widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   image_animation->loop = TRUE;
   image_animation->auto_play = FALSE;
 
-  widget_on(win, EVT_WINDOW_OPEN, image_animation_on_open, image_animation);
+  widget_on(win, EVT_WINDOW_WILL_OPEN, image_animation_on_open, image_animation);
 
   return widget_init(widget, parent, &s_image_animation_vtable, x, y, w, h);
 }
@@ -156,6 +174,15 @@ ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   image_animation->interval = interval;
+
+  return RET_OK;
+}
+
+ret_t image_animation_set_delay(widget_t* widget, uint32_t delay) {
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  image_animation->delay = delay;
 
   return RET_OK;
 }

@@ -498,6 +498,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_BORDER_COLOR "border_color"
 
 /**
+ * @const WIDGET_PROP_DELAY
+ * 延迟时间(毫秒)
+ */
+#define WIDGET_PROP_DELAY "delay"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_
