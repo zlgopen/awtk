@@ -95,8 +95,16 @@ ret_t application_init() {
   image_set_image_name(image, "earth");
   image_set_draw_type(image, IMAGE_DRAW_ICON);
 
-  image = image_create(win, 100, 230, 60, 60);
+  image = image_create(win, 100, 230, 100, 100);
   image_set_image_name(image, "earth");
+  image_set_draw_type(image, IMAGE_DRAW_SCALE);
+
+  image = image_create(win, 10, 360, 100, 100);
+  image_set_image_name(image, "bricks");
+  image_set_draw_type(image, IMAGE_DRAW_ICON);
+
+  image = image_create(win, 100, 360, 100, 100);
+  image_set_image_name(image, "bricks");
   image_set_draw_type(image, IMAGE_DRAW_SCALE);
 
   label = label_create(win, 10, 40, 80, 30);
