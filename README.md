@@ -143,6 +143,7 @@ bin\demoui
 ### 2.HowTos
 * [如何在Visual Studio中调试AWTK](docs/vs_debug.md)
 * [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
+* [AWTK 调试技巧](docs/debug_tips.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](docs/script_binding.md)
@@ -164,6 +165,9 @@ bin\demoui
 [TODO.md](TODO.md)
 
 ## 最新动态
+
+* 2018/09/30
+  * lcd\_reg支持RGB565的图片。
 
 * 2018/09/28
   * 实现image\_animation控件并增加demo。
