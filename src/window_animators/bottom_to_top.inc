@@ -19,7 +19,7 @@ static ret_t window_animator_open_bottom_to_top_draw_prev(window_animator_t* wa)
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   dst = rect_init(win->x, win->y, win->w, win->h);
 
-#ifndef WITH_NANOVG
+#ifndef WITH_NANOVG_GL
   if (wa->percent > 0 && !lcd_is_swappable(c->lcd)) {
     wh_t h = (1 - wa->percent) * wa->curr_win->h;
 
@@ -45,7 +45,7 @@ static ret_t window_animator_open_bottom_to_top_draw_curr(window_animator_t* wa)
   float_t percent = wa->percent;
   float_t alpha = percent;
 
-#ifdef WITH_NANOVG
+#ifdef WITH_NANOVG_GL
   float_t h = win->h * percent;
   float_t y = win->parent->h - h;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);

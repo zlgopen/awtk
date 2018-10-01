@@ -150,7 +150,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     image->name = res->name;
     image->data = header->data;
 
-#if defined(WITH_AGG) || defined(WITH_PICASSO) || defined(WITH_NANOVG)
+#if defined(WITH_NANOVG_GL) || defined(WITH_NANOVG_SOFT)
     image_manager_add(imm, name, image);
 #endif
     return RET_OK;

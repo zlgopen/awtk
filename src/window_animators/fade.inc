@@ -18,7 +18,7 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
 
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   dst = rect_init(win->x, win->y, win->w, win->h);
-#ifndef WITH_NANOVG
+#ifndef WITH_NANOVG_GL
   if (wa->percent > 0 && !lcd_is_swappable(c->lcd)) {
     win = wa->curr_win;
     src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
@@ -41,7 +41,7 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   dst = rect_init(win->x, win->y, win->w, win->h);
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
 
-#ifdef WITH_NANOVG
+#ifdef WITH_NANOVG_GL
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   vgcanvas_save(vg);
   vgcanvas_set_global_alpha(vg, alpha);

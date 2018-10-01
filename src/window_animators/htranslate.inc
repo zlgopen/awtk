@@ -18,7 +18,7 @@ static ret_t window_animator_open_htranslate_draw_prev(window_animator_t* wa) {
   float_t x = win->w * percent;
   float_t w = win->w * (1 - percent);
 
-#ifdef WITH_NANOVG
+#ifdef WITH_NANOVG_GL
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   vgcanvas_draw_image(vg, &(wa->prev_img), x * ratio, win->y * ratio, w * ratio, win->h * ratio, 0,
                       win->y, w, win->h);
@@ -41,7 +41,7 @@ static ret_t window_animator_open_htranslate_draw_curr(window_animator_t* wa) {
   float_t x = win->w * (1 - percent);
   float_t w = win->w * percent;
 
-#ifdef WITH_NANOVG
+#ifdef WITH_NANOVG_GL
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   vgcanvas_draw_image(vg, &(wa->curr_img), 0, win->y * ratio, w * ratio, win->h * ratio, x, win->y,
                       w, win->h);
