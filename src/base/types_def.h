@@ -172,7 +172,7 @@ typedef enum _lcd_orientation_t {
 #define PATH_SEP '/'
 #endif /*PATH_SEP*/
 
-#ifdef NDEBUG
+#if defined(NDEBUG) || defined(SYLIXOS)
 #define ENSURE(p) p
 #define goto_error_if_fail(p) \
   if (!(p)) {                 \
@@ -439,5 +439,11 @@ typedef enum _app_type_t {
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
 #define WITH_G2D 1
 #endif /*WITH_PXP_G2D*/
+
+#ifdef WITH_NANOVG_AGGE
+#ifndef WITH_NANOVG_SOFT
+#define WITH_NANOVG_SOFT
+#endif/*WITH_NANOVG_SOFT*/
+#endif/*WITH_NANOVG_AGGE*/
 
 #endif /*TYPES_DEF_H*/

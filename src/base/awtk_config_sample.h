@@ -95,6 +95,18 @@
  */
 
 /**
+ * 如果有标准的fopen/fclose等函数，请定义本宏
+ *
+ * #define HAS_STDIO 1
+ */
+
+/**
+ * 如果有标准的pthread等函数，请定义本宏
+ *
+ * #define HAS_PTHREAD 1
+ */
+
+/**
  * 如果有优化版本的memcpy函数，请定义本宏
  *
  * #define HAS_FAST_MEMCPY 1
@@ -122,12 +134,6 @@
  * 如果启用VGCANVAS，而且没有OpenGL硬件加速，请定义本宏
  *
  * #define WITH_NANOVG_AGGE 1
- */
-
-/**
- * 如果启用VGCANVAS，请定义本宏
- *
- * #define WITH_VGCANVAS 1
  */
 
 #endif /*AWTK_CONFIG_H*/
