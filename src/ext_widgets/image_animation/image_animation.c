@@ -112,7 +112,6 @@ static const widget_vtable_t s_image_animation_vtable = {
 
 static ret_t image_animation_delay_play(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
-  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
   image_animation_play(widget);
 

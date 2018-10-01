@@ -129,7 +129,7 @@ ret_t path_app_root(char path[MAX_PATH + 1]) {
 ret_t path_normalize(const char* path, char* result, int32_t size) {
   const char* s = path;
   char* d = result;
-  return_value_if_fail(path != NULL && &result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
   while ((d - result) < size && *s) {
