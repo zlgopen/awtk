@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mem.c
  * Author: AWTK Develop Team
  * Brief:  simple memory manager
