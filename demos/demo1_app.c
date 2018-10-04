@@ -63,7 +63,7 @@ static ret_t on_show_dialog(void* ctx, event_t* e) {
   log_debug("code=%d\n", (int)code);
 
   (void)code;
-  tk_mem_info_dump();
+  tk_mem_dump();
   (void)e;
 
   return RET_OK;

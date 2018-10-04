@@ -38,6 +38,50 @@
 
 static void install_click_hander(widget_t* widget);
 
+uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,
+                           uint32_t* pmemset_speed) {
+  uint32_t i = 0;
+  uint32_t cost = 0;
+  uint32_t total_cost = 0;
+  uint32_t memcpy_speed;
+  uint32_t memset_speed;
+  uint32_t max_size = 100 * 1024 * 1024;
+  uint32_t start = time_now_ms();
+  uint32_t nr = max_size / length;
+
+  for (i = 0; i < nr; i++) {
+    memset(buffer, 0x00, length);
+  }
+  cost = time_now_ms() - start;
+  total_cost = cost;
+  if (cost) {
+    memset_speed = ((max_size / cost) * 1000) / 1024;
+  }
+
+  start = time_now_ms();
+  for (i = 0; i < nr; i++) {
+    uint32_t half = length >> 1;
+    memcpy(buffer, (char*)buffer + half, half);
+    memcpy((char*)buffer + half, buffer, half);
+  }
+  cost = time_now_ms() - start;
+  total_cost += cost;
+
+  if (cost) {
+    memcpy_speed = ((max_size / cost) * 1000) / 1024;
+  }
+
+  if (pmemset_speed != NULL) {
+    *pmemset_speed = memset_speed;
+  }
+
+  if (pmemcpy_speed != NULL) {
+    *pmemcpy_speed = memcpy_speed;
+  }
+
+  return total_cost;
+}
+
 static void open_window(const char* name, widget_t* to_close) {
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
 

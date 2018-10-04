@@ -188,7 +188,7 @@ static ret_t time_clock_destroy(widget_t* widget) {
   TKMEM_FREE(time_clock->bg_image);
   TKMEM_FREE(time_clock->hour_image);
   TKMEM_FREE(time_clock->minute_image);
-  TKMEM_FREE(time_clock->minute_image);
+  TKMEM_FREE(time_clock->second_image);
   if (time_clock->timer_id != TK_INVALID_ID) {
     timer_remove(time_clock->timer_id);
     time_clock->timer_id = TK_INVALID_ID;

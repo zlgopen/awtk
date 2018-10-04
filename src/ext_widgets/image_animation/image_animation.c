@@ -95,7 +95,7 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
 static ret_t image_animation_destroy(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
-  if(image_animation->timer_id != TK_INVALID_ID) {
+  if (image_animation->timer_id != TK_INVALID_ID) {
     timer_remove(image_animation->timer_id);
     image_animation->timer_id = TK_INVALID_ID;
   }

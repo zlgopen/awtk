@@ -136,4 +136,12 @@
  * #define WITH_NANOVG_AGGE 1
  */
 
+/**
+ * 如果启用内存泄露检查(内存小余1M慎用)，请定义本宏。
+ * 可以重新定义MEM_MAX_RECORDS限制最大记录数量。
+ *
+ * #define ENABLE_MEM_LEAK_CHECK 1
+ * #define MEM_MAX_RECORDS 4 * 1024
+ */
+
 #endif /*AWTK_CONFIG_H*/

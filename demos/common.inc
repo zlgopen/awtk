@@ -29,7 +29,7 @@ static ret_t on_ok(void* ctx, event_t* e) {
 
   dialog_quit(dialog, 0);
   (void)e;
-  tk_mem_info_dump();
+  tk_mem_dump();
   return RET_OK;
 }
 
@@ -44,6 +44,6 @@ static ret_t on_cancel(void* ctx, event_t* e) {
 
   dialog_quit(dialog, 1);
   (void)e;
-  tk_mem_info_dump();
+  tk_mem_dump();
   return RET_OK;
 }

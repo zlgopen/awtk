@@ -1,7 +1,7 @@
-﻿#include "base/mem.h"
+﻿#undef HAS_STD_MALLOC
+#include "base/mem.c"
 #include <assert.h>
 
-#ifndef HAS_STD_MALLOC
 #define STACK_SIZE 1000
 uint32_t s_heap_mem[1024 * 100];
 
@@ -37,6 +37,15 @@ void mem_stack_free_n(mem_stack_t* s, uint32_t nr) {
   }
 }
 
+void check_zero(void* ptr, uint32_t size) {
+  uint32_t i = 0;
+  char* p = (char*)ptr;
+
+  for (i = 0; i < size; i++) {
+    assert(p[i] == 0);
+  }
+}
+
 int main() {
   mem_stack_t s;
   uint32_t i = 0;
@@ -46,17 +55,18 @@ int main() {
   mem_stack_init(&s);
   tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 
-  tk_free(tk_alloc(100));
+  tk_free(TKMEM_ALLOC(100));
 
   for (i = 0; i < nr; i++) {
     uint32_t size = rand() % 100;
-    void* ptr = tk_calloc(size, 1);
+    void* ptr = TKMEM_CALLOC(size, 1);
 
+    check_zero(ptr, size);
     if (ptr != NULL) {
       if (mem_stack_has_space(&s)) {
         mem_stack_push(&s, ptr);
       } else {
-        tk_free(ptr);
+        TKMEM_FREE(ptr);
       }
     } else {
       mem_stack_free_n(&s, s.top >> 1);
@@ -64,13 +74,7 @@ int main() {
   }
 
   mem_stack_free_n(&s, s.top);
-  tk_mem_info_dump();
+  tk_mem_dump();
 
   return 0;
 }
-#else
-int main() {
-  printf("HAS_STD_MALLOC defined, no test.\n");
-  return 0;
-}
-#endif
