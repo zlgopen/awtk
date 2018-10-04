@@ -16,6 +16,12 @@
   </style>
 </window>
 
+<calibration_win>
+  <style name="default" fg_color="black"  text_color="black">
+    <normal bg_color="#f0f0f0"/>
+  </style>
+</calibration_win>
+
 <popup>
   <style name="default" border_color="#a0a0a0">
     <normal bg_color="#f0f0f0"/>

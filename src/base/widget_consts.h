@@ -793,6 +793,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_COLUMN "column"
 
 /**
+ * @const WIDGET_TYPE_CALIBRATION_WIN
+ *
+ */
+#define WIDGET_TYPE_CALIBRATION_WIN "calibration_win"
+
+/**
  * @enum widget_state_t
  * @annotation ["scriptable"]
  * @prefix WIDGET_

@@ -1,8 +1,0 @@
-<window>
-    <button style="cross" name="tl" x="20" y="20" w="32" h="32" text=""/>
-    <button style="cross" name="tr" x="right:20" y="20" w="32" h="32" text=""/>
-    <button style="cross" name="bl" x="20" y="bottom:20" w="32" h="32" text=""/>
-    <button style="cross" name="br" x="right:20" y="bottom:20" w="32" h="32" text=""/>
-    <button style="cross" name="cm" x="center" y="middle" w="32" h="32" text=""/>
-    <label name="tips" x="center" y="middle:50" w="32" h="32" text="calibration"/>
-</window>
