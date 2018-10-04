@@ -102,6 +102,8 @@ bin\demoui
 
 ## 各个平台的移植
 
+* [awtk-sylixos](https://github.com/zlgopen/awtk-sylixos)
+
 * [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
 
 * [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
@@ -169,6 +171,7 @@ bin\demoui
 
 * 2018/10/4
   * 完善内存管理，并增加内存泄露跟踪功能。
+  * 增加内存需求评估文档。
 
 * 2018/10/2-3
   * 移植到sylixos
