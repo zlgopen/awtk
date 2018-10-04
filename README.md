@@ -139,6 +139,7 @@ bin\demoui
 * [AWTK中的控件动画](docs/widget_animator.md)
 * [LCD旋转(横屏与竖屏)](docs/lcd_rotation.md)
 * [AWTK中的输入法](docs/input_method.md)
+* [AWTK内存需求评估指南](docs/memory.md)
 
 ### 2.HowTos
 * [如何在Visual Studio中调试AWTK](docs/vs_debug.md)
