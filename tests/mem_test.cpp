@@ -1,5 +1,6 @@
 ﻿#undef HAS_STD_MALLOC
 #include "base/mem.c"
+#include <time.h>
 #include <assert.h>
 
 #define STACK_SIZE 1000
