@@ -170,6 +170,10 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   widget_t* win = WIDGET(info->ctx);
   widget_destroy(win);
 
+#ifdef ENABLE_MEM_LEAK_CHECK
+  tk_mem_dump();
+#endif /*ENABLE_MEM_LEAK_CHECK*/
+
   return RET_OK;
 }
 

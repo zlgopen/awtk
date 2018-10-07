@@ -67,10 +67,6 @@ static ret_t window_destroy(widget_t* widget) {
   TKMEM_FREE(window->theme);
   TKMEM_FREE(window->anim_hint);
 
-#ifdef ENABLE_MEM_LEAK_CHECK
-  tk_mem_dump();
-#endif /*ENABLE_MEM_LEAK_CHECK*/
-
   return RET_OK;
 }
 
