@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
     } else {
       printf("load %s failed\n", in_filename);
     }
-    free(buff);
+    TKMEM_FREE(buff);
   }
 
   return 0;
