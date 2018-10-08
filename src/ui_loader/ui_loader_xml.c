@@ -32,6 +32,20 @@ typedef struct _xml_builder_t {
   str_t str;
 } xml_builder_t;
 
+/*FIXME: it is not a good solution to hardcode*/
+static bool_t is_precedence_prop(const char* tag, const char* prop) {
+  if ((tk_str_eq(tag, WIDGET_TYPE_EDIT) || tk_str_eq(tag, WIDGET_TYPE_SPIN_BOX)) &&
+      tk_str_eq(prop, WIDGET_PROP_INPUT_TYPE)) {
+    return TRUE;
+  } else if (tk_str_eq(prop, WIDGET_PROP_OPTIONS)) {
+    return TRUE;
+  } else if (tk_str_eq(prop, "visible_nr")) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
   char c = '\0';
   uint32_t i = 0;
@@ -70,6 +84,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   widget_layout_parse(&(desc.layout), x, y, w, h);
   ui_builder_on_widget_start(b->ui_builder, &desc);
 
+  /*set highest priority props*/
   i = 0;
   while (attrs[i] != NULL) {
     key = attrs[i];
@@ -83,11 +98,36 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
       }
     }
 
-    ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
-    ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
+    if (is_precedence_prop(tag, key)) {
+      ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
+      ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
+    }
 
     i += 2;
   }
+
+  /*set normal priority props*/
+  i = 0;
+  while (attrs[i] != NULL) {
+    key = attrs[i];
+    value = attrs[i + 1];
+    c = key[0];
+
+    if (key[1] == '\0') {
+      if (c == 'x' || c == 'y' || c == 'w' || c == 'h') {
+        i += 2;
+        continue;
+      }
+    }
+
+    if (!is_precedence_prop(tag, key)) {
+      ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
+      ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
+    }
+
+    i += 2;
+  }
+
   ui_builder_on_widget_prop_end(b->ui_builder);
 
   return;

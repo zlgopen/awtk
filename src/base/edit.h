@@ -109,7 +109,7 @@ typedef struct _edit_t {
   /**
    * @property {input_type_t} input_type
    * @annotation ["set_prop","get_prop","persitent","design"]
-   * 输入类型。
+   * 输入类型。XXX：需要在min/max/step之前设置。
    */
 
   /**
