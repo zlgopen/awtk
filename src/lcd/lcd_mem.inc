@@ -136,7 +136,7 @@ static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   pixel_t* fbuff = lcd_mem_init_drawing_fb(lcd, NULL);
   pixel_t p = fbuff[y * lcd->w + x];
 
-  return to_color(p);
+  return color_init(p.r, p.g, p.b, 0xff);
 }
 
 static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -207,12 +207,12 @@ static pixman_image_t* to_pixman_image(const uint8_t* data, bitmap_format_t form
   pixman_format_code_t f = PIXMAN_b8g8r8a8;
 
   switch (format) {
-    case BITMAP_FMT_RGBA: {
+    case BITMAP_FMT_RGBA8888: {
       bpp = 4;
       f = PIXMAN_r8g8b8a8;
       break;
     }
-    case BITMAP_FMT_BGRA: {
+    case BITMAP_FMT_BGRA8888: {
       bpp = 4;
       f = PIXMAN_a8r8g8b8;
       break;
@@ -314,18 +314,12 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
   lcd_mem_init_drawing_fb(lcd, &fb);
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
-
+  uint32_t bpp = bitmap_get_bpp(&fb);
   memset(img, 0x00, sizeof(bitmap_t));
   img->format = fb.format;
   img->flags = BITMAP_FLAG_OPAQUE;
 
-  if (img->format == BITMAP_FMT_RGBA || img->format == BITMAP_FMT_BGRA) {
-    size = lcd->w * lcd->h * 4;
-  } else if (img->format == BITMAP_FMT_RGB565) {
-    size = lcd->w * lcd->h * 2;
-  } else {
-    return_value_if_fail(size > 0, RET_FAIL);
-  }
+  size = lcd->w * lcd->h * bpp;
 
   data = TKMEM_ALLOC(size);
   return_value_if_fail(data != NULL, RET_FAIL);

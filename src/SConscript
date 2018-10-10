@@ -27,12 +27,10 @@ elif os.environ['LCD'] == 'SDL':
 else:
   sources += ['window_animators/window_animator_fb.c'];
 
-sources += ['lcd/lcd_mem_rgba8888.c', 
-  'lcd/lcd_mem_bgra8888.c', 
-  'lcd/lcd_mem_rgb565.c',
+sources += [
   'vgcanvas/vgcanvas_nanovg.c',
   'input_methods/input_method_creator.c'
-  ];
+  ] + Glob('lcd/lcd_mem_*.c') ;
 
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')

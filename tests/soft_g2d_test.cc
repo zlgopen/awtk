@@ -28,11 +28,11 @@ static void init_image(bitmap_t* fb, bitmap_t* img, int format) {
 }
 
 static void init_image16(bitmap_t* fb, bitmap_t* img) {
-  init_image(fb, img, BITMAP_FMT_RGB565);
+  init_image(fb, img, BITMAP_FMT_BGR565);
 }
 
 static void init_image32(bitmap_t* fb, bitmap_t* img) {
-  init_image(fb, img, BITMAP_FMT_RGBA);
+  init_image(fb, img, BITMAP_FMT_BGRA8888);
 }
 
 TEST(Soft2d, rotate16) {

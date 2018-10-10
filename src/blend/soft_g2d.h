@@ -32,11 +32,6 @@ ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
 ret_t soft_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
 ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha);
 
-ret_t blend_image_8888_565(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
-ret_t blend_image_8888_8888(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
-ret_t blend_image_565_565(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
-ret_t blend_image_565_8888(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a);
-
 END_C_DECLS
 
 #endif /*TK_BLEND_H*/

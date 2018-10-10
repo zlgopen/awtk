@@ -51,7 +51,7 @@ typedef struct _switch_t {
   float_t max_xoffset_ratio;
 
   /**
-   * @property {int32_t} 圆角半径。
+   * @property {int32_t} round_radius
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 图片的圆角半径。
    */

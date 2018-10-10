@@ -25,7 +25,7 @@ static void runTest(int32_t w, int32_t h, int32_t bpp) {
   int32_t size = w * h * bpp;
   uint8_t* data = (uint8_t*)malloc(size);
   memset(data, 0xff, size);
-  NVGcontext* vg = nvgCreateAGGE(w, h, bpp == 2 ? AGGE_RGB565 : AGGE_RGBA8888, data);
+  NVGcontext* vg = nvgCreateAGGE(w, h, bpp == 2 ? AGGE_BGR565 : AGGE_RGBA8888, data);
   int img = nvgCreateImage(vg, "demos/rgb.png", 0);
 
   nvgBeginFrame(vg, w, h, 1);

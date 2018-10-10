@@ -19,7 +19,9 @@ typedef enum _agge_bitmap_format_t {
   AGGE_RGBA8888 = 0,
   AGGE_BGRA8888,
   AGGE_RGB888,
-  AGGE_RGB565
+  AGGE_BGR888,
+  AGGE_RGB565,
+  AGGE_BGR565
 } agge_bitmap_format_t;
 
 NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, agge_bitmap_format_t format, uint8_t* data);

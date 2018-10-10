@@ -24,11 +24,20 @@
 #include "base/fs.h"
 #include "base/mem.h"
 #include "base/utils.h"
+#include "base/timer.h"
 #include "assets.h"
 
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
+
+static ret_t on_timer(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+
+  widget_invalidate(widget, NULL);
+
+  return RET_REPEAT;
+}
 
 widget_t* preview_ui(const char* filename) {
   str_t s;
@@ -59,6 +68,8 @@ widget_t* preview_ui(const char* filename) {
   } else {
     str_reset(&s);
   }
+
+  timer_add(on_timer, builder->root, 1000);
 
   return builder->root;
 }

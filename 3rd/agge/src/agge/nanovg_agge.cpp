@@ -243,7 +243,7 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
-      case NVG_TEXTURE_RGB565: {
+      case NVG_TEXTURE_BGR565: {
         typedef agge::bitmap<agge::pixel16_bgr565, agge::raw_bitmap> bgr565_bitmap_t;
         bgr565_bitmap_t src(tex->width, tex->height, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgr565_bitmap_t> color(&src, (float*)invxform);
@@ -390,7 +390,13 @@ static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int3
       params->renderFill = renderFill<agge::pixel24_rgb>;
       break;
     }
-    case AGGE_RGB565: {
+    case AGGE_BGR888: {
+      params->renderTriangles = renderTriangles<agge::pixel24_bgr>;
+      params->renderStroke = renderStroke<agge::pixel24_bgr>;
+      params->renderFill = renderFill<agge::pixel24_bgr>;
+      break;
+    }
+    case AGGE_BGR565: {
       params->renderTriangles = renderTriangles<agge::pixel16_bgr565>;
       params->renderStroke = renderStroke<agge::pixel16_bgr565>;
       params->renderFill = renderFill<agge::pixel16_bgr565>;

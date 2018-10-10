@@ -85,7 +85,7 @@ static ret_t image_loader_stb_load(image_loader_t* l, const uint8_t* buff, uint3
 
   image->w = w;
   image->h = h;
-  image->format = BITMAP_FMT_RGBA;
+  image->format = BITMAP_FMT_RGBA8888;
   image->flags = BITMAP_FLAG_IMMUTABLE;
 
   nr = w * h;

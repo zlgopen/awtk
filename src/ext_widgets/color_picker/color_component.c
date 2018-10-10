@@ -159,9 +159,9 @@ static ret_t color_component_init_image(bitmap_t* image, const char* name, int32
   image->flags = 0;
   image->name = name;
 #ifdef WITH_BITMAP_BGRA
-  image->format = BITMAP_FMT_BGRA;
+  image->format = BITMAP_FMT_BGRA8888;
 #else
-  image->format = BITMAP_FMT_RGBA;
+  image->format = BITMAP_FMT_RGBA8888;
 #endif /*WITH_BITMAP_BGRA*/
   image->data = (uint8_t*)TKMEM_ALLOC(size);
   return_value_if_fail(image->data != NULL, RET_OOM);

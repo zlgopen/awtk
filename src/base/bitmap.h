@@ -44,25 +44,45 @@ typedef enum _bitmap_format_t {
    */
   BITMAP_FMT_NONE = 0,
   /**
-   * @const BITMAP_FMT_RGBA
+   * @const BITMAP_FMT_RGBA8888
    * 一个像素占用4个字节，RGBA占一个字节，按内存地址递增。
    */
-  BITMAP_FMT_RGBA,
+  BITMAP_FMT_RGBA8888,
   /**
-   * @const BITMAP_FMT_BGRA
+   * @const BITMAP_FMT_ABGR8888
+   * 一个像素占用4个字节，ABGR占一个字节，按内存地址递增。
+   */
+  BITMAP_FMT_ABGR8888,
+  /**
+   * @const BITMAP_FMT_BGRA8888
    * 一个像素占用4个字节，BGRA占一个字节，按内存地址递增。
    */
-  BITMAP_FMT_BGRA,
+  BITMAP_FMT_BGRA8888,
+  /**
+   * @const BITMAP_FMT_ARGB8888
+   * 一个像素占用4个字节，ARGB占一个字节，按内存地址递增。
+   */
+  BITMAP_FMT_ARGB8888,
   /**
    * @const BITMAP_FMT_RGB565
-   * 一个像素占用2个字节，RGB分别占用5,6,5位。
+   * 一个像素占用2个字节，RGB分别占用5,6,5位, 按内存地址递增。
    */
   BITMAP_FMT_RGB565,
   /**
-   * @const BITMAP_FMT_RGB
+   * @const BITMAP_FMT_BGR565
+   * 一个像素占用2个字节，BGR分别占用5,6,5位, 按内存地址递增。
+   */
+  BITMAP_FMT_BGR565,
+  /**
+   * @const BITMAP_FMT_RGB888
    * 一个像素占用3个字节，RGB占一个字节，按内存地址递增。
    */
-  BITMAP_FMT_RGB,
+  BITMAP_FMT_RGB888,
+  /**
+   * @const BITMAP_FMT_BGR888
+   * 一个像素占用3个字节，RGB占一个字节，按内存地址递增。
+   */
+  BITMAP_FMT_BGR888
 } bitmap_format_t;
 
 /**
@@ -144,6 +164,7 @@ struct _bitmap_t {
 
   /*private members*/
 
+  bool_t should_free_data;
   bool_t should_free_handle;
   /* 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。*/
   void* specific;
@@ -275,9 +296,11 @@ typedef enum _image_draw_type_t {
   IMAGE_DRAW_PATCH3_Y_SCALE_X
 } image_draw_type_t;
 
-ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output);
-
+uint32_t bitmap_get_bpp(bitmap_t* bitmap);
 ret_t bitmap_rgba_to_bgra(bitmap_t* image);
+ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output);
+bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
+ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 
 END_C_DECLS
 

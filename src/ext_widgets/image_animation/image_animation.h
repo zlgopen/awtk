@@ -168,14 +168,14 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence);
 ret_t image_animation_play(widget_t* widget);
 
 /**
- * @method image_animation_play
+ * @method image_animation_stop
  * 停止(并重置index为0)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_animation对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_animation_play(widget_t* widget);
+ret_t image_animation_stop(widget_t* widget);
 
 /**
  * @method image_animation_pause

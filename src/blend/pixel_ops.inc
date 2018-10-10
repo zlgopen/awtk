@@ -25,28 +25,39 @@ static inline pixel_t blend_color(color_t bg, color_t fg, uint8_t a) {
   uint8_t r = (bg.rgba.r * minus_a + fg.rgba.r * a) >> 8;
   uint8_t g = (bg.rgba.g * minus_a + fg.rgba.g * a) >> 8;
   uint8_t b = (bg.rgba.b * minus_a + fg.rgba.b * a) >> 8;
+  pixel_t p = pixel_from_rgb(r, g, b);
 
-  return rgb_to_pixel(r, g, b);
+  return p;
 }
 
 static inline pixel_t blend_pixel(pixel_t pixel, color_t c) {
   uint8_t a = c.rgba.a;
   uint8_t minus_a = 0xff - a;
-  color_t bg = to_color(pixel);
+  rgba_t rgba = pixel_to_rgba(pixel);
 
-  uint8_t r = (bg.rgba.r * minus_a + c.rgba.r * a) >> 8;
-  uint8_t g = (bg.rgba.g * minus_a + c.rgba.g * a) >> 8;
-  uint8_t b = (bg.rgba.b * minus_a + c.rgba.b * a) >> 8;
+  uint8_t r = (rgba.r * minus_a + c.rgba.r * a) >> 8;
+  uint8_t g = (rgba.g * minus_a + c.rgba.g * a) >> 8;
+  uint8_t b = (rgba.b * minus_a + c.rgba.b * a) >> 8;
+  pixel_t p = pixel_from_rgb(r, g, b);
 
-  return rgb_to_pixel(r, g, b);
+  return p;
 }
 
 static inline pixel_t blend_alpha(color_t fg, uint8_t a) {
   uint8_t r = (fg.rgba.r * a) >> 8;
   uint8_t g = (fg.rgba.g * a) >> 8;
   uint8_t b = (fg.rgba.b * a) >> 8;
+  pixel_t p = pixel_from_rgb(r, g, b);
 
-  return rgb_to_pixel(r, g, b);
+  return p;
 }
 
-#define color_to_pixel(c) rgb_to_pixel(c.rgba.r, c.rgba.g, c.rgba.b)
+static inline pixel_t blend_rgba(rgba_t d, rgba_t s, uint8_t a) {
+  uint8_t minus_a = 0xff - a;
+  uint8_t r = (d.r * minus_a + s.r * a) >> 8;
+  uint8_t g = (d.g * minus_a + s.g * a) >> 8;
+  uint8_t b = (d.b * minus_a + s.b * a) >> 8;
+  pixel_t p = pixel_from_rgb(r, g, b);
+
+  return p;
+}

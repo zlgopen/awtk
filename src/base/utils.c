@@ -327,7 +327,7 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp) {
   } else if (bpp == 4) {
     tk_memcpy32((uint32_t*)dst, (uint32_t*)src, size);
   } else {
-    assert(!"not supported yet.");
+    memcpy(dst, src, size * bpp);
   }
 #endif /*HAS_FAST_MEMCPY*/
 

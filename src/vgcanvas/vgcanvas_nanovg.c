@@ -518,12 +518,24 @@ static agge_bitmap_format_t bitmap_format_to_agge(bitmap_format_t format) {
   agge_bitmap_format_t f = AGGE_RGBA8888;
 
   switch (format) {
-    case BITMAP_FMT_RGBA: {
+    case BITMAP_FMT_RGBA8888: {
       f = AGGE_RGBA8888;
       break;
     }
-    case BITMAP_FMT_BGRA: {
+    case BITMAP_FMT_BGRA8888: {
       f = AGGE_BGRA8888;
+      break;
+    }
+    case BITMAP_FMT_BGR888: {
+      f = AGGE_BGR888;
+      break;
+    }
+    case BITMAP_FMT_RGB888: {
+      f = AGGE_RGB888;
+      break;
+    }
+    case BITMAP_FMT_BGR565: {
+      f = AGGE_BGR565;
       break;
     }
     case BITMAP_FMT_RGB565: {
@@ -596,19 +608,19 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   }
 
   switch (img->format) {
-    case BITMAP_FMT_RGBA: {
+    case BITMAP_FMT_RGBA8888: {
       f = NVG_TEXTURE_RGBA;
       break;
     }
-    case BITMAP_FMT_BGRA: {
+    case BITMAP_FMT_BGRA8888: {
       f = NVG_TEXTURE_BGRA;
       break;
     }
-    case BITMAP_FMT_RGB565: {
-      f = NVG_TEXTURE_RGB565;
+    case BITMAP_FMT_BGR565: {
+      f = NVG_TEXTURE_BGR565;
       break;
     }
-    case BITMAP_FMT_RGB: {
+    case BITMAP_FMT_RGB888: {
       f = NVG_TEXTURE_RGB;
       break;
     }

@@ -520,8 +520,35 @@
         }
       },
       {
+        "name": "subtype",
+        "desc": "子类型。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "is_in_rom",
+        "desc": "资源是否在ROM中。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
         "name": "size",
         "desc": "大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "refcount",
+        "desc": "引用计数。is_in_rom == FALSE时才有效。",
         "type": "uint32_t",
         "annotation": {
           "readable": true,
@@ -815,16 +842,36 @@
         "name": "BITMAP_FMT_NONE"
       },
       {
-        "desc": "一个像素占用4个字节，RGBA四个通道占一个字节，按内存地址递增。",
-        "name": "BITMAP_FMT_RGBA"
+        "desc": "一个像素占用4个字节，RGBA占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_RGBA8888"
       },
       {
-        "desc": "一个像素占用4个字节，BGRA四个通道占一个字节，按内存地址递增。",
-        "name": "BITMAP_FMT_BGRA"
+        "desc": "一个像素占用4个字节，ABGR占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_ABGR8888"
       },
       {
-        "desc": "一个像素占用2个字节，RGB分别占用5,6,5位。",
+        "desc": "一个像素占用4个字节，BGRA占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_BGRA8888"
+      },
+      {
+        "desc": "一个像素占用4个字节，ARGB占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_ARGB8888"
+      },
+      {
+        "desc": "一个像素占用2个字节，RGB分别占用5,6,5位, 按内存地址递增。",
         "name": "BITMAP_FMT_RGB565"
+      },
+      {
+        "desc": "一个像素占用2个字节，BGR分别占用5,6,5位, 按内存地址递增。",
+        "name": "BITMAP_FMT_BGR565"
+      },
+      {
+        "desc": "一个像素占用3个字节，RGB占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_RGB888"
+      },
+      {
+        "desc": "一个像素占用3个字节，RGB占一个字节，按内存地址递增。",
+        "name": "BITMAP_FMT_BGR888"
       }
     ],
     "header": "base/bitmap.h",
@@ -1679,6 +1726,80 @@
     "annotation": {
       "scriptable": true
     }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建calibration_win对象",
+        "name": "calibration_win_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "calibration_win_on_done_t",
+            "name": "on_done",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置校准完成的处理函数。",
+        "name": "calibration_win_set_on_done",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/calibration_win.h",
+    "desc": "电阻屏校准屏幕。",
+    "name": "calibration_win_t",
+    "parent": "widget_t"
   },
   {
     "type": "class",
@@ -3626,7 +3747,7 @@
       },
       {
         "name": "input_type",
-        "desc": "输入类型。",
+        "desc": "输入类型。XXX：需要在min/max/step之前设置。",
         "type": "input_type_t",
         "annotation": {
           "set_prop": true,
@@ -7018,6 +7139,27 @@
             "type": "lcd_t*",
             "name": "lcd",
             "desc": "lcd对象。"
+          },
+          {
+            "type": "draw_image_info_t*",
+            "name": "info",
+            "desc": "绘制参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制图片。",
+        "name": "lcd_draw_image_matrix",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
           }
         ],
         "annotation": {},
@@ -7067,6 +7209,24 @@
         },
         "desc": "对于double fb，如果硬件支持swap，在LCD_DRAW_SWAP模式下，该函数用于切换fb。",
         "name": "lcd_swap",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": "flush。",
+        "name": "lcd_flush",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -11146,6 +11306,42 @@
             "desc": "vgcanvas对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "高度"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "如果data是framebuffer，format指定data的格式。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "framebuffer或其它ctx。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重新初始化，系统内部调用。",
+        "name": "vgcanvas_reinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          },
+          {
             "type": "rect_t*",
             "name": "dirty_rect",
             "desc": "需要绘制的区域。"
@@ -11779,22 +11975,6 @@
             "type": "vgcanvas_t*",
             "name": "vg",
             "desc": "vgcanvas对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "fill。为了让不同实现上的效果一致，自动清除之前的path。",
-        "name": "vgcanvas_fill",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "vgcanvas_t*",
-            "name": "vg",
-            "desc": "vgcanvas对象。"
           },
           {
             "type": "float_t",
@@ -11834,8 +12014,50 @@
           }
         ],
         "annotation": {},
-        "desc": "stroke。为了让不同实现上的效果一致，自动清除之前的path。",
+        "desc": "填充多边形。",
+        "name": "vgcanvas_fill",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "画线。",
         "name": "vgcanvas_stroke",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "stroke",
+            "desc": "TRUE表示画线FALSE表示填充。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。",
+        "name": "vgcanvas_paint",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -13162,6 +13384,10 @@
       {
         "desc": "边框颜色(仅仅使用于color tile)。",
         "name": "WIDGET_PROP_BORDER_COLOR"
+      },
+      {
+        "desc": "延迟时间(毫秒)",
+        "name": "WIDGET_PROP_DELAY"
       }
     ],
     "header": "base/widget_consts.h",
@@ -13363,6 +13589,10 @@
       {
         "desc": "",
         "name": "WIDGET_TYPE_COLUMN"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_TYPE_CALIBRATION_WIN"
       }
     ],
     "header": "base/widget_consts.h",
@@ -16235,6 +16465,528 @@
           }
         ],
         "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建guage对象",
+        "name": "guage_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "guage对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为guage对象(供脚本语言使用)。",
+        "name": "guage_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "guage对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "angle",
+            "desc": "指针角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
+        "name": "guage_set_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "angle",
+            "desc": "指针的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指针的图片。",
+        "name": "guage_set_pointer_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "bg_image",
+            "desc": "背景图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置背景图片。",
+        "name": "guage_set_bg_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "angle",
+        "desc": "指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "bg_image",
+        "desc": "背景图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "pointer_image",
+        "desc": "指针图片。图片须垂直向上，图片的中心点为旋转方向。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "guage/guage.h",
+    "desc": "仪表控件。",
+    "name": "guage_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建image_animation对象",
+        "name": "image_animation_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop",
+            "desc": "是否循环播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否循环播放。",
+        "name": "image_animation_set_loop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "图片前缀。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置图片前缀。",
+        "name": "image_animation_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "interval",
+            "desc": "间隔时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置播放间隔时间。",
+        "name": "image_animation_set_interval",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "delay",
+            "desc": "延迟播放时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置延迟播放时间(仅适用于自动播放)。",
+        "name": "image_animation_set_delay",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "auto_play",
+            "desc": "是否自动播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否自动播放。",
+        "name": "image_animation_set_auto_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "sequence",
+            "desc": "播放序列。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。",
+        "name": "image_animation_set_sequence",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "播放。",
+        "name": "image_animation_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "停止(并重置index为0)。",
+        "name": "image_animation_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "暂停。",
+        "name": "image_animation_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为image_animation对象(供脚本语言使用)。",
+        "name": "image_animation_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_animation对象。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "image",
+        "desc": "图片名称的前缀。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "sequence",
+        "desc": "播放的序列，字符可选值为:0-9,a-z,A-Z。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop",
+        "desc": "是否循环播放。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": "是否自动播放。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "interval",
+        "desc": "每张图片播放的时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "delay",
+        "desc": "自动播放时延迟播放的时间(毫秒)。",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "image_animation/image_animation.h",
+    "desc": "图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。",
+    "name": "image_animation_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
           "constructor": true
         },
         "desc": "创建candidates对象",
@@ -17667,6 +18419,880 @@
     "header": "slide_view/slide_view.h",
     "desc": "slide view。",
     "name": "slide_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建switch对象",
+        "name": "switch_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "switch对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "value",
+            "desc": "值"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的值。",
+        "name": "switch_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "switch对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换switch对象(供脚本语言使用)。",
+        "name": "switch_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "switch对象。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max_xoffset_ratio",
+        "desc": "当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "round_radius",
+        "desc": "图片的圆角半径。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "switch/switch.h",
+    "desc": "开关控件。",
+    "name": "switch_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建text_selector对象",
+        "name": "text_selector_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换text_selector对象(供脚本语言使用)。",
+        "name": "text_selector_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "text_selector对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "重置所有选项。",
+        "name": "text_selector_reset_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取选项个数。",
+        "name": "text_selector_count_options",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回选项个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "追加一个选项。",
+        "name": "text_selector_append_option",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "char*",
+            "name": "options",
+            "desc": "选项。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置选项。",
+        "name": "text_selector_set_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "start",
+            "desc": "起始值。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "个数。"
+          },
+          {
+            "type": "int32_t",
+            "name": "step",
+            "desc": "步长。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置一系列的整数选项。",
+        "name": "text_selector_set_range_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "选项的索引。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取第index个选项。",
+        "name": "text_selector_get_option",
+        "return": {
+          "type": "text_selector_option_t*",
+          "desc": "成功返回选项，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取text_selector的值。",
+        "name": "text_selector_get_value",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置text_selector的值。",
+        "name": "text_selector_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取text_selector的文本。",
+        "name": "text_selector_get_text",
+        "return": {
+          "type": "char*",
+          "desc": "返回文本。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置text_selector的文本。",
+        "name": "text_selector_set_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "选项的索引。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置第index个选项为当前选中的选项。",
+        "name": "text_selector_set_selected_index",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "visible_nr",
+            "desc": "选项数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置可见的选项数。",
+        "name": "text_selector_set_visible_nr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "visible_nr",
+        "desc": "可见的选项数量(只能是3或者5，缺省为5)。",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected_index",
+        "desc": "当前选中的选项。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "options",
+        "desc": "设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。对于数值选项，也可以指定一个范围，用『-』分隔起始值和结束值，如：\"1-7\"表示1到7。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "text_selector/text_selector.h",
+    "desc": "文本选择器控件，通常用于选择年月日等。XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。",
+    "name": "text_selector_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建time_clock对象",
+        "name": "time_clock_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "time_clock对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为time_clock对象(供脚本语言使用)。",
+        "name": "time_clock_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "time_clock对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "hour",
+            "desc": "小时的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置小时的值。",
+        "name": "time_clock_set_hour",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "minute",
+            "desc": "分钟的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置分钟的值。",
+        "name": "time_clock_set_minute",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "second",
+            "desc": "秒的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置秒的值。",
+        "name": "time_clock_set_second",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "hour",
+            "desc": "小时的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置小时的图片。",
+        "name": "time_clock_set_hour_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "minute_image",
+            "desc": "分钟的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置分钟的图片。",
+        "name": "time_clock_set_minute_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "second_image",
+            "desc": "秒的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置秒的图片。",
+        "name": "time_clock_set_second_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "bg_image",
+            "desc": "背景图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置背景图片。",
+        "name": "time_clock_set_bg_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置图片。",
+        "name": "time_clock_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "hour",
+        "desc": "小时。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "minute",
+        "desc": "分钟。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "second",
+        "desc": "秒。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "image",
+        "desc": "中心图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "bg_image",
+        "desc": "背景图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "hour_image",
+        "desc": "时针图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "minute_image",
+        "desc": "分针图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "second_image",
+        "desc": "秒针图片。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "time_clock/time_clock.h",
+    "desc": "时钟控件。",
+    "name": "time_clock_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true

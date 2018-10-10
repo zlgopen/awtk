@@ -20,8 +20,9 @@
  */
 
 #include "lcd/lcd_sdl2.h"
-#include "lcd/lcd_mem_rgb565.h"
-#include "lcd/lcd_mem_rgba8888.h"
+#include "lcd/lcd_mem_bgr565.h"
+#include "lcd/lcd_mem_bgr888.h"
+#include "lcd/lcd_mem_bgra8888.h"
 
 typedef struct _lcd_sdl2_t {
   lcd_t base;
@@ -33,7 +34,6 @@ typedef struct _lcd_sdl2_t {
 static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
   int pitch = 0;
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-
   SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->offline_fb), &pitch);
 
   return RET_OK;
@@ -177,17 +177,24 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->w = (wh_t)w;
   base->h = (wh_t)h;
 
-#ifdef WITH_FB_8888
+#ifdef WITH_FB_BGRA8888
   /*SDL ABGR is rgba from low address to high address*/
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgba8888_create(w, h, FALSE);
+  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgra8888_create(w, h, FALSE);
   lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB=8888\n");
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB_BGRA8888\n");
+#elif defined(WITH_FB_BGR888)
+  /*SDL ABGR is rgba from low address to high address*/
+  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgr888_create(w, h, FALSE);
+  lcd.texture =
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_BGR888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB_BGR888\n");
 #else
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_rgb565_create(w, h, FALSE);
+  /*SDL ABGR is rgba from low address to high address*/
+  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgr565_create(w, h, FALSE);
   lcd.texture =
       SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB=565\n");
+  log_debug("WITH_FB_BGR565\n");
 #endif
 
   base->type = lcd.lcd_mem->base.type;
