@@ -142,6 +142,7 @@ bin\demoui
 * [LCD旋转(横屏与竖屏)](docs/lcd_rotation.md)
 * [AWTK中的输入法](docs/input_method.md)
 * [AWTK内存需求评估指南](docs/memory.md)
+* [AWTK 中的一些惯例](docs/conventions.md)
 * [使用Qt Designer构建AWTK的界面](docs/qt-designer.md)
 
 ### 2.HowTos
