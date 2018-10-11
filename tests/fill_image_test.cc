@@ -29,6 +29,11 @@ static void test_fill_image(bitmap_format_t fmt) {
 
   bitmap_check(b, &r, bg.rgba);
 
+  r = rect_init(0, 0, w, h);
+  ASSERT_EQ(image_fill(b, &r, bg), RET_OK);
+  bitmap_dump(b);
+  bitmap_check(b, &r, bg.rgba);
+
   bitmap_destroy(b);
 }
 

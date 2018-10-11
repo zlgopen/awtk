@@ -47,6 +47,48 @@ TEST(Utils, tk_memset16) {
   check_buff16(buff, val, 11);
 }
 
+static void check_buff24(uint32_t* buff, uint32_t val, uint32_t size) {
+  uint32_t i = 0;
+  uint8_t* p = (uint8_t*)buff;
+  uint8_t* src = (uint8_t*)&(val);
+
+  for (i = 0; i < size; i++) {
+    ASSERT_EQ(p[0], src[0]);
+    ASSERT_EQ(p[1], src[1]);
+    ASSERT_EQ(p[2], src[2]);
+    p += 3;
+  }
+}
+
+TEST(Utils, tk_memset24) {
+  uint32_t buff[32];
+  uint32_t val = 0x123456;
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff, &val, 1);
+  check_buff24(buff, val, 1);
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff + 5, &val, 7);
+  check_buff24(buff + 5, val, 7);
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff + 7, &val, 10);
+  check_buff24(buff + 7, val, 10);
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff + 1, &val, 11);
+  check_buff24(buff + 1, val, 11);
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff + 3, &val, 10);
+  check_buff24(buff + 3, val, 10);
+
+  memset(buff, 0x00, sizeof(buff));
+  tk_memset24(buff, &val, 11);
+  check_buff24(buff, val, 11);
+}
+
 static void check_buff32(uint32_t* buff, uint32_t val, uint32_t size) {
   uint32_t i = 0;
   for (i = 0; i < size; i++) {

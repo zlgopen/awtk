@@ -145,7 +145,11 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
     case BITMAP_FMT_BGR565: {
       switch (img->format) {
         case BITMAP_FMT_BGR565: {
-          return blend_image_bgr565_bgr565(fb, img, dst, src, alpha);
+          if (dst->w == src->w && dst->h == src->h && alpha > 0xf8) {
+            soft_copy_image(fb, img, src, dst->x, dst->y);
+          } else {
+            return blend_image_bgr565_bgr565(fb, img, dst, src, alpha);
+          }
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr565_rgba8888(fb, img, dst, src, alpha);

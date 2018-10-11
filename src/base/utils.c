@@ -242,40 +242,92 @@ char* tk_strdup(const char* str) {
 }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
+  uint32_t n = 0;
+  uint16_t* p = buff;
+  uint8_t* pb = (uint8_t*)buff;
+
   return_value_if_fail(buff != NULL, NULL);
 
-  if (size < 8) {
-    uint32_t i = 0;
+  while ((uint32_t)pb % 4 != 0 && size > 0) {
+    *p = val;
 
-    for (i = 0; i < size; i++) {
-      buff[i] = val;
+    p++;
+    size--;
+    pb += 2;
+  }
+
+  n = size / 8; /*16bytes*/
+  if (n > 0) {
+    uint32_t* p32 = NULL;
+    uint32_t data = val | (val << 16);
+
+    while (n > 0) {
+      p32 = (uint32_t*)pb;
+
+      p32[0] = data;
+      p32[1] = data;
+      p32[2] = data;
+      p32[3] = data;
+
+      n--;
+      pb += 16;
     }
+  }
 
-    return buff;
-  } else {
+  n = size % 8;
+  if (n > 0) {
+    p = (uint16_t*)pb;
+    while (n > 0) {
+      *p = val;
+      p++;
+      n--;
+    }
+  }
+
+  return buff;
+}
+
+uint32_t* tk_memset24(uint32_t* buff, void* val, uint32_t size) {
+  uint32_t n = 0;
+  uint32_t bytes = size * 3;
+  uint8_t* pb = (uint8_t*)buff;
+  uint8_t* src = (uint8_t*)val;
+
+  while ((uint32_t)pb % 4 != 0 && size > 0) {
+    pb[0] = src[0];
+    pb[1] = src[1];
+    pb[2] = src[2];
+
+    pb += 3;
+    size--;
+  }
+
+  bytes = size * 3;
+  n = bytes / 12;
+
+  if (n > 0) {
     uint32_t* p = NULL;
-    uint32_t* end = NULL;
-    uint32_t val32 = (val << 16) | val;
-    uint8_t pad1 = ((size_t)buff) & 0x03;
-    uint8_t pad2 = pad1 ? (size & 0x01) == 0 : (size & 0x01) == 1;
+    uint32_t data0 = src[0] | src[1] << 8 | src[2] << 16 | src[0] << 24;
+    uint32_t data1 = src[1] | src[2] << 8 | src[0] << 16 | src[1] << 24;
+    uint32_t data2 = src[2] | src[0] << 8 | src[1] << 16 | src[2] << 24;
 
-    if (pad1) {
-      buff[0] = val;
-      p = (uint32_t*)(buff + 1);
-    } else {
-      p = (uint32_t*)(buff);
+    while (n > 0) {
+      p = (uint32_t*)pb;
+      p[0] = data0;
+      p[1] = data1;
+      p[2] = data2;
+      pb += 12;
+      n--;
     }
+  }
 
-    if (pad2) {
-      buff[size - 1] = val;
-      end = (uint32_t*)(buff + size - 1);
-    } else {
-      end = (uint32_t*)(buff + size);
-    }
-
-    while (p < end) {
-      *p++ = val32;
-    }
+  bytes = bytes % 12;
+  while (bytes > 0) {
+    pb[0] = src[0];
+    pb[1] = src[1];
+    pb[2] = src[2];
+    pb += 3;
+    bytes -= 3;
   }
 
   return buff;

@@ -39,6 +39,7 @@ char* tk_strndup(const char* str, uint32_t len);
 ret_t tk_str_append(char* str, uint32_t max_len, const char* s);
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size);
+uint32_t* tk_memset24(uint32_t* buff, void* val, uint32_t size);
 uint32_t* tk_memset32(uint32_t* buff, uint32_t val, uint32_t size);
 uint16_t* tk_memcpy16(uint16_t* dst, uint16_t* src, uint32_t size);
 uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);

@@ -1,3 +1,5 @@
+#include "base/utils.h"
+
 static ret_t fill_image(bitmap_t* fb, rect_t* dst, color_t c) {
   int x = 0;
   int y = 0;
@@ -10,12 +12,30 @@ static ret_t fill_image(bitmap_t* fb, rect_t* dst, color_t c) {
   pixel_dst_t* p = (pixel_dst_t*)((fb->data) + (dst->y * fb->w + dst->x) * bpp);
 
   if (a > 0xf8) {
-    for (y = 0; y < h; y++) {
-      for (x = 0; x < w; x++) {
-        /*FIXME: optimization*/
-        *p++ = data;
+    if(fb->w == dst->w && fb->h == dst->h) {
+      uint32_t size = w * h;
+      if (bpp == 2) {
+        tk_memset16((uint16_t*)p, *(uint16_t*)(&data), size);
+      } else if (bpp == 4) {
+        tk_memset32((uint32_t*)p, *(uint32_t*)(&data), size);
+      } else if (bpp == 3) {
+        tk_memset24((uint32_t*)p, &data, size);
+      } else {
+        assert(!"not supported");
       }
-      p += offset;
+    } else {
+      for (y = 0; y < h; y++) {
+        if (bpp == 2) {
+          tk_memset16((uint16_t*)p, *(uint16_t*)(&data), w);
+        } else if (bpp == 4) {
+          tk_memset32((uint32_t*)p, *(uint32_t*)(&data), w);
+        } else if (bpp == 3) {
+          tk_memset24((uint32_t*)p, &data, w);
+        } else {
+          assert(!"not supported");
+        }
+        p += fb->w;
+      }
     }
   } else {
     for (y = 0; y < h; y++) {
