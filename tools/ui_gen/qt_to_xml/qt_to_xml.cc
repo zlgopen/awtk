@@ -35,12 +35,17 @@ typedef struct _key_value_t {
 } key_value_t;
 
 static const key_value_t qt_tk_map[] = {{"QLabel", "label"},
+                                        {"QLineEdit", "edit"},
+                                        {"QWidget", "view"},
+                                        {"QGraphicsView", "image"},
+                                        {"QComboBox", "combo_box"},
                                         {"QPushButton", "button"},
-                                        {"QLineEdit", "label"},
-                                        {"QWidget", "group_box"},
                                         {"QCheckBox", "check_button"},
                                         {"QRadioButton", "radio_button"},
                                         {"QProgressBar", "progress_bar"},
+                                        {"QSpinBox", "spin_box"},
+                                        {"QDoubleSpinBox", "spin_box"},
+                                        {"QSlider", "slider"},
                                         {"QDialog", "dialog"},
                                         {"QMainWindow", "window"},
                                         {NULL, NULL}};
@@ -120,6 +125,13 @@ static void qt_to_xml_on_start(XmlBuilder* thiz, const char* tag, const char** a
     if (b->root == NULL) {
       b->root = b->widget;
     }
+
+    if(string(widget_class) == string("QDoubleSpinBox")) {
+      b->widget->properties = "input_type=\"float\" ";
+    }else if(string(widget_class) == string("QSpinBox")) {
+      b->widget->properties = "input_type=\"int\" ";
+    }
+
   } else if (strcmp(tag, "property") == 0) {
     const char* property = NULL;
     while (attrs[i]) {
