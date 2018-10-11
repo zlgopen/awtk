@@ -191,3 +191,6 @@ layout="r2 c2 s10 m5"
 ```
 ./bin/preview_ui demos/xml/layouts/demo1.xml
 ```
+
+> 优先使用父控件指定的layout参数，父控件有layout参数时，除特殊情况(vbox中的高度和hbox中的宽度)外，忽略子控件的xywh参数。
+
