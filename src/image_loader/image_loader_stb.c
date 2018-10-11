@@ -45,23 +45,23 @@ static ret_t image_stb_destroy(bitmap_t* image) {
 }
 
 static ret_t normalize_image(bitmap_t* image) {
-#ifdef WITH_BITMAP_RGB565
+#ifdef WITH_BITMAP_BGR565
   if (image->flags & BITMAP_FLAG_OPAQUE) {
     uint32_t size = image->w * image->h * 2;
     uint16_t* data = (uint16_t*)TKMEM_ALLOC(size);
     if (data != NULL) {
-      bitmap_rgba_to_rgb565(image, data);
+      bitmap_rgba_to_bgr565(image, data);
       stbi_image_free((uint8_t*)(image->data));
       image->data = (uint8_t*)data;
       image->destroy = image_stb_destroy_free;
     } else {
-      bitmap_rgba_to_rgb565(image, (uint16_t*)(image->data));
+      bitmap_rgba_to_bgr565(image, (uint16_t*)(image->data));
     }
-    image->format = BITMAP_FMT_RGB565;
+    image->format = BITMAP_FMT_BGR565;
 
     return RET_OK;
   }
-#endif /*WITH_BITMAP_RGB565*/
+#endif /*WITH_BITMAP_BGR565*/
 
 #ifdef WITH_BITMAP_BGRA
   bitmap_rgba_to_bgra(image);

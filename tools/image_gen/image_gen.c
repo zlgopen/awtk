@@ -57,13 +57,13 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
 
   if (image->flags & BITMAP_FLAG_OPAQUE) {
     if (image->format == BITMAP_FMT_RGBA8888) {
-      if (bitmap_rgba_to_rgb565(image, (uint16_t*)(header->data)) == RET_OK) {
-        header->format = BITMAP_FMT_RGB565;
+      if (bitmap_rgba_to_bgr565(image, (uint16_t*)(header->data)) == RET_OK) {
+        header->format = BITMAP_FMT_BGR565;
         size = sizeof(uint16_t) * image->w * image->h;
       } else {
-        assert(!"bitmap_rgba_to_rgb565 fail.");
+        assert(!"bitmap_rgba_to_bgr565 fail.");
       }
-    } else if (image->format == BITMAP_FMT_RGB565) {
+    } else if (image->format == BITMAP_FMT_BGR565) {
       size = sizeof(uint16_t) * image->w * image->h;
       memcpy(header->data, image->data, size);
     } else {

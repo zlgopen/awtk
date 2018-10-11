@@ -41,8 +41,8 @@
     DMA2D->IFCR = DMA2D_IFSR_CTCIF; \
   } while (0);
 
-#define PIXEL_FORMAT_ARGB8888 0X00
-#define PIXEL_FORMAT_RGB565 0X02
+#define PIXEL_FORMAT_BGRA8888 0X00
+#define PIXEL_FORMAT_BGR565 0X02
 
 ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint16_t x = 0;
@@ -56,7 +56,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint16_t o_pixsize = 0;
 
   return_value_if_fail(fb != NULL && fb->data != NULL && dst != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA8888,
+  return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
 
   x = dst->x;
@@ -64,13 +64,13 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   w = dst->w;
   h = dst->h;
 
-  if (fb->format == BITMAP_FMT_RGB565) {
+  if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
-    o_format = PIXEL_FORMAT_RGB565;
+    o_format = PIXEL_FORMAT_BGR565;
     color = ((((c.rgba.r) >> 3) << 11) | (((c.rgba.g) >> 2) << 5) | ((c.rgba.b) >> 3));
   } else {
     o_pixsize = 4;
-    o_format = PIXEL_FORMAT_ARGB8888;
+    o_format = PIXEL_FORMAT_BGRA8888;
     color = c.color;
   }
 
@@ -112,9 +112,9 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
 
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA8888,
+  return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_BGRA8888,
+  return_value_if_fail(img->format == BITMAP_FMT_BGR565 || img->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
 
   sx = src->x;
@@ -123,20 +123,20 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   h = src->h;
   iw = img->w;
 
-  if (fb->format == BITMAP_FMT_RGB565) {
+  if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
-    o_format = PIXEL_FORMAT_RGB565;
+    o_format = PIXEL_FORMAT_BGR565;
   } else {
     o_pixsize = 4;
-    o_format = PIXEL_FORMAT_ARGB8888;
+    o_format = PIXEL_FORMAT_BGRA8888;
   }
 
-  if (img->format == BITMAP_FMT_RGB565) {
+  if (img->format == BITMAP_FMT_BGR565) {
     fg_pixsize = 2;
-    fg_format = PIXEL_FORMAT_RGB565;
+    fg_format = PIXEL_FORMAT_BGR565;
   } else {
     fg_pixsize = 4;
-    fg_format = PIXEL_FORMAT_ARGB8888;
+    fg_format = PIXEL_FORMAT_BGRA8888;
   }
 
   o_offline = fb->w - w;
@@ -201,9 +201,9 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
   return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->data != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == BITMAP_FMT_RGB565 || fb->format == BITMAP_FMT_BGRA8888,
+  return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
-  return_value_if_fail(img->format == BITMAP_FMT_RGB565 || img->format == BITMAP_FMT_BGRA8888,
+  return_value_if_fail(img->format == BITMAP_FMT_BGR565 || img->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL); /*not support scale*/
 
@@ -215,20 +215,20 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
   h = src->h;
   iw = img->w;
 
-  if (fb->format == BITMAP_FMT_RGB565) {
+  if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
-    o_format = PIXEL_FORMAT_RGB565;
+    o_format = PIXEL_FORMAT_BGR565;
   } else {
     o_pixsize = 4;
-    o_format = PIXEL_FORMAT_ARGB8888;
+    o_format = PIXEL_FORMAT_BGRA8888;
   }
 
-  if (img->format == BITMAP_FMT_RGB565) {
+  if (img->format == BITMAP_FMT_BGR565) {
     fg_pixsize = 2;
-    fg_format = PIXEL_FORMAT_RGB565;
+    fg_format = PIXEL_FORMAT_BGR565;
   } else {
     fg_pixsize = 4;
-    fg_format = PIXEL_FORMAT_ARGB8888;
+    fg_format = PIXEL_FORMAT_BGRA8888;
   }
 
   o_offline = fb->w - w;

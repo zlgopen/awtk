@@ -298,7 +298,7 @@ typedef enum _image_draw_type_t {
 
 uint32_t bitmap_get_bpp(bitmap_t* bitmap);
 ret_t bitmap_rgba_to_bgra(bitmap_t* image);
-ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output);
+ret_t bitmap_rgba_to_bgr565(bitmap_t* image, uint16_t* output);
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
 ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 

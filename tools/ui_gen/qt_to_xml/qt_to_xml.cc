@@ -126,9 +126,9 @@ static void qt_to_xml_on_start(XmlBuilder* thiz, const char* tag, const char** a
       b->root = b->widget;
     }
 
-    if(string(widget_class) == string("QDoubleSpinBox")) {
+    if (string(widget_class) == string("QDoubleSpinBox")) {
       b->widget->properties = "input_type=\"float\" ";
-    }else if(string(widget_class) == string("QSpinBox")) {
+    } else if (string(widget_class) == string("QSpinBox")) {
       b->widget->properties = "input_type=\"int\" ";
     }
 

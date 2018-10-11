@@ -57,7 +57,7 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
 
 #include "base/pixel_pack_unpack.h"
 
-ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output) {
+ret_t bitmap_rgba_to_bgr565(bitmap_t* image, uint16_t* output) {
   uint32_t i = 0;
   uint16_t* d = output;
   uint32_t nr = image->w * image->h;
