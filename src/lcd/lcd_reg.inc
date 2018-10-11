@@ -223,7 +223,7 @@ static ret_t lcd_reg_draw_image_rgba(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
 static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   if (img->format == BITMAP_FMT_RGB565) {
     return lcd_reg_draw_image_rgb565(lcd, img, src, dst);
-  } else if (img->format == BITMAP_FMT_RGBA) {
+  } else if (img->format == BITMAP_FMT_RGBA8888) {
     return lcd_reg_draw_image_rgba(lcd, img, src, dst);
   } else {
     assert(!"not supported format");

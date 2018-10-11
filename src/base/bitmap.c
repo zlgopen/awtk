@@ -67,7 +67,7 @@ ret_t bitmap_rgba_to_rgb565(bitmap_t* image, uint16_t* output) {
   for (i = 0; i < nr; i++, d++, s++) {
     color_t c;
     c.color = *s;
-    *d = rgb_to_565(c.rgba.r, c.rgba.g, c.rgba.b);
+    *d = rgb_to_bgr565(c.rgba.r, c.rgba.g, c.rgba.b);
   }
 
   return RET_OK;
