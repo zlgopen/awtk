@@ -146,15 +146,12 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       switch (img->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_bgr565_bgr565(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr565_rgba8888(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgr565_bgra8888(fb, img, dst, src, alpha);
-          break;
         }
         default:
           break;
@@ -165,15 +162,12 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       switch (img->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_bgr888_bgr565(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr888_rgba8888(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgr888_bgra8888(fb, img, dst, src, alpha);
-          break;
         }
         default:
           break;
@@ -184,15 +178,12 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       switch (img->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_bgra8888_bgr565(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgra8888_rgba8888(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgra8888_bgra8888(fb, img, dst, src, alpha);
-          break;
         }
         default:
           break;
@@ -203,15 +194,12 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       switch (img->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_rgba8888_bgr565(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_rgba8888_rgba8888(fb, img, dst, src, alpha);
-          break;
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_rgba8888_bgra8888(fb, img, dst, src, alpha);
-          break;
         }
         default:
           break;
