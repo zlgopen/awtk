@@ -1,0 +1,5 @@
+<window theme="big_font">
+  <button x="c" y="10" w="100%" h="128" style="bigt" text="hellow123" />
+  <button x="c" y="m" w="100%" h="128" style="big" text="hellow123" />
+  <button x="c" y="bottom:10" w="100%" h="128" style="bigb" text="hellow123" />
+</window>

@@ -1,0 +1,24 @@
+
+<button>
+  <style name="bigt" border_color="#a0a0a0"  text_color="black" font_size="96" text_align_v="top">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="bigb" border_color="#a0a0a0"  text_color="black" font_size="96" text_align_v="bottom">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="big" border_color="#a0a0a0"  text_color="black" font_size="96">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+</button>

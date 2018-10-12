@@ -9,6 +9,7 @@
 #include "assets/inc/styles/calibration.data"
 #include "assets/inc/styles/tab_list.data"
 #include "assets/inc/styles/default.data"
+#include "assets/inc/styles/big_font.data"
 #include "assets/inc/styles/tab_top_compact.data"
 #include "assets/inc/styles/dialog.data"
 #include "assets/inc/styles/tab_top.data"
@@ -52,6 +53,7 @@
 #include "assets/inc/ui/scroll_bar_h.data"
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/text_selector.data"
+#include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
 #include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/selectm.data"
@@ -268,17 +270,17 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -325,6 +327,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_scroll_bar_h);
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_text_selector);
+  assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
   assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_selectm);
@@ -455,6 +458,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_calibration);
   assets_manager_add(rm, style_tab_list);
   assets_manager_add(rm, style_default);
+  assets_manager_add(rm, style_big_font);
   assets_manager_add(rm, style_tab_top_compact);
   assets_manager_add(rm, style_dialog);
   assets_manager_add(rm, style_tab_top);
