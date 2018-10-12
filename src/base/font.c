@@ -31,7 +31,7 @@ int32_t font_get_baseline(font_t* f, uint16_t font_size) {
   if (f != NULL && f->get_baseline != NULL) {
     return f->get_baseline(f, font_size);
   } else {
-    return font_size * 0.8;
+    return font_size;
   }
 }
 
