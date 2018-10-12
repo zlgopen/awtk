@@ -23,7 +23,7 @@
 #define LCD_SDL_H
 
 #include "base/lcd.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 BEGIN_C_DECLS
 

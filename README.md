@@ -72,10 +72,10 @@ scons
 
 ### Ubuntu
 
-如果没有安装scons和libsdl2-dev，请在终端运行下面的命令：
+如果没有安装scons和依赖的软件包，请在终端运行下面的命令：
 
 ```
-sudo apt-get install scons libsdl2-dev
+sudo apt-get install scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
 ```
 
 编译运行(在终端下，进入awtk所在的目录，并运行下列命令)：

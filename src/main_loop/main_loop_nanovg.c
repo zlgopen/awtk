@@ -24,9 +24,9 @@
 #include "main_loop/main_loop_nanovg.h"
 #include "main_loop/main_loop_simple.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL_opengl_glext.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
 
 #define LOOP_SDL_WINDOW(loop) ((SDL_Window*)(((main_loop_simple_t*)loop)->user1))
 #define LOOP_SDL_GLCONTEXT(loop) ((SDL_Window*)(((main_loop_simple_t*)loop)->user2))
@@ -69,7 +69,8 @@ static ret_t main_loop_nanovg_create_window(main_loop_simple_t* l) {
   }
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-    SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+    log_debug("Failed to initialize SDL: %s", SDL_GetError());
+    exit(0);
     return RET_FAIL;
   }
 

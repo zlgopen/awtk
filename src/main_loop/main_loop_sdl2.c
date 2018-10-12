@@ -26,7 +26,7 @@
 #include "lcd/lcd_sdl2.h"
 #include "base/idle.h"
 #include "base/timer.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #define LOOP_SDL_WINDOW(loop) ((SDL_Window*)(((main_loop_simple_t*)loop)->user1))
 #define LOOP_SDL_RENDER(loop) ((SDL_Renderer*)(((main_loop_simple_t*)loop)->user2))
