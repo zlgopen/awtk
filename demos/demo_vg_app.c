@@ -19,8 +19,9 @@
  *
  */
 
-#include "base/window.h"
 #include "base/view.h"
+#include "base/timer.h"
+#include "base/window.h"
 #include "base/image_manager.h"
 
 static ret_t on_paint_rect(void* ctx, event_t* e) {
@@ -424,6 +425,7 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   canvas_t* c = evt->c;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
+  vgcanvas_save(vg);
   vgcanvas_set_line_width(vg, 1);
   vgcanvas_set_stroke_color(vg, color_init(0, 0xff, 0, 0xff));
   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
@@ -441,6 +443,7 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_translate(vg, 0, 100);
 
   draw_text(vg);
+  vgcanvas_restore(vg);
 
   return RET_OK;
 }
@@ -459,9 +462,9 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   rect_t r = rect_init(10, 10, img.w, img.h);
   canvas_draw_image(c, &img, &s, &r);
 
+  vgcanvas_save(vg);
   vgcanvas_translate(vg, 0, 100);
 
-  vgcanvas_save(vg);
   vgcanvas_set_line_width(vg, 1);
   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
   vgcanvas_rect(vg, 5, 5, 100, 100);
@@ -512,12 +515,22 @@ static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_timer(const timer_info_t* timer) {
+  widget_t* widget = WIDGET(timer->ctx);
+
+  widget_invalidate(widget, NULL);
+
+  return RET_REPEAT;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
-  widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
-  // widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+ // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
+  widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+
+  timer_add(on_timer, win, 500);
 
   return RET_OK;
 }

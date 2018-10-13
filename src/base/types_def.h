@@ -35,6 +35,8 @@
 
 #ifdef HAS_STDIO
 #include <stdio.h>
+#else
+#define STBI_NO_STDIO
 #endif /*HAS_STDIO*/
 
 #include <stdlib.h>

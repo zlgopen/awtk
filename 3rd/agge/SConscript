@@ -3,11 +3,7 @@ import os
 env = DefaultEnvironment().Clone()
 LIB_DIR = os.environ['LIB_DIR'];
 BIN_DIR = os.environ['BIN_DIR'];
-SOURCES = Glob('src/agge/*.cpp')
+
+SOURCES = Glob('agge/*.cpp')
 env.Library(os.path.join(LIB_DIR, 'agge'), SOURCES);
 
-env['LIBS'] = ['agge'] + env['LIBS']
-
-env.Program(os.path.join(BIN_DIR, 'agge_demo_stroke'), Glob('demos/demo_stroke.c'));
-env.Program(os.path.join(BIN_DIR, 'agge_demo_fill'), Glob('demos/demo_fill.c'));
-env.Program(os.path.join(BIN_DIR, 'agge_demo_draw_image'), Glob('demos/demo_draw_image.c'));

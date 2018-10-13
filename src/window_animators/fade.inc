@@ -24,7 +24,7 @@ static ret_t window_animator_open_fade_draw_prev(window_animator_t* wa) {
     src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
     dst = rect_init(win->x, win->y, win->w, win->h);
   }
-#endif /**/
+#endif /*WITH_NANOVG_GL*/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
   return RET_OK;
@@ -52,7 +52,7 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   global_alpha = alpha * 0xff;
   lcd_set_global_alpha(c->lcd, global_alpha);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
-#endif
+#endif/*WITH_NANOVG_GL*/
 
   return RET_OK;
 }

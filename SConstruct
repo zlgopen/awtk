@@ -32,7 +32,7 @@ COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" -DHAS_STD_MALLOC -DWITH_SDL -DWIT
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE -DWITH_STB_FONT -DWITH_VGCANVAS -DWITH_UNICODE_BREAK '
 
 if LCD == 'GL':
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_NANOVG_GL3 -DWITHOUT_NANOVG_GLES3 -DWITH_VGCANVAS_LCD'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG -DWITH_NANOVG_GL3 -DWITH_NANOVG_GL -DWITH_VGCANVAS_LCD'
 else:
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_BITMAP_BGRA1 -DWITH_NANOVG_AGGE -DWITH_NANOVG_SOFT'
   if FRAME_BUFFER_FORMAT=='bgra8888':
@@ -86,19 +86,23 @@ elif OS_NAME == 'Windows':
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[LIB_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
-LIBS=['awtk', 'gpinyin', 'awtk', 'agge', 'linebreak', 'nanovg', 'SDL2', 'glad'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'agge', 'linebreak', 'nanovg-agge', 'nanovg', 'SDL2', 'glad'] + OS_LIBS
 
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
   TK_3RD_ROOT, 
   joinPath(TK_SRC, 'ext_widgets'), 
-  joinPath(TK_3RD_ROOT, 'nanovg/src'), 
+  joinPath(TK_3RD_ROOT, 'agge'), 
+  joinPath(TK_3RD_ROOT, 'nanovg'), 
+  joinPath(TK_3RD_ROOT, 'nanovg/base'), 
+  joinPath(TK_3RD_ROOT, 'nanovg/gl'), 
+  joinPath(TK_3RD_ROOT, 'nanovg/agge'), 
   joinPath(TK_3RD_ROOT, 'SDL/src'), 
   joinPath(TK_3RD_ROOT, 'SDL/include'), 
   joinPath(TK_3RD_ROOT, 'agge/src'), 
   joinPath(TK_3RD_ROOT, 'agge/include'), 
   joinPath(TK_3RD_ROOT, 'gpinyin/include'), 
-  joinPath(TK_3RD_ROOT, 'libunibreak/src'), 
+  joinPath(TK_3RD_ROOT, 'libunibreak'), 
   TK_TOOLS_ROOT] + OS_CPPPATH
 
 DefaultEnvironment(CCFLAGS = CCFLAGS, 
