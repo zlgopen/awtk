@@ -30,7 +30,7 @@
  */
 
 #include "emojidef.h"
-#include "emojidata.c"
+#include "emojidata.inc"
 
 /**
  * Finds out if a codepoint is extended pictographic.

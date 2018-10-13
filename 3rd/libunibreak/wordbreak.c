@@ -53,7 +53,7 @@
 #include <string.h>
 #include "unibreakdef.h"
 #include "wordbreak.h"
-#include "wordbreakdata.c"
+#include "wordbreakdata.inc"
 #include "emojidef.h"
 
 /**

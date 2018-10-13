@@ -28,6 +28,7 @@ bin/strgen*
 bin/image*
 bin/*demo*
 bin/*test
+bin/agg*
 .vscode
 .vs
 bin/cairo_stars

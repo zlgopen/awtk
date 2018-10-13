@@ -47,7 +47,7 @@
 
 #include <string.h>
 #include "graphemebreak.h"
-#include "graphemebreakdata.c"
+#include "graphemebreakdata.inc"
 #include "unibreakdef.h"
 #include "emojidef.h"
 
