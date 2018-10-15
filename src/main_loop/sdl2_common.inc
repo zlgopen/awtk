@@ -159,6 +159,9 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
     case SDL_WINDOWEVENT_CLOSE:
       log_debug("Window %d closed\n", event->window.windowID);
+      loop->user1 = NULL;
+      loop->user2 = NULL;
+      main_loop_quit(&(loop->base));
       break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     case SDL_WINDOWEVENT_TAKE_FOCUS:
@@ -180,7 +183,7 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
   SDL_Event event;
   ret_t ret = RET_OK;
 
-  while (SDL_PollEvent(&event)) {
+  while (SDL_PollEvent(&event) && loop->base.running) {
     switch (event.type) {
       case SDL_KEYDOWN:
       case SDL_KEYUP: {

@@ -18,22 +18,6 @@ TEST(Canvas, draw_hline) {
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
 
   lcd_log_reset(lcd);
-  canvas_draw_hline(&c, 10, 20, 100);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_hline(&c, 10, 310, 100);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_hline(&c, 10, 110, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_hline(&c, 320, 110, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
   canvas_draw_hline(&c, 90, 110, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(100,110,30);");
 
@@ -62,22 +46,6 @@ TEST(Canvas, draw_vline) {
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
 
   lcd_log_reset(lcd);
-  canvas_draw_vline(&c, 10, 20, 100);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_vline(&c, 310, 20, 100);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_vline(&c, 110, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_vline(&c, 110, 320, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
   canvas_draw_vline(&c, 110, 90, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,100,30);");
 
@@ -104,34 +72,6 @@ TEST(Canvas, fill_rect) {
 
   r = rect_init(100, 100, 200, 200);
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 10, 10, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 10, 210, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 10, 310, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 310, 10, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 310, 210, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 310, 310, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_fill_rect(&c, 120, 10, 10, 10);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
 
   lcd_log_reset(lcd);
   canvas_fill_rect(&c, 120, 310, 10, 10);
@@ -228,22 +168,6 @@ TEST(Canvas, draw_glyph) {
   r = rect_init(100, 100, 200, 200);
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
   canvas_set_font(&c, "demo0", font_size);
-
-  lcd_log_reset(lcd);
-  canvas_draw_char(&c, 0, 0, 0);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_char(&c, 0, 0, 120);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_char(&c, 0, 120, 320);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
-
-  lcd_log_reset(lcd);
-  canvas_draw_char(&c, 0, 330, 320);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "");
 
   lcd_log_reset(lcd);
   canvas_draw_char(&c, 0, 95, 95);

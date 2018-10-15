@@ -527,7 +527,7 @@ ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
 
- // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
+  //widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
 
   timer_add(on_timer, win, 500);
