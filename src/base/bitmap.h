@@ -163,6 +163,8 @@ struct _bitmap_t {
   const uint8_t* data;
 
   /*private members*/
+  /*data是按cache line对齐，而data_free_ptr是用于释放的指针*/
+  uint8_t* data_free_ptr;
 
   bool_t should_free_data;
   bool_t should_free_handle;
@@ -296,11 +298,20 @@ typedef enum _image_draw_type_t {
   IMAGE_DRAW_PATCH3_Y_SCALE_X
 } image_draw_type_t;
 
+#ifndef BITMAP_ALIGN_SIZE
+#define BITMAP_ALIGN_SIZE 32
+#endif /*BITMAP_ALIGN_SIZE*/
+
 uint32_t bitmap_get_bpp(bitmap_t* bitmap);
 ret_t bitmap_rgba_to_bgra(bitmap_t* image);
 ret_t bitmap_rgba_to_bgr565(bitmap_t* image, uint16_t* output);
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
+
+ret_t bitmap_alloc_data(bitmap_t* bitmap);
 ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
+
+ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data,
+                  uint32_t comp);
 
 END_C_DECLS
 

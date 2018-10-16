@@ -448,4 +448,6 @@ typedef enum _app_type_t {
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*WITH_NANOVG_AGGE*/
 
+#define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
+
 #endif /*TYPES_DEF_H*/
