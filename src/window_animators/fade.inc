@@ -52,7 +52,7 @@ static ret_t window_animator_open_fade_draw_curr(window_animator_t* wa) {
   global_alpha = alpha * 0xff;
   lcd_set_global_alpha(c->lcd, global_alpha);
   lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
-#endif/*WITH_NANOVG_GL*/
+#endif /*WITH_NANOVG_GL*/
 
   return RET_OK;
 }
