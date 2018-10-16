@@ -131,9 +131,16 @@
  */
 
 /**
- * 如果启用VGCANVAS，而且没有OpenGL硬件加速，请定义本宏
+ * 在没有GPU时，如果启用agge作为nanovg的后端(较agg作为后端：小，快，图形质量稍差)，请定义本宏。
  *
  * #define WITH_NANOVG_AGGE 1
+ */
+
+/**
+ * 在没有GPU时，如果启用agg作为nanovg的后端(较agge作为后端：大，慢，图形质量好)，请定义本宏。
+ * 注意：agg是以GPL协议开源。
+ *
+ * #define WITH_NANOVG_AGG 1
  */
 
 /**
