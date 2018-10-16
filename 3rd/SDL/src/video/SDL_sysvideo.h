@@ -238,6 +238,7 @@ struct SDL_VideoDevice
     int (*UpdateWindowFramebuffer) (_THIS, SDL_Window * window, const SDL_Rect * rects, int numrects);
     void (*DestroyWindowFramebuffer) (_THIS, SDL_Window * window);
     void (*OnWindowEnter) (_THIS, SDL_Window * window);
+	float (*GetWindowDpiRatio)(_THIS, SDL_Window* window);
 
     /* * * */
     /*

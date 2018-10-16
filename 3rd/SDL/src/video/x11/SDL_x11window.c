@@ -33,6 +33,7 @@
 #include "SDL_x11mouse.h"
 #include "SDL_x11shape.h"
 #include "SDL_x11xinput2.h"
+#include <gtk/gtk.h>
 
 #if SDL_VIDEO_OPENGL_EGL
 #include "SDL_x11opengles.h"
@@ -1612,6 +1613,16 @@ X11_AcceptDragAndDrop(SDL_Window * window, SDL_bool accept)
     } else {
         X11_XDeleteProperty(display, data->xwindow, XdndAware);
     }
+}
+
+extern float X11_GetWindowDpiRatio(SDL_Window * window)
+{
+	float dpi_ratio = 1.0f;
+	GdkScreen *screen;
+	gtk_init(NULL, NULL);
+	screen = gdk_screen_get_default();
+	dpi_ratio = gdk_screen_get_monitor_scale_factor(screen, 0);
+	return dpi_ratio;
 }
 
 #endif /* SDL_VIDEO_DRIVER_X11 */

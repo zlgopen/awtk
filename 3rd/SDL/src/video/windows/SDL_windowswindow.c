@@ -991,6 +991,248 @@ WIN_AcceptDragAndDrop(SDL_Window * window, SDL_bool accept)
     DragAcceptFiles(data->hwnd, accept ? TRUE : FALSE);
 }
 
+typedef LONG(WINAPI *pfnRtlGetVersion)(RTL_OSVERSIONINFOEXW*);
+static OSVERSIONINFOEXW g_osverinfo;
+SDL_bool 
+MyGetVersionEx()
+{
+	g_osverinfo.dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOEXW);
+	HMODULE hmodule = LoadLibrary(L"ntdll.dll");
+	pfnRtlGetVersion Rtl = (pfnRtlGetVersion)GetProcAddress(hmodule, "RtlGetVersion");
+	SDL_bool bRtn = SDL_FALSE;
+	if (Rtl)
+	{
+		if (!Rtl(&g_osverinfo))
+		{
+			bRtn = SDL_TRUE;
+		}
+	}
+	else
+	{
+		bRtn = SDL_TRUE;
+	}
+	FreeLibrary(hmodule);
+	return bRtn;
+}
+SDL_bool 
+GetOSVersionGreater8_1()
+{
+	SDL_bool bIsGreater8_1 = SDL_FALSE;
+	SYSTEM_INFO info;                                   //用SYSTEM_INFO结构判断64位AMD处理器 
+	GetSystemInfo(&info);                               //调用GetSystemInfo函数填充结构 
+	SDL_memset(&g_osverinfo, 0, sizeof(RTL_OSVERSIONINFOEXW));
+
+	enum { BUFF_SIZE = 30 };
+	char osName[BUFF_SIZE] = "UNKNOWN";
+	if (MyGetVersionEx(&g_osverinfo))
+	{
+		switch (g_osverinfo.dwPlatformId)
+		{
+		case VER_PLATFORM_WIN32_WINDOWS:
+		{
+			switch (g_osverinfo.dwMinorVersion)
+			{
+			case 0:
+			{
+				SDL_strlcpy(osName, "Windows 95", BUFF_SIZE);
+				bIsGreater8_1 = SDL_FALSE;
+				break;
+			}
+
+			case 10:
+			{
+				SDL_strlcpy(osName, "Windows 98", BUFF_SIZE);
+				bIsGreater8_1 = SDL_FALSE;
+				break;
+			}
+
+			case 90:
+			{
+				SDL_strlcpy(osName, "Windows Me", BUFF_SIZE);
+				bIsGreater8_1 = SDL_FALSE;
+				break;
+			}
+			}
+			break;
+		}
+
+		case VER_PLATFORM_WIN32_NT:
+		{
+			switch (g_osverinfo.dwMajorVersion)
+			{
+			case 3:
+			{
+				SDL_strlcpy(osName, "Windows NT 3.51", BUFF_SIZE);
+				bIsGreater8_1 = SDL_FALSE;
+				break;
+			}
+
+			case 4:
+			{
+				SDL_strlcpy(osName, "Windows NT 4.0", BUFF_SIZE);
+				bIsGreater8_1 = SDL_FALSE;
+				break;
+			}
+
+			case 5:
+			{
+				if (g_osverinfo.dwMinorVersion == 0)
+				{
+					SDL_strlcpy(osName, "Windows 2000", BUFF_SIZE);
+					bIsGreater8_1 = SDL_FALSE;
+				}
+				else if (g_osverinfo.dwMinorVersion == 1)
+				{
+					if (g_osverinfo.wSuiteMask & VER_SUITE_EMBEDDEDNT)
+					{
+						SDL_strlcpy(osName, "Windows XP Embedded", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else
+					{
+						SDL_strlcpy(osName, "Windows XP", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+				}
+				else if (g_osverinfo.dwMinorVersion == 2)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION && info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+					{
+						SDL_strlcpy(osName, "Windows XP Pro x64 Edition", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else if (GetSystemMetrics(SM_SERVERR2) == 0)
+					{
+						SDL_strlcpy(osName, "Windows Server 2003", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else if (GetSystemMetrics(SM_SERVERR2) != 0)
+					{
+						SDL_strlcpy(osName, "Windows Server 2003 R2", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+				}
+				break;
+			}
+
+			case 6:
+			{
+				if (g_osverinfo.dwMinorVersion == 0)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION)
+					{
+						SDL_strlcpy(osName, "Windows Vista", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else
+					{
+						SDL_strlcpy(osName, "Windows Server 2008", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+				}
+				else if (g_osverinfo.dwMinorVersion == 1)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION)
+					{
+						SDL_strlcpy(osName, "Windows 7", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else
+					{
+						SDL_strlcpy(osName, "Windows Server 2008 R2", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+				}
+				else if (g_osverinfo.dwMinorVersion == 2)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION)
+					{
+						SDL_strlcpy(osName, "Windows 8", BUFF_SIZE);
+						bIsGreater8_1 = SDL_FALSE;
+					}
+					else
+					{
+						SDL_strlcpy(osName, "Windows Server 2012 ", BUFF_SIZE);
+						bIsGreater8_1 = SDL_TRUE;
+					}
+				}
+				else if (g_osverinfo.dwMinorVersion == 3)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION)
+					{
+						SDL_strlcpy(osName, "Windows 8.1", BUFF_SIZE);
+						bIsGreater8_1 = SDL_TRUE;
+					}
+					else
+					{
+						SDL_strlcpy(osName, "Windows Server 2012 r2", BUFF_SIZE);
+						bIsGreater8_1 = SDL_TRUE;
+					}
+				}
+				break;
+			}
+
+			case 10:
+			{
+				if (g_osverinfo.dwMinorVersion == 0)
+				{
+					if (g_osverinfo.wProductType == VER_NT_WORKSTATION)
+					{
+						SDL_strlcpy(osName, "Windows 10", BUFF_SIZE);
+						bIsGreater8_1 = SDL_TRUE;
+					}
+				}
+				break;
+			}
+			}
+			break;
+		}
+		}
+	}
+	return bIsGreater8_1;
+}
+
+typedef int (WINAPI *MySetProcessDpiAwareness)(int);
+typedef HRESULT(WINAPI *MyGetDpiForMonitor)(HMONITOR, int, int*, int*); 
+float 
+WIN_GetWindowDpiRatio(SDL_Window *window)
+{
+	float fPixel_ratio = 1.0f;
+	int x = 0;
+	int y = 0;
+	const float nNormalPix = 96.0f;
+	if (!GetOSVersionGreater8_1())
+	{
+		HDC hdc = GetDC(NULL);
+		if (hdc)
+		{
+			x = GetDeviceCaps(hdc, LOGPIXELSX);//每英寸逻辑像素数 水平
+			y = GetDeviceCaps(hdc, LOGPIXELSY);//每英寸逻辑像素数 垂直    
+			ReleaseDC(NULL, hdc);
+		}
+	}
+	else
+	{
+		HMODULE hModule = LoadLibraryA("shcore.dll");
+		if (hModule)
+		{
+			MyGetDpiForMonitor  myGetDpi = (MyGetDpiForMonitor)GetProcAddress(hModule, "GetDpiForMonitor");
+			MySetProcessDpiAwareness setDpiAwareness = (MySetProcessDpiAwareness)GetProcAddress(hModule, "SetProcessDpiAwareness");
+			setDpiAwareness(2);
+			HMONITOR hMonitor;
+			POINT    pt;
+			HRESULT  hr = E_FAIL;
+			pt.x = 1;
+			pt.y = 1;
+			hMonitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+			hr = myGetDpi(hMonitor, MDT_EFFECTIVE_DPI, &x, &y);
+		}
+		FreeLibrary(hModule);
+	}
+	fPixel_ratio = x / nNormalPix;
+	return fPixel_ratio;
+}
+
 #endif /* SDL_VIDEO_DRIVER_WINDOWS */
 
 /* vi: set ts=4 sw=4 expandtab: */

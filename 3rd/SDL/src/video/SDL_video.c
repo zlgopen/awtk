@@ -56,10 +56,6 @@
 #include <emscripten.h>
 #endif
 
-#if SDL_VIDEO_DRIVER_X11
-#include <gtk/gtk.h>
-#endif
-
 /* Available video drivers */
 static VideoBootStrap *bootstrap[] = {
 #if SDL_VIDEO_DRIVER_COCOA
@@ -1408,28 +1404,15 @@ SDL_FinishWindowCreation(SDL_Window *window, Uint32 flags)
     }
 }
 
-float
-SDLCALL SDL_GetWindowDpiRatio(SDL_Window* window)
+float 
+SDL_GetWindowDpiRatio(SDL_Window* window)
 {
 	float dpi_ratio = 1.0f;
-#if SDL_VIDEO_DRIVER_WINDOWS
-	float ddpi = 1.0f; //Diagonal DPI
-	float hdpi = 1.0f; //Horizontal DPI
-	float vdpi = 1.0f; //Vertical DPI
-	const float nNormalPix = 96.0f;
-	SDL_VideoDisplay *display = SDL_GetDisplayForWindow(window);
-	int displayIndex = SDL_GetIndexOfDisplay(display);
-	SDL_GetDisplayDPI(displayIndex, &ddpi, &hdpi, &vdpi);
-	dpi_ratio = hdpi / nNormalPix;
-#endif
-#if SDL_VIDEO_DRIVER_X11
-	GdkScreen *screen;
-	gtk_init(NULL, NULL);
-	screen = gdk_screen_get_default();
-	dpi_ratio = gdk_screen_get_monitor_scale_factor(screen, 0);
-	//printf("screen: scale = %f\n", dpi_ratio);
-#endif
-	dpi_ratio = dpi_ratio > 1.0f ? dpi_ratio : 1.0f;
+	if ((window->flags & SDL_WINDOW_ALLOW_HIGHDPI) && _this->GetWindowDpiRatio) //allow hidpi
+	{
+		dpi_ratio = _this->GetWindowDpiRatio(_this, window);
+		dpi_ratio = dpi_ratio > 1.0f ? dpi_ratio : 1.0f;
+	}
 	return dpi_ratio;
 }
 
@@ -1513,6 +1496,7 @@ SDL_CreateWindow(const char *title, int x, int y, int w, int h, Uint32 flags)
         SDL_OutOfMemory();
         return NULL;
     }
+	window->flags = flags;
     window->magic = &_this->window_magic;
     window->id = _this->next_object_id++;
 	window->dpi_ratio = SDL_GetWindowDpiRatio(window);
