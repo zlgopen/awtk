@@ -44,7 +44,11 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
   }
 
   if (bitmap->should_free_data) {
-    TKMEM_FREE(bitmap->data);
+    if (bitmap->data_free_ptr != NULL) {
+      TKMEM_FREE(bitmap->data_free_ptr);
+    } else {
+      TKMEM_FREE(bitmap->data);
+    }
   }
 
   if (bitmap->should_free_handle) {
@@ -118,23 +122,43 @@ uint32_t bitmap_get_bpp(bitmap_t* bmp) {
   return 0;
 }
 
-bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format) {
-  uint32_t bpp = 0;
+ret_t bitmap_alloc_data(bitmap_t* bitmap) {
+  uint32_t size = 0;
   uint8_t* data = NULL;
+  return_value_if_fail(bitmap != NULL && bitmap->w > 0 && bitmap->h > 0, RET_BAD_PARAMS);
+
+  size = bitmap_get_bpp(bitmap) * bitmap->w * bitmap->h;
+  size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
+  data = (uint8_t*)TKMEM_ALLOC(size);
+
+  if (data != NULL) {
+    memset(data, 0x00, size);
+    bitmap->data_free_ptr = data;
+    bitmap->should_free_data = TRUE;
+    while ((uint32_t)data % BITMAP_ALIGN_SIZE) {
+      data++;
+    }
+    bitmap->data = data;
+
+    return RET_OK;
+  } else {
+    return RET_OOM;
+  }
+}
+
+bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format) {
   bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
   return_value_if_fail(bitmap != NULL, NULL);
 
   bitmap->w = w;
   bitmap->h = h;
   bitmap->format = format;
-  bpp = bitmap_get_bpp(bitmap);
-  bitmap->should_free_data = TRUE;
   bitmap->should_free_handle = TRUE;
-  data = (uint8_t*)TKMEM_ALLOC(bpp * w * h);
 
-  if (data != NULL) {
-    memset(data, 0x00, bpp * w * h);
-    bitmap->data = data;
+  bitmap_alloc_data(bitmap);
+  if (bitmap->data == NULL) {
+    TKMEM_FREE(bitmap);
+    bitmap = NULL;
   }
 
   return bitmap;
@@ -210,4 +234,90 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   }
 
   return RET_NOT_IMPL;
+}
+
+ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+  uint32_t i = 0;
+
+  if (comp == 4) {
+    uint32_t size = w * h * 4;
+    memcpy((uint8_t*)(b->data), data, size);
+  } else {
+    uint32_t n = w * h;
+    uint8_t* s = data;
+    uint8_t* d = (uint8_t*)(b->data);
+
+    for (i = 0; i < n; i++) {
+      *d++ = *s++;
+      *d++ = *s++;
+      *d++ = *s++;
+      *d++ = 0xff;
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+  uint32_t i = 0;
+  uint32_t n = w * h;
+  uint8_t* s = data;
+  uint8_t* d = (uint8_t*)(b->data);
+
+  /*bgra=rgba*/
+  for (i = 0; i < n; i++) {
+    d[0] = s[2];
+    d[1] = s[1];
+    d[2] = s[0];
+    d[3] = (comp == 3) ? 0xff : s[3];
+
+    d += 4;
+    s += comp;
+  }
+
+  return RET_OK;
+}
+
+ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+  uint32_t i = 0;
+  uint32_t n = w * h;
+  uint8_t* s = data;
+  uint16_t* d = (uint16_t*)(b->data);
+
+  for (i = 0; i < n; i++) {
+    uint8_t r = s[0];
+    uint8_t g = s[1];
+    uint8_t b = s[2];
+
+    *d++ = rgb_to_bgr565(r, g, b);
+
+    s += comp;
+  }
+}
+
+ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data,
+                  uint32_t comp) {
+  return_value_if_fail(b != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
+
+  memset(b, 0x00, sizeof(bitmap_t));
+
+  b->w = w;
+  b->h = h;
+  b->format = format;
+  b->flags = BITMAP_FLAG_IMMUTABLE;
+  return_value_if_fail(bitmap_alloc_data(b) == RET_OK, RET_OOM);
+
+  if (comp == 3) {
+    b->flags |= BITMAP_FLAG_OPAQUE;
+  }
+
+  if (format == BITMAP_FMT_BGRA8888) {
+    return bitmap_init_bgra8888(b, w, h, data, comp);
+  } else if (format == BITMAP_FMT_RGBA8888) {
+    return bitmap_init_rgba8888(b, w, h, data, comp);
+  } else if (comp == 3) {
+    return bitmap_init_bgr565(b, w, h, data, comp);
+  } else {
+    return RET_NOT_IMPL;
+  }
 }

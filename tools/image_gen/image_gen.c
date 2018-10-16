@@ -66,8 +66,9 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
     } else if (image->format == BITMAP_FMT_BGR565) {
       size = sizeof(uint16_t) * image->w * image->h;
       memcpy(header->data, image->data, size);
-    } else {
-      assert(!"not supported");
+    } else if (image->format == BITMAP_FMT_BGRA8888) {
+      size = sizeof(uint32_t) * image->w * image->h;
+      memcpy(header->data, image->data, size);
     }
   } else {
     size = sizeof(uint32_t) * image->w * image->h;

@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include "agge/nanovg_agg.h"
+#include "agg/nanovg_agg.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../stb/stb_image_write.h"
@@ -14,7 +14,7 @@
 static void run_test(int32_t w, int32_t h, int32_t BPP, const char* filename) {
   int32_t size = w * h * BPP;
   uint8_t* data = (uint8_t*)malloc(size);
-  NVGcontext* vg = nvgCreateAGG(w, h, BPP == 2 ? AGG_RGB565 : AGG_RGBA8888, data);
+  NVGcontext* vg = nvgCreateAGG(w, h, BPP == 2 ? NVG_TEXTURE_BGR565 : NVG_TEXTURE_RGBA, data);
 
   memset(data, 0xff, size);
   do_stroke(vg, w, h);

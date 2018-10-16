@@ -41,6 +41,8 @@
 
 #ifdef WITH_NANOVG_AGGE
 #include "agge/nanovg_agge.h"
+#elif defined(WITH_NANOVG_AGG)
+#include "agg/nanovg_agg.h"
 #else /*OpenGL*/
 #include "glad/glad.h"
 #include "nanovg_gl.h"
@@ -58,10 +60,9 @@ typedef struct _vgcanvas_nanovg_t {
   NVGcontext* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;
-#ifdef WITH_NANOVG_AGGE
-#else
+#if defined(WITH_NANOVG_GL)
   SDL_Window* sdl_window;
-#endif /*WITH_NANOVG_AGGE*/
+#endif /*WITH_NANOVG_GL*/
 } vgcanvas_nanovg_t;
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img);
@@ -373,7 +374,7 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
   return nvgTextBounds(vg, 0, 0, text, text + strlen(text), bounds);
 }
 
-#ifndef WITH_NANOVG_AGGE
+#if defined(WITH_NANOVG_GL)
 static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   int32_t id = (char*)(img->specific) - (char*)NULL;
   NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
@@ -387,7 +388,7 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 
   return RET_OK;
 }
-#endif /*WITH_NANOVG_AGGE*/
+#endif /*WITH_NANOVG_GL*/
 
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
@@ -513,33 +514,33 @@ static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-#if defined(WITH_NANOVG_AGGE)
-static agge_bitmap_format_t bitmap_format_to_agge(bitmap_format_t format) {
-  agge_bitmap_format_t f = AGGE_RGBA8888;
+#if defined(WITH_NANOVG_SOFT)
+static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
+  enum NVGtexture f = NVG_TEXTURE_BGRA;
 
   switch (format) {
     case BITMAP_FMT_RGBA8888: {
-      f = AGGE_RGBA8888;
+      f = NVG_TEXTURE_RGBA;
       break;
     }
     case BITMAP_FMT_BGRA8888: {
-      f = AGGE_BGRA8888;
+      f = NVG_TEXTURE_BGRA;
       break;
     }
     case BITMAP_FMT_BGR888: {
-      f = AGGE_BGR888;
+      f = NVG_TEXTURE_BGR;
       break;
     }
     case BITMAP_FMT_RGB888: {
-      f = AGGE_RGB888;
+      f = NVG_TEXTURE_RGB;
       break;
     }
     case BITMAP_FMT_BGR565: {
-      f = AGGE_BGR565;
+      f = NVG_TEXTURE_BGR565;
       break;
     }
     case BITMAP_FMT_RGB565: {
-      f = AGGE_RGB565;
+      f = NVG_TEXTURE_RGB565;
       break;
     }
     default: {
@@ -575,7 +576,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
   vgcanvas->w = w;
   vgcanvas->h = h;
   vgcanvas->buff = (uint32_t*)data;
-  nvgReinitAgge(vg, w, h, bitmap_format_to_agge(format), data);
+  nvgReinitAgge(vg, w, h, bitmap_format_to_nanovg(format), data);
 
   return RET_OK;
 }
@@ -767,6 +768,8 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   nvgDeleteGLES3(vg);
 #elif defined(WITH_NANOVG_AGGE)
   nvgDeleteAGGE(vg);
+#elif defined(WITH_NANOVG_AGG)
+  nvgDeleteAGG(vg);
 #endif
 
   return RET_OK;
@@ -821,9 +824,9 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
                                      vgcanvas_nanovg_unbind_fbo,
                                      vgcanvas_nanovg_destroy};
 
-#if defined(WITH_NANOVG_AGGE)
+#if defined(WITH_NANOVG_SOFT)
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data) {
-  agge_bitmap_format_t f = bitmap_format_to_agge(format);
+  enum NVGtexture f = bitmap_format_to_nanovg(format);
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
 
@@ -832,8 +835,13 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   nanovg->base.vt = &vt;
   nanovg->base.ratio = 1;
   nanovg->base.buff = (uint32_t*)data;
-
+#if defined(WITH_NANOVG_AGG)
+  nanovg->vg = nvgCreateAGG(w, h, f, (uint8_t*)data);
+#elif defined(WITH_NANOVG_AGGE)
   nanovg->vg = nvgCreateAGGE(w, h, f, (uint8_t*)data);
+#else
+#error "not supported"
+#endif
 
   return &(nanovg->base);
 }

@@ -1,0 +1,9 @@
+import os
+
+env = DefaultEnvironment().Clone()
+LIB_DIR = os.environ['LIB_DIR'];
+BIN_DIR = os.environ['BIN_DIR'];
+
+SOURCES = Glob('src/*.cpp')
+env.Library(os.path.join(LIB_DIR, 'agg'), SOURCES);
+

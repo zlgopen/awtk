@@ -70,7 +70,7 @@ struct AGGENVGcontext {
   int32_t w;
   int32_t h;
   uint8_t* data;
-  agge_bitmap_format_t format;
+  enum NVGtexture format;
 
   /*agge related*/
   agge::renderer ren;
@@ -331,38 +331,38 @@ static void aggenvg__renderDelete(void* uptr) {
 }
 
 static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int32_t h,
-                        agge_bitmap_format_t format, uint8_t* data) {
+                        enum NVGtexture format, uint8_t* data) {
   agge->w = w;
   agge->h = h;
   agge->data = data;
   agge->format = format;
 
   switch (agge->format) {
-    case AGGE_RGBA8888: {
+    case NVG_TEXTURE_RGBA: {
       params->renderTriangles = renderTriangles<agge::pixel32_rgba>;
       params->renderStroke = renderStroke<agge::pixel32_rgba>;
       params->renderFill = renderFill<agge::pixel32_rgba>;
       break;
     }
-    case AGGE_BGRA8888: {
+    case NVG_TEXTURE_BGRA: {
       params->renderTriangles = renderTriangles<agge::pixel32_bgra>;
       params->renderStroke = renderStroke<agge::pixel32_bgra>;
       params->renderFill = renderFill<agge::pixel32_bgra>;
       break;
     }
-    case AGGE_RGB888: {
+    case NVG_TEXTURE_RGB: {
       params->renderTriangles = renderTriangles<agge::pixel24_rgb>;
       params->renderStroke = renderStroke<agge::pixel24_rgb>;
       params->renderFill = renderFill<agge::pixel24_rgb>;
       break;
     }
-    case AGGE_BGR888: {
+    case NVG_TEXTURE_BGR: {
       params->renderTriangles = renderTriangles<agge::pixel24_bgr>;
       params->renderStroke = renderStroke<agge::pixel24_bgr>;
       params->renderFill = renderFill<agge::pixel24_bgr>;
       break;
     }
-    case AGGE_BGR565: {
+    case NVG_TEXTURE_BGR565: {
       params->renderTriangles = renderTriangles<agge::pixel16_bgr565>;
       params->renderStroke = renderStroke<agge::pixel16_bgr565>;
       params->renderFill = renderFill<agge::pixel16_bgr565>;
@@ -375,7 +375,7 @@ static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int3
   }
 }
 
-void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, agge_bitmap_format_t format,
+void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, enum NVGtexture format,
                    uint8_t* data) {
   NVGparams* params = nvgGetParams(ctx);
   AGGENVGcontext* agge = (AGGENVGcontext*)(params->userPtr);
@@ -383,7 +383,7 @@ void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, agge_bitmap_format_t f
   nvgInitAGGE(agge, params, w, h, format, data);
 }
 
-NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, agge_bitmap_format_t format, uint8_t* data) {
+NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, enum NVGtexture format, uint8_t* data) {
   NVGparams params;
   NVGcontext* ctx = NULL;
   AGGENVGcontext* agge = new AGGENVGcontext();

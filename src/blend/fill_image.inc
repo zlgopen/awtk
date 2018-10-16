@@ -12,7 +12,7 @@ static ret_t fill_image(bitmap_t* fb, rect_t* dst, color_t c) {
   pixel_dst_t* p = (pixel_dst_t*)((fb->data) + (dst->y * fb->w + dst->x) * bpp);
 
   if (a > 0xf8) {
-    if(fb->w == dst->w && fb->h == dst->h) {
+    if (fb->w == dst->w && fb->h == dst->h) {
       uint32_t size = w * h;
       if (bpp == 2) {
         tk_memset16((uint16_t*)p, *(uint16_t*)(&data), size);

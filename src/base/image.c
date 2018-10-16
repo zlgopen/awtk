@@ -66,13 +66,12 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t dst;
   bitmap_t* bitmap = NULL;
   image_t* image = IMAGE(widget);
+  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   bitmap = &(image->bitmap);
 
-#ifdef WITH_VGCANVAS
-  {
-    vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  if (vg != NULL) {
     bool_t need_transform = !tk_fequal(image->scale_x, 1) || !tk_fequal(image->scale_y, 1) ||
                             !tk_fequal(image->rotation, 0);
 
@@ -83,6 +82,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
       vgcanvas_save(vg);
       vgcanvas_translate(vg, c->ox, c->oy);
       vgcanvas_translate(vg, anchor_x, anchor_y);
+
       if (!tk_fequal(image->rotation, 0)) {
         vgcanvas_rotate(vg, image->rotation);
       }
@@ -99,7 +99,6 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
       return RET_OK;
     }
   }
-#endif /*WITH_VGCANVAS*/
 
   if (bitmap->data != NULL) {
     color_t trans = color_init(0x00, 0x00, 0x00, 0x00);

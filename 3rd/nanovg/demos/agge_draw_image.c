@@ -13,7 +13,7 @@
 static void run_test(int32_t w, int32_t h, int32_t BPP, const char* filename) {
   int32_t size = w * h * BPP;
   uint8_t* data = (uint8_t*)malloc(size);
-  NVGcontext* vg = nvgCreateAGGE(w, h, BPP == 2 ? AGGE_BGR565 : AGGE_RGBA8888, data);
+  NVGcontext* vg = nvgCreateAGGE(w, h, BPP == 2 ? NVG_TEXTURE_BGR565 : NVG_TEXTURE_BGRA, data);
 
   memset(data, 0xff, size);
   do_draw(vg, w, h);
