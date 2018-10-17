@@ -1,0 +1,4011 @@
+Running main() from gtest_main.cc
+[==========] Running 269 tests from 81 test cases.
+[----------] Global test environment set-up.
+[----------] 4 tests from AnimatorMove
+[ RUN      ] AnimatorMove.basic
+[       OK ] AnimatorMove.basic (0 ms)
+[ RUN      ] AnimatorMove.once
+[       OK ] AnimatorMove.once (0 ms)
+[ RUN      ] AnimatorMove.reversed
+[       OK ] AnimatorMove.reversed (0 ms)
+[ RUN      ] AnimatorMove.repeat
+[       OK ] AnimatorMove.repeat (0 ms)
+[----------] 4 tests from AnimatorMove (0 ms total)
+
+[----------] 1 test from AnimatorOpacity
+[ RUN      ] AnimatorOpacity.once
+[       OK ] AnimatorOpacity.once (0 ms)
+[----------] 1 test from AnimatorOpacity (0 ms total)
+
+[----------] 1 test from AnimatorValue
+[ RUN      ] AnimatorValue.once
+[       OK ] AnimatorValue.once (0 ms)
+[----------] 1 test from AnimatorValue (0 ms total)
+
+[----------] 5 tests from OArrayTest
+[ RUN      ] OArrayTest.popPush
+[       OK ] OArrayTest.popPush (0 ms)
+[ RUN      ] OArrayTest.random
+[       OK ] OArrayTest.random (4 ms)
+[ RUN      ] OArrayTest.inc
+[       OK ] OArrayTest.inc (4 ms)
+[ RUN      ] OArrayTest.dec
+[       OK ] OArrayTest.dec (8 ms)
+[ RUN      ] OArrayTest.removeAll
+[       OK ] OArrayTest.removeAll (0 ms)
+[----------] 5 tests from OArrayTest (16 ms total)
+
+[----------] 1 test from Basic
+[ RUN      ] Basic.round
+[       OK ] Basic.round (0 ms)
+[----------] 1 test from Basic (0 ms total)
+
+[----------] 1 test from Bitmap
+[ RUN      ] Bitmap.basic
+[       OK ] Bitmap.basic (1 ms)
+[----------] 1 test from Bitmap (1 ms total)
+
+[----------] 3 tests from BlendImage
+[ RUN      ] BlendImage.BITMAP_FMT_BGRA8888
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+04:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+03:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+04:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+04:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+03:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+04:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+04:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+03:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+04:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+[       OK ] BlendImage.BITMAP_FMT_BGRA8888 (0 ms)
+[ RUN      ] BlendImage.BITMAP_FMT_BGR888
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+[       OK ] BlendImage.BITMAP_FMT_BGR888 (0 ms)
+[ RUN      ] BlendImage.BITMAP_FMT_BGR565
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+[       OK ] BlendImage.BITMAP_FMT_BGR565 (1 ms)
+[----------] 3 tests from BlendImage (1 ms total)
+
+[----------] 4 tests from Buffer
+[ RUN      ] Buffer.basic
+[       OK ] Buffer.basic (0 ms)
+[ RUN      ] Buffer.WbufferSkip
+wbuffer_skip:36 ((int32_t)(wbuffer->cursor) + offset) >= 0
+[       OK ] Buffer.WbufferSkip (0 ms)
+[ RUN      ] Buffer.RbufferSkip
+rbuffer_skip:107 ((int32_t)(rbuffer->cursor) + offset) >= 0
+[       OK ] Buffer.RbufferSkip (0 ms)
+[ RUN      ] Buffer.string
+[       OK ] Buffer.string (0 ms)
+[----------] 4 tests from Buffer (0 ms total)
+
+[----------] 2 tests from Button
+[ RUN      ] Button.basic
+[       OK ] Button.basic (0 ms)
+[ RUN      ] Button.clone
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+[       OK ] Button.clone (0 ms)
+[----------] 2 tests from Button (0 ms total)
+
+[----------] 16 tests from Canvas
+[ RUN      ] Canvas.draw_hline
+[       OK ] Canvas.draw_hline (0 ms)
+[ RUN      ] Canvas.draw_vline
+[       OK ] Canvas.draw_vline (0 ms)
+[ RUN      ] Canvas.fill_rect
+[       OK ] Canvas.fill_rect (0 ms)
+[ RUN      ] Canvas.draw_points
+[       OK ] Canvas.draw_points (0 ms)
+[ RUN      ] Canvas.draw_glyph
+font_destroy:45 f != NULL && f->destroy != NULL
+[       OK ] Canvas.draw_glyph (0 ms)
+[ RUN      ] Canvas.draw_image
+[       OK ] Canvas.draw_image (0 ms)
+[ RUN      ] Canvas.draw_image_patch3_x_scale_y
+[       OK ] Canvas.draw_image_patch3_x_scale_y (0 ms)
+[ RUN      ] Canvas.draw_image_patch3_y_scale_x
+[       OK ] Canvas.draw_image_patch3_y_scale_x (0 ms)
+[ RUN      ] Canvas.draw_image_patch9
+[       OK ] Canvas.draw_image_patch9 (0 ms)
+[ RUN      ] Canvas.draw_image_repeat_x
+[       OK ] Canvas.draw_image_repeat_x (0 ms)
+[ RUN      ] Canvas.draw_image_repeat_y
+[       OK ] Canvas.draw_image_repeat_y (1 ms)
+[ RUN      ] Canvas.draw_image_repeat
+[       OK ] Canvas.draw_image_repeat (0 ms)
+[ RUN      ] Canvas.draw_image_scale_w
+[       OK ] Canvas.draw_image_scale_w (0 ms)
+[ RUN      ] Canvas.draw_image_scale_h
+[       OK ] Canvas.draw_image_scale_h (0 ms)
+[ RUN      ] Canvas.draw_image_scale
+[       OK ] Canvas.draw_image_scale (0 ms)
+[ RUN      ] Canvas.draw_image_center
+[       OK ] Canvas.draw_image_center (0 ms)
+[----------] 16 tests from Canvas (1 ms total)
+
+[----------] 2 tests from CheckButton
+[ RUN      ] CheckButton.basic
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] CheckButton.basic (0 ms)
+[ RUN      ] CheckButton.radio
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] CheckButton.radio (0 ms)
+[----------] 2 tests from CheckButton (0 ms total)
+
+[----------] 1 test from Color
+[ RUN      ] Color.basic
+[       OK ] Color.basic (0 ms)
+[----------] 1 test from Color (0 ms total)
+
+[----------] 2 tests from ColorTile
+[ RUN      ] ColorTile.basic
+[       OK ] ColorTile.basic (0 ms)
+[ RUN      ] ColorTile.clone
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+[       OK ] ColorTile.clone (0 ms)
+[----------] 2 tests from ColorTile (0 ms total)
+
+[----------] 1 test from ComboBoxItem
+[ RUN      ] ComboBoxItem.basic
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ComboBoxItem.basic (0 ms)
+[----------] 1 test from ComboBoxItem (0 ms total)
+
+[----------] 4 tests from ComboBox
+[ RUN      ] ComboBox.basic
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ComboBox.basic (1 ms)
+[ RUN      ] ComboBox.options
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ComboBox.options (0 ms)
+[ RUN      ] ComboBox.parse_options
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ComboBox.parse_options (0 ms)
+[ RUN      ] ComboBox.props
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ComboBox.props (0 ms)
+[----------] 4 tests from ComboBox (1 ms total)
+
+[----------] 1 test from CustomProps
+[ RUN      ] CustomProps.basic
+[       OK ] CustomProps.basic (0 ms)
+[----------] 1 test from CustomProps (0 ms total)
+
+[----------] 1 test from Dialog
+[ RUN      ] Dialog.basic
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+str_set_with_len:61 str != NULL && text != NULL
+str_set_with_len:61 str != NULL && text != NULL
+window_manager_get_top_window:400 index >= 0
+window_manager_get_top_window:400 index >= 0
+[       OK ] Dialog.basic (0 ms)
+[----------] 1 test from Dialog (0 ms total)
+
+[----------] 3 tests from Dragger
+[ RUN      ] Dragger.basic
+[       OK ] Dragger.basic (0 ms)
+[ RUN      ] Dragger.dragger_h
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_grab:1012 widget != NULL && child != NULL && widget->vt != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_ungrab:1023 widget != NULL && widget->vt != NULL
+[       OK ] Dragger.dragger_h (0 ms)
+[ RUN      ] Dragger.dragger_v
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_grab:1012 widget != NULL && child != NULL && widget->vt != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_ungrab:1023 widget != NULL && widget->vt != NULL
+[       OK ] Dragger.dragger_v (0 ms)
+[----------] 3 tests from Dragger (0 ms total)
+
+[----------] 4 tests from Edit
+[ RUN      ] Edit.int
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+[       OK ] Edit.int (0 ms)
+[ RUN      ] Edit.text
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+[       OK ] Edit.text (0 ms)
+[ RUN      ] Edit.float
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+[       OK ] Edit.float (0 ms)
+[ RUN      ] Edit.basic
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+[       OK ] Edit.basic (0 ms)
+[----------] 4 tests from Edit (0 ms total)
+
+[----------] 5 tests from Emitter
+[ RUN      ] Emitter.basic
+emitter_on:118 emitter != NULL && handler != NULL
+emitter_on:118 emitter != NULL && handler != NULL
+[       OK ] Emitter.basic (0 ms)
+[ RUN      ] Emitter.off
+[       OK ] Emitter.off (0 ms)
+[ RUN      ] Emitter.remove
+[       OK ] Emitter.remove (0 ms)
+[ RUN      ] Emitter.stop
+[       OK ] Emitter.stop (0 ms)
+[ RUN      ] Emitter.remove_in_func
+[       OK ] Emitter.remove_in_func (0 ms)
+[----------] 5 tests from Emitter (0 ms total)
+
+[----------] 1 test from Enums
+[ RUN      ] Enums.basic
+[       OK ] Enums.basic (0 ms)
+[----------] 1 test from Enums (0 ms total)
+
+[----------] 1 test from EventQueue
+[ RUN      ] EventQueue.basic
+[       OK ] EventQueue.basic (0 ms)
+[----------] 1 test from EventQueue (0 ms total)
+
+[----------] 1 test from Events
+[ RUN      ] Events.pointer_event_rotate
+[       OK ] Events.pointer_event_rotate (0 ms)
+[----------] 1 test from Events (0 ms total)
+
+[----------] 4 tests from FillImage
+[ RUN      ] FillImage.BITMAP_FMT_BGRA8888
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+04:00000000 00000000 406080ff 406080ff 406080ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+03:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+04:00000000 00000000 3b5977ff 3b5977ff 3b5977ff 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+01:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+02:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+03:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+04:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+05:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+06:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+07:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+[       OK ] FillImage.BITMAP_FMT_BGRA8888 (0 ms)
+[ RUN      ] FillImage.BITMAP_FMT_BGR888
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 3b5977ff 3b5977ff 3b5977ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+01:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+02:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+03:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+04:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+05:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+06:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+07:3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 3b5977ff 
+[       OK ] FillImage.BITMAP_FMT_BGR888 (0 ms)
+[ RUN      ] FillImage.BITMAP_FMT_BGR565
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+01:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+02:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+03:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+04:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+05:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+06:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+07:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+[       OK ] FillImage.BITMAP_FMT_BGR565 (0 ms)
+[ RUN      ] FillImage.BITMAP_FMT_RGB565
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 406080ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+03:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+04:000000ff 000000ff 385870ff 385870ff 385870ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+01:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+02:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+03:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+04:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+05:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+06:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+07:385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 385870ff 
+[       OK ] FillImage.BITMAP_FMT_RGB565 (0 ms)
+[----------] 4 tests from FillImage (0 ms total)
+
+[----------] 1 test from FontGen
+[ RUN      ] FontGen.basic
+0/19: 0x0031
+1/19: 0x0032
+2/19: 0x0033
+3/19: 0x0034
+4/19: 0x0035
+5/19: 0x0044
+6/19: 0x0045
+7/19: 0x0048
+8/19: 0x004c
+9/19: 0x004f
+10/19: 0x0052
+11/19: 0x0057
+12/19: 0x0064
+13/19: 0x0065
+14/19: 0x0068
+15/19: 0x006c
+16/19: 0x006f
+17/19: 0x0072
+18/19: 0x0077
+[       OK ] FontGen.basic (1 ms)
+[----------] 1 test from FontGen (1 ms total)
+
+[----------] 1 test from FontManager
+[ RUN      ] FontManager.basic
+font_destroy:45 f != NULL && f->destroy != NULL
+font_destroy:45 f != NULL && f->destroy != NULL
+font_destroy:45 f != NULL && f->destroy != NULL
+[       OK ] FontManager.basic (0 ms)
+[----------] 1 test from FontManager (0 ms total)
+
+[----------] 1 test from Fs
+[ RUN      ] Fs.basic
+[       OK ] Fs.basic (2 ms)
+[----------] 1 test from Fs (2 ms total)
+
+[----------] 1 test from GlyphCache
+[ RUN      ] GlyphCache.basic
+[       OK ] GlyphCache.basic (8 ms)
+[----------] 1 test from GlyphCache (8 ms total)
+
+[----------] 1 test from Idle
+[ RUN      ] Idle.basic
+[       OK ] Idle.basic (0 ms)
+[----------] 1 test from Idle (0 ms total)
+
+[----------] 2 tests from ImageAnimation
+[ RUN      ] ImageAnimation.basic
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_on:422 widget != NULL && on_event != NULL
+[       OK ] ImageAnimation.basic (0 ms)
+[ RUN      ] ImageAnimation.clone
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_on:422 widget != NULL && on_event != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+[       OK ] ImageAnimation.clone (0 ms)
+[----------] 2 tests from ImageAnimation (0 ms total)
+
+[----------] 4 tests from ImageLoaderStb
+[ RUN      ] ImageLoaderStb.basic
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test.png
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test.jpg
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test_opaque.png
+[       OK ] ImageLoaderStb.basic (0 ms)
+[ RUN      ] ImageLoaderStb.gen
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test_opaque.png
+[       OK ] ImageLoaderStb.gen (0 ms)
+[ RUN      ] ImageLoaderStb.bgr565_apaque
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test_opaque.png
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test_opaque.png
+[       OK ] ImageLoaderStb.bgr565_apaque (1 ms)
+[ RUN      ] ImageLoaderStb.bgr565_trans
+/Users/jim/Share/lab/gui/awtk/awtk/tests/testdata/test.png
+tests/image_loader_stb_test.cc:112: Failure
+Expected equality of these values:
+  !!(image.flags & BITMAP_FLAG_OPAQUE)
+    Which is: false
+  1
+[  FAILED  ] ImageLoaderStb.bgr565_trans (0 ms)
+[----------] 4 tests from ImageLoaderStb (1 ms total)
+
+[----------] 3 tests from ImageManager
+[ RUN      ] ImageManager.basic
+image_manager_load:140 res != NULL
+[       OK ] ImageManager.basic (0 ms)
+[ RUN      ] ImageManager.unload
+[       OK ] ImageManager.unload (0 ms)
+[ RUN      ] ImageManager.add
+[       OK ] ImageManager.add (0 ms)
+[----------] 3 tests from ImageManager (0 ms total)
+
+[----------] 1 test from Image
+[ RUN      ] Image.basic
+[       OK ] Image.basic (0 ms)
+[----------] 1 test from Image (0 ms total)
+
+[----------] 15 tests from Widget
+[ RUN      ] Widget.rotation
+[       OK ] Widget.rotation (0 ms)
+[ RUN      ] Widget.scale
+[       OK ] Widget.scale (0 ms)
+[ RUN      ] Widget.anchor
+[       OK ] Widget.anchor (0 ms)
+[ RUN      ] Widget.moveresize
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de051a8 size=8 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+small blocks size: 33109
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de051a8 size=8 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+recent blocks size: 3269951
+used: 3270287 bytes 42 blocks
+[       OK ] Widget.moveresize (0 ms)
+[ RUN      ] Widget.props
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de05f58 size=16 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33157
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de05f58 size=16 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3269999
+used: 3270343 bytes 43 blocks
+[       OK ] Widget.props (0 ms)
+[ RUN      ] Widget.custom_props
+[       OK ] Widget.custom_props (0 ms)
+[ RUN      ] Widget.props_default
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de060f8 size=32 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33213
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de060f8 size=32 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3270055
+used: 3270407 bytes 44 blocks
+[       OK ] Widget.props_default (1 ms)
+[ RUN      ] Widget.children
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de060f8 size=32 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33253
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de060f8 size=32 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3270095
+used: 3270455 bytes 45 blocks
+[       OK ] Widget.children (0 ms)
+[ RUN      ] Widget.move
+[       OK ] Widget.move (0 ms)
+[ RUN      ] Widget.resize
+[       OK ] Widget.resize (0 ms)
+[ RUN      ] Widget.move_resize
+[       OK ] Widget.move_resize (0 ms)
+[ RUN      ] Widget.prop
+[       OK ] Widget.prop (0 ms)
+[ RUN      ] Widget.dirty
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33317
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3270159
+used: 3270527 bytes 46 blocks
+[       OK ] Widget.dirty (0 ms)
+[ RUN      ] Widget.grab
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33357
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3270199
+used: 3270575 bytes 47 blocks
+[       OK ] Widget.grab (0 ms)
+[ RUN      ] Widget.index_of
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062a8 size=40 time=2142311, idle_manager_add:104
+small blocks size: 33397
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de05fb8 size=160 time=2142311, window_create:80
+0x7fc81de06228 size=56 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062a8 size=40 time=2142311, idle_manager_add:104
+recent blocks size: 3270239
+used: 3270623 bytes 48 blocks
+[       OK ] Widget.index_of (0 ms)
+[----------] 15 tests from Widget (1 ms total)
+
+[----------] 1 test from KeyBoard
+[ RUN      ] KeyBoard.basic
+window_manager_get_top_window:400 index >= 0
+[       OK ] KeyBoard.basic (0 ms)
+[----------] 1 test from KeyBoard (0 ms total)
+
+[----------] 2 tests from Label
+[ RUN      ] Label.basic
+[       OK ] Label.basic (0 ms)
+[ RUN      ] Label.clone
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+[       OK ] Label.clone (0 ms)
+[----------] 2 tests from Label (0 ms total)
+
+[----------] 18 tests from Layuout
+[ RUN      ] Layuout.basic
+[       OK ] Layuout.basic (0 ms)
+[ RUN      ] Layuout.negetive
+[       OK ] Layuout.negetive (0 ms)
+[ RUN      ] Layuout.negetivepercent
+[       OK ] Layuout.negetivepercent (0 ms)
+[ RUN      ] Layuout.fill
+[       OK ] Layuout.fill (0 ms)
+[ RUN      ] Layuout.percent
+[       OK ] Layuout.percent (0 ms)
+[ RUN      ] Layuout.center_middle
+[       OK ] Layuout.center_middle (0 ms)
+[ RUN      ] Layuout.center_middle1
+[       OK ] Layuout.center_middle1 (0 ms)
+[ RUN      ] Layuout.right_bottom
+[       OK ] Layuout.right_bottom (0 ms)
+[ RUN      ] Layuout.right_bottom1
+[       OK ] Layuout.right_bottom1 (0 ms)
+[ RUN      ] Layuout.layout_children_null
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_null (0 ms)
+[ RUN      ] Layuout.layout_children_00
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_00 (0 ms)
+[ RUN      ] Layuout.layout_children_10
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_10 (0 ms)
+[ RUN      ] Layuout.layout_children_01
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_01 (0 ms)
+[ RUN      ] Layuout.layout_children_11
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_11 (0 ms)
+[ RUN      ] Layuout.layout_children_14
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_14 (0 ms)
+[ RUN      ] Layuout.layout_children_41
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_41 (0 ms)
+[ RUN      ] Layuout.layout_children_22
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] Layuout.layout_children_22 (0 ms)
+[ RUN      ] Layuout.layout_children_parse
+[       OK ] Layuout.layout_children_parse (0 ms)
+[----------] 18 tests from Layuout (1 ms total)
+
+[----------] 1 test from LCDMem
+[ RUN      ] LCDMem.basic
+lcd_get_point_color:146 lcd != NULL && x >= 0 && y >= 0 && x < lcd->w && y < lcd->h
+[       OK ] LCDMem.basic (0 ms)
+[----------] 1 test from LCDMem (0 ms total)
+
+[----------] 4 tests from LineBreak
+[ RUN      ] LineBreak.word
+break:I: 1
+break:t: 0
+break: : 0
+break:i: 1
+break:s: 0
+break: : 0
+break:o: 1
+break:k: 0
+break:
+: 0
+break:h: 1
+break:e: 1
+break:l: 1
+break:l: 1
+break:o: 0
+break: : 0
+break:w: 1
+break:o: 1
+break:r: 1
+break:l: 1
+break:d: 0
+[       OK ] LineBreak.word (0 ms)
+[ RUN      ] LineBreak.line
+break:I: 2
+break:t: 2
+break: : 1
+break:i: 2
+break:s: 2
+break: : 1
+break:o: 2
+break:k: 2
+break:
+: 0
+break:h: 2
+break:e: 2
+break:l: 2
+break:l: 2
+break:o: 2
+break: : 1
+break:w: 2
+break:o: 2
+break:r: 2
+break:l: 2
+break:d: 0
+[       OK ] LineBreak.line (0 ms)
+[ RUN      ] LineBreak.chars
+[       OK ] LineBreak.chars (0 ms)
+[ RUN      ] LineBreak.chars_word
+[       OK ] LineBreak.chars_word (0 ms)
+[----------] 4 tests from LineBreak (0 ms total)
+
+[----------] 1 test from ListView
+[ RUN      ] ListView.basic
+[       OK ] ListView.basic (0 ms)
+[----------] 1 test from ListView (0 ms total)
+
+[----------] 1 test from Locale
+[ RUN      ] Locale.basic
+[       OK ] Locale.basic (0 ms)
+[----------] 1 test from Locale (0 ms total)
+
+[----------] 5 tests from Matrix
+[ RUN      ] Matrix.basic
+[       OK ] Matrix.basic (0 ms)
+[ RUN      ] Matrix.translate
+[       OK ] Matrix.translate (0 ms)
+[ RUN      ] Matrix.rotate
+[       OK ] Matrix.rotate (0 ms)
+[ RUN      ] Matrix.scale
+[       OK ] Matrix.scale (0 ms)
+[ RUN      ] Matrix.all
+[       OK ] Matrix.all (0 ms)
+[----------] 5 tests from Matrix (0 ms total)
+
+[----------] 1 test from Pages
+[ RUN      ] Pages.basic
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] Pages.basic (0 ms)
+[----------] 1 test from Pages (0 ms total)
+
+[----------] 8 tests from Path
+[ RUN      ] Path.basename
+[       OK ] Path.basename (0 ms)
+[ RUN      ] Path.extname
+[       OK ] Path.extname (0 ms)
+[ RUN      ] Path.dirname
+[       OK ] Path.dirname (0 ms)
+[ RUN      ] Path.exe
+[       OK ] Path.exe (0 ms)
+[ RUN      ] Path.normalize
+[       OK ] Path.normalize (0 ms)
+[ RUN      ] Path.build
+[       OK ] Path.build (0 ms)
+[ RUN      ] Path.abs
+[       OK ] Path.abs (0 ms)
+[ RUN      ] Path.approot
+[       OK ] Path.approot (0 ms)
+[----------] 8 tests from Path (1 ms total)
+
+[----------] 7 tests from Pixel
+[ RUN      ] Pixel.rgb565
+[       OK ] Pixel.rgb565 (0 ms)
+[ RUN      ] Pixel.rgb888
+[       OK ] Pixel.rgb888 (0 ms)
+[ RUN      ] Pixel.bgr888
+[       OK ] Pixel.bgr888 (0 ms)
+[ RUN      ] Pixel.rgba8888
+[       OK ] Pixel.rgba8888 (0 ms)
+[ RUN      ] Pixel.abgr8888
+[       OK ] Pixel.abgr8888 (0 ms)
+[ RUN      ] Pixel.bgra8888
+[       OK ] Pixel.bgra8888 (0 ms)
+[ RUN      ] Pixel.argb8888
+[       OK ] Pixel.argb8888 (0 ms)
+[----------] 7 tests from Pixel (0 ms total)
+
+[----------] 1 test from progress_bar
+[ RUN      ] progress_bar.basic
+[       OK ] progress_bar.basic (0 ms)
+[----------] 1 test from progress_bar (0 ms total)
+
+[----------] 3 tests from Rect
+[ RUN      ] Rect.merge
+[       OK ] Rect.merge (0 ms)
+[ RUN      ] Rect.contains
+[       OK ] Rect.contains (0 ms)
+[ RUN      ] Rect.intersect
+[       OK ] Rect.intersect (0 ms)
+[----------] 3 tests from Rect (0 ms total)
+
+[----------] 3 tests from ResourceManager
+[ RUN      ] ResourceManager.basic
+[       OK ] ResourceManager.basic (0 ms)
+[ RUN      ] ResourceManager.file
+[       OK ] ResourceManager.file (0 ms)
+[ RUN      ] ResourceManager.clearCache
+[       OK ] ResourceManager.clearCache (0 ms)
+[----------] 3 tests from ResourceManager (0 ms total)
+
+[----------] 3 tests from RichTextNode
+[ RUN      ] RichTextNode.text
+[       OK ] RichTextNode.text (0 ms)
+[ RUN      ] RichTextNode.image
+[       OK ] RichTextNode.image (0 ms)
+[ RUN      ] RichTextNode.basic
+[       OK ] RichTextNode.basic (0 ms)
+[----------] 3 tests from RichTextNode (0 ms total)
+
+[----------] 10 tests from RichTextParser
+[ RUN      ] RichTextParser.basic
+[       OK ] RichTextParser.basic (0 ms)
+[ RUN      ] RichTextParser.font
+[       OK ] RichTextParser.font (0 ms)
+[ RUN      ] RichTextParser.b
+[       OK ] RichTextParser.b (0 ms)
+[ RUN      ] RichTextParser.i
+[       OK ] RichTextParser.i (0 ms)
+[ RUN      ] RichTextParser.u
+[       OK ] RichTextParser.u (0 ms)
+[ RUN      ] RichTextParser.image
+[       OK ] RichTextParser.image (0 ms)
+[ RUN      ] RichTextParser.bu
+[       OK ] RichTextParser.bu (0 ms)
+[ RUN      ] RichTextParser.bui
+[       OK ] RichTextParser.bui (0 ms)
+[ RUN      ] RichTextParser.bui1
+[       OK ] RichTextParser.bui1 (0 ms)
+[ RUN      ] RichTextParser.bui2
+[       OK ] RichTextParser.bui2 (0 ms)
+[----------] 10 tests from RichTextParser (0 ms total)
+
+[----------] 1 test from RichTextRenderNode
+[ RUN      ] RichTextRenderNode.basic
+[       OK ] RichTextRenderNode.basic (0 ms)
+[----------] 1 test from RichTextRenderNode (0 ms total)
+
+[----------] 1 test from ROMFS
+[ RUN      ] ROMFS.basic
+[       OK ] ROMFS.basic (0 ms)
+[----------] 1 test from ROMFS (0 ms total)
+
+[----------] 4 tests from RotateImage
+[ RUN      ] RotateImage.BITMAP_FMT_BGRA8888
+00:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 406080ff 406080ff 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 406080ff 406080ff 00000000 00000000 
+04:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+05:00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+00:00000000 00000000 00000000 00000000 00000000 00000000 
+01:00000000 00000000 00000000 00000000 00000000 00000000 
+02:00000000 00000000 406080ff 406080ff 00000000 00000000 
+03:00000000 00000000 406080ff 406080ff 00000000 00000000 
+04:00000000 00000000 406080ff 406080ff 00000000 00000000 
+05:00000000 00000000 406080ff 406080ff 00000000 00000000 
+06:00000000 00000000 00000000 00000000 00000000 00000000 
+07:00000000 00000000 00000000 00000000 00000000 00000000 
+[       OK ] RotateImage.BITMAP_FMT_BGRA8888 (0 ms)
+[ RUN      ] RotateImage.BITMAP_FMT_BGR888
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+05:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+[       OK ] RotateImage.BITMAP_FMT_BGR888 (0 ms)
+[ RUN      ] RotateImage.BITMAP_FMT_BGR565
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+05:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+[       OK ] RotateImage.BITMAP_FMT_BGR565 (0 ms)
+[ RUN      ] RotateImage.BITMAP_FMT_RGB565
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+05:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+00:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+01:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+02:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+03:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+04:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+05:000000ff 000000ff 406080ff 406080ff 000000ff 000000ff 
+06:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+07:000000ff 000000ff 000000ff 000000ff 000000ff 000000ff 
+[       OK ] RotateImage.BITMAP_FMT_RGB565 (0 ms)
+[----------] 4 tests from RotateImage (1 ms total)
+
+[----------] 2 tests from ScrollBar
+[ RUN      ] ScrollBar.basic
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+dragger_set_range:102 widget != NULL && x_min <= x_max && y_min <= y_max
+widget_move_resize:77 widget != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_move_resize:77 widget != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+tk_strdup:239 str != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+tk_strdup:239 str != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+tk_strdup:239 str != NULL
+[       OK ] ScrollBar.basic (0 ms)
+[ RUN      ] ScrollBar.to_xml
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] ScrollBar.to_xml (0 ms)
+[----------] 2 tests from ScrollBar (0 ms total)
+
+[----------] 2 tests from ScrollView
+[ RUN      ] ScrollView.basic
+widget_invalidate:1129 widget != NULL && r != NULL
+widget_invalidate:1129 widget != NULL && r != NULL
+[       OK ] ScrollView.basic (0 ms)
+[ RUN      ] ScrollView.layout
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] ScrollView.layout (0 ms)
+[----------] 2 tests from ScrollView (0 ms total)
+
+[----------] 2 tests from SlideView
+[ RUN      ] SlideView.basic
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+[       OK ] SlideView.basic (0 ms)
+[ RUN      ] SlideView.props
+widget_get_child:1316 widget != NULL && widget->children != NULL
+widget_get_child:1316 widget != NULL && widget->children != NULL
+[       OK ] SlideView.props (0 ms)
+[----------] 2 tests from SlideView (0 ms total)
+
+[----------] 2 tests from slider
+[ RUN      ] slider.basic
+[       OK ] slider.basic (0 ms)
+[ RUN      ] slider.event
+[       OK ] slider.event (0 ms)
+[----------] 2 tests from slider (0 ms total)
+
+[----------] 2 tests from Soft2d
+[ RUN      ] Soft2d.rotate16
+[       OK ] Soft2d.rotate16 (0 ms)
+[ RUN      ] Soft2d.rotate32
+[       OK ] Soft2d.rotate32 (0 ms)
+[----------] 2 tests from Soft2d (0 ms total)
+
+[----------] 2 tests from SpinBox
+[ RUN      ] SpinBox.clone
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+edit_set_input_tips:551 widget != NULL && tips != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+tk_strdup:239 str != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+tk_strdup:239 str != NULL
+[       OK ] SpinBox.clone (0 ms)
+[ RUN      ] SpinBox.to_xml
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_on:422 widget != NULL && on_event != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+str_set_with_len:61 str != NULL && text != NULL
+ui_widget_serialize_prop:30 str_from_value(str, value) == RET_OK
+[       OK ] SpinBox.to_xml (0 ms)
+[----------] 2 tests from SpinBox (0 ms total)
+
+[----------] 5 tests from StrGen
+[ RUN      ] StrGen.basic1
+[       OK ] StrGen.basic1 (0 ms)
+[ RUN      ] StrGen.basic2
+[       OK ] StrGen.basic2 (0 ms)
+[ RUN      ] StrGen.basic3
+[       OK ] StrGen.basic3 (0 ms)
+[ RUN      ] StrGen.basicN
+[       OK ] StrGen.basicN (0 ms)
+[ RUN      ] StrGen.xml1
+[       OK ] StrGen.xml1 (0 ms)
+[----------] 5 tests from StrGen (0 ms total)
+
+[----------] 6 tests from Str
+[ RUN      ] Str.basic
+[       OK ] Str.basic (0 ms)
+[ RUN      ] Str.set_with_len
+[       OK ] Str.set_with_len (0 ms)
+[ RUN      ] Str.decode_xml_entity
+[       OK ] Str.decode_xml_entity (0 ms)
+[ RUN      ] Str.value
+[       OK ] Str.value (0 ms)
+[ RUN      ] Str.insert
+[       OK ] Str.insert (0 ms)
+[ RUN      ] Str.remove
+[       OK ] Str.remove (0 ms)
+[----------] 6 tests from Str (0 ms total)
+
+[----------] 1 test from SuggestWords
+[ RUN      ] SuggestWords.basic
+[       OK ] SuggestWords.basic (0 ms)
+[----------] 1 test from SuggestWords (0 ms total)
+
+[----------] 2 tests from Switch
+[ RUN      ] Switch.basic
+[       OK ] Switch.basic (1 ms)
+[ RUN      ] Switch.clone
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+tk_strdup:239 str != NULL
+[       OK ] Switch.clone (0 ms)
+[----------] 2 tests from Switch (1 ms total)
+
+[----------] 4 tests from TextSelector
+[ RUN      ] TextSelector.basic
+[       OK ] TextSelector.basic (0 ms)
+[ RUN      ] TextSelector.options
+[       OK ] TextSelector.options (0 ms)
+[ RUN      ] TextSelector.parse_options
+[       OK ] TextSelector.parse_options (0 ms)
+[ RUN      ] TextSelector.props
+[       OK ] TextSelector.props (0 ms)
+[----------] 4 tests from TextSelector (0 ms total)
+
+[----------] 5 tests from ThemeGen
+[ RUN      ] ThemeGen.basic
+  size=3 widget_type=widget name=default state=1
+    bg_color=0xff00ffff
+    fg_color=0xfffcfbfa
+    font_size=0x0000000c
+    font_name=sans
+  size=3 widget_type=progress_bar name=default state=1
+    bg_color=0xff00ffff
+    fg_color=0x7f00ffff
+    border_color=0xffff00ff
+[       OK ] ThemeGen.basic (0 ms)
+[ RUN      ] ThemeGen.state
+  size=3 widget_type=button name=default state=3
+    bg_color=0xff00ffff
+    fg_color=0xfffcfbfa
+    font_size=0x0000000c
+    font_name=sans
+  size=3 widget_type=button name=default state=2
+    bg_color=0xff00ffff
+    fg_color=0x7f00ffff
+    border_color=0xffff00ff
+[       OK ] ThemeGen.state (0 ms)
+[ RUN      ] ThemeGen.style_type
+  size=3 widget_type=button name=yellow state=3
+    bg_color=0xff00ffff
+    fg_color=0xfffcfbfa
+    font_size=0x0000000c
+    font_name=sans
+  size=3 widget_type=button name=yellow state=2
+    bg_color=0xff00ffff
+    fg_color=0x7f00ffff
+    border_color=0xffff00ff
+[       OK ] ThemeGen.style_type (0 ms)
+[ RUN      ] ThemeGen.inher
+  size=3 widget_type=button name=yellow state=3
+    font_size=0x0000000c
+    bg_color=0xff00ffff
+    fg_color=0xfffcfbfa
+    font_name=sans
+  size=2 widget_type=button name=yellow state=2
+    font_size=0x0000000e
+    bg_color=0xff00ffff
+    font_name=serif
+[       OK ] ThemeGen.inher (0 ms)
+[ RUN      ] ThemeGen.border
+  size=1 widget_type=button name=default state=1
+    border=0x00000001
+  size=1 widget_type=button name=default state=1
+    border=0x00000002
+  size=1 widget_type=button name=default state=1
+    border=0x00000004
+  size=1 widget_type=button name=default state=1
+    border=0x00000008
+  size=1 widget_type=button name=default state=1
+    border=0x0000ffff
+[       OK ] ThemeGen.border (0 ms)
+[----------] 5 tests from ThemeGen (0 ms total)
+
+[----------] 2 tests from Theme
+[ RUN      ] Theme.saveLoad
+[       OK ] Theme.saveLoad (0 ms)
+[ RUN      ] Theme.basic
+  size=5 widget_type=window_manager name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window_manager name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window_manager name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window_manager name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window_manager name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=window name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tool_bar name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tool_bar name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tool_bar name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tool_bar name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tool_bar name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=popup name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=popup name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=popup name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=popup name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=popup name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=sprite name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=sprite name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=sprite name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=sprite name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=sprite name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=keyboard name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=keyboard name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=keyboard name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=keyboard name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=keyboard name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dnd name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dnd name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dnd name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dnd name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dnd name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=label name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=label name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=label name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=label name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=label name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=image name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=image name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=image name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=image name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=image name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=edit name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=edit name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=edit name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=edit name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=edit name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=progress_bar name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=progress_bar name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=progress_bar name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=progress_bar name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=progress_bar name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=group_box name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=group_box name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=group_box name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=group_box name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=group_box name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=check_button name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=check_button name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=check_button name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=check_button name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=check_button name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=radio_button name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=radio_button name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=radio_button name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=radio_button name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=radio_button name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_title name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_title name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_title name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_title name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_title name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_client name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_client name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_client name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_client name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dialog_client name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slider name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slider name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slider name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slider name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slider name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=view name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=view name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=view name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=view name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=view name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box_item name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box_item name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box_item name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box_item name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=combo_box_item name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slide_view name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slide_view name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slide_view name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slide_view name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=slide_view name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=pages name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=pages name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=pages name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=pages name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=pages name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_control name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_control name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_control name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_control name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_control name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button_group name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button_group name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button_group name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button_group name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=tab_button_group name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button_group name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button_group name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button_group name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button_group name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=button_group name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=candidates name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=candidates name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=candidates name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=candidates name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=candidates name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=spin_box name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=spin_box name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=spin_box name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=spin_box name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=spin_box name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dragger name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dragger name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dragger name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dragger name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=dragger name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_d name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_d name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_d name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_d name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_d name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_m name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_m name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_m name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_m name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_bar_m name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_view name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_view name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_view name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_view name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=scroll_view name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view_h name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view_h name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view_h name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view_h name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_view_h name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_item name=default state=0
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_item name=default state=1
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_item name=default state=2
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_item name=default state=3
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+  size=5 widget_type=list_item name=default state=4
+    bg_color=0x00000001
+    fg_color=0x00000002
+    font_name=0x00000003
+    font_size=0x00000004
+    bg_color=1
+    fg_color=2
+    font_name=3
+    font_size=4
+[       OK ] Theme.basic (2 ms)
+[----------] 2 tests from Theme (2 ms total)
+
+[----------] 4 tests from Timer
+[ RUN      ] Timer.once
+[       OK ] Timer.once (0 ms)
+[ RUN      ] Timer.repeat
+[       OK ] Timer.repeat (0 ms)
+[ RUN      ] Timer.removeInTimer
+[       OK ] Timer.removeInTimer (0 ms)
+[ RUN      ] Timer.addInTimer
+[       OK ] Timer.addInTimer (0 ms)
+[----------] 4 tests from Timer (0 ms total)
+
+[----------] 2 tests from Tokenizer
+[ RUN      ] Tokenizer.basic
+[       OK ] Tokenizer.basic (0 ms)
+[ RUN      ] Tokenizer.separators
+[       OK ] Tokenizer.separators (0 ms)
+[----------] 2 tests from Tokenizer (0 ms total)
+
+[----------] 2 tests from UILoader
+[ RUN      ] UILoader.basic
+window_manager_get_top_window:400 index >= 0
+[       OK ] UILoader.basic (0 ms)
+[ RUN      ] UILoader.ext
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_window:1051 widget != NULL && widget->parent != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_get_type:1495 widget != NULL && widget->vt != NULL
+widget_get_window_theme:1154 win != NULL
+widget_layout_self:242 widget != NULL && widget->parent != NULL
+[       OK ] UILoader.ext (0 ms)
+[----------] 2 tests from UILoader (0 ms total)
+
+[----------] 2 tests from UILoaderXML
+[ RUN      ] UILoaderXML.basic
+window_manager_get_top_window:400 index >= 0
+[       OK ] UILoaderXML.basic (0 ms)
+[ RUN      ] UILoaderXML.attr
+window_manager_get_top_window:400 index >= 0
+[       OK ] UILoaderXML.attr (0 ms)
+[----------] 2 tests from UILoaderXML (0 ms total)
+
+[----------] 3 tests from UISerializer
+[ RUN      ] UISerializer.basic
+[       OK ] UISerializer.basic (0 ms)
+[ RUN      ] UISerializer.layout_self
+[       OK ] UISerializer.layout_self (0 ms)
+[ RUN      ] UISerializer.layout_self1
+[       OK ] UISerializer.layout_self1 (0 ms)
+[----------] 3 tests from UISerializer (0 ms total)
+
+[----------] 2 tests from UIXmlWriter
+[ RUN      ] UIXmlWriter.basic1
+[       OK ] UIXmlWriter.basic1 (0 ms)
+[ RUN      ] UIXmlWriter.basic2
+[       OK ] UIXmlWriter.basic2 (0 ms)
+[----------] 2 tests from UIXmlWriter (0 ms total)
+
+[----------] 2 tests from Utf8
+[ RUN      ] Utf8.ascii
+[       OK ] Utf8.ascii (0 ms)
+[ RUN      ] Utf8.chinese
+[       OK ] Utf8.chinese (0 ms)
+[----------] 2 tests from Utf8 (0 ms total)
+
+[----------] 12 tests from Utils
+[ RUN      ] Utils.basic
+[       OK ] Utils.basic (0 ms)
+[ RUN      ] Utils.tk_memset16
+[       OK ] Utils.tk_memset16 (0 ms)
+[ RUN      ] Utils.tk_memset24
+[       OK ] Utils.tk_memset24 (0 ms)
+[ RUN      ] Utils.tk_memset32
+[       OK ] Utils.tk_memset32 (0 ms)
+[ RUN      ] Utils.tk_memcpy16
+[       OK ] Utils.tk_memcpy16 (0 ms)
+[ RUN      ] Utils.tk_memcpy32
+[       OK ] Utils.tk_memcpy32 (0 ms)
+[ RUN      ] Utils.tk_strncpy
+[       OK ] Utils.tk_strncpy (0 ms)
+[ RUN      ] Utils.filename_to_name
+[       OK ] Utils.filename_to_name (0 ms)
+[ RUN      ] Utils.tk_skip_to_num
+[       OK ] Utils.tk_skip_to_num (0 ms)
+[ RUN      ] Utils.sscanf
+[       OK ] Utils.sscanf (0 ms)
+[ RUN      ] Utils.xml_file_expand_read
+[       OK ] Utils.xml_file_expand_read (0 ms)
+[ RUN      ] Utils.str_append
+tk_str_append:513 max_len > (len + org_len)
+[       OK ] Utils.str_append (0 ms)
+[----------] 12 tests from Utils (1 ms total)
+
+[----------] 11 tests from value
+[ RUN      ] value.i8
+[       OK ] value.i8 (0 ms)
+[ RUN      ] value.u8
+[       OK ] value.u8 (0 ms)
+[ RUN      ] value.i16
+[       OK ] value.i16 (0 ms)
+[ RUN      ] value.u16
+[       OK ] value.u16 (0 ms)
+[ RUN      ] value.i32
+[       OK ] value.i32 (0 ms)
+[ RUN      ] value.u32
+[       OK ] value.u32 (0 ms)
+[ RUN      ] value.i64
+[       OK ] value.i64 (0 ms)
+[ RUN      ] value.u64
+[       OK ] value.u64 (0 ms)
+[ RUN      ] value.float
+[       OK ] value.float (0 ms)
+[ RUN      ] value.double
+[       OK ] value.double (0 ms)
+[ RUN      ] value.int
+[       OK ] value.int (0 ms)
+[----------] 11 tests from value (0 ms total)
+
+[----------] 1 test from ValueTest
+[ RUN      ] ValueTest.str
+[       OK ] ValueTest.str (0 ms)
+[----------] 1 test from ValueTest (0 ms total)
+
+[----------] 1 test from Velocity
+[ RUN      ] Velocity.basic
+[       OK ] Velocity.basic (0 ms)
+[----------] 1 test from Velocity (0 ms total)
+
+[----------] 2 tests from WidgetFactory
+[ RUN      ] WidgetFactory.button
+widget_factory_deinit:181 items != NULL
+[       OK ] WidgetFactory.button (0 ms)
+[ RUN      ] WidgetFactory.custom
+widget_factory_create_widget:155 items != NULL
+[       OK ] WidgetFactory.custom (0 ms)
+[----------] 2 tests from WidgetFactory (0 ms total)
+
+[----------] 1 test from Window
+[ RUN      ] Window.basic
+===============large=========================
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+large blocks size: 3236842
+================small========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de063d8 size=160 time=2142311, window_create:80
+0x7fc81de06488 size=136 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062a8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062d8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06308 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06368 size=96 time=2142311, load_asset:35
+0x7fc81de06768 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06738 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06018 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06058 size=8 time=2142311, array_extend:60
+small blocks size: 33781
+================recent========================
+0x7fc81dc23ea8 size=48 time=2142311, timer_manager_create:52
+0x7fc81dc23ee8 size=40 time=2142311, idle_manager_create:48
+0x7fc81dc23f18 size=128 time=2142311, input_method_default_create:210
+0x7fc81dc23fc8 size=168 time=2142311, input_engine_create:82
+0x7fc81dc24078 size=33 time=2142311, str_extend:35
+0x7fc81dc26ce8 size=144 time=2142311, suggest_words_create:132
+0x106a14008 size=267586 time=2142311, alloc_resource:52
+0x7fc81e017608 size=34076 time=2142311, alloc_resource:57
+0x7fc81e01fc08 size=34076 time=2142311, alloc_resource:60
+0x7fc81e028208 size=6624 time=2142311, load_dict:110
+0x106a57008 size=461720 time=2142311, load_dict:111
+0x106ac8008 size=195333 time=2142311, load_dict:112
+0x7fc81dc265f8 size=828 time=2142311, load_dict:117
+0x7fc81e029c08 size=65102 time=2142311, load_ngram:162
+0x7fc81dc26ad8 size=512 time=2142311, load_ngram:163
+0x7fc81dc050f8 size=16 time=2142311, widget_factory_create:113
+0x7fc81dc26d88 size=16 time=2142311, assets_manager_create:247
+0x7fc81dc26da8 size=240 time=2142311, array_init:45
+0x7fc81dc26ea8 size=24 time=2142311, locale_info_create:39
+0x7fc81dc26ec8 size=24 time=2142311, emitter_create:27
+0x7fc81dc26ee8 size=96 time=2142311, load_asset:35
+0x7fc81dc26f98 size=16 time=2142311, font_manager_create:38
+0x7fc81dc26fb8 size=16 time=2142311, array_init:45
+0x7fc81dc26fd8 size=24 time=2142311, image_manager_create:48
+0x7fc81dc26ff8 size=256 time=2142311, window_manager_create:370
+0x7fc81dc26f58 size=48 time=2142311, emitter_on:120
+0x7fc81e03ac08 size=16613 time=2142311, load_asset:35
+0x106af8008 size=2162336 time=2142311, load_asset:35
+0x7fc81dc27148 size=240 time=2142311, font_stb_create:107
+0x7fc81e03ee08 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81dc27248 size=240 time=2142311, font_stb_create:107
+0x7fc81e041008 size=8192 time=2142311, glyph_cache_init:30
+0x7fc81de063d8 size=160 time=2142311, window_create:80
+0x7fc81de06488 size=136 time=2142311, array_extend:60
+0x7fc81de05ed8 size=88 time=2142311, array_extend:60
+0x7fc81de05d68 size=16 time=2142311, array_create:26
+0x7fc81de05f88 size=32 time=2142311, array_init:45
+0x7fc81de05f78 size=8 time=2142311, array_extend:60
+0x7fc81de06068 size=40 time=2142311, idle_manager_add:104
+0x7fc81e808408 size=4128 time=2142311, bitmap_alloc_data:94
+0x7fc81de06138 size=128 time=2142311, image_manager_add:67
+0x7fc81e809608 size=2336 time=2142311, bitmap_alloc_data:94
+0x7fc81de06098 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061c8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de061f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de060f8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062a8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de062d8 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06308 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06368 size=96 time=2142311, load_asset:35
+0x7fc81de06768 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06738 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06018 size=40 time=2142311, idle_manager_add:104
+0x7fc81de06058 size=8 time=2142311, array_extend:60
+recent blocks size: 3270623
+used: 3271063 bytes 55 blocks
+[       OK ] Window.basic (0 ms)
+[----------] 1 test from Window (0 ms total)
+
+[----------] 12 tests from WStr
+[ RUN      ] WStr.basic
+[       OK ] WStr.basic (0 ms)
+[ RUN      ] WStr.utf8
+[       OK ] WStr.utf8 (0 ms)
+[ RUN      ] WStr.remove
+[       OK ] WStr.remove (0 ms)
+[ RUN      ] WStr.insert
+[       OK ] WStr.insert (0 ms)
+[ RUN      ] WStr.poppush
+[       OK ] WStr.poppush (0 ms)
+[ RUN      ] WStr.int
+[       OK ] WStr.int (0 ms)
+[ RUN      ] WStr.double
+[       OK ] WStr.double (0 ms)
+[ RUN      ] WStr.value
+[       OK ] WStr.value (0 ms)
+[ RUN      ] WStr.wcs_len
+[       OK ] WStr.wcs_len (0 ms)
+[ RUN      ] WStr.wcs_cpy
+[       OK ] WStr.wcs_cpy (0 ms)
+[ RUN      ] WStr.wcs_chr
+[       OK ] WStr.wcs_chr (0 ms)
+[ RUN      ] WStr.wcs_dup
+[       OK ] WStr.wcs_dup (0 ms)
+[----------] 12 tests from WStr (0 ms total)
+
+[----------] 1 test from XmlParser
+[ RUN      ] XmlParser.basic
+[       OK ] XmlParser.basic (0 ms)
+[----------] 1 test from XmlParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 269 tests from 81 test cases ran. (42 ms total)
+[  PASSED  ] 268 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] ImageLoaderStb.bgr565_trans
+
+ 1 FAILED TEST

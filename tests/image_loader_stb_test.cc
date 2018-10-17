@@ -81,3 +81,54 @@ TEST(ImageLoaderStb, gen) {
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
   image_manager_unload_unused(image_manager(), 0);
 }
+
+static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require_bgra,
+                           bool_t enable_bgr565) {
+  uint32_t size = 0;
+  ret_t ret = RET_OK;
+  printf("%s\n", filename);
+  uint8_t* buff = (uint8_t*)read_file(filename, &size);
+  ret = stb_load_image(buff, size, image, require_bgra, enable_bgr565);
+  TKMEM_FREE(buff);
+
+  return ret;
+}
+
+TEST(ImageLoaderStb, bgr565_apaque) {
+  bitmap_t image;
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, TRUE, TRUE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGR565);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+}
+
+TEST(ImageLoaderStb, bgr565_trans) {
+  bitmap_t image;
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, TRUE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+}
+
+TEST(ImageLoaderStb, rgba) {
+  bitmap_t image;
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, FALSE, FALSE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_RGBA8888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+}
