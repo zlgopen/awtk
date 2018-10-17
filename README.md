@@ -146,9 +146,10 @@ bin\demoui
 * [使用Qt Designer构建AWTK的界面](docs/qt-designer.md)
 
 ### 2.HowTos
+* [AWTK 调试技巧](docs/debug_tips.md)
+* [如何加入中文输入法](docs/chinese_ime.md) 
 * [如何在Visual Studio中调试AWTK](docs/vs_debug.md)
 * [如何在非GUI线程操作GUI控件](docs/how_to_non_gui_thread_operate_widget.md)
-* [AWTK 调试技巧](docs/debug_tips.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](docs/script_binding.md)
