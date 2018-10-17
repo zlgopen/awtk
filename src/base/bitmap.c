@@ -61,45 +61,6 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
 
 #include "base/pixel_pack_unpack.h"
 
-ret_t bitmap_rgba_to_bgr565(bitmap_t* image, uint16_t* output) {
-  uint32_t i = 0;
-  uint16_t* d = output;
-  uint32_t nr = image->w * image->h;
-  uint32_t* s = (uint32_t*)(image->data);
-  return_value_if_fail(image->format == BITMAP_FMT_RGBA8888, RET_BAD_PARAMS);
-
-  for (i = 0; i < nr; i++, d++, s++) {
-    color_t c;
-    c.color = *s;
-    *d = rgb_to_bgr565(c.rgba.r, c.rgba.g, c.rgba.b);
-  }
-
-  return RET_OK;
-}
-
-ret_t bitmap_rgba_to_bgra(bitmap_t* image) {
-  int i = 0;
-  int nr = image->w * image->h;
-  uint8_t* data = (uint8_t*)(image->data);
-
-  /*default format is rgba, some sys need bgra*/
-  for (i = 0; i < nr; i++) {
-    uint8_t r = data[0];
-    uint8_t g = data[1];
-    uint8_t b = data[2];
-    uint8_t a = data[3];
-    data[0] = b;
-    data[1] = g;
-    data[2] = r;
-    data[3] = a;
-
-    data += 4;
-  }
-  image->format = BITMAP_FMT_BGRA8888;
-
-  return RET_OK;
-}
-
 uint32_t bitmap_get_bpp(bitmap_t* bmp) {
   return_value_if_fail(bmp != NULL, 0);
 
@@ -129,8 +90,8 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
 
   size = bitmap_get_bpp(bitmap) * bitmap->w * bitmap->h;
   size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
-  data = (uint8_t*)TKMEM_ALLOC(size);
 
+  data = (uint8_t*)TKMEM_ALLOC(size);
   if (data != NULL) {
     memset(data, 0x00, size);
     bitmap->data_free_ptr = data;
@@ -236,7 +197,8 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   return RET_NOT_IMPL;
 }
 
-ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
+                           uint32_t comp) {
   uint32_t i = 0;
 
   if (comp == 4) {
@@ -244,7 +206,7 @@ ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, u
     memcpy((uint8_t*)(b->data), data, size);
   } else {
     uint32_t n = w * h;
-    uint8_t* s = data;
+    const uint8_t* s = data;
     uint8_t* d = (uint8_t*)(b->data);
 
     for (i = 0; i < n; i++) {
@@ -258,10 +220,11 @@ ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, u
   return RET_OK;
 }
 
-ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
+                           uint32_t comp) {
   uint32_t i = 0;
   uint32_t n = w * h;
-  uint8_t* s = data;
+  const uint8_t* s = data;
   uint8_t* d = (uint8_t*)(b->data);
 
   /*bgra=rgba*/
@@ -278,10 +241,10 @@ ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, u
   return RET_OK;
 }
 
-ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
   uint32_t i = 0;
   uint32_t n = w * h;
-  uint8_t* s = data;
+  const uint8_t* s = data;
   uint16_t* d = (uint16_t*)(b->data);
 
   for (i = 0; i < n; i++) {
@@ -293,9 +256,28 @@ ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, uint8_t* data, uin
 
     s += comp;
   }
+
+  return RET_OK;
 }
 
-ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data,
+bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp) {
+  if (comp == 4) {
+    uint32_t i = 0;
+    uint32_t n = w * h;
+    const uint8_t* s = data;
+
+    for (i = 0; i < n; i++) {
+      if (s[3] != 0xff) {
+        return FALSE;
+      }
+      s += 4;
+    }
+  }
+
+  return TRUE;
+}
+
+ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data,
                   uint32_t comp) {
   return_value_if_fail(b != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
 
@@ -307,7 +289,7 @@ ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, u
   b->flags = BITMAP_FLAG_IMMUTABLE;
   return_value_if_fail(bitmap_alloc_data(b) == RET_OK, RET_OOM);
 
-  if (comp == 3) {
+  if (rgba_data_is_opaque(data, w, h, comp)) {
     b->flags |= BITMAP_FLAG_OPAQUE;
   }
 
@@ -315,7 +297,7 @@ ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, u
     return bitmap_init_bgra8888(b, w, h, data, comp);
   } else if (format == BITMAP_FMT_RGBA8888) {
     return bitmap_init_rgba8888(b, w, h, data, comp);
-  } else if (comp == 3) {
+  } else if (format == BITMAP_FMT_BGR565) {
     return bitmap_init_bgr565(b, w, h, data, comp);
   } else {
     return RET_NOT_IMPL;

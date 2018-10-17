@@ -28,6 +28,10 @@ BEGIN_C_DECLS
 
 image_loader_t* image_loader_stb(void);
 
+/*for tool image_gen only*/
+ret_t stb_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image, bool_t require_bgra,
+                     bool_t enable_bgr565);
+
 END_C_DECLS
 
 #endif /*TK_IMAGE_LOADER_STB_H*/
