@@ -60,24 +60,27 @@
 * 移植到STM32F103
 * 移植到STM32F429
 * 移植到STM32F767
+* sylixos移植
+* nanovg基于agg用纯软件实现的矢量图库。
 * nanovg基于agge用纯软件实现的矢量图库。
 * text select
+* switch
+* 模拟时钟控件。
+* 动画控件。
+* 电阻屏校准窗口。
+* Windows/Linux支持高清屏幕。
 
 ## 短期计划(顺序不定)
-* switch
-* text editor
-* port code editor
 * menu
 * chart
+* text editor
+* port code editor
 * property sheet
 * file browser
 * calendar
 * drag & drop
 * tableview
 * python binging 
-* rtthread移植
-* sylixos移植
-* djyos移植
 * remote client
 * 音频接口。
 * 键盘导航
@@ -87,10 +90,10 @@
 * ios移植
 * android移植
 * 支持vue.js
-* 用AWTK实现界面编辑器
 * 支持粒子产生器
 * 支持骨骼动画
 * flash播放器支持
 * 在浏览器中运行
+* 用AWTK实现界面编辑器
 * 微信小程序类似的开发方法
 

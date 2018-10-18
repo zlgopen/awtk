@@ -888,10 +888,12 @@ static ret_t widget_dispatch_leave_event(widget_t* widget) {
   widget_t* target = widget;
 
   while (target != NULL) {
+    widget_t* curr = target;
     event_t e = event_init(EVT_POINTER_LEAVE, target);
 
     widget_dispatch(target, &e);
-    target = target->target;
+    target = curr->target;
+    curr->target = NULL;
   }
 
   return RET_OK;
