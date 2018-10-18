@@ -181,6 +181,7 @@ bin\demoui
   * 修改MacOS升级后，打开窗口瞬间出现黑屏的问题。
   * 修改SDL+FB模式下刷新的问题。
   * 修改Windows下Mutex实现的BUG。
+  * 改进ListView滑动效果。
   * 增加文档。
 
 * 2018/10/17

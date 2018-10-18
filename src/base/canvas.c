@@ -240,7 +240,7 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
     canvas_set_clip_rect(c, NULL);
 #else
     canvas_set_clip_rect(c, dirty_rect);
-#endif/*WITH_SDL*/
+#endif /*WITH_SDL*/
   }
 
   return lcd_begin_frame(c->lcd, dirty_rect, draw_mode);

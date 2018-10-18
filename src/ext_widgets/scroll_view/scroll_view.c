@@ -197,9 +197,14 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   return RET_OK;
 }
 
+#define SPEED_SCALE 2
+#define MIN_DELTA 10
+
 static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
+  int32_t move_dx = e->x - scroll_view->down.x;
+  int32_t move_dy = e->y - scroll_view->down.y;
 
   velocity_update(v, e->e.time, e->x, e->y);
   if (scroll_view->xslidable || scroll_view->yslidable) {
@@ -215,18 +220,20 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
       log_debug("dx=%d xv=%d\n", dx, xv);
     }
 
-    if (scroll_view->xslidable && xv) {
-      xv = xv < 0 ? tk_min(xv, -widget->w) : tk_max(xv, widget->w);
-      scroll_view->xoffset_end = scroll_view->xoffset - xv;
-    } else {
-      scroll_view->xoffset_end = scroll_view->xoffset;
+    if (scroll_view->xslidable) {
+      if (tk_abs(move_dx) > MIN_DELTA) {
+        scroll_view->xoffset_end = scroll_view->xoffset - xv * SPEED_SCALE;
+      } else {
+        scroll_view->xoffset_end = scroll_view->xoffset - xv / SPEED_SCALE;
+      }
     }
 
     if (scroll_view->yslidable) {
-      yv = yv < 0 ? tk_min(yv, -widget->h) : tk_max(yv, widget->h);
-      scroll_view->yoffset_end = scroll_view->yoffset - yv;
-    } else {
-      scroll_view->yoffset_end = scroll_view->yoffset;
+      if (tk_abs(move_dy) > MIN_DELTA) {
+        scroll_view->yoffset_end = scroll_view->yoffset - yv * SPEED_SCALE;
+      } else {
+        scroll_view->yoffset_end = scroll_view->yoffset - yv / SPEED_SCALE;
+      }
     }
 
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
