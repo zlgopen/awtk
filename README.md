@@ -39,7 +39,7 @@
 
 10. 内置nanovg实现高质量的矢量动画。
 
-11. 支持窗口动画、控件动画和滑动动画等现代GUI常见特性。
+11. 支持窗口动画、控件动画、滑动动画和高清LCD等现代GUI常见特性。
 
 12. 支持国际化(Unicode、字符串翻译和输入法等)。
 
@@ -102,6 +102,12 @@ bin\demoui
 
 ## 各个平台的移植
 
+#### 官方支持平台 
+
+* [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
+
+#### 移植示例(不定期更新)
+
 * [awtk-sylixos](https://github.com/zlgopen/awtk-sylixos)
 
 * [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
@@ -109,8 +115,6 @@ bin\demoui
 * [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
 
 * [stm32f767igtx](https://github.com/zlgopen/awtk-stm32f767igtx-raw)
-
-* [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
 * [linux-framebuffer(嵌入式Linux请用本项目)](https://github.com/zlgopen/awtk-linux-fb)
 
@@ -175,6 +179,8 @@ bin\demoui
 * 2018/10/18
   * 修改控件状态问题（在特殊情况下，mouse重新进入控件，状态没有改变）。
   * 修改MacOS升级后，打开窗口瞬间出现黑屏的问题。
+  * 修改SDL+FB模式下刷新的问题。
+  * 修改Windows下Mutex实现的BUG。
   * 增加文档。
 
 * 2018/10/17
