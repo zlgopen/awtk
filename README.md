@@ -133,6 +133,7 @@ bin\demoui
 ## 文档
 
 ### 1.使用文档
+* [避坑指南](docs/trap_list.md)
 * [AWTK控件的布局参数介绍](docs/layout.md)
 * [AWTK界面描述文件介绍](docs/ui_desc.md)
 * [AWTK中的图片显示方式](docs/image_draw_type.md)
