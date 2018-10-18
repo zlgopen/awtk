@@ -33,7 +33,7 @@
 #endif
 
 struct _tk_mutex_t {
-  ret_t created;
+  bool_t created;
   tk_mutex_handle_t mutex;
 };
 
@@ -41,7 +41,7 @@ tk_mutex_t* tk_mutex_create() {
   tk_mutex_t* mutex = (tk_mutex_t*)TKMEM_ZALLOC(tk_mutex_t);
   return_value_if_fail(mutex != NULL, NULL);
 #ifdef WIN32
-  mutex->mutex = CreateMutex(NULL, RET_BAD_PARAMS, NULL);
+  mutex->mutex = CreateMutex(NULL, FALSE, NULL);
   mutex->created = mutex->mutex != NULL;
 #elif defined(HAS_PTHREAD)
   mutex->created = 0 == pthread_mutex_init(&(mutex->mutex), NULL);
@@ -82,7 +82,7 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 #elif defined(HAS_PTHREAD)
   pthread_mutex_destroy(&(mutex->mutex));
 #endif
-  mutex->created = RET_BAD_PARAMS;
+  mutex->created = FALSE;
 
   TKMEM_FREE(mutex);
 
