@@ -10,7 +10,7 @@ def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
 
 DPI='x1'
-IMAGEGEN_OPTIONS='bgra|bgr565'
+IMAGEGEN_OPTIONS='bgra+bgr565'
 
 CWD=os.getcwd()
 BIN_DIR=joinPath(CWD, 'bin')

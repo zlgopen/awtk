@@ -5,7 +5,7 @@
 用法说明：
 
 ```
-./bin/imagegen in_filename out_filename bgra|bgr565
+./bin/imagegen in_filename out_filename bgra+bgr565
 ```
 
 * in\_filename png/jpg 文件的文件名。
