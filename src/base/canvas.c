@@ -490,7 +490,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, int32_t nr, xy_t x
       y += font_size;
       x = left;
     } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
-      xy_t xx = x + g.x;
+      xy_t xx = x;
       xy_t yy = y + font_size + g.y;
 
       canvas_draw_glyph(c, &g, xx, yy);
