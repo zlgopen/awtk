@@ -264,6 +264,7 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd->draw_points = lcd_reg_draw_points;
   lcd->end_frame = lcd_reg_end_frame;
   lcd->destroy = lcd_reg_destroy;
+  lcd->support_dirty_rect = TRUE;
 
   return lcd;
 }

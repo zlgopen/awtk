@@ -61,10 +61,8 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
 
 #include "base/pixel_pack_unpack.h"
 
-uint32_t bitmap_get_bpp(bitmap_t* bmp) {
-  return_value_if_fail(bmp != NULL, 0);
-
-  switch (bmp->format) {
+uint32_t bitmap_get_bpp_of_format(bitmap_format_t format) {
+  switch (format) {
     case BITMAP_FMT_RGBA8888:
     case BITMAP_FMT_ABGR8888:
     case BITMAP_FMT_BGRA8888:
@@ -81,6 +79,12 @@ uint32_t bitmap_get_bpp(bitmap_t* bmp) {
   }
 
   return 0;
+}
+
+uint32_t bitmap_get_bpp(bitmap_t* bmp) {
+  return_value_if_fail(bmp != NULL, 0);
+
+  return bitmap_get_bpp_of_format(bmp->format);
 }
 
 ret_t bitmap_alloc_data(bitmap_t* bitmap) {

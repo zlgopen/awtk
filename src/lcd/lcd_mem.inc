@@ -433,6 +433,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->ratio = 1;
   base->type = LCD_FRAMEBUFFER;
   base->global_alpha = 0xff;
+  base->support_dirty_rect = TRUE;
   lcd->format = LCD_FORMAT;
 
   info->lcd_w = base->w;

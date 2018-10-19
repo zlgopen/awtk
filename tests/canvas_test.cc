@@ -11,7 +11,7 @@ TEST(Canvas, draw_hline) {
   canvas_t c;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
 
   r = rect_init(100, 100, 200, 200);
@@ -39,7 +39,7 @@ TEST(Canvas, draw_vline) {
   canvas_t c;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
 
   r = rect_init(100, 100, 200, 200);
@@ -67,7 +67,7 @@ TEST(Canvas, fill_rect) {
   canvas_t c;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
 
   r = rect_init(100, 100, 200, 200);
@@ -115,7 +115,7 @@ TEST(Canvas, draw_points) {
   canvas_t c;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
   point_t points[3];
 
@@ -160,7 +160,7 @@ TEST(Canvas, draw_glyph) {
   uint16_t font_size = 10;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
   font_dummy_init();
   font_manager_add(&font_manager, font_dummy_0("demo0", font_size));
@@ -201,7 +201,7 @@ TEST(Canvas, draw_image) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -273,7 +273,7 @@ TEST(Canvas, draw_image_patch3_x_scale_y) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -317,7 +317,7 @@ TEST(Canvas, draw_image_patch3_y_scale_x) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -361,7 +361,7 @@ TEST(Canvas, draw_image_patch9) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -413,7 +413,7 @@ TEST(Canvas, draw_image_repeat_x) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -458,7 +458,7 @@ TEST(Canvas, draw_image_repeat_y) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -504,7 +504,7 @@ TEST(Canvas, draw_image_repeat) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -551,7 +551,7 @@ TEST(Canvas, draw_image_scale_w) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -595,7 +595,7 @@ TEST(Canvas, draw_image_scale_h) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -639,7 +639,7 @@ TEST(Canvas, draw_image_scale) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 
@@ -683,7 +683,7 @@ TEST(Canvas, draw_image_center) {
   canvas_t c;
   bitmap_t img;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_log_init(800, 600);
   canvas_init(&c, lcd, &font_manager);
 

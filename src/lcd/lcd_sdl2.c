@@ -198,6 +198,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
 #endif
 
   base->type = lcd.lcd_mem->base.type;
+  base->support_dirty_rect = FALSE;
 
   return base;
 }

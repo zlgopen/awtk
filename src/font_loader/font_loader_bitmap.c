@@ -19,8 +19,8 @@
  *
  */
 
-#include "font/font_bitmap.h"
 #include "base/mem.h"
+#include "font_loader/font_loader_bitmap.h"
 
 typedef struct _font_bitmap_t {
   font_t base;
@@ -110,4 +110,19 @@ font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_
   return_value_if_fail(font != NULL, NULL);
 
   return font_bitmap_init(font, name, buff, buff_size);
+}
+
+static font_t* font_bitmap_load(font_loader_t* loader, const char* name, const uint8_t* buff,
+                                uint32_t buff_size) {
+  (void)loader;
+
+  return font_bitmap_create(name, buff, buff_size);
+}
+
+font_loader_t* font_loader_bitmap(void) {
+  static font_loader_t loader;
+  loader.type = ASSET_TYPE_FONT_TTF;
+  loader.load = font_bitmap_load;
+
+  return &loader;
 }

@@ -3,10 +3,10 @@
 #include "base/font.h"
 #include "base/mem.h"
 #include "base/widget.h"
-#include "font/font_bitmap.h"
-#include "font/font_stb.h"
 #include "tools/common/utils.h"
 #include "tools/font_gen/font_gen.h"
+#include "font_loader/font_loader_stb.h"
+#include "font_loader/font_loader_bitmap.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
 

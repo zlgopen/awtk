@@ -19,15 +19,17 @@
  *
  */
 
-#ifndef TK_FONT_STB_H
-#define TK_FONT_STB_H
+#ifndef TK_FONT_LOADER_STB_H
+#define TK_FONT_LOADER_STB_H
 
-#include "base/font.h"
+#include "base/font_loader.h"
 
 BEGIN_C_DECLS
 
 font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
 
+font_loader_t* font_loader_stb(void);
+
 END_C_DECLS
 
-#endif /*TK_FONT_STB_H*/
+#endif /*TK_FONT_LOADER_STB_H*/

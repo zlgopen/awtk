@@ -357,6 +357,7 @@ typedef enum _image_draw_type_t {
 
 /*private*/
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
+uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
 END_C_DECLS
