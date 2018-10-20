@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2018/10/21
+  * 出于一致性的考虑，将widget的属性style\_name重命名为style，将widget的属性style重命名为style\_data。
+  * 更新文档。
+
 * 2018/10/20
   * pages控件切换页面时触发EVT\_VALUE\_CHANGED事件。
   * slide\_view控件的indicator颜色由主题确定。
