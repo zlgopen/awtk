@@ -116,6 +116,9 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 }
 
 ret_t tk_deinit_internal(void) {
+  widget_destroy(window_manager());
+  window_manager_set(NULL);
+
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
@@ -136,9 +139,6 @@ ret_t tk_deinit_internal(void) {
 
   input_method_destroy(input_method());
   input_method_set(NULL);
-
-  widget_destroy(window_manager());
-  window_manager_set(NULL);
 
   return RET_OK;
 }

@@ -184,7 +184,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 }
 
 static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
-  style_t* style = &(widget->style);
+  style_t* style = &(widget->style_data);
   const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, "switch");
 
   if (image_name != NULL) {

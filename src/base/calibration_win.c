@@ -125,7 +125,7 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
 static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
   point_t pt = {0, 0};
   wstr_t* text = &(widget->text);
-  style_t* style = &(widget->style);
+  style_t* style = &(widget->style_data);
   color_t black = color_init(0, 0, 0, 0xff);
   calibration_win_t* win = CALIBRATION_WIN(widget);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);

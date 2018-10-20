@@ -510,7 +510,7 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
 
 static ret_t slide_view_paint_indicator_one(widget_t* widget, canvas_t* c, rect_t* r,
                                             uint32_t index, bool_t is_active) {
-  style_t* style = &(widget->style);
+  style_t* style = &(widget->style_data);
   color_t trans = color_init(0, 0, 0, 0);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
 

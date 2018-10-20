@@ -119,7 +119,7 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
     int32_t w = widget->w;
     int32_t h = widget->h;
     int32_t line_gap = rich_text->line_gap;
-    style_t* style = &(widget->style);
+    style_t* style = &(widget->style_data);
     int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
 
     rich_text->render_node =

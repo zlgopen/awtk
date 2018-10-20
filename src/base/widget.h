@@ -133,11 +133,11 @@ struct _widget_t {
    */
   char* tr_text;
   /**
-   * @property {char*} style_name
+   * @property {char*} style
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * Style Type。
    */
-  const char* style_name;
+  const char* style;
   /**
    * @property {bool_t} enable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -223,11 +223,11 @@ struct _widget_t {
    */
   emitter_t* emitter;
   /**
-   * @property {style_t} style
+   * @property {style_t} style_data
    * @annotation ["readable"]
    * Style数据。
    */
-  style_t style;
+  style_t style_data;
   /**
    * @property {layout_params_t*} layout_params
    * @annotation ["readable"]

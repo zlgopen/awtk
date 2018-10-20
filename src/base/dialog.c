@@ -33,7 +33,7 @@
 #include "base/window_manager.h"
 
 static ret_t dialog_on_paint_self(widget_t* widget, canvas_t* c) {
-  if (widget->style.data != NULL) {
+  if (widget->style_data.data != NULL) {
     return widget_paint_helper(widget, c, NULL, NULL);
   }
 
