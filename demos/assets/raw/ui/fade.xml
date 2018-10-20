@@ -1,4 +1,4 @@
-<dialog name="dialog" anim_hint="fade" x="c" y="m" w="80%" h="160">
+<dialog name="dialog" anim_hint="fade(duration=300)" x="c" y="m" w="80%" h="160">
   <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" />
   <dialog_client x="0" y="bottom" w="100%" h="-30">
     <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready?"/>

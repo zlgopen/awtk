@@ -1,9 +1,11 @@
 # 最新动态
 
 * 2018/10/20
-  * pages控件切换时触发EVT\_VALUE\_CHANGED事件。
-  * slide\_view控件切换时触发EVT\_VALUE\_CHANGED事件。
+  * pages控件切换页面时触发EVT\_VALUE\_CHANGED事件。
   * slide\_view控件的indicator颜色由主题确定。
+  * slide\_view控件切换页面时触发EVT\_VALUE\_CHANGED事件。
+  * 窗口动画支持指定时长，请参考[窗口动画](window_animator.md)文档。
+  * 更新文档。
 
 * 2018/10/19
   * 更新文档。
