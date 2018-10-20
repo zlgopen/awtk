@@ -177,6 +177,11 @@ bin\demoui
 
 ## 最新动态
 
+* 2018/10/20
+  * pages控件切换时触发EVT\_VALUE\_CHANGED事件。
+  * slide\_view控件切换时触发EVT\_VALUE\_CHANGED事件。
+  * slide\_view控件的indicator颜色由主题确定。
+
 * 2018/10/19
   * 更新文档。
   * 修改文字渲染的bug。
