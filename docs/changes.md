@@ -2,6 +2,7 @@
 
 * 2018/10/21
   * 出于一致性的考虑，将widget的属性style\_name重命名为style，将widget的属性style重命名为style\_data。
+  * 增加widget\_animator\_factory，从而支持在xml指定控件的动画。
   * 更新文档。
 
 * 2018/10/20
