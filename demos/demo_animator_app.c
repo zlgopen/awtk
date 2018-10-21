@@ -77,31 +77,31 @@ ret_t application_init() {
   widget_set_text(opacity, L"Opacity");
 
   image = image_create(win, 10, 220, 32, 32);
-  image_set_image_name(image, "earth");
+  image_set_image(image, "earth");
   image_set_draw_type(image, IMAGE_DRAW_ICON);
 
   image1 = image_create(win, 10, 220, 32, 32);
-  image_set_image_name(image1, "earth");
+  image_set_image(image1, "earth");
   image_set_draw_type(image1, IMAGE_DRAW_ICON);
 
   image2 = image_create(win, 10, 118, 100, 100);
-  image_set_image_name(image2, "bricks");
+  image_set_image(image2, "bricks");
   image_set_draw_type(image2, IMAGE_DRAW_ICON);
 
   image3 = image_create(win, 50, 118, 32, 32);
-  image_set_image_name(image3, "earth");
+  image_set_image(image3, "earth");
   image_set_draw_type(image3, IMAGE_DRAW_ICON);
 
   image4 = image_create(win, 100, 118, 32, 32);
-  image_set_image_name(image4, "earth");
+  image_set_image(image4, "earth");
   image_set_draw_type(image4, IMAGE_DRAW_ICON);
 
   image5 = image_create(win, 140, 118, 32, 32);
-  image_set_image_name(image5, "earth");
+  image_set_image(image5, "earth");
   image_set_draw_type(image5, IMAGE_DRAW_ICON);
 
   image6 = image_create(win, 180, 118, 32, 32);
-  image_set_image_name(image6, "earth");
+  image_set_image(image6, "earth");
   image_set_draw_type(image6, IMAGE_DRAW_ICON);
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
