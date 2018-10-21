@@ -89,9 +89,31 @@ typedef struct _widget_animator_parser_t {
 
 static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
   widget_animator_parser_t* p = (widget_animator_parser_t*)parser;
+  widget_t* widget = p->params.widget;
 
   tk_strncpy(p->params.name, func_name, NAME_LEN);
-
+  switch (p->params.name[0]) {
+    case 'm': /*move*/
+    {
+      move_params_t* move = &p->params.u.move;
+      move->x_from = widget->x;
+      move->y_from = widget->y;
+      move->x_to = widget->x;
+      move->y_to = widget->y;
+      break;
+    }
+    case 's': /*scale*/
+    {
+      scale_params_t* scale = &p->params.u.scale;
+      scale->x_from = 1;
+      scale->y_from = 1;
+      scale->x_to = 1;
+      scale->y_to = 1;
+      break;
+    }
+    default:
+      break;
+  }
   return RET_OK;
 }
 
