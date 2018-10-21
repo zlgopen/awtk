@@ -31,6 +31,7 @@
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
+#include "base/widget_animator_factory.h"
 
 static ret_t widget_destroy_only(widget_t* widget);
 
@@ -176,6 +177,37 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
 
   TKMEM_FREE(widget->name);
   widget->name = tk_strdup(name);
+
+  return RET_OK;
+}
+
+ret_t widget_set_animation(widget_t* widget, const char* animation) {
+  const char* end = NULL;
+  const char* start = animation;
+  return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(widget->animation);
+  widget->animation = tk_strdup(animation);
+
+  while (start != NULL) {
+    char params[256];
+    end = strchr(start, ';');
+
+    memset(params, 0x00, sizeof(params));
+    if (end != NULL) {
+      tk_strncpy(params, start, tk_min(end - start, sizeof(params) - 1));
+    } else {
+      tk_strncpy(params, start, sizeof(params) - 1);
+    }
+
+    return_value_if_fail(widget_animator_create(widget, params) != NULL, RET_BAD_PARAMS);
+
+    if (end == NULL) {
+      break;
+    } else {
+      start = end + 1;
+    }
+  }
 
   return RET_OK;
 }
@@ -662,6 +694,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     wstr_from_value(&(widget->text), v);
   } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
     widget_set_tr_text(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
+    widget_set_animation(widget, value_str(v));
   } else {
     ret = RET_NOT_FOUND;
   }
@@ -712,6 +746,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, widget->text.str);
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
+    value_set_str(v, widget->animation);
   } else {
     if (widget->vt->get_prop) {
       ret = widget->vt->get_prop(widget, name, v);
@@ -1088,6 +1124,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
   TKMEM_FREE(widget->name);
   TKMEM_FREE(widget->style);
   TKMEM_FREE(widget->tr_text);
+  TKMEM_FREE(widget->animation);
   wstr_reset(&(widget->text));
 
   if (widget->custom_props != NULL) {

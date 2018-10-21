@@ -139,6 +139,12 @@ struct _widget_t {
    */
   const char* style;
   /**
+   * @property {char*} animation
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 动画参数。
+   */
+  char* animation;
+  /**
    * @property {bool_t} enable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 启用/禁用状态。
@@ -490,6 +496,22 @@ ret_t widget_to_screen(widget_t* widget, point_t* p);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_name(widget_t* widget, const char* name);
+
+/**
+ * @method widget_set_animation
+ * 设置控件的动画参数。
+ * 参数的格式类似函数调用。如:
+ * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
+ * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
+ * 多个animation参数用『;』分开。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} animation 动画参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_animation(widget_t* widget, const char* animation);
 
 /**
  * @method widget_set_enable

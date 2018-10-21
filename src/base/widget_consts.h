@@ -180,6 +180,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VISIBLE "visible"
 
 /**
+ * @const WIDGET_PROP_ANIMATION
+ * 控件动画。
+ */
+#define WIDGET_PROP_ANIMATION "animation"
+
+/**
  * @const WIDGET_PROP_ANIM_HINT
  * 窗口动画。
  */
