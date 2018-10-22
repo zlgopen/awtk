@@ -151,4 +151,10 @@
  * #define MEM_MAX_RECORDS 4 * 1024
  */
 
+/**
+ * 如果启用鼠标指针，请定义本宏
+ *
+ * #define ENABLE_CURSOR 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

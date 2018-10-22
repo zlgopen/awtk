@@ -127,6 +127,7 @@
 #include "assets/inc/images/discovery_active.res"
 #include "assets/inc/images/shifton.res"
 #include "assets/inc/images/check.res"
+#include "assets/inc/images/cursor.res"
 #include "assets/inc/images/me.res"
 #include "assets/inc/images/info.res"
 #include "assets/inc/images/red_btn_p.res"
@@ -200,6 +201,7 @@
 #include "assets/inc/images/arrow_right_n.data"
 #include "assets/inc/images/clock_bg.data"
 #include "assets/inc/images/me_active.data"
+#include "assets/inc/images/cursor.data"
 #include "assets/inc/images/clock_minute.data"
 #include "assets/inc/images/switch.data"
 #include "assets/inc/images/checked.data"
@@ -382,6 +384,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_right_n);
   assets_manager_add(rm, image_clock_bg);
   assets_manager_add(rm, image_me_active);
+  assets_manager_add(rm, image_cursor);
   assets_manager_add(rm, image_clock_minute);
   assets_manager_add(rm, image_switch);
   assets_manager_add(rm, image_checked);

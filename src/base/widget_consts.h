@@ -102,6 +102,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_NAME "name"
 
 /**
+ * @const WIDGET_PROP_CURSOR
+ * 鼠标指针。
+ */
+#define WIDGET_PROP_CURSOR "cursor"
+
+/**
  * @const WIDGET_PROP_VALUE
  * 值。
  */

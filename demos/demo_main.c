@@ -24,6 +24,7 @@
 #include "base/mem.h"
 #include "base/path.h"
 #include "base/system_info.h"
+#include "base/window_manager.h"
 
 ret_t application_init(void);
 
@@ -62,6 +63,10 @@ int main(void) {
 
   assets_init();
   application_init();
+
+#ifdef ENABLE_CURSOR
+  window_manager_set_cursor(window_manager(), "cursor");
+#endif /*ENABLE_CURSOR*/
 
   tk_run();
 

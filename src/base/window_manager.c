@@ -28,6 +28,7 @@
 #include "base/layout.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
+#include "base/image_manager.h"
 #include "base/window_manager.h"
 
 static ret_t window_manager_inc_fps(widget_t* widget);
@@ -246,6 +247,18 @@ static rect_t window_manager_calc_dirty_rect(window_manager_t* wm) {
   return rect_fix(&r, widget->w, widget->h);
 }
 
+static ret_t window_manager_paint_cursor(widget_t* widget, canvas_t* c) {
+  bitmap_t bitmap;
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  return_value_if_fail(image_manager_load(image_manager(), wm->cursor, &bitmap) == RET_OK,
+                       RET_BAD_PARAMS);
+
+  canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
+
+  return RET_OK;
+}
+
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   rect_t* dr = &(wm->dirty_rect);
@@ -259,6 +272,9 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     if ((r.w > 0 && r.h > 0) || wm->show_fps) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
       ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+      if (wm->cursor != NULL) {
+        window_manager_paint_cursor(widget, c);
+      }
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
       /*
@@ -395,7 +411,7 @@ int32_t window_manager_find_top_window_index(widget_t* widget) {
   return -1;
 }
 
-widget_t* window_manager_get_top_window(widget_t* widget) {
+widget_t* window_manager_get_top_main_window(widget_t* widget) {
   int32_t index = window_manager_find_top_window_index(widget);
   return_value_if_fail(index >= 0, NULL);
 
@@ -424,7 +440,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
-  widget_t* top = window_manager_get_top_window(widget);
+  widget_t* top = window_manager_get_top_main_window(widget);
 
   if (top != NULL) {
     rect_t r;
@@ -435,8 +451,32 @@ static ret_t wm_on_remove_child(widget_t* widget, widget_t* window) {
   return RET_FAIL;
 }
 
+static ret_t window_manager_get_prop(widget_t* widget, const char* name, value_t* v) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_CURSOR)) {
+    value_set_str(v, wm->cursor);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t window_manager_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_CURSOR)) {
+    return window_manager_set_cursor(widget, value_str(v));
+  }
+
+  return RET_NOT_FOUND;
+}
+
 static const widget_vtable_t s_window_manager_vtable = {
     .type = WIDGET_TYPE_WINDOW_MANAGER,
+    .set_prop = window_manager_set_prop,
+    .get_prop = window_manager_get_prop,
     .invalidate = window_manager_invalidate,
     .on_paint_children = window_manager_on_paint_children,
     .on_remove_child = wm_on_remove_child,
@@ -599,6 +639,14 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
       widget_on_pointer_move(widget, evt);
+
+      wm->r_cursor.x = evt->x;
+      wm->r_cursor.y = evt->y;
+
+      if (wm->cursor != NULL) {
+        widget_invalidate(widget, &(wm->r_cursor));
+      }
+
       break;
     }
     case EVT_POINTER_UP: {
@@ -664,15 +712,6 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-ret_t window_manager_set_animating(widget_t* widget, bool_t animating) {
-  window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
-
-  wm->animating = animating;
-
-  return RET_OK;
-}
-
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
@@ -686,4 +725,22 @@ widget_t* window_manager_cast(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt == &s_window_manager_vtable, NULL);
 
   return widget;
+}
+
+ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(wm->cursor);
+  if (cursor != NULL) {
+    bitmap_t bitmap;
+    wm->cursor = tk_strdup(cursor);
+
+    return_value_if_fail(image_manager_load(image_manager(), cursor, &bitmap) == RET_OK,
+                         RET_BAD_PARAMS);
+    wm->r_cursor.w = bitmap.w;
+    wm->r_cursor.h = bitmap.h;
+  }
+
+  return RET_OK;
 }

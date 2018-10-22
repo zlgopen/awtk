@@ -181,6 +181,13 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
   return RET_OK;
 }
 
+ret_t widget_set_cursor(widget_t* widget, const char* cursor) {
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop_str(wm, WIDGET_PROP_CURSOR, cursor);
+}
+
 ret_t widget_set_animation(widget_t* widget, const char* animation) {
   const char* end = NULL;
   const char* start = animation;
@@ -1091,6 +1098,21 @@ widget_t* widget_get_window(widget_t* widget) {
   while (iter) {
     const char* type = widget_get_type(iter->parent);
     if (iter->parent && tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
+      return iter;
+    }
+    iter = iter->parent;
+  }
+
+  return iter;
+}
+
+widget_t* widget_get_window_manager(widget_t* widget) {
+  widget_t* iter = widget;
+  return_value_if_fail(widget != NULL, NULL);
+
+  while (iter) {
+    const char* type = widget_get_type(iter);
+    if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
       return iter;
     }
     iter = iter->parent;
