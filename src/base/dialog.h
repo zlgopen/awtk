@@ -22,9 +22,7 @@
 #ifndef TK_DIALOG_H
 #define TK_DIALOG_H
 
-#include "base/wstr.h"
-#include "base/widget.h"
-#include "base/window_animator.h"
+#include "base/window_base.h"
 
 BEGIN_C_DECLS
 
@@ -35,13 +33,13 @@ BEGIN_C_DECLS
  * 对话框控件。
  */
 typedef struct _dialog_t {
-  widget_t widget;
+  window_base_t window;
+
+  /*private*/
   widget_t* title;
   widget_t* client;
   uint32_t quit_code;
-  str_t anim_hint;
-  str_t theme;
-  str_t script;
+
 } dialog_t;
 
 /**
