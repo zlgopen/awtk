@@ -64,8 +64,8 @@ animation参数的格式，类似与函数调用。多个参数可以用『;』�
 
 * delay 延迟启动时间(毫秒)。
 * duration 时长(毫秒)。
-* yoyo\_times 往返的次数(x2)
-* repeat\_times 重复的次数。
+* yoyo\_times 往返的次数(x2)，为0视为永久播放。
+* repeat\_times 重复的次数，为0视为永久播放。
 
 #### 2. widget\_animator\_move动画的参数
 * x\_from x起始位置。
