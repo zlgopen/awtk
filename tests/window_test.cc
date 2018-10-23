@@ -20,10 +20,10 @@ TEST(Window, basic) {
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_ANIM_HINT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
-  
+
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_OPEN_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
-  
+
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_CLOSE_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
 
@@ -31,12 +31,12 @@ TEST(Window, basic) {
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_OPEN_ANIM_HINT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_OPEN_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
-  
+
   value_set_str(&v1, "center_scale");
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_CLOSE_ANIM_HINT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_CLOSE_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
-  
+
   value_set_str(&v1, "main");
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_THEME, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_THEME, &v2), RET_OK);

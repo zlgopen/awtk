@@ -259,6 +259,33 @@ static ret_t window_manager_paint_cursor(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  uint32_t w = wm->r_cursor.w;
+  uint32_t h = wm->r_cursor.h;
+
+  if (wm->cursor != NULL && w > 0 && h > 0) {
+    uint32_t hw = w >> 1;
+    uint32_t hh = h >> 1;
+    int32_t oldx = wm->r_cursor.x;
+    int32_t oldy = wm->r_cursor.y;
+    rect_t r = rect_init(oldx - hw, oldy - hh, w, h);
+
+    widget->dirty = FALSE;
+    widget_invalidate(widget, &r);
+
+    wm->r_cursor.x = x;
+    wm->r_cursor.y = y;
+
+    r = rect_init(x - hw, y - hh, w, h);
+
+    widget->dirty = FALSE;
+    widget_invalidate(widget, &r);
+  }
+
+  return RET_OK;
+}
+
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   rect_t* dr = &(wm->dirty_rect);
@@ -629,6 +656,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->shift = wm->shift;
       wm->pressed = TRUE;
       widget_on_pointer_down(widget, evt);
+
+      window_manager_update_cursor(widget, evt->x, evt->y);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -640,13 +669,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->shift = wm->shift;
       widget_on_pointer_move(widget, evt);
 
-      wm->r_cursor.x = evt->x;
-      wm->r_cursor.y = evt->y;
-
-      if (wm->cursor != NULL) {
-        widget_invalidate(widget, &(wm->r_cursor));
-      }
-
+      window_manager_update_cursor(widget, evt->x, evt->y);
       break;
     }
     case EVT_POINTER_UP: {
@@ -658,6 +681,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->shift = wm->shift;
       widget_on_pointer_up(widget, evt);
       wm->pressed = FALSE;
+
+      window_manager_update_cursor(widget, evt->x, evt->y);
       break;
     }
     case EVT_KEY_DOWN: {
