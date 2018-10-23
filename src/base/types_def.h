@@ -438,6 +438,8 @@ typedef enum _app_type_t {
 #define M_PI 3.1415926f
 #endif /*M_PI*/
 
+#define TK_UINT32_MAX 0xffffffff
+
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
 #define WITH_G2D 1
 #endif /*WITH_PXP_G2D*/

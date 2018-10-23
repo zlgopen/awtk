@@ -314,11 +314,11 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
   func_call_parser_deinit(&(parser.base));
 
   if (wa != NULL) {
-    if (parser.params.yoyo_times > 0) {
+    if (parser.params.yoyo_times >= 0) {
       widget_animator_set_yoyo(wa, parser.params.yoyo_times);
     }
 
-    if (parser.params.repeat_times > 0) {
+    if (parser.params.repeat_times >= 0) {
       widget_animator_set_repeat(wa, parser.params.repeat_times);
     }
 

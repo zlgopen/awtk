@@ -97,6 +97,35 @@ TEST(WidgetAnimatorFactory, scale) {
   ASSERT_EQ(scale->x_to, 200);
   ASSERT_EQ(scale->y_from, 1);
   ASSERT_EQ(scale->y_to, 1);
+  ASSERT_EQ(wa->forever, FALSE);
+
+  widget_animator_destroy(wa);
+  widget_destroy(b);
+}
+
+TEST(WidgetAnimatorFactory, yoyo_forever) {
+  widget_t* b = button_create(NULL, 10, 20, 100, 30);
+
+  widget_animator_t* wa = widget_animator_create(
+      b, "scale(x_from=1, x_to=200, yoyo_times=0, duration=2000, delay=1234)");
+
+  ASSERT_EQ(wa != NULL, true);
+  ASSERT_EQ(wa->yoyo_times, TK_UINT32_MAX);
+  ASSERT_EQ(wa->forever, TRUE);
+
+  widget_animator_destroy(wa);
+  widget_destroy(b);
+}
+
+TEST(WidgetAnimatorFactory, repeat_forever) {
+  widget_t* b = button_create(NULL, 10, 20, 100, 30);
+
+  widget_animator_t* wa = widget_animator_create(
+      b, "scale(x_from=1, x_to=200, repeat_times=0, duration=2000, delay=1234)");
+
+  ASSERT_EQ(wa != NULL, true);
+  ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX);
+  ASSERT_EQ(wa->forever, TRUE);
 
   widget_animator_destroy(wa);
   widget_destroy(b);

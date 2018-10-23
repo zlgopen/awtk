@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2018/10/23
+  * 修改鼠标指针残留的问题。
+  * 控件动画支持永久播放，yoyo\_times或repeat\_times设置为0时，视为永久播放。
+  * 公开函数widget\_animator\_stop，请确保调用了widget\_animator\_set\_destroy\_when\_done禁止播放完成时自动销毁动画对象。
+
 * 2018/10/22
   * 完善控件动画和demo。
   * 支持鼠标指针。

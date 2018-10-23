@@ -103,6 +103,20 @@ struct _widget_animator_t {
   emitter_t emitter;
 
   /**
+   * @property {bool_t} destroy_when_done;
+   * @annotation ["private"]
+   * 播放完成时是否自动销毁(缺省销毁)。
+   */
+  bool_t destroy_when_done;
+
+  /**
+   * @property {bool_t} forever
+   * @annotation ["private"]
+   * 是否永远播放(yoyo_times/repeat_times为0时，自动设置此标志)。
+   */
+  bool_t forever;
+
+  /**
    * @property {uint32_t} timer_id
    * @annotation ["private"]
    * 定时器ID。
@@ -216,6 +230,25 @@ uint32_t widget_animator_on(widget_animator_t* animator, event_type_t type, even
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_animator_off(widget_animator_t* animator, uint32_t id);
+
+/**
+ * @method widget_animator_stop
+ * 停止动画。
+ * @param {widget_animator_t*} animator 动画对象本身。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animator_stop(widget_animator_t* animator);
+
+/**
+ * @method widget_animator_set_destroy_when_done
+ * 设置完成时是否自动销毁动画对象本身(缺省销毁)。
+ * @param {widget_animator_t*} animator 动画对象本身。
+ * @param {bool_t} destroy_when_done 完成时是否自动销毁动画对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animator_set_destroy_when_done(widget_animator_t* animator, bool_t destroy_when_done);
 
 /**
  * @method widget_animator_destroy

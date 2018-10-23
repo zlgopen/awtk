@@ -82,7 +82,6 @@ widget_t* window_open_and_close(const char* name, widget_t* to_close);
  */
 ret_t window_close(widget_t* widget);
 
-
 /**
  * @method window_cast
  * 转换为window对象(供脚本语言使用)。
