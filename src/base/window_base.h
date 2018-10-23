@@ -78,37 +78,6 @@ typedef struct _window_base_t {
 
 } window_base_t;
 
-/**
- * @method window_open
- * @annotation ["constructor", "scriptable"]
- * 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
- * @param {char*} name window_base的名称。
- *
- * @return {widget_t*} 对象。
- */
-widget_t* window_open(const char* name);
-
-/**
- * @method window_base_open_and_close
- * @annotation ["constructor", "scriptable"]
- * 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
- * @param {char*} name window_base的名称。
- * @param {widget_t*} to_close 关闭该窗口。
- *
- * @return {widget_t*} 对象。
- */
-widget_t* window_base_open_and_close(const char* name, widget_t* to_close);
-
-/**
- * @method window_close
- * 关闭窗口。
- * @annotation ["deconstructor", "scriptable"]
- * @param {widget_t*} widget window_base对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t window_close(widget_t* widget);
-
 /*for sub class*/
 ret_t window_base_destroy(widget_t* widget);
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);

@@ -52,6 +52,38 @@ typedef struct _window_t {
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method window_open
+ * @annotation ["constructor", "scriptable"]
+ * 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name window_base的名称。
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* window_open(const char* name);
+
+/**
+ * @method window_open_and_close
+ * @annotation ["constructor", "scriptable"]
+ * 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
+ * @param {char*} name window_base的名称。
+ * @param {widget_t*} to_close 关闭该窗口。
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* window_open_and_close(const char* name, widget_t* to_close);
+
+/**
+ * @method window_close
+ * 关闭窗口。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_close(widget_t* widget);
+
+
+/**
  * @method window_cast
  * 转换为window对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]

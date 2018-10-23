@@ -207,6 +207,7 @@ bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
  * @method bitmap_get_bpp
  * 获取图片一个像素占用的字节数。
  * @annotation ["scriptable"]
+ * @param {bitmap_t*} bitmap bitmap对象。
  *
  * @return {uint32_t} 返回一个像素占用的字节数。
  */

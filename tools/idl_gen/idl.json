@@ -932,6 +932,125 @@
       {
         "params": [
           {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "格式。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建图片对象。",
+        "name": "bitmap_create_ex",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回bitmap对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取图片一个像素占用的字节数。",
+        "name": "bitmap_get_bpp",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回一个像素占用的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "rgba_t*",
+            "name": "rgba",
+            "desc": "返回颜色值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取图片指定像素的rgba颜色值(主要用于测试程序)。",
+        "name": "bitmap_get_pixel",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "格式。"
+          },
+          {
+            "type": "const uint8_t*",
+            "name": "",
+            "desc": "a"
+          },
+          {
+            "type": "uint32_t",
+            "name": "comp",
+            "desc": "颜色通道数(目前支持3(rgb)和4(rgba))。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化图片。数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。",
+        "name": "bitmap_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "bitmap_t*",
             "name": "bitmap",
             "desc": "bitmap对象。"
@@ -1789,6 +1908,32 @@
         "annotation": {},
         "desc": "设置校准完成的处理函数。",
         "name": "calibration_win_set_on_done",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "calibration_win_on_click_t",
+            "name": "on_click",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置校准点击事件的处理函数。",
+        "name": "calibration_win_set_on_click",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -4772,6 +4917,46 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "font_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名字。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "字体数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "字体数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载字体。",
+        "name": "font_loader_load",
+        "return": {
+          "type": "font_t*",
+          "desc": "成功返回font，失败返回NULL。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/font_loader.h",
+    "desc": "字体加载接口。",
+    "name": "font_loader_t"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {
           "constructor": true
@@ -4800,7 +4985,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "font_loader_t*",
+            "name": "loader",
+            "desc": "字体加载器。"
+          }
+        ],
         "annotation": {
           "constructor": true
         },
@@ -4817,6 +5008,11 @@
             "type": "font_manager_t*",
             "name": "fm",
             "desc": "字体管理器对象。"
+          },
+          {
+            "type": "font_loader_t*",
+            "name": "loader",
+            "desc": "字体加载器。"
           }
         ],
         "annotation": {
@@ -4908,6 +5104,75 @@
         "annotation": {},
         "desc": "析构并释放字体管理器。",
         "name": "font_manager_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/font_manager.h",
+    "desc": "字体管理器。(如果使用nanovg，字体由nanovg内部管理)",
+    "name": "font_manager_t"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "func_call_parser_t*",
+            "name": "parser",
+            "desc": "parser对象。"
+          },
+          {
+            "type": "char*",
+            "name": "str",
+            "desc": "要解析的字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化parser对象。",
+        "name": "func_call_parser_init",
+        "return": {
+          "type": "func_call_parser_t*",
+          "desc": "parser对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "func_call_parser_t*",
+            "name": "parser",
+            "desc": "parser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "开始解析。",
+        "name": "func_call_parser_parse",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "func_call_parser_t*",
+            "name": "parser",
+            "desc": "parser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置parser。",
+        "name": "func_call_parser_deinit",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -5044,9 +5309,9 @@
       }
     ],
     "properties": [],
-    "header": "base/font_manager.h",
-    "desc": "字体管理器。(如果使用nanovg，字体由nanovg内部管理)",
-    "name": "font_manager_t"
+    "header": "base/func_call_parser.h",
+    "desc": "从字符串中解析出函数调用需要的参数。func_call => func_name '(' params ')'params => param ',' paramsparam => name '=' valuefunc_name => IDname = IDvalue = int | float | ID如:move(x=10, y=20)如:rename(old_name=aa, new_name=bb)",
+    "name": "func_call_parser_t"
   },
   {
     "type": "class",
@@ -5684,7 +5949,7 @@
           "scriptable": true
         },
         "desc": "设置控件的图片名称。",
-        "name": "image_set_image_name",
+        "name": "image_set_image",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -5904,38 +6169,90 @@
       },
       {
         "name": "scale_y",
-        "desc": "@realonly控件在Y方向上的缩放比例。",
-        "type": "float_t"
+        "desc": "控件在Y方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       },
       {
         "name": "rotation",
-        "desc": "@realonly控件的旋转角度。",
-        "type": "float_t"
+        "desc": "控件的旋转角度。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       },
       {
         "name": "clickable",
-        "desc": "@realonly点击时，是否触发EVT_CLICK事件。",
-        "type": "bool_t"
+        "desc": "点击时，是否触发EVT_CLICK事件。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       },
       {
         "name": "selectable",
-        "desc": "@realonly是否设置选中状态。",
-        "type": "bool_t"
-      },
-      {
-        "name": "selected",
-        "desc": "@realonly当前是否被选中。",
-        "type": "bool_t"
+        "desc": "是否设置选中状态。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       },
       {
         "name": "image",
-        "desc": "@fake图片的名称(只能通过widget_get_prop/set_prop访问)。",
-        "type": "char*"
+        "desc": "图片的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       },
       {
         "name": "draw_type",
-        "desc": "@fake图片的绘制方式(只能通过widget_get_prop/set_prop访问，仅在没有旋转和缩放时生效)。",
-        "type": "char*"
+        "desc": "图片的绘制方式(仅在没有旋转和缩放时生效)。",
+        "type": "image_draw_type_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": "当前是否被选中。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
       }
     ],
     "header": "base/image.h",
@@ -7353,6 +7670,14 @@
         "annotation": {
           "readable": true
         }
+      },
+      {
+        "name": "support_dirty_rect",
+        "desc": "是否支持脏矩形。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
       }
     ],
     "header": "base/lcd.h",
@@ -7869,32 +8194,6 @@
       }
     ],
     "properties": [
-      {
-        "name": "theme",
-        "desc": "主题资源的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anim_hint",
-        "desc": "窗口动画名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
       {
         "name": "close_when_click",
         "desc": "点击时是否关闭窗口。",
@@ -12765,6 +13064,31 @@
     }
   },
   {
+    "params": [
+      {
+        "type": "widget_t*",
+        "name": "widget",
+        "desc": "动画应用的控件。"
+      },
+      {
+        "type": "const char*",
+        "name": "params",
+        "desc": "参数。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "创建animator对象。",
+    "name": "widget_animator_create",
+    "return": {
+      "type": "widget_animator_t*",
+      "desc": "动画对象。"
+    },
+    "type": "method",
+    "header": "base/widget_animator_factory.h"
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -13122,6 +13446,10 @@
         "name": "WIDGET_PROP_NAME"
       },
       {
+        "desc": "鼠标指针。",
+        "name": "WIDGET_PROP_CURSOR"
+      },
+      {
         "desc": "值。",
         "name": "WIDGET_PROP_VALUE"
       },
@@ -13172,6 +13500,10 @@
       {
         "desc": "是否可见。",
         "name": "WIDGET_PROP_VISIBLE"
+      },
+      {
+        "desc": "控件动画。",
+        "name": "WIDGET_PROP_ANIMATION"
       },
       {
         "desc": "窗口动画。",
@@ -14184,6 +14516,52 @@
             "desc": "控件对象。"
           },
           {
+            "type": "char*",
+            "name": "cursor",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置鼠标指针的图片名。",
+        "name": "widget_set_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "char*",
+            "name": "animation",
+            "desc": "动画参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的动画参数。参数的格式类似函数调用。如:opacity(from=0, to=255, yoyo_times=1000, duration=1000)move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)多个animation参数用『;』分开。",
+        "name": "widget_set_animation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "bool_t",
             "name": "enable",
             "desc": "是否启动。"
@@ -14858,6 +15236,24 @@
         "annotation": {
           "scriptable": true
         },
+        "desc": "获取当前的窗口管理器。",
+        "name": "widget_get_window_manager",
+        "return": {
+          "type": "widget_t*",
+          "desc": "窗口管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取当前控件的类型名称。",
         "name": "widget_get_type",
         "return": {
@@ -15231,8 +15627,21 @@
         }
       },
       {
-        "name": "style_name",
+        "name": "style",
         "desc": "Style Type。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "animation",
+        "desc": "动画参数。",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -15367,7 +15776,7 @@
         }
       },
       {
-        "name": "style",
+        "name": "style_data",
         "desc": "Style数据。",
         "type": "style_t",
         "annotation": {
@@ -15558,6 +15967,76 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "properties": [
+      {
+        "name": "theme",
+        "desc": "主题资源的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "script",
+        "desc": "脚本文件名称(暂时没用)。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "open_anim_hint",
+        "desc": "打开时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "close_anim_hint",
+        "desc": "关闭时的动画名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "stage",
+        "desc": "窗口当前处于的状态。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/window_base.h",
+    "desc": "窗口。",
+    "name": "window_base_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [],
@@ -15595,9 +16074,181 @@
       {
         "params": [
           {
+            "type": "window_manager_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的窗口管理器。",
+        "name": "window_manager_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建窗口管理器。",
+        "name": "window_manager_create",
+        "return": {
+          "type": "window_manager_t*",
+          "desc": "返回窗口管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_manager_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化窗口管理器。",
+        "name": "window_manager_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回窗口管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_manager_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取最上面的主窗口。",
+        "name": "window_manager_get_top_main_window",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回窗口对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "控件对象。"
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {},
+        "desc": "调整窗口管理器的大小。",
+        "name": "window_manager_resize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "打开窗口。",
+        "name": "window_manager_open_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭窗口。",
+        "name": "window_manager_close_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制。",
+        "name": "window_manager_paint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "分发输入事件。",
+        "name": "window_manager_dispatch_input_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
           },
           {
             "type": "bool_t",
@@ -15610,6 +16261,29 @@
         },
         "desc": "设置是否显示FPS。",
         "name": "window_manager_set_show_fps",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "cursor",
+            "desc": "图片名称(从图片管理器中加载)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置鼠标指针。",
+        "name": "window_manager_set_cursor",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -15680,6 +16354,68 @@
       {
         "params": [
           {
+            "type": "char*",
+            "name": "name",
+            "desc": "window_base的名称。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。",
+        "name": "window_open",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "window_base的名称。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "to_close",
+            "desc": "关闭该窗口。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。",
+        "name": "window_open_and_close",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window_base对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": "关闭窗口。",
+        "name": "window_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "widget",
             "desc": "window对象。"
@@ -15695,98 +16431,9 @@
           "type": "widget_t*",
           "desc": "window对象。"
         }
-      },
-      {
-        "params": [
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "window的名称。"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。",
-        "name": "window_open",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "window的名称。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "to_close",
-            "desc": "关闭该窗口。"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。",
-        "name": "window_open_and_close",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "window对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true,
-          "scriptable": true
-        },
-        "desc": "关闭窗口。",
-        "name": "window_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
       }
     ],
-    "properties": [
-      {
-        "name": "theme",
-        "desc": "主题资源的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anim_hint",
-        "desc": "动画的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
+    "properties": [],
     "header": "base/window.h",
     "desc": "窗口。",
     "name": "window_t",
@@ -17063,44 +17710,7 @@
         }
       }
     ],
-    "properties": [
-      {
-        "name": "theme",
-        "desc": "主题资源的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      },
-      {
-        "name": "open_anim_hint",
-        "desc": "打开时的动画名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      },
-      {
-        "name": "close_anim_hint",
-        "desc": "关闭时的动画名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true
-        }
-      }
-    ],
+    "properties": [],
     "header": "keyboard/keyboard.h",
     "desc": "键盘。",
     "name": "keyboard_t",
