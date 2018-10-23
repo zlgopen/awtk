@@ -36,6 +36,7 @@ typedef enum _point_name_t {
 } point_name_t;
 
 typedef ret_t (*calibration_win_on_done_t)(void* ctx, point_t points[4]);
+typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p);
 
 /**
  * @class calibration_win_t
@@ -49,9 +50,12 @@ typedef struct _calibration_win_t {
   uint32_t cross_size;
 
   uint32_t cursor;
-  void* on_done_ctx;
   point_t points[PT_MAX_NR];
+
+  void* on_done_ctx;
   calibration_win_on_done_t on_done;
+  void* on_click_ctx;
+  calibration_win_on_click_t on_click;
 } calibration_win_t;
 
 /**
@@ -78,6 +82,18 @@ widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on_done, void* ctx);
+
+/**
+ * @method calibration_win_set_on_click
+ * 设置校准点击事件的处理函数。
+ * @param {widget_t*} widget widget对象。
+ * @param {calibration_win_on_click_t} on_click 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t on_click,
+                                   void* ctx);
 
 #define CALIBRATION_WIN(widget) ((calibration_win_t*)(widget))
 

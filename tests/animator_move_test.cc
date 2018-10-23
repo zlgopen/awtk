@@ -174,3 +174,33 @@ TEST(AnimatorMove, repeat) {
   timer_manager_destroy(timer_manager());
   timer_manager_set(tm);
 }
+
+TEST(AnimatorMove, repeat_forever) {
+  uint32_t now = 0;
+  timer_manager_t* tm = timer_manager();
+  timer_manager_set(timer_manager_create(timer_get_time));
+
+  widget_t* button = button_create(NULL, 0, 0, 100, 30);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
+  widget_animator_move_set_params(wa, 0, 0, 100, 200);
+  widget_animator_set_repeat(wa, 0);
+
+  timer_set_time(now);
+  widget_animator_start(wa);
+
+  ASSERT_EQ(wa->forever, TRUE);
+  ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX);
+
+  timer_set_time(1000);
+  timer_dispatch();
+  ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX - 1);
+  
+  timer_set_time(2000);
+  wa->repeat_times = 1;
+  timer_dispatch();
+  ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX);
+
+  widget_destroy(button);
+  timer_manager_destroy(timer_manager());
+  timer_manager_set(tm);
+}

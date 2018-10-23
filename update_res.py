@@ -10,6 +10,8 @@ def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
 
 DPI='x1'
+IMAGEGEN_OPTIONS='bgra+bgr565'
+
 CWD=os.getcwd()
 BIN_DIR=joinPath(CWD, 'bin')
 APP_DIR=joinPath(CWD, 'demos')
@@ -78,8 +80,9 @@ def fontgen(raw, text, inc, size):
   os.system(toExe('fontgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' + joinPath(INPUT_DIR, text) +' ' + joinPath(OUTPUT_DIR, inc) + ' ' + str(size))
 
 def imagegen(raw, inc):
-  print(toExe('imagegen') + ' ' + raw + ' ' + inc)
-  os.system(toExe('imagegen') + ' ' + raw + ' ' + inc)
+  imagegen_exe=toExe('imagegen') + ' ' + raw + ' ' + inc + ' ' + IMAGEGEN_OPTIONS;
+  print(imagegen_exe);
+  os.system(imagegen_exe)
   inc=inc.replace('.data', '.res')
   resgen(raw, inc)
 

@@ -56,49 +56,47 @@ typedef struct _image_t {
   float_t scale_x;
   /**
    * @property {float_t} scale_y
-   * @realonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 控件在Y方向上的缩放比例。
    */
   float_t scale_y;
   /**
    * @property {float_t} rotation
-   * @realonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 控件的旋转角度。
    */
   float_t rotation;
   /**
    * @property {bool_t} clickable
-   * @realonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 点击时，是否触发EVT_CLICK事件。
    */
   bool_t clickable;
   /**
    * @property {bool_t} selectable
-   * @realonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否设置选中状态。
    */
   bool_t selectable;
   /**
+   * @property {char*} image
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 图片的名称。
+   */
+  char* image;
+  /**
+   * @property {image_draw_type_t} draw_type
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 图片的绘制方式(仅在没有旋转和缩放时生效)。
+   */
+  image_draw_type_t draw_type;
+
+  /**
    * @property {bool_t} selected
-   * @realonly
+   * @annotation ["readable","scriptable"]
    * 当前是否被选中。
    */
   bool_t selected;
-  /**
-   * @property {char*} image
-   * @fake
-   * 图片的名称(只能通过widget_get_prop/set_prop访问)。
-   */
-
-  /**
-   * @property {char*} draw_type
-   * @fake
-   * 图片的绘制方式(只能通过widget_get_prop/set_prop访问，仅在没有旋转和缩放时生效)。
-   */
-
-  /*private*/
-  bitmap_t bitmap;
-  image_draw_type_t draw_type;
 } image_t;
 
 /**
@@ -116,7 +114,7 @@ typedef struct _image_t {
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
- * @method image_set_image_name
+ * @method image_set_image
  * 设置控件的图片名称。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image对象。
@@ -124,7 +122,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_image_name(widget_t* widget, const char* name);
+ret_t image_set_image(widget_t* widget, const char* name);
 
 /**
  * @method image_set_draw_type
@@ -206,6 +204,9 @@ ret_t image_set_selectable(widget_t* widget, bool_t selectable);
 ret_t image_set_clickable(widget_t* widget, bool_t clickable);
 
 #define IMAGE(widget) ((image_t*)(widget))
+
+/*deprecated*/
+#define image_set_image_name image_set_image
 
 END_C_DECLS
 

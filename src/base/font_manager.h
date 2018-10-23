@@ -22,8 +22,8 @@
 #ifndef TK_FONT_MANAGER_H
 #define TK_FONT_MANAGER_H
 
-#include "base/font.h"
 #include "base/array.h"
+#include "base/font_loader.h"
 
 BEGIN_C_DECLS
 
@@ -34,6 +34,8 @@ BEGIN_C_DECLS
  */
 typedef struct _font_manager_t {
   array_t fonts;
+
+  font_loader_t* loader;
 } font_manager_t;
 
 /**
@@ -57,20 +59,22 @@ ret_t font_manager_set(font_manager_t* fm);
  * @method font_manager_create
  * 创建字体管理器。
  * @annotation ["constructor"]
+ * @param {font_loader_t*} loader 字体加载器。
  *
  * @return {font_manager_t*} 返回字体管理器对象。
  */
-font_manager_t* font_manager_create(void);
+font_manager_t* font_manager_create(font_loader_t* loader);
 
 /**
  * @method font_manager_init
  * 初始化字体管理器。
  * @annotation ["constructor"]
  * @param {font_manager_t*} fm 字体管理器对象。
+ * @param {font_loader_t*} loader 字体加载器。
  *
  * @return {font_manager_t*} 返回字体管理器对象。
  */
-font_manager_t* font_manager_init(font_manager_t* fm);
+font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
 
 /**
  * @method font_manager_add

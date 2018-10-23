@@ -394,3 +394,10 @@
     <normal />
   </style>
 </switch>
+
+<slide_view>
+  <style name="default">
+    <normal  fg_color="red" />
+  </style>
+</slide_view>
+

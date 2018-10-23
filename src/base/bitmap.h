@@ -166,9 +166,13 @@ struct _bitmap_t {
   /*data是按cache line对齐，而data_free_ptr是用于释放的指针*/
   uint8_t* data_free_ptr;
 
+  /*destroy时是否需要释放data指向的内存*/
   bool_t should_free_data;
+
+  /*destroy时是否需要释放bitmap本身的内存*/
   bool_t should_free_handle;
-  /* 显示特定的数据，如OpenGL texture ID，picasso/agg中图片等。*/
+
+  /* 显示特定的数据，如OpenGL texture ID，agg/agge中图片等。*/
   void* specific;
   /*specific_destroy的上下文*/
   void* specific_ctx;
@@ -186,6 +190,56 @@ struct _bitmap_t {
  * @return {bitmap_t*} 返回bitmap对象。
  */
 bitmap_t* bitmap_create(void);
+
+/**
+ * @method bitmap_create_ex
+ * 创建图片对象。
+ * @annotation ["constructor", "scriptable"]
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {bitmap_format_t} format 格式。
+ *
+ * @return {bitmap_t*} 返回bitmap对象。
+ */
+bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
+
+/**
+ * @method bitmap_get_bpp
+ * 获取图片一个像素占用的字节数。
+ * @annotation ["scriptable"]
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {uint32_t} 返回一个像素占用的字节数。
+ */
+uint32_t bitmap_get_bpp(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_get_pixel
+ * 获取图片指定像素的rgba颜色值(主要用于测试程序)。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} x x坐标。
+ * @param {uint32_t} y y坐标。
+ * @param {rgba_t*} rgba 返回颜色值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
+
+/**
+ * @method bitmap_init
+ * 初始化图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {bitmap_format_t} format 格式。
+ * @param {const uint8_t*} data
+ * 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+ * @param {uint32_t} comp 颜色通道数(目前支持3(rgb)和4(rgba))。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data,
+                  uint32_t comp);
 
 /**
  * @method bitmap_destroy
@@ -302,16 +356,10 @@ typedef enum _image_draw_type_t {
 #define BITMAP_ALIGN_SIZE 32
 #endif /*BITMAP_ALIGN_SIZE*/
 
-uint32_t bitmap_get_bpp(bitmap_t* bitmap);
-ret_t bitmap_rgba_to_bgra(bitmap_t* image);
-ret_t bitmap_rgba_to_bgr565(bitmap_t* image, uint16_t* output);
-bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
-
+/*private*/
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
-ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
-
-ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data,
-                  uint32_t comp);
+uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
+bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
 END_C_DECLS
 

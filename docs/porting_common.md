@@ -112,7 +112,7 @@
 
 ```
 
-> 请参考：src/base/awtk_config_sample.h
+> 请参考：src/base/awtk\_config\_sample.h
 
 ### 二、include路径
 
@@ -121,40 +121,42 @@ awtk
 awtk/src
 awtk/src/ext_widgets
 awtk/3rd
-awtk/3rd/agge/src
-awtk/3rd/agge/include
-awtk/3rd/nanovg/src
+awtk/3rd/agge
+awtk/3rd/nanovg/
+awtk/3rd/nanovg/base
 awtk/3rd/gpinyin/include
-awtk/3rd/libunibreak/src
+awtk/3rd/libunibreak
 awtk-port
 ```
 
 ### 三、要加入到工程的文件
 
-| Tables                      |      Are      | 
+| 文件                        |      说明    | 
 |-----------------------------|:-------------|
 | src/awtk.c                  | 加入       
 | src/base                    | 全部加入
 | src/xml                     | 全部加入
-| src/ui_loader               | 全部加入
+| src/ui\_loader              | 全部加入
 | src/blend                   | 使用framebuffer时全部加入
 | src/ext\_widgets            | 使用扩展控件时全部加入
-| src/font                    | 推荐全部加入(可只加需要的)
+| src/font\_loader            | 推荐全部加入(可只加需要的)
 | src/image\_loader           | 推荐全部加入(可只加需要的)
 | src/input\_engines          | 不需要输入法时加入input\_engine\_null.c，否则加入input\_engine\_pinyin.cpp
 | src/input\_methods          | 加入input\_method\_creator.c，根据宏决定启用何种输入法
 | src/lcd                     | 根据LCD类型(OpenGL/FrameBuffer/Register）选择相应的文件
 | src/main\_loop              | 嵌入式系统一般使用main\_loop\_simple.c
 | src/misc                    | 如果没有标准的内存管理函数请加入
-| src/platforms/raw/fs_os.c   | 如果没有文件系统请加入，否则请自行实现fs接口
-| src/platforms/raw/mutex_null.c   | 如果没有mutex请加入，否则请自行实现mutex接口
-| src/platforms/raw/sys_tick.c     | 如果需要自己实现sys tick中断，可以加入
+| src/platforms/raw/fs\_os.c       | 如果没有文件系统请加入，否则请自行实现fs接口
+| src/platforms/raw/mutex\_null.c  | 如果没有mutex请加入，否则请自行实现mutex接口
+| src/platforms/raw/sys\_tick.c    | 如果需要自己实现sys tick中断，可以加入
 | src/vgcanvas                     | 如果需要矢量图或图片旋转(不支持lcd\_reg)请加入vgcanvas\_nanovg.c，否则加入vgcanvas\_null.c
-| src/widget_animators             | 除了使用LCD\_REG的平台外推荐全部加入
-| src/window_animators             | 启用OpenGL(PC/Android/iOS)时加入window\_animator\_opengl.c，使用Framebuffer(一般嵌入式)时加入window\_animator\_fb.c，低端嵌入式平台请加入window\_animator\_null.c
+| src/widget\_animators            | 除了使用LCD\_REG的平台外推荐全部加入
+| src/window\_animators            | 启用OpenGL(PC/Android/iOS)时加入window\_animator\_opengl.c，使用Framebuffer(一般嵌入式)时加入window\_animator\_fb.c，低端嵌入式平台请加入window\_animator\_null.c
 | awtk/3rd/agge                    | 在framebuffer模式启用vgcanvas时加入
 | awtk/3rd/gpinyin/src             | 启用拼音输入法时加入
-| awtk/3rd/nanovg/src              | 在启用vgcanvas时加入
+| awtk/3rd/nanovg/base             | 在启用vgcanvas时加入
+| awtk/3rd/nanovg/agge             | 在启用vgcanvas时加入
+| awtk/3rd/libunibreak             | 建议加入
 | awtk-port                        | 加入各个平台自己的移植代码。
 | awtk/demos                       | 在使用ui demos可以加入：assets.c demo\_main.c demo\_ui\_app.c。
 

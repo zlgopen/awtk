@@ -24,10 +24,10 @@
 #include "base/utf8.h"
 #include "base/buffer.h"
 #include "common/utils.h"
-#include "font/font_stb.h"
-#include "font/font_bitmap.h"
 #include "font_gen/font_gen.h"
 #include "base/assets_manager.h"
+#include "font_loader/font_loader_stb.h"
+#include "font_loader/font_loader_bitmap.h"
 
 #define MAX_CHARS 100 * 1024
 #define MAX_BUFF_SIZE 1 * 1024 * 1024

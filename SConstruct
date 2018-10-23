@@ -87,6 +87,7 @@ OS_PROJECTS=[]
 if OS_NAME == 'Darwin':
   OS_LINKFLAGS='-framework OpenGL'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -DENABLE_MEM_LEAK_CHECK '
+  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_CURSOR '
   OS_LIBS = OS_LIBS + ['stdc++', 'pthread', 'm', 'dl']
 
 elif OS_NAME == 'Linux':

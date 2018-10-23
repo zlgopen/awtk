@@ -1,7 +1,7 @@
 ﻿/**
- * File:   font_stb.h
+ * File:   widget_animator_factory.h
  * Author: AWTK Develop Team
- * Brief:  stb truetype font loader
+ * Brief:  widget animator factory
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,19 +15,14 @@
 /**
  * History:
  * ================================================================
- * 2018-01-21 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-10-21 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_FONT_STB_H
-#define TK_FONT_STB_H
+#include "base/widget_animator_factory.h"
 
-#include "base/font.h"
-
-BEGIN_C_DECLS
-
-font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
-
-END_C_DECLS
-
-#endif /*TK_FONT_STB_H*/
+#ifdef WITHOUT_WIDGET_ANIMATOR
+widget_animator_t* widget_animator_create(widget_t* widget, const char* params) {
+  return NULL;
+}
+#endif /*WITHOUT_WIDGET_ANIMATOR*/

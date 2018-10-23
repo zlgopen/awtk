@@ -59,9 +59,9 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
 
   wa->canvas = c;
   wa->open = open;
-  wa->duration = 500;
   wa->prev_win = prev_win;
   wa->curr_win = curr_win;
+  wa->duration = wa->duration ? wa->duration : 500;
 
   ENSURE(vgcanvas_create_fbo(vg, &(wa->prev_fbo)) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, &(wa->prev_fbo)) == RET_OK);

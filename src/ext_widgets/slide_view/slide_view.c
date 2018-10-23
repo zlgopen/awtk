@@ -510,14 +510,20 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
 
 static ret_t slide_view_paint_indicator_one(widget_t* widget, canvas_t* c, rect_t* r,
                                             uint32_t index, bool_t is_active) {
-  if (is_active) {
-    canvas_set_fill_color(c, color_init(0xff, 0, 0, 0xff));
-    canvas_fill_rect(c, r->x, r->y, r->w, r->h);
-  } else {
-    canvas_set_stroke_color(c, color_init(0xff, 0, 0, 0xff));
-    canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
+  style_t* style = &(widget->style_data);
+  color_t trans = color_init(0, 0, 0, 0);
+  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+
+  if (fg.rgba.a) {
+    if (is_active) {
+      canvas_set_fill_color(c, fg);
+      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+    } else {
+      canvas_set_stroke_color(c, fg);
+      canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
+    }
   }
-  /*TODO: paint with icon*/
+
   return RET_OK;
 }
 
@@ -619,8 +625,13 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
-  slide_view->active = active;
-  widget_invalidate(widget, NULL);
+  if (slide_view->active != active) {
+    event_t evt = event_init(EVT_VALUE_CHANGED, widget);
+
+    slide_view->active = active;
+    widget_dispatch(widget, &evt);
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }

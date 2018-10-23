@@ -62,7 +62,7 @@ static void test_stroke_rect(canvas_t* c) {
 TEST(LCDMem, basic) {
   canvas_t canvas;
   font_manager_t font_manager;
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_mem_rgba8888_create(200, 200, TRUE);
   canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
 

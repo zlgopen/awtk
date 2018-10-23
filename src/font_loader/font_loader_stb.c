@@ -26,9 +26,9 @@
 #define STBTT_free(p, u) TKMEM_FREE(p)
 #define STBTT_malloc(s, u) TKMEM_ALLOC(s)
 
-#include "font/font_stb.h"
 #include "base/glyph_cache.h"
 #include "stb/stb_truetype.h"
+#include "font_loader/font_loader_stb.h"
 
 typedef struct _font_stb_t {
   font_t base;
@@ -118,4 +118,19 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->lineGap));
 
   return &(f->base);
+}
+
+static font_t* font_stb_load(font_loader_t* loader, const char* name, const uint8_t* buff,
+                             uint32_t buff_size) {
+  (void)loader;
+
+  return font_stb_create(name, buff, buff_size);
+}
+
+font_loader_t* font_loader_stb(void) {
+  static font_loader_t loader;
+  loader.type = ASSET_TYPE_FONT_TTF;
+  loader.load = font_stb_load;
+
+  return &loader;
 }

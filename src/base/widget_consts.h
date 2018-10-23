@@ -102,6 +102,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_NAME "name"
 
 /**
+ * @const WIDGET_PROP_CURSOR
+ * 鼠标指针。
+ */
+#define WIDGET_PROP_CURSOR "cursor"
+
+/**
  * @const WIDGET_PROP_VALUE
  * 值。
  */
@@ -178,6 +184,12 @@ BEGIN_C_DECLS
  * 是否可见。
  */
 #define WIDGET_PROP_VISIBLE "visible"
+
+/**
+ * @const WIDGET_PROP_ANIMATION
+ * 控件动画。
+ */
+#define WIDGET_PROP_ANIMATION "animation"
 
 /**
  * @const WIDGET_PROP_ANIM_HINT

@@ -22,7 +22,7 @@
 #ifndef TK_KEYBOARD_H
 #define TK_KEYBOARD_H
 
-#include "base/widget.h"
+#include "base/window_base.h"
 
 BEGIN_C_DECLS
 
@@ -32,27 +32,9 @@ BEGIN_C_DECLS
  * 键盘。
  */
 typedef struct _keyboard_t {
-  widget_t widget;
+  window_base_t window;
 
-  /**
-   * @property {char*} theme
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 主题资源的名称。
-   */
-  char* theme;
-  /**
-   * @property {char*} open_anim_hint
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 打开时的动画名称。
-   */
-  char* open_anim_hint;
-  /**
-   * @property {char*} close_anim_hint
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 关闭时的动画名称。
-   */
-  char* close_anim_hint;
-
+  /*private*/
   array_t action_buttons;
   uint32_t action_info_id;
 } keyboard_t;

@@ -88,6 +88,32 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"patch3_x_scale_y", 0, IMAGE_DRAW_PATCH3_X_SCALE_Y},
     {"patch3_y_scale_x", 0, IMAGE_DRAW_PATCH3_Y_SCALE_X}};
 
+static const key_type_value_t easing_type_name_value[] = {
+    {"linear", 0, EASING_LINEAR},
+    {"quadratic_in", 0, EASING_QUADRATIC_IN},
+    {"quadratic_out", 0, EASING_QUADRATIC_OUT},
+    {"quadratic_inout", 0, EASING_QUADRATIC_INOUT},
+    {"cubic_in", 0, EASING_CUBIC_IN},
+    {"cubic_out", 0, EASING_CUBIC_OUT},
+    {"sin_in", 0, EASING_SIN_IN},
+    {"sin_out", 0, EASING_SIN_OUT},
+    {"sin_inout", 0, EASING_SIN_INOUT},
+    {"pow_in", 0, EASING_POW_IN},
+    {"pow_out", 0, EASING_POW_OUT},
+    {"pow_inout", 0, EASING_POW_INOUT},
+    {"circular_in", 0, EASING_CIRCULAR_IN},
+    {"circular_out", 0, EASING_CIRCULAR_OUT},
+    {"circular_inout", 0, EASING_CIRCULAR_INOUT},
+    {"elastic_in", 0, EASING_ELASTIC_IN},
+    {"elastic_out", 0, EASING_ELASTIC_OUT},
+    {"elastic_inout", 0, EASING_ELASTIC_INOUT},
+    {"back_in", 0, EASING_BACK_IN},
+    {"back_out", 0, EASING_BACK_OUT},
+    {"back_inout", 0, EASING_BACK_INOUT},
+    {"bounce_in", 0, EASING_BOUNCE_IN},
+    {"bounce_out", 0, EASING_BOUNCE_OUT},
+    {"bounce_inout", 0, EASING_BOUNCE_INOUT}};
+
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;
   return_value_if_fail(items != NULL && name != NULL, NULL);
@@ -156,4 +182,12 @@ const key_type_value_t* image_draw_type_find_by_value(uint32_t value) {
 
 const key_type_value_t* input_type_find(const char* name) {
   return find_item(input_type_name_value, ARRAY_SIZE(input_type_name_value), name);
+}
+
+const key_type_value_t* easing_type_find(const char* name) {
+  return find_item(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), name);
+}
+
+const key_type_value_t* easing_type_find_by_value(uint32_t value) {
+  return find_item_by_value(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), value);
 }

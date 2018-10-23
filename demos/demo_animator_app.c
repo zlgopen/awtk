@@ -49,11 +49,13 @@ static ret_t on_start(void* ctx, event_t* e) {
     widget_animator_start(animators[i]);
   }
 
+  widget_set_enable(WIDGET(ctx), FALSE);
+
   return RET_OK;
 }
 
 ret_t application_init() {
-  int yoyo = 100;
+  int times = 100;
   widget_t* image = NULL;
   widget_t* image1 = NULL;
   widget_t* image2 = NULL;
@@ -75,79 +77,79 @@ ret_t application_init() {
   widget_set_text(opacity, L"Opacity");
 
   image = image_create(win, 10, 220, 32, 32);
-  image_set_image_name(image, "earth");
+  image_set_image(image, "earth");
   image_set_draw_type(image, IMAGE_DRAW_ICON);
 
   image1 = image_create(win, 10, 220, 32, 32);
-  image_set_image_name(image1, "earth");
+  image_set_image(image1, "earth");
   image_set_draw_type(image1, IMAGE_DRAW_ICON);
 
-  image2 = image_create(win, 10, 118, 32, 32);
-  image_set_image_name(image2, "bricks");
+  image2 = image_create(win, 10, 118, 100, 100);
+  image_set_image(image2, "bricks");
   image_set_draw_type(image2, IMAGE_DRAW_ICON);
 
   image3 = image_create(win, 50, 118, 32, 32);
-  image_set_image_name(image3, "earth");
+  image_set_image(image3, "earth");
   image_set_draw_type(image3, IMAGE_DRAW_ICON);
 
   image4 = image_create(win, 100, 118, 32, 32);
-  image_set_image_name(image4, "earth");
+  image_set_image(image4, "earth");
   image_set_draw_type(image4, IMAGE_DRAW_ICON);
 
   image5 = image_create(win, 140, 118, 32, 32);
-  image_set_image_name(image5, "earth");
+  image_set_image(image5, "earth");
   image_set_draw_type(image5, IMAGE_DRAW_ICON);
 
   image6 = image_create(win, 180, 118, 32, 32);
-  image_set_image_name(image6, "earth");
+  image_set_image(image6, "earth");
   image_set_draw_type(image6, IMAGE_DRAW_ICON);
 
   progress_bar = progress_bar_create(win, 10, 80, 168, 20);
 
   animator = widget_animator_move_create(image, 1000, delay, EASING_SIN_INOUT);
   widget_animator_move_set_params(animator, image->x, image->y, image->x + 100, image->y + 100);
-  widget_animator_set_repeat(animator, yoyo);
+  widget_animator_set_repeat(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_move_create(image1, 1000, delay, EASING_SIN_INOUT);
   widget_animator_move_set_params(animator, image1->x, image1->y, image1->x + 100, image->y);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_value_create(progress_bar, 1000, delay, EASING_SIN_INOUT);
   widget_animator_value_set_params(animator, 50, 100);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_opacity_create(opacity, 1000, delay, EASING_SIN_OUT);
   widget_animator_opacity_set_params(animator, 50, 255);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   animator = widget_animator_opacity_create(image6, 2000, delay, EASING_SIN_INOUT);
   widget_animator_opacity_set_params(animator, 50, 255);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_rotation_create(image2, 1000, delay, EASING_SIN_INOUT);
   widget_animator_rotation_set_params(animator, 0, 3.14 * 2);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, 0/*forever*/);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_scale_create(image3, 1000, delay, EASING_SIN_INOUT);
   widget_animator_scale_set_params(animator, 0.5f, 0.5f, 2.0f, 2.0f);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
   animator = widget_animator_scale_create(image4, 2000, delay, EASING_SIN_IN);
   widget_animator_scale_set_params(animator, 1.0f, 1.0f, -1.0f, 1.0f);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
   delay += 1000;
@@ -167,10 +169,10 @@ ret_t application_init() {
   delay += 1000;
   animator = widget_animator_opacity_create(image5, 2000, delay, EASING_SIN_OUT);
   widget_animator_opacity_set_params(animator, 255, 0);
-  widget_animator_set_yoyo(animator, yoyo);
+  widget_animator_set_yoyo(animator, times);
   animators[animators_nr++] = animator;
 
-  widget_on(start, EVT_CLICK, on_start, NULL);
+  widget_on(start, EVT_CLICK, on_start, start);
 
   return RET_OK;
 }

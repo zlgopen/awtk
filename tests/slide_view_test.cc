@@ -2,8 +2,22 @@
 #include "gtest/gtest.h"
 #include "base/button.h"
 #include "slide_view/slide_view.h"
+#include <string>
+
+using std::string;
+
+static ret_t slide_view_on_change(void* ctx, event_t* e) {
+  string& s = *(string*)ctx;
+
+  if (e->type == EVT_VALUE_CHANGED) {
+    s += "changed:";
+  }
+
+  return RET_OK;
+}
 
 TEST(SlideView, basic) {
+  string str;
   widget_t* w = slide_view_create(NULL, 0, 0, 400, 300);
   slide_view_t* slide_view = SLIDE_VIEW(w);
   widget_t* b1 = button_create(w, 0, 0, 400, 300);
@@ -14,6 +28,8 @@ TEST(SlideView, basic) {
   widget_set_name(b2, "b2");
   widget_set_name(b3, "b3");
 
+  widget_on(w, EVT_VALUE_CHANGED, slide_view_on_change, &str);
+
   slide_view_set_active(w, 0);
   ASSERT_EQ(slide_view->active, 0);
   ASSERT_EQ(slide_view_get_prev(slide_view), WIDGET(NULL));
@@ -22,6 +38,7 @@ TEST(SlideView, basic) {
   ASSERT_EQ(slide_view_activate_prev(slide_view), RET_FAIL);
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
   ASSERT_EQ(slide_view->active, 1);
+  ASSERT_EQ(str, "changed:");
 
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
   ASSERT_EQ(slide_view->active, 2);

@@ -88,6 +88,11 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
       p->x = evt->x;
       p->y = evt->y;
 
+      if (win->on_click != NULL) {
+        win->on_click(win->on_click_ctx, win->cursor, *p);
+      }
+      log_debug("click: %d {%d, %d}\n", win->cursor, p->x, p->y);
+
       calibration_win_invalidate(widget, win->cursor);
       win->cursor++;
       calibration_win_invalidate(widget, win->cursor);
@@ -120,7 +125,7 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
 static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
   point_t pt = {0, 0};
   wstr_t* text = &(widget->text);
-  style_t* style = &(widget->style);
+  style_t* style = &(widget->style_data);
   color_t black = color_init(0, 0, 0, 0xff);
   calibration_win_t* win = CALIBRATION_WIN(widget);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
@@ -154,6 +159,17 @@ ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on
 
   win->on_done = on_done;
   win->on_done_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t on_click,
+                                   void* ctx) {
+  calibration_win_t* win = CALIBRATION_WIN(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  win->on_click = on_click;
+  win->on_click_ctx = ctx;
 
   return RET_OK;
 }

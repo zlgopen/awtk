@@ -27,16 +27,16 @@
 #include "base/locale_info.h"
 #include "base/platform.h"
 #include "base/main_loop.h"
-#include "font/font_bitmap.h"
 #include "base/font_manager.h"
 #include "base/input_method.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
+#include "font_loader/font_loader_bitmap.h"
 
 #ifdef WITH_STB_FONT
-#include "font/font_stb.h"
+#include "font_loader/font_loader_stb.h"
 #endif /*WITH_STB_FONT*/
 
 #ifdef WITH_STB_IMAGE
@@ -81,10 +81,17 @@ ret_t tk_init_assets() {
 }
 
 ret_t tk_init_internal(void) {
-  image_loader_t* loader = NULL;
+  font_loader_t* font_loader = NULL;
+  image_loader_t* image_loader = NULL;
 #ifdef WITH_STB_IMAGE
-  loader = image_loader_stb();
+  image_loader = image_loader_stb();
 #endif /*WITH_STB_IMAGE*/
+
+#ifdef WITH_STB_FONT
+  font_loader = font_loader_stb();
+#elif defined(WITH_BITMAP_FONT)
+  font_loader = font_loader_bitmap();
+#endif /*WITH_STB_FONT*/
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
 
@@ -94,8 +101,8 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
-  return_value_if_fail(font_manager_set(font_manager_create()) == RET_OK, RET_FAIL);
-  return_value_if_fail(image_manager_set(image_manager_create(loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
 
   return RET_OK;
@@ -109,6 +116,9 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 }
 
 ret_t tk_deinit_internal(void) {
+  widget_destroy(window_manager());
+  window_manager_set(NULL);
+
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
@@ -129,9 +139,6 @@ ret_t tk_deinit_internal(void) {
 
   input_method_destroy(input_method());
   input_method_set(NULL);
-
-  widget_destroy(window_manager());
-  window_manager_set(NULL);
 
   return RET_OK;
 }

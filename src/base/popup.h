@@ -22,9 +22,7 @@
 #ifndef TK_POPUP_H
 #define TK_POPUP_H
 
-#include "base/wstr.h"
-#include "base/widget.h"
-#include "base/window_animator.h"
+#include "base/window_base.h"
 
 BEGIN_C_DECLS
 
@@ -35,26 +33,15 @@ BEGIN_C_DECLS
  * popup窗口。
  */
 typedef struct _popup_t {
-  widget_t widget;
+  window_base_t window;
 
-  /**
-   * @property {char*} theme
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 主题资源的名称。
-   */
-  char* theme;
-  /**
-   * @property {char*} anim_hint
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 窗口动画名称。
-   */
-  char* anim_hint;
   /**
    * @property {bool_t} close_when_click
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 点击时是否关闭窗口。
    */
   bool_t close_when_click;
+
   /**
    * @property {bool_t} close_when_click_outside
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

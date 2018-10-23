@@ -24,14 +24,12 @@
 #include "base/timer.h"
 #include "base/widget_animator.h"
 
-static ret_t widget_animator_stop(widget_animator_t* animator);
-
 static ret_t widget_animator_update(widget_animator_t* animator, float_t percent);
 
 static ret_t widget_animator_on_widget_destroy(void* ctx, event_t* e) {
   widget_animator_t* animator = (widget_animator_t*)ctx;
 
-  animator->widget_destroy_id = 0;
+  animator->widget_destroy_id = TK_INVALID_ID;
   widget_animator_destroy(animator);
 
   return RET_OK;
@@ -41,13 +39,14 @@ ret_t widget_animator_init(widget_animator_t* animator, widget_t* widget, uint32
                            uint32_t delay, easing_func_t easing) {
   return_value_if_fail(animator != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  animator->widget = widget;
   animator->delay = delay;
+  animator->widget = widget;
   animator->duration = duration;
   emitter_init(&(animator->emitter));
   animator->easing = easing != NULL ? easing : easing_get(EASING_LINEAR);
   animator->widget_destroy_id =
       widget_on(widget, EVT_DESTROY, widget_animator_on_widget_destroy, animator);
+  widget_animator_set_destroy_when_done(animator, TRUE);
 
   return RET_OK;
 }
@@ -74,6 +73,10 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
       animator->start_time = now;
       animator->repeat_times--;
 
+      if (animator->repeat_times == 0 && animator->forever) {
+        animator->repeat_times = TK_UINT32_MAX;
+      }
+
       emitter_dispatch(&(animator->emitter), &e);
     } else if (animator->yoyo_times > 0) {
       event_t e = event_init(EVT_ANIM_ONCE, animator);
@@ -81,13 +84,19 @@ static ret_t widget_animator_on_timer(const timer_info_t* timer) {
       animator->reversed = !animator->reversed;
       animator->yoyo_times--;
 
+      if (animator->yoyo_times == 0 && animator->forever) {
+        animator->yoyo_times = TK_UINT32_MAX;
+      }
+
       emitter_dispatch(&(animator->emitter), &e);
     } else {
       event_t e = event_init(EVT_ANIM_END, animator);
       emitter_dispatch(&(animator->emitter), &e);
 
-      animator->timer_id = 0;
-      widget_animator_destroy(animator);
+      animator->timer_id = TK_INVALID_ID;
+      if (animator->destroy_when_done) {
+        widget_animator_destroy(animator);
+      }
 
       return RET_REMOVE;
     }
@@ -124,10 +133,10 @@ ret_t widget_animator_start(widget_animator_t* animator) {
 
 ret_t widget_animator_stop(widget_animator_t* animator) {
   event_t e = event_init(EVT_ANIM_STOP, animator);
-  return_value_if_fail(animator != NULL && animator->timer_id > 0, RET_BAD_PARAMS);
+  return_value_if_fail(animator != NULL && animator->timer_id != TK_INVALID_ID, RET_BAD_PARAMS);
 
   timer_remove(animator->timer_id);
-  animator->timer_id = 0;
+  animator->timer_id = TK_INVALID_ID;
   emitter_dispatch(&(animator->emitter), &e);
 
   return RET_OK;
@@ -143,6 +152,10 @@ ret_t widget_animator_set_yoyo(widget_animator_t* animator, uint32_t yoyo_times)
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   animator->yoyo_times = yoyo_times;
+  animator->forever = yoyo_times == 0;
+  if (animator->forever) {
+    animator->yoyo_times = TK_UINT32_MAX;
+  }
 
   return RET_OK;
 }
@@ -151,6 +164,10 @@ ret_t widget_animator_set_repeat(widget_animator_t* animator, uint32_t repeat_ti
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   animator->repeat_times = repeat_times;
+  animator->forever = repeat_times == 0;
+  if (animator->forever) {
+    animator->repeat_times = TK_UINT32_MAX;
+  }
 
   return RET_OK;
 }
@@ -176,17 +193,24 @@ ret_t widget_animator_off(widget_animator_t* animator, uint32_t id) {
   return emitter_off(&(animator->emitter), id);
 }
 
+ret_t widget_animator_set_destroy_when_done(widget_animator_t* animator, bool_t destroy_when_done) {
+  return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
+
+  animator->destroy_when_done = destroy_when_done;
+
+  return RET_OK;
+}
+
 ret_t widget_animator_destroy(widget_animator_t* animator) {
   return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
 
-  if (animator->widget_destroy_id) {
+  if (animator->widget_destroy_id != TK_INVALID_ID) {
     widget_off(animator->widget, animator->widget_destroy_id);
-    animator->widget_destroy_id = 0;
+    animator->widget_destroy_id = TK_INVALID_ID;
   }
 
-  if (animator->timer_id) {
+  if (animator->timer_id != TK_INVALID_ID) {
     widget_animator_stop(animator);
-    animator->timer_id = 0;
   }
 
   emitter_deinit(&(animator->emitter));

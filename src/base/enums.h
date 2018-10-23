@@ -50,6 +50,8 @@ const key_type_value_t* image_draw_type_find_by_value(uint32_t value);
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name);
 const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32_t nr,
                                            uint32_t value);
+const key_type_value_t* easing_type_find(const char* name);
+const key_type_value_t* easing_type_find_by_value(uint32_t value);
 
 END_C_DECLS
 

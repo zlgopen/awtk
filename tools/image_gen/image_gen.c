@@ -20,6 +20,7 @@
  */
 
 #include "base/mem.h"
+#include "base/utils.h"
 #include "common/utils.h"
 #include "image_gen/image_gen.h"
 #include "base/image_manager.h"
@@ -40,14 +41,13 @@ ret_t image_gen(bitmap_t* image, const char* output_filename) {
   return RET_OK;
 }
 
-#include "base/utils.h"
-
 uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_size) {
   size_t size = 0;
+  uint32_t bpp = bitmap_get_bpp(image);
   bitmap_header_t* header = (bitmap_header_t*)output_buff;
   return_value_if_fail(image != NULL && output_buff != NULL, 0);
 
-  size = sizeof(uint32_t) * image->w * image->h;
+  size = bpp * image->w * image->h;
   return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, RET_BAD_PARAMS);
 
   header->w = image->w;
@@ -55,25 +55,7 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
   header->flags = image->flags;
   header->format = image->format;
 
-  if (image->flags & BITMAP_FLAG_OPAQUE) {
-    if (image->format == BITMAP_FMT_RGBA8888) {
-      if (bitmap_rgba_to_bgr565(image, (uint16_t*)(header->data)) == RET_OK) {
-        header->format = BITMAP_FMT_BGR565;
-        size = sizeof(uint16_t) * image->w * image->h;
-      } else {
-        assert(!"bitmap_rgba_to_bgr565 fail.");
-      }
-    } else if (image->format == BITMAP_FMT_BGR565) {
-      size = sizeof(uint16_t) * image->w * image->h;
-      memcpy(header->data, image->data, size);
-    } else if (image->format == BITMAP_FMT_BGRA8888) {
-      size = sizeof(uint32_t) * image->w * image->h;
-      memcpy(header->data, image->data, size);
-    }
-  } else {
-    size = sizeof(uint32_t) * image->w * image->h;
-    memcpy(header->data, image->data, size);
-  }
+  memcpy(header->data, image->data, size);
 
   return size + sizeof(bitmap_header_t);
 }

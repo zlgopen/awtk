@@ -21,9 +21,9 @@
 
 #include "base/mem.h"
 #include "common/utils.h"
-#include "font/font_bitmap.h"
-#include "font/font_stb.h"
 #include "font_gen.h"
+#include "font_loader/font_loader_bitmap.h"
+#include "font_loader/font_loader_stb.h"
 
 int main(int argc, char** argv) {
   uint32_t size = 0;

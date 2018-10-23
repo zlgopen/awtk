@@ -20,14 +20,15 @@
  */
 
 #include "base/mem.h"
+#include "base/time.h"
 #include "base/label.h"
-#include "base/locale_info.h"
 #include "base/timer.h"
 #include "base/button.h"
 #include "base/dialog.h"
 #include "base/image.h"
 #include "base/utils.h"
 #include "base/window.h"
+#include "base/locale_info.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
 #include "base/image_manager.h"
@@ -171,33 +172,6 @@ static ret_t on_dec(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-#include "widget_animators/widget_animator_opacity.h"
-#include "widget_animators/widget_animator_value.h"
-#include "widget_animators/widget_animator_move.h"
-#include "widget_animators/widget_animator_scale.h"
-#include "widget_animators/widget_animator_rotation.h"
-
-static void on_move_animator(widget_t* widget) {
-  widget_animator_t* animator = widget_animator_move_create(widget, 1000, 0, EASING_SIN_INOUT);
-  widget_animator_move_set_params(animator, widget->x, widget->y, widget->x + 200, widget->y);
-  widget_animator_set_repeat(animator, 1000);
-  widget_animator_start(animator);
-}
-
-static void on_fade_animator(widget_t* widget) {
-  widget_animator_t* animator = widget_animator_opacity_create(widget, 1000, 0, EASING_SIN_OUT);
-  widget_animator_opacity_set_params(animator, 50, 255);
-  widget_animator_set_yoyo(animator, 1000);
-  widget_animator_start(animator);
-}
-
-static void on_value_animator(widget_t* widget) {
-  widget_animator_t* animator = widget_animator_value_create(widget, 1000, 0, EASING_SIN_INOUT);
-  widget_animator_value_set_params(animator, 50, 100);
-  widget_animator_set_yoyo(animator, 1000);
-  widget_animator_start(animator);
-}
-
 static ret_t on_change_locale(void* ctx, event_t* e) {
   char country[3];
   char language[3];
@@ -242,12 +216,6 @@ static ret_t install_one(void* ctx, void* iter) {
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit, win);
       }
-    } else if (tk_str_eq(name, "move")) {
-      on_move_animator(widget);
-    } else if (tk_str_eq(name, "fade")) {
-      on_fade_animator(widget);
-    } else if (tk_str_eq(name, "value")) {
-      on_value_animator(widget);
     }
   }
   (void)ctx;

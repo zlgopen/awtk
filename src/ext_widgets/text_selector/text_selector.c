@@ -43,7 +43,7 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
 
   uint32_t y = 0;
   uint32_t i = 0;
-  style_t* style = &(widget->style);
+  style_t* style = &(widget->style_data);
   color_t trans = color_init(0, 0, 0, 0);
   int32_t yoffset = text_selector->yoffset;
   int32_t item_height = widget->h / text_selector->visible_nr;

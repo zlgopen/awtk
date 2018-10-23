@@ -133,11 +133,17 @@ struct _widget_t {
    */
   char* tr_text;
   /**
-   * @property {char*} style_name
+   * @property {char*} style
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * Style Type。
    */
-  const char* style_name;
+  const char* style;
+  /**
+   * @property {char*} animation
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 动画参数。
+   */
+  char* animation;
   /**
    * @property {bool_t} enable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -223,11 +229,11 @@ struct _widget_t {
    */
   emitter_t* emitter;
   /**
-   * @property {style_t} style
+   * @property {style_t} style_data
    * @annotation ["readable"]
    * Style数据。
    */
-  style_t style;
+  style_t style_data;
   /**
    * @property {layout_params_t*} layout_params
    * @annotation ["readable"]
@@ -490,6 +496,33 @@ ret_t widget_to_screen(widget_t* widget, point_t* p);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_name(widget_t* widget, const char* name);
+
+/**
+ * @method widget_set_cursor
+ * 设置鼠标指针的图片名。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} cursor 名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_cursor(widget_t* widget, const char* cursor);
+
+/**
+ * @method widget_set_animation
+ * 设置控件的动画参数。
+ * 参数的格式类似函数调用。如:
+ * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
+ * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
+ * 多个animation参数用『;』分开。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} animation 动画参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_animation(widget_t* widget, const char* animation);
 
 /**
  * @method widget_set_enable
@@ -796,6 +829,16 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx);
  * @return {widget_t*} 窗口对象。
  */
 widget_t* widget_get_window(widget_t* widget);
+
+/**
+ * @method widget_get_window_manager
+ * 获取当前的窗口管理器。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {widget_t*} 窗口管理器对象。
+ */
+widget_t* widget_get_window_manager(widget_t* widget);
 
 /**
  * @method widget_get_type

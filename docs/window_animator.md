@@ -35,6 +35,14 @@
 ```
 > anim\_hint的可选值，请参考src/base/window\_animator.h中的定义。
 
+可以指定动画时长(duration)，格式类似与函数调用，不过参数用name=value的形式，如：
+
+```
+anim_hint="center_scale(duration=300)"
+```
+
+* duration的单位为毫秒。
+
 ## 示例
 
 demoui演示了各种窗口动画：

@@ -176,6 +176,8 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
   }
 
+  widget_invalidate_force(loop->base.wm);
+
   return RET_OK;
 }
 

@@ -10,7 +10,7 @@
 TEST(FontManager, basic) {
   font_manager_t font_manager;
   font_dummy_init();
-  font_manager_init(&font_manager);
+  font_manager_init(&font_manager, NULL);
   font_manager_add(&font_manager, font_dummy_0("demo0", 10));
   font_manager_add(&font_manager, font_dummy_1("demo1", 11));
   font_manager_add(&font_manager, font_dummy_2("demo2", 12));
@@ -26,5 +26,15 @@ TEST(FontManager, basic) {
   ASSERT_EQ(font_manager_find(&font_manager, NULL, 20) != NULL, true);
   ASSERT_EQ(font_manager_find(&font_manager, "demo0", 20) != NULL, true);
 
+  font_manager_deinit(&font_manager);
+}
+
+#include "font_loader/font_loader_stb.h"
+
+TEST(FontManager, loader) {
+  font_manager_t font_manager;
+
+  font_manager_init(&font_manager, font_loader_stb());
+  ASSERT_EQ(font_manager_find(&font_manager, "ap", 20) != NULL, true);
   font_manager_deinit(&font_manager);
 }

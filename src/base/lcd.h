@@ -238,6 +238,13 @@ struct _lcd_t {
    */
   float_t ratio;
 
+  /**
+   * @property {bool_t} support_dirty_rect
+   * @annotation ["readable"]
+   * 是否支持脏矩形。
+   */
+  bool_t support_dirty_rect;
+
   rect_t fps_rect;
   rect_t dirty_rect;
 };

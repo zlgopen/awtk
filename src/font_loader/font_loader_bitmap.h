@@ -19,10 +19,10 @@
  *
  */
 
-#ifndef TK_FONT_BITMAP_H
-#define TK_FONT_BITMAP_H
+#ifndef TK_FONT_LOADER_BITMAP_H
+#define TK_FONT_LOADER_BITMAP_H
 
-#include "base/font.h"
+#include "base/font_loader.h"
 
 BEGIN_C_DECLS
 
@@ -40,6 +40,8 @@ typedef struct _font_bitmap_header_t {
 
 font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_size);
 
+font_loader_t* font_loader_bitmap(void);
+
 END_C_DECLS
 
-#endif /*TK_FONT_BITMAP_H*/
+#endif /*TK_FONT_LOADER_BITMAP_H*/

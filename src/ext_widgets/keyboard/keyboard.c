@@ -32,97 +32,29 @@
 static ret_t keyboard_on_load(void* ctx, event_t* e);
 static ret_t keyboard_on_action_info(void* ctx, event_t* e);
 
-static ret_t keyboard_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
-}
+static const char* s_keyboard_properties[] = {
+    WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT, WIDGET_PROP_CLOSE_ANIM_HINT,
+    WIDGET_PROP_THEME,     WIDGET_PROP_SCRIPT,         NULL};
 
-static ret_t keyboard_get_prop(widget_t* widget, const char* name, value_t* v) {
-  keyboard_t* keyboard = KEYBOARD(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
-
-  if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    value_set_str(v, keyboard->open_anim_hint);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    value_set_str(v, keyboard->close_anim_hint);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
-    value_set_str(v, keyboard->theme);
-    return RET_OK;
-  }
-
-  return RET_NOT_FOUND;
-}
-
-static ret_t keyboard_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  keyboard_t* keyboard = KEYBOARD(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
-
-  if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
-    const char* str = value_str(v);
-    TKMEM_FREE(keyboard->open_anim_hint);
-    TKMEM_FREE(keyboard->close_anim_hint);
-    keyboard->open_anim_hint = tk_strdup(str);
-    keyboard->close_anim_hint = tk_strdup(str);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    const char* str = value_str(v);
-    TKMEM_FREE(keyboard->open_anim_hint);
-    keyboard->open_anim_hint = tk_strdup(str);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    const char* str = value_str(v);
-    TKMEM_FREE(keyboard->close_anim_hint);
-    keyboard->close_anim_hint = tk_strdup(str);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
-    const char* str = value_str(v);
-    TKMEM_FREE(keyboard->theme);
-    keyboard->theme = tk_strdup(str);
-    return RET_OK;
-  }
-
-  return RET_NOT_FOUND;
-}
-
-static ret_t keyboard_destroy_default(widget_t* widget) {
-  keyboard_t* keyboard = KEYBOARD(widget);
-  input_method_off(input_method(), keyboard->action_info_id);
-
-  TKMEM_FREE(keyboard->theme);
-  TKMEM_FREE(keyboard->open_anim_hint);
-  TKMEM_FREE(keyboard->close_anim_hint);
-
-  return RET_OK;
-}
-
-static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
-                                              WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
                                                   .clone_properties = s_keyboard_properties,
                                                   .persistent_properties = s_keyboard_properties,
                                                   .create = keyboard_create,
-                                                  .on_paint_self = keyboard_on_paint_self,
-                                                  .set_prop = keyboard_set_prop,
-                                                  .get_prop = keyboard_get_prop,
-                                                  .destroy = keyboard_destroy_default};
+                                                  .on_paint_self = window_base_on_paint_self,
+                                                  .set_prop = window_base_set_prop,
+                                                  .get_prop = window_base_get_prop,
+                                                  .destroy = window_base_destroy};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   keyboard_t* keyboard = TKMEM_ZALLOC(keyboard_t);
   widget_t* widget = WIDGET(keyboard);
   return_value_if_fail(keyboard != NULL, NULL);
 
-  widget_init(widget, NULL, &s_keyboard_vtable, x, y, w, h);
+  window_base_init(widget, parent, &s_keyboard_vtable, x, y, w, h);
+
   array_init(&(keyboard->action_buttons), 0);
 
-  if (parent == NULL) {
-    parent = window_manager();
-  }
-
-  return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
-
-  widget_update_style(widget);
   widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
   keyboard->action_info_id =
       input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
