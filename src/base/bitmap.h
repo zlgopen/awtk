@@ -138,6 +138,12 @@ struct _bitmap_t {
    */
   wh_t h;
   /**
+   * @property {uint32_t} line_length
+   * @annotation ["readable", "scriptable"]
+   * 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。
+   */
+  uint32_t line_length;
+  /**
    * @property {uint16_t} flags
    * @annotation ["readable", "scriptable"]
    * 标志。请参考{bitmap_flag_t}。
@@ -197,11 +203,12 @@ bitmap_t* bitmap_create(void);
  * @annotation ["constructor", "scriptable"]
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
+ * @param {uint32_t} line_length line_length。
  * @param {bitmap_format_t} format 格式。
  *
  * @return {bitmap_t*} 返回bitmap对象。
  */
-bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format);
+bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format);
 
 /**
  * @method bitmap_get_bpp
@@ -226,7 +233,26 @@ uint32_t bitmap_get_bpp(bitmap_t* bitmap);
 ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 
 /**
- * @method bitmap_init
+ * @method bitmap_set_line_length
+ * 设置line_length。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} line_length line_length。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length);
+
+/**
+ * @method bitmap_get_line_length
+ * 获取每一行占用内存的字节数。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+uint32_t bitmap_get_line_length(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_init_from_rgba
  * 初始化图片。
  * @param {bitmap_t*} bitmap bitmap对象。
  * @param {uint32_t} w 宽度。
@@ -238,8 +264,21 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data,
-                  uint32_t comp);
+ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
+                            const uint8_t* data, uint32_t comp);
+
+/**
+ * @method bitmap_init
+ * 初始化图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {bitmap_format_t} format 格式。
+ * @param {const uint8_t*} data 数据，直接引用，但不负责释放。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data);
 
 /**
  * @method bitmap_destroy

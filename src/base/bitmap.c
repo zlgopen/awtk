@@ -92,7 +92,7 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
   uint8_t* data = NULL;
   return_value_if_fail(bitmap != NULL && bitmap->w > 0 && bitmap->h > 0, RET_BAD_PARAMS);
 
-  size = bitmap_get_bpp(bitmap) * bitmap->w * bitmap->h;
+  size = bitmap_get_line_length(bitmap) * bitmap->h;
   size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
 
   data = (uint8_t*)TKMEM_ALLOC(size);
@@ -111,7 +111,7 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
   }
 }
 
-bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format) {
+bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format) {
   bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
   return_value_if_fail(bitmap != NULL, NULL);
 
@@ -119,6 +119,7 @@ bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, bitmap_format_t format) {
   bitmap->h = h;
   bitmap->format = format;
   bitmap->should_free_handle = TRUE;
+  bitmap_set_line_length(bitmap, line_length);
 
   bitmap_alloc_data(bitmap);
   if (bitmap->data == NULL) {
@@ -135,7 +136,7 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   return_value_if_fail(bitmap != NULL && bitmap->data != NULL && rgba != NULL, RET_BAD_PARAMS);
   return_value_if_fail(x < bitmap->w && y < bitmap->h, RET_BAD_PARAMS);
 
-  data = bitmap->data + (bitmap->w * y + x) * bpp;
+  data = bitmap->data + bitmap_get_line_length(bitmap) * y + x * bpp;
 
   switch (bitmap->format) {
     case BITMAP_FMT_RGBA8888: {
@@ -281,29 +282,61 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
   return TRUE;
 }
 
-ret_t bitmap_init(bitmap_t* b, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data,
-                  uint32_t comp) {
-  return_value_if_fail(b != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
+ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
+                            const uint8_t* data, uint32_t comp) {
+  return_value_if_fail(bitmap != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
 
-  memset(b, 0x00, sizeof(bitmap_t));
+  memset(bitmap, 0x00, sizeof(bitmap_t));
 
-  b->w = w;
-  b->h = h;
-  b->format = format;
-  b->flags = BITMAP_FLAG_IMMUTABLE;
-  return_value_if_fail(bitmap_alloc_data(b) == RET_OK, RET_OOM);
+  bitmap->w = w;
+  bitmap->h = h;
+  bitmap->format = format;
+  bitmap_set_line_length(bitmap, 0);
+  bitmap->flags = BITMAP_FLAG_IMMUTABLE;
+  return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
 
   if (rgba_data_is_opaque(data, w, h, comp)) {
-    b->flags |= BITMAP_FLAG_OPAQUE;
+    bitmap->flags |= BITMAP_FLAG_OPAQUE;
   }
 
   if (format == BITMAP_FMT_BGRA8888) {
-    return bitmap_init_bgra8888(b, w, h, data, comp);
+    return bitmap_init_bgra8888(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_RGBA8888) {
-    return bitmap_init_rgba8888(b, w, h, data, comp);
+    return bitmap_init_rgba8888(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_BGR565) {
-    return bitmap_init_bgr565(b, w, h, data, comp);
+    return bitmap_init_bgr565(bitmap, w, h, data, comp);
   } else {
     return RET_NOT_IMPL;
   }
+}
+
+ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data) {
+  return_value_if_fail(bitmap != NULL && data != NULL, RET_BAD_PARAMS);
+
+  memset(bitmap, 0x00, sizeof(bitmap_t));
+
+  bitmap->w = w;
+  bitmap->h = h;
+  bitmap->data = data;
+  bitmap->format = format;
+  bitmap_set_line_length(bitmap, 0);
+
+  return RET_OK;
+}
+
+ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
+  uint32_t bpp = bitmap_get_bpp(bitmap);
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+
+  bitmap->line_length = tk_max(bitmap->w * bpp, line_length);
+
+  return RET_OK;
+}
+
+uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, 0);
+
+  assert(bitmap->line_length > bitmap->w);
+
+  return bitmap->line_length;
 }

@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2018/10/24
+  * 重构blend。
+  * framebuffer/bitmap支持line\_length(即stride/pitch)
+
 * 2018/10/23
   * 修改鼠标指针残留的问题。
   * 控件动画支持永久播放，yoyo\_times或repeat\_times设置为0时，视为永久播放。

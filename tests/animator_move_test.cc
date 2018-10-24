@@ -194,7 +194,7 @@ TEST(AnimatorMove, repeat_forever) {
   timer_set_time(1000);
   timer_dispatch();
   ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX - 1);
-  
+
   timer_set_time(2000);
   wa->repeat_times = 1;
   timer_dispatch();

@@ -34,7 +34,9 @@ typedef struct _lcd_sdl2_t {
 static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
   int pitch = 0;
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+
   SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->offline_fb), &pitch);
+  lcd_mem_set_line_length(sdl->lcd_mem, pitch);
 
   return RET_OK;
 }
@@ -108,7 +110,9 @@ static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
 
   SDL_UnlockTexture(sdl->texture);
   if ((dr->w > 0 && dr->h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
-    SDL_RenderCopy(sdl->render, sdl->texture, NULL, NULL);
+    SDL_Rect sr = {0, 0, lcd->w, lcd->h};
+
+    SDL_RenderCopy(sdl->render, sdl->texture, &sr, &sr);
   }
 
   if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
@@ -187,7 +191,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   /*SDL ABGR is rgba from low address to high address*/
   lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgr888_create(w, h, FALSE);
   lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_BGR888, SDL_TEXTUREACCESS_STREAMING, w, h);
+      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, w, h);
   log_debug("WITH_FB_BGR888\n");
 #else
   /*SDL ABGR is rgba from low address to high address*/

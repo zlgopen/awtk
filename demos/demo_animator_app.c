@@ -137,7 +137,7 @@ ret_t application_init() {
   delay += 1000;
   animator = widget_animator_rotation_create(image2, 1000, delay, EASING_SIN_INOUT);
   widget_animator_rotation_set_params(animator, 0, 3.14 * 2);
-  widget_animator_set_yoyo(animator, 0/*forever*/);
+  widget_animator_set_yoyo(animator, 0 /*forever*/);
   animators[animators_nr++] = animator;
 
   delay += 1000;

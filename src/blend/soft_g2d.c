@@ -50,53 +50,55 @@
 #include "rotate_image_rgb565.h"
 #include "rotate_image_rgba8888.h"
 
-ret_t soft_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy) {
-  uint32_t i = 0;
-  uint32_t size = 0;
+ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy) {
   uint8_t* src_p = NULL;
   uint8_t* dst_p = NULL;
-  uint32_t bpp = bitmap_get_bpp(fb);
-  return_value_if_fail(fb != NULL && img != NULL && src != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == img->format, RET_BAD_PARAMS);
+  uint32_t bpp = bitmap_get_bpp(dst);
+  uint32_t dst_line_length = bitmap_get_line_length(dst);
+  uint32_t src_line_length = bitmap_get_line_length(src);
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
 
-  src_p = (uint8_t*)(img->data) + (src->y * img->w + src->x) * bpp;
-  dst_p = (uint8_t*)(fb->data) + (dy * fb->w + dx) * bpp;
-
-  if (fb->w == img->w && fb->h == img->h && src->w == img->w && src->x == 0) {
-    size = (img->w * src->h);
+  src_p = (uint8_t*)(src->data) + src_r->y * src_line_length + src_r->x * bpp;
+  dst_p = (uint8_t*)(dst->data) + dy * dst_line_length + dx * bpp;
+  if ((dst->w * bpp == dst_line_length) && (src->w * bpp == src_line_length) && dst->w == src->w &&
+      dst->h == src->h && src_r->w == src->w && src_r->x == 0) {
+    uint32_t size = (src_r->w * src_r->h);
     tk_pixel_copy(dst_p, src_p, size, bpp);
 
     return RET_OK;
   } else {
-    size = src->w;
-    for (i = 0; i < src->h; i++) {
+    uint32_t i = 0;
+    uint32_t size = src_r->w;
+
+    for (i = 0; i < src_r->h; i++) {
       tk_pixel_copy(dst_p, src_p, size, bpp);
-      dst_p += bpp * fb->w;
-      src_p += bpp * img->w;
+      dst_p += dst_line_length;
+      src_p += src_line_length;
     }
   }
 
   return RET_OK;
 }
 
-ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
-  return_value_if_fail(fb != NULL && dst != NULL, RET_BAD_PARAMS);
+ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
+  return_value_if_fail(dst != NULL && dst_r != NULL, RET_BAD_PARAMS);
 
-  switch (fb->format) {
+  switch (dst->format) {
     case BITMAP_FMT_RGB565: {
-      return fill_rgb565_rect(fb, dst, c);
+      return fill_rgb565_rect(dst, dst_r, c);
     }
     case BITMAP_FMT_BGR565: {
-      return fill_bgr565_rect(fb, dst, c);
+      return fill_bgr565_rect(dst, dst_r, c);
     }
     case BITMAP_FMT_BGR888: {
-      return fill_bgr888_rect(fb, dst, c);
+      return fill_bgr888_rect(dst, dst_r, c);
     }
     case BITMAP_FMT_BGRA8888: {
-      return fill_bgra8888_rect(fb, dst, c);
+      return fill_bgra8888_rect(dst, dst_r, c);
     }
     case BITMAP_FMT_RGBA8888: {
-      return fill_rgba8888_rect(fb, dst, c);
+      return fill_rgba8888_rect(dst, dst_r, c);
     }
     default:
       break;
@@ -107,27 +109,27 @@ ret_t soft_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   return RET_NOT_IMPL;
 }
 
-ret_t soft_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o) {
   return_value_if_fail(o == LCD_ORIENTATION_90, RET_NOT_IMPL);
-  return_value_if_fail(fb != NULL && img != NULL && src != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fb->format == img->format, RET_BAD_PARAMS);
-  return_value_if_fail(fb->w == img->h && fb->h == img->w, RET_BAD_PARAMS);
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
+  return_value_if_fail(dst->w == src->h && dst->h == src->w, RET_BAD_PARAMS);
 
-  switch (fb->format) {
+  switch (dst->format) {
     case BITMAP_FMT_RGB565: {
-      return rotate_rgb565_image(fb, img, src, o);
+      return rotate_rgb565_image(dst, src, src_r, o);
     }
     case BITMAP_FMT_BGR565: {
-      return rotate_bgr565_image(fb, img, src, o);
+      return rotate_bgr565_image(dst, src, src_r, o);
     }
     case BITMAP_FMT_BGR888: {
-      return rotate_bgr888_image(fb, img, src, o);
+      return rotate_bgr888_image(dst, src, src_r, o);
     }
     case BITMAP_FMT_BGRA8888: {
-      return rotate_bgra8888_image(fb, img, src, o);
+      return rotate_bgra8888_image(dst, src, src_r, o);
     }
     case BITMAP_FMT_RGBA8888: {
-      return rotate_rgba8888_image(fb, img, src, o);
+      return rotate_rgba8888_image(dst, src, src_r, o);
     }
     default:
       break;
@@ -138,24 +140,25 @@ ret_t soft_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientatio
   return RET_NOT_IMPL;
 }
 
-ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t alpha) {
-  return_value_if_fail(fb != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
+ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t alpha) {
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
+                       RET_BAD_PARAMS);
 
-  switch (fb->format) {
+  switch (dst->format) {
     case BITMAP_FMT_BGR565: {
-      switch (img->format) {
+      switch (src->format) {
         case BITMAP_FMT_BGR565: {
-          if (dst->w == src->w && dst->h == src->h && alpha > 0xf8) {
-            soft_copy_image(fb, img, src, dst->x, dst->y);
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
+            soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
           } else {
-            return blend_image_bgr565_bgr565(fb, img, dst, src, alpha);
+            return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
         }
         case BITMAP_FMT_RGBA8888: {
-          return blend_image_bgr565_rgba8888(fb, img, dst, src, alpha);
+          return blend_image_bgr565_rgba8888(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_BGRA8888: {
-          return blend_image_bgr565_bgra8888(fb, img, dst, src, alpha);
+          return blend_image_bgr565_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;
@@ -163,15 +166,15 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       break;
     }
     case BITMAP_FMT_BGR888: {
-      switch (img->format) {
+      switch (src->format) {
         case BITMAP_FMT_BGR565: {
-          return blend_image_bgr888_bgr565(fb, img, dst, src, alpha);
+          return blend_image_bgr888_bgr565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_RGBA8888: {
-          return blend_image_bgr888_rgba8888(fb, img, dst, src, alpha);
+          return blend_image_bgr888_rgba8888(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_BGRA8888: {
-          return blend_image_bgr888_bgra8888(fb, img, dst, src, alpha);
+          return blend_image_bgr888_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;
@@ -179,15 +182,15 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       break;
     }
     case BITMAP_FMT_BGRA8888: {
-      switch (img->format) {
+      switch (src->format) {
         case BITMAP_FMT_BGR565: {
-          return blend_image_bgra8888_bgr565(fb, img, dst, src, alpha);
+          return blend_image_bgra8888_bgr565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_RGBA8888: {
-          return blend_image_bgra8888_rgba8888(fb, img, dst, src, alpha);
+          return blend_image_bgra8888_rgba8888(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_BGRA8888: {
-          return blend_image_bgra8888_bgra8888(fb, img, dst, src, alpha);
+          return blend_image_bgra8888_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;
@@ -195,15 +198,15 @@ ret_t soft_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
       break;
     }
     case BITMAP_FMT_RGBA8888: {
-      switch (img->format) {
+      switch (src->format) {
         case BITMAP_FMT_BGR565: {
-          return blend_image_rgba8888_bgr565(fb, img, dst, src, alpha);
+          return blend_image_rgba8888_bgr565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_RGBA8888: {
-          return blend_image_rgba8888_rgba8888(fb, img, dst, src, alpha);
+          return blend_image_rgba8888_rgba8888(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_BGRA8888: {
-          return blend_image_rgba8888_bgra8888(fb, img, dst, src, alpha);
+          return blend_image_rgba8888_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;

@@ -42,6 +42,7 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
 static ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
 
+  memset(img, 0x00, sizeof(bitmap_t));
   img->specific = (char*)NULL + fbo->id;
   img->specific_ctx = NULL;
   img->specific_destroy = NULL;

@@ -1,5 +1,7 @@
 ﻿#include "base/canvas.h"
 #include "gtest/gtest.h"
+#include "lcd/lcd_mem_bgr888.h"
+#include "lcd/lcd_mem_bgra8888.h"
 #include "lcd/lcd_mem_rgba8888.h"
 
 static void test_draw_points(canvas_t* c) {
@@ -16,9 +18,6 @@ static void test_draw_points(canvas_t* c) {
     memset(&color, 0x00, sizeof(color));
     color = lcd_get_point_color(c->lcd, p->x, p->y);
     ASSERT_EQ(color.color, stroke_color.color);
-
-    color = lcd_get_point_color(c->lcd, p->x + 10, p->y);
-    // ASSERT_EQ(color.color, 0);
   }
 }
 
@@ -59,18 +58,47 @@ static void test_stroke_rect(canvas_t* c) {
   ASSERT_EQ(color.color, stroke_color.color);
 }
 
-TEST(LCDMem, basic) {
+static void test_draw(canvas_t* c) {
+  ASSERT_EQ(canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL), RET_OK);
+  test_draw_points(c);
+  test_fill_rect(c);
+  test_stroke_rect(c);
+}
+
+TEST(LCDMem, rgba8888) {
   canvas_t canvas;
   font_manager_t font_manager;
   font_manager_init(&font_manager, NULL);
   lcd_t* lcd = lcd_mem_rgba8888_create(200, 200, TRUE);
   canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
 
-  ASSERT_EQ(c, &canvas);
-  ASSERT_EQ(canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL), RET_OK);
-  test_draw_points(c);
-  test_fill_rect(c);
-  test_stroke_rect(c);
+  test_draw(c);
+
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+}
+
+TEST(LCDMem, bgra8888) {
+  canvas_t canvas;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager, NULL);
+  lcd_t* lcd = lcd_mem_bgra8888_create(200, 200, TRUE);
+  canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
+
+  test_draw(c);
+
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+}
+
+TEST(LCDMem, bgr888) {
+  canvas_t canvas;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager, NULL);
+  lcd_t* lcd = lcd_mem_bgr888_create(200, 200, TRUE);
+  canvas_t* c = canvas_init(&canvas, lcd, &font_manager);
+
+  test_draw(c);
 
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);

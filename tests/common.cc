@@ -10,6 +10,7 @@ void bitmap_dump(bitmap_t* b) {
   uint32_t w = b->w;
   uint32_t h = b->h;
 
+  PRINTF("-----------------------------------------------\n");
   for (y = 0; y < h; y++) {
     PRINTF("%02d:", y);
     for (x = 0; x < w; x++) {

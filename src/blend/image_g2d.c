@@ -23,50 +23,52 @@
 #include "blend/soft_g2d.h"
 #include "blend/image_g2d.h"
 
-ret_t image_fill(bitmap_t* fb, rect_t* dst, color_t c) {
-  return_value_if_fail(fb != NULL && dst != NULL, RET_OK);
+ret_t image_fill(bitmap_t* dst, rect_t* dst_r, color_t c) {
+  return_value_if_fail(dst != NULL && dst_r != NULL, RET_OK);
 
 #ifdef WITH_G2D
-  if (g2d_fill_rect(fb, dst, c) == RET_OK) {
+  if (g2d_fill_rect(dst, dst_r, c) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
 
-  return soft_fill_rect(fb, dst, c);
+  return soft_fill_rect(dst, dst_r, c);
 }
 
-ret_t image_copy(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy) {
-  return_value_if_fail(fb != NULL && img != NULL && src != NULL, RET_OK);
+ret_t image_copy(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy) {
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_OK);
 
 #ifdef WITH_G2D
-  if (g2d_copy_image(fb, img, src, dx, dy) == RET_OK) {
+  if (g2d_copy_image(dst, src, src_r, dx, dy) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
 
-  return soft_copy_image(fb, img, src, dx, dy);
+  return soft_copy_image(dst, src, src_r, dx, dy);
 }
 
-ret_t image_rotate(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
-  return_value_if_fail(fb != NULL && img != NULL && src != NULL, RET_OK);
+ret_t image_rotate(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o) {
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_OK);
 
 #ifdef WITH_G2D
-  if (g2d_rotate_image(fb, img, src, o) == RET_OK) {
+  if (g2d_rotate_image(dst, src, src_r, o) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
 
-  return soft_rotate_image(fb, img, src, o);
+  return soft_rotate_image(dst, src, src_r, o);
 }
 
-ret_t image_blend(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha) {
-  return_value_if_fail(fb != NULL && img != NULL && dst != NULL && src != NULL, RET_BAD_PARAMS);
+ret_t image_blend(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r,
+                  uint8_t global_alpha) {
+  return_value_if_fail(dst != NULL && src != NULL && dst_r != NULL && src_r != NULL,
+                       RET_BAD_PARAMS);
 
 #ifdef WITH_G2D
-  if (g2d_blend_image(fb, img, dst, src, global_alpha) == RET_OK) {
+  if (g2d_blend_image(dst, src, dst_r, src_r, global_alpha) == RET_OK) {
     return RET_OK;
   }
 #endif /*WITH_G2D*/
 
-  return soft_blend_image(fb, img, dst, src, global_alpha);
+  return soft_blend_image(dst, src, dst_r, src_r, global_alpha);
 }

@@ -425,7 +425,7 @@ typedef enum _app_type_t {
 #define TK_DEFAULT_FONT_SIZE 18
 #define TK_MAX_FPS 100
 #define TK_OPACITY_ALPHA 0xfa
-#define TK_TRANSPARENT_ALPHA 0x05
+#define TK_TRANSPARENT_ALPHA 0x02
 #define TK_INVALID_ID 0
 
 #define tk_str_eq(s1, s2) \
