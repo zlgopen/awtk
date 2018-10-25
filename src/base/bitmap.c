@@ -311,7 +311,8 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
 }
 
 ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data) {
-  return_value_if_fail(bitmap != NULL && data != NULL, RET_BAD_PARAMS);
+  uint32_t bpp = bitmap_get_bpp_of_format(format);
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
   memset(bitmap, 0x00, sizeof(bitmap_t));
 
@@ -320,8 +321,15 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
   bitmap->data = data;
   bitmap->format = format;
   bitmap_set_line_length(bitmap, 0);
+  if (bpp < 4) {
+    bitmap->flags = BITMAP_FLAG_OPAQUE;
+  }
 
-  return RET_OK;
+  if (data == NULL) {
+    bitmap_alloc_data(bitmap);
+  }
+
+  return bitmap->data != NULL ? RET_OK : RET_OOM;
 }
 
 ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
