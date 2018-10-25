@@ -444,11 +444,11 @@ typedef enum _app_type_t {
 #define WITH_G2D 1
 #endif /*WITH_PXP_G2D*/
 
-#ifdef WITH_NANOVG_AGGE
+#if defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)
 #ifndef WITH_NANOVG_SOFT
 #define WITH_NANOVG_SOFT
 #endif /*WITH_NANOVG_SOFT*/
-#endif /*WITH_NANOVG_AGGE*/
+#endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
 
