@@ -267,48 +267,22 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   return mem->vgcanvas;
 }
 
-static ret_t snapshot_destroy(bitmap_t* img) {
-  TKMEM_FREE(img->data);
-
-  return RET_OK;
-}
-
 static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   bitmap_t fb;
-  uint32_t size = 0;
-  void* data = NULL;
+  lcd_orientation_t orientation = system_info()->lcd_orientation;
+
   lcd_mem_init_drawing_fb(lcd, &fb);
-  system_info_t* info = system_info();
-  lcd_orientation_t o = info->lcd_orientation;
-  uint32_t bpp = bitmap_get_bpp(&fb);
+  if (auto_rotate && orientation == LCD_ORIENTATION_90) {
+    rect_t r = rect_init(0, 0, fb.w, fb.h);
+    return_value_if_fail(bitmap_init(img, fb.h, fb.w, fb.format, NULL) == RET_OK, RET_OOM);
 
-  memset(img, 0x00, sizeof(bitmap_t));
-  img->format = fb.format;
-  img->flags = BITMAP_FLAG_OPAQUE;
-
-  size = lcd->w * lcd->h * bpp;
-
-  data = TKMEM_ALLOC(size);
-  return_value_if_fail(data != NULL, RET_FAIL);
-
-  img->data = (uint8_t*)data;
-  img->destroy = snapshot_destroy;
-
-  if (auto_rotate && o == LCD_ORIENTATION_90) {
-    rect_t r;
-    img->w = fb.h;
-    img->h = fb.w;
-    r = rect_init(0, 0, fb.w, fb.h);
-    image_rotate(img, &fb, &r, o);
+    return image_rotate(img, &fb, &r, orientation);
   } else {
-    img->w = fb.w;
-    img->h = fb.h;
+    rect_t r = rect_init(0, 0, fb.w, fb.h);
+    return_value_if_fail(bitmap_init(img, fb.w, fb.h, fb.format, NULL) == RET_OK, RET_OOM);
 
-    memcpy((void*)(img->data), (void*)(fb.data), size);
+    return image_copy(img, &fb, &r, 0, 0);
   }
-  bitmap_set_line_length(img, 0);
-
-  return RET_OK;
 }
 
 static ret_t lcd_mem_flush(lcd_t* lcd) {
