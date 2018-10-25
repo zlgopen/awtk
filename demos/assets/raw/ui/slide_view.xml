@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate" layout="r3 c3 m5 s10">
+<window anim_hint="htranslate" layout="r3 c3 m5 s10">
     <button name="open:slide_view_h" text="slide_view_h"/>
     <button name="open:slide_view_v" text="slide_view_v"/>
     <button name="open:auto_play" text="auto_play"/>

@@ -1,4 +1,4 @@
-<window name="main" anim_hint="vtranslate">
+<window anim_hint="vtranslate">
   <slider x="center" y="10" w="80%" h="20" value="10"/>
   <slider style="img" x="center" y="50" w="80%" h="30" value="20" />
   <slider style="img" x="center" y="90" w="80%" h="30" value="30" min="5" max="50" step="5"/>

@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate" layout="c2 h30 m5 s5">
+<window anim_hint="htranslate" layout="c2 h30 m5 s5">
     <button name="open:color_picker_full" text="Full"/>
     <button name="open:color_picker_simple" text="Simple"/>
     <button name="open:color_picker_rgb" text="RGB"/>

@@ -639,8 +639,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   return i;
 }
 #else
-static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
-                                    void* data) {
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
+                                    bitmap_format_t format, void* data) {
   (void)vg;
   (void)w;
   (void)h;
@@ -847,7 +847,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   return &(nanovg->base);
 }
 #else /*OpenGL*/
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format, void* sdl_window) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
+                            void* sdl_window) {
   int ww = 0;
   int wh = 0;
   int fw = 0;
