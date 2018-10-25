@@ -942,6 +942,11 @@
             "desc": "高度。"
           },
           {
+            "type": "uint32_t",
+            "name": "line_length",
+            "desc": "line_length。"
+          },
+          {
             "type": "bitmap_format_t",
             "name": "format",
             "desc": "格式。"
@@ -1016,6 +1021,43 @@
           },
           {
             "type": "uint32_t",
+            "name": "line_length",
+            "desc": "line_length。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置line_length。",
+        "name": "bitmap_set_line_length",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取每一行占用内存的字节数。",
+        "name": "bitmap_get_line_length",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          },
+          {
+            "type": "uint32_t",
             "name": "w",
             "desc": "宽度。"
           },
@@ -1042,6 +1084,42 @@
         ],
         "annotation": {},
         "desc": "初始化图片。数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。",
+        "name": "bitmap_init_from_rgba",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "格式。"
+          },
+          {
+            "type": "const uint8_t*",
+            "name": "data",
+            "desc": "数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化图片。",
         "name": "bitmap_init",
         "return": {
           "type": "ret_t",
@@ -1082,6 +1160,15 @@
         "name": "h",
         "desc": "高度。",
         "type": "wh_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "line_length",
+        "desc": "每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。",
+        "type": "uint32_t",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -11561,6 +11648,11 @@
             "desc": "高度"
           },
           {
+            "type": "uint32_t",
+            "name": "stride",
+            "desc": "一行占用的字节数。"
+          },
+          {
             "type": "bitmap_format_t",
             "name": "format",
             "desc": "如果data是framebuffer，format指定data的格式。"
@@ -11613,6 +11705,11 @@
             "type": "uint32_t",
             "name": "h",
             "desc": "高度"
+          },
+          {
+            "type": "uint32_t",
+            "name": "stride",
+            "desc": "一行占用的字节数。"
           },
           {
             "type": "bitmap_format_t",
@@ -13271,6 +13368,43 @@
           }
         ],
         "annotation": {},
+        "desc": "停止动画。",
+        "name": "widget_animator_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_animator_t*",
+            "name": "animator",
+            "desc": "动画对象本身。"
+          },
+          {
+            "type": "bool_t",
+            "name": "destroy_when_done",
+            "desc": "完成时是否自动销毁动画对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置完成时是否自动销毁动画对象本身(缺省销毁)。",
+        "name": "widget_animator_set_destroy_when_done",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_animator_t*",
+            "name": "animator",
+            "desc": "动画对象本身。"
+          }
+        ],
+        "annotation": {},
         "desc": "销毁animator对象。",
         "name": "widget_animator_destroy",
         "return": {
@@ -13348,6 +13482,22 @@
         "name": "emitter",
         "desc": "emitter",
         "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "destroy_when_done;",
+        "desc": "播放完成时是否自动销毁(缺省销毁)。",
+        "type": "bool_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "forever",
+        "desc": "是否永远播放(yoyo_times/repeat_times为0时，自动设置此标志)。",
+        "type": "bool_t",
         "annotation": {
           "private": true
         }
