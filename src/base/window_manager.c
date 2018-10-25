@@ -667,7 +667,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       pointer_event_rotate(evt, system_info());
 
-      if(evt->x != wm->last_x || evt->y != wm->last_y) {
+      if (evt->x != wm->last_x || evt->y != wm->last_y) {
         wm->last_x = evt->x;
         wm->last_y = evt->y;
 
@@ -688,7 +688,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
       widget_on_pointer_up(widget, evt);
-      
+
       wm->last_x = evt->x;
       wm->last_y = evt->y;
       wm->pressed = FALSE;
