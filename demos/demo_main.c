@@ -61,6 +61,7 @@ int main(void) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
+  log_debug("Build at: %s %s\n", __DATE__, __TIME__);
   assets_init();
   application_init();
 
