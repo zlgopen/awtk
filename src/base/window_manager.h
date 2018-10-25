@@ -69,6 +69,9 @@ typedef struct _window_manager_t {
 
   char* cursor;
   rect_t r_cursor;
+
+  xy_t last_x;
+  xy_t last_y;
 } window_manager_t;
 
 /**

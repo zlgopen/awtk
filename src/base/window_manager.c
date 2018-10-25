@@ -654,7 +654,10 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
+
       wm->pressed = TRUE;
+      wm->last_x = evt->x;
+      wm->last_y = evt->y;
       widget_on_pointer_down(widget, evt);
 
       window_manager_update_cursor(widget, evt->x, evt->y);
@@ -664,12 +667,17 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       pointer_event_rotate(evt, system_info());
 
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      widget_on_pointer_move(widget, evt);
+      if(evt->x != wm->last_x || evt->y != wm->last_y) {
+        wm->last_x = evt->x;
+        wm->last_y = evt->y;
 
-      window_manager_update_cursor(widget, evt->x, evt->y);
+        evt->alt = wm->alt;
+        evt->ctrl = wm->ctrl;
+        evt->shift = wm->shift;
+        widget_on_pointer_move(widget, evt);
+
+        window_manager_update_cursor(widget, evt->x, evt->y);
+      }
       break;
     }
     case EVT_POINTER_UP: {
@@ -680,6 +688,9 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
       widget_on_pointer_up(widget, evt);
+      
+      wm->last_x = evt->x;
+      wm->last_y = evt->y;
       wm->pressed = FALSE;
 
       window_manager_update_cursor(widget, evt->x, evt->y);
