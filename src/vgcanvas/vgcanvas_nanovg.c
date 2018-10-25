@@ -568,7 +568,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_NOT_IMPL;
 }
 
-static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, uint32_t stride,
                                     bitmap_format_t format, void* data) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
@@ -576,7 +576,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
   vgcanvas->w = w;
   vgcanvas->h = h;
   vgcanvas->buff = (uint32_t*)data;
-  nvgReinitAgge(vg, w, h, bitmap_format_to_nanovg(format), data);
+  nvgReinitAgge(vg, w, h, stride, bitmap_format_to_nanovg(format), data);
 
   return RET_OK;
 }
@@ -639,7 +639,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   return i;
 }
 #else
-static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, bitmap_format_t format,
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                                     void* data) {
   (void)vg;
   (void)w;
@@ -825,7 +825,8 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
                                      vgcanvas_nanovg_destroy};
 
 #if defined(WITH_NANOVG_SOFT)
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
+                            void* data) {
   enum NVGtexture f = bitmap_format_to_nanovg(format);
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
@@ -836,9 +837,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   nanovg->base.ratio = 1;
   nanovg->base.buff = (uint32_t*)data;
 #if defined(WITH_NANOVG_AGG)
-  nanovg->vg = nvgCreateAGG(w, h, f, (uint8_t*)data);
+  nanovg->vg = nvgCreateAGG(w, h, stride, f, (uint8_t*)data);
 #elif defined(WITH_NANOVG_AGGE)
-  nanovg->vg = nvgCreateAGGE(w, h, f, (uint8_t*)data);
+  nanovg->vg = nvgCreateAGGE(w, h, stride, f, (uint8_t*)data);
 #else
 #error "not supported"
 #endif
@@ -846,7 +847,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void
   return &(nanovg->base);
 }
 #else /*OpenGL*/
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* sdl_window) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format, void* sdl_window) {
   int ww = 0;
   int wh = 0;
   int fw = 0;

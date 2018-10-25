@@ -361,11 +361,12 @@ ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, 
   return vgcanvas_draw_image(vg, img, sx, sy, sw, sh, x, y, w, h);
 }
 
-ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, bitmap_format_t format, void* data) {
+ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
+                      bitmap_format_t format, void* data) {
   return_value_if_fail(vg != NULL && data != NULL, RET_BAD_PARAMS);
 
   if (vg->vt->reinit != NULL) {
-    return vg->vt->reinit(vg, w, h, format, data);
+    return vg->vt->reinit(vg, w, h, stride, format, data);
   }
 
   return RET_NOT_IMPL;

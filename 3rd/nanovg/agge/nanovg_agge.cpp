@@ -67,8 +67,9 @@ struct AGGENVGcontext {
   uint8_t a;
 
   /*frame buffer*/
-  int32_t w;
-  int32_t h;
+  uint32_t w;
+  uint32_t h;
+  uint32_t stride;
   uint8_t* data;
   enum NVGtexture format;
 
@@ -220,7 +221,7 @@ template <typename PixelT>
 void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
   agge::renderer& ren = agge->ren;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
-  agge::bitmap<PixelT, agge::raw_bitmap> surface(agge->w, agge->h, agge->data);
+  agge::bitmap<PixelT, agge::raw_bitmap> surface(agge->w, agge->h, agge->stride, agge->data);
 
   if (paint->image > 0) {
     float invxform[6];
@@ -230,28 +231,28 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
     switch (tex->type) {
       case NVG_TEXTURE_RGBA: {
         typedef agge::bitmap<agge::pixel32_rgba, agge::raw_bitmap> rgba_bitmap_t;
-        rgba_bitmap_t src(tex->width, tex->height, (uint8_t*)(tex->data));
+        rgba_bitmap_t src(tex->width, tex->height, tex->width*4, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgba_bitmap_t> color(&src, (float*)invxform);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGRA: {
         typedef agge::bitmap<agge::pixel32_bgra, agge::raw_bitmap> bgra_bitmap_t;
-        bgra_bitmap_t src(tex->width, tex->height, (uint8_t*)(tex->data));
+        bgra_bitmap_t src(tex->width, tex->height, tex->width*4, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgra_bitmap_t> color(&src, (float*)invxform);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGR565: {
         typedef agge::bitmap<agge::pixel16_bgr565, agge::raw_bitmap> bgr565_bitmap_t;
-        bgr565_bitmap_t src(tex->width, tex->height, (uint8_t*)(tex->data));
+        bgr565_bitmap_t src(tex->width, tex->height, tex->width*2, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgr565_bitmap_t> color(&src, (float*)invxform);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_RGB: {
         typedef agge::bitmap<agge::pixel24_rgb, agge::raw_bitmap> rgb_bitmap_t;
-        rgb_bitmap_t src(tex->width, tex->height, (uint8_t*)(tex->data));
+        rgb_bitmap_t src(tex->width, tex->height, tex->width*3, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgb_bitmap_t> color(&src, (float*)invxform);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
@@ -330,40 +331,37 @@ static void aggenvg__renderDelete(void* uptr) {
   delete agge;
 }
 
-static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int32_t h,
+static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, uint32_t w, uint32_t h, uint32_t stride,
                         enum NVGtexture format, uint8_t* data) {
   agge->w = w;
   agge->h = h;
   agge->data = data;
+  agge->stride = stride;
   agge->format = format;
+  params->renderTriangles = NULL;
 
   switch (agge->format) {
     case NVG_TEXTURE_RGBA: {
-      params->renderTriangles = renderTriangles<agge::pixel32_rgba>;
       params->renderStroke = renderStroke<agge::pixel32_rgba>;
       params->renderFill = renderFill<agge::pixel32_rgba>;
       break;
     }
     case NVG_TEXTURE_BGRA: {
-      params->renderTriangles = renderTriangles<agge::pixel32_bgra>;
       params->renderStroke = renderStroke<agge::pixel32_bgra>;
       params->renderFill = renderFill<agge::pixel32_bgra>;
       break;
     }
     case NVG_TEXTURE_RGB: {
-      params->renderTriangles = renderTriangles<agge::pixel24_rgb>;
       params->renderStroke = renderStroke<agge::pixel24_rgb>;
       params->renderFill = renderFill<agge::pixel24_rgb>;
       break;
     }
     case NVG_TEXTURE_BGR: {
-      params->renderTriangles = renderTriangles<agge::pixel24_bgr>;
       params->renderStroke = renderStroke<agge::pixel24_bgr>;
       params->renderFill = renderFill<agge::pixel24_bgr>;
       break;
     }
     case NVG_TEXTURE_BGR565: {
-      params->renderTriangles = renderTriangles<agge::pixel16_bgr565>;
       params->renderStroke = renderStroke<agge::pixel16_bgr565>;
       params->renderFill = renderFill<agge::pixel16_bgr565>;
       break;
@@ -375,15 +373,15 @@ static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, int32_t w, int3
   }
 }
 
-void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, enum NVGtexture format,
+void nvgReinitAgge(NVGcontext* ctx, uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format,
                    uint8_t* data) {
   NVGparams* params = nvgGetParams(ctx);
   AGGENVGcontext* agge = (AGGENVGcontext*)(params->userPtr);
 
-  nvgInitAGGE(agge, params, w, h, format, data);
+  nvgInitAGGE(agge, params, w, h, stride, format, data);
 }
 
-NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, enum NVGtexture format, uint8_t* data) {
+NVGcontext* nvgCreateAGGE(uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format, uint8_t* data) {
   NVGparams params;
   NVGcontext* ctx = NULL;
   AGGENVGcontext* agge = new AGGENVGcontext();
@@ -403,7 +401,7 @@ NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, enum NVGtexture format, uint8_t*
   params.userPtr = agge;
   params.edgeAntiAlias = 1;
 
-  nvgInitAGGE(agge, &params, w, h, format, data);
+  nvgInitAGGE(agge, &params, w, h, stride, format, data);
 
   ctx = nvgCreateInternal(&params);
   if (ctx == NULL) goto error;

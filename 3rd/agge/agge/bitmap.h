@@ -13,7 +13,7 @@ class bitmap : public RawBitmapT {
   typedef PixelT pixel;
 
  public:
-  bitmap(count_t width, count_t height, uint8_t* data);
+  bitmap(count_t width, count_t height, count_t stride, uint8_t* data);
 
   pixel* row_ptr(count_t y);
   const pixel* row_ptr(count_t y) const;
@@ -70,8 +70,8 @@ struct pixel_bpp<pixel8> {
 };
 
 template <typename PixelT, typename RawBitmapT>
-inline bitmap<PixelT, RawBitmapT>::bitmap(count_t width, count_t height, uint8_t* data)
-    : RawBitmapT(width, height, pixel_bpp<PixelT>::bpp, data) {
+inline bitmap<PixelT, RawBitmapT>::bitmap(count_t width, count_t height, count_t stride, uint8_t* data)
+    : RawBitmapT(width, height, stride, pixel_bpp<PixelT>::bpp, data) {
 }
 
 template <typename PixelT, typename RawBitmapT>

@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2018/10/25
+  * 重新实现take\_snapshot，支持特殊的stride。
+  * 自动过滤重复的pointer\_move事件。
+  * 完善list\_item。
+  * vgcanvas支持特殊的stride。
+
 * 2018/10/24
   * 重构blend。
   * framebuffer/bitmap支持line\_length(即stride/pitch)

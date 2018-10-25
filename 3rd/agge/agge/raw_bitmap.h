@@ -10,7 +10,7 @@ typedef uint8_t* image_handle;
 namespace agge {
 class raw_bitmap : noncopyable {
  public:  // General
-  raw_bitmap(count_t width, count_t height, bits_per_pixel bpp, uint8_t* data);
+  raw_bitmap(count_t width, count_t height, count_t stride, bits_per_pixel bpp, uint8_t* data);
   ~raw_bitmap() {
   }
 
@@ -25,9 +25,6 @@ class raw_bitmap : noncopyable {
   void blit(int x, int y, count_t width, count_t height) const;
 
  private:
-  count_t calculate_stride(count_t width) const;
-
- private:
   uint8_t* _memory;
   count_t _stride;
   count_t _width, _height;
@@ -35,9 +32,9 @@ class raw_bitmap : noncopyable {
   image_handle _native;
 };
 
-inline raw_bitmap::raw_bitmap(count_t width, count_t height, bits_per_pixel bpp, uint8_t* data)
+inline raw_bitmap::raw_bitmap(count_t width, count_t height, count_t stride, bits_per_pixel bpp, uint8_t* data)
     : _memory(data), _width(width), _height(height), _bpp(bpp), _native(0) {
-  _stride = this->calculate_stride(width);
+  _stride = stride;
 }
 
 inline count_t raw_bitmap::width() const {
@@ -60,7 +57,4 @@ inline image_handle raw_bitmap::native() const {
   return _native;
 }
 
-inline count_t raw_bitmap::calculate_stride(count_t width) const {
-  return (width * (_bpp / 8) + 3) & ~3;
-}
 }  // namespace agge
