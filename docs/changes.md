@@ -5,6 +5,7 @@
   * 修改edit crash的bug。
   * edit支持右对齐(style="number")。
   * Window增加stage属性，用于标识Window的生命周期。
+  * Windows下的demo开启一个终端显示LOG信息。
 
 * 2018/10/25
   * 重新实现take\_snapshot，支持特殊的stride。
