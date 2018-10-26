@@ -4,6 +4,7 @@
   * 为了避免不必要的误解，xml中不再指定window的name属性，以xml的文件名为准。
   * 修改edit crash的bug。
   * edit支持右对齐(style="number")。
+  * Window增加stage属性，用于标识Window的生命周期。
 
 * 2018/10/25
   * 重新实现take\_snapshot，支持特殊的stride。

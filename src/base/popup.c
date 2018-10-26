@@ -96,7 +96,7 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return window_base_on_event(widget, e);
 }
 
 static const char* s_popup_properties[] = {

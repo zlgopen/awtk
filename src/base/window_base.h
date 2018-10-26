@@ -26,10 +26,27 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @enum window_stage_t
+ * @annotation ["scriptable"]
+ * @prefix WINDOW_STAGE_
+ * 窗口的生命周期常量定义。
+ */
 typedef enum _window_stage_t {
+  /**
+   * @const WINDOW_STAGE_CREATED
+   * 初始状态。
+   */
   WINDOW_STAGE_CREATED = 0,
-  WINDOW_STAGE_WILL_OPEN,
-  WINDOW_STAGE_OPEN,
+  /**
+   * @const WINDOW_STAGE_OPENED
+   * 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)
+   */
+  WINDOW_STAGE_OPENED,
+  /**
+   * @const WINDOW_STAGE_CLOSED
+   * 窗口已关闭。
+   */
   WINDOW_STAGE_CLOSED
 } window_stage_t;
 
@@ -80,6 +97,7 @@ typedef struct _window_base_t {
 
 /*for sub class*/
 ret_t window_base_destroy(widget_t* widget);
+ret_t window_base_on_event(widget_t* widget, event_t* e);
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);

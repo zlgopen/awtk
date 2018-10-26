@@ -74,7 +74,7 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
 static ret_t lcd_mem_fill_rect_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {
   bitmap_t fb;
   rect_t r = rect_init(x, y, w, h);
-  c.rgba.a = (c.rgba.a * lcd->global_alpha)/0xff;
+  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
 
   lcd_mem_init_drawing_fb(lcd, &fb);
   return image_fill(&fb, &r, c);

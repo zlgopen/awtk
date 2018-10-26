@@ -99,6 +99,17 @@ ret_t window_base_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t window_base_on_event(widget_t* widget, event_t* e) {
+  window_base_t* win = WINDOW_BASE(widget);
+  if (e->type == EVT_WINDOW_OPEN) {
+    win->stage = WINDOW_STAGE_OPENED;
+  } else if (e->type == EVT_WINDOW_CLOSE) {
+    win->stage = WINDOW_STAGE_CLOSED;
+  }
+
+  return RET_OK;
+}
+
 widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x,
                            xy_t y, wh_t w, wh_t h) {
   window_base_t* win = WINDOW_BASE(widget);
@@ -113,6 +124,7 @@ widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtab
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
   widget_update_style(widget);
 
+  win->stage = WINDOW_STAGE_CREATED;
 #ifdef ENABLE_MEM_LEAK_CHECK
   tk_mem_dump();
 #endif /*ENABLE_MEM_LEAK_CHECK*/
