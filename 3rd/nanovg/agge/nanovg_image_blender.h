@@ -39,8 +39,8 @@ inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
 
   nvgTransformPoint(&ox, &oy, _matrix, x, y);
 
-  int lx = (int)(ox + 0.5f);
-  int ly = (int)(oy + 0.5f);
+  int lx = ::round(ox);
+  int ly = ::round(oy);
 
   if (lx < 0) {
     lx = 0;
