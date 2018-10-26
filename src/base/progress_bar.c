@@ -105,10 +105,10 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 
   color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   if (progress_bar->show_text && color.rgba.a) {
-    char s[32];
     uint32_t i = 0;
-    wchar_t str[32];
     uint32_t len = 0;
+    char s[TK_NUM_MAX_LEN + 1];
+    wchar_t str[TK_NUM_MAX_LEN + 1];
     uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 

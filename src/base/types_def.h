@@ -427,6 +427,7 @@ typedef enum _app_type_t {
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x02
 #define TK_INVALID_ID 0
+#define TK_NUM_MAX_LEN 31
 
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)

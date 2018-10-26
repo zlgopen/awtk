@@ -62,7 +62,6 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   float_t cw = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
-  float_t caret_x = edit->left_margin;
   wh_t w = widget->w - edit->left_margin - edit->right_margin;
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
@@ -78,7 +77,6 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
       wchar_t chr = invisible ? INVISIBLE_CHAR : str->str[i];
 
       cw = canvas_measure_text(c, &chr, 1);
-      caret_x += cw;
       w -= cw;
 
       if (w > cw && i > 0) {
@@ -105,14 +103,16 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
     text->str = temp_str;
     text->size = size;
   }
-  edit->caret_x = caret_x + 0.5f;
 
   return RET_OK;
 }
 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
+  rect_t r;
   wstr_t text;
+  uint32_t text_w = 0;
   edit_t* edit = EDIT(widget);
+  style_t* style = &(widget->style_data);
   wchar_t temp_str[TEMP_STR_LEN + 1];
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;
@@ -120,14 +120,34 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   uint8_t bottom_margin = edit->bottom_margin;
   wh_t w = widget->w - left_margin - right_margin;
   wh_t h = widget->h - top_margin - bottom_margin;
+  align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
 
   memset(temp_str, 0x00, sizeof(temp_str));
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
   return_value_if_fail(edit_get_display_text(widget, c, &text, temp_str) == RET_OK, RET_FAIL);
 
+  r = rect_init(left_margin, top_margin, w, h);
+  if (align_h == ALIGN_H_RIGHT) {
+    r.w -= 3;
+  }
+  text_w = canvas_measure_text(c, text.str, text.size);
   if (text.size > 0) {
-    rect_t r = rect_init(left_margin, top_margin, w, h);
     canvas_draw_text_in_rect(c, text.str, text.size, &r);
+  }
+
+  switch (align_h) {
+    case ALIGN_H_RIGHT: {
+      edit->caret_x = r.x + r.w + 1;
+      break;
+    }
+    case ALIGN_H_CENTER: {
+      edit->caret_x = r.x + (r.w + text_w) / 2 + 1;
+      break;
+    }
+    default: {
+      edit->caret_x = r.x + text_w + 1;
+      break;
+    }
   }
 
   if (widget->focused && !edit->readonly && edit->caret_visible) {
@@ -163,6 +183,10 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
   switch (input_type) {
     case INPUT_INT:
     case INPUT_UINT: {
+      if (text->size >= TK_NUM_MAX_LEN) {
+        return RET_FAIL;
+      }
+
       if (c >= '0' && c <= '9') {
         wstr_push(text, c);
         break;
@@ -176,6 +200,9 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     }
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      if (text->size >= TK_NUM_MAX_LEN) {
+        return RET_FAIL;
+      }
       if (c >= '0' && c <= '9') {
         wstr_push(text, c);
         break;
@@ -258,7 +285,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
   } else {
-    if (system_info()->app_type != APP_DESKTOP && isprint(key)) {
+    if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
     } else {
       return RET_OK;
