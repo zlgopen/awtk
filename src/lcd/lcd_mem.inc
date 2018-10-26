@@ -71,27 +71,21 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return RET_OK;
 }
 
+static ret_t lcd_mem_fill_rect_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {
+  bitmap_t fb;
+  rect_t r = rect_init(x, y, w, h);
+  c.rgba.a = (c.rgba.a * lcd->global_alpha)/0xff;
+
+  lcd_mem_init_drawing_fb(lcd, &fb);
+  return image_fill(&fb, &r, c);
+}
+
+static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return lcd_mem_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
+}
+
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
-  wh_t i = 0;
-  color_t c = lcd->stroke_color;
-  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
-  uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
-  pixel_t* p = (pixel_t*)(fbuff + y * line_length) + x;
-
-  if (a >= TK_OPACITY_ALPHA) {
-    pixel_t pixel = color_to_pixel(c);
-    for (i = 0; i < w; i++) {
-      p[i] = pixel;
-    }
-  } else if (a >= TK_TRANSPARENT_ALPHA) {
-    c.rgba.a = a;
-    for (i = 0; i < w; i++) {
-      p[i] = blend_pixel(p[i], c);
-    }
-  }
-
-  return RET_OK;
+  return lcd_mem_fill_rect_with_color(lcd, x, y, w, 1, lcd->stroke_color);
 }
 
 static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
@@ -148,14 +142,6 @@ static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   pixel_t p = *((pixel_t*)(fbuff + y * line_length) + x);
 
   return color_init(p.r, p.g, p.b, 0xff);
-}
-
-static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
-  bitmap_t fb;
-  rect_t r = rect_init(x, y, w, h);
-  lcd_mem_init_drawing_fb(lcd, &fb);
-
-  return image_fill(&fb, &r, lcd->fill_color);
 }
 
 static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
