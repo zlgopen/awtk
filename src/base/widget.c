@@ -109,7 +109,8 @@ ret_t widget_add_value(widget_t* widget, int32_t delta) {
 }
 
 bool_t widget_is_window_opened(widget_t* widget) {
-  int32_t stage = widget_get_prop_int(widget_get_window(widget), WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  int32_t stage =
+      widget_get_prop_int(widget_get_window(widget), WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
   return stage == WINDOW_STAGE_OPENED;
 }
@@ -120,7 +121,7 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
   TKMEM_FREE(widget->style);
   widget->style = tk_strdup(value);
 
-  if(widget_is_window_opened(widget)) {
+  if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
 
@@ -1283,8 +1284,8 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   if (vt && !tk_str_eq(vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
     widget->astyle = style_factory_create_style(widget);
   }
-  
-  if(widget_is_window_opened(widget)) {
+
+  if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
   widget_invalidate_force(widget);

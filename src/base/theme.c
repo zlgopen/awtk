@@ -84,7 +84,7 @@ const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defv
 }
 
 const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
-                                uint16_t state) {
+                                widget_state_t widget_state) {
   uint32_t i = 0;
   const theme_item_t* iter = NULL;
   const theme_header_t* header = (const theme_header_t*)(t->data);
@@ -96,7 +96,7 @@ const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char*
 
   iter = (const theme_item_t*)(t->data + sizeof(theme_header_t));
   for (i = 0; i < header->nr; i++) {
-    if (iter->state == state && tk_str_eq(iter->name, name) &&
+    if (iter->state == widget_state && tk_str_eq(iter->name, name) &&
         tk_str_eq(widget_type, iter->widget_type)) {
       return t->data + iter->offset;
     }
