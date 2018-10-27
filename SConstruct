@@ -19,8 +19,8 @@ if OS_NAME == 'Windows':
 #INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
 
-LCD='GL'
 LCD='SDL'
+LCD='GL'
 
 VGCANVAS='NANOVG'
 #NANOVG_BACKEND='AGGE'
