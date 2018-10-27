@@ -13,4 +13,3 @@ TEST(StyleConst, basic) {
   style_destroy(s);
   widget_destroy(w);
 }
-

@@ -104,7 +104,7 @@ TEST(Theme, basic) {
   for (int32_t i = 0; widget_types[i]; i++) {
     const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      style_data = theme_find_style(&t, type, 0, state);
+      style_data = theme_find_style(&t, type, 0, (widget_state_t)state);
       ASSERT_EQ(style_data != NULL, true);
       for (uint32_t name = 0; name < name_nr; name++) {
         uint32_t v = style_data_get_int(style_data, name, 0);
