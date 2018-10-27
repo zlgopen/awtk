@@ -27,30 +27,6 @@
 BEGIN_C_DECLS
 
 /**
- * @enum window_stage_t
- * @annotation ["scriptable"]
- * @prefix WINDOW_STAGE_
- * 窗口的生命周期常量定义。
- */
-typedef enum _window_stage_t {
-  /**
-   * @const WINDOW_STAGE_CREATED
-   * 初始状态。
-   */
-  WINDOW_STAGE_CREATED = 0,
-  /**
-   * @const WINDOW_STAGE_OPENED
-   * 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)
-   */
-  WINDOW_STAGE_OPENED,
-  /**
-   * @const WINDOW_STAGE_CLOSED
-   * 窗口已关闭。
-   */
-  WINDOW_STAGE_CLOSED
-} window_stage_t;
-
-/**
  * @class window_base_t
  * @parent widget_t
  * @annotation ["scriptable"]
@@ -88,11 +64,20 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} stage
-   * @annotation ["readable"]
+   * @annotation ["readable", "get_prop"]
    * 窗口当前处于的状态。
    */
   window_stage_t stage;
 
+  /**
+   * @property {const uint8_t*} theme_data
+   * @annotation ["get_prop", "private"]
+   * 窗口的常量主题数据。
+   */
+  const uint8_t* theme_data;
+
+  /*private*/
+  const asset_info_t* res_theme;
 } window_base_t;
 
 /*for sub class*/

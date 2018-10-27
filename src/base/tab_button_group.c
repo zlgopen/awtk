@@ -88,7 +88,7 @@ static widget_t* tab_button_group_get_pages(widget_t* widget) {
 
 static ret_t tab_button_group_on_paint_active_button(widget_t* widget, widget_t* button,
                                                      canvas_t* c) {
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);

@@ -21,15 +21,12 @@
 
 #include "base/mem.h"
 #include "base/label.h"
-
-static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
-}
+#include "base/widget_vtable.h"
 
 static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
                                                .type = WIDGET_TYPE_LABEL,
                                                .create = label_create,
-                                               .on_paint_self = label_on_paint_self};
+                                               .on_paint_self = widget_on_paint_self_default};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   label_t* label = TKMEM_ZALLOC(label_t);

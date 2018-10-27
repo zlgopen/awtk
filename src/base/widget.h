@@ -29,15 +29,13 @@
 #include "base/events.h"
 #include "base/emitter.h"
 #include "base/canvas.h"
+#include "base/style.h"
 #include "base/theme.h"
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
 #include "base/custom_props.h"
 
 BEGIN_C_DECLS
-
-struct _widget_t;
-typedef struct _widget_t widget_t;
 
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
@@ -175,6 +173,12 @@ struct _widget_t {
    */
   uint8_t dirty : 1;
   /**
+   * @property {bool_t} is_window
+   * @annotation ["readable"]
+   * 是否是窗口。
+   */
+  uint8_t is_window : 1;
+  /**
    * @property {uint8_t} state
    * @annotation ["readable"]
    * 控件的状态。
@@ -229,11 +233,11 @@ struct _widget_t {
    */
   emitter_t* emitter;
   /**
-   * @property {style_t} style_data
+   * @property {style_t*} astyle
    * @annotation ["readable"]
-   * Style数据。
+   * Style对象。
    */
-  style_t style_data;
+  style_t* astyle;
   /**
    * @property {layout_params_t*} layout_params
    * @annotation ["readable"]
@@ -749,7 +753,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e);
  * @method widget_get_prop
  * 通用的获取控件属性的函数。
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
+ * @param {const char*} name 属性的名称。
  * @param {value_t*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -760,7 +764,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
  * @method widget_set_prop
  * 通用的设置控件属性的函数。
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
+ * @param {const char*} name 属性的名称。
  * @param {value_t*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -769,15 +773,61 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 
 /**
  * @method widget_set_prop_str
- * 通用的设置控件属性的函数。
+ * 设置字符串格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
- * @param {char*} v 属性的值。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* v);
+
+/**
+ * @method widget_get_prop_str
+ * 获取字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} defval 缺省值。
+ *
+ * @return {const char*} 返回属性的值。
+ */
+const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval);
+
+/**
+ * @method widget_set_prop_int
+ * 设置字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
+
+/**
+ * @method widget_get_prop_int
+ * 获取字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {int32_t} 返回属性的值。
+ */
+int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval);
+
+/**
+ * @method widget_is_window_opened
+ * 判断当前控件所在的窗口是否已经打开。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回当前控件所在的窗口是否已经打开。
+ */
+bool_t widget_is_window_opened(widget_t* widget);
 
 /**
  * @method widget_layout_children

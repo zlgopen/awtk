@@ -105,8 +105,8 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (bitmap.data != NULL) {
     color_t trans = color_init(0x00, 0x00, 0x00, 0x00);
-    color_t bg = style_get_color(&(widget->style_data), STYLE_ID_BG_COLOR, trans);
-    color_t border = style_get_color(&(widget->style_data), STYLE_ID_BORDER_COLOR, trans);
+    color_t bg = style_get_color(widget->astyle, STYLE_ID_BG_COLOR, trans);
+    color_t border = style_get_color(widget->astyle, STYLE_ID_BORDER_COLOR, trans);
     if (bg.rgba.a == 0) {
 #ifdef USE_FAST_MODE
       if (widget->parent != NULL) {

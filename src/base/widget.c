@@ -31,6 +31,7 @@
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
+#include "base/style_factory.h"
 #include "base/widget_animator_factory.h"
 
 static ret_t widget_destroy_only(widget_t* widget);
@@ -107,12 +108,21 @@ ret_t widget_add_value(widget_t* widget, int32_t delta) {
   return widget_set_value(widget, widget_get_value(widget) + delta);
 }
 
+bool_t widget_is_window_opened(widget_t* widget) {
+  int32_t stage = widget_get_prop_int(widget_get_window(widget), WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+
+  return stage == WINDOW_STAGE_OPENED;
+}
+
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(widget->style);
   widget->style = tk_strdup(value);
-  widget_update_style(widget);
+
+  if(widget_is_window_opened(widget)) {
+    widget_update_style(widget);
+  }
 
   return RET_OK;
 }
@@ -488,7 +498,7 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
 ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
   rect_t r;
   bitmap_t img;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
@@ -553,7 +563,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
 ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   rect_t dst;
   bitmap_t img;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
@@ -578,7 +588,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
 }
 
 ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
@@ -610,7 +620,7 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
 }
 
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
-  if (widget->style_data.data) {
+  if (style_is_valid(widget->astyle)) {
     widget_draw_icon_text(widget, c, icon, text);
   }
 
@@ -640,7 +650,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     widget_t* parent = widget->parent;
     if (parent != NULL && !(parent->dirty)) {
       color_t trans = color_init(0, 0, 0, 0);
-      style_t* style = &(parent->style_data);
+      style_t* style = &(parent->astyle);
       color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
       if (bg.rgba.a != 0) {
         canvas_set_fill_color(c, bg);
@@ -790,6 +800,27 @@ ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* str) {
   return widget_set_prop(widget, name, &v);
 }
 
+const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
+
+  return value_str(&v);
+}
+
+ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t num) {
+  value_t v;
+  value_set_int(&v, num);
+
+  return widget_set_prop(widget, name, &v);
+}
+
+int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
+
+  return value_int(&v);
+}
+
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
@@ -798,7 +829,7 @@ ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
   if (widget->vt->on_paint_background) {
     ret = widget->vt->on_paint_background(widget, c);
   } else {
-    if (widget->style_data.data) {
+    if (style_is_valid(widget->astyle)) {
       widget_draw_background(widget, c);
     }
   }
@@ -847,7 +878,7 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
   if (widget->vt->on_paint_border) {
     ret = widget->vt->on_paint_border(widget, c);
   } else {
-    if (widget->style_data.data) {
+    if (style_is_valid(widget->astyle)) {
       ret = widget_draw_border(widget, c);
     }
   }
@@ -1093,17 +1124,16 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
 
 widget_t* widget_get_window(widget_t* widget) {
   widget_t* iter = widget;
-  return_value_if_fail(widget != NULL && widget->parent != NULL, NULL);
+  return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    const char* type = widget_get_type(iter->parent);
-    if (iter->parent && tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    if (iter->is_window) {
       return iter;
     }
     iter = iter->parent;
   }
 
-  return iter;
+  return NULL;
 }
 
 widget_t* widget_get_window_manager(widget_t* widget) {
@@ -1148,6 +1178,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
   wstr_reset(&(widget->text));
+  style_destroy(widget->astyle);
 
   if (widget->custom_props != NULL) {
     custom_props_destroy(widget->custom_props);
@@ -1208,67 +1239,8 @@ ret_t widget_invalidate_force(widget_t* widget) {
   return widget_invalidate(widget, NULL);
 }
 
-const void* widget_get_window_theme(widget_t* widget) {
-  value_t v;
-  const char* name = NULL;
-  widget_t* win = widget_get_window(widget);
-  return_value_if_fail(win != NULL, NULL);
-
-  name = win->name;
-  if (widget_get_prop(win, WIDGET_PROP_THEME, &v) == RET_OK && value_str(&v) != NULL) {
-    name = value_str(&v);
-  }
-
-  if (name != NULL) {
-    const asset_info_t* res = assets_manager_ref(assets_manager(), ASSET_TYPE_STYLE, name);
-    if (res != NULL) {
-      return res->data;
-    }
-  }
-
-  return NULL;
-}
-
-static const void* widget_get_style_data(widget_t* widget, uint8_t state) {
-  theme_t t;
-  value_t v;
-  const void* data = NULL;
-  char style_name[NAME_LEN + NAME_LEN + 1];
-  const char* type = widget->vt ? widget->vt->type : NULL;
-  const char* name = widget->style != NULL ? widget->style : TK_DEFAULT_STYLE;
-
-  return_value_if_fail(type != NULL, NULL);
-
-  if (widget_get_prop(widget, WIDGET_PROP_SUB_THEME, &v) == RET_OK && value_str(&v) != NULL) {
-    tk_snprintf(style_name, sizeof(style_name) - 1, "%s%s", name, value_str(&v));
-  } else {
-    tk_strncpy(style_name, name, sizeof(style_name) - 1);
-  }
-
-  t.data = (const uint8_t*)widget_get_window_theme(widget);
-  if (t.data != NULL) {
-    data = theme_find_style(&t, type, style_name, state);
-  }
-
-  if (data == NULL) {
-    data = theme_find_style(theme(), type, style_name, state);
-  }
-
-  return data;
-}
-
 ret_t widget_update_style(widget_t* widget) {
-  uint8_t state = 0;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  state = widget->state;
-  if (!widget->enable) {
-    state = WIDGET_STATE_DISABLE;
-  }
-
-  widget->style_data.data = widget_get_style_data(widget, state);
-
-  return RET_OK;
+  return style_notify_widget_state_changed(widget->astyle, widget);
 }
 
 ret_t widget_update_style_recursive(widget_t* widget) {
@@ -1308,7 +1280,11 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
     widget->vt = widget_vtable_default();
   }
 
-  if (parent != NULL) {
+  if (vt && !tk_str_eq(vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    widget->astyle = style_factory_create_style(widget);
+  }
+  
+  if(widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
   widget_invalidate_force(widget);
@@ -1395,7 +1371,7 @@ int32_t widget_index_of(widget_t* widget) {
 }
 
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);

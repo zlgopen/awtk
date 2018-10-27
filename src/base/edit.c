@@ -112,7 +112,7 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wstr_t text;
   uint32_t text_w = 0;
   edit_t* edit = EDIT(widget);
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   wchar_t temp_str[TEMP_STR_LEN + 1];
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;

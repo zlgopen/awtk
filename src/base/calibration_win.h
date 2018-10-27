@@ -22,7 +22,7 @@
 #ifndef TK_CALIBRATION_WIN_H
 #define TK_CALIBRATION_WIN_H
 
-#include "base/widget.h"
+#include "base/window_base.h"
 
 BEGIN_C_DECLS
 
@@ -44,7 +44,8 @@ typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p
  * 电阻屏校准屏幕。
  */
 typedef struct _calibration_win_t {
-  widget_t widget;
+  window_base_t window;
+
   uint32_t x_offset;
   uint32_t y_offset;
   uint32_t cross_size;

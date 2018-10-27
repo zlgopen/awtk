@@ -34,7 +34,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   color_t color;
   bitmap_t img;
   const char* image_name = NULL;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   image_draw_type_t draw_type = IMAGE_DRAW_CENTER;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);

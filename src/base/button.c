@@ -23,10 +23,7 @@
 #include "base/timer.h"
 #include "base/utils.h"
 #include "base/button.h"
-
-static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
-}
+#include "base/widget_vtable.h"
 
 static ret_t button_on_repeat(const timer_info_t* info) {
   pointer_event_t evt;
@@ -157,7 +154,7 @@ static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
                                                 .set_prop = button_set_prop,
                                                 .get_prop = button_get_prop,
                                                 .destroy = button_destroy,
-                                                .on_paint_self = button_on_paint_self};
+                                                .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   button_t* button = TKMEM_ZALLOC(button_t);

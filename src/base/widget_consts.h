@@ -324,6 +324,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_THEME "theme"
 
 /**
+ * @const WIDGET_PROP_STAGE
+ * window stage
+ */
+#define WIDGET_PROP_STAGE "stage"
+
+/**
+ * @const WIDGET_PROP_THEME_DATA
+ *
+ */
+#define WIDGET_PROP_THEME_DATA "theme_data"
+
+/**
  * @const WIDGET_PROP_SCRIPT
  *
  */
@@ -873,6 +885,36 @@ typedef enum _widget_state_t {
    */
   WIDGET_STATE_SELECTED = 10
 } widget_state_t;
+
+/**
+ * @enum window_stage_t
+ * @annotation ["scriptable"]
+ * @prefix WINDOW_STAGE_
+ * 窗口的生命周期常量定义。
+ */
+typedef enum _window_stage_t {
+  /**
+   * @const WINDOW_STAGE_CREATED
+   * 初始状态。
+   */
+  WINDOW_STAGE_NONE = 0,
+  /**
+   * @const WINDOW_STAGE_CREATED
+   * 创建完成。
+   */
+  WINDOW_STAGE_CREATED,
+  /**
+   * @const WINDOW_STAGE_OPENED
+   * 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)
+   */
+  WINDOW_STAGE_OPENED,
+  /**
+   * @const WINDOW_STAGE_CLOSED
+   * 窗口已关闭。
+   */
+  WINDOW_STAGE_CLOSED
+} window_stage_t;
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_CONSTS_H*/

@@ -23,27 +23,24 @@
 #include "base/theme.h"
 #include "base/buffer.h"
 
-color_t style_get_color(style_t* s, uint32_t name, color_t defval) {
-  defval.color = style_get_int(s, name, defval.color);
+color_t style_data_get_color(const uint8_t* s, uint32_t name, color_t defval) {
+  defval.color = style_data_get_int(s, name, defval.color);
 
   return defval;
 }
 
-uint32_t style_get_int(style_t* s, uint32_t name, uint32_t defval) {
+uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval) {
   uint32_t i = 0;
   uint32_t nr = 0;
   uint32_t iter = 0;
   uint32_t value = 0;
-  const uint8_t* p = NULL;
-  return_value_if_fail(s != NULL, defval);
+  const uint8_t* p = s;
 
-  p = s->data;
-  if (p == NULL) {
+  if (s == NULL) {
     return defval;
   }
 
   load_uint32(p, nr);
-
   for (i = 0; i < nr; i++) {
     load_uint32(p, iter);
     if (iter == name) {
@@ -58,15 +55,17 @@ uint32_t style_get_int(style_t* s, uint32_t name, uint32_t defval) {
   return defval;
 }
 
-const char* style_get_str(style_t* s, uint32_t name, const char* defval) {
+const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defval) {
   uint32_t i = 0;
   uint32_t nr = 0;
   uint32_t iter = 0;
-  const uint8_t* p = NULL;
-  return_value_if_fail(s != NULL && s->data != NULL, defval);
+  const uint8_t* p = s;
+
+  if (s == NULL) {
+    return defval;
+  }
 
   /*skip int values*/
-  p = s->data;
   load_uint32(p, nr);
   p += nr * 8;
 

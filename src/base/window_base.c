@@ -23,11 +23,32 @@
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/window_base.h"
+#include "base/assets_manager.h"
 #include "base/window_manager.h"
 
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
-  if (widget->style_data.data != NULL) {
+  if (style_is_valid(widget->astyle)) {
     return widget_paint_helper(widget, c, NULL, NULL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_load_theme_data(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+
+  const char* theme_name = widget->name;
+
+  if (window_base->theme != NULL) {
+    theme_name = window_base->theme;
+  }
+
+  if (theme_name != NULL) {
+    window_base->res_theme = assets_manager_ref(assets_manager(), ASSET_TYPE_STYLE, theme_name);
+  }
+
+  if (window_base->res_theme != NULL) {
+    window_base->theme_data = window_base->res_theme->data;
   }
 
   return RET_OK;
@@ -49,8 +70,14 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
     value_set_str(v, window_base->theme);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME_DATA)) {
+    value_set_pointer(v, (void*)(window_base->theme_data));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
     value_set_str(v, window_base->script);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_STAGE)) {
+    value_set_int(v, window_base->stage);
     return RET_OK;
   }
 
@@ -96,12 +123,22 @@ ret_t window_base_destroy(widget_t* widget) {
   TKMEM_FREE(window_base->open_anim_hint);
   TKMEM_FREE(window_base->close_anim_hint);
 
+  if (window_base->res_theme != NULL) {
+    assets_manager_unref(assets_manager(), window_base->res_theme);
+  }
+
   return RET_OK;
 }
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
   window_base_t* win = WINDOW_BASE(widget);
-  if (e->type == EVT_WINDOW_OPEN) {
+  int a = EVT_WINDOW_WILL_OPEN;
+
+  if (e->type == EVT_WINDOW_WILL_OPEN) {
+    win->stage = WINDOW_STAGE_CREATED;
+    window_base_load_theme_data(widget);
+    widget_update_style_recursive(widget);
+  } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
   } else if (e->type == EVT_WINDOW_CLOSE) {
     win->stage = WINDOW_STAGE_CLOSED;
@@ -116,15 +153,15 @@ widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtab
 
   return_value_if_fail(win != NULL, NULL);
 
+  widget->is_window = TRUE;
   widget_init(widget, NULL, vt, x, y, w, h);
   if (parent == NULL) {
     parent = window_manager();
   }
 
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
-  widget_update_style(widget);
 
-  win->stage = WINDOW_STAGE_CREATED;
+  win->stage = WINDOW_STAGE_NONE;
 #ifdef ENABLE_MEM_LEAK_CHECK
   tk_mem_dump();
 #endif /*ENABLE_MEM_LEAK_CHECK*/

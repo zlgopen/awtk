@@ -46,15 +46,15 @@ int main(void) {
 
   path_build(res_root, MAX_PATH, app_root, "demos", NULL);
 
-#if defined(WIN32) 
+#if defined(WIN32)
 #if !defined(NDEBUG)
   {
     AllocConsole();
-    FILE *fp = NULL;
+    FILE* fp = NULL;
     freopen_s(&fp, "CONOUT$", "w+t", stdout);
   }
-#endif/*NDEBUG*/
-#endif/*WIN32*/
+#endif /*NDEBUG*/
+#endif /*WIN32*/
 
   tk_init(320, 480, APP_SIMULATOR, NULL, res_root);
 #endif

@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2018/10/27
+  * 引入style/style\_factory接口，方便实现动态改变style。
+  * 实现style\_const兼容以前从配置文件获取而style数据。
+  * 重构。
+
 * 2018/10/26
   * 为了避免不必要的误解，xml中不再指定window的name属性，以xml的文件名为准。
   * 修改edit crash的bug。

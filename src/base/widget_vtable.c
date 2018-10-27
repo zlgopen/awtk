@@ -53,8 +53,9 @@ ret_t widget_on_event_default(widget_t* widget, event_t* e) {
 }
 
 ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c) {
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-
+  if (style_is_valid(widget->astyle)) {
+    return widget_paint_helper(widget, c, NULL, NULL);
+  }
   return RET_OK;
 }
 
