@@ -28,7 +28,7 @@ TEST(StyleConst, combo_box_item) {
   icon = style_get_str(s, STYLE_ID_ICON, NULL);
   ASSERT_EQ(string(icon), "empty");
 
-  combo_box_item_set_selected(b, TRUE);
+  combo_box_item_set_checked(b, TRUE);
   style_notify_widget_state_changed(s, b);
   icon = style_get_str(s, STYLE_ID_ICON, NULL);
   ASSERT_EQ(string(icon), "check");

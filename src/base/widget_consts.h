@@ -474,6 +474,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_SELECTED "selected"
 
 /**
+ * @const WIDGET_PROP_CHECKED
+ * 是否被勾选。
+ */
+#define WIDGET_PROP_CHECKED "checked"
+
+/**
  * @const WIDGET_PROP_ACTIVE_ICON
  * active状态下的图标。
  */
@@ -887,20 +893,20 @@ typedef enum _widget_state_t {
 
   /*for active/selected/current */
   /**
-   * @const WIDGET_STATE_NORMAL_OF_SELECTED
+   * @const WIDGET_STATE_NORMAL_OF_CHECKED
    * 正常状态(选中项)。
    */
-  WIDGET_STATE_NORMAL_OF_SELECTED = 101,
+  WIDGET_STATE_NORMAL_OF_CHECKED = 101,
   /**
-   * @const WIDGET_STATE_PRESSED_OF_SELECTED,
+   * @const WIDGET_STATE_PRESSED_OF_CHECKED,
    * 指针按下状态(选中项)。
    */
-  WIDGET_STATE_PRESSED_OF_SELECTED = 102,
+  WIDGET_STATE_PRESSED_OF_CHECKED = 102,
   /**
-   * @const WIDGET_STATE_OVER_OF_SELECTED
+   * @const WIDGET_STATE_OVER_OF_CHECKED
    * 指针悬浮状态(选中项)。
    */
-  WIDGET_STATE_OVER_OF_SELECTED = 103,
+  WIDGET_STATE_OVER_OF_CHECKED = 103,
   /**
    * @const WIDGET_STATE_NORMAL_OF_ACTIVE
    * 正常状态(当前项)。

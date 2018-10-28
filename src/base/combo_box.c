@@ -185,7 +185,7 @@ static ret_t combo_box_visit_item(void* ctx, void* data) {
 
     widget_on(iter, EVT_CLICK, combo_box_on_item_click, combo_box);
     if (index == combo_box->selected_index) {
-      COMBO_BOX_ITEM(iter)->selected = TRUE;
+      COMBO_BOX_ITEM(iter)->checked = TRUE;
       widget_update_style(iter);
     }
   }

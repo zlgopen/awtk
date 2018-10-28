@@ -187,9 +187,9 @@ TEST(ThemeGen, selected_state) {
     <normal     text_color=\"#111111\"/> \
     <pressed    text_color=\"#222222\"/> \
     <over       text_color=\"#333333\"/> \
-    <normal_of_selected     text_color=\"#444444\"/> \
-    <pressed_of_selected    text_color=\"#555555\"/> \
-    <over_of_selected       text_color=\"#666666\"/> \
+    <normal_of_checked     text_color=\"#444444\"/> \
+    <pressed_of_checked    text_color=\"#555555\"/> \
+    <over_of_checked       text_color=\"#666666\"/> \
   </style> \
 </combo_box_item>";
 

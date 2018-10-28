@@ -47,7 +47,7 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);
-        combo_box_item_set_selected(widget, TRUE);
+        combo_box_item_set_checked(widget, TRUE);
         widget_dispatch(widget, (event_t*)&evt);
       }
       break;
@@ -70,8 +70,8 @@ static ret_t combo_box_item_set_prop(widget_t* widget, const char* name, const v
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return combo_box_item_set_value(widget, value_int(v));
-  } else if (tk_str_eq(name, WIDGET_PROP_SELECTED)) {
-    return combo_box_item_set_selected(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_CHECKED)) {
+    return combo_box_item_set_checked(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -84,11 +84,11 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, combo_box_item->value);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SELECTED)) {
-    value_set_bool(v, combo_box_item->selected);
+  } else if (tk_str_eq(name, WIDGET_PROP_CHECKED)) {
+    value_set_bool(v, combo_box_item->checked);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
-    value_set_int(v, widget_get_state_for_style(widget, combo_box_item->selected));
+    value_set_int(v, widget_get_state_for_style(widget, combo_box_item->checked));
     return RET_OK;
   }
 
@@ -121,13 +121,13 @@ ret_t combo_box_item_set_value(widget_t* widget, int32_t value) {
   return RET_OK;
 }
 
-static ret_t combo_box_item_set_selected_only(widget_t* widget, bool_t selected) {
+static ret_t combo_box_item_set_checked_only(widget_t* widget, bool_t checked) {
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (combo_box_item->selected != selected) {
+  if (combo_box_item->checked != checked) {
     event_t e = event_init(EVT_VALUE_CHANGED, widget);
-    combo_box_item->selected = selected;
+    combo_box_item->checked = checked;
     widget_dispatch(widget, &e);
   }
 
@@ -136,16 +136,16 @@ static ret_t combo_box_item_set_selected_only(widget_t* widget, bool_t selected)
   return RET_OK;
 }
 
-ret_t combo_box_item_set_selected(widget_t* widget, bool_t selected) {
+ret_t combo_box_item_set_checked(widget_t* widget, bool_t checked) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  combo_box_item_set_selected_only(widget, selected);
+  combo_box_item_set_checked_only(widget, checked);
   if (widget->parent != NULL) {
     widget_t* parent = widget->parent;
 
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
     if (iter != widget) {
-      combo_box_item_set_selected_only(iter, !selected);
+      combo_box_item_set_checked_only(iter, !checked);
     }
     WIDGET_FOR_EACH_CHILD_END();
   }
