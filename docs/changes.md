@@ -2,6 +2,8 @@
 
 * 2018/10/28
   * 调整主题的格式：tab\_button处于active时的style，combo\_box\_item/check\_button/radio\_button处于checked时的style，作为不同状态处理，而不是作为不同的style处理。如果有用到，请参考demo做相应修改。
+  * 修改valgrind发现的一些内存泄露问题。
+  * demoui增加退出应用程序的按钮。
   * 更新文档。
 
 * 2018/10/27
