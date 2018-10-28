@@ -212,47 +212,87 @@
 
 <check_button bg_color="#f0f0f0" text_color="black">
   <style name="default">
-    <checked   icon="checked" />
-    <unchecked icon="unchecked" />
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
   </style>
   <style name="mute" >
-    <checked   icon="unmuted" />
-    <unchecked icon="muted" />
+    <normal  icon="unmuted" />
+    <pressed icon="unmuted" />
+    <over    icon="unmuted" />
+    <normal_of_checked icon="muted" />
+    <pressed_of_checked icon="muted" />
+    <over_of_checked icon="muted" />
   </style>
-  <style name="odd_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
-    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  <style name="odd_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#f5f5f5">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
-  <style name="even_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
-    <unchecked bg_color="#eaeaea" icon_at="right" />
+  <style name="even_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#eaeaea">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
 </check_button>
 
 <radio_button>
   <style name="default" bg_color="#f0f0f0" text_color="black">
-    <checked   icon="radio_checked" />
-    <unchecked icon="radio_unchecked" />
+    <normal  icon="radio_unchecked" />
+    <pressed icon="radio_unchecked" />
+    <over    icon="radio_unchecked" text_color="green"/>
+    <normal_of_checked icon="radio_checked" text_color="red"/>
+    <pressed_of_checked icon="radio_checked" text_color="red"/>
+    <over_of_checked icon="radio_checked" text_color="green"/>
   </style>
   <style name="left">
-    <checked   icon="left_on" />
-    <unchecked icon="left_off" />
+    <normal  icon="left_off" />
+    <pressed icon="left_off" />
+    <over    icon="left_off" />
+    <normal_of_checked icon="left_on" />
+    <pressed_of_checked icon="left_on" />
+    <over_of_checked icon="left_on" />
   </style>
   <style name="middle">
-    <checked   icon="middle_on" />
-    <unchecked icon="middle_off" />
+    <normal  icon="middle_off" />
+    <pressed icon="middle_off" />
+    <over    icon="middle_off" />
+    <normal_of_checked icon="middle_on" />
+    <pressed_of_checked icon="middle_on" />
+    <over_of_checked icon="middle_on" />
   </style>
   <style name="right">
-    <checked   icon="right_on" />
-    <unchecked icon="right_off" />
+    <normal  icon="right_off" />
+    <pressed icon="right_off" />
+    <over    icon="right_off" />
+    <normal_of_checked icon="right_on" />
+    <pressed_of_checked icon="right_on" />
+    <over_of_checked icon="right_on" />
   </style>
-  <style name="odd_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
-    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  <style name="odd_icon_right" text_color="black" margin="4" icon_at="right" bg_color="#f5f5f5">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
-  <style name="even_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
-    <unchecked bg_color="#eaeaea" icon_at="right" />
+  <style name="even_icon_right" text_color="black" margin="4" icon_at="right" bg_color="#eaeaea">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
 </radio_button>
 
