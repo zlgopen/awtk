@@ -161,6 +161,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
     im->keyboard = NULL;
     im->widget = NULL;
   }
+  TKMEM_FREE(info);
 
   return RET_OK;
 }

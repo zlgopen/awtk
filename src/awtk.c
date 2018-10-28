@@ -137,6 +137,9 @@ ret_t tk_deinit_internal(void) {
   timer_manager_destroy(timer_manager());
   timer_manager_set(NULL);
 
+  widget_factory_destroy(widget_factory());
+  widget_factory_set(NULL);
+
   input_method_destroy(input_method());
   input_method_set(NULL);
 

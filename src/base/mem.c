@@ -48,7 +48,7 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
 }
 
 static void* tk_alloc_impl(uint32_t size) {
-  uint32_t s = size + sizeof(mem_stat_t);
+  uint32_t s = size + sizeof(mem_block_t);
   void* ptr = malloc(s);
 
   if (ptr != NULL) {
@@ -70,7 +70,7 @@ static void* tk_realloc_impl(void* ptr, uint32_t size) {
     void* newptr = tk_alloc_impl(size);
 
     if (newptr) {
-      memcpy(newptr, ptr, tk_min(size, head->size));
+      memcpy(newptr, ptr, tk_min(size, head->size - sizeof(mem_block_t)));
       tk_free_impl(ptr);
 
       return newptr;

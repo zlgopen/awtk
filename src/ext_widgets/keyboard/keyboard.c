@@ -36,6 +36,14 @@ static const char* s_keyboard_properties[] = {
     WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT, WIDGET_PROP_CLOSE_ANIM_HINT,
     WIDGET_PROP_THEME,     WIDGET_PROP_SCRIPT,         NULL};
 
+static ret_t keyboard_destroy(widget_t* widget) {
+  keyboard_t* keyboard = KEYBOARD(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  array_deinit(&(keyboard->action_buttons));
+
+  return window_base_destroy(widget);
+}
+
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
                                                   .clone_properties = s_keyboard_properties,
@@ -45,7 +53,7 @@ static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .on_paint_self = window_base_on_paint_self,
                                                   .set_prop = window_base_set_prop,
                                                   .get_prop = window_base_get_prop,
-                                                  .destroy = window_base_destroy};
+                                                  .destroy = keyboard_destroy};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   keyboard_t* keyboard = TKMEM_ZALLOC(keyboard_t);
