@@ -932,7 +932,7 @@ typedef enum _widget_state_t {
  */
 typedef enum _window_stage_t {
   /**
-   * @const WINDOW_STAGE_CREATED
+   * @const WINDOW_STAGE_NONE
    * 初始状态。
    */
   WINDOW_STAGE_NONE = 0,

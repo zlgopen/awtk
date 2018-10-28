@@ -14553,7 +14553,7 @@
     "consts": [
       {
         "desc": "初始状态。",
-        "name": "WINDOW_STAGE_CREATED"
+        "name": "WINDOW_STAGE_NONE"
       },
       {
         "desc": "创建完成。",
