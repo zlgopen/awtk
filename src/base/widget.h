@@ -286,6 +286,17 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 ret_t widget_update_style(widget_t* widget);
 
 /**
+ * @method widget_get_state_for_style
+ * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} active 控件是否为当前项或选中项。
+ *
+ * @return {widget_state_t} 返回状态值。
+ */
+widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active);
+
+/**
  * @method widget_update_style_recursive
  * 让控件及其全部子控件根据自己当前状态更新style。
  * @annotation ["private"]

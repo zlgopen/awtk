@@ -112,7 +112,6 @@ resource_manager_add(theme_default);
 
 * 如果没有指定theme属性，以窗口的name属性作为窗口的主题文件名。
 
-* 如果没有指定name属性，以窗口的UI文件名作为窗口的主题文件名。
 
 * 以窗口自己的主题文件优先，其次为缺省的主题文件。
 

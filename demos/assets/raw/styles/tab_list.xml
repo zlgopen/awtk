@@ -1,13 +1,11 @@
 <tab_button>
-  <style name="default" text_align_h="left" margin="4" border_color="#cccccc" text_color="black" bg_color="#eeeeee">
-    <normal     />
-    <pressed    />
-    <over       />
-  </style>
-  <style name="default_active" text_align_h="left" margin="4" border_color="#cccccc" text_color="#1296db" bg_color="#eeeeee">
-    <normal     />
-    <pressed    />
-    <over       />
+  <style name="default" text_align_h="left" margin="4" border_color="#cccccc" bg_color="#eeeeee">
+    <normal     text_color="black"/>
+    <pressed    text_color="black"/>
+    <over       text_color="black"/>
+    <normal_of_active     text_color="#1296db"/>
+    <pressed_of_active    text_color="#1296db"/>
+    <over_of_active       text_color="#1296db"/>
   </style>
 </tab_button>
 

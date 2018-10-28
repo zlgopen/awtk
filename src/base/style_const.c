@@ -44,25 +44,12 @@ static const uint8_t* widget_get_const_theme_data(widget_t* widget) {
 
 static const void* widget_get_conststyle_data(widget_t* widget) {
   theme_t t;
-  value_t v;
   const void* data = NULL;
-  uint16_t state = widget->state;
   const char* type = widget->vt->type;
-  char style_name[NAME_LEN + NAME_LEN + 1];
-  const char* name = widget->style != NULL ? widget->style : TK_DEFAULT_STYLE;
-
-  if (!widget->enable) {
-    state = WIDGET_STATE_DISABLE;
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_SUB_THEME, &v) == RET_OK && value_str(&v) != NULL) {
-    tk_snprintf(style_name, sizeof(style_name) - 1, "%s%s", name, value_str(&v));
-  } else {
-    tk_strncpy(style_name, name, sizeof(style_name) - 1);
-  }
+  const char* style_name = widget->style != NULL ? widget->style : TK_DEFAULT_STYLE;
+  uint32_t state = widget_get_prop_int(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
   t.data = widget_get_const_theme_data(widget);
-
   if (t.data != NULL) {
     data = theme_find_style(&t, type, style_name, state);
   }

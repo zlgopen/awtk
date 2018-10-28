@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2018/10/28
+  * 调整主题的格式：tab\_button处于active时的style，combo\_box\_item处于selected时的style，作为不同状态处理，而不是作为不同的style处理。如果有用到，请参考demo做相应修改。
+  * 更新文档。
+
 * 2018/10/27
   * 引入style/style\_factory接口，方便实现动态改变style。
   * 实现style\_const兼容以前从配置文件获取而style数据。

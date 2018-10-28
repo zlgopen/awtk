@@ -87,8 +87,8 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED)) {
     value_set_bool(v, combo_box_item->selected);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SUB_THEME)) {
-    value_set_str(v, combo_box_item->selected ? "_selected" : "");
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+    value_set_int(v, widget_get_state_for_style(widget, combo_box_item->selected));
     return RET_OK;
   }
 

@@ -266,6 +266,28 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
   return RET_OK;
 }
 
+widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active) {
+  widget_state_t state = WIDGET_STATE_NORMAL;
+  return_value_if_fail(widget != NULL, state);
+
+  state = widget->state;
+  if (!widget->enable) {
+    return WIDGET_STATE_DISABLE;
+  }
+
+  if (active) {
+    if (state == WIDGET_STATE_NORMAL) {
+      state = WIDGET_STATE_NORMAL_OF_ACTIVE;
+    } else if (state == WIDGET_STATE_PRESSED) {
+      state = WIDGET_STATE_PRESSED_OF_ACTIVE;
+    } else if (state == WIDGET_STATE_OVER) {
+      state = WIDGET_STATE_OVER_OF_ACTIVE;
+    }
+  }
+
+  return state;
+}
+
 ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -781,6 +803,9 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       value_set_int32(v, widget->h);
+      ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+      value_set_int(v, widget_get_state_for_style(widget, FALSE));
       ret = RET_OK;
     }
   }

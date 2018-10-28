@@ -133,3 +133,88 @@ TEST(ThemeGen, border) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_ALL);
 }
+
+TEST(ThemeGen, active_state) {
+  uint8_t buff[1024];
+  theme_t theme;
+  color_t def = color_init(0, 0, 0, 0);
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<tab_button> \
+  <style name=\"default\" text_align_h=\"left\" margin=\"4\" border_color=\"#cccccc\" bg_color=\"#eeeeee\"> \
+    <normal     text_color=\"#111111\"/> \
+    <pressed    text_color=\"#222222\"/> \
+    <over       text_color=\"#333333\"/> \
+    <normal_of_active     text_color=\"#444444\"/> \
+    <pressed_of_active    text_color=\"#555555\"/> \
+    <over_of_active       text_color=\"#666666\"/> \
+  </style> \
+</tab_button>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_PRESSED);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_OVER);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
+
+  style_data =
+      theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_NORMAL_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
+
+  style_data =
+      theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_PRESSED_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
+
+  style_data =
+      theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_OVER_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+}
+
+TEST(ThemeGen, selected_state) {
+  uint8_t buff[1024];
+  theme_t theme;
+  color_t def = color_init(0, 0, 0, 0);
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<combo_box_item> \
+  <style name=\"default\" text_align_h=\"left\" margin=\"4\" border_color=\"#cccccc\" bg_color=\"#eeeeee\"> \
+    <normal     text_color=\"#111111\"/> \
+    <pressed    text_color=\"#222222\"/> \
+    <over       text_color=\"#333333\"/> \
+    <normal_of_selected     text_color=\"#444444\"/> \
+    <pressed_of_selected    text_color=\"#555555\"/> \
+    <over_of_selected       text_color=\"#666666\"/> \
+  </style> \
+</combo_box_item>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
+
+  style_data =
+      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_PRESSED);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
+                                WIDGET_STATE_NORMAL_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
+                                WIDGET_STATE_PRESSED_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
+
+  style_data =
+      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_ACTIVE);
+  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+}

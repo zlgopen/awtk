@@ -318,6 +318,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ROW "row"
 
 /**
+ * @const WIDGET_PROP_STATE_FOR_STYLE
+ *
+ */
+#define WIDGET_PROP_STATE_FOR_STYLE "state_for_style"
+
+/**
  * @const WIDGET_PROP_THEME
  *
  */
@@ -442,12 +448,6 @@ BEGIN_C_DECLS
  * 选中角度(幅度)
  */
 #define WIDGET_PROP_ROTATION "rotation"
-
-/**
- * @const WIDGET_PROP_SUB_THEME
- * sub theme。
- */
-#define WIDGET_PROP_SUB_THEME "sub_theme"
 
 /**
  * @const WIDGET_PROP_COMPACT
@@ -881,9 +881,41 @@ typedef enum _widget_state_t {
   WIDGET_STATE_ERROR = 9,
   /**
    * @const WIDGET_STATE_SELECTED
-   * 输入错误状态。
+   * 选中状态。
    */
-  WIDGET_STATE_SELECTED = 10
+  WIDGET_STATE_SELECTED = 10,
+
+  /*for active/selected/current */
+  /**
+   * @const WIDGET_STATE_NORMAL_OF_SELECTED
+   * 正常状态(选中项)。
+   */
+  WIDGET_STATE_NORMAL_OF_SELECTED = 101,
+  /**
+   * @const WIDGET_STATE_PRESSED_OF_SELECTED,
+   * 指针按下状态(选中项)。
+   */
+  WIDGET_STATE_PRESSED_OF_SELECTED = 102,
+  /**
+   * @const WIDGET_STATE_OVER_OF_SELECTED
+   * 指针悬浮状态(选中项)。
+   */
+  WIDGET_STATE_OVER_OF_SELECTED = 103,
+  /**
+   * @const WIDGET_STATE_NORMAL_OF_ACTIVE
+   * 正常状态(当前项)。
+   */
+  WIDGET_STATE_NORMAL_OF_ACTIVE = 101,
+  /**
+   * @const WIDGET_STATE_PRESSED_OF_ACTIVE,
+   * 指针按下状态(当前项)。
+   */
+  WIDGET_STATE_PRESSED_OF_ACTIVE = 102,
+  /**
+   * @const WIDGET_STATE_OVER_OF_ACTIVE
+   * 指针悬浮状态(当前项)。
+   */
+  WIDGET_STATE_OVER_OF_ACTIVE = 103
 } widget_state_t;
 
 /**
