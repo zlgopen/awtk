@@ -213,7 +213,6 @@ int32_t style_get_int(style_t* s, style_id_t id, int32_t defval);
 /**
  * @method style_get_color
  * 获取指定id的颜色值。
- * @annotation ["scriptable"]
  * @param {style_t*} s style对象。
  * @param {style_id_t} id 属性ID。
  * @param {color_t} defval 缺省值。
@@ -271,7 +270,6 @@ ret_t style_set_int(style_t* s, widget_state_t state, style_id_t id, uint32_t va
 /**
  * @method style_set_color
  * 设置指定id的颜色值(子类可以选择是否实现)。
- * @annotation ["scriptable"]
  * @param {style_t*} s style对象。
  * @param {widget_state_t} state 控件状态。
  * @param {style_id_t} id 属性ID。

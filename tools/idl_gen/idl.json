@@ -2495,7 +2495,7 @@
           },
           {
             "type": "bool_t",
-            "name": "selected",
+            "name": "checked",
             "desc": "是否被选中。"
           }
         ],
@@ -2503,7 +2503,7 @@
           "scriptable": true
         },
         "desc": "设置控件是否被选中。",
-        "name": "combo_box_item_set_selected",
+        "name": "combo_box_item_set_checked",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -2548,7 +2548,7 @@
         }
       },
       {
-        "name": "selected",
+        "name": "checked",
         "desc": "是否被选中。",
         "type": "bool_t",
         "annotation": {
@@ -9591,6 +9591,402 @@
     "name": "str_t"
   },
   {
+    "type": "enum",
+    "desc": "类型常量定义。",
+    "consts": [
+      {
+        "desc": "背景颜色。",
+        "name": "STYLE_ID_BG_COLOR"
+      },
+      {
+        "desc": "前景颜色。",
+        "name": "STYLE_ID_BG_COLOR"
+      },
+      {
+        "desc": "字体名称。",
+        "name": "STYLE_ID_FONT_NAME"
+      },
+      {
+        "desc": "字体大小。",
+        "name": "STYLE_ID_FONT_SIZE"
+      },
+      {
+        "desc": "字体风格(粗体、斜体等)。",
+        "name": "STYLE_ID_FONT_STYLE"
+      },
+      {
+        "desc": "文本颜色。",
+        "name": "STYLE_ID_TEXT_COLOR"
+      },
+      {
+        "desc": "提示文本颜色。",
+        "name": "STYLE_ID_TIPS_TEXT_COLOR"
+      },
+      {
+        "desc": "文本水平对齐的方式。",
+        "name": "STYLE_ID_TEXT_ALIGN_H"
+      },
+      {
+        "desc": "文本垂直对齐的方式。",
+        "name": "STYLE_ID_TEXT_ALIGN_V"
+      },
+      {
+        "desc": "边框颜色。",
+        "name": "STYLE_ID_BORDER_COLOR"
+      },
+      {
+        "desc": "边框类型。",
+        "name": "STYLE_ID_BORDER"
+      },
+      {
+        "desc": "图片的名称。",
+        "name": "STYLE_ID_BG_IMAGE"
+      },
+      {
+        "desc": "图片的显示方式。",
+        "name": "STYLE_ID_BG_IMAGE_DRAW_TYPE"
+      },
+      {
+        "desc": "图标的名称。",
+        "name": "STYLE_ID_ICON"
+      },
+      {
+        "desc": "图片的名称。",
+        "name": "STYLE_ID_FG_IMAGE"
+      },
+      {
+        "desc": "图片的显示方式。",
+        "name": "STYLE_ID_FG_IMAGE_DRAW_TYPE"
+      },
+      {
+        "desc": "边距。",
+        "name": "STYLE_ID_MARGIN"
+      },
+      {
+        "desc": "图标的位置。",
+        "name": "STYLE_ID_ICON_AT"
+      }
+    ],
+    "header": "base/style.h",
+    "name": "style_type_t",
+    "prefix": "STYLE"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "widget状态改变时，通知style更新数据。",
+        "name": "style_notify_widget_state_changed",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查style对象是否有效",
+        "name": "style_is_valid",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回是否有效。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取指定id的整数格式的值。",
+        "name": "style_get_int",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回整数格式的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "color_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定id的颜色值。",
+        "name": "style_get_color",
+        "return": {
+          "type": "color_t",
+          "desc": "返回颜色值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "const char*",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取指定id的字符串格式的值。",
+        "name": "style_get_str",
+        "return": {
+          "type": "const char*",
+          "desc": "返回字符串格式的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取style的名称(子类可以选择是否实现)。",
+        "name": "style_get_name",
+        "return": {
+          "type": "const char*",
+          "desc": "style的名称。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置style的名称(子类可以选择是否实现)。",
+        "name": "style_set_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "widget_state_t",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "int32_t",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定id整数格式的值(子类可以选择是否实现)。",
+        "name": "style_set_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "widget_state_t",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "color_t",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定id的颜色值(子类可以选择是否实现)。",
+        "name": "style_set_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "widget_state_t",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "style_id_t",
+            "name": "id",
+            "desc": "属性ID。"
+          },
+          {
+            "type": "const char*",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定id字符串的值(子类可以选择是否实现)。",
+        "name": "style_set_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "tk_on_style_item_t",
+            "name": "on_style_item",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "遍历。对每项调用回调函数on_style_item。",
+        "name": "style_foreach",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁style对象",
+        "name": "style_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "properties": [],
+    "header": "base/style.h",
+    "desc": "控件风格。",
+    "name": "style_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -10121,100 +10517,74 @@
   },
   {
     "type": "class",
-    "methods": [],
-    "properties": [],
-    "header": "base/theme.h",
-    "desc": "控件风格的参数。",
-    "name": "style_t"
-  },
-  {
-    "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的主题对象。",
+        "name": "theme",
+        "alias": "theme_instance",
+        "return": {
+          "type": "theme_t*",
+          "desc": "返回主题对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const uint8_t*",
+            "name": "data",
+            "desc": "主题数据。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化主题对象。",
+        "name": "theme_init",
+        "return": {
+          "type": "theme_t*",
+          "desc": "返回主题对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "theme_t*",
+            "name": "data",
+            "desc": "主题对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "widget_type",
+            "desc": "控件的类型名。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "style的名称。"
+          },
+          {
+            "type": "widget_state_t",
+            "name": "widget_state",
+            "desc": "控件的状态。"
+          }
+        ],
+        "annotation": {},
+        "desc": "查找满足条件的style。",
+        "name": "theme_find_style",
+        "return": {
+          "type": "theme_t*",
+          "desc": "返回主题对象。"
+        }
+      }
+    ],
     "properties": [],
     "header": "base/theme.h",
     "desc": "主题。",
     "name": "theme_t"
-  },
-  {
-    "type": "enum",
-    "desc": "类型常量定义。",
-    "consts": [
-      {
-        "desc": "背景颜色。",
-        "name": "STYLE_ID_BG_COLOR"
-      },
-      {
-        "desc": "前景颜色。",
-        "name": "STYLE_ID_BG_COLOR"
-      },
-      {
-        "desc": "字体名称。",
-        "name": "STYLE_ID_FONT_NAME"
-      },
-      {
-        "desc": "字体大小。",
-        "name": "STYLE_ID_FONT_SIZE"
-      },
-      {
-        "desc": "字体风格(粗体、斜体等)。",
-        "name": "STYLE_ID_FONT_STYLE"
-      },
-      {
-        "desc": "文本颜色。",
-        "name": "STYLE_ID_TEXT_COLOR"
-      },
-      {
-        "desc": "提示文本颜色。",
-        "name": "STYLE_ID_TIPS_TEXT_COLOR"
-      },
-      {
-        "desc": "文本水平对齐的方式。",
-        "name": "STYLE_ID_TEXT_ALIGN_H"
-      },
-      {
-        "desc": "文本垂直对齐的方式。",
-        "name": "STYLE_ID_TEXT_ALIGN_V"
-      },
-      {
-        "desc": "边框颜色。",
-        "name": "STYLE_ID_BORDER_COLOR"
-      },
-      {
-        "desc": "边框类型。",
-        "name": "STYLE_ID_BORDER"
-      },
-      {
-        "desc": "图片的名称。",
-        "name": "STYLE_ID_BG_IMAGE"
-      },
-      {
-        "desc": "图片的显示方式。",
-        "name": "STYLE_ID_BG_IMAGE_DRAW_TYPE"
-      },
-      {
-        "desc": "图标的名称。",
-        "name": "STYLE_ID_ICON"
-      },
-      {
-        "desc": "图片的名称。",
-        "name": "STYLE_ID_FG_IMAGE"
-      },
-      {
-        "desc": "图片的显示方式。",
-        "name": "STYLE_ID_FG_IMAGE_DRAW_TYPE"
-      },
-      {
-        "desc": "边距。",
-        "name": "STYLE_ID_MARGIN"
-      },
-      {
-        "desc": "图标的位置。",
-        "name": "STYLE_ID_ICON_AT"
-      }
-    ],
-    "header": "base/theme.h",
-    "name": "style_type_t",
-    "prefix": "STYLE"
   },
   {
     "type": "class",
@@ -13741,7 +14111,19 @@
       },
       {
         "desc": "",
+        "name": "WIDGET_PROP_STATE_FOR_STYLE"
+      },
+      {
+        "desc": "",
         "name": "WIDGET_PROP_THEME"
+      },
+      {
+        "desc": "window stage",
+        "name": "WIDGET_PROP_STAGE"
+      },
+      {
+        "desc": "",
+        "name": "WIDGET_PROP_THEME_DATA"
       },
       {
         "desc": "",
@@ -13816,10 +14198,6 @@
         "name": "WIDGET_PROP_ROTATION"
       },
       {
-        "desc": "sub theme。",
-        "name": "WIDGET_PROP_SUB_THEME"
-      },
-      {
         "desc": "紧凑模式。",
         "name": "WIDGET_PROP_COMPACT"
       },
@@ -13834,6 +14212,10 @@
       {
         "desc": "是否被选中。",
         "name": "WIDGET_PROP_SELECTED"
+      },
+      {
+        "desc": "是否被勾选。",
+        "name": "WIDGET_PROP_CHECKED"
       },
       {
         "desc": "active状态下的图标。",
@@ -14130,13 +14512,65 @@
         "name": "WIDGET_STATE_ERROR"
       },
       {
-        "desc": "输入错误状态。",
+        "desc": "选中状态。",
         "name": "WIDGET_STATE_SELECTED"
+      },
+      {
+        "desc": "正常状态(选中项)。",
+        "name": "WIDGET_STATE_NORMAL_OF_CHECKED"
+      },
+      {
+        "desc": "指针按下状态(选中项)。",
+        "name": "WIDGET_STATE_PRESSED_OF_CHECKED"
+      },
+      {
+        "desc": "指针悬浮状态(选中项)。",
+        "name": "WIDGET_STATE_OVER_OF_CHECKED"
+      },
+      {
+        "desc": "正常状态(当前项)。",
+        "name": "WIDGET_STATE_NORMAL_OF_ACTIVE"
+      },
+      {
+        "desc": "指针按下状态(当前项)。",
+        "name": "WIDGET_STATE_PRESSED_OF_ACTIVE"
+      },
+      {
+        "desc": "指针悬浮状态(当前项)。",
+        "name": "WIDGET_STATE_OVER_OF_ACTIVE"
       }
     ],
     "header": "base/widget_consts.h",
     "name": "widget_state_t",
     "prefix": "WIDGET_",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": "窗口的生命周期常量定义。",
+    "consts": [
+      {
+        "desc": "初始状态。",
+        "name": "WINDOW_STAGE_CREATED"
+      },
+      {
+        "desc": "创建完成。",
+        "name": "WINDOW_STAGE_CREATED"
+      },
+      {
+        "desc": "窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)",
+        "name": "WINDOW_STAGE_OPENED"
+      },
+      {
+        "desc": "窗口已关闭。",
+        "name": "WINDOW_STAGE_CLOSED"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "window_stage_t",
+    "prefix": "WINDOW_STAGE_",
     "annotation": {
       "scriptable": true
     }
@@ -14208,6 +14642,29 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "active",
+            "desc": "控件是否为当前项或选中项。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": "把控件的状态转成获取style选要的状态，一般只在子类中使用。",
+        "name": "widget_get_state_for_style",
+        "return": {
+          "type": "widget_state_t",
+          "desc": "返回状态值。"
         }
       },
       {
@@ -15199,7 +15656,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "属性的名称。"
           },
@@ -15225,7 +15682,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "属性的名称。"
           },
@@ -15251,12 +15708,12 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "属性的名称。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "v",
             "desc": "属性的值。"
           }
@@ -15264,11 +15721,113 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "通用的设置控件属性的函数。",
+        "desc": "设置字符串格式的属性。",
         "name": "widget_set_prop_str",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取字符串格式的属性。",
+        "name": "widget_get_prop_str",
+        "return": {
+          "type": "const char*",
+          "desc": "返回属性的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "int32_t",
+            "name": "v",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置字符串格式的属性。",
+        "name": "widget_set_prop_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取字符串格式的属性。",
+        "name": "widget_get_prop_int",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回属性的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件所在的窗口是否已经打开。",
+        "name": "widget_is_window_opened",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回当前控件所在的窗口是否已经打开。"
         }
       },
       {
@@ -15854,6 +16413,14 @@
         }
       },
       {
+        "name": "is_window",
+        "desc": "是否是窗口。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
         "name": "state",
         "desc": "控件的状态。",
         "type": "uint8_t",
@@ -15926,9 +16493,9 @@
         }
       },
       {
-        "name": "style_data",
-        "desc": "Style数据。",
-        "type": "style_t",
+        "name": "astyle",
+        "desc": "Style对象。",
+        "type": "style_t*",
         "annotation": {
           "readable": true
         }
@@ -16173,7 +16740,17 @@
         "desc": "窗口当前处于的状态。",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "get_prop": true
+        }
+      },
+      {
+        "name": "theme_data",
+        "desc": "窗口的常量主题数据。",
+        "type": "const uint8_t*",
+        "annotation": {
+          "get_prop": true,
+          "private": true
         }
       }
     ],

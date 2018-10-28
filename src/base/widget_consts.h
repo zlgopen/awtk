@@ -898,7 +898,7 @@ typedef enum _widget_state_t {
    */
   WIDGET_STATE_NORMAL_OF_CHECKED = 101,
   /**
-   * @const WIDGET_STATE_PRESSED_OF_CHECKED,
+   * @const WIDGET_STATE_PRESSED_OF_CHECKED
    * 指针按下状态(选中项)。
    */
   WIDGET_STATE_PRESSED_OF_CHECKED = 102,
@@ -913,7 +913,7 @@ typedef enum _widget_state_t {
    */
   WIDGET_STATE_NORMAL_OF_ACTIVE = 101,
   /**
-   * @const WIDGET_STATE_PRESSED_OF_ACTIVE,
+   * @const WIDGET_STATE_PRESSED_OF_ACTIVE
    * 指针按下状态(当前项)。
    */
   WIDGET_STATE_PRESSED_OF_ACTIVE = 102,
