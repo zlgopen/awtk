@@ -176,6 +176,8 @@ typedef struct _asset_info_t {
  */
 typedef struct _assets_manager_t {
   array_t assets;
+
+  char* res_root;
 } assets_manager_t;
 
 /**
@@ -217,6 +219,16 @@ assets_manager_t* assets_manager_create(uint32_t init_nr);
  * @return {assets_manager_t*} 返回asset manager对象。
  */
 assets_manager_t* assets_manager_init(assets_manager_t* rm, uint32_t init_nr);
+
+/**
+ * @method assets_manager_set_res_root
+ * 设置资源所在的目录(其下目录结构请参考demos)。
+ * @param {assets_manager_t*} rm asset manager对象。
+ * @param {const char*} res_root 资源所在的目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_res_root(assets_manager_t* rm, const char* res_root);
 
 /**
  * @method assets_manager_add

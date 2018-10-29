@@ -27,6 +27,14 @@
 
 static assets_manager_t* s_assets_manager = NULL;
 
+static const char* assets_manager_get_res_root(assets_manager_t* rm) {
+  if (rm->res_root != NULL) {
+    return rm->res_root;
+  } else {
+    return system_info()->app_root;
+  }
+}
+
 #ifdef WITH_FS_RES
 #include "base/fs.h"
 
@@ -48,11 +56,10 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   return info;
 }
 
-static ret_t assets_manager_build_path(char* path, uint32_t size, bool_t is_image,
-                                       const char* subpath, const char* name, const char* extname) {
+static ret_t build_path(const char* res_root, char* path, uint32_t size, bool_t is_image,
+                        const char* subpath, const char* name, const char* extname) {
   system_info_t* sysinfo = system_info();
   float_t dpr = sysinfo->device_pixel_ratio;
-  const char* app_root = sysinfo->app_root;
 
   if (is_image) {
     const char* ratio = "x1";
@@ -62,10 +69,10 @@ static ret_t assets_manager_build_path(char* path, uint32_t size, bool_t is_imag
       ratio = "x2";
     }
 
-    return_value_if_fail(path_build(path, size, app_root, subpath, ratio, name, NULL) == RET_OK,
+    return_value_if_fail(path_build(path, size, res_root, subpath, ratio, name, NULL) == RET_OK,
                          RET_FAIL);
   } else {
-    return_value_if_fail(path_build(path, size, app_root, subpath, name, NULL) == RET_OK, RET_FAIL);
+    return_value_if_fail(path_build(path, size, res_root, subpath, name, NULL) == RET_OK, RET_FAIL);
   }
 
   return tk_str_append(path, size, extname);
@@ -75,22 +82,23 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
   int32_t size = 0;
   char path[MAX_PATH + 1];
   asset_info_t* info = NULL;
+  const char* res_root = assets_manager_get_res_root(rm);
 
   memset(path, 0x00, sizeof(path));
   switch (type) {
     case ASSET_TYPE_FONT: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/fonts",
-                                                     name, ".ttf") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/fonts", name, ".ttf") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_FONT_TTF, size, path, name);
         break;
       }
 
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/fonts",
-                                                     name, ".bin") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/fonts", name, ".bin") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_FONT_BMP, size, path, name);
@@ -100,9 +108,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_STYLE: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/styles",
-                                                     name, ".bin") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/styles", name, ".bin") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_STYLE, size, path, name);
@@ -111,9 +119,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_STRINGS: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/strings",
-                                                     name, ".bin") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/strings", name, ".bin") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_STRINGS, size, path, name);
@@ -121,9 +129,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_IMAGE: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, TRUE, "assets/raw/images",
-                                                     name, ".png") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".png") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_IMAGE_PNG, size, path, name);
@@ -131,9 +139,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
         return info;
       }
 
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, TRUE, "assets/raw/images",
-                                                     name, ".jpg") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".jpg") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_IMAGE_JPG, size, path, name);
@@ -145,7 +153,7 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
     }
     case ASSET_TYPE_UI: {
       return_value_if_fail(
-          assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/ui", name, ".bin") == RET_OK,
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/ui", name, ".bin") == RET_OK,
           NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
@@ -156,9 +164,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_XML: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/xml", name,
-                                                     ".xml") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/xml", name, ".xml") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_XML, size, path, name);
@@ -168,9 +176,9 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_DATA: {
-      return_value_if_fail(assets_manager_build_path(path, MAX_PATH, FALSE, "assets/raw/data", name,
-                                                     ".bin") == RET_OK,
-                           NULL);
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/data", name, ".bin") == RET_OK,
+          NULL);
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_DATA, size, path, name);
@@ -255,6 +263,16 @@ assets_manager_t* assets_manager_init(assets_manager_t* rm, uint32_t init_nr) {
   array_init(&(rm->assets), init_nr);
 
   return rm;
+}
+
+ret_t assets_manager_set_res_root(assets_manager_t* rm, const char* res_root) {
+  return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
+  TKMEM_FREE(rm->res_root);
+  if (res_root != NULL) {
+    rm->res_root = tk_strdup(res_root);
+  }
+
+  return RET_OK;
 }
 
 ret_t assets_manager_add(assets_manager_t* rm, const void* info) {
@@ -353,6 +371,7 @@ ret_t assets_manager_deinit(assets_manager_t* rm) {
     asset_info_destroy(iter);
   }
 
+  TKMEM_FREE(rm->res_root);
   array_deinit(&(rm->assets));
 
   return RET_OK;
