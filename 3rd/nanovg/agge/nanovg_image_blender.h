@@ -1,5 +1,6 @@
 #pragma once
 
+#include "agge/math.h"
 #include "agge/pixel.h"
 #include "nanovg.h"
 
@@ -39,8 +40,8 @@ inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
 
   nvgTransformPoint(&ox, &oy, _matrix, x, y);
 
-  int lx = ::round(ox);
-  int ly = ::round(oy);
+  int lx = iround(ox);
+  int ly = iround(oy);
 
   if (lx < 0) {
     lx = 0;
