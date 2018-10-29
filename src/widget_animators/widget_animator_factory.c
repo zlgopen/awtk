@@ -219,7 +219,7 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
     }
     case 'e': {
       const key_type_value_t* easing = easing_type_find(value);
-      p->params.easing = easing != NULL ? easing->value : -1;
+      p->params.easing = easing != NULL ? (int32_t)(easing->value) : -1;
       break;
     }
     default:
