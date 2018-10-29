@@ -51,6 +51,8 @@ static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .create = keyboard_create,
                                                   .on_event = window_base_on_event,
                                                   .on_paint_self = window_base_on_paint_self,
+                                                  .on_paint_begin = window_base_on_paint_begin,
+                                                  .on_paint_end = window_base_on_paint_end,
                                                   .set_prop = window_base_set_prop,
                                                   .get_prop = window_base_get_prop,
                                                   .destroy = keyboard_destroy};

@@ -70,19 +70,22 @@ typedef struct _window_base_t {
   window_stage_t stage;
 
   /**
-   * @property {const uint8_t*} theme_data
+   * @property {const uint8_t*} theme_obj
    * @annotation ["get_prop", "private"]
    * 窗口的常量主题数据。
    */
-  const uint8_t* theme_data;
+  const uint8_t* theme_obj;
 
   /*private*/
   const asset_info_t* res_theme;
+  font_manager_t* font_manager;
 } window_base_t;
 
 /*for sub class*/
 ret_t window_base_destroy(widget_t* widget);
 ret_t window_base_on_event(widget_t* widget, event_t* e);
+ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c);
+ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);

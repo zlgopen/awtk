@@ -539,7 +539,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
 
   widget_prepare_text_style(widget, c);
   font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-  if (icon != NULL && image_manager_load(image_manager(), icon, &img) == RET_OK) {
+  if (icon != NULL && widget_load_image(widget, icon, &img) == RET_OK) {
     float_t dpr = system_info()->device_pixel_ratio;
 
     if (text != NULL && text->size > 0) {
@@ -597,7 +597,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   }
 
   if (image_name != NULL) {
-    if (image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+    if (widget_load_image(widget, image_name, &img) == RET_OK) {
       dst = rect_init(0, 0, widget->w, widget->h);
       image_draw_type_t draw_type =
           (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
@@ -668,6 +668,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
   canvas_translate(c, widget->x, widget->y);
 
+  widget_on_paint_begin(widget, c);
 #ifdef USE_FAST_MODE
   if (widget->dirty) {
     widget_t* parent = widget->parent;
@@ -690,7 +691,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 #endif
   widget_on_paint_children(widget, c);
   widget_on_paint_border(widget, c);
-  widget_on_paint_done(widget, c);
+  widget_on_paint_end(widget, c);
 
   widget->dirty = FALSE;
   if (widget->opacity < 0xff) {
@@ -912,13 +913,25 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
-ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
+ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_done) {
-    ret = widget->vt->on_paint_done(widget, c);
+  if (widget->vt->on_paint_begin) {
+    ret = widget->vt->on_paint_begin(widget, c);
+  }
+
+  return ret;
+}
+
+ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->vt->on_paint_end) {
+    ret = widget->vt->on_paint_end(widget, c);
   }
 
   return ret;
@@ -1552,6 +1565,21 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
   widget_prepare_text_style(widget, c);
 
   return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
+}
+
+ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+  value_t v;
+  image_manager_t* imm = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
+                       RET_BAD_PARAMS);
+
+  imm = (image_manager_t*)value_pointer(&v);
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+
+  return image_manager_load(imm, name, bitmap);
 }
 
 const char* widget_get_type(widget_t* widget) {

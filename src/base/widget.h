@@ -43,7 +43,8 @@ typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_border_t)(widget_t* widget, canvas_t* c);
-typedef ret_t (*widget_on_paint_done_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_begin_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_end_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
@@ -75,7 +76,8 @@ typedef struct _widget_vtable_t {
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;
   widget_on_paint_border_t on_paint_border;
-  widget_on_paint_done_t on_paint_done;
+  widget_on_paint_begin_t on_paint_begin;
+  widget_on_paint_end_t on_paint_end;
   widget_on_pointer_down_t on_pointer_down;
   widget_on_pointer_move_t on_pointer_move;
   widget_on_pointer_up_t on_pointer_up;
@@ -1049,6 +1051,18 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
  */
 float_t widget_measure_text(widget_t* widget, const wchar_t* text);
 
+/**
+ * @method widget_load_image
+ * 加载图片。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 图片名。
+ * @param {bitmap_t*} bitmap 图片对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
+
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
     int32_t i = 0;                                                \
@@ -1080,7 +1094,8 @@ ret_t widget_on_paint_background(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
-ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 

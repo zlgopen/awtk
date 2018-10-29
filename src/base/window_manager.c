@@ -516,8 +516,7 @@ static const widget_vtable_t s_window_manager_vtable = {
     .on_paint_children = window_manager_on_paint_children,
     .on_remove_child = wm_on_remove_child,
     .find_target = window_manager_find_target,
-    .destroy = window_manager_destroy
-};
+    .destroy = window_manager_destroy};
 
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);

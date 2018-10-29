@@ -71,8 +71,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  return_value_if_fail(image_manager_load(image_manager(), image->image, &bitmap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget_load_image(widget, image->image, &bitmap) == RET_OK, RET_BAD_PARAMS);
 
   if (vg != NULL) {
     bool_t need_transform = !tk_fequal(image->scale_x, 1) || !tk_fequal(image->scale_y, 1) ||

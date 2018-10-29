@@ -23,6 +23,8 @@
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/window_base.h"
+#include "base/font_manager.h"
+#include "base/image_manager.h"
 #include "base/assets_manager.h"
 #include "base/window_manager.h"
 
@@ -34,7 +36,19 @@ ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t window_base_load_theme_data(widget_t* widget) {
+ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
+  (void)widget;
+  (void)c;
+  return RET_OK;
+}
+
+ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
+  (void)widget;
+  (void)c;
+  return RET_OK;
+}
+
+static ret_t window_base_load_theme_obj(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
 
   const char* theme_name = widget->name;
@@ -48,7 +62,7 @@ static ret_t window_base_load_theme_data(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    window_base->theme_data = window_base->res_theme->data;
+    window_base->theme_obj = theme_create(window_base->res_theme->data);
   }
 
   return RET_OK;
@@ -70,8 +84,20 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
     value_set_str(v, window_base->theme);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_THEME_DATA)) {
-    value_set_pointer(v, (void*)(window_base->theme_data));
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OBJ)) {
+    value_set_pointer(v, (void*)(window_base->theme_obj));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DEFAULT_THEME_OBJ)) {
+    value_set_pointer(v, (void*)(theme()));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
+    value_set_pointer(v, (void*)(image_manager()));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
+    value_set_pointer(v, (void*)(font_manager()));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ASSETS_MANAGER)) {
+    value_set_pointer(v, (void*)(assets_manager()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
     value_set_str(v, window_base->script);
@@ -123,6 +149,10 @@ ret_t window_base_destroy(widget_t* widget) {
   TKMEM_FREE(window_base->open_anim_hint);
   TKMEM_FREE(window_base->close_anim_hint);
 
+  if (window_base->theme_obj != NULL) {
+    theme_destroy(window_base->theme_obj);
+  }
+
   if (window_base->res_theme != NULL) {
     assets_manager_unref(assets_manager(), window_base->res_theme);
   }
@@ -132,11 +162,10 @@ ret_t window_base_destroy(widget_t* widget) {
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
   window_base_t* win = WINDOW_BASE(widget);
-  int a = EVT_WINDOW_WILL_OPEN;
 
   if (e->type == EVT_WINDOW_WILL_OPEN) {
     win->stage = WINDOW_STAGE_CREATED;
-    window_base_load_theme_data(widget);
+    window_base_load_theme_obj(widget);
     widget_update_style_recursive(widget);
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;

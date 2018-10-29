@@ -65,6 +65,14 @@ wh_t canvas_get_height(canvas_t* c) {
   return c->lcd->h;
 }
 
+ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
+  return_value_if_fail(c != NULL && font_manager != NULL, RET_BAD_PARAMS);
+
+  c->font_manager = font_manager;
+
+  return RET_OK;
+}
+
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 

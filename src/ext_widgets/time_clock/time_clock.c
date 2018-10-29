@@ -197,9 +197,9 @@ static ret_t time_clock_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t time_clock_load_image(const char* name, bitmap_t* bitmap) {
+static ret_t time_clock_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
   if (name != NULL && bitmap != NULL) {
-    return image_manager_load(image_manager(), name, bitmap);
+    return widget_load_image(widget, name, bitmap);
   }
 
   return RET_FAIL;
@@ -215,11 +215,11 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
-  if (time_clock_load_image(time_clock->bg_image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->bg_image, &bitmap) == RET_OK) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
 
-  if (time_clock_load_image(time_clock->hour_image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->hour_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
     float_t hour = time_clock->hour + time_clock->minute / 60.0f;
@@ -237,7 +237,7 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
 
-  if (time_clock_load_image(time_clock->minute_image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->minute_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
     float_t minute = time_clock->minute + time_clock->second / 60.0f;
@@ -255,7 +255,7 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
 
-  if (time_clock_load_image(time_clock->second_image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->second_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2;
     float_t dy = 2;
 
@@ -272,7 +272,7 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_draw_image_matrix(c, &bitmap, &matrix);
   }
 
-  if (time_clock_load_image(time_clock->image, &bitmap) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->image, &bitmap) == RET_OK) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
 

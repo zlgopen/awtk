@@ -151,6 +151,10 @@ static const widget_vtable_t s_calibration_win_vtable = {
     .type = WIDGET_TYPE_CALIBRATION_WIN,
     .create = calibration_win_create,
     .on_event = calibration_win_on_event,
+    .set_prop = window_base_set_prop,
+    .get_prop = window_base_get_prop,
+    .on_paint_begin = window_base_on_paint_begin,
+    .on_paint_end = window_base_on_paint_end,
     .on_paint_self = calibration_win_on_paint_self};
 
 ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on_done, void* ctx) {

@@ -140,7 +140,7 @@ static ret_t tab_button_group_on_paint_border(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t tab_button_group_on_paint_done(widget_t* widget, canvas_t* c) {
+static ret_t tab_button_group_on_paint_end(widget_t* widget, canvas_t* c) {
   value_t v;
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (widget_get_prop(iter, WIDGET_PROP_VALUE, &v) == RET_OK && value_bool(&v)) {
@@ -183,7 +183,7 @@ static const widget_vtable_t s_tab_button_group_vtable = {
     .get_prop = tab_button_group_get_prop,
     .on_layout_children = tab_button_group_on_layout_children,
     .on_paint_border = tab_button_group_on_paint_border,
-    .on_paint_done = tab_button_group_on_paint_done,
+    .on_paint_end = tab_button_group_on_paint_end,
     .on_paint_self = tab_button_group_on_paint_self};
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

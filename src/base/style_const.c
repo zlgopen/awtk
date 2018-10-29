@@ -30,32 +30,40 @@ typedef struct _style_const_t {
   const uint8_t* data;
 } style_const_t;
 
-static const uint8_t* widget_get_const_theme_data(widget_t* widget) {
+static ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
+                                     theme_t** default_theme) {
   value_t v;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(win != NULL, NULL);
 
-  if (widget_get_prop(win, WIDGET_PROP_THEME_DATA, &v) == RET_OK) {
-    return (const uint8_t*)value_pointer(&v);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  if (widget_get_prop(win, WIDGET_PROP_THEME_OBJ, &v) == RET_OK) {
+    *win_theme = (theme_t*)value_pointer(&v);
   }
 
-  return NULL;
+  if (widget_get_prop(win, WIDGET_PROP_DEFAULT_THEME_OBJ, &v) == RET_OK) {
+    *default_theme = (theme_t*)value_pointer(&v);
+  }
+
+  return RET_OK;
 }
 
-static const void* widget_get_conststyle_data(widget_t* widget) {
-  theme_t t;
+static const void* widget_get_const_style_data(widget_t* widget) {
   const void* data = NULL;
+  theme_t* win_theme = NULL;
+  theme_t* default_theme = NULL;
   const char* type = widget->vt->type;
   const char* style_name = widget->style != NULL ? widget->style : TK_DEFAULT_STYLE;
   uint32_t state = widget_get_prop_int(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
-  t.data = widget_get_const_theme_data(widget);
-  if (t.data != NULL) {
-    data = theme_find_style(&t, type, style_name, state);
+  return_value_if_fail(widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK, NULL);
+
+  if (win_theme != NULL) {
+    data = theme_find_style(win_theme, type, style_name, state);
   }
 
   if (data == NULL) {
-    data = theme_find_style(theme(), type, style_name, state);
+    data = theme_find_style(default_theme, type, style_name, state);
   }
 
   return data;
@@ -64,7 +72,7 @@ static const void* widget_get_conststyle_data(widget_t* widget) {
 static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widget) {
   style_const_t* style = (style_const_t*)s;
 
-  style->data = widget_get_conststyle_data(widget);
+  style->data = widget_get_const_style_data(widget);
 
   return RET_OK;
 }

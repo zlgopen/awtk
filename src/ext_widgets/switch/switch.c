@@ -189,7 +189,7 @@ static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
 
   if (image_name != NULL) {
     bitmap_t img;
-    if (image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+    if (widget_load_image(widget, image_name, &img) == RET_OK) {
       return switch_on_paint_background_img(widget, c, &img);
     }
   }

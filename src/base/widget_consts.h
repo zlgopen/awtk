@@ -319,13 +319,13 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_STATE_FOR_STYLE
- *
+ * 控件状态。
  */
 #define WIDGET_PROP_STATE_FOR_STYLE "state_for_style"
 
 /**
  * @const WIDGET_PROP_THEME
- *
+ * 窗口主题名称。
  */
 #define WIDGET_PROP_THEME "theme"
 
@@ -336,10 +336,34 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_STAGE "stage"
 
 /**
- * @const WIDGET_PROP_THEME_DATA
- *
+ * @const WIDGET_PROP_IMAGE_MANAGER
+ * 图片管理器。
  */
-#define WIDGET_PROP_THEME_DATA "theme_data"
+#define WIDGET_PROP_IMAGE_MANAGER "image_manager"
+
+/**
+ * @const WIDGET_PROP_ASSETS_MANAGER
+ * 资源管理器。
+ */
+#define WIDGET_PROP_ASSETS_MANAGER "assets_manager"
+
+/**
+ * @const WIDGET_PROP_FONT_MANAGER
+ * 字体管理器。
+ */
+#define WIDGET_PROP_FONT_MANAGER "font_manager"
+
+/**
+ * @const WIDGET_PROP_THEME_OBJ
+ * 窗口的主题对象。
+ */
+#define WIDGET_PROP_THEME_OBJ "theme_obj"
+
+/**
+ * @const WIDGET_PROP_DEFAULT_THEME_OBJ
+ * 缺省的主题对象。
+ */
+#define WIDGET_PROP_DEFAULT_THEME_OBJ "default_theme_obj"
 
 /**
  * @const WIDGET_PROP_SCRIPT

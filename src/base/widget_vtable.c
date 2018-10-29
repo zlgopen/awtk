@@ -177,13 +177,7 @@ ret_t widget_destroy_default(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_on_paint_background_null(widget_t* widget, canvas_t* c) {
-  (void)widget;
-  (void)c;
-  return RET_OK;
-}
-
-ret_t widget_on_paint_done_null(widget_t* widget, canvas_t* c) {
+ret_t widget_on_paint_null(widget_t* widget, canvas_t* c) {
   (void)widget;
   (void)c;
   return RET_OK;
