@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   style.c
  * Author: AWTK Develop Team
  * Brief:  style interface

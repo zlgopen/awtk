@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   scroll_bar.h
  * Author: AWTK Develop Team
  * Brief:  scroll_bar

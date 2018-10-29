@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   guage.h
  * Author: AWTK Develop Team
  * Brief:  guage

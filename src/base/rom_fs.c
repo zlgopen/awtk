@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   rom_file.c
  * Author: AWTK Develop Team
  * Brief:  posix file api for rom data.

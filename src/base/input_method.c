@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   input_method.h
  * Author: AWTK Develop Team
  * Brief:  input method interface.

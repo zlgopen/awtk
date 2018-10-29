@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   edit.h
  * Author: AWTK Develop Team
  * Brief:  edit

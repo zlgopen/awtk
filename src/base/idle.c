@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   idle.c
  * Author: AWTK Develop Team
  * Brief:  idle manager

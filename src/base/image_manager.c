@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_manager.c
  * Author: AWTK Develop Team
  * Brief:  bitmap manager

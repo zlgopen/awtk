@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager

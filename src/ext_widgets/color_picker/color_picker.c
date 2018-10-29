@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   color_picker.
  * Author: AWTK Develop Team
  * Brief:  color_picker

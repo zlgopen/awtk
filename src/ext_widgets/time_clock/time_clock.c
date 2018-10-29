@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   time_clock.h
  * Author: AWTK Develop Team
  * Brief:  time_clock

@@ -1,4 +1,4 @@
-
+﻿
 
 #ifdef WITH_BITMAP_BGRA
 #define rgba_to_image8888(r, g, b, a) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))

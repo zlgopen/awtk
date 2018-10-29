@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   events.c
  * Author: AWTK Develop Team
  * Brief:  events structs

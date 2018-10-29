@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view

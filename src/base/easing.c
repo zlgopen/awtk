@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   easing.c
  * Author: AWTK Develop Team
  * Brief: easing functions.

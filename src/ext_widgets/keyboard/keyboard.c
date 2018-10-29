@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   keyboard.h
  * Author: AWTK Develop Team
  * Brief:  keyboard

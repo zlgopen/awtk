@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   color_parser.h
  * Author: AWTK Develop Team
  * Brief:  color parser

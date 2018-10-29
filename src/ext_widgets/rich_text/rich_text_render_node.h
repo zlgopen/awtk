@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   rich_text_render_node.h
  * Author: AWTK Develop Team
  * Brief:  rich_text_render_node
