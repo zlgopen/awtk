@@ -32,6 +32,15 @@ inline nanovg_image_blender<PixelT, BitmapT>::nanovg_image_blender(BitmapT* bitm
   this->h = bitmap->height();
 }
 
+template <typename PixelTargetT, typename PixelSrcT>
+inline void pixel_linear(PixelTargetT& t, const PixelSrcT& s, float a) {
+ float ma = 1 - a;
+ t.r = s.r*a + t.r*ma;
+ t.g = s.g*a + t.g*ma;
+ t.b = s.b*a + t.b*ma;
+ t.a = s.a*a + t.a*ma;
+}
+
 template <typename PixelT, typename BitmapT>
 inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
                                                              pixel32_rgba& ref) const {
@@ -40,25 +49,36 @@ inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
 
   nvgTransformPoint(&ox, &oy, _matrix, x, y);
 
-  int lx = iround(ox);
-  int ly = iround(oy);
+  pixel32_rgba p[4];   //default is zero
+  int x1 = floor(ox);
+  int x2 = ceil(ox);
+  int y1 = floor(oy);
+  int y2 = ceil(oy);
+  if (x1 >= 0 && x1 < this->w){
+   if (y1 >= 0 && y1 < this->h){
+    p[0].a = 0xff;
+    pixel_convert<pixel32_rgba, typename BitmapT::pixel>(p[0], _bitmap->row_ptr(y1)[x1]);
+   }
+   if (y2 >= 0 && y2 < this->h) {
+    p[2].a = 0xff;
+    pixel_convert<pixel32_rgba, typename BitmapT::pixel>(p[2], _bitmap->row_ptr(y2)[x1]);
+   }
+  }
+  if (x2 >= 0 && x2 < this->w) {
+   if (y1 >= 0 && y1 < this->h) {
+    p[1].a = 0xff;
+    pixel_convert<pixel32_rgba, typename BitmapT::pixel>(p[1], _bitmap->row_ptr(y1)[x2]);
+   }
+   if (y2 >= 0 && y2 < this->h) {
+    p[3].a = 0xff;
+    pixel_convert<pixel32_rgba, typename BitmapT::pixel>(p[3], _bitmap->row_ptr(y2)[x2]);
+   }
+  }
 
-  if (lx < 0) {
-    lx = 0;
-  }
-  if (lx >= this->w) {
-    lx = this->w - 1;
-  }
-
-  if (ly < 0) {
-    ly = 0;
-  }
-  if (ly >= this->h) {
-    ly = this->h - 1;
-  }
-
-  typename BitmapT::pixel p = _bitmap->row_ptr(ly)[lx];
-  pixel_convert<pixel32_rgba, typename BitmapT::pixel>(ref, p);
+  pixel_linear(p[0], p[1], ox - x1);
+  pixel_linear(p[2], p[3], ox - x1);
+  pixel_linear(p[0], p[2], oy - y1);
+  ref = p[0];
 
   return true;
 }

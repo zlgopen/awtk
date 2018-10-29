@@ -9,6 +9,7 @@
   * Windows 支持多线程编译。
   * 将UTF8的源文件转换成UTF8-BOM。
   * 修改编译警告。
+  * nanovg-agge使用双线性插值算法(感谢攀峰)。
 
 * 2018/10/28
   * 调整主题的格式：tab\_button处于active时的style，combo\_box\_item/check\_button/radio\_button处于checked时的style，作为不同状态处理，而不是作为不同的style处理。如果有用到，请参考demo做相应修改。
