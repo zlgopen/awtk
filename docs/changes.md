@@ -1,5 +1,12 @@
 # 最新动态
 
+* 2018/10/29
+  * assets\_manager 支持设置资源路径。
+  * font\_manager 支持设置assets\_manager。
+  * image\_manager 支持设置assets\_manager。
+  * 提供函数widget\_load\_image用于加载图片，实现新控件时请用本函数加载图片。
+  * 控件需要的图片、字体和其它资源均与当前窗口关联，方便在实现designer时，designer本身和被编辑的控件使用不同的资源。
+
 * 2018/10/28
   * 调整主题的格式：tab\_button处于active时的style，combo\_box\_item/check\_button/radio\_button处于checked时的style，作为不同状态处理，而不是作为不同的style处理。如果有用到，请参考demo做相应修改。
   * 修改valgrind发现的一些内存泄露问题。
