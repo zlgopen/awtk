@@ -5,8 +5,6 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
   uint32_t k = 0;
   uint32_t w = 0;
   uint32_t h = 0;
-  uint32_t fb_w = 0;
-  uint32_t img_w = 0;
   pixel_dst_t* src_p = NULL;
   pixel_dst_t* dst_p = NULL;
   uint32_t fb_bpp = bitmap_get_bpp(dst);
@@ -21,8 +19,6 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
 
   w = src_r->w;
   h = src_r->h;
-  fb_w = dst->w;
-  img_w = src->w;
 
   for (i = 0; i < h; i++) {
     pixel_dst_t* s = src_p + w - 1;

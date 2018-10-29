@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget_animator_factory.h
  * Author: AWTK Develop Team
  * Brief:  widget animator factory
@@ -74,7 +74,7 @@ typedef struct _animator_params_t {
   } u;
 
   uint32_t delay;
-  uint32_t easing;
+  int32_t easing;
   uint32_t duration;
   int32_t yoyo_times;
   int32_t repeat_times;
@@ -266,7 +266,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'm': /*move*/
     {
       move_params_t* move = &parser.params.u.move;
-      wa = widget_animator_move_create(widget, duration, delay, easing);
+      wa = widget_animator_move_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_move_set_params(wa, move->x_from, move->y_from, move->x_to, move->y_to);
@@ -275,7 +275,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 's': /*scale*/
     {
       scale_params_t* scale = &parser.params.u.scale;
-      wa = widget_animator_scale_create(widget, duration, delay, easing);
+      wa = widget_animator_scale_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_scale_set_params(wa, scale->x_from, scale->y_from, scale->x_to, scale->y_to);
@@ -284,7 +284,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'r': /*rotation*/
     {
       rotation_params_t* rotation = &parser.params.u.rotation;
-      wa = widget_animator_rotation_create(widget, duration, delay, easing);
+      wa = widget_animator_rotation_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_rotation_set_params(wa, rotation->from, rotation->to);
@@ -293,7 +293,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'v': /*value*/
     {
       value_params_t* value = &parser.params.u.value;
-      wa = widget_animator_value_create(widget, duration, delay, easing);
+      wa = widget_animator_value_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_value_set_params(wa, value->from, value->to);
@@ -302,7 +302,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'o': /*opacity*/
     {
       opacity_params_t* opacity = &parser.params.u.opacity;
-      wa = widget_animator_opacity_create(widget, duration, delay, easing);
+      wa = widget_animator_opacity_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_opacity_set_params(wa, opacity->from, opacity->to);

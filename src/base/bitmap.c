@@ -84,7 +84,7 @@ uint32_t bitmap_get_bpp_of_format(bitmap_format_t format) {
 uint32_t bitmap_get_bpp(bitmap_t* bmp) {
   return_value_if_fail(bmp != NULL, 0);
 
-  return bitmap_get_bpp_of_format(bmp->format);
+  return bitmap_get_bpp_of_format((bitmap_format_t)(bmp->format));
 }
 
 ret_t bitmap_alloc_data(bitmap_t* bitmap) {

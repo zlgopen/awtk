@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   rich_text_render_node.h
  * Author: AWTK Develop Team
  * Brief:  rich_text_render_node
@@ -22,7 +22,7 @@
 #ifndef TK_RICH_TEXT_RENDER_NODE_H
 #define TK_RICH_TEXT_RENDER_NODE_H
 
-#include "base/canvas.h"
+#include "base/widget.h"
 #include "rich_text/rich_text_node.h"
 
 BEGIN_C_DECLS
