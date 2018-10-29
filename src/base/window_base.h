@@ -70,11 +70,11 @@ typedef struct _window_base_t {
   window_stage_t stage;
 
   /**
-   * @property {const uint8_t*} theme_obj
+   * @property {theme_t*} theme_obj
    * @annotation ["get_prop", "private"]
    * 窗口的常量主题数据。
    */
-  const uint8_t* theme_obj;
+  theme_t* theme_obj;
 
   /*private*/
   const asset_info_t* res_theme;
