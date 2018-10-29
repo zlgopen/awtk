@@ -39,20 +39,40 @@ typedef struct _theme_t {
  * @method theme
  * 获取缺省的主题对象。
  * @alias theme_instance
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @return {theme_t*} 返回主题对象。
  */
 theme_t* theme(void);
 
 /**
- * @method theme_init
- * 初始化主题对象。
+ * @method theme_set
+ * 设置缺省的主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_set(theme_t* theme);
+
+/**
+ * @method theme_create
+ * 创建主题对象。
  * @annotation ["constructor"]
  * @param {const uint8_t*} data 主题数据。
  *
  * @return {theme_t*} 返回主题对象。
  */
-theme_t* theme_init(const uint8_t* data);
+theme_t* theme_create(const uint8_t* data);
+
+/**
+ * @method theme_init
+ * 初始化主题对象。
+ * @annotation ["constructor"]
+ * @param {theme_t*} theme 主题对象。
+ * @param {const uint8_t*} data 主题数据。
+ *
+ * @return {theme_t*} 返回主题对象。
+ */
+theme_t* theme_init(theme_t* theme, const uint8_t* data);
 
 /**
  * @method theme_find_style
@@ -66,7 +86,25 @@ theme_t* theme_init(const uint8_t* data);
  */
 const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
                                 widget_state_t widget_state);
+/**
+ * @method theme_deinit
+ * 析构主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_deinit(theme_t* theme);
 
+/**
+ * @method theme_destroy
+ * 析构并释放主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_destroy(theme_t* theme);
+
+/*data related*/
 uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval);
 color_t style_data_get_color(const uint8_t* s, uint32_t name, color_t defval);
 const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defval);

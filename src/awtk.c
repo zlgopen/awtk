@@ -71,7 +71,7 @@ ret_t tk_init_assets() {
         break;
       case ASSET_TYPE_STYLE:
         if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
-          theme_init(iter->data);
+          theme_init(theme(), iter->data);
         }
         break;
     }
@@ -99,6 +99,8 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
+
+  return_value_if_fail(theme_set(theme_create(NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
@@ -119,18 +121,6 @@ ret_t tk_deinit_internal(void) {
   widget_destroy(window_manager());
   window_manager_set(NULL);
 
-  image_manager_destroy(image_manager());
-  image_manager_set(NULL);
-
-  font_manager_destroy(font_manager());
-  font_manager_set(NULL);
-
-  locale_info_destroy(locale_info());
-  locale_info_set(NULL);
-
-  assets_manager_destroy(assets_manager());
-  assets_manager_set(NULL);
-
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);
 
@@ -142,6 +132,21 @@ ret_t tk_deinit_internal(void) {
 
   input_method_destroy(input_method());
   input_method_set(NULL);
+
+  theme_destroy(theme());
+  theme_set(NULL);
+
+  image_manager_destroy(image_manager());
+  image_manager_set(NULL);
+
+  font_manager_destroy(font_manager());
+  font_manager_set(NULL);
+
+  locale_info_destroy(locale_info());
+  locale_info_set(NULL);
+
+  assets_manager_destroy(assets_manager());
+  assets_manager_set(NULL);
 
   return RET_OK;
 }

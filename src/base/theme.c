@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/mem.h"
 #include "base/utils.h"
 #include "base/theme.h"
 #include "base/buffer.h"
@@ -106,15 +107,47 @@ const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char*
   return NULL;
 }
 
-static theme_t s_theme;
-theme_t* theme() {
-  return &s_theme;
+static theme_t* s_theme;
+
+theme_t* theme(void) {
+  return s_theme;
 }
 
-theme_t* theme_init(const uint8_t* data) {
-  return_value_if_fail(data != NULL, NULL);
+ret_t theme_set(theme_t* theme) {
+  s_theme = theme;
 
-  s_theme.data = data;
+  return RET_OK;
+}
 
-  return theme();
+theme_t* theme_create(const uint8_t* data) {
+  theme_t* theme = TKMEM_ZALLOC(theme_t);
+  return_value_if_fail(theme != NULL, NULL);
+
+  return theme_init(theme, data);
+}
+
+theme_t* theme_init(theme_t* theme, const uint8_t* data) {
+  return_value_if_fail(theme != NULL, NULL);
+
+  theme->data = data;
+
+  return theme;
+}
+
+ret_t theme_deinit(theme_t* theme) {
+  return_value_if_fail(theme != NULL, RET_BAD_PARAMS);
+
+  theme->data = NULL;
+
+  return RET_OK;
+}
+
+ret_t theme_destroy(theme_t* theme) {
+  return_value_if_fail(theme != NULL, RET_BAD_PARAMS);
+
+  theme_deinit(theme);
+
+  TKMEM_FREE(theme);
+
+  return RET_OK;
 }
