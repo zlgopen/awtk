@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   assets_manager.h
  * Author: AWTK Develop Team
  * Brief:  asset manager
@@ -27,6 +27,10 @@
 
 static assets_manager_t* s_assets_manager = NULL;
 
+
+#ifdef WITH_FS_RES
+#include "base/fs.h"
+
 static const char* assets_manager_get_res_root(assets_manager_t* rm) {
   if (rm->res_root != NULL) {
     return rm->res_root;
@@ -34,9 +38,6 @@ static const char* assets_manager_get_res_root(assets_manager_t* rm) {
     return system_info()->app_root;
   }
 }
-
-#ifdef WITH_FS_RES
-#include "base/fs.h"
 
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, const char* path,
                                 const char* name) {

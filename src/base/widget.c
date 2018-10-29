@@ -270,7 +270,7 @@ widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active) {
   widget_state_t state = WIDGET_STATE_NORMAL;
   return_value_if_fail(widget != NULL, state);
 
-  state = widget->state;
+  state = (widget_state_t)(widget->state);
   if (!widget->enable) {
     return WIDGET_STATE_DISABLE;
   }
