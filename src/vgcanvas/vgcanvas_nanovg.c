@@ -771,6 +771,7 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
 #elif defined(WITH_NANOVG_AGG)
   nvgDeleteAGG(vg);
 #endif
+  TKMEM_FREE(vgcanvas);
 
   return RET_OK;
 }
