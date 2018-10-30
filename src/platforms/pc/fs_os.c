@@ -214,14 +214,14 @@ ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
-  int32_t size = getcwd(path, MAX_PATH);
+  const char* p = NULL;
 
   (void)fs;
-  if (size >= 0) {
-    path[size] = '\0';
+  *path = '\0';
+  p = getcwd(path, MAX_PATH);
+  if (p != NULL) {
     return RET_OK;
   } else {
-    *path = '\0';
     return RET_FAIL;
   }
 }
