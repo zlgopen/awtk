@@ -53,7 +53,7 @@
      </list_item>
      <list_item style="empty" layout="r1 c0">
       <label w="30%" text="Text"/>
-      <edit w="70%" right_margin="34" tips="searth" min="0" max="150" step="0.1">
+      <edit style="dark" w="70%" right_margin="34" tips="searth" min="0" max="150" step="0.1">
         <button name="clear" style="edit_clear" x="right" y="bottom" w="30" h="100%" />
       </edit>
      </list_item>

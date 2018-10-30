@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2018/10/30
+  * edit的光标颜色从style(fg\_color)中获取。
+
 * 2018/10/29
   * assets\_manager 支持设置资源路径。
   * font\_manager 支持设置assets\_manager。
