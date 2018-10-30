@@ -140,6 +140,7 @@ typedef struct _edit_t {
   bool_t caret_visible;
 
   uint32_t timer_id;
+  uint32_t idle_id;
   input_limit_t limit;
 } edit_t;
 

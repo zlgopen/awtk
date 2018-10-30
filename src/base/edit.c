@@ -23,6 +23,7 @@
 #include "base/utf8.h"
 #include "base/edit.h"
 #include "base/keys.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include "base/utils.h"
 #include "base/enums.h"
@@ -151,7 +152,10 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   if (widget->focused && !edit->readonly && edit->caret_visible) {
-    canvas_set_stroke_color(c, color_init(0, 0, 0, 0xff));
+    color_t black = color_init(0, 0, 0, 0xff);
+    color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
+    canvas_set_stroke_color(c, fg);
+
     canvas_draw_vline(c, edit->caret_x, top_margin, h);
   }
 
@@ -937,15 +941,22 @@ static ret_t edit_destroy(widget_t* widget) {
     timer_remove(edit->timer_id);
     edit->timer_id = TK_INVALID_ID;
   }
+
+  if (edit->idle_id != TK_INVALID_ID) {
+    idle_remove(edit->idle_id);
+    edit->idle_id = TK_INVALID_ID;
+  }
   TKMEM_FREE(edit->tips);
 
   return RET_OK;
 }
 
-static ret_t edit_hook_children_button(void* ctx, event_t* e) {
-  widget_t* edit = WIDGET(ctx);
+static ret_t edit_hook_children_button(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  edit_t* edit = EDIT(widget);
 
-  widget_foreach(edit, edit_hook_button, edit);
+  widget_foreach(widget, edit_hook_button, widget);
+  edit->idle_id = TK_INVALID_ID;
 
   return RET_REMOVE;
 }
@@ -978,7 +989,6 @@ static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
 widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t h,
                     const widget_vtable_t* vt) {
   widget_t* widget = WIDGET(edit);
-  widget_t* win = widget_get_window(parent);
 
   return_value_if_fail(edit != NULL, NULL);
 
@@ -991,8 +1001,7 @@ widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t
   edit_set_text_limit(widget, 0, 1024);
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;
-
-  widget_on(win, EVT_WINDOW_OPEN, edit_hook_children_button, edit);
+  edit->idle_id = idle_add(edit_hook_children_button, edit);
 
   return widget;
 }
