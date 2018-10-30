@@ -27,7 +27,6 @@
 
 static assets_manager_t* s_assets_manager = NULL;
 
-
 #ifdef WITH_FS_RES
 #include "base/fs.h"
 

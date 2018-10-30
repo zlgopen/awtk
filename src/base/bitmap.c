@@ -100,7 +100,7 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
     memset(data, 0x00, size);
     bitmap->data_free_ptr = data;
     bitmap->should_free_data = TRUE;
-    while (((uint32_t)(data-(uint8_t*)NULL)) % BITMAP_ALIGN_SIZE) {
+    while (((uint32_t)(data - (uint8_t*)NULL)) % BITMAP_ALIGN_SIZE) {
       data++;
     }
     bitmap->data = data;
