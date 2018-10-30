@@ -147,7 +147,7 @@ TEST(Canvas, draw_points) {
   lcd_log_reset(lcd);
   POINTS3(100, 100, 200, 200, 300, 300);
   canvas_draw_points(&c, points, 3);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dps((100,100)(200,200)(300,300));");
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dps((100,100)(200,200));");
 
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);

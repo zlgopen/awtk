@@ -2,6 +2,7 @@
 
 * 2018/10/30
   * edit的光标颜色从style(fg\_color)中获取。
+  * 修改canvas裁剪算法存在的BUG。
 
 * 2018/10/29
   * assets\_manager 支持设置资源路径。
