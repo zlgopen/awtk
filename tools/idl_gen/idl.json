@@ -655,6 +655,27 @@
             "desc": "asset manager对象。"
           },
           {
+            "type": "const char*",
+            "name": "res_root",
+            "desc": "资源所在的目录。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置资源所在的目录(其下目录结构请参考demos)。",
+        "name": "assets_manager_set_res_root",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "rm",
+            "desc": "asset manager对象。"
+          },
+          {
             "type": "asset_info_t",
             "name": "info",
             "desc": "待增加的资源。"
@@ -5116,6 +5137,27 @@
         "params": [
           {
             "type": "font_manager_t*",
+            "name": "imm",
+            "desc": "图片管理器对象。"
+          },
+          {
+            "type": "assets_manager_t*",
+            "name": "assets_manager",
+            "desc": "资源管理器。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置资源管理器对象",
+        "name": "font_manager_set_assets_manager",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "font_manager_t*",
             "name": "fm",
             "desc": "字体管理器对象。"
           },
@@ -5197,7 +5239,24 @@
         }
       }
     ],
-    "properties": [],
+    "properties": [
+      {
+        "name": "loader",
+        "desc": "字体加载器。",
+        "type": "font_loader_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "assets_manager",
+        "desc": "资源管理器。",
+        "type": "assets_manager_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
     "header": "base/font_manager.h",
     "desc": "字体管理器。(如果使用nanovg，字体由nanovg内部管理)",
     "name": "font_manager_t"
@@ -5833,6 +5892,27 @@
             "desc": "图片管理器对象。"
           },
           {
+            "type": "assets_manager_t*",
+            "name": "assets_manager",
+            "desc": "资源管理器。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置资源管理器对象",
+        "name": "image_manager_set_assets_manager",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "image_manager_t*",
+            "name": "imm",
+            "desc": "图片管理器对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "time_delta_s",
             "desc": "时间范围，单位为秒。"
@@ -5965,6 +6045,14 @@
         "name": "loader",
         "desc": "图片加载器。",
         "type": "image_loader_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "assets_manager",
+        "desc": "资源管理器。",
+        "type": "assets_manager_t*",
         "annotation": {
           "private": true
         }
@@ -10521,7 +10609,8 @@
       {
         "params": [],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": "获取缺省的主题对象。",
         "name": "theme",
@@ -10533,6 +10622,45 @@
       },
       {
         "params": [
+          {
+            "type": "theme_t*",
+            "name": "theme",
+            "desc": "主题对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的主题对象。",
+        "name": "theme_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const uint8_t*",
+            "name": "data",
+            "desc": "主题数据。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建主题对象。",
+        "name": "theme_create",
+        "return": {
+          "type": "theme_t*",
+          "desc": "返回主题对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "theme_t*",
+            "name": "theme",
+            "desc": "主题对象。"
+          },
           {
             "type": "const uint8_t*",
             "name": "data",
@@ -10578,6 +10706,38 @@
         "return": {
           "type": "theme_t*",
           "desc": "返回主题对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "theme_t*",
+            "name": "theme",
+            "desc": "主题对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构主题对象。",
+        "name": "theme_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "theme_t*",
+            "name": "theme",
+            "desc": "主题对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放主题对象。",
+        "name": "theme_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
@@ -14110,11 +14270,11 @@
         "name": "WIDGET_PROP_ROW"
       },
       {
-        "desc": "",
+        "desc": "控件状态。",
         "name": "WIDGET_PROP_STATE_FOR_STYLE"
       },
       {
-        "desc": "",
+        "desc": "窗口主题名称。",
         "name": "WIDGET_PROP_THEME"
       },
       {
@@ -14122,8 +14282,24 @@
         "name": "WIDGET_PROP_STAGE"
       },
       {
-        "desc": "",
-        "name": "WIDGET_PROP_THEME_DATA"
+        "desc": "图片管理器。",
+        "name": "WIDGET_PROP_IMAGE_MANAGER"
+      },
+      {
+        "desc": "资源管理器。",
+        "name": "WIDGET_PROP_ASSETS_MANAGER"
+      },
+      {
+        "desc": "字体管理器。",
+        "name": "WIDGET_PROP_FONT_MANAGER"
+      },
+      {
+        "desc": "窗口的主题对象。",
+        "name": "WIDGET_PROP_THEME_OBJ"
+      },
+      {
+        "desc": "缺省的主题对象。",
+        "name": "WIDGET_PROP_DEFAULT_THEME_OBJ"
       },
       {
         "desc": "",
@@ -16254,6 +16430,34 @@
           "type": "float_t",
           "desc": "返回文本的宽度。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "图片名。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "图片对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "加载图片。",
+        "name": "widget_load_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "properties": [
@@ -16745,9 +16949,9 @@
         }
       },
       {
-        "name": "theme_data",
+        "name": "theme_obj",
         "desc": "窗口的常量主题数据。",
-        "type": "const uint8_t*",
+        "type": "theme_t*",
         "annotation": {
           "get_prop": true,
           "private": true
