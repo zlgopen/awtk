@@ -397,6 +397,7 @@ static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_
   mem->offline_fb = offline_fb;
   mem->online_fb = online_fb;
   mem->next_fb = next_fb;
+  lcd->support_dirty_rect = FALSE;
 
   return lcd;
 }
