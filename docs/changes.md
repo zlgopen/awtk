@@ -1,8 +1,10 @@
 # 最新动态
 
 * 2018/10/31
-  * 修改keyboard崩溃的问题(异步关闭keyboard时，对应的窗口已经关闭)。
+  * 修改keyboard崩溃的问题(关闭窗口时自动关闭对应的keyboard)。
   * 修改keyboard刷新的问题(新keyboard和旧keyboard的高度不一致导致的)。
+  * 增加tk\_roundi/tk\_clampi。
+  * 修3framebuffer的BUG。
 
 * 2018/10/30
   * edit的光标颜色从style(fg\_color)中获取。
