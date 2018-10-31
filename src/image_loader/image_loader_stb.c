@@ -31,7 +31,6 @@
 
 ret_t stb_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image, bool_t require_bgra,
                      bool_t enable_bgr565) {
-  int i = 0;
   int w = 0;
   int h = 0;
   int n = 0;
