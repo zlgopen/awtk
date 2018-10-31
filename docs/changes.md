@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2018/10/31
+  * 修改keyboard崩溃的问题(异步关闭keyboard时，对应的窗口已经关闭)。
+  * 修改keyboard刷新的问题(新keyboard和旧keyboard的高度不一致导致的)。
+
 * 2018/10/30
   * edit的光标颜色从style(fg\_color)中获取。
   * 修改canvas裁剪算法存在的BUG。

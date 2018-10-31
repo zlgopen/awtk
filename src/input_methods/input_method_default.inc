@@ -69,6 +69,16 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
   return keyboard;
 }
 
+static ret_t input_method_on_win_destroy(void* ctx, event_t* e) {
+  input_method_t* im = (input_method_t*)ctx;
+
+  im->widget = NULL;
+  im->win = NULL;
+  (void)e;
+
+  return RET_REMOVE;
+}
+
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
   im->win->y -= im->win_delta_y;
@@ -84,7 +94,7 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
     im->win = NULL;
   }
 
-  return RET_REMOVE;
+  return RET_OK;
 }
 
 static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bool_t open_anim) {
@@ -106,12 +116,20 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     im->win = win;
     im->win_delta_y = win->y + win->h - im->keyboard->y;
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
+  } else if (win->y + win->h < im->keyboard->y) {
+    /*when new keyboard height is not eq old keyboard height*/
+    close_anim_hint = "vtranslate";
+    im->win_delta_y += win->y + win->h - im->keyboard->y;
+    win->y = im->keyboard->y - win->h;
+    widget_invalidate_force(im->win);
   }
 
   value_set_str(&v, open_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+
+  widget_on(win, EVT_DESTROY, input_method_on_win_destroy, im);
 
   return RET_OK;
 }
