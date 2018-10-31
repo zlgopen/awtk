@@ -25,6 +25,7 @@
 #include "keyboard/keyboard.h"
 #include "suggest_words.inc"
 #include "base/input_method.h"
+#include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
 static const char* input_type_to_keyboard_name(int32_t input_type) {
@@ -69,16 +70,6 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
   return keyboard;
 }
 
-static ret_t input_method_on_win_destroy(void* ctx, event_t* e) {
-  input_method_t* im = (input_method_t*)ctx;
-
-  im->widget = NULL;
-  im->win = NULL;
-  (void)e;
-
-  return RET_REMOVE;
-}
-
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
   im->win->y -= im->win_delta_y;
@@ -95,6 +86,23 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
   }
 
   return RET_OK;
+}
+
+static ret_t input_method_on_win_close(void* ctx, event_t* e) {
+  input_method_t* im = (input_method_t*)ctx;
+
+  input_method_default_restore_win_position(im);
+
+  if (im->keyboard != NULL) {
+    window_manager_close_window_force(im->keyboard->parent, im->keyboard);
+    im->keyboard = NULL;
+  }
+
+  im->widget = NULL;
+  im->win = NULL;
+  (void)e;
+
+  return RET_REMOVE;
 }
 
 static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bool_t open_anim) {
@@ -129,7 +137,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
 
-  widget_on(win, EVT_DESTROY, input_method_on_win_destroy, im);
+  widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
 
   return RET_OK;
 }
