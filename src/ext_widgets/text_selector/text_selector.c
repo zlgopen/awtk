@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_selector.h
  * Author: AWTK Develop Team
  * Brief:  text_selector
@@ -337,7 +337,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     yoffset_end = max_yoffset;
   }
 
-  yoffset_end = round((float)yoffset_end / (float)item_height) * item_height;
+  yoffset_end = tk_roundi((float)yoffset_end / (float)item_height) * item_height;
   text_selector_scroll_to(widget, yoffset_end);
 
   return RET_OK;

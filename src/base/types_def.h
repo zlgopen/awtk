@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -245,17 +245,11 @@ typedef enum _lcd_orientation_t {
 
 typedef void* pointer_t;
 
-#ifndef tk_min
 #define tk_min(a, b) ((a) < (b) ? (a) : (b))
-#endif /*tk_min*/
-
-#ifndef tk_abs
 #define tk_abs(a) ((a) < (0) ? (-a) : (a))
-#endif /*tk_abs*/
-
-#ifndef tk_max
 #define tk_max(a, b) ((a) > (b) ? (a) : (b))
-#endif /*tk_max*/
+#define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
+#define tk_clampi(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
