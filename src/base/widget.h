@@ -23,6 +23,7 @@
 #define TK_WIDGET_H
 
 #include "base/str.h"
+#include "base/mem.h"
 #include "base/wstr.h"
 #include "base/value.h"
 #include "base/rect.h"
@@ -181,9 +182,16 @@ struct _widget_t {
    */
   uint8_t is_window : 1;
   /**
+   * @property {bool_t} is_designing_window
+   * @annotation ["readable"]
+   * 是否是设计窗口。
+   */
+  uint8_t is_designing_window: 1;
+
+  /**
    * @property {uint8_t} state
    * @annotation ["readable"]
-   * 控件的状态。
+   * 控件的状态(取值参考widget_state_t)。
    */
   uint8_t state;
   /**

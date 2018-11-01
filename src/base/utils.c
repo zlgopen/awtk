@@ -516,3 +516,26 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
 
   return RET_OK;
 }
+
+char* tk_str_copy(char* dst, const char* src) {
+  if (src != NULL) {
+    uint32_t size = strlen(src) + 1;
+    if (dst != NULL) {
+      char* str = TKMEM_REALLOC(char, dst, size);
+      return_value_if_fail(str != NULL, dst);
+      memcpy(str, src, size);
+      dst = str;
+    } else {
+      char* str = (char*)TKMEM_ALLOC(size);
+      return_value_if_fail(str != NULL, dst);
+      memcpy(str, src, size);
+      dst = str;
+    }
+  } else {
+    if (dst != NULL) {
+      *dst = '\0';
+    }
+  }
+
+  return dst;
+}
