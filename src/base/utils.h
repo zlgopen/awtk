@@ -33,8 +33,10 @@ const char* tk_skip_to_num(const char* str);
 const char* tk_itoa(char* str, int len, int n);
 const char* tk_ftoa(char* str, int len, double f);
 long tk_strtol(const char* str, const char** end, int base);
+
 char* tk_strncpy(char* dst, const char* src, size_t len);
 char* tk_strdup(const char* str);
+
 char* tk_strndup(const char* str, uint32_t len);
 ret_t tk_str_append(char* str, uint32_t max_len, const char* s);
 
@@ -51,6 +53,10 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size);
 
 /*expand include process instruction to file content: <?include filename="view_me.inc" ?>*/
 ret_t xml_file_expand_read(const char* filename, str_t* s);
+
+/*XXX:
+ * 本函数仅供内部使用，可以提高速度，但使用不当极度危险。它要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址*/
+char* tk_str_copy(char* dst, const char* src);
 
 END_C_DECLS
 

@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2018/11/01
+  * 增加style\_mutable，支持动态修改style(仅在编辑模式下启用)。
+  * 增强style\_factory，支持不同格式的style。比如想支持CSS，可以提供一个CSS的style\_factory。
+  * 更新文档。
+
 * 2018/10/31
   * 修改keyboard崩溃的问题(关闭窗口时自动关闭对应的keyboard)。
   * 修改keyboard刷新的问题(新keyboard和旧keyboard的高度不一致导致的)。

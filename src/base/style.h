@@ -125,45 +125,23 @@ typedef enum _style_id_t {
   STYLE_ID_ICON_AT
 } style_id_t;
 
-/*遍历的回调函数*/
-typedef ret_t (*tk_on_style_item_t)(void* ctx, uint32_t widget_state, style_id_t id,
-                                    const char* val);
-
 struct _style_t;
 typedef struct _style_t style_t;
-
-typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
 
 typedef bool_t (*style_is_valid_t)(style_t* s);
 typedef int32_t (*style_get_int_t)(style_t* s, style_id_t id, int32_t defval);
 typedef color_t (*style_get_color_t)(style_t* s, style_id_t id, color_t defval);
 typedef const char* (*style_get_str_t)(style_t* s, style_id_t id, const char* defval);
+typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
 
-typedef const char* (*style_get_name_t)(style_t* s);
-typedef ret_t (*style_set_name_t)(style_t* s, const char* name);
-typedef ret_t (*style_set_int_t)(style_t* s, widget_state_t state, style_id_t id, uint32_t val);
-typedef ret_t (*style_set_color_t)(style_t* s, widget_state_t state, style_id_t id, color_t val);
-typedef ret_t (*style_set_str_t)(style_t* s, widget_state_t state, style_id_t id, const char* val);
-
-typedef ret_t (*style_foreach_t)(style_t* s, tk_on_style_item_t on_style_item, void* ctx);
 typedef ret_t (*style_destroy_t)(style_t* s);
 
 typedef struct _style_vtable_t {
-  style_notify_widget_state_changed_t notify_widget_state_changed;
-
   style_is_valid_t is_valid;
   style_get_int_t get_int;
   style_get_str_t get_str;
   style_get_color_t get_color;
-
-  style_set_name_t set_name;
-  style_get_name_t get_name;
-
-  style_set_int_t set_int;
-  style_set_color_t set_color;
-  style_set_str_t set_str;
-
-  style_foreach_t foreach;
+  style_notify_widget_state_changed_t notify_widget_state_changed;
 
   style_destroy_t destroy;
 } style_vtable_t;
@@ -232,76 +210,6 @@ color_t style_get_color(style_t* s, style_id_t id, color_t defval);
  * @return {const char*} 返回字符串格式的值。
  */
 const char* style_get_str(style_t* s, style_id_t id, const char* defval);
-
-/**
- * @method style_get_name
- * 获取style的名称(子类可以选择是否实现)。
- * @annotation ["scriptable"]
- * @param {style_t*} s style对象。
- *
- * @return {const char*} style的名称。
- */
-const char* style_get_name(style_t* s);
-
-/**
- * @method style_set_name
- * 设置style的名称(子类可以选择是否实现)。
- * @annotation ["scriptable"]
- * @param {style_t*} s style对象。
- * @param {const char*} name 名称。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_set_name(style_t* s, const char* name);
-
-/**
- * @method style_set_int
- * 设置指定id整数格式的值(子类可以选择是否实现)。
- * @annotation ["scriptable"]
- * @param {style_t*} s style对象。
- * @param {widget_state_t} state 控件状态。
- * @param {style_id_t} id 属性ID。
- * @param {int32_t} val 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_set_int(style_t* s, widget_state_t state, style_id_t id, uint32_t val);
-
-/**
- * @method style_set_color
- * 设置指定id的颜色值(子类可以选择是否实现)。
- * @param {style_t*} s style对象。
- * @param {widget_state_t} state 控件状态。
- * @param {style_id_t} id 属性ID。
- * @param {color_t} val 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_set_color(style_t* s, widget_state_t state, style_id_t id, color_t val);
-
-/**
- * @method style_set_str
- * 设置指定id字符串的值(子类可以选择是否实现)。
- * @annotation ["scriptable"]
- * @param {style_t*} s style对象。
- * @param {widget_state_t} state 控件状态。
- * @param {style_id_t} id 属性ID。
- * @param {const char*} val 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_set_str(style_t* s, widget_state_t state, style_id_t id, const char* val);
-
-/**
- * @method style_foreach
- * 遍历。对每项调用回调函数on_style_item。
- * @param {style_t*} s style对象。
- * @param {tk_on_style_item_t} on_style_item 回调函数。
- * @param {void*} ctx 回调函数的上下文。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_foreach(style_t* s, tk_on_style_item_t on_style_item, void* ctx);
 
 /**
  * @method style_destroy

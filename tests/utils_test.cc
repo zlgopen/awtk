@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include "base/mem.h"
 #include "base/utils.h"
 #include "gtest/gtest.h"
 
@@ -218,4 +219,29 @@ TEST(Utils, str_append) {
 
   ASSERT_EQ(tk_str_append(str, sizeof(str), "6"), RET_FAIL);
   ASSERT_EQ(string(str), string("12345"));
+}
+
+TEST(Utils, tk_str_copy) {
+  char* p = NULL;
+  char* str = (char*)TKMEM_ALLOC(6);
+
+  p = tk_str_copy(str, "abc");
+  ASSERT_EQ(str, p);
+
+  p = tk_str_copy(str, "abcdef");
+  ASSERT_NE(str, p);
+  ASSERT_EQ(string(p), "abcdef");
+  str = p;
+
+  p = tk_str_copy(str, "abcdef");
+  ASSERT_EQ(str, p);
+  ASSERT_EQ(string(p), "abcdef");
+  str = p;
+
+  p = tk_str_copy(str, "abcdef123");
+  ASSERT_NE(str, p);
+  ASSERT_EQ(string(p), "abcdef123");
+  str = p;
+
+  TKMEM_FREE(str);
 }

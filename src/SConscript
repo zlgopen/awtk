@@ -12,6 +12,7 @@ sources=Glob('base/*.c') +\
   Glob('ext_widgets/*.c') + \
   Glob('ext_widgets/*/*.c') + \
   Glob('image_loader/*.c') + \
+  Glob('designer_support/*.c') + \
   Glob('widget_animators/*.c') + \
   Glob('platforms/pc/*.c') + \
   Glob('misc/*.cpp') + \

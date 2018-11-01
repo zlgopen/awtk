@@ -1320,7 +1320,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   }
 
   if (vt && !tk_str_eq(vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
-    widget->astyle = style_factory_create_style(widget);
+    widget->astyle = style_factory_create_style(style_factory(), widget);
   }
 
   if (parent != NULL && widget_is_window_opened(widget)) {
