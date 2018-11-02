@@ -4,6 +4,7 @@
   * update\_res.py增加参数，可以只更新指定类型的资源，以提高开发的效率。
   * update\_res.py放到scripts目录下(可在awtk目录或scripts目录运行)。
   * 增加函数widget\_add\_timer，增加的timer在控件销毁时，自动销毁。
+  * 改进button，先收到pointer\_down事件，再收到pointer\_up事件，才触发click事件。
 
 * 2018/11/01
   * 增加style\_mutable，支持动态修改style(仅在编辑模式下启用)。

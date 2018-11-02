@@ -51,7 +51,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN: {
       button->repeat_nr = 0;
-      button->point_down_aborted = FALSE;
+      button->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
@@ -64,7 +64,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
-      button->point_down_aborted = TRUE;
+      button->pressed = FALSE;
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
@@ -74,7 +74,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       widget_ungrab(widget->parent, widget);
-      if (!button->point_down_aborted) {
+      if (button->pressed) {
         pointer_event_t evt = *(pointer_event_t*)e;
         point_t p = {evt.x, evt.y};
         widget_to_local(widget, &p);
@@ -88,14 +88,19 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
         timer_remove(button->timer_id);
         button->timer_id = TK_INVALID_ID;
       }
+      button->pressed = FALSE;
       break;
     }
     case EVT_POINTER_LEAVE:
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
-    case EVT_POINTER_ENTER:
-      widget_set_state(widget, WIDGET_STATE_OVER);
+    case EVT_POINTER_ENTER: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      if (button->pressed || !evt->pressed) {
+        widget_set_state(widget, WIDGET_STATE_OVER);
+      }
       break;
+    }
     default:
       break;
   }
