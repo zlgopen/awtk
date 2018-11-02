@@ -1190,6 +1190,23 @@ widget_t* widget_get_window_manager(widget_t* widget) {
   return iter;
 }
 
+static ret_t widget_remove_timer_on_destroy(void* ctx, event_t* e) {
+  uint32_t id = (char*)ctx - (char*)NULL;
+  timer_remove(id);
+
+  return RET_REMOVE;
+}
+
+uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms) {
+  uint32_t id = 0;
+  return_value_if_fail(widget != NULL && on_timer != NULL, TK_INVALID_ID);
+
+  id = timer_add(on_timer, widget, duration_ms);
+  widget_on(widget, EVT_DESTROY, widget_remove_timer_on_destroy, ((char*)NULL) + id);
+
+  return id;
+}
+
 static ret_t widget_destroy_only(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);

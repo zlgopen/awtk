@@ -93,7 +93,7 @@ ret_t timer_init(timer_get_time_t get_time);
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
  *
- * @return {uint32_t} 返回timer的ID，0表示失败。
+ * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
 uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 

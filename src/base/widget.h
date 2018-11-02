@@ -27,6 +27,7 @@
 #include "base/wstr.h"
 #include "base/value.h"
 #include "base/rect.h"
+#include "base/timer.h"
 #include "base/events.h"
 #include "base/emitter.h"
 #include "base/canvas.h"
@@ -1000,6 +1001,17 @@ ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_layout(widget_t* widget);
+
+/**
+ * @method widget_add_timer
+ * 创建一个timer，该timer在控件销毁时自动销毁，timer_info_t的ctx为widget。
+ * @param {widget_t*} widget 控件对象。
+ * @param {timer_func_t} on_timer timer回调函数。
+ * @param {uint32_t} duration_ms 时间。
+ *
+ * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
  * @method widget_cast

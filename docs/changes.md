@@ -3,6 +3,7 @@
   * 修改tools下的资源生成工具，只在资源变化时才更新资源，以提高开发的效率。
   * update\_res.py增加参数，可以只更新指定类型的资源，以提高开发的效率。
   * update\_res.py放到scripts目录下(可在awtk目录或scripts目录运行)。
+  * 增加函数widget\_add\_timer，增加的timer在控件销毁时，自动销毁。
 
 * 2018/11/01
   * 增加style\_mutable，支持动态修改style(仅在编辑模式下启用)。

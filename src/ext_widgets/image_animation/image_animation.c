@@ -130,7 +130,8 @@ static ret_t image_animation_on_open(void* ctx, event_t* e) {
 
   if (image_animation->auto_play) {
     if (image_animation->delay > 0) {
-      image_animation->timer_id = timer_add(image_animation_delay_play, widget, image_animation->delay);
+      image_animation->timer_id =
+          timer_add(image_animation_delay_play, widget, image_animation->delay);
     } else {
       image_animation_play(widget);
     }

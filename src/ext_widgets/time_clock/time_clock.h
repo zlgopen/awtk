@@ -85,8 +85,6 @@ typedef struct _time_clock_t {
    */
   char* second_image;
 
-  /*private*/
-  uint32_t timer_id;
 } time_clock_t;
 
 /**
