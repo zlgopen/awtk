@@ -93,6 +93,7 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
       *image = iter->image;
       image->destroy = NULL;
       image->specific_destroy = NULL;
+      image->should_free_data = FALSE;
 
       iter->access_count++;
       iter->last_access_time = time_now_s();
