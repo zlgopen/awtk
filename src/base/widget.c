@@ -997,14 +997,15 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return ret;
 }
 
-static ret_t widget_dispatch_leave_event(widget_t* widget) {
+static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
   widget_t* target = widget;
 
   while (target != NULL) {
     widget_t* curr = target;
-    event_t e = event_init(EVT_POINTER_LEAVE, target);
+    pointer_event_t leave = *e;
+    leave.e.type = EVT_POINTER_LEAVE;
 
-    widget_dispatch(target, &e);
+    widget_dispatch(target, (event_t*)(&leave));
     target = curr->target;
     curr->target = NULL;
   }
@@ -1077,12 +1078,14 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   target = widget_find_target(widget, e->x, e->y);
   if (target != widget->target) {
     if (widget->target != NULL) {
-      widget_dispatch_leave_event(widget->target);
+      widget_dispatch_leave_event(widget->target, e);
     }
 
     if (target != NULL) {
-      event_t enter = event_init(EVT_POINTER_ENTER, target);
-      widget_dispatch(target, &enter);
+      pointer_event_t enter = *e;
+      enter.e.type = EVT_POINTER_ENTER;
+
+      widget_dispatch(target, (event_t*)(&enter));
     }
     widget->target = target;
   }
