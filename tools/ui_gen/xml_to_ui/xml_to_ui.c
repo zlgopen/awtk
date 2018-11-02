@@ -50,6 +50,8 @@ int main(int argc, char** argv) {
   in_filename = argv[1];
   out_filename = argv[2];
 
+  exit_if_need_not_update(in_filename, out_filename);
+
   str_init(&s, 0);
 
   return_value_if_fail(xml_file_expand_read(in_filename, &s) == RET_OK, 0);

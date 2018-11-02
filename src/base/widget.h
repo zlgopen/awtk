@@ -186,7 +186,7 @@ struct _widget_t {
    * @annotation ["readable"]
    * 是否是设计窗口。
    */
-  uint8_t is_designing_window: 1;
+  uint8_t is_designing_window : 1;
 
   /**
    * @property {uint8_t} state

@@ -27,6 +27,8 @@
 
 BEGIN_C_DECLS
 
+void exit_if_need_not_update(const char* in, const char* out);
+
 int unique(wchar_t* str, int size);
 char* read_file(const char* file_name, uint32_t* length);
 ret_t write_file(const char* file_name, const void* buff, uint32_t length);

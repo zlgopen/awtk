@@ -32,6 +32,33 @@
 #include "base/path.h"
 #include "base/assets_manager.h"
 
+void exit_if_need_not_update(const char* in, const char* out) {
+  struct stat st_in;
+  struct stat st_out;
+
+  memset(&st_in, 0x00, sizeof(st_in));
+  memset(&st_out, 0x00, sizeof(st_out));
+
+  if (in == NULL || out == NULL) {
+    log_debug("invalid params: %s %s\n", in, out);
+    exit(-1);
+  }
+
+  if (stat(in, &st_in) < 0) {
+    log_debug("%s not exist\n", in);
+    exit(-1);
+  }
+
+  if (stat(out, &st_out) < 0) {
+    return;
+  }
+
+  if (st_in.st_mtime < st_out.st_mtime || st_in.st_atime < st_out.st_mtime) {
+    log_debug("Skip because: %s is newer than %s\n", out, in);
+    exit(0);
+  }
+}
+
 char* read_file(const char* file_name, uint32_t* length) {
   return file_read(file_name, length);
 }
