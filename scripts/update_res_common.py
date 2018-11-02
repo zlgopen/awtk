@@ -151,7 +151,7 @@ def genIncludes(files):
   str1 = ""
   for f in files:
     incf = copy.copy(f);
-    incf=incf.replace(ASSETS_ROOT, ".");
+    incf=incf.replace(os.path.dirname(ASSETS_ROOT), ".");
     incf=incf.replace('\\', '/');
     incf=incf.replace('./', '');
     str1 += '#include "'+incf+'"\n'
