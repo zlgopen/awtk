@@ -61,9 +61,8 @@ bool_t value_bool(const value_t* v) {
       return v->value.f64 ? TRUE : FALSE;
     }
     case VALUE_TYPE_STRING: {
-      return (v->value.str == NULL || v->value.str[0] == '\0' || strcmp(v->value.str, "false") == 0)
-                 ? FALSE
-                 : TRUE;
+      const char* str = v->value.str;
+      return (str == NULL || *str == '0' || *str == 'f' || *str == 'F') ? FALSE : TRUE;
     }
     default:
       break;
