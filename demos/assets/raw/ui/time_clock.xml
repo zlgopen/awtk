@@ -1,6 +1,11 @@
 <window anim_hint="htranslate" >
-  <time_clock x="c" y="m" w="300" h="300" hour="11" minute="59" second="55"
-    bg_image="clock_bg" image="clock" 
+  <time_clock x="c" y="m" w="300" h="300" bg_image="clock_bg" image="clock" 
     hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/>
+
+  <digit_clock x="c" y="10" w="300" h="30" show_time="false"/>
+  <digit_clock x="c" y="40" w="300" h="30" show_date="false"/>
+  <digit_clock x="c" y="70" w="300" h="30" format="%02d:%02d" show_date="false"/>
+  <digit_clock x="c" y="bottom:50" w="300" h="30" />
+
   <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

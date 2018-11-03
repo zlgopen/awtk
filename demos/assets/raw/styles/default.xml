@@ -135,6 +135,12 @@
   </style>
 </spin_box>
 
+<digit_clock>
+  <style name="default">
+    <normal text_color="black" />
+  </style>
+</digit_clock>
+
 <label>
   <style name="default">
     <normal text_color="black" />
