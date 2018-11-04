@@ -33,10 +33,12 @@ typedef uint32_t (*timer_get_time_t)();
 typedef ret_t (*timer_func_t)(const timer_info_t* timer);
 
 typedef struct _timer_manager_t {
-  array_t timers[2];
   uint32_t active;
   uint32_t next_timer_id;
   timer_get_time_t get_time;
+  bool_t dispatching;
+  uint32_t last_dispatch_time;
+  struct _timer_info_t* first;
 } timer_manager_t;
 
 struct _timer_info_t {
@@ -46,9 +48,14 @@ struct _timer_info_t {
   uint32_t now;
   uint32_t start;
   uint32_t duration_ms;
+  uint32_t delta_time;
+  ;
   void* on_destroy_ctx;
   tk_destroy_t on_destroy;
   timer_manager_t* timer_manager;
+  bool_t pending_destroy;
+
+  struct _timer_info_t* next;
 };
 
 timer_manager_t* timer_manager(void);

@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include "base/utils.h"
 #include "base/timer.h"
 #include "gtest/gtest.h"
 
@@ -21,6 +22,14 @@ static void timer_clear_log(void) {
 static ret_t timer_once(const timer_info_t* timer) {
   s_log += "o:";
   return RET_OK;
+}
+
+static ret_t timer_delta_time(const timer_info_t* timer) {
+  char str[32];
+  tk_snprintf(str, sizeof(str), "%d:%d", timer->now, timer->delta_time);
+  s_log += str;
+
+  return RET_REPEAT;
 }
 
 static ret_t timer_repeat(const timer_info_t* timer) {
@@ -56,7 +65,7 @@ static string repeat_str(const string& substr, uint32_t nr) {
   return str;
 }
 
-#define NR 10
+#define NR 100
 
 TEST(Timer, once) {
   uint32_t i = 0;
@@ -81,6 +90,26 @@ TEST(Timer, once) {
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), 0);
   ASSERT_EQ(s_log, repeat_str("o:", NR));
+
+  timer_manager_destroy(tm);
+}
+
+TEST(Timer, delta_time) {
+  timer_manager_t* tm = NULL;
+
+  timer_set_time(80);
+  tm = timer_manager_create(timer_get_time);
+
+  timer_clear_log();
+  timer_manager_add(tm, timer_delta_time, NULL, 10);
+  timer_set_time(100);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(s_log, "100:20");
+
+  timer_clear_log();
+  timer_set_time(118);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(s_log, "118:18");
 
   timer_manager_destroy(tm);
 }
