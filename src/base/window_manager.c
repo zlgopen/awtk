@@ -179,7 +179,6 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
 }
 
 ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
-  window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (widget->target == window) {
@@ -220,7 +219,6 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
 }
 
 ret_t window_manager_close_window_force(widget_t* widget, widget_t* window) {
-  window_manager_t* wm = WINDOW_MANAGER(widget);
   event_t e = event_init(EVT_WINDOW_CLOSE, window);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
