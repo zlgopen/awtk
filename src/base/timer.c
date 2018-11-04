@@ -55,7 +55,7 @@ timer_manager_t* timer_manager_create(timer_get_time_t get_time) {
 timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_time_t get_time) {
   return_value_if_fail(timer_manager != NULL, NULL);
 
-  timer_manager->next_timer_id = 1;
+  timer_manager->next_timer_id = TK_INVALID_ID + 1;
   timer_manager->get_time = get_time;
   timer_manager->last_dispatch_time = get_time();
 
