@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget_animator_manager.c
  * Author: AWTK Develop Team
  * Brief:  animator manager
@@ -26,7 +26,7 @@ static widget_animator_manager_t* s_animator_manager;
 
 ret_t widget_animator_manager_time_elapse(widget_animator_manager_t* am, uint32_t delta_time) {
   widget_animator_t* iter = NULL;
-  return_value_if_fail(am != NULL, 0);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   delta_time = delta_time * am->time_scale;
 

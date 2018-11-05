@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   timer.c
  * Author: AWTK Develop Team
  * Brief:  timer manager
@@ -208,7 +208,6 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint32_t now = 0;
-  uint32_t delta_time = 0;
   timer_info_t* iter = NULL;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
