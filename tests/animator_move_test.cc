@@ -26,7 +26,29 @@ TEST(AnimatorMove, basic) {
   widget_destroy(button);
 }
 
-#include "get_time.inc"
+TEST(AnimatorMove, state) {
+  widget_t* button = button_create(NULL, 0, 0, 100, 30);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
+
+  ASSERT_EQ(wa->repeat_times, 0);
+  ASSERT_EQ(widget_animator_set_repeat(wa, 10), RET_OK);
+  ASSERT_EQ(wa->repeat_times, 10);
+
+  ASSERT_EQ(widget_animator_start(wa), RET_OK);
+  ASSERT_EQ(wa->state, ANIMATOR_RUNNING);
+
+  ASSERT_EQ(widget_animator_pause(wa), RET_OK);
+  ASSERT_EQ(wa->state, ANIMATOR_PAUSED);
+
+  ASSERT_EQ(widget_animator_start(wa), RET_OK);
+  ASSERT_EQ(wa->state, ANIMATOR_RUNNING);
+
+  ASSERT_EQ(widget_animator_stop(wa), RET_OK);
+  ASSERT_EQ(wa->state, ANIMATOR_STOPPED);
+
+  widget_animator_destroy(wa);
+  widget_destroy(button);
+}
 
 static string s_log;
 static ret_t on_animator_event(void* ctx, event_t* e) {
@@ -53,9 +75,6 @@ static ret_t on_animator_event(void* ctx, event_t* e) {
 }
 
 TEST(AnimatorMove, once) {
-  timer_manager_t* tm = timer_manager();
-  timer_manager_set(timer_manager_create(timer_get_time));
-
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
@@ -65,34 +84,56 @@ TEST(AnimatorMove, once) {
   widget_animator_on(wa, EVT_ANIM_END, on_animator_event, NULL);
 
   s_log = "";
-  timer_set_time(0);
   widget_animator_start(wa);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 0);
 
   ASSERT_EQ(s_log, "start:");
   ASSERT_EQ(button->x, 0);
   ASSERT_EQ(button->y, 0);
 
-  timer_set_time(500);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 500);
   ASSERT_EQ(button->x, 50);
   ASSERT_EQ(button->y, 100);
 
-  timer_set_time(1000);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 500);
   ASSERT_EQ(button->x, 100);
   ASSERT_EQ(button->y, 200);
   ASSERT_EQ(s_log, "start:end:");
 
   widget_destroy(button);
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(tm);
+}
+
+TEST(AnimatorMove, time_scale) {
+  widget_t* button = button_create(NULL, 0, 0, 100, 30);
+  widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
+  widget_animator_move_set_params(wa, 0, 0, 100, 200);
+  widget_animator_on(wa, EVT_ANIM_START, on_animator_event, NULL);
+  widget_animator_on(wa, EVT_ANIM_ONCE, on_animator_event, NULL);
+  widget_animator_on(wa, EVT_ANIM_STOP, on_animator_event, NULL);
+  widget_animator_on(wa, EVT_ANIM_END, on_animator_event, NULL);
+
+  s_log = "";
+  widget_animator_start(wa);
+  widget_animator_set_time_scale(wa, 0.5);
+  widget_animator_time_elapse(wa, 0);
+
+  ASSERT_EQ(s_log, "start:");
+  ASSERT_EQ(button->x, 0);
+  ASSERT_EQ(button->y, 0);
+
+  widget_animator_time_elapse(wa, 1000);
+  ASSERT_EQ(button->x, 50);
+  ASSERT_EQ(button->y, 100);
+
+  widget_animator_time_elapse(wa, 1000);
+  ASSERT_EQ(button->x, 100);
+  ASSERT_EQ(button->y, 200);
+  ASSERT_EQ(s_log, "start:end:");
+
+  widget_destroy(button);
 }
 
 TEST(AnimatorMove, reversed) {
-  timer_manager_t* tm = timer_manager();
-  timer_manager_set(timer_manager_create(timer_get_time));
-
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
@@ -103,36 +144,28 @@ TEST(AnimatorMove, reversed) {
   widget_animator_set_reversed(wa, TRUE);
 
   s_log = "";
-  timer_set_time(0);
   widget_animator_start(wa);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 0);
 
   ASSERT_EQ(s_log, "start:");
   ASSERT_EQ(button->x, 100);
   ASSERT_EQ(button->y, 200);
 
-  timer_set_time(500);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 500);
   ASSERT_EQ(button->x, 50);
   ASSERT_EQ(button->y, 100);
 
-  timer_set_time(1000);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 500);
   ASSERT_EQ(button->x, 0);
   ASSERT_EQ(button->y, 0);
   ASSERT_EQ(s_log, "start:end:");
 
   widget_destroy(button);
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(tm);
 }
 
 TEST(AnimatorMove, repeat) {
   uint32_t i = 0;
   uint32_t nr = 3;
-  uint32_t now = 0;
-  timer_manager_t* tm = timer_manager();
-  timer_manager_set(timer_manager_create(timer_get_time));
 
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
@@ -146,23 +179,19 @@ TEST(AnimatorMove, repeat) {
   s_log = "";
   string log = "start:";
 
-  timer_set_time(now);
   widget_animator_start(wa);
+  widget_animator_time_elapse(wa, 0);
 
   for (i = 0; i < nr; i++) {
-    timer_dispatch();
+    widget_animator_time_elapse(wa, 0);
     ASSERT_EQ(button->x, 0);
     ASSERT_EQ(button->y, 0);
 
-    now += 500;
-    timer_set_time(now);
-    timer_dispatch();
+    widget_animator_time_elapse(wa, 500);
     ASSERT_EQ(button->x, 50);
     ASSERT_EQ(button->y, 100);
 
-    now += 500;
-    timer_set_time(now);
-    timer_dispatch();
+    widget_animator_time_elapse(wa, 500);
     ASSERT_EQ(button->x, 100);
     ASSERT_EQ(button->y, 200);
 
@@ -171,36 +200,26 @@ TEST(AnimatorMove, repeat) {
   }
 
   widget_destroy(button);
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(tm);
 }
 
 TEST(AnimatorMove, repeat_forever) {
-  uint32_t now = 0;
-  timer_manager_t* tm = timer_manager();
-  timer_manager_set(timer_manager_create(timer_get_time));
-
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
   widget_animator_move_set_params(wa, 0, 0, 100, 200);
   widget_animator_set_repeat(wa, 0);
 
-  timer_set_time(now);
   widget_animator_start(wa);
+  widget_animator_time_elapse(wa, 0);
 
   ASSERT_EQ(wa->forever, TRUE);
   ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX);
 
-  timer_set_time(1000);
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 1000);
   ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX - 1);
 
-  timer_set_time(2000);
   wa->repeat_times = 1;
-  timer_dispatch();
+  widget_animator_time_elapse(wa, 1000);
   ASSERT_EQ(wa->repeat_times, TK_UINT32_MAX);
 
   widget_destroy(button);
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(tm);
 }

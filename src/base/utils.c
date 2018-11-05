@@ -113,6 +113,14 @@ int tk_atoi(const char* str) {
   return tk_strtol(str, NULL, 10);
 }
 
+bool_t tk_atob(const char* str) {
+  if (str == NULL || *str == 'f' || *str == 'F') {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 double tk_atof(const char* str) {
   int n = 0;
   uint32_t zero = 0;

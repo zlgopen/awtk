@@ -57,7 +57,6 @@ timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_ti
 
   timer_manager->next_timer_id = TK_INVALID_ID + 1;
   timer_manager->get_time = get_time;
-  timer_manager->last_dispatch_time = get_time();
 
   return timer_manager;
 }
@@ -209,6 +208,7 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint32_t now = 0;
+  uint32_t delta_time = 0;
   timer_info_t* iter = NULL;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
@@ -221,8 +221,6 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   timer_manager->dispatching = TRUE;
   while (iter != NULL) {
     iter->now = now;
-    iter->delta_time = now - timer_manager->last_dispatch_time;
-
     if ((iter->start + iter->duration_ms) <= now) {
       if (iter->on_timer(iter) != RET_REPEAT) {
         iter->pending_destroy = TRUE;
@@ -233,8 +231,6 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
     iter = iter->next;
   }
   timer_manager->dispatching = FALSE;
-  timer_manager->last_dispatch_time = now;
-
   timer_manager_remove_pending_destroy_timers(timer_manager);
 
   return RET_OK;

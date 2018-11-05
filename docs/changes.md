@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2018/11/04-05
+  * 控件动画支持暂停。
+  * 控件动画支持时间倍率，让时间变快和变慢。
+  * 控件动画支持按名称去开始、暂停、停止和销毁。
+  * 更易用的API。请参考widget\_start\_animator/widget\_pause\_animator。
+
 * 2018/11/03
   * 增加date\_time类(嵌入式平台需要调用date\_time\_set\_impl获取时间的函数)。
   * 增加数字时钟控件(ext\_widgets/time\_clock/digit\_clock.c)。

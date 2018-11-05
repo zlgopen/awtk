@@ -206,6 +206,11 @@ typedef enum _event_type_t {
    */
   EVT_ANIM_STOP,
   /**
+   * @const EVT_ANIM_PAUSE
+   * 控件动画被暂停的事件(event_t)。
+   */
+  EVT_ANIM_PAUSE,
+  /**
    * @const EVT_ANIM_ONCE
    * 控件动画yoyo/repeat时，完成一次的事件(event_t)。
    */

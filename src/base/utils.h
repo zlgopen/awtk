@@ -28,6 +28,7 @@
 BEGIN_C_DECLS
 
 int tk_atoi(const char* str);
+bool_t tk_atob(const char* str);
 double tk_atof(const char* str);
 const char* tk_skip_to_num(const char* str);
 const char* tk_itoa(char* str, int len, int n);

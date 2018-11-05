@@ -32,6 +32,7 @@
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "base/style_factory.h"
+#include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
 static ret_t widget_destroy_only(widget_t* widget);
@@ -200,12 +201,17 @@ ret_t widget_set_cursor(widget_t* widget, const char* cursor) {
 }
 
 ret_t widget_set_animation(widget_t* widget, const char* animation) {
+  return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
+
+  widget->animation = tk_str_copy(widget->animation, animation);
+
+  return widget_create_animator(widget, animation);
+}
+
+ret_t widget_create_animator(widget_t* widget, const char* animation) {
   const char* end = NULL;
   const char* start = animation;
   return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
-
-  TKMEM_FREE(widget->animation);
-  widget->animation = tk_strdup(animation);
 
   while (start != NULL) {
     char params[256];
@@ -228,6 +234,23 @@ ret_t widget_set_animation(widget_t* widget, const char* animation) {
   }
 
   return RET_OK;
+}
+
+ret_t widget_start_animator(widget_t* widget, const char* name) {
+  return widget_animator_manager_start(widget_animator_manager(), widget, name);
+}
+
+ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t time_scale) {
+  return widget_animator_manager_set_time_scale(widget_animator_manager(), widget, name,
+                                                time_scale);
+}
+
+ret_t widget_pause_animator(widget_t* widget, const char* name) {
+  return widget_animator_manager_pause(widget_animator_manager(), widget, name);
+}
+
+ret_t widget_stop_animator(widget_t* widget, const char* name) {
+  return widget_animator_manager_stop(widget_animator_manager(), widget, name);
 }
 
 ret_t widget_set_enable(widget_t* widget, bool_t enable) {

@@ -536,19 +536,107 @@ ret_t widget_set_cursor(widget_t* widget, const char* cursor);
 
 /**
  * @method widget_set_animation
- * 设置控件的动画参数。
+ * 设置控件的动画参数(仅用于在UI文件使用)。
  * 参数的格式类似函数调用。如:
  * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
  * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
  * 多个animation参数用『;』分开。
+ * 参考：https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} animation 动画参数。
+ * @param {const char*} animation 动画参数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_animation(widget_t* widget, const char* animation);
+
+/**
+ * @method widget_create_animator
+ * 创建动画。
+ * 参数的格式类似函数调用, 如:
+ * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
+ * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
+ * 参考：https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} animation 动画参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_create_animator(widget_t* widget, const char* animation);
+
+/**
+ * @method widget_start_animator
+ * 播放动画。
+ * 1.widget为NULL时，播放所有名称为name的动画。
+ * 2.name为NULL时，播放所有widget相关的动画。
+ * 3.widget和name均为NULL，播放所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_start_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_set_animator_time_scale
+ * 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。
+ * 1.widget为NULL时，设置所有名称为name的动画的时间倍率。
+ * 2.name为NULL时，设置所有widget相关的动画的时间倍率。
+ * 3.widget和name均为NULL，设置所有动画的时间倍率。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 动画名称。
+ * @param {float_t} time_scale 时间倍率。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t time_scale);
+
+/**
+ * @method widget_pause_animator
+ * 暂停动画。
+ * 1.widget为NULL时，暂停所有名称为name的动画。
+ * 2.name为NULL时，暂停所有widget相关的动画。
+ * 3.widget和name均为NULL，暂停所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_pause_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_stop_animator
+ * 停止动画。
+ * 1.widget为NULL时，停止所有名称为name的动画。
+ * 2.name为NULL时，停止所有widget相关的动画。
+ * 3.widget和name均为NULL，停止所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_stop_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_destroy_animator
+ * 销毁动画。
+ * 1.widget为NULL时，销毁所有名称为name的动画。
+ * 2.name为NULL时，销毁所有widget相关的动画。
+ * 3.widget和name均为NULL，销毁所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_destroy_animator(widget_t* widget, const char* name);
 
 /**
  * @method widget_set_enable

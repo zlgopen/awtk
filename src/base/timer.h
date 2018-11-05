@@ -37,7 +37,6 @@ typedef struct _timer_manager_t {
   uint32_t next_timer_id;
   timer_get_time_t get_time;
   bool_t dispatching;
-  uint32_t last_dispatch_time;
   struct _timer_info_t* first;
 } timer_manager_t;
 
@@ -48,7 +47,6 @@ struct _timer_info_t {
   uint32_t now;
   uint32_t start;
   uint32_t duration_ms;
-  uint32_t delta_time;
   void* on_destroy_ctx;
   tk_destroy_t on_destroy;
   timer_manager_t* timer_manager;
@@ -107,7 +105,8 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
  * @method timer_queue
  * 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
  * @annotation ["static"]
- * @param {timer_func_t} on_timer timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
+ * @param {timer_func_t} on_timer
+ * timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration_ms 时间。
  *
