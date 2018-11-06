@@ -1,5 +1,5 @@
 <window style="sky" anim_hint="htranslate">
-  <slide_view x="0" y="0" w="100%" h="100%">
+  <slide_view x="0" y="0" w="100%" h="100%" style="dot">
     <view x="0" y="0" w="100%" h="100%" layout="w60 h60 m5 s10">
       <button name="close" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />

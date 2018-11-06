@@ -124,8 +124,10 @@
 #include "assets/inc/images/play_n.res"
 #include "assets/inc/images/msg_active.res"
 #include "assets/inc/images/radio_checked.res"
+#include "assets/inc/images/active_dot.res"
 #include "assets/inc/images/question.res"
 #include "assets/inc/images/discovery_active.res"
+#include "assets/inc/images/dot.res"
 #include "assets/inc/images/shifton.res"
 #include "assets/inc/images/check.res"
 #include "assets/inc/images/cursor.res"
@@ -223,6 +225,7 @@
 #include "assets/inc/images/msg_active.data"
 #include "assets/inc/images/anic.data"
 #include "assets/inc/images/ani8.data"
+#include "assets/inc/images/active_dot.data"
 #include "assets/inc/images/guage_pointer.data"
 #include "assets/inc/images/right_off.data"
 #include "assets/inc/images/unmuted.data"
@@ -406,6 +409,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_msg_active);
   assets_manager_add(rm, image_anic);
   assets_manager_add(rm, image_ani8);
+  assets_manager_add(rm, image_active_dot);
   assets_manager_add(rm, image_guage_pointer);
   assets_manager_add(rm, image_right_off);
   assets_manager_add(rm, image_unmuted);

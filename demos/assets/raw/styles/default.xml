@@ -448,5 +448,8 @@
   <style name="default">
     <normal  fg_color="red" />
   </style>
+  <style name="dot">
+    <normal  icon="dot" active_icon="active_dot"/>
+  </style>
 </slide_view>
 

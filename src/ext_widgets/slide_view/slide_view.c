@@ -405,8 +405,6 @@ static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* 
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(prev, c);
     canvas_untranslate(c, 0, -r_yoffset);
-    //} else {
-    //  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
 
   canvas_translate(c, 0, yoffset);
@@ -441,8 +439,6 @@ static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* 
     canvas_translate(c, 0, r_yoffset);
     widget_paint(next, c);
     canvas_untranslate(c, 0, r_yoffset);
-    //} else {
-    //  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
 
   return RET_OK;
@@ -465,8 +461,6 @@ static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* 
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(prev, c);
     canvas_untranslate(c, -r_xoffset, 0);
-    //} else {
-    //  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
 
   canvas_translate(c, xoffset, 0);
@@ -501,8 +495,6 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
     canvas_translate(c, r_xoffset, 0);
     widget_paint(next, c);
     canvas_untranslate(c, r_xoffset, 0);
-    //} else {
-    //  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
 
   return RET_OK;
@@ -510,15 +502,28 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
 
 static ret_t slide_view_paint_indicator_one(widget_t* widget, canvas_t* c, rect_t* r,
                                             uint32_t index, bool_t is_active) {
+  bitmap_t img;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+  const char* icon = style_get_str(style, STYLE_ID_ICON, NULL);
+  const char* active_icon = style_get_str(style, STYLE_ID_ACTIVE_ICON, NULL);
 
-  if (fg.rgba.a) {
-    if (is_active) {
+  if (is_active) {
+    if (active_icon && widget_load_image(widget, active_icon, &img) == RET_OK) {
+      int32_t x = r->x + (r->w >> 1);
+      int32_t y = r->y + (r->h >> 1);
+      canvas_draw_icon(c, &img, x, y);
+    } else if (fg.rgba.a) {
       canvas_set_fill_color(c, fg);
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
-    } else {
+    }
+  } else {
+    if (icon && widget_load_image(widget, icon, &img) == RET_OK) {
+      int32_t x = r->x + (r->w >> 1);
+      int32_t y = r->y + (r->h >> 1);
+      canvas_draw_icon(c, &img, x, y);
+    } else if (fg.rgba.a) {
       canvas_set_stroke_color(c, fg);
       canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
     }

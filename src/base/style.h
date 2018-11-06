@@ -122,7 +122,12 @@ typedef enum _style_id_t {
    * @const STYLE_ID_ICON_AT
    * 图标的位置。
    */
-  STYLE_ID_ICON_AT
+  STYLE_ID_ICON_AT,
+  /**
+   * @const STYLE_ID_ACTIVE_ICON
+   * Active图标的名称。
+   */
+  STYLE_ID_ACTIVE_ICON,
 } style_id_t;
 
 struct _style_t;

@@ -42,6 +42,7 @@ static const key_type_value_t style_id_name_value[] = {
     {"fg_image", TYPE_STRING, STYLE_ID_FG_IMAGE},
     {"fg_image_draw_type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
     {"icon", TYPE_STRING, STYLE_ID_ICON},
+    {"active_icon", TYPE_STRING, STYLE_ID_ACTIVE_ICON},
     {"icon_at", TYPE_STRING, STYLE_ID_ICON_AT},
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
