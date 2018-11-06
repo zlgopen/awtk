@@ -80,11 +80,13 @@ ret_t application_init() {
   pause = button_create(win, 100, 10, 80, 30);
   widget_set_text(pause, L"Pause");
 
-  stop = button_create(win, 200, 10, 80, 30);
+  stop = button_create(win, 190, 10, 80, 30);
   widget_set_text(stop, L"Stop");
 
   opacity = button_create(win, 10, 50, 80, 30);
   widget_set_text(opacity, L"Opacity");
+
+  progress_bar = progress_bar_create(win, 10, 90, 168, 20);
 
   image = image_create(win, 10, 220, 32, 32);
   image_set_image(image, "earth");
@@ -114,8 +116,6 @@ ret_t application_init() {
   image_set_image(image6, "earth");
   image_set_draw_type(image6, IMAGE_DRAW_ICON);
 
-  progress_bar = progress_bar_create(win, 10, 80, 168, 20);
-
   animator = widget_animator_move_create(image, 1000, delay, EASING_SIN_INOUT);
   widget_animator_move_set_params(animator, image->x, image->y, image->x + 100, image->y + 100);
   widget_animator_set_destroy_when_done(animator, FALSE);
@@ -132,9 +132,9 @@ ret_t application_init() {
   widget_create_animator(progress_bar,
                          "value(from=50, to=100, duration=500, yoyo_times=1000, delay=1000)");
 
-  widget_create_animator(opacity, "opacity(to=0, duration=500, yoyo_times=1000)");
+  widget_create_animator(opacity, "opacity(to=50, duration=500, yoyo_times=1000)");
 
-  widget_create_animator(image6, "opacity(to=0, duration=500, yoyo_times=1000, delay=1000)");
+  widget_create_animator(image6, "opacity(to=50, duration=500, yoyo_times=1000, delay=1000)");
 
   widget_create_animator(image2, "rotation(to=6.28, yoyo_times=0, duration=1000, easing=sin_out)");
 

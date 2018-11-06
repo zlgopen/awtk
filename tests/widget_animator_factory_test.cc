@@ -171,7 +171,7 @@ TEST(WidgetAnimatorFactory, move_default) {
 }
 
 TEST(WidgetAnimatorFactory, scale) {
-  widget_t* b = button_create(NULL, 10, 20, 100, 30);
+  widget_t* b = image_create(NULL, 10, 20, 100, 30);
 
   widget_animator_t* wa = widget_animator_create(
       b, "scale(x_from=1, x_to=-1, repeat_times=1000, duration=2000, delay=1234)");

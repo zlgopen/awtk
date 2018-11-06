@@ -554,6 +554,8 @@ ret_t widget_set_animation(widget_t* widget, const char* animation);
 /**
  * @method widget_create_animator
  * 创建动画。
+ * 除非指定auto_start=false，动画创建后自动启动。
+ * 除非指定auto_destroy=false，动画播放完成后自动销毁。
  * 参数的格式类似函数调用, 如:
  * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
  * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
@@ -612,7 +614,7 @@ ret_t widget_pause_animator(widget_t* widget, const char* name);
 
 /**
  * @method widget_stop_animator
- * 停止动画。
+ * 停止动画(控件的相应属性回归原位)。
  * 1.widget为NULL时，停止所有名称为name的动画。
  * 2.name为NULL时，停止所有widget相关的动画。
  * 3.widget和name均为NULL，停止所有动画。

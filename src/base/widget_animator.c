@@ -156,6 +156,7 @@ ret_t widget_animator_stop(widget_animator_t* animator) {
     animator->start_time = 0;
     animator->state = ANIMATOR_STOPPED;
     emitter_dispatch(&(animator->emitter), &e);
+    widget_animator_update(animator, 0);
 
     return RET_OK;
   } else {
@@ -260,10 +261,6 @@ ret_t widget_animator_destroy(widget_animator_t* animator) {
   if (animator->widget_destroy_id != TK_INVALID_ID) {
     widget_off(animator->widget, animator->widget_destroy_id);
     animator->widget_destroy_id = TK_INVALID_ID;
-  }
-
-  if (animator->state == ANIMATOR_RUNNING) {
-    widget_animator_stop(animator);
   }
 
   if (animator->widget_animator_manager != NULL) {
