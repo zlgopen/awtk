@@ -292,6 +292,7 @@ static ret_t style_mutable_destroy(style_t* s) {
   style_mutable_t* style = (style_mutable_t*)s;
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(style->name);
   style_destroy(style->default_style);
   TKMEM_FREE(s);
 
