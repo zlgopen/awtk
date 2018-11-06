@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   date_time.c
  * Author: AWTK Develop Team
  * Brief:  date time
@@ -38,13 +38,10 @@ date_time_t* date_time_create(void) {
 date_time_t* date_time_init(date_time_t* dt) {
   return_value_if_fail(dt != NULL, NULL);
   memset(dt, 0x00, sizeof(date_time_t));
-
-  if (s_date_time_get_now != NULL) {
-    s_date_time_get_now(dt);
-  } else {
-    assert(!"please call date_time_set_impl before call date_time_get_now");
-  }
-
+	return_value_if_fail(s_date_time_get_now != NULL, dt);
+  
+  s_date_time_get_now(dt);
+  
   return dt;
 }
 
