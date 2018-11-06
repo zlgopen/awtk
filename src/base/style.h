@@ -128,6 +128,16 @@ typedef enum _style_id_t {
    * Active图标的名称。
    */
   STYLE_ID_ACTIVE_ICON,
+  /**
+   * @const STYLE_ID_ICON_X_OFFSET
+   * 图标X方向的偏移，方便实现按下的效果。
+   */
+  STYLE_ID_ICON_X_OFFSET,
+  /**
+   * @const STYLE_ID_ICON_Y_OFFSET
+   * 图标Y方向的偏移，方便实现按下的效果。
+   */
+  STYLE_ID_ICON_Y_OFFSET
 } style_id_t;
 
 struct _style_t;

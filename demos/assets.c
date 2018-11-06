@@ -194,6 +194,7 @@
 #include "assets/inc/images/right_on.data"
 #include "assets/inc/images/discovery.data"
 #include "assets/inc/images/rgb.data"
+#include "assets/inc/images/dot.data"
 #include "assets/inc/images/ani2.data"
 #include "assets/inc/images/find.data"
 #include "assets/inc/images/slider_fg.data"
@@ -378,6 +379,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_right_on);
   assets_manager_add(rm, image_discovery);
   assets_manager_add(rm, image_rgb);
+  assets_manager_add(rm, image_dot);
   assets_manager_add(rm, image_ani2);
   assets_manager_add(rm, image_find);
   assets_manager_add(rm, image_slider_fg);

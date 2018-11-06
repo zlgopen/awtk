@@ -227,10 +227,10 @@
   </style>
   <style name="mute" >
     <normal  icon="unmuted" />
-    <pressed icon="unmuted" />
+    <pressed icon="unmuted" icon_x_offset="1" icon_y_offset="1"/>
     <over    icon="unmuted" />
     <normal_of_checked icon="muted" />
-    <pressed_of_checked icon="muted" />
+    <pressed_of_checked icon="muted" icon_x_offset="1" icon_y_offset="1"/>
     <over_of_checked icon="muted" />
   </style>
   <style name="odd_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#f5f5f5">
