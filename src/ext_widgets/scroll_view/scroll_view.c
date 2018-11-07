@@ -327,6 +327,8 @@ static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {
 
   canvas_translate(c, xoffset, yoffset);
   canvas_get_clip_rect(c, &r_save);
+
+  r = rect_intersect(&r, &r_save);
   canvas_set_clip_rect(c, &r);
   widget_on_paint_children_default(widget, c);
   canvas_set_clip_rect(c, &r_save);
