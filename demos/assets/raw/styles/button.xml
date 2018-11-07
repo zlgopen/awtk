@@ -12,7 +12,7 @@
   </style>
   <style name="image" bg_image_draw_type="icon" text_color="blue">
     <normal   bg_image="play_n" />
-    <pressed  bg_image="play_p" />
+    <pressed  bg_image="play_p" icon_x_offset="1" icon_y_offset="1"/>
     <over     bg_image="play_o" />
   </style>
 </button>
