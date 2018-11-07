@@ -103,3 +103,15 @@ TEST(LCDMem, bgr888) {
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
 }
+
+TEST(LCDMem, resize) {
+  lcd_t* lcd = lcd_mem_bgra8888_create(100, 200, TRUE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  lcd_resize(lcd, 200, 100, 0);
+  ASSERT_EQ(lcd->w, 200);
+  ASSERT_EQ(lcd->h, 100);
+  ASSERT_EQ(mem->line_length, 200 * 4);
+
+  lcd_destroy(lcd);
+}

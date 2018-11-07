@@ -197,8 +197,8 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
       h = info->lcd_w;
     }
 
-    lcd->w = w;
-    lcd->h = h;
+    lcd_resize(lcd, w, h, 0);
+
     window_manager_resize(window_manager(), w, h);
   }
 

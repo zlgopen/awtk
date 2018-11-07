@@ -25,7 +25,7 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
     p->duration = tk_atoi(value);
   } else if (*name == 'e') { /*easing*/
     const key_type_value_t* easing = easing_type_find(value);
-    p->easing = easing != NULL ? easing->value : -1;
+    p->easing = easing != NULL ? (int)(easing->value) : -1;
   }
 
   return RET_OK;
@@ -74,7 +74,7 @@ static window_animator_t* window_animator_create(const char* type, bool_t open) 
   }
 
   if (parser.easing >= 0) {
-    wa->easing = easing_get(parser.easing);
+    wa->easing = easing_get((easing_type_t)(parser.easing));
   }
 
   if (strchr(type, '=') != NULL) {
