@@ -37,24 +37,30 @@ AWTK的主题按控件进行分类，每种控件可以有多种不同的风格�
 >
 > 同一控件可以出现多次(如上面的button出现了两次)，有利于实现配置共享，让维护工作更简单。 
 
-参考：demos/res/raw/theme/theme.xml
+参考：[demos/assets/raw/styles/default.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
 
 ### 二、主题的属性
 
 * bg\_color 背景颜色。
 * fg\_color 前景颜色。用途视具体控件而定，如进度条已完成部分的颜色使用前景颜色。
 * text\_color 文字的颜色
+* tips\_text\_color 提示文字的颜色
+* border\_color 边框颜色
+* border 边框类型，取值为left/right/top/bottom和all，以及它们的组合。
 * font\_name 字体的名称。
 * font\_size 字体的大小。
-* border\_color 边框的颜色。
-* font\_style 字体的风格(目前还不支持)，取值为italic/bold/underline。可用『,』分隔。
+* font\_style 字体的风格(目前还不支持)，取值为：italic/bold/underline。可用『,』分隔。
 * text\_align\_h 文本的水平对齐方式。取值为left/center/right。
 * text\_align\_v 文本的垂直对齐方式。取值为top/middle/bottom。
 * bg\_image 背景图片。
-* bg\_image\_draw\_type 背景图片的绘制方式。
+* bg\_image\_draw\_type 背景图片的[绘制方式](image_draw_type.md)。
 * fg\_image 前景图片。用途视具体控件而定，如进度条已完成部分的图片使用前景图片。
-* fg\_image\_draw\_type 前景图片的绘制方式。
+* fg\_image\_draw\_type 前景图片的[绘制方式](image_draw_type.md)。
 * icon 图标。用途视具体控件而定，如check\_button的图标，按钮上的图标，对话框标题上的图标。
+* active\_icon active图标。用途视具体控件而定，目前slideview的页面指示器会用到。
+* icon\_at 图标的位置，取值为left/right/top/bottom。
+* icon\_x\_offset 图标在X坐标方向上的偏移(可用来实现按下的效果)。 
+* icon\_y\_offset 图标在Y坐标方向上的偏移(可用来实现按下的效果)。
 * margin 边距。
 
 > 颜色可使用标准名称，#开头的16进制值和rgba合成的值。
