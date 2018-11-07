@@ -188,6 +188,8 @@ animation参数的格式，类似与函数调用。多个参数可以用『;』�
 * auto\_start 创建后自动启动(缺省为true)。
 * auto\_destroy 完成后自动销毁(缺省为true)。
 
+> 以下参数的缺省值为控件当前对应的值。
+
 #### 2. widget\_animator\_move动画的参数
 * x\_from x起始位置。
 * y\_from y起始位置。
@@ -212,7 +214,7 @@ animation参数的格式，类似与函数调用。多个参数可以用『;』�
 * from 起始值(弧度)。
 * to 结束值(弧度)。
 
-五、插值算法名称(easing)
+### 五、插值算法名称(easing)
 
 * linear
 * quadratic\_in
