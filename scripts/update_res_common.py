@@ -261,7 +261,7 @@ def updateRes():
     removeDir(OUTPUT_DIR)
     gen_res()
   elif ACTION=='clean':
-    removeDir(OUTPUT_DIR)
+    cleanRes();
   elif ACTION=='string':
     prepare()
     gen_res_all_string()
@@ -287,6 +287,15 @@ def updateRes():
     gen_gpinyin()
     gen_res_c()
   dumpArgs()
+
+def cleanRes():
+  print("==================================================================")
+  resFiles=glob.glob(joinPath(INPUT_DIR, '*/*.bin')) + glob.glob(joinPath(INPUT_DIR, '*/*/*.bin'))
+  for f in resFiles:
+    print("remove: " + f)
+    os.remove(f)
+  removeDir(OUTPUT_DIR)
+  print("==================================================================")
 
 def showUsage():
   global DPI
