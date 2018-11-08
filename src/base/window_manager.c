@@ -329,10 +329,10 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __FUNCTION__, (int)(r.x), (int)(r.y),
                 (int)(r.w), (int)(r.h), (int)wm->last_paint_cost);
       */
+      wm->last_dirty_rect = wm->dirty_rect;
     }
   }
 
-  wm->last_dirty_rect = wm->dirty_rect;
   wm->dirty_rect = rect_init(widget->w, widget->h, 0, 0);
 
   return RET_OK;

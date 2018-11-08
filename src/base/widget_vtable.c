@@ -33,6 +33,18 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
 
   r->x += widget->x;
   r->y += widget->y;
+  if (widget->astyle != NULL) {
+    int32_t ox = tk_abs(style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0));
+    int32_t oy = tk_abs(style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0));
+    if (ox > 0) {
+      r->x -= ox - 1;
+      r->w += ox + ox + 1;
+    }
+    if (oy > 0) {
+      r->y -= oy - 1;
+      r->h += oy + oy + 1;
+    }
+  }
 
   if (widget->parent) {
     widget_t* parent = widget->parent;
