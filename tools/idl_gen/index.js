@@ -163,11 +163,37 @@ class IDLGenerator {
 
     return;
   }
+  
+  parseEvent(comment) {
+    const event = {
+      name: '',
+      desc: ''
+    };
+
+    comment.split('\n').forEach(iter => {
+      if (iter.indexOf('@event') >= 0) {
+        const typeAndName = this.parseTypeAndName(iter);
+        event.type = typeAndName.type;
+        event.name = typeAndName.name;
+      } else if (iter.indexOf('@annotation') >= 0) {
+        event.annotation = this.parseAnnotation(iter);
+      } else {
+        event.desc += this.parseDesc(iter);
+      }
+    });
+
+    if(this.cls) {
+      this.cls.events.push(event);
+    }
+
+    return;
+  }
 
   parseClass(comment) {
     let cls = {};
     cls.type = 'class';
     cls.methods = [];
+    cls.events = [];
     cls.properties = [];
     cls.header = this.filename;
     cls.desc = '';
@@ -250,6 +276,8 @@ class IDLGenerator {
               this.parseMethod(comment);
             } else if (comment.indexOf(' @property') >= 0) {
               this.parseProperty(comment);
+            } else if (comment.indexOf(' @event') >= 0) {
+              this.parseEvent(comment);
             } else if (comment.indexOf(' @const') >= 0) {
               this.parseConst(comment);
             } else if (comment.indexOf(' @enum') >= 0) {
@@ -277,7 +305,6 @@ class IDLGenerator {
   }
 
   parseFolder(folder) {
-    this.result = []
     const files = glob.sync(folder);
     for (let i = 0; i < files.length; i++) {
       const iter = files[i];
@@ -294,6 +321,8 @@ class IDLGenerator {
 
   static gen() {
     let gen = new IDLGenerator();
+    
+    gen.result = []
     gen.parseFolder('../../src/**/*.h');
     gen.saveResult('idl.json');
   }

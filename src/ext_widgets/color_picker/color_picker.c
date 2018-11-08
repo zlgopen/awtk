@@ -333,12 +333,13 @@ static ret_t color_picker_update_color(widget_t* widget, color_t color) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
 
   if (color_picker->c.color != color.color) {
-    event_t changed = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     color_picker->c = color;
     color_hex_str(color_picker->c, color_picker->value);
     color_picker_sync_children(widget);
-    widget_dispatch(widget, &changed);
+    e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
   }
 

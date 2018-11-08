@@ -67,6 +67,16 @@ typedef struct _switch_t {
 } switch_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(开关状态)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(开关状态)改变事件。
+ */
+
+/**
  * @method switch_create
  * 创建switch对象
  * @annotation ["constructor", "scriptable"]

@@ -30,9 +30,10 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index) {
-    event_t evt = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &evt);
     pages->active = index;
+    evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
   }

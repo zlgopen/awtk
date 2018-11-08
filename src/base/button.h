@@ -48,6 +48,16 @@ typedef struct _button_t {
 } button_t;
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_LONG_PRESS
+ * 长按事件。
+ */
+
+/**
  * @method button_create
  * 创建button对象
  * @annotation ["constructor", "scriptable"]

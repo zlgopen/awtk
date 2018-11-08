@@ -62,8 +62,10 @@ static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (tab_button->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     tab_button->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_update_style(widget);
   }

@@ -247,7 +247,17 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
 }
 
 ret_t slider_set_value(widget_t* widget, uint16_t value) {
-  return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->value != value) {
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
+
+    return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
+  }
+
+  return RET_OK;
 }
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {

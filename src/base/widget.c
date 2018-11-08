@@ -253,6 +253,10 @@ ret_t widget_stop_animator(widget_t* widget, const char* name) {
   return widget_animator_manager_stop(widget_animator_manager(), widget, name);
 }
 
+ret_t widget_destroy_animator(widget_t* widget, const char* name) {
+  return widget_animator_manager_remove_all(widget_animator_manager(), widget, name);
+}
+
 ret_t widget_set_enable(widget_t* widget, bool_t enable) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -927,6 +931,7 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
 }
 
 ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
@@ -935,10 +940,15 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
     ret = widget->vt->on_paint_begin(widget, c);
   }
 
+  e.c = c;
+  e.e = event_init(EVT_AFTER_PAINT, widget);
+  widget_dispatch(widget, (event_t*)(&e));
+
   return ret;
 }
 
 ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
@@ -946,6 +956,10 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
   if (widget->vt->on_paint_end) {
     ret = widget->vt->on_paint_end(widget, c);
   }
+
+  e.c = c;
+  e.e = event_init(EVT_AFTER_PAINT, widget);
+  widget_dispatch(widget, (event_t*)(&e));
 
   return ret;
 }

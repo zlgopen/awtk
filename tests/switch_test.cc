@@ -51,3 +51,23 @@ TEST(Switch, clone) {
   widget_destroy(w1);
   widget_destroy(w2);
 }
+
+#include "log_change_events.inc"
+
+TEST(Switch, event) {
+  widget_t* w = switch_create(NULL, 0, 0, 100, 100);
+
+  switch_set_value(w, TRUE);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  switch_set_value(w, TRUE);
+  ASSERT_EQ(s_log, "");
+
+  switch_set_value(w, FALSE);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}

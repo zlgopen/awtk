@@ -631,9 +631,10 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->active != active) {
-    event_t evt = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &evt);
     slide_view->active = active;
+    evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
   }

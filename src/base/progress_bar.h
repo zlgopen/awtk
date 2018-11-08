@@ -55,6 +55,16 @@ typedef struct _progress_bar_t {
 } progress_bar_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值改变事件。
+ */
+
+/**
  * @method progress_bar_create
  * @annotation ["constructor", "scriptable"]
  * 创建progress_bar对象

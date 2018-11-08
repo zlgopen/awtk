@@ -36,3 +36,23 @@ TEST(ComboBoxItem, value) {
 
   widget_destroy(w);
 }
+
+#include "log_change_events.inc"
+
+TEST(ComboBoxItem, event) {
+  widget_t* w = combo_box_item_create(NULL, 0, 0, 100, 100);
+
+  combo_box_item_set_checked(w, TRUE);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  combo_box_item_set_checked(w, TRUE);
+  ASSERT_EQ(s_log, "");
+
+  combo_box_item_set_checked(w, FALSE);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}

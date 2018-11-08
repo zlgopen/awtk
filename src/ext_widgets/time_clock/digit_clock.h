@@ -112,7 +112,7 @@ ret_t digit_clock_set_show_time(widget_t* widget, bool_t show_time);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t digit_clock_set_bg_format(widget_t* widget, const char* format);
+ret_t digit_clock_set_format(widget_t* widget, const char* format);
 
 #define DIGIT_CLOCK_PROP_FORMAT "format"
 #define DIGIT_CLOCK_PROP_SHOW_DATE "show_date"

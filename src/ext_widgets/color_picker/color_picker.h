@@ -58,6 +58,16 @@ typedef struct _color_picker_t {
 } color_picker_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(颜色)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(颜色)改变事件。
+ */
+
+/**
  * @method color_picker_create
  * 创建color_picker对象
  * @annotation ["constructor", "scriptable"]

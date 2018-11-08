@@ -39,26 +39,22 @@ TEST(slider, basic) {
   widget_destroy(s);
 }
 
-static ret_t on_event(void* ctx, event_t* e) {
-  if (e->type == EVT_VALUE_CHANGED) {
-    *(int*)ctx = *(int*)ctx + 1;
-  }
+#include "log_change_events.inc"
 
-  return RET_OK;
-}
+TEST(Slider, event) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
 
-TEST(slider, event) {
-  int count = 0;
-  widget_t* s = slider_create(NULL, 10, 20, 30, 40);
+  slider_set_value(w, 10);
 
-  widget_on(s, EVT_VALUE_CHANGED, on_event, (void*)&count);
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
 
-  ASSERT_EQ(count, 0);
-  ASSERT_EQ(slider_set_value(s, 1), RET_OK);
-  ASSERT_EQ(count, 1);
+  slider_set_value(w, 10);
+  ASSERT_EQ(s_log, "");
 
-  ASSERT_EQ(slider_set_value(s, 2), RET_OK);
-  ASSERT_EQ(count, 2);
+  slider_set_value(w, 20);
+  ASSERT_EQ(s_log, "will_change;change;");
 
-  widget_destroy(s);
+  widget_destroy(w);
 }

@@ -138,9 +138,10 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
   return_value_if_fail(widget != NULL && value <= 100, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     progress_bar->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
   }

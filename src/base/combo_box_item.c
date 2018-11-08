@@ -126,8 +126,10 @@ static ret_t combo_box_item_set_checked_only(widget_t* widget, bool_t checked) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (combo_box_item->checked != checked) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     combo_box_item->checked = checked;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
   }
 

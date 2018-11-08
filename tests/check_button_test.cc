@@ -1,5 +1,8 @@
-﻿#include "gtest/gtest.h"
+﻿#include <string>
+#include "gtest/gtest.h"
 #include "base/check_button.h"
+
+using std::string;
 
 static ret_t on_changed(void* ctx, event_t* e) {
   int* count = (int*)ctx;
@@ -48,4 +51,24 @@ TEST(CheckButton, radio) {
   ASSERT_EQ(CHECK_BUTTON(button)->value, FALSE);
 
   widget_destroy(button);
+}
+
+#include "log_change_events.inc"
+
+TEST(CheckButton, event) {
+  widget_t* w = check_button_create_radio(NULL, 0, 0, 100, 100);
+
+  check_button_set_value(w, TRUE);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  check_button_set_value(w, TRUE);
+  ASSERT_EQ(s_log, "");
+
+  check_button_set_value(w, FALSE);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
 }

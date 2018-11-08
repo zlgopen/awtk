@@ -145,6 +145,16 @@ typedef struct _edit_t {
 } edit_t;
 
 /**
+ * @event {event_t} EVT_VALUE_CHANGING
+ * 文本正在改变事件(编辑中)。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 文本改变事件。
+ */
+
+/**
  * @method edit_create
  * 创建edit对象
  * @annotation ["constructor", "scriptable"]

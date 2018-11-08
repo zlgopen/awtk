@@ -270,6 +270,116 @@ struct _widget_t {
 };
 
 /**
+ * @event {event_t} EVT_WILL_MOVE
+ * 控件移动前触发。
+ */
+
+/**
+ * @event {event_t} EVT_MOVE
+ * 控件移动后触发。
+ */
+
+/**
+ * @event {event_t} EVT_WILL_RESIZE
+ * 控件调整大小前触发。
+ */
+
+/**
+ * @event {event_t} EVT_RESIZE
+ * 控件调整大小后触发。
+ */
+
+/**
+ * @event {event_t} EVT_WILL_MOVE_RESIZE
+ * 控件移动并调整大小前触发。
+ */
+
+/**
+ * @event {event_t} EVT_MOVE_RESIZE
+ * 控件移动并调整大小后触发。
+ */
+
+/**
+ * @event {prop_change_event_t} EVT_PROP_WILL_CHANGE
+ * 控件属性改变前触发(通过set_prop设置属性，才会触发)。
+ */
+
+/**
+ * @event {prop_change_event_t} EVT_PROP_CHANGED
+ * 控件属性改变后触发(通过set_prop设置属性，才会触发)。
+ */
+
+/**
+ * @event {paint_event_t} EVT_BEFORE_PAINT
+ * 控件绘制前触发。
+ */
+
+/**
+ * @event {paint_event_t} EVT_AFTER_PAINT
+ * 控件绘制完成时触发。
+ */
+
+/**
+ * @event {event_t} EVT_FOCUS
+ * 控件得到焦点时触发。
+ */
+
+/**
+ * @event {event_t} EVT_BLUR
+ * 控件失去焦点时触发。
+ */
+
+/**
+ * @event {wheel_event_t} EVT_WHEEL
+ * 鼠标滚轮事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_LEAVE
+ * 鼠标指针离开控件时触发。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_ENTER
+ * 鼠标指针进入控件时触发。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_KEY_DOWN
+ * 键按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_KEY_UP
+ * 键释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_DOWN
+ * 指针设备按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_DOWN_ABORT
+ * 取消指针设备按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_MOVE
+ * 指针设备移动事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_UP
+ * 指针设备释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_DESTROY
+ * 控件销毁时触发。
+ */
+
+/**
  * @method widget_init
  * 初始化控件。仅在子类控件构造函数中使用。
  * @annotation ["private"]

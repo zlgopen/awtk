@@ -102,3 +102,25 @@ TEST(TextSelector, props) {
 
   widget_destroy(w);
 }
+
+#include "log_change_events.inc"
+
+TEST(TextSelector, event) {
+  const char* str = "1:red;2:green;3:blue";
+  widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
+
+  text_selector_set_options(w, str);
+  text_selector_set_selected_index(w, 0);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  text_selector_set_value(w, 0);
+  ASSERT_EQ(s_log, "");
+
+  text_selector_set_selected_index(w, 1);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}

@@ -10,6 +10,8 @@ static ret_t pages_on_change(void* ctx, event_t* e) {
 
   if (e->type == EVT_VALUE_CHANGED) {
     s += "changed:";
+  } else if (e->type == EVT_VALUE_WILL_CHANGE) {
+    s += "will_change:";
   }
 
   return RET_OK;
@@ -27,16 +29,17 @@ TEST(Pages, basic) {
   widget_set_name(p2, "p2");
 
   widget_on(pages, EVT_VALUE_CHANGED, pages_on_change, &str);
+  widget_on(pages, EVT_VALUE_WILL_CHANGE, pages_on_change, &str);
 
   ASSERT_EQ(PAGES(pages)->active, 0);
 
   pages_set_active(pages, 1);
   ASSERT_EQ(PAGES(pages)->active, 1);
-  ASSERT_EQ(str, "changed:");
+  ASSERT_EQ(str, "will_change:changed:");
 
   pages_set_active_by_name(pages, "p2");
   ASSERT_EQ(PAGES(pages)->active, 2);
-  ASSERT_EQ(str, "changed:changed:");
+  ASSERT_EQ(str, "will_change:changed:will_change:changed:");
 
   pages_set_active_by_name(pages, "not found");
   ASSERT_EQ(PAGES(pages)->active, 2);
