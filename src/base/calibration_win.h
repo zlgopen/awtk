@@ -35,7 +35,7 @@ typedef enum _point_name_t {
   PT_MAX_NR
 } point_name_t;
 
-typedef ret_t (*calibration_win_on_done_t)(void* ctx, point_t points[4]);
+typedef ret_t (*calibration_win_on_done_t)(void* ctx, point_t points[PT_MAX_NR]);
 typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p);
 
 /**
