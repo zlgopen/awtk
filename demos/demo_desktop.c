@@ -20,8 +20,9 @@
  */
 
 #include "awtk.h"
-#include "base/mem.h"
 #include "assets.h"
+#include "base/mem.h"
+#include "base/path.h"
 #include "base/window.h"
 #include "base/label.h"
 #include "base/edit.h"
@@ -48,8 +49,13 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
 #else
 int main(void) {
 #endif
+  char res_root[MAX_PATH + 1];
+  char app_root[MAX_PATH + 1];
+  path_app_root(app_root);
+  memset(res_root, 0x00, sizeof(res_root));
 
-  tk_init(800, 480, APP_DESKTOP, "AWTK Demo", "./demos");
+  path_build(res_root, MAX_PATH, app_root, "demos", NULL);
+  tk_init(800, 480, APP_DESKTOP, "AWTK Demo", res_root);
 
   assets_init();
   application_init();
