@@ -277,17 +277,17 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else/*WITH_MINI_FONT*/
+#else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif/*WITH_MINI_FONT*/
-#else/*WITH_STB_FONT*/
+#endif /*WITH_MINI_FONT*/
+#else  /*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif/*WITH_STB_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_STB_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();

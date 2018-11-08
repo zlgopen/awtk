@@ -59,8 +59,8 @@ AWTK的主题按控件进行分类，每种控件可以有多种不同的风格�
 * icon 图标。用途视具体控件而定，如check\_button的图标，按钮上的图标，对话框标题上的图标。
 * active\_icon active图标。用途视具体控件而定，目前slideview的页面指示器会用到。
 * icon\_at 图标的位置，取值为left/right/top/bottom。
-* icon\_x\_offset 图标在X坐标方向上的偏移(可用来实现按下的效果)。 
-* icon\_y\_offset 图标在Y坐标方向上的偏移(可用来实现按下的效果)。
+* x\_offset 在X坐标方向上的偏移(可用来实现按下的效果)。 
+* y\_offset 在Y坐标方向上的偏移(可用来实现按下的效果)。
 * margin 边距。
 
 > 颜色可使用标准名称，#开头的16进制值和rgba合成的值。

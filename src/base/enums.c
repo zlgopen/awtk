@@ -44,8 +44,8 @@ static const key_type_value_t style_id_name_value[] = {
     {"icon", TYPE_STRING, STYLE_ID_ICON},
     {"active_icon", TYPE_STRING, STYLE_ID_ACTIVE_ICON},
     {"icon_at", TYPE_STRING, STYLE_ID_ICON_AT},
-    {"icon_x_offset", TYPE_INT, STYLE_ID_ICON_X_OFFSET},
-    {"icon_y_offset", TYPE_INT, STYLE_ID_ICON_Y_OFFSET},
+    {"x_offset", TYPE_INT, STYLE_ID_X_OFFSET},
+    {"y_offset", TYPE_INT, STYLE_ID_Y_OFFSET},
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
 static const key_type_value_t widget_state_name_value[] = {

@@ -548,8 +548,6 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-  int32_t icon_ox = style_get_int(style, STYLE_ID_ICON_X_OFFSET, 0);
-  int32_t icon_oy = style_get_int(style, STYLE_ID_ICON_Y_OFFSET, 0);
 
   wh_t w = widget->w - 2 * margin;
   wh_t h = widget->h - 2 * margin;
@@ -572,18 +570,18 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
         int text_h = font_size + margin;
         int text_y = widget->h - text_h;
 
-        r = rect_init(icon_ox, icon_oy, widget->w, text_y);
+        r = rect_init(0, 0, widget->w, text_y);
         canvas_draw_icon_in_rect(c, &img, &r);
 
         r = rect_init(margin, text_y, w, text_h);
       } else if (icon_at == ICON_AT_RIGHT) {
-        r = rect_init(widget->x + widget->w - widget->h + icon_ox, icon_oy, widget->h, widget->h);
+        r = rect_init(widget->x + widget->w - widget->h, 0, widget->h, widget->h);
         canvas_draw_icon_in_rect(c, &img, &r);
 
         canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
         r = rect_init(margin, margin, widget->w - widget->h - margin, h);
       } else {
-        r = rect_init(icon_ox, icon_oy, widget->h, widget->h);
+        r = rect_init(0, 0, widget->h, widget->h);
         canvas_draw_icon_in_rect(c, &img, &r);
 
         canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
@@ -591,7 +589,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
       }
       canvas_draw_text_in_rect(c, text->str, text->size, &r);
     } else {
-      r = rect_init(icon_ox, icon_oy, widget->w, widget->h);
+      r = rect_init(0, 0, widget->w, widget->h);
       canvas_draw_icon_in_rect(c, &img, &r);
     }
   } else if (text != NULL && text->size > 0) {
@@ -675,8 +673,36 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
   return RET_OK;
 }
 
+static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
+  int32_t ox = widget->x;
+  int32_t oy = widget->y;
+  uint8_t save_alpha = c->lcd->global_alpha;
+
+  if (widget->opacity < TK_OPACITY_ALPHA) {
+    canvas_set_global_alpha(c, (widget->opacity * save_alpha) / 0xff);
+  }
+  if (widget->astyle != NULL) {
+    ox += style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0);
+    oy += style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0);
+  }
+
+  canvas_translate(c, ox, oy);
+  widget_on_paint_begin(widget, c);
+  widget_on_paint_background(widget, c);
+  widget_on_paint_self(widget, c);
+  widget_on_paint_children(widget, c);
+  widget_on_paint_border(widget, c);
+  widget_on_paint_end(widget, c);
+  canvas_untranslate(c, ox, oy);
+
+  if (widget->opacity < TK_OPACITY_ALPHA) {
+    canvas_set_global_alpha(c, save_alpha);
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_paint(widget_t* widget, canvas_t* c) {
-  uint8_t save_alpha = 0;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   if (!widget->visible || widget->w <= 0 || widget->h <= 0) {
@@ -684,46 +710,8 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  save_alpha = c->lcd->global_alpha;
-
-  if (widget->opacity < TK_OPACITY_ALPHA) {
-    uint8_t alpha = (widget->opacity * save_alpha) / 0xff;
-    canvas_set_global_alpha(c, alpha);
-  }
-
-  canvas_translate(c, widget->x, widget->y);
-
-  widget_on_paint_begin(widget, c);
-#ifdef USE_FAST_MODE
-  if (widget->dirty) {
-    widget_t* parent = widget->parent;
-    if (parent != NULL && !(parent->dirty)) {
-      color_t trans = color_init(0, 0, 0, 0);
-      style_t* style = &(parent->astyle);
-      color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-      if (bg.rgba.a != 0) {
-        canvas_set_fill_color(c, bg);
-        canvas_fill_rect(c, 0, 0, widget->w, widget->h);
-      }
-    }
-
-    widget_on_paint_background(widget, c);
-    widget_on_paint_self(widget, c);
-  }
-#else
-  widget_on_paint_background(widget, c);
-  widget_on_paint_self(widget, c);
-#endif
-  widget_on_paint_children(widget, c);
-  widget_on_paint_border(widget, c);
-  widget_on_paint_end(widget, c);
-
+  widget_paint_impl(widget, c);
   widget->dirty = FALSE;
-  if (widget->opacity < 0xff) {
-    canvas_set_global_alpha(c, save_alpha);
-  }
-
-  canvas_untranslate(c, widget->x, widget->y);
 
   return RET_OK;
 }
