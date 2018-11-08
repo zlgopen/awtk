@@ -35,7 +35,7 @@ typedef struct _widget_state_style_t widget_state_style_t;
 
 /**
  * @class style_mutable_t
- * @parent style
+ * @parent style_t
  * @annotation ["scriptable"]
  * 控件风格(可实时修改并生效，用于在designer中被编辑的控件)。
  */

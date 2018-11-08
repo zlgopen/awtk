@@ -18955,7 +18955,7 @@
     "header": "designer_support/style_mutable.h",
     "desc": "控件风格(可实时修改并生效，用于在designer中被编辑的控件)。",
     "name": "style_mutable_t",
-    "parent": "style",
+    "parent": "style_t",
     "annotation": {
       "scriptable": true
     }
