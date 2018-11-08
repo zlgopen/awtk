@@ -1297,6 +1297,11 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 
   widget_set_dirty(widget);
+  if (widget->astyle != NULL) {
+    r->x += style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0);
+    r->y += style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0);
+  }
+
   if (widget->vt && widget->vt->invalidate) {
     return widget->vt->invalidate(widget, r);
   } else {
