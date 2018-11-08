@@ -29,8 +29,14 @@
     <radio_button name="r3" text="Pencil" value="true"/>
   </column>
 
-  <grid x="20" y="bottom:20" w="50%" h="100" layout="r:2 c:4 xm:2 s:10">
+  <row x="20" y="bottom:60" w="100" h="30" layout="r:1 c:4">
+    <radio_button style="left"/>
+    <radio_button style="middle"/>
+    <radio_button style="right"/>
     <check_button style="mute"/>
+  </grid>
+  
+  <grid x="20" y="bottom:10" w="80%" h="40" layout="r:1 c:5 xm:2 s:10">
     <image draw_type="icon" image="earth"/>
     <image draw_type="icon" image="rgba" />
     <image draw_type="icon" image="rgb" />
