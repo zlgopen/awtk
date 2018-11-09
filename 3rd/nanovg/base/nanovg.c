@@ -20,7 +20,7 @@
 #include <math.h>
 #include "nanovg.h"
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 #include <stdio.h>
 #include <memory.h>
 #define FONTSTASH_IMPLEMENTATION
@@ -30,7 +30,7 @@
 #else
 #include <string.h>
 #define printf(...)
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4100)  // unreferenced formal parameter
@@ -290,9 +290,9 @@ static NVGstate* nvg__getState(NVGcontext* ctx)
 
 NVGcontext* nvgCreateInternal(NVGparams* params)
 {
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 	FONSparams fontParams;
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 	NVGcontext* ctx = (NVGcontext*)malloc(sizeof(NVGcontext));
 	int i;
 	if (ctx == NULL) goto error;
@@ -317,7 +317,7 @@ NVGcontext* nvgCreateInternal(NVGparams* params)
 
 	if (ctx->params.renderCreate(ctx->params.userPtr) == 0) goto error;
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 	// Init font rendering
 	memset(&fontParams, 0, sizeof(fontParams));
 	fontParams.width = NVG_INIT_FONTIMAGE_SIZE;
@@ -335,7 +335,7 @@ NVGcontext* nvgCreateInternal(NVGparams* params)
 	ctx->fontImages[0] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, fontParams.width, fontParams.height, 0, NULL);
 	if (ctx->fontImages[0] == 0) goto error;
 	ctx->fontImageIdx = 0;
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 	return ctx;
 
@@ -356,7 +356,7 @@ void nvgDeleteInternal(NVGcontext* ctx)
 	if (ctx->commands != NULL) free(ctx->commands);
 	if (ctx->cache != NULL) nvg__deletePathCache(ctx->cache);
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 	if (ctx->fs)
 		fonsDeleteInternal(ctx->fs);
 
@@ -368,7 +368,7 @@ void nvgDeleteInternal(NVGcontext* ctx)
 	}
 #else
 	(void)i;
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 	if (ctx->params.renderDelete != NULL)
 		ctx->params.renderDelete(ctx->params.userPtr);
@@ -801,7 +801,7 @@ void nvgFillPaint(NVGcontext* ctx, NVGpaint paint)
 	nvgTransformMultiply(state->fill.xform, state->xform);
 }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 int nvgCreateImage(NVGcontext* ctx, const char* filename, int imageFlags)
 {
 	int w, h, n, image;
@@ -840,7 +840,7 @@ int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int 
 {
   return -1;
 }
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 int nvgCreateImageRGBA(NVGcontext* ctx, int w, int h, int imageFlags, const unsigned char* data)
 {
@@ -1448,7 +1448,7 @@ static int nvg__curveDivs(float r, float arc, float tol)
 	return nvg__maxi(2, (int)ceilf(arc / da));
 }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 static void nvg__chooseBevel(int bevel, NVGpoint* p0, NVGpoint* p1, float w,
 							float* x0, float* y0, float* x1, float* y1)
 {
@@ -2177,7 +2177,7 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 
 	return 1;
 }
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 // Draw
 void nvgBeginPath(NVGcontext* ctx)
@@ -2411,7 +2411,7 @@ void nvgCircle(NVGcontext* ctx, float cx, float cy, float r)
 	nvgEllipse(ctx, cx,cy, r,r);
 }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 void nvgDebugDumpPathCache(NVGcontext* ctx)
 {
 	const NVGpath* path;
@@ -2433,7 +2433,7 @@ void nvgDebugDumpPathCache(NVGcontext* ctx)
 		}
 	}
 }
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 void nvgFill(NVGcontext* ctx)
 {
@@ -2505,7 +2505,7 @@ void nvgStroke(NVGcontext* ctx)
 	}
 }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
 // Add fonts
 int nvgCreateFont(NVGcontext* ctx, const char* name, const char* path)
 {
@@ -3173,7 +3173,7 @@ float nvgTextBounds(NVGcontext* ctx, float x, float y, const char* string, const
   return 0;
 }
 
-#endif/*WITH_NANOVG_GL*/
+#endif/*WITH_NANOVG_GPU*/
 
 NVGparams* nvgGetParams(NVGcontext* ctx) {
   return &(ctx->params);

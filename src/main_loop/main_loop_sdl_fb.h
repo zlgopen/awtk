@@ -1,5 +1,5 @@
 ﻿/**
- * File:   main_loop_sdl2.h
+ * File:   main_loop_sdl_fb.h
  * Author: AWTK Develop Team
  * Brief:  sdl2 implemented main_loop interface
  *
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_MAIN_LOOP_SDL2_H
-#define TK_MAIN_LOOP_SDL2_H
+#ifndef TK_MAIN_LOOP_SDL_FB_H
+#define TK_MAIN_LOOP_SDL_FB_H
 
 #include "base/main_loop.h"
 
@@ -30,4 +30,4 @@ main_loop_t* main_loop_init(int w, int h);
 
 END_C_DECLS
 
-#endif /*TK_MAIN_LOOP_SDL2_H*/
+#endif /*TK_MAIN_LOOP_SDL_FB_H*/

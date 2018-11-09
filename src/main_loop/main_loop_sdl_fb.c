@@ -1,5 +1,5 @@
 ﻿/**
- * File:   main_loop_sdl2.c
+ * File:   main_loop_sdl_fb.c
  * Author: AWTK Develop Team
  * Brief:  sdl2 implemented main_loop interface
  *
@@ -20,7 +20,7 @@
  */
 
 #include "main_loop/main_loop_simple.h"
-#include "main_loop/main_loop_sdl2.h"
+#include "main_loop/main_loop_sdl_fb.h"
 #include "base/window_manager.h"
 #include "base/font_manager.h"
 #include "lcd/lcd_sdl2.h"
@@ -35,7 +35,7 @@
 
 #include "sdl2_common.inc"
 
-static ret_t main_loop_sdl2_destroy(main_loop_t* l) {
+static ret_t main_loop_sdl_fb_destroy(main_loop_t* l) {
   const char* errMsg = SDL_GetError();
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
@@ -57,7 +57,7 @@ static ret_t main_loop_sdl2_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
-static ret_t main_loop_sdl2_create_window(main_loop_simple_t* l) {
+static ret_t main_loop_sdl_fb_create_window(main_loop_simple_t* l) {
   int x = SDL_WINDOWPOS_UNDEFINED;
   int y = SDL_WINDOWPOS_UNDEFINED;
   int flags = SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED;
@@ -77,10 +77,10 @@ static ret_t main_loop_sdl2_create_window(main_loop_simple_t* l) {
 main_loop_t* main_loop_init(int w, int h) {
   main_loop_simple_t* loop = main_loop_simple_init(w, h);
 
-  loop->base.destroy = main_loop_sdl2_destroy;
-  loop->dispatch_input = main_loop_sdl2_dispatch;
+  loop->base.destroy = main_loop_sdl_fb_destroy;
+  loop->dispatch_input = main_loop_sdl_fb_dispatch;
 
-  main_loop_sdl2_create_window(loop);
+  main_loop_sdl_fb_create_window(loop);
   SDL_StopTextInput();
 
   return (main_loop_t*)loop;

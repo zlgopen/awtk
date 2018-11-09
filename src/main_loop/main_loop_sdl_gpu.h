@@ -1,5 +1,5 @@
 ﻿/**
- * File:   main_loop_nanovg.h
+ * File:   main_loop_sdl_gpu.h
  * Author: AWTK Develop Team
  * Brief:  nanovg implemented main_loop interface
  *
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_MAIN_LOOP_NANOVG_H
-#define TK_MAIN_LOOP_NANOVG_H
+#ifndef TK_MAIN_LOOP_SDL_GPU_H
+#define TK_MAIN_LOOP_SDL_GPU_H
 
 #include "base/main_loop.h"
 
@@ -30,4 +30,4 @@ main_loop_t* main_loop_init(int w, int h);
 
 END_C_DECLS
 
-#endif /*TK_MAIN_LOOP_NANOVG_H*/
+#endif /*TK_MAIN_LOOP_SDL_GPU_H*/
