@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/11/09
+  * 重正编译脚本，以便集成bgfx。
+  * 重正vgcanvas，以便集成bgfx。
 
 * 2018/11/08
   * 将icon\_x\_offset/icon\_y\_offset改名为x\_offset/y\_offset，进行整体偏移，效果更好。
