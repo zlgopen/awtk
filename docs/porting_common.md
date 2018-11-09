@@ -117,7 +117,6 @@
 ### 二、include路径
 
 ```
-awtk
 awtk/src
 awtk/src/ext_widgets
 awtk/3rd
@@ -149,9 +148,9 @@ awtk-port
 | src/platforms/raw/fs\_os.c       | 如果没有文件系统请加入，否则请自行实现fs接口
 | src/platforms/raw/mutex\_null.c  | 如果没有mutex请加入，否则请自行实现mutex接口
 | src/platforms/raw/sys\_tick.c    | 如果需要自己实现sys tick中断，可以加入
-| src/vgcanvas                     | 如果需要矢量图或图片旋转(不支持lcd\_reg)请加入vgcanvas\_nanovg.c，否则加入vgcanvas\_null.c
+| src/vgcanvas                     | 如果需要矢量图或图片旋转(不支持lcd\_reg)请加入vgcanvas\_nanovg_soft.c，否则加入vgcanvas\_null.c
 | src/widget\_animators            | 除了使用LCD\_REG的平台外推荐全部加入
-| src/window\_animators            | 启用OpenGL(PC/Android/iOS)时加入window\_animator\_opengl.c，使用Framebuffer(一般嵌入式)时加入window\_animator\_fb.c，低端嵌入式平台请加入window\_animator\_null.c
+| src/window\_animators            | 启用OpenGL(PC/Android/iOS)时加入window\_animator\_gpu.c，使用Framebuffer(一般嵌入式)时加入window\_animator\_fb.c，低端嵌入式平台请加入window\_animator\_null.c
 | awtk/3rd/agge                    | 在framebuffer模式启用vgcanvas时加入
 | awtk/3rd/gpinyin/src             | 启用拼音输入法时加入
 | awtk/3rd/nanovg/base             | 在启用vgcanvas时加入
@@ -164,5 +163,6 @@ awtk-port
 
 * 1.如果要加载png/jpg图片格式StackSize不小于32K。 
 * 2.使用keil编译时，请在C/C++ -> Misc Controls中加上**--gnu**标志。
+* 3.如果系统有FPU，初始化时一定要开启FPU。
 
 
