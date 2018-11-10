@@ -63,7 +63,6 @@ typedef struct _vgcanvas_nanovg_t {
 #include "vgcanvas_nanovg.inc"
 
 static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
-  
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");

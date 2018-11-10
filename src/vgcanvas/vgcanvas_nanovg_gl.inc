@@ -107,4 +107,3 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
 
   return RET_OK;
 }
-

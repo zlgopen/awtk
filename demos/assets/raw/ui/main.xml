@@ -20,6 +20,7 @@
     <button name="open:image_animation" text="Image Animation"/>
     <button name="open:calibration_win" text="Calibration"/>
     <button name="open:memtest" text="MemTest"/>
+    <button name="open:progress_circle" text="ProgressCircle"/>
     <button name="show_fps" text="Show FPS"/>
     <button name="exit" text="Exit"/>
 </window>

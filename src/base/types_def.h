@@ -429,10 +429,6 @@ typedef enum _app_type_t {
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
-#ifndef M_PI
-#define M_PI 3.1415926f
-#endif /*M_PI*/
-
 #define TK_UINT32_MAX 0xffffffff
 
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
@@ -446,6 +442,13 @@ typedef enum _app_type_t {
 #endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
+
+#ifndef M_PI
+#define M_PI 3.1415926f
+#endif /*M_PI*/
+
+#define TK_D2R(d) (((d)*M_PI) / 180)
+#define TK_R2D(r) (((r)*180) / M_PI)
 
 struct _widget_t;
 typedef struct _widget_t widget_t;

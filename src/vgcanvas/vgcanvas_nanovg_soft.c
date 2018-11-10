@@ -19,7 +19,6 @@
  *
  */
 
-
 #include "nanovg.h"
 #include "base/utf8.h"
 #include "base/mem.h"
@@ -31,7 +30,7 @@
 #include "agge/nanovg_agge.h"
 #elif defined(WITH_NANOVG_AGG)
 #include "agg/nanovg_agg.h"
-#endif/*WITH_NANOVG_AGGE|WITH_NANOVG_AGG*/
+#endif /*WITH_NANOVG_AGGE|WITH_NANOVG_AGG*/
 
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;

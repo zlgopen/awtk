@@ -453,3 +453,11 @@
   </style>
 </slide_view>
 
+<progress_circle>
+  <style name="default">
+    <normal text_color="green" fg_color="black" />
+  </style>
+  <style name="image">
+    <normal text_color="gold" fg_image="1" />
+  </style>
+</progress_circle>

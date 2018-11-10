@@ -484,4 +484,3 @@ static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
                                      vgcanvas_nanovg_bind_fbo,
                                      vgcanvas_nanovg_unbind_fbo,
                                      vgcanvas_nanovg_destroy};
-

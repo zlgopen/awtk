@@ -66,7 +66,7 @@ static ret_t main_loop_sdl_gpu_create_window(main_loop_simple_t* l) {
     exit(0);
     return RET_FAIL;
   }
-  
+
   LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow(title, x, y, l->w, l->h, flags));
   return_value_if_fail(LOOP_SDL_WINDOW(l) != NULL, RET_FAIL);
 

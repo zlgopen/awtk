@@ -11,7 +11,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
- 
+
   setBGFXViewRect(0, 0, 0, vgcanvas->w, vgcanvas->h);
   touchBGFX(0);
   nvgBeginFrame(canvas->vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio);
@@ -53,4 +53,3 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
 
   return RET_OK;
 }
-

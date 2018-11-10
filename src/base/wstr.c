@@ -102,7 +102,7 @@ wchar_t* wcsdup(const wchar_t* s) {
 #endif /*WITH_WCSXXX*/
 
 static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {
-  if (capacity < str->capacity) {
+  if (capacity <= str->capacity) {
     return RET_OK;
   }
 

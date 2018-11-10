@@ -19,6 +19,7 @@
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/color_picker_simple.data"
+#include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
 #include "assets/inc/ui/kb_phone.data"
 #include "assets/inc/ui/main.data"
@@ -299,6 +300,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_color_picker_simple);
+  assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
   assets_manager_add(rm, ui_kb_phone);
   assets_manager_add(rm, ui_main);
