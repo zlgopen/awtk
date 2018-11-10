@@ -616,12 +616,13 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 // Internal Render API
 //
 enum NVGtexture {
-	NVG_TEXTURE_ALPHA = 0x01,
-	NVG_TEXTURE_RGBA = 0x02,
-	NVG_TEXTURE_BGRA = 0x04,
-	NVG_TEXTURE_RGB  = 0x08,
-	NVG_TEXTURE_BGR  = 0x16,
-	NVG_TEXTURE_BGR565 = 0x32
+	NVG_TEXTURE_ALPHA = 1,
+	NVG_TEXTURE_RGBA = 2,
+	NVG_TEXTURE_BGRA = 4,
+	NVG_TEXTURE_RGB  = 8,
+	NVG_TEXTURE_BGR  = 16,
+	NVG_TEXTURE_RGB565 = 32,
+	NVG_TEXTURE_BGR565 = 64
 };
 
 struct NVGscissor {

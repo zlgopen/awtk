@@ -78,7 +78,7 @@ main_loop_t* main_loop_init(int w, int h) {
   main_loop_simple_t* loop = main_loop_simple_init(w, h);
 
   loop->base.destroy = main_loop_sdl_fb_destroy;
-  loop->dispatch_input = main_loop_sdl_fb_dispatch;
+  loop->dispatch_input = main_loop_sdl2_dispatch;
 
   main_loop_sdl_fb_create_window(loop);
   SDL_StopTextInput();
