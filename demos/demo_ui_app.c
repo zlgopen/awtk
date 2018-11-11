@@ -19,6 +19,7 @@
  *
  */
 
+#include "awtk.h"
 #include "base/mem.h"
 #include "base/time.h"
 #include "base/label.h"
@@ -117,7 +118,7 @@ static ret_t on_quit(void* ctx, event_t* e) {
 }
 
 static ret_t on_quit_app(void* ctx, event_t* e) {
-  main_loop_quit(main_loop());
+  tk_quit();
 
   return RET_OK;
 }
