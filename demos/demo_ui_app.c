@@ -21,7 +21,6 @@
 
 #include "awtk.h"
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/label.h"
 #include "base/timer.h"
 #include "base/button.h"
@@ -29,6 +28,7 @@
 #include "base/image.h"
 #include "base/utils.h"
 #include "base/window.h"
+#include "base/time_now.h"
 #include "base/main_loop.h"
 #include "base/locale_info.h"
 #include "base/check_button.h"

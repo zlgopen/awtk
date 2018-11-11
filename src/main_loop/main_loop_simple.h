@@ -23,7 +23,6 @@
 #define TK_MAIN_LOOP_SIMPLE_H
 
 #include "base/idle.h"
-#include "base/time.h"
 #include "base/timer.h"
 #include "base/mutex.h"
 #include "base/main_loop.h"

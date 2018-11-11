@@ -20,10 +20,10 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/utils.h"
 #include "base/layout.h"
 #include "base/velocity.h"
+#include "base/time_now.h"
 #include "scroll_view/scroll_view.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"

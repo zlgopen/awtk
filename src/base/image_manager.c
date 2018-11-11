@@ -20,8 +20,8 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/utils.h"
+#include "base/time_now.h"
 #include "base/image_manager.h"
 
 typedef struct _bitmap_cache_t {

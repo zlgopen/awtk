@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/time.h"
 #include "base/mem.h"
 #include "base/utf8.h"
 #include "base/utils.h"
 #include "base/enums.h"
+#include "base/time_now.h"
 #include "base/locale_info.h"
 #include "base/widget.h"
 #include "base/layout.h"

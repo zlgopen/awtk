@@ -20,8 +20,8 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/emitter.h"
+#include "base/time_now.h"
 
 emitter_t* emitter_create() {
   emitter_t* emitter = (emitter_t*)TKMEM_ZALLOC(emitter_t);

@@ -1,4 +1,9 @@
 # 最新动态
+* 2018/11/11
+  * 完善ProgressCircle控件。
+  * base/time.h改名为base/time\_now.h，避免和系统time.h冲突。
+  * 更新文档。
+
 * 2018/11/10
   * 增加ProgressCircle控件。
 

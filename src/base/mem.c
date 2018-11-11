@@ -20,7 +20,7 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
+#include "base/time_now.h"
 
 static void tk_free_impl(void* ptr);
 static void* tk_alloc_impl(uint32_t size);
@@ -334,7 +334,7 @@ static void* tk_calloc_impl(uint32_t nmemb, uint32_t s) {
 }
 
 #ifdef ENABLE_MEM_LEAK_CHECK
-#include "base/time.h"
+#include "base/time_now.h"
 
 typedef struct _mem_record_t {
   void* ptr;
