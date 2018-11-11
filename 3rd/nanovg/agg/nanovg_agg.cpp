@@ -323,6 +323,7 @@ void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compos
 
     agg::nanovg_vertex v(p->stroke, p->nstroke);
     agg::conv_stroke<agg::nanovg_vertex> path(v);
+    path.line_cap(agg::round_cap);
     path.width(strokeWidth);
     ras.add_path(path);
   }

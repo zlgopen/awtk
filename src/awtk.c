@@ -154,6 +154,8 @@ ret_t tk_deinit_internal(void) {
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
 
+  tk_mem_dump();
+
   return RET_OK;
 }
 

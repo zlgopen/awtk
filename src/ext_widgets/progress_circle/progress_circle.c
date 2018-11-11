@@ -51,7 +51,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     vgcanvas_translate(vg, c->ox, c->oy);
     vgcanvas_set_stroke_color(vg, color);
     vgcanvas_set_line_width(vg, progress_circle->line_width);
-
+    vgcanvas_set_line_cap(vg, "round");
     vgcanvas_begin_path(vg);
     if (end_angle > start_angle) {
       vgcanvas_arc(vg, cx, cy, r, start_angle, end_angle, ccw);

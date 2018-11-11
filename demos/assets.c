@@ -8,34 +8,73 @@
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/color_picker_simple.data"
+#include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
+#include "assets/inc/ui/kb_phone.data"
+#include "assets/inc/ui/main.data"
 #include "assets/inc/ui/scroll_bar.data"
 #include "assets/inc/ui/lua.data"
+#include "assets/inc/ui/preload.data"
+#include "assets/inc/ui/images.data"
 #include "assets/inc/ui/edit.data"
 #include "assets/inc/ui/locale.data"
 #include "assets/inc/ui/kb_int.data"
 #include "assets/inc/ui/tab_control.data"
+#include "assets/inc/ui/animation.data"
+#include "assets/inc/ui/keyboard.data"
 #include "assets/inc/ui/kb_hex.data"
+#include "assets/inc/ui/color.data"
 #include "assets/inc/ui/color_picker.data"
+#include "assets/inc/ui/switch.data"
 #include "assets/inc/ui/dragger.data"
+#include "assets/inc/ui/dialog2.data"
+#include "assets/inc/ui/color_picker_hsv.data"
+#include "assets/inc/ui/tab_bottom.data"
 #include "assets/inc/ui/list_view_m.data"
+#include "assets/inc/ui/calibration_win.data"
+#include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/kb_float.data"
+#include "assets/inc/ui/htranslate.data"
 #include "assets/inc/ui/list_view_vh.data"
 #include "assets/inc/ui/rich_text.data"
+#include "assets/inc/ui/scroll_view.data"
 #include "assets/inc/ui/tab_list.data"
+#include "assets/inc/ui/animator.data"
+#include "assets/inc/ui/scroll_view_h.data"
+#include "assets/inc/ui/scroll_bar_h.data"
+#include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
+#include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/selectm.data"
+#include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/basic.data"
+#include "assets/inc/ui/auto_play.data"
+#include "assets/inc/ui/guage.data"
+#include "assets/inc/ui/color_picker_full.data"
+#include "assets/inc/ui/dialog1.data"
 #include "assets/inc/ui/fade.data"
+#include "assets/inc/ui/image_list.data"
 #include "assets/inc/ui/select1.data"
+#include "assets/inc/ui/bottom.data"
+#include "assets/inc/ui/image_animation.data"
+#include "assets/inc/ui/slide_view.data"
 #include "assets/inc/ui/time_clock.data"
+#include "assets/inc/ui/tab_top.data"
+#include "assets/inc/ui/slide_view_v.data"
 #include "assets/inc/ui/top.data"
 #include "assets/inc/ui/button.data"
 #include "assets/inc/ui/list_view_d.data"
+#include "assets/inc/ui/vtranslate.data"
 #include "assets/inc/ui/kb_ufloat.data"
 #include "assets/inc/ui/kb_default.data"
+#include "assets/inc/ui/rich_text2.data"
+#include "assets/inc/ui/list_view_h.data"
 #include "assets/inc/ui/color_picker_rgb.data"
+#include "assets/inc/ui/tab_bottom_compact.data"
+#include "assets/inc/ui/kb_uint.data"
+#include "assets/inc/ui/scroll_view_v.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -166,17 +205,17 @@
 #include "assets/inc/images/msg.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else/*WITH_MINI_FONT*/
+#else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif/*WITH_MINI_FONT*/
-#else/*WITH_STB_FONT*/
+#endif /*WITH_MINI_FONT*/
+#else  /*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif/*WITH_STB_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_STB_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -188,34 +227,73 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_color_picker_simple);
+  assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
+  assets_manager_add(rm, ui_kb_phone);
+  assets_manager_add(rm, ui_main);
   assets_manager_add(rm, ui_scroll_bar);
   assets_manager_add(rm, ui_lua);
+  assets_manager_add(rm, ui_preload);
+  assets_manager_add(rm, ui_images);
   assets_manager_add(rm, ui_edit);
   assets_manager_add(rm, ui_locale);
   assets_manager_add(rm, ui_kb_int);
   assets_manager_add(rm, ui_tab_control);
+  assets_manager_add(rm, ui_animation);
+  assets_manager_add(rm, ui_keyboard);
   assets_manager_add(rm, ui_kb_hex);
+  assets_manager_add(rm, ui_color);
   assets_manager_add(rm, ui_color_picker);
+  assets_manager_add(rm, ui_switch);
   assets_manager_add(rm, ui_dragger);
+  assets_manager_add(rm, ui_dialog2);
+  assets_manager_add(rm, ui_color_picker_hsv);
+  assets_manager_add(rm, ui_tab_bottom);
   assets_manager_add(rm, ui_list_view_m);
+  assets_manager_add(rm, ui_calibration_win);
+  assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_kb_float);
+  assets_manager_add(rm, ui_htranslate);
   assets_manager_add(rm, ui_list_view_vh);
   assets_manager_add(rm, ui_rich_text);
+  assets_manager_add(rm, ui_scroll_view);
   assets_manager_add(rm, ui_tab_list);
+  assets_manager_add(rm, ui_animator);
+  assets_manager_add(rm, ui_scroll_view_h);
+  assets_manager_add(rm, ui_scroll_bar_h);
+  assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
+  assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_selectm);
+  assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_basic);
+  assets_manager_add(rm, ui_auto_play);
+  assets_manager_add(rm, ui_guage);
+  assets_manager_add(rm, ui_color_picker_full);
+  assets_manager_add(rm, ui_dialog1);
   assets_manager_add(rm, ui_fade);
+  assets_manager_add(rm, ui_image_list);
   assets_manager_add(rm, ui_select1);
+  assets_manager_add(rm, ui_bottom);
+  assets_manager_add(rm, ui_image_animation);
+  assets_manager_add(rm, ui_slide_view);
   assets_manager_add(rm, ui_time_clock);
+  assets_manager_add(rm, ui_tab_top);
+  assets_manager_add(rm, ui_slide_view_v);
   assets_manager_add(rm, ui_top);
   assets_manager_add(rm, ui_button);
   assets_manager_add(rm, ui_list_view_d);
+  assets_manager_add(rm, ui_vtranslate);
   assets_manager_add(rm, ui_kb_ufloat);
   assets_manager_add(rm, ui_kb_default);
+  assets_manager_add(rm, ui_rich_text2);
+  assets_manager_add(rm, ui_list_view_h);
   assets_manager_add(rm, ui_color_picker_rgb);
+  assets_manager_add(rm, ui_tab_bottom_compact);
+  assets_manager_add(rm, ui_kb_uint);
+  assets_manager_add(rm, ui_scroll_view_v);
   assets_manager_add(rm, strings_zh_CN);
   assets_manager_add(rm, strings_en_US);
   assets_manager_add(rm, image_ani3);
