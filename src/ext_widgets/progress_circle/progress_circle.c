@@ -72,7 +72,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     tk_snprintf(s, sizeof(s), "%u%s", progress_circle->value, unit);
 
     widget_set_text_utf8(widget, s);
-    widget_draw_icon_text(widget, c, NULL, NULL);
+    widget_paint_helper(widget, c, NULL, NULL);
   }
 
   return RET_OK;
