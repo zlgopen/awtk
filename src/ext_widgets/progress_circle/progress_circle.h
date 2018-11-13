@@ -35,11 +35,11 @@ BEGIN_C_DECLS
 typedef struct _progress_circle_t {
   widget_t widget;
   /**
-   * @property {uint32_t} value
+   * @property {float_t} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值(缺省为0)。
    */
-  uint32_t value;
+  float_t value;
   /**
    * @property {uint32_t} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -117,11 +117,11 @@ widget_t* progress_circle_cast(widget_t* widget);
  * 设置值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t}  value 值。
+ * @param {float_t}  value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t progress_circle_set_value(widget_t* widget, uint32_t value);
+ret_t progress_circle_set_value(widget_t* widget, float_t value);
 
 /**
  * @method progress_circle_set_max
