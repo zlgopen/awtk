@@ -89,9 +89,14 @@ typedef enum _value_type_t {
   VALUE_TYPE_POINTER,
   /**
    * @const VALUE_TYPE_FLOAT
-   * float类型。
+   * float_t类型。
    */
   VALUE_TYPE_FLOAT,
+  /**
+   * @const VALUE_TYPE_FLOAT32
+   * float类型。
+   */
+  VALUE_TYPE_FLOAT32,
   /**
    * @const VALUE_TYPE_DOUBLE
    * double类型。
@@ -125,6 +130,7 @@ typedef struct _value_t {
     uint32_t u32;
     int64_t i64;
     uint64_t u64;
+    float f;
     float f32;
     double f64;
     bool_t b;
@@ -352,11 +358,11 @@ pointer_t value_pointer(const value_t* v);
  * 设置类型为float的值。
  * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
- * @param {float}    value 待设置的值。
+ * @param {float_t}    value 待设置的值。
  *
  * @return {value_t*} value对象本身。
  */
-value_t* value_set_float(value_t* v, float value);
+value_t* value_set_float(value_t* v, float_t value);
 
 /**
  * @method value_float
@@ -366,7 +372,28 @@ value_t* value_set_float(value_t* v, float value);
  *
  * @return {float} 值。
  */
-float value_float(const value_t* v);
+float_t value_float(const value_t* v);
+
+/**
+ * @method value_set_float32
+ * 设置类型为float的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v     value对象。
+ * @param {float}    value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_float32(value_t* v, float value);
+
+/**
+ * @method value_float32
+ * 获取类型为float的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {float} 值。
+ */
+float value_float32(const value_t* v);
 
 /**
  * @method value_set_double
