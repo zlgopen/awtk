@@ -2058,9 +2058,7 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, float fringe, int lineCap
 
 		if (loop == 0) {
 			// Add cap
-			dx = p1->x - p0->x;
-			dy = p1->y - p0->y;
-			nvg__normalize(&dx, &dy);
+			nvg__vset(dst, p0->x, p0->y, u0,1); dst++;
 		}
 
 		for (j = s; j < e; ++j) {
@@ -2073,6 +2071,9 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, float fringe, int lineCap
 			// Loop it
 			nvg__vset(dst, verts[0].x, verts[0].y, u0,1); dst++;
 			nvg__vset(dst, verts[1].x, verts[1].y, u1,1); dst++;
+		} else {
+			// Add cap
+			nvg__vset(dst, p1->x, p1->y, u0,1); dst++;
 		}
 
 		path->nstroke = (int)(dst - verts);
