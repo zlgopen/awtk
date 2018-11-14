@@ -42,15 +42,29 @@ static const key_type_value_t style_id_name_value[] = {
     {"fg_image", TYPE_STRING, STYLE_ID_FG_IMAGE},
     {"fg_image_draw_type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
     {"icon", TYPE_STRING, STYLE_ID_ICON},
+    {"active_icon", TYPE_STRING, STYLE_ID_ACTIVE_ICON},
     {"icon_at", TYPE_STRING, STYLE_ID_ICON_AT},
+    {"x_offset", TYPE_INT, STYLE_ID_X_OFFSET},
+    {"y_offset", TYPE_INT, STYLE_ID_Y_OFFSET},
     {"margin", TYPE_INT, STYLE_ID_MARGIN}};
 
 static const key_type_value_t widget_state_name_value[] = {
-    {"normal", 0, WIDGET_STATE_NORMAL},       {"over", 0, WIDGET_STATE_OVER},
-    {"pressed", 0, WIDGET_STATE_PRESSED},     {"disable", 0, WIDGET_STATE_DISABLE},
-    {"focused", 0, WIDGET_STATE_FOCUSED},     {"checked", 0, WIDGET_STATE_CHECKED},
-    {"unchecked", 0, WIDGET_STATE_UNCHECKED}, {"error", 0, WIDGET_STATE_ERROR},
-    {"selected", 0, WIDGET_STATE_SELECTED},   {"empty", 0, WIDGET_STATE_EMPTY}};
+    {"normal", 0, WIDGET_STATE_NORMAL},
+    {"over", 0, WIDGET_STATE_OVER},
+    {"pressed", 0, WIDGET_STATE_PRESSED},
+    {"normal_of_active", 0, WIDGET_STATE_NORMAL_OF_ACTIVE},
+    {"over_of_active", 0, WIDGET_STATE_OVER_OF_ACTIVE},
+    {"pressed_of_active", 0, WIDGET_STATE_PRESSED_OF_ACTIVE},
+    {"normal_of_checked", 0, WIDGET_STATE_NORMAL_OF_CHECKED},
+    {"over_of_checked", 0, WIDGET_STATE_OVER_OF_CHECKED},
+    {"pressed_of_checked", 0, WIDGET_STATE_PRESSED_OF_CHECKED},
+    {"disable", 0, WIDGET_STATE_DISABLE},
+    {"focused", 0, WIDGET_STATE_FOCUSED},
+    {"checked", 0, WIDGET_STATE_CHECKED},
+    {"unchecked", 0, WIDGET_STATE_UNCHECKED},
+    {"error", 0, WIDGET_STATE_ERROR},
+    {"selected", 0, WIDGET_STATE_SELECTED},
+    {"empty", 0, WIDGET_STATE_EMPTY}};
 
 static const key_type_value_t align_v_name_value[] = {
     {"top", 0, ALIGN_V_TOP}, {"middle", 0, ALIGN_V_MIDDLE}, {"bottom", 0, ALIGN_V_BOTTOM}};

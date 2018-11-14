@@ -45,8 +45,17 @@ typedef struct _button_t {
   int32_t timer_id;
   int32_t repeat_nr;
   bool_t pressed;
-  bool_t point_down_aborted;
 } button_t;
+
+/**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_LONG_PRESS
+ * 长按事件。
+ */
 
 /**
  * @method button_create

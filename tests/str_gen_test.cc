@@ -1,4 +1,5 @@
-﻿#include "gtest/gtest.h"
+﻿#include "common.h"
+#include "gtest/gtest.h"
 #include "base/locale_info.h"
 #include "tools/str_gen/str_gen.h"
 #include "tools/str_gen/xml_str_gen.h"
@@ -92,8 +93,9 @@ TEST(StrGen, xml1) {
   ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
 
   sg.Output("zh_CN", buff, sizeof(buff));
-  ASSERT_EQ(string("确定"), str_table_lookup(table, "ok"));
-  ASSERT_EQ(string("取消"), str_table_lookup(table, "cancel"));
+  assert_str_eq(L"确定", str_table_lookup(table, "ok"));
+  assert_str_eq(L"取消", str_table_lookup(table, "cancel"));
+
   ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));
 }

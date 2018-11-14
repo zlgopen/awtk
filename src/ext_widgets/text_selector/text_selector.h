@@ -77,6 +77,16 @@ typedef struct _text_selector_t {
 } text_selector_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(当前项)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(当前项)改变事件。
+ */
+
+/**
  * @method text_selector_create
  * 创建text_selector对象
  * @annotation ["constructor", "scriptable"]

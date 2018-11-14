@@ -1,4 +1,4 @@
-<window name="switch" anim_hint="htranslate">
+<window anim_hint="htranslate">
   <switch x="10" y="60" w="90" h="22" />
   <switch x="200" y="60" w="90" h="22" round_radius="10" />
 

@@ -74,6 +74,21 @@ typedef struct _slider_t {
 } slider_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGING
+ * 值正在改变事件(拖动中)。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值改变事件。
+ */
+
+/**
  * @method slider_create
  * 创建slider对象
  * @annotation ["constructor", "scriptable"]

@@ -59,10 +59,8 @@ static ret_t switch_on_pointer_move(switch_t* aswitch, pointer_event_t* e) {
 static ret_t switch_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   switch_t* aswitch = SWITCH(ctx);
-  event_t evt = event_init(EVT_VALUE_CHANGED, widget);
 
   aswitch->wa = NULL;
-  widget_dispatch(widget, &evt);
   switch_set_value(widget, aswitch->xoffset == 0);
 
   return RET_REMOVE;
@@ -184,12 +182,12 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 }
 
 static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, "switch");
 
   if (image_name != NULL) {
     bitmap_t img;
-    if (image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+    if (widget_load_image(widget, image_name, &img) == RET_OK) {
       return switch_on_paint_background_img(widget, c, &img);
     }
   }
@@ -202,8 +200,10 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (aswitch->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     aswitch->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
   }
 

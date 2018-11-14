@@ -1,4 +1,5 @@
 ﻿#include "common.h"
+#include "base/utf8.h"
 #include "gtest/gtest.h"
 
 #define PRINTF printf
@@ -10,6 +11,7 @@ void bitmap_dump(bitmap_t* b) {
   uint32_t w = b->w;
   uint32_t h = b->h;
 
+  PRINTF("-----------------------------------------------\n");
   for (y = 0; y < h; y++) {
     PRINTF("%02d:", y);
     for (x = 0; x < w; x++) {
@@ -47,4 +49,15 @@ void bitmap_check(bitmap_t* b, rect_t* r, rgba_t e) {
       }
     }
   }
+}
+
+#include <string>
+
+using std::string;
+
+void assert_str_eq(const wchar_t* wstr, const char* utf8) {
+  char str[256];
+
+  utf8_from_utf16(wstr, str, sizeof(str));
+  ASSERT_EQ(string(str), string(utf8));
 }

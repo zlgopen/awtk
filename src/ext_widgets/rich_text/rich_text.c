@@ -89,7 +89,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
         const char* name = iter->node->u.image.name;
         image_draw_type_t draw_type = iter->node->u.image.draw_type;
 
-        if (image_manager_load(image_manager(), name, &bitmap) == RET_OK) {
+        if (widget_load_image(widget, name, &bitmap) == RET_OK) {
           canvas_draw_image_ex(c, &bitmap, draw_type, r);
         }
         break;
@@ -119,11 +119,11 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
     int32_t w = widget->w;
     int32_t h = widget->h;
     int32_t line_gap = rich_text->line_gap;
-    style_t* style = &(widget->style_data);
+    style_t* style = widget->astyle;
     int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
 
     rich_text->render_node =
-        rich_text_render_node_layout(rich_text->node, c, w, h, margin, line_gap);
+        rich_text_render_node_layout(widget, rich_text->node, c, w, h, margin, line_gap);
   }
   return_value_if_fail(rich_text->render_node != NULL, RET_OOM);
 

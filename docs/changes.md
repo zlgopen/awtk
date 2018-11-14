@@ -1,4 +1,110 @@
 # 最新动态
+* 2018/11/13
+  * 修改agg/agge为nanovg后端时linecap的BUG。
+
+* 2018/11/12
+  * 增加js demos。
+
+* 2018/11/11
+  * 完善ProgressCircle控件。
+  * base/time.h改名为base/time\_now.h，避免和系统time.h冲突。
+  * 更新文档。
+
+* 2018/11/10
+  * 增加ProgressCircle控件。
+
+* 2018/11/09
+  * 重正编译脚本，以便集成bgfx。
+  * 重正vgcanvas，以便集成bgfx。
+
+* 2018/11/08
+  * 将icon\_x\_offset/icon\_y\_offset改名为x\_offset/y\_offset，进行整体偏移，效果更好。
+  * 修改dirty\_rect的问题。
+  * 注释增加@event关键字，用来显示当前控件支持的事件。
+  * 完善控件的事件，并增加测试程序。
+
+* 2018/11/07
+  * 修改屏幕旋转的BUG。
+  * 修改get\_clip的BUG。
+  * 更新文档。
+
+* 2018/11/06
+  * 更新动画文档。
+  * slideview 支持使用图标作为指示器。
+  * style加了icon\_x\_offset/icon\_y\_offset，方便实现按下效果。
+
+* 2018/11/04-05
+  * 控件动画支持暂停。
+  * 控件动画支持时间倍率，让时间变快和变慢。
+  * 控件动画支持按名称去开始、暂停、停止和销毁。
+  * 更易用的API。请参考widget\_start\_animator/widget\_pause\_animator。
+
+* 2018/11/03
+  * 增加date\_time类(嵌入式平台需要调用date\_time\_set\_impl获取时间的函数)。
+  * 增加数字时钟控件(ext\_widgets/time\_clock/digit\_clock.c)。
+
+* 2018/11/02
+  * 修改tools下的资源生成工具，只在资源变化时才更新资源，以提高开发的效率。
+  * update\_res.py增加参数，可以只更新指定类型的资源，以提高开发的效率。
+  * update\_res.py放到scripts目录下(可在awtk目录或scripts目录运行)。
+  * 增加函数widget\_add\_timer，增加的timer在控件销毁时，自动销毁。
+  * 改进button，先收到pointer\_down事件，再收到pointer\_up事件，才触发click事件。
+
+* 2018/11/01
+  * 增加style\_mutable，支持动态修改style(仅在编辑模式下启用)。
+  * 增强style\_factory，支持不同格式的style。比如想支持CSS，可以提供一个CSS的style\_factory。
+  * 更新文档。
+
+* 2018/10/31
+  * 修改keyboard崩溃的问题(关闭窗口时自动关闭对应的keyboard)。
+  * 修改keyboard刷新的问题(新keyboard和旧keyboard的高度不一致导致的)。
+  * 增加tk\_roundi/tk\_clampi。
+  * 修3framebuffer的BUG。
+
+* 2018/10/30
+  * edit的光标颜色从style(fg\_color)中获取。
+  * 修改canvas裁剪算法存在的BUG。
+  * 修改valgrind查出来的内存泄露问题。
+  * demoui中的仪表增加动画。
+
+* 2018/10/29
+  * assets\_manager 支持设置资源路径。
+  * font\_manager 支持设置assets\_manager。
+  * image\_manager 支持设置assets\_manager。
+  * 提供函数widget\_load\_image用于加载图片，实现新控件时请用本函数加载图片。
+  * 控件需要的图片、字体和其它资源均与当前窗口关联，方便在实现designer时，designer本身和被编辑的控件使用不同的资源。
+  * Windows 支持多线程编译。
+  * 将UTF8的源文件转换成UTF8-BOM。
+  * 修改编译警告。
+  * nanovg-agge使用双线性插值算法(感谢攀峰)。
+
+* 2018/10/28
+  * 调整主题的格式：tab\_button处于active时的style，combo\_box\_item/check\_button/radio\_button处于checked时的style，作为不同状态处理，而不是作为不同的style处理。如果有用到，请参考demo做相应修改。
+  * 修改valgrind发现的一些内存泄露问题。
+  * demoui增加退出应用程序的按钮。
+  * 更新文档。
+
+* 2018/10/27
+  * 引入style/style\_factory接口，方便实现动态改变style。
+  * 实现style\_const兼容以前从配置文件获取而style数据。
+  * 重构。
+
+* 2018/10/26
+  * 为了避免不必要的误解，xml中不再指定window的name属性，以xml的文件名为准。
+  * 修改edit crash的bug。
+  * edit支持右对齐(style="number")。
+  * Window增加stage属性，用于标识Window的生命周期。
+  * Windows下的demo开启一个终端显示LOG信息。
+
+* 2018/10/25
+  * 重新实现take\_snapshot，支持特殊的stride。
+  * 自动过滤重复的pointer\_move事件。
+  * 完善list\_item。
+  * vgcanvas支持特殊的stride。
+
+* 2018/10/24
+  * 重构blend。
+  * framebuffer/bitmap支持line\_length(即stride/pitch)
 
 * 2018/10/23
   * 修改鼠标指针残留的问题。

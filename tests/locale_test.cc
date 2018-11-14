@@ -1,6 +1,7 @@
 ﻿#include "base/locale_info.h"
 #include "gtest/gtest.h"
 
+#include "common.h"
 #include <string>
 
 using std::string;
@@ -26,7 +27,8 @@ TEST(Locale, basic) {
   ASSERT_EQ(id, 1);
   ASSERT_EQ(locale_info_change(locale_info, "zh", "CN"), RET_OK);
   ASSERT_EQ(s_locale, "zh_CN");
-  ASSERT_EQ(string("确定"), string(locale_info_tr(locale_info, str)));
+
+  assert_str_eq(L"确定", locale_info_tr(locale_info, str));
 
   ASSERT_EQ(locale_info_off(locale_info, id), RET_OK);
   ASSERT_EQ(locale_info_change(locale_info, "en", "US"), RET_OK);

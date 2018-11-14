@@ -27,7 +27,7 @@
 #include "base/tokenizer.h"
 
 static ret_t str_extend(str_t* str, uint32_t capacity) {
-  if (capacity < str->capacity) {
+  if (capacity <= str->capacity) {
     return RET_OK;
   }
 
@@ -160,14 +160,14 @@ bool_t str_eq(str_t* str, const char* text) {
 }
 
 ret_t str_from_int(str_t* str, int32_t v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   return str_set(str, tk_itoa(buff, sizeof(buff), v));
 }
 
 ret_t str_from_float(str_t* str, float v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   return str_set(str, tk_ftoa(buff, sizeof(buff), v));

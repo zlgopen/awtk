@@ -25,6 +25,11 @@
 #include "blend/image_g2d.h"
 #include "base/system_info.h"
 
+static uint32_t lcd_mem_get_line_length(lcd_mem_t* mem) {
+  uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
+  return tk_max(mem->base.w * bpp, mem->line_length);
+}
+
 static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   uint8_t* fbuff = mem->offline_fb;
@@ -36,28 +41,28 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
 #endif /*LINUX*/
 
   if (fb != NULL) {
-    fb->w = lcd->w;
-    fb->h = lcd->h;
-    fb->data = fbuff;
-    fb->format = LCD_FORMAT;
+    bitmap_init(fb, lcd->w, lcd->h, mem->format, fbuff);
+    bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
   }
 
   return (pixel_t*)fbuff;
 }
 
 static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientation_t o) {
+  uint32_t w = 0;
+  uint32_t h = 0;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  fb->flags = 0;
-  fb->format = mem->format;
-  fb->data = mem->online_fb;
   if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
-    fb->w = lcd->w;
-    fb->h = lcd->h;
+    w = lcd->w;
+    h = lcd->h;
   } else {
-    fb->h = lcd->w;
-    fb->w = lcd->h;
+    h = lcd->w;
+    w = lcd->h;
   }
+
+  bitmap_init(fb, w, h, mem->format, mem->online_fb);
+  bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
 
   return fb;
 }
@@ -66,45 +71,42 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   return RET_OK;
 }
 
+static ret_t lcd_mem_fill_rect_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {
+  bitmap_t fb;
+  rect_t r = rect_init(x, y, w, h);
+  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
+
+  lcd_mem_init_drawing_fb(lcd, &fb);
+  return image_fill(&fb, &r, c);
+}
+
+static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return lcd_mem_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
+}
+
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
-  wh_t i = 0;
-  color_t c = lcd->stroke_color;
-  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
-  pixel_t* p = lcd_mem_init_drawing_fb(lcd, NULL) + y * lcd->w + x;
-
-  if (a >= TK_OPACITY_ALPHA) {
-    pixel_t pixel = color_to_pixel(c);
-    for (i = 0; i < w; i++) {
-      p[i] = pixel;
-    }
-  } else if (a >= TK_TRANSPARENT_ALPHA) {
-    c.rgba.a = a;
-    for (i = 0; i < w; i++) {
-      p[i] = blend_pixel(p[i], c);
-    }
-  }
-
-  return RET_OK;
+  return lcd_mem_fill_rect_with_color(lcd, x, y, w, 1, lcd->stroke_color);
 }
 
 static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
-  wh_t w = lcd->w;
   color_t c = lcd->stroke_color;
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
-  pixel_t* p = lcd_mem_init_drawing_fb(lcd, NULL) + y * lcd->w + x;
+  uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  pixel_t* p = (pixel_t*)(fbuff + y * line_length) + x;
 
   if (a >= TK_OPACITY_ALPHA) {
     pixel_t pixel = color_to_pixel(c);
     for (i = 0; i < h; i++) {
       *p = pixel;
-      p += w;
+      p = (pixel_t*)(((char*)p) + line_length);
     }
   } else if (a >= TK_TRANSPARENT_ALPHA) {
     c.rgba.a = a;
     for (i = 0; i < h; i++) {
       *p = blend_pixel(*p, c);
-      p += w;
+      p = (pixel_t*)(((char*)p) + line_length);
     }
   }
 
@@ -113,15 +115,16 @@ static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
 
 static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   wh_t i = 0;
-  wh_t w = lcd->w;
   color_t c = lcd->stroke_color;
   pixel_t pixel = color_to_pixel(c);
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
-  pixel_t* fbuff = lcd_mem_init_drawing_fb(lcd, NULL);
+  uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
-    pixel_t* p = fbuff + point->y * w + point->x;
+    pixel_t* p = (pixel_t*)(fbuff + point->y * line_length) + point->x;
+
     if (a >= TK_OPACITY_ALPHA) {
       *p = pixel;
     } else if (a >= TK_TRANSPARENT_ALPHA) {
@@ -133,34 +136,12 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 }
 
 static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
-  pixel_t* fbuff = lcd_mem_init_drawing_fb(lcd, NULL);
-  pixel_t p = fbuff[y * lcd->w + x];
+  uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+
+  pixel_t p = *((pixel_t*)(fbuff + y * line_length) + x);
 
   return color_init(p.r, p.g, p.b, 0xff);
-}
-
-static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
-  rect_t r;
-  bitmap_t fb;
-  color_t c = lcd->fill_color;
-  uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
-
-  if (a >= TK_OPACITY_ALPHA) {
-    r = rect_init(x, y, w, h);
-    lcd_mem_init_drawing_fb(lcd, &fb);
-
-    return image_fill(&fb, &r, lcd->fill_color);
-  } else if (a >= TK_TRANSPARENT_ALPHA) {
-    uint32_t i = 0;
-    color_t stroke_color = lcd->stroke_color;
-    lcd->stroke_color = c;
-    for (i = 0; i < h; i++) {
-      lcd_draw_hline(lcd, x, y + i, w);
-    }
-    lcd->stroke_color = stroke_color;
-  }
-
-  return RET_OK;
 }
 
 static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
@@ -173,14 +154,16 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   wh_t w = lcd->w;
   color_t color = lcd->text_color;
   uint8_t global_alpha = lcd->global_alpha;
-  pixel_t* fbuff = lcd_mem_init_drawing_fb(lcd, NULL);
-  pixel_t* dst_p = fbuff + y * w + x;
+  uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
   pixel_t pixel = color_to_pixel(color);
 
   for (j = 0; j < sh; j++) {
-    pixel_t* d = dst_p;
+    pixel_t* dst_p = (pixel_t*)(fbuff + (y + j) * line_length) + x;
     const uint8_t* s = src_p;
+    pixel_t* d = dst_p;
+
     for (i = 0; i < sw; i++, d++, s++) {
       uint8_t a = global_alpha > TK_OPACITY_ALPHA ? *s : ((*s * global_alpha) >> 8);
 
@@ -197,37 +180,6 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 
   return RET_OK;
 }
-
-#if defined(WITH_PXIMAN)
-#include "pixman.h"
-
-static pixman_image_t* to_pixman_image(const uint8_t* data, bitmap_format_t format, int32_t w,
-                                       int32_t h) {
-  int32_t bpp = 0;
-  pixman_format_code_t f = PIXMAN_b8g8r8a8;
-
-  switch (format) {
-    case BITMAP_FMT_RGBA8888: {
-      bpp = 4;
-      f = PIXMAN_r8g8b8a8;
-      break;
-    }
-    case BITMAP_FMT_BGRA8888: {
-      bpp = 4;
-      f = PIXMAN_a8r8g8b8;
-      break;
-    }
-    case BITMAP_FMT_RGB565: {
-      bpp = 2;
-      f = PIXMAN_r5g6b5;
-      break;
-    }
-    default: { return NULL; }
-  }
-
-  return pixman_image_create_bits_no_clear(f, w, h, (uint32_t*)data, w * bpp);
-}
-#endif /*WITH_PXIMAN*/
 
 static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   matrix_t* m = &(info->matrix);
@@ -291,57 +243,37 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   bitmap_t fb;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   lcd_mem_init_drawing_fb(lcd, &fb);
+  uint32_t line_length = lcd_mem_get_line_length(mem);
 
   if (mem->vgcanvas == NULL) {
-    mem->vgcanvas = vgcanvas_create(fb.w, fb.h, (bitmap_format_t)(fb.format), (uint32_t*)(fb.data));
+    mem->vgcanvas = vgcanvas_create(fb.w, fb.h, line_length, (bitmap_format_t)(fb.format),
+                                    (uint32_t*)(fb.data));
   } else {
-    vgcanvas_reinit(mem->vgcanvas, fb.w, fb.h, (bitmap_format_t)(fb.format), (uint32_t*)(fb.data));
+    vgcanvas_reinit(mem->vgcanvas, fb.w, fb.h, line_length, (bitmap_format_t)(fb.format),
+                    (uint32_t*)(fb.data));
   }
 
   return mem->vgcanvas;
 }
 
-static ret_t snapshot_destroy(bitmap_t* img) {
-  TKMEM_FREE(img->data);
-
-  return RET_OK;
-}
-
 static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   bitmap_t fb;
-  uint32_t size = 0;
-  void* data = NULL;
+  lcd_orientation_t orientation = system_info()->lcd_orientation;
+
   lcd_mem_init_drawing_fb(lcd, &fb);
-  system_info_t* info = system_info();
-  lcd_orientation_t o = info->lcd_orientation;
-  uint32_t bpp = bitmap_get_bpp(&fb);
-  memset(img, 0x00, sizeof(bitmap_t));
-  img->format = fb.format;
-  img->flags = BITMAP_FLAG_OPAQUE;
+  if (auto_rotate && orientation == LCD_ORIENTATION_90) {
+    rect_t r = rect_init(0, 0, fb.w, fb.h);
+    return_value_if_fail(bitmap_init(img, fb.h, fb.w, (bitmap_format_t)(fb.format), NULL) == RET_OK,
+                         RET_OOM);
 
-  size = lcd->w * lcd->h * bpp;
-
-  data = TKMEM_ALLOC(size);
-  return_value_if_fail(data != NULL, RET_FAIL);
-
-  img->data = (uint8_t*)data;
-  img->destroy = snapshot_destroy;
-
-  if (auto_rotate && o == LCD_ORIENTATION_90) {
-    rect_t r;
-    img->w = fb.h;
-    img->h = fb.w;
-    r = rect_init(0, 0, fb.w, fb.h);
-
-    image_rotate(img, &fb, &r, o);
+    return image_rotate(img, &fb, &r, orientation);
   } else {
-    img->w = fb.w;
-    img->h = fb.h;
+    rect_t r = rect_init(0, 0, fb.w, fb.h);
+    return_value_if_fail(bitmap_init(img, fb.w, fb.h, (bitmap_format_t)(fb.format), NULL) == RET_OK,
+                         RET_OOM);
 
-    memcpy((void*)(img->data), (void*)(fb.data), size);
+    return image_copy(img, &fb, &r, 0, 0);
   }
-
-  return RET_OK;
 }
 
 static ret_t lcd_mem_flush(lcd_t* lcd) {
@@ -401,10 +333,22 @@ static ret_t lcd_mem_destroy_offline_fb(lcd_t* lcd) {
   return RET_OK;
 }
 
+static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
+
+  lcd->w = w;
+  lcd->h = h;
+  mem->line_length = tk_max(mem->base.w * bpp, line_length);
+
+  return RET_OK;
+}
+
 static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   lcd_t* base = NULL;
   system_info_t* info = system_info();
   lcd_mem_t* lcd = TKMEM_ZALLOC(lcd_mem_t);
+  uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
   return_value_if_fail(lcd != NULL, NULL);
 
@@ -427,6 +371,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->take_snapshot = lcd_mem_take_snapshot;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = alloc ? lcd_mem_destroy_offline_fb : lcd_mem_destroy;
+  base->resize = lcd_mem_resize;
   base->flush = lcd_mem_flush;
   base->w = w;
   base->h = h;
@@ -434,6 +379,8 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->type = LCD_FRAMEBUFFER;
   base->global_alpha = 0xff;
   base->support_dirty_rect = TRUE;
+
+  lcd->line_length = w * bpp;
   lcd->format = LCD_FORMAT;
 
   info->lcd_w = base->w;
@@ -462,6 +409,7 @@ static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_
   mem->offline_fb = offline_fb;
   mem->online_fb = online_fb;
   mem->next_fb = next_fb;
+  lcd->support_dirty_rect = FALSE;
 
   return lcd;
 }

@@ -323,6 +323,7 @@ void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compos
 
     agg::nanovg_vertex v(p->stroke, p->nstroke);
     agg::conv_stroke<agg::nanovg_vertex> path(v);
+    path.line_cap(agg::round_cap);
     path.width(strokeWidth);
     ras.add_path(path);
   }
@@ -343,43 +344,39 @@ static void aggnvg__renderDelete(void* uptr) {
   delete agg;
 }
 
-static void nvgInitAGG(AGGNVGcontext* agg, NVGparams* params, int32_t w, int32_t h,
+static void nvgInitAGG(AGGNVGcontext* agg, NVGparams* params, uint32_t w, uint32_t h, uint32_t stride,
                         enum NVGtexture format, uint8_t* data) {
   agg->w = w;
   agg->h = h;
   agg->data = data;
   agg->format = format;
+  agg->stride = stride;
   params->renderTriangles = NULL;
 
   switch (agg->format) {
     case NVG_TEXTURE_BGRA: {
       params->renderStroke = renderStroke<agg::pixfmt_bgra32>;
       params->renderFill = renderFill<agg::pixfmt_bgra32>;
-      agg->stride = w * 4;
       break;
     }
     case NVG_TEXTURE_RGBA: {
       params->renderStroke = renderStroke<agg::pixfmt_rgba32>;
       params->renderFill = renderFill<agg::pixfmt_rgba32>;
-      agg->stride = w * 4;
       break;
     }
     case NVG_TEXTURE_BGR: {
       params->renderStroke = renderStroke<agg::pixfmt_bgr24>;
       params->renderFill = renderFill<agg::pixfmt_bgr24>;
-      agg->stride = w * 3;
       break;
     }
     case NVG_TEXTURE_RGB: {
       params->renderStroke = renderStroke<agg::pixfmt_rgb24>;
       params->renderFill = renderFill<agg::pixfmt_rgb24>;
-      agg->stride = w * 3;
       break;
     }
     case NVG_TEXTURE_BGR565: {
       params->renderStroke = renderStroke<agg::pixfmt_rgb565>;
       params->renderFill = renderFill<agg::pixfmt_rgb565>;
-      agg->stride = w * 2;
       break;
     }
     default: {
@@ -389,15 +386,15 @@ static void nvgInitAGG(AGGNVGcontext* agg, NVGparams* params, int32_t w, int32_t
   }
 }
 
-void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, enum NVGtexture format,
+void nvgReinitAgge(NVGcontext* ctx, uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format,
                    uint8_t* data) {
   NVGparams* params = nvgGetParams(ctx);
   AGGNVGcontext* agg = (AGGNVGcontext*)(params->userPtr);
 
-  nvgInitAGG(agg, params, w, h, format, data);
+  nvgInitAGG(agg, params, w, h, stride, format, data);
 }
 
-NVGcontext* nvgCreateAGG(int32_t w, int32_t h, enum NVGtexture format, uint8_t* data) {
+NVGcontext* nvgCreateAGG(uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format, uint8_t* data) {
   NVGparams params;
   NVGcontext* ctx = NULL;
   AGGNVGcontext* agg = new AGGNVGcontext();
@@ -417,7 +414,7 @@ NVGcontext* nvgCreateAGG(int32_t w, int32_t h, enum NVGtexture format, uint8_t* 
   params.userPtr = agg;
   params.edgeAntiAlias = 1;
 
-  nvgInitAGG(agg, &params, w, h, format, data);
+  nvgInitAGG(agg, &params, w, h, stride, format, data);
 
   ctx = nvgCreateInternal(&params);
   if (ctx == NULL) goto error;

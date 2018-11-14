@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   events.c
  * Author: AWTK Develop Team
  * Brief:  events structs
@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/time.h"
 #include "base/events.h"
+#include "base/time_now.h"
 
 wheel_event_t* wheel_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);

@@ -34,8 +34,11 @@ BEGIN_C_DECLS
  */
 typedef struct _list_item_t {
   widget_t widget;
+
+  /*private*/
   int32_t timer_id;
   bool_t dragged;
+  point_t down;
 } list_item_t;
 
 /**

@@ -1,4 +1,4 @@
-<window name="switch" anim_hint="htranslate">
+<window anim_hint="htranslate">
   <view x="0" y="0" w="100%" h="80%" layout="row:4 col:4">
     <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="100"/>
     <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="200"/>

@@ -191,29 +191,39 @@ ret_t fs_os_get_disk_info(fs_t* fs, int32_t* free_kb, int32_t* total_kb) {
 ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
   uint32_t size = MAX_PATH;
   (void)fs;
-  *path = '\0';
 
 #if defined(LINUX)
-  readlink("/proc/self/exe", path, MAX_PATH);
+  size = readlink("/proc/self/exe", path, MAX_PATH);
+  if (size >= 0) {
+    path[size] = '\0';
+    return RET_OK;
+  } else {
+    *path = '\0';
+    return RET_FAIL;
+  }
 #elif defined(WIN32)
+  (void)size;
   GetModuleFileNameA(GetModuleHandle(NULL), path, MAX_PATH);
 #elif defined(__APPLE__)
   _NSGetExecutablePath(path, &size);
   assert(size <= MAX_PATH);
   path[size] = '\0';
 #endif
-  (void)size;
 
   return RET_OK;
 }
 
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
+  const char* p = NULL;
+
   (void)fs;
-
-  getcwd(path, MAX_PATH);
-  path[MAX_PATH] = '\0';
-
-  return RET_OK;
+  *path = '\0';
+  p = getcwd(path, MAX_PATH);
+  if (p != NULL) {
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
 }
 
 static const fs_t s_os_fs = {.open_file = fs_os_open_file,

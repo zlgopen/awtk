@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   column.h
  * Author: AWTK Develop Team
  * Brief:  column

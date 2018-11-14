@@ -31,14 +31,22 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   list_item_t* list_item = LIST_ITEM(widget);
 
-  if (list_item->dragged) {
-    widget_set_state(widget, WIDGET_STATE_NORMAL);
-  } else {
+  if (!list_item->dragged) {
     widget_set_state(widget, WIDGET_STATE_PRESSED);
   }
   list_item->timer_id = TK_INVALID_ID;
 
   return RET_REMOVE;
+}
+
+static ret_t list_item_remove_timer(widget_t* widget) {
+  list_item_t* list_item = LIST_ITEM(widget);
+  if (list_item->timer_id != TK_INVALID_ID) {
+    timer_remove(list_item->timer_id);
+    list_item->timer_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
 }
 
 static ret_t list_item_on_event(widget_t* widget, event_t* e) {
@@ -47,15 +55,16 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN: {
-      list_item->timer_id = timer_add(list_item_on_timer, widget, 50);
+      pointer_event_t* evt = (pointer_event_t*)e;
+      list_item->down.x = evt->x;
+      list_item->down.y = evt->y;
+      list_item->timer_id = timer_add(list_item_on_timer, widget, 30);
+      widget_invalidate_force(widget);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
+      list_item_remove_timer(widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
-      if (list_item->timer_id != TK_INVALID_ID) {
-        timer_remove(list_item->timer_id);
-        list_item->timer_id = TK_INVALID_ID;
-      }
       break;
     }
     case EVT_POINTER_UP: {
@@ -66,16 +75,25 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       }
 
       list_item->dragged = FALSE;
+      list_item_remove_timer(widget);
+      widget_invalidate_force(widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_MOVE: {
-      if (list_item->timer_id != TK_INVALID_ID) {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      uint32_t dy = tk_abs(evt->y - list_item->down.y);
+
+      if (dy > 6) {
         list_item->dragged = TRUE;
+        list_item_remove_timer(widget);
+        widget_set_state(widget, WIDGET_STATE_NORMAL);
       }
+
       break;
     }
     case EVT_POINTER_LEAVE:
+      list_item_remove_timer(widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     case EVT_POINTER_ENTER:

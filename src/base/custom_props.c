@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   custom_props.c
  * Author: AWTK Develop Team
  * Brief:  custom_props

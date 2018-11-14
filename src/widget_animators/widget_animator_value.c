@@ -23,13 +23,13 @@
 #include "widget_animators/widget_animator_value.h"
 
 static ret_t widget_animator_value_update(widget_animator_t* animator, float_t percent) {
-  int32_t new_value = 0;
+  value_t v;
+  float_t new_value = 0;
   widget_animator_value_t* value = (widget_animator_value_t*)animator;
   return_value_if_fail(value != NULL, RET_BAD_PARAMS);
 
   new_value = value->from + (value->to - value->from) * percent;
-
-  widget_set_value(animator->widget, new_value);
+  widget_set_prop(animator->widget, WIDGET_PROP_VALUE, value_set_float(&v, new_value));
   widget_invalidate(animator->widget, NULL);
 
   return RET_OK;

@@ -39,8 +39,8 @@ typedef struct _framebuffer_object_t {
 struct _vgcanvas_t;
 typedef struct _vgcanvas_t vgcanvas_t;
 
-typedef ret_t (*vgcanvas_reinit_t)(vgcanvas_t* vg, uint32_t w, uint32_t h, bitmap_format_t format,
-                                   void* data);
+typedef ret_t (*vgcanvas_reinit_t)(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
+                                   bitmap_format_t format, void* data);
 typedef ret_t (*vgcanvas_begin_frame_t)(vgcanvas_t* vg, rect_t* dirty_rect);
 typedef ret_t (*vgcanvas_end_frame_t)(vgcanvas_t* vg);
 
@@ -287,12 +287,14 @@ struct _vgcanvas_t {
  * @annotation ["constructor"]
  * @param {uint32_t} w 宽度
  * @param {uint32_t} h 高度
+ * @param {uint32_t} stride 一行占用的字节数。
  * @param {bitmap_format_t} format 如果data是framebuffer，format指定data的格式。
  * @param {void*} data framebuffer或其它ctx。
  *
  * @return {vgcanvas_t} 返回vgcanvas
  */
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* data);
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
+                            void* data);
 
 /**
  * @method vgcanvas_begin_path
@@ -309,12 +311,14 @@ ret_t vgcanvas_begin_path(vgcanvas_t* vg);
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {uint32_t} w 宽度
  * @param {uint32_t} h 高度
+ * @param {uint32_t} stride 一行占用的字节数。
  * @param {bitmap_format_t} format 如果data是framebuffer，format指定data的格式。
  * @param {void*} data framebuffer或其它ctx。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, bitmap_format_t format, void* data);
+ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
+                      bitmap_format_t format, void* data);
 
 /**
  * @method vgcanvas_begin_frame

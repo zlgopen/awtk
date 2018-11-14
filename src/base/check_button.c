@@ -31,10 +31,12 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN: {
       check_button->point_down_aborted = FALSE;
+      widget_set_state(widget, WIDGET_STATE_PRESSED);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
       check_button->point_down_aborted = TRUE;
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_UP: {
@@ -45,8 +47,15 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
           check_button_set_value(widget, !(check_button->value));
         }
       }
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
+    case EVT_POINTER_LEAVE:
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      break;
+    case EVT_POINTER_ENTER:
+      widget_set_state(widget, WIDGET_STATE_OVER);
+      break;
     default:
       break;
   }
@@ -63,16 +72,14 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (check_button->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
-    check_button->value = value;
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
     widget_dispatch(widget, &e);
-  }
+    check_button->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
 
-  widget->state = WIDGET_STATE_NORMAL;
-  if (value) {
-    widget_set_state(widget, WIDGET_STATE_CHECKED);
-  } else {
-    widget_set_state(widget, WIDGET_STATE_UNCHECKED);
+    widget_update_style(widget);
+    widget_invalidate_force(widget);
   }
 
   return RET_OK;
@@ -103,6 +110,9 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_bool(v, check_button->value);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+    value_set_int(v, widget_get_state_for_style(widget, check_button->value));
     return RET_OK;
   }
 

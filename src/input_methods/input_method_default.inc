@@ -25,6 +25,7 @@
 #include "keyboard/keyboard.h"
 #include "suggest_words.inc"
 #include "base/input_method.h"
+#include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
 static const char* input_type_to_keyboard_name(int32_t input_type) {
@@ -84,6 +85,23 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
     im->win = NULL;
   }
 
+  return RET_OK;
+}
+
+static ret_t input_method_on_win_close(void* ctx, event_t* e) {
+  input_method_t* im = (input_method_t*)ctx;
+
+  input_method_default_restore_win_position(im);
+
+  if (im->keyboard != NULL) {
+    window_manager_close_window_force(im->keyboard->parent, im->keyboard);
+    im->keyboard = NULL;
+  }
+
+  im->widget = NULL;
+  im->win = NULL;
+  (void)e;
+
   return RET_REMOVE;
 }
 
@@ -106,12 +124,20 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     im->win = win;
     im->win_delta_y = win->y + win->h - im->keyboard->y;
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
+  } else if (win->y + win->h < im->keyboard->y) {
+    /*when new keyboard height is not eq old keyboard height*/
+    close_anim_hint = "vtranslate";
+    im->win_delta_y += win->y + win->h - im->keyboard->y;
+    win->y = im->keyboard->y - win->h;
+    widget_invalidate_force(im->win);
   }
 
   value_set_str(&v, open_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+
+  widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
 
   return RET_OK;
 }
@@ -161,6 +187,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
     im->keyboard = NULL;
     im->widget = NULL;
   }
+  TKMEM_FREE(info);
 
   return RET_OK;
 }

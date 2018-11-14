@@ -22,7 +22,8 @@
 #include "base/mem.h"
 #include "base/vgcanvas.h"
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, bitmap_format_t format, void* buff) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, int32_t stride, bitmap_format_t format,
+                            void* buff) {
   (void)w;
   (void)h;
   (void)format;

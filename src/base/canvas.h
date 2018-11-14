@@ -60,6 +60,8 @@ canvas_t* canvas_init(canvas_t* c, lcd_t* lcd, font_manager_t* font_manager);
 wh_t canvas_get_width(canvas_t* c);
 wh_t canvas_get_height(canvas_t* c);
 
+ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
+
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r);
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r);
 ret_t canvas_set_clip_rect_ex(canvas_t* c, const rect_t* r, bool_t translate);

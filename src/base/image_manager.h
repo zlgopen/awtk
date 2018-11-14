@@ -24,6 +24,7 @@
 
 #include "base/array.h"
 #include "base/image_loader.h"
+#include "base/assets_manager.h"
 
 BEGIN_C_DECLS
 
@@ -57,6 +58,13 @@ typedef struct _image_manager_t {
    * 图片加载器。
    */
   image_loader_t* loader;
+
+  /**
+   * @property {assets_manager_t*} assets_manager
+   * @annotation ["private"]
+   * 资源管理器。
+   */
+  assets_manager_t* assets_manager;
 } image_manager_t;
 
 /**
@@ -108,7 +116,17 @@ image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_manager_load(image_manager_t* im, const char* name, bitmap_t* image);
+ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image);
+
+/**
+ * @method image_manager_set_assets_manager
+ * 设置资源管理器对象
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {assets_manager_t*} assets_manager 资源管理器。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* assets_manager);
 
 /**
  * @method image_manager_unload_unused

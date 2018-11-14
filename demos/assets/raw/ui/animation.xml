@@ -1,4 +1,4 @@
-<window name="main" x="0" y="0" w="320" h="480" layout="r4 c2 m10 s10">
+<window x="0" y="0" w="320" h="480" layout="r4 c2 m10 s10">
   <button name="open:dialog2" text="none"/>
   <button name="open:dialog1" text="center scale"/>
   <button name="open:fade" text="fade"/>

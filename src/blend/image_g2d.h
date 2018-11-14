@@ -27,10 +27,10 @@
 
 BEGIN_C_DECLS
 
-ret_t image_fill(bitmap_t* fb, rect_t* dst, color_t c);
-ret_t image_copy(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
-ret_t image_rotate(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
-ret_t image_blend(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha);
+ret_t image_fill(bitmap_t* dst, rect_t* dst_r, color_t c);
+ret_t image_copy(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy);
+ret_t image_rotate(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o);
+ret_t image_blend(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t global_alpha);
 
 END_C_DECLS
 

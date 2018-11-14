@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include "base/utils.h"
 #include "base/timer.h"
 #include "gtest/gtest.h"
 
@@ -56,7 +57,7 @@ static string repeat_str(const string& substr, uint32_t nr) {
   return str;
 }
 
-#define NR 10
+#define NR 100
 
 TEST(Timer, once) {
   uint32_t i = 0;

@@ -42,15 +42,25 @@ typedef struct _combo_box_item_t {
    */
   int32_t value;
   /**
-   * @property {bool_t} selected
+   * @property {bool_t} checked
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否被选中。
    */
-  bool_t selected;
+  bool_t checked;
 
   /*private*/
   bool_t point_down_aborted;
 } combo_box_item_t;
+
+/**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(勾选状态)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(勾选状态)改变事件。
+ */
 
 /**
  * @method combo_box_item_create
@@ -77,15 +87,15 @@ widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 widget_t* combo_box_item_cast(widget_t* widget);
 
 /**
- * @method combo_box_item_set_selected
+ * @method combo_box_item_set_checked
  * 设置控件是否被选中。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box_item对象。
- * @param {bool_t}  selected 是否被选中。
+ * @param {bool_t}  checked 是否被选中。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t combo_box_item_set_selected(widget_t* widget, bool_t selected);
+ret_t combo_box_item_set_checked(widget_t* widget, bool_t checked);
 
 /**
  * @method combo_box_item_set_value

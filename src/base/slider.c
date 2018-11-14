@@ -59,7 +59,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   color_t color;
   float fvalue = 0;
   const char* image_name = NULL;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   slider_t* slider = SLIDER(widget);
   color_t trans = color_init(0, 0, 0, 0);
   uint16_t value = slider->value - slider->min;
@@ -247,7 +247,17 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
 }
 
 ret_t slider_set_value(widget_t* widget, uint16_t value) {
-  return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->value != value) {
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
+
+    return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
+  }
+
+  return RET_OK;
 }
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {
@@ -331,19 +341,17 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
 static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
                                             WIDGET_PROP_MIN,   WIDGET_PROP_MAX,
                                             WIDGET_PROP_STEP,  NULL};
-static const widget_vtable_t s_slider_vtable = {
-    .size = sizeof(slider_t),
-    .type = WIDGET_TYPE_SLIDER,
-    .clone_properties = s_slider_properties,
-    .persistent_properties = s_slider_properties,
-    .create = slider_create,
-    .on_event = slider_on_event,
-    .on_paint_background = widget_on_paint_background_null,
-    .on_paint_self = slider_on_paint_self,
-    .on_paint_border = widget_on_paint_done_null,
-    .on_paint_done = widget_on_paint_done_null,
-    .get_prop = slider_get_prop,
-    .set_prop = slider_set_prop};
+static const widget_vtable_t s_slider_vtable = {.size = sizeof(slider_t),
+                                                .type = WIDGET_TYPE_SLIDER,
+                                                .clone_properties = s_slider_properties,
+                                                .persistent_properties = s_slider_properties,
+                                                .create = slider_create,
+                                                .on_event = slider_on_event,
+                                                .on_paint_self = slider_on_paint_self,
+                                                .on_paint_border = widget_on_paint_null,
+                                                .on_paint_background = widget_on_paint_null,
+                                                .get_prop = slider_get_prop,
+                                                .set_prop = slider_set_prop};
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slider_t* slider = TKMEM_ZALLOC(slider_t);

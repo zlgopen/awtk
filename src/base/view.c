@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   view.h
  * Author: AWTK Develop Team
  * Brief:  view

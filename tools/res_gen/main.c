@@ -26,29 +26,31 @@
 int main(int argc, char** argv) {
   uint32_t size = 0;
   uint8_t* input_buff = NULL;
-  const char* input_filename = NULL;
-  const char* output_filename = NULL;
+  const char* in_filename = NULL;
+  const char* out_filename = NULL;
 
   TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc != 3) {
-    printf("Usage: %s input_filename output_filename\n", argv[0]);
+    printf("Usage: %s in_filename out_filename\n", argv[0]);
     return 0;
   }
 
-  input_filename = argv[1];
-  output_filename = argv[2];
+  in_filename = argv[1];
+  out_filename = argv[2];
 
-  input_buff = (uint8_t*)read_file(input_filename, &size);
+  exit_if_need_not_update(in_filename, out_filename);
+
+  input_buff = (uint8_t*)read_file(in_filename, &size);
   return_value_if_fail(input_buff != NULL, 0);
-  if (end_with(input_filename, ".ttf")) {
-    output_res_c_source(output_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff, size);
-  } else if (end_with(input_filename, ".png")) {
-    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff, size);
-  } else if (end_with(input_filename, ".jpg")) {
-    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
+  if (end_with(in_filename, ".ttf")) {
+    output_res_c_source(out_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff, size);
+  } else if (end_with(in_filename, ".png")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff, size);
+  } else if (end_with(in_filename, ".jpg")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else {
-    output_res_c_source(output_filename, ASSET_TYPE_DATA, 0, input_buff, size);
+    output_res_c_source(out_filename, ASSET_TYPE_DATA, 0, input_buff, size);
   }
 
   TKMEM_FREE(input_buff);

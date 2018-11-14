@@ -11,6 +11,8 @@ static ret_t slide_view_on_change(void* ctx, event_t* e) {
 
   if (e->type == EVT_VALUE_CHANGED) {
     s += "changed:";
+  } else if (e->type == EVT_VALUE_WILL_CHANGE) {
+    s += "will_changed:";
   }
 
   return RET_OK;
@@ -28,6 +30,7 @@ TEST(SlideView, basic) {
   widget_set_name(b2, "b2");
   widget_set_name(b3, "b3");
 
+  widget_on(w, EVT_VALUE_WILL_CHANGE, slide_view_on_change, &str);
   widget_on(w, EVT_VALUE_CHANGED, slide_view_on_change, &str);
 
   slide_view_set_active(w, 0);
@@ -38,7 +41,7 @@ TEST(SlideView, basic) {
   ASSERT_EQ(slide_view_activate_prev(slide_view), RET_FAIL);
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
   ASSERT_EQ(slide_view->active, 1);
-  ASSERT_EQ(str, "changed:");
+  ASSERT_EQ(str, "will_changed:changed:");
 
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
   ASSERT_EQ(slide_view->active, 2);

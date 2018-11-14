@@ -1,19 +1,26 @@
-## Demo程序
+# Demo程序
 
-### 示例介绍
+### 源文件和目录介绍
 
-* demo1  按传统方式创建界面。
-* demoui 从UI资源文件中创建界面。
-* ./prefix\_xml\_ui 预览XML界面描述文件。
-
-```
-./prefix\_xml\_ui ../tools/ui_gen/window1.xml 
-```
-
-### 源代码介绍
-
-* demo1\_app.c 按传统方式创建界面。
-* demo\_ui\_app.c 从UI资源文件中创建界面。
 * demo\_main.c 所有入口函数。
-* resource.c 资源初始化代码。
-* common.c 公共代码。
+* demo1\_app.c 演示按传统方式创建界面。
+* demo\_ui\_app.c 演示从UI资源文件中创建界面。
+* demo\_animator\_app.c 演示控件动画。 
+* demo\_desktop.c  演示开发桌面应用程序(使用原生输入法，可以调整窗口大小)。
+* demo\_thread\_app.c 演示非GUI线程操作GUI。
+* demo\_vg\_app.c 演示矢量图绘制。
+* preview\_ui.c 预览UI文件。
+* assets.c 资源初始化代码。
+* common.inc 公共代码。
+* assets 资源文件夹。
+
+### 可执行文件介绍
+
+* preview_ui 预览界面描述文件。
+
+```
+./bin/preview_ui demos/assets/raw/ui/main.xml
+```
+
+* bin下的demo*可以直接运行。
+

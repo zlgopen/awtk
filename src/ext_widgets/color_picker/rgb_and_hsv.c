@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Simple-color-conversions
  *
  * Copyright 2016 Jake Besworth

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   popup.c
  * Author: AWTK Develop Team
  * Brief:  popup
@@ -96,7 +96,7 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return window_base_on_event(widget, e);
 }
 
 static const char* s_popup_properties[] = {
@@ -114,6 +114,8 @@ static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .set_prop = popup_set_prop,
                                                .on_event = popup_on_event,
                                                .on_paint_self = window_base_on_paint_self,
+                                               .on_paint_begin = window_base_on_paint_begin,
+                                               .on_paint_end = window_base_on_paint_end,
                                                .destroy = window_base_destroy};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

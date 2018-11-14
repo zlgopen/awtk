@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   main_loop.c
  * Author: AWTK Develop Team
  * Brief:  main_loop interface
@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/time.h"
+#include "base/time_now.h"
 #include "base/platform.h"
 #include "base/main_loop.h"
 #include "base/window_manager.h"

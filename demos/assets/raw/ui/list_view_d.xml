@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate">
+<window anim_hint="htranslate">
   <list_view x="0"  y="0" w="100%" h="-50" item_height="60">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
       <list_item style="odd_clickable" layout="r1 c0">

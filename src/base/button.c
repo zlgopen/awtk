@@ -23,10 +23,7 @@
 #include "base/timer.h"
 #include "base/utils.h"
 #include "base/button.h"
-
-static ret_t button_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
-}
+#include "base/widget_vtable.h"
 
 static ret_t button_on_repeat(const timer_info_t* info) {
   pointer_event_t evt;
@@ -54,7 +51,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN: {
       button->repeat_nr = 0;
-      button->point_down_aborted = FALSE;
+      button->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
@@ -67,7 +64,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
-      button->point_down_aborted = TRUE;
+      button->pressed = FALSE;
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       if (button->timer_id != TK_INVALID_ID) {
         timer_remove(button->timer_id);
@@ -77,7 +74,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       widget_ungrab(widget->parent, widget);
-      if (!button->point_down_aborted) {
+      if (button->pressed) {
         pointer_event_t evt = *(pointer_event_t*)e;
         point_t p = {evt.x, evt.y};
         widget_to_local(widget, &p);
@@ -91,14 +88,19 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
         timer_remove(button->timer_id);
         button->timer_id = TK_INVALID_ID;
       }
+      button->pressed = FALSE;
       break;
     }
     case EVT_POINTER_LEAVE:
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
-    case EVT_POINTER_ENTER:
-      widget_set_state(widget, WIDGET_STATE_OVER);
+    case EVT_POINTER_ENTER: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      if (button->pressed || !evt->pressed) {
+        widget_set_state(widget, WIDGET_STATE_OVER);
+      }
       break;
+    }
     default:
       break;
   }
@@ -157,7 +159,7 @@ static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
                                                 .set_prop = button_set_prop,
                                                 .get_prop = button_get_prop,
                                                 .destroy = button_destroy,
-                                                .on_paint_self = button_on_paint_self};
+                                                .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   button_t* button = TKMEM_ZALLOC(button_t);

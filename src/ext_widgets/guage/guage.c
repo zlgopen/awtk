@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   guage.h
  * Author: AWTK Develop Team
  * Brief:  guage
@@ -94,9 +94,9 @@ static ret_t guage_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t guage_load_image(const char* name, bitmap_t* bitmap) {
+static ret_t guage_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
   if (name != NULL && bitmap != NULL) {
-    return image_manager_load(image_manager(), name, bitmap);
+    return widget_load_image(widget, name, bitmap);
   }
 
   return RET_FAIL;
@@ -112,11 +112,11 @@ static ret_t guage_on_paint_self(widget_t* widget, canvas_t* c) {
   guage_t* guage = GUAGE(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
-  if (guage_load_image(guage->bg_image, &bitmap) == RET_OK) {
+  if (guage_load_image(widget, guage->bg_image, &bitmap) == RET_OK) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
 
-  if (guage_load_image(guage->pointer_image, &bitmap) == RET_OK) {
+  if (guage_load_image(widget, guage->pointer_image, &bitmap) == RET_OK) {
     float_t dx = (dst.w - bitmap.w) / 2.0f;
     float_t dy = (dst.h - bitmap.h) / 2.0f;
 

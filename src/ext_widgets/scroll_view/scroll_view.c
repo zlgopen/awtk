@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view
@@ -20,10 +20,10 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/utils.h"
 #include "base/layout.h"
 #include "base/velocity.h"
+#include "base/time_now.h"
 #include "scroll_view/scroll_view.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -327,6 +327,8 @@ static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {
 
   canvas_translate(c, xoffset, yoffset);
   canvas_get_clip_rect(c, &r_save);
+
+  r = rect_intersect(&r, &r_save);
   canvas_set_clip_rect(c, &r);
   widget_on_paint_children_default(widget, c);
   canvas_set_clip_rect(c, &r_save);

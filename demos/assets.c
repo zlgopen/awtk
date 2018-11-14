@@ -3,6 +3,7 @@
 #ifndef WITH_FS_RES
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
+#include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
 #include "assets/inc/styles/color.data"
 #include "assets/inc/styles/tab_bottom.data"
@@ -18,6 +19,7 @@
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/color_picker_simple.data"
+#include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
 #include "assets/inc/ui/kb_phone.data"
 #include "assets/inc/ui/main.data"
@@ -123,8 +125,10 @@
 #include "assets/inc/images/play_n.res"
 #include "assets/inc/images/msg_active.res"
 #include "assets/inc/images/radio_checked.res"
+#include "assets/inc/images/active_dot.res"
 #include "assets/inc/images/question.res"
 #include "assets/inc/images/discovery_active.res"
+#include "assets/inc/images/dot.res"
 #include "assets/inc/images/shifton.res"
 #include "assets/inc/images/check.res"
 #include "assets/inc/images/cursor.res"
@@ -150,6 +154,7 @@
 #include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
+#include "assets/inc/images/progress_circle.res"
 #include "assets/inc/images/red_btn_o.res"
 #include "assets/inc/images/slider_drag.res"
 #include "assets/inc/images/unchecked.res"
@@ -182,6 +187,7 @@
 #include "assets/inc/images/arrow_right_o.data"
 #include "assets/inc/images/slider_bg.data"
 #include "assets/inc/images/ani3.data"
+#include "assets/inc/images/progress_circle.data"
 #include "assets/inc/images/muted.data"
 #include "assets/inc/images/earth.data"
 #include "assets/inc/images/shift.data"
@@ -191,6 +197,7 @@
 #include "assets/inc/images/right_on.data"
 #include "assets/inc/images/discovery.data"
 #include "assets/inc/images/rgb.data"
+#include "assets/inc/images/dot.data"
 #include "assets/inc/images/ani2.data"
 #include "assets/inc/images/find.data"
 #include "assets/inc/images/slider_fg.data"
@@ -222,6 +229,7 @@
 #include "assets/inc/images/msg_active.data"
 #include "assets/inc/images/anic.data"
 #include "assets/inc/images/ani8.data"
+#include "assets/inc/images/active_dot.data"
 #include "assets/inc/images/guage_pointer.data"
 #include "assets/inc/images/right_off.data"
 #include "assets/inc/images/unmuted.data"
@@ -272,17 +280,17 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -294,6 +302,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_color_picker_simple);
+  assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
   assets_manager_add(rm, ui_kb_phone);
   assets_manager_add(rm, ui_main);
@@ -365,6 +374,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_right_o);
   assets_manager_add(rm, image_slider_bg);
   assets_manager_add(rm, image_ani3);
+  assets_manager_add(rm, image_progress_circle);
   assets_manager_add(rm, image_muted);
   assets_manager_add(rm, image_earth);
   assets_manager_add(rm, image_shift);
@@ -374,6 +384,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_right_on);
   assets_manager_add(rm, image_discovery);
   assets_manager_add(rm, image_rgb);
+  assets_manager_add(rm, image_dot);
   assets_manager_add(rm, image_ani2);
   assets_manager_add(rm, image_find);
   assets_manager_add(rm, image_slider_fg);
@@ -405,6 +416,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_msg_active);
   assets_manager_add(rm, image_anic);
   assets_manager_add(rm, image_ani8);
+  assets_manager_add(rm, image_active_dot);
   assets_manager_add(rm, image_guage_pointer);
   assets_manager_add(rm, image_right_off);
   assets_manager_add(rm, image_unmuted);
@@ -455,6 +467,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_3);
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
+  assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);
   assets_manager_add(rm, style_tab_bottom);

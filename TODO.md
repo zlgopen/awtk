@@ -69,21 +69,25 @@
 * 动画控件。
 * 电阻屏校准窗口。
 * Windows/Linux支持高清屏幕。
+* 电阻屏校准窗口。
+* 数字时钟控件。
 
 ## 短期计划(顺序不定)
 * menu
-* chart
+* tree view
 * text editor
 * port code editor
 * property sheet
 * file browser
 * calendar
+* chart
 * drag & drop
 * tableview
 * python binging 
 * remote client
 * 音频接口。
 * 键盘导航
+* 事件录制与重放。
 * API doc到PDF转换工具
 
 ## 长期计划

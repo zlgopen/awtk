@@ -15,8 +15,8 @@
 extern "C" {
 #endif
 
-NVGcontext* nvgCreateAGG(int32_t w, int32_t h, enum NVGtexture format, uint8_t* data);
-void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, enum NVGtexture, uint8_t* data);
+NVGcontext* nvgCreateAGG(uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format, uint8_t* data);
+void nvgReinitAgge(NVGcontext* ctx, uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture, uint8_t* data);
 void nvgDeleteAGG(NVGcontext* ctx);
 
 #ifdef __cplusplus

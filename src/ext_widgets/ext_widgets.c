@@ -27,6 +27,7 @@
 #include "rich_text/rich_text.h"
 #include "keyboard/candidates.h"
 #include "time_clock/time_clock.h"
+#include "time_clock/digit_clock.h"
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
@@ -36,6 +37,7 @@
 #include "color_picker/color_picker.h"
 #include "text_selector/text_selector.h"
 #include "color_picker/color_component.h"
+#include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
 
 ret_t tk_ext_widgets_init() {
@@ -55,10 +57,12 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_DIGIT_CLOCK, digit_clock_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_GUAGE, guage_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SWITCH, switch_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_ANIMATION, image_animation_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_PROGRESS_CIRCLE, progress_circle_create);
 
   return RET_OK;
 }

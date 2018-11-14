@@ -1,4 +1,4 @@
-<window name="main" anim_hint="htranslate">
+<window anim_hint="htranslate">
   <view x="0" y="0" w="100%" h="80%">
     <dragger x="0" y="5" w="20" h="20" x_min="0" x_max="200" y_min="5" y_max="5">
       <image image="earth" x="center" y="middle" w="100%" h="100%"/>

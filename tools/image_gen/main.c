@@ -56,6 +56,9 @@ int main(int argc, char** argv) {
 
   in_filename = argv[1];
   out_filename = argv[2];
+
+  exit_if_need_not_update(in_filename, out_filename);
+
   buff = (uint8_t*)read_file(in_filename, &size);
   if (buff != NULL) {
     if (stb_load_image(buff, size, &image, require_bgra, enable_bgr565) == RET_OK) {

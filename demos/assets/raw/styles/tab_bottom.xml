@@ -6,15 +6,13 @@
 </tab_button_group>
 
 <tab_button>
-  <style name="default" margin="4" text_color="black" bg_color="#eeeeee">
-    <normal     />
-    <pressed    />
-    <over       />
-  </style>
-  <style name="default_active" margin="4" text_color="#00aa00" bg_color="#eeeeee">
-    <normal     />
-    <pressed    />
-    <over       />
+  <style name="default" margin="4" bg_color="#eeeeee">
+    <normal     text_color="black"/>
+    <pressed    text_color="black"/>
+    <over       text_color="black"/>
+    <normal_of_active     text_color="#00aa00"/>
+    <pressed_of_active    text_color="#00aa00"/>
+    <over_of_active       text_color="#00aa00"/>
   </style>
 </tab_button>
 

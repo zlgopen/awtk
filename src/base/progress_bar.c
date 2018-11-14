@@ -34,7 +34,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   color_t color;
   bitmap_t img;
   const char* image_name = NULL;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   image_draw_type_t draw_type = IMAGE_DRAW_CENTER;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
@@ -62,7 +62,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   draw_type =
       (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+  if (image_name && widget_load_image(widget, image_name, &img) == RET_OK) {
     if (progress_bar->vertical) {
       r.h += r.w;
     } else {
@@ -93,7 +93,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
   draw_type =
       (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+  if (image_name && widget_load_image(widget, image_name, &img) == RET_OK) {
     canvas_draw_image_ex(c, &img, draw_type, &r);
   }
 
@@ -105,10 +105,10 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 
   color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   if (progress_bar->show_text && color.rgba.a) {
-    char s[32];
     uint32_t i = 0;
-    wchar_t str[32];
     uint32_t len = 0;
+    char s[TK_NUM_MAX_LEN + 1];
+    wchar_t str[TK_NUM_MAX_LEN + 1];
     uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
     const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
 
@@ -138,9 +138,10 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
   return_value_if_fail(widget != NULL && value <= 100, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     progress_bar->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
   }
@@ -206,8 +207,7 @@ static const widget_vtable_t s_progress_bar_vtable = {
     .clone_properties = s_progress_bar_clone_properties,
     .create = progress_bar_create,
     .on_paint_self = progress_bar_on_paint_self,
-    .on_paint_background = widget_on_paint_background_null,
-    .on_paint_done = widget_on_paint_done_null,
+    .on_paint_background = widget_on_paint_null,
     .get_prop = progress_bar_get_prop,
     .set_prop = progress_bar_set_prop};
 

@@ -20,9 +20,9 @@
  */
 
 #include "base/utf8.h"
-#include "base/time.h"
 #include "base/utils.h"
 #include "base/canvas.h"
+#include "base/time_now.h"
 #include "base/wuxiaolin.inc"
 
 static ret_t canvas_draw_fps(canvas_t* c);
@@ -65,13 +65,21 @@ wh_t canvas_get_height(canvas_t* c) {
   return c->lcd->h;
 }
 
+ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
+  return_value_if_fail(c != NULL && font_manager != NULL, RET_BAD_PARAMS);
+
+  c->font_manager = font_manager;
+
+  return RET_OK;
+}
+
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 
   r->x = c->clip_left;
   r->y = c->clip_top;
-  r->w = c->clip_right - c->clip_left;
-  r->h = c->clip_bottom - c->clip_top;
+  r->w = c->clip_right - c->clip_left + 1;
+  r->h = c->clip_bottom - c->clip_top + 1;
 
   return RET_OK;
 }
@@ -89,20 +97,20 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
     if (c->lcd->set_clip_rect != NULL) {
       c->clip_left = 0;
       c->clip_top = 0;
-      c->clip_right = lcd_w;
-      c->clip_bottom = lcd_h;
+      c->clip_right = lcd_w - 1;
+      c->clip_bottom = lcd_h - 1;
       lcd_set_clip_rect(c->lcd, (rect_t*)r);
     } else {
       c->clip_left = r->x;
       c->clip_top = r->y;
-      c->clip_right = r->x + r->w;
-      c->clip_bottom = r->y + r->h;
+      c->clip_right = r->x + r->w - 1;
+      c->clip_bottom = r->y + r->h - 1;
     }
   } else {
     c->clip_left = 0;
     c->clip_top = 0;
-    c->clip_right = c->lcd->w;
-    c->clip_bottom = c->lcd->h;
+    c->clip_right = c->lcd->w - 1;
+    c->clip_bottom = c->lcd->h - 1;
   }
 
   if (c->clip_left < 0) {
@@ -113,12 +121,12 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
     c->clip_top = 0;
   }
 
-  if (c->clip_right > lcd_w) {
-    c->clip_right = lcd_w;
+  if (c->clip_right >= lcd_w) {
+    c->clip_right = lcd_w - 1;
   }
 
-  if (c->clip_bottom > lcd_h) {
-    c->clip_bottom = lcd_h;
+  if (c->clip_bottom >= lcd_h) {
+    c->clip_bottom = lcd_h - 1;
   }
 
   return RET_OK;
@@ -243,7 +251,7 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
 }
 
 static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {
-  xy_t x2 = x + w;
+  xy_t x2 = x + w - 1;
 
   if (y < c->clip_top || y > c->clip_bottom || x2 < c->clip_left || x > c->clip_right) {
     return RET_OK;
@@ -251,7 +259,7 @@ static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {
 
   x = tk_max(x, c->clip_left);
   x2 = tk_min(x2, c->clip_right);
-  w = x2 - x;
+  w = x2 - x + 1;
 
   return lcd_draw_hline(c->lcd, x, y, w);
 }
@@ -263,7 +271,7 @@ ret_t canvas_draw_hline(canvas_t* c, xy_t x, xy_t y, wh_t w) {
 }
 
 static ret_t canvas_draw_vline_impl(canvas_t* c, xy_t x, xy_t y, wh_t h) {
-  xy_t y2 = y + h;
+  xy_t y2 = y + h - 1;
 
   if (x < c->clip_left || x > c->clip_right || y2 < c->clip_top || y > c->clip_bottom) {
     return RET_OK;
@@ -271,7 +279,7 @@ static ret_t canvas_draw_vline_impl(canvas_t* c, xy_t x, xy_t y, wh_t h) {
 
   y = tk_max(y, c->clip_top);
   y2 = tk_min(y2, c->clip_bottom);
-  h = y2 - y;
+  h = y2 - y + 1;
 
   return lcd_draw_vline(c->lcd, x, y, h);
 }
@@ -293,8 +301,8 @@ static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t 
   } else if (y1 == y2) {
     return canvas_draw_hline_impl(c, x1, y1, tk_abs(x2 - x1) + 1);
   } else {
-    draw_line(c, x1, y1, x2, y2);
-    return RET_OK;
+    /*FIXME: should use vgcanvas to draw line*/
+    return RET_NOT_IMPL;
   }
 }
 
@@ -377,8 +385,8 @@ ret_t canvas_draw_points(canvas_t* c, point_t* points, uint32_t nr) {
 }
 
 static ret_t canvas_fill_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
-  xy_t x2 = x + w;
-  xy_t y2 = y + h;
+  xy_t x2 = x + w - 1;
+  xy_t y2 = y + h - 1;
 
   if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
     return RET_OK;
@@ -388,8 +396,8 @@ static ret_t canvas_fill_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) 
   y = tk_max(y, c->clip_top);
   x2 = tk_min(x2, c->clip_right);
   y2 = tk_min(y2, c->clip_bottom);
-  w = x2 - x;
-  h = y2 - y;
+  w = x2 - x + 1;
+  h = y2 - y + 1;
 
   return lcd_fill_rect(c->lcd, x, y, w, h);
 }
@@ -424,8 +432,8 @@ ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
   rect_t src;
   rect_t dst;
-  xy_t x2 = x + g->w;
-  xy_t y2 = y + g->h;
+  xy_t x2 = x + g->w - 1;
+  xy_t y2 = y + g->h - 1;
 
   if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
     return RET_OK;
@@ -433,8 +441,8 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
 
   dst.x = tk_max(x, c->clip_left);
   dst.y = tk_max(y, c->clip_top);
-  dst.w = tk_min(x2, c->clip_right) - dst.x;
-  dst.h = tk_min(y2, c->clip_bottom) - dst.y;
+  dst.w = tk_min(x2, c->clip_right) - dst.x + 1;
+  dst.h = tk_min(y2, c->clip_bottom) - dst.y + 1;
 
   src.x = dst.x - x;
   src.y = dst.y - y;
@@ -516,8 +524,8 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
 
   xy_t x = d->x;
   xy_t y = d->y;
-  xy_t x2 = d->x + d->w;
-  xy_t y2 = d->y + d->h;
+  xy_t x2 = d->x + d->w - 1;
+  xy_t y2 = d->y + d->h - 1;
 
   if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || x > c->clip_right || x2 < c->clip_left ||
       y > c->clip_bottom || y2 < c->clip_top) {
@@ -526,8 +534,8 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
 
   dst.x = tk_max(x, c->clip_left);
   dst.y = tk_max(y, c->clip_top);
-  dst.w = tk_min(x2, c->clip_right) - dst.x;
-  dst.h = tk_min(y2, c->clip_bottom) - dst.y;
+  dst.w = tk_min(x2, c->clip_right) - dst.x + 1;
+  dst.h = tk_min(y2, c->clip_bottom) - dst.y + 1;
 
   src.x = s->x + (dst.x - x) * s->w / d->w;
   src.y = s->y + (dst.y - y) * s->h / d->h;
@@ -917,35 +925,6 @@ ret_t canvas_end_frame(canvas_t* c) {
   canvas_draw_fps(c);
 
   return lcd_end_frame(c->lcd);
-}
-
-ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y) {
-  color_t bg = color_init(0xff, 0xff, 0, 0xff);
-  color_t fg = color_init(0xff, 0, 0, 0xff);
-
-  canvas_begin_frame(c, NULL, LCD_DRAW_NORMAL);
-  canvas_set_clip_rect(c, NULL);
-  canvas_set_fill_color(c, bg);
-  canvas_set_stroke_color(c, fg);
-  canvas_set_text_color(c, fg);
-  canvas_set_font(c, NULL, 20);
-  canvas_fill_rect(c, 10, 100, 200, 30);
-  canvas_stroke_rect(c, 10, 100, 200, 30);
-  canvas_draw_hline(c, 10, 300, 100);
-  canvas_draw_vline(c, 10, 300, 100);
-  canvas_draw_text(c, L"abababababa", 10, 15, 110);
-
-  if (pressed) {
-    canvas_set_fill_color(c, fg);
-  } else {
-    canvas_set_fill_color(c, bg);
-  }
-
-  canvas_fill_rect(c, x, y, 10, 10);
-
-  canvas_end_frame(c);
-
-  return RET_OK;
 }
 
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst) {

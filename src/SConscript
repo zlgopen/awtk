@@ -3,6 +3,7 @@ import copy
 
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
+NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 
 sources=Glob('base/*.c') +\
   Glob('ui_loader/*.c') + \
@@ -12,25 +13,34 @@ sources=Glob('base/*.c') +\
   Glob('ext_widgets/*.c') + \
   Glob('ext_widgets/*/*.c') + \
   Glob('image_loader/*.c') + \
+  Glob('designer_support/*.c') + \
   Glob('widget_animators/*.c') + \
   Glob('platforms/pc/*.c') + \
   Glob('misc/*.cpp') + \
   ['awtk.c'];
 
 sources += ['main_loop/main_loop_simple.c'];
-if os.environ['LCD'] == 'GL':
-  sources += ['window_animators/window_animator_opengl.c'];
-  sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_nanovg.c'];
-elif os.environ['LCD'] == 'SDL':
+if os.environ['LCD'] == 'SDL_GPU':
+  sources += ['window_animators/window_animator_gpu.c'];
+  sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl_gpu.c'];
+elif os.environ['LCD'] == 'SDL_FB':
   sources += ['window_animators/window_animator_fb.c'];
-  sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl2.c']
+  sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl_fb.c']
 else:
   sources += ['window_animators/window_animator_fb.c'];
 
 sources += [
-  'vgcanvas/vgcanvas_nanovg.c',
   'input_methods/input_method_creator.c'
   ] + Glob('lcd/lcd_mem_*.c') ;
+
+if NANOVG_BACKEND == 'BGFX':
+  sources +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
+elif NANOVG_BACKEND == 'AGG':
+  sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+elif NANOVG_BACKEND == 'AGGE':
+  sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+else:
+  sources +=['vgcanvas/vgcanvas_nanovg_gl.c'];
 
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')

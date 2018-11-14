@@ -27,7 +27,7 @@ static void do_draw(NVGcontext* vg, int32_t w, int32_t h) {
   int32_t iw = 0;
   int32_t ih = 0;
   int32_t comp = 4;
-  int img = load_image(vg, "demos/assets/raw/images/x2/rgb.png", &comp, &iw, &ih);
+  int img = load_image(vg, "../demos/assets/raw/images/x2/rgb.png", &comp, &iw, &ih);
 
   nvgBeginFrame(vg, w, h, 1);
 
@@ -37,7 +37,7 @@ static void do_draw(NVGcontext* vg, int32_t w, int32_t h) {
   draw_image(vg, imgPaint, 0, 0, iw, ih, 10, 100, iw*2, ih*2);
  
 
-  int img2 = load_image(vg, "demos/assets/raw/images/x2/rgba.png", &comp, &iw, &ih);
+  int img2 = load_image(vg, "../demos/assets/raw/images/x2/rgba.png", &comp, &iw, &ih);
   NVGpaint imgPaint2 = nvgImagePattern(vg, 0, 0, iw, ih, 0, img2, 1);
 
   nvgTranslate(vg, 100, 100);

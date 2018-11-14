@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   pixel.h
  * Author: AWTK Develop Team
  * Brief:  pixel format definitions

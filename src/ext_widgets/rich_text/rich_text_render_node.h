@@ -22,7 +22,7 @@
 #ifndef TK_RICH_TEXT_RENDER_NODE_H
 #define TK_RICH_TEXT_RENDER_NODE_H
 
-#include "base/canvas.h"
+#include "base/widget.h"
 #include "rich_text/rich_text_node.h"
 
 BEGIN_C_DECLS
@@ -57,9 +57,9 @@ typedef struct _rich_text_render_node_t {
 
 bool_t rich_text_is_flexable_w_char(wchar_t c);
 
-rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
-                                                      int32_t w, int32_t h, int32_t margin,
-                                                      int32_t line_gap);
+rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_text_node_t* node,
+                                                      canvas_t* c, int32_t w, int32_t h,
+                                                      int32_t margin, int32_t line_gap);
 rich_text_render_node_t* rich_text_render_node_append(rich_text_render_node_t* node,
                                                       rich_text_render_node_t* next);
 

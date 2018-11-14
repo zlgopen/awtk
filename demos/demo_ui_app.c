@@ -19,8 +19,8 @@
  *
  */
 
+#include "awtk.h"
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/label.h"
 #include "base/timer.h"
 #include "base/button.h"
@@ -28,6 +28,8 @@
 #include "base/image.h"
 #include "base/utils.h"
 #include "base/window.h"
+#include "base/time_now.h"
+#include "base/main_loop.h"
 #include "base/locale_info.h"
 #include "base/check_button.h"
 #include "base/progress_bar.h"
@@ -112,6 +114,12 @@ static ret_t on_quit(void* ctx, event_t* e) {
 
   dialog_quit(dialog, 0);
   (void)e;
+  return RET_OK;
+}
+
+static ret_t on_quit_app(void* ctx, event_t* e) {
+  tk_quit();
+
   return RET_OK;
 }
 
@@ -215,6 +223,11 @@ static ret_t install_one(void* ctx, void* iter) {
       widget_t* win = widget_get_window(widget);
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit, win);
+      }
+    } else if (tk_str_eq(name, "exit")) {
+      widget_t* win = widget_get_window(widget);
+      if (win) {
+        widget_on(widget, EVT_CLICK, on_quit_app, win);
       }
     }
   }

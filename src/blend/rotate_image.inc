@@ -1,24 +1,24 @@
-static ret_t rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o) {
   xy_t dx = 0;
   xy_t dy = 0;
   uint32_t i = 0;
   uint32_t k = 0;
   uint32_t w = 0;
   uint32_t h = 0;
-  uint32_t fb_w = 0;
-  uint32_t img_w = 0;
   pixel_dst_t* src_p = NULL;
   pixel_dst_t* dst_p = NULL;
+  uint32_t fb_bpp = bitmap_get_bpp(dst);
+  uint32_t img_bpp = bitmap_get_bpp(src);
+  uint32_t dst_line_length = bitmap_get_line_length(dst);
+  uint32_t src_line_length = bitmap_get_line_length(src);
 
-  dx = src->y;
-  dy = img->w - src->x - src->w;
-  dst_p = ((pixel_dst_t*)(fb->data)) + (dy * fb->w + dx);
-  src_p = ((pixel_dst_t*)(img->data)) + (src->y * img->w + src->x);
+  dx = src_r->y;
+  dy = src->w - src_r->x - src_r->w;
+  dst_p = (pixel_dst_t*)(dst->data + dy * dst_line_length + dx * fb_bpp);
+  src_p = (pixel_dst_t*)(src->data + src_r->y * src_line_length + src_r->x * img_bpp);
 
-  w = src->w;
-  h = src->h;
-  fb_w = fb->w;
-  img_w = img->w;
+  w = src_r->w;
+  h = src_r->h;
 
   for (i = 0; i < h; i++) {
     pixel_dst_t* s = src_p + w - 1;
@@ -26,11 +26,11 @@ static ret_t rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientat
 
     for (k = 0; k < w; k++) {
       *d = *s--;
-      d += fb_w;
+      d = (pixel_dst_t*)(((char*)d) + dst_line_length);
     }
 
     dst_p++;
-    src_p += img_w;
+    src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
   }
 
   return RET_OK;

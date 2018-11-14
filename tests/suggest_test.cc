@@ -1,4 +1,5 @@
-﻿#include "gtest/gtest.h"
+﻿#include "common.h"
+#include "gtest/gtest.h"
 #include "base/suggest_words.h"
 #include "tests/suggest_test.inc"
 
@@ -7,15 +8,15 @@ TEST(SuggestWords, basic) {
 
   ASSERT_EQ(suggest_words_find(sw, L"故"[0]), RET_OK);
   ASSERT_EQ(sw->words_nr, 8);
-  ASSERT_EQ(strcmp(sw->words, "事"), 0);
+  assert_str_eq(L"事", sw->words);
 
   ASSERT_EQ(suggest_words_find(sw, L"飞"[0]), RET_OK);
   ASSERT_EQ(sw->words_nr, 15);
-  ASSERT_EQ(strcmp(sw->words, "机"), 0);
+  assert_str_eq(L"机", sw->words);
 
   ASSERT_EQ(suggest_words_find(sw, L"几"[0]), RET_OK);
   ASSERT_EQ(sw->words_nr, 15);
-  ASSERT_EQ(strcmp(sw->words, "个"), 0);
+  assert_str_eq(L"个", sw->words);
 
   suggest_words_destroy(sw);
 }

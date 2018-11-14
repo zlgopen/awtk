@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -22,10 +22,10 @@
 #include "base/keys.h"
 #include "base/mem.h"
 #include "base/idle.h"
-#include "base/time.h"
 #include "base/utils.h"
 #include "base/timer.h"
 #include "base/layout.h"
+#include "base/time_now.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
@@ -178,10 +178,7 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   return RET_OK;
 }
 
-ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
-  ret_t ret = RET_OK;
-  window_manager_t* wm = WINDOW_MANAGER(widget);
-  event_t e = event_init(EVT_WINDOW_CLOSE, window);
+ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (widget->target == window) {
@@ -196,18 +193,42 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
     }
   }
 
+  return RET_OK;
+}
+
+ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  event_t e = event_init(EVT_WINDOW_CLOSE, window);
+  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  window_manager_prepare_close_window(widget, window);
+
   if (wm->animator) {
     wm->pending_close_window = window;
     return RET_OK;
   }
 
   widget_dispatch(window, &e);
+
   if (window_manager_check_if_need_close_animation(wm, window) != RET_OK) {
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
   }
 
-  return ret;
+  return RET_OK;
+}
+
+ret_t window_manager_close_window_force(widget_t* widget, widget_t* window) {
+  event_t e = event_init(EVT_WINDOW_CLOSE, window);
+  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  window_manager_prepare_close_window(widget, window);
+
+  widget_dispatch(window, &e);
+  widget_remove_child(widget, window);
+  widget_destroy(window);
+
+  return RET_OK;
 }
 
 widget_t* window_manager_find_target(widget_t* widget, xy_t x, xy_t y) {
@@ -308,10 +329,10 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __FUNCTION__, (int)(r.x), (int)(r.y),
                 (int)(r.w), (int)(r.h), (int)wm->last_paint_cost);
       */
+      wm->last_dirty_rect = wm->dirty_rect;
     }
   }
 
-  wm->last_dirty_rect = wm->dirty_rect;
   wm->dirty_rect = rect_init(widget->w, widget->h, 0, 0);
 
   return RET_OK;
@@ -500,6 +521,14 @@ static ret_t window_manager_set_prop(widget_t* widget, const char* name, const v
   return RET_NOT_FOUND;
 }
 
+static ret_t window_manager_destroy(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  TKMEM_FREE(wm->cursor);
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_window_manager_vtable = {
     .type = WIDGET_TYPE_WINDOW_MANAGER,
     .set_prop = window_manager_set_prop,
@@ -508,7 +537,7 @@ static const widget_vtable_t s_window_manager_vtable = {
     .on_paint_children = window_manager_on_paint_children,
     .on_remove_child = wm_on_remove_child,
     .find_target = window_manager_find_target,
-};
+    .destroy = window_manager_destroy};
 
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
@@ -654,7 +683,10 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->alt = wm->alt;
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
+
       wm->pressed = TRUE;
+      wm->last_x = evt->x;
+      wm->last_y = evt->y;
       widget_on_pointer_down(widget, evt);
 
       window_manager_update_cursor(widget, evt->x, evt->y);
@@ -664,12 +696,17 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       pointer_event_rotate(evt, system_info());
 
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      widget_on_pointer_move(widget, evt);
+      if (evt->x != wm->last_x || evt->y != wm->last_y) {
+        wm->last_x = evt->x;
+        wm->last_y = evt->y;
 
-      window_manager_update_cursor(widget, evt->x, evt->y);
+        evt->alt = wm->alt;
+        evt->ctrl = wm->ctrl;
+        evt->shift = wm->shift;
+        widget_on_pointer_move(widget, evt);
+
+        window_manager_update_cursor(widget, evt->x, evt->y);
+      }
       break;
     }
     case EVT_POINTER_UP: {
@@ -680,6 +717,9 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
       evt->ctrl = wm->ctrl;
       evt->shift = wm->shift;
       widget_on_pointer_up(widget, evt);
+
+      wm->last_x = evt->x;
+      wm->last_y = evt->y;
       wm->pressed = FALSE;
 
       window_manager_update_cursor(widget, evt->x, evt->y);

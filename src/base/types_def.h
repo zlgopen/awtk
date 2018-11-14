@@ -120,7 +120,7 @@ typedef enum _ret_t {
 
 /**
  * @enum lcd_orientation_t
- * LCD旋转角度(XXX:目前仅支持0度和90度)。
+ * LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。
  */
 typedef enum _lcd_orientation_t {
   /**
@@ -245,17 +245,11 @@ typedef enum _lcd_orientation_t {
 
 typedef void* pointer_t;
 
-#ifndef tk_min
 #define tk_min(a, b) ((a) < (b) ? (a) : (b))
-#endif /*tk_min*/
-
-#ifndef tk_abs
 #define tk_abs(a) ((a) < (0) ? (-a) : (a))
-#endif /*tk_abs*/
-
-#ifndef tk_max
 #define tk_max(a, b) ((a) > (b) ? (a) : (b))
-#endif /*tk_max*/
+#define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
+#define tk_clampi(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -425,8 +419,9 @@ typedef enum _app_type_t {
 #define TK_DEFAULT_FONT_SIZE 18
 #define TK_MAX_FPS 100
 #define TK_OPACITY_ALPHA 0xfa
-#define TK_TRANSPARENT_ALPHA 0x05
+#define TK_TRANSPARENT_ALPHA 0x02
 #define TK_INVALID_ID 0
+#define TK_NUM_MAX_LEN 31
 
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
@@ -434,22 +429,28 @@ typedef enum _app_type_t {
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
-#ifndef M_PI
-#define M_PI 3.1415926f
-#endif /*M_PI*/
-
 #define TK_UINT32_MAX 0xffffffff
 
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
 #define WITH_G2D 1
 #endif /*WITH_PXP_G2D*/
 
-#ifdef WITH_NANOVG_AGGE
+#if defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)
 #ifndef WITH_NANOVG_SOFT
 #define WITH_NANOVG_SOFT
 #endif /*WITH_NANOVG_SOFT*/
-#endif /*WITH_NANOVG_AGGE*/
+#endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
+
+#ifndef M_PI
+#define M_PI 3.1415926f
+#endif /*M_PI*/
+
+#define TK_D2R(d) (((d)*M_PI) / 180)
+#define TK_R2D(r) (((r)*180) / M_PI)
+
+struct _widget_t;
+typedef struct _widget_t widget_t;
 
 #endif /*TYPES_DEF_H*/

@@ -318,10 +318,52 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ROW "row"
 
 /**
+ * @const WIDGET_PROP_STATE_FOR_STYLE
+ * 控件状态。
+ */
+#define WIDGET_PROP_STATE_FOR_STYLE "state_for_style"
+
+/**
  * @const WIDGET_PROP_THEME
- *
+ * 窗口主题名称。
  */
 #define WIDGET_PROP_THEME "theme"
+
+/**
+ * @const WIDGET_PROP_STAGE
+ * window stage
+ */
+#define WIDGET_PROP_STAGE "stage"
+
+/**
+ * @const WIDGET_PROP_IMAGE_MANAGER
+ * 图片管理器。
+ */
+#define WIDGET_PROP_IMAGE_MANAGER "image_manager"
+
+/**
+ * @const WIDGET_PROP_ASSETS_MANAGER
+ * 资源管理器。
+ */
+#define WIDGET_PROP_ASSETS_MANAGER "assets_manager"
+
+/**
+ * @const WIDGET_PROP_FONT_MANAGER
+ * 字体管理器。
+ */
+#define WIDGET_PROP_FONT_MANAGER "font_manager"
+
+/**
+ * @const WIDGET_PROP_THEME_OBJ
+ * 窗口的主题对象。
+ */
+#define WIDGET_PROP_THEME_OBJ "theme_obj"
+
+/**
+ * @const WIDGET_PROP_DEFAULT_THEME_OBJ
+ * 缺省的主题对象。
+ */
+#define WIDGET_PROP_DEFAULT_THEME_OBJ "default_theme_obj"
 
 /**
  * @const WIDGET_PROP_SCRIPT
@@ -432,12 +474,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ROTATION "rotation"
 
 /**
- * @const WIDGET_PROP_SUB_THEME
- * sub theme。
- */
-#define WIDGET_PROP_SUB_THEME "sub_theme"
-
-/**
  * @const WIDGET_PROP_COMPACT
  * 紧凑模式。
  */
@@ -460,6 +496,12 @@ BEGIN_C_DECLS
  * 是否被选中。
  */
 #define WIDGET_PROP_SELECTED "selected"
+
+/**
+ * @const WIDGET_PROP_CHECKED
+ * 是否被勾选。
+ */
+#define WIDGET_PROP_CHECKED "checked"
 
 /**
  * @const WIDGET_PROP_ACTIVE_ICON
@@ -869,10 +911,72 @@ typedef enum _widget_state_t {
   WIDGET_STATE_ERROR = 9,
   /**
    * @const WIDGET_STATE_SELECTED
-   * 输入错误状态。
+   * 选中状态。
    */
-  WIDGET_STATE_SELECTED = 10
+  WIDGET_STATE_SELECTED = 10,
+
+  /*for active/selected/current */
+  /**
+   * @const WIDGET_STATE_NORMAL_OF_CHECKED
+   * 正常状态(选中项)。
+   */
+  WIDGET_STATE_NORMAL_OF_CHECKED = 101,
+  /**
+   * @const WIDGET_STATE_PRESSED_OF_CHECKED
+   * 指针按下状态(选中项)。
+   */
+  WIDGET_STATE_PRESSED_OF_CHECKED = 102,
+  /**
+   * @const WIDGET_STATE_OVER_OF_CHECKED
+   * 指针悬浮状态(选中项)。
+   */
+  WIDGET_STATE_OVER_OF_CHECKED = 103,
+  /**
+   * @const WIDGET_STATE_NORMAL_OF_ACTIVE
+   * 正常状态(当前项)。
+   */
+  WIDGET_STATE_NORMAL_OF_ACTIVE = 101,
+  /**
+   * @const WIDGET_STATE_PRESSED_OF_ACTIVE
+   * 指针按下状态(当前项)。
+   */
+  WIDGET_STATE_PRESSED_OF_ACTIVE = 102,
+  /**
+   * @const WIDGET_STATE_OVER_OF_ACTIVE
+   * 指针悬浮状态(当前项)。
+   */
+  WIDGET_STATE_OVER_OF_ACTIVE = 103
 } widget_state_t;
+
+/**
+ * @enum window_stage_t
+ * @annotation ["scriptable"]
+ * @prefix WINDOW_STAGE_
+ * 窗口的生命周期常量定义。
+ */
+typedef enum _window_stage_t {
+  /**
+   * @const WINDOW_STAGE_NONE
+   * 初始状态。
+   */
+  WINDOW_STAGE_NONE = 0,
+  /**
+   * @const WINDOW_STAGE_CREATED
+   * 创建完成。
+   */
+  WINDOW_STAGE_CREATED,
+  /**
+   * @const WINDOW_STAGE_OPENED
+   * 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)
+   */
+  WINDOW_STAGE_OPENED,
+  /**
+   * @const WINDOW_STAGE_CLOSED
+   * 窗口已关闭。
+   */
+  WINDOW_STAGE_CLOSED
+} window_stage_t;
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_CONSTS_H*/

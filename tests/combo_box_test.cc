@@ -88,3 +88,24 @@ TEST(ComboBox, props) {
 
   widget_destroy(w);
 }
+
+#include "log_change_events.inc"
+
+TEST(ComboBox, event) {
+  const char* str = "1:red;2:green;3:blue";
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 100);
+  combo_box_set_options(w, str);
+  combo_box_set_selected_index(w, 0);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(s_log, "");
+
+  combo_box_set_selected_index(w, 1);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}

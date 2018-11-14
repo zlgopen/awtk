@@ -23,20 +23,9 @@
 #define TK_THEME_H
 
 #include "base/color.h"
+#include "base/widget_consts.h"
 
 BEGIN_C_DECLS
-
-/**
- * @class style_t
- * 控件风格的参数。
- */
-typedef struct _style_t {
-  const uint8_t* data;
-} style_t;
-
-uint32_t style_get_int(style_t* s, uint32_t name, uint32_t defval);
-color_t style_get_color(style_t* s, uint32_t name, color_t defval);
-const char* style_get_str(style_t* s, uint32_t name, const char* defval);
 
 /**
  * @class theme_t
@@ -46,8 +35,83 @@ typedef struct _theme_t {
   const uint8_t* data;
 } theme_t;
 
+/**
+ * @method theme
+ * 获取缺省的主题对象。
+ * @alias theme_instance
+ * @annotation ["constructor", "scriptable"]
+ * @return {theme_t*} 返回主题对象。
+ */
 theme_t* theme(void);
-theme_t* theme_init(const uint8_t* data);
+
+/**
+ * @method theme_set
+ * 设置缺省的主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_set(theme_t* theme);
+
+/**
+ * @method theme_create
+ * 创建主题对象。
+ * @annotation ["constructor"]
+ * @param {const uint8_t*} data 主题数据。
+ *
+ * @return {theme_t*} 返回主题对象。
+ */
+theme_t* theme_create(const uint8_t* data);
+
+/**
+ * @method theme_init
+ * 初始化主题对象。
+ * @annotation ["constructor"]
+ * @param {theme_t*} theme 主题对象。
+ * @param {const uint8_t*} data 主题数据。
+ *
+ * @return {theme_t*} 返回主题对象。
+ */
+theme_t* theme_init(theme_t* theme, const uint8_t* data);
+
+/**
+ * @method theme_find_style
+ * 查找满足条件的style。
+ * @param {theme_t*} data 主题对象。
+ * @param {const char*} widget_type 控件的类型名。
+ * @param {const char*} name style的名称。
+ * @param {widget_state_t} widget_state 控件的状态。
+ *
+ * @return {theme_t*} 返回主题对象。
+ */
+const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
+                                widget_state_t widget_state);
+/**
+ * @method theme_deinit
+ * 析构主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_deinit(theme_t* theme);
+
+/**
+ * @method theme_destroy
+ * 析构并释放主题对象。
+ * @param {theme_t*} theme 主题对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_destroy(theme_t* theme);
+
+/*data related*/
+uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval);
+color_t style_data_get_color(const uint8_t* s, uint32_t name, color_t defval);
+const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defval);
+
+/*public for tools only*/
+#define THEME_MAGIC 0xFAFBFCFD
+#define TK_DEFAULT_STYLE "default"
 
 typedef struct _theme_header_t {
   uint32_t magic;
@@ -57,114 +121,10 @@ typedef struct _theme_header_t {
 
 typedef struct _theme_item_t {
   uint32_t offset;
-  uint16_t state;
+  uint32_t state;
   char name[NAME_LEN + 1];
   char widget_type[NAME_LEN + 1];
 } theme_item_t;
-
-const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
-                                uint16_t state);
-
-/**
- * @enum style_type_t
- * @prefix STYLE
- * 类型常量定义。
- */
-typedef enum _style_id_t {
-  /**
-   * @const STYLE_ID_BG_COLOR
-   * 背景颜色。
-   */
-  STYLE_ID_BG_COLOR = 1,
-  /**
-   * @const STYLE_ID_BG_COLOR
-   * 前景颜色。
-   */
-  STYLE_ID_FG_COLOR,
-  /**
-   * @const STYLE_ID_FONT_NAME
-   * 字体名称。
-   */
-  STYLE_ID_FONT_NAME,
-  /**
-   * @const STYLE_ID_FONT_SIZE
-   * 字体大小。
-   */
-  STYLE_ID_FONT_SIZE,
-  /**
-   * @const STYLE_ID_FONT_STYLE
-   * 字体风格(粗体、斜体等)。
-   */
-  STYLE_ID_FONT_STYLE,
-  /**
-   * @const STYLE_ID_TEXT_COLOR
-   * 文本颜色。
-   */
-  STYLE_ID_TEXT_COLOR,
-  /**
-   * @const STYLE_ID_TIPS_TEXT_COLOR
-   * 提示文本颜色。
-   */
-  STYLE_ID_TIPS_TEXT_COLOR,
-  /**
-   * @const STYLE_ID_TEXT_ALIGN_H
-   * 文本水平对齐的方式。
-   */
-  STYLE_ID_TEXT_ALIGN_H,
-  /**
-   * @const STYLE_ID_TEXT_ALIGN_V
-   * 文本垂直对齐的方式。
-   */
-  STYLE_ID_TEXT_ALIGN_V,
-  /**
-   * @const STYLE_ID_BORDER_COLOR
-   * 边框颜色。
-   */
-  STYLE_ID_BORDER_COLOR,
-  /**
-   * @const STYLE_ID_BORDER
-   * 边框类型。
-   */
-  STYLE_ID_BORDER,
-  /**
-   * @const STYLE_ID_BG_IMAGE
-   * 图片的名称。
-   */
-  STYLE_ID_BG_IMAGE,
-  /**
-   * @const STYLE_ID_BG_IMAGE_DRAW_TYPE
-   * 图片的显示方式。
-   */
-  STYLE_ID_BG_IMAGE_DRAW_TYPE,
-  /**
-   * @const STYLE_ID_ICON
-   * 图标的名称。
-   */
-  STYLE_ID_ICON,
-  /**
-   * @const STYLE_ID_FG_IMAGE
-   * 图片的名称。
-   */
-  STYLE_ID_FG_IMAGE,
-  /**
-   * @const STYLE_ID_FG_IMAGE_DRAW_TYPE
-   * 图片的显示方式。
-   */
-  STYLE_ID_FG_IMAGE_DRAW_TYPE,
-  /**
-   * @const STYLE_ID_MARGIN
-   * 边距。
-   */
-  STYLE_ID_MARGIN,
-  /**
-   * @const STYLE_ID_ICON_AT
-   * 图标的位置。
-   */
-  STYLE_ID_ICON_AT
-} style_id_t;
-
-#define THEME_MAGIC 0xFAFBFCFD
-#define TK_DEFAULT_STYLE "default"
 
 END_C_DECLS
 

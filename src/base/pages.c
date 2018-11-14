@@ -30,9 +30,10 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index) {
-    event_t evt = event_init(EVT_VALUE_CHANGED, widget);
-
+    event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &evt);
     pages->active = index;
+    evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
   }
@@ -96,7 +97,7 @@ static const widget_vtable_t s_pages_vtable = {.size = sizeof(pages_t),
                                                .type = WIDGET_TYPE_PAGES,
                                                .clone_properties = s_pages_clone_properties,
                                                .create = pages_create,
-                                               .on_paint_self = widget_on_paint_background_null,
+                                               .on_paint_self = widget_on_paint_null,
                                                .find_target = pages_find_target,
                                                .on_paint_children = pages_on_paint_children,
                                                .get_prop = pages_get_prop,

@@ -33,6 +33,18 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
 
   r->x += widget->x;
   r->y += widget->y;
+  if (widget->astyle != NULL) {
+    int32_t ox = tk_abs(style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0));
+    int32_t oy = tk_abs(style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0));
+    if (ox > 0) {
+      r->x -= ox - 1;
+      r->w += ox + ox + 1;
+    }
+    if (oy > 0) {
+      r->y -= oy - 1;
+      r->h += oy + oy + 1;
+    }
+  }
 
   if (widget->parent) {
     widget_t* parent = widget->parent;
@@ -53,8 +65,9 @@ ret_t widget_on_event_default(widget_t* widget, event_t* e) {
 }
 
 ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c) {
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-
+  if (style_is_valid(widget->astyle)) {
+    return widget_paint_helper(widget, c, NULL, NULL);
+  }
   return RET_OK;
 }
 
@@ -176,13 +189,7 @@ ret_t widget_destroy_default(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_on_paint_background_null(widget_t* widget, canvas_t* c) {
-  (void)widget;
-  (void)c;
-  return RET_OK;
-}
-
-ret_t widget_on_paint_done_null(widget_t* widget, canvas_t* c) {
+ret_t widget_on_paint_null(widget_t* widget, canvas_t* c) {
   (void)widget;
   (void)c;
   return RET_OK;

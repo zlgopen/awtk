@@ -119,13 +119,13 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return window_base_on_event(widget, e);
 }
 
 static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
   point_t pt = {0, 0};
   wstr_t* text = &(widget->text);
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t black = color_init(0, 0, 0, 0xff);
   calibration_win_t* win = CALIBRATION_WIN(widget);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
@@ -151,6 +151,10 @@ static const widget_vtable_t s_calibration_win_vtable = {
     .type = WIDGET_TYPE_CALIBRATION_WIN,
     .create = calibration_win_create,
     .on_event = calibration_win_on_event,
+    .set_prop = window_base_set_prop,
+    .get_prop = window_base_get_prop,
+    .on_paint_begin = window_base_on_paint_begin,
+    .on_paint_end = window_base_on_paint_end,
     .on_paint_self = calibration_win_on_paint_self};
 
 ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on_done, void* ctx) {
@@ -179,18 +183,13 @@ widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   widget_t* widget = WIDGET(win);
   return_value_if_fail(win != NULL, NULL);
 
-  widget_init(widget, NULL, &s_calibration_win_vtable, x, y, w, h);
-  if (parent == NULL) {
-    parent = window_manager();
-  }
-
   win->cursor = 0;
   win->x_offset = 20;
   win->y_offset = 20;
   win->cross_size = 16;
-  widget_resize(widget, parent->w, parent->h);
-  return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
-  widget_update_style(widget);
+
+  window_base_init(widget, parent, &s_calibration_win_vtable, x, y, w, h);
+  widget_resize(widget, widget->parent->w, widget->parent->h);
 
   return widget;
 }

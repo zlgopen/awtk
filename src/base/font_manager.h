@@ -24,6 +24,7 @@
 
 #include "base/array.h"
 #include "base/font_loader.h"
+#include "base/assets_manager.h"
 
 BEGIN_C_DECLS
 
@@ -35,7 +36,19 @@ BEGIN_C_DECLS
 typedef struct _font_manager_t {
   array_t fonts;
 
+  /**
+   * @property {font_loader_t*} loader
+   * @annotation ["private"]
+   * 字体加载器。
+   */
   font_loader_t* loader;
+
+  /**
+   * @property {assets_manager_t*} assets_manager
+   * @annotation ["private"]
+   * 资源管理器。
+   */
+  assets_manager_t* assets_manager;
 } font_manager_t;
 
 /**
@@ -75,6 +88,16 @@ font_manager_t* font_manager_create(font_loader_t* loader);
  * @return {font_manager_t*} 返回字体管理器对象。
  */
 font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
+
+/**
+ * @method font_manager_set_assets_manager
+ * 设置资源管理器对象
+ * @param {font_manager_t*} imm 图片管理器对象。
+ * @param {assets_manager_t*} assets_manager 资源管理器。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* assets_manager);
 
 /**
  * @method font_manager_add

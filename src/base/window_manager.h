@@ -69,6 +69,9 @@ typedef struct _window_manager_t {
 
   char* cursor;
   rect_t r_cursor;
+
+  xy_t last_x;
+  xy_t last_y;
 } window_manager_t;
 
 /**
@@ -158,6 +161,16 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_close_window(widget_t* widget, widget_t* window);
+
+/**
+ * @method window_manager_close_window_force
+ * 强制立即关闭窗口。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {widget_t*} window 窗口对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_close_window_force(widget_t* widget, widget_t* window);
 
 /**
  * @method window_manager_paint

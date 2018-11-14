@@ -55,6 +55,16 @@ typedef struct _tab_button_t {
 } tab_button_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(激活状态)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(激活状态)改变事件。
+ */
+
+/**
  * @method tab_button_create
  * 创建tab_button对象
  * @annotation ["constructor", "scriptable"]

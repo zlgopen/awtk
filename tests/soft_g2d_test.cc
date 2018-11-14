@@ -9,19 +9,12 @@
 static uint16_t s_fb_buff[FB_W * FB_H * 2];
 static uint16_t s_img_buff[IMG_W * IMG_H * 2];
 
-static void init_image(bitmap_t* fb, bitmap_t* img, int format) {
+static void init_image(bitmap_t* fb, bitmap_t* img, bitmap_format_t format) {
   uint8_t* fb_buff = (uint8_t*)s_fb_buff;
   uint8_t* img_buff = (uint8_t*)s_img_buff;
 
-  fb->w = FB_W;
-  fb->h = FB_H;
-  fb->format = format;
-  fb->data = (uint8_t*)fb_buff;
-
-  img->w = IMG_W;
-  img->h = IMG_H;
-  img->format = format;
-  img->data = (uint8_t*)img_buff;
+  bitmap_init(fb, FB_W, FB_H, format, fb_buff);
+  bitmap_init(img, IMG_W, IMG_H, format, img_buff);
 
   memset(s_fb_buff, 0x00, sizeof(s_fb_buff));
   memset(s_img_buff, 0xfe, sizeof(s_img_buff));

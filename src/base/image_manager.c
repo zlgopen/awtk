@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_manager.c
  * Author: AWTK Develop Team
  * Brief:  bitmap manager
@@ -20,10 +20,9 @@
  */
 
 #include "base/mem.h"
-#include "base/time.h"
 #include "base/utils.h"
+#include "base/time_now.h"
 #include "base/image_manager.h"
-#include "base/assets_manager.h"
 
 typedef struct _bitmap_cache_t {
   bitmap_t image;
@@ -56,6 +55,7 @@ image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader
 
   imm->loader = loader;
   array_init(&(imm->images), 0);
+  imm->assets_manager = assets_manager();
 
   return imm;
 }
@@ -93,6 +93,7 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
       *image = iter->image;
       image->destroy = NULL;
       image->specific_destroy = NULL;
+      image->should_free_data = FALSE;
 
       iter->access_count++;
       iter->last_access_time = time_now_s();
@@ -136,7 +137,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     return RET_OK;
   }
 
-  res = assets_manager_ref(assets_manager(), ASSET_TYPE_IMAGE, name);
+  res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
   return_value_if_fail(res != NULL, RET_NOT_FOUND);
 
   memset(image, 0x00, sizeof(bitmap_t));
@@ -158,13 +159,21 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
     ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
     if (ret == RET_OK) {
       image_manager_add(imm, name, image);
-      assets_manager_unref(assets_manager(), res);
+      assets_manager_unref(imm->assets_manager, res);
     }
 
     return image_manager_lookup(imm, name, image);
   } else {
     return RET_NOT_FOUND;
   }
+}
+
+ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* am) {
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+
+  imm->assets_manager = am;
+
+  return RET_OK;
 }
 
 static int bitmap_cache_cmp_time(bitmap_cache_t* a, bitmap_cache_t* b) {

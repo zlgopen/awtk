@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget_animator_factory.h
  * Author: AWTK Develop Team
  * Brief:  widget animator factory
@@ -62,6 +62,7 @@ typedef struct _rotation_params_t {
 } rotation_params_t;
 
 typedef struct _animator_params_t {
+  char type[NAME_LEN + 1];
   char name[NAME_LEN + 1];
 
   widget_t* widget;
@@ -74,10 +75,14 @@ typedef struct _animator_params_t {
   } u;
 
   uint32_t delay;
-  uint32_t easing;
+  int32_t easing;
   uint32_t duration;
   int32_t yoyo_times;
   int32_t repeat_times;
+
+  float_t time_scale;
+  bool_t auto_start;
+  bool_t auto_destroy;
 
 } animator_params_t;
 
@@ -88,27 +93,71 @@ typedef struct _widget_animator_parser_t {
 } widget_animator_parser_t;
 
 static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
+  value_t v;
   widget_animator_parser_t* p = (widget_animator_parser_t*)parser;
   widget_t* widget = p->params.widget;
 
-  tk_strncpy(p->params.name, func_name, NAME_LEN);
-  switch (p->params.name[0]) {
+  tk_strncpy(p->params.type, func_name, NAME_LEN);
+  switch (p->params.type[0]) {
     case 'm': /*move*/
     {
-      move_params_t* move = &p->params.u.move;
-      move->x_from = widget->x;
-      move->y_from = widget->y;
-      move->x_to = widget->x;
-      move->y_to = widget->y;
+      move_params_t* params = &p->params.u.move;
+
+      params->x_from = widget->x;
+      params->y_from = widget->y;
+      params->x_to = widget->x;
+      params->y_to = widget->y;
       break;
     }
     case 's': /*scale*/
     {
-      scale_params_t* scale = &p->params.u.scale;
-      scale->x_from = 1;
-      scale->y_from = 1;
-      scale->x_to = 1;
-      scale->y_to = 1;
+      float_t scale_x = 1.0f;
+      float_t scale_y = 1.0f;
+      scale_params_t* params = &p->params.u.scale;
+
+      if (widget_get_prop(widget, WIDGET_PROP_SCALE_X, &v) == RET_OK) {
+        scale_x = value_float(&v);
+      }
+      if (widget_get_prop(widget, WIDGET_PROP_SCALE_Y, &v) == RET_OK) {
+        scale_y = value_float(&v);
+      }
+
+      params->x_from = scale_x;
+      params->y_from = scale_y;
+      params->x_to = scale_x;
+      params->y_to = scale_y;
+
+      break;
+    }
+    case 'r': /*rotation*/
+    {
+      float_t value = 0;
+      rotation_params_t* params = &p->params.u.rotation;
+
+      if (widget_get_prop(widget, WIDGET_PROP_ROTATION, &v) == RET_OK) {
+        value = value_float(&v);
+      }
+
+      params->from = value;
+      params->to = value;
+      break;
+    }
+    case 'v': /*value*/
+    {
+      int32_t value = widget_get_value(widget);
+      value_params_t* params = &p->params.u.value;
+
+      params->from = value;
+      params->to = value;
+      break;
+    }
+    case 'o': /*opacity*/
+    {
+      int32_t value = widget->opacity;
+      opacity_params_t* params = &p->params.u.opacity;
+
+      params->from = value;
+      params->to = value;
       break;
     }
     default:
@@ -120,7 +169,7 @@ static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
 static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const char* value) {
   widget_animator_parser_t* p = (widget_animator_parser_t*)parser;
 
-  switch (p->params.name[0]) {
+  switch (p->params.type[0]) {
     case 'm': /*move*/
     {
       move_params_t* move = &p->params.u.move;
@@ -203,6 +252,16 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
       p->params.yoyo_times = tk_atoi(value);
       break;
     }
+    case 't': /*time_scale*/
+    {
+      p->params.time_scale = tk_atof(value);
+      break;
+    }
+    case 'n': /*name*/
+    {
+      tk_strncpy(p->params.name, value, NAME_LEN);
+      break;
+    }
     case 'r': /*repeat_times*/
     {
       p->params.repeat_times = tk_atoi(value);
@@ -217,9 +276,18 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
       }
       break;
     }
+    case 'a': /*auto_start|auto_destroy*/
+    {
+      if (tk_str_eq(name, "auto_start")) {
+        p->params.auto_start = tk_atob(value);
+      } else if (tk_str_eq(name, "auto_destroy")) {
+        p->params.auto_destroy = tk_atob(value);
+      }
+      break;
+    }
     case 'e': {
       const key_type_value_t* easing = easing_type_find(value);
-      p->params.easing = easing != NULL ? easing->value : -1;
+      p->params.easing = easing != NULL ? (int32_t)(easing->value) : -1;
       break;
     }
     default:
@@ -238,6 +306,9 @@ static ret_t widget_animator_parser_parse(widget_animator_parser_t* parser, cons
   parser->params.duration = 500;
   parser->params.yoyo_times = -1;
   parser->params.repeat_times = -1;
+  parser->params.auto_start = TRUE;
+  parser->params.auto_destroy = TRUE;
+  parser->params.time_scale = 1;
   parser->params.easing = EASING_SIN_INOUT;
 
   parser->params.widget = widget;
@@ -262,11 +333,11 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
   easing = parser.params.easing;
   duration = parser.params.duration;
 
-  switch (parser.params.name[0]) {
+  switch (parser.params.type[0]) {
     case 'm': /*move*/
     {
       move_params_t* move = &parser.params.u.move;
-      wa = widget_animator_move_create(widget, duration, delay, easing);
+      wa = widget_animator_move_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_move_set_params(wa, move->x_from, move->y_from, move->x_to, move->y_to);
@@ -275,7 +346,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 's': /*scale*/
     {
       scale_params_t* scale = &parser.params.u.scale;
-      wa = widget_animator_scale_create(widget, duration, delay, easing);
+      wa = widget_animator_scale_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_scale_set_params(wa, scale->x_from, scale->y_from, scale->x_to, scale->y_to);
@@ -284,7 +355,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'r': /*rotation*/
     {
       rotation_params_t* rotation = &parser.params.u.rotation;
-      wa = widget_animator_rotation_create(widget, duration, delay, easing);
+      wa = widget_animator_rotation_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_rotation_set_params(wa, rotation->from, rotation->to);
@@ -293,7 +364,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'v': /*value*/
     {
       value_params_t* value = &parser.params.u.value;
-      wa = widget_animator_value_create(widget, duration, delay, easing);
+      wa = widget_animator_value_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_value_set_params(wa, value->from, value->to);
@@ -302,7 +373,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     case 'o': /*opacity*/
     {
       opacity_params_t* opacity = &parser.params.u.opacity;
-      wa = widget_animator_opacity_create(widget, duration, delay, easing);
+      wa = widget_animator_opacity_create(widget, duration, delay, (easing_type_t)easing);
 
       return_value_if_fail(wa != NULL, NULL);
       widget_animator_opacity_set_params(wa, opacity->from, opacity->to);
@@ -322,7 +393,17 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
       widget_animator_set_repeat(wa, parser.params.repeat_times);
     }
 
-    widget_animator_start(wa);
+    if (parser.params.auto_start) {
+      widget_animator_start(wa);
+    }
+
+    widget_animator_set_time_scale(wa, parser.params.time_scale);
+    widget_animator_set_destroy_when_done(wa, parser.params.auto_destroy);
+    if (parser.params.name[0]) {
+      widget_animator_set_name(wa, parser.params.name);
+    } else {
+      widget_animator_set_name(wa, parser.params.type);
+    }
   }
 
   return wa;

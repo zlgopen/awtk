@@ -32,8 +32,12 @@ typedef struct _lcd_mem_t {
   uint8_t* online_fb;
   uint8_t* next_fb;
   vgcanvas_t* vgcanvas;
+
+  uint32_t line_length;
   bitmap_format_t format;
 } lcd_mem_t;
+
+#define lcd_mem_set_line_length(lcd, value) ((lcd_mem_t*)lcd)->line_length = value;
 
 END_C_DECLS
 

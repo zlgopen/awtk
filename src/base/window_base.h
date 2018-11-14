@@ -26,13 +26,6 @@
 
 BEGIN_C_DECLS
 
-typedef enum _window_stage_t {
-  WINDOW_STAGE_CREATED = 0,
-  WINDOW_STAGE_WILL_OPEN,
-  WINDOW_STAGE_OPEN,
-  WINDOW_STAGE_CLOSED
-} window_stage_t;
-
 /**
  * @class window_base_t
  * @parent widget_t
@@ -71,15 +64,28 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} stage
-   * @annotation ["readable"]
+   * @annotation ["readable", "get_prop"]
    * 窗口当前处于的状态。
    */
   window_stage_t stage;
 
+  /**
+   * @property {theme_t*} theme_obj
+   * @annotation ["get_prop", "private"]
+   * 窗口的常量主题数据。
+   */
+  theme_t* theme_obj;
+
+  /*private*/
+  const asset_info_t* res_theme;
+  font_manager_t* font_manager;
 } window_base_t;
 
 /*for sub class*/
 ret_t window_base_destroy(widget_t* widget);
+ret_t window_base_on_event(widget_t* widget, event_t* e);
+ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c);
+ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);

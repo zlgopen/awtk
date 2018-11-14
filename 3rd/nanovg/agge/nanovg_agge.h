@@ -15,8 +15,8 @@
 extern "C" {
 #endif
 
-NVGcontext* nvgCreateAGGE(int32_t w, int32_t h, enum NVGtexture format, uint8_t* data);
-void nvgReinitAgge(NVGcontext* ctx, int32_t w, int32_t h, enum NVGtexture format,
+NVGcontext* nvgCreateAGGE(uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format, uint8_t* data);
+void nvgReinitAgge(NVGcontext* ctx, uint32_t w, uint32_t h, uint32_t stride, enum NVGtexture format,
                    uint8_t* data);
 void nvgDeleteAGGE(NVGcontext* ctx);
 

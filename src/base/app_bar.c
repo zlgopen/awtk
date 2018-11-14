@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   app_bar.h
  * Author: AWTK Develop Team
  * Brief:  app_bar

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_selector.h
  * Author: AWTK Develop Team
  * Brief:  text_selector
@@ -43,7 +43,7 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
 
   uint32_t y = 0;
   uint32_t i = 0;
-  style_t* style = &(widget->style_data);
+  style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   int32_t yoffset = text_selector->yoffset;
   int32_t item_height = widget->h / text_selector->visible_nr;
@@ -240,16 +240,29 @@ static ret_t text_selector_on_pointer_move(text_selector_t* text_selector, point
   return RET_OK;
 }
 
-static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* text_selector) {
+static ret_t text_selector_set_selected_index_only(text_selector_t* text_selector, int32_t index) {
   widget_t* widget = WIDGET(text_selector);
-  int32_t mid_index = text_selector->visible_nr / 2;
-  int32_t item_height = widget->h / text_selector->visible_nr;
 
-  text_selector->selected_index = text_selector->yoffset / item_height + mid_index;
+  if (index != text_selector->selected_index) {
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
+    text_selector->selected_index = index;
+    e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
+  }
 
   widget_invalidate(widget, NULL);
 
   return RET_OK;
+}
+
+static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* text_selector) {
+  widget_t* widget = WIDGET(text_selector);
+  int32_t mid_index = text_selector->visible_nr / 2;
+  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t selected_index = text_selector->yoffset / item_height + mid_index;
+
+  return text_selector_set_selected_index_only(text_selector, selected_index);
 }
 
 static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector) {
@@ -265,19 +278,10 @@ static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* tex
 }
 
 static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
   text_selector_t* text_selector = TEXT_SELECTOR(ctx);
-  int32_t selected_index = text_selector->selected_index;
 
   text_selector->wa = NULL;
   text_selector_sync_selected_index_with_yoffset(text_selector);
-
-  if (selected_index != text_selector->selected_index) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    log_debug("selected_index: %d => %d %s\n", selected_index, text_selector->selected_index,
-              text_selector_get_text(widget));
-  }
 
   return RET_REMOVE;
 }
@@ -337,7 +341,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     yoffset_end = max_yoffset;
   }
 
-  yoffset_end = round((float)yoffset_end / (float)item_height) * item_height;
+  yoffset_end = tk_roundi((float)yoffset_end / (float)item_height) * item_height;
   text_selector_scroll_to(widget, yoffset_end);
 
   return RET_OK;
@@ -523,7 +527,7 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
   return_value_if_fail(option != NULL, RET_BAD_PARAMS);
 
-  text_selector->selected_index = index;
+  text_selector_set_selected_index_only(text_selector, index);
   text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return RET_OK;

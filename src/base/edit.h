@@ -140,8 +140,19 @@ typedef struct _edit_t {
   bool_t caret_visible;
 
   uint32_t timer_id;
+  uint32_t idle_id;
   input_limit_t limit;
 } edit_t;
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGING
+ * 文本正在改变事件(编辑中)。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 文本改变事件。
+ */
 
 /**
  * @method edit_create

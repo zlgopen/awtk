@@ -23,12 +23,15 @@
 #define TK_WIDGET_H
 
 #include "base/str.h"
+#include "base/mem.h"
 #include "base/wstr.h"
 #include "base/value.h"
 #include "base/rect.h"
+#include "base/timer.h"
 #include "base/events.h"
 #include "base/emitter.h"
 #include "base/canvas.h"
+#include "base/style.h"
 #include "base/theme.h"
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
@@ -36,16 +39,14 @@
 
 BEGIN_C_DECLS
 
-struct _widget_t;
-typedef struct _widget_t widget_t;
-
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_border_t)(widget_t* widget, canvas_t* c);
-typedef ret_t (*widget_on_paint_done_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_begin_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_paint_end_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
@@ -77,7 +78,8 @@ typedef struct _widget_vtable_t {
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;
   widget_on_paint_border_t on_paint_border;
-  widget_on_paint_done_t on_paint_done;
+  widget_on_paint_begin_t on_paint_begin;
+  widget_on_paint_end_t on_paint_end;
   widget_on_pointer_down_t on_pointer_down;
   widget_on_pointer_move_t on_pointer_move;
   widget_on_pointer_up_t on_pointer_up;
@@ -175,9 +177,22 @@ struct _widget_t {
    */
   uint8_t dirty : 1;
   /**
+   * @property {bool_t} is_window
+   * @annotation ["readable"]
+   * 是否是窗口。
+   */
+  uint8_t is_window : 1;
+  /**
+   * @property {bool_t} is_designing_window
+   * @annotation ["readable"]
+   * 是否是设计窗口。
+   */
+  uint8_t is_designing_window : 1;
+
+  /**
    * @property {uint8_t} state
    * @annotation ["readable"]
-   * 控件的状态。
+   * 控件的状态(取值参考widget_state_t)。
    */
   uint8_t state;
   /**
@@ -229,11 +244,11 @@ struct _widget_t {
    */
   emitter_t* emitter;
   /**
-   * @property {style_t} style_data
+   * @property {style_t*} astyle
    * @annotation ["readable"]
-   * Style数据。
+   * Style对象。
    */
-  style_t style_data;
+  style_t* astyle;
   /**
    * @property {layout_params_t*} layout_params
    * @annotation ["readable"]
@@ -253,6 +268,116 @@ struct _widget_t {
    */
   const widget_vtable_t* vt;
 };
+
+/**
+ * @event {event_t} EVT_WILL_MOVE
+ * 控件移动前触发。
+ */
+
+/**
+ * @event {event_t} EVT_MOVE
+ * 控件移动后触发。
+ */
+
+/**
+ * @event {event_t} EVT_WILL_RESIZE
+ * 控件调整大小前触发。
+ */
+
+/**
+ * @event {event_t} EVT_RESIZE
+ * 控件调整大小后触发。
+ */
+
+/**
+ * @event {event_t} EVT_WILL_MOVE_RESIZE
+ * 控件移动并调整大小前触发。
+ */
+
+/**
+ * @event {event_t} EVT_MOVE_RESIZE
+ * 控件移动并调整大小后触发。
+ */
+
+/**
+ * @event {prop_change_event_t} EVT_PROP_WILL_CHANGE
+ * 控件属性改变前触发(通过set_prop设置属性，才会触发)。
+ */
+
+/**
+ * @event {prop_change_event_t} EVT_PROP_CHANGED
+ * 控件属性改变后触发(通过set_prop设置属性，才会触发)。
+ */
+
+/**
+ * @event {paint_event_t} EVT_BEFORE_PAINT
+ * 控件绘制前触发。
+ */
+
+/**
+ * @event {paint_event_t} EVT_AFTER_PAINT
+ * 控件绘制完成时触发。
+ */
+
+/**
+ * @event {event_t} EVT_FOCUS
+ * 控件得到焦点时触发。
+ */
+
+/**
+ * @event {event_t} EVT_BLUR
+ * 控件失去焦点时触发。
+ */
+
+/**
+ * @event {wheel_event_t} EVT_WHEEL
+ * 鼠标滚轮事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_LEAVE
+ * 鼠标指针离开控件时触发。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_ENTER
+ * 鼠标指针进入控件时触发。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_KEY_DOWN
+ * 键按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_KEY_UP
+ * 键释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_DOWN
+ * 指针设备按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_DOWN_ABORT
+ * 取消指针设备按下事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_MOVE
+ * 指针设备移动事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_UP
+ * 指针设备释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_DESTROY
+ * 控件销毁时触发。
+ */
 
 /**
  * @method widget_init
@@ -280,6 +405,17 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_update_style(widget_t* widget);
+
+/**
+ * @method widget_get_state_for_style
+ * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} active 控件是否为当前项或选中项。
+ *
+ * @return {widget_state_t} 返回状态值。
+ */
+widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active);
 
 /**
  * @method widget_update_style_recursive
@@ -510,19 +646,109 @@ ret_t widget_set_cursor(widget_t* widget, const char* cursor);
 
 /**
  * @method widget_set_animation
- * 设置控件的动画参数。
+ * 设置控件的动画参数(仅用于在UI文件使用)。
  * 参数的格式类似函数调用。如:
  * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
  * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
  * 多个animation参数用『;』分开。
+ * 参考：https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} animation 动画参数。
+ * @param {const char*} animation 动画参数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_animation(widget_t* widget, const char* animation);
+
+/**
+ * @method widget_create_animator
+ * 创建动画。
+ * 除非指定auto_start=false，动画创建后自动启动。
+ * 除非指定auto_destroy=false，动画播放完成后自动销毁。
+ * 参数的格式类似函数调用, 如:
+ * opacity(from=0, to=255, yoyo_times=1000, duration=1000)
+ * move(x_from=10, x_to=100, y_from=10, y_to=100, duration=1000)
+ * 参考：https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} animation 动画参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_create_animator(widget_t* widget, const char* animation);
+
+/**
+ * @method widget_start_animator
+ * 播放动画。
+ * 1.widget为NULL时，播放所有名称为name的动画。
+ * 2.name为NULL时，播放所有widget相关的动画。
+ * 3.widget和name均为NULL，播放所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_start_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_set_animator_time_scale
+ * 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。
+ * 1.widget为NULL时，设置所有名称为name的动画的时间倍率。
+ * 2.name为NULL时，设置所有widget相关的动画的时间倍率。
+ * 3.widget和name均为NULL，设置所有动画的时间倍率。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 动画名称。
+ * @param {float_t} time_scale 时间倍率。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t time_scale);
+
+/**
+ * @method widget_pause_animator
+ * 暂停动画。
+ * 1.widget为NULL时，暂停所有名称为name的动画。
+ * 2.name为NULL时，暂停所有widget相关的动画。
+ * 3.widget和name均为NULL，暂停所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_pause_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_stop_animator
+ * 停止动画(控件的相应属性回归原位)。
+ * 1.widget为NULL时，停止所有名称为name的动画。
+ * 2.name为NULL时，停止所有widget相关的动画。
+ * 3.widget和name均为NULL，停止所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_stop_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_destroy_animator
+ * 销毁动画。
+ * 1.widget为NULL时，销毁所有名称为name的动画。
+ * 2.name为NULL时，销毁所有widget相关的动画。
+ * 3.widget和name均为NULL，销毁所有动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_destroy_animator(widget_t* widget, const char* name);
 
 /**
  * @method widget_set_enable
@@ -749,7 +975,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e);
  * @method widget_get_prop
  * 通用的获取控件属性的函数。
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
+ * @param {const char*} name 属性的名称。
  * @param {value_t*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -760,7 +986,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
  * @method widget_set_prop
  * 通用的设置控件属性的函数。
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
+ * @param {const char*} name 属性的名称。
  * @param {value_t*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -769,15 +995,61 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 
 /**
  * @method widget_set_prop_str
- * 通用的设置控件属性的函数。
+ * 设置字符串格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 属性的名称。
- * @param {char*} v 属性的值。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* v);
+
+/**
+ * @method widget_get_prop_str
+ * 获取字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} defval 缺省值。
+ *
+ * @return {const char*} 返回属性的值。
+ */
+const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval);
+
+/**
+ * @method widget_set_prop_int
+ * 设置字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
+
+/**
+ * @method widget_get_prop_int
+ * 获取字符串格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {int32_t} 返回属性的值。
+ */
+int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval);
+
+/**
+ * @method widget_is_window_opened
+ * 判断当前控件所在的窗口是否已经打开。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回当前控件所在的窗口是否已经打开。
+ */
+bool_t widget_is_window_opened(widget_t* widget);
 
 /**
  * @method widget_layout_children
@@ -931,6 +1203,17 @@ ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
 ret_t widget_layout(widget_t* widget);
 
 /**
+ * @method widget_add_timer
+ * 创建一个timer，该timer在控件销毁时自动销毁，timer_info_t的ctx为widget。
+ * @param {widget_t*} widget 控件对象。
+ * @param {timer_func_t} on_timer timer回调函数。
+ * @param {uint32_t} duration_ms 时间。
+ *
+ * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
+
+/**
  * @method widget_cast
  * 转换为widget对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -988,6 +1271,18 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
  */
 float_t widget_measure_text(widget_t* widget, const wchar_t* text);
 
+/**
+ * @method widget_load_image
+ * 加载图片。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 图片名。
+ * @param {bitmap_t*} bitmap 图片对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
+
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
     int32_t i = 0;                                                \
@@ -1019,7 +1314,8 @@ ret_t widget_on_paint_background(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
-ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
+ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 

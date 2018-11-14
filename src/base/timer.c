@@ -31,9 +31,6 @@ static ret_t timer_info_destroy(timer_info_t* info) {
 }
 
 static timer_manager_t* s_timer_manager;
-#define ACTIVE_TIMERS(timer_manager) (((timer_manager)->timers) + (timer_manager)->active)
-#define OFFLINE_TIMERS(timer_manager) \
-  (((timer_manager)->timers) + ((timer_manager)->active ? 0 : 1))
 
 timer_manager_t* timer_manager(void) {
   return s_timer_manager;
@@ -58,29 +55,24 @@ timer_manager_t* timer_manager_create(timer_get_time_t get_time) {
 timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_time_t get_time) {
   return_value_if_fail(timer_manager != NULL, NULL);
 
-  timer_manager->next_timer_id = 1;
+  timer_manager->next_timer_id = TK_INVALID_ID + 1;
   timer_manager->get_time = get_time;
-  array_init(timer_manager->timers + 0, 0);
-  array_init(timer_manager->timers + 1, 0);
 
   return timer_manager;
 }
 
 ret_t timer_manager_deinit(timer_manager_t* timer_manager) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  timer_info_t** timers = NULL;
+  timer_info_t* iter = NULL;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  nr = ACTIVE_TIMERS(timer_manager)->size;
-  timers = (timer_info_t**)ACTIVE_TIMERS(timer_manager)->elms;
+  iter = timer_manager->first;
+  while (iter != NULL) {
+    timer_info_t* next = iter->next;
 
-  for (i = 0; i < nr; i++) {
-    timer_info_t* iter = timers[i];
     timer_info_destroy(iter);
+    iter = next;
   }
-  array_deinit(timer_manager->timers + 0);
-  array_deinit(timer_manager->timers + 1);
+  timer_manager->first = NULL;
 
   return RET_OK;
 }
@@ -96,12 +88,13 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager) {
 
 uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
                            uint32_t duration_ms) {
+  timer_info_t* iter = NULL;
   timer_info_t* timer = NULL;
-  return_value_if_fail(on_timer != NULL, 0);
-  return_value_if_fail(timer_manager != NULL, 0);
+  return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
+  return_value_if_fail(timer_manager != NULL, TK_INVALID_ID);
 
   timer = TKMEM_ZALLOC(timer_info_t);
-  return_value_if_fail(timer != NULL, 0);
+  return_value_if_fail(timer != NULL, TK_INVALID_ID);
 
   timer->ctx = ctx;
   timer->on_timer = on_timer;
@@ -110,104 +103,165 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
   timer->id = timer_manager->next_timer_id++;
   timer->timer_manager = timer_manager;
 
-  return array_push(ACTIVE_TIMERS(timer_manager), timer) == RET_OK ? timer->id : 0;
-}
-
-static int timer_info_compare_id(const void* a, const void* b) {
-  timer_info_t* t1 = (timer_info_t*)a;
-  timer_info_t* t2 = (timer_info_t*)b;
-
-  if (t1->id == t2->id) {
-    return 0;
+  iter = timer_manager->first;
+  if (iter == NULL) {
+    timer_manager->first = timer;
+  } else {
+    while (iter->next != NULL) {
+      iter = iter->next;
+    }
+    iter->next = timer;
   }
 
-  return -1;
+  return timer->id;
 }
 
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {
-  timer_info_t timer;
-  ret_t ret = RET_FAIL;
-  return_value_if_fail(timer_id > 0, RET_BAD_PARAMS);
+  ret_t ret = RET_NOT_FOUND;
+  timer_info_t* iter = NULL;
+  timer_info_t* prev = NULL;
+  return_value_if_fail(timer_id != TK_INVALID_ID, RET_BAD_PARAMS);
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  timer.id = timer_id;
+  prev = timer_manager->first;
+  iter = timer_manager->first;
 
-  ret = array_remove(ACTIVE_TIMERS(timer_manager), timer_info_compare_id, &timer,
-                     (tk_destroy_t)timer_info_destroy);
-  if (ret != RET_OK) {
-    ret = array_remove(OFFLINE_TIMERS(timer_manager), timer_info_compare_id, &timer,
-                       (tk_destroy_t)timer_info_destroy);
+  if (iter->id == timer_id) {
+    if (timer_manager->dispatching) {
+      iter->pending_destroy = TRUE;
+    } else {
+      timer_manager->first = iter->next;
+      timer_info_destroy(iter);
+    }
+    ret = RET_OK;
+  } else {
+    prev = iter;
+    iter = iter->next;
+    while (iter != NULL) {
+      if (iter->id == timer_id) {
+        if (timer_manager->dispatching) {
+          iter->pending_destroy = TRUE;
+        } else {
+          prev->next = iter->next;
+          timer_info_destroy(iter);
+        }
+        ret = RET_OK;
+        break;
+      }
+      prev = iter;
+      iter = iter->next;
+    }
+  }
+
+  return ret;
+}
+
+static ret_t timer_manager_remove_pending_destroy_timers(timer_manager_t* timer_manager) {
+  ret_t ret = RET_NOT_FOUND;
+  timer_info_t* iter = NULL;
+  timer_info_t* prev = NULL;
+  return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
+
+  prev = timer_manager->first;
+  iter = timer_manager->first;
+  while (iter != NULL) {
+    if (iter->pending_destroy) {
+      if (iter == timer_manager->first) {
+        timer_manager->first = iter->next;
+        timer_info_destroy(iter);
+
+        prev = timer_manager->first;
+        iter = timer_manager->first;
+      } else {
+        prev->next = iter->next;
+        timer_info_destroy(iter);
+        iter = prev->next;
+      }
+    } else {
+      prev = iter;
+      iter = prev->next;
+    }
   }
 
   return ret;
 }
 
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id) {
-  timer_info_t timer;
-  const timer_info_t* ret = NULL;
-  return_value_if_fail(timer_id > 0, NULL);
+  timer_info_t* iter = NULL;
+  return_value_if_fail(timer_id != TK_INVALID_ID, NULL);
   return_value_if_fail(timer_manager != NULL, NULL);
 
-  timer.id = timer_id;
+  iter = timer_manager->first;
+  while (iter != NULL) {
+    if (iter->id == timer_id) {
+      if (iter->pending_destroy) {
+        return NULL;
+      }
+      return iter;
+    }
 
-  ret =
-      (const timer_info_t*)array_find(ACTIVE_TIMERS(timer_manager), timer_info_compare_id, &timer);
-  if (ret == NULL) {
-    ret = (const timer_info_t*)array_find(OFFLINE_TIMERS(timer_manager), timer_info_compare_id,
-                                          &timer);
+    iter = iter->next;
   }
 
-  return ret;
+  return NULL;
 }
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint32_t now = 0;
-  array_t* active = NULL;
-  array_t* offline = NULL;
+  timer_info_t* iter = NULL;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  now = timer_manager->get_time();
-  active = ACTIVE_TIMERS(timer_manager);
-  offline = OFFLINE_TIMERS(timer_manager);
-
-  while (active->size > 0) {
-    timer_info_t* iter = (timer_info_t*)array_pop(active);
-    if ((iter->start + iter->duration_ms) <= now) {
-      iter->now = now;
-      if (iter->on_timer(iter) != RET_REPEAT) {
-        timer_info_destroy(iter);
-      } else {
-        iter->start = now;
-        array_push(offline, iter);
-      }
-    } else {
-      array_push(offline, iter);
-    }
+  iter = timer_manager->first;
+  if (iter == NULL) {
+    return RET_OK;
   }
 
-  timer_manager->active = timer_manager->active ? 0 : 1;
+  now = timer_manager->get_time();
+  timer_manager->dispatching = TRUE;
+  while (iter != NULL) {
+    iter->now = now;
+    if ((iter->start + iter->duration_ms) <= now) {
+      if (iter->on_timer(iter) != RET_REPEAT) {
+        iter->pending_destroy = TRUE;
+      } else {
+        iter->start = now;
+      }
+    }
+    iter = iter->next;
+  }
+  timer_manager->dispatching = FALSE;
+  timer_manager_remove_pending_destroy_timers(timer_manager);
 
   return RET_OK;
 }
 
 uint32_t timer_manager_count(timer_manager_t* timer_manager) {
+  uint32_t count = 0;
+  timer_info_t* iter = NULL;
   return_value_if_fail(timer_manager != NULL, 0);
 
-  return ACTIVE_TIMERS(timer_manager)->size + OFFLINE_TIMERS(timer_manager)->size;
+  iter = timer_manager->first;
+  while (iter != NULL) {
+    if (!iter->pending_destroy) {
+      count++;
+    }
+    iter = iter->next;
+  }
+
+  return count;
 }
 
 uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
-  uint32_t i = 0;
-  array_t* active = NULL;
+  timer_info_t* iter = NULL;
   uint32_t t = timer_manager->get_time() + 0xffff;
   return_value_if_fail(timer_manager != NULL, t);
-  active = ACTIVE_TIMERS(timer_manager);
 
-  for (i = 0; i < active->size; i++) {
-    timer_info_t* iter = (timer_info_t*)(active->elms[i]);
+  iter = timer_manager->first;
+  while (iter != NULL) {
     if ((iter->start + iter->duration_ms) < t) {
       t = iter->start + iter->duration_ms;
     }
+    iter = iter->next;
   }
 
   return t;
@@ -237,7 +291,7 @@ ret_t timer_dispatch(void) {
 }
 
 uint32_t timer_count(void) {
-  return ACTIVE_TIMERS(timer_manager())->size;
+  return timer_manager_count(timer_manager());
 }
 
 uint32_t timer_next_time(void) {

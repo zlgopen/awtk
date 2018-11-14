@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   color_component.
  * Author: AWTK Develop Team
  * Brief:  color_component
@@ -154,6 +154,7 @@ static ret_t bitmap_destroy_data(bitmap_t* bitmap) {
 static ret_t color_component_init_image(bitmap_t* image, const char* name, int32_t w, int32_t h) {
   int32_t size = w * h * 4;
 
+  memset(image, 0x00, sizeof(bitmap_t));
   image->w = w;
   image->h = h;
   image->flags = 0;
@@ -166,6 +167,7 @@ static ret_t color_component_init_image(bitmap_t* image, const char* name, int32
   image->data = (uint8_t*)TKMEM_ALLOC(size);
   return_value_if_fail(image->data != NULL, RET_OOM);
   image->destroy = bitmap_destroy_data;
+  bitmap_set_line_length(image, 0);
 
   memset((void*)(image->data), 0xff, size);
 

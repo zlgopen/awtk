@@ -96,7 +96,7 @@ TEST(Theme, basic) {
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;
   theme_t t;
-  style_t s;
+  const uint8_t* style_data;
 
   GenThemeData(buff, sizeof(buff), state_nr, name_nr);
   t.data = buff;
@@ -104,12 +104,12 @@ TEST(Theme, basic) {
   for (int32_t i = 0; widget_types[i]; i++) {
     const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      s.data = theme_find_style(&t, type, 0, state);
-      ASSERT_EQ(s.data != NULL, true);
+      style_data = theme_find_style(&t, type, 0, (widget_state_t)state);
+      ASSERT_EQ(style_data != NULL, true);
       for (uint32_t name = 0; name < name_nr; name++) {
-        uint32_t v = style_get_int(&s, name, 0);
+        uint32_t v = style_data_get_int(style_data, name, 0);
         ASSERT_EQ(v, name);
-        v = atoi(style_get_str(&s, name, NULL));
+        v = atoi(style_data_get_str(style_data, name, NULL));
         ASSERT_EQ(v, name);
       }
     }

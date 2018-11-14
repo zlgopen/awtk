@@ -55,15 +55,17 @@ bool_t value_bool(const value_t* v) {
       return v->value.u64 ? TRUE : FALSE;
     }
     case VALUE_TYPE_FLOAT: {
+      return v->value.f ? TRUE : FALSE;
+    }
+    case VALUE_TYPE_FLOAT32: {
       return v->value.f32 ? TRUE : FALSE;
     }
     case VALUE_TYPE_DOUBLE: {
       return v->value.f64 ? TRUE : FALSE;
     }
     case VALUE_TYPE_STRING: {
-      return (v->value.str == NULL || v->value.str[0] == '\0' || strcmp(v->value.str, "false") == 0)
-                 ? FALSE
-                 : TRUE;
+      const char* str = v->value.str;
+      return (str == NULL || *str == '0' || *str == 'f' || *str == 'F') ? FALSE : TRUE;
     }
     default:
       break;
@@ -218,53 +220,71 @@ value_t* value_set_float(value_t* v, float value) {
   return_value_if_fail(v != NULL, NULL);
 
   v->type = VALUE_TYPE_FLOAT;
-  v->value.f32 = value;
+  v->value.f = value;
 
   return v;
 }
 
-float value_float(const value_t* v) {
+float_t value_float(const value_t* v) {
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
   switch (v->type) {
     case VALUE_TYPE_INT8: {
-      return (float)v->value.i8;
+      return (float_t)v->value.i8;
     }
     case VALUE_TYPE_UINT8: {
-      return (float)v->value.u8;
+      return (float_t)v->value.u8;
     }
     case VALUE_TYPE_INT16: {
-      return (float)v->value.i16;
+      return (float_t)v->value.i16;
     }
     case VALUE_TYPE_UINT16: {
-      return (float)v->value.u16;
+      return (float_t)v->value.u16;
     }
     case VALUE_TYPE_INT32: {
-      return (float)v->value.i32;
+      return (float_t)v->value.i32;
     }
     case VALUE_TYPE_UINT32: {
-      return (float)v->value.u32;
+      return (float_t)v->value.u32;
     }
     case VALUE_TYPE_INT64: {
-      return (float)v->value.i64;
+      return (float_t)v->value.i64;
     }
     case VALUE_TYPE_UINT64: {
-      return (float)v->value.u64;
+      return (float_t)v->value.u64;
     }
     case VALUE_TYPE_FLOAT: {
-      return (float)v->value.f32;
+      return (float_t)v->value.f;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      return (float_t)v->value.f32;
     }
     case VALUE_TYPE_DOUBLE: {
-      return (float)v->value.f64;
+      return (float_t)v->value.f64;
     }
     case VALUE_TYPE_STRING: {
-      return tk_atof(v->value.str);
+      return (float_t)tk_atof(v->value.str);
     }
     default:
       break;
   }
 
   return 0;
+}
+
+value_t* value_set_float32(value_t* v, float value) {
+  return_value_if_fail(v != NULL, NULL);
+
+  v->type = VALUE_TYPE_FLOAT;
+  v->value.f32 = value;
+
+  return v;
+}
+
+float value_float32(const value_t* v) {
+  return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
+
+  return v->value.f32;
 }
 
 value_t* value_set_double(value_t* v, double value) {
@@ -353,6 +373,9 @@ int value_int(const value_t* v) {
       return (int)v->value.u64;
     }
     case VALUE_TYPE_FLOAT: {
+      return (int)v->value.f;
+    }
+    case VALUE_TYPE_FLOAT32: {
       return (int)v->value.f32;
     }
     case VALUE_TYPE_DOUBLE: {
@@ -409,6 +432,9 @@ bool_t value_equal(const value_t* v, const value_t* other) {
       return v->value.u64 == other->value.u64;
     }
     case VALUE_TYPE_FLOAT: {
+      return tk_fequal(v->value.f, other->value.f32);
+    }
+    case VALUE_TYPE_FLOAT32: {
       return tk_fequal(v->value.f32, other->value.f32);
     }
     case VALUE_TYPE_DOUBLE: {

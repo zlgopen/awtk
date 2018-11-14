@@ -49,6 +49,14 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   return fm;
 }
 
+ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) {
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+
+  fm->assets_manager = am;
+
+  return RET_OK;
+}
+
 ret_t font_manager_add(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
 

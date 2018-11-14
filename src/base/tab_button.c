@@ -62,8 +62,10 @@ static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (tab_button->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
     tab_button->value = value;
+    e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_update_style(widget);
   }
@@ -127,8 +129,8 @@ static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v)
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_bool(v, tab_button->value);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SUB_THEME)) {
-    value_set_str(v, tab_button->value ? "_active" : "");
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+    value_set_int(v, widget_get_state_for_style(widget, tab_button->value));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MIN_W)) {
     value_set_int(v, tab_button_get_min_w(widget));
@@ -158,6 +160,15 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
+static ret_t tab_button_destroy(widget_t* widget) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+
+  TKMEM_FREE(tab_button->icon);
+  TKMEM_FREE(tab_button->active_icon);
+
+  return RET_OK;
+}
+
 static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 static const widget_vtable_t s_tab_button_vtable = {
     .size = sizeof(tab_button_t),
@@ -168,7 +179,7 @@ static const widget_vtable_t s_tab_button_vtable = {
     .on_paint_self = tab_button_on_paint_self,
     .get_prop = tab_button_get_prop,
     .set_prop = tab_button_set_prop,
-};
+    .destroy = tab_button_destroy};
 
 ret_t tab_button_set_icon(widget_t* widget, const char* name) {
   tab_button_t* tab_button = TAB_BUTTON(widget);

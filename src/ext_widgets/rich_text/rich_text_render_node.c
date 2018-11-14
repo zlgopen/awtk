@@ -111,9 +111,9 @@ ret_t rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node, in
   }                                                                    \
   row_h = 0;
 
-rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, canvas_t* c,
-                                                      int32_t w, int32_t h, int32_t margin,
-                                                      int32_t line_gap) {
+rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_text_node_t* node,
+                                                      canvas_t* c, int32_t w, int32_t h,
+                                                      int32_t margin, int32_t line_gap) {
   int32_t row_h = 0;
   int32_t x = margin;
   int32_t y = margin;
@@ -137,7 +137,7 @@ rich_text_render_node_t* rich_text_render_node_layout(rich_text_node_t* node, ca
         new_node = rich_text_render_node_create(iter);
         return_value_if_fail(new_node != NULL, render_node);
 
-        if (image_manager_load(image_manager(), name, &bitmap) == RET_OK) {
+        if (widget_load_image(widget, name, &bitmap) == RET_OK) {
           if (image->w == 0) {
             image->w = bitmap.w;
           }

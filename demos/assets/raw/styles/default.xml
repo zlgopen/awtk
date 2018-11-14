@@ -31,7 +31,7 @@
 <button>
   <style name="default" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#c0c0c0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
@@ -109,6 +109,13 @@
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
   </style>
+  <style name="number" border_color="#a0a0a0"  text_color="black" text_align_h="right">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+  </style>
   <style name="line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" text_align_v="bottom">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
@@ -127,6 +134,12 @@
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
   </style>
 </spin_box>
+
+<digit_clock>
+  <style name="default">
+    <normal text_color="black" />
+  </style>
+</digit_clock>
 
 <label>
   <style name="default">
@@ -205,47 +218,87 @@
 
 <check_button bg_color="#f0f0f0" text_color="black">
   <style name="default">
-    <checked   icon="checked" />
-    <unchecked icon="unchecked" />
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
   </style>
   <style name="mute" >
-    <checked   icon="unmuted" />
-    <unchecked icon="muted" />
+    <normal  icon="unmuted" />
+    <pressed icon="unmuted" x_offset="1" y_offset="1"/>
+    <over    icon="unmuted" />
+    <normal_of_checked icon="muted" />
+    <pressed_of_checked icon="muted" x_offset="1" y_offset="1"/>
+    <over_of_checked icon="muted" />
   </style>
-  <style name="odd_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
-    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  <style name="odd_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#f5f5f5">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
-  <style name="even_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
-    <unchecked bg_color="#eaeaea" icon_at="right" />
+  <style name="even_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#eaeaea">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
 </check_button>
 
 <radio_button>
   <style name="default" bg_color="#f0f0f0" text_color="black">
-    <checked   icon="radio_checked" />
-    <unchecked icon="radio_unchecked" />
+    <normal  icon="radio_unchecked" />
+    <pressed icon="radio_unchecked" />
+    <over    icon="radio_unchecked" text_color="green"/>
+    <normal_of_checked icon="radio_checked" text_color="red"/>
+    <pressed_of_checked icon="radio_checked" text_color="red"/>
+    <over_of_checked icon="radio_checked" text_color="green"/>
   </style>
   <style name="left">
-    <checked   icon="left_on" />
-    <unchecked icon="left_off" />
+    <normal  icon="left_off" />
+    <pressed icon="left_off" />
+    <over    icon="left_off" />
+    <normal_of_checked icon="left_on" />
+    <pressed_of_checked icon="left_on" />
+    <over_of_checked icon="left_on" />
   </style>
   <style name="middle">
-    <checked   icon="middle_on" />
-    <unchecked icon="middle_off" />
+    <normal  icon="middle_off" />
+    <pressed icon="middle_off" />
+    <over    icon="middle_off" />
+    <normal_of_checked icon="middle_on" />
+    <pressed_of_checked icon="middle_on" />
+    <over_of_checked icon="middle_on" />
   </style>
   <style name="right">
-    <checked   icon="right_on" />
-    <unchecked icon="right_off" />
+    <normal  icon="right_off" />
+    <pressed icon="right_off" />
+    <over    icon="right_off" />
+    <normal_of_checked icon="right_on" />
+    <pressed_of_checked icon="right_on" />
+    <over_of_checked icon="right_on" />
   </style>
-  <style name="odd_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#f5f5f5" icon_at="right" icon="check" />
-    <unchecked bg_color="#f5f5f5" icon_at="right" />
+  <style name="odd_icon_right" text_color="black" margin="4" icon_at="right" bg_color="#f5f5f5">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
-  <style name="even_icon_right" text_color="black" margin="4">
-    <checked   bg_color="#eaeaea" icon_at="right" icon="check" />
-    <unchecked bg_color="#eaeaea" icon_at="right" />
+  <style name="even_icon_right" text_color="black" margin="4" icon_at="right" bg_color="#eaeaea">
+    <normal  />
+    <pressed />
+    <over    />
+    <normal_of_checked icon="check" />
+    <pressed_of_checked icon="check" />
+    <over_of_checked icon="check" />
   </style>
 </radio_button>
 
@@ -343,11 +396,9 @@
     <normal     bg_color="#d0d0d0" />
     <pressed    bg_color="#f0f0f0" />
     <over       bg_color="#e0e0e0" />
-  </style>
-  <style name="default_active" border_color="#a0a0a0"  text_color="black">
-    <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#f0f0f0" />
-    <over       bg_color="#f0f0f0" />
+    <normal_of_active     bg_color="#f0f0f0" />
+    <pressed_of_active    bg_color="#f0f0f0" />
+    <over_of_active       bg_color="#f0f0f0" />
   </style>
 </tab_button>
 
@@ -368,15 +419,13 @@
 </combo_box>
 
 <combo_box_item>
-  <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0" icon="empty">
-    <normal  />
-    <pressed bg_color="#1296db" text_color="white" />
-    <over    bg_color="#1296db" text_color="white" />
-  </style>
-  <style name="default_selected" icon_at="left" text_color="black" bg_color="#f0f0f0" icon="check">
-    <normal  />
-    <pressed bg_color="#1296db" text_color="white" />
-    <over    bg_color="#1296db" text_color="white" />
+  <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0">
+    <normal  icon="empty"/>
+    <pressed icon="empty" bg_color="#1296db" text_color="white" />
+    <over    icon="empty" bg_color="#1296db" text_color="white" />
+    <normal_of_checked  icon="check"/>
+    <pressed_of_checked icon="check" bg_color="#1296db" text_color="white" />
+    <over_of_checked    icon="check" bg_color="#1296db" text_color="white" />
   </style>
 </combo_box_item>
 
@@ -399,5 +448,16 @@
   <style name="default">
     <normal  fg_color="red" />
   </style>
+  <style name="dot">
+    <normal  icon="dot" active_icon="active_dot"/>
+  </style>
 </slide_view>
 
+<progress_circle>
+  <style name="default">
+    <normal text_color="green" fg_color="black" />
+  </style>
+  <style name="image">
+    <normal text_color="gold" fg_image="progress_circle" />
+  </style>
+</progress_circle>

@@ -22,8 +22,8 @@
 #include "awtk.h"
 #include "base/mem.h"
 #include "base/idle.h"
-#include "base/time.h"
 #include "base/timer.h"
+#include "base/time_now.h"
 #include "base/locale_info.h"
 #include "base/platform.h"
 #include "base/main_loop.h"
@@ -31,6 +31,7 @@
 #include "base/input_method.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
+#include "base/widget_animator_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
 #include "font_loader/font_loader_bitmap.h"
@@ -71,7 +72,7 @@ ret_t tk_init_assets() {
         break;
       case ASSET_TYPE_STYLE:
         if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
-          theme_init(iter->data);
+          theme_init(theme(), iter->data);
         }
         break;
     }
@@ -99,10 +100,14 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
+
+  return_value_if_fail(theme_set(theme_create(NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
+                       RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
 
   return RET_OK;
@@ -119,6 +124,24 @@ ret_t tk_deinit_internal(void) {
   widget_destroy(window_manager());
   window_manager_set(NULL);
 
+  widget_animator_manager_destroy(widget_animator_manager());
+  widget_animator_manager_set(NULL);
+
+  idle_manager_destroy(idle_manager());
+  idle_manager_set(NULL);
+
+  timer_manager_destroy(timer_manager());
+  timer_manager_set(NULL);
+
+  widget_factory_destroy(widget_factory());
+  widget_factory_set(NULL);
+
+  input_method_destroy(input_method());
+  input_method_set(NULL);
+
+  theme_destroy(theme());
+  theme_set(NULL);
+
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
@@ -131,14 +154,7 @@ ret_t tk_deinit_internal(void) {
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
 
-  idle_manager_destroy(idle_manager());
-  idle_manager_set(NULL);
-
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(NULL);
-
-  input_method_destroy(input_method());
-  input_method_set(NULL);
+  tk_mem_dump();
 
   return RET_OK;
 }
@@ -183,8 +199,8 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
       h = info->lcd_w;
     }
 
-    lcd->w = w;
-    lcd->h = h;
+    lcd_resize(lcd, w, h, 0);
+
     window_manager_resize(window_manager(), w, h);
   }
 

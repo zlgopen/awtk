@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
@@ -111,6 +111,14 @@ long tk_strtol(const char* str, const char** end, int base) {
 
 int tk_atoi(const char* str) {
   return tk_strtol(str, NULL, 10);
+}
+
+bool_t tk_atob(const char* str) {
+  if (str == NULL || *str == 'f' || *str == 'F') {
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 double tk_atof(const char* str) {
@@ -515,4 +523,27 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
   str[org_len + len] = '\0';
 
   return RET_OK;
+}
+
+char* tk_str_copy(char* dst, const char* src) {
+  if (src != NULL) {
+    uint32_t size = strlen(src) + 1;
+    if (dst != NULL) {
+      char* str = TKMEM_REALLOC(char, dst, size);
+      return_value_if_fail(str != NULL, dst);
+      memcpy(str, src, size);
+      dst = str;
+    } else {
+      char* str = (char*)TKMEM_ALLOC(size);
+      return_value_if_fail(str != NULL, dst);
+      memcpy(str, src, size);
+      dst = str;
+    }
+  } else {
+    if (dst != NULL) {
+      *dst = '\0';
+    }
+  }
+
+  return dst;
 }

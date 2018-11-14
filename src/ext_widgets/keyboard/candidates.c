@@ -95,7 +95,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   candidates_t* candidates = CANDIDATES(widget);
   widget_t** children = (widget_t**)(widget->children->elms);
   canvas_t* c = candidates->canvas;
-  style_t* style = &(children[0]->style_data);
+  style_t* style = children[0]->astyle;
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
   canvas_set_font(c, TK_DEFAULT_FONT, font_size);

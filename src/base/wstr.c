@@ -102,7 +102,7 @@ wchar_t* wcsdup(const wchar_t* s) {
 #endif /*WITH_WCSXXX*/
 
 static ret_t wstr_extend(wstr_t* str, uint16_t capacity) {
-  if (capacity < str->capacity) {
+  if (capacity <= str->capacity) {
     return RET_OK;
   }
 
@@ -232,14 +232,14 @@ bool_t wstr_equal(wstr_t* str, wstr_t* other) {
 }
 
 ret_t wstr_from_int(wstr_t* str, int32_t v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   return wstr_set_utf8(str, tk_itoa(buff, sizeof(buff), v));
 }
 
 ret_t wstr_from_float(wstr_t* str, double v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   return wstr_set_utf8(str, tk_ftoa(buff, sizeof(buff), v));
@@ -260,7 +260,7 @@ ret_t wstr_from_value(wstr_t* str, const value_t* v) {
 }
 
 ret_t wstr_to_int(wstr_t* str, int32_t* v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   if (str->size > 0) {
     wstr_get_utf8(str, buff, sizeof(buff));
@@ -273,7 +273,7 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
 }
 
 ret_t wstr_to_float(wstr_t* str, double* v) {
-  char buff[32];
+  char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   if (str->size > 0) {
     wstr_get_utf8(str, buff, sizeof(buff));

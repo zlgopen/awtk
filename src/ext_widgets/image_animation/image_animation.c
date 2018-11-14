@@ -36,7 +36,7 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
     tk_strncpy(name, image_animation->image, NAME_LEN);
     name[strlen(name)] = image_animation->sequence[image_animation->index];
 
-    if (image_manager_load(image_manager(), name, &bitmap) == RET_OK) {
+    if (widget_load_image(widget, name, &bitmap) == RET_OK) {
       rect_t r = rect_init(0, 0, widget->w, widget->h);
       canvas_draw_icon_in_rect(c, &bitmap, &r);
     }
@@ -116,7 +116,9 @@ static const widget_vtable_t s_image_animation_vtable = {
 
 static ret_t image_animation_delay_play(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
+  image_animation->timer_id = TK_INVALID_ID;
   image_animation_play(widget);
 
   return RET_REMOVE;
@@ -128,7 +130,8 @@ static ret_t image_animation_on_open(void* ctx, event_t* e) {
 
   if (image_animation->auto_play) {
     if (image_animation->delay > 0) {
-      timer_add(image_animation_delay_play, widget, image_animation->delay);
+      image_animation->timer_id =
+          timer_add(image_animation_delay_play, widget, image_animation->delay);
     } else {
       image_animation_play(widget);
     }

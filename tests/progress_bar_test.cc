@@ -23,3 +23,23 @@ TEST(progress_bar, basic) {
 
   widget_destroy(s);
 }
+
+#include "log_change_events.inc"
+
+TEST(ProgressBar, event) {
+  widget_t* w = progress_bar_create(NULL, 0, 0, 100, 100);
+
+  progress_bar_set_value(w, 10);
+
+  s_log = "";
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
+
+  progress_bar_set_value(w, 10);
+  ASSERT_EQ(s_log, "");
+
+  progress_bar_set_value(w, 20);
+  ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}

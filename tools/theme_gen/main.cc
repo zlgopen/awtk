@@ -20,10 +20,13 @@
  */
 
 #include "base/mem.h"
+#include "common/utils.h"
 #include "xml_theme_gen.h"
 
 int main(int argc, char* argv[]) {
   bool_t output_bin = argc > 3;
+  const char* in_filename = NULL;
+  const char* out_filename = NULL;
 
   TKMEM_INIT(4 * 1024 * 1024)
 
@@ -32,7 +35,11 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  xml_gen(argv[1], argv[2], output_bin);
+  in_filename = argv[1];
+  out_filename = argv[2];
+
+  exit_if_need_not_update(in_filename, out_filename);
+  xml_gen(in_filename, out_filename, output_bin);
 
   return 0;
 }
