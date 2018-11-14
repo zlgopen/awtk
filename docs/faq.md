@@ -48,7 +48,7 @@
 
 可以用imagemagic转换：
 ```
-convert test.png +dither test.jpg
+convert bg.png  -ordered-dither o8x8,32,64,32 bg.jpg
 ```
 > 参考：http://www.imagemagick.org/Usage/quantize/
 
