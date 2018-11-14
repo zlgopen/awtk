@@ -115,6 +115,7 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   style_t* style = widget->astyle;
   wchar_t temp_str[TEMP_STR_LEN + 1];
+  color_t trans = color_init(0, 0, 0, 0);
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;
   uint8_t top_margin = edit->top_margin;
@@ -122,7 +123,14 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t w = widget->w - left_margin - right_margin;
   wh_t h = widget->h - top_margin - bottom_margin;
   align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+  /*
+    color_t selected_bg = style_get_color(style, STYLE_ID_SELECTED_FG_COLOR, trans);
+    color_t selected_fg = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, trans);
+    color_t selected_tc = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, trans);
 
+    log_debug("selected_bg=0x%08X selected_fg=%08X selected_tc=%08X\n",
+        selected_bg.color, selected_fg.color, selected_tc.color);
+  */
   memset(temp_str, 0x00, sizeof(temp_str));
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
   return_value_if_fail(edit_get_display_text(widget, c, &text, temp_str) == RET_OK, RET_FAIL);

@@ -46,7 +46,11 @@ static const key_type_value_t style_id_name_value[] = {
     {"icon_at", TYPE_STRING, STYLE_ID_ICON_AT},
     {"x_offset", TYPE_INT, STYLE_ID_X_OFFSET},
     {"y_offset", TYPE_INT, STYLE_ID_Y_OFFSET},
-    {"margin", TYPE_INT, STYLE_ID_MARGIN}};
+    {"margin", TYPE_INT, STYLE_ID_MARGIN},
+    {"selected_bg_color", TYPE_COLOR, STYLE_ID_SELECTED_BG_COLOR},
+    {"selected_fg_color", TYPE_COLOR, STYLE_ID_SELECTED_FG_COLOR},
+    {"selected_text_color", TYPE_COLOR, STYLE_ID_SELECTED_TEXT_COLOR},
+};
 
 static const key_type_value_t widget_state_name_value[] = {
     {"normal", 0, WIDGET_STATE_NORMAL},

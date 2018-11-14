@@ -39,7 +39,7 @@ typedef enum _style_id_t {
    */
   STYLE_ID_BG_COLOR = 1,
   /**
-   * @const STYLE_ID_BG_COLOR
+   * @const STYLE_ID_FG_COLOR
    * 前景颜色。
    */
   STYLE_ID_FG_COLOR,
@@ -137,7 +137,22 @@ typedef enum _style_id_t {
    * @const STYLE_ID_Y_OFFSET
    * Y方向的偏移，方便实现按下的效果。
    */
-  STYLE_ID_Y_OFFSET
+  STYLE_ID_Y_OFFSET,
+  /**
+   * @const STYLE_ID_SELECTED_BG_COLOR
+   * 编辑器中选中区域的背景颜色。
+   */
+  STYLE_ID_SELECTED_BG_COLOR,
+  /**
+   * @const STYLE_ID_SELECTED_FG_COLOR
+   * 编辑器中选中区域的前景颜色。
+   */
+  STYLE_ID_SELECTED_FG_COLOR,
+  /**
+   * @const STYLE_ID_SELECTED_TEXT_COLOR
+   * 编辑器中选中区域的文本颜色。
+   */
+  STYLE_ID_SELECTED_TEXT_COLOR,
 } style_id_t;
 
 struct _style_t;
