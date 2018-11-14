@@ -1,5 +1,7 @@
 <window style="dark" anim_hint="htranslate" >
-  <guage x="c" y="m" w="300" h="300" value="-128" bg_image="guage_bg"  pointer_image="guage_pointer" 
-      animation="value(from=-128, to=128, yoyo_times=1000, duration=3000, delay=1000)"/>
+  <guage x="c" y="m" w="240" h="240" image="guage_bg" >
+    <guage_pointer x="c" y="50" w="24" h="140" value="-128" image="guage_pointer" 
+        animation="value(from=-128, to=128, yoyo_times=1000, duration=3000, delay=1000)"/>
+   </guage>
   <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

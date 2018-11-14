@@ -20,52 +20,21 @@
  */
 
 #include "base/mem.h"
+#include "base/enums.h"
 #include "base/utils.h"
-#include "base/matrix.h"
 #include "guage/guage.h"
 #include "base/image_manager.h"
-
-ret_t guage_set_angle(widget_t* widget, int32_t angle) {
-  guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  guage->angle = angle;
-
-  return RET_OK;
-}
-
-ret_t guage_set_pointer_image(widget_t* widget, const char* pointer_image) {
-  guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  TKMEM_FREE(guage->pointer_image);
-  guage->pointer_image = tk_strdup(pointer_image);
-
-  return RET_OK;
-}
-
-ret_t guage_set_bg_image(widget_t* widget, const char* bg_image) {
-  guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  TKMEM_FREE(guage->bg_image);
-  guage->bg_image = tk_strdup(bg_image);
-
-  return RET_OK;
-}
 
 static ret_t guage_get_prop(widget_t* widget, const char* name, value_t* v) {
   guage_t* guage = GUAGE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, GUAGE_PROP_ANGLE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_int(v, guage->angle);
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
+    value_set_str(v, guage->image);
     return RET_OK;
-  } else if (tk_str_eq(name, GUAGE_PROP_POINTER_IMAGE)) {
-    value_set_str(v, guage->pointer_image);
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAW_TYPE)) {
+    value_set_int(v, guage->draw_type);
     return RET_OK;
-  } else if (tk_str_eq(name, GUAGE_PROP_BG_IMAGE)) {
-    value_set_str(v, guage->bg_image);
   }
 
   return RET_NOT_FOUND;
@@ -74,12 +43,19 @@ static ret_t guage_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t guage_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, GUAGE_PROP_ANGLE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    return guage_set_angle(widget, value_int(v));
-  } else if (tk_str_eq(name, GUAGE_PROP_POINTER_IMAGE)) {
-    return guage_set_pointer_image(widget, value_str(v));
-  } else if (tk_str_eq(name, GUAGE_PROP_BG_IMAGE)) {
-    return guage_set_bg_image(widget, value_str(v));
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
+    return guage_set_image(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAW_TYPE)) {
+    if (v->type == VALUE_TYPE_STRING) {
+      const key_type_value_t* kv = image_draw_type_find(value_str(v));
+      if (kv != NULL) {
+        return guage_set_draw_type(widget, (image_draw_type_t)(kv->value));
+      }
+    } else {
+      return guage_set_draw_type(widget, (image_draw_type_t)value_int(v));
+    }
+
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -88,56 +64,43 @@ static ret_t guage_set_prop(widget_t* widget, const char* name, const value_t* v
 static ret_t guage_destroy(widget_t* widget) {
   guage_t* guage = GUAGE(widget);
 
-  TKMEM_FREE(guage->bg_image);
-  TKMEM_FREE(guage->pointer_image);
+  TKMEM_FREE(guage->image);
 
   return RET_OK;
 }
 
-static ret_t guage_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
-  if (name != NULL && bitmap != NULL) {
-    return widget_load_image(widget, name, bitmap);
-  }
+ret_t guage_set_image(widget_t* widget, const char* name) {
+  guage_t* guage = GUAGE(widget);
+  return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
-  return RET_FAIL;
+  guage->image = tk_str_copy(guage->image, name);
+
+  return RET_OK;
 }
+
+ret_t guage_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
+  guage_t* guage = GUAGE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  guage->draw_type = draw_type;
+
+  return RET_OK;
+}
+
+static const char* s_guage_properties[] = {WIDGET_PROP_DRAW_TYPE, WIDGET_PROP_IMAGE, NULL};
 
 static ret_t guage_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
-  float_t rotation = 0;
-  float_t anchor_x = 0;
-  float_t anchor_y = 0;
-  matrix_t matrix;
-  matrix_t* m = matrix_init(&matrix);
   guage_t* guage = GUAGE(widget);
-  rect_t dst = rect_init(0, 0, widget->w, widget->h);
+  return_value_if_fail(guage->image != NULL, RET_BAD_PARAMS);
 
-  if (guage_load_image(widget, guage->bg_image, &bitmap) == RET_OK) {
-    canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
-  }
-
-  if (guage_load_image(widget, guage->pointer_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w - bitmap.w) / 2.0f;
-    float_t dy = (dst.h - bitmap.h) / 2.0f;
-
-    rotation = (2 * M_PI * guage->angle) / 360;
-    anchor_x = bitmap.w / 2.0f;
-    anchor_y = bitmap.h / 2.0f;
-
-    matrix_identity(m);
-    matrix_translate(m, c->ox + dx, c->oy + dy);
-    matrix_translate(m, anchor_x, anchor_y);
-    matrix_rotate(m, rotation);
-    matrix_translate(m, -anchor_x, -anchor_y);
-
-    canvas_draw_image_matrix(c, &bitmap, &matrix);
+  if (widget_load_image(widget, guage->image, &bitmap) == RET_OK) {
+    rect_t dst = rect_init(0, 0, widget->w, widget->h);
+    canvas_draw_image_ex(c, &bitmap, guage->draw_type, &dst);
   }
 
   return RET_OK;
 }
-
-static const char* s_guage_properties[] = {GUAGE_PROP_ANGLE, GUAGE_PROP_POINTER_IMAGE,
-                                           GUAGE_PROP_BG_IMAGE, NULL};
 
 static const widget_vtable_t s_guage_vtable = {.size = sizeof(guage_t),
                                                .type = WIDGET_TYPE_GUAGE,
@@ -154,7 +117,10 @@ widget_t* guage_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = WIDGET(guage);
   return_value_if_fail(guage != NULL, NULL);
 
-  return widget_init(widget, parent, &s_guage_vtable, x, y, w, h);
+  widget_init(widget, parent, &s_guage_vtable, x, y, w, h);
+  guage->draw_type = IMAGE_DRAW_CENTER;
+
+  return widget;
 }
 
 widget_t* guage_cast(widget_t* widget) {

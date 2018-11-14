@@ -13,8 +13,8 @@ static void image_shrink(unsigned char* idata, int iw, int ih, int n) {
   int y = 0;
   unsigned char* p = idata;
 
-  for(y = 0; y < ih; y++) {
-    for(x = 0; x < iw; x++) {
+  for (y = 0; y < ih; y++) {
+    for (x = 0; x < iw; x++) {
       p[0] = (p[0] >> 3) << 3;
       p[1] = (p[1] >> 2) << 2;
       p[2] = (p[2] >> 3) << 3;
