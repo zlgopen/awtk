@@ -23,6 +23,7 @@
 #define TK_DIGIT_CLOCK_H
 
 #include "base/widget.h"
+#include "base/date_time.h"
 
 BEGIN_C_DECLS
 
@@ -34,24 +35,20 @@ BEGIN_C_DECLS
  */
 typedef struct _digit_clock_t {
   widget_t widget;
-
-  /**
-   * @property {bool_t} show_date
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否显示日期。
-   */
-  bool_t show_date;
-  /**
-   * @property {bool_t} show_time
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否显示时间。
-   */
-  bool_t show_time;
-
   /**
    * @property {char*} format
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 显示格式。如日期格式为"%d-%02d-%02d"，显示类似于2018-12-12。
+   * 显示格式。
+   * Y 代表年
+   * M 代表月
+   * D 代表日
+   * h 代表时
+   * m 代表分
+   * s 代表秒
+   * 如 日期时间为：2018/11/12 9:10:20
+   * "Y/D/M"显示为"2018/11/12"
+   * "Y-D-M"显示为"2018-11-12"
+   * "Y-D-M h:m:s"显示为"2018-11-12 9:10:20"
    */
   char* format;
 
@@ -82,28 +79,6 @@ widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 widget_t* digit_clock_cast(widget_t* widget);
 
 /**
- * @method digit_clock_set_show_date
- * 设置是否显示日期。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {bool_t} show_date 是否显示日期。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t digit_clock_set_show_date(widget_t* widget, bool_t show_date);
-
-/**
- * @method digit_clock_set_show_time
- * 设置是否显示时间。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {bool_t} show_time 是否显示时间。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t digit_clock_set_show_time(widget_t* widget, bool_t show_time);
-
-/**
  * @method digit_clock_set_format
  * 设置显示格式。
  * @annotation ["scriptable"]
@@ -115,12 +90,13 @@ ret_t digit_clock_set_show_time(widget_t* widget, bool_t show_time);
 ret_t digit_clock_set_format(widget_t* widget, const char* format);
 
 #define DIGIT_CLOCK_PROP_FORMAT "format"
-#define DIGIT_CLOCK_PROP_SHOW_DATE "show_date"
-#define DIGIT_CLOCK_PROP_SHOW_TIME "show_time"
 
 #define WIDGET_TYPE_DIGIT_CLOCK "digit_clock"
 
 #define DIGIT_CLOCK(widget) ((digit_clock_t*)(widget))
+
+/*public for test*/
+ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt);
 
 END_C_DECLS
 
