@@ -3,6 +3,7 @@
   * 完善digit\_clock
   * change  WITH\_NANOVG\_GL to WITH\_NANOVG\_GPU
   * guage拆成表盘和表针两个控件。
+  * 新增加几个style：selected\_text\_color、selected\_text\_color和selected\_text\_color
 
 * 2018/11/13
   * 修改agg/agge为nanovg后端时linecap的BUG。
