@@ -72,7 +72,7 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
 static ret_t digit_clock_update_time(widget_t* widget) {
   date_time_t dt;
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
-  const char* format = digit_clock->format ? digit_clock->format : "y-m-d h:m:s";
+  const char* format = digit_clock->format ? digit_clock->format : "Y-M-D h:m:s";
   return_value_if_fail(strlen(format) < 64, RET_BAD_PARAMS);
 
   date_time_init(&dt);
