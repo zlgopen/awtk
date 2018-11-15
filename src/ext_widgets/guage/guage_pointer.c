@@ -22,6 +22,7 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/matrix.h"
+#include "base/widget_vtable.h"
 #include "guage/guage_pointer.h"
 #include "base/image_manager.h"
 
@@ -85,30 +86,59 @@ static ret_t guage_pointer_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t guage_pointer_paint_default(widget_t* widget, vgcanvas_t* vg) {
+  float_t w = widget->w;
+  float_t h = widget->h;
+  float_t cx = w * 0.5f;
+  float_t cy = h * 0.5f;
+  style_t* style = widget->astyle;
+  color_t black = color_init(0, 0, 0, 0xff);
+  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, black);
+  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
+
+  vgcanvas_begin_path(vg);
+  vgcanvas_move_to(vg, cx, 0);
+  vgcanvas_line_to(vg, cx, cx + h * 0.6);
+  vgcanvas_set_line_width(vg, 2);
+  vgcanvas_set_stroke_color(vg, bg);
+  vgcanvas_stroke(vg);
+
+  vgcanvas_begin_path(vg);
+  vgcanvas_set_fill_color(vg, fg);
+  vgcanvas_arc(vg, cx, cy, cx, 0, M_PI * 2, FALSE);
+  vgcanvas_fill(vg);
+
+  return RET_OK;
+}
+
 static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   float_t rotation = 0;
   float_t anchor_x = 0;
   float_t anchor_y = 0;
-  matrix_t matrix;
-  matrix_t* m = matrix_init(&matrix);
+  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
-  return_value_if_fail(guage_pointer->image != NULL, RET_BAD_PARAMS);
 
-  if (widget_load_image(widget, guage_pointer->image, &bitmap) == RET_OK) {
-    anchor_x = dst.w * 0.5f;
-    anchor_y = dst.h * 0.5f;
-    rotation = TK_D2R(guage_pointer->angle);
+  anchor_x = dst.w * 0.5f;
+  anchor_y = dst.h * 0.5f;
+  rotation = TK_D2R(guage_pointer->angle);
 
-    matrix_identity(m);
-    matrix_translate(m, c->ox, c->oy);
-    matrix_translate(m, anchor_x, anchor_y);
-    matrix_rotate(m, rotation);
-    matrix_translate(m, -anchor_x, -anchor_y);
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, c->ox, c->oy);
+  vgcanvas_translate(vg, anchor_x, anchor_y);
+  vgcanvas_rotate(vg, rotation);
+  vgcanvas_translate(vg, -anchor_x, -anchor_y);
 
-    canvas_draw_image_matrix(c, &bitmap, &matrix);
+  if (guage_pointer->image != NULL &&
+      widget_load_image(widget, guage_pointer->image, &bitmap) == RET_OK) {
+    float_t w = bitmap.w;
+    float_t h = bitmap.h;
+    vgcanvas_draw_image(vg, &bitmap, 0, 0, w, h, 0, 0, w, h);
+  } else {
+    guage_pointer_paint_default(widget, vg);
   }
+  vgcanvas_restore(vg);
 
   return RET_OK;
 }
@@ -123,6 +153,7 @@ static const widget_vtable_t s_guage_pointer_vtable = {
     .persistent_properties = s_guage_pointer_properties,
     .create = guage_pointer_create,
     .on_paint_self = guage_pointer_on_paint_self,
+    .on_paint_background = widget_on_paint_null,
     .set_prop = guage_pointer_set_prop,
     .get_prop = guage_pointer_get_prop,
     .destroy = guage_pointer_destroy};

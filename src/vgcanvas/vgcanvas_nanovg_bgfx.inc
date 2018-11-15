@@ -29,27 +29,19 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-enum 
-{
-  BEGIN_IDX = 1,
-  MAX_VIEW_COUNT = 256
-};
+enum { BEGIN_IDX = 1, MAX_VIEW_COUNT = 256 };
 static bool_t arrayViewId[MAX_VIEW_COUNT] = {0};
 
-static int32_t getFreeViewId(void)
-{
-
-    int32_t index = BEGIN_IDX;
-    for (int32_t i = BEGIN_IDX; i < MAX_VIEW_COUNT; ++i)
-    {
-      if (!arrayViewId[i])
-      {
-        index =  i;
-        arrayViewId[i] = true;
-		break;
-      }
+static int32_t getFreeViewId(void) {
+  int32_t index = BEGIN_IDX;
+  for (int32_t i = BEGIN_IDX; i < MAX_VIEW_COUNT; ++i) {
+    if (!arrayViewId[i]) {
+      index = i;
+      arrayViewId[i] = true;
+      break;
     }
-    return index;
+  }
+  return index;
 }
 
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
@@ -57,7 +49,7 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   handle = nvgluCreateFramebufferByViewId(vg, (int)(vgcanvas->w * vgcanvas->ratio),
-                                  (int)(vgcanvas->h * vgcanvas->ratio), 0, getFreeViewId());
+                                          (int)(vgcanvas->h * vgcanvas->ratio), 0, getFreeViewId());
   return_value_if_fail(handle != NULL, RET_FAIL);
   fbo->w = vgcanvas->w;
   fbo->h = vgcanvas->h;
@@ -68,9 +60,9 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 }
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
-   NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
-   nvgluDeleteFramebuffer(handle);
-   resetBGFX(fbo->w, fbo->h, 0);
+  NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
+  nvgluDeleteFramebuffer(handle);
+  resetBGFX(fbo->w, fbo->h, 0);
   arrayViewId[handle->viewId] = false;
   (void)vgcanvas;
   return RET_OK;
