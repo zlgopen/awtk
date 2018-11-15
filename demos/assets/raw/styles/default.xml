@@ -317,6 +317,9 @@
   <style name="default">
     <normal border_color="#606060" />
   </style>
+  <style name="notitle">
+    <normal border_color="#606060" bg_color="#ededed"/>
+  </style>
 </dialog>
 
 <dialog_title icon="info" text_color="black">

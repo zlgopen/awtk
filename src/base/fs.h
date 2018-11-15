@@ -88,7 +88,8 @@ typedef bool_t (*fs_dir_exist_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_dir_rename_t)(fs_t* fs, const char* name, const char* new_name);
 
 typedef int32_t (*fs_get_file_size_t)(fs_t* fs, const char* name);
-typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb);
+typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_kb,
+                                    int32_t* total_kb);
 typedef ret_t (*fs_get_exe_t)(fs_t* fs, char path[MAX_PATH + 1]);
 typedef ret_t (*fs_get_cwd_t)(fs_t* fs, char path[MAX_PATH + 1]);
 
