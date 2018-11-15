@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget_vtable.c
  * Author: AWTK Develop Team
  * Brief:  widget vtable default impl
@@ -23,10 +23,6 @@
 #include "base/mem.h"
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
-  rect_t r1 = *r;
-  rect_t r2 = rect_init(0, 0, widget->w, widget->h);
-
-  *r = rect_intersect(&r1, &r2);
   if (r->w <= 0 || r->h <= 0) {
     return RET_OK;
   }
@@ -37,11 +33,11 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
     int32_t ox = tk_abs(style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0));
     int32_t oy = tk_abs(style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0));
     if (ox > 0) {
-      r->x -= ox - 1;
+      r->x -= ox;
       r->w += ox + ox + 1;
     }
     if (oy > 0) {
-      r->y -= oy - 1;
+      r->y -= oy;
       r->h += oy + oy + 1;
     }
   }
