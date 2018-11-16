@@ -1168,8 +1168,8 @@ static ret_t canvas_draw_fps(canvas_t* c) {
     r = rect_init(0, 0, 60, 30);
     canvas_set_font(c, NULL, 16);
     canvas_set_clip_rect(c, NULL);
-    canvas_set_text_color(c, color_init(0xff, 0xff, 0, 0xff));
-    canvas_set_fill_color(c, color_init(0xd0, 0xd0, 0xd0, 0xff));
+    canvas_set_text_color(c, color_init(0xf0, 0xf0, 0xf0, 0xff));
+    canvas_set_fill_color(c, color_init(0x20, 0x20, 0x20, 0xff));
 
     lcd->fps_rect = r;
     tk_snprintf(fps, sizeof(fps), "%dfps", (int)(c->fps));
