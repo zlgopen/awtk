@@ -1,7 +1,18 @@
 # 最新动态
+<<<<<<< HEAD
 
-* 2018/11/15-19
+* 2018/11/16-19
   * SVG解析器和BSVG(二进制格式的SVG)解析器。
+
+* 2018/11/16
+  * 修改FPS的颜色。
+
+* 2018/11/15
+  * 同步bgfx的代码。
+  * 修改SConstruct定义SDL2。
+  * 修改scroll\_view  #issues/30
+  * 修改dirty\_rect的BUG(增加x\_offset/y\_offset引起的)。
+  * 完善guage，支持用颜色绘制指针。
 
 * 2018/11/14
   * 完善digit\_clock
