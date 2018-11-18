@@ -104,6 +104,16 @@ ret_t wbuffer_write_uint16(wbuffer_t* wbuffer, uint16_t value);
 ret_t wbuffer_write_uint32(wbuffer_t* wbuffer, uint32_t value);
 
 /**
+ * @method wbuffer_write_float
+ * 写入float数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {float_t} value 写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_float(wbuffer_t* wbuffer, float_t value);
+
+/**
  * @method wbuffer_write_binary
  * 写入指定长度的二进制数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
@@ -209,6 +219,16 @@ ret_t rbuffer_read_uint16(rbuffer_t* rbuffer, uint16_t* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value);
+
+/**
+ * @method rbuffer_read_float
+ * 读取float数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {float_t*} value 读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_float(rbuffer_t* rbuffer, float_t* value);
 
 /**
  * @method rbuffer_read_binary
