@@ -183,7 +183,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
         wa->y_from = scroll_view->yoffset;
       }
     }
-    
+
     wa->base.now = 0;
     wa->base.start_time = 0;
   } else {
