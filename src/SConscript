@@ -8,6 +8,7 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 sources=Glob('base/*.c') +\
   Glob('ui_loader/*.c') + \
   Glob('xml/*.c') + \
+  Glob('svg/*.c') + \
   Glob('font_loader/*.c') + \
   Glob('blend/*.c') + \
   Glob('ext_widgets/*.c') + \

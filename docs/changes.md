@@ -1,4 +1,8 @@
 # 最新动态
+
+* 2018/11/15-19
+  * SVG解析器和BSVG(二进制格式的SVG)解析器。
+
 * 2018/11/14
   * 完善digit\_clock
   * change  WITH\_NANOVG\_GL to WITH\_NANOVG\_GPU
