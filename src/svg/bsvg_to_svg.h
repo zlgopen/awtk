@@ -1,5 +1,5 @@
 ﻿/**
- * File:   svg_to_bsvg.c
+ * File:   bsvg_to_svg.c
  * Author: AWTK Develop Team
  * Brief:  bsvg to svg
  *
@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-ret_t svg_to_bsvg(const uint32_t* data, uint32_t size, str_t* str);
+ret_t bsvg_to_svg(const uint32_t* data, uint32_t size, str_t* str);
 
 /*public for test*/
 ret_t bsvg_to_svg_path(str_t* str, const svg_path_t* path);

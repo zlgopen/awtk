@@ -166,6 +166,7 @@ SConscriptFiles=NANOVG_BACKEND_PROJS + [
   'tools/str_gen/SConscript', 
   'tools/ui_gen/qt_to_xml/SConscript',
   'tools/ui_gen/xml_to_ui/SConscript',
+  'tools/svg_gen/SConscript',
   'demos/SConscript', 
   'tests/SConscript'
   ] + OS_PROJECTS

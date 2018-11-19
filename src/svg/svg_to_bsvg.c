@@ -113,6 +113,36 @@ static void svg_on_shape_path(bsvg_builder_t* svg, const char** attrs) {
   return;
 }
 
+static void svg_on_shape_line(bsvg_builder_t* svg, const char** attrs) {
+  float_t x1 = 0;
+  float_t y1 = 0;
+  float_t x2 = 0;
+  float_t y2 = 0;
+  uint32_t i = 0;
+  svg_shape_line_t s;
+
+  while (attrs[i] != NULL) {
+    const char* k = attrs[i];
+    const char* v = attrs[i + 1];
+    if (tk_str_eq(k, "x1")) {
+      x1 = tk_atof(v);
+    } else if (tk_str_eq(k, "y1")) {
+      y1 = tk_atof(v);
+    } else if (tk_str_eq(k, "x2")) {
+      x2 = tk_atof(v);
+    } else if (tk_str_eq(k, "y2")) {
+      y2 = tk_atof(v);
+    }
+    i += 2;
+  }
+
+  svg_shape_line_init(&s, x1, y1, x2, y2);
+  svg_init_shape((svg_shape_t*)&s, attrs);
+  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
+
+  return;
+}
+
 static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
   float_t x = 0;
   float_t y = 0;
@@ -129,9 +159,9 @@ static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
       x = tk_atof(v);
     } else if (tk_str_eq(k, "y")) {
       y = tk_atof(v);
-    } else if (tk_str_eq(k, "w")) {
+    } else if (tk_str_eq(k, "width")) {
       w = tk_atof(v);
-    } else if (tk_str_eq(k, "h")) {
+    } else if (tk_str_eq(k, "height")) {
       h = tk_atof(v);
     } else if (tk_str_eq(k, "rx")) {
       r = tk_atof(v);
@@ -156,9 +186,9 @@ static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
   while (attrs[i] != NULL) {
     const char* k = attrs[i];
     const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "x")) {
+    if (tk_str_eq(k, "cx")) {
       x = tk_atof(v);
-    } else if (tk_str_eq(k, "y")) {
+    } else if (tk_str_eq(k, "cy")) {
       y = tk_atof(v);
     } else if (tk_str_eq(k, "r")) {
       r = tk_atof(v);
@@ -169,6 +199,166 @@ static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
   svg_shape_circle_init(&s, x, y, r);
   svg_init_shape((svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
+
+  return;
+}
+
+static void svg_on_shape_ellipse(bsvg_builder_t* svg, const char** attrs) {
+  float_t x = 0;
+  float_t y = 0;
+  float_t rx = 0;
+  float_t ry = 0;
+  uint32_t i = 0;
+  svg_shape_ellipse_t s;
+
+  while (attrs[i] != NULL) {
+    const char* k = attrs[i];
+    const char* v = attrs[i + 1];
+    if (tk_str_eq(k, "cx")) {
+      x = tk_atof(v);
+    } else if (tk_str_eq(k, "cy")) {
+      y = tk_atof(v);
+    } else if (tk_str_eq(k, "rx")) {
+      rx = tk_atof(v);
+    } else if (tk_str_eq(k, "ry")) {
+      ry = tk_atof(v);
+    }
+    i += 2;
+  }
+
+  svg_shape_ellipse_init(&s, x, y, rx, ry);
+  svg_init_shape((svg_shape_t*)&s, attrs);
+  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
+
+  return;
+}
+
+typedef struct _svg_number_parser_t {
+  const char* p;
+  const char* str;
+  uint32_t max_nr;
+  uint32_t nr;
+  float_t* numbers;
+} svg_number_parser_t;
+
+static bool_t svg_number_parser_has_more(svg_number_parser_t* parser) {
+  while (parser->p[0] == ' ') {
+    parser->p++;
+  }
+
+  return parser->p[0];
+}
+
+static float_t svg_number_parser_get_number(svg_number_parser_t* parser) {
+  uint32_t i = 0;
+  const char* p = NULL;
+  char token[TK_NUM_MAX_LEN + 1];
+
+  p = parser->p;
+  if (*p == '+' || *p == '-') {
+    token[i++] = *p++;
+  }
+  while (*p == '.' || (*p >= '0' && *p <= '9')) {
+    token[i++] = *p++;
+  }
+  token[i] = '\0';
+  parser->p = p;
+
+  return tk_atof(token);
+}
+
+static uint32_t svg_number_count(const char* str) {
+  const char* p = str;
+  uint32_t max_nr = 0;
+
+  while (*p) {
+    if (*p == ' ') {
+      max_nr++;
+    }
+    p++;
+  }
+
+  return max_nr + 1;
+}
+
+static ret_t svg_number_parser_init(svg_number_parser_t* parser, const char* str, float_t* out,
+                                    uint32_t max_nr) {
+  parser->nr = 0;
+  parser->p = str;
+  parser->str = str;
+  parser->max_nr = max_nr;
+  parser->numbers = out;
+
+  return RET_OK;
+}
+
+uint32_t svg_parse_numbers(const char* str, float_t* out, uint32_t max_nr) {
+  svg_number_parser_t parser;
+
+  return_value_if_fail(str != NULL && out != NULL, 0);
+  return_value_if_fail(svg_number_parser_init(&parser, str, out, max_nr) == RET_OK, 0);
+
+  while (svg_number_parser_has_more(&parser) && parser.nr < parser.max_nr) {
+    parser.numbers[parser.nr++] = svg_number_parser_get_number(&parser);
+  }
+
+  return parser.nr;
+}
+
+static void svg_on_shape_polygon(bsvg_builder_t* svg, const char** attrs) {
+  uint32_t i = 0;
+  svg_shape_polygon_t* s = NULL;
+
+  while (attrs[i] != NULL) {
+    const char* k = attrs[i];
+    const char* v = attrs[i + 1];
+    if (tk_str_eq(k, "points")) {
+      uint32_t max_nr = svg_number_count(v);
+      s = TKMEM_ALLOC(sizeof(svg_shape_polygon_t) + sizeof(float_t) * max_nr);
+      return_if_fail(s != NULL);
+
+      svg_shape_polygon_init(s);
+      s->nr = svg_parse_numbers(v, s->data, max_nr);
+
+      break;
+    }
+    i += 2;
+  }
+
+  if (s != NULL) {
+    svg_init_shape((svg_shape_t*)s, attrs);
+    bsvg_builder_add_shape(svg, (svg_shape_t*)s);
+    TKMEM_FREE(s);
+  }
+
+  return;
+}
+
+static void svg_on_shape_polyline(bsvg_builder_t* svg, const char** attrs) {
+  uint32_t i = 0;
+  svg_shape_polyline_t* s = NULL;
+
+  while (attrs[i] != NULL) {
+    const char* k = attrs[i];
+    const char* v = attrs[i + 1];
+    if (tk_str_eq(k, "points")) {
+      uint32_t max_nr = svg_number_count(v);
+      s = TKMEM_ALLOC(sizeof(svg_shape_polyline_t) + sizeof(float_t) * max_nr);
+      return_if_fail(s != NULL);
+
+      svg_shape_polyline_init(s);
+      s->nr = svg_parse_numbers(v, s->data, max_nr);
+
+      break;
+    }
+    i += 2;
+  }
+
+  if (s != NULL) {
+    svg_init_shape((svg_shape_t*)s, attrs);
+    bsvg_builder_add_shape(svg, (svg_shape_t*)s);
+    TKMEM_FREE(s);
+  }
 
   return;
 }
@@ -185,6 +375,14 @@ static void svg_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) 
     svg_on_shape_rect(svg, attrs);
   } else if (tk_str_eq(tag, "circle")) {
     svg_on_shape_circle(svg, attrs);
+  } else if (tk_str_eq(tag, "ellipse")) {
+    svg_on_shape_ellipse(svg, attrs);
+  } else if (tk_str_eq(tag, "line")) {
+    svg_on_shape_line(svg, attrs);
+  } else if (tk_str_eq(tag, "polygon")) {
+    svg_on_shape_polygon(svg, attrs);
+  } else if (tk_str_eq(tag, "polyline")) {
+    svg_on_shape_polyline(svg, attrs);
   }
 
   return;

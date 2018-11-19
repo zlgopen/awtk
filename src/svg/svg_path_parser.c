@@ -63,7 +63,7 @@ static float_t svg_path_parser_get_number(svg_path_parser_t* parser) {
   const char* p = NULL;
   char token[TK_NUM_MAX_LEN + 1];
 
-  return_value_if_fail(svg_path_parser_next_token_type(parser) == TOKEN_NUMBER, RET_BAD_PARAMS);
+  return_value_if_fail(svg_path_parser_next_token_type(parser) == TOKEN_NUMBER, 0);
 
   p = parser->p;
   if (*p == '+' || *p == '-') {
@@ -248,8 +248,7 @@ static ret_t svg_path_parser_parse_cmd(svg_path_parser_t* parser, char c) {
       }
       break;
     }
-    default:
-      break;
+    default: { assert(!"not supported path!"); } break;
   }
 
   return RET_OK;

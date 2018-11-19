@@ -216,13 +216,13 @@ TEST(SvgPath, move) {
 
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("M 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" M1.0 2.0"));
 
   test_one_path(svg_path_move_rel_init(&path, 1, 2));
 
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("m 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" m1.0 2.0"));
 
   str_reset(&s);
 }
@@ -235,12 +235,12 @@ TEST(SvgPath, line) {
   test_one_path(svg_path_line_init(&path, 1, 2));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("L 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" L1.0 2.0"));
 
   test_one_path(svg_path_line_rel_init(&path, 1, 2));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("l 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" l1.0 2.0"));
 
   str_reset(&s);
 }
@@ -253,12 +253,12 @@ TEST(SvgPath, hline) {
   test_one_path(svg_path_hline_init(&path, 12));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("H 12.0"));
+  ASSERT_EQ(string(s.str), string(" H12.0"));
 
   test_one_path(svg_path_hline_rel_init(&path, 12));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("h 12.0"));
+  ASSERT_EQ(string(s.str), string(" h12.0"));
 
   str_reset(&s);
 }
@@ -270,12 +270,12 @@ TEST(SvgPath, vline) {
   test_one_path(svg_path_vline_init(&path, 12));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("V 12.0"));
+  ASSERT_EQ(string(s.str), string(" V12.0"));
 
   test_one_path(svg_path_vline_rel_init(&path, 12));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("v 12.0"));
+  ASSERT_EQ(string(s.str), string(" v12.0"));
 
   str_reset(&s);
 }
@@ -287,12 +287,12 @@ TEST(SvgPath, curve) {
   test_one_path(svg_path_curve_to_init(&path, 1, 2, 3, 4, 5, 6));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("C 1.0 2.0 3.0 4.0 5.0 6.0"));
+  ASSERT_EQ(string(s.str), string(" C1.0 2.0 3.0 4.0 5.0 6.0"));
 
   test_one_path(svg_path_curve_to_rel_init(&path, 1, 2, 3, 4, 5, 6));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("c 1.0 2.0 3.0 4.0 5.0 6.0"));
+  ASSERT_EQ(string(s.str), string(" c1.0 2.0 3.0 4.0 5.0 6.0"));
   str_reset(&s);
 }
 
@@ -303,12 +303,12 @@ TEST(SvgPath, scurve) {
   test_one_path(svg_path_scurve_to_init(&path, 1, 2, 3, 4));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("S 1.0 2.0 3.0 4.0"));
+  ASSERT_EQ(string(s.str), string(" S1.0 2.0 3.0 4.0"));
 
   test_one_path(svg_path_scurve_to_rel_init(&path, 1, 2, 3, 4));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("s 1.0 2.0 3.0 4.0"));
+  ASSERT_EQ(string(s.str), string(" s1.0 2.0 3.0 4.0"));
 
   str_reset(&s);
 }
@@ -320,12 +320,12 @@ TEST(SvgPath, qcurve) {
   test_one_path(svg_path_qcurve_to_init(&path, 1, 2, 3, 4));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("Q 1.0 2.0 3.0 4.0"));
+  ASSERT_EQ(string(s.str), string(" Q1.0 2.0 3.0 4.0"));
 
   test_one_path(svg_path_qcurve_to_rel_init(&path, 1, 2, 3, 4));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("q 1.0 2.0 3.0 4.0"));
+  ASSERT_EQ(string(s.str), string(" q1.0 2.0 3.0 4.0"));
 
   str_reset(&s);
 }
@@ -337,12 +337,12 @@ TEST(SvgPath, tcurve) {
   test_one_path(svg_path_tcurve_to_init(&path, 1, 2));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("T 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" T1.0 2.0"));
 
   test_one_path(svg_path_tcurve_to_rel_init(&path, 1, 2));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("t 1.0 2.0"));
+  ASSERT_EQ(string(s.str), string(" t1.0 2.0"));
 
   str_reset(&s);
 }
@@ -354,12 +354,12 @@ TEST(SvgPath, arc) {
   test_one_path(svg_path_arc_init(&path, 1, 2, 3, 1, 1, 6, 7));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("A 1.0 2.0 3.0 1 1 6.0 7.0"));
+  ASSERT_EQ(string(s.str), string(" A1.0 2.0 3.0 1 1 6.0 7.0"));
 
   test_one_path(svg_path_arc_rel_init(&path, 1, 2, 3, 1, 1, 6, 7));
   str_set(&s, "");
   bsvg_to_svg_path(&s, (svg_path_t*)&path);
-  ASSERT_EQ(string(s.str), string("a 1.0 2.0 3.0 1 1 6.0 7.0"));
+  ASSERT_EQ(string(s.str), string(" a1.0 2.0 3.0 1 1 6.0 7.0"));
 
   str_reset(&s);
 }

@@ -64,3 +64,9 @@ ret_t bsvg_visit(bsvg_t* svg, void* ctx, tk_visit_t on_shape, tk_visit_t on_path
 
   return RET_OK;
 }
+
+const svg_shape_t* bsvg_get_first_shape(bsvg_t* svg) {
+  return_value_if_fail(svg != NULL, NULL);
+
+  return (const svg_shape_t*)((const uint8_t*)(svg->data) + sizeof(bsvg_header_t));
+}

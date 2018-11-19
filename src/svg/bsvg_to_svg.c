@@ -35,100 +35,100 @@ ret_t bsvg_to_svg_path(str_t* str, const svg_path_t* path) {
   switch (path->type) {
     case SVG_PATH_M: {
       const svg_path_move_t* p = (const svg_path_move_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "M %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " M%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_M_REL: {
       const svg_path_move_t* p = (const svg_path_move_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "m %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " m%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_L: {
       const svg_path_line_t* p = (const svg_path_line_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "L %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " L%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_L_REL: {
       const svg_path_line_t* p = (const svg_path_line_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "l %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " l%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_H: {
       const svg_path_hline_t* p = (const svg_path_hline_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "H %.1f", p->x);
+      tk_snprintf(buff, sizeof(buff) - 1, " H%.1f", p->x);
       break;
     }
     case SVG_PATH_H_REL: {
       const svg_path_hline_t* p = (const svg_path_hline_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "h %.1f", p->x);
+      tk_snprintf(buff, sizeof(buff) - 1, " h%.1f", p->x);
       break;
     }
     case SVG_PATH_V: {
       const svg_path_vline_t* p = (const svg_path_vline_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "V %.1f", p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " V%.1f", p->y);
       break;
     }
     case SVG_PATH_V_REL: {
       const svg_path_vline_t* p = (const svg_path_vline_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "v %.1f", p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " v%.1f", p->y);
       break;
     }
     case SVG_PATH_C: {
       const svg_path_curve_to_t* p = (const svg_path_curve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "C %.1f %.1f %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x2,
+      tk_snprintf(buff, sizeof(buff) - 1, " C%.1f %.1f %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x2,
                   p->y2, p->x, p->y);
       break;
     }
     case SVG_PATH_C_REL: {
       const svg_path_curve_to_t* p = (const svg_path_curve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "c %.1f %.1f %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x2,
+      tk_snprintf(buff, sizeof(buff) - 1, " c%.1f %.1f %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x2,
                   p->y2, p->x, p->y);
       break;
     }
     case SVG_PATH_S: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "S %.1f %.1f %.1f %.1f", p->x2, p->y2, p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " S%.1f %.1f %.1f %.1f", p->x2, p->y2, p->x, p->y);
       break;
     }
     case SVG_PATH_S_REL: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "s %.1f %.1f %.1f %.1f", p->x2, p->y2, p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " s%.1f %.1f %.1f %.1f", p->x2, p->y2, p->x, p->y);
       break;
     }
     case SVG_PATH_Q: {
       const svg_path_qcurve_to_t* p = (const svg_path_qcurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "Q %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " Q%.1f %.1f %.1f %.1f", p->x1, p->y1, p->x, p->y);
       break;
     }
     case SVG_PATH_Q_REL: {
       const svg_path_qcurve_to_t* p = (const svg_path_qcurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "q %.1f %.1f %.1f %.1f", p->x1, p->y1, p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " q%.1f %.1f %.1f %.1f", p->x1, p->y1, p->x, p->y);
       break;
     }
     case SVG_PATH_T: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "T %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " T%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_T_REL: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "t %.1f %.1f", p->x, p->y);
+      tk_snprintf(buff, sizeof(buff) - 1, " t%.1f %.1f", p->x, p->y);
       break;
     }
     case SVG_PATH_A: {
       const svg_path_arc_t* p = (const svg_path_arc_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "A %.1f %.1f %.1f %d %d %.1f %.1f", p->rx, p->ry,
+      tk_snprintf(buff, sizeof(buff) - 1, " A%.1f %.1f %.1f %d %d %.1f %.1f", p->rx, p->ry,
                   p->rotation, p->large_arc, p->sweep, p->x, p->y);
       break;
     }
     case SVG_PATH_A_REL: {
       const svg_path_arc_t* p = (const svg_path_arc_t*)path;
-      tk_snprintf(buff, sizeof(buff) - 1, "a %.1f %.1f %.1f %d %d %.1f %.1f", p->rx, p->ry,
+      tk_snprintf(buff, sizeof(buff) - 1, " a%.1f %.1f %.1f %d %d %.1f %.1f", p->rx, p->ry,
                   p->rotation, p->large_arc, p->sweep, p->x, p->y);
       break;
     }
     case SVG_PATH_Z: {
-      tk_snprintf(buff, sizeof(buff) - 1, "Z");
+      tk_snprintf(buff, sizeof(buff) - 1, "z");
       break;
     }
     case SVG_PATH_NULL:
@@ -267,9 +267,12 @@ static ret_t bsvg_to_svg_on_path(void* ctx, const void* data) {
   ctx_info_t* info = (ctx_info_t*)ctx;
   const svg_path_t* path = (const svg_path_t*)data;
 
-  bsvg_to_svg_path(info->str, path);
-  str_append_char(info->str, '\"');
-  bsvg_to_svg_shape_end(info->str, info->shape);
+  if (path->type == SVG_PATH_NULL) {
+    str_append_char(info->str, '\"');
+    bsvg_to_svg_shape_end(info->str, info->shape);
+  } else {
+    bsvg_to_svg_path(info->str, path);
+  }
 
   return RET_OK;
 }

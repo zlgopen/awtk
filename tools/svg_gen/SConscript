@@ -1,0 +1,13 @@
+import os
+import sys
+
+env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+env['LIBS'] = ['theme_gen', 'common'] + env['LIBS'];
+
+env.Program(os.path.join(BIN_DIR, 'bsvggen'), ['bsvg_gen.cc'])
+env.Program(os.path.join(BIN_DIR, 'bsvgdump'), ['bsvg_dump.cc'])
+
+
+
