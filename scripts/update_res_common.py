@@ -106,7 +106,7 @@ def gen_res_svg():
     raw=copy.copy(f);
     basename=os.path.basename(inc);
     inc=joinPath(OUTPUT_DIR, 'images/'+basename);
-    inc=inc.replace('.svg', '.data')
+    inc=inc.replace('.svg', '.res')
     bin=bin.replace('.svg', '.bsvg')
     svggen(raw, inc, bin)
 

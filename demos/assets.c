@@ -88,8 +88,10 @@
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #ifdef WITH_STB_IMAGE
+#include "assets/inc/images/pointer.res"
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
+#include "assets/inc/images/girl.res"
 #include "assets/inc/images/shift.res"
 #include "assets/inc/images/ani7.res"
 #include "assets/inc/images/ania.res"
@@ -103,6 +105,7 @@
 #include "assets/inc/images/ani4.res"
 #include "assets/inc/images/anib.res"
 #include "assets/inc/images/me_active.res"
+#include "assets/inc/images/pointer_left.res"
 #include "assets/inc/images/arrow_up_n.res"
 #include "assets/inc/images/left_on.res"
 #include "assets/inc/images/arrow_right_p.res"
@@ -138,6 +141,7 @@
 #include "assets/inc/images/red_btn_p.res"
 #include "assets/inc/images/middle_off.res"
 #include "assets/inc/images/arrow_down_n.res"
+#include "assets/inc/images/pointer_red.res"
 #include "assets/inc/images/green_btn_o.res"
 #include "assets/inc/images/green_btn_n.res"
 #include "assets/inc/images/muted.res"
@@ -150,26 +154,32 @@
 #include "assets/inc/images/play_p.res"
 #include "assets/inc/images/2.res"
 #include "assets/inc/images/slider_bg.res"
+#include "assets/inc/images/pointer_4.res"
 #include "assets/inc/images/right_on.res"
 #include "assets/inc/images/guage_pointer.res"
+#include "assets/inc/images/boy.res"
 #include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/progress_circle.res"
 #include "assets/inc/images/red_btn_o.res"
 #include "assets/inc/images/slider_drag.res"
+#include "assets/inc/images/pointer_3.res"
+#include "assets/inc/images/pointer_2.res"
 #include "assets/inc/images/unchecked.res"
 #include "assets/inc/images/red_btn_n.res"
 #include "assets/inc/images/arrow_down_p.res"
 #include "assets/inc/images/slider_v_bg.res"
 #include "assets/inc/images/warn.res"
 #include "assets/inc/images/green_btn_p.res"
+#include "assets/inc/images/pointer_1.res"
 #include "assets/inc/images/switch.res"
 #include "assets/inc/images/radio_unchecked.res"
 #include "assets/inc/images/clock_bg.res"
 #include "assets/inc/images/clock_minute.res"
 #include "assets/inc/images/cross.res"
 #include "assets/inc/images/clock.res"
+#include "assets/inc/images/language.res"
 #include "assets/inc/images/find.res"
 #include "assets/inc/images/ani9.res"
 #include "assets/inc/images/arrow_up_p.res"
@@ -182,11 +192,11 @@
 #include "assets/inc/images/logo.res"
 #include "assets/inc/images/slider_drag_p.res"
 #include "assets/inc/images/backspace.res"
+#include "assets/inc/images/pointer_big.res"
 #include "assets/inc/images/arrow_left_p.res"
 #include "assets/inc/images/clock_hour.res"
 #else
 #include "assets/inc/images/arrow_right_o.data"
-#include "assets/inc/images/pointer_4.data"
 #include "assets/inc/images/slider_bg.data"
 #include "assets/inc/images/ani3.data"
 #include "assets/inc/images/progress_circle.data"
@@ -219,16 +229,12 @@
 #include "assets/inc/images/ani9.data"
 #include "assets/inc/images/anib.data"
 #include "assets/inc/images/arrow_up_o.data"
-#include "assets/inc/images/boy.data"
-#include "assets/inc/images/pointer_2.data"
 #include "assets/inc/images/clock.data"
 #include "assets/inc/images/empty.data"
 #include "assets/inc/images/ani5.data"
 #include "assets/inc/images/ani4.data"
 #include "assets/inc/images/left_off.data"
 #include "assets/inc/images/radio_unchecked.data"
-#include "assets/inc/images/language.data"
-#include "assets/inc/images/pointer_3.data"
 #include "assets/inc/images/rgba.data"
 #include "assets/inc/images/shifton.data"
 #include "assets/inc/images/arrow_up_n.data"
@@ -253,13 +259,9 @@
 #include "assets/inc/images/red_btn_p.data"
 #include "assets/inc/images/me.data"
 #include "assets/inc/images/arrow_down_p.data"
-#include "assets/inc/images/pointer_left.data"
 #include "assets/inc/images/warn.data"
 #include "assets/inc/images/contact_active.data"
-#include "assets/inc/images/pointer_red.data"
 #include "assets/inc/images/slider_drag_o.data"
-#include "assets/inc/images/pointer_1.data"
-#include "assets/inc/images/pointer.data"
 #include "assets/inc/images/ani6.data"
 #include "assets/inc/images/message.data"
 #include "assets/inc/images/edit_clear_o.data"
@@ -270,7 +272,6 @@
 #include "assets/inc/images/2.data"
 #include "assets/inc/images/check.data"
 #include "assets/inc/images/middle_on.data"
-#include "assets/inc/images/pointer_big.data"
 #include "assets/inc/images/arrow_down_o.data"
 #include "assets/inc/images/radio_checked.data"
 #include "assets/inc/images/red_btn_o.data"
@@ -291,7 +292,6 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#include "assets/inc/images/girl.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
@@ -384,7 +384,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, strings_zh_CN);
   assets_manager_add(rm, strings_en_US);
   assets_manager_add(rm, image_arrow_right_o);
-  assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_slider_bg);
   assets_manager_add(rm, image_ani3);
   assets_manager_add(rm, image_progress_circle);
@@ -417,16 +416,12 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_ani9);
   assets_manager_add(rm, image_anib);
   assets_manager_add(rm, image_arrow_up_o);
-  assets_manager_add(rm, image_boy);
-  assets_manager_add(rm, image_pointer_2);
   assets_manager_add(rm, image_clock);
   assets_manager_add(rm, image_empty);
   assets_manager_add(rm, image_ani5);
   assets_manager_add(rm, image_ani4);
   assets_manager_add(rm, image_left_off);
   assets_manager_add(rm, image_radio_unchecked);
-  assets_manager_add(rm, image_language);
-  assets_manager_add(rm, image_pointer_3);
   assets_manager_add(rm, image_rgba);
   assets_manager_add(rm, image_shifton);
   assets_manager_add(rm, image_arrow_up_n);
@@ -451,13 +446,9 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_red_btn_p);
   assets_manager_add(rm, image_me);
   assets_manager_add(rm, image_arrow_down_p);
-  assets_manager_add(rm, image_pointer_left);
   assets_manager_add(rm, image_warn);
   assets_manager_add(rm, image_contact_active);
-  assets_manager_add(rm, image_pointer_red);
   assets_manager_add(rm, image_slider_drag_o);
-  assets_manager_add(rm, image_pointer_1);
-  assets_manager_add(rm, image_pointer);
   assets_manager_add(rm, image_ani6);
   assets_manager_add(rm, image_message);
   assets_manager_add(rm, image_edit_clear_o);
@@ -468,7 +459,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_2);
   assets_manager_add(rm, image_check);
   assets_manager_add(rm, image_middle_on);
-  assets_manager_add(rm, image_pointer_big);
   assets_manager_add(rm, image_arrow_down_o);
   assets_manager_add(rm, image_radio_checked);
   assets_manager_add(rm, image_red_btn_o);
@@ -489,7 +479,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_3);
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
-  assets_manager_add(rm, image_girl);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);

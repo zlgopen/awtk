@@ -209,10 +209,6 @@ static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, uint32_t n
   uint32_t i = 0;
   return_value_if_fail(c != NULL && str != NULL && c->font != NULL, 0);
 
-  if (nr < 0) {
-    nr = wcslen(str);
-  }
-
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (chr == ' ') {
@@ -475,10 +471,6 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
   xy_t left = x;
   uint32_t start_time = time_now_ms();
   uint16_t font_size = c->font_size;
-
-  if (nr < 0) {
-    nr = wcslen(str);
-  }
 
   y -= font_size * 1 / 3;
   for (i = 0; i < nr; i++) {
