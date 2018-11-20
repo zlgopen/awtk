@@ -62,10 +62,8 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 
 static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* temp_str) {
   int32_t i = 0;
-  float_t cw = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
-  wh_t w = widget->w - edit->left_margin - edit->right_margin;
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
@@ -171,11 +169,9 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   wstr_t text;
-  uint32_t text_w = 0;
   edit_t* edit = EDIT(widget);
   style_t* style = widget->astyle;
   wchar_t temp_str[TEMP_STR_LEN + 1];
-  color_t trans = color_init(0, 0, 0, 0);
   uint8_t left_margin = edit->left_margin;
   uint8_t right_margin = edit->right_margin;
   uint8_t top_margin = edit->top_margin;
@@ -1069,7 +1065,13 @@ ret_t edit_dec(edit_t* edit) {
 
 ret_t edit_clear(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
+
   widget->text.size = 0;
+  edit->selected_start = 0;
+  edit->selected_end = 0;
+  edit->visible_start = 0;
+  edit->visible_end = 0;
+  edit_set_cursor_pos(widget, 0, 0);
 
   return widget_invalidate_force(widget);
 }
@@ -1089,7 +1091,7 @@ static ret_t edit_on_clear(void* ctx, event_t* e) {
   return edit_clear(EDIT(ctx));
 }
 
-static ret_t edit_hook_button(void* ctx, void* iter) {
+static ret_t edit_hook_button(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* edit = WIDGET(ctx);
 
