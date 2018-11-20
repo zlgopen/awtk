@@ -146,10 +146,14 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (guage_pointer->bsvg_asset != NULL) {
     bsvg_t bsvg;
+    style_t* style = widget->astyle;
+    color_t black = color_init(0, 0, 0, 0xff);
+    color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, black);
+    color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
     const asset_info_t* asset = guage_pointer->bsvg_asset;
-    vgcanvas_set_fill_color(vg, color_init(0, 0, 0, 0xff));
-    vgcanvas_set_stroke_color(vg, color_init(0, 0, 0, 0xff));
 
+    vgcanvas_set_fill_color(vg, bg);
+    vgcanvas_set_stroke_color(vg, fg);
     bsvg_draw(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size), vg);
   } else if (guage_pointer->image != NULL &&
              widget_load_image(widget, guage_pointer->image, &bitmap) == RET_OK) {
