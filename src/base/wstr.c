@@ -166,7 +166,7 @@ ret_t wstr_remove(wstr_t* str, uint32_t offset, uint32_t nr) {
 
   if (nr > 0) {
     p = str->str;
-    memmove(p + offset, p + offset + nr, nr * sizeof(wchar_t));
+    memmove(p + offset, p + offset + nr, (str->size - offset - nr) * sizeof(wchar_t));
     str->size -= nr;
     str->str[str->size] = 0;
   }
@@ -200,7 +200,7 @@ ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr
 
 ret_t wstr_push(wstr_t* str, const wchar_t c) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(wstr_extend(str, str->size + 1) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(wstr_extend(str, str->size + 2) == RET_OK, RET_BAD_PARAMS);
   str->str[str->size++] = c;
   str->str[str->size] = '\0';
 
