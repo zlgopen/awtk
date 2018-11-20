@@ -217,6 +217,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
     if (o == LCD_ORIENTATION_90 && lcd->draw_mode == LCD_DRAW_ANIMATION) {
       fb.w = lcd->h;
       fb.h = lcd->w;
+      fb.line_length = fb.w * bitmap_get_bpp_of_format(LCD_FORMAT);
 
       r.w = src->h;
       r.h = src->w;

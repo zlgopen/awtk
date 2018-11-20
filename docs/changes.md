@@ -4,6 +4,7 @@
   * 合并BUG #25的补丁。
   * bsvg\_draw(基本功能可用, A/S/T路径不支持)
   * guage\_pointer支持bsvg图片。
+  * 修改屏幕旋转时，窗口动画混乱的BUG。
 
 * 2018/11/16-19
   * SVG解析器和BSVG(二进制格式的SVG)解析器。

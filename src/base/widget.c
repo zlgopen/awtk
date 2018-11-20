@@ -1650,7 +1650,8 @@ ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL && widget != NULL && asset != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_ASSETS_MANAGER, &v) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_ASSETS_MANAGER, &v) == RET_OK,
+                       RET_BAD_PARAMS);
 
   am = (assets_manager_t*)value_pointer(&v);
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
