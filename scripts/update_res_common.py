@@ -78,6 +78,10 @@ def imagegen(raw, inc):
   inc=inc.replace('.data', '.res')
   resgen(raw, inc)
 
+def svggen(raw, inc, bin):
+  execCmd(toExe('bsvggen') + ' ' + raw + ' ' + inc)
+  execCmd(toExe('bsvggen') + ' ' + raw + ' ' + bin + ' bin')
+
 def xml_to_ui(raw, inc):
   execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
 
@@ -95,7 +99,18 @@ def gen_res_all_style():
     bin=bin.replace('.xml', '.bin')
     themegen_bin(raw, bin)
 
-def gen_res_all_image(): 
+def gen_res_svg(): 
+  for f in glob.glob(joinPath(INPUT_DIR, 'images/svg/*.*')):
+    inc=copy.copy(f);
+    bin=copy.copy(f);
+    raw=copy.copy(f);
+    basename=os.path.basename(inc);
+    inc=joinPath(OUTPUT_DIR, 'images/'+basename);
+    inc=inc.replace('.svg', '.data')
+    bin=bin.replace('.svg', '.bsvg')
+    svggen(raw, inc, bin)
+
+def gen_res_png_jpg(): 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);
     raw=copy.copy(f);
@@ -104,6 +119,10 @@ def gen_res_all_image():
     inc=inc.replace('.png', '.data')
     inc=inc.replace('.jpg', '.data')
     imagegen(raw, inc)
+
+def gen_res_all_image(): 
+    gen_res_svg()
+    gen_res_png_jpg()
 
 def gen_res_all_ui():
   for f in glob.glob(joinPath(INPUT_DIR, 'ui/*.xml')):
@@ -291,6 +310,10 @@ def updateRes():
 def cleanRes():
   print("==================================================================")
   resFiles=glob.glob(joinPath(INPUT_DIR, '*/*.bin')) + glob.glob(joinPath(INPUT_DIR, '*/*/*.bin'))
+  for f in resFiles:
+    print("remove: " + f)
+    os.remove(f)
+  resFiles=glob.glob(joinPath(INPUT_DIR, '*/*.bin')) + glob.glob(joinPath(INPUT_DIR, '*/*/*.bsvg'))
   for f in resFiles:
     print("remove: " + f)
     os.remove(f)
