@@ -941,7 +941,7 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
   }
 
   e.c = c;
-  e.e = event_init(EVT_AFTER_PAINT, widget);
+  e.e = event_init(EVT_BEFORE_PAINT, widget);
   widget_dispatch(widget, (event_t*)(&e));
 
   return ret;
