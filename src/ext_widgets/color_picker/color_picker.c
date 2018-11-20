@@ -56,7 +56,7 @@ static const widget_vtable_t s_color_picker_vtable = {.size = sizeof(color_picke
                                                       .get_prop = color_picker_get_prop,
                                                       .create = color_picker_create};
 
-static ret_t color_picker_update_child(void* ctx, void* iter) {
+static ret_t color_picker_update_child(void* ctx, const void* iter) {
   float h = 0;
   float s = 0;
   float v = 0;
@@ -294,7 +294,7 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t color_picker_hook_children(void* ctx, void* iter) {
+static ret_t color_picker_hook_children(void* ctx, const void* iter) {
   widget_t* child = WIDGET(iter);
   const char* name = child->name;
   const char* type = child->vt->type;

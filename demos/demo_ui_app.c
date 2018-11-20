@@ -192,7 +192,7 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t install_one(void* ctx, void* iter) {
+static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
 
   if (widget->name != NULL) {

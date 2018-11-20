@@ -72,7 +72,7 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha);
 ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size);
 ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v);
 
-float_t canvas_measure_text(canvas_t* c, wchar_t* str, int32_t nr);
+float_t canvas_measure_text(canvas_t* c, wchar_t* str, uint32_t nr);
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 
@@ -88,8 +88,8 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
-ret_t canvas_draw_text(canvas_t* c, wchar_t* str, int32_t nr, xy_t x, xy_t y);
-ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, int32_t nr, const rect_t* r);
+ret_t canvas_draw_text(canvas_t* c, wchar_t* str, uint32_t nr, xy_t x, xy_t y);
+ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, uint32_t nr, const rect_t* r);
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);

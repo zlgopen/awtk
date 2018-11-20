@@ -52,8 +52,6 @@ static int image_to_rgb565(const char* ifilename, const char* ofilename) {
 }
 
 int main(int argc, char* argv[]) {
-  int ow = 0;
-  int oh = 0;
   const char* ifilename = argv[1];
   const char* ofilename = argv[2];
 
