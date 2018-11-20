@@ -48,6 +48,9 @@ typedef struct _guage_pointer_t {
    * 指针图片。图片须垂直向上，图片的中心点为旋转方向。
    */
   char* image;
+
+  /*private*/
+  const asset_info_t* bsvg_asset;
 } guage_pointer_t;
 
 /**

@@ -22,9 +22,11 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/matrix.h"
+#include "svg/bsvg.h"
 #include "base/widget_vtable.h"
 #include "guage/guage_pointer.h"
 #include "base/image_manager.h"
+#include "base/assets_manager.h"
 
 ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
@@ -47,6 +49,15 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   guage_pointer->image = tk_str_copy(guage_pointer->image, image);
+  if (guage_pointer->image != NULL) {
+    const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
+
+    if (asset != NULL) {
+      if (asset->subtype == ASSET_TYPE_IMAGE_BSVG) {
+        guage_pointer->bsvg_asset = asset;
+      }
+    }
+  }
 
   return RET_OK;
 }
@@ -82,6 +93,9 @@ static ret_t guage_pointer_destroy(widget_t* widget) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
 
   TKMEM_FREE(guage_pointer->image);
+  if (guage_pointer->bsvg_asset != NULL) {
+    widget_unload_asset(widget, guage_pointer->bsvg_asset);
+  }
 
   return RET_OK;
 }
@@ -130,14 +144,22 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   vgcanvas_rotate(vg, rotation);
   vgcanvas_translate(vg, -anchor_x, -anchor_y);
 
-  if (guage_pointer->image != NULL &&
-      widget_load_image(widget, guage_pointer->image, &bitmap) == RET_OK) {
+  if (guage_pointer->bsvg_asset != NULL) {
+    bsvg_t bsvg;
+    const asset_info_t* asset = guage_pointer->bsvg_asset;
+    vgcanvas_set_fill_color(vg, color_init(0, 0, 0, 0xff));
+    vgcanvas_set_stroke_color(vg, color_init(0, 0, 0, 0xff));
+
+    bsvg_draw(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size), vg);
+  } else if (guage_pointer->image != NULL &&
+             widget_load_image(widget, guage_pointer->image, &bitmap) == RET_OK) {
     float_t w = bitmap.w;
     float_t h = bitmap.h;
     vgcanvas_draw_image(vg, &bitmap, 0, 0, w, h, 0, 0, w, h);
   } else {
     guage_pointer_paint_default(widget, vg);
   }
+
   vgcanvas_restore(vg);
 
   return RET_OK;
