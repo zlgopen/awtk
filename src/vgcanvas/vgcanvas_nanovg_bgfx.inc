@@ -5,7 +5,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
   (void)h;
   (void)format;
   (void)data;
-  resetBGFX(w, h, 0);
+  resetBGFX(w * vg->ratio, h * vg->ratio, 0);
   return RET_OK;
 }
 
@@ -62,7 +62,6 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
   nvgluDeleteFramebuffer(handle);
-  resetBGFX(fbo->w, fbo->h, 0);
   arrayViewId[handle->viewId] = false;
   (void)vgcanvas;
   return RET_OK;

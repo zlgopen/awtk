@@ -57,9 +57,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.h = h;
   nanovg->base.vt = &vt;
   nanovg->base.ratio = (float)fw / (float)ww;
-  nanovg->base.ratio = 1;
   nanovg->sdl_window = (SDL_Window*)sdl_window;
-  nanovg->vg = nvgCreateBGFX(1, 0, w, h, nanovg->sdl_window);
+  nanovg->vg = nvgCreateBGFX(1, 0, fw, fh, nanovg->sdl_window);
 
   if (nanovg->vg == NULL) {
     assert(!"BGFX is not supported!");
