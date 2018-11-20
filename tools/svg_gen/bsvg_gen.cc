@@ -35,7 +35,8 @@ static ret_t bsvg_gen(const char* input_file, const char* output_file, bool_t bi
     if (bin) {
       write_file(output_file, out, out_size);
     } else {
-      output_res_c_source(output_file, ASSET_TYPE_DATA, 0, (uint8_t*)out, out_size);
+      output_res_c_source(output_file, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG, (uint8_t*)out,
+                          out_size);
     }
   }
 
