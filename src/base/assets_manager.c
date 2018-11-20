@@ -56,12 +56,12 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   return info;
 }
 
-static ret_t build_path(const char* res_root, char* path, uint32_t size, bool_t is_image,
+static ret_t build_path(const char* res_root, char* path, uint32_t size, bool_t ratio_sensitive,
                         const char* subpath, const char* name, const char* extname) {
   system_info_t* sysinfo = system_info();
   float_t dpr = sysinfo->device_pixel_ratio;
 
-  if (is_image) {
+  if (ratio_sensitive) {
     const char* ratio = "x1";
     if (dpr >= 3) {
       ratio = "x3";
@@ -145,6 +145,16 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_IMAGE_JPG, size, path, name);
+        /*not cache png file jpg data*/
+        return info;
+      }
+
+      return_value_if_fail(build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/images/svg",
+                                      name, ".bsvg") == RET_OK,
+                           NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_IMAGE_BSVG, size, path, name);
         /*not cache png file jpg data*/
         return info;
       }

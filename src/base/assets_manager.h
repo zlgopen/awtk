@@ -102,7 +102,8 @@ typedef enum _asset_image_type_t {
   ASSET_TYPE_IMAGE_BMP,
   ASSET_TYPE_IMAGE_PNG,
   ASSET_TYPE_IMAGE_JPG,
-  ASSET_TYPE_IMAGE_GIF
+  ASSET_TYPE_IMAGE_BSVG,
+  ASSET_TYPE_IMAGE_GIF /*not supported yet*/
 } asset_image_type_t;
 
 /**
