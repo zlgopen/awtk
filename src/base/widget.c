@@ -1618,7 +1618,8 @@ ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
   value_t v;
   image_manager_t* imm = NULL;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(win != NULL && widget != NULL && name != NULL && bitmap != NULL,
+                       RET_BAD_PARAMS);
 
   return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
                        RET_BAD_PARAMS);
@@ -1627,6 +1628,34 @@ ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   return image_manager_load(imm, name, bitmap);
+}
+
+const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name) {
+  value_t v;
+  assets_manager_t* am = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL && widget != NULL && name != NULL, NULL);
+
+  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_ASSETS_MANAGER, &v) == RET_OK, NULL);
+
+  am = (assets_manager_t*)value_pointer(&v);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+
+  return assets_manager_ref(am, type, name);
+}
+
+ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {
+  value_t v;
+  assets_manager_t* am = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL && widget != NULL && asset != NULL, NULL);
+
+  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_ASSETS_MANAGER, &v) == RET_OK, NULL);
+
+  am = (assets_manager_t*)value_pointer(&v);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+
+  return assets_manager_unref(am, asset);
 }
 
 const char* widget_get_type(widget_t* widget) {
