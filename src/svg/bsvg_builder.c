@@ -25,8 +25,12 @@ bsvg_builder_t* bsvg_builder_init(bsvg_builder_t* svg, uint32_t* buff, uint32_t 
   return_value_if_fail(svg != NULL && buff != NULL && size > BSVG_MIN_SIZE, NULL);
 
   svg->header = (bsvg_header_t*)buff;
-  svg->header->magic = BSVG_MAGIC;
+  memset(svg->header, 0x00, sizeof(bsvg_header_t));
+
   svg->header->version = 1;
+  svg->header->stroke_width = 1;
+  svg->header->magic = BSVG_MAGIC;
+
   svg->current_shape_type = SVG_SHAPE_NULL;
   wbuffer_init(&(svg->buff), (uint8_t*)buff, size);
   svg->buff.cursor = sizeof(bsvg_header_t);

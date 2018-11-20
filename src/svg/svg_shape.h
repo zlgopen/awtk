@@ -42,6 +42,9 @@ typedef struct _svg_shape_t {
   uint8_t line_cap;
   uint8_t line_join;
   uint8_t stroke_width;
+  uint8_t no_fill;
+  uint8_t no_stroke;
+  uint16_t reserved;
   color_t fill;
   color_t stroke;
 } svg_shape_t;

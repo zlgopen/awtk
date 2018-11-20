@@ -254,6 +254,9 @@ ret_t bsvg_to_svg_shape(str_t* str, const svg_shape_t* shape) {
       str_append(str, "<path d=\"");
       return RET_OK;
     }
+    case SVG_SHAPE_NULL: {
+      return RET_OK;
+    }
     default: {
       assert(!"not supported type");
       return RET_OK;

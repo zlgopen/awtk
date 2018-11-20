@@ -70,8 +70,12 @@ static ret_t svg_on_sub_path(void* ctx, const void* data) {
   return RET_OK;
 }
 
-static void svg_init_shape(svg_shape_t* shape, const char** attrs) {
+static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char** attrs) {
   uint32_t i = 0;
+  bsvg_header_t* header = svg->header;
+
+  shape->fill = header->fill;
+  shape->stroke = header->stroke;
 
   while (attrs[i] != NULL) {
     const char* k = attrs[i];
@@ -83,9 +87,17 @@ static void svg_init_shape(svg_shape_t* shape, const char** attrs) {
     } else if (tk_str_eq(k, "stroke-width")) {
       shape->stroke_width = tk_atoi(v);
     } else if (tk_str_eq(k, "stroke")) {
-      shape->stroke = color_parse_simple(v);
+      if (tk_str_eq(v, "transparent")) {
+        shape->no_stroke = TRUE;
+      } else {
+        shape->stroke = color_parse_simple(v);
+      }
     } else if (tk_str_eq(k, "fill")) {
-      shape->fill = color_parse_simple(v);
+      if (tk_str_eq(v, "transparent")) {
+        shape->no_fill = TRUE;
+      } else {
+        shape->fill = color_parse_simple(v);
+      }
     }
 
     i += 2;
@@ -98,7 +110,7 @@ static void svg_on_shape_path(bsvg_builder_t* svg, const char** attrs) {
   uint32_t i = 0;
   svg_shape_path_t s;
   svg_shape_path_init(&s);
-  svg_init_shape((svg_shape_t*)&s, attrs);
+  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
 
   while (attrs[i] != NULL) {
@@ -137,7 +149,7 @@ static void svg_on_shape_line(bsvg_builder_t* svg, const char** attrs) {
   }
 
   svg_shape_line_init(&s, x1, y1, x2, y2);
-  svg_init_shape((svg_shape_t*)&s, attrs);
+  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
 
   return;
@@ -170,7 +182,7 @@ static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
   }
 
   svg_shape_rect_init(&s, x, y, w, h, r);
-  svg_init_shape((svg_shape_t*)&s, attrs);
+  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
 
   return;
@@ -197,7 +209,7 @@ static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
   }
 
   svg_shape_circle_init(&s, x, y, r);
-  svg_init_shape((svg_shape_t*)&s, attrs);
+  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
 
   return;
@@ -227,7 +239,7 @@ static void svg_on_shape_ellipse(bsvg_builder_t* svg, const char** attrs) {
   }
 
   svg_shape_ellipse_init(&s, x, y, rx, ry);
-  svg_init_shape((svg_shape_t*)&s, attrs);
+  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
   bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
 
   return;
@@ -326,7 +338,7 @@ static void svg_on_shape_polygon(bsvg_builder_t* svg, const char** attrs) {
   }
 
   if (s != NULL) {
-    svg_init_shape((svg_shape_t*)s, attrs);
+    svg_init_shape(svg, (svg_shape_t*)s, attrs);
     bsvg_builder_add_shape(svg, (svg_shape_t*)s);
     TKMEM_FREE(s);
   }
@@ -355,7 +367,7 @@ static void svg_on_shape_polyline(bsvg_builder_t* svg, const char** attrs) {
   }
 
   if (s != NULL) {
-    svg_init_shape((svg_shape_t*)s, attrs);
+    svg_init_shape(svg, (svg_shape_t*)s, attrs);
     bsvg_builder_add_shape(svg, (svg_shape_t*)s);
     TKMEM_FREE(s);
   }
@@ -416,6 +428,7 @@ ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_
   XmlParser* parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(&b, buff, buff_size));
   xml_parser_parse(parser, xml, size);
+  bsvg_builder_done(&(b.bsvg));
 
   *out = buff;
   *out_size = b.bsvg.buff.cursor;
