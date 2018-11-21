@@ -272,10 +272,11 @@ static ret_t window_manager_paint_cursor(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
-  return_value_if_fail(image_manager_load(image_manager(), wm->cursor, &bitmap) == RET_OK,
-                       RET_BAD_PARAMS);
-
-  canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
+  if (wm->cursor != NULL) {
+    return_value_if_fail(image_manager_load(image_manager(), wm->cursor, &bitmap) == RET_OK,
+                         RET_BAD_PARAMS);
+    canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
+  }
 
   return RET_OK;
 }
@@ -313,23 +314,26 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   window_manager_inc_fps(widget);
 
-  if ((dr->w && dr->h) || wm->show_fps) {
+  if (wm->show_fps) {
+    rect_t fps_rect = rect_init(0, 0, 60, 30);
+    widget_invalidate(widget, &fps_rect);
+  }
+
+  if (dr->w && dr->h) {
     uint32_t start_time = time_now_ms();
     rect_t r = window_manager_calc_dirty_rect(wm);
 
-    if ((r.w > 0 && r.h > 0) || wm->show_fps) {
+    if (r.w > 0 && r.h > 0) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
       ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
-      if (wm->cursor != NULL) {
-        window_manager_paint_cursor(widget, c);
-      }
+      window_manager_paint_cursor(widget, c);
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
+      wm->last_dirty_rect = wm->dirty_rect;
       /*
         log_debug("%s x=%d y=%d w=%d h=%d cost=%d\n", __FUNCTION__, (int)(r.x), (int)(r.y),
                 (int)(r.w), (int)(r.h), (int)wm->last_paint_cost);
       */
-      wm->last_dirty_rect = wm->dirty_rect;
     }
   }
 
