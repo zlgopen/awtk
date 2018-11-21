@@ -1180,9 +1180,9 @@ static ret_t canvas_draw_fps(canvas_t* c) {
 ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, uint32_t nr, const rect_t* r) {
   int x = 0;
   int y = 0;
-  uint32_t text_w = 0;
-  uint32_t baseline = 0;
-  uint32_t font_size = 0;
+  int32_t text_w = 0;
+  int32_t baseline = 0;
+  int32_t font_size = 0;
   return_value_if_fail(c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
 
   font_size = c->font_size;
