@@ -441,6 +441,11 @@ typedef enum _app_type_t {
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
 
+#if defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)
+#define WITH_NANOVG 1
+#define WITH_VGCANVAS 1
+#endif/*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
+
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
 
 #ifndef M_PI

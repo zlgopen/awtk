@@ -88,10 +88,8 @@
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #ifdef WITH_STB_IMAGE
-#include "assets/inc/images/pointer.res"
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
-#include "assets/inc/images/girl.res"
 #include "assets/inc/images/shift.res"
 #include "assets/inc/images/ani7.res"
 #include "assets/inc/images/ania.res"
@@ -105,7 +103,6 @@
 #include "assets/inc/images/ani4.res"
 #include "assets/inc/images/anib.res"
 #include "assets/inc/images/me_active.res"
-#include "assets/inc/images/pointer_left.res"
 #include "assets/inc/images/arrow_up_n.res"
 #include "assets/inc/images/left_on.res"
 #include "assets/inc/images/arrow_right_p.res"
@@ -141,7 +138,6 @@
 #include "assets/inc/images/red_btn_p.res"
 #include "assets/inc/images/middle_off.res"
 #include "assets/inc/images/arrow_down_n.res"
-#include "assets/inc/images/pointer_red.res"
 #include "assets/inc/images/green_btn_o.res"
 #include "assets/inc/images/green_btn_n.res"
 #include "assets/inc/images/muted.res"
@@ -154,32 +150,26 @@
 #include "assets/inc/images/play_p.res"
 #include "assets/inc/images/2.res"
 #include "assets/inc/images/slider_bg.res"
-#include "assets/inc/images/pointer_4.res"
 #include "assets/inc/images/right_on.res"
 #include "assets/inc/images/guage_pointer.res"
-#include "assets/inc/images/boy.res"
 #include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/progress_circle.res"
 #include "assets/inc/images/red_btn_o.res"
 #include "assets/inc/images/slider_drag.res"
-#include "assets/inc/images/pointer_3.res"
-#include "assets/inc/images/pointer_2.res"
 #include "assets/inc/images/unchecked.res"
 #include "assets/inc/images/red_btn_n.res"
 #include "assets/inc/images/arrow_down_p.res"
 #include "assets/inc/images/slider_v_bg.res"
 #include "assets/inc/images/warn.res"
 #include "assets/inc/images/green_btn_p.res"
-#include "assets/inc/images/pointer_1.res"
 #include "assets/inc/images/switch.res"
 #include "assets/inc/images/radio_unchecked.res"
 #include "assets/inc/images/clock_bg.res"
 #include "assets/inc/images/clock_minute.res"
 #include "assets/inc/images/cross.res"
 #include "assets/inc/images/clock.res"
-#include "assets/inc/images/language.res"
 #include "assets/inc/images/find.res"
 #include "assets/inc/images/ani9.res"
 #include "assets/inc/images/arrow_up_p.res"
@@ -192,7 +182,6 @@
 #include "assets/inc/images/logo.res"
 #include "assets/inc/images/slider_drag_p.res"
 #include "assets/inc/images/backspace.res"
-#include "assets/inc/images/pointer_big.res"
 #include "assets/inc/images/arrow_left_p.res"
 #include "assets/inc/images/clock_hour.res"
 #else
@@ -292,17 +281,30 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
+#ifdef WITH_VGCANVAS
+#include "assets/inc/images/pointer_4.bsvg"
+#include "assets/inc/images/pointer_2.bsvg"
+#include "assets/inc/images/boy.bsvg"
+#include "assets/inc/images/language.bsvg"
+#include "assets/inc/images/pointer_3.bsvg"
+#include "assets/inc/images/pointer_left.bsvg"
+#include "assets/inc/images/pointer_1.bsvg"
+#include "assets/inc/images/pointer.bsvg"
+#include "assets/inc/images/pointer_red.bsvg"
+#include "assets/inc/images/pointer_big.bsvg"
+#include "assets/inc/images/girl.bsvg"
+#endif/*WITH_VGCANVAS*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -494,6 +496,19 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_button);
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, font_default);
+#ifdef WITH_VGCANVAS
+  assets_manager_add(rm, image_pointer_4);
+  assets_manager_add(rm, image_pointer_2);
+  assets_manager_add(rm, image_boy);
+  assets_manager_add(rm, image_language);
+  assets_manager_add(rm, image_pointer_3);
+  assets_manager_add(rm, image_pointer_left);
+  assets_manager_add(rm, image_pointer_1);
+  assets_manager_add(rm, image_pointer);
+  assets_manager_add(rm, image_pointer_red);
+  assets_manager_add(rm, image_pointer_big);
+  assets_manager_add(rm, image_girl);
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();
