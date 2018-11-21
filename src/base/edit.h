@@ -16,6 +16,7 @@
  * History:
  * ================================================================
  * 2018-02-06 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-11-20 Li YaoShen  <liyaoshen@zlg.cn> 1.text selection; 2.cursor movable
  *
  */
 
@@ -136,6 +137,9 @@ typedef struct _edit_t {
   uint16_t selected_start;
   uint16_t selected_end;
 
+  int32_t cursor_pre;
+  int32_t cursor_pos;
+  xy_t offset_x;
   xy_t caret_x;
   bool_t caret_visible;
 

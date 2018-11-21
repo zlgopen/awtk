@@ -1,4 +1,37 @@
 # 最新动态
+* 2018/11/21
+  * 修改资源生成工具支持SVG。
+  * 修改slide\_view，增加一个拖动阀值，由该阀值和速度共同决定是否切换页面。
+  * 修改一些编译警告。
+
+* 2018/11/20
+  * 合并BUG #35的补丁。
+  * 合并BUG #25的补丁。
+  * bsvg\_draw(基本功能可用, A/S/T路径不支持)
+  * guage\_pointer支持bsvg图片。
+  * 修改屏幕旋转时，窗口动画混乱的BUG。
+
+* 2018/11/16-19
+  * SVG解析器和BSVG(二进制格式的SVG)解析器。
+  * bsvggen/bsvgdump等工具。
+
+* 2018/11/16
+  * 修改FPS的颜色。
+
+* 2018/11/15
+  * 同步bgfx的代码。
+  * 修改SConstruct定义SDL2。
+  * 修改scroll\_view  #issues/30
+  * 修改dirty\_rect的BUG(增加x\_offset/y\_offset引起的)。
+  * 完善guage，支持用颜色绘制指针。
+
+* 2018/11/14
+  * 完善digit\_clock
+  * change  WITH\_NANOVG\_GL to WITH\_NANOVG\_GPU
+  * guage拆成表盘和表针两个控件。
+  * 新增加几个style：selected\_text\_color、selected\_text\_color和selected\_text\_color
+  * 修改资源生成工具的BUG。该BUG导致资源后面有4字节的随机数据(功能不影响正确性)
+
 * 2018/11/13
   * 修改agg/agge为nanovg后端时linecap的BUG。
 

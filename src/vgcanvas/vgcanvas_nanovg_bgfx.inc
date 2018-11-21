@@ -5,7 +5,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
   (void)h;
   (void)format;
   (void)data;
-  resetBGFX(w, h, 0);
+  resetBGFX(w * vg->ratio, h * vg->ratio, 0);
   return RET_OK;
 }
 
@@ -29,19 +29,60 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+enum { BEGIN_IDX = 1, MAX_VIEW_COUNT = 256 };
+static bool_t arrayViewId[MAX_VIEW_COUNT] = {0};
+
+static int32_t getFreeViewId(void) {
+  int32_t index = BEGIN_IDX;
+  for (int32_t i = BEGIN_IDX; i < MAX_VIEW_COUNT; ++i) {
+    if (!arrayViewId[i]) {
+      index = i;
+      arrayViewId[i] = true;
+      break;
+    }
+  }
+  return index;
+}
+
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGLUframebuffer_bgfx* handle = NULL;
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  handle = nvgluCreateFramebufferByViewId(vg, (int)(vgcanvas->w * vgcanvas->ratio),
+                                          (int)(vgcanvas->h * vgcanvas->ratio), 0, getFreeViewId());
+  return_value_if_fail(handle != NULL, RET_FAIL);
+  fbo->w = vgcanvas->w;
+  fbo->h = vgcanvas->h;
+  fbo->handle = handle;
+  fbo->id = handle->image;
+  fbo->ratio = vgcanvas->ratio;
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
+  nvgluDeleteFramebuffer(handle);
+  arrayViewId[handle->viewId] = false;
+  (void)vgcanvas;
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
+
+  nvgluBindFramebuffer(handle);
+  nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
+
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  nvgEndFrame(vg);
+  nvgluBindFramebuffer(NULL);
+
   return RET_OK;
 }
 

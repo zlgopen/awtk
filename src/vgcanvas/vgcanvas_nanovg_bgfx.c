@@ -41,18 +41,24 @@ typedef struct _vgcanvas_nanovg_t {
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* sdl_window) {
+  int ww = 0;
+  int wh = 0;
+  int fw = 0;
+  int fh = 0;
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
 
   (void)format;
   (void)stride;
+  SDL_GetWindowSize((SDL_Window*)sdl_window, &ww, &wh);
+  SDL_GL_GetDrawableSize((SDL_Window*)sdl_window, &fw, &fh);
 
   nanovg->base.w = w;
   nanovg->base.h = h;
   nanovg->base.vt = &vt;
-  nanovg->base.ratio = 1;
+  nanovg->base.ratio = (float)fw / (float)ww;
   nanovg->sdl_window = (SDL_Window*)sdl_window;
-  nanovg->vg = nvgCreateBGFX(1, 0, w, h, nanovg->sdl_window);
+  nanovg->vg = nvgCreateBGFX(1, 0, fw, fh, nanovg->sdl_window);
 
   if (nanovg->vg == NULL) {
     assert(!"BGFX is not supported!");

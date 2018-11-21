@@ -15,6 +15,7 @@ elif OS_NAME == 'Linux':
 
 env.Program(os.path.join(BIN_DIR, 'image_resize'), ["resize.c"])
 env.Program(os.path.join(BIN_DIR, 'image_info'), ["info.c"])
+env.Program(os.path.join(BIN_DIR, 'image_to_rgb565'), ["to_rgb565.c"])
 
 
 

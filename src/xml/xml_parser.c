@@ -46,6 +46,7 @@ static void xml_parser_parse_entity(XmlParser* thiz);
 static void xml_parser_parse_start_tag(XmlParser* thiz);
 static void xml_parser_parse_end_tag(XmlParser* thiz);
 static void xml_parser_parse_comment(XmlParser* thiz);
+static void xml_parser_parse_doctype(XmlParser* thiz);
 static void xml_parser_parse_pi(XmlParser* thiz);
 static void xml_parser_parse_text(XmlParser* thiz);
 static void xml_parser_reset_buffer(XmlParser* thiz);
@@ -71,6 +72,7 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
     STAT_PRE_COMMENT1,
     STAT_PRE_COMMENT2,
     STAT_COMMENT,
+    STAT_DOCTYPE,
     STAT_PROCESS_INSTRUCTION,
   } state = STAT_NONE;
 
@@ -126,6 +128,8 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
       case STAT_PRE_COMMENT1: {
         if (c == '-') {
           state = STAT_PRE_COMMENT2;
+        } else if (c == 'D' || c == 'd') {
+          state = STAT_DOCTYPE;
         } else {
           xml_builder_on_error(thiz->builder, 0, 0, "expected \'-\'");
         }
@@ -140,6 +144,11 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
       }
       case STAT_COMMENT: {
         xml_parser_parse_comment(thiz);
+        state = STAT_NONE;
+        break;
+      }
+      case STAT_DOCTYPE: {
+        xml_parser_parse_doctype(thiz);
         state = STAT_NONE;
         break;
       }
@@ -314,6 +323,17 @@ static void xml_parser_parse_end_tag(XmlParser* thiz) {
       tag_name = thiz->buffer + xml_parser_strdup(thiz, start, thiz->read_ptr - start);
       xml_builder_on_end(thiz->builder, tag_name);
 
+      break;
+    }
+  }
+
+  return;
+}
+
+static void xml_parser_parse_doctype(XmlParser* thiz) {
+  for (; *thiz->read_ptr != '\0'; thiz->read_ptr++) {
+    char c = *thiz->read_ptr;
+    if (c == '>') {
       break;
     }
   }

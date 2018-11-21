@@ -150,7 +150,7 @@ static ret_t keyboard_on_action_info(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t keyboard_hook_buttons(void* ctx, void* iter) {
+static ret_t keyboard_hook_buttons(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   input_method_t* im = input_method();
   keyboard_t* keyboard = KEYBOARD(ctx);

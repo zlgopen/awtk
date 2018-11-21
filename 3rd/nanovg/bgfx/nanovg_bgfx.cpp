@@ -1254,7 +1254,7 @@ bgfx::TextureHandle nvglImageHandle(NVGcontext* _ctx, int32_t _image)
 	return tex->id;
 }
 
-NVGLUframebuffer_bgfx* nvgluCreateFramebuffer(NVGcontext* ctx, int32_t width, int32_t height, int32_t imageFlags, bgfx::ViewId viewId)
+NVGLUframebuffer_bgfx* nvgluCreateFramebufferByViewId(NVGcontext* ctx, int32_t width, int32_t height, int32_t imageFlags, uint16_t viewId)
 {
 	NVGLUframebuffer_bgfx* framebuffer = nvgluCreateFramebuffer(ctx, width, height, imageFlags);
 
@@ -1304,7 +1304,7 @@ NVGLUframebuffer_bgfx* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, 
 	NVGLUframebuffer_bgfx* framebuffer = BX_NEW(gl->allocator, NVGLUframebuffer_bgfx);
 	framebuffer->ctx    = _ctx;
 	framebuffer->image  = tex->id.idx;
-	framebuffer->handle = fbh;
+	framebuffer->handle = fbh.idx;
 
 	return framebuffer;
 }
@@ -1332,20 +1332,25 @@ void nvgluDeleteFramebuffer(NVGLUframebuffer_bgfx* _framebuffer)
 		return;
 	}
 
-	if (bgfx::isValid(_framebuffer->handle))
+	bgfx::FrameBufferHandle handle;
+	handle.idx = _framebuffer->handle;
+	if (bgfx::isValid(handle))
 	{
-		bgfx::destroy(_framebuffer->handle);
+		bgfx::destroy(handle);
 	}
 
 	struct NVGparams* params = nvgInternalParams(_framebuffer->ctx);
 	struct GLNVGcontext* gl = (struct GLNVGcontext*)params->userPtr;
 	glnvg__deleteTexture(gl, _framebuffer->image);
-	BX_DELETE(gl->allocator, _framebuffer);
+	BX_DELETE(gl->allocator, _framebuffer); 
 }
 
-void nvgluSetViewFramebuffer(bgfx::ViewId _viewId, NVGLUframebuffer_bgfx* _framebuffer)
+void nvgluSetViewFramebuffer(uint16_t _viewId, NVGLUframebuffer_bgfx* _framebuffer)
 {
 	_framebuffer->viewId = _viewId;
-	bgfx::setViewFrameBuffer(_viewId, _framebuffer->handle);
+
+	bgfx::FrameBufferHandle handle;
+	handle.idx = _framebuffer->handle;
+	bgfx::setViewFrameBuffer(_viewId, handle);
 	bgfx::setViewMode(_viewId, bgfx::ViewMode::Sequential);
 }

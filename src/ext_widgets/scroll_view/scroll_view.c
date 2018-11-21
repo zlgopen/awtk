@@ -184,7 +184,8 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
       }
     }
 
-    wa->base.start_time = time_now_ms();
+    wa->base.now = 0;
+    wa->base.start_time = 0;
   } else {
     scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
     return_value_if_fail(scroll_view->wa != NULL, RET_OOM);

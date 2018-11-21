@@ -178,7 +178,7 @@ int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
   return st.st_size;
 }
 
-ret_t fs_os_get_disk_info(fs_t* fs, int32_t* free_kb, int32_t* total_kb) {
+ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb) {
   /*TODO*/
   *free_kb = 0;
   *total_kb = 0;

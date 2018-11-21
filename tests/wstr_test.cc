@@ -265,3 +265,43 @@ TEST(WStr, wcs_dup) {
   ASSERT_EQ(wcs_cmp(str, L"abc中文测试123"), 0);
   TKMEM_FREE(str);
 }
+
+TEST(WStr, push) {
+  wstr_t str;
+  int32_t v = 0;
+  wstr_t* s = &str;
+  ASSERT_EQ(wstr_init(&str, 0), &str);
+
+  ASSERT_EQ(wstr_push(s, (wchar_t)'1'), RET_OK);
+  ASSERT_EQ(s->size, 1);
+  ASSERT_EQ(wstr_push(s, (wchar_t)'2'), RET_OK);
+  ASSERT_EQ(s->size, 2);
+
+  ASSERT_EQ(wstr_push_str(s, L"345", 3), RET_OK);
+  ASSERT_EQ(s->size, 5);
+  ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
+  ASSERT_EQ(v, 12345);
+  wstr_reset(&str);
+}
+
+TEST(WStr, push_int) {
+  wstr_t str;
+  wstr_t str1;
+  int32_t v = 0;
+  wstr_t* s = &str;
+  ASSERT_EQ(wstr_init(&str, 0), &str);
+
+  ASSERT_EQ(wstr_push_int(s, "%d", 12345), RET_OK);
+  ASSERT_EQ(s->size, 5);
+  ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
+  ASSERT_EQ(v, 12345);
+  s->size = 0;
+
+  wstr_init(&str1, 0);
+  wstr_set(&str1, L"0123");
+  ASSERT_EQ(wstr_push_int(s, "%04d", 123), RET_OK);
+  ASSERT_EQ(s->size, 4);
+  ASSERT_EQ(wstr_equal(s, &str1), TRUE);
+
+  wstr_reset(&str);
+}

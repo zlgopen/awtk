@@ -170,7 +170,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t combo_box_visit_item(void* ctx, void* data) {
+static ret_t combo_box_visit_item(void* ctx, const void* data) {
   widget_t* iter = WIDGET(data);
   combo_box_t* combo_box = COMBO_BOX(ctx);
 

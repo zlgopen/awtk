@@ -78,6 +78,10 @@ def imagegen(raw, inc):
   inc=inc.replace('.data', '.res')
   resgen(raw, inc)
 
+def svggen(raw, inc, bin):
+  execCmd(toExe('bsvggen') + ' ' + raw + ' ' + inc)
+  execCmd(toExe('bsvggen') + ' ' + raw + ' ' + bin + ' bin')
+
 def xml_to_ui(raw, inc):
   execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
 
@@ -95,7 +99,18 @@ def gen_res_all_style():
     bin=bin.replace('.xml', '.bin')
     themegen_bin(raw, bin)
 
-def gen_res_all_image(): 
+def gen_res_svg(): 
+  for f in glob.glob(joinPath(INPUT_DIR, 'images/svg/*.svg')):
+    inc=copy.copy(f);
+    bin=copy.copy(f);
+    raw=copy.copy(f);
+    basename=os.path.basename(inc);
+    inc=joinPath(OUTPUT_DIR, 'images/'+basename);
+    inc=inc.replace('.svg', '.bsvg')
+    bin=bin.replace('.svg', '.bsvg')
+    svggen(raw, inc, bin)
+
+def gen_res_png_jpg(): 
   for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
     inc=copy.copy(f);
     raw=copy.copy(f);
@@ -104,6 +119,10 @@ def gen_res_all_image():
     inc=inc.replace('.png', '.data')
     inc=inc.replace('.jpg', '.data')
     imagegen(raw, inc)
+
+def gen_res_all_image(): 
+    gen_res_png_jpg()
+    gen_res_svg()
 
 def gen_res_all_ui():
   for f in glob.glob(joinPath(INPUT_DIR, 'ui/*.xml')):
@@ -158,6 +177,22 @@ def genIncludes(files):
 
   return str1
 
+def gen_add_assets(files):
+  result = "";
+  for f in files:
+    incf = copy.copy(f);
+    basename = incf.replace(OUTPUT_DIR, '.');
+    basename = basename.replace('\\', '/');
+    basename = basename.replace('/fonts/', '/font/');
+    basename = basename.replace('/images/', '/image/');
+    basename = basename.replace('/styles/', '/style/');
+    basename = basename.replace('./', '');
+    basename = basename.replace('/', '_');
+    basename = basename.replace('.data', '');
+    basename = basename.replace('.bsvg', '');
+    result += '  assets_manager_add(rm, '+basename+');\n'
+  return result;
+
 def gen_res_c():
   result = '#include "awtk.h"\n'
   result += '#include "base/assets_manager.h"\n'
@@ -176,6 +211,11 @@ def gen_res_c():
   files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.data')) 
   result += genIncludes(files)
   result += '#endif/*WITH_STB_IMAGE*/\n'
+  
+  result += "#ifdef WITH_VGCANVAS\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg')) 
+  result += genIncludes(files)
+  result += '#endif/*WITH_VGCANVAS*/\n'
 
   result += "#ifdef WITH_STB_FONT\n"
   result += "#ifdef WITH_MINI_FONT\n"
@@ -203,17 +243,13 @@ def gen_res_c():
   result += '#else\n'
 
   files=glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
-  for f in files:
-    incf = copy.copy(f);
-    basename = incf.replace(OUTPUT_DIR, '.');
-    basename = basename.replace('\\', '/');
-    basename = basename.replace('/fonts/', '/font/');
-    basename = basename.replace('/images/', '/image/');
-    basename = basename.replace('/styles/', '/style/');
-    basename = basename.replace('./', '');
-    basename = basename.replace('/', '_');
-    basename = basename.replace('.data', '');
-    result += '  assets_manager_add(rm, '+basename+');\n'
+  result += gen_add_assets(files);
+
+  result += "#ifdef WITH_VGCANVAS\n"
+  files=glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg')) 
+  result += gen_add_assets(files);
+  result += '#endif/*WITH_VGCANVAS*/\n'
+
   result += '#endif\n'
 
   result += '\n'
@@ -291,6 +327,10 @@ def updateRes():
 def cleanRes():
   print("==================================================================")
   resFiles=glob.glob(joinPath(INPUT_DIR, '*/*.bin')) + glob.glob(joinPath(INPUT_DIR, '*/*/*.bin'))
+  for f in resFiles:
+    print("remove: " + f)
+    os.remove(f)
+  resFiles=glob.glob(joinPath(INPUT_DIR, '*/*.bin')) + glob.glob(joinPath(INPUT_DIR, '*/*/*.bsvg'))
   for f in resFiles:
     print("remove: " + f)
     os.remove(f)

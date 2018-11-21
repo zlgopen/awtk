@@ -1283,6 +1283,29 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text);
  */
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
 
+/**
+ * @method widget_load_asset
+ * 加载资源。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {asset_type_t} type 资源类型。
+ * @param {const char*}  name 资源名。
+ *
+ * @return {const asset_info_t*} 返回资源句柄。
+ */
+const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name);
+
+/**
+ * @method widget_unload_asset
+ * 卸载资源。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const asset_info_t*}  asset 资源句柄。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset);
+
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
     int32_t i = 0;                                                \

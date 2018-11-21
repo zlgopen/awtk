@@ -46,6 +46,11 @@
 
 * 如果是不透明的图片，可以将PNG转换成JPG文件，转换过程中启用dithering算法做平滑处理。
 
+可以用imagemagic转换：
+```
+convert bg.png  -ordered-dither o8x8,32,64,32 bg.jpg
+```
+> 参考：http://www.imagemagick.org/Usage/quantize/
 
 
 

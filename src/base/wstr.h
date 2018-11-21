@@ -33,17 +33,17 @@ BEGIN_C_DECLS
  */
 typedef struct _wstr_t {
   /**
-   * @property {uint16_t} size
+   * @property {uint32_t} size
    * @annotation ["readable"]
    * 长度。
    */
-  uint16_t size;
+  uint32_t size;
   /**
-   * @property {uint16_t} capacity
+   * @property {uint32_t} capacity
    * @annotation ["readable"]
    * 容量。
    */
-  uint16_t capacity;
+  uint32_t capacity;
   /**
    * @property {wchar_t*} str
    * @annotation ["readable"]
@@ -57,11 +57,11 @@ typedef struct _wstr_t {
  * 初始化字符串对象。
  * @annotation ["constructor"]
  * @param {wstr_t*} str str对象。
- * @param {uint16_t} capacity 初始容量。
+ * @param {uint32_t} capacity 初始容量。
  *
  * @return {wstr_t*} str对象本身。
  */
-wstr_t* wstr_init(wstr_t* str, uint16_t capacity);
+wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
 
 /**
  * @method wstr_set
@@ -88,34 +88,34 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text);
  * 获取UTF8字符串。
  * @param {wstr_t*} str str对象。
  * @param {char*} text 返回的字符串。
- * @param {uint16_t} size text最大长度。
+ * @param {uint32_t} size text最大长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wstr_get_utf8(wstr_t* str, char* text, uint16_t size);
+ret_t wstr_get_utf8(wstr_t* str, char* text, uint32_t size);
 
 /**
  * @method wstr_remove
  * 删除指定范围的字符。
  * @param {wstr_t*} str str对象。
- * @param {uint16_t} offset 指定的位置。
- * @param {uint16_t} nr 要删除的字符数。
+ * @param {uint32_t} offset 指定的位置。
+ * @param {uint32_t} nr 要删除的字符数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wstr_remove(wstr_t* str, uint16_t offset, uint16_t nr);
+ret_t wstr_remove(wstr_t* str, uint32_t offset, uint32_t nr);
 
 /**
  * @method wstr_insert
  * 在指定位置插入字符串。
  * @param {wstr_t*} str str对象。
- * @param {uint16_t} offset 指定的位置。
+ * @param {uint32_t} offset 指定的位置。
  * @param {wchar_t*} text 待插入的文本。
- * @param {uint16_t} nr 要插入的字符数。
+ * @param {uint32_t} nr 要插入的字符数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wstr_insert(wstr_t* str, uint16_t offset, const wchar_t* text, uint16_t nr);
+ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr);
 
 /**
  * @method wstr_push
@@ -135,6 +135,28 @@ ret_t wstr_push(wstr_t* str, const wchar_t c);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wstr_pop(wstr_t* str);
+
+/**
+ * @method wstr_push_str
+ * 追加一个字符。
+ * @param {wstr_t*} str str对象。
+ * @param {wchar_t*} s 字符串。
+ * @param {uint32_t} size 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_push_str(wstr_t* str, const wchar_t* s, uint32_t size);
+
+/**
+ * @method wstr_push_int
+ * 追加一个整数。
+ * @param {wstr_t*} str str对象。
+ * @param {const char*} format 格式(用于snprintf格式化数值)
+ * @param {int32_t} value 数值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_push_int(wstr_t* str, const char* format, int32_t value);
 
 /**
  * @method wstr_equal

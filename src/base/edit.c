@@ -16,6 +16,7 @@
  * History:
  * ================================================================
  * 2018-04-05 Li XianJing <xianjimli@hotmail.com> created
+ * 2018-11-20 Li YaoShen  <liyaoshen@zlg.cn> 1.text selection; 2.cursor movable
  *
  */
 
@@ -28,6 +29,7 @@
 #include "base/utils.h"
 #include "base/enums.h"
 #include "base/events.h"
+#include "base/window_manager.h"
 
 static ret_t edit_update_status(widget_t* widget);
 
@@ -60,10 +62,8 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 
 static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, wchar_t* temp_str) {
   int32_t i = 0;
-  float_t cw = 0;
   edit_t* edit = EDIT(widget);
   wstr_t* str = &(widget->text);
-  wh_t w = widget->w - edit->left_margin - edit->right_margin;
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
   if (!str->size && !widget->focused) {
@@ -73,21 +73,7 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   }
 
   if (str->size > 0) {
-    i = str->size - 1;
-    while (w > 0 && i >= 0) {
-      wchar_t chr = invisible ? INVISIBLE_CHAR : str->str[i];
-
-      cw = canvas_measure_text(c, &chr, 1);
-      w -= cw;
-
-      if (w > cw && i > 0) {
-        i--;
-      } else {
-        break;
-      }
-    }
-
-    text->str = str->str + i;
+    text->str = str->str;
     text->size = wcslen(text->str);
     text->capacity = text->size;
   } else {
@@ -108,10 +94,81 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   return RET_OK;
 }
 
+static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t* r) {
+  edit_t* edit = EDIT(widget);
+  xy_t y = 0;
+  int32_t text_w = 0;
+  int32_t pos_w = 0;
+  int32_t baseline = 0;
+  int32_t font_size = 0;
+  int32_t min_p = edit->cursor_pos < edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
+  int32_t max_p = edit->cursor_pos > edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
+  int32_t sel_w = 0;
+
+  font_size = c->font_size;
+  baseline = font_get_baseline(c->font, font_size);
+  pos_w = canvas_measure_text(c, text->str, edit->cursor_pos);
+  text_w =
+      pos_w + canvas_measure_text(c, text->str + edit->cursor_pos, text->size - edit->cursor_pos);
+  sel_w = canvas_measure_text(c, text->str + min_p, max_p - min_p);
+
+  switch (c->text_align_v) {
+    case ALIGN_V_TOP:
+      y = r->y;
+      break;
+    case ALIGN_V_BOTTOM:
+      y = r->y + (r->h - baseline);
+      break;
+    default:
+      y = r->y + ((r->h - baseline) >> 1);
+      break;
+  }
+
+  if (text_w <= r->w) {
+    switch (c->text_align_h) {
+      case ALIGN_H_LEFT:
+        edit->offset_x = r->x;
+        break;
+      case ALIGN_H_RIGHT:
+        edit->offset_x = r->x + (r->w - text_w);
+        break;
+      default:
+        edit->offset_x = r->x + ((r->w - text_w) >> 1);
+        break;
+    }
+
+    edit->caret_x = edit->offset_x + pos_w;
+  } else {
+    edit->caret_x = edit->offset_x + pos_w;
+    if (edit->caret_x < r->x) {
+      edit->offset_x += r->x - edit->caret_x;
+      edit->caret_x = r->x;
+    } else if (edit->caret_x > r->x + r->w - 1) {
+      edit->offset_x -= edit->caret_x - r->x - r->w + 1;
+      edit->caret_x = r->x + r->w - 1;
+    }
+  }
+
+  {
+    rect_t tmp;
+    canvas_get_clip_rect(c, &tmp);
+    canvas_set_clip_rect_ex(c, r, TRUE);
+    canvas_draw_text(c, text->str, text->size, edit->offset_x, y);
+    if (sel_w > 0 && widget->focused && !edit->readonly) {
+      xy_t sel_x = edit->cursor_pos < edit->cursor_pre ? edit->caret_x : edit->caret_x - sel_w++;
+      canvas_set_fill_color(c, color_init(0, 0, 0, 0xff));
+      canvas_set_text_color(c, color_init(255, 255, 255, 0xff));
+      canvas_fill_rect(c, sel_x, r->y, sel_w, r->h);
+      canvas_draw_text(c, text->str + min_p, max_p - min_p, sel_x, y);
+    }
+    canvas_set_clip_rect(c, &tmp);
+  }
+  return RET_OK;
+}
+
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   wstr_t text;
-  uint32_t text_w = 0;
   edit_t* edit = EDIT(widget);
   style_t* style = widget->astyle;
   wchar_t temp_str[TEMP_STR_LEN + 1];
@@ -122,7 +179,14 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t w = widget->w - left_margin - right_margin;
   wh_t h = widget->h - top_margin - bottom_margin;
   align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+  /*
+    color_t selected_bg = style_get_color(style, STYLE_ID_SELECTED_FG_COLOR, trans);
+    color_t selected_fg = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, trans);
+    color_t selected_tc = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, trans);
 
+    log_debug("selected_bg=0x%08X selected_fg=%08X selected_tc=%08X\n",
+        selected_bg.color, selected_fg.color, selected_tc.color);
+  */
   memset(temp_str, 0x00, sizeof(temp_str));
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
   return_value_if_fail(edit_get_display_text(widget, c, &text, temp_str) == RET_OK, RET_FAIL);
@@ -131,28 +195,12 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   if (align_h == ALIGN_H_RIGHT) {
     r.w -= 3;
   }
-  text_w = canvas_measure_text(c, text.str, text.size);
-  if (text.size > 0) {
-    canvas_draw_text_in_rect(c, text.str, text.size, &r);
-  }
 
-  switch (align_h) {
-    case ALIGN_H_RIGHT: {
-      edit->caret_x = r.x + r.w + 1;
-      break;
-    }
-    case ALIGN_H_CENTER: {
-      edit->caret_x = r.x + (r.w + text_w) / 2 + 1;
-      break;
-    }
-    default: {
-      edit->caret_x = r.x + text_w + 1;
-      break;
-    }
-  }
+  edit_draw_text(widget, c, &text, &r);
 
   if (widget->focused && !edit->readonly && edit->caret_visible) {
-    color_t black = color_init(0, 0, 0, 0xff);
+    color_t black = edit->cursor_pos == edit->cursor_pre ? color_init(0, 0, 0, 0xff)
+                                                         : color_init(255, 255, 255, 0xff);
     color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
     canvas_set_stroke_color(c, fg);
 
@@ -162,18 +210,93 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t edit_set_cursor_pos(widget_t* widget, int32_t pre, int32_t pos) {
+  edit_t* edit = EDIT(widget);
+  if (pre <= 0) {
+    edit->cursor_pre = 0;
+  } else {
+    edit->cursor_pre = pre < widget->text.size ? pre : widget->text.size;
+  }
+
+  if (pos <= 0) {
+    edit->cursor_pos = 0;
+  } else {
+    edit->cursor_pos = pos < widget->text.size ? pos : widget->text.size;
+  }
+  widget_invalidate(widget, NULL);
+  return RET_OK;
+}
+
+static int32_t edit_calcu_pos(widget_t* widget, xy_t posx) {
+  edit_t* edit = EDIT(widget);
+  int32_t pos = 0;
+  xy_t x = edit->offset_x;
+  canvas_t* c = WINDOW_MANAGER(window_manager())->canvas;
+  return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, 0);
+  for (pos = 0; pos < widget->text.size; ++pos) {
+    int32_t w = canvas_measure_text(c, widget->text.str + pos, 1);
+    if (posx < x + w) {
+      if (posx > x + w / 2) {
+        ++pos;
+        x += w;
+      }
+      break;
+    }
+    x += w;
+  }
+
+  if (posx < 0 && x > 0) {
+    --pos;
+  } else if (posx > widget->w && x < widget->w) {
+    ++pos;
+  }
+
+  return pos;
+}
+
+static ret_t edit_remove_select_str(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  if (edit->cursor_pos == edit->cursor_pre) {
+    return RET_FAIL;
+  }
+
+  int32_t min_p = 0;
+  int32_t max_p = 0;
+  if (edit->cursor_pos < edit->cursor_pre) {
+    min_p = edit->cursor_pos;
+    max_p = edit->cursor_pre;
+  } else {
+    min_p = edit->cursor_pre;
+    max_p = edit->cursor_pos;
+  }
+  wstr_remove(&(widget->text), min_p, max_p - min_p);
+  edit_set_cursor_pos(widget, min_p, min_p);
+
+  return RET_OK;
+}
+
 static ret_t edit_delete_prev_char(widget_t* widget) {
-  if (widget->text.size > 0) {
-    wstr_pop(&(widget->text));
+  edit_t* edit = EDIT(widget);
+  if (edit_remove_select_str(widget) == RET_OK) {
+    return RET_OK;
+  }
+
+  if (edit->cursor_pos > 0) {
+    wstr_remove(&(widget->text), edit->cursor_pos - 1, 1);
+    edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
   }
 
   return RET_OK;
 }
 
 static ret_t edit_delete_next_char(widget_t* widget) {
-  /*FIXME*/
-  if (widget->text.size > 0) {
-    wstr_pop(&(widget->text));
+  edit_t* edit = EDIT(widget);
+  if (edit_remove_select_str(widget) == RET_OK) {
+    return RET_OK;
+  }
+
+  if (edit->cursor_pos < widget->text.size) {
+    wstr_remove(&(widget->text), edit->cursor_pos, 1);
   }
 
   return RET_OK;
@@ -183,6 +306,9 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
   input_type_t input_type = edit->limit.type;
+  ret_t ret = RET_FAIL;
+
+  edit_remove_select_str(widget);
 
   switch (input_type) {
     case INPUT_INT:
@@ -192,11 +318,11 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
       }
 
       if (c >= '0' && c <= '9') {
-        wstr_push(text, c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_INT)) {
-        if (text->size == 0) {
-          wstr_push(text, c);
+        if (edit->cursor_pos == 0) {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
         break;
       }
@@ -208,16 +334,16 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
         return RET_FAIL;
       }
       if (c >= '0' && c <= '9') {
-        wstr_push(text, c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_FLOAT)) {
-        if (text->size == 0) {
-          wstr_push(text, c);
+        if (edit->cursor_pos == 0) {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
         break;
       } else if (c == '.' || c == 'e') {
-        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
-          wstr_push(text, c);
+        if (edit->cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
       }
       break;
@@ -225,10 +351,10 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     case INPUT_EMAIL: {
       if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' ||
           c == '.' || c == '_') {
-        wstr_push(text, c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
       } else if (c == '@') {
-        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
-          wstr_push(text, c);
+        if (edit->cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
       }
       break;
@@ -238,35 +364,38 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
         break;
       }
       if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
-        wstr_push(text, c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
       } else if (c == 'X' || c == 'x') {
-        if (text->size == 1 && text->str[0] == '0') {
-          wstr_push(text, c);
+        if (edit->cursor_pos == 1 && text->str[0] == '0') {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
       }
       break;
     }
     case INPUT_PHONE: {
       if (c >= '0' && c <= '9') {
-        wstr_push(text, c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         break;
       } else if (c == '-') {
-        if (text->size > 0 && wcs_chr(text->str, c) == NULL) {
-          wstr_push(text, c);
+        if (edit->cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+          ret = wstr_insert(text, edit->cursor_pos, &c, 1);
         }
       }
       break;
     }
     default: {
       if (widget->text.size < edit->limit.u.t.max) {
-        wstr_push(&(widget->text), c);
+        ret = wstr_insert(text, edit->cursor_pos, &c, 1);
       }
     }
   }
 
   edit_dispatch_event(widget, EVT_VALUE_CHANGING);
 
-  return RET_OK;
+  if (ret == RET_OK) {
+    edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
+  }
+  return ret;
 }
 
 static ret_t edit_commit_str(widget_t* widget, const char* str) {
@@ -288,6 +417,13 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     return edit_delete_prev_char(widget);
   } else if (key == FKEY_DELETE) {
     return edit_delete_next_char(widget);
+  } else if (key == FKEY_LEFT || key == FKEY_RIGHT) {
+    edit_t* edit = EDIT(widget);
+    if (key == FKEY_LEFT) {
+      return edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
+    } else {
+      return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
+    }
   } else {
     if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
@@ -366,6 +502,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
 static ret_t edit_auto_fix(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
+  bool_t fix = FALSE;
 
   switch (edit->limit.type) {
     case INPUT_TEXT: {
@@ -374,6 +511,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
       if (size > max) {
         text->size = max;
+        fix = TRUE;
       }
 
       break;
@@ -387,10 +525,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_int(text, &v);
       if (v < min) {
         v = min;
+        fix = TRUE;
       }
 
       if (v > max) {
         v = max;
+        fix = TRUE;
       }
       wstr_from_int(text, v);
       break;
@@ -404,10 +544,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_float(text, &v);
       if (v < min) {
         v = min;
+        fix = TRUE;
       }
 
       if (v > max) {
         v = max;
+        fix = TRUE;
       }
       wstr_from_float(text, v);
       wstr_trim_float_zero(text);
@@ -415,6 +557,10 @@ static ret_t edit_auto_fix(widget_t* widget) {
     }
     default:
       break;
+  }
+
+  if (fix) {
+    edit_set_cursor_pos(widget, 0, 0x0fffffff);
   }
 
   return RET_OK;
@@ -441,7 +587,18 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   }
 
   switch (type) {
-    case EVT_POINTER_DOWN:
+    case EVT_POINTER_DOWN: {
+      pointer_event_t evt = *(pointer_event_t*)e;
+      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
+        point_t p = {evt.x, evt.y};
+        uint32_t pos = 0;
+        widget_to_local(widget, &p);
+        pos = edit_calcu_pos(widget, p.x);
+        edit_set_cursor_pos(widget, pos, pos);
+        widget_grab(widget->parent, widget);
+      }
+    }
+
       if (edit->timer_id == 0) {
         edit->timer_id = timer_add(edit_update_caret, widget, 600);
       }
@@ -452,6 +609,21 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_update_status(widget);
 
       break;
+    case EVT_POINTER_MOVE: {
+      if (widget->parent && widget->parent->grab_widget == widget) {
+        pointer_event_t evt = *(pointer_event_t*)e;
+        point_t p = {evt.x, evt.y};
+        uint32_t pos = 0;
+        widget_to_local(widget, &p);
+        pos = edit_calcu_pos(widget, p.x);
+        edit_set_cursor_pos(widget, edit->cursor_pre, pos);
+      }
+      break;
+    }
+    case EVT_POINTER_UP: {
+      widget_ungrab(widget->parent, widget);
+      break;
+    }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
       edit_on_key_down(widget, evt);
@@ -735,6 +907,10 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     edit_set_input_tips(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+    edit->offset_x = 0;
+    edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
+    return RET_OK;
   }
 
   edit_update_status(widget);
@@ -773,6 +949,7 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
 
   wstr_trim_float_zero(text);
   edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  edit_set_cursor_pos(widget, 0, 0x0fffffff);
 
   return RET_OK;
 }
@@ -797,6 +974,7 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
 
   wstr_from_int(text, v);
   edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  edit_set_cursor_pos(widget, 0, 0x0fffffff);
 
   return RET_OK;
 }
@@ -823,7 +1001,7 @@ ret_t edit_set_int(widget_t* widget, int32_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_int(&(widget->text), value);
-
+  edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
   return RET_OK;
 }
 
@@ -831,7 +1009,7 @@ ret_t edit_set_double(widget_t* widget, double value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_float(&(widget->text), value);
-
+  edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
   return RET_OK;
 }
 
@@ -897,7 +1075,13 @@ ret_t edit_dec(edit_t* edit) {
 
 ret_t edit_clear(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
+
   widget->text.size = 0;
+  edit->selected_start = 0;
+  edit->selected_end = 0;
+  edit->visible_start = 0;
+  edit->visible_end = 0;
+  edit_set_cursor_pos(widget, 0, 0);
 
   return widget_invalidate_force(widget);
 }
@@ -917,7 +1101,7 @@ static ret_t edit_on_clear(void* ctx, event_t* e) {
   return edit_clear(EDIT(ctx));
 }
 
-static ret_t edit_hook_button(void* ctx, void* iter) {
+static ret_t edit_hook_button(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* edit = WIDGET(ctx);
 

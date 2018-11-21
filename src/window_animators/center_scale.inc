@@ -18,13 +18,13 @@ static ret_t window_animator_open_scale_draw_prev(window_animator_t* wa) {
 
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
   dst = rect_init(win->x, win->y, win->w, win->h);
-#ifndef WITH_NANOVG_GL
+#ifndef WITH_NANOVG_GPU
   if (wa->percent > 0 && !lcd_is_swappable(c->lcd)) {
     win = wa->curr_win;
     src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
     dst = rect_init(win->x, win->y, win->w, win->h);
   }
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_NANOVG_GPU*/
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 
   return RET_OK;
@@ -40,7 +40,7 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
   float_t alpha = wa->open ? wa->time_percent : 1 - wa->time_percent;
   src = rect_init(win->x * ratio, win->y * ratio, win->w * ratio, win->h * ratio);
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   dst = rect_init(0, 0, win->w, win->h);
   vgcanvas_save(vg);
@@ -60,7 +60,7 @@ static ret_t window_animator_open_scale_draw_curr(window_animator_t* wa) {
     lcd_set_global_alpha(c->lcd, alpha * 0xff);
     lcd_draw_image(c->lcd, &(wa->curr_img), &src, &dst);
   }
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_NANOVG_GPU*/
 
   return RET_OK;
 }

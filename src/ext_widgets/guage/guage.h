@@ -30,31 +30,24 @@ BEGIN_C_DECLS
  * @class guage_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * 仪表控件。
+ * 表盘控件。
  */
 typedef struct _guage_t {
   widget_t widget;
 
   /**
-   * @property {int32_t} angle
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
-   */
-  int32_t angle;
-
-  /**
-   * @property {char*} bg_image
+   * @property {char*} image
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 背景图片。
    */
-  char* bg_image;
+  char* image;
 
   /**
-   * @property {char*} pointer_image
+   * @property {image_draw_type_t} draw_type
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 指针图片。图片须垂直向上，图片的中心点为旋转方向。
+   * 图片的绘制方式。
    */
-  char* pointer_image;
+  image_draw_type_t draw_type;
 } guage_t;
 
 /**
@@ -82,44 +75,28 @@ widget_t* guage_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 widget_t* guage_cast(widget_t* widget);
 
 /**
- * @method guage_set_angle
- * 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
+ * @method guage_set_image
+ * 设置背景图片的名称。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {int32_t} angle 指针角度。
+ * @param {widget_t*} widget image对象。
+ * @param {char*}  name 图片名称，该图片必须存在于资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t guage_set_angle(widget_t* widget, int32_t angle);
+ret_t guage_set_image(widget_t* widget, const char* name);
 
 /**
- * @method guage_set_pointer_image
- * 设置指针的图片。
+ * @method guage_set_draw_type
+ * 设置图片的显示方式。
  * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {const char*} angle 指针的图片。
+ * @param {widget_t*} widget image对象。
+ * @param {image_draw_type_t}  draw_type 显示方式。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t guage_set_pointer_image(widget_t* widget, const char* angle);
-
-/**
- * @method guage_set_bg_image
- * 设置背景图片。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {const char*} bg_image 背景图片。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t guage_set_bg_image(widget_t* widget, const char* bg_image);
-
-#define GUAGE_PROP_ANGLE "angle"
-#define GUAGE_PROP_BG_IMAGE "bg_image"
-#define GUAGE_PROP_POINTER_IMAGE "pointer_image"
+ret_t guage_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
 
 #define WIDGET_TYPE_GUAGE "guage"
-
 #define GUAGE(widget) ((guage_t*)(widget))
 
 END_C_DECLS

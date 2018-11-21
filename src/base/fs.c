@@ -125,10 +125,10 @@ int32_t fs_get_file_size(fs_t* fs, const char* name) {
   return fs->get_file_size(fs, name);
 }
 
-ret_t fs_get_disk_info(fs_t* fs, int32_t* free_kb, int32_t* total_kb) {
+ret_t fs_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb) {
   return_value_if_fail(fs != NULL && free_kb != NULL && total_kb != NULL, RET_BAD_PARAMS);
 
-  return fs->get_disk_info(fs, free_kb, total_kb);
+  return fs->get_disk_info(fs, volume, free_kb, total_kb);
 }
 
 ret_t fs_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {

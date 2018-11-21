@@ -1,0 +1,5 @@
+<guage_pointer>
+  <style name="default">
+    <normal bg_color="#fe1700" fg_color="#3f0136"/>
+  </style>
+</guage_pointer>

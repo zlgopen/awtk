@@ -67,7 +67,7 @@ ret_t window_animator_destroy(window_animator_t* wa) {
 }
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
   (void)wa;
 #else
   rect_t r;
@@ -80,7 +80,7 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
 }
 
 ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_NANOVG_GPU
   (void)wa;
 #else
   rect_t r;

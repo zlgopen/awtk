@@ -122,7 +122,7 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
   res = (asset_info_t*)malloc(total_size);
-  memset(res, 0x00, sizeof(asset_info_t));
+  memset(res, 0x00, total_size);
   res->size = size;
   res->type = type;
   res->is_in_rom = TRUE;

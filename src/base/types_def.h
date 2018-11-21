@@ -256,7 +256,7 @@ typedef void* pointer_t;
 #endif /*ARRAY_SIZE*/
 
 typedef int (*tk_compare_t)(const void* a, const void* b);
-typedef ret_t (*tk_visit_t)(void* ctx, void* data);
+typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 typedef ret_t (*tk_destroy_t)(void* data);
 typedef ret_t (*tk_on_done_t)(void* data);
 typedef bool_t (*tk_is_valid_t)(void* data);
@@ -440,6 +440,11 @@ typedef enum _app_type_t {
 #define WITH_NANOVG_SOFT
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
+
+#if defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)
+#define WITH_NANOVG 1
+#define WITH_VGCANVAS 1
+#endif /*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
 
