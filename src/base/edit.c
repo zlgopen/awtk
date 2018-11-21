@@ -223,7 +223,7 @@ static ret_t edit_set_cursor_pos(widget_t* widget, int32_t pre, int32_t pos) {
   } else {
     edit->cursor_pos = pos < widget->text.size ? pos : widget->text.size;
   }
-
+  widget_invalidate(widget, NULL);
   return RET_OK;
 }
 
@@ -502,6 +502,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
 static ret_t edit_auto_fix(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
+  bool_t fix = FALSE;
 
   switch (edit->limit.type) {
     case INPUT_TEXT: {
@@ -510,6 +511,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
       if (size > max) {
         text->size = max;
+		fix = TRUE;
       }
 
       break;
@@ -523,10 +525,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_int(text, &v);
       if (v < min) {
         v = min;
+		fix = TRUE;
       }
 
       if (v > max) {
         v = max;
+		fix = TRUE;
       }
       wstr_from_int(text, v);
       break;
@@ -540,10 +544,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_float(text, &v);
       if (v < min) {
         v = min;
+		fix = TRUE;
       }
 
       if (v > max) {
         v = max;
+		fix = TRUE;
       }
       wstr_from_float(text, v);
       wstr_trim_float_zero(text);
@@ -551,6 +557,10 @@ static ret_t edit_auto_fix(widget_t* widget) {
     }
     default:
       break;
+  }
+
+  if (fix) {
+	  edit_set_cursor_pos(widget, 0, 0x0fffffff);
   }
 
   return RET_OK;
@@ -991,7 +1001,7 @@ ret_t edit_set_int(widget_t* widget, int32_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_int(&(widget->text), value);
-
+  edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
   return RET_OK;
 }
 
@@ -999,7 +1009,7 @@ ret_t edit_set_double(widget_t* widget, double value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_float(&(widget->text), value);
-
+  edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
   return RET_OK;
 }
 
