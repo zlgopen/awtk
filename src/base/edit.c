@@ -154,8 +154,8 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
     canvas_get_clip_rect(c, &tmp);
     canvas_set_clip_rect_ex(c, r, TRUE);
     canvas_draw_text(c, text->str, text->size, edit->offset_x, y);
-    if (sel_w > 0) {
-      xy_t sel_x = edit->cursor_pos < edit->cursor_pre ? edit->caret_x : edit->caret_x - sel_w + 1;
+    if (sel_w > 0 && widget->focused && !edit->readonly) {
+      xy_t sel_x = edit->cursor_pos < edit->cursor_pre ? edit->caret_x : edit->caret_x - sel_w++;
       canvas_set_fill_color(c, color_init(0, 0, 0, 0xff));
       canvas_set_text_color(c, color_init(255, 255, 255, 0xff));
       canvas_fill_rect(c, sel_x, r->y, sel_w, r->h);
