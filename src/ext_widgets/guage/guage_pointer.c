@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   guage_pointer.h
  * Author: AWTK Develop Team
  * Brief:  guage_pointer
@@ -22,7 +22,7 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "base/matrix.h"
-#include "svg/bsvg.h"
+#include "svg/bsvg_draw.h"
 #include "base/widget_vtable.h"
 #include "guage/guage_pointer.h"
 #include "base/image_manager.h"
@@ -112,7 +112,7 @@ static ret_t guage_pointer_paint_default(widget_t* widget, vgcanvas_t* vg) {
 
   vgcanvas_begin_path(vg);
   vgcanvas_move_to(vg, cx, 0);
-  vgcanvas_line_to(vg, cx, cx + h * 0.6);
+  vgcanvas_line_to(vg, cx, cx + h * 0.6f);
   vgcanvas_set_line_width(vg, 2);
   vgcanvas_set_stroke_color(vg, bg);
   vgcanvas_stroke(vg);
