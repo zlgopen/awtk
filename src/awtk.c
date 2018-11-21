@@ -36,6 +36,14 @@
 #include "base/assets_manager.h"
 #include "font_loader/font_loader_bitmap.h"
 
+#ifdef WITH_SDL
+#include "clip_board/clip_board_sdl.h"
+#define clip_board_create clip_board_sdl_create
+#else
+#include "clip_board/clip_board_default.h"
+#define clip_board_create clip_board_default_create
+#endif /*WITH_SDL*/
+
 #ifdef WITH_STB_FONT
 #include "font_loader/font_loader_stb.h"
 #endif /*WITH_STB_FONT*/
@@ -109,6 +117,7 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
 
   return RET_OK;
 }
@@ -123,6 +132,9 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 ret_t tk_deinit_internal(void) {
   widget_destroy(window_manager());
   window_manager_set(NULL);
+
+  clip_board_destroy(clip_board());
+  clip_board_set(NULL);
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
