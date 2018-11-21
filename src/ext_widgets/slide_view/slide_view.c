@@ -97,7 +97,9 @@ ret_t slide_view_activate_next(slide_view_t* slide_view) {
 }
 
 static ret_t slide_view_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
+  (void)widget;
+  (void)c;
+  return RET_OK;
 }
 
 static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_t* e) {
@@ -131,6 +133,8 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+#define DRAG_THRESHOLD 30
+
 static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
   uint32_t v_threshhold = 100;
   widget_t* widget = WIDGET(slide_view);
@@ -151,6 +155,9 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (yoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
+    if (tk_abs(yoffset) < DRAG_THRESHOLD) {
+      rollback = TRUE;
+    }
 
     if (!rollback) {
       yoffset_end = yoffset > 0 ? h : -h;
@@ -167,6 +174,9 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     if (xoffset > 0 && slide_view_get_prev(slide_view) == NULL) {
       rollback = TRUE;
     } else if (xoffset < 0 && slide_view_get_next(slide_view) == NULL) {
+      rollback = TRUE;
+    }
+    if (tk_abs(xoffset) < DRAG_THRESHOLD) {
       rollback = TRUE;
     }
 
