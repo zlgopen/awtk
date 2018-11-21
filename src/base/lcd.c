@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd.c
  * Author: AWTK Develop Team
  * Brief:  lcd interface
@@ -184,7 +184,7 @@ float lcd_measure_text(lcd_t* lcd, wchar_t* str, uint32_t nr) {
 }
 
 ret_t lcd_draw_text(lcd_t* lcd, wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
-  return_value_if_fail(nr < 10240, 0.0f);
+  return_value_if_fail(nr < 10240, RET_BAD_PARAMS);
   return_value_if_fail(lcd != NULL && lcd->draw_text != NULL && str != NULL, RET_OK);
 
   return lcd->draw_text(lcd, str, nr, x, y);

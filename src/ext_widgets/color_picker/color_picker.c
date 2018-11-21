@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   color_picker.
  * Author: AWTK Develop Team
  * Brief:  color_picker
@@ -302,7 +302,7 @@ static ret_t color_picker_hook_children(void* ctx, const void* iter) {
   if (name != NULL) {
     if (tk_str_eq(type, WIDGET_TYPE_EDIT) || tk_str_eq(type, WIDGET_TYPE_SLIDER) ||
         tk_str_eq(type, WIDGET_TYPE_COLOR_COMPONENT) || tk_str_eq(type, WIDGET_TYPE_SPIN_BOX)) {
-      widget_on(iter, EVT_VALUE_CHANGING, color_picker_on_child_value_changing, ctx);
+      widget_on(WIDGET(iter), EVT_VALUE_CHANGING, color_picker_on_child_value_changing, ctx);
     }
   }
 

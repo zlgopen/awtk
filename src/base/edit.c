@@ -511,7 +511,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
       if (size > max) {
         text->size = max;
-		fix = TRUE;
+        fix = TRUE;
       }
 
       break;
@@ -525,12 +525,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_int(text, &v);
       if (v < min) {
         v = min;
-		fix = TRUE;
+        fix = TRUE;
       }
 
       if (v > max) {
         v = max;
-		fix = TRUE;
+        fix = TRUE;
       }
       wstr_from_int(text, v);
       break;
@@ -544,12 +544,12 @@ static ret_t edit_auto_fix(widget_t* widget) {
       wstr_to_float(text, &v);
       if (v < min) {
         v = min;
-		fix = TRUE;
+        fix = TRUE;
       }
 
       if (v > max) {
         v = max;
-		fix = TRUE;
+        fix = TRUE;
       }
       wstr_from_float(text, v);
       wstr_trim_float_zero(text);
@@ -560,7 +560,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
   }
 
   if (fix) {
-	  edit_set_cursor_pos(widget, 0, 0x0fffffff);
+    edit_set_cursor_pos(widget, 0, 0x0fffffff);
   }
 
   return RET_OK;
