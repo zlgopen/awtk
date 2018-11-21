@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   svg_builder.c
  * Author: AWTK Develop Team
  * Brief:  svg builder
@@ -45,7 +45,7 @@ ret_t bsvg_builder_add_shape(bsvg_builder_t* svg, const svg_shape_t* shape) {
     svg_path_t path_null = {SVG_PATH_NULL};
     bsvg_builder_add_sub_path(svg, &path_null);
   }
-  svg->current_shape_type = shape->type;
+  svg->current_shape_type = (svg_shape_type_t)(shape->type);
 
   return wbuffer_write_binary(&(svg->buff), shape, svg_shape_size(shape));
 }

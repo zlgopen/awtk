@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   svg_to_bsvg.c
  * Author: AWTK Develop Team
  * Brief:  svg to  bsvg
@@ -402,7 +402,7 @@ static void svg_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) 
 
 static void svg_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
   (void)thiz;
-  printf("parse error: %d:%d %s\n", line, row, message);
+  log_debug("parse error: %d:%d %s\n", line, row, message);
   return;
 }
 

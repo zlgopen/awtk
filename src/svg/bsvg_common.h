@@ -27,6 +27,7 @@
 
 BEGIN_C_DECLS
 
+#pragma pack(push, 1)
 typedef struct _bsvg_header_t {
   uint32_t magic;
   uint8_t version;
@@ -39,6 +40,7 @@ typedef struct _bsvg_header_t {
   uint32_t w;
   uint32_t h;
 } bsvg_header_t;
+#pragma pack(pop)
 
 #define BSVG_MAGIC 0x20181115
 #define BSVG_MIN_SIZE (sizeof(bsvg_header_t) + sizeof(svg_shape_t))

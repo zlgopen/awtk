@@ -27,6 +27,7 @@
 
 BEGIN_C_DECLS
 
+#pragma pack(push, 1)
 typedef struct _svg_path_t {
   uint32_t type;
 } svg_path_t;
@@ -118,6 +119,7 @@ typedef struct _svg_path_arc_t {
   float_t x;
   float_t y;
 } svg_path_arc_t;
+#pragma pack(pop)
 
 uint32_t svg_path_size(const svg_path_t* path);
 

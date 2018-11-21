@@ -37,6 +37,7 @@ typedef enum _svg_shape_type_t {
   SVG_SHAPE_PATH
 } svg_shape_type_t;
 
+#pragma pack(push, 1)
 typedef struct _svg_shape_t {
   uint8_t type;
   uint8_t line_cap;
@@ -98,6 +99,7 @@ typedef struct _svg_shape_path_t {
 
   svg_path_t path[1];
 } svg_shape_path_t;
+#pragma pack(pop)
 
 uint32_t svg_shape_size(const svg_shape_t* shape);
 
