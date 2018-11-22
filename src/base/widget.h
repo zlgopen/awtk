@@ -1214,6 +1214,19 @@ ret_t widget_layout(widget_t* widget);
 uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
+ * @method widget_is_point_in
+ * 判断一个点是否在控件内。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {bool_t} is_local TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。
+ *
+ * @return {bool_t} 返回RET_OK表示成功，否则表示失败。
+ */
+bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local);
+
+/**
  * @method widget_cast
  * 转换为widget对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -1274,7 +1287,6 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text);
 /**
  * @method widget_load_image
  * 加载图片。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*}  name 图片名。
  * @param {bitmap_t*} bitmap 图片对象。
@@ -1286,7 +1298,6 @@ ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
 /**
  * @method widget_load_asset
  * 加载资源。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {asset_type_t} type 资源类型。
  * @param {const char*}  name 资源名。
@@ -1298,13 +1309,14 @@ const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const
 /**
  * @method widget_unload_asset
  * 卸载资源。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const asset_info_t*}  asset 资源句柄。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset);
+
+ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
