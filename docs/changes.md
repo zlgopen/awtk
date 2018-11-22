@@ -4,6 +4,8 @@
   * 完善button/checkbutton/comboboxitem对pointer down abort事件的处理。
   * 完善slideview拖动处理。
   * 完善脏矩形。
+  * 完善输入法(issue #40)。
+  * 完善edit.c，删除字符时触发changing事件(issue #41)。
 
 * 2018/11/21
   * 修改一些编译警告。

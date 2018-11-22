@@ -271,6 +271,7 @@ static ret_t edit_remove_select_str(widget_t* widget) {
   }
   wstr_remove(&(widget->text), min_p, max_p - min_p);
   edit_set_cursor_pos(widget, min_p, min_p);
+  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -284,6 +285,7 @@ static ret_t edit_delete_prev_char(widget_t* widget) {
   if (edit->cursor_pos > 0) {
     wstr_remove(&(widget->text), edit->cursor_pos - 1, 1);
     edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
+    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
   }
 
   return RET_OK;
@@ -297,6 +299,7 @@ static ret_t edit_delete_next_char(widget_t* widget) {
 
   if (edit->cursor_pos < widget->text.size) {
     wstr_remove(&(widget->text), edit->cursor_pos, 1);
+    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
   }
 
   return RET_OK;
