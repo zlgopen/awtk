@@ -43,6 +43,7 @@ typedef struct _check_button_t {
 
   /*private*/
   bool_t radio;
+  bool_t pressed;
   bool_t point_down_aborted;
 } check_button_t;
 

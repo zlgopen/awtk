@@ -49,7 +49,7 @@ typedef struct _combo_box_item_t {
   bool_t checked;
 
   /*private*/
-  bool_t point_down_aborted;
+  bool_t pressed;
 } combo_box_item_t;
 
 /**
