@@ -116,6 +116,11 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
 
   widget_to_screen(widget, &p);
   im->keyboard = window_open(keyboard);
+  if (im->keyboard == NULL) {
+    log_debug("Not found keyboard [%s], try default.\n", keyboard);
+    im->keyboard = window_open("kb_default");
+  }
+  return_value_if_fail(im->keyboard != NULL, RET_NOT_FOUND);
 
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";
