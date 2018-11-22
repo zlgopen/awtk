@@ -1,4 +1,10 @@
 # 最新动态
+
+* 2018/11/22
+  * 完善button/checkbutton/comboboxitem对pointer down abort事件的处理。
+  * 完善slideview拖动处理。
+  * 完善脏矩形。
+
 * 2018/11/21
   * 修改一些编译警告。
   * 修改资源生成工具支持SVG。

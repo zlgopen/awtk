@@ -32,11 +32,13 @@ static ret_t widget_animator_scale_update(widget_animator_t* animator, float_t p
   scale_x = scale->x_from + (scale->x_to - scale->x_from) * percent;
   scale_y = scale->y_from + (scale->y_to - scale->y_from) * percent;
 
+  widget_invalidate_force(animator->widget);
   value_set_float(&v, scale_x);
   widget_set_prop(animator->widget, WIDGET_PROP_SCALE_X, &v);
 
   value_set_float(&v, scale_y);
   widget_set_prop(animator->widget, WIDGET_PROP_SCALE_Y, &v);
+  widget_invalidate_force(animator->widget);
 
   return RET_OK;
 }

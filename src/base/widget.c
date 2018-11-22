@@ -44,13 +44,13 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   if (widget->x != x || widget->y != y) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget);
     widget->x = x;
     widget->y = y;
+    widget_invalidate_force(widget);
 
     e.type = EVT_MOVE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -63,13 +63,13 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
   if (widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget);
     widget->w = w;
     widget->h = h;
+    widget_invalidate_force(widget);
 
     e.type = EVT_RESIZE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -82,15 +82,15 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
   if (widget->x != x || widget->y != y || widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget);
     widget->x = x;
     widget->y = y;
     widget->w = w;
     widget->h = h;
+    widget_invalidate_force(widget);
 
     e.type = EVT_MOVE_RESIZE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -461,9 +461,10 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->visible != visible) {
+    widget_invalidate_force(widget);
     widget->visible = visible;
     widget_update_style(widget);
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget);
   }
 
   return RET_OK;
