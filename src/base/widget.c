@@ -1056,6 +1056,19 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e) {
+  widget_t* target = NULL;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  target = widget->target;
+  while (target != NULL) {
+    widget_dispatch(target, e);
+    target = target->target;
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = NULL;
@@ -1658,6 +1671,17 @@ ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   return assets_manager_unref(am, asset);
+}
+
+bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
+  point_t p = {x, y};
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (!is_local) {
+    widget_to_local(widget, &p);
+  }
+
+  return (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h);
 }
 
 const char* widget_get_type(widget_t* widget) {
