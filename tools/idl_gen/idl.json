@@ -1439,6 +1439,27 @@
             "desc": "wbuffer对象。"
           },
           {
+            "type": "float_t",
+            "name": "value",
+            "desc": "写入的数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入float数据。",
+        "name": "wbuffer_write_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wbuffer_t*",
+            "name": "wbuffer",
+            "desc": "wbuffer对象。"
+          },
+          {
             "type": "void*",
             "name": "data",
             "desc": "写入的数据。"
@@ -1636,6 +1657,27 @@
         "annotation": {},
         "desc": "读取uint32数据。",
         "name": "rbuffer_read_uint32",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rbuffer_t*",
+            "name": "rbuffer",
+            "desc": "rbuffer对象。"
+          },
+          {
+            "type": "float_t*",
+            "name": "value",
+            "desc": "读取的数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取float数据。",
+        "name": "rbuffer_read_float",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -2243,6 +2285,194 @@
     "desc": "勾选控件。",
     "name": "check_button_t",
     "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": "剪切板数据类型定义。",
+    "consts": [
+      {
+        "desc": "无数据。",
+        "name": "CLIP_BOARD_DATA_TYPE_NONE"
+      },
+      {
+        "desc": "UTF8文本。",
+        "name": "CLIP_BOARD_DATA_TYPE_TEXT"
+      }
+    ],
+    "header": "base/clip_board.h",
+    "name": "clip_board_data_type_t",
+    "prefix": "CLIP_BOARD_DATA_TYPE_",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的剪切板对象。",
+        "name": "clip_board",
+        "alias": "clip_board_instance",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回缺省剪切板对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的剪切板对象。",
+        "name": "clip_board_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清空剪切板中的数据。",
+        "name": "clip_board_clear",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          },
+          {
+            "type": "clip_board_data_type_t",
+            "name": "type",
+            "desc": "数据类型。"
+          },
+          {
+            "type": "const void* data",
+            "name": "data",
+            "desc": "数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置数据到剪切板中。",
+        "name": "clip_board_set_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          },
+          {
+            "type": "clip_board_data_type_t*",
+            "name": "type",
+            "desc": "返回数据类型(可为NULL)。"
+          },
+          {
+            "type": "void** data",
+            "name": "data",
+            "desc": "返回数据(可为NULL)。"
+          },
+          {
+            "type": "uint32_t*",
+            "name": "size",
+            "desc": "返回数据长度(可为NULL)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从剪切板中获取数据。",
+        "name": "clip_board_get_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁剪切板对象。",
+        "name": "clip_board_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": "设置文本(UTF8)数据到剪切板。",
+        "name": "clip_board_set_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": "从剪切板中获取文本(UTF8)数据。",
+        "name": "clip_board_get_text",
+        "return": {
+          "type": "const char*",
+          "desc": "返回文本数据。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/clip_board.h",
+    "desc": "剪切板接口。",
+    "name": "clip_board_t",
     "annotation": {
       "scriptable": true
     }
@@ -5970,6 +6200,324 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的图片名称。",
+        "name": "image_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "rotation",
+            "desc": "旋转角度(幅度)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_set_rotation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_x",
+            "desc": "X方向缩放比例。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_y",
+            "desc": "Y方向缩放比例。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_set_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_x",
+            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_y",
+            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_set_anchor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selected",
+            "desc": "是否被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的选中状态。",
+        "name": "image_set_selected",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selectable",
+            "desc": "是否可以被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否可以被选中。",
+        "name": "image_set_selectable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "clickable",
+            "desc": "是否可以被点击。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否可以被点击。",
+        "name": "image_set_clickable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_base对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为image_base对象(供脚本语言使用)。",
+        "name": "image_base_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_base对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "image",
+        "desc": "图片的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_x",
+        "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_y",
+        "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_x",
+        "desc": "控件在X方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_y",
+        "desc": "控件在Y方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "rotation",
+        "desc": "控件的旋转角度。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clickable",
+        "desc": "点击时，是否触发EVT_CLICK事件。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selectable",
+        "desc": "是否设置选中状态。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": "当前是否被选中。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/image_base.h",
+    "desc": "图片控件基类。",
+    "name": "image_base_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "image_loader_t*",
             "name": "loader",
             "desc": "loader对象。"
@@ -6339,29 +6887,6 @@
             "desc": "image对象。"
           },
           {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的图片名称。",
-        "name": "image_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
             "type": "image_draw_type_t",
             "name": "draw_type",
             "desc": "显示方式(仅在没有旋转和缩放时生效)。"
@@ -6382,256 +6907,23 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "rotation",
-            "desc": "旋转角度(幅度)。"
+            "desc": "image对象。"
           }
         ],
         "annotation": {
+          "cast": true,
           "scriptable": true
         },
-        "desc": "设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_set_rotation",
+        "desc": "转换为image对象(供脚本语言使用)。",
+        "name": "image_cast",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_x",
-            "desc": "X方向缩放比例。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_y",
-            "desc": "Y方向缩放比例。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_set_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_x",
-            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_y",
-            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_set_anchor",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selected",
-            "desc": "是否被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的选中状态。",
-        "name": "image_set_selected",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selectable",
-            "desc": "是否可以被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件是否可以被选中。",
-        "name": "image_set_selectable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "clickable",
-            "desc": "是否可以被点击。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件是否可以被点击。",
-        "name": "image_set_clickable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "widget_t*",
+          "desc": "image对象。"
         }
       }
     ],
     "events": [],
     "properties": [
-      {
-        "name": "anchor_x",
-        "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_y",
-        "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_x",
-        "desc": "控件在X方向上的缩放比例。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_y",
-        "desc": "控件在Y方向上的缩放比例。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "rotation",
-        "desc": "控件的旋转角度。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "clickable",
-        "desc": "点击时，是否触发EVT_CLICK事件。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selectable",
-        "desc": "是否设置选中状态。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "image",
-        "desc": "图片的名称。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
       {
         "name": "draw_type",
         "desc": "图片的绘制方式(仅在没有旋转和缩放时生效)。",
@@ -6642,15 +6934,6 @@
           "readable": true,
           "persitent": true,
           "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selected",
-        "desc": "当前是否被选中。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
           "scriptable": true
         }
       }
@@ -7781,7 +8064,7 @@
             "desc": "字符串。"
           },
           {
-            "type": "int32_t",
+            "type": "uint32_t",
             "name": "nr",
             "desc": "字符数。"
           }
@@ -7807,7 +8090,7 @@
             "desc": "字符串。"
           },
           {
-            "type": "int32_t",
+            "type": "uint32_t",
             "name": "nr",
             "desc": "字符数。"
           },
@@ -10034,7 +10317,7 @@
       },
       {
         "desc": "前景颜色。",
-        "name": "STYLE_ID_BG_COLOR"
+        "name": "STYLE_ID_FG_COLOR"
       },
       {
         "desc": "字体名称。",
@@ -10111,6 +10394,18 @@
       {
         "desc": "Y方向的偏移，方便实现按下的效果。",
         "name": "STYLE_ID_Y_OFFSET"
+      },
+      {
+        "desc": "编辑器中选中区域的背景颜色。",
+        "name": "STYLE_ID_SELECTED_BG_COLOR"
+      },
+      {
+        "desc": "编辑器中选中区域的前景颜色。",
+        "name": "STYLE_ID_SELECTED_FG_COLOR"
+      },
+      {
+        "desc": "编辑器中选中区域的文本颜色。",
+        "name": "STYLE_ID_SELECTED_TEXT_COLOR"
       }
     ],
     "header": "base/style.h",
@@ -11704,8 +11999,12 @@
         "name": "VALUE_TYPE_POINTER"
       },
       {
-        "desc": "float类型。",
+        "desc": "float_t类型。",
         "name": "VALUE_TYPE_FLOAT"
+      },
+      {
+        "desc": "float类型。",
+        "name": "VALUE_TYPE_FLOAT32"
       },
       {
         "desc": "double类型。",
@@ -12142,7 +12441,7 @@
             "desc": "value对象。"
           },
           {
-            "type": "float",
+            "type": "float_t",
             "name": "value",
             "desc": "待设置的值。"
           }
@@ -12170,6 +12469,47 @@
         },
         "desc": "获取类型为float的值。",
         "name": "value_float",
+        "return": {
+          "type": "float",
+          "desc": "值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          },
+          {
+            "type": "float",
+            "name": "value",
+            "desc": "待设置的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置类型为float的值。",
+        "name": "value_set_float32",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取类型为float的值。",
+        "name": "value_float32",
         "return": {
           "type": "float",
           "desc": "值。"
@@ -17166,6 +17506,39 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "bool_t",
+            "name": "is_local",
+            "desc": "TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断一个点是否在控件内。",
+        "name": "widget_is_point_in",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "widget对象。"
           }
         ],
@@ -17293,11 +17666,56 @@
             "desc": "图片对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "加载图片。",
         "name": "widget_load_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "资源名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载资源。",
+        "name": "widget_load_asset",
+        "return": {
+          "type": "const asset_info_t*",
+          "desc": "返回资源句柄。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const asset_info_t*",
+            "name": "asset",
+            "desc": "资源句柄。"
+          }
+        ],
+        "annotation": {},
+        "desc": "卸载资源。",
+        "name": "widget_unload_asset",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18373,7 +18791,7 @@
             "desc": "str对象。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "capacity",
             "desc": "初始容量。"
           }
@@ -18443,7 +18861,7 @@
             "desc": "返回的字符串。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "size",
             "desc": "text最大长度。"
           }
@@ -18464,12 +18882,12 @@
             "desc": "str对象。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "offset",
             "desc": "指定的位置。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "nr",
             "desc": "要删除的字符数。"
           }
@@ -18490,7 +18908,7 @@
             "desc": "str对象。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "offset",
             "desc": "指定的位置。"
           },
@@ -18500,7 +18918,7 @@
             "desc": "待插入的文本。"
           },
           {
-            "type": "uint16_t",
+            "type": "uint32_t",
             "name": "nr",
             "desc": "要插入的字符数。"
           }
@@ -18545,6 +18963,58 @@
         "annotation": {},
         "desc": "删除尾部字符。",
         "name": "wstr_pop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wstr_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "wchar_t*",
+            "name": "s",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个字符。",
+        "name": "wstr_push_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wstr_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式(用于snprintf格式化数值)"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个整数。",
+        "name": "wstr_push_int",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18735,7 +19205,7 @@
       {
         "name": "size",
         "desc": "长度。",
-        "type": "uint16_t",
+        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
@@ -18743,7 +19213,7 @@
       {
         "name": "capacity",
         "desc": "容量。",
-        "type": "uint16_t",
+        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
@@ -19288,6 +19758,151 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建guage_pointer对象",
+        "name": "guage_pointer_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "guage_pointer对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为guage_pointer对象(供脚本语言使用)。",
+        "name": "guage_pointer_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "guage_pointer对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "angle",
+            "desc": "指针角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
+        "name": "guage_pointer_set_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "指针的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指针的图片。",
+        "name": "guage_pointer_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "angle",
+        "desc": "指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "image",
+        "desc": "指针图片。图片须垂直向上，图片的中心点为旋转方向。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "guage/guage_pointer.h",
+    "desc": "仪表指针控件。",
+    "name": "guage_pointer_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建guage对象",
         "name": "guage_create",
         "return": {
@@ -19319,19 +19934,19 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "控件对象。"
+            "desc": "image对象。"
           },
           {
-            "type": "int32_t",
-            "name": "angle",
-            "desc": "指针角度。"
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
-        "name": "guage_set_angle",
+        "desc": "设置背景图片的名称。",
+        "name": "guage_set_image",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -19342,42 +19957,19 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "控件对象。"
+            "desc": "image对象。"
           },
           {
-            "type": "const char*",
-            "name": "angle",
-            "desc": "指针的图片。"
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "显示方式。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置指针的图片。",
-        "name": "guage_set_pointer_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "bg_image",
-            "desc": "背景图片。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置背景图片。",
-        "name": "guage_set_bg_image",
+        "desc": "设置图片的显示方式。",
+        "name": "guage_set_draw_type",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -19387,20 +19979,7 @@
     "events": [],
     "properties": [
       {
-        "name": "angle",
-        "desc": "指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "bg_image",
+        "name": "image",
         "desc": "背景图片。",
         "type": "char*",
         "annotation": {
@@ -19413,9 +19992,9 @@
         }
       },
       {
-        "name": "pointer_image",
-        "desc": "指针图片。图片须垂直向上，图片的中心点为旋转方向。",
-        "type": "char*",
+        "name": "draw_type",
+        "desc": "图片的绘制方式。",
+        "type": "image_draw_type_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -19427,7 +20006,7 @@
       }
     ],
     "header": "guage/guage.h",
-    "desc": "仪表控件。",
+    "desc": "表盘控件。",
     "name": "guage_t",
     "parent": "widget_t",
     "annotation": {
@@ -19962,7 +20541,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "float_t",
             "name": "value",
             "desc": "值。"
           }
@@ -20132,7 +20711,7 @@
       {
         "name": "value",
         "desc": "值(缺省为0)。",
-        "type": "uint32_t",
+        "type": "float_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -22172,52 +22751,6 @@
             "desc": "控件对象。"
           },
           {
-            "type": "bool_t",
-            "name": "show_date",
-            "desc": "是否显示日期。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否显示日期。",
-        "name": "digit_clock_set_show_date",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_time",
-            "desc": "是否显示时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否显示时间。",
-        "name": "digit_clock_set_show_time",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
             "type": "const char*",
             "name": "format",
             "desc": "格式。"
@@ -22237,34 +22770,8 @@
     "events": [],
     "properties": [
       {
-        "name": "show_date",
-        "desc": "是否显示日期。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "show_time",
-        "desc": "是否显示时间。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
         "name": "format",
-        "desc": "显示格式。如日期格式为\"%d-%02d-%02d\"，显示类似于2018-12-12。",
+        "desc": "显示格式。Y 代表年M 代表月D 代表日h 代表时m 代表分s 代表秒如 日期时间为：2018/11/12 9:10:20\"Y/D/M\"显示为\"2018/11/12\"\"Y-D-M\"显示为\"2018-11-12\"\"Y-D-M h:m:s\"显示为\"2018-11-12 9:10:20\"",
         "type": "char*",
         "annotation": {
           "set_prop": true,
