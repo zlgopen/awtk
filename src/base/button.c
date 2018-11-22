@@ -86,10 +86,12 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       pointer_event_t evt = *(pointer_event_t*)e;
       if (button->pressed && widget_is_point_in(widget, evt.x, evt.y, FALSE)) {
         evt.e = event_init(EVT_CLICK, widget);
+        button_pointer_up_cleanup(widget);
         widget_dispatch(widget, (event_t*)&evt);
+      } else {
+        button_pointer_up_cleanup(widget);
       }
 
-      button_pointer_up_cleanup(widget);
       break;
     }
     case EVT_POINTER_LEAVE:
