@@ -285,6 +285,7 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->state != state) {
+    widget_invalidate_force(widget);
     widget->state = state;
     widget_update_style(widget);
     widget_invalidate_force(widget);
