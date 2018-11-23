@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_base.h
  * Author: AWTK Develop Team
  * Brief:  image base
@@ -232,7 +232,7 @@ ret_t image_transform(widget_t* widget, canvas_t* c) {
   image_base_t* image_base = IMAGE_BASE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
 
-  return_value_if_fail(widget != NULL && vg != NULL, FALSE);
+  return_value_if_fail(widget != NULL && vg != NULL, RET_BAD_PARAMS);
 
   anchor_x = image_base->anchor_x * widget->w;
   anchor_y = image_base->anchor_y * widget->h;
