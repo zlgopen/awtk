@@ -29,8 +29,10 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
-      widget_set_state(widget, WIDGET_STATE_PRESSED);
-      widget_invalidate(widget, NULL);
+      if (image->clickable) {
+        widget_set_state(widget, WIDGET_STATE_PRESSED);
+        widget_invalidate(widget, NULL);
+      }
       break;
     case EVT_POINTER_UP: {
       if (image->clickable) {
@@ -225,21 +227,21 @@ bool_t image_need_transform(widget_t* widget) {
 }
 
 ret_t image_transform(widget_t* widget, canvas_t* c) {
+  float_t anchor_x = 0;
+  float_t anchor_y = 0;
   image_base_t* image_base = IMAGE_BASE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
 
   return_value_if_fail(widget != NULL && vg != NULL, FALSE);
 
-  if (image_need_transform(widget)) {
-    float_t anchor_x = image_base->anchor_x * widget->w;
-    float_t anchor_y = image_base->anchor_y * widget->h;
+  anchor_x = image_base->anchor_x * widget->w;
+  anchor_y = image_base->anchor_y * widget->h;
 
-    vgcanvas_translate(vg, c->ox, c->oy);
-    vgcanvas_translate(vg, anchor_x, anchor_y);
-    vgcanvas_rotate(vg, image_base->rotation);
-    vgcanvas_scale(vg, image_base->scale_x, image_base->scale_y);
-    vgcanvas_translate(vg, -anchor_x, -anchor_y);
-  }
+  vgcanvas_translate(vg, c->ox, c->oy);
+  vgcanvas_translate(vg, anchor_x, anchor_y);
+  vgcanvas_rotate(vg, image_base->rotation);
+  vgcanvas_scale(vg, image_base->scale_x, image_base->scale_y);
+  vgcanvas_translate(vg, -anchor_x, -anchor_y);
 
   return RET_OK;
 }

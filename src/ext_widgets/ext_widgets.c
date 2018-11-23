@@ -20,9 +20,10 @@
  */
 
 #include "ext_widgets.h"
+#include "switch/switch.h"
 #include "guage/guage.h"
 #include "guage/guage_pointer.h"
-#include "switch/switch.h"
+#include "svg_image/svg_image.h"
 #include "keyboard/keyboard.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
@@ -65,6 +66,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_SWITCH, switch_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_ANIMATION, image_animation_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_PROGRESS_CIRCLE, progress_circle_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_SVG_IMAGE, svg_image_create);
 
   return RET_OK;
 }

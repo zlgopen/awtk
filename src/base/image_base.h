@@ -68,7 +68,7 @@ typedef struct _image_base_t {
   /**
    * @property {float_t} rotation
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 控件的旋转角度。
+   * 控件的旋转角度(幅度)。
    */
   float_t rotation;
   /**

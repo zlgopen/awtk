@@ -1,4 +1,6 @@
 # 最新动态
+* 2018/11/23
+  * 增加svg\_image控件。SVG支持的特性请参考src/svg/README.md。
 
 * 2018/11/22
   * 完善button/checkbutton/comboboxitem对pointer down abort事件的处理。

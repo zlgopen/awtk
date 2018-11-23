@@ -464,3 +464,9 @@
     <normal text_color="gold" fg_image="progress_circle" />
   </style>
 </progress_circle>
+
+<svg_image>
+  <style name="default">
+    <normal border_color="green" fg_color="red" />
+  </style>
+</svg_image>
