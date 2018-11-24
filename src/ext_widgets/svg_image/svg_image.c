@@ -23,6 +23,7 @@
 #include "base/mem.h"
 #include "base/utils.h"
 #include "svg/bsvg_draw.h"
+#include "base/widget_vtable.h"
 #include "svg_image/svg_image.h"
 
 static ret_t svg_image_load_bsvg(widget_t* widget) {
@@ -59,8 +60,6 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     bsvg_t bsvg;
     int32_t x = 0;
     int32_t y = 0;
-    float_t anchor_x = 0;
-    float_t anchor_y = 0;
     style_t* style = widget->astyle;
     color_t black = color_init(0, 0, 0, 0xff);
     const asset_info_t* asset = svg_image->bsvg_asset;
@@ -114,6 +113,7 @@ static const widget_vtable_t s_svg_image_vtable = {.size = sizeof(svg_image_t),
                                                    .destroy = svg_image_destroy,
                                                    .on_event = image_base_on_event,
                                                    .on_paint_self = svg_image_on_paint_self,
+                                                   .on_paint_background = widget_on_paint_null,
                                                    .set_prop = image_base_set_prop,
                                                    .get_prop = image_base_get_prop};
 
