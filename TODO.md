@@ -71,6 +71,10 @@
 * Windows/Linux支持高清屏幕。
 * 电阻屏校准窗口。
 * 数字时钟控件。
+* 支持SVG
+* 支持GIF
+* ProgressCircle
+* 支持clipboard
 
 ## 短期计划(顺序不定)
 * menu

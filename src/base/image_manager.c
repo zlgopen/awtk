@@ -156,7 +156,7 @@ ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image
 #endif
     return RET_OK;
   } else if (imm->loader != NULL && res->subtype != ASSET_TYPE_IMAGE_BSVG) {
-    ret_t ret = image_loader_load(imm->loader, res->data, res->size, image);
+    ret_t ret = image_loader_load(imm->loader, res, image);
     if (ret == RET_OK) {
       image_manager_add(imm, name, image);
       assets_manager_unref(imm->assets_manager, res);

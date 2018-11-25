@@ -56,6 +56,7 @@
 #include "assets/inc/ui/scroll_view_h.data"
 #include "assets/inc/ui/scroll_bar_h.data"
 #include "assets/inc/ui/spinbox.data"
+#include "assets/inc/ui/gif_image.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
@@ -97,6 +98,7 @@
 #include "assets/inc/images/anic.res"
 #include "assets/inc/images/earth.res"
 #include "assets/inc/images/ani5.res"
+#include "assets/inc/images/bee.res"
 #include "assets/inc/images/contact.res"
 #include "assets/inc/images/slider_fg.res"
 #include "assets/inc/images/contact_active.res"
@@ -208,6 +210,7 @@
 #include "assets/inc/images/question.data"
 #include "assets/inc/images/guage_bg.data"
 #include "assets/inc/images/arrow_right_n.data"
+#include "assets/inc/images/bee.data"
 #include "assets/inc/images/clock_bg.data"
 #include "assets/inc/images/me_active.data"
 #include "assets/inc/images/cursor.data"
@@ -282,7 +285,7 @@
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/pointer_4.bsvg"
 #include "assets/inc/images/china.bsvg"
@@ -296,17 +299,17 @@
 #include "assets/inc/images/pointer.bsvg"
 #include "assets/inc/images/pointer_red.bsvg"
 #include "assets/inc/images/girl.bsvg"
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #ifdef WITH_STB_FONT
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
-#else /*WITH_MINI_FONT*/
+#else/*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#endif/*WITH_MINI_FONT*/
+#else/*WITH_STB_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -354,6 +357,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_scroll_view_h);
   assets_manager_add(rm, ui_scroll_bar_h);
   assets_manager_add(rm, ui_spinbox);
+  assets_manager_add(rm, ui_gif_image);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
@@ -410,6 +414,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_question);
   assets_manager_add(rm, image_guage_bg);
   assets_manager_add(rm, image_arrow_right_n);
+  assets_manager_add(rm, image_bee);
   assets_manager_add(rm, image_clock_bg);
   assets_manager_add(rm, image_me_active);
   assets_manager_add(rm, image_cursor);
@@ -512,7 +517,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_pointer);
   assets_manager_add(rm, image_pointer_red);
   assets_manager_add(rm, image_girl);
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

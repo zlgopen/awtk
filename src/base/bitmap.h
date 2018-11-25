@@ -168,6 +168,13 @@ struct _bitmap_t {
    */
   const uint8_t* data;
 
+  bool_t is_gif;
+  /*for gif begin*/
+  int32_t* gif_delays;
+  uint32_t gif_frame_h;
+  uint32_t gif_frames_nr;
+  /*for gif end*/
+
   /*private members*/
   /*data是按cache line对齐，而data_free_ptr是用于释放的指针*/
   uint8_t* data_free_ptr;
@@ -181,6 +188,7 @@ struct _bitmap_t {
   /* 显示特定的数据，如OpenGL texture ID，agg/agge中图片等。*/
   void* specific;
   /*specific_destroy的上下文*/
+
   void* specific_ctx;
   /*用于销毁specific*/
   bitmap_destroy_t specific_destroy;

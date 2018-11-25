@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 
   buff = (uint8_t*)read_file(in_filename, &size);
   if (buff != NULL) {
-    if (stb_load_image(buff, size, &image, require_bgra, enable_bgr565) == RET_OK) {
+    if (stb_load_image(0, buff, size, &image, require_bgra, enable_bgr565) == RET_OK) {
       if (image_gen(&image, out_filename) == RET_OK) {
         printf("done\n");
       } else {

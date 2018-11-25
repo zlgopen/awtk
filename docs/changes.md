@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/11/25
+  * 支持GIF图片(参考：demos/assets/raw/ui/gif\_image.xml)。
+
 * 2018/11/24
   * svg支持圆弧路径(A/a)
 

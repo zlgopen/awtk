@@ -118,6 +118,7 @@ def gen_res_png_jpg():
     inc=joinPath(OUTPUT_DIR, 'images/'+basename);
     inc=inc.replace('.png', '.data')
     inc=inc.replace('.jpg', '.data')
+    inc=inc.replace('.gif', '.data')
     imagegen(raw, inc)
 
 def gen_res_all_image(): 

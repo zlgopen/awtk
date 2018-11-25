@@ -1,4 +1,5 @@
-﻿#include "base/mem.h"
+﻿#include "base/fs.h"
+#include "base/mem.h"
 #include "gtest/gtest.h"
 #include "tools/common/utils.h"
 #include "base/image_manager.h"
@@ -11,13 +12,23 @@
 #define PNG_OPAQUE_NAME TK_ROOT "/tests/testdata/test_opaque.png"
 
 static ret_t load_image(const char* filename, bitmap_t* image) {
-  uint32_t size = 0;
   ret_t ret = RET_OK;
   image_loader_t* loader = image_loader_stb();
-  printf("%s\n", filename);
-  uint8_t* buff = (uint8_t*)read_file(filename, &size);
-  ret = image_loader_load(loader, buff, size, image);
-  TKMEM_FREE(buff);
+  uint32_t size = file_get_size(filename);
+  asset_info_t* info = (asset_info_t*)TKMEM_ALLOC(sizeof(asset_info_t) + size);
+  return_value_if_fail(info != NULL, RET_OOM);
+
+  memset(info, 0x00, sizeof(asset_info_t));
+  info->size = size;
+  info->type = ASSET_TYPE_IMAGE;
+  info->subtype = 0;
+  info->refcount = 1;
+  info->is_in_rom = FALSE;
+  strncpy(info->name, "name", NAME_LEN);
+
+  ENSURE(file_read_part(filename, info->data, size, 0) == size);
+  ret = image_loader_load(loader, info, image);
+  TKMEM_FREE(info);
 
   return ret;
 }
@@ -88,7 +99,7 @@ static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require
   ret_t ret = RET_OK;
   printf("%s\n", filename);
   uint8_t* buff = (uint8_t*)read_file(filename, &size);
-  ret = stb_load_image(buff, size, image, require_bgra, enable_bgr565);
+  ret = stb_load_image(0, buff, size, image, require_bgra, enable_bgr565);
   TKMEM_FREE(buff);
 
   return ret;
