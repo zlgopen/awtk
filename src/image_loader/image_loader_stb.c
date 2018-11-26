@@ -58,7 +58,9 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     return_value_if_fail(data != NULL, RET_FAIL);
 
     total_h = h * z;
-    if (require_bgra) {
+    if (enable_bgr565 && rgba_data_is_opaque(data, w, total_h, n)) {
+      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGR565, data, n);
+    } else if (require_bgra) {
       ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGRA8888, data, n);
     } else {
       ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_RGBA8888, data, n);
