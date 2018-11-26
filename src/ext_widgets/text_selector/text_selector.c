@@ -441,7 +441,7 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
     text_selector->option_items = option;
   }
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 int32_t text_selector_count_options(widget_t* widget) {
@@ -530,7 +530,7 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
   text_selector_set_selected_index_only(text_selector, index);
   text_selector_sync_yoffset_with_selected_index(text_selector);
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
@@ -540,7 +540,7 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
   text_selector_sync_yoffset_with_selected_index(text_selector);
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 int32_t text_selector_get_value(widget_t* widget) {

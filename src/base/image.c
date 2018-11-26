@@ -125,7 +125,7 @@ ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
 
   image->draw_type = draw_type;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 widget_t* image_cast(widget_t* widget) {

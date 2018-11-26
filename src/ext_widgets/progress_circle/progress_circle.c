@@ -107,7 +107,7 @@ ret_t progress_circle_set_max(widget_t* widget, uint32_t max) {
 
   progress_circle->max = max;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_circle_set_line_width(widget_t* widget, uint32_t line_width) {
@@ -116,7 +116,7 @@ ret_t progress_circle_set_line_width(widget_t* widget, uint32_t line_width) {
 
   progress_circle->line_width = line_width;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle) {
@@ -125,7 +125,7 @@ ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle) {
 
   progress_circle->start_angle = start_angle;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
@@ -134,7 +134,7 @@ ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
 
   progress_circle->unit = tk_str_copy(progress_circle->unit, unit);
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text) {
@@ -143,7 +143,7 @@ ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text) {
 
   progress_circle->show_text = show_text;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_clock_wise) {
@@ -152,7 +152,7 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
 
   progress_circle->counter_clock_wise = counter_clock_wise;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_t* v) {

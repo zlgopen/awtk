@@ -205,6 +205,7 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
     aswitch->value = value;
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
   }
 
   if (value) {

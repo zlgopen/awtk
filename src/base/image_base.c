@@ -153,7 +153,7 @@ ret_t image_set_image(widget_t* widget, const char* name) {
 
   image->image = tk_str_copy(image->image, name);
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t image_set_rotation(widget_t* widget, float_t rotation) {
