@@ -835,6 +835,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_GRID "grid"
 
 /**
+ * @const WIDGET_TYPE_GRID_ITEM
+ *
+ */
+#define WIDGET_TYPE_GRID_ITEM "grid_item"
+
+/**
  * @const WIDGET_TYPE_ROW
  *
  */
