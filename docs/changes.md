@@ -1,4 +1,14 @@
 # 最新动态
+* 2018/11/27
+  * 更新stm32767/stm429的工程。
+  * 更新资源。
+  * 修改编译警告。
+
+* 2018/11/26
+  * 优化不透明的gif。
+  * 修改部分函数widget\_invalidate
+  * 增加grid\_item。
+
 * 2018/11/25
   * 支持GIF图片(参考：demos/assets/raw/ui/gif\_image.xml)。
 
