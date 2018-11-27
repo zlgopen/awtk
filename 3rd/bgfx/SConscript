@@ -59,10 +59,10 @@ BgSources=[
 		'bgfx/src/vertexdecl.cpp'
 		]
 
+CCFLAGS = CCFLAGS + '-std=c++14 ';
 if OS_NAME == 'Windows':
 	BgCppPath= BgCppPath + ['bx/include/compat/msvc','bgfx/3rdparty/dxsdk/include']
 elif OS_NAME == 'Darwin':
-	CCFLAGS = CCFLAGS + '-std=c++11 ';
 	BgCppPath= BgCppPath + ['bx/include/compat/osx']
 	BgSources= BgSources + ['bgfx/src/renderer_mtl.mm']
 	
