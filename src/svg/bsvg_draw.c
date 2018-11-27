@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bsvg_draw.c
  * Author: AWTK Develop Team
  * Brief:  bsvg_draw
@@ -458,7 +458,7 @@ static float_t calc_vector_angle(float_t ux, float_t uy, float_t vx, float_t vy)
 
 static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_t radii,
                            float_t angle, bool_t largeArcFlag, bool_t sweepFlag) {
-  const float_t radPerDeg = M_PI / 180.0;
+  const float_t radPerDeg = M_PI / 180.0f;
   info->seg_index = 0;
 
   if (from.x == to.x && from.y == to.y) {
@@ -475,14 +475,14 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
   info->sin_phi = sin(angle * radPerDeg);
   info->cos_phi = cos(angle * radPerDeg);
 
-  float_t x1dash = info->cos_phi * (from.x - to.x) / 2.0 + info->sin_phi * (from.y - to.y) / 2.0;
-  float_t y1dash = -info->sin_phi * (from.x - to.x) / 2.0 + info->cos_phi * (from.y - to.y) / 2.0;
+  float_t x1dash = info->cos_phi * (from.x - to.x) / 2.0f + info->sin_phi * (from.y - to.y) / 2.0f;
+  float_t y1dash = -info->sin_phi * (from.x - to.x) / 2.0f + info->cos_phi * (from.y - to.y) / 2.0f;
 
   float_t root;
   float_t numerator = info->rx * info->rx * info->ry * info->ry -
                       info->rx * info->rx * y1dash * y1dash - info->ry * info->ry * x1dash * x1dash;
 
-  if (numerator < 0.0) {
+  if (numerator < 0.0f) {
     /*
     //  If info->rx , info->ry and are such that there is no solution (basically,
     //  the ellipse is not big enough to reach from 'from' to 'to'
@@ -492,14 +492,14 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
     // -> find factor s, such that numerator' with info->rx'=s*info->rx and
     //    info->ry'=s*info->ry becomes 0 :
     */
-    float_t s = sqrt(1.0 - numerator / (info->rx * info->rx * info->ry * info->ry));
+    float_t s = sqrt(1.0f - numerator / (info->rx * info->rx * info->ry * info->ry));
 
     info->rx *= s;
     info->ry *= s;
-    root = 0.0;
+    root = 0.0f;
 
   } else {
-    root = (largeArcFlag == sweepFlag ? -1.0 : 1.0) *
+    root = (largeArcFlag == sweepFlag ? -1.0f : 1.0f) *
            sqrt(numerator /
                 (info->rx * info->rx * y1dash * y1dash + info->ry * info->ry * x1dash * x1dash));
   }
@@ -507,21 +507,22 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
   float_t cxdash = root * info->rx * y1dash / info->ry;
   float_t cydash = -root * info->ry * x1dash / info->rx;
 
-  info->c.x = info->cos_phi * cxdash - info->sin_phi * cydash + (from.x + to.x) / 2.0;
-  info->c.y = info->sin_phi * cxdash + info->cos_phi * cydash + (from.y + to.y) / 2.0;
+  info->c.x = info->cos_phi * cxdash - info->sin_phi * cydash + (from.x + to.x) / 2.0f;
+  info->c.y = info->sin_phi * cxdash + info->cos_phi * cydash + (from.y + to.y) / 2.0f;
   info->theta =
-      calc_vector_angle(1.0, 0.0, (x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry);
+      calc_vector_angle(1.0f, 0.0f, (x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry);
   float_t dtheta = calc_vector_angle((x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry,
                                      (-x1dash - cxdash) / info->rx, (-y1dash - cydash) / info->ry);
   if (!sweepFlag && dtheta > 0)
-    dtheta -= 2.0 * M_PI;
+    dtheta -= 2.0f * M_PI;
   else if (sweepFlag && dtheta < 0)
-    dtheta += 2.0 * M_PI;
+    dtheta += 2.0f * M_PI;
 
   /* Convert into cubic bezier segments <= 90deg */
-  info->num_segs = (int32_t)(ceil(fabs(dtheta / (M_PI / 2.0))));
+  info->num_segs = (int32_t)(ceil(fabs(dtheta / (M_PI / 2.0f))));
   info->delta = dtheta / info->num_segs;
-  info->t = 8.0 / 3.0 * sin(info->delta / 4.0) * sin(info->delta / 4.0) / sin(info->delta / 2.0);
+  info->t =
+      8.0f / 3.0f * sin(info->delta / 4.0f) * sin(info->delta / 4.0f) / sin(info->delta / 2.0f);
 
   info->from = from;
 
