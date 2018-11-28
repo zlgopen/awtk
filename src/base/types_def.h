@@ -455,6 +455,8 @@ typedef enum _app_type_t {
 #define TK_D2R(d) (((d)*M_PI) / 180)
 #define TK_R2D(r) (((r)*180) / M_PI)
 
+#define TK_DRAG_THRESHOLD 10
+
 struct _widget_t;
 typedef struct _widget_t widget_t;
 
