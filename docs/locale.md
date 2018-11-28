@@ -20,6 +20,11 @@
 <language name="en_US">Cancel</language>
 <language name="zh_CN">取消</language>
 </string>
+
+<string name="value is %d">
+<language name="en_US">value is %d</language>
+<language name="zh_CN">值为%d</language>
+</string>
 ```
 
 > 在实际工作中，由程序员提供一个模板，让翻译人员翻译，翻译好之后交给程序员放到项目中。
@@ -45,13 +50,14 @@ Usage: ./bin/strgen input outputidr [bin]
 
 ## 动态字符串翻译
 
-有些字符串是在运行时，用一个模板根据当时的数据动态生成的。这类字符串的翻译，需要程序员先用函数locale\_tr获取当前语言的模板，生成真正要显示的字符串，再设置到控件中去。如：
+有些字符串是在运行时，用一个模板根据当时的数据动态生成的。这类字符串的翻译，需要程序员先用函数locale\_info\_tr获取当前语言的模板，生成真正要显示的字符串，再设置到控件中去。如：
 
 ```
-char tr_str[64];
-const char* format = locale_tr(locale(), "value is %d");
-snprintf(tr_str, sizeof(tr_str), format, value);
-widget_set_text(label, tr_str);
+  char str[64];
+  const char* format = locale_info_tr(locale_info(), "value is %d");
+  tk_snprintf(str, sizeof(str), format, value);
+  widget_set_text_utf8(widget, str);
+
 ```
 
 在切换当前语言时，这类字符串也需要特殊处理。注册窗口的的EVT\_LOCALE\_CHANGED事件的处理函数，然后做上面的处理即可：

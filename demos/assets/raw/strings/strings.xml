@@ -7,3 +7,8 @@
 <language name="en_US">Cancel</language>
 <language name="zh_CN">取消</language>
 </string>
+
+<string name="value is %d">
+<language name="en_US">value is %d</language>
+<language name="zh_CN">值为%d</language>
+</string>

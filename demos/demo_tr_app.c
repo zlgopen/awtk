@@ -51,9 +51,22 @@ static ret_t change_locale(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t set_locale_value(widget_t* widget, int32_t value) {
+  char str[64];
+  const char* format = locale_info_tr(locale_info(), "value is %d");
+  tk_snprintf(str, sizeof(str), format, value);
+  widget_set_text_utf8(widget, str);
+
+  return RET_OK;
+}
+
 static ret_t on_locale_changed(void* ctx, event_t* e) {
   (void)ctx;
   (void)e;
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+
+  set_locale_value(value, 100);
   log_debug("locale_infod change: %s_%s\n", locale_info()->language, locale_info()->country);
 
   return RET_OK;
@@ -62,6 +75,7 @@ static ret_t on_locale_changed(void* ctx, event_t* e) {
 ret_t application_init() {
   widget_t* ok = NULL;
   widget_t* cancel = NULL;
+  widget_t* value = NULL;
   widget_t* radio_button = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
 
@@ -72,6 +86,10 @@ ret_t application_init() {
 
   cancel = button_create(win, 100, 5, 80, 30);
   widget_set_tr_text(cancel, "cancel");
+
+  value = label_create(win, 200, 5, 80, 30);
+  widget_set_name(value, "value");
+  set_locale_value(value, 100);
 
   radio_button = check_button_create_radio(win, 10, 200, 80, 30);
   widget_set_tr_text(radio_button, "English");
