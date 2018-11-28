@@ -298,7 +298,7 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_add_timer(widget, time_clock_on_timer, 1000);
   date_time_init(&dt);
 
-  time_clock->hour = dt.hour;
+  time_clock->hour = dt.hour % 12;
   time_clock->minute = dt.minute;
   time_clock->second = dt.second;
 
