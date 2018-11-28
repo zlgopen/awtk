@@ -135,28 +135,6 @@ ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t*
   return RET_NOT_FOUND;
 }
 
-static ret_t point_to_local(widget_t* widget, point_t* p) {
-  value_t v;
-  widget_t* iter = widget;
-  return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
-
-  while (iter != NULL) {
-    p->x -= iter->x;
-    p->y -= iter->y;
-
-    if (widget_get_prop(iter, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
-      p->x += value_int(&v);
-    }
-
-    if (widget_get_prop(iter, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
-      p->y += value_int(&v);
-    }
-
-    iter = iter->parent;
-  }
-
-  return RET_OK;
-}
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
@@ -165,7 +143,7 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
     return widget->grab_widget;
   }
 
-  point_to_local(widget, &p);
+  widget_to_local(widget, &p);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   xy_t xx = p.x;
   xy_t yy = p.y;

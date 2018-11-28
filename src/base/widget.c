@@ -1399,16 +1399,13 @@ ret_t widget_to_screen(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
+    if (iter->vt->scrollable) {
+      p->x -= widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
+      p->y -= widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    }
+
     p->x += iter->x;
     p->y += iter->y;
-
-    if (widget_get_prop(iter, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
-      p->x -= value_int(&v);
-    }
-
-    if (widget_get_prop(iter, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
-      p->y -= value_int(&v);
-    }
 
     iter = iter->parent;
   }
@@ -1421,6 +1418,11 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
+    if (iter->vt->scrollable) {
+      p->x += widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
+      p->y += widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    }
+
     p->x -= iter->x;
     p->y -= iter->y;
 

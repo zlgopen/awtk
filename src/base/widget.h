@@ -68,7 +68,7 @@ typedef struct _widget_vtable_t {
   const char** clone_properties;
   /*持久化widget时需要保存的属性*/
   const char** persistent_properties;
-
+  uint32_t scrollable : 1;
   widget_create_t create;
   widget_get_prop_t get_prop;
   widget_set_prop_t set_prop;
@@ -594,7 +594,7 @@ const wchar_t* widget_get_text(widget_t* widget);
 
 /**
  * @method widget_to_local
- * 将全局坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
+ * 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
  * @param {widget_t*} widget 控件对象。
  * @param {point_t*} p 坐标点。
  *

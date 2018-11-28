@@ -404,6 +404,7 @@ static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
 static const widget_vtable_t s_scroll_view_vtable = {
     .size = sizeof(scroll_view_t),
     .type = WIDGET_TYPE_SCROLL_VIEW,
+    .scrollable = TRUE,
     .clone_properties = s_scroll_view_clone_properties,
     .create = scroll_view_create,
     .on_event = scroll_view_on_event,
