@@ -188,7 +188,9 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   vgcanvas_t* canvas = lcd_get_vgcanvas(lcd);
 
   if (canvas != NULL) {
+    rect_t r = info->clip;
     vgcanvas_save(canvas);
+    vgcanvas_clip_rect(canvas, r.x, r.y, r.w, r.h);
     vgcanvas_set_transform(canvas, m->a0, m->a1, m->a2, m->a3, m->a4, m->a5);
     vgcanvas_draw_image(canvas, info->img, s->x, s->y, s->w, s->h, d->x, d->y, d->w, d->h);
     vgcanvas_restore(canvas);
@@ -252,6 +254,7 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   } else {
     vgcanvas_reinit(mem->vgcanvas, fb.w, fb.h, line_length, (bitmap_format_t)(fb.format),
                     (uint32_t*)(fb.data));
+    vgcanvas_clip_rect(mem->vgcanvas, 0, 0, fb.w, fb.h);
   }
 
   return mem->vgcanvas;
