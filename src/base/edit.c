@@ -416,13 +416,13 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
 
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
-  if (key == FKEY_BACKSPACE) {
+  if (key == TK_KEY_BACKSPACE) {
     return edit_delete_prev_char(widget);
-  } else if (key == FKEY_DELETE) {
+  } else if (key == TK_KEY_DELETE) {
     return edit_delete_next_char(widget);
-  } else if (key == FKEY_LEFT || key == FKEY_RIGHT) {
+  } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
     edit_t* edit = EDIT(widget);
-    if (key == FKEY_LEFT) {
+    if (key == TK_KEY_LEFT) {
       return edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
     } else {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);

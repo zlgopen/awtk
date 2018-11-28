@@ -109,9 +109,9 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   } else if (key != NULL) {
     key += strlen(STR_KEY_PREFIX);
     if (tk_str_eq(key, STR_KEY_BACKSPACE)) {
-      code = FKEY_BACKSPACE;
+      code = TK_KEY_BACKSPACE;
     } else if (tk_str_eq(key, STR_KEY_SPACE)) {
-      code = FKEY_SPACE;
+      code = TK_KEY_SPACE;
     } else {
       code = *key;
     }
