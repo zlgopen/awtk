@@ -64,6 +64,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_DOWN_ABORT: {
       list_item_remove_timer(widget);
+      widget_invalidate_force(widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
@@ -84,7 +85,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       uint32_t dy = tk_abs(evt->y - list_item->down.y);
 
-      if (dy > 6) {
+      if (evt->pressed && dy > TK_DRAG_THRESHOLD) {
         list_item->dragged = TRUE;
         list_item_remove_timer(widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);
