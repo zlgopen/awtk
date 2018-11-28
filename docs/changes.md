@@ -1,6 +1,13 @@
 # 最新动态
 * 2018/11/28
   * 更新字符串翻译的文档和示例。
+  * 键值的前缀有FKEY改为TK\_KEY。
+  * 把is\_designing\_window/is\_window移到vtable中。
+  * 把window\_manager中输入设备状态相关的代码移到独立的文件中。
+  * 修改list\_item中的BUG。
+  * 修复issue #50
+  * 修复issue #51
+  * widget\_invalidate\_force增加一个参数。
 
 * 2018/11/27
   * 更新stm32767/stm429的工程。

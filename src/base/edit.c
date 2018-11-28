@@ -47,7 +47,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 
   r = rect_init(edit->caret_x, 0, 1, widget->h);
   edit->caret_visible = !edit->caret_visible;
-  widget_invalidate(widget, &r);
+  widget_invalidate_force(widget, &r);
 
   if (widget->focused) {
     return RET_REPEAT;
@@ -1043,7 +1043,7 @@ ret_t edit_inc(edit_t* edit) {
       break;
   }
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 ret_t edit_dec(edit_t* edit) {
@@ -1073,7 +1073,7 @@ ret_t edit_dec(edit_t* edit) {
       break;
   }
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 ret_t edit_clear(edit_t* edit) {
@@ -1086,7 +1086,7 @@ ret_t edit_clear(edit_t* edit) {
   edit->visible_end = 0;
   edit_set_cursor_pos(widget, 0, 0);
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 static ret_t edit_on_inc(void* ctx, event_t* e) {

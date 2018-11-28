@@ -86,7 +86,7 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
     widget_dispatch(widget, &e);
 
     widget_update_style(widget);
-    widget_invalidate_force(widget);
+    widget_invalidate_force(widget, NULL);
   }
 
   return RET_OK;

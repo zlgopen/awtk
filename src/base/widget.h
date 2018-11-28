@@ -944,10 +944,11 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r);
  * 强制重绘控件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
+ * @param {rect_t*} r 矩形对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate_force(widget_t* widget);
+ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
 
 /**
  * @method widget_paint

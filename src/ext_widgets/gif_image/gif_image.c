@@ -33,7 +33,7 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
     image->index = 0;
   }
 
-  widget_invalidate_force(WIDGET(image));
+  widget_invalidate_force(WIDGET(image), NULL);
   if (image->delays != NULL && image->frames_nr > 1) {
     uint32_t delay = image->delays[image->index];
 

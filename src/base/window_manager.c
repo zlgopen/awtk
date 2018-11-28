@@ -95,7 +95,7 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
 
 static ret_t on_idle_invalidate(const timer_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
-  widget_invalidate_force(curr_win);
+  widget_invalidate_force(curr_win, NULL);
 
   return RET_REMOVE;
 }
