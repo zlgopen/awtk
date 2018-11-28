@@ -503,11 +503,11 @@ typedef struct _key_event_t {
    */
   uint8_t shift : 1;
   /**
-   * @property {bool_t} caplock
+   * @property {bool_t} capslock
    * @annotation ["readable", "scriptable"]
-   * caplock键是否按下。
+   * capslock键是否按下。
    */
-  uint8_t caplock : 1;
+  uint8_t capslock : 1;
 } key_event_t;
 
 /**
