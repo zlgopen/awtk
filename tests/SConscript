@@ -1,15 +1,18 @@
 import os
 import sys
 
-TK_ROOT=os.environ['TK_ROOT'];
-GTEST_ROOT=os.environ['GTEST_ROOT'];
 BIN_DIR=os.environ['BIN_DIR'];
+TK_ROOT=os.environ['TK_ROOT'];
+TK_3RD_ROOT=os.environ['TK_3RD_ROOT'];
+GTEST_ROOT=os.environ['GTEST_ROOT'];
 
 env=DefaultEnvironment().Clone();
 
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   os.path.join(TK_ROOT, 'src'),  
+  os.path.join(TK_3RD_ROOT, 'SDL/src'), 
+  os.path.join(TK_3RD_ROOT, 'SDL/include'), 
   os.path.join(TK_ROOT, 'src/ext_widgets'),  
   os.path.join(TK_ROOT, '3rd/libunibreak'),
   os.path.join(GTEST_ROOT, 'src'),

@@ -25,6 +25,7 @@
 #include "base/widget.h"
 #include "base/canvas.h"
 #include "base/window_animator.h"
+#include "base/input_device_status.h"
 
 BEGIN_C_DECLS
 
@@ -48,11 +49,6 @@ typedef struct _window_manager_t {
   rect_t dirty_rect;
   rect_t last_dirty_rect;
 
-  uint8_t ctrl : 1;
-  uint8_t alt : 1;
-  uint8_t shift : 1;
-  uint8_t caplock : 1;
-
   bool_t animating;
   bool_t ignore_user_input;
   window_animator_t* animator;
@@ -62,7 +58,6 @@ typedef struct _window_manager_t {
   uint32_t fps;
   uint32_t fps_time;
   uint32_t fps_count;
-  bool_t pressed;
 
   widget_t* pending_close_window;
   widget_t* pending_open_window;
@@ -70,8 +65,7 @@ typedef struct _window_manager_t {
   char* cursor;
   rect_t r_cursor;
 
-  xy_t last_x;
-  xy_t last_y;
+  input_device_status_t input_device_status;
 } window_manager_t;
 
 /**
