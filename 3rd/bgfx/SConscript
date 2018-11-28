@@ -8,63 +8,64 @@ LIB_DIR=os.environ['LIB_DIR'];
 CCFLAGS=os.environ['CCFLAGS'];
 
 BgCppPath=['bx/3rdparty',
-		'bx/include',
-		'bimg/include',
-		'bgfx/3rdparty',
-		'bgfx/3rdparty/khronos',
-		'bgfx/include']
+                'bx/include',
+                'bimg/include',
+                'bgfx/3rdparty',
+                'bgfx/3rdparty/khronos',
+                'bgfx/include']
 BgSources=[
-		'bx/src/allocator.cpp',
-		'bx/src/bx.cpp',
-		'bx/src/commandline.cpp',
-		'bx/src/crtnone.cpp',
-		'bx/src/debug.cpp',
-		'bx/src/dtoa.cpp',
-		'bx/src/easing.cpp',
-		'bx/src/file.cpp',
-		'bx/src/filepath.cpp',
-		'bx/src/hash.cpp',
-		'bx/src/math.cpp',
-		'bx/src/mutex.cpp',
-		'bx/src/os.cpp',
-		'bx/src/process.cpp',
-		'bx/src/semaphore.cpp',
-		'bx/src/settings.cpp',
-		'bx/src/string.cpp',
-		'bx/src/sort.cpp',
-		'bx/src/thread.cpp',
-		'bx/src/timer.cpp',
-		'bx/src/url.cpp',
-		'bimg/src/image.cpp',
-		'bimg/src/image_gnf.cpp',
-		'bgfx/src/bgfx.cpp',
-		'bgfx/src/debug_renderdoc.cpp',
-		'bgfx/src/dxgi.cpp',
-		'bgfx/src/glcontext_egl.cpp',
-		'bgfx/src/glcontext_glx.cpp',
-		'bgfx/src/glcontext_wgl.cpp',
-		'bgfx/src/nvapi.cpp',
-		'bgfx/src/renderer_d3d11.cpp',
-		'bgfx/src/renderer_d3d12.cpp',
-		'bgfx/src/renderer_d3d9.cpp',
-		'bgfx/src/renderer_gl.cpp',
-		'bgfx/src/renderer_gnm.cpp',
-		'bgfx/src/renderer_noop.cpp',
-		'bgfx/src/renderer_vk.cpp',
-		'bgfx/src/shader.cpp',
-		'bgfx/src/shader_dx9bc.cpp',
-		'bgfx/src/shader_dxbc.cpp',
-		'bgfx/src/shader_spirv.cpp',
-		'bgfx/src/topology.cpp',
-		'bgfx/src/vertexdecl.cpp'
-		]
+                'bx/src/allocator.cpp',
+                'bx/src/bx.cpp',
+                'bx/src/commandline.cpp',
+                'bx/src/crtnone.cpp',
+                'bx/src/debug.cpp',
+                'bx/src/dtoa.cpp',
+                'bx/src/easing.cpp',
+                'bx/src/file.cpp',
+                'bx/src/filepath.cpp',
+                'bx/src/hash.cpp',
+                'bx/src/math.cpp',
+                'bx/src/mutex.cpp',
+                'bx/src/os.cpp',
+                'bx/src/process.cpp',
+                'bx/src/semaphore.cpp',
+                'bx/src/settings.cpp',
+                'bx/src/string.cpp',
+                'bx/src/sort.cpp',
+                'bx/src/thread.cpp',
+                'bx/src/timer.cpp',
+                'bx/src/url.cpp',
+                'bimg/src/image.cpp',
+                'bimg/src/image_gnf.cpp',
+                'bgfx/src/bgfx.cpp',
+                'bgfx/src/debug_renderdoc.cpp',
+                'bgfx/src/dxgi.cpp',
+                'bgfx/src/glcontext_egl.cpp',
+                'bgfx/src/glcontext_glx.cpp',
+                'bgfx/src/glcontext_wgl.cpp',
+                'bgfx/src/nvapi.cpp',
+                'bgfx/src/renderer_d3d11.cpp',
+                'bgfx/src/renderer_d3d12.cpp',
+                'bgfx/src/renderer_d3d9.cpp',
+                'bgfx/src/renderer_gl.cpp',
+                'bgfx/src/renderer_gnm.cpp',
+                'bgfx/src/renderer_noop.cpp',
+                'bgfx/src/renderer_vk.cpp',
+                'bgfx/src/shader.cpp',
+                'bgfx/src/shader_dx9bc.cpp',
+                'bgfx/src/shader_dxbc.cpp',
+                'bgfx/src/shader_spirv.cpp',
+                'bgfx/src/topology.cpp',
+                'bgfx/src/vertexdecl.cpp'
+                ]
 
-CCFLAGS = CCFLAGS + '-std=c++14 ';
 if OS_NAME == 'Windows':
-	BgCppPath= BgCppPath + ['bx/include/compat/msvc','bgfx/3rdparty/dxsdk/include']
+  CCFLAGS = CCFLAGS + ' /std:c++14 ';
+  BgCppPath = BgCppPath + ['bx/include/compat/msvc','bgfx/3rdparty/dxsdk/include']
 elif OS_NAME == 'Darwin':
-	BgCppPath= BgCppPath + ['bx/include/compat/osx']
-	BgSources= BgSources + ['bgfx/src/renderer_mtl.mm']
-	
+  CCFLAGS = CCFLAGS + ' -std=c++14 '
+  BgCppPath= BgCppPath + ['bx/include/compat/osx']
+  BgSources= BgSources + ['bgfx/src/renderer_mtl.mm']
+        
 env.Library(os.path.join(LIB_DIR, 'bgfx'), BgSources, CPPPATH = BgCppPath,CCFLAGS = CCFLAGS)
 

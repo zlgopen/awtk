@@ -37,6 +37,7 @@ elif NANOVG_BACKEND == 'BGFX':
   if OS_NAME == 'Darwin':
     CCFLAGS = CCFLAGS + ' -std=c++14 '
   elif OS_NAME == 'Windows':
+    CCFLAGS = CCFLAGS + ' /std:c++14 ';
     CPPPATH = CPPPATH + [joinPath(TK_3RD_ROOT, 'bgfx/bx/include/compat/msvc')];
   env.Library(os.path.join(LIB_DIR, 'nanovg-bgfx'), Glob('bgfx/*.cpp'), CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 
