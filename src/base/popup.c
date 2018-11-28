@@ -107,6 +107,7 @@ static const char* s_popup_properties[] = {
 
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .type = WIDGET_TYPE_POPUP,
+                                               .is_window = TRUE,
                                                .clone_properties = s_popup_properties,
                                                .persistent_properties = s_popup_properties,
                                                .create = popup_create,

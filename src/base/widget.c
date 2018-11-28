@@ -1211,7 +1211,7 @@ widget_t* widget_get_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    if (iter->is_window) {
+    if (iter->vt->is_window) {
       return iter;
     }
     iter = iter->parent;

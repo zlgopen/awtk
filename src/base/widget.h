@@ -68,7 +68,19 @@ typedef struct _widget_vtable_t {
   const char** clone_properties;
   /*持久化widget时需要保存的属性*/
   const char** persistent_properties;
+  /**
+   * 是否可以滚动。
+   */
   uint32_t scrollable : 1;
+  /**
+   * 是否是窗口。
+   */
+  uint32_t is_window : 1;
+  /**
+   * 是否是设计窗口。
+   */
+  uint32_t is_designing_window : 1;
+
   widget_create_t create;
   widget_get_prop_t get_prop;
   widget_set_prop_t set_prop;
@@ -176,19 +188,6 @@ struct _widget_t {
    * 标识控件是否需要重绘。
    */
   uint8_t dirty : 1;
-  /**
-   * @property {bool_t} is_window
-   * @annotation ["readable"]
-   * 是否是窗口。
-   */
-  uint8_t is_window : 1;
-  /**
-   * @property {bool_t} is_designing_window
-   * @annotation ["readable"]
-   * 是否是设计窗口。
-   */
-  uint8_t is_designing_window : 1;
-
   /**
    * @property {uint8_t} state
    * @annotation ["readable"]

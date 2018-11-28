@@ -321,7 +321,7 @@ static style_t* style_factory_create_style_mutable(style_factory_t* factory, wid
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(factory != NULL && widget != NULL, NULL);
 
-  if (win && win->is_designing_window) {
+  if (win && win->vt->is_designing_window) {
     return style_mutable_create(widget);
   } else {
     return style_const_create(widget);
