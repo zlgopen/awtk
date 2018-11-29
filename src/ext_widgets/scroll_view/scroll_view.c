@@ -32,20 +32,19 @@
 #define ANIMATING_TIME 500
 
 ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
-  rect_t r1 = *r;
-  rect_t r2 = rect_init(0, 0, widget->w, widget->h);
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  rect_t r_self = rect_init(0, 0, widget->w, widget->h);
 
-  r1.x -= scroll_view->xoffset;
-  r1.y -= scroll_view->yoffset;
-  *r = rect_intersect(&r1, &r2);
+  r->x += widget->x;
+  r->y += widget->y;
+  r->x -= scroll_view->xoffset;
+  r->y -= scroll_view->yoffset;
+
+  *r = rect_intersect(r, &r_self);
 
   if (r->w <= 0 || r->h <= 0) {
     return RET_OK;
   }
-
-  r->x += widget->x;
-  r->y += widget->y;
 
   if (widget->parent) {
     widget_invalidate(widget->parent, r);
