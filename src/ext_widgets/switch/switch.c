@@ -130,6 +130,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN_ABORT: {
       aswitch->point_down_aborted = TRUE;
       aswitch->xoffset = aswitch->xoffset_save;
+      widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_UP: {
