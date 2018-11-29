@@ -121,6 +121,22 @@ TEST(Layuout, center_middle1) {
   ASSERT_EQ(r.h, 80);
 }
 
+TEST(Layuout, center_middle2) {
+  rect_t r;
+  widget_layout_t layout;
+  ASSERT_EQ(widget_layout_parse(&layout, "c:1", "m:2", "30%", "40%"), &layout);
+  ASSERT_EQ(layout.x, 1);
+  ASSERT_EQ(layout.y, 2);
+  ASSERT_EQ(layout.x_attr, X_ATTR_CENTER);
+  ASSERT_EQ(layout.y_attr, Y_ATTR_MIDDLE);
+
+  widget_layout_calc(&layout, &r, 100, 200);
+  ASSERT_EQ(r.x, 36);
+  ASSERT_EQ(r.y, 62);
+  ASSERT_EQ(r.w, 30);
+  ASSERT_EQ(r.h, 80);
+}
+
 TEST(Layuout, right_bottom) {
   rect_t r;
   widget_layout_t layout;
@@ -141,6 +157,22 @@ TEST(Layuout, right_bottom1) {
   rect_t r;
   widget_layout_t layout;
   ASSERT_EQ(widget_layout_parse(&layout, "right:1", "bottom:2", "30%", "40%"), &layout);
+  ASSERT_EQ(layout.x, 1);
+  ASSERT_EQ(layout.y, 2);
+  ASSERT_EQ(layout.x_attr, X_ATTR_RIGHT);
+  ASSERT_EQ(layout.y_attr, Y_ATTR_BOTTOM);
+
+  widget_layout_calc(&layout, &r, 100, 200);
+  ASSERT_EQ(r.x, 69);
+  ASSERT_EQ(r.y, 118);
+  ASSERT_EQ(r.w, 30);
+  ASSERT_EQ(r.h, 80);
+}
+
+TEST(Layuout, right_bottom2) {
+  rect_t r;
+  widget_layout_t layout;
+  ASSERT_EQ(widget_layout_parse(&layout, "r:1", "b:2", "30%", "40%"), &layout);
   ASSERT_EQ(layout.x, 1);
   ASSERT_EQ(layout.y, 2);
   ASSERT_EQ(layout.x_attr, X_ATTR_RIGHT);
