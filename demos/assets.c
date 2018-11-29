@@ -118,6 +118,7 @@
 #include "assets/inc/images/arrow_left_o.res"
 #include "assets/inc/images/ani3.res"
 #include "assets/inc/images/clock_second.res"
+#include "assets/inc/images/en.res"
 #include "assets/inc/images/slider_drag_o.res"
 #include "assets/inc/images/guage_bg.res"
 #include "assets/inc/images/ani2.res"
@@ -130,6 +131,7 @@
 #include "assets/inc/images/msg_active.res"
 #include "assets/inc/images/radio_checked.res"
 #include "assets/inc/images/active_dot.res"
+#include "assets/inc/images/zh.res"
 #include "assets/inc/images/question.res"
 #include "assets/inc/images/discovery_active.res"
 #include "assets/inc/images/dot.res"
@@ -198,6 +200,7 @@
 #include "assets/inc/images/arrow_up_p.data"
 #include "assets/inc/images/bg800x480.data"
 #include "assets/inc/images/discovery_active.data"
+#include "assets/inc/images/en.data"
 #include "assets/inc/images/right_on.data"
 #include "assets/inc/images/discovery.data"
 #include "assets/inc/images/rgb.data"
@@ -218,6 +221,7 @@
 #include "assets/inc/images/switch.data"
 #include "assets/inc/images/checked.data"
 #include "assets/inc/images/middle_off.data"
+#include "assets/inc/images/zh.data"
 #include "assets/inc/images/arrow_right_p.data"
 #include "assets/inc/images/ani9.data"
 #include "assets/inc/images/anib.data"
@@ -402,6 +406,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_up_p);
   assets_manager_add(rm, image_bg800x480);
   assets_manager_add(rm, image_discovery_active);
+  assets_manager_add(rm, image_en);
   assets_manager_add(rm, image_right_on);
   assets_manager_add(rm, image_discovery);
   assets_manager_add(rm, image_rgb);
@@ -422,6 +427,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_switch);
   assets_manager_add(rm, image_checked);
   assets_manager_add(rm, image_middle_off);
+  assets_manager_add(rm, image_zh);
   assets_manager_add(rm, image_arrow_right_p);
   assets_manager_add(rm, image_ani9);
   assets_manager_add(rm, image_anib);
