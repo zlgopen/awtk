@@ -43,6 +43,7 @@ typedef struct _lcd_t lcd_t;
 
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
+typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 
 typedef ret_t (*lcd_set_global_alpha_t)(lcd_t* lcd, uint8_t alpha);
@@ -143,6 +144,7 @@ typedef enum _lcd_type_t {
 struct _lcd_t {
   lcd_begin_frame_t begin_frame;
   lcd_set_clip_rect_t set_clip_rect;
+  lcd_get_clip_rect_t get_clip_rect;
   lcd_set_global_alpha_t set_global_alpha;
   lcd_set_text_color_t set_text_color;
   lcd_set_stroke_color_t set_stroke_color;
@@ -269,6 +271,16 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode)
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect);
+
+/**
+ * @method lcd_get_clip_rect
+ * 获取裁剪区域。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {rect_t*} rect 裁剪区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_get_clip_rect(lcd_t* lcd, rect_t* rect);
 
 /**
  * @method lcd_resize

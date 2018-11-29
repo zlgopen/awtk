@@ -76,12 +76,15 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 
-  r->x = c->clip_left;
-  r->y = c->clip_top;
-  r->w = c->clip_right - c->clip_left + 1;
-  r->h = c->clip_bottom - c->clip_top + 1;
-
-  return RET_OK;
+  if (c->lcd->get_clip_rect != NULL) {
+    return lcd_get_clip_rect(c->lcd, r);
+  } else {
+    r->x = c->clip_left;
+    r->y = c->clip_top;
+    r->w = c->clip_right - c->clip_left + 1;
+    r->h = c->clip_bottom - c->clip_top + 1;
+    return RET_OK;
+  }
 }
 
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
@@ -94,18 +97,10 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
   lcd_h = c->lcd->h;
 
   if (r) {
-    if (c->lcd->set_clip_rect != NULL) {
-      c->clip_left = 0;
-      c->clip_top = 0;
-      c->clip_right = lcd_w - 1;
-      c->clip_bottom = lcd_h - 1;
-      lcd_set_clip_rect(c->lcd, (rect_t*)r);
-    } else {
-      c->clip_left = r->x;
-      c->clip_top = r->y;
-      c->clip_right = r->x + r->w - 1;
-      c->clip_bottom = r->y + r->h - 1;
-    }
+    c->clip_left = r->x;
+    c->clip_top = r->y;
+    c->clip_right = r->x + r->w - 1;
+    c->clip_bottom = r->y + r->h - 1;
   } else {
     c->clip_left = 0;
     c->clip_top = 0;
@@ -127,6 +122,15 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
 
   if (c->clip_bottom >= lcd_h) {
     c->clip_bottom = lcd_h - 1;
+  }
+
+  if (c->lcd->set_clip_rect != NULL) {
+    xy_t x = c->clip_left;
+    xy_t y = c->clip_top;
+    wh_t w = c->clip_right - c->clip_left + 1;
+    wh_t h = c->clip_bottom - c->clip_top + 1;
+    rect_t clip_r = rect_init(x, y, w, h);
+    lcd_set_clip_rect(c->lcd, &clip_r);
   }
 
   return RET_OK;

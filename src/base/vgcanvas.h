@@ -276,6 +276,7 @@ struct _vgcanvas_t {
    */
   uint32_t* buff;
 
+  rect_t clip_rect;
   const vgcanvas_vtable_t* vt;
 };
 
