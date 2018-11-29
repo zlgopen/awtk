@@ -356,6 +356,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
+  widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;
   }
@@ -1402,7 +1403,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 }
 
 ret_t widget_to_screen(widget_t* widget, point_t* p) {
-  value_t v;
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
