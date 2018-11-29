@@ -171,6 +171,15 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
   h = ih;
   w = iw * (1 - aswitch->max_xoffset_ratio);
 
+#ifdef WITH_NANOVG_SOFT
+  if (round_radius < 5) {
+    rect_t src = rect_init(xoffset, 0, w, ih);
+    rect_t dst = rect_init(0, 0, widget->w, widget->h);
+
+    return canvas_draw_image(c, img, &src, &dst);
+  }
+#endif /*WITH_NANOVG_SOFT*/
+
   vgcanvas_save(vg);
   vgcanvas_translate(vg, c->ox, c->oy);
   vgcanvas_scale(vg, wscale, hscale);
