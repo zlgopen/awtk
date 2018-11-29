@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/keys.h"
 #include "base/utils.h"
 #include "base/input_method.h"
 
@@ -107,15 +108,17 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
 
       return RET_OK;
     } else {
-      return RET_FAIL;
+      if (key != TK_KEY_BACKSPACE && key != TK_KEY_DELETE) {
+        return RET_FAIL;
+      }
     }
-  } else {
-    e.key = key;
-    e.e.type = EVT_KEY_DOWN;
-    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
-    e.e.type = EVT_KEY_UP;
-    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
   }
+
+  e.key = key;
+  e.e.type = EVT_KEY_DOWN;
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+  e.e.type = EVT_KEY_UP;
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
 
   return RET_OK;
 }
