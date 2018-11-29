@@ -1334,8 +1334,16 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
 }
 
 ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
+  widget_t* iter = widget;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  widget->dirty = FALSE;
+
+  while (iter != NULL) {
+    iter->dirty = FALSE;
+    if (iter->vt->is_window) {
+      break;
+    }
+    iter = iter->parent;
+  }
 
   return widget_invalidate(widget, NULL);
 }
