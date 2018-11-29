@@ -106,14 +106,16 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
                                        im->engine->candidates_nr);
 
       return RET_OK;
+    } else {
+      return RET_FAIL;
     }
+  } else {
+    e.key = key;
+    e.e.type = EVT_KEY_DOWN;
+    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+    e.e.type = EVT_KEY_UP;
+    input_method_dispatch_to_widget(input_method(), (event_t*)&e);
   }
-
-  e.key = key;
-  e.e.type = EVT_KEY_DOWN;
-  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
-  e.e.type = EVT_KEY_UP;
-  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
 
   return RET_OK;
 }
