@@ -442,9 +442,6 @@
   <style name="default">
     <normal  bg_image="switch" />
   </style>
-  <style name="color" fg_color="#f0f0f0"  bg_color="4ed164" text_color="black">
-    <normal />
-  </style>
 </switch>
 
 <slide_view>
