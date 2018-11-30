@@ -386,3 +386,101 @@ TEST(Widget, timer) {
 
   ASSERT_EQ(timer_find(id), (timer_info_t*)NULL);
 }
+
+TEST(Widget, restack1) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_restack(b1, 0), RET_OK);
+  ASSERT_EQ(widget_restack(b1, 1), RET_OK);
+  ASSERT_EQ(widget_restack(b1, -1), RET_OK);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, restack2) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 1, 0, 10, 20);
+  widget_t* b2 = button_create(w, 2, 0, 10, 20);
+
+  ASSERT_EQ(widget_index_of(b1), 0);
+  ASSERT_EQ(widget_index_of(b2), 1);
+
+  ASSERT_EQ(widget_restack(b1, -1), RET_OK);
+  ASSERT_EQ(widget_index_of(b1), 1);
+  ASSERT_EQ(widget_index_of(b2), 0);
+
+  ASSERT_EQ(widget_restack(b2, 1), RET_OK);
+  ASSERT_EQ(widget_index_of(b2), 1);
+  ASSERT_EQ(widget_index_of(b1), 0);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, restack3) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 1, 0, 10, 20);
+  widget_t* b2 = button_create(w, 2, 0, 10, 20);
+  widget_t* b3 = button_create(w, 3, 0, 10, 20);
+
+  ASSERT_EQ(widget_index_of(b1), 0);
+  ASSERT_EQ(widget_index_of(b2), 1);
+  ASSERT_EQ(widget_index_of(b3), 2);
+
+  ASSERT_EQ(widget_restack(b1, -1), RET_OK);
+  ASSERT_EQ(widget_index_of(b2), 0);
+  ASSERT_EQ(widget_index_of(b3), 1);
+  ASSERT_EQ(widget_index_of(b1), 2);
+
+  ASSERT_EQ(widget_restack(b1, 0), RET_OK);
+  ASSERT_EQ(widget_index_of(b1), 0);
+  ASSERT_EQ(widget_index_of(b2), 1);
+  ASSERT_EQ(widget_index_of(b3), 2);
+
+  ASSERT_EQ(widget_restack(b1, 1), RET_OK);
+  ASSERT_EQ(widget_index_of(b1), 1);
+  ASSERT_EQ(widget_index_of(b2), 0);
+  ASSERT_EQ(widget_index_of(b3), 2);
+
+  ASSERT_EQ(widget_restack(b1, 2), RET_OK);
+  ASSERT_EQ(widget_index_of(b1), 2);
+  ASSERT_EQ(widget_index_of(b2), 0);
+  ASSERT_EQ(widget_index_of(b3), 1);
+
+  ASSERT_EQ(widget_restack(b1, -1), RET_OK);
+  ASSERT_EQ(widget_index_of(b1), 2);
+  ASSERT_EQ(widget_index_of(b2), 0);
+  ASSERT_EQ(widget_index_of(b3), 1);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, insert) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 1, 0, 10, 20);
+  widget_t* b2 = button_create(w, 2, 0, 10, 20);
+  widget_t* b3 = button_create(w, 3, 0, 10, 20);
+  widget_t* b4 = button_create(NULL, 3, 0, 10, 20);
+  widget_t* b5 = button_create(NULL, 3, 0, 10, 20);
+  widget_t* b6 = button_create(NULL, 3, 0, 10, 20);
+
+  ASSERT_EQ(widget_insert_child(w, 0, b4), RET_OK);
+  ASSERT_EQ(widget_index_of(b4), 0);
+  
+  ASSERT_EQ(widget_insert_child(w, 1, b5), RET_OK);
+
+  ASSERT_EQ(widget_index_of(b4), 0);
+  ASSERT_EQ(widget_index_of(b5), 1);
+  ASSERT_EQ(widget_index_of(b1), 2);
+  ASSERT_EQ(widget_index_of(b2), 3);
+  ASSERT_EQ(widget_index_of(b3), 4);
+  
+  ASSERT_EQ(widget_insert_child(w, 0, b6), RET_OK);
+  ASSERT_EQ(widget_index_of(b6), 0);
+  ASSERT_EQ(widget_index_of(b4), 1);
+  ASSERT_EQ(widget_index_of(b5), 2);
+  
+  ASSERT_EQ(widget_insert_child(w, 1, b5), RET_FAIL);
+
+  widget_destroy(w);
+}

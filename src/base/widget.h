@@ -821,6 +821,27 @@ ret_t widget_add_child(widget_t* widget, widget_t* child);
 ret_t widget_remove_child(widget_t* widget, widget_t* child);
 
 /**
+ * @method widget_insert_child
+ * 插入子控件到指定的位置。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ * @param {widget_t*} child 子控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child);
+
+/**
+ * @method widget_restack
+ * 调整控件在父控件中的位置序数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_restack(widget_t* widget, uint32_t index);
+
+/**
  * @method widget_find_target
  * 查找x/y坐标对应的子控件。
  * @annotation ["private"]

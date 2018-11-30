@@ -337,7 +337,7 @@ ret_t widget_destroy_children(widget_t* widget) {
 }
 
 ret_t widget_add_child(widget_t* widget, widget_t* child) {
-  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
   if (widget->children == NULL) {
@@ -377,6 +377,47 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 
   child->parent = NULL;
   return array_remove(widget->children, NULL, child, NULL);
+}
+
+ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
+  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget_add_child(widget, child) == RET_OK, RET_FAIL);
+
+  return widget_restack(child, index);
+}
+
+ret_t widget_restack(widget_t* widget, uint32_t index) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  uint32_t old_index = 0;
+  widget_t** children = NULL;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
+
+  old_index = widget_index_of(widget);
+  nr = widget_count_children(widget->parent);
+  return_value_if_fail(old_index >= 0 && nr > 0, RET_BAD_PARAMS);
+
+  if (index >= nr) {
+    index = nr - 1;
+  }
+
+  if (index == old_index || nr == 1) {
+    return RET_OK;
+  }
+
+  children = (widget_t**)(widget->parent->children->elms);
+  if (index < old_index) {
+    for (i = old_index; i > index; i--) {
+      children[i] = children[i - 1];
+    }
+  } else {
+    for (i = old_index; i < index; i++) {
+      children[i] = children[i + 1];
+    }
+  }
+  children[index] = widget;
+
+  return RET_OK;
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {

@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/11/30
+  * 增加函数widget\_insert\_child/widget\_restack。
+  * 增加一些测试代码。
+
 * 2018/11/29
   * 修复scroll view中脏矩形的问题。
   * awtk-linux-fb工程支持编译用户的项目。
