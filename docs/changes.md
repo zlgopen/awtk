@@ -1,7 +1,8 @@
 # 最新动态
 * 2018/11/30
-  * 增加函数widget\_insert\_child/widget\_restack。
   * 增加一些测试代码。
+  * 增加函数widget\_insert\_child/widget\_restack。
+  * 用户修改系统时间后，更新定时器的启动时间，否则可能导致定时器长时间不会触发。
 
 * 2018/11/29
   * 修复scroll view中脏矩形的问题。

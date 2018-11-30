@@ -466,7 +466,7 @@ TEST(Widget, insert) {
 
   ASSERT_EQ(widget_insert_child(w, 0, b4), RET_OK);
   ASSERT_EQ(widget_index_of(b4), 0);
-  
+
   ASSERT_EQ(widget_insert_child(w, 1, b5), RET_OK);
 
   ASSERT_EQ(widget_index_of(b4), 0);
@@ -474,12 +474,12 @@ TEST(Widget, insert) {
   ASSERT_EQ(widget_index_of(b1), 2);
   ASSERT_EQ(widget_index_of(b2), 3);
   ASSERT_EQ(widget_index_of(b3), 4);
-  
+
   ASSERT_EQ(widget_insert_child(w, 0, b6), RET_OK);
   ASSERT_EQ(widget_index_of(b6), 0);
   ASSERT_EQ(widget_index_of(b4), 1);
   ASSERT_EQ(widget_index_of(b5), 2);
-  
+
   ASSERT_EQ(widget_insert_child(w, 1, b5), RET_FAIL);
 
   widget_destroy(w);

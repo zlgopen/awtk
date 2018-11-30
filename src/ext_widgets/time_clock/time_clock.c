@@ -27,6 +27,8 @@
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 
+static ret_t time_clock_reset_time(time_clock_t* time_clock);
+
 ret_t time_clock_set_hour(widget_t* widget, int32_t hour) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -172,7 +174,11 @@ static ret_t time_clock_on_timer(const timer_info_t* info) {
       }
     }
   }
-  widget_invalidate(widget, NULL);
+
+  widget_invalidate_force(widget, NULL);
+  if (info->user_changed_time) {
+    time_clock_reset_time(time_clock);
+  }
 
   return RET_REPEAT;
 }
@@ -287,20 +293,27 @@ static const widget_vtable_t s_time_clock_vtable = {
     .get_prop = time_clock_get_prop,
     .destroy = time_clock_destroy};
 
-widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+static ret_t time_clock_reset_time(time_clock_t* time_clock) {
   date_time_t dt;
+  date_time_init(&dt);
+
+  time_clock->hour = dt.hour % 12;
+  time_clock->minute = dt.minute;
+  time_clock->second = dt.second;
+
+  return RET_OK;
+}
+
+widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   time_clock_t* time_clock = TKMEM_ZALLOC(time_clock_t);
   widget_t* widget = WIDGET(time_clock);
   return_value_if_fail(time_clock != NULL, NULL);
 
   return_value_if_fail(widget_init(widget, parent, &s_time_clock_vtable, x, y, w, h) != NULL,
                        widget);
-  widget_add_timer(widget, time_clock_on_timer, 1000);
-  date_time_init(&dt);
 
-  time_clock->hour = dt.hour % 12;
-  time_clock->minute = dt.minute;
-  time_clock->second = dt.second;
+  time_clock_reset_time(time_clock);
+  widget_add_timer(widget, time_clock_on_timer, 1000);
 
   return widget;
 }
