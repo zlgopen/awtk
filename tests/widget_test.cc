@@ -13,7 +13,7 @@
 
 using std::string;
 
-TEST(Widget, moveresize) {
+TEST(Widget, basic1) {
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
 
   ASSERT_EQ(w->x, 0);
@@ -43,6 +43,51 @@ TEST(Widget, moveresize) {
 
   ASSERT_EQ(widget_set_focused(w, FALSE), RET_OK);
   ASSERT_EQ(w->focused, FALSE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, basic2) {
+  value_t t;
+  value_t f;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+
+  value_set_str(&t, "true");
+  value_set_str(&f, "false");
+
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_ENABLE, &t), RET_OK);
+  ASSERT_EQ(w->enable, TRUE);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_ENABLE, &f), RET_OK);
+  ASSERT_EQ(w->enable, FALSE);
+
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_VISIBLE, &t), RET_OK);
+  ASSERT_EQ(w->visible, TRUE);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_VISIBLE, &f), RET_OK);
+  ASSERT_EQ(w->visible, FALSE);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_X, 11), RET_OK);
+  ASSERT_EQ(w->x, 11);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_X, 0), 11);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_Y, 22), RET_OK);
+  ASSERT_EQ(w->y, 22);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_Y, 0), 22);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_W, 33), RET_OK);
+  ASSERT_EQ(w->w, 33);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_W, 0), 33);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_H, 44), RET_OK);
+  ASSERT_EQ(w->h, 44);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_H, 0), 44);
+
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_STYLE, "default"), RET_OK);
+  ASSERT_EQ(strcmp(w->style, "default"), 0);
+  ASSERT_EQ(strcmp(widget_get_prop_str(w, WIDGET_PROP_STYLE, ""), "default"), 0);
+
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_NAME, "name"), RET_OK);
+  ASSERT_EQ(strcmp(w->name, "name"), 0);
+  ASSERT_EQ(strcmp(widget_get_prop_str(w, WIDGET_PROP_NAME, ""), "name"), 0);
 
   widget_destroy(w);
 }
