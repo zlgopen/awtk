@@ -743,12 +743,12 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
-    widget->visible = !!value_int(v);
+    widget->visible = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
-    widget->enable = !!value_int(v);
+    widget->enable = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
