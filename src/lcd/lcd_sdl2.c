@@ -178,6 +178,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
 
   SDL_GetRendererOutputSize(render, &w, &h);
 
+  base->ratio = 1;
   base->w = (wh_t)w;
   base->h = (wh_t)h;
 
