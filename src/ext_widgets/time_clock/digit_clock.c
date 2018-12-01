@@ -94,7 +94,7 @@ static ret_t digit_clock_get_prop(widget_t* widget, const char* name, value_t* v
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, DIGIT_CLOCK_PROP_FORMAT)) {
+  if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     value_set_str(v, digit_clock->format);
     return RET_OK;
   }
@@ -105,7 +105,7 @@ static ret_t digit_clock_get_prop(widget_t* widget, const char* name, value_t* v
 static ret_t digit_clock_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, DIGIT_CLOCK_PROP_FORMAT)) {
+  if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     return digit_clock_set_format(widget, value_str(v));
   }
 
@@ -129,7 +129,7 @@ static ret_t digit_clock_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* s_digit_clock_properties[] = {DIGIT_CLOCK_PROP_FORMAT, NULL};
+static const char* s_digit_clock_properties[] = {WIDGET_PROP_FORMAT, NULL};
 
 static const widget_vtable_t s_digit_clock_vtable = {
     .size = sizeof(digit_clock_t),

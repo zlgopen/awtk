@@ -198,7 +198,6 @@ ret_t image_animation_pause(widget_t* widget);
 widget_t* image_animation_cast(widget_t* widget);
 
 #define IMAGE_ANIMATION_PROP_LOOP "loop"
-#define IMAGE_ANIMATION_PROP_IMAGE "image"
 #define IMAGE_ANIMATION_PROP_SEQUENCE "sequence"
 #define IMAGE_ANIMATION_PROP_INTERVAL "interval"
 #define IMAGE_ANIMATION_PROP_AUTO_PLAY "auto_play"

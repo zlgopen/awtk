@@ -29,6 +29,7 @@
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
 #include "keyboard/candidates.h"
+#include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
 #include "time_clock/digit_clock.h"
 #include "scroll_view/list_item.h"
@@ -71,6 +72,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_SVG_IMAGE, svg_image_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_GIF_IMAGE, gif_image_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANVAS_WIDGET, canvas_widget_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_VALUE, image_value_create);
 
   return RET_OK;
 }

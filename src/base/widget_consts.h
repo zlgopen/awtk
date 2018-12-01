@@ -426,6 +426,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_IMAGE "image"
 
 /**
+ * @const WIDGET_PROP_FORMAT
+ *
+ */
+#define WIDGET_PROP_FORMAT "format"
+
+/**
  * @const WIDGET_PROP_DRAW_TYPE
  *
  */

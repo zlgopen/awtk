@@ -12,8 +12,8 @@ TEST(DigitClock, basic) {
   digit_clock_t* t = DIGIT_CLOCK(w);
 
   value_set_str(&v1, "M/D");
-  ASSERT_EQ(widget_set_prop(w, DIGIT_CLOCK_PROP_FORMAT, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(w, DIGIT_CLOCK_PROP_FORMAT, &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_FORMAT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_FORMAT, &v2), RET_OK);
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
   ASSERT_EQ(string(value_str(&v1)), string(t->format));
 

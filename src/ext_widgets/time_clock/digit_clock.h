@@ -89,8 +89,6 @@ widget_t* digit_clock_cast(widget_t* widget);
  */
 ret_t digit_clock_set_format(widget_t* widget, const char* format);
 
-#define DIGIT_CLOCK_PROP_FORMAT "format"
-
 #define WIDGET_TYPE_DIGIT_CLOCK "digit_clock"
 
 #define DIGIT_CLOCK(widget) ((digit_clock_t*)(widget))

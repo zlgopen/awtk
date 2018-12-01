@@ -73,6 +73,7 @@
 #include "assets/inc/ui/select1.data"
 #include "assets/inc/ui/bottom.data"
 #include "assets/inc/ui/image_animation.data"
+#include "assets/inc/ui/image_value.data"
 #include "assets/inc/ui/slide_view.data"
 #include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/tab_top.data"
@@ -92,6 +93,8 @@
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
+#include "assets/inc/images/num_7.res"
+#include "assets/inc/images/num_6.res"
 #include "assets/inc/images/shift.res"
 #include "assets/inc/images/ani7.res"
 #include "assets/inc/images/ania.res"
@@ -100,27 +103,39 @@
 #include "assets/inc/images/ani5.res"
 #include "assets/inc/images/bee.res"
 #include "assets/inc/images/contact.res"
+#include "assets/inc/images/battery_4.res"
+#include "assets/inc/images/num_4.res"
 #include "assets/inc/images/slider_fg.res"
 #include "assets/inc/images/contact_active.res"
 #include "assets/inc/images/dialog_title.res"
+#include "assets/inc/images/battery_5.res"
+#include "assets/inc/images/num_5.res"
 #include "assets/inc/images/ani4.res"
 #include "assets/inc/images/anib.res"
 #include "assets/inc/images/me_active.res"
 #include "assets/inc/images/arrow_up_n.res"
 #include "assets/inc/images/left_on.res"
+#include "assets/inc/images/num_1.res"
+#include "assets/inc/images/battery_1.res"
 #include "assets/inc/images/arrow_right_p.res"
 #include "assets/inc/images/slider_v_fg.res"
 #include "assets/inc/images/empty.res"
 #include "assets/inc/images/rgba.res"
+#include "assets/inc/images/num_0.res"
+#include "assets/inc/images/battery_0.res"
 #include "assets/inc/images/edit_clear_p.res"
 #include "assets/inc/images/arrow_up_o.res"
 #include "assets/inc/images/ani1.res"
 #include "assets/inc/images/arrow_left_o.res"
 #include "assets/inc/images/ani3.res"
 #include "assets/inc/images/clock_second.res"
+#include "assets/inc/images/battery_2.res"
+#include "assets/inc/images/num_2.res"
 #include "assets/inc/images/en.res"
 #include "assets/inc/images/slider_drag_o.res"
 #include "assets/inc/images/guage_bg.res"
+#include "assets/inc/images/battery_3.res"
+#include "assets/inc/images/num_3.res"
 #include "assets/inc/images/ani2.res"
 #include "assets/inc/images/arrow_left_n.res"
 #include "assets/inc/images/middle_on.res"
@@ -148,6 +163,7 @@
 #include "assets/inc/images/muted.res"
 #include "assets/inc/images/arrow_down_o.res"
 #include "assets/inc/images/rgb.res"
+#include "assets/inc/images/num_dot.res"
 #include "assets/inc/images/unmuted.res"
 #include "assets/inc/images/right_off.res"
 #include "assets/inc/images/message.res"
@@ -179,9 +195,11 @@
 #include "assets/inc/images/ani9.res"
 #include "assets/inc/images/arrow_up_p.res"
 #include "assets/inc/images/edit_clear_o.res"
+#include "assets/inc/images/num_8.res"
 #include "assets/inc/images/arrow_right_n.res"
 #include "assets/inc/images/discovery.res"
 #include "assets/inc/images/arrow_right_o.res"
+#include "assets/inc/images/num_9.res"
 #include "assets/inc/images/edit_clear_n.res"
 #include "assets/inc/images/ani8.res"
 #include "assets/inc/images/logo.res"
@@ -191,10 +209,13 @@
 #include "assets/inc/images/clock_hour.res"
 #else
 #include "assets/inc/images/arrow_right_o.data"
+#include "assets/inc/images/num_4.data"
+#include "assets/inc/images/battery_1.data"
 #include "assets/inc/images/slider_bg.data"
 #include "assets/inc/images/ani3.data"
 #include "assets/inc/images/progress_circle.data"
 #include "assets/inc/images/muted.data"
+#include "assets/inc/images/num_8.data"
 #include "assets/inc/images/earth.data"
 #include "assets/inc/images/shift.data"
 #include "assets/inc/images/arrow_up_p.data"
@@ -204,14 +225,18 @@
 #include "assets/inc/images/right_on.data"
 #include "assets/inc/images/discovery.data"
 #include "assets/inc/images/rgb.data"
+#include "assets/inc/images/num_9.data"
 #include "assets/inc/images/dot.data"
 #include "assets/inc/images/ani2.data"
+#include "assets/inc/images/battery_0.data"
 #include "assets/inc/images/find.data"
 #include "assets/inc/images/slider_fg.data"
 #include "assets/inc/images/left_on.data"
 #include "assets/inc/images/1.data"
 #include "assets/inc/images/question.data"
 #include "assets/inc/images/guage_bg.data"
+#include "assets/inc/images/num_5.data"
+#include "assets/inc/images/num_dot.data"
 #include "assets/inc/images/arrow_right_n.data"
 #include "assets/inc/images/bee.data"
 #include "assets/inc/images/clock_bg.data"
@@ -225,6 +250,7 @@
 #include "assets/inc/images/arrow_right_p.data"
 #include "assets/inc/images/ani9.data"
 #include "assets/inc/images/anib.data"
+#include "assets/inc/images/num_2.data"
 #include "assets/inc/images/arrow_up_o.data"
 #include "assets/inc/images/clock.data"
 #include "assets/inc/images/empty.data"
@@ -235,6 +261,7 @@
 #include "assets/inc/images/rgba.data"
 #include "assets/inc/images/shifton.data"
 #include "assets/inc/images/arrow_up_n.data"
+#include "assets/inc/images/num_3.data"
 #include "assets/inc/images/msg_active.data"
 #include "assets/inc/images/anic.data"
 #include "assets/inc/images/ani8.data"
@@ -252,21 +279,27 @@
 #include "assets/inc/images/dialog_title.data"
 #include "assets/inc/images/ani7.data"
 #include "assets/inc/images/play_p.data"
+#include "assets/inc/images/battery_5.data"
 #include "assets/inc/images/green_btn_p.data"
 #include "assets/inc/images/red_btn_p.data"
 #include "assets/inc/images/me.data"
+#include "assets/inc/images/num_0.data"
 #include "assets/inc/images/arrow_down_p.data"
+#include "assets/inc/images/num_1.data"
 #include "assets/inc/images/warn.data"
 #include "assets/inc/images/contact_active.data"
 #include "assets/inc/images/slider_drag_o.data"
+#include "assets/inc/images/battery_4.data"
 #include "assets/inc/images/ani6.data"
 #include "assets/inc/images/message.data"
 #include "assets/inc/images/edit_clear_o.data"
 #include "assets/inc/images/ania.data"
 #include "assets/inc/images/ani1.data"
+#include "assets/inc/images/battery_3.data"
 #include "assets/inc/images/logo.data"
 #include "assets/inc/images/arrow_left_o.data"
 #include "assets/inc/images/2.data"
+#include "assets/inc/images/num_6.data"
 #include "assets/inc/images/check.data"
 #include "assets/inc/images/middle_on.data"
 #include "assets/inc/images/arrow_down_o.data"
@@ -286,9 +319,11 @@
 #include "assets/inc/images/arrow_down_n.data"
 #include "assets/inc/images/info.data"
 #include "assets/inc/images/msg.data"
+#include "assets/inc/images/num_7.data"
 #include "assets/inc/images/3.data"
 #include "assets/inc/images/arrow_left_n.data"
 #include "assets/inc/images/edit_clear_p.data"
+#include "assets/inc/images/battery_2.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/pointer_4.bsvg"
@@ -378,6 +413,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_select1);
   assets_manager_add(rm, ui_bottom);
   assets_manager_add(rm, ui_image_animation);
+  assets_manager_add(rm, ui_image_value);
   assets_manager_add(rm, ui_slide_view);
   assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_tab_top);
@@ -397,10 +433,13 @@ ret_t assets_init(void) {
   assets_manager_add(rm, strings_zh_CN);
   assets_manager_add(rm, strings_en_US);
   assets_manager_add(rm, image_arrow_right_o);
+  assets_manager_add(rm, image_num_4);
+  assets_manager_add(rm, image_battery_1);
   assets_manager_add(rm, image_slider_bg);
   assets_manager_add(rm, image_ani3);
   assets_manager_add(rm, image_progress_circle);
   assets_manager_add(rm, image_muted);
+  assets_manager_add(rm, image_num_8);
   assets_manager_add(rm, image_earth);
   assets_manager_add(rm, image_shift);
   assets_manager_add(rm, image_arrow_up_p);
@@ -410,14 +449,18 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_right_on);
   assets_manager_add(rm, image_discovery);
   assets_manager_add(rm, image_rgb);
+  assets_manager_add(rm, image_num_9);
   assets_manager_add(rm, image_dot);
   assets_manager_add(rm, image_ani2);
+  assets_manager_add(rm, image_battery_0);
   assets_manager_add(rm, image_find);
   assets_manager_add(rm, image_slider_fg);
   assets_manager_add(rm, image_left_on);
   assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_question);
   assets_manager_add(rm, image_guage_bg);
+  assets_manager_add(rm, image_num_5);
+  assets_manager_add(rm, image_num_dot);
   assets_manager_add(rm, image_arrow_right_n);
   assets_manager_add(rm, image_bee);
   assets_manager_add(rm, image_clock_bg);
@@ -431,6 +474,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_right_p);
   assets_manager_add(rm, image_ani9);
   assets_manager_add(rm, image_anib);
+  assets_manager_add(rm, image_num_2);
   assets_manager_add(rm, image_arrow_up_o);
   assets_manager_add(rm, image_clock);
   assets_manager_add(rm, image_empty);
@@ -441,6 +485,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_rgba);
   assets_manager_add(rm, image_shifton);
   assets_manager_add(rm, image_arrow_up_n);
+  assets_manager_add(rm, image_num_3);
   assets_manager_add(rm, image_msg_active);
   assets_manager_add(rm, image_anic);
   assets_manager_add(rm, image_ani8);
@@ -458,21 +503,27 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_dialog_title);
   assets_manager_add(rm, image_ani7);
   assets_manager_add(rm, image_play_p);
+  assets_manager_add(rm, image_battery_5);
   assets_manager_add(rm, image_green_btn_p);
   assets_manager_add(rm, image_red_btn_p);
   assets_manager_add(rm, image_me);
+  assets_manager_add(rm, image_num_0);
   assets_manager_add(rm, image_arrow_down_p);
+  assets_manager_add(rm, image_num_1);
   assets_manager_add(rm, image_warn);
   assets_manager_add(rm, image_contact_active);
   assets_manager_add(rm, image_slider_drag_o);
+  assets_manager_add(rm, image_battery_4);
   assets_manager_add(rm, image_ani6);
   assets_manager_add(rm, image_message);
   assets_manager_add(rm, image_edit_clear_o);
   assets_manager_add(rm, image_ania);
   assets_manager_add(rm, image_ani1);
+  assets_manager_add(rm, image_battery_3);
   assets_manager_add(rm, image_logo);
   assets_manager_add(rm, image_arrow_left_o);
   assets_manager_add(rm, image_2);
+  assets_manager_add(rm, image_num_6);
   assets_manager_add(rm, image_check);
   assets_manager_add(rm, image_middle_on);
   assets_manager_add(rm, image_arrow_down_o);
@@ -492,9 +543,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_down_n);
   assets_manager_add(rm, image_info);
   assets_manager_add(rm, image_msg);
+  assets_manager_add(rm, image_num_7);
   assets_manager_add(rm, image_3);
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
+  assets_manager_add(rm, image_battery_2);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);
