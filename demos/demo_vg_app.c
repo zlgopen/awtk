@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/view.h"
 #include "base/timer.h"
 #include "base/window.h"
 #include "base/image_manager.h"
+#include "canvas_widget/canvas_widget.h"
 
 static ret_t on_paint_rect(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
@@ -522,7 +522,7 @@ static ret_t on_timer(const timer_info_t* timer) {
 
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* canvas = view_create(win, 0, 0, win->w, win->h);
+  widget_t* canvas = canvas_widget_create(win, 0, 0, win->w, win->h);
 
   // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);

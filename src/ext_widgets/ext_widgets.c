@@ -38,6 +38,7 @@
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
 #include "color_picker/color_picker.h"
+#include "canvas_widget/canvas_widget.h"
 #include "text_selector/text_selector.h"
 #include "color_picker/color_component.h"
 #include "progress_circle/progress_circle.h"
@@ -69,6 +70,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_PROGRESS_CIRCLE, progress_circle_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SVG_IMAGE, svg_image_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_GIF_IMAGE, gif_image_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_CANVAS_WIDGET, canvas_widget_create);
 
   return RET_OK;
 }

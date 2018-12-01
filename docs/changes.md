@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/12/01
+  * 更新js/lua脚本绑定。
+  * 增加canvas控件。
+
 * 2018/11/30
   * 增加一些测试代码。
   * 增加函数widget\_insert\_child/widget\_restack。
