@@ -27,9 +27,14 @@
 BEGIN_C_DECLS
 
 /**
+ * @class tk_t
+ * @annotation ["scriptable", "fake"]
+ * TK全局对象。
+ */
+
+/**
  * @method tk_init
  * 初始化TK。
- * @annotation ["global"]
  * @param {wh_t} w LCD宽度。
  * @param {wh_t} h LCD高度。
  * @param {app_type_t} app_type 应用程序的类型。
@@ -43,7 +48,6 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 /**
  * @method tk_run
  * 进入TK事件主循环。
- * @annotation ["global"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -52,7 +56,7 @@ ret_t tk_run(void);
 /**
  * @method tk_quit
  * 退出TK事件主循环。
- * @annotation ["scriptable", "global"]
+ * @annotation ["static", "scriptable"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -61,7 +65,6 @@ ret_t tk_quit(void);
 /**
  * @method tk_set_lcd_orientation
  * 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
- * @annotation ["global"]
  * @param {int} orientation 旋转方向。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -71,7 +74,7 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
 /**
  * @method tk_init_assets
  * 初始化资源。
- * @annotation ["global", "private"]
+ * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

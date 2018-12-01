@@ -78,7 +78,7 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
 /**
  * @class timer_t
  * @annotation ["scriptable", "fake"]
- * timer函数在paint之后执行。
+ * 定时器系统。
  */
 
 /**

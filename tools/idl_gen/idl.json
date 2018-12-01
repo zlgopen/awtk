@@ -1,107 +1,104 @@
 [
   {
-    "params": [
+    "type": "class",
+    "methods": [
       {
-        "type": "wh_t",
-        "name": "w",
-        "desc": "LCD宽度。"
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "LCD宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "LCD高度。"
+          },
+          {
+            "type": "app_type_t",
+            "name": "app_type",
+            "desc": "应用程序的类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_name",
+            "desc": "应用程序的名称(必须为常量字符串)。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_root",
+            "desc": "应用程序的根目录，用于定位资源文件(必须为常量字符串)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化TK。",
+        "name": "tk_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       },
       {
-        "type": "wh_t",
-        "name": "h",
-        "desc": "LCD高度。"
+        "params": [],
+        "annotation": {},
+        "desc": "进入TK事件主循环。",
+        "name": "tk_run",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       },
       {
-        "type": "app_type_t",
-        "name": "app_type",
-        "desc": "应用程序的类型。"
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": "退出TK事件主循环。",
+        "name": "tk_quit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       },
       {
-        "type": "const char*",
-        "name": "app_name",
-        "desc": "应用程序的名称(必须为常量字符串)。"
+        "params": [
+          {
+            "type": "int",
+            "name": "orientation",
+            "desc": "旋转方向。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。",
+        "name": "tk_set_lcd_orientation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       },
       {
-        "type": "const char*",
-        "name": "app_root",
-        "desc": "应用程序的根目录，用于定位资源文件(必须为常量字符串)。"
+        "params": [],
+        "annotation": {
+          "private": true
+        },
+        "desc": "初始化资源。",
+        "name": "tk_init_assets",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
-    "annotation": {
-      "global": true
-    },
-    "desc": "初始化TK。",
-    "name": "tk_init",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "src/awtk.h"
-  },
-  {
-    "params": [],
-    "annotation": {
-      "global": true
-    },
-    "desc": "进入TK事件主循环。",
-    "name": "tk_run",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "src/awtk.h"
-  },
-  {
-    "params": [],
+    "events": [],
+    "properties": [],
+    "header": "src/awtk.h",
+    "desc": "TK全局对象。",
+    "name": "tk_t",
     "annotation": {
       "scriptable": true,
-      "global": true
-    },
-    "desc": "退出TK事件主循环。",
-    "name": "tk_quit",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "src/awtk.h"
-  },
-  {
-    "params": [
-      {
-        "type": "int",
-        "name": "orientation",
-        "desc": "旋转方向。"
-      }
-    ],
-    "annotation": {
-      "global": true
-    },
-    "desc": "设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。",
-    "name": "tk_set_lcd_orientation",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "src/awtk.h"
-  },
-  {
-    "params": [],
-    "annotation": {
-      "global": true,
-      "private": true
-    },
-    "desc": "初始化资源。",
-    "name": "tk_init_assets",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "src/awtk.h"
+      "fake": true
+    }
   },
   {
     "type": "class",
@@ -5365,8 +5362,8 @@
         }
       },
       {
-        "name": "caplock",
-        "desc": "caplock键是否按下。",
+        "name": "capslock",
+        "desc": "capslock键是否按下。",
         "type": "bool_t",
         "annotation": {
           "readable": true,
@@ -5943,6 +5940,78 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建grid_item对象",
+        "name": "grid_item_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "grid_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为grid_item对象(供脚本语言使用)。",
+        "name": "grid_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "grid_item对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/grid_item.h",
+    "desc": "grid_item。一个简单的容器控件，一般作为grid的子控件。",
+    "name": "grid_item_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建grid对象",
         "name": "grid_create",
         "return": {
@@ -6457,7 +6526,7 @@
       },
       {
         "name": "rotation",
-        "desc": "控件的旋转角度。",
+        "desc": "控件的旋转角度(幅度)。",
         "type": "float_t",
         "annotation": {
           "set_prop": true,
@@ -6523,14 +6592,9 @@
             "desc": "loader对象。"
           },
           {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "图片数据。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "图片数据长度。"
+            "type": "const asset_info_t*",
+            "name": "asset",
+            "desc": "资源。"
           },
           {
             "type": "bitmap_t*",
@@ -6945,6 +7009,60 @@
     "annotation": {
       "scriptable": true
     }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "input_device_status_t*",
+            "name": "ids",
+            "desc": "输入设备状态管理器对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化输入设备状态管理器。",
+        "name": "input_device_status_init",
+        "return": {
+          "type": "input_device_status_t*",
+          "desc": "返回输入设备状态管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_device_status_t*",
+            "name": "ids",
+            "desc": "输入设备状态管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对输入事件进行处理，然后分发给widget。",
+        "name": "input_device_status_on_input_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/input_device_status.h",
+    "desc": "输入设备状态管理器。本类仅供窗口管理器内部使用。",
+    "name": "input_device_status_t"
   },
   {
     "type": "class",
@@ -7667,6 +7785,27 @@
         "annotation": {},
         "desc": "设置裁剪区域。",
         "name": "lcd_set_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "rect",
+            "desc": "裁剪区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取裁剪区域。",
+        "name": "lcd_get_clip_rect",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -11549,7 +11688,7 @@
     "events": [],
     "properties": [],
     "header": "base/timer.h",
-    "desc": "timer函数在paint之后执行。",
+    "desc": "定时器系统。",
     "name": "timer_t",
     "annotation": {
       "scriptable": true,
@@ -15639,6 +15778,10 @@
       },
       {
         "desc": "",
+        "name": "WIDGET_TYPE_GRID_ITEM"
+      },
+      {
+        "desc": "",
         "name": "WIDGET_TYPE_ROW"
       },
       {
@@ -16234,7 +16377,7 @@
           }
         ],
         "annotation": {},
-        "desc": "将全局坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。",
+        "desc": "将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。",
         "name": "widget_to_local",
         "return": {
           "type": "ret_t",
@@ -16649,6 +16792,53 @@
             "desc": "控件对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "位置序数(大于等于总个数，则放到最后)。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "child",
+            "desc": "子控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "插入子控件到指定的位置。",
+        "name": "widget_insert_child",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "位置序数(大于等于总个数，则放到最后)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "调整控件在父控件中的位置序数。",
+        "name": "widget_restack",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "xy_t",
             "name": "x",
             "desc": "x坐标。"
@@ -16926,6 +17116,11 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形对象。"
           }
         ],
         "annotation": {
@@ -17985,22 +18180,6 @@
       {
         "name": "dirty",
         "desc": "标识控件是否需要重绘。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_window",
-        "desc": "是否是窗口。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_designing_window",
-        "desc": "是否是设计窗口。",
         "type": "bool_t",
         "annotation": {
           "readable": true
@@ -19722,6 +19901,78 @@
     },
     "type": "method",
     "header": "ext_widgets/ext_widgets.h"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建gif_image对象",
+        "name": "gif_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "gif_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为gif_image对象(供脚本语言使用)。",
+        "name": "gif_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "gif_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "gif_image/gif_image.h",
+    "desc": "GIF图片控件。",
+    "name": "gif_image_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
   },
   {
     "type": "class",
@@ -22179,6 +22430,78 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建svg_image对象",
+        "name": "svg_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "svg_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为svg_image对象(供脚本语言使用)。",
+        "name": "svg_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "svg_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "svg_image/svg_image.h",
+    "desc": "SVG图片控件。",
+    "name": "svg_image_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建switch对象",
         "name": "switch_create",
         "return": {
@@ -23340,12 +23663,12 @@
           {
             "type": "float_t",
             "name": "from",
-            "desc": "rotation起始值。"
+            "desc": "rotation起始值(弧度)。"
           },
           {
             "type": "float_t",
             "name": "to",
-            "desc": "rotation结束值。"
+            "desc": "rotation结束值(弧度)。"
           }
         ],
         "annotation": {},
