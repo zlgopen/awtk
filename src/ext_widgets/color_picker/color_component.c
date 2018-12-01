@@ -37,7 +37,7 @@ static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e
   widget_to_local(widget, &p);
   color_component->color_x = p.x;
   color_component->color_y = p.y;
-  widget_invalidate_force(widget);
+  widget_invalidate_force(widget, NULL);
   widget_dispatch(widget, &evt);
 
   return RET_OK;

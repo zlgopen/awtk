@@ -133,8 +133,6 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-#define DRAG_THRESHOLD 10
-
 static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
   uint32_t v_threshhold = 100;
   widget_t* widget = WIDGET(slide_view);
@@ -155,7 +153,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (yoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(yoffset) < DRAG_THRESHOLD) {
+    if (tk_abs(yoffset) < TK_DRAG_THRESHOLD) {
       rollback = TRUE;
     }
 
@@ -176,7 +174,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (xoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(xoffset) < DRAG_THRESHOLD) {
+    if (tk_abs(xoffset) < TK_DRAG_THRESHOLD) {
       rollback = TRUE;
     }
 
@@ -244,7 +242,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
           delta = evt->x - slide_view->down.x;
         }
 
-        if (tk_abs(delta) >= DRAG_THRESHOLD) {
+        if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
           pointer_event_t abort = *evt;
           abort.e.type = EVT_POINTER_DOWN_ABORT;
 

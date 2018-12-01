@@ -242,7 +242,7 @@ static ret_t image_animation_on_update(const timer_info_t* info) {
       }
     }
 
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget, NULL);
   }
 
   return ret;

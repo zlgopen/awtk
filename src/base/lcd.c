@@ -45,6 +45,12 @@ ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect) {
   return lcd->set_clip_rect(lcd, rect);
 }
 
+ret_t lcd_get_clip_rect(lcd_t* lcd, rect_t* rect) {
+  return_value_if_fail(lcd != NULL && lcd->get_clip_rect != NULL, RET_BAD_PARAMS);
+
+  return lcd->get_clip_rect(lcd, rect);
+}
+
 ret_t lcd_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
 

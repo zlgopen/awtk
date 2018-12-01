@@ -73,7 +73,7 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
   im->win->y -= im->win_delta_y;
-  widget_invalidate_force(im->win);
+  widget_invalidate_force(im->win, NULL);
 
   return RET_REMOVE;
 }
@@ -81,7 +81,7 @@ static ret_t on_push_window(void* ctx, event_t* e) {
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->win != NULL) {
     im->win->y += im->win_delta_y;
-    widget_invalidate_force(im->win);
+    widget_invalidate_force(im->win, NULL);
     im->win = NULL;
   }
 
@@ -134,7 +134,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     close_anim_hint = "vtranslate";
     im->win_delta_y += win->y + win->h - im->keyboard->y;
     win->y = im->keyboard->y - win->h;
-    widget_invalidate_force(im->win);
+    widget_invalidate_force(im->win, NULL);
   }
 
   value_set_str(&v, open_anim_hint);
@@ -201,6 +201,9 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   if (im->widget == widget) {
     return RET_OK;
   }
+
+  input_engine_reset_input(im->engine);
+  input_method_dispatch_candidates(im, "", 0);
 
   if (widget != NULL) {
     im->widget = widget;

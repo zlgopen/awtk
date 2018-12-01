@@ -56,6 +56,7 @@ timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_ti
   return_value_if_fail(timer_manager != NULL, NULL);
 
   timer_manager->next_timer_id = TK_INVALID_ID + 1;
+  timer_manager->last_dispatch_time = get_time();
   timer_manager->get_time = get_time;
 
   return timer_manager;
@@ -208,27 +209,47 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint32_t now = 0;
+  int32_t delta_time = 0;
   timer_info_t* iter = NULL;
+  bool_t user_changed_time = FALSE;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
   iter = timer_manager->first;
+  now = timer_manager->get_time();
+
+  delta_time = now - timer_manager->last_dispatch_time;
+  if (delta_time > 1000 || delta_time < 0) {
+    user_changed_time = TRUE;
+    log_debug("User change time: %u => %u\n", timer_manager->last_dispatch_time, now);
+  }
+
   if (iter == NULL) {
+    timer_manager->last_dispatch_time = now;
     return RET_OK;
   }
 
-  now = timer_manager->get_time();
   timer_manager->dispatching = TRUE;
   while (iter != NULL) {
     iter->now = now;
+    if (user_changed_time) {
+      iter->start += delta_time;
+      iter->user_changed_time = TRUE;
+    }
+
     if ((iter->start + iter->duration_ms) <= now) {
       if (iter->on_timer(iter) != RET_REPEAT) {
         iter->pending_destroy = TRUE;
       } else {
         iter->start = now;
       }
+
+      iter->user_changed_time = FALSE;
     }
+
     iter = iter->next;
   }
+
+  timer_manager->last_dispatch_time = now;
   timer_manager->dispatching = FALSE;
   timer_manager_remove_pending_destroy_timers(timer_manager);
 

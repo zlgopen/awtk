@@ -103,7 +103,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
 
     widget_layout(win);
     widget_dispatch(win, &e);
-    widget_invalidate_force(win);
+    widget_invalidate_force(win, NULL);
   }
 
   return RET_OK;

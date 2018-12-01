@@ -182,7 +182,6 @@ widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtab
 
   return_value_if_fail(win != NULL, NULL);
 
-  widget->is_window = TRUE;
   widget_init(widget, NULL, vt, x, y, w, h);
   if (parent == NULL) {
     parent = window_manager();

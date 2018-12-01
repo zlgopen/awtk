@@ -37,7 +37,7 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
-        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
@@ -79,7 +79,7 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
-        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
@@ -123,7 +123,7 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
@@ -164,7 +164,7 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:upper" style="highlight" w="15%" text="ABC"/>
-        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="earth" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
         <button repeat="300" name="space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
@@ -206,7 +206,8 @@
       </group_box>
       <group_box layout="rows:1 cols:0 spacing:2 margin:2">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
-        <button repeat="300" name="key:space" w="65%" text="Space"/>
+        <button name="page:lower" style="highlight" w="10%"><image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/></button>
+        <button repeat="300" name="key:space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>

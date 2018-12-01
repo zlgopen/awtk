@@ -1,0 +1,169 @@
+﻿#include "gtest/gtest.h"
+#include <string>
+#include "base/keys.h"
+#include "base/button.h"
+#include "base/input_device_status.h"
+
+using std::string;
+
+TEST(InputDeviceStatus, basic) {
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+  ASSERT_EQ(ids->alt, FALSE);
+  ASSERT_EQ(ids->ctrl, FALSE);
+  ASSERT_EQ(ids->capslock, FALSE);
+  ASSERT_EQ(ids->pressed, FALSE);
+  ASSERT_EQ(ids->last_x, 0);
+  ASSERT_EQ(ids->last_y, 0);
+}
+
+static string s_log;
+static ret_t on_event(void* ctx, event_t* e) {
+  if (e->type == EVT_KEY_DOWN) {
+    s_log = "keydown";
+  } else if (e->type == EVT_KEY_UP) {
+    s_log = "keyup";
+  } else if (e->type == EVT_POINTER_DOWN) {
+    s_log = "pointerdown";
+  } else if (e->type == EVT_POINTER_MOVE) {
+    s_log = "pointermove";
+  } else if (e->type == EVT_POINTER_UP) {
+    s_log = "pointerup";
+  }
+
+  return RET_OK;
+}
+
+TEST(InputDeviceStatus, alt) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  e.key = TK_KEY_LALT;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->alt, TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->alt, FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  e.key = TK_KEY_RALT;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->alt, TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->alt, FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  widget_destroy(w);
+}
+
+TEST(InputDeviceStatus, ctrl) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  e.key = TK_KEY_LCTRL;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->ctrl, TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->ctrl, FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  e.key = TK_KEY_RCTRL;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->ctrl, TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->ctrl, FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  widget_destroy(w);
+}
+
+TEST(InputDeviceStatus, capslock) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  e.key = TK_KEY_CAPSLOCK;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->capslock, TRUE);
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->capslock, FALSE);
+  ASSERT_EQ(s_log, "keyup");
+
+  widget_destroy(w);
+}
+
+TEST(InputDeviceStatus, pointer) {
+  pointer_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_POINTER_DOWN, on_event, w);
+  widget_on(w, EVT_POINTER_MOVE, on_event, w);
+  widget_on(w, EVT_POINTER_UP, on_event, w);
+
+  e.x = 10;
+  e.y = 20;
+  e.pressed = TRUE;
+  e.e = event_init(EVT_POINTER_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->last_x, e.x);
+  ASSERT_EQ(ids->last_y, e.y);
+  ASSERT_EQ(ids->pressed, TRUE);
+  ASSERT_EQ(s_log, "pointerdown");
+
+  e.x = 20;
+  e.y = 30;
+  e.pressed = TRUE;
+  e.e = event_init(EVT_POINTER_MOVE, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->last_x, e.x);
+  ASSERT_EQ(ids->last_y, e.y);
+  ASSERT_EQ(ids->pressed, TRUE);
+  ASSERT_EQ(s_log, "pointermove");
+
+  e.x = 30;
+  e.y = 40;
+  e.pressed = TRUE;
+  e.e = event_init(EVT_POINTER_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(ids->last_x, e.x);
+  ASSERT_EQ(ids->last_y, e.y);
+  ASSERT_EQ(ids->pressed, FALSE);
+  ASSERT_EQ(s_log, "pointerup");
+
+  widget_destroy(w);
+}

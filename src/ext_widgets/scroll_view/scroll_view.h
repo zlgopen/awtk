@@ -81,6 +81,7 @@ typedef struct _scroll_view_t {
 
   /*private*/
   point_t down;
+  bool_t dragged;
   int32_t xoffset_end;
   int32_t yoffset_end;
   int32_t xoffset_save;

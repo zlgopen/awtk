@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/keys.h"
 #include "base/utils.h"
 #include "base/input_method.h"
 
@@ -106,6 +107,10 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
                                        im->engine->candidates_nr);
 
       return RET_OK;
+    } else {
+      if (key != TK_KEY_BACKSPACE && key != TK_KEY_DELETE) {
+        return RET_FAIL;
+      }
     }
   }
 

@@ -32,20 +32,19 @@
 #define ANIMATING_TIME 500
 
 ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
-  rect_t r1 = *r;
-  rect_t r2 = rect_init(0, 0, widget->w, widget->h);
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  rect_t r_self = rect_init(0, 0, widget->w, widget->h);
 
-  r1.x -= scroll_view->xoffset;
-  r1.y -= scroll_view->yoffset;
-  *r = rect_intersect(&r1, &r2);
+  r->x += widget->x;
+  r->y += widget->y;
+  r->x -= scroll_view->xoffset;
+  r->y -= scroll_view->yoffset;
+
+  *r = rect_intersect(r, &r_self);
 
   if (r->w <= 0 || r->h <= 0) {
     return RET_OK;
   }
-
-  r->x += widget->x;
-  r->y += widget->y;
 
   if (widget->parent) {
     widget_invalidate(widget->parent, r);
@@ -244,18 +243,6 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
   return RET_OK;
 }
 
-static ret_t scroll_view_abort_pointer_down(scroll_view_t* scroll_view, pointer_event_t* e) {
-  widget_t* widget = WIDGET(scroll_view);
-  if (scroll_view->first_move_after_down && widget->target) {
-    pointer_event_t abort = *e;
-    abort.e.type = EVT_POINTER_DOWN_ABORT;
-    widget_dispatch(widget->target, (event_t*)(&abort));
-    scroll_view->first_move_after_down = FALSE;
-  }
-
-  return RET_OK;
-}
-
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -266,12 +253,10 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   if (scroll_view->wa == NULL) {
     if (scroll_view->xslidable && dx) {
       scroll_view->xoffset = scroll_view->xoffset_save - dx;
-      scroll_view_abort_pointer_down(scroll_view, e);
     }
 
     if (scroll_view->yslidable && dy) {
       scroll_view->yoffset = scroll_view->yoffset_save - dy;
-      scroll_view_abort_pointer_down(scroll_view, e);
     }
 
     if (scroll_view->on_scroll) {
@@ -289,6 +274,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      scroll_view->dragged = FALSE;
       widget_grab(widget->parent, widget);
       scroll_view->first_move_after_down = TRUE;
       scroll_view_on_pointer_down(scroll_view, (pointer_event_t*)e);
@@ -300,14 +286,40 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       if (dx || dy) {
         scroll_view_on_pointer_up(scroll_view, (pointer_event_t*)e);
       }
+      scroll_view->dragged = FALSE;
       widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed && (scroll_view->xslidable || scroll_view->yslidable)) {
+      if (!evt->pressed || !(scroll_view->xslidable || scroll_view->yslidable)) {
+        break;
+      }
+
+      if (scroll_view->dragged) {
         scroll_view_on_pointer_move(scroll_view, evt);
         scroll_view_invalidate_self(widget);
+      } else {
+        int32_t delta = 0;
+
+        if (scroll_view->xslidable && scroll_view->yslidable) {
+          int32_t xdelta = evt->x - scroll_view->down.x;
+          int32_t ydelta = evt->y - scroll_view->down.y;
+          delta = tk_abs(xdelta) > tk_abs(ydelta) ? xdelta : ydelta;
+        } else if (scroll_view->yslidable) {
+          delta = evt->y - scroll_view->down.y;
+        } else {
+          delta = evt->x - scroll_view->down.x;
+        }
+
+        if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
+          pointer_event_t abort = *evt;
+
+          abort.e.type = EVT_POINTER_DOWN_ABORT;
+          widget_dispatch_event_to_target_recursive(widget->target, (event_t*)(&abort));
+
+          scroll_view->dragged = TRUE;
+        }
       }
       break;
     }
@@ -404,6 +416,7 @@ static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
 static const widget_vtable_t s_scroll_view_vtable = {
     .size = sizeof(scroll_view_t),
     .type = WIDGET_TYPE_SCROLL_VIEW,
+    .scrollable = TRUE,
     .clone_properties = s_scroll_view_clone_properties,
     .create = scroll_view_create,
     .on_event = scroll_view_on_event,

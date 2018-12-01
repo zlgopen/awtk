@@ -400,7 +400,7 @@ ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
     }
   }
 
-  return RET_OK;
+  return widget_invalidate_force(widget, NULL);
 }
 
 int32_t combo_box_get_value(widget_t* widget) {

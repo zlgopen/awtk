@@ -95,7 +95,7 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
 
 static ret_t on_idle_invalidate(const timer_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
-  widget_invalidate_force(curr_win);
+  widget_invalidate_force(curr_win, NULL);
 
   return RET_REMOVE;
 }
@@ -613,65 +613,14 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
   return window_manger_layout_children(widget);
 }
 
-static ret_t window_manager_update_key_status(window_manager_t* wm, uint32_t key, bool_t down) {
-  if (key == FKEY_LSHIFT || key == FKEY_RSHIFT) {
-    wm->shift = down;
-  }
-  if (key == FKEY_LALT || key == FKEY_RALT) {
-    wm->alt = down;
-  }
-  if (key == FKEY_LCTRL || key == FKEY_RCTRL) {
-    wm->ctrl = down;
-  }
-  if (key == FKEY_CAPSLOCK) {
-    wm->caplock = down;
-  }
-
-  return RET_OK;
-}
-
-typedef struct _key_shift_t {
-  char key;
-  char shift_key;
-} key_shift_t;
-
-static const key_shift_t key_shift[] = {
-    {'`', '~'}, {'1', '!'}, {'2', '@'}, {'3', '#'},  {'4', '$'}, {'5', '%'}, {'6', '^'},
-    {'7', '&'}, {'8', '*'}, {'9', '('}, {'0', ')'},  {'-', '_'}, {'=', '+'}, {'[', '{'},
-    {']', '}'}, {',', '<'}, {'.', '>'}, {'\\', '|'}, {'/', '?'},
-};
-
-static ret_t window_manager_shift_key(window_manager_t* wm, key_event_t* e) {
-  char c = (char)e->key;
-  if (wm->shift) {
-    uint32_t i = 0;
-    for (i = 0; i < ARRAY_SIZE(key_shift); i++) {
-      if (key_shift[i].key == c) {
-        e->key = key_shift[i].shift_key;
-        return RET_OK;
-      }
-    }
-  }
-
-  if (wm->shift && wm->caplock) {
-    return RET_OK;
-  }
-
-  if (wm->shift || wm->caplock) {
-    if (c >= FKEY_a && c <= FKEY_z) {
-      e->key = c - 32;
-    }
-  }
-
-  return RET_OK;
-}
-
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
+  input_device_status_t* ids = NULL;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
+  ids = &(wm->input_device_status);
   if (wm->ignore_user_input) {
-    if (wm->pressed && e->type == EVT_POINTER_UP) {
+    if (ids->pressed && e->type == EVT_POINTER_UP) {
       log_debug("animating ignore input, but it is last pointer_up\n");
     } else {
       log_debug("animating ignore input\n");
@@ -679,104 +628,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
     }
   }
 
-  switch (e->type) {
-    case EVT_POINTER_DOWN: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-      pointer_event_rotate(evt, system_info());
-
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-
-      wm->pressed = TRUE;
-      wm->last_x = evt->x;
-      wm->last_y = evt->y;
-      widget_on_pointer_down(widget, evt);
-
-      window_manager_update_cursor(widget, evt->x, evt->y);
-      break;
-    }
-    case EVT_POINTER_MOVE: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-      pointer_event_rotate(evt, system_info());
-
-      if (evt->x != wm->last_x || evt->y != wm->last_y) {
-        wm->last_x = evt->x;
-        wm->last_y = evt->y;
-
-        evt->alt = wm->alt;
-        evt->ctrl = wm->ctrl;
-        evt->shift = wm->shift;
-        widget_on_pointer_move(widget, evt);
-
-        window_manager_update_cursor(widget, evt->x, evt->y);
-      }
-      break;
-    }
-    case EVT_POINTER_UP: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-      pointer_event_rotate(evt, system_info());
-
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      widget_on_pointer_up(widget, evt);
-
-      wm->last_x = evt->x;
-      wm->last_y = evt->y;
-      wm->pressed = FALSE;
-
-      window_manager_update_cursor(widget, evt->x, evt->y);
-      break;
-    }
-    case EVT_KEY_DOWN: {
-      key_event_t* evt = (key_event_t*)e;
-      window_manager_update_key_status(wm, evt->key, TRUE);
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      evt->caplock = wm->caplock;
-
-      window_manager_shift_key(wm, evt);
-      widget_on_keydown(widget, evt);
-      break;
-    }
-    case EVT_KEY_UP: {
-      key_event_t* evt = (key_event_t*)e;
-
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      evt->caplock = wm->caplock;
-
-      window_manager_shift_key(wm, evt);
-      widget_on_keyup(widget, evt);
-
-      window_manager_update_key_status(wm, evt->key, FALSE);
-      break;
-    }
-    case EVT_CONTEXT_MENU: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-      pointer_event_rotate(evt, system_info());
-
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      widget_dispatch_to_target(widget, e);
-      break;
-    }
-    case EVT_WHEEL: {
-      wheel_event_t* evt = (wheel_event_t*)e;
-
-      evt->alt = wm->alt;
-      evt->ctrl = wm->ctrl;
-      evt->shift = wm->shift;
-      widget_dispatch_to_key_target(widget, e);
-      break;
-    }
-    default:
-      break;
-  }
+  input_device_status_on_input_event(ids, widget, e);
+  window_manager_update_cursor(widget, ids->last_x, ids->last_y);
 
   return RET_OK;
 }

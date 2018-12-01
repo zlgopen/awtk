@@ -1,6 +1,26 @@
 # 最新动态
+* 2018/11/30
+  * 增加一些测试代码。
+  * 增加函数widget\_insert\_child/widget\_restack。
+  * 用户修改系统时间后，更新定时器的启动时间，否则可能导致定时器长时间不会触发。
+
+* 2018/11/29
+  * 修复scroll view中脏矩形的问题。
+  * awtk-linux-fb工程支持编译用户的项目。
+  * 修改switch控件中存在的问题并优化。
+  * 修改layout参数解析中存在的问题。
+  * 修改输入法相关的一些BUG。
+  * 缺省键盘增加中英文切换按钮。
+
 * 2018/11/28
   * 更新字符串翻译的文档和示例。
+  * 键值的前缀有FKEY改为TK\_KEY。
+  * 把is\_designing\_window/is\_window移到vtable中。
+  * 把window\_manager中输入设备状态相关的代码移到独立的文件中。
+  * 修改list\_item中的BUG。
+  * 修复issue #50
+  * 修复issue #51
+  * widget\_invalidate\_force增加一个参数。
 
 * 2018/11/27
   * 更新stm32767/stm429的工程。

@@ -53,6 +53,10 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t
 
   utf8_from_utf16(wstr, str, sizeof(str) - 1);
 
+  if ((wb->cursor + strlen(str) + 1) >= wb->capacity) {
+    return RET_FAIL;
+  }
+
   return wbuffer_write_string(wb, str);
 }
 

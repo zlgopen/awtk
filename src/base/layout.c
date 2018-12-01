@@ -31,13 +31,15 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
   memset(layout, 0x00, sizeof(*layout));
   if (x != NULL) {
     if (x[0] == 'c') {
-      if (x[6] == ':') {
-        layout->x = tk_atoi(x + 7);
+      const char* v = strchr(x, ':');
+      if (v != NULL) {
+        layout->x = tk_atoi(v + 1);
       }
       layout->x_attr = X_ATTR_CENTER;
     } else if (x[0] == 'r') {
-      if (x[5] == ':') {
-        layout->x = tk_atoi(x + 6);
+      const char* v = strchr(x, ':');
+      if (v != NULL) {
+        layout->x = tk_atoi(v + 1);
       }
       layout->x_attr = X_ATTR_RIGHT;
     } else if (strstr(x, "%") != NULL) {
@@ -53,13 +55,15 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
 
   if (y != NULL) {
     if (y[0] == 'm') {
-      if (y[6] == ':') {
-        layout->y = tk_atoi(y + 7);
+      const char* v = strchr(y, ':');
+      if (v != NULL) {
+        layout->y = tk_atoi(v + 1);
       }
       layout->y_attr = Y_ATTR_MIDDLE;
     } else if (y[0] == 'b') {
-      if (y[6] == ':') {
-        layout->y = tk_atoi(y + 7);
+      const char* v = strchr(y, ':');
+      if (v != NULL) {
+        layout->y = tk_atoi(v + 1);
       }
       layout->y_attr = Y_ATTR_BOTTOM;
     } else if (strstr(y, "%") != NULL) {

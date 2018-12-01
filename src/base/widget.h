@@ -68,6 +68,18 @@ typedef struct _widget_vtable_t {
   const char** clone_properties;
   /*持久化widget时需要保存的属性*/
   const char** persistent_properties;
+  /**
+   * 是否可以滚动。
+   */
+  uint32_t scrollable : 1;
+  /**
+   * 是否是窗口。
+   */
+  uint32_t is_window : 1;
+  /**
+   * 是否是设计窗口。
+   */
+  uint32_t is_designing_window : 1;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -176,19 +188,6 @@ struct _widget_t {
    * 标识控件是否需要重绘。
    */
   uint8_t dirty : 1;
-  /**
-   * @property {bool_t} is_window
-   * @annotation ["readable"]
-   * 是否是窗口。
-   */
-  uint8_t is_window : 1;
-  /**
-   * @property {bool_t} is_designing_window
-   * @annotation ["readable"]
-   * 是否是设计窗口。
-   */
-  uint8_t is_designing_window : 1;
-
   /**
    * @property {uint8_t} state
    * @annotation ["readable"]
@@ -594,7 +593,7 @@ const wchar_t* widget_get_text(widget_t* widget);
 
 /**
  * @method widget_to_local
- * 将全局坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
+ * 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
  * @param {widget_t*} widget 控件对象。
  * @param {point_t*} p 坐标点。
  *
@@ -822,6 +821,27 @@ ret_t widget_add_child(widget_t* widget, widget_t* child);
 ret_t widget_remove_child(widget_t* widget, widget_t* child);
 
 /**
+ * @method widget_insert_child
+ * 插入子控件到指定的位置。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ * @param {widget_t*} child 子控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child);
+
+/**
+ * @method widget_restack
+ * 调整控件在父控件中的位置序数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_restack(widget_t* widget, uint32_t index);
+
+/**
  * @method widget_find_target
  * 查找x/y坐标对应的子控件。
  * @annotation ["private"]
@@ -945,10 +965,11 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r);
  * 强制重绘控件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
+ * @param {rect_t*} r 矩形对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate_force(widget_t* widget);
+ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
 
 /**
  * @method widget_paint

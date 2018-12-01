@@ -29,6 +29,7 @@ static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,       WIDGET_
                                             WIDGET_PROP_SCRIPT,          NULL};
 
 static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDOW,
+                                                .is_window = TRUE,
                                                 .clone_properties = s_window_properties,
                                                 .persistent_properties = s_window_properties,
                                                 .on_event = window_base_on_event,

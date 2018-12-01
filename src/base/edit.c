@@ -47,7 +47,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 
   r = rect_init(edit->caret_x, 0, 1, widget->h);
   edit->caret_visible = !edit->caret_visible;
-  widget_invalidate(widget, &r);
+  widget_invalidate_force(widget, &r);
 
   if (widget->focused) {
     return RET_REPEAT;
@@ -416,13 +416,13 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
 
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
-  if (key == FKEY_BACKSPACE) {
+  if (key == TK_KEY_BACKSPACE) {
     return edit_delete_prev_char(widget);
-  } else if (key == FKEY_DELETE) {
+  } else if (key == TK_KEY_DELETE) {
     return edit_delete_next_char(widget);
-  } else if (key == FKEY_LEFT || key == FKEY_RIGHT) {
+  } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
     edit_t* edit = EDIT(widget);
-    if (key == FKEY_LEFT) {
+    if (key == TK_KEY_LEFT) {
       return edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
     } else {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
@@ -1043,7 +1043,7 @@ ret_t edit_inc(edit_t* edit) {
       break;
   }
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 ret_t edit_dec(edit_t* edit) {
@@ -1073,7 +1073,7 @@ ret_t edit_dec(edit_t* edit) {
       break;
   }
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 ret_t edit_clear(edit_t* edit) {
@@ -1086,7 +1086,7 @@ ret_t edit_clear(edit_t* edit) {
   edit->visible_end = 0;
   edit_set_cursor_pos(widget, 0, 0);
 
-  return widget_invalidate_force(widget);
+  return widget_invalidate_force(widget, NULL);
 }
 
 static ret_t edit_on_inc(void* ctx, event_t* e) {
