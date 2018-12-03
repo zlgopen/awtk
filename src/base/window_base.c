@@ -28,6 +28,8 @@
 #include "base/assets_manager.h"
 #include "base/window_manager.h"
 
+ret_t window_close(widget_t* widget);
+
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
   if (style_is_valid(widget->astyle)) {
     return widget_paint_helper(widget, c, NULL, NULL);
@@ -105,6 +107,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_STAGE)) {
     value_set_int(v, window_base->stage);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
+    value_set_int(v, window_base->closable);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -115,26 +120,30 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
-    TKMEM_FREE(window_base->open_anim_hint);
-    window_base->open_anim_hint = tk_strdup(value_str(v));
-    TKMEM_FREE(window_base->close_anim_hint);
-    window_base->close_anim_hint = tk_strdup(value_str(v));
+    window_base->open_anim_hint = tk_str_copy(window_base->open_anim_hint, value_str(v));
+    window_base->close_anim_hint = tk_str_copy(window_base->close_anim_hint, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    TKMEM_FREE(window_base->open_anim_hint);
-    window_base->open_anim_hint = tk_strdup(value_str(v));
+    window_base->open_anim_hint = tk_str_copy(window_base->open_anim_hint, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    TKMEM_FREE(window_base->close_anim_hint);
-    window_base->close_anim_hint = tk_strdup(value_str(v));
+    window_base->close_anim_hint = tk_str_copy(window_base->close_anim_hint, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
-    TKMEM_FREE(window_base->theme);
-    window_base->theme = tk_strdup(value_str(v));
+    window_base->theme = tk_str_copy(window_base->theme, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SCRIPT)) {
-    TKMEM_FREE(window_base->script);
-    window_base->script = tk_strdup(value_str(v));
+    window_base->script = tk_str_copy(window_base->script, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
+    if (v->type == VALUE_TYPE_STRING) {
+      const key_type_value_t* kv = window_closable_type_find(value_str(v));
+      if (kv != NULL) {
+        window_base->closable = kv->value;
+      }
+    } else {
+      window_base->closable = value_int(v);
+    }
     return RET_OK;
   }
 
@@ -171,6 +180,11 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     win->stage = WINDOW_STAGE_OPENED;
   } else if (e->type == EVT_WINDOW_CLOSE) {
     win->stage = WINDOW_STAGE_CLOSED;
+  } else if (e->type == EVT_REQUEST_CLOSE_WINDOW) {
+    log_debug("EVT_REQUEST_CLOSE_WINDOW\n");
+    if (win->closable == WINDOW_CLOSABLE_YES) {
+      window_close(widget);
+    }
   }
 
   return RET_OK;
