@@ -21,8 +21,8 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
   float_t ratio = wa->ratio;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-  vgcanvas_draw_image(vg, &(wa->prev_img), win->x * ratio, (y + win->y)* ratio, win->w * ratio, h * ratio,
-                      win->x, win->y, win->w, h);
+  vgcanvas_draw_image(vg, &(wa->prev_img), win->x * ratio, (y + win->y) * ratio, win->w * ratio,
+                      h * ratio, win->x, win->y, win->w, h);
 #else
   rect_t src;
   rect_t dst;
