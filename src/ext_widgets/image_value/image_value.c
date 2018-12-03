@@ -30,7 +30,6 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bi
   uint32_t w = 0;
   uint32_t h = 0;
   float_t ratio = c->lcd->ratio;
-  style_t* style = widget->astyle;
 
   for (i = 0; i < nr; i++) {
     bitmap_t* b = bitmap + i;
