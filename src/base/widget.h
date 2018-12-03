@@ -1040,7 +1040,7 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
 
 /**
  * @method widget_set_prop_int
- * 设置字符串格式的属性。
+ * 设置整数格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
@@ -1052,7 +1052,7 @@ ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
 
 /**
  * @method widget_get_prop_int
- * 获取字符串格式的属性。
+ * 获取整数格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
@@ -1061,6 +1061,30 @@ ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
  * @return {int32_t} 返回属性的值。
  */
 int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval);
+
+/**
+ * @method widget_set_prop_bool
+ * 设置布尔格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t v);
+
+/**
+ * @method widget_get_prop_bool
+ * 获取布尔格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} defval 缺省值。
+ *
+ * @return {bool_t} 返回属性的值。
+ */
+bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval);
 
 /**
  * @method widget_is_window_opened
