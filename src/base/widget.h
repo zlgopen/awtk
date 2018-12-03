@@ -179,7 +179,7 @@ struct _widget_t {
   /**
    * @property {bool_t} auto_created
    * @annotation ["readable"]
-   * 是否有父控件自动创建。
+   * 是否由父控件自动创建。
    */
   uint8_t auto_created : 1;
   /**
@@ -188,6 +188,12 @@ struct _widget_t {
    * 标识控件是否需要重绘。
    */
   uint8_t dirty : 1;
+  /**
+   * @property {bool_t} destroying
+   * @annotation ["readable"]
+   * 标识控件正在被销毁。
+   */
+  uint8_t destroying : 1;
   /**
    * @property {uint8_t} state
    * @annotation ["readable"]
