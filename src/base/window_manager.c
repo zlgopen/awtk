@@ -185,7 +185,7 @@ static ret_t window_manager_do_open_window(widget_t* widget, widget_t* window) {
 static ret_t wm_on_destroy_child(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   (void)e;
-  if(!widget->destroying) {
+  if (!widget->destroying) {
     window_manager_dispatch_top_window_changed(widget);
   }
 
