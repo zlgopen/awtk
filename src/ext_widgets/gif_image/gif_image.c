@@ -87,11 +87,9 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   if (bitmap.data != NULL) {
-    xy_t dx = (widget->w - bitmap.w) >> 1;
-    xy_t dy = (widget->h - h) >> 1;
     rect_t src = rect_init(0, y, bitmap.w, h);
-    rect_t dst = rect_init(dx, dy, bitmap.w, h);
-    canvas_draw_image(c, &bitmap, &src, &dst);
+    rect_t dst = rect_init(0, 0, widget->w, widget->h);
+    canvas_draw_image_scale_down(c, &bitmap, &src, &dst);
   }
 
   if (image->timer_id == TK_INVALID_ID && image->frames_nr > 1) {

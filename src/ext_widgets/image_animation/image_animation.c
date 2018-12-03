@@ -37,8 +37,9 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
     name[strlen(name)] = image_animation->sequence[image_animation->index];
 
     if (widget_load_image(widget, name, &bitmap) == RET_OK) {
-      rect_t r = rect_init(0, 0, widget->w, widget->h);
-      canvas_draw_icon_in_rect(c, &bitmap, &r);
+      rect_t s = rect_init(0, 0, bitmap.w, bitmap.h);
+      rect_t d = rect_init(0, 0, widget->w, widget->h);
+      canvas_draw_image_scale_down(c, &bitmap, &s, &d);
     }
   }
 

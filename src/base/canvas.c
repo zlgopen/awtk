@@ -994,6 +994,30 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
+ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
+  rect_t d;
+  float scale = 0;
+  float scalex = 0;
+  float scaley = 0;
+  return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  scalex = (float)(dst->w) / src->w;
+  scaley = (float)(dst->h) / src->h;
+  scale = tk_min(scalex, scaley);
+
+  if (scale >= 1) {
+    d.w = src->w;
+    d.h = src->h;
+  } else {
+    d.w = src->w * scale;
+    d.h = src->h * scale;
+  }
+  d.x = dst->x + ((dst->w - d.w) >> 1);
+  d.y = dst->y + ((dst->h - d.h) >> 1);
+
+  return canvas_draw_image(c, img, src, &d);
+}
+
 ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix) {
   draw_image_info_t info;
   return_value_if_fail(c != NULL && img != NULL && matrix != NULL && c->lcd != NULL,
