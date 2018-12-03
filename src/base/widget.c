@@ -909,6 +909,20 @@ int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval) 
   return value_int(&v);
 }
 
+ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t num) {
+  value_t v;
+  value_set_bool(&v, num);
+
+  return widget_set_prop(widget, name, &v);
+}
+
+bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
+
+  return value_bool(&v);
+}
+
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
