@@ -65,6 +65,7 @@ typedef struct _window_manager_t {
   char* cursor;
   rect_t r_cursor;
 
+  widget_t* system_bar;
   input_device_status_t input_device_status;
 } window_manager_t;
 

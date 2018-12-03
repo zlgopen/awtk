@@ -16,6 +16,12 @@
   </style>
 </window>
 
+<system_bar>
+  <style name="default">
+    <normal bg_color="#404040"/>
+  </style>
+</system_bar>
+
 <calibration_win>
   <style name="default" fg_color="black"  text_color="black">
     <normal bg_color="#f0f0f0"/>
