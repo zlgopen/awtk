@@ -20,6 +20,7 @@
  */
 
 #include "base/window_animator.h"
+#include "base/window_manager.h"
 
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
   canvas_t* c = NULL;
@@ -68,7 +69,11 @@ ret_t window_animator_destroy(window_animator_t* wa) {
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
-  (void)wa;
+  window_manager_t* wm = WINDOW_MANAGER(wa->curr_win->parent);
+
+  if (wm->system_bar) {
+    widget_paint(wm->system_bar, wa->canvas);
+  }
 #else
   rect_t r;
   widget_t* wm = wa->curr_win->parent;
