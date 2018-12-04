@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_base.h
  * Author: AWTK Develop Team
  * Brief:  window_base
@@ -139,10 +139,10 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = window_closable_type_find(value_str(v));
       if (kv != NULL) {
-        window_base->closable = kv->value;
+        window_base->closable = (window_closable_t)(kv->value);
       }
     } else {
-      window_base->closable = value_int(v);
+      window_base->closable = (window_closable_t)value_int(v);
     }
     return RET_OK;
   }
