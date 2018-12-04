@@ -18,7 +18,7 @@ system\_bar和普通窗口类似，你可以用代码创建，也可以用XML UI
 </system_bar>
 ```
 
-在system\_bar窗口中，有两个控件比较特殊：
+在system\_bar窗口中，有两个控件比较特殊(均为可选)：
 
 * 1.名为title的label控件。它自动显示当前主窗口的标题或名称。
 
