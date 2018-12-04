@@ -3,6 +3,7 @@
   * 更新stm32相关工程。
   * 完善system\_bar控件。
   * 增加system\_bar控件的使用文档。
+  * 窗口管理支持style。有时通过style给窗口管理器设置一张大背景背景，就不需要给窗口和system\_bar分别设置背景图片了。
 
 * 2018/12/02-03
   * 增加system\_bar控件(窗口vtranslate动画还需要相应完善)。

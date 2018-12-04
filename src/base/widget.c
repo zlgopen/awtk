@@ -1446,9 +1446,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
     widget->vt = widget_vtable_default();
   }
 
-  if (vt && !tk_str_eq(vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
-    widget->astyle = style_factory_create_style(style_factory(), widget);
-  }
+  widget->astyle = style_factory_create_style(style_factory(), widget);
 
   if (parent != NULL && widget_is_window_opened(widget)) {
     widget_update_style(widget);
@@ -1696,16 +1694,19 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
 }
 
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
-  value_t v;
   image_manager_t* imm = NULL;
-  widget_t* win = widget_get_window(widget);
-  return_value_if_fail(win != NULL && widget != NULL && name != NULL && bitmap != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
-                       RET_BAD_PARAMS);
+  if (tk_str_eq(widget->vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    imm = image_manager();
+  } else {
+    value_t v;
+    widget_t* win = widget_get_window(widget);
+    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
+                         RET_BAD_PARAMS);
+    imm = (image_manager_t*)value_pointer(&v);
+  }
 
-  imm = (image_manager_t*)value_pointer(&v);
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   return image_manager_load(imm, name, bitmap);

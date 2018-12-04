@@ -220,6 +220,7 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
   }
 
   widget_on(window, EVT_DESTROY, wm_on_destroy_child, widget);
+  widget_update_style(widget);
 
   return ret;
 }

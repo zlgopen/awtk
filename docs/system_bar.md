@@ -6,7 +6,7 @@ system\_bar是可选的，可以启用也可以不启用。如果要启用system
 
 ## 一、创建system\_bar窗口
 
-system\_bar和普通窗口类似，你可以用代码创建，也可以用XML UI描述文件创建，比如下面demoui中的system\_bar的XML UI描述文件：
+system\_bar和普通窗口类似，你可以用代码创建，也可以用XML UI描述文件创建，比如下面是demoui中的system\_bar的XML UI描述文件(system\_bar.xml)：
 
 ```
 <system_bar h="30">
@@ -47,6 +47,45 @@ system\_bar和普通窗口类似，你可以用代码创建，也可以用XML UI
 window_open("system_bar");
 ```
 
+## 三、style
 
+system\_bar的style和其它窗口一样，可以在styles目录下放一个与窗口同名的style文件(system\_bar.xml)。比如下面是demoui中的system\_bar的style(system\_bar.xml)：
 
+```
+<system_bar>
+  <style name="default">
+    <normal bg_color="#404040"/>
+  </style>
+</system_bar>
 
+<label>
+  <style name="title" text_align_h="left">
+    <normal text_color="white" />
+  </style>
+</label>
+
+<digit_clock>
+  <style name="time">
+    <normal text_color="white" />
+  </style>
+</digit_clock>
+
+<button>
+  <style name="close" icon="earth">
+    <normal     icon="close_n"/>
+    <pressed    icon="close_p"/>
+    <over       icon="close_n"/>
+    <disable    icon="close_d"/>
+  </style>
+</button>
+```
+
+如果整个屏幕用一张大的背景图，可以把背景图片设置到窗口管理器上，这样就不需要为system\_bar和应用窗口分别指定背景图片了。如：
+
+```
+<window_manager>
+  <style name="default">
+    <normal bg_image="bg800x480"/>
+  </style>
+</window_manager>
+```

@@ -57,6 +57,10 @@ static const void* widget_get_const_style_data(widget_t* widget) {
   widget_state_t state =
       (widget_state_t)widget_get_prop_int(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
+  if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    return theme_find_style(theme(), type, style_name, state);
+  }
+
   return_value_if_fail(widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK, NULL);
 
   if (win_theme != NULL) {
