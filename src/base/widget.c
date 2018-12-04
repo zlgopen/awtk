@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -389,7 +389,7 @@ ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
 ret_t widget_restack(widget_t* widget, uint32_t index) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  uint32_t old_index = 0;
+  int32_t old_index = 0;
   widget_t** children = NULL;
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
 
