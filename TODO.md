@@ -75,6 +75,9 @@
 * 支持GIF
 * ProgressCircle
 * 支持clipboard
+* ImageValue
+* SystemBar
+* Canvas
 
 ## 短期计划(顺序不定)
 * menu
@@ -88,7 +91,6 @@
 * drag & drop
 * tableview
 * python binging 
-* remote client
 * 音频接口。
 * 键盘导航
 * 事件录制与重放。
