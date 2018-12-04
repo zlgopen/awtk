@@ -2,6 +2,7 @@
 * 2018/12/04
   * 更新stm32相关工程。
   * 完善system\_bar控件。
+  * 增加system\_bar控件的使用文档。
 
 * 2018/12/02-03
   * 增加system\_bar控件(窗口vtranslate动画还需要相应完善)。

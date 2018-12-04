@@ -1,4 +1,4 @@
-<window closable="no" anim_hint="htranslate">
+<window closable="no" text="Desktop" anim_hint="htranslate">
   <slide_view x="0" y="0" w="100%" h="100%">
     <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
       <button name="open:basic" text="Basic"/>
