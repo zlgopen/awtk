@@ -39,7 +39,9 @@ system\_bar和普通窗口类似，你可以用代码创建，也可以用XML UI
 
 ## 二、打开窗口
 
-如果要启用system\_bar窗口，必须在打开应用程序的窗口之前打开system\_bar窗口(可以在资源加载窗口之后)。
+如果要启用system\_bar窗口，必须在打开应用程序的窗口之前打开system\_bar窗口。
+
+> 可以在资源加载窗口之后打开system\_bar窗口，但是资源加载窗口顶部区域需要留白。
 
 ```
 window_open("system_bar");
