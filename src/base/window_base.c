@@ -31,10 +31,6 @@
 ret_t window_close(widget_t* widget);
 
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
-  if (style_is_valid(widget->astyle)) {
-    return widget_paint_helper(widget, c, NULL, NULL);
-  }
-
   return RET_OK;
 }
 
