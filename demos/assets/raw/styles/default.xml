@@ -158,6 +158,14 @@
     <normal text_color="green" text_align_h="center" border_color="#a0a0a0"/>
   </style>
   
+  <style name="center_top">
+    <normal text_color="green" text_align_v="top" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
+  
+  <style name="center_bottom">
+    <normal text_color="green" text_align_v="bottom" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
+  
   <style name="right">
     <normal text_color="blue" text_align_h="right" border_color="#a0a0a0" margin="4"/>
   </style>

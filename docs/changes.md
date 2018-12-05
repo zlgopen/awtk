@@ -1,6 +1,7 @@
 # 最新动态
 * 2018/12/05
   * 修改scanline\_adapter<RendererT>::commit的BUG，强制转换导致数据错误覆盖。
+  * label支持多行显示(非自动换行，需自动换行请用rich\_text)。
 
 * 2018/12/04
   * 更新stm32相关工程。

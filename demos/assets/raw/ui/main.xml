@@ -30,6 +30,7 @@
       <button name="open:image_value" text="Value Image"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
+      <button name="open:label" text="Label"/>
       <button name="open:memtest" text="MemTest"/>
       <button name="show_fps" text="Show FPS"/>
       <button name="exit" text="Exit"/>
