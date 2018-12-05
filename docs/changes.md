@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/12/05
+  * 修改scanline\_adapter<RendererT>::commit的BUG，强制转换导致数据错误覆盖。
+
 * 2018/12/04
   * 更新stm32相关工程。
   * 完善system\_bar控件。
