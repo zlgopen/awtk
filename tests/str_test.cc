@@ -149,3 +149,30 @@ TEST(Str, remove) {
 
   str_reset(s);
 }
+
+TEST(Str, unescap) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, "a\\nbc"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "a\nbc");
+
+  ASSERT_EQ(str_set(s, "\\ra\\rbc\\r"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\ra\rbc\r");
+
+  ASSERT_EQ(str_set(s, "\\ta\\tbc\\t"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\ta\tbc\t");
+
+  ASSERT_EQ(str_set(s, "\\\\a\\\\bc\\\\"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\a\\bc\\");
+
+  str_reset(s);
+}

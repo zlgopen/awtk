@@ -143,6 +143,56 @@ ret_t str_decode_xml_entity(str_t* str, const char* text) {
   return str_decode_xml_entity_with_len(str, text, strlen(text));
 }
 
+ret_t str_unescape(str_t* str) {
+  char* s = NULL;
+  char* d = NULL;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+  s = str->str;
+  d = str->str;
+
+  while ((s - str->str) < str->size) {
+    char c = *s++;
+
+    if (c == '\\') {
+      switch (*s++) {
+        case 'n': {
+          c = '\n';
+          break;
+        }
+        case 'r': {
+          c = '\r';
+          break;
+        }
+        case 't': {
+          c = '\t';
+          break;
+        }
+        case '\'': {
+          c = '\'';
+          break;
+        }
+        case '\"': {
+          c = '\"';
+          break;
+        }
+        case '\\': {
+          c = '\\';
+          break;
+        }
+        default: {
+          log_warn("not support char\n");
+          break;
+        }
+      }
+    }
+    *d++ = c;
+  }
+  *d = '\0';
+  str->size = d - str->str;
+
+  return RET_OK;
+}
+
 bool_t str_eq(str_t* str, const char* text) {
   if ((str == NULL && text == NULL) || (str != NULL && str->str == NULL && text == NULL)) {
     return TRUE;
