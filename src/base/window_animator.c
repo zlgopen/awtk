@@ -67,13 +67,18 @@ ret_t window_animator_destroy(window_animator_t* wa) {
   return wa->destroy(wa);
 }
 
-ret_t window_animator_begin_frame(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GPU
+static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   window_manager_t* wm = WINDOW_MANAGER(wa->curr_win->parent);
 
-  if (wm->system_bar) {
+  if (!(wa->canvas->lcd->support_dirty_rect) && wm->system_bar) {
     widget_paint(wm->system_bar, wa->canvas);
   }
+
+  return RET_OK;
+}
+
+ret_t window_animator_begin_frame(window_animator_t* wa) {
+#ifdef WITH_NANOVG_GPU
 #else
   rect_t r;
   widget_t* wm = wa->curr_win->parent;
@@ -81,7 +86,7 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION) == RET_OK);
 #endif
 
-  return RET_OK;
+  return window_animator_paint_system_bar(wa);
 }
 
 ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
