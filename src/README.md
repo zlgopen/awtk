@@ -15,3 +15,5 @@
 * **input\_engines** 输入法引擎的各种实现。
 * **ui\_loader** 从界面描述数据创建窗口。
 * **vgcanvas** 矢量图画布。
+* **svg** 矢量图画SVG。
+* **clip\_board** 剪切板的实现。
