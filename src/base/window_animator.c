@@ -106,5 +106,5 @@ ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
 #endif
 
-  return RET_OK;
+  return window_animator_paint_system_bar(wa);
 }

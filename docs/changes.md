@@ -2,6 +2,8 @@
 * 2018/12/06
   * 更新文档。
   * 完善scroll view的滚动效果。
+  * 修改label中换行的bug。
+  * 修改窗口动画时system bar闪烁的BUG。
 
 * 2018/12/05
   * 修改scanline\_adapter<RendererT>::commit的BUG，强制转换导致数据错误覆盖。
