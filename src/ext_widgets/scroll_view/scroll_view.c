@@ -151,7 +151,8 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
 
   xoffset = scroll_view->xoffset;
   yoffset = scroll_view->yoffset;
-  if (xoffset == xoffset_end && yoffset == yoffset_end) {
+  if ((!scroll_view->yslidable && xoffset == xoffset_end) ||
+      (!scroll_view->xslidable && yoffset == yoffset_end)) {
     return RET_OK;
   }
 
@@ -170,16 +171,24 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   if (scroll_view->wa != NULL) {
     widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
     if (scroll_view->xslidable) {
-      if (wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w)) {
+      bool_t changed = wa->x_to != xoffset_end;
+      bool_t in_range = wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w);
+      if (changed && in_range) {
         wa->x_to = xoffset_end;
         wa->x_from = scroll_view->xoffset;
+      } else if (!scroll_view->yslidable) {
+        return RET_OK;
       }
     }
 
     if (scroll_view->yslidable) {
-      if (wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h)) {
+      bool_t changed = wa->y_to != yoffset_end;
+      bool_t in_range = wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h);
+      if (changed && in_range) {
         wa->y_to = yoffset_end;
         wa->y_from = scroll_view->yoffset;
+      } else if (!scroll_view->xslidable) {
+        return RET_OK;
       }
     }
 
@@ -217,7 +226,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
       int32_t dy = wa->y_to - scroll_view->yoffset;
       xv -= dx;
       yv -= dy;
-      log_debug("dx=%d xv=%d\n", dx, xv);
+      log_debug("dx=%d xv=%d dy=%d yv=%d\n", dx, xv, dy, yv);
     }
 
     if (scroll_view->xslidable) {
