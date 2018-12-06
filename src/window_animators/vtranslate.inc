@@ -21,13 +21,13 @@ static ret_t window_animator_open_vtranslate_draw_prev(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
   float_t ratio = wa->ratio;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
-  vgcanvas_draw_image(vg, &(wa->prev_img), win->x * ratio, y * ratio, win->w * ratio, h * ratio,
-                      win->x, 0, win->w, h);
+  vgcanvas_draw_image(vg, &(wa->prev_img), win->x * ratio, (y + win->y) * ratio, win->w * ratio,
+                      h * ratio, win->x, win->y, win->w, h);
 #else
   rect_t src;
   rect_t dst;
-  src = rect_init(win->x, y, win->w, h);
-  dst = rect_init(win->x, 0, win->w, h);
+  src = rect_init(win->x, y + win->y, win->w, h);
+  dst = rect_init(win->x, win->y, win->w, h);
   lcd_draw_image(c->lcd, &(wa->prev_img), &src, &dst);
 #endif
 

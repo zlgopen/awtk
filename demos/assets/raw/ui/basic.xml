@@ -10,9 +10,9 @@
   </row>
 
   <row x="0" y="80" w="100%" h="30" layout="r:1 c:3 xm:2 s:10">
-    <label name="left" text="Left"/>
-    <label name="center" text="Center"/>
-    <label name="right" text="Right"/>
+    <label style="left" name="left" text="Left"/>
+    <label style="center" name="center" text="Center"/>
+    <label style="right" name="right" text="Right"/>
   </row>
 
   <progress_bar name="bar1" x="10" y="128" w="240" h="30" value="40"/>

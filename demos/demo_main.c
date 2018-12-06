@@ -22,6 +22,7 @@
 #include "awtk.h"
 #include "assets.h"
 #include "base/mem.h"
+#include "base/fs.h"
 #include "base/path.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
@@ -45,6 +46,10 @@ int main(void) {
   memset(res_root, 0x00, sizeof(res_root));
 
   path_build(res_root, MAX_PATH, app_root, "demos", NULL);
+  if (!path_exist(res_root)) {
+    strcpy(res_root, app_root);
+    log_debug("%s not exist, try %s\n", res_root, app_root);
+  }
 
 #if defined(WIN32)
 #if !defined(NDEBUG)

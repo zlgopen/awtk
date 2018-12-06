@@ -49,6 +49,16 @@ typedef struct _window_base_t {
   char* script;
 
   /**
+   * @property {window_closable_t} closable
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
+   * 如果关闭窗口时，需要用户确认:
+   * * 1.将closable设置为WINDOW_CLOSABLE_CONFIRM
+   * * 2.处理窗口的EVT_REQUEST_CLOSE_WINDOW事件
+   */
+  window_closable_t closable;
+
+  /**
    * @property {char*} open_anim_hint
    * @annotation ["set_prop","get_prop","readable","persitent","design"]
    * 打开时的动画名称。

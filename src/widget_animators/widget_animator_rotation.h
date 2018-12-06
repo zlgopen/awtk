@@ -54,8 +54,8 @@ widget_animator_t* widget_animator_rotation_create(widget_t* widget, uint32_t du
  * @method widget_animator_rotation_set_params
  * 设置动画对象的参数。
  * @param {widget_animator_t*} animator 动画对象本身。
- * @param {float_t} from rotation起始值。
- * @param {float_t} to rotation结束值。
+ * @param {float_t} from rotation起始值(弧度)。
+ * @param {float_t} to rotation结束值(弧度)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

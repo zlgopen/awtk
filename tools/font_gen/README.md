@@ -24,6 +24,6 @@ pip install fonttools
 
 示例：
 ```
-pyftsubset ../../../fonts/msyh.ttf --text-file=../../demos/res/raw/fonts/text.txt  --output-file=../../demos/res/raw/fonts/font.ttf
+pyftsubset ../../../fonts/msyh.ttf --text-file=../../demos/assets/raw/fonts/text.txt  --output-file=../../demos/assets/raw/fonts/default.mini.ttf
 ```
 

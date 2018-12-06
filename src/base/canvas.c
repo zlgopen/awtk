@@ -76,12 +76,15 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 
-  r->x = c->clip_left;
-  r->y = c->clip_top;
-  r->w = c->clip_right - c->clip_left + 1;
-  r->h = c->clip_bottom - c->clip_top + 1;
-
-  return RET_OK;
+  if (c->lcd->get_clip_rect != NULL) {
+    return lcd_get_clip_rect(c->lcd, r);
+  } else {
+    r->x = c->clip_left;
+    r->y = c->clip_top;
+    r->w = c->clip_right - c->clip_left + 1;
+    r->h = c->clip_bottom - c->clip_top + 1;
+    return RET_OK;
+  }
 }
 
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
@@ -94,18 +97,10 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
   lcd_h = c->lcd->h;
 
   if (r) {
-    if (c->lcd->set_clip_rect != NULL) {
-      c->clip_left = 0;
-      c->clip_top = 0;
-      c->clip_right = lcd_w - 1;
-      c->clip_bottom = lcd_h - 1;
-      lcd_set_clip_rect(c->lcd, (rect_t*)r);
-    } else {
-      c->clip_left = r->x;
-      c->clip_top = r->y;
-      c->clip_right = r->x + r->w - 1;
-      c->clip_bottom = r->y + r->h - 1;
-    }
+    c->clip_left = r->x;
+    c->clip_top = r->y;
+    c->clip_right = r->x + r->w - 1;
+    c->clip_bottom = r->y + r->h - 1;
   } else {
     c->clip_left = 0;
     c->clip_top = 0;
@@ -127,6 +122,15 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r) {
 
   if (c->clip_bottom >= lcd_h) {
     c->clip_bottom = lcd_h - 1;
+  }
+
+  if (c->lcd->set_clip_rect != NULL) {
+    xy_t x = c->clip_left;
+    xy_t y = c->clip_top;
+    wh_t w = c->clip_right - c->clip_left + 1;
+    wh_t h = c->clip_bottom - c->clip_top + 1;
+    rect_t clip_r = rect_init(x, y, w, h);
+    lcd_set_clip_rect(c->lcd, &clip_r);
   }
 
   return RET_OK;
@@ -990,6 +994,30 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
+ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst) {
+  rect_t d;
+  float scale = 0;
+  float scalex = 0;
+  float scaley = 0;
+  return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  scalex = (float)(dst->w) / src->w;
+  scaley = (float)(dst->h) / src->h;
+  scale = tk_min(scalex, scaley);
+
+  if (scale >= 1) {
+    d.w = src->w;
+    d.h = src->h;
+  } else {
+    d.w = src->w * scale;
+    d.h = src->h * scale;
+  }
+  d.x = dst->x + ((dst->w - d.w) >> 1);
+  d.y = dst->y + ((dst->h - d.h) >> 1);
+
+  return canvas_draw_image(c, img, src, &d);
+}
+
 ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix) {
   draw_image_info_t info;
   return_value_if_fail(c != NULL && img != NULL && matrix != NULL && c->lcd != NULL,
@@ -1152,21 +1180,20 @@ ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
 static ret_t canvas_draw_fps(canvas_t* c) {
   lcd_t* lcd = c->lcd;
 
-  if (c->show_fps && c->lcd->draw_mode != LCD_DRAW_OFFLINE) {
+  if (c->show_fps && c->lcd->draw_mode == LCD_DRAW_NORMAL) {
     rect_t r;
     char fps[20];
     wchar_t wfps[20];
 
     r = rect_init(0, 0, 60, 30);
     canvas_set_font(c, NULL, 16);
-    canvas_set_clip_rect(c, NULL);
     canvas_set_text_color(c, color_init(0xf0, 0xf0, 0xf0, 0xff));
     canvas_set_fill_color(c, color_init(0x20, 0x20, 0x20, 0xff));
 
     lcd->fps_rect = r;
     tk_snprintf(fps, sizeof(fps), "%dfps", (int)(c->fps));
-    utf8_to_utf16(fps, wfps, strlen(fps) + 1);
 
+    utf8_to_utf16(fps, wfps, strlen(fps) + 1);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
     canvas_draw_text(c, wfps, wcslen(wfps), r.x + 8, r.y + 8);
   } else {

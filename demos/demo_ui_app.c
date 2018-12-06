@@ -258,6 +258,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
   widget_t* status = widget_lookup(win, "status", TRUE);
 
   if (s_preload_nr == total) {
+    window_open("system_bar");
     open_window("main", win);
 
     return RET_REMOVE;

@@ -49,6 +49,7 @@ static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT,       WIDGET_
                                             WIDGET_PROP_SCRIPT,          NULL};
 static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .type = WIDGET_TYPE_DIALOG,
+                                                .is_window = TRUE,
                                                 .clone_properties = s_dialog_properties,
                                                 .persistent_properties = s_dialog_properties,
                                                 .create = dialog_create,

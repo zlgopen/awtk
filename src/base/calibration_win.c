@@ -149,6 +149,7 @@ static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
 static const widget_vtable_t s_calibration_win_vtable = {
     .size = sizeof(calibration_win_t),
     .type = WIDGET_TYPE_CALIBRATION_WIN,
+    .is_window = TRUE,
     .create = calibration_win_create,
     .on_event = calibration_win_on_event,
     .set_prop = window_base_set_prop,

@@ -130,6 +130,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN_ABORT: {
       aswitch->point_down_aborted = TRUE;
       aswitch->xoffset = aswitch->xoffset_save;
+      widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_UP: {
@@ -169,6 +170,18 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 
   h = ih;
   w = iw * (1 - aswitch->max_xoffset_ratio);
+  wscale = (float_t)(widget->w) / (float_t)w;
+
+#ifdef WITH_NANOVG_SOFT
+  if (round_radius < 5) {
+    int32_t x = (widget->w - w) >> 1;
+    int32_t y = (widget->h - ih) >> 1;
+    rect_t src = rect_init(xoffset, 0, w, ih);
+    rect_t dst = rect_init(x, y, w, ih);
+
+    return canvas_draw_image(c, img, &src, &dst);
+  }
+#endif /*WITH_NANOVG_SOFT*/
 
   vgcanvas_save(vg);
   vgcanvas_translate(vg, c->ox, c->oy);
@@ -205,6 +218,7 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
     aswitch->value = value;
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
+    widget_invalidate(widget, NULL);
   }
 
   if (value) {
@@ -285,9 +299,9 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(aswitch != NULL, NULL);
 
   widget_init(widget, parent, &s_switch_vtable, x, y, w, h);
-  aswitch->max_xoffset_ratio = 0.34f;
   aswitch->value = TRUE;
-  aswitch->round_radius = 5;
+  aswitch->round_radius = 0;
+  aswitch->max_xoffset_ratio = 0.34f;
 
   return widget;
 }

@@ -46,6 +46,7 @@ static ret_t keyboard_destroy(widget_t* widget) {
 
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
+                                                  .is_window = TRUE,
                                                   .clone_properties = s_keyboard_properties,
                                                   .persistent_properties = s_keyboard_properties,
                                                   .create = keyboard_create,
@@ -108,9 +109,9 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   } else if (key != NULL) {
     key += strlen(STR_KEY_PREFIX);
     if (tk_str_eq(key, STR_KEY_BACKSPACE)) {
-      code = FKEY_BACKSPACE;
+      code = TK_KEY_BACKSPACE;
     } else if (tk_str_eq(key, STR_KEY_SPACE)) {
-      code = FKEY_SPACE;
+      code = TK_KEY_SPACE;
     } else {
       code = *key;
     }

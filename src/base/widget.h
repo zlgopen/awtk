@@ -68,6 +68,18 @@ typedef struct _widget_vtable_t {
   const char** clone_properties;
   /*持久化widget时需要保存的属性*/
   const char** persistent_properties;
+  /**
+   * 是否可以滚动。
+   */
+  uint32_t scrollable : 1;
+  /**
+   * 是否是窗口。
+   */
+  uint32_t is_window : 1;
+  /**
+   * 是否是设计窗口。
+   */
+  uint32_t is_designing_window : 1;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -167,7 +179,7 @@ struct _widget_t {
   /**
    * @property {bool_t} auto_created
    * @annotation ["readable"]
-   * 是否有父控件自动创建。
+   * 是否由父控件自动创建。
    */
   uint8_t auto_created : 1;
   /**
@@ -177,18 +189,11 @@ struct _widget_t {
    */
   uint8_t dirty : 1;
   /**
-   * @property {bool_t} is_window
+   * @property {bool_t} destroying
    * @annotation ["readable"]
-   * 是否是窗口。
+   * 标识控件正在被销毁。
    */
-  uint8_t is_window : 1;
-  /**
-   * @property {bool_t} is_designing_window
-   * @annotation ["readable"]
-   * 是否是设计窗口。
-   */
-  uint8_t is_designing_window : 1;
-
+  uint8_t destroying : 1;
   /**
    * @property {uint8_t} state
    * @annotation ["readable"]
@@ -594,7 +599,7 @@ const wchar_t* widget_get_text(widget_t* widget);
 
 /**
  * @method widget_to_local
- * 将全局坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
+ * 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。
  * @param {widget_t*} widget 控件对象。
  * @param {point_t*} p 坐标点。
  *
@@ -822,6 +827,27 @@ ret_t widget_add_child(widget_t* widget, widget_t* child);
 ret_t widget_remove_child(widget_t* widget, widget_t* child);
 
 /**
+ * @method widget_insert_child
+ * 插入子控件到指定的位置。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ * @param {widget_t*} child 子控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child);
+
+/**
+ * @method widget_restack
+ * 调整控件在父控件中的位置序数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_restack(widget_t* widget, uint32_t index);
+
+/**
  * @method widget_find_target
  * 查找x/y坐标对应的子控件。
  * @annotation ["private"]
@@ -945,10 +971,11 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r);
  * 强制重绘控件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
+ * @param {rect_t*} r 矩形对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate_force(widget_t* widget);
+ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
 
 /**
  * @method widget_paint
@@ -1019,7 +1046,7 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
 
 /**
  * @method widget_set_prop_int
- * 设置字符串格式的属性。
+ * 设置整数格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
@@ -1031,7 +1058,7 @@ ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
 
 /**
  * @method widget_get_prop_int
- * 获取字符串格式的属性。
+ * 获取整数格式的属性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
@@ -1040,6 +1067,30 @@ ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t v);
  * @return {int32_t} 返回属性的值。
  */
 int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval);
+
+/**
+ * @method widget_set_prop_bool
+ * 设置布尔格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t v);
+
+/**
+ * @method widget_get_prop_bool
+ * 获取布尔格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} defval 缺省值。
+ *
+ * @return {bool_t} 返回属性的值。
+ */
+bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval);
 
 /**
  * @method widget_is_window_opened
@@ -1214,6 +1265,19 @@ ret_t widget_layout(widget_t* widget);
 uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
+ * @method widget_is_point_in
+ * 判断一个点是否在控件内。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {bool_t} is_local TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。
+ *
+ * @return {bool_t} 返回RET_OK表示成功，否则表示失败。
+ */
+bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local);
+
+/**
  * @method widget_cast
  * 转换为widget对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -1274,7 +1338,6 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text);
 /**
  * @method widget_load_image
  * 加载图片。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*}  name 图片名。
  * @param {bitmap_t*} bitmap 图片对象。
@@ -1286,7 +1349,6 @@ ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
 /**
  * @method widget_load_asset
  * 加载资源。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {asset_type_t} type 资源类型。
  * @param {const char*}  name 资源名。
@@ -1298,13 +1360,14 @@ const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const
 /**
  * @method widget_unload_asset
  * 卸载资源。
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const asset_info_t*}  asset 资源句柄。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset);
+
+ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \

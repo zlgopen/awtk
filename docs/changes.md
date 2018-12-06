@@ -1,8 +1,83 @@
 # 最新动态
+* 2018/12/06
+  * 更新文档。
+  * 完善scroll view的滚动效果。
+  * 修改label中换行的bug。
+  * 修改窗口动画时system bar闪烁的BUG。
+
+* 2018/12/05
+  * 修改scanline\_adapter<RendererT>::commit的BUG，强制转换导致数据错误覆盖。
+  * label支持多行显示(非自动换行，需自动换行请用rich\_text)。
+
+* 2018/12/04
+  * 更新stm32相关工程。
+  * 完善system\_bar控件。
+  * 增加system\_bar控件的使用文档。
+  * 窗口管理支持style。有时通过style给窗口管理器设置一张大背景背景，就不需要给窗口和system\_bar分别设置背景图片了。
+
+* 2018/12/02-03
+  * 增加system\_bar控件(窗口vtranslate动画还需要相应完善)。
+
+* 2018/12/01
+  * 更新js/lua脚本绑定。
+  * 增加canvas控件。
+  * 增加image\_value控件，可以用图片来显示电池电量、WIFI信号强度和各种数值。
+
+* 2018/11/30
+  * 增加一些测试代码。
+  * 增加函数widget\_insert\_child/widget\_restack。
+  * 用户修改系统时间后，更新定时器的启动时间，否则可能导致定时器长时间不会触发。
+
+* 2018/11/29
+  * 修复scroll view中脏矩形的问题。
+  * awtk-linux-fb工程支持编译用户的项目。
+  * 修改switch控件中存在的问题并优化。
+  * 修改layout参数解析中存在的问题。
+  * 修改输入法相关的一些BUG。
+  * 缺省键盘增加中英文切换按钮。
+
+* 2018/11/28
+  * 更新字符串翻译的文档和示例。
+  * 键值的前缀有FKEY改为TK\_KEY。
+  * 把is\_designing\_window/is\_window移到vtable中。
+  * 把window\_manager中输入设备状态相关的代码移到独立的文件中。
+  * 修改list\_item中的BUG。
+  * 修复issue #50
+  * 修复issue #51
+  * widget\_invalidate\_force增加一个参数。
+
+* 2018/11/27
+  * 更新stm32767/stm429的工程。
+  * 更新资源。
+  * 修改编译警告。
+
+* 2018/11/26
+  * 优化不透明的gif。
+  * 修改部分函数widget\_invalidate
+  * 增加grid\_item。
+
+* 2018/11/25
+  * 支持GIF图片(参考：demos/assets/raw/ui/gif\_image.xml)。
+
+* 2018/11/24
+  * svg支持圆弧路径(A/a)
+
+* 2018/11/23
+  * 增加svg\_image控件。SVG支持的特性请参考src/svg/README.md。
+
+* 2018/11/22
+  * 完善button/checkbutton/comboboxitem对pointer down abort事件的处理。
+  * 完善slideview拖动处理。
+  * 完善脏矩形。
+  * 完善输入法(issue #40)。
+  * 完善edit.c，删除字符时触发changing事件(issue #41)。
+  * 增加image\_base类，把图片公共属性放到image\_base中，方便实现svg图片。可能导致接口不兼容，请酌情修改。
+
 * 2018/11/21
+  * 修改一些编译警告。
   * 修改资源生成工具支持SVG。
   * 修改slide\_view，增加一个拖动阀值，由该阀值和速度共同决定是否切换页面。
-  * 修改一些编译警告。
+  * 增加clip\_board接口、基于SDL和缺省实现。
 
 * 2018/11/20
   * 合并BUG #35的补丁。

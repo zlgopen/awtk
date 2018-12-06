@@ -30,23 +30,30 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN: {
-      check_button->point_down_aborted = FALSE;
+      check_button->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
+      widget_grab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
-      check_button->point_down_aborted = TRUE;
+      check_button->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_UP: {
-      if (!check_button->point_down_aborted) {
+      pointer_event_t* evt = (pointer_event_t*)e;
+
+      if (check_button->pressed && widget_is_point_in(widget, evt->x, evt->y, FALSE)) {
         if (check_button->radio) {
           check_button_set_value(widget, TRUE);
         } else {
           check_button_set_value(widget, !(check_button->value));
         }
       }
+
+      check_button->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
@@ -79,7 +86,7 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
     widget_dispatch(widget, &e);
 
     widget_update_style(widget);
-    widget_invalidate_force(widget);
+    widget_invalidate_force(widget, NULL);
   }
 
   return RET_OK;

@@ -57,12 +57,18 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
     auto_rotate = TRUE;
   }
 
+  r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
+  canvas_set_clip_rect(c, &r);
+  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
   ENSURE(lcd_take_snapshot(lcd, &(wa->prev_img), auto_rotate) == RET_OK);
   ENSURE(canvas_end_frame(c) == RET_OK);
 
+  r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
+  canvas_set_clip_rect(c, &r);
+  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
   ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img), auto_rotate) == RET_OK);
   ENSURE(canvas_end_frame(c) == RET_OK);

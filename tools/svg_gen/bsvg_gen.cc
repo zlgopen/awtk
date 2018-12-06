@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
   TKMEM_INIT(4 * 1024 * 1024)
 
   if (argc < 3) {
-    printf("Usage: %s input output [bin]\n", argv[0]);
+    printf("Usage: %s svg_filename bsvg_filename [bin]\n", argv[0]);
     return 0;
   }
 

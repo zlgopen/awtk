@@ -70,6 +70,11 @@ static const key_type_value_t widget_state_name_value[] = {
     {"selected", 0, WIDGET_STATE_SELECTED},
     {"empty", 0, WIDGET_STATE_EMPTY}};
 
+static const key_type_value_t window_closable_name_value[] = {
+    {"yes", 0, WINDOW_CLOSABLE_YES},
+    {"no", 0, WINDOW_CLOSABLE_NO},
+    {"confirm", 0, WINDOW_CLOSABLE_CONFIRM}};
+
 static const key_type_value_t align_v_name_value[] = {
     {"top", 0, ALIGN_V_TOP}, {"middle", 0, ALIGN_V_MIDDLE}, {"bottom", 0, ALIGN_V_BOTTOM}};
 
@@ -171,6 +176,10 @@ const key_type_value_t* style_id_find_by_value(uint32_t value) {
 
 const key_type_value_t* widget_state_find(const char* name) {
   return find_item(widget_state_name_value, ARRAY_SIZE(widget_state_name_value), name);
+}
+
+const key_type_value_t* window_closable_type_find(const char* name) {
+  return find_item(window_closable_name_value, ARRAY_SIZE(window_closable_name_value), name);
 }
 
 const key_type_value_t* align_v_type_find(const char* name) {

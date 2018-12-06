@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -44,13 +44,13 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   if (widget->x != x || widget->y != y) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget, NULL);
     widget->x = x;
     widget->y = y;
+    widget_invalidate_force(widget, NULL);
 
     e.type = EVT_MOVE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -63,13 +63,13 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
   if (widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget, NULL);
     widget->w = w;
     widget->h = h;
+    widget_invalidate_force(widget, NULL);
 
     e.type = EVT_RESIZE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -82,15 +82,15 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
   if (widget->x != x || widget->y != y || widget->w != w || widget->h != h) {
     widget_dispatch(widget, &e);
 
+    widget_invalidate_force(widget, NULL);
     widget->x = x;
     widget->y = y;
     widget->w = w;
     widget->h = h;
+    widget_invalidate_force(widget, NULL);
 
     e.type = EVT_MOVE_RESIZE;
     widget_dispatch(widget, &e);
-
-    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -285,9 +285,10 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->state != state) {
+    widget_invalidate_force(widget, NULL);
     widget->state = state;
     widget_update_style(widget);
-    widget_invalidate_force(widget);
+    widget_invalidate_force(widget, NULL);
   }
 
   return RET_OK;
@@ -336,7 +337,7 @@ ret_t widget_destroy_children(widget_t* widget) {
 }
 
 ret_t widget_add_child(widget_t* widget, widget_t* child) {
-  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
   if (widget->children == NULL) {
@@ -355,6 +356,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
+  widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;
   }
@@ -375,6 +377,47 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 
   child->parent = NULL;
   return array_remove(widget->children, NULL, child, NULL);
+}
+
+ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
+  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget_add_child(widget, child) == RET_OK, RET_FAIL);
+
+  return widget_restack(child, index);
+}
+
+ret_t widget_restack(widget_t* widget, uint32_t index) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  int32_t old_index = 0;
+  widget_t** children = NULL;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
+
+  old_index = widget_index_of(widget);
+  nr = widget_count_children(widget->parent);
+  return_value_if_fail(old_index >= 0 && nr > 0, RET_BAD_PARAMS);
+
+  if (index >= nr) {
+    index = nr - 1;
+  }
+
+  if (index == old_index || nr == 1) {
+    return RET_OK;
+  }
+
+  children = (widget_t**)(widget->parent->children->elms);
+  if (index < old_index) {
+    for (i = old_index; i > index; i--) {
+      children[i] = children[i - 1];
+    }
+  } else {
+    for (i = old_index; i < index; i++) {
+      children[i] = children[i + 1];
+    }
+  }
+  children[index] = widget;
+
+  return RET_OK;
 }
 
 static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
@@ -460,9 +503,10 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->visible != visible) {
+    widget_invalidate_force(widget, NULL);
     widget->visible = visible;
     widget_update_style(widget);
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget, NULL);
   }
 
   return RET_OK;
@@ -740,12 +784,12 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
-    widget->visible = !!value_int(v);
+    widget->visible = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
-    widget->enable = !!value_int(v);
+    widget->enable = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
@@ -863,6 +907,20 @@ int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval) 
   return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
 
   return value_int(&v);
+}
+
+ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t num) {
+  value_t v;
+  value_set_bool(&v, num);
+
+  return widget_set_prop(widget, name, &v);
+}
+
+bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
+
+  return value_bool(&v);
 }
 
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
@@ -1055,6 +1113,19 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e) {
+  widget_t* target = NULL;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  target = widget->target;
+  while (target != NULL) {
+    widget_dispatch(target, e);
+    target = target->target;
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = NULL;
@@ -1196,7 +1267,7 @@ widget_t* widget_get_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    if (iter->is_window) {
+    if (iter->vt->is_window) {
       return iter;
     }
     iter = iter->parent;
@@ -1241,6 +1312,7 @@ static ret_t widget_destroy_only(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
+  widget->destroying = TRUE;
   if (widget->emitter != NULL) {
     widget_dispatch(widget, &e);
     emitter_destroy(widget->emitter);
@@ -1318,9 +1390,17 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 }
 
-ret_t widget_invalidate_force(widget_t* widget) {
+ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
+  widget_t* iter = widget;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  widget->dirty = FALSE;
+
+  while (iter != NULL) {
+    iter->dirty = FALSE;
+    if (iter->vt->is_window) {
+      break;
+    }
+    iter = iter->parent;
+  }
 
   return widget_invalidate(widget, NULL);
 }
@@ -1366,34 +1446,28 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
     widget->vt = widget_vtable_default();
   }
 
-  if (vt && !tk_str_eq(vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
-    widget->astyle = style_factory_create_style(style_factory(), widget);
-  }
+  widget->astyle = style_factory_create_style(style_factory(), widget);
 
   if (parent != NULL && widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
-  widget_invalidate_force(widget);
+  widget_invalidate_force(widget, NULL);
 
   return widget;
 }
 
 ret_t widget_to_screen(widget_t* widget, point_t* p) {
-  value_t v;
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
+    if (iter->vt->scrollable) {
+      p->x -= widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
+      p->y -= widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    }
+
     p->x += iter->x;
     p->y += iter->y;
-
-    if (widget_get_prop(iter, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
-      p->x -= value_int(&v);
-    }
-
-    if (widget_get_prop(iter, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
-      p->y -= value_int(&v);
-    }
 
     iter = iter->parent;
   }
@@ -1406,6 +1480,11 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
+    if (iter->vt->scrollable) {
+      p->x += widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
+      p->y += widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    }
+
     p->x -= iter->x;
     p->y -= iter->y;
 
@@ -1615,16 +1694,19 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
 }
 
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
-  value_t v;
   image_manager_t* imm = NULL;
-  widget_t* win = widget_get_window(widget);
-  return_value_if_fail(win != NULL && widget != NULL && name != NULL && bitmap != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
-                       RET_BAD_PARAMS);
+  if (tk_str_eq(widget->vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    imm = image_manager();
+  } else {
+    value_t v;
+    widget_t* win = widget_get_window(widget);
+    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
+                         RET_BAD_PARAMS);
+    imm = (image_manager_t*)value_pointer(&v);
+  }
 
-  imm = (image_manager_t*)value_pointer(&v);
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   return image_manager_load(imm, name, bitmap);
@@ -1657,6 +1739,17 @@ ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   return assets_manager_unref(am, asset);
+}
+
+bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
+  point_t p = {x, y};
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (!is_local) {
+    widget_to_local(widget, &p);
+  }
+
+  return (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h);
 }
 
 const char* widget_get_type(widget_t* widget) {

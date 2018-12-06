@@ -34,9 +34,11 @@ typedef ret_t (*timer_func_t)(const timer_info_t* timer);
 
 typedef struct _timer_manager_t {
   uint32_t active;
+  bool_t dispatching;
+  uint32_t last_dispatch_time;
   uint32_t next_timer_id;
   timer_get_time_t get_time;
-  bool_t dispatching;
+
   struct _timer_info_t* first;
 } timer_manager_t;
 
@@ -51,7 +53,7 @@ struct _timer_info_t {
   tk_destroy_t on_destroy;
   timer_manager_t* timer_manager;
   bool_t pending_destroy;
-
+  bool_t user_changed_time;
   struct _timer_info_t* next;
 };
 
@@ -76,7 +78,7 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
 /**
  * @class timer_t
  * @annotation ["scriptable", "fake"]
- * timer函数在paint之后执行。
+ * 定时器系统。
  */
 
 /**

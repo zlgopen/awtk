@@ -26,9 +26,10 @@ static ret_t widget_animator_move_update(widget_animator_t* animator, float_t pe
   widget_animator_move_t* move = (widget_animator_move_t*)animator;
   return_value_if_fail(move != NULL, RET_BAD_PARAMS);
 
+  widget_invalidate_force(animator->widget, NULL);
   animator->widget->x = move->x_from + (move->x_to - move->x_from) * percent;
   animator->widget->y = move->y_from + (move->y_to - move->y_from) * percent;
-  widget_invalidate(animator->widget, NULL);
+  widget_invalidate_force(animator->widget, NULL);
 
   return RET_OK;
 }

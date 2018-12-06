@@ -102,6 +102,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_NAME "name"
 
 /**
+ * @const WIDGET_PROP_CLOSABLE
+ * 是否可以关闭。
+ */
+#define WIDGET_PROP_CLOSABLE "closable"
+
+/**
  * @const WIDGET_PROP_CURSOR
  * 鼠标指针。
  */
@@ -426,6 +432,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_IMAGE "image"
 
 /**
+ * @const WIDGET_PROP_FORMAT
+ *
+ */
+#define WIDGET_PROP_FORMAT "format"
+
+/**
  * @const WIDGET_PROP_DRAW_TYPE
  *
  */
@@ -596,9 +608,15 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_TYPE_POPUP
- *
+ * popup window
  */
 #define WIDGET_TYPE_POPUP "popup"
+
+/**
+ * @const WIDGET_TYPE_SYSTEM_BAR
+ * system bar window
+ */
+#define WIDGET_TYPE_SYSTEM_BAR "system_bar"
 
 /**
  * @const WIDGET_TYPE_SPRITE
@@ -835,6 +853,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_GRID "grid"
 
 /**
+ * @const WIDGET_TYPE_GRID_ITEM
+ *
+ */
+#define WIDGET_TYPE_GRID_ITEM "grid_item"
+
+/**
  * @const WIDGET_TYPE_ROW
  *
  */
@@ -976,6 +1000,30 @@ typedef enum _window_stage_t {
    */
   WINDOW_STAGE_CLOSED
 } window_stage_t;
+
+/**
+ * @enum window_closable_t
+ * @annotation ["scriptable"]
+ * @prefix WINDOW_CLOSABLE_
+ * 窗口的closable常量定义。
+ */
+typedef enum _window_closable_t {
+  /**
+   * @const WINDOW_CLOSABLE_YES
+   * 窗口可关闭。
+   */
+  WINDOW_CLOSABLE_YES = 0,
+  /**
+   * @const WINDOW_CLOSABLE_NO
+   * 窗口不可关闭。
+   */
+  WINDOW_CLOSABLE_NO,
+  /**
+   * @const WINDOW_CLOSABLE_CONFIRM
+   * 窗口需要确认后才能关闭。
+   */
+  WINDOW_CLOSABLE_CONFIRM
+} window_closable_t;
 
 END_C_DECLS
 

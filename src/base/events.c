@@ -60,6 +60,15 @@ paint_event_t* paint_event_cast(event_t* event) {
   return (paint_event_t*)event;
 }
 
+window_event_t* window_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_WINDOW_WILL_OPEN || event->type == EVT_WINDOW_OPEN ||
+                           event->type == EVT_WINDOW_CLOSE,
+                       NULL);
+
+  return (window_event_t*)event;
+}
+
 event_t event_init(uint32_t type, void* target) {
   event_t e;
 

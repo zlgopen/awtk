@@ -243,6 +243,16 @@ typedef enum _event_type_t {
    */
   EVT_WINDOW_CLOSE,
   /**
+   * @const EVT_REQUEST_CLOSE_WINDOW
+   * 请求关闭窗口的事件(event_t)。
+   */
+  EVT_REQUEST_CLOSE_WINDOW,
+  /**
+   * @const EVT_TOP_WINDOW_CHANGED
+   * 顶层窗口改变的事件(window_event_t)。
+   */
+  EVT_TOP_WINDOW_CHANGED,
+  /**
    * @const EVT_IM_COMMIT
    * 输入法提交输入的文本事件(im_commit_event_t)。
    */
@@ -503,11 +513,11 @@ typedef struct _key_event_t {
    */
   uint8_t shift : 1;
   /**
-   * @property {bool_t} caplock
+   * @property {bool_t} capslock
    * @annotation ["readable", "scriptable"]
-   * caplock键是否按下。
+   * capslock键是否按下。
    */
-  uint8_t caplock : 1;
+  uint8_t capslock : 1;
 } key_event_t;
 
 /**
@@ -545,6 +555,32 @@ typedef struct _paint_event_t {
  * @return {paint_event_t*} 对象。
  */
 paint_event_t* paint_event_cast(event_t* event);
+
+/**
+ * @class window_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 窗口事件，由窗口管理器触发。
+ */
+typedef struct _window_event_t {
+  event_t e;
+  /**
+   * @property {widget_t*} window
+   * @annotation ["readable", "scriptable"]
+   * canvas。
+   */
+  widget_t* window;
+} window_event_t;
+
+/**
+ * @method window_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转window_event_t对象。主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {window_event_t*} 对象。
+ */
+window_event_t* window_event_cast(event_t* event);
 
 /**
  * @method event_init

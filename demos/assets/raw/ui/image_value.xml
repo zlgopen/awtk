@@ -1,0 +1,21 @@
+<window anim_hint="htranslate">
+  <view x="0" y="0" w="100%" h="100%" layout="c:2 r:3">
+    <image_value  value="0" image="battery_"
+      animation="value(from=0, to=5, duration=10000)"/>
+    
+    <image_value  value="0" image="battery_"
+      animation="value(from=0, to=5, duration=10000)"/>
+    
+    <image_value  value="0" format="%02d" image="num_"
+      animation="value(from=10, to=100, duration=100000)"/>
+    
+    <image_value  value="0" format="%04d" image="num_"
+      animation="value(from=10, to=10000, duration=100000)"/>
+
+    <image_value  value="0" format="%02.2f" image="num_"
+      animation="value(from=0, to=100, duration=1000000)"/>
+
+    <image_value  value="0" format="%.4f" image="num_"
+      animation="value(from=0, to=100, duration=1000000)"/>
+  </view>
+</window>

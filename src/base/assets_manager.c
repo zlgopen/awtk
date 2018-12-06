@@ -149,6 +149,16 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
         return info;
       }
 
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".gif") == RET_OK,
+          NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_IMAGE_GIF, size, path, name);
+        /*not cache png file jpg data*/
+        return info;
+      }
+
       return_value_if_fail(build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/images/svg",
                                       name, ".bsvg") == RET_OK,
                            NULL);

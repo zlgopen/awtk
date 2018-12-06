@@ -62,7 +62,8 @@ namespace agge
 	template <typename RendererT>
 	AGGE_INLINE void scanline_adapter<RendererT>::commit(int next_x)
 	{
-		*reinterpret_cast<int *>(_cover) = 0;
+		//*reinterpret_cast<int *>(_cover) = 0;
+		*_cover = 0;
 		_renderer(_start_x, _x - _start_x, _start_cover);
 		_start_x = _x = next_x;
 		_cover = _start_cover;

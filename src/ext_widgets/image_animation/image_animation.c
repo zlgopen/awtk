@@ -37,8 +37,9 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
     name[strlen(name)] = image_animation->sequence[image_animation->index];
 
     if (widget_load_image(widget, name, &bitmap) == RET_OK) {
-      rect_t r = rect_init(0, 0, widget->w, widget->h);
-      canvas_draw_icon_in_rect(c, &bitmap, &r);
+      rect_t s = rect_init(0, 0, bitmap.w, bitmap.h);
+      rect_t d = rect_init(0, 0, widget->w, widget->h);
+      canvas_draw_image_scale_down(c, &bitmap, &s, &d);
     }
   }
 
@@ -52,7 +53,7 @@ static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_
   if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     value_set_bool(v, image_animation->loop);
     return RET_OK;
-  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_IMAGE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, image_animation->image);
     return RET_OK;
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_SEQUENCE)) {
@@ -77,7 +78,7 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
 
   if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     return image_animation_set_loop(widget, value_bool(v));
-  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_IMAGE)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_animation_set_image(widget, value_str(v));
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_SEQUENCE)) {
     return image_animation_set_sequence(widget, value_str(v));
@@ -169,8 +170,7 @@ ret_t image_animation_set_image(widget_t* widget, const char* image) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(widget != NULL && image != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(image_animation->image);
-  image_animation->image = tk_strdup(image);
+  image_animation->image = tk_str_copy(image_animation->image, image);
 
   return RET_OK;
 }
@@ -206,8 +206,7 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(widget != NULL && sequence != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(image_animation->sequence);
-  image_animation->sequence = tk_strdup(sequence);
+  image_animation->sequence = tk_str_copy(image_animation->sequence, sequence);
 
   return RET_OK;
 }
@@ -242,7 +241,7 @@ static ret_t image_animation_on_update(const timer_info_t* info) {
       }
     }
 
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget, NULL);
   }
 
   return ret;

@@ -21,6 +21,9 @@ static void timer_clear_log(void) {
 
 static ret_t timer_once(const timer_info_t* timer) {
   s_log += "o:";
+  if (timer->user_changed_time) {
+    s_log += "[uct]";
+  }
   return RET_OK;
 }
 
@@ -62,9 +65,9 @@ static string repeat_str(const string& substr, uint32_t nr) {
 TEST(Timer, once) {
   uint32_t i = 0;
   uint32_t ids[NR];
+  timer_set_time(0);
   timer_manager_t* tm = timer_manager_create(timer_get_time);
 
-  timer_set_time(0);
   for (i = 0; i < NR; i++) {
     ids[i] = timer_manager_add(tm, timer_once, NULL, i + 1);
     ASSERT_EQ(timer_manager_next_time(tm), 1);
@@ -89,9 +92,9 @@ TEST(Timer, once) {
 TEST(Timer, repeat) {
   uint32_t i = 0;
   uint32_t ids[NR];
+  timer_set_time(0);
   timer_manager_t* tm = timer_manager_create(timer_get_time);
 
-  timer_set_time(0);
   for (i = 0; i < NR; i++) {
     ids[i] = timer_manager_add(tm, timer_repeat, NULL, i + 1);
     ASSERT_EQ(timer_manager_next_time(tm), 1);
@@ -122,9 +125,9 @@ TEST(Timer, repeat) {
 }
 
 TEST(Timer, removeInTimer) {
+  timer_set_time(0);
   timer_manager_t* tm = timer_manager_create(timer_get_time);
 
-  timer_set_time(0);
   uint32_t id1 = timer_manager_add(tm, timer_repeat, NULL, 200);
   timer_manager_add(tm, timer_remove_in_timer, (char*)NULL + id1, 100);
 
@@ -138,9 +141,9 @@ TEST(Timer, removeInTimer) {
 }
 
 TEST(Timer, addInTimer) {
+  timer_set_time(0);
   timer_manager_t* tm = timer_manager_create(timer_get_time);
 
-  timer_set_time(0);
   timer_manager_add(tm, timer_add_in_timer, NULL, 100);
   ASSERT_EQ(timer_manager_next_time(tm), 100);
 
@@ -149,6 +152,29 @@ TEST(Timer, addInTimer) {
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), 3);
   ASSERT_EQ(s_log, "a:r:");
+
+  timer_manager_destroy(tm);
+}
+
+TEST(Timer, UserChangedTime) {
+  timer_set_time(100 * 1000);
+  timer_manager_t* tm = timer_manager_create(timer_get_time);
+
+  timer_manager_add(tm, timer_once, NULL, 100);
+  ASSERT_EQ(tm->last_dispatch_time, 100 * 1000);
+  ASSERT_EQ(timer_manager_next_time(tm), tm->last_dispatch_time + 100);
+
+  timer_clear_log();
+  timer_set_time(0);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(tm->last_dispatch_time, 0);
+  ASSERT_EQ(s_log, "");
+
+  timer_clear_log();
+  timer_set_time(100);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(tm->last_dispatch_time, 100);
+  ASSERT_EQ(s_log, "o:[uct]");
 
   timer_manager_destroy(tm);
 }

@@ -57,6 +57,7 @@ static ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
 static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                                      widget_t* curr_win, bool_t open) {
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  widget_t* wm = prev_win->parent;
 
   wa->canvas = c;
   wa->open = open;
@@ -67,12 +68,14 @@ static ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_
   ENSURE(vgcanvas_create_fbo(vg, &(wa->prev_fbo)) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
   vgcanvas_scale(vg, 1, 1);
+  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
   ENSURE(vgcanvas_unbind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
 
   ENSURE(vgcanvas_create_fbo(vg, &(wa->curr_fbo)) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
   vgcanvas_scale(vg, 1, 1);
+  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
   ENSURE(vgcanvas_unbind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
 

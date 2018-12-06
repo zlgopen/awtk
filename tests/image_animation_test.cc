@@ -21,8 +21,8 @@ TEST(ImageAnimation, basic) {
   ASSERT_EQ(wcscmp(w->text.str, L"Cancel"), 0);
 
   value_set_str(&v1, "image");
-  ASSERT_EQ(widget_set_prop(w, IMAGE_ANIMATION_PROP_IMAGE, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(w, IMAGE_ANIMATION_PROP_IMAGE, &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_IMAGE, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_IMAGE, &v2), RET_OK);
   ASSERT_EQ(string(v1.value.str), string(v2.value.str));
 
   value_set_str(&v1, "1234");

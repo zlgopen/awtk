@@ -1,0 +1,9 @@
+<window anim_hint="htranslate">
+  <view x="0" y="0" w="100%" h="-60" layout="c:2 r:2">
+    <gif image="bee"/>
+    <gif image="bee"/>
+    <gif image="bee"/>
+    <gif image="bee"/>
+  </view>
+  <button name="close" x="c" y="bottom:10" w="80" h="40" text="Close" />
+</window>

@@ -133,8 +133,6 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-#define DRAG_THRESHOLD 30
-
 static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
   uint32_t v_threshhold = 100;
   widget_t* widget = WIDGET(slide_view);
@@ -155,7 +153,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (yoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(yoffset) < DRAG_THRESHOLD) {
+    if (tk_abs(yoffset) < TK_DRAG_THRESHOLD) {
       rollback = TRUE;
     }
 
@@ -176,7 +174,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (xoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(xoffset) < DRAG_THRESHOLD) {
+    if (tk_abs(xoffset) < TK_DRAG_THRESHOLD) {
       rollback = TRUE;
     }
 
@@ -223,18 +221,36 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      if (slide_view->xoffset || slide_view->yoffset) {
+      if (slide_view->dragged) {
         slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
       }
+      slide_view->dragged = FALSE;
       widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed) {
+      if (slide_view->dragged) {
         slide_view_on_pointer_move(slide_view, evt);
         slide_view_invalidate(slide_view);
+      } else if (evt->pressed) {
+        int32_t delta = 0;
+
+        if (slide_view->vertical) {
+          delta = evt->y - slide_view->down.y;
+        } else {
+          delta = evt->x - slide_view->down.x;
+        }
+
+        if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
+          pointer_event_t abort = *evt;
+          abort.e.type = EVT_POINTER_DOWN_ABORT;
+
+          widget_dispatch_event_to_target_recursive(widget->target, (event_t*)(&abort));
+          slide_view->dragged = TRUE;
+        }
       }
+
       break;
     }
     default:

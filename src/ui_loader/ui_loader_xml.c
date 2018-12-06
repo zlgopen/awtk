@@ -100,6 +100,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
 
     if (is_precedence_prop(tag, key)) {
       ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
+      str_unescape(&(b->str));
       ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
     }
 
@@ -122,6 +123,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
 
     if (!is_precedence_prop(tag, key)) {
       ENSURE(str_decode_xml_entity(&(b->str), value) == RET_OK);
+      str_unescape(&(b->str));
       ui_builder_on_widget_prop(b->ui_builder, key, b->str.str);
     }
 

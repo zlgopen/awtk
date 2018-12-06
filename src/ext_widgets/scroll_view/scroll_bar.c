@@ -271,7 +271,7 @@ static ret_t scroll_bar_layout_children(widget_t* widget) {
 
   widget_move_resize(WIDGET(dragger), r.x, r.y, r.w, r.h);
   widget_layout(widget);
-  widget_invalidate_force(widget);
+  widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }
@@ -441,7 +441,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
 
   widget_set_opacity(widget, 0xff);
   widget_set_visible(widget, TRUE, FALSE);
-  widget_invalidate_force(widget);
+  widget_invalidate_force(widget, NULL);
 
   if (scroll_bar->value == value) {
     if (scroll_bar_is_mobile(widget)) {

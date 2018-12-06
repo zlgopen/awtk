@@ -32,24 +32,27 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN: {
-      combo_box_item->point_down_aborted = FALSE;
+      combo_box_item->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
-      combo_box_item->point_down_aborted = TRUE;
+      combo_box_item->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_UP: {
-      widget_ungrab(widget->parent, widget);
-      if (!combo_box_item->point_down_aborted) {
-        pointer_event_t evt = *(pointer_event_t*)e;
+      pointer_event_t evt = *(pointer_event_t*)e;
+      if (combo_box_item->pressed) {
         evt.e = event_init(EVT_CLICK, widget);
-        widget_set_state(widget, WIDGET_STATE_NORMAL);
         combo_box_item_set_checked(widget, TRUE);
         widget_dispatch(widget, (event_t*)&evt);
       }
+
+      combo_box_item->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_LEAVE:

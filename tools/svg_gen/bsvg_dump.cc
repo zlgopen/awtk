@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
   TKMEM_INIT(4 * 1024 * 1024)
 
   if (argc < 2) {
-    printf("Usage: %s input", argv[0]);
+    printf("Usage: %s bsvg_filename\n", argv[0]);
     return 0;
   }
 

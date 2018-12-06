@@ -46,6 +46,11 @@ typedef struct _point_t {
   xy_t y;
 } point_t;
 
+typedef struct _pointf_t {
+  float_t x;
+  float_t y;
+} pointf_t;
+
 /**
  * @class rect_t
  * @annotation ["scriptable"]

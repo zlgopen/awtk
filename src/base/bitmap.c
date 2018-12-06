@@ -49,6 +49,11 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
     } else {
       TKMEM_FREE(bitmap->data);
     }
+
+    if (bitmap->gif_delays) {
+      TKMEM_FREE(bitmap->gif_delays);
+      bitmap->gif_delays = NULL;
+    }
   }
 
   if (bitmap->should_free_handle) {

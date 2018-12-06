@@ -37,6 +37,8 @@
 #include "base/column.h"
 #include "base/app_bar.h"
 #include "base/dragger.h"
+#include "base/grid_item.h"
+#include "base/system_bar.h"
 #include "base/tab_button.h"
 #include "base/tab_control.h"
 #include "base/button_group.h"
@@ -86,10 +88,11 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
     {WIDGET_TYPE_POPUP, popup_create},
     {WIDGET_TYPE_GRID, grid_create},
+    {WIDGET_TYPE_GRID_ITEM, grid_item_create},
     {WIDGET_TYPE_ROW, row_create},
     {WIDGET_TYPE_COLUMN, column_create},
     {WIDGET_TYPE_APP_BAR, app_bar_create},
-    {WIDGET_TYPE_POPUP, popup_create},
+    {WIDGET_TYPE_SYSTEM_BAR, system_bar_create},
     {WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create},
     {WIDGET_TYPE_COLOR_TILE, color_tile_create}};
 

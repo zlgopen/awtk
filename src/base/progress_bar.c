@@ -155,7 +155,7 @@ ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical) {
 
   progress_bar->vertical = vertical;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text) {
@@ -164,7 +164,7 @@ ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text) {
 
   progress_bar->show_text = show_text;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* v) {

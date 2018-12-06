@@ -53,7 +53,7 @@ void exit_if_need_not_update(const char* in, const char* out) {
     return;
   }
 
-  if (st_in.st_mtime < st_out.st_mtime || st_in.st_atime < st_out.st_mtime) {
+  if (st_in.st_mtime < st_out.st_mtime) {
     log_debug("Skip because: %s is newer than %s\n", out, in);
     exit(0);
   }

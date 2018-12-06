@@ -160,6 +160,15 @@ ret_t str_remove(str_t* str, uint32_t offset, uint32_t len);
 ret_t str_append_char(str_t* str, char c);
 
 /**
+ * @method str_unescape
+ * 对字符串进行反转义。如：把"\n"转换成'\n'。
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_unescape(str_t* str);
+
+/**
  * @method str_decode_xml_entity
  * 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
  * @param {str_t*} str str对象。

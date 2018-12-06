@@ -56,7 +56,7 @@ typedef struct _slide_view_t {
   uint32_t active;
   bool_t animating;
   uint32_t timer_id;
-
+  bool_t dragged;
   velocity_t velocity;
 } slide_view_t;
 

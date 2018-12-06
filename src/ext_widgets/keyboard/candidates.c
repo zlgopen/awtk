@@ -139,7 +139,7 @@ static ret_t candidates_update_candidates(widget_t* widget, const char* strs, ui
   }
 
   candidates_relayout_children(widget);
-  widget_invalidate_force(widget);
+  widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }

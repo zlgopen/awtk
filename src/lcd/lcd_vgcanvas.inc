@@ -56,6 +56,13 @@ static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, rect_t* r) {
   return vgcanvas_clip_rect(LCD(lcd)->canvas, r->x, r->y, r->w, r->h);
 }
 
+static ret_t lcd_vgcanvas_get_clip_rect(lcd_t* lcd, rect_t* r) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  *r = canvas->clip_rect;
+
+  return RET_OK;
+}
+
 static ret_t lcd_vgcanvas_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   return vgcanvas_set_global_alpha(LCD(lcd)->canvas, (float_t)alpha / 255.0);
 }
@@ -217,6 +224,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
 
   base->begin_frame = lcd_vgcanvas_begin_frame;
   base->set_clip_rect = lcd_vgcanvas_set_clip_rect;
+  base->get_clip_rect = lcd_vgcanvas_get_clip_rect;
   base->draw_vline = lcd_vgcanvas_draw_vline;
   base->draw_hline = lcd_vgcanvas_draw_hline;
   base->fill_rect = lcd_vgcanvas_fill_rect;

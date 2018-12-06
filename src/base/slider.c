@@ -241,6 +241,7 @@ static ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_t
     slider->value = value;
     widget_invalidate(widget, NULL);
     widget_dispatch(widget, &evt);
+    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -266,7 +267,7 @@ ret_t slider_set_min(widget_t* widget, uint16_t min) {
 
   slider->min = min;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t slider_set_max(widget_t* widget, uint16_t max) {
@@ -275,7 +276,7 @@ ret_t slider_set_max(widget_t* widget, uint16_t max) {
 
   slider->max = max;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t slider_set_step(widget_t* widget, uint16_t step) {
@@ -284,7 +285,7 @@ ret_t slider_set_step(widget_t* widget, uint16_t step) {
 
   slider->step = step;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
@@ -293,7 +294,7 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
 
   slider->vertical = vertical;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {

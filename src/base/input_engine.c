@@ -39,9 +39,12 @@ ret_t input_engine_reset_input(input_engine_t* engine) {
 ret_t input_engine_input(input_engine_t* engine, int key) {
   ret_t ret = RET_OK;
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(engine->keys.size < TK_IM_MAX_INPUT_CHARS, RET_BAD_PARAMS);
 
-  if (key == FKEY_BACKSPACE) {
+  if (engine->keys.size >= TK_IM_MAX_INPUT_CHARS) {
+    return RET_BAD_PARAMS;
+  }
+
+  if (key == TK_KEY_BACKSPACE) {
     if (engine->keys.size > 0) {
       engine->keys.size--;
       engine->keys.str[engine->keys.size] = '\0';

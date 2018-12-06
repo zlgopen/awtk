@@ -158,6 +158,14 @@
     <normal text_color="green" text_align_h="center" border_color="#a0a0a0"/>
   </style>
   
+  <style name="center_top">
+    <normal text_color="green" text_align_v="top" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
+  
+  <style name="center_bottom">
+    <normal text_color="green" text_align_v="bottom" text_align_h="center" border_color="#a0a0a0"/>
+  </style>
+  
   <style name="right">
     <normal text_color="blue" text_align_h="right" border_color="#a0a0a0" margin="4"/>
   </style>
@@ -442,9 +450,6 @@
   <style name="default">
     <normal  bg_image="switch" />
   </style>
-  <style name="color" fg_color="#f0f0f0"  bg_color="4ed164" text_color="black">
-    <normal />
-  </style>
 </switch>
 
 <slide_view>
@@ -464,3 +469,10 @@
     <normal text_color="gold" fg_image="progress_circle" />
   </style>
 </progress_circle>
+
+<svg_image>
+  <style name="default">
+    <normal border_color="green" fg_color="red" />
+  </style>
+</svg_image>
+

@@ -52,6 +52,12 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 #define LABEL(widget) ((label_t*)(widget))
 
+/*public for test*/
+uint32_t line_breaker_count(const wchar_t* str);
+typedef ret_t (*line_breaker_on_line_t)(void* ctx, uint32_t index, const wchar_t* str,
+                                        uint32_t size);
+ret_t line_breaker_break(const wchar_t* str, line_breaker_on_line_t on_line, void* ctx);
+
 END_C_DECLS
 
 #endif /*TK_LABEL_H*/

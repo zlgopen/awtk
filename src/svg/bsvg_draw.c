@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bsvg_draw.c
  * Author: AWTK Develop Team
  * Brief:  bsvg_draw
@@ -21,13 +21,25 @@
 
 #include "svg/bsvg_draw.h"
 
+/*https://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes*/
+
 typedef struct _draw_ctx_t {
   float_t x;
   float_t y;
   bsvg_t* bsvg;
   vgcanvas_t* canvas;
   const svg_shape_t* shape;
+
+  /*for S/S_REL*/
+  float_t last_x2;
+  float_t last_y2;
+
+  /*for T/T_REL*/
+  float_t last_x1;
+  float_t last_y1;
 } draw_ctx_t;
+
+static ret_t bsvg_draw_arc_path(draw_ctx_t* ctx, const svg_path_arc_t* arc);
 
 ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
   vgcanvas_t* canvas = ctx->canvas;
@@ -97,78 +109,119 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     case SVG_PATH_C: {
       const svg_path_curve_to_t* p = (const svg_path_curve_to_t*)path;
 
+      vgcanvas_bezier_to(canvas, p->x1, p->y1, p->x2, p->y2, p->x, p->y);
       ctx->x = p->x;
       ctx->y = p->y;
-      vgcanvas_bezier_to(canvas, p->x1, p->y1, p->x2, p->y2, ctx->x, ctx->y);
+      ctx->last_x2 = p->x2;
+      ctx->last_y2 = p->y2;
+
       break;
     }
     case SVG_PATH_C_REL: {
       const svg_path_curve_to_t* p = (const svg_path_curve_to_t*)path;
-      float x1 = ctx->x + p->x1;
-      float y1 = ctx->y + p->y1;
-      float x2 = ctx->x + p->x2;
-      float y2 = ctx->y + p->y2;
-      float x = ctx->x + p->x;
-      float y = ctx->y + p->y;
+      float_t x1 = ctx->x + p->x1;
+      float_t y1 = ctx->y + p->y1;
+      float_t x2 = ctx->x + p->x2;
+      float_t y2 = ctx->y + p->y2;
+      float_t x = ctx->x + p->x;
+      float_t y = ctx->y + p->y;
 
       vgcanvas_bezier_to(canvas, x1, y1, x2, y2, x, y);
       ctx->x = x;
       ctx->y = y;
+      ctx->last_x2 = x2;
+      ctx->last_y2 = y2;
       break;
     }
     case SVG_PATH_S: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      (void)p;
-      /*TODO*/
+      float_t x1 = 2 * ctx->x - ctx->last_x2;
+      float_t y1 = 2 * ctx->y - ctx->last_y2;
+
+      vgcanvas_bezier_to(canvas, x1, y1, p->x2, p->y2, p->x, p->y);
+
+      ctx->x = p->x;
+      ctx->y = p->y;
+      ctx->last_x2 = p->x2;
+      ctx->last_y2 = p->y2;
       break;
     }
     case SVG_PATH_S_REL: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      (void)p;
-      /*TODO*/
+      float_t x1 = 2 * ctx->x - ctx->last_x2;
+      float_t y1 = 2 * ctx->y - ctx->last_y2;
+      float_t x2 = ctx->x + p->x2;
+      float_t y2 = ctx->y + p->y2;
+      float_t x = ctx->x + p->x;
+      float_t y = ctx->y + p->y;
+
+      vgcanvas_bezier_to(canvas, x1, y1, x2, y2, x, y);
+
+      ctx->x = x;
+      ctx->y = y;
+      ctx->last_x2 = x2;
+      ctx->last_y2 = y2;
       break;
     }
     case SVG_PATH_Q: {
       const svg_path_qcurve_to_t* p = (const svg_path_qcurve_to_t*)path;
+      vgcanvas_quad_to(canvas, p->x1, p->y1, p->x, p->y);
       ctx->x = p->x;
       ctx->y = p->y;
-      vgcanvas_quad_to(canvas, p->x1, p->y1, ctx->x, ctx->y);
+      ctx->last_x1 = p->x1;
+      ctx->last_y1 = p->y1;
       break;
     }
     case SVG_PATH_Q_REL: {
       const svg_path_qcurve_to_t* p = (const svg_path_qcurve_to_t*)path;
-      float x1 = ctx->x + p->x1;
-      float y1 = ctx->y + p->y1;
-      float x = ctx->x + p->x;
-      float y = ctx->y + p->y;
+      float_t x1 = ctx->x + p->x1;
+      float_t y1 = ctx->y + p->y1;
+      float_t x = ctx->x + p->x;
+      float_t y = ctx->y + p->y;
 
       vgcanvas_quad_to(canvas, x1, y1, x, y);
       ctx->x = x;
       ctx->y = y;
+      ctx->last_x1 = x1;
+      ctx->last_y1 = y1;
       break;
     }
     case SVG_PATH_T: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      (void)p;
-      /*TODO*/
+      float_t x1 = 2 * ctx->x - ctx->last_x1;
+      float_t y1 = 2 * ctx->y - ctx->last_y1;
+
+      vgcanvas_quad_to(canvas, x1, y1, p->x, p->y);
+
+      ctx->x = p->x;
+      ctx->y = p->y;
+      ctx->last_x1 = x1;
+      ctx->last_y1 = y1;
       break;
     }
     case SVG_PATH_T_REL: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      (void)p;
-      /*TODO*/
+      float_t x1 = 2 * ctx->x - ctx->last_x1;
+      float_t y1 = 2 * ctx->y - ctx->last_y1;
+      float_t x = ctx->x + p->x;
+      float_t y = ctx->y + p->y;
+
+      vgcanvas_quad_to(canvas, x1, y1, x, y);
+
+      ctx->x = x;
+      ctx->y = y;
+      ctx->last_x1 = x1;
+      ctx->last_y1 = y1;
       break;
     }
     case SVG_PATH_A: {
       const svg_path_arc_t* p = (const svg_path_arc_t*)path;
-      (void)p;
-      /*TODO*/
+      bsvg_draw_arc_path(ctx, p);
       break;
     }
     case SVG_PATH_A_REL: {
       const svg_path_arc_t* p = (const svg_path_arc_t*)path;
-      (void)p;
-      /*TODO*/
+      bsvg_draw_arc_path(ctx, p);
       break;
     }
     case SVG_PATH_Z: {
@@ -375,6 +428,164 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
   vgcanvas_scale(canvas, sx, sy);
   bsvg_visit(svg, &ctx, bsvg_draw_on_shape, bsvg_draw_on_path);
   vgcanvas_restore(canvas);
+
+  return RET_OK;
+}
+
+/*Adapt from https://github.com/mozilla/newtab-dev/blob/master/dom/svg/nsSVGPathDataParser.cpp
+ * begin:*/
+typedef struct _arc_info_t {
+  uint32_t seg_index;
+  uint32_t num_segs;
+  float_t rx;
+  float_t ry;
+  float_t sin_phi;
+  float_t cos_phi;
+  pointf_t c;
+  float_t delta;
+  pointf_t from;
+  float_t t;
+  float_t theta;
+} arc_info_t;
+
+static float_t calc_vector_angle(float_t ux, float_t uy, float_t vx, float_t vy) {
+  float_t ta = atan2(uy, ux);
+  float_t tb = atan2(vy, vx);
+  if (tb >= ta) return tb - ta;
+
+  return 2 * M_PI - (ta - tb);
+}
+
+static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_t radii,
+                           float_t angle, bool_t largeArcFlag, bool_t sweepFlag) {
+  const float_t radPerDeg = M_PI / 180.0f;
+  info->seg_index = 0;
+
+  if (from.x == to.x && from.y == to.y) {
+    info->num_segs = 0;
+    return RET_OK;
+  }
+  /*
+  // Convert to center parameterization as shown in
+  // http://www.w3.org/TR/SVG/implnote.html
+  */
+  info->rx = fabs(radii.x);
+  info->ry = fabs(radii.y);
+
+  info->sin_phi = sin(angle * radPerDeg);
+  info->cos_phi = cos(angle * radPerDeg);
+
+  float_t x1dash = info->cos_phi * (from.x - to.x) / 2.0f + info->sin_phi * (from.y - to.y) / 2.0f;
+  float_t y1dash = -info->sin_phi * (from.x - to.x) / 2.0f + info->cos_phi * (from.y - to.y) / 2.0f;
+
+  float_t root;
+  float_t numerator = info->rx * info->rx * info->ry * info->ry -
+                      info->rx * info->rx * y1dash * y1dash - info->ry * info->ry * x1dash * x1dash;
+
+  if (numerator < 0.0f) {
+    /*
+    //  If info->rx , info->ry and are such that there is no solution (basically,
+    //  the ellipse is not big enough to reach from 'from' to 'to'
+    //  then the ellipse is scaled up uniformly until there is
+    //  exactly one solution (until the ellipse is just big enough).
+
+    // -> find factor s, such that numerator' with info->rx'=s*info->rx and
+    //    info->ry'=s*info->ry becomes 0 :
+    */
+    float_t s = sqrt(1.0f - numerator / (info->rx * info->rx * info->ry * info->ry));
+
+    info->rx *= s;
+    info->ry *= s;
+    root = 0.0f;
+
+  } else {
+    root = (largeArcFlag == sweepFlag ? -1.0f : 1.0f) *
+           sqrt(numerator /
+                (info->rx * info->rx * y1dash * y1dash + info->ry * info->ry * x1dash * x1dash));
+  }
+
+  float_t cxdash = root * info->rx * y1dash / info->ry;
+  float_t cydash = -root * info->ry * x1dash / info->rx;
+
+  info->c.x = info->cos_phi * cxdash - info->sin_phi * cydash + (from.x + to.x) / 2.0f;
+  info->c.y = info->sin_phi * cxdash + info->cos_phi * cydash + (from.y + to.y) / 2.0f;
+  info->theta =
+      calc_vector_angle(1.0f, 0.0f, (x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry);
+  float_t dtheta = calc_vector_angle((x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry,
+                                     (-x1dash - cxdash) / info->rx, (-y1dash - cydash) / info->ry);
+  if (!sweepFlag && dtheta > 0)
+    dtheta -= 2.0f * M_PI;
+  else if (sweepFlag && dtheta < 0)
+    dtheta += 2.0f * M_PI;
+
+  /* Convert into cubic bezier segments <= 90deg */
+  info->num_segs = (int32_t)(ceil(fabs(dtheta / (M_PI / 2.0f))));
+  info->delta = dtheta / info->num_segs;
+  info->t =
+      8.0f / 3.0f * sin(info->delta / 4.0f) * sin(info->delta / 4.0f) / sin(info->delta / 2.0f);
+
+  info->from = from;
+
+  return RET_OK;
+}
+
+bool_t arc_info_next(arc_info_t* info, pointf_t* cp1, pointf_t* cp2, pointf_t* to) {
+  if (info->seg_index == info->num_segs) {
+    return FALSE;
+  }
+
+  float_t cosTheta1 = cos(info->theta);
+  float_t sinTheta1 = sin(info->theta);
+  float_t theta2 = info->theta + info->delta;
+  float_t cosTheta2 = cos(theta2);
+  float_t sinTheta2 = sin(theta2);
+
+  /* a) calculate endpoint of the segment:*/
+  to->x = info->cos_phi * info->rx * cosTheta2 - info->sin_phi * info->ry * sinTheta2 + info->c.x;
+  to->y = info->sin_phi * info->rx * cosTheta2 + info->cos_phi * info->ry * sinTheta2 + info->c.y;
+
+  /* b) calculate gradients at start/end points of segment:*/
+  cp1->x = info->from.x +
+           info->t * (-info->cos_phi * info->rx * sinTheta1 - info->sin_phi * info->ry * cosTheta1);
+  cp1->y = info->from.y +
+           info->t * (-info->sin_phi * info->rx * sinTheta1 + info->cos_phi * info->ry * cosTheta1);
+
+  cp2->x = to->x +
+           info->t * (info->cos_phi * info->rx * sinTheta2 + info->sin_phi * info->ry * cosTheta2);
+  cp2->y = to->y +
+           info->t * (info->sin_phi * info->rx * sinTheta2 - info->cos_phi * info->ry * cosTheta2);
+
+  /* do next segment*/
+  info->theta = theta2;
+  info->from = *to;
+  ++info->seg_index;
+
+  return TRUE;
+}
+/*Adapt from https://github.com/mozilla/newtab-dev/blob/master/dom/svg/nsSVGPathDataParser.cpp end*/
+
+static ret_t bsvg_draw_arc_path(draw_ctx_t* ctx, const svg_path_arc_t* arc) {
+  arc_info_t info;
+  pointf_t cp1 = {0, 0};
+  pointf_t cp2 = {0, 0};
+  pointf_t end = {0, 0};
+  pointf_t r = {arc->rx, arc->ry};
+  pointf_t from = {ctx->x, ctx->y};
+  pointf_t to = {arc->x, arc->y};
+  vgcanvas_t* canvas = ctx->canvas;
+
+  if (arc->path.type == SVG_PATH_A_REL) {
+    to.x += ctx->x;
+    to.y += ctx->y;
+  }
+
+  arc_info_init(&info, from, to, r, arc->rotation, arc->large_arc, arc->sweep);
+  while (arc_info_next(&info, &cp1, &cp2, &end)) {
+    vgcanvas_bezier_to(canvas, cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
+  }
+
+  ctx->x = to.x;
+  ctx->y = to.y;
 
   return RET_OK;
 }

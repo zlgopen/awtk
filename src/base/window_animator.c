@@ -20,6 +20,7 @@
  */
 
 #include "base/window_animator.h"
+#include "base/window_manager.h"
 
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
   canvas_t* c = NULL;
@@ -66,9 +67,18 @@ ret_t window_animator_destroy(window_animator_t* wa) {
   return wa->destroy(wa);
 }
 
+static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
+  window_manager_t* wm = WINDOW_MANAGER(wa->curr_win->parent);
+
+  if (!(wa->canvas->lcd->support_dirty_rect) && wm->system_bar) {
+    widget_paint(wm->system_bar, wa->canvas);
+  }
+
+  return RET_OK;
+}
+
 ret_t window_animator_begin_frame(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
-  (void)wa;
 #else
   rect_t r;
   widget_t* wm = wa->curr_win->parent;
@@ -76,7 +86,7 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION) == RET_OK);
 #endif
 
-  return RET_OK;
+  return window_animator_paint_system_bar(wa);
 }
 
 ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
@@ -96,5 +106,5 @@ ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
 #endif
 
-  return RET_OK;
+  return window_animator_paint_system_bar(wa);
 }

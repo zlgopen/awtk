@@ -1,0 +1,18 @@
+<window layout="c:3 r:4">
+  <label style="left"  text="it\nis\na\nmulti-line\nsample\n(left)"/>
+  <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>
+  <label style="right" text="it\nis\na\nmulti-line\nsample\n(right)"/>
+  
+  <label style="center_top"  text="it\nis\na\nmulti-line\nsample\n(center_top)"/>
+  <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>
+  <label style="center_bottom" text="it\nis\na\nmulti-line\nsample\n(center_bottom)"/>
+  
+  <label style="left"  text="left"/>
+  <label style="center" text="center"/>
+  <label style="right" text="right"/>
+  
+  <label style="center_top"  text="center_top"/>
+  <label style="center" text="center"/>
+  <label style="center_bottom" text="center_bottom"/>
+
+</window>
