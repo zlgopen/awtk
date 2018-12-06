@@ -40,7 +40,6 @@ uint32_t line_breaker_count(const wchar_t* str) {
       lines++;
     } else {
       p++;
-      p++;
     }
   }
 
