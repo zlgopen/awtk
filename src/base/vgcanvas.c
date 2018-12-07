@@ -271,12 +271,40 @@ ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t value) {
   return vg->vt->set_fill_color(vg, value);
 }
 
+ret_t vgcanvas_set_fill_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,
+                                        float_t ey, color_t icolor, color_t ocolor) {
+  return_value_if_fail(vg != NULL && vg->vt->set_fill_linear_gradient != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->set_fill_linear_gradient(vg, sx, sy, ex, ey, icolor, ocolor);
+}
+
+ret_t vgcanvas_set_fill_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, float_t inr,
+                                        float_t outr, color_t icolor, color_t ocolor) {
+  return_value_if_fail(vg != NULL && vg->vt->set_fill_radial_gradient != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->set_fill_radial_gradient(vg, cx, cy, inr, outr, icolor, ocolor);
+}
+
 ret_t vgcanvas_set_stroke_color(vgcanvas_t* vg, color_t value) {
   return_value_if_fail(vg != NULL && vg->vt->set_stroke_color != NULL, RET_BAD_PARAMS);
 
   vg->stroke_color = value;
 
   return vg->vt->set_stroke_color(vg, value);
+}
+
+ret_t vgcanvas_set_stroke_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,
+                                          float_t ey, color_t icolor, color_t ocolor) {
+  return_value_if_fail(vg != NULL && vg->vt->set_stroke_linear_gradient != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->set_stroke_linear_gradient(vg, sx, sy, ex, ey, icolor, ocolor);
+}
+
+ret_t vgcanvas_set_stroke_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, float_t inr,
+                                          float_t outr, color_t icolor, color_t ocolor) {
+  return_value_if_fail(vg != NULL && vg->vt->set_stroke_radial_gradient != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->set_stroke_radial_gradient(vg, cx, cy, inr, outr, icolor, ocolor);
 }
 
 ret_t vgcanvas_set_line_cap(vgcanvas_t* vg, const char* value) {

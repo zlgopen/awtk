@@ -366,10 +366,34 @@ static ret_t vgcanvas_nanovg_set_global_alpha(vgcanvas_t* vgcanvas, float_t valu
   return RET_OK;
 }
 
+static NVGcolor toNVGcolor(color_t c) {
+  return nvgRGBA(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
+}
+
 static ret_t vgcanvas_nanovg_set_fill_color(vgcanvas_t* vgcanvas, color_t c) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  nvgFillColor(vg, nvgRGBA(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a));
+  nvgFillColor(vg, toNVGcolor(c));
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_set_fill_linear_gradient(vgcanvas_t* vgcanvas, float_t sx, float_t sy,
+                                                      float_t ex, float_t ey, color_t icolor,
+                                                      color_t ocolor) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGpaint paint = nvgLinearGradient(vg, sx, sy, ex, ey, toNVGcolor(icolor), toNVGcolor(ocolor));
+  nvgFillPaint(vg, paint);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_set_fill_radial_gradient(vgcanvas_t* vgcanvas, float_t cx, float_t cy,
+                                                      float_t inr, float_t outr, color_t icolor,
+                                                      color_t ocolor) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGpaint paint = nvgRadialGradient(vg, cx, cy, inr, outr, toNVGcolor(icolor), toNVGcolor(ocolor));
+  nvgFillPaint(vg, paint);
 
   return RET_OK;
 }
@@ -378,6 +402,26 @@ static ret_t vgcanvas_nanovg_set_stroke_color(vgcanvas_t* vgcanvas, color_t c) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgStrokeColor(vg, nvgRGBA(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a));
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_set_stroke_linear_gradient(vgcanvas_t* vgcanvas, float_t sx,
+                                                        float_t sy, float_t ex, float_t ey,
+                                                        color_t icolor, color_t ocolor) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGpaint paint = nvgLinearGradient(vg, sx, sy, ex, ey, toNVGcolor(icolor), toNVGcolor(ocolor));
+  nvgStrokePaint(vg, paint);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_set_stroke_radial_gradient(vgcanvas_t* vgcanvas, float_t cx,
+                                                        float_t cy, float_t inr, float_t outr,
+                                                        color_t icolor, color_t ocolor) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGpaint paint = nvgRadialGradient(vg, cx, cy, inr, outr, toNVGcolor(icolor), toNVGcolor(ocolor));
+  nvgStrokePaint(vg, paint);
 
   return RET_OK;
 }
@@ -436,51 +480,56 @@ static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static const vgcanvas_vtable_t vt = {vgcanvas_nanovg_reinit,
-                                     vgcanvas_nanovg_begin_frame,
-                                     vgcanvas_nanovg_reset,
-                                     vgcanvas_nanovg_flush,
-                                     vgcanvas_nanovg_clear_rect,
-                                     vgcanvas_nanovg_begin_path,
-                                     vgcanvas_nanovg_move_to,
-                                     vgcanvas_nanovg_line_to,
-                                     vgcanvas_nanovg_arc,
-                                     vgcanvas_nanovg_arc_to,
-                                     vgcanvas_nanovg_bezier_to,
-                                     vgcanvas_nanovg_quad_to,
-                                     vgcanvas_nanovg_is_point_in_path,
-                                     vgcanvas_nanovg_ellipse,
-                                     vgcanvas_nanovg_rounded_rect,
-                                     vgcanvas_nanovg_close_path,
-                                     vgcanvas_nanovg_scale,
-                                     vgcanvas_nanovg_rotate,
-                                     vgcanvas_nanovg_translate,
-                                     vgcanvas_nanovg_transform,
-                                     vgcanvas_nanovg_set_transform,
-                                     vgcanvas_nanovg_clip_rect,
-                                     vgcanvas_nanovg_fill,
-                                     vgcanvas_nanovg_stroke,
-                                     vgcanvas_nanovg_paint,
-                                     vgcanvas_nanovg_set_font,
-                                     vgcanvas_nanovg_set_font_size,
-                                     vgcanvas_nanovg_set_text_align,
-                                     vgcanvas_nanovg_set_text_baseline,
-                                     vgcanvas_nanovg_fill_text,
-                                     vgcanvas_nanovg_measure_text,
-                                     vgcanvas_nanovg_draw_image,
-                                     vgcanvas_nanovg_set_antialias,
-                                     vgcanvas_nanovg_set_global_alpha,
-                                     vgcanvas_nanovg_set_line_width,
-                                     vgcanvas_nanovg_set_fill_color,
-                                     vgcanvas_nanovg_set_stroke_color,
-                                     vgcanvas_nanovg_set_line_join,
-                                     vgcanvas_nanovg_set_line_cap,
-                                     vgcanvas_nanovg_set_miter_limit,
-                                     vgcanvas_nanovg_save,
-                                     vgcanvas_nanovg_restore,
-                                     vgcanvas_nanovg_end_frame,
-                                     vgcanvas_nanovg_create_fbo,
-                                     vgcanvas_nanovg_destroy_fbo,
-                                     vgcanvas_nanovg_bind_fbo,
-                                     vgcanvas_nanovg_unbind_fbo,
-                                     vgcanvas_nanovg_destroy};
+static const vgcanvas_vtable_t vt = {
+    .reinit = vgcanvas_nanovg_reinit,
+    .begin_frame = vgcanvas_nanovg_begin_frame,
+    .reset = vgcanvas_nanovg_reset,
+    .flush = vgcanvas_nanovg_flush,
+    .clear_rect = vgcanvas_nanovg_clear_rect,
+    .begin_path = vgcanvas_nanovg_begin_path,
+    .move_to = vgcanvas_nanovg_move_to,
+    .line_to = vgcanvas_nanovg_line_to,
+    .arc = vgcanvas_nanovg_arc,
+    .arc_to = vgcanvas_nanovg_arc_to,
+    .bezier_to = vgcanvas_nanovg_bezier_to,
+    .quad_to = vgcanvas_nanovg_quad_to,
+    .is_point_in_path = vgcanvas_nanovg_is_point_in_path,
+    .ellipse = vgcanvas_nanovg_ellipse,
+    .rounded_rect = vgcanvas_nanovg_rounded_rect,
+    .close_path = vgcanvas_nanovg_close_path,
+    .scale = vgcanvas_nanovg_scale,
+    .rotate = vgcanvas_nanovg_rotate,
+    .translate = vgcanvas_nanovg_translate,
+    .transform = vgcanvas_nanovg_transform,
+    .set_transform = vgcanvas_nanovg_set_transform,
+    .clip_rect = vgcanvas_nanovg_clip_rect,
+    .fill = vgcanvas_nanovg_fill,
+    .stroke = vgcanvas_nanovg_stroke,
+    .paint = vgcanvas_nanovg_paint,
+    .set_font = vgcanvas_nanovg_set_font,
+    .set_font_size = vgcanvas_nanovg_set_font_size,
+    .set_text_align = vgcanvas_nanovg_set_text_align,
+    .set_text_baseline = vgcanvas_nanovg_set_text_baseline,
+    .fill_text = vgcanvas_nanovg_fill_text,
+    .measure_text = vgcanvas_nanovg_measure_text,
+    .draw_image = vgcanvas_nanovg_draw_image,
+    .set_antialias = vgcanvas_nanovg_set_antialias,
+    .set_global_alpha = vgcanvas_nanovg_set_global_alpha,
+    .set_line_width = vgcanvas_nanovg_set_line_width,
+    .set_fill_color = vgcanvas_nanovg_set_fill_color,
+    .set_fill_linear_gradient = vgcanvas_nanovg_set_fill_linear_gradient,
+    .set_fill_radial_gradient = vgcanvas_nanovg_set_fill_radial_gradient,
+    .set_stroke_color = vgcanvas_nanovg_set_stroke_color,
+    .set_stroke_linear_gradient = vgcanvas_nanovg_set_stroke_linear_gradient,
+    .set_stroke_radial_gradient = vgcanvas_nanovg_set_stroke_radial_gradient,
+    .set_line_join = vgcanvas_nanovg_set_line_join,
+    .set_line_cap = vgcanvas_nanovg_set_line_cap,
+    .set_miter_limit = vgcanvas_nanovg_set_miter_limit,
+    .save = vgcanvas_nanovg_save,
+    .restore = vgcanvas_nanovg_restore,
+    .end_frame = vgcanvas_nanovg_end_frame,
+    .create_fbo = vgcanvas_nanovg_create_fbo,
+    .bind_fbo = vgcanvas_nanovg_bind_fbo,
+    .destroy_fbo = vgcanvas_nanovg_destroy_fbo,
+    .unbind_fbo = vgcanvas_nanovg_unbind_fbo,
+    .destroy = vgcanvas_nanovg_destroy};

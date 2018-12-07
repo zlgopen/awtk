@@ -93,7 +93,22 @@ typedef ret_t (*vgcanvas_set_antialias_t)(vgcanvas_t* vg, bool_t value);
 typedef ret_t (*vgcanvas_set_global_alpha_t)(vgcanvas_t* vg, float_t alpha);
 typedef ret_t (*vgcanvas_set_line_width_t)(vgcanvas_t* vg, float_t value);
 typedef ret_t (*vgcanvas_set_fill_color_t)(vgcanvas_t* vg, color_t color);
+
+typedef ret_t (*vgcanvas_set_fill_linear_gradient_t)(vgcanvas_t* vg, float_t sx, float_t sy,
+                                                     float_t ex, float_t ey, color_t icolor,
+                                                     color_t ocolor);
+typedef ret_t (*vgcanvas_set_fill_radial_gradient_t)(vgcanvas_t* vg, float_t cx, float_t cy,
+                                                     float_t inr, float_t outr, color_t icolor,
+                                                     color_t ocolor);
+
 typedef ret_t (*vgcanvas_set_stroke_color_t)(vgcanvas_t* vg, color_t color);
+typedef ret_t (*vgcanvas_set_stroke_linear_gradient_t)(vgcanvas_t* vg, float_t sx, float_t sy,
+                                                       float_t ex, float_t ey, color_t icolor,
+                                                       color_t ocolor);
+typedef ret_t (*vgcanvas_set_stroke_radial_gradient_t)(vgcanvas_t* vg, float_t cx, float_t cy,
+                                                       float_t inr, float_t outr, color_t icolor,
+                                                       color_t ocolor);
+
 typedef ret_t (*vgcanvas_set_line_cap_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_line_join_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_miter_limit_t)(vgcanvas_t* vg, float_t value);
@@ -151,7 +166,11 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_global_alpha_t set_global_alpha;
   vgcanvas_set_line_width_t set_line_width;
   vgcanvas_set_fill_color_t set_fill_color;
+  vgcanvas_set_fill_linear_gradient_t set_fill_linear_gradient;
+  vgcanvas_set_fill_radial_gradient_t set_fill_radial_gradient;
   vgcanvas_set_stroke_color_t set_stroke_color;
+  vgcanvas_set_stroke_linear_gradient_t set_stroke_linear_gradient;
+  vgcanvas_set_stroke_radial_gradient_t set_stroke_radial_gradient;
   vgcanvas_set_line_join_t set_line_join;
   vgcanvas_set_line_cap_t set_line_cap;
   vgcanvas_set_miter_limit_t set_miter_limit;
@@ -753,6 +772,38 @@ ret_t vgcanvas_set_line_width(vgcanvas_t* vg, float_t value);
 ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t color);
 
 /**
+ * @method vgcanvas_set_linear_gradient
+ * set fill linear gradient
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} sx start x
+ * @param {float_t} sy start y
+ * @param {float_t} ex end x
+ * @param {float_t} ey end y
+ * @param {color_t} icolor 开始颜色。
+ * @param {color_t} ocolor 结束颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_fill_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,
+                                        float_t ey, color_t icolor, color_t ocolor);
+
+/**
+ * @method vgcanvas_set_radial_gradient
+ * set fill radial gradient
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} cx center x
+ * @param {float_t} cy center y
+ * @param {float_t} inr 内环半径
+ * @param {float_t} outr 外环半径。
+ * @param {color_t} icolor 开始颜色。
+ * @param {color_t} ocolor 结束颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_fill_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, float_t inr,
+                                        float_t outr, color_t icolor, color_t ocolor);
+
+/**
  * @method vgcanvas_set_stroke_color
  * set stroke color
  * @param {vgcanvas_t*} vg vgcanvas对象。
@@ -761,6 +812,38 @@ ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t color);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_set_stroke_color(vgcanvas_t* vg, color_t color);
+
+/**
+ * @method vgcanvas_set_linear_gradient
+ * set stroke linear gradient
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} sx start x
+ * @param {float_t} sy start y
+ * @param {float_t} ex end x
+ * @param {float_t} ey end y
+ * @param {color_t} icolor 开始颜色。
+ * @param {color_t} ocolor 结束颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_stroke_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,
+                                          float_t ey, color_t icolor, color_t ocolor);
+
+/**
+ * @method vgcanvas_set_radial_gradient
+ * set stroke radial gradient
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} cx center x
+ * @param {float_t} cy center y
+ * @param {float_t} inr 内环半径
+ * @param {float_t} outr 外环半径。
+ * @param {color_t} icolor 开始颜色。
+ * @param {color_t} ocolor 结束颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_stroke_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, float_t inr,
+                                          float_t outr, color_t icolor, color_t ocolor);
 
 /**
  * @method vgcanvas_set_line_cap
