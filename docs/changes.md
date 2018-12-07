@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/12/07
+  * VGCanvas支持渐变色(GL版本OK，AGGE版本还需要完善，AGG版本暂时不支持)。
+  * demoui增加vgcanvas的demo。 
+
 * 2018/12/06
   * 更新文档。
   * 完善scroll view的滚动效果。

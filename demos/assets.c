@@ -19,7 +19,9 @@
 #include "assets/inc/styles/system_bar.data"
 #include "assets/inc/styles/tab_bottom_compact.data"
 #include "assets/inc/ui/kb_ascii.data"
+#include "assets/inc/ui/vgcanvas.data"
 #include "assets/inc/ui/rich_text1.data"
+#include "assets/inc/ui/radial_gradient.data"
 #include "assets/inc/ui/color_picker_simple.data"
 #include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
@@ -27,6 +29,7 @@
 #include "assets/inc/ui/main.data"
 #include "assets/inc/ui/scroll_bar.data"
 #include "assets/inc/ui/lua.data"
+#include "assets/inc/ui/linear_gradient.data"
 #include "assets/inc/ui/preload.data"
 #include "assets/inc/ui/images.data"
 #include "assets/inc/ui/edit.data"
@@ -65,6 +68,7 @@
 #include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
+#include "assets/inc/ui/stroke_gradient.data"
 #include "assets/inc/ui/basic.data"
 #include "assets/inc/ui/auto_play.data"
 #include "assets/inc/ui/guage.data"
@@ -369,7 +373,9 @@ ret_t assets_init(void) {
   assets_manager_load(rm, ASSET_TYPE_FONT, "default");
 #else
   assets_manager_add(rm, ui_kb_ascii);
+  assets_manager_add(rm, ui_vgcanvas);
   assets_manager_add(rm, ui_rich_text1);
+  assets_manager_add(rm, ui_radial_gradient);
   assets_manager_add(rm, ui_color_picker_simple);
   assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
@@ -377,6 +383,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_main);
   assets_manager_add(rm, ui_scroll_bar);
   assets_manager_add(rm, ui_lua);
+  assets_manager_add(rm, ui_linear_gradient);
   assets_manager_add(rm, ui_preload);
   assets_manager_add(rm, ui_images);
   assets_manager_add(rm, ui_edit);
@@ -415,6 +422,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
+  assets_manager_add(rm, ui_stroke_gradient);
   assets_manager_add(rm, ui_basic);
   assets_manager_add(rm, ui_auto_play);
   assets_manager_add(rm, ui_guage);
