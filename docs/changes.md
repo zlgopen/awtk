@@ -1,6 +1,6 @@
 # 最新动态
 * 2018/12/07
-  * VGCanvas支持渐变色(GL版本OK，AGGE版本还需要完善，AGG版本暂时不支持)。
+  * VGCanvas支持渐变色(GL版本OK，AGGE版本OK，AGG版本暂时不支持)。
   * demoui增加vgcanvas的demo。 
   * draw\_vline高度允许为负。
   * draw\_hline宽度允许为负。

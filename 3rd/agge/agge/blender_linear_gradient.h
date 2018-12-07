@@ -22,7 +22,7 @@ class blender_linear_gradient {
   float _ey;
   float _dx;
   float _dy;
-  float _d;
+  float _dot_product_1;
   float _xw;
   float _yw;
   pixel32_rgba _sc;
@@ -32,11 +32,15 @@ class blender_linear_gradient {
 template <typename PixelT>
 inline blender_linear_gradient<PixelT>::blender_linear_gradient(float sx, float sy, float ex, float ey, 
     pixel32_rgba sc, pixel32_rgba ec) : _sx(sx), _sy(sy), _ex(ex), _ey(ey), _sc(sc), _ec(ec) {
+  if(sx == ex && sy == ey) {
+    assert(!"invalid params");
+    _ex = _sx + 1;
+    _ey = _sy + 1;
+  }
+
   _dx = ex - sx;
   _dy = ey - sy;
-  _xw = _dx / (_dx + _dy);
-  _yw = _dy / (_dx + _dy);
-  _d = sqrt(_dx * _dx + _dy * _dy);
+  _dot_product_1 = 1/(_dx * _dx + _dy * _dy);
 }
 
 template <typename PixelT>
@@ -65,9 +69,17 @@ inline bool blender_linear_gradient<PixelT>::get_color(int x, int y, pixel32_rgb
   } else if(_sy == _ey) {
     return this->gradient((x - _sx)/_dx, c);
   } else {
-    /*TODO*/
-    c = _ec;
-    return true;
+    //https://github.com/SFML/SFML/wiki/Source:-Color-Gradient
+    if(x < _sx || y < _sy) {
+      c = _sc;
+    } else if(x > _ex || y > _ey) {
+      c = _ec;
+    } else {
+      float dot_product = (x - _sx) * _dx + (y - _sy) * _dy;
+      float factor = dot_product * _dot_product_1;
+
+      return this->gradient(factor, c);
+    }
   }
 
   return true;
