@@ -29,6 +29,7 @@
 #include "assets/inc/ui/combo_box.data"
 #include "assets/inc/ui/kb_phone.data"
 #include "assets/inc/ui/main.data"
+#include "assets/inc/ui/digit_clock.data"
 #include "assets/inc/ui/scroll_bar.data"
 #include "assets/inc/ui/lua.data"
 #include "assets/inc/ui/linear_gradient.data"
@@ -384,6 +385,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_combo_box);
   assets_manager_add(rm, ui_kb_phone);
   assets_manager_add(rm, ui_main);
+  assets_manager_add(rm, ui_digit_clock);
   assets_manager_add(rm, ui_scroll_bar);
   assets_manager_add(rm, ui_lua);
   assets_manager_add(rm, ui_linear_gradient);

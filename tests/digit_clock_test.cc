@@ -30,51 +30,91 @@ TEST(DigitClock, format) {
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
   ASSERT_EQ(string(str), string("2018"));
 
+  ASSERT_EQ(digit_clock_format_time(w, "YY", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18"));
+
   ASSERT_EQ(digit_clock_format_time(w, "Y-", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
   ASSERT_EQ(string(str), string("2018-"));
 
-  dt.month = 12;
+  ASSERT_EQ(digit_clock_format_time(w, "YY-", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-"));
+
+  dt.month = 9;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12"));
+  ASSERT_EQ(string(str), string("2018-9"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09"));
 
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-"));
+  ASSERT_EQ(string(str), string("2018-9-"));
 
-  dt.day = 31;
+  dt.day = 3;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31"));
+  ASSERT_EQ(string(str), string("2018-9-3"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03"));
 
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D ", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 "));
+  ASSERT_EQ(string(str), string("2018-9-3 "));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD ", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03 "));
 
   dt.hour = 1;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D h", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 1"));
+  ASSERT_EQ(string(str), string("2018-9-3 1"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD hh", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03 01"));
 
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D h:", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 1:"));
+  ASSERT_EQ(string(str), string("2018-9-3 1:"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD hh:", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03 01:"));
 
   dt.minute = 2;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D h:m", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 1:2"));
+  ASSERT_EQ(string(str), string("2018-9-3 1:2"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD hh:mm", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03 01:02"));
 
   dt.second = 3;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D h:m:s", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 1:2:3"));
+  ASSERT_EQ(string(str), string("2018-9-3 1:2:3"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "YY-MM-DD hh:mm:ss", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("18-09-03 01:02:03"));
 
   dt.second = 32;
   ASSERT_EQ(digit_clock_format_time(w, "Y-M-D h:m:s", &dt), RET_OK);
   ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
-  ASSERT_EQ(string(str), string("2018-12-31 1:2:32"));
+  ASSERT_EQ(string(str), string("2018-9-3 1:2:32"));
+
+  ASSERT_EQ(digit_clock_format_time(w, "Y-M-D hh:mm:ss", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("2018-9-3 01:02:32"));
 
   widget_destroy(w);
 }

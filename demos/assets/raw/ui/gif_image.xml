@@ -5,5 +5,4 @@
     <gif image="bee"/>
     <gif image="bee"/>
   </view>
-  <button name="close" x="c" y="bottom:10" w="80" h="40" text="Close" />
 </window>

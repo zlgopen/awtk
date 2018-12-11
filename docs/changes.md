@@ -1,8 +1,9 @@
 # 最新动态
 
-* 2018/12/08-11
+* 2018/12/11
   * gradiant支持alpha渐变。
   * 完善slide menu控件，增加测试和demo。 
+  * 完善digit\_clock，支持YY、MM、DD、HH、mm、dd格式
 
 * 2018/12/08-10
   * slide menu控件。 

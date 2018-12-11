@@ -27,35 +27,70 @@
 
 #define DATE_TIME_MAX_LEN 127
 
+static uint32_t count_char(const char* p, char c) {
+  uint32_t nr = 0;
+  while (*p++ == c) {
+    nr++;
+  }
+
+  return nr;
+}
+
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt) {
   wstr_t* str = &(widget->text);
   const char* p = format;
 
   str->size = 0;
   while (*p) {
+    int32_t repeat = count_char(p, *p);
+
     switch (*p) {
       case 'Y': {
-        wstr_push_int(str, "%d", dt->year);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", (dt->year % 100));
+        } else {
+          wstr_push_int(str, "%d", dt->year);
+        }
         break;
       }
       case 'M': {
-        wstr_push_int(str, "%d", dt->month);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->month);
+        } else {
+          wstr_push_int(str, "%d", dt->month);
+        }
         break;
       }
       case 'D': {
-        wstr_push_int(str, "%d", dt->day);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->day);
+        } else {
+          wstr_push_int(str, "%d", dt->day);
+        }
         break;
       }
       case 'h': {
-        wstr_push_int(str, "%d", dt->hour);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->hour);
+        } else {
+          wstr_push_int(str, "%d", dt->hour);
+        }
         break;
       }
       case 'm': {
-        wstr_push_int(str, "%d", dt->minute);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->minute);
+        } else {
+          wstr_push_int(str, "%d", dt->minute);
+        }
         break;
       }
       case 's': {
-        wstr_push_int(str, "%d", dt->second);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->second);
+        } else {
+          wstr_push_int(str, "%d", dt->second);
+        }
         break;
       }
       default: {
@@ -63,7 +98,7 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
         break;
       }
     }
-    p++;
+    p += repeat;
   }
 
   return RET_OK;

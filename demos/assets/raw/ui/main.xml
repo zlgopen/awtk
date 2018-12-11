@@ -16,17 +16,18 @@
     </view>
     
     <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
+      <button name="open:time_clock" text="Analog Clock"/>
+      <button name="open:digit_clock" text="Digit Clock"/>
       <button name="open:locale" text="Locale"/>
-      <button name="open:time_clock" text="Time Clock"/>
-      <button name="open:guage" text="Guage"/>
       <button name="open:images" text="Image"/>
+      <button name="open:guage" text="Guage"/>
       <button name="open:switch" text="Switch"/>
       <button name="open:text_selector" text="Selector"/>
       <button name="open:image_animation" text="Image Animation"/>
       <button name="open:progress_circle" text="ProgressCircle"/>
+      <button name="open:image_value" text="Value Image"/>
       <button name="open:svg_image" text="SVG Image"/>
       <button name="open:gif_image" text="GIF Image"/>
-      <button name="open:image_value" text="Value Image"/>
     </view>
 
     <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
