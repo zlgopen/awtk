@@ -1,4 +1,5 @@
 #include "base/assets_manager.h"
+#include "base/window_manager.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
 
@@ -10,8 +11,9 @@ static ret_t on_window_open(void* ctx, event_t* e) {
     log_debug("window %s open\n", open->name);
   }
 
-  if (to_close != NULL && to_close->name != NULL) {
+  if (to_close != NULL) {
     log_debug("window %s close\n", to_close->name);
+    window_manager_close_window_force(to_close->parent, to_close);
   }
 
   return RET_REMOVE;
