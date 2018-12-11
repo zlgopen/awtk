@@ -91,8 +91,8 @@ inline void blender_linear_gradient<PixelT>::operator()(pixel* pixels, int x, in
   pixel32_rgba p(0, 0, 0, 0);
 
   for (; n; --n, ++pixels, ++covers) {
-    uint8_t a = *covers;
     if(this->get_color(x++, y, p)) {
+      uint8_t a = (*covers * p.a) >> 8;
       pixel_blend<PixelT, pixel32_rgba>(*pixels, p, a);
     }
   }
