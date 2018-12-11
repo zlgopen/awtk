@@ -2,9 +2,10 @@
 
 * 2018/12/08-11
   * gradiant支持alpha渐变。
+  * 完善slide menu控件，增加测试和demo。 
 
 * 2018/12/08-10
-  * slide menu控件(未完成)。 
+  * slide menu控件。 
 
 * 2018/12/07
   * VGCanvas支持渐变色(GL版本OK，AGGE版本OK，AGG版本暂时不支持)。

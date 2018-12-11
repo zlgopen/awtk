@@ -276,6 +276,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_YOFFSET "yoffset"
 
 /**
+ * @const WIDGET_PROP_ALIGN_V
+ *
+ */
+#define WIDGET_PROP_ALIGN_V "align_v"
+
+/**
+ * @const WIDGET_PROP_ALIGN_H
+ *
+ */
+#define WIDGET_PROP_ALIGN_H "align_h"
+
+/**
  * @const WIDGET_PROP_AUTO_PLAY
  *
  */

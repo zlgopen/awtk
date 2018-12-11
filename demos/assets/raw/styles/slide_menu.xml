@@ -1,0 +1,7 @@
+<button>
+  <style name="slide_button" text_color="black" font_size="32">
+    <normal     bg_image="1" bg_image_draw_type="scale"/>
+    <pressed    bg_image="1" bg_image_draw_type="scale" y_offset="1"/>
+    <over       bg_image="1" bg_image_draw_type="scale" />
+  </style>
+<button>

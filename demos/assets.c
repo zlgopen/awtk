@@ -3,6 +3,7 @@
 #ifndef WITH_FS_RES
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
+#include "assets/inc/styles/slide_menu.data"
 #include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
 #include "assets/inc/styles/color.data"
@@ -21,6 +22,7 @@
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/vgcanvas.data"
 #include "assets/inc/ui/rich_text1.data"
+#include "assets/inc/ui/slide_menu.data"
 #include "assets/inc/ui/radial_gradient.data"
 #include "assets/inc/ui/color_picker_simple.data"
 #include "assets/inc/ui/progress_circle.data"
@@ -375,6 +377,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_vgcanvas);
   assets_manager_add(rm, ui_rich_text1);
+  assets_manager_add(rm, ui_slide_menu);
   assets_manager_add(rm, ui_radial_gradient);
   assets_manager_add(rm, ui_color_picker_simple);
   assets_manager_add(rm, ui_progress_circle);
@@ -573,6 +576,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
+  assets_manager_add(rm, style_slide_menu);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);
