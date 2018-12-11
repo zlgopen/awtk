@@ -30,8 +30,6 @@
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"
 
-#define ANIMATING_TIME 500
-
 const char* s_text_selector_properties[] = {
     WIDGET_PROP_TEXT,           WIDGET_PROP_VALUE,
     WIDGET_PROP_OPTIONS,        TEXT_SELECTOR_PROP_VISIBLE_NR,
@@ -296,7 +294,7 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
     return RET_OK;
   }
 
-  text_selector->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  text_selector->wa = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
   return_value_if_fail(text_selector->wa != NULL, RET_OOM);
 
   widget_animator_scroll_set_params(text_selector->wa, 0, yoffset, 0, yoffset_end);

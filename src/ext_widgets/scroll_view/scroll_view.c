@@ -29,8 +29,6 @@
 #include "base/image_manager.h"
 #include "widget_animators/widget_animator_scroll.h"
 
-#define ANIMATING_TIME 500
-
 ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   rect_t r_self = rect_init(0, 0, widget->w, widget->h);
@@ -195,7 +193,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
     wa->base.now = 0;
     wa->base.start_time = 0;
   } else {
-    scroll_view->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+    scroll_view->wa = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
     return_value_if_fail(scroll_view->wa != NULL, RET_OOM);
 
     widget_animator_scroll_set_params(scroll_view->wa, xoffset, yoffset, xoffset_end, yoffset_end);
@@ -246,7 +244,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
     }
 
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
-                          ANIMATING_TIME);
+                          TK_ANIMATING_TIME);
   }
 
   return RET_OK;
@@ -325,7 +323,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
           pointer_event_t abort = *evt;
 
           abort.e.type = EVT_POINTER_DOWN_ABORT;
-          widget_dispatch_event_to_target_recursive(widget->target, (event_t*)(&abort));
+          widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
 
           scroll_view->dragged = TRUE;
         }
