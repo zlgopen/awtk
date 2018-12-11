@@ -101,7 +101,7 @@ static ret_t on_paint_linear_gradient(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   color_t scolor = color_init(0xff, 0, 0, 0xff);
-  color_t ecolor = color_init(0, 0xff, 0, 0xff);
+  color_t ecolor = color_init(0xff, 0, 0, 0x0);
   uint32_t spacing = 10;
   uint32_t w = (widget->w - 3 * spacing) >> 1;
   uint32_t h = (widget->h - 3 * spacing) >> 1;
@@ -143,7 +143,7 @@ static ret_t on_paint_radial_gradient(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   color_t scolor = color_init(0xff, 0, 0, 0xff);
-  color_t ecolor = color_init(0, 0xff, 0, 0xff);
+  color_t ecolor = color_init(0xff, 0, 0, 0);
   uint32_t spacing = 10;
   uint32_t w = (widget->w - 3 * spacing) >> 1;
   uint32_t h = (widget->h - 3 * spacing) >> 1;
