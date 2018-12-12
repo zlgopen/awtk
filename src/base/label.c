@@ -139,26 +139,65 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, const wchar_
 }
 
 static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
+  label_t* label = LABEL(widget);
   uint32_t lines = line_breaker_count(str);
 
   if (lines > 1) {
     return label_paint_text_mlines(widget, c, str, size, lines);
   } else {
-    return widget_on_paint_self_default(widget, c);
+    wstr_t str = widget->text;
+
+    if (label->length >= 0) {
+      str.size = tk_min(label->length, str.size);
+    }
+
+    return widget_paint_helper(widget, c, NULL, &str);
   }
 }
 
 static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
-  if (widget->text.size > 0) {
+  if (widget->text.size > 0 && style_is_valid(widget->astyle)) {
     label_paint_text(widget, c, widget->text.str, widget->text.size);
   }
 
   return RET_OK;
 }
 
+ret_t label_set_length(widget_t* widget, int32_t length) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  label->length = length;
+
+  return widget_invalidate_force(widget, NULL);
+}
+
+static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
+    value_set_int(v, label->length);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
+    return label_set_length(widget, tk_roundi(value_float(v)));
+  }
+
+  return RET_NOT_FOUND;
+}
+
 static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
                                                .type = WIDGET_TYPE_LABEL,
                                                .create = label_create,
+                                               .set_prop = label_set_prop,
+                                               .get_prop = label_get_prop,
                                                .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -166,5 +205,8 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = WIDGET(label);
   return_value_if_fail(label != NULL, NULL);
 
-  return widget_init(widget, parent, &s_label_vtable, x, y, w, h);
+  widget_init(widget, parent, &s_label_vtable, x, y, w, h);
+  label->length = -1;
+
+  return widget;
 }

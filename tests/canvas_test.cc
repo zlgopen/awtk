@@ -31,7 +31,7 @@ TEST(Canvas, draw_hline) {
 
   lcd_log_reset(lcd);
   canvas_draw_hline(&c, 290 + 40, 110, -40);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(290,110,10);");
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(291,110,9);");
 
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
@@ -63,7 +63,7 @@ TEST(Canvas, draw_vline) {
 
   lcd_log_reset(lcd);
   canvas_draw_vline(&c, 110, 290 + 40, -40);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,290,10);");
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,291,9);");
 
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);

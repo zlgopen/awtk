@@ -7,7 +7,9 @@
   <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>
   <label style="center_bottom" text="it\nis\na\nmulti-line\nsample\n(center_bottom)"/>
   
-  <label style="left"  text="left"/>
+  <label style="left"  text="dialing...  "
+    animation="length(from=7, to=12, easing=linear, duration=1200, repeat=1000)"
+    />
   <label style="center" text="center"/>
   <label style="right" text="right"/>
   
