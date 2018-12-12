@@ -268,7 +268,7 @@ ret_t canvas_draw_hline(canvas_t* c, xy_t x, xy_t y, wh_t w) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (w < 0) {
     w = -w;
-    x -= w;
+    x = x - w + 1;
   }
 
   return canvas_draw_hline_impl(c, c->ox + x, c->oy + y, w);
@@ -293,7 +293,7 @@ ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h) {
 
   if (h < 0) {
     h = -h;
-    y -= h;
+    y = y - h + 1;
   }
 
   return canvas_draw_vline_impl(c, c->ox + x, c->oy + y, h);
