@@ -107,7 +107,36 @@ typedef struct _widget_vtable_t {
 /**
  * @class widget_t
  * @annotation ["scriptable"]
- * 窗口基类。
+ * widget_t是所有控件、窗口和窗口管理器的基类。
+ *
+ * 通常**widget_t**通过一个矩形区域向用户呈现一些信息，接受用户的输入，并据此做出适当的反应。
+ * 它负责控件的生命周期、通用状态、事件分发和Style的管理。
+ * 本类提供的接口(函数和属性)除非特别说明，一般都适用于子类控件。
+ *
+ * > **widget_t**是抽象类，不要直接创建**widget_t**的实例。
+ *
+ * 为了便于解释，这里特别说明一下几个术语：
+ *
+ * * **父控件与子控件**：父控件与子控件指的两个控件的组合关系(这是在运行时决定的)。
+ * 比如：在窗口中放一个按钮，此时，我们称按钮是窗口的子控件，窗口是按钮的父控件。
+ *
+ * digraph G {
+ *   [default_style]
+ *
+ *   子控件 -> 父控件[arrowhead = "diamond"]
+ *
+ * }
+ *
+ * * **子类控件与父类控件**：子类控件与父类控件指的两类控件的继承关系(这是在设计时决定的)。
+ * 比如：我们称**button_t**是**widget_t**的子类控件，**widget_t**是**button_t**的父类控件。
+ *
+ * digraph G {
+ *   [default_style]
+ *
+ *   子类控件 -> 父类控件[arrowhead = "empty"]
+ *
+ * }
+ *
  */
 struct _widget_t {
   /**
@@ -143,13 +172,13 @@ struct _widget_t {
   /**
    * @property {char*} tr_text
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 如果需要在切换语言时实时生效，则需要保存用于翻译的字符串tr_text。
+   * 保存用于翻译的字符串。
    */
   char* tr_text;
   /**
    * @property {char*} style
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * Style Type。
+   * style的名称。
    */
   const char* style;
   /**
@@ -932,7 +961,7 @@ ret_t widget_off(widget_t* widget, int32_t id);
 
 /**
  * @method widget_child_on
- * 注册指定事件的处理函数。
+ * 为指定名称的子控件注册指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 子控件的名称。
  * @param {event_type_t} type 事件类型。
@@ -960,7 +989,7 @@ ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_ev
  * @method widget_invalidate
  * 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。
  * @param {widget_t*} widget 控件对象。
- * @param {rect_t*} r 矩形对象。
+ * @param {rect_t*} r 矩形对象(widget本地坐标)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -971,7 +1000,7 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r);
  * 强制重绘控件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {rect_t*} r 矩形对象。
+ * @param {rect_t*} r 矩形对象(widget本地坐标)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
