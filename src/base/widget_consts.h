@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_OPACITY
+ * 不透明度。
+ */
+#define WIDGET_PROP_OPACITY "opacity"
+
+/**
  * @const WIDGET_PROP_MIN_W
  * 最小宽度。
  */
@@ -118,6 +124,12 @@ BEGIN_C_DECLS
  * 值。
  */
 #define WIDGET_PROP_VALUE "value"
+
+/**
+ * @const WIDGET_PROP_LENGTH
+ * 长度。
+ */
+#define WIDGET_PROP_LENGTH "length"
 
 /**
  * @const WIDGET_PROP_TEXT

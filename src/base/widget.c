@@ -783,6 +783,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->w = (wh_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     widget->h = (wh_t)value_int(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_OPACITY)) {
+    widget->opacity = (uint8_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
@@ -838,6 +840,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int32(v, widget->w);
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
     value_set_int32(v, widget->h);
+  } else if (tk_str_eq(name, WIDGET_PROP_OPACITY)) {
+    value_set_int32(v, widget->opacity);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
