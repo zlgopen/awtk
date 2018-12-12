@@ -143,7 +143,7 @@ ret_t application_init() {
   widget_create_animator(image4,
                          "scale(x_to=2, y_to=2, yoyo_times=1000, duration=1000, easing=sin_out)");
 
-  widget_create_animator(image5, "move(y_to=400, duration=1000, easing=sin_out)");
+  widget_create_animator(image5, "y(to=400, duration=1000, easing=sin_out)");
   widget_create_animator(image5, "opacity(to=0, duration=500, yoyo_times=1000, delay=1000)");
 
   widget_on(start, EVT_CLICK, on_start, NULL);

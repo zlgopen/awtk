@@ -1,7 +1,7 @@
 ﻿/**
  * File:   widget_animator_scroll.h
  * Author: AWTK Develop Team
- * Brief:  animate widget by change its position.
+ * Brief:  animate widget by change its xoffset/yoffset.
  *
  * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -28,7 +28,8 @@ BEGIN_C_DECLS
 
 /**
  * @class widget_animator_scroll_t
- * 移动控件位置的动画。
+ * 滚动控件的动画。
+ * 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。
  */
 typedef struct _widget_animator_scroll_t {
   widget_animator_t base;
