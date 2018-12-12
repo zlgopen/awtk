@@ -87,7 +87,7 @@ scons
 
 ### Windows
 
-(请先安装python2.7，scons和Visual Studio C++(版本>=2015)
+(请先安装python2.7，scons和Visual Studio C++(版本>=2017)
 
 编译运行(在命令行模式下，进入awtk所在的目录，并运行下列命令)：
 

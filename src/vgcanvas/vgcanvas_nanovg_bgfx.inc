@@ -72,6 +72,7 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
   NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
 
   nvgluBindFramebuffer(handle);
+  touchBGFX(1);
   nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
 
   return RET_OK;
@@ -81,6 +82,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgEndFrame(vg);
+  frameBGFX(false);
   nvgluBindFramebuffer(NULL);
 
   return RET_OK;
