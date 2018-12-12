@@ -4,13 +4,14 @@ const glob = require('glob')
 class IDLGenerator {
   parseDesc(str) {
     if (str.indexOf('/**') < 0 && str.indexOf('*/') < 0) {
-      let desc = str.trim();
+      let desc = str;
+      let start = desc.indexOf('*');
 
-      if (desc.indexOf('*') == 0) {
-        desc = desc.substr(1).trim();
+      if (start >= 0) {
+        desc = desc.substr(start + 1);
       }
 
-      return desc;
+      return desc + '\n';
     } else {
       return '';
     }
