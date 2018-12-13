@@ -41,10 +41,14 @@ static ret_t slide_menu_set_xoffset(slide_menu_t* slide_menu, int32_t xoffset) {
   return RET_OK;
 }
 
-static int32_t slide_menu_fix_index(widget_t* widget, int32_t index) {
+int32_t slide_menu_fix_index(widget_t* widget, int32_t index) {
   uint32_t nr = widget_count_children(widget);
 
-  return (index < 0) ? (index + nr) : (index % nr);
+  while (index < 0) {
+    index += nr;
+  }
+
+  return (index % nr);
 }
 
 static widget_t* slide_menu_get_child(widget_t* widget, int32_t index) {

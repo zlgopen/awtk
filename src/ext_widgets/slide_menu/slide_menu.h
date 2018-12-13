@@ -140,6 +140,9 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale);
 #define WIDGET_TYPE_SLIDE_MENU "slide_menu"
 #define SLIDE_MENU(widget) ((slide_menu_t*)(widget))
 
+/*public for test*/
+int32_t slide_menu_fix_index(widget_t* widget, int32_t index);
+
 END_C_DECLS
 
 #endif /*TK_SLIDE_MENU_H*/
