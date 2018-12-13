@@ -335,6 +335,12 @@ typedef enum _image_draw_type_t {
   IMAGE_DRAW_SCALE_AUTO,
 
   /**
+   * @const IMAGE_DRAW_SCALE_DOWN
+   * 如果图片比目标矩形大，自动缩小显示，否则居中显示。
+   */
+  IMAGE_DRAW_SCALE_DOWN,
+
+  /**
    * @const IMAGE_DRAW_SCALE_W
    * 宽度缩放显示。 将图片缩放至目标矩形的宽度，高度按此比例进行缩放，超出不部分不显示。
    */
