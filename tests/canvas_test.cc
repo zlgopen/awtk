@@ -88,6 +88,10 @@ TEST(Canvas, fill_rect) {
   lcd_log_reset(lcd);
   canvas_fill_rect(&c, 110, 110, 40, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "fr(110,110,40,40);");
+  
+  lcd_log_reset(lcd);
+  canvas_fill_rect(&c, 180, 180, -40, -40);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "fr(141,141,40,40);");
 
   lcd_log_reset(lcd);
   canvas_fill_rect(&c, 90, 90, 40, 40);
