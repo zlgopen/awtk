@@ -22,6 +22,26 @@ TEST(Layuout, basic) {
   ASSERT_EQ(r.h, 4);
 }
 
+TEST(Layuout, undef) {
+  widget_layout_t layout;
+  rect_t r = rect_init(1, 2, 3, 4);
+  ASSERT_EQ(widget_layout_parse(&layout, NULL, NULL, NULL, NULL), &layout);
+  ASSERT_EQ(layout.x, 0);
+  ASSERT_EQ(layout.y, 0);
+  ASSERT_EQ(layout.w, 0);
+  ASSERT_EQ(layout.h, 0);
+  ASSERT_EQ(layout.x_attr, X_ATTR_UNDEF);
+  ASSERT_EQ(layout.y_attr, Y_ATTR_UNDEF);
+  ASSERT_EQ(layout.w_attr, W_ATTR_UNDEF);
+  ASSERT_EQ(layout.h_attr, H_ATTR_UNDEF);
+
+  widget_layout_calc(&layout, &r, 100, 200);
+  ASSERT_EQ(r.x, 1);
+  ASSERT_EQ(r.y, 2);
+  ASSERT_EQ(r.w, 3);
+  ASSERT_EQ(r.h, 4);
+}
+
 TEST(Layuout, negetive) {
   rect_t r;
   widget_layout_t layout;

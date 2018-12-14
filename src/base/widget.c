@@ -760,7 +760,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  if (widget->need_relayout) {
+  if (widget->parent != NULL && widget->need_relayout) {
     widget_layout(widget);
   }
 
@@ -1601,6 +1601,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
     memcpy(clone->layout_params, widget->layout_params, sizeof(layout_params_t));
   }
 
+  widget_update_style(clone);
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_clone(iter, clone);
   WIDGET_FOR_EACH_CHILD_END();

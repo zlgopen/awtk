@@ -50,7 +50,7 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
       layout->x_attr = X_ATTR_DEFAULT;
     }
   } else {
-    layout->x_attr = X_ATTR_DEFAULT;
+    layout->x_attr = X_ATTR_UNDEF;
   }
 
   if (y != NULL) {
@@ -74,7 +74,7 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
       layout->y_attr = Y_ATTR_DEFAULT;
     }
   } else {
-    layout->y_attr = Y_ATTR_DEFAULT;
+    layout->y_attr = Y_ATTR_UNDEF;
   }
 
   if (w != NULL) {
@@ -88,7 +88,7 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
       }
     }
   } else {
-    layout->h_attr = H_ATTR_PIXEL;
+    layout->w_attr = W_ATTR_UNDEF;
   }
 
   if (h != NULL) {
@@ -102,21 +102,21 @@ widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, con
       }
     }
   } else {
-    layout->h_attr = H_ATTR_PIXEL;
+    layout->h_attr = H_ATTR_UNDEF;
   }
 
   return layout;
 }
 
 ret_t widget_layout_calc(const widget_layout_t* layout, rect_t* r, wh_t parent_w, wh_t parent_h) {
-  xy_t x = layout->x;
-  xy_t y = layout->y;
-  wh_t w = layout->w;
-  wh_t h = layout->h;
   uint8_t x_attr = layout->x_attr;
   uint8_t y_attr = layout->y_attr;
   uint8_t w_attr = layout->w_attr;
   uint8_t h_attr = layout->h_attr;
+  xy_t x = x_attr == X_ATTR_UNDEF ? r->x : layout->x;
+  xy_t y = y_attr == Y_ATTR_UNDEF ? r->y : layout->y;
+  wh_t w = w_attr == W_ATTR_UNDEF ? r->w : layout->w;
+  wh_t h = h_attr == H_ATTR_UNDEF ? r->h : layout->h;
 
   if (parent_w > 0 && parent_h > 0) {
     if (w_attr == W_ATTR_PERCENT) {
@@ -219,12 +219,13 @@ ret_t widget_set_children_layout(widget_t* widget, const children_layout_t* cl) 
 ret_t widget_layout(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   widget_layout_self(widget);
+  widget->need_relayout = FALSE;
 
   return widget_layout_children(widget);
 }
 
 ret_t widget_layout_self_with_wh(widget_t* widget, wh_t w, wh_t h) {
-  rect_t r;
+  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->parent != NULL && widget->layout_params != NULL) {
@@ -238,6 +239,19 @@ ret_t widget_layout_self_with_wh(widget_t* widget, wh_t w, wh_t h) {
   return RET_OK;
 }
 
+static bool_t widget_is_self_layout(widget_t* widget) {
+  children_layout_t* layout = NULL;
+  widget_t* parent = widget->parent;
+
+  if (parent->layout_params == NULL || !parent->layout_params->children.inited) {
+    return TRUE;
+  }
+
+  layout = &(parent->layout_params->children);
+
+  return layout->rows == 0 && layout->cols == 0;
+}
+
 ret_t widget_layout_self(widget_t* widget) {
   value_t v;
   int32_t layout_w = 0;
@@ -246,6 +260,10 @@ ret_t widget_layout_self(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
 
   parent = widget->parent;
+  if (!widget_is_self_layout(widget)) {
+    return RET_OK;
+  }
+
   if (widget_get_prop(parent, WIDGET_PROP_LAYOUT_W, &v) == RET_OK) {
     layout_w = value_int(&v);
   } else {

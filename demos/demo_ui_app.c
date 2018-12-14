@@ -22,6 +22,7 @@
 #include "awtk.h"
 #include "base/mem.h"
 #include "base/label.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include "base/button.h"
 #include "base/dialog.h"
@@ -272,6 +273,30 @@ static ret_t on_quit_app(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t widget_destroy_only_in_idle(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  widget_destroy(widget);
+
+  return RET_REMOVE;
+}
+
+static ret_t on_remove_self(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_remove_child(widget->parent, widget);
+
+  idle_add(widget_destroy_only_in_idle, widget);
+
+  return RET_OK;
+}
+
+static ret_t on_clone_self(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* clone = widget_clone(widget, widget->parent);
+  widget_on(clone, EVT_CLICK, on_clone_self, clone);
+
+  return RET_OK;
+}
+
 static ret_t on_show_fps(void* ctx, event_t* e) {
   widget_t* button = WIDGET(ctx);
   widget_t* widget = window_manager();
@@ -361,6 +386,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_mem_test, win);
     } else if (tk_str_eq(name, "show_fps")) {
       widget_on(widget, EVT_CLICK, on_show_fps, widget);
+    } else if (tk_str_eq(name, "clone_self")) {
+      widget_on(widget, EVT_CLICK, on_clone_self, widget);
+    } else if (tk_str_eq(name, "remove_self")) {
+      widget_on(widget, EVT_CLICK, on_remove_self, widget);
     } else if (tk_str_eq(name, "chinese")) {
       widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
     } else if (tk_str_eq(name, "english")) {

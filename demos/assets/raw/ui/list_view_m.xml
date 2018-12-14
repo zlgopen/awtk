@@ -85,6 +85,10 @@
           <switch x="r:10" y="m" w="60" h="20"/>
         </label>
       </list_item>
+      <list_item style="even_clickable" name="clone_self" text="Clone Self" />
+      <list_item style="odd_clickable" name="clone_self" text="Clone Self" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self" />
+      <list_item style="odd_clickable" name="remove_self" text="Remove Self" />
     </scroll_view>
     <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
   </list_view>
