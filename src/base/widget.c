@@ -340,6 +340,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
+  widget->need_relayout = TRUE;
   if (widget->children == NULL) {
     widget->children = array_create(4);
   }
@@ -356,6 +357,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
+  widget->need_relayout = TRUE;
   widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;
@@ -756,6 +758,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   if (!widget->visible || widget->w <= 0 || widget->h <= 0) {
     widget->dirty = FALSE;
     return RET_OK;
+  }
+
+  if (widget->need_relayout) {
+    widget_layout(widget);
   }
 
   widget_paint_impl(widget, c);
