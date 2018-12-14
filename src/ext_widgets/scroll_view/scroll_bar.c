@@ -261,15 +261,17 @@ static ret_t scroll_bar_layout_children(widget_t* widget) {
   widget_t* dragger = scroll_bar->dragger;
   return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
 
-  if (widget->w > widget->h) {
-    int32_t max_x = widget_h + (widget_w - 2 * widget_h - r.w);
-    dragger_set_range(dragger, widget_h, r.y, max_x, r.y);
-  } else {
-    int32_t max_y = widget_w + (widget_h - 2 * widget_w - r.h);
-    dragger_set_range(dragger, r.x, widget_w, r.x, max_y);
-  }
+  if (dragger != NULL) {
+    if (widget->w > widget->h) {
+      int32_t max_x = widget_h + (widget_w - 2 * widget_h - r.w);
+      dragger_set_range(dragger, widget_h, r.y, max_x, r.y);
+    } else {
+      int32_t max_y = widget_w + (widget_h - 2 * widget_w - r.h);
+      dragger_set_range(dragger, r.x, widget_w, r.x, max_y);
+    }
 
-  widget_move_resize(WIDGET(dragger), r.x, r.y, r.w, r.h);
+    widget_move_resize(WIDGET(dragger), r.x, r.y, r.w, r.h);
+  }
   widget_layout(widget);
   widget_invalidate_force(widget, NULL);
 
