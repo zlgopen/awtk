@@ -47,7 +47,7 @@ widget_animator_t* widget_animator_prop_create(widget_t* widget, uint32_t durati
   return_value_if_fail(
       widget_animator_init(animator, widget, duration, delay, easing_get(easing)) == RET_OK, NULL);
 
-  prop = (widget_animator_t*)animator;
+  prop = (widget_animator_prop_t*)animator;
   animator->update = widget_animator_prop_update;
   tk_strncpy(prop->prop_name, prop_name, NAME_LEN);
 
