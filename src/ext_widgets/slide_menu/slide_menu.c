@@ -333,10 +333,10 @@ static ret_t slide_menu_set_prop(widget_t* widget, const char* name, const value
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = align_v_type_find(value_str(v));
       if (kv != NULL) {
-        slide_menu_set_align_v(widget, kv->value);
+        slide_menu_set_align_v(widget, (align_v_t)(kv->value));
       }
     } else {
-      slide_menu_set_align_v(widget, value_int(v));
+      slide_menu_set_align_v(widget, (align_v_t)(value_int(v)));
     }
     return RET_OK;
   }
@@ -527,7 +527,7 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
-  slide_menu->min_scale = tk_max(0.5, tk_min(min_scale, 1));
+  slide_menu->min_scale = tk_max(0.5f, tk_min(min_scale, 1));
 
   return widget_invalidate(widget, NULL);
 }
