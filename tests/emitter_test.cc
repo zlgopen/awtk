@@ -1,6 +1,6 @@
 ﻿
-#include "base/array.h"
-#include "base/emitter.h"
+#include "tkc/array.h"
+#include "tkc/emitter.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
 

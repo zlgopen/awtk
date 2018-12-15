@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/array.h"
+#include "tkc/array.h"
 
 static ret_t timer_info_destroy(timer_info_t* info) {
   memset(info, 0x00, sizeof(timer_info_t));

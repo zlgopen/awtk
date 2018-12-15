@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/layout.h"
-#include "base/tokenizer.h"
+#include "tkc/tokenizer.h"
 
 widget_layout_t* widget_layout_parse(widget_layout_t* layout, const char* x, const char* y,
                                      const char* w, const char* h) {

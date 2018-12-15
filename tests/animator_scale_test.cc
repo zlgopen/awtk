@@ -1,6 +1,6 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
-#include "base/image.h"
+#include "widgets/image.h"
 #include "widget_animators/widget_animator_scale.h"
 
 TEST(AnimatorScale, once) {

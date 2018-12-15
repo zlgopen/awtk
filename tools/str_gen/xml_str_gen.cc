@@ -20,8 +20,8 @@
  */
 
 #include "str_gen.h"
-#include "base/fs.h"
-#include "base/str.h"
+#include "tkc/fs.h"
+#include "tkc/str.h"
 #include "base/enums.h"
 #include "base/theme.h"
 #include "common/utils.h"

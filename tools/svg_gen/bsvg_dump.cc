@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/fs.h"
+#include "tkc/mem.h"
+#include "tkc/fs.h"
 #include "common/utils.h"
 #include "base/assets_manager.h"
 #include "svg/bsvg_to_svg.h"

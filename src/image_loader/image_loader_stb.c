@@ -24,7 +24,7 @@
 #define STBI_MALLOC TKMEM_ALLOC
 #define STBI_REALLOC(p, s) TKMEM_REALLOC(char, p, s)
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 
 #include "stb/stb_image.h"
 #include "image_loader/image_loader_stb.h"

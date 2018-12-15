@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "widget_animators/widget_animator_prop2.h"
 
 static ret_t widget_animator_prop2_update(widget_animator_t* animator, float_t percent) {

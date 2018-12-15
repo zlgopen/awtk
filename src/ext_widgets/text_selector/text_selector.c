@@ -19,14 +19,14 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
-#include "base/button.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
+#include "widgets/button.h"
 #include "base/layout.h"
-#include "base/popup.h"
-#include "base/window.h"
-#include "base/tokenizer.h"
+#include "widgets/popup.h"
+#include "widgets/window.h"
+#include "tkc/tokenizer.h"
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"
 

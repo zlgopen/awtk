@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/input_method.h"
 
 static ret_t input_method_null_request(input_method_t* im, widget_t* widget) {

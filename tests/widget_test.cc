@@ -1,10 +1,10 @@
 ﻿
 #include "base/canvas.h"
 #include "base/widget.h"
-#include "base/button.h"
-#include "base/label.h"
-#include "base/group_box.h"
-#include "base/window.h"
+#include "widgets/button.h"
+#include "widgets/label.h"
+#include "widgets/group_box.h"
+#include "widgets/window.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include <stdlib.h>

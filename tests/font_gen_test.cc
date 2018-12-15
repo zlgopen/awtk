@@ -1,7 +1,7 @@
 ﻿
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/font.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/widget.h"
 #include "tools/common/utils.h"
 #include "tools/font_gen/font_gen.h"

@@ -22,8 +22,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "base/str.h"
-#include "base/utils.h"
+#include "tkc/str.h"
+#include "tkc/utils.h"
 
 BEGIN_C_DECLS
 

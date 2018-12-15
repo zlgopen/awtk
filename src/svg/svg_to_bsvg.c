@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/color_parser.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/color_parser.h"
 #include "xml/xml_parser.h"
 #include "svg/svg_to_bsvg.h"
 #include "svg/svg_path_parser.h"

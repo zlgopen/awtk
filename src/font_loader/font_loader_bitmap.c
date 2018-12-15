@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "font_loader/font_loader_bitmap.h"
 
 typedef struct _font_bitmap_t {

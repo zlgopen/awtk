@@ -20,7 +20,7 @@
  */
 
 #include "base/widget_vtable.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
   if (r->w <= 0 || r->h <= 0) {

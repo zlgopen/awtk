@@ -1,7 +1,7 @@
 ﻿#include "gtest/gtest.h"
-#include "base/image.h"
-#include "base/button.h"
-#include "base/progress_bar.h"
+#include "widgets/image.h"
+#include "widgets/button.h"
+#include "widgets/progress_bar.h"
 #include "base/widget_animator_factory.h"
 
 #include "widget_animators/widget_animator_move.h"

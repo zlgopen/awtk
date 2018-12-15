@@ -22,7 +22,7 @@
 #ifndef IMAGE_GEN_H
 #define IMAGE_GEN_H
 
-#include "base/image.h"
+#include "widgets/image.h"
 
 BEGIN_C_DECLS
 

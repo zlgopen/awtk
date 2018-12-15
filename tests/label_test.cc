@@ -1,5 +1,5 @@
 ﻿#include "base/canvas.h"
-#include "base/label.h"
+#include "widgets/label.h"
 #include "base/widget.h"
 #include "font_dummy.h"
 #include "lcd_log.h"

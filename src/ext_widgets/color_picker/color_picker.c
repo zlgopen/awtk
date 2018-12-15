@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/edit.h"
-#include "base/slider.h"
-#include "base/color_tile.h"
-#include "base/color_parser.h"
+#include "tkc/mem.h"
+#include "widgets/edit.h"
+#include "widgets/slider.h"
+#include "widgets/color_tile.h"
+#include "tkc/color_parser.h"
 #include "color_picker/rgb_and_hsv.h"
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"

@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/buffer.h"
+#include "tkc/buffer.h"
 #include "base/enums.h"
-#include "base/utf8.h"
-#include "base/value.h"
+#include "tkc/utf8.h"
+#include "tkc/value.h"
 #include "base/ui_builder.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_binary_writer.h"

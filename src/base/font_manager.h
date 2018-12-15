@@ -22,7 +22,7 @@
 #ifndef TK_FONT_MANAGER_H
 #define TK_FONT_MANAGER_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/font_loader.h"
 #include "base/assets_manager.h"
 

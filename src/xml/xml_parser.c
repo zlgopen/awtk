@@ -18,8 +18,8 @@
  * 2018-01-19 Li XianJing <xianjimli@hotmail.com> adapted from ftk.
  *
  */
-#include "base/fs.h"
-#include "base/mem.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "xml/xml_parser.h"
 #ifndef isspace
 #define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')

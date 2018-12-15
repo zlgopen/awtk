@@ -22,7 +22,7 @@
 #ifndef TK_INPUT_ENGINE_H
 #define TK_INPUT_ENGINE_H
 
-#include "base/str.h"
+#include "tkc/str.h"
 
 BEGIN_C_DECLS
 

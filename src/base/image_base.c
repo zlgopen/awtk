@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/image_base.h"
 
 ret_t image_base_on_event(widget_t* widget, event_t* e) {

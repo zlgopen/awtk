@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/event_queue.h"
 
 event_queue_t* event_queue_create(uint16_t capacity) {

@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/buffer.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/buffer.h"
 #include "base/suggest_words.h"
 
 /*ref:tools/word_gen/gen.js*/

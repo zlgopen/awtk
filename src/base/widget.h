@@ -22,14 +22,16 @@
 #ifndef TK_WIDGET_H
 #define TK_WIDGET_H
 
-#include "base/str.h"
-#include "base/mem.h"
-#include "base/wstr.h"
-#include "base/value.h"
-#include "base/rect.h"
+#include "tkc/str.h"
+#include "tkc/mem.h"
+#include "tkc/wstr.h"
+#include "tkc/value.h"
+#include "tkc/rect.h"
+#include "tkc/emitter.h"
+
+#include "base/types_def.h"
 #include "base/timer.h"
 #include "base/events.h"
-#include "base/emitter.h"
 #include "base/canvas.h"
 #include "base/style.h"
 #include "base/theme.h"

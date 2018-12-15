@@ -1,6 +1,6 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
-#include "base/check_button.h"
+#include "widgets/check_button.h"
 
 using std::string;
 

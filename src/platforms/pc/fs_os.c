@@ -17,9 +17,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "base/fs.h"
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 
 static int32_t fs_os_file_read(fs_file_t* file, void* buffer, uint32_t size) {
   FILE* fp = (FILE*)(file->data);

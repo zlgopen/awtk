@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "canvas_widget/canvas_widget.h"
 
 static const widget_vtable_t s_canvas_widget_vtable = {.size = sizeof(canvas_widget_t),

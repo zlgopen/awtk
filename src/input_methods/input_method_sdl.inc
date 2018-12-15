@@ -20,7 +20,7 @@
  */
 
 #include <SDL.h>
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/input_method.h"
 #include "main_loop/main_loop_simple.h"
 

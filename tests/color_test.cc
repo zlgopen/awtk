@@ -1,5 +1,5 @@
-﻿#include "base/color.h"
-#include "base/color_parser.h"
+﻿#include "tkc/color.h"
+#include "tkc/color_parser.h"
 #include "gtest/gtest.h"
 #include <string>
 

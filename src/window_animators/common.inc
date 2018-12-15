@@ -1,7 +1,7 @@
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
-#include "base/easing.h"
-#include "base/func_call_parser.h"
+#include "tkc/easing.h"
+#include "tkc/func_call_parser.h"
 
 typedef struct _window_animation_parser_t {
   func_call_parser_t base;

@@ -22,7 +22,7 @@
 #ifndef TK_IMAGE_MANAGER_H
 #define TK_IMAGE_MANAGER_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/image_loader.h"
 #include "base/assets_manager.h"
 

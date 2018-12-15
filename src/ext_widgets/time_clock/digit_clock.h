@@ -23,7 +23,7 @@
 #define TK_DIGIT_CLOCK_H
 
 #include "base/widget.h"
-#include "base/date_time.h"
+#include "tkc/date_time.h"
 
 BEGIN_C_DECLS
 

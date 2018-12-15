@@ -21,7 +21,7 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 
 #define STBTT_free(p, u) TKMEM_FREE(p)
 #define STBTT_malloc(s, u) TKMEM_ALLOC(s)

@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/line_break.h"
 #include "base/image_manager.h"
 #include "rich_text/rich_text_render_node.h"

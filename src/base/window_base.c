@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/window_base.h"
 #include "base/font_manager.h"

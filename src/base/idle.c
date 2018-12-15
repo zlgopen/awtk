@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/idle.h"
-#include "base/array.h"
+#include "tkc/array.h"
 
 static idle_manager_t* s_idle_manager;
 

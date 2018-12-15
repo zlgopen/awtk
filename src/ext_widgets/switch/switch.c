@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "switch/switch.h"
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"

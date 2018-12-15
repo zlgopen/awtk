@@ -22,7 +22,7 @@
 #ifndef TK_ASSETS_MANAGER_H
 #define TK_ASSETS_MANAGER_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 
 BEGIN_C_DECLS
 

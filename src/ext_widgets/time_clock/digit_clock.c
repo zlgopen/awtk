@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/widget_vtable.h"
 #include "time_clock/digit_clock.h"
 

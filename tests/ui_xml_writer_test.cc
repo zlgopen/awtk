@@ -1,4 +1,4 @@
-﻿#include "base/dialog.h"
+﻿#include "widgets/dialog.h"
 #include "gtest/gtest.h"
 #include "ui_loader/ui_xml_writer.h"
 #include "ui_loader/ui_loader_default.h"

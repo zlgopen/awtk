@@ -19,16 +19,16 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/path.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/path.h"
+#include "tkc/utils.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
 static assets_manager_t* s_assets_manager = NULL;
 
 #ifdef WITH_FS_RES
-#include "base/fs.h"
+#include "tkc/fs.h"
 
 static const char* assets_manager_get_res_root(assets_manager_t* rm) {
   if (rm->res_root != NULL) {

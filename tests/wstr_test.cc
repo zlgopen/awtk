@@ -1,5 +1,5 @@
-﻿#include "base/wstr.h"
-#include "base/mem.h"
+﻿#include "tkc/wstr.h"
+#include "tkc/mem.h"
 #include "gtest/gtest.h"
 
 static void testSetWStr(const char* utf8, const wchar_t* cstr) {

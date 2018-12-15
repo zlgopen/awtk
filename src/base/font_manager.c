@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/font_manager.h"
 
 static font_manager_t* s_font_manager = NULL;

@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/locale_info.h"
 
 static locale_info_t* s_locale = NULL;

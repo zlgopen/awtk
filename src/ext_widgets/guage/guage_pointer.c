@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/matrix.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/matrix.h"
 #include "svg/bsvg_draw.h"
 #include "base/widget_vtable.h"
 #include "guage/guage_pointer.h"

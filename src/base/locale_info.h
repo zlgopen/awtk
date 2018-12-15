@@ -22,7 +22,7 @@
 #ifndef TK_LOCALE_H
 #define TK_LOCALE_H
 
-#include "base/emitter.h"
+#include "tkc/emitter.h"
 #include "base/assets_manager.h"
 
 BEGIN_C_DECLS

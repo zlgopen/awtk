@@ -1,6 +1,6 @@
 ﻿#include <string>
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "gtest/gtest.h"
 
 using std::string;

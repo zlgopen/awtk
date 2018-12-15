@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/thread.h"
+#include "tkc/mem.h"
+#include "tkc/thread.h"
 
 #ifdef WIN32
 #include <Windows.h>

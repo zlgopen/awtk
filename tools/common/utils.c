@@ -26,10 +26,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "base/fs.h"
-#include "base/mem.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "base/enums.h"
-#include "base/path.h"
+#include "tkc/path.h"
 #include "base/assets_manager.h"
 
 void exit_if_need_not_update(const char* in, const char* out) {

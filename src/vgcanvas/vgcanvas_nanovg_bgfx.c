@@ -20,7 +20,7 @@
  */
 
 #include "nanovg.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/vgcanvas.h"
 #include "bgfx/nanovg_bgfx.h"
 #include "base/image_manager.h"

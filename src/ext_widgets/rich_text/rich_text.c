@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/image_manager.h"
 #include "rich_text/rich_text.h"
 #include "rich_text/rich_text_parser.h"

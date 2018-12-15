@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "progress_circle/progress_circle.h"

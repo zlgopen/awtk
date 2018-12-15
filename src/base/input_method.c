@@ -20,7 +20,7 @@
  */
 
 #include "base/keys.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/input_method.h"
 
 ret_t input_method_dispatch(input_method_t* im, event_t* e) {

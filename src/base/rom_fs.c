@@ -29,7 +29,7 @@
 #define SEEK_END 2 /* set file offset to EOF plus offset */
 #endif
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/rom_fs.h"
 #include "base/assets_manager.h"
 

@@ -22,7 +22,8 @@
 #ifndef TK_VG_CANVAS_H
 #define TK_VG_CANVAS_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
+#include "base/types_def.h"
 #include "base/bitmap.h"
 
 BEGIN_C_DECLS

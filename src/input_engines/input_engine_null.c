@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/buffer.h"
+#include "tkc/mem.h"
+#include "tkc/buffer.h"
 #include "base/input_engine.h"
 
 static ret_t input_engine_null_reset_input(input_engine_t* engine) {

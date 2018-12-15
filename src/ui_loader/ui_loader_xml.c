@@ -20,8 +20,8 @@
  */
 
 #include "base/enums.h"
-#include "base/mem.h"
-#include "base/str.h"
+#include "tkc/mem.h"
+#include "tkc/str.h"
 #include "base/layout.h"
 #include "xml/xml_parser.h"
 #include "ui_loader/ui_loader_xml.h"

@@ -21,7 +21,7 @@
 
 #define LCD_FORMAT BITMAP_FMT_BGR888
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/pixel.h"
 #include "lcd/lcd_mem.h"
 

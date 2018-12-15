@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/button.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "widgets/button.h"
 #include "base/layout.h"
-#include "base/dragger.h"
+#include "widgets/dragger.h"
 #include "scroll_view/scroll_bar.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"

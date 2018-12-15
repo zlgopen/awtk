@@ -20,8 +20,8 @@
  */
 
 #include "base/enums.h"
-#include "base/utils.h"
-#include "base/func_call_parser.h"
+#include "tkc/utils.h"
+#include "tkc/func_call_parser.h"
 #include "base/widget_animator_factory.h"
 
 #ifndef WITHOUT_WIDGET_ANIMATOR

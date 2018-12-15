@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
 #include "base/image_manager.h"
 #include "image_animation/image_animation.h"

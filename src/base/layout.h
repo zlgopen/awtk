@@ -22,7 +22,7 @@
 #ifndef TK_LAYOUT_H
 #define TK_LAYOUT_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
 #include "base/widget.h"
 #include "base/layout_def.h"
 

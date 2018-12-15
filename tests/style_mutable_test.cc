@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
-#include "base/button.h"
-#include "base/window.h"
+#include "widgets/button.h"
+#include "widgets/window.h"
 #include "designer_support/style_mutable.h"
 
 #include <string>

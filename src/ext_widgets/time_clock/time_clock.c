@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/utils.h"
-#include "base/matrix.h"
-#include "base/date_time.h"
+#include "tkc/utils.h"
+#include "tkc/matrix.h"
+#include "tkc/date_time.h"
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 

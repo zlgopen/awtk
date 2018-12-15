@@ -1,5 +1,5 @@
 ﻿#include "base/pixel.h"
-#include "base/color.h"
+#include "tkc/color.h"
 #include "gtest/gtest.h"
 
 TEST(Pixel, rgb565) {

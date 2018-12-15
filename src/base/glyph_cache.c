@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/time_now.h"
+#include "tkc/mem.h"
+#include "tkc/time_now.h"
 #include "base/glyph_cache.h"
 
 glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity,

@@ -22,7 +22,7 @@
 #ifndef TK_CUSTOM_PROPS_H
 #define TK_CUSTOM_PROPS_H
 
-#include "base/value.h"
+#include "tkc/value.h"
 
 BEGIN_C_DECLS
 

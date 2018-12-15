@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/edit.h"
+#include "widgets/edit.h"
 #include "base/enums.h"
 #include "base/widget.h"
 #include "base/window_animator.h"

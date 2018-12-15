@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/utf8.h"
-#include "base/utils.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "base/canvas.h"
-#include "base/time_now.h"
+#include "tkc/time_now.h"
 #include "base/wuxiaolin.inc"
 
 static ret_t canvas_draw_fps(canvas_t* c);

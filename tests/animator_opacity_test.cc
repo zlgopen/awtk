@@ -1,6 +1,6 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
-#include "base/progress_bar.h"
+#include "widgets/progress_bar.h"
 #include "widget_animators/widget_animator_opacity.h"
 
 TEST(AnimatorOpacity, once) {

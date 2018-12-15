@@ -22,8 +22,8 @@
 #include <time.h>
 #include <stdio.h>
 #include "base/timer.h"
-#include "base/platform.h"
-#include "base/date_time.h"
+#include "tkc/platform.h"
+#include "tkc/date_time.h"
 
 #ifdef WIN32
 #include <windows.h>

@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/theme.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/widget.h"
 #include "base/style_const.h"
 

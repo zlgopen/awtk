@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/idle.h"
-#include "base/window.h"
+#include "widgets/window.h"
 #include "keyboard/keyboard.h"
 #include "suggest_words.inc"
 #include "base/input_method.h"

@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "common/utils.h"
 #include "font_gen.h"
 #include "font_loader/font_loader_bitmap.h"

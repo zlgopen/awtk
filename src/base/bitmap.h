@@ -22,7 +22,8 @@
 #ifndef TK_BITMAP_H
 #define TK_BITMAP_H
 
-#include "base/color.h"
+#include "tkc/color.h"
+#include "base/types_def.h"
 
 BEGIN_C_DECLS
 

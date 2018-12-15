@@ -1,6 +1,8 @@
-# 目录介绍
+## 目录介绍
 
-* **base** 核心库、基本控件和接口。
+* **tkc** toolkit c library。
+* **base** GUI 基本库。
+* **widgets** 基本控件。
 * **blend** 图片渲染函数。			
 * **lcd** LCD的各种实现。			
 * **font** 字体的各种实现。			
@@ -17,3 +19,13 @@
 * **vgcanvas** 矢量图画布。
 * **svg** 矢量图画SVG。
 * **clip\_board** 剪切板的实现。
+
+## 使用方法
+
+应用程序只需包含awtk.h即可。
+
+```
+#include "awtk.h"
+```
+
+

@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/mutex.h"
+#include "tkc/mem.h"
+#include "tkc/mutex.h"
 
 #ifdef WIN32
 #include "Windows.h"

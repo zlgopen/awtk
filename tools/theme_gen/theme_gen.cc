@@ -20,11 +20,11 @@
  */
 
 #include "theme_gen.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/theme.h"
-#include "base/buffer.h"
-#include "base/types_def.h"
+#include "tkc/buffer.h"
+#include "tkc/types_def.h"
 
 Style::Style() {
 }

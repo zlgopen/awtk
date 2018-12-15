@@ -19,13 +19,13 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/str.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/str.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/bitmap.h"
 #include "xml/xml_parser.h"
-#include "base/color_parser.h"
+#include "tkc/color_parser.h"
 #include "rich_text/rich_text_node.h"
 #include "rich_text/rich_text_parser.h"
 

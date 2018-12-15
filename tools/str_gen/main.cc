@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "xml_str_gen.h"
 
 int main(int argc, char* argv[]) {

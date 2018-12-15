@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
-#include "base/button.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
+#include "widgets/button.h"
 #include "keyboard/candidates.h"
 #include "base/input_method.h"
 #include "base/widget_vtable.h"

@@ -22,7 +22,7 @@
 #ifndef TK_STYLE_H
 #define TK_STYLE_H
 
-#include "base/color.h"
+#include "tkc/color.h"
 #include "base/widget_consts.h"
 
 BEGIN_C_DECLS

@@ -21,9 +21,9 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
-#include "base/fs.h"
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
 #include "assets.h"
 
@@ -74,7 +74,7 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
-#include "base/path.h"
+#include "tkc/path.h"
 
 #define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
 #if defined(WIN32)
@@ -110,7 +110,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
   str_set(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
 #else
-#include "base/mem.h"
+#include "tkc/mem.h"
 int main(int argc, char* argv[]) {
 #endif
   int32_t w = 320;

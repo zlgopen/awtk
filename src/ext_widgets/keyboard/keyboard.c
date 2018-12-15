@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/keys.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
-#include "base/pages.h"
+#include "widgets/pages.h"
 #include "base/locale_info.h"
 #include "keyboard/keyboard.h"
 #include "base/input_method.h"

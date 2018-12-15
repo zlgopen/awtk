@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/wstr.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/wstr.h"
 #include "base/custom_props.h"
 
 static ret_t value_free(value_t* v);

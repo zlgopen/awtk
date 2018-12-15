@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/image_manager.h"
 #include "base/pixel_pack_unpack.h"
 #include "color_picker/rgb_and_hsv.h"

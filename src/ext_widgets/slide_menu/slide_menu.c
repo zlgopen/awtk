@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/enums.h"
-#include "base/utils.h"
-#include "base/button.h"
+#include "tkc/utils.h"
+#include "widgets/button.h"
 #include "base/layout.h"
 #include "base/widget_vtable.h"
 #include "slide_menu/slide_menu.h"
@@ -539,4 +539,10 @@ ret_t slide_menu_set_align_v(widget_t* widget, align_v_t align_v) {
   slide_menu->align_v = align_v;
 
   return widget_invalidate(widget, NULL);
+}
+
+widget_t* slide_menu_cast(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt == &s_slide_menu_vtable, NULL);
+
+  return widget;
 }

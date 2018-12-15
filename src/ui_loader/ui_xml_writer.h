@@ -22,7 +22,7 @@
 #ifndef TK_UI_XML_WRITER_H
 #define TK_UI_XML_WRITER_H
 
-#include "base/str.h"
+#include "tkc/str.h"
 #include "base/ui_builder.h"
 
 BEGIN_C_DECLS

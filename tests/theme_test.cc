@@ -1,9 +1,9 @@
 ﻿
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/enums.h"
 #include "base/theme.h"
 #include "base/widget.h"
-#include "base/buffer.h"
+#include "tkc/buffer.h"
 #include "tools/theme_gen/theme_gen.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>

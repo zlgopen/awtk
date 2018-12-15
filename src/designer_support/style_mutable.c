@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/value.h"
-#include "base/utils.h"
+#include "tkc/value.h"
+#include "tkc/utils.h"
 #include "base/widget.h"
 #include "base/style_const.h"
 #include "base/style_factory.h"

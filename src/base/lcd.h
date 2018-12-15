@@ -22,9 +22,9 @@
 #ifndef TK_LCD_H
 #define TK_LCD_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
 #include "base/font.h"
-#include "base/matrix.h"
+#include "tkc/matrix.h"
 #include "base/bitmap.h"
 #include "base/vgcanvas.h"
 

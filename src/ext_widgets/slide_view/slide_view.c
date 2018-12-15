@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
-#include "base/easing.h"
+#include "tkc/easing.h"
 #include "slide_view/slide_view.h"
 #include "widget_animators/widget_animator_scroll.h"
 

@@ -1,4 +1,4 @@
-﻿#include "base/dialog.h"
+﻿#include "widgets/dialog.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"

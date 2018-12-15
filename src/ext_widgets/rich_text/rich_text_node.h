@@ -22,7 +22,7 @@
 #ifndef TK_RICH_TEXT_NODE_H
 #define TK_RICH_TEXT_NODE_H
 
-#include "base/color.h"
+#include "tkc/color.h"
 #include "base/bitmap.h"
 
 BEGIN_C_DECLS

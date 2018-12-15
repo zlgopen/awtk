@@ -20,9 +20,9 @@
  */
 
 #include <wctype.h>
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/buffer.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/buffer.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
 #include "base/assets_manager.h"

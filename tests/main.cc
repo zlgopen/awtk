@@ -30,7 +30,7 @@
 #include <stdio.h>
 
 #include "awtk.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/idle.h"
 #include "base/system_info.h"
 #include "gtest/gtest.h"

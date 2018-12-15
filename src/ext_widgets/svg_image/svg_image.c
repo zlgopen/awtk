@@ -20,8 +20,8 @@
  */
 
 #include "svg/bsvg.h"
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "svg/bsvg_draw.h"
 #include "base/widget_vtable.h"
 #include "svg_image/svg_image.h"

@@ -26,7 +26,7 @@
 #include "common/utils.h"
 #include "xml_theme_gen.h"
 #include "xml/xml_parser.h"
-#include "base/color_parser.h"
+#include "tkc/color_parser.h"
 #include "base/assets_manager.h"
 
 typedef struct _xml_builder_t {

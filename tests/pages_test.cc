@@ -1,5 +1,5 @@
-﻿#include "base/pages.h"
-#include "base/view.h"
+﻿#include "widgets/pages.h"
+#include "widgets/view.h"
 #include "gtest/gtest.h"
 #include <string>
 

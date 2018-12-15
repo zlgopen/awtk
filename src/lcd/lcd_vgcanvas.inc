@@ -20,7 +20,7 @@
  */
 
 #include "base/lcd.h"
-#include "base/utf8.h"
+#include "tkc/utf8.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
 

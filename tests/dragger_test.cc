@@ -1,4 +1,4 @@
-﻿#include "base/dragger.h"
+﻿#include "widgets/dragger.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"

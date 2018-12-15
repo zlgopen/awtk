@@ -1,5 +1,5 @@
 ﻿#undef HAS_STD_MALLOC
-#include "base/mem.c"
+#include "tkc/mem.c"
 #include <time.h>
 #include <assert.h>
 

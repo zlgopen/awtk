@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "ui_loader/ui_serializer.h"
 
 ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* value) {

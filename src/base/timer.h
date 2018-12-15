@@ -22,7 +22,7 @@
 #ifndef TK_TIMER_H
 #define TK_TIMER_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 
 BEGIN_C_DECLS
 

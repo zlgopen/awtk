@@ -20,12 +20,12 @@
  */
 
 #include "base/keys.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/idle.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
 #include "base/layout.h"
-#include "base/time_now.h"
+#include "tkc/time_now.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"

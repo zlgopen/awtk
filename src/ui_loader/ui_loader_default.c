@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/buffer.h"
+#include "tkc/mem.h"
+#include "tkc/buffer.h"
 #include "ui_loader/ui_loader_default.h"
 
 ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t size,

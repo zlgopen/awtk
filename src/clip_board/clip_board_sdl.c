@@ -21,8 +21,8 @@
 
 #ifdef WITH_SDL
 
-#include "base/mem.h"
-#include "base/str.h"
+#include "tkc/mem.h"
+#include "tkc/str.h"
 #include "SDL_clipboard.h"
 #include "clip_board/clip_board_sdl.h"
 

@@ -22,8 +22,8 @@
 #ifndef TK_SVG_PATH_H
 #define TK_SVG_PATH_H
 
-#include "base/color.h"
-#include "base/buffer.h"
+#include "tkc/color.h"
+#include "tkc/buffer.h"
 
 BEGIN_C_DECLS
 
