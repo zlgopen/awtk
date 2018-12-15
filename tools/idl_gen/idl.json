@@ -92,7 +92,7 @@
     ],
     "events": [],
     "properties": [],
-    "header": "src/awtk_main.h",
+    "header": "src/awtk_global.h",
     "desc": " TK全局对象。\n\n",
     "name": "tk_t",
     "annotation": {
@@ -5714,6 +5714,170 @@
       "scriptable": true,
       "fake": true
     }
+  },
+  {
+    "type": "enum",
+    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
+    "consts": [
+      {
+        "desc": " LCD没有旋转。\r\n",
+        "name": "LCD_ORIENTATION_0"
+      },
+      {
+        "desc": " LCD旋转90度。\r\n",
+        "name": "LCD_ORIENTATION_90"
+      },
+      {
+        "desc": " LCD旋转180度。\r\n",
+        "name": "LCD_ORIENTATION_180"
+      },
+      {
+        "desc": " LCD旋转270度。\r\n",
+        "name": "LCD_ORIENTATION_270"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "lcd_orientation_t",
+    "prefix": "LCD_ORIENTATION_"
+  },
+  {
+    "type": "enum",
+    "desc": " 垂直对齐的常量定义。\r\n",
+    "consts": [
+      {
+        "desc": " 无效对齐方式。\r\n",
+        "name": "ALIGN_V_NONE"
+      },
+      {
+        "desc": " 居中对齐。\r\n",
+        "name": "ALIGN_V_MIDDLE"
+      },
+      {
+        "desc": " 顶部对齐。\r\n",
+        "name": "ALIGN_V_TOP"
+      },
+      {
+        "desc": " 底部对齐。\r\n",
+        "name": "ALIGN_V_BOTTOM"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "align_v_t",
+    "prefix": "ALIGN_V_",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": " 水平对齐的常量定义。\r\n",
+    "consts": [
+      {
+        "desc": " 无效对齐方式。\r\n",
+        "name": "ALIGN_H_NONE"
+      },
+      {
+        "desc": " 居中对齐。\r\n",
+        "name": "ALIGN_H_CENTER"
+      },
+      {
+        "desc": " 左边对齐。\r\n",
+        "name": "ALIGN_H_LEFT"
+      },
+      {
+        "desc": " 右边对齐。\r\n",
+        "name": "ALIGN_H_RIGHT"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "align_h_t",
+    "prefix": "ALIGN_H_",
+    "annotation": {
+      "scriptable": true
+    }
+  },
+  {
+    "type": "enum",
+    "desc": " 控件边框类型。\r\n",
+    "consts": [
+      {
+        "desc": " 无边框。\r\n",
+        "name": "BORDER_NONE"
+      },
+      {
+        "desc": " 左边框线。\r\n",
+        "name": "BORDER_LEFT"
+      },
+      {
+        "desc": " 右边框线。\r\n",
+        "name": "BORDER_RIGHT"
+      },
+      {
+        "desc": " 上边框线。\r\n",
+        "name": "BORDER_TOP"
+      },
+      {
+        "desc": " 下边框线。\r\n",
+        "name": "BORDER_BOTTOM"
+      },
+      {
+        "desc": " 全边框线。\r\n",
+        "name": "BORDER_ALL"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "border_type_t",
+    "prefix": "BORDER_TYPE_"
+  },
+  {
+    "type": "enum",
+    "desc": " 图标所在的位置。\r\n",
+    "consts": [
+      {
+        "desc": " 自动选择位置。\r\n",
+        "name": "ICON_AT_AUTO"
+      },
+      {
+        "desc": " 水平左边，垂直居中。\r\n",
+        "name": "ICON_AT_LEFT"
+      },
+      {
+        "desc": " 水平右边，垂直居中(not used now)。\r\n",
+        "name": "ICON_AT_RIGHT"
+      },
+      {
+        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
+        "name": "ICON_AT_TOP"
+      },
+      {
+        "desc": " 水平居中，垂直低部(not used now)。\r\n",
+        "name": "ICON_AT_BOTTOM"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "icon_at_type_t",
+    "prefix": "ICON_AT"
+  },
+  {
+    "type": "enum",
+    "desc": " 应用程序类型。\r\n",
+    "consts": [
+      {
+        "desc": " 嵌入式或移动APP\r\n",
+        "name": "APP_MOBILE"
+      },
+      {
+        "desc": " 模拟器。\r\n",
+        "name": "APP_SIMULATOR"
+      },
+      {
+        "desc": " 桌面应用程序。\r\n",
+        "name": "APP_DESKTOP"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "app_type_t",
+    "prefix": "APP_"
   },
   {
     "type": "class",
@@ -18838,170 +19002,6 @@
     "annotation": {
       "scriptable": true
     }
-  },
-  {
-    "type": "enum",
-    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
-    "consts": [
-      {
-        "desc": " LCD没有旋转。\r\n",
-        "name": "LCD_ORIENTATION_0"
-      },
-      {
-        "desc": " LCD旋转90度。\r\n",
-        "name": "LCD_ORIENTATION_90"
-      },
-      {
-        "desc": " LCD旋转180度。\r\n",
-        "name": "LCD_ORIENTATION_180"
-      },
-      {
-        "desc": " LCD旋转270度。\r\n",
-        "name": "LCD_ORIENTATION_270"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "lcd_orientation_t",
-    "prefix": "LCD_ORIENTATION_"
-  },
-  {
-    "type": "enum",
-    "desc": " 垂直对齐的常量定义。\r\n",
-    "consts": [
-      {
-        "desc": " 无效对齐方式。\r\n",
-        "name": "ALIGN_V_NONE"
-      },
-      {
-        "desc": " 居中对齐。\r\n",
-        "name": "ALIGN_V_MIDDLE"
-      },
-      {
-        "desc": " 顶部对齐。\r\n",
-        "name": "ALIGN_V_TOP"
-      },
-      {
-        "desc": " 底部对齐。\r\n",
-        "name": "ALIGN_V_BOTTOM"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "align_v_t",
-    "prefix": "ALIGN_V_",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "enum",
-    "desc": " 水平对齐的常量定义。\r\n",
-    "consts": [
-      {
-        "desc": " 无效对齐方式。\r\n",
-        "name": "ALIGN_H_NONE"
-      },
-      {
-        "desc": " 居中对齐。\r\n",
-        "name": "ALIGN_H_CENTER"
-      },
-      {
-        "desc": " 左边对齐。\r\n",
-        "name": "ALIGN_H_LEFT"
-      },
-      {
-        "desc": " 右边对齐。\r\n",
-        "name": "ALIGN_H_RIGHT"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "align_h_t",
-    "prefix": "ALIGN_H_",
-    "annotation": {
-      "scriptable": true
-    }
-  },
-  {
-    "type": "enum",
-    "desc": " 控件边框类型。\r\n",
-    "consts": [
-      {
-        "desc": " 无边框。\r\n",
-        "name": "BORDER_NONE"
-      },
-      {
-        "desc": " 左边框线。\r\n",
-        "name": "BORDER_LEFT"
-      },
-      {
-        "desc": " 右边框线。\r\n",
-        "name": "BORDER_RIGHT"
-      },
-      {
-        "desc": " 上边框线。\r\n",
-        "name": "BORDER_TOP"
-      },
-      {
-        "desc": " 下边框线。\r\n",
-        "name": "BORDER_BOTTOM"
-      },
-      {
-        "desc": " 全边框线。\r\n",
-        "name": "BORDER_ALL"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "border_type_t",
-    "prefix": "BORDER_TYPE_"
-  },
-  {
-    "type": "enum",
-    "desc": " 图标所在的位置。\r\n",
-    "consts": [
-      {
-        "desc": " 自动选择位置。\r\n",
-        "name": "ICON_AT_AUTO"
-      },
-      {
-        "desc": " 水平左边，垂直居中。\r\n",
-        "name": "ICON_AT_LEFT"
-      },
-      {
-        "desc": " 水平右边，垂直居中(not used now)。\r\n",
-        "name": "ICON_AT_RIGHT"
-      },
-      {
-        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
-        "name": "ICON_AT_TOP"
-      },
-      {
-        "desc": " 水平居中，垂直低部(not used now)。\r\n",
-        "name": "ICON_AT_BOTTOM"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "icon_at_type_t",
-    "prefix": "ICON_AT"
-  },
-  {
-    "type": "enum",
-    "desc": " 应用程序类型。\r\n",
-    "consts": [
-      {
-        "desc": " 嵌入式或移动APP\r\n",
-        "name": "APP_MOBILE"
-      },
-      {
-        "desc": " 模拟器。\r\n",
-        "name": "APP_SIMULATOR"
-      },
-      {
-        "desc": " 桌面应用程序。\r\n",
-        "name": "APP_DESKTOP"
-      }
-    ],
-    "header": "tkc/types_def.h",
-    "name": "app_type_t",
-    "prefix": "APP_"
   },
   {
     "type": "enum",

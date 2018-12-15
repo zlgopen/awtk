@@ -22,7 +22,7 @@
 #ifndef TK_GLOBAL_H
 #define TK_GLOBAL_H
 
-#include "tkc/types_def.h"
+#include "base/types_def.h"
 
 BEGIN_C_DECLS
 
