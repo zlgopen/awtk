@@ -153,6 +153,11 @@ typedef enum _style_id_t {
    * 编辑器中选中区域的文本颜色。
    */
   STYLE_ID_SELECTED_TEXT_COLOR,
+  /**
+   * @const STYLE_ID_ROUND_RADIUS
+   * 圆角半径(仅在WITH_VGCANVAS定义时生效)。
+   */
+  STYLE_ID_ROUND_RADIUS,
 } style_id_t;
 
 struct _style_t;

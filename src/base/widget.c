@@ -661,12 +661,26 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   bitmap_t img;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
+  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
 
   if (bg.rgba.a) {
     canvas_set_fill_color(c, bg);
-    canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+    if (radius > 3) {
+      vgcanvas_t* vg = canvas_get_vgcanvas(c);
+      if (vg != NULL) {
+        vgcanvas_set_fill_color(vg, bg);
+        vgcanvas_translate(vg, c->ox, c->oy);
+        vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+        vgcanvas_translate(vg, -c->ox, -c->oy);
+        vgcanvas_fill(vg);
+      } else {
+        canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+      }
+    } else {
+      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+    }
   }
 
   if (image_name != NULL) {
@@ -687,6 +701,7 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
 
   if (bd.rgba.a) {
@@ -695,7 +710,20 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
 
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
-      canvas_stroke_rect(c, 0, 0, w, h);
+      if (radius > 3) {
+        vgcanvas_t* vg = canvas_get_vgcanvas(c);
+        if (vg != NULL) {
+          vgcanvas_set_stroke_color(vg, bd);
+          vgcanvas_translate(vg, c->ox, c->oy);
+          vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+          vgcanvas_translate(vg, -c->ox, -c->oy);
+          vgcanvas_stroke(vg);
+        } else {
+          canvas_stroke_rect(c, 0, 0, w, h);
+        }
+      } else {
+        canvas_stroke_rect(c, 0, 0, w, h);
+      }
     } else {
       if (border & BORDER_TOP) {
         canvas_draw_hline(c, 0, 0, w);

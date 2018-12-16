@@ -50,7 +50,7 @@ static const key_type_value_t style_id_name_value[] = {
     {"selected_bg_color", TYPE_COLOR, STYLE_ID_SELECTED_BG_COLOR},
     {"selected_fg_color", TYPE_COLOR, STYLE_ID_SELECTED_FG_COLOR},
     {"selected_text_color", TYPE_COLOR, STYLE_ID_SELECTED_TEXT_COLOR},
-};
+    {"round_radius", TYPE_INT, STYLE_ID_ROUND_RADIUS}};
 
 static const key_type_value_t widget_state_name_value[] = {
     {"normal", 0, WIDGET_STATE_NORMAL},

@@ -1,6 +1,7 @@
 # 最新动态
 * 2018/12/16
   * 修改issue #61
+  * 主题的背景和边框支持圆角半径round\_radius，仅在定义WITH\_VGCANVAS时有效。
 
 * 2018/12/15
   * 调整目录结构。将base拆分成tkc、base和widgets三个目录。
