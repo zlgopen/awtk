@@ -149,7 +149,7 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
 
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
-    timer_add(on_idle_invalidate, curr_win, 100);
+    widget_add_timer(curr_win, on_idle_invalidate, 100);
   }
 
   return RET_REMOVE;
