@@ -273,18 +273,10 @@ static ret_t on_quit_app(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t widget_destroy_only_in_idle(const idle_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  widget_destroy(widget);
-
-  return RET_REMOVE;
-}
-
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_remove_child(widget->parent, widget);
-
-  idle_add(widget_destroy_only_in_idle, widget);
+  widget_destroy(widget);
 
   return RET_OK;
 }

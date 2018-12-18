@@ -1,4 +1,11 @@
 # 最新动态
+* 2018/12/18
+  * widget\_destroy自动判断是否需要异步销毁。
+  * 修改issue #61(list item销毁时，自动移出定时器)。
+
+* 2018/12/17
+  * 抽象layouter接口，方便支持不同的layout算法(如CSS的flex)。(未完)
+
 * 2018/12/16
   * 修改issue #61
   * 主题的背景和边框支持圆角半径round\_radius，仅在定义WITH\_VGCANVAS时有效。
