@@ -195,7 +195,7 @@ static bool_t color_parse_hex(const char* color, uint8_t* r, uint8_t* g, uint8_t
   int ib = 0;
   int ia = 0xff;
 
-  if (len > 8) {
+  if (len < 8) {
     tk_sscanf(color, "#%02x%02x%02x", &ir, &ig, &ib);
   } else {
     tk_sscanf(color, "#%02x%02x%02x%02x", &ir, &ig, &ib, &ia);
