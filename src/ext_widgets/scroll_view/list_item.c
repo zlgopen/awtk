@@ -111,11 +111,24 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t list_item_destroy(widget_t* widget) {
+  list_item_t* list_item = LIST_ITEM(widget);
+  return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
+
+  if (list_item->timer_id != TK_INVALID_ID) {
+    timer_remove(list_item->timer_id);
+    list_item->timer_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
                                                    .type = WIDGET_TYPE_LIST_ITEM,
                                                    .create = list_item_create,
                                                    .on_event = list_item_on_event,
-                                                   .on_paint_self = list_item_on_paint_self};
+                                                   .on_paint_self = list_item_on_paint_self,
+                                                   .destroy = list_item_destroy};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   list_item_t* list_item = TKMEM_ZALLOC(list_item_t);
