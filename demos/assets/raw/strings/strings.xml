@@ -12,3 +12,13 @@
 <language name="en_US">value is %d</language>
 <language name="zh_CN">值为%d</language>
 </string>
+
+<string name="chinese">
+<language name="en_US">Chinese</language>
+<language name="zh_CN">中文</language>
+</string>
+
+<string name="english">
+<language name="en_US">English</language>
+<language name="zh_CN">英文</language>
+</string>
