@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #elif defined(WIN32)
+#include <stdio.h>
 #include <windows.h>
 #define unlink _unlink
 #define rename MoveFileA
