@@ -34,6 +34,7 @@ typedef struct _glyph_t {
   int8_t y;
   uint8_t w;
   uint8_t h;
+  int glyph_width;
   const uint8_t* data;
 } glyph_t;
 
