@@ -237,6 +237,12 @@ struct _widget_t {
    */
   uint8_t need_relayout : 1;
   /**
+   * @property {uint16_t} can_not_destroy
+   * @annotation ["readable"]
+   * 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。
+   */
+  uint16_t can_not_destroy;
+  /**
    * @property {bool_t} destroying
    * @annotation ["readable"]
    * 标识控件正在被销毁。

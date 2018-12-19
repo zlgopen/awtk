@@ -55,6 +55,8 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
     if (asset != NULL) {
       if (asset->subtype == ASSET_TYPE_IMAGE_BSVG) {
         guage_pointer->bsvg_asset = asset;
+      } else {
+        widget_unload_asset(widget, asset);
       }
     }
   }

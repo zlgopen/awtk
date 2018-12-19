@@ -35,7 +35,10 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
-static ret_t widget_destroy_only(widget_t* widget);
+static ret_t widget_do_destroy(widget_t* widget);
+static ret_t widget_destroy_sync(widget_t* widget);
+static ret_t widget_destroy_async(widget_t* widget);
+static ret_t widget_destroy_in_idle(const idle_info_t* info);
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   event_t e = event_init(EVT_WILL_MOVE, widget);
@@ -329,7 +332,7 @@ ret_t widget_destroy_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_destroy_only(iter);
+  widget_do_destroy(iter);
   WIDGET_FOR_EACH_CHILD_END();
   widget->children->size = 0;
 
@@ -550,6 +553,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  widget->can_not_destroy++;
   if (widget->vt && widget->vt->on_event) {
     ret = widget->vt->on_event(widget, e);
   } else {
@@ -559,6 +563,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   if (widget->emitter != NULL) {
     ret = emitter_dispatch(widget->emitter, e);
   }
+  widget->can_not_destroy--;
 
   return ret;
 }
@@ -1346,7 +1351,7 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return id;
 }
 
-static ret_t widget_destroy_only(widget_t* widget) {
+static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1386,6 +1391,30 @@ static ret_t widget_destroy_only(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t widget_destroy_in_idle(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+
+  widget_destroy_sync(widget);
+
+  return RET_REMOVE;
+}
+
+static ret_t widget_destroy_async(widget_t* widget) {
+  idle_add(widget_destroy_in_idle, widget);
+
+  return RET_OK;
+}
+
+static ret_t widget_do_destroy(widget_t* widget) {
+  if (widget->can_not_destroy) {
+    widget_destroy_async(widget);
+  } else {
+    widget_destroy_sync(widget);
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_destroy(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1393,7 +1422,7 @@ ret_t widget_destroy(widget_t* widget) {
     widget_remove_child(widget->parent, widget);
   }
 
-  return widget_destroy_only(widget);
+  return widget_do_destroy(widget);
 }
 
 static ret_t widget_set_dirty(widget_t* widget) {

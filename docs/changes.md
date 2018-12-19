@@ -1,4 +1,18 @@
 # 最新动态
+
+* 2018/12/19
+  * 修改combobox弹出窗口位置的BUG。
+  * 修改widget\_animator\_manager中野指针的问题(感谢陈谭提供补丁)。
+
+* 2018/12/18
+  * widget\_destroy自动判断是否需要异步销毁。
+  * 修改issue #61(list item销毁时，自动移出定时器)(感谢陈谭提供补丁)。
+  * 修改color parser的BUG(感谢朝泽提供补丁)。
+  * 修改guage的BUG(感谢朝泽提供补丁)。
+
+* 2018/12/17
+  * 抽象layouter接口，方便支持不同的layout算法(如CSS的flex)。(未完)
+
 * 2018/12/16
   * 修改issue #61
   * 主题的背景和边框支持圆角半径round\_radius，仅在定义WITH\_VGCANVAS时有效。
