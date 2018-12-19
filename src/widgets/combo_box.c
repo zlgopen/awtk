@@ -238,7 +238,7 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
 }
 
 static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
-  point_t p;
+  point_t p = {0, 0};
   widget_t* wm = NULL;
   widget_t* win = NULL;
   widget_t* widget = WIDGET(ctx);
@@ -254,9 +254,7 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
 
   combo_box_hook_items(combo_box, win);
 
-  p.x = widget->x;
-  p.y = widget->y;
-  widget_to_screen(win, &p);
+  widget_to_screen(widget, &p);
 
   wm = win->parent;
   if ((p.y + widget->h + win->h) < wm->h) {
