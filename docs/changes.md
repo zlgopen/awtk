@@ -2,6 +2,7 @@
 
 * 2018/12/19
   * 修改combobox弹出窗口位置的BUG。
+  * 修改widget\_animator\_manager中野指针的问题(感谢陈谭提供补丁)。
 
 * 2018/12/18
   * widget\_destroy自动判断是否需要异步销毁。
