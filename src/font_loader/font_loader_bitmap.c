@@ -60,7 +60,7 @@ static ret_t font_bitmap_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t f
 
   p = (font->buff + index->offset);
   memcpy(g, p, sizeof(glyph_t));
-  g->data = font->buff + index->offset + sizeof(glyph_t)-sizeof(g->data);
+  g->data = font->buff + index->offset + sizeof(glyph_t) - sizeof(g->data);
 
   return RET_OK;
 }
