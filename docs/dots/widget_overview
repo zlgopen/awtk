@@ -1,0 +1,18 @@
+digraph G { 
+   
+    rankdir  = BT
+    fontname = "Courier New"
+    fontsize = 12
+
+    node [
+        fontname = "Courier New"
+        fontsize = 12
+        shape    = "record"
+        width = 0.4 
+    ]   
+
+
+   label_t -> widget_t[style=dashed arrowhead=empty]
+   button_t -> widget_t[style=dashed arrowhead=empty]
+   edit_t -> widget_t[style=dashed arrowhead=empty]
+ }
