@@ -525,6 +525,14 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
   return RET_OK;
 }
 
+ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->sensitive = sensitive;
+
+  return RET_OK;
+}
+
 static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -834,6 +842,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->opacity = (uint8_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE)) {
+    widget->sensitive = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
     widget->floating = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
@@ -897,6 +907,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int32(v, widget->opacity);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
+  } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE)) {
+    value_set_bool(v, widget->sensitive);
   } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
     value_set_bool(v, widget->floating);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
@@ -1524,6 +1536,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->opacity = 0xff;
   widget->enable = TRUE;
   widget->visible = TRUE;
+  widget->sensitive = TRUE;
   widget->emitter = NULL;
   widget->children = NULL;
   widget->state = WIDGET_STATE_NORMAL;
@@ -1642,39 +1655,25 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-#define ASSIGN_PROP(prop) clone->prop = widget->prop;
-widget_t* widget_clone(widget_t* widget, widget_t* parent) {
-  widget_t* clone = NULL;
-  const char** properties = NULL;
-  return_value_if_fail(widget != NULL && widget->vt != NULL && widget->vt->create != NULL, NULL);
+static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
+                                                  WIDGET_PROP_STYLE,
+                                                  WIDGET_PROP_TR_TEXT,
+                                                  WIDGET_PROP_TEXT,
+                                                  WIDGET_PROP_ANIMATION,
+                                                  WIDGET_PROP_ENABLE,
+                                                  WIDGET_PROP_VISIBLE,
+                                                  WIDGET_PROP_FLOATING,
+                                                  WIDGET_PROP_CHILDREN_LAYOUT,
+                                                  WIDGET_PROP_SELF_LAYOUT,
+                                                  WIDGET_PROP_OPACITY,
+                                                  WIDGET_PROP_SENSITIVE,
+                                                  NULL};
 
-  clone = widget->vt->create(parent, widget->x, widget->y, widget->w, widget->h);
-  return_value_if_fail(clone != NULL, NULL);
+const char** widget_get_persistent_props(void) {
+  return s_widget_persistent_props;
+}
 
-  ASSIGN_PROP(opacity);
-  ASSIGN_PROP(enable);
-  ASSIGN_PROP(visible);
-  ASSIGN_PROP(floating);
-
-  clone->name = tk_strdup(widget->name);
-  clone->style = tk_strdup(widget->style);
-  clone->tr_text = tk_strdup(widget->tr_text);
-
-  if (widget->text.size) {
-    wstr_set(&(clone->text), widget->text.str);
-  }
-
-  if (widget->children_layout != NULL) {
-    const char* str = children_layouter_to_string(widget->children_layout);
-    widget_set_prop_str(clone, WIDGET_PROP_CHILDREN_LAYOUT, str);
-  }
-
-  if (widget->self_layout != NULL) {
-    const char* str = self_layouter_to_string(widget->self_layout);
-    widget_set_prop_str(clone, WIDGET_PROP_SELF_LAYOUT, str);
-  }
-
-  properties = widget->vt->clone_properties;
+static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char** properties) {
   if (properties != NULL) {
     value_t v;
     uint32_t i = 0;
@@ -1686,7 +1685,28 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
     }
   }
 
+  return RET_OK;
+}
+
+static ret_t widget_copy(widget_t* clone, widget_t* widget) {
+  clone->state = widget->state;
+  clone->focused = widget->focused;
+  widget_copy_props(clone, widget, s_widget_persistent_props);
+  widget_copy_props(clone, widget, widget->vt->clone_properties);
+
+  return RET_OK;
+}
+
+widget_t* widget_clone(widget_t* widget, widget_t* parent) {
+  widget_t* clone = NULL;
+  return_value_if_fail(widget != NULL && widget->vt != NULL && widget->vt->create != NULL, NULL);
+
+  clone = widget->vt->create(parent, widget->x, widget->y, widget->w, widget->h);
+  return_value_if_fail(clone != NULL, NULL);
+
+  widget_copy(clone, widget);
   widget_update_style(clone);
+
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_clone(iter, clone);
   WIDGET_FOR_EACH_CHILD_END();

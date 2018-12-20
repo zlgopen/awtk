@@ -228,6 +228,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VISIBLE "visible"
 
 /**
+ * @const WIDGET_PROP_SENSITIVE
+ * 是否接受用户事件。
+ */
+#define WIDGET_PROP_SENSITIVE "sensitive"
+
+/**
  * @const WIDGET_PROP_ANIMATION
  * 控件动画。
  */

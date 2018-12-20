@@ -215,6 +215,12 @@ struct _widget_t {
    */
   uint8_t visible : 1;
   /**
+   * @property {bool_t} sensitive
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * 是否接受用户事件。
+   */
+  uint8_t sensitive : 1;
+  /**
    * @property {bool_t} focused
    * @annotation ["readable"]
    * 是否得到焦点。
@@ -930,6 +936,17 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
 ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
 
 /**
+ * @method widget_set_sensitive
+ * 设置控件是否接受用户事件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} sensitive 是否接受用户事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
+
+/**
  * @method widget_on
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
@@ -1570,6 +1587,8 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 #define WIDGET(w) ((widget_t*)(w))
+
+const char** widget_get_persistent_props(void);
 
 END_C_DECLS
 

@@ -150,7 +150,7 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   xy_t r = iter->x + iter->w;
   xy_t b = iter->y + iter->h;
 
-  if (iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
+  if (iter->sensitive && iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END();

@@ -27,13 +27,46 @@
 ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* value) {
   str_t* str = &(((ui_xml_writer_t*)writer)->temp);
 
+  if (tk_str_eq(name, WIDGET_PROP_ENABLE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPACITY) && value_int(value) == 0xff) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FLOATING) && !value_bool(value)) {
+    return RET_OK;
+  }
+
   return_value_if_fail(str_from_value(str, value) == RET_OK, RET_OOM);
+
+  if (tk_str_eq(name, WIDGET_PROP_TEXT) && str->size == 0) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_NAME) && str->size == 0) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT) && str->size == 0) {
+    return RET_OK;
+  }
 
   return ui_builder_on_widget_prop(writer, name, str->str);
 }
 
-ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
+static ret_t ui_widget_serialize_props(ui_builder_t* writer, widget_t* widget,
+                                       const char** properties) {
   value_t v;
+  uint32_t i = 0;
+  for (i = 0; properties[i] != NULL; i++) {
+    const char* prop = properties[i];
+    if (widget_get_prop(widget, prop, &v) == RET_OK) {
+      ui_widget_serialize_prop(writer, prop, &v);
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   widget_desc_t desc;
 
   if (widget->auto_created) {
@@ -50,43 +83,13 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
 
   ui_builder_on_widget_start(writer, &desc);
 
-  if (widget->name != NULL) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_NAME, widget->name);
-  }
-  if (widget->tr_text != NULL) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_text);
-  }
-  if (widget->floating) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_FLOATING, "true");
-  }
-  if (widget->text.size) {
-    uint32_t size = widget->text.size * 3 + 1;
-    char* text = TKMEM_ALLOC(size);
-    utf8_from_utf16(widget->text.str, text, size);
-    ui_builder_on_widget_prop(writer, "text", text);
-    TKMEM_FREE(text);
-  }
-
+  ui_widget_serialize_props(writer, widget, widget_get_persistent_props());
   if (widget->vt->clone_properties || widget->vt->persistent_properties) {
-    uint32_t i = 0;
     const char** properties = widget->vt->persistent_properties;
     if (properties == NULL) {
       properties = widget->vt->clone_properties;
     }
-    for (i = 0; properties[i] != NULL; i++) {
-      const char* prop = properties[i];
-      if (widget_get_prop(widget, prop, &v) == RET_OK) {
-        ui_widget_serialize_prop(writer, prop, &v);
-      }
-    }
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_CHILDREN_LAYOUT, &v) == RET_OK) {
-    ui_widget_serialize_prop(writer, WIDGET_PROP_CHILDREN_LAYOUT, &v);
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_SELF_LAYOUT, &v) == RET_OK) {
-    ui_widget_serialize_prop(writer, WIDGET_PROP_SELF_LAYOUT, &v);
+    ui_widget_serialize_props(writer, widget, properties);
   }
 
   ui_builder_on_widget_prop_end(writer);
