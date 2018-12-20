@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   self_layouter.c
  * Author: AWTK Develop Team
  * Brief:  self layouter
@@ -91,10 +91,10 @@ int32_t self_layouter_get_param_int(self_layouter_t* layouter, const char* name,
 
 ret_t self_layouter_destroy(self_layouter_t* layouter) {
   if (layouter == NULL) {
-    return FALSE;
+    return RET_OK;
   }
 
-  return_value_if_fail(layouter->vt != NULL && layouter->vt->destroy != NULL, FALSE);
+  return_value_if_fail(layouter->vt != NULL && layouter->vt->destroy != NULL, RET_OK);
 
   return layouter->vt->destroy(layouter);
 }

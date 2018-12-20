@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   children_layouter_default_default.c
  * Author: AWTK Develop Team
  * Brief:  children layouter default
@@ -129,7 +129,6 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
       } else {
         return RET_FAIL;
       }
-      break;
     }
     case 'h': {
       if (l->rows_is_height) {
@@ -138,7 +137,6 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
       } else {
         return RET_FAIL;
       }
-      break;
     }
     case 'c': {
       if (!l->cols_is_width) {
@@ -147,7 +145,6 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
       } else {
         return RET_FAIL;
       }
-      break;
     }
     case 'r': {
       if (!l->rows_is_height) {

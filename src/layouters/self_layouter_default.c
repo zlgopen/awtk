@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   self_layouter_default_default.c
  * Author: AWTK Develop Team
  * Brief:  self layouter default
@@ -161,7 +161,6 @@ ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* nam
     default: {
       assert(!"not support param");
       return RET_FAIL;
-      break;
     }
   }
 

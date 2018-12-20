@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_serializer.c
  * Author: AWTK Develop Team
  * Brief:  ui_serializer
@@ -57,7 +57,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
     ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_text);
   }
   if (widget->floating) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_FLOATING, widget->floating);
+    ui_builder_on_widget_prop(writer, WIDGET_PROP_FLOATING, "true");
   }
   if (widget->text.size) {
     uint32_t size = widget->text.size * 3 + 1;
