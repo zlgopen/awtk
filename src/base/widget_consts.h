@@ -84,7 +84,7 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_CHILDREN_LAYOUT "children_layout"
 
 /**
- * @const WIDGET_PROP_CHILDREN_LAYOUT
+ * @const WIDGET_PROP_LAYOUT
  * 子控件布局参数(过时)。
  */
 #define WIDGET_PROP_LAYOUT "layout"

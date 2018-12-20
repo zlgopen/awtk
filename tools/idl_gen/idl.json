@@ -1001,6 +1001,229 @@
     }
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": " 根据参数创建layouter对象。\n\n\n",
+    "name": "children_layouter_create",
+    "return": {
+      "type": "children_layouter_t*",
+      "desc": "返回layouter对象。"
+    },
+    "type": "method",
+    "header": "base/children_layouter_factory.h"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取全部参数。\n\n\n",
+        "name": "children_layouter_to_string",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回字符串格式的参数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 对子控件进行Layout。\n\n\n",
+        "name": "children_layouter_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的参数。\n\n\n",
+        "name": "children_layouter_get_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的参数。\n\n\n",
+        "name": "children_layouter_set_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "参数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置字符串格式的参数。\n\n\n",
+        "name": "children_layouter_set_param_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "float_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的浮点格式的参数。\n\n\n",
+        "name": "children_layouter_get_param_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的整数格式的参数。\n\n\n",
+        "name": "children_layouter_get_param_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 判断layouter对象是否有效。\n\n\n",
+        "name": "children_layouter_is_valid",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示有效，否则表示无效。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 销毁layouter对象。\n\n\n",
+        "name": "children_layouter_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/children_layouter.h",
+    "desc": " 子控件排版布局器的接口。\n 按特定算法对子控件进行排版布局。\n\n",
+    "name": "children_layouter_t"
+  },
+  {
     "type": "enum",
     "desc": " 剪切板数据类型定义。\n\n",
     "consts": [
@@ -4865,6 +5088,218 @@
     }
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": " 根据参数创建layouter对象。\n\n\n",
+    "name": "self_layouter_create",
+    "return": {
+      "type": "self_layouter_t*",
+      "desc": "返回layouter对象。"
+    },
+    "type": "method",
+    "header": "base/self_layouter_factory.h"
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取全部参数。\n\n\n",
+        "name": "self_layouter_to_string",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回字符串格式的参数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "area",
+            "desc": "可以使用的区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 对控件进行Layout。\n\n\n",
+        "name": "self_layouter_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的参数。\n\n\n",
+        "name": "self_layouter_get_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的参数。\n\n\n",
+        "name": "self_layouter_set_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "参数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置字符串格式的参数。\n\n\n",
+        "name": "self_layouter_set_param_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "float_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的浮点格式的参数。\n\n\n",
+        "name": "self_layouter_get_param_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取指定的整数格式的参数。\n\n\n",
+        "name": "self_layouter_get_param_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "self_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 销毁layouter对象。\n\n\n",
+        "name": "self_layouter_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/self_layouter.h",
+    "desc": " 控件排版布局器的接口。\n 按特定算法对控件进行排版布局。\n\n",
+    "name": "self_layouter_t"
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -5023,6 +5458,10 @@
       {
         "desc": " 编辑器中选中区域的文本颜色。\n\n",
         "name": "STYLE_ID_SELECTED_TEXT_COLOR"
+      },
+      {
+        "desc": " 圆角半径(仅在WITH_VGCANVAS定义时生效)。\n\n",
+        "name": "STYLE_ID_ROUND_RADIUS"
       }
     ],
     "header": "base/style.h",
@@ -8366,6 +8805,18 @@
         "name": "WIDGET_PROP_MAX_W"
       },
       {
+        "desc": " 子控件布局参数。\n\n",
+        "name": "WIDGET_PROP_CHILDREN_LAYOUT"
+      },
+      {
+        "desc": " 子控件布局参数(过时)。\n\n",
+        "name": "WIDGET_PROP_LAYOUT"
+      },
+      {
+        "desc": " 控件布局参数。\n\n",
+        "name": "WIDGET_PROP_SELF_LAYOUT"
+      },
+      {
         "desc": " layout宽度。\n\n",
         "name": "WIDGET_PROP_LAYOUT_W"
       },
@@ -8416,6 +8867,10 @@
       {
         "desc": " 是否启用。\n\n",
         "name": "WIDGET_PROP_ENABLE"
+      },
+      {
+        "desc": " 是否启用floating布局。\n\n",
+        "name": "WIDGET_PROP_FLOATING"
       },
       {
         "desc": " 边距。\n\n",
@@ -9677,7 +10132,7 @@
           {
             "type": "bool_t",
             "name": "enable",
-            "desc": "是否启动。"
+            "desc": "是否可用性。"
           }
         ],
         "annotation": {
@@ -9685,6 +10140,29 @@
         },
         "desc": " 设置控件的可用性。\n\n\n",
         "name": "widget_set_enable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "floating",
+            "desc": "是否启用floating布局。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的floating标志。\n\n\n",
+        "name": "widget_set_floating",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -10594,101 +11072,6 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
-            "name": "x",
-            "desc": "x布局参数"
-          },
-          {
-            "type": "char*",
-            "name": "y",
-            "desc": "y布局参数"
-          },
-          {
-            "type": "char*",
-            "name": "w",
-            "desc": "w布局参数"
-          },
-          {
-            "type": "char*",
-            "name": "h",
-            "desc": "h布局参数"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置widget自身的layout参数。\n 请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)\n\n\n",
-        "name": "widget_set_self_layout_params",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "char*",
-            "name": "params",
-            "desc": "子控件布局参数(参考docs/layout.md)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置widget子控件的layout参数。\n 请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)\n\n\n",
-        "name": "widget_set_children_layout_params",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 重新排版widget及其子控件。\n\n\n",
-        "name": "widget_layout",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " layout子控件。\n\n\n",
-        "name": "widget_layout_children",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
             "type": "timer_func_t",
             "name": "on_timer",
             "desc": "timer回调函数。"
@@ -11150,6 +11533,124 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 布局当前控件及子控件。\n\n\n",
+        "name": "widget_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " layout子控件。\n\n\n",
+        "name": "widget_layout_children",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "布局参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件自己的布局参数。\n\n\n",
+        "name": "widget_set_self_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "布局参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置子控件的布局参数。\n\n\n",
+        "name": "widget_set_children_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "x",
+            "desc": "x参数。"
+          },
+          {
+            "type": "const char*",
+            "name": "y",
+            "desc": "y参数。"
+          },
+          {
+            "type": "const char*",
+            "name": "w",
+            "desc": "w参数。"
+          },
+          {
+            "type": "const char*",
+            "name": "h",
+            "desc": "h参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件自己的布局(缺省布局器)参数(过时，请用widget\\_set\\_self\\_layout)。\n\n\n",
+        "name": "widget_set_self_layout_params",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -11421,9 +11922,30 @@
         }
       },
       {
-        "name": "need_relayout",
-        "desc": " 标识控件是否需要重新layout。\n\n",
+        "name": "floating",
+        "desc": " 标识控件是否启用浮动布局，不受父控件的children_layout的控制。\n\n",
         "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "need_relayout_children",
+        "desc": " 标识控件是否需要重新layout子控件。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "can_not_destroy",
+        "desc": " 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\\_destroy，自动异步处理。\n\n",
+        "type": "uint16_t",
         "annotation": {
           "readable": true
         }
@@ -11517,11 +12039,23 @@
         }
       },
       {
-        "name": "layout_params",
-        "desc": " 布局参数。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)\n\n",
-        "type": "layout_params_t*",
+        "name": "children_layout",
+        "desc": " 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)\n\n",
+        "type": "children_layouter_t*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "set_prop": true,
+          "get_prop": true
+        }
+      },
+      {
+        "name": "self_layout",
+        "desc": " 控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)\n\n",
+        "type": "self_layouter_t*",
+        "annotation": {
+          "readable": true,
+          "set_prop": true,
+          "get_prop": true
         }
       },
       {
