@@ -5,6 +5,7 @@
   * 更新layout的文档，为了保持兼容，旧的layout属性仍然支持，新的代码请参考新的文档[layout](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。
   * 子控件支持浮动布局，不受父控件的children\_layouter的限制。
   * 支持等宽字体的问题(感谢[zjm1060](https://github.com/zjm1060)提供补丁)。 
+  * 修改vgcanvas中w/h为负数时的BUG(感谢朝泽提供补丁)。
 
 * 2018/12/19
   * 修改combobox弹出窗口位置的BUG。

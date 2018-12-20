@@ -231,4 +231,14 @@ typedef enum _app_type_t {
 struct _widget_t;
 typedef struct _widget_t widget_t;
 
+#define fix_xywh(x, y, w, h) \
+  if (w < 0) {               \
+    w = -w;                  \
+    x = x - w + 1;           \
+  }                          \
+  if (h < 0) {               \
+    h = -h;                  \
+    y = y - h + 1;           \
+  }
+
 #endif /*TK_TYPES_DEF_H*/
