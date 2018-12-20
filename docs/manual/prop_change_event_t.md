@@ -1,0 +1,72 @@
+## prop\_change\_event\_t
+### 概述
+ 对象属性变化事件。
+
+![image](images/prop_change_event_t_0.png)
+
+### 函数
+<p id="prop_change_event_t_methods">
+
+| 函数名称 | 说明 | 
+| -------- | ------------ | 
+| <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> |  把event对象转prop_change_event_t对象，主要给脚本语言使用。 |
+### 属性
+<p id="prop_change_event_t_properties">
+
+| 名属性称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#prop_change_event_t_name">name</a> | char* |  属性的名称。 |
+| <a href="#prop_change_event_t_value">value</a> | value_t* |  属性的值。 |
+### 事件
+<p id="prop_change_event_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+#### prop\_change\_event\_cast 函数
+-----------------------
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | prop\_change\_event\_t* | 对象。 |
+| event | event\_t* | event对象。 |
+<p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
+
+
+
+
+#### name 属性
+-----------------------
+<p id="prop_change_event_t_name"> 属性的名称。
+
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 否 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 否 |
+| 可在XML中设置 | 否 |
+| 支通过widget_get_prop读取 | 否 |
+| 支通过widget_set_prop修改 | 否 |
+#### value 属性
+-----------------------
+<p id="prop_change_event_t_value"> 属性的值。
+
+
+
+* 类型：value\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 否 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 否 |
+| 可在XML中设置 | 否 |
+| 支通过widget_get_prop读取 | 否 |
+| 支通过widget_set_prop修改 | 否 |

@@ -1,0 +1,51 @@
+## widget\_animator\_prop\_t
+### 概述
+ 通过修改对象的指定属性形成动画效果。
+
+### 函数
+<p id="widget_animator_prop_t_methods">
+
+| 函数名称 | 说明 | 
+| -------- | ------------ | 
+| <a href="#widget_animator_prop_t_widget_animator_prop_create">widget\_animator\_prop\_create</a> |  创建单属性动画对象。 |
+| <a href="#widget_animator_prop_t_widget_animator_prop_set_params">widget\_animator\_prop\_set\_params</a> |  设置动画对象的参数。 |
+### 属性
+<p id="widget_animator_prop_t_properties">
+
+| 名属性称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+### 事件
+<p id="widget_animator_prop_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+#### widget\_animator\_prop\_create 函数
+-----------------------
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_animator\_t* | 成功返回动画对象，失败返回NULL。 |
+| widget | widget\_t* | 控件对象。 |
+| duration | uint32\_t | 动画持续时间。 |
+| delay | uint32\_t | 动画执行时间。 |
+| easing | easing\_type\_t | 插值函数类型。 |
+| prop\_name | const char* | 属性的名称。 |
+<p id="widget_animator_prop_t_widget_animator_prop_create"> 创建单属性动画对象。
+
+
+
+
+#### widget\_animator\_prop\_set\_params 函数
+-----------------------
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| animator | widget\_animator\_t* | 动画对象本身。 |
+| from | float\_t | prop起始值。 |
+| to | float\_t | prop结束值。 |
+<p id="widget_animator_prop_t_widget_animator_prop_set_params"> 设置动画对象的参数。
+
+
+
+
