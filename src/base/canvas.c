@@ -242,7 +242,7 @@ static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, uint32_t n
     if (chr == ' ') {
       w += 4;
     } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
-      w += g.w + 1;
+      w += g.advance + 1;
     }
   }
 
@@ -547,7 +547,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
       xy_t yy = y + font_size + g.y;
 
       canvas_draw_glyph(c, &g, xx, yy);
-      x += g.w + 1;
+      x += g.advance + 1;
     } else {
       x += 4;
     }

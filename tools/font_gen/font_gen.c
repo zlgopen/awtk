@@ -94,6 +94,8 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
       save_uint8(p, g.y);
       save_uint8(p, g.w);
       save_uint8(p, g.h);
+      save_uint32(p, g.advance);
+
       memcpy(p, g.data, data_size);
       p += data_size;
     } else if (c > 32) {
