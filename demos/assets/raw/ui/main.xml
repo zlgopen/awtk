@@ -1,6 +1,6 @@
 <window closable="no" text="Desktop" anim_hint="htranslate">
   <slide_view x="0" y="0" w="100%" h="100%">
-    <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button name="open:basic" text="Basic"/>
       <button name="open:button" text="Buttons"/>
       <button name="open:edit" text="Edits"/>
@@ -15,7 +15,7 @@
       <button name="open:color_picker" text="Color Picker"/>
     </view>
     
-    <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button name="open:time_clock" text="Analog Clock"/>
       <button name="open:digit_clock" text="Digit Clock"/>
       <button name="open:locale" text="Locale"/>
@@ -30,7 +30,7 @@
       <button name="open:gif_image" text="GIF Image"/>
     </view>
 
-    <view x="0" y="0" w="100%" h="100%" layout="c2 r8 m5 s5">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button name="open:label" text="Label"/>
       <button name="open:slide_menu" text="Slide Menu"/>
       <button name="open:vgcanvas" text="VG Canvas"/>
@@ -38,7 +38,7 @@
       <button name="open:radial_gradient" text="Radial Gradient"/>
       <button name="open:stroke_gradient" text="Stroke Gradient"/>
     </view>
-    <view x="0" y="0" w="100%" h="100%" layout="c1 r8 m5 s5">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button name="open:memtest" text="MemTest"/>
       <button name="open:calibration_win" text="Calibration"/>
       <button name="show_fps" text="Show FPS"/>

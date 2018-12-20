@@ -42,37 +42,9 @@ typedef enum _y_attr_t {
   Y_ATTR_UNDEF
 } y_attr_t;
 
-typedef enum _w_attr_t { W_ATTR_PIXEL = 0, W_ATTR_PERCENT, W_ATTR_FILL, W_ATTR_UNDEF } w_attr_t;
+typedef enum _w_attr_t { W_ATTR_PIXEL = 0, W_ATTR_PERCENT, W_ATTR_UNDEF } w_attr_t;
 
-typedef enum _h_attr_t { H_ATTR_PIXEL = 0, H_ATTR_PERCENT, H_ATTR_FILL, H_ATTR_UNDEF } h_attr_t;
-
-typedef struct _widget_layout_t {
-  uint8_t x_attr;
-  uint8_t y_attr;
-  uint8_t w_attr;
-  uint8_t h_attr;
-  xy_t x;
-  xy_t y;
-  wh_t w;
-  wh_t h;
-  bool_t inited;
-} widget_layout_t;
-
-typedef struct _children_layout_t {
-  uint16_t rows;
-  uint16_t cols;
-  uint8_t x_margin;
-  uint8_t y_margin;
-  uint8_t spacing;
-  uint16_t cols_is_width : 1;
-  uint16_t rows_is_height : 1;
-  bool_t inited;
-} children_layout_t;
-
-typedef struct _layout_params_t {
-  widget_layout_t self;
-  children_layout_t children;
-} layout_params_t;
+typedef enum _h_attr_t { H_ATTR_PIXEL = 0, H_ATTR_PERCENT, H_ATTR_UNDEF } h_attr_t;
 
 END_C_DECLS
 

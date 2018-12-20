@@ -19,9 +19,10 @@
  *
  */
 
-#include "base/enums.h"
 #include "tkc/mem.h"
 #include "tkc/str.h"
+#include "tkc/utils.h"
+#include "base/enums.h"
 #include "base/layout.h"
 #include "xml/xml_parser.h"
 #include "ui_loader/ui_loader_xml.h"
@@ -44,6 +45,25 @@ static bool_t is_precedence_prop(const char* tag, const char* prop) {
   }
 
   return FALSE;
+}
+
+static bool_t is_valid_layout_param(const char* v) {
+  if (v != NULL) {
+    const char* p = v;
+    while (*p) {
+      if (*p < '0' || *p > '9') {
+        return TRUE;
+      }
+      p++;
+    }
+  }
+
+  return FALSE;
+}
+
+static bool_t is_valid_self_layout(const char* x, const char* y, const char* w, const char* h) {
+  return is_valid_layout_param(x) || is_valid_layout_param(y) || is_valid_layout_param(w) ||
+         is_valid_layout_param(h);
 }
 
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
@@ -81,8 +101,47 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   }
 
   strncpy(desc.type, tag, NAME_LEN);
-  widget_layout_parse(&(desc.layout), x, y, w, h);
+  desc.layout.x = tk_atoi(x);
+  desc.layout.y = tk_atoi(y);
+  desc.layout.w = tk_atoi(w);
+  desc.layout.h = tk_atoi(h);
   ui_builder_on_widget_start(b->ui_builder, &desc);
+
+  if (is_valid_self_layout(x, y, w, h)) {
+    str_t* s = &(b->str);
+    s->size = 0;
+    str_append(s, "default(");
+    if (x != NULL) {
+      str_append(s, "x=");
+      str_append(s, x);
+      str_append(s, ",");
+    }
+
+    if (y != NULL) {
+      str_append(s, "y=");
+      str_append(s, y);
+      str_append(s, ",");
+    }
+
+    if (w != NULL) {
+      str_append(s, "w=");
+      str_append(s, w);
+      str_append(s, ",");
+    }
+
+    if (h != NULL) {
+      str_append(s, "h=");
+      str_append(s, h);
+      str_append(s, ",");
+    }
+
+    while (s->size > 0 && s->str[s->size - 1] == ',') {
+      s->size--;
+    }
+
+    str_append(s, ")");
+    ui_builder_on_widget_prop(b->ui_builder, WIDGET_PROP_SELF_LAYOUT, b->str.str);
+  }
 
   /*set highest priority props*/
   i = 0;

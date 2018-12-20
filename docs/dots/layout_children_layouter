@@ -1,0 +1,18 @@
+digraph G { 
+   
+    rankdir  = BT
+    fontname = "Courier New"
+    fontsize = 12
+
+    node [
+        fontname = "Courier New"
+        fontsize = 12
+        shape    = "record"
+        width = 0.4 
+    ]   
+
+
+   children_layouter_default -> children_layouter[style=dashed arrowhead=empty]
+   children_layouter_flex -> children_layouter[style=dashed arrowhead=empty]
+   children_layouter_xxx -> children_layouter[style=dashed arrowhead=empty]
+ }

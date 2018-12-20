@@ -1,6 +1,6 @@
 <window style="sky" anim_hint="htranslate">
   <slide_view x="0" y="0" w="100%" h="100%" style="dot">
-    <view x="0" y="0" w="100%" h="100%" layout="w60 h60 m5 s10">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(w=60,h=60,m=5,s=10)">
       <button name="close" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />
         <label x="center" y="bottom" w="100%" h="30%" text="Close" />
@@ -35,7 +35,7 @@
       </button>
     </view>
     
-    <view x="0" y="0" w="100%" h="100%" layout="w60 h60 m5 s10">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(w=60,h=60,m=5,s=10)">
       <button name="btn11" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />
         <label x="center" y="bottom" w="100%" h="30%" text="1.1" />
@@ -70,7 +70,7 @@
       </button>
     </view>
     
-    <view x="0" y="0" w="100%" h="100%" layout="w60 h60 m5 s10">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(w=60,h=60,m=5,s=10)">
       <button name="btn21" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />
         <label x="center" y="bottom" w="100%" h="30%" text="2.1" />

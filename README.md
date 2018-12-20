@@ -70,7 +70,7 @@ scons
 ./bin/demoui
 ```
 
-### Ubuntu
+### Ubuntu (版本>=16)
 
 如果没有安装scons和依赖的软件包，请在终端运行下面的命令：
 

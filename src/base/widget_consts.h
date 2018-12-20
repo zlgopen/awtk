@@ -78,6 +78,24 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MAX_W "max_w"
 
 /**
+ * @const WIDGET_PROP_CHILDREN_LAYOUT
+ * 子控件布局参数。
+ */
+#define WIDGET_PROP_CHILDREN_LAYOUT "children_layout"
+
+/**
+ * @const WIDGET_PROP_CHILDREN_LAYOUT
+ * 子控件布局参数(过时)。
+ */
+#define WIDGET_PROP_LAYOUT "layout"
+
+/**
+ * @const WIDGET_PROP_SELF_LAYOUT
+ * 控件布局参数。
+ */
+#define WIDGET_PROP_SELF_LAYOUT "self_layout"
+
+/**
  * @const WIDGET_PROP_LAYOUT_W
  * layout宽度。
  */
@@ -154,6 +172,12 @@ BEGIN_C_DECLS
  * 是否启用。
  */
 #define WIDGET_PROP_ENABLE "enable"
+
+/**
+ * @const WIDGET_PROP_FLOATING
+ * 是否启用floating布局。
+ */
+#define WIDGET_PROP_FLOATING "floating"
 
 /**
  * @const WIDGET_PROP_MARGIN

@@ -32,45 +32,8 @@ ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* 
   return ui_builder_on_widget_prop(writer, name, str->str);
 }
 
-ret_t ui_widget_serialize_children_layout(ui_builder_t* writer, children_layout_t* layout) {
-  char temp[32];
-  str_t* str = &(((ui_xml_writer_t*)writer)->temp);
-
-  if (layout->cols_is_width) {
-    tk_snprintf(temp, sizeof(temp) - 1, "w:%d", (int)(layout->cols));
-  } else {
-    tk_snprintf(temp, sizeof(temp) - 1, "c:%d", (int)(layout->cols));
-  }
-  str_append(str, temp);
-  str_append(str, " ");
-
-  if (layout->rows_is_height) {
-    tk_snprintf(temp, sizeof(temp) - 1, "h:%d", (int)(layout->rows));
-  } else {
-    tk_snprintf(temp, sizeof(temp) - 1, "r:%d", (int)(layout->rows));
-  }
-  str_append(str, temp);
-  str_append(str, " ");
-
-  if (layout->x_margin) {
-    tk_snprintf(temp, sizeof(temp) - 1, "x:%d", (int)(layout->x_margin));
-    str_append(str, temp);
-  }
-
-  if (layout->y_margin) {
-    tk_snprintf(temp, sizeof(temp) - 1, "y:%d", (int)(layout->y_margin));
-    str_append(str, temp);
-  }
-
-  if (layout->spacing) {
-    tk_snprintf(temp, sizeof(temp) - 1, "s:%d", (int)(layout->spacing));
-    str_append(str, temp);
-  }
-
-  return ui_builder_on_widget_prop(writer, "layout", str->str);
-}
-
 ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
+  value_t v;
   widget_desc_t desc;
 
   if (widget->auto_created) {
@@ -80,14 +43,10 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   memset(&desc, 0x00, sizeof(desc));
   tk_strncpy(desc.type, widget->vt->type, NAME_LEN);
 
-  if (widget->layout_params && widget->layout_params->self.inited) {
-    desc.layout = widget->layout_params->self;
-  } else {
-    desc.layout.x = widget->x;
-    desc.layout.y = widget->y;
-    desc.layout.w = widget->w;
-    desc.layout.h = widget->h;
-  }
+  desc.layout.x = widget->x;
+  desc.layout.y = widget->y;
+  desc.layout.w = widget->w;
+  desc.layout.h = widget->h;
 
   ui_builder_on_widget_start(writer, &desc);
 
@@ -96,6 +55,9 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   }
   if (widget->tr_text != NULL) {
     ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_text);
+  }
+  if (widget->floating) {
+    ui_builder_on_widget_prop(writer, WIDGET_PROP_FLOATING, widget->floating);
   }
   if (widget->text.size) {
     uint32_t size = widget->text.size * 3 + 1;
@@ -106,7 +68,6 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   }
 
   if (widget->vt->clone_properties || widget->vt->persistent_properties) {
-    value_t v;
     uint32_t i = 0;
     const char** properties = widget->vt->persistent_properties;
     if (properties == NULL) {
@@ -120,8 +81,12 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
     }
   }
 
-  if (widget->layout_params != NULL && widget->layout_params->children.inited) {
-    ui_widget_serialize_children_layout(writer, &(widget->layout_params->children));
+  if (widget_get_prop(widget, WIDGET_PROP_CHILDREN_LAYOUT, &v) == RET_OK) {
+    ui_widget_serialize_prop(writer, WIDGET_PROP_CHILDREN_LAYOUT, &v);
+  }
+
+  if (widget_get_prop(widget, WIDGET_PROP_SELF_LAYOUT, &v) == RET_OK) {
+    ui_widget_serialize_prop(writer, WIDGET_PROP_SELF_LAYOUT, &v);
   }
 
   ui_builder_on_widget_prop_end(writer);

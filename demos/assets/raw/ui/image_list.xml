@@ -1,52 +1,52 @@
 <window anim_hint="htranslate">
   <list_view x="0"  y="0" w="100%" h="-50" item_height="60">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />
       </list_item>
-      <list_item style="empty" layout="r1 c3 s2 m2">
+      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
         <image selectable="true" style="selectable" draw_type="auto" image="1" />
         <image selectable="true" style="selectable" draw_type="auto" image="2" />
         <image selectable="true" style="selectable" draw_type="auto" image="3" />

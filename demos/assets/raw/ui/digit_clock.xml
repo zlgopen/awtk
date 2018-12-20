@@ -1,4 +1,4 @@
-<window anim_hint="htranslate" layout="c:1 h:30 s:10">
+<window anim_hint="htranslate" children_layout="default(c=1,h=30,s=10)">
   <digit_clock format="h:m" />
   <digit_clock format="hh:mm" />
   <digit_clock format="h:m:s"/>

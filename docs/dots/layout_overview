@@ -1,0 +1,17 @@
+digraph G { 
+   
+    rankdir  = RL
+    fontname = "Courier New"
+    fontsize = 12
+
+    node [
+        fontname = "Courier New"
+        fontsize = 12
+        shape    = "record"
+        width = 0.4 
+    ]   
+
+
+   self_layout -> widget_t[arrowhead = "ediamond"]
+   children_layout -> widget_t[arrowhead = "ediamond"]
+ }

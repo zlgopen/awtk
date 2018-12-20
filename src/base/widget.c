@@ -272,6 +272,14 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable) {
   return RET_OK;
 }
 
+ret_t widget_set_floating(widget_t* widget, bool_t floating) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->floating = floating;
+
+  return RET_OK;
+}
+
 ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -343,7 +351,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
-  widget->need_relayout = TRUE;
+  widget->need_relayout_children = TRUE;
   if (widget->children == NULL) {
     widget->children = array_create(4);
   }
@@ -360,7 +368,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  widget->need_relayout = TRUE;
+  widget->need_relayout_children = TRUE;
   widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;
@@ -793,8 +801,8 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  if (widget->parent != NULL && widget->need_relayout) {
-    widget_layout(widget);
+  if (widget->need_relayout_children) {
+    widget_layout_children(widget);
   }
 
   widget_paint_impl(widget, c);
@@ -826,6 +834,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->opacity = (uint8_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     widget->visible = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
+    widget->floating = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
@@ -839,6 +849,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_set_tr_text(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
     widget_set_animation(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
+    widget_set_self_layout(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT) || tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
+    widget_set_children_layout(widget, value_str(v));
   } else {
     ret = RET_NOT_FOUND;
   }
@@ -883,6 +897,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int32(v, widget->opacity);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
     value_set_bool(v, widget->visible);
+  } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
+    value_set_bool(v, widget->floating);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_str(v, widget->style);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
@@ -893,6 +909,18 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_wstr(v, widget->text.str);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
     value_set_str(v, widget->animation);
+  } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
+    if (widget->self_layout != NULL) {
+      value_set_str(v, self_layouter_to_string(widget->self_layout));
+    } else {
+      ret = RET_NOT_FOUND;
+    }
+  } else if (tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
+    if (widget->children_layout != NULL) {
+      value_set_str(v, children_layouter_to_string(widget->children_layout));
+    } else {
+      ret = RET_NOT_FOUND;
+    }
   } else {
     if (widget->vt->get_prop) {
       ret = widget->vt->get_prop(widget, name, v);
@@ -1257,16 +1285,6 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return ret;
 }
 
-ret_t widget_layout_children(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-
-  if (widget->vt->on_layout_children != NULL) {
-    return widget->vt->on_layout_children(widget);
-  } else {
-    return widget_layout_children_default(widget);
-  }
-}
-
 ret_t widget_grab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && widget->vt != NULL, RET_BAD_PARAMS);
   widget->grab_widget = child;
@@ -1370,8 +1388,14 @@ static ret_t widget_destroy_sync(widget_t* widget) {
     widget->vt->destroy(widget);
   }
 
-  if (widget->layout_params != NULL) {
-    TKMEM_FREE(widget->layout_params);
+  if (widget->children_layout != NULL) {
+    children_layouter_destroy(widget->children_layout);
+    widget->children_layout = NULL;
+  }
+
+  if (widget->self_layout != NULL) {
+    self_layouter_destroy(widget->self_layout);
+    widget->self_layout = NULL;
   }
 
   TKMEM_FREE(widget->name);
@@ -1630,6 +1654,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   ASSIGN_PROP(opacity);
   ASSIGN_PROP(enable);
   ASSIGN_PROP(visible);
+  ASSIGN_PROP(floating);
 
   clone->name = tk_strdup(widget->name);
   clone->style = tk_strdup(widget->style);
@@ -1637,6 +1662,16 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
 
   if (widget->text.size) {
     wstr_set(&(clone->text), widget->text.str);
+  }
+
+  if (widget->children_layout != NULL) {
+    const char* str = children_layouter_to_string(widget->children_layout);
+    widget_set_prop_str(clone, WIDGET_PROP_CHILDREN_LAYOUT, str);
+  }
+
+  if (widget->self_layout != NULL) {
+    const char* str = self_layouter_to_string(widget->self_layout);
+    widget_set_prop_str(clone, WIDGET_PROP_SELF_LAYOUT, str);
   }
 
   properties = widget->vt->clone_properties;
@@ -1649,13 +1684,6 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
         widget_set_prop(clone, prop, &v);
       }
     }
-  }
-
-  if (widget->layout_params != NULL) {
-    clone->layout_params = TKMEM_ZALLOC(layout_params_t);
-    return_value_if_fail(clone->layout_params != NULL, clone);
-
-    memcpy(clone->layout_params, widget->layout_params, sizeof(layout_params_t));
   }
 
   widget_update_style(clone);
@@ -1673,7 +1701,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
   return_value_if_fail(widget != NULL && other != NULL, FALSE);
 
   ret = PROP_EQ(opacity) && PROP_EQ(enable) && PROP_EQ(visible) && PROP_EQ(vt) && PROP_EQ(x) &&
-        PROP_EQ(y) && PROP_EQ(w) && PROP_EQ(h);
+        PROP_EQ(y) && PROP_EQ(w) && PROP_EQ(h) && PROP_EQ(floating);
   if (widget->name != NULL || other->name != NULL) {
     ret = ret && (tk_str_eq(widget->name, other->name) || PROP_EQ(name));
   }
@@ -1717,11 +1745,18 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
     }
   }
 
-  if (widget->layout_params != NULL || other->layout_params != NULL) {
-    if (widget->layout_params && other->layout_params) {
-      ret =
-          ret && memcmp(widget->layout_params, other->layout_params, sizeof(layout_params_t)) == 0;
-    } else {
+  if (widget->children_layout != other->children_layout) {
+    const char* str1 = children_layouter_to_string(widget->children_layout);
+    const char* str2 = children_layouter_to_string(other->children_layout);
+    if (!tk_str_eq(str1, str2)) {
+      return FALSE;
+    }
+  }
+
+  if (widget->self_layout != other->self_layout) {
+    const char* str1 = self_layouter_to_string(widget->self_layout);
+    const char* str2 = self_layouter_to_string(other->self_layout);
+    if (!tk_str_eq(str1, str2)) {
       return FALSE;
     }
   }

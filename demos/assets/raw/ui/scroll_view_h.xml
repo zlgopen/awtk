@@ -1,6 +1,6 @@
 <window anim_hint="htranslate">
   <button x="0" y="0" w="20" h="20" />
-  <scroll_view x="20"  y="20" w="200" h="200" virtual_w="400" virtual_h="200" xoffset="100" layout="w30 r1 m:2 s:2">
+  <scroll_view x="20"  y="20" w="200" h="200" virtual_w="400" virtual_h="200" xoffset="100" children_layout="default(w=30,r=1,m=2,s=2)">
     <button text="0" />
     <button text="1" />
     <button text="2" />

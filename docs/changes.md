@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2018/12/20
+  * 重新设计layouter的架构，把layouter分成self\_layouter和children\_layouter两个接口，方便扩展支持不同的布局方式(如css flex)。
+  * 更新layout的文档，为了保持兼容，旧的layout属性仍然支持，新的代码请参考新的文档[layout](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。
+  * 子控件支持浮动布局，不受父控件的children\_layouter的限制。
+
 * 2018/12/19
   * 修改combobox弹出窗口位置的BUG。
   * 修改widget\_animator\_manager中野指针的问题(感谢陈谭提供补丁)。
