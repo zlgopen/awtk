@@ -394,7 +394,7 @@ children_layouter_t* children_layouter_default_create(void) {
   return_value_if_fail(layouter != NULL, NULL);
 
   l = (children_layouter_t*)layouter;
-  
+
   str_init(&(l->params), 0);
   l->vt = &s_children_layouter_default_vtable;
 
