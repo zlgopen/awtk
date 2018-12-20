@@ -210,7 +210,7 @@ static ret_t combo_box_create_popup_items(combo_box_t* combo_box, widget_t* pare
 
 static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   value_t v;
-  children_layout_t cl;
+  char params[128];
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = 2;
   int32_t item_height = 30;
@@ -222,15 +222,9 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
 
-  memset(&cl, 0x00, sizeof(cl));
+  tk_snprintf(params, sizeof(params) - 1, "default(m=%d, r=%d c=%d)", margin, nr, 1);
+  widget_set_children_layout(win, params);
 
-  cl.inited = TRUE;
-  cl.x_margin = margin;
-  cl.y_margin = margin;
-  cl.rows = nr;
-  cl.cols = 1;
-
-  widget_set_children_layout(win, &cl);
   combo_box_create_popup_items(combo_box, win);
   widget_layout(win);
 

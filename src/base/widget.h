@@ -38,6 +38,8 @@
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
 #include "base/custom_props.h"
+#include "base/self_layouter.h"
+#include "base/children_layouter.h"
 
 BEGIN_C_DECLS
 
@@ -231,11 +233,17 @@ struct _widget_t {
    */
   uint8_t dirty : 1;
   /**
-   * @property {bool_t} need_relayout
-   * @annotation ["readable"]
-   * 标识控件是否需要重新layout。
+   * @property {bool_t} floating
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 标识控件是否启用浮动布局，不受父控件的children_layout的控制。
    */
-  uint8_t need_relayout : 1;
+  uint8_t floating : 1;
+  /**
+   * @property {bool_t} need_relayout_children
+   * @annotation ["readable"]
+   * 标识控件是否需要重新layout子控件。
+   */
+  uint8_t need_relayout_children : 1;
   /**
    * @property {uint16_t} can_not_destroy
    * @annotation ["readable"]
@@ -309,11 +317,17 @@ struct _widget_t {
    */
   style_t* astyle;
   /**
-   * @property {layout_params_t*} layout_params
-   * @annotation ["readable"]
-   * 布局参数。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)
+   * @property {children_layouter_t*} children_layout
+   * @annotation ["readable", "set_prop", "get_prop"]
+   * 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)
    */
-  layout_params_t* layout_params;
+  children_layouter_t* children_layout;
+  /**
+   * @property {self_layouter_t*} self_layout
+   * @annotation ["readable", "set_prop", "get_prop"]
+   * 控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)
+   */
+  self_layouter_t* self_layout;
   /**
    * @property {custom_props_t*} custom_props
    * @annotation ["readable"]
@@ -770,11 +784,22 @@ ret_t widget_destroy_animator(widget_t* widget, const char* name);
  * 设置控件的可用性。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t} enable 是否启动。
+ * @param {bool_t} enable 是否可用性。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_enable(widget_t* widget, bool_t enable);
+
+/**
+ * @method widget_set_floating
+ * 设置控件的floating标志。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} floating 是否启用floating布局。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_floating(widget_t* widget, bool_t floating);
 
 /**
  * @method widget_set_focused
@@ -1195,53 +1220,6 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent);
 bool_t widget_equal(widget_t* widget, widget_t* other);
 
 /**
- * @method widget_set_self_layout_params
- * 设置widget自身的layout参数。
- * 请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {char*} x x布局参数
- * @param {char*} y y布局参数
- * @param {char*} w w布局参数
- * @param {char*} h h布局参数
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
-                                    const char* h);
-
-/**
- * @method widget_set_children_layout_params
- * 设置widget子控件的layout参数。
- * 请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {char*} params 子控件布局参数(参考docs/layout.md)。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_set_children_layout_params(widget_t* widget, const char* params);
-
-/**
- * @method widget_layout
- * 重新排版widget及其子控件。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_layout(widget_t* widget);
-
-/**
- * @method widget_layout_children
- * layout子控件。
- * @param {widget_t*} widget 控件对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_layout_children(widget_t* widget);
-
-/**
  * @method widget_add_timer
  * 创建定时器。
  * 该定时器在控件销毁时自动销毁，**timer\_info\_t**的ctx为widget。
@@ -1520,6 +1498,62 @@ widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_update_style_recursive(widget_t* widget);
+
+/**
+ * @method widget_layout
+ * 布局当前控件及子控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_layout(widget_t* widget);
+
+/**
+ * @method widget_layout_children
+ * layout子控件。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_layout_children(widget_t* widget);
+
+/**
+ * @method widget_set_self_layout
+ * 设置控件自己的布局参数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} params 布局参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_self_layout(widget_t* widget, const char* params);
+
+/**
+ * @method widget_set_children_layout
+ * 设置子控件的布局参数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} params 布局参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_children_layout(widget_t* widget, const char* params);
+
+/**
+ * @method widget_set_self_layout_params
+ * 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} x x参数。
+ * @param {const char*} y y参数。
+ * @param {const char*} w w参数。
+ * @param {const char*} h h参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
+                                    const char* h);
 
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);

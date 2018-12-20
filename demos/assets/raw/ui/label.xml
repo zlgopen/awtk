@@ -1,4 +1,4 @@
-<window layout="c:3 r:4">
+<window children_layout="default(c=3,r=4)">
   <label style="left"  text="it\nis\na\nmulti-line\nsample\n(left)"/>
   <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>
   <label style="right" text="it\nis\na\nmulti-line\nsample\n(right)"/>

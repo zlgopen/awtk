@@ -43,82 +43,11 @@ static ret_t ui_xml_writer_write_prop(str_t* str, const char* name, const char* 
   return RET_OK;
 }
 
-static ret_t ui_xml_writer_write_widget_layout(str_t* str, widget_layout_t* layout) {
+static ret_t ui_xml_writer_write_prop_int(str_t* str, const char* name, int32_t v) {
   char value[32];
-  memset(value, 0x00, sizeof(value));
-  switch (layout->x_attr) {
-    case X_ATTR_PERCENT: {
-      tk_snprintf(value, sizeof(value) - 1, "%d%%", (int)layout->x);
-      break;
-    }
-    case X_ATTR_CENTER: {
-      tk_snprintf(value, sizeof(value) - 1, "center:%d", (int)layout->x);
-      break;
-    }
-    case X_ATTR_RIGHT: {
-      tk_snprintf(value, sizeof(value) - 1, "right:%d", (int)layout->x);
-      break;
-    }
-    default: {
-      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->x);
-      break;
-    }
-  }
-  return_value_if_fail(ui_xml_writer_write_prop(str, "x", value) == RET_OK, RET_OOM);
+  tk_snprintf(value, sizeof(value) - 1, "%d", v);
 
-  switch (layout->y_attr) {
-    case Y_ATTR_PERCENT: {
-      tk_snprintf(value, sizeof(value) - 1, "%d%%", (int)layout->y);
-      break;
-    }
-    case Y_ATTR_MIDDLE: {
-      tk_snprintf(value, sizeof(value) - 1, "middle:%d", (int)layout->y);
-      break;
-    }
-    case Y_ATTR_BOTTOM: {
-      tk_snprintf(value, sizeof(value) - 1, "bottom:%d", (int)layout->y);
-      break;
-    }
-    default: {
-      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->y);
-      break;
-    }
-  }
-  return_value_if_fail(ui_xml_writer_write_prop(str, "y", value) == RET_OK, RET_OOM);
-
-  switch (layout->w_attr) {
-    case W_ATTR_PERCENT: {
-      tk_snprintf(value, sizeof(value) - 1, "%d%%", (int)layout->w);
-      break;
-    }
-    case W_ATTR_FILL: {
-      tk_snprintf(value, sizeof(value) - 1, "fill");
-      break;
-    }
-    default: {
-      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->w);
-      break;
-    }
-  }
-  return_value_if_fail(ui_xml_writer_write_prop(str, "w", value) == RET_OK, RET_OOM);
-
-  switch (layout->h_attr) {
-    case H_ATTR_PERCENT: {
-      tk_snprintf(value, sizeof(value) - 1, "%d%%", (int)layout->h);
-      break;
-    }
-    case H_ATTR_FILL: {
-      tk_snprintf(value, sizeof(value) - 1, "fill");
-      break;
-    }
-    default: {
-      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->h);
-      break;
-    }
-  }
-  return_value_if_fail(ui_xml_writer_write_prop(str, "h", value) == RET_OK, RET_OOM);
-
-  return RET_OK;
+  return ui_xml_writer_write_prop(str, name, value);
 }
 
 static ret_t ui_xml_writer_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
@@ -136,8 +65,12 @@ static ret_t ui_xml_writer_on_widget_start(ui_builder_t* b, const widget_desc_t*
 
   return_value_if_fail(str_append(str, "<") == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, tag) == RET_OK, RET_OOM);
+  return_value_if_fail(ui_xml_writer_write_prop_int(str, "x", desc->layout.x) == RET_OK, RET_OOM);
+  return_value_if_fail(ui_xml_writer_write_prop_int(str, "y", desc->layout.y) == RET_OK, RET_OOM);
+  return_value_if_fail(ui_xml_writer_write_prop_int(str, "w", desc->layout.w) == RET_OK, RET_OOM);
+  return_value_if_fail(ui_xml_writer_write_prop_int(str, "h", desc->layout.h) == RET_OK, RET_OOM);
 
-  return ui_xml_writer_write_widget_layout(str, (widget_layout_t*)&(desc->layout));
+  return RET_OK;
 }
 
 static ret_t ui_xml_writer_on_widget_prop(ui_builder_t* b, const char* name, const char* value) {

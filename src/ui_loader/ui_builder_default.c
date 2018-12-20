@@ -28,8 +28,7 @@
 #include "ui_loader/ui_loader_default.h"
 
 static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_desc_t* desc) {
-  rect_t r;
-  const widget_layout_t* layout = &(desc->layout);
+  const rect_t* layout = &(desc->layout);
 
   xy_t x = layout->x;
   xy_t y = layout->y;
@@ -39,24 +38,10 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   widget_t* parent = b->widget;
   const char* type = desc->type;
 
-  if (parent != NULL) {
-    widget_layout_calc(layout, &r, parent->w, parent->h);
-    x = r.x;
-    y = r.y;
-    w = r.w;
-    h = r.h;
-  }
-
   widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
   if (widget == NULL) {
     log_debug("%s: not supported type %s\n", __FUNCTION__, type);
     assert(!"not supported");
-  }
-
-  if (layout->x_attr != X_ATTR_DEFAULT || layout->y_attr != Y_ATTR_DEFAULT ||
-      layout->w_attr != W_ATTR_PIXEL || layout->h_attr != H_ATTR_PIXEL || widget->w < 0 ||
-      widget->h < 0) {
-    widget_set_self_layout(widget, layout);
   }
 
   b->widget = widget;
@@ -72,12 +57,8 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
 static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name,
                                                const char* value) {
   value_t v;
-  if (strcmp(name, "layout") == 0) {
-    widget_set_children_layout_params(b->widget, value);
-  } else {
-    value_set_str(&v, value);
-    widget_set_prop(b->widget, name, &v);
-  }
+  value_set_str(&v, value);
+  widget_set_prop(b->widget, name, &v);
 
   return RET_OK;
 }

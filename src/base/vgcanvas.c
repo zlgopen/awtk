@@ -36,6 +36,7 @@ ret_t vgcanvas_flush(vgcanvas_t* vg) {
 ret_t vgcanvas_clear_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, color_t c) {
   return_value_if_fail(vg != NULL && vg->vt->clear_rect != NULL, RET_BAD_PARAMS);
 
+  fix_xywh(x, y, w, h);
   return vg->vt->clear_rect(vg, x, y, w, h, c);
 }
 
@@ -72,6 +73,7 @@ ret_t vgcanvas_translate(vgcanvas_t* vg, float_t x, float_t y) {
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL && vg->vt->clip_rect != NULL, RET_BAD_PARAMS);
 
+  fix_xywh(x, y, w, h);
   vg->clip_rect.x = x;
   vg->clip_rect.y = y;
   vg->clip_rect.w = w;
@@ -113,6 +115,7 @@ ret_t vgcanvas_begin_path(vgcanvas_t* vg) {
 ret_t vgcanvas_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, float_t r) {
   return_value_if_fail(vg != NULL && vg->vt->rounded_rect != NULL, RET_BAD_PARAMS);
 
+  fix_xywh(x, y, w, h);
   vgcanvas_begin_path(vg);
   return vg->vt->rounded_rect(vg, x, y, w, h, r);
 }
@@ -120,6 +123,7 @@ ret_t vgcanvas_rounded_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, flo
 ret_t vgcanvas_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
 
+  fix_xywh(x, y, w, h);
   return vgcanvas_rounded_rect(vg, x, y, w, h, 0);
 }
 

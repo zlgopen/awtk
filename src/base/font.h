@@ -29,14 +29,16 @@ BEGIN_C_DECLS
 struct _font_t;
 typedef struct _font_t font_t;
 
+#pragma pack(push, 1)
 typedef struct _glyph_t {
   int8_t x;
   int8_t y;
   uint8_t w;
   uint8_t h;
-  int glyph_width;
+  uint32_t advance;
   const uint8_t* data;
 } glyph_t;
+#pragma pack(pop)
 
 typedef int32_t (*font_get_baseline_t)(font_t* f, uint16_t font_size);
 typedef bool_t (*font_match_t)(font_t* f, const char* name, uint16_t font_size);

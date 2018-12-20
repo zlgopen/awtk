@@ -44,10 +44,9 @@ TEST(SlideMenu, basic) {
 
 TEST(SlideMenu, fix_index) {
   widget_t* w = slide_menu_create(NULL, 0, 0, 400, 300);
-  slide_menu_t* slide_menu = SLIDE_MENU(w);
-  widget_t* b1 = button_create(w, 0, 0, 0, 0);
-  widget_t* b2 = button_create(w, 0, 0, 0, 0);
-  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
 
   ASSERT_EQ(slide_menu_fix_index(w, 0), 0);
   ASSERT_EQ(slide_menu_fix_index(w, 1), 1);

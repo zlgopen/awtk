@@ -62,7 +62,8 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   int y1 = 0;
   int x2 = 0;
   int y2 = 0;
-  int advance, lsb;
+  int lsb = 0;
+  int advance = 0;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
   float scale = stbtt_ScaleForPixelHeight(sf, font_size);
@@ -78,7 +79,7 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   g->y = y;
   g->w = w;
   g->h = h;
-  g->glyph_width = advance;
+  g->advance = advance;
 
   glyph_cache_add(&(font->cache), c, font_size, g);
   stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
