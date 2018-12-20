@@ -82,7 +82,9 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   g->advance = advance;
 
   glyph_cache_add(&(font->cache), c, font_size, g);
-  stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
+  // program crashes when use NotoSansCJK font on some characters
+  // it's sees useless
+  //stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
