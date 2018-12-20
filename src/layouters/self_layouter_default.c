@@ -163,8 +163,6 @@ ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* nam
       return RET_FAIL;
     }
   }
-
-  return RET_OK;
 }
 
 ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* name,

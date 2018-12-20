@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   children_layouter.c
  * Author: AWTK Develop Team
  * Brief:  children layouter
@@ -105,10 +105,10 @@ bool_t children_layouter_is_valid(children_layouter_t* layouter) {
 
 ret_t children_layouter_destroy(children_layouter_t* layouter) {
   if (layouter == NULL) {
-    return FALSE;
+    return RET_OK;
   }
 
-  return_value_if_fail(layouter->vt != NULL && layouter->vt->destroy != NULL, FALSE);
+  return_value_if_fail(layouter->vt != NULL && layouter->vt->destroy != NULL, RET_OK);
 
   return layouter->vt->destroy(layouter);
 }
