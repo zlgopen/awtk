@@ -28,7 +28,6 @@ BEGIN_C_DECLS
 
 typedef struct _children_layouter_default_t {
   children_layouter_t layouter;
-  char* params;
   uint16_t rows;
   uint16_t cols;
   uint8_t x_margin;

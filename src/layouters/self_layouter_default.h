@@ -28,7 +28,6 @@ BEGIN_C_DECLS
 
 typedef struct _self_layouter_default_t {
   self_layouter_t layouter;
-  char* params;
   uint8_t x_attr;
   uint8_t y_attr;
   uint8_t w_attr;

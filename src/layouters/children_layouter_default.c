@@ -393,8 +393,9 @@ children_layouter_t* children_layouter_default_create(void) {
   layouter = TKMEM_ZALLOC(children_layouter_default_t);
   return_value_if_fail(layouter != NULL, NULL);
 
-  str_init(&(l->params), 0);
   l = (children_layouter_t*)layouter;
+  
+  str_init(&(l->params), 0);
   l->vt = &s_children_layouter_default_vtable;
 
   return (children_layouter_t*)layouter;
