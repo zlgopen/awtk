@@ -8,6 +8,7 @@
   * 修改vgcanvas中w/h为负数时的BUG(感谢朝泽提供补丁)。
   * 完善widget\_clone/widget\_equal/widget\_to\_xml。
   * widget增加sensitive属性。
+  * 完善main\_loop\_dispatch\_events，支持按键事件(感谢[zjm1060](https://github.com/zjm1060)提供补丁)。 
 
 * 2018/12/19
   * 修改combobox弹出窗口位置的BUG。
