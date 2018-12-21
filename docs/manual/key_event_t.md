@@ -1,8 +1,8 @@
 ## key\_event\_t
 ### 概述
- 按键事件。
-
 ![image](images/key_event_t_0.png)
+
+ 按键事件。
 
 ### 函数
 <p id="key_event_t_methods">
@@ -26,20 +26,30 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### key\_event\_cast 函数
+* 函数原型：
+
+```
+key_event_t* key_event_cast (event_t* event);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | key\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-<p id="key_event_t_key_event_cast"> 把event对象转key_event_t对象，主要给脚本语言使用。
+* 函数功能：
+
+> <p id="key_event_t_key_event_cast"> 把event对象转key_event_t对象，主要给脚本语言使用。
 
 
 
 
 #### alt 属性
 -----------------------
-<p id="key_event_t_alt"> alt键是否按下。
+> <p id="key_event_t_alt"> alt键是否按下。
 
 
 
@@ -57,7 +67,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### capslock 属性
 -----------------------
-<p id="key_event_t_capslock"> capslock键是否按下。
+> <p id="key_event_t_capslock"> capslock键是否按下。
 
 
 
@@ -75,7 +85,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### ctrl 属性
 -----------------------
-<p id="key_event_t_ctrl"> ctrl键是否按下。
+> <p id="key_event_t_ctrl"> ctrl键是否按下。
 
 
 
@@ -93,7 +103,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### key 属性
 -----------------------
-<p id="key_event_t_key"> 键值。
+> <p id="key_event_t_key"> 键值。
 
 
 
@@ -111,7 +121,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### shift 属性
 -----------------------
-<p id="key_event_t_shift"> shift键是否按下。
+> <p id="key_event_t_shift"> shift键是否按下。
 
 
 

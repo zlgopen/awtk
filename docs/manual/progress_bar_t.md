@@ -1,8 +1,8 @@
 ## progress\_bar\_t
 ### 概述
- 进度条控件。
 ![image](images/progress_bar_t_0.png)
 
+ 进度条控件。
 ### 函数
 <p id="progress_bar_t_methods">
 
@@ -29,17 +29,35 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值改变事件。 |
 #### progress\_bar\_cast 函数
+* 函数原型：
+
+```
+widget_t* progress_bar_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | progress\_bar对象。 |
 | widget | widget\_t* | progress\_bar对象。 |
-<p id="progress_bar_t_progress_bar_cast"> 转换为progress_bar对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_cast"> 转换为progress_bar对象(供脚本语言使用)。
 
 
 
 #### progress\_bar\_create 函数
+* 函数原型：
+
+```
+widget_t* progress_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -50,11 +68,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="progress_bar_t_progress_bar_create"> 创建progress_bar对象
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_create"> 创建progress_bar对象
 
 
 
 #### progress\_bar\_set\_show\_text 函数
+* 函数原型：
+
+```
+ret_t progress_bar_set_show_text (widget_t* widget, bool_t show_text);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -62,11 +90,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | show\_text | bool\_t | 是否显示文本。 |
-<p id="progress_bar_t_progress_bar_set_show_text"> 设置进度条的是否显示文本。
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_set_show_text"> 设置进度条的是否显示文本。
 
 
 
 #### progress\_bar\_set\_value 函数
+* 函数原型：
+
+```
+ret_t progress_bar_set_value (widget_t* widget, uint8_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -74,11 +112,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | value | uint8\_t | 进度 |
-<p id="progress_bar_t_progress_bar_set_value"> 设置进度条的进度。
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_set_value"> 设置进度条的进度。
 
 
 
 #### progress\_bar\_set\_vertical 函数
+* 函数原型：
+
+```
+ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -86,13 +134,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | vertical | bool\_t | 是否为垂直方向。 |
-<p id="progress_bar_t_progress_bar_set_vertical"> 设置进度条的方向。
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_set_vertical"> 设置进度条的方向。
 
 
 
 #### show\_text 属性
 -----------------------
-<p id="progress_bar_t_show_text"> 是否显示文本。
+> <p id="progress_bar_t_show_text"> 是否显示文本。
 
 
 * 类型：bool\_t
@@ -109,7 +159,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### value 属性
 -----------------------
-<p id="progress_bar_t_value"> 进度条的值[0-100]。
+> <p id="progress_bar_t_value"> 进度条的值[0-100]。
 
 
 * 类型：uint8\_t
@@ -126,7 +176,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### vertical 属性
 -----------------------
-<p id="progress_bar_t_vertical"> 进度条的是否为垂直方向。
+> <p id="progress_bar_t_vertical"> 进度条的是否为垂直方向。
 
 
 * 类型：bool\_t

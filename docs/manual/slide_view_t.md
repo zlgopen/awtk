@@ -1,8 +1,8 @@
 ## slide\_view\_t
 ### 概述
- slide view。
 ![image](images/slide_view_t_0.png)
 
+ slide view。
 ### 函数
 <p id="slide_view_t_methods">
 
@@ -28,17 +28,35 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(当前页)改变事件。 |
 #### slide\_view\_cast 函数
+* 函数原型：
+
+```
+widget_t* slide_view_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | slide\_view对象。 |
 | widget | widget\_t* | slide\_view对象。 |
-<p id="slide_view_t_slide_view_cast"> 转换为slide_view对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_cast"> 转换为slide_view对象(供脚本语言使用)。
 
 
 
 #### slide\_view\_create 函数
+* 函数原型：
+
+```
+widget_t* slide_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -49,11 +67,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="slide_view_t_slide_view_create"> 创建slide_view对象
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_create"> 创建slide_view对象
 
 
 
 #### slide\_view\_set\_active 函数
+* 函数原型：
+
+```
+ret_t slide_view_set_active (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -61,11 +89,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_view对象。 |
 | index | uint32\_t | 当前页的序号。 |
-<p id="slide_view_t_slide_view_set_active"> 设置当前页的序号。
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_set_active"> 设置当前页的序号。
 
 
 
 #### slide\_view\_set\_auto\_play 函数
+* 函数原型：
+
+```
+ret_t slide_view_set_auto_play (widget_t* widget, uint16_t auto_play);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -73,11 +111,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_view对象。 |
 | auto\_play | uint16\_t | 0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
-<p id="slide_view_t_slide_view_set_auto_play"> 设置为自动播放模式。
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_set_auto_play"> 设置为自动播放模式。
 
 
 
 #### slide\_view\_set\_vertical 函数
+* 函数原型：
+
+```
+ret_t slide_view_set_vertical (widget_t* widget, bool_t vertical);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -85,13 +133,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_view对象。 |
 | vertical | bool\_t | TRUE表示上下滑动，FALSE表示左右滑动。 |
-<p id="slide_view_t_slide_view_set_vertical"> 设置为上下滑动(缺省为左右滑动)。
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_set_vertical"> 设置为上下滑动(缺省为左右滑动)。
 
 
 
 #### auto\_play 属性
 -----------------------
-<p id="slide_view_t_auto_play"> 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
+> <p id="slide_view_t_auto_play"> 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
 
 
 * 类型：uint16\_t
@@ -108,7 +158,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### vertical 属性
 -----------------------
-<p id="slide_view_t_vertical"> 是否为上下滑动模式。
+> <p id="slide_view_t_vertical"> 是否为上下滑动模式。
 
 
 * 类型：bool\_t

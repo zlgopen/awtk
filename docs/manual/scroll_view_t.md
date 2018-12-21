@@ -1,8 +1,8 @@
 ## scroll\_view\_t
 ### 概述
- 滚动视图。
 ![image](images/scroll_view_t_0.png)
 
+ 滚动视图。
 ### 函数
 <p id="scroll_view_t_methods">
 
@@ -33,17 +33,35 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### scroll\_view\_cast 函数
+* 函数原型：
+
+```
+widget_t* scroll_view_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | scroll\_view对象。 |
 | widget | widget\_t* | scroll\_view对象。 |
-<p id="scroll_view_t_scroll_view_cast"> 转换为scroll_view对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_cast"> 转换为scroll_view对象(供脚本语言使用)。
 
 
 
 #### scroll\_view\_create 函数
+* 函数原型：
+
+```
+widget_t* scroll_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -54,11 +72,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="scroll_view_t_scroll_view_create"> 创建scroll_view对象
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_create"> 创建scroll_view对象
 
 
 
 #### scroll\_view\_scroll\_to 函数
+* 函数原型：
+
+```
+ret_t scroll_view_scroll_to (widget_t* widget, int32_t xoffset_end, int32_t yoffset_end, int32_t duration);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -68,11 +96,21 @@
 | xoffset\_end | int32\_t | x偏移量。 |
 | yoffset\_end | int32\_t | y偏移量。 |
 | duration | int32\_t | 时间。 |
-<p id="scroll_view_t_scroll_view_scroll_to"> 滚动到指定的偏移量。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_scroll_to"> 滚动到指定的偏移量。
 
 
 
 #### scroll\_view\_set\_offset 函数
+* 函数原型：
+
+```
+ret_t scroll_view_set_offset (widget_t* widget, int32_t xoffset, int32_t yoffset);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -81,11 +119,21 @@
 | widget | widget\_t* | 控件对象。 |
 | xoffset | int32\_t | x偏移量。 |
 | yoffset | int32\_t | y偏移量。 |
-<p id="scroll_view_t_scroll_view_set_offset"> 设置偏移量。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_offset"> 设置偏移量。
 
 
 
 #### scroll\_view\_set\_virtual\_h 函数
+* 函数原型：
+
+```
+ret_t scroll_view_set_virtual_h (widget_t* widget, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -93,11 +141,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | h | wh\_t | 虚拟高度。 |
-<p id="scroll_view_t_scroll_view_set_virtual_h"> 设置虚拟高度。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_virtual_h"> 设置虚拟高度。
 
 
 
 #### scroll\_view\_set\_virtual\_w 函数
+* 函数原型：
+
+```
+ret_t scroll_view_set_virtual_w (widget_t* widget, wh_t w);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -105,11 +163,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | w | wh\_t | 虚拟宽度。 |
-<p id="scroll_view_t_scroll_view_set_virtual_w"> 设置虚拟宽度。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_virtual_w"> 设置虚拟宽度。
 
 
 
 #### scroll\_view\_set\_xslidable 函数
+* 函数原型：
+
+```
+ret_t scroll_view_set_xslidable (widget_t* widget, bool_t xslidable);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -117,11 +185,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | xslidable | bool\_t | 是否允许滑动。 |
-<p id="scroll_view_t_scroll_view_set_xslidable"> 设置是否允许x方向滑动。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_xslidable"> 设置是否允许x方向滑动。
 
 
 
 #### scroll\_view\_set\_yslidable 函数
+* 函数原型：
+
+```
+ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -129,13 +207,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | yslidable | bool\_t | 是否允许滑动。 |
-<p id="scroll_view_t_scroll_view_set_yslidable"> 设置是否允许y方向滑动。
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_yslidable"> 设置是否允许y方向滑动。
 
 
 
 #### virtual\_h 属性
 -----------------------
-<p id="scroll_view_t_virtual_h"> 虚拟高度。
+> <p id="scroll_view_t_virtual_h"> 虚拟高度。
 
 
 * 类型：wh\_t
@@ -152,7 +232,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### virtual\_w 属性
 -----------------------
-<p id="scroll_view_t_virtual_w"> 虚拟宽度。
+> <p id="scroll_view_t_virtual_w"> 虚拟宽度。
 
 
 * 类型：wh\_t
@@ -169,7 +249,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### xoffset 属性
 -----------------------
-<p id="scroll_view_t_xoffset"> x偏移量。
+> <p id="scroll_view_t_xoffset"> x偏移量。
 
 
 * 类型：int32\_t
@@ -186,7 +266,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### xslidable 属性
 -----------------------
-<p id="scroll_view_t_xslidable"> 是否允许x方向滑动。
+> <p id="scroll_view_t_xslidable"> 是否允许x方向滑动。
 
 
 * 类型：bool\_t
@@ -203,7 +283,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### yoffset 属性
 -----------------------
-<p id="scroll_view_t_yoffset"> y偏移量。
+> <p id="scroll_view_t_yoffset"> y偏移量。
 
 
 * 类型：int32\_t
@@ -220,7 +300,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### yslidable 属性
 -----------------------
-<p id="scroll_view_t_yslidable"> 是否允许y方向滑动。
+> <p id="scroll_view_t_yslidable"> 是否允许y方向滑动。
 
 
 * 类型：bool\_t

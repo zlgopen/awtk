@@ -1,8 +1,8 @@
 ## pages\_t
 ### 概述
- Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
 ![image](images/pages_t_0.png)
 
+ Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
 ### 函数
 <p id="pages_t_methods">
 
@@ -26,17 +26,35 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(当前页)改变事件。 |
 #### pages\_cast 函数
+* 函数原型：
+
+```
+widget_t* pages_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | pages对象。 |
 | widget | widget\_t* | pages对象。 |
-<p id="pages_t_pages_cast"> 转换为pages对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="pages_t_pages_cast"> 转换为pages对象(供脚本语言使用)。
 
 
 
 #### pages\_create 函数
+* 函数原型：
+
+```
+widget_t* pages_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -47,11 +65,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="pages_t_pages_create"> 创建pages对象
+* 函数功能：
+
+> <p id="pages_t_pages_create"> 创建pages对象
 
 
 
 #### pages\_set\_active 函数
+* 函数原型：
+
+```
+ret_t pages_set_active (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -59,11 +87,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | index | uint32\_t | 当前Page的序号。 |
-<p id="pages_t_pages_set_active"> 设置当前的Page。
+* 函数功能：
+
+> <p id="pages_t_pages_set_active"> 设置当前的Page。
 
 
 
 #### pages\_set\_active\_by\_name 函数
+* 函数原型：
+
+```
+ret_t pages_set_active_by_name (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -71,13 +109,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 当前Page的名字。 |
-<p id="pages_t_pages_set_active_by_name"> 通过页面的名字设置当前的Page。
+* 函数功能：
+
+> <p id="pages_t_pages_set_active_by_name"> 通过页面的名字设置当前的Page。
 
 
 
 #### active 属性
 -----------------------
-<p id="pages_t_active"> 当前活跃的page。
+> <p id="pages_t_active"> 当前活跃的page。
 
 
 * 类型：uint32\_t

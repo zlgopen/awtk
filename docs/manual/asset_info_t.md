@@ -25,7 +25,7 @@
 | -------- | ----- | ------- | 
 #### is\_in\_rom 属性
 -----------------------
-<p id="asset_info_t_is_in_rom"> 资源是否在ROM中。
+> <p id="asset_info_t_is_in_rom"> 资源是否在ROM中。
 
 
 
@@ -43,7 +43,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### name 属性
 -----------------------
-<p id="asset_info_t_name"> 名称。
+> <p id="asset_info_t_name"> 名称。
 
 
 
@@ -61,7 +61,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### refcount 属性
 -----------------------
-<p id="asset_info_t_refcount"> 引用计数。is_in_rom == FALSE时才有效。
+> <p id="asset_info_t_refcount"> 引用计数。is_in_rom == FALSE时才有效。
 
 
 
@@ -79,7 +79,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### size 属性
 -----------------------
-<p id="asset_info_t_size"> 大小。
+> <p id="asset_info_t_size"> 大小。
 
 
 
@@ -97,7 +97,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### subtype 属性
 -----------------------
-<p id="asset_info_t_subtype"> 子类型。
+> <p id="asset_info_t_subtype"> 子类型。
 
 
 
@@ -115,7 +115,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### type 属性
 -----------------------
-<p id="asset_info_t_type"> 类型。
+> <p id="asset_info_t_type"> 类型。
 
 
 

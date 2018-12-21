@@ -1,8 +1,8 @@
 ## image\_base\_t
 ### 概述
- 图片控件基类。
 ![image](images/image_base_t_0.png)
 
+ 图片控件基类。
 ### 函数
 <p id="image_base_t_methods">
 
@@ -36,17 +36,35 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### image\_base\_cast 函数
+* 函数原型：
+
+```
+widget_t* image_base_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | image\_base对象。 |
 | widget | widget\_t* | image\_base对象。 |
-<p id="image_base_t_image_base_cast"> 转换为image_base对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="image_base_t_image_base_cast"> 转换为image_base对象(供脚本语言使用)。
 
 
 
 #### image\_set\_anchor 函数
+* 函数原型：
+
+```
+ret_t image_set_anchor (widget_t* widget, float_t anchor_x, float_t anchor_y);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -55,11 +73,21 @@
 | widget | widget\_t* | 控件对象。 |
 | anchor\_x | float\_t | 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。 |
 | anchor\_y | float\_t | 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。 |
-<p id="image_base_t_image_set_anchor"> 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。
+* 函数功能：
+
+> <p id="image_base_t_image_set_anchor"> 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 #### image\_set\_clickable 函数
+* 函数原型：
+
+```
+ret_t image_set_clickable (widget_t* widget, bool_t clickable);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -67,11 +95,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | clickable | bool\_t | 是否可以被点击。 |
-<p id="image_base_t_image_set_clickable"> 设置控件是否可以被点击。
+* 函数功能：
+
+> <p id="image_base_t_image_set_clickable"> 设置控件是否可以被点击。
 
 
 
 #### image\_set\_image 函数
+* 函数原型：
+
+```
+ret_t image_set_image (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -79,11 +117,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image对象。 |
 | name | char* | 图片名称，该图片必须存在于资源管理器。 |
-<p id="image_base_t_image_set_image"> 设置控件的图片名称。
+* 函数功能：
+
+> <p id="image_base_t_image_set_image"> 设置控件的图片名称。
 
 
 
 #### image\_set\_rotation 函数
+* 函数原型：
+
+```
+ret_t image_set_rotation (widget_t* widget, float_t rotation);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -91,11 +139,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | rotation | float\_t | 旋转角度(幅度)。 |
-<p id="image_base_t_image_set_rotation"> 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。
+* 函数功能：
+
+> <p id="image_base_t_image_set_rotation"> 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 #### image\_set\_scale 函数
+* 函数原型：
+
+```
+ret_t image_set_scale (widget_t* widget, float_t scale_x, float_t scale_y);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -104,11 +162,21 @@
 | widget | widget\_t* | 控件对象。 |
 | scale\_x | float\_t | X方向缩放比例。 |
 | scale\_y | float\_t | Y方向缩放比例。 |
-<p id="image_base_t_image_set_scale"> 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。
+* 函数功能：
+
+> <p id="image_base_t_image_set_scale"> 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 #### image\_set\_selectable 函数
+* 函数原型：
+
+```
+ret_t image_set_selectable (widget_t* widget, bool_t selectable);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -116,11 +184,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | selectable | bool\_t | 是否可以被选中。 |
-<p id="image_base_t_image_set_selectable"> 设置控件是否可以被选中。
+* 函数功能：
+
+> <p id="image_base_t_image_set_selectable"> 设置控件是否可以被选中。
 
 
 
 #### image\_set\_selected 函数
+* 函数原型：
+
+```
+ret_t image_set_selected (widget_t* widget, bool_t selected);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -128,13 +206,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | selected | bool\_t | 是否被选中。 |
-<p id="image_base_t_image_set_selected"> 设置控件的选中状态。
+* 函数功能：
+
+> <p id="image_base_t_image_set_selected"> 设置控件的选中状态。
 
 
 
 #### anchor\_x 属性
 -----------------------
-<p id="image_base_t_anchor_x"> 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。
+> <p id="image_base_t_anchor_x"> 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。
 
 
 * 类型：float\_t
@@ -151,7 +231,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### anchor\_y 属性
 -----------------------
-<p id="image_base_t_anchor_y"> 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。
+> <p id="image_base_t_anchor_y"> 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。
 
 
 * 类型：float\_t
@@ -168,7 +248,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### clickable 属性
 -----------------------
-<p id="image_base_t_clickable"> 点击时，是否触发EVT_CLICK事件。
+> <p id="image_base_t_clickable"> 点击时，是否触发EVT_CLICK事件。
 
 
 * 类型：bool\_t
@@ -185,7 +265,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### image 属性
 -----------------------
-<p id="image_base_t_image"> 图片的名称。
+> <p id="image_base_t_image"> 图片的名称。
 
 
 * 类型：char*
@@ -202,7 +282,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### rotation 属性
 -----------------------
-<p id="image_base_t_rotation"> 控件的旋转角度(幅度)。
+> <p id="image_base_t_rotation"> 控件的旋转角度(幅度)。
 
 
 * 类型：float\_t
@@ -219,7 +299,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### scale\_x 属性
 -----------------------
-<p id="image_base_t_scale_x"> 控件在X方向上的缩放比例。
+> <p id="image_base_t_scale_x"> 控件在X方向上的缩放比例。
 
 
 * 类型：float\_t
@@ -236,7 +316,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### scale\_y 属性
 -----------------------
-<p id="image_base_t_scale_y"> 控件在Y方向上的缩放比例。
+> <p id="image_base_t_scale_y"> 控件在Y方向上的缩放比例。
 
 
 * 类型：float\_t
@@ -253,7 +333,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### selectable 属性
 -----------------------
-<p id="image_base_t_selectable"> 是否设置选中状态。
+> <p id="image_base_t_selectable"> 是否设置选中状态。
 
 
 * 类型：bool\_t
@@ -270,7 +350,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### selected 属性
 -----------------------
-<p id="image_base_t_selected"> 当前是否被选中。
+> <p id="image_base_t_selected"> 当前是否被选中。
 
 
 * 类型：bool\_t

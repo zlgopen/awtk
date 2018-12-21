@@ -19,6 +19,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### image\_loader\_load 函数
+* 函数原型：
+
+```
+ret_t image_loader_load (image_loader_t* loader, const asset_info_t* asset, bitmap_t* bitmap);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -27,7 +35,9 @@
 | loader | image\_loader\_t* | loader对象。 |
 | asset | const asset\_info\_t* | 资源。 |
 | bitmap | bitmap\_t* | 用于返回位图对象。 |
-<p id="image_loader_t_image_loader_load"> 加载图片。
+* 函数功能：
+
+> <p id="image_loader_t_image_loader_load"> 加载图片。
 
 
 

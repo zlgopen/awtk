@@ -8905,6 +8905,10 @@
         "name": "WIDGET_PROP_VISIBLE"
       },
       {
+        "desc": " 是否接受用户事件。\n\n",
+        "name": "WIDGET_PROP_SENSITIVE"
+      },
+      {
         "desc": " 控件动画。\n\n",
         "name": "WIDGET_PROP_ANIMATION"
       },
@@ -10453,6 +10457,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "bool_t",
+            "name": "sensitive",
+            "desc": "是否接受用户事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件是否接受用户事件。\n\n\n",
+        "name": "widget_set_sensitive",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "event_type_t",
             "name": "type",
             "desc": "事件类型。"
@@ -11886,6 +11913,20 @@
       {
         "name": "visible",
         "desc": " 是否可见。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "writable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "sensitive",
+        "desc": " 是否接受用户事件。\n\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -23702,14 +23743,14 @@
           },
           {
             "type": "int32_t",
-            "name": "repeat",
-            "desc": "释放EVT_CLICK事件的时间间隔(毫秒)。"
+            "name": "length",
+            "desc": "最大可显示字符个数。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置最大可显示字符数。\r\n\r\n",
+        "desc": " 设置最大可显示字符个数。\r\n\r\n",
         "name": "label_set_length",
         "return": {
           "type": "ret_t",
@@ -23721,7 +23762,7 @@
     "properties": [
       {
         "name": "length",
-        "desc": " 显示字符的长度。主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。\r\n",
+        "desc": " 显示字符的长度(小余0时全部显示)。\r\n 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。\r\n",
         "type": "int32_t",
         "annotation": {
           "set_prop": true,
@@ -23734,7 +23775,7 @@
       }
     ],
     "header": "widgets/label.h",
-    "desc": " 文本控件。\r\n",
+    "desc": "\r\n 文本控件，用于显示一行或多行文本。\r\n 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。\r\n 如需自动换行请使用[rich\\_text\\_t](rich_text_t.md)控件。\r\n\r\n label\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于label\\_t控件。\r\n\r\n 在xml中使用\"label\"标签创建文本控件。如：\r\n\r\n ```xml\r\n <label style=\"center\" text=\"center\"/>\r\n ```\r\n\r\n > 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)\r\n\r\n 在c代码中使用函数label\\_create创建文本控件。如：\r\n\r\n ```c\r\n  widget_t* label = label_create(win, 10, 10, 128, 30);\r\n  widget_set_text(label, L\"hello awtk!\");\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"left\">\r\n   <normal text_color=\"red\" text_align_h=\"left\" border_color=\"#a0a0a0\" margin=\"4\" />\r\n  </style>\r\n ```\r\n \r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)\r\n\r\n",
     "name": "label_t",
     "parent": "widget_t",
     "annotation": {

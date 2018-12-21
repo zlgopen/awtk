@@ -1,9 +1,9 @@
 ## text\_selector\_t
 ### 概述
- 文本选择器控件，通常用于选择年月日等。
- XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
 ![image](images/text_selector_t_0.png)
 
+ 文本选择器控件，通常用于选择年月日等。
+ XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
 ### 函数
 <p id="text_selector_t_methods">
 
@@ -39,6 +39,14 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前项)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(当前项)改变事件。 |
 #### text\_selector\_append\_option 函数
+* 函数原型：
+
+```
+ret_t text_selector_append_option (widget_t* widget, int32_t value, char* text);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -47,33 +55,63 @@
 | widget | widget\_t* | text\_selector对象。 |
 | value | int32\_t | 值。 |
 | text | char* | 文本。 |
-<p id="text_selector_t_text_selector_append_option"> 追加一个选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_append_option"> 追加一个选项。
 
 
 
 #### text\_selector\_cast 函数
+* 函数原型：
+
+```
+widget_t* text_selector_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | text\_selector对象。 |
 | widget | widget\_t* | text\_selector对象。 |
-<p id="text_selector_t_text_selector_cast"> 转换text_selector对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_cast"> 转换text_selector对象(供脚本语言使用)。
 
 
 
 #### text\_selector\_count\_options 函数
+* 函数原型：
+
+```
+int32_t text_selector_count_options (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回选项个数。 |
 | widget | widget\_t* | text\_selector对象。 |
-<p id="text_selector_t_text_selector_count_options"> 获取选项个数。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_count_options"> 获取选项个数。
 
 
 
 #### text\_selector\_create 函数
+* 函数原型：
+
+```
+widget_t* text_selector_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -84,11 +122,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="text_selector_t_text_selector_create"> 创建text_selector对象
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_create"> 创建text_selector对象
 
 
 
 #### text\_selector\_get\_option 函数
+* 函数原型：
+
+```
+text_selector_option_t* text_selector_get_option (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -96,44 +144,84 @@
 | 返回值 | text\_selector\_option\_t* | 成功返回选项，失败返回NULL。 |
 | widget | widget\_t* | text\_selector对象。 |
 | index | uint32\_t | 选项的索引。 |
-<p id="text_selector_t_text_selector_get_option"> 获取第index个选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_get_option"> 获取第index个选项。
 
 
 
 #### text\_selector\_get\_text 函数
+* 函数原型：
+
+```
+char* text_selector_get_text (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回文本。 |
 | widget | widget\_t* | text\_selector对象。 |
-<p id="text_selector_t_text_selector_get_text"> 获取text_selector的文本。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_get_text"> 获取text_selector的文本。
 
 
 
 #### text\_selector\_get\_value 函数
+* 函数原型：
+
+```
+int32_t text_selector_get_value (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回值。 |
 | widget | widget\_t* | text\_selector对象。 |
-<p id="text_selector_t_text_selector_get_value"> 获取text_selector的值。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_get_value"> 获取text_selector的值。
 
 
 
 #### text\_selector\_reset\_options 函数
+* 函数原型：
+
+```
+ret_t text_selector_reset_options (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
-<p id="text_selector_t_text_selector_reset_options"> 重置所有选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_reset_options"> 重置所有选项。
 
 
 
 #### text\_selector\_set\_options 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_options (widget_t* widget, char* options);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -141,11 +229,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | options | char* | 选项。 |
-<p id="text_selector_t_text_selector_set_options"> 设置选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_options"> 设置选项。
 
 
 
 #### text\_selector\_set\_range\_options 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_range_options (widget_t* widget, int32_t start, uint32_t nr, int32_t step);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -155,11 +253,21 @@
 | start | int32\_t | 起始值。 |
 | nr | uint32\_t | 个数。 |
 | step | int32\_t | 步长。 |
-<p id="text_selector_t_text_selector_set_range_options"> 设置一系列的整数选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_range_options"> 设置一系列的整数选项。
 
 
 
 #### text\_selector\_set\_selected\_index 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_selected_index (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -167,11 +275,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | index | uint32\_t | 选项的索引。 |
-<p id="text_selector_t_text_selector_set_selected_index"> 设置第index个选项为当前选中的选项。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_selected_index"> 设置第index个选项为当前选中的选项。
 
 
 
 #### text\_selector\_set\_text 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_text (widget_t* widget, const char* text);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -179,11 +297,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | text | const char* | 文本。 |
-<p id="text_selector_t_text_selector_set_text"> 设置text_selector的文本。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_text"> 设置text_selector的文本。
 
 
 
 #### text\_selector\_set\_value 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_value (widget_t* widget, int32_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -191,11 +319,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | value | int32\_t | 值。 |
-<p id="text_selector_t_text_selector_set_value"> 设置text_selector的值。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_value"> 设置text_selector的值。
 
 
 
 #### text\_selector\_set\_visible\_nr 函数
+* 函数原型：
+
+```
+ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -203,13 +341,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | visible\_nr | uint32\_t | 选项数。 |
-<p id="text_selector_t_text_selector_set_visible_nr"> 设置可见的选项数。
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_visible_nr"> 设置可见的选项数。
 
 
 
 #### options 属性
 -----------------------
-<p id="text_selector_t_options"> 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
+> <p id="text_selector_t_options"> 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
  对于数值选项，也可以指定一个范围，用『-』分隔起始值和结束值，如："1-7"表示1到7。
 
 
@@ -227,7 +367,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### selected\_index 属性
 -----------------------
-<p id="text_selector_t_selected_index"> 当前选中的选项。
+> <p id="text_selector_t_selected_index"> 当前选中的选项。
 
 
 * 类型：int32\_t
@@ -244,7 +384,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### visible\_nr 属性
 -----------------------
-<p id="text_selector_t_visible_nr"> 可见的选项数量(只能是3或者5，缺省为5)。
+> <p id="text_selector_t_visible_nr"> 可见的选项数量(只能是3或者5，缺省为5)。
 
 
 * 类型：uint32\_t

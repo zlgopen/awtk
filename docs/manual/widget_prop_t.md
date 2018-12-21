@@ -39,6 +39,7 @@
 | WIDGET\_PROP\_BOTTOM\_MARGIN | 底边距。 |
 | WIDGET\_PROP\_STEP | 步长。 |
 | WIDGET\_PROP\_VISIBLE | 是否可见。 |
+| WIDGET\_PROP\_SENSITIVE | 是否接受用户事件。 |
 | WIDGET\_PROP\_ANIMATION | 控件动画。 |
 | WIDGET\_PROP\_ANIM\_HINT | 窗口动画。 |
 | WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口动画。 |

@@ -25,6 +25,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### timer\_add 函数
+* 函数原型：
+
+```
+uint32_t timer_add (timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -33,45 +41,85 @@
 | on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration\_ms | uint32\_t | 时间。 |
-<p id="timer_t_timer_add"> 增加一个timer。
+* 函数功能：
+
+> <p id="timer_t_timer_add"> 增加一个timer。
 
 
 
 
 #### timer\_count 函数
+* 函数原型：
+
+```
+uint32_t timer_count ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回timer的个数。 |
-<p id="timer_t_timer_count"> 返回timer的个数。
+* 函数功能：
+
+> <p id="timer_t_timer_count"> 返回timer的个数。
 
 
 
 
 #### timer\_next\_time 函数
+* 函数原型：
+
+```
+uint32_t timer_next_time ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回最近的timer到期时间。 |
-<p id="timer_t_timer_next_time"> 返回最近的timer到期时间。
+* 函数功能：
+
+> <p id="timer_t_timer_next_time"> 返回最近的timer到期时间。
 
 
 
 
 #### timer\_now 函数
+* 函数原型：
+
+```
+uint32_t timer_now ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回获取当前时间(ms)。 |
-<p id="timer_t_timer_now"> 获取当前时间(ms)。
+* 函数功能：
+
+> <p id="timer_t_timer_now"> 获取当前时间(ms)。
 
 
 
 
 #### timer\_queue 函数
+* 函数原型：
+
+```
+ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration_ms);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -80,25 +128,45 @@
 |  | timer\_func\_t | r |
 | ctx | void* | timer回调函数的上下文。 |
 | duration\_ms | uint32\_t | 时间。 |
-<p id="timer_t_timer_queue"> 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
+* 函数功能：
+
+> <p id="timer_t_timer_queue"> 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
  timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
 
 
 
 
 #### timer\_remove 函数
+* 函数原型：
+
+```
+ret_t timer_remove (uint32_t timer_id);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_id | uint32\_t | timerID。 |
-<p id="timer_t_timer_remove"> 删除指定的timer。
+* 函数功能：
+
+> <p id="timer_t_timer_remove"> 删除指定的timer。
 
 
 
 
 #### timer\_set\_on\_destroy 函数
+* 函数原型：
+
+```
+ret_t timer_set_on_destroy (uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -107,7 +175,9 @@
 | timer\_id | uint32\_t | timerID。 |
 | on\_destroy | tk\_destroy\_t | 回调函数。 |
 | on\_destroy\_ctx | void* | 回调函数上下文。 |
-<p id="timer_t_timer_set_on_destroy"> 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
+* 函数功能：
+
+> <p id="timer_t_timer_set_on_destroy"> 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
 
 
 

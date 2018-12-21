@@ -1,8 +1,8 @@
 ## prop\_change\_event\_t
 ### 概述
- 对象属性变化事件。
-
 ![image](images/prop_change_event_t_0.png)
+
+ 对象属性变化事件。
 
 ### 函数
 <p id="prop_change_event_t_methods">
@@ -23,20 +23,30 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### prop\_change\_event\_cast 函数
+* 函数原型：
+
+```
+prop_change_event_t* prop_change_event_cast (event_t* event);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | prop\_change\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-<p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
+* 函数功能：
+
+> <p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
 
 
 
 
 #### name 属性
 -----------------------
-<p id="prop_change_event_t_name"> 属性的名称。
+> <p id="prop_change_event_t_name"> 属性的名称。
 
 
 
@@ -54,7 +64,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### value 属性
 -----------------------
-<p id="prop_change_event_t_value"> 属性的值。
+> <p id="prop_change_event_t_value"> 属性的值。
 
 
 

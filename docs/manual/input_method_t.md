@@ -22,7 +22,7 @@
 | -------- | ----- | ------- | 
 #### action\_button\_enable 属性
 -----------------------
-<p id="input_method_t_action_button_enable"> 软键盘的上的action按钮是否可用。
+> <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮是否可用。
 
 
 
@@ -40,7 +40,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### action\_button\_enable 属性
 -----------------------
-<p id="input_method_t_action_button_enable"> 软键盘的上的action按钮文本。
+> <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮文本。
 
 
 
@@ -58,7 +58,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### input\_type 属性
 -----------------------
-<p id="input_method_t_input_type"> 当前输入的类型。
+> <p id="input_method_t_input_type"> 当前输入的类型。
 
 
 

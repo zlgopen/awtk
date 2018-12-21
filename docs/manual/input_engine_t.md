@@ -22,30 +22,58 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### input\_engine\_create 函数
+* 函数原型：
+
+```
+input_engine_t* input_engine_create ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | input\_engine\_t* | 返回输入法引擎对象。 |
-<p id="input_engine_t_input_engine_create"> 创建输入法引擎对象。
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_create"> 创建输入法引擎对象。
 
 
 
 
 #### input\_engine\_destroy 函数
+* 函数原型：
+
+```
+ret_t input_engine_destroy (input_engine_t* engine);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
-<p id="input_engine_t_input_engine_destroy"> @deconstructor
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_destroy"> @deconstructor
  销毁输入法引擎对象。
 
 
 
 
 #### input\_engine\_input 函数
+* 函数原型：
+
+```
+ret_t input_engine_input (input_engine_t* engine, int key);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -53,19 +81,31 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
 | key | int | 键值。 |
-<p id="input_engine_t_input_engine_input"> 输入新的按键，并更新候选字。
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_input"> 输入新的按键，并更新候选字。
 
 
 
 
 #### input\_engine\_reset\_input 函数
+* 函数原型：
+
+```
+ret_t input_engine_reset_input (input_engine_t* engine);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
-<p id="input_engine_t_input_engine_reset_input"> 清除所有输入的按键组合和候选字。
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_reset_input"> 清除所有输入的按键组合和候选字。
 
 
 

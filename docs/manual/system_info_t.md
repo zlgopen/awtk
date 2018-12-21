@@ -28,16 +28,34 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### system\_info 函数
+* 函数原型：
+
+```
+system_info_t* system_info ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | system\_info\_t* | 返回system\_info对象。 |
-<p id="system_info_t_system_info"> 获取system_info对象。
+* 函数功能：
+
+> <p id="system_info_t_system_info"> 获取system_info对象。
 
 
 
 #### system\_info\_init 函数
+* 函数原型：
+
+```
+ret_t system_info_init (app_type_t app_type, const char* app_name, const char* app_root);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -46,14 +64,16 @@
 | app\_type | app\_type\_t | 应用程序的类型。 |
 | app\_name | const char* | 应用程序的名称。 |
 | app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
-<p id="system_info_t_system_info_init"> 初始化system_info对象(PC软件才需调用)。
+* 函数功能：
+
+> <p id="system_info_t_system_info_init"> 初始化system_info对象(PC软件才需调用)。
 
 
 
 
 #### app\_name 属性
 -----------------------
-<p id="system_info_t_app_name"> 应用程序的名称。
+> <p id="system_info_t_app_name"> 应用程序的名称。
 
 
 
@@ -71,7 +91,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### app\_root 属性
 -----------------------
-<p id="system_info_t_app_root"> 应用程序的根目录，用于定位资源文件。
+> <p id="system_info_t_app_root"> 应用程序的根目录，用于定位资源文件。
 
 
 
@@ -89,7 +109,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### app\_type 属性
 -----------------------
-<p id="system_info_t_app_type"> 应用程序的类型。
+> <p id="system_info_t_app_type"> 应用程序的类型。
 
 
 
@@ -107,7 +127,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### device\_pixel\_ratio 属性
 -----------------------
-<p id="system_info_t_device_pixel_ratio"> 显示屏的密度。
+> <p id="system_info_t_device_pixel_ratio"> 显示屏的密度。
 
 
 
@@ -125,7 +145,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### lcd\_h 属性
 -----------------------
-<p id="system_info_t_lcd_h"> 显示屏的高度。
+> <p id="system_info_t_lcd_h"> 显示屏的高度。
 
 
 
@@ -143,7 +163,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### lcd\_orientation 属性
 -----------------------
-<p id="system_info_t_lcd_orientation"> 显示屏的旋转角度。
+> <p id="system_info_t_lcd_orientation"> 显示屏的旋转角度。
 
 
 
@@ -161,7 +181,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### lcd\_type 属性
 -----------------------
-<p id="system_info_t_lcd_type"> 显示屏的类型。
+> <p id="system_info_t_lcd_type"> 显示屏的类型。
 
 
 
@@ -179,7 +199,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### lcd\_w 属性
 -----------------------
-<p id="system_info_t_lcd_w"> 显示屏的宽度。
+> <p id="system_info_t_lcd_w"> 显示屏的宽度。
 
 
 

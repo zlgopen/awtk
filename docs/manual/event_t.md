@@ -22,20 +22,30 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### event\_cast 函数
+* 函数原型：
+
+```
+event_t* event_cast (event_t* event);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-<p id="event_t_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
+* 函数功能：
+
+> <p id="event_t_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
 
 
 
 
 #### target 属性
 -----------------------
-<p id="event_t_target"> 事件发生的目标对象。
+> <p id="event_t_target"> 事件发生的目标对象。
 
 
 
@@ -53,7 +63,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### time 属性
 -----------------------
-<p id="event_t_time"> 事件发生的时间。
+> <p id="event_t_time"> 事件发生的时间。
 
 
 
@@ -71,7 +81,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### type 属性
 -----------------------
-<p id="event_t_type"> 类型。
+> <p id="event_t_type"> 类型。
 
 
 

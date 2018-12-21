@@ -1,8 +1,8 @@
 ## im\_commit\_event\_t
 ### 概述
- 输入法提交输入的文本事件。
-
 ![image](images/im_commit_event_t_0.png)
+
+ 输入法提交输入的文本事件。
 
 ### 函数
 <p id="im_commit_event_t_methods">
@@ -22,7 +22,7 @@
 | -------- | ----- | ------- | 
 #### text 属性
 -----------------------
-<p id="im_commit_event_t_text"> 提交的文本。
+> <p id="im_commit_event_t_text"> 提交的文本。
 
 
 

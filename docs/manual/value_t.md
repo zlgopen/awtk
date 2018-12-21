@@ -54,18 +54,36 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### value\_bool 函数
+* 函数原型：
+
+```
+bool_t value_bool (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_bool"> 获取类型为bool的值。
+* 函数功能：
+
+> <p id="value_t_value_bool"> 获取类型为bool的值。
 
 
 
 
 #### value\_copy 函数
+* 函数原型：
+
+```
+void value_copy (value_t* dst, value_t* src);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -73,48 +91,88 @@
 | 返回值 | void | 值。 |
 | dst | value\_t* | 目的value对象。 |
 | src | value\_t* | 源value对象。 |
-<p id="value_t_value_copy"> 拷贝value的值。
+* 函数功能：
+
+> <p id="value_t_value_copy"> 拷贝value的值。
 
 
 
 
 #### value\_create 函数
+* 函数原型：
+
+```
+value_t* value_create ();
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | value\_t* | 对象。 |
-<p id="value_t_value_create"> 创建value对象
+* 函数功能：
+
+> <p id="value_t_value_create"> 创建value对象
 
 
 
 
 #### value\_destroy 函数
+* 函数原型：
+
+```
+void value_destroy (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void |  |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_destroy"> @deconstructor
+* 函数功能：
+
+> <p id="value_t_value_destroy"> @deconstructor
  销毁value对象
 
 
 
 
 #### value\_double 函数
+* 函数原型：
+
+```
+double value_double (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | double | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_double"> 获取类型为double的值。
+* 函数功能：
+
+> <p id="value_t_value_double"> 获取类型为double的值。
 
 
 
 
 #### value\_equal 函数
+* 函数原型：
+
+```
+bool_t value_equal (value_t* value, value_t* other);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -122,120 +180,220 @@
 | 返回值 | bool\_t | 为空值返回TRUE，否则返回FALSE。 |
 | value | value\_t* | value对象。 |
 | other | value\_t* | value对象。 |
-<p id="value_t_value_equal"> 判断两个value是否相同。
+* 函数功能：
+
+> <p id="value_t_value_equal"> 判断两个value是否相同。
 
 
 
 
 #### value\_float 函数
+* 函数原型：
+
+```
+float value_float (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | float | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_float"> 获取类型为float的值。
+* 函数功能：
+
+> <p id="value_t_value_float"> 获取类型为float的值。
 
 
 
 
 #### value\_float32 函数
+* 函数原型：
+
+```
+float value_float32 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | float | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_float32"> 获取类型为float的值。
+* 函数功能：
+
+> <p id="value_t_value_float32"> 获取类型为float的值。
 
 
 
 
 #### value\_int 函数
+* 函数原型：
+
+```
+int value_int (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_int"> 转换为int的值。
+* 函数功能：
+
+> <p id="value_t_value_int"> 转换为int的值。
 
 
 
 
 #### value\_int16 函数
+* 函数原型：
+
+```
+int16_t value_int16 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int16\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_int16"> 获取类型为int16的值。
+* 函数功能：
+
+> <p id="value_t_value_int16"> 获取类型为int16的值。
 
 
 
 
 #### value\_int32 函数
+* 函数原型：
+
+```
+int32_t value_int32 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_int32"> 获取类型为int32的值。
+* 函数功能：
+
+> <p id="value_t_value_int32"> 获取类型为int32的值。
 
 
 
 
 #### value\_int64 函数
+* 函数原型：
+
+```
+int64_t value_int64 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int64\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_int64"> 获取类型为int64的值。
+* 函数功能：
+
+> <p id="value_t_value_int64"> 获取类型为int64的值。
 
 
 
 
 #### value\_int8 函数
+* 函数原型：
+
+```
+int8_t value_int8 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int8\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_int8"> 获取类型为int8的值。
+* 函数功能：
+
+> <p id="value_t_value_int8"> 获取类型为int8的值。
 
 
 
 
 #### value\_is\_null 函数
+* 函数原型：
+
+```
+bool_t value_is_null (value_t* value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 为空值返回TRUE，否则返回FALSE。 |
 | value | value\_t* | value对象。 |
-<p id="value_t_value_is_null"> 判断value是否为空值。
+* 函数功能：
+
+> <p id="value_t_value_is_null"> 判断value是否为空值。
 
 
 
 
 #### value\_pointer 函数
+* 函数原型：
+
+```
+void* value_pointer (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void* | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_pointer"> 获取类型为pointer的值。
+* 函数功能：
+
+> <p id="value_t_value_pointer"> 获取类型为pointer的值。
 
 
 
 
 #### value\_set\_bool 函数
+* 函数原型：
+
+```
+value_t* value_set_bool (value_t* v, bool_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -243,12 +401,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | bool\_t | 待设置的值。 |
-<p id="value_t_value_set_bool"> 设置类型为bool的值。
+* 函数功能：
+
+> <p id="value_t_value_set_bool"> 设置类型为bool的值。
 
 
 
 
 #### value\_set\_double 函数
+* 函数原型：
+
+```
+value_t* value_set_double (value_t* v, double value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -256,12 +424,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | double | 待设置的值。 |
-<p id="value_t_value_set_double"> 设置类型为double的值。
+* 函数功能：
+
+> <p id="value_t_value_set_double"> 设置类型为double的值。
 
 
 
 
 #### value\_set\_float 函数
+* 函数原型：
+
+```
+value_t* value_set_float (value_t* v, float_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -269,12 +447,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | float\_t | 待设置的值。 |
-<p id="value_t_value_set_float"> 设置类型为float的值。
+* 函数功能：
+
+> <p id="value_t_value_set_float"> 设置类型为float的值。
 
 
 
 
 #### value\_set\_float32 函数
+* 函数原型：
+
+```
+value_t* value_set_float32 (value_t* v, float value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -282,12 +470,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | float | 待设置的值。 |
-<p id="value_t_value_set_float32"> 设置类型为float的值。
+* 函数功能：
+
+> <p id="value_t_value_set_float32"> 设置类型为float的值。
 
 
 
 
 #### value\_set\_int 函数
+* 函数原型：
+
+```
+value_t* value_set_int (value_t* v, int32_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -295,12 +493,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int32\_t | 待设置的值。 |
-<p id="value_t_value_set_int"> 设置类型为int的值。
+* 函数功能：
+
+> <p id="value_t_value_set_int"> 设置类型为int的值。
 
 
 
 
 #### value\_set\_int16 函数
+* 函数原型：
+
+```
+value_t* value_set_int16 (value_t* v, int16_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -308,12 +516,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int16\_t | 待设置的值。 |
-<p id="value_t_value_set_int16"> 设置类型为int16的值。
+* 函数功能：
+
+> <p id="value_t_value_set_int16"> 设置类型为int16的值。
 
 
 
 
 #### value\_set\_int32 函数
+* 函数原型：
+
+```
+value_t* value_set_int32 (value_t* v, int32_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -321,12 +539,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int32\_t | 待设置的值。 |
-<p id="value_t_value_set_int32"> 设置类型为int32的值。
+* 函数功能：
+
+> <p id="value_t_value_set_int32"> 设置类型为int32的值。
 
 
 
 
 #### value\_set\_int64 函数
+* 函数原型：
+
+```
+value_t* value_set_int64 (value_t* v, int64_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -334,12 +562,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int64\_t | 待设置的值。 |
-<p id="value_t_value_set_int64"> 设置类型为int64的值。
+* 函数功能：
+
+> <p id="value_t_value_set_int64"> 设置类型为int64的值。
 
 
 
 
 #### value\_set\_int8 函数
+* 函数原型：
+
+```
+value_t* value_set_int8 (value_t* v, int8_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -347,12 +585,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int8\_t | 待设置的值。 |
-<p id="value_t_value_set_int8"> 设置类型为int8的值。
+* 函数功能：
+
+> <p id="value_t_value_set_int8"> 设置类型为int8的值。
 
 
 
 
 #### value\_set\_pointer 函数
+* 函数原型：
+
+```
+value_t* value_set_pointer (value_t* v, pointer_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -360,12 +608,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | pointer\_t | 待设置的值。 |
-<p id="value_t_value_set_pointer"> 设置类型为pointer的值。
+* 函数功能：
+
+> <p id="value_t_value_set_pointer"> 设置类型为pointer的值。
 
 
 
 
 #### value\_set\_str 函数
+* 函数原型：
+
+```
+value_t* value_set_str (value_t* v, char* value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -373,12 +631,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | char* | 待设置的值。 |
-<p id="value_t_value_set_str"> 设置类型为char*的值。
+* 函数功能：
+
+> <p id="value_t_value_set_str"> 设置类型为char*的值。
 
 
 
 
 #### value\_set\_uint16 函数
+* 函数原型：
+
+```
+value_t* value_set_uint16 (value_t* v, uint16_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -386,12 +654,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | uint16\_t | 待设置的值。 |
-<p id="value_t_value_set_uint16"> 设置类型为uint16的值。
+* 函数功能：
+
+> <p id="value_t_value_set_uint16"> 设置类型为uint16的值。
 
 
 
 
 #### value\_set\_uint32 函数
+* 函数原型：
+
+```
+value_t* value_set_uint32 (value_t* v, uint32_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -399,12 +677,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | uint32\_t | 待设置的值。 |
-<p id="value_t_value_set_uint32"> 设置类型为uint32的值。
+* 函数功能：
+
+> <p id="value_t_value_set_uint32"> 设置类型为uint32的值。
 
 
 
 
 #### value\_set\_uint64 函数
+* 函数原型：
+
+```
+value_t* value_set_uint64 (value_t* v, uint64_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -412,12 +700,22 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | uint64\_t | 待设置的值。 |
-<p id="value_t_value_set_uint64"> 设置类型为uint64的值。
+* 函数功能：
+
+> <p id="value_t_value_set_uint64"> 设置类型为uint64的值。
 
 
 
 
 #### value\_set\_uint8 函数
+* 函数原型：
+
+```
+value_t* value_set_uint8 (value_t* v, uint8_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -425,74 +723,126 @@
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | uint8\_t | 待设置的值。 |
-<p id="value_t_value_set_uint8"> 设置类型为uint8的值。
+* 函数功能：
+
+> <p id="value_t_value_set_uint8"> 设置类型为uint8的值。
 
 
 
 
 #### value\_str 函数
+* 函数原型：
+
+```
+const char* value_str (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const char* | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_str"> 获取类型为str_t的值。
+* 函数功能：
+
+> <p id="value_t_value_str"> 获取类型为str_t的值。
 
 
 
 
 #### value\_uint16 函数
+* 函数原型：
+
+```
+uint16_t value_uint16 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint16\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_uint16"> 获取类型为uint16的值。
+* 函数功能：
+
+> <p id="value_t_value_uint16"> 获取类型为uint16的值。
 
 
 
 
 #### value\_uint32 函数
+* 函数原型：
+
+```
+uint32_t value_uint32 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_uint32"> 获取类型为uint32的值。
+* 函数功能：
+
+> <p id="value_t_value_uint32"> 获取类型为uint32的值。
 
 
 
 
 #### value\_uint64 函数
+* 函数原型：
+
+```
+uint64_t value_uint64 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint64\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_uint64"> 获取类型为uint64的值。
+* 函数功能：
+
+> <p id="value_t_value_uint64"> 获取类型为uint64的值。
 
 
 
 
 #### value\_uint8 函数
+* 函数原型：
+
+```
+int8_t value_uint8 (value_t* v);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int8\_t | 值。 |
 | v | value\_t* | value对象。 |
-<p id="value_t_value_uint8"> 获取类型为uint8的值。
+* 函数功能：
+
+> <p id="value_t_value_uint8"> 获取类型为uint8的值。
 
 
 
 
 #### type 属性
 -----------------------
-<p id="value_t_type"> 类型。
+> <p id="value_t_type"> 类型。
 
 
 

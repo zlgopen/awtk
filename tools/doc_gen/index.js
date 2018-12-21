@@ -94,8 +94,26 @@ function encodeStr(str) {
 
 
 class ApiGenerator {
+  genFuncPrototype(p) {
+    let result = '* 函数原型：\n\n';
+    result += '```\n';
+    result += `${p.return.type} ${p.name} (`;
+    p.params.forEach((iter, index) => {
+      if(index) {
+        result += ', ';
+      }
+      result += `${iter.type} ${iter.name}`;
+    })
+    result += ');\n';
+    result += '```\n\n';
+
+    return result;
+  }
+
   genOneFunc(cls, p) {
     let result = `#### ${encodeStr(p.name)} 函数\n`;
+    result += this.genFuncPrototype(p);
+    result += '* 参数说明：\n\n';
     result += `-----------------------\n\n`;
     result += `| 参数 | 类型 | 说明 |\n`;
     result += `| -------- | ----- | --------- |\n`;
@@ -105,7 +123,8 @@ class ApiGenerator {
       result += `| ${encodeStr(iter.name)} | ${encodeStr(iter.type)} | ${encodeStr(iter.desc)} |\n`;
     })
 
-    result += `${genAnchor(cls.name, p)}${p.desc}\n\n`;
+    result += '* 函数功能：\n\n';
+    result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
 
     return result;
   }
@@ -348,14 +367,14 @@ class ApiGenerator {
 
     result += `### 概述\n`;
 
-    result += cls.desc;
-
     if(cls.parent) {
       result += '```graphviz\n';
       result += '[default_style]\n';
       result += `${cls.name} -> ${cls.parent}[arrowhead = "empty"]`;
       result += '```\n';
     }
+    
+    result += cls.desc;
 
     result += this.genFunctionsIndex(cls);
     result += this.genPropertiesIndex(cls);
@@ -373,7 +392,7 @@ class ApiGenerator {
   genOneProperty(cls, p) {
     let result = `#### ${encodeStr(p.name)} 属性\n`;
     result += `-----------------------\n`;
-    result += `${genAnchor(cls.name, p)}${p.desc}\n\n`;
+    result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
     result += `* 类型：${encodeStr(p.type)}\n\n`;
 
     result += `| 特性 | 是否支持 |\n`;

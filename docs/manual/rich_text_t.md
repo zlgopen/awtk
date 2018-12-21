@@ -1,8 +1,8 @@
 ## rich\_text\_t
 ### 概述
- rich_text控件，实现简单的图文混排。
-
 ![image](images/rich_text_t_0.png)
+
+ rich_text控件，实现简单的图文混排。
 
 ### 函数
 <p id="rich_text_t_methods">
@@ -23,6 +23,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### rich\_text\_create 函数
+* 函数原型：
+
+```
+widget_t* rich_text_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -33,12 +41,22 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="rich_text_t_rich_text_create"> 创建rich_text对象
+* 函数功能：
+
+> <p id="rich_text_t_rich_text_create"> 创建rich_text对象
 
 
 
 
 #### rich\_text\_set\_text 函数
+* 函数原型：
+
+```
+ret_t rich_text_set_text (widget_t* widget, char* text);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -46,14 +64,16 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | text | char* | 文本。 |
-<p id="rich_text_t_rich_text_set_text"> 设置文本。
+* 函数功能：
+
+> <p id="rich_text_t_rich_text_set_text"> 设置文本。
 
 
 
 
 #### line\_gap 属性
 -----------------------
-<p id="rich_text_t_line_gap"> 行间距。
+> <p id="rich_text_t_line_gap"> 行间距。
 
 
 

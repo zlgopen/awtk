@@ -1,5 +1,7 @@
 ## color\_picker\_t
 ### 概述
+![image](images/color_picker_t_0.png)
+
  颜色选择器。 其中的控件必须按下列规则命名：
  COLOR_PICKER_CHILD_R 红色分量。可以是spin_box、edit和slider。
  COLOR_PICKER_CHILD_G 绿色分量。可以是spin_box、edit和slider。
@@ -10,8 +12,6 @@
  COLOR_PICKER_CHILD_SV Saturation和Value/Brightness分量。可以是color_component。
  COLOR_PICKER_CHILD_OLD 旧的值。可以是spin_box、edit和color_tile。
  COLOR_PICKER_CHILD_NEW 新的值。可以是spin_box、edit和color_tile。
-![image](images/color_picker_t_0.png)
-
 ### 函数
 <p id="color_picker_t_methods">
 
@@ -34,17 +34,35 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(颜色)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(颜色)改变事件。 |
 #### color\_picker\_cast 函数
+* 函数原型：
+
+```
+widget_t* color_picker_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | color\_picker对象。 |
 | widget | widget\_t* | color\_picker对象。 |
-<p id="color_picker_t_color_picker_cast"> 转换为color_picker对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="color_picker_t_color_picker_cast"> 转换为color_picker对象(供脚本语言使用)。
 
 
 
 #### color\_picker\_create 函数
+* 函数原型：
+
+```
+widget_t* color_picker_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -55,11 +73,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="color_picker_t_color_picker_create"> 创建color_picker对象
+* 函数功能：
+
+> <p id="color_picker_t_color_picker_create"> 创建color_picker对象
 
 
 
 #### color\_picker\_set\_color 函数
+* 函数原型：
+
+```
+ret_t color_picker_set_color (widget_t* widget, const char* color);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -67,13 +95,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | color | const char* | 颜色。 |
-<p id="color_picker_t_color_picker_set_color"> 设置颜色。
+* 函数功能：
+
+> <p id="color_picker_t_color_picker_set_color"> 设置颜色。
 
 
 
 #### value 属性
 -----------------------
-<p id="color_picker_t_value"> 颜色。
+> <p id="color_picker_t_value"> 颜色。
 
 
 * 类型：const char*

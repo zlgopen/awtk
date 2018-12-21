@@ -1,8 +1,8 @@
 ## button\_t
 ### 概述
- 按钮控件。
 ![image](images/button_t_0.png)
 
+ 按钮控件。
 ### 函数
 <p id="button_t_methods">
 
@@ -25,17 +25,35 @@
 | EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 | EVT\_LONG\_PRESS | pointer\_event\_t | 长按事件。 |
 #### button\_cast 函数
+* 函数原型：
+
+```
+widget_t* button_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | button对象。 |
 | widget | widget\_t* | button对象。 |
-<p id="button_t_button_cast"> 转换为button对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="button_t_button_cast"> 转换为button对象(供脚本语言使用)。
 
 
 
 #### button\_create 函数
+* 函数原型：
+
+```
+widget_t* button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -46,11 +64,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="button_t_button_create"> 创建button对象
+* 函数功能：
+
+> <p id="button_t_button_create"> 创建button对象
 
 
 
 #### button\_set\_repeat 函数
+* 函数原型：
+
+```
+ret_t button_set_repeat (widget_t* widget, int32_t repeat);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -58,13 +86,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | repeat | int32\_t | 释放EVT\_CLICK事件的时间间隔(毫秒)。 |
-<p id="button_t_button_set_repeat"> 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+* 函数功能：
+
+> <p id="button_t_button_set_repeat"> 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
 
 
 
 #### repeat 属性
 -----------------------
-<p id="button_t_repeat"> 重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+> <p id="button_t_repeat"> 重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
 
 
 * 类型：int32\_t

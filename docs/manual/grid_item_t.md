@@ -1,8 +1,8 @@
 ## grid\_item\_t
 ### 概述
- grid_item。一个简单的容器控件，一般作为grid的子控件。
 ![image](images/grid_item_t_0.png)
 
+ grid_item。一个简单的容器控件，一般作为grid的子控件。
 ### 函数
 <p id="grid_item_t_methods">
 
@@ -21,17 +21,35 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### grid\_item\_cast 函数
+* 函数原型：
+
+```
+widget_t* grid_item_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | grid\_item对象。 |
 | widget | widget\_t* | grid\_item对象。 |
-<p id="grid_item_t_grid_item_cast"> 转换为grid_item对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="grid_item_t_grid_item_cast"> 转换为grid_item对象(供脚本语言使用)。
 
 
 
 #### grid\_item\_create 函数
+* 函数原型：
+
+```
+widget_t* grid_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -42,7 +60,9 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="grid_item_t_grid_item_create"> 创建grid_item对象
+* 函数功能：
+
+> <p id="grid_item_t_grid_item_create"> 创建grid_item对象
 
 
 

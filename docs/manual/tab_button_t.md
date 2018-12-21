@@ -1,8 +1,8 @@
 ## tab\_button\_t
 ### 概述
- 标签按钮控件。
 ![image](images/tab_button_t_0.png)
 
+ 标签按钮控件。
 ### 函数
 <p id="tab_button_t_methods">
 
@@ -29,17 +29,35 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(激活状态)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(激活状态)改变事件。 |
 #### tab\_button\_cast 函数
+* 函数原型：
+
+```
+widget_t* tab_button_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | tab\_button对象。 |
 | widget | widget\_t* | tab\_button对象。 |
-<p id="tab_button_t_tab_button_cast"> 转换tab_button对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_cast"> 转换tab_button对象(供脚本语言使用)。
 
 
 
 #### tab\_button\_create 函数
+* 函数原型：
+
+```
+widget_t* tab_button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -50,11 +68,21 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="tab_button_t_tab_button_create"> 创建tab_button对象
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_create"> 创建tab_button对象
 
 
 
 #### tab\_button\_set\_active\_icon 函数
+* 函数原型：
+
+```
+ret_t tab_button_set_active_icon (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -62,11 +90,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
 | name | char* | 当前项的图标。 |
-<p id="tab_button_t_tab_button_set_active_icon"> 设置控件的active图标。
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_set_active_icon"> 设置控件的active图标。
 
 
 
 #### tab\_button\_set\_icon 函数
+* 函数原型：
+
+```
+ret_t tab_button_set_icon (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -74,11 +112,21 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
 | name | char* | 当前项的图标。 |
-<p id="tab_button_t_tab_button_set_icon"> 设置控件的图标。
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_set_icon"> 设置控件的图标。
 
 
 
 #### tab\_button\_set\_value 函数
+* 函数原型：
+
+```
+ret_t tab_button_set_value (widget_t* widget, uint32_t value);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -86,13 +134,15 @@
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
 | value | uint32\_t | 值 |
-<p id="tab_button_t_tab_button_set_value"> 设置控件的值。
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_set_value"> 设置控件的值。
 
 
 
 #### active\_icon 属性
 -----------------------
-<p id="tab_button_t_active_icon"> 当前项的图标的名称。
+> <p id="tab_button_t_active_icon"> 当前项的图标的名称。
 
 
 * 类型：char*
@@ -109,7 +159,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### icon 属性
 -----------------------
-<p id="tab_button_t_icon"> 非当前项的图标的名称。
+> <p id="tab_button_t_icon"> 非当前项的图标的名称。
 
 
 * 类型：char*
@@ -126,7 +176,7 @@
 | 支通过widget_set_prop修改 | 是 |
 #### value 属性
 -----------------------
-<p id="tab_button_t_value"> 值。
+> <p id="tab_button_t_value"> 值。
 
 
 * 类型：bool\_t

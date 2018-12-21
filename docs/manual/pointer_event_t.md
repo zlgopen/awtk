@@ -1,8 +1,8 @@
 ## pointer\_event\_t
 ### 概述
- 指针事件。
-
 ![image](images/pointer_event_t_0.png)
+
+ 指针事件。
 
 ### 函数
 <p id="pointer_event_t_methods">
@@ -28,20 +28,30 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### pointer\_event\_cast 函数
+* 函数原型：
+
+```
+pointer_event_t* pointer_event_cast (event_t* event);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | pointer\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-<p id="pointer_event_t_pointer_event_cast"> 把event对象转pointer_event_t对象，主要给脚本语言使用。
+* 函数功能：
+
+> <p id="pointer_event_t_pointer_event_cast"> 把event对象转pointer_event_t对象，主要给脚本语言使用。
 
 
 
 
 #### alt 属性
 -----------------------
-<p id="pointer_event_t_alt"> alt键是否按下。
+> <p id="pointer_event_t_alt"> alt键是否按下。
 
 
 
@@ -59,7 +69,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### button 属性
 -----------------------
-<p id="pointer_event_t_button"> button。
+> <p id="pointer_event_t_button"> button。
 
 
 
@@ -77,7 +87,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### ctrl 属性
 -----------------------
-<p id="pointer_event_t_ctrl"> ctrl键是否按下。
+> <p id="pointer_event_t_ctrl"> ctrl键是否按下。
 
 
 
@@ -95,7 +105,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### pressed 属性
 -----------------------
-<p id="pointer_event_t_pressed"> 指针是否按下。
+> <p id="pointer_event_t_pressed"> 指针是否按下。
 
 
 
@@ -113,7 +123,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### shift 属性
 -----------------------
-<p id="pointer_event_t_shift"> shift键是否按下。
+> <p id="pointer_event_t_shift"> shift键是否按下。
 
 
 
@@ -131,7 +141,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### x 属性
 -----------------------
-<p id="pointer_event_t_x"> x坐标。
+> <p id="pointer_event_t_x"> x坐标。
 
 
 
@@ -149,7 +159,7 @@
 | 支通过widget_set_prop修改 | 否 |
 #### y 属性
 -----------------------
-<p id="pointer_event_t_y"> y坐标。
+> <p id="pointer_event_t_y"> y坐标。
 
 
 

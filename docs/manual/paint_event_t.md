@@ -1,8 +1,8 @@
 ## paint\_event\_t
 ### 概述
- 绘制事件。
-
 ![image](images/paint_event_t_0.png)
+
+ 绘制事件。
 
 ### 函数
 <p id="paint_event_t_methods">
@@ -22,20 +22,30 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### paint\_event\_cast 函数
+* 函数原型：
+
+```
+paint_event_t* paint_event_cast (event_t* event);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | paint\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-<p id="paint_event_t_paint_event_cast"> 把event对象转paint_event_t对象。主要给脚本语言使用。
+* 函数功能：
+
+> <p id="paint_event_t_paint_event_cast"> 把event对象转paint_event_t对象。主要给脚本语言使用。
 
 
 
 
 #### c 属性
 -----------------------
-<p id="paint_event_t_c"> canvas。
+> <p id="paint_event_t_c"> canvas。
 
 
 

@@ -20,6 +20,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### widget\_animator\_prop\_create 函数
+* 函数原型：
+
+```
+widget_animator_t* widget_animator_prop_create (widget_t* widget, uint32_t duration, uint32_t delay, easing_type_t easing, const char* prop_name);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -30,12 +38,22 @@
 | delay | uint32\_t | 动画执行时间。 |
 | easing | easing\_type\_t | 插值函数类型。 |
 | prop\_name | const char* | 属性的名称。 |
-<p id="widget_animator_prop_t_widget_animator_prop_create"> 创建单属性动画对象。
+* 函数功能：
+
+> <p id="widget_animator_prop_t_widget_animator_prop_create"> 创建单属性动画对象。
 
 
 
 
 #### widget\_animator\_prop\_set\_params 函数
+* 函数原型：
+
+```
+ret_t widget_animator_prop_set_params (widget_animator_t* animator, float_t from, float_t to);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -44,7 +62,9 @@
 | animator | widget\_animator\_t* | 动画对象本身。 |
 | from | float\_t | prop起始值。 |
 | to | float\_t | prop结束值。 |
-<p id="widget_animator_prop_t_widget_animator_prop_set_params"> 设置动画对象的参数。
+* 函数功能：
+
+> <p id="widget_animator_prop_t_widget_animator_prop_set_params"> 设置动画对象的参数。
 
 
 

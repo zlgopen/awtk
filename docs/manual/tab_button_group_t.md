@@ -1,8 +1,8 @@
 ## tab\_button\_group\_t
 ### 概述
- Tab Button Group控件。
 ![image](images/tab_button_group_t_0.png)
 
+ Tab Button Group控件。
 ### 函数
 <p id="tab_button_group_t_methods">
 
@@ -22,17 +22,35 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### tab\_button\_group\_cast 函数
+* 函数原型：
+
+```
+widget_t* tab_button_group_cast (widget_t* widget);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | tab\_button\_group对象。 |
 | widget | widget\_t* | tab\_button\_group对象。 |
-<p id="tab_button_group_t_tab_button_group_cast"> 转换tab_button_group对象(供脚本语言使用)。
+* 函数功能：
+
+> <p id="tab_button_group_t_tab_button_group_cast"> 转换tab_button_group对象(供脚本语言使用)。
 
 
 
 #### tab\_button\_group\_create 函数
+* 函数原型：
+
+```
+widget_t* tab_button_group_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
 -----------------------
 
 | 参数 | 类型 | 说明 |
@@ -43,13 +61,15 @@
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-<p id="tab_button_group_t_tab_button_group_create"> 创建tab_button_group对象
+* 函数功能：
+
+> <p id="tab_button_group_t_tab_button_group_create"> 创建tab_button_group对象
 
 
 
 #### compact 属性
 -----------------------
-<p id="tab_button_group_t_compact"> 紧凑型排版子控件。
+> <p id="tab_button_group_t_compact"> 紧凑型排版子控件。
 
 
 * 类型：bool\_t
