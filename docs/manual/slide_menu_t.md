@@ -10,19 +10,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#slide_menu_t_slide_menu_cast">slide\_menu\_cast</a> |  转换slide_menu对象(供脚本语言使用)。 |
-| <a href="#slide_menu_t_slide_menu_create">slide\_menu\_create</a> |  创建slide_menu对象 |
-| <a href="#slide_menu_t_slide_menu_set_align_v">slide\_menu\_set\_align\_v</a> |  设置垂直对齐方式。 |
-| <a href="#slide_menu_t_slide_menu_set_min_scale">slide\_menu\_set\_min\_scale</a> |  设置最小缩放比例。 |
-| <a href="#slide_menu_t_slide_menu_set_value">slide\_menu\_set\_value</a> |  设置当前项。 |
+| <a href="#slide_menu_t_slide_menu_cast">slide\_menu\_cast</a> | 转换slide_menu对象(供脚本语言使用)。 |
+| <a href="#slide_menu_t_slide_menu_create">slide\_menu\_create</a> | 创建slide_menu对象 |
+| <a href="#slide_menu_t_slide_menu_set_align_v">slide\_menu\_set\_align\_v</a> | 设置垂直对齐方式。 |
+| <a href="#slide_menu_t_slide_menu_set_min_scale">slide\_menu\_set\_min\_scale</a> | 设置最小缩放比例。 |
+| <a href="#slide_menu_t_slide_menu_set_value">slide\_menu\_set\_value</a> | 设置当前项。 |
 ### 属性
 <p id="slide_menu_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slide_menu_t_align_v">align\_v</a> | align_v_t |  垂直对齐方式。 |
-| <a href="#slide_menu_t_min_scale">min\_scale</a> | float_t |  最小缩放比例。 |
-| <a href="#slide_menu_t_value">value</a> | int32_t |  值。代表当前选中项的索引。 |
+| <a href="#slide_menu_t_align_v">align\_v</a> | align_v_t | 垂直对齐方式。 |
+| <a href="#slide_menu_t_min_scale">min\_scale</a> | float_t | 最小缩放比例。 |
+| <a href="#slide_menu_t_value">value</a> | int32_t | 值。代表当前选中项的索引。 |
 ### 事件
 <p id="slide_menu_t_events">
 

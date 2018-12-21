@@ -9,19 +9,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#pointer_event_t_pointer_event_cast">pointer\_event\_cast</a> |  把event对象转pointer_event_t对象，主要给脚本语言使用。 |
+| <a href="#pointer_event_t_pointer_event_cast">pointer\_event\_cast</a> | 把event对象转pointer_event_t对象，主要给脚本语言使用。 |
 ### 属性
 <p id="pointer_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#pointer_event_t_alt">alt</a> | bool_t |  alt键是否按下。 |
-| <a href="#pointer_event_t_button">button</a> | uint8_t |  button。 |
-| <a href="#pointer_event_t_ctrl">ctrl</a> | bool_t |  ctrl键是否按下。 |
-| <a href="#pointer_event_t_pressed">pressed</a> | bool_t |  指针是否按下。 |
-| <a href="#pointer_event_t_shift">shift</a> | bool_t |  shift键是否按下。 |
-| <a href="#pointer_event_t_x">x</a> | xy_t |  x坐标。 |
-| <a href="#pointer_event_t_y">y</a> | xy_t |  y坐标。 |
+| <a href="#pointer_event_t_alt">alt</a> | bool_t | alt键是否按下。 |
+| <a href="#pointer_event_t_button">button</a> | uint8_t | button。 |
+| <a href="#pointer_event_t_ctrl">ctrl</a> | bool_t | ctrl键是否按下。 |
+| <a href="#pointer_event_t_pressed">pressed</a> | bool_t | 指针是否按下。 |
+| <a href="#pointer_event_t_shift">shift</a> | bool_t | shift键是否按下。 |
+| <a href="#pointer_event_t_x">x</a> | xy_t | x坐标。 |
+| <a href="#pointer_event_t_y">y</a> | xy_t | y坐标。 |
 ### 事件
 <p id="pointer_event_t_events">
 

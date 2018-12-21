@@ -9,27 +9,27 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#im_candidates_event_t_input_method">input\_method</a> |  获取全局输入法对象。 |
-| <a href="#im_candidates_event_t_input_method_commit_text">input\_method\_commit\_text</a> |  提交输入文本。 |
-| <a href="#im_candidates_event_t_input_method_create">input\_method\_create</a> |  创建输入法对象。在具体实现中实现。 |
-| <a href="#im_candidates_event_t_input_method_destroy">input\_method\_destroy</a> |  销毁输入法对象。在具体实现中实现。 |
-| <a href="#im_candidates_event_t_input_method_dispatch">input\_method\_dispatch</a> |  分发一个事件。 |
-| <a href="#im_candidates_event_t_input_method_dispatch_action">input\_method\_dispatch\_action</a> |  软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。 |
-| <a href="#im_candidates_event_t_input_method_dispatch_candidates">input\_method\_dispatch\_candidates</a> |  请求显示候选字。 |
-| <a href="#im_candidates_event_t_input_method_dispatch_key">input\_method\_dispatch\_key</a> |  提交按键。 |
-| <a href="#im_candidates_event_t_input_method_dispatch_to_widget">input\_method\_dispatch\_to\_widget</a> |  分发一个事件当前焦点控件。 |
-| <a href="#im_candidates_event_t_input_method_off">input\_method\_off</a> |  注销指定事件的处理函数。 |
-| <a href="#im_candidates_event_t_input_method_on">input\_method\_on</a> |  注册指定事件的处理函数。 |
-| <a href="#im_candidates_event_t_input_method_request">input\_method\_request</a> |  打开或关闭输入法。 |
-| <a href="#im_candidates_event_t_input_method_set">input\_method\_set</a> |  设置全局输入法对象。 |
-| <a href="#im_candidates_event_t_input_method_update_action_button_info">input\_method\_update\_action\_button\_info</a> |  设置软键盘上的action按钮的信息。 |
+| <a href="#im_candidates_event_t_input_method">input\_method</a> | 获取全局输入法对象。 |
+| <a href="#im_candidates_event_t_input_method_commit_text">input\_method\_commit\_text</a> | 提交输入文本。 |
+| <a href="#im_candidates_event_t_input_method_create">input\_method\_create</a> | 创建输入法对象。在具体实现中实现。 |
+| <a href="#im_candidates_event_t_input_method_destroy">input\_method\_destroy</a> | 销毁输入法对象。在具体实现中实现。 |
+| <a href="#im_candidates_event_t_input_method_dispatch">input\_method\_dispatch</a> | 分发一个事件。 |
+| <a href="#im_candidates_event_t_input_method_dispatch_action">input\_method\_dispatch\_action</a> | 软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。 |
+| <a href="#im_candidates_event_t_input_method_dispatch_candidates">input\_method\_dispatch\_candidates</a> | 请求显示候选字。 |
+| <a href="#im_candidates_event_t_input_method_dispatch_key">input\_method\_dispatch\_key</a> | 提交按键。 |
+| <a href="#im_candidates_event_t_input_method_dispatch_to_widget">input\_method\_dispatch\_to\_widget</a> | 分发一个事件当前焦点控件。 |
+| <a href="#im_candidates_event_t_input_method_off">input\_method\_off</a> | 注销指定事件的处理函数。 |
+| <a href="#im_candidates_event_t_input_method_on">input\_method\_on</a> | 注册指定事件的处理函数。 |
+| <a href="#im_candidates_event_t_input_method_request">input\_method\_request</a> | 打开或关闭输入法。 |
+| <a href="#im_candidates_event_t_input_method_set">input\_method\_set</a> | 设置全局输入法对象。 |
+| <a href="#im_candidates_event_t_input_method_update_action_button_info">input\_method\_update\_action\_button\_info</a> | 设置软键盘上的action按钮的信息。 |
 ### 属性
 <p id="im_candidates_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#im_candidates_event_t_candidates">candidates</a> | char* |  可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0 |
-| <a href="#im_candidates_event_t_candidates_nr">candidates\_nr</a> | uint32_t |  可选的文本的个数。 |
+| <a href="#im_candidates_event_t_candidates">candidates</a> | char* | 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0 |
+| <a href="#im_candidates_event_t_candidates_nr">candidates\_nr</a> | uint32_t | 可选的文本的个数。 |
 ### 事件
 <p id="im_candidates_event_t_events">
 

@@ -8,15 +8,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#dialog_t_dialog_cast">dialog\_cast</a> |  转换dialog对象(供脚本语言使用)。 |
-| <a href="#dialog_t_dialog_create">dialog\_create</a> |  创建dialog对象。 |
-| <a href="#dialog_t_dialog_create_simple">dialog\_create\_simple</a> |  创建dialog对象，同时创建title/client。 |
-| <a href="#dialog_t_dialog_get_client">dialog\_get\_client</a> |  获取client控件。 |
-| <a href="#dialog_t_dialog_get_title">dialog\_get\_title</a> |  获取title控件。 |
-| <a href="#dialog_t_dialog_modal">dialog\_modal</a> |  模态显示对话框。 |
-| <a href="#dialog_t_dialog_open">dialog\_open</a> |  从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。 |
-| <a href="#dialog_t_dialog_quit">dialog\_quit</a> |  退出模态显示。 |
-| <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> |  设置对话框的标题文本。 |
+| <a href="#dialog_t_dialog_cast">dialog\_cast</a> | 转换dialog对象(供脚本语言使用)。 |
+| <a href="#dialog_t_dialog_create">dialog\_create</a> | 创建dialog对象。 |
+| <a href="#dialog_t_dialog_create_simple">dialog\_create\_simple</a> | 创建dialog对象，同时创建title/client。 |
+| <a href="#dialog_t_dialog_get_client">dialog\_get\_client</a> | 获取client控件。 |
+| <a href="#dialog_t_dialog_get_title">dialog\_get\_title</a> | 获取title控件。 |
+| <a href="#dialog_t_dialog_modal">dialog\_modal</a> | 模态显示对话框。 |
+| <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示。 |
+| <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
 ### 属性
 <p id="dialog_t_properties">
 

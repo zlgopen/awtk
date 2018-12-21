@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#group_box_t_group_box_cast">group\_box\_cast</a> |  转换为group_box对象(供脚本语言使用)。 |
-| <a href="#group_box_t_group_box_create">group\_box\_create</a> |  创建group_box对象 |
+| <a href="#group_box_t_group_box_cast">group\_box\_cast</a> | 转换为group_box对象(供脚本语言使用)。 |
+| <a href="#group_box_t_group_box_create">group\_box\_create</a> | 创建group_box对象 |
 ### 属性
 <p id="group_box_t_properties">
 

@@ -3,8 +3,10 @@
 ![image](images/label_t_0.png)
 
 
- 文本控件，用于显示一行或多行文本。
+ 文本控件。用于显示一行或多行文本。
+
  文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。
+
  如需自动换行请使用[rich\_text\_t](rich_text_t.md)控件。
 
  label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于label\_t控件。
@@ -43,14 +45,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#label_t_label_create">label\_create</a> |  创建label对象 |
-| <a href="#label_t_label_set_length">label\_set\_length</a> |  设置最大可显示字符个数。 |
+| <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
+| <a href="#label_t_label_set_length">label\_set\_length</a> | 设置最大可显示字符个数。 |
 ### 属性
 <p id="label_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#label_t_length">length</a> | int32_t |  显示字符的长度(小余0时全部显示)。 |
+| <a href="#label_t_length">length</a> | int32_t | 显示字符的长度(小余0时全部显示)。 |
 ### 事件
 <p id="label_t_events">
 

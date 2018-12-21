@@ -8,28 +8,28 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#image_base_t_image_base_cast">image\_base\_cast</a> |  转换为image_base对象(供脚本语言使用)。 |
-| <a href="#image_base_t_image_set_anchor">image\_set\_anchor</a> |  设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_clickable">image\_set\_clickable</a> |  设置控件是否可以被点击。 |
-| <a href="#image_base_t_image_set_image">image\_set\_image</a> |  设置控件的图片名称。 |
-| <a href="#image_base_t_image_set_rotation">image\_set\_rotation</a> |  设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_scale">image\_set\_scale</a> |  设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_selectable">image\_set\_selectable</a> |  设置控件是否可以被选中。 |
-| <a href="#image_base_t_image_set_selected">image\_set\_selected</a> |  设置控件的选中状态。 |
+| <a href="#image_base_t_image_base_cast">image\_base\_cast</a> | 转换为image_base对象(供脚本语言使用)。 |
+| <a href="#image_base_t_image_set_anchor">image\_set\_anchor</a> | 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_set_clickable">image\_set\_clickable</a> | 设置控件是否可以被点击。 |
+| <a href="#image_base_t_image_set_image">image\_set\_image</a> | 设置控件的图片名称。 |
+| <a href="#image_base_t_image_set_rotation">image\_set\_rotation</a> | 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_set_scale">image\_set\_scale</a> | 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_set_selectable">image\_set\_selectable</a> | 设置控件是否可以被选中。 |
+| <a href="#image_base_t_image_set_selected">image\_set\_selected</a> | 设置控件的选中状态。 |
 ### 属性
 <p id="image_base_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#image_base_t_anchor_x">anchor\_x</a> | float_t |  锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。 |
-| <a href="#image_base_t_anchor_y">anchor\_y</a> | float_t |  锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。 |
-| <a href="#image_base_t_clickable">clickable</a> | bool_t |  点击时，是否触发EVT_CLICK事件。 |
-| <a href="#image_base_t_image">image</a> | char* |  图片的名称。 |
-| <a href="#image_base_t_rotation">rotation</a> | float_t |  控件的旋转角度(幅度)。 |
-| <a href="#image_base_t_scale_x">scale\_x</a> | float_t |  控件在X方向上的缩放比例。 |
-| <a href="#image_base_t_scale_y">scale\_y</a> | float_t |  控件在Y方向上的缩放比例。 |
-| <a href="#image_base_t_selectable">selectable</a> | bool_t |  是否设置选中状态。 |
-| <a href="#image_base_t_selected">selected</a> | bool_t |  当前是否被选中。 |
+| <a href="#image_base_t_anchor_x">anchor\_x</a> | float_t | 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。 |
+| <a href="#image_base_t_anchor_y">anchor\_y</a> | float_t | 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。 |
+| <a href="#image_base_t_clickable">clickable</a> | bool_t | 点击时，是否触发EVT_CLICK事件。 |
+| <a href="#image_base_t_image">image</a> | char* | 图片的名称。 |
+| <a href="#image_base_t_rotation">rotation</a> | float_t | 控件的旋转角度(幅度)。 |
+| <a href="#image_base_t_scale_x">scale\_x</a> | float_t | 控件在X方向上的缩放比例。 |
+| <a href="#image_base_t_scale_y">scale\_y</a> | float_t | 控件在Y方向上的缩放比例。 |
+| <a href="#image_base_t_selectable">selectable</a> | bool_t | 是否设置选中状态。 |
+| <a href="#image_base_t_selected">selected</a> | bool_t | 当前是否被选中。 |
 ### 事件
 <p id="image_base_t_events">
 

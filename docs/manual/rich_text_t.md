@@ -9,14 +9,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#rich_text_t_rich_text_create">rich\_text\_create</a> |  创建rich_text对象 |
-| <a href="#rich_text_t_rich_text_set_text">rich\_text\_set\_text</a> |  设置文本。 |
+| <a href="#rich_text_t_rich_text_create">rich\_text\_create</a> | 创建rich_text对象 |
+| <a href="#rich_text_t_rich_text_set_text">rich\_text\_set\_text</a> | 设置文本。 |
 ### 属性
 <p id="rich_text_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#rich_text_t_line_gap">line\_gap</a> | int32_t |  行间距。 |
+| <a href="#rich_text_t_line_gap">line\_gap</a> | int32_t | 行间距。 |
 ### 事件
 <p id="rich_text_t_events">
 

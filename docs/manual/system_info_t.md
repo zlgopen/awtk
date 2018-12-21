@@ -7,21 +7,21 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#system_info_t_system_info">system\_info</a> |  获取system_info对象。 |
-| <a href="#system_info_t_system_info_init">system\_info\_init</a> |  初始化system_info对象(PC软件才需调用)。 |
+| <a href="#system_info_t_system_info">system\_info</a> | 获取system_info对象。 |
+| <a href="#system_info_t_system_info_init">system\_info\_init</a> | 初始化system_info对象(PC软件才需调用)。 |
 ### 属性
 <p id="system_info_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#system_info_t_app_name">app\_name</a> | const char* |  应用程序的名称。 |
-| <a href="#system_info_t_app_root">app\_root</a> | const char* |  应用程序的根目录，用于定位资源文件。 |
-| <a href="#system_info_t_app_type">app\_type</a> | app_type_t |  应用程序的类型。 |
-| <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float_t |  显示屏的密度。 |
-| <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32_t |  显示屏的高度。 |
-| <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd_orientation_t |  显示屏的旋转角度。 |
-| <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd_type_t |  显示屏的类型。 |
-| <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32_t |  显示屏的宽度。 |
+| <a href="#system_info_t_app_name">app\_name</a> | const char* | 应用程序的名称。 |
+| <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |
+| <a href="#system_info_t_app_type">app\_type</a> | app_type_t | 应用程序的类型。 |
+| <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float_t | 显示屏的密度。 |
+| <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32_t | 显示屏的高度。 |
+| <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd_orientation_t | 显示屏的旋转角度。 |
+| <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd_type_t | 显示屏的类型。 |
+| <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32_t | 显示屏的宽度。 |
 ### 事件
 <p id="system_info_t_events">
 

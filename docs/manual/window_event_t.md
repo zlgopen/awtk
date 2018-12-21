@@ -9,15 +9,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_event_t_event_init">event\_init</a> |  初始化事件。 |
-| <a href="#window_event_t_pointer_event_rotate">pointer\_event\_rotate</a> |  根据屏幕旋转方向修正pointer_event中的坐标。 |
-| <a href="#window_event_t_window_event_cast">window\_event\_cast</a> |  把event对象转window_event_t对象。主要给脚本语言使用。 |
+| <a href="#window_event_t_event_init">event\_init</a> | 初始化事件。 |
+| <a href="#window_event_t_pointer_event_rotate">pointer\_event\_rotate</a> | 根据屏幕旋转方向修正pointer_event中的坐标。 |
+| <a href="#window_event_t_window_event_cast">window\_event\_cast</a> | 把event对象转window_event_t对象。主要给脚本语言使用。 |
 ### 属性
 <p id="window_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#window_event_t_window">window</a> | widget_t* |  canvas。 |
+| <a href="#window_event_t_window">window</a> | widget_t* | canvas。 |
 ### 事件
 <p id="window_event_t_events">
 

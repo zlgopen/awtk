@@ -7,25 +7,25 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#widget_animator_t_widget_animator_destroy">widget\_animator\_destroy</a> |  销毁animator对象。 |
-| <a href="#widget_animator_t_widget_animator_init">widget\_animator\_init</a> |  初始化。仅供子类内部使用。 |
-| <a href="#widget_animator_t_widget_animator_off">widget\_animator\_off</a> |  注销指定事件的处理函数。 |
-| <a href="#widget_animator_t_widget_animator_on">widget\_animator\_on</a> |  注册指定事件的处理函数。 |
-| <a href="#widget_animator_t_widget_animator_pause">widget\_animator\_pause</a> |  暂停动画。 |
-| <a href="#widget_animator_t_widget_animator_set_destroy_when_done">widget\_animator\_set\_destroy\_when\_done</a> |  设置完成时是否自动销毁动画对象(缺省销毁)。 |
-| <a href="#widget_animator_t_widget_animator_set_name">widget\_animator\_set\_name</a> |  设置名称。 |
-| <a href="#widget_animator_t_widget_animator_set_repeat">widget\_animator\_set\_repeat</a> |  设置为重复模式。 |
-| <a href="#widget_animator_t_widget_animator_set_reversed">widget\_animator\_set\_reversed</a> |  设置为逆向模式。 |
-| <a href="#widget_animator_t_widget_animator_set_time_scale">widget\_animator\_set\_time\_scale</a> |  设置时间倍率，用于实现时间加速减速和停滞的功能。 |
-| <a href="#widget_animator_t_widget_animator_set_yoyo">widget\_animator\_set\_yoyo</a> |  设置为yoyo模式。 |
-| <a href="#widget_animator_t_widget_animator_start">widget\_animator\_start</a> |  启动动画。 |
-| <a href="#widget_animator_t_widget_animator_stop">widget\_animator\_stop</a> |  停止动画。 |
+| <a href="#widget_animator_t_widget_animator_destroy">widget\_animator\_destroy</a> | 销毁animator对象。 |
+| <a href="#widget_animator_t_widget_animator_init">widget\_animator\_init</a> | 初始化。仅供子类内部使用。 |
+| <a href="#widget_animator_t_widget_animator_off">widget\_animator\_off</a> | 注销指定事件的处理函数。 |
+| <a href="#widget_animator_t_widget_animator_on">widget\_animator\_on</a> | 注册指定事件的处理函数。 |
+| <a href="#widget_animator_t_widget_animator_pause">widget\_animator\_pause</a> | 暂停动画。 |
+| <a href="#widget_animator_t_widget_animator_set_destroy_when_done">widget\_animator\_set\_destroy\_when\_done</a> | 设置完成时是否自动销毁动画对象(缺省销毁)。 |
+| <a href="#widget_animator_t_widget_animator_set_name">widget\_animator\_set\_name</a> | 设置名称。 |
+| <a href="#widget_animator_t_widget_animator_set_repeat">widget\_animator\_set\_repeat</a> | 设置为重复模式。 |
+| <a href="#widget_animator_t_widget_animator_set_reversed">widget\_animator\_set\_reversed</a> | 设置为逆向模式。 |
+| <a href="#widget_animator_t_widget_animator_set_time_scale">widget\_animator\_set\_time\_scale</a> | 设置时间倍率，用于实现时间加速减速和停滞的功能。 |
+| <a href="#widget_animator_t_widget_animator_set_yoyo">widget\_animator\_set\_yoyo</a> | 设置为yoyo模式。 |
+| <a href="#widget_animator_t_widget_animator_start">widget\_animator\_start</a> | 启动动画。 |
+| <a href="#widget_animator_t_widget_animator_stop">widget\_animator\_stop</a> | 停止动画。 |
 ### 属性
 <p id="widget_animator_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#widget_animator_t_name">name</a> | char* |  名称。 |
+| <a href="#widget_animator_t_name">name</a> | char* | 名称。 |
 ### 事件
 <p id="widget_animator_t_events">
 

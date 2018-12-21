@@ -8,28 +8,28 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#image_animation_t_image_animation_cast">image\_animation\_cast</a> |  转换为image_animation对象(供脚本语言使用)。 |
-| <a href="#image_animation_t_image_animation_create">image\_animation\_create</a> |  创建image_animation对象 |
-| <a href="#image_animation_t_image_animation_pause">image\_animation\_pause</a> |  暂停。 |
-| <a href="#image_animation_t_image_animation_play">image\_animation\_play</a> |  播放。 |
-| <a href="#image_animation_t_image_animation_set_auto_play">image\_animation\_set\_auto\_play</a> |  设置是否自动播放。 |
-| <a href="#image_animation_t_image_animation_set_delay">image\_animation\_set\_delay</a> |  设置延迟播放时间(仅适用于自动播放)。 |
-| <a href="#image_animation_t_image_animation_set_image">image\_animation\_set\_image</a> |  设置图片前缀。 |
-| <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> |  设置播放间隔时间。 |
-| <a href="#image_animation_t_image_animation_set_loop">image\_animation\_set\_loop</a> |  设置是否循环播放。 |
-| <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> |  设置播放序列。比如image为"fire"，sequence为"123", 将依次播放"fire1", "fire2", "fire3"。 |
-| <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> |  停止(并重置index为0)。 |
+| <a href="#image_animation_t_image_animation_cast">image\_animation\_cast</a> | 转换为image_animation对象(供脚本语言使用)。 |
+| <a href="#image_animation_t_image_animation_create">image\_animation\_create</a> | 创建image_animation对象 |
+| <a href="#image_animation_t_image_animation_pause">image\_animation\_pause</a> | 暂停。 |
+| <a href="#image_animation_t_image_animation_play">image\_animation\_play</a> | 播放。 |
+| <a href="#image_animation_t_image_animation_set_auto_play">image\_animation\_set\_auto\_play</a> | 设置是否自动播放。 |
+| <a href="#image_animation_t_image_animation_set_delay">image\_animation\_set\_delay</a> | 设置延迟播放时间(仅适用于自动播放)。 |
+| <a href="#image_animation_t_image_animation_set_image">image\_animation\_set\_image</a> | 设置图片前缀。 |
+| <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> | 设置播放间隔时间。 |
+| <a href="#image_animation_t_image_animation_set_loop">image\_animation\_set\_loop</a> | 设置是否循环播放。 |
+| <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> | 设置播放序列。比如image为"fire"，sequence为"123", 将依次播放"fire1", "fire2", "fire3"。 |
+| <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> | 停止(并重置index为0)。 |
 ### 属性
 <p id="image_animation_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#image_animation_t_auto_play">auto\_play</a> | bool_t |  是否自动播放。 |
-| <a href="#image_animation_t_delay">delay</a> | uint32_t |  自动播放时延迟播放的时间(毫秒)。 |
-| <a href="#image_animation_t_image">image</a> | char* |  图片名称的前缀。 |
-| <a href="#image_animation_t_interval">interval</a> | uint32_t |  每张图片播放的时间(毫秒)。 |
-| <a href="#image_animation_t_loop">loop</a> | bool_t |  是否循环播放。 |
-| <a href="#image_animation_t_sequence">sequence</a> | char* |  播放的序列，字符可选值为:0-9,a-z,A-Z。 |
+| <a href="#image_animation_t_auto_play">auto\_play</a> | bool_t | 是否自动播放。 |
+| <a href="#image_animation_t_delay">delay</a> | uint32_t | 自动播放时延迟播放的时间(毫秒)。 |
+| <a href="#image_animation_t_image">image</a> | char* | 图片名称的前缀。 |
+| <a href="#image_animation_t_interval">interval</a> | uint32_t | 每张图片播放的时间(毫秒)。 |
+| <a href="#image_animation_t_loop">loop</a> | bool_t | 是否循环播放。 |
+| <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为:0-9,a-z,A-Z。 |
 ### 事件
 <p id="image_animation_t_events">
 

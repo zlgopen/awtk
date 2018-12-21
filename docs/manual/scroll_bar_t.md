@@ -8,26 +8,26 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#scroll_bar_t_scroll_bar_add_delta">scroll\_bar\_add\_delta</a> |  在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。 |
-| <a href="#scroll_bar_t_scroll_bar_cast">scroll\_bar\_cast</a> |  转换为scroll_bar对象(供脚本语言使用)。 |
-| <a href="#scroll_bar_t_scroll_bar_create">scroll\_bar\_create</a> |  创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条) |
-| <a href="#scroll_bar_t_scroll_bar_create_desktop">scroll\_bar\_create\_desktop</a> |  创建desktop风格的scroll_bar对象 |
-| <a href="#scroll_bar_t_scroll_bar_create_mobile">scroll\_bar\_create\_mobile</a> |  创建mobile风格的scroll_bar对象 |
-| <a href="#scroll_bar_t_scroll_bar_is_mobile">scroll\_bar\_is\_mobile</a> |  判断是否是mobile风格的滚动条。 |
-| <a href="#scroll_bar_t_scroll_bar_scroll_delta">scroll\_bar\_scroll\_delta</a> |  在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。 |
-| <a href="#scroll_bar_t_scroll_bar_scroll_to">scroll\_bar\_scroll\_to</a> |  滚动到指定的值。 |
-| <a href="#scroll_bar_t_scroll_bar_set_params">scroll\_bar\_set\_params</a> |  设置参数。 |
-| <a href="#scroll_bar_t_scroll_bar_set_value">scroll\_bar\_set\_value</a> |  设置值，并触发EVT_VALUE_CHANGED事件。 |
-| <a href="#scroll_bar_t_scroll_bar_set_value_only">scroll\_bar\_set\_value\_only</a> |  设置值，但不触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_add_delta">scroll\_bar\_add\_delta</a> | 在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_cast">scroll\_bar\_cast</a> | 转换为scroll_bar对象(供脚本语言使用)。 |
+| <a href="#scroll_bar_t_scroll_bar_create">scroll\_bar\_create</a> | 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条) |
+| <a href="#scroll_bar_t_scroll_bar_create_desktop">scroll\_bar\_create\_desktop</a> | 创建desktop风格的scroll_bar对象 |
+| <a href="#scroll_bar_t_scroll_bar_create_mobile">scroll\_bar\_create\_mobile</a> | 创建mobile风格的scroll_bar对象 |
+| <a href="#scroll_bar_t_scroll_bar_is_mobile">scroll\_bar\_is\_mobile</a> | 判断是否是mobile风格的滚动条。 |
+| <a href="#scroll_bar_t_scroll_bar_scroll_delta">scroll\_bar\_scroll\_delta</a> | 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_scroll_to">scroll\_bar\_scroll\_to</a> | 滚动到指定的值。 |
+| <a href="#scroll_bar_t_scroll_bar_set_params">scroll\_bar\_set\_params</a> | 设置参数。 |
+| <a href="#scroll_bar_t_scroll_bar_set_value">scroll\_bar\_set\_value</a> | 设置值，并触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_set_value_only">scroll\_bar\_set\_value\_only</a> | 设置值，但不触发EVT_VALUE_CHANGED事件。 |
 ### 属性
 <p id="scroll_bar_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#scroll_bar_t_animatable">animatable</a> | bool_t |  滚动时是否启用动画。 |
-| <a href="#scroll_bar_t_row">row</a> | int32_t |  行的高度。 |
-| <a href="#scroll_bar_t_value">value</a> | int32_t |  当前的值。 |
-| <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32_t |  虚拟宽度或高度。 |
+| <a href="#scroll_bar_t_animatable">animatable</a> | bool_t | 滚动时是否启用动画。 |
+| <a href="#scroll_bar_t_row">row</a> | int32_t | 行的高度。 |
+| <a href="#scroll_bar_t_value">value</a> | int32_t | 当前的值。 |
+| <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32_t | 虚拟宽度或高度。 |
 ### 事件
 <p id="scroll_bar_t_events">
 

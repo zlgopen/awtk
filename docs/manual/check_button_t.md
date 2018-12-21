@@ -8,16 +8,16 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#check_button_t_check_button_cast">check\_button\_cast</a> |  转换check_button对象(供脚本语言使用)。 |
-| <a href="#check_button_t_check_button_create">check\_button\_create</a> |  创建check_button对象 |
-| <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> |  创建check_button对象 |
-| <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> |  设置控件的值。 |
+| <a href="#check_button_t_check_button_cast">check\_button\_cast</a> | 转换check_button对象(供脚本语言使用)。 |
+| <a href="#check_button_t_check_button_create">check\_button\_create</a> | 创建check_button对象 |
+| <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建check_button对象 |
+| <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="check_button_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#check_button_t_value">value</a> | bool_t |  值。 |
+| <a href="#check_button_t_value">value</a> | bool_t | 值。 |
 ### 事件
 <p id="check_button_t_events">
 

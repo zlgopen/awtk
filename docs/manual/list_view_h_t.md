@@ -8,17 +8,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#list_view_h_t_list_view_h_cast">list\_view\_h\_cast</a> |  转换为list_view_h对象(供脚本语言使用)。 |
-| <a href="#list_view_h_t_list_view_h_create">list\_view\_h\_create</a> |  创建list_view_h对象 |
-| <a href="#list_view_h_t_list_view_h_set_item_width">list\_view\_h\_set\_item\_width</a> |  设置列表项的宽度。 |
-| <a href="#list_view_h_t_list_view_h_set_spacing">list\_view\_h\_set\_spacing</a> |  设置列表项的间距。 |
+| <a href="#list_view_h_t_list_view_h_cast">list\_view\_h\_cast</a> | 转换为list_view_h对象(供脚本语言使用)。 |
+| <a href="#list_view_h_t_list_view_h_create">list\_view\_h\_create</a> | 创建list_view_h对象 |
+| <a href="#list_view_h_t_list_view_h_set_item_width">list\_view\_h\_set\_item\_width</a> | 设置列表项的宽度。 |
+| <a href="#list_view_h_t_list_view_h_set_spacing">list\_view\_h\_set\_spacing</a> | 设置列表项的间距。 |
 ### 属性
 <p id="list_view_h_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#list_view_h_t_item_width">item\_width</a> | int32_t |  列表项的宽度。 |
-| <a href="#list_view_h_t_spacing">spacing</a> | int32_t |  间距。 |
+| <a href="#list_view_h_t_item_width">item\_width</a> | int32_t | 列表项的宽度。 |
+| <a href="#list_view_h_t_spacing">spacing</a> | int32_t | 间距。 |
 ### 事件
 <p id="list_view_h_t_events">
 

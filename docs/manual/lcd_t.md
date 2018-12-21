@@ -6,48 +6,48 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#lcd_t_lcd_begin_frame">lcd\_begin\_frame</a> |  准备绘制。 |
-| <a href="#lcd_t_lcd_draw_glyph">lcd\_draw\_glyph</a> |  绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。 |
-| <a href="#lcd_t_lcd_draw_hline">lcd\_draw\_hline</a> |  绘制一条水平线。 |
-| <a href="#lcd_t_lcd_draw_image">lcd\_draw\_image</a> |  绘制图片。 |
-| <a href="#lcd_t_lcd_draw_image_matrix">lcd\_draw\_image\_matrix</a> |  绘制图片。 |
-| <a href="#lcd_t_lcd_draw_points">lcd\_draw\_points</a> |  绘制一组点。 |
-| <a href="#lcd_t_lcd_draw_text">lcd\_draw\_text</a> |  绘制字符。 |
-| <a href="#lcd_t_lcd_draw_vline">lcd\_draw\_vline</a> |  绘制一条垂直线。 |
-| <a href="#lcd_t_lcd_end_frame">lcd\_end\_frame</a> |  完成绘制，同步到显示设备。 |
-| <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> |  绘制实心矩形。 |
-| <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> |  获取裁剪区域。 |
-| <a href="#lcd_t_lcd_get_point_color_t">lcd\_get\_point\_color\_t</a> |  获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
-| <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> |  获取矢量图canvas。 |
-| <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> |  判读lcd是否支持swap。 |
-| <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> |  测量字符串占用的宽度。 |
-| <a href="#lcd_t_lcd_resize">lcd\_resize</a> |  基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 |
-| <a href="#lcd_t_lcd_set_clip_rect">lcd\_set\_clip\_rect</a> |  设置裁剪区域。 |
-| <a href="#lcd_t_lcd_set_fill_color">lcd\_set\_fill\_color</a> |  设置填充颜色。 |
-| <a href="#lcd_t_lcd_set_font_name">lcd\_set\_font\_name</a> |  设置字体名称。 |
-| <a href="#lcd_t_lcd_set_font_size">lcd\_set\_font\_size</a> |  设置字体大小。 |
-| <a href="#lcd_t_lcd_set_global_alpha">lcd\_set\_global\_alpha</a> |  设置全局alpha。 |
-| <a href="#lcd_t_lcd_set_stroke_color">lcd\_set\_stroke\_color</a> |  设置线条颜色。 |
-| <a href="#lcd_t_lcd_set_text_color">lcd\_set\_text\_color</a> |  设置文本颜色。 |
-| <a href="#lcd_t_lcd_stroke_rect">lcd\_stroke\_rect</a> |  绘制矩形。 |
-| <a href="#lcd_t_lcd_take_snapshot">lcd\_take\_snapshot</a> |  拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。 |
+| <a href="#lcd_t_lcd_begin_frame">lcd\_begin\_frame</a> | 准备绘制。 |
+| <a href="#lcd_t_lcd_draw_glyph">lcd\_draw\_glyph</a> | 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。 |
+| <a href="#lcd_t_lcd_draw_hline">lcd\_draw\_hline</a> | 绘制一条水平线。 |
+| <a href="#lcd_t_lcd_draw_image">lcd\_draw\_image</a> | 绘制图片。 |
+| <a href="#lcd_t_lcd_draw_image_matrix">lcd\_draw\_image\_matrix</a> | 绘制图片。 |
+| <a href="#lcd_t_lcd_draw_points">lcd\_draw\_points</a> | 绘制一组点。 |
+| <a href="#lcd_t_lcd_draw_text">lcd\_draw\_text</a> | 绘制字符。 |
+| <a href="#lcd_t_lcd_draw_vline">lcd\_draw\_vline</a> | 绘制一条垂直线。 |
+| <a href="#lcd_t_lcd_end_frame">lcd\_end\_frame</a> | 完成绘制，同步到显示设备。 |
+| <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> | 绘制实心矩形。 |
+| <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
+| <a href="#lcd_t_lcd_get_point_color_t">lcd\_get\_point\_color\_t</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
+| <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
+| <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
+| <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> | 测量字符串占用的宽度。 |
+| <a href="#lcd_t_lcd_resize">lcd\_resize</a> | 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 |
+| <a href="#lcd_t_lcd_set_clip_rect">lcd\_set\_clip\_rect</a> | 设置裁剪区域。 |
+| <a href="#lcd_t_lcd_set_fill_color">lcd\_set\_fill\_color</a> | 设置填充颜色。 |
+| <a href="#lcd_t_lcd_set_font_name">lcd\_set\_font\_name</a> | 设置字体名称。 |
+| <a href="#lcd_t_lcd_set_font_size">lcd\_set\_font\_size</a> | 设置字体大小。 |
+| <a href="#lcd_t_lcd_set_global_alpha">lcd\_set\_global\_alpha</a> | 设置全局alpha。 |
+| <a href="#lcd_t_lcd_set_stroke_color">lcd\_set\_stroke\_color</a> | 设置线条颜色。 |
+| <a href="#lcd_t_lcd_set_text_color">lcd\_set\_text\_color</a> | 设置文本颜色。 |
+| <a href="#lcd_t_lcd_stroke_rect">lcd\_stroke\_rect</a> | 绘制矩形。 |
+| <a href="#lcd_t_lcd_take_snapshot">lcd\_take\_snapshot</a> | 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。 |
 ### 属性
 <p id="lcd_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#lcd_t_draw_mode">draw\_mode</a> | lcd_draw_mode_t |  绘制模式。 |
-| <a href="#lcd_t_fill_color">fill\_color</a> | color_t |  填充颜色 |
-| <a href="#lcd_t_font_name">font\_name</a> | char* |  字体名称。 |
-| <a href="#lcd_t_font_size">font\_size</a> | uint32_t |  字体大小。 |
-| <a href="#lcd_t_global_alpha">global\_alpha</a> | uint8_t |  全局alpha |
-| <a href="#lcd_t_height">height</a> | wh_t |  屏幕的高度 |
-| <a href="#lcd_t_ratio">ratio</a> | float_t |  屏幕密度。 |
-| <a href="#lcd_t_stroke_color">stroke\_color</a> | color_t |  线条颜色 |
-| <a href="#lcd_t_support_dirty_rect">support\_dirty\_rect</a> | bool_t |  是否支持脏矩形。 |
-| <a href="#lcd_t_text_color">text\_color</a> | color_t |  文本颜色 |
-| <a href="#lcd_t_type">type</a> | lcd_type_t |  LCD的类型。 |
-| <a href="#lcd_t_w">w</a> | wh_t |  屏幕的宽度 |
+| <a href="#lcd_t_draw_mode">draw\_mode</a> | lcd_draw_mode_t | 绘制模式。 |
+| <a href="#lcd_t_fill_color">fill\_color</a> | color_t | 填充颜色 |
+| <a href="#lcd_t_font_name">font\_name</a> | char* | 字体名称。 |
+| <a href="#lcd_t_font_size">font\_size</a> | uint32_t | 字体大小。 |
+| <a href="#lcd_t_global_alpha">global\_alpha</a> | uint8_t | 全局alpha |
+| <a href="#lcd_t_height">height</a> | wh_t | 屏幕的高度 |
+| <a href="#lcd_t_ratio">ratio</a> | float_t | 屏幕密度。 |
+| <a href="#lcd_t_stroke_color">stroke\_color</a> | color_t | 线条颜色 |
+| <a href="#lcd_t_support_dirty_rect">support\_dirty\_rect</a> | bool_t | 是否支持脏矩形。 |
+| <a href="#lcd_t_text_color">text\_color</a> | color_t | 文本颜色 |
+| <a href="#lcd_t_type">type</a> | lcd_type_t | LCD的类型。 |
+| <a href="#lcd_t_w">w</a> | wh_t | 屏幕的宽度 |
 ### 事件
 <p id="lcd_t_events">
 

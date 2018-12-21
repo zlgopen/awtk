@@ -7,8 +7,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#widget_animator_prop_t_widget_animator_prop_create">widget\_animator\_prop\_create</a> |  创建单属性动画对象。 |
-| <a href="#widget_animator_prop_t_widget_animator_prop_set_params">widget\_animator\_prop\_set\_params</a> |  设置动画对象的参数。 |
+| <a href="#widget_animator_prop_t_widget_animator_prop_create">widget\_animator\_prop\_create</a> | 创建单属性动画对象。 |
+| <a href="#widget_animator_prop_t_widget_animator_prop_set_params">widget\_animator\_prop\_set\_params</a> | 设置动画对象的参数。 |
 ### 属性
 <p id="widget_animator_prop_t_properties">
 

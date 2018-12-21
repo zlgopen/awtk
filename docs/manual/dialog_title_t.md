@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#dialog_title_t_dialog_title_cast">dialog\_title\_cast</a> |  转换为dialog_title对象(供脚本语言使用)。 |
-| <a href="#dialog_title_t_dialog_title_create">dialog\_title\_create</a> |  创建dialog对象。 |
+| <a href="#dialog_title_t_dialog_title_cast">dialog\_title\_cast</a> | 转换为dialog_title对象(供脚本语言使用)。 |
+| <a href="#dialog_title_t_dialog_title_create">dialog\_title\_create</a> | 创建dialog对象。 |
 ### 属性
 <p id="dialog_title_t_properties">
 

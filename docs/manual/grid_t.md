@@ -9,8 +9,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#grid_t_grid_cast">grid\_cast</a> |  转换为grid对象(供脚本语言使用)。 |
-| <a href="#grid_t_grid_create">grid\_create</a> |  创建grid对象 |
+| <a href="#grid_t_grid_cast">grid\_cast</a> | 转换为grid对象(供脚本语言使用)。 |
+| <a href="#grid_t_grid_create">grid\_create</a> | 创建grid对象 |
 ### 属性
 <p id="grid_t_properties">
 

@@ -12,19 +12,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#image_value_t_image_value_cast">image\_value\_cast</a> |  转换为image_value对象(供脚本语言使用)。 |
-| <a href="#image_value_t_image_value_create">image\_value\_create</a> |  创建image_value对象 |
-| <a href="#image_value_t_image_value_set_format">image\_value\_set\_format</a> |  设置格式。 |
-| <a href="#image_value_t_image_value_set_image">image\_value\_set\_image</a> |  设置图片前缀。 |
-| <a href="#image_value_t_image_value_set_value">image\_value\_set\_value</a> |  设置值。 |
+| <a href="#image_value_t_image_value_cast">image\_value\_cast</a> | 转换为image_value对象(供脚本语言使用)。 |
+| <a href="#image_value_t_image_value_create">image\_value\_create</a> | 创建image_value对象 |
+| <a href="#image_value_t_image_value_set_format">image\_value\_set\_format</a> | 设置格式。 |
+| <a href="#image_value_t_image_value_set_image">image\_value\_set\_image</a> | 设置图片前缀。 |
+| <a href="#image_value_t_image_value_set_value">image\_value\_set\_value</a> | 设置值。 |
 ### 属性
 <p id="image_value_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#image_value_t_format">format</a> | char* |  数值到字符串转换时的格式，缺省为"%d"。 |
-| <a href="#image_value_t_image">image</a> | char* |  图片名称的前缀。 |
-| <a href="#image_value_t_value">value</a> | float_t |  值。 |
+| <a href="#image_value_t_format">format</a> | char* | 数值到字符串转换时的格式，缺省为"%d"。 |
+| <a href="#image_value_t_image">image</a> | char* | 图片名称的前缀。 |
+| <a href="#image_value_t_value">value</a> | float_t | 值。 |
 ### 事件
 <p id="image_value_t_events">
 

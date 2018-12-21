@@ -8,14 +8,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tab_button_group_t_tab_button_group_cast">tab\_button\_group\_cast</a> |  转换tab_button_group对象(供脚本语言使用)。 |
-| <a href="#tab_button_group_t_tab_button_group_create">tab\_button\_group\_create</a> |  创建tab_button_group对象 |
+| <a href="#tab_button_group_t_tab_button_group_cast">tab\_button\_group\_cast</a> | 转换tab_button_group对象(供脚本语言使用)。 |
+| <a href="#tab_button_group_t_tab_button_group_create">tab\_button\_group\_create</a> | 创建tab_button_group对象 |
 ### 属性
 <p id="tab_button_group_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#tab_button_group_t_compact">compact</a> | bool_t |  紧凑型排版子控件。 |
+| <a href="#tab_button_group_t_compact">compact</a> | bool_t | 紧凑型排版子控件。 |
 ### 事件
 <p id="tab_button_group_t_events">
 

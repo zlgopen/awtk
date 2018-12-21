@@ -8,11 +8,11 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_t_window_cast">window\_cast</a> |  转换为window对象(供脚本语言使用)。 |
-| <a href="#window_t_window_close">window\_close</a> |  关闭窗口。 |
-| <a href="#window_t_window_create">window\_create</a> |  创建window对象 |
-| <a href="#window_t_window_open">window\_open</a> |  从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
-| <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> |  从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#window_t_window_cast">window\_cast</a> | 转换为window对象(供脚本语言使用)。 |
+| <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
+| <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
+| <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 ### 属性
 <p id="window_t_properties">
 

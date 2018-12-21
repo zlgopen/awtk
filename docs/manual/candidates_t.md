@@ -8,7 +8,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#candidates_t_candidates_create">candidates\_create</a> |  创建candidates对象 |
+| <a href="#candidates_t_candidates_create">candidates\_create</a> | 创建candidates对象 |
 ### 属性
 <p id="candidates_t_properties">
 

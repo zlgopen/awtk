@@ -8,19 +8,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tab_button_t_tab_button_cast">tab\_button\_cast</a> |  转换tab_button对象(供脚本语言使用)。 |
-| <a href="#tab_button_t_tab_button_create">tab\_button\_create</a> |  创建tab_button对象 |
-| <a href="#tab_button_t_tab_button_set_active_icon">tab\_button\_set\_active\_icon</a> |  设置控件的active图标。 |
-| <a href="#tab_button_t_tab_button_set_icon">tab\_button\_set\_icon</a> |  设置控件的图标。 |
-| <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> |  设置控件的值。 |
+| <a href="#tab_button_t_tab_button_cast">tab\_button\_cast</a> | 转换tab_button对象(供脚本语言使用)。 |
+| <a href="#tab_button_t_tab_button_create">tab\_button\_create</a> | 创建tab_button对象 |
+| <a href="#tab_button_t_tab_button_set_active_icon">tab\_button\_set\_active\_icon</a> | 设置控件的active图标。 |
+| <a href="#tab_button_t_tab_button_set_icon">tab\_button\_set\_icon</a> | 设置控件的图标。 |
+| <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="tab_button_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#tab_button_t_active_icon">active\_icon</a> | char* |  当前项的图标的名称。 |
-| <a href="#tab_button_t_icon">icon</a> | char* |  非当前项的图标的名称。 |
-| <a href="#tab_button_t_value">value</a> | bool_t |  值。 |
+| <a href="#tab_button_t_active_icon">active\_icon</a> | char* | 当前项的图标的名称。 |
+| <a href="#tab_button_t_icon">icon</a> | char* | 非当前项的图标的名称。 |
+| <a href="#tab_button_t_value">value</a> | bool_t | 值。 |
 ### 事件
 <p id="tab_button_t_events">
 

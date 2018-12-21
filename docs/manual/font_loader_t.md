@@ -7,7 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#font_loader_t_font_loader_load">font\_loader\_load</a> |  加载字体。 |
+| <a href="#font_loader_t_font_loader_load">font\_loader\_load</a> | 加载字体。 |
 ### 属性
 <p id="font_loader_t_properties">
 

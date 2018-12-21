@@ -8,18 +8,18 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#slide_view_t_slide_view_cast">slide\_view\_cast</a> |  转换为slide_view对象(供脚本语言使用)。 |
-| <a href="#slide_view_t_slide_view_create">slide\_view\_create</a> |  创建slide_view对象 |
-| <a href="#slide_view_t_slide_view_set_active">slide\_view\_set\_active</a> |  设置当前页的序号。 |
-| <a href="#slide_view_t_slide_view_set_auto_play">slide\_view\_set\_auto\_play</a> |  设置为自动播放模式。 |
-| <a href="#slide_view_t_slide_view_set_vertical">slide\_view\_set\_vertical</a> |  设置为上下滑动(缺省为左右滑动)。 |
+| <a href="#slide_view_t_slide_view_cast">slide\_view\_cast</a> | 转换为slide_view对象(供脚本语言使用)。 |
+| <a href="#slide_view_t_slide_view_create">slide\_view\_create</a> | 创建slide_view对象 |
+| <a href="#slide_view_t_slide_view_set_active">slide\_view\_set\_active</a> | 设置当前页的序号。 |
+| <a href="#slide_view_t_slide_view_set_auto_play">slide\_view\_set\_auto\_play</a> | 设置为自动播放模式。 |
+| <a href="#slide_view_t_slide_view_set_vertical">slide\_view\_set\_vertical</a> | 设置为上下滑动(缺省为左右滑动)。 |
 ### 属性
 <p id="slide_view_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slide_view_t_auto_play">auto\_play</a> | uint16_t |  自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
-| <a href="#slide_view_t_vertical">vertical</a> | bool_t |  是否为上下滑动模式。 |
+| <a href="#slide_view_t_auto_play">auto\_play</a> | uint16_t | 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
+| <a href="#slide_view_t_vertical">vertical</a> | bool_t | 是否为上下滑动模式。 |
 ### 事件
 <p id="slide_view_t_events">
 

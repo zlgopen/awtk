@@ -7,10 +7,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_t_tk_init">tk\_init</a> |  初始化TK。 |
-| <a href="#tk_t_tk_quit">tk\_quit</a> |  退出TK事件主循环。 |
-| <a href="#tk_t_tk_run">tk\_run</a> |  进入TK事件主循环。 |
-| <a href="#tk_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> |  设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。 |
+| <a href="#tk_t_tk_init">tk\_init</a> | 初始化TK。 |
+| <a href="#tk_t_tk_quit">tk\_quit</a> | 退出TK事件主循环。 |
+| <a href="#tk_t_tk_run">tk\_run</a> | 进入TK事件主循环。 |
+| <a href="#tk_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。 |
 ### 属性
 <p id="tk_t_properties">
 

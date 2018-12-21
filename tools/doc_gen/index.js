@@ -265,7 +265,7 @@ class ApiGenerator {
 
       cls.methods.forEach((iter) => {
         if (!isPrivate(iter)) {
-          result += `| ${genA(cls.name, iter)} | ${iter.desc.split('\n')[0]} |\n`;
+          result += `| ${genA(cls.name, iter)} | ${iter.desc.split('\n')[0].trim()} |\n`;
         }
       });
     }
@@ -303,7 +303,7 @@ class ApiGenerator {
 
       cls.properties.forEach((p) => {
         if (!isPrivate(p)) {
-          result += `| ${genA(cls.name, p)} | ${p.type} | ${p.desc.split('\n')[0]} |\n`;
+          result += `| ${genA(cls.name, p)} | ${p.type} | ${p.desc.split('\n')[0].trim()} |\n`;
         }
       });
     }

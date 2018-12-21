@@ -8,26 +8,26 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#combo_box_t_combo_box_append_option">combo\_box\_append\_option</a> |  追加一个选项。 |
-| <a href="#combo_box_t_combo_box_cast">combo\_box\_cast</a> |  转换combo_box对象(供脚本语言使用)。 |
-| <a href="#combo_box_t_combo_box_count_options">combo\_box\_count\_options</a> |  获取选项个数。 |
-| <a href="#combo_box_t_combo_box_create">combo\_box\_create</a> |  创建combo_box对象 |
-| <a href="#combo_box_t_combo_box_get_option">combo\_box\_get\_option</a> |  获取第index个选项。 |
-| <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> |  获取combo_box的文本。 |
-| <a href="#combo_box_t_combo_box_get_value">combo\_box\_get\_value</a> |  获取combo_box的值。 |
-| <a href="#combo_box_t_combo_box_reset_options">combo\_box\_reset\_options</a> |  重置所有选项。 |
-| <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> |  点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
-| <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> |  设置选项。 |
-| <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> |  设置第index个选项为当前选中的选项。 |
+| <a href="#combo_box_t_combo_box_append_option">combo\_box\_append\_option</a> | 追加一个选项。 |
+| <a href="#combo_box_t_combo_box_cast">combo\_box\_cast</a> | 转换combo_box对象(供脚本语言使用)。 |
+| <a href="#combo_box_t_combo_box_count_options">combo\_box\_count\_options</a> | 获取选项个数。 |
+| <a href="#combo_box_t_combo_box_create">combo\_box\_create</a> | 创建combo_box对象 |
+| <a href="#combo_box_t_combo_box_get_option">combo\_box\_get\_option</a> | 获取第index个选项。 |
+| <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> | 获取combo_box的文本。 |
+| <a href="#combo_box_t_combo_box_get_value">combo\_box\_get\_value</a> | 获取combo_box的值。 |
+| <a href="#combo_box_t_combo_box_reset_options">combo\_box\_reset\_options</a> | 重置所有选项。 |
+| <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> | 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
+| <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> | 设置选项。 |
+| <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
 ### 属性
 <p id="combo_box_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#combo_box_t_open_window">open\_window</a> | char* |  为点击按钮时，要打开窗口的名称。 |
-| <a href="#combo_box_t_options">options</a> | char* |  设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
-| <a href="#combo_box_t_selected_index">selected\_index</a> | int32_t |  当前选中的选项。 |
-| <a href="#combo_box_t_value">value</a> | int32_t |  值。 |
+| <a href="#combo_box_t_open_window">open\_window</a> | char* | 为点击按钮时，要打开窗口的名称。 |
+| <a href="#combo_box_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
+| <a href="#combo_box_t_selected_index">selected\_index</a> | int32_t | 当前选中的选项。 |
+| <a href="#combo_box_t_value">value</a> | int32_t | 值。 |
 ### 事件
 <p id="combo_box_t_events">
 

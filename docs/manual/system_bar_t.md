@@ -11,8 +11,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#system_bar_t_system_bar_cast">system\_bar\_cast</a> |  转换为system_bar对象(供脚本语言使用)。 |
-| <a href="#system_bar_t_system_bar_create">system\_bar\_create</a> |  创建system_bar对象。 |
+| <a href="#system_bar_t_system_bar_cast">system\_bar\_cast</a> | 转换为system_bar对象(供脚本语言使用)。 |
+| <a href="#system_bar_t_system_bar_create">system\_bar\_create</a> | 创建system_bar对象。 |
 ### 属性
 <p id="system_bar_t_properties">
 

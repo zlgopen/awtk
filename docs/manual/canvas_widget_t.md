@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#canvas_widget_t_canvas_widget_cast">canvas\_widget\_cast</a> |  转换为canvas_widget对象(供脚本语言使用)。 |
-| <a href="#canvas_widget_t_canvas_widget_create">canvas\_widget\_create</a> |  创建canvas_widget对象 |
+| <a href="#canvas_widget_t_canvas_widget_cast">canvas\_widget\_cast</a> | 转换为canvas_widget对象(供脚本语言使用)。 |
+| <a href="#canvas_widget_t_canvas_widget_create">canvas\_widget\_create</a> | 创建canvas_widget对象 |
 ### 属性
 <p id="canvas_widget_t_properties">
 

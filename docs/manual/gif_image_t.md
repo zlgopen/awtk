@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#gif_image_t_gif_image_cast">gif\_image\_cast</a> |  转换为gif_image对象(供脚本语言使用)。 |
-| <a href="#gif_image_t_gif_image_create">gif\_image\_create</a> |  创建gif_image对象 |
+| <a href="#gif_image_t_gif_image_cast">gif\_image\_cast</a> | 转换为gif_image对象(供脚本语言使用)。 |
+| <a href="#gif_image_t_gif_image_create">gif\_image\_create</a> | 创建gif_image对象 |
 ### 属性
 <p id="gif_image_t_properties">
 

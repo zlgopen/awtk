@@ -9,17 +9,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#key_event_t_key_event_cast">key\_event\_cast</a> |  把event对象转key_event_t对象，主要给脚本语言使用。 |
+| <a href="#key_event_t_key_event_cast">key\_event\_cast</a> | 把event对象转key_event_t对象，主要给脚本语言使用。 |
 ### 属性
 <p id="key_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#key_event_t_alt">alt</a> | bool_t |  alt键是否按下。 |
-| <a href="#key_event_t_capslock">capslock</a> | bool_t |  capslock键是否按下。 |
-| <a href="#key_event_t_ctrl">ctrl</a> | bool_t |  ctrl键是否按下。 |
-| <a href="#key_event_t_key">key</a> | uint32_t |  键值。 |
-| <a href="#key_event_t_shift">shift</a> | bool_t |  shift键是否按下。 |
+| <a href="#key_event_t_alt">alt</a> | bool_t | alt键是否按下。 |
+| <a href="#key_event_t_capslock">capslock</a> | bool_t | capslock键是否按下。 |
+| <a href="#key_event_t_ctrl">ctrl</a> | bool_t | ctrl键是否按下。 |
+| <a href="#key_event_t_key">key</a> | uint32_t | 键值。 |
+| <a href="#key_event_t_shift">shift</a> | bool_t | shift键是否按下。 |
 ### 事件
 <p id="key_event_t_events">
 

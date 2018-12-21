@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#keyboard_t_keyboard_close">keyboard\_close</a> |  关闭keyboard窗口。 |
-| <a href="#keyboard_t_keyboard_create">keyboard\_create</a> |  创建keyboard对象 |
+| <a href="#keyboard_t_keyboard_close">keyboard\_close</a> | 关闭keyboard窗口。 |
+| <a href="#keyboard_t_keyboard_create">keyboard\_create</a> | 创建keyboard对象 |
 ### 属性
 <p id="keyboard_t_properties">
 

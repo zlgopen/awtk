@@ -7,23 +7,23 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#locale_info_t_locale_info">locale\_info</a> |  获取缺省locale_info。 |
-| <a href="#locale_info_t_locale_info_change">locale\_info\_change</a> |  设置当前的国家和语言。 |
-| <a href="#locale_info_t_locale_info_create">locale\_info\_create</a> |  创建locale_info。 |
-| <a href="#locale_info_t_locale_info_deinit">locale\_info\_deinit</a> |  释放全部资源。 |
-| <a href="#locale_info_t_locale_info_destroy">locale\_info\_destroy</a> |  释放全部资源并销毁locale_info对象。 |
-| <a href="#locale_info_t_locale_info_init">locale\_info\_init</a> |  初始化locale_info。 |
-| <a href="#locale_info_t_locale_info_off">locale\_info\_off</a> |  注销指定事件的处理函数。 |
-| <a href="#locale_info_t_locale_info_on">locale\_info\_on</a> |  注册指定事件的处理函数。 |
-| <a href="#locale_info_t_locale_info_set">locale\_info\_set</a> |  设置缺省locale_info。 |
-| <a href="#locale_info_t_locale_info_tr">locale\_info\_tr</a> |  翻译字符串。 |
+| <a href="#locale_info_t_locale_info">locale\_info</a> | 获取缺省locale_info。 |
+| <a href="#locale_info_t_locale_info_change">locale\_info\_change</a> | 设置当前的国家和语言。 |
+| <a href="#locale_info_t_locale_info_create">locale\_info\_create</a> | 创建locale_info。 |
+| <a href="#locale_info_t_locale_info_deinit">locale\_info\_deinit</a> | 释放全部资源。 |
+| <a href="#locale_info_t_locale_info_destroy">locale\_info\_destroy</a> | 释放全部资源并销毁locale_info对象。 |
+| <a href="#locale_info_t_locale_info_init">locale\_info\_init</a> | 初始化locale_info。 |
+| <a href="#locale_info_t_locale_info_off">locale\_info\_off</a> | 注销指定事件的处理函数。 |
+| <a href="#locale_info_t_locale_info_on">locale\_info\_on</a> | 注册指定事件的处理函数。 |
+| <a href="#locale_info_t_locale_info_set">locale\_info\_set</a> | 设置缺省locale_info。 |
+| <a href="#locale_info_t_locale_info_tr">locale\_info\_tr</a> | 翻译字符串。 |
 ### 属性
 <p id="locale_info_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#locale_info_t_country;">country;</a> | char* |  国家或地区。如：CN |
-| <a href="#locale_info_t_language">language</a> | char* |  语言。如：zh |
+| <a href="#locale_info_t_country;">country;</a> | char* | 国家或地区。如：CN |
+| <a href="#locale_info_t_language">language</a> | char* | 语言。如：zh |
 ### 事件
 <p id="locale_info_t_events">
 

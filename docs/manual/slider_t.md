@@ -8,23 +8,23 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#slider_t_slider_cast">slider\_cast</a> |  转换为slider对象(供脚本语言使用)。 |
-| <a href="#slider_t_slider_create">slider\_create</a> |  创建slider对象 |
-| <a href="#slider_t_slider_set_max">slider\_set\_max</a> |  设置滑块的最大值。 |
-| <a href="#slider_t_slider_set_min">slider\_set\_min</a> |  设置滑块的最小值。 |
-| <a href="#slider_t_slider_set_step">slider\_set\_step</a> |  设置滑块的拖动的最小单位。 |
-| <a href="#slider_t_slider_set_value">slider\_set\_value</a> |  设置滑块的值。 |
-| <a href="#slider_t_slider_set_vertical">slider\_set\_vertical</a> |  设置滑块的方向。 |
+| <a href="#slider_t_slider_cast">slider\_cast</a> | 转换为slider对象(供脚本语言使用)。 |
+| <a href="#slider_t_slider_create">slider\_create</a> | 创建slider对象 |
+| <a href="#slider_t_slider_set_max">slider\_set\_max</a> | 设置滑块的最大值。 |
+| <a href="#slider_t_slider_set_min">slider\_set\_min</a> | 设置滑块的最小值。 |
+| <a href="#slider_t_slider_set_step">slider\_set\_step</a> | 设置滑块的拖动的最小单位。 |
+| <a href="#slider_t_slider_set_value">slider\_set\_value</a> | 设置滑块的值。 |
+| <a href="#slider_t_slider_set_vertical">slider\_set\_vertical</a> | 设置滑块的方向。 |
 ### 属性
 <p id="slider_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slider_t_max">max</a> | uint16_t |  最大值。 |
-| <a href="#slider_t_min">min</a> | uint16_t |  最小值。 |
-| <a href="#slider_t_step">step</a> | uint16_t |  拖动的最小单位。 |
-| <a href="#slider_t_value">value</a> | uint16_t |  值。 |
-| <a href="#slider_t_vertical">vertical</a> | bool_t |  滑块的是否为垂直方向。 |
+| <a href="#slider_t_max">max</a> | uint16_t | 最大值。 |
+| <a href="#slider_t_min">min</a> | uint16_t | 最小值。 |
+| <a href="#slider_t_step">step</a> | uint16_t | 拖动的最小单位。 |
+| <a href="#slider_t_value">value</a> | uint16_t | 值。 |
+| <a href="#slider_t_vertical">vertical</a> | bool_t | 滑块的是否为垂直方向。 |
 ### 事件
 <p id="slider_t_events">
 

@@ -17,15 +17,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#color_picker_t_color_picker_cast">color\_picker\_cast</a> |  转换为color_picker对象(供脚本语言使用)。 |
-| <a href="#color_picker_t_color_picker_create">color\_picker\_create</a> |  创建color_picker对象 |
-| <a href="#color_picker_t_color_picker_set_color">color\_picker\_set\_color</a> |  设置颜色。 |
+| <a href="#color_picker_t_color_picker_cast">color\_picker\_cast</a> | 转换为color_picker对象(供脚本语言使用)。 |
+| <a href="#color_picker_t_color_picker_create">color\_picker\_create</a> | 创建color_picker对象 |
+| <a href="#color_picker_t_color_picker_set_color">color\_picker\_set\_color</a> | 设置颜色。 |
 ### 属性
 <p id="color_picker_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#color_picker_t_value">value</a> | const char* |  颜色。 |
+| <a href="#color_picker_t_value">value</a> | const char* | 颜色。 |
 ### 事件
 <p id="color_picker_t_events">
 

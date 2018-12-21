@@ -8,15 +8,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#image_t_image_cast">image\_cast</a> |  转换为image对象(供脚本语言使用)。 |
-| <a href="#image_t_image_create">image\_create</a> |  创建image对象 |
-| <a href="#image_t_image_set_draw_type">image\_set\_draw\_type</a> |  设置图片的显示方式。 |
+| <a href="#image_t_image_cast">image\_cast</a> | 转换为image对象(供脚本语言使用)。 |
+| <a href="#image_t_image_create">image\_create</a> | 创建image对象 |
+| <a href="#image_t_image_set_draw_type">image\_set\_draw\_type</a> | 设置图片的显示方式。 |
 ### 属性
 <p id="image_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#image_t_draw_type">draw\_type</a> | image_draw_type_t |  图片的绘制方式(仅在没有旋转和缩放时生效)。 |
+| <a href="#image_t_draw_type">draw\_type</a> | image_draw_type_t | 图片的绘制方式(仅在没有旋转和缩放时生效)。 |
 ### 事件
 <p id="image_t_events">
 

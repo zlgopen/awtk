@@ -7,24 +7,24 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#array_t_array_create">array\_create</a> |  创建array对象 |
-| <a href="#array_t_array_deinit">array\_deinit</a> |  清除数组中的元素。 |
-| <a href="#array_t_array_destroy">array\_destroy</a> |  清除数组中的元素，并释放数组对象。 |
-| <a href="#array_t_array_find">array\_find</a> |  查找第一个满足条件的元素。 |
-| <a href="#array_t_array_find_index">array\_find\_index</a> |  查找第一个满足条件的元素，并返回位置。 |
-| <a href="#array_t_array_init">array\_init</a> |  初始化array对象 |
-| <a href="#array_t_array_pop">array\_pop</a> |  弹出最后一个元素。 |
-| <a href="#array_t_array_push">array\_push</a> |  在尾巴追加一个元素。 |
-| <a href="#array_t_array_remove">array\_remove</a> |  删除第一个满足条件的元素。 |
-| <a href="#array_t_array_remove_all">array\_remove\_all</a> |  删除全部满足条件的元素。 |
+| <a href="#array_t_array_create">array\_create</a> | 创建array对象 |
+| <a href="#array_t_array_deinit">array\_deinit</a> | 清除数组中的元素。 |
+| <a href="#array_t_array_destroy">array\_destroy</a> | 清除数组中的元素，并释放数组对象。 |
+| <a href="#array_t_array_find">array\_find</a> | 查找第一个满足条件的元素。 |
+| <a href="#array_t_array_find_index">array\_find\_index</a> | 查找第一个满足条件的元素，并返回位置。 |
+| <a href="#array_t_array_init">array\_init</a> | 初始化array对象 |
+| <a href="#array_t_array_pop">array\_pop</a> | 弹出最后一个元素。 |
+| <a href="#array_t_array_push">array\_push</a> | 在尾巴追加一个元素。 |
+| <a href="#array_t_array_remove">array\_remove</a> | 删除第一个满足条件的元素。 |
+| <a href="#array_t_array_remove_all">array\_remove\_all</a> | 删除全部满足条件的元素。 |
 ### 属性
 <p id="array_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#array_t_capacity">capacity</a> | uint16_t |  数组的容量大小。 |
-| <a href="#array_t_elms">elms</a> | void** |  数组中的元素。 |
-| <a href="#array_t_size">size</a> | uint16_t |  数组中元素的个数。 |
+| <a href="#array_t_capacity">capacity</a> | uint16_t | 数组的容量大小。 |
+| <a href="#array_t_elms">elms</a> | void** | 数组中的元素。 |
+| <a href="#array_t_size">size</a> | uint16_t | 数组中元素的个数。 |
 ### 事件
 <p id="array_t_events">
 

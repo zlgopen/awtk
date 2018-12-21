@@ -8,29 +8,29 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#time_clock_t_time_clock_cast">time\_clock\_cast</a> |  转换为time_clock对象(供脚本语言使用)。 |
-| <a href="#time_clock_t_time_clock_create">time\_clock\_create</a> |  创建time_clock对象 |
-| <a href="#time_clock_t_time_clock_set_bg_image">time\_clock\_set\_bg\_image</a> |  设置背景图片。 |
-| <a href="#time_clock_t_time_clock_set_hour">time\_clock\_set\_hour</a> |  设置小时的值。 |
-| <a href="#time_clock_t_time_clock_set_hour_image">time\_clock\_set\_hour\_image</a> |  设置小时的图片。 |
-| <a href="#time_clock_t_time_clock_set_image">time\_clock\_set\_image</a> |  设置图片。 |
-| <a href="#time_clock_t_time_clock_set_minute">time\_clock\_set\_minute</a> |  设置分钟的值。 |
-| <a href="#time_clock_t_time_clock_set_minute_image">time\_clock\_set\_minute\_image</a> |  设置分钟的图片。 |
-| <a href="#time_clock_t_time_clock_set_second">time\_clock\_set\_second</a> |  设置秒的值。 |
-| <a href="#time_clock_t_time_clock_set_second_image">time\_clock\_set\_second\_image</a> |  设置秒的图片。 |
+| <a href="#time_clock_t_time_clock_cast">time\_clock\_cast</a> | 转换为time_clock对象(供脚本语言使用)。 |
+| <a href="#time_clock_t_time_clock_create">time\_clock\_create</a> | 创建time_clock对象 |
+| <a href="#time_clock_t_time_clock_set_bg_image">time\_clock\_set\_bg\_image</a> | 设置背景图片。 |
+| <a href="#time_clock_t_time_clock_set_hour">time\_clock\_set\_hour</a> | 设置小时的值。 |
+| <a href="#time_clock_t_time_clock_set_hour_image">time\_clock\_set\_hour\_image</a> | 设置小时的图片。 |
+| <a href="#time_clock_t_time_clock_set_image">time\_clock\_set\_image</a> | 设置图片。 |
+| <a href="#time_clock_t_time_clock_set_minute">time\_clock\_set\_minute</a> | 设置分钟的值。 |
+| <a href="#time_clock_t_time_clock_set_minute_image">time\_clock\_set\_minute\_image</a> | 设置分钟的图片。 |
+| <a href="#time_clock_t_time_clock_set_second">time\_clock\_set\_second</a> | 设置秒的值。 |
+| <a href="#time_clock_t_time_clock_set_second_image">time\_clock\_set\_second\_image</a> | 设置秒的图片。 |
 ### 属性
 <p id="time_clock_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#time_clock_t_bg_image">bg\_image</a> | char* |  背景图片。 |
-| <a href="#time_clock_t_hour">hour</a> | int32_t |  小时。 |
-| <a href="#time_clock_t_hour_image">hour\_image</a> | char* |  时针图片。 |
-| <a href="#time_clock_t_image">image</a> | char* |  中心图片。 |
-| <a href="#time_clock_t_minute">minute</a> | int32_t |  分钟。 |
-| <a href="#time_clock_t_minute_image">minute\_image</a> | char* |  分针图片。 |
-| <a href="#time_clock_t_second">second</a> | int32_t |  秒。 |
-| <a href="#time_clock_t_second_image">second\_image</a> | char* |  秒针图片。 |
+| <a href="#time_clock_t_bg_image">bg\_image</a> | char* | 背景图片。 |
+| <a href="#time_clock_t_hour">hour</a> | int32_t | 小时。 |
+| <a href="#time_clock_t_hour_image">hour\_image</a> | char* | 时针图片。 |
+| <a href="#time_clock_t_image">image</a> | char* | 中心图片。 |
+| <a href="#time_clock_t_minute">minute</a> | int32_t | 分钟。 |
+| <a href="#time_clock_t_minute_image">minute\_image</a> | char* | 分针图片。 |
+| <a href="#time_clock_t_second">second</a> | int32_t | 秒。 |
+| <a href="#time_clock_t_second_image">second\_image</a> | char* | 秒针图片。 |
 ### 事件
 <p id="time_clock_t_events">
 

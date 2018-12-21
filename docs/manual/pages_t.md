@@ -8,16 +8,16 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#pages_t_pages_cast">pages\_cast</a> |  转换为pages对象(供脚本语言使用)。 |
-| <a href="#pages_t_pages_create">pages\_create</a> |  创建pages对象 |
-| <a href="#pages_t_pages_set_active">pages\_set\_active</a> |  设置当前的Page。 |
-| <a href="#pages_t_pages_set_active_by_name">pages\_set\_active\_by\_name</a> |  通过页面的名字设置当前的Page。 |
+| <a href="#pages_t_pages_cast">pages\_cast</a> | 转换为pages对象(供脚本语言使用)。 |
+| <a href="#pages_t_pages_create">pages\_create</a> | 创建pages对象 |
+| <a href="#pages_t_pages_set_active">pages\_set\_active</a> | 设置当前的Page。 |
+| <a href="#pages_t_pages_set_active_by_name">pages\_set\_active\_by\_name</a> | 通过页面的名字设置当前的Page。 |
 ### 属性
 <p id="pages_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#pages_t_active">active</a> | uint32_t |  当前活跃的page。 |
+| <a href="#pages_t_active">active</a> | uint32_t | 当前活跃的page。 |
 ### 事件
 <p id="pages_t_events">
 

@@ -8,37 +8,37 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#edit_t_edit_cast">edit\_cast</a> |  转换为edit对象(供脚本语言使用)。 |
-| <a href="#edit_t_edit_create">edit\_create</a> |  创建edit对象 |
-| <a href="#edit_t_edit_get_double">edit\_get\_double</a> |  获取double类型的值。 |
-| <a href="#edit_t_edit_get_int">edit\_get\_int</a> |  获取int类型的值。 |
-| <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> |  设置编辑器是否为自动改正。 |
-| <a href="#edit_t_edit_set_double">edit\_set\_double</a> |  设置double类型的值。 |
-| <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> |  设置为浮点数输入及取值范围。 |
-| <a href="#edit_t_edit_set_input_tips">edit\_set\_input\_tips</a> |  设置编辑器的输入提示。 |
-| <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> |  设置编辑器的输入类型。 |
-| <a href="#edit_t_edit_set_int">edit\_set\_int</a> |  设置int类型的值。 |
-| <a href="#edit_t_edit_set_int_limit">edit\_set\_int\_limit</a> |  设置为整数输入及取值范围。 |
-| <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> |  当编辑器输入类型为密码时，设置密码是否可见。 |
-| <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> |  设置编辑器是否为只读。 |
-| <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> |  设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
+| <a href="#edit_t_edit_cast">edit\_cast</a> | 转换为edit对象(供脚本语言使用)。 |
+| <a href="#edit_t_edit_create">edit\_create</a> | 创建edit对象 |
+| <a href="#edit_t_edit_get_double">edit\_get\_double</a> | 获取double类型的值。 |
+| <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
+| <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
+| <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
+| <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
+| <a href="#edit_t_edit_set_input_tips">edit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
+| <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
+| <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
+| <a href="#edit_t_edit_set_int_limit">edit\_set\_int\_limit</a> | 设置为整数输入及取值范围。 |
+| <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
+| <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
+| <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
 ### 属性
 <p id="edit_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#edit_t_auto_fix">auto\_fix</a> | bool_t |  输入无效时，是否自动改正。 |
-| <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8_t |  下边距。 |
-| <a href="#edit_t_input_type">input\_type</a> | input_type_t |  输入类型。XXX：需要在min/max/step之前设置。 |
-| <a href="#edit_t_left_margin">left\_margin</a> | uint8_t |  左边距。 |
-| <a href="#edit_t_max">max</a> | char* |  最大值或最大长度。 |
-| <a href="#edit_t_min">min</a> | char* |  最小值或最小长度。 |
-| <a href="#edit_t_password_visible">password\_visible</a> | bool_t |  密码是否可见。 |
-| <a href="#edit_t_readonly">readonly</a> | bool_t |  编辑器是否为只读。 |
-| <a href="#edit_t_right_margin">right\_margin</a> | uint8_t |  右边距。 |
-| <a href="#edit_t_step">step</a> | char* |  步长。 |
-| <a href="#edit_t_tips">tips</a> | char* |  输入提示。 |
-| <a href="#edit_t_top_margin">top\_margin</a> | uint8_t |  上边距。 |
+| <a href="#edit_t_auto_fix">auto\_fix</a> | bool_t | 输入无效时，是否自动改正。 |
+| <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8_t | 下边距。 |
+| <a href="#edit_t_input_type">input\_type</a> | input_type_t | 输入类型。XXX：需要在min/max/step之前设置。 |
+| <a href="#edit_t_left_margin">left\_margin</a> | uint8_t | 左边距。 |
+| <a href="#edit_t_max">max</a> | char* | 最大值或最大长度。 |
+| <a href="#edit_t_min">min</a> | char* | 最小值或最小长度。 |
+| <a href="#edit_t_password_visible">password\_visible</a> | bool_t | 密码是否可见。 |
+| <a href="#edit_t_readonly">readonly</a> | bool_t | 编辑器是否为只读。 |
+| <a href="#edit_t_right_margin">right\_margin</a> | uint8_t | 右边距。 |
+| <a href="#edit_t_step">step</a> | char* | 步长。 |
+| <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
+| <a href="#edit_t_top_margin">top\_margin</a> | uint8_t | 上边距。 |
 ### 事件
 <p id="edit_t_events">
 

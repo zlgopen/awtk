@@ -12,10 +12,10 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#rect_t_h">h</a> | wh_t |  高度。 |
-| <a href="#rect_t_w">w</a> | wh_t |  宽度。 |
-| <a href="#rect_t_x">x</a> | xy_t |  x坐标。 |
-| <a href="#rect_t_y">y</a> | xy_t |  y坐标。 |
+| <a href="#rect_t_h">h</a> | wh_t | 高度。 |
+| <a href="#rect_t_w">w</a> | wh_t | 宽度。 |
+| <a href="#rect_t_x">x</a> | xy_t | x坐标。 |
+| <a href="#rect_t_y">y</a> | xy_t | y坐标。 |
 ### 事件
 <p id="rect_t_events">
 

@@ -7,26 +7,26 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#rbuffer_t_rbuffer_has_more">rbuffer\_has\_more</a> |  判断是否还有数据可读。 |
-| <a href="#rbuffer_t_rbuffer_init">rbuffer\_init</a> |  初始rbuffer对象。 |
-| <a href="#rbuffer_t_rbuffer_peek_uint16">rbuffer\_peek\_uint16</a> |  读取uint16数据，但不改变cursor的位置。 |
-| <a href="#rbuffer_t_rbuffer_peek_uint32">rbuffer\_peek\_uint32</a> |  读取uint32数据，但不改变cursor的位置。 |
-| <a href="#rbuffer_t_rbuffer_peek_uint8">rbuffer\_peek\_uint8</a> |  读取uint8数据，但不改变cursor的位置。 |
-| <a href="#rbuffer_t_rbuffer_read_binary">rbuffer\_read\_binary</a> |  读取指定长度的二进制数据。 |
-| <a href="#rbuffer_t_rbuffer_read_float">rbuffer\_read\_float</a> |  读取float数据。 |
-| <a href="#rbuffer_t_rbuffer_read_string">rbuffer\_read\_string</a> |  读取字符串。 |
-| <a href="#rbuffer_t_rbuffer_read_uint16">rbuffer\_read\_uint16</a> |  读取uint16数据。 |
-| <a href="#rbuffer_t_rbuffer_read_uint32">rbuffer\_read\_uint32</a> |  读取uint32数据。 |
-| <a href="#rbuffer_t_rbuffer_read_uint8">rbuffer\_read\_uint8</a> |  读取uint8数据。 |
-| <a href="#rbuffer_t_rbuffer_skip">rbuffer\_skip</a> |  跳过指定的长度。 |
+| <a href="#rbuffer_t_rbuffer_has_more">rbuffer\_has\_more</a> | 判断是否还有数据可读。 |
+| <a href="#rbuffer_t_rbuffer_init">rbuffer\_init</a> | 初始rbuffer对象。 |
+| <a href="#rbuffer_t_rbuffer_peek_uint16">rbuffer\_peek\_uint16</a> | 读取uint16数据，但不改变cursor的位置。 |
+| <a href="#rbuffer_t_rbuffer_peek_uint32">rbuffer\_peek\_uint32</a> | 读取uint32数据，但不改变cursor的位置。 |
+| <a href="#rbuffer_t_rbuffer_peek_uint8">rbuffer\_peek\_uint8</a> | 读取uint8数据，但不改变cursor的位置。 |
+| <a href="#rbuffer_t_rbuffer_read_binary">rbuffer\_read\_binary</a> | 读取指定长度的二进制数据。 |
+| <a href="#rbuffer_t_rbuffer_read_float">rbuffer\_read\_float</a> | 读取float数据。 |
+| <a href="#rbuffer_t_rbuffer_read_string">rbuffer\_read\_string</a> | 读取字符串。 |
+| <a href="#rbuffer_t_rbuffer_read_uint16">rbuffer\_read\_uint16</a> | 读取uint16数据。 |
+| <a href="#rbuffer_t_rbuffer_read_uint32">rbuffer\_read\_uint32</a> | 读取uint32数据。 |
+| <a href="#rbuffer_t_rbuffer_read_uint8">rbuffer\_read\_uint8</a> | 读取uint8数据。 |
+| <a href="#rbuffer_t_rbuffer_skip">rbuffer\_skip</a> | 跳过指定的长度。 |
 ### 属性
 <p id="rbuffer_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#rbuffer_t_capacity">capacity</a> | uint32_t |  缓存区最大容量。 |
-| <a href="#rbuffer_t_cursor">cursor</a> | uint32_t |  当前读取位置。 |
-| <a href="#rbuffer_t_data">data</a> | uint8_t* |  缓存区。 |
+| <a href="#rbuffer_t_capacity">capacity</a> | uint32_t | 缓存区最大容量。 |
+| <a href="#rbuffer_t_cursor">cursor</a> | uint32_t | 当前读取位置。 |
+| <a href="#rbuffer_t_data">data</a> | uint8_t* | 缓存区。 |
 ### 事件
 <p id="rbuffer_t_events">
 

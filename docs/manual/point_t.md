@@ -12,8 +12,8 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#point_t_x">x</a> | xy_t |  x坐标。 |
-| <a href="#point_t_y">y</a> | xy_t |  y坐标。 |
+| <a href="#point_t_x">x</a> | xy_t | x坐标。 |
+| <a href="#point_t_y">y</a> | xy_t | y坐标。 |
 ### 事件
 <p id="point_t_events">
 

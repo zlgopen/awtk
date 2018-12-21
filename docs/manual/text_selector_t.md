@@ -9,28 +9,28 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#text_selector_t_text_selector_append_option">text\_selector\_append\_option</a> |  追加一个选项。 |
-| <a href="#text_selector_t_text_selector_cast">text\_selector\_cast</a> |  转换text_selector对象(供脚本语言使用)。 |
-| <a href="#text_selector_t_text_selector_count_options">text\_selector\_count\_options</a> |  获取选项个数。 |
-| <a href="#text_selector_t_text_selector_create">text\_selector\_create</a> |  创建text_selector对象 |
-| <a href="#text_selector_t_text_selector_get_option">text\_selector\_get\_option</a> |  获取第index个选项。 |
-| <a href="#text_selector_t_text_selector_get_text">text\_selector\_get\_text</a> |  获取text_selector的文本。 |
-| <a href="#text_selector_t_text_selector_get_value">text\_selector\_get\_value</a> |  获取text_selector的值。 |
-| <a href="#text_selector_t_text_selector_reset_options">text\_selector\_reset\_options</a> |  重置所有选项。 |
-| <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> |  设置选项。 |
-| <a href="#text_selector_t_text_selector_set_range_options">text\_selector\_set\_range\_options</a> |  设置一系列的整数选项。 |
-| <a href="#text_selector_t_text_selector_set_selected_index">text\_selector\_set\_selected\_index</a> |  设置第index个选项为当前选中的选项。 |
-| <a href="#text_selector_t_text_selector_set_text">text\_selector\_set\_text</a> |  设置text_selector的文本。 |
-| <a href="#text_selector_t_text_selector_set_value">text\_selector\_set\_value</a> |  设置text_selector的值。 |
-| <a href="#text_selector_t_text_selector_set_visible_nr">text\_selector\_set\_visible\_nr</a> |  设置可见的选项数。 |
+| <a href="#text_selector_t_text_selector_append_option">text\_selector\_append\_option</a> | 追加一个选项。 |
+| <a href="#text_selector_t_text_selector_cast">text\_selector\_cast</a> | 转换text_selector对象(供脚本语言使用)。 |
+| <a href="#text_selector_t_text_selector_count_options">text\_selector\_count\_options</a> | 获取选项个数。 |
+| <a href="#text_selector_t_text_selector_create">text\_selector\_create</a> | 创建text_selector对象 |
+| <a href="#text_selector_t_text_selector_get_option">text\_selector\_get\_option</a> | 获取第index个选项。 |
+| <a href="#text_selector_t_text_selector_get_text">text\_selector\_get\_text</a> | 获取text_selector的文本。 |
+| <a href="#text_selector_t_text_selector_get_value">text\_selector\_get\_value</a> | 获取text_selector的值。 |
+| <a href="#text_selector_t_text_selector_reset_options">text\_selector\_reset\_options</a> | 重置所有选项。 |
+| <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> | 设置选项。 |
+| <a href="#text_selector_t_text_selector_set_range_options">text\_selector\_set\_range\_options</a> | 设置一系列的整数选项。 |
+| <a href="#text_selector_t_text_selector_set_selected_index">text\_selector\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
+| <a href="#text_selector_t_text_selector_set_text">text\_selector\_set\_text</a> | 设置text_selector的文本。 |
+| <a href="#text_selector_t_text_selector_set_value">text\_selector\_set\_value</a> | 设置text_selector的值。 |
+| <a href="#text_selector_t_text_selector_set_visible_nr">text\_selector\_set\_visible\_nr</a> | 设置可见的选项数。 |
 ### 属性
 <p id="text_selector_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#text_selector_t_options">options</a> | char* |  设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
-| <a href="#text_selector_t_selected_index">selected\_index</a> | int32_t |  当前选中的选项。 |
-| <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32_t |  可见的选项数量(只能是3或者5，缺省为5)。 |
+| <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
+| <a href="#text_selector_t_selected_index">selected\_index</a> | int32_t | 当前选中的选项。 |
+| <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32_t | 可见的选项数量(只能是3或者5，缺省为5)。 |
 ### 事件
 <p id="text_selector_t_events">
 

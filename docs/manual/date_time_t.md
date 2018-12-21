@@ -7,21 +7,21 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#date_time_t_date_time_create">date\_time\_create</a> |  创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
-| <a href="#date_time_t_date_time_date_time_set_impl">date\_time\_date\_time\_set\_impl</a> |  设置获取当前日期和时间的函数。 |
-| <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> |  销毁date_time对象(一般供脚本语言中使用)。 |
-| <a href="#date_time_t_date_time_init">date\_time\_init</a> |  初始为当前日期和时间。 |
+| <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
+| <a href="#date_time_t_date_time_date_time_set_impl">date\_time\_date\_time\_set\_impl</a> | 设置获取当前日期和时间的函数。 |
+| <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
+| <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
 ### 属性
 <p id="date_time_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#date_time_t_day">day</a> | int32_t |  日(1-31)。 |
-| <a href="#date_time_t_hour">hour</a> | int32_t |  时(0 - 23)。 |
-| <a href="#date_time_t_minute">minute</a> | int32_t |  分(0 - 59)。 |
-| <a href="#date_time_t_month">month</a> | int32_t |  月(1-12)。 |
-| <a href="#date_time_t_second">second</a> | int32_t |  秒(0 - 59)。 |
-| <a href="#date_time_t_year">year</a> | int32_t |  年。 |
+| <a href="#date_time_t_day">day</a> | int32_t | 日(1-31)。 |
+| <a href="#date_time_t_hour">hour</a> | int32_t | 时(0 - 23)。 |
+| <a href="#date_time_t_minute">minute</a> | int32_t | 分(0 - 59)。 |
+| <a href="#date_time_t_month">month</a> | int32_t | 月(1-12)。 |
+| <a href="#date_time_t_second">second</a> | int32_t | 秒(0 - 59)。 |
+| <a href="#date_time_t_year">year</a> | int32_t | 年。 |
 ### 事件
 <p id="date_time_t_events">
 

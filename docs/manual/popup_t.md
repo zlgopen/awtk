@@ -8,15 +8,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#popup_t_popup_cast">popup\_cast</a> |  转换为popup对象(供脚本语言使用)。 |
-| <a href="#popup_t_popup_create">popup\_create</a> |  创建popup对象。 |
+| <a href="#popup_t_popup_cast">popup\_cast</a> | 转换为popup对象(供脚本语言使用)。 |
+| <a href="#popup_t_popup_create">popup\_create</a> | 创建popup对象。 |
 ### 属性
 <p id="popup_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#popup_t_close_when_click">close\_when\_click</a> | bool_t |  点击时是否关闭窗口。 |
-| <a href="#popup_t_close_when_click_outside">close\_when\_click\_outside</a> | bool_t |  点击到窗口外时是否关闭窗口。 |
+| <a href="#popup_t_close_when_click">close\_when\_click</a> | bool_t | 点击时是否关闭窗口。 |
+| <a href="#popup_t_close_when_click_outside">close\_when\_click\_outside</a> | bool_t | 点击到窗口外时是否关闭窗口。 |
 ### 事件
 <p id="popup_t_events">
 

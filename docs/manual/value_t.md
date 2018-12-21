@@ -7,47 +7,47 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#value_t_value_bool">value\_bool</a> |  获取类型为bool的值。 |
-| <a href="#value_t_value_copy">value\_copy</a> |  拷贝value的值。 |
-| <a href="#value_t_value_create">value\_create</a> |  创建value对象 |
-| <a href="#value_t_value_destroy">value\_destroy</a> |  @deconstructor |
-| <a href="#value_t_value_double">value\_double</a> |  获取类型为double的值。 |
-| <a href="#value_t_value_equal">value\_equal</a> |  判断两个value是否相同。 |
-| <a href="#value_t_value_float">value\_float</a> |  获取类型为float的值。 |
-| <a href="#value_t_value_float32">value\_float32</a> |  获取类型为float的值。 |
-| <a href="#value_t_value_int">value\_int</a> |  转换为int的值。 |
-| <a href="#value_t_value_int16">value\_int16</a> |  获取类型为int16的值。 |
-| <a href="#value_t_value_int32">value\_int32</a> |  获取类型为int32的值。 |
-| <a href="#value_t_value_int64">value\_int64</a> |  获取类型为int64的值。 |
-| <a href="#value_t_value_int8">value\_int8</a> |  获取类型为int8的值。 |
-| <a href="#value_t_value_is_null">value\_is\_null</a> |  判断value是否为空值。 |
-| <a href="#value_t_value_pointer">value\_pointer</a> |  获取类型为pointer的值。 |
-| <a href="#value_t_value_set_bool">value\_set\_bool</a> |  设置类型为bool的值。 |
-| <a href="#value_t_value_set_double">value\_set\_double</a> |  设置类型为double的值。 |
-| <a href="#value_t_value_set_float">value\_set\_float</a> |  设置类型为float的值。 |
-| <a href="#value_t_value_set_float32">value\_set\_float32</a> |  设置类型为float的值。 |
-| <a href="#value_t_value_set_int">value\_set\_int</a> |  设置类型为int的值。 |
-| <a href="#value_t_value_set_int16">value\_set\_int16</a> |  设置类型为int16的值。 |
-| <a href="#value_t_value_set_int32">value\_set\_int32</a> |  设置类型为int32的值。 |
-| <a href="#value_t_value_set_int64">value\_set\_int64</a> |  设置类型为int64的值。 |
-| <a href="#value_t_value_set_int8">value\_set\_int8</a> |  设置类型为int8的值。 |
-| <a href="#value_t_value_set_pointer">value\_set\_pointer</a> |  设置类型为pointer的值。 |
-| <a href="#value_t_value_set_str">value\_set\_str</a> |  设置类型为char*的值。 |
-| <a href="#value_t_value_set_uint16">value\_set\_uint16</a> |  设置类型为uint16的值。 |
-| <a href="#value_t_value_set_uint32">value\_set\_uint32</a> |  设置类型为uint32的值。 |
-| <a href="#value_t_value_set_uint64">value\_set\_uint64</a> |  设置类型为uint64的值。 |
-| <a href="#value_t_value_set_uint8">value\_set\_uint8</a> |  设置类型为uint8的值。 |
-| <a href="#value_t_value_str">value\_str</a> |  获取类型为str_t的值。 |
-| <a href="#value_t_value_uint16">value\_uint16</a> |  获取类型为uint16的值。 |
-| <a href="#value_t_value_uint32">value\_uint32</a> |  获取类型为uint32的值。 |
-| <a href="#value_t_value_uint64">value\_uint64</a> |  获取类型为uint64的值。 |
-| <a href="#value_t_value_uint8">value\_uint8</a> |  获取类型为uint8的值。 |
+| <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
+| <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
+| <a href="#value_t_value_create">value\_create</a> | 创建value对象 |
+| <a href="#value_t_value_destroy">value\_destroy</a> | @deconstructor |
+| <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
+| <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
+| <a href="#value_t_value_float">value\_float</a> | 获取类型为float的值。 |
+| <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
+| <a href="#value_t_value_int">value\_int</a> | 转换为int的值。 |
+| <a href="#value_t_value_int16">value\_int16</a> | 获取类型为int16的值。 |
+| <a href="#value_t_value_int32">value\_int32</a> | 获取类型为int32的值。 |
+| <a href="#value_t_value_int64">value\_int64</a> | 获取类型为int64的值。 |
+| <a href="#value_t_value_int8">value\_int8</a> | 获取类型为int8的值。 |
+| <a href="#value_t_value_is_null">value\_is\_null</a> | 判断value是否为空值。 |
+| <a href="#value_t_value_pointer">value\_pointer</a> | 获取类型为pointer的值。 |
+| <a href="#value_t_value_set_bool">value\_set\_bool</a> | 设置类型为bool的值。 |
+| <a href="#value_t_value_set_double">value\_set\_double</a> | 设置类型为double的值。 |
+| <a href="#value_t_value_set_float">value\_set\_float</a> | 设置类型为float的值。 |
+| <a href="#value_t_value_set_float32">value\_set\_float32</a> | 设置类型为float的值。 |
+| <a href="#value_t_value_set_int">value\_set\_int</a> | 设置类型为int的值。 |
+| <a href="#value_t_value_set_int16">value\_set\_int16</a> | 设置类型为int16的值。 |
+| <a href="#value_t_value_set_int32">value\_set\_int32</a> | 设置类型为int32的值。 |
+| <a href="#value_t_value_set_int64">value\_set\_int64</a> | 设置类型为int64的值。 |
+| <a href="#value_t_value_set_int8">value\_set\_int8</a> | 设置类型为int8的值。 |
+| <a href="#value_t_value_set_pointer">value\_set\_pointer</a> | 设置类型为pointer的值。 |
+| <a href="#value_t_value_set_str">value\_set\_str</a> | 设置类型为char*的值。 |
+| <a href="#value_t_value_set_uint16">value\_set\_uint16</a> | 设置类型为uint16的值。 |
+| <a href="#value_t_value_set_uint32">value\_set\_uint32</a> | 设置类型为uint32的值。 |
+| <a href="#value_t_value_set_uint64">value\_set\_uint64</a> | 设置类型为uint64的值。 |
+| <a href="#value_t_value_set_uint8">value\_set\_uint8</a> | 设置类型为uint8的值。 |
+| <a href="#value_t_value_str">value\_str</a> | 获取类型为str_t的值。 |
+| <a href="#value_t_value_uint16">value\_uint16</a> | 获取类型为uint16的值。 |
+| <a href="#value_t_value_uint32">value\_uint32</a> | 获取类型为uint32的值。 |
+| <a href="#value_t_value_uint64">value\_uint64</a> | 获取类型为uint64的值。 |
+| <a href="#value_t_value_uint8">value\_uint8</a> | 获取类型为uint8的值。 |
 ### 属性
 <p id="value_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#value_t_type">type</a> | int8_t |  类型。 |
+| <a href="#value_t_type">type</a> | int8_t | 类型。 |
 ### 事件
 <p id="value_t_events">
 

@@ -7,13 +7,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#timer_t_timer_add">timer\_add</a> |  增加一个timer。 |
-| <a href="#timer_t_timer_count">timer\_count</a> |  返回timer的个数。 |
-| <a href="#timer_t_timer_next_time">timer\_next\_time</a> |  返回最近的timer到期时间。 |
-| <a href="#timer_t_timer_now">timer\_now</a> |  获取当前时间(ms)。 |
-| <a href="#timer_t_timer_queue">timer\_queue</a> |  用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。 |
-| <a href="#timer_t_timer_remove">timer\_remove</a> |  删除指定的timer。 |
-| <a href="#timer_t_timer_set_on_destroy">timer\_set\_on\_destroy</a> |  设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。 |
+| <a href="#timer_t_timer_add">timer\_add</a> | 增加一个timer。 |
+| <a href="#timer_t_timer_count">timer\_count</a> | 返回timer的个数。 |
+| <a href="#timer_t_timer_next_time">timer\_next\_time</a> | 返回最近的timer到期时间。 |
+| <a href="#timer_t_timer_now">timer\_now</a> | 获取当前时间(ms)。 |
+| <a href="#timer_t_timer_queue">timer\_queue</a> | 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。 |
+| <a href="#timer_t_timer_remove">timer\_remove</a> | 删除指定的timer。 |
+| <a href="#timer_t_timer_set_on_destroy">timer\_set\_on\_destroy</a> | 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。 |
 ### 属性
 <p id="timer_t_properties">
 

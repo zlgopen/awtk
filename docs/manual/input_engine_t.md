@@ -7,10 +7,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#input_engine_t_input_engine_create">input\_engine\_create</a> |  创建输入法引擎对象。 |
-| <a href="#input_engine_t_input_engine_destroy">input\_engine\_destroy</a> |  @deconstructor |
-| <a href="#input_engine_t_input_engine_input">input\_engine\_input</a> |  输入新的按键，并更新候选字。 |
-| <a href="#input_engine_t_input_engine_reset_input">input\_engine\_reset\_input</a> |  清除所有输入的按键组合和候选字。 |
+| <a href="#input_engine_t_input_engine_create">input\_engine\_create</a> | 创建输入法引擎对象。 |
+| <a href="#input_engine_t_input_engine_destroy">input\_engine\_destroy</a> | @deconstructor |
+| <a href="#input_engine_t_input_engine_input">input\_engine\_input</a> | 输入新的按键，并更新候选字。 |
+| <a href="#input_engine_t_input_engine_reset_input">input\_engine\_reset\_input</a> | 清除所有输入的按键组合和候选字。 |
 ### 属性
 <p id="input_engine_t_properties">
 

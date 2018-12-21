@@ -14,7 +14,7 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#im_commit_event_t_text">text</a> | char* |  提交的文本。 |
+| <a href="#im_commit_event_t_text">text</a> | char* | 提交的文本。 |
 ### 事件
 <p id="im_commit_event_t_events">
 

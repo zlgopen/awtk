@@ -7,10 +7,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#thread_t_thread_create">thread\_create</a> |  创建thread对象。 |
-| <a href="#thread_t_thread_destroy">thread\_destroy</a> |  销毁thread对象。 |
-| <a href="#thread_t_thread_join">thread\_join</a> |  等待线程退出。 |
-| <a href="#thread_t_thread_start">thread\_start</a> |  启动线程。 |
+| <a href="#thread_t_thread_create">thread\_create</a> | 创建thread对象。 |
+| <a href="#thread_t_thread_destroy">thread\_destroy</a> | 销毁thread对象。 |
+| <a href="#thread_t_thread_join">thread\_join</a> | 等待线程退出。 |
+| <a href="#thread_t_thread_start">thread\_start</a> | 启动线程。 |
 ### 属性
 <p id="thread_t_properties">
 

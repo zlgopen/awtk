@@ -9,8 +9,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#row_t_row_cast">row\_cast</a> |  转换为row对象(供脚本语言使用)。 |
-| <a href="#row_t_row_create">row\_create</a> |  创建row对象 |
+| <a href="#row_t_row_cast">row\_cast</a> | 转换为row对象(供脚本语言使用)。 |
+| <a href="#row_t_row_create">row\_create</a> | 创建row对象 |
 ### 属性
 <p id="row_t_properties">
 

@@ -7,21 +7,21 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tokenizer_t_tokenizer_deinit">tokenizer\_deinit</a> |  重置tokenizer。 |
-| <a href="#tokenizer_t_tokenizer_has_more">tokenizer\_has\_more</a> |  是否还有下一个token。 |
-| <a href="#tokenizer_t_tokenizer_init">tokenizer\_init</a> |  初始化tokenizer对象。 |
-| <a href="#tokenizer_t_tokenizer_next">tokenizer\_next</a> |  获取下一个token。 |
-| <a href="#tokenizer_t_tokenizer_next_float">tokenizer\_next\_float</a> |  获取下一个token，并转换成float。 |
-| <a href="#tokenizer_t_tokenizer_next_int">tokenizer\_next\_int</a> |  获取下一个token，并转换成int。 |
+| <a href="#tokenizer_t_tokenizer_deinit">tokenizer\_deinit</a> | 重置tokenizer。 |
+| <a href="#tokenizer_t_tokenizer_has_more">tokenizer\_has\_more</a> | 是否还有下一个token。 |
+| <a href="#tokenizer_t_tokenizer_init">tokenizer\_init</a> | 初始化tokenizer对象。 |
+| <a href="#tokenizer_t_tokenizer_next">tokenizer\_next</a> | 获取下一个token。 |
+| <a href="#tokenizer_t_tokenizer_next_float">tokenizer\_next\_float</a> | 获取下一个token，并转换成float。 |
+| <a href="#tokenizer_t_tokenizer_next_int">tokenizer\_next\_int</a> | 获取下一个token，并转换成int。 |
 ### 属性
 <p id="tokenizer_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#tokenizer_t_cursor">cursor</a> | uint32_t |  当前位置。 |
-| <a href="#tokenizer_t_separtor">separtor</a> | char* |  字符串。 |
-| <a href="#tokenizer_t_size">size</a> | uint32_t |  字符串的长度。 |
-| <a href="#tokenizer_t_str">str</a> | char* |  字符串。 |
+| <a href="#tokenizer_t_cursor">cursor</a> | uint32_t | 当前位置。 |
+| <a href="#tokenizer_t_separtor">separtor</a> | char* | 字符串。 |
+| <a href="#tokenizer_t_size">size</a> | uint32_t | 字符串的长度。 |
+| <a href="#tokenizer_t_str">str</a> | char* | 字符串。 |
 ### 事件
 <p id="tokenizer_t_events">
 

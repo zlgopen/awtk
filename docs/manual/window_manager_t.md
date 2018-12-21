@@ -8,26 +8,26 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_manager_t_window_manager">window\_manager</a> |  获取全局window_manager对象 |
-| <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> |  转换为window_manager对象(供脚本语言使用)。 |
-| <a href="#window_manager_t_window_manager_close_window">window\_manager\_close\_window</a> |  关闭窗口。 |
-| <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> |  强制立即关闭窗口。 |
-| <a href="#window_manager_t_window_manager_create">window\_manager\_create</a> |  创建窗口管理器。 |
-| <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> |  分发输入事件。 |
-| <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> |  获取最上面的主窗口。 |
-| <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> |  初始化窗口管理器。 |
-| <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> |  打开窗口。 |
-| <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> |  绘制。 |
-| <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> |  调整窗口管理器的大小。 |
-| <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> |  设置缺省的窗口管理器。 |
-| <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> |  设置鼠标指针。 |
-| <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> |  设置是否显示FPS。 |
+| <a href="#window_manager_t_window_manager">window\_manager</a> | 获取全局window_manager对象 |
+| <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
+| <a href="#window_manager_t_window_manager_close_window">window\_manager\_close\_window</a> | 关闭窗口。 |
+| <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
+| <a href="#window_manager_t_window_manager_create">window\_manager\_create</a> | 创建窗口管理器。 |
+| <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
+| <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
+| <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> | 初始化窗口管理器。 |
+| <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
+| <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
+| <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整窗口管理器的大小。 |
+| <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
+| <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
+| <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
 ### 属性
 <p id="window_manager_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#window_manager_t_show_fps">show\_fps</a> | bool_t |  是否显示fps。 |
+| <a href="#window_manager_t_show_fps">show\_fps</a> | bool_t | 是否显示fps。 |
 ### 事件
 <p id="window_manager_t_events">
 

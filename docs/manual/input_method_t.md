@@ -12,9 +12,9 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool_t |  软键盘的上的action按钮是否可用。 |
-| <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool_t |  软键盘的上的action按钮文本。 |
-| <a href="#input_method_t_input_type">input\_type</a> | input_type_t |  当前输入的类型。 |
+| <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool_t | 软键盘的上的action按钮是否可用。 |
+| <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool_t | 软键盘的上的action按钮文本。 |
+| <a href="#input_method_t_input_type">input\_type</a> | input_type_t | 当前输入的类型。 |
 ### 事件
 <p id="input_method_t_events">
 

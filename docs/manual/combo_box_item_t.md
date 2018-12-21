@@ -8,17 +8,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#combo_box_item_t_combo_box_item_cast">combo\_box\_item\_cast</a> |  转换combo_box_item对象(供脚本语言使用)。 |
-| <a href="#combo_box_item_t_combo_box_item_create">combo\_box\_item\_create</a> |  创建combo_box_item对象 |
-| <a href="#combo_box_item_t_combo_box_item_set_checked">combo\_box\_item\_set\_checked</a> |  设置控件是否被选中。 |
-| <a href="#combo_box_item_t_combo_box_item_set_value">combo\_box\_item\_set\_value</a> |  设置控件的值。 |
+| <a href="#combo_box_item_t_combo_box_item_cast">combo\_box\_item\_cast</a> | 转换combo_box_item对象(供脚本语言使用)。 |
+| <a href="#combo_box_item_t_combo_box_item_create">combo\_box\_item\_create</a> | 创建combo_box_item对象 |
+| <a href="#combo_box_item_t_combo_box_item_set_checked">combo\_box\_item\_set\_checked</a> | 设置控件是否被选中。 |
+| <a href="#combo_box_item_t_combo_box_item_set_value">combo\_box\_item\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="combo_box_item_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#combo_box_item_t_checked">checked</a> | bool_t |  是否被选中。 |
-| <a href="#combo_box_item_t_value">value</a> | int32_t |  值。 |
+| <a href="#combo_box_item_t_checked">checked</a> | bool_t | 是否被选中。 |
+| <a href="#combo_box_item_t_value">value</a> | int32_t | 值。 |
 ### 事件
 <p id="combo_box_item_t_events">
 

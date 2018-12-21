@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#list_item_t_list_item_cast">list\_item\_cast</a> |  转换为list_item对象(供脚本语言使用)。 |
-| <a href="#list_item_t_list_item_create">list\_item\_create</a> |  创建list_item对象 |
+| <a href="#list_item_t_list_item_cast">list\_item\_cast</a> | 转换为list_item对象(供脚本语言使用)。 |
+| <a href="#list_item_t_list_item_create">list\_item\_create</a> | 创建list_item对象 |
 ### 属性
 <p id="list_item_t_properties">
 

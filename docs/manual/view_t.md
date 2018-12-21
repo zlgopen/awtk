@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#view_t_view_cast">view\_cast</a> |  转换为view对象(供脚本语言使用)。 |
-| <a href="#view_t_view_create">view\_create</a> |  创建view对象 |
+| <a href="#view_t_view_cast">view\_cast</a> | 转换为view对象(供脚本语言使用)。 |
+| <a href="#view_t_view_create">view\_create</a> | 创建view对象 |
 ### 属性
 <p id="view_t_properties">
 

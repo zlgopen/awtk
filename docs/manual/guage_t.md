@@ -8,17 +8,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#guage_t_guage_cast">guage\_cast</a> |  转换为guage对象(供脚本语言使用)。 |
-| <a href="#guage_t_guage_create">guage\_create</a> |  创建guage对象 |
-| <a href="#guage_t_guage_set_draw_type">guage\_set\_draw\_type</a> |  设置图片的显示方式。 |
-| <a href="#guage_t_guage_set_image">guage\_set\_image</a> |  设置背景图片的名称。 |
+| <a href="#guage_t_guage_cast">guage\_cast</a> | 转换为guage对象(供脚本语言使用)。 |
+| <a href="#guage_t_guage_create">guage\_create</a> | 创建guage对象 |
+| <a href="#guage_t_guage_set_draw_type">guage\_set\_draw\_type</a> | 设置图片的显示方式。 |
+| <a href="#guage_t_guage_set_image">guage\_set\_image</a> | 设置背景图片的名称。 |
 ### 属性
 <p id="guage_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#guage_t_draw_type">draw\_type</a> | image_draw_type_t |  图片的绘制方式。 |
-| <a href="#guage_t_image">image</a> | char* |  背景图片。 |
+| <a href="#guage_t_draw_type">draw\_type</a> | image_draw_type_t | 图片的绘制方式。 |
+| <a href="#guage_t_image">image</a> | char* | 背景图片。 |
 ### 事件
 <p id="guage_t_events">
 

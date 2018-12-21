@@ -8,19 +8,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#list_view_t_list_view_cast">list\_view\_cast</a> |  转换为list_view对象(供脚本语言使用)。 |
-| <a href="#list_view_t_list_view_create">list\_view\_create</a> |  创建list_view对象 |
-| <a href="#list_view_t_list_view_set_auto_hide_scroll_bar">list\_view\_set\_auto\_hide\_scroll\_bar</a> |  设置是否自动隐藏滚动条。 |
-| <a href="#list_view_t_list_view_set_default_item_height">list\_view\_set\_default\_item\_height</a> |  设置列表项的缺省高度。 |
-| <a href="#list_view_t_list_view_set_item_height">list\_view\_set\_item\_height</a> |  设置列表项的高度。 |
+| <a href="#list_view_t_list_view_cast">list\_view\_cast</a> | 转换为list_view对象(供脚本语言使用)。 |
+| <a href="#list_view_t_list_view_create">list\_view\_create</a> | 创建list_view对象 |
+| <a href="#list_view_t_list_view_set_auto_hide_scroll_bar">list\_view\_set\_auto\_hide\_scroll\_bar</a> | 设置是否自动隐藏滚动条。 |
+| <a href="#list_view_t_list_view_set_default_item_height">list\_view\_set\_default\_item\_height</a> | 设置列表项的缺省高度。 |
+| <a href="#list_view_t_list_view_set_item_height">list\_view\_set\_item\_height</a> | 设置列表项的高度。 |
 ### 属性
 <p id="list_view_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#list_view_t_auto_hide_scroll_bar">auto\_hide\_scroll\_bar</a> | bool_t |  如果不需要滚动条时，自动隐藏滚动条。 |
-| <a href="#list_view_t_default_item_height">default\_item\_height</a> | int32_t |  列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。 |
-| <a href="#list_view_t_item_height">item\_height</a> | int32_t |  列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。 |
+| <a href="#list_view_t_auto_hide_scroll_bar">auto\_hide\_scroll\_bar</a> | bool_t | 如果不需要滚动条时，自动隐藏滚动条。 |
+| <a href="#list_view_t_default_item_height">default\_item\_height</a> | int32_t | 列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。 |
+| <a href="#list_view_t_item_height">item\_height</a> | int32_t | 列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。 |
 ### 事件
 <p id="list_view_t_events">
 

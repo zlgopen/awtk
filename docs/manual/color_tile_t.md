@@ -8,18 +8,18 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#color_tile_t_color_tile_cast">color\_tile\_cast</a> |  转换为color_tile对象(供脚本语言使用)。 |
-| <a href="#color_tile_t_color_tile_create">color\_tile\_create</a> |  创建color_tile对象 |
-| <a href="#color_tile_t_color_tile_set_bg_color">color\_tile\_set\_bg\_color</a> |  设置背景颜色。 |
-| <a href="#color_tile_t_color_tile_set_border_color">color\_tile\_set\_border\_color</a> |  设置边框颜色。 |
-| <a href="#color_tile_t_color_tile_set_value">color\_tile\_set\_value</a> |  设置背景颜色。 |
+| <a href="#color_tile_t_color_tile_cast">color\_tile\_cast</a> | 转换为color_tile对象(供脚本语言使用)。 |
+| <a href="#color_tile_t_color_tile_create">color\_tile\_create</a> | 创建color_tile对象 |
+| <a href="#color_tile_t_color_tile_set_bg_color">color\_tile\_set\_bg\_color</a> | 设置背景颜色。 |
+| <a href="#color_tile_t_color_tile_set_border_color">color\_tile\_set\_border\_color</a> | 设置边框颜色。 |
+| <a href="#color_tile_t_color_tile_set_value">color\_tile\_set\_value</a> | 设置背景颜色。 |
 ### 属性
 <p id="color_tile_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#color_tile_t_bg_color">bg\_color</a> | const char* |  背景颜色。 |
-| <a href="#color_tile_t_border_color">border\_color</a> | const char* |  边框颜色。 |
+| <a href="#color_tile_t_bg_color">bg\_color</a> | const char* | 背景颜色。 |
+| <a href="#color_tile_t_border_color">border\_color</a> | const char* | 边框颜色。 |
 ### 事件
 <p id="color_tile_t_events">
 

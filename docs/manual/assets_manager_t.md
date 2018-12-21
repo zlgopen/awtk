@@ -7,19 +7,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#assets_manager_t_assets_manager">assets\_manager</a> |  获取缺省资源管理器。 |
-| <a href="#assets_manager_t_assets_manager_add">assets\_manager\_add</a> |  向资源管理器中增加一个资源。 |
-| <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> |  清除指定类型的缓存。 |
-| <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> |  创建资源管理器。 |
-| <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> |  释放全部资源。 |
-| <a href="#assets_manager_t_assets_manager_destroy">assets\_manager\_destroy</a> |  释放全部资源并销毁asset manager对象。 |
-| <a href="#assets_manager_t_assets_manager_find_in_cache">assets\_manager\_find\_in\_cache</a> |  在资源管理器的缓存中查找指定的资源(不引用)。 |
-| <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> |  初始化资源管理器。 |
-| <a href="#assets_manager_t_assets_manager_load">assets\_manager\_load</a> |  从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。 |
-| <a href="#assets_manager_t_assets_manager_ref">assets\_manager\_ref</a> |  在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。 |
-| <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> |  设置缺省资源管理器。 |
-| <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> |  设置资源所在的目录(其下目录结构请参考demos)。 |
-| <a href="#assets_manager_t_assets_manager_unref">assets\_manager\_unref</a> |  释放指定的资源。 |
+| <a href="#assets_manager_t_assets_manager">assets\_manager</a> | 获取缺省资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_add">assets\_manager\_add</a> | 向资源管理器中增加一个资源。 |
+| <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> | 清除指定类型的缓存。 |
+| <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> | 创建资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> | 释放全部资源。 |
+| <a href="#assets_manager_t_assets_manager_destroy">assets\_manager\_destroy</a> | 释放全部资源并销毁asset manager对象。 |
+| <a href="#assets_manager_t_assets_manager_find_in_cache">assets\_manager\_find\_in\_cache</a> | 在资源管理器的缓存中查找指定的资源(不引用)。 |
+| <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> | 初始化资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_load">assets\_manager\_load</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH_FS_RES时才生效。 |
+| <a href="#assets_manager_t_assets_manager_ref">assets\_manager\_ref</a> | 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。 |
+| <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
+| <a href="#assets_manager_t_assets_manager_unref">assets\_manager\_unref</a> | 释放指定的资源。 |
 ### 属性
 <p id="assets_manager_t_properties">
 

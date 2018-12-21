@@ -7,9 +7,9 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#suggest_words_t_suggest_words_create">suggest\_words\_create</a> |  创建联想字对象。 |
-| <a href="#suggest_words_t_suggest_words_destroy">suggest\_words\_destroy</a> |  @deconstructor |
-| <a href="#suggest_words_t_suggest_words_find">suggest\_words\_find</a> |  查找prefix对应的联想字列表，成功后会更新words/words_nr。 |
+| <a href="#suggest_words_t_suggest_words_create">suggest\_words\_create</a> | 创建联想字对象。 |
+| <a href="#suggest_words_t_suggest_words_destroy">suggest\_words\_destroy</a> | @deconstructor |
+| <a href="#suggest_words_t_suggest_words_find">suggest\_words\_find</a> | 查找prefix对应的联想字列表，成功后会更新words/words_nr。 |
 ### 属性
 <p id="suggest_words_t_properties">
 

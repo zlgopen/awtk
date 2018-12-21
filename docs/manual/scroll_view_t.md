@@ -8,25 +8,25 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#scroll_view_t_scroll_view_cast">scroll\_view\_cast</a> |  转换为scroll_view对象(供脚本语言使用)。 |
-| <a href="#scroll_view_t_scroll_view_create">scroll\_view\_create</a> |  创建scroll_view对象 |
-| <a href="#scroll_view_t_scroll_view_scroll_to">scroll\_view\_scroll\_to</a> |  滚动到指定的偏移量。 |
-| <a href="#scroll_view_t_scroll_view_set_offset">scroll\_view\_set\_offset</a> |  设置偏移量。 |
-| <a href="#scroll_view_t_scroll_view_set_virtual_h">scroll\_view\_set\_virtual\_h</a> |  设置虚拟高度。 |
-| <a href="#scroll_view_t_scroll_view_set_virtual_w">scroll\_view\_set\_virtual\_w</a> |  设置虚拟宽度。 |
-| <a href="#scroll_view_t_scroll_view_set_xslidable">scroll\_view\_set\_xslidable</a> |  设置是否允许x方向滑动。 |
-| <a href="#scroll_view_t_scroll_view_set_yslidable">scroll\_view\_set\_yslidable</a> |  设置是否允许y方向滑动。 |
+| <a href="#scroll_view_t_scroll_view_cast">scroll\_view\_cast</a> | 转换为scroll_view对象(供脚本语言使用)。 |
+| <a href="#scroll_view_t_scroll_view_create">scroll\_view\_create</a> | 创建scroll_view对象 |
+| <a href="#scroll_view_t_scroll_view_scroll_to">scroll\_view\_scroll\_to</a> | 滚动到指定的偏移量。 |
+| <a href="#scroll_view_t_scroll_view_set_offset">scroll\_view\_set\_offset</a> | 设置偏移量。 |
+| <a href="#scroll_view_t_scroll_view_set_virtual_h">scroll\_view\_set\_virtual\_h</a> | 设置虚拟高度。 |
+| <a href="#scroll_view_t_scroll_view_set_virtual_w">scroll\_view\_set\_virtual\_w</a> | 设置虚拟宽度。 |
+| <a href="#scroll_view_t_scroll_view_set_xslidable">scroll\_view\_set\_xslidable</a> | 设置是否允许x方向滑动。 |
+| <a href="#scroll_view_t_scroll_view_set_yslidable">scroll\_view\_set\_yslidable</a> | 设置是否允许y方向滑动。 |
 ### 属性
 <p id="scroll_view_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#scroll_view_t_virtual_h">virtual\_h</a> | wh_t |  虚拟高度。 |
-| <a href="#scroll_view_t_virtual_w">virtual\_w</a> | wh_t |  虚拟宽度。 |
-| <a href="#scroll_view_t_xoffset">xoffset</a> | int32_t |  x偏移量。 |
-| <a href="#scroll_view_t_xslidable">xslidable</a> | bool_t |  是否允许x方向滑动。 |
-| <a href="#scroll_view_t_yoffset">yoffset</a> | int32_t |  y偏移量。 |
-| <a href="#scroll_view_t_yslidable">yslidable</a> | bool_t |  是否允许y方向滑动。 |
+| <a href="#scroll_view_t_virtual_h">virtual\_h</a> | wh_t | 虚拟高度。 |
+| <a href="#scroll_view_t_virtual_w">virtual\_w</a> | wh_t | 虚拟宽度。 |
+| <a href="#scroll_view_t_xoffset">xoffset</a> | int32_t | x偏移量。 |
+| <a href="#scroll_view_t_xslidable">xslidable</a> | bool_t | 是否允许x方向滑动。 |
+| <a href="#scroll_view_t_yoffset">yoffset</a> | int32_t | y偏移量。 |
+| <a href="#scroll_view_t_yslidable">yslidable</a> | bool_t | 是否允许y方向滑动。 |
 ### 事件
 <p id="scroll_view_t_events">
 

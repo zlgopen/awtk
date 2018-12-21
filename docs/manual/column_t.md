@@ -9,8 +9,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#column_t_column_cast">column\_cast</a> |  转换为column对象(供脚本语言使用)。 |
-| <a href="#column_t_column_create">column\_create</a> |  创建column对象 |
+| <a href="#column_t_column_cast">column\_cast</a> | 转换为column对象(供脚本语言使用)。 |
+| <a href="#column_t_column_create">column\_create</a> | 创建column对象 |
 ### 属性
 <p id="column_t_properties">
 

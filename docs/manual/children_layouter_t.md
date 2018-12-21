@@ -8,15 +8,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#children_layouter_t_children_layouter_destroy">children\_layouter\_destroy</a> |  销毁layouter对象。 |
-| <a href="#children_layouter_t_children_layouter_get_param">children\_layouter\_get\_param</a> |  获取指定的参数。 |
-| <a href="#children_layouter_t_children_layouter_get_param_float">children\_layouter\_get\_param\_float</a> |  获取指定的浮点格式的参数。 |
-| <a href="#children_layouter_t_children_layouter_get_param_int">children\_layouter\_get\_param\_int</a> |  获取指定的整数格式的参数。 |
-| <a href="#children_layouter_t_children_layouter_is_valid">children\_layouter\_is\_valid</a> |  判断layouter对象是否有效。 |
-| <a href="#children_layouter_t_children_layouter_layout">children\_layouter\_layout</a> |  对子控件进行Layout。 |
-| <a href="#children_layouter_t_children_layouter_set_param">children\_layouter\_set\_param</a> |  获取指定的参数。 |
-| <a href="#children_layouter_t_children_layouter_set_param_str">children\_layouter\_set\_param\_str</a> |  设置字符串格式的参数。 |
-| <a href="#children_layouter_t_children_layouter_to_string">children\_layouter\_to\_string</a> |  获取全部参数。 |
+| <a href="#children_layouter_t_children_layouter_destroy">children\_layouter\_destroy</a> | 销毁layouter对象。 |
+| <a href="#children_layouter_t_children_layouter_get_param">children\_layouter\_get\_param</a> | 获取指定的参数。 |
+| <a href="#children_layouter_t_children_layouter_get_param_float">children\_layouter\_get\_param\_float</a> | 获取指定的浮点格式的参数。 |
+| <a href="#children_layouter_t_children_layouter_get_param_int">children\_layouter\_get\_param\_int</a> | 获取指定的整数格式的参数。 |
+| <a href="#children_layouter_t_children_layouter_is_valid">children\_layouter\_is\_valid</a> | 判断layouter对象是否有效。 |
+| <a href="#children_layouter_t_children_layouter_layout">children\_layouter\_layout</a> | 对子控件进行Layout。 |
+| <a href="#children_layouter_t_children_layouter_set_param">children\_layouter\_set\_param</a> | 获取指定的参数。 |
+| <a href="#children_layouter_t_children_layouter_set_param_str">children\_layouter\_set\_param\_str</a> | 设置字符串格式的参数。 |
+| <a href="#children_layouter_t_children_layouter_to_string">children\_layouter\_to\_string</a> | 获取全部参数。 |
 ### 属性
 <p id="children_layouter_t_properties">
 

@@ -8,17 +8,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#switch_t_switch_cast">switch\_cast</a> |  转换switch对象(供脚本语言使用)。 |
-| <a href="#switch_t_switch_create">switch\_create</a> |  创建switch对象 |
-| <a href="#switch_t_switch_set_value">switch\_set\_value</a> |  设置控件的值。 |
+| <a href="#switch_t_switch_cast">switch\_cast</a> | 转换switch对象(供脚本语言使用)。 |
+| <a href="#switch_t_switch_create">switch\_create</a> | 创建switch对象 |
+| <a href="#switch_t_switch_set_value">switch\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="switch_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#switch_t_max_xoffset_ratio">max\_xoffset\_ratio</a> | float_t |  当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。 |
-| <a href="#switch_t_round_radius">round\_radius</a> | int32_t |  图片的圆角半径。 |
-| <a href="#switch_t_value">value</a> | bool_t |  值。 |
+| <a href="#switch_t_max_xoffset_ratio">max\_xoffset\_ratio</a> | float_t | 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。 |
+| <a href="#switch_t_round_radius">round\_radius</a> | int32_t | 图片的圆角半径。 |
+| <a href="#switch_t_value">value</a> | bool_t | 值。 |
 ### 事件
 <p id="switch_t_events">
 

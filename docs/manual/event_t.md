@@ -7,15 +7,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#event_t_event_cast">event\_cast</a> |  把event对象转wheel_event_t对象，主要给脚本语言使用。 |
+| <a href="#event_t_event_cast">event\_cast</a> | 把event对象转wheel_event_t对象，主要给脚本语言使用。 |
 ### 属性
 <p id="event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#event_t_target">target</a> | void* |  事件发生的目标对象。 |
-| <a href="#event_t_time">time</a> | int32_t |  事件发生的时间。 |
-| <a href="#event_t_type">type</a> | int32_t |  类型。 |
+| <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
+| <a href="#event_t_time">time</a> | int32_t | 事件发生的时间。 |
+| <a href="#event_t_type">type</a> | int32_t | 类型。 |
 ### 事件
 <p id="event_t_events">
 

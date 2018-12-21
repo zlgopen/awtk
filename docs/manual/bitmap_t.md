@@ -7,27 +7,27 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#bitmap_t_bitmap_create">bitmap\_create</a> |  创建图片对象(一般供脚本语言中使用)。 |
-| <a href="#bitmap_t_bitmap_create_ex">bitmap\_create\_ex</a> |  创建图片对象。 |
-| <a href="#bitmap_t_bitmap_destroy">bitmap\_destroy</a> |  销毁图片。 |
-| <a href="#bitmap_t_bitmap_get_bpp">bitmap\_get\_bpp</a> |  获取图片一个像素占用的字节数。 |
-| <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> |  获取每一行占用内存的字节数。 |
-| <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> |  获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
-| <a href="#bitmap_t_bitmap_init">bitmap\_init</a> |  初始化图片。 |
-| <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> |  初始化图片。 |
-| <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> |  设置line_length。 |
+| <a href="#bitmap_t_bitmap_create">bitmap\_create</a> | 创建图片对象(一般供脚本语言中使用)。 |
+| <a href="#bitmap_t_bitmap_create_ex">bitmap\_create\_ex</a> | 创建图片对象。 |
+| <a href="#bitmap_t_bitmap_destroy">bitmap\_destroy</a> | 销毁图片。 |
+| <a href="#bitmap_t_bitmap_get_bpp">bitmap\_get\_bpp</a> | 获取图片一个像素占用的字节数。 |
+| <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> | 获取每一行占用内存的字节数。 |
+| <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
+| <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
 ### 属性
 <p id="bitmap_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#bitmap_t_data">data</a> | uint8_t* |  图片数据。 |
-| <a href="#bitmap_t_flags">flags</a> | uint16_t |  标志。请参考{bitmap_flag_t}。 |
-| <a href="#bitmap_t_format">format</a> | uint16_t |  格式。请参考{bitmap_format_t}。 |
-| <a href="#bitmap_t_h">h</a> | wh_t |  高度。 |
-| <a href="#bitmap_t_line_length">line\_length</a> | uint32_t |  每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
-| <a href="#bitmap_t_name">name</a> | char* |  名称。 |
-| <a href="#bitmap_t_w">w</a> | wh_t |  宽度。 |
+| <a href="#bitmap_t_data">data</a> | uint8_t* | 图片数据。 |
+| <a href="#bitmap_t_flags">flags</a> | uint16_t | 标志。请参考{bitmap_flag_t}。 |
+| <a href="#bitmap_t_format">format</a> | uint16_t | 格式。请参考{bitmap_format_t}。 |
+| <a href="#bitmap_t_h">h</a> | wh_t | 高度。 |
+| <a href="#bitmap_t_line_length">line\_length</a> | uint32_t | 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
+| <a href="#bitmap_t_name">name</a> | char* | 名称。 |
+| <a href="#bitmap_t_w">w</a> | wh_t | 宽度。 |
 ### 事件
 <p id="bitmap_t_events">
 

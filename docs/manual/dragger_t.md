@@ -8,18 +8,18 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#dragger_t_dragger_cast">dragger\_cast</a> |  转换为dragger对象(供脚本语言使用)。 |
-| <a href="#dragger_t_dragger_create">dragger\_create</a> |  创建dragger对象。 |
-| <a href="#dragger_t_dragger_set_range">dragger\_set\_range</a> |  设置拖动的范围。 |
+| <a href="#dragger_t_dragger_cast">dragger\_cast</a> | 转换为dragger对象(供脚本语言使用)。 |
+| <a href="#dragger_t_dragger_create">dragger\_create</a> | 创建dragger对象。 |
+| <a href="#dragger_t_dragger_set_range">dragger\_set\_range</a> | 设置拖动的范围。 |
 ### 属性
 <p id="dragger_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#dragger_t_x_max">x\_max</a> | xy_t |  x坐标的最大值。 |
-| <a href="#dragger_t_x_min">x\_min</a> | xy_t |  x坐标的最小值。 |
-| <a href="#dragger_t_y_max">y\_max</a> | xy_t |  y坐标的最大值。 |
-| <a href="#dragger_t_y_min">y\_min</a> | xy_t |  y坐标的最小值。 |
+| <a href="#dragger_t_x_max">x\_max</a> | xy_t | x坐标的最大值。 |
+| <a href="#dragger_t_x_min">x\_min</a> | xy_t | x坐标的最小值。 |
+| <a href="#dragger_t_y_max">y\_max</a> | xy_t | y坐标的最大值。 |
+| <a href="#dragger_t_y_min">y\_min</a> | xy_t | y坐标的最小值。 |
 ### 事件
 <p id="dragger_t_events">
 

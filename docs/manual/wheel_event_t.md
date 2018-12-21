@@ -9,17 +9,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#wheel_event_t_wheel_event_cast">wheel\_event\_cast</a> |  把event对象转wheel_event_t对象，主要给脚本语言使用。 |
+| <a href="#wheel_event_t_wheel_event_cast">wheel\_event\_cast</a> | 把event对象转wheel_event_t对象，主要给脚本语言使用。 |
 ### 属性
 <p id="wheel_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#wheel_event_t_alt">alt</a> | bool_t |  alt键是否按下。 |
-| <a href="#wheel_event_t_ctrl">ctrl</a> | bool_t |  ctrl键是否按下。 |
-| <a href="#wheel_event_t_dx">dx</a> | int32_t |  滚轮的x值。 |
-| <a href="#wheel_event_t_dy">dy</a> | int32_t |  滚轮的x值。 |
-| <a href="#wheel_event_t_shift">shift</a> | bool_t |  shift键是否按下。 |
+| <a href="#wheel_event_t_alt">alt</a> | bool_t | alt键是否按下。 |
+| <a href="#wheel_event_t_ctrl">ctrl</a> | bool_t | ctrl键是否按下。 |
+| <a href="#wheel_event_t_dx">dx</a> | int32_t | 滚轮的x值。 |
+| <a href="#wheel_event_t_dy">dy</a> | int32_t | 滚轮的x值。 |
+| <a href="#wheel_event_t_shift">shift</a> | bool_t | shift键是否按下。 |
 ### 事件
 <p id="wheel_event_t_events">
 

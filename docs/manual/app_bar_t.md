@@ -9,8 +9,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#app_bar_t_app_bar_cast">app\_bar\_cast</a> |  转换为app_bar对象(供脚本语言使用)。 |
-| <a href="#app_bar_t_app_bar_create">app\_bar\_create</a> |  创建app_bar对象 |
+| <a href="#app_bar_t_app_bar_cast">app\_bar\_cast</a> | 转换为app_bar对象(供脚本语言使用)。 |
+| <a href="#app_bar_t_app_bar_create">app\_bar\_create</a> | 创建app_bar对象 |
 ### 属性
 <p id="app_bar_t_properties">
 

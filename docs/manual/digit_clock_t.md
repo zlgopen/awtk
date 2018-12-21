@@ -8,15 +8,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#digit_clock_t_digit_clock_cast">digit\_clock\_cast</a> |  转换为digit_clock对象(供脚本语言使用)。 |
-| <a href="#digit_clock_t_digit_clock_create">digit\_clock\_create</a> |  创建digit_clock对象 |
-| <a href="#digit_clock_t_digit_clock_set_format">digit\_clock\_set\_format</a> |  设置显示格式。 |
+| <a href="#digit_clock_t_digit_clock_cast">digit\_clock\_cast</a> | 转换为digit_clock对象(供脚本语言使用)。 |
+| <a href="#digit_clock_t_digit_clock_create">digit\_clock\_create</a> | 创建digit_clock对象 |
+| <a href="#digit_clock_t_digit_clock_set_format">digit\_clock\_set\_format</a> | 设置显示格式。 |
 ### 属性
 <p id="digit_clock_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#digit_clock_t_format">format</a> | char* |  显示格式。 |
+| <a href="#digit_clock_t_format">format</a> | char* | 显示格式。 |
 ### 事件
 <p id="digit_clock_t_events">
 

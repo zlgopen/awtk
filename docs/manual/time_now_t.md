@@ -9,8 +9,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#time_now_t_time_now_ms">time\_now\_ms</a> |  获取当前时间(毫秒)。 |
-| <a href="#time_now_t_time_now_s">time\_now\_s</a> |  获取当前时间(秒)。 |
+| <a href="#time_now_t_time_now_ms">time\_now\_ms</a> | 获取当前时间(毫秒)。 |
+| <a href="#time_now_t_time_now_s">time\_now\_s</a> | 获取当前时间(秒)。 |
 ### 属性
 <p id="time_now_t_properties">
 

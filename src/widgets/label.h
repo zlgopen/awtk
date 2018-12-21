@@ -31,8 +31,10 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  *
- * 文本控件，用于显示一行或多行文本。
+ * 文本控件。用于显示一行或多行文本。
+ *
  * 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。
+ *
  * 如需自动换行请使用[rich\_text\_t](rich_text_t.md)控件。
  *
  * label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于label\_t控件。

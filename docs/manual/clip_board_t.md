@@ -7,14 +7,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#clip_board_t_clip_board">clip\_board</a> |  获取缺省的剪切板对象。 |
-| <a href="#clip_board_t_clip_board_clear">clip\_board\_clear</a> |  清空剪切板中的数据。 |
-| <a href="#clip_board_t_clip_board_destroy">clip\_board\_destroy</a> |  销毁剪切板对象。 |
-| <a href="#clip_board_t_clip_board_get_data">clip\_board\_get\_data</a> |  从剪切板中获取数据。 |
-| <a href="#clip_board_t_clip_board_get_text">clip\_board\_get\_text</a> |  从剪切板中获取文本(UTF8)数据。 |
-| <a href="#clip_board_t_clip_board_set">clip\_board\_set</a> |  设置缺省的剪切板对象。 |
-| <a href="#clip_board_t_clip_board_set_data">clip\_board\_set\_data</a> |  设置数据到剪切板中。 |
-| <a href="#clip_board_t_clip_board_set_text">clip\_board\_set\_text</a> |  设置文本(UTF8)数据到剪切板。 |
+| <a href="#clip_board_t_clip_board">clip\_board</a> | 获取缺省的剪切板对象。 |
+| <a href="#clip_board_t_clip_board_clear">clip\_board\_clear</a> | 清空剪切板中的数据。 |
+| <a href="#clip_board_t_clip_board_destroy">clip\_board\_destroy</a> | 销毁剪切板对象。 |
+| <a href="#clip_board_t_clip_board_get_data">clip\_board\_get\_data</a> | 从剪切板中获取数据。 |
+| <a href="#clip_board_t_clip_board_get_text">clip\_board\_get\_text</a> | 从剪切板中获取文本(UTF8)数据。 |
+| <a href="#clip_board_t_clip_board_set">clip\_board\_set</a> | 设置缺省的剪切板对象。 |
+| <a href="#clip_board_t_clip_board_set_data">clip\_board\_set\_data</a> | 设置数据到剪切板中。 |
+| <a href="#clip_board_t_clip_board_set_text">clip\_board\_set\_text</a> | 设置文本(UTF8)数据到剪切板。 |
 ### 属性
 <p id="clip_board_t_properties">
 

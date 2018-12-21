@@ -9,20 +9,20 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> |  创建style_mutable对象。除了测试程序外不需要直接调用，widget会通过style_factory_create创建。 |
-| <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> |  遍历。对每项调用回调函数on_style_item。 |
-| <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> |  获取style的名称。 |
-| <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> |  将自己注册到style_factory。 |
-| <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> |  设置指定id的颜色值。 |
-| <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> |  设置指定id整数格式的值。 |
-| <a href="#style_mutable_t_style_mutable_set_name">style\_mutable\_set\_name</a> |  设置style的名称。 |
-| <a href="#style_mutable_t_style_mutable_set_str">style\_mutable\_set\_str</a> |  设置指定id字符串的值。 |
+| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style_mutable对象。除了测试程序外不需要直接调用，widget会通过style_factory_create创建。 |
+| <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on_style_item。 |
+| <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> | 获取style的名称。 |
+| <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style_factory。 |
+| <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定id的颜色值。 |
+| <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> | 设置指定id整数格式的值。 |
+| <a href="#style_mutable_t_style_mutable_set_name">style\_mutable\_set\_name</a> | 设置style的名称。 |
+| <a href="#style_mutable_t_style_mutable_set_str">style\_mutable\_set\_str</a> | 设置指定id字符串的值。 |
 ### 属性
 <p id="style_mutable_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#style_mutable_t_name">name</a> | char* |  名称。 |
+| <a href="#style_mutable_t_name">name</a> | char* | 名称。 |
 ### 事件
 <p id="style_mutable_t_events">
 

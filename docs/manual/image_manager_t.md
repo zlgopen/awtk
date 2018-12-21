@@ -7,18 +7,18 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#image_manager_t_image_manager">image\_manager</a> |  获取缺省的图片管理器。 |
-| <a href="#image_manager_t_image_manager_add">image\_manager\_add</a> |  向缓存中加入一张图片 |
-| <a href="#image_manager_t_image_manager_create">image\_manager\_create</a> |  创建图片管理器。 |
-| <a href="#image_manager_t_image_manager_deinit">image\_manager\_deinit</a> |  析构图片管理器。 |
-| <a href="#image_manager_t_image_manager_destroy">image\_manager\_destroy</a> |  析构并释放图片管理器。 |
-| <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> |  初始化图片管理器。 |
-| <a href="#image_manager_t_image_manager_load">image\_manager\_load</a> |  加载指定的图片。 |
-| <a href="#image_manager_t_image_manager_lookup">image\_manager\_lookup</a> |  从缓存中查找图片 |
-| <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> |  设置缺省的图片管理器。 |
-| <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> |  设置资源管理器对象 |
-| <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> |  从图片管理器中卸载指定时间内没有使用的图片。 |
-| <a href="#image_manager_t_image_manager_update_specific">image\_manager\_update\_specific</a> |  更新缓存中图片的specific信息。 |
+| <a href="#image_manager_t_image_manager">image\_manager</a> | 获取缺省的图片管理器。 |
+| <a href="#image_manager_t_image_manager_add">image\_manager\_add</a> | 向缓存中加入一张图片 |
+| <a href="#image_manager_t_image_manager_create">image\_manager\_create</a> | 创建图片管理器。 |
+| <a href="#image_manager_t_image_manager_deinit">image\_manager\_deinit</a> | 析构图片管理器。 |
+| <a href="#image_manager_t_image_manager_destroy">image\_manager\_destroy</a> | 析构并释放图片管理器。 |
+| <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> | 初始化图片管理器。 |
+| <a href="#image_manager_t_image_manager_load">image\_manager\_load</a> | 加载指定的图片。 |
+| <a href="#image_manager_t_image_manager_lookup">image\_manager\_lookup</a> | 从缓存中查找图片 |
+| <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> | 设置缺省的图片管理器。 |
+| <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象 |
+| <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
+| <a href="#image_manager_t_image_manager_update_specific">image\_manager\_update\_specific</a> | 更新缓存中图片的specific信息。 |
 ### 属性
 <p id="image_manager_t_properties">
 

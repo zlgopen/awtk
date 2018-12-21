@@ -6,8 +6,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#input_device_status_t_input_device_status_init">input\_device\_status\_init</a> |  初始化输入设备状态管理器。 |
-| <a href="#input_device_status_t_input_device_status_on_input_event">input\_device\_status\_on\_input\_event</a> |  对输入事件进行处理，然后分发给widget。 |
+| <a href="#input_device_status_t_input_device_status_init">input\_device\_status\_init</a> | 初始化输入设备状态管理器。 |
+| <a href="#input_device_status_t_input_device_status_on_input_event">input\_device\_status\_on\_input\_event</a> | 对输入事件进行处理，然后分发给widget。 |
 ### 属性
 <p id="input_device_status_t_properties">
 

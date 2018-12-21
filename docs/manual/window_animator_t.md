@@ -7,10 +7,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_animator_t_window_animator_create_for_close">window\_animator\_create\_for\_close</a> |  为关闭窗口创建动画。 |
-| <a href="#window_animator_t_window_animator_create_for_open">window\_animator\_create\_for\_open</a> |  为打开窗口创建动画。 |
-| <a href="#window_animator_t_window_animator_destroy">window\_animator\_destroy</a> |  销毁窗口动画对象。 |
-| <a href="#window_animator_t_window_animator_update">window\_animator\_update</a> |  更新动画。 |
+| <a href="#window_animator_t_window_animator_create_for_close">window\_animator\_create\_for\_close</a> | 为关闭窗口创建动画。 |
+| <a href="#window_animator_t_window_animator_create_for_open">window\_animator\_create\_for\_open</a> | 为打开窗口创建动画。 |
+| <a href="#window_animator_t_window_animator_destroy">window\_animator\_destroy</a> | 销毁窗口动画对象。 |
+| <a href="#window_animator_t_window_animator_update">window\_animator\_update</a> | 更新动画。 |
 ### 属性
 <p id="window_animator_t_properties">
 

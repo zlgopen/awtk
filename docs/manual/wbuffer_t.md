@@ -7,22 +7,22 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#wbuffer_t_wbuffer_init">wbuffer\_init</a> |  初始wbuffer对象。 |
-| <a href="#wbuffer_t_wbuffer_skip">wbuffer\_skip</a> |  跳过指定的长度。 |
-| <a href="#wbuffer_t_wbuffer_write_binary">wbuffer\_write\_binary</a> |  写入指定长度的二进制数据。 |
-| <a href="#wbuffer_t_wbuffer_write_float">wbuffer\_write\_float</a> |  写入float数据。 |
-| <a href="#wbuffer_t_wbuffer_write_string">wbuffer\_write\_string</a> |  写入字符串。 |
-| <a href="#wbuffer_t_wbuffer_write_uint16">wbuffer\_write\_uint16</a> |  写入uint16数据。 |
-| <a href="#wbuffer_t_wbuffer_write_uint32">wbuffer\_write\_uint32</a> |  写入uint32数据。 |
-| <a href="#wbuffer_t_wbuffer_write_uint8">wbuffer\_write\_uint8</a> |  写入uint8数据。 |
+| <a href="#wbuffer_t_wbuffer_init">wbuffer\_init</a> | 初始wbuffer对象。 |
+| <a href="#wbuffer_t_wbuffer_skip">wbuffer\_skip</a> | 跳过指定的长度。 |
+| <a href="#wbuffer_t_wbuffer_write_binary">wbuffer\_write\_binary</a> | 写入指定长度的二进制数据。 |
+| <a href="#wbuffer_t_wbuffer_write_float">wbuffer\_write\_float</a> | 写入float数据。 |
+| <a href="#wbuffer_t_wbuffer_write_string">wbuffer\_write\_string</a> | 写入字符串。 |
+| <a href="#wbuffer_t_wbuffer_write_uint16">wbuffer\_write\_uint16</a> | 写入uint16数据。 |
+| <a href="#wbuffer_t_wbuffer_write_uint32">wbuffer\_write\_uint32</a> | 写入uint32数据。 |
+| <a href="#wbuffer_t_wbuffer_write_uint8">wbuffer\_write\_uint8</a> | 写入uint8数据。 |
 ### 属性
 <p id="wbuffer_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#wbuffer_t_capacity">capacity</a> | uint32_t |  缓存区最大容量。 |
-| <a href="#wbuffer_t_cursor">cursor</a> | uint32_t |  当前写入位置。 |
-| <a href="#wbuffer_t_data">data</a> | uint8_t* |  缓存区。 |
+| <a href="#wbuffer_t_capacity">capacity</a> | uint32_t | 缓存区最大容量。 |
+| <a href="#wbuffer_t_cursor">cursor</a> | uint32_t | 当前写入位置。 |
+| <a href="#wbuffer_t_data">data</a> | uint8_t* | 缓存区。 |
 ### 事件
 <p id="wbuffer_t_events">
 

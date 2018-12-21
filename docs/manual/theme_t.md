@@ -7,13 +7,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#theme_t_theme">theme</a> |  获取缺省的主题对象。 |
-| <a href="#theme_t_theme_create">theme\_create</a> |  创建主题对象。 |
-| <a href="#theme_t_theme_deinit">theme\_deinit</a> |  析构主题对象。 |
-| <a href="#theme_t_theme_destroy">theme\_destroy</a> |  析构并释放主题对象。 |
-| <a href="#theme_t_theme_find_style">theme\_find\_style</a> |  查找满足条件的style。 |
-| <a href="#theme_t_theme_init">theme\_init</a> |  初始化主题对象。 |
-| <a href="#theme_t_theme_set">theme\_set</a> |  设置缺省的主题对象。 |
+| <a href="#theme_t_theme">theme</a> | 获取缺省的主题对象。 |
+| <a href="#theme_t_theme_create">theme\_create</a> | 创建主题对象。 |
+| <a href="#theme_t_theme_deinit">theme\_deinit</a> | 析构主题对象。 |
+| <a href="#theme_t_theme_destroy">theme\_destroy</a> | 析构并释放主题对象。 |
+| <a href="#theme_t_theme_find_style">theme\_find\_style</a> | 查找满足条件的style。 |
+| <a href="#theme_t_theme_init">theme\_init</a> | 初始化主题对象。 |
+| <a href="#theme_t_theme_set">theme\_set</a> | 设置缺省的主题对象。 |
 ### 属性
 <p id="theme_t_properties">
 

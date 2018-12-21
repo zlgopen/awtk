@@ -7,25 +7,25 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#emitter_t_emitter_create">emitter\_create</a> |  创建emitter对象。 |
-| <a href="#emitter_t_emitter_deinit">emitter\_deinit</a> |  析构。 |
-| <a href="#emitter_t_emitter_destroy">emitter\_destroy</a> |  销毁。 |
-| <a href="#emitter_t_emitter_disable">emitter\_disable</a> |  禁用。禁用后emitter_dispatch无效，但可以注册和注销。 |
-| <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> |  分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
-| <a href="#emitter_t_emitter_enable">emitter\_enable</a> |  启用。 |
-| <a href="#emitter_t_emitter_find">emitter\_find</a> |  通过ID查找emitter_item_t，主要用于辅助测试。 |
-| <a href="#emitter_t_emitter_init">emitter\_init</a> |  初始化emitter对象。 |
-| <a href="#emitter_t_emitter_off">emitter\_off</a> |  注销指定事件的处理函数。 |
-| <a href="#emitter_t_emitter_off_by_func">emitter\_off\_by\_func</a> |  注销指定事件的处理函数。 |
-| <a href="#emitter_t_emitter_on">emitter\_on</a> |  注册指定事件的处理函数。 |
-| <a href="#emitter_t_emitter_set_on_destroy">emitter\_set\_on\_destroy</a> |  设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。 |
-| <a href="#emitter_t_emitter_size">emitter\_size</a> |  获取注册的回调函数个数，主要用于辅助测试。 |
+| <a href="#emitter_t_emitter_create">emitter\_create</a> | 创建emitter对象。 |
+| <a href="#emitter_t_emitter_deinit">emitter\_deinit</a> | 析构。 |
+| <a href="#emitter_t_emitter_destroy">emitter\_destroy</a> | 销毁。 |
+| <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。禁用后emitter_dispatch无效，但可以注册和注销。 |
+| <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
+| <a href="#emitter_t_emitter_enable">emitter\_enable</a> | 启用。 |
+| <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
+| <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
+| <a href="#emitter_t_emitter_off">emitter\_off</a> | 注销指定事件的处理函数。 |
+| <a href="#emitter_t_emitter_off_by_func">emitter\_off\_by\_func</a> | 注销指定事件的处理函数。 |
+| <a href="#emitter_t_emitter_on">emitter\_on</a> | 注册指定事件的处理函数。 |
+| <a href="#emitter_t_emitter_set_on_destroy">emitter\_set\_on\_destroy</a> | 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。 |
+| <a href="#emitter_t_emitter_size">emitter\_size</a> | 获取注册的回调函数个数，主要用于辅助测试。 |
 ### 属性
 <p id="emitter_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#emitter_t_enable">enable</a> | bool_t |  禁用标志。禁用时dispatch无效。 |
+| <a href="#emitter_t_enable">enable</a> | bool_t | 禁用标志。禁用时dispatch无效。 |
 ### 事件
 <p id="emitter_t_events">
 

@@ -8,9 +8,9 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#calibration_win_t_calibration_win_create">calibration\_win\_create</a> |  创建calibration_win对象 |
-| <a href="#calibration_win_t_calibration_win_set_on_click">calibration\_win\_set\_on\_click</a> |  设置校准点击事件的处理函数。 |
-| <a href="#calibration_win_t_calibration_win_set_on_done">calibration\_win\_set\_on\_done</a> |  设置校准完成的处理函数。 |
+| <a href="#calibration_win_t_calibration_win_create">calibration\_win\_create</a> | 创建calibration_win对象 |
+| <a href="#calibration_win_t_calibration_win_set_on_click">calibration\_win\_set\_on\_click</a> | 设置校准点击事件的处理函数。 |
+| <a href="#calibration_win_t_calibration_win_set_on_done">calibration\_win\_set\_on\_done</a> | 设置校准完成的处理函数。 |
 ### 属性
 <p id="calibration_win_t_properties">
 

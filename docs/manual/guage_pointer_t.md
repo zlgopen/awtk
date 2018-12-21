@@ -8,17 +8,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#guage_pointer_t_guage_pointer_cast">guage\_pointer\_cast</a> |  转换为guage_pointer对象(供脚本语言使用)。 |
-| <a href="#guage_pointer_t_guage_pointer_create">guage\_pointer\_create</a> |  创建guage_pointer对象 |
-| <a href="#guage_pointer_t_guage_pointer_set_angle">guage\_pointer\_set\_angle</a> |  设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
-| <a href="#guage_pointer_t_guage_pointer_set_image">guage\_pointer\_set\_image</a> |  设置指针的图片。 |
+| <a href="#guage_pointer_t_guage_pointer_cast">guage\_pointer\_cast</a> | 转换为guage_pointer对象(供脚本语言使用)。 |
+| <a href="#guage_pointer_t_guage_pointer_create">guage\_pointer\_create</a> | 创建guage_pointer对象 |
+| <a href="#guage_pointer_t_guage_pointer_set_angle">guage\_pointer\_set\_angle</a> | 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
+| <a href="#guage_pointer_t_guage_pointer_set_image">guage\_pointer\_set\_image</a> | 设置指针的图片。 |
 ### 属性
 <p id="guage_pointer_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#guage_pointer_t_angle">angle</a> | int32_t |  指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
-| <a href="#guage_pointer_t_image">image</a> | char* |  指针图片。图片须垂直向上，图片的中心点为旋转方向。 |
+| <a href="#guage_pointer_t_angle">angle</a> | int32_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
+| <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。图片须垂直向上，图片的中心点为旋转方向。 |
 ### 事件
 <p id="guage_pointer_t_events">
 

@@ -9,14 +9,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> |  把event对象转prop_change_event_t对象，主要给脚本语言使用。 |
+| <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> | 把event对象转prop_change_event_t对象，主要给脚本语言使用。 |
 ### 属性
 <p id="prop_change_event_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#prop_change_event_t_name">name</a> | char* |  属性的名称。 |
-| <a href="#prop_change_event_t_value">value</a> | value_t* |  属性的值。 |
+| <a href="#prop_change_event_t_name">name</a> | char* | 属性的名称。 |
+| <a href="#prop_change_event_t_value">value</a> | value_t* | 属性的值。 |
 ### 事件
 <p id="prop_change_event_t_events">
 

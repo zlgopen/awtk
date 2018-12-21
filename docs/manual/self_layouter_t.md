@@ -8,14 +8,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#self_layouter_t_self_layouter_destroy">self\_layouter\_destroy</a> |  销毁layouter对象。 |
-| <a href="#self_layouter_t_self_layouter_get_param">self\_layouter\_get\_param</a> |  获取指定的参数。 |
-| <a href="#self_layouter_t_self_layouter_get_param_float">self\_layouter\_get\_param\_float</a> |  获取指定的浮点格式的参数。 |
-| <a href="#self_layouter_t_self_layouter_get_param_int">self\_layouter\_get\_param\_int</a> |  获取指定的整数格式的参数。 |
-| <a href="#self_layouter_t_self_layouter_layout">self\_layouter\_layout</a> |  对控件进行Layout。 |
-| <a href="#self_layouter_t_self_layouter_set_param">self\_layouter\_set\_param</a> |  获取指定的参数。 |
-| <a href="#self_layouter_t_self_layouter_set_param_str">self\_layouter\_set\_param\_str</a> |  设置字符串格式的参数。 |
-| <a href="#self_layouter_t_self_layouter_to_string">self\_layouter\_to\_string</a> |  获取全部参数。 |
+| <a href="#self_layouter_t_self_layouter_destroy">self\_layouter\_destroy</a> | 销毁layouter对象。 |
+| <a href="#self_layouter_t_self_layouter_get_param">self\_layouter\_get\_param</a> | 获取指定的参数。 |
+| <a href="#self_layouter_t_self_layouter_get_param_float">self\_layouter\_get\_param\_float</a> | 获取指定的浮点格式的参数。 |
+| <a href="#self_layouter_t_self_layouter_get_param_int">self\_layouter\_get\_param\_int</a> | 获取指定的整数格式的参数。 |
+| <a href="#self_layouter_t_self_layouter_layout">self\_layouter\_layout</a> | 对控件进行Layout。 |
+| <a href="#self_layouter_t_self_layouter_set_param">self\_layouter\_set\_param</a> | 获取指定的参数。 |
+| <a href="#self_layouter_t_self_layouter_set_param_str">self\_layouter\_set\_param\_str</a> | 设置字符串格式的参数。 |
+| <a href="#self_layouter_t_self_layouter_to_string">self\_layouter\_to\_string</a> | 获取全部参数。 |
 ### 属性
 <p id="self_layouter_t_properties">
 

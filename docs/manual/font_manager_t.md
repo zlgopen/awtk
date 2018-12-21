@@ -8,19 +8,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#font_manager_t_font_manager">font\_manager</a> |  获取缺省的字体管理器。 |
-| <a href="#font_manager_t_font_manager_add">font\_manager\_add</a> |  向缓存中加入字体。 |
-| <a href="#font_manager_t_font_manager_create">font\_manager\_create</a> |  创建字体管理器。 |
-| <a href="#font_manager_t_font_manager_deinit">font\_manager\_deinit</a> |  析构字体管理器。 |
-| <a href="#font_manager_t_font_manager_destroy">font\_manager\_destroy</a> |  析构并释放字体管理器。 |
-| <a href="#font_manager_t_font_manager_find">font\_manager\_find</a> |  从缓存中查找字体。 |
-| <a href="#font_manager_t_font_manager_init">font\_manager\_init</a> |  初始化字体管理器。 |
-| <a href="#font_manager_t_font_manager_set">font\_manager\_set</a> |  设置缺省的字体管理器。 |
-| <a href="#font_manager_t_font_manager_set_assets_manager">font\_manager\_set\_assets\_manager</a> |  设置资源管理器对象 |
-| <a href="#font_manager_t_g2d_blend_image">g2d\_blend\_image</a> |  把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 |
-| <a href="#font_manager_t_g2d_copy_image">g2d\_copy\_image</a> |  把图片指定的区域拷贝到framebuffer中。 |
-| <a href="#font_manager_t_g2d_copy_image">g2d\_copy\_image</a> |  把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
-| <a href="#font_manager_t_g2d_fill_rect">g2d\_fill\_rect</a> |  用颜色填充指定的区域。 |
+| <a href="#font_manager_t_font_manager">font\_manager</a> | 获取缺省的字体管理器。 |
+| <a href="#font_manager_t_font_manager_add">font\_manager\_add</a> | 向缓存中加入字体。 |
+| <a href="#font_manager_t_font_manager_create">font\_manager\_create</a> | 创建字体管理器。 |
+| <a href="#font_manager_t_font_manager_deinit">font\_manager\_deinit</a> | 析构字体管理器。 |
+| <a href="#font_manager_t_font_manager_destroy">font\_manager\_destroy</a> | 析构并释放字体管理器。 |
+| <a href="#font_manager_t_font_manager_find">font\_manager\_find</a> | 从缓存中查找字体。 |
+| <a href="#font_manager_t_font_manager_init">font\_manager\_init</a> | 初始化字体管理器。 |
+| <a href="#font_manager_t_font_manager_set">font\_manager\_set</a> | 设置缺省的字体管理器。 |
+| <a href="#font_manager_t_font_manager_set_assets_manager">font\_manager\_set\_assets\_manager</a> | 设置资源管理器对象 |
+| <a href="#font_manager_t_g2d_blend_image">g2d\_blend\_image</a> | 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 |
+| <a href="#font_manager_t_g2d_copy_image">g2d\_copy\_image</a> | 把图片指定的区域拷贝到framebuffer中。 |
+| <a href="#font_manager_t_g2d_copy_image">g2d\_copy\_image</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
+| <a href="#font_manager_t_g2d_fill_rect">g2d\_fill\_rect</a> | 用颜色填充指定的区域。 |
 ### 属性
 <p id="font_manager_t_properties">
 

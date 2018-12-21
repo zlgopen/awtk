@@ -7,33 +7,33 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#wstr_t_wstr_add_float">wstr\_add\_float</a> |  将字符串转成浮点数，加上delta，再转换回来。 |
-| <a href="#wstr_t_wstr_equal">wstr\_equal</a> |  判断两个字符是否相同。 |
-| <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> |  用浮点数初始化字符串。 |
-| <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> |  用整数初始化字符串。 |
-| <a href="#wstr_t_wstr_from_value">wstr\_from\_value</a> |  用value初始化字符串。 |
-| <a href="#wstr_t_wstr_get_utf8">wstr\_get\_utf8</a> |  获取UTF8字符串。 |
-| <a href="#wstr_t_wstr_init">wstr\_init</a> |  初始化字符串对象。 |
-| <a href="#wstr_t_wstr_insert">wstr\_insert</a> |  在指定位置插入字符串。 |
-| <a href="#wstr_t_wstr_pop">wstr\_pop</a> |  删除尾部字符。 |
-| <a href="#wstr_t_wstr_push">wstr\_push</a> |  追加一个字符。 |
-| <a href="#wstr_t_wstr_push_int">wstr\_push\_int</a> |  追加一个整数。 |
-| <a href="#wstr_t_wstr_push_str">wstr\_push\_str</a> |  追加一个字符。 |
-| <a href="#wstr_t_wstr_remove">wstr\_remove</a> |  删除指定范围的字符。 |
-| <a href="#wstr_t_wstr_reset">wstr\_reset</a> |  重置字符串为空。 |
-| <a href="#wstr_t_wstr_set">wstr\_set</a> |  设置字符串。 |
-| <a href="#wstr_t_wstr_set_utf8">wstr\_set\_utf8</a> |  设置UTF8字符串。 |
-| <a href="#wstr_t_wstr_to_float">wstr\_to\_float</a> |  将字符串转成浮点数。 |
-| <a href="#wstr_t_wstr_to_int">wstr\_to\_int</a> |  将字符串转成整数。 |
-| <a href="#wstr_t_wstr_trim_float_zero">wstr\_trim\_float\_zero</a> |  去掉浮点数小数点尾部的零。 |
+| <a href="#wstr_t_wstr_add_float">wstr\_add\_float</a> | 将字符串转成浮点数，加上delta，再转换回来。 |
+| <a href="#wstr_t_wstr_equal">wstr\_equal</a> | 判断两个字符是否相同。 |
+| <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> | 用浮点数初始化字符串。 |
+| <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> | 用整数初始化字符串。 |
+| <a href="#wstr_t_wstr_from_value">wstr\_from\_value</a> | 用value初始化字符串。 |
+| <a href="#wstr_t_wstr_get_utf8">wstr\_get\_utf8</a> | 获取UTF8字符串。 |
+| <a href="#wstr_t_wstr_init">wstr\_init</a> | 初始化字符串对象。 |
+| <a href="#wstr_t_wstr_insert">wstr\_insert</a> | 在指定位置插入字符串。 |
+| <a href="#wstr_t_wstr_pop">wstr\_pop</a> | 删除尾部字符。 |
+| <a href="#wstr_t_wstr_push">wstr\_push</a> | 追加一个字符。 |
+| <a href="#wstr_t_wstr_push_int">wstr\_push\_int</a> | 追加一个整数。 |
+| <a href="#wstr_t_wstr_push_str">wstr\_push\_str</a> | 追加一个字符。 |
+| <a href="#wstr_t_wstr_remove">wstr\_remove</a> | 删除指定范围的字符。 |
+| <a href="#wstr_t_wstr_reset">wstr\_reset</a> | 重置字符串为空。 |
+| <a href="#wstr_t_wstr_set">wstr\_set</a> | 设置字符串。 |
+| <a href="#wstr_t_wstr_set_utf8">wstr\_set\_utf8</a> | 设置UTF8字符串。 |
+| <a href="#wstr_t_wstr_to_float">wstr\_to\_float</a> | 将字符串转成浮点数。 |
+| <a href="#wstr_t_wstr_to_int">wstr\_to\_int</a> | 将字符串转成整数。 |
+| <a href="#wstr_t_wstr_trim_float_zero">wstr\_trim\_float\_zero</a> | 去掉浮点数小数点尾部的零。 |
 ### 属性
 <p id="wstr_t_properties">
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#wstr_t_capacity">capacity</a> | uint32_t |  容量。 |
-| <a href="#wstr_t_size">size</a> | uint32_t |  长度。 |
-| <a href="#wstr_t_str">str</a> | wchar_t* |  字符串。 |
+| <a href="#wstr_t_capacity">capacity</a> | uint32_t | 容量。 |
+| <a href="#wstr_t_size">size</a> | uint32_t | 长度。 |
+| <a href="#wstr_t_str">str</a> | wchar_t* | 字符串。 |
 ### 事件
 <p id="wstr_t_events">
 

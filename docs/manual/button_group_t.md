@@ -8,8 +8,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#button_group_t_button_group_cast">button\_group\_cast</a> |  转换为button_group对象(供脚本语言使用)。 |
-| <a href="#button_group_t_button_group_create">button\_group\_create</a> |  创建button_group对象 |
+| <a href="#button_group_t_button_group_cast">button\_group\_cast</a> | 转换为button_group对象(供脚本语言使用)。 |
+| <a href="#button_group_t_button_group_create">button\_group\_create</a> | 创建button_group对象 |
 ### 属性
 <p id="button_group_t_properties">
 
