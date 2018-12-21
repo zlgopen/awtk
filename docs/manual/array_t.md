@@ -22,15 +22,24 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#array_t_capacity">capacity</a> | uint16_t | 数组的容量大小。 |
+| <a href="#array_t_capacity">capacity</a> | uint16\_t | 数组的容量大小。 |
 | <a href="#array_t_elms">elms</a> | void** | 数组中的元素。 |
-| <a href="#array_t_size">size</a> | uint16_t | 数组中元素的个数。 |
+| <a href="#array_t_size">size</a> | uint16\_t | 数组中元素的个数。 |
 ### 事件
 <p id="array_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### array\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="array_t_array_create"> 创建array对象
+
+
+
+
 * 函数原型：
 
 ```
@@ -39,20 +48,20 @@ array_t* array_create (uint16_t* capacity);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | array\_t* | 数组对象。 |
 | capacity | uint16\_t* | 数组的初始容量。 |
+#### array\_deinit 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_create"> 创建array对象
+> <p id="array_t_array_deinit"> 清除数组中的元素。
 
 
 
 
-#### array\_deinit 函数
 * 函数原型：
 
 ```
@@ -61,20 +70,20 @@ void array_deinit (array_t* array);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 无。 |
 | array | array\_t* | 数组对象。 |
+#### array\_destroy 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_deinit"> 清除数组中的元素。
+> <p id="array_t_array_destroy"> 清除数组中的元素，并释放数组对象。
 
 
 
 
-#### array\_destroy 函数
 * 函数原型：
 
 ```
@@ -83,20 +92,20 @@ void array_destroy (array_t* array);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 无。 |
 | array | array\_t* | 数组对象。 |
+#### array\_find 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_destroy"> 清除数组中的元素，并释放数组对象。
+> <p id="array_t_array_find"> 查找第一个满足条件的元素。
 
 
 
 
-#### array\_find 函数
 * 函数原型：
 
 ```
@@ -105,22 +114,22 @@ void* array_find (array_t* array, tk_compare_t cmp, void* ctx);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void* | 如果找到，返回满足条件的对象，否则返回NULL。 |
 | array | array\_t* | 数组对象。 |
 | cmp | tk\_compare\_t | 比较函数，为NULL时直接比较指针。 |
 | ctx | void* | 比较函数的上下文。 |
+#### array\_find\_index 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_find"> 查找第一个满足条件的元素。
+> <p id="array_t_array_find_index"> 查找第一个满足条件的元素，并返回位置。
 
 
 
 
-#### array\_find\_index 函数
 * 函数原型：
 
 ```
@@ -129,22 +138,22 @@ int array_find_index (array_t* array, tk_compare_t cmp, void* ctx);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
 | array | array\_t* | 数组对象。 |
 | cmp | tk\_compare\_t | 比较函数，为NULL时直接比较指针。 |
 | ctx | void* | 比较函数的上下文。 |
+#### array\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_find_index"> 查找第一个满足条件的元素，并返回位置。
+> <p id="array_t_array_init"> 初始化array对象
 
 
 
 
-#### array\_init 函数
 * 函数原型：
 
 ```
@@ -153,21 +162,21 @@ array_t* array_init (array_t* array, uint16_t* capacity);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | array\_t* | 数组对象。 |
 | array | array\_t* | 数组对象。 |
 | capacity | uint16\_t* | 数组的初始容量。 |
+#### array\_pop 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_init"> 初始化array对象
+> <p id="array_t_array_pop"> 弹出最后一个元素。
 
 
 
 
-#### array\_pop 函数
 * 函数原型：
 
 ```
@@ -176,20 +185,20 @@ void* array_pop (array_t* array);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
 | array | array\_t* | 数组对象。 |
+#### array\_push 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_pop"> 弹出最后一个元素。
+> <p id="array_t_array_push"> 在尾巴追加一个元素。
 
 
 
 
-#### array\_push 函数
 * 函数原型：
 
 ```
@@ -198,21 +207,21 @@ ret_t array_push (array_t* array, void* data);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | array | array\_t* | 数组对象。 |
 | data | void* | 待追加的元素。 |
+#### array\_remove 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_push"> 在尾巴追加一个元素。
+> <p id="array_t_array_remove"> 删除第一个满足条件的元素。
 
 
 
 
-#### array\_remove 函数
 * 函数原型：
 
 ```
@@ -221,8 +230,6 @@ ret_t array_remove (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_t de
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -230,14 +237,16 @@ ret_t array_remove (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_t de
 | cmp | tk\_compare\_t | 比较函数，为NULL时直接比较指针。 |
 | ctx | void* | 比较函数的上下文。 |
 | destroy | tk\_destroy\_t | 销毁元素的回调函数。 |
+#### array\_remove\_all 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="array_t_array_remove"> 删除第一个满足条件的元素。
+> <p id="array_t_array_remove_all"> 删除全部满足条件的元素。
 
 
 
 
-#### array\_remove\_all 函数
 * 函数原型：
 
 ```
@@ -246,8 +255,6 @@ ret_t array_remove_all (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -255,13 +262,6 @@ ret_t array_remove_all (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_
 | cmp | tk\_compare\_t | 比较函数，为NULL时直接比较指针。 |
 | ctx | void* | 比较函数的上下文。 |
 | destroy | tk\_destroy\_t | 销毁元素的回调函数。 |
-* 函数功能：
-
-> <p id="array_t_array_remove_all"> 删除全部满足条件的元素。
-
-
-
-
 #### capacity 属性
 -----------------------
 > <p id="array_t_capacity"> 数组的容量大小。

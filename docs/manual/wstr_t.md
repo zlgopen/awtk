@@ -31,15 +31,24 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#wstr_t_capacity">capacity</a> | uint32_t | 容量。 |
-| <a href="#wstr_t_size">size</a> | uint32_t | 长度。 |
-| <a href="#wstr_t_str">str</a> | wchar_t* | 字符串。 |
+| <a href="#wstr_t_capacity">capacity</a> | uint32\_t | 容量。 |
+| <a href="#wstr_t_size">size</a> | uint32\_t | 长度。 |
+| <a href="#wstr_t_str">str</a> | wchar\_t* | 字符串。 |
 ### 事件
 <p id="wstr_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### wstr\_add\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_add_float"> 将字符串转成浮点数，加上delta，再转换回来。
+
+
+
+
 * 函数原型：
 
 ```
@@ -48,21 +57,21 @@ ret_t wstr_add_float (wstr_t* str, double delta);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | delta | double | 要加上的值。 |
+#### wstr\_equal 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_add_float"> 将字符串转成浮点数，加上delta，再转换回来。
+> <p id="wstr_t_wstr_equal"> 判断两个字符是否相同。
 
 
 
 
-#### wstr\_equal 函数
 * 函数原型：
 
 ```
@@ -71,21 +80,21 @@ bool_t wstr_equal (wstr_t* str, wstr_t* other);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示相同，否则表示不同。 |
 | str | wstr\_t* | str对象。 |
 | other | wstr\_t* | str对象。 |
+#### wstr\_from\_float 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_equal"> 判断两个字符是否相同。
+> <p id="wstr_t_wstr_from_float"> 用浮点数初始化字符串。
 
 
 
 
-#### wstr\_from\_float 函数
 * 函数原型：
 
 ```
@@ -94,21 +103,21 @@ ret_t wstr_from_float (wstr_t* str, double v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | v | double | 浮点数。 |
+#### wstr\_from\_int 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_from_float"> 用浮点数初始化字符串。
+> <p id="wstr_t_wstr_from_int"> 用整数初始化字符串。
 
 
 
 
-#### wstr\_from\_int 函数
 * 函数原型：
 
 ```
@@ -117,21 +126,21 @@ ret_t wstr_from_int (wstr_t* str, int32_t v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | v | int32\_t | 整数。 |
+#### wstr\_from\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_from_int"> 用整数初始化字符串。
+> <p id="wstr_t_wstr_from_value"> 用value初始化字符串。
 
 
 
 
-#### wstr\_from\_value 函数
 * 函数原型：
 
 ```
@@ -140,21 +149,21 @@ ret_t wstr_from_value (wstr_t* str, value_t v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | v | value\_t | value。 |
+#### wstr\_get\_utf8 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_from_value"> 用value初始化字符串。
+> <p id="wstr_t_wstr_get_utf8"> 获取UTF8字符串。
 
 
 
 
-#### wstr\_get\_utf8 函数
 * 函数原型：
 
 ```
@@ -163,22 +172,22 @@ ret_t wstr_get_utf8 (wstr_t* str, char* text, uint32_t size);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | text | char* | 返回的字符串。 |
 | size | uint32\_t | text最大长度。 |
+#### wstr\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_get_utf8"> 获取UTF8字符串。
+> <p id="wstr_t_wstr_init"> 初始化字符串对象。
 
 
 
 
-#### wstr\_init 函数
 * 函数原型：
 
 ```
@@ -187,21 +196,21 @@ wstr_t* wstr_init (wstr_t* str, uint32_t capacity);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | wstr\_t* | str对象本身。 |
 | str | wstr\_t* | str对象。 |
 | capacity | uint32\_t | 初始容量。 |
+#### wstr\_insert 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_init"> 初始化字符串对象。
+> <p id="wstr_t_wstr_insert"> 在指定位置插入字符串。
 
 
 
 
-#### wstr\_insert 函数
 * 函数原型：
 
 ```
@@ -210,8 +219,6 @@ ret_t wstr_insert (wstr_t* str, uint32_t offset, wchar_t* text, uint32_t nr);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -219,14 +226,16 @@ ret_t wstr_insert (wstr_t* str, uint32_t offset, wchar_t* text, uint32_t nr);
 | offset | uint32\_t | 指定的位置。 |
 | text | wchar\_t* | 待插入的文本。 |
 | nr | uint32\_t | 要插入的字符数。 |
+#### wstr\_pop 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_insert"> 在指定位置插入字符串。
+> <p id="wstr_t_wstr_pop"> 删除尾部字符。
 
 
 
 
-#### wstr\_pop 函数
 * 函数原型：
 
 ```
@@ -235,20 +244,20 @@ ret_t wstr_pop (wstr_t* str);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
+#### wstr\_push 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_pop"> 删除尾部字符。
+> <p id="wstr_t_wstr_push"> 追加一个字符。
 
 
 
 
-#### wstr\_push 函数
 * 函数原型：
 
 ```
@@ -257,21 +266,21 @@ ret_t wstr_push (wstr_t* str, wchar_t c);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | c | wchar\_t | 字符。 |
+#### wstr\_push\_int 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_push"> 追加一个字符。
+> <p id="wstr_t_wstr_push_int"> 追加一个整数。
 
 
 
 
-#### wstr\_push\_int 函数
 * 函数原型：
 
 ```
@@ -280,22 +289,22 @@ ret_t wstr_push_int (wstr_t* str, const char* format, int32_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | format | const char* | 格式(用于snprintf格式化数值) |
 | value | int32\_t | 数值。 |
+#### wstr\_push\_str 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_push_int"> 追加一个整数。
+> <p id="wstr_t_wstr_push_str"> 追加一个字符。
 
 
 
 
-#### wstr\_push\_str 函数
 * 函数原型：
 
 ```
@@ -304,22 +313,22 @@ ret_t wstr_push_str (wstr_t* str, wchar_t* s, uint32_t size);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | s | wchar\_t* | 字符串。 |
 | size | uint32\_t | 字符串长度。 |
+#### wstr\_remove 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_push_str"> 追加一个字符。
+> <p id="wstr_t_wstr_remove"> 删除指定范围的字符。
 
 
 
 
-#### wstr\_remove 函数
 * 函数原型：
 
 ```
@@ -328,22 +337,22 @@ ret_t wstr_remove (wstr_t* str, uint32_t offset, uint32_t nr);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | offset | uint32\_t | 指定的位置。 |
 | nr | uint32\_t | 要删除的字符数。 |
+#### wstr\_reset 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_remove"> 删除指定范围的字符。
+> <p id="wstr_t_wstr_reset"> 重置字符串为空。
 
 
 
 
-#### wstr\_reset 函数
 * 函数原型：
 
 ```
@@ -352,20 +361,20 @@ ret_t wstr_reset (wstr_t* str);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
+#### wstr\_set 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_reset"> 重置字符串为空。
+> <p id="wstr_t_wstr_set"> 设置字符串。
 
 
 
 
-#### wstr\_set 函数
 * 函数原型：
 
 ```
@@ -374,21 +383,21 @@ ret_t wstr_set (wstr_t* str, wchar_t* text);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | text | wchar\_t* | 要设置的字符串。 |
+#### wstr\_set\_utf8 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_set"> 设置字符串。
+> <p id="wstr_t_wstr_set_utf8"> 设置UTF8字符串。
 
 
 
 
-#### wstr\_set\_utf8 函数
 * 函数原型：
 
 ```
@@ -397,21 +406,21 @@ ret_t wstr_set_utf8 (wstr_t* str, char* text);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | text | char* | 要设置的字符串。 |
+#### wstr\_to\_float 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_set_utf8"> 设置UTF8字符串。
+> <p id="wstr_t_wstr_to_float"> 将字符串转成浮点数。
 
 
 
 
-#### wstr\_to\_float 函数
 * 函数原型：
 
 ```
@@ -420,21 +429,21 @@ ret_t wstr_to_float (wstr_t* str, double* v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | v | double* | 用于返回浮点数。 |
+#### wstr\_to\_int 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_to_float"> 将字符串转成浮点数。
+> <p id="wstr_t_wstr_to_int"> 将字符串转成整数。
 
 
 
 
-#### wstr\_to\_int 函数
 * 函数原型：
 
 ```
@@ -443,21 +452,21 @@ ret_t wstr_to_int (wstr_t* str, int32_t* v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | v | int32\_t* | 用于返回整数。 |
+#### wstr\_trim\_float\_zero 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="wstr_t_wstr_to_int"> 将字符串转成整数。
+> <p id="wstr_t_wstr_trim_float_zero"> 去掉浮点数小数点尾部的零。
 
 
 
 
-#### wstr\_trim\_float\_zero 函数
 * 函数原型：
 
 ```
@@ -466,19 +475,10 @@ ret_t wstr_trim_float_zero (wstr_t* str);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
-* 函数功能：
-
-> <p id="wstr_t_wstr_trim_float_zero"> 去掉浮点数小数点尾部的零。
-
-
-
-
 #### capacity 属性
 -----------------------
 > <p id="wstr_t_capacity"> 容量。

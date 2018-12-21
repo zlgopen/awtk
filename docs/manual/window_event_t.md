@@ -17,13 +17,22 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#window_event_t_window">window</a> | widget_t* | canvas。 |
+| <a href="#window_event_t_window">window</a> | widget\_t* | canvas。 |
 ### 事件
 <p id="window_event_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### event\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_event_t_event_init"> 初始化事件。
+
+
+
+
 * 函数原型：
 
 ```
@@ -32,21 +41,21 @@ event_t event_init (uint32_t type, void* target);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | event\_t | 事件对象。 |
 | type | uint32\_t | 事件类型。 |
 | target | void* | 目标对象。 |
+#### pointer\_event\_rotate 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="window_event_t_event_init"> 初始化事件。
+> <p id="window_event_t_pointer_event_rotate"> 根据屏幕旋转方向修正pointer_event中的坐标。
 
 
 
 
-#### pointer\_event\_rotate 函数
 * 函数原型：
 
 ```
@@ -55,21 +64,21 @@ ret_t pointer_event_rotate (pointer_event_t* evt, system_info_t* info);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | evt | pointer\_event\_t* | 指针事件对象。 |
 | info | system\_info\_t* | 系统信息。 |
+#### window\_event\_cast 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="window_event_t_pointer_event_rotate"> 根据屏幕旋转方向修正pointer_event中的坐标。
+> <p id="window_event_t_window_event_cast"> 把event对象转window_event_t对象。主要给脚本语言使用。
 
 
 
 
-#### window\_event\_cast 函数
 * 函数原型：
 
 ```
@@ -78,19 +87,10 @@ window_event_t* window_event_cast (event_t* event);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | window\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-* 函数功能：
-
-> <p id="window_event_t_window_event_cast"> 把event对象转window_event_t对象。主要给脚本语言使用。
-
-
-
-
 #### window 属性
 -----------------------
 > <p id="window_event_t_window"> canvas。

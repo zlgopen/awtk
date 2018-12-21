@@ -22,13 +22,13 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#progress_circle_t_counter_clock_wise">counter\_clock\_wise</a> | bool_t | 是否为逆时针方向(缺省为FALSE)。 |
-| <a href="#progress_circle_t_line_width">line\_width</a> | uint32_t | 环线的厚度(缺省为8)。 |
-| <a href="#progress_circle_t_max">max</a> | uint32_t | 最大值(缺省为100)。 |
-| <a href="#progress_circle_t_show_text">show\_text</a> | bool_t | 是否显示文本(缺省为TRUE)。 |
-| <a href="#progress_circle_t_start_angle">start\_angle</a> | int32_t | 起始角度(单位为度，缺省-90)。 |
+| <a href="#progress_circle_t_counter_clock_wise">counter\_clock\_wise</a> | bool\_t | 是否为逆时针方向(缺省为FALSE)。 |
+| <a href="#progress_circle_t_line_width">line\_width</a> | uint32\_t | 环线的厚度(缺省为8)。 |
+| <a href="#progress_circle_t_max">max</a> | uint32\_t | 最大值(缺省为100)。 |
+| <a href="#progress_circle_t_show_text">show\_text</a> | bool\_t | 是否显示文本(缺省为TRUE)。 |
+| <a href="#progress_circle_t_start_angle">start\_angle</a> | int32\_t | 起始角度(单位为度，缺省-90)。 |
 | <a href="#progress_circle_t_unit">unit</a> | char* | 单元(缺省无)。 |
-| <a href="#progress_circle_t_value">value</a> | float_t | 值(缺省为0)。 |
+| <a href="#progress_circle_t_value">value</a> | float\_t | 值(缺省为0)。 |
 ### 事件
 <p id="progress_circle_t_events">
 
@@ -37,6 +37,14 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值改变事件。 |
 #### progress\_circle\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="progress_circle_t_progress_circle_cast"> 转换为progress_circle对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -45,19 +53,19 @@ widget_t* progress_circle_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | progress\_circle对象。 |
 | widget | widget\_t* | progress\_circle对象。 |
+#### progress\_circle\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_cast"> 转换为progress_circle对象(供脚本语言使用)。
+> <p id="progress_circle_t_progress_circle_create"> 创建progress_circle对象
 
 
 
-#### progress\_circle\_create 函数
 * 函数原型：
 
 ```
@@ -65,8 +73,6 @@ widget_t* progress_circle_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -76,13 +82,15 @@ widget_t* progress_circle_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### progress\_circle\_set\_counter\_clock\_wise 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_create"> 创建progress_circle对象
+> <p id="progress_circle_t_progress_circle_set_counter_clock_wise"> 设置是否为逆时针方向。
 
 
 
-#### progress\_circle\_set\_counter\_clock\_wise 函数
 * 函数原型：
 
 ```
@@ -91,20 +99,20 @@ ret_t progress_circle_set_counter_clock_wise (widget_t* widget, bool_t counter_c
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | counter\_clock\_wise | bool\_t | 是否为逆时针方向。 |
+#### progress\_circle\_set\_line\_width 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_counter_clock_wise"> 设置是否为逆时针方向。
+> <p id="progress_circle_t_progress_circle_set_line_width"> 设置环线的厚度。
 
 
 
-#### progress\_circle\_set\_line\_width 函数
 * 函数原型：
 
 ```
@@ -113,20 +121,20 @@ ret_t progress_circle_set_line_width (widget_t* widget, uint32_t line_width);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | line\_width | uint32\_t | 环线的厚度。 |
+#### progress\_circle\_set\_max 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_line_width"> 设置环线的厚度。
+> <p id="progress_circle_t_progress_circle_set_max"> 设置最大值。
 
 
 
-#### progress\_circle\_set\_max 函数
 * 函数原型：
 
 ```
@@ -135,20 +143,20 @@ ret_t progress_circle_set_max (widget_t* widget, uint32_t max);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | max | uint32\_t | 最大值。 |
+#### progress\_circle\_set\_show\_text 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_max"> 设置最大值。
+> <p id="progress_circle_t_progress_circle_set_show_text"> 设置是否显示文本。
 
 
 
-#### progress\_circle\_set\_show\_text 函数
 * 函数原型：
 
 ```
@@ -157,20 +165,20 @@ ret_t progress_circle_set_show_text (widget_t* widget, bool_t show_text);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | show\_text | bool\_t | 是否显示文本。 |
+#### progress\_circle\_set\_start\_angle 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_show_text"> 设置是否显示文本。
+> <p id="progress_circle_t_progress_circle_set_start_angle"> 设置起始角度。
 
 
 
-#### progress\_circle\_set\_start\_angle 函数
 * 函数原型：
 
 ```
@@ -179,20 +187,20 @@ ret_t progress_circle_set_start_angle (widget_t* widget, int32_t start_angle);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | start\_angle | int32\_t | 起始角度。 |
+#### progress\_circle\_set\_unit 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_start_angle"> 设置起始角度。
+> <p id="progress_circle_t_progress_circle_set_unit"> 设置单位。
 
 
 
-#### progress\_circle\_set\_unit 函数
 * 函数原型：
 
 ```
@@ -201,20 +209,20 @@ ret_t progress_circle_set_unit (widget_t* widget, const char* unit);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | unit | const char* | 单位。 |
+#### progress\_circle\_set\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="progress_circle_t_progress_circle_set_unit"> 设置单位。
+> <p id="progress_circle_t_progress_circle_set_value"> 设置值。
 
 
 
-#### progress\_circle\_set\_value 函数
 * 函数原型：
 
 ```
@@ -223,19 +231,11 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | value | float\_t | 值。 |
-* 函数功能：
-
-> <p id="progress_circle_t_progress_circle_set_value"> 设置值。
-
-
-
 #### counter\_clock\_wise 属性
 -----------------------
 > <p id="progress_circle_t_counter_clock_wise"> 是否为逆时针方向(缺省为FALSE)。

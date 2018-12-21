@@ -16,16 +16,24 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#dragger_t_x_max">x\_max</a> | xy_t | x坐标的最大值。 |
-| <a href="#dragger_t_x_min">x\_min</a> | xy_t | x坐标的最小值。 |
-| <a href="#dragger_t_y_max">y\_max</a> | xy_t | y坐标的最大值。 |
-| <a href="#dragger_t_y_min">y\_min</a> | xy_t | y坐标的最小值。 |
+| <a href="#dragger_t_x_max">x\_max</a> | xy\_t | x坐标的最大值。 |
+| <a href="#dragger_t_x_min">x\_min</a> | xy\_t | x坐标的最小值。 |
+| <a href="#dragger_t_y_max">y\_max</a> | xy\_t | y坐标的最大值。 |
+| <a href="#dragger_t_y_min">y\_min</a> | xy\_t | y坐标的最小值。 |
 ### 事件
 <p id="dragger_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### dragger\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dragger_t_dragger_cast"> 转换为dragger对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -34,19 +42,19 @@ widget_t* dragger_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dragger对象。 |
 | widget | widget\_t* | dragger对象。 |
+#### dragger\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dragger_t_dragger_cast"> 转换为dragger对象(供脚本语言使用)。
+> <p id="dragger_t_dragger_create"> 创建dragger对象。
 
 
 
-#### dragger\_create 函数
 * 函数原型：
 
 ```
@@ -54,8 +62,6 @@ widget_t* dragger_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -65,13 +71,15 @@ widget_t* dragger_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dragger\_set\_range 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dragger_t_dragger_create"> 创建dragger对象。
+> <p id="dragger_t_dragger_set_range"> 设置拖动的范围。
 
 
 
-#### dragger\_set\_range 函数
 * 函数原型：
 
 ```
@@ -79,8 +87,6 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -90,12 +96,6 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 | y\_min | xy\_t | y坐标最小值。 |
 | x\_max | xy\_t | x坐标最大值。 |
 | y\_max | xy\_t | y坐标最大值。 |
-* 函数功能：
-
-> <p id="dragger_t_dragger_set_range"> 设置拖动的范围。
-
-
-
 #### x\_max 属性
 -----------------------
 > <p id="dragger_t_x_max"> x坐标的最大值。

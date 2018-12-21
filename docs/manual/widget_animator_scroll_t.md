@@ -21,6 +21,15 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### widget\_animator\_scroll\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_animator_scroll_t_widget_animator_scroll_create"> 创建动画对象。
+
+
+
+
 * 函数原型：
 
 ```
@@ -29,8 +38,6 @@ widget_animator_t* widget_animator_scroll_create (widget_t* widget, uint32_t dur
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_animator\_t* | 成功返回动画对象，失败返回NULL。 |
@@ -38,14 +45,16 @@ widget_animator_t* widget_animator_scroll_create (widget_t* widget, uint32_t dur
 | duration | uint32\_t | 动画持续时间。 |
 | delay | uint32\_t | 动画执行时间。 |
 | easing | easing\_type\_t | 插值函数类型。 |
+#### widget\_animator\_scroll\_set\_params 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="widget_animator_scroll_t_widget_animator_scroll_create"> 创建动画对象。
+> <p id="widget_animator_scroll_t_widget_animator_scroll_set_params"> 设置动画对象的参数。
 
 
 
 
-#### widget\_animator\_scroll\_set\_params 函数
 * 函数原型：
 
 ```
@@ -53,8 +62,6 @@ ret_t widget_animator_scroll_set_params (widget_animator_t* animator, xy_t x_fro
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -64,10 +71,3 @@ ret_t widget_animator_scroll_set_params (widget_animator_t* animator, xy_t x_fro
 | y\_from | xy\_t | y起点值。 |
 | x\_to | xy\_t | x终点值。 |
 | y\_to | xy\_t | y终点值。 |
-* 函数功能：
-
-> <p id="widget_animator_scroll_t_widget_animator_scroll_set_params"> 设置动画对象的参数。
-
-
-
-

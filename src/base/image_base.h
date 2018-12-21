@@ -31,6 +31,19 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  * 图片控件基类。
+ *
+ * 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：
+ *
+ * ```graphviz
+ *   [default_style]
+ *
+ *   image_t -> image_base_t[arrowhead = "empty"]
+ *   svg_image_t -> image_base_t[arrowhead = "empty"]
+ *   gif_image_t -> image_base_t[arrowhead = "empty"]
+ * ```
+ *
+ * > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\_t。
+ *
  */
 typedef struct _image_base_t {
   widget_t widget;

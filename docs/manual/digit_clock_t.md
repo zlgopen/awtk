@@ -23,6 +23,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### digit\_clock\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="digit_clock_t_digit_clock_cast"> 转换为digit_clock对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -31,19 +39,19 @@ widget_t* digit_clock_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | digit\_clock对象。 |
 | widget | widget\_t* | digit\_clock对象。 |
+#### digit\_clock\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="digit_clock_t_digit_clock_cast"> 转换为digit_clock对象(供脚本语言使用)。
+> <p id="digit_clock_t_digit_clock_create"> 创建digit_clock对象
 
 
 
-#### digit\_clock\_create 函数
 * 函数原型：
 
 ```
@@ -51,8 +59,6 @@ widget_t* digit_clock_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -62,13 +68,15 @@ widget_t* digit_clock_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### digit\_clock\_set\_format 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="digit_clock_t_digit_clock_create"> 创建digit_clock对象
+> <p id="digit_clock_t_digit_clock_set_format"> 设置显示格式。
 
 
 
-#### digit\_clock\_set\_format 函数
 * 函数原型：
 
 ```
@@ -77,19 +85,11 @@ ret_t digit_clock_set_format (widget_t* widget, const char* format);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | format | const char* | 格式。 |
-* 函数功能：
-
-> <p id="digit_clock_t_digit_clock_set_format"> 设置显示格式。
-
-
-
 #### format 属性
 -----------------------
 > <p id="digit_clock_t_format"> 显示格式。

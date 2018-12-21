@@ -20,6 +20,15 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### widget\_animator\_prop2\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_animator_prop2_t_widget_animator_prop2_create"> 创建双属性动画对象。
+
+
+
+
 * 函数原型：
 
 ```
@@ -27,8 +36,6 @@ widget_animator_t* widget_animator_prop2_create (widget_t* widget, uint32_t dura
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -39,14 +46,16 @@ widget_animator_t* widget_animator_prop2_create (widget_t* widget, uint32_t dura
 | easing | easing\_type\_t | 插值函数类型。 |
 | prop1\_name | const char* | 属性1的名称。 |
 | prop2\_name | const char* | 属性2的名称。 |
+#### widget\_animator\_prop2\_set\_params 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="widget_animator_prop2_t_widget_animator_prop2_create"> 创建双属性动画对象。
+> <p id="widget_animator_prop2_t_widget_animator_prop2_set_params"> 设置动画对象的参数。
 
 
 
 
-#### widget\_animator\_prop2\_set\_params 函数
 * 函数原型：
 
 ```
@@ -54,8 +63,6 @@ ret_t widget_animator_prop2_set_params (widget_animator_t* animator, float_t fro
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -65,10 +72,3 @@ ret_t widget_animator_prop2_set_params (widget_animator_t* animator, float_t fro
 | from2 | float\_t | y的初值。 |
 | to1 | float\_t | x的终值。 |
 | to2 | float\_t | y的终值。 |
-* 函数功能：
-
-> <p id="widget_animator_prop2_t_widget_animator_prop2_set_params"> 设置动画对象的参数。
-
-
-
-

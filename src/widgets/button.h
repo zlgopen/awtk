@@ -38,7 +38,7 @@ BEGIN_C_DECLS
  *
  * button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于button\_t控件。
  *
- * 在xml中使用"button"标签创建文本控件。如：
+ * 在xml中使用"button"标签创建按钮控件。如：
  *
  * ```xml
  * <button x="c" y="m" w="80" h="30" text="OK"/>
@@ -46,7 +46,7 @@ BEGIN_C_DECLS
  *
  * > 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
  *
- * 在c代码中使用函数button\_create创建文本控件。如：
+ * 在c代码中使用函数button\_create创建按钮控件。如：
  *
  * ```c
  *  widget_t* button = button_create(win, 10, 10, 128, 30);

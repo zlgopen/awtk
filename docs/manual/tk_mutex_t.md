@@ -22,6 +22,15 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### tk\_mutex\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_mutex_t_tk_mutex_create"> 创建mutex。
+
+
+
+
 * 函数原型：
 
 ```
@@ -30,19 +39,19 @@ tk_mutex_t* tk_mutex_create ();
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | tk\_mutex\_t* | mutex对象。 |
+#### tk\_mutex\_destroy 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tk_mutex_t_tk_mutex_create"> 创建mutex。
+> <p id="tk_mutex_t_tk_mutex_destroy"> 销毁mutex对象。
 
 
 
 
-#### tk\_mutex\_destroy 函数
 * 函数原型：
 
 ```
@@ -51,20 +60,20 @@ ret_t tk_mutex_destroy (tk_mutex_t* mutex);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | mutex | tk\_mutex\_t* | mutex对象。 |
+#### tk\_mutex\_lock 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tk_mutex_t_tk_mutex_destroy"> 销毁mutex对象。
+> <p id="tk_mutex_t_tk_mutex_lock"> 加锁。
 
 
 
 
-#### tk\_mutex\_lock 函数
 * 函数原型：
 
 ```
@@ -73,20 +82,20 @@ ret_t tk_mutex_lock (tk_mutex_t* mutex);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | mutex | tk\_mutex\_t* | mutex对象。 |
+#### tk\_mutex\_unlock 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tk_mutex_t_tk_mutex_lock"> 加锁。
+> <p id="tk_mutex_t_tk_mutex_unlock"> 解锁。
 
 
 
 
-#### tk\_mutex\_unlock 函数
 * 函数原型：
 
 ```
@@ -95,16 +104,7 @@ ret_t tk_mutex_unlock (tk_mutex_t* mutex);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | mutex | tk\_mutex\_t* | mutex对象。 |
-* 函数功能：
-
-> <p id="tk_mutex_t_tk_mutex_unlock"> 解锁。
-
-
-
-

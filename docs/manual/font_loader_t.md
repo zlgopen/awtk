@@ -19,6 +19,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### font\_loader\_load 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_loader_t_font_loader_load"> 加载字体。
+
+
+
 * 函数原型：
 
 ```
@@ -27,8 +35,6 @@ font_t* font_loader_load (font_loader_t* loader, const char* name, uint8_t* buff
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | font\_t* | 成功返回font，失败返回NULL。 |
@@ -36,9 +42,3 @@ font_t* font_loader_load (font_loader_t* loader, const char* name, uint8_t* buff
 | name | const char* | 字体名字。 |
 | buff | uint8\_t* | 字体数据。 |
 | size | uint32\_t | 字体数据长度。 |
-* 函数功能：
-
-> <p id="font_loader_t_font_loader_load"> 加载字体。
-
-
-

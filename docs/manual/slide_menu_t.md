@@ -20,9 +20,9 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slide_menu_t_align_v">align\_v</a> | align_v_t | 垂直对齐方式。 |
-| <a href="#slide_menu_t_min_scale">min\_scale</a> | float_t | 最小缩放比例。 |
-| <a href="#slide_menu_t_value">value</a> | int32_t | 值。代表当前选中项的索引。 |
+| <a href="#slide_menu_t_align_v">align\_v</a> | align\_v\_t | 垂直对齐方式。 |
+| <a href="#slide_menu_t_min_scale">min\_scale</a> | float\_t | 最小缩放比例。 |
+| <a href="#slide_menu_t_value">value</a> | int32\_t | 值。代表当前选中项的索引。 |
 ### 事件
 <p id="slide_menu_t_events">
 
@@ -31,6 +31,14 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前项)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(当前项)改变事件。 |
 #### slide\_menu\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_cast"> 转换slide_menu对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -39,19 +47,19 @@ widget_t* slide_menu_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | slide\_menu对象。 |
 | widget | widget\_t* | slide\_menu对象。 |
+#### slide\_menu\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slide_menu_t_slide_menu_cast"> 转换slide_menu对象(供脚本语言使用)。
+> <p id="slide_menu_t_slide_menu_create"> 创建slide_menu对象
 
 
 
-#### slide\_menu\_create 函数
 * 函数原型：
 
 ```
@@ -59,8 +67,6 @@ widget_t* slide_menu_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -70,13 +76,15 @@ widget_t* slide_menu_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slide\_menu\_set\_align\_v 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slide_menu_t_slide_menu_create"> 创建slide_menu对象
+> <p id="slide_menu_t_slide_menu_set_align_v"> 设置垂直对齐方式。
 
 
 
-#### slide\_menu\_set\_align\_v 函数
 * 函数原型：
 
 ```
@@ -85,20 +93,20 @@ ret_t slide_menu_set_align_v (widget_t* widget, align_v_t align_v);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_menu对象。 |
 | align\_v | align\_v\_t | 对齐方式。 |
+#### slide\_menu\_set\_min\_scale 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slide_menu_t_slide_menu_set_align_v"> 设置垂直对齐方式。
+> <p id="slide_menu_t_slide_menu_set_min_scale"> 设置最小缩放比例。
 
 
 
-#### slide\_menu\_set\_min\_scale 函数
 * 函数原型：
 
 ```
@@ -107,20 +115,20 @@ ret_t slide_menu_set_min_scale (widget_t* widget, float_t min_scale);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_menu对象。 |
 | min\_scale | float\_t | 最小缩放比例，范围[0.5-1]。 |
+#### slide\_menu\_set\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slide_menu_t_slide_menu_set_min_scale"> 设置最小缩放比例。
+> <p id="slide_menu_t_slide_menu_set_value"> 设置当前项。
 
 
 
-#### slide\_menu\_set\_value 函数
 * 函数原型：
 
 ```
@@ -129,19 +137,11 @@ ret_t slide_menu_set_value (widget_t* widget, uint32_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_menu对象。 |
 | value | uint32\_t | 当前项的索引。 |
-* 函数功能：
-
-> <p id="slide_menu_t_slide_menu_set_value"> 设置当前项。
-
-
-
 #### align\_v 属性
 -----------------------
 > <p id="slide_menu_t_align_v"> 垂直对齐方式。

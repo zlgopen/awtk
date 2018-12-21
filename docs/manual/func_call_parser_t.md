@@ -30,6 +30,15 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### func\_call\_parser\_deinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="func_call_parser_t_func_call_parser_deinit"> 重置parser。
+
+
+
+
 * 函数原型：
 
 ```
@@ -38,20 +47,20 @@ ret_t func_call_parser_deinit (func_call_parser_t* parser);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | parser | func\_call\_parser\_t* | parser对象。 |
+#### func\_call\_parser\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_deinit"> 重置parser。
+> <p id="func_call_parser_t_func_call_parser_init"> 初始化parser对象。
 
 
 
 
-#### func\_call\_parser\_init 函数
 * 函数原型：
 
 ```
@@ -60,22 +69,22 @@ func_call_parser_t* func_call_parser_init (func_call_parser_t* parser, char* str
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | func\_call\_parser\_t* | parser对象本身。 |
 | parser | func\_call\_parser\_t* | parser对象。 |
 | str | char* | 要解析的字符串。 |
 | size | uint32\_t | 字符串长度。 |
+#### func\_call\_parser\_parse 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_init"> 初始化parser对象。
+> <p id="func_call_parser_t_func_call_parser_parse"> 开始解析。
 
 
 
 
-#### func\_call\_parser\_parse 函数
 * 函数原型：
 
 ```
@@ -84,16 +93,7 @@ ret_t func_call_parser_parse (func_call_parser_t* parser);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | parser | func\_call\_parser\_t* | parser对象。 |
-* 函数功能：
-
-> <p id="func_call_parser_t_func_call_parser_parse"> 开始解析。
-
-
-
-

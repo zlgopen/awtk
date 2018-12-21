@@ -17,7 +17,7 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#guage_pointer_t_angle">angle</a> | int32_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
+| <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。图片须垂直向上，图片的中心点为旋转方向。 |
 ### 事件
 <p id="guage_pointer_t_events">
@@ -25,6 +25,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### guage\_pointer\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="guage_pointer_t_guage_pointer_cast"> 转换为guage_pointer对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -33,19 +41,19 @@ widget_t* guage_pointer_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | guage\_pointer对象。 |
 | widget | widget\_t* | guage\_pointer对象。 |
+#### guage\_pointer\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="guage_pointer_t_guage_pointer_cast"> 转换为guage_pointer对象(供脚本语言使用)。
+> <p id="guage_pointer_t_guage_pointer_create"> 创建guage_pointer对象
 
 
 
-#### guage\_pointer\_create 函数
 * 函数原型：
 
 ```
@@ -53,8 +61,6 @@ widget_t* guage_pointer_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -64,13 +70,15 @@ widget_t* guage_pointer_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### guage\_pointer\_set\_angle 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="guage_pointer_t_guage_pointer_create"> 创建guage_pointer对象
+> <p id="guage_pointer_t_guage_pointer_set_angle"> 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
 
 
 
-#### guage\_pointer\_set\_angle 函数
 * 函数原型：
 
 ```
@@ -79,20 +87,20 @@ ret_t guage_pointer_set_angle (widget_t* widget, int32_t angle);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | angle | int32\_t | 指针角度。 |
+#### guage\_pointer\_set\_image 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="guage_pointer_t_guage_pointer_set_angle"> 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
+> <p id="guage_pointer_t_guage_pointer_set_image"> 设置指针的图片。
 
 
 
-#### guage\_pointer\_set\_image 函数
 * 函数原型：
 
 ```
@@ -101,19 +109,11 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | image | const char* | 指针的图片。 |
-* 函数功能：
-
-> <p id="guage_pointer_t_guage_pointer_set_image"> 设置指针的图片。
-
-
-
 #### angle 属性
 -----------------------
 > <p id="guage_pointer_t_angle"> 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。

@@ -20,6 +20,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### candidates\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="candidates_t_candidates_create"> 创建candidates对象
+
+
+
 * 函数原型：
 
 ```
@@ -27,8 +35,6 @@ widget_t* candidates_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -38,9 +44,3 @@ widget_t* candidates_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-* 函数功能：
-
-> <p id="candidates_t_candidates_create"> 创建candidates对象
-
-
-

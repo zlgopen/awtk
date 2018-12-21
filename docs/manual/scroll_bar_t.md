@@ -24,16 +24,24 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#scroll_bar_t_animatable">animatable</a> | bool_t | 滚动时是否启用动画。 |
-| <a href="#scroll_bar_t_row">row</a> | int32_t | 行的高度。 |
-| <a href="#scroll_bar_t_value">value</a> | int32_t | 当前的值。 |
-| <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32_t | 虚拟宽度或高度。 |
+| <a href="#scroll_bar_t_animatable">animatable</a> | bool\_t | 滚动时是否启用动画。 |
+| <a href="#scroll_bar_t_row">row</a> | int32\_t | 行的高度。 |
+| <a href="#scroll_bar_t_value">value</a> | int32\_t | 当前的值。 |
+| <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32\_t | 虚拟宽度或高度。 |
 ### 事件
 <p id="scroll_bar_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### scroll\_bar\_add\_delta 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_bar_t_scroll_bar_add_delta"> 在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。
+
+
+
 * 函数原型：
 
 ```
@@ -42,20 +50,20 @@ ret_t scroll_bar_add_delta (widget_t* widget, int32_t delta);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | delta | int32\_t | 值。 |
+#### scroll\_bar\_cast 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_add_delta"> 在当前的值上增加一个值，并触发EVT_VALUE_CHANGED事件。
+> <p id="scroll_bar_t_scroll_bar_cast"> 转换为scroll_bar对象(供脚本语言使用)。
 
 
 
-#### scroll\_bar\_cast 函数
 * 函数原型：
 
 ```
@@ -64,19 +72,19 @@ widget_t* scroll_bar_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | scroll\_bar对象。 |
 | widget | widget\_t* | scroll\_bar对象。 |
+#### scroll\_bar\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_cast"> 转换为scroll_bar对象(供脚本语言使用)。
+> <p id="scroll_bar_t_scroll_bar_create"> 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)
 
 
 
-#### scroll\_bar\_create 函数
 * 函数原型：
 
 ```
@@ -85,8 +93,6 @@ widget_t* scroll_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
@@ -95,13 +101,15 @@ widget_t* scroll_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### scroll\_bar\_create\_desktop 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_create"> 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)
+> <p id="scroll_bar_t_scroll_bar_create_desktop"> 创建desktop风格的scroll_bar对象
 
 
 
-#### scroll\_bar\_create\_desktop 函数
 * 函数原型：
 
 ```
@@ -110,8 +118,6 @@ widget_t* scroll_bar_create_desktop (widget_t* parent, xy_t x, xy_t y, wh_t w, w
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
@@ -120,13 +126,15 @@ widget_t* scroll_bar_create_desktop (widget_t* parent, xy_t x, xy_t y, wh_t w, w
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### scroll\_bar\_create\_mobile 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_create_desktop"> 创建desktop风格的scroll_bar对象
+> <p id="scroll_bar_t_scroll_bar_create_mobile"> 创建mobile风格的scroll_bar对象
 
 
 
-#### scroll\_bar\_create\_mobile 函数
 * 函数原型：
 
 ```
@@ -135,8 +143,6 @@ widget_t* scroll_bar_create_mobile (widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
@@ -145,13 +151,15 @@ widget_t* scroll_bar_create_mobile (widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### scroll\_bar\_is\_mobile 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_create_mobile"> 创建mobile风格的scroll_bar对象
+> <p id="scroll_bar_t_scroll_bar_is_mobile"> 判断是否是mobile风格的滚动条。
 
 
 
-#### scroll\_bar\_is\_mobile 函数
 * 函数原型：
 
 ```
@@ -160,19 +168,19 @@ bool_t scroll_bar_is_mobile (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示是mobile风格的，否则表示不是mobile风格的。 |
 | widget | widget\_t* | scroll\_bar控件。 |
+#### scroll\_bar\_scroll\_delta 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_is_mobile"> 判断是否是mobile风格的滚动条。
+> <p id="scroll_bar_t_scroll_bar_scroll_delta"> 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。
 
 
 
-#### scroll\_bar\_scroll\_delta 函数
 * 函数原型：
 
 ```
@@ -181,20 +189,20 @@ ret_t scroll_bar_scroll_delta (widget_t* widget, int32_t delta);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | delta | int32\_t | 值。 |
+#### scroll\_bar\_scroll\_to 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_scroll_delta"> 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。
+> <p id="scroll_bar_t_scroll_bar_scroll_to"> 滚动到指定的值。
 
 
 
-#### scroll\_bar\_scroll\_to 函数
 * 函数原型：
 
 ```
@@ -203,21 +211,21 @@ ret_t scroll_bar_scroll_to (widget_t* widget, int32_t value, int32_t duration);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
 | duration | int32\_t | 时间。 |
+#### scroll\_bar\_set\_params 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_scroll_to"> 滚动到指定的值。
+> <p id="scroll_bar_t_scroll_bar_set_params"> 设置参数。
 
 
 
-#### scroll\_bar\_set\_params 函数
 * 函数原型：
 
 ```
@@ -226,21 +234,21 @@ ret_t scroll_bar_set_params (widget_t* widget, int32_t virtual_size, int32_t row
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | virtual\_size | int32\_t | 最大值。 |
 | row | int32\_t | 每一行的高度。 |
+#### scroll\_bar\_set\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_set_params"> 设置参数。
+> <p id="scroll_bar_t_scroll_bar_set_value"> 设置值，并触发EVT_VALUE_CHANGED事件。
 
 
 
-#### scroll\_bar\_set\_value 函数
 * 函数原型：
 
 ```
@@ -249,20 +257,20 @@ ret_t scroll_bar_set_value (widget_t* widget, int32_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
+#### scroll\_bar\_set\_value\_only 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="scroll_bar_t_scroll_bar_set_value"> 设置值，并触发EVT_VALUE_CHANGED事件。
+> <p id="scroll_bar_t_scroll_bar_set_value_only"> 设置值，但不触发EVT_VALUE_CHANGED事件。
 
 
 
-#### scroll\_bar\_set\_value\_only 函数
 * 函数原型：
 
 ```
@@ -271,19 +279,11 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
-* 函数功能：
-
-> <p id="scroll_bar_t_scroll_bar_set_value_only"> 设置值，但不触发EVT_VALUE_CHANGED事件。
-
-
-
 #### animatable 属性
 -----------------------
 > <p id="scroll_bar_t_animatable"> 滚动时是否启用动画。

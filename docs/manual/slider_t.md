@@ -20,11 +20,11 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slider_t_max">max</a> | uint16_t | 最大值。 |
-| <a href="#slider_t_min">min</a> | uint16_t | 最小值。 |
-| <a href="#slider_t_step">step</a> | uint16_t | 拖动的最小单位。 |
-| <a href="#slider_t_value">value</a> | uint16_t | 值。 |
-| <a href="#slider_t_vertical">vertical</a> | bool_t | 滑块的是否为垂直方向。 |
+| <a href="#slider_t_max">max</a> | uint16\_t | 最大值。 |
+| <a href="#slider_t_min">min</a> | uint16\_t | 最小值。 |
+| <a href="#slider_t_step">step</a> | uint16\_t | 拖动的最小单位。 |
+| <a href="#slider_t_value">value</a> | uint16\_t | 值。 |
+| <a href="#slider_t_vertical">vertical</a> | bool\_t | 滑块的是否为垂直方向。 |
 ### 事件
 <p id="slider_t_events">
 
@@ -34,6 +34,14 @@
 | EVT\_VALUE\_CHANGING | event\_t | 值正在改变事件(拖动中)。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值改变事件。 |
 #### slider\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slider_t_slider_cast"> 转换为slider对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -42,19 +50,19 @@ widget_t* slider_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | slider对象。 |
 | widget | widget\_t* | slider对象。 |
+#### slider\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_cast"> 转换为slider对象(供脚本语言使用)。
+> <p id="slider_t_slider_create"> 创建slider对象
 
 
 
-#### slider\_create 函数
 * 函数原型：
 
 ```
@@ -62,8 +70,6 @@ widget_t* slider_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -73,13 +79,15 @@ widget_t* slider_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slider\_set\_max 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_create"> 创建slider对象
+> <p id="slider_t_slider_set_max"> 设置滑块的最大值。
 
 
 
-#### slider\_set\_max 函数
 * 函数原型：
 
 ```
@@ -88,20 +96,20 @@ ret_t slider_set_max (widget_t* widget, uint16_t max);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | max | uint16\_t | 最大值 |
+#### slider\_set\_min 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_set_max"> 设置滑块的最大值。
+> <p id="slider_t_slider_set_min"> 设置滑块的最小值。
 
 
 
-#### slider\_set\_min 函数
 * 函数原型：
 
 ```
@@ -110,20 +118,20 @@ ret_t slider_set_min (widget_t* widget, uint16_t min);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | min | uint16\_t | 最小值 |
+#### slider\_set\_step 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_set_min"> 设置滑块的最小值。
+> <p id="slider_t_slider_set_step"> 设置滑块的拖动的最小单位。
 
 
 
-#### slider\_set\_step 函数
 * 函数原型：
 
 ```
@@ -132,20 +140,20 @@ ret_t slider_set_step (widget_t* widget, uint16_t step);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | step | uint16\_t | 拖动的最小单位。 |
+#### slider\_set\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_set_step"> 设置滑块的拖动的最小单位。
+> <p id="slider_t_slider_set_value"> 设置滑块的值。
 
 
 
-#### slider\_set\_value 函数
 * 函数原型：
 
 ```
@@ -154,20 +162,20 @@ ret_t slider_set_value (widget_t* widget, uint16_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | value | uint16\_t | 值 |
+#### slider\_set\_vertical 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="slider_t_slider_set_value"> 设置滑块的值。
+> <p id="slider_t_slider_set_vertical"> 设置滑块的方向。
 
 
 
-#### slider\_set\_vertical 函数
 * 函数原型：
 
 ```
@@ -176,19 +184,11 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | vertical | bool\_t | 是否为垂直方向。 |
-* 函数功能：
-
-> <p id="slider_t_slider_set_vertical"> 设置滑块的方向。
-
-
-
 #### max 属性
 -----------------------
 > <p id="slider_t_max"> 最大值。

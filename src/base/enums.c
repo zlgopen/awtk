@@ -100,6 +100,7 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"center", 0, IMAGE_DRAW_CENTER},
     {"scale", 0, IMAGE_DRAW_SCALE},
     {"scale_auto", 0, IMAGE_DRAW_SCALE_AUTO},
+    {"scale_down", 0, IMAGE_DRAW_SCALE_DOWN},
     {"scale_w", 0, IMAGE_DRAW_SCALE_W},
     {"scale_h", 0, IMAGE_DRAW_SCALE_H},
     {"repeat", 0, IMAGE_DRAW_REPEAT},

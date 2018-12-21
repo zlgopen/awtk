@@ -16,13 +16,22 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#prop_change_event_t_name">name</a> | char* | 属性的名称。 |
-| <a href="#prop_change_event_t_value">value</a> | value_t* | 属性的值。 |
+| <a href="#prop_change_event_t_value">value</a> | value\_t* | 属性的值。 |
 ### 事件
 <p id="prop_change_event_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### prop\_change\_event\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
+
+
+
+
 * 函数原型：
 
 ```
@@ -31,19 +40,10 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | prop\_change\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-* 函数功能：
-
-> <p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
-
-
-
-
 #### name 属性
 -----------------------
 > <p id="prop_change_event_t_name"> 属性的名称。

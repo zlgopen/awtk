@@ -17,8 +17,8 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#combo_box_item_t_checked">checked</a> | bool_t | 是否被选中。 |
-| <a href="#combo_box_item_t_value">value</a> | int32_t | 值。 |
+| <a href="#combo_box_item_t_checked">checked</a> | bool\_t | 是否被选中。 |
+| <a href="#combo_box_item_t_value">value</a> | int32\_t | 值。 |
 ### 事件
 <p id="combo_box_item_t_events">
 
@@ -27,6 +27,14 @@
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(勾选状态)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(勾选状态)改变事件。 |
 #### combo\_box\_item\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_item_t_combo_box_item_cast"> 转换combo_box_item对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -35,19 +43,19 @@ widget_t* combo_box_item_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | combo\_box\_item对象。 |
 | widget | widget\_t* | combo\_box\_item对象。 |
+#### combo\_box\_item\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_cast"> 转换combo_box_item对象(供脚本语言使用)。
+> <p id="combo_box_item_t_combo_box_item_create"> 创建combo_box_item对象
 
 
 
-#### combo\_box\_item\_create 函数
 * 函数原型：
 
 ```
@@ -55,8 +63,6 @@ widget_t* combo_box_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -66,13 +72,15 @@ widget_t* combo_box_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### combo\_box\_item\_set\_checked 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_create"> 创建combo_box_item对象
+> <p id="combo_box_item_t_combo_box_item_set_checked"> 设置控件是否被选中。
 
 
 
-#### combo\_box\_item\_set\_checked 函数
 * 函数原型：
 
 ```
@@ -81,20 +89,20 @@ ret_t combo_box_item_set_checked (widget_t* widget, bool_t checked);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box\_item对象。 |
 | checked | bool\_t | 是否被选中。 |
+#### combo\_box\_item\_set\_value 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_set_checked"> 设置控件是否被选中。
+> <p id="combo_box_item_t_combo_box_item_set_value"> 设置控件的值。
 
 
 
-#### combo\_box\_item\_set\_value 函数
 * 函数原型：
 
 ```
@@ -103,19 +111,11 @@ ret_t combo_box_item_set_value (widget_t* widget, int32_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box\_item对象。 |
 | value | int32\_t | 值 |
-* 函数功能：
-
-> <p id="combo_box_item_t_combo_box_item_set_value"> 设置控件的值。
-
-
-
 #### checked 属性
 -----------------------
 > <p id="combo_box_item_t_checked"> 是否被选中。

@@ -52,13 +52,21 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#label_t_length">length</a> | int32_t | 显示字符的长度(小余0时全部显示)。 |
+| <a href="#label_t_length">length</a> | int32\_t | 显示字符的长度(小余0时全部显示)。 |
 ### 事件
 <p id="label_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### label\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_create"> 创建label对象
+
+
+
 * 函数原型：
 
 ```
@@ -66,8 +74,6 @@ widget_t* label_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -77,13 +83,15 @@ widget_t* label_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### label\_set\_length 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="label_t_label_create"> 创建label对象
+> <p id="label_t_label_set_length"> 设置最大可显示字符个数。
 
 
 
-#### label\_set\_length 函数
 * 函数原型：
 
 ```
@@ -92,19 +100,11 @@ ret_t label_set_length (widget_t* widget, int32_t length);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | length | int32\_t | 最大可显示字符个数。 |
-* 函数功能：
-
-> <p id="label_t_label_set_length"> 设置最大可显示字符个数。
-
-
-
 #### length 属性
 -----------------------
 > <p id="label_t_length"> 显示字符的长度(小余0时全部显示)。

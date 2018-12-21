@@ -16,18 +16,26 @@
 | -------- | ----- | ------------ | 
 | <a href="#system_info_t_app_name">app\_name</a> | const char* | 应用程序的名称。 |
 | <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |
-| <a href="#system_info_t_app_type">app\_type</a> | app_type_t | 应用程序的类型。 |
-| <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float_t | 显示屏的密度。 |
-| <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32_t | 显示屏的高度。 |
-| <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd_orientation_t | 显示屏的旋转角度。 |
-| <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd_type_t | 显示屏的类型。 |
-| <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32_t | 显示屏的宽度。 |
+| <a href="#system_info_t_app_type">app\_type</a> | app\_type\_t | 应用程序的类型。 |
+| <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float\_t | 显示屏的密度。 |
+| <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32\_t | 显示屏的高度。 |
+| <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd\_orientation\_t | 显示屏的旋转角度。 |
+| <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd\_type\_t | 显示屏的类型。 |
+| <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32\_t | 显示屏的宽度。 |
 ### 事件
 <p id="system_info_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### system\_info 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info"> 获取system_info对象。
+
+
+
 * 函数原型：
 
 ```
@@ -36,18 +44,19 @@ system_info_t* system_info ();
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | system\_info\_t* | 返回system\_info对象。 |
+#### system\_info\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="system_info_t_system_info"> 获取system_info对象。
+> <p id="system_info_t_system_info_init"> 初始化system_info对象(PC软件才需调用)。
 
 
 
-#### system\_info\_init 函数
+
 * 函数原型：
 
 ```
@@ -56,21 +65,12 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | app\_type | app\_type\_t | 应用程序的类型。 |
 | app\_name | const char* | 应用程序的名称。 |
 | app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
-* 函数功能：
-
-> <p id="system_info_t_system_info_init"> 初始化system_info对象(PC软件才需调用)。
-
-
-
-
 #### app\_name 属性
 -----------------------
 > <p id="system_info_t_app_name"> 应用程序的名称。

@@ -28,6 +28,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### dialog\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_cast"> 转换dialog对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -36,19 +44,19 @@ widget_t* dialog_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dialog对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_cast"> 转换dialog对象(供脚本语言使用)。
+> <p id="dialog_t_dialog_create"> 创建dialog对象。
 
 
 
-#### dialog\_create 函数
 * 函数原型：
 
 ```
@@ -57,8 +65,6 @@ widget_t* dialog_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dialog对象。 |
@@ -67,13 +73,15 @@ widget_t* dialog_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dialog\_create\_simple 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_create"> 创建dialog对象。
+> <p id="dialog_t_dialog_create_simple"> 创建dialog对象，同时创建title/client。
 
 
 
-#### dialog\_create\_simple 函数
 * 函数原型：
 
 ```
@@ -82,8 +90,6 @@ widget_t* dialog_create_simple (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dialog对象。 |
@@ -92,13 +98,15 @@ widget_t* dialog_create_simple (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dialog\_get\_client 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_create_simple"> 创建dialog对象，同时创建title/client。
+> <p id="dialog_t_dialog_get_client"> 获取client控件。
 
 
 
-#### dialog\_get\_client 函数
 * 函数原型：
 
 ```
@@ -107,19 +115,19 @@ widget_t* dialog_get_client (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | client对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_get\_title 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_get_client"> 获取client控件。
+> <p id="dialog_t_dialog_get_title"> 获取title控件。
 
 
 
-#### dialog\_get\_title 函数
 * 函数原型：
 
 ```
@@ -128,19 +136,20 @@ widget_t* dialog_get_title (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | title对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_modal 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_get_title"> 获取title控件。
+> <p id="dialog_t_dialog_modal"> 模态显示对话框。
+ dialog_modal返回后，dialog对象将在下一个idle函数中回收，也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
 
 
 
-#### dialog\_modal 函数
 * 函数原型：
 
 ```
@@ -149,20 +158,19 @@ ret_t dialog_modal (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_open 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_modal"> 模态显示对话框。
- dialog_modal返回后，dialog对象将在下一个idle函数中回收，也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
+> <p id="dialog_t_dialog_open"> 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。
 
 
 
-#### dialog\_open 函数
 * 函数原型：
 
 ```
@@ -171,19 +179,19 @@ widget_t* dialog_open (char* name);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
 | name | char* | dialog的名称。 |
+#### dialog\_quit 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_open"> 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。
+> <p id="dialog_t_dialog_quit"> 退出模态显示。
 
 
 
-#### dialog\_quit 函数
 * 函数原型：
 
 ```
@@ -192,20 +200,20 @@ ret_t dialog_quit (widget_t* widget, uint32_t code);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
 | code | uint32\_t | 退出码，作为dialog\_modal的返回值。 |
+#### dialog\_set\_title 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_t_dialog_quit"> 退出模态显示。
+> <p id="dialog_t_dialog_set_title"> 设置对话框的标题文本。
 
 
 
-#### dialog\_set\_title 函数
 * 函数原型：
 
 ```
@@ -214,16 +222,8 @@ ret_t dialog_set_title (widget_t* widget, char* title);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
 | title | char* | 标题。 |
-* 函数功能：
-
-> <p id="dialog_t_dialog_set_title"> 设置对话框的标题文本。
-
-
-

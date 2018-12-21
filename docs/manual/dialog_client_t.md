@@ -21,6 +21,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### dialog\_client\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_client_t_dialog_client_cast"> 转换为dialog_client对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -29,19 +37,19 @@ widget_t* dialog_client_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dialog\_client对象。 |
 | widget | widget\_t* | dialog\_client对象。 |
+#### dialog\_client\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="dialog_client_t_dialog_client_cast"> 转换为dialog_client对象(供脚本语言使用)。
+> <p id="dialog_client_t_dialog_client_create"> 创建dialog对象。
 
 
 
-#### dialog\_client\_create 函数
 * 函数原型：
 
 ```
@@ -49,8 +57,6 @@ widget_t* dialog_client_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -60,9 +66,3 @@ widget_t* dialog_client_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-* 函数功能：
-
-> <p id="dialog_client_t_dialog_client_create"> 创建dialog对象。
-
-
-

@@ -63,27 +63,36 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#vgcanvas_t_anti_alias">anti\_alias</a> | bool_t | 是否启用反走样功能。 |
-| <a href="#vgcanvas_t_fill_color">fill\_color</a> | color_t | 填充颜色 |
+| <a href="#vgcanvas_t_anti_alias">anti\_alias</a> | bool\_t | 是否启用反走样功能。 |
+| <a href="#vgcanvas_t_fill_color">fill\_color</a> | color\_t | 填充颜色 |
 | <a href="#vgcanvas_t_font">font</a> | char* | 字体。 |
-| <a href="#vgcanvas_t_font_size">font\_size</a> | float_t | 字体大小。 |
-| <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float_t | 全局alpha。 |
-| <a href="#vgcanvas_t_height">height</a> | wh_t | canvas的高度 |
+| <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
+| <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
+| <a href="#vgcanvas_t_height">height</a> | wh\_t | canvas的高度 |
 | <a href="#vgcanvas_t_line_cap">line\_cap</a> | char* | line_cap。 |
 | <a href="#vgcanvas_t_line_join">line\_join</a> | char* | line_join。 |
-| <a href="#vgcanvas_t_line_width">line\_width</a> | float_t | 线宽。 |
-| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float_t | miter_limit。 |
-| <a href="#vgcanvas_t_ratio">ratio</a> | float_t | 显示比例。 |
-| <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color_t | 线条颜色 |
+| <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
+| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter_limit。 |
+| <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
+| <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
 | <a href="#vgcanvas_t_text_align">text\_align</a> | char* | text_align。 |
 | <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | char* | text_baseline。 |
-| <a href="#vgcanvas_t_w">w</a> | wh_t | canvas的宽度 |
+| <a href="#vgcanvas_t_w">w</a> | wh\_t | canvas的宽度 |
 ### 事件
 <p id="vgcanvas_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### vgcanvas\_arc 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_arc"> arc
+
+
+
+
 * 函数原型：
 
 ```
@@ -91,8 +100,6 @@ ret_t vgcanvas_arc (vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t sta
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -104,14 +111,16 @@ ret_t vgcanvas_arc (vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t sta
 | start\_angle | float\_t | 起始角度。 |
 | end\_angle | float\_t | 结束角度。 |
 | ccw | bool\_t | 是否逆时针。 |
+#### vgcanvas\_arc\_to 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_arc"> arc
+> <p id="vgcanvas_t_vgcanvas_arc_to"> arc to
 
 
 
 
-#### vgcanvas\_arc\_to 函数
 * 函数原型：
 
 ```
@@ -119,8 +128,6 @@ ret_t vgcanvas_arc_to (vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -131,14 +138,16 @@ ret_t vgcanvas_arc_to (vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float
 | x2 | float\_t | 结束点x坐标。 |
 | y2 | float\_t | 结束点y坐标。 |
 | r | float\_t | 半径。 |
+#### vgcanvas\_begin\_frame 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_arc_to"> arc to
+> <p id="vgcanvas_t_vgcanvas_begin_frame"> 开始绘制，系统内部调用。
 
 
 
 
-#### vgcanvas\_begin\_frame 函数
 * 函数原型：
 
 ```
@@ -147,21 +156,21 @@ ret_t vgcanvas_begin_frame (vgcanvas_t* vg, rect_t* dirty_rect);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | dirty\_rect | rect\_t* | 需要绘制的区域。 |
+#### vgcanvas\_begin\_path 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_begin_frame"> 开始绘制，系统内部调用。
+> <p id="vgcanvas_t_vgcanvas_begin_path"> begin path
 
 
 
 
-#### vgcanvas\_begin\_path 函数
 * 函数原型：
 
 ```
@@ -170,20 +179,20 @@ ret_t vgcanvas_begin_path (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_bezier\_to 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_begin_path"> begin path
+> <p id="vgcanvas_t_vgcanvas_bezier_to"> bezier curve to
 
 
 
 
-#### vgcanvas\_bezier\_to 函数
 * 函数原型：
 
 ```
@@ -191,8 +200,6 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -204,14 +211,16 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 | cp2y | float\_t | 控制点3y坐标。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_clear\_rect 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_bezier_to"> bezier curve to
+> <p id="vgcanvas_t_vgcanvas_clear_rect"> clear rect
 
 
 
 
-#### vgcanvas\_clear\_rect 函数
 * 函数原型：
 
 ```
@@ -219,8 +228,6 @@ ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, floa
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -231,14 +238,16 @@ ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, floa
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
 | c | color\_t | 颜色。 |
+#### vgcanvas\_clip\_rect 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_clear_rect"> clear rect
+> <p id="vgcanvas_t_vgcanvas_clip_rect"> clip_rect
 
 
 
 
-#### vgcanvas\_clip\_rect 函数
 * 函数原型：
 
 ```
@@ -246,8 +255,6 @@ ret_t vgcanvas_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -257,14 +264,16 @@ ret_t vgcanvas_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float
 | y | float\_t | y坐标。 |
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
+#### vgcanvas\_close\_path 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_clip_rect"> clip_rect
+> <p id="vgcanvas_t_vgcanvas_close_path"> close_path
 
 
 
 
-#### vgcanvas\_close\_path 函数
 * 函数原型：
 
 ```
@@ -273,20 +282,20 @@ ret_t vgcanvas_close_path (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_close_path"> close_path
+> <p id="vgcanvas_t_vgcanvas_create"> 创建vgcanvas。
 
 
 
 
-#### vgcanvas\_create 函数
 * 函数原型：
 
 ```
@@ -294,8 +303,6 @@ vgcanvas_t vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -305,14 +312,16 @@ vgcanvas_t vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 | stride | uint32\_t | 一行占用的字节数。 |
 | format | bitmap\_format\_t | 如果data是framebuffer，format指定data的格式。 |
 | data | void* | framebuffer或其它ctx。 |
+#### vgcanvas\_destroy 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_create"> 创建vgcanvas。
+> <p id="vgcanvas_t_vgcanvas_destroy"> destroy
 
 
 
 
-#### vgcanvas\_destroy 函数
 * 函数原型：
 
 ```
@@ -321,20 +330,20 @@ ret_t vgcanvas_destroy (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_draw\_icon 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_destroy"> destroy
+> <p id="vgcanvas_t_vgcanvas_draw_icon"> draw icon
 
 
 
 
-#### vgcanvas\_draw\_icon 函数
 * 函数原型：
 
 ```
@@ -343,8 +352,6 @@ ret_t vgcanvas_draw_icon (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -358,14 +365,16 @@ ret_t vgcanvas_draw_icon (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
 | dy | float\_t | dy |
 | dw | float\_t | dw |
 | dh | float\_t | dh |
+#### vgcanvas\_draw\_image 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_draw_icon"> draw icon
+> <p id="vgcanvas_t_vgcanvas_draw_image"> draw image
 
 
 
 
-#### vgcanvas\_draw\_image 函数
 * 函数原型：
 
 ```
@@ -374,8 +383,6 @@ ret_t vgcanvas_draw_image (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -389,14 +396,16 @@ ret_t vgcanvas_draw_image (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy
 | dy | float\_t | dy |
 | dw | float\_t | dw |
 | dh | float\_t | dh |
+#### vgcanvas\_ellipse 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_draw_image"> draw image
+> <p id="vgcanvas_t_vgcanvas_ellipse"> ellipse
 
 
 
 
-#### vgcanvas\_ellipse 函数
 * 函数原型：
 
 ```
@@ -404,8 +413,6 @@ ret_t vgcanvas_ellipse (vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -415,14 +422,16 @@ ret_t vgcanvas_ellipse (vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_
 | y | float\_t | y坐标。 |
 | rx | float\_t | 圆角半径。 |
 | ry | float\_t | 圆角半径。 |
+#### vgcanvas\_end\_frame 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_ellipse"> ellipse
+> <p id="vgcanvas_t_vgcanvas_end_frame"> 结束绘制。系统内部调用。
 
 
 
 
-#### vgcanvas\_end\_frame 函数
 * 函数原型：
 
 ```
@@ -431,20 +440,20 @@ ret_t vgcanvas_end_frame (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_fill 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_end_frame"> 结束绘制。系统内部调用。
+> <p id="vgcanvas_t_vgcanvas_fill"> 填充多边形。
 
 
 
 
-#### vgcanvas\_fill 函数
 * 函数原型：
 
 ```
@@ -453,20 +462,20 @@ ret_t vgcanvas_fill (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_fill\_text 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_fill"> 填充多边形。
+> <p id="vgcanvas_t_vgcanvas_fill_text"> fill text
 
 
 
 
-#### vgcanvas\_fill\_text 函数
 * 函数原型：
 
 ```
@@ -474,8 +483,6 @@ ret_t vgcanvas_fill_text (vgcanvas_t* vg, char* text, float_t x, float_t y, floa
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -485,14 +492,16 @@ ret_t vgcanvas_fill_text (vgcanvas_t* vg, char* text, float_t x, float_t y, floa
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
 | max\_width | float\_t | 最大宽度。 |
+#### vgcanvas\_flush 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_fill_text"> fill text
+> <p id="vgcanvas_t_vgcanvas_flush"> flush
 
 
 
 
-#### vgcanvas\_flush 函数
 * 函数原型：
 
 ```
@@ -501,20 +510,20 @@ ret_t vgcanvas_flush (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_is\_point\_in\_path 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_flush"> flush
+> <p id="vgcanvas_t_vgcanvas_is_point_in_path"> 检查点是否在当前路径中。
 
 
 
 
-#### vgcanvas\_is\_point\_in\_path 函数
 * 函数原型：
 
 ```
@@ -523,22 +532,22 @@ bool_t vgcanvas_is_point_in_path (vgcanvas_t* vg, float_t x, float_t y);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示在，否则表示不在。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_line\_to 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_is_point_in_path"> 检查点是否在当前路径中。
+> <p id="vgcanvas_t_vgcanvas_line_to"> line to。
 
 
 
 
-#### vgcanvas\_line\_to 函数
 * 函数原型：
 
 ```
@@ -547,22 +556,22 @@ ret_t vgcanvas_line_to (vgcanvas_t* vg, float_t x, float_t y);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_measure\_text 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_line_to"> line to。
+> <p id="vgcanvas_t_vgcanvas_measure_text"> measure text
 
 
 
 
-#### vgcanvas\_measure\_text 函数
 * 函数原型：
 
 ```
@@ -571,21 +580,21 @@ float_t vgcanvas_measure_text (vgcanvas_t* vg, char* text);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | float\_t | 返回text的宽度。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | text | char* | text |
+#### vgcanvas\_move\_to 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_measure_text"> measure text
+> <p id="vgcanvas_t_vgcanvas_move_to"> move to
 
 
 
 
-#### vgcanvas\_move\_to 函数
 * 函数原型：
 
 ```
@@ -594,38 +603,15 @@ ret_t vgcanvas_move_to (vgcanvas_t* vg, float_t x, float_t y);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_move_to"> move to
-
-
-
-
 #### vgcanvas\_paint 函数
-* 函数原型：
-
-```
-ret_t vgcanvas_paint (vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
-```
-
-* 参数说明：
-
 -----------------------
 
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| stroke | bool\_t | TRUE表示画线FALSE表示填充。 |
-| img | bitmap\_t* | 图片。 |
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_paint"> 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。
@@ -634,7 +620,30 @@ ret_t vgcanvas_paint (vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
 
 
 
+* 函数原型：
+
+```
+ret_t vgcanvas_paint (vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| stroke | bool\_t | TRUE表示画线FALSE表示填充。 |
+| img | bitmap\_t* | 图片。 |
 #### vgcanvas\_quad\_to 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_quad_to"> quadratic curve to
+
+
+
+
 * 函数原型：
 
 ```
@@ -642,8 +651,6 @@ ret_t vgcanvas_quad_to (vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, flo
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -653,14 +660,16 @@ ret_t vgcanvas_quad_to (vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, flo
 | cpy | float\_t | 控制点y坐标。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_rect 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_quad_to"> quadratic curve to
+> <p id="vgcanvas_t_vgcanvas_rect"> rect
 
 
 
 
-#### vgcanvas\_rect 函数
 * 函数原型：
 
 ```
@@ -668,8 +677,6 @@ ret_t vgcanvas_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h)
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -679,14 +686,16 @@ ret_t vgcanvas_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h)
 | y | float\_t | y坐标。 |
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
+#### vgcanvas\_reinit 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rect"> rect
+> <p id="vgcanvas_t_vgcanvas_reinit"> 重新初始化，系统内部调用。
 
 
 
 
-#### vgcanvas\_reinit 函数
 * 函数原型：
 
 ```
@@ -694,8 +703,6 @@ ret_t vgcanvas_reinit (vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride, 
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -706,14 +713,16 @@ ret_t vgcanvas_reinit (vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride, 
 | stride | uint32\_t | 一行占用的字节数。 |
 | format | bitmap\_format\_t | 如果data是framebuffer，format指定data的格式。 |
 | data | void* | framebuffer或其它ctx。 |
+#### vgcanvas\_reset 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_reinit"> 重新初始化，系统内部调用。
+> <p id="vgcanvas_t_vgcanvas_reset"> reset
 
 
 
 
-#### vgcanvas\_reset 函数
 * 函数原型：
 
 ```
@@ -722,20 +731,20 @@ ret_t vgcanvas_reset (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_restore 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_reset"> reset
+> <p id="vgcanvas_t_vgcanvas_restore"> restore
 
 
 
 
-#### vgcanvas\_restore 函数
 * 函数原型：
 
 ```
@@ -744,20 +753,20 @@ ret_t vgcanvas_restore (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_rotate 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_restore"> restore
+> <p id="vgcanvas_t_vgcanvas_rotate"> rotate
 
 
 
 
-#### vgcanvas\_rotate 函数
 * 函数原型：
 
 ```
@@ -766,21 +775,21 @@ ret_t vgcanvas_rotate (vgcanvas_t* vg, float_t rad);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | rad | float\_t | 角度 |
+#### vgcanvas\_rounded\_rect 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rotate"> rotate
+> <p id="vgcanvas_t_vgcanvas_rounded_rect"> round rect
 
 
 
 
-#### vgcanvas\_rounded\_rect 函数
 * 函数原型：
 
 ```
@@ -788,8 +797,6 @@ ret_t vgcanvas_rounded_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, fl
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -800,14 +807,16 @@ ret_t vgcanvas_rounded_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, fl
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
 | r | float\_t | 圆角半径。 |
+#### vgcanvas\_save 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rounded_rect"> round rect
+> <p id="vgcanvas_t_vgcanvas_save"> save
 
 
 
 
-#### vgcanvas\_save 函数
 * 函数原型：
 
 ```
@@ -816,20 +825,20 @@ ret_t vgcanvas_save (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_scale 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_save"> save
+> <p id="vgcanvas_t_vgcanvas_scale"> scale
 
 
 
 
-#### vgcanvas\_scale 函数
 * 函数原型：
 
 ```
@@ -838,22 +847,22 @@ ret_t vgcanvas_scale (vgcanvas_t* vg, float_t x, float_t y);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x方向缩放比例。 |
 | y | float\_t | y方向缩放比例。 |
+#### vgcanvas\_set\_antialias 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_scale"> scale
+> <p id="vgcanvas_t_vgcanvas_set_antialias"> set antialias
 
 
 
 
-#### vgcanvas\_set\_antialias 函数
 * 函数原型：
 
 ```
@@ -862,21 +871,21 @@ ret_t vgcanvas_set_antialias (vgcanvas_t* vg, bool_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | bool\_t | 是否启用反走样。 |
+#### vgcanvas\_set\_fill\_color 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_antialias"> set antialias
+> <p id="vgcanvas_t_vgcanvas_set_fill_color"> set fill color
 
 
 
 
-#### vgcanvas\_set\_fill\_color 函数
 * 函数原型：
 
 ```
@@ -885,21 +894,21 @@ ret_t vgcanvas_set_fill_color (vgcanvas_t* vg, color_t color);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_font 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_fill_color"> set fill color
+> <p id="vgcanvas_t_vgcanvas_set_font"> set font
 
 
 
 
-#### vgcanvas\_set\_font 函数
 * 函数原型：
 
 ```
@@ -908,21 +917,21 @@ ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | font | char* | 字体名称。 |
+#### vgcanvas\_set\_font\_size 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_font"> set font
+> <p id="vgcanvas_t_vgcanvas_set_font_size"> set font size
 
 
 
 
-#### vgcanvas\_set\_font\_size 函数
 * 函数原型：
 
 ```
@@ -931,21 +940,21 @@ ret_t vgcanvas_set_font_size (vgcanvas_t* vg, float_t font);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | font | float\_t | 字体大小。 |
+#### vgcanvas\_set\_global\_alpha 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_font_size"> set font size
+> <p id="vgcanvas_t_vgcanvas_set_global_alpha"> set global alpha
 
 
 
 
-#### vgcanvas\_set\_global\_alpha 函数
 * 函数原型：
 
 ```
@@ -954,21 +963,21 @@ ret_t vgcanvas_set_global_alpha (vgcanvas_t* vg, float_t alpha);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | alpha | float\_t | global alpha。 |
+#### vgcanvas\_set\_line\_cap 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_global_alpha"> set global alpha
+> <p id="vgcanvas_t_vgcanvas_set_line_cap"> set line cap
 
 
 
 
-#### vgcanvas\_set\_line\_cap 函数
 * 函数原型：
 
 ```
@@ -977,21 +986,21 @@ ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | char* | 取值：butt|round|square，必须为常量字符串。 |
+#### vgcanvas\_set\_line\_join 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_line_cap"> set line cap
+> <p id="vgcanvas_t_vgcanvas_set_line_join"> set line join
 
 
 
 
-#### vgcanvas\_set\_line\_join 函数
 * 函数原型：
 
 ```
@@ -1000,21 +1009,21 @@ ret_t vgcanvas_set_line_join (vgcanvas_t* vg, char* value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | char* | 取值：bevel|round|miter，必须为常量字符串。 |
+#### vgcanvas\_set\_line\_width 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_line_join"> set line join
+> <p id="vgcanvas_t_vgcanvas_set_line_width"> set line width
 
 
 
 
-#### vgcanvas\_set\_line\_width 函数
 * 函数原型：
 
 ```
@@ -1023,41 +1032,14 @@ ret_t vgcanvas_set_line_width (vgcanvas_t* vg, float_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | float\_t | 线宽。 |
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_line_width"> set line width
-
-
-
-
 #### vgcanvas\_set\_linear\_gradient 函数
-* 函数原型：
-
-```
-ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
 -----------------------
 
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| sx | float\_t | start x |
-| sy | float\_t | start y |
-| ex | float\_t | end x |
-| ey | float\_t | end y |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_linear_gradient"> set fill linear gradient
@@ -1065,7 +1047,6 @@ ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, floa
 
 
 
-#### vgcanvas\_set\_linear\_gradient 函数
 * 函数原型：
 
 ```
@@ -1073,8 +1054,6 @@ ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, floa
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -1086,6 +1065,9 @@ ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, floa
 | ey | float\_t | end y |
 | icolor | color\_t | 开始颜色。 |
 | ocolor | color\_t | 结束颜色。 |
+#### vgcanvas\_set\_linear\_gradient 函数
+-----------------------
+
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_linear_gradient"> set stroke linear gradient
@@ -1093,7 +1075,34 @@ ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, floa
 
 
 
+* 函数原型：
+
+```
+ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| sx | float\_t | start x |
+| sy | float\_t | start y |
+| ex | float\_t | end x |
+| ey | float\_t | end y |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_miter\_limit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_miter_limit"> set miter limit
+
+
+
+
 * 函数原型：
 
 ```
@@ -1102,41 +1111,14 @@ ret_t vgcanvas_set_miter_limit (vgcanvas_t* vg, float_t value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | float\_t | miter limit |
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_miter_limit"> set miter limit
-
-
-
-
 #### vgcanvas\_set\_radial\_gradient 函数
-* 函数原型：
-
-```
-ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
 -----------------------
 
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| cx | float\_t | center x |
-| cy | float\_t | center y |
-| inr | float\_t | 内环半径 |
-| outr | float\_t | 外环半径。 |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_radial_gradient"> set stroke radial gradient
@@ -1144,7 +1126,6 @@ ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, floa
 
 
 
-#### vgcanvas\_set\_radial\_gradient 函数
 * 函数原型：
 
 ```
@@ -1152,8 +1133,6 @@ ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, floa
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -1165,6 +1144,9 @@ ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, floa
 | outr | float\_t | 外环半径。 |
 | icolor | color\_t | 开始颜色。 |
 | ocolor | color\_t | 结束颜色。 |
+#### vgcanvas\_set\_radial\_gradient 函数
+-----------------------
+
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_radial_gradient"> set fill radial gradient
@@ -1172,7 +1154,34 @@ ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, floa
 
 
 
+* 函数原型：
+
+```
+ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| cx | float\_t | center x |
+| cy | float\_t | center y |
+| inr | float\_t | 内环半径 |
+| outr | float\_t | 外环半径。 |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_stroke\_color 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_stroke_color"> set stroke color
+
+
+
+
 * 函数原型：
 
 ```
@@ -1181,21 +1190,21 @@ ret_t vgcanvas_set_stroke_color (vgcanvas_t* vg, color_t color);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_text\_align 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_stroke_color"> set stroke color
+> <p id="vgcanvas_t_vgcanvas_set_text_align"> set text align
 
 
 
 
-#### vgcanvas\_set\_text\_align 函数
 * 函数原型：
 
 ```
@@ -1204,21 +1213,21 @@ ret_t vgcanvas_set_text_align (vgcanvas_t* vg, char* value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | char* | 取值：left|center|right，必须为常量字符串。 |
+#### vgcanvas\_set\_text\_baseline 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_text_align"> set text align
+> <p id="vgcanvas_t_vgcanvas_set_text_baseline"> set text baseline
 
 
 
 
-#### vgcanvas\_set\_text\_baseline 函数
 * 函数原型：
 
 ```
@@ -1227,21 +1236,21 @@ ret_t vgcanvas_set_text_baseline (vgcanvas_t* vg, char* value);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | char* | 取值：top|middle|bottom，必须为常量字符串。 |
+#### vgcanvas\_set\_transform 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_text_baseline"> set text baseline
+> <p id="vgcanvas_t_vgcanvas_set_transform"> set transform
 
 
 
 
-#### vgcanvas\_set\_transform 函数
 * 函数原型：
 
 ```
@@ -1250,8 +1259,6 @@ ret_t vgcanvas_set_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, f
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -1262,14 +1269,16 @@ ret_t vgcanvas_set_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, f
 | d | float\_t | d |
 | e | float\_t | e |
 | f | float\_t | f |
+#### vgcanvas\_stroke 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_transform"> set transform
+> <p id="vgcanvas_t_vgcanvas_stroke"> 画线。
 
 
 
 
-#### vgcanvas\_stroke 函数
 * 函数原型：
 
 ```
@@ -1278,20 +1287,20 @@ ret_t vgcanvas_stroke (vgcanvas_t* vg);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_transform 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_stroke"> 画线。
+> <p id="vgcanvas_t_vgcanvas_transform"> transform
 
 
 
 
-#### vgcanvas\_transform 函数
 * 函数原型：
 
 ```
@@ -1299,8 +1308,6 @@ ret_t vgcanvas_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, float
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -1312,14 +1319,16 @@ ret_t vgcanvas_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, float
 | d | float\_t | d |
 | e | float\_t | e |
 | f | float\_t | f |
+#### vgcanvas\_translate 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_transform"> transform
+> <p id="vgcanvas_t_vgcanvas_translate"> scale
 
 
 
 
-#### vgcanvas\_translate 函数
 * 函数原型：
 
 ```
@@ -1328,21 +1337,12 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x方向偏移。 |
 | y | float\_t | y方向偏移。 |
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_translate"> scale
-
-
-
-
 #### anti\_alias 属性
 -----------------------
 > <p id="vgcanvas_t_anti_alias"> 是否启用反走样功能。

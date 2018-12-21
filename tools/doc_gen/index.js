@@ -112,9 +112,12 @@ class ApiGenerator {
 
   genOneFunc(cls, p) {
     let result = `#### ${encodeStr(p.name)} 函数\n`;
+    result += `-----------------------\n\n`;
+    result += '* 函数功能：\n\n';
+    result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
+
     result += this.genFuncPrototype(p);
     result += '* 参数说明：\n\n';
-    result += `-----------------------\n\n`;
     result += `| 参数 | 类型 | 说明 |\n`;
     result += `| -------- | ----- | --------- |\n`;
     result += `| 返回值 | ${encodeStr(p.return.type)} | ${encodeStr(p.return.desc)} |\n`;
@@ -122,9 +125,6 @@ class ApiGenerator {
     p.params.forEach(iter => {
       result += `| ${encodeStr(iter.name)} | ${encodeStr(iter.type)} | ${encodeStr(iter.desc)} |\n`;
     })
-
-    result += '* 函数功能：\n\n';
-    result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
 
     return result;
   }
@@ -303,7 +303,7 @@ class ApiGenerator {
 
       cls.properties.forEach((p) => {
         if (!isPrivate(p)) {
-          result += `| ${genA(cls.name, p)} | ${p.type} | ${p.desc.split('\n')[0].trim()} |\n`;
+          result += `| ${genA(cls.name, p)} | ${encodeStr(p.type)} | ${p.desc.split('\n')[0].trim()} |\n`;
         }
       });
     }

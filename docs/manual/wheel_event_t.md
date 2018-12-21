@@ -15,17 +15,26 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#wheel_event_t_alt">alt</a> | bool_t | alt键是否按下。 |
-| <a href="#wheel_event_t_ctrl">ctrl</a> | bool_t | ctrl键是否按下。 |
-| <a href="#wheel_event_t_dx">dx</a> | int32_t | 滚轮的x值。 |
-| <a href="#wheel_event_t_dy">dy</a> | int32_t | 滚轮的x值。 |
-| <a href="#wheel_event_t_shift">shift</a> | bool_t | shift键是否按下。 |
+| <a href="#wheel_event_t_alt">alt</a> | bool\_t | alt键是否按下。 |
+| <a href="#wheel_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
+| <a href="#wheel_event_t_dx">dx</a> | int32\_t | 滚轮的x值。 |
+| <a href="#wheel_event_t_dy">dy</a> | int32\_t | 滚轮的x值。 |
+| <a href="#wheel_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
 ### 事件
 <p id="wheel_event_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### wheel\_event\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wheel_event_t_wheel_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
+
+
+
+
 * 函数原型：
 
 ```
@@ -34,19 +43,10 @@ wheel_event_t* wheel_event_cast (event_t* event);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | wheel\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
-* 函数功能：
-
-> <p id="wheel_event_t_wheel_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
-
-
-
-
 #### alt 属性
 -----------------------
 > <p id="wheel_event_t_alt"> alt键是否按下。

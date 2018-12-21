@@ -18,9 +18,9 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#tokenizer_t_cursor">cursor</a> | uint32_t | 当前位置。 |
+| <a href="#tokenizer_t_cursor">cursor</a> | uint32\_t | 当前位置。 |
 | <a href="#tokenizer_t_separtor">separtor</a> | char* | 字符串。 |
-| <a href="#tokenizer_t_size">size</a> | uint32_t | 字符串的长度。 |
+| <a href="#tokenizer_t_size">size</a> | uint32\_t | 字符串的长度。 |
 | <a href="#tokenizer_t_str">str</a> | char* | 字符串。 |
 ### 事件
 <p id="tokenizer_t_events">
@@ -28,6 +28,15 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### tokenizer\_deinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tokenizer_t_tokenizer_deinit"> 重置tokenizer。
+
+
+
+
 * 函数原型：
 
 ```
@@ -36,20 +45,20 @@ ret_t tokenizer_deinit (tokenizer_t* tokenizer);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
+#### tokenizer\_has\_more 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_deinit"> 重置tokenizer。
+> <p id="tokenizer_t_tokenizer_has_more"> 是否还有下一个token。
 
 
 
 
-#### tokenizer\_has\_more 函数
 * 函数原型：
 
 ```
@@ -58,20 +67,20 @@ bool_t tokenizer_has_more (tokenizer_t* tokenizer);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 还有下一个token返回TRUE，否则返回FALSE。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
+#### tokenizer\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_has_more"> 是否还有下一个token。
+> <p id="tokenizer_t_tokenizer_init"> 初始化tokenizer对象。
 
 
 
 
-#### tokenizer\_init 函数
 * 函数原型：
 
 ```
@@ -80,8 +89,6 @@ tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, c
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | tokenizer\_t* | tokenizer对象本身。 |
@@ -89,14 +96,16 @@ tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, c
 | str | char* | 要解析的字符串。 |
 | size | uint32\_t | 字符串长度。 |
 | separtor | char* | 分隔字符。 |
+#### tokenizer\_next 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_init"> 初始化tokenizer对象。
+> <p id="tokenizer_t_tokenizer_next"> 获取下一个token。
 
 
 
 
-#### tokenizer\_next 函数
 * 函数原型：
 
 ```
@@ -105,20 +114,20 @@ char* tokenizer_next (tokenizer_t* tokenizer);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 成功返回token，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
+#### tokenizer\_next\_float 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next"> 获取下一个token。
+> <p id="tokenizer_t_tokenizer_next_float"> 获取下一个token，并转换成float。
 
 
 
 
-#### tokenizer\_next\_float 函数
 * 函数原型：
 
 ```
@@ -127,21 +136,21 @@ char* tokenizer_next_float (tokenizer_t* tokenizer, float defval);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 成功返回token的float值，失败返回缺省值。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | defval | float | 缺省值。 |
+#### tokenizer\_next\_int 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next_float"> 获取下一个token，并转换成float。
+> <p id="tokenizer_t_tokenizer_next_int"> 获取下一个token，并转换成int。
 
 
 
 
-#### tokenizer\_next\_int 函数
 * 函数原型：
 
 ```
@@ -150,20 +159,11 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 成功返回token的int值，失败返回缺省值。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | defval | int | 缺省值。 |
-* 函数功能：
-
-> <p id="tokenizer_t_tokenizer_next_int"> 获取下一个token，并转换成int。
-
-
-
-
 #### cursor 属性
 -----------------------
 > <p id="tokenizer_t_cursor"> 当前位置。

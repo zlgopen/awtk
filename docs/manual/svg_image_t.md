@@ -21,6 +21,14 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### svg\_image\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="svg_image_t_svg_image_cast"> 转换为svg_image对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -29,19 +37,19 @@ widget_t* svg_image_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | svg\_image对象。 |
 | widget | widget\_t* | svg\_image对象。 |
+#### svg\_image\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="svg_image_t_svg_image_cast"> 转换为svg_image对象(供脚本语言使用)。
+> <p id="svg_image_t_svg_image_create"> 创建svg_image对象
 
 
 
-#### svg\_image\_create 函数
 * 函数原型：
 
 ```
@@ -49,8 +57,6 @@ widget_t* svg_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -60,9 +66,3 @@ widget_t* svg_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-* 函数功能：
-
-> <p id="svg_image_t_svg_image_create"> 创建svg_image对象
-
-
-

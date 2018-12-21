@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @class gif_image_t
- * @parent widget_t
+ * @parent image_base_t
  * @annotation ["scriptable"]
  * GIF图片控件。
  */

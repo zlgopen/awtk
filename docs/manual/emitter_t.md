@@ -25,13 +25,22 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#emitter_t_enable">enable</a> | bool_t | 禁用标志。禁用时dispatch无效。 |
+| <a href="#emitter_t_enable">enable</a> | bool\_t | 禁用标志。禁用时dispatch无效。 |
 ### 事件
 <p id="emitter_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 #### emitter\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_create"> 创建emitter对象。
+
+
+
+
 * 函数原型：
 
 ```
@@ -40,19 +49,19 @@ emitter_t* emitter_create ();
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | emitter\_t* | 对象。 |
+#### emitter\_deinit 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_create"> 创建emitter对象。
+> <p id="emitter_t_emitter_deinit"> 析构。
 
 
 
 
-#### emitter\_deinit 函数
 * 函数原型：
 
 ```
@@ -61,20 +70,20 @@ ret_t emitter_deinit (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
+#### emitter\_destroy 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_deinit"> 析构。
+> <p id="emitter_t_emitter_destroy"> 销毁。
 
 
 
 
-#### emitter\_destroy 函数
 * 函数原型：
 
 ```
@@ -83,20 +92,20 @@ ret_t emitter_destroy (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
+#### emitter\_disable 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_destroy"> 销毁。
+> <p id="emitter_t_emitter_disable"> 禁用。禁用后emitter_dispatch无效，但可以注册和注销。
 
 
 
 
-#### emitter\_disable 函数
 * 函数原型：
 
 ```
@@ -105,35 +114,13 @@ ret_t emitter_disable (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
-* 函数功能：
-
-> <p id="emitter_t_emitter_disable"> 禁用。禁用后emitter_dispatch无效，但可以注册和注销。
-
-
-
-
 #### emitter\_dispatch 函数
-* 函数原型：
-
-```
-ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
-```
-
-* 参数说明：
-
 -----------------------
 
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t |  |
-| emitter | emitter\_t* | emitter对象。 |
-| e | event\_t* | 事件对象。 |
 * 函数功能：
 
 > <p id="emitter_t_emitter_dispatch"> 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。
@@ -143,7 +130,29 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 
 
 
+* 函数原型：
+
+```
+ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t |  |
+| emitter | emitter\_t* | emitter对象。 |
+| e | event\_t* | 事件对象。 |
 #### emitter\_enable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_enable"> 启用。
+
+
+
+
 * 函数原型：
 
 ```
@@ -152,20 +161,20 @@ ret_t emitter_enable (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
+#### emitter\_find 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_enable"> 启用。
+> <p id="emitter_t_emitter_find"> 通过ID查找emitter_item_t，主要用于辅助测试。
 
 
 
 
-#### emitter\_find 函数
 * 函数原型：
 
 ```
@@ -174,21 +183,21 @@ ret_t emitter_find (emitter_t* emitter, uint32_t id);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
 | id | uint32\_t | emitter\_on返回的ID。 |
+#### emitter\_init 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_find"> 通过ID查找emitter_item_t，主要用于辅助测试。
+> <p id="emitter_t_emitter_init"> 初始化emitter对象。
 
 
 
 
-#### emitter\_init 函数
 * 函数原型：
 
 ```
@@ -197,20 +206,20 @@ emitter_t* emitter_init (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | emitter\_t* | 对象。 |
 | emitter | emitter\_t* | emitter对象。 |
+#### emitter\_off 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_init"> 初始化emitter对象。
+> <p id="emitter_t_emitter_off"> 注销指定事件的处理函数。
 
 
 
 
-#### emitter\_off 函数
 * 函数原型：
 
 ```
@@ -219,21 +228,21 @@ ret_t emitter_off (emitter_t* emitter, uint32_t id);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
 | id | uint32\_t | emitter\_on返回的ID。 |
+#### emitter\_off\_by\_func 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_off"> 注销指定事件的处理函数。
+> <p id="emitter_t_emitter_off_by_func"> 注销指定事件的处理函数。
 
 
 
 
-#### emitter\_off\_by\_func 函数
 * 函数原型：
 
 ```
@@ -242,8 +251,6 @@ ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t o
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -251,14 +258,16 @@ ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t o
 | type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
+#### emitter\_on 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_off_by_func"> 注销指定事件的处理函数。
+> <p id="emitter_t_emitter_on"> 注册指定事件的处理函数。
 
 
 
 
-#### emitter\_on 函数
 * 函数原型：
 
 ```
@@ -267,8 +276,6 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_even
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
@@ -276,14 +283,16 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_even
 | type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
+#### emitter\_set\_on\_destroy 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_on"> 注册指定事件的处理函数。
+> <p id="emitter_t_emitter_set_on_destroy"> 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。
 
 
 
 
-#### emitter\_set\_on\_destroy 函数
 * 函数原型：
 
 ```
@@ -292,8 +301,6 @@ ret_t emitter_set_on_destroy (emitter_t* emitter, uint32_t id, tk_destroy_t on_d
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
@@ -301,14 +308,16 @@ ret_t emitter_set_on_destroy (emitter_t* emitter, uint32_t id, tk_destroy_t on_d
 | id | uint32\_t | emitter\_on返回的ID。 |
 | on\_destroy | tk\_destroy\_t | 回调函数。 |
 | on\_destroy\_ctx | void* | 回调函数上下文。 |
+#### emitter\_size 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="emitter_t_emitter_set_on_destroy"> 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。
+> <p id="emitter_t_emitter_size"> 获取注册的回调函数个数，主要用于辅助测试。
 
 
 
 
-#### emitter\_size 函数
 * 函数原型：
 
 ```
@@ -317,19 +326,10 @@ uint32_t emitter_size (emitter_t* emitter);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 回调函数个数。 |
 | emitter | emitter\_t* | emitter对象。 |
-* 函数功能：
-
-> <p id="emitter_t_emitter_size"> 获取注册的回调函数个数，主要用于辅助测试。
-
-
-
-
 #### enable 属性
 -----------------------
 > <p id="emitter_t_enable"> 禁用标志。禁用时dispatch无效。

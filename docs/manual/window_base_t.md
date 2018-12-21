@@ -13,7 +13,7 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#window_base_t_closable">closable</a> | window_closable_t | 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。 |
+| <a href="#window_base_t_closable">closable</a> | window\_closable\_t | 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。 |
 | <a href="#window_base_t_close_anim_hint">close\_anim\_hint</a> | char* | 关闭时的动画名称。 |
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开时的动画名称。 |
 | <a href="#window_base_t_script">script</a> | char* | 脚本文件名称(暂时没用)。 |

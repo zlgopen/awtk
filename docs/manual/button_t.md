@@ -10,7 +10,7 @@
 
  button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于button\_t控件。
 
- 在xml中使用"button"标签创建文本控件。如：
+ 在xml中使用"button"标签创建按钮控件。如：
 
  ```xml
  <button x="c" y="m" w="80" h="30" text="OK"/>
@@ -18,7 +18,7 @@
 
  > 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
 
- 在c代码中使用函数button\_create创建文本控件。如：
+ 在c代码中使用函数button\_create创建按钮控件。如：
 
  ```c
   widget_t* button = button_create(win, 10, 10, 128, 30);
@@ -56,7 +56,7 @@
 
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#button_t_repeat">repeat</a> | int32_t | 重复触发EVT\_CLICK事件的时间间隔。 |
+| <a href="#button_t_repeat">repeat</a> | int32\_t | 重复触发EVT\_CLICK事件的时间间隔。 |
 ### 事件
 <p id="button_t_events">
 
@@ -65,6 +65,14 @@
 | EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 | EVT\_LONG\_PRESS | pointer\_event\_t | 长按事件。 |
 #### button\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="button_t_button_cast"> 转换为button对象(供脚本语言使用)。
+
+
+
 * 函数原型：
 
 ```
@@ -73,19 +81,19 @@ widget_t* button_cast (widget_t* widget);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | button对象。 |
 | widget | widget\_t* | button对象。 |
+#### button\_create 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="button_t_button_cast"> 转换为button对象(供脚本语言使用)。
+> <p id="button_t_button_create"> 创建button对象
 
 
 
-#### button\_create 函数
 * 函数原型：
 
 ```
@@ -93,8 +101,6 @@ widget_t* button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
-
------------------------
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
@@ -104,13 +110,15 @@ widget_t* button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### button\_set\_repeat 函数
+-----------------------
+
 * 函数功能：
 
-> <p id="button_t_button_create"> 创建button对象
+> <p id="button_t_button_set_repeat"> 设置触发EVT\_CLICK事件的时间间隔。为0则不重复触发EVT\_CLICK事件。
 
 
 
-#### button\_set\_repeat 函数
 * 函数原型：
 
 ```
@@ -119,19 +127,11 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 
 * 参数说明：
 
------------------------
-
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | repeat | int32\_t | 触发EVT\_CLICK事件的时间间隔(毫秒)。 |
-* 函数功能：
-
-> <p id="button_t_button_set_repeat"> 设置触发EVT\_CLICK事件的时间间隔。为0则不重复触发EVT\_CLICK事件。
-
-
-
 #### repeat 属性
 -----------------------
 > <p id="button_t_repeat"> 重复触发EVT\_CLICK事件的时间间隔。
