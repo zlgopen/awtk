@@ -7,8 +7,8 @@
 ![widget_overview](images/widget_overview.png)
 
 * [widget_t](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
-* [label_t](manual/widget_t.md) 文本控件。
-* [button_t](manual/widget_t.md) 按钮控件。
+* [label_t](manual/label_t.md) 文本控件。
+* [button_t](manual/button_t.md) 按钮控件。
 
 ### 输入法
 
