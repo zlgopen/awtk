@@ -55,10 +55,18 @@ ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* 
 static ret_t ui_widget_serialize_props(ui_builder_t* writer, widget_t* widget,
                                        const char** properties) {
   value_t v;
+  value_t defv;
   uint32_t i = 0;
   for (i = 0; properties[i] != NULL; i++) {
     const char* prop = properties[i];
     if (widget_get_prop(widget, prop, &v) == RET_OK) {
+      if (widget_get_prop_default_value(widget, prop, &defv) == RET_OK) {
+        if (value_equal(&v, &defv)) {
+          log_debug("skip default value %s\n", prop);
+          continue;
+        }
+      }
+
       ui_widget_serialize_prop(writer, prop, &v);
     }
   }

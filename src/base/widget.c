@@ -1560,6 +1560,52 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   return widget;
 }
 
+ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_X)) {
+    value_set_int32(v, 0);
+  } else if (tk_str_eq(name, WIDGET_PROP_Y)) {
+    value_set_int32(v, 0);
+  } else if (tk_str_eq(name, WIDGET_PROP_W)) {
+    value_set_int32(v, 0);
+  } else if (tk_str_eq(name, WIDGET_PROP_H)) {
+    value_set_int32(v, 0);
+  } else if (tk_str_eq(name, WIDGET_PROP_OPACITY)) {
+    value_set_int32(v, 0xff);
+  } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
+    value_set_bool(v, TRUE);
+  } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE)) {
+    value_set_bool(v, TRUE);
+  } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
+    value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
+    value_set_str(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
+    value_set_bool(v, TRUE);
+  } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
+    value_set_str(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+    value_set_wstr(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
+    value_set_str(v, widget->animation);
+  } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
+    value_set_str(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
+    value_set_str(v, NULL);
+  } else {
+    if (widget->vt->get_prop_default_value) {
+      ret = widget->vt->get_prop_default_value(widget, name, v);
+    } else {
+      ret = RET_NOT_FOUND;
+    }
+  }
+
+  return ret;
+}
+
 ret_t widget_to_screen(widget_t* widget, point_t* p) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);

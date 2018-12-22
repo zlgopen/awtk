@@ -132,6 +132,17 @@ static ret_t button_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
+static ret_t button_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
+    value_set_int(v, 0);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
 static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -153,16 +164,18 @@ static ret_t button_destroy(widget_t* widget) {
 }
 
 static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
-static const widget_vtable_t s_button_vtable = {.size = sizeof(button_t),
-                                                .type = WIDGET_TYPE_BUTTON,
-                                                .create = button_create,
-                                                .clone_properties = s_button_properties,
-                                                .persistent_properties = s_button_properties,
-                                                .on_event = button_on_event,
-                                                .set_prop = button_set_prop,
-                                                .get_prop = button_get_prop,
-                                                .destroy = button_destroy,
-                                                .on_paint_self = widget_on_paint_self_default};
+static const widget_vtable_t s_button_vtable = {
+    .size = sizeof(button_t),
+    .type = WIDGET_TYPE_BUTTON,
+    .create = button_create,
+    .clone_properties = s_button_properties,
+    .persistent_properties = s_button_properties,
+    .on_event = button_on_event,
+    .set_prop = button_set_prop,
+    .get_prop = button_get_prop,
+    .get_prop_default_value = button_get_prop_default_value,
+    .destroy = button_destroy,
+    .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   button_t* button = TKMEM_ZALLOC(button_t);
