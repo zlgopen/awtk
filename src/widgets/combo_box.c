@@ -371,17 +371,8 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index) {
   return NULL;
 }
 
-ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
+static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
   combo_box_t* combo_box = COMBO_BOX(widget);
-  return_value_if_fail(combo_box != NULL, RET_OK);
-
-  if (combo_box->selected_index != index) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    combo_box->selected_index = index;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-  }
 
   if (combo_box->option_items != NULL) {
     combo_box_option_t* option = combo_box_get_option(widget, index);
@@ -390,6 +381,26 @@ ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
       combo_box->value = option->value;
       widget_set_tr_text(widget, option->text);
     }
+  }
+
+  return RET_OK;
+}
+
+ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_OK);
+
+  if (combo_box->selected_index != index) {
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
+    combo_box->selected_index = index;
+
+    combo_box_sync_index_to_value(widget, index);
+
+    e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
+  } else {
+    combo_box_sync_index_to_value(widget, index);
   }
 
   return widget_invalidate_force(widget, NULL);

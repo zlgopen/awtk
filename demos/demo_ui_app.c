@@ -273,6 +273,16 @@ static ret_t on_quit_app(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_combo_box_changed(void* ctx, event_t* e) {
+  widget_t* combo_box = WIDGET(ctx);
+  widget_t* win = widget_get_window(combo_box);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+
+  widget_set_tr_text(value, combo_box_get_text(combo_box));
+
+  return RET_OK;
+}
+
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_remove_child(widget->parent, widget);
@@ -408,6 +418,8 @@ static ret_t install_one(void* ctx, const void* iter) {
         widget_on(widget, EVT_CLICK, on_quit_app, win);
       }
     }
+  } else if (tk_str_eq(widget->vt->type, "combo_box")) {
+    widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);
   }
   (void)ctx;
 

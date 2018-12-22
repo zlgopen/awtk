@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2018/12/22
+  * 修改combobox事件的BUG(issue #62)。
+
 * 2018/12/21
   * 整理控件API文档：button/label/image/edit
 
