@@ -61,6 +61,14 @@ static ret_t ui_widget_serialize_props(ui_builder_t* writer, widget_t* widget,
     const char* prop = properties[i];
     if (widget_get_prop(widget, prop, &v) == RET_OK) {
       if (widget_get_prop_default_value(widget, prop, &defv) == RET_OK) {
+        if (v.type == VALUE_TYPE_STRING && (v.value.str == NULL || v.value.str[0] == '\0')) {
+          continue;
+        }
+
+        if (v.type == VALUE_TYPE_WSTRING && (v.value.str == NULL || v.value.wstr[0] == '\0')) {
+          continue;
+        }
+
         if (value_equal(&v, &defv)) {
           log_debug("skip default value %s\n", prop);
           continue;

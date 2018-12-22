@@ -1399,6 +1399,9 @@ static ret_t widget_reset(widget_t* widget) {
     widget->tr_text[0] = '\0';
   }
 
+  widget->floating = FALSE;
+  widget->auto_created = FALSE;
+
   widget->parent = NULL;
   widget->target = NULL;
   widget->emitter = NULL;

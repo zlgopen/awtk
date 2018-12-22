@@ -163,6 +163,9 @@ static ret_t button_destroy(widget_t* widget) {
 #ifdef WITH_WIDGET_POOL
 static array_t s_button_pool;
 static ret_t button_recycle(widget_t* widget) {
+  button_t* button = BUTTON(widget);
+
+  button->repeat = 0;
   button_remove_timer(widget);
 
   return array_push(&s_button_pool, widget);
