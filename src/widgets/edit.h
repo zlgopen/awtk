@@ -65,11 +65,12 @@ typedef struct _input_limit_t {
  *在xml中使用"edit"标签创建编辑器控件。如：
  *
  * ```xml
- * <edit x="c" y="m" w="80" h="30" 
+ * <edit x="c" y="m" w="80" h="30"
  *   tips="age" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
  * ```
  *
- * > 更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
+ * >
+ *更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
  *
  * 在c代码中使用函数edit\_create创建编辑器控件。如：
  *
@@ -93,8 +94,9 @@ typedef struct _input_limit_t {
  *   <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
  * </style>
  * ```
- * 
- * > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+ *
+ * > 更多用法请参考：[theme
+ *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
  *
  */
 typedef struct _edit_t {

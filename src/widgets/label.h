@@ -45,7 +45,8 @@ BEGIN_C_DECLS
  * <label style="center" text="center"/>
  * ```
  *
- * > 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)
+ * >
+ * 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)
  *
  * 在c代码中使用函数label\_create创建文本控件。如：
  *
@@ -65,8 +66,9 @@ BEGIN_C_DECLS
  *   <normal text_color="red" text_align_h="left" border_color="#a0a0a0" margin="4" />
  *  </style>
  * ```
- * 
- * > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
+ *
+ * > 更多用法请参考：[theme
+ * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
  *
  */
 typedef struct _label_t {
