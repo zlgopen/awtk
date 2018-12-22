@@ -35,6 +35,7 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
+static ret_t widget_reset(widget_t* widget);
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -1381,6 +1382,50 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return id;
 }
 
+static ret_t widget_reset(widget_t* widget) {
+  if (widget->name != NULL) {
+    widget->name[0] = '\0';
+  }
+
+  if (widget->animation != NULL) {
+    widget->animation[0] = '\0';
+  }
+
+  if (widget->style != NULL) {
+    widget->style[0] = '\0';
+  }
+
+  if (widget->tr_text != NULL) {
+    widget->tr_text[0] = '\0';
+  }
+
+  widget->parent = NULL;
+  widget->target = NULL;
+  widget->emitter = NULL;
+  widget->astyle = NULL;
+  widget->children = NULL;
+  widget->key_target = NULL;
+  widget->self_layout = NULL;
+  widget->grab_widget = NULL;
+  widget->custom_props = NULL;
+  widget->children_layout = NULL;
+
+  return RET_OK;
+}
+
+static ret_t widget_recycle(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+  if (widget->vt->recycle != NULL) {
+    if (widget->vt->recycle(widget) == RET_OK) {
+      widget_reset(widget);
+
+      return RET_OK;
+    }
+  }
+
+  return RET_NOT_IMPL;
+}
+
 static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
@@ -1389,15 +1434,13 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   if (widget->emitter != NULL) {
     widget_dispatch(widget, &e);
     emitter_destroy(widget->emitter);
+    widget->emitter = NULL;
   }
 
   if (widget->children != NULL) {
     widget_destroy_children(widget);
     array_destroy(widget->children);
-  }
-
-  if (widget->vt->destroy) {
-    widget->vt->destroy(widget);
+    widget->children = NULL;
   }
 
   if (widget->children_layout != NULL) {
@@ -1410,19 +1453,30 @@ static ret_t widget_destroy_sync(widget_t* widget) {
     widget->self_layout = NULL;
   }
 
-  TKMEM_FREE(widget->name);
-  TKMEM_FREE(widget->style);
-  TKMEM_FREE(widget->tr_text);
-  TKMEM_FREE(widget->animation);
-  wstr_reset(&(widget->text));
-  style_destroy(widget->astyle);
-
   if (widget->custom_props != NULL) {
     custom_props_destroy(widget->custom_props);
+    widget->custom_props = NULL;
   }
 
-  memset(widget, 0x00, sizeof(widget_t));
-  TKMEM_FREE(widget);
+  wstr_reset(&(widget->text));
+  style_destroy(widget->astyle);
+  widget->astyle = NULL;
+
+  widget->destroying = FALSE;
+
+  if (widget_recycle(widget) != RET_OK) {
+    if (widget->vt->destroy) {
+      widget->vt->destroy(widget);
+    }
+
+    TKMEM_FREE(widget->name);
+    TKMEM_FREE(widget->style);
+    TKMEM_FREE(widget->tr_text);
+    TKMEM_FREE(widget->animation);
+
+    memset(widget, 0x00, sizeof(widget_t));
+    TKMEM_FREE(widget);
+  }
 
   return RET_OK;
 }
@@ -1555,6 +1609,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   if (parent != NULL && widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
+
   widget_invalidate_force(widget, NULL);
 
   return widget;

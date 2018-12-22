@@ -3,6 +3,7 @@
 * 2018/12/22
   * 修改combobox事件的BUG(issue #62)。
   * 增加函数widgeti\_get\_prop\_default\_value。
+  * 增加widget\_recycle函数，支持控件回收，提高运行速度，减少内存碎片。
 
 * 2018/12/21
   * 整理控件API文档：button/label/image/edit

@@ -25,6 +25,16 @@
 #include "widgets/button.h"
 #include "base/widget_vtable.h"
 
+static ret_t button_remove_timer(widget_t* widget) {
+  button_t* button = BUTTON(widget);
+  if (button->timer_id != TK_INVALID_ID) {
+    timer_remove(button->timer_id);
+    button->timer_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static ret_t button_on_repeat(const timer_info_t* info) {
   pointer_event_t evt;
   button_t* button = BUTTON(info->ctx);
@@ -47,12 +57,8 @@ static ret_t button_on_repeat(const timer_info_t* info) {
 static ret_t button_pointer_up_cleanup(widget_t* widget) {
   button_t* button = BUTTON(widget);
 
-  if (button->timer_id != TK_INVALID_ID) {
-    timer_remove(button->timer_id);
-    button->timer_id = TK_INVALID_ID;
-  }
-
   button->pressed = FALSE;
+  button_remove_timer(widget);
   widget_ungrab(widget->parent, widget);
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
@@ -68,10 +74,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       button->repeat_nr = 0;
       button->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
-      if (button->timer_id != TK_INVALID_ID) {
-        timer_remove(button->timer_id);
-        button->timer_id = TK_INVALID_ID;
-      }
+      button_remove_timer(widget);
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
       }
@@ -154,14 +157,28 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
 }
 
 static ret_t button_destroy(widget_t* widget) {
-  button_t* button = BUTTON(widget);
-  if (button->timer_id != TK_INVALID_ID) {
-    timer_remove(button->timer_id);
-    button->timer_id = TK_INVALID_ID;
-  }
-
-  return RET_OK;
+  return button_remove_timer(widget);
 }
+
+#ifdef WITH_WIDGET_POOL
+static array_t s_button_pool;
+static ret_t button_recycle(widget_t* widget) {
+  button_remove_timer(widget);
+
+  return array_push(&s_button_pool, widget);
+}
+
+static button_t* button_alloc(void) {
+  if (s_button_pool.size > 0) {
+    return (button_t*)array_pop(&s_button_pool);
+  } else {
+    return TKMEM_ZALLOC(button_t);
+  }
+}
+#else
+#define button_recycle NULL
+#define button_alloc() TKMEM_ZALLOC(button_t)
+#endif /*WITH_WIDGET_POOL*/
 
 static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
 static const widget_vtable_t s_button_vtable = {
@@ -175,10 +192,11 @@ static const widget_vtable_t s_button_vtable = {
     .get_prop = button_get_prop,
     .get_prop_default_value = button_get_prop_default_value,
     .destroy = button_destroy,
+    .recycle = button_recycle,
     .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  button_t* button = TKMEM_ZALLOC(button_t);
+  button_t* button = button_alloc();
   widget_t* widget = WIDGET(button);
   return_value_if_fail(button != NULL, NULL);
 

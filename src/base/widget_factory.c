@@ -181,14 +181,14 @@ ret_t widget_factory_deinit(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
   items = (creator_item_t**)(factory->creators.elms);
-  return_value_if_fail(items != NULL, RET_OOM);
+  if (items != NULL) {
+    for (i = 0, nr = factory->creators.size; i < nr; i++) {
+      iter = items[i];
+      TKMEM_FREE(iter);
+    }
 
-  for (i = 0, nr = factory->creators.size; i < nr; i++) {
-    iter = items[i];
-    TKMEM_FREE(iter);
+    array_deinit(&(factory->creators));
   }
-
-  array_deinit(&(factory->creators));
 
   return RET_OK;
 }

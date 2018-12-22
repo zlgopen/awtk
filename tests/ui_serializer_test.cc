@@ -17,8 +17,7 @@ TEST(UISerializer, basic) {
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
-  ASSERT_EQ(string(str.str),
-            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\">\n</button>\n");
+  ASSERT_EQ(string(str.str), "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);

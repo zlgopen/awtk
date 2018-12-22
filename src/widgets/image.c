@@ -91,6 +91,24 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   }
 }
 
+#ifdef WITH_WIDGET_POOL
+static array_t s_image_pool;
+static ret_t image_recycle(widget_t* widget) {
+  return array_push(&s_image_pool, widget);
+}
+
+static image_t* image_alloc(void) {
+  if (s_image_pool.size > 0) {
+    return (image_t*)array_pop(&s_image_pool);
+  } else {
+    return TKMEM_ZALLOC(image_t);
+  }
+}
+#else
+#define image_recycle NULL
+#define image_alloc() TKMEM_ZALLOC(image_t)
+#endif /*WITH_WIDGET_POOL*/
+
 static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
                                                  WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
                                                  WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
@@ -102,13 +120,14 @@ static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
                                                .clone_properties = s_image_clone_properties,
                                                .create = image_create,
                                                .destroy = image_base_destroy,
+                                               .recycle = image_recycle,
                                                .on_event = image_base_on_event,
                                                .on_paint_self = image_on_paint_self,
                                                .set_prop = image_set_prop,
                                                .get_prop = image_get_prop};
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  image_t* image = TKMEM_ZALLOC(image_t);
+  image_t* image = image_alloc();
   widget_t* widget = WIDGET(image);
   return_value_if_fail(image != NULL, NULL);
 

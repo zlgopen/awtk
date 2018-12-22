@@ -193,15 +193,34 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
+#ifdef WITH_WIDGET_POOL
+static array_t s_label_pool;
+static ret_t label_recycle(widget_t* widget) {
+  return array_push(&s_label_pool, widget);
+}
+
+static label_t* label_alloc(void) {
+  if (s_label_pool.size > 0) {
+    return (label_t*)array_pop(&s_label_pool);
+  } else {
+    return TKMEM_ZALLOC(label_t);
+  }
+}
+#else
+#define label_recycle NULL
+#define label_alloc() TKMEM_ZALLOC(label_t)
+#endif /*WITH_WIDGET_POOL*/
+
 static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
                                                .type = WIDGET_TYPE_LABEL,
                                                .create = label_create,
                                                .set_prop = label_set_prop,
                                                .get_prop = label_get_prop,
+                                               .recycle = label_recycle,
                                                .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  label_t* label = TKMEM_ZALLOC(label_t);
+  label_t* label = label_alloc();
   widget_t* widget = WIDGET(label);
   return_value_if_fail(label != NULL, NULL);
 

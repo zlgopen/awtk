@@ -64,6 +64,7 @@ typedef ret_t (*widget_get_prop_default_value_t)(widget_t* widget, const char* n
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+typedef ret_t (*widget_recycle_t)(widget_t* widget);
 typedef ret_t (*widget_destroy_t)(widget_t* widget);
 
 typedef struct _widget_vtable_t {
@@ -107,6 +108,7 @@ typedef struct _widget_vtable_t {
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
   widget_find_target_t find_target;
+  widget_recycle_t recycle;
   widget_destroy_t destroy;
 } widget_vtable_t;
 
@@ -197,7 +199,7 @@ struct _widget_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * style的名称。
    */
-  const char* style;
+  char* style;
   /**
    * @property {char*} animation
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
