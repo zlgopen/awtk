@@ -189,7 +189,7 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
   widget->name = tk_str_copy(widget->name, name);
-  
+
   return RET_OK;
 }
 
