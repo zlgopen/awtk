@@ -2,7 +2,8 @@
 
 * 2018/12/23
   * 优化。
-  * 整理控件API文档：spin\_box
+  * 整理控件API文档：spin\_box/combo\_box
+  * 增加combo\_box的C示例代码。
 
 * 2018/12/22
   * 修改combobox事件的BUG(issue #62)。
