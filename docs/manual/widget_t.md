@@ -48,8 +48,9 @@
 | <a href="#widget_t_widget_equal">widget\_equal</a> | 判断两个widget是否相同。 |
 | <a href="#widget_t_widget_foreach">widget\_foreach</a> | 遍历当前控件及子控件。 |
 | <a href="#widget_t_widget_get_child">widget\_get\_child</a> | 获取指定索引的子控件。 |
-| <a href="#widget_t_widget_get_prop">widget\_get\_prop</a> | 通用的获取控件属性的函数。 |
+| <a href="#widget_t_widget_get_prop">widget\_get\_prop</a> | 获取控件指定属性的值。 |
 | <a href="#widget_t_widget_get_prop_bool">widget\_get\_prop\_bool</a> | 获取布尔格式的属性。 |
+| <a href="#widget_t_widget_get_prop_default_value">widget\_get\_prop\_default\_value</a> | 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。 |
 | <a href="#widget_t_widget_get_prop_int">widget\_get\_prop\_int</a> | 获取整数格式的属性。 |
 | <a href="#widget_t_widget_get_prop_str">widget\_get\_prop\_str</a> | 获取字符串格式的属性。 |
 | <a href="#widget_t_widget_get_text">widget\_get\_text</a> | 获取控件的文本。 |
@@ -87,7 +88,7 @@
 | <a href="#widget_t_widget_set_focused">widget\_set\_focused</a> | 设置控件的是否聚焦。 |
 | <a href="#widget_t_widget_set_name">widget\_set\_name</a> | 设置控件的名称。 |
 | <a href="#widget_t_widget_set_opacity">widget\_set\_opacity</a> | 设置控件的不透明度。 |
-| <a href="#widget_t_widget_set_prop">widget\_set\_prop</a> | 通用的设置控件属性的函数。 |
+| <a href="#widget_t_widget_set_prop">widget\_set\_prop</a> | 设置控件指定属性的值。 |
 | <a href="#widget_t_widget_set_prop_bool">widget\_set\_prop\_bool</a> | 设置布尔格式的属性。 |
 | <a href="#widget_t_widget_set_prop_int">widget\_set\_prop\_int</a> | 设置整数格式的属性。 |
 | <a href="#widget_t_widget_set_prop_str">widget\_set\_prop\_str</a> | 设置字符串格式的属性。 |
@@ -575,7 +576,7 @@ widget_t* widget_get_child (widget_t* widget, int32_t index);
 
 * 函数功能：
 
-> <p id="widget_t_widget_get_prop"> 通用的获取控件属性的函数。
+> <p id="widget_t_widget_get_prop"> 获取控件指定属性的值。
 
 
 
@@ -593,7 +594,7 @@ ret_t widget_get_prop (widget_t* widget, const char* name, value_t* v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 属性的名称。 |
-| v | value\_t* | 属性的值。 |
+| v | value\_t* | 返回属性的值。 |
 #### widget\_get\_prop\_bool 函数
 -----------------------
 
@@ -618,6 +619,30 @@ bool_t widget_get_prop_bool (widget_t* widget, const char* name, bool_t defval);
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 属性的名称。 |
 | defval | bool\_t | 缺省值。 |
+#### widget\_get\_prop\_default\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_prop_default_value"> 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_get_prop_default_value (widget_t* widget, const char* name, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 属性的名称。 |
+| v | value\_t* | 返回属性的缺省值。 |
 #### widget\_get\_prop\_int 函数
 -----------------------
 
@@ -1524,7 +1549,7 @@ ret_t widget_set_opacity (widget_t* widget, uint8_t opacity);
 
 * 函数功能：
 
-> <p id="widget_t_widget_set_prop"> 通用的设置控件属性的函数。
+> <p id="widget_t_widget_set_prop"> 设置控件指定属性的值。
 
 
 

@@ -5,7 +5,7 @@
  按钮控件。
 
  点击按钮之后会触发EVT\_CLICK事件，注册EVT\_CLICK事件以执行特定操作。
- 
+
  按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。
 
  button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于button\_t控件。
@@ -16,7 +16,8 @@
  <button x="c" y="m" w="80" h="30" text="OK"/>
  ```
 
- > 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ >
+ 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
 
  在c代码中使用函数button\_create创建按钮控件。如：
 
@@ -28,7 +29,8 @@
 
  > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
 
- > 完整示例请参考：[button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
+ > 完整示例请参考：[button
+ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 
@@ -40,8 +42,9 @@
    <disable    bg_color="gray" text_color="#d0d0d0" />
  </style>
  ```
- 
- > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
+
+ > 更多用法请参考：[theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
 
 ### 函数
 <p id="button_t_methods">

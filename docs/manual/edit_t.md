@@ -2,7 +2,11 @@
 ### 概述
 ![image](images/edit_t_0.png)
 
-**单行编辑器控件。**
+ 单行编辑器控件。
+
+ 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。
+
+ 在使用内置的输入法时，软键盘由输入类型决定，开发者可以自定义软键盘的界面。
 
  edit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于edit\_t控件。
 
@@ -12,15 +16,17 @@
  * 名为"dec"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。
  * 名为"clear"的按钮。点击时清除编辑器中的内容。
 
-
 在xml中使用"edit"标签创建编辑器控件。如：
 
  ```xml
- <edit x="c" y="m" w="80" h="30" 
+ <edit x="c" y="m" w="80" h="30"
    tips="age" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
  ```
 
- > 更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
+ > XXX：需要在min/max/step之前设置input\_type。
+
+ >
+更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
 
  在c代码中使用函数edit\_create创建编辑器控件。如：
 
@@ -44,8 +50,9 @@
    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
  </style>
  ```
- 
- > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+
+ > 更多用法请参考：[theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
 
 ### 函数
 <p id="edit_t_methods">
@@ -75,12 +82,12 @@
 | <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
 | <a href="#edit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
-| <a href="#edit_t_max">max</a> | char* | 最大值或最大长度。 |
-| <a href="#edit_t_min">min</a> | char* | 最小值或最小长度。 |
+| <a href="#edit_t_max">max</a> | float\_t | 最大值或最大长度。 |
+| <a href="#edit_t_min">min</a> | float\_t | 最小值或最小长度。 |
 | <a href="#edit_t_password_visible">password\_visible</a> | bool\_t | 密码是否可见。 |
 | <a href="#edit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
 | <a href="#edit_t_right_margin">right\_margin</a> | uint8\_t | 右边距。 |
-| <a href="#edit_t_step">step</a> | char* | 步长。 |
+| <a href="#edit_t_step">step</a> | float\_t | 步长。 |
 | <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#edit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
 ### 事件
@@ -477,7 +484,7 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 > <p id="edit_t_max"> 最大值或最大长度。
 
 
-* 类型：char*
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -494,7 +501,7 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 > <p id="edit_t_min"> 最小值或最小长度。
 
 
-* 类型：char*
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -563,7 +570,7 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
  作为数值型编辑器时，一次增加和减少时的数值。
 
 
-* 类型：char*
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
