@@ -123,9 +123,7 @@ bool_t widget_is_window_opened(widget_t* widget) {
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(widget->style);
-  widget->style = tk_strdup(value);
-
+  widget->style = tk_str_copy(widget->style, value);
   if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
   }
@@ -153,8 +151,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
   tr_text = locale_info_tr(locale_info(), text);
-  TKMEM_FREE(widget->tr_text);
-  widget->tr_text = tk_strdup(text);
+  widget->tr_text = tk_str_copy(widget->tr_text, text);
 
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
 }
@@ -191,9 +188,8 @@ const wchar_t* widget_get_text(widget_t* widget) {
 ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(widget->name);
-  widget->name = tk_strdup(name);
-
+  widget->name = tk_str_copy(widget->name, name);
+  
   return RET_OK;
 }
 
