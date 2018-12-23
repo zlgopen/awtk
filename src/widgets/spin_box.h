@@ -33,7 +33,7 @@ BEGIN_C_DECLS
  * spinbox控件。
  *
  * 一个特殊的数值编辑器，将edit\_t和button\_t进行组合，方便编辑数值。
- * 
+ *
  * 点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。
  * step的值可以通过step属性进行设置。
  *
@@ -59,7 +59,8 @@ BEGIN_C_DECLS
  * >
  * > 可以用edit相关函数去设置它的各种属性。
  *
- * > 完整示例请参考：[spin_box demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)
+ * > 完整示例请参考：[spin_box
+ * demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)
  *
  * 可用通过style来设置控件的显示风格，如背景和边框等。如：
  *

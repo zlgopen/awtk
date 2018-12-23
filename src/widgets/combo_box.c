@@ -125,16 +125,26 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
   }
 }
 
-static const widget_vtable_t s_combo_box_vtable = {.size = sizeof(edit_t),
-                                                   .type = WIDGET_TYPE_COMBO_BOX,
-                                                   .clone_properties = s_combo_box_properties,
-                                                   .persistent_properties = s_combo_box_properties,
-                                                   .create = combo_box_create_self,
-                                                   .on_paint_self = edit_on_paint_self,
-                                                   .set_prop = combo_box_set_prop,
-                                                   .get_prop = combo_box_get_prop,
-                                                   .destroy = combo_box_destroy,
-                                                   .on_event = edit_on_event};
+static ret_t combo_box_on_layout_children(widget_t* widget) {
+  widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
+
+  widget_move_resize(button, widget->w - widget->h, 0, widget->h, widget->h);
+
+  return RET_OK;
+}
+
+static const widget_vtable_t s_combo_box_vtable = {
+    .size = sizeof(edit_t),
+    .type = WIDGET_TYPE_COMBO_BOX,
+    .clone_properties = s_combo_box_properties,
+    .persistent_properties = s_combo_box_properties,
+    .create = combo_box_create_self,
+    .on_paint_self = edit_on_paint_self,
+    .set_prop = combo_box_set_prop,
+    .get_prop = combo_box_get_prop,
+    .on_layout_children = combo_box_on_layout_children,
+    .destroy = combo_box_destroy,
+    .on_event = edit_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   combo_box_t* combo_box = TKMEM_ZALLOC(combo_box_t);
@@ -262,7 +272,6 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
 }
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  char wstr[12];
   widget_t* popup = NULL;
   widget_t* combo_box = combo_box_create_self(parent, x, y, w, h);
   return_value_if_fail(combo_box != NULL, NULL);
@@ -271,9 +280,6 @@ widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   popup->auto_created = TRUE;
   widget_set_name(popup, "popup");
   widget_use_style(popup, "combobox_down");
-
-  tk_snprintf(wstr, sizeof(wstr) - 1, "%d", h);
-  widget_set_self_layout_params(popup, "right", "0", wstr, "100%");
 
   widget_on(popup, EVT_CLICK, combo_box_on_button_click, combo_box);
 

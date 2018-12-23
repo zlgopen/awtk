@@ -17,4 +17,5 @@ digraph G {
    edit_t -> widget_t[style=dashed arrowhead=empty]
    spin_box_t -> widget_t[style=dashed arrowhead=empty]
    image_t -> widget_t[style=dashed arrowhead=empty]
+   combo_box_t -> widget_t[style=dashed arrowhead=empty]
  }
