@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2018/12/23
+  * 优化。
+  * 整理控件API文档：spin\_box
+
 * 2018/12/22
   * 修改combobox事件的BUG(issue #62)。
   * 增加函数widgeti\_get\_prop\_default\_value。

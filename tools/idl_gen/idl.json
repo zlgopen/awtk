@@ -10698,12 +10698,38 @@
           {
             "type": "value_t*",
             "name": "v",
-            "desc": "属性的值。"
+            "desc": "返回属性的值。"
           }
         ],
         "annotation": {},
-        "desc": " 通用的获取控件属性的函数。\n\n\n",
+        "desc": " 获取控件指定属性的值。\n\n\n",
         "name": "widget_get_prop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回属性的缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。\n\n\n",
+        "name": "widget_get_prop_default_value",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -10728,7 +10754,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 通用的设置控件属性的函数。\n\n\n",
+        "desc": " 设置控件指定属性的值。\n\n\n",
         "name": "widget_set_prop",
         "return": {
           "type": "ret_t",
@@ -21322,7 +21348,7 @@
       }
     ],
     "header": "widgets/button.h",
-    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n \r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n \r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
+    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[button\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
     "name": "button_t",
     "parent": "widget_t",
     "annotation": {
@@ -23360,7 +23386,7 @@
       }
     ],
     "header": "widgets/edit.h",
-    "desc": " 单行编辑器控件。\r\n\r\n edit\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于edit\\_t控件。\r\n\r\n edit\\_t本身可以做为容器，放入按钮等控件。有三个类按钮比较特殊：\r\n\r\n * 名为\"inc\"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"dec\"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"clear\"的按钮。点击时清除编辑器中的内容。\r\n\r\n 在xml中使用\"edit\"标签创建编辑器控件。如：\r\n\r\n ```xml\r\n <edit x=\"c\" y=\"m\" w=\"80\" h=\"30\" \r\n   tips=\"age\" input_type=\"uint\" min=\"0\" max=\"150\" step=\"1\" auto_fix=\"true\" style=\"number\" />\r\n ```\r\n\r\n > 更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)\r\n\r\n 在c代码中使用函数edit\\_create创建编辑器控件。如：\r\n\r\n ```c\r\n  widget_t* edit = edit_create(win, 10, 10, 128, 30);\r\n  widget_set_text(edit, L\"OK\");\r\n ```\r\n\r\n > 创建之后，可以用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n \r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)\r\n\r\n",
+    "desc": " 单行编辑器控件。\r\n\r\n edit\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于edit\\_t控件。\r\n\r\n edit\\_t本身可以做为容器，放入按钮等控件。有三个类按钮比较特殊：\r\n\r\n * 名为\"inc\"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"dec\"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"clear\"的按钮。点击时清除编辑器中的内容。\r\n\r\n在xml中使用\"edit\"标签创建编辑器控件。如：\r\n\r\n ```xml\r\n <edit x=\"c\" y=\"m\" w=\"80\" h=\"30\"\r\n   tips=\"age\" input_type=\"uint\" min=\"0\" max=\"150\" step=\"1\" auto_fix=\"true\" style=\"number\" />\r\n ```\r\n\r\n >\r\n更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)\r\n\r\n 在c代码中使用函数edit\\_create创建编辑器控件。如：\r\n\r\n ```c\r\n  widget_t* edit = edit_create(win, 10, 10, 128, 30);\r\n  widget_set_text(edit, L\"OK\");\r\n ```\r\n\r\n > 创建之后，可以用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)\r\n\r\n",
     "name": "edit_t",
     "parent": "widget_t",
     "annotation": {
@@ -23685,7 +23711,7 @@
       }
     ],
     "header": "widgets/image.h",
-    "desc": " 图片控件。\r\n\r\n 用来显示一张静态图片，目前支持bmp/png/jpg等格式。\r\n\r\n 如果要显示gif文件，请用[gif\\_image](gif_image_t.md)。\r\n\r\n 如果要显示svg文件，请用[svg\\_image](svg_image_t.md)。\r\n\r\n 如果需要支持勾选效果，请设置**selectable**属性。\r\n\r\n 如果需要支持点击效果，请设置**clickable**属性。\r\n\r\n image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于image\\_t控件。\r\n\r\n 在xml中使用\"image\"标签创建图片控件。如：\r\n\r\n ```xml\r\n <image style=\"border\" image=\"earth\" draw_type=\"icon\" />\r\n ```\r\n\r\n > 更多用法请参考：[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/images.xml)\r\n\r\n 在c代码中使用函数image\\_create创建图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = image_create(win, 10, 10, 128, 30);\r\n  widget_set_image(image, \"earth\");\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用widget\\_set\\_image设置图片名称。\r\n >\r\n > 可以用image\\_set\\_draw\\_type设置图片的绘制方式。\r\n\r\n > 绘制方式请参考[image\\_draw\\_type\\_t](image_draw_type_t.md)\r\n\r\n > 绘制方式的属性值和枚举值[image\\_draw\\_type\\_name\\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)\r\n\r\n > 完整示例请参考：[image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <image>\r\n  <style name=\"border\">\r\n   <normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\r\n  </style>\r\n </image>\r\n ```\r\n \r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L313)\r\n\r\n",
+    "desc": " 图片控件。\r\n\r\n 用来显示一张静态图片，目前支持bmp/png/jpg等格式。\r\n\r\n 如果要显示gif文件，请用[gif\\_image](gif_image_t.md)。\r\n\r\n 如果要显示svg文件，请用[svg\\_image](svg_image_t.md)。\r\n\r\n 如果需要支持勾选效果，请设置**selectable**属性。\r\n\r\n 如果需要支持点击效果，请设置**clickable**属性。\r\n\r\n image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于image\\_t控件。\r\n\r\n 在xml中使用\"image\"标签创建图片控件。如：\r\n\r\n ```xml\r\n <image style=\"border\" image=\"earth\" draw_type=\"icon\" />\r\n ```\r\n\r\n >\r\n 更多用法请参考：[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/images.xml)\r\n\r\n 在c代码中使用函数image\\_create创建图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = image_create(win, 10, 10, 128, 30);\r\n  widget_set_image(image, \"earth\");\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用widget\\_set\\_image设置图片名称。\r\n >\r\n > 可以用image\\_set\\_draw\\_type设置图片的绘制方式。\r\n\r\n > 绘制方式请参考[image\\_draw\\_type\\_t](image_draw_type_t.md)\r\n\r\n >\r\n 绘制方式的属性值和枚举值[image\\_draw\\_type\\_name\\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)\r\n\r\n > 完整示例请参考：[image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <image>\r\n  <style name=\"border\">\r\n   <normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\r\n  </style>\r\n </image>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L313)\r\n\r\n",
     "name": "image_t",
     "parent": "image_base_t",
     "annotation": {
@@ -23775,7 +23801,7 @@
       }
     ],
     "header": "widgets/label.h",
-    "desc": "\r\n 文本控件。用于显示一行或多行文本。\r\n\r\n 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。\r\n\r\n 如需自动换行请使用[rich\\_text\\_t](rich_text_t.md)控件。\r\n\r\n label\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于label\\_t控件。\r\n\r\n 在xml中使用\"label\"标签创建文本控件。如：\r\n\r\n ```xml\r\n <label style=\"center\" text=\"center\"/>\r\n ```\r\n\r\n > 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)\r\n\r\n 在c代码中使用函数label\\_create创建文本控件。如：\r\n\r\n ```c\r\n  widget_t* label = label_create(win, 10, 10, 128, 30);\r\n  widget_set_text(label, L\"hello awtk!\");\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"left\">\r\n   <normal text_color=\"red\" text_align_h=\"left\" border_color=\"#a0a0a0\" margin=\"4\" />\r\n  </style>\r\n ```\r\n \r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)\r\n\r\n",
+    "desc": "\r\n 文本控件。用于显示一行或多行文本。\r\n\r\n 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。\r\n\r\n 如需自动换行请使用[rich\\_text\\_t](rich_text_t.md)控件。\r\n\r\n label\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于label\\_t控件。\r\n\r\n 在xml中使用\"label\"标签创建文本控件。如：\r\n\r\n ```xml\r\n <label style=\"center\" text=\"center\"/>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)\r\n\r\n 在c代码中使用函数label\\_create创建文本控件。如：\r\n\r\n ```c\r\n  widget_t* label = label_create(win, 10, 10, 128, 30);\r\n  widget_set_text(label, L\"hello awtk!\");\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"left\">\r\n   <normal text_color=\"red\" text_align_h=\"left\" border_color=\"#a0a0a0\" margin=\"4\" />\r\n  </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)\r\n\r\n",
     "name": "label_t",
     "parent": "widget_t",
     "annotation": {
@@ -24622,7 +24648,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/spin_box.h",
-    "desc": " spinbox控件。\r\n",
+    "desc": " spinbox控件。\r\n\r\n 一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\r\n \r\n 点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\r\n step的值可以通过step属性进行设置。\r\n\r\n spin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\r\n\r\n 在xml中使用\"spin_box\"标签创建spinbox控件。如：\r\n\r\n ```xml\r\n <spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\r\n ```\r\n\r\n >\r\n 更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/spinbox.xml)\r\n\r\n 在c代码中使用函数spin_box\\_create创建spinbox控件。如：\r\n\r\n ```c\r\n  widget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\r\n  edit_set_input_type(spin_box, type);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 可以用edit相关函数去设置它的各种属性。\r\n\r\n > 完整示例请参考：[spin_box demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <spin_box>\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n </spin_box>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L128)\r\n\r\n",
     "name": "spin_box_t",
     "parent": "edit_t",
     "annotation": {
