@@ -54,6 +54,10 @@ typedef struct _input_limit_t {
  * @annotation ["scriptable"]
  * 单行编辑器控件。
  *
+ * 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。
+ *
+ * 在使用内置的输入法时，软键盘由输入类型决定，开发者可以自定义软键盘的界面。
+ *
  * edit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于edit\_t控件。
  *
  * edit\_t本身可以做为容器，放入按钮等控件。有三个类按钮比较特殊：
@@ -68,6 +72,8 @@ typedef struct _input_limit_t {
  * <edit x="c" y="m" w="80" h="30"
  *   tips="age" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
  * ```
+ *
+ * > XXX：需要在min/max/step之前设置input\_type。
  *
  * >
  *更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
@@ -160,19 +166,19 @@ typedef struct _edit_t {
    */
 
   /**
-   * @property {char*} min
+   * @property {float_t} min
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 最小值或最小长度。
    */
 
   /**
-   * @property {char*} max
+   * @property {float_t} max
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 最大值或最大长度。
    */
 
   /**
-   * @property {char*} step
+   * @property {float_t} step
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 步长。
    * 作为数值型编辑器时，一次增加和减少时的数值。
