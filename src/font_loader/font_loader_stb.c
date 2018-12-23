@@ -78,14 +78,14 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
   g->advance = advance;
 
   glyph_cache_add(&(font->cache), c, font_size, g);
-/*  
- *  for debug
- * int x1 = 0;
- * int y1 = 0;
- * int x2 = 0;
- * int y2 = 0;
- * stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
- */
+  /*
+   *  for debug
+   * int x1 = 0;
+   * int y1 = 0;
+   * int x2 = 0;
+   * int y2 = 0;
+   * stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
+   */
 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
