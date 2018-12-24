@@ -22639,7 +22639,7 @@
       {
         "params": [
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "dialog的名称。"
           }
@@ -22648,7 +22648,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 从资源文件中加载并创建Dialog对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
+        "desc": " 从资源文件中加载并创建Dialog对象。\r\n\r\n 本函数在ui\\_loader/ui\\_builder_default里实现。\r\n\r\n",
         "name": "dialog_open",
         "return": {
           "type": "widget_t*",
@@ -22689,7 +22689,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 模态显示对话框。\r\n dialog_modal返回后，dialog对象将在下一个idle函数中回收，也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。\r\n\r\n",
+        "desc": " 模态显示对话框。\r\n dialog_modal返回后，dialog对象将在下一个idle函数中回收。\r\n 也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。\r\n\r\n",
         "name": "dialog_modal",
         "return": {
           "type": "ret_t",
@@ -22712,7 +22712,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 退出模态显示。\r\n\r\n",
+        "desc": " 退出模态显示，关闭对话框。\r\n\r\n> 比如，在对话框中关闭按钮的事件处理函数中，调用本函数关闭对话框。\r\n\r\n\r\n",
         "name": "dialog_quit",
         "return": {
           "type": "ret_t",
@@ -22723,7 +22723,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/dialog.h",
-    "desc": " 对话框控件。\r\n",
+    "desc": " 对话框。\r\n \r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n  \r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n  \r\n   dialog_set_title(dlg, \"Dialog\");\r\n  \r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n  \r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n  \r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n  \r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n  \r\n   code = dialog_modal(dlg);\r\n  \r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
     "name": "dialog_t",
     "parent": "widget_t",
     "annotation": {
