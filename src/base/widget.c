@@ -1401,7 +1401,6 @@ static ret_t widget_reset(widget_t* widget) {
   widget->parent = NULL;
   widget->target = NULL;
   widget->emitter = NULL;
-  widget->astyle = NULL;
   widget->children = NULL;
   widget->key_target = NULL;
   widget->self_layout = NULL;
@@ -1603,7 +1602,9 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
     widget->vt = widget_vtable_default();
   }
 
-  widget->astyle = style_factory_create_style(style_factory(), widget);
+  if (widget->astyle == NULL) {
+    widget->astyle = style_factory_create_style(style_factory(), widget);
+  }
 
   if (parent != NULL && widget_is_window_opened(widget)) {
     widget_update_style(widget);

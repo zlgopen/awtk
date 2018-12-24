@@ -48,12 +48,16 @@ static ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
   return RET_OK;
 }
 
+static bool_t is_valid_style_name(const char* str) {
+  return str != NULL && *str;
+}
+
 static const void* widget_get_const_style_data(widget_t* widget) {
   const void* data = NULL;
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
   const char* type = widget->vt->type;
-  const char* style_name = widget->style != NULL ? widget->style : TK_DEFAULT_STYLE;
+  const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
   widget_state_t state =
       (widget_state_t)widget_get_prop_int(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
