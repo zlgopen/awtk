@@ -15,7 +15,19 @@ digraph G {
    label_t -> widget_t[style=dashed arrowhead=empty]
    button_t -> widget_t[style=dashed arrowhead=empty]
    edit_t -> widget_t[style=dashed arrowhead=empty]
-   spin_box_t -> widget_t[style=dashed arrowhead=empty]
-   image_t -> widget_t[style=dashed arrowhead=empty]
-   combo_box_t -> widget_t[style=dashed arrowhead=empty]
+   image_base_t -> widget_t[style=dashed arrowhead=empty]
+   window_base_t -> widget_t[style=dashed arrowhead=empty]
+   
+   window_t -> window_base_t[style=dashed arrowhead=empty]
+   popup_t -> window_base_t[style=dashed arrowhead=empty]
+   dialog_t -> window_base_t[style=dashed arrowhead=empty]
+   calibration_win_t -> window_base_t[style=dashed arrowhead=empty]
+   system_bar_t -> window_base_t[style=dashed arrowhead=empty]
+
+   image_t -> image_base_t[style=dashed arrowhead=empty]
+   gif_image_t -> image_base_t[style=dashed arrowhead=empty]
+   svg_image_t -> image_base_t[style=dashed arrowhead=empty]
+
+   combo_box_t -> edit_t[style=dashed arrowhead=empty]
+   spin_box_t -> edit_t[style=dashed arrowhead=empty]
  }

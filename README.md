@@ -47,7 +47,7 @@
 
 14. 脚本化。从API注释中提取API的描述信息，通过这些信息可以自动生成各种脚本的绑定代码。
 
-15. 支持硬件2D加速(目前支持STM32的DMA2D和NXP的PXP)和GPU加速(OpenGL/OpenGLES)，充分挖掘硬件潜能。
+15. 支持硬件2D加速(目前支持STM32的DMA2D和NXP的PXP)和GPU加速(OpenGL/OpenGLES/DirectX/Metal)，充分挖掘硬件潜能。
 
 16. 采用LGPL协议开源发布，在商业软件中使用时无需付费。
 
