@@ -3,6 +3,43 @@
 ![image](images/window_t_0.png)
 
  窗口。
+
+ 缺省的应用程序窗口，占用除system\_bar\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。
+
+ window\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于window\_t控件。
+
+ 在xml中使用"window"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：
+
+ ```xml
+ <window theme="basic" anim_hint="htranslate">
+ ...
+ </window>
+ ```
+
+ >
+ 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
+
+ 在c代码中使用函数window\_create创建窗口。如：
+
+ ```c
+  widget_t* window = window_create(NULL, 0, 0, 0, 0);
+ ```
+
+ > 无需指定父控件、坐标和大小，使用0即可。
+
+ > 完整示例请参考：[window
+ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)
+
+ 可用通过style来设置窗口的风格，如背景颜色或图片等。如：
+
+ ```xml
+ <style name="bricks">
+  <normal bg_image="bricks"  bg_image_draw_type="repeat"/>
+ </style>
+ ```
+
+ > 更多用法请参考：[theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)
 ### 函数
 <p id="window_t_methods">
 

@@ -12307,7 +12307,7 @@
     "properties": [
       {
         "name": "theme",
-        "desc": " 主题资源的名称。\r\n",
+        "desc": " 主题资源的名称。\r\n 每个窗口都可以有独立的主题文件，如果没指定，则使用系统缺省的主题文件。\r\n 主题是一个XML文件，放在assets/raw/styles目录下。\r\n 请参考[主题](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -12332,7 +12332,7 @@
       },
       {
         "name": "closable",
-        "desc": " 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。\r\n 如果关闭窗口时，需要用户确认:\r\n * 1.将closable设置为WINDOW_CLOSABLE_CONFIRM\r\n * 2.处理窗口的EVT_REQUEST_CLOSE_WINDOW事件\r\n",
+        "desc": " 收到EVT\\_REQUEST\\_CLOSE\\_WINDOW是否自动关闭窗口。\r\n\r\n 如果关闭窗口时，需要用户确认:\r\n\r\n * 1.将closable设置为WINDOW\\_CLOSABLE\\_CONFIRM\r\n\r\n * 2.处理窗口的EVT\\_REQUEST\\_CLOSE\\_WINDOW事件\r\n\r\n> closable在XML中取值为：yes/no/confirm，缺省为yes。\r\n",
         "type": "window_closable_t",
         "annotation": {
           "set_prop": true,
@@ -12345,7 +12345,7 @@
       },
       {
         "name": "open_anim_hint",
-        "desc": " 打开时的动画名称。\r\n",
+        "desc": " 打开窗口动画的名称。\r\n 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -12357,7 +12357,7 @@
       },
       {
         "name": "close_anim_hint",
-        "desc": " 关闭时的动画名称。\r\n",
+        "desc": " 关闭窗口动画的名称。\r\n 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -12378,16 +12378,39 @@
       },
       {
         "name": "theme_obj",
-        "desc": " 窗口的常量主题数据。\r\n",
+        "desc": " 窗口的常量主题数据。\r\n\r\n> 把主题管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载主题资源的问题。\r\n",
         "type": "theme_t*",
         "annotation": {
-          "get_prop": true,
-          "private": true
+          "get_prop": true
+        }
+      },
+      {
+        "name": "image_manager",
+        "desc": " 获取图片管理器对象。\r\n\r\n> 把图片管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载图片资源的问题。\r\n",
+        "type": "image_manager_t*",
+        "annotation": {
+          "get_prop": true
+        }
+      },
+      {
+        "name": "font_manager",
+        "desc": " 获取字体管理器对象。\r\n\r\n> 把字体管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载字体资源的问题。\r\n",
+        "type": "font_manager_t*",
+        "annotation": {
+          "get_prop": true
+        }
+      },
+      {
+        "name": "assets_manager",
+        "desc": " 获取资源管理器对象。\r\n\r\n > 把资源管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。\r\n",
+        "type": "assets_manager_t*",
+        "annotation": {
+          "get_prop": true
         }
       }
     ],
     "header": "base/window_base.h",
-    "desc": " 窗口。\r\n",
+    "desc": " 窗口。\r\n\r\n 本类把窗口相关的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   window_t -> window_base_t[arrowhead = \"empty\"]\r\n   popup_t -> window_base_t[arrowhead = \"empty\"]\r\n   dialog_t -> window_base_t[arrowhead = \"empty\"]\r\n   system_bar_t -> window_base_t[arrowhead = \"empty\"]\r\n   calibration_win_t -> window_base_t[arrowhead = \"empty\"]\r\n ```\r\n\r\n > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如window\\_t。\r\n\r\n",
     "name": "window_base_t",
     "parent": "widget_t",
     "annotation": {
@@ -22076,7 +22099,7 @@
             "desc": "combo_box对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "open_window",
             "desc": "弹出窗口的名称。"
           }
@@ -22163,7 +22186,7 @@
             "desc": "值。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "text",
             "desc": "文本。"
           }
@@ -22186,7 +22209,7 @@
             "desc": "combo_box对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "options",
             "desc": "选项。"
           }
@@ -22254,7 +22277,7 @@
         "desc": " 获取combo_box的文本。\r\n\r\n",
         "name": "combo_box_get_text",
         "return": {
-          "type": "char*",
+          "type": "const char*",
           "desc": "返回文本。"
         }
       }
@@ -22326,7 +22349,7 @@
       }
     ],
     "header": "widgets/combo_box.h",
-    "desc": " 下拉列表控件。\r\n\r\n 点击右边的按钮，可弹出一个下拉列表，从中选择一项作为当前的值。\r\n\r\n combo\\_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于combo\\_box\\_t控件。\r\n\r\n 在xml中使用\"combo_box\"标签创建下拉列表控件。\r\n\r\n 列表选项可以直接写在\"options\"属性中。如：\r\n\r\n ```xml\r\n <combo_box readonly=\"true\" x=\"10\" y=\"bottom:5\" w=\"200\" h=\"30\" tr_text=\"ok\" options=\"1:ok;2:cancel;\"/>\r\n ```\r\n\r\n 列表选项也可以放在独立的窗口中，用属性\"open_window\"指定窗口的名称。如：\r\n\r\n ```xml\r\n <combo_box open_window=\"language\" readonly=\"true\" x=\"10\" y=\"bottom:50\" w=\"200\" h=\"30\" tr_text=\"english\"/>\r\n ```\r\n\r\n language.xml:\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" h=\"80\" >\r\n  <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/combo_box.xml)\r\n\r\n 在c代码中使用函数combo\\_box\\_create创建下拉列表控件。如：\r\n\r\n ```c\r\n  widget_t* combo_box = combo_box_create(win, 10, 10, 128, 30);\r\n\r\n  combo_box_set_options(combo_box, \"left;center;right;\");\r\n  combo_box_set_selected_index(combo_box, 1);\r\n\r\n ```\r\n\r\n 创建之后：\r\n\r\n * 用combo\\_box\\_set\\_options设置可选项目。\r\n * 用combo\\_box\\_set\\_selected\\_index设置缺省项。\r\n\r\n> 完整示例请参考：[combo_box demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <combo_box>\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n </combo_box>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)\r\n\r\n",
+    "desc": " 下拉列表控件。\r\n\r\n 点击右边的按钮，可弹出一个下拉列表，从中选择一项作为当前的值。\r\n\r\n combo\\_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于combo\\_box\\_t控件。\r\n\r\n 在xml中使用\"combo_box\"标签创建下拉列表控件。\r\n\r\n 列表选项可以直接写在\"options\"属性中。如：\r\n\r\n ```xml\r\n <combo_box readonly=\"true\" x=\"10\" y=\"bottom:5\" w=\"200\" h=\"30\" tr_text=\"ok\"\r\noptions=\"1:ok;2:cancel;\"/>\r\n ```\r\n\r\n 列表选项也可以放在独立的窗口中，用属性\"open_window\"指定窗口的名称。如：\r\n\r\n ```xml\r\n <combo_box open_window=\"language\" readonly=\"true\" x=\"10\" y=\"bottom:50\" w=\"200\" h=\"30\"\r\ntr_text=\"english\"/>\r\n ```\r\n\r\n language.xml:\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" h=\"80\" >\r\n  <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/combo_box.xml)\r\n\r\n 在c代码中使用函数combo\\_box\\_create创建下拉列表控件。如：\r\n\r\n ```c\r\n  widget_t* combo_box = combo_box_create(win, 10, 10, 128, 30);\r\n\r\n  combo_box_set_options(combo_box, \"left;center;right;\");\r\n  combo_box_set_selected_index(combo_box, 1);\r\n\r\n ```\r\n\r\n 创建之后：\r\n\r\n * 用combo\\_box\\_set\\_options设置可选项目。\r\n * 用combo\\_box\\_set\\_selected\\_index设置缺省项。\r\n\r\n> 完整示例请参考：[combo_box\r\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <combo_box>\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n </combo_box>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)\r\n\r\n",
     "name": "combo_box_t",
     "parent": "widget_t",
     "annotation": {
@@ -25276,7 +25299,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/window.h",
-    "desc": " 窗口。\r\n",
+    "desc": " 窗口。\r\n\r\n 缺省的应用程序窗口，占用除system\\_bar\\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。\r\n\r\n window\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于window\\_t控件。\r\n\r\n 在xml中使用\"window\"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：\r\n\r\n ```xml\r\n <window theme=\"basic\" anim_hint=\"htranslate\">\r\n ...\r\n </window>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数window\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* window = window_create(NULL, 0, 0, 0, 0);\r\n ```\r\n\r\n > 无需指定父控件、坐标和大小，使用0即可。\r\n\r\n > 完整示例请参考：[window\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\r\n\r\n 可用通过style来设置窗口的风格，如背景颜色或图片等。如：\r\n\r\n ```xml\r\n <style name=\"bricks\">\r\n  <normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)\r\n",
     "name": "window_t",
     "parent": "widget_t",
     "annotation": {

@@ -10,6 +10,9 @@
 * [label\_t](manual/label_t.md) 文本控件。
 * [edit\_t](manual/edit_t.md) 单行编辑器控件。
 * [image\_t](manual/image_t.md) 图片控件。
+* [image\_base\_t](manual/image_base_t.md) 图片控件基类。
+* [window\_base\_t](manual/window_base_t.md) 窗口基类。
+* [window\_t](manual/window_t.md) 普通窗口。
 * [button\_t](manual/button_t.md) 按钮控件。
 * [spin\_box\_t](manual/spin_box_t.md) 数值编辑器控件。
 * [combo\_box\_t](manual/combo_box_t.md) 下拉列表控件。

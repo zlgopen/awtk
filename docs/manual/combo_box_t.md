@@ -13,13 +13,15 @@
  列表选项可以直接写在"options"属性中。如：
 
  ```xml
- <combo_box readonly="true" x="10" y="bottom:5" w="200" h="30" tr_text="ok" options="1:ok;2:cancel;"/>
+ <combo_box readonly="true" x="10" y="bottom:5" w="200" h="30" tr_text="ok"
+options="1:ok;2:cancel;"/>
  ```
 
  列表选项也可以放在独立的窗口中，用属性"open_window"指定窗口的名称。如：
 
  ```xml
- <combo_box open_window="language" readonly="true" x="10" y="bottom:50" w="200" h="30" tr_text="english"/>
+ <combo_box open_window="language" readonly="true" x="10" y="bottom:50" w="200" h="30"
+tr_text="english"/>
  ```
 
  language.xml:
@@ -54,7 +56,8 @@
  * 用combo\_box\_set\_options设置可选项目。
  * 用combo\_box\_set\_selected\_index设置缺省项。
 
-> 完整示例请参考：[combo_box demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
+> 完整示例请参考：[combo_box
+demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 
@@ -68,7 +71,8 @@
  </combo_box>
  ```
 
- > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)
+ > 更多用法请参考：[theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)
 
 ### 函数
 <p id="combo_box_t_methods">
@@ -114,7 +118,7 @@
 * 函数原型：
 
 ```
-ret_t combo_box_append_option (widget_t* widget, int32_t value, char* text);
+ret_t combo_box_append_option (widget_t* widget, int32_t value, const char* text);
 ```
 
 * 参数说明：
@@ -124,7 +128,7 @@ ret_t combo_box_append_option (widget_t* widget, int32_t value, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
 | value | int32\_t | 值。 |
-| text | char* | 文本。 |
+| text | const char* | 文本。 |
 #### combo\_box\_cast 函数
 -----------------------
 
@@ -226,14 +230,14 @@ combo_box_option_t* combo_box_get_option (widget_t* widget, uint32_t index);
 * 函数原型：
 
 ```
-char* combo_box_get_text (widget_t* widget);
+const char* combo_box_get_text (widget_t* widget);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 返回文本。 |
+| 返回值 | const char* | 返回文本。 |
 | widget | widget\_t* | combo\_box对象。 |
 #### combo\_box\_get\_value 函数
 -----------------------
@@ -289,7 +293,7 @@ ret_t combo_box_reset_options (widget_t* widget);
 * 函数原型：
 
 ```
-ret_t combo_box_set_open_window (widget_t* widget, char* open_window);
+ret_t combo_box_set_open_window (widget_t* widget, const char* open_window);
 ```
 
 * 参数说明：
@@ -298,7 +302,7 @@ ret_t combo_box_set_open_window (widget_t* widget, char* open_window);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
-| open\_window | char* | 弹出窗口的名称。 |
+| open\_window | const char* | 弹出窗口的名称。 |
 #### combo\_box\_set\_options 函数
 -----------------------
 
@@ -311,7 +315,7 @@ ret_t combo_box_set_open_window (widget_t* widget, char* open_window);
 * 函数原型：
 
 ```
-ret_t combo_box_set_options (widget_t* widget, char* options);
+ret_t combo_box_set_options (widget_t* widget, const char* options);
 ```
 
 * 参数说明：
@@ -320,7 +324,7 @@ ret_t combo_box_set_options (widget_t* widget, char* options);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
-| options | char* | 选项。 |
+| options | const char* | 选项。 |
 #### combo\_box\_set\_selected\_index 函数
 -----------------------
 
