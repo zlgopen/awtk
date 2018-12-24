@@ -13,6 +13,7 @@
 #### 窗口
 * [window\_base\_t](manual/window_base_t.md) 窗口基类。
 * [dialog\_t](manual/dialog_t.md) 对话框。
+* [popup\_t](manual/popup_t.md) 弹出窗口。
 * [window\_t](manual/window_t.md) 普通窗口。
 
 #### 控件

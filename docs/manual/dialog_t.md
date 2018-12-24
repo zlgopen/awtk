@@ -3,7 +3,7 @@
 ![image](images/dialog_t_0.png)
 
  对话框。
- 
+
  对话框是一种特殊的窗口，大小和位置可以自由设置。
  AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。
 
@@ -49,25 +49,25 @@
    widget_t* ok = NULL;
    widget_t* cancel = NULL;
    widget_t* label = NULL;
-  
+
    widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);
-  
+
    dialog_set_title(dlg, "Dialog");
-  
+
    ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);
    widget_set_text(ok, L"Go");
-  
+
    cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);
    widget_set_text(cancel, L"Cancel");
-  
+
    label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);
    widget_set_text(label, L"AWTK is cool!");
-  
+
    widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);
    widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);
-  
+
    code = dialog_modal(dlg);
-  
+
    log_debug("code=%d\n", code);
  ```
 

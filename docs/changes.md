@@ -1,4 +1,6 @@
 # 最新动态
+* 2018/12/24
+  * 整理控件API文档：dialog/popup/window/window\_base
 
 * 2018/12/23
   * 优化。

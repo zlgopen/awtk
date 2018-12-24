@@ -131,3 +131,21 @@ widget_t* popup_cast(widget_t* widget) {
 
   return widget;
 }
+
+ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  popup->close_when_click = close_when_click;
+
+  return RET_OK;
+}
+
+ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_click_outside) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  popup->close_when_click_outside = close_when_click_outside;
+
+  return RET_OK;
+}

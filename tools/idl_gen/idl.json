@@ -12378,7 +12378,7 @@
       },
       {
         "name": "theme_obj",
-        "desc": " 窗口的常量主题数据。\r\n\r\n> 把主题管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载主题资源的问题。\r\n",
+        "desc": " 窗口的常量主题数据。\r\n\r\n>\r\n把主题管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载主题资源的问题。\r\n",
         "type": "theme_t*",
         "annotation": {
           "get_prop": true
@@ -12386,7 +12386,7 @@
       },
       {
         "name": "image_manager",
-        "desc": " 获取图片管理器对象。\r\n\r\n> 把图片管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载图片资源的问题。\r\n",
+        "desc": " 获取图片管理器对象。\r\n\r\n>\r\n把图片管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载图片资源的问题。\r\n",
         "type": "image_manager_t*",
         "annotation": {
           "get_prop": true
@@ -12394,7 +12394,7 @@
       },
       {
         "name": "font_manager",
-        "desc": " 获取字体管理器对象。\r\n\r\n> 把字体管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载字体资源的问题。\r\n",
+        "desc": " 获取字体管理器对象。\r\n\r\n>\r\n把字体管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载字体资源的问题。\r\n",
         "type": "font_manager_t*",
         "annotation": {
           "get_prop": true
@@ -12402,7 +12402,7 @@
       },
       {
         "name": "assets_manager",
-        "desc": " 获取资源管理器对象。\r\n\r\n > 把资源管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。\r\n",
+        "desc": " 获取资源管理器对象。\r\n\r\n >\r\n 把资源管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。\r\n",
         "type": "assets_manager_t*",
         "annotation": {
           "get_prop": true
@@ -22723,7 +22723,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/dialog.h",
-    "desc": " 对话框。\r\n \r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n  \r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n  \r\n   dialog_set_title(dlg, \"Dialog\");\r\n  \r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n  \r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n  \r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n  \r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n  \r\n   code = dialog_modal(dlg);\r\n  \r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
+    "desc": " 对话框。\r\n\r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n\r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n\r\n   dialog_set_title(dlg, \"Dialog\");\r\n\r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n\r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n\r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n\r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n\r\n   code = dialog_modal(dlg);\r\n\r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
     "name": "dialog_t",
     "parent": "widget_t",
     "annotation": {
@@ -24034,6 +24034,52 @@
           "type": "widget_t*",
           "desc": "popup对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "close_when_click",
+            "desc": "点击时是否关闭窗口。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置点击时是否关闭窗口。\r\n\r\n",
+        "name": "popup_set_close_when_click",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "close_when_click_outside",
+            "desc": "点击窗口外部时是否关闭窗口。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置点击窗口外部时是否关闭窗口。\r\n\r\n",
+        "name": "popup_set_close_when_click_outside",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -24066,7 +24112,7 @@
       }
     ],
     "header": "widgets/popup.h",
-    "desc": " popup窗口。\r\n",
+    "desc": " 弹出窗口。\r\n\r\n 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\\_box的下列列表等功能。\r\n\r\n popup\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于popup\\_t控件。\r\n\r\n 在xml中使用\"popup\"标签创建弹出窗口。如：\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" x=\"c\" y=\"m\" w=\"80%\" h=\"80\" >\r\n <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[popup](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数popup\\_create创建弹出窗口。如：\r\n\r\n ```c\r\n widget_t* win = popup_create(NULL, 0, 0, w, h);\r\n popup_set_close_when_click_outside(win, TRUE);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk/src/widgets/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <popup>\r\n  <style name=\"default\" border_color=\"#a0a0a0\">\r\n    <normal bg_color=\"#f0f0f0\"/>\r\n  </style>\r\n </popup>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n",
     "name": "popup_t",
     "parent": "widget_t",
     "annotation": {
