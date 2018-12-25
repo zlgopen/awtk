@@ -24,6 +24,10 @@
 #include "tkc/array.h"
 
 static ret_t timer_info_destroy(timer_info_t* info) {
+  if (info->on_destroy != NULL) {
+    info->on_destroy(info);
+  }
+
   memset(info, 0x00, sizeof(timer_info_t));
   TKMEM_FREE(info);
 
