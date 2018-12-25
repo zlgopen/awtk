@@ -11,6 +11,9 @@
 #include <string>
 using std::string;
 
+static const char* state_names[] = {WIDGET_STATE_NORMAL,  WIDGET_STATE_PRESSED, WIDGET_STATE_OVER,
+                                    WIDGET_STATE_DISABLE, WIDGET_STATE_FOCUSED, NULL};
+
 static const char* widget_types[] = {WIDGET_TYPE_WINDOW_MANAGER,
                                      WIDGET_TYPE_NORMAL_WINDOW,
                                      WIDGET_TYPE_TOOL_BAR,
@@ -55,7 +58,7 @@ void GenThemeData(uint8_t* buff, uint32_t size, uint32_t state_nr, uint32_t name
   for (int32_t i = 0; widget_types[i]; i++) {
     const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      Style s(type, TK_DEFAULT_STYLE, state);
+      Style s(type, TK_DEFAULT_STYLE, state_names[state]);
       for (uint32_t name = 0; name < name_nr; name++) {
         char str[32];
         snprintf(str, sizeof(str), "%d", name);
@@ -104,7 +107,7 @@ TEST(Theme, basic) {
   for (int32_t i = 0; widget_types[i]; i++) {
     const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
-      style_data = theme_find_style(&t, type, 0, (widget_state_t)state);
+      style_data = theme_find_style(&t, type, 0, state_names[state]);
       ASSERT_EQ(style_data != NULL, true);
       for (uint32_t name = 0; name < name_nr; name++) {
         uint32_t v = style_data_get_int(style_data, name, 0);

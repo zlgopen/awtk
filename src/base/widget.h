@@ -271,7 +271,7 @@ struct _widget_t {
    * @annotation ["readable"]
    * 控件的状态(取值参考widget_state_t)。
    */
-  uint8_t state;
+  const char* state;
   /**
    * @property {uint8_t} opacity
    * @annotation ["readable"]
@@ -826,11 +826,11 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused);
  * @method widget_set_state
  * 设置控件的状态。
  * @param {widget_t*} widget 控件对象。
- * @param {widget_state_t} state 状态。
+ * @param {const char*} state 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_state(widget_t* widget, widget_state_t state);
+ret_t widget_set_state(widget_t* widget, const char* state);
 
 /**
  * @method widget_set_opacity
@@ -1515,11 +1515,12 @@ ret_t widget_update_style(widget_t* widget);
  * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
  * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
- * @param {bool_t} active 控件是否为当前项或选中项。
+ * @param {bool_t} active 控件是否为当前项。
+ * @param {bool_t} checked 控件是否为选中项。
  *
- * @return {widget_state_t} 返回状态值。
+ * @return {const char*} 返回状态值。
  */
-widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active);
+const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked);
 
 /**
  * @method widget_update_style_recursive

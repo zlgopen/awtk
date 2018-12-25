@@ -29,7 +29,7 @@
 Style::Style() {
 }
 
-Style::Style(const string& widget_type, const string& name, uint8_t state) {
+Style::Style(const string& widget_type, const string& name, const string& state) {
   this->widget_type = widget_type;
   this->name = name;
   this->state = state;
@@ -95,8 +95,8 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
 
   size = this->int_values.size();
   save_uint32(p, size);
-  printf("  size=%d widget_type=%s name=%s state=%d\n", size, this->widget_type.c_str(),
-         this->name.c_str(), this->state);
+  printf("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
+         this->name.c_str(), this->state.c_str());
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     uint32_t name = i->name;
@@ -160,8 +160,8 @@ uint8_t* ThemeGen::Output(uint8_t* buff, uint32_t max_size) {
   header->nr = nr;
 
   for (vector<Style>::iterator iter = this->styles.begin(); iter != this->styles.end(); iter++) {
-    item->state = iter->state;
     item->offset = p - buff;
+    tk_strncpy(item->state, iter->state.c_str(), NAME_LEN);
     tk_strncpy(item->name, iter->name.c_str(), NAME_LEN);
     tk_strncpy(item->widget_type, iter->widget_type.c_str(), NAME_LEN);
 

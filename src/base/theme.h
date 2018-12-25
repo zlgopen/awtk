@@ -80,12 +80,12 @@ theme_t* theme_init(theme_t* theme, const uint8_t* data);
  * @param {theme_t*} data 主题对象。
  * @param {const char*} widget_type 控件的类型名。
  * @param {const char*} name style的名称。
- * @param {widget_state_t} widget_state 控件的状态。
+ * @param {const char*} widget_state 控件的状态。
  *
  * @return {theme_t*} 返回主题对象。
  */
 const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
-                                widget_state_t widget_state);
+                                const char* widget_state);
 /**
  * @method theme_deinit
  * 析构主题对象。
@@ -121,7 +121,7 @@ typedef struct _theme_header_t {
 
 typedef struct _theme_item_t {
   uint32_t offset;
-  uint32_t state;
+  char state[NAME_LEN + 1];
   char name[NAME_LEN + 1];
   char widget_type[NAME_LEN + 1];
 } theme_item_t;

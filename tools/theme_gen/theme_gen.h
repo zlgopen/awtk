@@ -56,7 +56,7 @@ class NameStringValue {
 class Style {
  public:
   Style();
-  Style(const string& widget_type, const string& name, uint8_t state);
+  Style(const string& widget_type, const string& name, const string& state);
   ~Style();
 
   bool AddInt(uint32_t name, int32_t value);
@@ -68,7 +68,7 @@ class Style {
  public:
   string widget_type;
   string name;
-  uint8_t state;
+  string state;
   vector<NameIntValue> int_values;
   vector<NameStringValue> str_values;
 };

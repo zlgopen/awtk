@@ -4986,7 +4986,7 @@
             "desc": "style的名称。"
           },
           {
-            "type": "widget_state_t",
+            "type": "const char*",
             "name": "widget_state",
             "desc": "控件的状态。"
           }
@@ -8299,7 +8299,61 @@
   },
   {
     "type": "enum",
-    "desc": " 控件状态常量定义。\n\n",
+    "desc": " 窗口的生命周期常量定义。\n\n",
+    "consts": [
+      {
+        "desc": " 初始状态。\n\n",
+        "name": "WINDOW_STAGE_NONE"
+      },
+      {
+        "desc": " 创建完成。\n\n",
+        "name": "WINDOW_STAGE_CREATED"
+      },
+      {
+        "desc": " 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)\n\n",
+        "name": "WINDOW_STAGE_OPENED"
+      },
+      {
+        "desc": " 窗口已关闭。\n\n",
+        "name": "WINDOW_STAGE_CLOSED"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "window_stage_t",
+    "prefix": "WINDOW_STAGE_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 窗口的closable常量定义。\n\n",
+    "consts": [
+      {
+        "desc": " 窗口可关闭。\n\n",
+        "name": "WINDOW_CLOSABLE_YES"
+      },
+      {
+        "desc": " 窗口不可关闭。\n\n",
+        "name": "WINDOW_CLOSABLE_NO"
+      },
+      {
+        "desc": " 窗口需要确认后才能关闭。\n\n",
+        "name": "WINDOW_CLOSABLE_CONFIRM"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "window_closable_t",
+    "prefix": "WINDOW_CLOSABLE_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 控件状态常量定义。\n\n 这里指定常用的状态值，扩展控件可以在自己的头文件中定义私有的状态。\n\n",
     "consts": [
       {
         "desc": " 无效状态。\n\n",
@@ -8374,61 +8428,8 @@
     "name": "widget_state_t",
     "prefix": "WIDGET_",
     "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " 窗口的生命周期常量定义。\n\n",
-    "consts": [
-      {
-        "desc": " 初始状态。\n\n",
-        "name": "WINDOW_STAGE_NONE"
-      },
-      {
-        "desc": " 创建完成。\n\n",
-        "name": "WINDOW_STAGE_CREATED"
-      },
-      {
-        "desc": " 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)\n\n",
-        "name": "WINDOW_STAGE_OPENED"
-      },
-      {
-        "desc": " 窗口已关闭。\n\n",
-        "name": "WINDOW_STAGE_CLOSED"
-      }
-    ],
-    "header": "base/widget_consts.h",
-    "name": "window_stage_t",
-    "prefix": "WINDOW_STAGE_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " 窗口的closable常量定义。\n\n",
-    "consts": [
-      {
-        "desc": " 窗口可关闭。\n\n",
-        "name": "WINDOW_CLOSABLE_YES"
-      },
-      {
-        "desc": " 窗口不可关闭。\n\n",
-        "name": "WINDOW_CLOSABLE_NO"
-      },
-      {
-        "desc": " 窗口需要确认后才能关闭。\n\n",
-        "name": "WINDOW_CLOSABLE_CONFIRM"
-      }
-    ],
-    "header": "base/widget_consts.h",
-    "name": "window_closable_t",
-    "prefix": "WINDOW_CLOSABLE_",
-    "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "string": true
     },
     "level": 1
   },
@@ -9113,9 +9114,9 @@
             "desc": "控件对象。"
           },
           {
-            "type": "widget_state_t",
+            "type": "const char*",
             "name": "state",
-            "desc": "状态。"
+            "desc": "状态(必须为真正的常量字符串，在widget的整个生命周期有效)。"
           }
         ],
         "annotation": {},
@@ -10466,7 +10467,12 @@
           {
             "type": "bool_t",
             "name": "active",
-            "desc": "控件是否为当前项或选中项。"
+            "desc": "控件是否为当前项。"
+          },
+          {
+            "type": "bool_t",
+            "name": "checked",
+            "desc": "控件是否为选中项。"
           }
         ],
         "annotation": {
@@ -10475,7 +10481,7 @@
         "desc": " 把控件的状态转成获取style选要的状态，一般只在子类中使用。\n\n\n",
         "name": "widget_get_state_for_style",
         "return": {
-          "type": "widget_state_t",
+          "type": "const char*",
           "desc": "返回状态值。"
         }
       },
@@ -19800,7 +19806,7 @@
             "desc": "style对象。"
           },
           {
-            "type": "widget_state_t",
+            "type": "const char*",
             "name": "state",
             "desc": "控件状态。"
           },
@@ -19833,7 +19839,7 @@
             "desc": "style对象。"
           },
           {
-            "type": "widget_state_t",
+            "type": "const char*",
             "name": "state",
             "desc": "控件状态。"
           },
@@ -19864,7 +19870,7 @@
             "desc": "style对象。"
           },
           {
-            "type": "widget_state_t",
+            "type": "const char*",
             "name": "state",
             "desc": "控件状态。"
           },

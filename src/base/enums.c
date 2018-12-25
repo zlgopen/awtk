@@ -52,24 +52,6 @@ static const key_type_value_t style_id_name_value[] = {
     {"selected_text_color", TYPE_COLOR, STYLE_ID_SELECTED_TEXT_COLOR},
     {"round_radius", TYPE_INT, STYLE_ID_ROUND_RADIUS}};
 
-static const key_type_value_t widget_state_name_value[] = {
-    {"normal", 0, WIDGET_STATE_NORMAL},
-    {"over", 0, WIDGET_STATE_OVER},
-    {"pressed", 0, WIDGET_STATE_PRESSED},
-    {"normal_of_active", 0, WIDGET_STATE_NORMAL_OF_ACTIVE},
-    {"over_of_active", 0, WIDGET_STATE_OVER_OF_ACTIVE},
-    {"pressed_of_active", 0, WIDGET_STATE_PRESSED_OF_ACTIVE},
-    {"normal_of_checked", 0, WIDGET_STATE_NORMAL_OF_CHECKED},
-    {"over_of_checked", 0, WIDGET_STATE_OVER_OF_CHECKED},
-    {"pressed_of_checked", 0, WIDGET_STATE_PRESSED_OF_CHECKED},
-    {"disable", 0, WIDGET_STATE_DISABLE},
-    {"focused", 0, WIDGET_STATE_FOCUSED},
-    {"checked", 0, WIDGET_STATE_CHECKED},
-    {"unchecked", 0, WIDGET_STATE_UNCHECKED},
-    {"error", 0, WIDGET_STATE_ERROR},
-    {"selected", 0, WIDGET_STATE_SELECTED},
-    {"empty", 0, WIDGET_STATE_EMPTY}};
-
 static const key_type_value_t window_closable_name_value[] = {
     {"yes", 0, WINDOW_CLOSABLE_YES},
     {"no", 0, WINDOW_CLOSABLE_NO},
@@ -173,10 +155,6 @@ const key_type_value_t* style_id_find(const char* name) {
 
 const key_type_value_t* style_id_find_by_value(uint32_t value) {
   return find_item_by_value(style_id_name_value, ARRAY_SIZE(style_id_name_value), value);
-}
-
-const key_type_value_t* widget_state_find(const char* name) {
-  return find_item(widget_state_name_value, ARRAY_SIZE(widget_state_name_value), name);
 }
 
 const key_type_value_t* window_closable_type_find(const char* name) {

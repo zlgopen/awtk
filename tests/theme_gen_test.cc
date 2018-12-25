@@ -207,14 +207,14 @@ TEST(ThemeGen, selected_state) {
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
-                                WIDGET_STATE_NORMAL_OF_ACTIVE);
+                                WIDGET_STATE_NORMAL_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
-                                WIDGET_STATE_PRESSED_OF_ACTIVE);
+                                WIDGET_STATE_PRESSED_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
 
   style_data =
-      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_ACTIVE);
+      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
 }

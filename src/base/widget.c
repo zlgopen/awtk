@@ -289,10 +289,10 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   return RET_OK;
 }
 
-ret_t widget_set_state(widget_t* widget, widget_state_t state) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+ret_t widget_set_state(widget_t* widget, const char* state) {
+  return_value_if_fail(widget != NULL && state != NULL, RET_BAD_PARAMS);
 
-  if (widget->state != state) {
+  if (!tk_str_eq(widget->state, state)) {
     widget_invalidate_force(widget, NULL);
     widget->state = state;
     widget_update_style(widget);
@@ -302,11 +302,11 @@ ret_t widget_set_state(widget_t* widget, widget_state_t state) {
   return RET_OK;
 }
 
-widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active) {
-  widget_state_t state = WIDGET_STATE_NORMAL;
+const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
+  const char* state = WIDGET_STATE_NORMAL;
   return_value_if_fail(widget != NULL, state);
 
-  state = (widget_state_t)(widget->state);
+  state = (const char*)(widget->state);
   if (!widget->enable) {
     return WIDGET_STATE_DISABLE;
   }
@@ -318,6 +318,14 @@ widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active) {
       state = WIDGET_STATE_PRESSED_OF_ACTIVE;
     } else if (state == WIDGET_STATE_OVER) {
       state = WIDGET_STATE_OVER_OF_ACTIVE;
+    }
+  } else if (checked) {
+    if (state == WIDGET_STATE_NORMAL) {
+      state = WIDGET_STATE_NORMAL_OF_CHECKED;
+    } else if (state == WIDGET_STATE_PRESSED) {
+      state = WIDGET_STATE_PRESSED_OF_CHECKED;
+    } else if (state == WIDGET_STATE_OVER) {
+      state = WIDGET_STATE_OVER_OF_CHECKED;
     }
   }
 
@@ -947,7 +955,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       value_set_int32(v, widget->h);
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
-      value_set_int(v, widget_get_state_for_style(widget, FALSE));
+      value_set_str(v, widget_get_state_for_style(widget, FALSE, FALSE));
       ret = RET_OK;
     }
   }
