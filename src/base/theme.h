@@ -105,9 +105,9 @@ ret_t theme_deinit(theme_t* theme);
 ret_t theme_destroy(theme_t* theme);
 
 /*data related*/
-uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval);
-color_t style_data_get_color(const uint8_t* s, uint32_t name, color_t defval);
-const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defval);
+uint32_t style_data_get_int(const uint8_t* s, const char* name, uint32_t defval);
+color_t style_data_get_color(const uint8_t* s, const char* name, color_t defval);
+const char* style_data_get_str(const uint8_t* s, const char* name, const char* defval);
 
 /*public for tools only*/
 #define THEME_MAGIC 0xFAFBFCFD
@@ -125,6 +125,16 @@ typedef struct _theme_item_t {
   char name[NAME_LEN + 1];
   char widget_type[NAME_LEN + 1];
 } theme_item_t;
+
+typedef struct _style_int_data_t {
+  char name[NAME_LEN + 1];
+  uint32_t value;
+} style_int_data_t;
+
+typedef struct _style_str_data_t {
+  char name[NAME_LEN + 1];
+  char value[NAME_LEN + 1];
+} style_str_data_t;
 
 END_C_DECLS
 

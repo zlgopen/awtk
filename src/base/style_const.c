@@ -91,22 +91,22 @@ bool_t style_const_is_valid(style_t* s) {
   return style->data != NULL;
 }
 
-int32_t style_const_get_int(style_t* s, style_id_t id, int32_t defval) {
+int32_t style_const_get_int(style_t* s, const char* name, int32_t defval) {
   style_const_t* style = (style_const_t*)s;
 
-  return style_data_get_int(style->data, id, defval);
+  return style_data_get_int(style->data, name, defval);
 }
 
-color_t style_const_get_color(style_t* s, style_id_t id, color_t defval) {
+color_t style_const_get_color(style_t* s, const char* name, color_t defval) {
   style_const_t* style = (style_const_t*)s;
 
-  return style_data_get_color(style->data, id, defval);
+  return style_data_get_color(style->data, name, defval);
 }
 
-const char* style_const_get_str(style_t* s, style_id_t id, const char* defval) {
+const char* style_const_get_str(style_t* s, const char* name, const char* defval) {
   style_const_t* style = (style_const_t*)s;
 
-  return style_data_get_str(style->data, id, defval);
+  return style_data_get_str(style->data, name, defval);
 }
 
 static ret_t style_const_destroy(style_t* s) {

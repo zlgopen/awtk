@@ -4,6 +4,7 @@
   * 修改idle\_info\_destroy的BUG(感谢尧燊提供补丁)。
   * 修改timer\_info\_destroy的BUG(感谢尧燊提供补丁)。
   * widget状态由枚举格式改为字符串格式，这样方便第三方控件定义私有的状态。
+  * style\_id由枚举格式改为字符串格式，这样方便第三方控件定义私有的style\_id。
 
 * 2018/12/24
   * 整理控件API文档：dialog/popup/window/window\_base

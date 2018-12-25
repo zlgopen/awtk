@@ -28,10 +28,10 @@ ret_t style_notify_widget_state_changed(style_t* s, widget_t* widget) {
   return s->vt->notify_widget_state_changed(s, widget);
 }
 
-int32_t style_get_int(style_t* s, style_id_t id, int32_t defval) {
+int32_t style_get_int(style_t* s, const char* name, int32_t defval) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_int != NULL, defval);
 
-  return s->vt->get_int(s, id, defval);
+  return s->vt->get_int(s, name, defval);
 }
 
 bool_t style_is_valid(style_t* s) {
@@ -42,16 +42,16 @@ bool_t style_is_valid(style_t* s) {
   return FALSE;
 }
 
-color_t style_get_color(style_t* s, style_id_t id, color_t defval) {
+color_t style_get_color(style_t* s, const char* name, color_t defval) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_color != NULL, defval);
 
-  return s->vt->get_color(s, id, defval);
+  return s->vt->get_color(s, name, defval);
 }
 
-const char* style_get_str(style_t* s, style_id_t id, const char* defval) {
+const char* style_get_str(style_t* s, const char* name, const char* defval) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_str != NULL, defval);
 
-  return s->vt->get_str(s, id, defval);
+  return s->vt->get_str(s, name, defval);
 }
 
 ret_t style_destroy(style_t* s) {

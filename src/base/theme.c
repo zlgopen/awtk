@@ -24,17 +24,15 @@
 #include "base/theme.h"
 #include "tkc/buffer.h"
 
-color_t style_data_get_color(const uint8_t* s, uint32_t name, color_t defval) {
+color_t style_data_get_color(const uint8_t* s, const char* name, color_t defval) {
   defval.color = style_data_get_int(s, name, defval.color);
 
   return defval;
 }
 
-uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval) {
+uint32_t style_data_get_int(const uint8_t* s, const char* name, uint32_t defval) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  uint32_t iter = 0;
-  uint32_t value = 0;
   const uint8_t* p = s;
 
   if (s == NULL) {
@@ -43,23 +41,22 @@ uint32_t style_data_get_int(const uint8_t* s, uint32_t name, uint32_t defval) {
 
   load_uint32(p, nr);
   for (i = 0; i < nr; i++) {
-    load_uint32(p, iter);
-    if (iter == name) {
-      load_uint32(p, value);
-      defval = value;
+    const style_int_data_t* iter = (const style_int_data_t*)p;
+
+    if (tk_str_eq(iter->name, name)) {
+      defval = iter->value;
       break;
     } else {
-      p += 4;
+      p += sizeof(style_int_data_t);
     }
   }
 
   return defval;
 }
 
-const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defval) {
+const char* style_data_get_str(const uint8_t* s, const char* name, const char* defval) {
   uint32_t i = 0;
   uint32_t nr = 0;
-  uint32_t iter = 0;
   const uint8_t* p = s;
 
   if (s == NULL) {
@@ -68,16 +65,16 @@ const char* style_data_get_str(const uint8_t* s, uint32_t name, const char* defv
 
   /*skip int values*/
   load_uint32(p, nr);
-  p += nr * 8;
+  p += nr * sizeof(style_int_data_t);
 
   load_uint32(p, nr);
   for (i = 0; i < nr; i++) {
-    load_uint32(p, iter);
-    if (iter == name) {
-      defval = (const char*)p;
+    const style_str_data_t* iter = (const style_str_data_t*)p;
+    if (tk_str_eq(iter->name, name)) {
+      defval = iter->value;
       break;
     } else {
-      p += strlen((const char*)p) + 1;
+      p += sizeof(style_str_data_t);
     }
   }
 

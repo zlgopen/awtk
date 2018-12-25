@@ -7,13 +7,14 @@
 
 using std::string;
 
-static ret_t on_style_item(void* ctx, const char* widget_state, style_id_t id, const value_t* val) {
+static ret_t on_style_item(void* ctx, const char* widget_state, const char* id,
+                           const value_t* val) {
   string& log = *(string*)ctx;
   char str[128];
   if (val->type == VALUE_TYPE_STRING) {
-    snprintf(str, sizeof(str), "%s,%d,\"%s\";", widget_state, (int)id, value_str(val));
+    snprintf(str, sizeof(str), "%s,%s,\"%s\";", widget_state, id, value_str(val));
   } else {
-    snprintf(str, sizeof(str), "%s,%d,%d;", widget_state, (int)id, value_int(val));
+    snprintf(str, sizeof(str), "%s,%s,%d;", widget_state, id, value_int(val));
   }
   log += str;
 
@@ -58,8 +59,9 @@ TEST(StyleMutable, basic) {
   string str = string(style_mutable_get_name(style)) + string(":");
   style_mutable_foreach(style, on_style_item, &str);
   ASSERT_EQ(str,
-            "name2:normal,4,100;normal,2,65536;normal,3,\"font99\";pressed,4,100;pressed,2,65536;"
-            "pressed,3,\"font99\";over,4,100;over,2,65536;over,3,\"font99\";");
+            "name2:normal,font_size,100;normal,fg_color,65536;normal,font_name,\"font99\";pressed,"
+            "font_size,100;pressed,fg_color,65536;pressed,font_name,\"font99\";over,font_size,100;"
+            "over,fg_color,65536;over,font_name,\"font99\";");
 
   style_destroy(style);
   widget_destroy(w);

@@ -25,33 +25,6 @@
 #include "base/window_animator.h"
 #include "base/assets_manager.h"
 
-static const key_type_value_t style_id_name_value[] = {
-    {"bg_color", TYPE_COLOR, STYLE_ID_BG_COLOR},
-    {"fg_color", TYPE_COLOR, STYLE_ID_FG_COLOR},
-    {"text_color", TYPE_COLOR, STYLE_ID_TEXT_COLOR},
-    {"tips_text_color", TYPE_COLOR, STYLE_ID_TIPS_TEXT_COLOR},
-    {"border_color", TYPE_COLOR, STYLE_ID_BORDER_COLOR},
-    {"border", TYPE_COLOR, STYLE_ID_BORDER},
-    {"font_name", TYPE_STRING, STYLE_ID_FONT_NAME},
-    {"font_size", TYPE_INT, STYLE_ID_FONT_SIZE},
-    {"font_style", TYPE_INT, STYLE_ID_FONT_STYLE},
-    {"text_align_h", TYPE_INT, STYLE_ID_TEXT_ALIGN_H},
-    {"text_align_v", TYPE_INT, STYLE_ID_TEXT_ALIGN_V},
-    {"bg_image", TYPE_STRING, STYLE_ID_BG_IMAGE},
-    {"bg_image_draw_type", TYPE_INT, STYLE_ID_BG_IMAGE_DRAW_TYPE},
-    {"fg_image", TYPE_STRING, STYLE_ID_FG_IMAGE},
-    {"fg_image_draw_type", TYPE_INT, STYLE_ID_FG_IMAGE_DRAW_TYPE},
-    {"icon", TYPE_STRING, STYLE_ID_ICON},
-    {"active_icon", TYPE_STRING, STYLE_ID_ACTIVE_ICON},
-    {"icon_at", TYPE_STRING, STYLE_ID_ICON_AT},
-    {"x_offset", TYPE_INT, STYLE_ID_X_OFFSET},
-    {"y_offset", TYPE_INT, STYLE_ID_Y_OFFSET},
-    {"margin", TYPE_INT, STYLE_ID_MARGIN},
-    {"selected_bg_color", TYPE_COLOR, STYLE_ID_SELECTED_BG_COLOR},
-    {"selected_fg_color", TYPE_COLOR, STYLE_ID_SELECTED_FG_COLOR},
-    {"selected_text_color", TYPE_COLOR, STYLE_ID_SELECTED_TEXT_COLOR},
-    {"round_radius", TYPE_INT, STYLE_ID_ROUND_RADIUS}};
-
 static const key_type_value_t window_closable_name_value[] = {
     {"yes", 0, WINDOW_CLOSABLE_YES},
     {"no", 0, WINDOW_CLOSABLE_NO},
@@ -147,14 +120,6 @@ const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32
   }
 
   return NULL;
-}
-
-const key_type_value_t* style_id_find(const char* name) {
-  return find_item(style_id_name_value, ARRAY_SIZE(style_id_name_value), name);
-}
-
-const key_type_value_t* style_id_find_by_value(uint32_t value) {
-  return find_item_by_value(style_id_name_value, ARRAY_SIZE(style_id_name_value), value);
 }
 
 const key_type_value_t* window_closable_type_find(const char* name) {

@@ -135,7 +135,7 @@ TEST(ThemeGen, border) {
 }
 
 TEST(ThemeGen, active_state) {
-  uint8_t buff[1024];
+  uint8_t buff[10240];
   theme_t theme;
   color_t def = color_init(0, 0, 0, 0);
   const uint8_t* style_data = NULL;
@@ -177,7 +177,7 @@ TEST(ThemeGen, active_state) {
 }
 
 TEST(ThemeGen, selected_state) {
-  uint8_t buff[1024];
+  uint8_t buff[10240];
   theme_t theme;
   color_t def = color_init(0, 0, 0, 0);
   const uint8_t* style_data = NULL;

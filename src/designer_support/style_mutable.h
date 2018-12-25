@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /*遍历的回调函数*/
-typedef ret_t (*tk_on_style_item_t)(void* ctx, const char* widget_state, style_id_t id,
+typedef ret_t (*tk_on_style_item_t)(void* ctx, const char* widget_state, const char* name,
                                     const value_t* val);
 
 struct _widget_state_style_t;
@@ -91,40 +91,40 @@ ret_t style_mutable_set_name(style_t* s, const char* name);
 
 /**
  * @method style_mutable_set_int
- * 设置指定id整数格式的值。
+ * 设置指定name整数格式的值。
  * @annotation ["scriptable"]
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
- * @param {style_id_t} id 属性ID。
+ * @param {const char*} name 属性名。
  * @param {int32_t} val 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t style_mutable_set_int(style_t* s, const char* state, style_id_t id, uint32_t val);
+ret_t style_mutable_set_int(style_t* s, const char* state, const char* name, uint32_t val);
 
 /**
  * @method style_mutable_set_color
- * 设置指定id的颜色值。
+ * 设置指定name的颜色值。
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
- * @param {style_id_t} id 属性ID。
+ * @param {const char*} name 属性名。
  * @param {color_t} val 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t style_mutable_set_color(style_t* s, const char* state, style_id_t id, color_t val);
+ret_t style_mutable_set_color(style_t* s, const char* state, const char* name, color_t val);
 
 /**
  * @method style_mutable_set_str
- * 设置指定id字符串的值。
+ * 设置指定name字符串的值。
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
- * @param {style_id_t} id 属性ID。
+ * @param {const char*} name 属性名。
  * @param {const char*} val 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t style_mutable_set_str(style_t* s, const char* state, style_id_t id, const char* val);
+ret_t style_mutable_set_str(style_t* s, const char* state, const char* name, const char* val);
 
 /**
  * @method style_mutable_foreach

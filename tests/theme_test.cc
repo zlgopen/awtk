@@ -59,11 +59,15 @@ void GenThemeData(uint8_t* buff, uint32_t size, uint32_t state_nr, uint32_t name
     const char* type = widget_types[i];
     for (uint32_t state = 0; state < state_nr; state++) {
       Style s(type, TK_DEFAULT_STYLE, state_names[state]);
-      for (uint32_t name = 0; name < name_nr; name++) {
-        char str[32];
-        snprintf(str, sizeof(str), "%d", name);
-        s.AddInt(name, name);
-        s.AddString(name, str);
+      for (uint32_t k = 0; k < name_nr; k++) {
+        char name[32];
+        char value[32];
+
+        snprintf(name, sizeof(name), "%d", k);
+        snprintf(value, sizeof(value), "%d", k);
+
+        s.AddInt(name, k);
+        s.AddString(name, value);
       }
       g.AddStyle(s);
     }
@@ -95,7 +99,7 @@ TEST(Theme, saveLoad) {
 }
 
 TEST(Theme, basic) {
-  uint8_t buff[4 * 10240];
+  uint8_t buff[40 * 10240];
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;
   theme_t t;
@@ -109,11 +113,14 @@ TEST(Theme, basic) {
     for (uint32_t state = 0; state < state_nr; state++) {
       style_data = theme_find_style(&t, type, 0, state_names[state]);
       ASSERT_EQ(style_data != NULL, true);
-      for (uint32_t name = 0; name < name_nr; name++) {
+      for (uint32_t k = 0; k < name_nr; k++) {
+        char name[32];
+        snprintf(name, sizeof(name), "%d", k);
         uint32_t v = style_data_get_int(style_data, name, 0);
-        ASSERT_EQ(v, name);
-        v = atoi(style_data_get_str(style_data, name, NULL));
-        ASSERT_EQ(v, name);
+        ASSERT_EQ(v, k);
+        const char* str = style_data_get_str(style_data, name, NULL);
+        v = atoi(str);
+        ASSERT_EQ(v, k);
       }
     }
   }

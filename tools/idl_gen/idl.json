@@ -4436,7 +4436,7 @@
   },
   {
     "type": "enum",
-    "desc": " 类型常量定义。\n\n",
+    "desc": " style常量定义。\n\n",
     "consts": [
       {
         "desc": " 背景颜色。\n\n",
@@ -4540,8 +4540,12 @@
       }
     ],
     "header": "base/style.h",
-    "name": "style_type_t",
+    "name": "style_id_t",
     "prefix": "STYLE",
+    "annotation": {
+      "scriptable": true,
+      "string": true
+    },
     "level": 1
   },
   {
@@ -4596,9 +4600,9 @@
             "desc": "style对象。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "int32_t",
@@ -4609,7 +4613,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 获取指定id的整数格式的值。\n\n\n",
+        "desc": " 获取指定name的整数格式的值。\n\n\n",
         "name": "style_get_int",
         "return": {
           "type": "int32_t",
@@ -4624,9 +4628,9 @@
             "desc": "style对象。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "color_t",
@@ -4635,7 +4639,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 获取指定id的颜色值。\n\n\n",
+        "desc": " 获取指定name的颜色值。\n\n\n",
         "name": "style_get_color",
         "return": {
           "type": "color_t",
@@ -4650,9 +4654,9 @@
             "desc": "style对象。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "const char*",
@@ -4663,7 +4667,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 获取指定id的字符串格式的值。\n\n\n",
+        "desc": " 获取指定name的字符串格式的值。\n\n\n",
         "name": "style_get_str",
         "return": {
           "type": "const char*",
@@ -19811,9 +19815,9 @@
             "desc": "控件状态。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "int32_t",
@@ -19824,7 +19828,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置指定id整数格式的值。\n\n\n",
+        "desc": " 设置指定name整数格式的值。\n\n\n",
         "name": "style_mutable_set_int",
         "return": {
           "type": "ret_t",
@@ -19844,9 +19848,9 @@
             "desc": "控件状态。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "color_t",
@@ -19855,7 +19859,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 设置指定id的颜色值。\n\n\n",
+        "desc": " 设置指定name的颜色值。\n\n\n",
         "name": "style_mutable_set_color",
         "return": {
           "type": "ret_t",
@@ -19875,9 +19879,9 @@
             "desc": "控件状态。"
           },
           {
-            "type": "style_id_t",
-            "name": "id",
-            "desc": "属性ID。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
           },
           {
             "type": "const char*",
@@ -19886,7 +19890,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 设置指定id字符串的值。\n\n\n",
+        "desc": " 设置指定name字符串的值。\n\n\n",
         "name": "style_mutable_set_str",
         "return": {
           "type": "ret_t",

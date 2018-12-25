@@ -95,32 +95,29 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
     const char* name = attrs[i];
     const char* value = attrs[i + 1];
 
-    const key_type_value_t* item = style_id_find(name);
-    if (item != NULL) {
-      if (strcmp(name, "bg_image_draw_type") == 0 || strcmp(name, "fg_image_draw_type") == 0) {
-        const key_type_value_t* dt = image_draw_type_find(value);
-        s.AddInt(item->value, dt->value);
-      } else if (strcmp(name, "text_align_h") == 0) {
-        const key_type_value_t* dt = align_h_type_find(value);
-        s.AddInt(item->value, dt->value);
-      } else if (strcmp(name, "text_align_v") == 0) {
-        const key_type_value_t* dt = align_v_type_find(value);
-        s.AddInt(item->value, dt->value);
-      } else if (strcmp(name, "border") == 0) {
-        uint32_t border = to_border(value);
-        s.AddInt(item->value, border);
-      } else if (strcmp(name, "icon_at") == 0) {
-        uint32_t icon_at = to_icon_at(value);
-        s.AddInt(item->value, icon_at);
-      } else if (item->type == TYPE_INT) {
-        s.AddInt(item->value, atoi(value));
-      } else if (item->type == TYPE_COLOR) {
-        s.AddInt(item->value, parse_color(value).color);
-      } else {
-        s.AddString(item->value, value);
-      }
-    } else if (strcmp(name, "name") != 0) {
-      printf("Not supported style: %s\n", name);
+    if (strcmp(name, "name") == 0) {
+    } else if (strcmp(name, "bg_image_draw_type") == 0 || strcmp(name, "fg_image_draw_type") == 0) {
+      const key_type_value_t* dt = image_draw_type_find(value);
+      s.AddInt(name, dt->value);
+    } else if (strcmp(name, "text_align_h") == 0) {
+      const key_type_value_t* dt = align_h_type_find(value);
+      s.AddInt(name, dt->value);
+    } else if (strcmp(name, "text_align_v") == 0) {
+      const key_type_value_t* dt = align_v_type_find(value);
+      s.AddInt(name, dt->value);
+    } else if (strcmp(name, "border") == 0) {
+      uint32_t border = to_border(value);
+      s.AddInt(name, border);
+    } else if (strcmp(name, "icon_at") == 0) {
+      uint32_t icon_at = to_icon_at(value);
+      s.AddInt(name, icon_at);
+    } else if (strstr(name, "color") != NULL) {
+      s.AddInt(name, parse_color(value).color);
+    } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
+               strstr(name, "icon") != NULL) {
+      s.AddString(name, value);
+    } else {
+      s.AddInt(name, tk_atoi(value));
     }
 
     i += 2;
@@ -258,7 +255,7 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
 
 bool xml_gen(const char* input_file, const char* output_file, bool_t output_bin) {
   xml_builder_t b;
-  uint8_t buff[100 * 1024];
+  uint8_t buff[500 * 1024];
 
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
 
