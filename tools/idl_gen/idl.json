@@ -24789,9 +24789,9 @@
     "events": [],
     "properties": [],
     "header": "widgets/system_bar.h",
-    "desc": " system_bar窗口。独占LCD顶部区域，用来显示系统状态和当前窗口的标题等信息。\r\n system_bar对两个子控件会做特殊处理：\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT_REQUEST_CLOSE_WINDOW消息。\r\n",
+    "desc": " system\\_bar窗口。\r\n\r\n system\\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。\r\n\r\n> system\\_bar窗口需要在打开第一个应用程序窗口之前打开。\r\n\r\n system_bar对两个子控件会做特殊处理：\r\n\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT\\_REQUEST\\_CLOSE\\_WINDOW消息。\r\n\r\nsystem\\_bar\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于system\\_bar\\_t控件。\r\n\r\n 在xml中使用\"system\\_bar\"标签创建system\\_bar窗口。如：\r\n\r\n ```xml\r\n <system_bar h=\"30\">\r\n <column x=\"0\" y=\"0\" w=\"-40\" h=\"100%\">\r\n   <label style=\"title\" x=\"10\" y=\"m\" w=\"55%\" h=\"100%\" name=\"title\"/>\r\n   <digit_clock style=\"time\" x=\"r\" y=\"m\" w=\"40%\" h=\"100%\" format=\"hh:mm\"/>\r\n </column>\r\n <button style=\"close\" x=\"r:5\" y=\"m\" w=\"26\" h=\"26\" name=\"close\" text=\"x\"/>\r\n </system_bar>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/system_bar.xml)\r\n\r\n 在c代码中使用函数system\\_bar\\_create创建system\\_bar窗口。如：\r\n\r\n ```c\r\n widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等等。如：\r\n\r\n ```xml\r\n <system_bar>\r\n  <style name=\"default\">\r\n    <normal bg_color=\"#a0a0a0\"/>\r\n  </style>\r\n </system_bar>\r\n ```\r\n\r\n> 更多用法请参考：\r\n [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/system_bar.xml)\r\n\r\n",
     "name": "system_bar_t",
-    "parent": "widget_t",
+    "parent": "window_base_t",
     "annotation": {
       "scriptable": true
     }
