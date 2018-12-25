@@ -15,7 +15,7 @@
 * [dialog\_t](manual/dialog_t.md) 对话框。
 * [popup\_t](manual/popup_t.md) 弹出窗口。
 * [window\_t](manual/window_t.md) 普通窗口。
-* [system\_bar\_t](manual/window_t.md) 系统状态窗口。
+* [system\_bar\_t](manual/system_bar_t.md) 系统状态窗口。
 
 #### 控件
 
