@@ -1,6 +1,8 @@
 # 最新动态
 * 2018/12/25
   * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar/system\_bar
+  * 修改idle\_info\_destroy的BUG(感谢尧燊提供补丁)。
+  * 修改timer\_info\_destroy的BUG(感谢尧燊提供补丁)。
 
 * 2018/12/24
   * 整理控件API文档：dialog/popup/window/window\_base
