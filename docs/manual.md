@@ -26,6 +26,14 @@
 * [spin\_box\_t](manual/spin_box_t.md) 数值编辑器控件。
 * [combo\_box\_t](manual/combo_box_t.md) 下拉列表控件。
 
+* [row\_t](manual/row_t.md) 行控件。
+* [column\_t](manual/column_t.md) 列控件。
+* [grid\_t](manual/grid_t.md) 网格控件。
+* [grid\_item\_t](manual/grid_item_t.md) 网格项控件。
+* [view\_t](manual/view_t.md) 通用容器控件。
+* [group\_box\_t](manual/group_box_t.md) 通用分组控件。
+* [app\_bar\_t](manual/app_bar_t.md) app\_bar控件。
+
 ### 输入法
 
 ### 控件动画

@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/12/25
+  * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar
+
 * 2018/12/24
   * 整理控件API文档：dialog/popup/window/window\_base
 

@@ -21179,7 +21179,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/app_bar.h",
-    "desc": " app_bar。一个简单的容器控件，一般在窗口的顶部。\r\n 它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。\r\n",
+    "desc": " app_bar控件。\r\n\r\n 一个简单的容器控件，一般在窗口的顶部，用于显示本窗口的状态和信息。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n app\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于app\\_bar\\_t控件。\r\n\r\n 在xml中使用\"app\\_bar\"标签创建app\\_bar。如：\r\n\r\n ```xml\r\n <app_bar x=\"0\" y=\"0\" w=\"100%\" h=\"30\" >\r\n   <label x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" text=\"Basic Controls\" />\r\n </app_bar>\r\n ```\r\n\r\n 在c代码中使用函数app\\_bar\\_create创建app\\_bar。如：\r\n\r\n ```c\r\n  widget_t* app_bar = app_bar_create(win, 0, 0, 320, 30);\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n\r\n",
     "name": "app_bar_t",
     "parent": "widget_t",
     "annotation": {
@@ -21867,7 +21867,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/column.h",
-    "desc": " column。一个简单的容器控件，垂直排列一组控件。\r\n 它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。\r\n",
+    "desc": " column。一个简单的容器控件，垂直排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n column\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于column\\_t控件。\r\n\r\n 在xml中使用\"column\"标签创建column。如：\r\n\r\n ```xml\r\n  <column x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=1,r=0)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </column>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "column_t",
     "parent": "widget_t",
     "annotation": {
@@ -23481,7 +23481,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/grid_item.h",
-    "desc": " grid_item。一个简单的容器控件，一般作为grid的子控件。\r\n",
+    "desc": " grid_item。一个简单的容器控件，一般作为grid的子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n grid\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于grid\\_item\\_t控件。\r\n\r\n 在xml中使用\"grid\\_item\"标签创建grid\\_item。如：\r\n\r\n ```xml\r\n  <grid x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n    <grid_item>\r\n      <button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"0\" text=\"0\"/>\r\n    </grid_item>\r\n    <grid_item>\r\n      <button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"1\" text=\"1\"/>\r\n    </grid_item>\r\n    <grid_item>\r\n      <button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"2\" text=\"2\"/>\r\n    </grid_item>\r\n    <grid_item>\r\n      <button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"3\" text=\"3\"/>\r\n    </grid_item>\r\n  </grid>```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "grid_item_t",
     "parent": "widget_t",
     "annotation": {
@@ -23553,7 +23553,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/grid.h",
-    "desc": " grid。一个简单的容器控件，用于网格排列一组控件。\r\n 它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。\r\n",
+    "desc": " grid控件。一个简单的容器控件，用于网格排列一组控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n grid\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于grid\\_t控件。\r\n\r\n 在xml中使用\"grid\"标签创建grid。如：\r\n\r\n ```xml\r\n  <grid x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </grid>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n\r\n",
     "name": "grid_t",
     "parent": "widget_t",
     "annotation": {
@@ -23625,7 +23625,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/group_box.h",
-    "desc": " 分组控件。\r\n",
+    "desc": " 分组控件。\r\n\r\n 单选按钮在同一个父控件中是互斥的，所以通常将相关的单选按钮放在一个group\\_box中。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n group\\_box\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于group\\_box\\_t控件。\r\n\r\n 在xml中使用\"group\\_box\"标签创建group\\_box。如：\r\n\r\n ```xml\r\n <group_box x=\"20\" y=\"230\" w=\"50%\" h=\"90\" children_layout=\"default(r=3,c=1,ym=2,s=10)\" >\r\n   <radio_button name=\"r1\" text=\"Book\"/>\r\n   <radio_button name=\"r2\" text=\"Food\"/>\r\n   <radio_button name=\"r3\" text=\"Pencil\" value=\"true\"/>\r\n </group_box>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "group_box_t",
     "parent": "widget_t",
     "annotation": {
@@ -24376,7 +24376,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/row.h",
-    "desc": " row。一个简单的容器控件，用于水平排列一组控件。\r\n 它本身不提供布局功能(可用layout参数指定)，和view功能一致，仅提供具有语义的标签，让xml更具有可读性。\r\n",
+    "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "row_t",
     "parent": "widget_t",
     "annotation": {
@@ -25211,7 +25211,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/view.h",
-    "desc": " 一个通用的容器控件，也可以用作自绘。\r\n",
+    "desc": " 一个通用的容器控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\r\n\r\n 在xml中使用\"view\"标签创建view。如：\r\n\r\n ```xml\r\n  <view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n   </view>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "view_t",
     "parent": "widget_t",
     "annotation": {
