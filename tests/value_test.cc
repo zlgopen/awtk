@@ -7,9 +7,33 @@ TEST(value, i8) {
   ASSERT_EQ(value_int8(&v), 10);
 }
 
+TEST(value, stri8) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_int8(&v), 10);
+}
+
+TEST(value, wstri8) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
+  ASSERT_EQ(value_int8(&v), 10);
+}
+
 TEST(value, u8) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint8(&v, 10));
+  ASSERT_EQ(value_uint8(&v), 10);
+}
+
+TEST(value, stru8) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_uint8(&v), 10);
+}
+
+TEST(value, wstru8) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
   ASSERT_EQ(value_uint8(&v), 10);
 }
 
@@ -19,9 +43,33 @@ TEST(value, i16) {
   ASSERT_EQ(value_int16(&v), 10);
 }
 
+TEST(value, stri16) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_int16(&v), 10);
+}
+
+TEST(value, wstri16) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
+  ASSERT_EQ(value_int16(&v), 10);
+}
+
 TEST(value, u16) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint16(&v, 10));
+  ASSERT_EQ(value_uint16(&v), 10);
+}
+
+TEST(value, stru16) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_uint16(&v), 10);
+}
+
+TEST(value, wstru16) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
   ASSERT_EQ(value_uint16(&v), 10);
 }
 
@@ -31,9 +79,33 @@ TEST(value, i32) {
   ASSERT_EQ(value_int32(&v), 10);
 }
 
+TEST(value, stri32) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_int32(&v), 10);
+}
+
+TEST(value, wstri32) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
+  ASSERT_EQ(value_int32(&v), 10);
+}
+
 TEST(value, u32) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint32(&v, 10));
+  ASSERT_EQ(value_uint32(&v), 10);
+}
+
+TEST(value, stru32) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_uint32(&v), 10);
+}
+
+TEST(value, wstru32) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
   ASSERT_EQ(value_uint32(&v), 10);
 }
 
@@ -43,9 +115,33 @@ TEST(value, i64) {
   ASSERT_EQ(value_int64(&v), 10);
 }
 
+TEST(value, stri64) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_int64(&v), 10);
+}
+
+TEST(value, wstri64) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
+  ASSERT_EQ(value_int64(&v), 10);
+}
+
 TEST(value, u64) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint64(&v, 10));
+  ASSERT_EQ(value_uint64(&v), 10);
+}
+
+TEST(value, stru64) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_uint64(&v), 10);
+}
+
+TEST(value, wstru64) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
   ASSERT_EQ(value_uint64(&v), 10);
 }
 
@@ -55,9 +151,33 @@ TEST(value, float) {
   ASSERT_EQ(value_float(&v), 10);
 }
 
+TEST(value, strfloat) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_float(&v), 10);
+}
+
+TEST(value, wstrfloat) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
+  ASSERT_EQ(value_float(&v), 10);
+}
+
 TEST(value, double) {
   value_t v;
   ASSERT_EQ(&v, value_set_double(&v, 10));
+  ASSERT_EQ(value_double(&v), 10);
+}
+
+TEST(value, strdouble) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "10"));
+  ASSERT_EQ(value_double(&v), 10);
+}
+
+TEST(value, wstrdouble) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
   ASSERT_EQ(value_double(&v), 10);
 }
 
@@ -67,6 +187,14 @@ TEST(ValueTest, str) {
 
   ASSERT_EQ(&v, value_set_str(&v, str));
   ASSERT_EQ(strcmp(value_str(&v), "str"), 0);
+}
+
+TEST(ValueTest, wstr) {
+  value_t v;
+  const wchar_t* str = L"str";
+
+  ASSERT_EQ(&v, value_set_wstr(&v, str));
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"str"), 0);
 }
 
 TEST(value, int) {
