@@ -19235,7 +19235,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/window.h",
-    "desc": " 窗口。\r\n\r\n 缺省的应用程序窗口，占用除system\\_bar\\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。\r\n\r\n window\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于window\\_t控件。\r\n\r\n 在xml中使用\"window\"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：\r\n\r\n ```xml\r\n <window theme=\"basic\" anim_hint=\"htranslate\">\r\n ...\r\n </window>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数window\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* window = window_create(NULL, 0, 0, 0, 0);\r\n ```\r\n\r\n > 无需指定父控件、坐标和大小，使用0即可。\r\n\r\n > 完整示例请参考：[window\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\r\n\r\n 可用通过style来设置窗口的风格，如背景颜色或图片等。如：\r\n\r\n ```xml\r\n <style name=\"bricks\">\r\n  <normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)\r\n",
+    "desc": " 窗口。\r\n\r\n 缺省的应用程序窗口，占用除system\\_bar\\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。\r\n\r\n window\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于window\\_t控件。\r\n\r\n 在xml中使用\"window\"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：\r\n\r\n ```xml\r\n <window theme=\"basic\" anim_hint=\"htranslate\">\r\n ...\r\n </window>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数window\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* window = window_create(NULL, 0, 0, 0, 0);\r\n ```\r\n\r\n > 无需指定父控件、坐标和大小，使用0即可。\r\n\r\n > 完整示例请参考：[window\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\r\n\r\n 可用通过style来设置窗口的风格，如背景颜色或图片等。如：\r\n\r\n ```xml\r\n <style name=\"bricks\">\r\n  <normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)\r\n",
     "name": "window_t",
     "parent": "widget_t",
     "annotation": {
@@ -21472,7 +21472,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/button_group.h",
-    "desc": " Button Group控件。\r\n",
+    "desc": " Button Group控件。一个简单的容器控件，用于容纳一组按钮控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n button\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_group\\_t控件。\r\n\r\n 在xml中使用\"button\\_group\"标签创建button\\_group。如：\r\n\r\n ```xml\r\n <button_group x=\"0\" y=\"m\" w=\"100%\" h=\"40\" children_layout=\"default(c=4,r=1,s=5,m=5)\">\r\n   <button name=\"open:basic\" text=\"Basic\"/>\r\n   <button name=\"open:button\" text=\"Buttons\"/>\r\n   <button name=\"open:edit\" text=\"Edits\"/>\r\n   <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n </button_group>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "button_group_t",
     "parent": "widget_t",
     "annotation": {
@@ -21698,7 +21698,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/calibration_win.h",
-    "desc": " 电阻屏校准屏幕。\r\n",
+    "desc": " 电阻屏校准窗口。\r\n \r\n calibration\\_win\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于calibration\\_win\\_t控件。\r\n\r\n 在xml中使用\"calibration\\_win\"标签创建电阻屏校准窗口。如：\r\n\r\n ```xml\r\n <calibration_win name=\"cali\" w=\"100%\" h=\"100%\" text=\"Please click the center of cross\">\r\n </calibration_win>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/calibration_win.xml)\r\n\r\n 在c代码中使用函数calibration\\_win\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);\r\n ```\r\n\r\n 通过calibration\\_win\\_set\\_on\\_done注册回调函数，用于保存校准数据。\r\n\r\n",
     "name": "calibration_win_t",
     "parent": "widget_t",
     "level": 2
@@ -22250,7 +22250,7 @@
       }
     ],
     "header": "widgets/combo_box_item.h",
-    "desc": " ComboBox Item控件。\r\n",
+    "desc": " ComboBox Item控件。\r\n\r\n 本类仅供combo\\_box控件内部使用。\r\n\r\n",
     "name": "combo_box_item_t",
     "parent": "widget_t",
     "annotation": {
@@ -22620,7 +22620,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建dialog对象。\r\n\r\n",
+        "desc": " 创建dialog客户区对象。\r\n\r\n",
         "name": "dialog_client_create",
         "return": {
           "type": "widget_t*",
@@ -22650,7 +22650,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/dialog_client.h",
-    "desc": " 对话框客户区控件。\r\n",
+    "desc": " 对话框客户区控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n dialog\\_client\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于dialog\\_client\\_t控件。\r\n\r\n 在xml中使用\"dialog\\_client\"标签创建dialog\\_client。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 在c代码中，用dialog\\_create\\_simple创建对话框时，自动创建dialog客户区对象。\r\n\r\n",
     "name": "dialog_client_t",
     "parent": "widget_t",
     "annotation": {
@@ -22723,7 +22723,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/dialog_title.h",
-    "desc": " 对话框标题控件。\r\n",
+    "desc": " 对话框标题控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n dialog\\_title\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于dialog\\_title\\_t控件。\r\n\r\n 在xml中使用\"dialog\\_title\"标签创建dialog\\_title。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 在c代码中，用dialog\\_create\\_simple创建对话框时，自动创建dialog标题对象。\r\n\r\n",
     "name": "dialog_title_t",
     "parent": "widget_t",
     "annotation": {
@@ -22954,7 +22954,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/dialog.h",
-    "desc": " 对话框。\r\n\r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n\r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n\r\n   dialog_set_title(dlg, \"Dialog\");\r\n\r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n\r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n\r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n\r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n\r\n   code = dialog_modal(dlg);\r\n\r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
+    "desc": " 对话框。\r\n\r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n 对话框通常由对话框标题和对话框客户区两部分组成：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   dialog_title_t -> dialog_t[arrowhead = \"ediamond\"]\r\n   dialog_client_t -> dialog_t[arrowhead = \"ediamond\"]\r\n ```\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n\r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n\r\n   dialog_set_title(dlg, \"Dialog\");\r\n\r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n\r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n\r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n\r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n\r\n   code = dialog_modal(dlg);\r\n\r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
     "name": "dialog_t",
     "parent": "widget_t",
     "annotation": {

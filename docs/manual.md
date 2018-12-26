@@ -26,7 +26,10 @@
 * [image\_base\_t](manual/image_base_t.md) 图片控件基类。
 * [spin\_box\_t](manual/spin_box_t.md) 数值编辑器控件。
 * [combo\_box\_t](manual/combo_box_t.md) 下拉列表控件。
+* [combo\_box\_item\_t](manual/combo_box_item_t.md) 下拉列表项控件。
 * [color\_tile\_t](manual/color_tile_t.md) 色块控件。
+* [dialog\_title\_t](manual/dialog_title_t.md) 对话框标题控件。
+* [dialog\_client\_t](manual/dialog_client_t.md) 对话框客户区控件。
 
 * [row\_t](manual/row_t.md) 行控件。
 * [column\_t](manual/column_t.md) 列控件。
@@ -35,6 +38,7 @@
 * [view\_t](manual/view_t.md) 通用容器控件。
 * [group\_box\_t](manual/group_box_t.md) 通用分组控件。
 * [app\_bar\_t](manual/app_bar_t.md) app\_bar控件。
+* [button\_group\_t](manual/button_group.md) 按钮分组控件。
 
 ### 输入法
 

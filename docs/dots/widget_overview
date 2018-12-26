@@ -18,6 +18,7 @@ digraph G {
    label_t -> widget_t[arrowhead=empty]
    button_t -> widget_t[arrowhead=empty]
    color_tile_t -> widget_t[arrowhead=empty]
+   combo_box_item_t -> widget_t[arrowhead=empty]
 
    app_bar_t -> widget_t[arrowhead=empty]
    row_t -> widget_t[arrowhead=empty]
@@ -26,6 +27,9 @@ digraph G {
    grid_item_t -> widget_t[arrowhead=empty]
    group_box_t -> widget_t[arrowhead=empty]
    view_t -> widget_t[arrowhead=empty]
+   button_group_t -> widget_t[arrowhead=empty]
+   dialog_title_t -> widget_t[arrowhead=empty]
+   dialog_client_t -> widget_t[arrowhead=empty]
    
    window_t -> window_base_t[arrowhead=empty]
    popup_t -> window_base_t[arrowhead=empty]
