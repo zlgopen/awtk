@@ -90,7 +90,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   }
 
   memset(&desc, 0x00, sizeof(desc));
-  tk_strncpy(desc.type, widget->vt->type, NAME_LEN);
+  tk_strncpy(desc.type, widget->vt->type, TK_NAME_LEN);
 
   desc.layout.x = widget->x;
   desc.layout.y = widget->y;

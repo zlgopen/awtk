@@ -31,7 +31,7 @@ BEGIN_C_DECLS
  * widget自定义属性。
  */
 typedef struct _custom_prop_t {
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   value_t value;
 } custom_prop_t;
 

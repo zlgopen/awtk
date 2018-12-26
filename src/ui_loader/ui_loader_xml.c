@@ -100,7 +100,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     i += 2;
   }
 
-  strncpy(desc.type, tag, NAME_LEN);
+  strncpy(desc.type, tag, TK_NAME_LEN);
   desc.layout.x = tk_atoi(x);
   desc.layout.y = tk_atoi(y);
   desc.layout.w = tk_atoi(w);

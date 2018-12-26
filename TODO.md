@@ -78,8 +78,10 @@
 * ImageValue
 * SystemBar
 * Canvas
+* SlideMenu
 
 ## 短期计划(顺序不定)
+* 参考手册
 * menu
 * tree view
 * text editor
@@ -95,6 +97,7 @@
 * 键盘导航
 * 事件录制与重放。
 * API doc到PDF转换工具
+* 高亮对话框(背景模糊)
 
 ## 长期计划
 * ios移植

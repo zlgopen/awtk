@@ -133,7 +133,7 @@ struct _input_method_t {
    * @annotation ["readable"]
    * 软键盘的上的action按钮文本。
    */
-  char action_buton_text[NAME_LEN + 1];
+  char action_buton_text[TK_NAME_LEN + 1];
 
   /**
    * @property {emitter_t} emitter

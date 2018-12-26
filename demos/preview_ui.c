@@ -42,7 +42,7 @@ static ret_t on_timer(const timer_info_t* info) {
 widget_t* preview_ui(const char* filename) {
   str_t s;
   uint32_t size = 0;
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   ui_builder_t* builder = NULL;
   uint8_t* content = NULL;
   bool_t is_bin = strstr(filename, ".bin") != NULL;
@@ -57,7 +57,7 @@ widget_t* preview_ui(const char* filename) {
     size = s.size;
   }
 
-  filename_to_name(filename, name, NAME_LEN);
+  filename_to_name(filename, name, TK_NAME_LEN);
   builder = ui_builder_default(name);
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);

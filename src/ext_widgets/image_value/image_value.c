@@ -61,7 +61,7 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t i = 0;
   uint32_t nr = 0;
   char sub_name[8];
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   char str[IMAGE_VALUE_MAX_CHAR_NR + 1];
   bitmap_t bitmap[IMAGE_VALUE_MAX_CHAR_NR];
   image_value_t* image_value = IMAGE_VALUE(widget);
@@ -80,7 +80,7 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   nr = strlen(str);
   return_value_if_fail(nr > 0, RET_BAD_PARAMS);
 
-  name[NAME_LEN] = '\0';
+  name[TK_NAME_LEN] = '\0';
   for (i = 0; i < nr; i++) {
     if (str[i] == '.') {
       strcpy(sub_name, IMAGE_VALUE_MAP_DOT);
@@ -91,7 +91,7 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
       sub_name[1] = '\0';
     }
 
-    tk_snprintf(name, NAME_LEN, "%s%s", image_value->image, sub_name);
+    tk_snprintf(name, TK_NAME_LEN, "%s%s", image_value->image, sub_name);
     return_value_if_fail(widget_load_image(widget, name, bitmap + i) == RET_OK, RET_BAD_PARAMS);
   }
 

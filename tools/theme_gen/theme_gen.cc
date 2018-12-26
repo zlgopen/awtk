@@ -104,7 +104,7 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
     style_int_data_t data;
 
     data.value = value;
-    tk_strncpy(data.name, name.c_str(), NAME_LEN);
+    tk_strncpy(data.name, name.c_str(), TK_NAME_LEN);
 
     return_value_if_fail((end - p) > sizeof(data), NULL);
     memcpy(p, &data, sizeof(data));
@@ -123,8 +123,8 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
     const string& name = i->name;
     const string& value = i->value;
 
-    tk_strncpy(data.name, name.c_str(), NAME_LEN);
-    tk_strncpy(data.value, value.c_str(), NAME_LEN);
+    tk_strncpy(data.name, name.c_str(), TK_NAME_LEN);
+    tk_strncpy(data.value, value.c_str(), TK_NAME_LEN);
 
     return_value_if_fail((end - p) > sizeof(data), NULL);
     memcpy(p, &data, sizeof(data));
@@ -160,9 +160,9 @@ uint8_t* ThemeGen::Output(uint8_t* buff, uint32_t max_size) {
 
   for (vector<Style>::iterator iter = this->styles.begin(); iter != this->styles.end(); iter++) {
     item->offset = p - buff;
-    tk_strncpy(item->state, iter->state.c_str(), NAME_LEN);
-    tk_strncpy(item->name, iter->name.c_str(), NAME_LEN);
-    tk_strncpy(item->widget_type, iter->widget_type.c_str(), NAME_LEN);
+    tk_strncpy(item->state, iter->state.c_str(), TK_NAME_LEN);
+    tk_strncpy(item->name, iter->name.c_str(), TK_NAME_LEN);
+    tk_strncpy(item->widget_type, iter->widget_type.c_str(), TK_NAME_LEN);
 
     p = iter->Output(p, end - p);
     item++;

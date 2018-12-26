@@ -49,7 +49,7 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   info->subtype = subtype;
   info->refcount = 1;
   info->is_in_rom = FALSE;
-  strncpy(info->name, name, NAME_LEN);
+  strncpy(info->name, name, TK_NAME_LEN);
 
   ENSURE(file_read_part(path, info->data, size, 0) == size);
 

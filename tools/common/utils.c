@@ -86,7 +86,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
                       uint32_t size) {
   uint32_t i = 0;
   FILE* fp = NULL;
-  char str[NAME_LEN + 1];
+  char str[TK_NAME_LEN + 1];
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
   if (name == NULL) {

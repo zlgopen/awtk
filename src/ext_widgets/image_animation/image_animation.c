@@ -27,13 +27,13 @@
 
 static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
   if (image_animation->image != NULL && image_animation->sequence != NULL &&
       image_animation->index >= 0) {
     memset(name, 0x00, sizeof(name));
-    tk_strncpy(name, image_animation->image, NAME_LEN);
+    tk_strncpy(name, image_animation->image, TK_NAME_LEN);
     name[strlen(name)] = image_animation->sequence[image_animation->index];
 
     if (widget_load_image(widget, name, &bitmap) == RET_OK) {

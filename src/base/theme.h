@@ -121,19 +121,19 @@ typedef struct _theme_header_t {
 
 typedef struct _theme_item_t {
   uint32_t offset;
-  char state[NAME_LEN + 1];
-  char name[NAME_LEN + 1];
-  char widget_type[NAME_LEN + 1];
+  char state[TK_NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
+  char widget_type[TK_NAME_LEN + 1];
 } theme_item_t;
 
 typedef struct _style_int_data_t {
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   uint32_t value;
 } style_int_data_t;
 
 typedef struct _style_str_data_t {
-  char name[NAME_LEN + 1];
-  char value[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
+  char value[TK_NAME_LEN + 1];
 } style_str_data_t;
 
 END_C_DECLS

@@ -124,7 +124,7 @@ ret_t custom_props_set(custom_props_t* props, const char* name, const value_t* v
   return_value_if_fail(custom_props_extend(props, 1) == RET_OK, RET_OOM);
 
   iter = props->props + props->size++;
-  tk_strncpy(iter->name, name, NAME_LEN);
+  tk_strncpy(iter->name, name, TK_NAME_LEN);
 
   return value_assign(&(iter->value), v);
 }

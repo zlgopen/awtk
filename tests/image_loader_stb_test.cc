@@ -24,7 +24,7 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
   info->subtype = 0;
   info->refcount = 1;
   info->is_in_rom = FALSE;
-  strncpy(info->name, "name", NAME_LEN);
+  strncpy(info->name, "name", TK_NAME_LEN);
 
   ENSURE(file_read_part(filename, info->data, size, 0) == size);
   ret = image_loader_load(loader, info, image);
