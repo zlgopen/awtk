@@ -39,7 +39,7 @@
 * [grid\_item\_t](manual/grid_item_t.md) 网格项控件。
 * [group\_box\_t](manual/group_box_t.md) 通用分组控件。
 * [app\_bar\_t](manual/app_bar_t.md) app\_bar控件。
-* [button\_group\_t](manual/button_group.md) 按钮分组控件。
+* [button\_group\_t](manual/button_group_t.md) 按钮分组控件。
 
 ### 输入法
 
