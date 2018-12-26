@@ -8,28 +8,30 @@
 
 #### widget
 
-* [widget\_t](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
+* [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
 
 #### 窗口
-* [window\_base\_t](manual/window_base_t.md) 窗口基类。
-* [dialog\_t](manual/dialog_t.md) 对话框。
-* [popup\_t](manual/popup_t.md) 弹出窗口。
-* [window\_t](manual/window_t.md) 普通窗口。
-* [system\_bar\_t](manual/system_bar_t.md) 系统状态窗口。
-* [calibration\_win\_t](manual/calibration_win_t.md) 电阻屏校准窗口。
+* [window\_base\](manual/window_base_t.md) 窗口基类。
+* [dialog](manual/dialog_t.md) 对话框。
+* [popup](manual/popup_t.md) 弹出窗口。
+* [window](manual/window_t.md) 普通窗口。
+* [system\_bar](manual/system_bar_t.md) 系统状态窗口。
+* [calibration\_win\](manual/calibration_win_t.md) 电阻屏校准窗口。
 
 #### 基本控件
-* [button\_t](manual/button_t.md) 按钮控件。
-* [label\_t](manual/label_t.md) 文本控件。
-* [edit\_t](manual/edit_t.md) 单行编辑器控件。
-* [image\_t](manual/image_t.md) 图片控件。
-* [image\_base\_t](manual/image_base_t.md) 图片控件基类。
-* [spin\_box\_t](manual/spin_box_t.md) 数值编辑器控件。
-* [combo\_box\_t](manual/combo_box_t.md) 下拉列表控件。
-* [combo\_box\_item\_t](manual/combo_box_item_t.md) 下拉列表项控件。
-* [color\_tile\_t](manual/color_tile_t.md) 色块控件。
-* [dialog\_title\_t](manual/dialog_title_t.md) 对话框标题控件。
-* [dialog\_client\_t](manual/dialog_client_t.md) 对话框客户区控件。
+* [button](manual/button_t.md) 按钮控件。
+* [label](manual/label_t.md) 文本控件。
+* [edit](manual/edit_t.md) 单行编辑器控件。
+* [image](manual/image_t.md) 图片控件。
+* [image\_base](manual/image_base_t.md) 图片控件基类。
+* [spin\_box](manual/spin_box_t.md) 数值编辑器控件。
+* [combo\_box](manual/combo_box_t.md) 下拉列表控件。
+* [combo\_box\_item](manual/combo_box_item_t.md) 下拉列表项控件。
+* [color\_tile](manual/color_tile_t.md) 色块控件。
+* [dialog\_title](manual/dialog_title_t.md) 对话框标题控件。
+* [dialog\_client](manual/dialog_client_t.md) 对话框客户区控件。
+* [slider](manual/slider_t.md) 滑块控件。
+* [progress\_bar](manual/progress_bar_t.md) 进度条控件。
 
 #### 通用容器控件
 * [row\_t](manual/row_t.md) 行控件。

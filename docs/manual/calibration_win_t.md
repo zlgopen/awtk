@@ -3,7 +3,7 @@
 ![image](images/calibration_win_t_0.png)
 
  电阻屏校准窗口。
- 
+
  calibration\_win\_t是[window\_base\_t](window_base_t.md)的子类控件，
  window\_base\_t的函数均适用于calibration\_win\_t控件。
 

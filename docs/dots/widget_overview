@@ -19,6 +19,8 @@ digraph G {
    button_t -> widget_t[arrowhead=empty]
    color_tile_t -> widget_t[arrowhead=empty]
    combo_box_item_t -> widget_t[arrowhead=empty]
+   slider_t -> widget_t[arrowhead=empty]
+   progress_bar_t -> widget_t[arrowhead=empty]
 
    app_bar_t -> widget_t[arrowhead=empty]
    row_t -> widget_t[arrowhead=empty]

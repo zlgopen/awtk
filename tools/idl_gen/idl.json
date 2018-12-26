@@ -21593,7 +21593,7 @@
       }
     ],
     "header": "widgets/button.h",
-    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[button\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
+    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
     "name": "button_t",
     "parent": "widget_t",
     "annotation": {
@@ -21698,7 +21698,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/calibration_win.h",
-    "desc": " 电阻屏校准窗口。\r\n \r\n calibration\\_win\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于calibration\\_win\\_t控件。\r\n\r\n 在xml中使用\"calibration\\_win\"标签创建电阻屏校准窗口。如：\r\n\r\n ```xml\r\n <calibration_win name=\"cali\" w=\"100%\" h=\"100%\" text=\"Please click the center of cross\">\r\n </calibration_win>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/calibration_win.xml)\r\n\r\n 在c代码中使用函数calibration\\_win\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);\r\n ```\r\n\r\n 通过calibration\\_win\\_set\\_on\\_done注册回调函数，用于保存校准数据。\r\n\r\n",
+    "desc": " 电阻屏校准窗口。\r\n\r\n calibration\\_win\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于calibration\\_win\\_t控件。\r\n\r\n 在xml中使用\"calibration\\_win\"标签创建电阻屏校准窗口。如：\r\n\r\n ```xml\r\n <calibration_win name=\"cali\" w=\"100%\" h=\"100%\" text=\"Please click the center of cross\">\r\n </calibration_win>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/calibration_win.xml)\r\n\r\n 在c代码中使用函数calibration\\_win\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);\r\n ```\r\n\r\n 通过calibration\\_win\\_set\\_on\\_done注册回调函数，用于保存校准数据。\r\n\r\n",
     "name": "calibration_win_t",
     "parent": "widget_t",
     "level": 2
@@ -24628,7 +24628,7 @@
       }
     ],
     "header": "widgets/progress_bar.h",
-    "desc": " 进度条控件。\r\n",
+    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)\r\n\r\n",
     "name": "progress_bar_t",
     "parent": "widget_t",
     "annotation": {
@@ -24971,7 +24971,7 @@
       }
     ],
     "header": "widgets/slider.h",
-    "desc": " 滑块控件。\r\n",
+    "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)\r\n\r\n",
     "name": "slider_t",
     "parent": "widget_t",
     "annotation": {
