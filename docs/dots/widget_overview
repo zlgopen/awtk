@@ -17,6 +17,8 @@ digraph G {
    window_base_t -> widget_t[arrowhead=empty]
    label_t -> widget_t[arrowhead=empty]
    button_t -> widget_t[arrowhead=empty]
+   color_tile_t -> widget_t[arrowhead=empty]
+
    app_bar_t -> widget_t[arrowhead=empty]
    row_t -> widget_t[arrowhead=empty]
    column_t -> widget_t[arrowhead=empty]

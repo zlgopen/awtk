@@ -42,6 +42,9 @@ static ret_t color_tile_get_prop(widget_t* widget, const char* name, value_t* v)
   if (tk_str_eq(name, WIDGET_PROP_BG_COLOR)) {
     value_set_str(v, color_tile->bg_color);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_uint32(v, color_tile->bg.color);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BORDER_COLOR)) {
     value_set_str(v, color_tile->border_color);
     return RET_OK;
@@ -55,6 +58,10 @@ static ret_t color_tile_set_prop(widget_t* widget, const char* name, const value
 
   if (tk_str_eq(name, WIDGET_PROP_BG_COLOR)) {
     return color_tile_set_bg_color(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    color_t c;
+    c.color = value_int(v);
+    return color_tile_set_value(widget, c);
   } else if (tk_str_eq(name, WIDGET_PROP_BORDER_COLOR)) {
     return color_tile_set_border_color(widget, value_str(v));
   }
@@ -93,15 +100,9 @@ widget_t* color_tile_cast(widget_t* widget) {
 }
 
 ret_t color_tile_set_bg_color(widget_t* widget, const char* color) {
-  color_tile_t* color_tile = COLOR_TILE(widget);
-  return_value_if_fail(color_tile != NULL && color != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && color != NULL, RET_BAD_PARAMS);
 
-  color_tile->bg = color_parse_simple(color);
-  color_hex_str(color_tile->bg, color_tile->bg_color);
-
-  widget_invalidate(widget, NULL);
-
-  return RET_OK;
+  return color_tile_set_value(widget, color_parse_simple(color));
 }
 
 ret_t color_tile_set_border_color(widget_t* widget, const char* color) {
@@ -120,10 +121,18 @@ ret_t color_tile_set_value(widget_t* widget, color_t color) {
   color_tile_t* color_tile = COLOR_TILE(widget);
   return_value_if_fail(color_tile != NULL, RET_BAD_PARAMS);
 
-  color_tile->bg = color;
-  color_hex_str(color_tile->bg, color_tile->bg_color);
+  if (color_tile->bg.color != color.color) {
+    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    widget_dispatch(widget, &e);
 
-  widget_invalidate(widget, NULL);
+    color_tile->bg = color;
+    color_hex_str(color_tile->bg, color_tile->bg_color);
+
+    e = event_init(EVT_VALUE_CHANGED, widget);
+    widget_dispatch(widget, &e);
+
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
