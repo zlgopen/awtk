@@ -339,9 +339,8 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
-  progress_bar_set_value(progress_bar, value);
-
+  int32_t value = (PROGRESS_BAR(progress_bar)->value + 20);
+  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
   (void)e;
   return RET_OK;
 }
@@ -349,8 +348,8 @@ static ret_t on_inc(void* ctx, event_t* e) {
 static ret_t on_dec(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 90) % 100;
-  progress_bar_set_value(progress_bar, value);
+  int32_t value = PROGRESS_BAR(progress_bar)->value - 20;
+  widget_animate_value_to(progress_bar, tk_max(0, value), 500);
 
   (void)e;
   return RET_OK;

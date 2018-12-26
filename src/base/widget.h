@@ -544,6 +544,19 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t widget_set_value(widget_t* widget, int32_t value);
 
 /**
+ * @method widget_animate_value_to
+ * 设置控件的值(以动画形式变化到指定的值)。
+ * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  value 值。
+ * @param {uint32_t}  duration 动画持续时间(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration);
+
+/**
  * @method widget_add_value
  * 增加控件的值。
  * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。

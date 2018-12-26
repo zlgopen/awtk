@@ -113,6 +113,18 @@ ret_t widget_add_value(widget_t* widget, int32_t delta) {
   return widget_set_value(widget, widget_get_value(widget) + delta);
 }
 
+ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration) {
+  if (duration == 0) {
+    return widget_set_value(widget, value);
+  } else {
+    char params[64];
+    tk_snprintf(params, sizeof(params) - 1, "value(to=%d, duration=%d)", value, duration);
+
+    widget_destroy_animator(widget, "value");
+    return widget_create_animator(widget, params);
+  }
+}
+
 bool_t widget_is_window_opened(widget_t* widget) {
   int32_t stage =
       widget_get_prop_int(widget_get_window(widget), WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
