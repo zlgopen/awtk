@@ -35,6 +35,7 @@
 | <a href="#widget_t_widget_add_child">widget\_add\_child</a> | 加入一个子控件。 |
 | <a href="#widget_t_widget_add_timer">widget\_add\_timer</a> | 创建定时器。 |
 | <a href="#widget_t_widget_add_value">widget\_add\_value</a> | 增加控件的值。 |
+| <a href="#widget_t_widget_animate_value_to">widget\_animate\_value\_to</a> | 设置控件的值(以动画形式变化到指定的值)。 |
 | <a href="#widget_t_widget_cast">widget\_cast</a> | 转换为widget对象(供脚本语言使用)。 |
 | <a href="#widget_t_widget_child">widget\_child</a> | 查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。 |
 | <a href="#widget_t_widget_child_on">widget\_child\_on</a> | 为指定名称的子控件注册指定事件的处理函数。 |
@@ -259,6 +260,31 @@ ret_t widget_add_value (widget_t* widget, int32_t delta);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | delta | int32\_t | 增量。 |
+#### widget\_animate\_value\_to 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_animate_value_to"> 设置控件的值(以动画形式变化到指定的值)。
+ 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_animate_value_to (widget_t* widget, int32_t value, uint32_t duration);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| value | int32\_t | 值。 |
+| duration | uint32\_t | 动画持续时间(毫秒)。 |
 #### widget\_cast 函数
 -----------------------
 
@@ -1725,7 +1751,7 @@ ret_t widget_set_sensitive (widget_t* widget, bool_t sensitive);
 * 函数原型：
 
 ```
-ret_t widget_set_state (widget_t* widget, widget_state_t state);
+ret_t widget_set_state (widget_t* widget, const char* state);
 ```
 
 * 参数说明：
@@ -1734,7 +1760,7 @@ ret_t widget_set_state (widget_t* widget, widget_state_t state);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| state | widget\_state\_t | 状态。 |
+| state | const char* | 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。 |
 #### widget\_set\_text 函数
 -----------------------
 

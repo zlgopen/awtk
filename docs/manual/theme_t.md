@@ -123,7 +123,7 @@ ret_t theme_destroy (theme_t* theme);
 * 函数原型：
 
 ```
-theme_t* theme_find_style (theme_t* data, const char* widget_type, const char* name, widget_state_t widget_state);
+theme_t* theme_find_style (theme_t* data, const char* widget_type, const char* name, const char* widget_state);
 ```
 
 * 参数说明：
@@ -134,7 +134,7 @@ theme_t* theme_find_style (theme_t* data, const char* widget_type, const char* n
 | data | theme\_t* | 主题对象。 |
 | widget\_type | const char* | 控件的类型名。 |
 | name | const char* | style的名称。 |
-| widget\_state | widget\_state\_t | 控件的状态。 |
+| widget\_state | const char* | 控件的状态。 |
 #### theme\_init 函数
 -----------------------
 
