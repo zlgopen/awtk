@@ -29,12 +29,12 @@ TEST(FontManager, basic) {
   font_manager_deinit(&font_manager);
 }
 
-#include "font_loader/font_loader_stb.h"
+#include "font_loader/font_loader_truetype.h"
 
 TEST(FontManager, loader) {
   font_manager_t font_manager;
 
-  font_manager_init(&font_manager, font_loader_stb());
+  font_manager_init(&font_manager, font_loader_truetype());
   ASSERT_EQ(font_manager_find(&font_manager, "ap", 20) != NULL, true);
   font_manager_deinit(&font_manager);
 }

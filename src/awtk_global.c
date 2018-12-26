@@ -44,9 +44,7 @@
 #define clip_board_create clip_board_default_create
 #endif /*WITH_SDL*/
 
-#ifdef WITH_STB_FONT
-#include "font_loader/font_loader_stb.h"
-#endif /*WITH_STB_FONT*/
+#include "font_loader/font_loader_truetype.h"
 
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"
@@ -58,9 +56,9 @@ static ret_t tk_add_font(const asset_info_t* res) {
     font_manager_add(font_manager(), font_bitmap_create(res->name, res->data, res->size));
 #endif
   } else if (res->subtype == ASSET_TYPE_FONT_TTF) {
-#ifdef WITH_STB_FONT
-    font_manager_add(font_manager(), font_stb_create(res->name, res->data, res->size));
-#endif /*WITH_STB_FONT*/
+#ifdef WITH_TRUETYPE_FONT
+    font_manager_add(font_manager(), font_truetype_create(res->name, res->data, res->size));
+#endif /*WITH_TRUETYPE_FONT*/
   } else {
     log_debug("not support font type:%d\n", res->subtype);
   }
@@ -96,11 +94,11 @@ ret_t tk_init_internal(void) {
   image_loader = image_loader_stb();
 #endif /*WITH_STB_IMAGE*/
 
-#ifdef WITH_STB_FONT
-  font_loader = font_loader_stb();
+#ifdef WITH_TRUETYPE_FONT
+  font_loader = font_loader_truetype();
 #elif defined(WITH_BITMAP_FONT)
   font_loader = font_loader_bitmap();
-#endif /*WITH_STB_FONT*/
+#endif /*WITH_TRUETYPE_FONT*/
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
 

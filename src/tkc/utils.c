@@ -21,6 +21,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
 
