@@ -11,7 +11,7 @@
 * [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
 
 #### 窗口
-* [window\_base\](manual/window_base_t.md) 窗口基类。
+* [window\_base](manual/window_base_t.md) 窗口基类。
 * [dialog](manual/dialog_t.md) 对话框。
 * [popup](manual/popup_t.md) 弹出窗口。
 * [window](manual/window_t.md) 普通窗口。
@@ -34,14 +34,14 @@
 * [progress\_bar](manual/progress_bar_t.md) 进度条控件。
 
 #### 通用容器控件
-* [row\_t](manual/row_t.md) 行控件。
-* [column\_t](manual/column_t.md) 列控件。
-* [grid\_t](manual/grid_t.md) 网格控件。
-* [view\_t](manual/view_t.md) 通用容器控件。
-* [grid\_item\_t](manual/grid_item_t.md) 网格项控件。
-* [group\_box\_t](manual/group_box_t.md) 通用分组控件。
-* [app\_bar\_t](manual/app_bar_t.md) app\_bar控件。
-* [button\_group\_t](manual/button_group_t.md) 按钮分组控件。
+* [row](manual/row_t.md) 行控件。
+* [column](manual/column_t.md) 列控件。
+* [grid](manual/grid_t.md) 网格控件。
+* [view](manual/view_t.md) 通用容器控件。
+* [grid\_item](manual/grid_item_t.md) 网格项控件。
+* [group\_box](manual/group_box_t.md) 通用分组控件。
+* [app\_bar](manual/app_bar_t.md) app\_bar控件。
+* [button\_group](manual/button_group_t.md) 按钮分组控件。
 
 ### 输入法
 
