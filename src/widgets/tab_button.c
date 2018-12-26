@@ -160,7 +160,7 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static ret_t tab_button_destroy(widget_t* widget) {
+static ret_t tab_button_on_destroy(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
 
   TKMEM_FREE(tab_button->icon);
@@ -179,7 +179,7 @@ static const widget_vtable_t s_tab_button_vtable = {
     .on_paint_self = tab_button_on_paint_self,
     .get_prop = tab_button_get_prop,
     .set_prop = tab_button_set_prop,
-    .destroy = tab_button_destroy};
+    .on_destroy = tab_button_on_destroy};
 
 ret_t tab_button_set_icon(widget_t* widget, const char* name) {
   tab_button_t* tab_button = TAB_BUTTON(widget);

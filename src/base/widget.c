@@ -1471,8 +1471,8 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   widget->destroying = FALSE;
 
   if (widget_recycle(widget) != RET_OK) {
-    if (widget->vt->destroy) {
-      widget->vt->destroy(widget);
+    if (widget->vt->on_destroy) {
+      widget->vt->on_destroy(widget);
     }
 
     TKMEM_FREE(widget->name);

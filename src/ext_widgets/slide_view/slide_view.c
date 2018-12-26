@@ -623,7 +623,7 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t slide_view_destroy(widget_t* widget) {
+static ret_t slide_view_on_destroy(widget_t* widget) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   if (slide_view->timer_id) {
     timer_remove(slide_view->timer_id);
@@ -648,7 +648,7 @@ static const widget_vtable_t s_slide_view_vtable = {
     .find_target = slide_view_find_target,
     .on_paint_children = slide_view_on_paint_children,
     .on_paint_self = slide_view_on_paint_self,
-    .destroy = slide_view_destroy};
+    .on_destroy = slide_view_on_destroy};
 
 ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);

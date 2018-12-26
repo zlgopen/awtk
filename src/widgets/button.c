@@ -156,7 +156,7 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
   return RET_NOT_FOUND;
 }
 
-static ret_t button_destroy(widget_t* widget) {
+static ret_t button_on_destroy(widget_t* widget) {
   return button_remove_timer(widget);
 }
 
@@ -194,7 +194,7 @@ static const widget_vtable_t s_button_vtable = {
     .set_prop = button_set_prop,
     .get_prop = button_get_prop,
     .get_prop_default_value = button_get_prop_default_value,
-    .destroy = button_destroy,
+    .on_destroy = button_on_destroy,
     .recycle = button_recycle,
     .on_paint_self = widget_on_paint_self_default};
 

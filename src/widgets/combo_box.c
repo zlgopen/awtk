@@ -47,7 +47,7 @@ const char* s_combo_box_properties[] = {WIDGET_PROP_MIN,
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
-static ret_t combo_box_destroy(widget_t* widget) {
+static ret_t combo_box_on_destroy(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
 
   str_reset(&(combo_box->text));
@@ -143,7 +143,7 @@ static const widget_vtable_t s_combo_box_vtable = {
     .set_prop = combo_box_set_prop,
     .get_prop = combo_box_get_prop,
     .on_layout_children = combo_box_on_layout_children,
-    .destroy = combo_box_destroy,
+    .on_destroy = combo_box_on_destroy,
     .on_event = edit_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

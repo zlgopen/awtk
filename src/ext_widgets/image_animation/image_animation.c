@@ -93,7 +93,7 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
   return RET_NOT_FOUND;
 }
 
-static ret_t image_animation_destroy(widget_t* widget) {
+static ret_t image_animation_on_destroy(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
   if (image_animation->timer_id != TK_INVALID_ID) {
@@ -110,7 +110,7 @@ static const widget_vtable_t s_image_animation_vtable = {
     .size = sizeof(image_animation_t),
     .type = WIDGET_TYPE_IMAGE_ANIMATION,
     .create = image_animation_create,
-    .destroy = image_animation_destroy,
+    .on_destroy = image_animation_on_destroy,
     .get_prop = image_animation_get_prop,
     .set_prop = image_animation_set_prop,
     .on_paint_self = image_animation_on_paint_self};

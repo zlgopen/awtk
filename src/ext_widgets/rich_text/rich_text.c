@@ -176,7 +176,7 @@ static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_
   return RET_NOT_FOUND;
 }
 
-static ret_t rich_text_destroy(widget_t* widget) {
+static ret_t rich_text_on_destroy(widget_t* widget) {
   return rich_text_reset(widget);
 }
 
@@ -187,7 +187,7 @@ static const widget_vtable_t s_rich_text_vtable = {.size = sizeof(rich_text_t),
                                                    .clone_properties = s_rich_text_clone_properties,
                                                    .on_event = rich_text_on_event,
                                                    .set_prop = rich_text_set_prop,
-                                                   .destroy = rich_text_destroy,
+                                                   .on_destroy = rich_text_on_destroy,
                                                    .on_paint_self = rich_text_on_paint_self};
 
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

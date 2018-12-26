@@ -1122,7 +1122,7 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
   return RET_OK;
 }
 
-static ret_t edit_destroy(widget_t* widget) {
+static ret_t edit_on_destroy(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   if (edit->timer_id != TK_INVALID_ID) {
     timer_remove(edit->timer_id);
@@ -1170,7 +1170,7 @@ static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .on_paint_self = edit_on_paint_self,
                                               .set_prop = edit_set_prop,
                                               .get_prop = edit_get_prop,
-                                              .destroy = edit_destroy,
+                                              .on_destroy = edit_on_destroy,
                                               .on_event = edit_on_event};
 
 widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t h,

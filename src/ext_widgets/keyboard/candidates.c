@@ -144,7 +144,7 @@ static ret_t candidates_update_candidates(widget_t* widget, const char* strs, ui
   return RET_OK;
 }
 
-static ret_t candidates_destroy_default(widget_t* widget) {
+static ret_t candidates_on_destroy_default(widget_t* widget) {
   candidates_t* candidates = CANDIDATES(widget);
   input_method_off(input_method(), candidates->event_id);
 
@@ -161,7 +161,7 @@ static const widget_vtable_t s_candidates_vtable = {.size = sizeof(candidates_t)
                                                     .type = WIDGET_TYPE_CANDIDATES,
                                                     .create = candidates_create,
                                                     .on_paint_self = candidates_on_paint_self,
-                                                    .destroy = candidates_destroy_default};
+                                                    .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);

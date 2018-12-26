@@ -195,7 +195,7 @@ widget_t* image_base_cast(widget_t* widget);
 
 /*public for subclass*/
 widget_t* image_base_init(widget_t* widget);
-ret_t image_base_destroy(widget_t* widget);
+ret_t image_base_on_destroy(widget_t* widget);
 ret_t image_base_on_event(widget_t* widget, event_t* e);
 ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v);

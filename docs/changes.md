@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/12/26
+  * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
+
 * 2018/12/25
   * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar/system\_bar
   * 修改idle\_info\_destroy的BUG(感谢尧燊提供补丁)。

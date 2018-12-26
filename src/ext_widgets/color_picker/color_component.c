@@ -127,7 +127,7 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t color_component_destroy(widget_t* widget) {
+static ret_t color_component_on_destroy(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
   bitmap_destroy(&(color_component->image));
@@ -139,7 +139,7 @@ static const widget_vtable_t s_color_component_vtable = {
     .size = sizeof(color_component_t),
     .type = WIDGET_TYPE_COLOR_COMPONENT,
     .create = color_component_create,
-    .destroy = color_component_destroy,
+    .on_destroy = color_component_on_destroy,
     .on_event = color_component_on_event,
     .on_paint_self = color_component_on_paint_self};
 

@@ -156,7 +156,7 @@ static ret_t digit_clock_on_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t digit_clock_destroy(widget_t* widget) {
+static ret_t digit_clock_on_destroy(widget_t* widget) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
 
   TKMEM_FREE(digit_clock->format);
@@ -175,7 +175,7 @@ static const widget_vtable_t s_digit_clock_vtable = {
     .on_paint_self = widget_on_paint_self_default,
     .set_prop = digit_clock_set_prop,
     .get_prop = digit_clock_get_prop,
-    .destroy = digit_clock_destroy};
+    .on_destroy = digit_clock_on_destroy};
 
 widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   digit_clock_t* digit_clock = TKMEM_ZALLOC(digit_clock_t);

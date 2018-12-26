@@ -130,7 +130,7 @@ static ret_t image_value_set_prop(widget_t* widget, const char* name, const valu
   return RET_NOT_FOUND;
 }
 
-static ret_t image_value_destroy(widget_t* widget) {
+static ret_t image_value_on_destroy(widget_t* widget) {
   image_value_t* image_value = IMAGE_VALUE(widget);
 
   TKMEM_FREE(image_value->image);
@@ -142,7 +142,7 @@ static ret_t image_value_destroy(widget_t* widget) {
 static const widget_vtable_t s_image_value_vtable = {.size = sizeof(image_value_t),
                                                      .type = WIDGET_TYPE_IMAGE_VALUE,
                                                      .create = image_value_create,
-                                                     .destroy = image_value_destroy,
+                                                     .on_destroy = image_value_on_destroy,
                                                      .get_prop = image_value_get_prop,
                                                      .set_prop = image_value_set_prop,
                                                      .on_paint_self = image_value_on_paint_self};
