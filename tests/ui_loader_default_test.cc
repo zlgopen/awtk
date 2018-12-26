@@ -9,7 +9,7 @@
   desc.layout.y = yy;                 \
   desc.layout.w = ww;                 \
   desc.layout.h = hh;                 \
-  strncpy(desc.type, tt, NAME_LEN);
+  strncpy(desc.type, tt, TK_NAME_LEN);
 
 TEST(UILoader, basic) {
   uint8_t data[1024];

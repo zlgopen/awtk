@@ -91,7 +91,7 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
     value_set_bool(v, combo_box_item->checked);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
-    value_set_int(v, widget_get_state_for_style(widget, combo_box_item->checked));
+    value_set_str(v, widget_get_state_for_style(widget, FALSE, combo_box_item->checked));
     return RET_OK;
   }
 

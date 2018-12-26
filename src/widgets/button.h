@@ -31,13 +31,57 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  * 按钮控件。
+ *
+ * 点击按钮之后会触发EVT\_CLICK事件，注册EVT\_CLICK事件以执行特定操作。
+ *
+ * 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。
+ *
+ * button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于button\_t控件。
+ *
+ * 在xml中使用"button"标签创建按钮控件。如：
+ *
+ * ```xml
+ * <button x="c" y="m" w="80" h="30" text="OK"/>
+ * ```
+ *
+ * >
+ * 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ *
+ * 在c代码中使用函数button\_create创建按钮控件。如：
+ *
+ * ```c
+ *  widget_t* button = button_create(win, 10, 10, 128, 30);
+ *  widget_set_text(button, L"OK");
+ *  widget_on(button, EVT_CLICK, on_click, NULL);
+ * ```
+ *
+ * > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
+ *
+ * > 完整示例请参考：[button
+ * demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
+ *
+ * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ *
+ * ```xml
+ *  <style name="default" border_color="#a0a0a0"  text_color="black">
+ *   <normal     bg_color="#f0f0f0" />
+ *   <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+ *   <over       bg_color="#e0e0e0" />
+ *   <disable    bg_color="gray" text_color="#d0d0d0" />
+ * </style>
+ * ```
+ *
+ * > 更多用法请参考：[theme
+ * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
+ *
  */
 typedef struct _button_t {
   widget_t widget;
   /**
    * @property {int32_t} repeat
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 重复释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+   * 重复触发EVT\_CLICK事件的时间间隔。
+   * 为0则不重复触发EVT\_CLICK事件。
    */
   int32_t repeat;
 
@@ -83,10 +127,10 @@ widget_t* button_cast(widget_t* widget);
 
 /**
  * @method button_set_repeat
- * 设置释放EVT_CLICK事件的时间间隔。为0则不重复释放EVT_CLICK事件。
+ * 设置触发EVT\_CLICK事件的时间间隔。为0则不重复触发EVT\_CLICK事件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  repeat 释放EVT_CLICK事件的时间间隔(毫秒)。
+ * @param {int32_t}  repeat 触发EVT_CLICK事件的时间间隔(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

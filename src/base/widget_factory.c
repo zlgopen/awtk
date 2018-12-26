@@ -58,7 +58,7 @@
 
 static widget_factory_t* s_widget_factory = NULL;
 typedef struct _creator_item_t {
-  char type[NAME_LEN + 1];
+  char type[TK_NAME_LEN + 1];
   widget_create_t create;
 } creator_item_t;
 
@@ -135,7 +135,7 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
   return_value_if_fail(item != NULL, RET_OOM);
 
   item->create = create;
-  tk_strncpy(item->type, type, NAME_LEN);
+  tk_strncpy(item->type, type, TK_NAME_LEN);
   array_push(&(factory->creators), item);
 
   return RET_OK;
@@ -181,14 +181,14 @@ ret_t widget_factory_deinit(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
   items = (creator_item_t**)(factory->creators.elms);
-  return_value_if_fail(items != NULL, RET_OOM);
+  if (items != NULL) {
+    for (i = 0, nr = factory->creators.size; i < nr; i++) {
+      iter = items[i];
+      TKMEM_FREE(iter);
+    }
 
-  for (i = 0, nr = factory->creators.size; i < nr; i++) {
-    iter = items[i];
-    TKMEM_FREE(iter);
+    array_deinit(&(factory->creators));
   }
-
-  array_deinit(&(factory->creators));
 
   return RET_OK;
 }

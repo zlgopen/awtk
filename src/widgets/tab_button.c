@@ -130,7 +130,7 @@ static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v)
     value_set_bool(v, tab_button->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
-    value_set_int(v, widget_get_state_for_style(widget, tab_button->value));
+    value_set_str(v, widget_get_state_for_style(widget, tab_button->value, FALSE));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MIN_W)) {
     value_set_int(v, tab_button_get_min_w(widget));
@@ -160,7 +160,7 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static ret_t tab_button_destroy(widget_t* widget) {
+static ret_t tab_button_on_destroy(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
 
   TKMEM_FREE(tab_button->icon);
@@ -179,7 +179,7 @@ static const widget_vtable_t s_tab_button_vtable = {
     .on_paint_self = tab_button_on_paint_self,
     .get_prop = tab_button_get_prop,
     .set_prop = tab_button_set_prop,
-    .destroy = tab_button_destroy};
+    .on_destroy = tab_button_on_destroy};
 
 ret_t tab_button_set_icon(widget_t* widget, const char* name) {
   tab_button_t* tab_button = TAB_BUTTON(widget);

@@ -40,7 +40,7 @@ static int char_cmp(const void* a, const void* b) {
 }
 
 ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename) {
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
   uint32_t size = font_gen_buff(font, font_size, str, buff, MAX_BUFF_SIZE);
 

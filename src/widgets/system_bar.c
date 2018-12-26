@@ -96,7 +96,7 @@ static const widget_vtable_t s_system_bar_vtable = {
     .on_paint_self = window_base_on_paint_self,
     .on_paint_begin = window_base_on_paint_begin,
     .on_paint_end = window_base_on_paint_end,
-    .destroy = window_base_destroy};
+    .on_destroy = window_base_on_destroy};
 
 widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   system_bar_t* system_bar = TKMEM_ZALLOC(system_bar_t);

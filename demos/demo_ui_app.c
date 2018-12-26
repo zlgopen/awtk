@@ -273,6 +273,16 @@ static ret_t on_quit_app(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_combo_box_changed(void* ctx, event_t* e) {
+  widget_t* combo_box = WIDGET(ctx);
+  widget_t* win = widget_get_window(combo_box);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+
+  widget_set_tr_text(value, combo_box_get_text(combo_box));
+
+  return RET_OK;
+}
+
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_remove_child(widget->parent, widget);
@@ -329,9 +339,8 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
-  progress_bar_set_value(progress_bar, value);
-
+  int32_t value = (PROGRESS_BAR(progress_bar)->value + 20);
+  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
   (void)e;
   return RET_OK;
 }
@@ -339,8 +348,8 @@ static ret_t on_inc(void* ctx, event_t* e) {
 static ret_t on_dec(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 90) % 100;
-  progress_bar_set_value(progress_bar, value);
+  int32_t value = PROGRESS_BAR(progress_bar)->value - 20;
+  widget_animate_value_to(progress_bar, tk_max(0, value), 500);
 
   (void)e;
   return RET_OK;
@@ -408,6 +417,8 @@ static ret_t install_one(void* ctx, const void* iter) {
         widget_on(widget, EVT_CLICK, on_quit_app, win);
       }
     }
+  } else if (tk_str_eq(widget->vt->type, "combo_box")) {
+    widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);
   }
   (void)ctx;
 

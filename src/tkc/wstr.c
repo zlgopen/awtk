@@ -248,6 +248,10 @@ bool_t wstr_equal(wstr_t* str, wstr_t* other) {
     return TRUE;
   }
 
+  if (str->str == NULL || other->str == NULL) {
+    return FALSE;
+  }
+
   return wcscmp(str->str, other->str) == 0;
 }
 

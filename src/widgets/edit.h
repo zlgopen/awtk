@@ -52,7 +52,58 @@ typedef struct _input_limit_t {
  * @class edit_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * 文本控件。
+ * 单行编辑器控件。
+ *
+ * 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。
+ *
+ * 在使用内置的输入法时，软键盘由输入类型决定，开发者可以自定义软键盘的界面。
+ *
+ * edit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于edit\_t控件。
+ *
+ * edit\_t本身可以做为容器，放入按钮等控件。有三个类按钮比较特殊：
+ *
+ * * 名为"inc"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。
+ * * 名为"dec"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。
+ * * 名为"clear"的按钮。点击时清除编辑器中的内容。
+ *
+ *在xml中使用"edit"标签创建编辑器控件。如：
+ *
+ * ```xml
+ * <edit x="c" y="m" w="80" h="30"
+ *   tips="age" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
+ * ```
+ *
+ * > XXX：需要在min/max/step之前设置input\_type。
+ *
+ * >
+ *更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
+ *
+ * 在c代码中使用函数edit\_create创建编辑器控件。如：
+ *
+ * ```c
+ *  widget_t* edit = edit_create(win, 10, 10, 128, 30);
+ *  widget_set_text(edit, L"OK");
+ * ```
+ *
+ * > 创建之后，可以用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
+ *
+ * > 完整示例请参考：[edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)
+ *
+ * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ *
+ * ```xml
+ * <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+ *   <normal     bg_color="#f0f0f0" />
+ *   <focused    bg_color="#f0f0f0" border_color="black"/>
+ *   <disable    bg_color="gray" text_color="#d0d0d0" />
+ *   <error      bg_color="#f0f0f0" text_color="red" />
+ *   <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+ * </style>
+ * ```
+ *
+ * > 更多用法请参考：[theme
+ *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+ *
  */
 typedef struct _edit_t {
   widget_t widget;
@@ -110,25 +161,27 @@ typedef struct _edit_t {
   /**
    * @property {input_type_t} input_type
    * @annotation ["set_prop","get_prop","persitent","design"]
-   * 输入类型。XXX：需要在min/max/step之前设置。
+   * 输入类型。
+   * XXX：需要在min/max/step之前设置。
    */
 
   /**
-   * @property {char*} min
+   * @property {float_t} min
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 最小值或最小长度。
    */
 
   /**
-   * @property {char*} max
+   * @property {float_t} max
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 最大值或最大长度。
    */
 
   /**
-   * @property {char*} step
+   * @property {float_t} step
    * @annotation ["set_prop","get_prop","persitent","design"]
    * 步长。
+   * 作为数值型编辑器时，一次增加和减少时的数值。
    */
 
   /*private*/

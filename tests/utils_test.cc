@@ -160,12 +160,12 @@ TEST(Utils, tk_strncpy) {
 }
 
 TEST(Utils, filename_to_name) {
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
 
-  filename_to_name("test.png", name, NAME_LEN);
+  filename_to_name("test.png", name, TK_NAME_LEN);
   ASSERT_EQ(string(name), string("test"));
 
-  filename_to_name("/a/test.png", name, NAME_LEN);
+  filename_to_name("/a/test.png", name, TK_NAME_LEN);
   ASSERT_EQ(string(name), string("test"));
 }
 

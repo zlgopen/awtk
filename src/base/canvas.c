@@ -525,7 +525,6 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
       y += font_size;
       x = left;
     } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
-      // look good more
       xy_t xx = x + g.x;
       xy_t yy = y + font_size + g.y;
 

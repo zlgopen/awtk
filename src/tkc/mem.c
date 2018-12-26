@@ -438,7 +438,11 @@ void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line) 
 void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line) {
   void* newptr = tk_realloc_impl(ptr, size);
 
-  if (newptr != ptr) {
+  if (newptr == ptr) {
+    return newptr;
+  }
+
+  if (ptr != NULL) {
     tk_remove_record(ptr);
   }
 

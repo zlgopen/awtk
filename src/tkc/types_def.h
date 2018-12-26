@@ -229,8 +229,8 @@ typedef bool_t (*tk_is_valid_t)(void* data);
 typedef int (*tk_compare_t)(const void* a, const void* b);
 typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 
-/*NAME_LEN+1 must aligned to 4*/
-enum { NAME_LEN = 31 };
+/*TK_NAME_LEN+1 must aligned to 4*/
+enum { TK_NAME_LEN = 31 };
 
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)

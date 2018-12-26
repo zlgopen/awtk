@@ -115,7 +115,9 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
       }
 
       emitter_dispatch(&(animator->emitter), &e);
-    } else {
+    }
+
+    if (animator->repeat_times == 0 && animator->yoyo_times == 0) {
       event_t e = event_init(EVT_ANIM_END, animator);
       emitter_dispatch(&(animator->emitter), &e);
 

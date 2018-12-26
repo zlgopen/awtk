@@ -90,7 +90,7 @@ static ret_t text_selector_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t text_selector_destroy(widget_t* widget) {
+static ret_t text_selector_on_destroy(widget_t* widget) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   str_reset(&(text_selector->text));
@@ -383,7 +383,7 @@ static const widget_vtable_t s_text_selector_vtable = {
     .on_paint_self = text_selector_on_paint_self,
     .set_prop = text_selector_set_prop,
     .get_prop = text_selector_get_prop,
-    .destroy = text_selector_destroy,
+    .on_destroy = text_selector_on_destroy,
     .on_event = text_selector_on_event};
 
 widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

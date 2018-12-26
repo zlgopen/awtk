@@ -186,7 +186,6 @@
 #include "assets/inc/images/slider_bg.res"
 #include "assets/inc/images/right_on.res"
 #include "assets/inc/images/guage_pointer.res"
-#include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/progress_circle.res"
@@ -235,7 +234,6 @@
 #include "assets/inc/images/earth.data"
 #include "assets/inc/images/shift.data"
 #include "assets/inc/images/arrow_up_p.data"
-#include "assets/inc/images/bg800x480.data"
 #include "assets/inc/images/discovery_active.data"
 #include "assets/inc/images/en.data"
 #include "assets/inc/images/right_on.data"
@@ -347,15 +345,8 @@
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/pointer_4.bsvg"
 #include "assets/inc/images/china.bsvg"
-#include "assets/inc/images/pointer_2.bsvg"
-#include "assets/inc/images/boy.bsvg"
-#include "assets/inc/images/circle_cs.bsvg"
-#include "assets/inc/images/language.bsvg"
-#include "assets/inc/images/pointer_3.bsvg"
-#include "assets/inc/images/pointer_left.bsvg"
 #include "assets/inc/images/pointer_1.bsvg"
 #include "assets/inc/images/pointer.bsvg"
-#include "assets/inc/images/pointer_red.bsvg"
 #include "assets/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_STB_FONT
@@ -472,7 +463,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_earth);
   assets_manager_add(rm, image_shift);
   assets_manager_add(rm, image_arrow_up_p);
-  assets_manager_add(rm, image_bg800x480);
   assets_manager_add(rm, image_discovery_active);
   assets_manager_add(rm, image_en);
   assets_manager_add(rm, image_right_on);
@@ -600,15 +590,8 @@ ret_t assets_init(void) {
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);
-  assets_manager_add(rm, image_pointer_2);
-  assets_manager_add(rm, image_boy);
-  assets_manager_add(rm, image_circle_cs);
-  assets_manager_add(rm, image_language);
-  assets_manager_add(rm, image_pointer_3);
-  assets_manager_add(rm, image_pointer_left);
   assets_manager_add(rm, image_pointer_1);
   assets_manager_add(rm, image_pointer);
-  assets_manager_add(rm, image_pointer_red);
   assets_manager_add(rm, image_girl);
 #endif /*WITH_VGCANVAS*/
 #endif

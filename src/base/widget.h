@@ -60,10 +60,12 @@ typedef ret_t (*widget_on_add_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_remove_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
+typedef ret_t (*widget_get_prop_default_value_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-typedef ret_t (*widget_destroy_t)(widget_t* widget);
+typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
+typedef ret_t (*widget_recycle_t)(widget_t* widget);
 
 typedef struct _widget_vtable_t {
   uint32_t size;
@@ -87,6 +89,7 @@ typedef struct _widget_vtable_t {
 
   widget_create_t create;
   widget_get_prop_t get_prop;
+  widget_get_prop_default_value_t get_prop_default_value;
   widget_set_prop_t set_prop;
   widget_on_keyup_t on_keyup;
   widget_on_keydown_t on_keydown;
@@ -105,7 +108,8 @@ typedef struct _widget_vtable_t {
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
   widget_find_target_t find_target;
-  widget_destroy_t destroy;
+  widget_recycle_t recycle;
+  widget_on_destroy_t on_destroy;
 } widget_vtable_t;
 
 /**
@@ -195,7 +199,7 @@ struct _widget_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * style的名称。
    */
-  const char* style;
+  char* style;
   /**
    * @property {char*} animation
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -214,6 +218,12 @@ struct _widget_t {
    * 是否可见。
    */
   uint8_t visible : 1;
+  /**
+   * @property {bool_t} sensitive
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * 是否接受用户事件。
+   */
+  uint8_t sensitive : 1;
   /**
    * @property {bool_t} focused
    * @annotation ["readable"]
@@ -261,7 +271,7 @@ struct _widget_t {
    * @annotation ["readable"]
    * 控件的状态(取值参考widget_state_t)。
    */
-  uint8_t state;
+  const char* state;
   /**
    * @property {uint8_t} opacity
    * @annotation ["readable"]
@@ -532,6 +542,19 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_value(widget_t* widget, int32_t value);
+
+/**
+ * @method widget_animate_value_to
+ * 设置控件的值(以动画形式变化到指定的值)。
+ * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  value 值。
+ * @param {uint32_t}  duration 动画持续时间(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration);
 
 /**
  * @method widget_add_value
@@ -816,11 +839,11 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused);
  * @method widget_set_state
  * 设置控件的状态。
  * @param {widget_t*} widget 控件对象。
- * @param {widget_state_t} state 状态。
+ * @param {const char*} state 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_state(widget_t* widget, widget_state_t state);
+ret_t widget_set_state(widget_t* widget, const char* state);
 
 /**
  * @method widget_set_opacity
@@ -930,6 +953,17 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
 ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
 
 /**
+ * @method widget_set_sensitive
+ * 设置控件是否接受用户事件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} sensitive 是否接受用户事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
+
+/**
  * @method widget_on
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
@@ -1032,18 +1066,29 @@ ret_t widget_dispatch(widget_t* widget, event_t* e);
 
 /**
  * @method widget_get_prop
- * 通用的获取控件属性的函数。
+ * 获取控件指定属性的值。
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
- * @param {value_t*} v 属性的值。
+ * @param {value_t*} v 返回属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v);
 
 /**
+ * @method widget_get_prop_default_value
+ * 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {value_t*} v 返回属性的缺省值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t* v);
+
+/**
  * @method widget_set_prop
- * 通用的设置控件属性的函数。
+ * 设置控件指定属性的值。
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
  * @param {value_t*} v 属性的值。
@@ -1483,11 +1528,12 @@ ret_t widget_update_style(widget_t* widget);
  * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
  * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
- * @param {bool_t} active 控件是否为当前项或选中项。
+ * @param {bool_t} active 控件是否为当前项。
+ * @param {bool_t} checked 控件是否为选中项。
  *
- * @return {widget_state_t} 返回状态值。
+ * @return {const char*} 返回状态值。
  */
-widget_state_t widget_get_state_for_style(widget_t* widget, bool_t active);
+const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked);
 
 /**
  * @method widget_update_style_recursive
@@ -1570,6 +1616,8 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 #define WIDGET(w) ((widget_t*)(w))
+
+const char** widget_get_persistent_props(void);
 
 END_C_DECLS
 

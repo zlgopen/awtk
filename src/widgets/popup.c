@@ -117,7 +117,7 @@ static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .on_paint_self = window_base_on_paint_self,
                                                .on_paint_begin = window_base_on_paint_begin,
                                                .on_paint_end = window_base_on_paint_end,
-                                               .destroy = window_base_destroy};
+                                               .on_destroy = window_base_on_destroy};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   popup_t* popup = TKMEM_ZALLOC(popup_t);
@@ -130,4 +130,22 @@ widget_t* popup_cast(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt == &s_popup_vtable, NULL);
 
   return widget;
+}
+
+ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  popup->close_when_click = close_when_click;
+
+  return RET_OK;
+}
+
+ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_click_outside) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(widget != NULL, RET_FAIL);
+
+  popup->close_when_click_outside = close_when_click_outside;
+
+  return RET_OK;
 }

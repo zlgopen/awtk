@@ -31,7 +31,7 @@ struct _ui_builder_t;
 typedef struct _ui_builder_t ui_builder_t;
 
 typedef struct _widget_desc_t {
-  char type[NAME_LEN + 1];
+  char type[TK_NAME_LEN + 1];
   rect_t layout;
 } widget_desc_t;
 

@@ -49,7 +49,7 @@ widget_animator_t* widget_animator_prop_create(widget_t* widget, uint32_t durati
 
   prop = (widget_animator_prop_t*)animator;
   animator->update = widget_animator_prop_update;
-  tk_strncpy(prop->prop_name, prop_name, NAME_LEN);
+  tk_strncpy(prop->prop_name, prop_name, TK_NAME_LEN);
 
   return animator;
 }

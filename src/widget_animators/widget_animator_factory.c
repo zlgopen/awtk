@@ -50,8 +50,8 @@ typedef struct _prop_params_t {
 } prop_params_t;
 
 typedef struct _animator_params_t {
-  char type[NAME_LEN + 1];
-  char name[NAME_LEN + 1];
+  char type[TK_NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
 
   widget_t* widget;
   union {
@@ -84,7 +84,7 @@ static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
   widget_t* widget = p->params.widget;
   const char* type = p->params.type;
 
-  tk_strncpy(p->params.type, func_name, NAME_LEN);
+  tk_strncpy(p->params.type, func_name, TK_NAME_LEN);
   if (tk_str_eq(type, "move")) {
     move_params_t* params = &p->params.u.move;
 
@@ -182,7 +182,7 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
     }
     case 'n': /*name*/
     {
-      tk_strncpy(p->params.name, value, NAME_LEN);
+      tk_strncpy(p->params.name, value, TK_NAME_LEN);
       break;
     }
     case 'r': /*repeat_times*/

@@ -166,7 +166,7 @@ typedef struct _asset_info_t {
    * @annotation ["readable","scriptable"]
    * 名称。
    */
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   uint8_t data[4];
 } asset_info_t;
 

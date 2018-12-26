@@ -37,8 +37,8 @@ typedef struct _widget_animator_prop2_t {
   float_t to2;
   float_t from1;
   float_t from2;
-  char prop1_name[NAME_LEN + 1];
-  char prop2_name[NAME_LEN + 1];
+  char prop1_name[TK_NAME_LEN + 1];
+  char prop2_name[TK_NAME_LEN + 1];
 } widget_animator_prop2_t;
 
 /**

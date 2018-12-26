@@ -38,7 +38,7 @@ static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDO
                                                 .on_paint_end = window_base_on_paint_end,
                                                 .set_prop = window_base_set_prop,
                                                 .get_prop = window_base_get_prop,
-                                                .destroy = window_base_destroy};
+                                                .on_destroy = window_base_on_destroy};
 
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   window_t* win = TKMEM_ZALLOC(window_t);

@@ -135,7 +135,7 @@ TEST(ThemeGen, border) {
 }
 
 TEST(ThemeGen, active_state) {
-  uint8_t buff[1024];
+  uint8_t buff[10240];
   theme_t theme;
   color_t def = color_init(0, 0, 0, 0);
   const uint8_t* style_data = NULL;
@@ -177,7 +177,7 @@ TEST(ThemeGen, active_state) {
 }
 
 TEST(ThemeGen, selected_state) {
-  uint8_t buff[1024];
+  uint8_t buff[10240];
   theme_t theme;
   color_t def = color_init(0, 0, 0, 0);
   const uint8_t* style_data = NULL;
@@ -207,14 +207,14 @@ TEST(ThemeGen, selected_state) {
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
-                                WIDGET_STATE_NORMAL_OF_ACTIVE);
+                                WIDGET_STATE_NORMAL_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
-                                WIDGET_STATE_PRESSED_OF_ACTIVE);
+                                WIDGET_STATE_PRESSED_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
 
   style_data =
-      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_ACTIVE);
+      theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_CHECKED);
   ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
 }
