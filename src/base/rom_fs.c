@@ -57,6 +57,7 @@ rom_file_t* rom_fopen_buff(const uint8_t* data, uint32_t capacity) {
 size_t rom_fread(void* ptr, size_t size, size_t nitems, rom_file_t* f) {
   size_t available = 0;
   size_t nr = size * nitems;
+  return_value_if_fail(size > 0, 0);
   return_value_if_fail(ptr != NULL && f != NULL, 0);
 
   available = f->capacity - f->cursor;
