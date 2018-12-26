@@ -347,15 +347,8 @@
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/pointer_4.bsvg"
 #include "assets/inc/images/china.bsvg"
-#include "assets/inc/images/pointer_2.bsvg"
-#include "assets/inc/images/boy.bsvg"
-#include "assets/inc/images/circle_cs.bsvg"
-#include "assets/inc/images/language.bsvg"
-#include "assets/inc/images/pointer_3.bsvg"
-#include "assets/inc/images/pointer_left.bsvg"
 #include "assets/inc/images/pointer_1.bsvg"
 #include "assets/inc/images/pointer.bsvg"
-#include "assets/inc/images/pointer_red.bsvg"
 #include "assets/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_STB_FONT
@@ -600,15 +593,8 @@ ret_t assets_init(void) {
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);
-  assets_manager_add(rm, image_pointer_2);
-  assets_manager_add(rm, image_boy);
-  assets_manager_add(rm, image_circle_cs);
-  assets_manager_add(rm, image_language);
-  assets_manager_add(rm, image_pointer_3);
-  assets_manager_add(rm, image_pointer_left);
   assets_manager_add(rm, image_pointer_1);
   assets_manager_add(rm, image_pointer);
-  assets_manager_add(rm, image_pointer_red);
   assets_manager_add(rm, image_girl);
 #endif /*WITH_VGCANVAS*/
 #endif
