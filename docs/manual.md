@@ -16,9 +16,9 @@
 * [popup\_t](manual/popup_t.md) 弹出窗口。
 * [window\_t](manual/window_t.md) 普通窗口。
 * [system\_bar\_t](manual/system_bar_t.md) 系统状态窗口。
+* [calibration\_win\_t](manual/calibration_win_t.md) 电阻屏校准窗口。
 
-#### 控件
-
+#### 基本控件
 * [button\_t](manual/button_t.md) 按钮控件。
 * [label\_t](manual/label_t.md) 文本控件。
 * [edit\_t](manual/edit_t.md) 单行编辑器控件。
@@ -31,11 +31,12 @@
 * [dialog\_title\_t](manual/dialog_title_t.md) 对话框标题控件。
 * [dialog\_client\_t](manual/dialog_client_t.md) 对话框客户区控件。
 
+#### 通用容器控件
 * [row\_t](manual/row_t.md) 行控件。
 * [column\_t](manual/column_t.md) 列控件。
 * [grid\_t](manual/grid_t.md) 网格控件。
-* [grid\_item\_t](manual/grid_item_t.md) 网格项控件。
 * [view\_t](manual/view_t.md) 通用容器控件。
+* [grid\_item\_t](manual/grid_item_t.md) 网格项控件。
 * [group\_box\_t](manual/group_box_t.md) 通用分组控件。
 * [app\_bar\_t](manual/app_bar_t.md) app\_bar控件。
 * [button\_group\_t](manual/button_group.md) 按钮分组控件。
