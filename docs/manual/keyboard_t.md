@@ -10,16 +10,6 @@
 | -------- | ------------ | 
 | <a href="#keyboard_t_keyboard_close">keyboard\_close</a> | 关闭keyboard窗口。 |
 | <a href="#keyboard_t_keyboard_create">keyboard\_create</a> | 创建keyboard对象 |
-### 属性
-<p id="keyboard_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="keyboard_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### keyboard\_close 函数
 -----------------------
 

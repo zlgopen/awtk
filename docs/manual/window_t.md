@@ -50,16 +50,6 @@
 | <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
-### 属性
-<p id="window_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="window_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### window\_cast 函数
 -----------------------
 

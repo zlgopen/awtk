@@ -15,16 +15,6 @@
 | <a href="#clip_board_t_clip_board_set">clip\_board\_set</a> | 设置缺省的剪切板对象。 |
 | <a href="#clip_board_t_clip_board_set_data">clip\_board\_set\_data</a> | 设置数据到剪切板中。 |
 | <a href="#clip_board_t_clip_board_set_text">clip\_board\_set\_text</a> | 设置文本(UTF8)数据到剪切板。 |
-### 属性
-<p id="clip_board_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="clip_board_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### clip\_board 函数
 -----------------------
 

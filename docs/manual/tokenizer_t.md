@@ -22,11 +22,6 @@
 | <a href="#tokenizer_t_separtor">separtor</a> | char* | 字符串。 |
 | <a href="#tokenizer_t_size">size</a> | uint32\_t | 字符串的长度。 |
 | <a href="#tokenizer_t_str">str</a> | char* | 字符串。 |
-### 事件
-<p id="tokenizer_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### tokenizer\_deinit 函数
 -----------------------
 
@@ -176,12 +171,6 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### separtor 属性
 -----------------------
 > <p id="tokenizer_t_separtor"> 字符串。
@@ -194,12 +183,6 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### size 属性
 -----------------------
 > <p id="tokenizer_t_size"> 字符串的长度。
@@ -212,12 +195,6 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### str 属性
 -----------------------
 > <p id="tokenizer_t_str"> 字符串。
@@ -230,9 +207,3 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

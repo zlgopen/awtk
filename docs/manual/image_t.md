@@ -72,11 +72,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_t_draw_type">draw\_type</a> | image\_draw\_type\_t | 图片的绘制方式(仅在没有旋转和缩放时生效)。 |
-### 事件
-<p id="image_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### image\_cast 函数
 -----------------------
 
@@ -160,5 +155,5 @@ ret_t image_set_draw_type (widget_t* widget, image_draw_type_t draw_type);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

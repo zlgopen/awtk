@@ -31,11 +31,6 @@
 | <a href="#time_clock_t_minute_image">minute\_image</a> | char* | 分针图片。 |
 | <a href="#time_clock_t_second">second</a> | int32\_t | 秒。 |
 | <a href="#time_clock_t_second_image">second\_image</a> | char* | 秒针图片。 |
-### 事件
-<p id="time_clock_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### time\_clock\_cast 函数
 -----------------------
 
@@ -273,8 +268,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### hour 属性
 -----------------------
 > <p id="time_clock_t_hour"> 小时。
@@ -290,8 +285,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### hour\_image 属性
 -----------------------
 > <p id="time_clock_t_hour_image"> 时针图片。
@@ -307,8 +302,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="time_clock_t_image"> 中心图片。
@@ -324,8 +319,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### minute 属性
 -----------------------
 > <p id="time_clock_t_minute"> 分钟。
@@ -341,8 +336,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### minute\_image 属性
 -----------------------
 > <p id="time_clock_t_minute_image"> 分针图片。
@@ -358,8 +353,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### second 属性
 -----------------------
 > <p id="time_clock_t_second"> 秒。
@@ -375,8 +370,8 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### second\_image 属性
 -----------------------
 > <p id="time_clock_t_second_image"> 秒针图片。
@@ -392,5 +387,5 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

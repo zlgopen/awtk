@@ -20,16 +20,6 @@
 | <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_unref">assets\_manager\_unref</a> | 释放指定的资源。 |
-### 属性
-<p id="assets_manager_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="assets_manager_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### assets\_manager 函数
 -----------------------
 

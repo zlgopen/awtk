@@ -5,7 +5,7 @@
   * 增加函数：widget\_animate\_value\_to
   * 修改widget\_animator\_time\_elapse计算次数的BUG。
   * 整理控件API文档：color\_tile/calibration\_win/combo\_box\_item/button\_group
-  * 整理控件API文档：dialog\_title/dialog\_client/progress\_bar/slider
+  * 整理控件API文档：dialog\_title/dialog\_client/progress\_bar/slider/vgcanvas
 
 * 2018/12/25
   * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar/system\_bar

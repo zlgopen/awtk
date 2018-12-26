@@ -36,16 +36,6 @@
 | -------- | ------------ | 
 | <a href="#group_box_t_group_box_cast">group\_box\_cast</a> | 转换为group_box对象(供脚本语言使用)。 |
 | <a href="#group_box_t_group_box_create">group\_box\_create</a> | 创建group_box对象 |
-### 属性
-<p id="group_box_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="group_box_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### group\_box\_cast 函数
 -----------------------
 

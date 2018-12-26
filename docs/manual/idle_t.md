@@ -12,16 +12,6 @@
 | <a href="#idle_t_idle_queue">idle\_queue</a> | 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。 |
 | <a href="#idle_t_idle_remove">idle\_remove</a> | 删除指定的idle。 |
 | <a href="#idle_t_idle_set_on_destroy">idle\_set\_on\_destroy</a> | 设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。 |
-### 属性
-<p id="idle_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="idle_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### idle\_add 函数
 -----------------------
 

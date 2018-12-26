@@ -64,7 +64,8 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)
+ * [theme
+ * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)
  *
  */
 typedef struct _progress_bar_t {

@@ -6791,7 +6791,7 @@
       },
       {
         "name": "miter_limit",
-        "desc": " miter_limit。\n @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp\n\n",
+        "desc": " miter\\_limit。\n @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp\n\n",
         "type": "float_t",
         "annotation": {
           "readable": true
@@ -6799,7 +6799,7 @@
       },
       {
         "name": "line_cap",
-        "desc": " line_cap。\n @see http://www.w3school.com.cn/tags/canvas_linecap.asp\n\n",
+        "desc": " line\\_cap。\n @see http://www.w3school.com.cn/tags/canvas_linecap.asp\n\n",
         "type": "char*",
         "annotation": {
           "readable": true
@@ -6807,7 +6807,7 @@
       },
       {
         "name": "line_join",
-        "desc": " line_join。\n @see http://www.w3school.com.cn/tags/canvas_linejoin.asp\n\n",
+        "desc": " line\\_join。\n @see http://www.w3school.com.cn/tags/canvas_linejoin.asp\n\n",
         "type": "char*",
         "annotation": {
           "readable": true
@@ -6831,7 +6831,7 @@
       },
       {
         "name": "text_align",
-        "desc": " text_align。\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
+        "desc": " 文本对齐方式。\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
         "type": "char*",
         "annotation": {
           "readable": true
@@ -6839,7 +6839,7 @@
       },
       {
         "name": "text_baseline",
-        "desc": " text_baseline。\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
+        "desc": " 文本基线。\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
         "type": "char*",
         "annotation": {
           "readable": true
@@ -6871,7 +6871,7 @@
       }
     ],
     "header": "base/vgcanvas.h",
-    "desc": " 矢量图画布抽象基类。\n\n",
+    "desc": " 矢量图画布抽象基类。\n\n 具体实现时可以使用agg，nanovg, cairo和skia等方式。\n\n cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。\n\n 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。\n\n 我们对nanovg进行了一些改进:\n\n * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。\n\n * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。\n\n ```graphviz\n   [default_style]\n\n   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = \"empty\"]\n   opengl -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   bgfx -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agg -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agge -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   vgcanvas_skia_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_agge_t -> vgcanvas_t[arrowhead = \"empty\"]\n ```\n\n 示例：\n\n ```c\n   vgcanvas_t* vg = canvas_get_vgcanvas(c);\n   vgcanvas_save(vg);\n   vgcanvas_translate(vg, 0, 100);\n  \n   vgcanvas_set_line_width(vg, 1);\n   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));\n   vgcanvas_rect(vg, 5, 5, 100, 100);\n   vgcanvas_fill(vg);\n   vgcanvas_restore(vg);\n ```\n\n",
     "name": "vgcanvas_t",
     "level": 1
   },

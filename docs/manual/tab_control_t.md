@@ -10,16 +10,6 @@
 | -------- | ------------ | 
 | <a href="#tab_control_t_tab_control_cast">tab\_control\_cast</a> | 转换tab_control对象(供脚本语言使用)。 |
 | <a href="#tab_control_t_tab_control_create">tab\_control\_create</a> | 创建tab_control对象 |
-### 属性
-<p id="tab_control_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="tab_control_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### tab\_control\_cast 函数
 -----------------------
 

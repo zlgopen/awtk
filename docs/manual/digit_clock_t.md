@@ -17,11 +17,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#digit_clock_t_format">format</a> | char* | 显示格式。 |
-### 事件
-<p id="digit_clock_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### digit\_clock\_cast 函数
 -----------------------
 
@@ -123,5 +118,5 @@ ret_t digit_clock_set_format (widget_t* widget, const char* format);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

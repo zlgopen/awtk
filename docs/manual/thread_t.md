@@ -11,16 +11,6 @@
 | <a href="#thread_t_thread_destroy">thread\_destroy</a> | 销毁thread对象。 |
 | <a href="#thread_t_thread_join">thread\_join</a> | 等待线程退出。 |
 | <a href="#thread_t_thread_start">thread\_start</a> | 启动线程。 |
-### 属性
-<p id="thread_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="thread_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### thread\_create 函数
 -----------------------
 

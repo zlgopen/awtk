@@ -32,16 +32,6 @@
 | -------- | ------------ | 
 | <a href="#dialog_client_t_dialog_client_cast">dialog\_client\_cast</a> | 转换为dialog_client对象(供脚本语言使用)。 |
 | <a href="#dialog_client_t_dialog_client_create">dialog\_client\_create</a> | 创建dialog客户区对象。 |
-### 属性
-<p id="dialog_client_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="dialog_client_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### dialog\_client\_cast 函数
 -----------------------
 

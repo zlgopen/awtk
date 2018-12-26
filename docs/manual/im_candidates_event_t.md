@@ -30,11 +30,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#im_candidates_event_t_candidates">candidates</a> | char* | 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0 |
 | <a href="#im_candidates_event_t_candidates_nr">candidates\_nr</a> | uint32\_t | 可选的文本的个数。 |
-### 事件
-<p id="im_candidates_event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### input\_method 函数
 -----------------------
 
@@ -366,12 +361,6 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### candidates\_nr 属性
 -----------------------
 > <p id="im_candidates_event_t_candidates_nr"> 可选的文本的个数。
@@ -384,9 +373,3 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

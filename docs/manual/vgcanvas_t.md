@@ -2,6 +2,35 @@
 ### 概述
  矢量图画布抽象基类。
 
+ 具体实现时可以使用agg，nanovg, cairo和skia等方式。
+
+ cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。
+
+ 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。
+
+ 我们对nanovg进行了一些改进:
+
+ * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
+
+ * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。
+
+ ![image](images/vgcanvas_t_0.png)
+
+
+ 示例：
+
+ ```c
+   vgcanvas_t* vg = canvas_get_vgcanvas(c);
+   vgcanvas_save(vg);
+   vgcanvas_translate(vg, 0, 100);
+  
+   vgcanvas_set_line_width(vg, 1);
+   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
+   vgcanvas_rect(vg, 5, 5, 100, 100);
+   vgcanvas_fill(vg);
+   vgcanvas_restore(vg);
+ ```
+
 ### 函数
 <p id="vgcanvas_t_methods">
 
@@ -69,20 +98,15 @@
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
 | <a href="#vgcanvas_t_height">height</a> | wh\_t | canvas的高度 |
-| <a href="#vgcanvas_t_line_cap">line\_cap</a> | char* | line_cap。 |
-| <a href="#vgcanvas_t_line_join">line\_join</a> | char* | line_join。 |
+| <a href="#vgcanvas_t_line_cap">line\_cap</a> | char* | line\_cap。 |
+| <a href="#vgcanvas_t_line_join">line\_join</a> | char* | line\_join。 |
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
-| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter_limit。 |
+| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter\_limit。 |
 | <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
 | <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
-| <a href="#vgcanvas_t_text_align">text\_align</a> | char* | text_align。 |
-| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | char* | text_baseline。 |
+| <a href="#vgcanvas_t_text_align">text\_align</a> | char* | 文本对齐方式。 |
+| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | char* | 文本基线。 |
 | <a href="#vgcanvas_t_w">w</a> | wh\_t | canvas的宽度 |
-### 事件
-<p id="vgcanvas_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### vgcanvas\_arc 函数
 -----------------------
 
@@ -1355,12 +1379,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### fill\_color 属性
 -----------------------
 > <p id="vgcanvas_t_fill_color"> 填充颜色
@@ -1373,12 +1391,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### font 属性
 -----------------------
 > <p id="vgcanvas_t_font"> 字体。
@@ -1391,12 +1403,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### font\_size 属性
 -----------------------
 > <p id="vgcanvas_t_font_size"> 字体大小。
@@ -1409,12 +1415,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### global\_alpha 属性
 -----------------------
 > <p id="vgcanvas_t_global_alpha"> 全局alpha。
@@ -1427,12 +1427,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### height 属性
 -----------------------
 > <p id="vgcanvas_t_height"> canvas的高度
@@ -1445,15 +1439,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### line\_cap 属性
 -----------------------
-> <p id="vgcanvas_t_line_cap"> line_cap。
+> <p id="vgcanvas_t_line_cap"> line\_cap。
  @see http://www.w3school.com.cn/tags/canvas_linecap.asp
 
 
@@ -1464,15 +1452,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### line\_join 属性
 -----------------------
-> <p id="vgcanvas_t_line_join"> line_join。
+> <p id="vgcanvas_t_line_join"> line\_join。
  @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
 
 
@@ -1483,12 +1465,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### line\_width 属性
 -----------------------
 > <p id="vgcanvas_t_line_width"> 线宽。
@@ -1501,15 +1477,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### miter\_limit 属性
 -----------------------
-> <p id="vgcanvas_t_miter_limit"> miter_limit。
+> <p id="vgcanvas_t_miter_limit"> miter\_limit。
  @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
 
 
@@ -1520,12 +1490,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### ratio 属性
 -----------------------
 > <p id="vgcanvas_t_ratio"> 显示比例。
@@ -1538,12 +1502,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### stroke\_color 属性
 -----------------------
 > <p id="vgcanvas_t_stroke_color"> 线条颜色
@@ -1556,15 +1514,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### text\_align 属性
 -----------------------
-> <p id="vgcanvas_t_text_align"> text_align。
+> <p id="vgcanvas_t_text_align"> 文本对齐方式。
  @see http://www.w3school.com.cn/tags/canvas_textalign.asp
 
 
@@ -1575,15 +1527,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### text\_baseline 属性
 -----------------------
-> <p id="vgcanvas_t_text_baseline"> text_baseline。
+> <p id="vgcanvas_t_text_baseline"> 文本基线。
  @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
 
 
@@ -1594,12 +1540,6 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### w 属性
 -----------------------
 > <p id="vgcanvas_t_w"> canvas的宽度
@@ -1612,9 +1552,3 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

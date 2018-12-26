@@ -191,6 +191,45 @@ typedef struct _vgcanvas_vtable_t {
 /**
  * @class vgcanvas_t
  * 矢量图画布抽象基类。
+ *
+ * 具体实现时可以使用agg，nanovg, cairo和skia等方式。
+ *
+ * cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。
+ *
+ * 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。
+ *
+ * 我们对nanovg进行了一些改进:
+ *
+ * * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
+ *
+ * * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。
+ *
+ * ```graphviz
+ *   [default_style]
+ *
+ *   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = "empty"]
+ *   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = "empty"]
+ *   opengl -> vgcanvas_nanovg_t[arrowhead = "none"]
+ *   bgfx -> vgcanvas_nanovg_t[arrowhead = "none"]
+ *   agg -> vgcanvas_nanovg_t[arrowhead = "none"]
+ *   agge -> vgcanvas_nanovg_t[arrowhead = "none"]
+ *   vgcanvas_skia_t -> vgcanvas_t[arrowhead = "empty"]
+ *   vgcanvas_agge_t -> vgcanvas_t[arrowhead = "empty"]
+ * ```
+ *
+ * 示例：
+ *
+ * ```c
+ *   vgcanvas_t* vg = canvas_get_vgcanvas(c);
+ *   vgcanvas_save(vg);
+ *   vgcanvas_translate(vg, 0, 100);
+ *
+ *   vgcanvas_set_line_width(vg, 1);
+ *   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
+ *   vgcanvas_rect(vg, 5, 5, 100, 100);
+ *   vgcanvas_fill(vg);
+ *   vgcanvas_restore(vg);
+ * ```
  */
 struct _vgcanvas_t {
   /**
@@ -232,21 +271,21 @@ struct _vgcanvas_t {
   /**
    * @property {float_t} miter_limit
    * @annotation ["readable"]
-   * miter_limit。
+   * miter\_limit。
    * @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
    */
   float_t miter_limit;
   /**
    * @property {char*} line_cap
    * @annotation ["readable"]
-   * line_cap。
+   * line\_cap。
    * @see http://www.w3school.com.cn/tags/canvas_linecap.asp
    */
   const char* line_cap;
   /**
    * @property {char*} line_join
    * @annotation ["readable"]
-   * line_join。
+   * line\_join。
    * @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
    */
   const char* line_join;
@@ -265,14 +304,14 @@ struct _vgcanvas_t {
   /**
    * @property {char*} text_align
    * @annotation ["readable"]
-   * text_align。
+   * 文本对齐方式。
    * @see http://www.w3school.com.cn/tags/canvas_textalign.asp
    */
   const char* text_align;
   /**
    * @property {char*} text_baseline
    * @annotation ["readable"]
-   * text_baseline。
+   * 文本基线。
    * @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
    */
   const char* text_baseline;

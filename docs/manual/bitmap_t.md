@@ -28,11 +28,6 @@
 | <a href="#bitmap_t_line_length">line\_length</a> | uint32\_t | 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
 | <a href="#bitmap_t_name">name</a> | char* | 名称。 |
 | <a href="#bitmap_t_w">w</a> | wh\_t | 宽度。 |
-### 事件
-<p id="bitmap_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### bitmap\_create 函数
 -----------------------
 
@@ -257,12 +252,6 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### flags 属性
 -----------------------
 > <p id="bitmap_t_flags"> 标志。请参考{bitmap_flag_t}。
@@ -275,12 +264,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### format 属性
 -----------------------
 > <p id="bitmap_t_format"> 格式。请参考{bitmap_format_t}。
@@ -293,12 +277,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### h 属性
 -----------------------
 > <p id="bitmap_t_h"> 高度。
@@ -311,12 +290,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### line\_length 属性
 -----------------------
 > <p id="bitmap_t_line_length"> 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。
@@ -329,12 +303,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### name 属性
 -----------------------
 > <p id="bitmap_t_name"> 名称。
@@ -347,12 +316,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### w 属性
 -----------------------
 > <p id="bitmap_t_w"> 宽度。
@@ -365,9 +329,4 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

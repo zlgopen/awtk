@@ -26,11 +26,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#emitter_t_enable">enable</a> | bool\_t | 禁用标志。禁用时dispatch无效。 |
-### 事件
-<p id="emitter_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### emitter\_create 函数
 -----------------------
 
@@ -342,9 +337,3 @@ uint32_t emitter_size (emitter_t* emitter);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

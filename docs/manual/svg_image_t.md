@@ -10,16 +10,6 @@
 | -------- | ------------ | 
 | <a href="#svg_image_t_svg_image_cast">svg\_image\_cast</a> | 转换为svg_image对象(供脚本语言使用)。 |
 | <a href="#svg_image_t_svg_image_create">svg\_image\_create</a> | 创建svg_image对象 |
-### 属性
-<p id="svg_image_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="svg_image_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### svg\_image\_cast 函数
 -----------------------
 

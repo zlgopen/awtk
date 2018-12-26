@@ -13,16 +13,6 @@
 | <a href="#style_t_style_get_str">style\_get\_str</a> | 获取指定name的字符串格式的值。 |
 | <a href="#style_t_style_is_valid">style\_is\_valid</a> | 检查style对象是否有效 |
 | <a href="#style_t_style_notify_widget_state_changed">style\_notify\_widget\_state\_changed</a> | widget状态改变时，通知style更新数据。 |
-### 属性
-<p id="style_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="style_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### style\_destroy 函数
 -----------------------
 

@@ -22,11 +22,6 @@
 | <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd\_orientation\_t | 显示屏的旋转角度。 |
 | <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd\_type\_t | 显示屏的类型。 |
 | <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32\_t | 显示屏的宽度。 |
-### 事件
-<p id="system_info_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### system\_info 函数
 -----------------------
 
@@ -83,12 +78,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### app\_root 属性
 -----------------------
 > <p id="system_info_t_app_root"> 应用程序的根目录，用于定位资源文件。
@@ -101,12 +90,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### app\_type 属性
 -----------------------
 > <p id="system_info_t_app_type"> 应用程序的类型。
@@ -119,12 +102,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### device\_pixel\_ratio 属性
 -----------------------
 > <p id="system_info_t_device_pixel_ratio"> 显示屏的密度。
@@ -137,12 +114,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### lcd\_h 属性
 -----------------------
 > <p id="system_info_t_lcd_h"> 显示屏的高度。
@@ -155,12 +126,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### lcd\_orientation 属性
 -----------------------
 > <p id="system_info_t_lcd_orientation"> 显示屏的旋转角度。
@@ -173,12 +138,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### lcd\_type 属性
 -----------------------
 > <p id="system_info_t_lcd_type"> 显示屏的类型。
@@ -191,12 +150,6 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### lcd\_w 属性
 -----------------------
 > <p id="system_info_t_lcd_w"> 显示屏的宽度。
@@ -209,9 +162,3 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

@@ -42,16 +42,6 @@
 | -------- | ------------ | 
 | <a href="#grid_item_t_grid_item_cast">grid\_item\_cast</a> | 转换为grid_item对象(供脚本语言使用)。 |
 | <a href="#grid_item_t_grid_item_create">grid\_item\_create</a> | 创建grid_item对象 |
-### 属性
-<p id="grid_item_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="grid_item_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### grid\_item\_cast 函数
 -----------------------
 

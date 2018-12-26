@@ -9,16 +9,6 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#candidates_t_candidates_create">candidates\_create</a> | 创建candidates对象 |
-### 属性
-<p id="candidates_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="candidates_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### candidates\_create 函数
 -----------------------
 

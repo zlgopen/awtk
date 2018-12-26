@@ -24,11 +24,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#locale_info_t_country;">country;</a> | char* | 国家或地区。如：CN |
 | <a href="#locale_info_t_language">language</a> | char* | 语言。如：zh |
-### 事件
-<p id="locale_info_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### locale\_info 函数
 -----------------------
 
@@ -270,12 +265,6 @@ char* locale_info_tr (locale_info_t* locale_info, char* text);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### language 属性
 -----------------------
 > <p id="locale_info_t_language"> 语言。如：zh
@@ -288,9 +277,3 @@ char* locale_info_tr (locale_info_t* locale_info, char* text);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

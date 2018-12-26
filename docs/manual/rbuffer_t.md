@@ -27,11 +27,6 @@
 | <a href="#rbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区最大容量。 |
 | <a href="#rbuffer_t_cursor">cursor</a> | uint32\_t | 当前读取位置。 |
 | <a href="#rbuffer_t_data">data</a> | uint8\_t* | 缓存区。 |
-### 事件
-<p id="rbuffer_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### rbuffer\_has\_more 函数
 -----------------------
 
@@ -321,12 +316,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### cursor 属性
 -----------------------
 > <p id="rbuffer_t_cursor"> 当前读取位置。
@@ -339,12 +328,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### data 属性
 -----------------------
 > <p id="rbuffer_t_data"> 缓存区。
@@ -357,9 +340,3 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

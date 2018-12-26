@@ -43,6 +43,14 @@
 * [app\_bar](manual/app_bar_t.md) app\_bar控件。
 * [button\_group](manual/button_group_t.md) 按钮分组控件。
 
+### 画布
+
+#### 矢量图画布
+
+![vgcanvas\_overview](manual/images/vgcanvas_t_0.png)
+
+* [vgcanvas](manual/vgcanvas_t.md)
+
 ### 输入法
 
 ### 控件动画

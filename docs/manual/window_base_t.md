@@ -11,11 +11,6 @@
 
  > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如window\_t。
 
-### 函数
-<p id="window_base_t_methods">
-
-| 函数名称 | 说明 | 
-| -------- | ------------ | 
 ### 属性
 <p id="window_base_t_properties">
 
@@ -31,11 +26,6 @@
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
 | <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量主题数据。 |
-### 事件
-<p id="window_base_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### assets\_manager 属性
 -----------------------
 > <p id="window_base_t_assets_manager"> 获取资源管理器对象。
@@ -50,12 +40,8 @@
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 否 |
+| 支通过widget\_get\_prop读取 | 是 |
 #### closable 属性
 -----------------------
 > <p id="window_base_t_closable"> 收到EVT\_REQUEST\_CLOSE\_WINDOW是否自动关闭窗口。
@@ -79,8 +65,8 @@
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### close\_anim\_hint 属性
 -----------------------
 > <p id="window_base_t_close_anim_hint"> 关闭窗口动画的名称。
@@ -94,11 +80,10 @@
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
-| 可脚本化   | 否 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### font\_manager 属性
 -----------------------
 > <p id="window_base_t_font_manager"> 获取字体管理器对象。
@@ -113,12 +98,8 @@
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 否 |
+| 支通过widget\_get\_prop读取 | 是 |
 #### image\_manager 属性
 -----------------------
 > <p id="window_base_t_image_manager"> 获取图片管理器对象。
@@ -133,12 +114,8 @@
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 否 |
+| 支通过widget\_get\_prop读取 | 是 |
 #### open\_anim\_hint 属性
 -----------------------
 > <p id="window_base_t_open_anim_hint"> 打开窗口动画的名称。
@@ -152,11 +129,10 @@
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
-| 可脚本化   | 否 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### script 属性
 -----------------------
 > <p id="window_base_t_script"> 脚本文件名称(暂时没用)。
@@ -169,11 +145,10 @@
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
-| 可脚本化   | 否 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### stage 属性
 -----------------------
 > <p id="window_base_t_stage"> 窗口当前处于的状态。
@@ -185,12 +160,8 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 否 |
+| 支通过widget\_get\_prop读取 | 是 |
 #### theme 属性
 -----------------------
 > <p id="window_base_t_theme"> 主题资源的名称。
@@ -209,8 +180,8 @@
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### theme\_obj 属性
 -----------------------
 > <p id="window_base_t_theme_obj"> 窗口的常量主题数据。
@@ -225,9 +196,5 @@
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 否 |
+| 支通过widget\_get\_prop读取 | 是 |

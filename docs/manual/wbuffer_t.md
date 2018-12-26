@@ -23,11 +23,6 @@
 | <a href="#wbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区最大容量。 |
 | <a href="#wbuffer_t_cursor">cursor</a> | uint32\_t | 当前写入位置。 |
 | <a href="#wbuffer_t_data">data</a> | uint8\_t* | 缓存区。 |
-### 事件
-<p id="wbuffer_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### wbuffer\_init 函数
 -----------------------
 
@@ -226,12 +221,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### cursor 属性
 -----------------------
 > <p id="wbuffer_t_cursor"> 当前写入位置。
@@ -244,12 +233,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### data 属性
 -----------------------
 > <p id="wbuffer_t_data"> 缓存区。
@@ -262,9 +245,3 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

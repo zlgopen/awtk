@@ -19,11 +19,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#guage_t_draw_type">draw\_type</a> | image\_draw\_type\_t | 图片的绘制方式。 |
 | <a href="#guage_t_image">image</a> | char* | 背景图片。 |
-### 事件
-<p id="guage_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### guage\_cast 函数
 -----------------------
 
@@ -129,8 +124,8 @@ ret_t guage_set_image (widget_t* widget, char* name);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="guage_t_image"> 背景图片。
@@ -146,5 +141,5 @@ ret_t guage_set_image (widget_t* widget, char* name);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

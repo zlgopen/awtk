@@ -19,11 +19,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。图片须垂直向上，图片的中心点为旋转方向。 |
-### 事件
-<p id="guage_pointer_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### guage\_pointer\_cast 函数
 -----------------------
 
@@ -129,8 +124,8 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="guage_pointer_t_image"> 指针图片。图片须垂直向上，图片的中心点为旋转方向。
@@ -146,5 +141,5 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

@@ -11,16 +11,6 @@
 | <a href="#tk_mutex_t_tk_mutex_destroy">tk\_mutex\_destroy</a> | 销毁mutex对象。 |
 | <a href="#tk_mutex_t_tk_mutex_lock">tk\_mutex\_lock</a> | 加锁。 |
 | <a href="#tk_mutex_t_tk_mutex_unlock">tk\_mutex\_unlock</a> | 解锁。 |
-### 属性
-<p id="tk_mutex_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="tk_mutex_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### tk\_mutex\_create 函数
 -----------------------
 

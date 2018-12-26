@@ -16,16 +16,6 @@
 | <a href="#color_component_t_color_component_get_s">color\_component\_get\_s</a> | 获取s分量。 |
 | <a href="#color_component_t_color_component_get_v">color\_component\_get\_v</a> | 获取v分量。 |
 | <a href="#color_component_t_color_component_set_color">color\_component\_set\_color</a> | 设置颜色。 |
-### 属性
-<p id="color_component_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="color_component_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### color\_component\_create 函数
 -----------------------
 

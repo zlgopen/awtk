@@ -35,16 +35,6 @@
 | -------- | ------------ | 
 | <a href="#column_t_column_cast">column\_cast</a> | 转换为column对象(供脚本语言使用)。 |
 | <a href="#column_t_column_create">column\_create</a> | 创建column对象 |
-### 属性
-<p id="column_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="column_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### column\_cast 函数
 -----------------------
 

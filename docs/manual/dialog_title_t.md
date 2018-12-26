@@ -32,16 +32,6 @@
 | -------- | ------------ | 
 | <a href="#dialog_title_t_dialog_title_cast">dialog\_title\_cast</a> | 转换为dialog_title对象(供脚本语言使用)。 |
 | <a href="#dialog_title_t_dialog_title_create">dialog\_title\_create</a> | 创建dialog对象。 |
-### 属性
-<p id="dialog_title_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="dialog_title_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### dialog\_title\_cast 函数
 -----------------------
 

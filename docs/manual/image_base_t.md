@@ -38,11 +38,6 @@
 | <a href="#image_base_t_scale_y">scale\_y</a> | float\_t | 控件在Y方向上的缩放比例。 |
 | <a href="#image_base_t_selectable">selectable</a> | bool\_t | 是否设置选中状态。 |
 | <a href="#image_base_t_selected">selected</a> | bool\_t | 当前是否被选中。 |
-### 事件
-<p id="image_base_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### image\_base\_cast 函数
 -----------------------
 
@@ -235,8 +230,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### anchor\_y 属性
 -----------------------
 > <p id="image_base_t_anchor_y"> 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。
@@ -252,8 +247,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### clickable 属性
 -----------------------
 > <p id="image_base_t_clickable"> 点击时，是否触发EVT_CLICK事件。
@@ -269,8 +264,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="image_base_t_image"> 图片的名称。
@@ -286,8 +281,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### rotation 属性
 -----------------------
 > <p id="image_base_t_rotation"> 控件的旋转角度(幅度)。
@@ -303,8 +298,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### scale\_x 属性
 -----------------------
 > <p id="image_base_t_scale_x"> 控件在X方向上的缩放比例。
@@ -320,8 +315,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### scale\_y 属性
 -----------------------
 > <p id="image_base_t_scale_y"> 控件在Y方向上的缩放比例。
@@ -337,8 +332,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### selectable 属性
 -----------------------
 > <p id="image_base_t_selectable"> 是否设置选中状态。
@@ -354,8 +349,8 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### selected 属性
 -----------------------
 > <p id="image_base_t_selected"> 当前是否被选中。
@@ -367,9 +362,4 @@ ret_t image_set_selected (widget_t* widget, bool_t selected);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

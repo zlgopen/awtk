@@ -22,11 +22,6 @@
 | <a href="#date_time_t_month">month</a> | int32\_t | 月(1-12)。 |
 | <a href="#date_time_t_second">second</a> | int32\_t | 秒(0 - 59)。 |
 | <a href="#date_time_t_year">year</a> | int32\_t | 年。 |
-### 事件
-<p id="date_time_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### date\_time\_create 函数
 -----------------------
 
@@ -126,12 +121,6 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### hour 属性
 -----------------------
 > <p id="date_time_t_hour"> 时(0 - 23)。
@@ -144,12 +133,6 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### minute 属性
 -----------------------
 > <p id="date_time_t_minute"> 分(0 - 59)。
@@ -162,12 +145,6 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### month 属性
 -----------------------
 > <p id="date_time_t_month"> 月(1-12)。
@@ -180,12 +157,6 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### second 属性
 -----------------------
 > <p id="date_time_t_second"> 秒(0 - 59)。
@@ -198,12 +169,6 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### year 属性
 -----------------------
 > <p id="date_time_t_year"> 年。
@@ -216,9 +181,3 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

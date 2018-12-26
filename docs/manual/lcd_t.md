@@ -48,11 +48,6 @@
 | <a href="#lcd_t_text_color">text\_color</a> | color\_t | 文本颜色 |
 | <a href="#lcd_t_type">type</a> | lcd\_type\_t | LCD的类型。 |
 | <a href="#lcd_t_w">w</a> | wh\_t | 屏幕的宽度 |
-### 事件
-<p id="lcd_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### lcd\_begin\_frame 函数
 -----------------------
 
@@ -637,12 +632,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### fill\_color 属性
 -----------------------
 > <p id="lcd_t_fill_color"> 填充颜色
@@ -654,12 +643,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### font\_name 属性
 -----------------------
 > <p id="lcd_t_font_name"> 字体名称。
@@ -671,12 +654,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### font\_size 属性
 -----------------------
 > <p id="lcd_t_font_size"> 字体大小。
@@ -688,12 +665,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### global\_alpha 属性
 -----------------------
 > <p id="lcd_t_global_alpha"> 全局alpha
@@ -705,12 +676,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### height 属性
 -----------------------
 > <p id="lcd_t_height"> 屏幕的高度
@@ -722,12 +687,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### ratio 属性
 -----------------------
 > <p id="lcd_t_ratio"> 屏幕密度。
@@ -739,12 +698,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### stroke\_color 属性
 -----------------------
 > <p id="lcd_t_stroke_color"> 线条颜色
@@ -756,12 +709,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### support\_dirty\_rect 属性
 -----------------------
 > <p id="lcd_t_support_dirty_rect"> 是否支持脏矩形。
@@ -773,12 +720,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### text\_color 属性
 -----------------------
 > <p id="lcd_t_text_color"> 文本颜色
@@ -790,12 +731,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### type 属性
 -----------------------
 > <p id="lcd_t_type"> LCD的类型。
@@ -807,12 +742,6 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### w 属性
 -----------------------
 > <p id="lcd_t_w"> 屏幕的宽度
@@ -824,9 +753,3 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

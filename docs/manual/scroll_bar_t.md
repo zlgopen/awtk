@@ -28,11 +28,6 @@
 | <a href="#scroll_bar_t_row">row</a> | int32\_t | 行的高度。 |
 | <a href="#scroll_bar_t_value">value</a> | int32\_t | 当前的值。 |
 | <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32\_t | 虚拟宽度或高度。 |
-### 事件
-<p id="scroll_bar_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### scroll\_bar\_add\_delta 函数
 -----------------------
 
@@ -299,8 +294,8 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### row 属性
 -----------------------
 > <p id="scroll_bar_t_row"> 行的高度。
@@ -316,8 +311,8 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="scroll_bar_t_value"> 当前的值。
@@ -333,8 +328,8 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### virtual\_size 属性
 -----------------------
 > <p id="scroll_bar_t_virtual_size"> 虚拟宽度或高度。
@@ -350,5 +345,5 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

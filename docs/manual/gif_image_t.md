@@ -10,16 +10,6 @@
 | -------- | ------------ | 
 | <a href="#gif_image_t_gif_image_cast">gif\_image\_cast</a> | 转换为gif_image对象(供脚本语言使用)。 |
 | <a href="#gif_image_t_gif_image_create">gif\_image\_create</a> | 创建gif_image对象 |
-### 属性
-<p id="gif_image_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="gif_image_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### gif\_image\_cast 函数
 -----------------------
 

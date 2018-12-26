@@ -242,8 +242,8 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### min 属性
 -----------------------
 > <p id="slider_t_min"> 最小值。
@@ -259,8 +259,8 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### step 属性
 -----------------------
 > <p id="slider_t_step"> 拖动的最小单位。
@@ -276,8 +276,8 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="slider_t_value"> 值。
@@ -293,8 +293,8 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### vertical 属性
 -----------------------
 > <p id="slider_t_vertical"> 滑块的是否为垂直方向。
@@ -310,5 +310,5 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

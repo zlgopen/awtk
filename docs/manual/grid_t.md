@@ -36,16 +36,6 @@
 | -------- | ------------ | 
 | <a href="#grid_t_grid_cast">grid\_cast</a> | 转换为grid对象(供脚本语言使用)。 |
 | <a href="#grid_t_grid_create">grid\_create</a> | 创建grid对象 |
-### 属性
-<p id="grid_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="grid_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### grid\_cast 函数
 -----------------------
 

@@ -11,16 +11,6 @@
 | <a href="#window_animator_t_window_animator_create_for_open">window\_animator\_create\_for\_open</a> | 为打开窗口创建动画。 |
 | <a href="#window_animator_t_window_animator_destroy">window\_animator\_destroy</a> | 销毁窗口动画对象。 |
 | <a href="#window_animator_t_window_animator_update">window\_animator\_update</a> | 更新动画。 |
-### 属性
-<p id="window_animator_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="window_animator_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### window\_animator\_create\_for\_close 函数
 -----------------------
 

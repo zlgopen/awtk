@@ -20,11 +20,6 @@
 | <a href="#key_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
 | <a href="#key_event_t_key">key</a> | uint32\_t | 键值。 |
 | <a href="#key_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
-### 事件
-<p id="key_event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### key\_event\_cast 函数
 -----------------------
 
@@ -59,12 +54,7 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### capslock 属性
 -----------------------
 > <p id="key_event_t_capslock"> capslock键是否按下。
@@ -77,12 +67,7 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### ctrl 属性
 -----------------------
 > <p id="key_event_t_ctrl"> ctrl键是否按下。
@@ -95,12 +80,7 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### key 属性
 -----------------------
 > <p id="key_event_t_key"> 键值。
@@ -113,12 +93,7 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### shift 属性
 -----------------------
 > <p id="key_event_t_shift"> shift键是否按下。
@@ -131,9 +106,4 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
