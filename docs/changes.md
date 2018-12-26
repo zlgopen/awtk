@@ -3,6 +3,7 @@
   * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
   * 重命名NAME\_LEN为TK\_NAME\_LEN。
   * 增加函数：widget\_animate\_value\_to
+  * 修改widget\_animator\_time\_elapse计算次数的BUG。
 
 * 2018/12/25
   * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar/system\_bar
