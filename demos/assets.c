@@ -186,7 +186,6 @@
 #include "assets/inc/images/slider_bg.res"
 #include "assets/inc/images/right_on.res"
 #include "assets/inc/images/guage_pointer.res"
-#include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/progress_circle.res"
@@ -235,7 +234,6 @@
 #include "assets/inc/images/earth.data"
 #include "assets/inc/images/shift.data"
 #include "assets/inc/images/arrow_up_p.data"
-#include "assets/inc/images/bg800x480.data"
 #include "assets/inc/images/discovery_active.data"
 #include "assets/inc/images/en.data"
 #include "assets/inc/images/right_on.data"
@@ -465,7 +463,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_earth);
   assets_manager_add(rm, image_shift);
   assets_manager_add(rm, image_arrow_up_p);
-  assets_manager_add(rm, image_bg800x480);
   assets_manager_add(rm, image_discovery_active);
   assets_manager_add(rm, image_en);
   assets_manager_add(rm, image_right_on);
