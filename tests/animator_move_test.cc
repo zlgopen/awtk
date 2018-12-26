@@ -196,6 +196,9 @@ TEST(AnimatorMove, repeat) {
     ASSERT_EQ(button->y, 200);
 
     log += "once:";
+    if (i == 2) {
+      log += "end:";
+    }
     ASSERT_EQ(s_log, log);
   }
 
