@@ -72,22 +72,23 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
 
   g->data = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
   stbtt_GetCodepointHMetrics(sf, c, &advance, &lsb);
-  advance *= scale;
+
   g->x = x;
   g->y = y;
   g->w = w;
   g->h = h;
-  g->advance = advance;
+  g->advance = advance * scale;
 
-  glyph_cache_add(&(font->cache), c, font_size, g);
-  /*
-   *  for debug
-   * int x1 = 0;
-   * int y1 = 0;
-   * int x2 = 0;
-   * int y2 = 0;
-   * stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
-   */
+  if (g->data != NULL) {
+    glyph_t* gg = glyph_clone(g);
+    if (gg != NULL) {
+      glyph_cache_add(&(font->cache), c, font_size, gg);
+    } else {
+      STBTT_free(g->data, NULL);
+      log_warn("out of memory\n");
+      g->data = NULL;
+    }
+  }
 
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
@@ -103,9 +104,10 @@ static ret_t font_stb_destroy(font_t* f) {
 
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
-  if (g->data) {
+  if (g->data != NULL) {
     STBTT_free(g->data, NULL);
   }
+  glyph_destroy(g);
 
   return RET_OK;
 }

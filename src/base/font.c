@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/mem.h"
 #include "base/font.h"
 
 ret_t font_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size) {
@@ -45,4 +46,27 @@ ret_t font_destroy(font_t* f) {
   return_value_if_fail(f != NULL && f->destroy != NULL, RET_BAD_PARAMS);
 
   return f->destroy(f);
+}
+
+glyph_t* glyph_create(void) {
+  return TKMEM_ZALLOC(glyph_t);
+}
+
+glyph_t* glyph_clone(glyph_t* old) {
+  glyph_t* g = NULL;
+  return_value_if_fail(old != NULL, NULL);
+
+  g = glyph_create();
+  return_value_if_fail(g != NULL, NULL);
+  *g = *old;
+
+  return g;
+}
+
+ret_t glyph_destroy(glyph_t* g) {
+  return_value_if_fail(g != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(g);
+
+  return RET_OK;
 }

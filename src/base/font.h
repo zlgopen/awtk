@@ -40,6 +40,10 @@ typedef struct _glyph_t {
 } glyph_t;
 #pragma pack(pop)
 
+glyph_t* glyph_create(void);
+glyph_t* glyph_clone(glyph_t* g);
+ret_t glyph_destroy(glyph_t* g);
+
 typedef int32_t (*font_get_baseline_t)(font_t* f, uint16_t font_size);
 typedef bool_t (*font_match_t)(font_t* f, const char* name, uint16_t font_size);
 typedef ret_t (*font_find_glyph_t)(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size);
