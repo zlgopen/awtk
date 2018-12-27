@@ -95,7 +95,7 @@ static ret_t custom_props_extend(custom_props_t* props, int32_t size) {
     return RET_OK;
   }
 
-  new_props = TKMEM_REALLOC(custom_prop_t, props->props, capacity);
+  new_props = TKMEM_REALLOCT(custom_prop_t, props->props, capacity);
   if (new_props != NULL) {
     props->props = new_props;
     props->capacity = capacity;

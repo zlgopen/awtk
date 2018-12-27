@@ -59,16 +59,6 @@ system\_bar\_t是[window\_base\_t](window_base_t.md)的子类控件，
 | -------- | ------------ | 
 | <a href="#system_bar_t_system_bar_cast">system\_bar\_cast</a> | 转换为system_bar对象(供脚本语言使用)。 |
 | <a href="#system_bar_t_system_bar_create">system\_bar\_create</a> | 创建system_bar对象。 |
-### 属性
-<p id="system_bar_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="system_bar_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### system\_bar\_cast 函数
 -----------------------
 

@@ -20,11 +20,6 @@
 | <a href="#wheel_event_t_dx">dx</a> | int32\_t | 滚轮的x值。 |
 | <a href="#wheel_event_t_dy">dy</a> | int32\_t | 滚轮的x值。 |
 | <a href="#wheel_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
-### 事件
-<p id="wheel_event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### wheel\_event\_cast 函数
 -----------------------
 
@@ -59,12 +54,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### ctrl 属性
 -----------------------
 > <p id="wheel_event_t_ctrl"> ctrl键是否按下。
@@ -77,12 +67,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### dx 属性
 -----------------------
 > <p id="wheel_event_t_dx"> 滚轮的x值。
@@ -95,12 +80,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### dy 属性
 -----------------------
 > <p id="wheel_event_t_dy"> 滚轮的x值。
@@ -113,12 +93,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### shift 属性
 -----------------------
 > <p id="wheel_event_t_shift"> shift键是否按下。
@@ -131,9 +106,4 @@ wheel_event_t* wheel_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

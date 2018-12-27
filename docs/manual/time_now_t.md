@@ -11,16 +11,6 @@
 | -------- | ------------ | 
 | <a href="#time_now_t_time_now_ms">time\_now\_ms</a> | 获取当前时间(毫秒)。 |
 | <a href="#time_now_t_time_now_s">time\_now\_s</a> | 获取当前时间(秒)。 |
-### 属性
-<p id="time_now_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="time_now_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### time\_now\_ms 函数
 -----------------------
 

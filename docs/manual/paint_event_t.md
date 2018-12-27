@@ -16,11 +16,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#paint_event_t_c">c</a> | canvas\_t* | canvas。 |
-### 事件
-<p id="paint_event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### paint\_event\_cast 函数
 -----------------------
 
@@ -55,9 +50,4 @@ paint_event_t* paint_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

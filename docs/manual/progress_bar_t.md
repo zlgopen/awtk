@@ -3,6 +3,42 @@
 ![image](images/progress_bar_t_0.png)
 
  进度条控件。
+
+ 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。
+
+ progress\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_bar\_t控件。
+
+ 在xml中使用"progress\_bar"标签创建进度条控件。如：
+
+ ```xml
+  <progress_bar name="bar1" x="10" y="128" w="240" h="30" value="40"/>
+  <progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/>
+ ```
+
+ > 更多用法请参考：
+ [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)
+
+ 在c代码中使用函数progress\_bar\_create创建进度条控件。如：
+
+ ```c
+  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);
+ ```
+
+ > 完整示例请参考：
+ [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)
+
+ 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+ ```xml
+ <style>
+   <normal bg_color="#f0f0f0" text_color="gold" fg_color="#c0c0c0" border_color="#a0a0a0" />
+ </style>
+ ```
+
+ > 更多用法请参考：
+ [theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)
+
 ### 函数
 <p id="progress_bar_t_methods">
 
@@ -155,8 +191,8 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="progress_bar_t_value"> 进度条的值[0-100]。
@@ -172,8 +208,8 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### vertical 属性
 -----------------------
 > <p id="progress_bar_t_vertical"> 进度条的是否为垂直方向。
@@ -189,5 +225,5 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

@@ -22,7 +22,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
 #define STBI_MALLOC TKMEM_ALLOC
-#define STBI_REALLOC(p, s) TKMEM_REALLOC(char, p, s)
+#define STBI_REALLOC(p, s) TKMEM_REALLOC(p, s)
 
 #include "tkc/mem.h"
 

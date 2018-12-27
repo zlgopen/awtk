@@ -10,16 +10,6 @@
 | <a href="#custom_props_t_custom_props_destroy">custom\_props\_destroy</a> | 销毁属性集合。 |
 | <a href="#custom_props_t_custom_props_get">custom\_props\_get</a> | 获取属性的值。 |
 | <a href="#custom_props_t_custom_props_set">custom\_props\_set</a> | 设置属性的值。 |
-### 属性
-<p id="custom_props_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="custom_props_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### custom\_props\_create 函数
 -----------------------
 

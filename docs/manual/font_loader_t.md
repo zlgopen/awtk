@@ -8,16 +8,6 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#font_loader_t_font_loader_load">font\_loader\_load</a> | 加载字体。 |
-### 属性
-<p id="font_loader_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="font_loader_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### font\_loader\_load 函数
 -----------------------
 

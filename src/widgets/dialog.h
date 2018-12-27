@@ -35,6 +35,15 @@ BEGIN_C_DECLS
  * 对话框是一种特殊的窗口，大小和位置可以自由设置。
  * AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。
  *
+ * 对话框通常由对话框标题和对话框客户区两部分组成：
+ *
+ * ```graphviz
+ *   [default_style]
+ *
+ *   dialog_title_t -> dialog_t[arrowhead = "ediamond"]
+ *   dialog_client_t -> dialog_t[arrowhead = "ediamond"]
+ * ```
+ *
  * dialog\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于dialog\_t控件。
  *
  * 在xml中使用"dialog"标签创建对话框。如：

@@ -14,16 +14,6 @@
 | <a href="#timer_t_timer_queue">timer\_queue</a> | 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。 |
 | <a href="#timer_t_timer_remove">timer\_remove</a> | 删除指定的timer。 |
 | <a href="#timer_t_timer_set_on_destroy">timer\_set\_on\_destroy</a> | 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。 |
-### 属性
-<p id="timer_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="timer_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### timer\_add 函数
 -----------------------
 

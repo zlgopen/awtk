@@ -22,11 +22,6 @@
 | <a href="#pointer_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
 | <a href="#pointer_event_t_x">x</a> | xy\_t | x坐标。 |
 | <a href="#pointer_event_t_y">y</a> | xy\_t | y坐标。 |
-### 事件
-<p id="pointer_event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### pointer\_event\_cast 函数
 -----------------------
 
@@ -61,12 +56,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### button 属性
 -----------------------
 > <p id="pointer_event_t_button"> button。
@@ -79,12 +69,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### ctrl 属性
 -----------------------
 > <p id="pointer_event_t_ctrl"> ctrl键是否按下。
@@ -97,12 +82,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### pressed 属性
 -----------------------
 > <p id="pointer_event_t_pressed"> 指针是否按下。
@@ -115,12 +95,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### shift 属性
 -----------------------
 > <p id="pointer_event_t_shift"> shift键是否按下。
@@ -133,12 +108,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### x 属性
 -----------------------
 > <p id="pointer_event_t_x"> x坐标。
@@ -151,12 +121,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### y 属性
 -----------------------
 > <p id="pointer_event_t_y"> y坐标。
@@ -169,9 +134,4 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

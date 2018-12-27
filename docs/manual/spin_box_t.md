@@ -58,16 +58,6 @@
 | -------- | ------------ | 
 | <a href="#spin_box_t_spin_box_cast">spin\_box\_cast</a> | 转换为spin_box对象(供脚本语言使用)。 |
 | <a href="#spin_box_t_spin_box_create">spin\_box\_create</a> | 创建spin_box对象 |
-### 属性
-<p id="spin_box_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="spin_box_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### spin\_box\_cast 函数
 -----------------------
 

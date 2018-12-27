@@ -41,9 +41,15 @@
  */
 
 /**
- * 如果支持Truetype字体，请定义本宏
+ * 如果用stb支持Truetype字体，请定义本宏
  *
  * #define WITH_STB_FONT 1
+ */
+
+/**
+ * 如果用freetype支持Truetype字体，请定义本宏。
+ *
+ * #define WITH_FT_FONT 1
  */
 
 /**

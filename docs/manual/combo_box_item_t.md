@@ -3,6 +3,9 @@
 ![image](images/combo_box_item_t_0.png)
 
  ComboBox Item控件。
+
+ 本类仅供combo\_box控件内部使用。
+
 ### 函数
 <p id="combo_box_item_t_methods">
 
@@ -131,8 +134,8 @@ ret_t combo_box_item_set_value (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="combo_box_item_t_value"> 值。
@@ -148,5 +151,5 @@ ret_t combo_box_item_set_value (widget_t* widget, int32_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

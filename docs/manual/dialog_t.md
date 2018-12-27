@@ -7,6 +7,11 @@
  对话框是一种特殊的窗口，大小和位置可以自由设置。
  AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。
 
+ 对话框通常由对话框标题和对话框客户区两部分组成：
+
+ ![image](images/dialog_t_1.png)
+
+
  dialog\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于dialog\_t控件。
 
  在xml中使用"dialog"标签创建对话框。如：
@@ -101,16 +106,6 @@
 | <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。 |
 | <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示，关闭对话框。 |
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
-### 属性
-<p id="dialog_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="dialog_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### dialog\_cast 函数
 -----------------------
 

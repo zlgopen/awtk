@@ -25,11 +25,6 @@
 | <a href="#array_t_capacity">capacity</a> | uint16\_t | 数组的容量大小。 |
 | <a href="#array_t_elms">elms</a> | void** | 数组中的元素。 |
 | <a href="#array_t_size">size</a> | uint16\_t | 数组中元素的个数。 |
-### 事件
-<p id="array_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### array\_create 函数
 -----------------------
 
@@ -274,12 +269,6 @@ ret_t array_remove_all (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### elms 属性
 -----------------------
 > <p id="array_t_elms"> 数组中的元素。
@@ -292,12 +281,6 @@ ret_t array_remove_all (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### size 属性
 -----------------------
 > <p id="array_t_size"> 数组中元素的个数。
@@ -310,9 +293,3 @@ ret_t array_remove_all (array_t* array, tk_compare_t cmp, void* ctx, tk_destroy_
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

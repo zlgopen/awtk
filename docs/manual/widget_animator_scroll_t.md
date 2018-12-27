@@ -10,16 +10,6 @@
 | -------- | ------------ | 
 | <a href="#widget_animator_scroll_t_widget_animator_scroll_create">widget\_animator\_scroll\_create</a> | 创建动画对象。 |
 | <a href="#widget_animator_scroll_t_widget_animator_scroll_set_params">widget\_animator\_scroll\_set\_params</a> | 设置动画对象的参数。 |
-### 属性
-<p id="widget_animator_scroll_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="widget_animator_scroll_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### widget\_animator\_scroll\_create 函数
 -----------------------
 

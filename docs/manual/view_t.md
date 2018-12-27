@@ -31,16 +31,6 @@
 | -------- | ------------ | 
 | <a href="#view_t_view_cast">view\_cast</a> | 转换为view对象(供脚本语言使用)。 |
 | <a href="#view_t_view_create">view\_create</a> | 创建view对象 |
-### 属性
-<p id="view_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="view_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### view\_cast 函数
 -----------------------
 

@@ -19,11 +19,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#list_view_h_t_item_width">item\_width</a> | int32\_t | 列表项的宽度。 |
 | <a href="#list_view_h_t_spacing">spacing</a> | int32\_t | 间距。 |
-### 事件
-<p id="list_view_h_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### list\_view\_h\_cast 函数
 -----------------------
 
@@ -129,8 +124,8 @@ ret_t list_view_h_set_spacing (widget_t* widget, int32_t spacing);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### spacing 属性
 -----------------------
 > <p id="list_view_h_t_spacing"> 间距。
@@ -146,5 +141,5 @@ ret_t list_view_h_set_spacing (widget_t* widget, int32_t spacing);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

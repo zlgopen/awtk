@@ -64,11 +64,6 @@
 | -------- | ----- | ------------ | 
 | <a href="#popup_t_close_when_click">close\_when\_click</a> | bool\_t | 点击时是否关闭窗口。 |
 | <a href="#popup_t_close_when_click_outside">close\_when\_click\_outside</a> | bool\_t | 点击到窗口外时是否关闭窗口。 |
-### 事件
-<p id="popup_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### popup\_cast 函数
 -----------------------
 
@@ -174,8 +169,8 @@ ret_t popup_set_close_when_click_outside (widget_t* widget, bool_t close_when_cl
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### close\_when\_click\_outside 属性
 -----------------------
 > <p id="popup_t_close_when_click_outside"> 点击到窗口外时是否关闭窗口。
@@ -191,5 +186,5 @@ ret_t popup_set_close_when_click_outside (widget_t* widget, bool_t close_when_cl
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

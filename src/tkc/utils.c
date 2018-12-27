@@ -21,6 +21,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
 
@@ -529,7 +530,7 @@ char* tk_str_copy(char* dst, const char* src) {
   if (src != NULL) {
     uint32_t size = strlen(src) + 1;
     if (dst != NULL) {
-      char* str = TKMEM_REALLOC(char, dst, size);
+      char* str = TKMEM_REALLOCT(char, dst, size);
       return_value_if_fail(str != NULL, dst);
       memcpy(str, src, size);
       dst = str;
@@ -546,4 +547,30 @@ char* tk_str_copy(char* dst, const char* src) {
   }
 
   return dst;
+}
+
+int tk_watoi(const wchar_t* str) {
+  char num[TK_NUM_MAX_LEN + 1] = {0};
+  return_value_if_fail(str != NULL, 0);
+
+  utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
+
+  return tk_atoi(num);
+}
+
+bool_t tk_watob(const wchar_t* str) {
+  if (str == NULL || *str == 'f' || *str == 'F') {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+double tk_watof(const wchar_t* str) {
+  char num[TK_NUM_MAX_LEN + 1] = {0};
+  return_value_if_fail(str != NULL, 0);
+
+  utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
+
+  return tk_atof(num);
 }

@@ -42,14 +42,78 @@ void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line);
 void* tk_alloc(uint32_t size, const char* func, uint32_t line);
 void tk_free(void* ptr);
 
+/**
+ * @class tk_mem_t
+ * @annotation ["fake"]
+ * 内存管理相关的宏和函数。
+ *
+ * 示例：
+ *
+ * ```c
+ * char* str = (char*)TKMEM_ALLOC(100);
+ * ...
+ * TKMEM_FREE(str);
+ * ```
+ *
+ * ```c
+ * char* str = (char*)TKMEM_ALLOC(100);
+ * ...
+ * str = (char*)TKMEM_REALLOC(str, 128);
+ * ...
+ * TKMEM_FREE(str);
+ * ```
+ */
+
+/**
+ * @method TKMEM_ALLOC
+ * 分配一块内存。
+ *
+ * @annotation ["macro"]
+ * @param {uint32_t} size 内存大小。
+ *
+ * @return {void*} 成功返回内存块首地址，失败返回NULL。
+ */
 #define TKMEM_ALLOC(size) tk_alloc(size, __FUNCTION__, __LINE__)
+
+/**
+ * @method TKMEM_CALLOC
+ * 分配一块内存，并将内容清零。
+ *
+ * @annotation ["macro"]
+ * @param {uint32_t} nmemb 内存块数量。
+ * @param {uint32_t} size 每一块的大小。
+ *
+ * @return {void*} 成功返回内存块首地址，失败返回NULL。
+ */
 #define TKMEM_CALLOC(nmemb, size) tk_calloc(nmemb, size, __FUNCTION__, __LINE__)
+
+/**
+ * @method TKMEM_REALLOC
+ * 重新分配一块内存，如果原来的内存块大于等于需要的空间，直接返回原来的内存块。
+ *
+ * @annotation ["macro"]
+ * @param {void*} p 原来的内存地址。
+ * @param {uint32_t} size 每一块的大小。
+ *
+ * @return {void*} 成功返回内存块首地址，失败返回NULL。
+ */
+#define TKMEM_REALLOC(p, size) tk_realloc(p, size, __FUNCTION__, __LINE__)
+
+/**
+ * @method TKMEM_FREE
+ * 释放内存。
+ *
+ * @annotation ["macro"]
+ * @param {void*} p 内存地址。
+ *
+ * @return {void} 无。
+ */
+#define TKMEM_FREE(p) {tk_free((void*)p);  p = NULL;}
+
+/*helpler*/
 #define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type), __FUNCTION__, __LINE__)
 #define TKMEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type), __FUNCTION__, __LINE__)
-#define TKMEM_REALLOC(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type), __FUNCTION__, __LINE__)
-#define TKMEM_FREE(p) \
-  tk_free((void*)p);  \
-  p = NULL;
+#define TKMEM_REALLOCT(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type), __FUNCTION__, __LINE__)
 
 /*for memory debug*/
 typedef struct _mem_stat_t {

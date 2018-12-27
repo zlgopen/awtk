@@ -11,16 +11,6 @@
 | <a href="#tk_t_tk_quit">tk\_quit</a> | 退出TK事件主循环。 |
 | <a href="#tk_t_tk_run">tk\_run</a> | 进入TK事件主循环。 |
 | <a href="#tk_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。 |
-### 属性
-<p id="tk_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="tk_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### tk\_init 函数
 -----------------------
 

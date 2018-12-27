@@ -10,16 +10,6 @@
 | <a href="#style_factory_t_style_factory">style\_factory</a> | 获取缺省的style factory。 |
 | <a href="#style_factory_t_style_factory_create_style">style\_factory\_create\_style</a> | 创建style。 |
 | <a href="#style_factory_t_style_factory_set">style\_factory\_set</a> | 设置缺省的style factory(需要自定义的style factory才设置)。 |
-### 属性
-<p id="style_factory_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="style_factory_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### style\_factory 函数
 -----------------------
 

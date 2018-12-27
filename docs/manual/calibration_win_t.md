@@ -2,7 +2,29 @@
 ### 概述
 ![image](images/calibration_win_t_0.png)
 
- 电阻屏校准屏幕。
+ 电阻屏校准窗口。
+
+ calibration\_win\_t是[window\_base\_t](window_base_t.md)的子类控件，
+ window\_base\_t的函数均适用于calibration\_win\_t控件。
+
+ 在xml中使用"calibration\_win"标签创建电阻屏校准窗口。如：
+
+ ```xml
+ <calibration_win name="cali" w="100%" h="100%" text="Please click the center of cross">
+ </calibration_win>
+ ```
+
+ > 更多用法请参考：
+ [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/calibration_win.xml)
+
+ 在c代码中使用函数calibration\_win\_create创建窗口。如：
+
+ ```c
+  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);
+ ```
+
+ 通过calibration\_win\_set\_on\_done注册回调函数，用于保存校准数据。
+
 ### 函数
 <p id="calibration_win_t_methods">
 
@@ -11,16 +33,6 @@
 | <a href="#calibration_win_t_calibration_win_create">calibration\_win\_create</a> | 创建calibration_win对象 |
 | <a href="#calibration_win_t_calibration_win_set_on_click">calibration\_win\_set\_on\_click</a> | 设置校准点击事件的处理函数。 |
 | <a href="#calibration_win_t_calibration_win_set_on_done">calibration\_win\_set\_on\_done</a> | 设置校准完成的处理函数。 |
-### 属性
-<p id="calibration_win_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="calibration_win_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### calibration\_win\_create 函数
 -----------------------
 

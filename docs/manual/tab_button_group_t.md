@@ -16,11 +16,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tab_button_group_t_compact">compact</a> | bool\_t | 紧凑型排版子控件。 |
-### 事件
-<p id="tab_button_group_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### tab\_button\_group\_cast 函数
 -----------------------
 
@@ -82,5 +77,5 @@ widget_t* tab_button_group_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

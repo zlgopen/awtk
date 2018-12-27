@@ -2,11 +2,6 @@
 ### 概述
  单个资源的描述信息。
 
-### 函数
-<p id="asset_info_t_methods">
-
-| 函数名称 | 说明 | 
-| -------- | ------------ | 
 ### 属性
 <p id="asset_info_t_properties">
 
@@ -18,11 +13,6 @@
 | <a href="#asset_info_t_size">size</a> | uint32\_t | 大小。 |
 | <a href="#asset_info_t_subtype">subtype</a> | uint8\_t | 子类型。 |
 | <a href="#asset_info_t_type">type</a> | uint16\_t | 类型。 |
-### 事件
-<p id="asset_info_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### is\_in\_rom 属性
 -----------------------
 > <p id="asset_info_t_is_in_rom"> 资源是否在ROM中。
@@ -35,12 +25,7 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### name 属性
 -----------------------
 > <p id="asset_info_t_name"> 名称。
@@ -53,12 +38,7 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### refcount 属性
 -----------------------
 > <p id="asset_info_t_refcount"> 引用计数。is_in_rom == FALSE时才有效。
@@ -71,12 +51,7 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### size 属性
 -----------------------
 > <p id="asset_info_t_size"> 大小。
@@ -89,12 +64,7 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### subtype 属性
 -----------------------
 > <p id="asset_info_t_subtype"> 子类型。
@@ -107,12 +77,7 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### type 属性
 -----------------------
 > <p id="asset_info_t_type"> 类型。
@@ -125,9 +90,4 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

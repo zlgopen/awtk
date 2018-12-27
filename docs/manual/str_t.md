@@ -43,11 +43,6 @@
 | <a href="#str_t_capacity">capacity</a> | uint32\_t | 容量。 |
 | <a href="#str_t_size">size</a> | uint32\_t | 长度。 |
 | <a href="#str_t_str">str</a> | char* | 字符串。 |
-### 事件
-<p id="str_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### str\_append 函数
 -----------------------
 
@@ -708,12 +703,6 @@ ret_t str_unescape (str_t* str);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### size 属性
 -----------------------
 > <p id="str_t_size"> 长度。
@@ -726,12 +715,6 @@ ret_t str_unescape (str_t* str);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### str 属性
 -----------------------
 > <p id="str_t_str"> 字符串。
@@ -744,9 +727,3 @@ ret_t str_unescape (str_t* str);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
-| 可脚本化   | 否 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

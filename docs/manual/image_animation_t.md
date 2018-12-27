@@ -30,11 +30,6 @@
 | <a href="#image_animation_t_interval">interval</a> | uint32\_t | 每张图片播放的时间(毫秒)。 |
 | <a href="#image_animation_t_loop">loop</a> | bool\_t | 是否循环播放。 |
 | <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为:0-9,a-z,A-Z。 |
-### 事件
-<p id="image_animation_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### image\_animation\_cast 函数
 -----------------------
 
@@ -291,8 +286,8 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### delay 属性
 -----------------------
 > <p id="image_animation_t_delay"> 自动播放时延迟播放的时间(毫秒)。
@@ -308,8 +303,8 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="image_animation_t_image"> 图片名称的前缀。
@@ -325,8 +320,8 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### interval 属性
 -----------------------
 > <p id="image_animation_t_interval"> 每张图片播放的时间(毫秒)。
@@ -342,8 +337,8 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### loop 属性
 -----------------------
 > <p id="image_animation_t_loop"> 是否循环播放。
@@ -359,8 +354,8 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### sequence 属性
 -----------------------
 > <p id="image_animation_t_sequence"> 播放的序列，字符可选值为:0-9,a-z,A-Z。
@@ -376,5 +371,5 @@ ret_t image_animation_stop (widget_t* widget);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

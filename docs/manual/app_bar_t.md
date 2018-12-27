@@ -41,16 +41,6 @@
 | -------- | ------------ | 
 | <a href="#app_bar_t_app_bar_cast">app\_bar\_cast</a> | 转换为app_bar对象(供脚本语言使用)。 |
 | <a href="#app_bar_t_app_bar_create">app\_bar\_create</a> | 创建app_bar对象 |
-### 属性
-<p id="app_bar_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="app_bar_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### app\_bar\_cast 函数
 -----------------------
 

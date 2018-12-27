@@ -23,11 +23,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#style_mutable_t_name">name</a> | char* | 名称。 |
-### 事件
-<p id="style_mutable_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### style\_mutable\_create 函数
 -----------------------
 
@@ -227,9 +222,4 @@ ret_t style_mutable_set_str (style_t* s, const char* state, const char* name, co
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

@@ -19,6 +19,8 @@
  *
  */
 
+#ifdef WITH_STB_FONT
+
 #define STB_TRUETYPE_IMPLEMENTATION
 
 #include "tkc/mem.h"
@@ -142,3 +144,5 @@ font_loader_t* font_loader_stb(void) {
 
   return &loader;
 }
+
+#endif /*WITH_STB_FONT*/

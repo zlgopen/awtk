@@ -16,8 +16,8 @@
  <button x="c" y="m" w="80" h="30" text="OK"/>
  ```
 
- >
- 更多用法请参考：[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ > 更多用法请参考：
+ [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
 
  在c代码中使用函数button\_create创建按钮控件。如：
 
@@ -29,8 +29,8 @@
 
  > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
 
- > 完整示例请参考：[button
- demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
+ > 完整示例请参考：
+ [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 
@@ -43,7 +43,8 @@
  </style>
  ```
 
- > 更多用法请参考：[theme
+ > 更多用法请参考：
+ [theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
 
 ### 函数
@@ -151,5 +152,5 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

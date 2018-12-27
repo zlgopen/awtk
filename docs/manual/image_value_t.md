@@ -25,11 +25,6 @@
 | <a href="#image_value_t_format">format</a> | char* | 数值到字符串转换时的格式，缺省为"%d"。 |
 | <a href="#image_value_t_image">image</a> | char* | 图片名称的前缀。 |
 | <a href="#image_value_t_value">value</a> | float\_t | 值。 |
-### 事件
-<p id="image_value_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### image\_value\_cast 函数
 -----------------------
 
@@ -157,8 +152,8 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
 > <p id="image_value_t_image"> 图片名称的前缀。
@@ -174,8 +169,8 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="image_value_t_value"> 值。
@@ -191,5 +186,5 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

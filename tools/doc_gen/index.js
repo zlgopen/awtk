@@ -36,6 +36,10 @@ function isScriptable(obj) {
   return obj.annotation && obj.annotation.scriptable;
 }
 
+function isMacro(obj) {
+  return obj.annotation && obj.annotation.macro;
+}
+
 function isFake(obj) {
   return obj.annotation && obj.annotation.fake;
 }
@@ -111,7 +115,7 @@ class ApiGenerator {
   }
 
   genOneFunc(cls, p) {
-    let result = `#### ${encodeStr(p.name)} 函数\n`;
+    let result = `#### ${encodeStr(p.name)} ${isMacro(p) ? "宏" : "函数"}\n`;
     result += `-----------------------\n\n`;
     result += '* 函数功能：\n\n';
     result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
@@ -251,7 +255,7 @@ class ApiGenerator {
   genFunctionsIndex(cls) {
     let result = '';
 
-    if (cls.methods) {
+    if (cls.methods && cls.methods.length) {
       result += `### 函数\n`
       result += genAnchor(cls.name, {
         name: 'methods'
@@ -289,7 +293,7 @@ class ApiGenerator {
 
   genPropertiesIndex(cls) {
     let result = '';
-    if (cls.properties) {
+    if (cls.properties && cls.properties.length) {
       result += `### 属性\n`
       result += genAnchor(cls.name, {
         name: 'properties'
@@ -327,7 +331,7 @@ class ApiGenerator {
   genConsts(cls) {
     let result = '';
 
-    if (cls.consts) {
+    if (cls.consts && cls.consts.length) {
       result += `### 常量\n`
       result += genAnchor(cls.name, {
         name: 'consts'
@@ -346,7 +350,7 @@ class ApiGenerator {
   genEvents(cls) {
     let result = '';
 
-    if (cls.events) {
+    if (cls.events && cls.events.length) {
       result += `### 事件\n`
       result += genAnchor(cls.name, {
         name: 'events'
@@ -395,16 +399,31 @@ class ApiGenerator {
     result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;
     result += `* 类型：${encodeStr(p.type)}\n\n`;
 
-    result += `| 特性 | 是否支持 |\n`;
-    result += `| -------- | ----- |\n`;
-    result += `| 可直接读取 | ${toBool(isReadable(p))} |\n`;
-    result += `| 可直接修改 | ${toBool(isWritable(p))} |\n`;
-    result += `| 可持久化   | ${toBool(isPersitent(p))} |\n`;
-    result += `| 可脚本化   | ${toBool(isScriptable(p))} |\n`;
-    result += `| 可在IDE中设置 | ${toBool(isDesign(p))} |\n`;
-    result += `| 可在XML中设置 | ${toBool(isGetProp(p))} |\n`;
-    result += `| 支通过widget_get_prop读取 | ${toBool(isGetProp(p))} |\n`;
-    result += `| 支通过widget_set_prop修改 | ${toBool(isSetProp(p))} |\n`;
+    if(p.annotation) {
+      result += `| 特性 | 是否支持 |\n`;
+      result += `| -------- | ----- |\n`;
+      result += `| 可直接读取 | ${toBool(isReadable(p))} |\n`;
+      result += `| 可直接修改 | ${toBool(isWritable(p))} |\n`;
+
+      if(isPersitent(p)) {
+        result += `| 可持久化   | ${toBool(isPersitent(p))} |\n`;
+      }
+      if(isScriptable(p)) {
+        result += `| 可脚本化   | ${toBool(isScriptable(p))} |\n`;
+      }
+      if(isDesign(p)) {
+        result += `| 可在IDE中设置 | ${toBool(isDesign(p))} |\n`;
+      }
+      if(isGetProp(p)) {
+        result += `| 可在XML中设置 | ${toBool(isGetProp(p))} |\n`;
+      }
+      if(isGetProp(p)) {
+        result += `| 支通过widget\\_get\\_prop读取 | ${toBool(isGetProp(p))} |\n`;
+      }
+      if(isSetProp(p)) {
+        result += `| 支通过widget\\_set\\_prop修改 | ${toBool(isSetProp(p))} |\n`;
+      }
+    }
 
     return result;
   }

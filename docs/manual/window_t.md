@@ -6,7 +6,7 @@
 
  缺省的应用程序窗口，占用除system\_bar\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。
 
- window\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于window\_t控件。
+ window\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于window\_t控件。
 
  在xml中使用"window"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：
 
@@ -50,16 +50,6 @@
 | <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
-### 属性
-<p id="window_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="window_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### window\_cast 函数
 -----------------------
 

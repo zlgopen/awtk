@@ -16,11 +16,6 @@
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
 | <a href="#event_t_time">time</a> | int32\_t | 事件发生的时间。 |
 | <a href="#event_t_type">type</a> | int32\_t | 类型。 |
-### 事件
-<p id="event_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### event\_cast 函数
 -----------------------
 
@@ -55,12 +50,7 @@ event_t* event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### time 属性
 -----------------------
 > <p id="event_t_time"> 事件发生的时间。
@@ -73,12 +63,7 @@ event_t* event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |
 #### type 属性
 -----------------------
 > <p id="event_t_type"> 类型。
@@ -91,9 +76,4 @@ event_t* event_cast (event_t* event);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可持久化   | 否 |
 | 可脚本化   | 是 |
-| 可在IDE中设置 | 否 |
-| 可在XML中设置 | 否 |
-| 支通过widget_get_prop读取 | 否 |
-| 支通过widget_set_prop修改 | 否 |

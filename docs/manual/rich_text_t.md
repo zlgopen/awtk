@@ -17,11 +17,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rich_text_t_line_gap">line\_gap</a> | int32\_t | 行间距。 |
-### 事件
-<p id="rich_text_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### rich\_text\_create 函数
 -----------------------
 
@@ -87,5 +82,5 @@ ret_t rich_text_set_text (widget_t* widget, char* text);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget_get_prop读取 | 是 |
-| 支通过widget_set_prop修改 | 是 |
+| 支通过widget\_get\_prop读取 | 是 |
+| 支通过widget\_set\_prop修改 | 是 |

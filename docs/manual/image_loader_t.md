@@ -8,16 +8,6 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#image_loader_t_image_loader_load">image\_loader\_load</a> | 加载图片。 |
-### 属性
-<p id="image_loader_t_properties">
-
-| 名属性称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-### 事件
-<p id="image_loader_t_events">
-
-| 事件名称 | 类型  | 说明 | 
-| -------- | ----- | ------- | 
 #### image\_loader\_load 函数
 -----------------------
 
