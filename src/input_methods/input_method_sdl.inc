@@ -50,9 +50,8 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
     r.w = widget->w;
     r.h = widget->h;
 
-    /*FIXME:*/
-    SDL_SetTextInputRect(to_sdl_global(&r));
     SDL_StartTextInput();
+    SDL_SetTextInputRect(to_sdl_global(&r));
   } else {
     SDL_StopTextInput();
   }
