@@ -120,8 +120,7 @@ ret_t emitter_disable (emitter_t* emitter);
 
 > <p id="emitter_t_emitter_dispatch"> 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。
  禁用状态下，本函数不做任何事情。
-
- 如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
 
 
 
@@ -241,7 +240,7 @@ ret_t emitter_off (emitter_t* emitter, uint32_t id);
 * 函数原型：
 
 ```
-ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+ret_t emitter_off_by_func (emitter_t* emitter, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -250,7 +249,7 @@ ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t o
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_on 函数
@@ -266,7 +265,7 @@ ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t o
 * 函数原型：
 
 ```
-uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t emitter_on (emitter_t* emitter, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -275,7 +274,7 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_even
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_set\_on\_destroy 函数

@@ -47,5 +47,5 @@ void* color_parse (const char* color);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | void* | 返回color\\_t对象。 |
+| 返回值 | void* | 返回color\_t对象。 |
 | color | const char* | 字符串格式的颜色。 |

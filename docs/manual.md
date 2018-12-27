@@ -81,5 +81,7 @@
 * [array](manual/array_t.md) 动态数组对象。
 * [wbuffer](manual/wbuffer_t.md) Write Buffer。
 * [rbuffer](manual/rbuffer_t.md) Read Buffer。
+* [date\_time](manual/date_time_t.md) 时间日期函数。
+* [event](manual/event.md) 事件基类。
 
 
