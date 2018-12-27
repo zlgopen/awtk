@@ -28,7 +28,34 @@ BEGIN_C_DECLS
 
 /**
  * @class wbuffer_t
- * write buffer，用于数据打包。
+ * Write Buffer。用于数据打包。
+ *
+ * 示例：
+ *
+ * ```c
+ *  uint8_t buff[128];
+ *  wbuffer_t wbuffer;
+ *  rbuffer_t rbuffer;
+ *  const char* str = NULL;
+ *  wbuffer_init(&wbuffer, buff, sizeof(buff));
+ *
+ *  wbuffer_write_string(&wbuffer, "hello awtk");
+ *
+ *  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
+ *  rbuffer_read_string(&rbuffer, &str);
+ * ```
+ *
+ * ```c
+ *  wbuffer_t wbuffer;
+ *  wbuffer_init_extendable(&wbuffer);
+ *
+ *  wbuffer_write_string(&wbuffer, "hello awtk");
+ *
+ *  wbuffer_deinit(&wbuffer);
+ * ```
+ * > 如果初始化为extendable，则最后需要调用wbuffer\_deinit释放资源。
+ *
+ *
  */
 typedef struct _wbuffer_t {
   /**
@@ -49,6 +76,12 @@ typedef struct _wbuffer_t {
    * 缓存区最大容量。
    */
   uint32_t capacity;
+  /**
+   * @property {bool_t} extendable
+   * @annotation ["readable"]
+   * 容量是否可扩展。
+   */
+  bool_t extendable;
 } wbuffer_t;
 
 /**
@@ -64,14 +97,34 @@ typedef struct _wbuffer_t {
 wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 
 /**
- * @method wbuffer_skip
- * 跳过指定的长度。
+ * @method wbuffer_init_extendable
+ * 初始wbuffer对象，自动扩展buffer，使用完成后需要调用wbuffer\_deinit释放资源。
+ *
+ * @annotation ["constructor"]
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {int32_t} offset 跳过的偏移量，正数往前负数往回跳。
+ *
+ * @return {wbuffer_t*} wbuffer对象本身。
+ */
+wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer);
+
+/**
+ * @method wbuffer_deinit
+ * 释放资源。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t offset);
+ret_t wbuffer_deinit(wbuffer_t* wbuffer);
+
+/**
+ * @method wbuffer_skip
+ * 跳过指定的长度。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int32_t} delta 跳过的偏移量，正数往前负数往回跳。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t delta);
 
 /**
  * @method wbuffer_write_uint8
@@ -136,7 +189,22 @@ ret_t wbuffer_write_string(wbuffer_t* wbuffer, const char* data);
 
 /**
  * @class rbuffer_t
- * read buffer，用于数据解包。
+ * Read Buffer。用于数据解包。
+ *
+ * 示例：
+ *
+ * ```c
+ *  uint8_t buff[128];
+ *  wbuffer_t wbuffer;
+ *  rbuffer_t rbuffer;
+ *  const char* str = NULL;
+ *  wbuffer_init(&wbuffer, buff, sizeof(buff));
+ *
+ *  wbuffer_write_string(&wbuffer, "hello awtk");
+ *
+ *  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
+ *  rbuffer_read_string(&rbuffer, &str);
+ * ```
  */
 typedef struct _rbuffer_t {
   /**
