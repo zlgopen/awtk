@@ -523,7 +523,6 @@ value_t* value_create(void);
 
 /**
  * @method value_destroy
- * @deconstructor
  * 销毁value对象。
  * @annotation ["deconstructor", "scriptable"]
  * @param {value_t*} v value对象。

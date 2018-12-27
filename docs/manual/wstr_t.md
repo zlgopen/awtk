@@ -2,12 +2,28 @@
 ### 概述
  可变长度的宽字符字符串。
 
+ 示例：
+
+ ```c
+  wstr_t s;
+  wstr_init(&s, 0);
+
+  wstr_append(&s, L"abc");
+  wstr_append(&s, L"123");
+
+  wstr_reset(&s);
+ ```
+ > 先调wstr\_init进行初始化，最后调用wstr\_reset释放内存。
+
+
 ### 函数
 <p id="wstr_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#wstr_t_wstr_add_float">wstr\_add\_float</a> | 将字符串转成浮点数，加上delta，再转换回来。 |
+| <a href="#wstr_t_wstr_append">wstr\_append</a> | 追加字符串。 |
+| <a href="#wstr_t_wstr_append_with_len">wstr\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_equal">wstr\_equal</a> | 判断两个字符是否相同。 |
 | <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> | 用整数初始化字符串。 |
@@ -18,7 +34,6 @@
 | <a href="#wstr_t_wstr_pop">wstr\_pop</a> | 删除尾部字符。 |
 | <a href="#wstr_t_wstr_push">wstr\_push</a> | 追加一个字符。 |
 | <a href="#wstr_t_wstr_push_int">wstr\_push\_int</a> | 追加一个整数。 |
-| <a href="#wstr_t_wstr_push_str">wstr\_push\_str</a> | 追加一个字符。 |
 | <a href="#wstr_t_wstr_remove">wstr\_remove</a> | 删除指定范围的字符。 |
 | <a href="#wstr_t_wstr_reset">wstr\_reset</a> | 重置字符串为空。 |
 | <a href="#wstr_t_wstr_set">wstr\_set</a> | 设置字符串。 |
@@ -57,6 +72,53 @@ ret_t wstr_add_float (wstr_t* str, double delta);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | delta | double | 要加上的值。 |
+#### wstr\_append 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_append"> 追加字符串。
+
+
+
+
+* 函数原型：
+
+```
+ret_t wstr_append (wstr_t* str, wchar_t* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| text | wchar\_t* | 要追加的字符串。 |
+#### wstr\_append\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_append_with_len"> 追加字符串。
+
+
+
+
+* 函数原型：
+
+```
+ret_t wstr_append_with_len (wstr_t* str, wchar_t* text, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| text | wchar\_t* | 要追加的字符串。 |
+| len | uint32\_t | 字符串长度。 |
 #### wstr\_equal 函数
 -----------------------
 
@@ -290,30 +352,6 @@ ret_t wstr_push_int (wstr_t* str, const char* format, int32_t value);
 | str | wstr\_t* | str对象。 |
 | format | const char* | 格式(用于snprintf格式化数值) |
 | value | int32\_t | 数值。 |
-#### wstr\_push\_str 函数
------------------------
-
-* 函数功能：
-
-> <p id="wstr_t_wstr_push_str"> 追加一个字符。
-
-
-
-
-* 函数原型：
-
-```
-ret_t wstr_push_str (wstr_t* str, wchar_t* s, uint32_t size);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| str | wstr\_t* | str对象。 |
-| s | wchar\_t* | 字符串。 |
-| size | uint32\_t | 字符串长度。 |
 #### wstr\_remove 函数
 -----------------------
 

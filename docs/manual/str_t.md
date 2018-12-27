@@ -2,6 +2,21 @@
 ### 概述
  可变长度的UTF8字符串。
 
+ 示例：
+
+ ```c
+  str_t s;
+  str_init(&s, 0); 
+
+  str_append(&s, "abc");
+  str_append(&s, "123");
+
+  str_reset(&s);
+ ```
+
+ > 先调str\_init进行初始化，最后调用str\_reset释放内存。
+
+
 ### 函数
 <p id="str_t_methods">
 
@@ -219,7 +234,7 @@ bool_t str_eq (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_from_float (str_t* str, float v);
+ret_t str_from_float (str_t* str, double v);
 ```
 
 * 参数说明：
@@ -228,7 +243,7 @@ ret_t str_from_float (str_t* str, float v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | float | 浮点数。 |
+| v | double | 浮点数。 |
 #### str\_from\_int 函数
 -----------------------
 
@@ -523,7 +538,7 @@ bool_t str_start_with (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_to_float (str_t* str, float* v);
+ret_t str_to_float (str_t* str, double* v);
 ```
 
 * 参数说明：
@@ -532,7 +547,7 @@ ret_t str_to_float (str_t* str, float* v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | float* | 用于返回浮点数。 |
+| v | double* | 用于返回浮点数。 |
 #### str\_to\_int 函数
 -----------------------
 

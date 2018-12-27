@@ -20,7 +20,7 @@
 | <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
 | <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
 | <a href="#value_t_value_create">value\_create</a> | 创建value对象。 |
-| <a href="#value_t_value_destroy">value\_destroy</a> | @deconstructor |
+| <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float的值。 |
@@ -125,8 +125,7 @@ value_t* value_create ();
 
 * 函数功能：
 
-> <p id="value_t_value_destroy"> @deconstructor
- 销毁value对象。
+> <p id="value_t_value_destroy"> 销毁value对象。
 
 
 
