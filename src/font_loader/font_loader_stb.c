@@ -70,14 +70,14 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
     return RET_OK;
   }
 
-  g->data = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
+  g->bitmap.data = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
   stbtt_GetCodepointHMetrics(sf, c, &advance, &lsb);
   advance *= scale;
-  g->x = x;
-  g->y = y;
-  g->w = w;
-  g->h = h;
-  g->advance = advance;
+  g->metrics.x = x;
+  g->metrics.y = y;
+  g->metrics.w = w;
+  g->metrics.h = h;
+  g->metrics.advanceX = advance;
 
   glyph_cache_add(&(font->cache), c, font_size, g);
   /*
@@ -89,7 +89,7 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
    * stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
    */
 
-  return g->data != NULL ? RET_OK : RET_NOT_FOUND;
+  return g->bitmap.data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
 static ret_t font_stb_destroy(font_t* f) {
@@ -103,8 +103,8 @@ static ret_t font_stb_destroy(font_t* f) {
 
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
-  if (g->data) {
-    STBTT_free(g->data, NULL);
+  if (g->bitmap.data) {
+    STBTT_free(g->bitmap.data, NULL);
   }
 
   return RET_OK;

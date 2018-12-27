@@ -31,12 +31,18 @@ typedef struct _font_t font_t;
 
 #pragma pack(push, 1)
 typedef struct _glyph_t {
-  int8_t x;
-  int8_t y;
-  uint8_t w;
-  uint8_t h;
-  uint32_t advance;
-  const uint8_t* data;
+	struct{
+	  int8_t x;
+	  int8_t y;
+	  uint8_t w;
+	  uint8_t h;
+	  uint32_t advanceX;
+	  uint32_t advanceY;
+	}metrics;
+	struct{
+		const uint8_t* data;
+	}bitmap;
+	void *userData;
 } glyph_t;
 #pragma pack(pop)
 

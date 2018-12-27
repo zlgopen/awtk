@@ -4,7 +4,6 @@
  *  Created on: 2018Äê12ÔÂ26ÈÕ
  *      Author: zjm09
  */
-
 #ifdef WITH_FT_FONT
 #ifdef USE_SYSTEM_FREETYPE
 #include <ft2build.h>
@@ -43,7 +42,7 @@ static ret_t font_ft_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
 
-  g->data = NULL;
+  g->bitmap.data = NULL;
 
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
     return RET_OK;
@@ -54,17 +53,19 @@ static ret_t font_ft_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_
   if (!FT_Load_Char(sf->face, c, FT_LOAD_DEFAULT | FT_LOAD_RENDER)) {
     glyf = sf->face->glyph;
     FT_Get_Glyph(glyf, &glyph);
-    g->data = glyf->bitmap.buffer;
-    g->h = glyf->bitmap.rows;
-    g->w = glyf->bitmap.width;
-    g->x = glyf->bitmap_left;
-    g->y = -glyf->bitmap_top;
-    g->advance = glyf->metrics.horiAdvance / 64;
+    g->bitmap.data = glyf->bitmap.buffer;
+    g->metrics.h = glyf->bitmap.rows;
+    g->metrics.w = glyf->bitmap.width;
+    g->metrics.x = glyf->bitmap_left;
+    g->metrics.y = -glyf->bitmap_top;
+    g->metrics.advanceX = glyf->metrics.horiAdvance / 64;
+    g->userData = glyph;
+
+    glyph_cache_add(&(font->cache), c, font_size, g);
   }
 
-  glyph_cache_add(&(font->cache), c, font_size, g);
 
-  return g->data != NULL ? RET_OK : RET_NOT_FOUND;
+  return g->bitmap.data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
 static int32_t font_ft_get_baseline(font_t* f, uint16_t font_size) {
@@ -91,8 +92,8 @@ static ret_t font_ft_destroy(font_t* f) {
 
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
-  if (g->data) {
-    free(g->data);
+  if (g->userData) {
+	  FT_Done_Glyph((FT_Glyph)g->userData);
   }
 
   return RET_OK;
