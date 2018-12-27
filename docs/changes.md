@@ -1,6 +1,6 @@
 # 最新动态
 * 2018/12/27
-  * 整理控件API文档：value/mem/str/wstr/array/wbuffer/rbuffer。
+  * 整理控件API文档：value/mem/str/wstr/array/wbuffer/rbuffer/rgba/color。
   * 修改SDL输入法的问题(感谢大恒提供补丁)。
 
 * 2018/12/26

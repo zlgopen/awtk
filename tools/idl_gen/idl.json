@@ -1,28 +1,31 @@
 [
   {
     "type": "enum",
-    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
+    "desc": " 垂直对齐的常量定义。\r\n",
     "consts": [
       {
-        "desc": " LCD没有旋转。\r\n",
-        "name": "LCD_ORIENTATION_0"
+        "desc": " 无效对齐方式。\r\n",
+        "name": "ALIGN_V_NONE"
       },
       {
-        "desc": " LCD旋转90度。\r\n",
-        "name": "LCD_ORIENTATION_90"
+        "desc": " 居中对齐。\r\n",
+        "name": "ALIGN_V_MIDDLE"
       },
       {
-        "desc": " LCD旋转180度。\r\n",
-        "name": "LCD_ORIENTATION_180"
+        "desc": " 顶部对齐。\r\n",
+        "name": "ALIGN_V_TOP"
       },
       {
-        "desc": " LCD旋转270度。\r\n",
-        "name": "LCD_ORIENTATION_270"
+        "desc": " 底部对齐。\r\n",
+        "name": "ALIGN_V_BOTTOM"
       }
     ],
     "header": "base/types_def.h",
-    "name": "lcd_orientation_t",
-    "prefix": "LCD_ORIENTATION_",
+    "name": "align_v_t",
+    "prefix": "ALIGN_V_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -5071,40 +5074,37 @@
   },
   {
     "type": "enum",
+    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
+    "consts": [
+      {
+        "desc": " LCD没有旋转。\r\n",
+        "name": "LCD_ORIENTATION_0"
+      },
+      {
+        "desc": " LCD旋转90度。\r\n",
+        "name": "LCD_ORIENTATION_90"
+      },
+      {
+        "desc": " LCD旋转180度。\r\n",
+        "name": "LCD_ORIENTATION_180"
+      },
+      {
+        "desc": " LCD旋转270度。\r\n",
+        "name": "LCD_ORIENTATION_270"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "lcd_orientation_t",
+    "prefix": "LCD_ORIENTATION_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " 垂直对齐的常量定义。\r\n",
-    "consts": [
-      {
-        "desc": " 无效对齐方式。\r\n",
-        "name": "ALIGN_V_NONE"
-      },
-      {
-        "desc": " 居中对齐。\r\n",
-        "name": "ALIGN_V_MIDDLE"
-      },
-      {
-        "desc": " 顶部对齐。\r\n",
-        "name": "ALIGN_V_TOP"
-      },
-      {
-        "desc": " 底部对齐。\r\n",
-        "name": "ALIGN_V_BOTTOM"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "align_v_t",
-    "prefix": "ALIGN_V_",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -11824,7 +11824,7 @@
       }
     ],
     "header": "tkc/buffer.h",
-    "desc": " Write Buffer。用于数据打包。\n\n 示例：\n\n ```c\n  uint8_t buff[128];\n  wbuffer_t wbuffer;\n  rbuffer_t rbuffer;\n  const char* str = NULL;\n  wbuffer_init(&wbuffer, buff, sizeof(buff));\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);\n  rbuffer_read_string(&rbuffer, &str);\n ```\n \n ```c\n  wbuffer_t wbuffer;\n  wbuffer_init_extendable(&wbuffer);\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  wbuffer_deinit(&wbuffer);\n ```\n > 如果初始化为extendable，则最后需要调用wbuffer\\_deinit释放资源。\n\n\n\n",
+    "desc": " Write Buffer。用于数据打包。\n\n 示例：\n\n ```c\n  uint8_t buff[128];\n  wbuffer_t wbuffer;\n  rbuffer_t rbuffer;\n  const char* str = NULL;\n  wbuffer_init(&wbuffer, buff, sizeof(buff));\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);\n  rbuffer_read_string(&rbuffer, &str);\n ```\n\n ```c\n  wbuffer_t wbuffer;\n  wbuffer_init_extendable(&wbuffer);\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  wbuffer_deinit(&wbuffer);\n ```\n > 如果初始化为extendable，则最后需要调用wbuffer\\_deinit释放资源。\n\n\n\n",
     "name": "wbuffer_t",
     "level": 1
   },
@@ -12121,6 +12121,116 @@
     "header": "tkc/buffer.h",
     "desc": " Read Buffer。用于数据解包。\n\n 示例：\n\n ```c\n  uint8_t buff[128];\n  wbuffer_t wbuffer;\n  rbuffer_t rbuffer;\n  const char* str = NULL;\n  wbuffer_init(&wbuffer, buff, sizeof(buff));\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);\n  rbuffer_read_string(&rbuffer, &str);\n ```\n\n",
     "name": "rbuffer_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "r",
+        "desc": " 红色。\n\n",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "g",
+        "desc": " 绿色。\n\n",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "b",
+        "desc": " 蓝色。\n\n",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "a",
+        "desc": " alpha。\n\n",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      }
+    ],
+    "header": "tkc/color.h",
+    "desc": " 颜色的四个通道。\n\n\n",
+    "name": "rgba_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint8_t",
+            "name": "r",
+            "desc": "红色。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "g",
+            "desc": "绿色。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "b",
+            "desc": "蓝色。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "a",
+            "desc": "alpha。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 初始化颜色对象。\n\n\n",
+        "name": "color_init",
+        "return": {
+          "type": "color_t",
+          "desc": "颜色对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "rgba",
+        "desc": " 颜色的RGBA值。\n\n",
+        "type": "rgba_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "color",
+        "desc": " 颜色的数值。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      }
+    ],
+    "header": "tkc/color.h",
+    "desc": " 颜色。\n\n\n",
+    "name": "color_t",
     "level": 1
   },
   {
@@ -14368,7 +14478,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置类型为float的值。\n\n\n",
+        "desc": " 设置类型为float\\_t的值。\n\n\n",
         "name": "value_set_float",
         "return": {
           "type": "value_t*",
@@ -14386,10 +14496,10 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 获取类型为float的值。\n\n\n",
+        "desc": " 获取类型为float\\_t的值。\n\n\n",
         "name": "value_float",
         "return": {
-          "type": "float",
+          "type": "float_t",
           "desc": "值。"
         }
       },
@@ -15410,124 +15520,6 @@
     "desc": " 滚动控件的动画。\n 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。\n\n",
     "name": "widget_animator_scroll_t",
     "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建candidates对象\r\n\r\n",
-        "name": "candidates_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "keyboard/candidates.h",
-    "desc": " 输入法候选字词控件。\r\n",
-    "name": "candidates_t",
-    "parent": "widget_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建keyboard对象\r\n\r\n",
-        "name": "keyboard_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": " 关闭keyboard窗口。\r\n\r\n",
-        "name": "keyboard_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "keyboard/keyboard.h",
-    "desc": " 键盘。\r\n",
-    "name": "keyboard_t",
-    "parent": "widget_t",
-    "level": 2
   },
   {
     "type": "class",
@@ -20111,6 +20103,125 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建color_component对象\r\n\r\n",
+        "name": "color_component_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "c",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置颜色。\r\n\r\n",
+        "name": "color_component_set_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取h分量。\r\n\r\n",
+        "name": "color_component_get_h",
+        "return": {
+          "type": "float",
+          "desc": "返回h分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取s分量。\r\n\r\n",
+        "name": "color_component_get_s",
+        "return": {
+          "type": "float",
+          "desc": "返回s分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取v分量。\r\n\r\n",
+        "name": "color_component_get_v",
+        "return": {
+          "type": "float",
+          "desc": "返回v分量。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "color_picker/color_component.h",
+    "desc": " 颜色选择器的颜色分量。\r\n 控件的名称有严格规定：\r\n COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\r\n COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。\r\n",
+    "name": "color_component_t",
+    "parent": "widget_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "input_method_t*",
             "name": "im",
             "desc": "控件对象。"
@@ -20409,127 +20520,6 @@
     "desc": " 输入法请求显示候选字的事件。\n\n",
     "name": "im_candidates_event_t",
     "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建color_picker对象\r\n\r\n",
-        "name": "color_picker_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置颜色。\r\n\r\n",
-        "name": "color_picker_set_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_picker对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为color_picker对象(供脚本语言使用)。\r\n\r\n",
-        "name": "color_picker_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "color_picker对象。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值(颜色)即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值(颜色)改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": " 颜色。\r\n",
-        "type": "const char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "color_picker/color_picker.h",
-    "desc": " 颜色选择器。 其中的控件必须按下列规则命名：\r\n COLOR_PICKER_CHILD_R 红色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_G 绿色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_B 蓝色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_H Hue分量。可以是spin_box、edit、slider和color_component。\r\n COLOR_PICKER_CHILD_S Saturation分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_V Value/Brightness分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_SV Saturation和Value/Brightness分量。可以是color_component。\r\n COLOR_PICKER_CHILD_OLD 旧的值。可以是spin_box、edit和color_tile。\r\n COLOR_PICKER_CHILD_NEW 新的值。可以是spin_box、edit和color_tile。\r\n",
-    "name": "color_picker_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 2
   },
   {
@@ -21474,6 +21464,124 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建candidates对象\r\n\r\n",
+        "name": "candidates_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "keyboard/candidates.h",
+    "desc": " 输入法候选字词控件。\r\n",
+    "name": "candidates_t",
+    "parent": "widget_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建keyboard对象\r\n\r\n",
+        "name": "keyboard_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": " 关闭keyboard窗口。\r\n\r\n",
+        "name": "keyboard_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "keyboard/keyboard.h",
+    "desc": " 键盘。\r\n",
+    "name": "keyboard_t",
+    "parent": "widget_t",
     "level": 2
   },
   {
@@ -25240,10 +25348,11 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
-        "desc": " 创建color_component对象\r\n\r\n",
-        "name": "color_component_create",
+        "desc": " 创建color_picker对象\r\n\r\n",
+        "name": "color_picker_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -25257,14 +25366,16 @@
             "desc": "控件对象。"
           },
           {
-            "type": "color_t",
-            "name": "c",
+            "type": "const char*",
+            "name": "color",
             "desc": "颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置颜色。\r\n\r\n",
-        "name": "color_component_set_color",
+        "name": "color_picker_set_color",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -25275,56 +25386,55 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "color_component对象。"
+            "desc": "color_picker对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 获取h分量。\r\n\r\n",
-        "name": "color_component_get_h",
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为color_picker对象(供脚本语言使用)。\r\n\r\n",
+        "name": "color_picker_cast",
         "return": {
-          "type": "float",
-          "desc": "返回h分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 获取s分量。\r\n\r\n",
-        "name": "color_component_get_s",
-        "return": {
-          "type": "float",
-          "desc": "返回s分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 获取v分量。\r\n\r\n",
-        "name": "color_component_get_v",
-        "return": {
-          "type": "float",
-          "desc": "返回v分量。"
+          "type": "widget_t*",
+          "desc": "color_picker对象。"
         }
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "color_picker/color_component.h",
-    "desc": " 颜色选择器的颜色分量。\r\n 控件的名称有严格规定：\r\n COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\r\n COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。\r\n",
-    "name": "color_component_t",
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值(颜色)即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值(颜色)改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 颜色。\r\n",
+        "type": "const char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "color_picker/color_picker.h",
+    "desc": " 颜色选择器。 其中的控件必须按下列规则命名：\r\n COLOR_PICKER_CHILD_R 红色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_G 绿色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_B 蓝色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_H Hue分量。可以是spin_box、edit、slider和color_component。\r\n COLOR_PICKER_CHILD_S Saturation分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_V Value/Brightness分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_SV Saturation和Value/Brightness分量。可以是color_component。\r\n COLOR_PICKER_CHILD_OLD 旧的值。可以是spin_box、edit和color_tile。\r\n COLOR_PICKER_CHILD_NEW 新的值。可以是spin_box、edit和color_tile。\r\n",
+    "name": "color_picker_t",
     "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 2
   },
   {

@@ -359,7 +359,7 @@ pointer_t value_pointer(const value_t* v);
 
 /**
  * @method value_set_float
- * 设置类型为float的值。
+ * 设置类型为float\_t的值。
  * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {float_t}    value 待设置的值。
@@ -370,11 +370,11 @@ value_t* value_set_float(value_t* v, float_t value);
 
 /**
  * @method value_float
- * 获取类型为float的值。
+ * 获取类型为float\_t的值。
  * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
- * @return {float} 值。
+ * @return {float_t} 值。
  */
 float_t value_float(const value_t* v);
 

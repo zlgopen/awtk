@@ -16,7 +16,7 @@
   rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
   rbuffer_read_string(&rbuffer, &str);
  ```
- 
+
  ```c
   wbuffer_t wbuffer;
   wbuffer_init_extendable(&wbuffer);
