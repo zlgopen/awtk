@@ -102,14 +102,14 @@ widget_t* color_tile_cast(widget_t* widget) {
 ret_t color_tile_set_bg_color(widget_t* widget, const char* color) {
   return_value_if_fail(widget != NULL && color != NULL, RET_BAD_PARAMS);
 
-  return color_tile_set_value(widget, color_parse_simple(color));
+  return color_tile_set_value(widget, color_parse(color));
 }
 
 ret_t color_tile_set_border_color(widget_t* widget, const char* color) {
   color_tile_t* color_tile = COLOR_TILE(widget);
   return_value_if_fail(color_tile != NULL && color != NULL, RET_BAD_PARAMS);
 
-  color_tile->border = color_parse_simple(color);
+  color_tile->border = color_parse(color);
   color_hex_str(color_tile->border, color_tile->border_color);
 
   widget_invalidate(widget, NULL);

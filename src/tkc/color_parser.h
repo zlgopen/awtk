@@ -27,9 +27,40 @@
 
 BEGIN_C_DECLS
 
-bool_t color_parse(const char* color, uint8_t* r, uint8_t* g, uint8_t* b, uint8_t* a);
+/**
+ * @class color_parser_t
+ * @annotation ["fake"]
+ * 颜色解析相关函数。
+ *
+ * 示例：
+ *
+ * ```c
+ * color_t c;
+ * c = color_parse("#112233");
+ * c = color_parse("white");
+ * c = color_parse("rgb(11,22,33)");
+ * c = color_parse("rgba(11,22,33,0.5)");
+ * ```
+ *
+ */
 
-color_t color_parse_simple(const char* color);
+/**
+ * @method color_parse
+ * 把字符串格式的颜色转换成color\_t对象。
+ *
+ * 目前支持下列格式：
+ *
+ * * 16进制格式。如："#112233"
+ * * 颜色名称格式。如："green"
+ * * rgb格式。如："rgb(11,22,33)"
+ * * rgba格式。如："rgba(11,22,33,0.5)"
+ *
+ * @annotation ["static"]
+ * @param {const char*} color 字符串格式的颜色。
+ *
+ * @return {void*} 返回color_t对象。
+ */
+color_t color_parse(const char* color);
 
 END_C_DECLS
 

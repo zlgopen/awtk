@@ -74,6 +74,7 @@
 * [tkmem](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
 * [color](manual/color_t.md) 颜色对象。
+* [color\_parse](manual/color_parser_t.md) 颜色解析对象。
 * [value](manual/value_t.md) 通用值对象。
 * [str](manual/str_t.md) UTF-8字符串对象。
 * [wstr](manual/wstr_t.md) Unicode字符串对象。

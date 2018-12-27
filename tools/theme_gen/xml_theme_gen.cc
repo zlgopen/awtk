@@ -41,9 +41,7 @@ typedef struct _xml_builder_t {
 } xml_builder_t;
 
 static color_t parse_color(const char* name) {
-  color_t c;
-  c.color = 0;
-  color_parse(name, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b), &(c.rgba.a));
+  color_t c = color_parse(name);
 
   return c;
 }

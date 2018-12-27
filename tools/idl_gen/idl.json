@@ -12125,6 +12125,38 @@
   },
   {
     "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "字符串格式的颜色。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": " 把字符串格式的颜色转换成color\\_t对象。\n\n 目前支持下列格式：\n\n * 16进制格式。如：\"#112233\"\n * 颜色名称格式。如：\"green\"\n * rgb格式。如：\"rgb(11,22,33)\"\n * rgba格式。如：\"rgba(11,22,33,0.5)\"\n\n\n\n",
+        "name": "color_parse",
+        "return": {
+          "type": "void*",
+          "desc": "返回color\\_t对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/color_parser.h",
+    "desc": " 颜色解析相关函数。\n\n 示例：\n\n ```c\n color_t c;\n c = color_parse(\"#112233\");\n c = color_parse(\"white\");\n c = color_parse(\"rgb(11,22,33)\");\n c = color_parse(\"rgba(11,22,33,0.5)\");\n ```\n\n\n",
+    "name": "color_parser_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [],
     "events": [],
     "properties": [
@@ -15520,343 +15552,6 @@
     "desc": " 滚动控件的动画。\n 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。\n\n",
     "name": "widget_animator_scroll_t",
     "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建progress_circle对象\r\n\r\n",
-        "name": "progress_circle_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "progress_circle对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n",
-        "name": "progress_circle_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "progress_circle对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "value",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置值。\r\n\r\n",
-        "name": "progress_circle_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max",
-            "desc": "最大值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置最大值。\r\n\r\n",
-        "name": "progress_circle_set_max",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "line_width",
-            "desc": "环线的厚度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置环线的厚度。\r\n\r\n",
-        "name": "progress_circle_set_line_width",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "start_angle",
-            "desc": "起始角度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置起始角度。\r\n\r\n",
-        "name": "progress_circle_set_start_angle",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "unit",
-            "desc": "单位。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置单位。\r\n\r\n",
-        "name": "progress_circle_set_unit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_text",
-            "desc": "是否显示文本。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否显示文本。\r\n\r\n",
-        "name": "progress_circle_set_show_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "counter_clock_wise",
-            "desc": "是否为逆时针方向。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否为逆时针方向。\r\n\r\n",
-        "name": "progress_circle_set_counter_clock_wise",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": " 值(缺省为0)。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "max",
-        "desc": " 最大值(缺省为100)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "start_angle",
-        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "line_width",
-        "desc": " 环线的厚度(缺省为8)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "unit",
-        "desc": " 单元(缺省无)。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "counter_clock_wise",
-        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "show_text",
-        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "progress_circle/progress_circle.h",
-    "desc": " 进度圆环控件。\r\n",
-    "name": "progress_circle_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
   },
   {
     "type": "class",
@@ -21582,6 +21277,343 @@
     "desc": " 键盘。\r\n",
     "name": "keyboard_t",
     "parent": "widget_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建progress_circle对象\r\n\r\n",
+        "name": "progress_circle_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "progress_circle对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n",
+        "name": "progress_circle_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "progress_circle对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置值。\r\n\r\n",
+        "name": "progress_circle_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max",
+            "desc": "最大值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置最大值。\r\n\r\n",
+        "name": "progress_circle_set_max",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "line_width",
+            "desc": "环线的厚度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置环线的厚度。\r\n\r\n",
+        "name": "progress_circle_set_line_width",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "start_angle",
+            "desc": "起始角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置起始角度。\r\n\r\n",
+        "name": "progress_circle_set_start_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "unit",
+            "desc": "单位。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置单位。\r\n\r\n",
+        "name": "progress_circle_set_unit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_text",
+            "desc": "是否显示文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否显示文本。\r\n\r\n",
+        "name": "progress_circle_set_show_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "counter_clock_wise",
+            "desc": "是否为逆时针方向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否为逆时针方向。\r\n\r\n",
+        "name": "progress_circle_set_counter_clock_wise",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 值(缺省为0)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": " 最大值(缺省为100)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "start_angle",
+        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "line_width",
+        "desc": " 环线的厚度(缺省为8)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "unit",
+        "desc": " 单元(缺省无)。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "counter_clock_wise",
+        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "progress_circle/progress_circle.h",
+    "desc": " 进度圆环控件。\r\n",
+    "name": "progress_circle_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 2
   },
   {
