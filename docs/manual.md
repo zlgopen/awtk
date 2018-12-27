@@ -71,9 +71,12 @@
 
 ## 二、基本函数库
 
-* [tkmem](manual/tk_mem_t.md) 内存管理。
+* [tkmem](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [value](manual/value_t.md) 通用值对象。
 * [str](manual/str_t.md) UTF-8字符串对象。
 * [wstr](manual/wstr_t.md) Unicode字符串对象。
+* [array](manual/array_t.md) 动态数组对象。
+* [wbuffer](manual/wbuffer_t.md) Write Buffer。
+* [rbuffer](manual/rbuffer_t.md) Read Buffer。
 
 

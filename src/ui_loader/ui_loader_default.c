@@ -36,7 +36,7 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
   return_value_if_fail(magic == UI_DATA_MAGIC, RET_BAD_PARAMS);
 
   ui_builder_on_start(b);
-  while (rbuffer_has_more(&rbuffer)) {
+  while ((rbuffer.cursor + sizeof(desc)) <= rbuffer.capacity) {
     const char* key = NULL;
     const char* value = NULL;
     return_value_if_fail(rbuffer_read_binary(&rbuffer, &desc, sizeof(desc)) == RET_OK,

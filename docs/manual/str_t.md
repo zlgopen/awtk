@@ -6,7 +6,7 @@
 
  ```c
   str_t s;
-  str_init(&s, 0); 
+  str_init(&s, 0);
 
   str_append(&s, "abc");
   str_append(&s, "123");

@@ -11566,7 +11566,7 @@
       }
     ],
     "header": "tkc/array.h",
-    "desc": " 动态数组，根据元素个数动态调整数组的容量。\n\n",
+    "desc": " 动态数组，根据元素个数动态调整数组的容量。\n\n 用array\\_init初始化时，用array\\_deinit释放。如：\n\n ```c\n array_t array;\n array_init(&array, 10);\n ...\n array_deinit(&array);\n ```\n\n 用array\\_create创建时，用array\\_destroy销毁。如：\n\n ```c\n array_t* array = array_create(10);\n ...\n array_destroy(array);\n ```\n\n\n",
     "name": "array_t",
     "level": 1
   },
@@ -11607,10 +11607,44 @@
             "type": "wbuffer_t*",
             "name": "wbuffer",
             "desc": "wbuffer对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 初始wbuffer对象，自动扩展buffer，使用完成后需要调用wbuffer\\_deinit释放资源。\n\n\n\n",
+        "name": "wbuffer_init_extendable",
+        "return": {
+          "type": "wbuffer_t*",
+          "desc": "wbuffer对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wbuffer_t*",
+            "name": "wbuffer",
+            "desc": "wbuffer对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 释放资源。\n\n\n",
+        "name": "wbuffer_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wbuffer_t*",
+            "name": "wbuffer",
+            "desc": "wbuffer对象。"
           },
           {
             "type": "int32_t",
-            "name": "offset",
+            "name": "delta",
             "desc": "跳过的偏移量，正数往前负数往回跳。"
           }
         ],
@@ -11779,10 +11813,18 @@
         "annotation": {
           "readable": true
         }
+      },
+      {
+        "name": "extendable",
+        "desc": " 容量是否可扩展。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
       }
     ],
     "header": "tkc/buffer.h",
-    "desc": " write buffer，用于数据打包。\n\n",
+    "desc": " Write Buffer。用于数据打包。\n\n 示例：\n\n ```c\n  uint8_t buff[128];\n  wbuffer_t wbuffer;\n  rbuffer_t rbuffer;\n  const char* str = NULL;\n  wbuffer_init(&wbuffer, buff, sizeof(buff));\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);\n  rbuffer_read_string(&rbuffer, &str);\n ```\n \n ```c\n  wbuffer_t wbuffer;\n  wbuffer_init_extendable(&wbuffer);\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  wbuffer_deinit(&wbuffer);\n ```\n > 如果初始化为extendable，则最后需要调用wbuffer\\_deinit释放资源。\n\n\n\n",
     "name": "wbuffer_t",
     "level": 1
   },
@@ -12077,7 +12119,7 @@
       }
     ],
     "header": "tkc/buffer.h",
-    "desc": " read buffer，用于数据解包。\n\n",
+    "desc": " Read Buffer。用于数据解包。\n\n 示例：\n\n ```c\n  uint8_t buff[128];\n  wbuffer_t wbuffer;\n  rbuffer_t rbuffer;\n  const char* str = NULL;\n  wbuffer_init(&wbuffer, buff, sizeof(buff));\n\n  wbuffer_write_string(&wbuffer, \"hello awtk\");\n\n  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);\n  rbuffer_read_string(&rbuffer, &str);\n ```\n\n",
     "name": "rbuffer_t",
     "level": 1
   },
@@ -13480,7 +13522,7 @@
       }
     ],
     "header": "tkc/str.h",
-    "desc": " 可变长度的UTF8字符串。\n\n 示例：\n\n ```c\n  str_t s;\n  str_init(&s, 0); \n\n  str_append(&s, \"abc\");\n  str_append(&s, \"123\");\n\n  str_reset(&s);\n ```\n\n > 先调str\\_init进行初始化，最后调用str\\_reset释放内存。\n\n\n",
+    "desc": " 可变长度的UTF8字符串。\n\n 示例：\n\n ```c\n  str_t s;\n  str_init(&s, 0);\n\n  str_append(&s, \"abc\");\n  str_append(&s, \"123\");\n\n  str_reset(&s);\n ```\n\n > 先调str\\_init进行初始化，最后调用str\\_reset释放内存。\n\n\n",
     "name": "str_t",
     "level": 1
   },

@@ -108,7 +108,11 @@ void tk_free(void* ptr);
  *
  * @return {void} 无。
  */
-#define TKMEM_FREE(p) {tk_free((void*)p);  p = NULL;}
+#define TKMEM_FREE(p)  \
+  {                    \
+    tk_free((void*)p); \
+    p = NULL;          \
+  }
 
 /*helpler*/
 #define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type), __FUNCTION__, __LINE__)
