@@ -32,7 +32,7 @@ static ret_t str_extend(str_t* str, uint32_t capacity) {
   }
 
   if (capacity > 0) {
-    char* s = TKMEM_REALLOC(char, str->str, capacity + 1);
+    char* s = TKMEM_REALLOCT(char, str->str, capacity + 1);
     return_value_if_fail(s != NULL, RET_FAIL);
 
     s[capacity] = '\0';

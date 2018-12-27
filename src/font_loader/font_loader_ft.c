@@ -92,7 +92,7 @@ static ret_t font_ft_destroy(font_t* f) {
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
   if (g->data) {
-    // TKMEM_FREE(g->data);
+    free(g->data);
   }
 
   return RET_OK;

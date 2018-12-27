@@ -1,198 +1,28 @@
 [
   {
-    "type": "class",
-    "methods": [
+    "type": "enum",
+    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
+    "consts": [
       {
-        "params": [
-          {
-            "type": "timer_get_time_t",
-            "name": "get_time",
-            "desc": "获取当前时间的函数。"
-          }
-        ],
-        "annotation": {
-          "private": true,
-          "static": true
-        },
-        "desc": " 初始化定时器系统。\n\n\n",
-        "name": "timer_init",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
+        "desc": " LCD没有旋转。\r\n",
+        "name": "LCD_ORIENTATION_0"
       },
       {
-        "params": [
-          {
-            "type": "timer_func_t",
-            "name": "on_timer",
-            "desc": "timer回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "timer回调函数的上下文。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "duration_ms",
-            "desc": "时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": "custom",
-          "static": true
-        },
-        "desc": " 增加一个timer。\n\n\n",
-        "name": "timer_add",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回timer的ID，TK_INVALID_ID表示失败。"
-        }
+        "desc": " LCD旋转90度。\r\n",
+        "name": "LCD_ORIENTATION_90"
       },
       {
-        "params": [
-          {
-            "type": "timer_func_t",
-            "name": "",
-            "desc": "r"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "timer回调函数的上下文。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "duration_ms",
-            "desc": "时间。"
-          }
-        ],
-        "annotation": {
-          "static": true
-        },
-        "desc": " 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。\n timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。\n\n\n",
-        "name": "timer_queue",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
+        "desc": " LCD旋转180度。\r\n",
+        "name": "LCD_ORIENTATION_180"
       },
       {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "timer_id",
-            "desc": "timerID。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true,
-          "static": true
-        },
-        "desc": " 删除指定的timer。\n\n\n",
-        "name": "timer_remove",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "timer_id",
-            "desc": "timerID。"
-          },
-          {
-            "type": "tk_destroy_t",
-            "name": "on_destroy",
-            "desc": "回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "on_destroy_ctx",
-            "desc": "回调函数上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。\n\n\n",
-        "name": "timer_set_on_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 查找指定ID的timer。\n\n\n",
-        "name": "timer_find",
-        "return": {
-          "type": "timer_info_t*",
-          "desc": "返回timer的信息。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 检查全部timer的函数，如果时间到期，调用相应的timer函数。\n\n\n",
-        "name": "timer_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "static": true
-        },
-        "desc": " 返回timer的个数。\n\n\n",
-        "name": "timer_count",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回timer的个数。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "static": true
-        },
-        "desc": " 返回最近的timer到期时间。\n\n\n",
-        "name": "timer_next_time",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回最近的timer到期时间。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "static": true
-        },
-        "desc": " 获取当前时间(ms)。\n\n\n",
-        "name": "timer_now",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回获取当前时间(ms)。"
-        }
+        "desc": " LCD旋转270度。\r\n",
+        "name": "LCD_ORIENTATION_270"
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "base/timer.h",
-    "desc": " 定时器系统。\n\n",
-    "name": "timer_t",
-    "annotation": {
-      "scriptable": true,
-      "fake": true
-    },
+    "header": "base/types_def.h",
+    "name": "lcd_orientation_t",
+    "prefix": "LCD_ORIENTATION_",
     "level": 1
   },
   {
@@ -5044,38 +4874,208 @@
     "level": 1
   },
   {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "timer_get_time_t",
+            "name": "get_time",
+            "desc": "获取当前时间的函数。"
+          }
+        ],
+        "annotation": {
+          "private": true,
+          "static": true
+        },
+        "desc": " 初始化定时器系统。\n\n\n",
+        "name": "timer_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "timer_func_t",
+            "name": "on_timer",
+            "desc": "timer回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "timer回调函数的上下文。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "duration_ms",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": "custom",
+          "static": true
+        },
+        "desc": " 增加一个timer。\n\n\n",
+        "name": "timer_add",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回timer的ID，TK_INVALID_ID表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "timer_func_t",
+            "name": "",
+            "desc": "r"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "timer回调函数的上下文。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "duration_ms",
+            "desc": "时间。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": " 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。\n timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。\n\n\n",
+        "name": "timer_queue",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": " 删除指定的timer。\n\n\n",
+        "name": "timer_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "on_destroy",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "on_destroy_ctx",
+            "desc": "回调函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。\n\n\n",
+        "name": "timer_set_on_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 查找指定ID的timer。\n\n\n",
+        "name": "timer_find",
+        "return": {
+          "type": "timer_info_t*",
+          "desc": "返回timer的信息。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 检查全部timer的函数，如果时间到期，调用相应的timer函数。\n\n\n",
+        "name": "timer_dispatch",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": " 返回timer的个数。\n\n\n",
+        "name": "timer_count",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回timer的个数。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": " 返回最近的timer到期时间。\n\n\n",
+        "name": "timer_next_time",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回最近的timer到期时间。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": " 获取当前时间(ms)。\n\n\n",
+        "name": "timer_now",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回获取当前时间(ms)。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/timer.h",
+    "desc": " 定时器系统。\n\n",
+    "name": "timer_t",
+    "annotation": {
+      "scriptable": true,
+      "fake": true
+    },
+    "level": 1
+  },
+  {
     "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。\r\n",
-    "consts": [
-      {
-        "desc": " LCD没有旋转。\r\n",
-        "name": "LCD_ORIENTATION_0"
-      },
-      {
-        "desc": " LCD旋转90度。\r\n",
-        "name": "LCD_ORIENTATION_90"
-      },
-      {
-        "desc": " LCD旋转180度。\r\n",
-        "name": "LCD_ORIENTATION_180"
-      },
-      {
-        "desc": " LCD旋转270度。\r\n",
-        "name": "LCD_ORIENTATION_270"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "lcd_orientation_t",
-    "prefix": "LCD_ORIENTATION_",
     "level": 1
   },
   {
@@ -6871,7 +6871,7 @@
       }
     ],
     "header": "base/vgcanvas.h",
-    "desc": " 矢量图画布抽象基类。\n\n 具体实现时可以使用agg，nanovg, cairo和skia等方式。\n\n cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。\n\n 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。\n\n 我们对nanovg进行了一些改进:\n\n * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。\n\n * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。\n\n ```graphviz\n   [default_style]\n\n   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = \"empty\"]\n   opengl -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   bgfx -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agg -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agge -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   vgcanvas_skia_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_agge_t -> vgcanvas_t[arrowhead = \"empty\"]\n ```\n\n 示例：\n\n ```c\n   vgcanvas_t* vg = canvas_get_vgcanvas(c);\n   vgcanvas_save(vg);\n   vgcanvas_translate(vg, 0, 100);\n  \n   vgcanvas_set_line_width(vg, 1);\n   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));\n   vgcanvas_rect(vg, 5, 5, 100, 100);\n   vgcanvas_fill(vg);\n   vgcanvas_restore(vg);\n ```\n\n",
+    "desc": " 矢量图画布抽象基类。\n\n 具体实现时可以使用agg，nanovg, cairo和skia等方式。\n\n cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。\n\n 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。\n\n 我们对nanovg进行了一些改进:\n\n * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。\n\n * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。\n\n ```graphviz\n   [default_style]\n\n   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = \"empty\"]\n   opengl -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   bgfx -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agg -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agge -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   vgcanvas_skia_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_agge_t -> vgcanvas_t[arrowhead = \"empty\"]\n ```\n\n 示例：\n\n ```c\n   vgcanvas_t* vg = canvas_get_vgcanvas(c);\n   vgcanvas_save(vg);\n   vgcanvas_translate(vg, 0, 100);\n\n   vgcanvas_set_line_width(vg, 1);\n   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));\n   vgcanvas_rect(vg, 5, 5, 100, 100);\n   vgcanvas_fill(vg);\n   vgcanvas_restore(vg);\n ```\n\n",
     "name": "vgcanvas_t",
     "level": 1
   },
@@ -12601,6 +12601,102 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "内存大小。"
+          }
+        ],
+        "annotation": {
+          "macro": true
+        },
+        "desc": " 分配一块内存。\n\n\n\n",
+        "name": "TKMEM_ALLOC",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回内存块首地址，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "nmemb",
+            "desc": "内存块数量。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "每一块的大小。"
+          }
+        ],
+        "annotation": {
+          "macro": true
+        },
+        "desc": " 分配一块内存，并将内容清零。\n\n\n\n",
+        "name": "TKMEM_CALLOC",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回内存块首地址，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "p",
+            "desc": "原来的内存地址。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "每一块的大小。"
+          }
+        ],
+        "annotation": {
+          "macro": true
+        },
+        "desc": " 重新分配一块内存，如果原来的内存块大于等于需要的空间，直接返回原来的内存块。\n\n\n\n",
+        "name": "TKMEM_REALLOC",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回内存块首地址，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "p",
+            "desc": "内存地址。"
+          }
+        ],
+        "annotation": {
+          "macro": true
+        },
+        "desc": " 释放内存。\n\n\n\n",
+        "name": "TKMEM_FREE",
+        "return": {
+          "type": "void",
+          "desc": "无。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem.h",
+    "desc": " 内存管理相关的宏和函数。\n\n 示例：\n\n ```c\n char* str = (char*)TKMEM_ALLOC(100);\n ...\n TKMEM_FREE(str);\n ```\n\n ```c\n char* str = (char*)TKMEM_ALLOC(100);\n ...\n str = (char*)TKMEM_REALLOC(str, 128);\n ...\n TKMEM_FREE(str);\n ```\n\n",
+    "name": "tk_mem_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {},
         "desc": " 创建mutex。\n\n\n",
@@ -14345,7 +14441,7 @@
             "desc": "value对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "value",
             "desc": "待设置的值。"
           }
@@ -14353,8 +14449,29 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置类型为char*的值。\n\n\n",
+        "desc": " 设置类型为字符串的值。\n\n\n",
         "name": "value_set_str",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "value",
+            "desc": "待设置的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置类型为宽字符串的值。\n\n\n",
+        "name": "value_set_wstr",
         "return": {
           "type": "value_t*",
           "desc": "value对象本身。"
@@ -14371,10 +14488,28 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 获取类型为str_t的值。\n\n\n",
+        "desc": " 获取类型为字符串的值。\n\n\n",
         "name": "value_str",
         "return": {
           "type": "const char*",
+          "desc": "值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取类型为宽字符串的值。\n\n\n",
+        "name": "value_wstr",
+        "return": {
+          "type": "const wchar_t*",
           "desc": "值。"
         }
       },
@@ -14452,8 +14587,8 @@
         "desc": " 拷贝value的值。\n\n\n",
         "name": "value_copy",
         "return": {
-          "type": "void",
-          "desc": "值。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -14485,7 +14620,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建value对象\n\n\n",
+        "desc": " 创建value对象。\n\n\n",
         "name": "value_create",
         "return": {
           "type": "value_t*",
@@ -14504,28 +14639,18 @@
           "deconstructor": true,
           "scriptable": true
         },
-        "desc": " @deconstructor\n 销毁value对象\n\n\n",
+        "desc": " @deconstructor\n 销毁value对象。\n\n\n",
         "name": "value_destroy",
         "return": {
-          "type": "void",
-          "desc": ""
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "type",
-        "desc": " 类型。\n\n",
-        "type": "int8_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
+    "properties": [],
     "header": "tkc/value.h",
-    "desc": " 一个通用数据类型，用来存放整数、浮点数、obj_t、str_t和其它对象。\n\n",
+    "desc": " 一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。\n\n 在C/C++中，一般不需动态创建对象，直接声明并初始化即可。如：\n\n ```c\n value_t v;\n value_set_int(&v, 100);\n ```\n\n> 在脚本语言中，需要动态创建对象。\n\n\n",
     "name": "value_t",
     "annotation": {
       "scriptable": true
@@ -15222,188 +15347,6 @@
     "desc": " 滚动控件的动画。\n 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。\n\n",
     "name": "widget_animator_scroll_t",
     "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建image_value对象\r\n\r\n",
-        "name": "image_value_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_value对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "image",
-            "desc": "图片前缀。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置图片前缀。\r\n\r\n",
-        "name": "image_value_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_value对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "format",
-            "desc": "格式。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置格式。\r\n\r\n",
-        "name": "image_value_set_format",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_value对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "value",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置值。\r\n\r\n",
-        "name": "image_value_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_value对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为image_value对象(供脚本语言使用)。\r\n\r\n",
-        "name": "image_value_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "image_value对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "image",
-        "desc": " 图片名称的前缀。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "format",
-        "desc": " 数值到字符串转换时的格式，缺省为\"%d\"。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "value",
-        "desc": " 值。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "image_value/image_value.h",
-    "desc": " image_value控件。可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。\r\n 其原理如下：\r\n  * 1.把value以format为格式转换成字符串。\r\n  * 2.把每个字符与image(图片文件名前缀)映射成一个图片名。\r\n  * 3.最后把这些图片显示出来。\r\n",
-    "name": "image_value_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
   },
   {
     "type": "class",
@@ -20032,6 +19975,79 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建canvas_widget对象\r\n\r\n",
+        "name": "canvas_widget_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "canvas_widget对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为canvas_widget对象(供脚本语言使用)。\r\n\r\n",
+        "name": "canvas_widget_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "canvas_widget对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "canvas_widget/canvas_widget.h",
+    "desc": " 画布控件。\r\n",
+    "name": "canvas_widget_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "input_method_t*",
             "name": "im",
             "desc": "控件对象。"
@@ -20330,125 +20346,6 @@
     "desc": " 输入法请求显示候选字的事件。\n\n",
     "name": "im_candidates_event_t",
     "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建color_component对象\r\n\r\n",
-        "name": "color_component_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "color_t",
-            "name": "c",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置颜色。\r\n\r\n",
-        "name": "color_component_set_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 获取h分量。\r\n\r\n",
-        "name": "color_component_get_h",
-        "return": {
-          "type": "float",
-          "desc": "返回h分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 获取s分量。\r\n\r\n",
-        "name": "color_component_get_s",
-        "return": {
-          "type": "float",
-          "desc": "返回s分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 获取v分量。\r\n\r\n",
-        "name": "color_component_get_v",
-        "return": {
-          "type": "float",
-          "desc": "返回v分量。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "color_picker/color_component.h",
-    "desc": " 颜色选择器的颜色分量。\r\n 控件的名称有严格规定：\r\n COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\r\n COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。\r\n",
-    "name": "color_component_t",
-    "parent": "widget_t",
     "level": 2
   },
   {
@@ -21369,6 +21266,188 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": " 创建image_value对象\r\n\r\n",
+        "name": "image_value_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_value对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "图片前缀。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置图片前缀。\r\n\r\n",
+        "name": "image_value_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_value对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置格式。\r\n\r\n",
+        "name": "image_value_set_format",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_value对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置值。\r\n\r\n",
+        "name": "image_value_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_value对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为image_value对象(供脚本语言使用)。\r\n\r\n",
+        "name": "image_value_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_value对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "image",
+        "desc": " 图片名称的前缀。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "format",
+        "desc": " 数值到字符串转换时的格式，缺省为\"%d\"。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": " 值。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "image_value/image_value.h",
+    "desc": " image_value控件。可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。\r\n 其原理如下：\r\n  * 1.把value以format为格式转换成字符串。\r\n  * 2.把每个字符与image(图片文件名前缀)映射成一个图片名。\r\n  * 3.最后把这些图片显示出来。\r\n",
+    "name": "image_value_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 创建app_bar对象\r\n\r\n",
         "name": "app_bar_create",
         "return": {
@@ -21593,7 +21672,7 @@
       }
     ],
     "header": "widgets/button.h",
-    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
+    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
     "name": "button_t",
     "parent": "widget_t",
     "annotation": {
@@ -24628,7 +24707,7 @@
       }
     ],
     "header": "widgets/progress_bar.h",
-    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)\r\n\r\n",
+    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)\r\n\r\n",
     "name": "progress_bar_t",
     "parent": "widget_t",
     "annotation": {
@@ -24971,7 +25050,7 @@
       }
     ],
     "header": "widgets/slider.h",
-    "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)\r\n\r\n",
+    "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)\r\n\r\n",
     "name": "slider_t",
     "parent": "widget_t",
     "annotation": {
@@ -25098,11 +25177,10 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "scriptable": true
+          "constructor": true
         },
-        "desc": " 创建canvas_widget对象\r\n\r\n",
-        "name": "canvas_widget_create",
+        "desc": " 创建color_component对象\r\n\r\n",
+        "name": "color_component_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -25113,30 +25191,77 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "canvas_widget对象。"
+            "desc": "控件对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "c",
+            "desc": "颜色。"
           }
         ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为canvas_widget对象(供脚本语言使用)。\r\n\r\n",
-        "name": "canvas_widget_cast",
+        "annotation": {},
+        "desc": " 设置颜色。\r\n\r\n",
+        "name": "color_component_set_color",
         "return": {
-          "type": "widget_t*",
-          "desc": "canvas_widget对象。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取h分量。\r\n\r\n",
+        "name": "color_component_get_h",
+        "return": {
+          "type": "float",
+          "desc": "返回h分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取s分量。\r\n\r\n",
+        "name": "color_component_get_s",
+        "return": {
+          "type": "float",
+          "desc": "返回s分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取v分量。\r\n\r\n",
+        "name": "color_component_get_v",
+        "return": {
+          "type": "float",
+          "desc": "返回v分量。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "canvas_widget/canvas_widget.h",
-    "desc": " 画布控件。\r\n",
-    "name": "canvas_widget_t",
+    "header": "color_picker/color_component.h",
+    "desc": " 颜色选择器的颜色分量。\r\n 控件的名称有严格规定：\r\n COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\r\n COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。\r\n",
+    "name": "color_component_t",
     "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 2
   },
   {

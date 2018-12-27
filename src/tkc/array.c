@@ -57,7 +57,7 @@ static bool_t array_extend(array_t* array) {
     void* elms = NULL;
     uint16_t capacity = (array->capacity >> 1) + array->capacity + 1;
 
-    elms = TKMEM_REALLOC(void*, array->elms, capacity);
+    elms = TKMEM_REALLOCT(void*, array->elms, capacity);
     if (elms) {
       array->elms = elms;
       array->capacity = capacity;

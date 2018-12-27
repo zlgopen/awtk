@@ -36,6 +36,10 @@ function isScriptable(obj) {
   return obj.annotation && obj.annotation.scriptable;
 }
 
+function isMacro(obj) {
+  return obj.annotation && obj.annotation.macro;
+}
+
 function isFake(obj) {
   return obj.annotation && obj.annotation.fake;
 }
@@ -111,7 +115,7 @@ class ApiGenerator {
   }
 
   genOneFunc(cls, p) {
-    let result = `#### ${encodeStr(p.name)} 函数\n`;
+    let result = `#### ${encodeStr(p.name)} ${isMacro(p) ? "宏" : "函数"}\n`;
     result += `-----------------------\n\n`;
     result += '* 函数功能：\n\n';
     result += `> ${genAnchor(cls.name, p)}${p.desc}\n\n`;

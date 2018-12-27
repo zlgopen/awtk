@@ -530,7 +530,7 @@ char* tk_str_copy(char* dst, const char* src) {
   if (src != NULL) {
     uint32_t size = strlen(src) + 1;
     if (dst != NULL) {
-      char* str = TKMEM_REALLOC(char, dst, size);
+      char* str = TKMEM_REALLOCT(char, dst, size);
       return_value_if_fail(str != NULL, dst);
       memcpy(str, src, size);
       dst = str;

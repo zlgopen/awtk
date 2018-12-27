@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/12/27
+  * 整理控件API文档：value/mem/str/wstr
+  * 修改SDL输入法的问题(感谢大恒提供补丁)。
+
 * 2018/12/26
   * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
   * 重命名NAME\_LEN为TK\_NAME\_LEN。
