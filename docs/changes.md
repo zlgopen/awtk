@@ -5,6 +5,7 @@
   * 完善freetype字体渲染(感谢zjm09提供补丁)。
   * 完善glyph\_cache，允许glyph有不同的实现。 
   * 重构color\_parser并增加单元测试。
+  * 把events拆成两部分，基础部分移到tkc中。
 
 * 2018/12/26
   * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
