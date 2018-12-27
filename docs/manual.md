@@ -71,9 +71,9 @@
 
 ## 二、基本函数库
 
-[tkmem](docs/tk_mem_t.md) 内存管理。
-[value](docs/value_t.md) 通用值对象。
-[str](docs/str_t.md) UTF-8字符串对象。
-[wstr](docs/wstr_t.md) Unicode字符串对象。
+* [tkmem](manual/tk_mem_t.md) 内存管理。
+* [value](manual/value_t.md) 通用值对象。
+* [str](manual/str_t.md) UTF-8字符串对象。
+* [wstr](manual/wstr_t.md) Unicode字符串对象。
 
 

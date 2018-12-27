@@ -23,7 +23,7 @@
    vgcanvas_t* vg = canvas_get_vgcanvas(c);
    vgcanvas_save(vg);
    vgcanvas_translate(vg, 0, 100);
-  
+
    vgcanvas_set_line_width(vg, 1);
    vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
    vgcanvas_rect(vg, 5, 5, 100, 100);
