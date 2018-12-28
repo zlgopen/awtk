@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 
 /**
  * @class font_manager_t
- * 字体管理器。
+ * 字体管理器，负责字体的加载和缓存管理。
  * (如果使用nanovg，字体由nanovg内部管理)
  */
 typedef struct _font_manager_t {

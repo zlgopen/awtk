@@ -61,7 +61,7 @@
 * [font\_loader\_ft](manual/font_loader_ft_t.md) 基于freetype实现的字体加载器。
 * [font\_loader\_stb](manual/font_loader_stb_t.md) 基于stb实现的字体加载器。
 * [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
-* [font\_manager](manual/font_manager_t.md) 字体加载器。
+* [font\_manager](manual/font_manager_t.md) 字体管理器。
 
 ### 输入法
 
