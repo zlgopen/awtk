@@ -1,7 +1,7 @@
-/*
+ï»¿/*
  * font_loader_ft.h
  *
- *  Created on: 2018Äê12ÔÂ26ÈÕ
+ *  Created on: 2018å¹´12æœˆ26æ—¥
  *      Author: zjm09
  */
 
@@ -16,11 +16,11 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size);
 
 /**
  * @class font_loader_ft_t
- * freetype×ÖÌå¼ÓÔØÆ÷¡£
+ * freetypeå­—ä½“åŠ è½½å™¨ã€‚
  * @annotation["fake"]
  *
- * freetypeÖ÷ÒªÓÃÓÚ¼ÓÔØÊ¸Á¿×ÖÌå(Èçtruetype)£¬Ëü¹¦ÄÜÇ¿´ó£¬Ğ§¹ûÓÅÒì£¬Óëstb×ÖÌå¼ÓÔØÆ÷Ïà±È£¬È±µãÊÇ´úÂëÁ¿±È½Ï´ó¡£
- * Èç¹ûflash¿Õ¼ä¹»´ó£¬ÓÅÏÈÊ¹ÓÃfreetype£¬·ñÔòÊ¹ÓÃstb¡£
+ * freetypeä¸»è¦ç”¨äºåŠ è½½çŸ¢é‡å­—ä½“(å¦‚truetype)ï¼Œå®ƒåŠŸèƒ½å¼ºå¤§ï¼Œæ•ˆæœä¼˜å¼‚ï¼Œä¸stbå­—ä½“åŠ è½½å™¨ç›¸æ¯”ï¼Œç¼ºç‚¹æ˜¯ä»£ç é‡æ¯”è¾ƒå¤§ã€‚
+ * å¦‚æœflashç©ºé—´å¤Ÿå¤§ï¼Œä¼˜å…ˆä½¿ç”¨freetypeï¼Œå¦åˆ™ä½¿ç”¨stbã€‚
  *
  */
 
@@ -28,9 +28,9 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size);
  * @method font_loader_ft
  * @annotation ["constructor"]
  *
- * »ñÈ¡freetype×ÖÌå¼ÓÔØÆ÷¶ÔÏó¡£
+ * è·å–freetypeå­—ä½“åŠ è½½å™¨å¯¹è±¡ã€‚
  *
- * @return {font_loader_t*} ·µ»Ø×ÖÌå¼ÓÔØÆ÷¶ÔÏó¡£
+ * @return {font_loader_t*} è¿”å›å­—ä½“åŠ è½½å™¨å¯¹è±¡ã€‚
  */
 font_loader_t* font_loader_ft(void);
 

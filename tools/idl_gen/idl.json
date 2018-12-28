@@ -15830,18 +15830,18 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "\r\n ��ȡfreetype�������������\r\n\r\n",
+        "desc": "\r\n 获取freetype字体加载器对象。\r\n\r\n",
         "name": "font_loader_ft",
         "return": {
           "type": "font_loader_t*",
-          "desc": "�����������������"
+          "desc": "返回字体加载器对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
     "header": "font_loader/font_loader_ft.h",
-    "desc": " freetype�����������\r\n\r\n freetype��Ҫ���ڼ���ʸ������(��truetype)��������ǿ��Ч�����죬��stb�����������ȣ�ȱ���Ǵ������Ƚϴ�\r\n ���flash�ռ乻������ʹ��freetype������ʹ��stb��\r\n\r\n",
+    "desc": " freetype字体加载器。\r\n\r\n freetype主要用于加载矢量字体(如truetype)，它功能强大，效果优异，与stb字体加载器相比，缺点是代码量比较大。\r\n 如果flash空间够大，优先使用freetype，否则使用stb。\r\n\r\n",
     "name": "font_loader_ft_t",
     "annotation": {
       "fake": true

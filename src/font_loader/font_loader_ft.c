@@ -1,7 +1,7 @@
-/*
+ï»¿/*
  * font_loader_ft.c
  *
- *  Created on: 2018Äê12ÔÂ26ÈÕ
+ *  Created on: 2018ï¿½ï¿½12ï¿½ï¿½26ï¿½ï¿½
  *      Author: zjm09
  */
 #ifdef WITH_FT_FONT
