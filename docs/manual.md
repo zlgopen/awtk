@@ -51,6 +51,18 @@
 
 * [vgcanvas](manual/vgcanvas_t.md)
 
+### 字体
+
+![vgcanvas\_overview](images/font_overview.png)
+
+* [glyph](manual/glyph_t.md) 字模。
+* [font](manual/font_t.md) 字体。
+* [font\_loader](manual/font_t.md) 字体加载器。
+* [font\_loader\_ft](manual/font_loader_ft_t.md) 基于freetype实现的字体加载器。
+* [font\_loader\_stb](manual/font_loader_stb_t.md) 基于stb实现的字体加载器。
+* [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
+* [font\_manager](manual/font_manager_t.md) 字体加载器。
+
 ### 输入法
 
 ### 控件动画
@@ -65,13 +77,12 @@
 
 ### 定时器
 
-### 字体
 
 ### 图片
 
 ## 二、基本函数库
 
-* [tkmem](manual/tk_mem_t.md) 内存管理相关函数和宏。
+* [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
 * [color](manual/color_t.md) 颜色对象。
 * [color\_parse](manual/color_parser_t.md) 颜色解析对象。

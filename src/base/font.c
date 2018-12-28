@@ -22,10 +22,10 @@
 #include "tkc/mem.h"
 #include "base/font.h"
 
-ret_t font_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size) {
-  return_value_if_fail(f != NULL && f->find_glyph != NULL && g != NULL, RET_BAD_PARAMS);
+ret_t font_get_glyph(font_t* f, wchar_t chr, uint16_t font_size, glyph_t* g) {
+  return_value_if_fail(f != NULL && f->get_glyph != NULL && g != NULL, RET_BAD_PARAMS);
 
-  return f->find_glyph(f, chr, g, font_size);
+  return f->get_glyph(f, chr, font_size, g);
 }
 
 int32_t font_get_baseline(font_t* f, uint16_t font_size) {

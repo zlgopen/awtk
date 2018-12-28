@@ -55,7 +55,7 @@ static int32_t font_stb_get_baseline(font_t* f, uint16_t font_size) {
   return scale * font->ascent;
 }
 
-static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
+static ret_t font_stb_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
   int x = 0;
   int y = 0;
   int w = 0;
@@ -121,7 +121,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
 
   f->base.name = name;
   f->base.match = font_stb_match;
-  f->base.find_glyph = font_stb_find_glyph;
+  f->base.get_glyph = font_stb_get_glyph;
   f->base.get_baseline = font_stb_get_baseline;
   f->base.destroy = font_stb_destroy;
 

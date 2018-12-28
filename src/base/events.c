@@ -86,4 +86,3 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 
   return RET_OK;
 }
-

@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/12/28
+  * 整理API文档：glyph/font/font\_loader/font\_manager/font\_loader\_ft/font\_loader\_stb/font\_loader\_bitmap
+  * 重构font相关的代码  
+
 * 2018/12/27
   * 整理控件API文档：value/mem/str/wstr/array/wbuffer/rbuffer/rgba/color/color\_parser。
   * 修改SDL输入法的问题(感谢大恒提供补丁)。

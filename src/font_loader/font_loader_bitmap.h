@@ -40,6 +40,27 @@ typedef struct _font_bitmap_header_t {
 
 font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_size);
 
+/**
+ * @class font_loader_bitmap_t
+ * bitmap字体加载器。
+ *
+ * bitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。
+ * 适合低端嵌入式平台。
+ *
+ * tools/font_gen用于把矢量字体(如truetype)转换成位图字体。
+ *
+ * @annotation["fake"]
+ *
+ */
+
+/**
+ * @method font_loader_bitmap
+ * @annotation ["constructor"]
+ *
+ * 获取bitmap字体加载器对象。
+ *
+ * @return {font_loader_t*} 返回字体加载器对象。
+ */
 font_loader_t* font_loader_bitmap(void);
 
 END_C_DECLS

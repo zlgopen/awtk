@@ -57,7 +57,7 @@ static bool_t font_ft_match(font_t* f, const char* name, uint16_t font_size) {
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
-static ret_t font_ft_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
+static ret_t font_ft_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
   FT_Glyph glyph;
@@ -147,7 +147,7 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size) {
 
   f->base.name = name;
   f->base.match = font_ft_match;
-  f->base.find_glyph = font_ft_find_glyph;
+  f->base.get_glyph = font_ft_get_glyph;
   f->base.get_baseline = font_ft_get_baseline;
   f->base.destroy = font_ft_destroy;
 

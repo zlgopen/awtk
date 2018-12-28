@@ -79,4 +79,3 @@ typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 END_C_DECLS
 
 #endif /**TK_EVENT_H*/
-

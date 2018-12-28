@@ -216,7 +216,7 @@ ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size) {
     lcd_set_font_name(c->lcd, name);
     lcd_set_font_size(c->lcd, size);
   } else {
-    c->font = font_manager_find(c->font_manager, name, size);
+    c->font = font_manager_get_font(c->font_manager, name, size);
   }
 
   return RET_OK;
@@ -241,7 +241,7 @@ static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, uint32_t n
     wchar_t chr = str[i];
     if (chr == ' ') {
       w += 4;
-    } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
+    } else if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
       w += g.advance + 1;
     }
   }
@@ -490,7 +490,7 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
 static ret_t canvas_draw_char_impl(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   glyph_t g;
   uint16_t font_size = c->font_size;
-  return_value_if_fail(font_find_glyph(c->font, chr, &g, font_size) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(font_get_glyph(c->font, chr, font_size, &g) == RET_OK, RET_BAD_PARAMS);
 
   x += g.x;
   y += font_size + g.y;
@@ -524,7 +524,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
     } else if (chr == '\r') {
       y += font_size;
       x = left;
-    } else if (font_find_glyph(c->font, chr, &g, c->font_size) == RET_OK) {
+    } else if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
       xy_t xx = x + g.x;
       xy_t yy = y + font_size + g.y;
 

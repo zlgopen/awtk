@@ -100,7 +100,7 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
 ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* assets_manager);
 
 /**
- * @method font_manager_add
+ * @method font_manager_add_font
  * 向缓存中加入字体。
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名。
@@ -108,18 +108,18 @@ ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* ass
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t font_manager_add(font_manager_t* fm, font_t* font);
+ret_t font_manager_add_font(font_manager_t* fm, font_t* font);
 
 /**
- * @method font_manager_find
- * 从缓存中查找字体。
+ * @method font_manager_get_font
+ * 从缓存中查找字体，如果没找到，再加载字体，并缓存。
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
  * @param {uint16_t} size 字体的大小。
  *
  * @return {font_t*} 返回字体对象。
  */
-font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size);
+font_t* font_manager_get_font(font_manager_t* fm, const char* name, uint16_t size);
 
 /**
  * @method font_manager_deinit

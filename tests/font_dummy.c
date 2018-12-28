@@ -28,7 +28,7 @@ ret_t font_dummy_init() {
   return RET_OK;
 }
 
-static ret_t font_dummy_find_glyph(font_t* f, wchar_t chr, glyph_t* g, uint16_t font_size) {
+static ret_t font_dummy_get_glyph(font_t* f, wchar_t chr, uint16_t font_size, glyph_t* g) {
   if (chr == 0) {
     *g = s_glyph_0;
   } else if (chr == 1) {
@@ -53,7 +53,7 @@ font_t* font_dummy_0(const char* name, uint16_t size) {
   s_font0.base.name = name;
   s_font0.font_size = size;
   s_font0.base.match = font_dummy_match;
-  s_font0.base.find_glyph = font_dummy_find_glyph;
+  s_font0.base.get_glyph = font_dummy_get_glyph;
 
   return &s_font0.base;
 }
@@ -63,7 +63,7 @@ font_t* font_dummy_1(const char* name, uint16_t size) {
   s_font1.base.name = name;
   s_font1.font_size = size;
   s_font1.base.match = font_dummy_match;
-  s_font1.base.find_glyph = font_dummy_find_glyph;
+  s_font1.base.get_glyph = font_dummy_get_glyph;
 
   return &s_font1.base;
 }
@@ -73,7 +73,7 @@ font_t* font_dummy_2(const char* name, uint16_t size) {
   s_font2.base.name = name;
   s_font2.font_size = size;
   s_font2.base.match = font_dummy_match;
-  s_font2.base.find_glyph = font_dummy_find_glyph;
+  s_font2.base.get_glyph = font_dummy_get_glyph;
 
   return &s_font2.base;
 }
