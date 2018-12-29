@@ -26,6 +26,24 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class image_loader_stb_t
+ * stb图片加载器。
+ *
+ * stb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。
+ *
+ * @annotation["fake"]
+ *
+ */
+
+/**
+ * @method image_loader_stb
+ * @annotation ["constructor"]
+ *
+ * 获取stb图片加载器对象。
+ *
+ * @return {image_loader_t*} 返回图片加载器对象。
+ */
 image_loader_t* image_loader_stb(void);
 
 /*for tool image_gen only*/

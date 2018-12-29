@@ -83,7 +83,7 @@ static void draw_image(vgcanvas_t* vg) {
 
   vgcanvas_save(vg);
 
-  image_manager_load(image_manager(), "bricks", &img);
+  image_manager_get_bitmap(image_manager(), "bricks", &img);
 
   vgcanvas_translate(vg, (vg->w - img.w) / 2, 0);
 

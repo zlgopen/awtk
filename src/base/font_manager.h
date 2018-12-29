@@ -92,7 +92,15 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
 /**
  * @method font_manager_set_assets_manager
  * 设置资源管理器对象
- * @param {font_manager_t*} imm 图片管理器对象。
+ *
+ * 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个字体管理器：
+ *
+ * * 一个用于designer本身加载字体。
+ *
+ * * 一个用于被设计的窗口加载字体。
+ *
+ *这两个字体管理器需要从不同的路径加载资源。
+ * @param {font_manager_t*} imm 字体管理器对象。
  * @param {assets_manager_t*} assets_manager 资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -136,7 +136,7 @@ ret_t bitmap_get_line_length (bitmap_t* bitmap);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回每一行占用内存的字节数。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_get\_pixel 函数
 -----------------------

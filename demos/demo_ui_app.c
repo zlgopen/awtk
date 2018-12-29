@@ -457,7 +457,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
     switch (iter->type) {
       case ASSET_TYPE_IMAGE: {
         bitmap_t img;
-        image_manager_load(image_manager(), iter->name, &img);
+        image_manager_get_bitmap(image_manager(), iter->name, &img);
         break;
       }
       default: {

@@ -84,7 +84,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
 TEST(ImageLoaderStb, gen) {
   bitmap_t image;
   ASSERT_EQ(add_image_res(PNG_OPAQUE_NAME, "test.png"), RET_OK);
-  ASSERT_EQ(image_manager_load(image_manager(), "test.png", &image), RET_OK);
+  ASSERT_EQ(image_manager_get_bitmap(image_manager(), "test.png", &image), RET_OK);
 
   ASSERT_EQ(32, image.w);
   ASSERT_EQ(32, image.h);

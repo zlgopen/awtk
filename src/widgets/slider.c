@@ -95,7 +95,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
   draw_type =
       (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
     if (slider->vertical) {
       r.x = 0;
       r.w = widget->w;
@@ -127,7 +127,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   draw_type =
       (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
     if (slider->vertical) {
       r.x = 0;
       r.w = widget->w;
@@ -145,7 +145,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
   image_name = style_get_str(style, STYLE_ID_ICON, NULL);
-  if (image_name && image_manager_load(image_manager(), image_name, &img) == RET_OK) {
+  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
     canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
   }
 

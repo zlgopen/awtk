@@ -208,6 +208,14 @@ ret_t font_manager_set (font_manager_t* fm);
 
 > <p id="font_manager_t_font_manager_set_assets_manager"> 设置资源管理器对象
 
+ 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个字体管理器：
+
+ * 一个用于designer本身加载字体。
+
+ * 一个用于被设计的窗口加载字体。
+
+这两个字体管理器需要从不同的路径加载资源。
+
 
 
 
@@ -222,5 +230,5 @@ ret_t font_manager_set_assets_manager (font_manager_t* imm, assets_manager_t* as
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| imm | font\_manager\_t* | 图片管理器对象。 |
+| imm | font\_manager\_t* | 字体管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |

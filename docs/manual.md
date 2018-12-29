@@ -51,9 +51,9 @@
 
 * [vgcanvas](manual/vgcanvas_t.md)
 
-### 字体
+### 字体资源
 
-![vgcanvas\_overview](images/font_overview.png)
+![font\_overview](images/font_overview.png)
 
 * [glyph](manual/glyph_t.md) 字模。
 * [font](manual/font_t.md) 字体。
@@ -62,6 +62,15 @@
 * [font\_loader\_stb](manual/font_loader_stb_t.md) 基于stb实现的字体加载器。
 * [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
 * [font\_manager](manual/font_manager_t.md) 字体管理器。
+
+### 图片资源
+
+![image\_overview](images/image_overview.png)
+
+* [bitmap](manual/bitmap_t.md) 位图。
+* [image\_loader](manual/image_loader_t.md) 图片加载器。
+* [image\_loader\_stb](manual/image_loader_stb_t.md) stb图片加载器。
+* [image\_manager](manual/image_manager_t.md) 图片管理器。
 
 ### 输入法
 

@@ -333,7 +333,7 @@ static ret_t window_manager_paint_cursor(widget_t* widget, canvas_t* c) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
   if (wm->cursor != NULL) {
-    return_value_if_fail(image_manager_load(image_manager(), wm->cursor, &bitmap) == RET_OK,
+    return_value_if_fail(image_manager_get_bitmap(image_manager(), wm->cursor, &bitmap) == RET_OK,
                          RET_BAD_PARAMS);
     canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
   }
@@ -734,7 +734,7 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
     bitmap_t bitmap;
     wm->cursor = tk_strdup(cursor);
 
-    return_value_if_fail(image_manager_load(image_manager(), cursor, &bitmap) == RET_OK,
+    return_value_if_fail(image_manager_get_bitmap(image_manager(), cursor, &bitmap) == RET_OK,
                          RET_BAD_PARAMS);
     wm->r_cursor.w = bitmap.w;
     wm->r_cursor.h = bitmap.h;

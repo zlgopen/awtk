@@ -256,7 +256,7 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length);
  * 获取每一行占用内存的字节数。
  * @param {bitmap_t*} bitmap bitmap对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回每一行占用内存的字节数。
  */
 uint32_t bitmap_get_line_length(bitmap_t* bitmap);
 

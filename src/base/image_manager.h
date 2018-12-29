@@ -107,8 +107,10 @@ image_manager_t* image_manager_create(image_loader_t* loader);
 image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader);
 
 /**
- * @method image_manager_load
- * 加载指定的图片。
+ * @method image_manager_get_bitmap
+ * 获取指定的图片。
+ * 先从缓存查找，如果没找到，再加载并缓存。
+ *
  * @annotation ["scriptable"]
  * @param {image_manager_t*} imm 图片管理器对象。
  * @param {char*} name 图片名称。
@@ -116,17 +118,7 @@ image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image);
-
-/**
- * @method image_manager_set_assets_manager
- * 设置资源管理器对象
- * @param {image_manager_t*} imm 图片管理器对象。
- * @param {assets_manager_t*} assets_manager 资源管理器。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* assets_manager);
+ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image);
 
 /**
  * @method image_manager_unload_unused
@@ -139,28 +131,6 @@ ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* a
 ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s);
 
 /**
- * @method image_manager_add
- * 向缓存中加入一张图片
- * @param {image_manager_t*} imm 图片管理器对象。
- * @param {char*} name 图片名。
- * @param {bitmap_t*} image 图片信息。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* image);
-
-/**
- * @method image_manager_lookup
- * 从缓存中查找图片
- * @param {image_manager_t*} imm 图片管理器对象。
- * @param {char*} name 图片名。
- * @param {bitmap_t*} image 返回图片信息。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* image);
-
-/**
  * @method image_manager_update_specific
  * 更新缓存中图片的specific信息。
  * @param {image_manager_t*} imm 图片管理器对象。
@@ -169,6 +139,25 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image);
+
+/**
+ * @method image_manager_set_assets_manager
+ * 设置资源管理器对象。
+ *
+ * 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个图片管理器：
+ *
+ * * 一个用于designer本身加载图片。
+ *
+ * * 一个用于被设计的窗口加载图片。
+ *
+ *这两个图片管理器需要从不同的路径加载资源。
+ *
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {assets_manager_t*} assets_manager 资源管理器。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* assets_manager);
 
 /**
  * @method image_manager_deinit
@@ -187,6 +176,10 @@ ret_t image_manager_deinit(image_manager_t* im);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_manager_destroy(image_manager_t* im);
+
+/*public for test*/
+ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* image);
+ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* image);
 
 END_C_DECLS
 

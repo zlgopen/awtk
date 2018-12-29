@@ -1,4 +1,8 @@
 # 最新动态
+* 2018/12/29
+  * 整理API文档：bitmap/image\_loader/image\_manager/image\_loader\_stb
+  * 重构image相关的代码  
+
 * 2018/12/28
   * 整理API文档：glyph/font/font\_loader/font\_manager/font\_loader\_ft/font\_loader\_stb/font\_loader\_bitmap
   * 重构font相关的代码  
