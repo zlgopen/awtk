@@ -1,5 +1,7 @@
 ## image\_loader\_stb\_t
 ### 概述
+![image](images/image_loader_stb_t_0.png)
+
  stb图片加载器。
 
  stb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。

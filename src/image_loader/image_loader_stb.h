@@ -28,6 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class image_loader_stb_t
+ * @parent image_loader_t
  * stb图片加载器。
  *
  * stb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。

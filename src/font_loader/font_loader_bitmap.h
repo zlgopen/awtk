@@ -42,6 +42,7 @@ font_t* font_bitmap_create(const char* name, const uint8_t* buff, uint32_t buff_
 
 /**
  * @class font_loader_bitmap_t
+ * @parent font_loader_t
  * bitmap字体加载器。
  *
  * bitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。

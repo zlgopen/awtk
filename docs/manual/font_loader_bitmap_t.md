@@ -1,5 +1,7 @@
 ## font\_loader\_bitmap\_t
 ### 概述
+![image](images/font_loader_bitmap_t_0.png)
+
  bitmap字体加载器。
 
  bitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。

@@ -1,5 +1,7 @@
 ## font\_loader\_stb\_t
 ### 概述
+![image](images/font_loader_stb_t_0.png)
+
  stb字体加载器。
 
  stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。

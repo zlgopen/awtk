@@ -16,6 +16,7 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size);
 
 /**
  * @class font_loader_ft_t
+ * @parent font_loader_t
  * freetype字体加载器。
  * @annotation["fake"]
  *
