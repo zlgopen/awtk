@@ -79,11 +79,13 @@
 * [image\_loader\_stb](manual/image_loader_stb_t.md) stb图片加载器。
 * [image\_manager](manual/image_manager_t.md) 图片管理器。
 
-#### 3.主题
+#### 3.字符串资源
 
-#### 4.UI描述数据
+* [locale\_info](manual/locale_info_t.md) 本地化信息。
 
-#### 5.字符串资源
+#### 4.主题
+
+#### 5.UI描述数据
 
 
 ### 输入法

@@ -4092,7 +4092,7 @@
       }
     ],
     "header": "base/locale_info.h",
-    "desc": " locale_info\n\n",
+    "desc": " 本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。\n\n\n",
     "name": "locale_info_t",
     "annotation": {
       "scriptable": true

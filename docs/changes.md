@@ -1,7 +1,7 @@
 # 最新动态
 * 2018/12/29
   * 整理API文档：bitmap/image\_loader/image\_manager/image\_loader\_stb
-  * 整理API文档：asset\_info/assets\_manager
+  * 整理API文档：asset\_info/assets\_manager/locale\_info
   * 重构image相关的代码  
 
 * 2018/12/28
