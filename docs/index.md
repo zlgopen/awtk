@@ -13,7 +13,7 @@
 * [AWTK中的国际化之字符串翻译](locale.md)
 * [AWTK中的主题](theme.md)
 * [AWTK中的system\_bar使用方法](system_bar.md)
-* [AWTK中的资源管理器](resource_manager.md)
+* [AWTK中的资源管理器](assets_manager.md)
 * [AWTK中的窗口动画](window_animator.md)
 * [AWTK中的控件动画](widget_animator.md)
 * [LCD旋转(横屏与竖屏)](lcd_rotation.md)

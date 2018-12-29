@@ -51,7 +51,14 @@
 
 * [vgcanvas](manual/vgcanvas_t.md)
 
-### 字体资源
+### 资源相关组件
+
+![assets overview](images/assets_overview.png)
+
+* [asset\_info](manual/asset_info_t.md) 资源信息。
+* [assets_manager](manual/assets_manager_t.md) 资源管理器。
+
+#### 1.字体
 
 ![font\_overview](images/font_overview.png)
 
@@ -63,7 +70,7 @@
 * [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
 * [font\_manager](manual/font_manager_t.md) 字体管理器。
 
-### 图片资源
+#### 2.图片
 
 ![image\_overview](images/image_overview.png)
 
@@ -71,6 +78,13 @@
 * [image\_loader](manual/image_loader_t.md) 图片加载器。
 * [image\_loader\_stb](manual/image_loader_stb_t.md) stb图片加载器。
 * [image\_manager](manual/image_manager_t.md) 图片管理器。
+
+#### 3.主题
+
+#### 4.UI描述数据
+
+#### 5.字符串资源
+
 
 ### 输入法
 
@@ -80,14 +94,7 @@
 
 ### 布局器
 
-### 资源
-
-### 主题
-
 ### 定时器
-
-
-### 图片
 
 ## 二、基本函数库
 
