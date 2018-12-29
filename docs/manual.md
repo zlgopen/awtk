@@ -16,7 +16,7 @@
 * [popup](manual/popup_t.md) 弹出窗口。
 * [window](manual/window_t.md) 普通窗口。
 * [system\_bar](manual/system_bar_t.md) 系统状态窗口。
-* [calibration\_win\](manual/calibration_win_t.md) 电阻屏校准窗口。
+* [calibration\_win](manual/calibration_win_t.md) 电阻屏校准窗口。
 
 #### 基本控件
 * [button](manual/button_t.md) 按钮控件。
