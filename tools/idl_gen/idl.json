@@ -20788,7 +20788,7 @@
           "constructor": true
         },
         "desc": "\n 创建只读的style对象。\n\n\n",
-        "name": "style_const",
+        "name": "style_const_create",
         "return": {
           "type": "style_t*",
           "desc": "返回style对象。"

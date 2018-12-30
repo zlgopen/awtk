@@ -14,13 +14,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#style_const_t_style_const">style\_const</a> |  |
-#### style\_const 函数
+| <a href="#style_const_t_style_const_create">style\_const\_create</a> |  |
+#### style\_const\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="style_const_t_style_const">
+> <p id="style_const_t_style_const_create">
  创建只读的style对象。
 
 
@@ -29,7 +29,7 @@
 * 函数原型：
 
 ```
-style_t* style_const ();
+style_t* style_const_create ();
 ```
 
 * 参数说明：

@@ -39,7 +39,7 @@ BEGIN_C_DECLS
  */
 
 /**
- * @method style_const
+ * @method style_const_create
  * @annotation ["constructor"]
  *
  * 创建只读的style对象。
