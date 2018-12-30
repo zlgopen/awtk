@@ -30,6 +30,9 @@ BEGIN_C_DECLS
 /**
  * @class theme_t
  * 主题。
+ *
+ * 负责管理缺省的主题数据，方便实现style\_const。
+ *
  */
 typedef struct _theme_t {
   const uint8_t* data;

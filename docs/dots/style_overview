@@ -1,0 +1,22 @@
+digraph UML {
+  rankdir  = BT
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+     
+   style_t->widget_t[arrowhead=none];
+   style_factory_t->widget_t[arrowhead=none];
+   subgraph cluster_0{
+     style_factory_t->style_t[constraint=false arrowhead=vee];
+   };
+   
+   subgraph cluster_1{
+     style_const_t -> style_mutable_t[constraint=false arrowhead=ediamond]
+   };
+   style_const_t -> style_t[arrowhead=empty style=dashed]
+   style_mutable_t -> style_t[arrowhead=empty style=dashed]
+   theme_t -> style_const_t[arrowhead=none]
+}

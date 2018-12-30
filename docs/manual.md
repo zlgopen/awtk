@@ -85,6 +85,14 @@
 
 #### 4.主题
 
+![style\_overview](images/style_overview.png)
+
+* [style](manual/style_t.md) style接口。
+* [theme](manual/theme_t.md) 常量主题数据。
+* [style\_factory](manual/style_factory_t.md) style工厂。
+* [style\_const](manual/style_const_t.md) 只读的style。
+* [style\_mutable](manual/style_mutable_t.md) 可修改的style。
+
 #### 5.UI描述数据
 
 

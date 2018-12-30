@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/12/30
+  * 整理API文档：style/style\_const/style\_mutable/theme/style\_factory
+
 * 2018/12/29
   * 整理API文档：bitmap/image\_loader/image\_manager/image\_loader\_stb
   * 整理API文档：asset\_info/assets\_manager/locale\_info
