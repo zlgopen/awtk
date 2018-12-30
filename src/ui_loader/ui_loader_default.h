@@ -22,7 +22,7 @@
 #ifndef TK_UI_LOADER_DEFAULT_H
 #define TK_UI_LOADER_DEFAULT_H
 
-#include "ui_loader/ui_loader.h"
+#include "base/ui_loader.h"
 
 BEGIN_C_DECLS
 
