@@ -95,6 +95,17 @@
 
 #### 5.UI描述数据
 
+![ui\_loader\_overview](images/ui_loader_overview.png)
+
+* [ui\_loader](manual/ui_loader_t.md) loader接口。
+* [ui\_builder](manual/ui_builder_t.md) builder接口。
+
+* [ui\_builder\_default](manual/ui_builder_default_t.md) 缺省builder实现，负责构建widget树。
+* [ui\_xml\_writer](manual/ui_xml_writer_t.md) 生成XML格式的UI描述数据。 
+* [ui\_binary\_writer](manual/ui_binary_writer_t.md) 生成二进制格式的UI描述数据。  
+
+* [ui\_loader\_default](manual/ui_loader_default_t.md) 二进制格式的UI资源加载器。 
+* [ui\_loader\_xml](manual/ui_loader_xml_t.md) XML格式的UI资源加载器。
 
 ### 输入法
 

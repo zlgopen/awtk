@@ -1,4 +1,7 @@
 # 最新动态
+* 2018/12/31
+  * 整理API文档：ui\_loader/ui\_builder/ui\_xml\_writer/ui\_binary\_writer/ui\_builder\_default
+
 * 2018/12/30
   * 整理API文档：style/style\_const/style\_mutable/theme/style\_factory
   * move ui\_loader.c/.h to base目录。
