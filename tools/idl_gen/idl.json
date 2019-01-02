@@ -1,28 +1,28 @@
 [
   {
     "type": "enum",
-    "desc": " 水平对齐的常量定义。\r\n",
+    "desc": " 垂直对齐的常量定义。\r\n",
     "consts": [
       {
         "desc": " 无效对齐方式。\r\n",
-        "name": "ALIGN_H_NONE"
+        "name": "ALIGN_V_NONE"
       },
       {
         "desc": " 居中对齐。\r\n",
-        "name": "ALIGN_H_CENTER"
+        "name": "ALIGN_V_MIDDLE"
       },
       {
-        "desc": " 左边对齐。\r\n",
-        "name": "ALIGN_H_LEFT"
+        "desc": " 顶部对齐。\r\n",
+        "name": "ALIGN_V_TOP"
       },
       {
-        "desc": " 右边对齐。\r\n",
-        "name": "ALIGN_H_RIGHT"
+        "desc": " 底部对齐。\r\n",
+        "name": "ALIGN_V_BOTTOM"
       }
     ],
     "header": "base/types_def.h",
-    "name": "align_h_t",
-    "prefix": "ALIGN_H_",
+    "name": "align_v_t",
+    "prefix": "ALIGN_V_",
     "annotation": {
       "scriptable": true
     },
@@ -2326,6 +2326,57 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "on_idle",
+        "desc": " idle回调函数。\n\n",
+        "type": "idle_func_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctx",
+        "desc": " idle回调函数上下文。\n\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "id",
+        "desc": " idle的ID\n\n > 为TK\\_INVALID\\_ID时表示无效idle。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy_ctx",
+        "desc": " idle销毁时的回调函数的上下文。\n\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy",
+        "desc": " idle销毁时的回调函数。\n\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/idle.h",
+    "desc": " 单个idle的信息。\n\n",
+    "name": "idle_info_t",
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -2459,7 +2510,7 @@
     "events": [],
     "properties": [],
     "header": "base/idle.h",
-    "desc": " idle函数在主循环中paint之后执行。\n\n",
+    "desc": "\n idle可以看作是duration为0的定时器，不同的是idle函数在主循环中paint之后执行。\n\n > idle可以用来实现一些异步处理。\n\n\n",
     "name": "idle_t",
     "annotation": {
       "scriptable": true,
@@ -5265,6 +5316,89 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "on_timer",
+        "desc": " 定时器回调函数。\n\n",
+        "type": "timer_func_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctx",
+        "desc": " 定时器回调函数的上下文\n\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "id",
+        "desc": " 定时器的ID\n\n > 为TK\\_INVALID\\_ID时表示无效定时器。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "now",
+        "desc": " 当前时间(相对时间，单位为毫秒)。\n\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "start",
+        "desc": " 起始时间(相对时间，单位为毫秒)。\n\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "duration",
+        "desc": " 时间间隔(单位为毫秒)。\n\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy",
+        "desc": " 定时器销毁时的回调函数。\n\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy_ctx",
+        "desc": " 定时器销毁时的回调函数上下文。\n\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "user_changed_time",
+        "desc": " 用户是否修改了系统时间。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/timer.h",
+    "desc": " 单个定时器的信息。\n\n",
+    "name": "timer_info_t",
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -5299,7 +5433,7 @@
           },
           {
             "type": "uint32_t",
-            "name": "duration_ms",
+            "name": "duration",
             "desc": "时间。"
           }
         ],
@@ -5328,7 +5462,7 @@
           },
           {
             "type": "uint32_t",
-            "name": "duration_ms",
+            "name": "duration",
             "desc": "时间。"
           }
         ],
@@ -5451,7 +5585,7 @@
     "events": [],
     "properties": [],
     "header": "base/timer.h",
-    "desc": " 定时器系统。\n\n",
+    "desc": " 定时器系统。\n\n > 本定时器精度较低，最高精度为1000/FPS，如果需要高精度的定时器，请用OS提供的定时器。\n\n\n",
     "name": "timer_t",
     "annotation": {
       "scriptable": true,
@@ -5487,40 +5621,40 @@
   },
   {
     "type": "enum",
-    "desc": " 垂直对齐的常量定义。\r\n",
-    "consts": [
-      {
-        "desc": " 无效对齐方式。\r\n",
-        "name": "ALIGN_V_NONE"
-      },
-      {
-        "desc": " 居中对齐。\r\n",
-        "name": "ALIGN_V_MIDDLE"
-      },
-      {
-        "desc": " 顶部对齐。\r\n",
-        "name": "ALIGN_V_TOP"
-      },
-      {
-        "desc": " 底部对齐。\r\n",
-        "name": "ALIGN_V_BOTTOM"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "align_v_t",
-    "prefix": "ALIGN_V_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 水平对齐的常量定义。\r\n",
+    "consts": [
+      {
+        "desc": " 无效对齐方式。\r\n",
+        "name": "ALIGN_H_NONE"
+      },
+      {
+        "desc": " 居中对齐。\r\n",
+        "name": "ALIGN_H_CENTER"
+      },
+      {
+        "desc": " 左边对齐。\r\n",
+        "name": "ALIGN_H_LEFT"
+      },
+      {
+        "desc": " 右边对齐。\r\n",
+        "name": "ALIGN_H_RIGHT"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "align_h_t",
+    "prefix": "ALIGN_H_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -11642,7 +11776,7 @@
       }
     ],
     "header": "base/widget.h",
-    "desc": " **widget_t** 是所有控件、窗口和窗口管理器的基类。\n **widget_t**也是一个容器，可放其它**widget_t**到它的内部，形成一个树形结构。\n\n ```graphviz\n   [default_style]\n\n   widget_t -> widget_t[arrowhead = \"diamond\"]\n   window_t -> widget_t[arrowhead = \"empty\"]\n   window_manager_t -> widget_t[arrowhead = \"empty\"]\n   button_t -> widget_t[arrowhead = \"empty\"]\n   label_t -> widget_t[arrowhead = \"empty\"]\n   xxx_widget_t -> widget_t[arrowhead = \"empty\"]\n ```\n\n 通常**widget_t**通过一个矩形区域向用户呈现一些信息，接受用户的输入，并据此做出适当的反应。\n 它负责控件的生命周期、通用状态、事件分发和Style的管理。\n 本类提供的接口(函数和属性)除非特别说明，一般都适用于子类控件。\n\n > **widget_t**是抽象类，不要直接创建**widget_t**的实例。\n\n 为了便于解释，这里特别说明一下几个术语：\n\n * **父控件与子控件**：父控件与子控件指的两个控件的组合关系(这是在运行时决定的)。\n 比如：在窗口中放一个按钮，此时，我们称按钮是窗口的子控件，窗口是按钮的父控件。\n\n ```graphviz\n   [default_style]\n\n   子控件 -> 父控件[arrowhead = \"ediamond\"]\n ```\n\n * **子类控件与父类控件**：子类控件与父类控件指的两类控件的继承关系(这是在设计时决定的)。\n 比如：我们称**button_t**是**widget_t**的子类控件，**widget_t**是**button_t**的父类控件。\n\n ```graphviz\n   [default_style]\n\n   子类控件 -> 父类控件[arrowhead = \"empty\"]\n\n ```\n\n\n",
+    "desc": " **widget_t** 是所有控件、窗口和窗口管理器的基类。\n **widget_t**也是一个容器，可放其它**widget_t**到它的内部，形成一个树形结构。\n\n ```graphviz\n   [default_style]\n\n   widget_t -> widget_t[arrowhead = \"diamond\"]\n   window_t -> widget_t[arrowhead = \"empty\"]\n   window_manager_t -> widget_t[arrowhead = \"empty\"]\n   button_t -> widget_t[arrowhead = \"empty\"]\n   label_t -> widget_t[arrowhead = \"empty\"]\n   xxx_widget_t -> widget_t[arrowhead = \"empty\"]\n ```\n\n 通常**widget_t**通过一个矩形区域向用户呈现一些信息，接受用户的输入，并据此做出适当的反应。\n 它负责控件的生命周期、通用状态、事件分发和Style的管理。\n 本类提供的接口(函数和属性)除非特别说明，一般都适用于子类控件。\n\n 为了便于解释，这里特别说明一下几个术语：\n\n * **父控件与子控件**：父控件与子控件指的两个控件的组合关系(这是在运行时决定的)。\n 比如：在窗口中放一个按钮，此时，我们称按钮是窗口的子控件，窗口是按钮的父控件。\n\n ```graphviz\n   [default_style]\n\n   子控件 -> 父控件[arrowhead = \"ediamond\"]\n ```\n\n * **子类控件与父类控件**：子类控件与父类控件指的两类控件的继承关系(这是在设计时决定的)。\n 比如：我们称**button_t**是**widget_t**的子类控件，**widget_t**是**button_t**的父类控件。\n\n ```graphviz\n   [default_style]\n\n   子类控件 -> 父类控件[arrowhead = \"empty\"]\n\n ```\n\n widget相关的函数都只能在GUI线程中执行，如果需在非GUI线程中想调用widget相关函数，\n 请用idle\\_queue或timer\\_queue进行串行化。\n 请参考[demo thread](https://github.com/zlgopen/awtk/blob/master/demos/demo_thread_app.c)\n\n **widget\\_t**是抽象类，不要直接创建**widget\\_t**的实例。控件支持两种创建方式：\n\n * 通过XML创建。如：\n\n ```xml\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\n ```\n\n * 通过代码创建。如：\n\n ```c\n  widget_t* button = button_create(win, 10, 10, 128, 30);\n  widget_set_text(button, L\"OK\");\n  widget_on(button, EVT_CLICK, on_click, NULL);\n ```\n\n\n",
     "name": "widget_t",
     "annotation": {
       "scriptable": true
@@ -19059,390 +19193,6 @@
         "params": [
           {
             "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的图片名称。\r\n\r\n",
-        "name": "image_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "rotation",
-            "desc": "旋转角度(幅度)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_rotation",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_x",
-            "desc": "X方向缩放比例。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_y",
-            "desc": "Y方向缩放比例。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_x",
-            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_y",
-            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_anchor",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selected",
-            "desc": "是否被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的选中状态。\r\n\r\n",
-        "name": "image_set_selected",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selectable",
-            "desc": "是否可以被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件是否可以被选中。\r\n\r\n",
-        "name": "image_set_selectable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "clickable",
-            "desc": "是否可以被点击。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件是否可以被点击。\r\n\r\n",
-        "name": "image_set_clickable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_base对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为image_base对象(供脚本语言使用)。\r\n\r\n",
-        "name": "image_base_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "image_base对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "image",
-        "desc": " 图片的名称。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_x",
-        "desc": " 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_y",
-        "desc": " 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_x",
-        "desc": " 控件在X方向上的缩放比例。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_y",
-        "desc": " 控件在Y方向上的缩放比例。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "rotation",
-        "desc": " 控件的旋转角度(幅度)。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "clickable",
-        "desc": " 点击时，是否触发EVT_CLICK事件。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selectable",
-        "desc": " 是否设置选中状态。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selected",
-        "desc": " 当前是否被选中。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/image_base.h",
-    "desc": " 图片控件基类。\r\n\r\n 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   image_t -> image_base_t[arrowhead = \"empty\"]\r\n   svg_image_t -> image_base_t[arrowhead = \"empty\"]\r\n   gif_image_t -> image_base_t[arrowhead = \"empty\"]\r\n ```\r\n\r\n > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\r\n\r\n",
-    "name": "image_base_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转window_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "window_event_cast",
-        "return": {
-          "type": "window_event_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "pointer_event_t*",
-            "name": "evt",
-            "desc": "指针事件对象。"
-          },
-          {
-            "type": "system_info_t*",
-            "name": "info",
-            "desc": "系统信息。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 根据屏幕旋转方向修正pointer_event中的坐标。\n\n\n",
-        "name": "pointer_event_rotate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "window",
-        "desc": " canvas。\n\n",
-        "type": "widget_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 窗口事件，由窗口管理器触发。\n\n",
-    "name": "window_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
           },
@@ -19708,33 +19458,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 创建只读的style对象。\n\n\n",
-        "name": "style_const_create",
-        "return": {
-          "type": "style_t*",
-          "desc": "返回style对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/style_const.h",
-    "desc": "\n 只读的style，从theme\\_t中获取数据。\n\n tools/theme_gen用于把XML的主题数据转换成常量数据。\n\n\n\n",
-    "name": "style_const_t",
-    "parent": "style_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "event_t*",
@@ -19831,6 +19554,113 @@
   },
   {
     "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建只读的style对象。\n\n\n",
+        "name": "style_const_create",
+        "return": {
+          "type": "style_t*",
+          "desc": "返回style对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/style_const.h",
+    "desc": "\n 只读的style，从theme\\_t中获取数据。\n\n tools/theme_gen用于把XML的主题数据转换成常量数据。\n\n\n\n",
+    "name": "style_const_t",
+    "parent": "style_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转key_event_t对象，主要给脚本语言使用。\n\n\n",
+        "name": "key_event_cast",
+        "return": {
+          "type": "key_event_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "key",
+        "desc": " 键值。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": " alt键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": " ctrl键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": " shift键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "capslock",
+        "desc": " capslock键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": " 按键事件。\n\n",
+    "name": "key_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [],
     "events": [],
     "properties": [
@@ -19902,6 +19732,50 @@
     "header": "base/input_method.h",
     "desc": " 输入法请求显示候选字的事件。\n\n",
     "name": "im_candidates_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "paint_event_cast",
+        "return": {
+          "type": "paint_event_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "c",
+        "desc": " canvas。\n\n",
+        "type": "canvas_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": " 绘制事件。\n\n",
+    "name": "paint_event_t",
+    "annotation": {
+      "scriptable": true
+    },
     "parent": "event_t",
     "level": 2
   },
@@ -20888,56 +20762,41 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 把event对象转key_event_t对象，主要给脚本语言使用。\n\n\n",
-        "name": "key_event_cast",
+        "desc": " 把event对象转window_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "window_event_cast",
         "return": {
-          "type": "key_event_t*",
+          "type": "window_event_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "pointer_event_t*",
+            "name": "evt",
+            "desc": "指针事件对象。"
+          },
+          {
+            "type": "system_info_t*",
+            "name": "info",
+            "desc": "系统信息。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 根据屏幕旋转方向修正pointer_event中的坐标。\n\n\n",
+        "name": "pointer_event_rotate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "key",
-        "desc": " 键值。\n\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "alt",
-        "desc": " alt键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "ctrl",
-        "desc": " ctrl键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "shift",
-        "desc": " shift键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "capslock",
-        "desc": " capslock键是否按下。\n\n",
-        "type": "bool_t",
+        "name": "window",
+        "desc": " canvas。\n\n",
+        "type": "widget_t*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -20945,8 +20804,8 @@
       }
     ],
     "header": "base/events.h",
-    "desc": " 按键事件。\n\n",
-    "name": "key_event_t",
+    "desc": " 窗口事件，由窗口管理器触发。\n\n",
+    "name": "window_event_t",
     "annotation": {
       "scriptable": true
     },
@@ -21179,6 +21038,325 @@
         "params": [
           {
             "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的图片名称。\r\n\r\n",
+        "name": "image_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "rotation",
+            "desc": "旋转角度(幅度)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_set_rotation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_x",
+            "desc": "X方向缩放比例。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_y",
+            "desc": "Y方向缩放比例。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_set_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_x",
+            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_y",
+            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_set_anchor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selected",
+            "desc": "是否被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的选中状态。\r\n\r\n",
+        "name": "image_set_selected",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selectable",
+            "desc": "是否可以被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件是否可以被选中。\r\n\r\n",
+        "name": "image_set_selectable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "clickable",
+            "desc": "是否可以被点击。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件是否可以被点击。\r\n\r\n",
+        "name": "image_set_clickable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_base对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为image_base对象(供脚本语言使用)。\r\n\r\n",
+        "name": "image_base_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_base对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "image",
+        "desc": " 图片的名称。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_x",
+        "desc": " 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_y",
+        "desc": " 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_x",
+        "desc": " 控件在X方向上的缩放比例。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_y",
+        "desc": " 控件在Y方向上的缩放比例。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "rotation",
+        "desc": " 控件的旋转角度(幅度)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clickable",
+        "desc": " 点击时，是否触发EVT_CLICK事件。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selectable",
+        "desc": " 是否设置选中状态。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": " 当前是否被选中。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/image_base.h",
+    "desc": " 图片控件基类。\r\n\r\n 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   image_t -> image_base_t[arrowhead = \"empty\"]\r\n   svg_image_t -> image_base_t[arrowhead = \"empty\"]\r\n   gif_image_t -> image_base_t[arrowhead = \"empty\"]\r\n ```\r\n\r\n > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\r\n\r\n",
+    "name": "image_base_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
           },
@@ -21207,8 +21385,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建guage对象\r\n\r\n",
-        "name": "guage_create",
+        "desc": " 创建image_animation对象\r\n\r\n",
+        "name": "image_animation_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -21219,64 +21397,210 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "guage对象。"
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop",
+            "desc": "是否循环播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否循环播放。\r\n\r\n",
+        "name": "image_animation_set_loop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "图片前缀。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置图片前缀。\r\n\r\n",
+        "name": "image_animation_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "interval",
+            "desc": "间隔时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置播放间隔时间。\r\n\r\n",
+        "name": "image_animation_set_interval",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "delay",
+            "desc": "延迟播放时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置延迟播放时间(仅适用于自动播放)。\r\n\r\n",
+        "name": "image_animation_set_delay",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "auto_play",
+            "desc": "是否自动播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否自动播放。\r\n\r\n",
+        "name": "image_animation_set_auto_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "sequence",
+            "desc": "播放序列。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。\r\n\r\n",
+        "name": "image_animation_set_sequence",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 播放。\r\n\r\n",
+        "name": "image_animation_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 停止(并重置index为0)。\r\n\r\n",
+        "name": "image_animation_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 暂停。\r\n\r\n",
+        "name": "image_animation_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为guage对象(供脚本语言使用)。\r\n\r\n",
-        "name": "guage_cast",
+        "desc": " 转换为image_animation对象(供脚本语言使用)。\r\n\r\n",
+        "name": "image_animation_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "guage对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置背景图片的名称。\r\n\r\n",
-        "name": "guage_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "image_draw_type_t",
-            "name": "draw_type",
-            "desc": "显示方式。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置图片的显示方式。\r\n\r\n",
-        "name": "guage_set_draw_type",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "desc": "image_animation对象。"
         }
       }
     ],
@@ -21284,7 +21608,7 @@
     "properties": [
       {
         "name": "image",
-        "desc": " 背景图片。\r\n",
+        "desc": " 图片名称的前缀。\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -21296,9 +21620,61 @@
         }
       },
       {
-        "name": "draw_type",
-        "desc": " 图片的绘制方式。\r\n",
-        "type": "image_draw_type_t",
+        "name": "sequence",
+        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop",
+        "desc": " 是否循环播放。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": " 是否自动播放。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "interval",
+        "desc": " 每张图片播放的时间(毫秒)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "delay",
+        "desc": " 自动播放时延迟播放的时间(毫秒)。\r\n",
+        "type": "uint32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -21309,57 +21685,13 @@
         }
       }
     ],
-    "header": "guage/guage.h",
-    "desc": " 表盘控件。\r\n",
-    "name": "guage_t",
+    "header": "image_animation/image_animation.h",
+    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n",
+    "name": "image_animation_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true
     },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "paint_event_cast",
-        "return": {
-          "type": "paint_event_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "c",
-        "desc": " canvas。\n\n",
-        "type": "canvas_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 绘制事件。\n\n",
-    "name": "paint_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
     "level": 2
   },
   {
@@ -25923,8 +26255,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建image_animation对象\r\n\r\n",
-        "name": "image_animation_create",
+        "desc": " 创建guage对象\r\n\r\n",
+        "name": "guage_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -25935,210 +26267,64 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "loop",
-            "desc": "是否循环播放。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否循环播放。\r\n\r\n",
-        "name": "image_animation_set_loop",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "image",
-            "desc": "图片前缀。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置图片前缀。\r\n\r\n",
-        "name": "image_animation_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "interval",
-            "desc": "间隔时间(毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置播放间隔时间。\r\n\r\n",
-        "name": "image_animation_set_interval",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "delay",
-            "desc": "延迟播放时间(毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置延迟播放时间(仅适用于自动播放)。\r\n\r\n",
-        "name": "image_animation_set_delay",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "auto_play",
-            "desc": "是否自动播放。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否自动播放。\r\n\r\n",
-        "name": "image_animation_set_auto_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "sequence",
-            "desc": "播放序列。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。\r\n\r\n",
-        "name": "image_animation_set_sequence",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 播放。\r\n\r\n",
-        "name": "image_animation_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 停止(并重置index为0)。\r\n\r\n",
-        "name": "image_animation_stop",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 暂停。\r\n\r\n",
-        "name": "image_animation_pause",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
+            "desc": "guage对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为image_animation对象(供脚本语言使用)。\r\n\r\n",
-        "name": "image_animation_cast",
+        "desc": " 转换为guage对象(供脚本语言使用)。\r\n\r\n",
+        "name": "guage_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "image_animation对象。"
+          "desc": "guage对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置背景图片的名称。\r\n\r\n",
+        "name": "guage_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "显示方式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置图片的显示方式。\r\n\r\n",
+        "name": "guage_set_draw_type",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
@@ -26146,7 +26332,7 @@
     "properties": [
       {
         "name": "image",
-        "desc": " 图片名称的前缀。\r\n",
+        "desc": " 背景图片。\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -26158,61 +26344,9 @@
         }
       },
       {
-        "name": "sequence",
-        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "loop",
-        "desc": " 是否循环播放。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "auto_play",
-        "desc": " 是否自动播放。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "interval",
-        "desc": " 每张图片播放的时间(毫秒)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "delay",
-        "desc": " 自动播放时延迟播放的时间(毫秒)。\r\n",
-        "type": "uint32_t",
+        "name": "draw_type",
+        "desc": " 图片的绘制方式。\r\n",
+        "type": "image_draw_type_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -26223,9 +26357,9 @@
         }
       }
     ],
-    "header": "image_animation/image_animation.h",
-    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n",
-    "name": "image_animation_t",
+    "header": "guage/guage.h",
+    "desc": " 表盘控件。\r\n",
+    "name": "guage_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true

@@ -31,16 +31,50 @@ typedef struct _idle_info_t idle_info_t;
 
 typedef ret_t (*idle_func_t)(const idle_info_t* idle);
 
+/**
+ * @class idle_info_t
+ * 单个idle的信息。
+ */
 struct _idle_info_t {
-  void* ctx;
-  uint32_t id;
+  /**
+   * @property {idle_func_t} on_idle
+   * @annotation ["readable"]
+   * idle回调函数。
+   */
   idle_func_t on_idle;
 
-  bool_t pending_destroy;
+  /**
+   * @property {void*} ctx
+   * @annotation ["readable"]
+   * idle回调函数上下文。
+   */
+  void* ctx;
 
+  /**
+   * @property {uint32_t} id
+   * @annotation ["readable"]
+   * idle的ID
+   *
+   * > 为TK\_INVALID\_ID时表示无效idle。
+   */
+  uint32_t id;
+
+  /**
+   * @property {tk_destroy_t} on_destroy_ctx
+   * @annotation ["readable"]
+   * idle销毁时的回调函数的上下文。
+   */
   void* on_destroy_ctx;
+
+  /**
+   * @property {tk_destroy_t} on_destroy
+   * @annotation ["readable"]
+   * idle销毁时的回调函数。
+   */
   tk_destroy_t on_destroy;
 
+  /*private*/
+  bool_t pending_destroy;
   struct _idle_info_t* next;
 };
 
@@ -68,7 +102,11 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
 /**
  * @class idle_t
  * @annotation ["scriptable", "fake"]
- * idle函数在主循环中paint之后执行。
+ *
+ * idle可以看作是duration为0的定时器，不同的是idle函数在主循环中paint之后执行。
+ *
+ * > idle可以用来实现一些异步处理。
+ *
  */
 
 /**

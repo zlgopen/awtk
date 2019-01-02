@@ -133,8 +133,6 @@ typedef struct _widget_vtable_t {
  * 它负责控件的生命周期、通用状态、事件分发和Style的管理。
  * 本类提供的接口(函数和属性)除非特别说明，一般都适用于子类控件。
  *
- * > **widget_t**是抽象类，不要直接创建**widget_t**的实例。
- *
  * 为了便于解释，这里特别说明一下几个术语：
  *
  * * **父控件与子控件**：父控件与子控件指的两个控件的组合关系(这是在运行时决定的)。
@@ -154,6 +152,26 @@ typedef struct _widget_vtable_t {
  *
  *   子类控件 -> 父类控件[arrowhead = "empty"]
  *
+ * ```
+ *
+ * widget相关的函数都只能在GUI线程中执行，如果需在非GUI线程中想调用widget相关函数，
+ * 请用idle\_queue或timer\_queue进行串行化。
+ * 请参考[demo thread](https://github.com/zlgopen/awtk/blob/master/demos/demo_thread_app.c)
+ *
+ * **widget\_t**是抽象类，不要直接创建**widget\_t**的实例。控件支持两种创建方式：
+ *
+ * * 通过XML创建。如：
+ *
+ * ```xml
+ * <button x="c" y="m" w="80" h="30" text="OK"/>
+ * ```
+ *
+ * * 通过代码创建。如：
+ *
+ * ```c
+ *  widget_t* button = button_create(win, 10, 10, 128, 30);
+ *  widget_set_text(button, L"OK");
+ *  widget_on(button, EVT_CLICK, on_click, NULL);
  * ```
  *
  */

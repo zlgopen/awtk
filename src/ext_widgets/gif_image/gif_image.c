@@ -37,7 +37,7 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
   if (image->delays != NULL && image->frames_nr > 1) {
     uint32_t delay = image->delays[image->index];
 
-    if (delay == info->duration_ms) {
+    if (delay == info->duration) {
       return RET_REPEAT;
     } else {
       image->timer_id = timer_add(gif_image_on_timer, image, delay);
