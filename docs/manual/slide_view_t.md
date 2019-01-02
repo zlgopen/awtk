@@ -154,8 +154,8 @@ ret_t slide_view_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### vertical 属性
 -----------------------
 > <p id="slide_view_t_vertical"> 是否为上下滑动模式。
@@ -171,5 +171,5 @@ ret_t slide_view_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

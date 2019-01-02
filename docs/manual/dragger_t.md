@@ -106,8 +106,8 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### x\_min 属性
 -----------------------
 > <p id="dragger_t_x_min"> x坐标的最小值。
@@ -123,8 +123,8 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### y\_max 属性
 -----------------------
 > <p id="dragger_t_y_max"> y坐标的最大值。
@@ -140,8 +140,8 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### y\_min 属性
 -----------------------
 > <p id="dragger_t_y_min"> y坐标的最小值。
@@ -157,5 +157,5 @@ widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_ma
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

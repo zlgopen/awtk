@@ -41,7 +41,7 @@
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
 #### closable 属性
 -----------------------
 > <p id="window_base_t_closable"> 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
@@ -65,8 +65,8 @@
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### close\_anim\_hint 属性
 -----------------------
 > <p id="window_base_t_close_anim_hint"> 关闭窗口动画的名称。
@@ -82,8 +82,8 @@
 | 可持久化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### font\_manager 属性
 -----------------------
 > <p id="window_base_t_font_manager"> 获取字体管理器对象。
@@ -99,7 +99,7 @@
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
 #### image\_manager 属性
 -----------------------
 > <p id="window_base_t_image_manager"> 获取图片管理器对象。
@@ -115,7 +115,7 @@
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
 #### open\_anim\_hint 属性
 -----------------------
 > <p id="window_base_t_open_anim_hint"> 打开窗口动画的名称。
@@ -131,8 +131,8 @@
 | 可持久化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### script 属性
 -----------------------
 > <p id="window_base_t_script"> 脚本文件名称(暂时没用)。
@@ -147,8 +147,8 @@
 | 可持久化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### stage 属性
 -----------------------
 > <p id="window_base_t_stage"> 窗口当前处于的状态。
@@ -161,7 +161,7 @@
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
 #### theme 属性
 -----------------------
 > <p id="window_base_t_theme"> 主题资源的名称。
@@ -180,8 +180,8 @@
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### theme\_obj 属性
 -----------------------
 > <p id="window_base_t_theme_obj"> 窗口的常量主题数据。
@@ -197,4 +197,4 @@
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |

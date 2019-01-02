@@ -148,8 +148,8 @@ ret_t list_view_set_item_height (widget_t* widget, int32_t item_height);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### default\_item\_height 属性
 -----------------------
 > <p id="list_view_t_default_item_height"> 列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。
@@ -165,8 +165,8 @@ ret_t list_view_set_item_height (widget_t* widget, int32_t item_height);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### item\_height 属性
 -----------------------
 > <p id="list_view_t_item_height"> 列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。
@@ -182,5 +182,5 @@ ret_t list_view_set_item_height (widget_t* widget, int32_t item_height);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

@@ -171,8 +171,8 @@ ret_t color_tile_set_value (widget_t* widget, color_t color);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### border\_color 属性
 -----------------------
 > <p id="color_tile_t_border_color"> 边框颜色。
@@ -188,5 +188,5 @@ ret_t color_tile_set_value (widget_t* widget, color_t color);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

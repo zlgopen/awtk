@@ -2100,8 +2100,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### astyle 属性
 -----------------------
 > <p id="widget_t_astyle"> Style对象。
@@ -2163,8 +2163,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### custom\_props 属性
 -----------------------
 > <p id="widget_t_custom_props"> 自定义属性。
@@ -2229,8 +2229,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### floating 属性
 -----------------------
 > <p id="widget_t_floating"> 标识控件是否启用浮动布局，不受父控件的children_layout的控制。
@@ -2247,8 +2247,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### focused 属性
 -----------------------
 > <p id="widget_t_focused"> 是否得到焦点。
@@ -2289,8 +2289,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### key\_target 属性
 -----------------------
 > <p id="widget_t_key_target"> 接收按键事件的子控件。
@@ -2319,8 +2319,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### need\_relayout\_children 属性
 -----------------------
 > <p id="widget_t_need_relayout_children"> 标识控件是否需要重新layout子控件。
@@ -2370,8 +2370,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### sensitive 属性
 -----------------------
 > <p id="widget_t_sensitive"> 是否接受用户事件。
@@ -2388,8 +2388,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### state 属性
 -----------------------
 > <p id="widget_t_state"> 控件的状态(取值参考widget_state_t)。
@@ -2418,8 +2418,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### target 属性
 -----------------------
 > <p id="widget_t_target"> 接收事件的子控件。
@@ -2460,8 +2460,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### visible 属性
 -----------------------
 > <p id="widget_t_visible"> 是否可见。
@@ -2478,8 +2478,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### vt 属性
 -----------------------
 > <p id="widget_t_vt"> 虚函数表。
@@ -2508,8 +2508,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### x 属性
 -----------------------
 > <p id="widget_t_x"> x坐标(相对于父控件的x坐标)。
@@ -2526,8 +2526,8 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### y 属性
 -----------------------
 > <p id="widget_t_y"> y坐标(相对于父控件的y坐标)。
@@ -2544,5 +2544,5 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

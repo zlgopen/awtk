@@ -362,8 +362,8 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### options 属性
 -----------------------
 > <p id="combo_box_t_options"> 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
@@ -379,8 +379,8 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### selected\_index 属性
 -----------------------
 > <p id="combo_box_t_selected_index"> 当前选中的选项。
@@ -396,8 +396,8 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="combo_box_t_value"> 值。
@@ -413,5 +413,5 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

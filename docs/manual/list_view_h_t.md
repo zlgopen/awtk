@@ -124,8 +124,8 @@ ret_t list_view_h_set_spacing (widget_t* widget, int32_t spacing);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### spacing 属性
 -----------------------
 > <p id="list_view_h_t_spacing"> 间距。
@@ -141,5 +141,5 @@ ret_t list_view_h_set_spacing (widget_t* widget, int32_t spacing);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

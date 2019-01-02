@@ -251,8 +251,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### line\_width 属性
 -----------------------
 > <p id="progress_circle_t_line_width"> 环线的厚度(缺省为8)。
@@ -268,8 +268,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### max 属性
 -----------------------
 > <p id="progress_circle_t_max"> 最大值(缺省为100)。
@@ -285,8 +285,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### show\_text 属性
 -----------------------
 > <p id="progress_circle_t_show_text"> 是否显示文本(缺省为TRUE)。
@@ -302,8 +302,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### start\_angle 属性
 -----------------------
 > <p id="progress_circle_t_start_angle"> 起始角度(单位为度，缺省-90)。
@@ -319,8 +319,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### unit 属性
 -----------------------
 > <p id="progress_circle_t_unit"> 单元(缺省无)。
@@ -336,8 +336,8 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="progress_circle_t_value"> 值(缺省为0)。
@@ -353,5 +353,5 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

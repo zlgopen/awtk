@@ -191,8 +191,8 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="progress_bar_t_value"> 进度条的值[0-100]。
@@ -208,8 +208,8 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### vertical 属性
 -----------------------
 > <p id="progress_bar_t_vertical"> 进度条的是否为垂直方向。
@@ -225,5 +225,5 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

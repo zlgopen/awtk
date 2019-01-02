@@ -363,8 +363,8 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### selected\_index 属性
 -----------------------
 > <p id="text_selector_t_selected_index"> 当前选中的选项。
@@ -380,8 +380,8 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### visible\_nr 属性
 -----------------------
 > <p id="text_selector_t_visible_nr"> 可见的选项数量(只能是3或者5，缺省为5)。
@@ -397,5 +397,5 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

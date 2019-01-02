@@ -418,10 +418,10 @@ class ApiGenerator {
         result += `| 可在XML中设置 | ${toBool(isGetProp(p))} |\n`;
       }
       if(isGetProp(p)) {
-        result += `| 支通过widget\\_get\\_prop读取 | ${toBool(isGetProp(p))} |\n`;
+        result += `| 可通过widget\\_get\\_prop读取 | ${toBool(isGetProp(p))} |\n`;
       }
       if(isSetProp(p)) {
-        result += `| 支通过widget\\_set\\_prop修改 | ${toBool(isSetProp(p))} |\n`;
+        result += `| 可通过widget\\_set\\_prop修改 | ${toBool(isSetProp(p))} |\n`;
       }
     }
 

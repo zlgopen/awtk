@@ -223,8 +223,8 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### virtual\_w 属性
 -----------------------
 > <p id="scroll_view_t_virtual_w"> 虚拟宽度。
@@ -240,8 +240,8 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### xoffset 属性
 -----------------------
 > <p id="scroll_view_t_xoffset"> x偏移量。
@@ -257,8 +257,8 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### xslidable 属性
 -----------------------
 > <p id="scroll_view_t_xslidable"> 是否允许x方向滑动。
@@ -272,8 +272,8 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可直接修改 | 否 |
 | 可脚本化   | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### yoffset 属性
 -----------------------
 > <p id="scroll_view_t_yoffset"> y偏移量。
@@ -287,8 +287,8 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可直接修改 | 否 |
 | 可脚本化   | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### yslidable 属性
 -----------------------
 > <p id="scroll_view_t_yslidable"> 是否允许y方向滑动。
@@ -304,5 +304,5 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
-| 支通过widget\_get\_prop读取 | 是 |
-| 支通过widget\_set\_prop修改 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
