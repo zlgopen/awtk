@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/style_const_t_0.png)
 
- 
+
  只读的style，从theme\_t中获取数据。
 
  tools/theme_gen用于把XML的主题数据转换成常量数据。

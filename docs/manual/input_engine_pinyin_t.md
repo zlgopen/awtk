@@ -2,8 +2,10 @@
 ### 概述
 ![image](images/input_engine_pinyin_t_0.png)
 
- 
+
  拼音输入法引擎实现。
+
+ 基于谷歌拼音输入法实现。
 
 
 

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class ui_loader_xml_t
  * @parent ui_loader_t
- * 
+ *
  * XML格式的UI资源加载器。
  *
  * @annotation["fake"]

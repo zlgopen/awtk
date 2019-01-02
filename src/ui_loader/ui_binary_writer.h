@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class ui_binary_writer_t
  * @parent ui_builder_t
- * 
+ *
  * 生成二进制格式的UI描述数据。
  *
  */

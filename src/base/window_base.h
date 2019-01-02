@@ -69,7 +69,7 @@ typedef struct _window_base_t {
   /**
    * @property {window_closable_t} closable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 收到EVT\_REQUEST\_CLOSE\_WINDOW是否自动关闭窗口。
+   * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
    *
    * 如果关闭窗口时，需要用户确认:
    *

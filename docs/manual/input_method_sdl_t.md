@@ -2,8 +2,10 @@
 ### 概述
 ![image](images/input_method_sdl_t_0.png)
 
- 
+
  SDL输入法实现。
+
+ SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。
 
 
 

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class style_const_t
  * @parent style_t
- * 
+ *
  * 只读的style，从theme\_t中获取数据。
  *
  * tools/theme_gen用于把XML的主题数据转换成常量数据。

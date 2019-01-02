@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/ui_xml_writer_t_0.png)
 
- 
+
  生成XML格式的UI描述数据。
 
 

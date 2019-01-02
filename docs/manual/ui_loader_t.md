@@ -9,7 +9,7 @@
 
  * XML格式的加载器。
 
- * 二进制格式的加载器。 
+ * 二进制格式的加载器。
 
  ![image](images/ui_loader_t_0.png)
 

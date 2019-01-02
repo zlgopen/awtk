@@ -29,8 +29,10 @@ BEGIN_C_DECLS
 /**
  * @class input_engine_null_t
  * @parent input_engine_t
- * 
+ *
  * 空输入法引擎实现。
+ *
+ * 缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。
  *
  * @annotation["fake"]
  *

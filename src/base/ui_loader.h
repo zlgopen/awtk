@@ -43,7 +43,7 @@ typedef ret_t (*ui_loader_load_t)(ui_loader_t* loader, const uint8_t* data, uint
  *
  * * XML格式的加载器。
  *
- * * 二进制格式的加载器。 
+ * * 二进制格式的加载器。
  *
  * ```graphviz
  *   [default_style]
@@ -70,7 +70,8 @@ struct _ui_loader_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui_builder_t* builder);
+ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size,
+                     ui_builder_t* builder);
 
 END_C_DECLS
 

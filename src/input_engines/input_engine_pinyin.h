@@ -29,8 +29,10 @@ BEGIN_C_DECLS
 /**
  * @class input_engine_pinyin_t
  * @parent input_engine_t
- * 
+ *
  * 拼音输入法引擎实现。
+ *
+ * 基于谷歌拼音输入法实现。
  *
  * @annotation["fake"]
  *

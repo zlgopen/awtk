@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class ui_loader_default_t
  * @parent ui_loader_t
- * 
+ *
  * 二进制格式的UI资源加载器。
  *
  * @annotation["fake"]

@@ -2,8 +2,10 @@
 ### 概述
 ![image](images/input_method_null_t_0.png)
 
- 
+
  空输入法实现。
+
+ 在不需要输入法的嵌入式平台使用空的输入法。
 
 
 

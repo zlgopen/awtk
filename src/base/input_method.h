@@ -166,6 +166,9 @@ typedef struct _im_candidates_event_t {
  *  input_method_null_t -> input_method_t [arrowhead=empty style=dashed]
  *
  * ```
+ *
+ * > 输入类型请参考：[input\_type](input_type_t.md)
+ *
  */
 struct _input_method_t {
   /**

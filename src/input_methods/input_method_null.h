@@ -29,8 +29,10 @@ BEGIN_C_DECLS
 /**
  * @class input_method_null_t
  * @parent input_method_t
- * 
+ *
  * 空输入法实现。
+ *
+ * 在不需要输入法的嵌入式平台使用空的输入法。
  *
  * @annotation["fake"]
  *

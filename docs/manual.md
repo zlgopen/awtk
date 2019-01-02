@@ -56,7 +56,7 @@
 ![assets overview](images/assets_overview.png)
 
 * [asset\_info](manual/asset_info_t.md) 资源信息。
-* [assets_manager](manual/assets_manager_t.md) 资源管理器。
+* [assets\_manager](manual/assets_manager_t.md) 资源管理器。
 
 #### 1.字体
 

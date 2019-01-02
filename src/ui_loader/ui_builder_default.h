@@ -29,9 +29,9 @@ BEGIN_C_DECLS
 /**
  * @class ui_builder_default_t
  * @parent ui_builder_t
- * 
+ *
  * @annotation ["fake"]
- * 
+ *
  * 构建widget树。
  *
  */
@@ -42,7 +42,7 @@ BEGIN_C_DECLS
  *
  * 获取缺省的ui\_builder对象。
  *
- * @param {const char*} name 窗口的缺省名称。 
+ * @param {const char*} name 窗口的缺省名称。
  *
  * @return {ui_builder_t*} 返回ui\_builder对象。
  */

@@ -29,8 +29,10 @@ BEGIN_C_DECLS
 /**
  * @class input_method_sdl_t
  * @parent input_method_t
- * 
+ *
  * SDL输入法实现。
+ *
+ * SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。
  *
  * @annotation["fake"]
  *
@@ -50,4 +52,3 @@ input_method_t* input_method_sdl_create(void);
 END_C_DECLS
 
 #endif /*TK_INPUT_METHOD_SDL_H*/
-

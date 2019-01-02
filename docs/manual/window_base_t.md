@@ -17,7 +17,7 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_base_t_assets_manager">assets\_manager</a> | assets\_manager\_t* | 获取资源管理器对象。 |
-| <a href="#window_base_t_closable">closable</a> | window\_closable\_t | 收到EVT\_REQUEST\_CLOSE\_WINDOW是否自动关闭窗口。 |
+| <a href="#window_base_t_closable">closable</a> | window\_closable\_t | 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。 |
 | <a href="#window_base_t_close_anim_hint">close\_anim\_hint</a> | char* | 关闭窗口动画的名称。 |
 | <a href="#window_base_t_font_manager">font\_manager</a> | font\_manager\_t* | 获取字体管理器对象。 |
 | <a href="#window_base_t_image_manager">image\_manager</a> | image\_manager\_t* | 获取图片管理器对象。 |
@@ -44,7 +44,7 @@
 | 支通过widget\_get\_prop读取 | 是 |
 #### closable 属性
 -----------------------
-> <p id="window_base_t_closable"> 收到EVT\_REQUEST\_CLOSE\_WINDOW是否自动关闭窗口。
+> <p id="window_base_t_closable"> 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
 
  如果关闭窗口时，需要用户确认:
 

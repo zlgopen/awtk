@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class ui_xml_writer_t
  * @parent ui_builder_t
- * 
+ *
  * 生成XML格式的UI描述数据。
  *
  */

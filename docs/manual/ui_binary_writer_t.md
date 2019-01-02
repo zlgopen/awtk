@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/ui_binary_writer_t_0.png)
 
- 
+
  生成二进制格式的UI描述数据。
 
 

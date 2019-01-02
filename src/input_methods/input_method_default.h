@@ -29,8 +29,12 @@ BEGIN_C_DECLS
 /**
  * @class input_method_default_t
  * @parent input_method_t
- * 
- * 缺省输入法实现。
+ *
+ * 缺省输入法实现。输入法会启用软键盘，但是开发者可以自定义输入法引擎。
+ *
+ * 目前可以选择不启用输入法引擎或启用拼音输入法引擎。
+ *
+ * 开发者也可以开发手写输入法或语音输入法，如果实现时遇到问题可以和我们交流。
  *
  * @annotation["fake"]
  *
@@ -50,4 +54,3 @@ input_method_t* input_method_default_create(void);
 END_C_DECLS
 
 #endif /*TK_INPUT_METHOD_DEFAULT_H*/
-

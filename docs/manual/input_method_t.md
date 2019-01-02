@@ -13,6 +13,9 @@
  ![image](images/input_method_t_0.png)
 
 
+ > 输入类型请参考：[input\_type](input_type_t.md)
+
+
 ### 函数
 <p id="input_method_t_methods">
 
