@@ -109,6 +109,17 @@
 
 ### 输入法
 
+![input\_method\_overview](images/input_method_overview.png)
+
+* [input\_method](manual/input_method_t.md) 输入法接口。
+* [input\_method\_default](manual/input_method_default_t.md) 输入法缺省实现。
+* [input\_method\_sdl](manual/input_method_sdl_t.md) 输入法SDL实现。
+* [input\_method\_null](manual/input_method_null_t.md) 输入法空实现。
+
+* [input\_engine](manual/input_engine_t.md) 输入法引擎接口。
+* [input\_engine\_null](manual/input_engine_null_t.md) 空输入法引擎实现。
+* [input\_engine\_pinyin](manual/input_engine_pinyin_t.md) 拼音输入法引擎实现。
+
 ### 控件动画
 
 ### 窗口动画

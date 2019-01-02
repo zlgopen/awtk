@@ -2815,8 +2815,10 @@
             "desc": "输入法引擎对象。"
           }
         ],
-        "annotation": {},
-        "desc": " @deconstructor\n 销毁输入法引擎对象。\n\n\n",
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": " 销毁输入法引擎对象。\n\n\n",
         "name": "input_engine_destroy",
         "return": {
           "type": "ret_t",
@@ -2889,7 +2891,7 @@
       }
     ],
     "header": "base/input_engine.h",
-    "desc": " 输入法引擎接口。\n\n",
+    "desc": " 输入法引擎接口。\n\n 常见的实现方式有以下几种：\n\n * 空实现。用于不需要输入法的嵌入式平台。\n\n * 拼音输入法实现。用于需要输入法的嵌入式平台。\n\n ```graphviz\n [default_style]\n\n input_engine_pinyin_t -> input_engine_t[arrowhead=empty style=dashed]\n input_engine_null_t -> input_engine_t[arrowhead=empty style=dashed]\n\n ```\n\n",
     "name": "input_engine_t",
     "level": 1
   },
@@ -2944,7 +2946,285 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 分发一个事件。\n\n\n",
+        "name": "input_method_dispatch",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 分发一个事件当前焦点控件。\n\n\n",
+        "name": "input_method_dispatch_to_widget",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 注册指定事件的处理函数。\n\n\n",
+        "name": "input_method_on",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回id，用于input_method_off。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "input_method_on返回的ID。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 注销指定事件的处理函数。\n\n\n",
+        "name": "input_method_off",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "焦点控件，为NULL时关闭输入法，非NULL时打开输入法。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 打开或关闭输入法。\n\n\n",
+        "name": "input_method_request",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "按钮的文本。"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable",
+            "desc": "按钮的是否可用。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置软键盘上的action按钮的信息。\n\n\n",
+        "name": "input_method_update_action_button_info",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。\n\n\n",
+        "name": "input_method_dispatch_action",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 提交输入文本。\n\n\n",
+        "name": "input_method_commit_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "key",
+            "desc": "键值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 提交按键。\n\n\n",
+        "name": "input_method_dispatch_key",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "char*",
+            "name": "strs",
+            "desc": "候选字列表。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "候选字个数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 请求显示候选字。\n\n\n",
+        "name": "input_method_dispatch_candidates",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": " 创建输入法对象。在具体实现中实现。\n\n\n",
+        "name": "input_method_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "成功返回输入法对象，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 销毁输入法对象。在具体实现中实现。\n\n\n",
+        "name": "input_method_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": " 获取全局输入法对象。\n\n\n",
+        "name": "input_method",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "成功返回输入法对象，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置全局输入法对象。\n\n\n",
+        "name": "input_method_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
     "events": [],
     "properties": [
       {
@@ -3013,7 +3293,7 @@
       }
     ],
     "header": "base/input_method.h",
-    "desc": " 输入法接口。\n\n",
+    "desc": " 输入法接口。\n\n 常见的实现方式有以下几种：\n\n * 空实现。用于不需要输入法的嵌入式平台。\n\n * 缺省实现。用于需要输入法的嵌入式平台。\n\n * 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。\n\n ```graphviz\n  [default_style]\n\n  input_method_default_t -> input_method_t [arrowhead=empty style=dashed]\n  input_method_sdl_t -> input_method_t [arrowhead=empty style=dashed]\n  input_method_null_t -> input_method_t [arrowhead=empty style=dashed]\n\n ```\n\n",
     "name": "input_method_t",
     "level": 1
   },
@@ -18641,6 +18921,141 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建空输入法引擎对象。\n\n\n\n",
+        "name": "input_engine_create",
+        "return": {
+          "type": "input_engine_t*",
+          "desc": "返回输入法引擎对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_engines/input_engine_null.h",
+    "desc": " \n 空输入法引擎实现。\n\n\n\n",
+    "name": "input_engine_null_t",
+    "parent": "input_engine_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建拼音输入法引擎对象。\n\n\n\n",
+        "name": "input_engine_create",
+        "return": {
+          "type": "input_engine_t*",
+          "desc": "返回输入法引擎对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_engines/input_engine_pinyin.h",
+    "desc": " \n 拼音输入法引擎实现。\n\n\n\n",
+    "name": "input_engine_pinyin_t",
+    "parent": "input_engine_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建缺省输入法对象。\n\n\n\n",
+        "name": "input_method_default_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_default.h",
+    "desc": " \n 缺省输入法实现。\n\n\n\n",
+    "name": "input_method_default_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建空输入法对象。\n\n\n\n",
+        "name": "input_method_null_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_null.h",
+    "desc": " \n 空输入法实现。\n\n\n\n",
+    "name": "input_method_null_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建SDL输入法对象。\n\n\n\n",
+        "name": "input_method_sdl_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_sdl.h",
+    "desc": " \n SDL输入法实现。\n\n\n\n",
+    "name": "input_method_sdl_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "widget_t*",
@@ -19416,86 +19831,6 @@
   },
   {
     "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转key_event_t对象，主要给脚本语言使用。\n\n\n",
-        "name": "key_event_cast",
-        "return": {
-          "type": "key_event_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "key",
-        "desc": " 键值。\n\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "alt",
-        "desc": " alt键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "ctrl",
-        "desc": " ctrl键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "shift",
-        "desc": " shift键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "capslock",
-        "desc": " capslock键是否按下。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 按键事件。\n\n",
-    "name": "key_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
     "methods": [],
     "events": [],
     "properties": [
@@ -19539,6 +19874,34 @@
     "header": "base/input_method.h",
     "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
     "name": "im_action_button_info_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "candidates",
+        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "candidates_nr",
+        "desc": " 可选的文本的个数。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/input_method.h",
+    "desc": " 输入法请求显示候选字的事件。\n\n",
+    "name": "im_candidates_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -20516,303 +20879,77 @@
       {
         "params": [
           {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "控件对象。"
-          },
-          {
             "type": "event_t*",
-            "name": "e",
-            "desc": "事件。"
+            "name": "event",
+            "desc": "event对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 分发一个事件。\n\n\n",
-        "name": "input_method_dispatch",
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转key_event_t对象，主要给脚本语言使用。\n\n\n",
+        "name": "key_event_cast",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 分发一个事件当前焦点控件。\n\n\n",
-        "name": "input_method_dispatch_to_widget",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "event_type_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 注册指定事件的处理函数。\n\n\n",
-        "name": "input_method_on",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回id，用于input_method_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "input_method_on返回的ID。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 注销指定事件的处理函数。\n\n\n",
-        "name": "input_method_off",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "焦点控件，为NULL时关闭输入法，非NULL时打开输入法。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 打开或关闭输入法。\n\n\n",
-        "name": "input_method_request",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "char*",
-            "name": "text",
-            "desc": "按钮的文本。"
-          },
-          {
-            "type": "bool_t",
-            "name": "enable",
-            "desc": "按钮的是否可用。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置软键盘上的action按钮的信息。\n\n\n",
-        "name": "input_method_update_action_button_info",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。\n\n\n",
-        "name": "input_method_dispatch_action",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "char*",
-            "name": "text",
-            "desc": "文本。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 提交输入文本。\n\n\n",
-        "name": "input_method_commit_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "key",
-            "desc": "键值。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 提交按键。\n\n\n",
-        "name": "input_method_dispatch_key",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          },
-          {
-            "type": "char*",
-            "name": "strs",
-            "desc": "候选字列表。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "nr",
-            "desc": "候选字个数。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 请求显示候选字。\n\n\n",
-        "name": "input_method_dispatch_candidates",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": " 创建输入法对象。在具体实现中实现。\n\n\n",
-        "name": "input_method_create",
-        "return": {
-          "type": "input_method_t*",
-          "desc": "成功返回输入法对象，失败返回NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 销毁输入法对象。在具体实现中实现。\n\n\n",
-        "name": "input_method_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": " 获取全局输入法对象。\n\n\n",
-        "name": "input_method",
-        "return": {
-          "type": "input_method_t*",
-          "desc": "成功返回输入法对象，失败返回NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "input_method_t*",
-            "name": "im",
-            "desc": "输入法对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置全局输入法对象。\n\n\n",
-        "name": "input_method_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "key_event_t*",
+          "desc": "对象。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "candidates",
-        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
-        "type": "char*",
+        "name": "key",
+        "desc": " 键值。\n\n",
+        "type": "uint32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
-        "name": "candidates_nr",
-        "desc": " 可选的文本的个数。\n\n",
-        "type": "uint32_t",
+        "name": "alt",
+        "desc": " alt键是否按下。\n\n",
+        "type": "bool_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": " ctrl键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": " shift键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "capslock",
+        "desc": " capslock键是否按下。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
         }
       }
     ],
-    "header": "base/input_method.h",
-    "desc": " 输入法请求显示候选字的事件。\n\n",
-    "name": "im_candidates_event_t",
+    "header": "base/events.h",
+    "desc": " 按键事件。\n\n",
+    "name": "key_event_t",
+    "annotation": {
+      "scriptable": true
+    },
     "parent": "event_t",
     "level": 2
   },
@@ -20895,42 +21032,144 @@
       {
         "params": [
           {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建guage_pointer对象\r\n\r\n",
+        "name": "guage_pointer_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "guage_pointer对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "paint_event_cast",
+        "desc": " 转换为guage_pointer对象(供脚本语言使用)。\r\n\r\n",
+        "name": "guage_pointer_cast",
         "return": {
-          "type": "paint_event_t*",
-          "desc": "对象。"
+          "type": "widget_t*",
+          "desc": "guage_pointer对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "angle",
+            "desc": "指针角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。\r\n\r\n",
+        "name": "guage_pointer_set_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "指针的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置指针的图片。\r\n\r\n",
+        "name": "guage_pointer_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "c",
-        "desc": " canvas。\n\n",
-        "type": "canvas_t*",
+        "name": "angle",
+        "desc": " 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。\r\n",
+        "type": "int32_t",
         "annotation": {
+          "set_prop": true,
+          "get_prop": true,
           "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "image",
+        "desc": " 指针图片。图片须垂直向上，图片的中心点为旋转方向。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
           "scriptable": true
         }
       }
     ],
-    "header": "base/events.h",
-    "desc": " 绘制事件。\n\n",
-    "name": "paint_event_t",
+    "header": "guage/guage_pointer.h",
+    "desc": " 仪表指针控件。\r\n",
+    "name": "guage_pointer_t",
+    "parent": "widget_t",
     "annotation": {
       "scriptable": true
     },
-    "parent": "event_t",
     "level": 2
   },
   {
@@ -21085,342 +21324,42 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建image_animation对象\r\n\r\n",
-        "name": "image_animation_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "loop",
-            "desc": "是否循环播放。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否循环播放。\r\n\r\n",
-        "name": "image_animation_set_loop",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "image",
-            "desc": "图片前缀。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置图片前缀。\r\n\r\n",
-        "name": "image_animation_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "interval",
-            "desc": "间隔时间(毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置播放间隔时间。\r\n\r\n",
-        "name": "image_animation_set_interval",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "delay",
-            "desc": "延迟播放时间(毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置延迟播放时间(仅适用于自动播放)。\r\n\r\n",
-        "name": "image_animation_set_delay",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "auto_play",
-            "desc": "是否自动播放。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否自动播放。\r\n\r\n",
-        "name": "image_animation_set_auto_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "sequence",
-            "desc": "播放序列。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。\r\n\r\n",
-        "name": "image_animation_set_sequence",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 播放。\r\n\r\n",
-        "name": "image_animation_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 停止(并重置index为0)。\r\n\r\n",
-        "name": "image_animation_stop",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 暂停。\r\n\r\n",
-        "name": "image_animation_pause",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_animation对象。"
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为image_animation对象(供脚本语言使用)。\r\n\r\n",
-        "name": "image_animation_cast",
+        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "paint_event_cast",
         "return": {
-          "type": "widget_t*",
-          "desc": "image_animation对象。"
+          "type": "paint_event_t*",
+          "desc": "对象。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "image",
-        "desc": " 图片名称的前缀。\r\n",
-        "type": "char*",
+        "name": "c",
+        "desc": " canvas。\n\n",
+        "type": "canvas_t*",
         "annotation": {
-          "set_prop": true,
-          "get_prop": true,
           "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "sequence",
-        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "loop",
-        "desc": " 是否循环播放。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "auto_play",
-        "desc": " 是否自动播放。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "interval",
-        "desc": " 每张图片播放的时间(毫秒)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "delay",
-        "desc": " 自动播放时延迟播放的时间(毫秒)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
           "scriptable": true
         }
       }
     ],
-    "header": "image_animation/image_animation.h",
-    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n",
-    "name": "image_animation_t",
-    "parent": "widget_t",
+    "header": "base/events.h",
+    "desc": " 绘制事件。\n\n",
+    "name": "paint_event_t",
     "annotation": {
       "scriptable": true
     },
+    "parent": "event_t",
     "level": 2
   },
   {
@@ -25984,8 +25923,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建guage_pointer对象\r\n\r\n",
-        "name": "guage_pointer_create",
+        "desc": " 创建image_animation对象\r\n\r\n",
+        "name": "image_animation_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -25996,85 +25935,218 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "guage_pointer对象。"
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop",
+            "desc": "是否循环播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否循环播放。\r\n\r\n",
+        "name": "image_animation_set_loop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "image",
+            "desc": "图片前缀。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置图片前缀。\r\n\r\n",
+        "name": "image_animation_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "interval",
+            "desc": "间隔时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置播放间隔时间。\r\n\r\n",
+        "name": "image_animation_set_interval",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "delay",
+            "desc": "延迟播放时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置延迟播放时间(仅适用于自动播放)。\r\n\r\n",
+        "name": "image_animation_set_delay",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "auto_play",
+            "desc": "是否自动播放。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否自动播放。\r\n\r\n",
+        "name": "image_animation_set_auto_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "sequence",
+            "desc": "播放序列。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。\r\n\r\n",
+        "name": "image_animation_set_sequence",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 播放。\r\n\r\n",
+        "name": "image_animation_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 停止(并重置index为0)。\r\n\r\n",
+        "name": "image_animation_stop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 暂停。\r\n\r\n",
+        "name": "image_animation_pause",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为guage_pointer对象(供脚本语言使用)。\r\n\r\n",
-        "name": "guage_pointer_cast",
+        "desc": " 转换为image_animation对象(供脚本语言使用)。\r\n\r\n",
+        "name": "image_animation_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "guage_pointer对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "angle",
-            "desc": "指针角度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。\r\n\r\n",
-        "name": "guage_pointer_set_angle",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "image",
-            "desc": "指针的图片。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置指针的图片。\r\n\r\n",
-        "name": "guage_pointer_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "desc": "image_animation对象。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "angle",
-        "desc": " 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。\r\n",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
         "name": "image",
-        "desc": " 指针图片。图片须垂直向上，图片的中心点为旋转方向。\r\n",
+        "desc": " 图片名称的前缀。\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -26084,11 +26156,76 @@
           "design": true,
           "scriptable": true
         }
+      },
+      {
+        "name": "sequence",
+        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop",
+        "desc": " 是否循环播放。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": " 是否自动播放。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "interval",
+        "desc": " 每张图片播放的时间(毫秒)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "delay",
+        "desc": " 自动播放时延迟播放的时间(毫秒)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
       }
     ],
-    "header": "guage/guage_pointer.h",
-    "desc": " 仪表指针控件。\r\n",
-    "name": "guage_pointer_t",
+    "header": "image_animation/image_animation.h",
+    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n",
+    "name": "image_animation_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true

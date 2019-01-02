@@ -38,6 +38,20 @@ typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
 /**
  * @class input_engine_t
  * 输入法引擎接口。
+ *
+ * 常见的实现方式有以下几种：
+ *
+ * * 空实现。用于不需要输入法的嵌入式平台。
+ *
+ * * 拼音输入法实现。用于需要输入法的嵌入式平台。
+ *
+ * ```graphviz
+ * [default_style]
+ *
+ * input_engine_pinyin_t -> input_engine_t[arrowhead=empty style=dashed]
+ * input_engine_null_t -> input_engine_t[arrowhead=empty style=dashed]
+ *
+ * ```
  */
 struct _input_engine_t {
   /**
@@ -75,7 +89,7 @@ input_engine_t* input_engine_create(void);
 
 /**
  * @method input_engine_destroy
- * @deconstructor
+ * @annotation ["deconstructor"]
  * 销毁输入法引擎对象。
  * @param {input_engine_t*} engine 输入法引擎对象。
  *

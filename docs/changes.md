@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/01/02
+  * 整理API文档：input\_method/input\_method\_default/input\_method\_sdl/input\_method\_null
+  * 整理API文档：input\_engine/input\_engine\_pinyin/input\_engine\_null
+
 * 2018/12/31
   * 整理API文档：ui\_loader/ui\_builder/ui\_xml\_writer/ui\_binary\_writer/ui\_builder\_default
 

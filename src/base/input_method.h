@@ -89,8 +89,83 @@ typedef enum _input_type_t {
 } input_type_t;
 
 /**
+ * @class im_commit_event_t
+ * @parent event_t
+ * 输入法提交输入的文本事件。
+ */
+typedef struct _im_commit_event_t {
+  event_t e;
+  /**
+   * @property {char*} text
+   * @annotation ["readable"]
+   * 提交的文本。
+   */
+  const char* text;
+} im_commit_event_t;
+
+/**
+ * @class im_action_button_info_event_t
+ * @parent event_t
+ * 设置软键盘上的action按钮的信息事件。
+ */
+typedef struct _im_action_button_info_event_t {
+  event_t e;
+  /**
+   * @property {char*} text
+   * @annotation ["readable"]
+   * 软键盘上的action按钮显示的文本。
+   */
+  const char* text;
+  /**
+   * @property {bool_t} enable
+   * @annotation ["readable"]
+   * 软键盘上的action按钮启用。
+   */
+  bool_t enable;
+} im_action_button_info_event_t;
+
+/**
+ * @class im_candidates_event_t
+ * @parent event_t
+ * 输入法请求显示候选字的事件。
+ */
+typedef struct _im_candidates_event_t {
+  event_t e;
+  /**
+   * @property {char*} candidates
+   * @annotation ["readable"]
+   * 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0
+   */
+  const char* candidates;
+
+  /**
+   * @property {uint32_t} candidates_nr
+   * @annotation ["readable"]
+   * 可选的文本的个数。
+   */
+  uint32_t candidates_nr;
+} im_candidates_event_t;
+
+/**
  * @class input_method_t
  * 输入法接口。
+ *
+ * 常见的实现方式有以下几种：
+ *
+ * * 空实现。用于不需要输入法的嵌入式平台。
+ *
+ * * 缺省实现。用于需要输入法的嵌入式平台。
+ *
+ * * 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。
+ *
+ * ```graphviz
+ *  [default_style]
+ *
+ *  input_method_default_t -> input_method_t [arrowhead=empty style=dashed]
+ *  input_method_sdl_t -> input_method_t [arrowhead=empty style=dashed]
+ *  input_method_null_t -> input_method_t [arrowhead=empty style=dashed]
+ *
+ * ```
  */
 struct _input_method_t {
   /**
@@ -157,64 +232,6 @@ struct _input_method_t {
   input_method_request_t request;
   input_method_destroy_t destroy;
 };
-
-/**
- * @class im_commit_event_t
- * @parent event_t
- * 输入法提交输入的文本事件。
- */
-typedef struct _im_commit_event_t {
-  event_t e;
-  /**
-   * @property {char*} text
-   * @annotation ["readable"]
-   * 提交的文本。
-   */
-  const char* text;
-} im_commit_event_t;
-
-/**
- * @class im_action_button_info_event_t
- * @parent event_t
- * 设置软键盘上的action按钮的信息事件。
- */
-typedef struct _im_action_button_info_event_t {
-  event_t e;
-  /**
-   * @property {char*} text
-   * @annotation ["readable"]
-   * 软键盘上的action按钮显示的文本。
-   */
-  const char* text;
-  /**
-   * @property {bool_t} enable
-   * @annotation ["readable"]
-   * 软键盘上的action按钮启用。
-   */
-  bool_t enable;
-} im_action_button_info_event_t;
-
-/**
- * @class im_candidates_event_t
- * @parent event_t
- * 输入法请求显示候选字的事件。
- */
-typedef struct _im_candidates_event_t {
-  event_t e;
-  /**
-   * @property {char*} candidates
-   * @annotation ["readable"]
-   * 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0
-   */
-  const char* candidates;
-
-  /**
-   * @property {uint32_t} candidates_nr
-   * @annotation ["readable"]
-   * 可选的文本的个数。
-   */
-  uint32_t candidates_nr;
-} im_candidates_event_t;
 
 /**
  * @method input_method_dispatch

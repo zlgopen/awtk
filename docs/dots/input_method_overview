@@ -1,0 +1,24 @@
+digraph UML {
+  rankdir  = BT
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+   
+   input_method_t -> edit_t [arrowhead=none]
+
+   subgraph cluster_1 {
+    input_method_t -> input_engine_t [constraint=false arrowhead=vee style=dashed]
+   }
+   
+   input_method_default_t -> input_method_t [arrowhead=empty style=dashed]
+   input_method_sdl_t -> input_method_t [arrowhead=empty style=dashed]
+   input_method_null_t -> input_method_t [arrowhead=empty style=dashed]
+   
+   input_engine_pinyin_t -> input_engine_t[arrowhead=empty style=dashed]
+   input_engine_null_t -> input_engine_t[arrowhead=empty style=dashed]
+   
+   keyboard_t ->input_method_default_t [arrowhead=none]
+}
