@@ -37,7 +37,11 @@ typedef struct _widget_state_style_t widget_state_style_t;
  * @class style_mutable_t
  * @parent style_t
  * @annotation ["scriptable"]
- * 控件风格(可实时修改并生效，用于在designer中被编辑的控件)。
+ *
+ * 可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。
+ *
+ * style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
+ *
  */
 typedef struct _style_mutable_t {
   style_t style;
@@ -128,7 +132,7 @@ ret_t style_mutable_set_str(style_t* s, const char* state, const char* name, con
 
 /**
  * @method style_mutable_foreach
- * 遍历。对每项调用回调函数on_style_item。
+ * 遍历。对每项调用回调函数on\_style\_item。
  * @param {style_t*} s style对象。
  * @param {tk_on_style_item_t} on_style_item 回调函数。
  * @param {void*} ctx 回调函数的上下文。
@@ -139,7 +143,10 @@ ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* 
 
 /**
  * @method style_mutable_create
- * 创建style_mutable对象。除了测试程序外不需要直接调用，widget会通过style_factory_create创建。
+ * 创建style\_mutable对象。
+ *
+ * > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
+ *
  * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} widget 控件
  *
@@ -149,7 +156,7 @@ style_t* style_mutable_create(widget_t* widget);
 
 /**
  * @method style_mutable_register
- * 将自己注册到style_factory。
+ * 将自己注册到style\_factory。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

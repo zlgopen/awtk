@@ -175,7 +175,7 @@ TEST(Canvas, draw_glyph) {
   font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
   font_dummy_init();
-  font_manager_add(&font_manager, font_dummy_0("demo0", font_size));
+  font_manager_add_font(&font_manager, font_dummy_0("demo0", font_size));
 
   r = rect_init(100, 100, 200, 200);
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);

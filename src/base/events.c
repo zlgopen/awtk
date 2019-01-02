@@ -69,16 +69,6 @@ window_event_t* window_event_cast(event_t* event) {
   return (window_event_t*)event;
 }
 
-event_t event_init(uint32_t type, void* target) {
-  event_t e;
-
-  e.type = type;
-  e.target = target;
-  e.time = time_now_ms();
-
-  return e;
-}
-
 ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
   xy_t x = evt->x;
   xy_t y = evt->y;
@@ -95,8 +85,4 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
   }
 
   return RET_OK;
-}
-
-event_t* event_cast(event_t* event) {
-  return event;
 }

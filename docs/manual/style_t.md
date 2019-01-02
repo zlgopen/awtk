@@ -2,6 +2,18 @@
 ### 概述
  控件风格。
 
+ widget从style对象中，获取诸如字体、颜色和图片相关的参数，根据这些参数来绘制界面。
+
+ ```c
+ style_t* style = widget->astyle;
+ int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+ int32_t icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
+ uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+ ```
+
+ 属性名称的请参考[style\_id](style_id_t.md)
+
+
 ### 函数
 <p id="style_t_methods">
 

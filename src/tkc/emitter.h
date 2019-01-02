@@ -66,7 +66,8 @@ typedef struct _emitter_t {
   /**
    * @property {bool_t} remove_curr_iter
    * @annotation ["private"]
-   * 如果在回调函数中，emitter_off当前正在dispatch的回调函数，我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。
+   * 如果在回调函数中，emitter_off当前正在dispatch的回调函数，
+   * 我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。
    * XXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。
    */
   bool_t remove_curr_iter;
@@ -103,9 +104,8 @@ emitter_t* emitter_init(emitter_t* emitter);
  * 禁用状态下，本函数不做任何事情。
  * @param {emitter_t*} emitter emitter对象。
  * @param {event_t*} e 事件对象。
-
  * @return {ret_t}
- 如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
  */
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
 
@@ -113,7 +113,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
  * @method emitter_on
  * 注册指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
@@ -135,7 +135,7 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
  * @method emitter_off_by_func
  * 注销指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *

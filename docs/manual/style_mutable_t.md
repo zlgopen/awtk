@@ -2,17 +2,21 @@
 ### 概述
 ![image](images/style_mutable_t_0.png)
 
- 控件风格(可实时修改并生效，用于在designer中被编辑的控件)。
+
+ 可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。
+
+ style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
+
 
 ### 函数
 <p id="style_mutable_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style_mutable对象。除了测试程序外不需要直接调用，widget会通过style_factory_create创建。 |
-| <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on_style_item。 |
+| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 |
+| <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
 | <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> | 获取style的名称。 |
-| <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style_factory。 |
+| <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style\_factory。 |
 | <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定name的颜色值。 |
 | <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> | 设置指定name整数格式的值。 |
 | <a href="#style_mutable_t_style_mutable_set_name">style\_mutable\_set\_name</a> | 设置style的名称。 |
@@ -28,7 +32,10 @@
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_create"> 创建style_mutable对象。除了测试程序外不需要直接调用，widget会通过style_factory_create创建。
+> <p id="style_mutable_t_style_mutable_create"> 创建style\_mutable对象。
+
+ > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
+
 
 
 
@@ -50,7 +57,7 @@ style_t* style_mutable_create (widget_t* widget);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_foreach"> 遍历。对每项调用回调函数on_style_item。
+> <p id="style_mutable_t_style_mutable_foreach"> 遍历。对每项调用回调函数on\_style\_item。
 
 
 
@@ -96,7 +103,7 @@ const char* style_mutable_get_name (style_t* s);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_register"> 将自己注册到style_factory。
+> <p id="style_mutable_t_style_mutable_register"> 将自己注册到style\_factory。
 
 
 

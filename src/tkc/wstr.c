@@ -198,6 +198,24 @@ ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr
   return RET_OK;
 }
 
+ret_t wstr_append_with_len(wstr_t* str, const wchar_t* text, uint32_t size) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(wstr_extend(str, str->size + size + 1) == RET_OK, RET_BAD_PARAMS);
+
+  memcpy(str->str + str->size, text, size * sizeof(wchar_t));
+  str->size += size;
+  str->str[str->size] = '\0';
+
+  return RET_OK;
+}
+
+ret_t wstr_append(wstr_t* str, const wchar_t* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return wstr_append_with_len(str, text, wcslen(text));
+}
+
 ret_t wstr_push(wstr_t* str, const wchar_t c) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wstr_extend(str, str->size + 2) == RET_OK, RET_BAD_PARAMS);
@@ -205,12 +223,6 @@ ret_t wstr_push(wstr_t* str, const wchar_t c) {
   str->str[str->size] = '\0';
 
   return RET_OK;
-}
-
-ret_t wstr_push_str(wstr_t* str, const wchar_t* s, uint32_t size) {
-  return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
-
-  return wstr_insert(str, str->size, s, size);
 }
 
 ret_t wstr_push_int(wstr_t* str, const char* format, int32_t value) {
@@ -224,7 +236,7 @@ ret_t wstr_push_int(wstr_t* str, const char* format, int32_t value) {
   tk_snprintf(buff, TK_NUM_MAX_LEN, format, value);
   utf8_to_utf16(buff, s, TK_NUM_MAX_LEN);
 
-  return wstr_push_str(str, s, wcslen(s));
+  return wstr_append_with_len(str, s, wcslen(s));
 }
 
 ret_t wstr_pop(wstr_t* str) {

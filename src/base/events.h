@@ -22,6 +22,7 @@
 #ifndef TK_EVENTS_H
 #define TK_EVENTS_H
 
+#include "tkc/event.h"
 #include "tkc/value.h"
 #include "base/canvas.h"
 #include "base/system_info.h"
@@ -300,42 +301,6 @@ typedef enum _event_type_t {
 } event_type_t;
 
 /**
- * @class event_t
- * @annotation ["scriptable"]
- * 事件基类。
- */
-typedef struct _event_t {
-  /**
-   * @property {int32_t} type
-   * @annotation ["readable", "scriptable"]
-   * 类型。
-   */
-  uint32_t type;
-  /**
-   * @property {int32_t} time
-   * @annotation ["readable", "scriptable"]
-   * 事件发生的时间。
-   */
-  uint32_t time;
-  /**
-   * @property {void*} target
-   * @annotation ["readable", "scriptable"]
-   * 事件发生的目标对象。
-   */
-  void* target;
-} event_t;
-
-/**
- * @method event_cast
- * @annotation ["cast", "scriptable"]
- * 把event对象转wheel_event_t对象，主要给脚本语言使用。
- * @param {event_t*} event event对象。
- *
- * @return {event_t*} 对象。
- */
-event_t* event_cast(event_t* event);
-
-/**
  * @class wheel_event_t
  * @annotation ["scriptable"]
  * @parent event_t
@@ -583,16 +548,6 @@ typedef struct _window_event_t {
 window_event_t* window_event_cast(event_t* event);
 
 /**
- * @method event_init
- * 初始化事件。
- * @param {uint32_t} type 事件类型。
- * @param {void*} target 目标对象。
- *
- * @return {event_t} 事件对象。
- */
-event_t event_init(uint32_t type, void* target);
-
-/**
  * @method pointer_event_rotate
  * 根据屏幕旋转方向修正pointer_event中的坐标。
  * @param {pointer_event_t*} evt 指针事件对象。
@@ -601,9 +556,6 @@ event_t event_init(uint32_t type, void* target);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info);
-
-/*事件处理函数原型*/
-typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 
 END_C_DECLS
 

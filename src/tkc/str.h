@@ -30,6 +30,21 @@ BEGIN_C_DECLS
 /**
  * @class str_t
  * 可变长度的UTF8字符串。
+ *
+ * 示例：
+ *
+ * ```c
+ *  str_t s;
+ *  str_init(&s, 0);
+ *
+ *  str_append(&s, "abc");
+ *  str_append(&s, "123");
+ *
+ *  str_reset(&s);
+ * ```
+ *
+ * > 先调str\_init进行初始化，最后调用str\_reset释放内存。
+ *
  */
 typedef struct _str_t {
   /**
@@ -203,11 +218,11 @@ ret_t str_from_int(str_t* str, int32_t v);
  * @method str_from_float
  * 用浮点数初始化字符串。
  * @param {str_t*} str str对象。
- * @param {float} v 浮点数。
+ * @param {double} v 浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_from_float(str_t* str, float v);
+ret_t str_from_float(str_t* str, double v);
 
 /**
  * @method str_from_value
@@ -243,11 +258,11 @@ ret_t str_to_int(str_t* str, int32_t* v);
  * @method str_to_float
  * 将字符串转成浮点数。
  * @param {str_t*} str str对象。
- * @param {float*} v 用于返回浮点数。
+ * @param {double*} v 用于返回浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_to_float(str_t* str, float* v);
+ret_t str_to_float(str_t* str, double* v);
 
 /**
  * @method str_end_with

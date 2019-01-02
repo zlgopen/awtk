@@ -1,6 +1,7 @@
 ## locale\_info\_t
 ### 概述
- locale_info
+ 本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。
+
 
 ### 函数
 <p id="locale_info_t_methods">

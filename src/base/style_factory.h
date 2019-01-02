@@ -33,7 +33,10 @@ typedef style_t* (*style_factory_create_style_t)(style_factory_t* factory, widge
 
 /**
  * @class style_factory_t
- * style_factory接口。
+ * style工厂接口，主要用于创建style。
+ *
+ *> 在特殊情况下，可以实现自己的style工厂，比如支持CSS和可实时修改的style。
+ *
  */
 struct _style_factory_t {
   style_factory_create_style_t create_style;

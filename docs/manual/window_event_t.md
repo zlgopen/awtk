@@ -9,7 +9,6 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_event_t_event_init">event\_init</a> | 初始化事件。 |
 | <a href="#window_event_t_pointer_event_rotate">pointer\_event\_rotate</a> | 根据屏幕旋转方向修正pointer_event中的坐标。 |
 | <a href="#window_event_t_window_event_cast">window\_event\_cast</a> | 把event对象转window_event_t对象。主要给脚本语言使用。 |
 ### 属性
@@ -18,29 +17,6 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_event_t_window">window</a> | widget\_t* | canvas。 |
-#### event\_init 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_event_t_event_init"> 初始化事件。
-
-
-
-
-* 函数原型：
-
-```
-event_t event_init (uint32_t type, void* target);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | event\_t | 事件对象。 |
-| type | uint32\_t | 事件类型。 |
-| target | void* | 目标对象。 |
 #### pointer\_event\_rotate 函数
 -----------------------
 

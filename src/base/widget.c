@@ -1953,7 +1953,7 @@ ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
 
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
-  return image_manager_load(imm, name, bitmap);
+  return image_manager_get_bitmap(imm, name, bitmap);
 }
 
 const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name) {

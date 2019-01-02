@@ -4,6 +4,16 @@
 
 using std::string;
 
+TEST(Str, demo) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append(&s, "abc");
+  str_append(&s, "123");
+
+  str_reset(&s);
+}
+
 TEST(Str, basic) {
   str_t str;
   str_t* s = NULL;

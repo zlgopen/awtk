@@ -1,0 +1,20 @@
+digraph UML {
+  rankdir  = BT
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+     
+   subgraph clusterImageManager {
+       bitmap_t[ label = "{bitmap_t|+x\l+y\l+w\l+h\l+data\l}" ];
+       image_manager_t[ label = "{image_manager_t|+ get_bitmap(...)\l}" ];
+       image_loader_t[ label = "{image_loader_t|+ load(...)\l}" ];
+
+       image_manager_t->bitmap_t[constraint=false arrowhead=none];
+       image_loader_t->image_manager_t[arrowhead=vee ];
+   };
+    
+   image_loader_stb_t->image_loader_t[arrowhead=empty style=dashed];
+}

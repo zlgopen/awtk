@@ -1,0 +1,24 @@
+digraph UML {
+  rankdir  = BT
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+   
+   subgraph cluster_1{
+     ui_builder_t[ label = "{ui_builder_t|+on_start(...)\l+on_widget_start(...)\l+on_widget_prop(...)\l+on_widget_end(...)\l+on_end(...)\l}" ];
+     ui_loader_t[ label = "{ui_loader_t|+load(...)\l}" ];
+     ui_loader_t -> ui_builder_t[constraint=false arrowhead=vee]
+   };
+
+   ui_loader_default_t -> ui_loader_t [arrowhead=empty style=dashed]
+   ui_loader_xml_t -> ui_loader_t [arrowhead=empty style=dashed]
+   
+   ui_builder_default_t -> ui_builder_t [arrowhead=empty style=dashed]
+   ui_xml_writer_t -> ui_builder_t [arrowhead=empty style=dashed]
+   ui_binary_writer_t -> ui_builder_t [arrowhead=empty style=dashed]
+
+
+}

@@ -130,6 +130,8 @@ bin\demoui
 
 * [C示例代码](https://github.com/zlgopen/awtk-c-demos)
 
+* [扩展控件实例: 二维码](https://github.com/CUITzhaoqi/awtk-qr)
+
 ## 文档
 
 [文档](docs/index.md)

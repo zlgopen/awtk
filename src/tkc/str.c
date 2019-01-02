@@ -216,7 +216,7 @@ ret_t str_from_int(str_t* str, int32_t v) {
   return str_set(str, tk_itoa(buff, sizeof(buff), v));
 }
 
-ret_t str_from_float(str_t* str, float v) {
+ret_t str_from_float(str_t* str, double v) {
   char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
@@ -265,7 +265,7 @@ ret_t str_to_int(str_t* str, int32_t* v) {
   return RET_OK;
 }
 
-ret_t str_to_float(str_t* str, float* v) {
+ret_t str_to_float(str_t* str, double* v) {
   return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
   *v = tk_atof(str->str);
 

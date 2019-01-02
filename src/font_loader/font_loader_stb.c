@@ -55,7 +55,7 @@ static int32_t font_stb_get_baseline(font_t* f, uint16_t font_size) {
   return scale * font->ascent;
 }
 
-static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
+static ret_t font_stb_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
   int x = 0;
   int y = 0;
   int w = 0;
@@ -72,22 +72,23 @@ static ret_t font_stb_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font
 
   g->bitmap.data = stbtt_GetCodepointBitmap(sf, 0, scale, c, &w, &h, &x, &y);
   stbtt_GetCodepointHMetrics(sf, c, &advance, &lsb);
-  advance *= scale;
-  g->metrics.x = x;
-  g->metrics.y = y;
-  g->metrics.w = w;
-  g->metrics.h = h;
-  g->metrics.advanceX = advance;
 
-  glyph_cache_add(&(font->cache), c, font_size, g);
-  /*
-   *  for debug
-   * int x1 = 0;
-   * int y1 = 0;
-   * int x2 = 0;
-   * int y2 = 0;
-   * stbtt_GetGlyphBitmapBox(sf, c, 0, scale, &x1, &y1, &x2, &y2);
-   */
+  g->x = x;
+  g->y = y;
+  g->w = w;
+  g->h = h;
+  g->advance = advance * scale;
+
+  if (g->data != NULL) {
+    glyph_t* gg = glyph_clone(g);
+    if (gg != NULL) {
+      glyph_cache_add(&(font->cache), c, font_size, gg);
+    } else {
+      STBTT_free(g->data, NULL);
+      log_warn("out of memory\n");
+      g->data = NULL;
+    }
+  }
 
   return g->bitmap.data != NULL ? RET_OK : RET_NOT_FOUND;
 }
@@ -103,9 +104,10 @@ static ret_t font_stb_destroy(font_t* f) {
 
 static ret_t destroy_glyph(void* data) {
   glyph_t* g = (glyph_t*)data;
-  if (g->bitmap.data) {
-    STBTT_free(g->bitmap.data, NULL);
+  if (g->data != NULL) {
+    STBTT_free(g->data, NULL);
   }
+  glyph_destroy(g);
 
   return RET_OK;
 }
@@ -119,7 +121,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
 
   f->base.name = name;
   f->base.match = font_stb_match;
-  f->base.find_glyph = font_stb_find_glyph;
+  f->base.get_glyph = font_stb_get_glyph;
   f->base.get_baseline = font_stb_get_baseline;
   f->base.destroy = font_stb_destroy;
 

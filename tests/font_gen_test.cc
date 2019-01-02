@@ -31,8 +31,8 @@ TEST(FontGen, basic) {
     glyph_t g1;
     glyph_t g2;
     char c = str[i];
-    ASSERT_EQ(font_find_glyph(ttf_font, c, &g1, font_size), RET_OK);
-    ASSERT_EQ(font_find_glyph(bmp_font, c, &g2, font_size), RET_OK);
+    ASSERT_EQ(font_get_glyph(ttf_font, c, font_size, &g1), RET_OK);
+    ASSERT_EQ(font_get_glyph(bmp_font, c, font_size, &g2), RET_OK);
 
     ASSERT_EQ(g1.x, g2.x);
     ASSERT_EQ(g1.y, g2.y);

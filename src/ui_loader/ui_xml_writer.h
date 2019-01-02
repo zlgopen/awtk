@@ -27,6 +27,13 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class ui_xml_writer_t
+ * @parent ui_builder_t
+ * 
+ * 生成XML格式的UI描述数据。
+ *
+ */
 typedef struct _ui_xml_writer_t {
   ui_builder_t builder;
   str_t* str;
@@ -35,6 +42,17 @@ typedef struct _ui_xml_writer_t {
   uint32_t level;
 } ui_xml_writer_t;
 
+/**
+ * @method ui_xml_writer_init
+ * @annotation ["constructor"]
+ *
+ * 初始化ui\_xml\_writer对象。
+ *
+ * @param {ui_xml_writer_t*} writer writer对象。
+ * @param {str_t*} str 保存结果的str。
+ *
+ * @return {ui_builder_t*} 返回ui\_builder对象。
+ */
 ui_builder_t* ui_xml_writer_init(ui_xml_writer_t* writer, str_t* str);
 
 END_C_DECLS

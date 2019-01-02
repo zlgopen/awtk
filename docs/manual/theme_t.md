@@ -2,6 +2,9 @@
 ### 概述
  主题。
 
+ 负责管理缺省的主题数据，方便实现style\_const。
+
+
 ### 函数
 <p id="theme_t_methods">
 

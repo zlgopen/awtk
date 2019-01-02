@@ -20,10 +20,10 @@
 | <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
 | <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
 | <a href="#value_t_value_create">value\_create</a> | 创建value对象。 |
-| <a href="#value_t_value_destroy">value\_destroy</a> | @deconstructor |
+| <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
-| <a href="#value_t_value_float">value\_float</a> | 获取类型为float的值。 |
+| <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
 | <a href="#value_t_value_int">value\_int</a> | 转换为int的值。 |
 | <a href="#value_t_value_int16">value\_int16</a> | 获取类型为int16的值。 |
@@ -34,7 +34,7 @@
 | <a href="#value_t_value_pointer">value\_pointer</a> | 获取类型为pointer的值。 |
 | <a href="#value_t_value_set_bool">value\_set\_bool</a> | 设置类型为bool的值。 |
 | <a href="#value_t_value_set_double">value\_set\_double</a> | 设置类型为double的值。 |
-| <a href="#value_t_value_set_float">value\_set\_float</a> | 设置类型为float的值。 |
+| <a href="#value_t_value_set_float">value\_set\_float</a> | 设置类型为float\_t的值。 |
 | <a href="#value_t_value_set_float32">value\_set\_float32</a> | 设置类型为float的值。 |
 | <a href="#value_t_value_set_int">value\_set\_int</a> | 设置类型为int的值。 |
 | <a href="#value_t_value_set_int16">value\_set\_int16</a> | 设置类型为int16的值。 |
@@ -125,8 +125,7 @@ value_t* value_create ();
 
 * 函数功能：
 
-> <p id="value_t_value_destroy"> @deconstructor
- 销毁value对象。
+> <p id="value_t_value_destroy"> 销毁value对象。
 
 
 
@@ -193,7 +192,7 @@ bool_t value_equal (value_t* value, value_t* other);
 
 * 函数功能：
 
-> <p id="value_t_value_float"> 获取类型为float的值。
+> <p id="value_t_value_float"> 获取类型为float\_t的值。
 
 
 
@@ -201,14 +200,14 @@ bool_t value_equal (value_t* value, value_t* other);
 * 函数原型：
 
 ```
-float value_float (value_t* v);
+float_t value_float (value_t* v);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | float | 值。 |
+| 返回值 | float\_t | 值。 |
 | v | value\_t* | value对象。 |
 #### value\_float32 函数
 -----------------------
@@ -437,7 +436,7 @@ value_t* value_set_double (value_t* v, double value);
 
 * 函数功能：
 
-> <p id="value_t_value_set_float"> 设置类型为float的值。
+> <p id="value_t_value_set_float"> 设置类型为float\_t的值。
 
 
 

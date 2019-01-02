@@ -53,11 +53,11 @@
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
-    font_manager_add(font_manager(), font_bitmap_create(res->name, res->data, res->size));
+    font_manager_add_font(font_manager(), font_bitmap_create(res->name, res->data, res->size));
 #endif
   } else if (res->subtype == ASSET_TYPE_FONT_TTF) {
 #ifdef WITH_TRUETYPE_FONT
-    font_manager_add(font_manager(), font_truetype_create(res->name, res->data, res->size));
+    font_manager_add_font(font_manager(), font_truetype_create(res->name, res->data, res->size));
 #endif /*WITH_TRUETYPE_FONT*/
   } else {
     log_debug("not support font type:%d\n", res->subtype);

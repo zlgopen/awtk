@@ -19,7 +19,7 @@
  *
  */
 
-#include "ui_loader/ui_loader.h"
+#include "base/ui_loader.h"
 #include "base/assets_manager.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"

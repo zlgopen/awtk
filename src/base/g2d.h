@@ -28,6 +28,12 @@
 BEGIN_C_DECLS
 
 /**
+ * @class g2d_t
+ *
+ * 2D加速接口。
+ *
+ */
+/**
  * @method g2d_fill_rect
  * 用颜色填充指定的区域。
  * @param {bitmap_t*} fb framebuffer对象。

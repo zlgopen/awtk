@@ -11,7 +11,7 @@ TEST(GlyphCache, basic) {
 
   for (i = 0; i < nr; i++) {
     ASSERT_EQ(glyph_cache_lookup(c, i, size, &g) == RET_NOT_FOUND, true);
-    ASSERT_EQ(glyph_cache_add(c, i, size, &g) == RET_OK, true);
+    ASSERT_EQ(glyph_cache_add(c, i, size, glyph_clone(&g)) == RET_OK, true);
     ASSERT_EQ(glyph_cache_lookup(c, i, size, &g) == RET_OK, true);
   }
 

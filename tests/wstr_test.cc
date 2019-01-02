@@ -18,6 +18,16 @@ static void testSetWStr(const char* utf8, const wchar_t* cstr) {
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 
+TEST(WStr, demo) {
+  wstr_t s;
+  wstr_init(&s, 0);
+
+  wstr_append(&s, L"abc");
+  wstr_append(&s, L"123");
+
+  wstr_reset(&s);
+}
+
 TEST(WStr, basic) {
   testSetWStr("Hello", L"Hello");
   testSetWStr("中文", L"中文");
@@ -277,7 +287,7 @@ TEST(WStr, push) {
   ASSERT_EQ(wstr_push(s, (wchar_t)'2'), RET_OK);
   ASSERT_EQ(s->size, 2);
 
-  ASSERT_EQ(wstr_push_str(s, L"345", 3), RET_OK);
+  ASSERT_EQ(wstr_append_with_len(s, L"345", 3), RET_OK);
   ASSERT_EQ(s->size, 5);
   ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
   ASSERT_EQ(v, 12345);
@@ -302,6 +312,32 @@ TEST(WStr, push_int) {
   ASSERT_EQ(wstr_push_int(s, "%04d", 123), RET_OK);
   ASSERT_EQ(s->size, 4);
   ASSERT_EQ(wstr_equal(s, &str1), TRUE);
+
+  wstr_reset(&str);
+}
+
+TEST(WStr, append) {
+  wstr_t str;
+
+  wstr_init(&str, 0);
+  ASSERT_EQ(wstr_append(&str, L"123"), RET_OK);
+  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(wstr_append(&str, L"abc"), RET_OK);
+  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(wcscmp(str.str, L"123abc"), 0);
+
+  wstr_reset(&str);
+}
+
+TEST(WStr, append_len) {
+  wstr_t str;
+
+  wstr_init(&str, 0);
+  ASSERT_EQ(wstr_append_with_len(&str, L"123123", 3), RET_OK);
+  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(wstr_append_with_len(&str, L"abcabc", 3), RET_OK);
+  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(wcscmp(str.str, L"123abc"), 0);
 
   wstr_reset(&str);
 }

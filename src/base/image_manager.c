@@ -128,7 +128,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   return RET_NOT_FOUND;
 }
 
-ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
+ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
   const asset_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 

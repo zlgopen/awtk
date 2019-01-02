@@ -9,7 +9,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#asset_info_t_is_in_rom">is\_in\_rom</a> | uint8\_t | 资源是否在ROM中。 |
 | <a href="#asset_info_t_name">name</a> | char* | 名称。 |
-| <a href="#asset_info_t_refcount">refcount</a> | uint32\_t | 引用计数。is_in_rom == FALSE时才有效。 |
+| <a href="#asset_info_t_refcount">refcount</a> | uint32\_t | 引用计数。 |
 | <a href="#asset_info_t_size">size</a> | uint32\_t | 大小。 |
 | <a href="#asset_info_t_subtype">subtype</a> | uint8\_t | 子类型。 |
 | <a href="#asset_info_t_type">type</a> | uint16\_t | 类型。 |
@@ -41,7 +41,8 @@
 | 可脚本化   | 是 |
 #### refcount 属性
 -----------------------
-> <p id="asset_info_t_refcount"> 引用计数。is_in_rom == FALSE时才有效。
+> <p id="asset_info_t_refcount"> 引用计数。
+ is\_in\_rom == FALSE时才有效。
 
 
 

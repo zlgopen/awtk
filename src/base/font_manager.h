@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 
 /**
  * @class font_manager_t
- * 字体管理器。
+ * 字体管理器，负责字体的加载和缓存管理。
  * (如果使用nanovg，字体由nanovg内部管理)
  */
 typedef struct _font_manager_t {
@@ -92,7 +92,15 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
 /**
  * @method font_manager_set_assets_manager
  * 设置资源管理器对象
- * @param {font_manager_t*} imm 图片管理器对象。
+ *
+ * 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个字体管理器：
+ *
+ * * 一个用于designer本身加载字体。
+ *
+ * * 一个用于被设计的窗口加载字体。
+ *
+ *这两个字体管理器需要从不同的路径加载资源。
+ * @param {font_manager_t*} imm 字体管理器对象。
  * @param {assets_manager_t*} assets_manager 资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -100,7 +108,7 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
 ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* assets_manager);
 
 /**
- * @method font_manager_add
+ * @method font_manager_add_font
  * 向缓存中加入字体。
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名。
@@ -108,18 +116,18 @@ ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* ass
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t font_manager_add(font_manager_t* fm, font_t* font);
+ret_t font_manager_add_font(font_manager_t* fm, font_t* font);
 
 /**
- * @method font_manager_find
- * 从缓存中查找字体。
+ * @method font_manager_get_font
+ * 从缓存中查找字体，如果没找到，再加载字体，并缓存。
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
  * @param {uint16_t} size 字体的大小。
  *
  * @return {font_t*} 返回字体对象。
  */
-font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size);
+font_t* font_manager_get_font(font_manager_t* fm, const char* name, uint16_t size);
 
 /**
  * @method font_manager_deinit

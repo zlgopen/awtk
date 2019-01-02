@@ -1,7 +1,27 @@
 # 最新动态
+* 2018/12/31
+  * 整理API文档：ui\_loader/ui\_builder/ui\_xml\_writer/ui\_binary\_writer/ui\_builder\_default
+
+* 2018/12/30
+  * 整理API文档：style/style\_const/style\_mutable/theme/style\_factory
+  * move ui\_loader.c/.h to base目录。
+
+* 2018/12/29
+  * 整理API文档：bitmap/image\_loader/image\_manager/image\_loader\_stb
+  * 整理API文档：asset\_info/assets\_manager/locale\_info
+  * 重构image相关的代码  
+
+* 2018/12/28
+  * 整理API文档：glyph/font/font\_loader/font\_manager/font\_loader\_ft/font\_loader\_stb/font\_loader\_bitmap
+  * 重构font相关的代码  
+
 * 2018/12/27
-  * 整理控件API文档：value/mem/str/wstr
+  * 整理控件API文档：value/mem/str/wstr/array/wbuffer/rbuffer/rgba/color/color\_parser。
   * 修改SDL输入法的问题(感谢大恒提供补丁)。
+  * 完善freetype字体渲染(感谢zjm09提供补丁)。
+  * 完善glyph\_cache，允许glyph有不同的实现。 
+  * 重构color\_parser并增加单元测试。
+  * 把events拆成两部分，基础部分移到tkc中。
 
 * 2018/12/26
   * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
