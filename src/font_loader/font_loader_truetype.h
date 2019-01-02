@@ -40,7 +40,6 @@
 #undef WITH_TRUETYPE_FONT
 #define font_truetype_create NULL
 #define font_loader_truetype NULL
-#error "not supported truetype font"
 #endif /*WITH_STB_FONT*/
 
 #endif /*TK_FONT_LOADER_TRUE_TYPE_H*/
