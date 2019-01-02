@@ -1,9 +1,12 @@
 ﻿/*
  * font_loader_ft.c
  *
- *  Created on: 2018��12��26��
+ *  Created on: 2018/12/26
  *      Author: zjm09
  */
+
+#include "base/types_def.h"
+
 #ifdef WITH_FT_FONT
 #ifdef USE_SYSTEM_FREETYPE
 #include <ft2build.h>

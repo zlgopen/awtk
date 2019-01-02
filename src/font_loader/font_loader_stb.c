@@ -19,6 +19,8 @@
  *
  */
 
+#include "base/types_def.h"
+
 #ifdef WITH_STB_FONT
 
 #define STB_TRUETYPE_IMPLEMENTATION
