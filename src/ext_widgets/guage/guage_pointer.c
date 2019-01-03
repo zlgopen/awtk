@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/matrix.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/matrix.h"
 #include "svg/bsvg_draw.h"
 #include "base/widget_vtable.h"
 #include "guage/guage_pointer.h"
@@ -55,6 +55,8 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
     if (asset != NULL) {
       if (asset->subtype == ASSET_TYPE_IMAGE_BSVG) {
         guage_pointer->bsvg_asset = asset;
+      } else {
+        widget_unload_asset(widget, asset);
       }
     }
   }
@@ -89,7 +91,7 @@ static ret_t guage_pointer_set_prop(widget_t* widget, const char* name, const va
   return RET_NOT_FOUND;
 }
 
-static ret_t guage_pointer_destroy(widget_t* widget) {
+static ret_t guage_pointer_on_destroy(widget_t* widget) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
 
   TKMEM_FREE(guage_pointer->image);
@@ -182,7 +184,7 @@ static const widget_vtable_t s_guage_pointer_vtable = {
     .on_paint_background = widget_on_paint_null,
     .set_prop = guage_pointer_set_prop,
     .get_prop = guage_pointer_get_prop,
-    .destroy = guage_pointer_destroy};
+    .on_destroy = guage_pointer_on_destroy};
 
 widget_t* guage_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   guage_pointer_t* guage_pointer = TKMEM_ZALLOC(guage_pointer_t);

@@ -24,7 +24,7 @@
 
 #include "base/idle.h"
 #include "base/timer.h"
-#include "base/mutex.h"
+#include "tkc/mutex.h"
 #include "base/main_loop.h"
 #include "base/event_queue.h"
 #include "base/font_manager.h"

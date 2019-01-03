@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_OPACITY
+ * 不透明度。
+ */
+#define WIDGET_PROP_OPACITY "opacity"
+
+/**
  * @const WIDGET_PROP_MIN_W
  * 最小宽度。
  */
@@ -70,6 +76,24 @@ BEGIN_C_DECLS
  * 最大宽度。
  */
 #define WIDGET_PROP_MAX_W "max_w"
+
+/**
+ * @const WIDGET_PROP_CHILDREN_LAYOUT
+ * 子控件布局参数。
+ */
+#define WIDGET_PROP_CHILDREN_LAYOUT "children_layout"
+
+/**
+ * @const WIDGET_PROP_LAYOUT
+ * 子控件布局参数(过时)。
+ */
+#define WIDGET_PROP_LAYOUT "layout"
+
+/**
+ * @const WIDGET_PROP_SELF_LAYOUT
+ * 控件布局参数。
+ */
+#define WIDGET_PROP_SELF_LAYOUT "self_layout"
 
 /**
  * @const WIDGET_PROP_LAYOUT_W
@@ -120,6 +144,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VALUE "value"
 
 /**
+ * @const WIDGET_PROP_LENGTH
+ * 长度。
+ */
+#define WIDGET_PROP_LENGTH "length"
+
+/**
  * @const WIDGET_PROP_TEXT
  * 文本。
  */
@@ -142,6 +172,12 @@ BEGIN_C_DECLS
  * 是否启用。
  */
 #define WIDGET_PROP_ENABLE "enable"
+
+/**
+ * @const WIDGET_PROP_FLOATING
+ * 是否启用floating布局。
+ */
+#define WIDGET_PROP_FLOATING "floating"
 
 /**
  * @const WIDGET_PROP_MARGIN
@@ -190,6 +226,12 @@ BEGIN_C_DECLS
  * 是否可见。
  */
 #define WIDGET_PROP_VISIBLE "visible"
+
+/**
+ * @const WIDGET_PROP_SENSITIVE
+ * 是否接受用户事件。
+ */
+#define WIDGET_PROP_SENSITIVE "sensitive"
 
 /**
  * @const WIDGET_PROP_ANIMATION
@@ -274,6 +316,18 @@ BEGIN_C_DECLS
  *
  */
 #define WIDGET_PROP_YOFFSET "yoffset"
+
+/**
+ * @const WIDGET_PROP_ALIGN_V
+ *
+ */
+#define WIDGET_PROP_ALIGN_V "align_v"
+
+/**
+ * @const WIDGET_PROP_ALIGN_H
+ *
+ */
+#define WIDGET_PROP_ALIGN_H "align_h"
 
 /**
  * @const WIDGET_PROP_AUTO_PLAY
@@ -877,102 +931,6 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_CALIBRATION_WIN "calibration_win"
 
 /**
- * @enum widget_state_t
- * @annotation ["scriptable"]
- * @prefix WIDGET_
- * 控件状态常量定义。
- */
-typedef enum _widget_state_t {
-  /**
-   * @const WIDGET_STATE_NONE
-   * 无效状态。
-   */
-  WIDGET_STATE_NONE,
-  /**
-   * @const WIDGET_STATE_NORMAL
-   * 正常状态。
-   */
-  WIDGET_STATE_NORMAL = 1,
-  /**
-   * @const WIDGET_STATE_PRESSED
-   * 指针按下状态。
-   */
-  WIDGET_STATE_PRESSED = 2,
-  /**
-   * @const WIDGET_STATE_OVER
-   * 指针悬浮状态。
-   */
-  WIDGET_STATE_OVER = 3,
-  /**
-   * @const WIDGET_STATE_DISABLE
-   * 禁用状态。
-   */
-  WIDGET_STATE_DISABLE = 4,
-  /**
-   * @const WIDGET_STATE_FOCUSED
-   * 聚焦状态。
-   */
-  WIDGET_STATE_FOCUSED = 5,
-  /**
-   * @const WIDGET_STATE_CHECKED
-   * 勾选状态。
-   */
-  WIDGET_STATE_CHECKED = 6,
-  /**
-   * @const WIDGET_STATE_UNCHECKED
-   * 没勾选状态。
-   */
-  WIDGET_STATE_UNCHECKED = 7,
-  /**
-   * @const WIDGET_STATE_EMPTY
-   * 编辑器无内容状态。
-   */
-  WIDGET_STATE_EMPTY = 8,
-  /**
-   * @const WIDGET_STATE_ERROR
-   * 输入错误状态。
-   */
-  WIDGET_STATE_ERROR = 9,
-  /**
-   * @const WIDGET_STATE_SELECTED
-   * 选中状态。
-   */
-  WIDGET_STATE_SELECTED = 10,
-
-  /*for active/selected/current */
-  /**
-   * @const WIDGET_STATE_NORMAL_OF_CHECKED
-   * 正常状态(选中项)。
-   */
-  WIDGET_STATE_NORMAL_OF_CHECKED = 101,
-  /**
-   * @const WIDGET_STATE_PRESSED_OF_CHECKED
-   * 指针按下状态(选中项)。
-   */
-  WIDGET_STATE_PRESSED_OF_CHECKED = 102,
-  /**
-   * @const WIDGET_STATE_OVER_OF_CHECKED
-   * 指针悬浮状态(选中项)。
-   */
-  WIDGET_STATE_OVER_OF_CHECKED = 103,
-  /**
-   * @const WIDGET_STATE_NORMAL_OF_ACTIVE
-   * 正常状态(当前项)。
-   */
-  WIDGET_STATE_NORMAL_OF_ACTIVE = 101,
-  /**
-   * @const WIDGET_STATE_PRESSED_OF_ACTIVE
-   * 指针按下状态(当前项)。
-   */
-  WIDGET_STATE_PRESSED_OF_ACTIVE = 102,
-  /**
-   * @const WIDGET_STATE_OVER_OF_ACTIVE
-   * 指针悬浮状态(当前项)。
-   */
-  WIDGET_STATE_OVER_OF_ACTIVE = 103
-} widget_state_t;
-
-/**
  * @enum window_stage_t
  * @annotation ["scriptable"]
  * @prefix WINDOW_STAGE_
@@ -1024,6 +982,116 @@ typedef enum _window_closable_t {
    */
   WINDOW_CLOSABLE_CONFIRM
 } window_closable_t;
+
+/**
+ * @enum widget_state_t
+ * @annotation ["scriptable", "string"]
+ * @prefix WIDGET_
+ * 控件状态常量定义。
+ *
+ * 这里指定常用的状态值，扩展控件可以在自己的头文件中定义私有的状态。
+ */
+
+/**
+ * @const WIDGET_STATE_NONE
+ * 无效状态。
+ */
+#define WIDGET_STATE_NONE ""
+/**
+ * @const WIDGET_STATE_NORMAL
+ * 正常状态。
+ */
+#define WIDGET_STATE_NORMAL "normal"
+
+/**
+ * @const WIDGET_STATE_PRESSED
+ * 指针按下状态。
+ */
+#define WIDGET_STATE_PRESSED "pressed"
+/**
+ * @const WIDGET_STATE_OVER
+ * 指针悬浮状态。
+ */
+#define WIDGET_STATE_OVER "over"
+
+/**
+ * @const WIDGET_STATE_DISABLE
+ * 禁用状态。
+ */
+#define WIDGET_STATE_DISABLE "disable"
+
+/**
+ * @const WIDGET_STATE_FOCUSED
+ * 聚焦状态。
+ */
+#define WIDGET_STATE_FOCUSED "focused"
+
+/**
+ * @const WIDGET_STATE_CHECKED
+ * 勾选状态。
+ */
+#define WIDGET_STATE_CHECKED "checked"
+
+/**
+ * @const WIDGET_STATE_UNCHECKED
+ * 没勾选状态。
+ */
+#define WIDGET_STATE_UNCHECKED "unchecked"
+
+/**
+ * @const WIDGET_STATE_EMPTY
+ * 编辑器无内容状态。
+ */
+#define WIDGET_STATE_EMPTY "empty"
+
+/**
+ * @const WIDGET_STATE_ERROR
+ * 输入错误状态。
+ */
+#define WIDGET_STATE_ERROR "error"
+
+/**
+ * @const WIDGET_STATE_SELECTED
+ * 选中状态。
+ */
+#define WIDGET_STATE_SELECTED "selected"
+
+/*for active/selected/current */
+/**
+ * @const WIDGET_STATE_NORMAL_OF_CHECKED
+ * 正常状态(选中项)。
+ */
+#define WIDGET_STATE_NORMAL_OF_CHECKED "normal_of_checked"
+
+/**
+ * @const WIDGET_STATE_PRESSED_OF_CHECKED
+ * 指针按下状态(选中项)。
+ */
+#define WIDGET_STATE_PRESSED_OF_CHECKED "pressed_of_checked"
+
+/**
+ * @const WIDGET_STATE_OVER_OF_CHECKED
+ * 指针悬浮状态(选中项)。
+ */
+#define WIDGET_STATE_OVER_OF_CHECKED "over_of_checked"
+
+/**
+ * @const WIDGET_STATE_NORMAL_OF_ACTIVE
+ * 正常状态(当前项)。
+ */
+#define WIDGET_STATE_NORMAL_OF_ACTIVE "normal_of_active"
+
+/**
+ * @const WIDGET_STATE_PRESSED_OF_ACTIVE
+ * 指针按下状态(当前项)。
+ */
+#define WIDGET_STATE_PRESSED_OF_ACTIVE "pressed_of_active"
+
+/**
+ * @const WIDGET_STATE_OVER_OF_ACTIVE
+ * 指针悬浮状态(当前项)。
+ */
+#define WIDGET_STATE_OVER_OF_ACTIVE "over_of_active"
 
 END_C_DECLS
 

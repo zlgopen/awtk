@@ -22,7 +22,7 @@
 #ifndef TK_TIMER_H
 #define TK_TIMER_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 
 BEGIN_C_DECLS
 
@@ -42,18 +42,74 @@ typedef struct _timer_manager_t {
   struct _timer_info_t* first;
 } timer_manager_t;
 
+/**
+ * @class timer_info_t
+ * 单个定时器的信息。
+ */
 struct _timer_info_t {
+  /**
+   * @property {timer_func_t} on_timer
+   * @annotation ["readable"]
+   * 定时器回调函数。
+   */
   timer_func_t on_timer;
+  /**
+   * @property {void*} ctx
+   * @annotation ["readable"]
+   * 定时器回调函数的上下文
+   */
   void* ctx;
+  /**
+   * @property {uint32_t} id
+   * @annotation ["readable"]
+   * 定时器的ID
+   *
+   * > 为TK\_INVALID\_ID时表示无效定时器。
+   */
   uint32_t id;
+  /**
+   * @property {uint32_t} now
+   * @annotation ["readable"]
+   * 当前时间(相对时间，单位为毫秒)。
+   *
+   */
   uint32_t now;
+  /**
+   * @property {uint32_t} start
+   * @annotation ["readable"]
+   * 起始时间(相对时间，单位为毫秒)。
+   *
+   */
   uint32_t start;
-  uint32_t duration_ms;
-  void* on_destroy_ctx;
+  /**
+   * @property {uint32_t} duration
+   * @annotation ["readable"]
+   * 时间间隔(单位为毫秒)。
+   *
+   */
+  uint32_t duration;
+  /**
+   * @property {tk_destroy_t} on_destroy
+   * @annotation ["readable"]
+   * 定时器销毁时的回调函数。
+   */
   tk_destroy_t on_destroy;
+  /**
+   * @property {void*} on_destroy_ctx
+   * @annotation ["readable"]
+   * 定时器销毁时的回调函数上下文。
+   */
+  void* on_destroy_ctx;
+  /**
+   * @property {bool_t} user_changed_time
+   * @annotation ["readable"]
+   * 用户是否修改了系统时间。
+   */
+  bool_t user_changed_time;
+
+  /*private*/
   timer_manager_t* timer_manager;
   bool_t pending_destroy;
-  bool_t user_changed_time;
   struct _timer_info_t* next;
 };
 
@@ -66,7 +122,7 @@ ret_t timer_manager_deinit(timer_manager_t* timer_manager);
 ret_t timer_manager_destroy(timer_manager_t* timer_manager);
 
 uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
-                           uint32_t duration_ms);
+                           uint32_t duration);
 ret_t timer_manager_set_on_destroy(timer_manager_t* timer_manager, uint32_t timer_id,
                                    tk_destroy_t on_destroy, void* on_destroy_ctx);
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
@@ -79,6 +135,24 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
  * @class timer_t
  * @annotation ["scriptable", "fake"]
  * 定时器系统。
+ *
+ * > 本定时器精度较低，最高精度为1000/FPS，如果需要高精度的定时器，请用OS提供的定时器。
+ *
+ * 示例：
+ *
+ * ```c
+ * static ret_t my_on_timer(const timer_info_t* info) {
+ *  widget_t* widget = WIDGET(info->ctx);
+ *  ...
+ *  return RET_REPEAT;
+ * }
+ *
+ * ...
+ *
+ * timer_add(my_on_timer, widget, 1000);
+ * ```
+ * > 在非GUI线程请用timer\_queue。
+ *
  */
 
 /**
@@ -97,11 +171,11 @@ ret_t timer_init(timer_get_time_t get_time);
  * @annotation ["scriptable:custom", "static"]
  * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
- * @param {uint32_t} duration_ms 时间。
+ * @param {uint32_t} duration 时间。
  *
  * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
-uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration);
 
 /**
  * @method timer_queue
@@ -110,11 +184,11 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
  * @param {timer_func_t} on_timer
  * timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
  * @param {void*} ctx timer回调函数的上下文。
- * @param {uint32_t} duration_ms 时间。
+ * @param {uint32_t} duration 时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
 
 /**
  * @method timer_remove

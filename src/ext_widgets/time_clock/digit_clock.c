@@ -19,13 +19,22 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/widget_vtable.h"
 #include "time_clock/digit_clock.h"
 
 #define DATE_TIME_MAX_LEN 127
+
+static uint32_t count_char(const char* p, char c) {
+  uint32_t nr = 0;
+  while (*p++ == c) {
+    nr++;
+  }
+
+  return nr;
+}
 
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt) {
   wstr_t* str = &(widget->text);
@@ -33,29 +42,55 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
 
   str->size = 0;
   while (*p) {
+    int32_t repeat = count_char(p, *p);
+
     switch (*p) {
       case 'Y': {
-        wstr_push_int(str, "%d", dt->year);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", (dt->year % 100));
+        } else {
+          wstr_push_int(str, "%d", dt->year);
+        }
         break;
       }
       case 'M': {
-        wstr_push_int(str, "%d", dt->month);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->month);
+        } else {
+          wstr_push_int(str, "%d", dt->month);
+        }
         break;
       }
       case 'D': {
-        wstr_push_int(str, "%d", dt->day);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->day);
+        } else {
+          wstr_push_int(str, "%d", dt->day);
+        }
         break;
       }
       case 'h': {
-        wstr_push_int(str, "%d", dt->hour);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->hour);
+        } else {
+          wstr_push_int(str, "%d", dt->hour);
+        }
         break;
       }
       case 'm': {
-        wstr_push_int(str, "%d", dt->minute);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->minute);
+        } else {
+          wstr_push_int(str, "%d", dt->minute);
+        }
         break;
       }
       case 's': {
-        wstr_push_int(str, "%d", dt->second);
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->second);
+        } else {
+          wstr_push_int(str, "%d", dt->second);
+        }
         break;
       }
       default: {
@@ -63,7 +98,7 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
         break;
       }
     }
-    p++;
+    p += repeat;
   }
 
   return RET_OK;
@@ -121,7 +156,7 @@ static ret_t digit_clock_on_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t digit_clock_destroy(widget_t* widget) {
+static ret_t digit_clock_on_destroy(widget_t* widget) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
 
   TKMEM_FREE(digit_clock->format);
@@ -140,7 +175,7 @@ static const widget_vtable_t s_digit_clock_vtable = {
     .on_paint_self = widget_on_paint_self_default,
     .set_prop = digit_clock_set_prop,
     .get_prop = digit_clock_get_prop,
-    .destroy = digit_clock_destroy};
+    .on_destroy = digit_clock_on_destroy};
 
 widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   digit_clock_t* digit_clock = TKMEM_ZALLOC(digit_clock_t);

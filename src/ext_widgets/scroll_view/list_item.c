@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
 #include "scroll_view/list_item.h"
 
@@ -69,16 +69,16 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
+      list_item_remove_timer(widget);
+      widget_invalidate_force(widget, NULL);
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+
       if (!list_item->dragged) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
         widget_dispatch(widget, (event_t*)&evt);
       }
-
       list_item->dragged = FALSE;
-      list_item_remove_timer(widget);
-      widget_invalidate_force(widget, NULL);
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -111,11 +111,24 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t list_item_on_destroy(widget_t* widget) {
+  list_item_t* list_item = LIST_ITEM(widget);
+  return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
+
+  if (list_item->timer_id != TK_INVALID_ID) {
+    timer_remove(list_item->timer_id);
+    list_item->timer_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
                                                    .type = WIDGET_TYPE_LIST_ITEM,
                                                    .create = list_item_create,
                                                    .on_event = list_item_on_event,
-                                                   .on_paint_self = list_item_on_paint_self};
+                                                   .on_paint_self = list_item_on_paint_self,
+                                                   .on_destroy = list_item_on_destroy};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   list_item_t* list_item = TKMEM_ZALLOC(list_item_t);

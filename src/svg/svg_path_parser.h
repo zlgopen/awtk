@@ -22,7 +22,7 @@
 #ifndef TK_SVG_PATH_BUILDER_H
 #define TK_SVG_PATH_BUILDER_H
 
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
 

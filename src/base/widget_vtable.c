@@ -20,7 +20,7 @@
  */
 
 #include "base/widget_vtable.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
   if (r->w <= 0 || r->h <= 0) {
@@ -150,7 +150,7 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   xy_t r = iter->x + iter->w;
   xy_t b = iter->y + iter->h;
 
-  if (iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
+  if (iter->sensitive && iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END();
@@ -158,7 +158,7 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   return NULL;
 }
 
-ret_t widget_destroy_default(widget_t* widget) {
+ret_t widget_on_destroy_default(widget_t* widget) {
   (void)widget;
   return RET_OK;
 }
@@ -181,7 +181,7 @@ static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default
                                          .get_prop = widget_get_prop_default,
                                          .set_prop = widget_set_prop_default,
                                          .find_target = widget_find_target_default,
-                                         .destroy = widget_destroy_default};
+                                         .on_destroy = widget_on_destroy_default};
 
 const widget_vtable_t* widget_vtable_default() {
   return &s_vtable;

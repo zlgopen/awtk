@@ -1,11 +1,11 @@
 ﻿
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/font.h"
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/widget.h"
 #include "tools/common/utils.h"
 #include "tools/font_gen/font_gen.h"
-#include "font_loader/font_loader_stb.h"
+#include "font_loader/font_loader_truetype.h"
 #include "font_loader/font_loader_bitmap.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
@@ -21,7 +21,7 @@ TEST(FontGen, basic) {
   uint16_t font_size = 20;
   uint8_t* bmp_buff = (uint8_t*)TKMEM_ALLOC(BUFF_SIZE);
   uint8_t* ttf_buff = (uint8_t*)read_file(TTF_FILE, &size);
-  font_t* ttf_font = font_stb_create("default", ttf_buff, size);
+  font_t* ttf_font = font_truetype_create("default", ttf_buff, size);
   const char* str = "helloworldHELLOWORLD1243541helloworldHELLOWORLD1243541";
 
   uint32_t ret = font_gen_buff(ttf_font, font_size, str, bmp_buff, BUFF_SIZE);
@@ -31,8 +31,8 @@ TEST(FontGen, basic) {
     glyph_t g1;
     glyph_t g2;
     char c = str[i];
-    ASSERT_EQ(font_find_glyph(ttf_font, c, &g1, font_size), RET_OK);
-    ASSERT_EQ(font_find_glyph(bmp_font, c, &g2, font_size), RET_OK);
+    ASSERT_EQ(font_get_glyph(ttf_font, c, font_size, &g1), RET_OK);
+    ASSERT_EQ(font_get_glyph(bmp_font, c, font_size, &g2), RET_OK);
 
     ASSERT_EQ(g1.x, g2.x);
     ASSERT_EQ(g1.y, g2.y);

@@ -19,14 +19,12 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
-#include "base/easing.h"
+#include "tkc/easing.h"
 #include "slide_view/slide_view.h"
 #include "widget_animators/widget_animator_scroll.h"
-
-#define ANIMATING_TIME 500
 
 static ret_t slide_view_invalidate(slide_view_t* slide_view);
 
@@ -138,7 +136,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
   widget_t* widget = WIDGET(slide_view);
   velocity_t* v = &(slide_view->velocity);
   widget_animator_t* animator =
-      widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+      widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
 
   velocity_update(v, e->e.time, e->x, e->y);
   if (slide_view->vertical) {
@@ -625,7 +623,7 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t slide_view_destroy(widget_t* widget) {
+static ret_t slide_view_on_destroy(widget_t* widget) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   if (slide_view->timer_id) {
     timer_remove(slide_view->timer_id);
@@ -650,7 +648,7 @@ static const widget_vtable_t s_slide_view_vtable = {
     .find_target = slide_view_find_target,
     .on_paint_children = slide_view_on_paint_children,
     .on_paint_self = slide_view_on_paint_self,
-    .destroy = slide_view_destroy};
+    .on_destroy = slide_view_on_destroy};
 
 ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
@@ -691,7 +689,7 @@ static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
   slide_view_t* slide_view = SLIDE_VIEW(timer->ctx);
 
   widget_animator_t* animator =
-      widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+      widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
 
   if (slide_view->vertical) {
     widget_animator_scroll_set_params(animator, 0, 0, 0, -widget->h);
@@ -718,7 +716,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
 
   if (auto_play) {
     slide_view->timer_id =
-        timer_add(slide_view_on_timer_next, slide_view, auto_play + ANIMATING_TIME);
+        timer_add(slide_view_on_timer_next, slide_view, auto_play + TK_ANIMATING_TIME);
 
     return slide_view->timer_id ? RET_OK : RET_OOM;
   }

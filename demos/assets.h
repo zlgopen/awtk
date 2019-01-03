@@ -22,7 +22,7 @@
 #ifndef ASSET_H
 #define ASSET_H
 
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
 

@@ -1,10 +1,10 @@
 ﻿
 #include "base/canvas.h"
 #include "base/widget.h"
-#include "base/button.h"
-#include "base/label.h"
-#include "base/group_box.h"
-#include "base/window.h"
+#include "widgets/button.h"
+#include "widgets/label.h"
+#include "widgets/group_box.h"
+#include "widgets/window.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include <stdlib.h>
@@ -481,6 +481,34 @@ TEST(Widget, insert) {
   ASSERT_EQ(widget_index_of(b5), 2);
 
   ASSERT_EQ(widget_insert_child(w, 1, b5), RET_FAIL);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, widget_get_state_for_style) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 1, 0, 10, 20);
+
+  widget_set_state(b, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(string(WIDGET_STATE_NORMAL), widget_get_state_for_style(b, FALSE, FALSE));
+  widget_set_state(b, WIDGET_STATE_PRESSED);
+  ASSERT_EQ(string(WIDGET_STATE_PRESSED), widget_get_state_for_style(b, FALSE, FALSE));
+  widget_set_state(b, WIDGET_STATE_OVER);
+  ASSERT_EQ(string(WIDGET_STATE_OVER), widget_get_state_for_style(b, FALSE, FALSE));
+
+  widget_set_state(b, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(string(WIDGET_STATE_NORMAL_OF_CHECKED), widget_get_state_for_style(b, FALSE, TRUE));
+  widget_set_state(b, WIDGET_STATE_PRESSED);
+  ASSERT_EQ(string(WIDGET_STATE_PRESSED_OF_CHECKED), widget_get_state_for_style(b, FALSE, TRUE));
+  widget_set_state(b, WIDGET_STATE_OVER);
+  ASSERT_EQ(string(WIDGET_STATE_OVER_OF_CHECKED), widget_get_state_for_style(b, FALSE, TRUE));
+
+  widget_set_state(b, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(string(WIDGET_STATE_NORMAL_OF_ACTIVE), widget_get_state_for_style(b, TRUE, FALSE));
+  widget_set_state(b, WIDGET_STATE_PRESSED);
+  ASSERT_EQ(string(WIDGET_STATE_PRESSED_OF_ACTIVE), widget_get_state_for_style(b, TRUE, FALSE));
+  widget_set_state(b, WIDGET_STATE_OVER);
+  ASSERT_EQ(string(WIDGET_STATE_OVER_OF_ACTIVE), widget_get_state_for_style(b, TRUE, FALSE));
 
   widget_destroy(w);
 }

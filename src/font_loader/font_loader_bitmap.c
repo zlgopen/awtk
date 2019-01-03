@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "font_loader/font_loader_bitmap.h"
 
 typedef struct _font_bitmap_t {
@@ -50,7 +50,7 @@ static font_bitmap_index_t* find_glyph(font_bitmap_index_t* elms, uint32_t nr, w
   return NULL;
 }
 
-static ret_t font_bitmap_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t font_size) {
+static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
   const uint8_t* p = NULL;
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
@@ -60,7 +60,7 @@ static ret_t font_bitmap_find_glyph(font_t* f, wchar_t c, glyph_t* g, uint16_t f
 
   p = (font->buff + index->offset);
   memcpy(g, p, sizeof(glyph_t));
-  g->data = font->buff + index->offset + 4;
+  g->data = font->buff + index->offset + sizeof(glyph_t) - sizeof(g->data);
 
   return RET_OK;
 }
@@ -96,7 +96,7 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   f->buff_size = buff_size;
   f->base.match = font_bitmap_match;
   f->base.get_baseline = font_bitmap_get_baseline;
-  f->base.find_glyph = font_bitmap_find_glyph;
+  f->base.get_glyph = font_bitmap_get_glyph;
   f->base.destroy = font_bitmap_destroy;
 
   return &(f->base);

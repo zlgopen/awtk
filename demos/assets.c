@@ -3,6 +3,7 @@
 #ifndef WITH_FS_RES
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
+#include "assets/inc/styles/slide_menu.data"
 #include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
 #include "assets/inc/styles/color.data"
@@ -19,14 +20,19 @@
 #include "assets/inc/styles/system_bar.data"
 #include "assets/inc/styles/tab_bottom_compact.data"
 #include "assets/inc/ui/kb_ascii.data"
+#include "assets/inc/ui/vgcanvas.data"
 #include "assets/inc/ui/rich_text1.data"
+#include "assets/inc/ui/slide_menu.data"
+#include "assets/inc/ui/radial_gradient.data"
 #include "assets/inc/ui/color_picker_simple.data"
 #include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
 #include "assets/inc/ui/kb_phone.data"
 #include "assets/inc/ui/main.data"
+#include "assets/inc/ui/digit_clock.data"
 #include "assets/inc/ui/scroll_bar.data"
 #include "assets/inc/ui/lua.data"
+#include "assets/inc/ui/linear_gradient.data"
 #include "assets/inc/ui/preload.data"
 #include "assets/inc/ui/images.data"
 #include "assets/inc/ui/edit.data"
@@ -46,6 +52,7 @@
 #include "assets/inc/ui/list_view_m.data"
 #include "assets/inc/ui/calibration_win.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/language.data"
 #include "assets/inc/ui/kb_float.data"
 #include "assets/inc/ui/htranslate.data"
 #include "assets/inc/ui/list_view_vh.data"
@@ -65,6 +72,7 @@
 #include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
+#include "assets/inc/ui/stroke_gradient.data"
 #include "assets/inc/ui/basic.data"
 #include "assets/inc/ui/auto_play.data"
 #include "assets/inc/ui/guage.data"
@@ -130,6 +138,7 @@
 #include "assets/inc/images/battery_0.res"
 #include "assets/inc/images/edit_clear_p.res"
 #include "assets/inc/images/arrow_up_o.res"
+#include "assets/inc/images/visible.res"
 #include "assets/inc/images/ani1.res"
 #include "assets/inc/images/arrow_left_o.res"
 #include "assets/inc/images/ani3.res"
@@ -178,7 +187,6 @@
 #include "assets/inc/images/slider_bg.res"
 #include "assets/inc/images/right_on.res"
 #include "assets/inc/images/guage_pointer.res"
-#include "assets/inc/images/bg800x480.res"
 #include "assets/inc/images/left_off.res"
 #include "assets/inc/images/1.res"
 #include "assets/inc/images/progress_circle.res"
@@ -210,6 +218,7 @@
 #include "assets/inc/images/edit_clear_n.res"
 #include "assets/inc/images/ani8.res"
 #include "assets/inc/images/logo.res"
+#include "assets/inc/images/invisible.res"
 #include "assets/inc/images/slider_drag_p.res"
 #include "assets/inc/images/backspace.res"
 #include "assets/inc/images/arrow_left_p.res"
@@ -227,7 +236,6 @@
 #include "assets/inc/images/earth.data"
 #include "assets/inc/images/shift.data"
 #include "assets/inc/images/arrow_up_p.data"
-#include "assets/inc/images/bg800x480.data"
 #include "assets/inc/images/discovery_active.data"
 #include "assets/inc/images/en.data"
 #include "assets/inc/images/right_on.data"
@@ -243,11 +251,13 @@
 #include "assets/inc/images/left_on.data"
 #include "assets/inc/images/1.data"
 #include "assets/inc/images/question.data"
+#include "assets/inc/images/invisible.data"
 #include "assets/inc/images/guage_bg.data"
 #include "assets/inc/images/num_5.data"
 #include "assets/inc/images/num_dot.data"
 #include "assets/inc/images/arrow_right_n.data"
 #include "assets/inc/images/bee.data"
+#include "assets/inc/images/visible.data"
 #include "assets/inc/images/clock_bg.data"
 #include "assets/inc/images/me_active.data"
 #include "assets/inc/images/cursor.data"
@@ -339,26 +349,19 @@
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/pointer_4.bsvg"
 #include "assets/inc/images/china.bsvg"
-#include "assets/inc/images/pointer_2.bsvg"
-#include "assets/inc/images/boy.bsvg"
-#include "assets/inc/images/circle_cs.bsvg"
-#include "assets/inc/images/language.bsvg"
-#include "assets/inc/images/pointer_3.bsvg"
-#include "assets/inc/images/pointer_left.bsvg"
 #include "assets/inc/images/pointer_1.bsvg"
 #include "assets/inc/images/pointer.bsvg"
-#include "assets/inc/images/pointer_red.bsvg"
 #include "assets/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
-#ifdef WITH_STB_FONT
+#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #ifdef WITH_MINI_FONT
 #include "assets/inc/fonts/default.mini.res"
 #else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
 #endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
 #endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
@@ -369,14 +372,19 @@ ret_t assets_init(void) {
   assets_manager_load(rm, ASSET_TYPE_FONT, "default");
 #else
   assets_manager_add(rm, ui_kb_ascii);
+  assets_manager_add(rm, ui_vgcanvas);
   assets_manager_add(rm, ui_rich_text1);
+  assets_manager_add(rm, ui_slide_menu);
+  assets_manager_add(rm, ui_radial_gradient);
   assets_manager_add(rm, ui_color_picker_simple);
   assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
   assets_manager_add(rm, ui_kb_phone);
   assets_manager_add(rm, ui_main);
+  assets_manager_add(rm, ui_digit_clock);
   assets_manager_add(rm, ui_scroll_bar);
   assets_manager_add(rm, ui_lua);
+  assets_manager_add(rm, ui_linear_gradient);
   assets_manager_add(rm, ui_preload);
   assets_manager_add(rm, ui_images);
   assets_manager_add(rm, ui_edit);
@@ -396,6 +404,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_list_view_m);
   assets_manager_add(rm, ui_calibration_win);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_language);
   assets_manager_add(rm, ui_kb_float);
   assets_manager_add(rm, ui_htranslate);
   assets_manager_add(rm, ui_list_view_vh);
@@ -415,6 +424,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
+  assets_manager_add(rm, ui_stroke_gradient);
   assets_manager_add(rm, ui_basic);
   assets_manager_add(rm, ui_auto_play);
   assets_manager_add(rm, ui_guage);
@@ -457,7 +467,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_earth);
   assets_manager_add(rm, image_shift);
   assets_manager_add(rm, image_arrow_up_p);
-  assets_manager_add(rm, image_bg800x480);
   assets_manager_add(rm, image_discovery_active);
   assets_manager_add(rm, image_en);
   assets_manager_add(rm, image_right_on);
@@ -473,11 +482,13 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_left_on);
   assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_question);
+  assets_manager_add(rm, image_invisible);
   assets_manager_add(rm, image_guage_bg);
   assets_manager_add(rm, image_num_5);
   assets_manager_add(rm, image_num_dot);
   assets_manager_add(rm, image_arrow_right_n);
   assets_manager_add(rm, image_bee);
+  assets_manager_add(rm, image_visible);
   assets_manager_add(rm, image_clock_bg);
   assets_manager_add(rm, image_me_active);
   assets_manager_add(rm, image_cursor);
@@ -565,6 +576,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
+  assets_manager_add(rm, style_slide_menu);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);
@@ -584,15 +596,8 @@ ret_t assets_init(void) {
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);
-  assets_manager_add(rm, image_pointer_2);
-  assets_manager_add(rm, image_boy);
-  assets_manager_add(rm, image_circle_cs);
-  assets_manager_add(rm, image_language);
-  assets_manager_add(rm, image_pointer_3);
-  assets_manager_add(rm, image_pointer_left);
   assets_manager_add(rm, image_pointer_1);
   assets_manager_add(rm, image_pointer);
-  assets_manager_add(rm, image_pointer_red);
   assets_manager_add(rm, image_girl);
 #endif /*WITH_VGCANVAS*/
 #endif

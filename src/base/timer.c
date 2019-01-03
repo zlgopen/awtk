@@ -19,11 +19,15 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/array.h"
+#include "tkc/array.h"
 
 static ret_t timer_info_destroy(timer_info_t* info) {
+  if (info->on_destroy != NULL) {
+    info->on_destroy(info);
+  }
+
   memset(info, 0x00, sizeof(timer_info_t));
   TKMEM_FREE(info);
 
@@ -88,7 +92,7 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager) {
 }
 
 uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
-                           uint32_t duration_ms) {
+                           uint32_t duration) {
   timer_info_t* iter = NULL;
   timer_info_t* timer = NULL;
   return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
@@ -99,7 +103,7 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
 
   timer->ctx = ctx;
   timer->on_timer = on_timer;
-  timer->duration_ms = duration_ms;
+  timer->duration = duration;
   timer->start = timer_manager->get_time();
   timer->id = timer_manager->next_timer_id++;
   timer->timer_manager = timer_manager;
@@ -236,7 +240,7 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
       iter->user_changed_time = TRUE;
     }
 
-    if ((iter->start + iter->duration_ms) <= now) {
+    if ((iter->start + iter->duration) <= now) {
       if (iter->on_timer(iter) != RET_REPEAT) {
         iter->pending_destroy = TRUE;
       } else {
@@ -279,8 +283,8 @@ uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
 
   iter = timer_manager->first;
   while (iter != NULL) {
-    if ((iter->start + iter->duration_ms) < t) {
-      t = iter->start + iter->duration_ms;
+    if ((iter->start + iter->duration) < t) {
+      t = iter->start + iter->duration;
     }
     iter = iter->next;
   }
@@ -295,8 +299,8 @@ ret_t timer_init(timer_get_time_t get_time) {
   return timer_manager_set(timer_manager_create(get_time));
 }
 
-uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration_ms) {
-  return timer_manager_add(timer_manager(), on_timer, ctx, duration_ms);
+uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration) {
+  return timer_manager_add(timer_manager(), on_timer, ctx, duration);
 }
 
 ret_t timer_remove(uint32_t timer_id) {

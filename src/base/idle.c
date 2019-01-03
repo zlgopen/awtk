@@ -19,13 +19,17 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/idle.h"
-#include "base/array.h"
+#include "tkc/array.h"
 
 static idle_manager_t* s_idle_manager;
 
 static ret_t idle_info_destroy(idle_info_t* info) {
+  if (info->on_destroy != NULL) {
+    info->on_destroy(info);
+  }
+
   memset(info, 0x00, sizeof(idle_info_t));
   TKMEM_FREE(info);
 

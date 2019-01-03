@@ -23,7 +23,7 @@
 #define TK_WINDOW_ANIMATOR_H
 
 #include "base/widget.h"
-#include "base/easing.h"
+#include "tkc/easing.h"
 
 BEGIN_C_DECLS
 

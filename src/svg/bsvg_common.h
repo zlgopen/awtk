@@ -22,7 +22,7 @@
 #ifndef TK_BSVG_COMMON_H
 #define TK_BSVG_COMMON_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
 #include "svg/svg_shape.h"
 
 BEGIN_C_DECLS

@@ -1,6 +1,6 @@
 // Used to test if target platform support cpp
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "misc/new.hpp"
 
 class Test {

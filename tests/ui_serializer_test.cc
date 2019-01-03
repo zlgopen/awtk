@@ -1,4 +1,4 @@
-﻿#include "base/button.h"
+﻿#include "widgets/button.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "base/layout.h"
@@ -17,13 +17,25 @@ TEST(UISerializer, basic) {
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
-  ASSERT_EQ(string(str.str),
-            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"0\">\n</button>\n");
+  ASSERT_EQ(string(str.str), "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);
 }
 
+TEST(UISerializer, repeat) {
+  str_t str;
+  widget_t* w = button_create(NULL, 10, 20, 30, 40);
+  button_set_repeat(w, 100);
+  str_init(&str, 1024);
+  widget_to_xml(w, &str);
+
+  ASSERT_EQ(string(str.str),
+            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"100\">\n</button>\n");
+
+  str_reset(&str);
+  widget_destroy(w);
+}
 TEST(UISerializer, layout_self) {
   str_t str;
   widget_t* w = button_create(NULL, 10, 20, 30, 40);
@@ -32,9 +44,9 @@ TEST(UISerializer, layout_self) {
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
-  ASSERT_EQ(
-      string(str.str),
-      "<button x=\"right:100\" y=\"middle:10\" w=\"fill\" h=\"10%\" repeat=\"0\">\n</button>\n");
+  ASSERT_EQ(string(str.str),
+            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
+            "self_layout=\"default(x=r:100,y=m:10,w=0,h=10%)\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);
@@ -48,9 +60,9 @@ TEST(UISerializer, layout_self1) {
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
-  ASSERT_EQ(
-      string(str.str),
-      "<button x=\"center:100\" y=\"bottom:10\" w=\"fill\" h=\"10%\" repeat=\"0\">\n</button>\n");
+  ASSERT_EQ(string(str.str),
+            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
+            "self_layout=\"default(x=c:100,y=b:10,w=0,h=10%)\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);

@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/font_manager.h"
 
 static font_manager_t* s_font_manager = NULL;
@@ -57,7 +57,7 @@ ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) 
   return RET_OK;
 }
 
-ret_t font_manager_add(font_manager_t* fm, font_t* font) {
+ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
 
   return array_push(&(fm->fonts), font);
@@ -100,7 +100,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
   return font;
 }
 
-font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {
+font_t* font_manager_get_font(font_manager_t* fm, const char* name, uint16_t size) {
   font_t* font = NULL;
 
   name = name != NULL ? name : TK_DEFAULT_FONT;
@@ -110,7 +110,7 @@ font_t* font_manager_find(font_manager_t* fm, const char* name, uint16_t size) {
   if (font == NULL) {
     font = font_manager_load(fm, name, size);
     if (font != NULL) {
-      font_manager_add(fm, font);
+      font_manager_add_font(fm, font);
     }
   }
 

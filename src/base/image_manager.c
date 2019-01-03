@@ -19,14 +19,14 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/time_now.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/time_now.h"
 #include "base/image_manager.h"
 
 typedef struct _bitmap_cache_t {
   bitmap_t image;
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   uint32_t access_count;
   uint32_t created_time;
   uint32_t last_access_time;
@@ -72,7 +72,7 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->created_time = time_now_s();
   cache->image.should_free_handle = FALSE;
 
-  tk_strncpy(cache->name, name, NAME_LEN);
+  tk_strncpy(cache->name, name, TK_NAME_LEN);
   cache->last_access_time = cache->created_time;
   cache->image.name = cache->name;
 
@@ -128,7 +128,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   return RET_NOT_FOUND;
 }
 
-ret_t image_manager_load(image_manager_t* imm, const char* name, bitmap_t* image) {
+ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
   const asset_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 

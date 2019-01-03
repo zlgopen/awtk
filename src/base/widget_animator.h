@@ -22,9 +22,9 @@
 #ifndef TK_WIDGET_ANIMATOR_H
 #define TK_WIDGET_ANIMATOR_H
 
-#include "base/easing.h"
+#include "tkc/easing.h"
 #include "base/widget.h"
-#include "base/emitter.h"
+#include "tkc/emitter.h"
 
 BEGIN_C_DECLS
 

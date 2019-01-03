@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 #ifndef XML_THEME_GEN_H
 #define XML_THEME_GEN_H

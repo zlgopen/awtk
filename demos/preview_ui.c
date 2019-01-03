@@ -21,9 +21,9 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
-#include "base/fs.h"
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/timer.h"
 #include "assets.h"
 
@@ -42,7 +42,7 @@ static ret_t on_timer(const timer_info_t* info) {
 widget_t* preview_ui(const char* filename) {
   str_t s;
   uint32_t size = 0;
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   ui_builder_t* builder = NULL;
   uint8_t* content = NULL;
   bool_t is_bin = strstr(filename, ".bin") != NULL;
@@ -57,7 +57,7 @@ widget_t* preview_ui(const char* filename) {
     size = s.size;
   }
 
-  filename_to_name(filename, name, NAME_LEN);
+  filename_to_name(filename, name, TK_NAME_LEN);
   builder = ui_builder_default(name);
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
@@ -74,7 +74,7 @@ widget_t* preview_ui(const char* filename) {
   return builder->root;
 }
 
-#include "base/path.h"
+#include "tkc/path.h"
 
 #define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
 #if defined(WIN32)
@@ -110,7 +110,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
   str_set(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
 #else
-#include "base/mem.h"
+#include "tkc/mem.h"
 int main(int argc, char* argv[]) {
 #endif
   int32_t w = 320;

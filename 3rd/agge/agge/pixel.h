@@ -118,7 +118,7 @@ inline void pixel_blend(PixelTargetT& t, const PixelSrcT& s, uint8_t a) {
       t.g = s.g >> 2;
       t.b = s.b >> 3;
     }
-  } else if (a > 0x08) {
+  } else if (a > 0x01) {
     uint8_t m_a = 0xff - a;
     if (sizeof(t) == 2) {
       if (sizeof(s) == 2) {
@@ -154,7 +154,7 @@ inline void pixel_blend(pixel16_bgr565& t, const pixel32_rgba& s, uint8_t a) {
     t.r = s.r >> 3;
     t.g = s.g >> 2;
     t.b = s.b >> 3;
-  } else if (a > 0x08) {
+  } else if (a > 0x01) {
     uint8_t m_a = 0xff - a;
     t.r = (s.r * a + (t.r << 3) * m_a) >> 11;
     t.g = (s.g * a + (t.g << 2) * m_a) >> 10;

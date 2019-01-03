@@ -22,7 +22,7 @@
 #ifndef TK_WIDGET_FACTORY_H
 #define TK_WIDGET_FACTORY_H
 
-#include "base/array.h"
+#include "tkc/array.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS

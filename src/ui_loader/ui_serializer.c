@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ui_serializer.c
  * Author: AWTK Develop Team
  * Brief:  ui_serializer
@@ -19,55 +19,67 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "ui_loader/ui_serializer.h"
 
 ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* value) {
   str_t* str = &(((ui_xml_writer_t*)writer)->temp);
 
+  if (tk_str_eq(name, WIDGET_PROP_ENABLE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPACITY) && value_int(value) == 0xff) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE) && value_bool(value)) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FLOATING) && !value_bool(value)) {
+    return RET_OK;
+  }
+
   return_value_if_fail(str_from_value(str, value) == RET_OK, RET_OOM);
+
+  if (tk_str_eq(name, WIDGET_PROP_TEXT) && str->size == 0) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_NAME) && str->size == 0) {
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT) && str->size == 0) {
+    return RET_OK;
+  }
 
   return ui_builder_on_widget_prop(writer, name, str->str);
 }
 
-ret_t ui_widget_serialize_children_layout(ui_builder_t* writer, children_layout_t* layout) {
-  char temp[32];
-  str_t* str = &(((ui_xml_writer_t*)writer)->temp);
+static ret_t ui_widget_serialize_props(ui_builder_t* writer, widget_t* widget,
+                                       const char** properties) {
+  value_t v;
+  value_t defv;
+  uint32_t i = 0;
+  for (i = 0; properties[i] != NULL; i++) {
+    const char* prop = properties[i];
+    if (widget_get_prop(widget, prop, &v) == RET_OK) {
+      if (widget_get_prop_default_value(widget, prop, &defv) == RET_OK) {
+        if (v.type == VALUE_TYPE_STRING && (v.value.str == NULL || v.value.str[0] == '\0')) {
+          continue;
+        }
 
-  if (layout->cols_is_width) {
-    tk_snprintf(temp, sizeof(temp) - 1, "w:%d", (int)(layout->cols));
-  } else {
-    tk_snprintf(temp, sizeof(temp) - 1, "c:%d", (int)(layout->cols));
-  }
-  str_append(str, temp);
-  str_append(str, " ");
+        if (v.type == VALUE_TYPE_WSTRING && (v.value.str == NULL || v.value.wstr[0] == '\0')) {
+          continue;
+        }
 
-  if (layout->rows_is_height) {
-    tk_snprintf(temp, sizeof(temp) - 1, "h:%d", (int)(layout->rows));
-  } else {
-    tk_snprintf(temp, sizeof(temp) - 1, "r:%d", (int)(layout->rows));
-  }
-  str_append(str, temp);
-  str_append(str, " ");
+        if (value_equal(&v, &defv)) {
+          log_debug("skip default value %s\n", prop);
+          continue;
+        }
+      }
 
-  if (layout->x_margin) {
-    tk_snprintf(temp, sizeof(temp) - 1, "x:%d", (int)(layout->x_margin));
-    str_append(str, temp);
-  }
-
-  if (layout->y_margin) {
-    tk_snprintf(temp, sizeof(temp) - 1, "y:%d", (int)(layout->y_margin));
-    str_append(str, temp);
+      ui_widget_serialize_prop(writer, prop, &v);
+    }
   }
 
-  if (layout->spacing) {
-    tk_snprintf(temp, sizeof(temp) - 1, "s:%d", (int)(layout->spacing));
-    str_append(str, temp);
-  }
-
-  return ui_builder_on_widget_prop(writer, "layout", str->str);
+  return RET_OK;
 }
 
 ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
@@ -78,50 +90,22 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   }
 
   memset(&desc, 0x00, sizeof(desc));
-  tk_strncpy(desc.type, widget->vt->type, NAME_LEN);
+  tk_strncpy(desc.type, widget->vt->type, TK_NAME_LEN);
 
-  if (widget->layout_params && widget->layout_params->self.inited) {
-    desc.layout = widget->layout_params->self;
-  } else {
-    desc.layout.x = widget->x;
-    desc.layout.y = widget->y;
-    desc.layout.w = widget->w;
-    desc.layout.h = widget->h;
-  }
+  desc.layout.x = widget->x;
+  desc.layout.y = widget->y;
+  desc.layout.w = widget->w;
+  desc.layout.h = widget->h;
 
   ui_builder_on_widget_start(writer, &desc);
 
-  if (widget->name != NULL) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_NAME, widget->name);
-  }
-  if (widget->tr_text != NULL) {
-    ui_builder_on_widget_prop(writer, WIDGET_PROP_TR_TEXT, widget->tr_text);
-  }
-  if (widget->text.size) {
-    uint32_t size = widget->text.size * 3 + 1;
-    char* text = TKMEM_ALLOC(size);
-    utf8_from_utf16(widget->text.str, text, size);
-    ui_builder_on_widget_prop(writer, "text", text);
-    TKMEM_FREE(text);
-  }
-
+  ui_widget_serialize_props(writer, widget, widget_get_persistent_props());
   if (widget->vt->clone_properties || widget->vt->persistent_properties) {
-    value_t v;
-    uint32_t i = 0;
     const char** properties = widget->vt->persistent_properties;
     if (properties == NULL) {
       properties = widget->vt->clone_properties;
     }
-    for (i = 0; properties[i] != NULL; i++) {
-      const char* prop = properties[i];
-      if (widget_get_prop(widget, prop, &v) == RET_OK) {
-        ui_widget_serialize_prop(writer, prop, &v);
-      }
-    }
-  }
-
-  if (widget->layout_params != NULL && widget->layout_params->children.inited) {
-    ui_widget_serialize_children_layout(writer, &(widget->layout_params->children));
+    ui_widget_serialize_props(writer, widget, properties);
   }
 
   ui_builder_on_widget_prop_end(writer);

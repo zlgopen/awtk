@@ -21,19 +21,19 @@
 
 #include "base/timer.h"
 #include "base/enums.h"
-#include "base/button.h"
-#include "base/dialog.h"
-#include "base/image.h"
-#include "base/label.h"
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/utf8.h"
-#include "base/window.h"
-#include "base/slider.h"
-#include "base/group_box.h"
-#include "base/check_button.h"
+#include "widgets/button.h"
+#include "widgets/dialog.h"
+#include "widgets/image.h"
+#include "widgets/label.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/utf8.h"
+#include "widgets/window.h"
+#include "widgets/slider.h"
+#include "widgets/group_box.h"
+#include "widgets/check_button.h"
 #include "base/image_manager.h"
-#include "base/progress_bar.h"
+#include "widgets/progress_bar.h"
 #include "base/widget_animator_manager.h"
 #include "widget_animators/widget_animator_opacity.h"
 #include "widget_animators/widget_animator_value.h"
@@ -143,7 +143,7 @@ ret_t application_init() {
   widget_create_animator(image4,
                          "scale(x_to=2, y_to=2, yoyo_times=1000, duration=1000, easing=sin_out)");
 
-  widget_create_animator(image5, "move(y_to=400, duration=1000, easing=sin_out)");
+  widget_create_animator(image5, "y(to=400, duration=1000, easing=sin_out)");
   widget_create_animator(image5, "opacity(to=0, duration=500, yoyo_times=1000, delay=1000)");
 
   widget_on(start, EVT_CLICK, on_start, NULL);

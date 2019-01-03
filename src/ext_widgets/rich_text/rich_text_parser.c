@@ -19,13 +19,13 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/str.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/str.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/bitmap.h"
 #include "xml/xml_parser.h"
-#include "base/color_parser.h"
+#include "tkc/color_parser.h"
 #include "rich_text/rich_text_node.h"
 #include "rich_text/rich_text_parser.h"
 
@@ -76,7 +76,7 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
       if (tk_str_eq(key, "size")) {
         b->font->size = tk_atoi(value);
       } else if (tk_str_eq(key, "color")) {
-        b->font->color = color_parse_simple(value);
+        b->font->color = color_parse(value);
       } else if (tk_str_eq(key, "align_v")) {
         const key_type_value_t* kv = align_v_type_find(value);
         if (kv != NULL) {

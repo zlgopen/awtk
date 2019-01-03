@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include "base/timer.h"
 #include "gtest/gtest.h"
-#include "base/progress_bar.h"
+#include "widgets/progress_bar.h"
 #include "widget_animators/widget_animator_value.h"
 
 TEST(AnimatorValue, once) {

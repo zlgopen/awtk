@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/edit.h"
-#include "base/slider.h"
-#include "base/color_tile.h"
-#include "base/color_parser.h"
+#include "tkc/mem.h"
+#include "widgets/edit.h"
+#include "widgets/slider.h"
+#include "widgets/color_tile.h"
+#include "tkc/color_parser.h"
 #include "color_picker/rgb_and_hsv.h"
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"
@@ -350,7 +350,7 @@ ret_t color_picker_set_color(widget_t* widget, const char* color) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(widget != NULL && color != NULL, RET_BAD_PARAMS);
 
-  color_picker->init_c = color_parse_simple(color);
+  color_picker->init_c = color_parse(color);
   color_picker_update_color(widget, color_picker->init_c);
 
   return RET_OK;

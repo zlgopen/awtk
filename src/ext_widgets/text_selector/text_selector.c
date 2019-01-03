@@ -19,18 +19,16 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
-#include "base/button.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
+#include "widgets/button.h"
 #include "base/layout.h"
-#include "base/popup.h"
-#include "base/window.h"
-#include "base/tokenizer.h"
+#include "widgets/popup.h"
+#include "widgets/window.h"
+#include "tkc/tokenizer.h"
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"
-
-#define ANIMATING_TIME 500
 
 const char* s_text_selector_properties[] = {
     WIDGET_PROP_TEXT,           WIDGET_PROP_VALUE,
@@ -92,7 +90,7 @@ static ret_t text_selector_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t text_selector_destroy(widget_t* widget) {
+static ret_t text_selector_on_destroy(widget_t* widget) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   str_reset(&(text_selector->text));
@@ -296,7 +294,7 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
     return RET_OK;
   }
 
-  text_selector->wa = widget_animator_scroll_create(widget, ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  text_selector->wa = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
   return_value_if_fail(text_selector->wa != NULL, RET_OOM);
 
   widget_animator_scroll_set_params(text_selector->wa, 0, yoffset, 0, yoffset_end);
@@ -385,7 +383,7 @@ static const widget_vtable_t s_text_selector_vtable = {
     .on_paint_self = text_selector_on_paint_self,
     .set_prop = text_selector_set_prop,
     .get_prop = text_selector_get_prop,
-    .destroy = text_selector_destroy,
+    .on_destroy = text_selector_on_destroy,
     .on_event = text_selector_on_event};
 
 widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

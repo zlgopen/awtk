@@ -89,76 +89,6 @@ typedef enum _input_type_t {
 } input_type_t;
 
 /**
- * @class input_method_t
- * 输入法接口。
- */
-struct _input_method_t {
-  /**
-   * @property {widget_t*} widget
-   * @annotation ["private"]
-   * 当前的焦点控件。
-   */
-  widget_t* widget;
-
-  /**
-   * @property {widget_t*} keyboard
-   * @annotation ["private"]
-   * 当前的软件键盘。
-   */
-  widget_t* keyboard;
-
-  /**
-   * @property {widget_t*} win
-   * @annotation ["private"]
-   * 当前的窗口。
-   */
-  widget_t* win;
-
-  /**
-   * @property {int32_t} win_delta_y
-   * @annotation ["private"]
-   * 由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。
-   */
-  int32_t win_delta_y;
-
-  /**
-   * @property {bool_t} action_button_enable
-   * @annotation ["readable"]
-   * 软键盘的上的action按钮是否可用。
-   */
-  bool_t action_button_enable;
-
-  /**
-   * @property {bool_t} action_button_enable
-   * @annotation ["readable"]
-   * 软键盘的上的action按钮文本。
-   */
-  char action_buton_text[NAME_LEN + 1];
-
-  /**
-   * @property {emitter_t} emitter
-   * @annotation ["private"]
-   * emitter。用于实现dispatch/on/off等功能。
-   */
-  emitter_t emitter;
-
-  /**
-   * @property {input_type_t} input_type
-   * @annotation ["readable"]
-   * 当前输入的类型。
-   */
-  input_type_t input_type;
-
-  input_engine_t* engine;
-  suggest_words_t* suggest_words;
-  /**
-   * 子类需要实现的函数。
-   */
-  input_method_request_t request;
-  input_method_destroy_t destroy;
-};
-
-/**
  * @class im_commit_event_t
  * @parent event_t
  * 输入法提交输入的文本事件。
@@ -215,6 +145,96 @@ typedef struct _im_candidates_event_t {
    */
   uint32_t candidates_nr;
 } im_candidates_event_t;
+
+/**
+ * @class input_method_t
+ * 输入法接口。
+ *
+ * 常见的实现方式有以下几种：
+ *
+ * * 空实现。用于不需要输入法的嵌入式平台。
+ *
+ * * 缺省实现。用于需要输入法的嵌入式平台。
+ *
+ * * 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。
+ *
+ * ```graphviz
+ *  [default_style]
+ *
+ *  input_method_default_t -> input_method_t [arrowhead=empty style=dashed]
+ *  input_method_sdl_t -> input_method_t [arrowhead=empty style=dashed]
+ *  input_method_null_t -> input_method_t [arrowhead=empty style=dashed]
+ *
+ * ```
+ *
+ * > 输入类型请参考：[input\_type](input_type_t.md)
+ *
+ */
+struct _input_method_t {
+  /**
+   * @property {widget_t*} widget
+   * @annotation ["private"]
+   * 当前的焦点控件。
+   */
+  widget_t* widget;
+
+  /**
+   * @property {widget_t*} keyboard
+   * @annotation ["private"]
+   * 当前的软件键盘。
+   */
+  widget_t* keyboard;
+
+  /**
+   * @property {widget_t*} win
+   * @annotation ["private"]
+   * 当前的窗口。
+   */
+  widget_t* win;
+
+  /**
+   * @property {int32_t} win_delta_y
+   * @annotation ["private"]
+   * 由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。
+   */
+  int32_t win_delta_y;
+
+  /**
+   * @property {bool_t} action_button_enable
+   * @annotation ["readable"]
+   * 软键盘的上的action按钮是否可用。
+   */
+  bool_t action_button_enable;
+
+  /**
+   * @property {bool_t} action_button_enable
+   * @annotation ["readable"]
+   * 软键盘的上的action按钮文本。
+   */
+  char action_buton_text[TK_NAME_LEN + 1];
+
+  /**
+   * @property {emitter_t} emitter
+   * @annotation ["private"]
+   * emitter。用于实现dispatch/on/off等功能。
+   */
+  emitter_t emitter;
+
+  /**
+   * @property {input_type_t} input_type
+   * @annotation ["readable"]
+   * 当前输入的类型。
+   */
+  input_type_t input_type;
+
+  input_engine_t* engine;
+  suggest_words_t* suggest_words;
+  /**
+   * 子类需要实现的函数。
+   */
+  input_method_request_t request;
+  input_method_destroy_t destroy;
+};
 
 /**
  * @method input_method_dispatch

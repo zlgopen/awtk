@@ -1,4 +1,4 @@
-﻿#include "base/array.h"
+﻿#include "tkc/array.h"
 #include "gtest/gtest.h"
 
 #include <math.h>
@@ -21,6 +21,19 @@ static int pointer_cmp(const void* p1, const void* p2) {
 static void test_add(array_t* array, void* pv) {
   ASSERT_EQ(RET_OK, array_push(array, pv));
   ASSERT_EQ(pv, array_find(array, pointer_cmp, pv));
+}
+
+TEST(OArrayTest, demo1) {
+  array_t array;
+  array_init(&array, 10);
+
+  array_deinit(&array);
+}
+
+TEST(OArrayTest, demo2) {
+  array_t* array = array_create(10);
+
+  array_destroy(array);
 }
 
 TEST(OArrayTest, popPush) {

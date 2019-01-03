@@ -1,5 +1,5 @@
 <window anim_hint="htranslate">
-  <button x="c" y="10" w="128" h="30" text="Text"/>
+  <button style="round" x="c" y="10" w="128" h="30" text="Text"/>
   <button style="red_btn" x="c" y="50" w="128" h="30" text="Text"/>
   <button style="icon" x="c" y="90" w="128" h="30" text="Text"/>
   <button x="c" y="130" w="128" h="30">

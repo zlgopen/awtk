@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/str.h"
-#include "base/utils.h"
+#include "tkc/str.h"
+#include "tkc/utils.h"
 #include "svg/bsvg.h"
 #include "svg/bsvg_to_svg.h"
 

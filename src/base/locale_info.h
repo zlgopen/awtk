@@ -22,7 +22,7 @@
 #ifndef TK_LOCALE_H
 #define TK_LOCALE_H
 
-#include "base/emitter.h"
+#include "tkc/emitter.h"
 #include "base/assets_manager.h"
 
 BEGIN_C_DECLS
@@ -30,7 +30,8 @@ BEGIN_C_DECLS
 /**
  * @class locale_info_t
  * @annotation ["scriptable"]
- * locale_info
+ * 本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。
+ *
  */
 typedef struct _locale_info_t {
   /**

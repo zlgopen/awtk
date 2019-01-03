@@ -30,6 +30,7 @@ BEGIN_C_DECLS
  * @class keyboard_t
  * @parent widget_t
  * 键盘。
+ *
  */
 typedef struct _keyboard_t {
   window_base_t window;

@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
 #include "base/window_base.h"
 #include "base/font_manager.h"
@@ -146,7 +146,7 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
   return RET_NOT_FOUND;
 }
 
-ret_t window_base_destroy(widget_t* widget) {
+ret_t window_base_on_destroy(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
 
   TKMEM_FREE(window_base->script);

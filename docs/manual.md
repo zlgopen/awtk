@@ -1,0 +1,159 @@
+# 参考手册
+
+## 一、GUI相关组件
+
+### 控件
+
+![widget\_overview](images/widget_overview.svg)
+
+#### widget
+
+* [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
+
+#### 窗口
+* [window\_base](manual/window_base_t.md) 窗口基类。
+* [dialog](manual/dialog_t.md) 对话框。
+* [popup](manual/popup_t.md) 弹出窗口。
+* [window](manual/window_t.md) 普通窗口。
+* [system\_bar](manual/system_bar_t.md) 系统状态窗口。
+* [calibration\_win](manual/calibration_win_t.md) 电阻屏校准窗口。
+
+#### 基本控件
+* [button](manual/button_t.md) 按钮控件。
+* [label](manual/label_t.md) 文本控件。
+* [edit](manual/edit_t.md) 单行编辑器控件。
+* [image](manual/image_t.md) 图片控件。
+* [image\_base](manual/image_base_t.md) 图片控件基类。
+* [spin\_box](manual/spin_box_t.md) 数值编辑器控件。
+* [combo\_box](manual/combo_box_t.md) 下拉列表控件。
+* [combo\_box\_item](manual/combo_box_item_t.md) 下拉列表项控件。
+* [color\_tile](manual/color_tile_t.md) 色块控件。
+* [dialog\_title](manual/dialog_title_t.md) 对话框标题控件。
+* [dialog\_client](manual/dialog_client_t.md) 对话框客户区控件。
+* [slider](manual/slider_t.md) 滑块控件。
+* [progress\_bar](manual/progress_bar_t.md) 进度条控件。
+
+#### 通用容器控件
+* [row](manual/row_t.md) 行控件。
+* [column](manual/column_t.md) 列控件。
+* [grid](manual/grid_t.md) 网格控件。
+* [view](manual/view_t.md) 通用容器控件。
+* [grid\_item](manual/grid_item_t.md) 网格项控件。
+* [group\_box](manual/group_box_t.md) 通用分组控件。
+* [app\_bar](manual/app_bar_t.md) app\_bar控件。
+* [button\_group](manual/button_group_t.md) 按钮分组控件。
+
+### 画布
+
+#### 矢量图画布
+
+![vgcanvas\_overview](manual/images/vgcanvas_t_0.png)
+
+* [vgcanvas](manual/vgcanvas_t.md)
+
+### 资源相关组件
+
+![assets overview](images/assets_overview.png)
+
+* [asset\_info](manual/asset_info_t.md) 资源信息。
+* [assets\_manager](manual/assets_manager_t.md) 资源管理器。
+
+#### 1.字体
+
+![font\_overview](images/font_overview.png)
+
+* [glyph](manual/glyph_t.md) 字模。
+* [font](manual/font_t.md) 字体。
+* [font\_loader](manual/font_loader_t.md) 字体加载器。
+* [font\_loader\_ft](manual/font_loader_ft_t.md) 基于freetype实现的字体加载器。
+* [font\_loader\_stb](manual/font_loader_stb_t.md) 基于stb实现的字体加载器。
+* [font\_loader\_bitmap](manual/font_loader_bitmap_t.md) 基于位图实现的字体加载器。
+* [font\_manager](manual/font_manager_t.md) 字体管理器。
+
+#### 2.图片
+
+![image\_overview](images/image_overview.png)
+
+* [bitmap](manual/bitmap_t.md) 位图。
+* [image\_loader](manual/image_loader_t.md) 图片加载器。
+* [image\_loader\_stb](manual/image_loader_stb_t.md) stb图片加载器。
+* [image\_manager](manual/image_manager_t.md) 图片管理器。
+
+#### 3.字符串资源
+
+* [locale\_info](manual/locale_info_t.md) 本地化信息。
+
+#### 4.主题
+
+![style\_overview](images/style_overview.png)
+
+* [style](manual/style_t.md) style接口。
+* [theme](manual/theme_t.md) 常量主题数据。
+* [style\_factory](manual/style_factory_t.md) style工厂。
+* [style\_const](manual/style_const_t.md) 只读的style。
+* [style\_mutable](manual/style_mutable_t.md) 可修改的style。
+
+#### 5.UI描述数据
+
+![ui\_loader\_overview](images/ui_loader_overview.png)
+
+* [ui\_loader](manual/ui_loader_t.md) loader接口。
+* [ui\_builder](manual/ui_builder_t.md) builder接口。
+
+* [ui\_builder\_default](manual/ui_builder_default_t.md) 缺省builder实现，负责构建widget树。
+* [ui\_xml\_writer](manual/ui_xml_writer_t.md) 生成XML格式的UI描述数据。 
+* [ui\_binary\_writer](manual/ui_binary_writer_t.md) 生成二进制格式的UI描述数据。  
+
+* [ui\_loader\_default](manual/ui_loader_default_t.md) 二进制格式的UI资源加载器。 
+* [ui\_loader\_xml](manual/ui_loader_xml_t.md) XML格式的UI资源加载器。
+
+### 输入法
+
+![input\_method\_overview](images/input_method_overview.png)
+
+* [input\_method](manual/input_method_t.md) 输入法接口。
+* [input\_method\_default](manual/input_method_default_t.md) 输入法缺省实现。
+* [input\_method\_sdl](manual/input_method_sdl_t.md) 输入法SDL实现。
+* [input\_method\_null](manual/input_method_null_t.md) 输入法空实现。
+
+* [input\_engine](manual/input_engine_t.md) 输入法引擎接口。
+* [input\_engine\_null](manual/input_engine_null_t.md) 空输入法引擎实现。
+* [input\_engine\_pinyin](manual/input_engine_pinyin_t.md) 拼音输入法引擎实现。
+
+### 定时器/IDLE
+
+![timer\_overview](images/timer_overview.png)
+
+* [timer](manual/timer_t.md) 定时器。
+
+* [timer\_info](manual/timer_info_t.md) 单个timer的信息。
+
+![idle\_overview](images/idle_overview.png)
+
+* [idle](manual/idle_t.md) 用于异步执行一些函数。 
+
+* [idle\_info](manual/idle_info_t.md) 单个idle的信息。 
+
+### 控件动画
+
+### 窗口动画
+
+### 布局器
+
+
+## 二、基本函数库
+
+* [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
+* [rgba](manual/rgba_t.md) RGBA颜色值。
+* [color](manual/color_t.md) 颜色对象。
+* [color\_parse](manual/color_parser_t.md) 颜色解析对象。
+* [value](manual/value_t.md) 通用值对象。
+* [str](manual/str_t.md) UTF-8字符串对象。
+* [wstr](manual/wstr_t.md) Unicode字符串对象。
+* [array](manual/array_t.md) 动态数组对象。
+* [wbuffer](manual/wbuffer_t.md) Write Buffer。
+* [rbuffer](manual/rbuffer_t.md) Read Buffer。
+* [date\_time](manual/date_time_t.md) 时间日期函数。
+* [event](manual/event_t.md) 事件基类。
+
+

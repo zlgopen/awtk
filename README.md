@@ -47,7 +47,7 @@
 
 14. 脚本化。从API注释中提取API的描述信息，通过这些信息可以自动生成各种脚本的绑定代码。
 
-15. 支持硬件2D加速(目前支持STM32的DMA2D和NXP的PXP)和GPU加速(OpenGL/OpenGLES)，充分挖掘硬件潜能。
+15. 支持硬件2D加速(目前支持STM32的DMA2D和NXP的PXP)和GPU加速(OpenGL/OpenGLES/DirectX/Metal)，充分挖掘硬件潜能。
 
 16. 采用LGPL协议开源发布，在商业软件中使用时无需付费。
 
@@ -70,7 +70,7 @@ scons
 ./bin/demoui
 ```
 
-### Ubuntu
+### Ubuntu (版本>=16)
 
 如果没有安装scons和依赖的软件包，请在终端运行下面的命令：
 
@@ -87,7 +87,7 @@ scons
 
 ### Windows
 
-(请先安装python2.7，scons和Visual Studio C++(版本>=2015)
+(请先安装python2.7，scons和Visual Studio C++(版本>=2017)
 
 编译运行(在命令行模式下，进入awtk所在的目录，并运行下列命令)：
 
@@ -129,6 +129,8 @@ bin\demoui
 * [模板工程](https://github.com/zlgopen/awtk-hello)
 
 * [C示例代码](https://github.com/zlgopen/awtk-c-demos)
+
+* [扩展控件实例: 二维码](https://github.com/CUITzhaoqi/awtk-qr)
 
 ## 文档
 

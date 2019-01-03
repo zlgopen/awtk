@@ -22,7 +22,8 @@
 #ifndef TK_BITMAP_H
 #define TK_BITMAP_H
 
-#include "base/color.h"
+#include "tkc/color.h"
+#include "base/types_def.h"
 
 BEGIN_C_DECLS
 
@@ -255,7 +256,7 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length);
  * 获取每一行占用内存的字节数。
  * @param {bitmap_t*} bitmap bitmap对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回每一行占用内存的字节数。
  */
 uint32_t bitmap_get_line_length(bitmap_t* bitmap);
 
@@ -333,6 +334,12 @@ typedef enum _image_draw_type_t {
    * 自动缩放显示。将图片缩放至目标矩形的宽度或高度(选取最小的比例)，并居中显示。
    */
   IMAGE_DRAW_SCALE_AUTO,
+
+  /**
+   * @const IMAGE_DRAW_SCALE_DOWN
+   * 如果图片比目标矩形大，自动缩小显示，否则居中显示。
+   */
+  IMAGE_DRAW_SCALE_DOWN,
 
   /**
    * @const IMAGE_DRAW_SCALE_W

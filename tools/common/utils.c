@@ -26,10 +26,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "base/fs.h"
-#include "base/mem.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "base/enums.h"
-#include "base/path.h"
+#include "tkc/path.h"
 #include "base/assets_manager.h"
 
 void exit_if_need_not_update(const char* in, const char* out) {
@@ -86,7 +86,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
                       uint32_t size) {
   uint32_t i = 0;
   FILE* fp = NULL;
-  char str[NAME_LEN + 1];
+  char str[TK_NAME_LEN + 1];
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
   if (name == NULL) {

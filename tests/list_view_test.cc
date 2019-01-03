@@ -2,7 +2,7 @@
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "base/layout.h"
-#include "base/button.h"
+#include "widgets/button.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"

@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include "base/timer.h"
 #include "gtest/gtest.h"
-#include "base/button.h"
+#include "widgets/button.h"
 #include "widget_animators/widget_animator_move.h"
 
 using std::string;
@@ -196,6 +196,9 @@ TEST(AnimatorMove, repeat) {
     ASSERT_EQ(button->y, 200);
 
     log += "once:";
+    if (i == 2) {
+      log += "end:";
+    }
     ASSERT_EQ(s_log, log);
   }
 

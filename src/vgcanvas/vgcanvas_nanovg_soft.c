@@ -20,8 +20,8 @@
  */
 
 #include "nanovg.h"
-#include "base/utf8.h"
-#include "base/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/mem.h"
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
 #include "base/assets_manager.h"

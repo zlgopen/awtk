@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "lcd/lcd_mem.h"
 #include "base/vgcanvas.h"
 #include "blend/image_g2d.h"

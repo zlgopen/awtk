@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "base/time_now.h"
+#include "tkc/time_now.h"
 #include "base/input_method.h"
 
 static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Event* sdl_event) {
@@ -106,9 +106,16 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   return RET_OK;
 }
 
-static ret_t main_loop_sdl2_dispatch_window_resize(main_loop_simple_t* loop, uint32_t win_id, int w,
-                                                   int h) {
+static ret_t main_loop_sdl2_dispatch_window_resize(main_loop_simple_t* loop, uint32_t win_id,
+                                                   int new_w, int new_h) {
+  int w = 0;
+  int h = 0;
+  SDL_Window* win = SDL_GetWindowFromID(win_id);
+
+  SDL_GetWindowSize(win, &w, &h);
   lcd_resize(loop->base.canvas.lcd, w, h, 0);
+
+  log_debug("resize: win(%d %d) event(%d %d)\n", w, h, new_w, new_h);
   return window_manager_resize(loop->base.wm, w, h);
 }
 

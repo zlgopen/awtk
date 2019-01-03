@@ -1,4 +1,137 @@
 # 最新动态
+* 2019/01/03
+  * 同步SDL代码。
+  * 整理API文档：timer/idle
+  * 用valgrind测试内存问题，并修改progress\_circle中的内存泄露问题。
+  * 修改桌面版本窗口resize的问题。
+  * 密码编辑器增加显示/不显示明文的开关。
+  * 键盘增加关闭按钮。
+  * 修改把控件状态改成字符串导致的BUG。
+  * 修改处理capslock的BUG。
+
+* 2019/01/02
+  * 整理API文档：input\_method/input\_method\_default/input\_method\_sdl/input\_method\_null
+  * 整理API文档：input\_engine/input\_engine\_pinyin/input\_engine\_null
+  * 更新stm32相关工程。
+
+* 2018/12/31
+  * 整理API文档：ui\_loader/ui\_builder/ui\_xml\_writer/ui\_binary\_writer/ui\_builder\_default
+
+* 2018/12/30
+  * 整理API文档：style/style\_const/style\_mutable/theme/style\_factory
+  * move ui\_loader.c/.h to base目录。
+
+* 2018/12/29
+  * 整理API文档：bitmap/image\_loader/image\_manager/image\_loader\_stb
+  * 整理API文档：asset\_info/assets\_manager/locale\_info
+  * 重构image相关的代码  
+
+* 2018/12/28
+  * 整理API文档：glyph/font/font\_loader/font\_manager/font\_loader\_ft/font\_loader\_stb/font\_loader\_bitmap
+  * 重构font相关的代码  
+
+* 2018/12/27
+  * 整理控件API文档：value/mem/str/wstr/array/wbuffer/rbuffer/rgba/color/color\_parser。
+  * 修改SDL输入法的问题(感谢大恒提供补丁)。
+  * 完善freetype字体渲染(感谢zjm09提供补丁)。
+  * 完善glyph\_cache，允许glyph有不同的实现。 
+  * 重构color\_parser并增加单元测试。
+  * 把events拆成两部分，基础部分移到tkc中。
+
+* 2018/12/26
+  * 为了语义的一致性，把widget的虚函数destroy改名为on\_destroy。on\_destroy只是通知子类控件即将销毁。
+  * 重命名NAME\_LEN为TK\_NAME\_LEN。
+  * 增加函数：widget\_animate\_value\_to
+  * 修改widget\_animator\_time\_elapse计算次数的BUG。
+  * 整理控件API文档：color\_tile/calibration\_win/combo\_box\_item/button\_group
+  * 整理控件API文档：dialog\_title/dialog\_client/progress\_bar/slider/vgcanvas
+  * 支持freetype字体渲染(感谢zjm09提供补丁)。
+  * 完善value\_t。
+
+* 2018/12/25
+  * 整理控件API文档：row/column/grid/grid\_item/view/group\_box/app\_bar/system\_bar
+  * 修改idle\_info\_destroy的BUG(感谢尧燊提供补丁)。
+  * 修改timer\_info\_destroy的BUG(感谢尧燊提供补丁)。
+  * widget状态由枚举格式改为字符串格式，这样方便第三方控件定义私有的状态。
+  * style\_id由枚举格式改为字符串格式，这样方便第三方控件定义私有的style\_id。
+
+* 2018/12/24
+  * 整理控件API文档：dialog/popup/window/window\_base
+
+* 2018/12/23
+  * 优化。
+  * 整理控件API文档：spin\_box/combo\_box
+  * 增加combo\_box的C示例代码。
+
+* 2018/12/22
+  * 修改combobox事件的BUG(issue #62)。
+  * 增加函数widgeti\_get\_prop\_default\_value。
+  * 增加widget\_recycle函数，支持控件回收，提高运行速度，减少内存碎片。
+
+* 2018/12/21
+  * 整理控件API文档：button/label/image/edit
+
+* 2018/12/20
+  * 重新设计layouter的架构，把layouter分成self\_layouter和children\_layouter两个接口，方便扩展支持不同的布局方式(如css flex)。
+  * 更新layout的文档，为了保持兼容，旧的layout属性仍然支持，新的代码请参考新的文档[layout](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。
+  * 子控件支持浮动布局，不受父控件的children\_layouter的限制。
+  * 支持等宽字体的问题(感谢[zjm1060](https://github.com/zjm1060)提供补丁)。 
+  * 修改vgcanvas中w/h为负数时的BUG(感谢朝泽提供补丁)。
+  * 完善widget\_clone/widget\_equal/widget\_to\_xml。
+  * widget增加sensitive属性。
+  * 完善main\_loop\_dispatch\_events，支持按键事件(感谢[zjm1060](https://github.com/zjm1060)提供补丁)。 
+
+* 2018/12/19
+  * 修改combobox弹出窗口位置的BUG。
+  * 修改widget\_animator\_manager中野指针的问题(感谢陈谭提供补丁)。
+
+* 2018/12/18
+  * widget\_destroy自动判断是否需要异步销毁。
+  * 修改issue #61(list item销毁时，自动移出定时器)(感谢陈谭提供补丁)。
+  * 修改color parser的BUG(感谢朝泽提供补丁)。
+  * 修改guage的BUG(感谢朝泽提供补丁)。
+
+* 2018/12/17
+  * 抽象layouter接口，方便支持不同的layout算法(如CSS的flex)。(未完)
+
+* 2018/12/16
+  * 修改issue #61
+  * 主题的背景和边框支持圆角半径round\_radius，仅在定义WITH\_VGCANVAS时有效。
+
+* 2018/12/15
+  * 调整目录结构。将base拆分成tkc、base和widgets三个目录。
+  * awtk.h包含所有头文件，应用程序只需包含awtk.h即可。
+    * 好处：一是使用简单，二是避免漏头文件造成的指针被截断的BUG。
+    * 坏处：编译稍慢。对于小型应用程序影响不大。大型应用程序和移植层仍然可以选择只包含需要的头文件。
+  * 更新相关工程的代码。
+
+* 2018/12/14
+  * 修改layout的BUG。
+
+* 2018/12/13
+  * 修改slide menu的BUG(感谢尧燊提供补丁)。
+
+* 2018/12/12
+  * 支持任何数值型属性的动画。如x/y/w/h等等。 
+  * 完善label，支持动态设置显示字符数，形成动画效果。
+  * 修改bgfx闪烁的问题(感谢大恒提供补丁)。
+  * 修改canvas的BUG(感谢朝泽提供补丁)。
+  * 更新文档。
+
+* 2018/12/11
+  * gradiant支持alpha渐变。
+  * 完善slide menu控件，增加测试和demo。 
+  * 完善digit\_clock，支持YY、MM、DD、HH、mm、dd格式
+
+* 2018/12/08-10
+  * slide menu控件。 
+
+* 2018/12/07
+  * VGCanvas支持渐变色(GL版本OK，AGGE版本OK，AGG版本暂时不支持)。
+  * demoui增加vgcanvas的demo。 
+  * draw\_vline高度允许为负。
+  * draw\_hline宽度允许为负。
+
 * 2018/12/06
   * 更新文档。
   * 完善scroll view的滚动效果。

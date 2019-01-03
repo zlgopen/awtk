@@ -19,16 +19,16 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/path.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/path.h"
+#include "tkc/utils.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
 static assets_manager_t* s_assets_manager = NULL;
 
 #ifdef WITH_FS_RES
-#include "base/fs.h"
+#include "tkc/fs.h"
 
 static const char* assets_manager_get_res_root(assets_manager_t* rm) {
   if (rm->res_root != NULL) {
@@ -49,7 +49,7 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   info->subtype = subtype;
   info->refcount = 1;
   info->is_in_rom = FALSE;
-  strncpy(info->name, name, NAME_LEN);
+  strncpy(info->name, name, TK_NAME_LEN);
 
   ENSURE(file_read_part(path, info->data, size, 0) == size);
 

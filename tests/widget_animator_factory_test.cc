@@ -1,7 +1,7 @@
 ﻿#include "gtest/gtest.h"
-#include "base/image.h"
-#include "base/button.h"
-#include "base/progress_bar.h"
+#include "widgets/image.h"
+#include "widgets/button.h"
+#include "widgets/progress_bar.h"
 #include "base/widget_animator_factory.h"
 
 #include "widget_animators/widget_animator_move.h"
@@ -19,7 +19,7 @@ TEST(WidgetAnimatorFactory, opacity) {
 
   widget_animator_t* wa = widget_animator_create(
       b, "opacity(from=1, to=200, yoyo_times=1000, duration=2000, delay=1234)");
-  widget_animator_opacity_t* opacity = (widget_animator_opacity_t*)wa;
+  widget_animator_prop_t* opacity = (widget_animator_prop_t*)wa;
 
   ASSERT_EQ(wa != NULL, true);
   ASSERT_EQ(wa->delay, 1234);
@@ -36,14 +36,14 @@ TEST(WidgetAnimatorFactory, opacity_default) {
   widget_t* b = button_create(NULL, 10, 20, 100, 30);
   b->opacity = 200;
   widget_animator_t* wa = widget_animator_create(b, "opacity(from=12)");
-  widget_animator_opacity_t* opacity = (widget_animator_opacity_t*)wa;
+  widget_animator_prop_t* opacity = (widget_animator_prop_t*)wa;
   ASSERT_EQ(opacity->from, 12);
   ASSERT_EQ(opacity->to, 200);
   widget_animator_destroy(wa);
 
   b->opacity = 200;
   wa = widget_animator_create(b, "opacity(to=12)");
-  opacity = (widget_animator_opacity_t*)wa;
+  opacity = (widget_animator_prop_t*)wa;
   ASSERT_EQ(opacity->from, 200);
   ASSERT_EQ(opacity->to, 12);
   widget_animator_destroy(wa);
@@ -56,7 +56,7 @@ TEST(WidgetAnimatorFactory, rotation) {
 
   widget_animator_t* wa = widget_animator_create(
       b, "rotation(from=1, to=200, yoyo_times=1000, duration=2000, delay=1234)");
-  widget_animator_rotation_t* rotation = (widget_animator_rotation_t*)wa;
+  widget_animator_prop_t* rotation = (widget_animator_prop_t*)wa;
 
   ASSERT_EQ(wa != NULL, true);
   ASSERT_EQ(wa->delay, 1234);
@@ -77,13 +77,13 @@ TEST(WidgetAnimatorFactory, rotation_default) {
   widget_set_prop(b, WIDGET_PROP_ROTATION, &v);
 
   widget_animator_t* wa = widget_animator_create(b, "rotation(from=1)");
-  widget_animator_rotation_t* rotation = (widget_animator_rotation_t*)wa;
+  widget_animator_prop_t* rotation = (widget_animator_prop_t*)wa;
   ASSERT_EQ(rotation->from, 1);
   ASSERT_EQ(rotation->to, 200);
   widget_animator_destroy(wa);
 
   wa = widget_animator_create(b, "rotation(to=1)");
-  rotation = (widget_animator_rotation_t*)wa;
+  rotation = (widget_animator_prop_t*)wa;
   ASSERT_EQ(rotation->to, 1);
   ASSERT_EQ(rotation->from, 200);
   widget_animator_destroy(wa);
@@ -96,7 +96,7 @@ TEST(WidgetAnimatorFactory, value) {
 
   widget_animator_t* wa = widget_animator_create(
       b, "value(from=1, to=200, yoyo_times=1000, duration=2000, delay=1234)");
-  widget_animator_value_t* value = (widget_animator_value_t*)wa;
+  widget_animator_prop_t* value = (widget_animator_prop_t*)wa;
 
   ASSERT_EQ(wa != NULL, true);
   ASSERT_EQ(wa->delay, 1234);
@@ -114,13 +114,13 @@ TEST(WidgetAnimatorFactory, value_default) {
 
   widget_set_value(b, 20);
   widget_animator_t* wa = widget_animator_create(b, "value(from=10)");
-  widget_animator_value_t* value = (widget_animator_value_t*)wa;
+  widget_animator_prop_t* value = (widget_animator_prop_t*)wa;
   ASSERT_EQ(value->from, 10);
   ASSERT_EQ(value->to, 20);
   widget_animator_destroy(wa);
 
   wa = widget_animator_create(b, "value(to=10)");
-  value = (widget_animator_value_t*)wa;
+  value = (widget_animator_prop_t*)wa;
   ASSERT_EQ(value->from, 20);
   ASSERT_EQ(value->to, 10);
   widget_animator_destroy(wa);
@@ -133,16 +133,16 @@ TEST(WidgetAnimatorFactory, move) {
 
   widget_animator_t* wa = widget_animator_create(
       b, "move(x_from=1, x_to=200, yoyo_times=1000, duration=2000, delay=1234)");
-  widget_animator_move_t* move = (widget_animator_move_t*)wa;
+  widget_animator_prop2_t* move = (widget_animator_prop2_t*)wa;
 
   ASSERT_EQ(wa != NULL, true);
   ASSERT_EQ(wa->delay, 1234);
   ASSERT_EQ(wa->yoyo_times, 1000);
   ASSERT_EQ(wa->duration, 2000);
-  ASSERT_EQ(move->x_from, 1);
-  ASSERT_EQ(move->x_to, 200);
-  ASSERT_EQ(move->y_from, b->y);
-  ASSERT_EQ(move->y_to, b->y);
+  ASSERT_EQ(move->from1, 1);
+  ASSERT_EQ(move->to1, 200);
+  ASSERT_EQ(move->from2, b->y);
+  ASSERT_EQ(move->to2, b->y);
 
   widget_animator_destroy(wa);
   widget_destroy(b);
@@ -152,19 +152,19 @@ TEST(WidgetAnimatorFactory, move_default) {
   widget_t* b = button_create(NULL, 10, 20, 100, 30);
 
   widget_animator_t* wa = widget_animator_create(b, "move(x_from=1, x_to=200)");
-  widget_animator_move_t* move = (widget_animator_move_t*)wa;
-  ASSERT_EQ(move->x_from, 1);
-  ASSERT_EQ(move->x_to, 200);
-  ASSERT_EQ(move->y_from, b->y);
-  ASSERT_EQ(move->y_to, b->y);
+  widget_animator_prop2_t* move = (widget_animator_prop2_t*)wa;
+  ASSERT_EQ(move->from1, 1);
+  ASSERT_EQ(move->to1, 200);
+  ASSERT_EQ(move->from2, b->y);
+  ASSERT_EQ(move->to2, b->y);
   widget_animator_destroy(wa);
 
   wa = widget_animator_create(b, "move(y_from=1, y_to=200)");
-  move = (widget_animator_move_t*)wa;
-  ASSERT_EQ(move->y_from, 1);
-  ASSERT_EQ(move->y_to, 200);
-  ASSERT_EQ(move->x_from, b->x);
-  ASSERT_EQ(move->x_to, b->x);
+  move = (widget_animator_prop2_t*)wa;
+  ASSERT_EQ(move->from2, 1);
+  ASSERT_EQ(move->to2, 200);
+  ASSERT_EQ(move->from1, b->x);
+  ASSERT_EQ(move->to1, b->x);
   widget_animator_destroy(wa);
 
   widget_destroy(b);
@@ -175,16 +175,16 @@ TEST(WidgetAnimatorFactory, scale) {
 
   widget_animator_t* wa = widget_animator_create(
       b, "scale(x_from=1, x_to=-1, repeat_times=1000, duration=2000, delay=1234)");
-  widget_animator_scale_t* scale = (widget_animator_scale_t*)wa;
+  widget_animator_prop2_t* scale = (widget_animator_prop2_t*)wa;
 
   ASSERT_EQ(wa != NULL, true);
   ASSERT_EQ(wa->delay, 1234);
   ASSERT_EQ(wa->repeat_times, 1000);
   ASSERT_EQ(wa->duration, 2000);
-  ASSERT_EQ(scale->x_from, 1);
-  ASSERT_EQ(scale->x_to, -1);
-  ASSERT_EQ(scale->y_from, 1);
-  ASSERT_EQ(scale->y_to, 1);
+  ASSERT_EQ(scale->from1, 1);
+  ASSERT_EQ(scale->to1, -1);
+  ASSERT_EQ(scale->from2, 1);
+  ASSERT_EQ(scale->to2, 1);
   ASSERT_EQ(wa->forever, FALSE);
 
   widget_animator_destroy(wa);
@@ -196,19 +196,19 @@ TEST(WidgetAnimatorFactory, scale_default) {
 
   image_set_scale(b, 2, 4);
   widget_animator_t* wa = widget_animator_create(b, "scale(x_from=1, x_to=200)");
-  widget_animator_scale_t* scale = (widget_animator_scale_t*)wa;
-  ASSERT_EQ(scale->x_from, 1);
-  ASSERT_EQ(scale->x_to, 200);
-  ASSERT_EQ(scale->y_from, 4);
-  ASSERT_EQ(scale->y_to, 4);
+  widget_animator_prop2_t* scale = (widget_animator_prop2_t*)wa;
+  ASSERT_EQ(scale->from1, 1);
+  ASSERT_EQ(scale->to1, 200);
+  ASSERT_EQ(scale->from2, 4);
+  ASSERT_EQ(scale->to2, 4);
   widget_animator_destroy(wa);
 
   wa = widget_animator_create(b, "scale(y_from=1, y_to=200)");
-  scale = (widget_animator_scale_t*)wa;
-  ASSERT_EQ(scale->y_from, 1);
-  ASSERT_EQ(scale->y_to, 200);
-  ASSERT_EQ(scale->x_from, 2);
-  ASSERT_EQ(scale->x_to, 2);
+  scale = (widget_animator_prop2_t*)wa;
+  ASSERT_EQ(scale->from2, 1);
+  ASSERT_EQ(scale->to2, 200);
+  ASSERT_EQ(scale->from1, 2);
+  ASSERT_EQ(scale->to1, 2);
   widget_animator_destroy(wa);
 
   widget_destroy(b);
@@ -311,5 +311,24 @@ TEST(WidgetAnimatorFactory, time_scale) {
       b, "scale(time_scale=1.5 x_from=1, x_to=200, repeat_times=0, duration=2000)");
   ASSERT_EQ(wa->time_scale, 1.5);
 
+  widget_destroy(b);
+}
+
+TEST(WidgetAnimatorFactory, any_prop) {
+  widget_t* b = progress_bar_create(NULL, 10, 20, 100, 30);
+
+  widget_animator_t* wa = widget_animator_create(
+      b, "any_prop(from=1, to=200, yoyo_times=1000, duration=2000, delay=1234)");
+  widget_animator_prop_t* prop = (widget_animator_prop_t*)wa;
+
+  ASSERT_EQ(wa != NULL, true);
+  ASSERT_EQ(wa->delay, 1234);
+  ASSERT_EQ(wa->yoyo_times, 1000);
+  ASSERT_EQ(wa->duration, 2000);
+  ASSERT_EQ(prop->from, 1);
+  ASSERT_EQ(prop->to, 200);
+  ASSERT_EQ(prop->prop_name, string("any_prop"));
+
+  widget_animator_destroy(wa);
   widget_destroy(b);
 }

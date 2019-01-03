@@ -1,0 +1,30 @@
+digraph G { 
+   
+    rankdir  = BT
+    fontname = "Courier New"
+    fontsize = 12
+
+    node [
+        fontname = "Courier New"
+        fontsize = 12
+        shape    = "record"
+        width = 0.4 
+    ]   
+
+   subgraph clusterFontManager{
+     glyph_t[ label = "{glyph_t|+x\l+y\l+w\l+h\l+data\l}" ];
+     font_t[ label = "{font_t|+match(...)\l+find_glyph(...) : glyph_t\l}" ];
+     font_loader_t [ label = "{font_loader_t|+load(...) : font_t\l}" ];
+     font_manager_t [ label = "{font_manager_t|+get_font(...) : font_t\l}" ];
+
+     glyph_t -> font_t [constraint=false arrowhead = ediamond ]
+     font_t -> font_manager_t[arrowhead="none"];
+     font_loader_t -> font_manager_t[arrowhead="none"];
+     font_loader_t -> font_t [constraint=false arrowhead="vee" label="load"];
+   }
+
+   canvas_t -> font_manager_t[arrowhead="vee" label="get_font"];
+   font_loader_ft_t -> font_loader_t[arrowhead=empty style=dashed]
+   font_loader_stb_t -> font_loader_t[arrowhead=empty style=dashed]
+   font_loader_bitmap_t -> font_loader_t[arrowhead=empty style=dashed]
+ }

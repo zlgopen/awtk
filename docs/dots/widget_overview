@@ -1,0 +1,78 @@
+digraph G { 
+   
+    rankdir  = RL
+    fontname = "Courier New"
+    fontsize = 12
+
+    node [
+        fontname = "Courier New"
+        fontsize = 12
+        shape    = "record"
+        width = 0.4 
+    ]   
+
+  edit_t[URL="../manual/edit_t.md"]
+  image_base_t[URL="../manual/image_base_t.md"]
+  window_base_t[URL="../manual/window_base_t.md"]
+  label_t[URL="../manual/label_t.md"]
+  button_t[URL="../manual/button_t.md"]
+  color_tile_t[URL="../manual/color_tile_t.md"]
+  combo_box_item_t[URL="../manual/combo_box_item_t.md"]
+  slider_t[URL="../manual/slider_t.md"]
+  progress_bar_t[URL="../manual/progress_bar_t.md"]
+  app_bar_t[URL="../manual/app_bar_t.md"]
+  row_t[URL="../manual/row_t.md"]
+  column_t[URL="../manual/column_t.md"]
+  grid_t[URL="../manual/grid_t.md"]
+  grid_item_t[URL="../manual/grid_item_t.md"]
+  group_box_t[URL="../manual/group_box_t.md"]
+  view_t[URL="../manual/view_t.md"]
+  button_group_t[URL="../manual/button_group_t.md"]
+  dialog_title_t[URL="../manual/dialog_title_t.md"]
+  dialog_client_t[URL="../manual/dialog_client_t.md"]
+  window_t[URL="../manual/window_t.md"]
+  popup_t[URL="../manual/popup_t.md"]
+  dialog_t[URL="../manual/dialog_t.md"]
+  calibration_win_t[URL="../manual/calibration_win_t.md"]
+  system_bar_t[URL="../manual/system_bar_t.md"]
+  image_t[URL="../manual/image_t.md"]
+  gif_image_t[URL="../manual/gif_image_t.md"]
+  svg_image_t[URL="../manual/svg_image_t.md"]
+  combo_box_t[URL="../manual/combo_box_t.md"]
+  spin_box_t[URL="../manual/spin_box_t.md"]
+
+
+   edit_t -> widget_t[arrowhead=empty]
+   image_base_t -> widget_t[arrowhead=empty]
+   window_base_t -> widget_t[arrowhead=empty]
+   label_t -> widget_t[arrowhead=empty]
+   button_t -> widget_t[arrowhead=empty]
+   color_tile_t -> widget_t[arrowhead=empty]
+   combo_box_item_t -> widget_t[arrowhead=empty]
+   slider_t -> widget_t[arrowhead=empty]
+   progress_bar_t -> widget_t[arrowhead=empty]
+
+   app_bar_t -> widget_t[arrowhead=empty]
+   row_t -> widget_t[arrowhead=empty]
+   column_t -> widget_t[arrowhead=empty]
+   grid_t -> widget_t[arrowhead=empty]
+   grid_item_t -> widget_t[arrowhead=empty]
+   group_box_t -> widget_t[arrowhead=empty]
+   view_t -> widget_t[arrowhead=empty]
+   button_group_t -> widget_t[arrowhead=empty]
+   dialog_title_t -> widget_t[arrowhead=empty]
+   dialog_client_t -> widget_t[arrowhead=empty]
+   
+   window_t -> window_base_t[arrowhead=empty]
+   popup_t -> window_base_t[arrowhead=empty]
+   dialog_t -> window_base_t[arrowhead=empty]
+   calibration_win_t -> window_base_t[arrowhead=empty]
+   system_bar_t -> window_base_t[arrowhead=empty]
+
+   image_t -> image_base_t[arrowhead=empty]
+   gif_image_t -> image_base_t[arrowhead=empty]
+   svg_image_t -> image_base_t[arrowhead=empty]
+
+   combo_box_t -> edit_t[arrowhead=empty]
+   spin_box_t -> edit_t[arrowhead=empty]
+ }

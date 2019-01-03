@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/wstr.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/wstr.h"
 #include "base/custom_props.h"
 
 static ret_t value_free(value_t* v);
@@ -95,7 +95,7 @@ static ret_t custom_props_extend(custom_props_t* props, int32_t size) {
     return RET_OK;
   }
 
-  new_props = TKMEM_REALLOC(custom_prop_t, props->props, capacity);
+  new_props = TKMEM_REALLOCT(custom_prop_t, props->props, capacity);
   if (new_props != NULL) {
     props->props = new_props;
     props->capacity = capacity;
@@ -124,7 +124,7 @@ ret_t custom_props_set(custom_props_t* props, const char* name, const value_t* v
   return_value_if_fail(custom_props_extend(props, 1) == RET_OK, RET_OOM);
 
   iter = props->props + props->size++;
-  tk_strncpy(iter->name, name, NAME_LEN);
+  tk_strncpy(iter->name, name, TK_NAME_LEN);
 
   return value_assign(&(iter->value), v);
 }

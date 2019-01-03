@@ -30,7 +30,7 @@ typedef struct _glyph_cache_item_t {
   uint32_t last_access_time;
   uint16_t size;
   wchar_t code;
-  glyph_t g;
+  glyph_t* g;
 } glyph_cache_item_t;
 
 typedef struct _glyph_cache_t {

@@ -20,8 +20,8 @@
  */
 
 #include "svg/bsvg.h"
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "svg/bsvg_draw.h"
 #include "base/widget_vtable.h"
 #include "svg_image/svg_image.h"
@@ -89,7 +89,7 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t svg_image_destroy(widget_t* widget) {
+static ret_t svg_image_on_destroy(widget_t* widget) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, RET_BAD_PARAMS);
 
@@ -98,7 +98,7 @@ static ret_t svg_image_destroy(widget_t* widget) {
     svg_image->bsvg_asset = NULL;
   }
 
-  return image_base_destroy(widget);
+  return image_base_on_destroy(widget);
 }
 
 static const char* s_svg_image_clone_properties[] = {
@@ -110,7 +110,7 @@ static const widget_vtable_t s_svg_image_vtable = {.size = sizeof(svg_image_t),
                                                    .type = WIDGET_TYPE_SVG_IMAGE,
                                                    .clone_properties = s_svg_image_clone_properties,
                                                    .create = svg_image_create,
-                                                   .destroy = svg_image_destroy,
+                                                   .on_destroy = svg_image_on_destroy,
                                                    .on_event = image_base_on_event,
                                                    .on_paint_self = svg_image_on_paint_self,
                                                    .on_paint_background = widget_on_paint_null,

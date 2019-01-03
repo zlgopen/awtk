@@ -102,7 +102,7 @@ ret_t image_value_set_format(widget_t* widget, const char* format);
  * 设置值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_value对象。
- * @param {const char*} value 值。
+ * @param {float_t} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

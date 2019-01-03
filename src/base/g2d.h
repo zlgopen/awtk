@@ -22,11 +22,17 @@
 #ifndef TK_G2D_H
 #define TK_G2D_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
 #include "base/bitmap.h"
 
 BEGIN_C_DECLS
 
+/**
+ * @class g2d_t
+ *
+ * 2D加速接口。
+ *
+ */
 /**
  * @method g2d_fill_rect
  * 用颜色填充指定的区域。

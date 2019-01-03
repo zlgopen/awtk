@@ -20,8 +20,8 @@
  */
 
 #include "str_gen.h"
-#include "base/wstr.h"
-#include "base/buffer.h"
+#include "tkc/wstr.h"
+#include "tkc/buffer.h"
 #include "base/locale_info.h"
 
 void StrGen::Add(const string& language, const Sentence& sentence) {

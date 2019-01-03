@@ -1,6 +1,6 @@
 ﻿#include <string>
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "gtest/gtest.h"
 
 using std::string;
@@ -9,6 +9,10 @@ TEST(Utils, basic) {
   char str[32];
 
   ASSERT_EQ(tk_atoi("100"), 100);
+  ASSERT_EQ(tk_watoi(L"100"), 100);
+  ASSERT_EQ(tk_atof("100"), 100);
+  ASSERT_EQ(tk_watof(L"100"), 100);
+
   ASSERT_EQ(strcmp(tk_itoa(str, sizeof(str), tk_atoi("100")), "100"), 0);
 }
 
@@ -160,12 +164,12 @@ TEST(Utils, tk_strncpy) {
 }
 
 TEST(Utils, filename_to_name) {
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
 
-  filename_to_name("test.png", name, NAME_LEN);
+  filename_to_name("test.png", name, TK_NAME_LEN);
   ASSERT_EQ(string(name), string("test"));
 
-  filename_to_name("/a/test.png", name, NAME_LEN);
+  filename_to_name("/a/test.png", name, TK_NAME_LEN);
   ASSERT_EQ(string(name), string("test"));
 }
 

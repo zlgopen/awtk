@@ -1,4 +1,4 @@
-﻿#include "base/array.h"
+﻿#include "tkc/array.h"
 #include "base/canvas.h"
 #include "base/font_manager.h"
 #include "font_dummy.h"
@@ -29,6 +29,10 @@ TEST(Canvas, draw_hline) {
   canvas_draw_hline(&c, 290, 110, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(290,110,10);");
 
+  lcd_log_reset(lcd);
+  canvas_draw_hline(&c, 290 + 40, 110, -40);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(291,110,9);");
+
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
@@ -57,6 +61,10 @@ TEST(Canvas, draw_vline) {
   canvas_draw_vline(&c, 110, 290, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,290,10);");
 
+  lcd_log_reset(lcd);
+  canvas_draw_vline(&c, 110, 290 + 40, -40);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,291,9);");
+
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
@@ -80,6 +88,10 @@ TEST(Canvas, fill_rect) {
   lcd_log_reset(lcd);
   canvas_fill_rect(&c, 110, 110, 40, 40);
   ASSERT_EQ(lcd_log_get_commands(lcd), "fr(110,110,40,40);");
+
+  lcd_log_reset(lcd);
+  canvas_fill_rect(&c, 180, 180, -40, -40);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "fr(141,141,40,40);");
 
   lcd_log_reset(lcd);
   canvas_fill_rect(&c, 90, 90, 40, 40);
@@ -163,7 +175,7 @@ TEST(Canvas, draw_glyph) {
   font_manager_init(&font_manager, NULL);
   canvas_init(&c, lcd, &font_manager);
   font_dummy_init();
-  font_manager_add(&font_manager, font_dummy_0("demo0", font_size));
+  font_manager_add_font(&font_manager, font_dummy_0("demo0", font_size));
 
   r = rect_init(100, 100, 200, 200);
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);

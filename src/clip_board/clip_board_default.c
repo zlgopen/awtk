@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/str.h"
+#include "tkc/mem.h"
+#include "tkc/str.h"
 #include "clip_board/clip_board_default.h"
 
 typedef struct _clip_board_default_t {

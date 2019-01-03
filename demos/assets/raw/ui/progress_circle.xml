@@ -1,5 +1,5 @@
 <window >
-  <view x="10" y="10" w="200" h="200" layout="r:2 c:2 s:5">
+  <view x="c" y="m" w="200" h="200" children_layout="default(r=2,c=2,s=5)">
     <progress_circle max="360" show_text="true" 
       animation="value(from=0, to=360, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 

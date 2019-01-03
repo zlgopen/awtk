@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/widget_animator_manager.h"
 
 static widget_animator_manager_t* s_animator_manager;
@@ -32,8 +32,10 @@ ret_t widget_animator_manager_time_elapse(widget_animator_manager_t* am, uint32_
 
   iter = am->first;
   while (iter != NULL) {
+    widget_animator_t* next = iter->next;
+
     widget_animator_time_elapse(iter, delta_time);
-    iter = iter->next;
+    iter = next;
   }
 
   return RET_OK;

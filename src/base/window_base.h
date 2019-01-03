@@ -31,6 +31,21 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  * 窗口。
+ *
+ * 本类把窗口相关的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：
+ *
+ * ```graphviz
+ *   [default_style]
+ *
+ *   window_t -> window_base_t[arrowhead = "empty"]
+ *   popup_t -> window_base_t[arrowhead = "empty"]
+ *   dialog_t -> window_base_t[arrowhead = "empty"]
+ *   system_bar_t -> window_base_t[arrowhead = "empty"]
+ *   calibration_win_t -> window_base_t[arrowhead = "empty"]
+ * ```
+ *
+ * > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如window\_t。
+ *
  */
 typedef struct _window_base_t {
   widget_t widget;
@@ -38,6 +53,9 @@ typedef struct _window_base_t {
    * @property {char*} theme
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 主题资源的名称。
+   * 每个窗口都可以有独立的主题文件，如果没指定，则使用系统缺省的主题文件。
+   * 主题是一个XML文件，放在assets/raw/styles目录下。
+   * 请参考[主题](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
    */
   char* theme;
 
@@ -52,23 +70,30 @@ typedef struct _window_base_t {
    * @property {window_closable_t} closable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
+   *
    * 如果关闭窗口时，需要用户确认:
-   * * 1.将closable设置为WINDOW_CLOSABLE_CONFIRM
-   * * 2.处理窗口的EVT_REQUEST_CLOSE_WINDOW事件
+   *
+   * * 1.将closable设置为WINDOW\_CLOSABLE\_CONFIRM
+   *
+   * * 2.处理窗口的EVT\_REQUEST\_CLOSE\_WINDOW事件
+   *
+   *> closable在XML中取值为：yes/no/confirm，缺省为yes。
    */
   window_closable_t closable;
 
   /**
    * @property {char*} open_anim_hint
    * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 打开时的动画名称。
+   * 打开窗口动画的名称。
+   * 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
    */
   char* open_anim_hint;
 
   /**
    * @property {char*} close_anim_hint
    * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 关闭时的动画名称。
+   * 关闭窗口动画的名称。
+   * 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
    */
   char* close_anim_hint;
 
@@ -81,10 +106,40 @@ typedef struct _window_base_t {
 
   /**
    * @property {theme_t*} theme_obj
-   * @annotation ["get_prop", "private"]
+   * @annotation ["get_prop"]
    * 窗口的常量主题数据。
+   *
+   *>
+   *把主题管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载主题资源的问题。
    */
   theme_t* theme_obj;
+
+  /**
+   * @property {image_manager_t*} image_manager
+   * @annotation ["get_prop"]
+   * 获取图片管理器对象。
+   *
+   *>
+   *把图片管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载图片资源的问题。
+   */
+
+  /**
+   * @property {font_manager_t*} font_manager
+   * @annotation ["get_prop"]
+   * 获取字体管理器对象。
+   *
+   *>
+   *把字体管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载字体资源的问题。
+   */
+
+  /**
+   * @property {assets_manager_t*} assets_manager
+   * @annotation ["get_prop"]
+   * 获取资源管理器对象。
+   *
+   * >
+   * 把资源管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。
+   */
 
   /*private*/
   const asset_info_t* res_theme;
@@ -92,7 +147,7 @@ typedef struct _window_base_t {
 } window_base_t;
 
 /*for sub class*/
-ret_t window_base_destroy(widget_t* widget);
+ret_t window_base_on_destroy(widget_t* widget);
 ret_t window_base_on_event(widget_t* widget, event_t* e);
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c);
 ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);

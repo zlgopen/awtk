@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
-#include "base/color_parser.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/color_parser.h"
 #include "xml/xml_parser.h"
 #include "svg/svg_to_bsvg.h"
 #include "svg/svg_path_parser.h"
@@ -90,13 +90,13 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
       if (tk_str_eq(v, "transparent")) {
         shape->no_stroke = TRUE;
       } else {
-        shape->stroke = color_parse_simple(v);
+        shape->stroke = color_parse(v);
       }
     } else if (tk_str_eq(k, "fill")) {
       if (tk_str_eq(v, "transparent")) {
         shape->no_fill = TRUE;
       } else {
-        shape->fill = color_parse_simple(v);
+        shape->fill = color_parse(v);
       }
     }
 

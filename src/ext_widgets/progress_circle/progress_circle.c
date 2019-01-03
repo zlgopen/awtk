@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "progress_circle/progress_circle.h"
@@ -155,6 +155,14 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
   return widget_invalidate(widget, NULL);
 }
 
+static ret_t progress_circle_on_destroy(widget_t* widget) {
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+
+  TKMEM_FREE(progress_circle->unit);
+
+  return RET_OK;
+}
+
 static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_t* v) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -221,6 +229,7 @@ static const widget_vtable_t s_progress_circle_vtable = {
     .clone_properties = s_progress_circle_clone_properties,
     .create = progress_circle_create,
     .on_paint_self = progress_circle_on_paint_self,
+    .on_destroy = progress_circle_on_destroy,
     .get_prop = progress_circle_get_prop,
     .set_prop = progress_circle_set_prop};
 

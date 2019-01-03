@@ -1,8 +1,18 @@
-﻿#include "base/str.h"
+﻿#include "tkc/str.h"
 #include "gtest/gtest.h"
 #include <string>
 
 using std::string;
+
+TEST(Str, demo) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append(&s, "abc");
+  str_append(&s, "123");
+
+  str_reset(&s);
+}
 
 TEST(Str, basic) {
   str_t str;

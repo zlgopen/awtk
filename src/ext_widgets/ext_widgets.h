@@ -22,7 +22,7 @@
 #ifndef TK_EXT_WIDGETS_H
 #define TK_EXT_WIDGETS_H
 
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
 

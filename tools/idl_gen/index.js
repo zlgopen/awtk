@@ -4,13 +4,14 @@ const glob = require('glob')
 class IDLGenerator {
   parseDesc(str) {
     if (str.indexOf('/**') < 0 && str.indexOf('*/') < 0) {
-      let desc = str.trim();
+      let desc = str;
+      let start = desc.indexOf('*');
 
-      if (desc.indexOf('*') == 0) {
-        desc = desc.substr(1).trim();
+      if (start >= 0) {
+        desc = desc.substr(start + 1);
       }
 
-      return desc;
+      return desc + '\n';
     } else {
       return '';
     }
@@ -314,6 +315,45 @@ class IDLGenerator {
     return;
   }
 
+  updateLevel() {
+    let json = this.result;
+
+    function getClass(name) {
+      return json.find(iter => {
+        return iter.name === name;
+      });
+    }
+
+    function updateLevel(cls) {
+      if(cls.level) {
+        return cls.level;
+      }
+  
+      cls.level = 1;
+      if(cls.parent) {
+        let parent = getClass(cls.parent);
+        cls.level += updateLevel(parent);
+      }
+
+      return cls.level;
+    }
+
+    json.forEach(iter => {
+      updateLevel(iter);
+    });
+  }
+  
+  sort() {
+    this.result.sort((a, b) => {
+      return a.level - b.level;
+    });
+  }
+
+  postProcess() {
+    this.updateLevel();
+    this.sort();
+  }
+
   saveResult() {
     const str = JSON.stringify(this.result, null, '  ');
     fs.writeFileSync('idl.json', str);
@@ -324,6 +364,7 @@ class IDLGenerator {
     
     gen.result = []
     gen.parseFolder('../../src/**/*.h');
+    gen.postProcess();
     gen.saveResult('idl.json');
   }
 }

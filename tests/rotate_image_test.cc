@@ -1,5 +1,5 @@
 ﻿#include "base/pixel.h"
-#include "base/color.h"
+#include "tkc/color.h"
 #include "base/bitmap.h"
 #include "blend/image_g2d.h"
 #include "gtest/gtest.h"

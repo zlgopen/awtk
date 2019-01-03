@@ -10,13 +10,15 @@
 #include <agge/renderer.h>
 #include <agge/rasterizer.h>
 #include <agge/raw_bitmap.h>
+#include <agge/nanovg_agge.h>
+#include <agge/nanovg_vertex.h>
 #include <agge/filling_rules.h>
+#include <agge/stroke_features.h>
 #include <agge/blenders_generic.h>
 #include <agge/vector_rasterizer.h>
-#include <agge/stroke_features.h>
 #include <agge/nanovg_image_blender.h>
-#include <agge/nanovg_vertex.h>
-#include <agge/nanovg_agge.h>
+#include <agge/blender_linear_gradient.h>
+#include <agge/blender_radial_gradient.h>
 
 template <typename T>
 agge::rect<T> mkrect(T x1, T y1, T x2, T y2) {
@@ -217,6 +219,10 @@ static void prepareRasterizer(AGGENVGcontext* agge, NVGscissor* scissor, NVGpain
   agge->a = paint->innerColor.a * 0xff;
 }
 
+static agge::pixel32_rgba to_pixel32_rgba(NVGcolor rgba) {
+  return agge::pixel32_rgba(rgba.r * 255, rgba.g * 255, rgba.b * 255, rgba.a * 255);
+}
+
 template <typename PixelT>
 void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
   agge::renderer& ren = agge->ren;
@@ -263,9 +269,35 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
       }
     }
   } else {
-    agge::blender_solid_color_rgb<PixelT> color(agge->r, agge->g, agge->b, agge->a);
+    if(memcmp(&(paint->innerColor), &(paint->outerColor), sizeof(paint->outerColor)) == 0) {
+      agge::blender_solid_color_rgb<PixelT> color(agge->r, agge->g, agge->b, agge->a);
+      ren(surface, 0, ras, color, agge::winding<>());
+    } else if(paint->radius == 0) {
+      const float large = 1e5;
+      float dx = paint->xform[2];
+      float dy = paint->xform[3];
+      float d = (paint->extent[1] - large) * 2;
+      float sx = paint->xform[4] + dx*large;
+      float sy = paint->xform[5] + dy*large;
+      float ex = sx + d * dx;
+      float ey = sy + d * dy;
+      agge::pixel32_rgba ic = to_pixel32_rgba(paint->innerColor);
+      agge::pixel32_rgba oc = to_pixel32_rgba(paint->outerColor);
+      agge::blender_linear_gradient<PixelT> color(sx, sy, ex, ey, ic, oc);
 
-    ren(surface, 0, ras, color, agge::winding<>());
+      ren(surface, 0, ras, color, agge::winding<>());
+    } else {
+      float cx = paint->xform[4];
+      float cy = paint->xform[5];
+      float inr = paint->radius - paint->feather/2;
+      float outr = paint->radius + paint->feather/2;
+      
+      agge::pixel32_rgba ic = to_pixel32_rgba(paint->innerColor);
+      agge::pixel32_rgba oc = to_pixel32_rgba(paint->outerColor);
+      agge::blender_radial_gradient<PixelT> color(cx, cy, inr, outr, ic, oc);
+
+      ren(surface, 0, ras, color, agge::winding<>());
+    }
   }
 }
 

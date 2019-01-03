@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/utils.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/image_base.h"
 
 ret_t image_base_on_event(widget_t* widget, event_t* e) {
@@ -125,7 +125,7 @@ ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v) 
   return RET_NOT_FOUND;
 }
 
-ret_t image_base_destroy(widget_t* widget) {
+ret_t image_base_on_destroy(widget_t* widget) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 

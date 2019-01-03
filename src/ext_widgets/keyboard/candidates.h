@@ -22,7 +22,7 @@
 #ifndef TK_CANDIDATES_H
 #define TK_CANDIDATES_H
 
-#include "base/str.h"
+#include "tkc/str.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS

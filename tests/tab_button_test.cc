@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
-#include "base/tab_button.h"
-#include "base/tab_button_group.h"
+#include "widgets/tab_button.h"
+#include "widgets/tab_button_group.h"
 
 TEST(TabButton, basic) {
   value_t v1;

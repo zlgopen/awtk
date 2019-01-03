@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/mutex.h"
+#include "tkc/mem.h"
+#include "tkc/mutex.h"
 
 struct _tk_mutex_t {
   uint32_t none;

@@ -22,7 +22,7 @@
 #ifndef TK_IMAGE_G2D_H
 #define TK_IMAGE_G2D_H
 
-#include "base/rect.h"
+#include "tkc/rect.h"
 #include "base/bitmap.h"
 
 BEGIN_C_DECLS

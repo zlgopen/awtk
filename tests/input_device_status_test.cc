@@ -1,7 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include <string>
 #include "base/keys.h"
-#include "base/button.h"
+#include "widgets/button.h"
 #include "base/input_device_status.h"
 
 using std::string;
@@ -114,13 +114,24 @@ TEST(InputDeviceStatus, capslock) {
   e.key = TK_KEY_CAPSLOCK;
   e.e = event_init(EVT_KEY_DOWN, NULL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
-  ASSERT_EQ(ids->capslock, TRUE);
   ASSERT_EQ(s_log, "keydown");
 
   e.e = event_init(EVT_KEY_UP, NULL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
-  ASSERT_EQ(ids->capslock, FALSE);
   ASSERT_EQ(s_log, "keyup");
+
+  ASSERT_EQ(ids->capslock, TRUE);
+
+  e.key = TK_KEY_CAPSLOCK;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keyup");
+
+  ASSERT_EQ(ids->capslock, FALSE);
 
   widget_destroy(w);
 }

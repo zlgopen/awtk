@@ -1,0 +1,23 @@
+digraph UML {
+  rankdir  = TB
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+     
+   subgraph clusterAssetsManager {
+       asset_info_t[ label = "{asset_info_t|+name\l+data\l+size\l+type\l+subtype\l}" ];
+       assets_manager_t->asset_info_t[constraint=false arrowhead=none];
+   };
+    
+   locale_info_t ->assets_manager_t[arrowhead=vee];
+   font_manager_t->assets_manager_t[arrowhead=vee];
+   image_manager_t->assets_manager_t[arrowhead=vee];
+   theme_t->assets_manager_t[arrowhead=vee];
+   ui_loader_t->assets_manager_t[arrowhead=vee];
+   assets_manager_t -> fs[arrowhead=vee];
+   assets_manager_t -> rom_data[arrowhead=vee];
+   assets_manager_t -> network[arrowhead=vee];
+}

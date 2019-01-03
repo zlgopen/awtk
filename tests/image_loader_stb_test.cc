@@ -1,5 +1,5 @@
-﻿#include "base/fs.h"
-#include "base/mem.h"
+﻿#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "gtest/gtest.h"
 #include "tools/common/utils.h"
 #include "base/image_manager.h"
@@ -24,7 +24,7 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
   info->subtype = 0;
   info->refcount = 1;
   info->is_in_rom = FALSE;
-  strncpy(info->name, "name", NAME_LEN);
+  strncpy(info->name, "name", TK_NAME_LEN);
 
   ENSURE(file_read_part(filename, info->data, size, 0) == size);
   ret = image_loader_load(loader, info, image);
@@ -84,7 +84,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
 TEST(ImageLoaderStb, gen) {
   bitmap_t image;
   ASSERT_EQ(add_image_res(PNG_OPAQUE_NAME, "test.png"), RET_OK);
-  ASSERT_EQ(image_manager_load(image_manager(), "test.png", &image), RET_OK);
+  ASSERT_EQ(image_manager_get_bitmap(image_manager(), "test.png", &image), RET_OK);
 
   ASSERT_EQ(32, image.w);
   ASSERT_EQ(32, image.h);

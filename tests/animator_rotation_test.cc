@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include "base/timer.h"
 #include "gtest/gtest.h"
-#include "base/image.h"
+#include "widgets/image.h"
 #include "widget_animators/widget_animator_rotation.h"
 
 TEST(AnimatorRotation, once) {

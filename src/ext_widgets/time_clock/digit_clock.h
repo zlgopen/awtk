@@ -23,7 +23,7 @@
 #define TK_DIGIT_CLOCK_H
 
 #include "base/widget.h"
-#include "base/date_time.h"
+#include "tkc/date_time.h"
 
 BEGIN_C_DECLS
 
@@ -39,16 +39,24 @@ typedef struct _digit_clock_t {
    * @property {char*} format
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 显示格式。
-   * Y 代表年
-   * M 代表月
-   * D 代表日
-   * h 代表时
-   * m 代表分
-   * s 代表秒
+   * Y 代表年(完整显示)
+   * M 代表月(1-12)
+   * D 代表日(1-31)
+   * h 代表时(0-23)
+   * m 代表分(0-59)
+   * s 代表秒(0-59)
+   * YY 代表年(只显示末两位)
+   * MM 代表月(01-12)
+   * DD 代表日(01-31)
+   * hh 代表时(00-23)
+   * mm 代表分(00-59)
+   * ss 代表秒(00-59)
+   *
    * 如 日期时间为：2018/11/12 9:10:20
    * "Y/D/M"显示为"2018/11/12"
    * "Y-D-M"显示为"2018-11-12"
    * "Y-D-M h:m:s"显示为"2018-11-12 9:10:20"
+   * "Y-D-M hh:mm:ss"显示为"2018-11-12 09:10:20"
    */
   char* format;
 

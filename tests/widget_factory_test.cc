@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
-#include "base/mem.h"
-#include "base/button.h"
+#include "tkc/mem.h"
+#include "widgets/button.h"
 #include "base/widget_factory.h"
 
 typedef struct _custom_widget_t {

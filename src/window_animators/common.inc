@@ -1,11 +1,11 @@
-#include "base/utils.h"
+#include "tkc/utils.h"
 #include "base/enums.h"
-#include "base/easing.h"
-#include "base/func_call_parser.h"
+#include "tkc/easing.h"
+#include "tkc/func_call_parser.h"
 
 typedef struct _window_animation_parser_t {
   func_call_parser_t base;
-  char name[NAME_LEN + 1];
+  char name[TK_NAME_LEN + 1];
   int duration;
   int easing;
 } window_animation_parser_t;
@@ -13,7 +13,7 @@ typedef struct _window_animation_parser_t {
 static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
   window_animation_parser_t* p = (window_animation_parser_t*)parser;
 
-  tk_strncpy(p->name, func_name, NAME_LEN);
+  tk_strncpy(p->name, func_name, TK_NAME_LEN);
 
   return RET_OK;
 }

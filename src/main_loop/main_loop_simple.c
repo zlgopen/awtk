@@ -19,7 +19,7 @@
  *
  */
 
-#include "base/time_now.h"
+#include "tkc/time_now.h"
 #include "main_loop/main_loop_simple.h"
 
 static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* r) {
@@ -121,22 +121,20 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   while (main_loop_simple_recv_event(loop, &r) == RET_OK) {
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
-        window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
-        break;
       case EVT_POINTER_MOVE:
-        window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
-        break;
       case EVT_POINTER_UP:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
         break;
-      case REQ_ADD_IDLE: {
+      case EVT_KEY_DOWN:
+      case EVT_KEY_UP:
+        window_manager_dispatch_input_event(widget, (event_t*)&(r.key_event));
+        break;
+      case REQ_ADD_IDLE:
         idle_add(r.add_idle.func, r.add_idle.e.target);
         break;
-      }
-      case REQ_ADD_TIMER: {
+      case REQ_ADD_TIMER:
         timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
         break;
-      }
       default:
         break;
     }

@@ -21,11 +21,11 @@
 
 #include "awtk.h"
 #include "assets.h"
-#include "base/mem.h"
-#include "base/path.h"
-#include "base/window.h"
-#include "base/label.h"
-#include "base/edit.h"
+#include "tkc/mem.h"
+#include "tkc/path.h"
+#include "widgets/window.h"
+#include "widgets/label.h"
+#include "widgets/edit.h"
 #include "base/system_info.h"
 
 ret_t application_init(void) {

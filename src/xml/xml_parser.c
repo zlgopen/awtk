@@ -18,8 +18,8 @@
  * 2018-01-19 Li XianJing <xianjimli@hotmail.com> adapted from ftk.
  *
  */
-#include "base/fs.h"
-#include "base/mem.h"
+#include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "xml/xml_parser.h"
 #ifndef isspace
 #define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
@@ -177,7 +177,7 @@ static int xml_parser_strdup(XmlParser* thiz, const char* start, int length) {
 
   if ((thiz->buffer_used + length) >= thiz->capacity) {
     int new_capacity = thiz->capacity + (thiz->capacity >> 1) + length + 32;
-    char* buffer = (char*)TKMEM_REALLOC(char, thiz->buffer, new_capacity);
+    char* buffer = (char*)TKMEM_REALLOCT(char, thiz->buffer, new_capacity);
     if (buffer != NULL) {
       thiz->buffer = buffer;
       thiz->capacity = new_capacity;

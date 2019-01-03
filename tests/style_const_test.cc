@@ -1,8 +1,8 @@
 ﻿#include "gtest/gtest.h"
-#include "base/button.h"
-#include "base/window.h"
+#include "widgets/button.h"
+#include "widgets/window.h"
 #include "base/style_const.h"
-#include "base/combo_box_item.h"
+#include "widgets/combo_box_item.h"
 #include <string>
 
 using std::string;

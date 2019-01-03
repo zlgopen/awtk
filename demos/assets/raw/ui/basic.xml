@@ -3,40 +3,42 @@
     <label x="0" y="0" w="100%" h="100%" text="Basic Controls" />
   </app_bar>
 
-  <row x="0" y="40" w="100%" h="30" layout="r:1 c:3 xm:2 s:10">
+  <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
     <button name="inc_value" text="Inc"/>
     <button name="close" text="Close"/>
     <button name="dec_value" text="Dec"/>
   </row>
 
-  <row x="0" y="80" w="100%" h="30" layout="r:1 c:3 xm:2 s:10">
+  <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
     <label style="left" name="left" text="Left"/>
     <label style="center" name="center" text="Center"/>
     <label style="right" name="right" text="Right"/>
   </row>
 
-  <progress_bar name="bar1" x="10" y="128" w="240" h="30" value="40"/>
+
+  <slider name="slider" x="10" y="116" w="240" h="20" value="40"/>
+  <progress_bar name="bar1" x="10" y="142" w="240" h="16" value="40"/>
   <progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/>
 
-  <column x="20" y="160" w="50%" h="60" layout="r:2 c:1 ym:2 s:10" >
+  <column x="20" y="160" w="50%" h="60" children_layout="default(r=2,c=1,ym=2,s=10)" >
     <check_button name="c1" text="Book"/>
     <check_button name="c2" text="Food"/>
   </column>
 
-  <column x="20" y="230" w="50%" h="90" layout="r:3 c:1 ym:2 s:10" >
+  <column x="20" y="230" w="50%" h="90" children_layout="default(r=3,c=1,ym=2,s=10)" >
     <radio_button name="r1" text="Book"/>
     <radio_button name="r2" text="Food"/>
     <radio_button name="r3" text="Pencil" value="true"/>
   </column>
 
-  <row x="20" y="bottom:60" w="100" h="30" layout="r:1 c:4">
+  <row x="20" y="bottom:60" w="100" h="30" children_layout="default(r=1,c=4)">
     <radio_button style="left"/>
     <radio_button style="middle"/>
     <radio_button style="right"/>
     <check_button style="mute"/>
   </grid>
   
-  <grid x="20" y="bottom:10" w="80%" h="40" layout="r:1 c:5 xm:2 s:10">
+  <grid x="20" y="bottom:10" w="80%" h="40" children_layout="default(r=1,c=5,x=2,s=10)">
     <image draw_type="icon" image="earth"/>
     <image draw_type="icon" image="rgba" />
     <image draw_type="icon" image="rgb" />

@@ -19,10 +19,10 @@
  *
  */
 
-#include "base/str.h"
-#include "base/mem.h"
-#include "base/utf8.h"
-#include "base/utils.h"
+#include "tkc/str.h"
+#include "tkc/mem.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "rich_text/rich_text_node.h"
 
 rich_text_node_t* rich_text_text_create_with_len(rich_text_font_t* font, const char* text,

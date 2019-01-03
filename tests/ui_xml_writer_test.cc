@@ -1,4 +1,4 @@
-﻿#include "base/dialog.h"
+﻿#include "widgets/dialog.h"
 #include "gtest/gtest.h"
 #include "ui_loader/ui_xml_writer.h"
 #include "ui_loader/ui_loader_default.h"
@@ -13,7 +13,7 @@ using std::string;
   desc.layout.y = yy;                 \
   desc.layout.w = ww;                 \
   desc.layout.h = hh;                 \
-  strncpy(desc.type, tt, NAME_LEN);
+  strncpy(desc.type, tt, TK_NAME_LEN);
 
 TEST(UIXmlWriter, basic1) {
   str_t str;

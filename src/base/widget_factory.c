@@ -19,46 +19,46 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/row.h"
-#include "base/grid.h"
-#include "base/view.h"
-#include "base/utils.h"
-#include "base/image.h"
-#include "base/label.h"
-#include "base/value.h"
-#include "base/window.h"
-#include "base/button.h"
-#include "base/dialog.h"
-#include "base/slider.h"
-#include "base/edit.h"
-#include "base/pages.h"
-#include "base/popup.h"
-#include "base/column.h"
-#include "base/app_bar.h"
-#include "base/dragger.h"
-#include "base/grid_item.h"
-#include "base/system_bar.h"
-#include "base/tab_button.h"
-#include "base/tab_control.h"
-#include "base/button_group.h"
-#include "base/tab_button_group.h"
-#include "base/spin_box.h"
-#include "base/group_box.h"
-#include "base/dialog_title.h"
-#include "base/dialog_client.h"
-#include "base/check_button.h"
-#include "base/progress_bar.h"
-#include "base/combo_box.h"
-#include "base/color_tile.h"
-#include "base/combo_box_item.h"
+#include "tkc/mem.h"
+#include "widgets/row.h"
+#include "widgets/grid.h"
+#include "widgets/view.h"
+#include "tkc/utils.h"
+#include "widgets/image.h"
+#include "widgets/label.h"
+#include "tkc/value.h"
+#include "widgets/window.h"
+#include "widgets/button.h"
+#include "widgets/dialog.h"
+#include "widgets/slider.h"
+#include "widgets/edit.h"
+#include "widgets/pages.h"
+#include "widgets/popup.h"
+#include "widgets/column.h"
+#include "widgets/app_bar.h"
+#include "widgets/dragger.h"
+#include "widgets/grid_item.h"
+#include "widgets/system_bar.h"
+#include "widgets/tab_button.h"
+#include "widgets/tab_control.h"
+#include "widgets/button_group.h"
+#include "widgets/tab_button_group.h"
+#include "widgets/spin_box.h"
+#include "widgets/group_box.h"
+#include "widgets/dialog_title.h"
+#include "widgets/dialog_client.h"
+#include "widgets/check_button.h"
+#include "widgets/progress_bar.h"
+#include "widgets/combo_box.h"
+#include "widgets/color_tile.h"
+#include "widgets/combo_box_item.h"
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
-#include "base/calibration_win.h"
+#include "widgets/calibration_win.h"
 
 static widget_factory_t* s_widget_factory = NULL;
 typedef struct _creator_item_t {
-  char type[NAME_LEN + 1];
+  char type[TK_NAME_LEN + 1];
   widget_create_t create;
 } creator_item_t;
 
@@ -135,7 +135,7 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
   return_value_if_fail(item != NULL, RET_OOM);
 
   item->create = create;
-  tk_strncpy(item->type, type, NAME_LEN);
+  tk_strncpy(item->type, type, TK_NAME_LEN);
   array_push(&(factory->creators), item);
 
   return RET_OK;
@@ -181,14 +181,14 @@ ret_t widget_factory_deinit(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
   items = (creator_item_t**)(factory->creators.elms);
-  return_value_if_fail(items != NULL, RET_OOM);
+  if (items != NULL) {
+    for (i = 0, nr = factory->creators.size; i < nr; i++) {
+      iter = items[i];
+      TKMEM_FREE(iter);
+    }
 
-  for (i = 0, nr = factory->creators.size; i < nr; i++) {
-    iter = items[i];
-    TKMEM_FREE(iter);
+    array_deinit(&(factory->creators));
   }
-
-  array_deinit(&(factory->creators));
 
   return RET_OK;
 }

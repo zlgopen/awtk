@@ -21,9 +21,9 @@
 
 #include "awtk.h"
 #include "assets.h"
-#include "base/mem.h"
-#include "base/fs.h"
-#include "base/path.h"
+#include "tkc/mem.h"
+#include "tkc/fs.h"
+#include "tkc/path.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 

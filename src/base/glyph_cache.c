@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/mem.h"
-#include "base/time_now.h"
+#include "tkc/mem.h"
+#include "tkc/time_now.h"
 #include "base/glyph_cache.h"
 
 glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint16_t capacity,
@@ -72,7 +72,7 @@ ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, uint16_t size, glyph_t
   glyph_cache_item_t* item = glyph_cache_get_empty(cache);
   return_value_if_fail(cache != NULL && g != NULL && item != NULL, RET_BAD_PARAMS);
 
-  item->g = *g;
+  item->g = g;
   item->size = size;
   item->code = code;
   item->last_access_time = time_now_ms();
@@ -88,7 +88,7 @@ ret_t glyph_cache_lookup(glyph_cache_t* cache, wchar_t code, uint16_t size, glyp
   for (i = 0, nr = cache->size; i < nr; i++) {
     glyph_cache_item_t* item = cache->items + i;
     if (item->code == code && item->size == size) {
-      *g = item->g;
+      *g = *(item->g);
       item->last_access_time = time_now_ms();
 
       return RET_OK;
@@ -107,7 +107,7 @@ ret_t glyph_cache_deinit(glyph_cache_t* cache) {
   if (cache->destroy_glyph != NULL) {
     for (i = 0, nr = cache->size; i < nr; i++) {
       glyph_cache_item_t* item = cache->items + i;
-      cache->destroy_glyph(&(item->g));
+      cache->destroy_glyph(item->g);
     }
   }
 

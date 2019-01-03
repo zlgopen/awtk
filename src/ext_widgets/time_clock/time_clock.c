@@ -19,11 +19,11 @@
  *
  */
 
-#include "base/mem.h"
+#include "tkc/mem.h"
 #include "base/timer.h"
-#include "base/utils.h"
-#include "base/matrix.h"
-#include "base/date_time.h"
+#include "tkc/utils.h"
+#include "tkc/matrix.h"
+#include "tkc/date_time.h"
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 
@@ -183,7 +183,7 @@ static ret_t time_clock_on_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t time_clock_destroy(widget_t* widget) {
+static ret_t time_clock_on_destroy(widget_t* widget) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
 
   TKMEM_FREE(time_clock->image);
@@ -291,7 +291,7 @@ static const widget_vtable_t s_time_clock_vtable = {
     .on_paint_self = time_clock_on_paint_self,
     .set_prop = time_clock_set_prop,
     .get_prop = time_clock_get_prop,
-    .destroy = time_clock_destroy};
+    .on_destroy = time_clock_on_destroy};
 
 static ret_t time_clock_reset_time(time_clock_t* time_clock) {
   date_time_t dt;
