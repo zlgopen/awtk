@@ -324,19 +324,19 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
   }
 
   if (active) {
-    if (state == WIDGET_STATE_NORMAL) {
+    if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
       state = WIDGET_STATE_NORMAL_OF_ACTIVE;
-    } else if (state == WIDGET_STATE_PRESSED) {
+    } else if (tk_str_eq(state, WIDGET_STATE_PRESSED)) {
       state = WIDGET_STATE_PRESSED_OF_ACTIVE;
-    } else if (state == WIDGET_STATE_OVER) {
+    } else if (tk_str_eq(state, WIDGET_STATE_OVER)) {
       state = WIDGET_STATE_OVER_OF_ACTIVE;
     }
   } else if (checked) {
-    if (state == WIDGET_STATE_NORMAL) {
+    if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
       state = WIDGET_STATE_NORMAL_OF_CHECKED;
-    } else if (state == WIDGET_STATE_PRESSED) {
+    } else if (tk_str_eq(state, WIDGET_STATE_PRESSED)) {
       state = WIDGET_STATE_PRESSED_OF_CHECKED;
-    } else if (state == WIDGET_STATE_OVER) {
+    } else if (tk_str_eq(state, WIDGET_STATE_OVER)) {
       state = WIDGET_STATE_OVER_OF_CHECKED;
     }
   }
