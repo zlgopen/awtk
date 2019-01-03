@@ -31,62 +31,65 @@
    vgcanvas_restore(vg);
  ```
 
+ >请参考：https://www.w3schools.com/tags/ref_canvas.asp
+
+
 ### 函数
 <p id="vgcanvas_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#vgcanvas_t_vgcanvas_arc">vgcanvas\_arc</a> | arc |
-| <a href="#vgcanvas_t_vgcanvas_arc_to">vgcanvas\_arc\_to</a> | arc to |
+| <a href="#vgcanvas_t_vgcanvas_arc">vgcanvas\_arc</a> | 生成一条圆弧。 |
+| <a href="#vgcanvas_t_vgcanvas_arc_to">vgcanvas\_arc\_to</a> | 生成一条圆弧路径到指定点。 |
 | <a href="#vgcanvas_t_vgcanvas_begin_frame">vgcanvas\_begin\_frame</a> | 开始绘制，系统内部调用。 |
-| <a href="#vgcanvas_t_vgcanvas_begin_path">vgcanvas\_begin\_path</a> | begin path |
-| <a href="#vgcanvas_t_vgcanvas_bezier_to">vgcanvas\_bezier\_to</a> | bezier curve to |
-| <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | clear rect |
-| <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | clip_rect |
-| <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | close_path |
+| <a href="#vgcanvas_t_vgcanvas_begin_path">vgcanvas\_begin\_path</a> | 清除之前的路径，并重新开始一条路径。 |
+| <a href="#vgcanvas_t_vgcanvas_bezier_to">vgcanvas\_bezier\_to</a> | 生成一条三次贝塞尔曲线。 |
+| <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
+| <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
+| <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
 | <a href="#vgcanvas_t_vgcanvas_create">vgcanvas\_create</a> | 创建vgcanvas。 |
-| <a href="#vgcanvas_t_vgcanvas_destroy">vgcanvas\_destroy</a> | destroy |
-| <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | draw icon |
-| <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | draw image |
-| <a href="#vgcanvas_t_vgcanvas_ellipse">vgcanvas\_ellipse</a> | ellipse |
+| <a href="#vgcanvas_t_vgcanvas_destroy">vgcanvas\_destroy</a> | 销毁vgcanvas对象。 |
+| <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 |
+| <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | 绘制图片。 |
+| <a href="#vgcanvas_t_vgcanvas_ellipse">vgcanvas\_ellipse</a> | 生成一个椭圆路径。 |
 | <a href="#vgcanvas_t_vgcanvas_end_frame">vgcanvas\_end\_frame</a> | 结束绘制。系统内部调用。 |
 | <a href="#vgcanvas_t_vgcanvas_fill">vgcanvas\_fill</a> | 填充多边形。 |
-| <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | fill text |
+| <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | 绘制文本。 |
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
 | <a href="#vgcanvas_t_vgcanvas_is_point_in_path">vgcanvas\_is\_point\_in\_path</a> | 检查点是否在当前路径中。 |
-| <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | line to。 |
-| <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | measure text |
-| <a href="#vgcanvas_t_vgcanvas_move_to">vgcanvas\_move\_to</a> | move to |
+| <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | 生成一条线段(从当前点到目标点)。 |
+| <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
+| <a href="#vgcanvas_t_vgcanvas_move_to">vgcanvas\_move\_to</a> | 移动当前点到指定点。 |
 | <a href="#vgcanvas_t_vgcanvas_paint">vgcanvas\_paint</a> | 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。 |
-| <a href="#vgcanvas_t_vgcanvas_quad_to">vgcanvas\_quad\_to</a> | quadratic curve to |
-| <a href="#vgcanvas_t_vgcanvas_rect">vgcanvas\_rect</a> | rect |
+| <a href="#vgcanvas_t_vgcanvas_quad_to">vgcanvas\_quad\_to</a> | 生成一条二次贝塞尔曲线。 |
+| <a href="#vgcanvas_t_vgcanvas_rect">vgcanvas\_rect</a> | 生成一个矩形路径。 |
 | <a href="#vgcanvas_t_vgcanvas_reinit">vgcanvas\_reinit</a> | 重新初始化，系统内部调用。 |
-| <a href="#vgcanvas_t_vgcanvas_reset">vgcanvas\_reset</a> | reset |
-| <a href="#vgcanvas_t_vgcanvas_restore">vgcanvas\_restore</a> | restore |
-| <a href="#vgcanvas_t_vgcanvas_rotate">vgcanvas\_rotate</a> | rotate |
-| <a href="#vgcanvas_t_vgcanvas_rounded_rect">vgcanvas\_rounded\_rect</a> | round rect |
-| <a href="#vgcanvas_t_vgcanvas_save">vgcanvas\_save</a> | save |
-| <a href="#vgcanvas_t_vgcanvas_scale">vgcanvas\_scale</a> | scale |
-| <a href="#vgcanvas_t_vgcanvas_set_antialias">vgcanvas\_set\_antialias</a> | set antialias |
-| <a href="#vgcanvas_t_vgcanvas_set_fill_color">vgcanvas\_set\_fill\_color</a> | set fill color |
-| <a href="#vgcanvas_t_vgcanvas_set_font">vgcanvas\_set\_font</a> | set font |
-| <a href="#vgcanvas_t_vgcanvas_set_font_size">vgcanvas\_set\_font\_size</a> | set font size |
-| <a href="#vgcanvas_t_vgcanvas_set_global_alpha">vgcanvas\_set\_global\_alpha</a> | set global alpha |
-| <a href="#vgcanvas_t_vgcanvas_set_line_cap">vgcanvas\_set\_line\_cap</a> | set line cap |
-| <a href="#vgcanvas_t_vgcanvas_set_line_join">vgcanvas\_set\_line\_join</a> | set line join |
-| <a href="#vgcanvas_t_vgcanvas_set_line_width">vgcanvas\_set\_line\_width</a> | set line width |
-| <a href="#vgcanvas_t_vgcanvas_set_linear_gradient">vgcanvas\_set\_linear\_gradient</a> | set fill linear gradient |
-| <a href="#vgcanvas_t_vgcanvas_set_linear_gradient">vgcanvas\_set\_linear\_gradient</a> | set stroke linear gradient |
-| <a href="#vgcanvas_t_vgcanvas_set_miter_limit">vgcanvas\_set\_miter\_limit</a> | set miter limit |
-| <a href="#vgcanvas_t_vgcanvas_set_radial_gradient">vgcanvas\_set\_radial\_gradient</a> | set stroke radial gradient |
-| <a href="#vgcanvas_t_vgcanvas_set_radial_gradient">vgcanvas\_set\_radial\_gradient</a> | set fill radial gradient |
-| <a href="#vgcanvas_t_vgcanvas_set_stroke_color">vgcanvas\_set\_stroke\_color</a> | set stroke color |
-| <a href="#vgcanvas_t_vgcanvas_set_text_align">vgcanvas\_set\_text\_align</a> | set text align |
-| <a href="#vgcanvas_t_vgcanvas_set_text_baseline">vgcanvas\_set\_text\_baseline</a> | set text baseline |
-| <a href="#vgcanvas_t_vgcanvas_set_transform">vgcanvas\_set\_transform</a> | set transform |
+| <a href="#vgcanvas_t_vgcanvas_reset">vgcanvas\_reset</a> | 重置状态。 |
+| <a href="#vgcanvas_t_vgcanvas_restore">vgcanvas\_restore</a> | 恢复上次save的状态。 |
+| <a href="#vgcanvas_t_vgcanvas_rotate">vgcanvas\_rotate</a> | 旋转。 |
+| <a href="#vgcanvas_t_vgcanvas_rounded_rect">vgcanvas\_rounded\_rect</a> | 生成一个圆角矩形路径。 |
+| <a href="#vgcanvas_t_vgcanvas_save">vgcanvas\_save</a> | 保存当前的状态。如颜色和矩阵等信息。 |
+| <a href="#vgcanvas_t_vgcanvas_scale">vgcanvas\_scale</a> | 缩放。 |
+| <a href="#vgcanvas_t_vgcanvas_set_antialias">vgcanvas\_set\_antialias</a> | 设置是否启用反走样。 |
+| <a href="#vgcanvas_t_vgcanvas_set_fill_color">vgcanvas\_set\_fill\_color</a> | 设置填充颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_fill_linear_gradient">vgcanvas\_set\_fill\_linear\_gradient</a> | 设置填充颜色为线性渐变色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_fill_radial_gradient">vgcanvas\_set\_fill\_radial\_gradient</a> | 设置填充颜色为径向渐变色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_font">vgcanvas\_set\_font</a> | 设置字体的名称。 |
+| <a href="#vgcanvas_t_vgcanvas_set_font_size">vgcanvas\_set\_font\_size</a> | 设置字体的大小。 |
+| <a href="#vgcanvas_t_vgcanvas_set_global_alpha">vgcanvas\_set\_global\_alpha</a> | 设置全局透明度。 |
+| <a href="#vgcanvas_t_vgcanvas_set_line_cap">vgcanvas\_set\_line\_cap</a> | 设置line cap。 |
+| <a href="#vgcanvas_t_vgcanvas_set_line_join">vgcanvas\_set\_line\_join</a> | 设置line join。 |
+| <a href="#vgcanvas_t_vgcanvas_set_line_width">vgcanvas\_set\_line\_width</a> | 设置线条的宽度。 |
+| <a href="#vgcanvas_t_vgcanvas_set_miter_limit">vgcanvas\_set\_miter\_limit</a> | 设置miter limit。 |
+| <a href="#vgcanvas_t_vgcanvas_set_stroke_color">vgcanvas\_set\_stroke\_color</a> | 设置线条颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_stroke_linear_gradient">vgcanvas\_set\_stroke\_linear\_gradient</a> | 设置线条颜色为线性渐变色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_stroke_radial_gradient">vgcanvas\_set\_stroke\_radial\_gradient</a> | 设置线条颜色为径向渐变色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_text_align">vgcanvas\_set\_text\_align</a> | 设置文本水平对齐的方式。 |
+| <a href="#vgcanvas_t_vgcanvas_set_text_baseline">vgcanvas\_set\_text\_baseline</a> | 设置文本垂直对齐的方式。 |
+| <a href="#vgcanvas_t_vgcanvas_set_transform">vgcanvas\_set\_transform</a> | 设置变换矩阵。 |
 | <a href="#vgcanvas_t_vgcanvas_stroke">vgcanvas\_stroke</a> | 画线。 |
-| <a href="#vgcanvas_t_vgcanvas_transform">vgcanvas\_transform</a> | transform |
-| <a href="#vgcanvas_t_vgcanvas_translate">vgcanvas\_translate</a> | scale |
+| <a href="#vgcanvas_t_vgcanvas_transform">vgcanvas\_transform</a> | 变换矩阵。 |
+| <a href="#vgcanvas_t_vgcanvas_translate">vgcanvas\_translate</a> | 平移。 |
 ### 属性
 <p id="vgcanvas_t_properties">
 
@@ -112,7 +115,8 @@
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_arc"> arc
+> <p id="vgcanvas_t_vgcanvas_arc"> 生成一条圆弧。
+
 
 
 
@@ -140,7 +144,8 @@ ret_t vgcanvas_arc (vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t sta
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_arc_to"> arc to
+> <p id="vgcanvas_t_vgcanvas_arc_to"> 生成一条圆弧路径到指定点。
+
 
 
 
@@ -172,6 +177,7 @@ ret_t vgcanvas_arc_to (vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float
 
 
 
+
 * 函数原型：
 
 ```
@@ -190,7 +196,8 @@ ret_t vgcanvas_begin_frame (vgcanvas_t* vg, rect_t* dirty_rect);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_begin_path"> begin path
+> <p id="vgcanvas_t_vgcanvas_begin_path"> 清除之前的路径，并重新开始一条路径。
+
 
 
 
@@ -212,7 +219,8 @@ ret_t vgcanvas_begin_path (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_bezier_to"> bezier curve to
+> <p id="vgcanvas_t_vgcanvas_bezier_to"> 生成一条三次贝塞尔曲线。
+
 
 
 
@@ -240,7 +248,8 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_clear_rect"> clear rect
+> <p id="vgcanvas_t_vgcanvas_clear_rect"> 用颜色清除指定矩形区域。
+
 
 
 
@@ -267,7 +276,8 @@ ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, floa
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_clip_rect"> clip_rect
+> <p id="vgcanvas_t_vgcanvas_clip_rect"> 矩形裁剪。
+
 
 
 
@@ -293,7 +303,10 @@ ret_t vgcanvas_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_close_path"> close_path
+> <p id="vgcanvas_t_vgcanvas_close_path"> 闭合路径。
+
+ >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。 
+
 
 
 
@@ -341,7 +354,7 @@ vgcanvas_t vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_destroy"> destroy
+> <p id="vgcanvas_t_vgcanvas_destroy"> 销毁vgcanvas对象。
 
 
 
@@ -363,7 +376,10 @@ ret_t vgcanvas_destroy (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_draw_icon"> draw icon
+> <p id="vgcanvas_t_vgcanvas_draw_icon"> 绘制图标。
+
+ 绘制图标时会根据屏幕密度进行自动缩放，而绘制普通图片时不会。
+
 
 
 
@@ -394,7 +410,8 @@ ret_t vgcanvas_draw_icon (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_draw_image"> draw image
+> <p id="vgcanvas_t_vgcanvas_draw_image"> 绘制图片。
+
 
 
 
@@ -425,7 +442,8 @@ ret_t vgcanvas_draw_image (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_ellipse"> ellipse
+> <p id="vgcanvas_t_vgcanvas_ellipse"> 生成一个椭圆路径。
+
 
 
 
@@ -478,6 +496,7 @@ ret_t vgcanvas_end_frame (vgcanvas_t* vg);
 
 
 
+
 * 函数原型：
 
 ```
@@ -495,7 +514,8 @@ ret_t vgcanvas_fill (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_fill_text"> fill text
+> <p id="vgcanvas_t_vgcanvas_fill_text"> 绘制文本。
+
 
 
 
@@ -526,6 +546,7 @@ ret_t vgcanvas_fill_text (vgcanvas_t* vg, char* text, float_t x, float_t y, floa
 
 
 
+
 * 函数原型：
 
 ```
@@ -544,6 +565,7 @@ ret_t vgcanvas_flush (vgcanvas_t* vg);
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_is_point_in_path"> 检查点是否在当前路径中。
+
 
 
 
@@ -567,7 +589,8 @@ bool_t vgcanvas_is_point_in_path (vgcanvas_t* vg, float_t x, float_t y);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_line_to"> line to。
+> <p id="vgcanvas_t_vgcanvas_line_to"> 生成一条线段(从当前点到目标点)。
+
 
 
 
@@ -591,7 +614,8 @@ ret_t vgcanvas_line_to (vgcanvas_t* vg, float_t x, float_t y);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_measure_text"> measure text
+> <p id="vgcanvas_t_vgcanvas_measure_text"> 测量文本的宽度。
+ 
 
 
 
@@ -614,7 +638,8 @@ float_t vgcanvas_measure_text (vgcanvas_t* vg, char* text);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_move_to"> move to
+> <p id="vgcanvas_t_vgcanvas_move_to"> 移动当前点到指定点。
+
 
 
 
@@ -644,6 +669,7 @@ ret_t vgcanvas_move_to (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
+
 * 函数原型：
 
 ```
@@ -663,7 +689,8 @@ ret_t vgcanvas_paint (vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_quad_to"> quadratic curve to
+> <p id="vgcanvas_t_vgcanvas_quad_to"> 生成一条二次贝塞尔曲线。
+
 
 
 
@@ -689,7 +716,8 @@ ret_t vgcanvas_quad_to (vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, flo
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rect"> rect
+> <p id="vgcanvas_t_vgcanvas_rect"> 生成一个矩形路径。
+
 
 
 
@@ -720,6 +748,7 @@ ret_t vgcanvas_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h)
 
 
 
+
 * 函数原型：
 
 ```
@@ -742,7 +771,8 @@ ret_t vgcanvas_reinit (vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride, 
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_reset"> reset
+> <p id="vgcanvas_t_vgcanvas_reset"> 重置状态。
+
 
 
 
@@ -764,7 +794,10 @@ ret_t vgcanvas_reset (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_restore"> restore
+> <p id="vgcanvas_t_vgcanvas_restore"> 恢复上次save的状态。
+
+ save/restore必须配套使用，否则可能导致状态混乱。
+
 
 
 
@@ -786,7 +819,8 @@ ret_t vgcanvas_restore (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rotate"> rotate
+> <p id="vgcanvas_t_vgcanvas_rotate"> 旋转。
+
 
 
 
@@ -809,7 +843,8 @@ ret_t vgcanvas_rotate (vgcanvas_t* vg, float_t rad);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_rounded_rect"> round rect
+> <p id="vgcanvas_t_vgcanvas_rounded_rect"> 生成一个圆角矩形路径。
+
 
 
 
@@ -836,7 +871,10 @@ ret_t vgcanvas_rounded_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, fl
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_save"> save
+> <p id="vgcanvas_t_vgcanvas_save"> 保存当前的状态。如颜色和矩阵等信息。
+
+ save/restore必须配套使用，否则可能导致状态混乱。
+
 
 
 
@@ -858,7 +896,8 @@ ret_t vgcanvas_save (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_scale"> scale
+> <p id="vgcanvas_t_vgcanvas_scale"> 缩放。
+
 
 
 
@@ -882,7 +921,8 @@ ret_t vgcanvas_scale (vgcanvas_t* vg, float_t x, float_t y);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_antialias"> set antialias
+> <p id="vgcanvas_t_vgcanvas_set_antialias"> 设置是否启用反走样。
+
 
 
 
@@ -905,7 +945,8 @@ ret_t vgcanvas_set_antialias (vgcanvas_t* vg, bool_t value);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_fill_color"> set fill color
+> <p id="vgcanvas_t_vgcanvas_set_fill_color"> 设置填充颜色。
+
 
 
 
@@ -923,12 +964,71 @@ ret_t vgcanvas_set_fill_color (vgcanvas_t* vg, color_t color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_fill\_linear\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_fill_linear_gradient"> 设置填充颜色为线性渐变色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_fill_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| sx | float\_t | start x |
+| sy | float\_t | start y |
+| ex | float\_t | end x |
+| ey | float\_t | end y |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
+#### vgcanvas\_set\_fill\_radial\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_fill_radial_gradient"> 设置填充颜色为径向渐变色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_fill_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| cx | float\_t | center x |
+| cy | float\_t | center y |
+| inr | float\_t | 内环半径 |
+| outr | float\_t | 外环半径。 |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_font 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_font"> set font
+> <p id="vgcanvas_t_vgcanvas_set_font"> 设置字体的名称。
+
 
 
 
@@ -951,7 +1051,8 @@ ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_font_size"> set font size
+> <p id="vgcanvas_t_vgcanvas_set_font_size"> 设置字体的大小。
+ 
 
 
 
@@ -974,7 +1075,8 @@ ret_t vgcanvas_set_font_size (vgcanvas_t* vg, float_t font);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_global_alpha"> set global alpha
+> <p id="vgcanvas_t_vgcanvas_set_global_alpha"> 设置全局透明度。
+
 
 
 
@@ -997,7 +1099,7 @@ ret_t vgcanvas_set_global_alpha (vgcanvas_t* vg, float_t alpha);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_line_cap"> set line cap
+> <p id="vgcanvas_t_vgcanvas_set_line_cap"> 设置line cap。
 
 
 
@@ -1020,7 +1122,7 @@ ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_line_join"> set line join
+> <p id="vgcanvas_t_vgcanvas_set_line_join"> 设置line join。
 
 
 
@@ -1043,7 +1145,8 @@ ret_t vgcanvas_set_line_join (vgcanvas_t* vg, char* value);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_line_width"> set line width
+> <p id="vgcanvas_t_vgcanvas_set_line_width"> 设置线条的宽度。
+
 
 
 
@@ -1061,68 +1164,12 @@ ret_t vgcanvas_set_line_width (vgcanvas_t* vg, float_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | float\_t | 线宽。 |
-#### vgcanvas\_set\_linear\_gradient 函数
------------------------
-
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_linear_gradient"> set fill linear gradient
-
-
-
-
-* 函数原型：
-
-```
-ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| sx | float\_t | start x |
-| sy | float\_t | start y |
-| ex | float\_t | end x |
-| ey | float\_t | end y |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
-#### vgcanvas\_set\_linear\_gradient 函数
------------------------
-
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_linear_gradient"> set stroke linear gradient
-
-
-
-
-* 函数原型：
-
-```
-ret_t vgcanvas_set_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| sx | float\_t | start x |
-| sy | float\_t | start y |
-| ex | float\_t | end x |
-| ey | float\_t | end y |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_miter\_limit 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_miter_limit"> set miter limit
+> <p id="vgcanvas_t_vgcanvas_set_miter_limit"> 设置miter limit。
 
 
 
@@ -1140,68 +1187,13 @@ ret_t vgcanvas_set_miter_limit (vgcanvas_t* vg, float_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | value | float\_t | miter limit |
-#### vgcanvas\_set\_radial\_gradient 函数
------------------------
-
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_radial_gradient"> set stroke radial gradient
-
-
-
-
-* 函数原型：
-
-```
-ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| cx | float\_t | center x |
-| cy | float\_t | center y |
-| inr | float\_t | 内环半径 |
-| outr | float\_t | 外环半径。 |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
-#### vgcanvas\_set\_radial\_gradient 函数
------------------------
-
-* 函数功能：
-
-> <p id="vgcanvas_t_vgcanvas_set_radial_gradient"> set fill radial gradient
-
-
-
-
-* 函数原型：
-
-```
-ret_t vgcanvas_set_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vg | vgcanvas\_t* | vgcanvas对象。 |
-| cx | float\_t | center x |
-| cy | float\_t | center y |
-| inr | float\_t | 内环半径 |
-| outr | float\_t | 外环半径。 |
-| icolor | color\_t | 开始颜色。 |
-| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_stroke\_color 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_stroke_color"> set stroke color
+> <p id="vgcanvas_t_vgcanvas_set_stroke_color"> 设置线条颜色。
+
 
 
 
@@ -1219,12 +1211,71 @@ ret_t vgcanvas_set_stroke_color (vgcanvas_t* vg, color_t color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_stroke\_linear\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_stroke_linear_gradient"> 设置线条颜色为线性渐变色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_stroke_linear_gradient (vgcanvas_t* vg, float_t sx, float_t sy, float_t ex, float_t ey, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| sx | float\_t | start x |
+| sy | float\_t | start y |
+| ex | float\_t | end x |
+| ey | float\_t | end y |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
+#### vgcanvas\_set\_stroke\_radial\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_stroke_radial_gradient"> 设置线条颜色为径向渐变色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_stroke_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy, float_t inr, float_t outr, color_t icolor, color_t ocolor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| cx | float\_t | center x |
+| cy | float\_t | center y |
+| inr | float\_t | 内环半径 |
+| outr | float\_t | 外环半径。 |
+| icolor | color\_t | 开始颜色。 |
+| ocolor | color\_t | 结束颜色。 |
 #### vgcanvas\_set\_text\_align 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_text_align"> set text align
+> <p id="vgcanvas_t_vgcanvas_set_text_align"> 设置文本水平对齐的方式。
+
 
 
 
@@ -1247,7 +1298,8 @@ ret_t vgcanvas_set_text_align (vgcanvas_t* vg, char* value);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_text_baseline"> set text baseline
+> <p id="vgcanvas_t_vgcanvas_set_text_baseline"> 设置文本垂直对齐的方式。
+
 
 
 
@@ -1270,7 +1322,8 @@ ret_t vgcanvas_set_text_baseline (vgcanvas_t* vg, char* value);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_set_transform"> set transform
+> <p id="vgcanvas_t_vgcanvas_set_transform"> 设置变换矩阵。
+
 
 
 
@@ -1303,6 +1356,7 @@ ret_t vgcanvas_set_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, f
 
 
 
+
 * 函数原型：
 
 ```
@@ -1320,7 +1374,8 @@ ret_t vgcanvas_stroke (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_transform"> transform
+> <p id="vgcanvas_t_vgcanvas_transform"> 变换矩阵。
+
 
 
 
@@ -1348,7 +1403,8 @@ ret_t vgcanvas_transform (vgcanvas_t* vg, float_t a, float_t b, float_t c, float
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_translate"> scale
+> <p id="vgcanvas_t_vgcanvas_translate"> 平移。
+
 
 
 
