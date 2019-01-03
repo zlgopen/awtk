@@ -342,7 +342,6 @@ struct _vgcanvas_t {
   const vgcanvas_vtable_t* vt;
 };
 
-
 /**
  * @method vgcanvas_create
  * 创建vgcanvas。
@@ -561,7 +560,7 @@ ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t
  * @method vgcanvas_close_path
  * 闭合路径。
  *
- * >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。 
+ * >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。
  *
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
@@ -715,7 +714,7 @@ ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font);
 /**
  * @method vgcanvas_set_font_size
  * 设置字体的大小。
- * 
+ *
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} font 字体大小。
  *
@@ -762,7 +761,7 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
 /**
  * @method vgcanvas_measure_text
  * 测量文本的宽度。
- * 
+ *
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {char*} text text
  *
@@ -856,7 +855,7 @@ ret_t vgcanvas_set_line_width(vgcanvas_t* vg, float_t value);
 ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t color);
 
 /**
- * @method vgcanvas_set_fill_linear_gradient 
+ * @method vgcanvas_set_fill_linear_gradient
  * 设置填充颜色为线性渐变色。
  *
  * @param {vgcanvas_t*} vg vgcanvas对象。
