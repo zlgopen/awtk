@@ -370,7 +370,7 @@ IME_Init(SDL_VideoData *videodata, HWND hwnd)
     videodata->ime_available = SDL_TRUE;
     IME_UpdateInputLocale(videodata);
     IME_SetupAPI(videodata);
-    videodata->ime_uiless = UILess_SetupSinks(videodata);
+    //videodata->ime_uiless = UILess_SetupSinks(videodata);//win10 不显示问题
     IME_UpdateInputLocale(videodata);
     IME_Disable(videodata, hwnd);
 }
@@ -879,27 +879,30 @@ IME_HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM *lParam, SDL_VideoD
         IME_InputLangChanged(videodata);
         break;
     case WM_IME_SETCONTEXT:
-        *lParam = 0;
+        //*lParam = 0;  //win7 窗口切换后输入框不显示问题
         break;
     case WM_IME_STARTCOMPOSITION:
-        trap = SDL_TRUE;
+        //trap = SDL_TRUE;
         break;
     case WM_IME_COMPOSITION:
-        trap = SDL_TRUE;
-        himc = ImmGetContext(hwnd);
-        if (*lParam & GCS_RESULTSTR) {
-            IME_GetCompositionString(videodata, himc, GCS_RESULTSTR);
-            IME_SendInputEvent(videodata);
-        }
-        if (*lParam & GCS_COMPSTR) {
-            if (!videodata->ime_uiless)
-                videodata->ime_readingstring[0] = 0;
+	{
+      /*trap = SDL_TRUE;
+      himc = ImmGetContext(hwnd);
+      if (*lParam & GCS_RESULTSTR) {
+        SDL_Log("WM_IME_COMPOSITION >>GCS_RESULTSTR\n");
+        IME_GetCompositionString(videodata, himc, GCS_RESULTSTR);
+        IME_SendInputEvent(videodata);
+      }
+      if (*lParam & GCS_COMPSTR) {
+        SDL_Log("WM_IME_COMPOSITION >>GCS_COMPSTR\n");
+       if (!videodata->ime_uiless) videodata->ime_readingstring[0] = 0;
 
-            IME_GetCompositionString(videodata, himc, GCS_COMPSTR);
-            IME_SendEditingEvent(videodata);
-        }
-        ImmReleaseContext(hwnd, himc);
-        break;
+        IME_GetCompositionString(videodata, himc, GCS_COMPSTR);
+        IME_SendEditingEvent(videodata);
+      }
+      ImmReleaseContext(hwnd, himc);*/
+	}
+       break;
     case WM_IME_ENDCOMPOSITION:
         videodata->ime_composition[0] = 0;
         videodata->ime_readingstring[0] = 0;
@@ -914,7 +917,7 @@ IME_HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM *lParam, SDL_VideoD
             break;
         case IMN_OPENCANDIDATE:
         case IMN_CHANGECANDIDATE:
-            if (videodata->ime_uiless)
+           // if (videodata->ime_uiless)
                 break;
 
             trap = SDL_TRUE;
