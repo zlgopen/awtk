@@ -305,7 +305,7 @@ ret_t vgcanvas_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float
 
 > <p id="vgcanvas_t_vgcanvas_close_path"> 闭合路径。
 
- >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。 
+ >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。
 
 
 
@@ -615,7 +615,7 @@ ret_t vgcanvas_line_to (vgcanvas_t* vg, float_t x, float_t y);
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_measure_text"> 测量文本的宽度。
- 
+
 
 
 
@@ -1052,7 +1052,7 @@ ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_font_size"> 设置字体的大小。
- 
+
 
 
 

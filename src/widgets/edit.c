@@ -1104,6 +1104,15 @@ static ret_t edit_on_clear(void* ctx, event_t* e) {
   return edit_clear(EDIT(ctx));
 }
 
+static ret_t edit_on_password_visible(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  widget_t* widget = WIDGET(e->target);
+
+  edit->password_visible = widget_get_prop_bool(widget, WIDGET_PROP_VALUE, edit->password_visible);
+
+  return RET_OK;
+}
+
 static ret_t edit_hook_button(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* edit = WIDGET(ctx);
@@ -1116,6 +1125,8 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, edit_on_dec, edit);
     } else if (tk_str_eq(name, "clear")) {
       widget_on(widget, EVT_CLICK, edit_on_clear, edit);
+    } else if (tk_str_eq(name, "visible")) {
+      widget_on(widget, EVT_VALUE_CHANGED, edit_on_password_visible, edit);
     }
   }
 

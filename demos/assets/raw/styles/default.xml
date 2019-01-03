@@ -476,3 +476,13 @@
   </style>
 </svg_image>
 
+<check_button>
+  <style name="password_visible" >
+    <normal  icon="invisible" />
+    <pressed icon="invisible" x_offset="1" y_offset="1"/>
+    <over    icon="invisible" />
+    <normal_of_checked icon="visible" />
+    <pressed_of_checked icon="visible" x_offset="1" y_offset="1"/>
+    <over_of_checked icon="visible" />
+  </style>
+</check_button>

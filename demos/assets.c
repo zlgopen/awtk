@@ -138,6 +138,7 @@
 #include "assets/inc/images/battery_0.res"
 #include "assets/inc/images/edit_clear_p.res"
 #include "assets/inc/images/arrow_up_o.res"
+#include "assets/inc/images/visible.res"
 #include "assets/inc/images/ani1.res"
 #include "assets/inc/images/arrow_left_o.res"
 #include "assets/inc/images/ani3.res"
@@ -217,6 +218,7 @@
 #include "assets/inc/images/edit_clear_n.res"
 #include "assets/inc/images/ani8.res"
 #include "assets/inc/images/logo.res"
+#include "assets/inc/images/invisible.res"
 #include "assets/inc/images/slider_drag_p.res"
 #include "assets/inc/images/backspace.res"
 #include "assets/inc/images/arrow_left_p.res"
@@ -249,11 +251,13 @@
 #include "assets/inc/images/left_on.data"
 #include "assets/inc/images/1.data"
 #include "assets/inc/images/question.data"
+#include "assets/inc/images/invisible.data"
 #include "assets/inc/images/guage_bg.data"
 #include "assets/inc/images/num_5.data"
 #include "assets/inc/images/num_dot.data"
 #include "assets/inc/images/arrow_right_n.data"
 #include "assets/inc/images/bee.data"
+#include "assets/inc/images/visible.data"
 #include "assets/inc/images/clock_bg.data"
 #include "assets/inc/images/me_active.data"
 #include "assets/inc/images/cursor.data"
@@ -478,11 +482,13 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_left_on);
   assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_question);
+  assets_manager_add(rm, image_invisible);
   assets_manager_add(rm, image_guage_bg);
   assets_manager_add(rm, image_num_5);
   assets_manager_add(rm, image_num_dot);
   assets_manager_add(rm, image_arrow_right_n);
   assets_manager_add(rm, image_bee);
+  assets_manager_add(rm, image_visible);
   assets_manager_add(rm, image_clock_bg);
   assets_manager_add(rm, image_me_active);
   assets_manager_add(rm, image_cursor);

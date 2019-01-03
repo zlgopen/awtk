@@ -60,11 +60,12 @@ typedef struct _input_limit_t {
  *
  * edit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于edit\_t控件。
  *
- * edit\_t本身可以做为容器，放入按钮等控件。有三个类按钮比较特殊：
+ * edit\_t本身可以做为容器，放入按钮等控件。有几个特殊的子控件：
  *
+ * * 名为"clear"的按钮。点击时清除编辑器中的内容。
  * * 名为"inc"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。
  * * 名为"dec"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。
- * * 名为"clear"的按钮。点击时清除编辑器中的内容。
+ * * 名为"visible"的复选框。勾选时显示密码，反之不显示密码。
  *
  *在xml中使用"edit"标签创建编辑器控件。如：
  *
@@ -75,8 +76,8 @@ typedef struct _input_limit_t {
  *
  * > XXX：需要在min/max/step之前设置input\_type。
  *
- * >
- *更多用法请参考：[edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
+ * >更多用法请参考：
+ * [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
  *
  * 在c代码中使用函数edit\_create创建编辑器控件。如：
  *
@@ -87,7 +88,8 @@ typedef struct _input_limit_t {
  *
  * > 创建之后，可以用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
  *
- * > 完整示例请参考：[edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)
+ * > 完整示例请参考：
+ * [edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)
  *
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
@@ -101,7 +103,8 @@ typedef struct _input_limit_t {
  * </style>
  * ```
  *
- * > 更多用法请参考：[theme
+ * > 更多用法请参考：
+ * [theme
  *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
  *
  */
