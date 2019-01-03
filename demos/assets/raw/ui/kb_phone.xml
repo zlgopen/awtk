@@ -1,5 +1,8 @@
-<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="30%">
-  <pages x="0" y="0" w="100%" h="100%" active="0">
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%">
+  <column style="placeholder" x="0" y="0" w="100%" h="30">
+    <button name="close" style="close" x="r:1" y="1" w="28" h="28" text="x" />
+  </column>
+  <pages x="0" y="30" w="100%" h="-30" active="0">
     <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=3,s=2,m=4)">
         <button name="1" text="1"/>
         <button name="2" text="2"/>

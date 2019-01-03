@@ -213,4 +213,5 @@
     </view>
   </pages>
   <candidates x="0" y="0" w="100%" h="30"/>
+  <button name="close" style="close" self_layout="default(floating=true, x=r:2, y=2, w=20, h=20)" text="x" />
 </keyboard>
