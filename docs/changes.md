@@ -3,6 +3,7 @@
   * 同步SDL代码。
   * 整理API文档：timer/idle
   * 用valgrind测试内存问题，并修改progress\_circle中的内存泄露问题。
+  * 修改桌面版本窗口resize的问题。
 
 * 2019/01/02
   * 整理API文档：input\_method/input\_method\_default/input\_method\_sdl/input\_method\_null
