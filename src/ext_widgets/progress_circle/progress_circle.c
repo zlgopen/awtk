@@ -158,7 +158,7 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
 static ret_t progress_circle_on_destroy(widget_t* widget) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
 
-  TKMEM_FREE(progress_circle->uint);
+  TKMEM_FREE(progress_circle->unit);
 
   return RET_OK;
 }
@@ -229,7 +229,7 @@ static const widget_vtable_t s_progress_circle_vtable = {
     .clone_properties = s_progress_circle_clone_properties,
     .create = progress_circle_create,
     .on_paint_self = progress_circle_on_paint_self,
-    .get_prop = progress_circle_on_destroy,
+    .on_destroy = progress_circle_on_destroy,
     .get_prop = progress_circle_get_prop,
     .set_prop = progress_circle_set_prop};
 
