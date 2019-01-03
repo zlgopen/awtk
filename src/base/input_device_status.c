@@ -45,8 +45,10 @@ static ret_t input_device_status_update_key_status(input_device_status_t* ids, u
     ids->ctrl = down;
   }
 
-  if (key == TK_KEY_CAPSLOCK) {
-    ids->capslock = down;
+  if (!down) {
+    if (key == TK_KEY_CAPSLOCK) {
+      ids->capslock = !(ids->capslock);
+    }
   }
 
   return RET_OK;
@@ -77,12 +79,16 @@ static ret_t input_device_status_shift_key(input_device_status_t* ids, key_event
   }
 
   if (ids->shift && ids->capslock) {
+    if (c >= 'A' && c <= 'Z') {
+      e->key = tolower(c);
+    }
+
     return RET_OK;
   }
 
   if (ids->shift || ids->capslock) {
-    if (c >= TK_KEY_a && c <= TK_KEY_z) {
-      e->key = c - 32;
+    if (c >= 'a' && c <= 'z') {
+      e->key = toupper(c);
     }
   }
 
