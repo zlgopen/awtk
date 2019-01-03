@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/01/03
+  * 同步SDL代码。
+  * 整理API文档：timer/idle
+
 * 2019/01/02
   * 整理API文档：input\_method/input\_method\_default/input\_method\_sdl/input\_method\_null
   * 整理API文档：input\_engine/input\_engine\_pinyin/input\_engine\_null

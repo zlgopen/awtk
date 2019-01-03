@@ -2,6 +2,24 @@
 ### 概述
  定时器系统。
 
+ > 本定时器精度较低，最高精度为1000/FPS，如果需要高精度的定时器，请用OS提供的定时器。
+
+ 示例：
+
+ ```c
+ static ret_t my_on_timer(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  ...
+  return RET_REPEAT;
+ }
+
+ ...
+
+ timer_add(my_on_timer, widget, 1000);
+ ```
+ > 在非GUI线程请用timer\_queue。
+
+
 ### 函数
 <p id="timer_t_methods">
 
@@ -27,7 +45,7 @@
 * 函数原型：
 
 ```
-uint32_t timer_add (timer_func_t on_timer, void* ctx, uint32_t duration_ms);
+uint32_t timer_add (timer_func_t on_timer, void* ctx, uint32_t duration);
 ```
 
 * 参数说明：
@@ -37,7 +55,7 @@ uint32_t timer_add (timer_func_t on_timer, void* ctx, uint32_t duration_ms);
 | 返回值 | uint32\_t | 返回timer的ID，TK\_INVALID\_ID表示失败。 |
 | on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
-| duration\_ms | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间。 |
 #### timer\_count 函数
 -----------------------
 
@@ -115,7 +133,7 @@ uint32_t timer_now ();
 * 函数原型：
 
 ```
-ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration_ms);
+ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration);
 ```
 
 * 参数说明：
@@ -125,7 +143,7 @@ ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration_ms);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 |  | timer\_func\_t | r |
 | ctx | void* | timer回调函数的上下文。 |
-| duration\_ms | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间。 |
 #### timer\_remove 函数
 -----------------------
 

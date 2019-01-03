@@ -1,6 +1,28 @@
 ## idle\_t
 ### 概述
- idle函数在主循环中paint之后执行。
+
+ idle可以看作是duration为0的定时器，不同的是idle函数在主循环中paint之后执行。
+
+ > idle可以用来实现一些异步处理。
+
+ 示例：
+
+ ```c
+ static ret_t something_on_idle(const idle_info_t* info) {
+   widget_t* widget = WIDGET(info->ctx);
+   edit_t* edit = EDIT(widget);
+   ...
+   return RET_REMOVE;
+ }
+
+ ...
+
+ idle_add(something_on_idle, edit);
+
+ ```
+
+ > 在非GUI线程请用idle\_queue。
+
 
 ### 函数
 <p id="idle_t_methods">

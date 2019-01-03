@@ -120,13 +120,26 @@
 * [input\_engine\_null](manual/input_engine_null_t.md) 空输入法引擎实现。
 * [input\_engine\_pinyin](manual/input_engine_pinyin_t.md) 拼音输入法引擎实现。
 
+### 定时器/IDLE
+
+![timer\_overview](images/timer_overview.png)
+
+* [timer](manual/timer_t.md) 定时器。
+
+* [timer\_info](manual/timer_info_t.md) 单个timer的信息。
+
+![idle\_overview](images/idle_overview.png)
+
+* [idle](manual/idle_t.md) 用于异步执行一些函数。 
+
+* [idle\_info](manual/idle_info_t.md) 单个idle的信息。 
+
 ### 控件动画
 
 ### 窗口动画
 
 ### 布局器
 
-### 定时器
 
 ## 二、基本函数库
 

@@ -1,0 +1,11 @@
+digraph UML {
+  rankdir  = LR
+     
+  fontname = "Courier New"
+  fontsize = 10
+     
+  node [ fontname = "Courier New", fontsize = 10, shape = "record" ];
+  edge [ fontname = "Courier New", fontsize = 10 ];
+     
+  idle_t -> idle_info_t[arrowhead=vee]
+}
