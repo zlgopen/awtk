@@ -1,4 +1,4 @@
-<window theme="slide_menu" children_layout="default(c=1,h=80,s=10)">
+<window theme="slide_menu" children_layout="default(c=1,h=50,s=10)">
   <slide_menu align_v="top">
     <button style="slide_button" text="0"/>
     <button style="slide_button" text="1"/>
@@ -12,6 +12,8 @@
     <button style="slide_button" text="2"/>
     <button style="slide_button" text="3"/>
     <button style="slide_button" text="4"/>
+    <button style="slide_button" text="5"/>
+    <button style="slide_button" text="6"/>
   </slide_menu>
   <slide_menu align_v="bottom">
     <button style="slide_button" text="0"/>
@@ -19,6 +21,11 @@
     <button style="slide_button" text="2"/>
     <button style="slide_button" text="3"/>
     <button style="slide_button" text="4"/>
+    <button style="slide_button" text="5"/>
+    <button style="slide_button" text="6"/>
+    <button style="slide_button" text="7"/>
+    <button style="slide_button" text="8"/>
+    <button style="slide_button" text="9"/>
   </slide_menu>
   <slide_menu align_v="middle" min_scale="1">
     <button style="slide_button" text="0"/>
@@ -26,5 +33,10 @@
     <button style="slide_button" text="2"/>
     <button style="slide_button" text="3"/>
     <button style="slide_button" text="4"/>
+    <button style="slide_button" text="5"/>
+    <button style="slide_button" text="6"/>
+    <button style="slide_button" text="7"/>
+    <button style="slide_button" text="8"/>
+    <button style="slide_button" text="9"/>
   </slide_menu>
 </window>
