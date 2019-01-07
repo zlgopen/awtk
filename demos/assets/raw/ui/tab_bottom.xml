@@ -1,11 +1,13 @@
 <window anim_hint="htranslate" theme="tab_bottom">
-  <pages x="0" y="0" w="100%" h="-60" style="at_top">
-    <?include filename="tab_views.inc" ?>
-  </pages>
-  <tab_button_group x="0" y="bottom" w="100%" h="60" >
-    <tab_button icon="msg" active_icon="msg_active" text="Message"/>
-    <tab_button icon="contact" active_icon="contact_active" text="Contact" value="true" />
-    <tab_button icon="discovery" active_icon="discovery_active" text="Discovery" />
-    <tab_button icon="me" active_icon="me_active" text="Me" />
-  </tab_button_group>
+  <tab_control x="0" y="0" w="100%" h="100%" >
+    <pages x="0" y="0" w="100%" h="-60" style="at_top">
+      <?include filename="tab_views.inc" ?>
+    </pages>
+    <tab_button_group x="0" y="bottom" w="100%" h="60" >
+      <tab_button icon="msg" active_icon="msg_active" text="Message"/>
+      <tab_button icon="contact" active_icon="contact_active" text="Contact" value="true" />
+      <tab_button icon="discovery" active_icon="discovery_active" text="Discovery" />
+      <tab_button icon="me" active_icon="me_active" text="Me" />
+    </tab_button_group>
+  </tab_control>
 </window>

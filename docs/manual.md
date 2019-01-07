@@ -32,6 +32,9 @@
 * [dialog\_client](manual/dialog_client_t.md) 对话框客户区控件。
 * [slider](manual/slider_t.md) 滑块控件。
 * [progress\_bar](manual/progress_bar_t.md) 进度条控件。
+* [tab\_control](manual/tab_control_t.md) 标签控件。
+* [tab\_button](manual/tab_button_t.md) 标签按钮控件。
+* [tab\_button\_group](manual/tab_button_group_t.md) 标签按钮分组控件。
 
 #### 通用容器控件
 * [row](manual/row_t.md) 行控件。

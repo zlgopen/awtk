@@ -2,6 +2,7 @@
 
 * 2019/01/07
   * 修改"Copyright (c) 2018 - 2018"为"Copyright (c) 2018 - 2019"
+  * 整理API文档：tab\_control/tab\_button/tab\_button\_group。
 
 * 2019/01/04
   * slide\_menu动态决定可见子控件的个数(由长度与宽度比例和子控件个数决定)。

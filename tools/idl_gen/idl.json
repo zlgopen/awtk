@@ -17923,7 +17923,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/tab_control.h",
-    "desc": " 标签控件。\r\n",
+    "desc": " 标签控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n\r\n 标签控件通常会包含一个pages控件和一个tab\\_button\\_group控件。\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   pages_t -> tab_control_t[arrowhead = \"ediamond\"]\r\n   tab_button_group_t -> tab_control_t[arrowhead = \"ediamond\"]\r\n   view_t ->pages_t[arrowhead = \"ediamond\"]\r\n   tab_button_t -> tab_button_group_t[arrowhead = \"ediamond\"]\r\n ```\r\n\r\n tab\\_control\\_t是[widget\\_t](widget_t.md)的子类控件，\r\n widget\\_t的函数均适用于tab\\_control\\_t控件。\r\n\r\n 在xml中使用\"tab\\_control\"标签创建标签控件。如：\r\n\r\n ```xml\r\n <tab_control x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" >\r\n   <pages x=\"c\" y=\"20\" w=\"90%\" h=\"-60\" value=\"1\">\r\n   ...\r\n   </pages>\r\n   <tab_button_group>\r\n   ...\r\n   </tab_button_group>\r\n </tab_control>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n",
     "name": "tab_control_t",
     "parent": "widget_t",
     "annotation": {
@@ -22146,7 +22146,7 @@
     "events": [],
     "properties": [],
     "header": "keyboard/keyboard.h",
-    "desc": " 键盘。\r\n",
+    "desc": " 键盘。\r\n\r\n",
     "name": "keyboard_t",
     "parent": "widget_t",
     "level": 2
@@ -24796,7 +24796,7 @@
       }
     ],
     "header": "widgets/edit.h",
-    "desc": " 单行编辑器控件。\r\n\r\n 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。\r\n\r\n 在使用内置的输入法时，软键盘由输入类型决定，开发者可以自定义软键盘的界面。\r\n\r\n edit\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于edit\\_t控件。\r\n\r\n edit\\_t本身可以做为容器，放入按钮等控件。有几个特殊的子控件：\r\n\r\n * 名为\"clear\"的按钮。点击时清除编辑器中的内容。\r\n * 名为\"inc\"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"dec\"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"visible\"的复选框。勾选时显示密码，反之不显示密码。\r\n\r\n在xml中使用\"edit\"标签创建编辑器控件。如：\r\n\r\n ```xml\r\n <edit x=\"c\" y=\"m\" w=\"80\" h=\"30\"\r\n   tips=\"age\" input_type=\"uint\" min=\"0\" max=\"150\" step=\"1\" auto_fix=\"true\" style=\"number\" />\r\n ```\r\n\r\n > XXX：需要在min/max/step之前设置input\\_type。\r\n\r\n >更多用法请参考：\r\n [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)\r\n\r\n 在c代码中使用函数edit\\_create创建编辑器控件。如：\r\n\r\n ```c\r\n  widget_t* edit = edit_create(win, 10, 10, 128, 30);\r\n  widget_set_text(edit, L\"OK\");\r\n ```\r\n\r\n > 创建之后，可以用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)\r\n\r\n",
+    "desc": " 单行编辑器控件。\r\n\r\n 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。\r\n\r\n 在使用内置的输入法时，软键盘由输入类型决定，开发者可以自定义软键盘的界面。\r\n\r\n edit\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于edit\\_t控件。\r\n\r\n edit\\_t本身可以做为容器，放入按钮等控件。有几个特殊的子控件：\r\n\r\n * 名为\"clear\"的按钮。点击时清除编辑器中的内容。\r\n * 名为\"inc\"的按钮。点击时增加编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"dec\"的按钮。点击时减少编辑器的值，用于实现类似于spinbox的功能。\r\n * 名为\"visible\"的复选框。勾选时显示密码，反之不显示密码。\r\n\r\n在xml中使用\"edit\"标签创建编辑器控件。如：\r\n\r\n ```xml\r\n <edit x=\"c\" y=\"m\" w=\"80\" h=\"30\"\r\n   tips=\"age\" input_type=\"uint\" min=\"0\" max=\"150\" step=\"1\" auto_fix=\"true\" style=\"number\" />\r\n ```\r\n\r\n > XXX：需要在min/max/step之前设置input\\_type。\r\n\r\n >更多用法请参考：\r\n [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)\r\n\r\n 在c代码中使用函数edit\\_create创建编辑器控件。如：\r\n\r\n ```c\r\n  widget_t* edit = edit_create(win, 10, 10, 128, 30);\r\n  widget_set_text(edit, L\"OK\");\r\n ```\r\n\r\n > 创建之后，可以用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [edit demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/edit.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)\r\n\r\n",
     "name": "edit_t",
     "parent": "widget_t",
     "annotation": {
@@ -25208,7 +25208,7 @@
       }
     ],
     "header": "widgets/tab_button.h",
-    "desc": " 标签按钮控件。\r\n",
+    "desc": " 标签按钮控件。\r\n\r\n 标签按钮有点类似单选按钮，但点击标签按钮之后会自动切换当前的标签页。\r\n\r\n tab\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于tab\\_button\\_t控件。\r\n\r\n 在xml中使用\"tab\\_button\"标签创建标签按钮控件。如：\r\n\r\n ```xml\r\n   <tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\r\n     <tab_button text=\"General\"/>\r\n     <tab_button text=\"Network\" value=\"true\" />\r\n     <tab_button text=\"Security\"/>\r\n   </tab_button_group>\r\n ```\r\n\r\n 标签按钮一般放在标签按钮分组中，布局由标签按钮分组控件决定，不需要指定自己的布局参数和坐标。\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <tab_button>\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#d0d0d0\" />\r\n   <pressed    bg_color=\"#f0f0f0\" />\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <normal_of_active     bg_color=\"#f0f0f0\" />\r\n   <pressed_of_active    bg_color=\"#f0f0f0\" />\r\n   <over_of_active       bg_color=\"#f0f0f0\" />\r\n </style>\r\n </tab_button>\r\n ```\r\n\r\n",
     "name": "tab_button_t",
     "parent": "widget_t",
     "annotation": {
@@ -25443,7 +25443,7 @@
       }
     ],
     "header": "widgets/pages.h",
-    "desc": " Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。\r\n",
+    "desc": " 页面管理控件。\r\n\r\n 只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。\r\n 常用于实现标签控件中的页面管理。\r\n\r\n pages\\_t是[widget\\_t](widget_t.md)的子类控件，\r\n widget\\_t的函数均适用于pages\\_t控件。\r\n\r\n 在xml中使用\"pages\"标签创建页面管理控件。如：\r\n\r\n ```xml\r\n <tab_control x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" >\r\n   <pages x=\"c\" y=\"20\" w=\"90%\" h=\"-60\" value=\"1\">\r\n   ...\r\n   </pages>\r\n   <tab_button_group>\r\n   ...\r\n   </tab_button_group>\r\n </tab_control>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n",
     "name": "pages_t",
     "parent": "widget_t",
     "annotation": {
@@ -26212,7 +26212,7 @@
       }
     ],
     "header": "widgets/tab_button_group.h",
-    "desc": " Tab Button Group控件。\r\n",
+    "desc": " 标签按钮分组控件。\r\n\r\n 一个简单的容器，主要用于对标签按钮进行布局和管理。\r\n\r\n tab\\_button\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，\r\n widget\\_t的函数均适用于tab\\_button\\_group\\_t控件。\r\n\r\n 在xml中使用\"tab\\_button\\_group\"标签创建标签按钮分组控件。如：\r\n\r\n ```xml\r\n   <tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\r\n     <tab_button text=\"General\"/>\r\n     <tab_button text=\"Network\" value=\"true\" />\r\n     <tab_button text=\"Security\"/>\r\n   </tab_button_group>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 可用通过style来设置控件的显示风格，如颜色等等。如：\r\n\r\n ```xml\r\n <tab_button_group>\r\n  <style name=\"default\">\r\n   <normal/>\r\n  </style>\r\n </tab_button_group>\r\n ```\r\n\r\n",
     "name": "tab_button_group_t",
     "parent": "widget_t",
     "annotation": {

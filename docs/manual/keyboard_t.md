@@ -3,6 +3,7 @@
 ![image](images/keyboard_t_0.png)
 
  键盘。
+
 ### 函数
 <p id="keyboard_t_methods">
 

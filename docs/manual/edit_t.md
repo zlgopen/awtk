@@ -54,7 +54,8 @@
  ```
 
  > 更多用法请参考：
- [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+ [theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
 
 ### 函数
 <p id="edit_t_methods">
