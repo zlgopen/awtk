@@ -53,6 +53,7 @@ typedef int32_t xy_t;
 typedef int32_t wh_t;
 typedef float float_t;
 typedef void* pointer_t;
+typedef uint16_t font_size_t;
 
 /**
  * @enum ret_t

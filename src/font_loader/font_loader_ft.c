@@ -55,12 +55,12 @@ static ret_t glyph_ft_destory(glyph_ft_t* g) {
   return RET_OK;
 }
 
-static bool_t font_ft_match(font_t* f, const char* name, uint16_t font_size) {
+static bool_t font_ft_match(font_t* f, const char* name, font_size_t font_size) {
   (void)font_size;
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
-static ret_t font_ft_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
+static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
   FT_Glyph glyph;
@@ -100,7 +100,7 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t
   return g->data != NULL ? RET_OK : RET_NOT_FOUND;
 }
 
-static int32_t font_ft_get_baseline(font_t* f, uint16_t font_size) {
+static int32_t font_ft_get_baseline(font_t* f, font_size_t font_size) {
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
 

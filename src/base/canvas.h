@@ -47,7 +47,7 @@ struct _canvas_t {
 
   lcd_t* lcd;
   font_t* font;
-  uint16_t font_size;
+  font_size_t font_size;
   const char* font_name;
 
   align_v_t text_align_v;
@@ -69,7 +69,7 @@ ret_t canvas_set_fill_color(canvas_t* c, color_t color);
 ret_t canvas_set_text_color(canvas_t* c, color_t color);
 ret_t canvas_set_stroke_color(canvas_t* c, color_t color);
 ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha);
-ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size);
+ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size);
 ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v);
 
 float_t canvas_measure_text(canvas_t* c, wchar_t* str, uint32_t nr);

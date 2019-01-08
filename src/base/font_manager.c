@@ -63,7 +63,7 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return array_push(&(fm->fonts), font);
 }
 
-static font_t* font_manager_lookup(font_manager_t* fm, const char* name, uint16_t size) {
+static font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
   uint32_t i = 0;
   uint32_t nr = 0;
   font_t** fonts = NULL;
@@ -100,7 +100,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
   return font;
 }
 
-font_t* font_manager_get_font(font_manager_t* fm, const char* name, uint16_t size) {
+font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size) {
   font_t* font = NULL;
 
   name = name != NULL ? name : TK_DEFAULT_FONT;

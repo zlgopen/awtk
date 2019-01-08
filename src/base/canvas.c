@@ -207,7 +207,7 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
   return RET_OK;
 }
 
-ret_t canvas_set_font(canvas_t* c, const char* name, uint16_t size) {
+ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
   c->font_name = name;
@@ -489,7 +489,7 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
 
 static ret_t canvas_draw_char_impl(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   glyph_t g;
-  uint16_t font_size = c->font_size;
+  font_size_t font_size = c->font_size;
   return_value_if_fail(font_get_glyph(c->font, chr, font_size, &g) == RET_OK, RET_BAD_PARAMS);
 
   x += g.x;
@@ -509,7 +509,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
   uint32_t i = 0;
   xy_t left = x;
   uint32_t start_time = time_now_ms();
-  uint16_t font_size = c->font_size;
+  font_size_t font_size = c->font_size;
 
   y -= font_size * 1 / 3;
   for (i = 0; i < nr; i++) {
