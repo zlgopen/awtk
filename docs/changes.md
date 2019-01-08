@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/01/08
+  * 完善text\_selector，增加mask color，实现伪3D效果。
+  * 修改font size的类型为font\_size\_t。
+
 * 2019/01/07
   * 修改"Copyright (c) 2018 - 2018"为"Copyright (c) 2018 - 2019"
   * 整理API文档：tab\_control/tab\_button/tab\_button\_group。
