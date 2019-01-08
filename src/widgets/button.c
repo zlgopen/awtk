@@ -46,12 +46,21 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   button->repeat_nr++;
   widget_dispatch(widget, (event_t*)&evt);
 
-  if (button->repeat_nr == 4) {
-    evt.e = event_init(EVT_LONG_PRESS, widget);
-    widget_dispatch(widget, (event_t*)&evt);
-  }
-
   return RET_REPEAT;
+}
+
+static ret_t button_on_long_press(const timer_info_t* info) {
+  pointer_event_t evt;
+  widget_t* widget = WIDGET(info->ctx);
+
+  evt.x = 0;
+  evt.y = 0;
+  evt.e = event_init(EVT_LONG_PRESS, widget);
+  widget_dispatch(widget, (event_t*)&evt);
+
+  log_debug("Long Pressed:%s\n", widget->name);
+
+  return RET_REMOVE;
 }
 
 static ret_t button_pointer_up_cleanup(widget_t* widget) {
@@ -77,7 +86,10 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       button_remove_timer(widget);
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
+      } else {
+        button->timer_id = timer_add(button_on_long_press, widget, TK_LONG_PRESS_TIME);
       }
+
       widget_grab(widget->parent, widget);
       break;
     }

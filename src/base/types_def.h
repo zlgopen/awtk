@@ -241,4 +241,6 @@ typedef struct _widget_t widget_t;
     y = y - h + 1;           \
   }
 
+#define TK_LONG_PRESS_TIME 1000
+
 #endif /*TK_TYPES_DEF_H*/
