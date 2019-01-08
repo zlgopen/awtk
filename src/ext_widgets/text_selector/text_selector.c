@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "tkc/easing.h"
 #include "widgets/button.h"
 #include "base/layout.h"
 #include "widgets/popup.h"
@@ -35,15 +36,47 @@ const char* s_text_selector_properties[] = {
     WIDGET_PROP_OPTIONS,        TEXT_SELECTOR_PROP_VISIBLE_NR,
     WIDGET_PROP_SELECTED_INDEX, NULL};
 
+static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
+  int32_t i = 0;
+  int32_t y = 0;
+  int32_t n = widget->h / 2;
+  style_t* style = widget->astyle;
+  color_t trans = color_init(0, 0, 0, 0);
+  easing_func_t easing = easing_get(EASING_CUBIC_IN);
+  color_t mask_color = style_get_color(style, STYLE_ID_MASK_COLOR, trans);
+
+  if (mask_color.rgba.a) {
+    for (i = 0; i < n; i++) {
+      y = n - i - 1;
+
+      mask_color.rgba.a = 0xff * easing((float_t)i / (float_t)n);
+      canvas_set_stroke_color(c, mask_color);
+      canvas_draw_hline(c, 0, y, widget->w);
+    }
+
+    for (i = 0; i < n; i++) {
+      y = widget->h - n + i;
+
+      mask_color.rgba.a = 0xff * easing((float_t)i / (float_t)n);
+      canvas_set_stroke_color(c, mask_color);
+      canvas_draw_hline(c, 0, y, widget->w);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   text_selector_option_t* iter = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   uint32_t y = 0;
   uint32_t i = 0;
+  int32_t half_h = widget->h / 2;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   int32_t yoffset = text_selector->yoffset;
+  int32_t visible_nr = text_selector->visible_nr;
   int32_t item_height = widget->h / text_selector->visible_nr;
   color_t fc = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   rect_t r = rect_init(0, 0, widget->w, item_height);
@@ -53,7 +86,7 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
 
   if (fc.rgba.a) {
     canvas_set_stroke_color(c, fc);
-    for (i = 1; i < text_selector->visible_nr; i++) {
+    for (i = 1; i < visible_nr; i++) {
       y = i * item_height;
       canvas_draw_hline(c, 0, y, widget->w);
     }
@@ -84,6 +117,7 @@ static ret_t text_selector_on_paint_self(widget_t* widget, canvas_t* c) {
   if (r.w > 0 && r.h > 0) {
     canvas_set_clip_rect(c, &r);
     text_selector_paint_self(widget, c);
+    text_selector_paint_mask(widget, c);
     canvas_set_clip_rect(c, &r_save);
   }
 
