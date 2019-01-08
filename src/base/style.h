@@ -46,6 +46,12 @@ BEGIN_C_DECLS
 #define STYLE_ID_FG_COLOR "fg_color"
 
 /**
+ * @const STYLE_ID_MASK_COLOR
+ * 蒙版颜色。
+ */
+#define STYLE_ID_MASK_COLOR "mask_color"
+
+/**
  * @const STYLE_ID_FONT_NAME
  * 字体名称。
  */
