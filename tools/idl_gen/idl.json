@@ -1905,7 +1905,7 @@
             "desc": "字体名，为NULL时使用TK_DEFAULT_FONT。"
           },
           {
-            "type": "uint16_t",
+            "type": "font_size_t",
             "name": "size",
             "desc": "字体的大小。"
           }
@@ -2088,7 +2088,7 @@
             "desc": "font对象。"
           },
           {
-            "type": "uint16_t",
+            "type": "font_size_t",
             "name": "font_size",
             "desc": "字体大小。"
           }
@@ -2114,7 +2114,7 @@
             "desc": "字体名称。"
           },
           {
-            "type": "uint16_t",
+            "type": "font_size_t",
             "name": "font_size",
             "desc": "字体大小。"
           }
@@ -2140,7 +2140,7 @@
             "desc": "字符。"
           },
           {
-            "type": "uint16_t",
+            "type": "font_size_t",
             "name": "font_size",
             "desc": "字体大小。"
           },
@@ -4716,6 +4716,10 @@
       {
         "desc": " 前景颜色。\n\n",
         "name": "STYLE_ID_FG_COLOR"
+      },
+      {
+        "desc": " 蒙版颜色。\n\n",
+        "name": "STYLE_ID_MASK_COLOR"
       },
       {
         "desc": " 字体名称。\n\n",
@@ -20499,7 +20503,7 @@
     "events": [],
     "properties": [],
     "header": "canvas_widget/canvas_widget.h",
-    "desc": " 画布控件。\r\n",
+    "desc": " 画布控件。\r\n\r\n 画布控件让开发者可以自己在控件上绘制需要的内容。\r\n\r\n canvas\\_widget\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于canvas\\_widget\\_t控件。\r\n\r\n 在xml中使用\"canvas\"标签创建画布控件。如：\r\n\r\n ```xml\r\n <canvas name=\"paint_vgcanvas\" x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [canvas_widget.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/vgcanvas.xml)\r\n\r\n 在c代码中使用函数canvas\\_widget\\_create创建画布控件。如：\r\n\r\n ```c\r\n widget_t* canvas = canvas_widget_create(win, 0, 0, win->w, win->h);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_on注册EVT\\_PAINT事件，并在EVT\\_PAINT事件处理函数中绘制。\r\n\r\n ```c\r\n widget_on(canvas, EVT_PAINT, on_paint_event, canvas);\r\n ```\r\n\r\n 绘制时，可以通过canvas接口去绘制，也可以通过vgcanvas接口去绘制。\r\n 先从evt获取canvas对象，再通过canvas\\_get\\_vgcanvas从canvas中获取vgcanvas对象。\r\n\r\n ```c\r\n\r\n static ret_t on_paint_event(void* ctx, event_t* evt) {\r\n  widget_t* canvas_widget = WIDGET(ctx);\r\n  canvas_t* c = paint_event_cast(evt)->c;\r\n  vgcanvas_t* vg = canvas_get_vgcanvas(c);\r\n  color_t bg = color_init(0xe0, 0xe0, 0xe0, 0xff);\r\n  color_t tc = color_init(0, 0, 0, 0xff);\r\n  rect_t r = rect_init(canvas_widget->x, canvas_widget->y, canvas_widget->w, canvas_widget->h);\r\n\r\n  vgcanvas_save(vg);\r\n  vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);\r\n  vgcanvas_translate(vg, r.x, r.y);\r\n\r\n ...\r\n\r\n  vgcanvas_restore(vg);\r\n\r\n  return RET_OK;\r\n }\r\n ```\r\n\r\n > 完整示例请参考：\r\n [canvas demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/canvas.c)\r\n\r\n",
     "name": "canvas_widget_t",
     "parent": "widget_t",
     "annotation": {

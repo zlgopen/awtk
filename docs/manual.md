@@ -46,6 +46,9 @@
 * [app\_bar](manual/app_bar_t.md) app\_bar控件。
 * [button\_group](manual/button_group_t.md) 按钮分组控件。
 
+#### 扩展控件
+* [canvas\_widget](manual/canvas_widget_t.md) 画布控件。
+
 ### 画布
 
 #### 矢量图画布

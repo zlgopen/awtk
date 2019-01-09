@@ -2,6 +2,8 @@
 
 * 2019/01/09
   * 完善slide menu，增加mask color，实现两边的按钮淡出的效果。
+  * 增加canavs widget的demo
+  * 整理API文档：canvas\_widget
 
 * 2019/01/08
   * 完善text\_selector，增加mask color，实现伪3D效果。
