@@ -1,12 +1,12 @@
-<window theme="slide_menu" children_layout="default(c=1,h=50,s=10)">
-  <slide_menu align_v="top">
+<window theme="slide_menu" children_layout="default(c=1,h=60,s=10)">
+  <slide_menu style="mask" align_v="top">
     <button style="slide_button" text="0"/>
     <button style="slide_button" text="1"/>
     <button style="slide_button" text="2"/>
     <button style="slide_button" text="3"/>
     <button style="slide_button" text="4"/>
   </slide_menu>
-  <slide_menu align_v="middle">
+  <slide_menu style="mask" align_v="middle">
     <button style="slide_button" text="0"/>
     <button style="slide_button" text="1"/>
     <button style="slide_button" text="2"/>

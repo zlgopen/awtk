@@ -489,3 +489,12 @@
     <over_of_checked icon="visible" />
   </style>
 </check_button>
+
+<slide_menu>
+  <style name="default">
+    <normal     bg_color="#f0f0f0"/>
+  </style>
+  <style name="mask">
+    <normal     bg_color="#f0f0f0" mask_color="#f0f0f0"/>
+  </style>
+</slide_menu>

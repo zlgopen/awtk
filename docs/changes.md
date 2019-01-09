@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/01/09
+  * 完善slide menu，增加mask color，实现两边的按钮淡出的效果。
+
 * 2019/01/08
   * 完善text\_selector，增加mask color，实现伪3D效果。
   * 修改font size的类型为font\_size\_t。

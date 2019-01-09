@@ -119,6 +119,41 @@ static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t slide_menu_paint_mask(widget_t* widget, canvas_t* c, rect_t* r) {
+  int32_t i = 0;
+  int32_t x = 0;
+  int32_t n = r->w / 2 + 2;
+  int32_t cx = widget->w / 2;
+  style_t* style = widget->astyle;
+  color_t trans = color_init(0, 0, 0, 0);
+  easing_func_t easing = easing_get(EASING_LINEAR);
+  color_t mask_color = style_get_color(style, STYLE_ID_MASK_COLOR, trans);
+
+  if (mask_color.rgba.a) {
+    for (i = 0; i < n; i++) {
+      x = cx - i;
+
+      if (x >= 0) {
+        mask_color.rgba.a = 0xff * easing((float_t)i / (float_t)n);
+        canvas_set_stroke_color(c, mask_color);
+        canvas_draw_vline(c, x, 0, widget->h);
+      }
+    }
+
+    for (i = 0; i < n; i++) {
+      x = cx + i;
+
+      if (x < widget->w) {
+        mask_color.rgba.a = 0xff * easing((float_t)i / (float_t)n);
+        canvas_set_stroke_color(c, mask_color);
+        canvas_draw_vline(c, x, 0, widget->h);
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
   if (slide_menu_get_visible_nr(widget) >= 1) {
     rect_t r;
@@ -133,6 +168,7 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
     canvas_set_clip_rect(c, &r);
     slide_menu_paint_children(widget, c);
     canvas_set_clip_rect(c, &save_r);
+    slide_menu_paint_mask(widget, c, &clip_r);
   }
 
   return RET_OK;
