@@ -408,3 +408,7 @@ ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
 
   return RET_NOT_IMPL;
 }
+
+vgcanvas_t* vgcanvas_cast(vgcanvas_t* vg) {
+  return vg;
+}

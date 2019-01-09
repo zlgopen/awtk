@@ -977,7 +977,864 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          },
+          {
+            "type": "font_manager_t*",
+            "name": "font_manager",
+            "desc": "字体管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化，系统内部调用。\r\n\r\n\r\n",
+        "name": "canvas_init",
+        "return": {
+          "type": "canvas_t*",
+          "desc": "返回canvas对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取画布的宽度。\r\n\r\n\r\n\r\n",
+        "name": "canvas_get_width",
+        "return": {
+          "type": "wh_t",
+          "desc": "返回画布的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取画布的高度。\r\n\r\n\r\n\r\n",
+        "name": "canvas_get_height",
+        "return": {
+          "type": "wh_t",
+          "desc": "返回画布的高度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取裁剪区。\r\n\r\n\r\n",
+        "name": "canvas_get_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置裁剪区。\r\n\r\n\r\n",
+        "name": "canvas_set_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "translate",
+            "desc": "是否将裁剪区的位置加上canvas当前的偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置裁剪区。\r\n\r\n\r\n",
+        "name": "canvas_set_clip_rect_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置填充颜色。\r\n\r\n\r\n",
+        "name": "canvas_set_fill_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置文本颜色。\r\n\r\n\r\n",
+        "name": "canvas_set_text_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置线条颜色。\r\n\r\n\r\n",
+        "name": "canvas_set_stroke_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置填充颜色。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_set_fill_color_str",
+        "alias": "canvas_set_fill_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置文本颜色。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_set_text_color_str",
+        "alias": "canvas_set_text_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置线条颜色。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_set_stroke_color_str",
+        "alias": "canvas_set_stroke_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "alpha",
+            "desc": "alpha值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置全局alpha值。\r\n\r\n\r\n",
+        "name": "canvas_set_global_alpha",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dx",
+            "desc": "x偏移。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dy",
+            "desc": "y偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 平移原点坐标。\r\n\r\n\r\n",
+        "name": "canvas_translate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dx",
+            "desc": "x偏移。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dy",
+            "desc": "y偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 反向平移原点坐标。\r\n\r\n\r\n",
+        "name": "canvas_untranslate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 画垂直线。\r\n\r\n\r\n",
+        "name": "canvas_draw_vline",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 画水平线。\r\n\r\n\r\n",
+        "name": "canvas_draw_hline",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const point_t*",
+            "name": "points",
+            "desc": "点数组。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "点的个数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 画多个点。\r\n\r\n\r\n",
+        "name": "canvas_draw_points",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 填充矩形。\r\n\r\n\r\n",
+        "name": "canvas_fill_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 绘制矩形。\r\n\r\n\r\n",
+        "name": "canvas_stroke_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名称。"
+          },
+          {
+            "type": "font_size_t",
+            "name": "size",
+            "desc": "字体大小。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置字体。\r\n\r\n\r\n",
+        "name": "canvas_set_font",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "align_h_t",
+            "name": "align_h",
+            "desc": "水平对齐方式。"
+          },
+          {
+            "type": "align_v_t",
+            "name": "align_v",
+            "desc": "垂直对齐方式。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置文本对齐方式。\r\n\r\n\r\n",
+        "name": "canvas_set_text_align",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 计算文本所占的宽度。\r\n\r\n\r\n",
+        "name": "canvas_measure_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回文本所占的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 计算文本所占的宽度。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_measure_utf8",
+        "alias": "canvas_measure_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回文本所占的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 绘制文本。\r\n\r\n\r\n",
+        "name": "canvas_draw_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 绘制文本。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_draw_utf8",
+        "alias": "canvas_draw_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 绘制文本。\r\n\r\n\r\n",
+        "name": "canvas_draw_text_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 绘制文本。\r\n\r\n > 供脚本语言使用。\r\n\r\n\r\n",
+        "name": "canvas_draw_utf8_in_rect",
+        "alias": "canvas_draw_text_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "cx",
+            "desc": "中心点x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "cy",
+            "desc": "中心点y坐标。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 绘制图标。\r\n\r\n\r\n",
+        "name": "canvas_draw_icon",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src",
+            "desc": "源区域。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst",
+            "desc": "目的区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 绘制图片。\r\n\r\n\r\n",
+        "name": "canvas_draw_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "constructor": true
+        },
+        "desc": " 获取vgcanvas对象。\r\n\r\n\r\n",
+        "name": "canvas_get_vgcanvas",
+        "return": {
+          "type": "vgcanvas_t*",
+          "desc": "返回vgcanvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为canvas对象(供脚本语言使用)。\r\n\r\n",
+        "name": "canvas_cast",
+        "return": {
+          "type": "canvas_t*",
+          "desc": "canvas对象。"
+        }
+      }
+    ],
     "events": [],
     "properties": [],
     "header": "base/canvas.h",
@@ -3858,7 +4715,7 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "wchar_t*",
+            "type": "const wchar_t*",
             "name": "str",
             "desc": "字符串。"
           },
@@ -3884,7 +4741,7 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "wchar_t*",
+            "type": "const wchar_t*",
             "name": "str",
             "desc": "字符串。"
           },
@@ -5968,6 +6825,25 @@
             "type": "vgcanvas_t*",
             "name": "vg",
             "desc": "vgcanvas对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为vgcanvas对象(供脚本语言使用)。\n\n\n",
+        "name": "vgcanvas_cast",
+        "return": {
+          "type": "vgcanvas_t*",
+          "desc": "vgcanvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
           },
           {
             "type": "uint32_t",
@@ -6027,7 +6903,9 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " flush\n\n\n\n",
         "name": "vgcanvas_flush",
         "return": {
@@ -6090,7 +6968,9 @@
             "desc": "y坐标。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 移动当前点到指定点。\n\n\n\n",
         "name": "vgcanvas_move_to",
         "return": {
@@ -6116,7 +6996,9 @@
             "desc": "y坐标。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一条线段(从当前点到目标点)。\n\n\n\n",
         "name": "vgcanvas_line_to",
         "return": {
@@ -6152,7 +7034,9 @@
             "desc": "y坐标。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一条二次贝塞尔曲线。\n\n\n\n",
         "name": "vgcanvas_quad_to",
         "return": {
@@ -6198,7 +7082,9 @@
             "desc": "y坐标。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一条三次贝塞尔曲线。\n\n\n\n",
         "name": "vgcanvas_bezier_to",
         "return": {
@@ -6239,7 +7125,9 @@
             "desc": "半径。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一条圆弧路径到指定点。\n\n\n\n",
         "name": "vgcanvas_arc_to",
         "return": {
@@ -6285,7 +7173,9 @@
             "desc": "是否逆时针。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一条圆弧。\n\n\n\n",
         "name": "vgcanvas_arc",
         "return": {
@@ -6311,7 +7201,9 @@
             "desc": "y坐标。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 检查点是否在当前路径中。\n\n\n\n",
         "name": "vgcanvas_is_point_in_path",
         "return": {
@@ -6347,7 +7239,9 @@
             "desc": "高度。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一个矩形路径。\n\n\n\n",
         "name": "vgcanvas_rect",
         "return": {
@@ -6388,7 +7282,9 @@
             "desc": "圆角半径。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一个圆角矩形路径。\n\n\n\n",
         "name": "vgcanvas_rounded_rect",
         "return": {
@@ -6424,7 +7320,9 @@
             "desc": "圆角半径。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 生成一个椭圆路径。\n\n\n\n",
         "name": "vgcanvas_ellipse",
         "return": {
@@ -6440,7 +7338,9 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 闭合路径。\n\n >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。\n\n\n\n",
         "name": "vgcanvas_close_path",
         "return": {
@@ -6481,7 +7381,9 @@
             "desc": "颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 用颜色清除指定矩形区域。\n\n\n\n",
         "name": "vgcanvas_clear_rect",
         "return": {
@@ -6502,7 +7404,9 @@
             "desc": "角度"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 旋转。\n\n\n\n",
         "name": "vgcanvas_rotate",
         "return": {
@@ -6528,7 +7432,9 @@
             "desc": "y方向缩放比例。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 缩放。\n\n\n\n",
         "name": "vgcanvas_scale",
         "return": {
@@ -6554,7 +7460,9 @@
             "desc": "y方向偏移。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 平移。\n\n\n\n",
         "name": "vgcanvas_translate",
         "return": {
@@ -6600,7 +7508,9 @@
             "desc": "f"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 变换矩阵。\n\n\n\n",
         "name": "vgcanvas_transform",
         "return": {
@@ -6646,7 +7556,9 @@
             "desc": "f"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置变换矩阵。\n\n\n\n",
         "name": "vgcanvas_set_transform",
         "return": {
@@ -6682,7 +7594,9 @@
             "desc": "高度。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 矩形裁剪。\n\n\n\n",
         "name": "vgcanvas_clip_rect",
         "return": {
@@ -6698,7 +7612,9 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 填充多边形。\n\n\n\n",
         "name": "vgcanvas_fill",
         "return": {
@@ -6714,7 +7630,9 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 画线。\n\n\n\n",
         "name": "vgcanvas_stroke",
         "return": {
@@ -6740,7 +7658,9 @@
             "desc": "图片。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。\n 多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。\n\n\n\n",
         "name": "vgcanvas_paint",
         "return": {
@@ -6761,7 +7681,9 @@
             "desc": "字体名称。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置字体的名称。\n\n\n\n",
         "name": "vgcanvas_set_font",
         "return": {
@@ -6782,7 +7704,9 @@
             "desc": "字体大小。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置字体的大小。\n\n\n\n",
         "name": "vgcanvas_set_font_size",
         "return": {
@@ -6803,7 +7727,9 @@
             "desc": "取值：left|center|right，必须为常量字符串。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置文本水平对齐的方式。\n\n\n\n",
         "name": "vgcanvas_set_text_align",
         "return": {
@@ -6824,7 +7750,9 @@
             "desc": "取值：top|middle|bottom，必须为常量字符串。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置文本垂直对齐的方式。\n\n\n\n",
         "name": "vgcanvas_set_text_baseline",
         "return": {
@@ -6860,7 +7788,9 @@
             "desc": "最大宽度。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 绘制文本。\n\n\n\n",
         "name": "vgcanvas_fill_text",
         "return": {
@@ -6881,7 +7811,9 @@
             "desc": "text"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 测量文本的宽度。\n\n\n\n",
         "name": "vgcanvas_measure_text",
         "return": {
@@ -6942,7 +7874,9 @@
             "desc": "dh"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 绘制图片。\n\n\n\n",
         "name": "vgcanvas_draw_image",
         "return": {
@@ -7003,7 +7937,9 @@
             "desc": "dh"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 绘制图标。\n\n 绘制图标时会根据屏幕密度进行自动缩放，而绘制普通图片时不会。\n\n\n\n",
         "name": "vgcanvas_draw_icon",
         "return": {
@@ -7045,7 +7981,9 @@
             "desc": "global alpha。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置全局透明度。\n\n\n\n",
         "name": "vgcanvas_set_global_alpha",
         "return": {
@@ -7066,7 +8004,9 @@
             "desc": "线宽。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置线条的宽度。\n\n\n\n",
         "name": "vgcanvas_set_line_width",
         "return": {
@@ -7087,7 +8027,9 @@
             "desc": "颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置填充颜色。\n\n\n\n",
         "name": "vgcanvas_set_fill_color",
         "return": {
@@ -7133,7 +8075,9 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置填充颜色为线性渐变色。\n\n\n\n",
         "name": "vgcanvas_set_fill_linear_gradient",
         "return": {
@@ -7179,7 +8123,9 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置填充颜色为径向渐变色。\n\n\n\n",
         "name": "vgcanvas_set_fill_radial_gradient",
         "return": {
@@ -7200,7 +8146,9 @@
             "desc": "颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置线条颜色。\n\n\n\n",
         "name": "vgcanvas_set_stroke_color",
         "return": {
@@ -7246,7 +8194,9 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置线条颜色为线性渐变色。\n\n\n\n",
         "name": "vgcanvas_set_stroke_linear_gradient",
         "return": {
@@ -7292,7 +8242,9 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置线条颜色为径向渐变色。\n\n\n\n",
         "name": "vgcanvas_set_stroke_radial_gradient",
         "return": {
@@ -7313,8 +8265,10 @@
             "desc": "取值：butt|round|square，必须为常量字符串。"
           }
         ],
-        "annotation": {},
-        "desc": " 设置line cap。\n\n\n",
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置line cap。\n\n\n\n",
         "name": "vgcanvas_set_line_cap",
         "return": {
           "type": "ret_t",
@@ -7334,8 +8288,10 @@
             "desc": "取值：bevel|round|miter，必须为常量字符串。"
           }
         ],
-        "annotation": {},
-        "desc": " 设置line join。\n\n\n",
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置line join。\n\n\n\n",
         "name": "vgcanvas_set_line_join",
         "return": {
           "type": "ret_t",
@@ -7355,8 +8311,10 @@
             "desc": "miter limit"
           }
         ],
-        "annotation": {},
-        "desc": " 设置miter limit。\n\n\n",
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置miter limit。\n\n\n\n",
         "name": "vgcanvas_set_miter_limit",
         "return": {
           "type": "ret_t",
@@ -7371,8 +8329,10 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 保存当前的状态。如颜色和矩阵等信息。\n\n save/restore必须配套使用，否则可能导致状态混乱。\n\n\n\n",
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 保存当前的状态。如颜色和矩阵等信息。\n\n > save/restore必须配套使用，否则可能导致状态混乱。\n\n\n\n",
         "name": "vgcanvas_save",
         "return": {
           "type": "ret_t",
@@ -7387,8 +8347,10 @@
             "desc": "vgcanvas对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 恢复上次save的状态。\n\n save/restore必须配套使用，否则可能导致状态混乱。\n\n\n\n",
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 恢复上次save的状态。\n\n> save/restore必须配套使用，否则可能导致状态混乱。\n\n\n\n",
         "name": "vgcanvas_restore",
         "return": {
           "type": "ret_t",
@@ -12926,6 +13888,150 @@
           "type": "color_t",
           "desc": "颜色对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "uint8_t",
+            "name": "r",
+            "desc": "红色通道。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "b",
+            "desc": "蓝色通道。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "g",
+            "desc": "绿色通道。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "a",
+            "desc": "alpha通道。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建color对象。\n\n > 主要供脚本语言使用。 \n\n\n\n",
+        "name": "color_create",
+        "return": {
+          "type": "color_t*",
+          "desc": "color对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "css类似的颜色值。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建color对象。\n\n > 主要供脚本语言使用。 \n\n\n\n",
+        "name": "color_create_with_str",
+        "return": {
+          "type": "color_t*",
+          "desc": "color对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "\n 获取红色通道的值。\n\n > 主要供脚本语言使用。 \n\n\n\n\n",
+        "name": "color_r",
+        "return": {
+          "type": "uint8_t",
+          "desc": "返回红色通道的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "\n 获取绿色通道的值。\n\n > 主要供脚本语言使用。 \n\n\n\n\n",
+        "name": "color_g",
+        "return": {
+          "type": "uint8_t",
+          "desc": "返回绿色通道的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "\n 获取蓝色通道的值。\n\n > 主要供脚本语言使用。 \n\n\n\n\n",
+        "name": "color_b",
+        "return": {
+          "type": "uint8_t",
+          "desc": "返回蓝色通道的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "\n 获取alpha通道的值。\n\n > 主要供脚本语言使用。 \n\n\n\n\n",
+        "name": "color_a",
+        "return": {
+          "type": "uint8_t",
+          "desc": "返回alpha通道的值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": "\n 销毁color对象。\n > 主要供脚本语言使用。 \n\n\n\n",
+        "name": "color_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -12952,6 +14058,9 @@
     "header": "tkc/color.h",
     "desc": " 颜色。\n\n\n",
     "name": "color_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -13751,7 +14860,61 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建rect对象。\n\n > 主要供脚本语言使用。 \n\n\n\n",
+        "name": "rect_create",
+        "return": {
+          "type": "rect_t*",
+          "desc": "rect对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": "\n 销毁rect对象。\n > 主要供脚本语言使用。 \n\n\n\n",
+        "name": "rect_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
     "events": [],
     "properties": [
       {

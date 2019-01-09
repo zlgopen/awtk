@@ -61,18 +61,19 @@ typedef struct _rgba_t {
 /**
  * @class color_t
  * 颜色。
+ * @annotation ["scriptable"]
  *
  */
 typedef union _color_t {
   /**
    * @property {rgba_t} rgba
-   * @annotation ["readable","writable"]
+   * @annotation ["readable", "writable"]
    * 颜色的RGBA值。
    */
   rgba_t rgba;
   /**
    * @property {uint32_t} color
-   * @annotation ["readable","writable"]
+   * @annotation ["readable", "writable"]
    * 颜色的数值。
    */
   uint32_t color;
@@ -91,7 +92,108 @@ typedef union _color_t {
  */
 color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-typedef uint8_t gray_t;
+/**
+ * @method color_create
+ * 创建color对象。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["constructor", "scriptable"]
+ * @param {uint8_t} r 红色通道。
+ * @param {uint8_t} b 蓝色通道。
+ * @param {uint8_t} g 绿色通道。
+ * @param {uint8_t} a alpha通道。
+ *
+ * @return {color_t*} color对象。
+ */
+color_t* color_create(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+/**
+ * @method color_create_with_str
+ * 创建color对象。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["constructor", "scriptable"]
+ * @param {const char*} str css类似的颜色值。
+ *
+ * @return {color_t*} color对象。
+ */
+color_t* color_create_with_str(const char* str);
+
+/**
+ * @method color_r
+ *
+ * 获取红色通道的值。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {uint8_t} 返回红色通道的值。
+ *
+ */
+uint8_t color_r(color_t* c);
+
+/**
+ * @method color_g
+ *
+ * 获取绿色通道的值。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {uint8_t} 返回绿色通道的值。
+ *
+ */
+uint8_t color_g(color_t* c);
+
+/**
+ * @method color_b
+ *
+ * 获取蓝色通道的值。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {uint8_t} 返回蓝色通道的值。
+ *
+ */
+uint8_t color_b(color_t* c);
+
+/**
+ * @method color_a
+ *
+ * 获取alpha通道的值。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {uint8_t} 返回alpha通道的值。
+ *
+ */
+uint8_t color_a(color_t* c);
+
+/**
+ * @method color_destroy
+ *
+ * 销毁color对象。
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t color_destroy(color_t* c);
+
 const char* color_hex_str(color_t c, char str[8]);
 
 END_C_DECLS

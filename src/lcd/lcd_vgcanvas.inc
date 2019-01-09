@@ -162,7 +162,7 @@ static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info)
 }
 
 #define MAX_CHARS 256
-float_t lcd_vgcanvas_measure_text(lcd_t* lcd, wchar_t* str, uint32_t nr) {
+float_t lcd_vgcanvas_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
   wchar_t temp[MAX_CHARS + 1];
   char text[2 * MAX_CHARS + 1];
   vgcanvas_t* canvas = LCD(lcd)->canvas;
@@ -178,7 +178,7 @@ float_t lcd_vgcanvas_measure_text(lcd_t* lcd, wchar_t* str, uint32_t nr) {
   return vgcanvas_measure_text(LCD(lcd)->canvas, text);
 }
 
-static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
+static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
   wchar_t temp[MAX_CHARS + 1];
   char text[2 * MAX_CHARS + 1];
   vgcanvas_t* canvas = LCD(lcd)->canvas;

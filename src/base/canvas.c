@@ -19,10 +19,12 @@
  *
  */
 
+#include "tkc/wstr.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "base/canvas.h"
 #include "tkc/time_now.h"
+#include "tkc/color_parser.h"
 #include "base/wuxiaolin.inc"
 
 static ret_t canvas_draw_fps(canvas_t* c);
@@ -231,7 +233,7 @@ ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v) {
   return RET_OK;
 }
 
-static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, uint32_t nr) {
+static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint32_t nr) {
   glyph_t g;
   float_t w = 0;
   uint32_t i = 0;
@@ -249,7 +251,7 @@ static float_t canvas_measure_text_default(canvas_t* c, wchar_t* str, uint32_t n
   return w;
 }
 
-float_t canvas_measure_text(canvas_t* c, wchar_t* str, uint32_t nr) {
+float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr) {
   return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
 
   if (c->lcd->measure_text) {
@@ -257,6 +259,20 @@ float_t canvas_measure_text(canvas_t* c, wchar_t* str, uint32_t nr) {
   } else {
     return canvas_measure_text_default(c, str, nr);
   }
+}
+
+float_t canvas_measure_utf8(canvas_t* c, const char* str) {
+  wstr_t s;
+  float_t ret = 0;
+  return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
+
+  wstr_init(&s, 0);
+  return_value_if_fail(wstr_set_utf8(&s, str) == RET_OK, 0);
+
+  ret = canvas_measure_text(c, s.str, s.size);
+  wstr_reset(&s);
+
+  return ret;
 }
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
@@ -347,7 +363,7 @@ ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
 
 #define MAX_POINTS_PER_DRAW 20
 
-static ret_t canvas_do_draw_points(canvas_t* c, point_t* points, uint32_t nr) {
+static ret_t canvas_do_draw_points(canvas_t* c, const point_t* points, uint32_t nr) {
   uint32_t i = 0;
   uint32_t real_nr = 0;
   xy_t left = c->clip_left;
@@ -359,21 +375,23 @@ static ret_t canvas_do_draw_points(canvas_t* c, point_t* points, uint32_t nr) {
   return_value_if_fail(nr <= MAX_POINTS_PER_DRAW, RET_BAD_PARAMS);
 
   for (i = 0; i < nr; i++) {
-    point_t* p = points + i;
+    const point_t* p = points + i;
     if (p->x < left || p->x > right || p->y < top || p->y > bottom) {
       continue;
     }
 
-    real_points[real_nr] = *p;
+    real_points[real_nr].x = p->x + c->ox;
+    real_points[real_nr].y = p->y + c->oy;
+
     real_nr++;
   }
 
   return lcd_draw_points(c->lcd, real_points, real_nr);
 }
 
-static ret_t canvas_draw_points_impl(canvas_t* c, point_t* points, uint32_t nr) {
+static ret_t canvas_draw_points_impl(canvas_t* c, const point_t* points, uint32_t nr) {
   uint32_t i = 0;
-  point_t* p = points;
+  const point_t* p = points;
   uint32_t n = (nr / MAX_POINTS_PER_DRAW);
   uint32_t r = (nr % MAX_POINTS_PER_DRAW);
 
@@ -389,32 +407,10 @@ static ret_t canvas_draw_points_impl(canvas_t* c, point_t* points, uint32_t nr) 
   return RET_OK;
 }
 
-ret_t canvas_draw_points(canvas_t* c, point_t* points, uint32_t nr) {
-  xy_t ox = 0;
-  xy_t oy = 0;
-  uint32_t i = 0;
-  ret_t ret = RET_OK;
+ret_t canvas_draw_points(canvas_t* c, const point_t* points, uint32_t nr) {
   return_value_if_fail(c != NULL && points != NULL, RET_BAD_PARAMS);
 
-  ox = c->ox;
-  oy = c->oy;
-  if (ox && oy) {
-    for (i = 0; i < nr; i++) {
-      point_t* p = points + i;
-      p->x += ox;
-      p->y += oy;
-    }
-  }
-  ret = canvas_draw_points_impl(c, points, nr);
-  if (ox && oy) {
-    for (i = 0; i < nr; i++) {
-      point_t* p = points + i;
-      p->x -= ox;
-      p->y -= oy;
-    }
-  }
-
-  return ret;
+  return canvas_draw_points_impl(c, points, nr);
 }
 
 static ret_t canvas_fill_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -504,7 +500,7 @@ ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   return canvas_draw_char_impl(c, chr, c->ox + x, c->oy + y);
 }
 
-static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
+static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
   glyph_t g;
   uint32_t i = 0;
   xy_t left = x;
@@ -540,13 +536,27 @@ static ret_t canvas_draw_text_impl(canvas_t* c, wchar_t* str, uint32_t nr, xy_t 
   return RET_OK;
 }
 
-ret_t canvas_draw_text(canvas_t* c, wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
+ret_t canvas_draw_text(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
   return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, RET_BAD_PARAMS);
   if (c->lcd->draw_text != NULL) {
     return lcd_draw_text(c->lcd, str, nr, c->ox + x, c->oy + y);
   } else {
     return canvas_draw_text_impl(c, str, nr, c->ox + x, c->oy + y);
   }
+}
+
+ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y) {
+  wstr_t s;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, RET_BAD_PARAMS);
+
+  wstr_init(&s, 0);
+  return_value_if_fail(wstr_set_utf8(&s, str) == RET_OK, RET_OOM);
+
+  ret = canvas_draw_text(c, s.str, s.size, x, y);
+  wstr_reset(&s);
+
+  return ret;
 }
 
 static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t* d) {
@@ -1273,7 +1283,7 @@ static ret_t canvas_draw_fps(canvas_t* c) {
   return RET_OK;
 }
 
-ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, uint32_t nr, const rect_t* r_in) {
+ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r_in) {
   int x = 0;
   int y = 0;
   int32_t text_w = 0;
@@ -1315,6 +1325,20 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, wchar_t* str, uint32_t nr, const rec
   return canvas_draw_text(c, str, nr, x, y);
 }
 
+ret_t canvas_draw_utf8_in_rect(canvas_t* c, const char* str, const rect_t* r) {
+  wstr_t s;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
+
+  wstr_init(&s, 0);
+  return_value_if_fail(wstr_set_utf8(&s, str) == RET_OK, RET_OOM);
+
+  ret = canvas_draw_text_in_rect(c, s.str, s.size, r);
+  wstr_reset(&s);
+
+  return ret;
+}
+
 vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
   vgcanvas_t* vg = NULL;
   return_value_if_fail(c != NULL && c->lcd != NULL, NULL);
@@ -1328,4 +1352,26 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
   }
 
   return vg;
+}
+
+ret_t canvas_set_stroke_color_str(canvas_t* c, const char* color) {
+  return_value_if_fail(c != NULL && color != NULL, RET_BAD_PARAMS);
+
+  return canvas_set_stroke_color(c, color_parse(color));
+}
+
+ret_t canvas_set_fill_color_str(canvas_t* c, const char* color) {
+  return_value_if_fail(c != NULL && color != NULL, RET_BAD_PARAMS);
+
+  return canvas_set_fill_color(c, color_parse(color));
+}
+
+ret_t canvas_set_text_color_str(canvas_t* c, const char* color) {
+  return_value_if_fail(c != NULL && color != NULL, RET_BAD_PARAMS);
+
+  return canvas_set_text_color(c, color_parse(color));
+}
+
+canvas_t* canvas_cast(canvas_t* c) {
+  return c;
 }

@@ -83,8 +83,36 @@ typedef struct _rect_t {
   wh_t h;
 } rect_t;
 
-rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
+/**
+ * @method rect_create
+ * 创建rect对象。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["constructor", "scriptable"]
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ *
+ * @return {rect_t*} rect对象。
+ */
+rect_t* rect_create(xy_t x, xy_t y, wh_t w, wh_t h);
 
+/**
+ * @method rect_destroy
+ *
+ * 销毁rect对象。
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {rect_t*} r rect对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rect_destroy(rect_t* r);
+
+rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
 bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
 rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h);

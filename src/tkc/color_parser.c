@@ -1,5 +1,6 @@
 ﻿#include "color_parser.h"
 #include "tkc/str.h"
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 
 typedef struct _color_map_t {
@@ -252,4 +253,13 @@ color_t color_parse(const char* color) {
   color_parse_impl(color, &r, &g, &b, &a);
 
   return color_init(r, g, b, a);
+}
+
+color_t* color_create_with_str(const char* str) {
+  color_t* c = TKMEM_ZALLOC(color_t);
+  return_value_if_fail(c != NULL, NULL);
+
+  *c = color_parse(str);
+
+  return c;
 }

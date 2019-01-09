@@ -18,6 +18,7 @@
  * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+#include "tkc/mem.h"
 #include "tkc/rect.h"
 
 ret_t rect_merge(rect_t* dr, rect_t* r) {
@@ -133,4 +134,21 @@ rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h) {
   }
 
   return *r;
+}
+
+rect_t* rect_create(xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t* r = TKMEM_ZALLOC(rect_t);
+  return_value_if_fail(r != NULL, NULL);
+
+  *r = rect_init(x, y, w, h);
+
+  return r;
+}
+
+ret_t rect_destroy(rect_t* r) {
+  return_value_if_fail(r != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(r);
+
+  return RET_OK;
 }

@@ -58,8 +58,6 @@ static ret_t button_on_long_press(const timer_info_t* info) {
   evt.e = event_init(EVT_LONG_PRESS, widget);
   widget_dispatch(widget, (event_t*)&evt);
 
-  log_debug("Long Pressed:%s\n", widget->name);
-
   return RET_REMOVE;
 }
 
