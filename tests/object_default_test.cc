@@ -1,8 +1,13 @@
 ﻿#include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
-
+#include <stdlib.h>
 #include <string>
+
+#ifdef WIN32
+#define random rand
+#define srandom srand
+#endif/*WIN32*/
 
 using std::string;
 
@@ -211,6 +216,8 @@ TEST(ObejectDefault, random) {
   int32_t n = 10000;
 
   object_t* obj = object_default_create(0);
+
+	srandom(time(0));                                 
 
   for (i = 0; i < n; i++) {
     int32_t num = tk_abs((int32_t)random());
