@@ -31,6 +31,8 @@ int tk_atoi(const char* str);
 bool_t tk_atob(const char* str);
 double tk_atof(const char* str);
 
+int32_t tk_str_cmp(const char* a, const char* b);
+
 int tk_watoi(const wchar_t* str);
 bool_t tk_watob(const wchar_t* str);
 double tk_watof(const wchar_t* str);
@@ -42,6 +44,7 @@ long tk_strtol(const char* str, const char** end, int base);
 
 char* tk_strncpy(char* dst, const char* src, size_t len);
 char* tk_strdup(const char* str);
+wchar_t* tk_wstrdup(const wchar_t* str);
 
 char* tk_strndup(const char* str, uint32_t len);
 ret_t tk_str_append(char* str, uint32_t max_len, const char* s);

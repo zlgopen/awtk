@@ -111,7 +111,12 @@ typedef enum _value_type_t {
    * @const VALUE_TYPE_WSTRING
    * wchar_t*类型。
    */
-  VALUE_TYPE_WSTRING
+  VALUE_TYPE_WSTRING,
+  /**
+   * @const VALUE_TYPE_OBJECT
+   * object_t*类型。
+   */
+  VALUE_TYPE_OBJECT
 } value_type_t;
 
 /**
@@ -129,8 +134,10 @@ typedef enum _value_type_t {
  *> 在脚本语言中，需要动态创建对象。
  *
  */
-typedef struct _value_t {
-  uint8_t type;
+struct _value_t {
+  uint32_t type : 8;
+  uint32_t free_handle : 1;
+
   union {
     int8_t i8;
     uint8_t u8;
@@ -147,8 +154,9 @@ typedef struct _value_t {
     pointer_t ptr;
     const char* str;
     const wchar_t* wstr;
+    object_t* object;
   } value;
-} value_t;
+};
 
 /**
  * @method value_set_bool
@@ -492,6 +500,38 @@ bool_t value_equal(const value_t* value, const value_t* other);
 int value_int(const value_t* v);
 
 /**
+ * @method value_set_int
+ * 设置类型为int的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v  value对象。
+ * @param {int32_t}  value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_int(value_t* v, int32_t value);
+
+/**
+ * @method value_set_object
+ * 设置类型为object的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v  value对象。
+ * @param {object_t*}  value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_object(value_t* v, object_t* value);
+
+/**
+ * @method value_object
+ * 转换为object的值。
+ * @annotation ["scriptable", "constructor"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {object_t*} 值。
+ */
+object_t* value_object(const value_t* v);
+
+/**
  * @method value_copy
  * 拷贝value的值。
  * @param {value_t*} dst 目的value对象。
@@ -502,15 +542,14 @@ int value_int(const value_t* v);
 ret_t value_copy(value_t* dst, const value_t* src);
 
 /**
- * @method value_set_int
- * 设置类型为int的值。
- * @annotation ["scriptable"]
- * @param {value_t*} v  value对象。
- * @param {int32_t}  value 待设置的值。
+ * @method value_deep_copy
+ * 深拷贝value的值。
+ * @param {value_t*} dst 目的value对象。
+ * @param {value_t*} src 源value对象。
  *
- * @return {value_t*} value对象本身。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-value_t* value_set_int(value_t* v, int32_t value);
+ret_t value_deep_copy(value_t* dst, const value_t* src);
 
 /**
  * @method value_create
@@ -530,6 +569,16 @@ value_t* value_create(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t value_destroy(value_t* v);
+
+/**
+ * @method value_reset
+ * 重置value对象。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_reset(value_t* v);
 
 END_C_DECLS
 

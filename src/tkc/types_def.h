@@ -55,6 +55,12 @@ typedef float float_t;
 typedef void* pointer_t;
 typedef uint16_t font_size_t;
 
+struct _value_t;
+typedef struct _value_t value_t;
+
+struct _object_t;
+typedef struct _object_t object_t;
+
 /**
  * @enum ret_t
  * @annotation ["scriptable"]
@@ -91,6 +97,11 @@ typedef enum _ret_t {
    * 找到。
    */
   RET_FOUND,
+  /**
+   * @const RET_BUSY
+   * 对象忙。
+   */
+  RET_BUSY,
   /**
    * @const RET_REMOVE
    * 移出。通常用于定时器。

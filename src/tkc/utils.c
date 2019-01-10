@@ -250,6 +250,19 @@ char* tk_strdup(const char* str) {
   return tk_strndup(str, strlen(str));
 }
 
+wchar_t* tk_wstrdup(const wchar_t* str) {
+  uint32_t size = 0;
+  wchar_t* new_str = NULL;
+  return_value_if_fail(str != NULL, NULL);
+  size = wcslen(str) + 1;
+
+  new_str = TKMEM_ALLOC(size * sizeof(wchar_t));
+  return_value_if_fail(new_str != NULL, NULL);
+  memcpy(new_str, str, size * sizeof(wchar_t));
+
+  return new_str;
+}
+
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
   uint32_t n = 0;
   uint16_t* p = buff;
@@ -524,6 +537,22 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
   str[org_len + len] = '\0';
 
   return RET_OK;
+}
+
+int32_t tk_str_cmp(const char* a, const char* b) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return strcmp(a, b);
 }
 
 char* tk_str_copy(char* dst, const char* src) {

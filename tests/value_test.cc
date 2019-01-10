@@ -1,5 +1,6 @@
 ﻿#include "tkc/value.h"
 #include "gtest/gtest.h"
+#include "tkc/object_default.h"
 
 TEST(value, i8) {
   value_t v;
@@ -197,7 +198,47 @@ TEST(ValueTest, wstr) {
   ASSERT_EQ(wcscmp(value_wstr(&v), L"str"), 0);
 }
 
+TEST(ValueTest, object) {
+  value_t v;
+  object_t* o = object_default_create(10);
+
+  ASSERT_EQ(&v, value_set_object(&v, o));
+  ASSERT_EQ(o, value_object(&v));
+
+  object_unref(o);
+}
+
 TEST(value, int) {
   value_t v;
   ASSERT_EQ(value_int(value_set_uint64(&v, 10)), 10);
+}
+
+TEST(ValueTest, copy) {
+  value_t v;
+  value_t other;
+  const char* str = "str";
+
+  ASSERT_EQ(&other, value_set_str(&other, str));
+  ASSERT_EQ(value_copy(&v, &other), RET_OK);
+
+  ASSERT_EQ(strcmp(value_str(&v), "str"), 0);
+  ASSERT_EQ(v.value.str, other.value.str);
+
+  value_reset(&v);
+  value_reset(&other);
+}
+
+TEST(ValueTest, deepcopy) {
+  value_t v;
+  value_t other;
+  const char* str = "str";
+
+  ASSERT_EQ(&other, value_set_str(&other, str));
+  ASSERT_EQ(value_deep_copy(&v, &other), RET_OK);
+
+  ASSERT_EQ(strcmp(value_str(&v), "str"), 0);
+  ASSERT_NE(v.value.str, other.value.str);
+
+  value_reset(&v);
+  value_reset(&other);
 }
