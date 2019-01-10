@@ -56,6 +56,8 @@ static ret_t button_on_long_press(const timer_info_t* info) {
   evt.x = 0;
   evt.y = 0;
   evt.e = event_init(EVT_LONG_PRESS, widget);
+
+  button_remove_timer(widget);
   widget_dispatch(widget, (event_t*)&evt);
 
   return RET_REMOVE;
