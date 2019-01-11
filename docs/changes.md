@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/01/11
+  * 增加slist\_t。
+
+* 2019/01/10
+  * 增加object\_t/object\_default\_t/named\_value\_t等几个类。
+  * value\_t支持object。
 
 * 2019/01/09
   * 完善slide menu，增加mask color，实现两边的按钮淡出的效果。
