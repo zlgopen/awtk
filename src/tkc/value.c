@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   value.h
  * Author: AWTK Develop Team
  * Brief:  generic value type
@@ -39,8 +39,6 @@ bool_t value_bool(const value_t* v) {
     }
     default: { return value_int(v) ? TRUE : FALSE; }
   }
-
-  return FALSE;
 }
 
 value_t* value_init(value_t* v, uint32_t type) {

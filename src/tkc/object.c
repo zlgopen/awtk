@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object.c
  * Author: AWTK Develop Team
  * Brief:  reference count object
@@ -79,7 +79,6 @@ ret_t object_unref(object_t* obj) {
 
 object_t* object_ref(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, NULL);
-  return_value_if_fail(!(obj->visiting), RET_BUSY);
 
   obj->ref_count++;
 

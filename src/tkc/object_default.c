@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_default.c
  * Author: AWTK Develop Team
  * Brief:  default object
@@ -25,6 +25,7 @@
 #include "tkc/object_default.h"
 
 static void object_default_check(object_default_t* o) {
+#ifndef NDEBUG
   uint32_t i = 0;
 
   for (i = 0; i < o->props_size; i++) {
@@ -34,6 +35,9 @@ static void object_default_check(object_default_t* o) {
       assert(strcmp(prev->name, iter->name) < 0);
     }
   }
+#else
+(void)o;	
+#endif
 }
 
 static ret_t object_default_clean_invalid_props(object_t* obj) {
