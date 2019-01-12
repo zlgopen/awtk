@@ -54,7 +54,7 @@ typedef struct _named_value_t {
  * 创建named_value对象。
  * @annotation ["constructor", "scriptable"]
  *
- * @return {ret_t} 返回named_value对象。
+ * @return {named_value_t*} 返回named_value对象。
  */
 named_value_t* named_value_create(void);
 
@@ -80,7 +80,7 @@ named_value_t* named_value_init(named_value_t* nv, const char* name, const value
  *
  * @param {named_value_t*} nv named_value对象。
  *
- * @return {ret_t} 返回named_value对象。
+ * @return {named_value_t*} 返回named_value对象。
  */
 named_value_t* named_value_cast(named_value_t* nv);
 

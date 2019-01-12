@@ -74,7 +74,7 @@ typedef struct _object_default_t {
  * @annotation ["constructor", "scriptable"]
  * @param {uint32_t} init_capacity 初始容量。
  *
- * @return {ret_t} 返回object对象。
+ * @return {object_t*} 返回object对象。
  *
  */
 object_t* object_default_create(uint32_t init_capacity);

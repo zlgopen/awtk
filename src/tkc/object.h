@@ -100,7 +100,7 @@ ret_t object_unref(object_t* obj);
  * @annotation ["constructor", "scriptable"]
  * @param {object_t*} obj object对象。
  *
- * @return {ret_t} 返回object对象。
+ * @return {object_t*} 返回object对象。
  */
 object_t* object_ref(object_t* obj);
 

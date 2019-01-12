@@ -14738,7 +14738,7 @@
         "desc": "\n 创建named_value对象。\n\n\n",
         "name": "named_value_create",
         "return": {
-          "type": "ret_t",
+          "type": "named_value_t*",
           "desc": "返回named_value对象。"
         }
       },
@@ -14785,7 +14785,7 @@
         "desc": "\n 转换为named_value对象(供脚本语言使用)。\n\n\n\n",
         "name": "named_value_cast",
         "return": {
-          "type": "ret_t",
+          "type": "named_value_t*",
           "desc": "返回named_value对象。"
         }
       },
@@ -22648,7 +22648,7 @@
         "desc": " 引用计数加1。\n\n\n\n",
         "name": "object_ref",
         "return": {
-          "type": "ret_t",
+          "type": "object_t*",
           "desc": "返回object对象。"
         }
       },
@@ -28364,7 +28364,7 @@
         "desc": "\n 创建对象。\n\n\n\n\n",
         "name": "object_default_create",
         "return": {
-          "type": "ret_t",
+          "type": "object_t*",
           "desc": "返回object对象。"
         }
       }
