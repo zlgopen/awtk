@@ -62,7 +62,7 @@ struct _timer_info_t {
 
   /**
    * @property {uint32_t} id
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 定时器的ID
    *
    * > 为TK\_INVALID\_ID时表示无效定时器。
@@ -71,7 +71,7 @@ struct _timer_info_t {
 
   /**
    * @property {uint32_t} now
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 当前时间(相对时间，单位为毫秒)。
    *
    */
@@ -109,7 +109,7 @@ struct _timer_info_t {
 
   /**
    * @property {bool_t} user_changed_time
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 用户是否修改了系统时间。
    */
   bool_t user_changed_time;

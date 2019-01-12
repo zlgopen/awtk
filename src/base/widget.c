@@ -24,6 +24,7 @@
 #include "tkc/utils.h"
 #include "base/enums.h"
 #include "tkc/time_now.h"
+#include "base/idle.h"
 #include "base/locale_info.h"
 #include "base/widget.h"
 #include "base/layout.h"

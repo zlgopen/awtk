@@ -186,6 +186,10 @@ int32_t slist_count(slist_t* slist, void* ctx) {
 }
 
 ret_t slist_deinit(slist_t* slist) {
+  return slist_remove_all(slist);
+}
+
+ret_t slist_remove_all(slist_t* slist) {
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
   if (slist->first != NULL) {
     slist_node_t* iter = slist->first;
@@ -196,6 +200,7 @@ ret_t slist_deinit(slist_t* slist) {
 
       iter = next;
     }
+    slist->first = NULL;
   }
 
   return RET_OK;

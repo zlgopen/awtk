@@ -22,82 +22,9 @@
 #ifndef TK_IDLE_H
 #define TK_IDLE_H
 
-#include "tkc/array.h"
+#include "base/idle_manager.h"
 
 BEGIN_C_DECLS
-
-struct _idle_info_t;
-typedef struct _idle_info_t idle_info_t;
-
-typedef ret_t (*idle_func_t)(const idle_info_t* idle);
-
-/**
- * @class idle_info_t
- * 单个idle的信息。
- */
-struct _idle_info_t {
-  /**
-   * @property {idle_func_t} on_idle
-   * @annotation ["readable"]
-   * idle回调函数。
-   */
-  idle_func_t on_idle;
-
-  /**
-   * @property {void*} ctx
-   * @annotation ["readable"]
-   * idle回调函数上下文。
-   */
-  void* ctx;
-
-  /**
-   * @property {uint32_t} id
-   * @annotation ["readable"]
-   * idle的ID
-   *
-   * > 为TK\_INVALID\_ID时表示无效idle。
-   */
-  uint32_t id;
-
-  /**
-   * @property {tk_destroy_t} on_destroy_ctx
-   * @annotation ["readable"]
-   * idle销毁时的回调函数的上下文。
-   */
-  void* on_destroy_ctx;
-
-  /**
-   * @property {tk_destroy_t} on_destroy
-   * @annotation ["readable"]
-   * idle销毁时的回调函数。
-   */
-  tk_destroy_t on_destroy;
-
-  /*private*/
-  bool_t pending_destroy;
-  struct _idle_info_t* next;
-};
-
-typedef struct _idle_manager_t {
-  bool_t dispatching;
-  uint32_t next_idle_id;
-
-  struct _idle_info_t* first;
-} idle_manager_t;
-
-idle_manager_t* idle_manager(void);
-ret_t idle_manager_set(idle_manager_t* idle_manager);
-
-idle_manager_t* idle_manager_create(void);
-idle_manager_t* idle_manager_init(idle_manager_t* idle_manager);
-ret_t idle_manager_deinit(idle_manager_t* idle_manager);
-ret_t idle_manager_destroy(idle_manager_t* idle_manager);
-
-ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
-ret_t idle_manager_remove_all(idle_manager_t* idle_manager);
-ret_t idle_manager_remove(idle_manager_t* idle_manager, uint32_t idle_id);
-const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id);
-uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
 /**
  * @class idle_t

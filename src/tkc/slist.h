@@ -119,6 +119,15 @@ void* slist_find(slist_t* slist, void* ctx);
 ret_t slist_remove(slist_t* slist, void* ctx);
 
 /**
+ * @method slist_remove_all
+ * 删除全部元素。
+ * @param {slist_t*} slist 单向链表对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slist_remove_all(slist_t* slist);
+
+/**
  * @method slist_append
  * 在尾巴追加一个元素。
  * @param {slist_t*} slist 单向链表对象。
