@@ -154,13 +154,11 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint32_t
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint32_t now = 0;
   int32_t delta_time = 0;
-  bool_t user_changed_time = FALSE;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
   now = timer_manager->get_time();
   delta_time = now - timer_manager->last_dispatch_time;
   if (delta_time > 3000 || delta_time < 0) {
-    user_changed_time = TRUE;
     timer_manager_update_time(timer_manager, now, delta_time);
     log_debug("User change time: %u => %u\n", timer_manager->last_dispatch_time, now);
   }
