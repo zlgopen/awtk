@@ -11,6 +11,20 @@
 
 using std::string;
 
+static ret_t event_dump(void* ctx, event_t* e) {
+  string& str = *(string*)ctx;
+
+  if (e->type == EVT_PROP_WILL_CHANGE || e->type == EVT_PROP_CHANGED) {
+    prop_change_event_t* evt = (prop_change_event_t*)e;
+    str += evt->name;
+    str += ":";
+  } else if (e->type == EVT_DESTROY) {
+    str += "destroy:";
+  }
+
+  return RET_OK;
+}
+
 static ret_t visit_dump(void* ctx, const void* data) {
   string& str = *(string*)ctx;
   const named_value_t* nv = (named_value_t*)data;
@@ -18,6 +32,24 @@ static ret_t visit_dump(void* ctx, const void* data) {
   str += nv->name;
 
   return RET_OK;
+}
+
+TEST(ObejectDefault, events) {
+  value_t v;
+  string log;
+  object_t* obj = object_default_create(0);
+  object_default_t* o = OBJECT_DEFAULT(obj);
+
+  emitter_on((emitter_t*)o, EVT_PROP_WILL_CHANGE, event_dump, &log);
+  emitter_on((emitter_t*)o, EVT_PROP_CHANGED, event_dump, &log);
+  emitter_on((emitter_t*)o, EVT_DESTROY, event_dump, &log);
+
+  ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(object_set_prop(obj, "8", value_set_int(&v, 50)), RET_OK);
+
+  object_unref(obj);
+
+  ASSERT_EQ(log, "6:6:8:8:destroy:");
 }
 
 TEST(ObejectDefault, basic) {
@@ -197,15 +229,6 @@ TEST(ObejectDefault, visis_remove) {
   object_foreach_prop(obj, visit_test_busy, obj);
 
   object_unref(obj);
-}
-
-static void assert_le(int32_t a, int32_t b) {
-  char s1[32];
-  char s2[32];
-  tk_snprintf(s1, sizeof(s1), "%d", a);
-  tk_snprintf(s2, sizeof(s2), "%d", b);
-
-  ASSERT_LE(string(s1), string(s2));
 }
 
 TEST(ObejectDefault, random) {

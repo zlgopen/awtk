@@ -201,7 +201,7 @@ ret_t lcd_draw_points (lcd_t* lcd, point_t* points, uint32_t nr);
 * 函数原型：
 
 ```
-ret_t lcd_draw_text (lcd_t* lcd, wchar_t* str, uint32_t nr, xy_t x, xy_t y);
+ret_t lcd_draw_text (lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y);
 ```
 
 * 参数说明：
@@ -210,7 +210,7 @@ ret_t lcd_draw_text (lcd_t* lcd, wchar_t* str, uint32_t nr, xy_t x, xy_t y);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| str | wchar\_t* | 字符串。 |
+| str | const wchar\_t* | 字符串。 |
 | nr | uint32\_t | 字符数。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
@@ -383,7 +383,7 @@ bool_t lcd_is_swappable (lcd_t* lcd);
 * 函数原型：
 
 ```
-float_t lcd_measure_text (lcd_t* lcd, wchar_t* str, uint32_t nr);
+float_t lcd_measure_text (lcd_t* lcd, const wchar_t* str, uint32_t nr);
 ```
 
 * 参数说明：
@@ -392,7 +392,7 @@ float_t lcd_measure_text (lcd_t* lcd, wchar_t* str, uint32_t nr);
 | -------- | ----- | --------- |
 | 返回值 | float\_t | 返回字符串占用的宽度。 |
 | lcd | lcd\_t* | lcd对象。 |
-| str | wchar\_t* | 字符串。 |
+| str | const wchar\_t* | 字符串。 |
 | nr | uint32\_t | 字符数。 |
 #### lcd\_resize 函数
 -----------------------

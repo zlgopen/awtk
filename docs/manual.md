@@ -149,6 +149,8 @@
 
 ## 二、基本函数库
 
+* [array](manual/array_t.md) 动态数组。
+* [slist](manual/slist_t.md) 单向链表。
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
 * [color](manual/color_t.md) 颜色对象。
@@ -156,7 +158,6 @@
 * [value](manual/value_t.md) 通用值对象。
 * [str](manual/str_t.md) UTF-8字符串对象。
 * [wstr](manual/wstr_t.md) Unicode字符串对象。
-* [array](manual/array_t.md) 动态数组对象。
 * [wbuffer](manual/wbuffer_t.md) Write Buffer。
 * [rbuffer](manual/rbuffer_t.md) Read Buffer。
 * [date\_time](manual/date_time_t.md) 时间日期函数。

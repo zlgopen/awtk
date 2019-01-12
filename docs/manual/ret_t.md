@@ -12,6 +12,7 @@
 | RET\_NOT\_IMPL | 没有实现/不支持。 |
 | RET\_QUIT | 退出。通常用于主循环。 |
 | RET\_FOUND | 找到。 |
+| RET\_BUSY | 对象忙。 |
 | RET\_REMOVE | 移出。通常用于定时器。 |
 | RET\_REPEAT | 重复。通常用于定时器。 |
 | RET\_NOT\_FOUND | 没找到。 |

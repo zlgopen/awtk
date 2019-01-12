@@ -44,6 +44,7 @@
 | <a href="#vgcanvas_t_vgcanvas_begin_frame">vgcanvas\_begin\_frame</a> | 开始绘制，系统内部调用。 |
 | <a href="#vgcanvas_t_vgcanvas_begin_path">vgcanvas\_begin\_path</a> | 清除之前的路径，并重新开始一条路径。 |
 | <a href="#vgcanvas_t_vgcanvas_bezier_to">vgcanvas\_bezier\_to</a> | 生成一条三次贝塞尔曲线。 |
+| <a href="#vgcanvas_t_vgcanvas_cast">vgcanvas\_cast</a> | 转换为vgcanvas对象(供脚本语言使用)。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
 | <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
@@ -243,6 +244,28 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 | cp2y | float\_t | 控制点3y坐标。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_cast"> 转换为vgcanvas对象(供脚本语言使用)。
+
+
+
+
+* 函数原型：
+
+```
+vgcanvas_t* vgcanvas_cast (vgcanvas_t* vg);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | vgcanvas\_t* | vgcanvas对象。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
 #### vgcanvas\_clear\_rect 函数
 -----------------------
 
@@ -796,7 +819,7 @@ ret_t vgcanvas_reset (vgcanvas_t* vg);
 
 > <p id="vgcanvas_t_vgcanvas_restore"> 恢复上次save的状态。
 
- save/restore必须配套使用，否则可能导致状态混乱。
+> save/restore必须配套使用，否则可能导致状态混乱。
 
 
 
@@ -873,7 +896,7 @@ ret_t vgcanvas_rounded_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, fl
 
 > <p id="vgcanvas_t_vgcanvas_save"> 保存当前的状态。如颜色和矩阵等信息。
 
- save/restore必须配套使用，否则可能导致状态混乱。
+ > save/restore必须配套使用，否则可能导致状态混乱。
 
 
 
@@ -1104,6 +1127,7 @@ ret_t vgcanvas_set_global_alpha (vgcanvas_t* vg, float_t alpha);
 
 
 
+
 * 函数原型：
 
 ```
@@ -1123,6 +1147,7 @@ ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_line_join"> 设置line join。
+
 
 
 
@@ -1170,6 +1195,7 @@ ret_t vgcanvas_set_line_width (vgcanvas_t* vg, float_t value);
 * 函数功能：
 
 > <p id="vgcanvas_t_vgcanvas_set_miter_limit"> 设置miter limit。
+
 
 
 
