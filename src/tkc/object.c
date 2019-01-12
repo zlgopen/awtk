@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/event.h"
 #include "tkc/object.h"
 
 ret_t object_set_name(object_t* obj, const char* name) {
@@ -34,7 +35,10 @@ ret_t object_set_name(object_t* obj, const char* name) {
 
 static ret_t object_destroy(object_t* obj) {
   ret_t ret = RET_OK;
+  event_t e = event_init(EVT_DESTROY, obj);
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+
+  emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
 
   if (obj->vt->on_destroy != NULL) {
     ret = obj->vt->on_destroy(obj);
@@ -105,7 +109,18 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* v) {
   return_value_if_fail(!(obj->visiting), RET_BUSY);
 
   if (obj->vt->set_prop != NULL) {
+    prop_change_event_t e;
+
+    e.name = name;
+    e.value = v;
+
+    e.e = event_init(EVT_PROP_WILL_CHANGE, obj);
+    emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
+
     ret = obj->vt->set_prop(obj, name, v);
+
+    e.e = event_init(EVT_PROP_CHANGED, obj);
+    emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
   }
 
   return ret;
