@@ -171,9 +171,14 @@ TEST(Timer, UserChangedTime) {
   ASSERT_EQ(s_log, "");
 
   timer_clear_log();
-  timer_set_time(100);
+  timer_set_time(10000);
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
-  ASSERT_EQ(tm->last_dispatch_time, 100);
+  ASSERT_EQ(tm->last_dispatch_time, 10000);
+
+  timer_clear_log();
+  timer_set_time(10200);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(tm->last_dispatch_time, 10200);
   ASSERT_EQ(s_log, "o:[uct]");
 
   timer_manager_destroy(tm);

@@ -7,7 +7,7 @@
 #ifdef WIN32
 #define random rand
 #define srandom srand
-#endif/*WIN32*/
+#endif /*WIN32*/
 
 using std::string;
 
@@ -217,7 +217,7 @@ TEST(ObejectDefault, random) {
 
   object_t* obj = object_default_create(0);
 
-	srandom(time(0));                                 
+  srandom(time(0));
 
   for (i = 0; i < n; i++) {
     int32_t num = tk_abs((int32_t)random());

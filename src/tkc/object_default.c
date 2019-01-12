@@ -36,7 +36,7 @@ static void object_default_check(object_default_t* o) {
     }
   }
 #else
-(void)o;	
+  (void)o;
 #endif
 }
 
