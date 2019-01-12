@@ -263,4 +263,8 @@ enum { TK_NAME_LEN = 31 };
 #define TK_D2R(d) (((d)*M_PI) / 180)
 #define TK_R2D(r) (((r)*180) / M_PI)
 
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#endif /*HAS_AWTK_CONFIG*/
+
 #endif /*TYPES_DEF_H*/

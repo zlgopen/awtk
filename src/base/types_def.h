@@ -24,10 +24,6 @@
 
 #include "tkc/types_def.h"
 
-#if defined(HAS_AWTK_CONFIG)
-#include "awtk_config.h"
-#endif /*HAS_AWTK_CONFIG*/
-
 /**
  * @enum lcd_orientation_t
  * LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。
