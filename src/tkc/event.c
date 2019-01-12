@@ -35,3 +35,11 @@ event_t event_init(uint32_t type, void* target) {
 event_t* event_cast(event_t* event) {
   return event;
 }
+
+prop_change_event_t* prop_change_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROP_CHANGED || event->type == EVT_PROP_WILL_CHANGE,
+                       NULL);
+
+  return (prop_change_event_t*)event;
+}

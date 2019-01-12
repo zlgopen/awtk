@@ -29,14 +29,6 @@ wheel_event_t* wheel_event_cast(event_t* event) {
   return (wheel_event_t*)event;
 }
 
-prop_change_event_t* prop_change_event_cast(event_t* event) {
-  return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_PROP_CHANGED || event->type == EVT_PROP_WILL_CHANGE,
-                       NULL);
-
-  return (prop_change_event_t*)event;
-}
-
 pointer_event_t* pointer_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type >= EVT_POINTER_DOWN && event->type <= EVT_CLICK, NULL);

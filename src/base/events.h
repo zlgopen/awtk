@@ -45,7 +45,7 @@ typedef enum _event_type_t {
    * @const EVT_POINTER_DOWN
    * 指针按下事件名(pointer_event_t)。
    */
-  EVT_POINTER_DOWN,
+  EVT_POINTER_DOWN = 0xff,
   /**
    * @const EVT_POINTER_DOWN_ABORT
    * 取消前一个指针按下事件名(pointer_event_t)。
@@ -117,11 +117,6 @@ typedef enum _event_type_t {
    */
   EVT_KEY_UP,
   /**
-   * @const EVT_DESTROY
-   * 对象销毁事件名(event_t)。
-   */
-  EVT_DESTROY,
-  /**
    * @const EVT_WILL_MOVE
    * 即将移动Widget的事件名(event_t)。
    */
@@ -151,16 +146,6 @@ typedef enum _event_type_t {
    * 调整Widget大小/位置的事件名(event_t)。
    */
   EVT_MOVE_RESIZE,
-  /**
-   * @const EVT_PROP_WILL_CHANGE
-   * 对象的属性即将改变的事件名(prop_change_event_t)。
-   */
-  EVT_PROP_WILL_CHANGE,
-  /**
-   * @const EVT_PROP_CHANGED
-   * 对象的属性改变的事件名(prop_change_event_t)。
-   */
-  EVT_PROP_CHANGED,
   /**
    * @const EVT_VALUE_WILL_CHANGE
    * 控件的值即将改变的事件名(event_t)。
@@ -349,38 +334,6 @@ typedef struct _wheel_event_t {
  * @return {wheel_event_t*} 对象。
  */
 wheel_event_t* wheel_event_cast(event_t* event);
-
-/**
- * @class prop_change_event_t
- * @annotation ["scriptable"]
- * @parent event_t
- * 对象属性变化事件。
- */
-typedef struct _prop_change_event_t {
-  event_t e;
-  /**
-   * @property {char*} name
-   * @annotation ["readable", "scriptable"]
-   * 属性的名称。
-   */
-  const char* name;
-  /**
-   * @property {value_t*} value
-   * @annotation ["readable", "scriptable"]
-   * 属性的值。
-   */
-  const value_t* value;
-} prop_change_event_t;
-
-/**
- * @method prop_change_event_cast
- * @annotation ["cast", "scriptable"]
- * 把event对象转prop_change_event_t对象，主要给脚本语言使用。
- * @param {event_t*} event event对象。
- *
- * @return {prop_change_event_t*} 对象。
- */
-prop_change_event_t* prop_change_event_cast(event_t* event);
 
 /**
  * @class pointer_event_t
