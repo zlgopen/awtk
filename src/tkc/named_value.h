@@ -82,7 +82,7 @@ named_value_t* named_value_init(named_value_t* nv, const char* name, const value
  *
  * @return {ret_t} 返回named_value对象。
  */
-named_value_t* named_value_init(named_value_t* nv, const char* name, const value_t* value);
+named_value_t* named_value_cast(named_value_t* nv);
 
 /**
  * @method named_value_set_name

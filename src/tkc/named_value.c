@@ -84,3 +84,9 @@ ret_t named_value_destroy(named_value_t* nv) {
 
   return RET_OK;
 }
+
+value_t* named_value_get_value(named_value_t* nv) {
+  return_value_if_fail(nv != NULL, NULL);
+
+  return &(nv->value);
+}

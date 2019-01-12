@@ -65,3 +65,9 @@ idle_info_t* idle_info_init_dummy(idle_info_t* idle, uint32_t id) {
 
   return idle;
 }
+
+idle_info_t* idle_info_cast(idle_info_t* idle) {
+  return_value_if_fail(idle != NULL, NULL);
+
+  return idle;
+}

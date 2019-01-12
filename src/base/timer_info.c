@@ -70,3 +70,9 @@ timer_info_t* timer_info_init_dummy(timer_info_t* timer, uint32_t id) {
 
   return timer;
 }
+
+timer_info_t* timer_info_cast(timer_info_t* timer) {
+  return_value_if_fail(timer != NULL, NULL);
+
+  return timer;
+}

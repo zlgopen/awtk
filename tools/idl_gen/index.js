@@ -206,6 +206,8 @@ class IDLGenerator {
         cls.name = this.parseName(iter);
       } else if (iter.indexOf('@annotation') >= 0) {
         cls.annotation = this.parseAnnotation(iter);
+      }else if (iter.indexOf('@alias') >= 0) {
+        cls.alias = this.parseAlias(iter);
       } else if (iter.indexOf('@parent') >= 0) {
         cls.parent = this.parseParent(iter);
       } else {

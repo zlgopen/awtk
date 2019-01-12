@@ -55,6 +55,7 @@ struct _object_vtable_t {
  * @class object_t
  * @parent emitter_t
  * @annotation ["scriptable"]
+ * @alias object_base
  *
  * 对象接口。
  *
