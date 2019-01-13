@@ -200,7 +200,7 @@ TEST(ValueTest, wstr) {
 
 TEST(ValueTest, object) {
   value_t v;
-  object_t* o = object_default_create(10);
+  object_t* o = object_default_create();
 
   ASSERT_EQ(&v, value_set_object(&v, o));
   ASSERT_EQ(o, value_object(&v));

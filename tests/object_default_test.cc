@@ -37,7 +37,7 @@ static ret_t visit_dump(void* ctx, const void* data) {
 TEST(ObejectDefault, events) {
   value_t v;
   string log;
-  object_t* obj = object_default_create(0);
+  object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   emitter_on((emitter_t*)o, EVT_PROP_WILL_CHANGE, event_dump, &log);
@@ -55,7 +55,7 @@ TEST(ObejectDefault, events) {
 TEST(ObejectDefault, basic) {
   value_t v;
   string log;
-  object_t* obj = object_default_create(0);
+  object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   ASSERT_EQ(o->props_size, 0);
@@ -197,7 +197,7 @@ static ret_t visit_test_busy(void* ctx, const void* data) {
 TEST(ObejectDefault, visis_remove) {
   value_t v;
   string log;
-  object_t* obj = object_default_create(0);
+  object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   ASSERT_EQ(object_set_prop(obj, "2", value_set_int(&v, 2)), RET_OK);
@@ -238,7 +238,7 @@ TEST(ObejectDefault, random) {
   int32_t i = 0;
   int32_t n = 10000;
 
-  object_t* obj = object_default_create(0);
+  object_t* obj = object_default_create();
 
   srandom(time(0));
 
@@ -254,7 +254,7 @@ TEST(ObejectDefault, random) {
 }
 
 TEST(ObejectDefault, set_name) {
-  object_t* obj = object_default_create(0);
+  object_t* obj = object_default_create();
 
   object_set_name(obj, "abc");
   ASSERT_EQ(obj->name, string("abc"));

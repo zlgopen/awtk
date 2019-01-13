@@ -76,15 +76,45 @@ typedef struct _event_t {
   void* target;
 } event_t;
 
+/*事件处理函数原型*/
+typedef ret_t (*event_func_t)(void* ctx, event_t* e);
+
 /**
  * @method event_cast
+ * 转换为event对象(供脚本语言使用)。
+ *
+ * 主要给脚本语言使用。
  * @annotation ["cast", "scriptable"]
- * 把event对象转wheel_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
  * @return {event_t*} 对象。
  */
 event_t* event_cast(event_t* event);
+
+/**
+ * @method event_create
+ * @annotation ["constructor", "scriptable"]
+ * 创建event对象。
+ *
+ * 主要给脚本语言使用。
+ * @param {uint32_t} type 事件类型。
+ * @param {void*} target 目标对象。
+ *
+ * @return {event_t*} 返回事件对象。
+ */
+event_t* event_create(uint32_t type, void* target);
+
+/**
+ * @method event_destroy
+ * 销毁事件对象。
+ *
+ * 主要给脚本语言使用。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {event_t*} event event对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t event_destroy(event_t* event);
 
 /**
  * @method event_init
@@ -96,9 +126,6 @@ event_t* event_cast(event_t* event);
  * @return {event_t} 事件对象。
  */
 event_t event_init(uint32_t type, void* target);
-
-/*事件处理函数原型*/
-typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 
 /**
  * @class prop_change_event_t

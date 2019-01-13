@@ -14050,7 +14050,8 @@
       {
         "params": [],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
         "desc": " 创建emitter对象。\n\n\n",
         "name": "emitter_create",
@@ -14124,7 +14125,7 @@
           }
         ],
         "annotation": {
-          "scriptable": "on_event"
+          "scriptable": "custom"
         },
         "desc": " 注册指定事件的处理函数。\n\n\n",
         "name": "emitter_on",
@@ -14320,13 +14321,33 @@
           }
         ],
         "annotation": {
-          "deconstructor": true
+          "deconstructor": true,
+          "scriptable": true
         },
         "desc": " 销毁。\n\n\n\n",
         "name": "emitter_destroy",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为emitter对象(供脚本语言使用)。\n\n 主要给脚本语言使用。\n\n\n",
+        "name": "emitter_cast",
+        "return": {
+          "type": "emitter_t*",
+          "desc": "对象。"
         }
       }
     ],
@@ -14421,11 +14442,54 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 把event对象转wheel_event_t对象，主要给脚本语言使用。\n\n\n",
+        "desc": " 转换为event对象(供脚本语言使用)。\n\n 主要给脚本语言使用。\n\n\n",
         "name": "event_cast",
         "return": {
           "type": "event_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "目标对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建event对象。\n\n 主要给脚本语言使用。\n\n\n",
+        "name": "event_create",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回事件对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": " 销毁事件对象。\n\n 主要给脚本语言使用。\n\n\n",
+        "name": "event_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -28350,13 +28414,7 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "init_capacity",
-            "desc": "初始容量。"
-          }
-        ],
+        "params": [],
         "annotation": {
           "constructor": true,
           "scriptable": true

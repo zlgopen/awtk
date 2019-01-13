@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/mem.h"
 #include "tkc/event.h"
 #include "tkc/time_now.h"
 
@@ -42,4 +43,21 @@ prop_change_event_t* prop_change_event_cast(event_t* event) {
                        NULL);
 
   return (prop_change_event_t*)event;
+}
+
+event_t* event_create(uint32_t type, void* target) {
+  event_t* e = TKMEM_ZALLOC(event_t);
+
+  return_value_if_fail(e != NULL, NULL);
+  *e = event_init(type, target);
+
+  return e;
+}
+
+ret_t event_destroy(event_t* event) {
+  return_value_if_fail(event != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(event);
+
+  return RET_OK;
 }

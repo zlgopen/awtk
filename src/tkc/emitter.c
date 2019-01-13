@@ -253,3 +253,9 @@ ret_t emitter_set_on_destroy(emitter_t* emitter, uint32_t id, tk_destroy_t on_de
 
   return RET_OK;
 }
+
+emitter_t* emitter_cast(emitter_t* emitter) {
+  return_value_if_fail(emitter != NULL, NULL);
+
+  return emitter;
+}
