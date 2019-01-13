@@ -19,6 +19,9 @@
  *
  */
 
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/color_parser.h"
 #include "base/vgcanvas.h"
 
 ret_t vgcanvas_reset(vgcanvas_t* vg) {
@@ -102,6 +105,9 @@ ret_t vgcanvas_paint(vgcanvas_t* vg, bool_t stroke, bitmap_t* img) {
 
 ret_t vgcanvas_destroy(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->destroy != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(vg->text_baseline);
+  TKMEM_FREE(vg->text_align);
 
   return vg->vt->destroy(vg);
 }
@@ -210,7 +216,7 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* text_align) {
   return_value_if_fail(vg != NULL && vg->vt->set_text_align != NULL && text_align != NULL,
                        RET_BAD_PARAMS);
 
-  vg->text_align = text_align;
+  vg->text_align = tk_str_copy(vg->text_align, text_align);
 
   return vg->vt->set_text_align(vg, text_align);
 }
@@ -219,7 +225,7 @@ ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
   return_value_if_fail(vg != NULL && vg->vt->set_text_baseline != NULL && text_baseline != NULL,
                        RET_BAD_PARAMS);
 
-  vg->text_baseline = text_baseline;
+  vg->text_baseline = tk_str_copy(vg->text_baseline, text_baseline);
 
   return vg->vt->set_text_baseline(vg, text_baseline);
 }
@@ -275,6 +281,12 @@ ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t value) {
   return vg->vt->set_fill_color(vg, value);
 }
 
+ret_t vgcanvas_set_fill_color_str(vgcanvas_t* vg, const char* color) {
+  color_t c = color_parse(color);
+
+  return vgcanvas_set_fill_color(vg, c);
+}
+
 ret_t vgcanvas_set_fill_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,
                                         float_t ey, color_t icolor, color_t ocolor) {
   return_value_if_fail(vg != NULL && vg->vt->set_fill_linear_gradient != NULL, RET_BAD_PARAMS);
@@ -295,6 +307,12 @@ ret_t vgcanvas_set_stroke_color(vgcanvas_t* vg, color_t value) {
   vg->stroke_color = value;
 
   return vg->vt->set_stroke_color(vg, value);
+}
+
+ret_t vgcanvas_set_stroke_color_str(vgcanvas_t* vg, const char* color) {
+  color_t c = color_parse(color);
+
+  return vgcanvas_set_stroke_color(vg, c);
 }
 
 ret_t vgcanvas_set_stroke_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, float_t ex,

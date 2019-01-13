@@ -191,6 +191,7 @@ typedef struct _vgcanvas_vtable_t {
 /**
  * @class vgcanvas_t
  * 矢量图画布抽象基类。
+ * @annotation ["scriptable"]
  *
  * 具体实现时可以使用agg，nanovg, cairo和skia等方式。
  *
@@ -237,87 +238,90 @@ typedef struct _vgcanvas_vtable_t {
 struct _vgcanvas_t {
   /**
    * @property {wh_t} w
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * canvas的宽度
    */
   uint32_t w;
   /**
-   * @property {wh_t} height
-   * @annotation ["readable"]
+   * @property {wh_t} h
+   * @annotation ["readable", "scriptable"]
    * canvas的高度
    */
   uint32_t h;
   /**
    * @property {float_t} ratio
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 显示比例。
    */
   float_t ratio;
   /**
    * @property {bool_t} anti_alias
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 是否启用反走样功能。
    */
   bool_t anti_alias;
   /**
    * @property {float_t} line_width
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 线宽。
    */
   float_t line_width;
   /**
    * @property {float_t} global_alpha
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 全局alpha。
    */
   float_t global_alpha;
   /**
    * @property {float_t} miter_limit
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * miter\_limit。
    * @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
    */
   float_t miter_limit;
   /**
    * @property {char*} line_cap
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * line\_cap。
    * @see http://www.w3school.com.cn/tags/canvas_linecap.asp
    */
   const char* line_cap;
   /**
    * @property {char*} line_join
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * line\_join。
    * @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
    */
   const char* line_join;
   /**
    * @property {char*} font
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 字体。
    */
   const char* font;
   /**
    * @property {float_t} font_size
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 字体大小。
    */
   float_t font_size;
   /**
    * @property {char*} text_align
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 文本对齐方式。
+   *
    * @see http://www.w3school.com.cn/tags/canvas_textalign.asp
    */
-  const char* text_align;
+  char* text_align;
   /**
    * @property {char*} text_baseline
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 文本基线。
+   *
    * @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
    */
-  const char* text_baseline;
+  char* text_baseline;
+
   /**
    * @property {color_t} fill_color
    * @annotation ["readable"]
@@ -416,9 +420,26 @@ ret_t vgcanvas_flush(vgcanvas_t* vg);
 ret_t vgcanvas_begin_frame(vgcanvas_t* vg, rect_t* dirty_rect);
 
 /**
+ * @method vgcanvas_clear_rect
+ * 用颜色清除指定矩形区域。
+ *
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} x x坐标。
+ * @param {float_t} y y坐标。
+ * @param {float_t} w 宽度。
+ * @param {float_t} h 高度。
+ * @param {color_t} c 颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_clear_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
+                          color_t color);
+
+/**
  * @method vgcanvas_begin_path
  * 清除之前的路径，并重新开始一条路径。
  *
+ * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -589,23 +610,6 @@ ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_close_path(vgcanvas_t* vg);
-
-/**
- * @method vgcanvas_clear_rect
- * 用颜色清除指定矩形区域。
- *
- * @annotation ["scriptable"]
- * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} x x坐标。
- * @param {float_t} y y坐标。
- * @param {float_t} w 宽度。
- * @param {float_t} h 高度。
- * @param {color_t} c 颜色。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vgcanvas_clear_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
-                          color_t color);
 
 /**
  * @method vgcanvas_rotate
@@ -854,6 +858,7 @@ ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, 
  * @method vgcanvas_set_antialias
  * 设置是否启用反走样。
  *
+ * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {bool_t} value 是否启用反走样。
  *
@@ -889,7 +894,6 @@ ret_t vgcanvas_set_line_width(vgcanvas_t* vg, float_t value);
  * @method vgcanvas_set_fill_color
  * 设置填充颜色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {color_t} color 颜色。
  *
@@ -898,10 +902,22 @@ ret_t vgcanvas_set_line_width(vgcanvas_t* vg, float_t value);
 ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t color);
 
 /**
+ * @method vgcanvas_set_fill_color_str
+ * 设置填充颜色。
+ *
+ * @alias vgcanvas_set_fill_color
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {const char*} color 颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_fill_color_str(vgcanvas_t* vg, const char* color);
+
+/**
  * @method vgcanvas_set_fill_linear_gradient
  * 设置填充颜色为线性渐变色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} sx start x
  * @param {float_t} sy start y
@@ -919,7 +935,6 @@ ret_t vgcanvas_set_fill_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy, 
  * @method vgcanvas_set_fill_radial_gradient
  * 设置填充颜色为径向渐变色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} cx center x
  * @param {float_t} cy center y
@@ -937,7 +952,6 @@ ret_t vgcanvas_set_fill_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, 
  * @method vgcanvas_set_stroke_color
  * 设置线条颜色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {color_t} color 颜色。
  *
@@ -946,10 +960,22 @@ ret_t vgcanvas_set_fill_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy, 
 ret_t vgcanvas_set_stroke_color(vgcanvas_t* vg, color_t color);
 
 /**
+ * @method vgcanvas_set_stroke_color_str
+ * 设置线条颜色。
+ *
+ * @alias vgcanvas_set_stroke_color
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {const char*} color 颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_stroke_color_str(vgcanvas_t* vg, const char* str);
+
+/**
  * @method vgcanvas_set_stroke_linear_gradient
  * 设置线条颜色为线性渐变色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} sx start x
  * @param {float_t} sy start y
@@ -967,7 +993,6 @@ ret_t vgcanvas_set_stroke_linear_gradient(vgcanvas_t* vg, float_t sx, float_t sy
  * @method vgcanvas_set_stroke_radial_gradient
  * 设置线条颜色为径向渐变色。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} cx center x
  * @param {float_t} cy center y

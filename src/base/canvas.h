@@ -36,8 +36,20 @@ typedef struct _canvas_t canvas_t;
  * canvas类。
  */
 struct _canvas_t {
+  /**
+   * @property {xy_t} ox
+   * @annotation ["readable", "scriptable"]
+   * x坐标偏移。
+   */
   xy_t ox;
+
+  /**
+   * @property {xy_t} oy
+   * @annotation ["readable", "scriptable"]
+   * y坐标偏移。
+   */
   xy_t oy;
+
   xy_t clip_left;
   xy_t clip_top;
   xy_t clip_right;
@@ -458,7 +470,7 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
  * @method canvas_get_vgcanvas
  * 获取vgcanvas对象。
  *
- * @annotation ["scriptable", "constructor"]
+ * @annotation ["scriptable"]
  * @param {canvas_t*} c canvas对象。
  *
  * @return {vgcanvas_t*} 返回vgcanvas对象。

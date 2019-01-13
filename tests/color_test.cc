@@ -35,7 +35,9 @@ TEST(Color, dynamic) {
 
 TEST(Color, dynamic1) {
   const char* str = "#01020304";
-  color_t* c = color_create_with_str(str);
+  color_t* c = color_create(0, 0, 0, 0);
+
+  color_from_str(c, str);
 
   ASSERT_EQ(color_r(c), c->rgba.r);
   ASSERT_EQ(color_g(c), c->rgba.g);

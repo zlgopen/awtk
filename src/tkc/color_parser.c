@@ -255,9 +255,8 @@ color_t color_parse(const char* color) {
   return color_init(r, g, b, a);
 }
 
-color_t* color_create_with_str(const char* str) {
-  color_t* c = TKMEM_ZALLOC(color_t);
-  return_value_if_fail(c != NULL, NULL);
+color_t* color_from_str(color_t* c, const char* str) {
+  return_value_if_fail(c != NULL && str != NULL, NULL);
 
   *c = color_parse(str);
 

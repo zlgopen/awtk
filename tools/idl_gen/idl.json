@@ -1810,8 +1810,7 @@
           }
         ],
         "annotation": {
-          "scriptable": true,
-          "constructor": true
+          "scriptable": true
         },
         "desc": " 获取vgcanvas对象。\r\n\r\n\r\n",
         "name": "canvas_get_vgcanvas",
@@ -1841,7 +1840,26 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "ox",
+        "desc": " x坐标偏移。\r\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "oy",
+        "desc": " y坐标偏移。\r\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "base/canvas.h",
     "desc": " canvas类。\r\n",
     "name": "canvas_t",
@@ -6794,9 +6812,52 @@
             "type": "vgcanvas_t*",
             "name": "vg",
             "desc": "vgcanvas对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "float_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "float_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "float_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "color_t",
+            "name": "c",
+            "desc": "颜色。"
           }
         ],
         "annotation": {},
+        "desc": " 用颜色清除指定矩形区域。\n\n\n\n",
+        "name": "vgcanvas_clear_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 清除之前的路径，并重新开始一条路径。\n\n\n\n",
         "name": "vgcanvas_begin_path",
         "return": {
@@ -7197,49 +7258,6 @@
         },
         "desc": " 闭合路径。\n\n >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。\n\n\n\n",
         "name": "vgcanvas_close_path",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "vgcanvas_t*",
-            "name": "vg",
-            "desc": "vgcanvas对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "float_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "float_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "float_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "color_t",
-            "name": "c",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 用颜色清除指定矩形区域。\n\n\n\n",
-        "name": "vgcanvas_clear_rect",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -7814,7 +7832,9 @@
             "desc": "是否启用反走样。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 设置是否启用反走样。\n\n\n\n",
         "name": "vgcanvas_set_antialias",
         "return": {
@@ -7881,11 +7901,33 @@
             "desc": "颜色。"
           }
         ],
+        "annotation": {},
+        "desc": " 设置填充颜色。\n\n\n\n",
+        "name": "vgcanvas_set_fill_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
         "desc": " 设置填充颜色。\n\n\n\n",
-        "name": "vgcanvas_set_fill_color",
+        "name": "vgcanvas_set_fill_color_str",
+        "alias": "vgcanvas_set_fill_color",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -7929,9 +7971,7 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": " 设置填充颜色为线性渐变色。\n\n\n\n",
         "name": "vgcanvas_set_fill_linear_gradient",
         "return": {
@@ -7977,9 +8017,7 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": " 设置填充颜色为径向渐变色。\n\n\n\n",
         "name": "vgcanvas_set_fill_radial_gradient",
         "return": {
@@ -8000,11 +8038,33 @@
             "desc": "颜色。"
           }
         ],
+        "annotation": {},
+        "desc": " 设置线条颜色。\n\n\n\n",
+        "name": "vgcanvas_set_stroke_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
         "desc": " 设置线条颜色。\n\n\n\n",
-        "name": "vgcanvas_set_stroke_color",
+        "name": "vgcanvas_set_stroke_color_str",
+        "alias": "vgcanvas_set_stroke_color",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -8048,9 +8108,7 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": " 设置线条颜色为线性渐变色。\n\n\n\n",
         "name": "vgcanvas_set_stroke_linear_gradient",
         "return": {
@@ -8096,9 +8154,7 @@
             "desc": "结束颜色。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": " 设置线条颜色为径向渐变色。\n\n\n\n",
         "name": "vgcanvas_set_stroke_radial_gradient",
         "return": {
@@ -8251,15 +8307,17 @@
         "desc": " canvas的宽度\n\n",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
-        "name": "height",
+        "name": "h",
         "desc": " canvas的高度\n\n",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8267,7 +8325,8 @@
         "desc": " 显示比例。\n\n",
         "type": "float_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8275,7 +8334,8 @@
         "desc": " 是否启用反走样功能。\n\n",
         "type": "bool_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8283,7 +8343,8 @@
         "desc": " 线宽。\n\n",
         "type": "float_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8291,7 +8352,8 @@
         "desc": " 全局alpha。\n\n",
         "type": "float_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8299,7 +8361,8 @@
         "desc": " miter\\_limit。\n @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp\n\n",
         "type": "float_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8307,7 +8370,8 @@
         "desc": " line\\_cap。\n @see http://www.w3school.com.cn/tags/canvas_linecap.asp\n\n",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8315,7 +8379,8 @@
         "desc": " line\\_join。\n @see http://www.w3school.com.cn/tags/canvas_linejoin.asp\n\n",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8323,7 +8388,8 @@
         "desc": " 字体。\n\n",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8331,23 +8397,26 @@
         "desc": " 字体大小。\n\n",
         "type": "float_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
         "name": "text_align",
-        "desc": " 文本对齐方式。\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
+        "desc": " 文本对齐方式。\n\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
         "name": "text_baseline",
-        "desc": " 文本基线。\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
+        "desc": " 文本基线。\n\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
         "type": "char*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -8378,6 +8447,9 @@
     "header": "base/vgcanvas.h",
     "desc": " 矢量图画布抽象基类。\n\n 具体实现时可以使用agg，nanovg, cairo和skia等方式。\n\n cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。\n\n 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。\n\n 我们对nanovg进行了一些改进:\n\n * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。\n\n * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。\n\n ```graphviz\n   [default_style]\n\n   vgcanvas_cairo_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_nanovg_t -> vgcanvas_t[arrowhead = \"empty\"]\n   opengl -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   bgfx -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agg -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   agge -> vgcanvas_nanovg_t[arrowhead = \"none\"]\n   vgcanvas_skia_t -> vgcanvas_t[arrowhead = \"empty\"]\n   vgcanvas_agge_t -> vgcanvas_t[arrowhead = \"empty\"]\n ```\n\n 示例：\n\n ```c\n   vgcanvas_t* vg = canvas_get_vgcanvas(c);\n   vgcanvas_save(vg);\n   vgcanvas_translate(vg, 0, 100);\n\n   vgcanvas_set_line_width(vg, 1);\n   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));\n   vgcanvas_rect(vg, 5, 5, 100, 100);\n   vgcanvas_fill(vg);\n   vgcanvas_restore(vg);\n ```\n\n >请参考：https://www.w3schools.com/tags/ref_canvas.asp\n\n\n",
     "name": "vgcanvas_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -13780,17 +13852,21 @@
       {
         "params": [
           {
+            "type": "color_t*",
+            "name": "c",
+            "desc": "color对象。"
+          },
+          {
             "type": "const char*",
             "name": "str",
             "desc": "css类似的颜色值。"
           }
         ],
         "annotation": {
-          "constructor": true,
           "scriptable": true
         },
         "desc": " 创建color对象。\n\n > 主要供脚本语言使用。\n\n\n\n",
-        "name": "color_create_with_str",
+        "name": "color_from_str",
         "return": {
           "type": "color_t*",
           "desc": "color对象。"
@@ -17368,7 +17444,7 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为value对象。\n\n > 供脚本语言使用 \n\n\n",
+        "desc": " 转换为value对象。\n\n > 供脚本语言使用\n\n\n",
         "name": "value_cast",
         "return": {
           "type": "value_t*",
