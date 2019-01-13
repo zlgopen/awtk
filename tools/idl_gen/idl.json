@@ -15152,6 +15152,44 @@
             "type": "rect_t*",
             "name": "rect",
             "desc": "rect对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置rect对象的xywh。\n\n > 主要供脚本语言使用。\n\n\n\n",
+        "name": "rect_set",
+        "return": {
+          "type": "rect_t*",
+          "desc": "rect对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rect_t*",
+            "name": "rect",
+            "desc": "rect对象。"
           }
         ],
         "annotation": {

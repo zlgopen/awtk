@@ -100,6 +100,23 @@ typedef struct _rect_t {
 rect_t* rect_create(xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method rect_set
+ * 设置rect对象的xywh。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {rect_t*} rect rect对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ *
+ * @return {rect_t*} rect对象。
+ */
+rect_t* rect_set(rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
  * @method rect_cast
  * 转换为rect对象。
  *
