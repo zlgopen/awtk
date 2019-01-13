@@ -81,13 +81,13 @@ typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 
 /**
  * @method event_cast
- * 转换为event对象(供脚本语言使用)。
+ * 转换为event对象。
  *
- * 主要给脚本语言使用。
+ * > 供脚本语言使用
  * @annotation ["cast", "scriptable"]
  * @param {event_t*} event event对象。
  *
- * @return {event_t*} 对象。
+ * @return {event_t*} event对象。
  */
 event_t* event_cast(event_t* event);
 

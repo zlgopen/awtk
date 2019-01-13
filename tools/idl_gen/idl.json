@@ -13872,6 +13872,25 @@
         "params": [
           {
             "type": "color_t*",
+            "name": "color",
+            "desc": "color对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为color对象。\n\n > 供脚本语言使用。\n\n\n",
+        "name": "color_cast",
+        "return": {
+          "type": "color_t*",
+          "desc": "color对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "color_t*",
             "name": "c",
             "desc": "color对象。"
           }
@@ -13905,7 +13924,8 @@
         "type": "uint32_t",
         "annotation": {
           "readable": true,
-          "writable": true
+          "writable": true,
+          "scriptable": true
         }
       }
     ],
@@ -14442,11 +14462,11 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为event对象(供脚本语言使用)。\n\n 主要给脚本语言使用。\n\n\n",
+        "desc": " 转换为event对象。\n\n > 供脚本语言使用\n\n\n",
         "name": "event_cast",
         "return": {
           "type": "event_t*",
-          "desc": "对象。"
+          "desc": "event对象。"
         }
       },
       {
@@ -15054,6 +15074,25 @@
         "params": [
           {
             "type": "rect_t*",
+            "name": "rect",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为rect对象。\n\n > 供脚本语言使用。\n\n\n",
+        "name": "rect_cast",
+        "return": {
+          "type": "rect_t*",
+          "desc": "rect对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rect_t*",
             "name": "r",
             "desc": "rect对象。"
           }
@@ -15077,7 +15116,8 @@
         "desc": " x坐标。\n\n",
         "type": "xy_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -15085,7 +15125,8 @@
         "desc": " y坐标。\n\n",
         "type": "xy_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -15093,7 +15134,8 @@
         "desc": " 宽度。\n\n",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -15101,7 +15143,8 @@
         "desc": " 高度。\n\n",
         "type": "wh_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       }
     ],
@@ -17009,11 +17052,33 @@
             "desc": "待设置的值。"
           }
         ],
+        "annotation": {},
+        "desc": " 设置类型为字符串的值。\n\n\n",
+        "name": "value_set_str",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "待设置的值。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置类型为字符串的值。\n\n\n",
-        "name": "value_set_str",
+        "desc": " 设置类型为字符串的值(并拷贝字符串)。\n\n > 供脚本语言使用。\n\n\n",
+        "name": "value_dup_str",
+        "alias": "value_set_str",
         "return": {
           "type": "value_t*",
           "desc": "value对象本身。"
@@ -17289,6 +17354,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "value",
+            "desc": "value对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为value对象。\n\n > 供脚本语言使用 \n\n\n",
+        "name": "value_cast",
+        "return": {
+          "type": "value_t*",
+          "desc": "对象。"
         }
       }
     ],

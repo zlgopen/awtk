@@ -60,3 +60,9 @@ uint8_t color_a(color_t* c) {
 
   return c->rgba.a;
 }
+
+color_t* color_cast(color_t* color) {
+  return_value_if_fail(color != NULL, NULL);
+
+  return color;
+}

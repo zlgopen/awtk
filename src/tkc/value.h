@@ -431,13 +431,26 @@ double value_double(const value_t* v);
 /**
  * @method value_set_str
  * 设置类型为字符串的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {const char*}   value 待设置的值。
  *
  * @return {value_t*} value对象本身。
  */
 value_t* value_set_str(value_t* v, const char* value);
+
+/**
+ * @method value_dup_str
+ * 设置类型为字符串的值(并拷贝字符串)。
+ *
+ * > 供脚本语言使用。
+ * @alias value_set_str
+ * @annotation ["scriptable"]
+ * @param {value_t*} v     value对象。
+ * @param {const char*}   value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_dup_str(value_t* v, const char* value);
 
 /**
  * @method value_set_wstr
@@ -579,6 +592,18 @@ ret_t value_destroy(value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t value_reset(value_t* v);
+
+/**
+ * @method value_cast
+ * 转换为value对象。
+ *
+ * > 供脚本语言使用
+ * @annotation ["cast", "scriptable"]
+ * @param {value_t*} value value对象。
+ *
+ * @return {value_t*} 对象。
+ */
+value_t* value_cast(value_t* value);
 
 END_C_DECLS
 

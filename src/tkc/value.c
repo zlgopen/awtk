@@ -311,6 +311,16 @@ value_t* value_set_str(value_t* v, const char* value) {
   return value_init(v, VALUE_TYPE_STRING);
 }
 
+value_t* value_dup_str(value_t* v, const char* value) {
+  return_value_if_fail(v != NULL, NULL);
+
+  value_init(v, VALUE_TYPE_STRING);
+  v->value.str = tk_strdup(value);
+  v->free_handle = TRUE;
+
+  return v;
+}
+
 value_t* value_set_wstr(value_t* v, const wchar_t* value) {
   return_value_if_fail(v != NULL, NULL);
 
@@ -547,4 +557,10 @@ object_t* value_object(const value_t* v) {
   return_value_if_fail(v != NULL && v->type == VALUE_TYPE_OBJECT, NULL);
 
   return v->value.object;
+}
+
+value_t* value_cast(value_t* value) {
+  return_value_if_fail(value != NULL, NULL);
+
+  return value;
 }
