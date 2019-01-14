@@ -1,7 +1,7 @@
 # 最新动态
 * 2019/01/14
   * 完善脚本绑定(增加函数和注释)。
-  * 整理API文档：color\_picker/gif\_image/guage/guage\_pointer/image\_animation/image\_value。
+  * 整理API文档：color\_picker/gif\_image/guage/guage\_pointer/image\_animation/image\_value/keyboard。
 
 * 2019/01/13
   * 完善脚本绑定(增加函数和注释)。
