@@ -37,38 +37,37 @@ BEGIN_C_DECLS
 typedef struct _date_time_t {
   /**
    * @property {int32_t} second
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 秒(0 - 59)。
    */
   int32_t second;
   /**
    * @property {int32_t} minute
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 分(0 - 59)。
    */
   int32_t minute;
   /**
    * @property {int32_t} hour
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 时(0 - 23)。
    */
   int32_t hour; /* hours (0 - 23) */
   /**
    * @property {int32_t} day
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 日(1-31)。
    */
   int32_t day;
-
   /**
    * @property {int32_t} month
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 月(1-12)。
    */
   int32_t month;
   /**
    * @property {int32_t} year
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 年。
    */
   int32_t year;
@@ -95,6 +94,7 @@ date_time_t* date_time_init(date_time_t* dt);
 /**
  * @method date_time_destroy
  * 销毁date_time对象(一般供脚本语言中使用)。
+ *
  * @annotation ["deconstructor", "scriptable"]
  * @param {date_time_t*} dt date_time对象。
  *
@@ -105,8 +105,11 @@ ret_t date_time_destroy(date_time_t* dt);
 typedef ret_t (*date_time_get_now_t)(date_time_t* dt);
 
 /**
- * @method date_time_date_time_set_impl
+ * @method date_time_set_impl
  * 设置获取当前日期和时间的函数。
+ *
+ * > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
+ *
  * @param {date_time_get_now_t} date_time_get_now 获取当前日期和时间的函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

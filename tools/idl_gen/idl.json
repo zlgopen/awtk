@@ -14057,7 +14057,7 @@
           "deconstructor": true,
           "scriptable": true
         },
-        "desc": " 销毁date_time对象(一般供脚本语言中使用)。\n\n\n",
+        "desc": " 销毁date_time对象(一般供脚本语言中使用)。\n\n\n\n",
         "name": "date_time_destroy",
         "return": {
           "type": "ret_t",
@@ -14073,8 +14073,8 @@
           }
         ],
         "annotation": {},
-        "desc": " 设置获取当前日期和时间的函数。\n\n\n",
-        "name": "date_time_date_time_set_impl",
+        "desc": " 设置获取当前日期和时间的函数。\n\n > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。\n\n\n\n",
+        "name": "date_time_set_impl",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -14088,7 +14088,8 @@
         "desc": " 秒(0 - 59)。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -14096,7 +14097,8 @@
         "desc": " 分(0 - 59)。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -14104,7 +14106,8 @@
         "desc": " 时(0 - 23)。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -14112,7 +14115,8 @@
         "desc": " 日(1-31)。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -14120,7 +14124,8 @@
         "desc": " 月(1-12)。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -14128,7 +14133,8 @@
         "desc": " 年。\n\n",
         "type": "int32_t",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       }
     ],
