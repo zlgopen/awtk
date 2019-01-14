@@ -23371,7 +23371,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置颜色。\r\n\r\n",
+        "desc": " 设置颜色。\r\n\r\n\r\n",
         "name": "color_picker_set_color",
         "return": {
           "type": "ret_t",
@@ -23390,7 +23390,7 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为color_picker对象(供脚本语言使用)。\r\n\r\n",
+        "desc": " 转换为color_picker对象(供脚本语言使用)。\r\n\r\n\r\n",
         "name": "color_picker_cast",
         "return": {
           "type": "widget_t*",
@@ -23426,7 +23426,7 @@
       }
     ],
     "header": "color_picker/color_picker.h",
-    "desc": " 颜色选择器。 其中的控件必须按下列规则命名：\r\n COLOR_PICKER_CHILD_R 红色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_G 绿色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_B 蓝色分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_H Hue分量。可以是spin_box、edit、slider和color_component。\r\n COLOR_PICKER_CHILD_S Saturation分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_V Value/Brightness分量。可以是spin_box、edit和slider。\r\n COLOR_PICKER_CHILD_SV Saturation和Value/Brightness分量。可以是color_component。\r\n COLOR_PICKER_CHILD_OLD 旧的值。可以是spin_box、edit和color_tile。\r\n COLOR_PICKER_CHILD_NEW 新的值。可以是spin_box、edit和color_tile。\r\n",
+    "desc": " 颜色选择器。 \r\n\r\n color\\_picker\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于color\\_picker\\_t控件。\r\n\r\n 在xml中使用\"color\\_picker\"标签创建颜色选择器控件。如：\r\n\r\n ```xml\r\n <color_picker x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" value=\"orange\">\r\n  <color_component x=\"0\" y=\"0\" w=\"200\" h=\"200\" name=\"sv\"/>\r\n  <color_component x=\"210\" y=\"0\" w=\"20\" h=\"200\" name=\"h\"/>\r\n  <color_tile x=\"0\" y=\"210\" w=\"50%\" h=\"20\" name=\"new\" bg_color=\"green\"/>\r\n  <color_tile x=\"right\" y=\"210\" w=\"50%\" h=\"20\" name=\"old\" bg_color=\"blue\"/>\r\n </color_picker>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [color\\_picker](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/color_picker.xml)\r\n\r\n 其中的子控件必须按下列规则命名：\r\n\r\n * r 红色分量。可以是spin_box、edit和slider。\r\n * g 绿色分量。可以是spin_box、edit和slider。\r\n * b 蓝色分量。可以是spin_box、edit和slider。\r\n * h Hue分量。可以是spin_box、edit、slider和color_component。\r\n * s Saturation分量。可以是spin_box、edit和slider。\r\n * v Value/Brightness分量。可以是spin_box、edit和slider。\r\n * sv Saturation和Value/Brightness分量。可以是color_component。\r\n * old 旧的值。可以是spin_box、edit和color_tile。\r\n * new 新的值。可以是spin_box、edit和color_tile。\r\n\r\n",
     "name": "color_picker_t",
     "parent": "widget_t",
     "annotation": {
