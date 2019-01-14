@@ -41,7 +41,8 @@
  ```
 
  > 更多用法请参考：
- [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
+ [theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
 
 ### 函数
 <p id="label_t_methods">

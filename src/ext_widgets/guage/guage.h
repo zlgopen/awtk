@@ -43,7 +43,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/guages.xml)
+ * [guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/guage.xml)
  *
  * 在c代码中使用函数guage\_create创建表盘控件。如：
  *

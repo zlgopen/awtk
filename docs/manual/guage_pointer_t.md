@@ -23,7 +23,7 @@
 
  ```c
   widget_t* guage_pointer = guage_pointer_create(guage, 10, 10, 100, 30);
-  guage_pointer_set_image(guage_pointer, "guage_pointer"); 
+  guage_pointer_set_image(guage_pointer, "guage_pointer");
  ```
 
  > 创建之后，需要用guage\_pointer\_set\_image设置仪表指针图片。
