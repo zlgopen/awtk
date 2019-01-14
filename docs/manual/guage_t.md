@@ -3,6 +3,40 @@
 ![image](images/guage_t_0.png)
 
  表盘控件。
+
+ 表盘控件就是一张图片。
+
+ guage\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于guage\_t控件。
+
+ 在xml中使用"guage"标签创建表盘控件。如：
+
+ ```xml
+ <guage x="c" y="10" w="240" h="240" image="guage_bg" >
+ ```
+
+ > 更多用法请参考：
+ [guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/guages.xml)
+
+ 在c代码中使用函数guage\_create创建表盘控件。如：
+
+ ```c
+  widget_t* guage = guage_create(win, 10, 10, 200, 200);
+  guage_set_image(guage, "guage_bg");
+ ```
+
+ 可用通过style来设置控件的显示风格，如背景和边框等。如：
+
+ ```xml
+ <guage>
+  <style name="border">
+   <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
+  </style>
+ </guage>
+ ```
+
+ > 更多用法请参考：
+ [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
+
 ### 函数
 <p id="guage_t_methods">
 
@@ -71,6 +105,10 @@ widget_t* guage_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数功能：
 
 > <p id="guage_t_guage_set_draw_type"> 设置图片的显示方式。
+
+ > 绘制方式的属性值和枚举值:
+ [image\_draw\_type\_name\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)
+
 
 
 

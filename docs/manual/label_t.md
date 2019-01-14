@@ -17,8 +17,8 @@
  <label style="center" text="center"/>
  ```
 
- >
- 更多用法请参考：[label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)
+ > 更多用法请参考：
+ [label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)
 
  在c代码中使用函数label\_create创建文本控件。如：
 
@@ -29,7 +29,8 @@
 
  > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
 
- > 完整示例请参考：[label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)
+ > 完整示例请参考：
+ [label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 
@@ -39,8 +40,8 @@
   </style>
  ```
 
- > 更多用法请参考：[theme
- default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
+ > 更多用法请参考：
+ [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
 
 ### 函数
 <p id="label_t_methods">

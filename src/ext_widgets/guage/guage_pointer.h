@@ -31,6 +31,32 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  * 仪表指针控件。
+ *
+ * 仪表指针就是一张旋转的图片，图片可以是普通图片也可以是SVG图片。
+ *
+ * 在嵌入式平台上，对于旋转的图片，SVG图片的效率比位图高数倍，所以推荐使用SVG图片。
+ *
+ * guage\_pointer\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于guage\_pointer\_t控件。
+ *
+ * 在xml中使用"guage\_pointer"标签创建仪表指针控件。如：
+ *
+ * ```xml
+ * <guage_pointer x="c" y="50" w="24" h="140" value="-128" image="guage_pointer" />
+ * ```
+ *
+ * > 更多用法请参考：
+ * [guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/guage.xml)
+ *
+ * 在c代码中使用函数guage\_pointer\_create创建仪表指针控件。如：
+ *
+ * ```c
+ *  widget_t* guage_pointer = guage_pointer_create(guage, 10, 10, 100, 30);
+ *  guage_pointer_set_image(guage_pointer, "guage_pointer");
+ * ```
+ *
+ * > 创建之后，需要用guage\_pointer\_set\_image设置仪表指针图片。
+ *
+ *
  */
 typedef struct _guage_pointer_t {
   widget_t widget;
@@ -45,7 +71,10 @@ typedef struct _guage_pointer_t {
   /**
    * @property {char*} image
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 指针图片。图片须垂直向上，图片的中心点为旋转方向。
+   * 指针图片。
+   *
+   * 图片须垂直向上，图片的中心点为旋转方向。
+   *
    */
   char* image;
 

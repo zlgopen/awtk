@@ -50,6 +50,8 @@
 * [canvas\_widget](manual/canvas_widget_t.md) 画布控件。
 * [color\_picker](manual/color_picker_t.md) 颜色选择器控件。
 * [gif\_image](manual/gif_image_t.md) gif\_image控件。
+* [guage](manual/guage_t.md) 仪表控件。
+* [guage\_pointer](manual/guage_pointer_t.md) 仪表指针控件。
 
 ### 画布
 
