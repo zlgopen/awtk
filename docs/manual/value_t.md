@@ -18,11 +18,13 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
+| <a href="#value_t_value_cast">value\_cast</a> | 转换为value对象。 |
 | <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
 | <a href="#value_t_value_create">value\_create</a> | 创建value对象。 |
 | <a href="#value_t_value_deep_copy">value\_deep\_copy</a> | 深拷贝value的值。 |
 | <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
+| <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
@@ -80,6 +82,30 @@ bool_t value_bool (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_cast"> 转换为value对象。
+
+ > 供脚本语言使用
+
+
+
+
+* 函数原型：
+
+```
+value_t* value_cast (value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | 对象。 |
+| value | value\_t* | value对象。 |
 #### value\_copy 函数
 -----------------------
 
@@ -191,6 +217,31 @@ double value_double (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | double | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_dup\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_dup_str"> 设置类型为字符串的值(并拷贝字符串)。
+
+ > 供脚本语言使用。
+
+
+
+
+* 函数原型：
+
+```
+value_t* value_dup_str (value_t* v, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | const char* | 待设置的值。 |
 #### value\_equal 函数
 -----------------------
 

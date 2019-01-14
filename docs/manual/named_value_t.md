@@ -38,14 +38,14 @@
 * 函数原型：
 
 ```
-ret_t named_value_cast (named_value_t* nv);
+named_value_t* named_value_cast (named_value_t* nv);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回named\_value对象。 |
+| 返回值 | named\_value\_t* | 返回named\_value对象。 |
 | nv | named\_value\_t* | named\_value对象。 |
 #### named\_value\_create 函数
 -----------------------
@@ -61,14 +61,14 @@ ret_t named_value_cast (named_value_t* nv);
 * 函数原型：
 
 ```
-ret_t named_value_create ();
+named_value_t* named_value_create ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回named\_value对象。 |
+| 返回值 | named\_value\_t* | 返回named\_value对象。 |
 #### named\_value\_deinit 函数
 -----------------------
 

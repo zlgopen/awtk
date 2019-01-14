@@ -1,5 +1,6 @@
 ## emitter\_t
 ### 概述
+
  事件分发器, 用于实现观察者模式。
 
 ### 函数
@@ -7,10 +8,11 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#emitter_t_emitter_cast">emitter\_cast</a> | 转换为emitter对象(供脚本语言使用)。 |
 | <a href="#emitter_t_emitter_create">emitter\_create</a> | 创建emitter对象。 |
 | <a href="#emitter_t_emitter_deinit">emitter\_deinit</a> | 析构。 |
 | <a href="#emitter_t_emitter_destroy">emitter\_destroy</a> | 销毁。 |
-| <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。禁用后emitter_dispatch无效，但可以注册和注销。 |
+| <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。 |
 | <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
 | <a href="#emitter_t_emitter_enable">emitter\_enable</a> | 启用。 |
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
@@ -26,6 +28,30 @@
 | 名属性称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#emitter_t_enable">enable</a> | bool\_t | 禁用标志。禁用时dispatch无效。 |
+#### emitter\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_cast"> 转换为emitter对象(供脚本语言使用)。
+
+ 主要给脚本语言使用。
+
+
+
+
+* 函数原型：
+
+```
+emitter_t* emitter_cast (emitter_t* emitter);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | emitter\_t* | 对象。 |
+| emitter | emitter\_t* | emitter对象。 |
 #### emitter\_create 函数
 -----------------------
 
@@ -57,6 +83,7 @@ emitter_t* emitter_create ();
 
 
 
+
 * 函数原型：
 
 ```
@@ -79,6 +106,7 @@ ret_t emitter_deinit (emitter_t* emitter);
 
 
 
+
 * 函数原型：
 
 ```
@@ -96,7 +124,10 @@ ret_t emitter_destroy (emitter_t* emitter);
 
 * 函数功能：
 
-> <p id="emitter_t_emitter_disable"> 禁用。禁用后emitter_dispatch无效，但可以注册和注销。
+> <p id="emitter_t_emitter_disable"> 禁用。
+
+ 禁用后emitter_dispatch无效，但可以注册和注销。
+
 
 
 

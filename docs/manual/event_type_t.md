@@ -23,15 +23,12 @@
 | EVT\_KEY\_DOWN | 键按下事件名(key\_event\_t)。 |
 | EVT\_KEY\_REPEAT | 按键repeat事件名(key\_event\_t)。 |
 | EVT\_KEY\_UP | 键抬起事件名(key\_event\_t)。 |
-| EVT\_DESTROY | 对象销毁事件名(event\_t)。 |
 | EVT\_WILL\_MOVE | 即将移动Widget的事件名(event\_t)。 |
 | EVT\_MOVE | 移动Widget的事件名(event\_t)。 |
 | EVT\_WILL\_RESIZE | 即将调整Widget大小的事件名(event\_t)。 |
 | EVT\_RESIZE | 调整Widget大小的事件名(event\_t)。 |
 | EVT\_WILL\_MOVE\_RESIZE | 即将调整Widget大小/位置的事件名(event\_t)。 |
 | EVT\_MOVE\_RESIZE | 调整Widget大小/位置的事件名(event\_t)。 |
-| EVT\_PROP\_WILL\_CHANGE | 对象的属性即将改变的事件名(prop\_change\_event\_t)。 |
-| EVT\_PROP\_CHANGED | 对象的属性改变的事件名(prop\_change\_event\_t)。 |
 | EVT\_VALUE\_WILL\_CHANGE | 控件的值即将改变的事件名(event\_t)。 |
 | EVT\_VALUE\_CHANGED | 控件的值改变的事件名(event\_t)。 |
 | EVT\_VALUE\_CHANGING | 控件的值持续改变(如编辑器正在编辑)的事件名(event\_t)。 |

@@ -73,6 +73,7 @@
 | <a href="#vgcanvas_t_vgcanvas_scale">vgcanvas\_scale</a> | 缩放。 |
 | <a href="#vgcanvas_t_vgcanvas_set_antialias">vgcanvas\_set\_antialias</a> | 设置是否启用反走样。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_color">vgcanvas\_set\_fill\_color</a> | 设置填充颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_fill_color_str">vgcanvas\_set\_fill\_color\_str</a> | 设置填充颜色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_linear_gradient">vgcanvas\_set\_fill\_linear\_gradient</a> | 设置填充颜色为线性渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_radial_gradient">vgcanvas\_set\_fill\_radial\_gradient</a> | 设置填充颜色为径向渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_font">vgcanvas\_set\_font</a> | 设置字体的名称。 |
@@ -83,6 +84,7 @@
 | <a href="#vgcanvas_t_vgcanvas_set_line_width">vgcanvas\_set\_line\_width</a> | 设置线条的宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_set_miter_limit">vgcanvas\_set\_miter\_limit</a> | 设置miter limit。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_color">vgcanvas\_set\_stroke\_color</a> | 设置线条颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_stroke_color_str">vgcanvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_linear_gradient">vgcanvas\_set\_stroke\_linear\_gradient</a> | 设置线条颜色为线性渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_radial_gradient">vgcanvas\_set\_stroke\_radial\_gradient</a> | 设置线条颜色为径向渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_text_align">vgcanvas\_set\_text\_align</a> | 设置文本水平对齐的方式。 |
@@ -101,7 +103,7 @@
 | <a href="#vgcanvas_t_font">font</a> | char* | 字体。 |
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
-| <a href="#vgcanvas_t_height">height</a> | wh\_t | canvas的高度 |
+| <a href="#vgcanvas_t_h">h</a> | wh\_t | canvas的高度 |
 | <a href="#vgcanvas_t_line_cap">line\_cap</a> | char* | line\_cap。 |
 | <a href="#vgcanvas_t_line_join">line\_join</a> | char* | line\_join。 |
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
@@ -987,6 +989,30 @@ ret_t vgcanvas_set_fill_color (vgcanvas_t* vg, color_t color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_fill\_color\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_fill_color_str"> 设置填充颜色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_fill_color_str (vgcanvas_t* vg, const char* color);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| color | const char* | 颜色。 |
 #### vgcanvas\_set\_fill\_linear\_gradient 函数
 -----------------------
 
@@ -1237,6 +1263,30 @@ ret_t vgcanvas_set_stroke_color (vgcanvas_t* vg, color_t color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | color\_t | 颜色。 |
+#### vgcanvas\_set\_stroke\_color\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_stroke_color_str"> 设置线条颜色。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* color);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| color | const char* | 颜色。 |
 #### vgcanvas\_set\_stroke\_linear\_gradient 函数
 -----------------------
 
@@ -1461,6 +1511,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### fill\_color 属性
 -----------------------
 > <p id="vgcanvas_t_fill_color"> 填充颜色
@@ -1485,6 +1536,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### font\_size 属性
 -----------------------
 > <p id="vgcanvas_t_font_size"> 字体大小。
@@ -1497,6 +1549,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### global\_alpha 属性
 -----------------------
 > <p id="vgcanvas_t_global_alpha"> 全局alpha。
@@ -1509,9 +1562,10 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### height 属性
+| 可脚本化   | 是 |
+#### h 属性
 -----------------------
-> <p id="vgcanvas_t_height"> canvas的高度
+> <p id="vgcanvas_t_h"> canvas的高度
 
 
 
@@ -1521,6 +1575,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### line\_cap 属性
 -----------------------
 > <p id="vgcanvas_t_line_cap"> line\_cap。
@@ -1534,6 +1589,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### line\_join 属性
 -----------------------
 > <p id="vgcanvas_t_line_join"> line\_join。
@@ -1547,6 +1603,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### line\_width 属性
 -----------------------
 > <p id="vgcanvas_t_line_width"> 线宽。
@@ -1559,6 +1616,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### miter\_limit 属性
 -----------------------
 > <p id="vgcanvas_t_miter_limit"> miter\_limit。
@@ -1572,6 +1630,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### ratio 属性
 -----------------------
 > <p id="vgcanvas_t_ratio"> 显示比例。
@@ -1584,6 +1643,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### stroke\_color 属性
 -----------------------
 > <p id="vgcanvas_t_stroke_color"> 线条颜色
@@ -1599,6 +1659,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 #### text\_align 属性
 -----------------------
 > <p id="vgcanvas_t_text_align"> 文本对齐方式。
+
  @see http://www.w3school.com.cn/tags/canvas_textalign.asp
 
 
@@ -1609,9 +1670,11 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### text\_baseline 属性
 -----------------------
 > <p id="vgcanvas_t_text_baseline"> 文本基线。
+
  @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
 
 
@@ -1622,6 +1685,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### w 属性
 -----------------------
 > <p id="vgcanvas_t_w"> canvas的宽度
@@ -1634,3 +1698,4 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可脚本化   | 是 |

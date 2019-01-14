@@ -38,15 +38,14 @@
 * 函数原型：
 
 ```
-ret_t object_default_create (uint32_t init_capacity);
+object_t* object_default_create ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回object对象。 |
-| init\_capacity | uint32\_t | 初始容量。 |
+| 返回值 | object\_t* | 返回object对象。 |
 #### props 属性
 -----------------------
 > <p id="object_default_t_props"> 属性数组。

@@ -51,14 +51,14 @@ BEGIN_C_DECLS
  * <image style="border" image="earth" draw_type="icon" />
  * ```
  *
- * >
- * 更多用法请参考：[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/images.xml)
+ * > 更多用法请参考：
+ * [image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/images.xml)
  *
  * 在c代码中使用函数image\_create创建图片控件。如：
  *
  * ```c
  *  widget_t* image = image_create(win, 10, 10, 128, 30);
- *  widget_set_image(image, "earth");
+ *  image_set_image(image, "earth");
  * ```
  *
  * > 创建之后:
@@ -69,10 +69,11 @@ BEGIN_C_DECLS
  *
  * > 绘制方式请参考[image\_draw\_type\_t](image_draw_type_t.md)
  *
- * >
- * 绘制方式的属性值和枚举值[image\_draw\_type\_name\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)
+ * > 绘制方式的属性值和枚举值:
+ * [image\_draw\_type\_name\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)
  *
- * > 完整示例请参考：[image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)
+ * > 完整示例请参考：
+ * [image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)
  *
  * 可用通过style来设置控件的显示风格，如背景和边框等。如：
  *
@@ -84,7 +85,8 @@ BEGIN_C_DECLS
  * </image>
  * ```
  *
- * > 更多用法请参考：[theme
+ * > 更多用法请参考：
+ * [theme
  * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L313)
  *
  */

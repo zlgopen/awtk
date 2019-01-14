@@ -38,6 +38,13 @@
 | <a href="#canvas_t_canvas_stroke_rect">canvas\_stroke\_rect</a> | 绘制矩形。 |
 | <a href="#canvas_t_canvas_translate">canvas\_translate</a> | 平移原点坐标。 |
 | <a href="#canvas_t_canvas_untranslate">canvas\_untranslate</a> | 反向平移原点坐标。 |
+### 属性
+<p id="canvas_t_properties">
+
+| 名属性称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#canvas_t_ox">ox</a> | xy\_t | x坐标偏移。 |
+| <a href="#canvas_t_oy">oy</a> | xy\_t | y坐标偏移。 |
 #### canvas\_cast 函数
 -----------------------
 
@@ -813,3 +820,27 @@ ret_t canvas_untranslate (canvas_t* c, xy_t dx, xy_t dy);
 | c | canvas\_t* | canvas对象。 |
 | dx | xy\_t | x偏移。 |
 | dy | xy\_t | y偏移。 |
+#### ox 属性
+-----------------------
+> <p id="canvas_t_ox"> x坐标偏移。
+
+
+* 类型：xy\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### oy 属性
+-----------------------
+> <p id="canvas_t_oy"> y坐标偏移。
+
+
+* 类型：xy\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |

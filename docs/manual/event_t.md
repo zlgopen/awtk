@@ -7,7 +7,9 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#event_t_event_cast">event\_cast</a> | 把event对象转wheel_event_t对象，主要给脚本语言使用。 |
+| <a href="#event_t_event_cast">event\_cast</a> | 转换为event对象。 |
+| <a href="#event_t_event_create">event\_create</a> | 创建event对象。 |
+| <a href="#event_t_event_destroy">event\_destroy</a> | 销毁事件对象。 |
 | <a href="#event_t_event_init">event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="event_t_properties">
@@ -22,7 +24,9 @@
 
 * 函数功能：
 
-> <p id="event_t_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
+> <p id="event_t_event_cast"> 转换为event对象。
+
+ > 供脚本语言使用
 
 
 
@@ -37,7 +41,56 @@ event_t* event_cast (event_t* event);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | event\_t* | 对象。 |
+| 返回值 | event\_t* | event对象。 |
+| event | event\_t* | event对象。 |
+#### event\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_create"> 创建event对象。
+
+ 主要给脚本语言使用。
+
+
+
+
+* 函数原型：
+
+```
+event_t* event_create (uint32_t type, void* target);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | event\_t* | 返回事件对象。 |
+| type | uint32\_t | 事件类型。 |
+| target | void* | 目标对象。 |
+#### event\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_destroy"> 销毁事件对象。
+
+ 主要给脚本语言使用。
+
+
+
+
+* 函数原型：
+
+```
+ret_t event_destroy (event_t* event);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | event | event\_t* | event对象。 |
 #### event\_init 函数
 -----------------------

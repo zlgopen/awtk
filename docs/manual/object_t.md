@@ -12,14 +12,14 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
-| <a href="#object_t_object_create">object\_create</a> |  |
+| <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
 | <a href="#object_t_object_get_prop">object\_get\_prop</a> | 获取指定属性的值。 |
-| <a href="#object_t_object_ref">object\_ref</a> |  |
+| <a href="#object_t_object_ref">object\_ref</a> | 引用计数加1。 |
 | <a href="#object_t_object_remove_prop">object\_remove\_prop</a> | 删除指定属性。 |
 | <a href="#object_t_object_set_name">object\_set\_name</a> | 设置对象的名称。 |
 | <a href="#object_t_object_set_prop">object\_set\_prop</a> | 设置指定属性的值。 |
-| <a href="#object_t_object_unref">object\_unref</a> |  |
+| <a href="#object_t_object_unref">object\_unref</a> | 引用计数减1。引用计数为0时，销毁对象。 |
 ### 属性
 <p id="object_t_properties">
 
@@ -56,8 +56,7 @@ int32_t object_compare (object_t* obj, object_t* other);
 
 * 函数功能：
 
-> <p id="object_t_object_create">
- 创建对象。
+> <p id="object_t_object_create"> 创建对象。
 
  > 仅供子类调用。
 
@@ -132,8 +131,7 @@ ret_t object_get_prop (object_t* obj, const char* name, value_t* v);
 
 * 函数功能：
 
-> <p id="object_t_object_ref">
- 引用计数加1。
+> <p id="object_t_object_ref"> 引用计数加1。
 
 
 
@@ -142,14 +140,14 @@ ret_t object_get_prop (object_t* obj, const char* name, value_t* v);
 * 函数原型：
 
 ```
-ret_t object_ref (object_t* obj);
+object_t* object_ref (object_t* obj);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回object对象。 |
+| 返回值 | object\_t* | 返回object对象。 |
 | obj | object\_t* | object对象。 |
 #### object\_remove\_prop 函数
 -----------------------
@@ -229,8 +227,7 @@ ret_t object_set_prop (object_t* obj, const char* name, value_t* v);
 
 * 函数功能：
 
-> <p id="object_t_object_unref">
- 引用计数减1。引用计数为0时，销毁对象。
+> <p id="object_t_object_unref"> 引用计数减1。引用计数为0时，销毁对象。
 
 
 

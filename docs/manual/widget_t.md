@@ -362,7 +362,7 @@ widget_t* widget_child (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_child_on (widget_t* widget, char* name, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -372,7 +372,7 @@ int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 子控件的名称。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_clone 函数
@@ -1229,7 +1229,7 @@ ret_t widget_off (widget_t* widget, int32_t id);
 * 函数原型：
 
 ```
-ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+ret_t widget_off_by_func (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1238,7 +1238,7 @@ ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_e
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_on 函数
@@ -1261,7 +1261,7 @@ ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_e
 * 函数原型：
 
 ```
-int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_on (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1270,7 +1270,7 @@ int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, v
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_pause\_animator 函数
