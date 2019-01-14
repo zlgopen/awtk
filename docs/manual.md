@@ -52,6 +52,7 @@
 * [gif\_image](manual/gif_image_t.md) gif\_image控件。
 * [guage](manual/guage_t.md) 仪表控件。
 * [guage\_pointer](manual/guage_pointer_t.md) 仪表指针控件。
+* [image\_animation](manual/image_animation_t.md) 图片动画控件。
 
 ### 画布
 

@@ -3,6 +3,33 @@
 ![image](images/image_animation_t_0.png)
 
  图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。
+
+ image\_animation\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于image\_animation\_t控件。
+
+ 在xml中使用"image\_animation"标签创建图片动画控件。如：
+
+ ```xml
+ <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50"/>
+ ```
+
+ > 更多用法请参考：
+ [image_animation.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/image_animation.xml)
+
+ 在c代码中使用函数image\_animation\_create创建图片动画控件。如：
+
+ ```c
+ image_animation = image_animation_create(win, 10, 10, 200, 200);
+ image_animation_set_image(image_animation, "ani");
+ image_animation_set_interval(image_animation, 50);
+ image_animation_set_sequence(image_animation, "123456789abc");
+ image_animation_play(image_animation);
+ ```
+
+ > 完整示例请参考：
+ [image_animation demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)
+
+ 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。
+
 ### 函数
 <p id="image_animation_t_methods">
 
