@@ -20310,7 +20310,7 @@
     "properties": [
       {
         "name": "format",
-        "desc": " 显示格式。\r\n Y 代表年(完整显示)\r\n M 代表月(1-12)\r\n D 代表日(1-31)\r\n h 代表时(0-23)\r\n m 代表分(0-59)\r\n s 代表秒(0-59)\r\n YY 代表年(只显示末两位)\r\n MM 代表月(01-12)\r\n DD 代表日(01-31)\r\n hh 代表时(00-23)\r\n mm 代表分(00-59)\r\n ss 代表秒(00-59)\r\n\r\n 如 日期时间为：2018/11/12 9:10:20\r\n \"Y/D/M\"显示为\"2018/11/12\"\r\n \"Y-D-M\"显示为\"2018-11-12\"\r\n \"Y-D-M h:m:s\"显示为\"2018-11-12 9:10:20\"\r\n \"Y-D-M hh:mm:ss\"显示为\"2018-11-12 09:10:20\"\r\n",
+        "desc": " 显示格式。\r\n\r\n Y 代表年(完整显示)\r\n M 代表月(1-12)\r\n D 代表日(1-31)\r\n h 代表时(0-23)\r\n m 代表分(0-59)\r\n s 代表秒(0-59)\r\n YY 代表年(只显示末两位)\r\n MM 代表月(01-12)\r\n DD 代表日(01-31)\r\n hh 代表时(00-23)\r\n mm 代表分(00-59)\r\n ss 代表秒(00-59)\r\n\r\n 如 日期时间为：2018/11/12 9:10:20\r\n \"Y/D/M\"显示为\"2018/11/12\"\r\n \"Y-D-M\"显示为\"2018-11-12\"\r\n \"Y-D-M h:m:s\"显示为\"2018-11-12 9:10:20\"\r\n \"Y-D-M hh:mm:ss\"显示为\"2018-11-12 09:10:20\"\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -20323,7 +20323,7 @@
       }
     ],
     "header": "time_clock/digit_clock.h",
-    "desc": " 数字时钟控件。\r\n",
+    "desc": " 数字时钟控件。\r\n\r\n digit\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于digit\\_clock\\_t控件。\r\n\r\n 在xml中使用\"digit\\_clock\"标签创建数字时钟控件。如：\r\n\r\n ```xml\r\n <digit_clock format=\"YY/MM/DD h:mm:ss\"/>\r\n ```\r\n\r\n > 更多用法请参考：[digit\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/digit_clock.xml)\r\n\r\n 在c代码中使用函数digit\\_clock\\_create创建数字时钟控件。如：\r\n\r\n ```c\r\n widget_t* tc = digit_clock_create(win, 10, 10, 240, 30);\r\n digit_clock_set_format(tc, \"YY/MM/DD h:mm:ss\");\r\n ```\r\n\r\n > 完整示例请参考：[digit\\_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/digit_clock.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L138)\r\n\r\n",
     "name": "digit_clock_t",
     "parent": "widget_t",
     "annotation": {
@@ -20685,7 +20685,7 @@
       }
     ],
     "header": "time_clock/time_clock.h",
-    "desc": " 时钟控件。\r\n",
+    "desc": " 模拟时钟控件。\r\n\r\n time\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于time\\_clock\\_t控件。\r\n\r\n 在xml中使用\"time\\_clock\"标签创建开关控件。如：\r\n\r\n ```xml\r\n <time_clock x=\"c\" y=\"m\" w=\"300\" h=\"300\" bg_image=\"clock_bg\" image=\"clock\"\r\n   hour_image=\"clock_hour\" minute_image=\"clock_minute\" second_image=\"clock_second\"/>\r\n ```\r\n\r\n > 更多用法请参考：[time\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/time_clock.xml)\r\n\r\n 在c代码中使用函数time\\_clock\\_create创建开关控件。如：\r\n\r\n ```c\r\n widget_t* tc = time_clock_create(win, 10, 10, 240, 240);\r\n time_clock_set_image(tc, \"clock\");\r\n time_clock_set_bg_image(tc, \"clock_bg\");\r\n time_clock_set_hour_image(tc, \"clock_hour\");\r\n time_clock_set_minute_image(tc, \"clock_minute\");\r\n time_clock_set_second_image(tc, \"clock_second\");\r\n ```\r\n\r\n > 完整示例请参考：[time_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/time_clock.c)\r\n \r\n time\\_clock一般不需要设置style。\r\n \r\n",
     "name": "time_clock_t",
     "parent": "widget_t",
     "annotation": {
@@ -27949,7 +27949,7 @@
       }
     ],
     "header": "widgets/label.h",
-    "desc": "\r\n 文本控件。用于显示一行或多行文本。\r\n\r\n 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。\r\n\r\n 如需自动换行请使用[rich\\_text\\_t](rich_text_t.md)控件。\r\n\r\n label\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于label\\_t控件。\r\n\r\n 在xml中使用\"label\"标签创建文本控件。如：\r\n\r\n ```xml\r\n <label style=\"center\" text=\"center\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [label.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)\r\n\r\n 在c代码中使用函数label\\_create创建文本控件。如：\r\n\r\n ```c\r\n  widget_t* label = label_create(win, 10, 10, 128, 30);\r\n  widget_set_text(label, L\"hello awtk!\");\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [label demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"left\">\r\n   <normal text_color=\"red\" text_align_h=\"left\" border_color=\"#a0a0a0\" margin=\"4\" />\r\n  </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)\r\n\r\n",
+    "desc": "\r\n 文本控件。用于显示一行或多行文本。\r\n\r\n 文本控件不会根据文本的长度自动换行，只有文本内容包含换行符时才会换行。\r\n\r\n 如需自动换行请使用[rich\\_text\\_t](rich_text_t.md)控件。\r\n\r\n label\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于label\\_t控件。\r\n\r\n 在xml中使用\"label\"标签创建文本控件。如：\r\n\r\n ```xml\r\n <label style=\"center\" text=\"center\"/>\r\n ```\r\n\r\n > 更多用法请参考：[label.xml](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)\r\n\r\n 在c代码中使用函数label\\_create创建文本控件。如：\r\n\r\n ```c\r\n  widget_t* label = label_create(win, 10, 10, 128, 30);\r\n  widget_set_text(label, L\"hello awtk!\");\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[label demo](\r\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"left\">\r\n   <normal text_color=\"red\" text_align_h=\"left\" border_color=\"#a0a0a0\" margin=\"4\" />\r\n  </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)\r\n\r\n",
     "name": "label_t",
     "parent": "widget_t",
     "annotation": {

@@ -62,6 +62,8 @@
 * [svg\_image](manual/svg_image_t.md) SVG图片控件。
 * [switch](manual/switch_t.md) 开关控件。
 * [text\_selector](manual/text\_selector_t.md) 文本选择器控件。
+* [time\_clock](manual/time\_clock_t.md) 模拟时钟控件。
+* [digit\_clock](manual/digit\_clock_t.md) 数字时钟控件。
 
 ### 画布
 
