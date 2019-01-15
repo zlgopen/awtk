@@ -55,6 +55,7 @@
 * [image\_animation](manual/image_animation_t.md) 图片动画控件。
 * [image\_value](manual/image_value_t.md) 图片值控件。
 * [keyboard](manual/keyboard_t.md)  软键盘控件。
+* [progress\_circle](manual/progress_circle_t.md) 进度圆环控件。
 
 ### 画布
 

@@ -24788,7 +24788,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建progress_circle对象\r\n\r\n",
+        "desc": " 创建progress_circle对象\r\n\r\n\r\n",
         "name": "progress_circle_create",
         "return": {
           "type": "widget_t*",
@@ -24807,7 +24807,7 @@
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n",
+        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n\r\n",
         "name": "progress_circle_cast",
         "return": {
           "type": "widget_t*",
@@ -24830,7 +24830,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置值。\r\n\r\n",
+        "desc": " 设置值。\r\n\r\n\r\n",
         "name": "progress_circle_set_value",
         "return": {
           "type": "ret_t",
@@ -24853,7 +24853,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置最大值。\r\n\r\n",
+        "desc": " 设置最大值。\r\n\r\n\r\n",
         "name": "progress_circle_set_max",
         "return": {
           "type": "ret_t",
@@ -24876,7 +24876,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置环线的厚度。\r\n\r\n",
+        "desc": " 设置环线的厚度。\r\n\r\n\r\n",
         "name": "progress_circle_set_line_width",
         "return": {
           "type": "ret_t",
@@ -24899,7 +24899,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置起始角度。\r\n\r\n",
+        "desc": " 设置起始角度。\r\n\r\n\r\n",
         "name": "progress_circle_set_start_angle",
         "return": {
           "type": "ret_t",
@@ -24922,7 +24922,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置单位。\r\n\r\n",
+        "desc": " 设置单位。\r\n\r\n\r\n",
         "name": "progress_circle_set_unit",
         "return": {
           "type": "ret_t",
@@ -24945,7 +24945,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置是否显示文本。\r\n\r\n",
+        "desc": " 设置是否显示文本。\r\n\r\n\r\n",
         "name": "progress_circle_set_show_text",
         "return": {
           "type": "ret_t",
@@ -24968,7 +24968,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置是否为逆时针方向。\r\n\r\n",
+        "desc": " 设置是否为逆时针方向。\r\n\r\n\r\n",
         "name": "progress_circle_set_counter_clock_wise",
         "return": {
           "type": "ret_t",
@@ -25082,7 +25082,7 @@
       }
     ],
     "header": "progress_circle/progress_circle.h",
-    "desc": " 进度圆环控件。\r\n",
+    "desc": " 进度圆环控件。\r\n\r\n progress\\_circle\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_circle\\_t控件。\r\n\r\n 在xml中使用\"progress\\_circle\"标签创建进度圆环控件。如：\r\n\r\n ```xml\r\n  <progress_circle max=\"360\" show_text=\"true\" start_angle=\"90\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/progress_circle.xml)\r\n\r\n 在c代码中使用函数progress\\_circle\\_create创建进度圆环控件。如：\r\n\r\n ```c\r\n  progress_circle = progress_circle_create(win, 10, 10, 200, 200);\r\n  progress_circle_set_max(progress_circle, 360);\r\n  widget_set_value(progress_circle, 128);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_circle demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"green\" fg_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)\r\n\r\n",
     "name": "progress_circle_t",
     "parent": "widget_t",
     "annotation": {
