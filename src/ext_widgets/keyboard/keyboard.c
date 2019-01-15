@@ -47,6 +47,7 @@ static ret_t keyboard_on_destroy(widget_t* widget) {
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
                                                   .is_window = TRUE,
+                                                  .is_keyboard = TRUE,
                                                   .clone_properties = s_keyboard_properties,
                                                   .persistent_properties = s_keyboard_properties,
                                                   .create = keyboard_create,

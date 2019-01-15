@@ -1240,8 +1240,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    const char* type = widget_get_type(target);
-    if (!tk_str_eq(type, WIDGET_TYPE_KEYBOARD)) {
+    if (!(target->vt->is_keyboard)) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
