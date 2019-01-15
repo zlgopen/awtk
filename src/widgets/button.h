@@ -44,8 +44,8 @@ BEGIN_C_DECLS
  * <button x="c" y="m" w="80" h="30" text="OK"/>
  * ```
  *
- * > 更多用法请参考：
- * [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ * > 更多用法请参考：[button.xml](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
  *
  * 在c代码中使用函数button\_create创建按钮控件。如：
  *
@@ -57,8 +57,8 @@ BEGIN_C_DECLS
  *
  * > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
  *
- * > 完整示例请参考：
- * [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
+ * > 完整示例请参考：[button demo](
+ * https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
  *
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
@@ -71,9 +71,8 @@ BEGIN_C_DECLS
  * </style>
  * ```
  *
- * > 更多用法请参考：
- * [theme
- * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
+ * > 更多用法请参考：[theme default](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
  *
  */
 typedef struct _button_t {
