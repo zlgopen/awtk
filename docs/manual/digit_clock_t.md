@@ -3,6 +3,8 @@
 ![image](images/digit_clock_t_0.png)
 
  数字时钟控件。
+
+----------------------------------
 ### 函数
 <p id="digit_clock_t_methods">
 

@@ -4,6 +4,8 @@
 
  设置软键盘上的action按钮的信息事件。
 
+
+----------------------------------
 ### 属性
 <p id="im_action_button_info_event_t_properties">
 

@@ -25,6 +25,8 @@
 
  在c代码中，用dialog\_create\_simple创建对话框时，自动创建dialog标题对象。
 
+
+----------------------------------
 ### 函数
 <p id="dialog_title_t_methods">
 

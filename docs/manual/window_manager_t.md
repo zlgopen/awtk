@@ -3,6 +3,8 @@
 ![image](images/window_manager_t_0.png)
 
  窗口管理器。
+
+----------------------------------
 ### 函数
 <p id="window_manager_t_methods">
 

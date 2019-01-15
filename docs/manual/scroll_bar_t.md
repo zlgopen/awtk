@@ -3,6 +3,8 @@
 ![image](images/scroll_bar_t_0.png)
 
  scroll_bar控件。
+
+----------------------------------
 ### 函数
 <p id="scroll_bar_t_methods">
 

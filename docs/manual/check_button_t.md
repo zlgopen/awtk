@@ -3,6 +3,8 @@
 ![image](images/check_button_t_0.png)
 
  勾选控件。
+
+----------------------------------
 ### 函数
 <p id="check_button_t_methods">
 

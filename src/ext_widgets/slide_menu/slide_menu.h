@@ -50,8 +50,8 @@ BEGIN_C_DECLS
  * </slide_menu>
  * ```
  *
- * > 更多用法请参考：[slide_menu.xml]
- * (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_menu.xml)
+ * > 更多用法请参考：[slide_menu.xml](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_menu.xml)
  *
  * 在c代码中使用函数slide\_menu\_create创建左右滑动菜单控件。如：
  *
@@ -79,8 +79,8 @@ BEGIN_C_DECLS
  * widget_on(b, EVT_CLICK, on_button_click, b);
  * ```
  *
- * > 完整示例请参考：[slide_menu demo]
- * (https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)
+ * > 完整示例请参考：[slide_menu demo](
+ * https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)
  *
  * 可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：
  *
@@ -90,8 +90,8 @@ BEGIN_C_DECLS
  * </style>
  * ```
  *
- * > 更多用法请参考：[theme default]
- * (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)
+ * > 更多用法请参考：[theme default](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)
  *
  */
 typedef struct _slide_menu_t {

@@ -39,6 +39,8 @@
  [theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)
 
+
+----------------------------------
 ### 函数
 <p id="progress_bar_t_methods">
 

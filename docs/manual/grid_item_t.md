@@ -35,6 +35,8 @@
    <normal     bg_color="#f0f0f0" />
  </style>
  ```
+
+----------------------------------
 ### 函数
 <p id="grid_item_t_methods">
 

@@ -3,6 +3,8 @@
 ![image](images/scroll_view_t_0.png)
 
  滚动视图。
+
+----------------------------------
 ### 函数
 <p id="scroll_view_t_methods">
 

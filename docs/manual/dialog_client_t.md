@@ -25,6 +25,8 @@
 
  在c代码中，用dialog\_create\_simple创建对话框时，自动创建dialog客户区对象。
 
+
+----------------------------------
 ### 函数
 <p id="dialog_client_t_methods">
 

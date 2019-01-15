@@ -379,6 +379,7 @@ class ApiGenerator {
     }
     
     result += cls.desc;
+    result += '\n----------------------------------\n';
 
     result += this.genFunctionsIndex(cls);
     result += this.genPropertiesIndex(cls);

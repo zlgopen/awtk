@@ -36,6 +36,8 @@ image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 
  可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。
 
+
+----------------------------------
 ### 函数
 <p id="image_value_t_methods">
 

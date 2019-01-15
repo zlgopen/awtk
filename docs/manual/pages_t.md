@@ -26,6 +26,8 @@
  > 更多用法请参考：
  [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
 
+
+----------------------------------
 ### 函数
 <p id="pages_t_methods">
 

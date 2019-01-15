@@ -47,6 +47,8 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
  > 更多用法请参考：[theme default](
  https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L458)
 
+
+----------------------------------
 ### 函数
 <p id="slide_view_t_methods">
 

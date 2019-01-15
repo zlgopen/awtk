@@ -32,6 +32,8 @@
  </tab_button_group>
  ```
 
+
+----------------------------------
 ### 函数
 <p id="tab_button_group_t_methods">
 

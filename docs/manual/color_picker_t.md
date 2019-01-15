@@ -32,6 +32,8 @@
  * old 旧的值。可以是spin_box、edit和color_tile。
  * new 新的值。可以是spin_box、edit和color_tile。
 
+
+----------------------------------
 ### 函数
 <p id="color_picker_t_methods">
 

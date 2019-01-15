@@ -42,6 +42,8 @@
  [theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)
 
+
+----------------------------------
 ### 函数
 <p id="slider_t_methods">
 

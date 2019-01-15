@@ -62,6 +62,8 @@
  * [canvas接口描述](canvas_t.md)
  * [vgcanvas接口描述](vgcanvas_t.md)
 
+
+----------------------------------
 ### 函数
 <p id="canvas_widget_t_methods">
 

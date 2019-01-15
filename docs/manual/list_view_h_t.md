@@ -3,6 +3,8 @@
 ![image](images/list_view_h_t_0.png)
 
  水平ListView控件。
+
+----------------------------------
 ### 函数
 <p id="list_view_h_t_methods">
 

@@ -27,6 +27,8 @@
  ```
  > 创建之后，用color\_tile\_set\_bg\_color设置背景颜色。
 
+
+----------------------------------
 ### 函数
 <p id="color_tile_t_methods">
 

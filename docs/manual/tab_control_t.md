@@ -30,6 +30,8 @@
  > 更多用法请参考：
  [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
 
+
+----------------------------------
 ### 函数
 <p id="tab_control_t_methods">
 

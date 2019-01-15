@@ -3,6 +3,8 @@
  滚动控件的动画。
  本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。
 
+
+----------------------------------
 ### 函数
 <p id="widget_animator_scroll_t_methods">
 

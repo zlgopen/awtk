@@ -3,6 +3,8 @@
 ![image](images/list_item_t_0.png)
 
  list item控件。
+
+----------------------------------
 ### 函数
 <p id="list_item_t_methods">
 

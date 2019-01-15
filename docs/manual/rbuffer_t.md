@@ -17,6 +17,8 @@
   rbuffer_read_string(&rbuffer, &str);
  ```
 
+
+----------------------------------
 ### 函数
 <p id="rbuffer_t_methods">
 

@@ -3,6 +3,8 @@
 ![image](images/switch_t_0.png)
 
  开关控件。
+
+----------------------------------
 ### 函数
 <p id="switch_t_methods">
 

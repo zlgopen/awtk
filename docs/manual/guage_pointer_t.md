@@ -29,6 +29,8 @@
  > 创建之后，需要用guage\_pointer\_set\_image设置仪表指针图片。
 
 
+
+----------------------------------
 ### 函数
 <p id="guage_pointer_t_methods">
 

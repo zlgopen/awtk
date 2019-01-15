@@ -48,6 +48,8 @@
 
  > 更多用法请参考：[theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)
+
+----------------------------------
 ### 函数
 <p id="popup_t_methods">
 

@@ -3,6 +3,8 @@
 ![image](images/time_clock_t_0.png)
 
  时钟控件。
+
+----------------------------------
 ### 函数
 <p id="time_clock_t_methods">
 

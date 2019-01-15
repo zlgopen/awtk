@@ -3,6 +3,8 @@
 ![image](images/dragger_t_0.png)
 
  dragger控件。
+
+----------------------------------
 ### 函数
 <p id="dragger_t_methods">
 

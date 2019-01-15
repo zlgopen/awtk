@@ -3,6 +3,8 @@
 ![image](images/svg_image_t_0.png)
 
  SVG图片控件。
+
+----------------------------------
 ### 函数
 <p id="svg_image_t_methods">
 

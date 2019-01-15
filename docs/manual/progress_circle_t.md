@@ -39,6 +39,8 @@
  [theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)
 
+
+----------------------------------
 ### 函数
 <p id="progress_circle_t_methods">
 

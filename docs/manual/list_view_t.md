@@ -3,6 +3,8 @@
 ![image](images/list_view_t_0.png)
 
  ListView控件。
+
+----------------------------------
 ### 函数
 <p id="list_view_t_methods">
 

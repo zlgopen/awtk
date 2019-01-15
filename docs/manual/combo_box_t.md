@@ -74,6 +74,8 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
  > 更多用法请参考：[theme
 default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)
 
+
+----------------------------------
 ### 函数
 <p id="combo_box_t_methods">
 

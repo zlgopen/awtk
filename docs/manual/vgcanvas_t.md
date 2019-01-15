@@ -34,6 +34,8 @@
  >请参考：https://www.w3schools.com/tags/ref_canvas.asp
 
 
+
+----------------------------------
 ### 函数
 <p id="vgcanvas_t_methods">
 
