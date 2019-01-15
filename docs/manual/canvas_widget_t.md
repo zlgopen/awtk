@@ -56,6 +56,11 @@
 
  > 完整示例请参考：
  [canvas demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/canvas.c)
+ 
+ 参考：
+
+ * [canvas接口描述](canvas_t.md)
+ * [vgcanvas接口描述](vgcanvas_t.md)
 
 ### 函数
 <p id="canvas_widget_t_methods">

@@ -84,6 +84,11 @@ BEGIN_C_DECLS
  *
  * > 完整示例请参考：
  * [canvas demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/canvas.c)
+ * 
+ * 参考：
+ *
+ * * [canvas接口描述](canvas_t.md)
+ * * [vgcanvas接口描述](vgcanvas_t.md)
  *
  */
 typedef struct _canvas_widget_t {
