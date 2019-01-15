@@ -57,6 +57,7 @@
 * [keyboard](manual/keyboard_t.md)  软键盘控件。
 * [progress\_circle](manual/progress_circle_t.md) 进度圆环控件。
 * [rich\_text](manual/rich_text_t.md) 图文混排控件。
+* [slide\_menu](manual/slide_menu_t.md) 左右滑动菜单控件。
 
 ### 画布
 

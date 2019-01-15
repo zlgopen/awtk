@@ -2,9 +2,67 @@
 ### 概述
 ![image](images/slide_menu_t_0.png)
 
- slide menu。
- 一般用一组按钮作为子控件，通过左右滑动改变当前的项。
- 除了当菜单使用外，也可以用来切换页面。
+ 左右滑动菜单控件。
+
+ 一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。
+
+ slide\_menu\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于slide\_menu\_t控件。
+
+ 在xml中使用"slide\_menu"标签创建左右滑动菜单控件。如：
+
+ ```xml
+ <slide_menu style="mask" align_v="top">
+  <button style="slide_button" text="0"/>
+   <button style="slide_button" text="1"/>
+   <button style="slide_button" text="2"/>
+   <button style="slide_button" text="3"/>
+   <button style="slide_button" text="4"/>
+ </slide_menu>
+ ```
+
+ > 更多用法请参考：
+ [slide_menu.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_menu.xml)
+
+ 在c代码中使用函数slide\_menu\_create创建左右滑动菜单控件。如：
+
+ ```c
+ slide_menu = slide_menu_create(win, 10, 10, 300, 60);
+ b = button_create(slide_menu, 0, 0, 0, 0);
+ widget_set_text_utf8(b, "1");
+ b = button_create(slide_menu, 0, 0, 0, 0);
+ widget_set_text_utf8(b, "2");
+ b = button_create(slide_menu, 0, 0, 0, 0);
+ widget_set_text_utf8(b, "3");
+ b = button_create(slide_menu, 0, 0, 0, 0);
+ widget_set_text_utf8(b, "4");
+ ```
+
+ 可按下面的方法关注当前项改变的事件：
+
+ ```c
+ widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);
+ ```
+ 
+ 可按下面的方法关注当前按钮被点击的事件：
+
+ ```c
+ widget_on(b, EVT_CLICK, on_button_click, b);
+ ```
+
+ > 完整示例请参考：
+ [slide_menu demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)
+
+ 可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：
+
+ ```xml
+ <style name="mask">
+   <normal     bg_color="#f0f0f0" mask_color="#f0f0f0"/>
+ </style>
+ ```
+
+ > 更多用法请参考：
+ [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)
+
 ### 函数
 <p id="slide_menu_t_methods">
 
