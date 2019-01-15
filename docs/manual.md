@@ -59,6 +59,7 @@
 * [rich\_text](manual/rich_text_t.md) 图文混排控件。
 * [slide\_menu](manual/slide_menu_t.md) 左右滑动菜单控件。
 * [slide\_view](manual/slide_view_t.md) 滑动视图控件。
+* [svg\_image](manual/svg_image_t.md) SVG图片控件。
 
 ### 画布
 
