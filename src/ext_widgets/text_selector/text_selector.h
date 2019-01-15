@@ -38,8 +38,44 @@ typedef struct _text_selector_option_t {
  * @class text_selector_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * 文本选择器控件，通常用于选择年月日等。
- * XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
+ * 文本选择器控件，通常用于选择日期和时间等。
+ *
+ * > XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
+ *
+ * text\_selector\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于text\_selector\_t控件。
+ *
+ * 在xml中使用"text\_selector"标签创建文本选择器控件。如：
+ *
+ * ```xml
+ * <text_selector options="red;green;blue;gold;orange" visible_nr="3" text="red"/>
+ * ```
+ *
+ * > 更多用法请参考：[text\_selector.xml](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/text_selector.xml)
+ *
+ * 在c代码中使用函数text\_selector\_create创建文本选择器控件。如：
+ *
+ * ```c
+ * widget_t* ts = text_selector_create(win, 10, 10, 80, 150);
+ * text_selector_set_options(ts, "1:red;2:green;3:blue;4:orange;5:gold");
+ * text_selector_set_value(ts, 1);
+ * widget_use_style(ts, "dark");
+ * ```
+ *
+ * > 完整示例请参考：[text\_selector demo](
+ * https://github.com/zlgopen/awtk-c-demos/blob/master/demos/text_selector.c)
+ *
+ * 可用通过style来设置控件的显示风格，如字体和背景颜色等。如：
+ *
+ * ```xml
+ * <style name="dark" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
+ *   <normal     bg_color="#ffffff" mask_color="#404040" border_color="#404040"/>
+ * </style>
+ * ```
+ *
+ * > 更多用法请参考：[theme default](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L443)
+ *
  */
 typedef struct _text_selector_t {
   widget_t widget;

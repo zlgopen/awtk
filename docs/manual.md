@@ -61,6 +61,7 @@
 * [slide\_view](manual/slide_view_t.md) 滑动视图控件。
 * [svg\_image](manual/svg_image_t.md) SVG图片控件。
 * [switch](manual/switch_t.md) 开关控件。
+* [text\_selector](manual/text\_selector_t.md) 文本选择器控件。
 
 ### 画布
 

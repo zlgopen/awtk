@@ -1,11 +1,13 @@
 # 最新动态
 * 2019/01/15
   * 整理API文档：progress\_circle/rich\_text/slide\_menu/slide\_view/svg\_image/switch
+  * 整理API文档：text\_selector
   * 增加progress\_circle c语言demo。
   * 增加slide\_menu c语言demo。
   * 增加slide\_view c语言demo。
   * 增加svg\_image c语言demo。
   * 增加switch c语言demo。
+  * 增加text\_selector c语言demo。
   * 增加INPUT\_CUSTOM用于关闭系统缺省软键盘。
 
 * 2019/01/14
