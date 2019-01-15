@@ -89,7 +89,7 @@ typedef struct _widget_vtable_t {
   /**
    * 是否是软键盘(点击软键盘不改变编辑器的焦点)。
    */
-  uint32_t is_keyboard: 1;
+  uint32_t is_keyboard : 1;
 
   widget_create_t create;
   widget_get_prop_t get_prop;

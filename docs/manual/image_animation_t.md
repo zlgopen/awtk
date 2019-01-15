@@ -26,7 +26,8 @@
  ```
 
  > 完整示例请参考：
- [image_animation demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)
+ [image_animation
+ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)
 
  可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。
 

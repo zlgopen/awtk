@@ -24,7 +24,8 @@
  ```
 
  > 完整示例请参考：
- [progress_circle demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)
+ [progress_circle
+ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 
@@ -35,7 +36,8 @@
  ```
 
  > 更多用法请参考：
- [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)
+ [theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)
 
 ### 函数
 <p id="progress_circle_t_methods">
