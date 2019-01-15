@@ -85,7 +85,12 @@ typedef enum _input_type_t {
    * @const INPUT_PHONE
    * 电话号码。
    */
-  INPUT_PHONE
+  INPUT_PHONE,
+  /**
+   * @const INPUT_CUSTOM
+   * 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。
+   */
+  INPUT_CUSTOM
 } input_type_t;
 
 /**

@@ -31,7 +31,7 @@ BEGIN_C_DECLS
  * @parent widget_t
  * 软键盘。
  *
- * 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。 
+ * 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。
  *
  * 这里介绍一下定制软键盘的方法：
  *
@@ -47,7 +47,8 @@ BEGIN_C_DECLS
  *| INPUT\_HEX      | kb\_hex.xml      |
  *| INPUT\_EMAIL    | kb\_ascii.xml    |
  *| INPUT\_PASSWORD | kb\_ascii.xml    |
- *| 其它           | kb\_default.xml  |
+ *| INPUT\_CUSTOM   | 使用自定义的键盘 |
+ *| 其它            | kb\_default.xml  |
  *
  * keyboard中按钮子控件的名称有些特殊要求：
  *

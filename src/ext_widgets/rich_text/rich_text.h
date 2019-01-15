@@ -38,10 +38,10 @@ BEGIN_C_DECLS
  * 在xml中使用"rich\_text"标签创建图文混排控件。如：
  *
  * ```xml
- * <rich_text x="0" y="0" w="100%" h="60" 
+ * <rich_text x="0" y="0" w="100%" h="60"
  * text="<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font>" />
  * ```
- * > 
+ * >
  *
  * > 更多用法请参考：
  * [rich_text.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/rich_text.xml)

@@ -72,7 +72,7 @@ BEGIN_C_DECLS
  * ```c
  * widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);
  * ```
- 
+ 
  * 可按下面的方法关注当前按钮被点击的事件：
  *
  * ```c
@@ -91,7 +91,8 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)
+ * [theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)
  *
  */
 typedef struct _slide_menu_t {

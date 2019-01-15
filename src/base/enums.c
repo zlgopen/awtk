@@ -37,6 +37,7 @@ static const key_type_value_t input_type_name_value[] = {
     {"int", 0, INPUT_INT},       {"float", 0, INPUT_FLOAT}, {"uint", 0, INPUT_UINT},
     {"ufloat", 0, INPUT_UFLOAT}, {"text", 0, INPUT_TEXT},   {"password", 0, INPUT_PASSWORD},
     {"hex", 0, INPUT_HEX},       {"email", 0, INPUT_EMAIL}, {"phone", 0, INPUT_PHONE},
+    {"custom", 0, INPUT_CUSTOM},
 };
 
 static const key_type_value_t align_h_name_value[] = {

@@ -3,6 +3,7 @@
   * 整理API文档：progress\_circle/rich\_text/slide\_menu
   * 增加progress\_circle c语言demo。
   * 增加slide\_menu c语言demo。
+  * 增加INPUT\_CUSTOM用于关闭系统缺省软键盘。
 
 * 2019/01/14
   * 完善脚本绑定(增加函数和注释)。
