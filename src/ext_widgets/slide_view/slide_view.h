@@ -50,8 +50,8 @@ BEGIN_C_DECLS
  *   </slide_view>
  * ```
  *
- * > 更多用法请参考：[slide_view.xml]
- * (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
+ * > 更多用法请参考：[slide_view.xml](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
  *
  * 在c代码中使用函数slide\_view\_create创建滑动视图控件。如：
  *
@@ -60,7 +60,8 @@ BEGIN_C_DECLS
  * ```
  *
  * > 完整示例请参考：
- * [slide_view demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)
+ * [slide_view demo](
+ * https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)
  *
  * 可用通过style来设置控件的显示风格，如背景颜色和指示器的图标等等。如：
  *
@@ -72,8 +73,8 @@ BEGIN_C_DECLS
  *
  * > 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\_view上。
  *
- * > 更多用法请参考：[theme default]
- * (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L458)
+ * > 更多用法请参考：[theme default](
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L458)
  *
  */
 typedef struct _slide_view_t {
