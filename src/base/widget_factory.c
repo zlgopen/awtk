@@ -62,6 +62,10 @@ typedef struct _creator_item_t {
   widget_create_t create;
 } creator_item_t;
 
+static int32_t creator_item_cmp(const creator_item_t* iter, const char* type) {
+  return strcmp(iter->type, type);
+}
+
 static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_DIALOG, dialog_create},
     {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
@@ -122,7 +126,7 @@ widget_factory_t* widget_factory_create(void) {
 widget_factory_t* widget_factory_init(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, NULL);
 
-  array_init(&(factory->creators), 0);
+  darray_init(&(factory->creators), 0, default_destroy, (tk_compare_t)creator_item_cmp);
 
   return factory;
 }
@@ -136,17 +140,14 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
 
   item->create = create;
   tk_strncpy(item->type, type, TK_NAME_LEN);
-  array_push(&(factory->creators), item);
+  darray_push(&(factory->creators), item);
 
   return RET_OK;
 }
 
 widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* type,
                                        widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
   const creator_item_t* iter = NULL;
-  const creator_item_t** items = NULL;
   return_value_if_fail(factory != NULL && type != NULL, NULL);
 
   iter = widget_factory_find_builtin_creator(type);
@@ -154,17 +155,10 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
     return iter->create(parent, x, y, w, h);
   }
 
-  items = (const creator_item_t**)(factory->creators.elms);
-  return_value_if_fail(items != NULL, NULL);
+  iter = darray_find(&(factory->creators), type);
+  return_value_if_fail(iter != NULL, NULL);
 
-  for (i = 0, nr = factory->creators.size; i < nr; i++) {
-    iter = items[i];
-    if (tk_str_eq(iter->type, type)) {
-      return iter->create(parent, x, y, w, h);
-    }
-  }
-
-  return NULL;
+  return iter->create(parent, x, y, w, h);
 }
 
 ret_t widget_factory_set(widget_factory_t* factory) {
@@ -174,21 +168,9 @@ ret_t widget_factory_set(widget_factory_t* factory) {
 }
 
 ret_t widget_factory_deinit(widget_factory_t* factory) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  creator_item_t* iter = NULL;
-  creator_item_t** items = NULL;
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
-  items = (creator_item_t**)(factory->creators.elms);
-  if (items != NULL) {
-    for (i = 0, nr = factory->creators.size; i < nr; i++) {
-      iter = items[i];
-      TKMEM_FREE(iter);
-    }
-
-    array_deinit(&(factory->creators));
-  }
+  darray_deinit(&(factory->creators));
 
   return RET_OK;
 }

@@ -22,13 +22,13 @@
 #ifndef TK_WIDGET_FACTORY_H
 #define TK_WIDGET_FACTORY_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
 
 typedef struct _widget_factory_t {
-  array_t creators;
+  darray_t creators;
 } widget_factory_t;
 
 widget_factory_t* widget_factory(void);

@@ -26,6 +26,7 @@
 #include "tkc/mem.h"
 #include "tkc/wstr.h"
 #include "tkc/value.h"
+#include "tkc/darray.h"
 #include "tkc/rect.h"
 #include "tkc/emitter.h"
 
@@ -334,11 +335,11 @@ struct _widget_t {
    */
   widget_t* key_target;
   /**
-   * @property {array_t*} children
+   * @property {darray_t*} children
    * @annotation ["readable"]
    * 全部子控件。
    */
-  array_t* children;
+  darray_t* children;
   /**
    * @property {emitter_t*} emitter
    * @annotation ["readable"]

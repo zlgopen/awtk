@@ -603,3 +603,17 @@ double tk_watof(const wchar_t* str) {
 
   return tk_atof(num);
 }
+
+ret_t default_destroy(void* data) {
+  TKMEM_FREE(data);
+
+  return RET_OK;
+}
+
+ret_t dummy_destroy(void* data) {
+  return RET_OK;
+}
+
+int32_t pointer_compare(const void* a, const void* b) {
+  return ((const char*)a - (const char*)b);
+}

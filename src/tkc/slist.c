@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/slist.h"
 
 static slist_node_t* slist_node_create(void* data) {
@@ -40,14 +41,6 @@ static ret_t slist_node_destroy(slist_node_t* node, tk_destroy_t destroy) {
   return RET_OK;
 }
 
-static ret_t dummy_destroy(void* data) {
-  return RET_OK;
-}
-
-static int32_t dummy_compare(const void* a, const void* b) {
-  return ((const char*)a - (const char*)b);
-}
-
 slist_t* slist_create(tk_destroy_t destroy, tk_compare_t compare) {
   slist_t* slist = TKMEM_ZALLOC(slist_t);
   return_value_if_fail(slist != NULL, NULL);
@@ -59,7 +52,7 @@ slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare) 
   return_value_if_fail(slist != NULL, NULL);
   slist->first = NULL;
   slist->destroy = destroy != NULL ? destroy : dummy_destroy;
-  slist->compare = compare != NULL ? compare : dummy_compare;
+  slist->compare = compare != NULL ? compare : pointer_compare;
 
   return slist;
 }

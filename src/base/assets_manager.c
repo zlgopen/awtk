@@ -25,6 +25,17 @@
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
+static int asset_cache_cmp_type(const void* a, const void* b) {
+  const asset_info_t* aa = (const asset_info_t*)a;
+  const asset_info_t* bb = (const asset_info_t*)b;
+
+  if (aa->is_in_rom) {
+    return -1;
+  }
+
+  return aa->type - bb->type;
+}
+
 static assets_manager_t* s_assets_manager = NULL;
 
 #ifdef WITH_FS_RES
@@ -280,7 +291,8 @@ assets_manager_t* assets_manager_create(uint32_t init_nr) {
 assets_manager_t* assets_manager_init(assets_manager_t* rm, uint32_t init_nr) {
   return_value_if_fail(rm != NULL, NULL);
 
-  array_init(&(rm->assets), init_nr);
+  darray_init(&(rm->assets), init_nr, (tk_destroy_t)asset_info_unref,
+              (tk_compare_t)asset_cache_cmp_type);
 
   return rm;
 }
@@ -300,8 +312,7 @@ ret_t assets_manager_add(assets_manager_t* rm, const void* info) {
   return_value_if_fail(rm != NULL && info != NULL, RET_BAD_PARAMS);
 
   asset_info_ref((asset_info_t*)r);
-
-  return array_push(&(rm->assets), (void*)r);
+  return darray_push(&(rm->assets), (void*)r);
 }
 
 const asset_info_t* assets_manager_find_in_cache(assets_manager_t* rm, asset_type_t type,
@@ -347,24 +358,15 @@ ret_t assets_manager_unref(assets_manager_t* rm, const asset_info_t* info) {
   if (!(info->is_in_rom)) {
     bool_t remove = info->refcount <= 1;
 
-    asset_info_unref((asset_info_t*)info);
     if (remove) {
-      array_remove(&(rm->assets), NULL, (void*)info, NULL);
+      tk_compare_t cmp = rm->assets.compare;
+      rm->assets.compare = pointer_compare;
+      darray_remove(&(rm->assets), (void*)info);
+      rm->assets.compare = cmp;
     }
   }
 
   return RET_OK;
-}
-
-static int asset_cache_cmp_type(const void* a, const void* b) {
-  const asset_info_t* aa = (const asset_info_t*)a;
-  const asset_info_t* bb = (const asset_info_t*)b;
-
-  if (aa->is_in_rom) {
-    return -1;
-  }
-
-  return aa->type - bb->type;
 }
 
 ret_t assets_manager_clear_cache(assets_manager_t* rm, asset_type_t type) {
@@ -374,8 +376,7 @@ ret_t assets_manager_clear_cache(assets_manager_t* rm, asset_type_t type) {
   info.type = type;
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
 
-  return array_remove_all(&(rm->assets), asset_cache_cmp_type, &info,
-                          (tk_destroy_t)asset_info_unref);
+  return darray_remove_all(&(rm->assets), &info);
 }
 
 ret_t assets_manager_deinit(assets_manager_t* rm) {
@@ -392,7 +393,7 @@ ret_t assets_manager_deinit(assets_manager_t* rm) {
   }
 
   TKMEM_FREE(rm->res_root);
-  array_deinit(&(rm->assets));
+  darray_deinit(&(rm->assets));
 
   return RET_OK;
 }

@@ -22,7 +22,7 @@
 #ifndef TK_ASSETS_MANAGER_H
 #define TK_ASSETS_MANAGER_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 
 BEGIN_C_DECLS
 
@@ -205,7 +205,7 @@ typedef struct _asset_info_t {
  *
  */
 typedef struct _assets_manager_t {
-  array_t assets;
+  darray_t assets;
 
   char* res_root;
 } assets_manager_t;

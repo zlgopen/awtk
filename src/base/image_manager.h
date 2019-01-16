@@ -22,7 +22,7 @@
 #ifndef TK_IMAGE_MANAGER_H
 #define TK_IMAGE_MANAGER_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "base/image_loader.h"
 #include "base/assets_manager.h"
 
@@ -46,11 +46,11 @@ typedef struct _bitmap_header_t {
  */
 typedef struct _image_manager_t {
   /**
-   * @property {array_t} images
+   * @property {darray_t} images
    * @annotation ["private"]
    * 缓存的图片。
    */
-  array_t images;
+  darray_t images;
 
   /**
    * @property {image_loader_t*} loader

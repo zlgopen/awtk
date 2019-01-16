@@ -67,6 +67,10 @@ ret_t xml_file_expand_read(const char* filename, str_t* s);
  * 本函数仅供内部使用，可以提高速度，但使用不当极度危险。它要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址*/
 char* tk_str_copy(char* dst, const char* src);
 
+ret_t dummy_destroy(void* data);
+ret_t default_destroy(void* data);
+int32_t pointer_compare(const void* a, const void* b);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/

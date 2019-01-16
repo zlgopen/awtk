@@ -24,6 +24,19 @@
 
 static font_manager_t* s_font_manager = NULL;
 
+typedef struct _font_cmp_info_t {
+  const char* name;
+  uint32_t size;
+} font_cmp_info_t;
+
+static int32_t font_cmp(font_t* font, font_cmp_info_t* info) {
+  if (font_match(font, info->name, info->size)) {
+    return 0;
+  }
+
+  return -1;
+}
+
 font_manager_t* font_manager(void) {
   return s_font_manager;
 }
@@ -42,7 +55,7 @@ font_manager_t* font_manager_create(font_loader_t* loader) {
 
 font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   return_value_if_fail(fm != NULL, NULL);
-  array_init(&(fm->fonts), 2);
+  darray_init(&(fm->fonts), 2, (tk_destroy_t)font_destroy, (tk_compare_t)font_cmp);
 
   fm->loader = loader;
 
@@ -60,27 +73,14 @@ ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) 
 ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
 
-  return array_push(&(fm->fonts), font);
+  return darray_push(&(fm->fonts), font);
 }
 
 static font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  font_t** fonts = NULL;
+  font_cmp_info_t info = {name, size};
   return_value_if_fail(fm != NULL, NULL);
 
-  nr = fm->fonts.size;
-  fonts = (font_t**)fm->fonts.elms;
-  return_value_if_fail(nr > 0, NULL);
-
-  for (i = 0; i < nr; i++) {
-    font_t* iter = fonts[i];
-    if (font_match(iter, name, size)) {
-      return iter;
-    }
-  }
-
-  return NULL;
+  return darray_find(&(fm->fonts), &info);
 }
 
 font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
@@ -123,21 +123,9 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 }
 
 ret_t font_manager_deinit(font_manager_t* fm) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  font_t** fonts = NULL;
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
 
-  nr = fm->fonts.size;
-  fonts = (font_t**)fm->fonts.elms;
-  for (i = 0; i < nr; i++) {
-    font_t* iter = fonts[i];
-    font_destroy(iter);
-  }
-
-  array_deinit(&(fm->fonts));
-
-  return RET_OK;
+  return darray_deinit(&(fm->fonts));
 }
 
 ret_t font_manager_destroy(font_manager_t* fm) {

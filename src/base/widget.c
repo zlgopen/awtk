@@ -371,7 +371,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   child->parent = widget;
   widget->need_relayout_children = TRUE;
   if (widget->children == NULL) {
-    widget->children = array_create(4);
+    widget->children = darray_create(4, NULL, NULL);
   }
 
   if (widget->vt->on_add_child) {
@@ -380,7 +380,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     }
   }
 
-  return array_push(widget->children, child);
+  return darray_push(widget->children, child);
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
@@ -407,7 +407,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   }
 
   child->parent = NULL;
-  return array_remove(widget->children, NULL, child, NULL);
+  return darray_remove(widget->children, child);
 }
 
 ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
@@ -1411,7 +1411,7 @@ static ret_t widget_destroy_sync(widget_t* widget) {
 
   if (widget->children != NULL) {
     widget_destroy_children(widget);
-    array_destroy(widget->children);
+    darray_destroy(widget->children);
     widget->children = NULL;
   }
 

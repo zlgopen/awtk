@@ -50,17 +50,17 @@ BEGIN_C_DECLS
  */
 typedef struct _darray_t {
   /**
-   * @property {uint16_t} size
+   * @property {uint32_t} size
    * @annotation ["readable"]
    * 数组中元素的个数。
    */
-  uint16_t size;
+  uint32_t size;
   /**
-   * @property {uint16_t} capacity
+   * @property {uint32_t} capacity
    * @annotation ["readable"]
    * 数组的容量大小。
    */
-  uint16_t capacity;
+  uint32_t capacity;
   /**
    * @property {void**} elms
    * @annotation ["readable"]
@@ -87,26 +87,26 @@ typedef struct _darray_t {
  * @annotation ["constructor"]
  * 创建darray对象。
  *
- * @param {uint16_t*} capacity 数组的初始容量。
+ * @param {uint32_t*} capacity 数组的初始容量。
  * @param {tk_destroy_t} destroy 元素销毁函数。
  * @param {tk_compare_t} compare 元素比较函数。
  *
  * @return {darray_t*} 数组对象。
  */
-darray_t* darray_create(uint16_t capacity, tk_destroy_t destroy, tk_compare_t compare);
+darray_t* darray_create(uint32_t capacity, tk_destroy_t destroy, tk_compare_t compare);
 
 /**
  * @method darray_init
  * 初始化darray对象。
  *
  * @param {darray_t*} darray 数组对象。
- * @param {uint16_t*} capacity 数组的初始容量。
+ * @param {uint32_t*} capacity 数组的初始容量。
  * @param {tk_destroy_t} destroy 元素销毁函数。
  * @param {tk_compare_t} compare 元素比较函数。
  *
  * @return {darray_t*} 数组对象。
  */
-darray_t* darray_init(darray_t* darray, uint16_t capacity, tk_destroy_t destroy,
+darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
                       tk_compare_t compare);
 
 /**

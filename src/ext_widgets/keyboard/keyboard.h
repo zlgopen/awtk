@@ -72,7 +72,7 @@ typedef struct _keyboard_t {
   window_base_t window;
 
   /*private*/
-  array_t action_buttons;
+  darray_t action_buttons;
   uint32_t action_info_id;
 } keyboard_t;
 

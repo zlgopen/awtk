@@ -20,17 +20,10 @@
  */
 
 #include "tkc/darray.h"
+#include "tkc/utils.h"
 #include "tkc/mem.h"
 
-static ret_t dummy_destroy(void* data) {
-  return RET_OK;
-}
-
-static int32_t dummy_compare(const void* a, const void* b) {
-  return ((const char*)a - (const char*)b);
-}
-
-darray_t* darray_create(uint16_t capacity, tk_destroy_t destroy, tk_compare_t compare) {
+darray_t* darray_create(uint32_t capacity, tk_destroy_t destroy, tk_compare_t compare) {
   darray_t* darray = TKMEM_ZALLOC(darray_t);
   return_value_if_fail(darray != NULL, NULL);
 
@@ -43,14 +36,14 @@ darray_t* darray_create(uint16_t capacity, tk_destroy_t destroy, tk_compare_t co
   }
 }
 
-darray_t* darray_init(darray_t* darray, uint16_t capacity, tk_destroy_t destroy,
+darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
                       tk_compare_t compare) {
   return_value_if_fail(darray != NULL, NULL);
 
   darray->size = 0;
   darray->elms = NULL;
   darray->destroy = destroy != NULL ? destroy : dummy_destroy;
-  darray->compare = compare != NULL ? compare : dummy_compare;
+  darray->compare = compare != NULL ? compare : pointer_compare;
 
   if (capacity > 0) {
     darray->elms = TKMEM_ZALLOCN(void*, capacity);
@@ -66,7 +59,7 @@ static bool_t darray_extend(darray_t* darray) {
     return TRUE;
   } else {
     void* elms = NULL;
-    uint16_t capacity = (darray->capacity >> 1) + darray->capacity + 1;
+    uint32_t capacity = (darray->capacity >> 1) + darray->capacity + 1;
 
     elms = TKMEM_REALLOCT(void*, darray->elms, capacity);
     if (elms) {

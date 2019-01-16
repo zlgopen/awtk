@@ -22,7 +22,7 @@
 #ifndef TK_FONT_MANAGER_H
 #define TK_FONT_MANAGER_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "base/font_loader.h"
 #include "base/assets_manager.h"
 
@@ -34,7 +34,7 @@ BEGIN_C_DECLS
  * (如果使用nanovg，字体由nanovg内部管理)
  */
 typedef struct _font_manager_t {
-  array_t fonts;
+  darray_t fonts;
 
   /**
    * @property {font_loader_t*} loader
