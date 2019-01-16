@@ -227,6 +227,9 @@ typedef enum _app_type_t {
 struct _widget_t;
 typedef struct _widget_t widget_t;
 
+struct _widget_vtable_t;
+typedef struct _widget_vtable_t widget_vtable_t;
+
 #define fix_xywh(x, y, w, h) \
   if (w < 0) {               \
     w = -w;                  \

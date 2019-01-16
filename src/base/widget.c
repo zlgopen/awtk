@@ -1635,6 +1635,18 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   return widget;
 }
 
+widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                        wh_t h) {
+  widget_t* widget = NULL;
+  return_value_if_fail(vt != NULL && vt->size >= sizeof(widget_t), NULL);
+
+  widget = TKMEM_ALLOC(vt->size);
+  return_value_if_fail(widget != NULL, NULL);
+  memset(widget, 0x00, vt->size);
+
+  return widget_init(widget, parent, vt, x, y, w, h);
+}
+
 ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);

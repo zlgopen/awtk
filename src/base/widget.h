@@ -67,7 +67,7 @@ typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, w
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
 typedef ret_t (*widget_recycle_t)(widget_t* widget);
 
-typedef struct _widget_vtable_t {
+struct _widget_vtable_t {
   uint32_t size;
   const char* type;
   /*克隆widget时需要复制的属性*/
@@ -90,6 +90,11 @@ typedef struct _widget_vtable_t {
    * 是否是软键盘(点击软键盘不改变编辑器的焦点)。
    */
   uint32_t is_keyboard : 1;
+
+  /**
+   * 是否启用pool。
+   */
+  uint32_t enable_pool : 1;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -114,7 +119,7 @@ typedef struct _widget_vtable_t {
   widget_find_target_t find_target;
   widget_recycle_t recycle;
   widget_on_destroy_t on_destroy;
-} widget_vtable_t;
+};
 
 /**
  * @class widget_t
@@ -1521,6 +1526,10 @@ ret_t widget_re_translate_text(widget_t* widget);
 /**
  * @method widget_init
  * 初始化控件。仅在子类控件构造函数中使用。
+ *
+ * > 请用widget\_create代替本函数。
+ *
+ * @depreated
  * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
@@ -1534,6 +1543,22 @@ ret_t widget_re_translate_text(widget_t* widget);
  */
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h);
+
+/**
+ * @method widget_create
+ * 创建控件。仅在子类控件构造函数中使用。
+ * @annotation ["private"]
+ * @param {widget_t*} parent widget的父控件。
+ * @param {widget_vtable_t*} vt 虚表。
+ * @param {xy_t}   x x坐标
+ * @param {xy_t}   y y坐标
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
+ *
+ * @return {widget_t*} widget对象本身。
+ */
+widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                        wh_t h);
 
 /**
  * @method widget_update_style
