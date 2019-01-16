@@ -317,12 +317,11 @@ static ret_t color_picker_on_window_will_open(void* ctx, event_t* e) {
 }
 
 widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  color_picker_t* color_picker = TKMEM_ZALLOC(color_picker_t);
-  widget_t* widget = WIDGET(color_picker);
+  widget_t* widget = widget_create(parent, &s_color_picker_vtable, x, y, w, h);
+  color_picker_t* color_picker = COLOR_PICKER(widget);
   widget_t* win = widget_get_window(parent);
   return_value_if_fail(color_picker != NULL, NULL);
 
-  widget_init(widget, parent, &s_color_picker_vtable, x, y, w, h);
   widget_on(win, EVT_WINDOW_WILL_OPEN, color_picker_on_window_will_open, color_picker);
   color_picker_set_color(widget, "gold");
 

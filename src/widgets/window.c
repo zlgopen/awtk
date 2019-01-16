@@ -29,6 +29,7 @@ static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,       WIDGET_
                                             WIDGET_PROP_SCRIPT,          NULL};
 
 static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDOW,
+                                                .size = sizeof(window_t),
                                                 .is_window = TRUE,
                                                 .clone_properties = s_window_properties,
                                                 .persistent_properties = s_window_properties,
@@ -41,10 +42,7 @@ static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDO
                                                 .on_destroy = window_base_on_destroy};
 
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  window_t* win = TKMEM_ZALLOC(window_t);
-  widget_t* widget = WIDGET(win);
-
-  return window_base_init(widget, parent, &s_window_vtable, x, y, w, h);
+  return window_base_create(parent, &s_window_vtable, x, y, w, h);
 }
 
 widget_t* window_cast(widget_t* widget) {

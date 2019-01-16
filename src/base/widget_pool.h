@@ -35,6 +35,10 @@ BEGIN_C_DECLS
  * * 优点：速度快，内存碎片少。
  * * 缺点：占用一点内存空间。
  *
+ * 通过宏WITH\_WIDGET\_POOL来指定最大缓存控件的数量。
+ *
+ * 控件可以通过vt->enable\_pool参数决定该类控件是否启用缓存。
+ *
  */
 typedef struct _widget_pool_t {
   object_t* cache;

@@ -677,11 +677,7 @@ ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical) {
 }
 
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  slide_view_t* slide_view = TKMEM_ZALLOC(slide_view_t);
-  widget_t* widget = WIDGET(slide_view);
-  return_value_if_fail(slide_view != NULL, NULL);
-
-  return widget_init(widget, parent, &s_slide_view_vtable, x, y, w, h);
+  return widget_create(parent, &s_slide_view_vtable, x, y, w, h);
 }
 
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {

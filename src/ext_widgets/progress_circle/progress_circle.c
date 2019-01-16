@@ -234,11 +234,9 @@ static const widget_vtable_t s_progress_circle_vtable = {
     .set_prop = progress_circle_set_prop};
 
 widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  progress_circle_t* progress_circle = TKMEM_ZALLOC(progress_circle_t);
-  widget_t* widget = WIDGET(progress_circle);
+  widget_t* widget = widget_create(parent, &s_progress_circle_vtable, x, y, w, h);
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, NULL);
-
-  widget_init(widget, parent, &s_progress_circle_vtable, x, y, w, h);
 
   progress_circle->max = 100;
   progress_circle->line_width = 8;

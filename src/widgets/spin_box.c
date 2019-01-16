@@ -27,7 +27,7 @@ extern const char* s_edit_properties[];
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
-static const widget_vtable_t s_spin_box_vtable = {.size = sizeof(edit_t),
+static const widget_vtable_t s_spin_box_vtable = {.size = sizeof(spin_box_t),
                                                   .type = WIDGET_TYPE_SPIN_BOX,
                                                   .clone_properties = s_edit_properties,
                                                   .persistent_properties = s_edit_properties,
@@ -38,7 +38,7 @@ static const widget_vtable_t s_spin_box_vtable = {.size = sizeof(edit_t),
                                                   .on_event = edit_on_event};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* spin_box = edit_create_ex(parent, x, y, w, h, &s_spin_box_vtable);
+  widget_t* spin_box = edit_create_ex(parent, &s_spin_box_vtable, x, y, w, h);
   edit_t* edit = EDIT(spin_box);
   return_value_if_fail(spin_box != NULL, NULL);
 

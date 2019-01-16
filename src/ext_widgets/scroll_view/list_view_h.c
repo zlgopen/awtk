@@ -80,6 +80,7 @@ static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
 }
 
 static const widget_vtable_t s_list_view_h_vtable = {.type = WIDGET_TYPE_LIST_VIEW_H,
+                                                     .size = sizeof(list_view_h_t),
                                                      .set_prop = list_view_h_set_prop,
                                                      .get_prop = list_view_h_get_prop,
                                                      .on_event = list_view_h_on_event,
@@ -137,11 +138,7 @@ static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
 }
 
 widget_t* list_view_h_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  list_view_h_t* list_view_h = TKMEM_ZALLOC(list_view_h_t);
-  widget_t* widget = WIDGET(list_view_h);
-  return_value_if_fail(list_view_h != NULL, NULL);
-
-  return widget_init(widget, parent, &s_list_view_h_vtable, x, y, w, h);
+  return widget_create(parent, &s_list_view_h_vtable, x, y, w, h);
 }
 
 ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {

@@ -171,11 +171,9 @@ static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
 }
 
 widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  candidates_t* candidates = TKMEM_ZALLOC(candidates_t);
-  widget_t* widget = WIDGET(candidates);
+  widget_t* widget = widget_create(parent, &s_candidates_vtable, x, y, w, h);
+  candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, NULL);
-
-  widget_init(widget, parent, &s_candidates_vtable, x, y, w, h);
 
   candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
                                          candidates_on_im_candidates_event, candidates);

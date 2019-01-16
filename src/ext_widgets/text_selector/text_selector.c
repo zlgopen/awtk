@@ -420,13 +420,13 @@ static const widget_vtable_t s_text_selector_vtable = {
     .on_event = text_selector_on_event};
 
 widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  text_selector_t* text_selector = TKMEM_ZALLOC(text_selector_t);
-  widget_t* widget = WIDGET(text_selector);
+  widget_t* widget = widget_create(parent, &s_text_selector_vtable, x, y, w, h);
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, NULL);
 
   text_selector->visible_nr = 5;
 
-  return widget_init(widget, parent, &s_text_selector_vtable, x, y, w, h);
+  return widget;
 }
 
 ret_t text_selector_reset_options(widget_t* widget) {

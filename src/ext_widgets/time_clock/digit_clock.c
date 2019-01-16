@@ -178,12 +178,10 @@ static const widget_vtable_t s_digit_clock_vtable = {
     .on_destroy = digit_clock_on_destroy};
 
 widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  digit_clock_t* digit_clock = TKMEM_ZALLOC(digit_clock_t);
-  widget_t* widget = WIDGET(digit_clock);
-  return_value_if_fail(digit_clock != NULL, NULL);
+  widget_t* widget = widget_create(parent, &s_digit_clock_vtable, x, y, w, h);
+  digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
 
-  return_value_if_fail(widget_init(widget, parent, &s_digit_clock_vtable, x, y, w, h) != NULL,
-                       widget);
+  return_value_if_fail(digit_clock != NULL, NULL);
 
   digit_clock_update_time(widget);
   widget_add_timer(widget, digit_clock_on_timer, 1000);

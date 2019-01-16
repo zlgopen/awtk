@@ -2,14 +2,20 @@
 #include "base/widget_pool.h"
 #include "widgets/label.h"
 
-static const widget_vtable_t s_enable_vtable = {
-    .size = sizeof(widget_t), .type = "enable", .enable_pool = TRUE};
+static widget_vtable_t s_enable_vtable;
+static widget_vtable_t s_disable_vtable;
 
-static const widget_vtable_t s_disable_vtable = {.size = sizeof(widget_t), .type = "disable"};
+static widget_vtable_t* vtable_init(widget_vtable_t* vt, const char* type, bool_t enable_pool) {
+  vt->type = type;
+  vt->size = sizeof(widget_t);
+  vt->enable_pool = enable_pool;
+
+  return vt;
+}
 
 TEST(WidgetPool, basic) {
-  const widget_vtable_t* vt = &s_enable_vtable;
-  const widget_vtable_t* d_vt = &s_disable_vtable;
+  widget_vtable_t* vt = vtable_init(&s_enable_vtable, "enable", TRUE);
+  widget_vtable_t* d_vt = vtable_init(&s_disable_vtable, "disable", FALSE);
 
   widget_pool_t* pool = widget_pool_create(5);
   widget_t* e = widget_pool_create_widget(pool, vt);
@@ -38,7 +44,7 @@ TEST(WidgetPool, basic) {
 }
 
 TEST(WidgetPool, enable) {
-  const widget_vtable_t* vt = &s_enable_vtable;
+  const widget_vtable_t* vt = vtable_init(&s_enable_vtable, "enable", TRUE);
   widget_pool_t* pool = widget_pool_create(5);
   widget_t* e = widget_pool_create_widget(pool, vt);
 
@@ -55,7 +61,7 @@ TEST(WidgetPool, enable) {
 }
 
 TEST(WidgetPool, disable) {
-  const widget_vtable_t* vt = &s_disable_vtable;
+  const widget_vtable_t* vt = vtable_init(&s_disable_vtable, "disable", FALSE);
   widget_pool_t* pool = widget_pool_create(5);
   widget_t* e = widget_pool_create_widget(pool, vt);
 
@@ -66,9 +72,9 @@ TEST(WidgetPool, disable) {
 }
 
 TEST(WidgetPool, disable_nr) {
-  const widget_vtable_t* vt = &s_disable_vtable;
-  widget_pool_t* pool = widget_pool_create(5);
   widget_t* widgets[100];
+  widget_pool_t* pool = widget_pool_create(5);
+  const widget_vtable_t* vt = vtable_init(&s_disable_vtable, "disable", FALSE);
 
   for (int32_t i = 0; i < ARRAY_SIZE(widgets); i++) {
     widgets[i] = widget_pool_create_widget(pool, vt);
@@ -84,9 +90,9 @@ TEST(WidgetPool, disable_nr) {
 }
 
 TEST(WidgetPool, enable_nr) {
-  const widget_vtable_t* vt = &s_enable_vtable;
   widget_t* widgets[100];
   widget_pool_t* pool = widget_pool_create(ARRAY_SIZE(widgets));
+  const widget_vtable_t* vt = vtable_init(&s_enable_vtable, "enable", TRUE);
 
   for (int32_t i = 0; i < ARRAY_SIZE(widgets); i++) {
     widgets[i] = widget_pool_create_widget(pool, vt);
@@ -102,9 +108,9 @@ TEST(WidgetPool, enable_nr) {
 }
 
 TEST(WidgetPool, enable_nr_limit) {
-  const widget_vtable_t* vt = &s_enable_vtable;
   widget_t* widgets[100];
   widget_pool_t* pool = widget_pool_create(10);
+  const widget_vtable_t* vt = vtable_init(&s_enable_vtable, "enable", TRUE);
 
   for (int32_t i = 0; i < ARRAY_SIZE(widgets); i++) {
     widgets[i] = widget_pool_create_widget(pool, vt);

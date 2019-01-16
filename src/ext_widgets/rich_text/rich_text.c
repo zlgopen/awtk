@@ -191,11 +191,7 @@ static const widget_vtable_t s_rich_text_vtable = {.size = sizeof(rich_text_t),
                                                    .on_paint_self = rich_text_on_paint_self};
 
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  rich_text_t* rich_text = TKMEM_ZALLOC(rich_text_t);
-  widget_t* widget = WIDGET(rich_text);
-  return_value_if_fail(rich_text != NULL, NULL);
-
-  return widget_init(widget, parent, &s_rich_text_vtable, x, y, w, h);
+  return widget_create(parent, &s_rich_text_vtable, x, y, w, h);
 }
 
 ret_t rich_text_set_text(widget_t* widget, const char* text) {

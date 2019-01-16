@@ -187,11 +187,7 @@ static const widget_vtable_t s_tab_button_group_vtable = {
     .on_paint_self = tab_button_group_on_paint_self};
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  tab_button_group_t* tab_button_group = TKMEM_ZALLOC(tab_button_group_t);
-  widget_t* widget = WIDGET(tab_button_group);
-  return_value_if_fail(tab_button_group != NULL, NULL);
-
-  return widget_init(widget, parent, &s_tab_button_group_vtable, x, y, w, h);
+  return widget_create(parent, &s_tab_button_group_vtable, x, y, w, h);
 }
 
 widget_t* tab_button_group_cast(widget_t* widget) {

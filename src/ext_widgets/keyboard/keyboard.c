@@ -60,14 +60,11 @@ static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .on_destroy = keyboard_on_destroy};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  keyboard_t* keyboard = TKMEM_ZALLOC(keyboard_t);
-  widget_t* widget = WIDGET(keyboard);
+  widget_t* widget = window_base_create(parent, &s_keyboard_vtable, x, y, w, h);
+  keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, NULL);
 
-  window_base_init(widget, parent, &s_keyboard_vtable, x, y, w, h);
-
   array_init(&(keyboard->action_buttons), 0);
-
   widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
   keyboard->action_info_id =
       input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);

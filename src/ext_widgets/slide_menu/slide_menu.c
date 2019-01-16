@@ -550,15 +550,15 @@ static const widget_vtable_t s_slide_menu_vtable = {
     .on_event = slide_menu_on_event};
 
 widget_t* slide_menu_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  slide_menu_t* slide_menu = TKMEM_ZALLOC(slide_menu_t);
-  widget_t* widget = WIDGET(slide_menu);
+  widget_t* widget = widget_create(parent, &s_slide_menu_vtable, x, y, w, h);
+  slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(slide_menu != NULL, NULL);
 
   slide_menu->value = 1;
   slide_menu->min_scale = 0.8f;
   slide_menu->align_v = ALIGN_V_BOTTOM;
 
-  return widget_init(widget, parent, &s_slide_menu_vtable, x, y, w, h);
+  return widget;
 }
 
 ret_t slide_menu_set_value(widget_t* widget, uint32_t index) {

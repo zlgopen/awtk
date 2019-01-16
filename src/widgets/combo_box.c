@@ -135,7 +135,7 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
 }
 
 static const widget_vtable_t s_combo_box_vtable = {
-    .size = sizeof(edit_t),
+    .size = sizeof(combo_box_t),
     .type = WIDGET_TYPE_COMBO_BOX,
     .clone_properties = s_combo_box_properties,
     .persistent_properties = s_combo_box_properties,
@@ -148,17 +148,16 @@ static const widget_vtable_t s_combo_box_vtable = {
     .on_event = edit_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  combo_box_t* combo_box = TKMEM_ZALLOC(combo_box_t);
+  widget_t* widget = edit_create_ex(parent, &s_combo_box_vtable, x, y, w, h);
+  combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(combo_box);
   return_value_if_fail(combo_box != NULL, NULL);
-
-  edit_init(parent, edit, x, y, w, h, &s_combo_box_vtable);
 
   edit->right_margin = h;
   edit->left_margin = 4;
   str_init(&(combo_box->text), 32);
 
-  return WIDGET(combo_box);
+  return widget;
 }
 
 static ret_t combo_box_on_item_click(void* ctx, event_t* e) {

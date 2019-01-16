@@ -129,11 +129,10 @@ static const widget_vtable_t s_gif_image_vtable = {.size = sizeof(gif_image_t),
                                                    .get_prop = image_base_get_prop};
 
 widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  gif_image_t* gif_image = TKMEM_ZALLOC(gif_image_t);
-  widget_t* widget = WIDGET(gif_image);
+  widget_t* widget = widget_create(parent, &s_gif_image_vtable, x, y, w, h);
+  gif_image_t* gif_image = GIF_IMAGE(widget);
   return_value_if_fail(gif_image != NULL, NULL);
 
-  widget_init(widget, parent, &s_gif_image_vtable, x, y, w, h);
   image_base_init(widget);
 
   return widget;

@@ -187,11 +187,7 @@ static const widget_vtable_t s_guage_pointer_vtable = {
     .on_destroy = guage_pointer_on_destroy};
 
 widget_t* guage_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  guage_pointer_t* guage_pointer = TKMEM_ZALLOC(guage_pointer_t);
-  widget_t* widget = WIDGET(guage_pointer);
-  return_value_if_fail(guage_pointer != NULL, NULL);
-
-  return widget_init(widget, parent, &s_guage_pointer_vtable, x, y, w, h);
+  return widget_create(parent, &s_guage_pointer_vtable, x, y, w, h);
 }
 
 widget_t* guage_pointer_cast(widget_t* widget) {

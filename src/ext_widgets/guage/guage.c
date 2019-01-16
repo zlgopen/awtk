@@ -113,11 +113,11 @@ static const widget_vtable_t s_guage_vtable = {.size = sizeof(guage_t),
                                                .on_destroy = guage_on_destroy};
 
 widget_t* guage_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  guage_t* guage = TKMEM_ZALLOC(guage_t);
-  widget_t* widget = WIDGET(guage);
+  widget_t* widget = widget_create(parent, &s_guage_vtable, x, y, w, h);
+  guage_t* guage = GUAGE(widget);
+
   return_value_if_fail(guage != NULL, NULL);
 
-  widget_init(widget, parent, &s_guage_vtable, x, y, w, h);
   guage->draw_type = IMAGE_DRAW_CENTER;
 
   return widget;

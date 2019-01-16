@@ -131,11 +131,10 @@ static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
                                                    .on_destroy = list_item_on_destroy};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  list_item_t* list_item = TKMEM_ZALLOC(list_item_t);
-  widget_t* widget = WIDGET(list_item);
+  widget_t* widget = widget_create(parent, &s_list_item_vtable, x, y, w, h);
+  list_item_t* list_item = LIST_ITEM(widget);
   return_value_if_fail(list_item != NULL, NULL);
 
-  widget_init(widget, parent, &s_list_item_vtable, x, y, w, h);
   list_item->timer_id = TK_INVALID_ID;
 
   return widget;

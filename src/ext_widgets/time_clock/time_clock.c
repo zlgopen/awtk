@@ -305,12 +305,9 @@ static ret_t time_clock_reset_time(time_clock_t* time_clock) {
 }
 
 widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  time_clock_t* time_clock = TKMEM_ZALLOC(time_clock_t);
-  widget_t* widget = WIDGET(time_clock);
+  widget_t* widget = widget_create(parent, &s_time_clock_vtable, x, y, w, h);
+  time_clock_t* time_clock = TIME_CLOCK(widget);
   return_value_if_fail(time_clock != NULL, NULL);
-
-  return_value_if_fail(widget_init(widget, parent, &s_time_clock_vtable, x, y, w, h) != NULL,
-                       widget);
 
   time_clock_reset_time(time_clock);
   widget_add_timer(widget, time_clock_on_timer, 1000);

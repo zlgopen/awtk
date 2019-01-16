@@ -541,11 +541,10 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
 
 static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
                                             const widget_vtable_t* vt) {
-  scroll_bar_t* scroll_bar = TKMEM_ZALLOC(scroll_bar_t);
-  widget_t* widget = WIDGET(scroll_bar);
+  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, NULL);
 
-  widget_init(widget, parent, vt, x, y, w, h);
   scroll_bar->animatable = TRUE;
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 

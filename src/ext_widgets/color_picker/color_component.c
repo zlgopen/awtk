@@ -236,11 +236,10 @@ static ret_t color_component_update_h(widget_t* widget) {
 }
 
 widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  color_component_t* color_component = TKMEM_ZALLOC(color_component_t);
-  widget_t* widget = WIDGET(color_component);
+  widget_t* widget = widget_create(parent, &s_color_component_vtable, x, y, w, h);
+  color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, NULL);
 
-  widget_init(widget, parent, &s_color_component_vtable, x, y, w, h);
   color_component_init_image(&(color_component->image), "", w, h);
   color_component->c = color_init(0xff, 0xff, 0xff, 0xff);
   color_component->need_update = TRUE;

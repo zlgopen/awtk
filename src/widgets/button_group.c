@@ -32,11 +32,7 @@ static const widget_vtable_t s_button_group_vtable = {.size = sizeof(button_grou
                                                       .on_paint_self = button_group_on_paint_self};
 
 widget_t* button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  button_group_t* button_group = TKMEM_ZALLOC(button_group_t);
-  widget_t* widget = WIDGET(button_group);
-  return_value_if_fail(button_group != NULL, NULL);
-
-  return widget_init(widget, parent, &s_button_group_vtable, x, y, w, h);
+  return widget_create(parent, &s_button_group_vtable, x, y, w, h);
 }
 
 widget_t* button_group_cast(widget_t* widget) {

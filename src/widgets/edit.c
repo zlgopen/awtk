@@ -1184,13 +1184,11 @@ static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
                                               .on_destroy = edit_on_destroy,
                                               .on_event = edit_on_event};
 
-widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t h,
-                    const widget_vtable_t* vt) {
-  widget_t* widget = WIDGET(edit);
-
-  return_value_if_fail(edit != NULL, NULL);
-
-  widget_init(widget, parent, vt, x, y, w, h);
+widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                         wh_t h) {
+  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL, NULL);
 
   edit->left_margin = 2;
   edit->right_margin = 2;
@@ -1204,16 +1202,8 @@ widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t
   return widget;
 }
 
-widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
-                         const widget_vtable_t* vt) {
-  edit_t* edit = TKMEM_ZALLOC(edit_t);
-  return_value_if_fail(edit != NULL, NULL);
-
-  return edit_init(parent, edit, x, y, w, h, vt);
-}
-
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return edit_create_ex(parent, x, y, w, h, &s_edit_vtable);
+  return edit_create_ex(parent, &s_edit_vtable, x, y, w, h);
 }
 
 widget_t* edit_cast(widget_t* widget) {

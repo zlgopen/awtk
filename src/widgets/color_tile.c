@@ -82,11 +82,10 @@ static const widget_vtable_t s_color_tile_vtable = {
     .on_paint_self = color_tile_on_paint_self};
 
 widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  color_tile_t* color_tile = TKMEM_ZALLOC(color_tile_t);
-  widget_t* widget = WIDGET(color_tile);
+  widget_t* widget = widget_create(parent, &s_color_tile_vtable, x, y, w, h);
+  color_tile_t* color_tile = COLOR_TILE(widget);
   return_value_if_fail(color_tile != NULL, NULL);
 
-  widget_init(widget, parent, &s_color_tile_vtable, x, y, w, h);
   color_tile_set_bg_color(widget, "#ffffff");
   color_tile_set_border_color(widget, "#000000");
 

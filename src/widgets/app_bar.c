@@ -26,11 +26,7 @@ static const widget_vtable_t s_app_bar_vtable = {
     .size = sizeof(app_bar_t), .type = WIDGET_TYPE_APP_BAR, .create = app_bar_create};
 
 widget_t* app_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  app_bar_t* app_bar = TKMEM_ZALLOC(app_bar_t);
-  widget_t* widget = WIDGET(app_bar);
-  return_value_if_fail(app_bar != NULL, NULL);
-
-  return widget_init(widget, parent, &s_app_bar_vtable, x, y, w, h);
+  return widget_create(parent, &s_app_bar_vtable, x, y, w, h);
 }
 
 widget_t* app_bar_cast(widget_t* widget) {

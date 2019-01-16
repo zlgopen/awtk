@@ -355,11 +355,9 @@ static const widget_vtable_t s_slider_vtable = {.size = sizeof(slider_t),
                                                 .set_prop = slider_set_prop};
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  slider_t* slider = TKMEM_ZALLOC(slider_t);
-  widget_t* widget = WIDGET(slider);
+  widget_t* widget = widget_create(parent, &s_slider_vtable, x, y, w, h);
+  slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL, NULL);
-
-  widget_init(widget, parent, &s_slider_vtable, x, y, w, h);
 
   slider->min = 0;
   slider->max = 100;

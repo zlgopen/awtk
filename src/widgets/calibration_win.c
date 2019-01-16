@@ -180,8 +180,9 @@ ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t 
 }
 
 widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  calibration_win_t* win = TKMEM_ZALLOC(calibration_win_t);
-  widget_t* widget = WIDGET(win);
+  widget_t* widget = window_base_create(parent, &s_calibration_win_vtable, x, y, w, h);
+  calibration_win_t* win = CALIBRATION_WIN(widget);
+
   return_value_if_fail(win != NULL, NULL);
 
   win->cursor = 0;
@@ -189,7 +190,6 @@ widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   win->y_offset = 20;
   win->cross_size = 16;
 
-  window_base_init(widget, parent, &s_calibration_win_vtable, x, y, w, h);
   widget_resize(widget, widget->parent->w, widget->parent->h);
 
   return widget;

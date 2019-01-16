@@ -380,10 +380,8 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t edit_on_event(widget_t* widget, event_t* e);
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v);
-widget_t* edit_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
-                         const widget_vtable_t* vt);
-widget_t* edit_init(widget_t* parent, edit_t* edit, xy_t x, xy_t y, wh_t w, wh_t h,
-                    const widget_vtable_t* vt);
+widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                         wh_t h);
 
 /*public for test*/
 ret_t edit_inc(edit_t* edit);

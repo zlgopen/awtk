@@ -163,4 +163,11 @@
  * #define ENABLE_CURSOR 1
  */
 
+/**
+ * 如果启用控件缓存，请定义本宏
+ * 缓存内存占用约：200 * WITH_WIDGET_POOL
+ *
+ * #define WITH_WIDGET_POOL 1000
+ */
+
 #endif /*AWTK_CONFIG_H*/

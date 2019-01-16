@@ -99,10 +99,10 @@ static const widget_vtable_t s_system_bar_vtable = {
     .on_destroy = window_base_on_destroy};
 
 widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  system_bar_t* system_bar = TKMEM_ZALLOC(system_bar_t);
-  widget_t* widget = WIDGET(system_bar);
+  widget_t* widget = window_base_create(parent, &s_system_bar_vtable, x, y, w, h);
+  system_bar_t* system_bar = SYSTEM_BAR(widget);
+  return_value_if_fail(widget != NULL, NULL);
 
-  window_base_init(widget, parent, &s_system_bar_vtable, x, y, w, h);
   widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
 
   return widget;

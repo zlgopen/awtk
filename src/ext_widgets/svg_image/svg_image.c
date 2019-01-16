@@ -118,11 +118,11 @@ static const widget_vtable_t s_svg_image_vtable = {.size = sizeof(svg_image_t),
                                                    .get_prop = image_base_get_prop};
 
 widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  svg_image_t* svg_image = TKMEM_ZALLOC(svg_image_t);
-  widget_t* widget = WIDGET(svg_image);
+  widget_t* widget = widget_create(parent, &s_svg_image_vtable, x, y, w, h);
+  svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, NULL);
 
-  widget_init(widget, parent, &s_svg_image_vtable, x, y, w, h);
+  widget_create(parent, &s_svg_image_vtable, x, y, w, h);
   image_base_init(widget);
 
   return widget;

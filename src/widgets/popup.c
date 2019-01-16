@@ -120,10 +120,7 @@ static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .on_destroy = window_base_on_destroy};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  popup_t* popup = TKMEM_ZALLOC(popup_t);
-  widget_t* widget = WIDGET(popup);
-
-  return window_base_init(widget, parent, &s_popup_vtable, x, y, w, h);
+  return window_base_create(parent, &s_popup_vtable, x, y, w, h);
 }
 
 widget_t* popup_cast(widget_t* widget) {

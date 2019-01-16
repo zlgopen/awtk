@@ -143,18 +143,18 @@ static ret_t image_animation_on_open(void* ctx, event_t* e) {
 
 widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* win = widget_get_window(parent);
-  image_animation_t* image_animation = TKMEM_ZALLOC(image_animation_t);
-  widget_t* widget = WIDGET(image_animation);
+  widget_t* widget = widget_create(parent, &s_image_animation_vtable, x, y, w, h);
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+
   return_value_if_fail(image_animation != NULL, NULL);
 
   image_animation->index = 0;
   image_animation->interval = 16;
   image_animation->loop = TRUE;
   image_animation->auto_play = FALSE;
-
   widget_on(win, EVT_WINDOW_WILL_OPEN, image_animation_on_open, image_animation);
 
-  return widget_init(widget, parent, &s_image_animation_vtable, x, y, w, h);
+  return widget;
 }
 
 ret_t image_animation_set_loop(widget_t* widget, bool_t loop) {

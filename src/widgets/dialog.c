@@ -63,10 +63,7 @@ static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .on_destroy = window_base_on_destroy};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  dialog_t* dialog = TKMEM_ZALLOC(dialog_t);
-  widget_t* widget = WIDGET(dialog);
-
-  return window_base_init(widget, parent, &s_dialog_vtable, x, y, w, h);
+  return window_base_create(parent, &s_dialog_vtable, x, y, w, h);
 }
 
 widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

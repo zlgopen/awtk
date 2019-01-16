@@ -148,11 +148,11 @@ static const widget_vtable_t s_image_value_vtable = {.size = sizeof(image_value_
                                                      .on_paint_self = image_value_on_paint_self};
 
 widget_t* image_value_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  image_value_t* image_value = TKMEM_ZALLOC(image_value_t);
-  widget_t* widget = WIDGET(image_value);
+  widget_t* widget = widget_create(parent, &s_image_value_vtable, x, y, w, h);
+  image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, NULL);
 
-  return widget_init(widget, parent, &s_image_value_vtable, x, y, w, h);
+  return widget;
 }
 
 ret_t image_value_set_image(widget_t* widget, const char* image) {

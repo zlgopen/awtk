@@ -104,11 +104,7 @@ static const widget_vtable_t s_pages_vtable = {.size = sizeof(pages_t),
                                                .set_prop = pages_set_prop};
 
 widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  pages_t* pages = TKMEM_ZALLOC(pages_t);
-  widget_t* widget = WIDGET(pages);
-  return_value_if_fail(pages != NULL, NULL);
-
-  return widget_init(widget, parent, &s_pages_vtable, x, y, w, h);
+  return widget_create(parent, &s_pages_vtable, x, y, w, h);
 }
 
 widget_t* pages_cast(widget_t* widget) {

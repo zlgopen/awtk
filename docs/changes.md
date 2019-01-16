@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/01/16
+  * 增加darray类，逐步替换以前的array类。
+  * 增加widget pool用于控件的缓存和重复利用，可以通过WITH\_WIDGET\_POOL启用。
+  * 增加widget\_create函数，简化子类控件的创建函数，同时让通用控件本身的由widget pool集中管理。
+
 * 2019/01/15
   * 整理API文档：progress\_circle/rich\_text/slide\_menu/slide\_view/svg\_image/switch
   * 整理API文档：text\_selector/time\_clock/digit\_clock

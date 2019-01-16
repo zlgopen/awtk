@@ -212,11 +212,15 @@ static const widget_vtable_t s_progress_bar_vtable = {
     .set_prop = progress_bar_set_prop};
 
 widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  progress_bar_t* progress_bar = TKMEM_ZALLOC(progress_bar_t);
-  widget_t* widget = WIDGET(progress_bar);
+  widget_t* widget = widget_create(parent, &s_progress_bar_vtable, x, y, w, h);
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, NULL);
 
-  return widget_init(widget, parent, &s_progress_bar_vtable, x, y, w, h);
+  progress_bar->value = 0;
+  progress_bar->vertical = FALSE;
+  progress_bar->show_text = FALSE;
+
+  return widget;
 }
 
 widget_t* progress_bar_cast(widget_t* widget) {

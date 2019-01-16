@@ -161,22 +161,21 @@ static const widget_vtable_t s_radio_button_vtable = {
 };
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  check_button_t* check_button = TKMEM_ZALLOC(check_button_t);
-  widget_t* widget = WIDGET(check_button);
+  widget_t* widget = widget_create(parent, &s_radio_button_vtable, x, y, w, h);
+  check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);
 
-  widget_init(widget, parent, &s_check_button_vtable, x, y, w, h);
+  check_button->radio = FALSE;
+  widget->state = WIDGET_STATE_NORMAL;
   check_button_set_value_only(widget, FALSE);
 
   return widget;
 }
 
 widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  check_button_t* check_button = TKMEM_ZALLOC(check_button_t);
-  widget_t* widget = WIDGET(check_button);
+  widget_t* widget = widget_create(parent, &s_radio_button_vtable, x, y, w, h);
+  check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);
-
-  widget_init(widget, parent, &s_radio_button_vtable, x, y, w, h);
 
   check_button->radio = TRUE;
   widget->state = WIDGET_STATE_NORMAL;

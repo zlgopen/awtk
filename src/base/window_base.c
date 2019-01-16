@@ -186,20 +186,20 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x,
-                           xy_t y, wh_t w, wh_t h) {
+widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                             wh_t h) {
+  widget_t* widget = widget_create(NULL, vt, x, y, w, h);
   window_base_t* win = WINDOW_BASE(widget);
 
   return_value_if_fail(win != NULL, NULL);
 
-  widget_init(widget, NULL, vt, x, y, w, h);
   if (parent == NULL) {
     parent = window_manager();
   }
 
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
-
   win->stage = WINDOW_STAGE_NONE;
+
 #ifdef ENABLE_MEM_LEAK_CHECK
   tk_mem_dump();
 #endif /*ENABLE_MEM_LEAK_CHECK*/

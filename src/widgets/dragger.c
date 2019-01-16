@@ -163,11 +163,7 @@ static const widget_vtable_t s_dragger_vtable = {.size = sizeof(dragger_t),
                                                  .on_paint_self = dragger_on_paint_self};
 
 widget_t* dragger_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  dragger_t* dragger = TKMEM_ZALLOC(dragger_t);
-  widget_t* widget = WIDGET(dragger);
-  return_value_if_fail(dragger != NULL, NULL);
-
-  return widget_init(widget, parent, &s_dragger_vtable, x, y, w, h);
+  return widget_create(parent, &s_dragger_vtable, x, y, w, h);
 }
 
 widget_t* dragger_cast(widget_t* widget) {

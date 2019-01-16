@@ -26,11 +26,7 @@ static const widget_vtable_t s_view_vtable = {
     .size = sizeof(view_t), .type = WIDGET_TYPE_VIEW, .create = view_create};
 
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  view_t* view = TKMEM_ZALLOC(view_t);
-  widget_t* widget = WIDGET(view);
-  return_value_if_fail(view != NULL, NULL);
-
-  return widget_init(widget, parent, &s_view_vtable, x, y, w, h);
+  return widget_create(parent, &s_view_vtable, x, y, w, h);
 }
 
 widget_t* view_cast(widget_t* widget) {

@@ -26,11 +26,7 @@ static const widget_vtable_t s_row_vtable = {
     .size = sizeof(row_t), .type = WIDGET_TYPE_ROW, .create = row_create};
 
 widget_t* row_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  row_t* row = TKMEM_ZALLOC(row_t);
-  widget_t* widget = WIDGET(row);
-  return_value_if_fail(row != NULL, NULL);
-
-  return widget_init(widget, parent, &s_row_vtable, x, y, w, h);
+  return widget_create(parent, &s_row_vtable, x, y, w, h);
 }
 
 widget_t* row_cast(widget_t* widget) {
