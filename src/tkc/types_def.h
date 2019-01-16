@@ -141,6 +141,8 @@ typedef enum _ret_t {
 
 #ifdef WIN32
 #include <windows.h>
+#define random rand
+#define srandom srand
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)

@@ -4,11 +4,6 @@
 #include <stdlib.h>
 #include <string>
 
-#ifdef WIN32
-#define random rand
-#define srandom srand
-#endif /*WIN32*/
-
 using std::string;
 
 static ret_t event_dump(void* ctx, event_t* e) {

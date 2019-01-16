@@ -1,36 +1,32 @@
 [
   {
     "type": "enum",
-    "desc": " 控件边框类型。\r\n",
+    "desc": " 图标所在的位置。\r\n",
     "consts": [
       {
-        "desc": " 无边框。\r\n",
-        "name": "BORDER_NONE"
+        "desc": " 自动选择位置。\r\n",
+        "name": "ICON_AT_AUTO"
       },
       {
-        "desc": " 左边框线。\r\n",
-        "name": "BORDER_LEFT"
+        "desc": " 水平左边，垂直居中。\r\n",
+        "name": "ICON_AT_LEFT"
       },
       {
-        "desc": " 右边框线。\r\n",
-        "name": "BORDER_RIGHT"
+        "desc": " 水平右边，垂直居中(not used now)。\r\n",
+        "name": "ICON_AT_RIGHT"
       },
       {
-        "desc": " 上边框线。\r\n",
-        "name": "BORDER_TOP"
+        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
+        "name": "ICON_AT_TOP"
       },
       {
-        "desc": " 下边框线。\r\n",
-        "name": "BORDER_BOTTOM"
-      },
-      {
-        "desc": " 全边框线。\r\n",
-        "name": "BORDER_ALL"
+        "desc": " 水平居中，垂直低部(not used now)。\r\n",
+        "name": "ICON_AT_BOTTOM"
       }
     ],
     "header": "base/types_def.h",
-    "name": "border_type_t",
-    "prefix": "BORDER_TYPE_",
+    "name": "icon_at_type_t",
+    "prefix": "ICON_AT",
     "level": 1
   },
   {
@@ -6421,41 +6417,45 @@
   },
   {
     "type": "enum",
+    "desc": " 控件边框类型。\r\n",
+    "consts": [
+      {
+        "desc": " 无边框。\r\n",
+        "name": "BORDER_NONE"
+      },
+      {
+        "desc": " 左边框线。\r\n",
+        "name": "BORDER_LEFT"
+      },
+      {
+        "desc": " 右边框线。\r\n",
+        "name": "BORDER_RIGHT"
+      },
+      {
+        "desc": " 上边框线。\r\n",
+        "name": "BORDER_TOP"
+      },
+      {
+        "desc": " 下边框线。\r\n",
+        "name": "BORDER_BOTTOM"
+      },
+      {
+        "desc": " 全边框线。\r\n",
+        "name": "BORDER_ALL"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "border_type_t",
+    "prefix": "BORDER_TYPE_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " 图标所在的位置。\r\n",
-    "consts": [
-      {
-        "desc": " 自动选择位置。\r\n",
-        "name": "ICON_AT_AUTO"
-      },
-      {
-        "desc": " 水平左边，垂直居中。\r\n",
-        "name": "ICON_AT_LEFT"
-      },
-      {
-        "desc": " 水平右边，垂直居中(not used now)。\r\n",
-        "name": "ICON_AT_RIGHT"
-      },
-      {
-        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
-        "name": "ICON_AT_TOP"
-      },
-      {
-        "desc": " 水平居中，垂直低部(not used now)。\r\n",
-        "name": "ICON_AT_BOTTOM"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "icon_at_type_t",
-    "prefix": "ICON_AT",
     "level": 1
   },
   {
@@ -12045,8 +12045,51 @@
         "annotation": {
           "private": true
         },
-        "desc": " 初始化控件。仅在子类控件构造函数中使用。\n\n\n",
+        "desc": " 初始化控件。仅在子类控件构造函数中使用。\n\n > 请用widget\\_create代替本函数。\n\n @depreated\n\n\n",
         "name": "widget_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "widget对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "widget的父控件。"
+          },
+          {
+            "type": "widget_vtable_t*",
+            "name": "vt",
+            "desc": "虚表。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 创建控件。仅在子类控件构造函数中使用。\n\n\n",
+        "name": "widget_create",
         "return": {
           "type": "widget_t*",
           "desc": "widget对象本身。"
@@ -13147,7 +13190,7 @@
       }
     ],
     "header": "tkc/array.h",
-    "desc": " 动态数组，根据元素个数动态调整数组的容量。\n\n 用array\\_init初始化时，用array\\_deinit释放。如：\n\n ```c\n array_t array;\n array_init(&array, 10);\n ...\n array_deinit(&array);\n ```\n\n 用array\\_create创建时，用array\\_destroy销毁。如：\n\n ```c\n array_t* array = array_create(10);\n ...\n array_destroy(array);\n ```\n\n\n",
+    "desc": " 动态数组，根据元素个数动态调整数组的容量。\n\n > 本类已经过时，逐步替换成darray。\n\n",
     "name": "array_t",
     "level": 1
   },
@@ -14015,6 +14058,328 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint16_t*",
+            "name": "capacity",
+            "desc": "数组的初始容量。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "destroy",
+            "desc": "元素销毁函数。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "元素比较函数。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建darray对象。\n\n\n\n",
+        "name": "darray_create",
+        "return": {
+          "type": "darray_t*",
+          "desc": "数组对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint16_t*",
+            "name": "capacity",
+            "desc": "数组的初始容量。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "destroy",
+            "desc": "元素销毁函数。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "元素比较函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化darray对象。\n\n\n\n",
+        "name": "darray_init",
+        "return": {
+          "type": "darray_t*",
+          "desc": "数组对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 查找第一个满足条件的元素。\n\n\n",
+        "name": "darray_find",
+        "return": {
+          "type": "void*",
+          "desc": "如果找到，返回满足条件的对象，否则返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 查找第一个满足条件的元素，并返回位置。\n\n\n",
+        "name": "darray_find_index",
+        "return": {
+          "type": "int",
+          "desc": "如果找到，返回满足条件的对象的位置，否则返回-1。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 删除第一个满足条件的元素。\n\n\n",
+        "name": "darray_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "位置序数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 删除指定位置的元素。\n\n\n",
+        "name": "darray_remove_index",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 删除全部满足条件的元素。\n\n\n",
+        "name": "darray_remove_all",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 弹出最后一个元素。\n\n\n",
+        "name": "darray_pop",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "待追加的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 在尾巴追加一个元素。\n\n\n",
+        "name": "darray_push",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 返回满足条件元素的个数。\n\n\n",
+        "name": "darray_count",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回元素个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 清除全部元素。\n\n\n",
+        "name": "darray_clear",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 清除全部元素，并释放elms。\n\n\n",
+        "name": "darray_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 销毁darray对象。\n\n\n",
+        "name": "darray_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": " 数组中元素的个数。\n\n",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": " 数组的容量大小。\n\n",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "elms",
+        "desc": " 数组中的元素。\n\n",
+        "type": "void**",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "destroy",
+        "desc": " 元素销毁函数。\n\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "compare",
+        "desc": " 元素比较函数。\n\n",
+        "type": "tk_compare_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/darray.h",
+    "desc": " 动态数组，根据元素个数动态调整数组的容量。\n\n 用darray\\_init初始化时，用darray\\_deinit释放。如：\n\n ```c\n darray_t darray;\n darray_init(&darray, 10, destroy, compare);\n ...\n darray_deinit(&darray);\n ```\n\n 用darray\\_create创建时，用darray\\_destroy销毁。如：\n\n ```c\n darray_t* darray = darray_create(10, destroy, compare);\n ...\n darray_destroy(darray);\n ```\n\n\n",
+    "name": "darray_t",
     "level": 1
   },
   {
@@ -18257,152 +18622,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建list_view_h对象\r\n\r\n",
-        "name": "list_view_h_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "item_width",
-            "desc": "列表项的宽度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置列表项的宽度。\r\n\r\n",
-        "name": "list_view_h_set_item_width",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "spacing",
-            "desc": "列表项的间距。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置列表项的间距。\r\n\r\n",
-        "name": "list_view_h_set_spacing",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_view_h对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为list_view_h对象(供脚本语言使用)。\r\n\r\n",
-        "name": "list_view_h_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_view_h对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "item_width",
-        "desc": " 列表项的宽度。\r\n",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "spacing",
-        "desc": " 间距。\r\n",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "scroll_view/list_view_h.h",
-    "desc": " 水平ListView控件。\r\n",
-    "name": "list_view_h_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": " 创建list_view对象\r\n\r\n",
         "name": "list_view_create",
         "return": {
@@ -19406,7 +19625,7 @@
       }
     ],
     "header": "slide_menu/slide_menu.h",
-    "desc": " 左右滑动菜单控件。\r\n\r\n 一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。\r\n\r\n slide\\_menu\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_menu\\_t控件。\r\n\r\n 在xml中使用\"slide\\_menu\"标签创建左右滑动菜单控件。如：\r\n\r\n ```xml\r\n <slide_menu style=\"mask\" align_v=\"top\">\r\n  <button style=\"slide_button\" text=\"0\"/>\r\n   <button style=\"slide_button\" text=\"1\"/>\r\n   <button style=\"slide_button\" text=\"2\"/>\r\n   <button style=\"slide_button\" text=\"3\"/>\r\n   <button style=\"slide_button\" text=\"4\"/>\r\n </slide_menu>\r\n ```\r\n\r\n > 更多用法请参考：[slide_menu.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_menu.xml)\r\n\r\n 在c代码中使用函数slide\\_menu\\_create创建左右滑动菜单控件。如：\r\n\r\n ```c\r\n slide_menu = slide_menu_create(win, 10, 10, 300, 60);\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"1\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"2\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"3\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"4\");\r\n ```\r\n\r\n 可按下面的方法关注当前项改变的事件：\r\n\r\n ```c\r\n widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);\r\n ```\r\n \r\r\r\r\n 可按下面的方法关注当前按钮被点击的事件：\r\n\r\n ```c\r\n widget_on(b, EVT_CLICK, on_button_click, b);\r\n ```\r\n\r\n > 完整示例请参考：[slide_menu demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"mask\">\r\n   <normal     bg_color=\"#f0f0f0\" mask_color=\"#f0f0f0\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)\r\n\r\n",
+    "desc": " 左右滑动菜单控件。\r\n\r\n 一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。\r\n\r\n slide\\_menu\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_menu\\_t控件。\r\n\r\n 在xml中使用\"slide\\_menu\"标签创建左右滑动菜单控件。如：\r\n\r\n ```xml\r\n <slide_menu style=\"mask\" align_v=\"top\">\r\n  <button style=\"slide_button\" text=\"0\"/>\r\n   <button style=\"slide_button\" text=\"1\"/>\r\n   <button style=\"slide_button\" text=\"2\"/>\r\n   <button style=\"slide_button\" text=\"3\"/>\r\n   <button style=\"slide_button\" text=\"4\"/>\r\n </slide_menu>\r\n ```\r\n\r\n > 更多用法请参考：[slide_menu.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_menu.xml)\r\n\r\n 在c代码中使用函数slide\\_menu\\_create创建左右滑动菜单控件。如：\r\n\r\n ```c\r\n slide_menu = slide_menu_create(win, 10, 10, 300, 60);\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"1\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"2\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"3\");\r\n b = button_create(slide_menu, 0, 0, 0, 0);\r\n widget_set_text_utf8(b, \"4\");\r\n ```\r\n\r\n 可按下面的方法关注当前项改变的事件：\r\n\r\n ```c\r\n widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);\r\n ```\r\n \r\r\r\r\r\r\n 可按下面的方法关注当前按钮被点击的事件：\r\n\r\n ```c\r\n widget_on(b, EVT_CLICK, on_button_click, b);\r\n ```\r\n\r\n > 完整示例请参考：[slide_menu demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"mask\">\r\n   <normal     bg_color=\"#f0f0f0\" mask_color=\"#f0f0f0\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L493)\r\n\r\n",
     "name": "slide_menu_t",
     "parent": "widget_t",
     "annotation": {
@@ -20685,7 +20904,7 @@
       }
     ],
     "header": "time_clock/time_clock.h",
-    "desc": " 模拟时钟控件。\r\n\r\n time\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于time\\_clock\\_t控件。\r\n\r\n 在xml中使用\"time\\_clock\"标签创建开关控件。如：\r\n\r\n ```xml\r\n <time_clock x=\"c\" y=\"m\" w=\"300\" h=\"300\" bg_image=\"clock_bg\" image=\"clock\"\r\n   hour_image=\"clock_hour\" minute_image=\"clock_minute\" second_image=\"clock_second\"/>\r\n ```\r\n\r\n > 更多用法请参考：[time\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/time_clock.xml)\r\n\r\n 在c代码中使用函数time\\_clock\\_create创建开关控件。如：\r\n\r\n ```c\r\n widget_t* tc = time_clock_create(win, 10, 10, 240, 240);\r\n time_clock_set_image(tc, \"clock\");\r\n time_clock_set_bg_image(tc, \"clock_bg\");\r\n time_clock_set_hour_image(tc, \"clock_hour\");\r\n time_clock_set_minute_image(tc, \"clock_minute\");\r\n time_clock_set_second_image(tc, \"clock_second\");\r\n ```\r\n\r\n > 完整示例请参考：[time_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/time_clock.c)\r\n \r\n time\\_clock一般不需要设置style。\r\n \r\n",
+    "desc": " 模拟时钟控件。\r\n\r\n time\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于time\\_clock\\_t控件。\r\n\r\n 在xml中使用\"time\\_clock\"标签创建开关控件。如：\r\n\r\n ```xml\r\n <time_clock x=\"c\" y=\"m\" w=\"300\" h=\"300\" bg_image=\"clock_bg\" image=\"clock\"\r\n   hour_image=\"clock_hour\" minute_image=\"clock_minute\" second_image=\"clock_second\"/>\r\n ```\r\n\r\n > 更多用法请参考：[time\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/time_clock.xml)\r\n\r\n 在c代码中使用函数time\\_clock\\_create创建开关控件。如：\r\n\r\n ```c\r\n widget_t* tc = time_clock_create(win, 10, 10, 240, 240);\r\n time_clock_set_image(tc, \"clock\");\r\n time_clock_set_bg_image(tc, \"clock_bg\");\r\n time_clock_set_hour_image(tc, \"clock_hour\");\r\n time_clock_set_minute_image(tc, \"clock_minute\");\r\n time_clock_set_second_image(tc, \"clock_second\");\r\n ```\r\n\r\n > 完整示例请参考：[time_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/time_clock.c)\r\n\r\n time\\_clock一般不需要设置style。\r\n\r\n",
     "name": "time_clock_t",
     "parent": "widget_t",
     "annotation": {
@@ -21879,6 +22098,34 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "text",
+        "desc": " 软键盘上的action按钮显示的文本。\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": " 软键盘上的action按钮启用。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/input_method.h",
+    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
+    "name": "im_action_button_info_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -21927,34 +22174,6 @@
     "annotation": {
       "scriptable": true
     },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "text",
-        "desc": " 软键盘上的action按钮显示的文本。\n\n",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "enable",
-        "desc": " 软键盘上的action按钮启用。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/input_method.h",
-    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
-    "name": "im_action_button_info_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -22648,6 +22867,79 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": " 创建canvas_widget对象\r\n\r\n",
+        "name": "canvas_widget_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "canvas_widget对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为canvas_widget对象(供脚本语言使用)。\r\n\r\n",
+        "name": "canvas_widget_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "canvas_widget对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "canvas_widget/canvas_widget.h",
+    "desc": " 画布控件。\r\n\r\n 画布控件让开发者可以自己在控件上绘制需要的内容。\r\n\r\n canvas\\_widget\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于canvas\\_widget\\_t控件。\r\n\r\n 在xml中使用\"canvas\"标签创建画布控件。如：\r\n\r\n ```xml\r\n <canvas name=\"paint_vgcanvas\" x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [canvas_widget.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/vgcanvas.xml)\r\n\r\n 在c代码中使用函数canvas\\_widget\\_create创建画布控件。如：\r\n\r\n ```c\r\n widget_t* canvas = canvas_widget_create(win, 0, 0, win->w, win->h);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_on注册EVT\\_PAINT事件，并在EVT\\_PAINT事件处理函数中绘制。\r\n\r\n ```c\r\n widget_on(canvas, EVT_PAINT, on_paint_event, canvas);\r\n ```\r\n\r\n 绘制时，可以通过canvas接口去绘制，也可以通过vgcanvas接口去绘制。\r\n 先从evt获取canvas对象，再通过canvas\\_get\\_vgcanvas从canvas中获取vgcanvas对象。\r\n\r\n ```c\r\n\r\n static ret_t on_paint_event(void* ctx, event_t* evt) {\r\n  widget_t* canvas_widget = WIDGET(ctx);\r\n  canvas_t* c = paint_event_cast(evt)->c;\r\n  vgcanvas_t* vg = canvas_get_vgcanvas(c);\r\n  color_t bg = color_init(0xe0, 0xe0, 0xe0, 0xff);\r\n  color_t tc = color_init(0, 0, 0, 0xff);\r\n  rect_t r = rect_init(canvas_widget->x, canvas_widget->y, canvas_widget->w, canvas_widget->h);\r\n\r\n  vgcanvas_save(vg);\r\n  vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);\r\n  vgcanvas_translate(vg, r.x, r.y);\r\n\r\n ...\r\n\r\n  vgcanvas_restore(vg);\r\n\r\n  return RET_OK;\r\n }\r\n ```\r\n\r\n > 完整示例请参考：\r\n [canvas demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/canvas.c)\r\n\r\n 参考：\r\n\r\n * [canvas接口描述](canvas_t.md)\r\n * [vgcanvas接口描述](vgcanvas_t.md)\r\n\r\n",
+    "name": "canvas_widget_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 创建slider对象\r\n\r\n",
         "name": "slider_create",
         "return": {
@@ -23123,79 +23415,6 @@
       "scriptable": true
     },
     "alias": "object_base",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建canvas_widget对象\r\n\r\n",
-        "name": "canvas_widget_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "canvas_widget对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为canvas_widget对象(供脚本语言使用)。\r\n\r\n",
-        "name": "canvas_widget_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "canvas_widget对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "canvas_widget/canvas_widget.h",
-    "desc": " 画布控件。\r\n\r\n 画布控件让开发者可以自己在控件上绘制需要的内容。\r\n\r\n canvas\\_widget\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于canvas\\_widget\\_t控件。\r\n\r\n 在xml中使用\"canvas\"标签创建画布控件。如：\r\n\r\n ```xml\r\n <canvas name=\"paint_vgcanvas\" x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [canvas_widget.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/vgcanvas.xml)\r\n\r\n 在c代码中使用函数canvas\\_widget\\_create创建画布控件。如：\r\n\r\n ```c\r\n widget_t* canvas = canvas_widget_create(win, 0, 0, win->w, win->h);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_on注册EVT\\_PAINT事件，并在EVT\\_PAINT事件处理函数中绘制。\r\n\r\n ```c\r\n widget_on(canvas, EVT_PAINT, on_paint_event, canvas);\r\n ```\r\n\r\n 绘制时，可以通过canvas接口去绘制，也可以通过vgcanvas接口去绘制。\r\n 先从evt获取canvas对象，再通过canvas\\_get\\_vgcanvas从canvas中获取vgcanvas对象。\r\n\r\n ```c\r\n\r\n static ret_t on_paint_event(void* ctx, event_t* evt) {\r\n  widget_t* canvas_widget = WIDGET(ctx);\r\n  canvas_t* c = paint_event_cast(evt)->c;\r\n  vgcanvas_t* vg = canvas_get_vgcanvas(c);\r\n  color_t bg = color_init(0xe0, 0xe0, 0xe0, 0xff);\r\n  color_t tc = color_init(0, 0, 0, 0xff);\r\n  rect_t r = rect_init(canvas_widget->x, canvas_widget->y, canvas_widget->w, canvas_widget->h);\r\n\r\n  vgcanvas_save(vg);\r\n  vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);\r\n  vgcanvas_translate(vg, r.x, r.y);\r\n\r\n ...\r\n\r\n  vgcanvas_restore(vg);\r\n\r\n  return RET_OK;\r\n }\r\n ```\r\n\r\n > 完整示例请参考：\r\n [canvas demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/canvas.c)\r\n\r\n 参考：\r\n\r\n * [canvas接口描述](canvas_t.md)\r\n * [vgcanvas接口描述](vgcanvas_t.md)\r\n\r\n",
-    "name": "canvas_widget_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 2
   },
   {
@@ -24606,163 +24825,6 @@
       {
         "params": [
           {
-            "type": "ui_binary_writer_t*",
-            "name": "writer",
-            "desc": "writer对象。"
-          },
-          {
-            "type": "wbuffer_t*",
-            "name": "wbuffer",
-            "desc": "保存结果的buffer。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 初始化ui\\_binary\\_writer对象。\n\n\n\n",
-        "name": "ui_binary_writer_init",
-        "return": {
-          "type": "ui_builder_t*",
-          "desc": "返回ui\\_builder对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ui_loader/ui_binary_writer.h",
-    "desc": "\n 生成二进制格式的UI描述数据。\n\n\n",
-    "name": "ui_binary_writer_t",
-    "parent": "ui_builder_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "窗口的缺省名称。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 获取缺省的ui\\_builder对象。\n\n\n\n",
-        "name": "ui_builder_default",
-        "return": {
-          "type": "ui_builder_t*",
-          "desc": "返回ui\\_builder对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ui_loader/ui_builder_default.h",
-    "desc": "\n\n 构建widget树。\n\n\n",
-    "name": "ui_builder_default_t",
-    "parent": "ui_builder_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 获取二进制格式格式的UI资源加载器对象。\n\n\n\n",
-        "name": "default_ui_loader",
-        "return": {
-          "type": "ui_loader_t*",
-          "desc": "返回UI加载器对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ui_loader/ui_loader_default.h",
-    "desc": "\n 二进制格式的UI资源加载器。\n\n\n\n",
-    "name": "ui_loader_default_t",
-    "parent": "ui_loader_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 获取XML格式的UI资源加载器对象。\n\n\n\n",
-        "name": "xml_ui_loader",
-        "return": {
-          "type": "ui_loader_t*",
-          "desc": "返回UI加载器对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ui_loader/ui_loader_xml.h",
-    "desc": "\n XML格式的UI资源加载器。\n\n\n\n",
-    "name": "ui_loader_xml_t",
-    "parent": "ui_loader_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "ui_xml_writer_t*",
-            "name": "writer",
-            "desc": "writer对象。"
-          },
-          {
-            "type": "str_t*",
-            "name": "str",
-            "desc": "保存结果的str。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 初始化ui\\_xml\\_writer对象。\n\n\n\n",
-        "name": "ui_xml_writer_init",
-        "return": {
-          "type": "ui_builder_t*",
-          "desc": "返回ui\\_builder对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ui_loader/ui_xml_writer.h",
-    "desc": "\n 生成XML格式的UI描述数据。\n\n\n",
-    "name": "ui_xml_writer_t",
-    "parent": "ui_builder_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -25100,6 +25162,163 @@
       {
         "params": [
           {
+            "type": "ui_binary_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          },
+          {
+            "type": "wbuffer_t*",
+            "name": "wbuffer",
+            "desc": "保存结果的buffer。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 初始化ui\\_binary\\_writer对象。\n\n\n\n",
+        "name": "ui_binary_writer_init",
+        "return": {
+          "type": "ui_builder_t*",
+          "desc": "返回ui\\_builder对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ui_loader/ui_binary_writer.h",
+    "desc": "\n 生成二进制格式的UI描述数据。\n\n\n",
+    "name": "ui_binary_writer_t",
+    "parent": "ui_builder_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "窗口的缺省名称。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 获取缺省的ui\\_builder对象。\n\n\n\n",
+        "name": "ui_builder_default",
+        "return": {
+          "type": "ui_builder_t*",
+          "desc": "返回ui\\_builder对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ui_loader/ui_builder_default.h",
+    "desc": "\n\n 构建widget树。\n\n\n",
+    "name": "ui_builder_default_t",
+    "parent": "ui_builder_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 获取二进制格式格式的UI资源加载器对象。\n\n\n\n",
+        "name": "default_ui_loader",
+        "return": {
+          "type": "ui_loader_t*",
+          "desc": "返回UI加载器对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ui_loader/ui_loader_default.h",
+    "desc": "\n 二进制格式的UI资源加载器。\n\n\n\n",
+    "name": "ui_loader_default_t",
+    "parent": "ui_loader_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 获取XML格式的UI资源加载器对象。\n\n\n\n",
+        "name": "xml_ui_loader",
+        "return": {
+          "type": "ui_loader_t*",
+          "desc": "返回UI加载器对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ui_loader/ui_loader_xml.h",
+    "desc": "\n XML格式的UI资源加载器。\n\n\n\n",
+    "name": "ui_loader_xml_t",
+    "parent": "ui_loader_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "ui_xml_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          },
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "保存结果的str。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 初始化ui\\_xml\\_writer对象。\n\n\n\n",
+        "name": "ui_xml_writer_init",
+        "return": {
+          "type": "ui_builder_t*",
+          "desc": "返回ui\\_builder对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ui_loader/ui_xml_writer.h",
+    "desc": "\n 生成XML格式的UI描述数据。\n\n\n",
+    "name": "ui_xml_writer_t",
+    "parent": "ui_builder_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -25252,6 +25471,152 @@
     "header": "scroll_view/list_item.h",
     "desc": " list item控件。\r\n",
     "name": "list_item_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建list_view_h对象\r\n\r\n",
+        "name": "list_view_h_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "item_width",
+            "desc": "列表项的宽度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置列表项的宽度。\r\n\r\n",
+        "name": "list_view_h_set_item_width",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "spacing",
+            "desc": "列表项的间距。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置列表项的间距。\r\n\r\n",
+        "name": "list_view_h_set_spacing",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view_h对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为list_view_h对象(供脚本语言使用)。\r\n\r\n",
+        "name": "list_view_h_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_view_h对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "item_width",
+        "desc": " 列表项的宽度。\r\n",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "spacing",
+        "desc": " 间距。\r\n",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "scroll_view/list_view_h.h",
+    "desc": " 水平ListView控件。\r\n",
+    "name": "list_view_h_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true

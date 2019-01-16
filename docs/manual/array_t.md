@@ -2,23 +2,7 @@
 ### 概述
  动态数组，根据元素个数动态调整数组的容量。
 
- 用array\_init初始化时，用array\_deinit释放。如：
-
- ```c
- array_t array;
- array_init(&array, 10);
- ...
- array_deinit(&array);
- ```
-
- 用array\_create创建时，用array\_destroy销毁。如：
-
- ```c
- array_t* array = array_create(10);
- ...
- array_destroy(array);
- ```
-
+ > 本类已经过时，逐步替换成darray。
 
 
 ----------------------------------

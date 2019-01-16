@@ -29,9 +29,9 @@
 
  > 完整示例请参考：[time_clock demo](
  https://github.com/zlgopen/awtk-c-demos/blob/master/demos/time_clock.c)
- 
+
  time\_clock一般不需要设置style。
- 
+
 
 ----------------------------------
 ### 函数

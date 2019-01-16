@@ -168,7 +168,7 @@
 
 ## 二、基本函数库
 
-* [array](manual/array_t.md) 动态数组。
+* [darray](manual/darray_t.md) 动态数组。
 * [slist](manual/slist_t.md) 单向链表。
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
