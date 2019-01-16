@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   system_bar.c
  * Author: AWTK Develop Team
  * Brief:  system_bar
@@ -100,7 +100,6 @@ static const widget_vtable_t s_system_bar_vtable = {
 
 widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = window_base_create(parent, &s_system_bar_vtable, x, y, w, h);
-  system_bar_t* system_bar = SYSTEM_BAR(widget);
   return_value_if_fail(widget != NULL, NULL);
 
   widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
