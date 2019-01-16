@@ -65,7 +65,6 @@ typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const val
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
-typedef ret_t (*widget_recycle_t)(widget_t* widget);
 
 struct _widget_vtable_t {
   uint32_t size;
@@ -92,7 +91,7 @@ struct _widget_vtable_t {
   uint32_t is_keyboard : 1;
 
   /**
-   * 是否启用pool。
+   * 是否启用pool(如果启用pool，控件需要对其成员全部变量初始化，不能假定成员变量为0)。
    */
   uint32_t enable_pool : 1;
 
@@ -117,7 +116,6 @@ struct _widget_vtable_t {
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
   widget_find_target_t find_target;
-  widget_recycle_t recycle;
   widget_on_destroy_t on_destroy;
 };
 

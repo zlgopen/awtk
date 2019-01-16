@@ -29,6 +29,7 @@
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
+#include "base/widget_pool.h"
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -36,7 +37,6 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
-static ret_t widget_reset(widget_t* widget);
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -1398,52 +1398,6 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return id;
 }
 
-static ret_t widget_reset(widget_t* widget) {
-  if (widget->name != NULL) {
-    widget->name[0] = '\0';
-  }
-
-  if (widget->animation != NULL) {
-    widget->animation[0] = '\0';
-  }
-
-  if (widget->style != NULL) {
-    widget->style[0] = '\0';
-  }
-
-  if (widget->tr_text != NULL) {
-    widget->tr_text[0] = '\0';
-  }
-
-  widget->floating = FALSE;
-  widget->auto_created = FALSE;
-
-  widget->parent = NULL;
-  widget->target = NULL;
-  widget->emitter = NULL;
-  widget->children = NULL;
-  widget->key_target = NULL;
-  widget->self_layout = NULL;
-  widget->grab_widget = NULL;
-  widget->custom_props = NULL;
-  widget->children_layout = NULL;
-
-  return RET_OK;
-}
-
-static ret_t widget_recycle(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  if (widget->vt->recycle != NULL) {
-    if (widget->vt->recycle(widget) == RET_OK) {
-      widget_reset(widget);
-
-      return RET_OK;
-    }
-  }
-
-  return RET_NOT_IMPL;
-}
-
 static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
@@ -1482,21 +1436,14 @@ static ret_t widget_destroy_sync(widget_t* widget) {
 
   widget->destroying = FALSE;
 
-  if (widget_recycle(widget) != RET_OK) {
-    if (widget->vt->on_destroy) {
-      widget->vt->on_destroy(widget);
-    }
+  return widget_pool_destroy_widget(widget_pool(), widget);
+}
 
-    TKMEM_FREE(widget->name);
-    TKMEM_FREE(widget->style);
-    TKMEM_FREE(widget->tr_text);
-    TKMEM_FREE(widget->animation);
+widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                        wh_t h) {
+  return_value_if_fail(vt != NULL, NULL);
 
-    memset(widget, 0x00, sizeof(widget_t));
-    TKMEM_FREE(widget);
-  }
-
-  return RET_OK;
+  return widget_init(widget_pool_create_widget(widget_pool(), vt), parent, vt, x, y, w, h);
 }
 
 static ret_t widget_destroy_in_idle(const idle_info_t* info) {
@@ -1633,18 +1580,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget_invalidate_force(widget, NULL);
 
   return widget;
-}
-
-widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
-                        wh_t h) {
-  widget_t* widget = NULL;
-  return_value_if_fail(vt != NULL && vt->size >= sizeof(widget_t), NULL);
-
-  widget = TKMEM_ALLOC(vt->size);
-  return_value_if_fail(widget != NULL, NULL);
-  memset(widget, 0x00, vt->size);
-
-  return widget_init(widget, parent, vt, x, y, w, h);
 }
 
 ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {

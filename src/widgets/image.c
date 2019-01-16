@@ -91,24 +91,6 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   }
 }
 
-#ifdef WITH_WIDGET_POOL
-static array_t s_image_pool;
-static ret_t image_recycle(widget_t* widget) {
-  return array_push(&s_image_pool, widget);
-}
-
-static image_t* image_alloc(void) {
-  if (s_image_pool.size > 0) {
-    return (image_t*)array_pop(&s_image_pool);
-  } else {
-    return TKMEM_ZALLOC(image_t);
-  }
-}
-#else
-#define image_recycle NULL
-#define image_alloc() TKMEM_ZALLOC(image_t)
-#endif /*WITH_WIDGET_POOL*/
-
 static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
                                                  WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
                                                  WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
@@ -117,21 +99,20 @@ static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_
 
 static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
                                                .type = WIDGET_TYPE_IMAGE,
+                                               .enable_pool = TRUE,
                                                .clone_properties = s_image_clone_properties,
                                                .create = image_create,
                                                .on_destroy = image_base_on_destroy,
-                                               .recycle = image_recycle,
                                                .on_event = image_base_on_event,
                                                .on_paint_self = image_on_paint_self,
                                                .set_prop = image_set_prop,
                                                .get_prop = image_get_prop};
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  image_t* image = image_alloc();
-  widget_t* widget = WIDGET(image);
+  widget_t* widget = widget_create(parent, &s_image_vtable, x, y, w, h);
+  image_t* image = IMAGE(widget);
   return_value_if_fail(image != NULL, NULL);
 
-  widget_init(widget, parent, &s_image_vtable, x, y, w, h);
   image_base_init(widget);
   image->draw_type = IMAGE_DRAW_DEFAULT;
 
