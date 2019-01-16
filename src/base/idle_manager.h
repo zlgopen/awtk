@@ -27,11 +27,11 @@
 
 BEGIN_C_DECLS
 
-typedef struct _idle_manager_t {
+struct _idle_manager_t {
   slist_t idles;
   uint32_t next_idle_id;
   uint32_t dispatch_times;
-} idle_manager_t;
+} ;
 
 idle_manager_t* idle_manager(void);
 ret_t idle_manager_set(idle_manager_t* idle_manager);

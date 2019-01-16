@@ -27,13 +27,13 @@
 
 BEGIN_C_DECLS
 
-typedef struct _timer_manager_t {
+struct _timer_manager_t {
   uint32_t next_timer_id;
   uint32_t last_dispatch_time;
   timer_get_time_t get_time;
 
   slist_t timers;
-} timer_manager_t;
+} ;
 
 timer_manager_t* timer_manager(void);
 ret_t timer_manager_set(timer_manager_t* timer_manager);
