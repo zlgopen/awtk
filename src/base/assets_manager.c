@@ -25,6 +25,8 @@
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
+static ret_t asset_info_unref(asset_info_t* info);
+
 static int asset_cache_cmp_type(const void* a, const void* b) {
   const asset_info_t* aa = (const asset_info_t*)a;
   const asset_info_t* bb = (const asset_info_t*)b;
