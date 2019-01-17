@@ -33,33 +33,14 @@ typedef struct _style_item_t {
   struct _style_item_t* next;
 } style_item_t;
 
-static ret_t value_depp_copy(value_t* d, const value_t* s) {
-  if (s->type == VALUE_TYPE_STRING) {
-    if (d->type != VALUE_TYPE_STRING) {
-      d->type = VALUE_TYPE_STRING;
-      d->value.str = NULL;
-    }
-    d->value.str = tk_str_copy((char*)(d->value.str), s->value.str);
-
-    return RET_OK;
-  }
-
-  if (d->type == VALUE_TYPE_STRING) {
-    TKMEM_FREE(d->value.str);
-    d->value.str = NULL;
-  }
-  *d = *s;
-
-  return RET_OK;
-}
-
 static style_item_t* style_item_add(style_item_t* first, const char* name, const value_t* value) {
   style_item_t* iter = first;
   style_item_t* item = TKMEM_ZALLOC(style_item_t);
   return_value_if_fail(item != NULL, NULL);
 
   item->name = name;
-  value_depp_copy(&(item->value), value);
+  value_reset(&(item->value));
+  value_deep_copy(&(item->value), value);
 
   if (first != NULL) {
     while (iter->next) {
@@ -79,7 +60,8 @@ static ret_t style_item_set(style_item_t* first, const char* name, const value_t
   if (first != NULL) {
     while (iter) {
       if (iter->name == name) {
-        value_depp_copy(&(iter->value), value);
+        value_reset(&(iter->value));
+        value_deep_copy(&(iter->value), value);
         return RET_OK;
       }
       iter = iter->next;
@@ -288,11 +270,39 @@ ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* 
   return RET_OK;
 }
 
+ret_t style_mutable_reset(style_t* s) {
+  style_item_t* iter = NULL;
+  widget_state_style_t* witer = NULL;
+  style_mutable_t* style = (style_mutable_t*)s;
+  return_value_if_fail(s != NULL, RET_BAD_PARAMS);
+
+  witer = style->styles;
+  while (witer != NULL) {
+    widget_state_style_t* wnext = witer->next;
+
+    iter = witer->items;
+    while (iter != NULL) {
+      style_item_t* next = iter->next;
+
+      value_reset(&(iter->value));
+      TKMEM_FREE(iter);
+
+      iter = next;
+    }
+    TKMEM_FREE(witer);
+
+    witer = wnext;
+  }
+
+  return RET_OK;
+}
+
 static ret_t style_mutable_destroy(style_t* s) {
   style_mutable_t* style = (style_mutable_t*)s;
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(style->name);
+  style_mutable_reset(s);
   style_destroy(style->default_style);
   TKMEM_FREE(s);
 

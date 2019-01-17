@@ -432,6 +432,7 @@ ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_
 
   *out = buff;
   *out_size = b.bsvg.buff.cursor;
+  xml_parser_destroy(parser);
 
   return RET_OK;
 }
