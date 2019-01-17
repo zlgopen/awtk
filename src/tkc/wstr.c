@@ -411,6 +411,7 @@ ret_t wstr_add_float(wstr_t* str, double delta) {
 ret_t wstr_reset(wstr_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
   TKMEM_FREE(str->str);
+  memset(str, 0x00, sizeof(wstr_t));
 
   return RET_OK;
 }
