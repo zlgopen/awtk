@@ -51,8 +51,9 @@ typedef struct _self_layouter_vtable_t {
 
 /**
  * @class self_layouter_t
- * 控件排版布局器的接口。
- * 按特定算法对控件进行排版布局。
+ * 控件自身排版布局器的接口。
+ *
+ * 按特定算法对控件进行排版布局，子类需要实现vtable中的函数。
  */
 struct _self_layouter_t {
   str_t params;

@@ -26,6 +26,16 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class self_layouter_default_t
+ * @parent self_layouter_t
+ *
+ * 缺省的控件自身布局算法实现。
+ *
+ *> 用法请参考：[缺省控件自身布局算法](
+ *https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
+ *
+ */
 typedef struct _self_layouter_default_t {
   self_layouter_t layouter;
   uint8_t x_attr;
@@ -38,6 +48,15 @@ typedef struct _self_layouter_default_t {
   wh_t h;
 } self_layouter_default_t;
 
+/**
+ * @method self_layouter_default_create
+ * @annotation ["constructor"]
+ *
+ * 创建控件自身布局对象。
+ *
+ * @return {self_layouter_t*} 返回创建控件自身布局对象。
+ *
+ */
 self_layouter_t* self_layouter_default_create(void);
 
 bool_t self_layouter_default_is_valid(self_layouter_t* layouter);

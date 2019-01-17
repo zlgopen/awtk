@@ -1912,7 +1912,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 对子控件进行Layout。\n\n\n",
+        "desc": " 对子控件进行Layout。\n\n\n\n",
         "name": "children_layouter_layout",
         "return": {
           "type": "ret_t",
@@ -1938,7 +1938,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 获取指定的参数。\n\n\n",
+        "desc": " 获取指定的参数。\n\n\n\n",
         "name": "children_layouter_get_param",
         "return": {
           "type": "ret_t",
@@ -1964,7 +1964,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 获取指定的参数。\n\n\n",
+        "desc": " 获取指定的参数。\n\n\n\n",
         "name": "children_layouter_set_param",
         "return": {
           "type": "ret_t",
@@ -1990,7 +1990,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 设置字符串格式的参数。\n\n\n",
+        "desc": " 设置字符串格式的参数。\n\n\n\n",
         "name": "children_layouter_set_param_str",
         "return": {
           "type": "ret_t",
@@ -2016,7 +2016,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 获取指定的浮点格式的参数。\n\n\n",
+        "desc": " 获取指定的浮点格式的参数。\n\n\n\n",
         "name": "children_layouter_get_param_float",
         "return": {
           "type": "ret_t",
@@ -2042,7 +2042,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 获取指定的整数格式的参数。\n\n\n",
+        "desc": " 获取指定的整数格式的参数。\n\n\n\n",
         "name": "children_layouter_get_param_int",
         "return": {
           "type": "ret_t",
@@ -2058,7 +2058,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 判断layouter对象是否有效。\n\n\n",
+        "desc": " 判断layouter对象是否有效。\n\n\n\n",
         "name": "children_layouter_is_valid",
         "return": {
           "type": "bool_t",
@@ -2074,7 +2074,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 销毁layouter对象。\n\n\n",
+        "desc": " 销毁layouter对象。\n\n\n\n",
         "name": "children_layouter_destroy",
         "return": {
           "type": "ret_t",
@@ -2085,7 +2085,7 @@
     "events": [],
     "properties": [],
     "header": "base/children_layouter.h",
-    "desc": " 子控件排版布局器的接口。\n 按特定算法对子控件进行排版布局。\n\n",
+    "desc": " 子控件排版布局器的接口。\n\n 按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。\n\n\n",
     "name": "children_layouter_t",
     "level": 1
   },
@@ -5457,7 +5457,7 @@
     "events": [],
     "properties": [],
     "header": "base/self_layouter.h",
-    "desc": " 控件排版布局器的接口。\n 按特定算法对控件进行排版布局。\n\n",
+    "desc": " 控件自身排版布局器的接口。\n\n 按特定算法对控件进行排版布局，子类需要实现vtable中的函数。\n\n",
     "name": "self_layouter_t",
     "level": 1
   },
@@ -21194,6 +21194,54 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建子控件布局对象。\n\n\n\n",
+        "name": "children_layouter_default_create",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回创建子控件布局对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "layouters/children_layouter_default.h",
+    "desc": "\n 缺省的子控件布局算法实现。\n\n> 用法请参考：[缺省子控件布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)\n\n\n",
+    "name": "children_layouter_default_t",
+    "parent": "children_layouter_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 创建控件自身布局对象。\n\n\n\n",
+        "name": "self_layouter_default_create",
+        "return": {
+          "type": "self_layouter_t*",
+          "desc": "返回创建控件自身布局对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "layouters/self_layouter_default.h",
+    "desc": "\n 缺省的控件自身布局算法实现。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)\n\n\n",
+    "name": "self_layouter_default_t",
+    "parent": "self_layouter_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "widget_t*",
@@ -24745,6 +24793,56 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建candidates对象\r\n\r\n",
+        "name": "candidates_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "keyboard/candidates.h",
+    "desc": " 输入法候选字词控件。\r\n",
+    "name": "candidates_t",
+    "parent": "widget_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "event_t*",
             "name": "event",
             "desc": "event对象。"
@@ -24802,74 +24900,6 @@
       "scriptable": true
     },
     "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建keyboard对象\r\n\r\n",
-        "name": "keyboard_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": " 关闭keyboard窗口。\r\n\r\n",
-        "name": "keyboard_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "keyboard/keyboard.h",
-    "desc": " 软键盘。\r\n\r\n 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\r\n\r\n 这里介绍一下定制软键盘的方法：\r\n\r\n  编辑器输入类型和软键盘UI资源文件的对应关系:\r\n\r\n| 输入类型       | 软键盘UI资源文件|\r\n|----------------|:---------------:|\r\n| INPUT\\_PHONE    | kb\\_phone.xml    |\r\n| INPUT\\_INT      | kb\\_int.xml      |\r\n| INPUT\\_FLOAT    | kb\\_float.xml    |\r\n| INPUT\\_UINT     | kb\\_uint.xml     |\r\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\r\n| INPUT\\_HEX      | kb\\_hex.xml      |\r\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\r\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\r\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\r\n| 其它            | kb\\_default.xml  |\r\n\r\n keyboard中按钮子控件的名称有些特殊要求：\r\n\r\n|  名称          | 功能            |\r\n|----------------|:---------------:|\r\n| return         | 回车键          |\r\n| action         | 定制按钮        |\r\n| backspace      | 删除键          |\r\n| space          | 空格键          |\r\n| close          | 关闭软键盘      |\r\n| 前缀key:       | 键值            |\r\n| 前缀page:      | 切换到页面      |\r\n\r\n\r\n > 更多用法请参考：\r\n [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)\r\n\r\n",
-    "name": "keyboard_t",
-    "parent": "widget_t",
     "level": 2
   },
   {
@@ -28746,19 +28776,37 @@
         "annotation": {
           "constructor": true
         },
-        "desc": " 创建candidates对象\r\n\r\n",
-        "name": "candidates_create",
+        "desc": " 创建keyboard对象\r\n\r\n",
+        "name": "keyboard_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": " 关闭keyboard窗口。\r\n\r\n",
+        "name": "keyboard_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "keyboard/candidates.h",
-    "desc": " 输入法候选字词控件。\r\n",
-    "name": "candidates_t",
+    "header": "keyboard/keyboard.h",
+    "desc": " 软键盘。\r\n\r\n 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\r\n\r\n 这里介绍一下定制软键盘的方法：\r\n\r\n  编辑器输入类型和软键盘UI资源文件的对应关系:\r\n\r\n| 输入类型       | 软键盘UI资源文件|\r\n|----------------|:---------------:|\r\n| INPUT\\_PHONE    | kb\\_phone.xml    |\r\n| INPUT\\_INT      | kb\\_int.xml      |\r\n| INPUT\\_FLOAT    | kb\\_float.xml    |\r\n| INPUT\\_UINT     | kb\\_uint.xml     |\r\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\r\n| INPUT\\_HEX      | kb\\_hex.xml      |\r\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\r\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\r\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\r\n| 其它            | kb\\_default.xml  |\r\n\r\n keyboard中按钮子控件的名称有些特殊要求：\r\n\r\n|  名称          | 功能            |\r\n|----------------|:---------------:|\r\n| return         | 回车键          |\r\n| action         | 定制按钮        |\r\n| backspace      | 删除键          |\r\n| space          | 空格键          |\r\n| close          | 关闭软键盘      |\r\n| 前缀key:       | 键值            |\r\n| 前缀page:      | 切换到页面      |\r\n\r\n\r\n > 更多用法请参考：\r\n [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)\r\n\r\n",
+    "name": "keyboard_t",
     "parent": "widget_t",
     "level": 2
   },

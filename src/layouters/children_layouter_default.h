@@ -26,6 +26,16 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class children_layouter_default_t
+ * @parent children_layouter_t
+ *
+ * 缺省的子控件布局算法实现。
+ *
+ *> 用法请参考：[缺省子控件布局算法](
+ *https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)
+ *
+ */
 typedef struct _children_layouter_default_t {
   children_layouter_t layouter;
   uint16_t rows;
@@ -37,6 +47,15 @@ typedef struct _children_layouter_default_t {
   uint8_t rows_is_height : 1;
 } children_layouter_default_t;
 
+/**
+ * @method children_layouter_default_create
+ * @annotation ["constructor"]
+ *
+ * 创建子控件布局对象。
+ *
+ * @return {children_layouter_t*} 返回创建子控件布局对象。
+ *
+ */
 children_layouter_t* children_layouter_default_create(void);
 
 END_C_DECLS

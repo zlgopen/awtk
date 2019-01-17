@@ -16,4 +16,3 @@ TEST(GifImage, basic) {
 
   widget_destroy(w);
 }
-

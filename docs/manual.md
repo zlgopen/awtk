@@ -164,12 +164,19 @@
 
 * [idle\_info](manual/idle_info_t.md) 单个idle的信息。 
 
-### 控件动画
-
-### 窗口动画
-
 ### 布局器
+  
+![self\_layouter](../docs/images/layout_self_layouter.png)
 
+![children\_layouter](../docs/images/layout_children_layouter.png)
+
+* [self\_layouter](manual/self_layouter_t.md) 控件自身排版布局器的接口
+
+* [children\_layouter](manual/children_layouter_t.md) 子控件排版布局器的接口
+
+* [self\_layouter\_default](manual/self_layouter_default_t.md) 缺省的控件自身布局算法实现。
+
+* [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
 
 ## 二、基本函数库
 

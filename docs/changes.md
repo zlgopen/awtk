@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/01/16
   * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
+  * 整理API文档：self\_layouter/self\_layouter\_default/children\_layouter/children\_layouter\_default
   * 去掉array类，使用darray类代替。
   * 修改valgrind发现的泄露内存问题。
 

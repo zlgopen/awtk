@@ -16,4 +16,3 @@ TEST(SvgImage, basic) {
 
   widget_destroy(w);
 }
-
