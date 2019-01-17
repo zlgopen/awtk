@@ -33,7 +33,7 @@ struct _timer_manager_t {
   timer_get_time_t get_time;
 
   slist_t timers;
-} ;
+};
 
 timer_manager_t* timer_manager(void);
 ret_t timer_manager_set(timer_manager_t* timer_manager);

@@ -161,7 +161,7 @@ static const widget_vtable_t s_radio_button_vtable = {
 };
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_radio_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, &s_check_button_vtable, x, y, w, h);
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);
 
