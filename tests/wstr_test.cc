@@ -306,6 +306,7 @@ TEST(WStr, push_int) {
   ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
   ASSERT_EQ(v, 12345);
   s->size = 0;
+  wstr_reset(&str);
 
   wstr_init(&str1, 0);
   wstr_set(&str1, L"0123");

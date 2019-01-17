@@ -223,6 +223,7 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
 
   if (info != NULL) {
     assets_manager_add(rm, info);
+    asset_info_unref(info);
   }
 
   return info;
@@ -380,17 +381,7 @@ ret_t assets_manager_clear_cache(assets_manager_t* rm, asset_type_t type) {
 }
 
 ret_t assets_manager_deinit(assets_manager_t* rm) {
-  uint32_t i = 0;
-  asset_info_t* iter = NULL;
-  asset_info_t** all = NULL;
   return_value_if_fail(rm != NULL, RET_BAD_PARAMS);
-
-  all = (asset_info_t**)(rm->assets.elms);
-
-  for (i = 0; i < rm->assets.size; i++) {
-    iter = all[i];
-    asset_info_destroy(iter);
-  }
 
   TKMEM_FREE(rm->res_root);
   darray_deinit(&(rm->assets));

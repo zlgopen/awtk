@@ -47,7 +47,7 @@ static ret_t object_destroy(object_t* obj) {
   obj->vt = NULL;
   obj->ref_count = 0;
   emitter_deinit((emitter_t*)obj);
-
+  TKMEM_FREE(obj->name);
   TKMEM_FREE(obj);
 
   return ret;
