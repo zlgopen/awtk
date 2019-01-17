@@ -61,9 +61,14 @@
 * [slide\_view](manual/slide_view_t.md) 滑动视图控件。
 * [svg\_image](manual/svg_image_t.md) SVG图片控件。
 * [switch](manual/switch_t.md) 开关控件。
-* [text\_selector](manual/text\_selector_t.md) 文本选择器控件。
-* [time\_clock](manual/time\_clock_t.md) 模拟时钟控件。
-* [digit\_clock](manual/digit\_clock_t.md) 数字时钟控件。
+* [text\_selector](manual/text_selector_t.md) 文本选择器控件。
+* [time\_clock](manual/time_clock_t.md) 模拟时钟控件。
+* [digit\_clock](manual/digit_clock_t.md) 数字时钟控件。
+* [list\_view](manual/list_view_t.md) 列表视图控件。
+* [list\_view\_h](manual/list_view_h_t.md) 水平列表视图控件。
+* [list\_item](manual/list_item_t.md) 列表项控件。
+* [scroll\_bar](manual/scroll_bar_t.md) 滚动条控件。
+* [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
 
 ### 画布
 

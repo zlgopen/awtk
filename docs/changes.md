@@ -1,5 +1,9 @@
 # 最新动态
 * 2019/01/16
+  * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
+  * 去掉array类，使用darray类代替。
+
+* 2019/01/16
   * 增加darray类，逐步替换以前的array类。
   * 增加widget pool用于控件的缓存和重复利用，可以通过WITH\_WIDGET\_POOL启用。
   * 增加widget\_create函数，简化子类控件的创建函数，同时让通用控件本身的由widget pool集中管理。

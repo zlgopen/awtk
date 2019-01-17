@@ -38,6 +38,38 @@ typedef ret_t (*scroll_view_on_scroll_to_t)(widget_t* widget, int32_t xoffset_en
  * @parent widget_t
  * @annotation ["scriptable"]
  * 滚动视图。
+ *
+ * scroll\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_view\_t控件。
+ *
+ * 在xml中使用"scroll\_view"标签创建滚动视图控件。如：
+ *
+ * ```xml
+ * <list_view x="0"  y="30" w="100%" h="-80" item_height="60">
+ *   <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
+ *     <list_item style="odd" children_layout="default(rows=1,cols=0)">
+ *       <image draw_type="icon" w="30" image="earth"/>
+ *       <label w="-30" text="1.Hello AWTK !">
+ *         <switch x="r:10" y="m" w="60" h="20"/>
+ *       </label>
+ *     </list_item>
+ *     ...
+ *   </scroll_view>
+ *  </list_view>
+ * ```
+ *
+ * > 滚动视图一般作为列表视图的子控件使用。
+ *
+ * > 更多用法请参考：[list\_view\_m.xml](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
+ *
+ * 在c代码中使用函数scroll\_view\_create创建列表视图控件。如：
+ *
+ * ```c
+ *  widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
+ * ```
+ *
+ * 可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。
+ *
  */
 typedef struct _scroll_view_t {
   widget_t widget;

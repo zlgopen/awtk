@@ -139,7 +139,7 @@
 | <a href="#widget_t_astyle">astyle</a> | style\_t* | Style对象。 |
 | <a href="#widget_t_auto_created">auto\_created</a> | bool\_t | 是否由父控件自动创建。 |
 | <a href="#widget_t_can_not_destroy">can\_not\_destroy</a> | uint16\_t | 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。 |
-| <a href="#widget_t_children">children</a> | array\_t* | 全部子控件。 |
+| <a href="#widget_t_children">children</a> | darray\_t* | 全部子控件。 |
 | <a href="#widget_t_children_layout">children\_layout</a> | children\_layouter\_t* | 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
 | <a href="#widget_t_custom_props">custom\_props</a> | custom\_props\_t* | 自定义属性。 |
 | <a href="#widget_t_destroying">destroying</a> | bool\_t | 标识控件正在被销毁。 |
@@ -2164,7 +2164,7 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 
-* 类型：array\_t*
+* 类型：darray\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

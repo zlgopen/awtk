@@ -31,7 +31,43 @@ BEGIN_C_DECLS
  * @class scroll_bar_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * scroll_bar控件。
+ * 滚动条控件。
+ *
+ *> 目前只支持垂直滚动。
+ *
+ * scroll\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_bar\_t控件。
+ *
+ * 在xml中使用"scroll\_bar"或"scroll\_bar\_d"或"scroll\_bar\_m"标签创建滚动条控件。如：
+ *
+ * ```xml
+ * <list_view x="0"  y="30" w="100%" h="-80" item_height="60">
+ * <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
+ * ...
+ * </scroll_view>
+ * <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
+ * </list_view>
+ * ```
+ *
+ * > 更多用法请参考：[list\_view\_m.xml](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
+ *
+ * 在c代码中使用函数scroll\_bar\_create创建列表项控件。如：
+ *
+ * ```c
+ *  widget_t* scroll_bar = scroll_bar_create(list_view, 0, 0, 0, 0);
+ * ```
+ *
+ * ```xml
+ * <style name="default">
+ *   <normal bg_color="#c0c0c0" fg_color="#808080"/>
+ *   <over bg_color="#c0c0c0" fg_color="#808080"/>
+ *   <pressed bg_color="#c0c0c0" fg_color="#808080"/>
+ * </style>
+ * ```
+ *
+ * > 更多用法请参考：[theme default](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L350)
+ *
  */
 typedef struct _scroll_bar_t {
   widget_t widget;
@@ -68,7 +104,10 @@ typedef struct _scroll_bar_t {
 
 /**
  * @method scroll_bar_create
- * 创建scroll_bar对象(根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条)
+ * 创建scroll_bar对象
+ *
+ * > 根据宏WITH_DESKTOP_STYLE决定创建desktop风格还是mobile风格的滚动条
+ *
  * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

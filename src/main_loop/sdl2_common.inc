@@ -50,6 +50,10 @@ static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_E
   event.dx = sdl_event->wheel.x;
   event.dy = sdl_event->wheel.y;
 
+#ifdef MACOS
+  event.dy = -event.dy;
+#endif /*MACOS*/
+
   if (event.dy > 0) {
     event.dy = tk_max(MIN_WHEEL_DELTA, event.dy);
   } else if (event.dy < 0) {

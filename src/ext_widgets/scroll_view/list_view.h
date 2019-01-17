@@ -30,7 +30,53 @@ BEGIN_C_DECLS
  * @class list_view_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * ListView控件。
+ * 列表视图控件。
+ *
+ * 列表视图控件是一个可以垂直滚动的列表控件。
+ *
+ * 如果不需要滚动，可以用view控件配置适当的layout参数作为列表控件。
+ *
+ * 列表视图中的列表项可以固定高度，也可以使用不同高度。请参考[变高列表项](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_vh.xml)
+ *
+ * 列表视图控件的中可以有滚动条，也可以没有滚动条。
+ * 可以使用移动设备风格的滚动条，也可以使用桌面风格的滚动条。
+ *
+ * list\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于list\_view\_t控件。
+ *
+ * 在xml中使用"list\_view"标签创建列表视图控件。如：
+ *
+ * ```xml
+ * <list_view x="0"  y="30" w="100%" h="-80" item_height="60">
+ *   <scroll_view name="view" x="0"  y="0" w="100%" h="100%">
+ *     <list_item style="odd" children_layout="default(rows=1,cols=0)">
+ *       <image draw_type="icon" w="30" image="earth"/>
+ *       <label w="-30" text="1.Hello AWTK !">
+ *         <switch x="r:10" y="m" w="60" h="20"/>
+ *       </label>
+ *     </list_item>
+ *     ...
+ *   </scroll_view>
+ *  </list_view>
+ * ```
+ *
+ * > 注意：列表项不是作为列表视图控件的直接子控件，而是作为滚动视图的子控件。
+ *
+ *
+ * > 更多用法请参考：[list\_view\_m.xml](
+ *https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
+ *
+ * 在c代码中使用函数list\_view\_create创建列表视图控件。如：
+ *
+ * ```c
+ *  widget_t* list_view = list_view_create(win, 0, 0, 0, 0);
+ * ```
+ *
+ * 用代码构造列表视图是比较繁琐的事情，最好用XML来构造。
+ * 如果需要动态修改，可以使用widget\_clone来增加列表项，使用widget\_remove\_child来移出列表项。
+ *
+ * 可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。
+ *
  */
 typedef struct _list_view_t {
   widget_t widget;

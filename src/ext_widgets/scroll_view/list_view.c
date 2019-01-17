@@ -75,9 +75,6 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       wheel_event_t* evt = (wheel_event_t*)e;
       int32_t delta = evt->dy;
       if (list_view->scroll_bar != NULL) {
-#ifdef MACOS
-        delta = -delta;
-#endif /*MACOS*/
         scroll_bar_add_delta(list_view->scroll_bar, delta);
         log_debug("wheel: %d\n", delta);
       }
