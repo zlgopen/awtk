@@ -122,7 +122,6 @@ widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, NULL);
 
-  widget_create(parent, &s_svg_image_vtable, x, y, w, h);
   image_base_init(widget);
 
   return widget;
