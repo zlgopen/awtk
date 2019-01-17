@@ -73,7 +73,7 @@ const char* children_layouter_to_string(children_layouter_t* layouter);
 
 /**
  * @method children_layouter_layout
- * 对子控件进行Layout。
+ * 对控件的子控件进行布局。
  *
  * @param {children_layouter_t*} layouter layouter对象。
  * @param {widget_t*} widget 控件。

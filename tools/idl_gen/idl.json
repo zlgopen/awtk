@@ -1912,7 +1912,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 对子控件进行Layout。\n\n\n\n",
+        "desc": " 对控件的子控件进行布局。\n\n\n\n",
         "name": "children_layouter_layout",
         "return": {
           "type": "ret_t",
@@ -5300,7 +5300,7 @@
           }
         ],
         "annotation": {},
-        "desc": " 对控件进行Layout。\n\n\n",
+        "desc": " 对控件自身进行布局。\n\n\n",
         "name": "self_layouter_layout",
         "return": {
           "type": "ret_t",

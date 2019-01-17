@@ -71,7 +71,7 @@ const char* self_layouter_to_string(self_layouter_t* layouter);
 
 /**
  * @method self_layouter_layout
- * 对控件进行Layout。
+ * 对控件自身进行布局。
  * @param {self_layouter_t*} layouter layouter对象。
  * @param {widget_t*} widget 控件。
  * @param {rect_t*} area 可以使用的区域。
