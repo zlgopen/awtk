@@ -55,7 +55,7 @@
 ### 属性
 <p id="str_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#str_t_capacity">capacity</a> | uint32\_t | 容量。 |
 | <a href="#str_t_size">size</a> | uint32\_t | 长度。 |

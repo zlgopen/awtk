@@ -298,7 +298,7 @@ class ApiGenerator {
       result += genAnchor(cls.name, {
         name: 'properties'
       }) + '\n\n';
-      result += '| 名属性称 | 类型 | 说明 | \n';
+      result += '| 属性名称 | 类型 | 说明 | \n';
       result += '| -------- | ----- | ------------ | \n';
 
       cls.properties.sort((a, b) => {

@@ -53,7 +53,7 @@
 ### 属性
 <p id="tab_button_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tab_button_t_active_icon">active\_icon</a> | char* | 当前项的图标的名称。 |
 | <a href="#tab_button_t_icon">icon</a> | char* | 非当前项的图标的名称。 |

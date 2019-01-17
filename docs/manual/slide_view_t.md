@@ -62,7 +62,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
 ### 属性
 <p id="slide_view_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slide_view_t_auto_play">auto\_play</a> | uint16\_t | 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
 | <a href="#slide_view_t_vertical">vertical</a> | bool\_t | 是否为上下滑动模式。 |

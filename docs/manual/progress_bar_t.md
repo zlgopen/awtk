@@ -54,7 +54,7 @@
 ### 属性
 <p id="progress_bar_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#progress_bar_t_show_text">show\_text</a> | bool\_t | 是否显示文本。 |
 | <a href="#progress_bar_t_value">value</a> | uint8\_t | 进度条的值[0-100]。 |

@@ -59,7 +59,7 @@
 ### 属性
 <p id="button_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#button_t_repeat">repeat</a> | int32\_t | 重复触发EVT\_CLICK事件的时间间隔。 |
 ### 事件

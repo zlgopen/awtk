@@ -56,7 +56,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 ### 属性
 <p id="label_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#label_t_length">length</a> | int32\_t | 显示字符的长度(小余0时全部显示)。 |
 #### label\_create 函数

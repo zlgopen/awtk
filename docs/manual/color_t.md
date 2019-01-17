@@ -22,7 +22,7 @@
 ### 属性
 <p id="color_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#color_t_color">color</a> | uint32\_t | 颜色的数值。 |
 | <a href="#color_t_rgba">rgba</a> | rgba\_t | 颜色的RGBA值。 |

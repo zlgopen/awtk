@@ -7,7 +7,7 @@
 ### 属性
 <p id="asset_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#asset_info_t_is_in_rom">is\_in\_rom</a> | uint8\_t | 资源是否在ROM中。 |
 | <a href="#asset_info_t_name">name</a> | char* | 名称。 |

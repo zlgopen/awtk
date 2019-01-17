@@ -16,7 +16,7 @@
 ### 属性
 <p id="idle_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#idle_info_t_ctx">ctx</a> | void* | idle回调函数上下文。 |
 | <a href="#idle_info_t_id">id</a> | uint32\_t | idle的ID |

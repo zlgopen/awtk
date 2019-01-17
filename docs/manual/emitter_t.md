@@ -27,7 +27,7 @@
 ### 属性
 <p id="emitter_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#emitter_t_enable">enable</a> | bool\_t | 禁用标志。禁用时dispatch无效。 |
 #### emitter\_cast 函数

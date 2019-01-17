@@ -17,7 +17,7 @@
 ### 属性
 <p id="check_button_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#check_button_t_value">value</a> | bool\_t | 值。 |
 ### 事件

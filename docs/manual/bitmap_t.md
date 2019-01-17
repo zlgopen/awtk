@@ -21,7 +21,7 @@
 ### 属性
 <p id="bitmap_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#bitmap_t_data">data</a> | uint8\_t* | 图片数据。 |
 | <a href="#bitmap_t_flags">flags</a> | uint16\_t | 标志。请参考{bitmap_flag_t}。 |

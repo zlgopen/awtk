@@ -16,7 +16,7 @@
 ### 属性
 <p id="dragger_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#dragger_t_x_max">x\_max</a> | xy\_t | x坐标的最大值。 |
 | <a href="#dragger_t_x_min">x\_min</a> | xy\_t | x坐标的最小值。 |

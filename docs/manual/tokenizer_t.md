@@ -18,7 +18,7 @@
 ### 属性
 <p id="tokenizer_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tokenizer_t_cursor">cursor</a> | uint32\_t | 当前位置。 |
 | <a href="#tokenizer_t_separtor">separtor</a> | char* | 字符串。 |

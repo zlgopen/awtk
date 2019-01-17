@@ -42,7 +42,7 @@
  ```c
  widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);
  ```
- 
+ 
  可按下面的方法关注当前按钮被点击的事件：
 
  ```c
@@ -78,7 +78,7 @@
 ### 属性
 <p id="slide_menu_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slide_menu_t_align_v">align\_v</a> | align\_v\_t | 垂直对齐方式。 |
 | <a href="#slide_menu_t_min_scale">min\_scale</a> | float\_t | 最小缩放比例。 |

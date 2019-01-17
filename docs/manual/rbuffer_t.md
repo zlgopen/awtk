@@ -39,7 +39,7 @@
 ### 属性
 <p id="rbuffer_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区最大容量。 |
 | <a href="#rbuffer_t_cursor">cursor</a> | uint32\_t | 当前读取位置。 |

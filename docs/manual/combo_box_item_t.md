@@ -20,7 +20,7 @@
 ### 属性
 <p id="combo_box_item_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#combo_box_item_t_checked">checked</a> | bool\_t | 是否被选中。 |
 | <a href="#combo_box_item_t_value">value</a> | int32\_t | 值。 |

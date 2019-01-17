@@ -51,7 +51,7 @@
 ### 属性
 <p id="guage_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#guage_t_draw_type">draw\_type</a> | image\_draw\_type\_t | 图片的绘制方式。 |
 | <a href="#guage_t_image">image</a> | char* | 背景图片。 |

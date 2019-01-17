@@ -64,7 +64,7 @@
 ### 属性
 <p id="text_selector_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#text_selector_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |

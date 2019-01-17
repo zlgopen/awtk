@@ -73,7 +73,7 @@
 ### 属性
 <p id="image_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_t_draw_type">draw\_type</a> | image\_draw\_type\_t | 图片的绘制方式(仅在没有旋转和缩放时生效)。 |
 #### image\_cast 函数

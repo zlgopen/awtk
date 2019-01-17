@@ -40,7 +40,7 @@
 ### 属性
 <p id="pages_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#pages_t_active">active</a> | uint32\_t | 当前活跃的page。 |
 ### 事件

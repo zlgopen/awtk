@@ -15,7 +15,7 @@
 ### 属性
 <p id="key_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#key_event_t_alt">alt</a> | bool\_t | alt键是否按下。 |
 | <a href="#key_event_t_capslock">capslock</a> | bool\_t | capslock键是否按下。 |

@@ -40,7 +40,7 @@
 ### 属性
 <p id="input_method_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮是否可用。 |
 | <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮文本。 |

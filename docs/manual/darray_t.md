@@ -43,7 +43,7 @@
 ### 属性
 <p id="darray_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#darray_t_capacity">capacity</a> | uint32\_t | 数组的容量大小。 |
 | <a href="#darray_t_compare">compare</a> | tk\_compare\_t | 元素比较函数。 |

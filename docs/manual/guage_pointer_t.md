@@ -43,7 +43,7 @@
 ### 属性
 <p id="guage_pointer_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。 |

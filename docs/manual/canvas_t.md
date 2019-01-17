@@ -43,7 +43,7 @@
 ### 属性
 <p id="canvas_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#canvas_t_ox">ox</a> | xy\_t | x坐标偏移。 |
 | <a href="#canvas_t_oy">oy</a> | xy\_t | y坐标偏移。 |

@@ -98,7 +98,7 @@
 ### 属性
 <p id="vgcanvas_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#vgcanvas_t_anti_alias">anti\_alias</a> | bool\_t | 是否启用反走样功能。 |
 | <a href="#vgcanvas_t_fill_color">fill\_color</a> | color\_t | 填充颜色 |

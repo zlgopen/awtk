@@ -36,7 +36,7 @@
 ### 属性
 <p id="lcd_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#lcd_t_draw_mode">draw\_mode</a> | lcd\_draw\_mode\_t | 绘制模式。 |
 | <a href="#lcd_t_fill_color">fill\_color</a> | color\_t | 填充颜色 |

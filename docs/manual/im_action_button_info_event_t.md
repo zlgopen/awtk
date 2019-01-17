@@ -9,7 +9,7 @@
 ### 属性
 <p id="im_action_button_info_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#im_action_button_info_event_t_enable">enable</a> | bool\_t | 软键盘上的action按钮启用。 |
 | <a href="#im_action_button_info_event_t_text">text</a> | char* | 软键盘上的action按钮显示的文本。 |

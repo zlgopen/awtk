@@ -25,7 +25,7 @@
 ### 属性
 <p id="object_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_t_name">name</a> | char* | 对象的名称。 |
 | <a href="#object_t_ref_count">ref\_count</a> | int32\_t | 引用计数。 |

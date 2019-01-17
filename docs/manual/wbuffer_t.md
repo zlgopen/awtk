@@ -49,7 +49,7 @@
 ### 属性
 <p id="wbuffer_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#wbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区最大容量。 |
 | <a href="#wbuffer_t_cursor">cursor</a> | uint32\_t | 当前写入位置。 |

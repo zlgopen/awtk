@@ -19,7 +19,7 @@
 ### 属性
 <p id="object_default_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_default_t_props">props</a> | named\_value\_t | 属性数组。 |
 | <a href="#object_default_t_props_capacity">props\_capacity</a> | uint32\_t | 属性数组的容量。 |

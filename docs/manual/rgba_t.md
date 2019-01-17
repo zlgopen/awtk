@@ -8,7 +8,7 @@
 ### 属性
 <p id="rgba_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rgba_t_a">a</a> | uint8\_t | alpha。 |
 | <a href="#rgba_t_b">b</a> | uint8\_t | 蓝色。 |

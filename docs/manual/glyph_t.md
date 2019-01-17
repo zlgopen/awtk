@@ -16,7 +16,7 @@
 ### 属性
 <p id="glyph_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#glyph_t_advance">advance</a> | int32\_t | 占位宽度。 |
 | <a href="#glyph_t_data">data</a> | const uint8\_t* | 数据。 |

@@ -64,7 +64,7 @@
 ### 属性
 <p id="rich_text_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rich_text_t_line_gap">line\_gap</a> | int32\_t | 行间距。 |
 #### rich\_text\_create 函数

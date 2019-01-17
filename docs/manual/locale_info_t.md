@@ -23,7 +23,7 @@
 ### 属性
 <p id="locale_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#locale_info_t_country;">country;</a> | char* | 国家或地区。如：CN |
 | <a href="#locale_info_t_language">language</a> | char* | 语言。如：zh |

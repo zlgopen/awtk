@@ -27,7 +27,7 @@
 ### 属性
 <p id="window_manager_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_manager_t_show_fps">show\_fps</a> | bool\_t | 是否显示fps。 |
 #### window\_manager 函数

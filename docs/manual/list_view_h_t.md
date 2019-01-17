@@ -48,7 +48,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_h.xml)
 ### 属性
 <p id="list_view_h_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#list_view_h_t_item_width">item\_width</a> | int32\_t | 列表项的宽度。 |
 | <a href="#list_view_h_t_spacing">spacing</a> | int32\_t | 间距。 |

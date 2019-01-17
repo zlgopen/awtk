@@ -44,7 +44,7 @@
 ### 属性
 <p id="tab_button_group_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tab_button_group_t_compact">compact</a> | bool\_t | 紧凑型排版子控件。 |
 #### tab\_button\_group\_cast 函数

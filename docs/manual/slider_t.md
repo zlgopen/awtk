@@ -59,7 +59,7 @@
 ### 属性
 <p id="slider_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slider_t_max">max</a> | uint16\_t | 最大值。 |
 | <a href="#slider_t_min">min</a> | uint16\_t | 最小值。 |

@@ -15,7 +15,7 @@
 ### 属性
 <p id="pointer_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#pointer_event_t_alt">alt</a> | bool\_t | alt键是否按下。 |
 | <a href="#pointer_event_t_button">button</a> | uint8\_t | button。 |

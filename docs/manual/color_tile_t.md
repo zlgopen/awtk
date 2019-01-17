@@ -42,7 +42,7 @@
 ### 属性
 <p id="color_tile_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#color_tile_t_bg_color">bg\_color</a> | const char* | 背景颜色。 |
 | <a href="#color_tile_t_border_color">border\_color</a> | const char* | 边框颜色。 |

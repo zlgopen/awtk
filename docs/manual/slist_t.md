@@ -42,7 +42,7 @@
 ### 属性
 <p id="slist_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slist_t_compare">compare</a> | tk\_compare\_t | 元素比较函数。 |
 | <a href="#slist_t_destroy">destroy</a> | tk\_destroy\_t | 元素销毁函数。 |

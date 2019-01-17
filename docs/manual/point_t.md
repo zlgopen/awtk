@@ -7,7 +7,7 @@
 ### 属性
 <p id="point_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#point_t_x">x</a> | xy\_t | x坐标。 |
 | <a href="#point_t_y">y</a> | xy\_t | y坐标。 |

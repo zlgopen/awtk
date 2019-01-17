@@ -16,7 +16,7 @@
 ### 属性
 <p id="event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
 | <a href="#event_t_time">time</a> | int32\_t | 事件发生的时间。 |

@@ -16,7 +16,7 @@
 ### 属性
 <p id="timer_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#timer_info_t_ctx">ctx</a> | void* | 定时器回调函数的上下文 |
 | <a href="#timer_info_t_duration">duration</a> | uint32\_t | 时间间隔(单位为毫秒)。 |

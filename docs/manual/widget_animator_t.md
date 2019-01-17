@@ -25,7 +25,7 @@
 ### 属性
 <p id="widget_animator_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#widget_animator_t_name">name</a> | char* | 名称。 |
 #### widget\_animator\_destroy 函数

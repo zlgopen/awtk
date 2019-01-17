@@ -49,7 +49,7 @@
 ### 属性
 <p id="switch_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#switch_t_max_xoffset_ratio">max\_xoffset\_ratio</a> | float\_t | 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。 |
 | <a href="#switch_t_round_radius">round\_radius</a> | int32\_t | 图片的圆角半径。 |

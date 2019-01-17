@@ -51,7 +51,7 @@ image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ### 属性
 <p id="image_value_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_value_t_format">format</a> | char* | 数值到字符串转换时的格式，缺省为"%d"。 |
 | <a href="#image_value_t_image">image</a> | char* | 图片名称的前缀。 |

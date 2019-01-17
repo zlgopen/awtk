@@ -49,7 +49,7 @@
 ### 属性
 <p id="digit_clock_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#digit_clock_t_format">format</a> | char* | 显示格式。 |
 #### digit\_clock\_cast 函数

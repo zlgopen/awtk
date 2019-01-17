@@ -21,7 +21,7 @@
 ### 属性
 <p id="named_value_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#named_value_t_name">name</a> | char* | 名称。 |
 | <a href="#named_value_t_value">value</a> | value\_t | 值。 |

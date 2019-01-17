@@ -34,7 +34,7 @@ BEGIN_C_DECLS
  *
  * time\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于time\_clock\_t控件。
  *
- * 在xml中使用"time\_clock"标签创建开关控件。如：
+ * 在xml中使用"time\_clock"标签创建模拟时钟控件。如：
  *
  * ```xml
  * <time_clock x="c" y="m" w="300" h="300" bg_image="clock_bg" image="clock"
@@ -44,7 +44,7 @@ BEGIN_C_DECLS
  * > 更多用法请参考：[time\_clock.xml](
  * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/time_clock.xml)
  *
- * 在c代码中使用函数time\_clock\_create创建开关控件。如：
+ * 在c代码中使用函数time\_clock\_create创建模拟时钟控件。如：
  *
  * ```c
  * widget_t* tc = time_clock_create(win, 10, 10, 240, 240);

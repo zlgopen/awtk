@@ -53,7 +53,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
 ### 属性
 <p id="scroll_view_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#scroll_view_t_virtual_h">virtual\_h</a> | wh\_t | 虚拟高度。 |
 | <a href="#scroll_view_t_virtual_w">virtual\_w</a> | wh\_t | 虚拟宽度。 |

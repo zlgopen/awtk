@@ -133,7 +133,7 @@
 ### 属性
 <p id="widget_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#widget_t_animation">animation</a> | char* | 动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md) |
 | <a href="#widget_t_astyle">astyle</a> | style\_t* | Style对象。 |

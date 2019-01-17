@@ -14,7 +14,7 @@
 ### 属性
 <p id="system_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#system_info_t_app_name">app\_name</a> | const char* | 应用程序的名称。 |
 | <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |

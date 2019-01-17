@@ -9,7 +9,7 @@
 ### 属性
 <p id="im_commit_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#im_commit_event_t_text">text</a> | char* | 提交的文本。 |
 #### text 属性

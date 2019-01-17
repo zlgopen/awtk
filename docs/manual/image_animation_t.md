@@ -52,7 +52,7 @@
 ### 属性
 <p id="image_animation_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_animation_t_auto_play">auto\_play</a> | bool\_t | 是否自动播放。 |
 | <a href="#image_animation_t_delay">delay</a> | uint32\_t | 自动播放时延迟播放的时间(毫秒)。 |

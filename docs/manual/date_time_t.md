@@ -19,7 +19,7 @@
 ### 属性
 <p id="date_time_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#date_time_t_day">day</a> | int32\_t | 日(1-31)。 |
 | <a href="#date_time_t_hour">hour</a> | int32\_t | 时(0 - 23)。 |
