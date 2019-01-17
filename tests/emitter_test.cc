@@ -1,5 +1,4 @@
 ﻿
-#include "tkc/array.h"
 #include "tkc/emitter.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>

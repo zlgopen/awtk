@@ -39,7 +39,7 @@ static const char* s_keyboard_properties[] = {
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  array_deinit(&(keyboard->action_buttons));
+  darray_deinit(&(keyboard->action_buttons));
 
   return window_base_on_destroy(widget);
 }
@@ -64,7 +64,7 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, NULL);
 
-  array_init(&(keyboard->action_buttons), 0, NULL, NULL);
+  darray_init(&(keyboard->action_buttons), 0, NULL, NULL);
   widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
   keyboard->action_info_id =
       input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
@@ -167,7 +167,7 @@ static ret_t keyboard_hook_buttons(void* ctx, const void* iter) {
     widget_on(widget, EVT_CLICK, keyboard_on_button_click, keyboard);
 
     if (tk_str_eq(name, STR_ACTION)) {
-      array_push(&(keyboard->action_buttons), widget);
+      darray_push(&(keyboard->action_buttons), widget);
       keyboard_update_action_buton_info(widget, im->action_buton_text, im->action_button_enable);
     }
   }

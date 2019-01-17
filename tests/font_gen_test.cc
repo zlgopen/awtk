@@ -1,5 +1,4 @@
 ﻿
-#include "tkc/array.h"
 #include "base/font.h"
 #include "tkc/mem.h"
 #include "base/widget.h"

@@ -155,7 +155,7 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
     return iter->create(parent, x, y, w, h);
   }
 
-  iter = darray_find(&(factory->creators), type);
+  iter = darray_find(&(factory->creators), (void*)type);
   return_value_if_fail(iter != NULL, NULL);
 
   return iter->create(parent, x, y, w, h);

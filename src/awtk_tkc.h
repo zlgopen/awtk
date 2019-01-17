@@ -22,7 +22,7 @@
 #ifndef TK_TKC_H
 #define TK_TKC_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "tkc/buffer.h"
 #include "tkc/color.h"
 #include "tkc/color_parser.h"
