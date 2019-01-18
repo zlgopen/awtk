@@ -18,7 +18,7 @@
 * [AWTK中的控件动画](widget_animator.md)
 * [LCD旋转(横屏与竖屏)](lcd_rotation.md)
 * [AWTK中的输入法](input_method.md)
-* [AWTK内存需求评估指南](memory.md)
+* [AWTK 硬件资源需求评估](hardware_req.md)
 * [AWTK 中的一些惯例](conventions.md)
 * [使用Qt Designer构建AWTK的界面](qt-designer.md)
 
