@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/01/17
+  * 增加文档。
+
 * 2019/01/16
   * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
   * 整理API文档：self\_layouter/self\_layouter\_default/children\_layouter/children\_layouter\_default

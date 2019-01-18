@@ -46,3 +46,4 @@
 ### 6.其它
 * [常见问题解答](faq.md)
 * [修改AWTK的代码风格](code_style.md)
+* [AWTK是如何保证代码质量的](qa.md)
