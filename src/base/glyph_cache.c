@@ -61,7 +61,7 @@ static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
 
   item = cache->items + oldest;
   if (cache->destroy_glyph) {
-    cache->destroy_glyph(&(item->g));
+    cache->destroy_glyph(item->g);
     memset(item, 0x00, sizeof(glyph_cache_item_t));
   }
 

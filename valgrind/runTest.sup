@@ -1,0 +1,294 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:g_malloc0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_fundamental
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:g_type_register_static
+   fun:g_param_type_register_static
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5600.3
+   fun:call_init
+   fun:_dl_init
+   obj:/lib/x86_64-linux-gnu/ld-2.27.so
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:tk_alloc_impl
+   fun:tk_alloc
+   fun:_ZN10ime_pinyin5NGram10load_ngramEP11_rom_file_t
+   fun:_ZN10ime_pinyin8DictTrie9load_dictEPKcjj
+   fun:_ZN10ime_pinyin12MatrixSearch4initEPKcS2_
+   fun:im_open_decoder_rom
+   fun:input_engine_create
+   fun:input_method_default_create
+   fun:input_method_create
+   fun:tk_init_internal
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:tk_alloc_impl
+   fun:tk_alloc
+   fun:_ZN10ime_pinyin5NGram10load_ngramEP11_rom_file_t
+   fun:_ZN10ime_pinyin8DictTrie9load_dictEPKcjj
+   fun:_ZN10ime_pinyin12MatrixSearch4initEPKcS2_
+   fun:im_open_decoder_rom
+   fun:input_engine_create
+   fun:input_method_default_create
+   fun:input_method_create
+   fun:tk_init_internal
+   fun:main
+}
