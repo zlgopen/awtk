@@ -364,7 +364,7 @@ ret_t assets_manager_unref(assets_manager_t* rm, const asset_info_t* info) {
     if (remove) {
       tk_compare_t cmp = rm->assets.compare;
       rm->assets.compare = pointer_compare;
-      if(darray_remove(&(rm->assets), (void*)info) == RET_NOT_FOUND) {
+      if (darray_remove(&(rm->assets), (void*)info) == RET_NOT_FOUND) {
         asset_info_unref((asset_info_t*)info);
       }
       rm->assets.compare = cmp;

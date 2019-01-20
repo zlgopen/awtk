@@ -154,6 +154,44 @@ int32_t object_compare(object_t* obj, object_t* other);
 ret_t object_get_prop(object_t* obj, const char* name, value_t* v);
 
 /**
+ * @method object_get_prop_str
+ * 获取指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {const char*} 返回指定属性的字符串类型的值。
+ */
+const char* object_get_prop_str(object_t* obj, const char* name);
+
+/**
+ * @method object_get_prop_int
+ * 获取指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {const char*} 返回指定属性的整数类型的值。
+ */
+int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval);
+
+/**
+ * @method object_get_prop_float
+ * 获取指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float_t} defval 缺省值。
+ *
+ * @return {const char*} 返回指定属性的浮点数类型的值。
+ */
+float_t object_get_prop_float(object_t* obj, const char* name, float_t defval);
+
+/**
  * @method object_remove_prop
  * 删除指定属性。
  *
@@ -172,11 +210,50 @@ ret_t object_remove_prop(object_t* obj, const char* name);
  * @annotation ["scriptable"]
  * @param {object_t*} obj object对象。
  * @param {const char*} name 属性的名称。
- * @param {value_t*} v 属性的值。
+ * @param {value_t*} value 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t object_set_prop(object_t* obj, const char* name, const value_t* v);
+ret_t object_set_prop(object_t* obj, const char* name, const value_t* value);
+
+/**
+ * @method object_set_prop_str
+ * 设置指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_str(object_t* obj, const char* name, const char* value);
+
+/**
+ * @method object_set_prop_int
+ * 设置指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value);
+
+/**
+ * @method object_set_prop_float
+ * 设置指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
 
 /**
  * @method object_foreach_prop
@@ -190,6 +267,8 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx);
+
+#define OBJECT(obj) ((object_t*)(obj))
 
 END_C_DECLS
 

@@ -7,6 +7,7 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 
 sources=Glob('tkc/*.c') +\
   Glob('base/*.c') + \
+  Glob('mvvm/*.c') + \
   Glob('layouters/*.c') + \
   Glob('widgets/*.c') + \
   Glob('ui_loader/*.c') + \

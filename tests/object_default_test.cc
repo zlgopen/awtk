@@ -259,3 +259,30 @@ TEST(ObejectDefault, set_name) {
 
   object_unref(obj);
 }
+
+TEST(ObejectDefault, set_prop_int) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_int(obj, "int", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "int", 0), 123);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, set_prop_float) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "float", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_float(obj, "float", 0), 123);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, set_prop_str) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_str(obj, "str", "123"), RET_OK);
+  ASSERT_EQ(string(object_get_prop_str(obj, "str")), string("123"));
+
+  object_unref(obj);
+}

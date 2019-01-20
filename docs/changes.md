@@ -1,13 +1,17 @@
 # 最新动态
 
-* 2019/01/18
+* 2019/01/20
+  * 完善object，增加一些包装函数。
+  * 增加binding\_rule/binding\_rule\_data
+
+* 2019/01/19
   * 修改valgrind发些的问题，并增加一些脚本。
   * 增加MVVM分支。 
 
-* 2019/01/17
+* 2019/01/18
   * 增加文档。
 
-* 2019/01/16
+* 2019/01/17
   * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
   * 整理API文档：self\_layouter/self\_layouter\_default/children\_layouter/children\_layouter\_default
   * 去掉array类，使用darray类代替。
