@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  self layouter
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -51,8 +51,9 @@ typedef struct _self_layouter_vtable_t {
 
 /**
  * @class self_layouter_t
- * 控件排版布局器的接口。
- * 按特定算法对控件进行排版布局。
+ * 控件自身排版布局器的接口。
+ *
+ * 按特定算法对控件进行排版布局，子类需要实现vtable中的函数。
  */
 struct _self_layouter_t {
   str_t params;
@@ -70,7 +71,7 @@ const char* self_layouter_to_string(self_layouter_t* layouter);
 
 /**
  * @method self_layouter_layout
- * 对控件进行Layout。
+ * 对控件自身进行布局。
  * @param {self_layouter_t*} layouter layouter对象。
  * @param {widget_t*} widget 控件。
  * @param {rect_t*} area 可以使用的区域。

@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,10 +24,12 @@
 #include "tkc/utils.h"
 #include "base/enums.h"
 #include "tkc/time_now.h"
+#include "base/idle.h"
 #include "base/locale_info.h"
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
+#include "base/widget_pool.h"
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -35,7 +37,6 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
-static ret_t widget_reset(widget_t* widget);
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -370,7 +371,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   child->parent = widget;
   widget->need_relayout_children = TRUE;
   if (widget->children == NULL) {
-    widget->children = array_create(4);
+    widget->children = darray_create(4, NULL, NULL);
   }
 
   if (widget->vt->on_add_child) {
@@ -379,7 +380,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     }
   }
 
-  return array_push(widget->children, child);
+  return darray_push(widget->children, child);
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
@@ -406,7 +407,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   }
 
   child->parent = NULL;
-  return array_remove(widget->children, NULL, child, NULL);
+  return darray_remove(widget->children, child);
 }
 
 ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
@@ -601,7 +602,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return ret;
 }
 
-int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
+int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   if (widget->emitter == NULL) {
     widget->emitter = emitter_create();
@@ -610,8 +611,8 @@ int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, vo
   return emitter_on(widget->emitter, type, on_event, ctx);
 }
 
-int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
-                        event_func_t on_event, void* ctx) {
+int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
+                        void* ctx) {
   return widget_on(widget_lookup(widget, name, TRUE), type, on_event, ctx);
 }
 
@@ -622,7 +623,7 @@ ret_t widget_off(widget_t* widget, int32_t id) {
   return emitter_off(widget->emitter, id);
 }
 
-ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx) {
+ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
@@ -1239,8 +1240,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    const char* type = widget_get_type(target);
-    if (!tk_str_eq(type, WIDGET_TYPE_KEYBOARD)) {
+    if (!(target->vt->is_keyboard)) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
@@ -1398,52 +1398,6 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return id;
 }
 
-static ret_t widget_reset(widget_t* widget) {
-  if (widget->name != NULL) {
-    widget->name[0] = '\0';
-  }
-
-  if (widget->animation != NULL) {
-    widget->animation[0] = '\0';
-  }
-
-  if (widget->style != NULL) {
-    widget->style[0] = '\0';
-  }
-
-  if (widget->tr_text != NULL) {
-    widget->tr_text[0] = '\0';
-  }
-
-  widget->floating = FALSE;
-  widget->auto_created = FALSE;
-
-  widget->parent = NULL;
-  widget->target = NULL;
-  widget->emitter = NULL;
-  widget->children = NULL;
-  widget->key_target = NULL;
-  widget->self_layout = NULL;
-  widget->grab_widget = NULL;
-  widget->custom_props = NULL;
-  widget->children_layout = NULL;
-
-  return RET_OK;
-}
-
-static ret_t widget_recycle(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  if (widget->vt->recycle != NULL) {
-    if (widget->vt->recycle(widget) == RET_OK) {
-      widget_reset(widget);
-
-      return RET_OK;
-    }
-  }
-
-  return RET_NOT_IMPL;
-}
-
 static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
@@ -1457,7 +1411,7 @@ static ret_t widget_destroy_sync(widget_t* widget) {
 
   if (widget->children != NULL) {
     widget_destroy_children(widget);
-    array_destroy(widget->children);
+    darray_destroy(widget->children);
     widget->children = NULL;
   }
 
@@ -1482,21 +1436,14 @@ static ret_t widget_destroy_sync(widget_t* widget) {
 
   widget->destroying = FALSE;
 
-  if (widget_recycle(widget) != RET_OK) {
-    if (widget->vt->on_destroy) {
-      widget->vt->on_destroy(widget);
-    }
+  return widget_pool_destroy_widget(widget_pool(), widget);
+}
 
-    TKMEM_FREE(widget->name);
-    TKMEM_FREE(widget->style);
-    TKMEM_FREE(widget->tr_text);
-    TKMEM_FREE(widget->animation);
+widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                        wh_t h) {
+  return_value_if_fail(vt != NULL, NULL);
 
-    memset(widget, 0x00, sizeof(widget_t));
-    TKMEM_FREE(widget);
-  }
-
-  return RET_OK;
+  return widget_init(widget_pool_create_widget(widget_pool(), vt), parent, vt, x, y, w, h);
 }
 
 static ret_t widget_destroy_in_idle(const idle_info_t* info) {

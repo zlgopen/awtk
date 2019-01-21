@@ -25,6 +25,8 @@
 
  通过calibration\_win\_set\_on\_done注册回调函数，用于保存校准数据。
 
+
+----------------------------------
 ### 函数
 <p id="calibration_win_t_methods">
 

@@ -5,5 +5,6 @@
   <combo_box readonly="true" x="10" y="bottom:5" w="200" h="30" tr_text="ok" options="1:ok;2:cancel;"/>
   <combo_box open_window="language" readonly="true" x="10" y="bottom:50" w="200" h="30" tr_text="english"/>
 
-  <label name="value" x="center" y="middle" w="50%" h="30" text=""/>
+  <label name="old_value" x="center" y="middle:-20" w="50%" h="30" text=""/>
+  <label name="value" x="center" y="middle:20" w="50%" h="30" text=""/>
 </window>

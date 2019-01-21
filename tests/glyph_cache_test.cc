@@ -7,7 +7,7 @@ TEST(GlyphCache, basic) {
   uint16_t nr = 10000;
   glyph_cache_t cache;
   glyph_t g;
-  glyph_cache_t* c = glyph_cache_init(&cache, 64, NULL);
+  glyph_cache_t* c = glyph_cache_init(&cache, 64, (tk_destroy_t)glyph_destroy);
 
   for (i = 0; i < nr; i++) {
     ASSERT_EQ(glyph_cache_lookup(c, i, size, &g) == RET_NOT_FOUND, true);

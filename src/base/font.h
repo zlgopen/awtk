@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  font interface
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -103,9 +103,9 @@ glyph_t* glyph_clone(glyph_t* g);
  */
 ret_t glyph_destroy(glyph_t* g);
 
-typedef int32_t (*font_get_baseline_t)(font_t* f, uint16_t font_size);
-typedef bool_t (*font_match_t)(font_t* f, const char* name, uint16_t font_size);
-typedef ret_t (*font_get_glyph_t)(font_t* f, wchar_t chr, uint16_t font_size, glyph_t* g);
+typedef int32_t (*font_get_baseline_t)(font_t* f, font_size_t font_size);
+typedef bool_t (*font_match_t)(font_t* f, const char* name, font_size_t font_size);
+typedef ret_t (*font_get_glyph_t)(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g);
 
 typedef ret_t (*font_destroy_t)(font_t* f);
 
@@ -126,11 +126,11 @@ struct _font_t {
  * @method font_get_baseline
  * 获取字体的基线。
  * @param {font_t*} font font对象。
- * @param {uint16_t} font_size 字体大小。
+ * @param {font_size_t} font_size 字体大小。
  *
  * @return {int32_t} 返回字体的基线。
  */
-int32_t font_get_baseline(font_t* font, uint16_t font_size);
+int32_t font_get_baseline(font_t* font, font_size_t font_size);
 
 /**
  * @method font_match
@@ -138,11 +138,11 @@ int32_t font_get_baseline(font_t* font, uint16_t font_size);
  *
  * @param {font_t*} font font对象。
  * @param {const char*} font_name 字体名称。
- * @param {uint16_t} font_size 字体大小。
+ * @param {font_size_t} font_size 字体大小。
  *
  * @return {int32_t} 返回TRUE表示成功，FALSE表示失败。
  */
-bool_t font_match(font_t* font, const char* font_name, uint16_t font_size);
+bool_t font_match(font_t* font, const char* font_name, font_size_t font_size);
 
 /**
  * @method font_get_glyph
@@ -150,12 +150,12 @@ bool_t font_match(font_t* font, const char* font_name, uint16_t font_size);
  *
  * @param {font_t*} font font对象。
  * @param {wchar_t} chr 字符。
- * @param {uint16_t} font_size 字体大小。
+ * @param {font_size_t} font_size 字体大小。
  * @param {glyph_t*} glyph 返回字模数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t font_get_glyph(font_t* font, wchar_t chr, uint16_t font_size, glyph_t* glyph);
+ret_t font_get_glyph(font_t* font, wchar_t chr, font_size_t font_size, glyph_t* glyph);
 
 /**
  * @method font_destroy

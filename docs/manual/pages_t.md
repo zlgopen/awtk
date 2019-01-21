@@ -2,7 +2,32 @@
 ### 概述
 ![image](images/pages_t_0.png)
 
- Pages。只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
+ 页面管理控件。
+
+ 只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
+ 常用于实现标签控件中的页面管理。
+
+ pages\_t是[widget\_t](widget_t.md)的子类控件，
+ widget\_t的函数均适用于pages\_t控件。
+
+ 在xml中使用"pages"标签创建页面管理控件。如：
+
+ ```xml
+ <tab_control x="0" y="0" w="100%" h="100%" >
+   <pages x="c" y="20" w="90%" h="-60" value="1">
+   ...
+   </pages>
+   <tab_button_group>
+   ...
+   </tab_button_group>
+ </tab_control>
+ ```
+
+ > 更多用法请参考：
+ [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
+
+
+----------------------------------
 ### 函数
 <p id="pages_t_methods">
 
@@ -15,7 +40,7 @@
 ### 属性
 <p id="pages_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#pages_t_active">active</a> | uint32\_t | 当前活跃的page。 |
 ### 事件

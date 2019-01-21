@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -53,6 +53,13 @@ typedef int32_t xy_t;
 typedef int32_t wh_t;
 typedef float float_t;
 typedef void* pointer_t;
+typedef uint16_t font_size_t;
+
+struct _value_t;
+typedef struct _value_t value_t;
+
+struct _object_t;
+typedef struct _object_t object_t;
 
 /**
  * @enum ret_t
@@ -90,6 +97,11 @@ typedef enum _ret_t {
    * 找到。
    */
   RET_FOUND,
+  /**
+   * @const RET_BUSY
+   * 对象忙。
+   */
+  RET_BUSY,
   /**
    * @const RET_REMOVE
    * 移出。通常用于定时器。
@@ -129,6 +141,8 @@ typedef enum _ret_t {
 
 #ifdef WIN32
 #include <windows.h>
+#define random rand
+#define srandom srand
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
@@ -250,5 +264,9 @@ enum { TK_NAME_LEN = 31 };
 
 #define TK_D2R(d) (((d)*M_PI) / 180)
 #define TK_R2D(r) (((r)*180) / M_PI)
+
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#endif /*HAS_AWTK_CONFIG*/
 
 #endif /*TYPES_DEF_H*/

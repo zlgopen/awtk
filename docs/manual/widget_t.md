@@ -45,6 +45,8 @@
  ```
 
 
+
+----------------------------------
 ### 函数
 <p id="widget_t_methods">
 
@@ -131,13 +133,13 @@
 ### 属性
 <p id="widget_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#widget_t_animation">animation</a> | char* | 动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md) |
 | <a href="#widget_t_astyle">astyle</a> | style\_t* | Style对象。 |
 | <a href="#widget_t_auto_created">auto\_created</a> | bool\_t | 是否由父控件自动创建。 |
 | <a href="#widget_t_can_not_destroy">can\_not\_destroy</a> | uint16\_t | 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。 |
-| <a href="#widget_t_children">children</a> | array\_t* | 全部子控件。 |
+| <a href="#widget_t_children">children</a> | darray\_t* | 全部子控件。 |
 | <a href="#widget_t_children_layout">children\_layout</a> | children\_layouter\_t* | 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
 | <a href="#widget_t_custom_props">custom\_props</a> | custom\_props\_t* | 自定义属性。 |
 | <a href="#widget_t_destroying">destroying</a> | bool\_t | 标识控件正在被销毁。 |
@@ -362,7 +364,7 @@ widget_t* widget_child (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_child_on (widget_t* widget, char* name, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -372,7 +374,7 @@ int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 子控件的名称。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_clone 函数
@@ -1229,7 +1231,7 @@ ret_t widget_off (widget_t* widget, int32_t id);
 * 函数原型：
 
 ```
-ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+ret_t widget_off_by_func (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1238,7 +1240,7 @@ ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_e
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_on 函数
@@ -1261,7 +1263,7 @@ ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_e
 * 函数原型：
 
 ```
-int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_on (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1270,7 +1272,7 @@ int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, v
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_pause\_animator 函数
@@ -2162,7 +2164,7 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 
-* 类型：array\_t*
+* 类型：darray\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

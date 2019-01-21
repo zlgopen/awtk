@@ -8,6 +8,8 @@
  style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
 
 
+
+----------------------------------
 ### 函数
 <p id="style_mutable_t_methods">
 
@@ -24,7 +26,7 @@
 ### 属性
 <p id="style_mutable_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#style_mutable_t_name">name</a> | char* | 名称。 |
 #### style\_mutable\_create 函数

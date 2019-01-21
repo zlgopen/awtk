@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  switch
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -294,11 +294,10 @@ static const widget_vtable_t s_switch_vtable = {
 };
 
 widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  switch_t* aswitch = TKMEM_ZALLOC(switch_t);
-  widget_t* widget = WIDGET(aswitch);
+  widget_t* widget = widget_create(parent, &s_switch_vtable, x, y, w, h);
+  switch_t* aswitch = SWITCH(widget);
   return_value_if_fail(aswitch != NULL, NULL);
 
-  widget_init(widget, parent, &s_switch_vtable, x, y, w, h);
   aswitch->value = TRUE;
   aswitch->round_radius = 0;
   aswitch->max_xoffset_ratio = 0.34f;

@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -248,6 +248,19 @@ char* tk_strdup(const char* str) {
   return_value_if_fail(str != NULL, NULL);
 
   return tk_strndup(str, strlen(str));
+}
+
+wchar_t* tk_wstrdup(const wchar_t* str) {
+  uint32_t size = 0;
+  wchar_t* new_str = NULL;
+  return_value_if_fail(str != NULL, NULL);
+  size = wcslen(str) + 1;
+
+  new_str = TKMEM_ALLOC(size * sizeof(wchar_t));
+  return_value_if_fail(new_str != NULL, NULL);
+  memcpy(new_str, str, size * sizeof(wchar_t));
+
+  return new_str;
 }
 
 uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
@@ -526,6 +539,22 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
   return RET_OK;
 }
 
+int32_t tk_str_cmp(const char* a, const char* b) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return strcmp(a, b);
+}
+
 char* tk_str_copy(char* dst, const char* src) {
   if (src != NULL) {
     uint32_t size = strlen(src) + 1;
@@ -573,4 +602,18 @@ double tk_watof(const wchar_t* str) {
   utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
 
   return tk_atof(num);
+}
+
+ret_t default_destroy(void* data) {
+  TKMEM_FREE(data);
+
+  return RET_OK;
+}
+
+ret_t dummy_destroy(void* data) {
+  return RET_OK;
+}
+
+int32_t pointer_compare(const void* a, const void* b) {
+  return ((const char*)a - (const char*)b);
 }

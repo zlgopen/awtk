@@ -249,3 +249,17 @@ TEST(Utils, tk_str_copy) {
 
   TKMEM_FREE(str);
 }
+
+TEST(Utils, tk_strdup) {
+  char* str = tk_strdup("abc");
+  ASSERT_EQ(string(str), "abc");
+
+  TKMEM_FREE(str);
+}
+
+TEST(Utils, tk_wstrdup) {
+  wchar_t* str = tk_wstrdup(L"abc");
+  ASSERT_EQ(memcmp(str, L"abc", sizeof(wchar_t) * 3), 0);
+
+  TKMEM_FREE(str);
+}

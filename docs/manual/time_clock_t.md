@@ -2,7 +2,38 @@
 ### 概述
 ![image](images/time_clock_t_0.png)
 
- 时钟控件。
+ 模拟时钟控件。
+
+ time\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于time\_clock\_t控件。
+
+ 在xml中使用"time\_clock"标签创建模拟时钟控件。如：
+
+ ```xml
+ <time_clock x="c" y="m" w="300" h="300" bg_image="clock_bg" image="clock"
+   hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/>
+ ```
+
+ > 更多用法请参考：[time\_clock.xml](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/time_clock.xml)
+
+ 在c代码中使用函数time\_clock\_create创建模拟时钟控件。如：
+
+ ```c
+ widget_t* tc = time_clock_create(win, 10, 10, 240, 240);
+ time_clock_set_image(tc, "clock");
+ time_clock_set_bg_image(tc, "clock_bg");
+ time_clock_set_hour_image(tc, "clock_hour");
+ time_clock_set_minute_image(tc, "clock_minute");
+ time_clock_set_second_image(tc, "clock_second");
+ ```
+
+ > 完整示例请参考：[time_clock demo](
+ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/time_clock.c)
+
+ time\_clock一般不需要设置style。
+
+
+----------------------------------
 ### 函数
 <p id="time_clock_t_methods">
 
@@ -21,7 +52,7 @@
 ### 属性
 <p id="time_clock_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#time_clock_t_bg_image">bg\_image</a> | char* | 背景图片。 |
 | <a href="#time_clock_t_hour">hour</a> | int32\_t | 小时。 |

@@ -442,7 +442,10 @@
 
 <text_selector>
   <style name="default" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
-    <normal     bg_color="#f0f0f0" />
+    <normal     bg_color="#f0f0f0"/>
+  </style>
+  <style name="dark" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
+    <normal     bg_color="#ffffff" mask_color="#404040" border_color="#404040"/>
   </style>
 </text_selector>
 
@@ -486,3 +489,12 @@
     <over_of_checked icon="visible" />
   </style>
 </check_button>
+
+<slide_menu>
+  <style name="default">
+    <normal     bg_color="#f0f0f0"/>
+  </style>
+  <style name="mask">
+    <normal     bg_color="#f0f0f0" mask_color="#f0f0f0"/>
+  </style>
+</slide_menu>

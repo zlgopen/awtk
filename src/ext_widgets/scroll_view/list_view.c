@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  list_view
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -75,9 +75,6 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       wheel_event_t* evt = (wheel_event_t*)e;
       int32_t delta = evt->dy;
       if (list_view->scroll_bar != NULL) {
-#ifdef MACOS
-        delta = -delta;
-#endif /*MACOS*/
         scroll_bar_add_delta(list_view->scroll_bar, delta);
         log_debug("wheel: %d\n", delta);
       }
@@ -90,6 +87,7 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
 }
 
 static const widget_vtable_t s_list_view_vtable = {.type = WIDGET_TYPE_LIST_VIEW,
+                                                   .size = sizeof(list_view_t),
                                                    .set_prop = list_view_set_prop,
                                                    .get_prop = list_view_get_prop,
                                                    .on_event = list_view_on_event,
@@ -257,11 +255,7 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
 }
 
 widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  list_view_t* list_view = TKMEM_ZALLOC(list_view_t);
-  widget_t* widget = WIDGET(list_view);
-  return_value_if_fail(list_view != NULL, NULL);
-
-  return widget_init(widget, parent, &s_list_view_vtable, x, y, w, h);
+  return widget_create(parent, &s_list_view_vtable, x, y, w, h);
 }
 
 ret_t list_view_set_item_height(widget_t* widget, int32_t item_height) {

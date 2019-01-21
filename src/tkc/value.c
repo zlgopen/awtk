@@ -1,9 +1,9 @@
-﻿/**
+/**
  * File:   value.h
  * Author: AWTK Develop Team
  * Brief:  generic value type
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/value.h"
 #include "tkc/utils.h"
+#include "tkc/object.h"
 
 bool_t value_bool(const value_t* v) {
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
@@ -38,25 +39,27 @@ bool_t value_bool(const value_t* v) {
     }
     default: { return value_int(v) ? TRUE : FALSE; }
   }
+}
 
-  return FALSE;
+value_t* value_init(value_t* v, uint32_t type) {
+  v->type = type;
+  v->free_handle = FALSE;
+
+  return v;
 }
 
 value_t* value_set_bool(value_t* v, bool_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_BOOL;
   v->value.b = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_BOOL);
 }
 
 value_t* value_set_int8(value_t* v, int8_t value) {
   return_value_if_fail(v != NULL, NULL);
-  v->type = VALUE_TYPE_INT8;
-  v->value.i8 = value;
 
-  return v;
+  v->value.i8 = value;
+  return value_init(v, VALUE_TYPE_INT8);
 }
 
 int8_t value_int8(const value_t* v) {
@@ -72,10 +75,9 @@ int8_t value_int8(const value_t* v) {
 value_t* value_set_uint8(value_t* v, uint8_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_UINT8;
   v->value.u8 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_UINT8);
 }
 
 uint8_t value_uint8(const value_t* v) {
@@ -91,10 +93,9 @@ uint8_t value_uint8(const value_t* v) {
 value_t* value_set_int16(value_t* v, int16_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_INT16;
   v->value.i16 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_INT16);
 }
 
 int16_t value_int16(const value_t* v) {
@@ -110,10 +111,9 @@ int16_t value_int16(const value_t* v) {
 value_t* value_set_uint16(value_t* v, uint16_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_UINT16;
   v->value.u16 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_UINT16);
 }
 
 uint16_t value_uint16(const value_t* v) {
@@ -129,10 +129,8 @@ uint16_t value_uint16(const value_t* v) {
 value_t* value_set_int32(value_t* v, int32_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_INT32;
   v->value.i32 = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_INT32);
 }
 
 int32_t value_int32(const value_t* v) {
@@ -147,10 +145,9 @@ int32_t value_int32(const value_t* v) {
 
 value_t* value_set_uint32(value_t* v, uint32_t value) {
   return_value_if_fail(v != NULL, NULL);
-  v->type = VALUE_TYPE_UINT32;
-  v->value.u32 = value;
 
-  return v;
+  v->value.u32 = value;
+  return value_init(v, VALUE_TYPE_UINT32);
 }
 
 uint32_t value_uint32(const value_t* v) {
@@ -166,10 +163,8 @@ uint32_t value_uint32(const value_t* v) {
 value_t* value_set_int64(value_t* v, int64_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_INT64;
   v->value.i64 = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_INT64);
 }
 
 int64_t value_int64(const value_t* v) {
@@ -185,10 +180,9 @@ int64_t value_int64(const value_t* v) {
 value_t* value_set_uint64(value_t* v, uint64_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_UINT64;
   v->value.u64 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_UINT64);
 }
 
 uint64_t value_uint64(const value_t* v) {
@@ -204,10 +198,8 @@ uint64_t value_uint64(const value_t* v) {
 value_t* value_set_pointer(value_t* v, pointer_t value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_POINTER;
   v->value.ptr = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_POINTER);
 }
 
 pointer_t value_pointer(const value_t* v) {
@@ -220,10 +212,9 @@ pointer_t value_pointer(const value_t* v) {
 value_t* value_set_float(value_t* v, float value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_FLOAT;
   v->value.f = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_FLOAT);
 }
 
 float_t value_float(const value_t* v) {
@@ -280,10 +271,9 @@ float_t value_float(const value_t* v) {
 value_t* value_set_float32(value_t* v, float value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_FLOAT;
   v->value.f32 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_FLOAT32);
 }
 
 float value_float32(const value_t* v) {
@@ -299,10 +289,9 @@ float value_float32(const value_t* v) {
 value_t* value_set_double(value_t* v, double value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_DOUBLE;
   v->value.f64 = value;
 
-  return v;
+  return value_init(v, VALUE_TYPE_DOUBLE);
 }
 
 double value_double(const value_t* v) {
@@ -318,8 +307,16 @@ double value_double(const value_t* v) {
 value_t* value_set_str(value_t* v, const char* value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_STRING;
   v->value.str = value;
+  return value_init(v, VALUE_TYPE_STRING);
+}
+
+value_t* value_dup_str(value_t* v, const char* value) {
+  return_value_if_fail(v != NULL, NULL);
+
+  value_init(v, VALUE_TYPE_STRING);
+  v->value.str = tk_strdup(value);
+  v->free_handle = TRUE;
 
   return v;
 }
@@ -327,10 +324,8 @@ value_t* value_set_str(value_t* v, const char* value) {
 value_t* value_set_wstr(value_t* v, const wchar_t* value) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->type = VALUE_TYPE_WSTRING;
   v->value.wstr = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_WSTRING);
 }
 
 const char* value_str(const value_t* v) {
@@ -355,6 +350,34 @@ ret_t value_copy(value_t* dst, const value_t* src) {
   }
 
   memcpy(dst, src, sizeof(value_t));
+
+  return RET_OK;
+}
+
+ret_t value_deep_copy(value_t* dst, const value_t* src) {
+  return_value_if_fail(dst != NULL && src != NULL, RET_BAD_PARAMS);
+
+  value_copy(dst, src);
+
+  switch (dst->type) {
+    case VALUE_TYPE_STRING: {
+      dst->free_handle = TRUE;
+      dst->value.str = tk_strdup(src->value.str);
+      break;
+    }
+    case VALUE_TYPE_WSTRING: {
+      dst->free_handle = TRUE;
+      dst->value.wstr = tk_wstrdup(src->value.wstr);
+      break;
+    }
+    case VALUE_TYPE_OBJECT: {
+      dst->free_handle = TRUE;
+      object_ref(dst->value.object);
+      break;
+    }
+    default:
+      break;
+  }
 
   return RET_OK;
 }
@@ -467,6 +490,9 @@ bool_t value_equal(const value_t* v, const value_t* other) {
     case VALUE_TYPE_WSTRING: {
       return (v->value.wstr == other->value.wstr) || tk_wstr_eq(v->value.wstr, other->value.wstr);
     }
+    case VALUE_TYPE_OBJECT: {
+      return object_compare(v->value.object, other->value.object) == 0;
+    }
     default:
       break;
   }
@@ -482,10 +508,59 @@ value_t* value_create() {
   return TKMEM_ZALLOC(value_t);
 }
 
+ret_t value_reset(value_t* v) {
+  return_value_if_fail(v != NULL, RET_BAD_PARAMS);
+
+  if (v->free_handle) {
+    switch (v->type) {
+      case VALUE_TYPE_STRING: {
+        TKMEM_FREE(v->value.str);
+        break;
+      }
+      case VALUE_TYPE_WSTRING: {
+        TKMEM_FREE(v->value.wstr);
+        break;
+      }
+      case VALUE_TYPE_OBJECT: {
+        object_unref(v->value.object);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  memset(v, 0x00, sizeof(value_t));
+
+  return RET_OK;
+}
+
 ret_t value_destroy(value_t* v) {
   return_value_if_fail(v != NULL, RET_BAD_PARAMS);
 
+  value_reset(v);
   TKMEM_FREE(v);
 
   return RET_OK;
+}
+
+value_t* value_set_object(value_t* v, object_t* value) {
+  return_value_if_fail(v != NULL && value != NULL, NULL);
+
+  v->type = VALUE_TYPE_OBJECT;
+  v->value.object = value;
+
+  return v;
+}
+
+object_t* value_object(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_OBJECT, NULL);
+
+  return v->value.object;
+}
+
+value_t* value_cast(value_t* value) {
+  return_value_if_fail(value != NULL, NULL);
+
+  return value;
 }

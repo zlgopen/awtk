@@ -3,6 +3,8 @@
  本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。
 
 
+
+----------------------------------
 ### 函数
 <p id="locale_info_t_methods">
 
@@ -21,7 +23,7 @@
 ### 属性
 <p id="locale_info_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#locale_info_t_country;">country;</a> | char* | 国家或地区。如：CN |
 | <a href="#locale_info_t_language">language</a> | char* | 语言。如：zh |

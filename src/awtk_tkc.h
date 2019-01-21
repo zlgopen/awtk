@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  awtk toolkit c libs
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,7 +22,7 @@
 #ifndef TK_TKC_H
 #define TK_TKC_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "tkc/buffer.h"
 #include "tkc/color.h"
 #include "tkc/color_parser.h"

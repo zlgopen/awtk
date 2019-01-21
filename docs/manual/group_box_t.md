@@ -29,6 +29,8 @@
    <normal     bg_color="#f0f0f0" />
  </style>
  ```
+
+----------------------------------
 ### 函数
 <p id="group_box_t_methods">
 

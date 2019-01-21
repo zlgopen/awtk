@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  button
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -46,12 +46,21 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   button->repeat_nr++;
   widget_dispatch(widget, (event_t*)&evt);
 
-  if (button->repeat_nr == 4) {
-    evt.e = event_init(EVT_LONG_PRESS, widget);
-    widget_dispatch(widget, (event_t*)&evt);
-  }
-
   return RET_REPEAT;
+}
+
+static ret_t button_on_long_press(const timer_info_t* info) {
+  pointer_event_t evt;
+  widget_t* widget = WIDGET(info->ctx);
+
+  evt.x = 0;
+  evt.y = 0;
+  evt.e = event_init(EVT_LONG_PRESS, widget);
+
+  button_remove_timer(widget);
+  widget_dispatch(widget, (event_t*)&evt);
+
+  return RET_REMOVE;
 }
 
 static ret_t button_pointer_up_cleanup(widget_t* widget) {
@@ -77,7 +86,10 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       button_remove_timer(widget);
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
+      } else {
+        button->timer_id = timer_add(button_on_long_press, widget, TK_LONG_PRESS_TIME);
       }
+
       widget_grab(widget->parent, widget);
       break;
     }
@@ -160,33 +172,11 @@ static ret_t button_on_destroy(widget_t* widget) {
   return button_remove_timer(widget);
 }
 
-#ifdef WITH_WIDGET_POOL
-static array_t s_button_pool;
-static ret_t button_recycle(widget_t* widget) {
-  button_t* button = BUTTON(widget);
-
-  button->repeat = 0;
-  button_remove_timer(widget);
-
-  return array_push(&s_button_pool, widget);
-}
-
-static button_t* button_alloc(void) {
-  if (s_button_pool.size > 0) {
-    return (button_t*)array_pop(&s_button_pool);
-  } else {
-    return TKMEM_ZALLOC(button_t);
-  }
-}
-#else
-#define button_recycle NULL
-#define button_alloc() TKMEM_ZALLOC(button_t)
-#endif /*WITH_WIDGET_POOL*/
-
 static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
 static const widget_vtable_t s_button_vtable = {
     .size = sizeof(button_t),
     .type = WIDGET_TYPE_BUTTON,
+    .enable_pool = TRUE,
     .create = button_create,
     .clone_properties = s_button_properties,
     .persistent_properties = s_button_properties,
@@ -195,15 +185,16 @@ static const widget_vtable_t s_button_vtable = {
     .get_prop = button_get_prop,
     .get_prop_default_value = button_get_prop_default_value,
     .on_destroy = button_on_destroy,
-    .recycle = button_recycle,
     .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  button_t* button = button_alloc();
-  widget_t* widget = WIDGET(button);
+  widget_t* widget = widget_create(parent, &s_button_vtable, x, y, w, h);
+  button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL, NULL);
 
-  widget_init(widget, parent, &s_button_vtable, x, y, w, h);
+  button->repeat = 0;
+  button->repeat_nr = 0;
+  button->pressed = FALSE;
   button->timer_id = TK_INVALID_ID;
 
   return widget;

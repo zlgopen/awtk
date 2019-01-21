@@ -1,6 +1,18 @@
 ﻿#include "tkc/rect.h"
 #include "gtest/gtest.h"
 
+TEST(Rect, basic) {
+  rect_t* r = rect_create(1, 2, 3, 4);
+  rect_t r1 = rect_init(1, 2, 3, 4);
+
+  ASSERT_EQ(r->x, r1.x);
+  ASSERT_EQ(r->y, r1.y);
+  ASSERT_EQ(r->w, r1.w);
+  ASSERT_EQ(r->h, r1.h);
+
+  rect_destroy(r);
+}
+
 TEST(Rect, merge) {
   rect_t dr;
   rect_t r;

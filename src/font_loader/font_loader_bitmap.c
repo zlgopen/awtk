@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  font interface
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -50,7 +50,7 @@ static font_bitmap_index_t* find_glyph(font_bitmap_index_t* elms, uint32_t nr, w
   return NULL;
 }
 
-static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
+static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   const uint8_t* p = NULL;
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
@@ -65,11 +65,11 @@ static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, uint16_t font_size, gly
   return RET_OK;
 }
 
-static bool_t font_bitmap_match(font_t* f, const char* name, uint16_t font_size) {
+static bool_t font_bitmap_match(font_t* f, const char* name, font_size_t font_size) {
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
   if (name == NULL || strcmp(name, font->base.name) == 0) {
-    return header->font_size == font_size;
+    return (int32_t)(header->font_size) == (int32_t)font_size;
   }
 
   return FALSE;
@@ -80,7 +80,7 @@ static ret_t font_bitmap_destroy(font_t* f) {
   return RET_OK;
 }
 
-static int32_t font_bitmap_get_baseline(font_t* f, uint16_t font_size) {
+static int32_t font_bitmap_get_baseline(font_t* f, font_size_t font_size) {
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
 

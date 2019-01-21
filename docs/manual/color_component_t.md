@@ -6,6 +6,8 @@
  控件的名称有严格规定：
  COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。
  COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
+
+----------------------------------
 ### 函数
 <p id="color_component_t_methods">
 

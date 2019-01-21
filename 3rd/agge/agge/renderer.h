@@ -116,8 +116,13 @@ namespace agge
 
 			int len = i->x - x;
 
-			if (len && cover_m)
-				scanline.add_span(x, len, alpha(cover_m));
+			if (len && cover_m) {
+				if (len > 0) {
+					scanline.add_span(x, len, alpha(cover_m));
+				} else {
+					//printf("sweep_scanline i->x=%d x=%d len=%d area=%d cover=%d cover_m=%d \r\n", i->x, x, len, area, cover, cover_m);
+				}
+			}
 		}
 	}
 

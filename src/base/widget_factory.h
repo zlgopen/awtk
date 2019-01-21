@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  widget factory
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,13 +22,13 @@
 #ifndef TK_WIDGET_FACTORY_H
 #define TK_WIDGET_FACTORY_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
 
 typedef struct _widget_factory_t {
-  array_t creators;
+  darray_t creators;
 } widget_factory_t;
 
 widget_factory_t* widget_factory(void);

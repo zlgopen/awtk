@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  font manager
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,7 +22,7 @@
 #ifndef TK_FONT_MANAGER_H
 #define TK_FONT_MANAGER_H
 
-#include "tkc/array.h"
+#include "tkc/darray.h"
 #include "base/font_loader.h"
 #include "base/assets_manager.h"
 
@@ -34,7 +34,7 @@ BEGIN_C_DECLS
  * (如果使用nanovg，字体由nanovg内部管理)
  */
 typedef struct _font_manager_t {
-  array_t fonts;
+  darray_t fonts;
 
   /**
    * @property {font_loader_t*} loader
@@ -123,11 +123,11 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font);
  * 从缓存中查找字体，如果没找到，再加载字体，并缓存。
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
- * @param {uint16_t} size 字体的大小。
+ * @param {font_size_t} size 字体的大小。
  *
  * @return {font_t*} 返回字体对象。
  */
-font_t* font_manager_get_font(font_manager_t* fm, const char* name, uint16_t size);
+font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size);
 
 /**
  * @method font_manager_deinit

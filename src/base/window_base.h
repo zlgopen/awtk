@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  window_base
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -154,8 +154,8 @@ ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);
-widget_t* window_base_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x,
-                           xy_t y, wh_t w, wh_t h);
+widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                             wh_t h);
 
 #define WINDOW_BASE(widget) ((window_base_t*)(widget))
 

@@ -2,7 +2,53 @@
 ### 概述
 ![image](images/slide_view_t_0.png)
 
- slide view。
+ 滑动视图。
+
+ 滑动视图可以管理多个页面，并通过滑动来切换当前页面。也可以管理多张图片，让它们自动切换。
+
+ slide\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于slide\_view\_t控件。
+
+ 在xml中使用"slide\_view"标签创建滑动视图控件。如：
+
+ ```xml
+   <slide_view x="0" y="0" w="100%" h="100%" style="dot">
+   <view x="0" y="0" w="100%" h="100%" children_layout="default(w=60,h=60,m=5,s=10)">
+    ...
+   </view>
+   <view x="0" y="0" w="100%" h="100%" children_layout="default(w=60,h=60,m=5,s=10)">
+    ...
+   </view>
+   </slide_view>
+ ```
+
+ > 更多用法请参考：[slide_view.xml](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
+
+ 在c代码中使用函数slide\_view\_create创建滑动视图控件。如：
+
+ ```c
+ slide_view = slide_view_create(win, 0, 0, win->w, win->h);
+ ```
+
+ > 完整示例请参考：
+ [slide_view demo](
+ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)
+
+ 可用通过style来设置控件的显示风格，如背景颜色和指示器的图标等等。如：
+
+ ```xml
+ <style name="dot">
+   <normal  icon="dot" active_icon="active_dot"/>
+ </style>
+ ```
+
+ > 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\_view上。
+
+ > 更多用法请参考：[theme default](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L458)
+
+
+----------------------------------
 ### 函数
 <p id="slide_view_t_methods">
 
@@ -16,7 +62,7 @@
 ### 属性
 <p id="slide_view_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slide_view_t_auto_play">auto\_play</a> | uint16\_t | 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
 | <a href="#slide_view_t_vertical">vertical</a> | bool\_t | 是否为上下滑动模式。 |

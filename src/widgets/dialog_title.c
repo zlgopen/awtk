@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  dialog title
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -36,11 +36,9 @@ static const widget_vtable_t s_dialog_title_vtable = {.size = sizeof(dialog_titl
                                                       .on_paint_self = dialog_title_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  dialog_title_t* dialog_title = TKMEM_ZALLOC(dialog_title_t);
-  widget_t* widget = WIDGET(dialog_title);
-  return_value_if_fail(dialog_title != NULL, NULL);
+  widget_t* widget = widget_create(parent, &s_dialog_title_vtable, x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
 
-  widget_init(widget, parent, &s_dialog_title_vtable, x, y, w, h);
   widget_set_name(widget, "title");
 
   return widget;

@@ -3,6 +3,41 @@
 ![image](images/switch_t_0.png)
 
  开关控件。
+
+ switch\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于switch\_t控件。
+
+ 在xml中使用"switch"标签创建开关控件。如：
+
+ ```xml
+ <switch x="10" y="60" w="60" h="22" />
+ ```
+
+ > 更多用法请参考：[switch.xml](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/switch.xml)
+
+ 在c代码中使用函数switch\_create创建开关控件。如：
+
+ ```c
+  widget_t* sw = switch_create(win, 10, 10, 80, 30);
+  widget_on(sw, EVT_VALUE_CHANGED, on_changed, NULL);
+ ```
+
+ > 完整示例请参考：[switch demo](
+ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/switch.c)
+
+ 可用通过style来设置控件的显示风格，如背景图片等。如：
+
+ ```xml
+ <style name="default">
+   <normal  bg_image="switch" />
+ </style>
+ ```
+
+ > 更多用法请参考：[theme default](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L452)
+
+
+----------------------------------
 ### 函数
 <p id="switch_t_methods">
 
@@ -14,7 +49,7 @@
 ### 属性
 <p id="switch_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#switch_t_max_xoffset_ratio">max\_xoffset\_ratio</a> | float\_t | 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。 |
 | <a href="#switch_t_round_radius">round\_radius</a> | int32\_t | 图片的圆角半径。 |

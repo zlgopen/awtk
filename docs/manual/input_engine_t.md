@@ -11,6 +11,8 @@
  ![image](images/input_engine_t_0.png)
 
 
+
+----------------------------------
 ### 函数
 <p id="input_engine_t_methods">
 
@@ -23,7 +25,7 @@
 ### 属性
 <p id="input_engine_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 #### input\_engine\_create 函数
 -----------------------

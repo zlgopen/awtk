@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  canvas_widget
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,11 +27,7 @@ static const widget_vtable_t s_canvas_widget_vtable = {.size = sizeof(canvas_wid
                                                        .create = canvas_widget_create};
 
 widget_t* canvas_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  canvas_widget_t* canvas_widget = TKMEM_ZALLOC(canvas_widget_t);
-  widget_t* widget = WIDGET(canvas_widget);
-  return_value_if_fail(canvas_widget != NULL, NULL);
-
-  return widget_init(widget, parent, &s_canvas_widget_vtable, x, y, w, h);
+  return widget_create(parent, &s_canvas_widget_vtable, x, y, w, h);
 }
 
 widget_t* canvas_widget_cast(widget_t* widget) {

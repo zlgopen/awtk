@@ -3,6 +3,8 @@
  字体管理器，负责字体的加载和缓存管理。
  (如果使用nanovg，字体由nanovg内部管理)
 
+
+----------------------------------
 ### 函数
 <p id="font_manager_t_methods">
 
@@ -20,7 +22,7 @@
 ### 属性
 <p id="font_manager_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 #### font\_manager 函数
 -----------------------
@@ -145,7 +147,7 @@ ret_t font_manager_destroy (font_manager_t* fm);
 * 函数原型：
 
 ```
-font_t* font_manager_get_font (font_manager_t* fm, char* name, uint16_t size);
+font_t* font_manager_get_font (font_manager_t* fm, char* name, font_size_t size);
 ```
 
 * 参数说明：
@@ -155,7 +157,7 @@ font_t* font_manager_get_font (font_manager_t* fm, char* name, uint16_t size);
 | 返回值 | font\_t* | 返回字体对象。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
 | name | char* | 字体名，为NULL时使用TK\_DEFAULT\_FONT。 |
-| size | uint16\_t | 字体的大小。 |
+| size | font\_size\_t | 字体的大小。 |
 #### font\_manager\_init 函数
 -----------------------
 

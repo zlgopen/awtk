@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  emitter dispatcher
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -252,4 +252,10 @@ ret_t emitter_set_on_destroy(emitter_t* emitter, uint32_t id, tk_destroy_t on_de
   item->on_destroy_ctx = on_destroy_ctx;
 
   return RET_OK;
+}
+
+emitter_t* emitter_cast(emitter_t* emitter) {
+  return_value_if_fail(emitter != NULL, NULL);
+
+  return emitter;
 }

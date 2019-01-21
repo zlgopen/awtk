@@ -52,6 +52,8 @@ system\_bar\_t是[window\_base\_t](window_base_t.md)的子类控件，
 > 更多用法请参考：
  [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/system_bar.xml)
 
+
+----------------------------------
 ### 函数
 <p id="system_bar_t_methods">
 

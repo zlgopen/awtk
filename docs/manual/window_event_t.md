@@ -4,6 +4,8 @@
 
  窗口事件，由窗口管理器触发。
 
+
+----------------------------------
 ### 函数
 <p id="window_event_t_methods">
 
@@ -14,7 +16,7 @@
 ### 属性
 <p id="window_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_event_t_window">window</a> | widget\_t* | canvas。 |
 #### pointer\_event\_rotate 函数

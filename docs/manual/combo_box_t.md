@@ -74,6 +74,8 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
  > 更多用法请参考：[theme
 default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)
 
+
+----------------------------------
 ### 函数
 <p id="combo_box_t_methods">
 
@@ -93,7 +95,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 ### 属性
 <p id="combo_box_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#combo_box_t_open_window">open\_window</a> | char* | 为点击按钮时，要打开窗口的名称。 |
 | <a href="#combo_box_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |

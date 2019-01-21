@@ -3,6 +3,8 @@
 ![image](images/candidates_t_0.png)
 
  输入法候选字词控件。
+
+----------------------------------
 ### 函数
 <p id="candidates_t_methods">
 

@@ -51,6 +51,8 @@
  > 更多用法请参考：[theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L128)
 
+
+----------------------------------
 ### 函数
 <p id="spin_box_t_methods">
 

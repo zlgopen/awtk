@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  input method default
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -54,6 +54,10 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
     }
     case INPUT_HEX: {
       keyboard = "kb_hex";
+      break;
+    }
+    case INPUT_CUSTOM: {
+      log_debug("custom keyboard\n");
       break;
     }
     case INPUT_EMAIL:
@@ -113,6 +117,10 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   const char* close_anim_hint = "bottom_to_top";
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
   const char* keyboard = input_type_to_keyboard_name(input_type);
+
+  if (keyboard == NULL) {
+    return RET_OK;
+  }
 
   widget_to_screen(widget, &p);
   im->keyboard = window_open(keyboard);

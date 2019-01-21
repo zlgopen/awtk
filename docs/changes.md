@@ -1,4 +1,76 @@
 # 最新动态
+* 2019/01/18
+  * 修改valgrind发些的问题，并增加一些脚本。
+
+* 2019/01/17
+  * 增加文档。
+
+* 2019/01/16
+  * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
+  * 整理API文档：self\_layouter/self\_layouter\_default/children\_layouter/children\_layouter\_default
+  * 去掉array类，使用darray类代替。
+  * 修改valgrind发现的泄露内存问题。
+
+* 2019/01/16
+  * 增加darray类，逐步替换以前的array类。
+  * 增加widget pool用于控件的缓存和重复利用，可以通过WITH\_WIDGET\_POOL启用。
+  * 增加widget\_create函数，简化子类控件的创建函数，同时让通用控件本身的由widget pool集中管理。
+  * 使用array的地方替换为darray。
+  * 更新stm32相关工程。
+
+* 2019/01/15
+  * 整理API文档：progress\_circle/rich\_text/slide\_menu/slide\_view/svg\_image/switch
+  * 整理API文档：text\_selector/time\_clock/digit\_clock
+  * 增加progress\_circle c语言demo。
+  * 增加slide\_menu c语言demo。
+  * 增加slide\_view c语言demo。
+  * 增加svg\_image c语言demo。
+  * 增加switch c语言demo。
+  * 增加text\_selector c语言demo。
+  * 增加time\_clock c语言demo。
+  * 增加digit\_clock c语言demo。
+  * 增加INPUT\_CUSTOM用于关闭系统缺省软键盘。
+
+* 2019/01/14
+  * 完善脚本绑定(增加函数和注释)。
+  * 整理API文档：color\_picker/gif\_image/guage/guage\_pointer/image\_animation/image\_value/keyboard。
+
+* 2019/01/13
+  * 完善脚本绑定(增加函数和注释)。
+  * 更新awtk-js。
+  * 更新awtk-lua。
+
+* 2019/01/12
+  * 重新实现timer，解决timer中打开模态窗口的问题。 
+  * 重新实现idle，解决idle中打开模态窗口的问题。 
+  * 完善object，在修改属性和销毁时触发事件。
+
+* 2019/01/11
+  * 增加slist\_t。
+
+* 2019/01/10
+  * 增加object\_t/object\_default\_t/named\_value\_t等几个类。
+  * value\_t支持object。
+
+* 2019/01/09
+  * 完善slide menu，增加mask color，实现两边的按钮淡出的效果。
+  * 增加canavs widget的demo
+  * 整理API文档：canvas\_widget
+
+* 2019/01/08
+  * 完善text\_selector，增加mask color，实现伪3D效果。
+  * 修改font size的类型为font\_size\_t。
+  * 修改agge scan line为负的BUG(感谢陈谭提供补丁)。
+  * 按钮支持长按事件。
+
+* 2019/01/07
+  * 修改"Copyright (c) 2018 - 2018"为"Copyright (c) 2018 - 2019"
+  * 整理API文档：tab\_control/tab\_button/tab\_button\_group。
+
+* 2019/01/04
+  * slide\_menu动态决定可见子控件的个数(由长度与宽度比例和子控件个数决定)。
+  * 修改combobox的BUG。
+
 * 2019/01/03
   * 同步SDL代码。
   * 整理API文档：timer/idle

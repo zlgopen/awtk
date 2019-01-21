@@ -1,6 +1,8 @@
 ## custom\_props\_t
 ### 概述
  widget自定义属性集合。
+
+----------------------------------
 ### 函数
 <p id="custom_props_t_methods">
 

@@ -12,16 +12,21 @@
 > 在脚本语言中，需要动态创建对象。
 
 
+
+----------------------------------
 ### 函数
 <p id="value_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
+| <a href="#value_t_value_cast">value\_cast</a> | 转换为value对象。 |
 | <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
 | <a href="#value_t_value_create">value\_create</a> | 创建value对象。 |
+| <a href="#value_t_value_deep_copy">value\_deep\_copy</a> | 深拷贝value的值。 |
 | <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
+| <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
@@ -31,7 +36,9 @@
 | <a href="#value_t_value_int64">value\_int64</a> | 获取类型为int64的值。 |
 | <a href="#value_t_value_int8">value\_int8</a> | 获取类型为int8的值。 |
 | <a href="#value_t_value_is_null">value\_is\_null</a> | 判断value是否为空值。 |
+| <a href="#value_t_value_object">value\_object</a> | 转换为object的值。 |
 | <a href="#value_t_value_pointer">value\_pointer</a> | 获取类型为pointer的值。 |
+| <a href="#value_t_value_reset">value\_reset</a> | 重置value对象。 |
 | <a href="#value_t_value_set_bool">value\_set\_bool</a> | 设置类型为bool的值。 |
 | <a href="#value_t_value_set_double">value\_set\_double</a> | 设置类型为double的值。 |
 | <a href="#value_t_value_set_float">value\_set\_float</a> | 设置类型为float\_t的值。 |
@@ -41,6 +48,7 @@
 | <a href="#value_t_value_set_int32">value\_set\_int32</a> | 设置类型为int32的值。 |
 | <a href="#value_t_value_set_int64">value\_set\_int64</a> | 设置类型为int64的值。 |
 | <a href="#value_t_value_set_int8">value\_set\_int8</a> | 设置类型为int8的值。 |
+| <a href="#value_t_value_set_object">value\_set\_object</a> | 设置类型为object的值。 |
 | <a href="#value_t_value_set_pointer">value\_set\_pointer</a> | 设置类型为pointer的值。 |
 | <a href="#value_t_value_set_str">value\_set\_str</a> | 设置类型为字符串的值。 |
 | <a href="#value_t_value_set_uint16">value\_set\_uint16</a> | 设置类型为uint16的值。 |
@@ -76,6 +84,30 @@ bool_t value_bool (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_cast"> 转换为value对象。
+
+ > 供脚本语言使用
+
+
+
+
+* 函数原型：
+
+```
+value_t* value_cast (value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | 对象。 |
+| value | value\_t* | value对象。 |
 #### value\_copy 函数
 -----------------------
 
@@ -120,6 +152,29 @@ value_t* value_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | value\_t* | 对象。 |
+#### value\_deep\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_deep_copy"> 深拷贝value的值。
+
+
+
+
+* 函数原型：
+
+```
+ret_t value_deep_copy (value_t* dst, value_t* src);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dst | value\_t* | 目的value对象。 |
+| src | value\_t* | 源value对象。 |
 #### value\_destroy 函数
 -----------------------
 
@@ -164,6 +219,31 @@ double value_double (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | double | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_dup\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_dup_str"> 设置类型为字符串的值(并拷贝字符串)。
+
+ > 供脚本语言使用。
+
+
+
+
+* 函数原型：
+
+```
+value_t* value_dup_str (value_t* v, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | const char* | 待设置的值。 |
 #### value\_equal 函数
 -----------------------
 
@@ -363,6 +443,28 @@ bool_t value_is_null (value_t* value);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 为空值返回TRUE，否则返回FALSE。 |
 | value | value\_t* | value对象。 |
+#### value\_object 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_object"> 转换为object的值。
+
+
+
+
+* 函数原型：
+
+```
+object_t* value_object (value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 值。 |
+| v | value\_t* | value对象。 |
 #### value\_pointer 函数
 -----------------------
 
@@ -384,6 +486,28 @@ void* value_pointer (value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void* | 值。 |
+| v | value\_t* | value对象。 |
+#### value\_reset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_reset"> 重置value对象。
+
+
+
+
+* 函数原型：
+
+```
+ret_t value_reset (value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | v | value\_t* | value对象。 |
 #### value\_set\_bool 函数
 -----------------------
@@ -592,6 +716,29 @@ value_t* value_set_int8 (value_t* v, int8_t value);
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | int8\_t | 待设置的值。 |
+#### value\_set\_object 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_set_object"> 设置类型为object的值。
+
+
+
+
+* 函数原型：
+
+```
+value_t* value_set_object (value_t* v, object_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | object\_t* | 待设置的值。 |
 #### value\_set\_pointer 函数
 -----------------------
 

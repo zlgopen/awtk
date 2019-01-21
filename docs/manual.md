@@ -32,6 +32,9 @@
 * [dialog\_client](manual/dialog_client_t.md) 对话框客户区控件。
 * [slider](manual/slider_t.md) 滑块控件。
 * [progress\_bar](manual/progress_bar_t.md) 进度条控件。
+* [tab\_control](manual/tab_control_t.md) 标签控件。
+* [tab\_button](manual/tab_button_t.md) 标签按钮控件。
+* [tab\_button\_group](manual/tab_button_group_t.md) 标签按钮分组控件。
 
 #### 通用容器控件
 * [row](manual/row_t.md) 行控件。
@@ -43,7 +46,34 @@
 * [app\_bar](manual/app_bar_t.md) app\_bar控件。
 * [button\_group](manual/button_group_t.md) 按钮分组控件。
 
+#### 扩展控件
+* [canvas\_widget](manual/canvas_widget_t.md) 画布控件。
+* [color\_picker](manual/color_picker_t.md) 颜色选择器控件。
+* [gif\_image](manual/gif_image_t.md) gif\_image控件。
+* [guage](manual/guage_t.md) 仪表控件。
+* [guage\_pointer](manual/guage_pointer_t.md) 仪表指针控件。
+* [image\_animation](manual/image_animation_t.md) 图片动画控件。
+* [image\_value](manual/image_value_t.md) 图片值控件。
+* [keyboard](manual/keyboard_t.md)  软键盘控件。
+* [progress\_circle](manual/progress_circle_t.md) 进度圆环控件。
+* [rich\_text](manual/rich_text_t.md) 图文混排控件。
+* [slide\_menu](manual/slide_menu_t.md) 左右滑动菜单控件。
+* [slide\_view](manual/slide_view_t.md) 滑动视图控件。
+* [svg\_image](manual/svg_image_t.md) SVG图片控件。
+* [switch](manual/switch_t.md) 开关控件。
+* [text\_selector](manual/text_selector_t.md) 文本选择器控件。
+* [time\_clock](manual/time_clock_t.md) 模拟时钟控件。
+* [digit\_clock](manual/digit_clock_t.md) 数字时钟控件。
+* [list\_view](manual/list_view_t.md) 列表视图控件。
+* [list\_view\_h](manual/list_view_h_t.md) 水平列表视图控件。
+* [list\_item](manual/list_item_t.md) 列表项控件。
+* [scroll\_bar](manual/scroll_bar_t.md) 滚动条控件。
+* [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
+
 ### 画布
+
+#### 普通画布
+* [canvas](manual/canvas_t.md)
 
 #### 矢量图画布
 
@@ -134,15 +164,24 @@
 
 * [idle\_info](manual/idle_info_t.md) 单个idle的信息。 
 
-### 控件动画
-
-### 窗口动画
-
 ### 布局器
+  
+![self\_layouter](../docs/images/layout_self_layouter.png)
 
+![children\_layouter](../docs/images/layout_children_layouter.png)
+
+* [self\_layouter](manual/self_layouter_t.md) 控件自身排版布局器的接口
+
+* [children\_layouter](manual/children_layouter_t.md) 子控件排版布局器的接口
+
+* [self\_layouter\_default](manual/self_layouter_default_t.md) 缺省的控件自身布局算法实现。
+
+* [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
 
 ## 二、基本函数库
 
+* [darray](manual/darray_t.md) 动态数组。
+* [slist](manual/slist_t.md) 单向链表。
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
 * [color](manual/color_t.md) 颜色对象。
@@ -150,7 +189,6 @@
 * [value](manual/value_t.md) 通用值对象。
 * [str](manual/str_t.md) UTF-8字符串对象。
 * [wstr](manual/wstr_t.md) Unicode字符串对象。
-* [array](manual/array_t.md) 动态数组对象。
 * [wbuffer](manual/wbuffer_t.md) Write Buffer。
 * [rbuffer](manual/rbuffer_t.md) Read Buffer。
 * [date\_time](manual/date_time_t.md) 时间日期函数。

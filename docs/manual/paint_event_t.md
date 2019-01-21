@@ -4,6 +4,8 @@
 
  绘制事件。
 
+
+----------------------------------
 ### 函数
 <p id="paint_event_t_methods">
 
@@ -13,7 +15,7 @@
 ### 属性
 <p id="paint_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#paint_event_t_c">c</a> | canvas\_t* | canvas。 |
 #### paint\_event\_cast 函数

@@ -1,5 +1,4 @@
 ﻿
-#include "tkc/array.h"
 #include "base/theme.h"
 #include "base/widget.h"
 #include "tools/theme_gen/xml_theme_gen.h"

@@ -9,6 +9,7 @@
 | -------- | ------- | 
 | STYLE\_ID\_BG\_COLOR | 背景颜色。 |
 | STYLE\_ID\_FG\_COLOR | 前景颜色。 |
+| STYLE\_ID\_MASK\_COLOR | 蒙版颜色。 |
 | STYLE\_ID\_FONT\_NAME | 字体名称。 |
 | STYLE\_ID\_FONT\_SIZE | 字体大小。 |
 | STYLE\_ID\_FONT\_STYLE | 字体风格(粗体、斜体等)。 |

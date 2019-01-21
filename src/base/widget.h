@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,6 +26,7 @@
 #include "tkc/mem.h"
 #include "tkc/wstr.h"
 #include "tkc/value.h"
+#include "tkc/darray.h"
 #include "tkc/rect.h"
 #include "tkc/emitter.h"
 
@@ -65,9 +66,8 @@ typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const val
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
-typedef ret_t (*widget_recycle_t)(widget_t* widget);
 
-typedef struct _widget_vtable_t {
+struct _widget_vtable_t {
   uint32_t size;
   const char* type;
   /*克隆widget时需要复制的属性*/
@@ -86,6 +86,15 @@ typedef struct _widget_vtable_t {
    * 是否是设计窗口。
    */
   uint32_t is_designing_window : 1;
+  /**
+   * 是否是软键盘(点击软键盘不改变编辑器的焦点)。
+   */
+  uint32_t is_keyboard : 1;
+
+  /**
+   * 是否启用pool(如果启用pool，控件需要对其成员全部变量初始化，不能假定成员变量为0)。
+   */
+  uint32_t enable_pool : 1;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -108,9 +117,8 @@ typedef struct _widget_vtable_t {
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
   widget_find_target_t find_target;
-  widget_recycle_t recycle;
   widget_on_destroy_t on_destroy;
-} widget_vtable_t;
+};
 
 /**
  * @class widget_t
@@ -327,11 +335,11 @@ struct _widget_t {
    */
   widget_t* key_target;
   /**
-   * @property {array_t*} children
+   * @property {darray_t*} children
    * @annotation ["readable"]
    * 全部子控件。
    */
-  array_t* children;
+  darray_t* children;
   /**
    * @property {emitter_t*} emitter
    * @annotation ["readable"]
@@ -986,7 +994,7 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * 使用示例：
@@ -999,7 +1007,7 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
  *
  * @return {int32_t} 返回id，用于widget_off。
  */
-int32_t widget_on(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_off
@@ -1018,27 +1026,27 @@ ret_t widget_off(widget_t* widget, int32_t id);
  * 递归查找指定名称的子控件，然后为其注册指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 子控件的名称。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
  * @return {int32_t} 返回id，用于widget_off。
  */
-int32_t widget_child_on(widget_t* widget, const char* name, event_type_t type,
-                        event_func_t on_event, void* ctx);
+int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
+                        void* ctx);
 
 /**
  * @method widget_off_by_func
  * 注销指定事件的处理函数。
  * 仅用于辅助实现脚本绑定。
  * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_off_by_func(widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_invalidate
@@ -1517,6 +1525,10 @@ ret_t widget_re_translate_text(widget_t* widget);
 /**
  * @method widget_init
  * 初始化控件。仅在子类控件构造函数中使用。
+ *
+ * > 请用widget\_create代替本函数。
+ *
+ * @depreated
  * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
@@ -1530,6 +1542,22 @@ ret_t widget_re_translate_text(widget_t* widget);
  */
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h);
+
+/**
+ * @method widget_create
+ * 创建控件。仅在子类控件构造函数中使用。
+ * @annotation ["private"]
+ * @param {widget_t*} parent widget的父控件。
+ * @param {widget_vtable_t*} vt 虚表。
+ * @param {xy_t}   x x坐标
+ * @param {xy_t}   y y坐标
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
+ *
+ * @return {widget_t*} widget对象本身。
+ */
+widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
+                        wh_t h);
 
 /**
  * @method widget_update_style

@@ -4,7 +4,7 @@
  * Author: AWTK Develop Team
  * Brief:  config
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -161,6 +161,13 @@
  * 如果启用鼠标指针，请定义本宏
  *
  * #define ENABLE_CURSOR 1
+ */
+
+/**
+ * 如果启用控件缓存，请定义本宏
+ * 缓存内存占用约：200 * WITH_WIDGET_POOL
+ *
+ * #define WITH_WIDGET_POOL 1000
  */
 
 #endif /*AWTK_CONFIG_H*/

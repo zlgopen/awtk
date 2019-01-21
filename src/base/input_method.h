@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  input method interface.
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -85,7 +85,12 @@ typedef enum _input_type_t {
    * @const INPUT_PHONE
    * 电话号码。
    */
-  INPUT_PHONE
+  INPUT_PHONE,
+  /**
+   * @const INPUT_CUSTOM
+   * 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。
+   */
+  INPUT_CUSTOM
 } input_type_t;
 
 /**

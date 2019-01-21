@@ -23,3 +23,4 @@
 | VALUE\_TYPE\_DOUBLE | double类型。 |
 | VALUE\_TYPE\_STRING | char*类型。 |
 | VALUE\_TYPE\_WSTRING | wchar\_t*类型。 |
+| VALUE\_TYPE\_OBJECT | object\_t*类型。 |

@@ -11,6 +11,8 @@
 
  > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\_t。
 
+
+----------------------------------
 ### 函数
 <p id="image_base_t_methods">
 
@@ -27,7 +29,7 @@
 ### 属性
 <p id="image_base_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_base_t_anchor_x">anchor\_x</a> | float\_t | 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。 |
 | <a href="#image_base_t_anchor_y">anchor\_y</a> | float\_t | 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。 |

@@ -4,6 +4,8 @@
 
  对象属性变化事件。
 
+
+----------------------------------
 ### 函数
 <p id="prop_change_event_t_methods">
 
@@ -13,7 +15,7 @@
 ### 属性
 <p id="prop_change_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#prop_change_event_t_name">name</a> | char* | 属性的名称。 |
 | <a href="#prop_change_event_t_value">value</a> | value\_t* | 属性的值。 |

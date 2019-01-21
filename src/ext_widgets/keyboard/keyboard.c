@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  keyboard
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,7 +39,7 @@ static const char* s_keyboard_properties[] = {
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  array_deinit(&(keyboard->action_buttons));
+  darray_deinit(&(keyboard->action_buttons));
 
   return window_base_on_destroy(widget);
 }
@@ -47,6 +47,7 @@ static ret_t keyboard_on_destroy(widget_t* widget) {
 static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .type = WIDGET_TYPE_KEYBOARD,
                                                   .is_window = TRUE,
+                                                  .is_keyboard = TRUE,
                                                   .clone_properties = s_keyboard_properties,
                                                   .persistent_properties = s_keyboard_properties,
                                                   .create = keyboard_create,
@@ -59,14 +60,11 @@ static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
                                                   .on_destroy = keyboard_on_destroy};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  keyboard_t* keyboard = TKMEM_ZALLOC(keyboard_t);
-  widget_t* widget = WIDGET(keyboard);
+  widget_t* widget = window_base_create(parent, &s_keyboard_vtable, x, y, w, h);
+  keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, NULL);
 
-  window_base_init(widget, parent, &s_keyboard_vtable, x, y, w, h);
-
-  array_init(&(keyboard->action_buttons), 0);
-
+  darray_init(&(keyboard->action_buttons), 0, NULL, NULL);
   widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
   keyboard->action_info_id =
       input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
@@ -89,6 +87,7 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
   return pages_set_active_by_name(parent, name);
 }
 
+#define STR_CLOSE "close"
 #define STR_RETURN "return"
 #define STR_ACTION "action"
 #define STR_KEY_SPACE "space"
@@ -104,7 +103,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   const char* key = strstr(name, STR_KEY_PREFIX);
   const char* page_name = strstr(name, STR_PAGE_PREFIX);
 
-  if (tk_str_eq(name, "close")) {
+  if (tk_str_eq(name, STR_CLOSE)) {
     input_method_request(im, NULL);
 
     return RET_OK;
@@ -168,7 +167,7 @@ static ret_t keyboard_hook_buttons(void* ctx, const void* iter) {
     widget_on(widget, EVT_CLICK, keyboard_on_button_click, keyboard);
 
     if (tk_str_eq(name, STR_ACTION)) {
-      array_push(&(keyboard->action_buttons), widget);
+      darray_push(&(keyboard->action_buttons), widget);
       keyboard_update_action_buton_info(widget, im->action_buton_text, im->action_button_enable);
     }
   }

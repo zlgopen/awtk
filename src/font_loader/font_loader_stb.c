@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  stb truetype font loader
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,12 +44,12 @@ typedef struct _font_stb_t {
 
 } font_stb_t;
 
-static bool_t font_stb_match(font_t* f, const char* name, uint16_t font_size) {
+static bool_t font_stb_match(font_t* f, const char* name, font_size_t font_size) {
   (void)font_size;
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
-static int32_t font_stb_get_baseline(font_t* f, uint16_t font_size) {
+static int32_t font_stb_get_baseline(font_t* f, font_size_t font_size) {
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
   float scale = stbtt_ScaleForPixelHeight(sf, font_size);
@@ -57,7 +57,7 @@ static int32_t font_stb_get_baseline(font_t* f, uint16_t font_size) {
   return scale * font->ascent;
 }
 
-static ret_t font_stb_get_glyph(font_t* f, wchar_t c, uint16_t font_size, glyph_t* g) {
+static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
   int x = 0;
   int y = 0;
   int w = 0;

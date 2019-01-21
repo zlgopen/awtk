@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  rect struct and utils functions.
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,6 +18,7 @@
  * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+#include "tkc/mem.h"
 #include "tkc/rect.h"
 
 ret_t rect_merge(rect_t* dr, rect_t* r) {
@@ -133,4 +134,35 @@ rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h) {
   }
 
   return *r;
+}
+
+rect_t* rect_create(xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t* r = TKMEM_ZALLOC(rect_t);
+  return_value_if_fail(r != NULL, NULL);
+
+  *r = rect_init(x, y, w, h);
+
+  return r;
+}
+
+rect_t* rect_set(rect_t* r, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return_value_if_fail(r != NULL, NULL);
+
+  *r = rect_init(x, y, w, h);
+
+  return r;
+}
+
+rect_t* rect_cast(rect_t* rect) {
+  return_value_if_fail(rect != NULL, NULL);
+
+  return rect;
+}
+
+ret_t rect_destroy(rect_t* r) {
+  return_value_if_fail(r != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(r);
+
+  return RET_OK;
 }

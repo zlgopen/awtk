@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  tab_button_group
  *
- * Copyright (c) 2018 - 2018  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,7 +30,36 @@ BEGIN_C_DECLS
  * @class tab_button_group_t
  * @parent widget_t
  * @annotation ["scriptable"]
- * Tab Button Group控件。
+ * 标签按钮分组控件。
+ *
+ * 一个简单的容器，主要用于对标签按钮进行布局和管理。
+ *
+ * tab\_button\_group\_t是[widget\_t](widget_t.md)的子类控件，
+ * widget\_t的函数均适用于tab\_button\_group\_t控件。
+ *
+ * 在xml中使用"tab\_button\_group"标签创建标签按钮分组控件。如：
+ *
+ * ```xml
+ *   <tab_button_group x="c" y="bottom:10" w="90%" h="30" compact="true" >
+ *     <tab_button text="General"/>
+ *     <tab_button text="Network" value="true" />
+ *     <tab_button text="Security"/>
+ *   </tab_button_group>
+ * ```
+ *
+ * > 更多用法请参考：
+ * [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
+ *
+ * 可用通过style来设置控件的显示风格，如颜色等等。如：
+ *
+ * ```xml
+ * <tab_button_group>
+ *  <style name="default">
+ *   <normal/>
+ *  </style>
+ * </tab_button_group>
+ * ```
+ *
  */
 typedef struct _tab_button_group_t {
   widget_t widget;

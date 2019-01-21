@@ -3,6 +3,41 @@
 ![image](images/digit_clock_t_0.png)
 
  数字时钟控件。
+
+ digit\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于digit\_clock\_t控件。
+
+ 在xml中使用"digit\_clock"标签创建数字时钟控件。如：
+
+ ```xml
+ <digit_clock format="YY/MM/DD h:mm:ss"/>
+ ```
+
+ > 更多用法请参考：[digit\_clock.xml](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/digit_clock.xml)
+
+ 在c代码中使用函数digit\_clock\_create创建数字时钟控件。如：
+
+ ```c
+ widget_t* tc = digit_clock_create(win, 10, 10, 240, 30);
+ digit_clock_set_format(tc, "YY/MM/DD h:mm:ss");
+ ```
+
+ > 完整示例请参考：[digit\_clock demo](
+ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/digit_clock.c)
+
+ 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+ ```xml
+ <style name="default">
+   <normal text_color="black" />
+ </style>
+ ```
+
+ > 更多用法请参考：[theme default](
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L138)
+
+
+----------------------------------
 ### 函数
 <p id="digit_clock_t_methods">
 
@@ -14,7 +49,7 @@
 ### 属性
 <p id="digit_clock_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#digit_clock_t_format">format</a> | char* | 显示格式。 |
 #### digit\_clock\_cast 函数
@@ -88,6 +123,7 @@ ret_t digit_clock_set_format (widget_t* widget, const char* format);
 #### format 属性
 -----------------------
 > <p id="digit_clock_t_format"> 显示格式。
+
  Y 代表年(完整显示)
  M 代表月(1-12)
  D 代表日(1-31)

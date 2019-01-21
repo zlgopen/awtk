@@ -54,8 +54,11 @@
  ```
 
  > 更多用法请参考：
- [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+ [theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
 
+
+----------------------------------
 ### 函数
 <p id="edit_t_methods">
 
@@ -78,7 +81,7 @@
 ### 属性
 <p id="edit_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
 | <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |

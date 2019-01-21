@@ -1,6 +1,8 @@
 ## input\_device\_status\_t
 ### 概述
  输入设备状态管理器。本类仅供窗口管理器内部使用。
+
+----------------------------------
 ### 函数
 <p id="input_device_status_t_methods">
 

@@ -4,6 +4,8 @@
 
  滚轮事件。
 
+
+----------------------------------
 ### 函数
 <p id="wheel_event_t_methods">
 
@@ -13,7 +15,7 @@
 ### 属性
 <p id="wheel_event_t_properties">
 
-| 名属性称 | 类型 | 说明 | 
+| 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#wheel_event_t_alt">alt</a> | bool\_t | alt键是否按下。 |
 | <a href="#wheel_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
