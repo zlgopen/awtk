@@ -231,7 +231,7 @@ TEST(ObejectDefault, random) {
   string log;
   char name[32];
   int32_t i = 0;
-  int32_t n = 10000;
+  int32_t n = 1000;
 
   object_t* obj = object_default_create();
 

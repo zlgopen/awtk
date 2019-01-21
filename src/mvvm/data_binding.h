@@ -1,7 +1,7 @@
 ﻿/**
- * File:   binding_rule_data.c
+ * File:   data_binding.c
  * Author: AWTK Develop Team
- * Brief:  data binding rule
+ * Brief:  data binding
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef TK_BINDING_RULE_DATA_H
-#define TK_BINDING_RULE_DATA_H
+#ifndef TK_DATA_BINDING_H
+#define TK_DATA_BINDING_H
 
 #include "tkc/str.h"
 #include "tkc/object_default.h"
@@ -88,26 +88,76 @@ typedef enum _binding_mode_t {
 } binding_mode_t;
 
 /**
- * @class binding_rule_data_t
+ * @class data_binding_t
  * @parent binding_rule_t
  * @annotation ["scriptable"]
  * 数据绑定规则。
  *
  */
-typedef struct _binding_rule_data_t {
+typedef struct _data_binding_t {
   binding_rule_t binding_rule;
   object_t* props;
   str_t last_error;
-} binding_rule_data_t;
 
-binding_rule_t* binding_rule_data_create(void);
+  /**
+   * @property {char*} path
+   * @annotation ["readable"]
+   * 模型中的数据名称。
+   */
+  char* path;
+  
+  /**
+   * @property {char*} prop
+   * @annotation ["readable"]
+   * 控件的属性。
+   */
+  char* prop;
+  
+  /**
+   * @property {char*} converter
+   * @annotation ["readable"]
+   * 格式转换器的名称。
+   */
+  char* converter;
+  
+  /**
+   * @property {char*} validator
+   * @annotation ["readable"]
+   * 数据校验器的名称。
+   */
+  char* validator;
+  
+  /**
+   * @property {binding_mode_t} mode
+   * @annotation ["readable"]
+   * 绑定模式
+   */
+  binding_mode_t mode;
 
-const char* binding_rule_data_get_path(binding_rule_t* rule);
-const char* binding_rule_data_get_converter(binding_rule_t* rule);
-const char* binding_rule_data_get_validator(binding_rule_t* rule);
-binding_mode_t binding_rule_data_get_mode(binding_rule_t* rule);
-update_model_trigger_t binding_rule_data_get_trigger(binding_rule_t* rule);
+  /**
+   * @property {update_model_trigger_t} trigger;
+   * @annotation ["readable"]
+   * 触发更新模型的时机。
+   */
+  update_model_trigger_t trigger;
+} data_binding_t;
+
+/**
+ * @method data_binding_create
+ * 创建数据绑定对象。
+ * @annotation ["constructor", "scriptable"]
+ *
+ * @return {binding_rule_t*} 返回数据绑定对象。
+ */
+binding_rule_t* data_binding_create(void);
+
+#define DATA_BINDING_PATH "Path"
+#define DATA_BINDING_MODE "Mode"
+#define DATA_BINDING_PROP "Prop"
+#define DATA_BINDING_TRIGGER "Trigger"
+#define DATA_BINDING_CONVERTER "Converter"
+#define DATA_BINDING_VALIDATOR "Validator"
 
 END_C_DECLS
 
-#endif /*TK_BINDING_RULE_DATA_H*/
+#endif /*TK_DATA_BINDING_H*/

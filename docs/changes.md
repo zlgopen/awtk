@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/01/21
+  * 增加data\_binding/command\_binding.
+  * 增加测试程序。
+
 * 2019/01/20
   * 完善object，增加一些包装函数。
   * 增加binding\_rule/binding\_rule\_data
