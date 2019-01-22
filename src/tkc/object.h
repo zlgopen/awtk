@@ -30,12 +30,14 @@ struct _object_vtable_t;
 typedef struct _object_vtable_t object_vtable_t;
 
 typedef ret_t (*object_on_destroy_t)(object_t* obj);
-typedef int32_t (*object_compare_t)(object_t* obj, object_t* other);
+typedef int (*object_compare_t)(object_t* obj, object_t* other);
 
 typedef ret_t (*object_remove_prop_t)(object_t* obj, const char* name);
 typedef ret_t (*object_get_prop_t)(object_t* obj, const char* name, value_t* v);
 typedef ret_t (*object_foreach_prop_t)(object_t* obj, tk_visit_t on_prop, void* ctx);
 typedef ret_t (*object_set_prop_t)(object_t* obj, const char* name, const value_t* v);
+typedef bool_t (*object_can_exec_t)(object_t* obj, const char* name, const char* args);
+typedef ret_t (*object_exec_t)(object_t* obj, const char* name, const char* args);
 
 struct _object_vtable_t {
   const char* type;
@@ -49,6 +51,8 @@ struct _object_vtable_t {
   object_set_prop_t set_prop;
   object_remove_prop_t remove_prop;
   object_foreach_prop_t foreach_prop;
+  object_can_exec_t can_exec;
+  object_exec_t exec;
 };
 
 /**
@@ -136,9 +140,9 @@ ret_t object_set_name(object_t* obj, const char* name);
  * @param {object_t*} obj object对象。
  * @param {object_t*} other 比较的object对象。
  *
- * @return {int32_t} 返回比较结果。
+ * @return {int} 返回比较结果。
  */
-int32_t object_compare(object_t* obj, object_t* other);
+int object_compare(object_t* obj, object_t* other);
 
 /**
  * @method object_get_prop
@@ -267,6 +271,31 @@ ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx);
+
+/**
+ * @method object_can_exec
+ * 检查是否可以执行指定的命令。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 命令的名称。
+ * @param {const char*} args 命令的参数。
+ *
+ * @return {bool_t} 返回TRUE表示可以执行，否则表示不可以执行。
+ */
+bool_t object_can_exec(object_t* obj, const char* name, const char* args);
+
+/**
+ * @method object_exec
+ * 执行指定的命令。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 命令的名称。
+ * @param {const char*} args 命令的参数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_exec(object_t* obj, const char* name, const char* args);
 
 #define OBJECT(obj) ((object_t*)(obj))
 

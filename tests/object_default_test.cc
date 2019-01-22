@@ -286,3 +286,12 @@ TEST(ObejectDefault, set_prop_str) {
 
   object_unref(obj);
 }
+
+TEST(ObejectDefault, exec) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_can_exec(obj, "test", "123"), FALSE);
+  ASSERT_EQ(object_exec(obj, "test", "123"), RET_NOT_IMPL);
+
+  object_unref(obj);
+}

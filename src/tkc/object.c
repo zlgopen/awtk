@@ -202,13 +202,37 @@ ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   return ret;
 }
 
-int32_t object_compare(object_t* obj, object_t* other) {
+int object_compare(object_t* obj, object_t* other) {
   int32_t ret = -1;
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, -1);
   return_value_if_fail(other != NULL && other->vt != NULL && other->ref_count >= 0, -1);
 
   if (obj->vt->compare != NULL) {
     ret = obj->vt->compare(obj, other);
+  }
+
+  return ret;
+}
+
+bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
+  bool_t ret = FALSE;
+  return_value_if_fail(name != NULL, FALSE);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, FALSE);
+
+  if (obj->vt->can_exec != NULL) {
+    ret = obj->vt->can_exec(obj, name, args);
+  }
+
+  return ret;
+}
+
+ret_t object_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
+
+  if (obj->vt->exec != NULL) {
+    ret = obj->vt->exec(obj, name, args);
   }
 
   return ret;
