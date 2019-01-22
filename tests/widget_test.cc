@@ -378,7 +378,7 @@ static ret_t dummy_on_timer(const timer_info_t* info) {
 }
 
 TEST(Widget, timer) {
-  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* w = button_create(NULL, 0, 0, 400, 300);
   uint32_t id = widget_add_timer(w, dummy_on_timer, 100);
   ASSERT_EQ(timer_find(id)->id, id);
 
