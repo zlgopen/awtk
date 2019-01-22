@@ -39,7 +39,7 @@ static ret_t data_binding_on_destroy(object_t* obj) {
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
 
   str_reset(&(rule->last_error));
-  if(rule->props != NULL) {
+  if (rule->props != NULL) {
     object_unref(rule->props);
   }
 
@@ -89,7 +89,7 @@ static ret_t data_binding_set_prop(object_t* obj, const char* name, const value_
   } else if (tk_str_eq(DATA_BINDING_VALIDATOR, name)) {
     rule->validator = tk_str_copy(rule->validator, value);
   } else {
-    if(rule->props == NULL) {
+    if (rule->props == NULL) {
       rule->props = object_default_create();
     }
     ret = object_set_prop(rule->props, name, v);
@@ -122,15 +122,13 @@ static ret_t data_binding_get_prop(object_t* obj, const char* name, value_t* v) 
   return ret;
 }
 
-static const object_vtable_t s_data_binding_vtable = {
-    .type = "data_binding",
-    .desc = "data_binding",
-    .size = sizeof(data_binding_t),
-    .is_collection = FALSE,
-    .on_destroy = data_binding_on_destroy,
-    .get_prop = data_binding_get_prop,
-    .set_prop = data_binding_set_prop
-};
+static const object_vtable_t s_data_binding_vtable = {.type = "data_binding",
+                                                      .desc = "data_binding",
+                                                      .size = sizeof(data_binding_t),
+                                                      .is_collection = FALSE,
+                                                      .on_destroy = data_binding_on_destroy,
+                                                      .get_prop = data_binding_get_prop,
+                                                      .set_prop = data_binding_set_prop};
 
 static data_binding_t* data_binding_cast(void* rule) {
   object_t* obj = OBJECT(rule);
@@ -155,4 +153,3 @@ binding_rule_t* data_binding_create(void) {
 
   return BINDING_RULE(rule);
 }
-

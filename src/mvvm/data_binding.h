@@ -105,28 +105,28 @@ typedef struct _data_binding_t {
    * 模型中的数据名称。
    */
   char* path;
-  
+
   /**
    * @property {char*} prop
    * @annotation ["readable"]
    * 控件的属性。
    */
   char* prop;
-  
+
   /**
    * @property {char*} converter
    * @annotation ["readable"]
    * 格式转换器的名称。
    */
   char* converter;
-  
+
   /**
    * @property {char*} validator
    * @annotation ["readable"]
    * 数据校验器的名称。
    */
   char* validator;
-  
+
   /**
    * @property {binding_mode_t} mode
    * @annotation ["readable"]

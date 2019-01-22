@@ -49,12 +49,20 @@ typedef struct _tokenizer_t {
    * 当前位置。
    */
   uint32_t cursor;
+
   /**
    * @property {char*} separtor
    * @annotation ["readable"]
-   * 字符串。
+   * 分隔字符串。
    */
   const char* separtor;
+
+  /**
+   * @property {char*} single_char_token
+   * @annotation ["readable"]
+   * 单字符的token。
+   */
+  const char* single_char_token;
 
   str_t token;
 } tokenizer_t;
@@ -72,6 +80,21 @@ typedef struct _tokenizer_t {
  */
 tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t size,
                             const char* separtor);
+
+/**
+ * @method tokenizer_init_ex
+ * 初始化tokenizer对象。
+ * @annotation ["constructor"]
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ * @param {char*} str 要解析的字符串。
+ * @param {uint32_t} size 字符串长度。
+ * @param {char*} separtor 分隔字符。
+ * @param {char*} single_char_token 单字符token。
+ *
+ * @return {tokenizer_t*} tokenizer对象本身。
+ */
+tokenizer_t* tokenizer_init_ex(tokenizer_t* tokenizer, const char* str, uint32_t size,
+                               const char* separtor, const char* single_char_token);
 
 /**
  * @method tokenizer_has_more

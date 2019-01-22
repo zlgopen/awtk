@@ -50,27 +50,34 @@ typedef struct _command_binding_t {
    * 执行命令之前，是否更新数据到模型。
    */
   bool_t update_model;
-  
+
   /**
    * @property {char*} command
    * @annotation ["readable"]
    * 命令名称。
    */
   char* command;
-  
+
   /**
    * @property {char*} args
    * @annotation ["readable"]
    * 命令参数。
    */
   char* args;
-  
+
   /**
    * @property {char*} event
    * @annotation ["readable"]
    * 事件名称。
    */
   char* event;
+
+  /**
+   * @property {char*} event_args
+   * @annotation ["readable"]
+   * 事件参数。
+   */
+  char* event_args;
 } command_binding_t;
 
 /**
@@ -84,6 +91,7 @@ binding_rule_t* command_binding_create(void);
 
 #define COMMAND_BINDING_ARGS "Args"
 #define COMMAND_BINDING_EVENT "Event"
+#define COMMAND_BINDING_EVENT_ARGS "EventArgs"
 #define COMMAND_BINDING_COMMAND "Command"
 #define COMMAND_BINDING_CLOSE_WINDOW "CloseWindow"
 #define COMMAND_BINDING_UPDATE_MODEL "UpdateModel"

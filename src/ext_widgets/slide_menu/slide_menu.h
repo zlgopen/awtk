@@ -72,7 +72,7 @@ BEGIN_C_DECLS
  * ```c
  * widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);
  * ```
- 
+ 
  * 可按下面的方法关注当前按钮被点击的事件：
  *
  * ```c

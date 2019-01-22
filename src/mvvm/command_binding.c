@@ -24,19 +24,13 @@
 #include "tkc/object_default.h"
 #include "mvvm/command_binding.h"
 
-#define COMMAND_BINDING_ARGS "Args"
-#define COMMAND_BINDING_EVENT "Event"
-#define COMMAND_BINDING_COMMAND "Command"
-#define COMMAND_BINDING_CLOSE_WINDOW "CloseWindow"
-#define COMMAND_BINDING_UPDATE_MODEL "UpdateModel"
-
 static command_binding_t* command_binding_cast(void* rule);
 
 static ret_t command_binding_on_destroy(object_t* obj) {
   command_binding_t* rule = command_binding_cast(obj);
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
 
-  if(rule->props != NULL) {
+  if (rule->props != NULL) {
     object_unref(rule->props);
   }
 
@@ -50,7 +44,7 @@ static ret_t command_binding_set_prop(object_t* obj, const char* name, const val
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(COMMAND_BINDING_COMMAND, name)) {
-    if(value == NULL) {
+    if (value == NULL) {
       value = name;
     }
     rule->command = tk_str_copy(rule->command, value);
@@ -58,12 +52,14 @@ static ret_t command_binding_set_prop(object_t* obj, const char* name, const val
     rule->args = tk_str_copy(rule->args, value);
   } else if (tk_str_eq(COMMAND_BINDING_EVENT, name)) {
     rule->event = tk_str_copy(rule->event, value);
+  } else if (tk_str_eq(COMMAND_BINDING_EVENT_ARGS, name)) {
+    rule->event_args = tk_str_copy(rule->event_args, value);
   } else if (tk_str_eq(COMMAND_BINDING_CLOSE_WINDOW, name)) {
-    rule->close_window = TRUE;
+    rule->close_window = value != NULL ? tk_atob(value) : TRUE;
   } else if (tk_str_eq(COMMAND_BINDING_UPDATE_MODEL, name)) {
-    rule->update_model = TRUE;
+    rule->update_model = value != NULL ? tk_atob(value) : TRUE;
   } else {
-    if(rule->props == NULL) {
+    if (rule->props == NULL) {
       rule->props = object_default_create();
     }
     ret = object_set_prop(rule->props, name, v);
@@ -94,15 +90,13 @@ static ret_t command_binding_get_prop(object_t* obj, const char* name, value_t* 
   return ret;
 }
 
-static const object_vtable_t s_command_binding_vtable = {
-    .type = "command_binding",
-    .desc = "command_binding",
-    .size = sizeof(command_binding_t),
-    .is_collection = FALSE,
-    .on_destroy = command_binding_on_destroy,
-    .get_prop = command_binding_get_prop,
-    .set_prop = command_binding_set_prop
-};
+static const object_vtable_t s_command_binding_vtable = {.type = "command_binding",
+                                                         .desc = "command_binding",
+                                                         .size = sizeof(command_binding_t),
+                                                         .is_collection = FALSE,
+                                                         .on_destroy = command_binding_on_destroy,
+                                                         .get_prop = command_binding_get_prop,
+                                                         .set_prop = command_binding_set_prop};
 
 static command_binding_t* command_binding_cast(void* rule) {
   object_t* obj = OBJECT(rule);
@@ -119,4 +113,3 @@ binding_rule_t* command_binding_create(void) {
 
   return BINDING_RULE(rule);
 }
-

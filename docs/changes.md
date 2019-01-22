@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/01/22
+  * 增加binding rule parse
+
 * 2019/01/21
   * 增加data\_binding/command\_binding.
   * 增加测试程序。
