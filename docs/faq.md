@@ -53,4 +53,26 @@ convert bg.png  -ordered-dither o8x8,32,64,32 bg.jpg
 > 参考：http://www.imagemagick.org/Usage/quantize/
 
 
+#### 5.在Windows平台，SVG显示不正常，如何解决？
 
+原因是Windows下OpenGL不支持非凸多边形，所以要解决这个问题，需要使用不同的NANOVG\_BACKEND。这可以在SConstruct文件中修改。如：
+
+```
+#NANOVG_BACKEND='GL3'
+#NANOVG_BACKEND='GLES2'
+#NANOVG_BACKEND='GLES3'
+#NANOVG_BACKEND='AGG'
+#NANOVG_BACKEND='AGGE'
+NANOVG_BACKEND='BGFX'
+```
+
+在PC上，BGFX是推荐的NANOVG\_BACKEND，但是需要进入3rd/bgfx目录，手工下载bgfx相关源码：
+
+```
+cd 3rd/bgfx
+git clone https://github.com/bkaradzic/bx.git 
+git clone https://github.com/bkaradzic/bimg.git 
+git clone https://github.com/bkaradzic/bgfx.git
+```
+
+> 如果您不需要使用SVG，仍然可以使用GL3作为NANOVG\_BACKEND。

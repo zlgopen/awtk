@@ -130,7 +130,7 @@ struct _timer_info_t {
 timer_info_t* timer_info_cast(timer_info_t* timer);
 
 /*internal use*/
-int32_t timer_info_compare(const void* a, const void* b);
+int timer_info_compare(const void* a, const void* b);
 timer_info_t* timer_info_init_dummy(timer_info_t* timer, uint32_t id);
 timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void* ctx,
                                 uint32_t duration);

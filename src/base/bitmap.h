@@ -171,7 +171,7 @@ struct _bitmap_t {
 
   bool_t is_gif;
   /*for gif begin*/
-  int32_t* gif_delays;
+  int* gif_delays;
   uint32_t gif_frame_h;
   uint32_t gif_frames_nr;
   /*for gif end*/

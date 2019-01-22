@@ -1471,9 +1471,16 @@ static ret_t widget_do_destroy(widget_t* widget) {
 }
 
 ret_t widget_destroy(widget_t* widget) {
+  widget_t* parent = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->parent != NULL) {
+  parent = widget->parent;
+  if (parent != NULL) {
+    if (parent->target == widget || parent->key_target == widget) {
+      widget_remove_child(parent, widget);
+      return widget_destroy_async(widget);
+    }
+
     widget_remove_child(widget->parent, widget);
   }
 

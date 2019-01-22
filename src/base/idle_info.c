@@ -53,7 +53,7 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
   return idle;
 }
 
-int32_t idle_info_compare(const void* a, const void* b) {
+int idle_info_compare(const void* a, const void* b) {
   return ((const idle_info_t*)a)->id - ((const idle_info_t*)b)->id;
 }
 
