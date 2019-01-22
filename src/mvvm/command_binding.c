@@ -43,10 +43,10 @@ static ret_t command_binding_set_prop(object_t* obj, const char* name, const val
   command_binding_t* rule = command_binding_cast(obj);
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(COMMAND_BINDING_COMMAND, name)) {
-    if (value == NULL) {
-      value = name;
-    }
+  if (rule->command == NULL && value == NULL) {
+    value = name;
+    rule->command = tk_str_copy(rule->command, value);
+  } else if (tk_str_eq(COMMAND_BINDING_COMMAND, name)) {
     rule->command = tk_str_copy(rule->command, value);
   } else if (tk_str_eq(COMMAND_BINDING_ARGS, name)) {
     rule->args = tk_str_copy(rule->args, value);

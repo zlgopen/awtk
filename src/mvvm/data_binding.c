@@ -51,8 +51,10 @@ static ret_t data_binding_set_prop(object_t* obj, const char* name, const value_
   const char* value = value_str(v);
   data_binding_t* rule = data_binding_cast(obj);
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
-
-  if (tk_str_eq(DATA_BINDING_MODE, name)) {
+  if (rule->path == NULL && value == NULL) {
+    value = name;
+    rule->path = tk_str_copy(rule->path, value);
+  } else if (tk_str_eq(DATA_BINDING_MODE, name)) {
     binding_mode_t mode = BINDING_TWO_WAY;
 
     if (tk_str_eq(value, STR_ONCE)) {
