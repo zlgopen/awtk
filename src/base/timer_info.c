@@ -58,7 +58,7 @@ timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void
   return timer;
 }
 
-int32_t timer_info_compare(const void* a, const void* b) {
+int timer_info_compare(const void* a, const void* b) {
   return ((const timer_info_t*)a)->id - ((const timer_info_t*)b)->id;
 }
 

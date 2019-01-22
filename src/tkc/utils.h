@@ -69,7 +69,7 @@ char* tk_str_copy(char* dst, const char* src);
 
 ret_t dummy_destroy(void* data);
 ret_t default_destroy(void* data);
-int32_t pointer_compare(const void* a, const void* b);
+int pointer_compare(const void* a, const void* b);
 
 END_C_DECLS
 

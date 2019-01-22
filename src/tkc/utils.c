@@ -614,6 +614,6 @@ ret_t dummy_destroy(void* data) {
   return RET_OK;
 }
 
-int32_t pointer_compare(const void* a, const void* b) {
+int pointer_compare(const void* a, const void* b) {
   return ((const char*)a - (const char*)b);
 }
