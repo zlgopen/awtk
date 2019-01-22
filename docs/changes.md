@@ -1,4 +1,6 @@
 # 最新动态
+* 2019/01/23
+  * 增加value\_converter/value\_converter\_delegate
 
 * 2019/01/22
   * 增加binding rule parse
