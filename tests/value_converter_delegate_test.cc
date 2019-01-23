@@ -29,7 +29,7 @@ TEST(ValueConverterDelegate, basic) {
   value_set_int(&v, 1234);
 
   ASSERT_EQ(value_converter_to_view(c, &v, &v_view), RET_OK);
-  ASSERT_EQ(string(value_str(&v_view)), string(value_str(&v)));
+  ASSERT_EQ(string(value_str(&v_view)), string("1234"));
 
   ASSERT_EQ(value_converter_to_model(c, &v_view, &v_model), RET_OK);
   ASSERT_EQ(value_int(&v_model), 1234);
