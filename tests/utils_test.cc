@@ -263,3 +263,17 @@ TEST(Utils, tk_wstrdup) {
 
   TKMEM_FREE(str);
 }
+
+TEST(Utils, tk_replace_locale) {
+  char name[TK_NAME_LEN + 1];
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, "zh_CN"), RET_OK);
+  ASSERT_EQ(string(name), string("test-zh_CN"));
+
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, "zh"), RET_OK);
+  ASSERT_EQ(string(name), string("test-zh"));
+
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, ""), RET_OK);
+  ASSERT_EQ(string(name), string("test-"));
+
+  ASSERT_EQ(tk_replace_locale("test", name, "zh"), RET_BAD_PARAMS);
+}
