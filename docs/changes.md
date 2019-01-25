@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/01/25
+  * 增加model\_delegate。
+
 * 2019/01/24
   * 增加value\_validator/value\_validator\_delegate
 
