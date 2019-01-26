@@ -170,6 +170,18 @@ ret_t object_get_prop(object_t* obj, const char* name, value_t* v);
 const char* object_get_prop_str(object_t* obj, const char* name);
 
 /**
+ * @method object_get_prop_pointer
+ * 获取指定属性的指针类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {void*} 返回指定属性的指针类型的值。
+ */
+void* object_get_prop_pointer(object_t* obj, const char* name);
+
+/**
  * @method object_get_prop_int
  * 获取指定属性的整数类型的值。
  *
@@ -232,6 +244,19 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_set_prop_str(object_t* obj, const char* name, const char* value);
+
+/**
+ * @method object_set_prop_pointer
+ * 设置指定属性的指针类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_pointer(object_t* obj, const char* name, void* value);
 
 /**
  * @method object_set_prop_int

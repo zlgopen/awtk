@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/01/26
+  * 修改字符串翻译的问题。issue 83/86
+  * 增加value converter factory
+  * 增加value validator factory
+
 * 2019/01/25
   * 增加model\_delegate。
 

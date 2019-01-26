@@ -237,6 +237,7 @@ typedef enum _ret_t {
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #endif /*ARRAY_SIZE*/
 
+typedef void* (*tk_create_t)(void);
 typedef ret_t (*tk_destroy_t)(void* data);
 typedef ret_t (*tk_on_done_t)(void* data);
 typedef bool_t (*tk_is_valid_t)(void* data);

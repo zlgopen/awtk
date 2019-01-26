@@ -33,3 +33,28 @@ TEST(ValueValidatorDelegate, basic) {
   str_reset(&str);
   object_unref(OBJECT(c));
 }
+
+static void* create_dummy_value_validator(void) {
+  return value_validator_delegate_create(is_valid_age);
+}
+
+TEST(ValueValidatorDelegate, factory) {
+  value_t v;
+  str_t str;
+  value_validator_init();
+  ASSERT_EQ(value_validator_register("dummy", create_dummy_value_validator), RET_OK);
+  value_validator_t* c = value_validator_create("dummy");
+
+  ASSERT_NE(c, (value_validator_t*)NULL);
+
+  str_init(&str, 0);
+  value_set_int(&v, 1234);
+  ASSERT_EQ(value_validator_is_valid(c, &v, &str), FALSE);
+  ASSERT_EQ(string(str.str), "error");
+
+  value_set_int(&v, 123);
+  ASSERT_EQ(value_validator_is_valid(c, &v, &str), TRUE);
+
+  object_unref(OBJECT(c));
+  value_validator_deinit();
+}

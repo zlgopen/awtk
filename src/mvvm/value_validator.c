@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/object_default.h"
 #include "mvvm/value_validator.h"
 
 bool_t value_validator_is_valid(value_validator_t* validator, const value_t* value, str_t* msg) {
@@ -28,4 +29,42 @@ bool_t value_validator_is_valid(value_validator_t* validator, const value_t* val
   return_value_if_fail(value != NULL && msg != NULL, RET_BAD_PARAMS);
 
   return validator->is_valid(validator, value, msg);
+}
+
+static object_t* s_value_validator_creators;
+
+value_validator_t* value_validator_create(const char* name) {
+  tk_create_t create = NULL;
+  return_value_if_fail(name != NULL, NULL);
+  return_value_if_fail(value_validator_init() == RET_OK, NULL);
+
+  create = (tk_create_t)object_get_prop_pointer(s_value_validator_creators, name);
+  return_value_if_fail(create != NULL, NULL);
+
+  return (value_validator_t*)create();
+}
+
+ret_t value_validator_register(const char* name, tk_create_t create) {
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(create != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(value_validator_init() == RET_OK, RET_BAD_PARAMS);
+
+  return object_set_prop_pointer(s_value_validator_creators, name, create);
+}
+
+ret_t value_validator_init(void) {
+  if (s_value_validator_creators == NULL) {
+    s_value_validator_creators = object_default_create();
+  }
+
+  return s_value_validator_creators != NULL ? RET_OK : RET_FAIL;
+}
+
+ret_t value_validator_deinit(void) {
+  return_value_if_fail(s_value_validator_creators != NULL, RET_BAD_PARAMS);
+
+  object_unref(s_value_validator_creators);
+  s_value_validator_creators = NULL;
+
+  return RET_OK;
 }

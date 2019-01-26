@@ -38,3 +38,30 @@ TEST(ValueConverterDelegate, basic) {
 
   object_unref(OBJECT(c));
 }
+
+static void* create_dummy_value_converter(void) {
+  return value_converter_delegate_create(to_int, to_str);
+}
+
+TEST(ValueConverterDelegate, factory) {
+  value_t v;
+  value_t v_view;
+  value_t v_model;
+  value_converter_init();
+  ASSERT_EQ(value_converter_register("dummy", create_dummy_value_converter), RET_OK);
+  value_converter_t* c = value_converter_create("dummy");
+
+  ASSERT_NE(c, (value_converter_t*)NULL);
+
+  value_set_int(&v, 1234);
+  ASSERT_EQ(value_converter_to_view(c, &v, &v_view), RET_OK);
+  ASSERT_EQ(string(value_str(&v_view)), string("1234"));
+
+  ASSERT_EQ(value_converter_to_model(c, &v_view, &v_model), RET_OK);
+  ASSERT_EQ(value_int(&v_model), 1234);
+  value_reset(&v_view);
+  value_reset(&v_model);
+
+  object_unref(OBJECT(c));
+  value_converter_deinit();
+}

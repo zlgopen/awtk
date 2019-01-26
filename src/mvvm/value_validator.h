@@ -38,7 +38,7 @@ typedef ret_t (*value_validator_is_valid_t)(value_validator_t* validator, const 
  * @parent object_t
  * @annotation ["scriptable"]
  *
- * 值合法性检查。
+ * 值校验器。
  *
  */
 struct _value_validator_t {
@@ -60,6 +60,49 @@ struct _value_validator_t {
  * @return {bool_t} 返回TRUE表示有效，否则表示无效。
  */
 bool_t value_validator_is_valid(value_validator_t* validator, const value_t* value, str_t* msg);
+
+/**
+ * @method value_validator_create
+ * 创建指定名称的值校验器。
+ *
+ * @annotation ["scriptable", "static"]
+ * @param {const char*} name 名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+value_validator_t* value_validator_create(const char* name);
+
+/**
+ * @method value_validator_register
+ *
+ * 注册值校验器的创建函数。
+ * @annotation ["scriptable", "static"]
+ * @param {const char*} name 名称。
+ * @param {tk_create_t} create 创建函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_validator_register(const char* name, tk_create_t create);
+
+/**
+ * @method value_validator_init
+ *
+ * 初始化值校验器的全局对象。
+ * @annotation ["scriptable", "static"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_validator_init(void);
+
+/**
+ * @method value_validator_deinit
+ *
+ * 释放值校验器的全局对象。
+ * @annotation ["scriptable", "static"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_validator_deinit(void);
 
 #define VALUE_VALIDATOR(validator) ((value_validator_t*)(validator))
 
