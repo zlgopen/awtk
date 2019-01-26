@@ -295,3 +295,40 @@ TEST(ObejectDefault, exec) {
 
   object_unref(obj);
 }
+
+TEST(ObejectDefault, has_prop) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
+  ASSERT_EQ(object_has_prop(obj, "a"), TRUE);
+  ASSERT_EQ(object_has_prop(obj, "A"), FALSE);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, expr_number) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
+  ASSERT_EQ(object_set_prop_float(obj, "b", 456), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123 + 456);
+
+  ASSERT_EQ(object_eval(obj, "($a+$b)*2", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), (123 + 456) * 2);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, expr_str) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(string(value_str(&v)), string("123abc"));
+
+  object_unref(obj);
+}

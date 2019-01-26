@@ -298,6 +298,31 @@ ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
 ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx);
 
 /**
+ * @method object_has_prop
+ * 检查是否存在指定的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t object_has_prop(object_t* obj, const char* name);
+
+/**
+ * @method object_eval
+ * 计算一个表达式，表达式中引用的变量从prop中获取。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} expr 表达式。
+ * @param {value_t*} v 返回计算结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_eval(object_t* obj, const char* expr, value_t* v);
+
+/**
  * @method object_can_exec
  * 检查是否可以执行指定的命令。
  *

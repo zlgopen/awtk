@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "tkc/event.h"
 #include "tkc/object.h"
+#include "tkc/expr_eval.h"
 
 ret_t object_set_name(object_t* obj, const char* name) {
   ret_t ret = RET_OK;
@@ -252,4 +253,92 @@ ret_t object_exec(object_t* obj, const char* name, const char* args) {
   }
 
   return ret;
+}
+
+bool_t object_has_prop(object_t* obj, const char* name) {
+  value_t v;
+  ret_t ret = RET_OK;
+  return_value_if_fail(name != NULL, FALSE);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, FALSE);
+
+  ret = object_get_prop(obj, name, &v);
+  value_reset(&v);
+
+  return ret == RET_OK;
+}
+
+static bool_t is_prop_name(const char* expr) {
+  const char* p = expr;
+  while (*p) {
+    if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') ||
+        *p == '_') {
+      p++;
+    } else {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+static EvalFunc obj_get_func(const char* name, void* user_data) {
+  const EvalHooks* hooks = eval_default_hooks();
+
+  return hooks->get_func(name, user_data);
+}
+
+static EvalResult obj_get_variable(const char* name, void* user_data, ExprValue* output) {
+  value_t value;
+  object_t* obj = (object_t*)user_data;
+  const EvalHooks* hooks = eval_default_hooks();
+
+  if (object_get_prop(obj, name, &value) == RET_OK) {
+    if (value.type == VALUE_TYPE_STRING) {
+      const char* str = value_str(&value);
+      expr_value_set_string(output, str, strlen(str));
+    } else {
+      expr_value_set_number(output, value_double(&value));
+    }
+
+    return EVAL_RESULT_OK;
+  }
+
+  return hooks->get_variable(name, user_data, output);
+}
+
+ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
+  return_value_if_fail(expr != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
+
+  if (is_prop_name(expr)) {
+    return object_get_prop(obj, expr, v);
+  } else {
+    EvalHooks hooks;
+    ExprValue result;
+    EvalResult ret;
+
+    hooks.get_func = obj_get_func;
+    hooks.get_variable = obj_get_variable;
+
+    ret = eval_execute(expr, &hooks, (void*)obj, &result);
+    if (ret == EVAL_RESULT_OK) {
+      if (result.type == EXPR_VALUE_TYPE_STRING) {
+        value_dup_str(v, result.v.str.str);
+      } else {
+        double res = result.v.val;
+        if (res > (int64_t)res) {
+          value_set_double(v, res);
+        } else {
+          value_set_int64(v, (int64_t)res);
+        }
+      }
+      expr_value_clear(&result);
+
+      return RET_OK;
+    } else {
+      log_warn("expr error: %s\n", eval_result_to_string(ret));
+      value_set_int(v, 0);
+      return RET_FAIL;
+    }
+  }
 }
