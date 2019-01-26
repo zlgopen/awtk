@@ -262,6 +262,7 @@ enum { TK_NAME_LEN = 31 };
 #define TK_INVALID_ID 0
 #define TK_NUM_MAX_LEN 31
 #define TK_UINT32_MAX 0xffffffff
+#define TK_LOCALE_MAGIC "$locale$"
 
 #define TK_D2R(d) (((d)*M_PI) / 180)
 #define TK_R2D(r) (((r)*180) / M_PI)

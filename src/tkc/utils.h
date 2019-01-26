@@ -71,6 +71,8 @@ ret_t dummy_destroy(void* data);
 ret_t default_destroy(void* data);
 int pointer_compare(const void* a, const void* b);
 
+ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/

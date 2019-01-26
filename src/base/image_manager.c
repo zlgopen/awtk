@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/time_now.h"
+#include "base/locale_info.h"
 #include "base/image_manager.h"
 
 typedef struct _bitmap_cache_t {
@@ -145,7 +146,8 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   return RET_NOT_FOUND;
 }
 
-ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
+static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* name,
+                                           bitmap_t* image) {
   const asset_info_t* res = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
@@ -182,6 +184,37 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
     return image_manager_lookup(imm, name, image);
   } else {
     return RET_NOT_FOUND;
+  }
+}
+
+ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
+  return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
+
+  if (strstr(name, TK_LOCALE_MAGIC) != NULL) {
+    char locale[TK_NAME_LEN + 1];
+    char real_name[TK_NAME_LEN + 1];
+    const char* language = locale_info()->language;
+    const char* country = locale_info()->country;
+
+    tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
+    tk_replace_locale(name, real_name, locale);
+    if (image_manager_get_bitmap_impl(imm, real_name, image) == RET_OK) {
+      return RET_OK;
+    }
+
+    tk_replace_locale(name, real_name, language);
+    if (image_manager_get_bitmap_impl(imm, real_name, image) == RET_OK) {
+      return RET_OK;
+    }
+
+    tk_replace_locale(name, real_name, "");
+    if (image_manager_get_bitmap_impl(imm, real_name, image) == RET_OK) {
+      return RET_OK;
+    }
+
+    return RET_FAIL;
+  } else {
+    return image_manager_get_bitmap_impl(imm, name, image);
   }
 }
 

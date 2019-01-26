@@ -75,7 +75,23 @@ widget_on(win, EVT_LOCALE_CHANGED, on_locale_changed, win);
 
 ## 图片翻译
 
-在一些游戏中，有些文字是直接绘制在图片上的。在不同的语言中，需要加载不同的图片。这个实现起来并不难，AWTK目前暂时不支持，以后根据需求决定是否支持。
+在一些应用程序中，有些文字是直接绘制在图片上的。所以在切换到不同的语言时，需要加载不同的图片。这时只要在图片名称中包含『$locale$』即可，加载时自动替换成当前的语言。
+
+如：图片名称为『flag\_$locale$』，当前语言为en\_US，加载图片时会按下列顺序查找：
+
+* flag\_en\_US
+* flag_en
+* flag_
+
+XML中的用法：
+
+```
+<image style="border" image="flag_$locale$" draw_type="icon" />
+```
+
+```
+image_set_image(image, "flag_$locale$");
+```
 
 ## 使用方法
 

@@ -617,3 +617,30 @@ ret_t dummy_destroy(void* data) {
 int pointer_compare(const void* a, const void* b) {
   return ((const char*)a - (const char*)b);
 }
+
+ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale) {
+  char* d = NULL;
+  char* p = NULL;
+  int32_t len = 0;
+  const char* s = NULL;
+  return_value_if_fail(strlen(name) < TK_NAME_LEN, RET_BAD_PARAMS);
+  return_value_if_fail(strlen(locale) <= strlen(TK_LOCALE_MAGIC), RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL && out != NULL && locale != NULL, RET_BAD_PARAMS);
+
+  d = out;
+  s = name;
+  p = strstr(name, TK_LOCALE_MAGIC);
+  return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+
+  len = p - s;
+  memcpy(d, s, len);
+  d += len;
+
+  len = strlen(locale);
+  memcpy(d, locale, len);
+
+  d += len;
+  strcpy(d, p + strlen(TK_LOCALE_MAGIC));
+
+  return RET_OK;
+}
