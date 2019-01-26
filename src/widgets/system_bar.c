@@ -56,7 +56,9 @@ static ret_t system_bar_on_top_window_changed(void* ctx, event_t* e) {
   log_debug("%s\n", top_window->name);
 
   if (title != NULL) {
-    if (top_window->text.str) {
+    if (top_window->tr_text) {
+      widget_set_tr_text(title, top_window->tr_text);
+    } else if (top_window->text.str) {
       widget_set_text(title, top_window->text.str);
     } else {
       widget_set_text_utf8(title, top_window->name);
