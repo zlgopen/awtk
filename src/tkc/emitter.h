@@ -238,6 +238,8 @@ ret_t emitter_destroy(emitter_t* emitter);
  */
 emitter_t* emitter_cast(emitter_t* emitter);
 
+#define EMITTER(emitter) ((emitter_t*)(emitter))
+
 END_C_DECLS
 
 #endif /*TK_EMITTER_H*/

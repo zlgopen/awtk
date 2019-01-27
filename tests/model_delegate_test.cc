@@ -2,6 +2,7 @@
 #include "tkc/utils.h"
 #include "gtest/gtest.h"
 #include "mvvm/model_delegate.h"
+#include "mvvm/view_model_normal.h"
 
 #include <string>
 
@@ -244,4 +245,32 @@ TEST(ModelDelegate, command_not_exist) {
   ASSERT_EQ(object_exec(OBJECT(model), "load", NULL), RET_NOT_FOUND);
 
   object_unref(OBJECT(model));
+}
+
+TEST(ModelDelegate, view_model) {
+  value_t v;
+  value_t v1;
+  model_t* model = test_obj_create_model();
+  view_model_t* vm = view_model_normal_create(model);
+
+  value_set_int(&v, 123);
+  ASSERT_EQ(view_model_has_prop(vm, "u32"), TRUE);
+  ASSERT_EQ(view_model_has_prop(vm, "u31"), FALSE);
+  ASSERT_EQ(view_model_can_exec(vm, "save", NULL), TRUE);
+  ASSERT_EQ(view_model_exec(vm, "save", NULL), RET_OK);
+
+  ASSERT_EQ(view_model_can_exec(vm, "load", NULL), FALSE);
+
+  ASSERT_EQ(view_model_set_prop(vm, "u32", &v), RET_OK);
+  ASSERT_EQ(view_model_get_prop(vm, "u32", &v1), RET_OK);
+  ASSERT_EQ(value_int(&v), value_int(&v1));
+
+  ASSERT_EQ(view_model_set_prop(vm, "i32", &v), RET_OK);
+  ASSERT_EQ(view_model_get_prop(vm, "i32", &v1), RET_OK);
+  ASSERT_EQ(value_int(&v), value_int(&v1));
+
+  ASSERT_EQ(view_model_eval(vm, "$u32+$i32", &v1), RET_OK);
+  ASSERT_EQ(2 * value_int(&v), value_int(&v1));
+
+  object_unref(OBJECT(vm));
 }

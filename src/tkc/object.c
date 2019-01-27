@@ -267,20 +267,6 @@ bool_t object_has_prop(object_t* obj, const char* name) {
   return ret == RET_OK;
 }
 
-static bool_t is_prop_name(const char* expr) {
-  const char* p = expr;
-  while (*p) {
-    if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') ||
-        *p == '_') {
-      p++;
-    } else {
-      return FALSE;
-    }
-  }
-
-  return TRUE;
-}
-
 static EvalFunc obj_get_func(const char* name, void* user_data) {
   const EvalHooks* hooks = eval_default_hooks();
 
@@ -310,7 +296,7 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
   return_value_if_fail(expr != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
-  if (is_prop_name(expr)) {
+  if (tk_is_valid_name(expr)) {
     return object_get_prop(obj, expr, v);
   } else {
     EvalHooks hooks;

@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/01/27
+  * 增加view\_model
+
 * 2019/01/26
   * 修改字符串翻译的问题。issue 83/86
   * 增加value converter factory
