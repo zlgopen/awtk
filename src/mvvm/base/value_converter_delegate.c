@@ -19,7 +19,7 @@
  *
  */
 
-#include "mvvm/value_converter_delegate.h"
+#include "mvvm/base/value_converter_delegate.h"
 
 static const object_vtable_t s_value_converter_delegate_vtable = {
     .type = "value_converter_delegate",

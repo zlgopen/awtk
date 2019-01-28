@@ -22,7 +22,7 @@
 #ifndef TK_VIEW_MODEL_H
 #define TK_VIEW_MODEL_H
 
-#include "mvvm/model.h"
+#include "mvvm/base/model.h"
 
 BEGIN_C_DECLS
 

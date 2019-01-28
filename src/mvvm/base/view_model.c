@@ -19,7 +19,7 @@
  *
  */
 
-#include "mvvm/view_model.h"
+#include "mvvm/base/view_model.h"
 #include "tkc/expr_eval.h"
 #include "tkc/utils.h"
 

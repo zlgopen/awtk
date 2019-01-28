@@ -1,5 +1,5 @@
 ﻿#include "tkc/utils.h"
-#include "mvvm/value_validator_delegate.h"
+#include "mvvm/base/value_validator_delegate.h"
 #include "gtest/gtest.h"
 
 #include <string>

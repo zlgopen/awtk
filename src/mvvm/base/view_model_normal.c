@@ -20,7 +20,7 @@
  */
 
 #include "tkc/utils.h"
-#include "mvvm/view_model_normal.h"
+#include "mvvm/base/view_model_normal.h"
 
 static ret_t view_model_normal_on_destroy(object_t* obj) {
   view_model_t* vm = VIEW_MODEL(obj);

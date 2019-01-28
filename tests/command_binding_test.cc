@@ -1,4 +1,4 @@
-﻿#include "mvvm/command_binding.h"
+﻿#include "mvvm/base/command_binding.h"
 #include "gtest/gtest.h"
 
 #include <string>

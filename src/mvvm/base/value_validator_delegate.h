@@ -22,7 +22,7 @@
 #ifndef TK_VALUE_VALIDATOR_DELEGATE_H
 #define TK_VALUE_VALIDATOR_DELEGATE_H
 
-#include "mvvm/value_validator.h"
+#include "mvvm/base/value_validator.h"
 
 BEGIN_C_DECLS
 

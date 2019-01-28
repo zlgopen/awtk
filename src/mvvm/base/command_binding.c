@@ -22,7 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
-#include "mvvm/command_binding.h"
+#include "mvvm/base/command_binding.h"
 
 static command_binding_t* command_binding_cast(void* rule);
 

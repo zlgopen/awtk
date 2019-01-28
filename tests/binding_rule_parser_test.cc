@@ -1,6 +1,6 @@
-﻿#include "mvvm/binding_rule_parser.h"
-#include "mvvm/command_binding.h"
-#include "mvvm/data_binding.h"
+﻿#include "mvvm/base/binding_rule_parser.h"
+#include "mvvm/base/command_binding.h"
+#include "mvvm/base/data_binding.h"
 #include "gtest/gtest.h"
 #include <string>
 

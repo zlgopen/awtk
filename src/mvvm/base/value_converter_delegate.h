@@ -22,7 +22,7 @@
 #ifndef TK_VALUE_CONVERTER_DELEGATE_H
 #define TK_VALUE_CONVERTER_DELEGATE_H
 
-#include "mvvm/value_converter.h"
+#include "mvvm/base/value_converter.h"
 
 BEGIN_C_DECLS
 

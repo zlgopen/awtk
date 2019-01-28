@@ -22,7 +22,7 @@
 #ifndef TK_MODEL_DELEGATE_H
 #define TK_MODEL_DELEGATE_H
 
-#include "mvvm/model.h"
+#include "mvvm/base/model.h"
 
 BEGIN_C_DECLS
 

@@ -1,8 +1,8 @@
 ﻿#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "gtest/gtest.h"
-#include "mvvm/model_delegate.h"
-#include "mvvm/view_model_normal.h"
+#include "mvvm/base/model_delegate.h"
+#include "mvvm/base/view_model_normal.h"
 
 #include <string>
 

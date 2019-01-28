@@ -20,7 +20,7 @@
  */
 
 #include "tkc/object_default.h"
-#include "mvvm/value_validator.h"
+#include "mvvm/base/value_validator.h"
 
 bool_t value_validator_is_valid(value_validator_t* validator, const value_t* value, str_t* msg) {
   return_value_if_fail(validator != NULL && validator->object.vt != NULL, RET_BAD_PARAMS);

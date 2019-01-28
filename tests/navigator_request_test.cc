@@ -1,5 +1,5 @@
 ﻿#include "gtest/gtest.h"
-#include "mvvm/navigator_request.h"
+#include "mvvm/base/navigator_request.h"
 
 #include <string>
 

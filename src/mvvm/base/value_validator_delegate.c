@@ -19,7 +19,7 @@
  *
  */
 
-#include "mvvm/value_validator_delegate.h"
+#include "mvvm/base/value_validator_delegate.h"
 
 static const object_vtable_t s_value_validator_delegate_vtable = {
     .type = "value_validator_delegate",

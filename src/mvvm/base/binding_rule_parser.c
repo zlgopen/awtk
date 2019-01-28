@@ -21,9 +21,9 @@
 
 #include "tkc/utils.h"
 #include "tkc/tokenizer.h"
-#include "mvvm/data_binding.h"
-#include "mvvm/command_binding.h"
-#include "mvvm/binding_rule_parser.h"
+#include "mvvm/base/data_binding.h"
+#include "mvvm/base/command_binding.h"
+#include "mvvm/base/binding_rule_parser.h"
 
 /*
  * v-command:on_click=

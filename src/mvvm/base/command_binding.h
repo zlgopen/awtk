@@ -22,7 +22,7 @@
 #ifndef TK_COMMAND_BINDING_H
 #define TK_COMMAND_BINDING_H
 
-#include "mvvm/binding_rule.h"
+#include "mvvm/base/binding_rule.h"
 
 BEGIN_C_DECLS
 

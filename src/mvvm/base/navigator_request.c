@@ -22,7 +22,7 @@
 #include "tkc/value.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
-#include "mvvm/navigator_request.h"
+#include "mvvm/base/navigator_request.h"
 
 static ret_t navigator_request_on_destroy(object_t* obj) {
   navigator_request_t* req = NAVIGATOR_REQUEST(obj);

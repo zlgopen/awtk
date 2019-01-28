@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "mvvm/data_binding.h"
+#include "mvvm/base/data_binding.h"
 
 #define STR_ONCE "Once"
 #define STR_TWO_WAY "TwoWay"

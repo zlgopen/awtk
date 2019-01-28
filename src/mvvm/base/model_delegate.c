@@ -22,7 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
-#include "mvvm/model_delegate.h"
+#include "mvvm/base/model_delegate.h"
 
 typedef struct _command_desc_t {
   model_exec_t exec;

@@ -1,4 +1,4 @@
-﻿#include "mvvm/data_binding.h"
+﻿#include "mvvm/base/data_binding.h"
 #include "gtest/gtest.h"
 
 #include <string>
