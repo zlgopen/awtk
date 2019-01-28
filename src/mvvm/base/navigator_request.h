@@ -58,7 +58,7 @@ struct _navigator_request_t {
   value_t result;
 
   /**
-   * @property {value_t} result
+   * @property {navigator_request_on_result_t} on_result
    * @annotation ["readable"]
    * 用于非模态窗口返回结果。
    */

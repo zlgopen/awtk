@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/01/28
   * 增加navigator\_request
+  * 增加navigator\_handler
 
 * 2019/01/27
   * 增加view\_model
