@@ -64,6 +64,7 @@ struct _navigator_request_t {
    */
   navigator_request_on_result_t on_result;
 
+  void* user_data;
   /*private*/
   object_t* args;
 };
@@ -113,7 +114,7 @@ ret_t navigator_request_on_result(navigator_request_t* req, const value_t* resul
 #define NAVIGATOR_ARG_MIN "min"
 #define NAVIGATOR_ARG_MAX "max"
 #define NAVIGATOR_ARG_TITLE "title"
-#define NAVIGATOR_ARG_LABEL "label"
+#define NAVIGATOR_ARG_TIPS "tips"
 #define NAVIGATOR_ARG_DEFAULT "default"
 #define NAVIGATOR_ARG_TIMEOUT "timeout"
 #define NAVIGATOR_ARG_CONTENT "content"

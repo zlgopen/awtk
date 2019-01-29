@@ -73,6 +73,8 @@ ret_t navigator_handler_on_request(navigator_handler_t* handler, navigator_reque
 
 #define NAVIGATOR_HANDLER(handler) ((navigator_handler_t*)(handler))
 
+#define NAVIGATOR_DEFAULT_HANDLER "default_handler"
+
 END_C_DECLS
 
 #endif /*TK_NAVIGATOR_HANDLER_H*/

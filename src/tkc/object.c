@@ -121,6 +121,15 @@ void* object_get_prop_pointer(object_t* obj, const char* name) {
   }
 }
 
+object_t* object_get_prop_object(object_t* obj, const char* name) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_object(&v);
+  } else {
+    return NULL;
+  }
+}
+
 int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval) {
   value_t v;
   if (object_get_prop(obj, name, &v) == RET_OK) {
@@ -173,6 +182,13 @@ ret_t object_set_prop_str(object_t* obj, const char* name, const char* value) {
 ret_t object_set_prop_pointer(object_t* obj, const char* name, void* value) {
   value_t v;
   value_set_pointer(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+ret_t object_set_prop_object(object_t* obj, const char* name, object_t* value) {
+  value_t v;
+  value_set_object(&v, value);
 
   return object_set_prop(obj, name, &v);
 }

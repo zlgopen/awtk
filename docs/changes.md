@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/01/29
+  * 增加navigator
+
 * 2019/01/28
   * 增加navigator\_request
   * 增加navigator\_handler
