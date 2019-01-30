@@ -28,6 +28,7 @@
 #include "tkc/value.h"
 #include "tkc/darray.h"
 #include "tkc/rect.h"
+#include "tkc/object.h"
 #include "tkc/emitter.h"
 
 #include "base/types_def.h"
@@ -38,7 +39,6 @@
 #include "base/theme.h"
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
-#include "base/custom_props.h"
 #include "base/self_layouter.h"
 #include "base/children_layouter.h"
 
@@ -365,11 +365,12 @@ struct _widget_t {
    */
   self_layouter_t* self_layout;
   /**
-   * @property {custom_props_t*} custom_props
+   * @property {object_t*} custom_props
    * @annotation ["readable"]
    * 自定义属性。
    */
-  custom_props_t* custom_props;
+  object_t* custom_props;
+
   /**
    * @property {widget_vtable_t} vt
    * @annotation ["readable"]

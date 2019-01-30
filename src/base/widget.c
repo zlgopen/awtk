@@ -894,9 +894,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props == NULL) {
-      widget->custom_props = custom_props_create(3);
+      widget->custom_props = object_default_create();
     }
-    ret = custom_props_set(widget->custom_props, name, v);
+    ret = object_set_prop(widget->custom_props, name, v);
   }
 
   if (ret != RET_NOT_FOUND) {
@@ -975,7 +975,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props != NULL) {
-      ret = custom_props_get(widget->custom_props, name, v);
+      ret = object_get_prop(widget->custom_props, name, v);
     }
   }
 
@@ -1426,7 +1426,7 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   }
 
   if (widget->custom_props != NULL) {
-    custom_props_destroy(widget->custom_props);
+    object_unref(widget->custom_props);
     widget->custom_props = NULL;
   }
 
