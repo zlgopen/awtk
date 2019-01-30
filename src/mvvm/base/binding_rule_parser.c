@@ -27,7 +27,8 @@
 
 /*
  * v-command:on_click=
- * v-command:on_keydown:ctrl_a
+ * v-command:on_pointer_down=
+ * v-command:on_key_down:ctrl_a
  * v-data:visible=
  */
 

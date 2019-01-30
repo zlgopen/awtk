@@ -1,5 +1,5 @@
 ﻿/**
- * File:   binding_context_awtk.h
+ * File:   binding_context_awtk.c
  * Author: AWTK Develop Team
  * Brief:  binding context awtk
  *
@@ -31,7 +31,8 @@ static ret_t on_widget_prop_change(void* ctx, event_t* e) {
 
   data_binding_vm_set_prop(rule, evt->value);
 
-  /*TODO*/
+  /*TODO: check error*/
+
   return RET_OK;
 }
 
@@ -42,7 +43,8 @@ static ret_t on_widget_value_change(void* ctx, event_t* e) {
   return_value_if_fail(widget_get_prop(widget, WIDGET_PROP_VALUE, &v) == RET_OK, RET_OK);
 
   data_binding_vm_set_prop(rule, &v);
-  /*TODO*/
+  /*TODO: check error*/
+
   return RET_OK;
 }
 
@@ -71,7 +73,6 @@ static ret_t binding_context_bind_data(binding_context_t* ctx, const char* name,
 
   return RET_OK;
 error:
-
   object_unref(OBJECT(rule));
 
   return RET_FAIL;
@@ -83,9 +84,13 @@ static ret_t binding_context_bind_command(binding_context_t* ctx, const char* na
   return_value_if_fail(rule != NULL, RET_FAIL);
 
   BINDING_RULE(rule)->binding_context = ctx;
-  darray_push(&(ctx->command_bindings), rule);
+  goto_error_if_fail(darray_push(&(ctx->command_bindings), rule) == RET_OK);
 
   return RET_OK;
+error:
+  object_unref(OBJECT(rule));
+
+  return RET_FAIL;
 }
 
 static ret_t visit_prop(void* ctx, const void* data) {
