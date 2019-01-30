@@ -88,6 +88,15 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
 ret_t wstr_set(wstr_t* str, const wchar_t* text);
 
 /**
+ * @method wstr_clear
+ * 清除字符串内容。
+ * @param {wstr_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_clear(wstr_t* str);
+
+/**
  * @method wstr_set_utf8
  * 设置UTF8字符串。
  * @param {wstr_t*} str str对象。

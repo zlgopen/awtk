@@ -139,6 +139,16 @@ ret_t wstr_set(wstr_t* str, const wchar_t* text) {
   return RET_OK;
 }
 
+ret_t wstr_clear(wstr_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  str->size = 0;
+  if (str->str != NULL) {
+    str->str[0] = '\0';
+  }
+
+  return RET_OK;
+}
+
 ret_t wstr_set_utf8(wstr_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wstr_extend(str, strlen(text) + 2) == RET_OK, RET_OOM);
