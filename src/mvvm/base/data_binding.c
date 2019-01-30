@@ -21,7 +21,10 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "mvvm/base/binding_context.h"
 #include "mvvm/base/data_binding.h"
+#include "mvvm/base/value_converter.h"
+#include "mvvm/base/value_validator.h"
 
 #define STR_ONCE "Once"
 #define STR_TWO_WAY "TwoWay"
@@ -38,7 +41,6 @@ static ret_t data_binding_on_destroy(object_t* obj) {
   data_binding_t* rule = data_binding_cast(obj);
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
 
-  str_reset(&(rule->last_error));
   if (rule->props != NULL) {
     object_unref(rule->props);
   }
@@ -145,7 +147,6 @@ binding_rule_t* data_binding_create(void) {
 
   ((object_t*)rule)->vt = &s_data_binding_vtable;
 
-  str_init(&(rule->last_error), 0);
   rule->props = object_default_create();
 
   if (rule->props == NULL) {
@@ -154,4 +155,99 @@ binding_rule_t* data_binding_create(void) {
   }
 
   return BINDING_RULE(rule);
+}
+
+static ret_t value_to_model(const char* name, const value_t* from, value_t* to) {
+  if (name != NULL) {
+    value_converter_t* c = value_converter_create(name);
+    if (c != NULL) {
+      if (value_converter_to_model(c, from, to) == RET_OK) {
+        object_unref(OBJECT(c));
+        return RET_OK;
+      } else {
+        log_debug("value_converter_to_model %s failed\n", name);
+        object_unref(OBJECT(c));
+        return RET_FAIL;
+      }
+    } else {
+      log_debug("not found value_converter %s\n", name);
+      return RET_FAIL;
+    }
+  } else {
+    *to = *from;
+    return RET_OK;
+  }
+}
+
+static ret_t value_to_view(const char* name, value_t* from, value_t* to) {
+  if (name != NULL) {
+    value_converter_t* c = value_converter_create(name);
+    if (c != NULL) {
+      if (value_converter_to_view(c, from, to) == RET_OK) {
+        value_reset(from);
+        object_unref(OBJECT(c));
+        return RET_OK;
+      } else {
+        log_debug("value_converter_to_model %s failed\n", name);
+        object_unref(OBJECT(c));
+        return RET_FAIL;
+      }
+    } else {
+      log_debug("not found value_converter %s\n", name);
+      return RET_FAIL;
+    }
+  } else {
+    *to = *from;
+    return RET_OK;
+  }
+}
+
+static bool_t value_is_valid(const char* name, const value_t* value, str_t* msg) {
+  bool_t ret = FALSE;
+  value_validator_t* validator = NULL;
+
+  if (name == NULL) {
+    return TRUE;
+  }
+
+  validator = value_validator_create(name);
+  if (validator != NULL) {
+    ret = value_validator_is_valid(validator, value, msg);
+    object_unref(OBJECT(validator));
+  } else {
+    log_debug("not found validator\n");
+  }
+
+  return ret;
+}
+
+ret_t data_binding_vm_get_prop(data_binding_t* rule, value_t* v) {
+  value_t raw;
+  binding_context_t* ctx = NULL;
+  return_value_if_fail(rule != NULL && v != NULL, RET_BAD_PARAMS);
+
+  ctx = BINDING_RULE(rule)->binding_context;
+  return_value_if_fail(ctx != NULL && ctx->vm != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(view_model_get_prop(ctx->vm, rule->path, &raw) == RET_OK, RET_FAIL);
+
+  return value_to_view(rule->converter, &raw, v);
+}
+
+ret_t data_binding_vm_set_prop(data_binding_t* rule, const value_t* raw) {
+  value_t v;
+  binding_context_t* ctx = NULL;
+  return_value_if_fail(rule != NULL && raw != NULL, RET_BAD_PARAMS);
+
+  ctx = BINDING_RULE(rule)->binding_context;
+  return_value_if_fail(ctx != NULL && ctx->vm != NULL, RET_BAD_PARAMS);
+
+  str_clear(&(ctx->vm->last_error));
+  if (!value_is_valid(rule->validator, raw, &(ctx->vm->last_error))) {
+    return RET_BAD_PARAMS;
+  }
+
+  return_value_if_fail(value_to_model(rule->converter, raw, &v) == RET_OK, RET_FAIL);
+
+  return view_model_set_prop(ctx->vm, rule->path, &v);
 }

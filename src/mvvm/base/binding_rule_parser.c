@@ -31,9 +31,6 @@
  * v-data:visible=
  */
 
-#define BINDING_RULE_DATA_PREFIX "v-data"
-#define BINDING_RULE_COMMAND_PREFIX "v-command"
-
 static ret_t data_binding_init(data_binding_t* rule, tokenizer_t* t) {
   if (tokenizer_has_more(t)) {
     const char* prop = tokenizer_next(t);

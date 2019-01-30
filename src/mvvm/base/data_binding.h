@@ -97,7 +97,6 @@ typedef enum _binding_mode_t {
 typedef struct _data_binding_t {
   binding_rule_t binding_rule;
   object_t* props;
-  str_t last_error;
 
   /**
    * @property {char*} path
@@ -150,6 +149,11 @@ typedef struct _data_binding_t {
  * @return {binding_rule_t*} 返回数据绑定对象。
  */
 binding_rule_t* data_binding_create(void);
+
+ret_t data_binding_vm_get_prop(data_binding_t* rule, value_t* v);
+ret_t data_binding_vm_set_prop(data_binding_t* rule, const value_t* v);
+
+#define DATA_BINDING(rule) ((data_binding_t*)rule);
 
 #define DATA_BINDING_PATH "Path"
 #define DATA_BINDING_MODE "Mode"

@@ -277,3 +277,11 @@ TEST(Utils, tk_replace_locale) {
 
   ASSERT_EQ(tk_replace_locale("test", name, "zh"), RET_BAD_PARAMS);
 }
+
+TEST(Utils, tk_str_start_with) {
+  ASSERT_EQ(tk_str_start_with("abc123", "a"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "ab"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "abc"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", ""), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "b"), FALSE);
+}

@@ -23,6 +23,7 @@
 #define TK_BINDING_RULE_H
 
 #include "tkc/object.h"
+#include "mvvm/base/types_def.h"
 
 BEGIN_C_DECLS
 
@@ -54,9 +55,14 @@ BEGIN_C_DECLS
  */
 typedef struct _binding_rule_t {
   object_t object;
+
+  binding_context_t* binding_context;
 } binding_rule_t;
 
 #define BINDING_RULE(rule) ((binding_rule_t*)(rule))
+
+#define BINDING_RULE_DATA_PREFIX "v-data"
+#define BINDING_RULE_COMMAND_PREFIX "v-command"
 
 END_C_DECLS
 

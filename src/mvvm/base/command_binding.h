@@ -89,6 +89,8 @@ typedef struct _command_binding_t {
  */
 binding_rule_t* command_binding_create(void);
 
+#define COMMAND_BINDING(rule) ((command_binding_t*)rule);
+
 #define COMMAND_BINDING_ARGS "Args"
 #define COMMAND_BINDING_EVENT "Event"
 #define COMMAND_BINDING_EVENT_ARGS "EventArgs"

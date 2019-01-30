@@ -22,6 +22,7 @@
 #ifndef TK_VIEW_MODEL_H
 #define TK_VIEW_MODEL_H
 
+#include "tkc/str.h"
 #include "mvvm/base/model.h"
 
 BEGIN_C_DECLS
@@ -50,6 +51,8 @@ struct _view_model_t {
   model_t* model;
 
   view_model_type_t type;
+
+  str_t last_error;
 };
 
 view_model_t* view_model_init(view_model_t* vm, view_model_type_t type, model_t* model);
