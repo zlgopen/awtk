@@ -99,6 +99,15 @@ bool_t str_eq(str_t* str, const char* text);
 ret_t str_set(str_t* str, const char* text);
 
 /**
+ * @method str_clear
+ * 清除字符串内容。
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_clear(str_t* str);
+
+/**
  * @method str_set_with_len
  * 设置字符串。
  * @param {str_t*} str str对象。

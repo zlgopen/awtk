@@ -56,6 +56,16 @@ ret_t str_set(str_t* str, const char* text) {
   return str_set_with_len(str, text, 0xffff);
 }
 
+ret_t str_clear(str_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  str->size = 0;
+  if (str->str != NULL) {
+    str->str[0] = '\0';
+  }
+
+  return RET_OK;
+}
+
 ret_t str_set_with_len(str_t* str, const char* text, uint32_t len) {
   uint32_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
