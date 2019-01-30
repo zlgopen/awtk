@@ -658,3 +658,9 @@ bool_t tk_is_valid_name(const char* name) {
 
   return TRUE;
 }
+
+bool_t tk_str_start_with(const char* str, const char* prefix) {
+  return_value_if_fail(str != NULL && prefix != NULL, FALSE);
+
+  return memcmp(str, prefix, strlen(prefix)) == 0;
+}

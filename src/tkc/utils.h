@@ -74,6 +74,8 @@ int pointer_compare(const void* a, const void* b);
 bool_t tk_is_valid_name(const char* name);
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
 
+bool_t tk_str_start_with(const char* str, const char* prefix);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/
