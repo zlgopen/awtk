@@ -149,6 +149,16 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
 ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 
 /**
+ * @method emitter_off_by_ctx
+ * 注销指定事件的处理函数。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx);
+
+/**
  * @method emitter_set_on_destroy
  * 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {emitter_t*} emitter emitter对象。
