@@ -148,10 +148,10 @@ typedef struct _data_binding_t {
  *
  * @return {binding_rule_t*} 返回数据绑定对象。
  */
-binding_rule_t* data_binding_create(void);
+data_binding_t* data_binding_create(void);
 
-ret_t data_binding_vm_get_prop(data_binding_t* rule, value_t* v);
-ret_t data_binding_vm_set_prop(data_binding_t* rule, const value_t* v);
+ret_t data_binding_get_prop(data_binding_t* rule, value_t* v);
+ret_t data_binding_set_prop(data_binding_t* rule, const value_t* v);
 
 #define DATA_BINDING(rule) ((data_binding_t*)rule);
 

@@ -68,7 +68,7 @@ binding_rule_t* binding_rule_create(const char* name) {
     const char* type = tokenizer_next(&t);
 
     if (tk_str_eq(type, BINDING_RULE_DATA_PREFIX)) {
-      rule = data_binding_create();
+      rule = BINDING_RULE(data_binding_create());
       if (rule != NULL) {
         if (data_binding_init((data_binding_t*)rule, &t) != RET_OK) {
           object_unref((object_t*)rule);
@@ -77,7 +77,7 @@ binding_rule_t* binding_rule_create(const char* name) {
       }
 
     } else if (tk_str_eq(type, BINDING_RULE_COMMAND_PREFIX)) {
-      rule = command_binding_create();
+      rule = BINDING_RULE(command_binding_create());
       if (rule != NULL) {
         if (command_binding_init((command_binding_t*)rule, &t) != RET_OK) {
           object_unref((object_t*)rule);

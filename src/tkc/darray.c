@@ -190,6 +190,25 @@ int32_t darray_count(darray_t* darray, void* data) {
   return n;
 }
 
+ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx) {
+  return_value_if_fail(darray != NULL && visit != NULL, RET_BAD_PARAMS);
+
+  if (darray->elms != NULL) {
+    uint32_t i = 0;
+    void** elms = darray->elms;
+
+    for (i = 0; i < darray->size; i++) {
+      void* iter = elms[i];
+      ret_t ret = visit(ctx, iter);
+      if (ret != RET_OK) {
+        return ret;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t darray_clear(darray_t* darray) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 

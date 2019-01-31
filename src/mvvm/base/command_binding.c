@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
+#include "mvvm/base/binding_context.h"
 #include "mvvm/base/command_binding.h"
 
 static command_binding_t* command_binding_cast(void* rule);
@@ -105,11 +106,29 @@ static command_binding_t* command_binding_cast(void* rule) {
   return (command_binding_t*)rule;
 }
 
-binding_rule_t* command_binding_create(void) {
+command_binding_t* command_binding_create(void) {
   command_binding_t* rule = TKMEM_ZALLOC(command_binding_t);
   return_value_if_fail(rule != NULL, NULL);
 
   ((object_t*)rule)->vt = &s_command_binding_vtable;
 
-  return BINDING_RULE(rule);
+  return rule;
+}
+
+bool_t command_binding_can_exec(command_binding_t* rule) {
+  binding_context_t* ctx = NULL;
+  return_value_if_fail(rule != NULL, FALSE);
+  ctx = BINDING_RULE(rule)->binding_context;
+  return_value_if_fail(ctx != NULL && ctx->vm != NULL, FALSE);
+
+  return view_model_can_exec(ctx->vm, rule->command, rule->args);
+}
+
+ret_t command_binding_exec(command_binding_t* rule) {
+  binding_context_t* ctx = NULL;
+  return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
+  ctx = BINDING_RULE(rule)->binding_context;
+  return_value_if_fail(ctx != NULL && ctx->vm != NULL, RET_BAD_PARAMS);
+
+  return view_model_exec(ctx->vm, rule->command, rule->args);
 }

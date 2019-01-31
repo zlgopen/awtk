@@ -48,7 +48,7 @@ static ret_t data_binding_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t data_binding_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t data_binding_object_set_prop(object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
   const char* value = value_str(v);
   data_binding_t* rule = data_binding_cast(obj);
@@ -102,7 +102,7 @@ static ret_t data_binding_set_prop(object_t* obj, const char* name, const value_
   return ret;
 }
 
-static ret_t data_binding_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t data_binding_object_get_prop(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_OK;
   data_binding_t* rule = data_binding_cast(obj);
   return_value_if_fail(rule != NULL, RET_BAD_PARAMS);
@@ -131,8 +131,8 @@ static const object_vtable_t s_data_binding_vtable = {.type = "data_binding",
                                                       .size = sizeof(data_binding_t),
                                                       .is_collection = FALSE,
                                                       .on_destroy = data_binding_on_destroy,
-                                                      .get_prop = data_binding_get_prop,
-                                                      .set_prop = data_binding_set_prop};
+                                                      .get_prop = data_binding_object_get_prop,
+                                                      .set_prop = data_binding_object_set_prop};
 
 static data_binding_t* data_binding_cast(void* rule) {
   object_t* obj = OBJECT(rule);
@@ -141,7 +141,7 @@ static data_binding_t* data_binding_cast(void* rule) {
   return (data_binding_t*)rule;
 }
 
-binding_rule_t* data_binding_create(void) {
+data_binding_t* data_binding_create(void) {
   data_binding_t* rule = TKMEM_ZALLOC(data_binding_t);
   return_value_if_fail(rule != NULL, NULL);
 
@@ -154,7 +154,7 @@ binding_rule_t* data_binding_create(void) {
     rule = NULL;
   }
 
-  return BINDING_RULE(rule);
+  return rule;
 }
 
 static ret_t value_to_model(const char* name, const value_t* from, value_t* to) {
@@ -221,7 +221,7 @@ static bool_t value_is_valid(const char* name, const value_t* value, str_t* msg)
   return ret;
 }
 
-ret_t data_binding_vm_get_prop(data_binding_t* rule, value_t* v) {
+ret_t data_binding_get_prop(data_binding_t* rule, value_t* v) {
   value_t raw;
   binding_context_t* ctx = NULL;
   return_value_if_fail(rule != NULL && v != NULL, RET_BAD_PARAMS);
@@ -234,7 +234,7 @@ ret_t data_binding_vm_get_prop(data_binding_t* rule, value_t* v) {
   return value_to_view(rule->converter, &raw, v);
 }
 
-ret_t data_binding_vm_set_prop(data_binding_t* rule, const value_t* raw) {
+ret_t data_binding_set_prop(data_binding_t* rule, const value_t* raw) {
   value_t v;
   binding_context_t* ctx = NULL;
   return_value_if_fail(rule != NULL && raw != NULL, RET_BAD_PARAMS);

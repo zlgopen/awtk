@@ -56,6 +56,7 @@ BEGIN_C_DECLS
 typedef struct _binding_rule_t {
   object_t object;
 
+  void* widget;
   binding_context_t* binding_context;
 } binding_rule_t;
 

@@ -61,8 +61,10 @@ ret_t view_model_get_prop(view_model_t* vm, const char* name, value_t* value) {
 ret_t view_model_set_prop(view_model_t* vm, const char* name, const value_t* value) {
   return_value_if_fail(vm != NULL && name != NULL && value != NULL, RET_BAD_PARAMS);
 
-  if (object_set_prop(OBJECT(vm), name, value) == RET_OK) {
-    return RET_OK;
+  if (object_has_prop(OBJECT(vm), name)) {
+    if (object_set_prop(OBJECT(vm), name, value) == RET_OK) {
+      return RET_OK;
+    }
   }
 
   return object_set_prop(OBJECT(vm->model), name, value);

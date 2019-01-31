@@ -87,7 +87,11 @@ typedef struct _command_binding_t {
  *
  * @return {binding_rule_t*} 返回数据绑定对象。
  */
-binding_rule_t* command_binding_create(void);
+command_binding_t* command_binding_create(void);
+
+bool_t command_binding_can_exec(command_binding_t* rule);
+
+ret_t command_binding_exec(command_binding_t* rule);
 
 #define COMMAND_BINDING(rule) ((command_binding_t*)rule);
 

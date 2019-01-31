@@ -1,7 +1,10 @@
 # 最新动态
+* 2019/01/31
+  * 增加binding context awtk
+
 * 2019/01/30
   * 增加binding context
-
+  
 * 2019/01/29
   * 增加navigator
 

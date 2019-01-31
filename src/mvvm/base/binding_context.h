@@ -53,7 +53,9 @@ struct _binding_context_t {
   widget_t* current_widget;
 
   bool_t bound;
-  binding_context_vtable_t* vt;
+  bool_t updating_view;
+  bool_t updating_model;
+  const binding_context_vtable_t* vt;
 };
 
 /**
