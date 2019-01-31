@@ -167,6 +167,9 @@ TEST(ModelDelegate, view_model) {
   ASSERT_EQ(view_model_has_prop(vm, "u31"), FALSE);
   ASSERT_EQ(view_model_can_exec(vm, "save", NULL), TRUE);
   ASSERT_EQ(view_model_exec(vm, "save", NULL), RET_OK);
+  
+  ASSERT_EQ(view_model_can_exec(vm, "save", "1"), TRUE);
+  ASSERT_EQ(view_model_exec(vm, "save", "1"), RET_OK);
 
   ASSERT_EQ(view_model_can_exec(vm, "load", NULL), FALSE);
 

@@ -208,6 +208,10 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
 
 #define SLIDER(widget) ((slider_t*)(widget))
 
+/*public for test*/
+ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
+                                       bool_t force);
+
 END_C_DECLS
 
 #endif /*TK_SLIDER_H*/

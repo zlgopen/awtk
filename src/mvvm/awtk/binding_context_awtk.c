@@ -68,9 +68,8 @@ static ret_t binding_context_bind_data(binding_context_t* ctx, const char* name,
       if (tk_str_eq(rule->prop, WIDGET_PROP_VALUE)) {
         if (rule->trigger == UPDATE_WHEN_CHANGING) {
           widget_on(widget, EVT_VALUE_CHANGING, on_widget_value_change, rule);
-        } else {
-          widget_on(widget, EVT_VALUE_CHANGED, on_widget_value_change, rule);
         }
+        widget_on(widget, EVT_VALUE_CHANGED, on_widget_value_change, rule);
       } else {
         widget_on(widget, EVT_PROP_CHANGED, on_widget_prop_change, rule);
       }
@@ -85,7 +84,13 @@ error:
 }
 
 /*TODO: add more event*/
-static int_str_t s_event_map[] = {{EVT_CLICK, "on_click"}, {EVT_NONE, NULL}};
+static int_str_t s_event_map[] = {
+  {EVT_CLICK, "on_click"}, 
+  {EVT_POINTER_DOWN, "on_pointer_down"}, 
+  {EVT_POINTER_UP, "on_pointer_up"}, 
+  {EVT_KEY_DOWN, "on_key_down"}, 
+  {EVT_KEY_UP, "on_key_up"}, 
+  {EVT_NONE, NULL}};
 
 static ret_t on_widget_event(void* ctx, event_t* e) {
   command_binding_t* rule = COMMAND_BINDING(ctx);

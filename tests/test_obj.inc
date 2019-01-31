@@ -29,8 +29,9 @@ static test_obj_t* test_obj_create(void) {
 #define MAX_SAVE_COUNT 100
 
 static ret_t test_obj_save(test_obj_t* obj, const char* args) {
+  int delta = args != NULL ? tk_atoi(args) : 1;
   if (obj->save_count < MAX_SAVE_COUNT) {
-    obj->save_count++;
+    obj->save_count += delta;
 
     return RET_OK;
   } else {
@@ -39,11 +40,18 @@ static ret_t test_obj_save(test_obj_t* obj, const char* args) {
 }
 
 static bool_t test_obj_can_save(test_obj_t* obj, const char* args) {
-  return obj->save_count < MAX_SAVE_COUNT;
+  int delta = args != NULL ? tk_atoi(args) : 1;
+  return (obj->save_count + delta) <= MAX_SAVE_COUNT;
 }
 
 static ret_t test_obj_get_data(test_obj_t* obj, value_t* v) {
   value_set_str(v, obj->data);
+
+  return RET_OK;
+}
+
+static ret_t test_obj_get_save_count(test_obj_t* obj, value_t* v) {
+  value_set_int(v, obj->save_count);
 
   return RET_OK;
 }
@@ -81,6 +89,7 @@ static model_t* test_obj_create_model(void) {
   MODEL_SIMPLE_PROP(model, "b", VALUE_TYPE_BOOL, &(obj->b));
 
   MODEL_PROP(model, "data", test_obj_get_data, test_obj_set_data);
+  MODEL_PROP(model, "save_count", test_obj_get_save_count, NULL);
   MODEL_COMMAND(model, "save", test_obj_save, test_obj_can_save);
 
   /*test repeat*/
