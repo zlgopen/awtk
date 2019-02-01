@@ -2,6 +2,7 @@
 * 2019/02/01
   * 增加测试。
   * 合并mvvm分支。
+  * 将mvvm代码移动到独立的项目：awtk-mvvm
 
 * 2019/01/31
   * 增加binding context awtk
