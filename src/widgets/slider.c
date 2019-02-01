@@ -218,7 +218,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
 }
 
 ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
-                                       bool_t force) {
+                                bool_t force) {
   uint16_t step = 0;
   uint16_t offset = 0;
   slider_t* slider = SLIDER(widget);

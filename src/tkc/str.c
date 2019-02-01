@@ -240,7 +240,8 @@ ret_t str_from_value(str_t* str, const value_t* v) {
     return str_set(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
     return str_from_wstr(str, value_wstr(v));
-  } else if (v->type == VALUE_TYPE_FLOAT) {
+  } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32 ||
+             v->type == VALUE_TYPE_DOUBLE) {
     return str_from_float(str, value_float(v));
   } else if (v->type == VALUE_TYPE_BOOL) {
     return str_set(str, value_bool(v) ? "true" : "false");
