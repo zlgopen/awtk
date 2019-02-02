@@ -285,3 +285,10 @@ TEST(Utils, tk_str_start_with) {
   ASSERT_EQ(tk_str_start_with("abc123", ""), TRUE);
   ASSERT_EQ(tk_str_start_with("abc123", "b"), FALSE);
 }
+
+TEST(Utils, ieq) {
+  ASSERT_EQ(strcasecmp("Trigger", "trigger"), 0);
+  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
+  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
+}
+

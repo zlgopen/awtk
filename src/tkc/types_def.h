@@ -143,6 +143,7 @@ typedef enum _ret_t {
 #include <windows.h>
 #define random rand
 #define srandom srand
+#define strcasecmp stricmp
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
@@ -249,6 +250,9 @@ enum { TK_NAME_LEN = 31 };
 
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
+#define tk_str_ieq(s1, s2) \
+  (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0)
+
 #define tk_wstr_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
