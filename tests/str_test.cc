@@ -115,7 +115,7 @@ TEST(Str, value) {
   value_set_float32(&v, 100);
   ASSERT_EQ(str_from_value(s, &v), RET_OK);
   ASSERT_EQ(string(s->str), string("100.000000"));
-  
+
   value_set_double(&v, 100);
   ASSERT_EQ(str_from_value(s, &v), RET_OK);
   ASSERT_EQ(string(s->str), string("100.000000"));

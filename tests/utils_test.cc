@@ -291,4 +291,3 @@ TEST(Utils, ieq) {
   ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
   ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
 }
-

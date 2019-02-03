@@ -44,6 +44,11 @@ typedef enum _event_base_type_t {
    */
   EVT_PROP_CHANGED,
   /**
+   * @const EVT_PROPS_CHANGED
+   * 对象的属性改变的事件名(props_event_t)。
+   */
+  EVT_PROPS_CHANGED,
+  /**
    * @const EVT_DESTROY
    * 对象销毁事件名(event_t)。
    */

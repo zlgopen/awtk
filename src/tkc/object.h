@@ -372,6 +372,17 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args);
  */
 ret_t object_exec(object_t* obj, const char* name, const char* args);
 
+/**
+ * @method object_notify_changed
+ * 触发EVT_PROPS_CHANGED事件。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_notify_changed(object_t* obj);
+
 #define OBJECT(obj) ((object_t*)(obj))
 
 END_C_DECLS

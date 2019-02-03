@@ -148,6 +148,12 @@ float_t object_get_prop_float(object_t* obj, const char* name, float_t defval) {
   }
 }
 
+ret_t object_notify_changed(object_t* obj) {
+  event_t e = event_init(EVT_PROPS_CHANGED, obj);
+
+  return emitter_dispatch((emitter_t*)obj, &e);
+}
+
 ret_t object_set_prop(object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -164,9 +170,10 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* v) {
     emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
 
     ret = obj->vt->set_prop(obj, name, v);
-
-    e.e = event_init(EVT_PROP_CHANGED, obj);
-    emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
+    if (ret == RET_OK) {
+      e.e = event_init(EVT_PROP_CHANGED, obj);
+      emitter_dispatch((emitter_t*)obj, (event_t*)(&e));
+    }
   }
 
   return ret;
