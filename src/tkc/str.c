@@ -262,8 +262,12 @@ ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
     uint32_t size = wcslen(wstr) * 3;
     return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
 
-    utf8_from_utf16(wstr, str->str, size);
-    str->size = strlen(str->str);
+    if (size > 0) {
+      utf8_from_utf16(wstr, str->str, size);
+      str->size = strlen(str->str);
+    } else {
+      str_set(str, "");
+    }
   }
 
   return RET_OK;
