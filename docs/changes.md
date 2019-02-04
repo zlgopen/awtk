@@ -2,6 +2,7 @@
 * 2019/02/04
   * 增加测试程序。
   * 更新资源。
+  * edit处理属性value。
 
 * 2019/02/03
   * 增加object\_notify\_changed。

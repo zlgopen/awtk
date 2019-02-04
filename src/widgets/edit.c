@@ -826,6 +826,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_wstr(v, widget->text.str);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -913,6 +916,11 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit->offset_x = 0;
     edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    edit->offset_x = 0;
+    edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
+    wstr_from_value(&(widget->text), v);
     return RET_OK;
   }
 
