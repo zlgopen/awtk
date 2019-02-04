@@ -45,11 +45,16 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
 
       if (check_button->pressed && widget_is_point_in(widget, evt->x, evt->y, FALSE)) {
+        pointer_event_t click = *evt;
+        click.e.type = EVT_CLICK;
+
         if (check_button->radio) {
           check_button_set_value(widget, TRUE);
         } else {
           check_button_set_value(widget, !(check_button->value));
         }
+
+        widget_dispatch(widget, (event_t*)&click);
       }
 
       check_button->pressed = FALSE;
@@ -98,7 +103,7 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
 
   check_button_set_value_only(widget, value);
 
-  if (check_button->radio && widget->parent != NULL) {
+  if (check_button->radio && widget->parent != NULL && value) {
     widget_t* parent = widget->parent;
 
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
