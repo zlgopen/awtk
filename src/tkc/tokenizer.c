@@ -84,6 +84,32 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer) {
   return tokenizer->cursor < tokenizer->size;
 }
 
+const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str) {
+  return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK && str != NULL, NULL);
+
+  if (tokenizer_has_more(tokenizer)) {
+    uint32_t len = 0;
+    str_t* s = &(tokenizer->token);
+    uint32_t start = tokenizer->cursor;
+
+    while (tokenizer->str[tokenizer->cursor]) {
+      char c = tokenizer->str[tokenizer->cursor];
+      if (strchr(str, c) != NULL) {
+        break;
+      }
+      tokenizer->cursor++;
+    }
+
+    len = tokenizer->cursor - start;
+    str_set_with_len(s, tokenizer->str + start, len);
+    tokenizer_skip_separator(tokenizer);
+
+    return s->str;
+  }
+
+  return NULL;
+}
+
 const char* tokenizer_next(tokenizer_t* tokenizer) {
   return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK, NULL);
 
