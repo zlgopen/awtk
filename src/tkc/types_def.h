@@ -133,6 +133,11 @@ typedef enum _ret_t {
    */
   RET_CONTINUE,
   /**
+   * @const RET_OBJECT_CHANGED
+   * 对象属性变化。
+   */
+  RET_OBJECT_CHANGED,
+  /**
    * @const RET_BAD_PARAMS
    * 无效参数。
    */
