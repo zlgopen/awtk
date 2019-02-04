@@ -78,3 +78,25 @@ TEST(Tokenizer, single_char_token) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, until1) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a==1}", 100, "{ }", "=,");
+  ASSERT_EQ(t, &tokenizer);
+
+  ASSERT_EQ(string(tokenizer_next_until(t, ",}")), string("a==1"));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, until2) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a==1, a}", 100, "{ }", "=,");
+  ASSERT_EQ(t, &tokenizer);
+
+  ASSERT_EQ(string(tokenizer_next_until(t, ",}")), string("a==1"));
+
+  tokenizer_deinit(t);
+}
