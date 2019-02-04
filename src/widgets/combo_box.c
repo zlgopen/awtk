@@ -67,6 +67,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     value_set_int(v, combo_box->selected_index);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_int(v, combo_box->value);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, combo_box->options);
     return RET_OK;
@@ -117,6 +120,9 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     combo_box_set_selected_index(widget, value_int(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    combo_box_set_value(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     combo_box_parse_options(widget, value_str(v));
@@ -368,6 +374,25 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index) {
   return NULL;
 }
 
+int32_t combo_box_find_option(widget_t* widget, int32_t value) {
+  uint32_t i = 0;
+  combo_box_option_t* iter = NULL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, 0);
+
+  iter = combo_box->option_items;
+  while (iter != NULL) {
+    if (iter->value == value) {
+      return i;
+    }
+
+    i++;
+    iter = iter->next;
+  }
+
+  return 0;
+}
+
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
   combo_box_t* combo_box = COMBO_BOX(widget);
 
@@ -414,6 +439,12 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
 
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
   return combo_box_set_selected_index_ex(widget, index, NULL);
+}
+
+ret_t combo_box_set_value(widget_t* widget, int32_t value) {
+  int32_t index = combo_box_find_option(widget, value);
+
+  return combo_box_set_selected_index(widget, index);
 }
 
 int32_t combo_box_get_value(widget_t* widget) {
