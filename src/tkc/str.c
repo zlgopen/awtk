@@ -26,7 +26,7 @@
 #include "tkc/value.h"
 #include "tkc/tokenizer.h"
 
-static ret_t str_extend(str_t* str, uint32_t capacity) {
+ret_t str_extend(str_t* str, uint32_t capacity) {
   if (capacity <= str->capacity) {
     return RET_OK;
   }
