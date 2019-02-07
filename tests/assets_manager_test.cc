@@ -1,7 +1,7 @@
 ﻿#include "base/assets_manager.h"
 #include "gtest/gtest.h"
 
-TEST(ResourceManager, basic) {
+TEST(AssetsManager, basic) {
   const asset_info_t* null_res = NULL;
   assets_manager_t* rm = assets_manager_create(10);
 
@@ -25,7 +25,7 @@ TEST(ResourceManager, basic) {
   assets_manager_destroy(rm);
 }
 
-TEST(ResourceManager, file) {
+TEST(AssetsManager, file_image) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager_create(10);
 
@@ -36,7 +36,18 @@ TEST(ResourceManager, file) {
   assets_manager_destroy(rm);
 }
 
-TEST(ResourceManager, clearCache) {
+TEST(AssetsManager, file_script) {
+  const asset_info_t* r = NULL;
+  assets_manager_t* rm = assets_manager_create(10);
+
+  r = assets_manager_ref(rm, ASSET_TYPE_SCRIPT, "dummy");
+  ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(assets_manager_unref(rm, r), RET_OK);
+
+  assets_manager_destroy(rm);
+}
+
+TEST(AssetsManager, clearCache) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager_create(10);
 

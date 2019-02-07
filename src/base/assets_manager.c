@@ -121,6 +121,27 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
 
       break;
     }
+    case ASSET_TYPE_SCRIPT: {
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".js") == RET_OK,
+          NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_SCRIPT_JS, size, path, name);
+        break;
+      }
+
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".lua") == RET_OK,
+          NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_SCRIPT_LUA, size, path, name);
+        break;
+      }
+
+      break;
+    }
     case ASSET_TYPE_STYLE: {
       return_value_if_fail(
           build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/styles", name, ".bin") == RET_OK,

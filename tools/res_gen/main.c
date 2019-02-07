@@ -51,6 +51,13 @@ int main(int argc, char** argv) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else if (end_with(in_filename, ".gif")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff, size);
+  } else if (end_with(in_filename, ".js")) {
+    output_res_c_source(out_filename, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff, size);
+  } else if (end_with(in_filename, ".lua")) {
+    output_res_c_source(out_filename, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, input_buff, size);
+  } else if (end_with(in_filename, ".py")) {
+    output_res_c_source(out_filename, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON, input_buff,
+                        size);
   } else {
     output_res_c_source(out_filename, ASSET_TYPE_DATA, 0, input_buff, size);
   }
