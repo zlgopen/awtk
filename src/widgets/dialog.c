@@ -44,9 +44,8 @@ static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
   return RET_CONTINUE;
 }
 
-static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT,       WIDGET_PROP_OPEN_ANIM_HINT,
-                                            WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME,
-                                            WIDGET_PROP_SCRIPT,          NULL};
+static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
+                                            WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
                                                 .type = WIDGET_TYPE_DIALOG,
                                                 .is_window = TRUE,

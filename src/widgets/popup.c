@@ -99,11 +99,13 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
   return window_base_on_event(widget, e);
 }
 
-static const char* s_popup_properties[] = {
-    WIDGET_PROP_ANIM_HINT,        WIDGET_PROP_OPEN_ANIM_HINT,
-    WIDGET_PROP_CLOSE_ANIM_HINT,  WIDGET_PROP_THEME,
-    WIDGET_PROP_CLOSE_WHEN_CLICK, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
-    WIDGET_PROP_SCRIPT,           NULL};
+static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
+                                           WIDGET_PROP_OPEN_ANIM_HINT,
+                                           WIDGET_PROP_CLOSE_ANIM_HINT,
+                                           WIDGET_PROP_THEME,
+                                           WIDGET_PROP_CLOSE_WHEN_CLICK,
+                                           WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
+                                           NULL};
 
 static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
                                                .type = WIDGET_TYPE_POPUP,

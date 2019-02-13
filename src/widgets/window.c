@@ -24,9 +24,8 @@
 #include "base/enums.h"
 #include "widgets/window.h"
 
-static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,       WIDGET_PROP_OPEN_ANIM_HINT,
-                                            WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME,
-                                            WIDGET_PROP_SCRIPT,          NULL};
+static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
+                                            WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 
 static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                                                 .size = sizeof(window_t),

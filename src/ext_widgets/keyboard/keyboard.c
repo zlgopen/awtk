@@ -32,9 +32,8 @@
 static ret_t keyboard_on_load(void* ctx, event_t* e);
 static ret_t keyboard_on_action_info(void* ctx, event_t* e);
 
-static const char* s_keyboard_properties[] = {
-    WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT, WIDGET_PROP_CLOSE_ANIM_HINT,
-    WIDGET_PROP_THEME,     WIDGET_PROP_SCRIPT,         NULL};
+static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
+                                              WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);

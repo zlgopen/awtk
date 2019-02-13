@@ -29,7 +29,7 @@
 #include "widgets/system_bar.h"
 #include "base/window_manager.h"
 
-static const char* s_system_bar_properties[] = {WIDGET_PROP_THEME, WIDGET_PROP_SCRIPT, NULL};
+static const char* s_system_bar_properties[] = {WIDGET_PROP_THEME, NULL};
 
 static ret_t system_bar_on_request_close_window(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);

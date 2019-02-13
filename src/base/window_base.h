@@ -60,13 +60,6 @@ typedef struct _window_base_t {
   char* theme;
 
   /**
-   * @property {char*} script
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 脚本文件名称(暂时没用)。
-   */
-  char* script;
-
-  /**
    * @property {window_closable_t} closable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。

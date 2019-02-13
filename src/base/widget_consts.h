@@ -426,12 +426,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DEFAULT_THEME_OBJ "default_theme_obj"
 
 /**
- * @const WIDGET_PROP_SCRIPT
- *
- */
-#define WIDGET_PROP_SCRIPT "script"
-
-/**
  * @const WIDGET_PROP_ITEM_WIDTH
  *
  */
