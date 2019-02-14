@@ -291,3 +291,12 @@ TEST(Utils, ieq) {
   ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
   ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
 }
+
+TEST(Utils, tk_under_score_to_camel) {
+  char name[11];
+  ASSERT_EQ(string(tk_under_score_to_camel("test", name, sizeof(name)-1)), string("test"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj", name, sizeof(name)-1)), string("testObj"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_", name, sizeof(name)-1)), string("testObj"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_get", name, sizeof(name)-1)), string("testObjGet"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_get", name, 7)), string("testObj"));
+}

@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/02/14
+  * 增加 tk\_under\_score\_to\_camel
+  * 增加 widget\_set\_prop\_pointer/widget\_get\_prop\_pointer
+
 * 2019/02/13
   * 窗口去掉script属性。
 

@@ -664,3 +664,27 @@ bool_t tk_str_start_with(const char* str, const char* prefix) {
 
   return memcmp(str, prefix, strlen(prefix)) == 0;
 }
+
+const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size) {
+  uint32_t i = 0;
+  const char* s = name;
+  return_value_if_fail(name != NULL && out != NULL && max_out_size > 0, NULL);
+
+  while(*s && i < max_out_size) {
+    if(*s == '_') {
+      s++;
+      if(*s != '\0') {
+        out[i++] = toupper(*s);
+      } else {
+        break;
+      }
+    } else {
+      out[i++] = *s;
+    }
+    s++;
+  }
+  out[i] = '\0';
+
+  return out;
+}
+
