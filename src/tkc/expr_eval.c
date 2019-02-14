@@ -24,10 +24,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include "tkc/utils.h"
 #include "tkc/expr_eval.h"
 
 #ifdef WIN32
-#define snprintf _snprintf
+#define tk_snprintf _tk_snprintf
 #define DIRECTORY_SEPARATOR_CHAR '\\'
 #else
 #define DIRECTORY_SEPARATOR_CHAR '/'
@@ -165,9 +166,9 @@ static EvalResult expr_str_append_char(ExprStr* str, char c) {
 
 static const char* number_to_string(double v, char* str, size_t capacity) {
   if (ceill(v) == v) {
-    snprintf(str, capacity, "%u", (unsigned int)v);
+    tk_snprintf(str, capacity, "%u", (unsigned int)v);
   } else {
-    snprintf(str, capacity, "%lf", v);
+    tk_snprintf(str, capacity, "%lf", v);
   }
 
   return str;
@@ -799,7 +800,7 @@ static EvalResult parse_product(EvalContext* ctx, ExprValue* output) {
       result = parse_unary(ctx, &rhs);
       if (result != EVAL_RESULT_OK) return result;
 
-      expr_value_op(&lhs, &rhs, type);
+      expr_value_op(&lhs, &rhs, (EvalTokenType)type);
     } else {
       break;
     }
@@ -831,7 +832,7 @@ static EvalResult parse_sum(EvalContext* ctx, ExprValue* output) {
       result = parse_product(ctx, &rhs);
       if (result != EVAL_RESULT_OK) return result;
 
-      expr_value_op(&lhs, &rhs, type);
+      expr_value_op(&lhs, &rhs, (EvalTokenType)type);
     } else {
       break;
     }
