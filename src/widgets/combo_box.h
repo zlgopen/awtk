@@ -222,7 +222,7 @@ int32_t combo_box_count_options(widget_t* widget);
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index);
 
 /**
- * @method combo_box_set_value_
+ * @method combo_box_set_value
  * 设置值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box对象。
