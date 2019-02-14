@@ -1149,6 +1149,27 @@ ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* v);
 const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval);
 
 /**
+ * @method widget_set_prop_pointer
+ * 设置指针格式的属性。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void**} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* v);
+
+/**
+ * @method widget_get_prop_pointer
+ * 获取指针格式的属性。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {void*} 返回属性的值。
+ */
+void* widget_get_prop_pointer(widget_t* widget, const char* name);
+
+/**
  * @method widget_set_prop_int
  * 设置整数格式的属性。
  * @annotation ["scriptable"]

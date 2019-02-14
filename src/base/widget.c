@@ -996,6 +996,20 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
   return value_str(&v);
 }
 
+ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer) {
+  value_t v;
+  value_set_pointer(&v, pointer);
+
+  return widget_set_prop(widget, name, &v);
+}
+
+void* widget_get_prop_pointer(widget_t* widget, const char* name) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, NULL);
+
+  return value_pointer(&v);
+}
+
 ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t num) {
   value_t v;
   value_set_int(&v, num);
