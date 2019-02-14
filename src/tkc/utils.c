@@ -670,10 +670,10 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
   const char* s = name;
   return_value_if_fail(name != NULL && out != NULL && max_out_size > 0, NULL);
 
-  while(*s && i < max_out_size) {
-    if(*s == '_') {
+  while (*s && i < max_out_size) {
+    if (*s == '_') {
       s++;
-      if(*s != '\0') {
+      if (*s != '\0') {
         out[i++] = toupper(*s);
       } else {
         break;
@@ -687,4 +687,3 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
 
   return out;
 }
-

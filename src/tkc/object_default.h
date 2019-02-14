@@ -71,12 +71,24 @@ typedef struct _object_default_t {
  *
  * 创建对象。
  *
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  *
  * @return {object_t*} 返回object对象。
  *
  */
 object_t* object_default_create(void);
+
+/**
+ * @method object_default_unref
+ *
+ * for script gc
+ *
+ * @annotation ["deconstructor", "scriptable", "gc"]
+
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+#define object_default_unref object_unref
 
 #define OBJECT_DEFAULT(obj) ((object_default_t*)(obj))
 

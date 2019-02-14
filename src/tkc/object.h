@@ -90,7 +90,7 @@ struct _object_t {
  * @method object_unref
  * 引用计数减1。引用计数为0时，销毁对象。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {object_t*} obj object对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -101,7 +101,7 @@ ret_t object_unref(object_t* obj);
  * @method object_ref
  * 引用计数加1。
  *
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @param {object_t*} obj object对象。
  *
  * @return {object_t*} 返回object对象。

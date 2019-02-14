@@ -98,7 +98,7 @@ event_t* event_cast(event_t* event);
 
 /**
  * @method event_create
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * 创建event对象。
  *
  * 主要给脚本语言使用。
@@ -114,7 +114,7 @@ event_t* event_create(uint32_t type, void* target);
  * 销毁事件对象。
  *
  * 主要给脚本语言使用。
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {event_t*} event event对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -83,7 +83,7 @@ typedef struct _emitter_t {
 
 /**
  * @method emitter_create
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * 创建emitter对象。
  *
  * @return {emitter_t*} 对象。
@@ -229,7 +229,7 @@ ret_t emitter_deinit(emitter_t* emitter);
  * @method emitter_destroy
  * 销毁。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {emitter_t*} emitter emitter对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

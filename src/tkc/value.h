@@ -566,7 +566,7 @@ ret_t value_deep_copy(value_t* dst, const value_t* src);
 
 /**
  * @method value_create
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * 创建value对象。
  *
  * @return {value_t*} 对象。
@@ -576,7 +576,7 @@ value_t* value_create(void);
 /**
  * @method value_destroy
  * 销毁value对象。
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {value_t*} v value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

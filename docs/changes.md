@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/02/15
+  * bitmap/color/date\_time/rect/named\_value/object/object\_default/emitter/value js绑定支持gc。
+  * lua绑定还不支持gc("\_\_gc"被调用多次，而且udata居然无法修改，如果哪位朋友熟悉，麻烦指点一下)
+  * 更新stm32f103/427/767的工程。
+
 * 2019/02/14
   * 增加 tk\_under\_score\_to\_camel
   * 增加 widget\_set\_prop\_pointer/widget\_get\_prop\_pointer

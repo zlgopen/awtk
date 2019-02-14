@@ -609,7 +609,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建图片对象(一般供脚本语言中使用)。\n\n",
         "name": "bitmap_create",
@@ -643,7 +644,8 @@
         ],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建图片对象。\n\n\n",
         "name": "bitmap_create_ex",
@@ -825,7 +827,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 销毁图片。\n\n",
         "name": "bitmap_destroy",
@@ -13725,7 +13728,8 @@
         ],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建color对象。\n\n > 主要供脚本语言使用。\n\n\n\n",
         "name": "color_create",
@@ -13858,7 +13862,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": "\n 销毁color对象。\n > 主要供脚本语言使用。\n\n\n\n",
         "name": "color_destroy",
@@ -14253,7 +14258,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。\n\n\n",
         "name": "date_time_create",
@@ -14288,7 +14294,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 销毁date_time对象(一般供脚本语言中使用)。\n\n\n\n",
         "name": "date_time_destroy",
@@ -14386,7 +14393,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建emitter对象。\n\n\n",
         "name": "emitter_create",
@@ -14678,7 +14686,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 销毁。\n\n\n\n",
         "name": "emitter_destroy",
@@ -14824,7 +14833,8 @@
         ],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建event对象。\n\n 主要给脚本语言使用。\n\n\n",
         "name": "event_create",
@@ -14843,7 +14853,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 销毁事件对象。\n\n 主要给脚本语言使用。\n\n\n",
         "name": "event_destroy",
@@ -15157,7 +15168,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": "\n 创建named_value对象。\n\n\n",
         "name": "named_value_create",
@@ -15305,7 +15317,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": "\n 销毁named_value对象。\n\n\n\n",
         "name": "named_value_destroy",
@@ -15401,7 +15414,8 @@
         ],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建rect对象。\n\n > 主要供脚本语言使用。\n\n\n\n",
         "name": "rect_create",
@@ -15477,7 +15491,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": "\n 销毁rect对象。\n > 主要供脚本语言使用。\n\n\n\n",
         "name": "rect_destroy",
@@ -17797,7 +17812,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 创建value对象。\n\n\n",
         "name": "value_create",
@@ -17816,7 +17832,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 销毁value对象。\n\n\n",
         "name": "value_destroy",
@@ -23275,7 +23292,8 @@
         ],
         "annotation": {
           "deconstructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 引用计数减1。引用计数为0时，销毁对象。\n\n\n\n",
         "name": "object_unref",
@@ -23294,7 +23312,8 @@
         ],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": " 引用计数加1。\n\n\n\n",
         "name": "object_ref",
@@ -29454,13 +29473,28 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
         "desc": "\n 创建对象。\n\n\n\n\n",
         "name": "object_default_create",
         "return": {
           "type": "object_t*",
           "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true,
+          "gc": true
+        },
+        "desc": "\n for script gc\n\n  \n\n\n",
+        "name": "object_default_unref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
