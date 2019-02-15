@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Eval - Simple numerical expression evaluator
  *
  * https://github.com/mattbucknall/eval
