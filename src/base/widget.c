@@ -1905,23 +1905,38 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
   return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
 }
 
-ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+static image_manager_t* widget_get_image_manager(widget_t* widget) {
   image_manager_t* imm = NULL;
-  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, NULL);
 
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
     imm = image_manager();
   } else {
     value_t v;
     widget_t* win = widget_get_window(widget);
-    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
-                         RET_BAD_PARAMS);
+    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK, NULL);
     imm = (image_manager_t*)value_pointer(&v);
   }
 
+  return imm;
+}
+
+ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+  image_manager_t* imm = widget_get_image_manager(widget);
+
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
   return image_manager_get_bitmap(imm, name, bitmap);
+}
+
+ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap) {
+  image_manager_t* imm = widget_get_image_manager(widget);
+
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && bitmap != NULL, RET_BAD_PARAMS);
+
+  return image_manager_unload_bitmap(imm, bitmap);
 }
 
 const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name) {
