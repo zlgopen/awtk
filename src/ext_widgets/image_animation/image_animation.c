@@ -21,25 +21,80 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include "base/image_manager.h"
 #include "image_animation/image_animation.h"
 
-static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
-  bitmap_t bitmap;
-  char name[TK_NAME_LEN + 1];
-  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-
-  if (image_animation->image != NULL && image_animation->sequence != NULL &&
-      image_animation->index >= 0) {
-    memset(name, 0x00, sizeof(name));
+static ret_t image_animation_get_image_name(image_animation_t* image_animation,
+                                            char name[TK_NAME_LEN + 1]) {
+  memset(name, 0x00, TK_NAME_LEN + 1);
+  if (image_animation->sequence != NULL) {
     tk_strncpy(name, image_animation->image, TK_NAME_LEN);
     name[strlen(name)] = image_animation->sequence[image_animation->index];
+  } else {
+    tk_snprintf(name, TK_NAME_LEN, "%s%d", image_animation->image, image_animation->index);
+  }
 
+  return RET_OK;
+}
+
+#define MAX_CACHE_NR 60
+
+static ret_t on_idle_unload_image(const idle_info_t* info) {
+  bitmap_t bitmap;
+  widget_t* widget = WIDGET(info->ctx);
+  image_animation_t* image_animation = IMAGE_ANIMATION(info->ctx);
+
+  if (image_animation->image_data != NULL) {
+    memset(&bitmap, 0x00, sizeof(bitmap));
+    bitmap.data = image_animation->image_data;
+    widget_unload_image(widget, &bitmap);
+  }
+
+  return RET_REMOVE;
+}
+
+static ret_t image_animation_unload_image(widget_t* widget, bitmap_t* image) {
+  bool_t clear_cache = FALSE;
+  widget_t* win = widget_get_window(widget);
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+
+  if (image_animation->sequence && strlen(image_animation->sequence) > MAX_CACHE_NR) {
+    clear_cache = TRUE;
+  }
+
+  if ((image_animation->end_index - image_animation->start_index) > MAX_CACHE_NR) {
+    clear_cache = TRUE;
+  }
+
+  if (image->w > (win->w >> 1) && image->h > (win->h >> 1)) {
+    clear_cache = TRUE;
+  }
+
+  clear_cache = TRUE;
+  if (clear_cache) {
+    idle_add(on_idle_unload_image, widget);
+  }
+
+  return TRUE;
+}
+
+static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(image_animation->image != NULL, RET_BAD_PARAMS);
+
+  if (image_animation->index >= 0) {
+    bitmap_t bitmap;
+    char name[TK_NAME_LEN + 1];
+
+    image_animation_get_image_name(image_animation, name);
     if (widget_load_image(widget, name, &bitmap) == RET_OK) {
       rect_t s = rect_init(0, 0, bitmap.w, bitmap.h);
       rect_t d = rect_init(0, 0, widget->w, widget->h);
       canvas_draw_image_scale_down(c, &bitmap, &s, &d);
+
+      image_animation_unload_image(widget, &bitmap);
     }
   }
 
@@ -56,6 +111,10 @@ static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, image_animation->image);
     return RET_OK;
+  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_START_INDEX)) {
+    value_set_int(v, image_animation->start_index);
+  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_END_INDEX)) {
+    value_set_int(v, image_animation->end_index);
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_SEQUENCE)) {
     value_set_str(v, image_animation->sequence);
     return RET_OK;
@@ -74,12 +133,18 @@ static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_
 }
 
 static ret_t image_animation_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     return image_animation_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_animation_set_image(widget, value_str(v));
+  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_START_INDEX)) {
+    image_animation->start_index = value_uint32(v);
+    image_animation->index = image_animation->start_index;
+  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_END_INDEX)) {
+    image_animation->end_index = value_uint32(v);
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_SEQUENCE)) {
     return image_animation_set_sequence(widget, value_str(v));
   } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_AUTO_PLAY)) {
@@ -100,15 +165,25 @@ static ret_t image_animation_on_destroy(widget_t* widget) {
     timer_remove(image_animation->timer_id);
     image_animation->timer_id = TK_INVALID_ID;
   }
+  image_animation->image_data = NULL;
   TKMEM_FREE(image_animation->image);
   TKMEM_FREE(image_animation->sequence);
 
   return RET_OK;
 }
 
+static const char* s_image_animation_clone_properties[] = {IMAGE_ANIMATION_PROP_LOOP,
+                                                           IMAGE_ANIMATION_PROP_SEQUENCE,
+                                                           IMAGE_ANIMATION_PROP_START_INDEX,
+                                                           IMAGE_ANIMATION_PROP_END_INDEX,
+                                                           IMAGE_ANIMATION_PROP_INTERVAL,
+                                                           IMAGE_ANIMATION_PROP_AUTO_PLAY,
+                                                           NULL};
+
 static const widget_vtable_t s_image_animation_vtable = {
     .size = sizeof(image_animation_t),
     .type = WIDGET_TYPE_IMAGE_ANIMATION,
+    .clone_properties = s_image_animation_clone_properties,
     .create = image_animation_create,
     .on_destroy = image_animation_on_destroy,
     .get_prop = image_animation_get_prop,
@@ -149,6 +224,8 @@ widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   return_value_if_fail(image_animation != NULL, NULL);
 
   image_animation->index = 0;
+  image_animation->end_index = 0;
+  image_animation->start_index = 0;
   image_animation->interval = 16;
   image_animation->loop = TRUE;
   image_animation->auto_play = FALSE;
@@ -211,40 +288,79 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence) {
   return RET_OK;
 }
 
-static ret_t image_animation_on_update(const timer_info_t* info) {
-  ret_t ret = RET_REMOVE;
-  widget_t* widget = WIDGET(info->ctx);
+ret_t image_animation_set_range_sequence(widget_t* widget, uint32_t start_index,
+                                         uint32_t end_index) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (image_animation->image != NULL && image_animation->sequence != NULL) {
-    if (image_animation->index < 0) {
-      image_animation->index = 0;
+  image_animation->index = start_index;
+  image_animation->end_index = end_index;
+  image_animation->start_index = start_index;
+
+  return RET_OK;
+}
+
+static ret_t image_animation_restart(image_animation_t* image_animation) {
+  if (image_animation->sequence != NULL) {
+    image_animation->index = 0;
+  } else {
+    image_animation->index = image_animation->start_index;
+  }
+
+  return RET_REPEAT;
+}
+
+static ret_t image_animation_next(image_animation_t* image_animation) {
+  ret_t ret = RET_REMOVE;
+  if (image_animation->sequence) {
+    if (image_animation->sequence[image_animation->index + 1]) {
+      image_animation->index++;
       ret = RET_REPEAT;
-    } else {
-      if (image_animation->sequence[image_animation->index + 1]) {
-        image_animation->index++;
-        ret = RET_REPEAT;
-      } else {
-        if (image_animation->loop) {
-          event_t e = event_init(EVT_ANIM_ONCE, widget);
-
-          image_animation->index = 0;
-          ret = RET_REPEAT;
-
-          widget_dispatch(widget, &e);
-        } else {
-          event_t e = event_init(EVT_ANIM_END, widget);
-          image_animation->index = -1;
-
-          widget_dispatch(widget, &e);
-        }
-      }
     }
-
-    widget_invalidate_force(widget, NULL);
+  } else {
+    if (image_animation->index < image_animation->end_index) {
+      image_animation->index++;
+      ret = RET_REPEAT;
+    }
   }
 
   return ret;
+}
+
+ret_t image_animation_update(widget_t* widget) {
+  ret_t ret = RET_REMOVE;
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(image_animation->image != NULL, RET_REMOVE);
+
+  if (image_animation->index < 0) {
+    ret = image_animation_restart(image_animation);
+  } else {
+    ret = image_animation_next(image_animation);
+
+    if (ret == RET_REMOVE) {
+      if (image_animation->loop) {
+        event_t e = event_init(EVT_ANIM_ONCE, widget);
+        widget_dispatch(widget, &e);
+
+        ret = image_animation_restart(image_animation);
+      } else {
+        event_t e = event_init(EVT_ANIM_END, widget);
+        image_animation->index = -1;
+
+        widget_dispatch(widget, &e);
+      }
+    }
+  }
+
+  widget_invalidate_force(widget, NULL);
+
+  return ret;
+}
+
+static ret_t image_animation_on_update(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+
+  return image_animation_update(widget);
 }
 
 ret_t image_animation_play(widget_t* widget) {

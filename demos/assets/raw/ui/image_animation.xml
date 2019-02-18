@@ -1,9 +1,9 @@
 <window anim_hint="htranslate">
   <view x="0" y="0" w="100%" h="80%" children_layout="default(r=4,c=4)">
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="100"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="200"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="300"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="400"/>
+    <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="100"/>
+    <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="200"/>
+    <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="300"/>
+    <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="400"/>
 
     <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="500"/>
     <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="600"/>

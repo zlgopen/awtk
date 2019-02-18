@@ -64,3 +64,26 @@ TEST(ImageAnimation, clone) {
   widget_destroy(w1);
   widget_destroy(w2);
 }
+
+TEST(ImageAnimation, range) {
+  widget_t* w = image_animation_create(NULL, 10, 20, 30, 40);
+  image_animation_t* ia = IMAGE_ANIMATION(w);
+
+  ASSERT_EQ(widget_set_prop_int(w, IMAGE_ANIMATION_PROP_START_INDEX, 100), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, IMAGE_ANIMATION_PROP_START_INDEX, 0), 100);
+
+  ASSERT_EQ(widget_set_prop_int(w, IMAGE_ANIMATION_PROP_END_INDEX, 200), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, IMAGE_ANIMATION_PROP_END_INDEX, 0), 200);
+
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_IMAGE, "fire"), RET_OK);
+
+  image_animation_stop(w);
+  image_animation_update(w);
+  ASSERT_EQ(ia->index, 100);
+  image_animation_update(w);
+  ASSERT_EQ(ia->index, 101);
+  image_animation_update(w);
+  ASSERT_EQ(ia->index, 102);
+
+  widget_destroy(w);
+}

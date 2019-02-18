@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/02/18
+  * 完善image\_animation，支持指定一个范围。
+
 * 2019/02/15
   * bitmap/color/date\_time/rect/named\_value/object/object\_default/emitter/value js绑定支持gc。
   * lua绑定还不支持gc("\_\_gc"被调用多次，而且udata居然无法修改，如果哪位朋友熟悉，麻烦指点一下)

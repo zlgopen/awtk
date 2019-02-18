@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_animation.h
  * Author: AWTK Develop Team
  * Brief:  image_animation
@@ -32,12 +32,16 @@ BEGIN_C_DECLS
  * @annotation ["scriptable"]
  * 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。
  *
+ * 图片序列可以用sequence指定，也可以用start\_index和end\_index指定一个范围。
+ *
  * image\_animation\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于image\_animation\_t控件。
  *
  * 在xml中使用"image\_animation"标签创建图片动画控件。如：
  *
  * ```xml
  * <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50"/>
+ * <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50"
+ * delay="100"/>
  * ```
  *
  * > 更多用法请参考：
@@ -76,6 +80,18 @@ typedef struct _image_animation_t {
    */
   char* sequence;
   /**
+   * @property {uint32_t} start_index
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 图片起始序数。
+   */
+  uint32_t start_index;
+  /**
+   * @property {uint32_t} end_index
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 图片结束序数。
+   */
+  uint32_t end_index;
+  /**
    * @property {bool_t} loop
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否循环播放。
@@ -103,6 +119,7 @@ typedef struct _image_animation_t {
   /*private*/
   int32_t index;
   uint32_t timer_id;
+  void* image_data;
 } image_animation_t;
 
 /**
@@ -186,6 +203,19 @@ ret_t image_animation_set_auto_play(widget_t* widget, bool_t auto_play);
 ret_t image_animation_set_sequence(widget_t* widget, const char* sequence);
 
 /**
+ * @method image_animation_set_range_sequence
+ * 设置播放序列。比如image为"fire"，max_nr为100, 将依次播放"fire0", ..., "fire99"。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_animation对象。
+ * @param {uint32_t} start_index 图片起始序数。
+ * @param {uint32_t} end_index 图片结束序数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_animation_set_range_sequence(widget_t* widget, uint32_t start_index,
+                                         uint32_t end_index);
+
+/**
  * @method image_animation_play
  * 播放。
  * @annotation ["scriptable"]
@@ -227,11 +257,16 @@ widget_t* image_animation_cast(widget_t* widget);
 
 #define IMAGE_ANIMATION_PROP_LOOP "loop"
 #define IMAGE_ANIMATION_PROP_SEQUENCE "sequence"
+#define IMAGE_ANIMATION_PROP_START_INDEX "start_index"
+#define IMAGE_ANIMATION_PROP_END_INDEX "end_index"
 #define IMAGE_ANIMATION_PROP_INTERVAL "interval"
 #define IMAGE_ANIMATION_PROP_AUTO_PLAY "auto_play"
 
 #define WIDGET_TYPE_IMAGE_ANIMATION "image_animation"
 #define IMAGE_ANIMATION(widget) ((image_animation_t*)(widget))
+
+/*public for test*/
+ret_t image_animation_update(widget_t* widget);
 
 END_C_DECLS
 
