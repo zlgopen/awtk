@@ -1360,6 +1360,19 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
 
 /**
+ * @method widget_unload_image
+ * 卸载图片。
+ *
+ *> 一般不需要调用，只有确认在图片不再需要时才调用本函数卸载。
+ *
+ * @param {widget_t*} widget 控件对象。
+ * @param {bitmap_t*} bitmap 图片对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap);
+
+/**
  * @method widget_load_asset
  * 加载资源。
  * @param {widget_t*} widget 控件对象。
