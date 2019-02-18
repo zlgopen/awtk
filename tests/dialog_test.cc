@@ -5,6 +5,7 @@
 #include "lcd_log.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
+#include "widgets/window.h"
 
 TEST(Dialog, basic) {
   value_t v1;
@@ -28,4 +29,10 @@ TEST(Dialog, basic) {
 
   widget_destroy(w);
   widget_destroy(w1);
+}
+
+TEST(Dialog, invalid_modal) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(dialog_modal(w), RET_BAD_PARAMS);
+  widget_destroy(w);
 }

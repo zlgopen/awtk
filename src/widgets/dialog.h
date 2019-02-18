@@ -242,7 +242,7 @@ uint32_t dialog_modal(widget_t* widget);
  */
 ret_t dialog_quit(widget_t* widget, uint32_t code);
 
-#define DIALOG(widget) ((dialog_t*)(widget))
+#define DIALOG(widget) ((dialog_t*)(dialog_cast(widget)))
 
 END_C_DECLS
 

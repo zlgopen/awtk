@@ -101,12 +101,13 @@ static ret_t dialog_idle_close(const idle_info_t* info) {
 }
 
 uint32_t dialog_modal(widget_t* widget) {
+  bool_t running = FALSE;
   dialog_t* dialog = DIALOG(widget);
-  bool_t running = main_loop()->running;
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   log_debug("%s run\n", __FUNCTION__);
 
+  running = main_loop()->running;
   widget_invalidate(widget, NULL);
   main_loop_run(main_loop());
   main_loop()->running = running;

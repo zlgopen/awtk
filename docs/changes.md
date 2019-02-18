@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/02/18
   * 完善image\_animation，支持指定一个范围。
+  * 完善dialog，避免dialog\_model应用到普通窗口上。
 
 * 2019/02/15
   * bitmap/color/date\_time/rect/named\_value/object/object\_default/emitter/value js绑定支持gc。
