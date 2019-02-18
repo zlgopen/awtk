@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Eval - Simple numerical expression evaluator
  *
  * https://github.com/mattbucknall/eval
@@ -28,7 +28,6 @@
 #include "tkc/expr_eval.h"
 
 #ifdef WIN32
-#define tk_snprintf _tk_snprintf
 #define DIRECTORY_SEPARATOR_CHAR '\\'
 #else
 #define DIRECTORY_SEPARATOR_CHAR '/'
