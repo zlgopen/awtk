@@ -235,6 +235,17 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   return darray_remove_all(&(imm->images), &b);
 }
 
+ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
+  bitmap_cache_t b;
+  return_value_if_fail(imm != NULL && imm->loader != NULL && image != NULL, RET_BAD_PARAMS);
+
+  b.image.data = image->data;
+  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
+
+  imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
+  return darray_remove_all(&(imm->images), &b);
+}
+
 ret_t image_manager_deinit(image_manager_t* imm) {
   return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
 
