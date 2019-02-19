@@ -96,6 +96,11 @@ struct _widget_vtable_t {
    */
   uint32_t enable_pool : 1;
 
+  /**
+   * parent class vtable
+   */
+  struct _widget_vtable_t* parent;
+
   widget_create_t create;
   widget_get_prop_t get_prop;
   widget_get_prop_default_value_t get_prop_default_value;
@@ -1699,6 +1704,8 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 #define WIDGET(w) ((widget_t*)(w))
 
 const char** widget_get_persistent_props(void);
+
+bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 
 END_C_DECLS
 

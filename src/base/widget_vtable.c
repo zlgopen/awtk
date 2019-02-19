@@ -169,7 +169,10 @@ ret_t widget_on_paint_null(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default,
+const widget_vtable_t g_widget_vtable = {.size = sizeof(widget_t),
+                                         .type = WIDGET_TYPE_NONE,
+                                         .parent = NULL,
+                                         .invalidate = widget_invalidate_default,
                                          .on_event = widget_on_event_default,
                                          .on_paint_self = widget_on_paint_self_default,
                                          .on_paint_children = widget_on_paint_children_default,
@@ -184,5 +187,5 @@ static const widget_vtable_t s_vtable = {.invalidate = widget_invalidate_default
                                          .on_destroy = widget_on_destroy_default};
 
 const widget_vtable_t* widget_vtable_default() {
-  return &s_vtable;
+  return &g_widget_vtable;
 }

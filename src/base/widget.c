@@ -1988,3 +1988,20 @@ const char* widget_get_type(widget_t* widget) {
 widget_t* widget_cast(widget_t* widget) {
   return widget;
 }
+
+bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
+  const widget_vtable_t* iter = NULL;
+  return_value_if_fail(widget != NULL && vt != NULL, FALSE);
+
+  iter = widget->vt;
+
+  while (iter != NULL) {
+    if (iter == vt) {
+      return TRUE;
+    }
+
+    iter = iter->parent;
+  }
+
+  return FALSE;
+}

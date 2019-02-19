@@ -79,3 +79,13 @@ TEST(Button, remove_parent) {
   widget_destroy(w);
   idle_dispatch();
 }
+
+TEST(Button, cast) {
+  widget_t* w = window_create(NULL, 0, 0, 320, 240);
+  widget_t* b = button_create(w, 10, 10, 30, 40);
+
+  ASSERT_EQ(button_cast(b), b);
+  ASSERT_EQ(button_cast(w), WIDGET(NULL));
+
+  widget_destroy(w);
+}

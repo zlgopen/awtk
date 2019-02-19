@@ -136,7 +136,10 @@ widget_t* button_cast(widget_t* widget);
  */
 ret_t button_set_repeat(widget_t* widget, int32_t repeat);
 
-#define BUTTON(widget) ((button_t*)(widget))
+#define BUTTON(widget) ((button_t*)(button_cast(widget)))
+
+/*public for subclass*/
+extern const widget_vtable_t g_button_vtable;
 
 END_C_DECLS
 
