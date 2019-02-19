@@ -138,8 +138,8 @@ ret_t button_set_repeat(widget_t* widget, int32_t repeat);
 
 #define BUTTON(widget) ((button_t*)(button_cast(widget)))
 
-/*public for subclass*/
-extern const widget_vtable_t g_button_vtable;
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(button);
 
 END_C_DECLS
 

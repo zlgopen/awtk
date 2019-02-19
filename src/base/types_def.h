@@ -242,4 +242,20 @@ typedef struct _widget_vtable_t widget_vtable_t;
 
 #define TK_LONG_PRESS_TIME 1000
 
+#ifdef WITH_SDL
+#define WITH_WIDGET_TYPE_CHECK 1
+#endif /*WITH_SDL*/
+
+#ifdef WITH_WIDGET_TYPE_CHECK
+#define TK_REF_VTABLE(vt) &(g_##vt##_vtable)
+#define TK_PARENT_VTABLE(vt) TK_REF_VTABLE(vt)
+#define TK_DECL_VTABLE(vt) const widget_vtable_t g_##vt##_vtable
+#define TK_EXTERN_VTABLE(vt) extern const widget_vtable_t g_##vt##_vtable
+#else
+#define TK_REF_VTABLE(vt) &(s_##vt##_vtable)
+#define TK_PARENT_VTABLE(vt) NULL
+#define TK_DECL_VTABLE(vt) static const widget_vtable_t s_##vt##_vtable
+#define TK_EXTERN_VTABLE(vt)
+#endif /*WITH_WIDGET_TYPE_CHECK*/
+
 #endif /*TK_TYPES_DEF_H*/
