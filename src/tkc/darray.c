@@ -162,6 +162,18 @@ void* darray_pop(darray_t* darray) {
   return darray->elms[--darray->size];
 }
 
+void* darray_tail(darray_t* darray) {
+  return_value_if_fail(darray != NULL && darray->size > 0, NULL);
+
+  return darray->elms[darray->size - 1];
+}
+
+void* darray_head(darray_t* darray) {
+  return_value_if_fail(darray != NULL && darray->size > 0, NULL);
+
+  return darray->elms[0];
+}
+
 ret_t darray_push(darray_t* darray, void* data) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
   return_value_if_fail(darray_extend(darray), RET_OOM);

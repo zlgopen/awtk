@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/02/19
+  * add darray\_tail/darray\_head。
+
 * 2019/02/18
   * 完善image\_animation，支持指定一个范围。
   * 完善dialog，避免dialog\_model应用到普通窗口上。

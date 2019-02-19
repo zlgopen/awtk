@@ -28,6 +28,26 @@ TEST(DArrayTest, create) {
   darray_destroy(darray);
 }
 
+TEST(DArrayTest, stack) {
+  char* p = NULL;
+  darray_t* darray = darray_create(10, NULL, NULL);
+  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->capacity, 10);
+
+  ASSERT_EQ(darray_tail(darray), p);
+  ASSERT_EQ(darray_head(darray), p);
+
+  ASSERT_EQ(RET_OK, darray_push(darray, p + 1));
+  ASSERT_EQ(darray_tail(darray), p + 1);
+  ASSERT_EQ(darray_head(darray), p + 1);
+  ASSERT_EQ(1, darray_count(darray, p + 1));
+
+  ASSERT_EQ(darray_pop(darray), p + 1);
+  ASSERT_EQ(darray->size, 0);
+
+  darray_destroy(darray);
+}
+
 TEST(DArrayTest, basic) {
   char* p = NULL;
   darray_t* darray = darray_create(10, NULL, NULL);
