@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "widgets/app_bar.h"
+#include "base/widget_vtable.h"
 
 TK_DECL_VTABLE(app_bar) = {.size = sizeof(app_bar_t),
                            .type = WIDGET_TYPE_APP_BAR,

@@ -99,7 +99,7 @@ struct _widget_vtable_t {
   /**
    * parent class vtable
    */
-  struct _widget_vtable_t* parent;
+  const struct _widget_vtable_t* parent;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
