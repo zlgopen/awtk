@@ -29675,7 +29675,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "对象。"
+          }
+        ],
         "annotation": {
           "deconstructor": true,
           "scriptable": true,

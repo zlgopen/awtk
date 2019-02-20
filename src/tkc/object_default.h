@@ -82,6 +82,7 @@ object_t* object_default_create(void);
  * @method object_default_unref
  *
  * for script gc
+ * @param {object_t*} obj 对象。
  *
  * @annotation ["deconstructor", "scriptable", "gc"]
 
