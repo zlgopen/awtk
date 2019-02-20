@@ -37,6 +37,10 @@ ret_t timer_remove(uint32_t timer_id) {
   return timer_manager_remove(timer_manager(), timer_id);
 }
 
+ret_t timer_reset(uint32_t timer_id) {
+  return timer_manager_reset(timer_manager(), timer_id);
+}
+
 const timer_info_t* timer_find(uint32_t timer_id) {
   return timer_manager_find(timer_manager(), timer_id);
 }
