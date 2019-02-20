@@ -55,12 +55,14 @@
 | -------- | ------------ | 
 | <a href="#button_t_button_cast">button\_cast</a> | 转换为button对象(供脚本语言使用)。 |
 | <a href="#button_t_button_create">button\_create</a> | 创建button对象 |
+| <a href="#button_t_button_set_enable_long_press">button\_set\_enable\_long\_press</a> | 设置是否启用长按事件。 |
 | <a href="#button_t_button_set_repeat">button\_set\_repeat</a> | 设置触发EVT\_CLICK事件的时间间隔。为0则不重复触发EVT\_CLICK事件。 |
 ### 属性
 <p id="button_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#button_t_enable_long_press">enable\_long\_press</a> | bool\_t |  |
 | <a href="#button_t_repeat">repeat</a> | int32\_t | 重复触发EVT\_CLICK事件的时间间隔。 |
 ### 事件
 <p id="button_t_events">
@@ -115,6 +117,28 @@ widget_t* button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### button\_set\_enable\_long\_press 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="button_t_button_set_enable_long_press"> 设置是否启用长按事件。
+
+
+
+* 函数原型：
+
+```
+ret_t button_set_enable_long_press (widget_t* widget, bool_t enable_long_press);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| enable\_long\_press | bool\_t | 是否启用长按事件。 |
 #### button\_set\_repeat 函数
 -----------------------
 
@@ -137,6 +161,27 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | repeat | int32\_t | 触发EVT\_CLICK事件的时间间隔(毫秒)。 |
+#### enable\_long\_press 属性
+-----------------------
+> <p id="button_t_enable_long_press">
+ 是否启用长按事件，为true时才触发长按事件。
+ 触发长按事件后不再触发点击事件。
+ 缺省不启用。
+
+
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### repeat 属性
 -----------------------
 > <p id="button_t_repeat"> 重复触发EVT\_CLICK事件的时间间隔。

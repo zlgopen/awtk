@@ -73,6 +73,7 @@
 | <a href="#widget_t_widget_get_prop_bool">widget\_get\_prop\_bool</a> | 获取布尔格式的属性。 |
 | <a href="#widget_t_widget_get_prop_default_value">widget\_get\_prop\_default\_value</a> | 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。 |
 | <a href="#widget_t_widget_get_prop_int">widget\_get\_prop\_int</a> | 获取整数格式的属性。 |
+| <a href="#widget_t_widget_get_prop_pointer">widget\_get\_prop\_pointer</a> | 获取指针格式的属性。 |
 | <a href="#widget_t_widget_get_prop_str">widget\_get\_prop\_str</a> | 获取字符串格式的属性。 |
 | <a href="#widget_t_widget_get_text">widget\_get\_text</a> | 获取控件的文本。 |
 | <a href="#widget_t_widget_get_type">widget\_get\_type</a> | 获取当前控件的类型名称。 |
@@ -112,6 +113,7 @@
 | <a href="#widget_t_widget_set_prop">widget\_set\_prop</a> | 设置控件指定属性的值。 |
 | <a href="#widget_t_widget_set_prop_bool">widget\_set\_prop\_bool</a> | 设置布尔格式的属性。 |
 | <a href="#widget_t_widget_set_prop_int">widget\_set\_prop\_int</a> | 设置整数格式的属性。 |
+| <a href="#widget_t_widget_set_prop_pointer">widget\_set\_prop\_pointer</a> | 设置指针格式的属性。 |
 | <a href="#widget_t_widget_set_prop_str">widget\_set\_prop\_str</a> | 设置字符串格式的属性。 |
 | <a href="#widget_t_widget_set_self_layout">widget\_set\_self\_layout</a> | 设置控件自己的布局参数。 |
 | <a href="#widget_t_widget_set_self_layout_params">widget\_set\_self\_layout\_params</a> | 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。 |
@@ -129,6 +131,7 @@
 | <a href="#widget_t_widget_to_screen">widget\_to\_screen</a> | 将控件内的本地坐标转换成屏幕上的坐标。 |
 | <a href="#widget_t_widget_ungrab">widget\_ungrab</a> | 让指定子控件放弃抓住事件。 |
 | <a href="#widget_t_widget_unload_asset">widget\_unload\_asset</a> | 卸载资源。 |
+| <a href="#widget_t_widget_unload_image">widget\_unload\_image</a> | 卸载图片。 |
 | <a href="#widget_t_widget_use_style">widget\_use\_style</a> | 启用指定的主题。 |
 ### 属性
 <p id="widget_t_properties">
@@ -141,7 +144,7 @@
 | <a href="#widget_t_can_not_destroy">can\_not\_destroy</a> | uint16\_t | 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。 |
 | <a href="#widget_t_children">children</a> | darray\_t* | 全部子控件。 |
 | <a href="#widget_t_children_layout">children\_layout</a> | children\_layouter\_t* | 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
-| <a href="#widget_t_custom_props">custom\_props</a> | custom\_props\_t* | 自定义属性。 |
+| <a href="#widget_t_custom_props">custom\_props</a> | object\_t* | 自定义属性。 |
 | <a href="#widget_t_destroying">destroying</a> | bool\_t | 标识控件正在被销毁。 |
 | <a href="#widget_t_dirty">dirty</a> | bool\_t | 标识控件是否需要重绘。 |
 | <a href="#widget_t_emitter">emitter</a> | emitter\_t* | 事件发射器。 |
@@ -713,6 +716,29 @@ int32_t widget_get_prop_int (widget_t* widget, const char* name, int32_t defval)
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 属性的名称。 |
 | defval | int32\_t | 缺省值。 |
+#### widget\_get\_prop\_pointer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_prop_pointer"> 获取指针格式的属性。
+
+
+
+
+* 函数原型：
+
+```
+void* widget_get_prop_pointer (widget_t* widget, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回属性的值。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 属性的名称。 |
 #### widget\_get\_prop\_str 函数
 -----------------------
 
@@ -1662,6 +1688,30 @@ ret_t widget_set_prop_int (widget_t* widget, const char* name, int32_t v);
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 属性的名称。 |
 | v | int32\_t | 属性的值。 |
+#### widget\_set\_prop\_pointer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_prop_pointer"> 设置指针格式的属性。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_set_prop_pointer (widget_t* widget, const char* name, void** v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 属性的名称。 |
+| v | void** | 属性的值。 |
 #### widget\_set\_prop\_str 函数
 -----------------------
 
@@ -2081,6 +2131,32 @@ ret_t widget_unload_asset (widget_t* widget, const asset_info_t* asset);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | asset | const asset\_info\_t* | 资源句柄。 |
+#### widget\_unload\_image 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_unload_image"> 卸载图片。
+
+> 一般不需要调用，只有确认在图片不再需要时才调用本函数卸载。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_unload_image (widget_t* widget, bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| bitmap | bitmap\_t* | 图片对象。 |
 #### widget\_use\_style 函数
 -----------------------
 
@@ -2191,7 +2267,7 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 
-* 类型：custom\_props\_t*
+* 类型：object\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

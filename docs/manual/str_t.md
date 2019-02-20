@@ -27,10 +27,12 @@
 | <a href="#str_t_str_append">str\_append</a> | 追加字符串。 |
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
+| <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_end_with">str\_end\_with</a> | 判断字符串是否以指定的子串结尾。 |
 | <a href="#str_t_str_eq">str\_eq</a> | 判断两个字符串是否相等。 |
+| <a href="#str_t_str_extend">str\_extend</a> | 扩展字符串到指定的容量。 |
 | <a href="#str_t_str_from_float">str\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#str_t_str_from_int">str\_from\_int</a> | 用整数初始化字符串。 |
 | <a href="#str_t_str_from_value">str\_from\_value</a> | 用value初始化字符串。 |
@@ -130,6 +132,28 @@ ret_t str_append_with_len (str_t* str, char* text, uint32_t len);
 | str | str\_t* | str对象。 |
 | text | char* | 要追加的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_clear"> 清除字符串内容。
+
+
+
+
+* 函数原型：
+
+```
+ret_t str_clear (str_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
 #### str\_decode\_xml\_entity 函数
 -----------------------
 
@@ -223,6 +247,29 @@ bool_t str_eq (str_t* str, char* text);
 | 返回值 | bool\_t | 返回是否相等。 |
 | str | str\_t* | str对象。 |
 | text | char* | 待比较的字符串。 |
+#### str\_extend 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_extend"> 扩展字符串到指定的容量。
+
+
+
+
+* 函数原型：
+
+```
+ret_t str_extend (str_t* str, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| capacity | uint32\_t | 初始容量。 |
 #### str\_from\_float 函数
 -----------------------
 
