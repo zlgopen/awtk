@@ -2484,6 +2484,10 @@
         "name": "EVT_DRAG_END"
       },
       {
+        "desc": " 在指定的时间内(WITH_SCREEN_SAVER_TIME)，没有用户输入事件，由窗口管理器触发。\n\n",
+        "name": "EVT_SCREEN_SAVER"
+      },
+      {
         "desc": " event queue其它请求编号起始值。\n\n",
         "name": "EVT_REQ_START"
       },
@@ -3391,6 +3395,27 @@
         "annotation": {},
         "desc": " 从图片管理器中卸载指定时间内没有使用的图片。\n\n\n",
         "name": "image_manager_unload_unused",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "image_manager_t*",
+            "name": "imm",
+            "desc": "图片管理器对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "image",
+            "desc": "图片。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 从图片管理器中卸载指定的图片。\n\n\n",
+        "name": "image_manager_unload_bitmap",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -6133,6 +6158,25 @@
         },
         "desc": " 删除指定的timer。\n\n\n",
         "name": "timer_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": " 重置指定的timer，重置之后定时器重新开始计时。\n\n\n",
+        "name": "timer_reset",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -9457,6 +9501,10 @@
       },
       {
         "desc": "\n\n",
+        "name": "WIDGET_PROP_ENABLE_LONG_PRESS"
+      },
+      {
+        "desc": "\n\n",
         "name": "WIDGET_PROP_ANIMATABLE"
       },
       {
@@ -11796,6 +11844,27 @@
             "desc": "控件对象。"
           },
           {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "图片对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 卸载图片。\n\n> 一般不需要调用，只有确认在图片不再需要时才调用本函数卸载。\n\n\n\n",
+        "name": "widget_unload_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "asset_type_t",
             "name": "type",
             "desc": "资源类型。"
@@ -14081,6 +14150,38 @@
         "annotation": {},
         "desc": " 弹出最后一个元素。\n\n\n",
         "name": "darray_pop",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 返回最后一个元素。\n\n\n",
+        "name": "darray_tail",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "darray_t*",
+            "name": "darray",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 返回第一个元素。\n\n\n",
+        "name": "darray_head",
         "return": {
           "type": "void*",
           "desc": "成功返回最后一个元素，失败返回NULL。"
@@ -24970,6 +25071,34 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "image_animation对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "start_index",
+            "desc": "图片起始序数。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "end_index",
+            "desc": "图片结束序数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置播放序列。比如image为\"fire\"，max_nr为100, 将依次播放\"fire0\", ..., \"fire99\"。\r\n\r\n",
+        "name": "image_animation_set_range_sequence",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
           }
         ],
         "annotation": {
@@ -25067,6 +25196,32 @@
         }
       },
       {
+        "name": "start_index",
+        "desc": " 图片起始序数。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "end_index",
+        "desc": " 图片结束序数。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
         "name": "loop",
         "desc": " 是否循环播放。\r\n",
         "type": "bool_t",
@@ -25120,7 +25275,7 @@
       }
     ],
     "header": "image_animation/image_animation.h",
-    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n\r\n image\\_animation\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_animation\\_t控件。\r\n\r\n 在xml中使用\"image\\_animation\"标签创建图片动画控件。如：\r\n\r\n ```xml\r\n <image_animation image=\"ani\" sequence=\"123456789abc\" auto_play=\"true\" interval=\"50\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [image_animation.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/image_animation.xml)\r\n\r\n 在c代码中使用函数image\\_animation\\_create创建图片动画控件。如：\r\n\r\n ```c\r\n image_animation = image_animation_create(win, 10, 10, 200, 200);\r\n image_animation_set_image(image_animation, \"ani\");\r\n image_animation_set_interval(image_animation, 50);\r\n image_animation_set_sequence(image_animation, \"123456789abc\");\r\n image_animation_play(image_animation);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [image_animation\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。\r\n\r\n",
+    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n\r\n 图片序列可以用sequence指定，也可以用start\\_index和end\\_index指定一个范围。\r\n\r\n image\\_animation\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_animation\\_t控件。\r\n\r\n 在xml中使用\"image\\_animation\"标签创建图片动画控件。如：\r\n\r\n ```xml\r\n <image_animation image=\"ani\" sequence=\"123456789abc\" auto_play=\"true\" interval=\"50\"/>\r\n <image_animation image=\"ani\" start_index=\"1\" end_index=\"9\" auto_play=\"true\" interval=\"50\"\r\n delay=\"100\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [image_animation.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/image_animation.xml)\r\n\r\n 在c代码中使用函数image\\_animation\\_create创建图片动画控件。如：\r\n\r\n ```c\r\n image_animation = image_animation_create(win, 10, 10, 200, 200);\r\n image_animation_set_image(image_animation, \"ani\");\r\n image_animation_set_interval(image_animation, 50);\r\n image_animation_set_sequence(image_animation, \"123456789abc\");\r\n image_animation_play(image_animation);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [image_animation\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。\r\n\r\n",
     "name": "image_animation_t",
     "parent": "widget_t",
     "annotation": {
@@ -26043,6 +26198,29 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_long_press",
+            "desc": "是否启用长按事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否启用长按事件。\r\n\r\n",
+        "name": "button_set_enable_long_press",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -26062,6 +26240,19 @@
         "name": "repeat",
         "desc": " 重复触发EVT\\_CLICK事件的时间间隔。\r\n 为0则不重复触发EVT\\_CLICK事件。\r\n",
         "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "enable_long_press",
+        "desc": "\r\n 是否启用长按事件，为true时才触发长按事件。\r\n 触发长按事件后不再触发点击事件。\r\n 缺省不启用。\r\n\r\n",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -29490,7 +29681,7 @@
           "scriptable": true,
           "gc": true
         },
-        "desc": "\n for script gc\n\n  \n\n\n",
+        "desc": "\n for script gc\n\n\n\n\n",
         "name": "object_default_unref",
         "return": {
           "type": "ret_t",
