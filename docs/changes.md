@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/02/20
+  * 按钮增加enable\_long\_press属性用于启用长按事件，触发长按事件后不再触发点击事件。
+
 * 2019/02/19
   * add darray\_tail/darray\_head。
 
