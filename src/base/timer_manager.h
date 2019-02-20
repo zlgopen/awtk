@@ -48,6 +48,7 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
 ret_t timer_manager_set_on_destroy(timer_manager_t* timer_manager, uint32_t timer_id,
                                    tk_destroy_t on_destroy, void* on_destroy_ctx);
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id);
+ret_t timer_manager_reset(timer_manager_t* timer_manager, uint32_t timer_id);
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
 uint32_t timer_manager_count(timer_manager_t* timer_manager);

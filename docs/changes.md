@@ -1,6 +1,8 @@
 # 最新动态
 * 2019/02/20
   * 按钮增加enable\_long\_press属性用于启用长按事件，触发长按事件后不再触发点击事件。
+  * 增加timer\_reset函数。
+  * 增加屏保支持。
 
 * 2019/02/19
   * add darray\_tail/darray\_head。

@@ -52,6 +52,31 @@ static bool_t is_popup(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
 
+#ifdef WITH_SCREEN_SAVER_TIME
+static ret_t wm_on_screen_saver_timer(const timer_info_t* info) {
+  window_manager_t* wm = WINDOW_MANAGER(info->ctx);
+  event_t e = event_init(EVT_SCREEN_SAVER, wm);
+  wm->screen_saver_timer_id = TK_INVALID_ID;
+
+  widget_dispatch(WIDGET(wm), &e);
+  log_debug("emit: EVT_SCREEN_SAVER\n");
+
+  return RET_REMOVE;
+}
+
+static ret_t window_manager_start_or_reset_screen_saver_timer(window_manager_t* wm) {
+  if (wm->screen_saver_timer_id == TK_INVALID_ID) {
+    wm->screen_saver_timer_id = timer_add(wm_on_screen_saver_timer, wm, WITH_SCREEN_SAVER_TIME);
+  } else {
+    timer_reset(wm->screen_saver_timer_id);
+  }
+
+  return RET_OK;
+}
+#else
+#define window_manager_start_or_reset_screen_saver_timer(wm)
+#endif /*WITH_SCREEN_SAVER_TIME*/
+
 static ret_t window_manager_dispatch_top_window_changed(widget_t* widget) {
   window_event_t e;
 
@@ -627,6 +652,7 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   widget_init(w, NULL, &s_window_manager_vtable, 0, 0, 0, 0);
 
+  window_manager_start_or_reset_screen_saver_timer(wm);
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
 
   return w;
@@ -693,6 +719,8 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   input_device_status_t* ids = NULL;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
+
+  window_manager_start_or_reset_screen_saver_timer(wm);
 
   ids = &(wm->input_device_status);
   if (wm->ignore_user_input) {

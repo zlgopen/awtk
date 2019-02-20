@@ -67,6 +67,7 @@ typedef struct _window_manager_t {
 
   widget_t* system_bar;
   input_device_status_t input_device_status;
+  uint32_t screen_saver_timer_id;
 } window_manager_t;
 
 /**

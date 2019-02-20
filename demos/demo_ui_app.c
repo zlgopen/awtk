@@ -494,8 +494,19 @@ static ret_t show_preload_res_window() {
   return RET_OK;
 }
 
+static ret_t on_screen_saver(void* ctx, event_t* e) {
+#ifdef SCREEN_SAVER_WINDOW
+  window_open(SCREEN_SAVER_WINDOW);
+#endif /*SCREEN_SAVER_WINDOW*/
+  log_debug("on_screen_saver\n");
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   tk_ext_widgets_init();
+
+  widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   return show_preload_res_window();
 }
