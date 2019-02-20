@@ -384,6 +384,7 @@ static ret_t install_one(void* ctx, const void* iter) {
     const char* name = widget->name;
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
+      widget_on(widget, EVT_LONG_PRESS, on_open_window, (void*)(name + 5));
     } else if (tk_str_eq(name, "paint_linear_gradient")) {
       widget_on(widget, EVT_PAINT, on_paint_linear_gradient, NULL);
     } else if (tk_str_eq(name, "paint_radial_gradient")) {

@@ -1,7 +1,8 @@
 <window anim_hint="htranslate">
-  <button style="round" enable_long_press="true" x="c" y="10" w="128" h="30" text="Text"/>
-  <button style="red_btn" enable_long_press="true" x="c" y="50" w="128" h="30" text="Text"/>
-  <button style="icon" enable_long_press="true" x="c" y="90" w="128" h="30" text="Text"/>
+  <button name="open:dialog1" style="round" enable_long_press="true" 
+    x="c" y="10" w="128" h="30" text="Long Press"/>
+  <button style="red_btn" x="c" y="50" w="128" h="30" text="Text"/>
+  <button style="icon" x="c" y="90" w="128" h="30" text="Text"/>
   <button x="c" y="130" w="128" h="30">
     <label y="0" x="0" w="100%" h="100%" text="Text"/>
     <image image="earth" draw_type="icon" y="0" x="right" w="30" h="100%"/>
