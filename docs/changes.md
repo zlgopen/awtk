@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/02/21
+  * 增加object\_copy\_prop
+  * 修改value\_copy/value\_deep\_copy的BUG。
+  * 修改named\_value\_set\_value的BUG。
+
 * 2019/02/20
   * 按钮增加enable\_long\_press属性用于启用长按事件，触发长按事件后不再触发点击事件。
   * 增加timer\_reset函数。
