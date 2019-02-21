@@ -92,13 +92,13 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
-![水平布局](images/水平布局.png)
+![水平布局](images/layout_hbox.png)
 
 ### 2. vbox垂直布局
 
@@ -124,13 +124,13 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
-bin\preview_ui.exe E:\t.xml
+bin\preview_ui.exe t.xml
 ```
 
-![垂直布局](images/垂直布局.png)
+![垂直布局](images/layout_vbox.png)
 
 ### 3. listbox列表布局
 
@@ -156,13 +156,13 @@ bin\preview_ui.exe E:\t.xml
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
-![列表布局](images/列表布局.png)
+![列表布局](images/layout_list.png)
 
 ### 4. grid网格布局
 
@@ -183,13 +183,13 @@ bin\preview_ui.exe E:\t.xml
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
-![网格布局](images/网格布局.png)
+![网格布局](images/layout_grid.png)
 
 ### 5. floating浮动布局
 
@@ -210,10 +210,10 @@ bin\preview_ui.exe E:\t.xml
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
 ![浮动布局](images/浮动布局.png)
@@ -237,13 +237,13 @@ bin\preview_ui.exe E:\t.xml
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
-![高级用法一](images/高级用法一.png)
+![高级用法一](images/layout_adv1.png)
 
 ### 2.子控件自身的布局参数x/y/w/h均为像素方式时，需要用self\_layout参数指定。
 
@@ -261,13 +261,13 @@ bin\preview_ui.exe E:\t.xml
 </window>
 ```
 
-例如，将文件保存在E:\t.xml，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- bin\preview_ui.exe E:\t.xml
+ bin\preview_ui.exe t.xml
 ```
 
-![高级用法二](images/高级用法二.png)
+![高级用法二](images/layout_adv2.png)
 
 ## 五、示例
 
