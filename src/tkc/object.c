@@ -293,6 +293,21 @@ bool_t object_has_prop(object_t* obj, const char* name) {
   return ret == RET_OK;
 }
 
+ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
+  value_t v;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(src != NULL && src->vt != NULL && src->ref_count >= 0, RET_BAD_PARAMS);
+
+  if (object_get_prop(src, name, &v) == RET_OK) {
+    ret = object_set_prop(obj, name, &v);
+    value_reset(&v);
+  }
+
+  return ret;
+}
+
 static EvalFunc obj_get_func(const char* name, void* user_data) {
   const EvalHooks* hooks = eval_default_hooks();
 

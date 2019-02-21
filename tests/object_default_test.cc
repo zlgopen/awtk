@@ -278,6 +278,21 @@ TEST(ObejectDefault, set_prop_float) {
   object_unref(obj);
 }
 
+TEST(ObejectDefault, copy_prop) {
+  object_t* src = object_default_create();
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(src, "float", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_float(src, "float", 0), 123);
+
+  ASSERT_EQ(object_copy_prop(obj, src, "float"), RET_OK);
+  ASSERT_EQ(object_get_prop_float(obj, "float", 0), 123);
+
+  ASSERT_NE(object_copy_prop(obj, src, "not exist"), RET_OK);
+
+  object_unref(obj);
+}
+
 TEST(ObejectDefault, set_prop_str) {
   object_t* obj = object_default_create();
 
