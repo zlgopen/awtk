@@ -4,30 +4,56 @@
 
 ## 一、设置屏保定时器时间
 
-AWTK对屏保提供了一定支持，只要定义宏WITH\_SCREEN\_SAVER\_TIME，为之指定一个时间(毫秒)，在指定一个时间内没有用户操作，即通过窗口管理器触发一个EVT\_SCREEN\_SAVER事件。
+用函数window\_manager\_set\_screen\_saver\_time设置屏保时间。
 
 ```
 /**
- * 如果启用屏保定时器，请定义本宏
- * 如果启用，在指定时间内没有用户操作时，通过窗口管理器触EVT_SCREEN_SAVER事件。
- * 时间为毫秒。
+ * @method window_manager_set_screen_saver_time
+ * 设置屏保时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {uint32_t}  screen_saver_time 屏保时间(单位毫秒)。
  *
- * #define WITH_SCREEN_SAVER_TIME 180 * 1000
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
+ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_saver_time);
 ```
 
-> 参考：src/base/awtk\_config\_sample.h
+```
+window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
+```
 
 ## 二、注册事件并打开屏保窗口
 
+示例：
+
 ```
+static ret_t close_window_on_event(void* ctx, event_t* e) {
+  window_close(WIDGET(ctx));
+
+  return RET_REMOVE;
+}
+
 static ret_t on_screen_saver(void* ctx, event_t* e) {
-  window_open(SCREEN_SAVER_WINDOW);
+  /*please change image_animation to your own window name*/
+  widget_t* win = window_open("image_animation");
+
+  widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
+  widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
+  widget_on(win, EVT_KEY_UP, close_window_on_event, win);
 
   return RET_OK;
 }
 
-widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
+ret_t application_init() {
+  tk_ext_widgets_init();
+
+  /*enable screen saver*/
+  window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
+  widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
+
+  return show_preload_res_window();
+}
+
 ```
 
-> 屏保窗口在收到用户事件后应关闭自己。

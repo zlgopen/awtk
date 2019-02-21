@@ -495,11 +495,19 @@ static ret_t show_preload_res_window() {
   return RET_OK;
 }
 
+static ret_t close_window_on_event(void* ctx, event_t* e) {
+  window_close(WIDGET(ctx));
+
+  return RET_REMOVE;
+}
+
 static ret_t on_screen_saver(void* ctx, event_t* e) {
-#ifdef SCREEN_SAVER_WINDOW
-  window_open(SCREEN_SAVER_WINDOW);
-#endif /*SCREEN_SAVER_WINDOW*/
-  log_debug("on_screen_saver\n");
+  /*please change image_animation to your own window name*/
+  widget_t* win = window_open("image_animation");
+
+  widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
+  widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
+  widget_on(win, EVT_KEY_UP, close_window_on_event, win);
 
   return RET_OK;
 }
@@ -507,6 +515,8 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
 ret_t application_init() {
   tk_ext_widgets_init();
 
+  /*enable screen saver*/
+  window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
   widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   return show_preload_res_window();

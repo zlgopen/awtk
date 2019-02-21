@@ -170,12 +170,4 @@
  * #define WITH_WIDGET_POOL 1000
  */
 
-/**
- * 如果启用屏保定时器，请定义本宏
- * 如果启用，在指定时间内没有用户操作时，通过窗口管理器触EVT_SCREEN_SAVER事件。
- * 时间为毫秒。
- *
- * #define WITH_SCREEN_SAVER_TIME 180 * 1000
- */
-
 #endif /*AWTK_CONFIG_H*/

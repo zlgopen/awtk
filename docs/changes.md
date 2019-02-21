@@ -4,6 +4,7 @@
   * 修改value\_copy/value\_deep\_copy的BUG。
   * 修改named\_value\_set\_value的BUG。
   * 完善布局文档(感谢俊杰提供补丁)。
+  * 支持动态设置屏保时间。
 
 * 2019/02/20
   * 按钮增加enable\_long\_press属性用于启用长按事件，触发长按事件后不再触发点击事件。
