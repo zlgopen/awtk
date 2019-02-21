@@ -216,7 +216,7 @@ bin\preview_ui.exe t.xml
  bin\preview_ui.exe t.xml
 ```
 
-![浮动布局](images/浮动布局.png)
+![浮动布局](images/layout_floating.png)
 
 ## 四、高级用法
 
@@ -272,3 +272,8 @@ bin\preview_ui.exe t.xml
 ## 五、示例
 
 demos/assets/raw/ui/中有演示各种布局参数的示例。
+
+> 以上在运行预览命令时，假定awtk的根目录为当前目录。
+> 
+> 在不同平台下，命令运行方式有细微差别，请自行调整。
+> 
