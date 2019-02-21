@@ -62,8 +62,11 @@ ret_t named_value_set_name(named_value_t* nv, const char* name) {
 ret_t named_value_set_value(named_value_t* nv, const value_t* value) {
   return_value_if_fail(nv != NULL && value != NULL, RET_BAD_PARAMS);
 
-  value_reset(&(nv->value));
+  if (value_equal(&(nv->value), value)) {
+    return RET_OK;
+  }
 
+  value_reset(&(nv->value));
   return value_deep_copy(&(nv->value), value);
 }
 
