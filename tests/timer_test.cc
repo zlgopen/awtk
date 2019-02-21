@@ -101,7 +101,7 @@ TEST(Timer, reset) {
   ASSERT_EQ(timer_manager_count(tm), 1);
   ASSERT_EQ(s_log, "");
 
-  timer_set_time(100);
+  timer_set_time(200);
   ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
   ASSERT_EQ(timer_manager_count(tm), 0);
   ASSERT_EQ(s_log, "o:");
