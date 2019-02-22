@@ -22833,6 +22833,29 @@
             "desc": "窗口管理器对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "screen_saver_time",
+            "desc": "屏保时间(单位毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置屏保时间。\r\n\r\n",
+        "name": "window_manager_set_screen_saver_time",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
             "type": "const char*",
             "name": "cursor",
             "desc": "图片名称(从图片管理器中加载)。"
@@ -23824,6 +23847,29 @@
         },
         "desc": " 设置指定属性的浮点数类型的值。\n\n\n\n",
         "name": "object_set_prop_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "目标对象。"
+          },
+          {
+            "type": "object_t*",
+            "name": "src",
+            "desc": "源对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 拷贝指定的属性。\n\n\n\n",
+        "name": "object_copy_prop",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -26264,7 +26310,7 @@
       }
     ],
     "header": "widgets/button.h",
-    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：[button.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：[button demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
+    "desc": " 按钮控件。\r\n\r\n 点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\r\n\r\n 按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\r\n\r\n button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\r\n\r\n 在xml中使用\"button\"标签创建按钮控件。如：\r\n\r\n ```xml\r\n <button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)\r\n\r\n 在c代码中使用函数button\\_create创建按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = button_create(win, 10, 10, 128, 30);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_CLICK, on_click, NULL);\r\n ```\r\n\r\n > 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\r\n\r\n > 完整示例请参考：\r\n [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n  <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\r\n   <over       bg_color=\"#e0e0e0\" />\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)\r\n\r\n",
     "name": "button_t",
     "parent": "widget_t",
     "annotation": {
@@ -26409,7 +26455,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建check_button对象\r\n\r\n",
+        "desc": " 创建多选按钮对象\r\n\r\n",
         "name": "check_button_create",
         "return": {
           "type": "widget_t*",
@@ -26448,7 +26494,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建check_button对象\r\n\r\n",
+        "desc": " 创建单选按钮对象\r\n\r\n",
         "name": "check_button_create_radio",
         "return": {
           "type": "widget_t*",
@@ -26526,7 +26572,7 @@
       }
     ],
     "header": "widgets/check_button.h",
-    "desc": " 勾选控件。\r\n",
+    "desc": " 勾选按钮控件(单选/多选)。\r\n\r\n check\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于check\\_button\\_t控件。\r\n\r\n 在xml中使用\"check_button\"标签创建多选按钮控件。如：\r\n\r\n ```xml\r\n <check_button name=\"c1\" text=\"Book\"/>\r\n ```\r\n\r\n 在xml中使用\"radio_button\"标签创建单选按钮控件。如：\r\n\r\n ```xml\r\n <radio_button name=\"r1\" text=\"Book\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数check\\_button\\_create创建多选按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = check_button_create(win, x, y, w, h);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);\r\n ```\r\n\r\n 在c代码中使用函数check\\_button\\_create\\_radio创建单选按钮控件。如：\r\n\r\n ```c\r\n  widget_t* button = check_button_create_radio(win, x, y, w, h);\r\n  widget_set_text(button, L\"OK\");\r\n  widget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/check_button.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\" icon_at=\"left\">\r\n   <normal  icon=\"unchecked\" />\r\n   <pressed icon=\"unchecked\" />\r\n   <over    icon=\"unchecked\" text_color=\"green\"/>\r\n   <normal_of_checked icon=\"checked\" text_color=\"blue\"/>\r\n   <pressed_of_checked icon=\"checked\" text_color=\"blue\"/>\r\n   <over_of_checked icon=\"checked\" text_color=\"green\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L227)\r\n\r\n",
     "name": "check_button_t",
     "parent": "widget_t",
     "annotation": {
@@ -27812,7 +27858,7 @@
       }
     ],
     "header": "widgets/dragger.h",
-    "desc": " dragger控件。\r\n",
+    "desc": " dragger控件。\r\n\r\n 目前主要用于scrollbar里的滑块。\r\n\r\n",
     "name": "dragger_t",
     "parent": "widget_t",
     "annotation": {
@@ -28694,7 +28740,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置最大可显示字符个数。\r\n\r\n",
+        "desc": " 设置显示字符的个数(小余0时全部显示)。。\r\n\r\n",
         "name": "label_set_length",
         "return": {
           "type": "ret_t",
@@ -28706,7 +28752,7 @@
     "properties": [
       {
         "name": "length",
-        "desc": " 显示字符的长度(小余0时全部显示)。\r\n 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。\r\n",
+        "desc": " 显示字符的个数(小余0时全部显示)。\r\n 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。\r\n",
         "type": "int32_t",
         "annotation": {
           "set_prop": true,

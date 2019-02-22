@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/02/22
+  * 完善控件文档(感谢俊杰提供补丁)。
+
 * 2019/02/21
   * 增加object\_copy\_prop
   * 修改value\_copy/value\_deep\_copy的BUG。

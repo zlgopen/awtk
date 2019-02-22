@@ -4,6 +4,9 @@
 
  dragger控件。
 
+ 目前主要用于scrollbar里的滑块。
+
+
 ----------------------------------
 ### 函数
 <p id="dragger_t_methods">

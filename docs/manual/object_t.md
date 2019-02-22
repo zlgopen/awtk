@@ -15,6 +15,7 @@
 | -------- | ------------ | 
 | <a href="#object_t_object_can_exec">object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
+| <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
 | <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
@@ -93,6 +94,30 @@ int object_compare (object_t* obj, object_t* other);
 | 返回值 | int | 返回比较结果。 |
 | obj | object\_t* | object对象。 |
 | other | object\_t* | 比较的object对象。 |
+#### object\_copy\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_copy_prop"> 拷贝指定的属性。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_copy_prop (object_t* obj, object_t* src);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | 目标对象。 |
+| src | object\_t* | 源对象。 |
 #### object\_create 函数
 -----------------------
 

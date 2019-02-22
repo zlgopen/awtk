@@ -2,7 +2,61 @@
 ### 概述
 ![image](images/check_button_t_0.png)
 
- 勾选控件。
+ 勾选按钮控件(单选/多选)。
+
+ check\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于check\_button\_t控件。
+
+ 在xml中使用"check_button"标签创建多选按钮控件。如：
+
+ ```xml
+ <check_button name="c1" text="Book"/>
+ ```
+
+ 在xml中使用"radio_button"标签创建单选按钮控件。如：
+
+ ```xml
+ <radio_button name="r1" text="Book"/>
+ ```
+
+ > 更多用法请参考：
+ [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)
+
+ 在c代码中使用函数check\_button\_create创建多选按钮控件。如：
+
+ ```c
+  widget_t* button = check_button_create(win, x, y, w, h);
+  widget_set_text(button, L"OK");
+  widget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);
+ ```
+
+ 在c代码中使用函数check\_button\_create\_radio创建单选按钮控件。如：
+
+ ```c
+  widget_t* button = check_button_create_radio(win, x, y, w, h);
+  widget_set_text(button, L"OK");
+  widget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);
+ ```
+
+ > 完整示例请参考：
+ [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/check_button.c)
+
+ 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+ ```xml
+ <style name="default" icon_at="left">
+   <normal  icon="unchecked" />
+   <pressed icon="unchecked" />
+   <over    icon="unchecked" text_color="green"/>
+   <normal_of_checked icon="checked" text_color="blue"/>
+   <pressed_of_checked icon="checked" text_color="blue"/>
+   <over_of_checked icon="checked" text_color="green"/>
+ </style>
+ ```
+
+ > 更多用法请参考：
+ [theme
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L227)
+
 
 ----------------------------------
 ### 函数
@@ -11,8 +65,8 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#check_button_t_check_button_cast">check\_button\_cast</a> | 转换check_button对象(供脚本语言使用)。 |
-| <a href="#check_button_t_check_button_create">check\_button\_create</a> | 创建check_button对象 |
-| <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建check_button对象 |
+| <a href="#check_button_t_check_button_create">check\_button\_create</a> | 创建多选按钮对象 |
+| <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建单选按钮对象 |
 | <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="check_button_t_properties">
@@ -53,7 +107,7 @@ widget_t* check_button_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="check_button_t_check_button_create"> 创建check_button对象
+> <p id="check_button_t_check_button_create"> 创建多选按钮对象
 
 
 
@@ -78,7 +132,7 @@ widget_t* check_button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 * 函数功能：
 
-> <p id="check_button_t_check_button_create_radio"> 创建check_button对象
+> <p id="check_button_t_check_button_create_radio"> 创建单选按钮对象
 
 
 
