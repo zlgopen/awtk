@@ -23864,6 +23864,11 @@
             "type": "object_t*",
             "name": "src",
             "desc": "源对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性的名称。"
           }
         ],
         "annotation": {
