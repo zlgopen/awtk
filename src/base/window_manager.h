@@ -75,7 +75,7 @@ typedef struct _window_manager_t {
  * @method window_manager
  * 获取全局window_manager对象
  * @alias window_manager_instance
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "cast"]
  *
  * @return {widget_t*} 对象。
  */

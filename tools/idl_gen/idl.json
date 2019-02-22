@@ -22580,7 +22580,8 @@
         "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "cast": true
         },
         "desc": " 获取全局window_manager对象\r\n\r\n",
         "name": "window_manager",
