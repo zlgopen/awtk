@@ -112,7 +112,7 @@ TEST(ImageAnimation, format) {
   ia->index = 11;
   ASSERT_EQ(image_animation_get_image_name(ia, name), RET_OK);
   ASSERT_STREQ(name, "ani_11");
-  
+
   ASSERT_EQ(image_animation_set_format(w, "%s_%x"), RET_OK);
   ia->index = 11;
   ASSERT_EQ(image_animation_get_image_name(ia, name), RET_OK);

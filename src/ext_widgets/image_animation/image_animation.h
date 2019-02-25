@@ -74,7 +74,6 @@ typedef struct _image_animation_t {
   char* image;
   /**
    * @property {char*} sequence
-   * @deprecated 请使用start_index/end_index代替。
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 播放的序列，字符可选值为:0-9,a-z,A-Z。
    *
@@ -206,9 +205,9 @@ ret_t image_animation_set_auto_play(widget_t* widget, bool_t auto_play);
 
 /**
  * @method image_animation_set_sequence
- * 设置播放序列。比如image为"fire"，sequence为"123", 将依次播放"fire1", "fire2", "fire3"。
+ * 设置播放序列。比如image为"fire"，sequence为"12223", 将依次播放"fire1", "fire2", "fire2", "fire2",
+ * "fire3"。
  * @annotation ["scriptable"]
- * @deprecated 请使用image_animation_set_range_sequence代替。
  * @param {widget_t*} widget image_animation对象。
  * @param {const char*} sequence 播放序列。
  *
