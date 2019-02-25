@@ -146,6 +146,7 @@ CPPPATH=[TK_ROOT,
   TK_TOOLS_ROOT] + OS_CPPPATH
 
 os.environ['LCD'] = LCD
+os.environ['TK_ROOT'] = TK_ROOT
 os.environ['CCFLAGS'] = CCFLAGS;
 os.environ['VGCANVAS'] = VGCANVAS 
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
