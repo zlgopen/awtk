@@ -159,7 +159,11 @@ ret_t button_set_repeat(widget_t* widget, int32_t repeat);
  */
 ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press);
 
-#define BUTTON(widget) ((button_t*)(widget))
+#define BUTTON(widget) ((button_t*)(button_cast(widget)))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(button);
+
 
 END_C_DECLS
 
