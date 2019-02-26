@@ -160,7 +160,10 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
  */
 widget_t* check_button_cast(widget_t* widget);
 
-#define CHECK_BUTTON(widget) ((check_button_t*)(widget))
+#define CHECK_BUTTON(widget) ((check_button_t*)(check_button_cast(widget)))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(check_button);
 
 END_C_DECLS
 

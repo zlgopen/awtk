@@ -142,11 +142,12 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 }
 
 static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
-static const widget_vtable_t s_check_button_vtable = {
+TK_DECL_VTABLE(check_button) = {
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_CHECK_BUTTON,
     .clone_properties = s_check_button_properties,
     .persistent_properties = s_check_button_properties,
+    .parent = TK_PARENT_VTABLE(widget),
     .create = check_button_create,
     .on_event = check_button_on_event,
     .on_paint_self = check_button_on_paint_self,
@@ -154,10 +155,11 @@ static const widget_vtable_t s_check_button_vtable = {
     .set_prop = check_button_set_prop,
 };
 
-static const widget_vtable_t s_radio_button_vtable = {
+TK_DECL_VTABLE(radio_button) = {
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_RADIO_BUTTON,
     .clone_properties = s_check_button_properties,
+    .parent = TK_PARENT_VTABLE(widget),
     .create = check_button_create_radio,
     .on_event = check_button_on_event,
     .on_paint_self = check_button_on_paint_self,
@@ -166,7 +168,7 @@ static const widget_vtable_t s_radio_button_vtable = {
 };
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_check_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(check_button), x, y, w, h);
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);
 
@@ -178,7 +180,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
 }
 
 widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_radio_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(radio_button), x, y, w, h);
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);
 
@@ -190,9 +192,9 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 }
 
 widget_t* check_button_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && (widget->vt == &s_check_button_vtable ||
-                                          widget->vt == &s_radio_button_vtable),
-                       NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, check_button) 
+      || WIDGET_IS_INSTANCE_OF(widget, radio_button), NULL);
 
   return widget;
 }
+
