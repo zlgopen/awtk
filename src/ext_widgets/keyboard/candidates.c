@@ -157,11 +157,12 @@ static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_candidates_vtable = {.size = sizeof(candidates_t),
-                                                    .type = WIDGET_TYPE_CANDIDATES,
-                                                    .create = candidates_create,
-                                                    .on_paint_self = candidates_on_paint_self,
-                                                    .on_destroy = candidates_on_destroy_default};
+TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
+                              .type = WIDGET_TYPE_CANDIDATES,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = candidates_create,
+                              .on_paint_self = candidates_on_paint_self,
+                              .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
@@ -171,12 +172,18 @@ static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
 }
 
 widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_candidates_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(candidates), x, y, w, h);
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, NULL);
 
   candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
                                          candidates_on_im_candidates_event, candidates);
+
+  return widget;
+}
+
+widget_t* candidates_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, candidates), NULL);
 
   return widget;
 }
