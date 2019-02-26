@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/02/26
+  * 合并typecheck分支。
+  * 控件支持运行时类型检查(目前支持Linux/Windows/Macos和部分嵌入时平台)。
+
 * 2019/02/25
   * 完善image\_animation，修改#85
   * 重构SConstruct，把公共代码放到awtk\_config.py，可供其它项目使用。
