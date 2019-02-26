@@ -58,3 +58,11 @@ TEST(Slider, event) {
 
   widget_destroy(w);
 }
+
+TEST(Slider, cast) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, slider_cast(w));
+
+  widget_destroy(w);
+}

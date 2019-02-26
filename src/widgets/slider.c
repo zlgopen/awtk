@@ -339,20 +339,21 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
 static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
                                             WIDGET_PROP_MIN,   WIDGET_PROP_MAX,
                                             WIDGET_PROP_STEP,  NULL};
-static const widget_vtable_t s_slider_vtable = {.size = sizeof(slider_t),
-                                                .type = WIDGET_TYPE_SLIDER,
-                                                .clone_properties = s_slider_properties,
-                                                .persistent_properties = s_slider_properties,
-                                                .create = slider_create,
-                                                .on_event = slider_on_event,
-                                                .on_paint_self = slider_on_paint_self,
-                                                .on_paint_border = widget_on_paint_null,
-                                                .on_paint_background = widget_on_paint_null,
-                                                .get_prop = slider_get_prop,
-                                                .set_prop = slider_set_prop};
+TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
+                          .type = WIDGET_TYPE_SLIDER,
+                          .clone_properties = s_slider_properties,
+                          .persistent_properties = s_slider_properties,
+                          .parent = TK_PARENT_VTABLE(widget),
+                          .create = slider_create,
+                          .on_event = slider_on_event,
+                          .on_paint_self = slider_on_paint_self,
+                          .on_paint_border = widget_on_paint_null,
+                          .on_paint_background = widget_on_paint_null,
+                          .get_prop = slider_get_prop,
+                          .set_prop = slider_set_prop};
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_slider_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(slider), x, y, w, h);
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL, NULL);
 
@@ -365,7 +366,7 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* slider_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_slider_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, slider), NULL);
 
   return widget;
 }

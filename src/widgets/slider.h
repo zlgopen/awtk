@@ -206,7 +206,10 @@ ret_t slider_set_step(widget_t* widget, uint16_t step);
  */
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
 
-#define SLIDER(widget) ((slider_t*)(widget))
+#define SLIDER(widget) ((slider_t*)(slider_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(slider);
 
 /*public for test*/
 ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype, bool_t force);
