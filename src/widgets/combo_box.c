@@ -144,7 +144,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .type = WIDGET_TYPE_COMBO_BOX,
                              .clone_properties = s_combo_box_properties,
                              .persistent_properties = s_combo_box_properties,
-                             .parent = TK_PARENT_VTABLE(widget),
+                             .parent = TK_PARENT_VTABLE(edit),
                              .create = combo_box_create_self,
                              .on_paint_self = edit_on_paint_self,
                              .set_prop = combo_box_set_prop,
@@ -156,7 +156,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
   combo_box_t* combo_box = COMBO_BOX(widget);
-  edit_t* edit = EDIT(combo_box);
+  edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL, NULL);
 
   edit->right_margin = h;

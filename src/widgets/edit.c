@@ -1197,7 +1197,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
                          wh_t h) {
   widget_t* widget = widget_create(parent, vt, x, y, w, h);
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(edit != NULL, NULL);
 
   edit->left_margin = 2;
   edit->right_margin = 2;
