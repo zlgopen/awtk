@@ -158,7 +158,10 @@ widget_t* image_value_cast(widget_t* widget);
 #define IMAGE_VALUE_MAX_CHAR_NR 8
 #endif /*IMAGE_VALUE_MAX_CHAR_NR*/
 
-#define IMAGE_VALUE(widget) ((image_value_t*)(widget))
+#define IMAGE_VALUE(widget) ((image_value_t*)(image_value_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(image_value);
 
 END_C_DECLS
 

@@ -139,16 +139,17 @@ static ret_t image_value_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_image_value_vtable = {.size = sizeof(image_value_t),
-                                                     .type = WIDGET_TYPE_IMAGE_VALUE,
-                                                     .create = image_value_create,
-                                                     .on_destroy = image_value_on_destroy,
-                                                     .get_prop = image_value_get_prop,
-                                                     .set_prop = image_value_set_prop,
-                                                     .on_paint_self = image_value_on_paint_self};
+TK_DECL_VTABLE(image_value) = {.size = sizeof(image_value_t),
+                               .type = WIDGET_TYPE_IMAGE_VALUE,
+                               .parent = TK_PARENT_VTABLE(widget),
+                               .create = image_value_create,
+                               .on_destroy = image_value_on_destroy,
+                               .get_prop = image_value_get_prop,
+                               .set_prop = image_value_set_prop,
+                               .on_paint_self = image_value_on_paint_self};
 
 widget_t* image_value_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_image_value_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(image_value), x, y, w, h);
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, NULL);
 
@@ -191,7 +192,7 @@ ret_t image_value_set_value(widget_t* widget, float_t value) {
 }
 
 widget_t* image_value_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_image_value_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image_value), NULL);
 
   return widget;
 }
