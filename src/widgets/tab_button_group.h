@@ -96,7 +96,10 @@ widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
  */
 widget_t* tab_button_group_cast(widget_t* widget);
 
-#define TAB_BUTTON_GROUP(widget) ((tab_button_group_t*)(widget))
+#define TAB_BUTTON_GROUP(widget) ((tab_button_group_t*)(tab_button_group_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(tab_button_group);
 
 END_C_DECLS
 

@@ -48,3 +48,13 @@ TEST(TabButton, event) {
 
   widget_destroy(g);
 }
+
+TEST(TabButton, cast) {
+  widget_t* g = tab_button_group_create(NULL, 0, 0, 100, 100);
+  widget_t* w = tab_button_create(g, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, tab_button_cast(w));
+  ASSERT_NE(w, tab_button_group_cast(w));
+
+  widget_destroy(g);
+}

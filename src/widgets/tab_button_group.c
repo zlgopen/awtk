@@ -175,23 +175,23 @@ static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_tab_button_group_vtable = {
-    .size = sizeof(tab_button_group_t),
-    .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
-    .create = tab_button_group_create,
-    .set_prop = tab_button_group_set_prop,
-    .get_prop = tab_button_group_get_prop,
-    .on_layout_children = tab_button_group_on_layout_children,
-    .on_paint_border = tab_button_group_on_paint_border,
-    .on_paint_end = tab_button_group_on_paint_end,
-    .on_paint_self = tab_button_group_on_paint_self};
+TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
+                                    .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
+                                    .parent = TK_PARENT_VTABLE(widget),
+                                    .create = tab_button_group_create,
+                                    .set_prop = tab_button_group_set_prop,
+                                    .get_prop = tab_button_group_get_prop,
+                                    .on_layout_children = tab_button_group_on_layout_children,
+                                    .on_paint_border = tab_button_group_on_paint_border,
+                                    .on_paint_end = tab_button_group_on_paint_end,
+                                    .on_paint_self = tab_button_group_on_paint_self};
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_tab_button_group_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(tab_button_group), x, y, w, h);
 }
 
 widget_t* tab_button_group_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_tab_button_group_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, tab_button_group), NULL);
 
   return widget;
 }

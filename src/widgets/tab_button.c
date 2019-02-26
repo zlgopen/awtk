@@ -170,16 +170,16 @@ static ret_t tab_button_on_destroy(widget_t* widget) {
 }
 
 static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
-static const widget_vtable_t s_tab_button_vtable = {
-    .size = sizeof(tab_button_t),
-    .type = WIDGET_TYPE_TAB_BUTTON,
-    .clone_properties = s_tab_button_clone_properties,
-    .create = tab_button_create,
-    .on_event = tab_button_on_event,
-    .on_paint_self = tab_button_on_paint_self,
-    .get_prop = tab_button_get_prop,
-    .set_prop = tab_button_set_prop,
-    .on_destroy = tab_button_on_destroy};
+TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
+                              .type = WIDGET_TYPE_TAB_BUTTON,
+                              .clone_properties = s_tab_button_clone_properties,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = tab_button_create,
+                              .on_event = tab_button_on_event,
+                              .on_paint_self = tab_button_on_paint_self,
+                              .get_prop = tab_button_get_prop,
+                              .set_prop = tab_button_set_prop,
+                              .on_destroy = tab_button_on_destroy};
 
 ret_t tab_button_set_icon(widget_t* widget, const char* name) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
@@ -202,7 +202,7 @@ ret_t tab_button_set_active_icon(widget_t* widget, const char* name) {
 }
 
 widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_tab_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(tab_button), x, y, w, h);
   tab_button_t* tab_button = TAB_BUTTON(widget);
   return_value_if_fail(tab_button != NULL, NULL);
 
@@ -212,7 +212,7 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* tab_button_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_tab_button_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, tab_button), NULL);
 
   return widget;
 }

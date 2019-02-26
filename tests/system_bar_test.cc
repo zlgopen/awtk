@@ -1,4 +1,5 @@
-﻿#include "widgets/system_bar.h"
+﻿#include "widgets/window.h"
+#include "widgets/system_bar.h"
 #include "gtest/gtest.h"
 
 TEST(SystemBar, cast) {
@@ -7,5 +8,5 @@ TEST(SystemBar, cast) {
   ASSERT_EQ(w, system_bar_cast(w));
   ASSERT_EQ(w, window_base_cast(w));
 
-  widget_destroy(w);
+  window_close(w);
 }
