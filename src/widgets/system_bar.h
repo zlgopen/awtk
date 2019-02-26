@@ -109,7 +109,10 @@ widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* system_bar_cast(widget_t* widget);
 
-#define SYSTEM_BAR(widget) ((system_bar_t*)(widget))
+#define SYSTEM_BAR(widget) ((system_bar_t*)(system_bar_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(system_bar);
 
 END_C_DECLS
 
