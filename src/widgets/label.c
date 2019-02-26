@@ -193,20 +193,27 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
-                                               .type = WIDGET_TYPE_LABEL,
-                                               .enable_pool = TRUE,
-                                               .create = label_create,
-                                               .set_prop = label_set_prop,
-                                               .get_prop = label_get_prop,
-                                               .on_paint_self = label_on_paint_self};
+TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
+                         .type = WIDGET_TYPE_LABEL,
+                         .enable_pool = TRUE,
+                         .parent = TK_PARENT_VTABLE(widget),
+                         .create = label_create,
+                         .set_prop = label_set_prop,
+                         .get_prop = label_get_prop,
+                         .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_label_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(label), x, y, w, h);
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL, NULL);
 
   label->length = -1;
+
+  return widget;
+}
+
+widget_t* label_cast(widget_t* widget) {
+  return_value_if_fail(widget_is_instance_of(widget, TK_REF_VTABLE(label)), NULL);
 
   return widget;
 }

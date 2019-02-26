@@ -110,7 +110,20 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 ret_t label_set_length(widget_t* widget, int32_t length);
 
-#define LABEL(widget) ((label_t*)(widget))
+/**
+ * @method label_cast
+ * 转换为label对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget label对象。
+ *
+ * @return {widget_t*} label对象。
+ */
+widget_t* label_cast(widget_t* widget);
+
+#define LABEL(widget) ((label_t*)(label_cast(widget)))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(label);
 
 /*public for test*/
 uint32_t line_breaker_count(const wchar_t* str);
