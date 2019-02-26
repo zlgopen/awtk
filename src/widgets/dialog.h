@@ -244,6 +244,9 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(widget)))
 
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(dialog);
+
 END_C_DECLS
 
 #endif /*TK_DIALOG_H*/

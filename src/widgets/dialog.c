@@ -46,23 +46,24 @@ static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
 
 static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                             WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
-static const widget_vtable_t s_dialog_vtable = {.size = sizeof(dialog_t),
-                                                .type = WIDGET_TYPE_DIALOG,
-                                                .is_window = TRUE,
-                                                .clone_properties = s_dialog_properties,
-                                                .persistent_properties = s_dialog_properties,
-                                                .create = dialog_create,
-                                                .on_add_child = dialog_on_add_child,
-                                                .on_event = window_base_on_event,
-                                                .on_paint_self = window_base_on_paint_self,
-                                                .on_paint_begin = window_base_on_paint_begin,
-                                                .on_paint_end = window_base_on_paint_end,
-                                                .set_prop = window_base_set_prop,
-                                                .get_prop = window_base_get_prop,
-                                                .on_destroy = window_base_on_destroy};
+TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
+                          .type = WIDGET_TYPE_DIALOG,
+                          .is_window = TRUE,
+                          .clone_properties = s_dialog_properties,
+                          .persistent_properties = s_dialog_properties,
+                          .parent = TK_PARENT_VTABLE(widget),
+                          .create = dialog_create,
+                          .on_add_child = dialog_on_add_child,
+                          .on_event = window_base_on_event,
+                          .on_paint_self = window_base_on_paint_self,
+                          .on_paint_begin = window_base_on_paint_begin,
+                          .on_paint_end = window_base_on_paint_end,
+                          .set_prop = window_base_set_prop,
+                          .get_prop = window_base_get_prop,
+                          .on_destroy = window_base_on_destroy};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return window_base_create(parent, &s_dialog_vtable, x, y, w, h);
+  return window_base_create(parent, TK_REF_VTABLE(dialog), x, y, w, h);
 }
 
 widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -129,7 +130,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
 }
 
 widget_t* dialog_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_dialog_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, dialog), NULL);
 
   return widget;
 }
