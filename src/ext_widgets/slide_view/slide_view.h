@@ -177,7 +177,10 @@ widget_t* slide_view_get_next(slide_view_t* slide_view);
 ret_t slide_view_activate_prev(slide_view_t* slide_view);
 ret_t slide_view_activate_next(slide_view_t* slide_view);
 
-#define SLIDE_VIEW(widget) ((slide_view_t*)(widget))
+#define SLIDE_VIEW(widget) ((slide_view_t*)(slide_view_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(slide_view);
 
 END_C_DECLS
 
