@@ -1711,7 +1711,6 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
 
-
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/

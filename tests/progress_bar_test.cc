@@ -41,7 +41,7 @@ TEST(ProgressBar, event) {
 
 TEST(ProgressBar, cast) {
   widget_t* w = progress_bar_create(NULL, 0, 0, 100, 100);
-  
+
   ASSERT_EQ(w, progress_bar_cast(w));
 
   widget_destroy(w);

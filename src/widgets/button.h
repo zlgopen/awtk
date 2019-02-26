@@ -164,7 +164,6 @@ ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press);
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(button);
 
-
 END_C_DECLS
 
 #endif /*TK_BUTTON_H*/

@@ -578,8 +578,9 @@ widget_t* scroll_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* scroll_bar_cast(widget_t* widget) {
-  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, scroll_bar_mobile) 
-      || WIDGET_IS_INSTANCE_OF(widget, scroll_bar_desktop), NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, scroll_bar_mobile) ||
+                           WIDGET_IS_INSTANCE_OF(widget, scroll_bar_desktop),
+                       NULL);
 
   return widget;
 }

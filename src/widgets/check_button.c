@@ -192,9 +192,9 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
 }
 
 widget_t* check_button_cast(widget_t* widget) {
-  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, check_button) 
-      || WIDGET_IS_INSTANCE_OF(widget, radio_button), NULL);
+  return_value_if_fail(
+      WIDGET_IS_INSTANCE_OF(widget, check_button) || WIDGET_IS_INSTANCE_OF(widget, radio_button),
+      NULL);
 
   return widget;
 }
-

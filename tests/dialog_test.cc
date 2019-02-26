@@ -38,4 +38,3 @@ TEST(Dialog, cast) {
 
   widget_destroy(w);
 }
-

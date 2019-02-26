@@ -86,4 +86,3 @@ TEST(CheckButton, check_cast) {
   ASSERT_NE(w, button_cast(w));
   widget_destroy(w);
 }
-
