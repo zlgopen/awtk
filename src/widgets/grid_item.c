@@ -22,15 +22,17 @@
 #include "tkc/mem.h"
 #include "widgets/grid_item.h"
 
-static const widget_vtable_t s_grid_item_vtable = {
-    .size = sizeof(grid_item_t), .type = WIDGET_TYPE_ROW, .create = grid_item_create};
+TK_DECL_VTABLE(grid_item) = {.size = sizeof(grid_item_t),
+                             .type = WIDGET_TYPE_ROW,
+                             .parent = TK_PARENT_VTABLE(widget),
+                             .create = grid_item_create};
 
 widget_t* grid_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_grid_item_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(grid_item), x, y, w, h);
 }
 
 widget_t* grid_item_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_grid_item_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, grid_item), NULL);
 
   return widget;
 }
