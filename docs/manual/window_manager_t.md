@@ -23,6 +23,7 @@
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整窗口管理器的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
+| <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
 ### 属性
 <p id="window_manager_t_properties">
@@ -309,6 +310,28 @@ ret_t window_manager_set_cursor (widget_t* widget, const char* cursor);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | cursor | const char* | 图片名称(从图片管理器中加载)。 |
+#### window\_manager\_set\_screen\_saver\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_set_screen_saver_time"> 设置屏保时间。
+
+
+
+* 函数原型：
+
+```
+ret_t window_manager_set_screen_saver_time (widget_t* widget, uint32_t screen_saver_time);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| screen\_saver\_time | uint32\_t | 屏保时间(单位毫秒)。 |
 #### window\_manager\_set\_show\_fps 函数
 -----------------------
 

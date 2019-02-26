@@ -96,6 +96,16 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
 ret_t timer_remove(uint32_t timer_id);
 
 /**
+ * @method timer_reset
+ * 重置指定的timer，重置之后定时器重新开始计时。
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} timer_id timerID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_reset(uint32_t timer_id);
+
+/**
  * @method timer_set_on_destroy
  * 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {uint32_t} timer_id timerID。

@@ -462,6 +462,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_REPEAT "repeat"
 
 /**
+ * @const WIDGET_PROP_ENABLE_LONG_PRESS
+ *
+ */
+#define WIDGET_PROP_ENABLE_LONG_PRESS "enable_long_press"
+
+/**
  * @const WIDGET_PROP_ANIMATABLE
  *
  */

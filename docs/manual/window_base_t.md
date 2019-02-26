@@ -24,7 +24,6 @@
 | <a href="#window_base_t_font_manager">font\_manager</a> | font\_manager\_t* | 获取字体管理器对象。 |
 | <a href="#window_base_t_image_manager">image\_manager</a> | image\_manager\_t* | 获取图片管理器对象。 |
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开窗口动画的名称。 |
-| <a href="#window_base_t_script">script</a> | char* | 脚本文件名称(暂时没用)。 |
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
 | <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量主题数据。 |
@@ -122,22 +121,6 @@
 -----------------------
 > <p id="window_base_t_open_anim_hint"> 打开窗口动画的名称。
  请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
-
-
-* 类型：char*
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### script 属性
------------------------
-> <p id="window_base_t_script"> 脚本文件名称(暂时没用)。
 
 
 * 类型：char*

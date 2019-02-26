@@ -5,20 +5,32 @@
     <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="300"/>
     <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="400"/>
 
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="500"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="600"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="700"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="800"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="500"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="600"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="700"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="800"/>
 
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="900"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1000"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1100"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1200"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="900"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1000"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1100"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1200"/>
     
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1300"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1400"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1500"/>
-    <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50" delay="1600"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1300"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1400"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1500"/>
+    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+      auto_play="true" interval="50" delay="1600"/>
   </view>
 
   <button name="close" x="center" y="bottom:50" w="50%" h="50" text="close"/>

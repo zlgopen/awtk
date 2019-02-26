@@ -310,6 +310,19 @@ ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value);
 ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
 
 /**
+ * @method object_copy_prop
+ * 拷贝指定的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 目标对象。
+ * @param {object_t*} src 源对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_copy_prop(object_t* obj, object_t* src, const char* name);
+
+/**
  * @method object_foreach_prop
  * 遍历所有属性。
  *

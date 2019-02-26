@@ -33,14 +33,14 @@
 input_method_t* input_method_create(void) {
   input_method_t* im = NULL;
 
-#if defined(WITH_SDL)
+#if defined(WITH_NULL_IM)
+  im = input_method_null_create();
+#elif defined(WITH_SDL)
   if (system_info()->app_type == APP_DESKTOP) {
     im = input_method_sdl_create();
   } else {
     im = input_method_default_create();
   }
-#elif defined(WITH_NULL_IM)
-  im = input_method_null_create();
 #else
   im = input_method_default_create();
 #endif /*WITH_SDL*/

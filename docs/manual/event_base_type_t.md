@@ -9,4 +9,5 @@
 | -------- | ------- | 
 | EVT\_PROP\_WILL\_CHANGE | 对象的属性即将改变的事件名(prop\_change\_event\_t)。 |
 | EVT\_PROP\_CHANGED | 对象的属性改变的事件名(prop\_change\_event\_t)。 |
+| EVT\_PROPS\_CHANGED | 对象的属性改变的事件名(props\_event\_t)。 |
 | EVT\_DESTROY | 对象销毁事件名(event\_t)。 |
