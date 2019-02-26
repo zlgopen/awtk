@@ -308,7 +308,10 @@ widget_t* image_animation_cast(widget_t* widget);
 #define IMAGE_ANIMATION_PROP_UNLOAD_AFTER_PAINT "unload_after_paint"
 
 #define WIDGET_TYPE_IMAGE_ANIMATION "image_animation"
-#define IMAGE_ANIMATION(widget) ((image_animation_t*)(widget))
+#define IMAGE_ANIMATION(widget) ((image_animation_t*)(image_animation_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(image_animation);
 
 /*public for test*/
 ret_t image_animation_update(widget_t* widget);

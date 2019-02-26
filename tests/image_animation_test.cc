@@ -124,3 +124,11 @@ TEST(ImageAnimation, format) {
 
   widget_destroy(w);
 }
+
+TEST(ImageAnimation, cast) {
+  widget_t* w = image_animation_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, image_animation_cast(w));
+
+  widget_destroy(w);
+}

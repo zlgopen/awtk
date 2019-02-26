@@ -169,15 +169,15 @@ static const char* s_image_animation_clone_properties[] = {IMAGE_ANIMATION_PROP_
                                                            IMAGE_ANIMATION_PROP_AUTO_PLAY,
                                                            NULL};
 
-static const widget_vtable_t s_image_animation_vtable = {
-    .size = sizeof(image_animation_t),
-    .type = WIDGET_TYPE_IMAGE_ANIMATION,
-    .clone_properties = s_image_animation_clone_properties,
-    .create = image_animation_create,
-    .on_destroy = image_animation_on_destroy,
-    .get_prop = image_animation_get_prop,
-    .set_prop = image_animation_set_prop,
-    .on_paint_self = image_animation_on_paint_self};
+TK_DECL_VTABLE(image_animation) = {.size = sizeof(image_animation_t),
+                                   .type = WIDGET_TYPE_IMAGE_ANIMATION,
+                                   .clone_properties = s_image_animation_clone_properties,
+                                   .parent = TK_PARENT_VTABLE(widget),
+                                   .create = image_animation_create,
+                                   .on_destroy = image_animation_on_destroy,
+                                   .get_prop = image_animation_get_prop,
+                                   .set_prop = image_animation_set_prop,
+                                   .on_paint_self = image_animation_on_paint_self};
 
 static ret_t image_animation_delay_play(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
@@ -207,7 +207,7 @@ static ret_t image_animation_on_open(void* ctx, event_t* e) {
 
 widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* win = widget_get_window(parent);
-  widget_t* widget = widget_create(parent, &s_image_animation_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(image_animation), x, y, w, h);
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
   return_value_if_fail(image_animation != NULL, NULL);
@@ -405,7 +405,7 @@ ret_t image_animation_set_format(widget_t* widget, const char* format) {
 }
 
 widget_t* image_animation_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_image_animation_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image_animation), NULL);
 
   return widget;
 }
