@@ -97,3 +97,11 @@ TEST(SlideMenu, props) {
 
   widget_destroy(w);
 }
+
+TEST(SlideMenu, cast) {
+  widget_t* w = slide_menu_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(w, slide_menu_cast(w));
+
+  widget_destroy(w);
+}

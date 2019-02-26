@@ -196,7 +196,10 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale);
 #define SLIDE_MENU_PROP_MIN_SCALE "min_scale"
 
 #define WIDGET_TYPE_SLIDE_MENU "slide_menu"
-#define SLIDE_MENU(widget) ((slide_menu_t*)(widget))
+#define SLIDE_MENU(widget) ((slide_menu_t*)(slide_menu_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(slide_menu);
 
 /*public for test*/
 int32_t slide_menu_fix_index(widget_t* widget, int32_t index);
