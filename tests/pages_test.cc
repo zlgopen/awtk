@@ -46,3 +46,11 @@ TEST(Pages, basic) {
 
   widget_destroy(pages);
 }
+
+TEST(Pages, cast) {
+  widget_t* pages = pages_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(pages, pages_cast(pages));
+
+  widget_destroy(pages);
+}
