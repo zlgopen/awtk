@@ -191,22 +191,22 @@ static ret_t button_on_destroy(widget_t* widget) {
 
 static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
 
-const widget_vtable_t g_button_vtable = {.size = sizeof(button_t),
-                                         .type = WIDGET_TYPE_BUTTON,
-                                         .enable_pool = TRUE,
-                                         .parent = &g_widget_vtable,
-                                         .create = button_create,
-                                         .clone_properties = s_button_properties,
-                                         .persistent_properties = s_button_properties,
-                                         .on_event = button_on_event,
-                                         .set_prop = button_set_prop,
-                                         .get_prop = button_get_prop,
-                                         .get_prop_default_value = button_get_prop_default_value,
-                                         .on_destroy = button_on_destroy,
-                                         .on_paint_self = widget_on_paint_self_default};
+TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
+                          .type = WIDGET_TYPE_BUTTON,
+                          .enable_pool = TRUE,
+                          .parent = TK_PARENT_VTABLE(widget),
+                          .create = button_create,
+                          .clone_properties = s_button_properties,
+                          .persistent_properties = s_button_properties,
+                          .on_event = button_on_event,
+                          .set_prop = button_set_prop,
+                          .get_prop = button_get_prop,
+                          .get_prop_default_value = button_get_prop_default_value,
+                          .on_destroy = button_on_destroy,
+                          .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &g_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(button), x, y, w, h);
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL, NULL);
 
@@ -220,7 +220,7 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* button_cast(widget_t* widget) {
-  return_value_if_fail(widget_is_instance_of(widget, &g_button_vtable), NULL);
+  return_value_if_fail(widget_is_instance_of(widget, TK_REF_VTABLE(button)), NULL);
 
   return widget;
 }
