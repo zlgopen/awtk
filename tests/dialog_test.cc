@@ -39,8 +39,3 @@ TEST(Dialog, cast) {
   widget_destroy(w);
 }
 
-TEST(Dialog, invalid_modal) {
-  widget_t* w = window_create(NULL, 10, 20, 30, 40);
-  ASSERT_EQ(dialog_modal(w), RET_BAD_PARAMS);
-  widget_destroy(w);
-}
