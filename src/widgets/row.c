@@ -22,15 +22,17 @@
 #include "tkc/mem.h"
 #include "widgets/row.h"
 
-static const widget_vtable_t s_row_vtable = {
-    .size = sizeof(row_t), .type = WIDGET_TYPE_ROW, .create = row_create};
+TK_DECL_VTABLE(row) = {.size = sizeof(row_t),
+                       .type = WIDGET_TYPE_ROW,
+                       .parent = TK_PARENT_VTABLE(widget),
+                       .create = row_create};
 
 widget_t* row_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_row_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(row), x, y, w, h);
 }
 
 widget_t* row_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_row_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, row), NULL);
 
   return widget;
 }
