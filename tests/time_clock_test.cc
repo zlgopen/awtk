@@ -42,7 +42,7 @@ TEST(TimeClock, basic) {
   ASSERT_EQ(string(value_str(&v1)), string(t->minute_image));
 
   value_set_str(&v1, "second");
-  ;
+
   ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_SECOND_IMAGE, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_SECOND_IMAGE, &v2), RET_OK);
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
@@ -59,6 +59,14 @@ TEST(TimeClock, basic) {
   ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_IMAGE, &v2), RET_OK);
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
   ASSERT_EQ(string(value_str(&v1)), string(t->image));
+
+  widget_destroy(w);
+}
+
+TEST(TimeClock, cast) {
+  widget_t* w = time_clock_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, time_clock_cast(w));
 
   widget_destroy(w);
 }

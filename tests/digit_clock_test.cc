@@ -118,3 +118,11 @@ TEST(DigitClock, format) {
 
   widget_destroy(w);
 }
+
+TEST(DigitClock, cast) {
+  widget_t* w = digit_clock_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, digit_clock_cast(w));
+
+  widget_destroy(w);
+}
