@@ -161,7 +161,10 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
  */
 widget_t* list_view_cast(widget_t* widget);
 
-#define LIST_VIEW(widget) ((list_view_t*)(widget))
+#define LIST_VIEW(widget) ((list_view_t*)(list_view_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(list_view);
 
 END_C_DECLS
 

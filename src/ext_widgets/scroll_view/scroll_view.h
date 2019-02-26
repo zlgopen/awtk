@@ -222,7 +222,10 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
 ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffset_end,
                             int32_t duration);
 
-#define SCROLL_VIEW(widget) ((scroll_view_t*)(widget))
+#define SCROLL_VIEW(widget) ((scroll_view_t*)(scroll_view_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(scroll_view);
 
 END_C_DECLS
 

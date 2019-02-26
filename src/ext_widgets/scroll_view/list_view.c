@@ -86,13 +86,13 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_list_view_vtable = {.type = WIDGET_TYPE_LIST_VIEW,
-                                                   .size = sizeof(list_view_t),
-                                                   .set_prop = list_view_set_prop,
-                                                   .get_prop = list_view_get_prop,
-                                                   .on_event = list_view_on_event,
-                                                   .on_add_child = list_view_on_add_child,
-                                                   .on_paint_self = list_view_on_paint_self};
+TK_DECL_VTABLE(list_view) = {.type = WIDGET_TYPE_LIST_VIEW,
+                             .size = sizeof(list_view_t),
+                             .set_prop = list_view_set_prop,
+                             .get_prop = list_view_get_prop,
+                             .on_event = list_view_on_event,
+                             .on_add_child = list_view_on_add_child,
+                             .on_paint_self = list_view_on_paint_self};
 
 static int32_t scroll_bar_to_scroll_view(list_view_t* list_view, int32_t v) {
   scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
@@ -255,7 +255,7 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
 }
 
 widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_list_view_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(list_view), x, y, w, h);
 }
 
 ret_t list_view_set_item_height(widget_t* widget, int32_t item_height) {
@@ -286,7 +286,7 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
 }
 
 widget_t* list_view_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_list_view_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, list_view), NULL);
 
   return widget;
 }

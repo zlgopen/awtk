@@ -420,21 +420,21 @@ static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
                                                        WIDGET_PROP_XOFFSET,
                                                        WIDGET_PROP_YOFFSET,
                                                        NULL};
-static const widget_vtable_t s_scroll_view_vtable = {
-    .size = sizeof(scroll_view_t),
-    .type = WIDGET_TYPE_SCROLL_VIEW,
-    .scrollable = TRUE,
-    .clone_properties = s_scroll_view_clone_properties,
-    .create = scroll_view_create,
-    .on_event = scroll_view_on_event,
-    .invalidate = scroll_view_invalidate,
-    .on_layout_children = scroll_view_on_layout_children,
-    .on_paint_children = scroll_view_on_paint_children,
-    .get_prop = scroll_view_get_prop,
-    .set_prop = scroll_view_set_prop};
+TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
+                               .type = WIDGET_TYPE_SCROLL_VIEW,
+                               .scrollable = TRUE,
+                               .clone_properties = s_scroll_view_clone_properties,
+                               .parent = TK_PARENT_VTABLE(widget),
+                               .create = scroll_view_create,
+                               .on_event = scroll_view_on_event,
+                               .invalidate = scroll_view_invalidate,
+                               .on_layout_children = scroll_view_on_layout_children,
+                               .on_paint_children = scroll_view_on_paint_children,
+                               .get_prop = scroll_view_get_prop,
+                               .set_prop = scroll_view_set_prop};
 
 widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_scroll_view_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(scroll_view), x, y, w, h);
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, NULL);
 
@@ -492,7 +492,7 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable) {
 }
 
 widget_t* scroll_view_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_scroll_view_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, scroll_view), NULL);
 
   return widget;
 }

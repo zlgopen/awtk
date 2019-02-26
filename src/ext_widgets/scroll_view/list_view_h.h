@@ -128,7 +128,10 @@ ret_t list_view_h_set_spacing(widget_t* widget, bool_t spacing);
  */
 widget_t* list_view_h_cast(widget_t* widget);
 
-#define LIST_VIEW_H(widget) ((list_view_h_t*)(widget))
+#define LIST_VIEW_H(widget) ((list_view_h_t*)(list_view_h_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(list_view_h);
 
 END_C_DECLS
 

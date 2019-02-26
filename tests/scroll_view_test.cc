@@ -65,3 +65,11 @@ TEST(ScrollView, layout) {
 
   widget_destroy(widget);
 }
+
+TEST(ScrollView, cast) {
+  widget_t* w = scroll_view_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, scroll_view_cast(w));
+
+  widget_destroy(w);
+}

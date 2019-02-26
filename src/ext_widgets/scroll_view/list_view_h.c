@@ -79,13 +79,13 @@ static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_list_view_h_vtable = {.type = WIDGET_TYPE_LIST_VIEW_H,
-                                                     .size = sizeof(list_view_h_t),
-                                                     .set_prop = list_view_h_set_prop,
-                                                     .get_prop = list_view_h_get_prop,
-                                                     .on_event = list_view_h_on_event,
-                                                     .on_add_child = list_view_h_on_add_child,
-                                                     .on_paint_self = list_view_h_on_paint_self};
+TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
+                               .size = sizeof(list_view_h_t),
+                               .set_prop = list_view_h_set_prop,
+                               .get_prop = list_view_h_get_prop,
+                               .on_event = list_view_h_on_event,
+                               .on_add_child = list_view_h_on_add_child,
+                               .on_paint_self = list_view_h_on_paint_self};
 
 static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
   int32_t virtual_w = widget->w;
@@ -138,7 +138,7 @@ static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
 }
 
 widget_t* list_view_h_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_list_view_h_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(list_view_h), x, y, w, h);
 }
 
 ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {
@@ -160,7 +160,7 @@ ret_t list_view_h_set_spacing(widget_t* widget, bool_t spacing) {
 }
 
 widget_t* list_view_h_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_list_view_h_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, list_view_h), NULL);
 
   return widget;
 }
