@@ -181,17 +181,18 @@ static ret_t rich_text_on_destroy(widget_t* widget) {
 }
 
 static const char* s_rich_text_clone_properties[] = {NULL};
-static const widget_vtable_t s_rich_text_vtable = {.size = sizeof(rich_text_t),
-                                                   .type = "rich_text",
-                                                   .create = rich_text_create,
-                                                   .clone_properties = s_rich_text_clone_properties,
-                                                   .on_event = rich_text_on_event,
-                                                   .set_prop = rich_text_set_prop,
-                                                   .on_destroy = rich_text_on_destroy,
-                                                   .on_paint_self = rich_text_on_paint_self};
+TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
+                             .type = "rich_text",
+                             .parent = TK_PARENT_VTABLE(widget),
+                             .create = rich_text_create,
+                             .clone_properties = s_rich_text_clone_properties,
+                             .on_event = rich_text_on_event,
+                             .set_prop = rich_text_set_prop,
+                             .on_destroy = rich_text_on_destroy,
+                             .on_paint_self = rich_text_on_paint_self};
 
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_rich_text_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(rich_text), x, y, w, h);
 }
 
 ret_t rich_text_set_text(widget_t* widget, const char* text) {
@@ -202,4 +203,10 @@ ret_t rich_text_set_text(widget_t* widget, const char* text) {
   rich_text->node = rich_text_parse(text, strlen(text));
 
   return RET_OK;
+}
+
+widget_t* rich_text_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, rich_text), NULL);
+
+  return widget;
 }
