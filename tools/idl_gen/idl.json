@@ -1585,7 +1585,7 @@
         "desc": " 计算文本所占的宽度。\r\n\r\n\r\n",
         "name": "canvas_measure_text",
         "return": {
-          "type": "ret_t",
+          "type": "float_t",
           "desc": "返回文本所占的宽度。"
         }
       },
@@ -1609,7 +1609,7 @@
         "name": "canvas_measure_utf8",
         "alias": "canvas_measure_text",
         "return": {
-          "type": "ret_t",
+          "type": "float_t",
           "desc": "返回文本所占的宽度。"
         }
       },
@@ -22469,7 +22469,27 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window_base对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为window_base对象(供脚本语言使用)。\r\n\r\n",
+        "name": "window_base_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "window_base对象。"
+        }
+      }
+    ],
     "events": [],
     "properties": [
       {
@@ -24248,6 +24268,25 @@
           "type": "float",
           "desc": "返回v分量。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为color_component对象(供脚本语言使用)。\r\n\r\n\r\n",
+        "name": "color_component_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "color_component对象。"
+        }
       }
     ],
     "events": [],
@@ -25110,7 +25149,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"123\", 将依次播放\"fire1\", \"fire2\", \"fire3\"。\r\n\r\n",
+        "desc": " 设置播放序列。比如image为\"fire\"，sequence为\"12223\", 将依次播放\"fire1\", \"fire2\", \"fire2\", \"fire2\",\r\n \"fire3\"。\r\n\r\n",
         "name": "image_animation_set_sequence",
         "return": {
           "type": "ret_t",
@@ -25138,7 +25177,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置播放序列。比如image为\"fire\"，max_nr为100, 将依次播放\"fire0\", ..., \"fire99\"。\r\n\r\n",
+        "desc": " 设置播放序列。比如image为\"fire\"，start_index为0, end_index为99, 将依次播放\"fire0\", ...,\r\n \"fire99\"。\r\n\r\n若指定的图片不存在，则重复上一张图片。\r\n\r\n\r\n",
         "name": "image_animation_set_range_sequence",
         "return": {
           "type": "ret_t",
@@ -25205,6 +25244,52 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "image_animation对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置生成图片名的格式。\r\n\r\n XXX:生成图片名时，第一个参数是图片名前缀，第二个是序数，只能在此前提下设置格式。\r\n\r\n ```\r\n  const char* format = image_animation->format ? image_animation->format : \"%s%d\";\r\n  tk_snprintf(name, TK_NAME_LEN, format, image_animation->image, image_animation->index);\r\n ```\r\n\r\n\r\n",
+        "name": "image_animation_set_format",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "unload_after_paint",
+            "desc": "是否绘制完成后unload图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置绘制完成后unload图片，以释放内存空间。\r\n\r\n",
+        "name": "image_animation_set_unload_after_paint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
           }
         ],
         "annotation": {
@@ -25236,7 +25321,7 @@
       },
       {
         "name": "sequence",
-        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n",
+        "desc": " 播放的序列，字符可选值为:0-9,a-z,A-Z。\r\n\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -25300,6 +25385,32 @@
         }
       },
       {
+        "name": "unload_after_paint",
+        "desc": " 绘制完成后unload图片，以释放内存空间。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "format",
+        "desc": " 索引到图片名转换时的格式，缺省为\"%s%d\"。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
         "name": "interval",
         "desc": " 每张图片播放的时间(毫秒)。\r\n",
         "type": "uint32_t",
@@ -25327,7 +25438,7 @@
       }
     ],
     "header": "image_animation/image_animation.h",
-    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n\r\n 图片序列可以用sequence指定，也可以用start\\_index和end\\_index指定一个范围。\r\n\r\n image\\_animation\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_animation\\_t控件。\r\n\r\n 在xml中使用\"image\\_animation\"标签创建图片动画控件。如：\r\n\r\n ```xml\r\n <image_animation image=\"ani\" sequence=\"123456789abc\" auto_play=\"true\" interval=\"50\"/>\r\n <image_animation image=\"ani\" start_index=\"1\" end_index=\"9\" auto_play=\"true\" interval=\"50\"\r\n delay=\"100\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [image_animation.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/image_animation.xml)\r\n\r\n 在c代码中使用函数image\\_animation\\_create创建图片动画控件。如：\r\n\r\n ```c\r\n image_animation = image_animation_create(win, 10, 10, 200, 200);\r\n image_animation_set_image(image_animation, \"ani\");\r\n image_animation_set_interval(image_animation, 50);\r\n image_animation_set_sequence(image_animation, \"123456789abc\");\r\n image_animation_play(image_animation);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [image_animation\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。\r\n\r\n",
+    "desc": " 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。\r\n\r\n 图片序列可以用sequence指定，也可以用start\\_index和end\\_index指定一个范围。\r\n\r\n image\\_animation\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_animation\\_t控件。\r\n\r\n 在xml中使用\"image\\_animation\"标签创建图片动画控件。如：\r\n\r\n ```xml\r\n <image_animation image=\"ani\" start_index=\"1\" end_index=\"9\" auto_play=\"true\" interval=\"50\"\r\n delay=\"100\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [image_animation.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/image_animation.xml)\r\n\r\n 在c代码中使用函数image\\_animation\\_create创建图片动画控件。如：\r\n\r\n ```c\r\n image_animation = image_animation_create(win, 10, 10, 200, 200);\r\n image_animation_set_image(image_animation, \"ani\");\r\n image_animation_set_interval(image_animation, 50);\r\n image_animation_set_range_sequence(image_animation, 1, 9);\r\n image_animation_play(image_animation);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [image_animation\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。\r\n\r\n",
     "name": "image_animation_t",
     "parent": "widget_t",
     "annotation": {
@@ -25557,6 +25668,25 @@
           "type": "widget_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "candidates对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为candidates对象(供脚本语言使用)。\r\n\r\n",
+        "name": "candidates_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "candidates对象。"
+        }
       }
     ],
     "events": [],
@@ -25624,6 +25754,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为keyboard对象(供脚本语言使用)。\r\n\r\n",
+        "name": "keyboard_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "keyboard对象。"
         }
       }
     ],
@@ -25920,6 +26069,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "rich_text对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为rich_text对象(供脚本语言使用)。\n\n\n",
+        "name": "rich_text_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "rich_text对象。"
         }
       }
     ],
@@ -26415,6 +26583,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "calibration_win对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为calibration_win对象(供脚本语言使用)。\r\n\r\n",
+        "name": "calibration_win_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "calibration_win对象。"
         }
       }
     ],
@@ -28751,6 +28938,25 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "label对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为label对象(供脚本语言使用)。\r\n\r\n",
+        "name": "label_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "label对象。"
         }
       }
     ],
