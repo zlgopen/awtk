@@ -108,7 +108,10 @@ widget_t* dragger_cast(widget_t* widget);
  */
 ret_t dragger_set_range(widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_max, xy_t y_max);
 
-#define DRAGGER(widget) ((dragger_t*)(widget))
+#define DRAGGER(widget) ((dragger_t*)(dragger_cast(widget)))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(dragger);
 
 END_C_DECLS
 

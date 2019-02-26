@@ -115,3 +115,11 @@ TEST(Dragger, dragger_v) {
 
   widget_destroy(b);
 }
+
+TEST(Dragger, cast) {
+  widget_t* b = dragger_create(NULL, 0, 0, 30, 30);
+
+  ASSERT_EQ(b, dragger_cast(b));
+
+  widget_destroy(b);
+}
