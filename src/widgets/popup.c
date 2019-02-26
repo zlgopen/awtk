@@ -107,26 +107,27 @@ static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
                                            NULL};
 
-static const widget_vtable_t s_popup_vtable = {.size = sizeof(popup_t),
-                                               .type = WIDGET_TYPE_POPUP,
-                                               .is_window = TRUE,
-                                               .clone_properties = s_popup_properties,
-                                               .persistent_properties = s_popup_properties,
-                                               .create = popup_create,
-                                               .get_prop = popup_get_prop,
-                                               .set_prop = popup_set_prop,
-                                               .on_event = popup_on_event,
-                                               .on_paint_self = window_base_on_paint_self,
-                                               .on_paint_begin = window_base_on_paint_begin,
-                                               .on_paint_end = window_base_on_paint_end,
-                                               .on_destroy = window_base_on_destroy};
+TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
+                         .type = WIDGET_TYPE_POPUP,
+                         .is_window = TRUE,
+                         .clone_properties = s_popup_properties,
+                         .persistent_properties = s_popup_properties,
+                         .parent = TK_PARENT_VTABLE(window_base),
+                         .create = popup_create,
+                         .get_prop = popup_get_prop,
+                         .set_prop = popup_set_prop,
+                         .on_event = popup_on_event,
+                         .on_paint_self = window_base_on_paint_self,
+                         .on_paint_begin = window_base_on_paint_begin,
+                         .on_paint_end = window_base_on_paint_end,
+                         .on_destroy = window_base_on_destroy};
 
 widget_t* popup_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return window_base_create(parent, &s_popup_vtable, x, y, w, h);
+  return window_base_create(parent, TK_REF_VTABLE(popup), x, y, w, h);
 }
 
 widget_t* popup_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_popup_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, popup), NULL);
 
   return widget;
 }
