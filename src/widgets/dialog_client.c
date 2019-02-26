@@ -27,14 +27,14 @@ static ret_t dialog_client_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_dialog_client_vtable = {
-    .size = sizeof(dialog_client_t),
-    .type = WIDGET_TYPE_DIALOG_CLIENT,
-    .create = dialog_client_create,
-    .on_paint_self = dialog_client_on_paint_self};
+TK_DECL_VTABLE(dialog_client) = {.size = sizeof(dialog_client_t),
+                                 .type = WIDGET_TYPE_DIALOG_CLIENT,
+                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .create = dialog_client_create,
+                                 .on_paint_self = dialog_client_on_paint_self};
 
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_dialog_client_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(dialog_client), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
 
   widget_set_name(widget, "client");
@@ -44,7 +44,7 @@ widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 }
 
 widget_t* dialog_client_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_dialog_client_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, dialog_client), NULL);
 
   return widget;
 }
