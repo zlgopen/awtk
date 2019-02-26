@@ -140,21 +140,21 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_combo_box_vtable = {
-    .size = sizeof(combo_box_t),
-    .type = WIDGET_TYPE_COMBO_BOX,
-    .clone_properties = s_combo_box_properties,
-    .persistent_properties = s_combo_box_properties,
-    .create = combo_box_create_self,
-    .on_paint_self = edit_on_paint_self,
-    .set_prop = combo_box_set_prop,
-    .get_prop = combo_box_get_prop,
-    .on_layout_children = combo_box_on_layout_children,
-    .on_destroy = combo_box_on_destroy,
-    .on_event = edit_on_event};
+TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
+                             .type = WIDGET_TYPE_COMBO_BOX,
+                             .clone_properties = s_combo_box_properties,
+                             .persistent_properties = s_combo_box_properties,
+                             .parent = TK_PARENT_VTABLE(widget),
+                             .create = combo_box_create_self,
+                             .on_paint_self = edit_on_paint_self,
+                             .set_prop = combo_box_set_prop,
+                             .get_prop = combo_box_get_prop,
+                             .on_layout_children = combo_box_on_layout_children,
+                             .on_destroy = combo_box_on_destroy,
+                             .on_event = edit_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = edit_create_ex(parent, &s_combo_box_vtable, x, y, w, h);
+  widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(combo_box);
   return_value_if_fail(combo_box != NULL, NULL);
@@ -467,7 +467,7 @@ const char* combo_box_get_text(widget_t* widget) {
 }
 
 widget_t* combo_box_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_combo_box_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, combo_box), NULL);
 
   return widget;
 }
