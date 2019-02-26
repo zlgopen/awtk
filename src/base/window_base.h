@@ -149,8 +149,20 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                              wh_t h);
+/**
+ * @method window_base_cast
+ * 转换为window_base对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {widget_t*} window_base对象。
+ */
+widget_t* window_base_cast(widget_t* widget);
 
-#define WINDOW_BASE(widget) ((window_base_t*)(widget))
+#define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(widget)))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(window_base);
 
 END_C_DECLS
 

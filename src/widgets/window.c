@@ -27,25 +27,27 @@
 static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                             WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
 
-static const widget_vtable_t s_window_vtable = {.type = WIDGET_TYPE_NORMAL_WINDOW,
-                                                .size = sizeof(window_t),
-                                                .is_window = TRUE,
-                                                .clone_properties = s_window_properties,
-                                                .persistent_properties = s_window_properties,
-                                                .on_event = window_base_on_event,
-                                                .on_paint_self = window_base_on_paint_self,
-                                                .on_paint_begin = window_base_on_paint_begin,
-                                                .on_paint_end = window_base_on_paint_end,
-                                                .set_prop = window_base_set_prop,
-                                                .get_prop = window_base_get_prop,
-                                                .on_destroy = window_base_on_destroy};
+TK_DECL_VTABLE(window) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
+                          .size = sizeof(window_t),
+                          .is_window = TRUE,
+                          .parent = TK_PARENT_VTABLE(window_base),
+                          .create = window_create,
+                          .clone_properties = s_window_properties,
+                          .persistent_properties = s_window_properties,
+                          .on_event = window_base_on_event,
+                          .on_paint_self = window_base_on_paint_self,
+                          .on_paint_begin = window_base_on_paint_begin,
+                          .on_paint_end = window_base_on_paint_end,
+                          .set_prop = window_base_set_prop,
+                          .get_prop = window_base_get_prop,
+                          .on_destroy = window_base_on_destroy};
 
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return window_base_create(parent, &s_window_vtable, x, y, w, h);
+  return window_base_create(parent, TK_REF_VTABLE(window), x, y, w, h);
 }
 
 widget_t* window_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_window_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, window), NULL);
 
   return widget;
 }

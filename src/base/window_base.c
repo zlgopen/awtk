@@ -205,3 +205,11 @@ ret_t window_close(widget_t* widget) {
 
   return window_manager_close_window(widget->parent, widget);
 }
+
+TK_DECL_VTABLE(window_base) = {.size = sizeof(window_base_t), .parent = TK_PARENT_VTABLE(widget)};
+
+widget_t* window_base_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, window_base), NULL);
+
+  return widget;
+}

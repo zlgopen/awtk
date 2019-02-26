@@ -25,10 +25,18 @@ TEST(Dialog, basic) {
 
   w1 = widget_clone(w, NULL);
   ASSERT_EQ(widget_equal(w, w1), TRUE);
-  ASSERT_EQ(dialog_cast(w1), w1);
 
   widget_destroy(w);
   widget_destroy(w1);
+}
+
+TEST(Dialog, cast) {
+  widget_t* w = dialog_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, dialog_cast(w));
+  ASSERT_EQ(w, window_base_cast(w));
+
+  widget_destroy(w);
 }
 
 TEST(Dialog, invalid_modal) {
