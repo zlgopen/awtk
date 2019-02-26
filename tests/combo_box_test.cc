@@ -113,6 +113,7 @@ TEST(ComboBox, event) {
 TEST(ComboBox, cast) {
   widget_t* w = combo_box_create(NULL, 0, 0, 100, 100);
 
+  ASSERT_EQ(w, edit_cast(w));
   ASSERT_EQ(w, combo_box_cast(w));
 
   widget_destroy(w);

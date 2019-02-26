@@ -27,18 +27,19 @@ extern const char* s_edit_properties[];
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
-static const widget_vtable_t s_spin_box_vtable = {.size = sizeof(spin_box_t),
-                                                  .type = WIDGET_TYPE_SPIN_BOX,
-                                                  .clone_properties = s_edit_properties,
-                                                  .persistent_properties = s_edit_properties,
-                                                  .create = spin_box_create_self,
-                                                  .on_paint_self = edit_on_paint_self,
-                                                  .set_prop = edit_set_prop,
-                                                  .get_prop = edit_get_prop,
-                                                  .on_event = edit_on_event};
+TK_DECL_VTABLE(spin_box) = {.size = sizeof(spin_box_t),
+                            .type = WIDGET_TYPE_SPIN_BOX,
+                            .clone_properties = s_edit_properties,
+                            .persistent_properties = s_edit_properties,
+                            .parent = TK_PARENT_VTABLE(edit),
+                            .create = spin_box_create_self,
+                            .on_paint_self = edit_on_paint_self,
+                            .set_prop = edit_set_prop,
+                            .get_prop = edit_get_prop,
+                            .on_event = edit_on_event};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* spin_box = edit_create_ex(parent, &s_spin_box_vtable, x, y, w, h);
+  widget_t* spin_box = edit_create_ex(parent, TK_REF_VTABLE(spin_box), x, y, w, h);
   edit_t* edit = EDIT(spin_box);
   return_value_if_fail(spin_box != NULL, NULL);
 
@@ -71,7 +72,7 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* spin_box_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_spin_box_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, spin_box), NULL);
 
   return widget;
 }
