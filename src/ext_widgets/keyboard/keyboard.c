@@ -43,23 +43,24 @@ static ret_t keyboard_on_destroy(widget_t* widget) {
   return window_base_on_destroy(widget);
 }
 
-static const widget_vtable_t s_keyboard_vtable = {.size = sizeof(keyboard_t),
-                                                  .type = WIDGET_TYPE_KEYBOARD,
-                                                  .is_window = TRUE,
-                                                  .is_keyboard = TRUE,
-                                                  .clone_properties = s_keyboard_properties,
-                                                  .persistent_properties = s_keyboard_properties,
-                                                  .create = keyboard_create,
-                                                  .on_event = window_base_on_event,
-                                                  .on_paint_self = window_base_on_paint_self,
-                                                  .on_paint_begin = window_base_on_paint_begin,
-                                                  .on_paint_end = window_base_on_paint_end,
-                                                  .set_prop = window_base_set_prop,
-                                                  .get_prop = window_base_get_prop,
-                                                  .on_destroy = keyboard_on_destroy};
+TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
+                            .type = WIDGET_TYPE_KEYBOARD,
+                            .is_window = TRUE,
+                            .is_keyboard = TRUE,
+                            .clone_properties = s_keyboard_properties,
+                            .persistent_properties = s_keyboard_properties,
+                            .parent = TK_PARENT_VTABLE(window_base),
+                            .create = keyboard_create,
+                            .on_event = window_base_on_event,
+                            .on_paint_self = window_base_on_paint_self,
+                            .on_paint_begin = window_base_on_paint_begin,
+                            .on_paint_end = window_base_on_paint_end,
+                            .set_prop = window_base_set_prop,
+                            .get_prop = window_base_get_prop,
+                            .on_destroy = keyboard_on_destroy};
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = window_base_create(parent, &s_keyboard_vtable, x, y, w, h);
+  widget_t* widget = window_base_create(parent, TK_REF_VTABLE(keyboard), x, y, w, h);
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, NULL);
 
@@ -187,4 +188,10 @@ ret_t keyboard_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return window_manager_close_window(widget->parent, widget);
+}
+
+widget_t* keyboard_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, keyboard), NULL);
+
+  return widget;
 }
