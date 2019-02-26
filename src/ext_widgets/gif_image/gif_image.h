@@ -111,7 +111,10 @@ widget_t* gif_image_cast(widget_t* widget);
 
 #define WIDGET_TYPE_GIF_IMAGE "gif"
 
-#define GIF_IMAGE(widget) ((gif_image_t*)(widget))
+#define GIF_IMAGE(widget) ((gif_image_t*)(gif_image_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(gif_image);
 
 END_C_DECLS
 

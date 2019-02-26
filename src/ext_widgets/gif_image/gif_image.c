@@ -117,19 +117,20 @@ static ret_t gif_image_on_destroy(widget_t* widget) {
   return image_base_on_destroy(widget);
 }
 
-static const widget_vtable_t s_gif_image_vtable = {.size = sizeof(gif_image_t),
-                                                   .type = WIDGET_TYPE_GIF_IMAGE,
-                                                   .clone_properties = s_gif_image_clone_properties,
-                                                   .create = gif_image_create,
-                                                   .on_destroy = gif_image_on_destroy,
-                                                   .on_event = image_base_on_event,
-                                                   .on_paint_self = gif_image_on_paint_self,
-                                                   .on_paint_background = widget_on_paint_null,
-                                                   .set_prop = image_base_set_prop,
-                                                   .get_prop = image_base_get_prop};
+TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
+                             .type = WIDGET_TYPE_GIF_IMAGE,
+                             .clone_properties = s_gif_image_clone_properties,
+                             .parent = TK_PARENT_VTABLE(image_base),
+                             .create = gif_image_create,
+                             .on_destroy = gif_image_on_destroy,
+                             .on_event = image_base_on_event,
+                             .on_paint_self = gif_image_on_paint_self,
+                             .on_paint_background = widget_on_paint_null,
+                             .set_prop = image_base_set_prop,
+                             .get_prop = image_base_get_prop};
 
 widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_gif_image_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(gif_image), x, y, w, h);
   gif_image_t* gif_image = GIF_IMAGE(widget);
   return_value_if_fail(gif_image != NULL, NULL);
 
@@ -139,7 +140,7 @@ widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* gif_image_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_gif_image_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, gif_image), NULL);
 
   return widget;
 }
