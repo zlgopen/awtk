@@ -124,7 +124,10 @@ ret_t color_picker_set_color(widget_t* widget, const char* color);
  */
 widget_t* color_picker_cast(widget_t* widget);
 
-#define COLOR_PICKER(widget) ((color_picker_t*)(widget))
+#define COLOR_PICKER(widget) ((color_picker_t*)(color_picker_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(color_picker);
 
 END_C_DECLS
 

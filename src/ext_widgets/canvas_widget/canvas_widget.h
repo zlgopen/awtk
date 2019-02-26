@@ -121,7 +121,10 @@ widget_t* canvas_widget_cast(widget_t* widget);
 
 #define WIDGET_TYPE_CANVAS_WIDGET "canvas"
 
-#define CANVAS_WIDGET(widget) ((canvas_widget_t*)(widget))
+#define CANVAS_WIDGET(widget) ((canvas_widget_t*)(canvas_widget_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(canvas_widget);
 
 END_C_DECLS
 

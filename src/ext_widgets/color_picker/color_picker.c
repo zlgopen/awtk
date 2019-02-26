@@ -50,11 +50,12 @@ static ret_t color_picker_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_color_picker_vtable = {.size = sizeof(color_picker_t),
-                                                      .type = WIDGET_TYPE_COLOR_PICKER,
-                                                      .set_prop = color_picker_set_prop,
-                                                      .get_prop = color_picker_get_prop,
-                                                      .create = color_picker_create};
+TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
+                                .type = WIDGET_TYPE_COLOR_PICKER,
+                                .set_prop = color_picker_set_prop,
+                                .get_prop = color_picker_get_prop,
+                                .parent = TK_PARENT_VTABLE(widget),
+                                .create = color_picker_create};
 
 static ret_t color_picker_update_child(void* ctx, const void* iter) {
   float h = 0;
@@ -317,7 +318,7 @@ static ret_t color_picker_on_window_will_open(void* ctx, event_t* e) {
 }
 
 widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_color_picker_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_picker), x, y, w, h);
   color_picker_t* color_picker = COLOR_PICKER(widget);
   widget_t* win = widget_get_window(parent);
   return_value_if_fail(color_picker != NULL, NULL);
@@ -356,7 +357,7 @@ ret_t color_picker_set_color(widget_t* widget, const char* color) {
 }
 
 widget_t* color_picker_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_color_picker_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, color_picker), NULL);
 
   return widget;
 }

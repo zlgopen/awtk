@@ -102,7 +102,21 @@ float color_component_get_s(widget_t* widget);
  */
 float color_component_get_v(widget_t* widget);
 
-#define COLOR_COMPONENT(widget) ((color_component_t*)(widget))
+/**
+ * @method color_component_cast
+ * 转换为color_component对象(供脚本语言使用)。
+ *
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget color_component对象。
+ *
+ * @return {widget_t*} color_component对象。
+ */
+widget_t* color_component_cast(widget_t* widget);
+
+#define COLOR_COMPONENT(widget) ((color_component_t*)(color_component_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(color_component);
 
 END_C_DECLS
 
