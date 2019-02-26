@@ -26,17 +26,18 @@ static ret_t button_group_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_button_group_vtable = {.size = sizeof(button_group_t),
-                                                      .type = WIDGET_TYPE_BUTTON_GROUP,
-                                                      .create = button_group_create,
-                                                      .on_paint_self = button_group_on_paint_self};
+TK_DECL_VTABLE(button_group) = {.size = sizeof(button_group_t),
+                                .type = WIDGET_TYPE_BUTTON_GROUP,
+                                .parent = TK_PARENT_VTABLE(widget),
+                                .create = button_group_create,
+                                .on_paint_self = button_group_on_paint_self};
 
 widget_t* button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_button_group_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(button_group), x, y, w, h);
 }
 
 widget_t* button_group_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_button_group_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, button_group), NULL);
 
   return widget;
 }

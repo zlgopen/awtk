@@ -47,9 +47,6 @@ ret_t widget_destroy_default(widget_t* widget);
 
 ret_t widget_on_paint_null(widget_t* widget, canvas_t* c);
 
-/*public for subclass*/
-TK_EXTERN_VTABLE(widget);
-
 END_C_DECLS
 
 #endif /*TK_WIDGET_VTABLE_H*/

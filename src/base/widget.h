@@ -1706,7 +1706,11 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 const char** widget_get_persistent_props(void);
 
 bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
-#define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(app_bar))
+#define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))
+
+/*public for subclass*/
+TK_EXTERN_VTABLE(widget);
+
 
 END_C_DECLS
 
