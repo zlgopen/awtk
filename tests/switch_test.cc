@@ -71,3 +71,11 @@ TEST(Switch, event) {
 
   widget_destroy(w);
 }
+
+TEST(Switch, cast) {
+  widget_t* w = switch_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, switch_cast(w));
+
+  widget_destroy(w);
+}

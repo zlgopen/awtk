@@ -148,7 +148,10 @@ widget_t* switch_cast(widget_t* widget);
 #define SWITCH_PROP_MAX_XOFFSET_RATIO "max_xoffset_ratio"
 
 #define WIDGET_TYPE_SWITCH "switch"
-#define SWITCH(widget) ((switch_t*)(widget))
+#define SWITCH(widget) ((switch_t*)(switch_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(switch);
 
 END_C_DECLS
 

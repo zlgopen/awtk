@@ -281,11 +281,12 @@ static const char* s_switch_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_XOFFS
                                             SWITCH_PROP_ROUND_RADIUS, SWITCH_PROP_MAX_XOFFSET_RATIO,
                                             NULL};
 
-static const widget_vtable_t s_switch_vtable = {
+TK_DECL_VTABLE(switch) = {
     .size = sizeof(switch_t),
     .type = WIDGET_TYPE_SWITCH,
     .clone_properties = s_switch_properties,
     .persistent_properties = s_switch_properties,
+    .parent = TK_PARENT_VTABLE(widget),
     .create = switch_create,
     .on_event = switch_on_event,
     .on_paint_background = switch_on_paint_background,
@@ -294,7 +295,7 @@ static const widget_vtable_t s_switch_vtable = {
 };
 
 widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_switch_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(switch), x, y, w, h);
   switch_t* aswitch = SWITCH(widget);
   return_value_if_fail(aswitch != NULL, NULL);
 
@@ -306,7 +307,7 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* switch_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && (widget->vt == &s_switch_vtable), NULL);
+  return_value_if_fail(widget != NULL && (widget->vt == TK_REF_VTABLE(switch)), NULL);
 
   return widget;
 }
