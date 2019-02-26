@@ -98,17 +98,17 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_combo_box_item_vtable = {
-    .size = sizeof(combo_box_item_t),
-    .type = WIDGET_TYPE_COMBO_BOX_ITEM,
-    .on_paint_self = combo_box_item_on_paint_self,
-    .on_event = combo_box_item_on_event,
-    .get_prop = combo_box_item_get_prop,
-    .set_prop = combo_box_item_set_prop,
-    .create = combo_box_item_create};
+TK_DECL_VTABLE(combo_box_item) = {.size = sizeof(combo_box_item_t),
+                                  .type = WIDGET_TYPE_COMBO_BOX_ITEM,
+                                  .on_paint_self = combo_box_item_on_paint_self,
+                                  .on_event = combo_box_item_on_event,
+                                  .get_prop = combo_box_item_get_prop,
+                                  .set_prop = combo_box_item_set_prop,
+                                  .parent = TK_PARENT_VTABLE(widget),
+                                  .create = combo_box_item_create};
 
 widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_combo_box_item_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(combo_box_item), x, y, w, h);
 }
 
 ret_t combo_box_item_set_value(widget_t* widget, int32_t value) {
@@ -155,7 +155,7 @@ ret_t combo_box_item_set_checked(widget_t* widget, bool_t checked) {
 }
 
 widget_t* combo_box_item_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_combo_box_item_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, combo_box_item), NULL);
 
   return widget;
 }
