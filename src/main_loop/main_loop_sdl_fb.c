@@ -43,12 +43,12 @@ static ret_t main_loop_sdl_fb_destroy(main_loop_t* l) {
     SDL_Log("Error : %s\n", errMsg);
   }
 
-  if (LOOP_SDL_WINDOW(loop)) {
-    SDL_DestroyWindow(LOOP_SDL_WINDOW(loop));
-  }
-
   if (LOOP_SDL_RENDER(loop)) {
     SDL_DestroyRenderer(LOOP_SDL_RENDER(loop));
+  }
+
+  if (LOOP_SDL_WINDOW(loop)) {
+    SDL_DestroyWindow(LOOP_SDL_WINDOW(loop));
   }
 
   SDL_Quit();
