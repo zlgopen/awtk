@@ -242,7 +242,7 @@ uint32_t dialog_modal(widget_t* widget);
  */
 ret_t dialog_quit(widget_t* widget, uint32_t code);
 
-#define DIALOG(widget) ((dialog_t*)(dialog_cast(widget)))
+#define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(dialog);

@@ -159,7 +159,7 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
  */
 widget_t* window_base_cast(widget_t* widget);
 
-#define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(widget)))
+#define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(window_base);

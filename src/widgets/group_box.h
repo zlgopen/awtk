@@ -86,7 +86,7 @@ widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* group_box_cast(widget_t* widget);
 
-#define GROUP_BOX(widget) ((group_box_t*)(group_box_cast(widget)))
+#define GROUP_BOX(widget) ((group_box_t*)(group_box_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(group_box);

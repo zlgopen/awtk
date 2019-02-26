@@ -120,7 +120,7 @@ ret_t label_set_length(widget_t* widget, int32_t length);
  */
 widget_t* label_cast(widget_t* widget);
 
-#define LABEL(widget) ((label_t*)(label_cast(widget)))
+#define LABEL(widget) ((label_t*)(label_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(label);

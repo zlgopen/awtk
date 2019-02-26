@@ -132,7 +132,7 @@ ret_t color_tile_set_border_color(widget_t* widget, const char* color);
  */
 ret_t color_tile_set_value(widget_t* widget, color_t color);
 
-#define COLOR_TILE(widget) ((color_tile_t*)(color_tile_cast(widget)))
+#define COLOR_TILE(widget) ((color_tile_t*)(color_tile_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(color_tile);

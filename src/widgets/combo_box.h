@@ -285,7 +285,7 @@ int32_t combo_box_get_value(widget_t* widget);
  */
 const char* combo_box_get_text(widget_t* widget);
 
-#define COMBO_BOX(widget) ((combo_box_t*)(combo_box_cast(widget)))
+#define COMBO_BOX(widget) ((combo_box_t*)(combo_box_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(combo_box);

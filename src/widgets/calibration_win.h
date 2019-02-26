@@ -127,7 +127,7 @@ ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t 
  */
 widget_t* calibration_win_cast(widget_t* widget);
 
-#define CALIBRATION_WIN(widget) ((calibration_win_t*)(calibration_win_cast(widget)))
+#define CALIBRATION_WIN(widget) ((calibration_win_t*)(calibration_win_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(calibration_win);
