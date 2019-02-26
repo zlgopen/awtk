@@ -68,3 +68,11 @@ TEST(ProgressCircle, event) {
 
   widget_destroy(w);
 }
+
+TEST(ProgressCircle, cast) {
+  widget_t* w = progress_circle_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, progress_circle_cast(w));
+
+  widget_destroy(w);
+}

@@ -223,18 +223,18 @@ static const char* s_progress_circle_clone_properties[] = {WIDGET_PROP_VALUE,
                                                            PROGRESS_CIRCLE_PROP_UNIT,
                                                            WIDGET_PROP_SHOW_TEXT,
                                                            NULL};
-static const widget_vtable_t s_progress_circle_vtable = {
-    .size = sizeof(progress_circle_t),
-    .type = WIDGET_TYPE_PROGRESS_CIRCLE,
-    .clone_properties = s_progress_circle_clone_properties,
-    .create = progress_circle_create,
-    .on_paint_self = progress_circle_on_paint_self,
-    .on_destroy = progress_circle_on_destroy,
-    .get_prop = progress_circle_get_prop,
-    .set_prop = progress_circle_set_prop};
+TK_DECL_VTABLE(progress_circle) = {.size = sizeof(progress_circle_t),
+                                   .type = WIDGET_TYPE_PROGRESS_CIRCLE,
+                                   .clone_properties = s_progress_circle_clone_properties,
+                                   .parent = TK_PARENT_VTABLE(widget),
+                                   .create = progress_circle_create,
+                                   .on_paint_self = progress_circle_on_paint_self,
+                                   .on_destroy = progress_circle_on_destroy,
+                                   .get_prop = progress_circle_get_prop,
+                                   .set_prop = progress_circle_set_prop};
 
 widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_progress_circle_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(progress_circle), x, y, w, h);
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, NULL);
 
@@ -248,7 +248,7 @@ widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 }
 
 widget_t* progress_circle_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_progress_circle_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, progress_circle), NULL);
 
   return widget;
 }
