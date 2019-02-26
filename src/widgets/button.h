@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * File:   button.h
  * Author: AWTK Develop Team
