@@ -22,15 +22,17 @@
 #include "tkc/mem.h"
 #include "widgets/column.h"
 
-static const widget_vtable_t s_column_vtable = {
-    .size = sizeof(column_t), .type = WIDGET_TYPE_COLUMN, .create = column_create};
+TK_DECL_VTABLE(column) = {.size = sizeof(column_t),
+                          .type = WIDGET_TYPE_COLUMN,
+                          .parent = TK_PARENT_VTABLE(widget),
+                          .create = column_create};
 
 widget_t* column_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_column_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(column), x, y, w, h);
 }
 
 widget_t* column_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_column_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, column), NULL);
 
   return widget;
 }
