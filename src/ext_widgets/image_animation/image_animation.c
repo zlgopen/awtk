@@ -56,16 +56,28 @@ static ret_t on_idle_unload_image(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t image_animation_load_image(image_animation_t* image_animation, bitmap_t* bitmap) {
+  char name[TK_NAME_LEN + 1];
+  widget_t* widget = WIDGET(image_animation);
+
+  image_animation_get_image_name(image_animation, name);
+  if (widget_load_image(widget, name, bitmap) == RET_OK) {
+    tk_strncpy(image_animation->image_name, name, TK_NAME_LEN);
+    return RET_OK;
+  }
+
+  /*use old one*/
+  return widget_load_image(widget, image_animation->image_name, bitmap);
+}
+
 static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(image_animation->image != NULL, RET_BAD_PARAMS);
 
   if (image_animation->index >= 0) {
     bitmap_t bitmap;
-    char name[TK_NAME_LEN + 1];
 
-    image_animation_get_image_name(image_animation, name);
-    if (widget_load_image(widget, name, &bitmap) == RET_OK) {
+    if (image_animation_load_image(image_animation, &bitmap) == RET_OK) {
       rect_t s = rect_init(0, 0, bitmap.w, bitmap.h);
       rect_t d = rect_init(0, 0, widget->w, widget->h);
       canvas_draw_image_scale_down(c, &bitmap, &s, &d);

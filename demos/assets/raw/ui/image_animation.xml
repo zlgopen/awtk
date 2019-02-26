@@ -29,7 +29,9 @@
       auto_play="true" interval="50" delay="1400"/>
     <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
       auto_play="true" interval="50" delay="1500"/>
-    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+
+    <!-- 13-100 not exist, so pause to play for some time. -->
+    <image_animation image="ani" start_index="1" end_index="100" format="%s%x" 
       auto_play="true" interval="50" delay="1600"/>
   </view>
 

@@ -132,6 +132,7 @@ typedef struct _image_animation_t {
   int32_t index;
   uint32_t timer_id;
   void* image_data;
+  char image_name[TK_NAME_LEN + 1];
 } image_animation_t;
 
 /**
@@ -219,6 +220,9 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence);
  * @method image_animation_set_range_sequence
  * 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ...,
  * "fire99"。
+ *
+ *若指定的图片不存在，则重复上一张图片。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_animation对象。
  * @param {uint32_t} start_index 图片起始序数。
