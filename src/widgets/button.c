@@ -220,7 +220,7 @@ widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* button_cast(widget_t* widget) {
-  return_value_if_fail(widget_is_instance_of(widget, TK_REF_VTABLE(button)), NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, button), NULL);
 
   return widget;
 }
