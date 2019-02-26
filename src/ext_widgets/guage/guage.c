@@ -102,18 +102,19 @@ static ret_t guage_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_guage_vtable = {.size = sizeof(guage_t),
-                                               .type = WIDGET_TYPE_GUAGE,
-                                               .clone_properties = s_guage_properties,
-                                               .persistent_properties = s_guage_properties,
-                                               .create = guage_create,
-                                               .on_paint_self = guage_on_paint_self,
-                                               .set_prop = guage_set_prop,
-                                               .get_prop = guage_get_prop,
-                                               .on_destroy = guage_on_destroy};
+TK_DECL_VTABLE(guage) = {.size = sizeof(guage_t),
+                         .type = WIDGET_TYPE_GUAGE,
+                         .clone_properties = s_guage_properties,
+                         .persistent_properties = s_guage_properties,
+                         .parent = TK_PARENT_VTABLE(widget),
+                         .create = guage_create,
+                         .on_paint_self = guage_on_paint_self,
+                         .set_prop = guage_set_prop,
+                         .get_prop = guage_get_prop,
+                         .on_destroy = guage_on_destroy};
 
 widget_t* guage_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_guage_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(guage), x, y, w, h);
   guage_t* guage = GUAGE(widget);
 
   return_value_if_fail(guage != NULL, NULL);
@@ -124,7 +125,7 @@ widget_t* guage_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* guage_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_guage_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, guage), NULL);
 
   return widget;
 }

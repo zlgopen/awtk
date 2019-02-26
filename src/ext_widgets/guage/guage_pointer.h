@@ -130,7 +130,10 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image);
 
 #define GUAGE_POINTER_PROP_ANGLE "angle"
 #define WIDGET_TYPE_GUAGE_POINTER "guage_pointer"
-#define GUAGE_POINTER(widget) ((guage_pointer_t*)(widget))
+#define GUAGE_POINTER(widget) ((guage_pointer_t*)(guage_pointer_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(guage_pointer);
 
 END_C_DECLS
 

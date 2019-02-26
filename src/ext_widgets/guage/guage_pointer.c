@@ -174,24 +174,24 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
 static const char* s_guage_pointer_properties[] = {GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE,
                                                    NULL};
 
-static const widget_vtable_t s_guage_pointer_vtable = {
-    .size = sizeof(guage_pointer_t),
-    .type = WIDGET_TYPE_GUAGE_POINTER,
-    .clone_properties = s_guage_pointer_properties,
-    .persistent_properties = s_guage_pointer_properties,
-    .create = guage_pointer_create,
-    .on_paint_self = guage_pointer_on_paint_self,
-    .on_paint_background = widget_on_paint_null,
-    .set_prop = guage_pointer_set_prop,
-    .get_prop = guage_pointer_get_prop,
-    .on_destroy = guage_pointer_on_destroy};
+TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),
+                                 .type = WIDGET_TYPE_GUAGE_POINTER,
+                                 .clone_properties = s_guage_pointer_properties,
+                                 .persistent_properties = s_guage_pointer_properties,
+                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .create = guage_pointer_create,
+                                 .on_paint_self = guage_pointer_on_paint_self,
+                                 .on_paint_background = widget_on_paint_null,
+                                 .set_prop = guage_pointer_set_prop,
+                                 .get_prop = guage_pointer_get_prop,
+                                 .on_destroy = guage_pointer_on_destroy};
 
 widget_t* guage_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_guage_pointer_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(guage_pointer), x, y, w, h);
 }
 
 widget_t* guage_pointer_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_guage_pointer_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, guage_pointer), NULL);
 
   return widget;
 }
