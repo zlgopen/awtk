@@ -124,3 +124,11 @@ TEST(TextSelector, event) {
 
   widget_destroy(w);
 }
+
+TEST(TextSelector, cast) {
+  widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, text_selector_cast(w));
+
+  widget_destroy(w);
+}

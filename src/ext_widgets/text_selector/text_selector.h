@@ -278,7 +278,10 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr);
 
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
-#define TEXT_SELECTOR(widget) ((text_selector_t*)(widget))
+#define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(text_selector);
 
 /*public for test*/
 ret_t text_selector_parse_options(widget_t* widget, const char* str);
