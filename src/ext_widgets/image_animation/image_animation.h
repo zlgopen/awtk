@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_animation.h
  * Author: AWTK Develop Team
  * Brief:  image_animation
