@@ -241,6 +241,18 @@ static ret_t lcd_reg_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
+static bitmap_format_t lcd_reg_get_desired_bitmap_format(lcd_t* lcd) {
+#ifdef LCD_FORMAT
+  return LCD_FORMAT;
+#else
+  if (sizeof(pixel_t) == 2) {
+    return BITMAP_FMT_BGR565;
+  } else {
+    return BITMAP_FMT_RGBA8888;
+  }
+#endif /*LCD_FORMAT*/
+}
+
 lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd_t* lcd = TKMEM_ZALLOC(lcd_t);
   system_info_t* info = system_info();
@@ -265,6 +277,7 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd->end_frame = lcd_reg_end_frame;
   lcd->destroy = lcd_reg_destroy;
   lcd->support_dirty_rect = TRUE;
+  lcd->get_desired_bitmap_format = lcd_reg_get_desired_bitmap_format;
 
   return lcd;
 }
