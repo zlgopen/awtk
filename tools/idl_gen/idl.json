@@ -4761,6 +4761,22 @@
             "desc": "lcd对象。"
           }
         ],
+        "annotation": {},
+        "desc": " 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。\r\n\r\n",
+        "name": "lcd_get_desired_bitmap_format",
+        "return": {
+          "type": "bitmap_format_t",
+          "desc": "返回期望的位图格式。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          }
+        ],
         "annotation": {
           "private": true
         },
@@ -18755,6 +18771,79 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": " 创建list_item对象\r\n\r\n",
+        "name": "list_item_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为list_item对象(供脚本语言使用)。\r\n\r\n",
+        "name": "list_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_item对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "scroll_view/list_item.h",
+    "desc": " 列表项控件。\r\n\r\n 列表项控件是一个简单的容器控件，一般作为列表视图中滚动视图的子控件。\r\n\r\n list\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于list\\_item\\_t控件。\r\n\r\n 在xml中使用\"list\\_item\"标签创建列表项控件。如：\r\n\r\n ```xml\r\n <list_view x=\"0\"  y=\"30\" w=\"100%\" h=\"-80\" item_height=\"60\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\">\r\n     <list_item style=\"odd\" children_layout=\"default(rows=1,cols=0)\">\r\n       <image draw_type=\"icon\" w=\"30\" image=\"earth\"/>\r\n       <label w=\"-30\" text=\"1.Hello AWTK !\">\r\n         <switch x=\"r:10\" y=\"m\" w=\"60\" h=\"20\"/>\r\n       </label>\r\n     </list_item>\r\n     ...\r\n   </scroll_view>\r\n  </list_view>\r\n ```\r\n\r\n > 更多用法请参考：[list\\_view\\_m.xml](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)\r\n\r\n 在c代码中使用函数list\\_item\\_create创建列表项控件。如：\r\n\r\n ```c\r\n  widget_t* list_item = list_item_create(scroll_view, 0, 0, 0, 0);\r\n ```\r\n\r\n > 列表项控件大小一般由列表控制，不需指定xywh参数。\r\n\r\n 可以用style来实现可点击或不可点击的效果。如：\r\n\r\n ```xml\r\n <style name=\"odd_clickable\" border_color=\"#a0a0a0\"  border=\"bottom\" text_color=\"black\">\r\n   <normal     bg_color=\"#f5f5f5\" />\r\n   <pressed    bg_color=\"#c0c0c0\" />\r\n   <over       bg_color=\"#f5f5f5\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L372)\r\n\r\n",
+    "name": "list_item_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 创建list_view_h对象\r\n\r\n",
         "name": "list_view_h_create",
         "return": {
@@ -26041,6 +26130,343 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": " 创建progress_circle对象\r\n\r\n\r\n",
+        "name": "progress_circle_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "progress_circle对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n\r\n",
+        "name": "progress_circle_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "progress_circle对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置值。\r\n\r\n\r\n",
+        "name": "progress_circle_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max",
+            "desc": "最大值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置最大值。\r\n\r\n\r\n",
+        "name": "progress_circle_set_max",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "line_width",
+            "desc": "环线的厚度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置环线的厚度。\r\n\r\n\r\n",
+        "name": "progress_circle_set_line_width",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "start_angle",
+            "desc": "起始角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置起始角度。\r\n\r\n\r\n",
+        "name": "progress_circle_set_start_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "unit",
+            "desc": "单位。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置单位。\r\n\r\n\r\n",
+        "name": "progress_circle_set_unit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_text",
+            "desc": "是否显示文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否显示文本。\r\n\r\n\r\n",
+        "name": "progress_circle_set_show_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "counter_clock_wise",
+            "desc": "是否为逆时针方向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否为逆时针方向。\r\n\r\n\r\n",
+        "name": "progress_circle_set_counter_clock_wise",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 值(缺省为0)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": " 最大值(缺省为100)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "start_angle",
+        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "line_width",
+        "desc": " 环线的厚度(缺省为8)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "unit",
+        "desc": " 单元(缺省无)。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "counter_clock_wise",
+        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "progress_circle/progress_circle.h",
+    "desc": " 进度圆环控件。\r\n\r\n progress\\_circle\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_circle\\_t控件。\r\n\r\n 在xml中使用\"progress\\_circle\"标签创建进度圆环控件。如：\r\n\r\n ```xml\r\n  <progress_circle max=\"360\" show_text=\"true\" start_angle=\"90\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/progress_circle.xml)\r\n\r\n 在c代码中使用函数progress\\_circle\\_create创建进度圆环控件。如：\r\n\r\n ```c\r\n  progress_circle = progress_circle_create(win, 10, 10, 200, 200);\r\n  progress_circle_set_max(progress_circle, 360);\r\n  widget_set_value(progress_circle, 128);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_circle\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"green\" fg_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)\r\n\r\n",
+    "name": "progress_circle_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 创建rich_text对象\n\n\n",
         "name": "rich_text_create",
         "return": {
@@ -26110,79 +26536,6 @@
     "header": "rich_text/rich_text.h",
     "desc": " 图文混排控件，实现简单的图文混排。\n\n rich\\_text\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于rich\\_text\\_t控件。\n\n 在xml中使用\"rich\\_text\"标签创建图文混排控件。如：\n\n ```xml\n <rich_text x=\"0\" y=\"0\" w=\"100%\" h=\"60\"\n text=\"<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font>\" />\n ```\n >\n\n > 更多用法请参考：\n [rich_text.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/rich_text.xml)\n\n 在c代码中使用函数rich\\_text\\_create创建图文混排控件。如：\n\n ```c\n  widget_t* rich_text = rich_text_create(win, 0, 0, 0, 0);\n  widget_set_text_utf8(rich_text,\n                    \"<image name=\\\"bricks\\\"/><font color=\\\"gold\\\" align_v=\\\"bottom\\\" \"\n                    \"size=\\\"24\\\">hello awtk!</font><font color=\\\"green\\\" size=\\\"20\\\">ProTip! The \"\n                    \"feed shows you events from people you follow and repositories you watch. \"\n                    \"nhello world. </font><font color=\\\"red\\\" \"\n                    \"size=\\\"20\\\">确定取消中文字符测试。确定。取消。中文字符测试。</font>\");\n\n widget_set_self_layout_params(rich_text, \"center\", \"middle\", \"100%\", \"100%\");\n ```\n\n > 完整示例请参考：\n [rich_text demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/rich_text.c)\n\n 可用通过style来设置控件的显示风格，如背景颜色等等。而字体的大小和颜色则由文本内部的属性决定。\n\n 目前支持image和font两个tag：\n\n * image 支持的属性有：\n   * name 图片的名称。\n   * w 图片的宽度。\n   * h 图片的高度。\n\n * font 支持的属性有：\n   * color 颜色。\n   * size 大小。\n   * align_v 垂直方向对齐的方式(top|middle|bottom)。\n   * bold 粗体(暂不支持)\n   * italic 斜体(暂不支持)\n   * underline 下划线(暂不支持)\n\n\n",
     "name": "rich_text_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建list_item对象\r\n\r\n",
-        "name": "list_item_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_item对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为list_item对象(供脚本语言使用)。\r\n\r\n",
-        "name": "list_item_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_item对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "scroll_view/list_item.h",
-    "desc": " 列表项控件。\r\n\r\n 列表项控件是一个简单的容器控件，一般作为列表视图中滚动视图的子控件。\r\n\r\n list\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于list\\_item\\_t控件。\r\n\r\n 在xml中使用\"list\\_item\"标签创建列表项控件。如：\r\n\r\n ```xml\r\n <list_view x=\"0\"  y=\"30\" w=\"100%\" h=\"-80\" item_height=\"60\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\">\r\n     <list_item style=\"odd\" children_layout=\"default(rows=1,cols=0)\">\r\n       <image draw_type=\"icon\" w=\"30\" image=\"earth\"/>\r\n       <label w=\"-30\" text=\"1.Hello AWTK !\">\r\n         <switch x=\"r:10\" y=\"m\" w=\"60\" h=\"20\"/>\r\n       </label>\r\n     </list_item>\r\n     ...\r\n   </scroll_view>\r\n  </list_view>\r\n ```\r\n\r\n > 更多用法请参考：[list\\_view\\_m.xml](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)\r\n\r\n 在c代码中使用函数list\\_item\\_create创建列表项控件。如：\r\n\r\n ```c\r\n  widget_t* list_item = list_item_create(scroll_view, 0, 0, 0, 0);\r\n ```\r\n\r\n > 列表项控件大小一般由列表控制，不需指定xywh参数。\r\n\r\n 可以用style来实现可点击或不可点击的效果。如：\r\n\r\n ```xml\r\n <style name=\"odd_clickable\" border_color=\"#a0a0a0\"  border=\"bottom\" text_color=\"black\">\r\n   <normal     bg_color=\"#f5f5f5\" />\r\n   <pressed    bg_color=\"#c0c0c0\" />\r\n   <over       bg_color=\"#f5f5f5\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L372)\r\n\r\n",
-    "name": "list_item_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true
@@ -29503,343 +29856,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建progress_circle对象\r\n\r\n\r\n",
-        "name": "progress_circle_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "progress_circle对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n\r\n",
-        "name": "progress_circle_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "progress_circle对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "value",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置值。\r\n\r\n\r\n",
-        "name": "progress_circle_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max",
-            "desc": "最大值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置最大值。\r\n\r\n\r\n",
-        "name": "progress_circle_set_max",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "line_width",
-            "desc": "环线的厚度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置环线的厚度。\r\n\r\n\r\n",
-        "name": "progress_circle_set_line_width",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "start_angle",
-            "desc": "起始角度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置起始角度。\r\n\r\n\r\n",
-        "name": "progress_circle_set_start_angle",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "unit",
-            "desc": "单位。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置单位。\r\n\r\n\r\n",
-        "name": "progress_circle_set_unit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_text",
-            "desc": "是否显示文本。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否显示文本。\r\n\r\n\r\n",
-        "name": "progress_circle_set_show_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "counter_clock_wise",
-            "desc": "是否为逆时针方向。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否为逆时针方向。\r\n\r\n\r\n",
-        "name": "progress_circle_set_counter_clock_wise",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": " 值(缺省为0)。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "max",
-        "desc": " 最大值(缺省为100)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "start_angle",
-        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "line_width",
-        "desc": " 环线的厚度(缺省为8)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "unit",
-        "desc": " 单元(缺省无)。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "counter_clock_wise",
-        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "show_text",
-        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "progress_circle/progress_circle.h",
-    "desc": " 进度圆环控件。\r\n\r\n progress\\_circle\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_circle\\_t控件。\r\n\r\n 在xml中使用\"progress\\_circle\"标签创建进度圆环控件。如：\r\n\r\n ```xml\r\n  <progress_circle max=\"360\" show_text=\"true\" start_angle=\"90\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/progress_circle.xml)\r\n\r\n 在c代码中使用函数progress\\_circle\\_create创建进度圆环控件。如：\r\n\r\n ```c\r\n  progress_circle = progress_circle_create(win, 10, 10, 200, 200);\r\n  progress_circle_set_max(progress_circle, 360);\r\n  widget_set_value(progress_circle, 128);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_circle\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"green\" fg_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)\r\n\r\n",
-    "name": "progress_circle_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": " 创建image对象\r\n\r\n",
         "name": "image_create",
         "return": {
@@ -30468,6 +30484,136 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建mutable_image对象\r\n\r\n",
+        "name": "mutable_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "mutable_image_prepare_image_t",
+            "name": "prepare_image",
+            "desc": "准备图片的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "prepare_image_ctx",
+            "desc": "prepare_image回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 设置prepare_image回调函数。\r\n\r\n prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\r\n\r\n\r\n",
+        "name": "mutable_image_set_prepare_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "framebuffer宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "framebuffer高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "framebuffer的格式。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "framebuffer内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 设置framebuffer。\r\n\r\n 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\r\n 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\r\n\r\n\r\n",
+        "name": "mutable_image_set_framebuffer",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": " 转换为mutable_image对象(供脚本语言使用)。\r\n\r\n",
+        "name": "mutable_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "mutable_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mutable_image/mutable_image.h",
+    "desc": "\r\n mutable图片控件。\r\n\r\n 像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\r\n\r\n 本控件辅助实现摄像头和视频的显示功能。\r\n\r\n mutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\r\n\r\n 在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\r\n\r\n ```xml\r\n <mutable_image w=\"100%\" h=\"100%\"/>\r\n ```\r\n\r\n >更多用法请参考：\r\n [mutable\r\n image](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mutable_image.xml)\r\n\r\n 在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = mutable_image_create(win, 10, 10, 200, 200);\r\n  mutable_image_set_prepare_image(image, get_camera_image, camera);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\r\n\r\n > 完整示例请参考：[mutable image demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\r\n\r\n 一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。\r\n\r\n",
+    "name": "mutable_image_t",
+    "parent": "image_base_t",
     "level": 3
   }
 ]

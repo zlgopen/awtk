@@ -47,6 +47,7 @@
 #include "color_picker/color_component.h"
 #include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
+#include "mutable_image/mutable_image.h"
 
 #include "ext_widgets/ext_widgets.h"
 

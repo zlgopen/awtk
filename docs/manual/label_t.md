@@ -51,6 +51,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#label_t_label_cast">label\_cast</a> | 转换为label对象(供脚本语言使用)。 |
 | <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
 | <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。。 |
 ### 属性
@@ -59,6 +60,27 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小余0时全部显示)。 |
+#### label\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_cast"> 转换为label对象(供脚本语言使用)。
+
+
+
+* 函数原型：
+
+```
+widget_t* label_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | label对象。 |
+| widget | widget\_t* | label对象。 |
 #### label\_create 函数
 -----------------------
 

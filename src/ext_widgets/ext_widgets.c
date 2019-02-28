@@ -45,6 +45,7 @@
 #include "color_picker/color_component.h"
 #include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
+#include "mutable_image/mutable_image.h"
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_RICH_TEXT, rich_text_create);
@@ -75,6 +76,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANVAS_WIDGET, canvas_widget_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_VALUE, image_value_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_MENU, slide_menu_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create);
 
   return RET_OK;
 }

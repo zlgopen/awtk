@@ -10,7 +10,29 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#candidates_t_candidates_cast">candidates\_cast</a> | 转换为candidates对象(供脚本语言使用)。 |
 | <a href="#candidates_t_candidates_create">candidates\_create</a> | 创建candidates对象 |
+#### candidates\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="candidates_t_candidates_cast"> 转换为candidates对象(供脚本语言使用)。
+
+
+
+* 函数原型：
+
+```
+widget_t* candidates_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | candidates对象。 |
+| widget | widget\_t* | candidates对象。 |
 #### candidates\_create 函数
 -----------------------
 

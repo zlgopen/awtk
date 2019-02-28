@@ -13,6 +13,12 @@
 
 
 ----------------------------------
+### 函数
+<p id="window_base_t_methods">
+
+| 函数名称 | 说明 | 
+| -------- | ------------ | 
+| <a href="#window_base_t_window_base_cast">window\_base\_cast</a> | 转换为window_base对象(供脚本语言使用)。 |
 ### 属性
 <p id="window_base_t_properties">
 
@@ -27,6 +33,27 @@
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
 | <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量主题数据。 |
+#### window\_base\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_cast"> 转换为window_base对象(供脚本语言使用)。
+
+
+
+* 函数原型：
+
+```
+widget_t* window_base_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | window\_base对象。 |
+| widget | widget\_t* | window\_base对象。 |
 #### assets\_manager 属性
 -----------------------
 > <p id="window_base_t_assets_manager"> 获取资源管理器对象。

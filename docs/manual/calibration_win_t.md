@@ -32,9 +32,31 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#calibration_win_t_calibration_win_cast">calibration\_win\_cast</a> | 转换为calibration_win对象(供脚本语言使用)。 |
 | <a href="#calibration_win_t_calibration_win_create">calibration\_win\_create</a> | 创建calibration_win对象 |
 | <a href="#calibration_win_t_calibration_win_set_on_click">calibration\_win\_set\_on\_click</a> | 设置校准点击事件的处理函数。 |
 | <a href="#calibration_win_t_calibration_win_set_on_done">calibration\_win\_set\_on\_done</a> | 设置校准完成的处理函数。 |
+#### calibration\_win\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="calibration_win_t_calibration_win_cast"> 转换为calibration_win对象(供脚本语言使用)。
+
+
+
+* 函数原型：
+
+```
+widget_t* calibration_win_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | calibration\_win对象。 |
+| widget | widget\_t* | calibration\_win对象。 |
 #### calibration\_win\_create 函数
 -----------------------
 

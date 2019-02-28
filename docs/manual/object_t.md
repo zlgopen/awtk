@@ -108,7 +108,7 @@ int object_compare (object_t* obj, object_t* other);
 * 函数原型：
 
 ```
-ret_t object_copy_prop (object_t* obj, object_t* src);
+ret_t object_copy_prop (object_t* obj, object_t* src, const char* name);
 ```
 
 * 参数说明：
@@ -118,6 +118,7 @@ ret_t object_copy_prop (object_t* obj, object_t* src);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | 目标对象。 |
 | src | object\_t* | 源对象。 |
+| name | const char* | 属性的名称。 |
 #### object\_create 函数
 -----------------------
 

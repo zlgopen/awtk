@@ -19,6 +19,7 @@
 | <a href="#lcd_t_lcd_end_frame">lcd\_end\_frame</a> | 完成绘制，同步到显示设备。 |
 | <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> | 绘制实心矩形。 |
 | <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
+| <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
 | <a href="#lcd_t_lcd_get_point_color_t">lcd\_get\_point\_color\_t</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
 | <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
@@ -308,6 +309,27 @@ ret_t lcd_get_clip_rect (lcd_t* lcd, rect_t* rect);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | rect | rect\_t* | 裁剪区域。 |
+#### lcd\_get\_desired\_bitmap\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_desired_bitmap_format"> 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。
+
+
+
+* 函数原型：
+
+```
+bitmap_format_t lcd_get_desired_bitmap_format (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_format\_t | 返回期望的位图格式。 |
+| lcd | lcd\_t* | lcd对象。 |
 #### lcd\_get\_point\_color\_t 函数
 -----------------------
 
