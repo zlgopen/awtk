@@ -78,7 +78,6 @@ typedef struct _mutable_image_t {
   bitmap_t* fb;
   bitmap_t* image;
   canvas_t* canvas;
-
 } mutable_image_t;
 
 /**
@@ -97,10 +96,12 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 /**
  * @method mutable_image_set_prepare_image
- *
  * 设置prepare_image回调函数。
  *
  * prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。
+ * 比如获取摄像头的预览图片，将其设置到image参数中。
+ *
+ * 注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。
  *
  * @param {widget_t*} widget mutable_image对象。
  * @param {mutable_image_prepare_image_t} prepare_image 准备图片的回调函数。
@@ -113,8 +114,7 @@ ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_im
 
 /**
  * @method mutable_image_set_framebuffer
- *
- * 设置framebuffer。
+ * 设置framebuffer(当硬件支持多层合成时才用)。
  *
  * 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。
  * 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。
@@ -133,6 +133,7 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
 /**
  * @method mutable_image_cast
  * 转换为mutable_image对象(供脚本语言使用)。
+ *
  * @annotation ["cast"]
  * @param {widget_t*} widget mutable_image对象。
  *
