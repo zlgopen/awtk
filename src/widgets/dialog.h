@@ -242,6 +242,18 @@ uint32_t dialog_modal(widget_t* widget);
  */
 ret_t dialog_quit(widget_t* widget, uint32_t code);
 
+/**
+ * @method dialog_toast
+ * 创建taost的dialog。
+ *
+ * @annotation ["static", "scriptable"]
+ * @param {const char*} text 文本内容。
+ * @param {uint32_t} duration 显示时间(单位为毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_toast(const char* text, uint32_t duration);
+
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

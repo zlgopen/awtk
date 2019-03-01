@@ -28235,6 +28235,30 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本内容。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "duration",
+            "desc": "显示时间(单位为毫秒)。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 创建taost的dialog。\r\n\r\n\r\n",
+        "name": "dialog_toast",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -29288,6 +29312,44 @@
         },
         "desc": " 设置显示字符的个数(小余0时全部显示)。。\r\n\r\n",
         "name": "label_set_length",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "min_w",
+            "desc": "最小宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_w",
+            "desc": "最大宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "min_h",
+            "desc": "最小高度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_h",
+            "desc": "最大高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 根据文本内容调节控件大小。\r\n\r\n\r\n",
+        "name": "label_resize_to_content",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -30546,7 +30608,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\r\n 设置prepare_image回调函数。\r\n\r\n prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\r\n\r\n\r\n",
+        "desc": " 设置prepare_image回调函数。\r\n\r\n prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\r\n 比如获取摄像头的预览图片，将其设置到image参数中。\r\n\r\n 注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。\r\n\r\n\r\n",
         "name": "mutable_image_set_prepare_image",
         "return": {
           "type": "ret_t",
@@ -30582,7 +30644,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\r\n 设置framebuffer。\r\n\r\n 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\r\n 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\r\n\r\n\r\n",
+        "desc": " 设置framebuffer(当硬件支持多层合成时才用)。\r\n\r\n 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\r\n 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\r\n\r\n\r\n",
         "name": "mutable_image_set_framebuffer",
         "return": {
           "type": "ret_t",
@@ -30600,7 +30662,7 @@
         "annotation": {
           "cast": true
         },
-        "desc": " 转换为mutable_image对象(供脚本语言使用)。\r\n\r\n",
+        "desc": " 转换为mutable_image对象(供脚本语言使用)。\r\n\r\n\r\n",
         "name": "mutable_image_cast",
         "return": {
           "type": "widget_t*",

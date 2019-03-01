@@ -46,14 +46,15 @@
 | -------- | ------------ | 
 | <a href="#mutable_image_t_mutable_image_cast">mutable\_image\_cast</a> | 转换为mutable_image对象(供脚本语言使用)。 |
 | <a href="#mutable_image_t_mutable_image_create">mutable\_image\_create</a> | 创建mutable_image对象 |
-| <a href="#mutable_image_t_mutable_image_set_framebuffer">mutable\_image\_set\_framebuffer</a> |  |
-| <a href="#mutable_image_t_mutable_image_set_prepare_image">mutable\_image\_set\_prepare\_image</a> |  |
+| <a href="#mutable_image_t_mutable_image_set_framebuffer">mutable\_image\_set\_framebuffer</a> | 设置framebuffer(当硬件支持多层合成时才用)。 |
+| <a href="#mutable_image_t_mutable_image_set_prepare_image">mutable\_image\_set\_prepare\_image</a> | 设置prepare_image回调函数。 |
 #### mutable\_image\_cast 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="mutable_image_t_mutable_image_cast"> 转换为mutable_image对象(供脚本语言使用)。
+
 
 
 
@@ -99,8 +100,7 @@ widget_t* mutable_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 * 函数功能：
 
-> <p id="mutable_image_t_mutable_image_set_framebuffer">
- 设置framebuffer。
+> <p id="mutable_image_t_mutable_image_set_framebuffer"> 设置framebuffer(当硬件支持多层合成时才用)。
 
  有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。
  此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。
@@ -129,10 +129,12 @@ ret_t mutable_image_set_framebuffer (widget_t* widget, uint32_t w, uint32_t h, b
 
 * 函数功能：
 
-> <p id="mutable_image_t_mutable_image_set_prepare_image">
- 设置prepare_image回调函数。
+> <p id="mutable_image_t_mutable_image_set_prepare_image"> 设置prepare_image回调函数。
 
  prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。
+ 比如获取摄像头的预览图片，将其设置到image参数中。
+
+ 注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。
 
 
 

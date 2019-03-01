@@ -70,6 +70,7 @@
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
 #include "assets/inc/ui/slide_view_h.data"
+#include "assets/inc/ui/dialogs.data"
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/stroke_gradient.data"
@@ -422,6 +423,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
   assets_manager_add(rm, ui_slide_view_h);
+  assets_manager_add(rm, ui_dialogs);
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_stroke_gradient);

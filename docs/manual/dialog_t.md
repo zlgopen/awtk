@@ -108,6 +108,7 @@
 | <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。 |
 | <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示，关闭对话框。 |
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
+| <a href="#dialog_t_dialog_toast">dialog\_toast</a> | 创建taost的dialog。 |
 #### dialog\_cast 函数
 -----------------------
 
@@ -314,3 +315,26 @@ ret_t dialog_set_title (widget_t* widget, char* title);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
 | title | char* | 标题。 |
+#### dialog\_toast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_toast"> 创建taost的dialog。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_toast (const char* text, uint32_t duration);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text | const char* | 文本内容。 |
+| duration | uint32\_t | 显示时间(单位为毫秒)。 |

@@ -1,0 +1,4 @@
+<window text="DialogEx" anim_hint="htranslate" children_layout="default(c=2,r=8,m=5,s=5)">>
+  <button name="open:toast" text="Toast"/>
+  <button name="open:button" text="Buttons"/>
+</window>

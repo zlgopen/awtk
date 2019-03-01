@@ -246,7 +246,13 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
 }
 
 static ret_t on_open_window(void* ctx, event_t* e) {
-  open_window((const char*)ctx, NULL);
+  const char* name = ctx;
+
+  if (tk_str_eq(name, "toast")) {
+    dialog_toast("This is a toast!", 3000);
+  } else {
+    open_window(name, NULL);
+  }
 
   (void)e;
 

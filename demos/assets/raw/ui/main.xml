@@ -32,6 +32,7 @@
 
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button name="open:label" text="Label"/>
+      <button name="open:dialogs" text="Dialogs"/>
       <button name="open:slide_menu" text="Slide Menu"/>
       <button name="open:vgcanvas" text="VG Canvas"/>
       <button name="open:linear_gradient" text="Linear Gradient"/>

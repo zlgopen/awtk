@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2019/03/01
+  * 完善label。
+  * 更新文档。
+  * 增加dialog\_toast
+
 * 2019/02/28
   * 增加mutable image，用于camem和video显示图像。
 

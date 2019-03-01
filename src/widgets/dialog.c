@@ -148,3 +148,67 @@ widget_t* dialog_get_client(widget_t* widget) {
 
   return dialog->client;
 }
+
+#include "base/window_manager.h"
+
+#define TOAST_STYLE_NAME "default"
+
+static ret_t on_event_to_quit(void* ctx, event_t* e) {
+  widget_t* dlg = WIDGET(ctx);
+  dialog_quit(dlg, 0);
+
+  return RET_REMOVE;
+}
+
+static ret_t on_timer_to_quit(const timer_info_t* info) {
+  widget_t* dlg = WIDGET(info->ctx);
+
+  dialog_quit(dlg, 0);
+
+  return RET_REMOVE;
+}
+
+/*simple dialogs*/
+
+ret_t dialog_toast(const char* text, uint32_t duration) {
+  xy_t x = 0;
+  xy_t y = 0;
+  uint32_t min_w = 128;
+  uint32_t max_w = 0;
+  uint32_t min_h = 30;
+  uint32_t max_h = 0;
+  widget_t* wm = NULL;
+  widget_t* label = NULL;
+  widget_t* dialog = NULL;
+  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
+
+  dialog = dialog_create(NULL, 0, 0, 200, 30);
+  return_value_if_fail(dialog != NULL, RET_OOM);
+  label = label_create(dialog, 0, 0, dialog->w, dialog->h);
+  goto_error_if_fail(label != NULL);
+
+  wm = dialog->parent;
+
+  max_w = wm->w * 0.8;
+  max_h = wm->h * 0.8;
+  widget_set_text_utf8(label, text);
+  widget_use_style(label, TOAST_STYLE_NAME);
+  widget_use_style(dialog, TOAST_STYLE_NAME);
+  label_resize_to_content(label, min_w, max_w, min_h, max_h);
+
+  x = (wm->w - label->w) >> 1;
+  y = (wm->h - label->h) >> 1;
+  widget_resize(dialog, label->w, label->h);
+  widget_move(dialog, x, y);
+
+  widget_on(dialog, EVT_POINTER_UP, on_event_to_quit, dialog);
+  widget_add_timer(dialog, on_timer_to_quit, duration);
+
+  dialog_modal(dialog);
+
+  return RET_OK;
+error:
+  widget_destroy(dialog);
+
+  return RET_FAIL;
+}
