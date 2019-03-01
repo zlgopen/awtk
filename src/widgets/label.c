@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "widgets/label.h"
 #include "base/widget_vtable.h"
+#include "base/window_manager.h"
 
 uint32_t line_breaker_count(const wchar_t* str) {
   uint32_t lines = 1;
@@ -159,6 +160,57 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   if (widget->text.size > 0 && style_is_valid(widget->astyle)) {
     label_paint_text(widget, c, widget->text.str, widget->text.size);
   }
+
+  return RET_OK;
+}
+
+static ret_t label_on_line_measure(void* ctx, uint32_t index, const wchar_t* str, uint32_t size) {
+  ctx_info_t* info = (ctx_info_t*)ctx;
+  float_t text_w = canvas_measure_text(info->c, str, size);
+
+  info->w = tk_max(info->w, text_w);
+  info->y += info->line_height;
+
+  return RET_OK;
+}
+
+ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, uint32_t min_h,
+                              uint32_t max_h) {
+  wh_t w = 0;
+  wh_t h = 0;
+  ctx_info_t ctx;
+  canvas_t* c = NULL;
+  int32_t margin = 0;
+  style_t* style = NULL;
+  uint32_t font_size = 20;
+  label_t* label = LABEL(widget);
+
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  c = WINDOW_MANAGER(window_manager())->canvas;
+  margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+  font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+
+  ctx.c = c;
+  ctx.w = 0;
+  ctx.y = margin;
+  ctx.x = margin;
+  ctx.widget = widget;
+  ctx.line_height = font_size;
+
+  widget_prepare_text_style(widget, c);
+  line_breaker_break(widget->text.str, label_on_line_measure, &ctx);
+
+  w = ctx.w;
+  w = tk_min(w, max_w);
+  w = tk_max(w, min_w);
+
+  h = ctx.y + margin;
+  h = tk_min(h, max_h);
+  h = tk_max(h, min_h);
+
+  widget_resize(widget, w, h);
 
   return RET_OK;
 }

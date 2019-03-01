@@ -111,6 +111,22 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t label_set_length(widget_t* widget, int32_t length);
 
 /**
+ * @method label_resize_to_content
+ * 根据文本内容调节控件大小。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t}  min_w 最小宽度。
+ * @param {uint32_t}  max_w 最大宽度。
+ * @param {uint32_t}  min_h 最小高度。
+ * @param {uint32_t}  max_h 最大高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, uint32_t min_h,
+                              uint32_t max_h);
+
+/**
  * @method label_cast
  * 转换为label对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
