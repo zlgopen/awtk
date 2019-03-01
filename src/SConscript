@@ -39,7 +39,7 @@ sources += [
   ] + Glob('lcd/lcd_mem_*.c') ;
 
 if NANOVG_BACKEND == 'BGFX':
-  sources +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
+  sources +=['vgcanvas/vgcanvas_nanovg_bgfx.cpp'];
 elif NANOVG_BACKEND == 'AGG':
   sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
 elif NANOVG_BACKEND == 'AGGE':
