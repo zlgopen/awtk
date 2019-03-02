@@ -28252,7 +28252,7 @@
           "static": true,
           "scriptable": true
         },
-        "desc": " 显示『短暂提示信息』对话框。\r\n\r\n> 显示主题由dialog_toast.xml文件决定。\r\n\r\n\r\n",
+        "desc": " 显示『短暂提示信息』对话框。\r\n\r\n 主题由dialog_toast.xml文件决定。\r\n\r\n\r\n",
         "name": "dialog_toast",
         "return": {
           "type": "ret_t",
@@ -28271,7 +28271,7 @@
           "static": true,
           "scriptable": true
         },
-        "desc": " 显示『提示信息』对话框。\r\n\r\n> 显示主题由dialog_info.xml文件决定。\r\n\r\n\r\n",
+        "desc": " 显示『提示信息』对话框。\r\n\r\n 主题由dialog_info.xml文件决定。\r\n\r\n\r\n",
         "name": "dialog_info",
         "return": {
           "type": "ret_t",
@@ -28290,7 +28290,7 @@
           "static": true,
           "scriptable": true
         },
-        "desc": " 显示『警告』对话框。\r\n\r\n> 显示主题由dialog_warn.xml文件决定。\r\n\r\n\r\n",
+        "desc": " 显示『警告』对话框。\r\n\r\n 主题由dialog_warn.xml文件决定。\r\n\r\n\r\n",
         "name": "dialog_warn",
         "return": {
           "type": "ret_t",
@@ -28309,7 +28309,7 @@
           "static": true,
           "scriptable": true
         },
-        "desc": " 显示『确认』对话框。\r\n\r\n> 显示主题由dialog_confirm.xml文件决定。\r\n\r\n\r\n",
+        "desc": " 显示『确认』对话框。\r\n\r\n 主题由dialog_confirm.xml文件决定。\r\n\r\n\r\n",
         "name": "dialog_confirm",
         "return": {
           "type": "ret_t",
