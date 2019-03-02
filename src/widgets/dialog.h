@@ -244,7 +244,9 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
 
 /**
  * @method dialog_toast
- * 创建taost的dialog。
+ * 显示『短暂提示信息』对话框。
+ *
+ *> 显示主题由dialog_toast.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
  * @param {const char*} text 文本内容。
@@ -253,6 +255,45 @@ ret_t dialog_quit(widget_t* widget, uint32_t code);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_toast(const char* text, uint32_t duration);
+
+/**
+ * @method dialog_info
+ * 显示『提示信息』对话框。
+ *
+ *> 显示主题由dialog_info.xml文件决定。
+ *
+ * @annotation ["static", "scriptable"]
+ * @param {const char*} text 文本内容。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_info(const char* text);
+
+/**
+ * @method dialog_warn
+ * 显示『警告』对话框。
+ *
+ *> 显示主题由dialog_warn.xml文件决定。
+ *
+ * @annotation ["static", "scriptable"]
+ * @param {const char*} text 文本内容。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_warn(const char* text);
+
+/**
+ * @method dialog_confirm
+ * 显示『确认』对话框。
+ *
+ *> 显示主题由dialog_confirm.xml文件决定。
+ *
+ * @annotation ["static", "scriptable"]
+ * @param {const char*} text 文本内容。
+ *
+ * @return {ret_t} 返回RET_OK表示确认，否则表示取消。
+ */
+ret_t dialog_confirm(const char* text);
 
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 

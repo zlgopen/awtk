@@ -1,4 +1,6 @@
 # 最新动态
+* 2019/03/02
+  * 增加dialog\_warn/dialog\_info/dialog\_warn。
 
 * 2019/03/01
   * 完善label。

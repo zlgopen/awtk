@@ -1,0 +1,12 @@
+<label>
+  <style name="default">
+    <normal text_color="black" text_align_h="left" />
+  </style>
+</label>
+
+<dialog_title icon="warn" text_color="black">
+  <style name="default">
+    <normal bg_color="#a9a9a0" />
+  </style>
+</dialog_title>
+
