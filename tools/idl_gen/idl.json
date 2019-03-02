@@ -17873,8 +17873,7 @@
           }
         ],
         "annotation": {
-          "scriptable": true,
-          "constructor": true
+          "scriptable": true
         },
         "desc": " 转换为object的值。\n\n\n",
         "name": "value_object",
@@ -28253,11 +28252,68 @@
           "static": true,
           "scriptable": true
         },
-        "desc": " 创建taost的dialog。\r\n\r\n\r\n",
+        "desc": " 显示『短暂提示信息』对话框。\r\n\r\n> 显示主题由dialog_toast.xml文件决定。\r\n\r\n\r\n",
         "name": "dialog_toast",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本内容。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 显示『提示信息』对话框。\r\n\r\n> 显示主题由dialog_info.xml文件决定。\r\n\r\n\r\n",
+        "name": "dialog_info",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本内容。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 显示『警告』对话框。\r\n\r\n> 显示主题由dialog_warn.xml文件决定。\r\n\r\n\r\n",
+        "name": "dialog_warn",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本内容。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 显示『确认』对话框。\r\n\r\n> 显示主题由dialog_confirm.xml文件决定。\r\n\r\n\r\n",
+        "name": "dialog_confirm",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示确认，否则表示取消。"
         }
       }
     ],

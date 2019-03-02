@@ -537,7 +537,7 @@ value_t* value_set_object(value_t* v, object_t* value);
 /**
  * @method value_object
  * 转换为object的值。
- * @annotation ["scriptable", "constructor"]
+ * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {object_t*} 值。
