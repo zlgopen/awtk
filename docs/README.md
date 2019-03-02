@@ -29,6 +29,7 @@
 * [如何在Visual Studio中调试AWTK](vs_debug.md)
 * [如何在非GUI线程操作GUI控件](how_to_non_gui_thread_operate_widget.md)
 * [如何启用鼠标指针](how_to_enable_mouse_cursor.md)
+* [如何启用屏保](screen_saver.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)

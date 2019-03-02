@@ -231,7 +231,7 @@ TEST(ObejectDefault, random) {
   string log;
   char name[32];
   int32_t i = 0;
-  int32_t n = 10000;
+  int32_t n = 1000;
 
   object_t* obj = object_default_create();
 
@@ -256,6 +256,94 @@ TEST(ObejectDefault, set_name) {
 
   object_set_name(obj, "abc123");
   ASSERT_EQ(obj->name, string("abc123"));
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, set_prop_int) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_int(obj, "int", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "int", 0), 123);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, set_prop_float) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "float", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_float(obj, "float", 0), 123);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, copy_prop) {
+  object_t* src = object_default_create();
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(src, "float", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_float(src, "float", 0), 123);
+
+  ASSERT_EQ(object_copy_prop(obj, src, "float"), RET_OK);
+  ASSERT_EQ(object_get_prop_float(obj, "float", 0), 123);
+
+  ASSERT_NE(object_copy_prop(obj, src, "not exist"), RET_OK);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, set_prop_str) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_str(obj, "str", "123"), RET_OK);
+  ASSERT_EQ(string(object_get_prop_str(obj, "str")), string("123"));
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, exec) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_can_exec(obj, "test", "123"), FALSE);
+  ASSERT_EQ(object_exec(obj, "test", "123"), RET_NOT_IMPL);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, has_prop) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
+  ASSERT_EQ(object_has_prop(obj, "a"), TRUE);
+  ASSERT_EQ(object_has_prop(obj, "A"), FALSE);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, expr_number) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
+  ASSERT_EQ(object_set_prop_float(obj, "b", 456), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123 + 456);
+
+  ASSERT_EQ(object_eval(obj, "($a+$b)*2", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), (123 + 456) * 2);
+
+  object_unref(obj);
+}
+
+TEST(ObejectDefault, expr_str) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(string(value_str(&v)), string("123abc"));
 
   object_unref(obj);
 }

@@ -52,7 +52,7 @@ typedef struct _named_value_t {
  * @method named_value_create
  *
  * 创建named_value对象。
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  *
  * @return {named_value_t*} 返回named_value对象。
  */
@@ -139,7 +139,7 @@ ret_t named_value_deinit(named_value_t* nv);
  * @method named_value_destroy
  *
  * 销毁named_value对象。
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  *
  * @param {named_value_t*} nv named_value对象。
  *

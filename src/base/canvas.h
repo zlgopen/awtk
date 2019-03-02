@@ -359,7 +359,7 @@ ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v);
  * @param {const wchar_t*} str 字符串。
  * @param {uint32_t} nr 字符数。
  *
- * @return {ret_t} 返回文本所占的宽度。
+ * @return {float_t} 返回文本所占的宽度。
  */
 float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr);
 
@@ -374,7 +374,7 @@ float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr);
  * @param {canvas_t*} c canvas对象。
  * @param {const char*} str 字符串。
  *
- * @return {ret_t} 返回文本所占的宽度。
+ * @return {float_t} 返回文本所占的宽度。
  */
 float_t canvas_measure_utf8(canvas_t* c, const char* str);
 

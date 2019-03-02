@@ -72,7 +72,7 @@ BEGIN_C_DECLS
  * ```c
  * widget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);
  * ```
- 
+ *
  * 可按下面的方法关注当前按钮被点击的事件：
  *
  * ```c
@@ -196,7 +196,10 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale);
 #define SLIDE_MENU_PROP_MIN_SCALE "min_scale"
 
 #define WIDGET_TYPE_SLIDE_MENU "slide_menu"
-#define SLIDE_MENU(widget) ((slide_menu_t*)(widget))
+#define SLIDE_MENU(widget) ((slide_menu_t*)(slide_menu_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(slide_menu);
 
 /*public for test*/
 int32_t slide_menu_fix_index(widget_t* widget, int32_t index);

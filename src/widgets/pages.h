@@ -121,7 +121,10 @@ ret_t pages_set_active(widget_t* widget, uint32_t index);
  */
 ret_t pages_set_active_by_name(widget_t* widget, const char* name);
 
-#define PAGES(widget) ((pages_t*)(widget))
+#define PAGES(widget) ((pages_t*)(pages_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(pages);
 
 END_C_DECLS
 

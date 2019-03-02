@@ -4,6 +4,7 @@
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
 #include "assets/inc/styles/slide_menu.data"
+#include "assets/inc/styles/dialog_toast.data"
 #include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
 #include "assets/inc/styles/color.data"
@@ -13,12 +14,15 @@
 #include "assets/inc/styles/default.data"
 #include "assets/inc/styles/big_font.data"
 #include "assets/inc/styles/tab_top_compact.data"
+#include "assets/inc/styles/dialog_info.data"
 #include "assets/inc/styles/guage.data"
+#include "assets/inc/styles/dialog_confirm.data"
 #include "assets/inc/styles/dialog.data"
 #include "assets/inc/styles/tab_top.data"
 #include "assets/inc/styles/button.data"
 #include "assets/inc/styles/system_bar.data"
 #include "assets/inc/styles/tab_bottom_compact.data"
+#include "assets/inc/styles/dialog_warn.data"
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/vgcanvas.data"
 #include "assets/inc/ui/rich_text1.data"
@@ -70,6 +74,7 @@
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
 #include "assets/inc/ui/slide_view_h.data"
+#include "assets/inc/ui/dialogs.data"
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/stroke_gradient.data"
@@ -422,6 +427,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
   assets_manager_add(rm, ui_slide_view_h);
+  assets_manager_add(rm, ui_dialogs);
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_stroke_gradient);
@@ -577,6 +583,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
   assets_manager_add(rm, style_slide_menu);
+  assets_manager_add(rm, style_dialog_toast);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);
   assets_manager_add(rm, style_color);
@@ -586,12 +593,15 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_default);
   assets_manager_add(rm, style_big_font);
   assets_manager_add(rm, style_tab_top_compact);
+  assets_manager_add(rm, style_dialog_info);
   assets_manager_add(rm, style_guage);
+  assets_manager_add(rm, style_dialog_confirm);
   assets_manager_add(rm, style_dialog);
   assets_manager_add(rm, style_tab_top);
   assets_manager_add(rm, style_button);
   assets_manager_add(rm, style_system_bar);
   assets_manager_add(rm, style_tab_bottom_compact);
+  assets_manager_add(rm, style_dialog_warn);
   assets_manager_add(rm, font_default);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);

@@ -91,6 +91,11 @@ widget_t* app_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* app_bar_cast(widget_t* widget);
 
+#define APP_BAR(w) ((app_bar_t*)(app_bar_cast(w))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(app_bar);
+
 END_C_DECLS
 
 #endif /*TK_APP_BAR_H*/

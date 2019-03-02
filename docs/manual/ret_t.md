@@ -19,4 +19,5 @@
 | RET\_DONE | 操作完成。 |
 | RET\_STOP | 停止后续操作。 |
 | RET\_CONTINUE | 继续后续操作。 |
+| RET\_OBJECT\_CHANGED | 对象属性变化。 |
 | RET\_BAD\_PARAMS | 无效参数。 |

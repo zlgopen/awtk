@@ -86,6 +86,11 @@ widget_t* grid_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* grid_cast(widget_t* widget);
 
+#define GRID(widget) ((grid_t*)(grid_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(grid);
+
 END_C_DECLS
 
 #endif /*TK_GRID_H*/

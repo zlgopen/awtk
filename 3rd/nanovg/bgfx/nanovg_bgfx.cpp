@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2018 Branimir Karadzic. All rights reserved.
+ * Copyright 2011-2019 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
  */
 
@@ -26,22 +26,19 @@
 #include <math.h>
 #include "nanovg.h"
 
-//#include <bgfx/bgfx.h>
-#include "nanovg_bgfx.h"
-#include "nanovg_bgfxEx.h"
+#include <bgfx/bgfx.h>
 #include <bgfx/embedded_shader.h>
+
 #include <bx/bx.h>
 #include <bx/allocator.h>
 #include <bx/uint32_t.h>
-
-#include <bgfx/platform.h>
-
-#include "SDL_syswm.h"
 
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4244); // warning C4244: '=' : conversion from '' to '', possible loss of data
 
 #include "vs_nanovg_fill.bin.h"
 #include "fs_nanovg_fill.bin.h"
+
+#include "nanovg_bgfx.h"
 
 static const bgfx::EmbeddedShader s_embeddedShaders[] =
 {
@@ -276,7 +273,7 @@ namespace
 		gl->u_scissorExtScale = bgfx::createUniform("u_scissorExtScale", bgfx::UniformType::Vec4);
 		gl->u_extentRadius    = bgfx::createUniform("u_extentRadius",    bgfx::UniformType::Vec4);
 		gl->u_params          = bgfx::createUniform("u_params",          bgfx::UniformType::Vec4);
-		gl->s_tex             = bgfx::createUniform("s_tex",             bgfx::UniformType::Int1);
+		gl->s_tex             = bgfx::createUniform("s_tex",             bgfx::UniformType::Sampler);
 
 		if (bgfx::getRendererType() == bgfx::RendererType::Direct3D9)
 		{
@@ -562,8 +559,8 @@ namespace
 	static void nvgRenderViewport(void* _userPtr, float width, float height, float devicePixelRatio)
 	{
 		struct GLNVGcontext* gl = (struct GLNVGcontext*)_userPtr;
-		gl->view[0] = (float)width;
-		gl->view[1] = (float)height;
+		gl->view[0] = width;
+		gl->view[1] = height;
 		bgfx::setViewRect(gl->viewId, 0, 0, width * devicePixelRatio, height * devicePixelRatio);
 	}
 
@@ -1134,7 +1131,7 @@ NVGcontext* nvgCreate(int32_t _edgeaa, bgfx::ViewId _viewId, bx::AllocatorI* _al
 	if (ctx == NULL) goto error;
 
 	return ctx;
-   
+
 error:
 	// 'gl' is freed by nvgDeleteInternal.
 	if (ctx != NULL)
@@ -1145,90 +1142,11 @@ error:
 	return NULL;
 }
 
-bool sdlSetWindow(SDL_Window* _window)
-	{
-		SDL_SysWMinfo wmi;
-		SDL_VERSION(&wmi.version);
-		if (!SDL_GetWindowWMInfo(_window, &wmi) )
-		{
-			return false;
-		}
-
-		bgfx::PlatformData pd;
-#	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-		pd.ndt          = wmi.info.x11.display;
-		pd.nwh          = (void*)(uintptr_t)wmi.info.x11.window;
-#	elif BX_PLATFORM_OSX
-		pd.ndt          = NULL;
-		pd.nwh          = wmi.info.cocoa.window;
-#	elif BX_PLATFORM_WINDOWS
-		pd.ndt          = NULL;
-		pd.nwh          = wmi.info.win.window;
-#	elif BX_PLATFORM_STEAMLINK
-		pd.ndt          = wmi.info.vivante.display;
-		pd.nwh          = wmi.info.vivante.window;
-#	endif // BX_PLATFORM_
-		pd.context      = NULL;
-		pd.backBuffer   = NULL;
-		pd.backBufferDS = NULL;
-		bgfx::setPlatformData(pd);
-
-		return true;
-	}
-
-NVGcontext* nvgCreateBGFX(int32_t _edgeaa, uint16_t _viewId ,uint32_t _width, uint32_t _height, SDL_Window* _window) {
-
-		if (!sdlSetWindow(_window))
-		{
-			return NULL;
-		}
-		//bgfx::renderFrame();
-		bgfx::Init init;
-		init.type     = bgfx::RendererType::Count;
-		init.vendorId = BGFX_PCI_ID_NONE;
-		init.resolution.width  = _width;
-		init.resolution.height = _height;
-		init.resolution.reset  = BGFX_RESET_VSYNC;
-		bgfx::init(init);
-
-		bgfx::setViewClear(0
-			, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH
-			, 0x303030ff
-			, 1.0f
-			, 0
-			);
-		
-	NVGcontext* vg = nvgCreate(_edgeaa, _viewId, NULL);
-	bgfx::setViewMode(0, bgfx::ViewMode::Sequential);
-	return vg;
+NVGcontext* nvgCreate(int32_t _edgeaa, bgfx::ViewId _viewId) {
+	return nvgCreate(_edgeaa, _viewId, NULL);
 }
 
-uint32_t renderBGFXFrame(int32_t _msecs)
-{
-	return (uint32_t)bgfx::renderFrame(_msecs);
-}
-
-void setBGFXViewRect(uint16_t _viewId, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height)
-{
-	bgfx::setViewRect(_viewId, _x, _y, _width, _height);
-}
-
-void touchBGFX(uint16_t _viewId)
-{
-	bgfx::touch(_viewId);
-}
-
-uint32_t frameBGFX(bool _capture)
-{
-	return bgfx::frame(_capture);
-}
-
-void resetBGFX(uint32_t _width, uint32_t _height, uint32_t _flags)
-{
-	bgfx::reset(_width, _height, _flags);
-}
-
-void nvgDeleteBGFX(NVGcontext* _ctx)
+void nvgDelete(NVGcontext* _ctx)
 {
 	nvgDeleteInternal(_ctx);
 }
@@ -1254,9 +1172,9 @@ bgfx::TextureHandle nvglImageHandle(NVGcontext* _ctx, int32_t _image)
 	return tex->id;
 }
 
-NVGLUframebuffer_bgfx* nvgluCreateFramebufferByViewId(NVGcontext* ctx, int32_t width, int32_t height, int32_t imageFlags, uint16_t viewId)
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int32_t width, int32_t height, int32_t imageFlags, bgfx::ViewId viewId)
 {
-	NVGLUframebuffer_bgfx* framebuffer = nvgluCreateFramebuffer(ctx, width, height, imageFlags);
+	NVGLUframebuffer* framebuffer = nvgluCreateFramebuffer(ctx, width, height, imageFlags);
 
 	if (framebuffer != NULL)
 	{
@@ -1266,7 +1184,7 @@ NVGLUframebuffer_bgfx* nvgluCreateFramebufferByViewId(NVGcontext* ctx, int32_t w
 	return framebuffer;
 }
 
-NVGLUframebuffer_bgfx* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags)
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags)
 {
 	BX_UNUSED(_imageFlags);
 	bgfx::TextureHandle textures[] =
@@ -1301,15 +1219,15 @@ NVGLUframebuffer_bgfx* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, 
 	tex->flags  = _imageFlags | NVG_IMAGE_PREMULTIPLIED;
 	tex->id     = bgfx::getTexture(fbh);
 
-	NVGLUframebuffer_bgfx* framebuffer = BX_NEW(gl->allocator, NVGLUframebuffer_bgfx);
+	NVGLUframebuffer* framebuffer = BX_NEW(gl->allocator, NVGLUframebuffer);
 	framebuffer->ctx    = _ctx;
 	framebuffer->image  = tex->id.idx;
-	framebuffer->handle = fbh.idx;
+	framebuffer->handle = fbh;
 
 	return framebuffer;
 }
 
-void nvgluBindFramebuffer(NVGLUframebuffer_bgfx* _framebuffer)
+void nvgluBindFramebuffer(NVGLUframebuffer* _framebuffer)
 {
 	static NVGcontext* s_prevCtx = NULL;
 	static bgfx::ViewId s_prevViewId;
@@ -1325,32 +1243,27 @@ void nvgluBindFramebuffer(NVGLUframebuffer_bgfx* _framebuffer)
 	}
 }
 
-void nvgluDeleteFramebuffer(NVGLUframebuffer_bgfx* _framebuffer)
+void nvgluDeleteFramebuffer(NVGLUframebuffer* _framebuffer)
 {
 	if (_framebuffer == NULL)
 	{
 		return;
 	}
 
-	bgfx::FrameBufferHandle handle;
-	handle.idx = _framebuffer->handle;
-	if (bgfx::isValid(handle))
+	if (bgfx::isValid(_framebuffer->handle))
 	{
-		bgfx::destroy(handle);
+		bgfx::destroy(_framebuffer->handle);
 	}
 
 	struct NVGparams* params = nvgInternalParams(_framebuffer->ctx);
 	struct GLNVGcontext* gl = (struct GLNVGcontext*)params->userPtr;
 	glnvg__deleteTexture(gl, _framebuffer->image);
-	BX_DELETE(gl->allocator, _framebuffer); 
+	BX_DELETE(gl->allocator, _framebuffer);
 }
 
-void nvgluSetViewFramebuffer(uint16_t _viewId, NVGLUframebuffer_bgfx* _framebuffer)
+void nvgluSetViewFramebuffer(bgfx::ViewId _viewId, NVGLUframebuffer* _framebuffer)
 {
 	_framebuffer->viewId = _viewId;
-
-	bgfx::FrameBufferHandle handle;
-	handle.idx = _framebuffer->handle;
-	bgfx::setViewFrameBuffer(_viewId, handle);
+	bgfx::setViewFrameBuffer(_viewId, _framebuffer->handle);
 	bgfx::setViewMode(_viewId, bgfx::ViewMode::Sequential);
 }

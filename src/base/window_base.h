@@ -60,13 +60,6 @@ typedef struct _window_base_t {
   char* theme;
 
   /**
-   * @property {char*} script
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
-   * 脚本文件名称(暂时没用)。
-   */
-  char* script;
-
-  /**
    * @property {window_closable_t} closable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
@@ -156,8 +149,20 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                              wh_t h);
+/**
+ * @method window_base_cast
+ * 转换为window_base对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {widget_t*} window_base对象。
+ */
+widget_t* window_base_cast(widget_t* widget);
 
-#define WINDOW_BASE(widget) ((window_base_t*)(widget))
+#define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(window_base);
 
 END_C_DECLS
 

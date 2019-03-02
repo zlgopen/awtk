@@ -894,9 +894,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props == NULL) {
-      widget->custom_props = custom_props_create(3);
+      widget->custom_props = object_default_create();
     }
-    ret = custom_props_set(widget->custom_props, name, v);
+    ret = object_set_prop(widget->custom_props, name, v);
   }
 
   if (ret != RET_NOT_FOUND) {
@@ -975,7 +975,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props != NULL) {
-      ret = custom_props_get(widget->custom_props, name, v);
+      ret = object_get_prop(widget->custom_props, name, v);
     }
   }
 
@@ -994,6 +994,20 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
   return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
 
   return value_str(&v);
+}
+
+ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer) {
+  value_t v;
+  value_set_pointer(&v, pointer);
+
+  return widget_set_prop(widget, name, &v);
+}
+
+void* widget_get_prop_pointer(widget_t* widget, const char* name) {
+  value_t v;
+  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, NULL);
+
+  return value_pointer(&v);
 }
 
 ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t num) {
@@ -1426,7 +1440,7 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   }
 
   if (widget->custom_props != NULL) {
-    custom_props_destroy(widget->custom_props);
+    object_unref(widget->custom_props);
     widget->custom_props = NULL;
   }
 
@@ -1471,9 +1485,16 @@ static ret_t widget_do_destroy(widget_t* widget) {
 }
 
 ret_t widget_destroy(widget_t* widget) {
+  widget_t* parent = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->parent != NULL) {
+  parent = widget->parent;
+  if (parent != NULL) {
+    if (parent->target == widget || parent->key_target == widget) {
+      widget_remove_child(parent, widget);
+      return widget_destroy_async(widget);
+    }
+
     widget_remove_child(widget->parent, widget);
   }
 
@@ -1884,23 +1905,38 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
   return canvas_measure_text(c, (wchar_t*)text, wcslen(text));
 }
 
-ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+static image_manager_t* widget_get_image_manager(widget_t* widget) {
   image_manager_t* imm = NULL;
-  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, NULL);
 
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
     imm = image_manager();
   } else {
     value_t v;
     widget_t* win = widget_get_window(widget);
-    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK,
-                         RET_BAD_PARAMS);
+    return_value_if_fail(widget_get_prop(win, WIDGET_PROP_IMAGE_MANAGER, &v) == RET_OK, NULL);
     imm = (image_manager_t*)value_pointer(&v);
   }
 
+  return imm;
+}
+
+ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+  image_manager_t* imm = widget_get_image_manager(widget);
+
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
   return image_manager_get_bitmap(imm, name, bitmap);
+}
+
+ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap) {
+  image_manager_t* imm = widget_get_image_manager(widget);
+
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && bitmap != NULL, RET_BAD_PARAMS);
+
+  return image_manager_unload_bitmap(imm, bitmap);
 }
 
 const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name) {
@@ -1951,4 +1987,25 @@ const char* widget_get_type(widget_t* widget) {
 
 widget_t* widget_cast(widget_t* widget) {
   return widget;
+}
+
+bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
+  const widget_vtable_t* iter = NULL;
+  return_value_if_fail(widget != NULL && vt != NULL, FALSE);
+
+  iter = widget->vt;
+
+  while (iter != NULL) {
+    if (iter == vt) {
+      return TRUE;
+    }
+
+    iter = iter->parent;
+  }
+#ifdef WITH_WIDGET_TYPE_CHECK
+  return FALSE;
+#else
+  log_warn("%s is not instance of %s\n", widget->vt->type, vt->type);
+  return TRUE;
+#endif /*WITH_WIDGET_TYPE_CHECK*/
 }

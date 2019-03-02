@@ -636,19 +636,19 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
 static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_VERTICAL,
                                                 WIDGET_PROP_XOFFSET,   WIDGET_PROP_YOFFSET,
                                                 WIDGET_PROP_AUTO_PLAY, NULL};
-static const widget_vtable_t s_slide_view_vtable = {
-    .size = sizeof(slide_view_t),
-    .type = WIDGET_TYPE_SLIDE_VIEW,
-    .clone_properties = s_slide_view_properties,
-    .persistent_properties = s_slide_view_properties,
-    .create = slide_view_create,
-    .on_event = slide_view_on_event,
-    .get_prop = slide_view_get_prop,
-    .set_prop = slide_view_set_prop,
-    .find_target = slide_view_find_target,
-    .on_paint_children = slide_view_on_paint_children,
-    .on_paint_self = slide_view_on_paint_self,
-    .on_destroy = slide_view_on_destroy};
+TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
+                              .type = WIDGET_TYPE_SLIDE_VIEW,
+                              .clone_properties = s_slide_view_properties,
+                              .persistent_properties = s_slide_view_properties,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = slide_view_create,
+                              .on_event = slide_view_on_event,
+                              .get_prop = slide_view_get_prop,
+                              .set_prop = slide_view_set_prop,
+                              .find_target = slide_view_find_target,
+                              .on_paint_children = slide_view_on_paint_children,
+                              .on_paint_self = slide_view_on_paint_self,
+                              .on_destroy = slide_view_on_destroy};
 
 ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
@@ -677,7 +677,7 @@ ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical) {
 }
 
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_slide_view_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(slide_view), x, y, w, h);
 }
 
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
@@ -721,7 +721,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
 }
 
 widget_t* slide_view_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_slide_view_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, slide_view), NULL);
 
   return widget;
 }

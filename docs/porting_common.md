@@ -132,10 +132,13 @@ awtk-port
 
 | 文件                        |      说明    | 
 |-----------------------------|:-------------|
-| src/awtk.c                  | 加入       
+| src/awtk\_global.c          | 加入       
+| src/tkc                     | 全部加入
 | src/base                    | 全部加入
+| src/widgets                 | 全部加入
 | src/xml                     | 全部加入
 | src/ui\_loader              | 全部加入
+| src/svg                     | 支持vgcanvas时全部加入
 | src/blend                   | 使用framebuffer时全部加入
 | src/ext\_widgets            | 使用扩展控件时全部加入
 | src/font\_loader            | 推荐全部加入(可只加需要的)

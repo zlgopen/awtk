@@ -82,7 +82,10 @@ widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* dialog_title_cast(widget_t* widget);
 
-#define DIALOG_TITLE(widget) ((dialog_title_t*)(widget))
+#define DIALOG_TITLE(widget) ((dialog_title_t*)(dialog_title_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(dialog_title);
 
 END_C_DECLS
 

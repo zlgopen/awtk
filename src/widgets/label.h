@@ -79,7 +79,7 @@ typedef struct _label_t {
   /**
    * @property {int32_t} length
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 显示字符的长度(小余0时全部显示)。
+   * 显示字符的个数(小余0时全部显示)。
    * 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。
    */
   int32_t length;
@@ -101,7 +101,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method label_set_length
- * 设置最大可显示字符个数。
+ * 设置显示字符的个数(小余0时全部显示)。。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  length 最大可显示字符个数。
@@ -110,7 +110,36 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 ret_t label_set_length(widget_t* widget, int32_t length);
 
-#define LABEL(widget) ((label_t*)(widget))
+/**
+ * @method label_resize_to_content
+ * 根据文本内容调节控件大小。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t}  min_w 最小宽度。
+ * @param {uint32_t}  max_w 最大宽度。
+ * @param {uint32_t}  min_h 最小高度。
+ * @param {uint32_t}  max_h 最大高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, uint32_t min_h,
+                              uint32_t max_h);
+
+/**
+ * @method label_cast
+ * 转换为label对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget label对象。
+ *
+ * @return {widget_t*} label对象。
+ */
+widget_t* label_cast(widget_t* widget);
+
+#define LABEL(widget) ((label_t*)(label_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(label);
 
 /*public for test*/
 uint32_t line_breaker_count(const wchar_t* str);

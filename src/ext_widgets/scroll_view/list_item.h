@@ -110,7 +110,10 @@ widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* list_item_cast(widget_t* widget);
 
-#define LIST_ITEM(widget) ((list_item_t*)(widget))
+#define LIST_ITEM(widget) ((list_item_t*)(list_item_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(list_item);
 
 END_C_DECLS
 

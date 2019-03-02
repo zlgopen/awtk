@@ -1,10 +1,5 @@
 ﻿#include "widgets/progress_bar.h"
-#include "base/canvas.h"
-#include "base/widget.h"
-#include "font_dummy.h"
-#include "lcd_log.h"
 #include "gtest/gtest.h"
-#include <stdlib.h>
 
 TEST(progress_bar, basic) {
   value_t v1;
@@ -40,6 +35,14 @@ TEST(ProgressBar, event) {
 
   progress_bar_set_value(w, 20);
   ASSERT_EQ(s_log, "will_change;change;");
+
+  widget_destroy(w);
+}
+
+TEST(ProgressBar, cast) {
+  widget_t* w = progress_bar_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, progress_bar_cast(w));
 
   widget_destroy(w);
 }

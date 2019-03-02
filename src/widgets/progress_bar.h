@@ -157,7 +157,10 @@ ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical);
  */
 ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text);
 
-#define PROGRESS_BAR(widget) ((progress_bar_t*)(widget))
+#define PROGRESS_BAR(widget) ((progress_bar_t*)(progress_bar_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(progress_bar);
 
 END_C_DECLS
 

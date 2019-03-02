@@ -22,8 +22,8 @@
 #include "tkc/utils.h"
 #include "tkc/tokenizer.h"
 
-tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t size,
-                            const char* separtor) {
+tokenizer_t* tokenizer_init_ex(tokenizer_t* tokenizer, const char* str, uint32_t size,
+                               const char* separtor, const char* single_char_token) {
   uint32_t str_size = 0;
   return_value_if_fail(tokenizer != NULL && str != NULL && separtor != NULL, NULL);
 
@@ -32,9 +32,15 @@ tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t si
   tokenizer->cursor = 0;
   tokenizer->separtor = separtor;
   tokenizer->size = tk_min(str_size, size);
+  tokenizer->single_char_token = single_char_token;
   str_init(&(tokenizer->token), 20);
 
   return tokenizer;
+}
+
+tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t size,
+                            const char* separtor) {
+  return tokenizer_init_ex(tokenizer, str, size, separtor, NULL);
 }
 
 static ret_t tokenizer_skip_separator(tokenizer_t* tokenizer) {
@@ -53,11 +59,16 @@ static ret_t tokenizer_skip_separator(tokenizer_t* tokenizer) {
 }
 
 static ret_t tokenizer_skip_non_separator(tokenizer_t* tokenizer) {
+  const char* separtor = NULL;
+  const char* single_char_token = NULL;
   return_value_if_fail(tokenizer != NULL, RET_BAD_PARAMS);
+
+  separtor = tokenizer->separtor;
+  single_char_token = tokenizer->single_char_token != NULL ? tokenizer->single_char_token : "";
 
   while (tokenizer->cursor < tokenizer->size) {
     char c = tokenizer->str[tokenizer->cursor];
-    if (strchr(tokenizer->separtor, c) == NULL) {
+    if (strchr(separtor, c) == NULL && strchr(single_char_token, c) == NULL) {
       tokenizer->cursor++;
     } else {
       break;
@@ -73,6 +84,32 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer) {
   return tokenizer->cursor < tokenizer->size;
 }
 
+const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str) {
+  return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK && str != NULL, NULL);
+
+  if (tokenizer_has_more(tokenizer)) {
+    uint32_t len = 0;
+    str_t* s = &(tokenizer->token);
+    uint32_t start = tokenizer->cursor;
+
+    while (tokenizer->str[tokenizer->cursor]) {
+      char c = tokenizer->str[tokenizer->cursor];
+      if (strchr(str, c) != NULL) {
+        break;
+      }
+      tokenizer->cursor++;
+    }
+
+    len = tokenizer->cursor - start;
+    str_set_with_len(s, tokenizer->str + start, len);
+    tokenizer_skip_separator(tokenizer);
+
+    return s->str;
+  }
+
+  return NULL;
+}
+
 const char* tokenizer_next(tokenizer_t* tokenizer) {
   return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK, NULL);
 
@@ -80,6 +117,15 @@ const char* tokenizer_next(tokenizer_t* tokenizer) {
     uint32_t len = 0;
     str_t* s = &(tokenizer->token);
     uint32_t start = tokenizer->cursor;
+
+    if (tokenizer->single_char_token != NULL) {
+      if (strchr(tokenizer->single_char_token, tokenizer->str[start]) != NULL) {
+        str_set_with_len(s, tokenizer->str + start, 1);
+        tokenizer->cursor++;
+
+        return s->str;
+      }
+    }
 
     tokenizer_skip_non_separator(tokenizer);
 

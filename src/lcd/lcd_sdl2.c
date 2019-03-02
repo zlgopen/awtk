@@ -135,6 +135,12 @@ static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotat
   return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img, auto_rotate);
 }
 
+static ret_t lcd_sdl2_get_desired_bitmap_format(lcd_t* lcd) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+
+  return lcd_get_desired_bitmap_format((lcd_t*)(sdl->lcd_mem));
+}
+
 static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
@@ -173,6 +179,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->end_frame = lcd_sdl2_end_frame;
   base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
   base->take_snapshot = lcd_sdl2_take_snapshot;
+  base->get_desired_bitmap_format = lcd_sdl2_get_desired_bitmap_format;
   base->set_global_alpha = lcd_sdl2_set_global_alpha;
   base->destroy = lcd_sdl2_destroy;
 

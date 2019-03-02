@@ -49,20 +49,6 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t button_on_long_press(const timer_info_t* info) {
-  pointer_event_t evt;
-  widget_t* widget = WIDGET(info->ctx);
-
-  evt.x = 0;
-  evt.y = 0;
-  evt.e = event_init(EVT_LONG_PRESS, widget);
-
-  button_remove_timer(widget);
-  widget_dispatch(widget, (event_t*)&evt);
-
-  return RET_REMOVE;
-}
-
 static ret_t button_pointer_up_cleanup(widget_t* widget) {
   button_t* button = BUTTON(widget);
 
@@ -72,6 +58,20 @@ static ret_t button_pointer_up_cleanup(widget_t* widget) {
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return RET_OK;
+}
+
+static ret_t button_on_long_press(const timer_info_t* info) {
+  pointer_event_t evt;
+  widget_t* widget = WIDGET(info->ctx);
+
+  evt.x = 0;
+  evt.y = 0;
+  evt.e = event_init(EVT_LONG_PRESS, widget);
+
+  button_pointer_up_cleanup(widget);
+  widget_dispatch(widget, (event_t*)&evt);
+
+  return RET_REMOVE;
 }
 
 static ret_t button_on_event(widget_t* widget, event_t* e) {
@@ -86,7 +86,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       button_remove_timer(widget);
       if (button->repeat > 0) {
         button->timer_id = timer_add(button_on_repeat, widget, button->repeat);
-      } else {
+      } else if (button->enable_long_press) {
         button->timer_id = timer_add(button_on_long_press, widget, TK_LONG_PRESS_TIME);
       }
 
@@ -135,12 +135,24 @@ ret_t button_set_repeat(widget_t* widget, int32_t repeat) {
   return RET_OK;
 }
 
+ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press) {
+  button_t* button = BUTTON(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  button->enable_long_press = enable_long_press;
+
+  return RET_OK;
+}
+
 static ret_t button_get_prop(widget_t* widget, const char* name, value_t* v) {
   button_t* button = BUTTON(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
     value_set_int(v, button->repeat);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_LONG_PRESS)) {
+    value_set_bool(v, button->enable_long_press);
     return RET_OK;
   }
 
@@ -153,6 +165,9 @@ static ret_t button_get_prop_default_value(widget_t* widget, const char* name, v
   if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
     value_set_int(v, 0);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_LONG_PRESS)) {
+    value_set_bool(v, FALSE);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -163,6 +178,8 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
 
   if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
     return button_set_repeat(widget, value_int(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_LONG_PRESS)) {
+    return button_set_enable_long_press(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -173,35 +190,37 @@ static ret_t button_on_destroy(widget_t* widget) {
 }
 
 static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
-static const widget_vtable_t s_button_vtable = {
-    .size = sizeof(button_t),
-    .type = WIDGET_TYPE_BUTTON,
-    .enable_pool = TRUE,
-    .create = button_create,
-    .clone_properties = s_button_properties,
-    .persistent_properties = s_button_properties,
-    .on_event = button_on_event,
-    .set_prop = button_set_prop,
-    .get_prop = button_get_prop,
-    .get_prop_default_value = button_get_prop_default_value,
-    .on_destroy = button_on_destroy,
-    .on_paint_self = widget_on_paint_self_default};
+
+TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
+                          .type = WIDGET_TYPE_BUTTON,
+                          .enable_pool = TRUE,
+                          .parent = TK_PARENT_VTABLE(widget),
+                          .create = button_create,
+                          .clone_properties = s_button_properties,
+                          .persistent_properties = s_button_properties,
+                          .on_event = button_on_event,
+                          .set_prop = button_set_prop,
+                          .get_prop = button_get_prop,
+                          .get_prop_default_value = button_get_prop_default_value,
+                          .on_destroy = button_on_destroy,
+                          .on_paint_self = widget_on_paint_self_default};
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_button_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(button), x, y, w, h);
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL, NULL);
 
   button->repeat = 0;
   button->repeat_nr = 0;
   button->pressed = FALSE;
+  button->enable_long_press = FALSE;
   button->timer_id = TK_INVALID_ID;
 
   return widget;
 }
 
 widget_t* button_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_button_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, button), NULL);
 
   return widget;
 }

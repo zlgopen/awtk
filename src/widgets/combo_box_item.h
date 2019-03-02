@@ -111,7 +111,10 @@ ret_t combo_box_item_set_checked(widget_t* widget, bool_t checked);
  */
 ret_t combo_box_item_set_value(widget_t* widget, int32_t value);
 
-#define COMBO_BOX_ITEM(widget) ((combo_box_item_t*)(widget))
+#define COMBO_BOX_ITEM(widget) ((combo_box_item_t*)(combo_box_item_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(combo_box_item);
 
 END_C_DECLS
 

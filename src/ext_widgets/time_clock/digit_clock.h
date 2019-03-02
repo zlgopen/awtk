@@ -133,7 +133,10 @@ ret_t digit_clock_set_format(widget_t* widget, const char* format);
 
 #define WIDGET_TYPE_DIGIT_CLOCK "digit_clock"
 
-#define DIGIT_CLOCK(widget) ((digit_clock_t*)(widget))
+#define DIGIT_CLOCK(widget) ((digit_clock_t*)(digit_clock_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(digit_clock);
 
 /*public for test*/
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt);

@@ -1,0 +1,11 @@
+<label>
+  <style name="default">
+    <normal text_color="white" text_align_h="left" margin="4"/>
+  </style>
+</label>
+
+<dialog>
+  <style name="default">
+    <normal bg_color="#606060" />
+  </style>
+</dialog>

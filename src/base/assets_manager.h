@@ -76,6 +76,12 @@ typedef enum _asset_type_t {
   ASSET_TYPE_STRINGS,
 
   /**
+   * @const ASSET_TYPE_SCRIPT
+   * JS等脚本资源。
+   */
+  ASSET_TYPE_SCRIPT,
+
+  /**
    * @const ASSET_TYPE_DATA
    * 其它数据资源。
    */
@@ -91,6 +97,17 @@ typedef enum _asset_font_type_t {
   ASSET_TYPE_FONT_TTF,
   ASSET_TYPE_FONT_BMP
 } asset_font_type_t;
+
+/**
+ * @enum asset_script_type_t
+ * 脚本资源类型定义。
+ */
+typedef enum _asset_script_type_t {
+  ASSET_TYPE_SCRIPT_NONE,
+  ASSET_TYPE_SCRIPT_JS,
+  ASSET_TYPE_SCRIPT_LUA,
+  ASSET_TYPE_SCRIPT_PYTHON
+} asset_script_type_t;
 
 /**
  * @enum asset_image_type_t

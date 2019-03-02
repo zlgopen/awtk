@@ -16,3 +16,13 @@ TEST(SvgImage, basic) {
 
   widget_destroy(w);
 }
+
+TEST(SvgImage, cast) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* img = svg_image_create(w, 0, 0, 100, 100);
+
+  ASSERT_EQ(img, svg_image_cast(img));
+  ASSERT_EQ(img, image_base_cast(img));
+
+  widget_destroy(w);
+}

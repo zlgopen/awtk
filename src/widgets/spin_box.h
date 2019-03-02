@@ -106,7 +106,10 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* spin_box_cast(widget_t* widget);
 
-#define SPIN_BOX(widget) ((spin_box_t*)(widget))
+#define SPIN_BOX(widget) ((spin_box_t*)(spin_box_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(spin_box);
 
 END_C_DECLS
 

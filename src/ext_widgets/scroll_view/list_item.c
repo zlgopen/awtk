@@ -123,15 +123,16 @@ static ret_t list_item_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_list_item_vtable = {.size = sizeof(list_item_t),
-                                                   .type = WIDGET_TYPE_LIST_ITEM,
-                                                   .create = list_item_create,
-                                                   .on_event = list_item_on_event,
-                                                   .on_paint_self = list_item_on_paint_self,
-                                                   .on_destroy = list_item_on_destroy};
+TK_DECL_VTABLE(list_item) = {.size = sizeof(list_item_t),
+                             .type = WIDGET_TYPE_LIST_ITEM,
+                             .parent = TK_PARENT_VTABLE(widget),
+                             .create = list_item_create,
+                             .on_event = list_item_on_event,
+                             .on_paint_self = list_item_on_paint_self,
+                             .on_destroy = list_item_on_destroy};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_list_item_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(list_item), x, y, w, h);
   list_item_t* list_item = LIST_ITEM(widget);
   return_value_if_fail(list_item != NULL, NULL);
 
@@ -141,7 +142,7 @@ widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* list_item_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_list_item_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, list_item), NULL);
 
   return widget;
 }

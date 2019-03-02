@@ -27,7 +27,6 @@
 #include "base/bitmap.h"
 #include "base/canvas.h"
 #include "base/clip_board.h"
-#include "base/custom_props.h"
 #include "base/enums.h"
 #include "base/event_queue.h"
 #include "base/events.h"

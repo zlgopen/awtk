@@ -22,16 +22,17 @@
 #include "tkc/mem.h"
 #include "canvas_widget/canvas_widget.h"
 
-static const widget_vtable_t s_canvas_widget_vtable = {.size = sizeof(canvas_widget_t),
-                                                       .type = WIDGET_TYPE_CANVAS_WIDGET,
-                                                       .create = canvas_widget_create};
+TK_DECL_VTABLE(canvas_widget) = {.size = sizeof(canvas_widget_t),
+                                 .type = WIDGET_TYPE_CANVAS_WIDGET,
+                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .create = canvas_widget_create};
 
 widget_t* canvas_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_canvas_widget_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(canvas_widget), x, y, w, h);
 }
 
 widget_t* canvas_widget_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_canvas_widget_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, canvas_widget), NULL);
 
   return widget;
 }

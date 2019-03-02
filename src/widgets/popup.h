@@ -141,7 +141,10 @@ ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click);
  */
 ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_click_outside);
 
-#define POPUP(widget) ((popup_t*)(widget))
+#define POPUP(widget) ((popup_t*)(popup_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(popup);
 
 END_C_DECLS
 

@@ -240,7 +240,10 @@ ret_t time_clock_set_image(widget_t* widget, const char* image);
 
 #define WIDGET_TYPE_TIME_CLOCK "time_clock"
 
-#define TIME_CLOCK(widget) ((time_clock_t*)(widget))
+#define TIME_CLOCK(widget) ((time_clock_t*)(time_clock_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(time_clock);
 
 END_C_DECLS
 

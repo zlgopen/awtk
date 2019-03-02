@@ -54,3 +54,49 @@ TEST(Tokenizer, separators) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, single_char_token) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a, b=2}", 100, "{ }", "=,");
+  ASSERT_EQ(t, &tokenizer);
+
+  ASSERT_EQ(tokenizer_has_more(t), TRUE);
+  ASSERT_EQ(string("a"), tokenizer_next(t));
+
+  ASSERT_EQ(tokenizer_has_more(t), TRUE);
+  ASSERT_EQ(string(","), tokenizer_next(t));
+
+  ASSERT_EQ(tokenizer_has_more(t), TRUE);
+  ASSERT_EQ(string("b"), tokenizer_next(t));
+
+  ASSERT_EQ(tokenizer_has_more(t), TRUE);
+  ASSERT_EQ(string("="), tokenizer_next(t));
+
+  ASSERT_EQ(tokenizer_has_more(t), TRUE);
+  ASSERT_EQ(string("2"), tokenizer_next(t));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, until1) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a==1}", 100, "{ }", "=,");
+  ASSERT_EQ(t, &tokenizer);
+
+  ASSERT_EQ(string(tokenizer_next_until(t, ",}")), string("a==1"));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, until2) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a==1, a}", 100, "{ }", "=,");
+  ASSERT_EQ(t, &tokenizer);
+
+  ASSERT_EQ(string(tokenizer_next_until(t, ",}")), string("a==1"));
+
+  tokenizer_deinit(t);
+}

@@ -23,7 +23,10 @@
 * [label](manual/label_t.md) 文本控件。
 * [edit](manual/edit_t.md) 单行编辑器控件。
 * [image](manual/image_t.md) 图片控件。
+* [dragger](manual/dragger_t.md) dragger控件。
 * [image\_base](manual/image_base_t.md) 图片控件基类。
+* [check\_button](manual/check_button_t.md) 多选按钮。
+* [radio\_button](manual/check_button_t.md) 单选按钮。
 * [spin\_box](manual/spin_box_t.md) 数值编辑器控件。
 * [combo\_box](manual/combo_box_t.md) 下拉列表控件。
 * [combo\_box\_item](manual/combo_box_item_t.md) 下拉列表项控件。
@@ -69,6 +72,7 @@
 * [list\_item](manual/list_item_t.md) 列表项控件。
 * [scroll\_bar](manual/scroll_bar_t.md) 滚动条控件。
 * [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
+* [mutable\_image](manual/mutable_image_t.md) mutable图片控件(用于辅助实现camera/video)。
 
 ### 画布
 

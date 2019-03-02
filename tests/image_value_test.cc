@@ -27,3 +27,11 @@ TEST(ImageValue, basic) {
 
   widget_destroy(w);
 }
+
+TEST(ImageValue, cast) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, image_value_cast(w));
+
+  widget_destroy(w);
+}

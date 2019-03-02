@@ -263,3 +263,42 @@ TEST(Utils, tk_wstrdup) {
 
   TKMEM_FREE(str);
 }
+
+TEST(Utils, tk_replace_locale) {
+  char name[TK_NAME_LEN + 1];
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, "zh_CN"), RET_OK);
+  ASSERT_EQ(string(name), string("test-zh_CN"));
+
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, "zh"), RET_OK);
+  ASSERT_EQ(string(name), string("test-zh"));
+
+  ASSERT_EQ(tk_replace_locale("test-$locale$", name, ""), RET_OK);
+  ASSERT_EQ(string(name), string("test-"));
+
+  ASSERT_EQ(tk_replace_locale("test", name, "zh"), RET_BAD_PARAMS);
+}
+
+TEST(Utils, tk_str_start_with) {
+  ASSERT_EQ(tk_str_start_with("abc123", "a"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "ab"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "abc"), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", ""), TRUE);
+  ASSERT_EQ(tk_str_start_with("abc123", "b"), FALSE);
+}
+
+TEST(Utils, ieq) {
+  ASSERT_EQ(strcasecmp("Trigger", "trigger"), 0);
+  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
+  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
+}
+
+TEST(Utils, tk_under_score_to_camel) {
+  char name[11];
+  ASSERT_EQ(string(tk_under_score_to_camel("test", name, sizeof(name) - 1)), string("test"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj", name, sizeof(name) - 1)), string("testObj"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_", name, sizeof(name) - 1)),
+            string("testObj"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_get", name, sizeof(name) - 1)),
+            string("testObjGet"));
+  ASSERT_EQ(string(tk_under_score_to_camel("test_obj_get", name, 7)), string("testObj"));
+}

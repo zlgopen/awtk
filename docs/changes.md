@@ -1,11 +1,139 @@
 # 最新动态
-* 2019/01/18
-  * 修改valgrind发些的问题，并增加一些脚本。
+* 2019/03/02
+  * 增加dialog\_warn/dialog\_info/dialog\_warn。
 
-* 2019/01/17
+* 2019/03/01
+  * 完善label。
+  * 更新文档。
+  * 增加dialog\_toast
+
+* 2019/02/28
+  * 增加mutable image，用于camem和video显示图像。
+
+* 2019/02/27
+  * 同步BGFX最新代码。
+
+* 2019/02/26
+  * 合并typecheck分支。
+  * 控件支持运行时类型检查(目前支持Linux/Windows/Macos和部分嵌入时平台)。
+  * 修改main\_loop\_sdl\_fb\_destroy的问题(感谢大恒提供补丁)。
+  * 修改canvas\_t中注释错误(感谢朝泽提供补丁)。
+  * 完善image\_animation，修改#85 
+
+* 2019/02/25
+  * 完善image\_animation，修改#85
+  * 重构SConstruct，把公共代码放到awtk\_config.py，可供其它项目使用。
+
+* 2019/02/22
+  * 完善控件文档(感谢俊杰提供补丁)。
+  * 更新IDL。
+  * 修改awtk-js代码产生器中生成cast函数的问题。
+
+* 2019/02/21
+  * 增加object\_copy\_prop
+  * 修改value\_copy/value\_deep\_copy的BUG。
+  * 修改named\_value\_set\_value的BUG。
+  * 完善布局文档(感谢俊杰提供补丁)。
+  * 支持动态设置屏保时间。
+
+* 2019/02/20
+  * 按钮增加enable\_long\_press属性用于启用长按事件，触发长按事件后不再触发点击事件。
+  * 增加timer\_reset函数。
+  * 增加屏保支持。
+
+* 2019/02/19
+  * add darray\_tail/darray\_head。
+
+* 2019/02/18
+  * 完善image\_animation，支持指定一个范围。
+  * 完善dialog，避免dialog\_model应用到普通窗口上。
+
+* 2019/02/15
+  * bitmap/color/date\_time/rect/named\_value/object/object\_default/emitter/value js绑定支持gc。
+  * lua绑定还不支持gc("\_\_gc"被调用多次，而且udata居然无法修改，如果哪位朋友熟悉，麻烦指点一下)
+  * 更新stm32f103/427/767的工程。
+
+* 2019/02/14
+  * 增加 tk\_under\_score\_to\_camel
+  * 增加 widget\_set\_prop\_pointer/widget\_get\_prop\_pointer
+
+* 2019/02/13
+  * 窗口去掉script属性。
+
+* 2019/02/07
+  * 资源支持脚本。
+  * 修改object\_has\_prop的BUG。
+
+* 2019/02/05
+  * 公开函数str\_extend
+
+* 2019/02/04
+  * 增加测试程序。
+  * 更新资源。
+  * edit处理属性value。
+  * 完善str/tokenizer/combobox/checkbutton
+
+* 2019/02/03
+  * 增加object\_notify\_changed。
+
+* 2019/02/02
+  * 增加tk\_str\_ieq
+
+* 2019/02/01
+  * 增加测试。
+  * 合并mvvm分支。
+  * 将mvvm代码移动到独立的项目：awtk-mvvm
+
+* 2019/01/31
+  * 增加binding context awtk
+
+* 2019/01/30
+  * 增加binding context
+  
+* 2019/01/29
+  * 增加navigator
+
+* 2019/01/28
+  * 增加navigator\_request
+  * 增加navigator\_handler
+
+* 2019/01/27
+  * 增加view\_model
+
+* 2019/01/26
+  * 修改字符串翻译的问题。issue 83/86
+  * 增加value converter factory
+  * 增加value validator factory
+  * add expr eval
+
+* 2019/01/25
+  * 增加model\_delegate。
+
+* 2019/01/24
+  * 增加value\_validator/value\_validator\_delegate
+
+* 2019/01/23
+  * 增加value\_converter/value\_converter\_delegate
+
+* 2019/01/22
+  * 增加binding rule parse
+
+* 2019/01/21
+  * 增加data\_binding/command\_binding.
+  * 增加测试程序。
+
+* 2019/01/20
+  * 完善object，增加一些包装函数。
+  * 增加binding\_rule/binding\_rule\_data
+
+* 2019/01/19
+  * 修改valgrind发些的问题，并增加一些脚本。
+  * 增加MVVM分支。 
+
+* 2019/01/18
   * 增加文档。
 
-* 2019/01/16
+* 2019/01/17
   * 整理API文档：list\_view/list\_view\_h/list\_view\_item/scroll\_view/scroll\_bar
   * 整理API文档：self\_layouter/self\_layouter\_default/children\_layouter/children\_layouter\_default
   * 去掉array类，使用darray类代替。

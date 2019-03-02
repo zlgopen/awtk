@@ -26,17 +26,18 @@ static ret_t tab_control_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_tab_control_vtable = {.size = sizeof(tab_control_t),
-                                                     .type = WIDGET_TYPE_TAB_CONTROL,
-                                                     .create = tab_control_create,
-                                                     .on_paint_self = tab_control_on_paint_self};
+TK_DECL_VTABLE(tab_control) = {.size = sizeof(tab_control_t),
+                               .type = WIDGET_TYPE_TAB_CONTROL,
+                               .parent = TK_PARENT_VTABLE(widget),
+                               .create = tab_control_create,
+                               .on_paint_self = tab_control_on_paint_self};
 
 widget_t* tab_control_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, &s_tab_control_vtable, x, y, w, h);
+  return widget_create(parent, TK_REF_VTABLE(tab_control), x, y, w, h);
 }
 
 widget_t* tab_control_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_tab_control_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, tab_control), NULL);
 
   return widget;
 }

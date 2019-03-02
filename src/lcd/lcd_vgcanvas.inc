@@ -207,11 +207,15 @@ static ret_t lcd_vgcanvas_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
-vgcanvas_t* lcd_vgcanvas_get_vgcanvas(lcd_t* lcd) {
+static vgcanvas_t* lcd_vgcanvas_get_vgcanvas(lcd_t* lcd) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   vgcanvas_begin_path(canvas);
 
   return canvas;
+}
+
+static bitmap_format_t lcd_vgcanvas_get_desired_bitmap_format(lcd_t* lcd) {
+  return BITMAP_FMT_RGBA8888;
 }
 
 lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
@@ -239,6 +243,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->set_font_name = lcd_vgcanvas_set_font_name;
   base->set_font_size = lcd_vgcanvas_set_font_size;
   base->set_global_alpha = lcd_vgcanvas_set_global_alpha;
+  base->get_desired_bitmap_format = lcd_vgcanvas_get_desired_bitmap_format;
   base->resize = lcd_vgcanvas_resize;
   base->destroy = lcd_vgcanvas_destroy;
 

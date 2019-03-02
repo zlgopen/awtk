@@ -129,7 +129,10 @@ ret_t window_close(widget_t* widget);
  */
 widget_t* window_cast(widget_t* widget);
 
-#define WINDOW(widget) ((window_t*)(widget))
+#define WINDOW(widget) ((window_t*)(window_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(window);
 
 END_C_DECLS
 

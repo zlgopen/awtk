@@ -826,6 +826,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_wstr(v, widget->text.str);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -913,6 +916,11 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit->offset_x = 0;
     edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    edit->offset_x = 0;
+    edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
+    wstr_from_value(&(widget->text), v);
     return RET_OK;
   }
 
@@ -1173,22 +1181,23 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_TIPS,
                                    WIDGET_PROP_PASSWORD_VISIBLE,
                                    NULL};
-static const widget_vtable_t s_edit_vtable = {.size = sizeof(edit_t),
-                                              .type = WIDGET_TYPE_EDIT,
-                                              .clone_properties = s_edit_properties,
-                                              .persistent_properties = s_edit_properties,
-                                              .create = edit_create,
-                                              .on_paint_self = edit_on_paint_self,
-                                              .set_prop = edit_set_prop,
-                                              .get_prop = edit_get_prop,
-                                              .on_destroy = edit_on_destroy,
-                                              .on_event = edit_on_event};
+TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
+                        .type = WIDGET_TYPE_EDIT,
+                        .clone_properties = s_edit_properties,
+                        .persistent_properties = s_edit_properties,
+                        .parent = TK_PARENT_VTABLE(widget),
+                        .create = edit_create,
+                        .on_paint_self = edit_on_paint_self,
+                        .set_prop = edit_set_prop,
+                        .get_prop = edit_get_prop,
+                        .on_destroy = edit_on_destroy,
+                        .on_event = edit_on_event};
 
 widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                          wh_t h) {
   widget_t* widget = widget_create(parent, vt, x, y, w, h);
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(edit != NULL, NULL);
 
   edit->left_margin = 2;
   edit->right_margin = 2;
@@ -1203,11 +1212,11 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 }
 
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return edit_create_ex(parent, &s_edit_vtable, x, y, w, h);
+  return edit_create_ex(parent, TK_REF_VTABLE(edit), x, y, w, h);
 }
 
 widget_t* edit_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_edit_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, edit), NULL);
 
   return widget;
 }

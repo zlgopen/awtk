@@ -55,3 +55,11 @@ TEST(ScrollBar, to_xml) {
   str_reset(&str);
   widget_destroy(w);
 }
+
+TEST(ScrollBar, cast) {
+  widget_t* w = scroll_bar_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, scroll_bar_cast(w));
+
+  widget_destroy(w);
+}

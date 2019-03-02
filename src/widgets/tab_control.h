@@ -93,6 +93,11 @@ widget_t* tab_control_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* tab_control_cast(widget_t* widget);
 
+#define TAB_CONTROL(widget) ((tab_control_t*)(tab_control_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(tab_control);
+
 END_C_DECLS
 
 #endif /*TK_TAB_CONTROL_H*/

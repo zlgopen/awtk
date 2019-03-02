@@ -98,6 +98,14 @@ ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {
   return slist_remove(&(timer_manager->timers), timer_info_init_dummy(&timer, timer_id));
 }
 
+ret_t timer_manager_reset(timer_manager_t* timer_manager, uint32_t timer_id) {
+  timer_info_t* info = (timer_info_t*)timer_manager_find(timer_manager, timer_id);
+  return_value_if_fail(info != NULL, RET_NOT_FOUND);
+  info->start = timer_manager->get_time();
+
+  return RET_OK;
+}
+
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id) {
   timer_info_t timer;
   return_value_if_fail(timer_id != TK_INVALID_ID, NULL);

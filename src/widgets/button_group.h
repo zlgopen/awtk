@@ -85,7 +85,10 @@ widget_t* button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* button_group_cast(widget_t* widget);
 
-#define BUTTON_GROUP(widget) ((button_group_t*)(widget))
+#define BUTTON_GROUP(widget) ((button_group_t*)(button_group_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(button_group);
 
 END_C_DECLS
 

@@ -56,7 +56,20 @@ typedef struct _candidates_t {
  */
 widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
-#define CANDIDATES(widget) ((candidates_t*)(widget))
+/**
+ * @method candidates_cast
+ * 转换为candidates对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget candidates对象。
+ *
+ * @return {widget_t*} candidates对象。
+ */
+widget_t* candidates_cast(widget_t* widget);
+
+#define CANDIDATES(widget) ((candidates_t*)(candidates_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(candidates);
 
 END_C_DECLS
 

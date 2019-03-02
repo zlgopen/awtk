@@ -146,17 +146,17 @@ static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_calibration_win_vtable = {
-    .size = sizeof(calibration_win_t),
-    .type = WIDGET_TYPE_CALIBRATION_WIN,
-    .is_window = TRUE,
-    .create = calibration_win_create,
-    .on_event = calibration_win_on_event,
-    .set_prop = window_base_set_prop,
-    .get_prop = window_base_get_prop,
-    .on_paint_begin = window_base_on_paint_begin,
-    .on_paint_end = window_base_on_paint_end,
-    .on_paint_self = calibration_win_on_paint_self};
+TK_DECL_VTABLE(calibration_win) = {.size = sizeof(calibration_win_t),
+                                   .type = WIDGET_TYPE_CALIBRATION_WIN,
+                                   .is_window = TRUE,
+                                   .parent = TK_PARENT_VTABLE(window_base),
+                                   .create = calibration_win_create,
+                                   .on_event = calibration_win_on_event,
+                                   .set_prop = window_base_set_prop,
+                                   .get_prop = window_base_get_prop,
+                                   .on_paint_begin = window_base_on_paint_begin,
+                                   .on_paint_end = window_base_on_paint_end,
+                                   .on_paint_self = calibration_win_on_paint_self};
 
 ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on_done, void* ctx) {
   calibration_win_t* win = CALIBRATION_WIN(widget);
@@ -180,7 +180,7 @@ ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t 
 }
 
 widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = window_base_create(parent, &s_calibration_win_vtable, x, y, w, h);
+  widget_t* widget = window_base_create(parent, TK_REF_VTABLE(calibration_win), x, y, w, h);
   calibration_win_t* win = CALIBRATION_WIN(widget);
 
   return_value_if_fail(win != NULL, NULL);
@@ -191,6 +191,12 @@ widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   win->cross_size = 16;
 
   widget_resize(widget, widget->parent->w, widget->parent->h);
+
+  return widget;
+}
+
+widget_t* calibration_win_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, calibration_win), NULL);
 
   return widget;
 }

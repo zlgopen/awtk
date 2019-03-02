@@ -171,7 +171,7 @@ struct _bitmap_t {
 
   bool_t is_gif;
   /*for gif begin*/
-  int32_t* gif_delays;
+  int* gif_delays;
   uint32_t gif_frame_h;
   uint32_t gif_frames_nr;
   /*for gif end*/
@@ -201,7 +201,7 @@ struct _bitmap_t {
 /**
  * @method bitmap_create
  * 创建图片对象(一般供脚本语言中使用)。
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @return {bitmap_t*} 返回bitmap对象。
  */
 bitmap_t* bitmap_create(void);
@@ -209,7 +209,7 @@ bitmap_t* bitmap_create(void);
 /**
  * @method bitmap_create_ex
  * 创建图片对象。
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
  * @param {uint32_t} line_length line_length。
@@ -292,7 +292,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
 /**
  * @method bitmap_destroy
  * 销毁图片。
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {bitmap_t*} bitmap bitmap对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

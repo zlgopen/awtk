@@ -42,3 +42,12 @@ TEST(SpinBox, to_xml) {
   str_reset(&str);
   widget_destroy(w1);
 }
+
+TEST(SpinBox, cast) {
+  widget_t* w = spin_box_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, spin_box_cast(w));
+  ASSERT_EQ(w, edit_cast(w));
+
+  widget_destroy(w);
+}

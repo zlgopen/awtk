@@ -69,6 +69,7 @@ typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t
 typedef ret_t (*lcd_draw_image_matrix_t)(lcd_t* lcd, draw_image_info_t* info);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
+typedef bitmap_format_t (*lcd_get_desired_bitmap_format_t)(lcd_t* lcd);
 
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
 typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
@@ -167,6 +168,7 @@ struct _lcd_t {
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;
+  lcd_get_desired_bitmap_format_t get_desired_bitmap_format;
   lcd_resize_t resize;
   lcd_destroy_t destroy;
 
@@ -505,6 +507,15 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
+
+/**
+ * @method lcd_get_desired_bitmap_format
+ * 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {bitmap_format_t} 返回期望的位图格式。
+ */
+bitmap_format_t lcd_get_desired_bitmap_format(lcd_t* lcd);
 
 /**
  * @method lcd_swap

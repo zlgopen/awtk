@@ -4,12 +4,15 @@
 
  图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。
 
+ 图片序列可以用sequence指定，也可以用start\_index和end\_index指定一个范围。
+
  image\_animation\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于image\_animation\_t控件。
 
  在xml中使用"image\_animation"标签创建图片动画控件。如：
 
  ```xml
- <image_animation image="ani" sequence="123456789abc" auto_play="true" interval="50"/>
+ <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50"
+ delay="100"/>
  ```
 
  > 更多用法请参考：
@@ -21,7 +24,7 @@
  image_animation = image_animation_create(win, 10, 10, 200, 200);
  image_animation_set_image(image_animation, "ani");
  image_animation_set_interval(image_animation, 50);
- image_animation_set_sequence(image_animation, "123456789abc");
+ image_animation_set_range_sequence(image_animation, 1, 9);
  image_animation_play(image_animation);
  ```
 
@@ -44,10 +47,13 @@
 | <a href="#image_animation_t_image_animation_play">image\_animation\_play</a> | 播放。 |
 | <a href="#image_animation_t_image_animation_set_auto_play">image\_animation\_set\_auto\_play</a> | 设置是否自动播放。 |
 | <a href="#image_animation_t_image_animation_set_delay">image\_animation\_set\_delay</a> | 设置延迟播放时间(仅适用于自动播放)。 |
+| <a href="#image_animation_t_image_animation_set_format">image\_animation\_set\_format</a> | 设置生成图片名的格式。 |
 | <a href="#image_animation_t_image_animation_set_image">image\_animation\_set\_image</a> | 设置图片前缀。 |
 | <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> | 设置播放间隔时间。 |
 | <a href="#image_animation_t_image_animation_set_loop">image\_animation\_set\_loop</a> | 设置是否循环播放。 |
-| <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> | 设置播放序列。比如image为"fire"，sequence为"123", 将依次播放"fire1", "fire2", "fire3"。 |
+| <a href="#image_animation_t_image_animation_set_range_sequence">image\_animation\_set\_range\_sequence</a> | 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ..., |
+| <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> | 设置播放序列。比如image为"fire"，sequence为"12223", 将依次播放"fire1", "fire2", "fire2", "fire2", |
+| <a href="#image_animation_t_image_animation_set_unload_after_paint">image\_animation\_set\_unload\_after\_paint</a> | 设置绘制完成后unload图片，以释放内存空间。 |
 | <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> | 停止(并重置index为0)。 |
 ### 属性
 <p id="image_animation_t_properties">
@@ -56,10 +62,14 @@
 | -------- | ----- | ------------ | 
 | <a href="#image_animation_t_auto_play">auto\_play</a> | bool\_t | 是否自动播放。 |
 | <a href="#image_animation_t_delay">delay</a> | uint32\_t | 自动播放时延迟播放的时间(毫秒)。 |
+| <a href="#image_animation_t_end_index">end\_index</a> | uint32\_t | 图片结束序数。 |
+| <a href="#image_animation_t_format">format</a> | char* | 索引到图片名转换时的格式，缺省为"%s%d"。 |
 | <a href="#image_animation_t_image">image</a> | char* | 图片名称的前缀。 |
 | <a href="#image_animation_t_interval">interval</a> | uint32\_t | 每张图片播放的时间(毫秒)。 |
 | <a href="#image_animation_t_loop">loop</a> | bool\_t | 是否循环播放。 |
 | <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为:0-9,a-z,A-Z。 |
+| <a href="#image_animation_t_start_index">start\_index</a> | uint32\_t | 图片起始序数。 |
+| <a href="#image_animation_t_unload_after_paint">unload\_after\_paint</a> | bool\_t | 绘制完成后unload图片，以释放内存空间。 |
 #### image\_animation\_cast 函数
 -----------------------
 
@@ -192,6 +202,36 @@ ret_t image_animation_set_delay (widget_t* widget, uint32_t delay);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image\_animation对象。 |
 | delay | uint32\_t | 延迟播放时间(毫秒)。 |
+#### image\_animation\_set\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_set_format"> 设置生成图片名的格式。
+
+ XXX:生成图片名时，第一个参数是图片名前缀，第二个是序数，只能在此前提下设置格式。
+
+ ```
+  const char* format = image_animation->format ? image_animation->format : "%s%d";
+  tk_snprintf(name, TK_NAME_LEN, format, image_animation->image, image_animation->index);
+ ```
+
+
+
+
+* 函数原型：
+
+```
+ret_t image_animation_set_format (widget_t* widget, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
+| format | const char* | 格式。 |
 #### image\_animation\_set\_image 函数
 -----------------------
 
@@ -258,12 +298,40 @@ ret_t image_animation_set_loop (widget_t* widget, bool_t loop);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image\_animation对象。 |
 | loop | bool\_t | 是否循环播放。 |
+#### image\_animation\_set\_range\_sequence 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_set_range_sequence"> 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ...,
+ "fire99"。
+
+若指定的图片不存在，则重复上一张图片。
+
+
+
+
+* 函数原型：
+
+```
+ret_t image_animation_set_range_sequence (widget_t* widget, uint32_t start_index, uint32_t end_index);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
+| start\_index | uint32\_t | 图片起始序数。 |
+| end\_index | uint32\_t | 图片结束序数。 |
 #### image\_animation\_set\_sequence 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_animation_t_image_animation_set_sequence"> 设置播放序列。比如image为"fire"，sequence为"123", 将依次播放"fire1", "fire2", "fire3"。
+> <p id="image_animation_t_image_animation_set_sequence"> 设置播放序列。比如image为"fire"，sequence为"12223", 将依次播放"fire1", "fire2", "fire2", "fire2",
+ "fire3"。
 
 
 
@@ -280,6 +348,28 @@ ret_t image_animation_set_sequence (widget_t* widget, const char* sequence);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image\_animation对象。 |
 | sequence | const char* | 播放序列。 |
+#### image\_animation\_set\_unload\_after\_paint 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_set_unload_after_paint"> 设置绘制完成后unload图片，以释放内存空间。
+
+
+
+* 函数原型：
+
+```
+ret_t image_animation_set_unload_after_paint (widget_t* widget, bool_t unload_after_paint);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
+| unload\_after\_paint | bool\_t | 是否绘制完成后unload图片。 |
 #### image\_animation\_stop 函数
 -----------------------
 
@@ -324,6 +414,40 @@ ret_t image_animation_stop (widget_t* widget);
 
 
 * 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### end\_index 属性
+-----------------------
+> <p id="image_animation_t_end_index"> 图片结束序数。
+
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### format 属性
+-----------------------
+> <p id="image_animation_t_format"> 索引到图片名转换时的格式，缺省为"%s%d"。
+
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -391,7 +515,42 @@ ret_t image_animation_stop (widget_t* widget);
 > <p id="image_animation_t_sequence"> 播放的序列，字符可选值为:0-9,a-z,A-Z。
 
 
+
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### start\_index 属性
+-----------------------
+> <p id="image_animation_t_start_index"> 图片起始序数。
+
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### unload\_after\_paint 属性
+-----------------------
+> <p id="image_animation_t_unload_after_paint"> 绘制完成后unload图片，以释放内存空间。
+
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

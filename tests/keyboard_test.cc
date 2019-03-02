@@ -18,3 +18,12 @@ TEST(KeyBoard, basic) {
 
   widget_destroy(b);
 }
+
+TEST(KeyBoard, cast) {
+  widget_t* b = keyboard_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(b, keyboard_cast(b));
+  ASSERT_EQ(b, window_base_cast(b));
+
+  widget_destroy(b);
+}

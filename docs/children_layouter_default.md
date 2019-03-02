@@ -68,9 +68,9 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 
 在没有设置子控件布局参数时，采用缺省的布局方式，父控件啥事也不做，完全由子控件自己的布局参数决定。
 
-### 1. hbox
+### 1. hbox水平布局
 
-当rows=1,cols=0时，所有子控件在水平方向排成一行，可以实现其它GUI中hbox的功能。子控件的参数：
+当rows=1,cols=0时，所有子控件在水平方向排成一行，可以实现水平布局功能。子控件的参数：
 
 * x 从左到右排列，由布局参数计算而出。
 * y 为y\_margin
@@ -92,15 +92,17 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
 
-### 2. vbox
+![水平布局](images/layout_hbox.png)
 
-当cols=1,rows=0时，所有子控件在垂直方向排成一列，可以实现其它GUI中vbox的功能。子控件的参数：
+### 2. vbox垂直布局
+
+当cols=1,rows=0时，所有子控件在垂直方向排成一列，可以实现垂直布局功能。子控件的参数：
 
 * x 为x\_margin
 * y 从上到下排列，由布局参数计算而出。
@@ -122,15 +124,17 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+bin\preview_ui.exe t.xml
 ```
 
-### 3. listbox
+![垂直布局](images/layout_vbox.png)
 
-当cols=1,rows=N时，所有子控件在垂直方向排成一列，可以实现其它GUI中listbox的功能。子控件的参数：
+### 3. listbox列表布局
+
+当cols=1,rows=N时，所有子控件在垂直方向排成一列，可以实现列表布局功能。子控件的参数：
 
 * x 为x\_margin
 * y 从上到下排列，由布局参数计算而出。
@@ -152,15 +156,17 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
 
-### 4. grid
+![列表布局](images/layout_list.png)
 
-当cols=M,rows=N时，所有子控件放在MxN的网格中，可以实现其它GUI中grid的功能。
+### 4. grid网格布局
+
+当cols=M,rows=N时，所有子控件放在MxN的网格中，可以实现网格布局功能。
 
 > 子控件无需指定x/y/w/h等参数
 
@@ -177,13 +183,15 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
 
-### 5. 浮动布局
+![网格布局](images/layout_grid.png)
+
+### 5. floating浮动布局
 
 如果子控件的floating属性设置为true，其不受children\_layout的限制：
 
@@ -202,12 +210,13 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
 
+![浮动布局](images/layout_floating.png)
 
 ## 四、高级用法
 
@@ -228,11 +237,13 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
+
+![高级用法一](images/layout_adv1.png)
 
 ### 2.子控件自身的布局参数x/y/w/h均为像素方式时，需要用self\_layout参数指定。
 
@@ -250,13 +261,19 @@ widget_set_children_layout(w, "default(r=2,c=2)");
 </window>
 ```
 
-保存为t.xml，可用preview_ui预览效果：
+例如，将文件保存当前目录的t.xml文件，可用preview_ui（在awtk\bin目录下）预览效果如下图，命令如下：
 
 ```
- ./bin/preview_ui t.xml 
+ bin\preview_ui.exe t.xml
 ```
 
+![高级用法二](images/layout_adv2.png)
 
 ## 五、示例
 
 demos/assets/raw/ui/中有演示各种布局参数的示例。
+
+> 以上在运行预览命令时，假定awtk的根目录为当前目录。
+> 
+> 在不同平台下，命令运行方式有细微差别，请自行调整。
+> 

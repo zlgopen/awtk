@@ -20,6 +20,7 @@
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
 | <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
 | <a href="#emitter_t_emitter_off">emitter\_off</a> | 注销指定事件的处理函数。 |
+| <a href="#emitter_t_emitter_off_by_ctx">emitter\_off\_by\_ctx</a> | 注销指定事件的处理函数。 |
 | <a href="#emitter_t_emitter_off_by_func">emitter\_off\_by\_func</a> | 注销指定事件的处理函数。 |
 | <a href="#emitter_t_emitter_on">emitter\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#emitter_t_emitter_set_on_destroy">emitter\_set\_on\_destroy</a> | 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。 |
@@ -260,6 +261,29 @@ ret_t emitter_off (emitter_t* emitter, uint32_t id);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
 | id | uint32\_t | emitter\_on返回的ID。 |
+#### emitter\_off\_by\_ctx 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_off_by_ctx"> 注销指定事件的处理函数。
+
+
+
+
+* 函数原型：
+
+```
+ret_t emitter_off_by_ctx (emitter_t* emitter, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| emitter | emitter\_t* | emitter对象。 |
+| ctx | void* | 事件处理函数上下文。 |
 #### emitter\_off\_by\_func 函数
 -----------------------
 

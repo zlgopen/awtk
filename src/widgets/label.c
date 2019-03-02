@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "widgets/label.h"
 #include "base/widget_vtable.h"
+#include "base/window_manager.h"
 
 uint32_t line_breaker_count(const wchar_t* str) {
   uint32_t lines = 1;
@@ -163,6 +164,57 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t label_on_line_measure(void* ctx, uint32_t index, const wchar_t* str, uint32_t size) {
+  ctx_info_t* info = (ctx_info_t*)ctx;
+  float_t text_w = canvas_measure_text(info->c, str, size);
+
+  info->w = tk_max(info->w, text_w);
+  info->y += info->line_height;
+
+  return RET_OK;
+}
+
+ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, uint32_t min_h,
+                              uint32_t max_h) {
+  wh_t w = 0;
+  wh_t h = 0;
+  ctx_info_t ctx;
+  canvas_t* c = NULL;
+  int32_t margin = 0;
+  style_t* style = NULL;
+  uint32_t font_size = 20;
+  label_t* label = LABEL(widget);
+
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  c = WINDOW_MANAGER(window_manager())->canvas;
+  margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+  font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+
+  ctx.c = c;
+  ctx.w = 0;
+  ctx.y = margin;
+  ctx.x = margin;
+  ctx.widget = widget;
+  ctx.line_height = font_size;
+
+  widget_prepare_text_style(widget, c);
+  line_breaker_break(widget->text.str, label_on_line_measure, &ctx);
+
+  w = ctx.w;
+  w = tk_min(w, max_w);
+  w = tk_max(w, min_w);
+
+  h = ctx.y + margin;
+  h = tk_min(h, max_h);
+  h = tk_max(h, min_h);
+
+  widget_resize(widget, w, h);
+
+  return RET_OK;
+}
+
 ret_t label_set_length(widget_t* widget, int32_t length) {
   label_t* label = LABEL(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -193,20 +245,27 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const widget_vtable_t s_label_vtable = {.size = sizeof(label_t),
-                                               .type = WIDGET_TYPE_LABEL,
-                                               .enable_pool = TRUE,
-                                               .create = label_create,
-                                               .set_prop = label_set_prop,
-                                               .get_prop = label_get_prop,
-                                               .on_paint_self = label_on_paint_self};
+TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
+                         .type = WIDGET_TYPE_LABEL,
+                         .enable_pool = TRUE,
+                         .parent = TK_PARENT_VTABLE(widget),
+                         .create = label_create,
+                         .set_prop = label_set_prop,
+                         .get_prop = label_get_prop,
+                         .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_label_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(label), x, y, w, h);
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL, NULL);
 
   label->length = -1;
+
+  return widget;
+}
+
+widget_t* label_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, label), NULL);
 
   return widget;
 }

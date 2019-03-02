@@ -100,7 +100,20 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 ret_t keyboard_close(widget_t* parent);
 
-#define KEYBOARD(widget) ((keyboard_t*)(widget))
+/**
+ * @method keyboard_cast
+ * 转换为keyboard对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget keyboard对象。
+ *
+ * @return {widget_t*} keyboard对象。
+ */
+widget_t* keyboard_cast(widget_t* widget);
+
+#define KEYBOARD(widget) ((keyboard_t*)(keyboard_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(keyboard);
 
 END_C_DECLS
 

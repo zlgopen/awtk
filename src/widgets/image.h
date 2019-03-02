@@ -136,7 +136,10 @@ ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
  */
 widget_t* image_cast(widget_t* widget);
 
-#define IMAGE(widget) ((image_t*)(widget))
+#define IMAGE(widget) ((image_t*)(image_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(image);
 
 END_C_DECLS
 

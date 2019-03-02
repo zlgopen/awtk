@@ -450,14 +450,14 @@ canvas_t* canvas_init (canvas_t* c, lcd_t* lcd, font_manager_t* font_manager);
 * 函数原型：
 
 ```
-ret_t canvas_measure_text (canvas_t* c, const wchar_t* str, uint32_t nr);
+float_t canvas_measure_text (canvas_t* c, const wchar_t* str, uint32_t nr);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回文本所占的宽度。 |
+| 返回值 | float\_t | 返回文本所占的宽度。 |
 | c | canvas\_t* | canvas对象。 |
 | str | const wchar\_t* | 字符串。 |
 | nr | uint32\_t | 字符数。 |
@@ -476,14 +476,14 @@ ret_t canvas_measure_text (canvas_t* c, const wchar_t* str, uint32_t nr);
 * 函数原型：
 
 ```
-ret_t canvas_measure_utf8 (canvas_t* c, const char* str);
+float_t canvas_measure_utf8 (canvas_t* c, const char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回文本所占的宽度。 |
+| 返回值 | float\_t | 返回文本所占的宽度。 |
 | c | canvas\_t* | canvas对象。 |
 | str | const char* | 字符串。 |
 #### canvas\_set\_clip\_rect 函数

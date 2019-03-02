@@ -235,7 +235,10 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
  */
 bool_t scroll_bar_is_mobile(widget_t* widget);
 
-#define SCROLL_BAR(widget) ((scroll_bar_t*)(widget))
+#define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(scroll_bar);
 
 END_C_DECLS
 

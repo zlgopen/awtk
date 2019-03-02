@@ -93,11 +93,11 @@
 * menu
 * drag & drop
 * tableview
-* python binging 
 * 音频接口。
 * 键盘导航
 * 事件录制与重放。
 * 高亮对话框(背景模糊)
+* Accessibility
 
 ## 长期计划
 * ios移植

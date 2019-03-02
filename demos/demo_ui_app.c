@@ -246,7 +246,19 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
 }
 
 static ret_t on_open_window(void* ctx, event_t* e) {
-  open_window((const char*)ctx, NULL);
+  const char* name = ctx;
+
+  if (tk_str_eq(name, "toast")) {
+    dialog_toast("Hello AWTK!\nThis is a toast!", 3000);
+  } else if (tk_str_eq(name, "info")) {
+    dialog_info("Hello AWTK!\nThis is info dialog!");
+  } else if (tk_str_eq(name, "warn")) {
+    dialog_warn("Hello AWTK!\nDanger!!!");
+  } else if (tk_str_eq(name, "confirm")) {
+    dialog_confirm("Hello AWTK!\nAre you sure to close?");
+  } else {
+    open_window(name, NULL);
+  }
 
   (void)e;
 
@@ -384,6 +396,7 @@ static ret_t install_one(void* ctx, const void* iter) {
     const char* name = widget->name;
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
+      widget_on(widget, EVT_LONG_PRESS, on_open_window, (void*)(name + 5));
     } else if (tk_str_eq(name, "paint_linear_gradient")) {
       widget_on(widget, EVT_PAINT, on_paint_linear_gradient, NULL);
     } else if (tk_str_eq(name, "paint_radial_gradient")) {
@@ -494,8 +507,29 @@ static ret_t show_preload_res_window() {
   return RET_OK;
 }
 
+static ret_t close_window_on_event(void* ctx, event_t* e) {
+  window_close(WIDGET(ctx));
+
+  return RET_REMOVE;
+}
+
+static ret_t on_screen_saver(void* ctx, event_t* e) {
+  /*please change image_animation to your own window name*/
+  widget_t* win = window_open("image_animation");
+
+  widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
+  widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
+  widget_on(win, EVT_KEY_UP, close_window_on_event, win);
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   tk_ext_widgets_init();
+
+  /*enable screen saver*/
+  window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
+  widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   return show_preload_res_window();
 }

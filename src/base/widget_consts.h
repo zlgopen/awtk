@@ -426,12 +426,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DEFAULT_THEME_OBJ "default_theme_obj"
 
 /**
- * @const WIDGET_PROP_SCRIPT
- *
- */
-#define WIDGET_PROP_SCRIPT "script"
-
-/**
  * @const WIDGET_PROP_ITEM_WIDTH
  *
  */
@@ -466,6 +460,12 @@ BEGIN_C_DECLS
  *
  */
 #define WIDGET_PROP_REPEAT "repeat"
+
+/**
+ * @const WIDGET_PROP_ENABLE_LONG_PRESS
+ *
+ */
+#define WIDGET_PROP_ENABLE_LONG_PRESS "enable_long_press"
 
 /**
  * @const WIDGET_PROP_ANIMATABLE

@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+#include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
@@ -115,6 +116,27 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       if (file_exist(path)) {
         size = file_get_size(path);
         info = load_asset(type, ASSET_TYPE_FONT_BMP, size, path, name);
+        break;
+      }
+
+      break;
+    }
+    case ASSET_TYPE_SCRIPT: {
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".js") == RET_OK,
+          NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_SCRIPT_JS, size, path, name);
+        break;
+      }
+
+      return_value_if_fail(
+          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".lua") == RET_OK,
+          NULL);
+      if (file_exist(path)) {
+        size = file_get_size(path);
+        info = load_asset(type, ASSET_TYPE_SCRIPT_LUA, size, path, name);
         break;
       }
 
@@ -337,7 +359,8 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* rm, asset_typ
   return NULL;
 }
 
-const asset_info_t* assets_manager_ref(assets_manager_t* rm, asset_type_t type, const char* name) {
+static const asset_info_t* assets_manager_ref_impl(assets_manager_t* rm, asset_type_t type,
+                                                   const char* name) {
   const asset_info_t* info = assets_manager_find_in_cache(rm, type, name);
 
   if (info == NULL) {
@@ -348,6 +371,40 @@ const asset_info_t* assets_manager_ref(assets_manager_t* rm, asset_type_t type, 
   }
 
   return info;
+}
+
+const asset_info_t* assets_manager_ref(assets_manager_t* rm, asset_type_t type, const char* name) {
+  const asset_info_t* info = NULL;
+  return_value_if_fail(rm != NULL && name != NULL, NULL);
+  if (strstr(name, TK_LOCALE_MAGIC) != NULL) {
+    char locale[TK_NAME_LEN + 1];
+    char real_name[TK_NAME_LEN + 1];
+    const char* language = locale_info()->language;
+    const char* country = locale_info()->country;
+
+    tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
+    tk_replace_locale(name, real_name, locale);
+    info = assets_manager_ref_impl(rm, type, real_name);
+    if (info != NULL) {
+      return info;
+    }
+
+    tk_replace_locale(name, real_name, language);
+    info = assets_manager_ref_impl(rm, type, real_name);
+    if (info != NULL) {
+      return info;
+    }
+
+    tk_replace_locale(name, real_name, "");
+    info = assets_manager_ref_impl(rm, type, real_name);
+    if (info != NULL) {
+      return info;
+    }
+
+    return NULL;
+  } else {
+    return assets_manager_ref_impl(rm, type, name);
+  }
 }
 
 ret_t assets_manager_unref(assets_manager_t* rm, const asset_info_t* info) {
@@ -364,7 +421,7 @@ ret_t assets_manager_unref(assets_manager_t* rm, const asset_info_t* info) {
     if (remove) {
       tk_compare_t cmp = rm->assets.compare;
       rm->assets.compare = pointer_compare;
-      if(darray_remove(&(rm->assets), (void*)info) == RET_NOT_FOUND) {
+      if (darray_remove(&(rm->assets), (void*)info) == RET_NOT_FOUND) {
         asset_info_unref((asset_info_t*)info);
       }
       rm->assets.compare = cmp;

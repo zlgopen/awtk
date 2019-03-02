@@ -614,6 +614,76 @@ ret_t dummy_destroy(void* data) {
   return RET_OK;
 }
 
-int32_t pointer_compare(const void* a, const void* b) {
+int pointer_compare(const void* a, const void* b) {
   return ((const char*)a - (const char*)b);
+}
+
+ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale) {
+  char* d = NULL;
+  char* p = NULL;
+  int32_t len = 0;
+  const char* s = NULL;
+  return_value_if_fail(strlen(name) < TK_NAME_LEN, RET_BAD_PARAMS);
+  return_value_if_fail(strlen(locale) <= strlen(TK_LOCALE_MAGIC), RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL && out != NULL && locale != NULL, RET_BAD_PARAMS);
+
+  d = out;
+  s = name;
+  p = strstr(name, TK_LOCALE_MAGIC);
+  return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+
+  len = p - s;
+  memcpy(d, s, len);
+  d += len;
+
+  len = strlen(locale);
+  memcpy(d, locale, len);
+
+  d += len;
+  strcpy(d, p + strlen(TK_LOCALE_MAGIC));
+
+  return RET_OK;
+}
+
+bool_t tk_is_valid_name(const char* name) {
+  const char* p = name;
+  while (*p) {
+    if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') ||
+        *p == '_') {
+      p++;
+    } else {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+bool_t tk_str_start_with(const char* str, const char* prefix) {
+  return_value_if_fail(str != NULL && prefix != NULL, FALSE);
+
+  return memcmp(str, prefix, strlen(prefix)) == 0;
+}
+
+const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size) {
+  uint32_t i = 0;
+  const char* s = name;
+  return_value_if_fail(name != NULL && out != NULL && max_out_size > 0, NULL);
+
+  while (*s && i < max_out_size) {
+    if (*s == '_') {
+      s++;
+      if (*s != '\0') {
+        out[i++] = toupper(*s);
+      } else {
+        break;
+      }
+    } else {
+      out[i++] = *s;
+    }
+    s++;
+  }
+  out[i] = '\0';
+
+  return out;
 }

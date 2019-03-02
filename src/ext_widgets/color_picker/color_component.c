@@ -135,13 +135,13 @@ static ret_t color_component_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_color_component_vtable = {
-    .size = sizeof(color_component_t),
-    .type = WIDGET_TYPE_COLOR_COMPONENT,
-    .create = color_component_create,
-    .on_destroy = color_component_on_destroy,
-    .on_event = color_component_on_event,
-    .on_paint_self = color_component_on_paint_self};
+TK_DECL_VTABLE(color_component) = {.size = sizeof(color_component_t),
+                                   .type = WIDGET_TYPE_COLOR_COMPONENT,
+                                   .parent = TK_PARENT_VTABLE(widget),
+                                   .create = color_component_create,
+                                   .on_destroy = color_component_on_destroy,
+                                   .on_event = color_component_on_event,
+                                   .on_paint_self = color_component_on_paint_self};
 
 static ret_t bitmap_destroy_data(bitmap_t* bitmap) {
   void* data = (void*)bitmap->data;
@@ -236,7 +236,7 @@ static ret_t color_component_update_h(widget_t* widget) {
 }
 
 widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_color_component_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_component), x, y, w, h);
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, NULL);
 
@@ -308,4 +308,10 @@ float color_component_get_v(widget_t* widget) {
   float v = (float)(color_component->color_x) / (float)(widget->w);
 
   return v;
+}
+
+widget_t* color_component_cast(widget_t* widget) {
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, color_component), NULL);
+
+  return widget;
 }

@@ -83,7 +83,7 @@ typedef struct _emitter_t {
 
 /**
  * @method emitter_create
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * 创建emitter对象。
  *
  * @return {emitter_t*} 对象。
@@ -147,6 +147,16 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
+
+/**
+ * @method emitter_off_by_ctx
+ * 注销指定事件的处理函数。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx);
 
 /**
  * @method emitter_set_on_destroy
@@ -219,7 +229,7 @@ ret_t emitter_deinit(emitter_t* emitter);
  * @method emitter_destroy
  * 销毁。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {emitter_t*} emitter emitter对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -237,6 +247,8 @@ ret_t emitter_destroy(emitter_t* emitter);
  * @return {emitter_t*} 对象。
  */
 emitter_t* emitter_cast(emitter_t* emitter);
+
+#define EMITTER(emitter) ((emitter_t*)(emitter))
 
 END_C_DECLS
 

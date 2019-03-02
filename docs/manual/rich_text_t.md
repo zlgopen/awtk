@@ -59,6 +59,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#rich_text_t_rich_text_cast">rich\_text\_cast</a> | 转换为rich_text对象(供脚本语言使用)。 |
 | <a href="#rich_text_t_rich_text_create">rich\_text\_create</a> | 创建rich_text对象 |
 | <a href="#rich_text_t_rich_text_set_text">rich\_text\_set\_text</a> | 设置文本。 |
 ### 属性
@@ -67,6 +68,28 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rich_text_t_line_gap">line\_gap</a> | int32\_t | 行间距。 |
+#### rich\_text\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rich_text_t_rich_text_cast"> 转换为rich_text对象(供脚本语言使用)。
+
+
+
+
+* 函数原型：
+
+```
+widget_t* rich_text_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | rich\_text对象。 |
+| widget | widget\_t* | rich\_text对象。 |
 #### rich\_text\_create 函数
 -----------------------
 

@@ -89,6 +89,26 @@ TEST(Timer, once) {
   timer_manager_destroy(tm);
 }
 
+TEST(Timer, reset) {
+  timer_manager_t* tm = timer_manager_create(timer_get_time);
+  uint32_t id = timer_manager_add(tm, timer_once, NULL, 100);
+
+  timer_set_time(100);
+  timer_reset(id);
+
+  timer_clear_log();
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_log, "");
+
+  timer_set_time(200);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 0);
+  ASSERT_EQ(s_log, "o:");
+
+  timer_manager_destroy(tm);
+}
+
 TEST(Timer, repeat) {
   uint32_t i = 0;
   uint32_t ids[NR];

@@ -67,13 +67,15 @@ typedef struct _window_manager_t {
 
   widget_t* system_bar;
   input_device_status_t input_device_status;
+  uint32_t screen_saver_timer_id;
+  uint32_t screen_saver_time;
 } window_manager_t;
 
 /**
  * @method window_manager
  * 获取全局window_manager对象
  * @alias window_manager_instance
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "cast"]
  *
  * @return {widget_t*} 对象。
  */
@@ -197,6 +199,17 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps);
+
+/**
+ * @method window_manager_set_screen_saver_time
+ * 设置屏保时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {uint32_t}  screen_saver_time 屏保时间(单位毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_saver_time);
 
 /**
  * @method window_manager_set_cursor

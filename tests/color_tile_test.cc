@@ -55,3 +55,11 @@ TEST(ColorTile, clone) {
   widget_destroy(w1);
   widget_destroy(w2);
 }
+
+TEST(ColorTile, cast) {
+  widget_t* w = color_tile_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(w, color_tile_cast(w));
+
+  widget_destroy(w);
+}

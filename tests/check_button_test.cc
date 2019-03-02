@@ -1,5 +1,6 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
+#include "widgets/button.h"
 #include "widgets/check_button.h"
 
 using std::string;
@@ -70,5 +71,18 @@ TEST(CheckButton, event) {
   check_button_set_value(w, FALSE);
   ASSERT_EQ(s_log, "will_change;change;");
 
+  widget_destroy(w);
+}
+
+TEST(CheckButton, radio_cast) {
+  widget_t* w = check_button_create_radio(NULL, 0, 0, 100, 100);
+  ASSERT_EQ(w, check_button_cast(w));
+  widget_destroy(w);
+}
+
+TEST(CheckButton, check_cast) {
+  widget_t* w = check_button_create(NULL, 0, 0, 100, 100);
+  ASSERT_EQ(w, check_button_cast(w));
+  ASSERT_NE(w, button_cast(w));
   widget_destroy(w);
 }

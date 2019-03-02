@@ -49,12 +49,20 @@ typedef struct _tokenizer_t {
    * 当前位置。
    */
   uint32_t cursor;
+
   /**
    * @property {char*} separtor
    * @annotation ["readable"]
-   * 字符串。
+   * 分隔字符串。
    */
   const char* separtor;
+
+  /**
+   * @property {char*} single_char_token
+   * @annotation ["readable"]
+   * 单字符的token。
+   */
+  const char* single_char_token;
 
   str_t token;
 } tokenizer_t;
@@ -74,6 +82,21 @@ tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t si
                             const char* separtor);
 
 /**
+ * @method tokenizer_init_ex
+ * 初始化tokenizer对象。
+ * @annotation ["constructor"]
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ * @param {char*} str 要解析的字符串。
+ * @param {uint32_t} size 字符串长度。
+ * @param {char*} separtor 分隔字符。
+ * @param {char*} single_char_token 单字符token。
+ *
+ * @return {tokenizer_t*} tokenizer对象本身。
+ */
+tokenizer_t* tokenizer_init_ex(tokenizer_t* tokenizer, const char* str, uint32_t size,
+                               const char* separtor, const char* single_char_token);
+
+/**
  * @method tokenizer_has_more
  * 是否还有下一个token。
  * @param {tokenizer_t*} tokenizer tokenizer对象。
@@ -90,6 +113,16 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer);
  * @return {char*} 成功返回token，失败返回NULL。
  */
 const char* tokenizer_next(tokenizer_t* tokenizer);
+
+/**
+ * @method tokenizer_next_until
+ * 获取下一个token，该token直到遇到指定的char。
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ * @param {const char*} str 字符集。
+ *
+ * @return {char*} 成功返回token，失败返回NULL。
+ */
+const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str);
 
 /**
  * @method tokenizer_next_int

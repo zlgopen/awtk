@@ -204,9 +204,24 @@ value_t* value_set_pointer(value_t* v, pointer_t value) {
 
 pointer_t value_pointer(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
-  return_value_if_fail(v->type == VALUE_TYPE_POINTER, NULL);
+  switch (v->type) {
+    case VALUE_TYPE_STRING: {
+      return (void*)(v->value.str);
+    }
+    case VALUE_TYPE_WSTRING: {
+      return (void*)(v->value.wstr);
+    }
+    case VALUE_TYPE_OBJECT: {
+      return (v->value.object);
+    }
+    case VALUE_TYPE_POINTER: {
+      return (v->value.ptr);
+    }
+    default:
+      break;
+  }
 
-  return v->value.ptr;
+  return NULL;
 }
 
 value_t* value_set_float(value_t* v, float value) {
@@ -350,6 +365,7 @@ ret_t value_copy(value_t* dst, const value_t* src) {
   }
 
   memcpy(dst, src, sizeof(value_t));
+  dst->free_handle = FALSE;
 
   return RET_OK;
 }
@@ -361,18 +377,18 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
 
   switch (dst->type) {
     case VALUE_TYPE_STRING: {
-      dst->free_handle = TRUE;
       dst->value.str = tk_strdup(src->value.str);
+      dst->free_handle = dst->value.str != NULL;
       break;
     }
     case VALUE_TYPE_WSTRING: {
-      dst->free_handle = TRUE;
       dst->value.wstr = tk_wstrdup(src->value.wstr);
+      dst->free_handle = dst->value.wstr != NULL;
       break;
     }
     case VALUE_TYPE_OBJECT: {
-      dst->free_handle = TRUE;
       object_ref(dst->value.object);
+      dst->free_handle = dst->value.object != NULL;
       break;
     }
     default:

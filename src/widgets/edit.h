@@ -373,7 +373,10 @@ ret_t edit_set_input_tips(widget_t* widget, const char* tips);
  */
 ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
 
-#define EDIT(widget) ((edit_t*)(widget))
+#define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(edit);
 
 /*public for spinbox and other controls*/
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c);

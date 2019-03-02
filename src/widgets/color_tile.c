@@ -71,18 +71,18 @@ static ret_t color_tile_set_prop(widget_t* widget, const char* name, const value
 
 static const char* s_color_tile_properties[] = {WIDGET_PROP_BG_COLOR, WIDGET_PROP_BORDER_COLOR,
                                                 NULL};
-static const widget_vtable_t s_color_tile_vtable = {
-    .size = sizeof(color_tile_t),
-    .type = WIDGET_TYPE_COLOR_TILE,
-    .create = color_tile_create,
-    .clone_properties = s_color_tile_properties,
-    .persistent_properties = s_color_tile_properties,
-    .set_prop = color_tile_set_prop,
-    .get_prop = color_tile_get_prop,
-    .on_paint_self = color_tile_on_paint_self};
+TK_DECL_VTABLE(color_tile) = {.size = sizeof(color_tile_t),
+                              .type = WIDGET_TYPE_COLOR_TILE,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = color_tile_create,
+                              .clone_properties = s_color_tile_properties,
+                              .persistent_properties = s_color_tile_properties,
+                              .set_prop = color_tile_set_prop,
+                              .get_prop = color_tile_get_prop,
+                              .on_paint_self = color_tile_on_paint_self};
 
 widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_color_tile_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_tile), x, y, w, h);
   color_tile_t* color_tile = COLOR_TILE(widget);
   return_value_if_fail(color_tile != NULL, NULL);
 
@@ -93,7 +93,7 @@ widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* color_tile_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_color_tile_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, color_tile), NULL);
 
   return widget;
 }

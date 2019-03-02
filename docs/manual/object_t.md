@@ -13,14 +13,30 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#object_t_object_can_exec">object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
+| <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
+| <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
+| <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
 | <a href="#object_t_object_get_prop">object\_get\_prop</a> | 获取指定属性的值。 |
+| <a href="#object_t_object_get_prop_float">object\_get\_prop\_float</a> | 获取指定属性的浮点数类型的值。 |
+| <a href="#object_t_object_get_prop_int">object\_get\_prop\_int</a> | 获取指定属性的整数类型的值。 |
+| <a href="#object_t_object_get_prop_object">object\_get\_prop\_object</a> | 获取指定属性的object类型的值。 |
+| <a href="#object_t_object_get_prop_pointer">object\_get\_prop\_pointer</a> | 获取指定属性的指针类型的值。 |
+| <a href="#object_t_object_get_prop_str">object\_get\_prop\_str</a> | 获取指定属性的字符串类型的值。 |
+| <a href="#object_t_object_has_prop">object\_has\_prop</a> | 检查是否存在指定的属性。 |
+| <a href="#object_t_object_notify_changed">object\_notify\_changed</a> | 触发EVT_PROPS_CHANGED事件。 |
 | <a href="#object_t_object_ref">object\_ref</a> | 引用计数加1。 |
 | <a href="#object_t_object_remove_prop">object\_remove\_prop</a> | 删除指定属性。 |
 | <a href="#object_t_object_set_name">object\_set\_name</a> | 设置对象的名称。 |
 | <a href="#object_t_object_set_prop">object\_set\_prop</a> | 设置指定属性的值。 |
+| <a href="#object_t_object_set_prop_float">object\_set\_prop\_float</a> | 设置指定属性的浮点数类型的值。 |
+| <a href="#object_t_object_set_prop_int">object\_set\_prop\_int</a> | 设置指定属性的整数类型的值。 |
+| <a href="#object_t_object_set_prop_object">object\_set\_prop\_object</a> | 设置指定属性的object类型的值。 |
+| <a href="#object_t_object_set_prop_pointer">object\_set\_prop\_pointer</a> | 设置指定属性的指针类型的值。 |
+| <a href="#object_t_object_set_prop_str">object\_set\_prop\_str</a> | 设置指定属性的字符串类型的值。 |
 | <a href="#object_t_object_unref">object\_unref</a> | 引用计数减1。引用计数为0时，销毁对象。 |
 ### 属性
 <p id="object_t_properties">
@@ -29,6 +45,31 @@
 | -------- | ----- | ------------ | 
 | <a href="#object_t_name">name</a> | char* | 对象的名称。 |
 | <a href="#object_t_ref_count">ref\_count</a> | int32\_t | 引用计数。 |
+#### object\_can\_exec 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_can_exec"> 检查是否可以执行指定的命令。
+
+
+
+
+
+* 函数原型：
+
+```
+bool_t object_can_exec (object_t* obj, const char* name, const char* args);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示可以执行，否则表示不可以执行。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 命令的名称。 |
+| args | const char* | 命令的参数。 |
 #### object\_compare 函数
 -----------------------
 
@@ -43,16 +84,41 @@
 * 函数原型：
 
 ```
-int32_t object_compare (object_t* obj, object_t* other);
+int object_compare (object_t* obj, object_t* other);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回比较结果。 |
+| 返回值 | int | 返回比较结果。 |
 | obj | object\_t* | object对象。 |
 | other | object\_t* | 比较的object对象。 |
+#### object\_copy\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_copy_prop"> 拷贝指定的属性。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_copy_prop (object_t* obj, object_t* src, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | 目标对象。 |
+| src | object\_t* | 源对象。 |
+| name | const char* | 属性的名称。 |
 #### object\_create 函数
 -----------------------
 
@@ -78,6 +144,55 @@ ret_t object_create (const object_vtable_t* vt);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回object对象。 |
 | vt | const object\_vtable\_t* | 虚函数表。 |
+#### object\_eval 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_eval"> 计算一个表达式，表达式中引用的变量从prop中获取。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_eval (object_t* obj, const char* expr, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| expr | const char* | 表达式。 |
+| v | value\_t* | 返回计算结果。 |
+#### object\_exec 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_exec"> 执行指定的命令。
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_exec (object_t* obj, const char* name, const char* args);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 命令的名称。 |
+| args | const char* | 命令的参数。 |
 #### object\_foreach\_prop 函数
 -----------------------
 
@@ -128,6 +243,175 @@ ret_t object_get_prop (object_t* obj, const char* name, value_t* v);
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
 | v | value\_t* | 返回属性的值。 |
+#### object\_get\_prop\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_prop_float"> 获取指定属性的浮点数类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+float_t object_get_prop_float (object_t* obj, const char* name, float_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float\_t | 返回指定属性的浮点数类型的值。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| defval | float\_t | 缺省值。 |
+#### object\_get\_prop\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_prop_int"> 获取指定属性的整数类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+int32_t object_get_prop_int (object_t* obj, const char* name, int32_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回指定属性的整数类型的值。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| defval | int32\_t | 缺省值。 |
+#### object\_get\_prop\_object 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_prop_object"> 获取指定属性的object类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+object_t* object_get_prop_object (object_t* obj, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回指定属性的object类型的值。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+#### object\_get\_prop\_pointer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_prop_pointer"> 获取指定属性的指针类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+void* object_get_prop_pointer (object_t* obj, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回指定属性的指针类型的值。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+#### object\_get\_prop\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_prop_str"> 获取指定属性的字符串类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+const char* object_get_prop_str (object_t* obj, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回指定属性的字符串类型的值。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+#### object\_has\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_has_prop"> 检查是否存在指定的属性。
+
+
+
+
+
+* 函数原型：
+
+```
+bool_t object_has_prop (object_t* obj, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+#### object\_notify\_changed 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_notify_changed"> 触发EVT_PROPS_CHANGED事件。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_notify_changed (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
 #### object\_ref 函数
 -----------------------
 
@@ -213,7 +497,7 @@ ret_t object_set_name (object_t* obj, const char* name);
 * 函数原型：
 
 ```
-ret_t object_set_prop (object_t* obj, const char* name, value_t* v);
+ret_t object_set_prop (object_t* obj, const char* name, value_t* value);
 ```
 
 * 参数说明：
@@ -223,7 +507,132 @@ ret_t object_set_prop (object_t* obj, const char* name, value_t* v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
-| v | value\_t* | 属性的值。 |
+| value | value\_t* | 属性的值。 |
+#### object\_set\_prop\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_float"> 设置指定属性的浮点数类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_set_prop_float (object_t* obj, const char* name, float_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| value | float\_t | 属性的值。 |
+#### object\_set\_prop\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_int"> 设置指定属性的整数类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_set_prop_int (object_t* obj, const char* name, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| value | int32\_t | 属性的值。 |
+#### object\_set\_prop\_object 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_object"> 设置指定属性的object类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_set_prop_object (object_t* obj, const char* name, object_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| value | object\_t* | 属性的值。 |
+#### object\_set\_prop\_pointer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_pointer"> 设置指定属性的指针类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_set_prop_pointer (object_t* obj, const char* name, void* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| value | void* | 属性的值。 |
+#### object\_set\_prop\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_str"> 设置指定属性的字符串类型的值。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_set_prop_str (object_t* obj, const char* name, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| value | const char* | 属性的值。 |
 #### object\_unref 函数
 -----------------------
 

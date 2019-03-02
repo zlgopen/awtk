@@ -62,7 +62,7 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
 
 ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   image_base_t* image = IMAGE_BASE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, image->image);
@@ -95,7 +95,7 @@ ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v) {
   image_base_t* image = IMAGE_BASE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_set_image(widget, value_str(v));
@@ -212,8 +212,10 @@ ret_t image_set_clickable(widget_t* widget, bool_t clickable) {
   return widget_invalidate(widget, NULL);
 }
 
+TK_DECL_VTABLE(image_base) = {.size = sizeof(image_base_t), .parent = TK_PARENT_VTABLE(widget)};
+
 widget_t* image_base_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image_base), NULL);
 
   return widget;
 }

@@ -28,6 +28,7 @@
 #include "tkc/value.h"
 #include "tkc/darray.h"
 #include "tkc/rect.h"
+#include "tkc/object.h"
 #include "tkc/emitter.h"
 
 #include "base/types_def.h"
@@ -38,7 +39,6 @@
 #include "base/theme.h"
 #include "base/layout_def.h"
 #include "base/widget_consts.h"
-#include "base/custom_props.h"
 #include "base/self_layouter.h"
 #include "base/children_layouter.h"
 
@@ -95,6 +95,11 @@ struct _widget_vtable_t {
    * 是否启用pool(如果启用pool，控件需要对其成员全部变量初始化，不能假定成员变量为0)。
    */
   uint32_t enable_pool : 1;
+
+  /**
+   * parent class vtable
+   */
+  const struct _widget_vtable_t* parent;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -365,11 +370,12 @@ struct _widget_t {
    */
   self_layouter_t* self_layout;
   /**
-   * @property {custom_props_t*} custom_props
+   * @property {object_t*} custom_props
    * @annotation ["readable"]
    * 自定义属性。
    */
-  custom_props_t* custom_props;
+  object_t* custom_props;
+
   /**
    * @property {widget_vtable_t} vt
    * @annotation ["readable"]
@@ -1148,6 +1154,27 @@ ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* v);
 const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval);
 
 /**
+ * @method widget_set_prop_pointer
+ * 设置指针格式的属性。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void**} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* v);
+
+/**
+ * @method widget_get_prop_pointer
+ * 获取指针格式的属性。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {void*} 返回属性的值。
+ */
+void* widget_get_prop_pointer(widget_t* widget, const char* name);
+
+/**
  * @method widget_set_prop_int
  * 设置整数格式的属性。
  * @annotation ["scriptable"]
@@ -1336,6 +1363,19 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap);
+
+/**
+ * @method widget_unload_image
+ * 卸载图片。
+ *
+ *> 一般不需要调用，只有确认在图片不再需要时才调用本函数卸载。
+ *
+ * @param {widget_t*} widget 控件对象。
+ * @param {bitmap_t*} bitmap 图片对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap);
 
 /**
  * @method widget_load_asset
@@ -1664,6 +1704,12 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 #define WIDGET(w) ((widget_t*)(w))
 
 const char** widget_get_persistent_props(void);
+
+bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
+#define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))
+
+/*public for subclass*/
+TK_EXTERN_VTABLE(widget);
 
 END_C_DECLS
 

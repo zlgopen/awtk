@@ -50,6 +50,8 @@ def prepare():
   prepareOutputDir('fonts')
   prepareOutputDir('strings')
   prepareOutputDir('ui')
+  prepareOutputDir('scripts')
+  prepareOutputDir('data')
 
 def execCmd(cmd):
   print(cmd)
@@ -146,6 +148,15 @@ def gen_res_all_font():
     resgen(raw, res)
   fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
 
+def gen_res_all_script():
+  for f in glob.glob(joinPath(INPUT_DIR, 'scripts/*.js')):
+    res=copy.copy(f);
+    raw=copy.copy(f);
+    res=res.replace(INPUT_DIR, '.')
+    res=res.replace('.js', '.res');
+    raw=raw.replace(INPUT_DIR, '.')
+    resgen(raw, res)
+
 def gen_res_all_string():
   strgen('strings/strings.xml', 'strings');
   strgen_bin('strings/strings.xml', 'strings');
@@ -158,6 +169,7 @@ def gen_gpinyin():
 def gen_res_all():
   gen_res_all_string()
   gen_res_all_font()
+  gen_res_all_script()
   gen_res_all_image()
   gen_res_all_ui()
   gen_res_all_style()
@@ -307,6 +319,10 @@ def updateRes():
     prepare()
     gen_res_all_font()
     gen_res_c()
+  elif ACTION=="script":
+    prepare()
+    gen_res_all_script()
+    gen_res_c()
   elif ACTION=='image':
     prepare()
     gen_res_all_image()
@@ -342,7 +358,7 @@ def showUsage():
   global DPI
   global ACTION
   global IMAGEGEN_OPTIONS
-  args=' action[clean|all|font|image|ui|style|string] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
+  args=' action[clean|all|font|image|ui|style|string|script] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
   if len(sys.argv) == 1:
     print('=========================================================');
     print('Usage: '+sys.argv[0] + args)

@@ -348,6 +348,12 @@ static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   return RET_OK;
 }
 
+static bitmap_format_t lcd_mem_get_desired_bitmap_format(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  return mem->format;
+}
+
 static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   lcd_t* base = NULL;
   system_info_t* info = system_info();
@@ -373,6 +379,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->get_point_color = lcd_mem_get_point_color;
   base->get_vgcanvas = lcd_mem_get_vgcanvas;
   base->take_snapshot = lcd_mem_take_snapshot;
+  base->get_desired_bitmap_format = lcd_mem_get_desired_bitmap_format;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = alloc ? lcd_mem_destroy_offline_fb : lcd_mem_destroy;
   base->resize = lcd_mem_resize;

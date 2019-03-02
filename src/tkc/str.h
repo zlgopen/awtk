@@ -79,6 +79,17 @@ typedef struct _str_t {
 str_t* str_init(str_t* str, uint32_t capacity);
 
 /**
+ * @method str_extend
+ * 扩展字符串到指定的容量。
+ * @annotation ["constructor"]
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} capacity 初始容量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_extend(str_t* str, uint32_t capacity);
+
+/**
  * @method str_eq
  * 判断两个字符串是否相等。
  * @param {str_t*} str str对象。
@@ -97,6 +108,15 @@ bool_t str_eq(str_t* str, const char* text);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_set(str_t* str, const char* text);
+
+/**
+ * @method str_clear
+ * 清除字符串内容。
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_clear(str_t* str);
 
 /**
  * @method str_set_with_len

@@ -1,54 +1,44 @@
 /*
- * Copyright 2011-2018 Branimir Karadzic. All rights reserved.
+ * Copyright 2011-2019 Branimir Karadzic. All rights reserved.
  * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
  */
 
 #ifndef NANOVG_BGFX_H_HEADER_GUARD
 #define NANOVG_BGFX_H_HEADER_GUARD
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include "nanovg.h"
-#include <SDL.h>
 
-#ifndef M_PI
-#define M_PI 3.1415926f
-#endif /*M_PI*/
+#include <bgfx/bgfx.h>
 
-typedef struct _NVGLUframebuffer_bgfx
+namespace bx { struct AllocatorI; }
+
+struct NVGcontext;
+
+struct NVGLUframebuffer
 {
   NVGcontext* ctx;
-  uint16_t handle;
+  bgfx::FrameBufferHandle handle;
   int image;
-  uint16_t viewId;
-} NVGLUframebuffer_bgfx ;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-///sdl entry
-NVGcontext* nvgCreateBGFX(int32_t _edgeaa, uint16_t _viewId,uint32_t _width, uint32_t _height, SDL_Window* _window);
+  bgfx::ViewId viewId;
+};
 
 ///
-void nvgDeleteBGFX(NVGcontext* _ctx);
+NVGcontext* nvgCreate(int32_t _edgeaa, bgfx::ViewId _viewId, bx::AllocatorI* _allocator);
 
-uint32_t renderBGFXFrame(int32_t _msecs);
+///
+NVGcontext* nvgCreate(int32_t _edgeaa, bgfx::ViewId _viewId);
 
-void setBGFXViewRect(uint16_t _viewId, uint16_t _x, uint16_t _y, uint16_t _width, uint16_t _height);
+///
+void nvgDelete(NVGcontext* _ctx);
 
-void touchBGFX(uint16_t _viewId);
+///
+void nvgSetViewId(NVGcontext* _ctx, bgfx::ViewId _viewId);
 
-uint32_t frameBGFX(bool _capture);
-
-void resetBGFX(uint32_t _width, uint32_t _height, uint32_t _flags);
+///
+uint16_t nvgGetViewId(struct NVGcontext* _ctx);
 
 // Helper functions to create bgfx framebuffer to render to.
 // Example:
 //		float scale = 2;
-//		NVGLUframebuffer_bgfx* fb = nvgluCreateFramebuffer(ctx, 100 * scale, 100 * scale, 0);
+//		NVGLUframebuffer* fb = nvgluCreateFramebuffer(ctx, 100 * scale, 100 * scale, 0);
 //		nvgluSetViewFramebuffer(VIEW_ID, fb);
 //		nvgluBindFramebuffer(fb);
 //		nvgBeginFrame(ctx, 100, 100, scale);
@@ -66,22 +56,18 @@ void resetBGFX(uint32_t _width, uint32_t _height, uint32_t _flags);
 //		nvgEndFrame(ctx);
 
 ///
-NVGLUframebuffer_bgfx* nvgluCreateFramebufferByViewId(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags, uint16_t _viewId);
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags, bgfx::ViewId _viewId);
 
 ///
-NVGLUframebuffer_bgfx* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags);
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags);
 
 ///
-void nvgluBindFramebuffer(NVGLUframebuffer_bgfx* _framebuffer_bgfx);
+void nvgluBindFramebuffer(NVGLUframebuffer* _framebuffer);
 
 ///
-void nvgluDeleteFramebuffer(NVGLUframebuffer_bgfx* _framebuffer_bgfx);
+void nvgluDeleteFramebuffer(NVGLUframebuffer* _framebuffer);
 
 ///
-void nvgluSetViewFramebuffer(uint16_t _viewId, NVGLUframebuffer_bgfx* _framebuffer_bgfx);
-
-#ifdef __cplusplus
-}
-#endif
+void nvgluSetViewFramebuffer(bgfx::ViewId _viewId, NVGLUframebuffer* _framebuffer);
 
 #endif // NANOVG_BGFX_H_HEADER_GUARD

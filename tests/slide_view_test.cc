@@ -94,3 +94,11 @@ TEST(SlideView, props) {
 
   widget_destroy(w);
 }
+
+TEST(SlideView, cast) {
+  widget_t* w = slide_view_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(w, slide_view_cast(w));
+
+  widget_destroy(w);
+}

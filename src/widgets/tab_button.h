@@ -156,7 +156,10 @@ ret_t tab_button_set_icon(widget_t* widget, const char* name);
  */
 ret_t tab_button_set_active_icon(widget_t* widget, const char* name);
 
-#define TAB_BUTTON(widget) ((tab_button_t*)(widget))
+#define TAB_BUTTON(widget) ((tab_button_t*)(tab_button_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(tab_button);
 
 END_C_DECLS
 

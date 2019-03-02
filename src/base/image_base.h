@@ -202,7 +202,10 @@ ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v);
 bool_t image_need_transform(widget_t* widget);
 ret_t image_transform(widget_t* widget, canvas_t* c);
 
-#define IMAGE_BASE(widget) ((image_base_t*)(widget))
+#define IMAGE_BASE(widget) ((image_base_t*)(image_base_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(image_base);
 
 END_C_DECLS
 

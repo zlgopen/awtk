@@ -92,6 +92,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 | <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> | 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
 | <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> | 设置选项。 |
 | <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
+| <a href="#combo_box_t_combo_box_set_value">combo\_box\_set\_value</a> | 设置值。 |
 ### 属性
 <p id="combo_box_t_properties">
 
@@ -349,6 +350,28 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
 | index | uint32\_t | 选项的索引。 |
+#### combo\_box\_set\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_set_value"> 设置值。
+
+
+
+* 函数原型：
+
+```
+ret_t combo_box_set_value (widget_t* widget, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| value | int32\_t | 值。 |
 #### open\_window 属性
 -----------------------
 > <p id="combo_box_t_open_window"> 为点击按钮时，要打开窗口的名称。

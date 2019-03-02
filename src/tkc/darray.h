@@ -169,6 +169,24 @@ ret_t darray_remove_all(darray_t* darray, void* ctx);
 void* darray_pop(darray_t* darray);
 
 /**
+ * @method darray_tail
+ * 返回最后一个元素。
+ * @param {darray_t*} darray 数组对象。
+ *
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ */
+void* darray_tail(darray_t* darray);
+
+/**
+ * @method darray_head
+ * 返回第一个元素。
+ * @param {darray_t*} darray 数组对象。
+ *
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ */
+void* darray_head(darray_t* darray);
+
+/**
  * @method darray_push
  * 在尾巴追加一个元素。
  * @param {darray_t*} darray 数组对象。
@@ -196,6 +214,17 @@ int32_t darray_count(darray_t* darray, void* ctx);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t darray_clear(darray_t* darray);
+
+/**
+ * @method darray_foreach
+ * 遍历元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_visit_t} visit 遍历函数。
+ * @param {void*} ctx 遍历函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx);
 
 /**
  * @method darray_deinit

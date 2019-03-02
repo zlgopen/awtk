@@ -34,12 +34,15 @@
 | <a href="#darray_t_darray_destroy">darray\_destroy</a> | 销毁darray对象。 |
 | <a href="#darray_t_darray_find">darray\_find</a> | 查找第一个满足条件的元素。 |
 | <a href="#darray_t_darray_find_index">darray\_find\_index</a> | 查找第一个满足条件的元素，并返回位置。 |
+| <a href="#darray_t_darray_foreach">darray\_foreach</a> | 遍历元素。 |
+| <a href="#darray_t_darray_head">darray\_head</a> | 返回第一个元素。 |
 | <a href="#darray_t_darray_init">darray\_init</a> | 初始化darray对象。 |
 | <a href="#darray_t_darray_pop">darray\_pop</a> | 弹出最后一个元素。 |
 | <a href="#darray_t_darray_push">darray\_push</a> | 在尾巴追加一个元素。 |
 | <a href="#darray_t_darray_remove">darray\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#darray_t_darray_remove_all">darray\_remove\_all</a> | 删除全部满足条件的元素。 |
 | <a href="#darray_t_darray_remove_index">darray\_remove\_index</a> | 删除指定位置的元素。 |
+| <a href="#darray_t_darray_tail">darray\_tail</a> | 返回最后一个元素。 |
 ### 属性
 <p id="darray_t_properties">
 
@@ -210,6 +213,52 @@ int darray_find_index (darray_t* darray, void* ctx);
 | 返回值 | int | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
 | darray | darray\_t* | 数组对象。 |
 | ctx | void* | 比较函数的上下文。 |
+#### darray\_foreach 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_foreach"> 遍历元素。
+
+
+
+
+* 函数原型：
+
+```
+ret_t darray_foreach (darray_t* darray, tk_visit_t visit, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| visit | tk\_visit\_t | 遍历函数。 |
+| ctx | void* | 遍历函数的上下文。 |
+#### darray\_head 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_head"> 返回第一个元素。
+
+
+
+
+* 函数原型：
+
+```
+void* darray_head (darray_t* darray);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
+| darray | darray\_t* | 数组对象。 |
 #### darray\_init 函数
 -----------------------
 
@@ -350,6 +399,28 @@ ret_t darray_remove_index (darray_t* darray, uint32_t index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | darray | darray\_t* | 数组对象。 |
 | index | uint32\_t | 位置序数。 |
+#### darray\_tail 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_tail"> 返回最后一个元素。
+
+
+
+
+* 函数原型：
+
+```
+void* darray_tail (darray_t* darray);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
+| darray | darray\_t* | 数组对象。 |
 #### capacity 属性
 -----------------------
 > <p id="darray_t_capacity"> 数组的容量大小。

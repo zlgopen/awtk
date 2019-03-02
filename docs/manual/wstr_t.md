@@ -26,6 +26,7 @@
 | <a href="#wstr_t_wstr_add_float">wstr\_add\_float</a> | 将字符串转成浮点数，加上delta，再转换回来。 |
 | <a href="#wstr_t_wstr_append">wstr\_append</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_append_with_len">wstr\_append\_with\_len</a> | 追加字符串。 |
+| <a href="#wstr_t_wstr_clear">wstr\_clear</a> | 清除字符串内容。 |
 | <a href="#wstr_t_wstr_equal">wstr\_equal</a> | 判断两个字符是否相同。 |
 | <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> | 用整数初始化字符串。 |
@@ -121,6 +122,28 @@ ret_t wstr_append_with_len (wstr_t* str, wchar_t* text, uint32_t len);
 | str | wstr\_t* | str对象。 |
 | text | wchar\_t* | 要追加的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### wstr\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_clear"> 清除字符串内容。
+
+
+
+
+* 函数原型：
+
+```
+ret_t wstr_clear (wstr_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
 #### wstr\_equal 函数
 -----------------------
 

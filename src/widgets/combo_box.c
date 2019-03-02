@@ -67,6 +67,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     value_set_int(v, combo_box->selected_index);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_int(v, combo_box->value);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, combo_box->options);
     return RET_OK;
@@ -118,6 +121,9 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     combo_box_set_selected_index(widget, value_int(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    combo_box_set_value(widget, value_int(v));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     combo_box_parse_options(widget, value_str(v));
     return RET_OK;
@@ -134,23 +140,23 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_combo_box_vtable = {
-    .size = sizeof(combo_box_t),
-    .type = WIDGET_TYPE_COMBO_BOX,
-    .clone_properties = s_combo_box_properties,
-    .persistent_properties = s_combo_box_properties,
-    .create = combo_box_create_self,
-    .on_paint_self = edit_on_paint_self,
-    .set_prop = combo_box_set_prop,
-    .get_prop = combo_box_get_prop,
-    .on_layout_children = combo_box_on_layout_children,
-    .on_destroy = combo_box_on_destroy,
-    .on_event = edit_on_event};
+TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
+                             .type = WIDGET_TYPE_COMBO_BOX,
+                             .clone_properties = s_combo_box_properties,
+                             .persistent_properties = s_combo_box_properties,
+                             .parent = TK_PARENT_VTABLE(edit),
+                             .create = combo_box_create_self,
+                             .on_paint_self = edit_on_paint_self,
+                             .set_prop = combo_box_set_prop,
+                             .get_prop = combo_box_get_prop,
+                             .on_layout_children = combo_box_on_layout_children,
+                             .on_destroy = combo_box_on_destroy,
+                             .on_event = edit_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = edit_create_ex(parent, &s_combo_box_vtable, x, y, w, h);
+  widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
   combo_box_t* combo_box = COMBO_BOX(widget);
-  edit_t* edit = EDIT(combo_box);
+  edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL, NULL);
 
   edit->right_margin = h;
@@ -368,6 +374,25 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index) {
   return NULL;
 }
 
+int32_t combo_box_find_option(widget_t* widget, int32_t value) {
+  uint32_t i = 0;
+  combo_box_option_t* iter = NULL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, 0);
+
+  iter = combo_box->option_items;
+  while (iter != NULL) {
+    if (iter->value == value) {
+      return i;
+    }
+
+    i++;
+    iter = iter->next;
+  }
+
+  return 0;
+}
+
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
   combo_box_t* combo_box = COMBO_BOX(widget);
 
@@ -416,6 +441,12 @@ ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
   return combo_box_set_selected_index_ex(widget, index, NULL);
 }
 
+ret_t combo_box_set_value(widget_t* widget, int32_t value) {
+  int32_t index = combo_box_find_option(widget, value);
+
+  return combo_box_set_selected_index(widget, index);
+}
+
 int32_t combo_box_get_value(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, 0);
@@ -436,7 +467,7 @@ const char* combo_box_get_text(widget_t* widget) {
 }
 
 widget_t* combo_box_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_combo_box_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, combo_box), NULL);
 
   return widget;
 }

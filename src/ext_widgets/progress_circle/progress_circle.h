@@ -247,7 +247,10 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
 #define PROGRESS_CIRCLE_PROP_COUNTER_CLOCK_WISE "counter_clock_wise"
 
 #define WIDGET_TYPE_PROGRESS_CIRCLE "progress_circle"
-#define PROGRESS_CIRCLE(widget) ((progress_circle_t*)(widget))
+#define PROGRESS_CIRCLE(widget) ((progress_circle_t*)(progress_circle_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(progress_circle);
 
 END_C_DECLS
 

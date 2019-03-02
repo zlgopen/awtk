@@ -144,3 +144,9 @@ TEST(Edit, basic) {
 
   widget_destroy(b);
 }
+
+TEST(Edit, cast) {
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(b, edit_cast(b));
+  widget_destroy(b);
+}

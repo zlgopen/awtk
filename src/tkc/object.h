@@ -30,12 +30,14 @@ struct _object_vtable_t;
 typedef struct _object_vtable_t object_vtable_t;
 
 typedef ret_t (*object_on_destroy_t)(object_t* obj);
-typedef int32_t (*object_compare_t)(object_t* obj, object_t* other);
+typedef int (*object_compare_t)(object_t* obj, object_t* other);
 
 typedef ret_t (*object_remove_prop_t)(object_t* obj, const char* name);
 typedef ret_t (*object_get_prop_t)(object_t* obj, const char* name, value_t* v);
 typedef ret_t (*object_foreach_prop_t)(object_t* obj, tk_visit_t on_prop, void* ctx);
 typedef ret_t (*object_set_prop_t)(object_t* obj, const char* name, const value_t* v);
+typedef bool_t (*object_can_exec_t)(object_t* obj, const char* name, const char* args);
+typedef ret_t (*object_exec_t)(object_t* obj, const char* name, const char* args);
 
 struct _object_vtable_t {
   const char* type;
@@ -49,6 +51,8 @@ struct _object_vtable_t {
   object_set_prop_t set_prop;
   object_remove_prop_t remove_prop;
   object_foreach_prop_t foreach_prop;
+  object_can_exec_t can_exec;
+  object_exec_t exec;
 };
 
 /**
@@ -86,7 +90,7 @@ struct _object_t {
  * @method object_unref
  * 引用计数减1。引用计数为0时，销毁对象。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {object_t*} obj object对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -97,7 +101,7 @@ ret_t object_unref(object_t* obj);
  * @method object_ref
  * 引用计数加1。
  *
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @param {object_t*} obj object对象。
  *
  * @return {object_t*} 返回object对象。
@@ -136,9 +140,9 @@ ret_t object_set_name(object_t* obj, const char* name);
  * @param {object_t*} obj object对象。
  * @param {object_t*} other 比较的object对象。
  *
- * @return {int32_t} 返回比较结果。
+ * @return {int} 返回比较结果。
  */
-int32_t object_compare(object_t* obj, object_t* other);
+int object_compare(object_t* obj, object_t* other);
 
 /**
  * @method object_get_prop
@@ -152,6 +156,68 @@ int32_t object_compare(object_t* obj, object_t* other);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_get_prop(object_t* obj, const char* name, value_t* v);
+
+/**
+ * @method object_get_prop_str
+ * 获取指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {const char*} 返回指定属性的字符串类型的值。
+ */
+const char* object_get_prop_str(object_t* obj, const char* name);
+
+/**
+ * @method object_get_prop_pointer
+ * 获取指定属性的指针类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {void*} 返回指定属性的指针类型的值。
+ */
+void* object_get_prop_pointer(object_t* obj, const char* name);
+
+/**
+ * @method object_get_prop_object
+ * 获取指定属性的object类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {object_t*} 返回指定属性的object类型的值。
+ */
+object_t* object_get_prop_object(object_t* obj, const char* name);
+
+/**
+ * @method object_get_prop_int
+ * 获取指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {int32_t} 返回指定属性的整数类型的值。
+ */
+int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval);
+
+/**
+ * @method object_get_prop_float
+ * 获取指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float_t} defval 缺省值。
+ *
+ * @return {float_t} 返回指定属性的浮点数类型的值。
+ */
+float_t object_get_prop_float(object_t* obj, const char* name, float_t defval);
 
 /**
  * @method object_remove_prop
@@ -172,11 +238,89 @@ ret_t object_remove_prop(object_t* obj, const char* name);
  * @annotation ["scriptable"]
  * @param {object_t*} obj object对象。
  * @param {const char*} name 属性的名称。
- * @param {value_t*} v 属性的值。
+ * @param {value_t*} value 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t object_set_prop(object_t* obj, const char* name, const value_t* v);
+ret_t object_set_prop(object_t* obj, const char* name, const value_t* value);
+
+/**
+ * @method object_set_prop_str
+ * 设置指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_str(object_t* obj, const char* name, const char* value);
+
+/**
+ * @method object_set_prop_pointer
+ * 设置指定属性的指针类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_pointer(object_t* obj, const char* name, void* value);
+
+/**
+ * @method object_set_prop_object
+ * 设置指定属性的object类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {object_t*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_object(object_t* obj, const char* name, object_t* value);
+
+/**
+ * @method object_set_prop_int
+ * 设置指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value);
+
+/**
+ * @method object_set_prop_float
+ * 设置指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
+
+/**
+ * @method object_copy_prop
+ * 拷贝指定的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 目标对象。
+ * @param {object_t*} src 源对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_copy_prop(object_t* obj, object_t* src, const char* name);
 
 /**
  * @method object_foreach_prop
@@ -190,6 +334,69 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx);
+
+/**
+ * @method object_has_prop
+ * 检查是否存在指定的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t object_has_prop(object_t* obj, const char* name);
+
+/**
+ * @method object_eval
+ * 计算一个表达式，表达式中引用的变量从prop中获取。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} expr 表达式。
+ * @param {value_t*} v 返回计算结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_eval(object_t* obj, const char* expr, value_t* v);
+
+/**
+ * @method object_can_exec
+ * 检查是否可以执行指定的命令。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 命令的名称。
+ * @param {const char*} args 命令的参数。
+ *
+ * @return {bool_t} 返回TRUE表示可以执行，否则表示不可以执行。
+ */
+bool_t object_can_exec(object_t* obj, const char* name, const char* args);
+
+/**
+ * @method object_exec
+ * 执行指定的命令。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 命令的名称。
+ * @param {const char*} args 命令的参数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_exec(object_t* obj, const char* name, const char* args);
+
+/**
+ * @method object_notify_changed
+ * 触发EVT_PROPS_CHANGED事件。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_notify_changed(object_t* obj);
+
+#define OBJECT(obj) ((object_t*)(obj))
 
 END_C_DECLS
 

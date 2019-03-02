@@ -82,7 +82,10 @@ widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
  */
 widget_t* dialog_client_cast(widget_t* widget);
 
-#define DIALOG_CLIENT(widget) ((dialog_client_t*)(widget))
+#define DIALOG_CLIENT(widget) ((dialog_client_t*)(dialog_client_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(dialog_client);
 
 END_C_DECLS
 

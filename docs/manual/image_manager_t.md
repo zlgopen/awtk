@@ -17,6 +17,7 @@
 | <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> | 初始化图片管理器。 |
 | <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> | 设置缺省的图片管理器。 |
 | <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象。 |
+| <a href="#image_manager_t_image_manager_unload_bitmap">image\_manager\_unload\_bitmap</a> | 从图片管理器中卸载指定的图片。 |
 | <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
 | <a href="#image_manager_t_image_manager_update_specific">image\_manager\_update\_specific</a> | 更新缓存中图片的specific信息。 |
 ### 属性
@@ -213,6 +214,29 @@ ret_t image_manager_set_assets_manager (image_manager_t* imm, assets_manager_t* 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### image\_manager\_unload\_bitmap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_unload_bitmap"> 从图片管理器中卸载指定的图片。
+
+
+
+
+* 函数原型：
+
+```
+ret_t image_manager_unload_bitmap (image_manager_t* imm, bitmap_t* image);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| imm | image\_manager\_t* | 图片管理器对象。 |
+| image | bitmap\_t* | 图片。 |
 #### image\_manager\_unload\_unused 函数
 -----------------------
 

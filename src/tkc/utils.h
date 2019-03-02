@@ -69,7 +69,13 @@ char* tk_str_copy(char* dst, const char* src);
 
 ret_t dummy_destroy(void* data);
 ret_t default_destroy(void* data);
-int32_t pointer_compare(const void* a, const void* b);
+int pointer_compare(const void* a, const void* b);
+
+bool_t tk_is_valid_name(const char* name);
+ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
+
+bool_t tk_str_start_with(const char* str, const char* prefix);
+const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size);
 
 END_C_DECLS
 

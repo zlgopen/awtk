@@ -76,7 +76,7 @@ typedef struct _date_time_t {
 /**
  * @method date_time_create
  * 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  *
  * @return {date_time_t*} 返回date_time对象。
  */
@@ -95,7 +95,7 @@ date_time_t* date_time_init(date_time_t* dt);
  * @method date_time_destroy
  * 销毁date_time对象(一般供脚本语言中使用)。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {date_time_t*} dt date_time对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

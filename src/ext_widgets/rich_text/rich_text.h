@@ -121,7 +121,20 @@ widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 ret_t rich_text_set_text(widget_t* widget, const char* text);
 
-#define RICH_TEXT(widget) ((rich_text_t*)(widget))
+/**
+ * @method rich_text_cast
+ * 转换为rich_text对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget rich_text对象。
+ *
+ * @return {widget_t*} rich_text对象。
+ */
+widget_t* rich_text_cast(widget_t* widget);
+
+#define RICH_TEXT(widget) ((rich_text_t*)(rich_text_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(rich_text);
 
 END_C_DECLS
 

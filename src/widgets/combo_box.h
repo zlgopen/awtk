@@ -222,6 +222,17 @@ int32_t combo_box_count_options(widget_t* widget);
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index);
 
 /**
+ * @method combo_box_set_value
+ * 设置值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_value(widget_t* widget, int32_t value);
+
+/**
  * @method combo_box_append_option
  * 追加一个选项。
  * @annotation ["scriptable"]
@@ -274,7 +285,10 @@ int32_t combo_box_get_value(widget_t* widget);
  */
 const char* combo_box_get_text(widget_t* widget);
 
-#define COMBO_BOX(widget) ((combo_box_t*)(widget))
+#define COMBO_BOX(widget) ((combo_box_t*)(combo_box_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(combo_box);
 
 /*public for test*/
 ret_t combo_box_parse_options(widget_t* widget, const char* str);

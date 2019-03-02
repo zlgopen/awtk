@@ -97,19 +97,20 @@ static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_
                                                  WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
                                                  WIDGET_PROP_SELECTABLE, NULL};
 
-static const widget_vtable_t s_image_vtable = {.size = sizeof(image_t),
-                                               .type = WIDGET_TYPE_IMAGE,
-                                               .enable_pool = TRUE,
-                                               .clone_properties = s_image_clone_properties,
-                                               .create = image_create,
-                                               .on_destroy = image_base_on_destroy,
-                                               .on_event = image_base_on_event,
-                                               .on_paint_self = image_on_paint_self,
-                                               .set_prop = image_set_prop,
-                                               .get_prop = image_get_prop};
+TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
+                         .type = WIDGET_TYPE_IMAGE,
+                         .enable_pool = TRUE,
+                         .clone_properties = s_image_clone_properties,
+                         .parent = TK_PARENT_VTABLE(image_base),
+                         .create = image_create,
+                         .on_destroy = image_base_on_destroy,
+                         .on_event = image_base_on_event,
+                         .on_paint_self = image_on_paint_self,
+                         .set_prop = image_set_prop,
+                         .get_prop = image_get_prop};
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_image_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(image), x, y, w, h);
   image_t* image = IMAGE(widget);
   return_value_if_fail(image != NULL, NULL);
 
@@ -129,7 +130,7 @@ ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
 }
 
 widget_t* image_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_image_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image), NULL);
 
   return widget;
 }

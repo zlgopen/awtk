@@ -106,19 +106,20 @@ static const char* s_svg_image_clone_properties[] = {
     WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
     WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, NULL};
 
-static const widget_vtable_t s_svg_image_vtable = {.size = sizeof(svg_image_t),
-                                                   .type = WIDGET_TYPE_SVG_IMAGE,
-                                                   .clone_properties = s_svg_image_clone_properties,
-                                                   .create = svg_image_create,
-                                                   .on_destroy = svg_image_on_destroy,
-                                                   .on_event = image_base_on_event,
-                                                   .on_paint_self = svg_image_on_paint_self,
-                                                   .on_paint_background = widget_on_paint_null,
-                                                   .set_prop = image_base_set_prop,
-                                                   .get_prop = image_base_get_prop};
+TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
+                             .type = WIDGET_TYPE_SVG_IMAGE,
+                             .clone_properties = s_svg_image_clone_properties,
+                             .parent = TK_PARENT_VTABLE(image_base),
+                             .create = svg_image_create,
+                             .on_destroy = svg_image_on_destroy,
+                             .on_event = image_base_on_event,
+                             .on_paint_self = svg_image_on_paint_self,
+                             .on_paint_background = widget_on_paint_null,
+                             .set_prop = image_base_set_prop,
+                             .get_prop = image_base_get_prop};
 
 widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_svg_image_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(svg_image), x, y, w, h);
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, NULL);
 
@@ -128,7 +129,7 @@ widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* svg_image_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_svg_image_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, svg_image), NULL);
 
   return widget;
 }

@@ -100,14 +100,18 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#dialog_t_dialog_cast">dialog\_cast</a> | 转换dialog对象(供脚本语言使用)。 |
+| <a href="#dialog_t_dialog_confirm">dialog\_confirm</a> | 显示『确认』对话框。 |
 | <a href="#dialog_t_dialog_create">dialog\_create</a> | 创建dialog对象。 |
 | <a href="#dialog_t_dialog_create_simple">dialog\_create\_simple</a> | 创建dialog对象，同时创建title/client。 |
 | <a href="#dialog_t_dialog_get_client">dialog\_get\_client</a> | 获取client控件。 |
 | <a href="#dialog_t_dialog_get_title">dialog\_get\_title</a> | 获取title控件。 |
+| <a href="#dialog_t_dialog_info">dialog\_info</a> | 显示『提示信息』对话框。 |
 | <a href="#dialog_t_dialog_modal">dialog\_modal</a> | 模态显示对话框。 |
 | <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。 |
 | <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示，关闭对话框。 |
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
+| <a href="#dialog_t_dialog_toast">dialog\_toast</a> | 显示『短暂提示信息』对话框。 |
+| <a href="#dialog_t_dialog_warn">dialog\_warn</a> | 显示『警告』对话框。 |
 #### dialog\_cast 函数
 -----------------------
 
@@ -129,6 +133,30 @@ widget_t* dialog_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | dialog对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_confirm 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_confirm"> 显示『确认』对话框。
+
+ 主题由dialog_confirm.xml文件决定。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_confirm (const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示确认，否则表示取消。 |
+| text | const char* | 文本内容。 |
 #### dialog\_create 函数
 -----------------------
 
@@ -221,6 +249,30 @@ widget_t* dialog_get_title (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | title对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_info 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_info"> 显示『提示信息』对话框。
+
+ 主题由dialog_info.xml文件决定。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_info (const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text | const char* | 文本内容。 |
 #### dialog\_modal 函数
 -----------------------
 
@@ -314,3 +366,52 @@ ret_t dialog_set_title (widget_t* widget, char* title);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
 | title | char* | 标题。 |
+#### dialog\_toast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_toast"> 显示『短暂提示信息』对话框。
+
+ 主题由dialog_toast.xml文件决定。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_toast (const char* text, uint32_t duration);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text | const char* | 文本内容。 |
+| duration | uint32\_t | 显示时间(单位为毫秒)。 |
+#### dialog\_warn 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_warn"> 显示『警告』对话框。
+
+ 主题由dialog_warn.xml文件决定。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_warn (const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text | const char* | 文本内容。 |

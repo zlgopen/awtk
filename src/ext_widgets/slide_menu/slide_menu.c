@@ -536,21 +536,21 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_slide_menu_vtable = {
-    .size = sizeof(slide_menu_t),
-    .type = WIDGET_TYPE_SLIDE_MENU,
-    .clone_properties = s_slide_menu_properties,
-    .persistent_properties = s_slide_menu_properties,
-    .create = slide_menu_create,
-    .set_prop = slide_menu_set_prop,
-    .get_prop = slide_menu_get_prop,
-    .find_target = slide_menu_find_target,
-    .on_paint_children = slide_menu_on_paint_children,
-    .on_layout_children = slide_menu_layout_children,
-    .on_event = slide_menu_on_event};
+TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
+                              .type = WIDGET_TYPE_SLIDE_MENU,
+                              .clone_properties = s_slide_menu_properties,
+                              .persistent_properties = s_slide_menu_properties,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = slide_menu_create,
+                              .set_prop = slide_menu_set_prop,
+                              .get_prop = slide_menu_get_prop,
+                              .find_target = slide_menu_find_target,
+                              .on_paint_children = slide_menu_on_paint_children,
+                              .on_layout_children = slide_menu_layout_children,
+                              .on_event = slide_menu_on_event};
 
 widget_t* slide_menu_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_slide_menu_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(slide_menu), x, y, w, h);
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(slide_menu != NULL, NULL);
 
@@ -590,7 +590,7 @@ ret_t slide_menu_set_align_v(widget_t* widget, align_v_t align_v) {
 }
 
 widget_t* slide_menu_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_slide_menu_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, slide_menu), NULL);
 
   return widget;
 }

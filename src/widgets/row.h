@@ -85,6 +85,11 @@ widget_t* row_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* row_cast(widget_t* widget);
 
+#define ROW(widget) ((row_t*)(row_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(row);
+
 END_C_DECLS
 
 #endif /*TK_ROW_H*/

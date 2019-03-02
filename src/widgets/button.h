@@ -44,8 +44,8 @@ BEGIN_C_DECLS
  * <button x="c" y="m" w="80" h="30" text="OK"/>
  * ```
  *
- * > 更多用法请参考：[button.xml](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ * > 更多用法请参考：
+ * [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
  *
  * 在c代码中使用函数button\_create创建按钮控件。如：
  *
@@ -57,8 +57,8 @@ BEGIN_C_DECLS
  *
  * > 创建之后，需要用widget\_set\_text或widget\_set\_text\_utf8设置文本内容。
  *
- * > 完整示例请参考：[button demo](
- * https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
+ * > 完整示例请参考：
+ * [button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)
  *
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
@@ -71,8 +71,9 @@ BEGIN_C_DECLS
  * </style>
  * ```
  *
- * > 更多用法请参考：[theme default](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
+ * > 更多用法请参考：
+ * [theme
+ * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
  *
  */
 typedef struct _button_t {
@@ -84,6 +85,17 @@ typedef struct _button_t {
    * 为0则不重复触发EVT\_CLICK事件。
    */
   int32_t repeat;
+
+  /**
+   * @property {bool_t} enable_long_press
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   *
+   * 是否启用长按事件，为true时才触发长按事件。
+   * 触发长按事件后不再触发点击事件。
+   * 缺省不启用。
+   *
+   */
+  bool_t enable_long_press;
 
   /*private*/
   int32_t timer_id;
@@ -136,7 +148,21 @@ widget_t* button_cast(widget_t* widget);
  */
 ret_t button_set_repeat(widget_t* widget, int32_t repeat);
 
-#define BUTTON(widget) ((button_t*)(widget))
+/**
+ * @method button_set_enable_long_press
+ * 设置是否启用长按事件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  enable_long_press 是否启用长按事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press);
+
+#define BUTTON(widget) ((button_t*)(button_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(button);
 
 END_C_DECLS
 

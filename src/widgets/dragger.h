@@ -31,6 +31,9 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable"]
  * dragger控件。
+ *
+ * 目前主要用于scrollbar里的滑块。
+ *
  */
 typedef struct _dragger_t {
   widget_t widget;
@@ -59,6 +62,7 @@ typedef struct _dragger_t {
    */
   xy_t y_max;
 
+  /**/
   xy_t save_x;
   xy_t save_y;
   xy_t down_x;
@@ -104,7 +108,10 @@ widget_t* dragger_cast(widget_t* widget);
  */
 ret_t dragger_set_range(widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_max, xy_t y_max);
 
-#define DRAGGER(widget) ((dragger_t*)(widget))
+#define DRAGGER(widget) ((dragger_t*)(dragger_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(dragger);
 
 END_C_DECLS
 

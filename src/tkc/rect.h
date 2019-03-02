@@ -89,7 +89,7 @@ typedef struct _rect_t {
  *
  * > 主要供脚本语言使用。
  *
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  * @param {wh_t} w 宽度。
@@ -134,7 +134,7 @@ rect_t* rect_cast(rect_t* rect);
  * 销毁rect对象。
  * > 主要供脚本语言使用。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {rect_t*} r rect对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -407,20 +407,20 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const widget_vtable_t s_text_selector_vtable = {
-    .size = sizeof(text_selector_t),
-    .type = WIDGET_TYPE_TEXT_SELECTOR,
-    .clone_properties = s_text_selector_properties,
-    .persistent_properties = s_text_selector_properties,
-    .create = text_selector_create,
-    .on_paint_self = text_selector_on_paint_self,
-    .set_prop = text_selector_set_prop,
-    .get_prop = text_selector_get_prop,
-    .on_destroy = text_selector_on_destroy,
-    .on_event = text_selector_on_event};
+TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
+                                 .type = WIDGET_TYPE_TEXT_SELECTOR,
+                                 .clone_properties = s_text_selector_properties,
+                                 .persistent_properties = s_text_selector_properties,
+                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .create = text_selector_create,
+                                 .on_paint_self = text_selector_on_paint_self,
+                                 .set_prop = text_selector_set_prop,
+                                 .get_prop = text_selector_get_prop,
+                                 .on_destroy = text_selector_on_destroy,
+                                 .on_event = text_selector_on_event};
 
 widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_text_selector_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(text_selector), x, y, w, h);
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, NULL);
 
@@ -617,7 +617,7 @@ ret_t text_selector_set_text(widget_t* widget, const char* text) {
 }
 
 widget_t* text_selector_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_text_selector_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, text_selector), NULL);
 
   return widget;
 }

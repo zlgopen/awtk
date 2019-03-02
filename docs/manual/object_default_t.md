@@ -16,6 +16,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> |  |
+| <a href="#object_default_t_object_default_unref">object\_default\_unref</a> |  |
 ### 属性
 <p id="object_default_t_properties">
 
@@ -48,6 +49,31 @@ object_t* object_default_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | object\_t* | 返回object对象。 |
+#### object\_default\_unref 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_default_t_object_default_unref">
+ for script gc
+
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t object_default_unref (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | 对象。 |
 #### props 属性
 -----------------------
 > <p id="object_default_t_props"> 属性数组。

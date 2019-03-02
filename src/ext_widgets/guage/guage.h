@@ -135,7 +135,10 @@ ret_t guage_set_image(widget_t* widget, const char* name);
 ret_t guage_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
 
 #define WIDGET_TYPE_GUAGE "guage"
-#define GUAGE(widget) ((guage_t*)(widget))
+#define GUAGE(widget) ((guage_t*)(guage_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(guage);
 
 END_C_DECLS
 

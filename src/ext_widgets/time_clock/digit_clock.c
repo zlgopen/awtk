@@ -166,19 +166,19 @@ static ret_t digit_clock_on_destroy(widget_t* widget) {
 
 static const char* s_digit_clock_properties[] = {WIDGET_PROP_FORMAT, NULL};
 
-static const widget_vtable_t s_digit_clock_vtable = {
-    .size = sizeof(digit_clock_t),
-    .type = WIDGET_TYPE_DIGIT_CLOCK,
-    .clone_properties = s_digit_clock_properties,
-    .persistent_properties = s_digit_clock_properties,
-    .create = digit_clock_create,
-    .on_paint_self = widget_on_paint_self_default,
-    .set_prop = digit_clock_set_prop,
-    .get_prop = digit_clock_get_prop,
-    .on_destroy = digit_clock_on_destroy};
+TK_DECL_VTABLE(digit_clock) = {.size = sizeof(digit_clock_t),
+                               .type = WIDGET_TYPE_DIGIT_CLOCK,
+                               .clone_properties = s_digit_clock_properties,
+                               .persistent_properties = s_digit_clock_properties,
+                               .parent = TK_PARENT_VTABLE(widget),
+                               .create = digit_clock_create,
+                               .on_paint_self = widget_on_paint_self_default,
+                               .set_prop = digit_clock_set_prop,
+                               .get_prop = digit_clock_get_prop,
+                               .on_destroy = digit_clock_on_destroy};
 
 widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_digit_clock_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(digit_clock), x, y, w, h);
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
 
   return_value_if_fail(digit_clock != NULL, NULL);
@@ -190,7 +190,7 @@ widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* digit_clock_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_digit_clock_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, digit_clock), NULL);
 
   return widget;
 }

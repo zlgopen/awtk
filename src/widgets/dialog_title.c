@@ -30,13 +30,14 @@ static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
-static const widget_vtable_t s_dialog_title_vtable = {.size = sizeof(dialog_title_t),
-                                                      .type = WIDGET_TYPE_DIALOG_TITLE,
-                                                      .create = dialog_title_create,
-                                                      .on_paint_self = dialog_title_on_paint_self};
+TK_DECL_VTABLE(dialog_title) = {.size = sizeof(dialog_title_t),
+                                .type = WIDGET_TYPE_DIALOG_TITLE,
+                                .parent = TK_PARENT_VTABLE(widget),
+                                .create = dialog_title_create,
+                                .on_paint_self = dialog_title_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_dialog_title_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(dialog_title), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
 
   widget_set_name(widget, "title");
@@ -45,7 +46,7 @@ widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
 }
 
 widget_t* dialog_title_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_dialog_title_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, dialog_title), NULL);
 
   return widget;
 }

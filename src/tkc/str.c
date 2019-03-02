@@ -26,7 +26,7 @@
 #include "tkc/value.h"
 #include "tkc/tokenizer.h"
 
-static ret_t str_extend(str_t* str, uint32_t capacity) {
+ret_t str_extend(str_t* str, uint32_t capacity) {
   if (capacity <= str->capacity) {
     return RET_OK;
   }
@@ -54,6 +54,16 @@ str_t* str_init(str_t* str, uint32_t capacity) {
 
 ret_t str_set(str_t* str, const char* text) {
   return str_set_with_len(str, text, 0xffff);
+}
+
+ret_t str_clear(str_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  str->size = 0;
+  if (str->str != NULL) {
+    str->str[0] = '\0';
+  }
+
+  return RET_OK;
 }
 
 ret_t str_set_with_len(str_t* str, const char* text, uint32_t len) {
@@ -230,7 +240,8 @@ ret_t str_from_value(str_t* str, const value_t* v) {
     return str_set(str, value_str(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
     return str_from_wstr(str, value_wstr(v));
-  } else if (v->type == VALUE_TYPE_FLOAT) {
+  } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32 ||
+             v->type == VALUE_TYPE_DOUBLE) {
     return str_from_float(str, value_float(v));
   } else if (v->type == VALUE_TYPE_BOOL) {
     return str_set(str, value_bool(v) ? "true" : "false");
@@ -251,8 +262,12 @@ ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
     uint32_t size = wcslen(wstr) * 3;
     return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
 
-    utf8_from_utf16(wstr, str->str, size);
-    str->size = strlen(str->str);
+    if (size > 0) {
+      utf8_from_utf16(wstr, str->str, size);
+      str->size = strlen(str->str);
+    } else {
+      str_set(str, "");
+    }
   }
 
   return RET_OK;

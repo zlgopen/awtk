@@ -56,3 +56,11 @@ TEST(ComboBoxItem, event) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBoxItem, cast) {
+  widget_t* w = combo_box_item_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(w, combo_box_item_cast(w));
+
+  widget_destroy(w);
+}

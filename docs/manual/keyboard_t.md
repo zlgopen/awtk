@@ -46,8 +46,30 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#keyboard_t_keyboard_cast">keyboard\_cast</a> | 转换为keyboard对象(供脚本语言使用)。 |
 | <a href="#keyboard_t_keyboard_close">keyboard\_close</a> | 关闭keyboard窗口。 |
 | <a href="#keyboard_t_keyboard_create">keyboard\_create</a> | 创建keyboard对象 |
+#### keyboard\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="keyboard_t_keyboard_cast"> 转换为keyboard对象(供脚本语言使用)。
+
+
+
+* 函数原型：
+
+```
+widget_t* keyboard_cast (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | keyboard对象。 |
+| widget | widget\_t* | keyboard对象。 |
 #### keyboard\_close 函数
 -----------------------
 

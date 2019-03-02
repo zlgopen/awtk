@@ -98,7 +98,7 @@ color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
  *
  * > 主要供脚本语言使用。
  *
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["constructor", "scriptable", "gc"]
  * @param {uint8_t} r 红色通道。
  * @param {uint8_t} b 蓝色通道。
  * @param {uint8_t} g 绿色通道。
@@ -200,7 +200,7 @@ color_t* color_cast(color_t* color);
  * 销毁color对象。
  * > 主要供脚本语言使用。
  *
- * @annotation ["deconstructor", "scriptable"]
+ * @annotation ["deconstructor", "scriptable", "gc"]
  * @param {color_t*} c color对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

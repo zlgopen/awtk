@@ -29,7 +29,7 @@ TEST(Image, basic) {
   widget_destroy(img);
 }
 
-TEST(Widget, rotation) {
+TEST(Image, rotation) {
   image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
   image_base_t* image_base = IMAGE_BASE(w);
 
@@ -39,7 +39,7 @@ TEST(Widget, rotation) {
   widget_destroy(WIDGET(w));
 }
 
-TEST(Widget, scale) {
+TEST(Image, scale) {
   image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
   image_base_t* image_base = IMAGE_BASE(w);
 
@@ -53,7 +53,7 @@ TEST(Widget, scale) {
   widget_destroy(WIDGET(w));
 }
 
-TEST(Widget, anchor) {
+TEST(Image, anchor) {
   image_t* w = IMAGE(image_create(NULL, 0, 0, 400, 300));
   image_base_t* image_base = IMAGE_BASE(w);
 
@@ -65,4 +65,13 @@ TEST(Widget, anchor) {
   ASSERT_EQ(image_base->anchor_y, 1.0f);
 
   widget_destroy(WIDGET(w));
+}
+
+TEST(Image, cast) {
+  widget_t* w = image_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(w, image_cast(w));
+  ASSERT_EQ(w, image_base_cast(w));
+
+  widget_destroy(w);
 }

@@ -242,3 +242,14 @@ TEST(ValueTest, deepcopy) {
   value_reset(&v);
   value_reset(&other);
 }
+
+TEST(ValueTest, copy_str) {
+  value_t v;
+  value_t other;
+
+  ASSERT_EQ(value_dup_str(&v, "hello"), &v);
+  ASSERT_EQ(value_copy(&other, &v), RET_OK);
+
+  value_reset(&v);
+  value_reset(&other);
+}

@@ -117,8 +117,20 @@ ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on
  */
 ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t on_click,
                                    void* ctx);
+/**
+ * @method calibration_win_cast
+ * 转换为calibration_win对象(供脚本语言使用)。
+ * @annotation ["cast", "scriptable"]
+ * @param {widget_t*} widget calibration_win对象。
+ *
+ * @return {widget_t*} calibration_win对象。
+ */
+widget_t* calibration_win_cast(widget_t* widget);
 
-#define CALIBRATION_WIN(widget) ((calibration_win_t*)(widget))
+#define CALIBRATION_WIN(widget) ((calibration_win_t*)(calibration_win_cast(WIDGET(widget))))
+
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(calibration_win);
 
 END_C_DECLS
 

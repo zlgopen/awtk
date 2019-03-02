@@ -232,6 +232,16 @@ TEST(WStr, value) {
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
   ASSERT_EQ(wcs_cmp(str.str, L"b12345"), 0);
 
+  value_set_float32(&v1, 123);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_to_int(&str, &vi), RET_OK);
+  ASSERT_EQ(value_int(&v1), vi);
+
+  value_set_double(&v1, 123);
+  ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
+  ASSERT_EQ(wstr_to_int(&str, &vi), RET_OK);
+  ASSERT_EQ(value_int(&v1), vi);
+
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 

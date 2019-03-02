@@ -47,7 +47,7 @@ static const key_type_value_t asset_type_value[] = {
     {"font", 0, ASSET_TYPE_FONT},       {"image", 0, ASSET_TYPE_IMAGE},
     {"style", 0, ASSET_TYPE_STYLE},     {"ui", 0, ASSET_TYPE_UI},
     {"strings", 0, ASSET_TYPE_STRINGS}, {"xml", 0, ASSET_TYPE_XML},
-    {"data", 0, ASSET_TYPE_DATA},
+    {"data", 0, ASSET_TYPE_DATA},       {"script", 0, ASSET_TYPE_SCRIPT},
 };
 
 static const key_type_value_t image_draw_type_name_value[] = {

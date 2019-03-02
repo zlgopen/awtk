@@ -282,16 +282,16 @@ static const char* s_time_clock_properties[] = {
     TIME_CLOCK_PROP_IMAGE,        TIME_CLOCK_PROP_BG_IMAGE,     TIME_CLOCK_PROP_HOUR_IMAGE,
     TIME_CLOCK_PROP_MINUTE_IMAGE, TIME_CLOCK_PROP_SECOND_IMAGE, NULL};
 
-static const widget_vtable_t s_time_clock_vtable = {
-    .size = sizeof(time_clock_t),
-    .type = WIDGET_TYPE_TIME_CLOCK,
-    .clone_properties = s_time_clock_properties,
-    .persistent_properties = s_time_clock_properties,
-    .create = time_clock_create,
-    .on_paint_self = time_clock_on_paint_self,
-    .set_prop = time_clock_set_prop,
-    .get_prop = time_clock_get_prop,
-    .on_destroy = time_clock_on_destroy};
+TK_DECL_VTABLE(time_clock) = {.size = sizeof(time_clock_t),
+                              .type = WIDGET_TYPE_TIME_CLOCK,
+                              .clone_properties = s_time_clock_properties,
+                              .persistent_properties = s_time_clock_properties,
+                              .parent = TK_PARENT_VTABLE(widget),
+                              .create = time_clock_create,
+                              .on_paint_self = time_clock_on_paint_self,
+                              .set_prop = time_clock_set_prop,
+                              .get_prop = time_clock_get_prop,
+                              .on_destroy = time_clock_on_destroy};
 
 static ret_t time_clock_reset_time(time_clock_t* time_clock) {
   date_time_t dt;
@@ -305,7 +305,7 @@ static ret_t time_clock_reset_time(time_clock_t* time_clock) {
 }
 
 widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, &s_time_clock_vtable, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(time_clock), x, y, w, h);
   time_clock_t* time_clock = TIME_CLOCK(widget);
   return_value_if_fail(time_clock != NULL, NULL);
 
@@ -316,7 +316,7 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* time_clock_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && widget->vt == &s_time_clock_vtable, NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, time_clock), NULL);
 
   return widget;
 }
