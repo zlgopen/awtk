@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mutable_image.h
  * Author: AWTK Develop Team
  * Brief:  mutable_image
@@ -34,7 +34,7 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
     bitmap_format_t format = BITMAP_FMT_NONE;
 
     if (mutable_image->fb != NULL) {
-      format = mutable_image->fb->format;
+      format = (bitmap_format_t)(mutable_image->fb->format);
     } else {
       format = lcd_get_desired_bitmap_format(c->lcd);
     }
