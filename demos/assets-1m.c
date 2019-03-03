@@ -483,7 +483,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_slider_fg);
   assets_manager_add(rm, image_close_n);
   assets_manager_add(rm, image_left_on);
-  assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_question);
   assets_manager_add(rm, image_invisible);
   assets_manager_add(rm, image_guage_bg);
@@ -553,7 +552,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_battery_3);
   assets_manager_add(rm, image_logo);
   assets_manager_add(rm, image_arrow_left_o);
-  assets_manager_add(rm, image_2);
   assets_manager_add(rm, image_num_6);
   assets_manager_add(rm, image_check);
   assets_manager_add(rm, image_middle_on);
@@ -575,7 +573,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_info);
   assets_manager_add(rm, image_msg);
   assets_manager_add(rm, image_num_7);
-  assets_manager_add(rm, image_3);
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
