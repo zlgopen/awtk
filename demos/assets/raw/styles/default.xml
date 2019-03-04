@@ -182,7 +182,7 @@
 
 <progress_bar>
   <style>
-    <normal bg_color="#f0f0f0" text_color="gold" fg_color="#c0c0c0" border_color="#a0a0a0" />
+    <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333" />
   </style>
   
   <style name="img" bg_image="slider_bg" fg_image="slider_fg">

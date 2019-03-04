@@ -358,20 +358,26 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t progress_bar_animate_delta(widget_t* win, const char* name, int32_t delta) {
+  widget_t* progress_bar = widget_lookup(win, name, TRUE);
+  int32_t value = (PROGRESS_BAR(progress_bar)->value + delta);
+  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
+
+  return RET_OK;
+}
+
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
-  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  int32_t value = (PROGRESS_BAR(progress_bar)->value + 20);
-  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
+  progress_bar_animate_delta(win, "bar1", 10);
+  progress_bar_animate_delta(win, "bar2", 10);
   (void)e;
   return RET_OK;
 }
 
 static ret_t on_dec(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
-  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  int32_t value = PROGRESS_BAR(progress_bar)->value - 20;
-  widget_animate_value_to(progress_bar, tk_max(0, value), 500);
+  progress_bar_animate_delta(win, "bar1", -10);
+  progress_bar_animate_delta(win, "bar2", -10);
 
   (void)e;
   return RET_OK;

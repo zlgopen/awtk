@@ -44,12 +44,12 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     x = 0;
     y = 0;
     w = widget->w;
-    h = (widget->h * (100 - progress_bar->value)) / 100;
+    h = widget->h - (widget->h * progress_bar->value) / 100;
   } else {
-    x = 0;
     y = 0;
     h = widget->h;
-    w = (widget->w * (100 - progress_bar->value)) / 100;
+    w = widget->w - (widget->w * progress_bar->value) / 100;
+    x = widget->w - w;
   }
 
   r = rect_init(x, y, w, h);

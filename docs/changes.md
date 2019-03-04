@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/03/04
   * 更新文档。
+  * 修改progress\_bar显示的BUG(感谢俊杰提供补丁)。
 
 * 2019/03/02
   * 增加dialog\_warn/dialog\_info/dialog\_warn。
