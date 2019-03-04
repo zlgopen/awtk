@@ -777,3 +777,13 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
 
   return RET_OK;
 }
+
+ret_t window_manager_request_close_top_window(widget_t* widget) {
+  event_t e;
+  widget_t* top_window = window_manager_get_top_main_window(widget);
+  return_value_if_fail(top_window != NULL, RET_NOT_FOUND);
+
+  e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
+
+  return widget_dispatch(top_window, &e);
+}
