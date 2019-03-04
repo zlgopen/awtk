@@ -6,6 +6,7 @@ static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Ev
   im_commit_event_t e;
   SDL_TextInputEvent* text_input_event = (SDL_TextInputEvent*)sdl_event;
 
+  memset(&e, 0x00, sizeof(e));
   e.e = event_init(EVT_IM_COMMIT, NULL);
   e.text = text_input_event->text;
 
@@ -21,6 +22,7 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
   int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
 
+  memset(&event, 0x00, sizeof(event));
   event.e.time = time_now_ms();
   event.key = sdl_event->key.keysym.sym;
   switch (type) {
@@ -46,6 +48,7 @@ static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_E
   wheel_event_t event;
   widget_t* widget = loop->base.wm;
 
+  memset(&event, 0x00, sizeof(event));
   event.e = event_init(EVT_WHEEL, widget);
   event.dx = sdl_event->wheel.x;
   event.dy = sdl_event->wheel.y;
@@ -69,6 +72,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
 
+  memset(&event, 0x00, sizeof(event));
   event.e.time = time_now_ms();
   switch (type) {
     case SDL_MOUSEBUTTONDOWN: {

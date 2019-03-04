@@ -22,6 +22,7 @@
 #ifndef TK_BASE_H
 #define TK_BASE_H
 
+#include "base/keys.h"
 #include "base/assets_manager.h"
 #include "base/awtk_config_sample.h"
 #include "base/bitmap.h"

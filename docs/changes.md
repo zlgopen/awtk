@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/03/04
+  * 更新文档。
+
 * 2019/03/02
   * 增加dialog\_warn/dialog\_info/dialog\_warn。
 
