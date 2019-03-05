@@ -12001,6 +12001,100 @@
             "type": "canvas_t*",
             "name": "c",
             "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 根据控件的style绘制边框矩形。\n\n\n",
+        "name": "widget_stroke_border_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "图片缺省绘制方式。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 根据控件的style绘制背景矩形。\n\n\n",
+        "name": "widget_fill_bg_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "图片缺省绘制方式。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 根据控件的style绘制前景矩形。\n\n\n",
+        "name": "widget_fill_fg_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
           }
         ],
         "annotation": {
@@ -18804,7 +18898,9 @@
     "name": "list_item_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -18950,7 +19046,9 @@
     "name": "list_view_h_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -19132,7 +19230,9 @@
     "name": "list_view_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -19502,7 +19602,9 @@
     "name": "scroll_bar_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -19803,7 +19905,9 @@
     "name": "scroll_view_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -19996,7 +20100,9 @@
     "name": "slide_menu_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -20176,7 +20282,9 @@
     "name": "slide_view_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -20263,7 +20371,9 @@
     "name": "tab_button_group_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -20410,7 +20520,9 @@
     "name": "switch_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -20803,7 +20915,9 @@
     "name": "text_selector_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -21275,7 +21389,9 @@
     "name": "time_clock_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -21639,7 +21755,9 @@
     "name": "tab_control_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -22093,7 +22211,10 @@
     "name": "window_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
     },
     "level": 2
   },
@@ -22979,6 +23100,24 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 请求关闭顶层窗口。\r\n\r\n",
+        "name": "window_manager_request_close_top_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -23508,7 +23647,9 @@
     "name": "slider_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -24243,7 +24384,9 @@
     "name": "canvas_widget_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -24502,7 +24645,9 @@
     "name": "color_picker_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -24575,7 +24720,9 @@
     "name": "view_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -24768,7 +24915,9 @@
     "name": "tab_button_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -24914,7 +25063,9 @@
     "name": "guage_pointer_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -25060,7 +25211,9 @@
     "name": "guage_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -25530,7 +25683,9 @@
     "name": "image_animation_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -25712,7 +25867,9 @@
     "name": "image_value_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -25783,6 +25940,9 @@
     "desc": " 输入法候选字词控件。\r\n",
     "name": "candidates_t",
     "parent": "widget_t",
+    "annotation": {
+      "widget": true
+    },
     "level": 2
   },
   {
@@ -25870,6 +26030,11 @@
     "desc": " 软键盘。\r\n\r\n 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\r\n\r\n 这里介绍一下定制软键盘的方法：\r\n\r\n  编辑器输入类型和软键盘UI资源文件的对应关系:\r\n\r\n| 输入类型       | 软键盘UI资源文件|\r\n|----------------|:---------------:|\r\n| INPUT\\_PHONE    | kb\\_phone.xml    |\r\n| INPUT\\_INT      | kb\\_int.xml      |\r\n| INPUT\\_FLOAT    | kb\\_float.xml    |\r\n| INPUT\\_UINT     | kb\\_uint.xml     |\r\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\r\n| INPUT\\_HEX      | kb\\_hex.xml      |\r\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\r\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\r\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\r\n| 其它            | kb\\_default.xml  |\r\n\r\n keyboard中按钮子控件的名称有些特殊要求：\r\n\r\n|  名称          | 功能            |\r\n|----------------|:---------------:|\r\n| return         | 回车键          |\r\n| action         | 定制按钮        |\r\n| backspace      | 删除键          |\r\n| space          | 空格键          |\r\n| close          | 关闭软键盘      |\r\n| 前缀key:       | 键值            |\r\n| 前缀page:      | 切换到页面      |\r\n\r\n\r\n > 更多用法请参考：\r\n [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)\r\n\r\n",
     "name": "keyboard_t",
     "parent": "widget_t",
+    "annotation": {
+      "design": true,
+      "widget": true,
+      "window": true
+    },
     "level": 2
   },
   {
@@ -26427,7 +26592,9 @@
     "name": "progress_circle_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -26537,7 +26704,9 @@
     "name": "rich_text_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -26610,7 +26779,9 @@
     "name": "app_bar_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -26683,7 +26854,9 @@
     "name": "button_group_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -26840,7 +27013,9 @@
     "name": "button_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -26963,6 +27138,11 @@
     "desc": " 电阻屏校准窗口。\r\n\r\n calibration\\_win\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于calibration\\_win\\_t控件。\r\n\r\n 在xml中使用\"calibration\\_win\"标签创建电阻屏校准窗口。如：\r\n\r\n ```xml\r\n <calibration_win name=\"cali\" w=\"100%\" h=\"100%\" text=\"Please click the center of cross\">\r\n </calibration_win>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/calibration_win.xml)\r\n\r\n 在c代码中使用函数calibration\\_win\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);\r\n ```\r\n\r\n 通过calibration\\_win\\_set\\_on\\_done注册回调函数，用于保存校准数据。\r\n\r\n",
     "name": "calibration_win_t",
     "parent": "widget_t",
+    "annotation": {
+      "design": true,
+      "widget": true,
+      "window": true
+    },
     "level": 2
   },
   {
@@ -27121,7 +27301,9 @@
     "name": "check_button_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -27286,7 +27468,9 @@
     "name": "color_tile_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -27359,7 +27543,9 @@
     "name": "column_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -27516,7 +27702,9 @@
     "name": "combo_box_item_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -27866,7 +28054,9 @@
     "name": "combo_box_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -27939,7 +28129,9 @@
     "name": "dialog_client_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -28012,7 +28204,9 @@
     "name": "dialog_title_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -28324,7 +28518,10 @@
     "name": "dialog_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
     },
     "level": 2
   },
@@ -28488,7 +28685,9 @@
     "name": "dragger_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29012,7 +29211,9 @@
     "name": "edit_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29085,7 +29286,9 @@
     "name": "grid_item_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29158,7 +29361,9 @@
     "name": "grid_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29231,7 +29436,9 @@
     "name": "group_box_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29304,7 +29511,9 @@
     "name": "row_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29452,7 +29661,9 @@
     "name": "label_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29596,7 +29807,9 @@
     "name": "pages_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -29742,7 +29955,10 @@
     "name": "popup_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
     },
     "level": 2
   },
@@ -29935,7 +30151,9 @@
     "name": "progress_bar_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 2
   },
@@ -30045,7 +30263,9 @@
     "name": "image_t",
     "parent": "image_base_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 3
   },
@@ -30193,7 +30413,9 @@
     "name": "spin_box_t",
     "parent": "edit_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 3
   },
@@ -30266,7 +30488,10 @@
     "name": "system_bar_t",
     "parent": "window_base_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
     },
     "level": 3
   },
@@ -30339,7 +30564,9 @@
     "name": "svg_image_t",
     "parent": "image_base_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 3
   },
@@ -30412,7 +30639,9 @@
     "name": "gif_image_t",
     "parent": "image_base_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 3
   },
