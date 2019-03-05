@@ -695,48 +695,48 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   return RET_OK;
 }
 
-ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
-  rect_t dst;
+ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
+                       image_draw_type_t draw_type) {
   bitmap_t img;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
-  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  const char* color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
+  const char* image_key = bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE;
+  const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
 
-  if (bg.rgba.a) {
-    canvas_set_fill_color(c, bg);
+  color_t color = style_get_color(style, color_key, trans);
+  const char* image_name = style_get_str(style, image_key, NULL);
+
+  if (color.rgba.a) {
+    canvas_set_fill_color(c, color);
     if (radius > 3) {
       vgcanvas_t* vg = canvas_get_vgcanvas(c);
       if (vg != NULL) {
-        vgcanvas_set_fill_color(vg, bg);
+        vgcanvas_set_fill_color(vg, color);
         vgcanvas_translate(vg, c->ox, c->oy);
-        vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+        vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
         vgcanvas_translate(vg, -c->ox, -c->oy);
         vgcanvas_fill(vg);
       } else {
-        canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+        canvas_fill_rect(c, r->x, r->y, r->w, r->h);
       }
     } else {
-      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
   }
 
   if (image_name != NULL) {
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
-      dst = rect_init(0, 0, widget->w, widget->h);
-      image_draw_type_t draw_type =
-          (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
-      int32_t start_time = time_now_ms();
-      canvas_draw_image_ex(c, &img, draw_type, &dst);
-      dst.w = time_now_ms() - start_time;
+      draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
+      canvas_draw_image_ex(c, &img, draw_type, r);
     }
   }
 
   return RET_OK;
 }
 
-ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
@@ -744,8 +744,8 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
 
   if (bd.rgba.a) {
-    wh_t w = widget->w;
-    wh_t h = widget->h;
+    wh_t w = r->w;
+    wh_t h = r->h;
 
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
@@ -754,7 +754,7 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
         if (vg != NULL) {
           vgcanvas_set_stroke_color(vg, bd);
           vgcanvas_translate(vg, c->ox, c->oy);
-          vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+          vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
           vgcanvas_translate(vg, -c->ox, -c->oy);
           vgcanvas_stroke(vg);
         } else {
@@ -780,6 +780,31 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   }
 
   return RET_OK;
+}
+
+static ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  r = rect_init(0, 0, widget->w, widget->h);
+
+  return widget_fill_rect(widget, c, &r, TRUE, IMAGE_DRAW_CENTER);
+}
+
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+  return widget_fill_rect(widget, c, r, TRUE, draw_type);
+}
+
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+  return widget_fill_rect(widget, c, r, FALSE, draw_type);
+}
+
+static ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  r = rect_init(0, 0, widget->w, widget->h);
+  return widget_stroke_border_rect(widget, c, &r);
 }
 
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
