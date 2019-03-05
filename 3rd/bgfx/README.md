@@ -13,3 +13,13 @@ git clone https://github.com/bkaradzic/bgfx.git
 
 ```
 
+已知问题：
+
+bgfx.h中的init函数，在部分编译器上有问题，可以按下列方式修改：
+
+
+```
+-   bool init(const Init& _init = {});
++ bool init(const Init& _init);
+```
+

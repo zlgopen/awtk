@@ -45,7 +45,7 @@ static int32_t getFreeViewId(void) {
 }
 
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
-  NVGLUframebuffer_bgfx* handle = NULL;
+  struct NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   handle = nvgluCreateFramebufferByViewId(vg, (int)(vgcanvas->w * vgcanvas->ratio),
@@ -54,24 +54,24 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   fbo->w = vgcanvas->w;
   fbo->h = vgcanvas->h;
   fbo->handle = handle;
-  fbo->id = handle->image;
+  fbo->id = getBgfxFboImage(handle);
   fbo->ratio = vgcanvas->ratio;
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
-  NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
-  nvgluDeleteFramebuffer(handle);
-  arrayViewId[handle->viewId] = false;
+  struct NVGLUframebuffer* handle = (struct NVGLUframebuffer*)fbo->handle;
+  nvgluDeleteFramebufferEx(handle);
+  arrayViewId[getBgfxFboViewId(handle)] = false;
   (void)vgcanvas;
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  NVGLUframebuffer_bgfx* handle = (NVGLUframebuffer_bgfx*)fbo->handle;
+  struct NVGLUframebuffer* handle = (struct NVGLUframebuffer*)fbo->handle;
 
-  nvgluBindFramebuffer(handle);
+  nvgluBindFramebufferEx(handle);
   touchBGFX(1);
   nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
 
@@ -83,7 +83,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 
   nvgEndFrame(vg);
   frameBGFX(false);
-  nvgluBindFramebuffer(NULL);
+  nvgluBindFramebufferEx(NULL);
 
   return RET_OK;
 }

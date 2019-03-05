@@ -1,4 +1,5 @@
 #include "bgfx/nanovg_bgfx.h"
+#include "bgfx/nanovg_bgfx_ex.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "../stb/stb_image.h"
 #include "draw_image.inc"

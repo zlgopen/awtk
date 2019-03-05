@@ -22,7 +22,7 @@
 #include "nanovg.h"
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
-#include "bgfx/nanovg_bgfx.h"
+#include "bgfx/nanovg_bgfx_ex.h"
 #include "base/image_manager.h"
 
 typedef struct _vgcanvas_nanovg_t {
@@ -63,6 +63,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   if (nanovg->vg == NULL) {
     assert(!"BGFX is not supported!");
   }
+
+  log_debug("use BGFX backend\n");
 
   return &(nanovg->base);
 }
