@@ -41,6 +41,7 @@ typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p
 /**
  * @class calibration_win_t
  * @parent widget_t
+ * @annotation ["design", "widget", "window"]
  * 电阻屏校准窗口。
  *
  * calibration\_win\_t是[window\_base\_t](window_base_t.md)的子类控件，

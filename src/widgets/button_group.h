@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class button_group_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * Button Group控件。一个简单的容器控件，用于容纳一组按钮控件。
  *
  * 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。

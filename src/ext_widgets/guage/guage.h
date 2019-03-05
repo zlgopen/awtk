@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class guage_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 表盘控件。
  *
  * 表盘控件就是一张图片。

@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class slide_view_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 滑动视图。
  *
  * 滑动视图可以管理多个页面，并通过滑动来切换当前页面。也可以管理多张图片，让它们自动切换。

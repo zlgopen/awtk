@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class label_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  *
  * 文本控件。用于显示一行或多行文本。
  *

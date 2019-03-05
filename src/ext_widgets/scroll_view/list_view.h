@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class list_view_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 列表视图控件。
  *
  * 列表视图控件是一个可以垂直滚动的列表控件。

@@ -36,7 +36,7 @@ typedef ret_t (*scroll_view_on_scroll_to_t)(widget_t* widget, int32_t xoffset_en
 /**
  * @class scroll_view_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 滚动视图。
  *
  * scroll\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_view\_t控件。

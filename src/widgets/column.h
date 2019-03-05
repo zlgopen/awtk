@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class column_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * column。一个简单的容器控件，垂直排列其子控件。
  *
  * 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。

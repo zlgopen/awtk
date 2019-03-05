@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class app_bar_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * app_bar控件。
  *
  * 一个简单的容器控件，一般在窗口的顶部，用于显示本窗口的状态和信息。

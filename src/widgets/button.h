@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class button_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 按钮控件。
  *
  * 点击按钮之后会触发EVT\_CLICK事件，注册EVT\_CLICK事件以执行特定操作。

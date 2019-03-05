@@ -51,7 +51,7 @@ typedef struct _input_limit_t {
 /**
  * @class edit_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 单行编辑器控件。
  *
  * 在基于SDL的平台，单行编辑器控件使用平台原生的输入法，对于嵌入式平台使用内置的输入法。

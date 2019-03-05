@@ -4,6 +4,7 @@
   * 增加widget\_stroke\_border\_rect/widget\_fill\_bg\_rect等函数供子类使用。
   * 合并issue #97(感谢陈谭提供补丁)
   * 更新bgfx backend(感谢大恒提供补丁)。
+  * 在类的annotation中增加window/widget/design
 
 * 2019/03/04
   * 更新文档。

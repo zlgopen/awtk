@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class scroll_bar_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 滚动条控件。
  *
  *> 目前只支持垂直滚动。

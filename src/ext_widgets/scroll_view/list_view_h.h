@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class list_view_h_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 水平列表视图控件。
  *
  * list\_view\_h\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于list\_view\_h\_t控件。

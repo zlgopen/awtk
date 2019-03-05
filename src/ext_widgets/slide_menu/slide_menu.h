@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class slide_menu_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 左右滑动菜单控件。
  *
  * 一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。

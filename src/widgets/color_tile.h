@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class color_tile_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 色块控件。
  *
  * 用来显示一个颜色块，它通过属性而不是主题来设置颜色，方便在运行时动态改变颜色。

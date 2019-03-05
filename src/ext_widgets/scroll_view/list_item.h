@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class list_item_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 列表项控件。
  *
  * 列表项控件是一个简单的容器控件，一般作为列表视图中滚动视图的子控件。

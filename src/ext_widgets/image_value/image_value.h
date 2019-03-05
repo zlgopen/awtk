@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class image_value_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 图片值控件。
  *
  * 可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。

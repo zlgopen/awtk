@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class time_clock_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 模拟时钟控件。
  *
  * time\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于time\_clock\_t控件。

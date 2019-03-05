@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class progress_bar_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 进度条控件。
  *
  * 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。

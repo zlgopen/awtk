@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class dialog_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget","window"]
  * 对话框。
  *
  * 对话框是一种特殊的窗口，大小和位置可以自由设置。

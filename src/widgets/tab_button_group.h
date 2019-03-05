@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class tab_button_group_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 标签按钮分组控件。
  *
  * 一个简单的容器，主要用于对标签按钮进行布局和管理。

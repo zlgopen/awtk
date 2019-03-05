@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class tab_button_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 标签按钮控件。
  *
  * 标签按钮有点类似单选按钮，但点击标签按钮之后会自动切换当前的标签页。

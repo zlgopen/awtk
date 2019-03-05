@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class popup_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget","window"]
  * 弹出窗口。
  *
  * 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\_box的下列列表等功能。
