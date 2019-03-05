@@ -2,6 +2,7 @@
 * 2019/03/04
   * 完善progressbar/slider的显示函数。
   * 增加widget\_stroke\_border\_rect/widget\_fill\_bg\_rect等函数供子类使用。
+  * 合并issue #97(感谢陈谭提供补丁)
 
 * 2019/03/04
   * 更新文档。

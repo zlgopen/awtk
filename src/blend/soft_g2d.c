@@ -149,7 +149,7 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
       switch (src->format) {
         case BITMAP_FMT_BGR565: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
-            soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
           } else {
             return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
@@ -159,6 +159,22 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgr565_bgra8888(dst, src, dst_r, src_r, alpha);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_RGB565: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rgb565_bgr565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rgb565_rgba8888(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rgb565_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;

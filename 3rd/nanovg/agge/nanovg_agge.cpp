@@ -398,6 +398,11 @@ static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, uint32_t w, uin
       params->renderFill = renderFill<agge::pixel16_bgr565>;
       break;
     }
+    case NVG_TEXTURE_RGB565: {
+      params->renderStroke = renderStroke<agge::pixel16_rgb565>;
+      params->renderFill = renderFill<agge::pixel16_rgb565>;
+      break;
+    }
     default: {
       assert(!"not supported format");
       break;
