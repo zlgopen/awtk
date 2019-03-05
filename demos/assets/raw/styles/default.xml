@@ -185,12 +185,18 @@
     <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333" />
   </style>
   
-  <style name="img" bg_image="slider_bg" fg_image="slider_fg">
-    <normal icon="slider_drag"/>
+  <style name="round">
+    <normal round_radius="5" text_color="gold" bg_color="#c0c0c0" 
+      fg_color="green" border_color="#333333" />
+  </style>
+  
+  <style name="img" bg_image="slider_bg" fg_image="slider_fg" text_color="black">
+    <normal />
   </style>
 
-  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="patch3_y" fg_image_draw_type="patch3_y">
-    <normal icon="slider_drag"/>
+  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" text_color="black" 
+    bg_image_draw_type="patch3_y" fg_image_draw_type="patch3_y">
+    <normal/>
   </style>
 </progress_bar>
 
@@ -198,7 +204,13 @@
   <style>
     <normal bg_color="#a0a0a0" fg_color="blue" border_color="#ffd700"/>
     <pressed bg_color="#a0a0a0" fg_color="blue" border_color="#ffa700"/>
-    <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>
+    <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
+  </style>
+  
+  <style name="round" round_radius="5">
+    <normal bg_color="#a0a0a0" fg_color="blue" border_color="#ffd700"/>
+    <pressed bg_color="#a0a0a0" fg_color="blue" border_color="#ffa700"/>
+    <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
   </style>
 
   <style name="img" bg_image="slider_bg" fg_image="slider_fg">

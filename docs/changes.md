@@ -1,5 +1,9 @@
 # 最新动态
 * 2019/03/04
+  * 完善progressbar/slider的显示函数。
+  * 增加widget\_stroke\_border\_rect/widget\_fill\_bg\_rect等函数供子类使用。
+
+* 2019/03/04
   * 更新文档。
   * 修改progress\_bar显示的BUG(感谢俊杰提供补丁)。
 
