@@ -1471,6 +1471,44 @@ ret_t widget_destroy(widget_t* widget);
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text);
 
 /**
+ * @method widget_stroke_border_rect
+ * 根据控件的style绘制边框矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r);
+
+/**
+ * @method widget_fill_bg_rect
+ * 根据控件的style绘制背景矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+
+/**
+ * @method widget_fill_fg_rect
+ * 根据控件的style绘制前景矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+
+/**
  * @method widget_prepare_text_style
  * 从widget的style中取出字体名称、大小和颜色数据，设置到canvas中。
  *
