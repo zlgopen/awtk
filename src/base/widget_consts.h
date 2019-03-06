@@ -259,121 +259,127 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_MIN
- *
+ * 最小值。
  */
 #define WIDGET_PROP_MIN "min"
 
 /**
  * @const WIDGET_PROP_TIPS
- *
+ * 提示信息。
  */
 #define WIDGET_PROP_TIPS "tips"
 
 /**
  * @const WIDGET_PROP_INPUT_TYPE
- *
+ * 输入类型。
  */
 #define WIDGET_PROP_INPUT_TYPE "input_type"
 
 /**
  * @const WIDGET_PROP_READONLY
- *
+ * 只读模式。
  */
 #define WIDGET_PROP_READONLY "readonly"
 
 /**
  * @const WIDGET_PROP_PASSWORD_VISIBLE
- *
+ * 密码是否可见。
  */
 #define WIDGET_PROP_PASSWORD_VISIBLE "password_visible"
 
 /**
  * @const WIDGET_PROP_ACTIVE
- *
+ * 是否处于active状态。
  */
 #define WIDGET_PROP_ACTIVE "active"
 
 /**
  * @const WIDGET_PROP_VERTICAL
- *
+ * 是否为垂直模式。
  */
 #define WIDGET_PROP_VERTICAL "vertical"
 
 /**
  * @const WIDGET_PROP_SHOW_TEXT
- *
+ * 是否显示文本。
  */
 #define WIDGET_PROP_SHOW_TEXT "show_text"
 
 /**
  * @const WIDGET_PROP_XOFFSET
- *
+ * X方向的偏移。
  */
 #define WIDGET_PROP_XOFFSET "xoffset"
 
 /**
  * @const WIDGET_PROP_YOFFSET
- *
+ * Y方向的偏移。
  */
 #define WIDGET_PROP_YOFFSET "yoffset"
 
 /**
  * @const WIDGET_PROP_ALIGN_V
- *
+ * 垂直对齐模式。
  */
 #define WIDGET_PROP_ALIGN_V "align_v"
 
 /**
  * @const WIDGET_PROP_ALIGN_H
- *
+ * 水平对齐模式。
  */
 #define WIDGET_PROP_ALIGN_H "align_h"
 
 /**
  * @const WIDGET_PROP_AUTO_PLAY
- *
+ * 是否自动播放或指定播放的时间。
  */
 #define WIDGET_PROP_AUTO_PLAY "auto_play"
 
 /**
+ * @const WIDGET_PROP_LOOP
+ * 是否循环播放或循环播放的次数。
+ */
+#define WIDGET_PROP_LOOP "loop"
+
+/**
  * @const WIDGET_PROP_AUTO_FIX
- *
+ * 是否启用自动更正功能。
  */
 #define WIDGET_PROP_AUTO_FIX "auto_fix"
 
 /**
  * @const WIDGET_PROP_X_MIN
- *
+ * X最小值。
  */
 #define WIDGET_PROP_X_MIN "x_min"
 
 /**
  * @const WIDGET_PROP_X_MAX
- *
+ * X最大值。
  */
 #define WIDGET_PROP_X_MAX "x_max"
 
 /**
  * @const WIDGET_PROP_Y_MIN
- *
+ * Y最小值。
  */
 #define WIDGET_PROP_Y_MIN "y_min"
 
 /**
  * @const WIDGET_PROP_Y_MAX
- *
+ * Y最大值。
  */
 #define WIDGET_PROP_Y_MAX "y_max"
 
 /**
  * @const WIDGET_PROP_MAX
- *
+ * 最大值。
  */
 #define WIDGET_PROP_MAX "max"
 
 /**
  * @const WIDGET_PROP_ROW
- *
+ * 行数或每行的高度。
  */
 #define WIDGET_PROP_ROW "row"
 
@@ -427,97 +433,97 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_ITEM_WIDTH
- *
+ * 项的宽度。
  */
 #define WIDGET_PROP_ITEM_WIDTH "item_width"
 
 /**
  * @const WIDGET_PROP_ITEM_HEIGHT
- *
+ * 项的高度。
  */
 #define WIDGET_PROP_ITEM_HEIGHT "item_height"
 
 /**
  * @const WIDGET_PROP_DEFAULT_ITEM_HEIGHT
- *
+ * 项的缺省高度。
  */
 #define WIDGET_PROP_DEFAULT_ITEM_HEIGHT "default_item_height"
 
 /**
  * @const WIDGET_PROP_XSLIDABLE
- *
+ * X方向是否可拖动。
  */
 #define WIDGET_PROP_XSLIDABLE "xslidable"
 
 /**
  * @const WIDGET_PROP_YSLIDABLE
- *
+ * Y方向是否可拖动。
  */
 #define WIDGET_PROP_YSLIDABLE "yslidable"
 
 /**
  * @const WIDGET_PROP_REPEAT
- *
+ * 重复次数。
  */
 #define WIDGET_PROP_REPEAT "repeat"
 
 /**
  * @const WIDGET_PROP_ENABLE_LONG_PRESS
- *
+ * 是否启用长按。
  */
 #define WIDGET_PROP_ENABLE_LONG_PRESS "enable_long_press"
 
 /**
  * @const WIDGET_PROP_ANIMATABLE
- *
+ * 是否启用动画。
  */
 #define WIDGET_PROP_ANIMATABLE "animatable"
 
 /**
  * @const WIDGET_PROP_AUTO_HIDE_SCROLL_BAR
- *
+ * 是否自动隐藏滚动条。
  */
 #define WIDGET_PROP_AUTO_HIDE_SCROLL_BAR "auto_hide_scroll_bar"
 
 /**
  * @const WIDGET_PROP_IMAGE
- *
+ * 图片名称。
  */
 #define WIDGET_PROP_IMAGE "image"
 
 /**
  * @const WIDGET_PROP_FORMAT
- *
+ * 显示格式。
  */
 #define WIDGET_PROP_FORMAT "format"
 
 /**
  * @const WIDGET_PROP_DRAW_TYPE
- *
+ * 图片绘制类型。
  */
 #define WIDGET_PROP_DRAW_TYPE "draw_type"
 
 /**
  * @const WIDGET_PROP_SELECTABLE
- *
+ * 是否可选择。
  */
 #define WIDGET_PROP_SELECTABLE "selectable"
 
 /**
  * @const WIDGET_PROP_CLICKABLE
- *
+ * 是否可点击。
  */
 #define WIDGET_PROP_CLICKABLE "clickable"
 
 /**
  * @const WIDGET_PROP_SCALE_X
- *
+ * X方向缩放比例。
  */
 #define WIDGET_PROP_SCALE_X "scale_x"
 
 /**
  * @const WIDGET_PROP_SCALE_Y
- *
+ * Y方向缩放比例。
  */
 #define WIDGET_PROP_SCALE_Y "scale_y"
 
@@ -632,37 +638,37 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_TYPE_NONE
- *
+ * 无特殊类型。
  */
 #define WIDGET_TYPE_NONE "widget"
 
 /**
  * @const WIDGET_TYPE_WINDOW_MANAGER
- *
+ * 窗口管理器。
  */
 #define WIDGET_TYPE_WINDOW_MANAGER "window_manager"
 
 /**
  * @const WIDGET_TYPE_NORMAL_WINDOW
- *
+ * 普通窗口。
  */
 #define WIDGET_TYPE_NORMAL_WINDOW "window"
 
 /**
  * @const WIDGET_TYPE_TOOL_BAR
- *
+ * 工具条。
  */
 #define WIDGET_TYPE_TOOL_BAR "tool_bar"
 
 /**
  * @const WIDGET_TYPE_DIALOG
- *
+ * 对话框。
  */
 #define WIDGET_TYPE_DIALOG "dialog"
 
 /**
  * @const WIDGET_TYPE_POPUP
- * popup window
+ * 弹出窗口。
  */
 #define WIDGET_TYPE_POPUP "popup"
 
@@ -674,259 +680,259 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_TYPE_SPRITE
- *
+ * 精灵窗口。
  */
 #define WIDGET_TYPE_SPRITE "sprite"
 
 /**
  * @const WIDGET_TYPE_KEYBOARD
- *
+ * 键盘窗口。
  */
 #define WIDGET_TYPE_KEYBOARD "keyboard"
 
 /**
  * @const WIDGET_TYPE_DND
- *
+ * 拖放状态窗口。
  */
 #define WIDGET_TYPE_DND "dnd"
 
 /**
  * @const WIDGET_TYPE_LABEL
- *
+ * 文本控件。
  */
 #define WIDGET_TYPE_LABEL "label"
 
 /**
  * @const WIDGET_TYPE_BUTTON
- *
+ * 按钮控件。
  */
 #define WIDGET_TYPE_BUTTON "button"
 
 /**
  * @const WIDGET_TYPE_IMAGE
- *
+ * 图片控件。
  */
 #define WIDGET_TYPE_IMAGE "image"
 
 /**
  * @const WIDGET_TYPE_EDIT
- *
+ * 文本编辑控件。
  */
 #define WIDGET_TYPE_EDIT "edit"
 
 /**
  * @const WIDGET_TYPE_PROGRESS_BAR
- *
+ * 进度条控件。
  */
 #define WIDGET_TYPE_PROGRESS_BAR "progress_bar"
 
 /**
  * @const WIDGET_TYPE_GROUP_BOX
- *
+ * 分组控件。
  */
 #define WIDGET_TYPE_GROUP_BOX "group_box"
 
 /**
  * @const WIDGET_TYPE_CHECK_BUTTON
- *
+ * 多选按钮控件。
  */
 #define WIDGET_TYPE_CHECK_BUTTON "check_button"
 
 /**
  * @const WIDGET_TYPE_RADIO_BUTTON
- *
+ * 单选按钮控件。
  */
 #define WIDGET_TYPE_RADIO_BUTTON "radio_button"
 
 /**
  * @const WIDGET_TYPE_DIALOG_TITLE
- *
+ * 对话框标题。
  */
 #define WIDGET_TYPE_DIALOG_TITLE "dialog_title"
 
 /**
  * @const WIDGET_TYPE_DIALOG_CLIENT
- *
+ * 对话框客户区域。
  */
 #define WIDGET_TYPE_DIALOG_CLIENT "dialog_client"
 
 /**
  * @const WIDGET_TYPE_SLIDER
- *
+ * 滑块控件。
  */
 #define WIDGET_TYPE_SLIDER "slider"
 
 /**
  * @const WIDGET_TYPE_VIEW
- *
+ * 视图控件。
  */
 #define WIDGET_TYPE_VIEW "view"
 
 /**
  * @const WIDGET_TYPE_COMBO_BOX
- *
+ * 下拉选择框控件。
  */
 #define WIDGET_TYPE_COMBO_BOX "combo_box"
 
 /**
  * @const WIDGET_TYPE_COMBO_BOX_ITEM
- *
+ * 下拉选择框的列表项控件。
  */
 #define WIDGET_TYPE_COMBO_BOX_ITEM "combo_box_item"
 
 /**
  * @const WIDGET_TYPE_SLIDE_VIEW
- *
+ * 滑动视图控件。
  */
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 
 /**
  * @const WIDGET_TYPE_PAGES
- *
+ * 多页控件。
  */
 #define WIDGET_TYPE_PAGES "pages"
 
 /**
  * @const WIDGET_TYPE_TAB_BUTTON
- *
+ * 标签按钮控件。
  */
 #define WIDGET_TYPE_TAB_BUTTON "tab_button"
 
 /**
  * @const WIDGET_TYPE_TAB_CONTROL
- *
+ * 标签控件。
  */
 #define WIDGET_TYPE_TAB_CONTROL "tab_control"
 
 /**
  * @const WIDGET_TYPE_TAB_BUTTON_GROUP
- *
+ * 标签按钮分组控件。
  */
 #define WIDGET_TYPE_TAB_BUTTON_GROUP "tab_button_group"
 
 /**
  * @const WIDGET_TYPE_BUTTON_GROUP
- *
+ * 按钮分组控件。
  */
 #define WIDGET_TYPE_BUTTON_GROUP "button_group"
 
 /**
  * @const WIDGET_TYPE_CANDIDATES
- *
+ * 候选字控件。
  */
 #define WIDGET_TYPE_CANDIDATES "candidates"
 
 /**
  * @const WIDGET_TYPE_SPIN_BOX
- *
+ * 数值编辑控件。
  */
 #define WIDGET_TYPE_SPIN_BOX "spin_box"
 
 /**
  * @const WIDGET_TYPE_DRAGGER
- *
+ * 拖动块控件。
  */
 #define WIDGET_TYPE_DRAGGER "dragger"
 
 /**
  * @const WIDGET_TYPE_SCROLL_BAR
- *
+ * 滚动条控件。
  */
 #define WIDGET_TYPE_SCROLL_BAR "scroll_bar"
 
 /**
  * @const WIDGET_TYPE_SCROLL_BAR_DESKTOP
- *
+ * 桌面版滚动条控件。
  */
 #define WIDGET_TYPE_SCROLL_BAR_DESKTOP "scroll_bar_d"
 
 /**
  * @const WIDGET_TYPE_SCROLL_BAR_MOBILE
- *
+ * 移动版滚动条控件。
  */
 #define WIDGET_TYPE_SCROLL_BAR_MOBILE "scroll_bar_m"
 
 /**
  * @const WIDGET_TYPE_SCROLL_VIEW
- *
+ * 滚动视图控件。
  */
 #define WIDGET_TYPE_SCROLL_VIEW "scroll_view"
 
 /**
  * @const WIDGET_TYPE_LIST_VIEW
- *
+ * 列表视图控件。
  */
 #define WIDGET_TYPE_LIST_VIEW "list_view"
 
 /**
  * @const WIDGET_TYPE_LIST_VIEW_H
- *
+ * 水平列表视图控件。
  */
 #define WIDGET_TYPE_LIST_VIEW_H "list_view_h"
 
 /**
  * @const WIDGET_TYPE_LIST_ITEM
- *
+ * 列表项控件。
  */
 #define WIDGET_TYPE_LIST_ITEM "list_item"
 
 /**
  * @const WIDGET_TYPE_COLOR_PICKER
- *
+ * 颜色选择器控件。
  */
 #define WIDGET_TYPE_COLOR_PICKER "color_picker"
 
 /**
  * @const WIDGET_TYPE_COLOR_COMPONENT
- *
+ * 颜色选择器组件控件。
  */
 #define WIDGET_TYPE_COLOR_COMPONENT "color_component"
 
 /**
  * @const WIDGET_TYPE_COLOR_TILE
- *
+ * 颜色块控件。
  */
 #define WIDGET_TYPE_COLOR_TILE "color_tile"
 
 /**
  * @const WIDGET_TYPE_RICH_TEXT
- *
+ * 富文本控件。
  */
 #define WIDGET_TYPE_RICH_TEXT "rich_text"
 
 /**
  * @const WIDGET_TYPE_APP_BAR
- *
+ * AppBar控件。
  */
 #define WIDGET_TYPE_APP_BAR "app_bar"
 
 /**
  * @const WIDGET_TYPE_GRID
- *
+ * 网格控件。
  */
 #define WIDGET_TYPE_GRID "grid"
 
 /**
  * @const WIDGET_TYPE_GRID_ITEM
- *
+ * 网格项目控件。
  */
 #define WIDGET_TYPE_GRID_ITEM "grid_item"
 
 /**
  * @const WIDGET_TYPE_ROW
- *
+ * 行控件。
  */
 #define WIDGET_TYPE_ROW "row"
 
 /**
  * @const WIDGET_TYPE_COLUMN
- *
+ * 列控件。
  */
 #define WIDGET_TYPE_COLUMN "column"
 
 /**
  * @const WIDGET_TYPE_CALIBRATION_WIN
- *
+ * 电阻屏校准窗口。
  */
 #define WIDGET_TYPE_CALIBRATION_WIN "calibration_win"
 
