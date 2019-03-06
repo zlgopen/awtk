@@ -28,7 +28,7 @@
 
 static ret_t slide_view_invalidate(slide_view_t* slide_view);
 
-static bool slide_view_is_loopable(slide_view_t* slide_view) {
+static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
   return slide_view->auto_play || slide_view->loop;
 }
 
