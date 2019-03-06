@@ -283,6 +283,31 @@ static ret_t on_paint_center(void* ctx, event_t* e) {
 
 #include "vg_common.inc"
 
+static ret_t on_paint_text(void* ctx, event_t* e) {
+  int32_t x = 0;
+  int32_t y = 0;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  color_t color = color_init(0xff, 0, 0, 0xff);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+
+  color = color_init(0xff, 0, 0, 0xff);
+  canvas_set_stroke_color(c, color);
+  canvas_stroke_rect(c, x, y, 100, 30);
+
+  color = color_init(0xff, 0, 0, 0xff);
+  canvas_set_text_color(c, color);
+  canvas_set_font(c, NULL, 30);
+
+  vgcanvas_set_fill_color(vg, color);
+  vgcanvas_fill_text(vg, "ABC", 0, 0, 100);
+  /*
+    vgcanvas_translate(vg, x, y);
+    canvas_draw_text(c, L"abc", 3, 0, 0);
+  */
+  return RET_OK;
+}
+
 static ret_t on_paint_vg(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
   canvas_t* c = evt->c;

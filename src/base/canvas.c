@@ -1349,6 +1349,8 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
     canvas_get_clip_rect(c, &r);
     vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
     vgcanvas_begin_path(vg);
+    vgcanvas_set_text_align(vg, "left");
+    vgcanvas_set_text_baseline(vg, "top");
   }
 
   return vg;

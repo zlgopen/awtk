@@ -2,6 +2,7 @@
 * 2019/03/05
   * 更新文档。
   * slide view支持循环切换。
+  * 修改canvas\_draw\_text和vgcanvas\_fill\_text坐标不一致的问题。
 
 * 2019/03/04
   * 完善progressbar/slider的显示函数。
