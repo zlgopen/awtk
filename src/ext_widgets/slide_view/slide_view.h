@@ -93,6 +93,16 @@ typedef struct _slide_view_t {
    */
   uint16_t auto_play;
 
+  /**
+   * @property {bool_t} loop
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 循环切换模式。
+   *
+   * 向后切换：切换到最后一页时，再往后切换就到第一页。
+   * 向前切换：切换到第一页时，再往前切换就到最后一页。
+   */
+  bool_t loop;
+
   /*private*/
   point_t down;
   int32_t xoffset;
@@ -170,6 +180,17 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t index);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical);
+
+/**
+ * @method slide_view_set_loop
+ * 设置循环切换模式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ * @param {bool_t} loop 是否启用循环切换模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_view_set_loop(widget_t* widget, bool_t loop);
 
 /*public for test only*/
 widget_t* slide_view_get_prev(slide_view_t* slide_view);

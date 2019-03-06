@@ -9380,83 +9380,87 @@
         "name": "WIDGET_PROP_CLOSE_ANIM_HINT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 最小值。\n\n",
         "name": "WIDGET_PROP_MIN"
       },
       {
-        "desc": "\n\n",
+        "desc": " 提示信息。\n\n",
         "name": "WIDGET_PROP_TIPS"
       },
       {
-        "desc": "\n\n",
+        "desc": " 输入类型。\n\n",
         "name": "WIDGET_PROP_INPUT_TYPE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 只读模式。\n\n",
         "name": "WIDGET_PROP_READONLY"
       },
       {
-        "desc": "\n\n",
+        "desc": " 密码是否可见。\n\n",
         "name": "WIDGET_PROP_PASSWORD_VISIBLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否处于active状态。\n\n",
         "name": "WIDGET_PROP_ACTIVE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否为垂直模式。\n\n",
         "name": "WIDGET_PROP_VERTICAL"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否显示文本。\n\n",
         "name": "WIDGET_PROP_SHOW_TEXT"
       },
       {
-        "desc": "\n\n",
+        "desc": " X方向的偏移。\n\n",
         "name": "WIDGET_PROP_XOFFSET"
       },
       {
-        "desc": "\n\n",
+        "desc": " Y方向的偏移。\n\n",
         "name": "WIDGET_PROP_YOFFSET"
       },
       {
-        "desc": "\n\n",
+        "desc": " 垂直对齐模式。\n\n",
         "name": "WIDGET_PROP_ALIGN_V"
       },
       {
-        "desc": "\n\n",
+        "desc": " 水平对齐模式。\n\n",
         "name": "WIDGET_PROP_ALIGN_H"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否自动播放或指定播放的时间。\n\n",
         "name": "WIDGET_PROP_AUTO_PLAY"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否循环播放或循环播放的次数。\n\n",
+        "name": "WIDGET_PROP_LOOP"
+      },
+      {
+        "desc": " 是否启用自动更正功能。\n\n",
         "name": "WIDGET_PROP_AUTO_FIX"
       },
       {
-        "desc": "\n\n",
+        "desc": " X最小值。\n\n",
         "name": "WIDGET_PROP_X_MIN"
       },
       {
-        "desc": "\n\n",
+        "desc": " X最大值。\n\n",
         "name": "WIDGET_PROP_X_MAX"
       },
       {
-        "desc": "\n\n",
+        "desc": " Y最小值。\n\n",
         "name": "WIDGET_PROP_Y_MIN"
       },
       {
-        "desc": "\n\n",
+        "desc": " Y最大值。\n\n",
         "name": "WIDGET_PROP_Y_MAX"
       },
       {
-        "desc": "\n\n",
+        "desc": " 最大值。\n\n",
         "name": "WIDGET_PROP_MAX"
       },
       {
-        "desc": "\n\n",
+        "desc": " 行数或每行的高度。\n\n",
         "name": "WIDGET_PROP_ROW"
       },
       {
@@ -9492,67 +9496,67 @@
         "name": "WIDGET_PROP_DEFAULT_THEME_OBJ"
       },
       {
-        "desc": "\n\n",
+        "desc": " 项的宽度。\n\n",
         "name": "WIDGET_PROP_ITEM_WIDTH"
       },
       {
-        "desc": "\n\n",
+        "desc": " 项的高度。\n\n",
         "name": "WIDGET_PROP_ITEM_HEIGHT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 项的缺省高度。\n\n",
         "name": "WIDGET_PROP_DEFAULT_ITEM_HEIGHT"
       },
       {
-        "desc": "\n\n",
+        "desc": " X方向是否可拖动。\n\n",
         "name": "WIDGET_PROP_XSLIDABLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " Y方向是否可拖动。\n\n",
         "name": "WIDGET_PROP_YSLIDABLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 重复次数。\n\n",
         "name": "WIDGET_PROP_REPEAT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否启用长按。\n\n",
         "name": "WIDGET_PROP_ENABLE_LONG_PRESS"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否启用动画。\n\n",
         "name": "WIDGET_PROP_ANIMATABLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否自动隐藏滚动条。\n\n",
         "name": "WIDGET_PROP_AUTO_HIDE_SCROLL_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 图片名称。\n\n",
         "name": "WIDGET_PROP_IMAGE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 显示格式。\n\n",
         "name": "WIDGET_PROP_FORMAT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 图片绘制类型。\n\n",
         "name": "WIDGET_PROP_DRAW_TYPE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否可选择。\n\n",
         "name": "WIDGET_PROP_SELECTABLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 是否可点击。\n\n",
         "name": "WIDGET_PROP_CLICKABLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " X方向缩放比例。\n\n",
         "name": "WIDGET_PROP_SCALE_X"
       },
       {
-        "desc": "\n\n",
+        "desc": " Y方向缩放比例。\n\n",
         "name": "WIDGET_PROP_SCALE_Y"
       },
       {
@@ -9638,27 +9642,27 @@
     "desc": " 控件的类型。\n\n",
     "consts": [
       {
-        "desc": "\n\n",
+        "desc": " 无特殊类型。\n\n",
         "name": "WIDGET_TYPE_NONE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 窗口管理器。\n\n",
         "name": "WIDGET_TYPE_WINDOW_MANAGER"
       },
       {
-        "desc": "\n\n",
+        "desc": " 普通窗口。\n\n",
         "name": "WIDGET_TYPE_NORMAL_WINDOW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 工具条。\n\n",
         "name": "WIDGET_TYPE_TOOL_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 对话框。\n\n",
         "name": "WIDGET_TYPE_DIALOG"
       },
       {
-        "desc": " popup window\n\n",
+        "desc": " 弹出窗口。\n\n",
         "name": "WIDGET_TYPE_POPUP"
       },
       {
@@ -9666,175 +9670,175 @@
         "name": "WIDGET_TYPE_SYSTEM_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 精灵窗口。\n\n",
         "name": "WIDGET_TYPE_SPRITE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 键盘窗口。\n\n",
         "name": "WIDGET_TYPE_KEYBOARD"
       },
       {
-        "desc": "\n\n",
+        "desc": " 拖放状态窗口。\n\n",
         "name": "WIDGET_TYPE_DND"
       },
       {
-        "desc": "\n\n",
+        "desc": " 文本控件。\n\n",
         "name": "WIDGET_TYPE_LABEL"
       },
       {
-        "desc": "\n\n",
+        "desc": " 按钮控件。\n\n",
         "name": "WIDGET_TYPE_BUTTON"
       },
       {
-        "desc": "\n\n",
+        "desc": " 图片控件。\n\n",
         "name": "WIDGET_TYPE_IMAGE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 文本编辑控件。\n\n",
         "name": "WIDGET_TYPE_EDIT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 进度条控件。\n\n",
         "name": "WIDGET_TYPE_PROGRESS_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 分组控件。\n\n",
         "name": "WIDGET_TYPE_GROUP_BOX"
       },
       {
-        "desc": "\n\n",
+        "desc": " 多选按钮控件。\n\n",
         "name": "WIDGET_TYPE_CHECK_BUTTON"
       },
       {
-        "desc": "\n\n",
+        "desc": " 单选按钮控件。\n\n",
         "name": "WIDGET_TYPE_RADIO_BUTTON"
       },
       {
-        "desc": "\n\n",
+        "desc": " 对话框标题。\n\n",
         "name": "WIDGET_TYPE_DIALOG_TITLE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 对话框客户区域。\n\n",
         "name": "WIDGET_TYPE_DIALOG_CLIENT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 滑块控件。\n\n",
         "name": "WIDGET_TYPE_SLIDER"
       },
       {
-        "desc": "\n\n",
+        "desc": " 视图控件。\n\n",
         "name": "WIDGET_TYPE_VIEW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 下拉选择框控件。\n\n",
         "name": "WIDGET_TYPE_COMBO_BOX"
       },
       {
-        "desc": "\n\n",
+        "desc": " 下拉选择框的列表项控件。\n\n",
         "name": "WIDGET_TYPE_COMBO_BOX_ITEM"
       },
       {
-        "desc": "\n\n",
+        "desc": " 滑动视图控件。\n\n",
         "name": "WIDGET_TYPE_SLIDE_VIEW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 多页控件。\n\n",
         "name": "WIDGET_TYPE_PAGES"
       },
       {
-        "desc": "\n\n",
+        "desc": " 标签按钮控件。\n\n",
         "name": "WIDGET_TYPE_TAB_BUTTON"
       },
       {
-        "desc": "\n\n",
+        "desc": " 标签控件。\n\n",
         "name": "WIDGET_TYPE_TAB_CONTROL"
       },
       {
-        "desc": "\n\n",
+        "desc": " 标签按钮分组控件。\n\n",
         "name": "WIDGET_TYPE_TAB_BUTTON_GROUP"
       },
       {
-        "desc": "\n\n",
+        "desc": " 按钮分组控件。\n\n",
         "name": "WIDGET_TYPE_BUTTON_GROUP"
       },
       {
-        "desc": "\n\n",
+        "desc": " 候选字控件。\n\n",
         "name": "WIDGET_TYPE_CANDIDATES"
       },
       {
-        "desc": "\n\n",
+        "desc": " 数值编辑控件。\n\n",
         "name": "WIDGET_TYPE_SPIN_BOX"
       },
       {
-        "desc": "\n\n",
+        "desc": " 拖动块控件。\n\n",
         "name": "WIDGET_TYPE_DRAGGER"
       },
       {
-        "desc": "\n\n",
+        "desc": " 滚动条控件。\n\n",
         "name": "WIDGET_TYPE_SCROLL_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 桌面版滚动条控件。\n\n",
         "name": "WIDGET_TYPE_SCROLL_BAR_DESKTOP"
       },
       {
-        "desc": "\n\n",
+        "desc": " 移动版滚动条控件。\n\n",
         "name": "WIDGET_TYPE_SCROLL_BAR_MOBILE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 滚动视图控件。\n\n",
         "name": "WIDGET_TYPE_SCROLL_VIEW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 列表视图控件。\n\n",
         "name": "WIDGET_TYPE_LIST_VIEW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 水平列表视图控件。\n\n",
         "name": "WIDGET_TYPE_LIST_VIEW_H"
       },
       {
-        "desc": "\n\n",
+        "desc": " 列表项控件。\n\n",
         "name": "WIDGET_TYPE_LIST_ITEM"
       },
       {
-        "desc": "\n\n",
+        "desc": " 颜色选择器控件。\n\n",
         "name": "WIDGET_TYPE_COLOR_PICKER"
       },
       {
-        "desc": "\n\n",
+        "desc": " 颜色选择器组件控件。\n\n",
         "name": "WIDGET_TYPE_COLOR_COMPONENT"
       },
       {
-        "desc": "\n\n",
+        "desc": " 颜色块控件。\n\n",
         "name": "WIDGET_TYPE_COLOR_TILE"
       },
       {
-        "desc": "\n\n",
+        "desc": " 富文本控件。\n\n",
         "name": "WIDGET_TYPE_RICH_TEXT"
       },
       {
-        "desc": "\n\n",
+        "desc": " AppBar控件。\n\n",
         "name": "WIDGET_TYPE_APP_BAR"
       },
       {
-        "desc": "\n\n",
+        "desc": " 网格控件。\n\n",
         "name": "WIDGET_TYPE_GRID"
       },
       {
-        "desc": "\n\n",
+        "desc": " 网格项目控件。\n\n",
         "name": "WIDGET_TYPE_GRID_ITEM"
       },
       {
-        "desc": "\n\n",
+        "desc": " 行控件。\n\n",
         "name": "WIDGET_TYPE_ROW"
       },
       {
-        "desc": "\n\n",
+        "desc": " 列控件。\n\n",
         "name": "WIDGET_TYPE_COLUMN"
       },
       {
-        "desc": "\n\n",
+        "desc": " 电阻屏校准窗口。\n\n",
         "name": "WIDGET_TYPE_CALIBRATION_WIN"
       }
     ],
@@ -20235,6 +20239,29 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop",
+            "desc": "是否启用循环切换模式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置循环切换模式。\r\n\r\n",
+        "name": "slide_view_set_loop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -20267,6 +20294,19 @@
         "name": "auto_play",
         "desc": " 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。\r\n",
         "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop",
+        "desc": " 循环切换模式。\r\n\r\n 向后切换：切换到最后一页时，再往后切换就到第一页。\r\n 向前切换：切换到第一页时，再往前切换就到最后一页。\r\n",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

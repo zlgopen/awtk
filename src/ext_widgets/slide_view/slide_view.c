@@ -28,6 +28,10 @@
 
 static ret_t slide_view_invalidate(slide_view_t* slide_view);
 
+static bool slide_view_is_loopable(slide_view_t* slide_view) {
+  return slide_view->auto_play || slide_view->loop;
+}
+
 static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int ox, int oy) {
   rect_t rr = *r;
   rr.x += ox;
@@ -45,7 +49,7 @@ widget_t* slide_view_get_prev(slide_view_t* slide_view) {
 
   if (active > 0) {
     return widget_get_child(widget, active - 1);
-  } else if (slide_view->auto_play && nr > 1) {
+  } else if (slide_view_is_loopable(slide_view) && nr > 1) {
     return widget_get_child(widget, nr - 1);
   } else {
     return NULL;
@@ -59,7 +63,7 @@ widget_t* slide_view_get_next(slide_view_t* slide_view) {
 
   if ((active + 1) < nr) {
     return widget_get_child(widget, active + 1);
-  } else if (slide_view->auto_play && nr > 1) {
+  } else if (slide_view_is_loopable(slide_view) && nr > 1) {
     return widget_get_child(widget, 0);
   } else {
     return NULL;
@@ -73,7 +77,7 @@ ret_t slide_view_activate_prev(slide_view_t* slide_view) {
 
   if (active > 0) {
     return slide_view_set_active(widget, active - 1);
-  } else if (slide_view->auto_play && nr > 1) {
+  } else if (slide_view_is_loopable(slide_view) && nr > 1) {
     return slide_view_set_active(widget, nr - 1);
   } else {
     return RET_FAIL;
@@ -87,7 +91,7 @@ ret_t slide_view_activate_next(slide_view_t* slide_view) {
 
   if ((active + 1) < nr) {
     return slide_view_set_active(widget, active + 1);
-  } else if (slide_view->auto_play && nr > 1) {
+  } else if (slide_view_is_loopable(slide_view) && nr > 1) {
     return slide_view_set_active(widget, 0);
   } else {
     return RET_FAIL;
@@ -277,6 +281,9 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, slide_view->vertical);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+    value_set_bool(v, slide_view->loop);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_PLAY)) {
     value_set_int(v, slide_view->auto_play);
     return RET_OK;
@@ -397,6 +404,8 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     return slide_view_set_active(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slide_view_set_vertical(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+    return slide_view_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     slide_view->xoffset = value_int(v);
     slide_view_invalidate(slide_view);
@@ -633,9 +642,13 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_VERTICAL,
-                                                WIDGET_PROP_XOFFSET,   WIDGET_PROP_YOFFSET,
-                                                WIDGET_PROP_AUTO_PLAY, NULL};
+static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,
+                                                WIDGET_PROP_VERTICAL,
+                                                WIDGET_PROP_LOOP,
+                                                WIDGET_PROP_XOFFSET,
+                                                WIDGET_PROP_YOFFSET,
+                                                WIDGET_PROP_AUTO_PLAY,
+                                                NULL};
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .type = WIDGET_TYPE_SLIDE_VIEW,
                               .clone_properties = s_slide_view_properties,
@@ -676,8 +689,25 @@ ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical) {
   return RET_OK;
 }
 
+ret_t slide_view_set_loop(widget_t* widget, bool_t loop) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+
+  slide_view->loop = loop;
+
+  return RET_OK;
+}
+
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, TK_REF_VTABLE(slide_view), x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(slide_view), x, y, w, h);
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL, NULL);
+
+  slide_view->loop = FALSE;
+  slide_view->auto_play = 0;
+  slide_view->vertical = FALSE;
+
+  return widget;
 }
 
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {

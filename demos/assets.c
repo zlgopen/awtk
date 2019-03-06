@@ -54,8 +54,10 @@
 #include "assets/inc/ui/color_picker_hsv.data"
 #include "assets/inc/ui/tab_bottom.data"
 #include "assets/inc/ui/list_view_m.data"
+#include "assets/inc/ui/slide_view_h_loop.data"
 #include "assets/inc/ui/calibration_win.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/slide_view_v_loop.data"
 #include "assets/inc/ui/language.data"
 #include "assets/inc/ui/kb_float.data"
 #include "assets/inc/ui/htranslate.data"
@@ -407,8 +409,10 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_color_picker_hsv);
   assets_manager_add(rm, ui_tab_bottom);
   assets_manager_add(rm, ui_list_view_m);
+  assets_manager_add(rm, ui_slide_view_h_loop);
   assets_manager_add(rm, ui_calibration_win);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_slide_view_v_loop);
   assets_manager_add(rm, ui_language);
   assets_manager_add(rm, ui_kb_float);
   assets_manager_add(rm, ui_htranslate);

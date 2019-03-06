@@ -1,6 +1,7 @@
-<window anim_hint="htranslate" children_layout="default(r=3,c=3,m=5,s=10)">
+<window anim_hint="htranslate" children_layout="default(h=40,c=1,m=5,s=10)">
     <button name="open:slide_view_h" text="slide_view_h"/>
     <button name="open:slide_view_v" text="slide_view_v"/>
+    <button name="open:slide_view_h_loop" text="slide_view_h loop"/>
+    <button name="open:slide_view_v_loop" text="slide_view_v loop"/>
     <button name="open:auto_play" text="auto_play"/>
-    <button name="close" text="Close"/>
 </window>

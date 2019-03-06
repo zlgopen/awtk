@@ -44,26 +44,27 @@
 | WIDGET\_PROP\_ANIM\_HINT | 窗口动画。 |
 | WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口动画。 |
 | WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口动画。 |
-| WIDGET\_PROP\_MIN |  |
-| WIDGET\_PROP\_TIPS |  |
-| WIDGET\_PROP\_INPUT\_TYPE |  |
-| WIDGET\_PROP\_READONLY |  |
-| WIDGET\_PROP\_PASSWORD\_VISIBLE |  |
-| WIDGET\_PROP\_ACTIVE |  |
-| WIDGET\_PROP\_VERTICAL |  |
-| WIDGET\_PROP\_SHOW\_TEXT |  |
-| WIDGET\_PROP\_XOFFSET |  |
-| WIDGET\_PROP\_YOFFSET |  |
-| WIDGET\_PROP\_ALIGN\_V |  |
-| WIDGET\_PROP\_ALIGN\_H |  |
-| WIDGET\_PROP\_AUTO\_PLAY |  |
-| WIDGET\_PROP\_AUTO\_FIX |  |
-| WIDGET\_PROP\_X\_MIN |  |
-| WIDGET\_PROP\_X\_MAX |  |
-| WIDGET\_PROP\_Y\_MIN |  |
-| WIDGET\_PROP\_Y\_MAX |  |
-| WIDGET\_PROP\_MAX |  |
-| WIDGET\_PROP\_ROW |  |
+| WIDGET\_PROP\_MIN | 最小值。 |
+| WIDGET\_PROP\_TIPS | 提示信息。 |
+| WIDGET\_PROP\_INPUT\_TYPE | 输入类型。 |
+| WIDGET\_PROP\_READONLY | 只读模式。 |
+| WIDGET\_PROP\_PASSWORD\_VISIBLE | 密码是否可见。 |
+| WIDGET\_PROP\_ACTIVE | 是否处于active状态。 |
+| WIDGET\_PROP\_VERTICAL | 是否为垂直模式。 |
+| WIDGET\_PROP\_SHOW\_TEXT | 是否显示文本。 |
+| WIDGET\_PROP\_XOFFSET | X方向的偏移。 |
+| WIDGET\_PROP\_YOFFSET | Y方向的偏移。 |
+| WIDGET\_PROP\_ALIGN\_V | 垂直对齐模式。 |
+| WIDGET\_PROP\_ALIGN\_H | 水平对齐模式。 |
+| WIDGET\_PROP\_AUTO\_PLAY | 是否自动播放或指定播放的时间。 |
+| WIDGET\_PROP\_LOOP | 是否循环播放或循环播放的次数。 |
+| WIDGET\_PROP\_AUTO\_FIX | 是否启用自动更正功能。 |
+| WIDGET\_PROP\_X\_MIN | X最小值。 |
+| WIDGET\_PROP\_X\_MAX | X最大值。 |
+| WIDGET\_PROP\_Y\_MIN | Y最小值。 |
+| WIDGET\_PROP\_Y\_MAX | Y最大值。 |
+| WIDGET\_PROP\_MAX | 最大值。 |
+| WIDGET\_PROP\_ROW | 行数或每行的高度。 |
 | WIDGET\_PROP\_STATE\_FOR\_STYLE | 控件状态。 |
 | WIDGET\_PROP\_THEME | 窗口主题名称。 |
 | WIDGET\_PROP\_STAGE | window stage |
@@ -72,22 +73,22 @@
 | WIDGET\_PROP\_FONT\_MANAGER | 字体管理器。 |
 | WIDGET\_PROP\_THEME\_OBJ | 窗口的主题对象。 |
 | WIDGET\_PROP\_DEFAULT\_THEME\_OBJ | 缺省的主题对象。 |
-| WIDGET\_PROP\_ITEM\_WIDTH |  |
-| WIDGET\_PROP\_ITEM\_HEIGHT |  |
-| WIDGET\_PROP\_DEFAULT\_ITEM\_HEIGHT |  |
-| WIDGET\_PROP\_XSLIDABLE |  |
-| WIDGET\_PROP\_YSLIDABLE |  |
-| WIDGET\_PROP\_REPEAT |  |
-| WIDGET\_PROP\_ENABLE\_LONG\_PRESS |  |
-| WIDGET\_PROP\_ANIMATABLE |  |
-| WIDGET\_PROP\_AUTO\_HIDE\_SCROLL\_BAR |  |
-| WIDGET\_PROP\_IMAGE |  |
-| WIDGET\_PROP\_FORMAT |  |
-| WIDGET\_PROP\_DRAW\_TYPE |  |
-| WIDGET\_PROP\_SELECTABLE |  |
-| WIDGET\_PROP\_CLICKABLE |  |
-| WIDGET\_PROP\_SCALE\_X |  |
-| WIDGET\_PROP\_SCALE\_Y |  |
+| WIDGET\_PROP\_ITEM\_WIDTH | 项的宽度。 |
+| WIDGET\_PROP\_ITEM\_HEIGHT | 项的高度。 |
+| WIDGET\_PROP\_DEFAULT\_ITEM\_HEIGHT | 项的缺省高度。 |
+| WIDGET\_PROP\_XSLIDABLE | X方向是否可拖动。 |
+| WIDGET\_PROP\_YSLIDABLE | Y方向是否可拖动。 |
+| WIDGET\_PROP\_REPEAT | 重复次数。 |
+| WIDGET\_PROP\_ENABLE\_LONG\_PRESS | 是否启用长按。 |
+| WIDGET\_PROP\_ANIMATABLE | 是否启用动画。 |
+| WIDGET\_PROP\_AUTO\_HIDE\_SCROLL\_BAR | 是否自动隐藏滚动条。 |
+| WIDGET\_PROP\_IMAGE | 图片名称。 |
+| WIDGET\_PROP\_FORMAT | 显示格式。 |
+| WIDGET\_PROP\_DRAW\_TYPE | 图片绘制类型。 |
+| WIDGET\_PROP\_SELECTABLE | 是否可选择。 |
+| WIDGET\_PROP\_CLICKABLE | 是否可点击。 |
+| WIDGET\_PROP\_SCALE\_X | X方向缩放比例。 |
+| WIDGET\_PROP\_SCALE\_Y | Y方向缩放比例。 |
 | WIDGET\_PROP\_ANCHOR\_X | x锚点。 |
 | WIDGET\_PROP\_ANCHOR\_Y | y锚点。 |
 | WIDGET\_PROP\_ROTATION | 选中角度(幅度) |
