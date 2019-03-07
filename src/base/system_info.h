@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @class system_info_t
- * @parent object
+ * @parent object_t
  * 当前系统的信息。
  */
 typedef struct _system_info_t {
@@ -81,6 +81,8 @@ typedef struct _system_info_t {
    * @property {const char*} lcd_orientation_name
    * @annotation ["readable", "fake"]
    * 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。
+   *
+   * > 只能通过object\_get\_prop函数访问。
    */
 
   /**
@@ -181,10 +183,10 @@ ret_t system_info_set_lcd_type(system_info_t* info, lcd_type_t lcd_type);
 
 /**
  * @method system_info_set_lcd_orientation
- * 设置LCD类型。
+ * 设置LCD的旋转角度。
  *
  * @param {system_info_t* info} info system_info对象。
- * @param {lcd_orientation_t} lcd_orientation 设置LCD类型。
+ * @param {lcd_orientation_t} lcd_orientation 设置LCD的旋转角度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

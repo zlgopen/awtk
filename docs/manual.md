@@ -182,6 +182,10 @@
 
 * [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
 
+### 杂项
+
+* [system\_info](manual/system_info_t.md) 系统信息。
+
 ## 二、基本函数库
 
 * [darray](manual/darray_t.md) 动态数组。
