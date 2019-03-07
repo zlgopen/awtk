@@ -103,6 +103,14 @@ typedef struct _slide_view_t {
    */
   bool_t loop;
 
+  /**
+   * @property {char*} anim_hint
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 页面切换效果。
+   *
+   */
+  char* anim_hint;
+
   /*private*/
   point_t down;
   int32_t xoffset;
@@ -180,6 +188,29 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t index);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical);
+
+/**
+ * @method slide_view_set_anim_hint
+ * 设置页面切换动画。
+ *
+ * anim_hint取值如下：
+ *
+ * * "translate"：平移。
+ * * "overlap"：覆盖。
+ * * "overlap\_with\_alpha"：覆盖并改变透明度。
+ *
+ *> 使用"overlap"或"overlap\_with\_alpha"动画时，背景图片最好指定到page上。
+ *>
+ *> 使用"overlap\_with\_alpha"动画时，slideview的背景设置为黑色，
+ *> 或slideview的背景设置为透明，窗口的背景设置为黑色，以获得更好的视觉效果和性能。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ * @param {const char*} anim_hint 页面切换动画。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_view_set_anim_hint(widget_t* widget, const char* anim_hint);
 
 /**
  * @method slide_view_set_loop

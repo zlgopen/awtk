@@ -107,6 +107,13 @@ TEST(SlideView, props) {
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
   ASSERT_EQ(value_bool(&v1), SLIDE_VIEW(w)->loop);
 
+  value_set_str(&v1, "overlap");
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_ANIM_HINT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
+  ASSERT_EQ(v1.type, v2.type);
+  ASSERT_STREQ(value_str(&v1), value_str(&v2));
+  ASSERT_STREQ(value_str(&v1), SLIDE_VIEW(w)->anim_hint);
+
   widget_destroy(w);
 }
 

@@ -20248,6 +20248,29 @@
             "desc": "slide_view对象。"
           },
           {
+            "type": "const char*",
+            "name": "anim_hint",
+            "desc": "页面切换动画。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置页面切换动画。\r\n\r\n anim_hint取值如下：\r\n\r\n * \"translate\"：平移。\r\n * \"overlap\"：覆盖。\r\n * \"overlap\\_with\\_alpha\"：覆盖并改变透明度。\r\n\r\n> 使用\"overlap\"或\"overlap\\_with\\_alpha\"动画时，背景图片最好指定到page上。\r\n>\r\n> 使用\"overlap\\_with\\_alpha\"动画时，slideview的背景设置为黑色，\r\n> 或slideview的背景设置为透明，窗口的背景设置为黑色，以获得更好的视觉效果和性能。\r\n\r\n\r\n",
+        "name": "slide_view_set_anim_hint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
             "type": "bool_t",
             "name": "loop",
             "desc": "是否启用循环切换模式。"
@@ -20307,6 +20330,19 @@
         "name": "loop",
         "desc": " 循环切换模式。\r\n\r\n 向后切换：切换到最后一页时，再往后切换就到第一页。\r\n 向前切换：切换到第一页时，再往前切换就到最后一页。\r\n",
         "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anim_hint",
+        "desc": " 页面切换效果。\r\n\r\n",
+        "type": "char*",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

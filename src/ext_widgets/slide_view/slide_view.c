@@ -28,12 +28,22 @@
 
 static ret_t slide_view_invalidate(slide_view_t* slide_view);
 
+static bool_t anim_hint_is_overlap(slide_view_t* slide_view) {
+  return tk_str_eq(slide_view->anim_hint, "overlap") ||
+         tk_str_eq(slide_view->anim_hint, "overlap_with_alpha");
+}
+
+static bool_t anim_hint_is_overlap_with_alpha(slide_view_t* slide_view) {
+  return tk_str_eq(slide_view->anim_hint, "overlap_with_alpha");
+}
+
 static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
   return slide_view->auto_play || slide_view->loop;
 }
 
-static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int ox, int oy) {
+static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int32_t ox, int32_t oy) {
   rect_t rr = *r;
+
   rr.x += ox;
   rr.y += oy;
   rr.w -= 1;
@@ -144,10 +154,10 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
 
   velocity_update(v, e->e.time, e->x, e->y);
   if (slide_view->vertical) {
-    int h = widget->h;
-    int yoffset_end = 0;
-    int yv = tk_abs(v->yv);
-    int yoffset = slide_view->yoffset;
+    int32_t h = widget->h;
+    int32_t yoffset_end = 0;
+    int32_t yv = tk_abs(v->yv);
+    int32_t yoffset = slide_view->yoffset;
     bool_t rollback = (yv < v_threshhold) && (tk_abs(yoffset) < h / 2);
 
     if (yoffset > 0 && slide_view_get_prev(slide_view) == NULL) {
@@ -165,10 +175,10 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
 
     widget_animator_scroll_set_params(animator, 0, yoffset, 0, yoffset_end);
   } else {
-    int w = widget->w;
-    int xoffset_end = 0;
-    int xv = tk_abs(v->xv);
-    int xoffset = slide_view->xoffset;
+    int32_t w = widget->w;
+    int32_t xoffset_end = 0;
+    int32_t xv = tk_abs(v->xv);
+    int32_t xoffset = slide_view->xoffset;
     bool_t rollback = (xv < v_threshhold) && (tk_abs(xoffset) < w / 2);
 
     if (xoffset > 0 && slide_view_get_prev(slide_view) == NULL) {
@@ -281,6 +291,9 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, slide_view->vertical);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
+    value_set_str(v, slide_view->anim_hint);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
     value_set_bool(v, slide_view->loop);
     return RET_OK;
@@ -318,8 +331,8 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
   rect_t r_next;
   rect_t r_prev;
   rect_t r_active;
-  int xoffset = slide_view->xoffset;
-  int yoffset = slide_view->yoffset;
+  int32_t xoffset = slide_view->xoffset;
+  int32_t yoffset = slide_view->yoffset;
   widget_t* widget = WIDGET(slide_view);
   widget_t* active = widget_get_child(widget, slide_view->active);
   widget_t* next = slide_view_get_next(slide_view);
@@ -404,6 +417,8 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     return slide_view_set_active(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slide_view_set_vertical(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
+    return slide_view_set_anim_hint(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
     return slide_view_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
@@ -421,116 +436,214 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* c) {
-  rect_t r;
-  int ox = c->ox;
-  int oy = c->oy;
+static ret_t slide_view_paint_prev_next_v_translate(slide_view_t* slide_view, canvas_t* c,
+                                                    widget_t* prev, widget_t* next,
+                                                    int32_t yoffset) {
+  int32_t ox = c->ox;
+  int32_t oy = c->oy;
   xy_t w = WIDGET(slide_view)->w;
   xy_t h = WIDGET(slide_view)->h;
-  int yoffset = slide_view->yoffset;
-  int r_yoffset = h - slide_view->yoffset;
-  widget_t* prev = slide_view_get_prev(slide_view);
-  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
+  int32_t r_yoffset = h - yoffset;
 
-  r = rect_init(0, 0, w, yoffset);
   if (prev) {
+    rect_t r = rect_init(0, 0, w, yoffset);
     canvas_translate(c, 0, -r_yoffset);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(prev, c);
     canvas_untranslate(c, 0, -r_yoffset);
   }
 
-  canvas_translate(c, 0, yoffset);
-  r = rect_init(0, yoffset, w, r_yoffset);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  widget_paint(active, c);
-  canvas_untranslate(c, 0, yoffset);
-
-  return RET_OK;
-}
-
-static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* c) {
-  rect_t r;
-  int ox = c->ox;
-  int oy = c->oy;
-  xy_t w = WIDGET(slide_view)->w;
-  xy_t h = WIDGET(slide_view)->h;
-  int yoffset = tk_abs(slide_view->yoffset);
-  int r_yoffset = h - tk_abs(slide_view->yoffset);
-  widget_t* next = slide_view_get_next(slide_view);
-  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
-
-  canvas_translate(c, 0, -yoffset);
-  r = rect_init(0, 0, w, r_yoffset);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  widget_paint(active, c);
-  canvas_untranslate(c, 0, -yoffset);
-
-  r = rect_init(0, r_yoffset, w, yoffset);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  if (next) {
-    canvas_translate(c, 0, r_yoffset);
+  if (next != NULL) {
+    canvas_translate(c, 0, yoffset);
+    rect_t r = rect_init(0, yoffset, w, r_yoffset);
+    canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(next, c);
-    canvas_untranslate(c, 0, r_yoffset);
+    canvas_untranslate(c, 0, yoffset);
   }
 
   return RET_OK;
 }
 
-static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* c) {
+static ret_t slide_view_set_next_global_alpha_v(slide_view_t* slide_view, canvas_t* c,
+                                                int32_t offset, int32_t total) {
+  if (anim_hint_is_overlap_with_alpha(slide_view)) {
+    uint8_t a = 0xff - (0xff * offset) / total;
+    canvas_set_global_alpha(c, a);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_set_prev_global_alpha_v(slide_view_t* slide_view, canvas_t* c,
+                                                int32_t offset, int32_t total) {
+  if (anim_hint_is_overlap_with_alpha(slide_view)) {
+    uint8_t a = 0xff - 0x40 + (0x40 * offset) / total;
+    canvas_set_global_alpha(c, a);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canvas_t* c,
+                                                  widget_t* prev, widget_t* next, int32_t yoffset) {
   rect_t r;
-  int ox = c->ox;
-  int oy = c->oy;
+  int32_t ox = c->ox;
+  int32_t oy = c->oy;
   xy_t w = WIDGET(slide_view)->w;
   xy_t h = WIDGET(slide_view)->h;
-  int xoffset = slide_view->xoffset;
-  int r_xoffset = w - slide_view->xoffset;
+  int32_t r_yoffset = h - yoffset;
+
+  if (next != NULL) {
+    slide_view_set_next_global_alpha_v(slide_view, c, yoffset, h);
+    widget_paint(next, c);
+  }
+
+  r = rect_init(0, 0, w, yoffset);
+  if (prev != NULL) {
+    slide_view_set_prev_global_alpha_v(slide_view, c, yoffset, h);
+
+    canvas_translate(c, 0, -r_yoffset);
+    canvas_set_clip_rect_with_offset(c, &r, ox, oy);
+    widget_paint(prev, c);
+    canvas_untranslate(c, 0, -r_yoffset);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* c) {
+  int32_t yoffset = tk_abs(slide_view->yoffset);
   widget_t* prev = slide_view_get_prev(slide_view);
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
+  if (anim_hint_is_overlap(slide_view)) {
+    return slide_view_paint_prev_next_v_overlap(slide_view, c, prev, active, yoffset);
+  } else {
+    return slide_view_paint_prev_next_v_translate(slide_view, c, prev, active, yoffset);
+  }
+}
+
+static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* c) {
+  int32_t yoffset = WIDGET(slide_view)->h - tk_abs(slide_view->yoffset);
+  widget_t* next = slide_view_get_next(slide_view);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
+
+  if (anim_hint_is_overlap(slide_view)) {
+    return slide_view_paint_prev_next_v_overlap(slide_view, c, active, next, yoffset);
+  } else {
+    return slide_view_paint_prev_next_v_translate(slide_view, c, active, next, yoffset);
+  }
+}
+
+static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, canvas_t* c,
+                                                    widget_t* prev, widget_t* next,
+                                                    int32_t xoffset) {
+  rect_t r;
+  int32_t ox = c->ox;
+  int32_t oy = c->oy;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
+  int32_t r_xoffset = w - xoffset;
+
   r = rect_init(0, 0, xoffset, h);
-  if (prev) {
+  if (prev != NULL) {
     canvas_translate(c, -r_xoffset, 0);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(prev, c);
     canvas_untranslate(c, -r_xoffset, 0);
   }
 
-  canvas_translate(c, xoffset, 0);
-  r = rect_init(xoffset, 0, r_xoffset, h);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  widget_paint(active, c);
-  canvas_untranslate(c, xoffset, 0);
+  if (next != NULL) {
+    canvas_translate(c, xoffset, 0);
+    r = rect_init(xoffset, 0, r_xoffset, h);
+    canvas_set_clip_rect_with_offset(c, &r, ox, oy);
+    widget_paint(next, c);
+    canvas_untranslate(c, xoffset, 0);
+  }
 
   return RET_OK;
 }
 
-static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* c) {
-  rect_t r;
-  int ox = c->ox;
-  int oy = c->oy;
-  xy_t w = WIDGET(slide_view)->w;
-  xy_t h = WIDGET(slide_view)->h;
-  int xoffset = tk_abs(slide_view->xoffset);
-  int r_xoffset = w - tk_abs(slide_view->xoffset);
-  widget_t* next = slide_view_get_next(slide_view);
-  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
+static ret_t slide_view_set_next_global_alpha_h(slide_view_t* slide_view, canvas_t* c) {
+  if (anim_hint_is_overlap_with_alpha(slide_view)) {
+    int32_t offset = slide_view->xoffset;
+    int32_t total = WIDGET(slide_view)->w;
+    uint8_t a = 0xff - 0x40 + (0x40 * offset) / total;
 
-  canvas_translate(c, -xoffset, 0);
-  r = rect_init(0, 0, r_xoffset, h);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  widget_paint(active, c);
-  canvas_untranslate(c, -xoffset, 0);
-
-  r = rect_init(r_xoffset, 0, xoffset, h);
-  canvas_set_clip_rect_with_offset(c, &r, ox, oy);
-  if (next) {
-    canvas_translate(c, r_xoffset, 0);
-    widget_paint(next, c);
-    canvas_untranslate(c, r_xoffset, 0);
+    canvas_set_global_alpha(c, a);
   }
 
   return RET_OK;
+}
+
+static ret_t slide_view_set_prev_global_alpha_h(slide_view_t* slide_view, canvas_t* c) {
+  if (anim_hint_is_overlap_with_alpha(slide_view)) {
+    uint8_t a = 0;
+    int32_t offset = slide_view->xoffset;
+    int32_t total = WIDGET(slide_view)->w;
+
+    if (offset > 0) {
+      a = (0xff * tk_abs(offset)) / total;
+    } else {
+      a = 0xff - (0xff * tk_abs(offset)) / total;
+    }
+
+    canvas_set_global_alpha(c, a);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_paint_prev_next_h_overlap(slide_view_t* slide_view, canvas_t* c,
+                                                  widget_t* prev, widget_t* next, int32_t xoffset) {
+  rect_t r;
+  int32_t ox = c->ox;
+  int32_t oy = c->oy;
+  xy_t w = WIDGET(slide_view)->w;
+  xy_t h = WIDGET(slide_view)->h;
+  int32_t r_xoffset = w - xoffset;
+
+  r = rect_init(0, 0, xoffset, h);
+  if (prev != NULL) {
+    slide_view_set_prev_global_alpha_h(slide_view, c);
+    widget_paint(prev, c);
+  }
+
+  if (next != NULL) {
+    slide_view_set_next_global_alpha_h(slide_view, c);
+
+    canvas_translate(c, xoffset, 0);
+    r = rect_init(xoffset, 0, r_xoffset, h);
+    canvas_set_clip_rect_with_offset(c, &r, ox, oy);
+    widget_paint(next, c);
+    canvas_untranslate(c, xoffset, 0);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* c) {
+  int32_t xoffset = tk_abs(slide_view->xoffset);
+  widget_t* prev = slide_view_get_prev(slide_view);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
+
+  if (anim_hint_is_overlap(slide_view)) {
+    return slide_view_paint_prev_next_h_overlap(slide_view, c, prev, active, xoffset);
+  } else {
+    return slide_view_paint_prev_next_h_translate(slide_view, c, prev, active, xoffset);
+  }
+}
+
+static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* c) {
+  int32_t xoffset = WIDGET(slide_view)->w - tk_abs(slide_view->xoffset);
+  widget_t* next = slide_view_get_next(slide_view);
+  widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
+
+  if (anim_hint_is_overlap(slide_view)) {
+    return slide_view_paint_prev_next_h_overlap(slide_view, c, active, next, xoffset);
+  } else {
+    return slide_view_paint_prev_next_h_translate(slide_view, c, active, next, xoffset);
+  }
 }
 
 static ret_t slide_view_paint_indicator_one(widget_t* widget, canvas_t* c, rect_t* r,
@@ -570,8 +683,8 @@ static ret_t slide_view_paint_indicator(widget_t* widget, canvas_t* c) {
   uint32_t i = 0;
   uint32_t size = 8;
   uint32_t offset = 0;
-  int cx = widget->w >> 1;
-  int cy = widget->h >> 1;
+  int32_t cx = widget->w >> 1;
+  int32_t cy = widget->h >> 1;
   uint32_t half_size = size >> 1;
   uint32_t double_size = size << 1;
   uint32_t nr = widget_count_children(widget);
@@ -603,12 +716,14 @@ static ret_t slide_view_paint_indicator(widget_t* widget, canvas_t* c) {
 
 static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   rect_t save_r;
+  uint8_t save_a = c->lcd->global_alpha;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   widget_t* active = widget_get_child(widget, slide_view->active);
 
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);
 
   canvas_get_clip_rect(c, &save_r);
+
   if (slide_view->vertical) {
     if (slide_view->yoffset > 0) {
       slide_view_paint_children_v_gt(slide_view, c);
@@ -627,6 +742,7 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
     }
   }
   canvas_set_clip_rect(c, &save_r);
+  canvas_set_global_alpha(c, save_a);
   slide_view_paint_indicator(widget, c);
 
   return RET_OK;
@@ -638,17 +754,14 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
     timer_remove(slide_view->timer_id);
     slide_view->timer_id = 0;
   }
+  TKMEM_FREE(slide_view->anim_hint);
 
   return RET_OK;
 }
 
-static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,
-                                                WIDGET_PROP_VERTICAL,
-                                                WIDGET_PROP_LOOP,
-                                                WIDGET_PROP_XOFFSET,
-                                                WIDGET_PROP_YOFFSET,
-                                                WIDGET_PROP_AUTO_PLAY,
-                                                NULL};
+static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_LOOP,
+                                                WIDGET_PROP_VERTICAL,  WIDGET_PROP_ANIM_HINT,
+                                                WIDGET_PROP_AUTO_PLAY, NULL};
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .type = WIDGET_TYPE_SLIDE_VIEW,
                               .clone_properties = s_slide_view_properties,
@@ -685,6 +798,15 @@ ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical) {
 
   slide_view->vertical = vertical;
   widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
+ret_t slide_view_set_anim_hint(widget_t* widget, const char* anim_hint) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+
+  slide_view->anim_hint = tk_str_copy(slide_view->anim_hint, anim_hint);
 
   return RET_OK;
 }
