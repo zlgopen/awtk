@@ -364,6 +364,22 @@ ret_t str_to_lower(str_t* str);
 ret_t str_to_upper(str_t* str);
 
 /**
+ * @method str_expand_vars
+ * 将字符串中的变量展开为obj中对应的属性值。
+ *
+ * 变量的格式为${xxx}：
+ *
+ * * xxx为变量名时，${xxx}被展开为obj的属性xxx的值。
+ * * xxx为表达式时，${xxx}被展开为表达式的值，表达式中可以用变量，$为变量的前缀，如${$x+$y}。
+ * * xxx为变量名时，而不存在obj的属性时，${xxx}被移出。
+ *
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj);
+
+/**
  * @method str_reset
  * 重置字符串为空。
  * @param {str_t*} str str对象。
