@@ -30,6 +30,8 @@
 * [如何在非GUI线程操作GUI控件](how_to_non_gui_thread_operate_widget.md)
 * [如何启用鼠标指针](how_to_enable_mouse_cursor.md)
 * [如何启用屏保](screen_saver.md)
+* [如何设置字体的全局缩放比例](how_to_scale_font.md)
+* [如何用实体键关闭任何一个窗口](how_close_and_window_by_key.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)

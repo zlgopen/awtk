@@ -383,6 +383,22 @@ static ret_t on_dec(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_change_font_size(void* ctx, event_t* e) {
+  float_t font_scale = 1;
+  widget_t* win = WIDGET(ctx);
+
+  if (widget_get_value(widget_lookup(win, "font_small", TRUE))) {
+    font_scale = 0.9;
+  } else if (widget_get_value(widget_lookup(win, "font_big", TRUE))) {
+    font_scale = 1.1;
+  }
+  system_info_set_font_scale(system_info(), font_scale);
+
+  widget_invalidate_force(win, NULL);
+
+  return RET_OK;
+}
+
 static ret_t on_change_locale(void* ctx, event_t* e) {
   char country[3];
   char language[3];
@@ -424,6 +440,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
     } else if (tk_str_eq(name, "english")) {
       widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
+    } else if (tk_str_eq(name, "font_small") || tk_str_eq(name, "font_normal") ||
+               tk_str_eq(name, "font_big")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_VALUE_CHANGED, on_change_font_size, win);
     } else if (tk_str_eq(name, "inc_value")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_inc, win);

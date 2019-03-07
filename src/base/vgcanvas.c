@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "tkc/color_parser.h"
 #include "base/vgcanvas.h"
+#include "base/system_info.h"
 
 ret_t vgcanvas_reset(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->reset != NULL, RET_BAD_PARAMS);
@@ -207,6 +208,7 @@ ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
 ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size) {
   return_value_if_fail(vg != NULL && vg->vt->set_font_size != NULL, RET_BAD_PARAMS);
 
+  size = system_info()->font_scale * size;
   vg->font_size = size;
 
   return vg->vt->set_font_size(vg, size);
