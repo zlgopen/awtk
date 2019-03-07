@@ -431,6 +431,7 @@ static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
 
   mem->offline_fb = fbuff;
   mem->online_fb = NULL;
+  lcd->flush = NULL;
 
   return lcd;
 }

@@ -211,7 +211,7 @@ ret_t lcd_swap(lcd_t* lcd) {
     return lcd->swap(lcd);
   }
 
-  return RET_NOT_IMPL;
+  return RET_OK;
 }
 
 ret_t lcd_flush(lcd_t* lcd) {
@@ -221,7 +221,7 @@ ret_t lcd_flush(lcd_t* lcd) {
     return lcd->flush(lcd);
   }
 
-  return RET_NOT_IMPL;
+  return RET_OK;
 }
 
 bool_t lcd_is_swappable(lcd_t* lcd) {
