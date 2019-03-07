@@ -22,7 +22,7 @@
 #ifndef TK_EMITTER_H
 #define TK_EMITTER_H
 
-#include "base/events.h"
+#include "tkc/event.h"
 
 BEGIN_C_DECLS
 
