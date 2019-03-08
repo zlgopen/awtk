@@ -157,9 +157,13 @@ void* darray_find(darray_t* darray, void* data) {
 }
 
 void* darray_pop(darray_t* darray) {
-  return_value_if_fail(darray != NULL && darray->size > 0, NULL);
+  return_value_if_fail(darray != NULL, NULL);
 
-  return darray->elms[--darray->size];
+  if (darray->size > 0) {
+    return darray->elms[--darray->size];
+  } else {
+    return NULL;
+  }
 }
 
 void* darray_tail(darray_t* darray) {
@@ -240,11 +244,13 @@ ret_t darray_clear(darray_t* darray) {
 }
 
 ret_t darray_deinit(darray_t* darray) {
-  return_value_if_fail(darray != NULL && darray->elms != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
-  darray_clear(darray);
-  TKMEM_FREE(darray->elms);
-  memset(darray, 0x00, sizeof(darray_t));
+  if (darray->elms != NULL) {
+    darray_clear(darray);
+    TKMEM_FREE(darray->elms);
+    memset(darray, 0x00, sizeof(darray_t));
+  }
 
   return RET_OK;
 }
