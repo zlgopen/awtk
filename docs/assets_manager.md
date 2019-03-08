@@ -83,6 +83,14 @@ AWTK中的资源需要进行格式转换才能使用：
   image_manager_load(image_manager(), "earth", &img);
 ```
 
+> 不过通过更上层widget的函数去加载图片：
+
+```
+ bitmap_t bitmap;
+ widget_load_image(widget, "myimage", &bitmap);
+```
+
+
 * 使用UI数据
 
 使用window\_open，指定资源的名称即可。如：
