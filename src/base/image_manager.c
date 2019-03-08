@@ -187,6 +187,24 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   }
 }
 
+typedef struct _imm_expr_info_t {
+  image_manager_t* imm;
+  bitmap_t* image;
+} imm_expr_info_t;
+
+static ret_t image_manager_on_expr_result(void* ctx, const void* data) {
+  imm_expr_info_t* info = (imm_expr_info_t*)ctx;
+  const char* name = (const char*)data;
+
+  return image_manager_get_bitmap_impl(info->imm, name, info->image);
+}
+
+ret_t image_manager_get_bitmap_exprs(image_manager_t* imm, const char* exprs, bitmap_t* image) {
+  imm_expr_info_t ctx = {imm, image};
+
+  return system_info_eval_exprs(system_info(), exprs, image_manager_on_expr_result, &ctx);
+}
+
 ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
@@ -213,6 +231,8 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
     }
 
     return RET_FAIL;
+  } else if (strchr(name, '$') != NULL || strchr(name, ',') != NULL) {
+    return image_manager_get_bitmap_exprs(imm, name, image);
   } else {
     return image_manager_get_bitmap_impl(imm, name, image);
   }

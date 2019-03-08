@@ -78,9 +78,25 @@ typedef struct _system_info_t {
   lcd_orientation_t lcd_orientation;
 
   /**
-   * @property {const char*} lcd_orientation_name
+   * @property {const char*} device_orientation
    * @annotation ["readable", "fake"]
    * 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。
+   *
+   * > 只能通过object\_get\_prop函数访问。
+   */
+
+  /**
+   * @property {const char*} country
+   * @annotation ["readable", "fake"]
+   * locale中的国家。
+   *
+   * > 只能通过object\_get\_prop函数访问。
+   */
+
+  /**
+   * @property {const char*} language
+   * @annotation ["readable", "fake"]
+   * locale中的语言。
    *
    * > 只能通过object\_get\_prop函数访问。
    */
@@ -210,16 +226,22 @@ ret_t system_info_set_device_pixel_ratio(system_info_t* info, float_t device_pix
 #define SYSTEM_INFO_PROP_LCD_TYPE "lcd_type"
 #define SYSTEM_INFO_PROP_LCD_ORIENTATION "lcd_orientation"
 #define SYSTEM_INFO_PROP_DEVICE_PIXEL_RATIO "device_pixel_ratio"
-#define SYSTEM_INFO_PROP_LCD_ORIENTATION_NAME "lcd_orientation_name"
+#define SYSTEM_INFO_PROP_DEVICE_ORIENTATION "device_orientation"
 
 #define SYSTEM_INFO_PROP_APP_TYPE "app_type"
 #define SYSTEM_INFO_PROP_APP_NAME "app_name"
 #define SYSTEM_INFO_PROP_APP_ROOT "app_root"
+#define SYSTEM_INFO_PROP_APP_ROOT "app_root"
+#define SYSTEM_INFO_PROP_LANGUAGE "language"
+#define SYSTEM_INFO_PROP_COUNTRY "country"
 
 /*public for test*/
 system_info_t* system_info_create(app_type_t app_type, const char* app_name, const char* app_root);
 ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const char* app_name,
                                const char* app_root);
+
+ret_t system_info_eval_exprs(system_info_t* info, const char* exprs, tk_visit_t on_expr_result,
+                             void* ctx);
 
 END_C_DECLS
 

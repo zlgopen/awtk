@@ -37,11 +37,24 @@ int gui_app_start(int lcd_w, int lcd_h) {
 #if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-#else
-int main(void) {
-#endif
+  int32_t lcd_w = 320;
+  int32_t lcd_h = 480;
   char res_root[MAX_PATH + 1];
   char app_root[MAX_PATH + 1];
+#else
+int main(int argc, char* argv[]) {
+  int32_t lcd_w = 320;
+  int32_t lcd_h = 480;
+  char res_root[MAX_PATH + 1];
+  char app_root[MAX_PATH + 1];
+
+  if (argc >= 2) {
+    lcd_w = tk_atoi(argv[1]);
+  }
+  if (argc >= 3) {
+    lcd_h = tk_atoi(argv[2]);
+  }
+#endif
   path_app_root(app_root);
   memset(res_root, 0x00, sizeof(res_root));
 
@@ -61,7 +74,7 @@ int main(void) {
 #endif /*NDEBUG*/
 #endif /*WIN32*/
 
-  tk_init(320, 480, APP_SIMULATOR, NULL, res_root);
+  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, res_root);
 #endif
 
 //#define WITH_LCD_PORTRAIT 1

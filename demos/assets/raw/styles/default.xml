@@ -12,7 +12,7 @@
   </style>
 
   <style name="sky">
-    <normal bg_image="landscape_1"/>
+    <normal bg_image="bg_${device_orientation}_1"/>
   </style>
 </window>
 

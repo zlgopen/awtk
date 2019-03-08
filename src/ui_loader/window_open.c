@@ -19,10 +19,10 @@ static ret_t on_window_open(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static widget_t* window_open_impl(const char* name, asset_type_t res_type, widget_t* to_close) {
+static widget_t* window_open_with_name(const char* name, widget_t* to_close) {
   ui_loader_t* loader = default_ui_loader();
   ui_builder_t* builder = ui_builder_default(name);
-  const asset_info_t* ui = assets_manager_ref(assets_manager(), res_type, name);
+  const asset_info_t* ui = assets_manager_ref(assets_manager(), ASSET_TYPE_UI, name);
   return_value_if_fail(ui != NULL, NULL);
 
   ui_loader_load(loader, ui->data, ui->size, builder);
@@ -35,12 +35,40 @@ static widget_t* window_open_impl(const char* name, asset_type_t res_type, widge
   return builder->root;
 }
 
+typedef struct _ui_expr_info_t {
+  widget_t* to_close;
+  widget_t* widget;
+} ui_expr_info_t;
+
+static ret_t ui_on_expr(void* ctx, const void* data) {
+  const char* name = (const char*)data;
+  ui_expr_info_t* info = (ui_expr_info_t*)ctx;
+
+  info->widget = window_open_with_name(name, info->to_close);
+
+  return info->widget != NULL ? RET_OK : RET_FAIL;
+}
+
+static widget_t* window_open_with_expr(const char* exprs, widget_t* to_close) {
+  ui_expr_info_t info = {to_close, NULL};
+
+  system_info_eval_exprs(system_info(), exprs, ui_on_expr, &info);
+
+  return info.widget;
+}
+
 widget_t* window_open_and_close(const char* name, widget_t* to_close) {
-  return window_open_impl(name, ASSET_TYPE_UI, to_close);
+  return_value_if_fail(name != NULL, NULL);
+
+  if (strchr(name, ',') != NULL || strchr(name, '$') != NULL) {
+    return window_open_with_expr(name, to_close);
+  } else {
+    return window_open_with_name(name, to_close);
+  }
 }
 
 widget_t* window_open(const char* name) {
-  return window_open_impl(name, ASSET_TYPE_UI, NULL);
+  return window_open_and_close(name, NULL);
 }
 
 widget_t* dialog_open(const char* name) {

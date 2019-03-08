@@ -19,8 +19,12 @@
  *
  */
 
+#include "tkc/str.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/object.h"
 #include "base/system_info.h"
+#include "base/locale_info.h"
 
 static system_info_t* s_system_info = NULL;
 
@@ -70,7 +74,7 @@ static ret_t system_info_get_prop(object_t* obj, const char* name, value_t* v) {
     value_set_int(v, info->lcd_type);
   } else if (tk_str_eq(name, SYSTEM_INFO_PROP_LCD_ORIENTATION)) {
     value_set_int(v, info->lcd_orientation);
-  } else if (tk_str_eq(name, SYSTEM_INFO_PROP_LCD_ORIENTATION_NAME)) {
+  } else if (tk_str_eq(name, SYSTEM_INFO_PROP_DEVICE_ORIENTATION)) {
     int32_t w = info->lcd_w;
     int32_t h = info->lcd_h;
     lcd_orientation_t orientation = info->lcd_orientation;
@@ -87,6 +91,10 @@ static ret_t system_info_get_prop(object_t* obj, const char* name, value_t* v) {
     value_set_str(v, info->app_name);
   } else if (tk_str_eq(name, SYSTEM_INFO_PROP_APP_ROOT)) {
     value_set_str(v, info->app_root);
+  } else if (tk_str_eq(name, SYSTEM_INFO_PROP_LANGUAGE)) {
+    value_set_str(v, locale_info()->language);
+  } else if (tk_str_eq(name, SYSTEM_INFO_PROP_COUNTRY)) {
+    value_set_str(v, locale_info()->country);
   } else {
     value_set_int(v, 0);
     return RET_FOUND;
@@ -158,4 +166,52 @@ ret_t system_info_set_device_pixel_ratio(system_info_t* info, float_t device_pix
   info->device_pixel_ratio = device_pixel_ratio;
 
   return RET_OK;
+}
+
+static ret_t system_info_eval_one(system_info_t* info, str_t* str, const char* expr,
+                                  tk_visit_t on_expr_result, void* ctx) {
+  if (strchr(expr, '$') != NULL) {
+    str_set(str, "");
+    ENSURE(str_expand_vars(str, expr, OBJECT(info)) == RET_OK);
+  } else {
+    ENSURE(str_set(str, expr) == RET_OK);
+  }
+
+  return on_expr_result(ctx, str->str);
+}
+
+ret_t system_info_eval_exprs(system_info_t* info, const char* exprs, tk_visit_t on_expr_result,
+                             void* ctx) {
+  str_t str;
+  char* p = NULL;
+  char* expr = NULL;
+  ret_t ret = RET_FAIL;
+  char* dup_exprs = NULL;
+  return_value_if_fail(exprs != NULL && on_expr_result != NULL, RET_BAD_PARAMS);
+
+  dup_exprs = tk_strdup(exprs);
+  return_value_if_fail(dup_exprs != NULL, RET_BAD_PARAMS);
+
+  expr = dup_exprs;
+  p = strchr(expr, ',');
+  str_init(&str, 0);
+
+  while (p != NULL) {
+    *p = '\0';
+
+    if ((ret = system_info_eval_one(info, &str, expr, on_expr_result, ctx)) == RET_OK) {
+      goto done;
+    }
+
+    expr = p + 1;
+    p = strchr(expr, ',');
+  }
+
+  ret = system_info_eval_one(info, &str, expr, on_expr_result, ctx);
+
+done:
+  str_reset(&str);
+  TKMEM_FREE(dup_exprs);
+
+  return ret;
 }

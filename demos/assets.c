@@ -28,6 +28,7 @@
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/slide_menu.data"
 #include "assets/inc/ui/radial_gradient.data"
+#include "assets/inc/ui/auto_play_landscape.data"
 #include "assets/inc/ui/color_picker_simple.data"
 #include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
@@ -72,6 +73,7 @@
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/label.data"
 #include "assets/inc/ui/gif_image.data"
+#include "assets/inc/ui/auto_play_portrait.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
@@ -383,6 +385,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_slide_menu);
   assets_manager_add(rm, ui_radial_gradient);
+  assets_manager_add(rm, ui_auto_play_landscape);
   assets_manager_add(rm, ui_color_picker_simple);
   assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
@@ -427,6 +430,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_label);
   assets_manager_add(rm, ui_gif_image);
+  assets_manager_add(rm, ui_auto_play_portrait);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
