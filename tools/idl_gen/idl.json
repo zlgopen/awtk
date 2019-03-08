@@ -30968,8 +30968,26 @@
         }
       },
       {
-        "name": "lcd_orientation_name",
+        "name": "device_orientation",
         "desc": " 显示屏的方向名称，可选值：\"portrait\"表示竖屏，\"landscape\"表示横屏。\n\n > 只能通过object\\_get\\_prop函数访问。\n\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "fake": true
+        }
+      },
+      {
+        "name": "country",
+        "desc": " locale中的国家。\n\n > 只能通过object\\_get\\_prop函数访问。\n\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "fake": true
+        }
+      },
+      {
+        "name": "language",
+        "desc": " locale中的语言。\n\n > 只能通过object\\_get\\_prop函数访问。\n\n",
         "type": "const char*",
         "annotation": {
           "readable": true,

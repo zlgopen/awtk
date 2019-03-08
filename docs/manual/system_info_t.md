@@ -28,11 +28,13 @@
 | <a href="#system_info_t_app_name">app\_name</a> | const char* | 应用程序的名称。 |
 | <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |
 | <a href="#system_info_t_app_type">app\_type</a> | app\_type\_t | 应用程序的类型。 |
+| <a href="#system_info_t_country">country</a> | const char* | locale中的国家。 |
+| <a href="#system_info_t_device_orientation">device\_orientation</a> | const char* | 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。 |
 | <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float\_t | 显示屏的密度。 |
 | <a href="#system_info_t_font_scale">font\_scale</a> | float\_t | 字体缩放比例，用于实现字体整体放大。 |
+| <a href="#system_info_t_language">language</a> | const char* | locale中的语言。 |
 | <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32\_t | 显示屏的高度。 |
 | <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd\_orientation\_t | 显示屏的旋转角度。 |
-| <a href="#system_info_t_lcd_orientation_name">lcd\_orientation\_name</a> | const char* | 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。 |
 | <a href="#system_info_t_lcd_type">lcd\_type</a> | lcd\_type\_t | 显示屏的类型。 |
 | <a href="#system_info_t_lcd_w">lcd\_w</a> | uint32\_t | 显示屏的宽度。 |
 #### system\_info 函数
@@ -280,6 +282,34 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+#### country 属性
+-----------------------
+> <p id="system_info_t_country"> locale中的国家。
+
+ > 只能通过object\_get\_prop函数访问。
+
+
+
+* 类型：const char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### device\_orientation 属性
+-----------------------
+> <p id="system_info_t_device_orientation"> 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。
+
+ > 只能通过object\_get\_prop函数访问。
+
+
+
+* 类型：const char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### device\_pixel\_ratio 属性
 -----------------------
 > <p id="system_info_t_device_pixel_ratio"> 显示屏的密度。
@@ -304,6 +334,20 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+#### language 属性
+-----------------------
+> <p id="system_info_t_language"> locale中的语言。
+
+ > 只能通过object\_get\_prop函数访问。
+
+
+
+* 类型：const char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### lcd\_h 属性
 -----------------------
 > <p id="system_info_t_lcd_h"> 显示屏的高度。
@@ -323,20 +367,6 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 
 
 * 类型：lcd\_orientation\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### lcd\_orientation\_name 属性
------------------------
-> <p id="system_info_t_lcd_orientation_name"> 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。
-
- > 只能通过object\_get\_prop函数访问。
-
-
-
-* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
