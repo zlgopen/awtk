@@ -14,6 +14,9 @@
   <style name="sky">
     <normal bg_image="bg_${device_orientation}_1"/>
   </style>
+  <style name="black">
+    <normal bg_color="black"/>
+  </style>
 </window>
 
 <calibration_win>

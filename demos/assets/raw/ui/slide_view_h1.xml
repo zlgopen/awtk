@@ -1,0 +1,6 @@
+<window anim_hint="htranslate">
+  <slide_view x="0" y="0" w="100%" h="100%" loop="true" 
+    anim_hint="overlap">
+    <?include filename="slide_view_images.inc" ?>
+  </slide_view>
+</window>
