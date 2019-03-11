@@ -262,7 +262,13 @@ static ret_t on_open_window(void* ctx, event_t* e) {
 
   (void)e;
 
+#if 1
+  /*for test only*/
+  widget_on(WIDGET(e->target), EVT_CLICK, on_open_window, (void*)name);
+  return RET_REMOVE;
+#else
   return RET_OK;
+#endif
 }
 
 static ret_t on_close(void* ctx, event_t* e) {

@@ -94,3 +94,28 @@ TEST(Button, cast) {
 
   widget_destroy(w);
 }
+
+static ret_t on_click1(void* ctx, event_t* e) {
+  return RET_OK;
+}
+
+static ret_t on_click2(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_on(widget, EVT_CLICK, on_click2, widget);
+
+  return RET_REMOVE;
+}
+
+TEST(Button, event) {
+  widget_t* w = window_create(NULL, 0, 0, 320, 240);
+  event_t e = event_init(EVT_CLICK, w);
+
+  widget_on(w, EVT_CLICK, on_click1, w);
+  widget_on(w, EVT_CLICK, on_click2, w);
+
+  ASSERT_EQ(widget_dispatch(w, &e), RET_OK);
+  ASSERT_EQ(widget_dispatch(w, &e), RET_OK);
+  ASSERT_EQ(widget_dispatch(w, &e), RET_OK);
+
+  widget_destroy(w);
+}
