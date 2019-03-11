@@ -1,0 +1,8 @@
+<digit_clock>
+  <style name="default">
+    <normal text_color="black" />
+  </style>
+  <style name="green" font_size="32">
+    <normal text_color="green" />
+  </style>
+</digit_clock>

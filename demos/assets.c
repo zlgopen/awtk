@@ -4,6 +4,7 @@
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
 #include "assets/inc/styles/slide_menu.data"
+#include "assets/inc/styles/digit_clock.data"
 #include "assets/inc/styles/dialog_toast.data"
 #include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
@@ -591,6 +592,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
   assets_manager_add(rm, style_slide_menu);
+  assets_manager_add(rm, style_digit_clock);
   assets_manager_add(rm, style_dialog_toast);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);

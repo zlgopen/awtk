@@ -22,6 +22,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#date_time_t_day">day</a> | int32\_t | 日(1-31)。 |
+| <a href="#date_time_t_day">day</a> | int32\_t | 星期几(0-6, Sunday = 0)。 |
 | <a href="#date_time_t_hour">hour</a> | int32\_t | 时(0 - 23)。 |
 | <a href="#date_time_t_minute">minute</a> | int32\_t | 分(0 - 59)。 |
 | <a href="#date_time_t_month">month</a> | int32\_t | 月(1-12)。 |
@@ -121,6 +122,19 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 #### day 属性
 -----------------------
 > <p id="date_time_t_day"> 日(1-31)。
+
+
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### day 属性
+-----------------------
+> <p id="date_time_t_day"> 星期几(0-6, Sunday = 0)。
 
 
 

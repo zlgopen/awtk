@@ -7,4 +7,6 @@
   <digit_clock format="YY-MM-DD"/>
   <digit_clock format="Y/M/D h:mm:ss"/>
   <digit_clock format="YY/MM/DD h:mm:ss"/>
+  <digit_clock style="green" format="W(w)"/>
+  <digit_clock style="green" format="MMM(M) W(w)"/>
 </window>
