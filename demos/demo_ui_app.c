@@ -556,12 +556,27 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+  if (evt->key == TK_KEY_F2) {
+    window_manager_back(WIDGET(ctx));
+  } else if (evt->key == TK_KEY_F3) {
+    window_manager_back_to_home(WIDGET(ctx));
+  }
+
+  return RET_OK;
+}
+
 ret_t application_init() {
+  widget_t* wm = window_manager();
+
   tk_ext_widgets_init();
 
   /*enable screen saver*/
-  window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
-  widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
+  window_manager_set_screen_saver_time(wm, 180 * 1000);
+  widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
+
+  widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
 
   return show_preload_res_window();
 }

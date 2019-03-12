@@ -223,16 +223,29 @@ ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_sav
 ret_t window_manager_set_cursor(widget_t* widget, const char* cursor);
 
 /**
- * @method window_manager_request_close_top_window
+ * @method window_manager_back
  * 请求关闭顶层窗口。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t window_manager_request_close_top_window(widget_t* widget);
+ret_t window_manager_back(widget_t* widget);
+
+/**
+ * @method window_manager_back_to_home
+ * 回到主窗口，关闭之上的全部窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_back_to_home(widget_t* widget);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
+
+/*for compatible*/
+#define window_manager_request_close_top_window window_manager_back
 
 END_C_DECLS
 

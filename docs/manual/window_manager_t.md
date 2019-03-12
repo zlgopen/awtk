@@ -11,6 +11,8 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_manager_t_window_manager">window\_manager</a> | 获取全局window_manager对象 |
+| <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。 |
+| <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_close_window">window\_manager\_close\_window</a> | 关闭窗口。 |
 | <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
@@ -20,7 +22,6 @@
 | <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> | 初始化窗口管理器。 |
 | <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
 | <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
-| <a href="#window_manager_t_window_manager_request_close_top_window">window\_manager\_request\_close\_top\_window</a> | 请求关闭顶层窗口。 |
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整窗口管理器的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
@@ -52,6 +53,48 @@ widget_t* window_manager ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
+#### window\_manager\_back 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_back"> 请求关闭顶层窗口。
+
+
+
+* 函数原型：
+
+```
+ret_t window_manager_back (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_back\_to\_home 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_back_to_home"> 回到主窗口，关闭之上的全部窗口。
+
+
+
+* 函数原型：
+
+```
+ret_t window_manager_back_to_home (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_cast 函数
 -----------------------
 
@@ -245,27 +288,6 @@ ret_t window_manager_paint (widget_t* widget, canvas_t* c);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | c | canvas\_t* | 画布。 |
-#### window\_manager\_request\_close\_top\_window 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_request_close_top_window"> 请求关闭顶层窗口。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_request_close_top_window (widget_t* widget);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_resize 函数
 -----------------------
 

@@ -23674,7 +23674,25 @@
           "scriptable": true
         },
         "desc": " 请求关闭顶层窗口。\r\n\r\n",
-        "name": "window_manager_request_close_top_window",
+        "name": "window_manager_back",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 回到主窗口，关闭之上的全部窗口。\r\n\r\n",
+        "name": "window_manager_back_to_home",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

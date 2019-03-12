@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/03/12
+  * 窗口管理器增加window\_manager\_back/window\_manager\_back\_to\_home
+  * 增加示例。
+  * 更新文档。
+
 * 2019/03/11
   * date time中增加wday表示星期。
   * 数字时钟支持星期和月的英文。
