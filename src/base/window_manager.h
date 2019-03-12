@@ -122,6 +122,7 @@ widget_t* window_manager_init(window_manager_t* widget);
 /**
  * @method window_manager_get_top_main_window
  * 获取最上面的主窗口。
+ * @annotation ["scriptable"]
  * @param {window_manager_t*} widget 窗口管理器对象。
  *
  * @return {widget_t*} 返回窗口对象。
@@ -131,6 +132,7 @@ widget_t* window_manager_get_top_main_window(widget_t* widget);
 /**
  * @method window_manager_resize
  * 调整窗口管理器的大小。
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {wh_t}   w 宽度
  * @param {wh_t}   h 高度
@@ -142,6 +144,7 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
 /**
  * @method window_manager_open_window
  * 打开窗口。
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} window 窗口对象。
  *
@@ -152,6 +155,7 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window);
 /**
  * @method window_manager_close_window
  * 关闭窗口。
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} window 窗口对象。
  *
@@ -162,6 +166,9 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window);
 /**
  * @method window_manager_close_window_force
  * 强制立即关闭窗口。
+ *
+ *> 本函数不会执行窗口动画。 
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} window 窗口对象。
  *
@@ -172,6 +179,10 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window);
 /**
  * @method window_manager_paint
  * 绘制。
+ *
+ *> 仅由主循环调用。
+ *
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {canvas_t*} c 画布。
  *
@@ -182,6 +193,10 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c);
 /**
  * @method window_manager_dispatch_input_event
  * 分发输入事件。
+ *
+ *> 一般仅由主循环调用，特殊情况也可以用来注入事件。
+ *
+ * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {event_t*} e 事件对象。
  *

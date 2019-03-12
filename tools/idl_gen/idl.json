@@ -23454,7 +23454,9 @@
             "desc": "窗口管理器对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 获取最上面的主窗口。\r\n\r\n",
         "name": "window_manager_get_top_main_window",
         "return": {
@@ -23480,7 +23482,9 @@
             "desc": "高度"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "private": true
+        },
         "desc": " 调整窗口管理器的大小。\r\n\r\n",
         "name": "window_manager_resize",
         "return": {
@@ -23501,7 +23505,9 @@
             "desc": "窗口对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "private": true
+        },
         "desc": " 打开窗口。\r\n\r\n",
         "name": "window_manager_open_window",
         "return": {
@@ -23522,7 +23528,9 @@
             "desc": "窗口对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "private": true
+        },
         "desc": " 关闭窗口。\r\n\r\n",
         "name": "window_manager_close_window",
         "return": {
@@ -23543,8 +23551,10 @@
             "desc": "窗口对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 强制立即关闭窗口。\r\n\r\n",
+        "annotation": {
+          "private": true
+        },
+        "desc": " 强制立即关闭窗口。\r\n\r\n> 本函数不会执行窗口动画。 \r\n\r\n",
         "name": "window_manager_close_window_force",
         "return": {
           "type": "ret_t",
@@ -23564,8 +23574,10 @@
             "desc": "画布。"
           }
         ],
-        "annotation": {},
-        "desc": " 绘制。\r\n\r\n",
+        "annotation": {
+          "private": true
+        },
+        "desc": " 绘制。\r\n\r\n> 仅由主循环调用。\r\n\r\n\r\n",
         "name": "window_manager_paint",
         "return": {
           "type": "ret_t",
@@ -23585,8 +23597,10 @@
             "desc": "事件对象。"
           }
         ],
-        "annotation": {},
-        "desc": " 分发输入事件。\r\n\r\n",
+        "annotation": {
+          "private": true
+        },
+        "desc": " 分发输入事件。\r\n\r\n> 一般仅由主循环调用，特殊情况也可以用来注入事件。\r\n\r\n\r\n",
         "name": "window_manager_dispatch_input_event",
         "return": {
           "type": "ret_t",

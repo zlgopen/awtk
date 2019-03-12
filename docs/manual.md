@@ -10,6 +10,9 @@
 
 * [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
 
+#### 窗口管理器
+* [window\_manager](manual/window_manager_t.md) 窗口管理器。
+
 #### 窗口
 * [window\_base](manual/window_base_t.md) 窗口基类。
 * [dialog](manual/dialog_t.md) 对话框。
