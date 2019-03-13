@@ -179,23 +179,23 @@ TEST(Emitter, remove_in_func) {
 
 TEST(Emitter, remove_item) {
   uint32_t i = 0;
-  uint32_t n = 10000;
+  uint32_t n = 5000;
   emitter_t* emitter = emitter_create();
 
-  for(i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     emitter_on(emitter, 123, on_event, NULL);
-    ASSERT_EQ(emitter_size(emitter), i+1);
+    ASSERT_EQ(emitter_size(emitter), i + 1);
   }
-
 
   ASSERT_EQ(emitter_get_item(emitter, 0), emitter->items);
   ASSERT_EQ(emitter_get_item(emitter, 1), emitter->items->next);
   ASSERT_EQ(emitter_get_item(emitter, 2), emitter->items->next->next);
 
-  for(i = 0; i < n; i++) {
-    uint32_t r = random()%emitter_size(emitter);
-    ASSERT_EQ(emitter_remove_item(emitter, emitter_get_item(emitter,r)), RET_OK);
+  for (i = 0; i < n; i++) {
+    uint32_t r = random() % emitter_size(emitter);
+    ASSERT_EQ(emitter_remove_item(emitter, emitter_get_item(emitter, r)), RET_OK);
   }
+  ASSERT_EQ(emitter_size(emitter), 0);
 
   emitter_destroy(emitter);
 }

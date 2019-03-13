@@ -157,7 +157,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   }
 
   res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
-  if(res == NULL) {
+  if (res == NULL) {
     return RET_NOT_FOUND;
   }
 

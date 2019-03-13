@@ -489,8 +489,7 @@ static void install_click_hander(widget_t* widget) {
 #include "base/assets_manager.h"
 
 static uint32_t s_preload_nr = 0;
-static const preload_res_t s_preload_res[] = {
-                                              {ASSET_TYPE_IMAGE, "earth"},
+static const preload_res_t s_preload_res[] = {{ASSET_TYPE_IMAGE, "earth"},
                                               {ASSET_TYPE_IMAGE, "dialog_title"},
                                               {ASSET_TYPE_IMAGE, "rgb"},
                                               {ASSET_TYPE_IMAGE, "rgba"}};
@@ -549,7 +548,7 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
   widget_t* win = NULL;
   const char* screen_saver_win = "image_animation";
 
-  if(widget_child(window_manager(), screen_saver_win) != NULL) {
+  if (widget_child(window_manager(), screen_saver_win) != NULL) {
     log_debug("screen saver exist.\n");
     return RET_OK;
   }

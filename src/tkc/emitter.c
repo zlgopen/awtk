@@ -315,10 +315,9 @@ emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index) {
   return_value_if_fail(emitter != NULL && index < emitter_size(emitter), NULL);
 
   iter = emitter->items;
-  for(i = 0; i < index && iter != NULL; i++) {
+  for (i = 0; i < index && iter != NULL; i++) {
     iter = iter->next;
   }
 
   return iter;
 }
-
