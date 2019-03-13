@@ -382,7 +382,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 
   ENSURE(darray_push(widget->children, child) == RET_OK);
 
-  if (!(widget->initializing) && widget_get_window(child) != NULL) {
+  if (!(child->initializing) && widget_get_window(child) != NULL) {
     widget_update_style_recursive(child);
   }
 
