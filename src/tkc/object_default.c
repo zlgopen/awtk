@@ -281,3 +281,22 @@ object_t* object_default_create(void) {
 
   return obj;
 }
+
+object_t* object_default_clone(object_default_t* o) {
+  object_t* dup = NULL;
+  return_value_if_fail(o != NULL, NULL);
+
+  dup = object_default_create();
+  return_value_if_fail(dup != NULL, NULL);
+
+  if (o->props_size > 0) {
+    uint32_t i = 0;
+    for (i = 0; i < o->props_size; i++) {
+      named_value_t* iter = o->props + i;
+
+      object_set_prop(dup, iter->name, &(iter->value));
+    }
+  }
+
+  return dup;
+}

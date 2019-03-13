@@ -79,6 +79,19 @@ typedef struct _object_default_t {
 object_t* object_default_create(void);
 
 /**
+ * @method object_default_create
+ *
+ * 克隆对象。
+ *
+ * @annotation ["constructor"]
+ * @param {object_default_t*} o 被克隆的对象。
+ *
+ * @return {object_t*} 返回object对象。
+ *
+ */
+object_t* object_default_clone(object_default_t* o);
+
+/**
  * @method object_default_unref
  *
  * for script gc

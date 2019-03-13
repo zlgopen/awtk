@@ -347,3 +347,19 @@ TEST(ObejectDefault, expr_str) {
 
   object_unref(obj);
 }
+
+TEST(ObejectDefault, clone) {
+  value_t v;
+  object_t* clone = NULL;
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
+
+  clone = object_default_clone(OBJECT_DEFAULT(obj));
+  ASSERT_EQ(object_eval(clone, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(string(value_str(&v)), string("123abc"));
+
+  object_unref(obj);
+  object_unref(clone);
+}
