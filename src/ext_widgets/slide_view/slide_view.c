@@ -474,16 +474,6 @@ static ret_t slide_view_set_next_global_alpha_v(slide_view_t* slide_view, canvas
   return RET_OK;
 }
 
-static ret_t slide_view_set_prev_global_alpha_v(slide_view_t* slide_view, canvas_t* c,
-                                                int32_t offset, int32_t total) {
-  if (anim_hint_is_overlap_with_alpha(slide_view)) {
-    uint8_t a = 0xff - 0x40 + (0x40 * offset) / total;
-    canvas_set_global_alpha(c, a);
-  }
-
-  return RET_OK;
-}
-
 static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canvas_t* c,
                                                   widget_t* prev, widget_t* next, int32_t yoffset) {
   rect_t r;
@@ -496,12 +486,11 @@ static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canv
   if (next != NULL) {
     slide_view_set_next_global_alpha_v(slide_view, c, yoffset, h);
     widget_paint(next, c);
+    canvas_set_global_alpha(c, 0xff);
   }
 
   r = rect_init(0, 0, w, yoffset);
   if (prev != NULL) {
-    slide_view_set_prev_global_alpha_v(slide_view, c, yoffset, h);
-
     canvas_translate(c, 0, -r_yoffset);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
     widget_paint(prev, c);
@@ -564,18 +553,6 @@ static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, ca
   return RET_OK;
 }
 
-static ret_t slide_view_set_next_global_alpha_h(slide_view_t* slide_view, canvas_t* c) {
-  if (anim_hint_is_overlap_with_alpha(slide_view)) {
-    int32_t offset = slide_view->xoffset;
-    int32_t total = WIDGET(slide_view)->w;
-    uint8_t a = 0xff - 0x40 + (0x40 * offset) / total;
-
-    canvas_set_global_alpha(c, a);
-  }
-
-  return RET_OK;
-}
-
 static ret_t slide_view_set_prev_global_alpha_h(slide_view_t* slide_view, canvas_t* c) {
   if (anim_hint_is_overlap_with_alpha(slide_view)) {
     uint8_t a = 0;
@@ -607,11 +584,10 @@ static ret_t slide_view_paint_prev_next_h_overlap(slide_view_t* slide_view, canv
   if (prev != NULL) {
     slide_view_set_prev_global_alpha_h(slide_view, c);
     widget_paint(prev, c);
+    canvas_set_global_alpha(c, 0xff);
   }
 
   if (next != NULL) {
-    slide_view_set_next_global_alpha_h(slide_view, c);
-
     canvas_translate(c, xoffset, 0);
     r = rect_init(xoffset, 0, r_xoffset, h);
     canvas_set_clip_rect_with_offset(c, &r, ox, oy);
