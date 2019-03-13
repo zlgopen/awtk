@@ -369,3 +369,27 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
     }
   }
 }
+
+const char* object_get_type(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+
+  return obj->vt->type;
+}
+
+const char* object_get_desc(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+
+  return obj->vt->desc;
+}
+
+bool_t object_is_collection(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+
+  return obj->vt->is_collection;
+}
+
+uint32_t object_get_size(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+
+  return obj->vt->size;
+}
