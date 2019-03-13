@@ -250,6 +250,10 @@ emitter_t* emitter_cast(emitter_t* emitter);
 
 #define EMITTER(emitter) ((emitter_t*)(emitter))
 
+/*public for test*/
+ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);
+emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index);
+
 END_C_DECLS
 
 #endif /*TK_EMITTER_H*/

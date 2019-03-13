@@ -489,7 +489,7 @@ static void install_click_hander(widget_t* widget) {
 #include "base/assets_manager.h"
 
 static uint32_t s_preload_nr = 0;
-static const preload_res_t s_preload_res[] = {{ASSET_TYPE_IMAGE, "bg800x480"},
+static const preload_res_t s_preload_res[] = {
                                               {ASSET_TYPE_IMAGE, "earth"},
                                               {ASSET_TYPE_IMAGE, "dialog_title"},
                                               {ASSET_TYPE_IMAGE, "rgb"},
@@ -546,11 +546,16 @@ static ret_t close_window_on_event(void* ctx, event_t* e) {
 }
 
 static ret_t on_screen_saver(void* ctx, event_t* e) {
-  /*please change image_animation to your own window name*/
-  widget_t* win = window_open("image_animation");
+  widget_t* win = NULL;
+  const char* screen_saver_win = "image_animation";
 
+  if(widget_child(window_manager(), screen_saver_win) != NULL) {
+    log_debug("screen saver exist.\n");
+    return RET_OK;
+  }
+
+  win = window_open(screen_saver_win);
   widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
-  widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
   widget_on(win, EVT_KEY_UP, close_window_on_event, win);
 
   return RET_OK;
@@ -573,7 +578,7 @@ ret_t application_init() {
   tk_ext_widgets_init();
 
   /*enable screen saver*/
-  window_manager_set_screen_saver_time(wm, 180 * 1000);
+  window_manager_set_screen_saver_time(wm, 5 * 1000);
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);

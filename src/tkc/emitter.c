@@ -69,7 +69,7 @@ static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_it
   return RET_OK;
 }
 
-static ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
+ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
 
   if (emitter->items) {
@@ -83,6 +83,7 @@ static ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
         return emitter_remove(emitter, prev, iter);
       }
 
+      prev = iter;
       iter = next;
     }
   }
@@ -307,3 +308,17 @@ emitter_t* emitter_cast(emitter_t* emitter) {
 
   return emitter;
 }
+
+emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index) {
+  uint32_t i = 0;
+  emitter_item_t* iter = NULL;
+  return_value_if_fail(emitter != NULL && index < emitter_size(emitter), NULL);
+
+  iter = emitter->items;
+  for(i = 0; i < index && iter != NULL; i++) {
+    iter = iter->next;
+  }
+
+  return iter;
+}
+

@@ -157,7 +157,9 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   }
 
   res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
-  return_value_if_fail(res != NULL, RET_NOT_FOUND);
+  if(res == NULL) {
+    return RET_NOT_FOUND;
+  }
 
   memset(image, 0x00, sizeof(bitmap_t));
   if (res->subtype == ASSET_TYPE_IMAGE_RAW) {
