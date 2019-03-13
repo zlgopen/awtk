@@ -292,6 +292,12 @@ struct _widget_t {
    */
   uint16_t can_not_destroy;
   /**
+   * @property {bool_t} initializing
+   * @annotation ["readable"]
+   * 标识控件正在初始化。
+   */
+  uint8_t initializing : 1;
+  /**
    * @property {bool_t} destroying
    * @annotation ["readable"]
    * 标识控件正在被销毁。

@@ -5,6 +5,7 @@
 #include "widgets/label.h"
 #include "widgets/group_box.h"
 #include "widgets/window.h"
+#include "base/style_const.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include <stdlib.h>
@@ -509,6 +510,38 @@ TEST(Widget, widget_get_state_for_style) {
   ASSERT_EQ(string(WIDGET_STATE_PRESSED_OF_ACTIVE), widget_get_state_for_style(b, TRUE, FALSE));
   widget_set_state(b, WIDGET_STATE_OVER);
   ASSERT_EQ(string(WIDGET_STATE_OVER_OF_ACTIVE), widget_get_state_for_style(b, TRUE, FALSE));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, update_style1) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(NULL, 1, 0, 10, 20);
+  style_const_t* style = (style_const_t*)(b->astyle);
+
+  ASSERT_EQ(style->data, (const unsigned char*)NULL);
+  widget_use_style(b, "edit_clear");
+  ASSERT_EQ(style->data, (const unsigned char*)NULL);
+
+  widget_add_child(w, b);
+  ASSERT_NE(style->data, (const unsigned char*)NULL);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, update_style2) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* g = group_box_create(NULL, 0, 0, 100, 200);
+  widget_t* b = button_create(g, 1, 0, 10, 20);
+  style_const_t* style = (style_const_t*)(b->astyle);
+
+  ASSERT_EQ(style->data, (const unsigned char*)NULL);
+  widget_use_style(b, "edit_clear");
+  ASSERT_EQ(style->data, (const unsigned char*)NULL);
+
+  widget_add_child(w, g);
+
+  ASSERT_NE(style->data, (const unsigned char*)NULL);
 
   widget_destroy(w);
 }

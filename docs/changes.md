@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/03/13
+  * 增加了object\_get\_type等函数。
+  * 修改widget\_use\_style的问题。
+
 * 2019/03/12
   * 窗口管理器增加window\_manager\_back/window\_manager\_back\_to\_home
   * 增加示例。

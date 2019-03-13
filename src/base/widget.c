@@ -141,7 +141,7 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
     widget_update_style(widget);
   }
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
@@ -380,7 +380,13 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     }
   }
 
-  return darray_push(widget->children, child);
+  ENSURE(darray_push(widget->children, child) == RET_OK);
+
+  if (!(widget->initializing) && widget_get_window(child) != NULL) {
+    widget_update_style_recursive(child);
+  }
+
+  return RET_OK;
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
@@ -1604,6 +1610,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->sensitive = TRUE;
   widget->emitter = NULL;
   widget->children = NULL;
+  widget->initializing = TRUE;
   widget->state = WIDGET_STATE_NORMAL;
 
   if (parent) {
@@ -1624,6 +1631,8 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   }
 
   widget_invalidate_force(widget, NULL);
+
+  widget->initializing = FALSE;
 
   return widget;
 }

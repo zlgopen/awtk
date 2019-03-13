@@ -34,9 +34,11 @@ BEGIN_C_DECLS
  *
  * tools/theme_gen用于把XML的主题数据转换成常量数据。
  *
- * @annotation["fake"]
- *
  */
+typedef struct _style_const_t {
+  style_t style;
+  const uint8_t* data;
+} style_const_t;
 
 /**
  * @method style_const_create
