@@ -555,6 +555,7 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
 
   win = window_open(screen_saver_win);
   widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
+  widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
   widget_on(win, EVT_KEY_UP, close_window_on_event, win);
 
   return RET_OK;
@@ -577,7 +578,7 @@ ret_t application_init() {
   tk_ext_widgets_init();
 
   /*enable screen saver*/
-  window_manager_set_screen_saver_time(wm, 5 * 1000);
+  window_manager_set_screen_saver_time(wm, 180 * 1000);
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
