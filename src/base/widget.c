@@ -1817,6 +1817,10 @@ static ret_t widget_copy(widget_t* clone, widget_t* widget) {
   widget_copy_props(clone, widget, s_widget_persistent_props);
   widget_copy_props(clone, widget, widget->vt->clone_properties);
 
+  if (widget->custom_props) {
+    clone->custom_props = object_default_clone(OBJECT_DEFAULT(widget->custom_props));
+  }
+
   return RET_OK;
 }
 

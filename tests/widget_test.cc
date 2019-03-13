@@ -545,3 +545,17 @@ TEST(Widget, update_style2) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, clone_custom_props) {
+  widget_t* clone = NULL;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_set_prop_int(b, "custom", 123), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(b, "custom", 0), 123);
+
+  clone = widget_clone(b, b->parent);
+  ASSERT_EQ(widget_get_prop_int(clone, "custom", 0), 123);
+
+  widget_destroy(w);
+}
