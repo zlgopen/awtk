@@ -60,7 +60,7 @@ typedef struct _date_time_t {
    */
   int32_t day;
   /**
-   * @property {int32_t} day
+   * @property {int32_t} wday
    * @annotation ["readable", "scriptable"]
    * 星期几(0-6, Sunday = 0)。
    */
