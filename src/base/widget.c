@@ -1285,7 +1285,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    if (!(target->vt->is_keyboard)) {
+    if (!(widget_is_keyboard(target))) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
@@ -2046,4 +2046,19 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
   log_warn("%s is not instance of %s\n", widget->vt->type, vt->type);
   return TRUE;
 #endif /*WITH_WIDGET_TYPE_CHECK*/
+}
+
+bool_t widget_is_keyboard(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  if (widget->vt->is_keyboard) {
+    return TRUE;
+  }
+
+  if(widget_get_prop(widget, WIDGET_PROP_IS_KEYBOARD, &v) == RET_OK) {
+    return value_bool(&v);
+  }
+
+  return FALSE;
 }
