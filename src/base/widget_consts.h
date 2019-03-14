@@ -630,6 +630,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DELAY "delay"
 
 /**
+ * @const WIDGET_PROP_IS_KEYBOARD
+ * 是否为键盘。
+ */
+#define WIDGET_PROP_IS_KEYBOARD "is_keyboard"
+
+/**
+ * @const WIDGET_PROP_FOCUS
+ * 设置为输入焦点。
+ */
+#define WIDGET_PROP_FOCUS "focus"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_
