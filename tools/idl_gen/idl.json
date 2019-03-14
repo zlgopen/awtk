@@ -14594,6 +14594,24 @@
             "type": "emitter_t*",
             "name": "emitter",
             "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 分发事件。\n > 对emitter_dispatch的包装，分发一个简单的事件。\n  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。\n\n",
+        "name": "emitter_dispatch_simple_event",
+        "return": {
+          "type": "ret_t",
+          "desc": ""
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
           },
           {
             "type": "uint32_t",
@@ -14922,6 +14940,14 @@
       {
         "desc": " 对象的属性改变的事件名(prop_change_event_t)。\n\n",
         "name": "EVT_PROP_CHANGED"
+      },
+      {
+        "desc": " 即将增加和删除集合中的项目(event_t)。\n\n",
+        "name": "EVT_ITEMS_WILL_CHANGE"
+      },
+      {
+        "desc": " 完成增加和删除集合中的项目(event_t)。\n\n",
+        "name": "EVT_ITEMS_CHANGED"
       },
       {
         "desc": " 对象的属性改变的事件名(props_event_t)。\n\n",
@@ -19211,7 +19237,7 @@
           {
             "type": "bool_t",
             "name": "auto_hide_scroll_bar",
-            "desc": "列表项的高度。"
+            "desc": "是否自动隐藏滚动条。"
           }
         ],
         "annotation": {
