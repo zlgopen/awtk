@@ -272,13 +272,30 @@ static ret_t on_open_window(void* ctx, event_t* e) {
 }
 
 static ret_t on_close(void* ctx, event_t* e) {
-  widget_t* win = (widget_t*)ctx;
+  widget_t* win = WIDGET(ctx);
   (void)e;
   return window_close(win);
 }
 
+static ret_t on_send_key(void* ctx, event_t* e) {
+  widget_t* button = WIDGET(e->target);
+  char text[2];
+  text[0] = (char)button->text.str[0];
+  text[1] = '\0';
+
+  input_method_commit_text(input_method(), text);
+
+  return RET_OK;
+}
+
+static ret_t on_backspace(void* ctx, event_t* e) {
+  input_method_dispatch_key(input_method(), TK_KEY_BACKSPACE);
+
+  return RET_OK;
+}
+
 static ret_t on_quit(void* ctx, event_t* e) {
-  widget_t* dialog = (widget_t*)ctx;
+  widget_t* dialog = WIDGET(ctx);
 
   dialog_quit(dialog, 0);
   (void)e;
@@ -461,6 +478,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       if (win) {
         widget_on(widget, EVT_CLICK, on_close, win);
       }
+    } else if (tk_str_eq(name, "key")) {
+      widget_on(widget, EVT_CLICK, on_send_key, NULL);
+    } else if (tk_str_eq(name, "backspace")) {
+      widget_on(widget, EVT_CLICK, on_backspace, NULL);
     } else if (tk_str_eq(name, "quit")) {
       widget_t* win = widget_get_window(widget);
       if (win) {

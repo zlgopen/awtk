@@ -41,6 +41,7 @@
 #include "assets/inc/ui/linear_gradient.data"
 #include "assets/inc/ui/preload.data"
 #include "assets/inc/ui/images.data"
+#include "assets/inc/ui/soft_keyboard.data"
 #include "assets/inc/ui/edit.data"
 #include "assets/inc/ui/locale.data"
 #include "assets/inc/ui/kb_int.data"
@@ -402,6 +403,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_linear_gradient);
   assets_manager_add(rm, ui_preload);
   assets_manager_add(rm, ui_images);
+  assets_manager_add(rm, ui_soft_keyboard);
   assets_manager_add(rm, ui_edit);
   assets_manager_add(rm, ui_locale);
   assets_manager_add(rm, ui_kb_int);

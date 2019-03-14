@@ -9512,6 +9512,14 @@
       {
         "desc": " 延迟时间(毫秒)\n\n",
         "name": "WIDGET_PROP_DELAY"
+      },
+      {
+        "desc": " 是否为键盘。\n\n",
+        "name": "WIDGET_PROP_IS_KEYBOARD"
+      },
+      {
+        "desc": " 设置为输入焦点。\n\n",
+        "name": "WIDGET_PROP_FOCUS"
       }
     ],
     "header": "base/widget_consts.h",
@@ -11853,6 +11861,24 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 判断当前控件是否是keyboard。\n\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n\n 在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n\n ```c\n widget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n ```\n\n\n\n",
+        "name": "widget_is_keyboard",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           },
           {
             "type": "canvas_t*",
@@ -12749,6 +12775,14 @@
         "name": "can_not_destroy",
         "desc": " 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\\_destroy，自动异步处理。\n\n",
         "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "initializing",
+        "desc": " 标识控件正在初始化。\n\n",
+        "type": "bool_t",
         "annotation": {
           "readable": true
         }
@@ -14461,7 +14495,7 @@
         }
       },
       {
-        "name": "day",
+        "name": "wday",
         "desc": " 星期几(0-6, Sunday = 0)。\n\n",
         "type": "int32_t",
         "annotation": {
@@ -23112,12 +23146,9 @@
     "events": [],
     "properties": [],
     "header": "base/style_const.h",
-    "desc": "\n 只读的style，从theme\\_t中获取数据。\n\n tools/theme_gen用于把XML的主题数据转换成常量数据。\n\n\n\n",
+    "desc": "\n 只读的style，从theme\\_t中获取数据。\n\n tools/theme_gen用于把XML的主题数据转换成常量数据。\n\n\n",
     "name": "style_const_t",
     "parent": "style_t",
-    "annotation": {
-      "fake": true
-    },
     "level": 2
   },
   {
@@ -23554,7 +23585,7 @@
         "annotation": {
           "private": true
         },
-        "desc": " 强制立即关闭窗口。\r\n\r\n> 本函数不会执行窗口动画。 \r\n\r\n",
+        "desc": " 强制立即关闭窗口。\r\n\r\n> 本函数不会执行窗口动画。\r\n\r\n",
         "name": "window_manager_close_window_force",
         "return": {
           "type": "ret_t",
@@ -23866,6 +23897,78 @@
         "return": {
           "type": "ret_t",
           "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取对象的类型名称。\n\n\n\n",
+        "name": "object_get_type",
+        "return": {
+          "type": "const char*",
+          "desc": "返回对象的类型名称。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取对象的描述信息。\n\n\n\n",
+        "name": "object_get_desc",
+        "return": {
+          "type": "const char*",
+          "desc": "返回对象的描述信息。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取对象占用内存的大小。\n\n\n\n",
+        "name": "object_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回对象占用内存的大小。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 判断对象是否是集合。\n\n\n\n",
+        "name": "object_is_collection",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是集合，否则不是。"
         }
       },
       {
@@ -29136,6 +29239,29 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "focus",
+            "desc": "是否为焦点。。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置为焦点。\r\n\r\n",
+        "name": "edit_set_focus",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -29245,6 +29371,19 @@
       {
         "name": "tips",
         "desc": " 输入提示。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "focus",
+        "desc": " 设置为焦点(通常用于在XML中缺省设置为焦点控件)。\r\n",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -30299,6 +30438,24 @@
           "gc": true
         },
         "desc": "\n 创建对象。\n\n\n\n\n",
+        "name": "object_default_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_default_t*",
+            "name": "o",
+            "desc": "被克隆的对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\n 克隆对象。\n\n\n\n\n",
         "name": "object_default_create",
         "return": {
           "type": "object_t*",
