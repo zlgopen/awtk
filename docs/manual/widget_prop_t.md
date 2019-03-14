@@ -106,3 +106,5 @@
 | WIDGET\_PROP\_BG\_COLOR | 背景颜色(仅仅使用于color tile)。 |
 | WIDGET\_PROP\_BORDER\_COLOR | 边框颜色(仅仅使用于color tile)。 |
 | WIDGET\_PROP\_DELAY | 延迟时间(毫秒) |
+| WIDGET\_PROP\_IS\_KEYBOARD | 是否为键盘。 |
+| WIDGET\_PROP\_FOCUS | 设置为输入焦点。 |
