@@ -252,7 +252,7 @@ ret_t scroll_bar_scroll_to (widget_t* widget, int32_t value, int32_t duration);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
-| duration | int32\_t | 时间。 |
+| duration | int32\_t | 动画持续时间。 |
 #### scroll\_bar\_set\_params 函数
 -----------------------
 
@@ -274,7 +274,7 @@ ret_t scroll_bar_set_params (widget_t* widget, int32_t virtual_size, int32_t row
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
-| virtual\_size | int32\_t | 最大值。 |
+| virtual\_size | int32\_t | 虚拟高度。 |
 | row | int32\_t | 每一行的高度。 |
 #### scroll\_bar\_set\_value 函数
 -----------------------

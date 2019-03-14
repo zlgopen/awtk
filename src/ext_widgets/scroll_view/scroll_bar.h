@@ -162,7 +162,7 @@ widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  * 设置参数。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
- * @param {int32_t} virtual_size 最大值。
+ * @param {int32_t} virtual_size 虚拟高度。
  * @param {int32_t} row 每一行的高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -175,7 +175,7 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} value 值。
- * @param {int32_t} duration 时间。
+ * @param {int32_t} duration 动画持续时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -19477,7 +19477,7 @@
           {
             "type": "int32_t",
             "name": "virtual_size",
-            "desc": "最大值。"
+            "desc": "虚拟高度。"
           },
           {
             "type": "int32_t",
@@ -19510,7 +19510,7 @@
           {
             "type": "int32_t",
             "name": "duration",
-            "desc": "时间。"
+            "desc": "动画持续时间。"
           }
         ],
         "annotation": {
