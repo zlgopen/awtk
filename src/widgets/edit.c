@@ -660,7 +660,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         }
       }
       edit_dispatch_event(widget, EVT_VALUE_CHANGED);
-
       break;
     }
     case EVT_FOCUS: {
@@ -823,6 +822,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     value_set_bool(v, edit->password_visible);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+    value_set_bool(v, edit->focus);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
@@ -910,6 +912,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     edit_set_password_visible(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+    edit_set_focus(widget, value_bool(v));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     edit_set_input_tips(widget, value_str(v));
     return RET_OK;
@@ -934,6 +939,25 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   edit->password_visible = password_visible;
+
+  return RET_OK;
+}
+
+ret_t edit_set_focus(widget_t* widget, bool_t focus) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  edit->focus = focus;
+  widget->focused = focus;
+
+  if(focus) {
+    event_t e = event_init(EVT_FOCUS, widget);
+    widget_dispatch(widget, &e);
+  } else {
+    event_t e = event_init(EVT_BLUR, widget);
+    widget_dispatch(widget, &e);
+  }
+  edit_update_status(widget);
 
   return RET_OK;
 }
@@ -1179,6 +1203,7 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_TOP_MARGIN,
                                    WIDGET_PROP_BOTTOM_MARGIN,
                                    WIDGET_PROP_TIPS,
+                                   WIDGET_PROP_FOCUS,
                                    WIDGET_PROP_PASSWORD_VISIBLE,
                                    NULL};
 TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),

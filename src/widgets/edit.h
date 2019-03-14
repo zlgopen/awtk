@@ -160,6 +160,13 @@ typedef struct _edit_t {
    * 输入提示。
    */
   char* tips;
+  
+  /**
+   * @property {char*} focus
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 设置为焦点(通常用于在XML中缺省设置为焦点控件)。
+   */
+  bool_t focus;
 
   /**
    * @property {input_type_t} input_type
@@ -372,6 +379,17 @@ ret_t edit_set_input_tips(widget_t* widget, const char* tips);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
+
+/**
+ * @method edit_set_focus
+ * 设置为焦点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} focus 是否为焦点。。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_focus(widget_t* widget, bool_t focus);
 
 #define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
 
