@@ -145,7 +145,7 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
  * 设置是否自动隐藏滚动条。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t} auto_hide_scroll_bar 列表项的高度。
+ * @param {bool_t} auto_hide_scroll_bar 是否自动隐藏滚动条。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
