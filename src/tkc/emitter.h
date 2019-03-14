@@ -113,6 +113,17 @@ emitter_t* emitter_init(emitter_t* emitter);
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
 
 /**
+ * @method emitter_dispatch_simple_event
+ * 分发事件。
+ * > 对emitter_dispatch的包装，分发一个简单的事件。
+ * @annotation ["scriptable"]
+ * @param {emitter_t*} emitter emitter对象。
+ * @return {ret_t}
+ *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ */
+ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
+
+/**
  * @method emitter_on
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
