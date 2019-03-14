@@ -10,7 +10,7 @@
 
 > 如果希望初始化时编辑器自动获的焦点，可以设置focus为true。
 
-### 二、软键盘的按钮放入一个view(任何容器控件均可)中，并将view设置为软键盘。
+### 二、软键盘的按钮放入一个view(任何容器控件均可)中，并将view的is\_keyboard设置为true。
 
 ```
   <view y="60" x="c" w="90%" h="-60" is_keyboard="true" 
