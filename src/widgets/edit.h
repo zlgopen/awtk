@@ -162,7 +162,7 @@ typedef struct _edit_t {
   char* tips;
 
   /**
-   * @property {char*} focus
+   * @property {bool_t} focus
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 设置为焦点(通常用于在XML中缺省设置为焦点控件)。
    */

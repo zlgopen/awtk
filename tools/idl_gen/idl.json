@@ -14594,6 +14594,11 @@
             "type": "emitter_t*",
             "name": "emitter",
             "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
           }
         ],
         "annotation": {
@@ -23506,7 +23511,7 @@
       {
         "params": [
           {
-            "type": "window_manager_t*",
+            "type": "widget_t*",
             "name": "widget",
             "desc": "窗口管理器对象。"
           }
@@ -29410,7 +29415,7 @@
       {
         "name": "focus",
         "desc": " 设置为焦点(通常用于在XML中缺省设置为焦点控件)。\r\n",
-        "type": "char*",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

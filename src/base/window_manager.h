@@ -123,7 +123,7 @@ widget_t* window_manager_init(window_manager_t* widget);
  * @method window_manager_get_top_main_window
  * 获取最上面的主窗口。
  * @annotation ["scriptable"]
- * @param {window_manager_t*} widget 窗口管理器对象。
+ * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {widget_t*} 返回窗口对象。
  */

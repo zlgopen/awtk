@@ -142,7 +142,7 @@ window_manager_t* window_manager_create ();
 * 函数原型：
 
 ```
-widget_t* window_manager_get_top_main_window (window_manager_t* widget);
+widget_t* window_manager_get_top_main_window (widget_t* widget);
 ```
 
 * 参数说明：
@@ -150,7 +150,7 @@ widget_t* window_manager_get_top_main_window (window_manager_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回窗口对象。 |
-| widget | window\_manager\_t* | 窗口管理器对象。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_init 函数
 -----------------------
 
