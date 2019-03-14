@@ -950,7 +950,7 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
   edit->focus = focus;
   widget->focused = focus;
 
-  if(focus) {
+  if (focus) {
     event_t e = event_init(EVT_FOCUS, widget);
     widget_dispatch(widget, &e);
   } else {

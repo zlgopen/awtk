@@ -160,7 +160,7 @@ typedef struct _edit_t {
    * 输入提示。
    */
   char* tips;
-  
+
   /**
    * @property {char*} focus
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

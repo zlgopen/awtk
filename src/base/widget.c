@@ -2056,7 +2056,7 @@ bool_t widget_is_keyboard(widget_t* widget) {
     return TRUE;
   }
 
-  if(widget_get_prop(widget, WIDGET_PROP_IS_KEYBOARD, &v) == RET_OK) {
+  if (widget_get_prop(widget, WIDGET_PROP_IS_KEYBOARD, &v) == RET_OK) {
     return value_bool(&v);
   }
 
