@@ -66,4 +66,3 @@ static ret_t on_backspace(void* ctx, event_t* e) {
 
 * [demo\_ui\_app.c](https://github.com/zlgopen/awtk/blob/master/demos/demo_ui_app.c)
 * [soft\_keyboard.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/soft_keyboard.xml)
-* 

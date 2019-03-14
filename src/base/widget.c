@@ -1667,11 +1667,13 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
-    value_set_str(v, widget->animation);
+    value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
     value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
     value_set_str(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+    value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
       ret = widget->vt->get_prop_default_value(widget, name, v);
@@ -1799,11 +1801,18 @@ const char** widget_get_persistent_props(void) {
 static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char** properties) {
   if (properties != NULL) {
     value_t v;
+    value_t defval;
     uint32_t i = 0;
     for (i = 0; properties[i] != NULL; i++) {
       const char* prop = properties[i];
       if (widget_get_prop(widget, prop, &v) == RET_OK) {
-        widget_set_prop(clone, prop, &v);
+        if(widget_get_prop_default_value(widget, prop, &defval) == RET_OK) {
+          if(!value_equal(&v, &defval)) {
+            widget_set_prop(clone, prop, &v);
+          }
+        } else {
+          widget_set_prop(clone, prop, &v);
+        }
       }
     }
   }
