@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class group_box_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 分组控件。
  *
  * 单选按钮在同一个父控件中是互斥的，所以通常将相关的单选按钮放在一个group\_box中。

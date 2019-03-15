@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class system_bar_t
  * @parent window_base_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget","window"]
  * system\_bar窗口。
  *
  * system\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。

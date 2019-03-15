@@ -1,3 +1,5 @@
+#include "SDL.h"
+
 static SDL_Window* CreateSDLWindow(int w, int h){
 	SDL_Init(0 | SDL_INIT_GAMECONTROLLER);
 	static SDL_Window* sdl_window = NULL;

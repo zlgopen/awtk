@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class dragger_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * dragger控件。
  *
  * 目前主要用于scrollbar里的滑块。

@@ -26,6 +26,7 @@
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
 #include "base/wuxiaolin.inc"
+#include "base/system_info.h"
 
 static ret_t canvas_draw_fps(canvas_t* c);
 
@@ -211,6 +212,8 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
 
 ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+  size = system_info()->font_scale * size;
 
   c->font_name = name;
   c->font_size = size;
@@ -1349,6 +1352,8 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
     canvas_get_clip_rect(c, &r);
     vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
     vgcanvas_begin_path(vg);
+    vgcanvas_set_text_align(vg, "left");
+    vgcanvas_set_text_baseline(vg, "top");
   }
 
   return vg;

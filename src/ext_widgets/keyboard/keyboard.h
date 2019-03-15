@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class keyboard_t
  * @parent widget_t
+ * @annotation ["design","widget","window"]
  * 软键盘。
  *
  * 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。

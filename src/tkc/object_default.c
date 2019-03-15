@@ -154,9 +154,14 @@ static ret_t object_default_remove_prop(object_t* obj, const char* name) {
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   if (o->props_size > 0) {
+    named_value_t* iter = NULL;
     int32_t index = object_default_find(o->props, o->props_size, name);
-    named_value_t* iter = o->props + index;
 
+    if (index < 0 || index >= o->props_size) {
+      return RET_NOT_FOUND;
+    }
+
+    iter = o->props + index;
     if (tk_str_eq(iter->name, name)) {
       named_value_deinit(iter);
       ret = object_default_clean_invalid_props(obj);
@@ -208,9 +213,14 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   if (o->props_size > 0) {
+    named_value_t* iter = NULL;
     int32_t index = object_default_find(o->props, o->props_size, name);
-    named_value_t* iter = o->props + index;
 
+    if (index < 0 || index >= o->props_size) {
+      return RET_NOT_FOUND;
+    }
+
+    iter = o->props + index;
     if (tk_str_eq(iter->name, name)) {
       ret = value_copy(v, &(iter->value));
     }
@@ -270,4 +280,23 @@ object_t* object_default_create(void) {
   }
 
   return obj;
+}
+
+object_t* object_default_clone(object_default_t* o) {
+  object_t* dup = NULL;
+  return_value_if_fail(o != NULL, NULL);
+
+  dup = object_default_create();
+  return_value_if_fail(dup != NULL, NULL);
+
+  if (o->props_size > 0) {
+    uint32_t i = 0;
+    for (i = 0; i < o->props_size; i++) {
+      named_value_t* iter = o->props + i;
+
+      object_set_prop(dup, iter->name, &(iter->value));
+    }
+  }
+
+  return dup;
 }

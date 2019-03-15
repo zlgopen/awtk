@@ -13,6 +13,7 @@ BgCppPath=['bx/3rdparty',
                 'bgfx/3rdparty',
                 'bgfx/3rdparty/khronos',
                 'bimg/3rdparty/astc-codec/include',
+                'bimg/3rdparty/astc-codec/',
                 'bgfx/include']
 BgSources=[
                 'bx/src/allocator.cpp',
@@ -58,7 +59,7 @@ BgSources=[
                 'bgfx/src/shader_spirv.cpp',
                 'bgfx/src/topology.cpp',
                 'bgfx/src/vertexdecl.cpp'
-                ]
+                ] + Glob("bimg/3rdparty/astc-codec/src/decoder/*.cc")
 
 if OS_NAME == 'Windows':
   CCFLAGS = CCFLAGS + ' /std:c++14 ';

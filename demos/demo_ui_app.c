@@ -262,17 +262,40 @@ static ret_t on_open_window(void* ctx, event_t* e) {
 
   (void)e;
 
+#if 1
+  /*for test only*/
+  widget_on(WIDGET(e->target), EVT_CLICK, on_open_window, (void*)name);
+  return RET_REMOVE;
+#else
   return RET_OK;
+#endif
 }
 
 static ret_t on_close(void* ctx, event_t* e) {
-  widget_t* win = (widget_t*)ctx;
+  widget_t* win = WIDGET(ctx);
   (void)e;
   return window_close(win);
 }
 
+static ret_t on_send_key(void* ctx, event_t* e) {
+  widget_t* button = WIDGET(e->target);
+  char text[2];
+  text[0] = (char)button->text.str[0];
+  text[1] = '\0';
+
+  input_method_commit_text(input_method(), text);
+
+  return RET_OK;
+}
+
+static ret_t on_backspace(void* ctx, event_t* e) {
+  input_method_dispatch_key(input_method(), TK_KEY_BACKSPACE);
+
+  return RET_OK;
+}
+
 static ret_t on_quit(void* ctx, event_t* e) {
-  widget_t* dialog = (widget_t*)ctx;
+  widget_t* dialog = WIDGET(ctx);
 
   dialog_quit(dialog, 0);
   (void)e;
@@ -358,22 +381,44 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t progress_bar_animate_delta(widget_t* win, const char* name, int32_t delta) {
+  widget_t* progress_bar = widget_lookup(win, name, TRUE);
+  int32_t value = (PROGRESS_BAR(progress_bar)->value + delta);
+  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
+
+  return RET_OK;
+}
+
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
-  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  int32_t value = (PROGRESS_BAR(progress_bar)->value + 20);
-  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
+  progress_bar_animate_delta(win, "bar1", 10);
+  progress_bar_animate_delta(win, "bar2", 10);
   (void)e;
   return RET_OK;
 }
 
 static ret_t on_dec(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
-  widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
-  int32_t value = PROGRESS_BAR(progress_bar)->value - 20;
-  widget_animate_value_to(progress_bar, tk_max(0, value), 500);
+  progress_bar_animate_delta(win, "bar1", -10);
+  progress_bar_animate_delta(win, "bar2", -10);
 
   (void)e;
+  return RET_OK;
+}
+
+static ret_t on_change_font_size(void* ctx, event_t* e) {
+  float_t font_scale = 1;
+  widget_t* win = WIDGET(ctx);
+
+  if (widget_get_value(widget_lookup(win, "font_small", TRUE))) {
+    font_scale = 0.9;
+  } else if (widget_get_value(widget_lookup(win, "font_big", TRUE))) {
+    font_scale = 1.1;
+  }
+  system_info_set_font_scale(system_info(), font_scale);
+
+  widget_invalidate_force(win, NULL);
+
   return RET_OK;
 }
 
@@ -418,6 +463,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
     } else if (tk_str_eq(name, "english")) {
       widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
+    } else if (tk_str_eq(name, "font_small") || tk_str_eq(name, "font_normal") ||
+               tk_str_eq(name, "font_big")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_VALUE_CHANGED, on_change_font_size, win);
     } else if (tk_str_eq(name, "inc_value")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_inc, win);
@@ -429,6 +478,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       if (win) {
         widget_on(widget, EVT_CLICK, on_close, win);
       }
+    } else if (tk_str_eq(name, "key")) {
+      widget_on(widget, EVT_CLICK, on_send_key, NULL);
+    } else if (tk_str_eq(name, "backspace")) {
+      widget_on(widget, EVT_CLICK, on_backspace, NULL);
     } else if (tk_str_eq(name, "quit")) {
       widget_t* win = widget_get_window(widget);
       if (win) {
@@ -457,8 +510,7 @@ static void install_click_hander(widget_t* widget) {
 #include "base/assets_manager.h"
 
 static uint32_t s_preload_nr = 0;
-static const preload_res_t s_preload_res[] = {{ASSET_TYPE_IMAGE, "bg800x480"},
-                                              {ASSET_TYPE_IMAGE, "earth"},
+static const preload_res_t s_preload_res[] = {{ASSET_TYPE_IMAGE, "earth"},
                                               {ASSET_TYPE_IMAGE, "dialog_title"},
                                               {ASSET_TYPE_IMAGE, "rgb"},
                                               {ASSET_TYPE_IMAGE, "rgba"}};
@@ -514,9 +566,15 @@ static ret_t close_window_on_event(void* ctx, event_t* e) {
 }
 
 static ret_t on_screen_saver(void* ctx, event_t* e) {
-  /*please change image_animation to your own window name*/
-  widget_t* win = window_open("image_animation");
+  widget_t* win = NULL;
+  const char* screen_saver_win = "image_animation";
 
+  if (widget_child(window_manager(), screen_saver_win) != NULL) {
+    log_debug("screen saver exist.\n");
+    return RET_OK;
+  }
+
+  win = window_open(screen_saver_win);
   widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
   widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
   widget_on(win, EVT_KEY_UP, close_window_on_event, win);
@@ -524,12 +582,27 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+  if (evt->key == TK_KEY_F2) {
+    window_manager_back(WIDGET(ctx));
+  } else if (evt->key == TK_KEY_F3) {
+    window_manager_back_to_home(WIDGET(ctx));
+  }
+
+  return RET_OK;
+}
+
 ret_t application_init() {
+  widget_t* wm = window_manager();
+
   tk_ext_widgets_init();
 
   /*enable screen saver*/
-  window_manager_set_screen_saver_time(window_manager(), 180 * 1000);
-  widget_on(window_manager(), EVT_SCREEN_SAVER, on_screen_saver, NULL);
+  window_manager_set_screen_saver_time(wm, 180 * 1000);
+  widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
+
+  widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
 
   return show_preload_res_window();
 }

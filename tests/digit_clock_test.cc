@@ -126,3 +126,44 @@ TEST(DigitClock, cast) {
 
   widget_destroy(w);
 }
+
+TEST(DigitClock, wday) {
+  date_time_t dt;
+  char str[128];
+  widget_t* w = digit_clock_create(NULL, 10, 20, 30, 40);
+
+  dt.wday = 0;
+  ASSERT_EQ(digit_clock_format_time(w, "W", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("Sun"));
+
+  dt.wday = 5;
+  ASSERT_EQ(digit_clock_format_time(w, "W", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("Fri"));
+
+  widget_destroy(w);
+}
+
+TEST(DigitClock, month) {
+  date_time_t dt;
+  char str[128];
+  widget_t* w = digit_clock_create(NULL, 10, 20, 30, 40);
+
+  dt.month = 1;
+  ASSERT_EQ(digit_clock_format_time(w, "MMM", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("Jan"));
+
+  dt.month = 6;
+  ASSERT_EQ(digit_clock_format_time(w, "MMM", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("Jun"));
+
+  dt.month = 12;
+  ASSERT_EQ(digit_clock_format_time(w, "MMM", &dt), RET_OK);
+  ASSERT_EQ(wstr_get_utf8(&(w->text), str, sizeof(str)), RET_OK);
+  ASSERT_EQ(string(str), string("Dec"));
+
+  widget_destroy(w);
+}

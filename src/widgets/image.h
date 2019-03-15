@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class image_t
  * @parent image_base_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 图片控件。
  *
  * 用来显示一张静态图片，目前支持bmp/png/jpg等格式。

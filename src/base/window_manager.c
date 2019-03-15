@@ -537,8 +537,7 @@ int32_t window_manager_find_top_window_index(widget_t* widget) {
   return_value_if_fail(widget != NULL, -1);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  const char* type = widget_get_type(iter);
-  if (tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
+  if (is_normal_window(iter)) {
     return i;
   }
   WIDGET_FOR_EACH_CHILD_END();
@@ -559,8 +558,7 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  const char* type = widget_get_type(iter);
-  if (iter->visible && tk_str_eq(type, WIDGET_TYPE_NORMAL_WINDOW)) {
+  if (iter->visible && is_normal_window(iter)) {
     start = i;
     break;
   }
@@ -776,4 +774,43 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
   }
 
   return RET_OK;
+}
+
+ret_t window_manager_back(widget_t* widget) {
+  event_t e;
+  widget_t* top_window = window_manager_get_top_main_window(widget);
+  return_value_if_fail(top_window != NULL, RET_NOT_FOUND);
+
+  e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
+
+  return widget_dispatch(top_window, &e);
+}
+
+ret_t window_manager_back_to_home(widget_t* widget) {
+  widget_t* top = NULL;
+  widget_t* home = NULL;
+  int32_t children_nr = widget_count_children(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (children_nr < 2) {
+    return RET_OK;
+  }
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (home == NULL) {
+    if (is_normal_window(iter)) {
+      home = iter;
+    }
+  } else if ((i + 1) < children_nr) {
+    if (!is_system_bar(iter)) {
+      window_manager_close_window_force(widget, iter);
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  children_nr = widget_count_children(widget);
+  top = widget_get_child(widget, children_nr - 1);
+  return_value_if_fail(top != home, RET_OK);
+
+  return window_manager_close_window(widget, top);
 }

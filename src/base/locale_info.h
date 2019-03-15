@@ -23,6 +23,7 @@
 #define TK_LOCALE_H
 
 #include "tkc/emitter.h"
+#include "base/events.h"
 #include "base/assets_manager.h"
 
 BEGIN_C_DECLS

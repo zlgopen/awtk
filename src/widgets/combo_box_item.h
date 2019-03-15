@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class combo_box_item_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * ComboBox Item控件。
  *
  * 本类仅供combo\_box控件内部使用。

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class pages_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 页面管理控件。
  *
  * 只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。

@@ -1,3 +1,4 @@
+#include "nanovg.h"
 
 static int load_image(NVGcontext* vg, const char* filename, int32_t* comp, int32_t* iw, int32_t* ih) {
 

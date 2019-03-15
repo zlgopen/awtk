@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class color_picker_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 颜色选择器。
  *
  * color\_picker\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于color\_picker\_t控件。

@@ -55,6 +55,7 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
   dt->minute = wtm.wMinute;
   dt->hour = wtm.wHour;
   dt->day = wtm.wDay;
+  dt->wday = wtm.wDayOfWeek;
   dt->month = wtm.wMonth;
   dt->year = wtm.wYear;
 
@@ -73,6 +74,7 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
   dt->day = t->tm_mday;
   dt->month = t->tm_mon + 1;
   dt->year = t->tm_year + 1900;
+  dt->wday = t->tm_wday;
 
   return RET_OK;
 }

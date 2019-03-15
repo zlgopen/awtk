@@ -17,18 +17,19 @@
 
 
   <slider name="slider" x="10" y="116" w="240" h="20" value="40"/>
-  <progress_bar name="bar1" x="10" y="142" w="240" h="16" value="40"/>
+  <progress_bar name="bar1" x="10" y="142" w="240" h="16" value="40" show_text="true"/>
   <progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/>
 
-  <column x="20" y="160" w="50%" h="60" children_layout="default(r=2,c=1,ym=2,s=10)" >
-    <check_button name="c1" text="Book"/>
-    <check_button name="c2" text="Food"/>
+  <column x="20" y="160" w="50%" h="90" children_layout="default(r=3,c=1,ym=2,s=10)" >
+    <check_button name="r1" text="Book"/>
+    <check_button name="r2" text="Food"/>
+    <check_button name="r3" text="Pencil" value="true"/>
   </column>
 
-  <column x="20" y="230" w="50%" h="90" children_layout="default(r=3,c=1,ym=2,s=10)" >
-    <radio_button name="r1" text="Book"/>
-    <radio_button name="r2" text="Food"/>
-    <radio_button name="r3" text="Pencil" value="true"/>
+  <column x="20" y="260" w="50%" h="90" children_layout="default(r=3,c=1,ym=2,s=10)" >
+    <radio_button name="font_small" text="Small Font"/>
+    <radio_button name="font_normal" text="Normal Font"/>
+    <radio_button name="font_big" text="Big Font"/>
   </column>
 
   <row x="20" y="bottom:60" w="100" h="30" children_layout="default(r=1,c=4)">

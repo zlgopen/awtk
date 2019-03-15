@@ -1,4 +1,5 @@
 #include "bgfx/nanovg_bgfx.h"
+#include "bgfx/nanovg_bgfx_ex.h"
 #include "fill.inc"
 #include "get_sdl_window.inc"
 

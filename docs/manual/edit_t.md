@@ -71,6 +71,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
+| <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
 | <a href="#edit_t_edit_set_input_tips">edit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
 | <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
@@ -85,6 +86,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 | -------- | ----- | ------------ | 
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
 | <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
+| <a href="#edit_t_focus">focus</a> | bool\_t | 设置为焦点(通常用于在XML中缺省设置为焦点控件)。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
 | <a href="#edit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
 | <a href="#edit_t_max">max</a> | float\_t | 最大值或最大长度。 |
@@ -258,6 +260,28 @@ ret_t edit_set_float_limit (widget_t* widget, double min, double max, double ste
 | min | double | 最小值。 |
 | max | double | 最大值。 |
 | step | double | 步长。 |
+#### edit\_set\_focus 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_focus"> 设置为焦点。
+
+
+
+* 函数原型：
+
+```
+ret_t edit_set_focus (widget_t* widget, bool_t focus);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| focus | bool\_t | 是否为焦点。。 |
 #### edit\_set\_input\_tips 函数
 -----------------------
 
@@ -438,6 +462,23 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 
 
 * 类型：uint8\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### focus 属性
+-----------------------
+> <p id="edit_t_focus"> 设置为焦点(通常用于在XML中缺省设置为焦点控件)。
+
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

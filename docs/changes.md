@@ -1,4 +1,56 @@
 # 最新动态
+* 2019/03/14
+  * 修改edit/widget支持自定义的软键盘。
+  * 增加自定义的软键盘的示例和文档。
+  * 更新文档。
+
+* 2019/03/13
+  * 增加了object\_get\_type等函数。
+  * 修改widget\_use\_style的问题。
+  * 修改emitter\_remove\_item的BUG。
+  * 增加object\_default\_clone。
+  * 修改widget\_clone没有拷贝自定义属性的问题。
+
+* 2019/03/12
+  * 窗口管理器增加window\_manager\_back/window\_manager\_back\_to\_home
+  * 增加示例。
+  * 更新文档。
+
+* 2019/03/11
+  * date time中增加wday表示星期。
+  * 数字时钟支持星期和月的英文。
+  * 修改事件处理函数返回RET\_REMOVE时，同时注册事件处理函数的问题。
+  * 更新资源。
+
+* 2019/03/08
+  * 支持屏幕密度不敏感的图片，放到images/xx中。
+  * UI/图片资源名称支持表达式。
+
+* 2019/03/07
+  * 增加str\_expand\_vars函数。
+  * 重新实现system\_info。
+  * 支持设置字体的全局缩放比例。
+
+* 2019/03/06
+  * slide view支持设置不同的切换动画。
+  * 修改single fb的flush函数相关问题(感谢陈谭提供补丁)。
+
+* 2019/03/05
+  * 更新文档。
+  * slide view支持循环切换。
+  * 修改canvas\_draw\_text和vgcanvas\_fill\_text坐标不一致的问题。
+
+* 2019/03/04
+  * 完善progressbar/slider的显示函数。
+  * 增加widget\_stroke\_border\_rect/widget\_fill\_bg\_rect等函数供子类使用。
+  * 合并issue #97(感谢陈谭提供补丁)
+  * 更新bgfx backend(感谢大恒提供补丁)。
+  * 在类的annotation中增加window/widget/design
+
+* 2019/03/04
+  * 更新文档。
+  * 修改progress\_bar显示的BUG(感谢俊杰提供补丁)。
+
 * 2019/03/02
   * 增加dialog\_warn/dialog\_info/dialog\_warn。
 

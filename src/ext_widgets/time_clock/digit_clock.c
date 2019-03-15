@@ -20,8 +20,10 @@
  */
 
 #include "tkc/mem.h"
-#include "base/timer.h"
+#include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "base/timer.h"
+#include "base/locale_info.h"
 #include "base/widget_vtable.h"
 #include "time_clock/digit_clock.h"
 
@@ -36,11 +38,34 @@ static uint32_t count_char(const char* p, char c) {
   return nr;
 }
 
+static wchar_t* digit_clock_translate_wday(wchar_t* str, uint32_t size, uint32_t wday) {
+  return_value_if_fail(wday < 7, NULL);
+
+  static const char* wdays[] = {
+      "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat",
+  };
+
+  const char* utf8 = locale_info_tr(locale_info(), wdays[wday]);
+  return utf8_to_utf16(utf8, str, size);
+}
+
+static wchar_t* digit_clock_translate_month(wchar_t* str, uint32_t size, uint32_t month) {
+  return_value_if_fail(month < 13, NULL);
+
+  static const char* months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
+                                 "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+
+  const char* utf8 = locale_info_tr(locale_info(), months[month - 1]);
+  return utf8_to_utf16(utf8, str, size);
+}
+
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt) {
-  wstr_t* str = &(widget->text);
+  wchar_t temp[32];
   const char* p = format;
+  wstr_t* str = &(widget->text);
 
   str->size = 0;
+  memset(temp, 0x00, sizeof(temp));
   while (*p) {
     int32_t repeat = count_char(p, *p);
 
@@ -56,6 +81,9 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
       case 'M': {
         if (repeat == 2) {
           wstr_push_int(str, "%02d", dt->month);
+        } else if (repeat == 3) {
+          digit_clock_translate_month(temp, ARRAY_SIZE(temp), dt->month);
+          wstr_append(str, temp);
         } else {
           wstr_push_int(str, "%d", dt->month);
         }
@@ -91,6 +119,15 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
         } else {
           wstr_push_int(str, "%d", dt->second);
         }
+        break;
+      }
+      case 'w': {
+        wstr_push_int(str, "%d", dt->wday);
+        break;
+      }
+      case 'W': {
+        digit_clock_translate_wday(temp, ARRAY_SIZE(temp), dt->wday);
+        wstr_append(str, temp);
         break;
       }
       default: {

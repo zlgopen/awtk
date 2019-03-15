@@ -4,6 +4,7 @@
 #include "assets/inc/strings/zh_CN.data"
 #include "assets/inc/strings/en_US.data"
 #include "assets/inc/styles/slide_menu.data"
+#include "assets/inc/styles/digit_clock.data"
 #include "assets/inc/styles/dialog_toast.data"
 #include "assets/inc/styles/edit.data"
 #include "assets/inc/styles/keyboard.data"
@@ -28,6 +29,7 @@
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/slide_menu.data"
 #include "assets/inc/ui/radial_gradient.data"
+#include "assets/inc/ui/auto_play_landscape.data"
 #include "assets/inc/ui/color_picker_simple.data"
 #include "assets/inc/ui/progress_circle.data"
 #include "assets/inc/ui/combo_box.data"
@@ -39,10 +41,12 @@
 #include "assets/inc/ui/linear_gradient.data"
 #include "assets/inc/ui/preload.data"
 #include "assets/inc/ui/images.data"
+#include "assets/inc/ui/soft_keyboard.data"
 #include "assets/inc/ui/edit.data"
 #include "assets/inc/ui/locale.data"
 #include "assets/inc/ui/kb_int.data"
 #include "assets/inc/ui/tab_control.data"
+#include "assets/inc/ui/slide_view_v2.data"
 #include "assets/inc/ui/animation.data"
 #include "assets/inc/ui/keyboard.data"
 #include "assets/inc/ui/kb_hex.data"
@@ -54,8 +58,11 @@
 #include "assets/inc/ui/color_picker_hsv.data"
 #include "assets/inc/ui/tab_bottom.data"
 #include "assets/inc/ui/list_view_m.data"
+#include "assets/inc/ui/slide_view_h_loop.data"
 #include "assets/inc/ui/calibration_win.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/slide_view_h2.data"
+#include "assets/inc/ui/slide_view_v_loop.data"
 #include "assets/inc/ui/language.data"
 #include "assets/inc/ui/kb_float.data"
 #include "assets/inc/ui/htranslate.data"
@@ -70,6 +77,7 @@
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/label.data"
 #include "assets/inc/ui/gif_image.data"
+#include "assets/inc/ui/auto_play_portrait.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
@@ -78,6 +86,7 @@
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/stroke_gradient.data"
+#include "assets/inc/ui/slide_view_h1.data"
 #include "assets/inc/ui/basic.data"
 #include "assets/inc/ui/auto_play.data"
 #include "assets/inc/ui/guage.data"
@@ -85,6 +94,7 @@
 #include "assets/inc/ui/dialog1.data"
 #include "assets/inc/ui/fade.data"
 #include "assets/inc/ui/image_list.data"
+#include "assets/inc/ui/slide_view_v1.data"
 #include "assets/inc/ui/select1.data"
 #include "assets/inc/ui/bottom.data"
 #include "assets/inc/ui/image_animation.data"
@@ -381,6 +391,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_slide_menu);
   assets_manager_add(rm, ui_radial_gradient);
+  assets_manager_add(rm, ui_auto_play_landscape);
   assets_manager_add(rm, ui_color_picker_simple);
   assets_manager_add(rm, ui_progress_circle);
   assets_manager_add(rm, ui_combo_box);
@@ -392,10 +403,12 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_linear_gradient);
   assets_manager_add(rm, ui_preload);
   assets_manager_add(rm, ui_images);
+  assets_manager_add(rm, ui_soft_keyboard);
   assets_manager_add(rm, ui_edit);
   assets_manager_add(rm, ui_locale);
   assets_manager_add(rm, ui_kb_int);
   assets_manager_add(rm, ui_tab_control);
+  assets_manager_add(rm, ui_slide_view_v2);
   assets_manager_add(rm, ui_animation);
   assets_manager_add(rm, ui_keyboard);
   assets_manager_add(rm, ui_kb_hex);
@@ -407,8 +420,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_color_picker_hsv);
   assets_manager_add(rm, ui_tab_bottom);
   assets_manager_add(rm, ui_list_view_m);
+  assets_manager_add(rm, ui_slide_view_h_loop);
   assets_manager_add(rm, ui_calibration_win);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_slide_view_h2);
+  assets_manager_add(rm, ui_slide_view_v_loop);
   assets_manager_add(rm, ui_language);
   assets_manager_add(rm, ui_kb_float);
   assets_manager_add(rm, ui_htranslate);
@@ -423,6 +439,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_label);
   assets_manager_add(rm, ui_gif_image);
+  assets_manager_add(rm, ui_auto_play_portrait);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
@@ -431,6 +448,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_stroke_gradient);
+  assets_manager_add(rm, ui_slide_view_h1);
   assets_manager_add(rm, ui_basic);
   assets_manager_add(rm, ui_auto_play);
   assets_manager_add(rm, ui_guage);
@@ -438,6 +456,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_dialog1);
   assets_manager_add(rm, ui_fade);
   assets_manager_add(rm, ui_image_list);
+  assets_manager_add(rm, ui_slide_view_v1);
   assets_manager_add(rm, ui_select1);
   assets_manager_add(rm, ui_bottom);
   assets_manager_add(rm, ui_image_animation);
@@ -583,6 +602,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
   assets_manager_add(rm, style_slide_menu);
+  assets_manager_add(rm, style_digit_clock);
   assets_manager_add(rm, style_dialog_toast);
   assets_manager_add(rm, style_edit);
   assets_manager_add(rm, style_keyboard);

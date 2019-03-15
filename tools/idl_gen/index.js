@@ -334,7 +334,13 @@ class IDLGenerator {
       cls.level = 1;
       if(cls.parent) {
         let parent = getClass(cls.parent);
-        cls.level += updateLevel(parent);
+        if(parent) {
+          cls.level += updateLevel(parent);
+        } else {
+          cls.level += 1;
+          console.log('not found class:' + cls.parent);
+          process.exit(0);
+        }
       }
 
       return cls.level;

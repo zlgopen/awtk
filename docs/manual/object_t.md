@@ -20,13 +20,17 @@
 | <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
+| <a href="#object_t_object_get_desc">object\_get\_desc</a> | 获取对象的描述信息。 |
 | <a href="#object_t_object_get_prop">object\_get\_prop</a> | 获取指定属性的值。 |
 | <a href="#object_t_object_get_prop_float">object\_get\_prop\_float</a> | 获取指定属性的浮点数类型的值。 |
 | <a href="#object_t_object_get_prop_int">object\_get\_prop\_int</a> | 获取指定属性的整数类型的值。 |
 | <a href="#object_t_object_get_prop_object">object\_get\_prop\_object</a> | 获取指定属性的object类型的值。 |
 | <a href="#object_t_object_get_prop_pointer">object\_get\_prop\_pointer</a> | 获取指定属性的指针类型的值。 |
 | <a href="#object_t_object_get_prop_str">object\_get\_prop\_str</a> | 获取指定属性的字符串类型的值。 |
+| <a href="#object_t_object_get_size">object\_get\_size</a> | 获取对象占用内存的大小。 |
+| <a href="#object_t_object_get_type">object\_get\_type</a> | 获取对象的类型名称。 |
 | <a href="#object_t_object_has_prop">object\_has\_prop</a> | 检查是否存在指定的属性。 |
+| <a href="#object_t_object_is_collection">object\_is\_collection</a> | 判断对象是否是集合。 |
 | <a href="#object_t_object_notify_changed">object\_notify\_changed</a> | 触发EVT_PROPS_CHANGED事件。 |
 | <a href="#object_t_object_ref">object\_ref</a> | 引用计数加1。 |
 | <a href="#object_t_object_remove_prop">object\_remove\_prop</a> | 删除指定属性。 |
@@ -218,6 +222,29 @@ ret_t object_foreach_prop (object_t* obj, tk_visit_t on_prop, void* ctx);
 | obj | object\_t* | object对象。 |
 | on\_prop | tk\_visit\_t | 回调函数。 |
 | ctx | void* | 回调函数上下文。 |
+#### object\_get\_desc 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_desc"> 获取对象的描述信息。
+
+
+
+
+
+* 函数原型：
+
+```
+const char* object_get_desc (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回对象的描述信息。 |
+| obj | object\_t* | object对象。 |
 #### object\_get\_prop 函数
 -----------------------
 
@@ -365,6 +392,52 @@ const char* object_get_prop_str (object_t* obj, const char* name);
 | 返回值 | const char* | 返回指定属性的字符串类型的值。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+#### object\_get\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_size"> 获取对象占用内存的大小。
+
+
+
+
+
+* 函数原型：
+
+```
+uint32_t object_get_size (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回对象占用内存的大小。 |
+| obj | object\_t* | object对象。 |
+#### object\_get\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_type"> 获取对象的类型名称。
+
+
+
+
+
+* 函数原型：
+
+```
+const char* object_get_type (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回对象的类型名称。 |
+| obj | object\_t* | object对象。 |
 #### object\_has\_prop 函数
 -----------------------
 
@@ -389,6 +462,29 @@ bool_t object_has_prop (object_t* obj, const char* name);
 | 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+#### object\_is\_collection 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_is_collection"> 判断对象是否是集合。
+
+
+
+
+
+* 函数原型：
+
+```
+bool_t object_is_collection (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是集合，否则不是。 |
+| obj | object\_t* | object对象。 |
 #### object\_notify\_changed 函数
 -----------------------
 

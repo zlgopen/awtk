@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class progress_circle_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 进度圆环控件。
  *
  * progress\_circle\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_circle\_t控件。

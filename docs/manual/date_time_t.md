@@ -26,6 +26,7 @@
 | <a href="#date_time_t_minute">minute</a> | int32\_t | 分(0 - 59)。 |
 | <a href="#date_time_t_month">month</a> | int32\_t | 月(1-12)。 |
 | <a href="#date_time_t_second">second</a> | int32\_t | 秒(0 - 59)。 |
+| <a href="#date_time_t_wday">wday</a> | int32\_t | 星期几(0-6, Sunday = 0)。 |
 | <a href="#date_time_t_year">year</a> | int32\_t | 年。 |
 #### date\_time\_create 函数
 -----------------------
@@ -173,6 +174,19 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 #### second 属性
 -----------------------
 > <p id="date_time_t_second"> 秒(0 - 59)。
+
+
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### wday 属性
+-----------------------
+> <p id="date_time_t_wday"> 星期几(0-6, Sunday = 0)。
 
 
 

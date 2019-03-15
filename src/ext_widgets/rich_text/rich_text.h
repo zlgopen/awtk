@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class rich_text_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 图文混排控件，实现简单的图文混排。
  *
  * rich\_text\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于rich\_text\_t控件。

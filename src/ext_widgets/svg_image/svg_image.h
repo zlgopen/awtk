@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class svg_image_t
  * @parent image_base_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * SVG图片控件。
  *
  * svg\_image\_t是[image\_base\_t](image_base_t.md)的子类控件，image\_base\_t的函数均适用于svg\_image\_t控件。

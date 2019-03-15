@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class guage_pointer_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 仪表指针控件。
  *
  * 仪表指针就是一张旋转的图片，图片可以是普通图片也可以是SVG图片。

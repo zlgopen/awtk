@@ -93,6 +93,8 @@ XML中的用法：
 image_set_image(image, "flag_$locale$");
 ```
 
+> 也可以使用[资源名称的高级用法](assets_manager.md)来实现同样的功能。
+
 ## 使用方法
 
 如果控件的文本需要翻译，则通过函数widget\_set\_tr\_text设置文本(如果不需要翻译，则用widget\_set\_text设置):

@@ -92,151 +92,179 @@ static ret_t build_path(const char* res_root, char* path, uint32_t size, bool_t 
   return tk_str_append(path, size, extname);
 }
 
-asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const char* name) {
-  int32_t size = 0;
+static asset_info_t* try_load_image(const char* res_root, const char* name,
+                                    asset_image_type_t subtype, bool_t ratio) {
   char path[MAX_PATH + 1];
-  asset_info_t* info = NULL;
-  const char* res_root = assets_manager_get_res_root(rm);
+  const char* extname = NULL;
+  const char* subpath = ratio ? "assets/raw/images" : "assets/raw/images/xx";
 
-  memset(path, 0x00, sizeof(path));
+  switch (subtype) {
+    case ASSET_TYPE_IMAGE_JPG: {
+      extname = ".jpg";
+      break;
+    }
+    case ASSET_TYPE_IMAGE_PNG: {
+      extname = ".png";
+      break;
+    }
+    case ASSET_TYPE_IMAGE_GIF: {
+      extname = ".gif";
+      break;
+    }
+    case ASSET_TYPE_IMAGE_BSVG: {
+      extname = ".bsvg";
+      subpath = "assets/raw/images/svg";
+      break;
+    }
+    default: { return NULL; }
+  }
+
+  return_value_if_fail(
+      build_path(res_root, path, MAX_PATH, ratio, subpath, name, extname) == RET_OK, NULL);
+
+  if (file_exist(path)) {
+    size_t size = file_get_size(path);
+    asset_info_t* info = load_asset(ASSET_TYPE_IMAGE, subtype, size, path, name);
+
+    return info;
+  }
+
+  return NULL;
+}
+
+static asset_info_t* try_load_assets(const char* res_root, const char* name, const char* extname,
+                                     asset_type_t type, uint16_t subtype) {
+  char path[MAX_PATH + 1];
+  const char* subpath = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/fonts", name, ".ttf") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_FONT_TTF, size, path, name);
-        break;
-      }
-
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/fonts", name, ".bin") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_FONT_BMP, size, path, name);
-        break;
-      }
-
+      subpath = "assets/raw/fonts";
       break;
     }
     case ASSET_TYPE_SCRIPT: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".js") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_SCRIPT_JS, size, path, name);
-        break;
-      }
-
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/scripts", name, ".lua") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_SCRIPT_LUA, size, path, name);
-        break;
-      }
-
+      subpath = "assets/raw/scripts";
       break;
     }
     case ASSET_TYPE_STYLE: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/styles", name, ".bin") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_STYLE, size, path, name);
+      subpath = "assets/raw/styles";
+      break;
+    }
+    case ASSET_TYPE_STRINGS: {
+      subpath = "assets/raw/strings";
+      break;
+    }
+    case ASSET_TYPE_UI: {
+      subpath = "assets/raw/ui";
+      break;
+    }
+    case ASSET_TYPE_XML: {
+      subpath = "assets/raw/xml";
+      break;
+    }
+    case ASSET_TYPE_DATA: {
+      subpath = "assets/raw/data";
+      break;
+    }
+    default: { return NULL; }
+  }
+
+  return_value_if_fail(
+      build_path(res_root, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK, NULL);
+  if (file_exist(path)) {
+    int32_t size = file_get_size(path);
+    return load_asset(type, subtype, size, path, name);
+  }
+
+  return NULL;
+}
+
+asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const char* name) {
+  asset_info_t* info = NULL;
+  const char* res_root = assets_manager_get_res_root(rm);
+
+  switch (type) {
+    case ASSET_TYPE_FONT: {
+      if ((info = try_load_assets(res_root, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
+        break;
+      }
+
+      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_FONT_BMP)) != NULL) {
+        break;
+      }
+      break;
+    }
+    case ASSET_TYPE_SCRIPT: {
+      if ((info = try_load_assets(res_root, name, ".js", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
+        break;
+      }
+
+      if ((info = try_load_assets(res_root, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
+        break;
+      }
+      break;
+    }
+    case ASSET_TYPE_STYLE: {
+      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_STYLE)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_STRINGS: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/strings", name, ".bin") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_STRINGS, size, path, name);
+      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_STRINGS)) != NULL) {
+        break;
       }
       break;
     }
     case ASSET_TYPE_IMAGE: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".png") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_IMAGE_PNG, size, path, name);
-        /*not cache png file raw data*/
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_PNG, TRUE)) != NULL) {
         return info;
       }
 
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".jpg") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_IMAGE_JPG, size, path, name);
-        /*not cache png file jpg data*/
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_JPG, TRUE)) != NULL) {
         return info;
       }
 
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, TRUE, "assets/raw/images", name, ".gif") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_IMAGE_GIF, size, path, name);
-        /*not cache png file jpg data*/
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_GIF, TRUE)) != NULL) {
         return info;
       }
 
-      return_value_if_fail(build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/images/svg",
-                                      name, ".bsvg") == RET_OK,
-                           NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_IMAGE_BSVG, size, path, name);
-        /*not cache png file jpg data*/
+      /*try ratio-insensitive image.*/
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_PNG, FALSE)) != NULL) {
+        return info;
+      }
+
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_JPG, FALSE)) != NULL) {
+        return info;
+      }
+
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_GIF, FALSE)) != NULL) {
+        return info;
+      }
+
+      if ((info = try_load_image(res_root, name, ASSET_TYPE_IMAGE_BSVG, FALSE)) != NULL) {
         return info;
       }
 
       break;
     }
     case ASSET_TYPE_UI: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/ui", name, ".bin") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_UI_BIN, size, path, name);
-        /*not cache ui*/
-        return info;
+      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_UI)) != NULL) {
+        break;
       }
       break;
     }
     case ASSET_TYPE_XML: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/xml", name, ".xml") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_XML, size, path, name);
-        /*not cache xml*/
-        return info;
+      if ((info = try_load_assets(res_root, name, ".xml", type, ASSET_TYPE_XML)) != NULL) {
+        break;
       }
       break;
     }
     case ASSET_TYPE_DATA: {
-      return_value_if_fail(
-          build_path(res_root, path, MAX_PATH, FALSE, "assets/raw/data", name, ".bin") == RET_OK,
-          NULL);
-      if (file_exist(path)) {
-        size = file_get_size(path);
-        info = load_asset(type, ASSET_TYPE_DATA, size, path, name);
+      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_DATA)) != NULL) {
+        break;
+      }
+
+      if ((info = try_load_assets(res_root, name, ".dat", type, ASSET_TYPE_DATA)) != NULL) {
         break;
       }
       break;

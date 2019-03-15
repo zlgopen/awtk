@@ -81,6 +81,8 @@ static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
 
 TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
                                .size = sizeof(list_view_h_t),
+                               .parent = TK_PARENT_VTABLE(widget),
+                               .create = list_view_h_create,
                                .set_prop = list_view_h_set_prop,
                                .get_prop = list_view_h_get_prop,
                                .on_event = list_view_h_on_event,

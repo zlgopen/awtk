@@ -394,10 +394,10 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   lcd->line_length = w * bpp;
   lcd->format = LCD_FORMAT;
 
-  info->lcd_w = base->w;
-  info->lcd_h = base->h;
-  info->lcd_type = base->type;
-  info->device_pixel_ratio = 1;
+  system_info_set_lcd_w(info, base->w);
+  system_info_set_lcd_h(info, base->h);
+  system_info_set_lcd_type(info, base->type);
+  system_info_set_device_pixel_ratio(info, 1);
 
   return base;
 }
@@ -431,6 +431,7 @@ static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
 
   mem->offline_fb = fbuff;
   mem->online_fb = NULL;
+  lcd->flush = NULL;
 
   return lcd;
 }

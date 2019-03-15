@@ -22,7 +22,7 @@
 #ifndef TK_EMITTER_H
 #define TK_EMITTER_H
 
-#include "base/events.h"
+#include "tkc/event.h"
 
 BEGIN_C_DECLS
 
@@ -111,6 +111,18 @@ emitter_t* emitter_init(emitter_t* emitter);
  *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
  */
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
+
+/**
+ * @method emitter_dispatch_simple_event
+ * 分发事件。
+ * > 对emitter_dispatch的包装，分发一个简单的事件。
+ * @annotation ["scriptable"]
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {uint32_t} type 事件类型。
+ * @return {ret_t}
+ *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ */
+ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
 
 /**
  * @method emitter_on
@@ -249,6 +261,10 @@ ret_t emitter_destroy(emitter_t* emitter);
 emitter_t* emitter_cast(emitter_t* emitter);
 
 #define EMITTER(emitter) ((emitter_t*)(emitter))
+
+/*public for test*/
+ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);
+emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index);
 
 END_C_DECLS
 

@@ -24,6 +24,7 @@
 #include "tkc/str.h"
 #include "tkc/utils.h"
 #include "tkc/value.h"
+#include "tkc/object.h"
 #include "tkc/tokenizer.h"
 
 ret_t str_extend(str_t* str, uint32_t capacity) {
@@ -497,6 +498,51 @@ ret_t str_remove(str_t* s, uint32_t offset, uint32_t size) {
   memmove(s->str + offset, s->str + offset + size, strlen(s->str + offset + size));
   s->size -= size;
   s->str[s->size] = '\0';
+
+  return RET_OK;
+}
+
+static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
+  value_t v;
+  uint32_t len = 0;
+  char name[TK_NAME_LEN + 1];
+  const char* end = strchr(p, '}');
+  return_value_if_fail(end != NULL, p);
+
+  len = end - p;
+  return_value_if_fail(len <= TK_NAME_LEN, end + 1);
+
+  tk_strncpy(name, p, len);
+  return_value_if_fail(object_eval((object_t*)obj, name, &v) == RET_OK, end + 1);
+
+  if (v.type == VALUE_TYPE_STRING) {
+    str_append(str, value_str(&v));
+  } else {
+    char num[TK_NUM_MAX_LEN + 1];
+    tk_snprintf(num, TK_NUM_MAX_LEN, "%d", value_int(&v));
+    str_append(str, num);
+  }
+
+  return end + 1;
+}
+
+ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj) {
+  const char* p = src;
+  return_value_if_fail(str != NULL && src != NULL && obj != NULL, RET_BAD_PARAMS);
+
+  while (*p) {
+    char c = *p;
+
+    if (c == '$') {
+      if (p[1] && p[2]) {
+        p = expand_var(str, p + 2, obj);
+      }
+      continue;
+    } else {
+      str_append_char(str, c);
+      p++;
+    }
+  }
 
   return RET_OK;
 }

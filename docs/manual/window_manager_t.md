@@ -11,16 +11,12 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_manager_t_window_manager">window\_manager</a> | 获取全局window_manager对象 |
+| <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。 |
+| <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
-| <a href="#window_manager_t_window_manager_close_window">window\_manager\_close\_window</a> | 关闭窗口。 |
-| <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
 | <a href="#window_manager_t_window_manager_create">window\_manager\_create</a> | 创建窗口管理器。 |
-| <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> | 初始化窗口管理器。 |
-| <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
-| <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
-| <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整窗口管理器的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
@@ -51,6 +47,48 @@ widget_t* window_manager ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
+#### window\_manager\_back 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_back"> 请求关闭顶层窗口。
+
+
+
+* 函数原型：
+
+```
+ret_t window_manager_back (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_back\_to\_home 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_back_to_home"> 回到主窗口，关闭之上的全部窗口。
+
+
+
+* 函数原型：
+
+```
+ret_t window_manager_back_to_home (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_cast 函数
 -----------------------
 
@@ -72,50 +110,6 @@ widget_t* window_manager_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | window\_manager对象。 |
 | widget | widget\_t* | window\_manager对象。 |
-#### window\_manager\_close\_window 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_close_window"> 关闭窗口。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_close_window (widget_t* widget, widget_t* window);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| window | widget\_t* | 窗口对象。 |
-#### window\_manager\_close\_window\_force 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_close_window_force"> 强制立即关闭窗口。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_close_window_force (widget_t* widget, widget_t* window);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| window | widget\_t* | 窗口对象。 |
 #### window\_manager\_create 函数
 -----------------------
 
@@ -136,28 +130,6 @@ window_manager_t* window_manager_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | window\_manager\_t* | 返回窗口管理器对象。 |
-#### window\_manager\_dispatch\_input\_event 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_dispatch_input_event"> 分发输入事件。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_dispatch_input_event (widget_t* widget, event_t* e);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| e | event\_t* | 事件对象。 |
 #### window\_manager\_get\_top\_main\_window 函数
 -----------------------
 
@@ -170,7 +142,7 @@ ret_t window_manager_dispatch_input_event (widget_t* widget, event_t* e);
 * 函数原型：
 
 ```
-widget_t* window_manager_get_top_main_window (window_manager_t* widget);
+widget_t* window_manager_get_top_main_window (widget_t* widget);
 ```
 
 * 参数说明：
@@ -178,7 +150,7 @@ widget_t* window_manager_get_top_main_window (window_manager_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回窗口对象。 |
-| widget | window\_manager\_t* | 窗口管理器对象。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_init 函数
 -----------------------
 
@@ -200,73 +172,6 @@ widget_t* window_manager_init (window_manager_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回窗口管理器对象。 |
 | widget | window\_manager\_t* | 窗口管理器对象。 |
-#### window\_manager\_open\_window 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_open_window"> 打开窗口。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_open_window (widget_t* widget, widget_t* window);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| window | widget\_t* | 窗口对象。 |
-#### window\_manager\_paint 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_paint"> 绘制。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_paint (widget_t* widget, canvas_t* c);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| c | canvas\_t* | 画布。 |
-#### window\_manager\_resize 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_manager_t_window_manager_resize"> 调整窗口管理器的大小。
-
-
-
-* 函数原型：
-
-```
-ret_t window_manager_resize (widget_t* widget, wh_t w, wh_t h);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 窗口管理器对象。 |
-| w | wh\_t | 宽度 |
-| h | wh\_t | 高度 |
 #### window\_manager\_set 函数
 -----------------------
 

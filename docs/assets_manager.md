@@ -35,9 +35,9 @@ AWTK中的资源需要进行格式转换才能使用：
 * bin/resgen 二进制文件生成资源常量数组
 * bin/themegen XML主题转换成二进制的主题
 * bin/xml\_to\_ui XML的界面描述格式转换二进制的界面描述格式
-* update\_res.py 批量转换整个项目的资源
+* ./scripts/update\_res.py 批量转换整个项目的资源
 
-## 初始化
+## 一、初始化
 
 将资源生成常量数组直接编译到代码中时，其初始化过程为：
 
@@ -72,7 +72,7 @@ AWTK中的资源需要进行格式转换才能使用：
 
 > 参考：demos/assets.c
 
-## 使用方法
+## 二、使用方法
 
 * 加载图片图片
 
@@ -82,6 +82,14 @@ AWTK中的资源需要进行格式转换才能使用：
   bitmap_t img;
   image_manager_load(image_manager(), "earth", &img);
 ```
+
+> 不过通过更上层widget的函数去加载图片：
+
+```
+ bitmap_t bitmap;
+ widget_load_image(widget, "myimage", &bitmap);
+```
+
 
 * 使用UI数据
 
@@ -100,6 +108,65 @@ widget_t* win = window_open(name);
 一般在界面描述文件中指定style即可。
 
 
+## 三、资源的名称
 
+资源名称一般就是资源的文件名，不带文件扩展名。比如图片名为test.png，那资源名称就是test，如果因为某种原因，把test.png换成了test.jpg，对代码并无影响。
 
+对于图片和UI资源名称，AWTK还支持一种高级用法。想想下面几种情况：
 
+* 需要支持不同的分辨率。而在不同分辨率里，要使用不同的背景图片。
+* 需要支持竖屏和横屏。而有的界面自动排版不能满足需求，需要为竖屏和横屏个写一个XML文件。
+* 需要支持不同的语言。而在不同的语言里，有的图片是语言相关的。
+
+为了应对这些情况，AWTK提供了名称表达式：
+
+* 名称中可以带变量和表达式。变量用${xxx}表示，xxx将被替换成实际的值。
+* 可以指定多个名称，依次匹配，直到找到的为止。多个名称之间用逗号分隔。
+
+示例1：
+
+```
+  <style name="sky">
+    <normal bg_image="bg_${device_orientation}_1"/>
+  </style>
+```
+
+在竖屏下，相当于：
+
+```
+  <style name="sky">
+    <normal bg_image="bg_portrait_1"/>
+  </style>
+```
+
+在横屏下，相当于：
+
+```
+  <style name="sky">
+    <normal bg_image="bg_landscape_1"/>
+  </style>
+```
+
+示例2:
+
+```
+<image image="flag_${country},flag_none" x="c" y="m:-80" w="80" h="80"/>
+```
+
+在locale为zh\_CN时，相当于：
+
+```
+<image image="flag_CN,flag_none" x="c" y="m:-80" w="80" h="80"/>
+```
+
+依次查找flag\_CN和flag\_none两个图片。
+
+在locale为en\_US时，相当于：
+
+```
+<image image="flag_US,flag_none" x="c" y="m:-80" w="80" h="80"/>
+```
+
+依次查找flag\_US和flag\_none两个图片。
+
+> 变量名可以使用[system\_info中的成员变量](https://github.com/zlgopen/awtk/blob/master/docs/manual/system_info_t.md)

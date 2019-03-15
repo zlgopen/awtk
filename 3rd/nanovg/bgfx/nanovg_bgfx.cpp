@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "nanovg.h"
-
+#include "nanovg_bgfx.h"
 #include <bgfx/bgfx.h>
 #include <bgfx/embedded_shader.h>
 
@@ -37,8 +37,6 @@ BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4244); // warning C4244: '=' : conversion from
 
 #include "vs_nanovg_fill.bin.h"
 #include "fs_nanovg_fill.bin.h"
-
-#include "nanovg_bgfx.h"
 
 static const bgfx::EmbeddedShader s_embeddedShaders[] =
 {

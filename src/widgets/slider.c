@@ -46,94 +46,15 @@ static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   return RET_OK;
 }
 
-static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
+static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   rect_t r;
-  xy_t x = 0;
-  xy_t y = 0;
-  wh_t w = 0;
-  wh_t h = 0;
   bitmap_t img;
   color_t color;
-  float fvalue = 0;
   const char* image_name = NULL;
   style_t* style = widget->astyle;
-  slider_t* slider = SLIDER(widget);
   color_t trans = color_init(0, 0, 0, 0);
-  uint16_t value = slider->value - slider->min;
-  uint16_t range = slider->max - slider->min;
-  image_draw_type_t draw_type = IMAGE_DRAW_CENTER;
 
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(slider->max > slider->min, RET_BAD_PARAMS);
-  return_value_if_fail(slider->value >= slider->min && slider->value <= slider->max,
-                       RET_BAD_PARAMS);
-
-  fvalue = (float)value / (float)range;
-
-  if (slider->vertical) {
-    w = widget->w >> 1;
-    h = (widget->h - widget->w) * fvalue + w;
-    x = widget->w >> 2;
-    y = widget->h - h;
-  } else {
-    x = 0;
-    h = widget->h >> 1;
-    w = (widget->w - widget->h) * fvalue + h;
-    y = widget->h >> 2;
-  }
-
-  r = rect_init(x, y, w, h);
-  color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
-  if (color.rgba.a) {
-    canvas_set_fill_color(c, color);
-    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
-  }
-
-  image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
-  draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-    if (slider->vertical) {
-      r.x = 0;
-      r.w = widget->w;
-    } else {
-      r.y = 0;
-      r.h = widget->h;
-    }
-    canvas_draw_image_ex(c, &img, draw_type, &r);
-  }
-
-  if (slider->vertical) {
-    h = widget->h - h;
-    w = widget->w >> 1;
-    x = widget->w >> 2;
-    y = 0;
-  } else {
-    x = w;
-    w = widget->w - w;
-    h = widget->h >> 1;
-    y = widget->h >> 2;
-  }
-
-  r = rect_init(x, y, w, h);
-  color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-  if (color.rgba.a) {
-    canvas_set_fill_color(c, color);
-    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
-  }
-  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-    if (slider->vertical) {
-      r.x = 0;
-      r.w = widget->w;
-    } else {
-      r.y = 0;
-      r.h = widget->h;
-    }
-    canvas_draw_image_ex(c, &img, draw_type, &r);
-  }
 
   slider_get_dragger_rect(widget, &r);
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
@@ -141,9 +62,69 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   }
+
   image_name = style_get_str(style, STYLE_ID_ICON, NULL);
   if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
     canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
+  }
+
+  return RET_OK;
+}
+
+static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  style_t* style = widget->astyle;
+  slider_t* slider = SLIDER(widget);
+  uint16_t range = slider->max - slider->min;
+  uint16_t value = slider->value - slider->min;
+  float_t fvalue = (float_t)value / (float_t)range;
+  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  image_draw_type_t draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
+
+  if (slider->vertical) {
+    r.x = widget->w >> 2;
+    r.y = 0;
+    r.w = widget->w >> 1;
+    r.h = widget->h - (widget->h * fvalue);
+  } else {
+    r.y = widget->h >> 2;
+    r.h = widget->h >> 1;
+    r.w = widget->w - (widget->w * fvalue);
+    r.x = widget->w - r.w;
+  }
+
+  if (radius || bg_image != NULL) {
+    r = rect_init(0, 0, widget->w, widget->h);
+  }
+
+  widget_fill_bg_rect(widget, c, &r, draw_type);
+
+  if (slider->vertical) {
+    r.x = widget->w >> 2;
+    r.w = widget->w >> 1;
+    r.h = (widget->h * fvalue);
+    r.y = widget->h - r.h;
+  } else {
+    r.h = widget->h >> 1;
+    r.w = (widget->w * fvalue);
+    r.y = widget->h >> 2;
+    r.x = 0;
+  }
+  widget_fill_fg_rect(widget, c, &r, draw_type);
+
+  slider_paint_dragger(widget, c);
+
+  if (slider->vertical) {
+    r.x = widget->w >> 2;
+    r.w = widget->w >> 1;
+    r.h = (widget->h * fvalue);
+    r.y = widget->h - r.h;
+  } else {
+    r.h = widget->h >> 1;
+    r.w = (widget->w * fvalue);
+    r.y = widget->h >> 2;
+    r.x = 0;
   }
 
   return RET_OK;

@@ -24,6 +24,9 @@ AWTK中的API注释，除了作为API的文档之外，还充当以下重要的�
 
 * scriptable 该类可以被脚本化。
 * fake 该类是fake的，并不真实存在。
+* widget 表示该类是widget的子类。
+* window 表示该类是窗口的子类。
+* design 表示可以在UI设计器中使用。
 
 ### 二、类成员变量注释
 

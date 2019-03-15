@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class window_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget","window"]
  * 窗口。
  *
  * 缺省的应用程序窗口，占用除system\_bar\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。

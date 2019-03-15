@@ -253,10 +253,10 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->type = LCD_VGCANVAS;
   base->support_dirty_rect = FALSE;
 
-  info->lcd_w = base->w;
-  info->lcd_h = base->h;
-  info->lcd_type = base->type;
-  info->device_pixel_ratio = canvas->ratio;
+  system_info_set_lcd_w(info, base->w);
+  system_info_set_lcd_h(info, base->h);
+  system_info_set_lcd_type(info, base->type);
+  system_info_set_device_pixel_ratio(info, canvas->ratio);
 
   lcd.canvas = canvas;
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   dialog.c
  * Author: AWTK Develop Team
  * Brief:  dialog
@@ -230,7 +230,7 @@ ret_t dialog_toast(const char* text, uint32_t duration) {
   widget_on(dialog, EVT_POINTER_UP, on_ok_to_quit, dialog);
   widget_add_timer(dialog, on_timer_to_quit, duration);
 
-  return dialog_modal(dialog);
+  return (ret_t)dialog_modal(dialog);
 error:
   widget_destroy(label);
 
@@ -273,7 +273,7 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   if (dialog != NULL && ok != NULL) {
     widget_layout(dialog);
 
-    return dialog_modal(dialog);
+    return (ret_t)dialog_modal(dialog);
   } else {
     widget_destroy(dialog);
 
@@ -333,7 +333,7 @@ ret_t dialog_confirm(const char* text) {
   if (dialog != NULL && ok != NULL) {
     widget_layout(dialog);
 
-    return dialog_modal(dialog);
+    return (ret_t)dialog_modal(dialog);
   } else {
     widget_destroy(dialog);
 

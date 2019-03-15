@@ -121,6 +121,50 @@ object_t* object_ref(object_t* obj);
 object_t* object_create(const object_vtable_t* vt);
 
 /**
+ * @method object_get_type
+ * 获取对象的类型名称。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {const char*} 返回对象的类型名称。
+ */
+const char* object_get_type(object_t* obj);
+
+/**
+ * @method object_get_desc
+ * 获取对象的描述信息。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {const char*} 返回对象的描述信息。
+ */
+const char* object_get_desc(object_t* obj);
+
+/**
+ * @method object_get_size
+ * 获取对象占用内存的大小。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {uint32_t} 返回对象占用内存的大小。
+ */
+uint32_t object_get_size(object_t* obj);
+
+/**
+ * @method object_is_collection
+ * 判断对象是否是集合。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {bool_t} 返回TRUE表示是集合，否则不是。
+ */
+bool_t object_is_collection(object_t* obj);
+
+/**
  * @method object_set_name
  * 设置对象的名称。
  *

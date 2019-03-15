@@ -292,6 +292,12 @@ struct _widget_t {
    */
   uint16_t can_not_destroy;
   /**
+   * @property {bool_t} initializing
+   * @annotation ["readable"]
+   * 标识控件正在初始化。
+   */
+  uint8_t initializing : 1;
+  /**
    * @property {bool_t} destroying
    * @annotation ["readable"]
    * 标识控件正在被销毁。
@@ -1458,6 +1464,25 @@ ret_t widget_destroy(widget_t* widget);
 /*简化控件实现的函数*/
 
 /**
+ * @method widget_is_keyboard
+ * 判断当前控件是否是keyboard。
+ *
+ *> keyboard收到pointer事件时，不会让当前控件失去焦点。
+ *
+ * 在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。
+ *
+ * ```c
+ * widget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);
+ * ```
+ *
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+bool_t widget_is_keyboard(widget_t* widget);
+
+/**
  * @method widget_paint_helper
  * 帮助子控件实现自己的绘制函数。
  * @annotation ["private"]
@@ -1469,6 +1494,44 @@ ret_t widget_destroy(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text);
+
+/**
+ * @method widget_stroke_border_rect
+ * 根据控件的style绘制边框矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r);
+
+/**
+ * @method widget_fill_bg_rect
+ * 根据控件的style绘制背景矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+
+/**
+ * @method widget_fill_fg_rect
+ * 根据控件的style绘制前景矩形。
+ * @annotation ["private"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {rect_t*} r 矩形区域。
+ * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
 
 /**
  * @method widget_prepare_text_style

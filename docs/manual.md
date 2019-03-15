@@ -10,6 +10,9 @@
 
 * [widget](manual/widget_t.md) 所有控件、窗口和窗口管理器的基类。
 
+#### 窗口管理器
+* [window\_manager](manual/window_manager_t.md) 窗口管理器。
+
 #### 窗口
 * [window\_base](manual/window_base_t.md) 窗口基类。
 * [dialog](manual/dialog_t.md) 对话框。
@@ -181,6 +184,10 @@
 * [self\_layouter\_default](manual/self_layouter_default_t.md) 缺省的控件自身布局算法实现。
 
 * [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
+
+### 杂项
+
+* [system\_info](manual/system_info_t.md) 系统信息。
 
 ## 二、基本函数库
 

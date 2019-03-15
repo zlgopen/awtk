@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class switch_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 开关控件。
  *
  * switch\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于switch\_t控件。

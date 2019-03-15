@@ -262,10 +262,11 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd->h = h;
   lcd->ratio = 1;
   lcd->type = LCD_REGISTER;
-  info->lcd_w = lcd->w;
-  info->lcd_h = lcd->h;
-  info->lcd_type = lcd->type;
-  info->device_pixel_ratio = 1;
+
+  system_info_set_lcd_w(info, lcd->w);
+  system_info_set_lcd_h(info, lcd->h);
+  system_info_set_lcd_type(info, lcd->type);
+  system_info_set_device_pixel_ratio(info, 1);
 
   lcd->begin_frame = lcd_reg_begin_frame;
   lcd->draw_vline = lcd_reg_draw_vline;

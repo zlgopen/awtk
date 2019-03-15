@@ -30,6 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class candidates_t
  * @parent widget_t
+ * @annotation ["widget"]
  * 输入法候选字词控件。
  */
 typedef struct _candidates_t {

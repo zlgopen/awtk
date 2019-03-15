@@ -1,4 +1,5 @@
 ﻿#include "tkc/str.h"
+#include "tkc/object_default.h"
 #include "gtest/gtest.h"
 #include <string>
 
@@ -191,6 +192,63 @@ TEST(Str, unescap) {
   ASSERT_EQ(str_set(s, "\\\\a\\\\bc\\\\"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
   ASSERT_EQ(string(s->str), "\\a\\bc\\");
+
+  str_reset(s);
+}
+
+TEST(Str, expand_vars) {
+  str_t str;
+  object_t* vars = object_default_create();
+  object_set_prop_int(vars, "x", 100);
+  object_set_prop_int(vars, "y", 200);
+  object_set_prop_int(vars, "w", 300);
+  object_set_prop_int(vars, "h", 400);
+  object_set_prop_str(vars, "os", "mac");
+
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_expand_vars(s, "${x}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "100");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "${x},${y}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "100,200");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "img-${x},${y}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "img-100,200");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "img-${x},${y},${w},${h}-${os}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "img-100,200,300,400-mac");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "${$x+$y}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "300");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "${$os+$os}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "macmac");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "${($x+$y)+$os}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "300mac");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "${abc}", vars), RET_OK);
+  ASSERT_STREQ(s->str, "");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "123${abc}456", vars), RET_OK);
+  ASSERT_STREQ(s->str, "123456");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "123${}456", vars), RET_OK);
+  ASSERT_STREQ(s->str, "123456");
+
+  str_set(s, "");
+  ASSERT_EQ(str_expand_vars(s, "123${abc+$x}456", vars), RET_OK);
+  ASSERT_STREQ(s->str, "123456");
 
   str_reset(s);
 }

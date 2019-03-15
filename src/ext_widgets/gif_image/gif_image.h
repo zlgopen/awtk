@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class gif_image_t
  * @parent image_base_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * GIF图片控件。
  *
  * > 注意：GIF图片的尺寸大于控件大小时会自动缩小图片，但一般的嵌入式系统的硬件加速都不支持图片缩放，

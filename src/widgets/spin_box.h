@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class spin_box_t
  * @parent edit_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * spinbox控件。
  *
  * 一个特殊的数值编辑器，将edit\_t和button\_t进行组合，方便编辑数值。

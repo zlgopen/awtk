@@ -69,6 +69,28 @@ static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_it
   return RET_OK;
 }
 
+ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
+  return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
+
+  if (emitter->items) {
+    emitter_item_t* iter = emitter->items;
+    emitter_item_t* prev = emitter->items;
+
+    while (iter != NULL) {
+      emitter_item_t* next = iter->next;
+
+      if (iter == item) {
+        return emitter_remove(emitter, prev, iter);
+      }
+
+      prev = iter;
+      iter = next;
+    }
+  }
+
+  return RET_NOT_FOUND;
+}
+
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(emitter != NULL && e != NULL, RET_BAD_PARAMS);
@@ -96,7 +118,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
 
           emitter->curr_iter = NULL;
           emitter->remove_curr_iter = FALSE;
-          emitter_remove(emitter, prev, iter);
+          emitter_remove_item(emitter, iter);
           iter = next;
 
           continue;
@@ -286,3 +308,24 @@ emitter_t* emitter_cast(emitter_t* emitter) {
 
   return emitter;
 }
+
+emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index) {
+  uint32_t i = 0;
+  emitter_item_t* iter = NULL;
+  return_value_if_fail(emitter != NULL && index < emitter_size(emitter), NULL);
+
+  iter = emitter->items;
+  for (i = 0; i < index && iter != NULL; i++) {
+    iter = iter->next;
+  }
+
+  return iter;
+}
+
+ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type) {
+  event_t e =  event_init(type, emitter);
+  return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
+
+  return emitter_dispatch(emitter, &e);
+}
+

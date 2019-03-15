@@ -1,0 +1,5 @@
+<window anim_hint="htranslate" text="Portrait">
+  <slide_view x="0" y="0" w="100%" h="100%" vertical="true">
+    <?include filename="slide_view.inc" ?>
+  </slide_view>
+</window>

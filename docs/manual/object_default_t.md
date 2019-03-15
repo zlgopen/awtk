@@ -16,6 +16,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> |  |
+| <a href="#object_default_t_object_default_create">object\_default\_create</a> |  |
 | <a href="#object_default_t_object_default_unref">object\_default\_unref</a> |  |
 ### 属性
 <p id="object_default_t_properties">
@@ -49,6 +50,31 @@ object_t* object_default_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | object\_t* | 返回object对象。 |
+#### object\_default\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_default_t_object_default_create">
+ 克隆对象。
+
+
+
+
+
+
+* 函数原型：
+
+```
+object_t* object_default_create (object_default_t* o);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回object对象。 |
+| o | object\_default\_t* | 被克隆的对象。 |
 #### object\_default\_unref 函数
 -----------------------
 

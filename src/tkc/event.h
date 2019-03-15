@@ -44,6 +44,16 @@ typedef enum _event_base_type_t {
    */
   EVT_PROP_CHANGED,
   /**
+   * @const EVT_ITEMS_WILL_CHANGE
+   * 即将增加和删除集合中的项目(event_t)。
+   */
+  EVT_ITEMS_WILL_CHANGE,
+  /**
+   * @const EVT_ITEMS_CHANGED
+   * 完成增加和删除集合中的项目(event_t)。
+   */
+  EVT_ITEMS_CHANGED,
+  /**
    * @const EVT_PROPS_CHANGED
    * 对象的属性改变的事件名(props_event_t)。
    */

@@ -26,109 +26,55 @@
 #include "base/image_manager.h"
 
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
-  xy_t x = 0;
-  xy_t y = 0;
-  wh_t w = 0;
-  wh_t h = 0;
   rect_t r;
-  color_t color;
-  bitmap_t img;
-  const char* image_name = NULL;
   style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
-  image_draw_type_t draw_type = IMAGE_DRAW_CENTER;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  image_draw_type_t draw_type = progress_bar->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
   if (progress_bar->vertical) {
-    x = 0;
-    y = 0;
-    w = widget->w;
-    h = (widget->h * (100 - progress_bar->value)) / 100;
+    r.x = 0;
+    r.y = 0;
+    r.w = widget->w;
+    r.h = widget->h - (widget->h * progress_bar->value) / 100;
   } else {
-    x = 0;
-    y = 0;
-    h = widget->h;
-    w = (widget->w * (100 - progress_bar->value)) / 100;
+    r.y = 0;
+    r.h = widget->h;
+    r.w = widget->w - (widget->w * progress_bar->value) / 100;
+    r.x = widget->w - r.w;
   }
 
-  r = rect_init(x, y, w, h);
-  color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-  if (color.rgba.a) {
-    canvas_set_fill_color(c, color);
-    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  if (radius || bg_image != NULL) {
+    r = rect_init(0, 0, widget->w, widget->h);
   }
 
-  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && widget_load_image(widget, image_name, &img) == RET_OK) {
-    if (progress_bar->vertical) {
-      r.h += r.w;
-    } else {
-      r.w += r.h;
-    }
-    canvas_draw_image_ex(c, &img, draw_type, &r);
-  }
+  widget_fill_bg_rect(widget, c, &r, draw_type);
 
   if (progress_bar->vertical) {
-    x = 0;
-    w = widget->w;
-    h = (widget->h * progress_bar->value) / 100;
-    y = widget->h - h;
+    r.x = 0;
+    r.w = widget->w;
+    r.h = (widget->h * progress_bar->value) / 100;
+    r.y = widget->h - r.h;
   } else {
-    h = widget->h;
-    w = (widget->w * progress_bar->value) / 100;
-    y = 0;
-    x = 0;
+    r.h = widget->h;
+    r.w = (widget->w * progress_bar->value) / 100;
+    r.y = 0;
+    r.x = 0;
+  }
+  widget_fill_fg_rect(widget, c, &r, draw_type);
+
+  if (progress_bar->show_text) {
+    char str[TK_NUM_MAX_LEN + 1];
+
+    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
+    widget_set_text_utf8(widget, str);
+
+    return widget_paint_helper(widget, c, NULL, NULL);
   }
 
-  r = rect_init(x, y, w, h);
-  color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
-  if (color.rgba.a) {
-    canvas_set_fill_color(c, color);
-    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
-  }
-
-  image_name = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
-  draw_type =
-      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_PATCH3_X);
-  if (image_name && widget_load_image(widget, image_name, &img) == RET_OK) {
-    canvas_draw_image_ex(c, &img, draw_type, &r);
-  }
-
-  color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
-  if (color.rgba.a) {
-    canvas_set_stroke_color(c, color);
-    canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
-  }
-
-  color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
-  if (progress_bar->show_text && color.rgba.a) {
-    uint32_t i = 0;
-    uint32_t len = 0;
-    char s[TK_NUM_MAX_LEN + 1];
-    wchar_t str[TK_NUM_MAX_LEN + 1];
-    uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
-
-    tk_itoa(s, sizeof(s), progress_bar->value);
-    len = strlen(s);
-    s[len] = '%';
-    s[len + 1] = '\0';
-
-    for (i = 0; s[i]; i++) {
-      str[i] = s[i];
-    }
-
-    str[i] = 0;
-    canvas_set_text_color(c, color);
-    canvas_set_font(c, font_name, font_size);
-    w = canvas_measure_text(c, str, i);
-    x = (widget->w - w) >> 1;
-    y = (widget->h - font_size) >> 1;
-    canvas_draw_text(c, str, i, x, y);
-  }
+  r = rect_init(0, 0, widget->w, widget->h);
+  widget_stroke_border_rect(widget, c, &r);
 
   return RET_OK;
 }

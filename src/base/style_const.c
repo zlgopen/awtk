@@ -25,11 +25,6 @@
 #include "base/widget.h"
 #include "base/style_const.h"
 
-typedef struct _style_const_t {
-  style_t style;
-  const uint8_t* data;
-} style_const_t;
-
 static ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
                                      theme_t** default_theme) {
   value_t v;

@@ -1,5 +1,5 @@
 <window closable="no" text="Desktop" anim_hint="htranslate">
-  <slide_view x="0" y="0" w="100%" h="100%">
+  <slide_view x="0" y="0" w="100%" h="100%" loop="true">
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button name="open:basic" text="Basic"/>
       <button name="open:button" text="Buttons"/>
@@ -34,6 +34,7 @@
       <button name="open:label" text="Label"/>
       <button name="open:dialogs" text="Dialogs"/>
       <button name="open:slide_menu" text="Slide Menu"/>
+      <button name="open:soft_keyboard" text="Custom Keyboard"/>
       <button name="open:vgcanvas" text="VG Canvas"/>
       <button name="open:linear_gradient" text="Linear Gradient"/>
       <button name="open:radial_gradient" text="Radial Gradient"/>

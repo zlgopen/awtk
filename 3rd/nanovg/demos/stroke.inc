@@ -1,3 +1,4 @@
+#include "nanovg.h"
 
 static void do_stroke(NVGcontext* vg, int32_t w, int32_t h) {
   nvgBeginFrame(vg, w, h, 1);

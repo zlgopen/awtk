@@ -37,7 +37,7 @@ typedef struct _text_selector_option_t {
 /**
  * @class text_selector_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 文本选择器控件，通常用于选择日期和时间等。
  *
  * > XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。

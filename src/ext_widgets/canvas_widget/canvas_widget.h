@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class canvas_widget_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 画布控件。
  *
  * 画布控件让开发者可以自己在控件上绘制需要的内容。

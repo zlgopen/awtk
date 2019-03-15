@@ -141,7 +141,7 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
     widget_update_style(widget);
   }
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
@@ -380,7 +380,13 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     }
   }
 
-  return darray_push(widget->children, child);
+  ENSURE(darray_push(widget->children, child) == RET_OK);
+
+  if (!(child->initializing) && widget_get_window(child) != NULL) {
+    widget_update_style_recursive(child);
+  }
+
+  return RET_OK;
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
@@ -695,48 +701,48 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   return RET_OK;
 }
 
-ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
-  rect_t dst;
+ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
+                       image_draw_type_t draw_type) {
   bitmap_t img;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
-  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, trans);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  const char* color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
+  const char* image_key = bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE;
+  const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
 
-  if (bg.rgba.a) {
-    canvas_set_fill_color(c, bg);
+  color_t color = style_get_color(style, color_key, trans);
+  const char* image_name = style_get_str(style, image_key, NULL);
+
+  if (color.rgba.a) {
+    canvas_set_fill_color(c, color);
     if (radius > 3) {
       vgcanvas_t* vg = canvas_get_vgcanvas(c);
       if (vg != NULL) {
-        vgcanvas_set_fill_color(vg, bg);
+        vgcanvas_set_fill_color(vg, color);
         vgcanvas_translate(vg, c->ox, c->oy);
-        vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+        vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
         vgcanvas_translate(vg, -c->ox, -c->oy);
         vgcanvas_fill(vg);
       } else {
-        canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+        canvas_fill_rect(c, r->x, r->y, r->w, r->h);
       }
     } else {
-      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
   }
 
   if (image_name != NULL) {
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
-      dst = rect_init(0, 0, widget->w, widget->h);
-      image_draw_type_t draw_type =
-          (image_draw_type_t)style_get_int(style, STYLE_ID_BG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
-      int32_t start_time = time_now_ms();
-      canvas_draw_image_ex(c, &img, draw_type, &dst);
-      dst.w = time_now_ms() - start_time;
+      draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
+      canvas_draw_image_ex(c, &img, draw_type, r);
     }
   }
 
   return RET_OK;
 }
 
-ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
@@ -744,8 +750,8 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
 
   if (bd.rgba.a) {
-    wh_t w = widget->w;
-    wh_t h = widget->h;
+    wh_t w = r->w;
+    wh_t h = r->h;
 
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
@@ -754,7 +760,7 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
         if (vg != NULL) {
           vgcanvas_set_stroke_color(vg, bd);
           vgcanvas_translate(vg, c->ox, c->oy);
-          vgcanvas_rounded_rect(vg, 0, 0, widget->w, widget->h, radius);
+          vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
           vgcanvas_translate(vg, -c->ox, -c->oy);
           vgcanvas_stroke(vg);
         } else {
@@ -780,6 +786,31 @@ ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
   }
 
   return RET_OK;
+}
+
+static ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  r = rect_init(0, 0, widget->w, widget->h);
+
+  return widget_fill_rect(widget, c, &r, TRUE, IMAGE_DRAW_CENTER);
+}
+
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+  return widget_fill_rect(widget, c, r, TRUE, draw_type);
+}
+
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+  return widget_fill_rect(widget, c, r, FALSE, draw_type);
+}
+
+static ret_t widget_draw_border(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  r = rect_init(0, 0, widget->w, widget->h);
+  return widget_stroke_border_rect(widget, c, &r);
 }
 
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
@@ -1254,7 +1285,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL && target->enable) {
-    if (!(target->vt->is_keyboard)) {
+    if (!(widget_is_keyboard(target))) {
       if (!target->focused) {
         event_t focus = event_init(EVT_FOCUS, target);
         if (widget->key_target) {
@@ -1579,6 +1610,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->sensitive = TRUE;
   widget->emitter = NULL;
   widget->children = NULL;
+  widget->initializing = TRUE;
   widget->state = WIDGET_STATE_NORMAL;
 
   if (parent) {
@@ -1599,6 +1631,8 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   }
 
   widget_invalidate_force(widget, NULL);
+
+  widget->initializing = FALSE;
 
   return widget;
 }
@@ -1633,11 +1667,13 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     value_set_wstr(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
-    value_set_str(v, widget->animation);
+    value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
     value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
     value_set_str(v, NULL);
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+    value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
       ret = widget->vt->get_prop_default_value(widget, name, v);
@@ -1765,11 +1801,18 @@ const char** widget_get_persistent_props(void) {
 static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char** properties) {
   if (properties != NULL) {
     value_t v;
+    value_t defval;
     uint32_t i = 0;
     for (i = 0; properties[i] != NULL; i++) {
       const char* prop = properties[i];
       if (widget_get_prop(widget, prop, &v) == RET_OK) {
-        widget_set_prop(clone, prop, &v);
+        if(widget_get_prop_default_value(widget, prop, &defval) == RET_OK) {
+          if(!value_equal(&v, &defval)) {
+            widget_set_prop(clone, prop, &v);
+          }
+        } else {
+          widget_set_prop(clone, prop, &v);
+        }
       }
     }
   }
@@ -1782,6 +1825,10 @@ static ret_t widget_copy(widget_t* clone, widget_t* widget) {
   clone->focused = widget->focused;
   widget_copy_props(clone, widget, s_widget_persistent_props);
   widget_copy_props(clone, widget, widget->vt->clone_properties);
+
+  if (widget->custom_props) {
+    clone->custom_props = object_default_clone(OBJECT_DEFAULT(widget->custom_props));
+  }
 
   return RET_OK;
 }
@@ -2008,4 +2055,19 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
   log_warn("%s is not instance of %s\n", widget->vt->type, vt->type);
   return TRUE;
 #endif /*WITH_WIDGET_TYPE_CHECK*/
+}
+
+bool_t widget_is_keyboard(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  if (widget->vt->is_keyboard) {
+    return TRUE;
+  }
+
+  if (widget_get_prop(widget, WIDGET_PROP_IS_KEYBOARD, &v) == RET_OK) {
+    return value_bool(&v);
+  }
+
+  return FALSE;
 }

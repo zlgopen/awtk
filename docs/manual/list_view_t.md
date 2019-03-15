@@ -136,7 +136,7 @@ ret_t list_view_set_auto_hide_scroll_bar (widget_t* widget, bool_t auto_hide_scr
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| auto\_hide\_scroll\_bar | bool\_t | 列表项的高度。 |
+| auto\_hide\_scroll\_bar | bool\_t | 是否自动隐藏滚动条。 |
 #### list\_view\_set\_default\_item\_height 函数
 -----------------------
 

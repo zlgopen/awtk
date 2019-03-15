@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class image_animation_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。
  *
  * 图片序列可以用sequence指定，也可以用start\_index和end\_index指定一个范围。

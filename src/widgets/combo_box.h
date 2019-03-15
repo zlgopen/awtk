@@ -35,7 +35,7 @@ typedef struct _combo_box_option_t {
 /**
  * @class combo_box_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 下拉列表控件。
  *
  * 点击右边的按钮，可弹出一个下拉列表，从中选择一项作为当前的值。

@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class check_button_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 勾选按钮控件(单选/多选)。
  *
  * check\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于check\_button\_t控件。

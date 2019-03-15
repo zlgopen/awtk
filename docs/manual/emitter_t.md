@@ -16,6 +16,7 @@
 | <a href="#emitter_t_emitter_destroy">emitter\_destroy</a> | 销毁。 |
 | <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。 |
 | <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
+| <a href="#emitter_t_emitter_dispatch_simple_event">emitter\_dispatch\_simple\_event</a> | 分发事件。 |
 | <a href="#emitter_t_emitter_enable">emitter\_enable</a> | 启用。 |
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
 | <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
@@ -171,6 +172,30 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 | 返回值 | ret\_t |  |
 | emitter | emitter\_t* | emitter对象。 |
 | e | event\_t* | 事件对象。 |
+#### emitter\_dispatch\_simple\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_dispatch_simple_event"> 分发事件。
+ > 对emitter_dispatch的包装，分发一个简单的事件。
+  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+
+
+
+* 函数原型：
+
+```
+ret_t emitter_dispatch_simple_event (emitter_t* emitter, uint32_t type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t |  |
+| emitter | emitter\_t* | emitter对象。 |
+| type | uint32\_t | 事件类型。 |
 #### emitter\_enable 函数
 -----------------------
 
