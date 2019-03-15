@@ -72,3 +72,30 @@ TEST(AssetsManager, clearCache) {
 
   assets_manager_destroy(rm);
 }
+
+TEST(AssetsManager, data) {
+  const asset_info_t* r = NULL;
+  assets_manager_t* rm = assets_manager();
+
+#ifdef WITH_FS_RES
+  r = assets_manager_ref(rm, ASSET_TYPE_DATA, "test");
+  ASSERT_EQ(r != NULL, true);
+  assets_manager_unref(rm, r);
+#else
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "test");
+  ASSERT_EQ(r != NULL, true);
+#endif/*WITH_FS_RES*/
+}
+
+TEST(AssetsManager, xml) {
+  const asset_info_t* r = NULL;
+  assets_manager_t* rm = assets_manager();
+#ifdef WITH_FS_RES
+  r = assets_manager_ref(rm, ASSET_TYPE_XML, "test");
+  ASSERT_EQ(r != NULL, true);
+  assets_manager_unref(rm, r);
+#else
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_XML, "test");
+  ASSERT_EQ(r != NULL, true);
+#endif/*WITH_FS_RES*/
+}

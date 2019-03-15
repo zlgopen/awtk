@@ -116,6 +116,8 @@
 #include "assets/inc/ui/tab_bottom_compact.data"
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
+#include "assets/inc/xml/test.data"
+#include "assets/inc/data/test.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -601,6 +603,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_left_n);
   assets_manager_add(rm, image_edit_clear_p);
   assets_manager_add(rm, image_battery_2);
+  assets_manager_add(rm, xml_test);
   assets_manager_add(rm, style_slide_menu);
   assets_manager_add(rm, style_digit_clock);
   assets_manager_add(rm, style_dialog_toast);
@@ -623,6 +626,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, style_dialog_warn);
   assets_manager_add(rm, font_default);
+  assets_manager_add(rm, data_test);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);
