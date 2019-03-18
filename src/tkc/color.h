@@ -207,7 +207,11 @@ color_t* color_cast(color_t* color);
  */
 ret_t color_destroy(color_t* c);
 
-const char* color_hex_str(color_t c, char str[8]);
+#define TK_COLOR_HEX_LEN 11
+#define TK_COLOR_RGBA_LEN 31
+
+const char* color_hex_str(color_t c, char str[TK_COLOR_HEX_LEN + 1]);
+const char* color_rgba_str(color_t c, char str[TK_COLOR_RGBA_LEN + 1]);
 
 END_C_DECLS
 

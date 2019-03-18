@@ -84,7 +84,7 @@ TEST(AssetsManager, data) {
 #else
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "test");
   ASSERT_EQ(r != NULL, true);
-#endif/*WITH_FS_RES*/
+#endif /*WITH_FS_RES*/
 }
 
 TEST(AssetsManager, xml) {
@@ -97,5 +97,5 @@ TEST(AssetsManager, xml) {
 #else
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_XML, "test");
   ASSERT_EQ(r != NULL, true);
-#endif/*WITH_FS_RES*/
+#endif /*WITH_FS_RES*/
 }

@@ -14,12 +14,6 @@ color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   return c;
 }
 
-const char* color_hex_str(color_t c, char str[8]) {
-  tk_snprintf(str, 8, "#%02X%02X%02X", (int)(c.rgba.r), (int)(c.rgba.g), (int)(c.rgba.b));
-
-  return str;
-}
-
 color_t* color_create(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   color_t* c = TKMEM_ZALLOC(color_t);
   return_value_if_fail(c != NULL, NULL);
@@ -65,4 +59,20 @@ color_t* color_cast(color_t* color) {
   return_value_if_fail(color != NULL, NULL);
 
   return color;
+}
+
+const char* color_hex_str(color_t c, char str[TK_COLOR_HEX_LEN + 1]) {
+  tk_snprintf(str, TK_COLOR_HEX_LEN, "#%02X%02X%02X", (int)(c.rgba.r), (int)(c.rgba.g),
+              (int)(c.rgba.b));
+
+  return str;
+}
+
+const char* color_rgba_str(color_t c, char str[TK_COLOR_RGBA_LEN + 1]) {
+  float a = c.rgba.a / 0xff;
+
+  tk_snprintf(str, TK_COLOR_RGBA_LEN, "rgba(%d,%d,%d,%1.1f)", (int)(c.rgba.r), (int)(c.rgba.g),
+              (int)(c.rgba.b), a);
+
+  return str;
 }

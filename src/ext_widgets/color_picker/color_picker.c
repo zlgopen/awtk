@@ -99,11 +99,11 @@ static ret_t color_picker_update_child(void* ctx, const void* iter) {
       value = v * 100;
       edit_set_int(child, value);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_NEW)) {
-      char hex[8];
+      char hex[TK_COLOR_HEX_LEN + 1];
       color_hex_str(color_picker->c, hex);
       widget_set_text_utf8(child, hex + 1);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_OLD)) {
-      char hex[8];
+      char hex[TK_COLOR_HEX_LEN + 1];
       color_hex_str(color_picker->init_c, hex);
       widget_set_text_utf8(child, hex + 1);
     }

@@ -70,7 +70,7 @@ typedef struct _color_picker_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 颜色。
    */
-  char value[8];
+  char value[TK_COLOR_HEX_LEN + 1];
 
   color_t c;
   color_t init_c;

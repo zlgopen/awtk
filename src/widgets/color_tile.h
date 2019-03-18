@@ -64,14 +64,14 @@ typedef struct _color_tile_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 背景颜色。
    */
-  char bg_color[8];
+  char bg_color[TK_COLOR_HEX_LEN + 1];
 
   /**
    * @property {const char*} border_color
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 边框颜色。
    */
-  char border_color[8];
+  char border_color[TK_COLOR_HEX_LEN + 1];
 
   color_t bg;
   color_t border;
