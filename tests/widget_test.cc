@@ -561,7 +561,6 @@ TEST(Widget, clone_custom_props) {
 }
 
 TEST(Widget, is_keyboard) {
-  widget_t* clone = NULL;
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* group = group_box_create(w, 1, 0, 10, 20);
 

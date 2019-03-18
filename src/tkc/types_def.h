@@ -177,7 +177,7 @@ typedef enum _ret_t {
 #endif /*PATH_SEP*/
 
 #if defined(NDEBUG) || defined(SYLIXOS)
-#define ENSURE(p) p
+#define ENSURE(p) (void)(p)
 #define goto_error_if_fail(p) \
   if (!(p)) {                 \
     goto error;               \
