@@ -383,13 +383,13 @@ const char* object_get_desc(object_t* obj) {
 }
 
 bool_t object_is_collection(object_t* obj) {
-  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+  return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
 
   return obj->vt->is_collection;
 }
 
 uint32_t object_get_size(object_t* obj) {
-  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+  return_value_if_fail(obj != NULL && obj->vt != NULL, 0);
 
   return obj->vt->size;
 }

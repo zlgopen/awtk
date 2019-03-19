@@ -1,4 +1,18 @@
 # 最新动态
+* 2019/03/19
+  * 增加window\_close\_force函数。
+  * 修改window\_manager\_close\_window多次关闭同一个窗口的问题。
+  * 增加RET\_ITEMS\_CHANGED。
+  * 修改EVAL\_MAX\_NAME\_LENGTH为32(以前为16，有些短)。
+  * 完善scroll\_bar\_set\_params。
+
+* 2019/03/18
+  * 增加color\_rgba\_str。
+  * tk\_atof和tk\_atoi等函数，使用系统自带实现。
+
+* 2019/03/15
+  * 完善资源脚本，支持data/xml格式。
+
 * 2019/03/14
   * 修改edit/widget支持自定义的软键盘。
   * 增加自定义的软键盘的示例和文档。

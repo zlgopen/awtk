@@ -323,9 +323,8 @@ emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index) {
 }
 
 ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type) {
-  event_t e =  event_init(type, emitter);
+  event_t e = event_init(type, emitter);
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
 
   return emitter_dispatch(emitter, &e);
 }
-

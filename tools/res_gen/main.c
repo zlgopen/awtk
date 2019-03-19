@@ -58,6 +58,8 @@ int main(int argc, char** argv) {
   } else if (end_with(in_filename, ".py")) {
     output_res_c_source(out_filename, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON, input_buff,
                         size);
+  } else if (end_with(in_filename, ".xml")) {
+    output_res_c_source(out_filename, ASSET_TYPE_XML, 0, input_buff, size);
   } else {
     output_res_c_source(out_filename, ASSET_TYPE_DATA, 0, input_buff, size);
   }

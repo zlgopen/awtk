@@ -52,6 +52,7 @@ def prepare():
   prepareOutputDir('ui')
   prepareOutputDir('scripts')
   prepareOutputDir('data')
+  prepareOutputDir('xml')
 
 def execCmd(cmd):
   print(cmd)
@@ -138,6 +139,22 @@ def gen_res_all_ui():
     bin=bin.replace('.xml', '.bin')
     xml_to_ui_bin(raw, bin)
 
+def gen_res_all_data():
+  for f in glob.glob(joinPath(INPUT_DIR, 'data/*.dat')):
+    inc=copy.copy(f);
+    raw=copy.copy(f);
+    inc=inc.replace('.dat', '.data')
+    inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    resgen(raw, inc)
+
+def gen_res_all_xml():
+  for f in glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')):
+    inc=copy.copy(f);
+    raw=copy.copy(f);
+    inc=inc.replace('.xml', '.data')
+    inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    resgen(raw, inc)
+
 def gen_res_all_font():
   for f in glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')):
     res=copy.copy(f);
@@ -173,6 +190,8 @@ def gen_res_all():
   gen_res_all_image()
   gen_res_all_ui()
   gen_res_all_style()
+  gen_res_all_data()
+  gen_res_all_xml()
   
 def writeResult(str):
   fd = os.open(ASSET_C, os.O_RDWR|os.O_CREAT|os.O_TRUNC)
@@ -212,8 +231,10 @@ def gen_res_c():
 
   result += '#ifndef WITH_FS_RES\n'
   files=glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
-    + glob.glob(joinPath(OUTPUT_DIR, 'styles/*.data')) \
-    + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) 
+    + glob.glob(joinPath(OUTPUT_DIR, 'styles/*.data'))  \
+    + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'xml/*.data')) \
+    + glob.glob(joinPath(OUTPUT_DIR, 'data/*.data')) 
 
   result += genIncludes(files);
 
@@ -335,6 +356,14 @@ def updateRes():
     prepare()
     gen_res_all_style()
     gen_res_c()
+  elif ACTION=='data':
+    prepare()
+    gen_res_all_data()
+    gen_res_c()
+  elif ACTION=='xml':
+    prepare()
+    gen_res_all_xml()
+    gen_res_c()
   elif ACTION=='pinyin':
     prepare()
     gen_gpinyin()
@@ -358,7 +387,7 @@ def showUsage():
   global DPI
   global ACTION
   global IMAGEGEN_OPTIONS
-  args=' action[clean|all|font|image|ui|style|string|script] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
+  args=' action[clean|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
   if len(sys.argv) == 1:
     print('=========================================================');
     print('Usage: '+sys.argv[0] + args)

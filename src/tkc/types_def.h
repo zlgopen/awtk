@@ -138,6 +138,11 @@ typedef enum _ret_t {
    */
   RET_OBJECT_CHANGED,
   /**
+   * @const RET_ITEMS_CHANGED
+   * 集合数目变化。
+   */
+  RET_ITEMS_CHANGED,
+  /**
    * @const RET_BAD_PARAMS
    * 无效参数。
    */
@@ -177,7 +182,7 @@ typedef enum _ret_t {
 #endif /*PATH_SEP*/
 
 #if defined(NDEBUG) || defined(SYLIXOS)
-#define ENSURE(p) p
+#define ENSURE(p) (void)(p)
 #define goto_error_if_fail(p) \
   if (!(p)) {                 \
     goto error;               \

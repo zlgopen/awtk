@@ -11,6 +11,7 @@ TEST(Utils, basic) {
   ASSERT_EQ(tk_atoi("100"), 100);
   ASSERT_EQ(tk_watoi(L"100"), 100);
   ASSERT_EQ(tk_atof("100"), 100);
+  ASSERT_EQ(tk_atof("1e2"), 100);
   ASSERT_EQ(tk_watof(L"100"), 100);
 
   ASSERT_EQ(strcmp(tk_itoa(str, sizeof(str), tk_atoi("100")), "100"), 0);

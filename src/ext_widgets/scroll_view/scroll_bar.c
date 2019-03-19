@@ -352,6 +352,10 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
   scroll_bar->virtual_size = virtual_size;
   scroll_bar->row = row;
 
+  if (scroll_bar->value >= virtual_size) {
+    scroll_bar->value = virtual_size - row;
+  }
+
   return RET_OK;
 }
 

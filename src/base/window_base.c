@@ -200,6 +200,12 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
   return widget;
 }
 
+ret_t window_close_force(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return window_manager_close_window_force(widget->parent, widget);
+}
+
 ret_t window_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

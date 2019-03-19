@@ -42,6 +42,15 @@ int tk_str2bool(const char* str) {
   return 1;
 }
 
+bool_t tk_atob(const char* str) {
+  if (str == NULL || *str == 'f' || *str == 'F') {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+#ifdef HAS_NO_LIBC
 static long tk_strtol_internal(const char* str, const char** end, int base) {
   int i = 0;
   long n = 0;
@@ -108,18 +117,6 @@ long tk_strtol(const char* str, const char** end, int base) {
   n = tk_strtol_internal(str, end, base);
 
   return neg ? -n : n;
-}
-
-int tk_atoi(const char* str) {
-  return tk_strtol(str, NULL, 10);
-}
-
-bool_t tk_atob(const char* str) {
-  if (str == NULL || *str == 'f' || *str == 'F') {
-    return FALSE;
-  }
-
-  return TRUE;
 }
 
 double tk_atof(const char* str) {
@@ -210,6 +207,32 @@ static const char* tk_itoa_simple(char* str, int len, int n, const char** end) {
 
 const char* tk_itoa(char* str, int len, int n) {
   return tk_itoa_simple(str, len, n, NULL);
+}
+
+#else
+double tk_atof(const char* str) {
+  return_value_if_fail(str != NULL, 0);
+
+  return atof(str);
+}
+
+long tk_strtol(const char* str, const char** end, int base) {
+  return_value_if_fail(str != NULL, 0);
+
+  return strtol(str, (char**)end, base);
+}
+
+const char* tk_itoa(char* str, int len, int n) {
+  return_value_if_fail(str != NULL, NULL);
+
+  tk_snprintf(str, len, "%d", n);
+
+  return str;
+}
+#endif /*HAS_NO_LIBC*/
+
+int tk_atoi(const char* str) {
+  return tk_strtol(str, NULL, 10);
 }
 
 const char* tk_ftoa(char* str, int len, double value) {

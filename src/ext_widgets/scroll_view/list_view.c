@@ -220,6 +220,15 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
 
       y = iter->y + iter->h;
     }
+
+    if ((SCROLL_BAR(scroll_bar)->value) >= y) {
+      int32_t offset = tk_max(0, (y - widget->h + item_height));
+      scroll_bar_set_value(scroll_bar, offset);
+      scroll_view_set_offset(WIDGET(scroll_view), 0, offset);
+    }
+  } else {
+    scroll_bar_set_value(scroll_bar, 0);
+    scroll_view_set_offset(WIDGET(scroll_view), 0, 0);
   }
 
   scroll_view_set_virtual_h(list_view->scroll_view, virtual_h);

@@ -6,7 +6,7 @@
 using std::string;
 
 TEST(Color, basic) {
-  char hex[8];
+  char hex[TK_COLOR_HEX_LEN + 1];
   const char* str = "#AABBCC";
   color_t c = color_parse(str);
   color_hex_str(c, hex);
@@ -50,4 +50,11 @@ TEST(Color, dynamic1) {
   ASSERT_EQ(color_a(c), 4);
 
   color_destroy(c);
+}
+
+TEST(Color, rgba) {
+  char str[TK_COLOR_RGBA_LEN + 1];
+  color_t c = color_init(1, 2, 3, 0xff);
+
+  ASSERT_STREQ(color_rgba_str(c, str), "rgba(1,2,3,1.0)");
 }
