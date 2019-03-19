@@ -138,6 +138,11 @@ typedef enum _ret_t {
    */
   RET_OBJECT_CHANGED,
   /**
+   * @const RET_ITEMS_CHANGED
+   * 集合数目变化。
+   */
+  RET_ITEMS_CHANGED,
+  /**
    * @const RET_BAD_PARAMS
    * 无效参数。
    */
