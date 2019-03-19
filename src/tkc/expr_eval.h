@@ -32,7 +32,7 @@
 BEGIN_C_DECLS
 
 #define EVAL_MAX_STACK_DEPTH 8
-#define EVAL_MAX_NAME_LENGTH 16
+#define EVAL_MAX_NAME_LENGTH 32
 
 typedef enum _ExprValueType { EXPR_VALUE_TYPE_NUMBER = 0, EXPR_VALUE_TYPE_STRING } ExprValueType;
 
