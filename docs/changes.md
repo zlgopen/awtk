@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/03/19
+  * 增加window\_close\_force函数。
+  * 修改window\_manager\_close\_window多次关闭同一个窗口的问题。
+
 * 2019/03/18
   * 增加color\_rgba\_str。
   * tk\_atof和tk\_atoi等函数，使用系统自带实现。

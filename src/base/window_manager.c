@@ -52,6 +52,16 @@ static bool_t is_popup(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
 
+static bool_t is_window(widget_t* widget) {
+  return widget != NULL && widget->vt != NULL && widget->vt->is_window;
+}
+
+static bool_t is_window_opened(widget_t* widget) {
+  int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+
+  return stage == WINDOW_STAGE_OPENED;
+}
+
 static ret_t wm_on_screen_saver_timer(const timer_info_t* info) {
   window_manager_t* wm = WINDOW_MANAGER(info->ctx);
   event_t e = event_init(EVT_SCREEN_SAVER, wm);
@@ -286,7 +296,11 @@ ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
 
 ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
-  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(is_window(window), RET_BAD_PARAMS);
+  return_value_if_fail(is_window_opened(window), RET_BAD_PARAMS);
+  return_value_if_fail(wm->pending_close_window != window, RET_BAD_PARAMS);
 
   window_manager_prepare_close_window(widget, window);
 
@@ -305,7 +319,11 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
 }
 
 ret_t window_manager_close_window_force(widget_t* widget, widget_t* window) {
-  return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(is_window(window), RET_BAD_PARAMS);
+  return_value_if_fail(wm->pending_close_window != window, RET_BAD_PARAMS);
 
   window_manager_prepare_close_window(widget, window);
   window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);

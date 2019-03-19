@@ -229,7 +229,7 @@ const char* tk_itoa(char* str, int len, int n) {
 
   return str;
 }
-#endif/*HAS_NO_LIBC*/
+#endif /*HAS_NO_LIBC*/
 
 int tk_atoi(const char* str) {
   return tk_strtol(str, NULL, 10);

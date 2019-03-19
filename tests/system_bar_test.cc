@@ -8,5 +8,5 @@ TEST(SystemBar, cast) {
   ASSERT_EQ(w, system_bar_cast(w));
   ASSERT_EQ(w, window_base_cast(w));
 
-  window_close(w);
+  window_close_force(w);
 }
