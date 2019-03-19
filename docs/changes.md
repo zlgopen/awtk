@@ -2,6 +2,9 @@
 * 2019/03/19
   * 增加window\_close\_force函数。
   * 修改window\_manager\_close\_window多次关闭同一个窗口的问题。
+  * 增加RET\_ITEMS\_CHANGED。
+  * 修改EVAL\_MAX\_NAME\_LENGTH为32(以前为16，有些短)。
+  * 完善scroll\_bar\_set\_params。
 
 * 2019/03/18
   * 增加color\_rgba\_str。
