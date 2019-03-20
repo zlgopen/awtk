@@ -51,3 +51,17 @@ TEST(Window, cast) {
   ASSERT_EQ(w, window_base_cast(w));
   widget_destroy(w);
 }
+
+TEST(Window, fullscreen) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(window_set_fullscreen(w, TRUE), RET_OK);
+
+  ASSERT_EQ(w->x, 0);
+  ASSERT_EQ(w->y, 0);
+  ASSERT_EQ(w->w, w->parent->w);
+  ASSERT_EQ(w->h, w->parent->h);
+  ASSERT_EQ(WINDOW(w)->fullscreen, TRUE);
+  ASSERT_EQ(WINDOW(w)->fullscreen, widget_get_prop_bool(w, WIDGET_PROP_FULLSCREEN, FALSE));
+
+  widget_destroy(w);
+}

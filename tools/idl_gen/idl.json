@@ -1,24 +1,32 @@
 [
   {
     "type": "enum",
-    "desc": " 应用程序类型。\r\n",
+    "desc": " 图标所在的位置。\r\n",
     "consts": [
       {
-        "desc": " 嵌入式或移动APP\r\n",
-        "name": "APP_MOBILE"
+        "desc": " 自动选择位置。\r\n",
+        "name": "ICON_AT_AUTO"
       },
       {
-        "desc": " 模拟器。\r\n",
-        "name": "APP_SIMULATOR"
+        "desc": " 水平左边，垂直居中。\r\n",
+        "name": "ICON_AT_LEFT"
       },
       {
-        "desc": " 桌面应用程序。\r\n",
-        "name": "APP_DESKTOP"
+        "desc": " 水平右边，垂直居中(not used now)。\r\n",
+        "name": "ICON_AT_RIGHT"
+      },
+      {
+        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
+        "name": "ICON_AT_TOP"
+      },
+      {
+        "desc": " 水平居中，垂直低部(not used now)。\r\n",
+        "name": "ICON_AT_BOTTOM"
       }
     ],
     "header": "base/types_def.h",
-    "name": "app_type_t",
-    "prefix": "APP_",
+    "name": "icon_at_type_t",
+    "prefix": "ICON_AT",
     "level": 1
   },
   {
@@ -121,6 +129,15 @@
       "scriptable": true,
       "fake": true
     },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 字体资源类型定义。\n\n",
+    "consts": [],
+    "header": "base/assets_manager.h",
+    "name": "asset_data_type_t",
+    "prefix": "ASSET_DATA_TYPE_",
     "level": 1
   },
   {
@@ -6294,41 +6311,33 @@
   },
   {
     "type": "enum",
-    "desc": " 图标所在的位置。\r\n",
-    "consts": [
-      {
-        "desc": " 自动选择位置。\r\n",
-        "name": "ICON_AT_AUTO"
-      },
-      {
-        "desc": " 水平左边，垂直居中。\r\n",
-        "name": "ICON_AT_LEFT"
-      },
-      {
-        "desc": " 水平右边，垂直居中(not used now)。\r\n",
-        "name": "ICON_AT_RIGHT"
-      },
-      {
-        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
-        "name": "ICON_AT_TOP"
-      },
-      {
-        "desc": " 水平居中，垂直低部(not used now)。\r\n",
-        "name": "ICON_AT_BOTTOM"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "icon_at_type_t",
-    "prefix": "ICON_AT",
-    "level": 1
-  },
-  {
-    "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 应用程序类型。\r\n",
+    "consts": [
+      {
+        "desc": " 嵌入式或移动APP\r\n",
+        "name": "APP_MOBILE"
+      },
+      {
+        "desc": " 模拟器。\r\n",
+        "name": "APP_SIMULATOR"
+      },
+      {
+        "desc": " 桌面应用程序。\r\n",
+        "name": "APP_DESKTOP"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "app_type_t",
+    "prefix": "APP_",
     "level": 1
   },
   {
@@ -9256,6 +9265,10 @@
       {
         "desc": " 窗口动画。\n\n",
         "name": "WIDGET_PROP_ANIM_HINT"
+      },
+      {
+        "desc": " 窗口设置为全部大小。\n\n",
+        "name": "WIDGET_PROP_FULLSCREEN"
       },
       {
         "desc": " 打开窗口动画。\n\n",
@@ -17110,6 +17123,10 @@
         "name": "RET_OBJECT_CHANGED"
       },
       {
+        "desc": " 集合数目变化。\r\n",
+        "name": "RET_ITEMS_CHANGED"
+      },
+      {
         "desc": " 无效参数。\r\n",
         "name": "RET_BAD_PARAMS"
       }
@@ -22807,16 +22824,40 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "fullscreen",
+            "desc": "是否全屏。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": " 设置为全屏窗口。\r\n\r\n>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。\r\n\r\n\r\n",
+        "name": "window_set_fullscreen",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "char*",
             "name": "name",
-            "desc": "window_base的名称。"
+            "desc": "window的名称。"
           }
         ],
         "annotation": {
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
+        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n\r\n",
         "name": "window_open",
         "return": {
           "type": "widget_t*",
@@ -22828,7 +22869,7 @@
           {
             "type": "char*",
             "name": "name",
-            "desc": "window_base的名称。"
+            "desc": "window的名称。"
           },
           {
             "type": "widget_t*",
@@ -22840,7 +22881,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
+        "desc": " 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
         "name": "window_open_and_close",
         "return": {
           "type": "widget_t*",
@@ -22852,7 +22893,7 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "window_base对象。"
+            "desc": "window对象。"
           }
         ],
         "annotation": {
@@ -22861,6 +22902,25 @@
         },
         "desc": " 关闭窗口。\r\n\r\n",
         "name": "window_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": " 立即无条件关闭窗口(无动画)。\r\n\r\n",
+        "name": "window_close_force",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -22887,7 +22947,21 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "fullscreen",
+        "desc": "\r\n 是否全屏(覆盖system_bar)。\r\n\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "widgets/window.h",
     "desc": " 窗口。\r\n\r\n 缺省的应用程序窗口，占用除system\\_bar\\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。\r\n\r\n window\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于window\\_t控件。\r\n\r\n 在xml中使用\"window\"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：\r\n\r\n ```xml\r\n <window theme=\"basic\" anim_hint=\"htranslate\">\r\n ...\r\n </window>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数window\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* window = window_create(NULL, 0, 0, 0, 0);\r\n ```\r\n\r\n > 无需指定父控件、坐标和大小，使用0即可。\r\n\r\n > 完整示例请参考：[window\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\r\n\r\n 可用通过style来设置窗口的风格，如背景颜色或图片等。如：\r\n\r\n ```xml\r\n <style name=\"bricks\">\r\n  <normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)\r\n",
     "name": "window_t",

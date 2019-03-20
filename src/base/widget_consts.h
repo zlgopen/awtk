@@ -246,6 +246,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ANIM_HINT "anim_hint"
 
 /**
+ * @const WIDGET_PROP_FULLSCREEN
+ * 窗口设置为全部大小。
+ */
+#define WIDGET_PROP_FULLSCREEN "fullscreen"
+
+/**
  * @const WIDGET_PROP_OPEN_ANIM_HINT
  * 打开窗口动画。
  */

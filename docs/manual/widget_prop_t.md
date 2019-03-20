@@ -42,6 +42,7 @@
 | WIDGET\_PROP\_SENSITIVE | 是否接受用户事件。 |
 | WIDGET\_PROP\_ANIMATION | 控件动画。 |
 | WIDGET\_PROP\_ANIM\_HINT | 窗口动画。 |
+| WIDGET\_PROP\_FULLSCREEN | 窗口设置为全部大小。 |
 | WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口动画。 |
 | WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口动画。 |
 | WIDGET\_PROP\_MIN | 最小值。 |

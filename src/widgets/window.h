@@ -72,6 +72,14 @@ BEGIN_C_DECLS
 typedef struct _window_t {
   window_base_t window;
 
+  /**
+   * @property {bool_t} fullscreen
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   *
+   * 是否全屏(覆盖system_bar)。
+   *
+   */
+  bool_t fullscreen;
 } window_t;
 
 /**
@@ -87,6 +95,20 @@ typedef struct _window_t {
  * @return {widget_t*} 对象。
  */
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method window_set_fullscreen
+ * 设置为全屏窗口。
+ *
+ *>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+ *
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {widget_t*} widget window对象。
+ * @param {bool_t} fullscreen 是否全屏。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen);
 
 /**
  * @method window_open
