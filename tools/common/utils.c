@@ -82,11 +82,24 @@ int unique(wchar_t* str, int size) {
   return d - str;
 }
 
+static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* prefix,
+                               const char* name) {
+  tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", prefix ? prefix : "", name);
+
+  char* p = strrchr(var_name, '.');
+  if (p != NULL) {
+    *p = '\0';
+  }
+
+  return var_name;
+}
+
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
                       uint32_t size) {
   uint32_t i = 0;
   FILE* fp = NULL;
   char str[TK_NAME_LEN + 1];
+  char var_name[2 * TK_NAME_LEN + 1];
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
   if (name == NULL) {
@@ -94,9 +107,11 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
     name = str;
   }
 
+  log_debug("filename=%s prefix=%s name=%s size=%u\n", filename, prefix, name, size);
+
   fp = fopen(filename, "wb+");
   if (fp != NULL) {
-    fprintf(fp, "const unsigned char %s_%s[] = {", prefix ? prefix : "", name);
+    fprintf(fp, "const unsigned char %s[] = {", to_var_name(var_name, prefix, name));
     for (i = 0; i < size; i++) {
       if ((i % 20) == 0) {
         fprintf(fp, "\n");
@@ -113,8 +128,8 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
   return RET_FAIL;
 }
 
-ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
-                          uint32_t size) {
+ret_t output_res_c_source_ex(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
+                             uint32_t size, const char* name) {
   asset_info_t* res = NULL;
   uint32_t total_size = sizeof(asset_info_t) + size;
   const key_type_value_t* kv = asset_type_find_by_value(type);
@@ -129,11 +144,24 @@ ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype,
   res->refcount = 0;
   res->subtype = subtype;
   memcpy(res->data, buff, size);
-  filename_to_name(filename, res->name, sizeof(res->name));
+  if (name != NULL) {
+    tk_strncpy(res->name, name, sizeof(res->name) - 1);
+  } else {
+    if (type == ASSET_TYPE_DATA) {
+      filename_to_name_ex(filename, res->name, sizeof(res->name), FALSE);
+    } else {
+      filename_to_name(filename, res->name, sizeof(res->name));
+    }
+  }
   output_c_source(filename, kv->name, res->name, (uint8_t*)res, total_size);
   free(res);
 
   return RET_OK;
+}
+
+ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
+                          uint32_t size) {
+  return output_res_c_source_ex(filename, type, subtype, buff, size, NULL);
 }
 
 const char* skip_to(const char* p, char c) {

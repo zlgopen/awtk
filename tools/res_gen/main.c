@@ -61,7 +61,30 @@ int main(int argc, char** argv) {
   } else if (end_with(in_filename, ".xml")) {
     output_res_c_source(out_filename, ASSET_TYPE_XML, 0, input_buff, size);
   } else {
-    output_res_c_source(out_filename, ASSET_TYPE_DATA, 0, input_buff, size);
+    const char* name = strrchr(in_filename, '/');
+    if (name == NULL) {
+      name = strrchr(in_filename, '\\');
+    }
+    if (name != NULL) {
+      name++;
+    }
+
+    if (end_with(in_filename, ".txt")) {
+      output_res_c_source_ex(out_filename, ASSET_TYPE_DATA, ASSET_TYPE_DATA_TEXT, input_buff, size,
+                             name);
+    } else if (end_with(in_filename, ".json")) {
+      output_res_c_source_ex(out_filename, ASSET_TYPE_DATA, ASSET_TYPE_DATA_JSON, input_buff, size,
+                             name);
+    } else if (end_with(in_filename, ".bin")) {
+      output_res_c_source_ex(out_filename, ASSET_TYPE_DATA, ASSET_TYPE_DATA_BIN, input_buff, size,
+                             name);
+    } else if (end_with(in_filename, ".dat")) {
+      output_res_c_source_ex(out_filename, ASSET_TYPE_DATA, ASSET_TYPE_DATA_DAT, input_buff, size,
+                             name);
+    } else {
+      output_res_c_source_ex(out_filename, ASSET_TYPE_DATA, ASSET_TYPE_DATA_NONE, input_buff, size,
+                             name);
+    }
   }
 
   TKMEM_FREE(input_buff);

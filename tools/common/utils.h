@@ -37,6 +37,8 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
 
 ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
                           uint32_t size);
+ret_t output_res_c_source_ex(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
+                             uint32_t size, const char* name);
 
 const char* to_lower(char* str);
 const char* skip_to(const char* p, char c);

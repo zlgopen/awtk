@@ -21,6 +21,7 @@ INCLUDE_PATH = [TK_ROOT,
 
 env['CPPPATH'] = INCLUDE_PATH
 env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common'] + env['LIBS']
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),

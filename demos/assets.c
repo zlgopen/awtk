@@ -118,6 +118,8 @@
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
 #include "assets/inc/data/test.data"
+#include "assets/inc/data/app.data"
+#include "assets/inc/data/abc.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -627,6 +629,8 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_dialog_warn);
   assets_manager_add(rm, font_default);
   assets_manager_add(rm, data_test);
+  assets_manager_add(rm, data_app);
+  assets_manager_add(rm, data_abc);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);

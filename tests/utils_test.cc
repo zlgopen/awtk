@@ -174,6 +174,16 @@ TEST(Utils, filename_to_name) {
   ASSERT_EQ(string(name), string("test"));
 }
 
+TEST(Utils, filename_to_name_ex) {
+  char name[TK_NAME_LEN + 1];
+
+  filename_to_name_ex("test.png", name, TK_NAME_LEN, FALSE);
+  ASSERT_EQ(string(name), string("test.png"));
+
+  filename_to_name_ex("/a/test.png", name, TK_NAME_LEN, TRUE);
+  ASSERT_EQ(string(name), string("test"));
+}
+
 TEST(Utils, tk_skip_to_num) {
   ASSERT_EQ(tk_atoi(tk_skip_to_num("123")), 123);
   ASSERT_EQ(tk_atoi(tk_skip_to_num("abc123")), 123);
