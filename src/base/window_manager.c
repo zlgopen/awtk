@@ -766,6 +766,7 @@ ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_sav
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   wm->screen_saver_time = screen_saver_time;
+  window_manager_start_or_reset_screen_saver_timer(wm);
 
   return RET_OK;
 }
