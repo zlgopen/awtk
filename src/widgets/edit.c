@@ -414,24 +414,43 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
+static bool_t edit_is_number(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  input_type_t input_type = edit->limit.type;
+
+  return input_type == INPUT_UINT || input_type == INPUT_INT || input_type == INPUT_FLOAT ||
+         input_type == INPUT_UFLOAT || input_type == INPUT_HEX;
+}
+
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
+  edit_t* edit = EDIT(widget);
   uint32_t key = e->key;
   if (key == TK_KEY_BACKSPACE) {
     return edit_delete_prev_char(widget);
   } else if (key == TK_KEY_DELETE) {
     return edit_delete_next_char(widget);
   } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
-    edit_t* edit = EDIT(widget);
     if (key == TK_KEY_LEFT) {
       return edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
     } else {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
     }
-  } else if (key == TK_KEY_TAB || key == TK_KEY_DOWN) {
+  } else if (key == TK_KEY_TAB) {
     widget_focus_next(widget);
     return RET_OK;
+  } else if (key == TK_KEY_DOWN) {
+    if (!edit_is_number(widget)) {
+      widget_focus_next(widget);
+    } else {
+      edit_dec(widget);
+    }
+    return RET_OK;
   } else if (key == TK_KEY_UP) {
-    widget_focus_prev(widget);
+    if (!edit_is_number(widget)) {
+      widget_focus_prev(widget);
+    } else {
+      edit_inc(widget);
+    }
     return RET_OK;
   } else {
     if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
@@ -692,9 +711,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
-      if (evt->dy > 0) {
+      int32_t delta = evt->dy;
+      if (delta > 0) {
         edit_dec(edit);
-      } else if (evt->dy < 0) {
+      } else if (delta < 0) {
         edit_inc(edit);
       }
       break;
