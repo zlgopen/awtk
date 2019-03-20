@@ -2082,3 +2082,79 @@ bool_t widget_is_keyboard(widget_t* widget) {
 
   return FALSE;
 }
+
+static bool_t widget_is_focusable(widget_t* widget) {
+  value_t v;
+  value_set_bool(&v, FALSE);
+  widget_get_prop(widget, WIDGET_PROP_FOCUSABLE, &v);
+
+  return value_bool(&v);
+}
+
+static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
+  widget_t* widget = WIDGET(data);
+  darray_t* all_focusable = (darray_t*)ctx;
+
+  if (widget_is_focusable(widget)) {
+    darray_push(all_focusable, widget);
+  }
+
+  return RET_OK;
+}
+
+static ret_t widget_get_all_focusable_widgets_win(widget_t* widget, darray_t* all_focusable) {
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  widget_foreach(win, widget_on_visit_focusable, all_focusable);
+
+  return RET_OK;
+}
+
+static ret_t widget_move_focus(widget_t* widget, bool_t next) {
+  uint32_t i = 0;
+  uint32_t focus = 0;
+  darray_t all_focusable;
+  return_value_if_fail(widget != NULL && widget->focused, RET_BAD_PARAMS);
+  return_value_if_fail(darray_init(&all_focusable, 10, NULL, NULL) != NULL, RET_OOM);
+
+  widget_get_all_focusable_widgets_win(widget, &all_focusable);
+
+  if (all_focusable.size > 1) {
+    for (i = 0; i < all_focusable.size; i++) {
+      widget_t* iter = WIDGET(all_focusable.elms[i]);
+      if (iter == widget) {
+        if (next) {
+          if ((i + 1) == all_focusable.size) {
+            focus = 0;
+          } else {
+            focus = i + 1;
+          }
+        } else {
+          if (i == 0) {
+            focus = all_focusable.size - 1;
+          } else {
+            focus = i - 1;
+          }
+        }
+
+        iter = WIDGET(all_focusable.elms[focus]);
+        widget_set_prop_bool(widget, WIDGET_PROP_FOCUS, FALSE);
+        widget_set_prop_bool(iter, WIDGET_PROP_FOCUS, TRUE);
+        break;
+      }
+    }
+  }
+
+  darray_deinit(&all_focusable);
+
+  return RET_OK;
+}
+
+ret_t widget_focus_prev(widget_t* widget) {
+  return widget_move_focus(widget, FALSE);
+}
+
+ret_t widget_focus_next(widget_t* widget) {
+  return widget_move_focus(widget, TRUE);
+}

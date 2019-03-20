@@ -6,6 +6,7 @@
   * 修改关闭system\_bar时没有注销事件的BUG(感谢朝泽提供补丁)。
   * window支持fullscreen属性。
   * 修改edit缺省焦点的BUG。
+  * 支持用tab/up/down键切换编辑器焦点。
 
 * 2019/03/19
   * 增加window\_close\_force函数。

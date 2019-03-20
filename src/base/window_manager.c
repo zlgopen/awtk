@@ -597,9 +597,6 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
       widget_paint(iter, c);
       if (!has_fullscreen_win) {
         has_fullscreen_win = is_window_fullscreen(iter);
-        if (has_fullscreen_win) {
-          log_debug("%s is fullscreen\n", iter->name);
-        }
       }
     }
   }

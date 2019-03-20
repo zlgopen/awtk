@@ -164,3 +164,48 @@ TEST(Edit, focus) {
 
   widget_destroy(w);
 }
+
+TEST(Edit, focus_next) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 400);
+  widget_t* g = group_box_create(w, 0, 0, 400, 400);
+  widget_t* e1 = edit_create(g, 10, 20, 30, 40);
+  widget_t* e2 = edit_create(g, 10, 60, 30, 40);
+  widget_t* e3 = edit_create(g, 10, 90, 30, 40);
+
+  ASSERT_EQ(edit_set_focus(e1, TRUE), RET_OK);
+  ASSERT_EQ(g->key_target, e1);
+  ASSERT_EQ(widget_focus_next(e1), RET_OK);
+  ASSERT_EQ(g->key_target, e2);
+  ASSERT_EQ(widget_focus_next(e1), RET_BAD_PARAMS);
+
+  ASSERT_EQ(widget_focus_next(e2), RET_OK);
+  ASSERT_EQ(g->key_target, e3);
+
+  ASSERT_EQ(widget_focus_next(e3), RET_OK);
+  ASSERT_EQ(g->key_target, e1);
+
+  widget_destroy(w);
+}
+
+TEST(Edit, focus_prev) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 400);
+  widget_t* g = group_box_create(w, 0, 0, 400, 400);
+  widget_t* e1 = edit_create(g, 10, 20, 30, 40);
+  widget_t* e2 = edit_create(g, 10, 60, 30, 40);
+  widget_t* e3 = edit_create(g, 10, 90, 30, 40);
+
+  ASSERT_EQ(edit_set_focus(e1, TRUE), RET_OK);
+  ASSERT_EQ(g->key_target, e1);
+
+  ASSERT_EQ(widget_focus_prev(e1), RET_OK);
+  ASSERT_EQ(g->key_target, e3);
+  ASSERT_EQ(widget_focus_prev(e1), RET_BAD_PARAMS);
+
+  ASSERT_EQ(widget_focus_prev(e3), RET_OK);
+  ASSERT_EQ(g->key_target, e2);
+
+  ASSERT_EQ(widget_focus_prev(e2), RET_OK);
+  ASSERT_EQ(g->key_target, e1);
+
+  widget_destroy(w);
+}

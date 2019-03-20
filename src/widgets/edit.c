@@ -427,6 +427,12 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     } else {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
     }
+  } else if (key == TK_KEY_TAB || key == TK_KEY_DOWN) {
+    widget_focus_next(widget);
+    return RET_OK;
+  } else if (key == TK_KEY_UP) {
+    widget_focus_prev(widget);
+    return RET_OK;
   } else {
     if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
@@ -844,6 +850,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
+    value_set_bool(v, !(edit->readonly));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_wstr(v, widget->text.str);
     return RET_OK;
@@ -1225,6 +1234,7 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    NULL};
 TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .type = WIDGET_TYPE_EDIT,
+                        .is_focusable = TRUE,
                         .clone_properties = s_edit_properties,
                         .persistent_properties = s_edit_properties,
                         .parent = TK_PARENT_VTABLE(widget),

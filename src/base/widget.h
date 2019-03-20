@@ -83,6 +83,12 @@ struct _widget_vtable_t {
    */
   uint32_t is_window : 1;
   /**
+   * 是否是focusable。
+   *
+   *>如编辑器。
+   */
+  uint32_t is_focusable : 1;
+  /**
    * 是否是设计窗口。
    */
   uint32_t is_designing_window : 1;
@@ -1682,6 +1688,30 @@ ret_t widget_update_style(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_as_key_target(widget_t* widget);
+
+/**
+ * @method widget_focus_next
+ * 把焦点移动下一个控件。
+ *
+ *>widget必须是当前焦点控件。
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_focus_next(widget_t* widget);
+
+/**
+ * @method widget_focus_prev
+ * 把焦点移动前一个控件。
+ *
+ *>widget必须是当前焦点控件。
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_focus_prev(widget_t* widget);
 
 /**
  * @method widget_get_state_for_style
