@@ -140,10 +140,11 @@ def gen_res_all_ui():
     xml_to_ui_bin(raw, bin)
 
 def gen_res_all_data():
-  for f in glob.glob(joinPath(INPUT_DIR, 'data/*.dat')):
+  for f in glob.glob(joinPath(INPUT_DIR, 'data/*.*')):
     inc=copy.copy(f);
     raw=copy.copy(f);
-    inc=inc.replace('.dat', '.data')
+    _, extname = os.path.splitext(inc)
+    inc=inc.replace(extname, '.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
     resgen(raw, inc)
 
