@@ -6,6 +6,7 @@ BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
 env['LIBS'] = ['common'] + env['LIBS']
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 env.Program(os.path.join(BIN_DIR, 'resgen'), ["main.c"])
 
