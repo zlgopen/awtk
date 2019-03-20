@@ -1673,6 +1673,17 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
 ret_t widget_update_style(widget_t* widget);
 
 /**
+ * @method widget_set_as_key_target
+ * 递归的把父控件的key_target设置为自己。
+ *
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_as_key_target(widget_t* widget);
+
+/**
  * @method widget_get_state_for_style
  * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
  * @annotation ["private"]

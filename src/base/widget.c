@@ -2057,6 +2057,17 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 }
 
+ret_t widget_set_as_key_target(widget_t* widget) {
+  if (widget != NULL) {
+    if (widget->parent != NULL) {
+      widget->parent->key_target = widget;
+      widget_set_as_key_target(widget->parent);
+    }
+  }
+
+  return RET_OK;
+}
+
 bool_t widget_is_keyboard(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);

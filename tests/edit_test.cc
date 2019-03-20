@@ -1,10 +1,12 @@
-﻿#include "widgets/edit.h"
-#include "base/canvas.h"
+﻿#include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
+#include "widgets/edit.h"
+#include "widgets/window.h"
+#include "widgets/group_box.h"
 
 TEST(Edit, int) {
   value_t v1;
@@ -149,4 +151,16 @@ TEST(Edit, cast) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(b, edit_cast(b));
   widget_destroy(b);
+}
+
+TEST(Edit, focus) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 400);
+  widget_t* g = group_box_create(w, 0, 0, 400, 400);
+  widget_t* e = edit_create(g, 10, 20, 30, 40);
+
+  ASSERT_EQ(edit_set_focus(e, TRUE), RET_OK);
+  ASSERT_EQ(w->key_target, g);
+  ASSERT_EQ(g->key_target, e);
+
+  widget_destroy(w);
 }

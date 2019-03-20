@@ -52,7 +52,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
   if (widget->focused) {
     return RET_REPEAT;
   } else {
-    edit->timer_id = 0;
+    edit->timer_id = TK_INVALID_ID;
     return RET_REMOVE;
   }
 }
@@ -581,6 +581,22 @@ static ret_t edit_update_status(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_request_input_method_async(const idle_info_t* info) {
+  input_method_request(input_method(), WIDGET(info->ctx));
+
+  return RET_REMOVE;
+}
+
+static ret_t edit_request_input_method(widget_t* widget) {
+  if (widget_is_window_opened(widget)) {
+    input_method_request(input_method(), widget);
+  } else {
+    idle_add(edit_request_input_method_async, widget);
+  }
+
+  return RET_OK;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
@@ -600,11 +616,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_set_cursor_pos(widget, pos, pos);
         widget_grab(widget->parent, widget);
       }
-    }
-
-      if (edit->timer_id == 0) {
-        edit->timer_id = timer_add(edit_update_caret, widget, 600);
-      }
 
       if (widget->target == NULL) {
         input_method_request(input_method(), widget);
@@ -612,6 +623,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_update_status(widget);
 
       break;
+    }
     case EVT_POINTER_MOVE: {
       if (widget->parent && widget->parent->grab_widget == widget) {
         pointer_event_t evt = *(pointer_event_t*)e;
@@ -663,8 +675,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
+      if (edit->timer_id == TK_INVALID_ID) {
+        edit->timer_id = timer_add(edit_update_caret, widget, 600);
+      }
+
       if (widget->target == NULL) {
-        input_method_request(input_method(), widget);
+        edit_request_input_method(widget);
       }
       break;
     }
@@ -952,6 +968,7 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
 
   if (focus) {
     event_t e = event_init(EVT_FOCUS, widget);
+    widget_set_as_key_target(widget);
     widget_dispatch(widget, &e);
   } else {
     event_t e = event_init(EVT_BLUR, widget);
