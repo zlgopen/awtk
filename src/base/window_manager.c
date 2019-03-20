@@ -666,7 +666,6 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   widget_init(w, NULL, &s_window_manager_vtable, 0, 0, 0, 0);
 
-  window_manager_start_or_reset_screen_saver_timer(wm);
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
 
   return w;
