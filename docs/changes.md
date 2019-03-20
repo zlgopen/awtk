@@ -7,6 +7,7 @@
   * window支持fullscreen属性。
   * 修改edit缺省焦点的BUG。
   * 支持用tab/up/down键切换编辑器焦点。
+  * 修改wheel事件在windows下方向相反的问题。
 
 * 2019/03/19
   * 增加window\_close\_force函数。
