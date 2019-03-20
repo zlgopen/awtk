@@ -3,6 +3,7 @@
   * 支持编译Windows 32 位版本(感谢陈谭提供补丁)
   * 修改资源生成脚本，对于data数据，不限制文件名(DATA类型的资源需带扩展名才能访问)。
   * 修改scrollbar的style配置的BUG。
+  * 修改关闭system\_bar时没有注销事件的BUG(感谢朝泽提供补丁)。
 
 * 2019/03/19
   * 增加window\_close\_force函数。

@@ -85,6 +85,16 @@ ret_t system_bar_on_event(widget_t* widget, event_t* e) {
   return window_base_on_event(widget, e);
 }
 
+static ret_t system_bar_on_destroy(widget_t* widget) {
+  widget_t* wm = window_manager();
+
+  if (wm != NULL) {
+    emitter_off_by_ctx(wm->emitter, widget);
+  }
+
+  return window_base_on_destroy(widget);
+}
+
 TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .type = WIDGET_TYPE_SYSTEM_BAR,
                               .is_window = TRUE,
@@ -98,7 +108,7 @@ TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .on_paint_self = window_base_on_paint_self,
                               .on_paint_begin = window_base_on_paint_begin,
                               .on_paint_end = window_base_on_paint_end,
-                              .on_destroy = window_base_on_destroy};
+                              .on_destroy = system_bar_on_destroy};
 
 widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = window_base_create(parent, TK_REF_VTABLE(system_bar), x, y, w, h);
