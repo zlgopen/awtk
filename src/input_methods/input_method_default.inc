@@ -143,6 +143,10 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     im->win_delta_y += win->y + win->h - im->keyboard->y;
     win->y = im->keyboard->y - win->h;
     widget_invalidate_force(im->win, NULL);
+  } else if (p.y < 0) {
+    im->win->y += im->win_delta_y;
+    im->win_delta_y = 0;
+    widget_invalidate_force(im->win, NULL);
   }
 
   value_set_str(&v, open_anim_hint);
@@ -157,16 +161,22 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
 
 static ret_t input_method_default_show_keyboard(input_method_t* im) {
   value_t v;
+  point_t p = {0, 0};
   int32_t input_type = 0;
   bool_t open_anim = TRUE;
+  widget_t* widget = im->widget;
 
   value_set_int(&v, 0);
   widget_get_prop(im->widget, WIDGET_PROP_INPUT_TYPE, &v);
   input_type = value_int(&v);
 
+  widget_to_screen(widget, &p);
   if (im->keyboard != NULL) {
-    if (im->input_type == input_type) {
+    bool_t edit_is_in_view = (p.y >= 0) && ((p.y + widget->h) <= im->keyboard->y);
+
+    if (im->input_type == input_type && edit_is_in_view) {
       /*old edit and new edit has same input type, reuse old keyboard*/
+
       return RET_OK;
     } else {
       /*keyboard is open, close old one, disable open animation of new one*/
