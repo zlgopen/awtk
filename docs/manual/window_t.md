@@ -59,7 +59,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#window_t_fullscreen">fullscreen</a> | bool\_t |  |
+| <a href="#window_t_fullscreen">fullscreen</a> | bool\_t | 是否全屏。 |
 #### window\_cast 函数
 -----------------------
 
@@ -219,9 +219,9 @@ ret_t window_set_fullscreen (widget_t* widget, bool_t fullscreen);
 | fullscreen | bool\_t | 是否全屏。 |
 #### fullscreen 属性
 -----------------------
-> <p id="window_t_fullscreen">
- 是否全屏(覆盖system_bar)。
+> <p id="window_t_fullscreen"> 是否全屏。
 
+>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
 
 
 * 类型：bool\_t

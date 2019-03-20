@@ -75,9 +75,9 @@ typedef struct _window_t {
   /**
    * @property {bool_t} fullscreen
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否全屏。
    *
-   * 是否全屏(覆盖system_bar)。
-   *
+   *>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
    */
   bool_t fullscreen;
 } window_t;

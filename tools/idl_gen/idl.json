@@ -22950,7 +22950,7 @@
     "properties": [
       {
         "name": "fullscreen",
-        "desc": "\r\n 是否全屏(覆盖system_bar)。\r\n\r\n",
+        "desc": " 是否全屏。\r\n\r\n>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -27285,7 +27285,7 @@
     "properties": [
       {
         "name": "repeat",
-        "desc": " 重复触发EVT\\_CLICK事件的时间间隔。\r\n 为0则不重复触发EVT\\_CLICK事件。\r\n",
+        "desc": " 重复触发EVT\\_CLICK事件的时间间隔。\r\n\r\n 为0则不重复触发EVT\\_CLICK事件。\r\n",
         "type": "int32_t",
         "annotation": {
           "set_prop": true,
@@ -27298,7 +27298,7 @@
       },
       {
         "name": "enable_long_press",
-        "desc": "\r\n 是否启用长按事件，为true时才触发长按事件。\r\n 触发长按事件后不再触发点击事件。\r\n 缺省不启用。\r\n\r\n",
+        "desc": " 是否启用长按事件，为true时才触发长按事件。\r\n\r\n 触发长按事件后不再触发点击事件。\r\n 缺省不启用。\r\n\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
