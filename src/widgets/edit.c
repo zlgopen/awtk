@@ -442,14 +442,14 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (!edit_is_number(widget)) {
       widget_focus_next(widget);
     } else {
-      edit_dec(widget);
+      edit_dec(edit);
     }
     return RET_OK;
   } else if (key == TK_KEY_UP) {
     if (!edit_is_number(widget)) {
       widget_focus_prev(widget);
     } else {
-      edit_inc(widget);
+      edit_inc(edit);
     }
     return RET_OK;
   } else {
@@ -1102,19 +1102,21 @@ ret_t edit_inc(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      float_t step = edit->limit.u.f.step ? edit->limit.u.f.step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->limit.u.f.min);
         wstr_trim_float_zero(text);
       }
-      edit_add_float(edit, edit->limit.u.f.step);
+      edit_add_float(edit, step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      int32_t step = edit->limit.u.i.step ? edit->limit.u.i.step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->limit.u.i.min);
       }
-      edit_add_int(edit, edit->limit.u.i.step);
+      edit_add_int(edit, step);
       break;
     }
     default:
@@ -1132,19 +1134,21 @@ ret_t edit_dec(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      float_t step = edit->limit.u.f.step ? edit->limit.u.f.step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->limit.u.f.max);
         wstr_trim_float_zero(text);
       }
-      edit_add_float(edit, -edit->limit.u.f.step);
+      edit_add_float(edit, -step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      int32_t step = edit->limit.u.i.step ? edit->limit.u.i.step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->limit.u.i.max);
       }
-      edit_add_int(edit, -edit->limit.u.i.step);
+      edit_add_int(edit, -step);
       break;
     }
     default:
