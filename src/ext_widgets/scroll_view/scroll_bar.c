@@ -568,7 +568,6 @@ widget_t* scroll_bar_create_desktop(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   return_value_if_fail(widget != NULL, NULL);
 
   scroll_bar_create_children(widget);
-  widget_use_style(widget, "destkop");
 
   return widget;
 }

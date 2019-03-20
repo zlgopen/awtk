@@ -370,7 +370,7 @@
 </scroll_bar_m>
 
 <scroll_bar_d>
-  <style name="destkop" border_color="gray">
+  <style name="default" border_color="gray">
     <normal bg_color="#f0f0f0"/>
     <over bg_color="#f0f0f0" />
     <pressed bg_color="#f0f0f0" />
