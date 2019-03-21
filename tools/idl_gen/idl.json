@@ -1,24 +1,32 @@
 [
   {
     "type": "enum",
-    "desc": " 应用程序类型。\r\n",
+    "desc": " 图标所在的位置。\r\n",
     "consts": [
       {
-        "desc": " 嵌入式或移动APP\r\n",
-        "name": "APP_MOBILE"
+        "desc": " 自动选择位置。\r\n",
+        "name": "ICON_AT_AUTO"
       },
       {
-        "desc": " 模拟器。\r\n",
-        "name": "APP_SIMULATOR"
+        "desc": " 水平左边，垂直居中。\r\n",
+        "name": "ICON_AT_LEFT"
       },
       {
-        "desc": " 桌面应用程序。\r\n",
-        "name": "APP_DESKTOP"
+        "desc": " 水平右边，垂直居中(not used now)。\r\n",
+        "name": "ICON_AT_RIGHT"
+      },
+      {
+        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
+        "name": "ICON_AT_TOP"
+      },
+      {
+        "desc": " 水平居中，垂直低部(not used now)。\r\n",
+        "name": "ICON_AT_BOTTOM"
       }
     ],
     "header": "base/types_def.h",
-    "name": "app_type_t",
-    "prefix": "APP_",
+    "name": "icon_at_type_t",
+    "prefix": "ICON_AT",
     "level": 1
   },
   {
@@ -121,6 +129,15 @@
       "scriptable": true,
       "fake": true
     },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 字体资源类型定义。\n\n",
+    "consts": [],
+    "header": "base/assets_manager.h",
+    "name": "asset_data_type_t",
+    "prefix": "ASSET_DATA_TYPE_",
     "level": 1
   },
   {
@@ -4155,7 +4172,7 @@
             "desc": "需要绘制的区域。"
           },
           {
-            "type": "bool_t",
+            "type": "lcd_draw_mode_t",
             "name": "anim_mode",
             "desc": "动画模式，如果可能，直接画到显存而不是离线的framebuffer。"
           }
@@ -4375,17 +4392,17 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "x",
             "desc": "x坐标。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "y",
             "desc": "y坐标。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "h",
             "desc": "直线高度。"
           }
@@ -4406,17 +4423,17 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "x",
             "desc": "x坐标。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "y",
             "desc": "y坐标。"
           },
           {
-            "type": "xy_t*",
+            "type": "xy_t",
             "name": "w",
             "desc": "直线宽度。"
           }
@@ -4475,9 +4492,9 @@
         ],
         "annotation": {},
         "desc": " 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。\r\n\r\n",
-        "name": "lcd_get_point_color_t",
+        "name": "lcd_get_point_color",
         "return": {
-          "type": "ret_t",
+          "type": "color_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
@@ -6294,41 +6311,33 @@
   },
   {
     "type": "enum",
-    "desc": " 图标所在的位置。\r\n",
-    "consts": [
-      {
-        "desc": " 自动选择位置。\r\n",
-        "name": "ICON_AT_AUTO"
-      },
-      {
-        "desc": " 水平左边，垂直居中。\r\n",
-        "name": "ICON_AT_LEFT"
-      },
-      {
-        "desc": " 水平右边，垂直居中(not used now)。\r\n",
-        "name": "ICON_AT_RIGHT"
-      },
-      {
-        "desc": " 水平居中，垂直顶部(not used now)。\r\n",
-        "name": "ICON_AT_TOP"
-      },
-      {
-        "desc": " 水平居中，垂直低部(not used now)。\r\n",
-        "name": "ICON_AT_BOTTOM"
-      }
-    ],
-    "header": "base/types_def.h",
-    "name": "icon_at_type_t",
-    "prefix": "ICON_AT",
-    "level": 1
-  },
-  {
-    "type": "enum",
     "desc": " 字体资源类型定义。\n\n",
     "consts": [],
     "header": "base/assets_manager.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " 应用程序类型。\r\n",
+    "consts": [
+      {
+        "desc": " 嵌入式或移动APP\r\n",
+        "name": "APP_MOBILE"
+      },
+      {
+        "desc": " 模拟器。\r\n",
+        "name": "APP_SIMULATOR"
+      },
+      {
+        "desc": " 桌面应用程序。\r\n",
+        "name": "APP_DESKTOP"
+      }
+    ],
+    "header": "base/types_def.h",
+    "name": "app_type_t",
+    "prefix": "APP_",
     "level": 1
   },
   {
@@ -9134,6 +9143,10 @@
         "name": "WIDGET_PROP_H"
       },
       {
+        "desc": " slider中的bar的的宽度或高度。\n\n",
+        "name": "WIDGET_PROP_BAR_SIZE"
+      },
+      {
         "desc": " 不透明度。\n\n",
         "name": "WIDGET_PROP_OPACITY"
       },
@@ -9256,6 +9269,10 @@
       {
         "desc": " 窗口动画。\n\n",
         "name": "WIDGET_PROP_ANIM_HINT"
+      },
+      {
+        "desc": " 窗口设置为全部大小。\n\n",
+        "name": "WIDGET_PROP_FULLSCREEN"
       },
       {
         "desc": " 打开窗口动画。\n\n",
@@ -9520,6 +9537,10 @@
       {
         "desc": " 设置为输入焦点。\n\n",
         "name": "WIDGET_PROP_FOCUS"
+      },
+      {
+        "desc": " 是否支持焦点停留。\n\n",
+        "name": "WIDGET_PROP_FOCUSABLE"
       }
     ],
     "header": "base/widget_consts.h",
@@ -12298,6 +12319,60 @@
         },
         "desc": " 让控件根据自己当前状态更新style。\n\n\n",
         "name": "widget_update_style",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 递归的把父控件的key_target设置为自己。\n\n\n\n",
+        "name": "widget_set_as_key_target",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 把焦点移动下一个控件。\n\n>widget必须是当前焦点控件。\n\n\n",
+        "name": "widget_focus_next",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 把焦点移动前一个控件。\n\n>widget必须是当前焦点控件。\n\n\n",
+        "name": "widget_focus_prev",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -17110,6 +17185,10 @@
         "name": "RET_OBJECT_CHANGED"
       },
       {
+        "desc": " 集合数目变化。\r\n",
+        "name": "RET_ITEMS_CHANGED"
+      },
+      {
         "desc": " 无效参数。\r\n",
         "name": "RET_BAD_PARAMS"
       }
@@ -18844,6 +18923,345 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": " 创建progress_circle对象\r\n\r\n\r\n",
+        "name": "progress_circle_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "progress_circle对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n\r\n",
+        "name": "progress_circle_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "progress_circle对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置值。\r\n\r\n\r\n",
+        "name": "progress_circle_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max",
+            "desc": "最大值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置最大值。\r\n\r\n\r\n",
+        "name": "progress_circle_set_max",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "line_width",
+            "desc": "环线的厚度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置环线的厚度。\r\n\r\n\r\n",
+        "name": "progress_circle_set_line_width",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "start_angle",
+            "desc": "起始角度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置起始角度。\r\n\r\n\r\n",
+        "name": "progress_circle_set_start_angle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "unit",
+            "desc": "单位。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置单位。\r\n\r\n\r\n",
+        "name": "progress_circle_set_unit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_text",
+            "desc": "是否显示文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否显示文本。\r\n\r\n\r\n",
+        "name": "progress_circle_set_show_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "counter_clock_wise",
+            "desc": "是否为逆时针方向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否为逆时针方向。\r\n\r\n\r\n",
+        "name": "progress_circle_set_counter_clock_wise",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 值(缺省为0)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": " 最大值(缺省为100)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "start_angle",
+        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "line_width",
+        "desc": " 环线的厚度(缺省为8)。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "unit",
+        "desc": " 单元(缺省无)。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "counter_clock_wise",
+        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "progress_circle/progress_circle.h",
+    "desc": " 进度圆环控件。\r\n\r\n progress\\_circle\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_circle\\_t控件。\r\n\r\n 在xml中使用\"progress\\_circle\"标签创建进度圆环控件。如：\r\n\r\n ```xml\r\n  <progress_circle max=\"360\" show_text=\"true\" start_angle=\"90\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/progress_circle.xml)\r\n\r\n 在c代码中使用函数progress\\_circle\\_create创建进度圆环控件。如：\r\n\r\n ```c\r\n  progress_circle = progress_circle_create(win, 10, 10, 200, 200);\r\n  progress_circle_set_max(progress_circle, 360);\r\n  widget_set_value(progress_circle, 128);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_circle\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"green\" fg_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)\r\n\r\n",
+    "name": "progress_circle_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 创建rich_text对象\n\n\n",
         "name": "rich_text_create",
         "return": {
@@ -20487,8 +20905,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建slider对象\r\n\r\n",
-        "name": "slider_create",
+        "desc": " 创建row对象\r\n\r\n",
+        "name": "row_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -20499,223 +20917,26 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "slider对象。"
+            "desc": "row对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为slider对象(供脚本语言使用)。\r\n\r\n",
-        "name": "slider_cast",
+        "desc": " 转换为row对象(供脚本语言使用)。\r\n\r\n",
+        "name": "row_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "slider对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "value",
-            "desc": "值"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置滑块的值。\r\n\r\n",
-        "name": "slider_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "min",
-            "desc": "最小值"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置滑块的最小值。\r\n\r\n",
-        "name": "slider_set_min",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "max",
-            "desc": "最大值"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置滑块的最大值。\r\n\r\n",
-        "name": "slider_set_max",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "step",
-            "desc": "拖动的最小单位。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置滑块的拖动的最小单位。\r\n\r\n",
-        "name": "slider_set_step",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "vertical",
-            "desc": "是否为垂直方向。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置滑块的方向。\r\n\r\n",
-        "name": "slider_set_vertical",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "desc": "row对象。"
         }
       }
     ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGING",
-        "desc": " 值正在改变事件(拖动中)。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": " 值。\r\n",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "min",
-        "desc": " 最小值。\r\n",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "max",
-        "desc": " 最大值。\r\n",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "step",
-        "desc": " 拖动的最小单位。\r\n",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "vertical",
-        "desc": " 滑块的是否为垂直方向。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/slider.h",
-    "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)\r\n\r\n",
-    "name": "slider_t",
+    "events": [],
+    "properties": [],
+    "header": "widgets/row.h",
+    "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
+    "name": "row_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -22035,6 +22256,62 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "text",
+        "desc": " 软键盘上的action按钮显示的文本。\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": " 软键盘上的action按钮启用。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/input_method.h",
+    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
+    "name": "im_action_button_info_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "candidates",
+        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "candidates_nr",
+        "desc": " 可选的文本的个数。\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/input_method.h",
+    "desc": " 输入法请求显示候选字的事件。\n\n",
+    "name": "im_candidates_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -22376,6 +22653,17 @@
       "design": true,
       "widget": true
     },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "base/lcd_profile.h",
+    "desc": " 对现有LCD对象进行包装，实现对各个函数的时间统计，用于辅助定位性能瓶颈。\r\n\r\n",
+    "name": "lcd_profile_t",
+    "parent": "lcd_t",
     "level": 2
   },
   {
@@ -22807,16 +23095,40 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "fullscreen",
+            "desc": "是否全屏。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": " 设置为全屏窗口。\r\n\r\n>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。\r\n\r\n\r\n",
+        "name": "window_set_fullscreen",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "char*",
             "name": "name",
-            "desc": "window_base的名称。"
+            "desc": "window的名称。"
           }
         ],
         "annotation": {
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
+        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n\r\n",
         "name": "window_open",
         "return": {
           "type": "widget_t*",
@@ -22828,7 +23140,7 @@
           {
             "type": "char*",
             "name": "name",
-            "desc": "window_base的名称。"
+            "desc": "window的名称。"
           },
           {
             "type": "widget_t*",
@@ -22840,7 +23152,7 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
+        "desc": " 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。\r\n\r\n",
         "name": "window_open_and_close",
         "return": {
           "type": "widget_t*",
@@ -22852,7 +23164,7 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "window_base对象。"
+            "desc": "window对象。"
           }
         ],
         "annotation": {
@@ -22861,6 +23173,25 @@
         },
         "desc": " 关闭窗口。\r\n\r\n",
         "name": "window_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": " 立即无条件关闭窗口(无动画)。\r\n\r\n",
+        "name": "window_close_force",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -22887,7 +23218,21 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "fullscreen",
+        "desc": " 是否全屏。\r\n\r\n>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "widgets/window.h",
     "desc": " 窗口。\r\n\r\n 缺省的应用程序窗口，占用除system\\_bar\\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。\r\n\r\n window\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于window\\_t控件。\r\n\r\n 在xml中使用\"window\"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：\r\n\r\n ```xml\r\n <window theme=\"basic\" anim_hint=\"htranslate\">\r\n ...\r\n </window>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数window\\_create创建窗口。如：\r\n\r\n ```c\r\n  widget_t* window = window_create(NULL, 0, 0, 0, 0);\r\n ```\r\n\r\n > 无需指定父控件、坐标和大小，使用0即可。\r\n\r\n > 完整示例请参考：[window\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\r\n\r\n 可用通过style来设置窗口的风格，如背景颜色或图片等。如：\r\n\r\n ```xml\r\n <style name=\"bricks\">\r\n  <normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)\r\n",
     "name": "window_t",
@@ -22974,6 +23319,59 @@
     "header": "base/events.h",
     "desc": " 滚轮事件。\n\n",
     "name": "wheel_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转prop_change_event_t对象，主要给脚本语言使用。\n\n\n",
+        "name": "prop_change_event_cast",
+        "return": {
+          "type": "prop_change_event_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "name",
+        "desc": " 属性的名称。\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": " 属性的值。\n\n",
+        "type": "value_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/event.h",
+    "desc": " 对象属性变化事件。\n\n",
+    "name": "prop_change_event_t",
     "annotation": {
       "scriptable": true
     },
@@ -23188,123 +23586,6 @@
       {
         "params": [
           {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转prop_change_event_t对象，主要给脚本语言使用。\n\n\n",
-        "name": "prop_change_event_cast",
-        "return": {
-          "type": "prop_change_event_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "name",
-        "desc": " 属性的名称。\n\n",
-        "type": "char*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "value",
-        "desc": " 属性的值。\n\n",
-        "type": "value_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "tkc/event.h",
-    "desc": " 对象属性变化事件。\n\n",
-    "name": "prop_change_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "paint_event_cast",
-        "return": {
-          "type": "paint_event_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "c",
-        "desc": " canvas。\n\n",
-        "type": "canvas_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 绘制事件。\n\n",
-    "name": "paint_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "text",
-        "desc": " 提交的文本。\n\n",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/input_method.h",
-    "desc": " 输入法提交输入的文本事件。\n\n",
-    "name": "im_commit_event_t",
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "widget_t*",
             "name": "widget",
             "desc": "window_base对象。"
@@ -23429,377 +23710,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true,
-          "cast": true
-        },
-        "desc": " 获取全局window_manager对象\r\n\r\n",
-        "name": "window_manager",
-        "alias": "window_manager_instance",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "window_manager对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为window_manager对象(供脚本语言使用)。\r\n\r\n",
-        "name": "window_manager_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "window_manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "window_manager_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置缺省的窗口管理器。\r\n\r\n",
-        "name": "window_manager_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建窗口管理器。\r\n\r\n",
-        "name": "window_manager_create",
-        "return": {
-          "type": "window_manager_t*",
-          "desc": "返回窗口管理器对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "window_manager_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 初始化窗口管理器。\r\n\r\n",
-        "name": "window_manager_init",
-        "return": {
-          "type": "widget_t*",
-          "desc": "返回窗口管理器对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 获取最上面的主窗口。\r\n\r\n",
-        "name": "window_manager_get_top_main_window",
-        "return": {
-          "type": "widget_t*",
-          "desc": "返回窗口对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 调整窗口管理器的大小。\r\n\r\n",
-        "name": "window_manager_resize",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 打开窗口。\r\n\r\n",
-        "name": "window_manager_open_window",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 关闭窗口。\r\n\r\n",
-        "name": "window_manager_close_window",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 强制立即关闭窗口。\r\n\r\n> 本函数不会执行窗口动画。\r\n\r\n",
-        "name": "window_manager_close_window_force",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 绘制。\r\n\r\n> 仅由主循环调用。\r\n\r\n\r\n",
-        "name": "window_manager_paint",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": " 分发输入事件。\r\n\r\n> 一般仅由主循环调用，特殊情况也可以用来注入事件。\r\n\r\n\r\n",
-        "name": "window_manager_dispatch_input_event",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_fps",
-            "desc": "是否显示FPS。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否显示FPS。\r\n\r\n",
-        "name": "window_manager_set_show_fps",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "screen_saver_time",
-            "desc": "屏保时间(单位毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置屏保时间。\r\n\r\n",
-        "name": "window_manager_set_screen_saver_time",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "cursor",
-            "desc": "图片名称(从图片管理器中加载)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置鼠标指针。\r\n\r\n",
-        "name": "window_manager_set_cursor",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 请求关闭顶层窗口。\r\n\r\n",
-        "name": "window_manager_back",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 回到主窗口，关闭之上的全部窗口。\r\n\r\n",
-        "name": "window_manager_back_to_home",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "show_fps",
-        "desc": " 是否显示fps。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/window_manager.h",
-    "desc": " 窗口管理器。\r\n",
-    "name": "window_manager_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "widget_t*",
@@ -23831,8 +23741,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建row对象\r\n\r\n",
-        "name": "row_create",
+        "desc": " 创建progress_bar对象\r\n\r\n",
+        "name": "progress_bar_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -23843,26 +23753,146 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "row对象。"
+            "desc": "progress_bar对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为row对象(供脚本语言使用)。\r\n\r\n",
-        "name": "row_cast",
+        "desc": " 转换为progress_bar对象(供脚本语言使用)。\r\n\r\n",
+        "name": "progress_bar_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "row对象。"
+          "desc": "progress_bar对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "value",
+            "desc": "进度"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的进度。\r\n\r\n",
+        "name": "progress_bar_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "vertical",
+            "desc": "是否为垂直方向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的方向。\r\n\r\n",
+        "name": "progress_bar_set_vertical",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_text",
+            "desc": "是否显示文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的是否显示文本。\r\n\r\n",
+        "name": "progress_bar_set_show_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/row.h",
-    "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
-    "name": "row_t",
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 进度条的值[0-100]。\r\n",
+        "type": "uint8_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "vertical",
+        "desc": " 进度条的是否为垂直方向。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": " 是否显示文本。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/progress_bar.h",
+    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)\r\n\r\n",
+    "name": "progress_bar_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -24609,6 +24639,377 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true,
+          "cast": true
+        },
+        "desc": " 获取全局window_manager对象\r\n\r\n",
+        "name": "window_manager",
+        "alias": "window_manager_instance",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window_manager对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为window_manager对象(供脚本语言使用)。\r\n\r\n",
+        "name": "window_manager_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "window_manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_manager_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置缺省的窗口管理器。\r\n\r\n",
+        "name": "window_manager_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建窗口管理器。\r\n\r\n",
+        "name": "window_manager_create",
+        "return": {
+          "type": "window_manager_t*",
+          "desc": "返回窗口管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_manager_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": " 初始化窗口管理器。\r\n\r\n",
+        "name": "window_manager_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回窗口管理器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取最上面的主窗口。\r\n\r\n",
+        "name": "window_manager_get_top_main_window",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回窗口对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 调整窗口管理器的大小。\r\n\r\n",
+        "name": "window_manager_resize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 打开窗口。\r\n\r\n",
+        "name": "window_manager_open_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 关闭窗口。\r\n\r\n",
+        "name": "window_manager_close_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 强制立即关闭窗口。\r\n\r\n> 本函数不会执行窗口动画。\r\n\r\n",
+        "name": "window_manager_close_window_force",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 绘制。\r\n\r\n> 仅由主循环调用。\r\n\r\n\r\n",
+        "name": "window_manager_paint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          }
+        ],
+        "annotation": {
+          "private": true
+        },
+        "desc": " 分发输入事件。\r\n\r\n> 一般仅由主循环调用，特殊情况也可以用来注入事件。\r\n\r\n\r\n",
+        "name": "window_manager_dispatch_input_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_fps",
+            "desc": "是否显示FPS。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置是否显示FPS。\r\n\r\n",
+        "name": "window_manager_set_show_fps",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "screen_saver_time",
+            "desc": "屏保时间(单位毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置屏保时间。\r\n\r\n",
+        "name": "window_manager_set_screen_saver_time",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "cursor",
+            "desc": "图片名称(从图片管理器中加载)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置鼠标指针。\r\n\r\n",
+        "name": "window_manager_set_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 请求关闭顶层窗口。\r\n\r\n",
+        "name": "window_manager_back",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 回到主窗口，关闭之上的全部窗口。\r\n\r\n",
+        "name": "window_manager_back_to_home",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "show_fps",
+        "desc": " 是否显示fps。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/window_manager.h",
+    "desc": " 窗口管理器。\r\n",
+    "name": "window_manager_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "style_t*",
@@ -25183,29 +25584,45 @@
   },
   {
     "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
+    "methods": [
       {
-        "name": "text",
-        "desc": " 软键盘上的action按钮显示的文本。\n\n",
-        "type": "char*",
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
         "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "enable",
-        "desc": " 软键盘上的action按钮启用。\n\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "paint_event_cast",
+        "return": {
+          "type": "paint_event_t*",
+          "desc": "对象。"
         }
       }
     ],
-    "header": "base/input_method.h",
-    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
-    "name": "im_action_button_info_event_t",
+    "events": [],
+    "properties": [
+      {
+        "name": "c",
+        "desc": " canvas。\n\n",
+        "type": "canvas_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": " 绘制事件。\n\n",
+    "name": "paint_event_t",
+    "annotation": {
+      "scriptable": true
+    },
     "parent": "event_t",
     "level": 2
   },
@@ -26256,78 +26673,6 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": " 创建candidates对象\r\n\r\n",
-        "name": "candidates_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "candidates对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为candidates对象(供脚本语言使用)。\r\n\r\n",
-        "name": "candidates_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "candidates对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "keyboard/candidates.h",
-    "desc": " 输入法候选字词控件。\r\n",
-    "name": "candidates_t",
-    "parent": "widget_t",
-    "annotation": {
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "ui_binary_writer_t*",
             "name": "writer",
             "desc": "writer对象。"
@@ -26513,8 +26858,8 @@
         "annotation": {
           "constructor": true
         },
-        "desc": " 创建keyboard对象\r\n\r\n",
-        "name": "keyboard_create",
+        "desc": " 创建candidates对象\r\n\r\n",
+        "name": "candidates_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -26524,50 +26869,30 @@
         "params": [
           {
             "type": "widget_t*",
-            "name": "parent",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": " 关闭keyboard窗口。\r\n\r\n",
-        "name": "keyboard_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
             "name": "widget",
-            "desc": "keyboard对象。"
+            "desc": "candidates对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为keyboard对象(供脚本语言使用)。\r\n\r\n",
-        "name": "keyboard_cast",
+        "desc": " 转换为candidates对象(供脚本语言使用)。\r\n\r\n",
+        "name": "candidates_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "keyboard对象。"
+          "desc": "candidates对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "keyboard/keyboard.h",
-    "desc": " 软键盘。\r\n\r\n 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\r\n\r\n 这里介绍一下定制软键盘的方法：\r\n\r\n  编辑器输入类型和软键盘UI资源文件的对应关系:\r\n\r\n| 输入类型       | 软键盘UI资源文件|\r\n|----------------|:---------------:|\r\n| INPUT\\_PHONE    | kb\\_phone.xml    |\r\n| INPUT\\_INT      | kb\\_int.xml      |\r\n| INPUT\\_FLOAT    | kb\\_float.xml    |\r\n| INPUT\\_UINT     | kb\\_uint.xml     |\r\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\r\n| INPUT\\_HEX      | kb\\_hex.xml      |\r\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\r\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\r\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\r\n| 其它            | kb\\_default.xml  |\r\n\r\n keyboard中按钮子控件的名称有些特殊要求：\r\n\r\n|  名称          | 功能            |\r\n|----------------|:---------------:|\r\n| return         | 回车键          |\r\n| action         | 定制按钮        |\r\n| backspace      | 删除键          |\r\n| space          | 空格键          |\r\n| close          | 关闭软键盘      |\r\n| 前缀key:       | 键值            |\r\n| 前缀page:      | 切换到页面      |\r\n\r\n\r\n > 更多用法请参考：\r\n [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)\r\n\r\n",
-    "name": "keyboard_t",
+    "header": "keyboard/candidates.h",
+    "desc": " 输入法候选字词控件。\r\n",
+    "name": "candidates_t",
     "parent": "widget_t",
     "annotation": {
-      "design": true,
-      "widget": true,
-      "window": true
+      "widget": true
     },
     "level": 2
   },
@@ -26577,25 +26902,17 @@
     "events": [],
     "properties": [
       {
-        "name": "candidates",
-        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
+        "name": "text",
+        "desc": " 提交的文本。\n\n",
         "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "candidates_nr",
-        "desc": " 可选的文本的个数。\n\n",
-        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
       }
     ],
     "header": "base/input_method.h",
-    "desc": " 输入法请求显示候选字的事件。\n\n",
-    "name": "im_candidates_event_t",
+    "desc": " 输入法提交输入的文本事件。\n\n",
+    "name": "im_commit_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -26634,8 +26951,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建progress_circle对象\r\n\r\n\r\n",
-        "name": "progress_circle_create",
+        "desc": " 创建slider对象\r\n\r\n",
+        "name": "slider_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -26646,18 +26963,18 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "progress_circle对象。"
+            "desc": "slider对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为progress_circle对象(供脚本语言使用)。\r\n\r\n\r\n",
-        "name": "progress_circle_cast",
+        "desc": " 转换为slider对象(供脚本语言使用)。\r\n\r\n",
+        "name": "slider_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "progress_circle对象。"
+          "desc": "slider对象。"
         }
       },
       {
@@ -26668,16 +26985,16 @@
             "desc": "控件对象。"
           },
           {
-            "type": "float_t",
+            "type": "uint16_t",
             "name": "value",
-            "desc": "值。"
+            "desc": "值"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置值。\r\n\r\n\r\n",
-        "name": "progress_circle_set_value",
+        "desc": " 设置滑块的值。\r\n\r\n",
+        "name": "slider_set_value",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -26691,16 +27008,62 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "uint16_t",
+            "name": "min",
+            "desc": "最小值"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置滑块的最小值。\r\n\r\n",
+        "name": "slider_set_min",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint16_t",
             "name": "max",
-            "desc": "最大值。"
+            "desc": "最大值"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置最大值。\r\n\r\n\r\n",
-        "name": "progress_circle_set_max",
+        "desc": " 设置滑块的最大值。\r\n\r\n",
+        "name": "slider_set_max",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "step",
+            "desc": "拖动的最小单位。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置滑块的拖动的最小单位。\r\n\r\n",
+        "name": "slider_set_step",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -26715,61 +27078,15 @@
           },
           {
             "type": "uint32_t",
-            "name": "line_width",
-            "desc": "环线的厚度。"
+            "name": "bar_size",
+            "desc": "bar的宽度或高度。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置环线的厚度。\r\n\r\n\r\n",
-        "name": "progress_circle_set_line_width",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "start_angle",
-            "desc": "起始角度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置起始角度。\r\n\r\n\r\n",
-        "name": "progress_circle_set_start_angle",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "unit",
-            "desc": "单位。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置单位。\r\n\r\n\r\n",
-        "name": "progress_circle_set_unit",
+        "desc": " 设置bar的宽度或高度。\r\n\r\n",
+        "name": "slider_set_bar_size",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -26784,38 +27101,15 @@
           },
           {
             "type": "bool_t",
-            "name": "show_text",
-            "desc": "是否显示文本。"
+            "name": "vertical",
+            "desc": "是否为垂直方向。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置是否显示文本。\r\n\r\n\r\n",
-        "name": "progress_circle_set_show_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "counter_clock_wise",
-            "desc": "是否为逆时针方向。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置是否为逆时针方向。\r\n\r\n\r\n",
-        "name": "progress_circle_set_counter_clock_wise",
+        "desc": " 设置滑块的方向。\r\n\r\n",
+        "name": "slider_set_vertical",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -26829,6 +27123,11 @@
         "type": "event_t"
       },
       {
+        "name": "EVT_VALUE_CHANGING",
+        "desc": " 值正在改变事件(拖动中)。\r\n",
+        "type": "event_t"
+      },
+      {
         "name": "EVT_VALUE_CHANGED",
         "desc": " 值改变事件。\r\n",
         "type": "event_t"
@@ -26837,8 +27136,21 @@
     "properties": [
       {
         "name": "value",
-        "desc": " 值(缺省为0)。\r\n",
-        "type": "float_t",
+        "desc": " 值。\r\n",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "min",
+        "desc": " 最小值。\r\n",
+        "type": "uint16_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -26850,8 +27162,8 @@
       },
       {
         "name": "max",
-        "desc": " 最大值(缺省为100)。\r\n",
-        "type": "uint32_t",
+        "desc": " 最大值。\r\n",
+        "type": "uint16_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -26862,9 +27174,9 @@
         }
       },
       {
-        "name": "start_angle",
-        "desc": " 起始角度(单位为度，缺省-90)。\r\n",
-        "type": "int32_t",
+        "name": "step",
+        "desc": " 拖动的最小单位。\r\n",
+        "type": "uint16_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -26875,34 +27187,8 @@
         }
       },
       {
-        "name": "line_width",
-        "desc": " 环线的厚度(缺省为8)。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "unit",
-        "desc": " 单元(缺省无)。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "counter_clock_wise",
-        "desc": " 是否为逆时针方向(缺省为FALSE)。\r\n",
+        "name": "vertical",
+        "desc": " 滑块的是否为垂直方向。\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -26914,9 +27200,9 @@
         }
       },
       {
-        "name": "show_text",
-        "desc": " 是否显示文本(缺省为TRUE)。\r\n",
-        "type": "bool_t",
+        "name": "bar_size",
+        "desc": " bar的宽度或高度。\r\n",
+        "type": "uint32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -26927,9 +27213,9 @@
         }
       }
     ],
-    "header": "progress_circle/progress_circle.h",
-    "desc": " 进度圆环控件。\r\n\r\n progress\\_circle\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_circle\\_t控件。\r\n\r\n 在xml中使用\"progress\\_circle\"标签创建进度圆环控件。如：\r\n\r\n ```xml\r\n  <progress_circle max=\"360\" show_text=\"true\" start_angle=\"90\" />\r\n ```\r\n\r\n > 更多用法请参考：\r\n [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/progress_circle.xml)\r\n\r\n 在c代码中使用函数progress\\_circle\\_create创建进度圆环控件。如：\r\n\r\n ```c\r\n  progress_circle = progress_circle_create(win, 10, 10, 200, 200);\r\n  progress_circle_set_max(progress_circle, 360);\r\n  widget_set_value(progress_circle, 128);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_circle\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"green\" fg_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L467)\r\n\r\n",
-    "name": "progress_circle_t",
+    "header": "widgets/slider.h",
+    "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L179)\r\n\r\n",
+    "name": "slider_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -27211,7 +27497,7 @@
     "properties": [
       {
         "name": "repeat",
-        "desc": " 重复触发EVT\\_CLICK事件的时间间隔。\r\n 为0则不重复触发EVT\\_CLICK事件。\r\n",
+        "desc": " 重复触发EVT\\_CLICK事件的时间间隔。\r\n\r\n 为0则不重复触发EVT\\_CLICK事件。\r\n",
         "type": "int32_t",
         "annotation": {
           "set_prop": true,
@@ -27224,7 +27510,7 @@
       },
       {
         "name": "enable_long_press",
-        "desc": "\r\n 是否启用长按事件，为true时才触发长按事件。\r\n 触发长按事件后不再触发点击事件。\r\n 缺省不启用。\r\n\r\n",
+        "desc": " 是否启用长按事件，为true时才触发长按事件。\r\n\r\n 触发长按事件后不再触发点击事件。\r\n 缺省不启用。\r\n\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -29741,11 +30027,11 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建progress_bar对象\r\n\r\n",
-        "name": "progress_bar_create",
+        "desc": " 创建popup对象。\r\n\r\n",
+        "name": "popup_create",
         "return": {
           "type": "widget_t*",
-          "desc": "对象。"
+          "desc": "popup对象。"
         }
       },
       {
@@ -29753,18 +30039,18 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "progress_bar对象。"
+            "desc": "popup对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为progress_bar对象(供脚本语言使用)。\r\n\r\n",
-        "name": "progress_bar_cast",
+        "desc": " 转换为popup对象(供脚本语言使用)。\r\n\r\n",
+        "name": "popup_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "progress_bar对象。"
+          "desc": "popup对象。"
         }
       },
       {
@@ -29775,16 +30061,16 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint8_t",
-            "name": "value",
-            "desc": "进度"
+            "type": "bool_t",
+            "name": "close_when_click",
+            "desc": "点击时是否关闭窗口。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置进度条的进度。\r\n\r\n",
-        "name": "progress_bar_set_value",
+        "desc": " 设置点击时是否关闭窗口。\r\n\r\n",
+        "name": "popup_set_close_when_click",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -29799,73 +30085,26 @@
           },
           {
             "type": "bool_t",
-            "name": "vertical",
-            "desc": "是否为垂直方向。"
+            "name": "close_when_click_outside",
+            "desc": "点击窗口外部时是否关闭窗口。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置进度条的方向。\r\n\r\n",
-        "name": "progress_bar_set_vertical",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_text",
-            "desc": "是否显示文本。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置进度条的是否显示文本。\r\n\r\n",
-        "name": "progress_bar_set_show_text",
+        "desc": " 设置点击窗口外部时是否关闭窗口。\r\n\r\n",
+        "name": "popup_set_close_when_click_outside",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
+    "events": [],
     "properties": [
       {
-        "name": "value",
-        "desc": " 进度条的值[0-100]。\r\n",
-        "type": "uint8_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "vertical",
-        "desc": " 进度条的是否为垂直方向。\r\n",
+        "name": "close_when_click",
+        "desc": " 点击时是否关闭窗口。\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -29877,8 +30116,8 @@
         }
       },
       {
-        "name": "show_text",
-        "desc": " 是否显示文本。\r\n",
+        "name": "close_when_click_outside",
+        "desc": " 点击到窗口外时是否关闭窗口。\r\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -29890,14 +30129,15 @@
         }
       }
     ],
-    "header": "widgets/progress_bar.h",
-    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L183)\r\n\r\n",
-    "name": "progress_bar_t",
+    "header": "widgets/popup.h",
+    "desc": " 弹出窗口。\r\n\r\n 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\\_box的下列列表等功能。\r\n\r\n popup\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于popup\\_t控件。\r\n\r\n 在xml中使用\"popup\"标签创建弹出窗口。如：\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" x=\"c\" y=\"m\" w=\"80%\" h=\"80\" >\r\n <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[popup](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数popup\\_create创建弹出窗口。如：\r\n\r\n ```c\r\n widget_t* win = popup_create(NULL, 0, 0, w, h);\r\n popup_set_close_when_click_outside(win, TRUE);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk/src/widgets/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <popup>\r\n  <style name=\"default\" border_color=\"#a0a0a0\">\r\n    <normal bg_color=\"#f0f0f0\"/>\r\n  </style>\r\n </popup>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n",
+    "name": "popup_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
       "design": true,
-      "widget": true
+      "widget": true,
+      "window": true
     },
     "level": 2
   },
@@ -30229,14 +30469,31 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "scriptable": true
+          "constructor": true
         },
-        "desc": " 创建popup对象。\r\n\r\n",
-        "name": "popup_create",
+        "desc": " 创建keyboard对象\r\n\r\n",
+        "name": "keyboard_create",
         "return": {
           "type": "widget_t*",
-          "desc": "popup对象。"
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": " 关闭keyboard窗口。\r\n\r\n",
+        "name": "keyboard_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -30244,102 +30501,28 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "popup对象。"
+            "desc": "keyboard对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为popup对象(供脚本语言使用)。\r\n\r\n",
-        "name": "popup_cast",
+        "desc": " 转换为keyboard对象(供脚本语言使用)。\r\n\r\n",
+        "name": "keyboard_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "popup对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "close_when_click",
-            "desc": "点击时是否关闭窗口。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置点击时是否关闭窗口。\r\n\r\n",
-        "name": "popup_set_close_when_click",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "close_when_click_outside",
-            "desc": "点击窗口外部时是否关闭窗口。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置点击窗口外部时是否关闭窗口。\r\n\r\n",
-        "name": "popup_set_close_when_click_outside",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "desc": "keyboard对象。"
         }
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "close_when_click",
-        "desc": " 点击时是否关闭窗口。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "close_when_click_outside",
-        "desc": " 点击到窗口外时是否关闭窗口。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/popup.h",
-    "desc": " 弹出窗口。\r\n\r\n 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\\_box的下列列表等功能。\r\n\r\n popup\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于popup\\_t控件。\r\n\r\n 在xml中使用\"popup\"标签创建弹出窗口。如：\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" x=\"c\" y=\"m\" w=\"80%\" h=\"80\" >\r\n <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[popup](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数popup\\_create创建弹出窗口。如：\r\n\r\n ```c\r\n widget_t* win = popup_create(NULL, 0, 0, w, h);\r\n popup_set_close_when_click_outside(win, TRUE);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk/src/widgets/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <popup>\r\n  <style name=\"default\" border_color=\"#a0a0a0\">\r\n    <normal bg_color=\"#f0f0f0\"/>\r\n  </style>\r\n </popup>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n",
-    "name": "popup_t",
+    "properties": [],
+    "header": "keyboard/keyboard.h",
+    "desc": " 软键盘。\r\n\r\n 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\r\n\r\n 这里介绍一下定制软键盘的方法：\r\n\r\n  编辑器输入类型和软键盘UI资源文件的对应关系:\r\n\r\n| 输入类型       | 软键盘UI资源文件|\r\n|----------------|:---------------:|\r\n| INPUT\\_PHONE    | kb\\_phone.xml    |\r\n| INPUT\\_INT      | kb\\_int.xml      |\r\n| INPUT\\_FLOAT    | kb\\_float.xml    |\r\n| INPUT\\_UINT     | kb\\_uint.xml     |\r\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\r\n| INPUT\\_HEX      | kb\\_hex.xml      |\r\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\r\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\r\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\r\n| 其它            | kb\\_default.xml  |\r\n\r\n keyboard中按钮子控件的名称有些特殊要求：\r\n\r\n|  名称          | 功能            |\r\n|----------------|:---------------:|\r\n| return         | 回车键          |\r\n| action         | 定制按钮        |\r\n| backspace      | 删除键          |\r\n| space          | 空格键          |\r\n| close          | 关闭软键盘      |\r\n| 前缀key:       | 键值            |\r\n| 前缀page:      | 切换到页面      |\r\n\r\n\r\n > 更多用法请参考：\r\n [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)\r\n\r\n",
+    "name": "keyboard_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true,
       "design": true,
       "widget": true,
       "window": true
@@ -30462,99 +30645,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true,
-          "gc": true
-        },
-        "desc": "\n 创建对象。\n\n\n\n\n",
-        "name": "object_default_create",
-        "return": {
-          "type": "object_t*",
-          "desc": "返回object对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "object_default_t*",
-            "name": "o",
-            "desc": "被克隆的对象。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "\n 克隆对象。\n\n\n\n\n",
-        "name": "object_default_create",
-        "return": {
-          "type": "object_t*",
-          "desc": "返回object对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "object_t*",
-            "name": "obj",
-            "desc": "对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true,
-          "scriptable": true,
-          "gc": true
-        },
-        "desc": "\n for script gc\n\n\n\n\n",
-        "name": "object_default_unref",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "props_size",
-        "desc": " 属性个数。\n\n\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "props_capacity",
-        "desc": " 属性数组的容量。\n\n\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "props",
-        "desc": " 属性数组。\n\n\n",
-        "type": "named_value_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "tkc/object_default.h",
-    "desc": "\n 对象接口的缺省实现。\n\n 内部使用有序数组保存所有属性，可以快速查找指定名称的属性。\n\n\n",
-    "name": "object_default_t",
-    "parent": "object_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "widget_t*",
@@ -30658,6 +30748,136 @@
           }
         ],
         "annotation": {
+          "constructor": true
+        },
+        "desc": " 创建mutable_image对象\r\n\r\n",
+        "name": "mutable_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "mutable_image_prepare_image_t",
+            "name": "prepare_image",
+            "desc": "准备图片的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "prepare_image_ctx",
+            "desc": "prepare_image回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置prepare_image回调函数。\r\n\r\n prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\r\n 比如获取摄像头的预览图片，将其设置到image参数中。\r\n\r\n 注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。\r\n\r\n\r\n",
+        "name": "mutable_image_set_prepare_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "framebuffer宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "framebuffer高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "framebuffer的格式。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "framebuffer内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置framebuffer(当硬件支持多层合成时才用)。\r\n\r\n 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\r\n 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\r\n\r\n\r\n",
+        "name": "mutable_image_set_framebuffer",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": " 转换为mutable_image对象(供脚本语言使用)。\r\n\r\n\r\n",
+        "name": "mutable_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "mutable_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mutable_image/mutable_image.h",
+    "desc": "\r\n mutable图片控件。\r\n\r\n 像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\r\n\r\n 本控件辅助实现摄像头和视频的显示功能。\r\n\r\n mutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\r\n\r\n 在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\r\n\r\n ```xml\r\n <mutable_image w=\"100%\" h=\"100%\"/>\r\n ```\r\n\r\n >更多用法请参考：\r\n [mutable\r\n image](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mutable_image.xml)\r\n\r\n 在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = mutable_image_create(win, 10, 10, 200, 200);\r\n  mutable_image_set_prepare_image(image, get_camera_image, camera);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\r\n\r\n > 完整示例请参考：[mutable image demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\r\n\r\n 一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。\r\n\r\n",
+    "name": "mutable_image_t",
+    "parent": "image_base_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
           "constructor": true,
           "scriptable": true
         },
@@ -30705,75 +30925,92 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
+        "params": [],
         "annotation": {
           "constructor": true,
-          "scriptable": true
+          "scriptable": true,
+          "gc": true
         },
-        "desc": " 创建system_bar对象。\r\n\r\n",
-        "name": "system_bar_create",
+        "desc": "\n 创建对象。\n\n\n\n\n",
+        "name": "object_default_create",
         "return": {
-          "type": "widget_t*",
-          "desc": "system_bar对象。"
+          "type": "object_t*",
+          "desc": "返回object对象。"
         }
       },
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "system_bar对象。"
+            "type": "object_default_t*",
+            "name": "o",
+            "desc": "被克隆的对象。"
           }
         ],
         "annotation": {
-          "cast": true,
-          "scriptable": true
+          "constructor": true
         },
-        "desc": " 转换为system_bar对象(供脚本语言使用)。\r\n\r\n",
-        "name": "system_bar_cast",
+        "desc": "\n 克隆对象。\n\n\n\n\n",
+        "name": "object_default_create",
         "return": {
-          "type": "widget_t*",
-          "desc": "system_bar对象。"
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true,
+          "gc": true
+        },
+        "desc": "\n for script gc\n\n\n\n\n",
+        "name": "object_default_unref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "widgets/system_bar.h",
-    "desc": " system\\_bar窗口。\r\n\r\n system\\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。\r\n\r\n> system\\_bar窗口需要在打开第一个应用程序窗口之前打开。\r\n\r\n system_bar对两个子控件会做特殊处理：\r\n\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT\\_REQUEST\\_CLOSE\\_WINDOW消息。\r\n\r\nsystem\\_bar\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于system\\_bar\\_t控件。\r\n\r\n 在xml中使用\"system\\_bar\"标签创建system\\_bar窗口。如：\r\n\r\n ```xml\r\n <system_bar h=\"30\">\r\n <column x=\"0\" y=\"0\" w=\"-40\" h=\"100%\">\r\n   <label style=\"title\" x=\"10\" y=\"m\" w=\"55%\" h=\"100%\" name=\"title\"/>\r\n   <digit_clock style=\"time\" x=\"r\" y=\"m\" w=\"40%\" h=\"100%\" format=\"hh:mm\"/>\r\n </column>\r\n <button style=\"close\" x=\"r:5\" y=\"m\" w=\"26\" h=\"26\" name=\"close\" text=\"x\"/>\r\n </system_bar>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/system_bar.xml)\r\n\r\n 在c代码中使用函数system\\_bar\\_create创建system\\_bar窗口。如：\r\n\r\n ```c\r\n widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等等。如：\r\n\r\n ```xml\r\n <system_bar>\r\n  <style name=\"default\">\r\n    <normal bg_color=\"#a0a0a0\"/>\r\n  </style>\r\n </system_bar>\r\n ```\r\n\r\n> 更多用法请参考：\r\n [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/system_bar.xml)\r\n\r\n",
-    "name": "system_bar_t",
-    "parent": "window_base_t",
+    "properties": [
+      {
+        "name": "props_size",
+        "desc": " 属性个数。\n\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "props_capacity",
+        "desc": " 属性数组的容量。\n\n\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "props",
+        "desc": " 属性数组。\n\n\n",
+        "type": "named_value_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/object_default.h",
+    "desc": "\n 对象接口的缺省实现。\n\n 内部使用有序数组保存所有属性，可以快速查找指定名称的属性。\n\n\n",
+    "name": "object_default_t",
+    "parent": "object_t",
     "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true,
-      "window": true
+      "scriptable": true
     },
     "level": 3
   },
@@ -31363,13 +31600,14 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
-        "desc": " 创建mutable_image对象\r\n\r\n",
-        "name": "mutable_image_create",
+        "desc": " 创建system_bar对象。\r\n\r\n",
+        "name": "system_bar_create",
         "return": {
           "type": "widget_t*",
-          "desc": "对象。"
+          "desc": "system_bar对象。"
         }
       },
       {
@@ -31377,88 +31615,33 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "mutable_image对象。"
-          },
-          {
-            "type": "mutable_image_prepare_image_t",
-            "name": "prepare_image",
-            "desc": "准备图片的回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "prepare_image_ctx",
-            "desc": "prepare_image回调函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置prepare_image回调函数。\r\n\r\n prepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\r\n 比如获取摄像头的预览图片，将其设置到image参数中。\r\n\r\n 注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。\r\n\r\n\r\n",
-        "name": "mutable_image_set_prepare_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "mutable_image对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "w",
-            "desc": "framebuffer宽度。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "h",
-            "desc": "framebuffer高度。"
-          },
-          {
-            "type": "bitmap_format_t",
-            "name": "format",
-            "desc": "framebuffer的格式。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "framebuffer内存。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 设置framebuffer(当硬件支持多层合成时才用)。\r\n\r\n 有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\r\n 此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\r\n\r\n\r\n",
-        "name": "mutable_image_set_framebuffer",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "mutable_image对象。"
+            "desc": "system_bar对象。"
           }
         ],
         "annotation": {
-          "cast": true
+          "cast": true,
+          "scriptable": true
         },
-        "desc": " 转换为mutable_image对象(供脚本语言使用)。\r\n\r\n\r\n",
-        "name": "mutable_image_cast",
+        "desc": " 转换为system_bar对象(供脚本语言使用)。\r\n\r\n",
+        "name": "system_bar_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "mutable_image对象。"
+          "desc": "system_bar对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "mutable_image/mutable_image.h",
-    "desc": "\r\n mutable图片控件。\r\n\r\n 像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\r\n\r\n 本控件辅助实现摄像头和视频的显示功能。\r\n\r\n mutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\r\n\r\n 在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\r\n\r\n ```xml\r\n <mutable_image w=\"100%\" h=\"100%\"/>\r\n ```\r\n\r\n >更多用法请参考：\r\n [mutable\r\n image](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mutable_image.xml)\r\n\r\n 在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = mutable_image_create(win, 10, 10, 200, 200);\r\n  mutable_image_set_prepare_image(image, get_camera_image, camera);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\r\n\r\n > 完整示例请参考：[mutable image demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\r\n\r\n 一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。\r\n\r\n",
-    "name": "mutable_image_t",
-    "parent": "image_base_t",
+    "header": "widgets/system_bar.h",
+    "desc": " system\\_bar窗口。\r\n\r\n system\\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。\r\n\r\n> system\\_bar窗口需要在打开第一个应用程序窗口之前打开。\r\n\r\n system_bar对两个子控件会做特殊处理：\r\n\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT\\_REQUEST\\_CLOSE\\_WINDOW消息。\r\n\r\nsystem\\_bar\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于system\\_bar\\_t控件。\r\n\r\n 在xml中使用\"system\\_bar\"标签创建system\\_bar窗口。如：\r\n\r\n ```xml\r\n <system_bar h=\"30\">\r\n <column x=\"0\" y=\"0\" w=\"-40\" h=\"100%\">\r\n   <label style=\"title\" x=\"10\" y=\"m\" w=\"55%\" h=\"100%\" name=\"title\"/>\r\n   <digit_clock style=\"time\" x=\"r\" y=\"m\" w=\"40%\" h=\"100%\" format=\"hh:mm\"/>\r\n </column>\r\n <button style=\"close\" x=\"r:5\" y=\"m\" w=\"26\" h=\"26\" name=\"close\" text=\"x\"/>\r\n </system_bar>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/system_bar.xml)\r\n\r\n 在c代码中使用函数system\\_bar\\_create创建system\\_bar窗口。如：\r\n\r\n ```c\r\n widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等等。如：\r\n\r\n ```xml\r\n <system_bar>\r\n  <style name=\"default\">\r\n    <normal bg_color=\"#a0a0a0\"/>\r\n  </style>\r\n </system_bar>\r\n ```\r\n\r\n> 更多用法请参考：\r\n [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/system_bar.xml)\r\n\r\n",
+    "name": "system_bar_t",
+    "parent": "window_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
+    },
     "level": 3
   }
 ]

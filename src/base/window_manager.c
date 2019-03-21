@@ -34,7 +34,15 @@
 static ret_t window_manager_inc_fps(widget_t* widget);
 static ret_t window_manager_update_fps(widget_t* widget);
 static ret_t window_manager_do_open_window(widget_t* wm, widget_t* window);
-static ret_t window_manger_layout_child(widget_t* widget, widget_t* window);
+static ret_t window_manager_layout_child(widget_t* widget, widget_t* window);
+
+static bool_t is_window_fullscreen(widget_t* widget) {
+  value_t v;
+  value_set_bool(&v, FALSE);
+  widget_get_prop(widget, WIDGET_PROP_FULLSCREEN, &v);
+
+  return value_bool(&v);
+}
 
 static bool_t is_system_bar(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR);
@@ -242,7 +250,7 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
 
   ret = widget_add_child(widget, window);
   return_value_if_fail(ret == RET_OK, RET_FAIL);
-  window_manger_layout_child(widget, window);
+  window_manager_layout_child(widget, window);
 
   window->dirty = FALSE;
   widget->target = window;
@@ -572,6 +580,7 @@ widget_t* window_manager_get_top_main_window(widget_t* widget) {
 
 ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   int32_t start = 0;
+  bool_t has_fullscreen_win = FALSE;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
@@ -584,14 +593,20 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
-    widget_paint(iter, c);
-    if (i == start) {
-      if (wm->system_bar != NULL) {
-        widget_paint(wm->system_bar, c);
+    if (wm->system_bar != iter) {
+      widget_paint(iter, c);
+      if (!has_fullscreen_win) {
+        has_fullscreen_win = is_window_fullscreen(iter);
       }
     }
   }
   WIDGET_FOR_EACH_CHILD_END()
+
+  if (!has_fullscreen_win) {
+    if (wm->system_bar != NULL && wm->system_bar->visible) {
+      widget_paint(wm->system_bar, c);
+    }
+  }
 
   return RET_OK;
 }
@@ -666,13 +681,12 @@ widget_t* window_manager_init(window_manager_t* wm) {
 
   widget_init(w, NULL, &s_window_manager_vtable, 0, 0, 0, 0);
 
-  window_manager_start_or_reset_screen_saver_timer(wm);
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
 
   return w;
 }
 
-static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
+static ret_t window_manager_layout_child(widget_t* widget, widget_t* window) {
   xy_t x = window->x;
   xy_t y = window->y;
   wh_t w = window->w;
@@ -686,10 +700,17 @@ static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
   }
 
   if (is_normal_window(window)) {
-    x = client_r.x;
-    y = client_r.y;
-    w = client_r.w;
-    h = client_r.h;
+    if (is_window_fullscreen(window)) {
+      x = 0;
+      y = 0;
+      w = widget->w;
+      h = widget->h;
+    } else {
+      x = client_r.x;
+      y = client_r.y;
+      w = client_r.w;
+      h = client_r.h;
+    }
   } else if (is_system_bar(window)) {
     x = 0;
     y = 0;
@@ -705,11 +726,11 @@ static ret_t window_manger_layout_child(widget_t* widget, widget_t* window) {
   return RET_OK;
 }
 
-static ret_t window_manger_layout_children(widget_t* widget) {
+ret_t window_manager_layout_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  window_manger_layout_child(widget, iter);
+  window_manager_layout_child(widget, iter);
   WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
@@ -726,7 +747,7 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
   wm->last_dirty_rect = wm->dirty_rect;
   widget_move_resize(widget, 0, 0, w, h);
 
-  return window_manger_layout_children(widget);
+  return window_manager_layout_children(widget);
 }
 
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
@@ -766,6 +787,7 @@ ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_sav
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   wm->screen_saver_time = screen_saver_time;
+  window_manager_start_or_reset_screen_saver_timer(wm);
 
   return RET_OK;
 }

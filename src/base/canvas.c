@@ -28,6 +28,8 @@
 #include "base/wuxiaolin.inc"
 #include "base/system_info.h"
 
+#include "base/lcd_profile.h"
+
 static ret_t canvas_draw_fps(canvas_t* c);
 
 static rect_t* canvas_fix_rect(const rect_t* r, rect_t* o) {
@@ -71,7 +73,7 @@ canvas_t* canvas_init(canvas_t* c, lcd_t* lcd, font_manager_t* font_manager) {
 
   memset(c, 0x00, sizeof(canvas_t));
 
-  c->lcd = lcd;
+  c->lcd = lcd_profile_create(lcd);
   c->font_manager = font_manager;
 
   return c;
@@ -205,6 +207,7 @@ ret_t canvas_set_stroke_color(canvas_t* c, color_t color) {
 ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
+  c->global_alpha = alpha;
   lcd_set_global_alpha(c->lcd, alpha);
 
   return RET_OK;

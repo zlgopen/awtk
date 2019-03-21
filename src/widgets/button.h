@@ -82,6 +82,7 @@ typedef struct _button_t {
    * @property {int32_t} repeat
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 重复触发EVT\_CLICK事件的时间间隔。
+   *
    * 为0则不重复触发EVT\_CLICK事件。
    */
   int32_t repeat;
@@ -89,8 +90,8 @@ typedef struct _button_t {
   /**
    * @property {bool_t} enable_long_press
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
    * 是否启用长按事件，为true时才触发长按事件。
+   *
    * 触发长按事件后不再触发点击事件。
    * 缺省不启用。
    *

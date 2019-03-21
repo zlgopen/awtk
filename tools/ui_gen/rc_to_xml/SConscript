@@ -5,6 +5,7 @@ env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 
 env['LIBS'] = ['common'] + env['LIBS']
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 env.Program(os.path.join(BIN_DIR, 'rc_to_xml'), ["rc_to_xml.cc"])
 
 

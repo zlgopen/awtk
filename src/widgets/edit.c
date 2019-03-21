@@ -52,7 +52,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
   if (widget->focused) {
     return RET_REPEAT;
   } else {
-    edit->timer_id = 0;
+    edit->timer_id = TK_INVALID_ID;
     return RET_REMOVE;
   }
 }
@@ -414,19 +414,44 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
+static bool_t edit_is_number(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  input_type_t input_type = edit->limit.type;
+
+  return input_type == INPUT_UINT || input_type == INPUT_INT || input_type == INPUT_FLOAT ||
+         input_type == INPUT_UFLOAT || input_type == INPUT_HEX;
+}
+
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
+  edit_t* edit = EDIT(widget);
   uint32_t key = e->key;
   if (key == TK_KEY_BACKSPACE) {
     return edit_delete_prev_char(widget);
   } else if (key == TK_KEY_DELETE) {
     return edit_delete_next_char(widget);
   } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
-    edit_t* edit = EDIT(widget);
     if (key == TK_KEY_LEFT) {
       return edit_set_cursor_pos(widget, edit->cursor_pos - 1, edit->cursor_pos - 1);
     } else {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
     }
+  } else if (key == TK_KEY_TAB) {
+    widget_focus_next(widget);
+    return RET_OK;
+  } else if (key == TK_KEY_DOWN) {
+    if (!edit_is_number(widget)) {
+      widget_focus_next(widget);
+    } else {
+      edit_dec(edit);
+    }
+    return RET_OK;
+  } else if (key == TK_KEY_UP) {
+    if (!edit_is_number(widget)) {
+      widget_focus_prev(widget);
+    } else {
+      edit_inc(edit);
+    }
+    return RET_OK;
   } else {
     if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
       return edit_input_char(widget, (wchar_t)key);
@@ -581,6 +606,22 @@ static ret_t edit_update_status(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_request_input_method_async(const idle_info_t* info) {
+  input_method_request(input_method(), WIDGET(info->ctx));
+
+  return RET_REMOVE;
+}
+
+static ret_t edit_request_input_method(widget_t* widget) {
+  if (widget_is_window_opened(widget)) {
+    input_method_request(input_method(), widget);
+  } else {
+    idle_add(edit_request_input_method_async, widget);
+  }
+
+  return RET_OK;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
@@ -600,11 +641,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_set_cursor_pos(widget, pos, pos);
         widget_grab(widget->parent, widget);
       }
-    }
-
-      if (edit->timer_id == 0) {
-        edit->timer_id = timer_add(edit_update_caret, widget, 600);
-      }
 
       if (widget->target == NULL) {
         input_method_request(input_method(), widget);
@@ -612,6 +648,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_update_status(widget);
 
       break;
+    }
     case EVT_POINTER_MOVE: {
       if (widget->parent && widget->parent->grab_widget == widget) {
         pointer_event_t evt = *(pointer_event_t*)e;
@@ -663,16 +700,21 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
+      if (edit->timer_id == TK_INVALID_ID) {
+        edit->timer_id = timer_add(edit_update_caret, widget, 600);
+      }
+
       if (widget->target == NULL) {
-        input_method_request(input_method(), widget);
+        edit_request_input_method(widget);
       }
       break;
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
-      if (evt->dy > 0) {
+      int32_t delta = evt->dy;
+      if (delta > 0) {
         edit_dec(edit);
-      } else if (evt->dy < 0) {
+      } else if (delta < 0) {
         edit_inc(edit);
       }
       break;
@@ -828,6 +870,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
+    value_set_bool(v, !(edit->readonly));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_wstr(v, widget->text.str);
     return RET_OK;
@@ -952,6 +997,7 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
 
   if (focus) {
     event_t e = event_init(EVT_FOCUS, widget);
+    widget_set_as_key_target(widget);
     widget_dispatch(widget, &e);
   } else {
     event_t e = event_init(EVT_BLUR, widget);
@@ -1056,19 +1102,21 @@ ret_t edit_inc(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      float_t step = edit->limit.u.f.step ? edit->limit.u.f.step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->limit.u.f.min);
         wstr_trim_float_zero(text);
       }
-      edit_add_float(edit, edit->limit.u.f.step);
+      edit_add_float(edit, step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      int32_t step = edit->limit.u.i.step ? edit->limit.u.i.step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->limit.u.i.min);
       }
-      edit_add_int(edit, edit->limit.u.i.step);
+      edit_add_int(edit, step);
       break;
     }
     default:
@@ -1086,19 +1134,21 @@ ret_t edit_dec(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
+      float_t step = edit->limit.u.f.step ? edit->limit.u.f.step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->limit.u.f.max);
         wstr_trim_float_zero(text);
       }
-      edit_add_float(edit, -edit->limit.u.f.step);
+      edit_add_float(edit, -step);
       break;
     }
     case INPUT_INT:
     case INPUT_UINT: {
+      int32_t step = edit->limit.u.i.step ? edit->limit.u.i.step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->limit.u.i.max);
       }
-      edit_add_int(edit, -edit->limit.u.i.step);
+      edit_add_int(edit, -step);
       break;
     }
     default:
@@ -1208,6 +1258,7 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    NULL};
 TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .type = WIDGET_TYPE_EDIT,
+                        .is_focusable = TRUE,
                         .clone_properties = s_edit_properties,
                         .persistent_properties = s_edit_properties,
                         .parent = TK_PARENT_VTABLE(widget),

@@ -50,7 +50,7 @@ TEST(ScrollBar, to_xml) {
 
   ASSERT_EQ(widget_to_xml(w, &str), RET_OK);
   ASSERT_EQ(string(str.str), string("<scroll_bar_d x=\"10\" y=\"20\" w=\"30\" h=\"400\" "
-                                    "style=\"destkop\" animatable=\"true\">\n</scroll_bar_d>\n"));
+                                    "animatable=\"true\">\n</scroll_bar_d>\n"));
 
   str_reset(&str);
   widget_destroy(w);

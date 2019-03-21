@@ -11,6 +11,7 @@ TK_3RD_ROOT=os.environ['TK_3RD_ROOT'];
 OS_NAME=platform.system()
 
 env.Library(os.path.join(LIB_DIR, 'nanovg'), Glob('base/*.c'))
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 if NANOVG_BACKEND == 'AGG':

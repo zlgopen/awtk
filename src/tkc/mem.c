@@ -59,9 +59,12 @@ static void* tk_alloc_impl(uint32_t size) {
 
     s_mem_stat.used_bytes += head->size;
     s_mem_stat.used_block_nr++;
-  }
 
-  return (char*)ptr + sizeof(mem_block_t);
+    return (char*)ptr + sizeof(mem_block_t);
+  } else {
+    log_warn("out of memory: size=%u\n", size);
+    return NULL;
+  }
 }
 
 static void* tk_realloc_impl(void* ptr, uint32_t size) {

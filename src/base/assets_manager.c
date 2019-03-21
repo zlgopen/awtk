@@ -260,11 +260,7 @@ asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const
       break;
     }
     case ASSET_TYPE_DATA: {
-      if ((info = try_load_assets(res_root, name, ".bin", type, ASSET_TYPE_DATA)) != NULL) {
-        break;
-      }
-
-      if ((info = try_load_assets(res_root, name, ".dat", type, ASSET_TYPE_DATA)) != NULL) {
+      if ((info = try_load_assets(res_root, name, "", type, ASSET_TYPE_DATA)) != NULL) {
         break;
       }
       break;

@@ -12,6 +12,8 @@ if OS_NAME == 'Darwin':
   env['LIBS'] = ['m'];
 elif OS_NAME == 'Linux':
   env['LIBS'] = ['m'];
+  
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 env.Program(os.path.join(BIN_DIR, 'image_resize'), ["resize.c"])
 env.Program(os.path.join(BIN_DIR, 'image_info'), ["info.c"])

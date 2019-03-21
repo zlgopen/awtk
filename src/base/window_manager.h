@@ -262,6 +262,9 @@ ret_t window_manager_back_to_home(widget_t* widget);
 /*for compatible*/
 #define window_manager_request_close_top_window window_manager_back
 
+/*public for window*/
+ret_t window_manager_layout_children(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_WINDOW_MANAGER_H*/

@@ -1,4 +1,19 @@
 # 最新动态
+* 2019/03/21
+  * 增加lcd\_profile用于对绘制函数进行profile。
+  * data资源支持同文件名，不同扩展名。
+  * slider增加bar\_size属性。
+
+* 2019/03/20
+  * 支持编译Windows 32 位版本(感谢陈谭提供补丁)
+  * 修改资源生成脚本，对于data数据，不限制文件名(DATA类型的资源需带扩展名才能访问)。
+  * 修改scrollbar的style配置的BUG。
+  * 修改关闭system\_bar时没有注销事件的BUG(感谢朝泽提供补丁)。
+  * window支持fullscreen属性。
+  * 修改edit缺省焦点的BUG。
+  * 支持用tab/up/down键切换编辑器焦点。
+  * 修改wheel事件在windows下方向相反的问题。
+
 * 2019/03/19
   * 增加window\_close\_force函数。
   * 修改window\_manager\_close\_window多次关闭同一个窗口的问题。

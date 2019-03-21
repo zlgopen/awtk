@@ -35,9 +35,15 @@ static ret_t close_window_on_event(void* ctx, event_t* e) {
 }
 
 static ret_t on_screen_saver(void* ctx, event_t* e) {
-  /*please change image_animation to your own window name*/
-  widget_t* win = window_open("image_animation");
+  widget_t* win = NULL;
+  const char* screen_saver_win = "image_animation";
 
+  if (widget_child(window_manager(), screen_saver_win) != NULL) {
+    log_debug("screen saver exist.\n");
+    return RET_OK;
+  }
+
+  win = window_open(screen_saver_win);
   widget_on(win, EVT_POINTER_MOVE, close_window_on_event, win);
   widget_on(win, EVT_POINTER_UP, close_window_on_event, win);
   widget_on(win, EVT_KEY_UP, close_window_on_event, win);
@@ -57,3 +63,4 @@ ret_t application_init() {
 
 ```
 
+> 可以在XML设置window的fullscreen属性，让屏保窗口进入全屏状态。

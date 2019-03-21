@@ -63,7 +63,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#button_t_enable_long_press">enable\_long\_press</a> | bool\_t |  |
+| <a href="#button_t_enable_long_press">enable\_long\_press</a> | bool\_t | 是否启用长按事件，为true时才触发长按事件。 |
 | <a href="#button_t_repeat">repeat</a> | int32\_t | 重复触发EVT\_CLICK事件的时间间隔。 |
 ### 事件
 <p id="button_t_events">
@@ -164,8 +164,8 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 | repeat | int32\_t | 触发EVT\_CLICK事件的时间间隔(毫秒)。 |
 #### enable\_long\_press 属性
 -----------------------
-> <p id="button_t_enable_long_press">
- 是否启用长按事件，为true时才触发长按事件。
+> <p id="button_t_enable_long_press"> 是否启用长按事件，为true时才触发长按事件。
+
  触发长按事件后不再触发点击事件。
  缺省不启用。
 
@@ -186,6 +186,7 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 #### repeat 属性
 -----------------------
 > <p id="button_t_repeat"> 重复触发EVT\_CLICK事件的时间间隔。
+
  为0则不重复触发EVT\_CLICK事件。
 
 

@@ -458,7 +458,7 @@ int tk_sscanf(const char* str, const char* format, ...) {
   return ret;
 }
 
-ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
+ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t remove_extname) {
   char* p = NULL;
   const char* name = filename;
   return_value_if_fail(filename != NULL && str != NULL, RET_BAD_PARAMS);
@@ -475,12 +475,19 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
   }
 
   tk_strncpy(str, name, size - 1);
-  p = strchr(str, '.');
-  if (p != NULL) {
-    *p = '\0';
+
+  if (remove_extname) {
+    p = strchr(str, '.');
+    if (p != NULL) {
+      *p = '\0';
+    }
   }
 
   return RET_OK;
+}
+
+ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
+  return filename_to_name_ex(filename, str, size, TRUE);
 }
 
 #define INCLUDE_XML "<?include"

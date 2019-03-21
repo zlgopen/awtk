@@ -51,6 +51,7 @@
 | -------- | ------------ | 
 | <a href="#slider_t_slider_cast">slider\_cast</a> | 转换为slider对象(供脚本语言使用)。 |
 | <a href="#slider_t_slider_create">slider\_create</a> | 创建slider对象 |
+| <a href="#slider_t_slider_set_bar_size">slider\_set\_bar\_size</a> | 设置bar的宽度或高度。 |
 | <a href="#slider_t_slider_set_max">slider\_set\_max</a> | 设置滑块的最大值。 |
 | <a href="#slider_t_slider_set_min">slider\_set\_min</a> | 设置滑块的最小值。 |
 | <a href="#slider_t_slider_set_step">slider\_set\_step</a> | 设置滑块的拖动的最小单位。 |
@@ -61,6 +62,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#slider_t_bar_size">bar\_size</a> | uint32\_t | bar的宽度或高度。 |
 | <a href="#slider_t_max">max</a> | uint16\_t | 最大值。 |
 | <a href="#slider_t_min">min</a> | uint16\_t | 最小值。 |
 | <a href="#slider_t_step">step</a> | uint16\_t | 拖动的最小单位。 |
@@ -120,6 +122,28 @@ widget_t* slider_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slider\_set\_bar\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slider_t_slider_set_bar_size"> 设置bar的宽度或高度。
+
+
+
+* 函数原型：
+
+```
+ret_t slider_set_bar_size (widget_t* widget, uint32_t bar_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| bar\_size | uint32\_t | bar的宽度或高度。 |
 #### slider\_set\_max 函数
 -----------------------
 
@@ -230,6 +254,23 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | vertical | bool\_t | 是否为垂直方向。 |
+#### bar\_size 属性
+-----------------------
+> <p id="slider_t_bar_size"> bar的宽度或高度。
+
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### max 属性
 -----------------------
 > <p id="slider_t_max"> 最大值。

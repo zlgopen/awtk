@@ -363,18 +363,19 @@
   </style>
 </dialog_client>
 
-<scroll_bar>
+<scroll_bar_m>
   <style name="default">
-    <normal bg_color="#c0c0c0" fg_color="#808080"/>
-    <over bg_color="#c0c0c0" fg_color="#808080"/>
-    <pressed bg_color="#c0c0c0" fg_color="#808080"/>
+    <normal fg_color="#808080"/>
   </style>
-  <style name="destkop" border_color="gray">
+</scroll_bar_m>
+
+<scroll_bar_d>
+  <style name="default" border_color="gray">
     <normal bg_color="#f0f0f0"/>
     <over bg_color="#f0f0f0" />
     <pressed bg_color="#f0f0f0" />
   </style>
-</scroll_bar>
+</scroll_bar_d>
 
 <dragger>
   <style name="scroll_bar" >

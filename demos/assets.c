@@ -117,7 +117,10 @@
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
-#include "assets/inc/data/test.data"
+#include "assets/inc/data/app_json.data"
+#include "assets/inc/data/test_dat.data"
+#include "assets/inc/data/test_json.data"
+#include "assets/inc/data/abc_any.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -626,7 +629,10 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, style_dialog_warn);
   assets_manager_add(rm, font_default);
-  assets_manager_add(rm, data_test);
+  assets_manager_add(rm, data_app_json);
+  assets_manager_add(rm, data_test_dat);
+  assets_manager_add(rm, data_test_json);
+  assets_manager_add(rm, data_abc_any);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);

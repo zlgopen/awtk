@@ -1,6 +1,6 @@
 <window anim_hint="vtranslate">
-  <slider x="center" y="10" w="80%" h="20" value="10"/>
-  <slider style="img" x="center" y="50" w="80%" h="30" value="20" />
-  <slider style="img" x="center" y="90" w="80%" h="30" value="30" min="5" max="50" step="5"/>
+  <slider x="center" y="10" w="80%" h="40" value="10" bar_size="10"/>
+  <slider style="img" x="center" y="50" w="80%" h="60" value="20" />
+  <slider style="img" x="center" y="120" w="80%" h="60" value="30" min="5" max="50" step="5"/>
   <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
 </window>

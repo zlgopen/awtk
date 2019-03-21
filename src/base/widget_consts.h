@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_BAR_SIZE
+ * slider中的bar的的宽度或高度。
+ */
+#define WIDGET_PROP_BAR_SIZE "bar_size"
+
+/**
  * @const WIDGET_PROP_OPACITY
  * 不透明度。
  */
@@ -244,6 +250,12 @@ BEGIN_C_DECLS
  * 窗口动画。
  */
 #define WIDGET_PROP_ANIM_HINT "anim_hint"
+
+/**
+ * @const WIDGET_PROP_FULLSCREEN
+ * 窗口设置为全部大小。
+ */
+#define WIDGET_PROP_FULLSCREEN "fullscreen"
 
 /**
  * @const WIDGET_PROP_OPEN_ANIM_HINT
@@ -640,6 +652,12 @@ BEGIN_C_DECLS
  * 设置为输入焦点。
  */
 #define WIDGET_PROP_FOCUS "focus"
+
+/**
+ * @const WIDGET_PROP_FOCUSABLE
+ * 是否支持焦点停留。
+ */
+#define WIDGET_PROP_FOCUSABLE "focusable"
 
 /**
  * @enum widget_type_t

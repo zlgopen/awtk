@@ -11,6 +11,7 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_BAR\_SIZE | slider中的bar的的宽度或高度。 |
 | WIDGET\_PROP\_OPACITY | 不透明度。 |
 | WIDGET\_PROP\_MIN\_W | 最小宽度。 |
 | WIDGET\_PROP\_MAX\_W | 最大宽度。 |
@@ -42,6 +43,7 @@
 | WIDGET\_PROP\_SENSITIVE | 是否接受用户事件。 |
 | WIDGET\_PROP\_ANIMATION | 控件动画。 |
 | WIDGET\_PROP\_ANIM\_HINT | 窗口动画。 |
+| WIDGET\_PROP\_FULLSCREEN | 窗口设置为全部大小。 |
 | WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口动画。 |
 | WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口动画。 |
 | WIDGET\_PROP\_MIN | 最小值。 |
@@ -108,3 +110,4 @@
 | WIDGET\_PROP\_DELAY | 延迟时间(毫秒) |
 | WIDGET\_PROP\_IS\_KEYBOARD | 是否为键盘。 |
 | WIDGET\_PROP\_FOCUS | 设置为输入焦点。 |
+| WIDGET\_PROP\_FOCUSABLE | 是否支持焦点停留。 |

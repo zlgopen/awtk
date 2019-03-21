@@ -49,9 +49,17 @@
 | -------- | ------------ | 
 | <a href="#window_t_window_cast">window\_cast</a> | 转换为window对象(供脚本语言使用)。 |
 | <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
+| <a href="#window_t_window_close_force">window\_close\_force</a> | 立即无条件关闭窗口(无动画)。 |
 | <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
-| <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#window_t_window_set_fullscreen">window\_set\_fullscreen</a> | 设置为全屏窗口。 |
+### 属性
+<p id="window_t_properties">
+
+| 属性名称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#window_t_fullscreen">fullscreen</a> | bool\_t | 是否全屏。 |
 #### window\_cast 函数
 -----------------------
 
@@ -93,7 +101,28 @@ ret_t window_close (widget_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | window\_base对象。 |
+| widget | widget\_t* | window对象。 |
+#### window\_close\_force 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_window_close_force"> 立即无条件关闭窗口(无动画)。
+
+
+
+* 函数原型：
+
+```
+ret_t window_close_force (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window对象。 |
 #### window\_create 函数
 -----------------------
 
@@ -128,6 +157,7 @@ widget_t* window_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
+
 * 函数原型：
 
 ```
@@ -139,13 +169,13 @@ widget_t* window_open (char* name);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
-| name | char* | window\_base的名称。 |
+| name | char* | window的名称。 |
 #### window\_open\_and\_close 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="window_t_window_open_and_close"> 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
+> <p id="window_t_window_open_and_close"> 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
 
 
 
@@ -160,5 +190,49 @@ widget_t* window_open_and_close (char* name, widget_t* to_close);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
-| name | char* | window\_base的名称。 |
+| name | char* | window的名称。 |
 | to\_close | widget\_t* | 关闭该窗口。 |
+#### window\_set\_fullscreen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_window_set_fullscreen"> 设置为全屏窗口。
+
+>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+
+
+
+
+* 函数原型：
+
+```
+ret_t window_set_fullscreen (widget_t* widget, bool_t fullscreen);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window对象。 |
+| fullscreen | bool\_t | 是否全屏。 |
+#### fullscreen 属性
+-----------------------
+> <p id="window_t_fullscreen"> 是否全屏。
+
+>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

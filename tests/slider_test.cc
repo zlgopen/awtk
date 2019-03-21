@@ -31,6 +31,12 @@ TEST(slider, basic) {
   ASSERT_EQ(widget_get_prop(s, "step", &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
+  value_set_int(&v1, 10);
+  ASSERT_EQ(widget_set_prop(s, "bar_size", &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(s, "bar_size", &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+  ASSERT_EQ(SLIDER(s)->bar_size, value_int(&v2));
+
   value_set_bool(&v1, TRUE);
   ASSERT_EQ(widget_set_prop(s, "vertical", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(s, "vertical", &v2), RET_OK);

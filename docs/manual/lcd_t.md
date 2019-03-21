@@ -20,7 +20,7 @@
 | <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> | 绘制实心矩形。 |
 | <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
 | <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
-| <a href="#lcd_t_lcd_get_point_color_t">lcd\_get\_point\_color\_t</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
+| <a href="#lcd_t_lcd_get_point_color">lcd\_get\_point\_color</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
 | <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
 | <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> | 测量字符串占用的宽度。 |
@@ -63,7 +63,7 @@
 * 函数原型：
 
 ```
-ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, bool_t anim_mode);
+ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t anim_mode);
 ```
 
 * 参数说明：
@@ -73,7 +73,7 @@ ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, bool_t anim_mode);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | dirty\_rect | rect\_t* | 需要绘制的区域。 |
-| anim\_mode | bool\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
+| anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
 #### lcd\_draw\_glyph 函数
 -----------------------
 
@@ -111,7 +111,7 @@ ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 * 函数原型：
 
 ```
-ret_t lcd_draw_hline (lcd_t* lcd, xy_t* x, xy_t* y, xy_t* w);
+ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
 ```
 
 * 参数说明：
@@ -120,9 +120,9 @@ ret_t lcd_draw_hline (lcd_t* lcd, xy_t* x, xy_t* y, xy_t* w);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| x | xy\_t* | x坐标。 |
-| y | xy\_t* | y坐标。 |
-| w | xy\_t* | 直线宽度。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| w | xy\_t | 直线宽度。 |
 #### lcd\_draw\_image 函数
 -----------------------
 
@@ -229,7 +229,7 @@ ret_t lcd_draw_text (lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y
 * 函数原型：
 
 ```
-ret_t lcd_draw_vline (lcd_t* lcd, xy_t* x, xy_t* y, xy_t* h);
+ret_t lcd_draw_vline (lcd_t* lcd, xy_t x, xy_t y, xy_t h);
 ```
 
 * 参数说明：
@@ -238,9 +238,9 @@ ret_t lcd_draw_vline (lcd_t* lcd, xy_t* x, xy_t* y, xy_t* h);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| x | xy\_t* | x坐标。 |
-| y | xy\_t* | y坐标。 |
-| h | xy\_t* | 直线高度。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| h | xy\_t | 直线高度。 |
 #### lcd\_end\_frame 函数
 -----------------------
 
@@ -330,26 +330,26 @@ bitmap_format_t lcd_get_desired_bitmap_format (lcd_t* lcd);
 | -------- | ----- | --------- |
 | 返回值 | bitmap\_format\_t | 返回期望的位图格式。 |
 | lcd | lcd\_t* | lcd对象。 |
-#### lcd\_get\_point\_color\_t 函数
+#### lcd\_get\_point\_color 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_point_color_t"> 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
+> <p id="lcd_t_lcd_get_point_color"> 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
 
 
 
 * 函数原型：
 
 ```
-ret_t lcd_get_point_color_t (lcd_t* lcd, xy_t x, xy_t y);
+color_t lcd_get_point_color (lcd_t* lcd, xy_t x, xy_t y);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | color\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
