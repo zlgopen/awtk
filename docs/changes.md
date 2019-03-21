@@ -2,6 +2,7 @@
 * 2019/03/21
   * 增加lcd\_profile用于对绘制函数进行profile。
   * data资源支持同文件名，不同扩展名。
+  * slider增加bar\_size属性。
 
 * 2019/03/20
   * 支持编译Windows 32 位版本(感谢陈谭提供补丁)

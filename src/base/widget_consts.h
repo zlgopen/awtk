@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_BAR_SIZE
+ * slider中的bar的的宽度或高度。
+ */
+#define WIDGET_PROP_BAR_SIZE "bar_size"
+
+/**
  * @const WIDGET_PROP_OPACITY
  * 不透明度。
  */

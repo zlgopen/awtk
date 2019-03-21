@@ -71,6 +71,16 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static uint32_t slider_get_bar_size(widget_t* widget) {
+  slider_t* slider = SLIDER(widget);
+
+  if (slider->vertical) {
+    return slider->bar_size ? slider->bar_size : (widget->w >> 1);
+  } else {
+    return slider->bar_size ? slider->bar_size : (widget->h >> 1);
+  }
+}
+
 static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   style_t* style = widget->astyle;
@@ -83,13 +93,13 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   image_draw_type_t draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
   if (slider->vertical) {
-    r.x = widget->w >> 2;
     r.y = 0;
-    r.w = widget->w >> 1;
+    r.w = slider_get_bar_size(widget);
+    r.x = (widget->w - r.w) / 2;
     r.h = widget->h - (widget->h * fvalue);
   } else {
-    r.y = widget->h >> 2;
-    r.h = widget->h >> 1;
+    r.h = slider_get_bar_size(widget);
+    r.y = (widget->h - r.h) / 2;
     r.w = widget->w - (widget->w * fvalue);
     r.x = widget->w - r.w;
   }
@@ -101,14 +111,14 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_fill_bg_rect(widget, c, &r, draw_type);
 
   if (slider->vertical) {
-    r.x = widget->w >> 2;
-    r.w = widget->w >> 1;
+    r.w = slider_get_bar_size(widget);
+    r.x = (widget->w - r.w) / 2;
     r.h = (widget->h * fvalue);
     r.y = widget->h - r.h;
   } else {
-    r.h = widget->h >> 1;
+    r.h = slider_get_bar_size(widget);
+    r.y = (widget->h - r.h) / 2;
     r.w = (widget->w * fvalue);
-    r.y = widget->h >> 2;
     r.x = 0;
   }
   widget_fill_fg_rect(widget, c, &r, draw_type);
@@ -266,6 +276,15 @@ ret_t slider_set_step(widget_t* widget, uint16_t step) {
   return widget_invalidate(widget, NULL);
 }
 
+ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && bar_size > 0, RET_BAD_PARAMS);
+
+  slider->bar_size = bar_size;
+
+  return widget_invalidate(widget, NULL);
+}
+
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -294,6 +313,9 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     value_set_int(v, slider->step);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_BAR_SIZE)) {
+    value_set_int(v, slider->bar_size);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -312,6 +334,8 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
     return slider_set_max(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     return slider_set_step(widget, value_int(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_BAR_SIZE)) {
+    return slider_set_bar_size(widget, value_int(v));
   }
 
   return RET_NOT_FOUND;

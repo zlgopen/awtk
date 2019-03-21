@@ -108,6 +108,13 @@ typedef struct _slider_t {
    */
   bool_t vertical;
 
+  /**
+   * @property {uint32_t} bar_size
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * bar的宽度或高度。
+   */
+  uint32_t bar_size;
+
   /*private*/
   bool_t dragging;
 } slider_t;
@@ -194,6 +201,17 @@ ret_t slider_set_max(widget_t* widget, uint16_t max);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slider_set_step(widget_t* widget, uint16_t step);
+
+/**
+ * @method slider_set_bar_size
+ * 设置bar的宽度或高度。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t}  bar_size bar的宽度或高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size);
 
 /**
  * @method slider_set_vertical

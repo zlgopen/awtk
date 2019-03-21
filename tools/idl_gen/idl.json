@@ -9143,6 +9143,10 @@
         "name": "WIDGET_PROP_H"
       },
       {
+        "desc": " slider中的bar的的宽度或高度。\n\n",
+        "name": "WIDGET_PROP_BAR_SIZE"
+      },
+      {
         "desc": " 不透明度。\n\n",
         "name": "WIDGET_PROP_OPACITY"
       },
@@ -27073,6 +27077,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "bar_size",
+            "desc": "bar的宽度或高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置bar的宽度或高度。\r\n\r\n",
+        "name": "slider_set_bar_size",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "bool_t",
             "name": "vertical",
             "desc": "是否为垂直方向。"
@@ -27163,6 +27190,19 @@
         "name": "vertical",
         "desc": " 滑块的是否为垂直方向。\r\n",
         "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "bar_size",
+        "desc": " bar的宽度或高度。\r\n",
+        "type": "uint32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
