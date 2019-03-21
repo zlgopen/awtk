@@ -144,7 +144,8 @@ def gen_res_all_data():
     inc=copy.copy(f);
     raw=copy.copy(f);
     _, extname = os.path.splitext(inc)
-    inc=inc.replace(extname, '.data')
+    uextname = extname.replace('.', '_');
+    inc=inc.replace(extname, uextname+'.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
     resgen(raw, inc)
 

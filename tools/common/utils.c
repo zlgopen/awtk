@@ -88,7 +88,7 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* p
 
   char* p = strrchr(var_name, '.');
   if (p != NULL) {
-    *p = '\0';
+    *p = '_';
   }
 
   return var_name;
