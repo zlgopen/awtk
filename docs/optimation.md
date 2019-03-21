@@ -1,5 +1,7 @@
 ## 优化技巧
 
+### 一、优化提示
+
 * memcpy是最快的贴图方式，所以对于不透明的图片，尽量保持与Framebuffer一致的格式，这样可以直接使用memcpy贴图。
 
 > 比如FrameBuffer的格式是BGR565，请定义宏WITH\_BITMAP\_BGR565。
@@ -41,3 +43,56 @@
 * 使用3个framebuffer可以避免GUI等待和拷贝，能够有效提高帧率，有条件时尽量启用。
 
 * 猜测往往是错误的，请用函数time\_now\_ms去度量你怀疑的地方。
+
+### 二、工具
+
+如果定义全局的宏(在工程中定义)ENABLE\_PERFORMANCE\_PROFILE，会使用lcd\_profile对全部绘制函数(图片、文字和填充等等)进行时间统计。当绘制一帧需要的时间超过25ms，会打印一些信息:
+
+```
+#####################################
+src/base/lcd_profile.c:326
+-------------------------------------
+  total_cost=30
+  draw_image_cost=18 times=1
+  draw_text_cost=0 times=15
+  fill_cost=0 times=15
+  stroke_cost=0 times=15
+  end_frame_cost=10
+-------------------------------------
+```
+
+
+也可以在lcd\_profile\_end\_frame函数里设置一个断点，从profile对象上能查看到更详细的统计信息：
+
+```
+  uint32_t total_cost;
+  uint32_t swap_cost;
+  uint32_t flush_cost;
+
+  uint32_t draw_image_cost;
+  uint32_t draw_image_times;
+  uint32_t draw_image_pixels;
+
+  uint32_t draw_text_cost;
+  uint32_t draw_text_times;
+  uint32_t draw_text_chars;
+
+  uint32_t fill_cost;
+  uint32_t fill_times;
+  uint32_t fill_pixels;
+
+  uint32_t stroke_cost;
+  uint32_t stroke_times;
+  uint32_t stroke_pixels;
+```
+
+>参考[lcd_profile.c](https://github.com/zlgopen/awtk/blob/master/src/base/lcd_profile.c)
+
+
+
+
+
+
+
+
+

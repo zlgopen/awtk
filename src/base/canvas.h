@@ -65,6 +65,7 @@ struct _canvas_t {
   align_v_t text_align_v;
   align_h_t text_align_h;
   font_manager_t* font_manager;
+  uint8_t global_alpha;
 };
 
 /**

@@ -824,7 +824,7 @@ ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_
 static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
   int32_t ox = widget->x;
   int32_t oy = widget->y;
-  uint8_t save_alpha = c->lcd->global_alpha;
+  uint8_t save_alpha = c->global_alpha;
 
   if (widget->opacity < TK_OPACITY_ALPHA) {
     canvas_set_global_alpha(c, (widget->opacity * save_alpha) / 0xff);

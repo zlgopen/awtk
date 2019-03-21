@@ -138,6 +138,7 @@ typedef enum _lcd_type_t {
    */
   LCD_VGCANVAS
 } lcd_type_t;
+
 /**
  * @class lcd_t
  * 显示设备抽象基类。
@@ -258,7 +259,7 @@ struct _lcd_t {
  * 准备绘制。
  * @param {lcd_t*} lcd lcd对象。
  * @param {rect_t*} dirty_rect 需要绘制的区域。
- * @param {bool_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
+ * @param {lcd_draw_mode_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -361,9 +362,9 @@ ret_t lcd_set_font_size(lcd_t* lcd, uint32_t font_size);
  * @method lcd_draw_vline
  * 绘制一条垂直线。
  * @param {lcd_t*} lcd lcd对象。
- * @param {xy_t*} x x坐标。
- * @param {xy_t*} y y坐标。
- * @param {xy_t*} h 直线高度。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {xy_t} h 直线高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -373,9 +374,9 @@ ret_t lcd_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
  * @method lcd_draw_hline
  * 绘制一条水平线。
  * @param {lcd_t*} lcd lcd对象。
- * @param {xy_t*} x x坐标。
- * @param {xy_t*} y y坐标。
- * @param {xy_t*} w 直线宽度。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {xy_t} w 直线宽度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -393,13 +394,13 @@ ret_t lcd_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
 ret_t lcd_draw_points(lcd_t* lcd, point_t* points, uint32_t nr);
 
 /**
- * @method lcd_get_point_color_t
+ * @method lcd_get_point_color
  * 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
  * @param {lcd_t*} lcd lcd对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {color_t} 返回RET_OK表示成功，否则表示失败。
  */
 color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y);
 
