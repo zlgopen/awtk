@@ -164,7 +164,7 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
 
 static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_t* v) {
   rich_text_t* rich_text = RICH_TEXT(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(rich_text != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return rich_text_set_text(widget, value_str(v));

@@ -253,7 +253,7 @@ ret_t color_component_set_color(widget_t* widget, color_t c) {
   float S = 0;
   float V = 0;
   color_component_t* color_component = COLOR_COMPONENT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
 
   color_component->c = c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &H, &S, &V);
@@ -274,7 +274,7 @@ ret_t color_component_set_color(widget_t* widget, color_t c) {
 
 static ret_t color_component_set_type(widget_t* widget, const char* type) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
-  return_value_if_fail(widget != NULL && type != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(color_component != NULL && type != NULL, RET_BAD_PARAMS);
 
   color_component->image.name = type;
 

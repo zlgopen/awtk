@@ -30,7 +30,7 @@
 
 static ret_t color_picker_get_prop(widget_t* widget, const char* name, value_t* v) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(color_picker != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_str(v, color_picker->value);
@@ -348,7 +348,7 @@ static ret_t color_picker_update_color(widget_t* widget, color_t color) {
 
 ret_t color_picker_set_color(widget_t* widget, const char* color) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  return_value_if_fail(widget != NULL && color != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(color_picker != NULL && color != NULL, RET_BAD_PARAMS);
 
   color_picker->init_c = color_parse(color);
   color_picker_update_color(widget, color_picker->init_c);

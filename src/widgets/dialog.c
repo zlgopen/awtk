@@ -87,7 +87,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 ret_t dialog_set_title(widget_t* widget, const char* title) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL && title != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL && title != NULL, RET_BAD_PARAMS);
 
   return widget_set_text_utf8(dialog->title, title);
 }
@@ -122,7 +122,7 @@ uint32_t dialog_modal(widget_t* widget) {
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   dialog->quit_code = code;
   main_loop_quit(main_loop());
@@ -138,14 +138,14 @@ widget_t* dialog_cast(widget_t* widget) {
 
 widget_t* dialog_get_title(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(dialog != NULL, NULL);
 
   return dialog->title;
 }
 
 widget_t* dialog_get_client(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(dialog != NULL, NULL);
 
   return dialog->client;
 }

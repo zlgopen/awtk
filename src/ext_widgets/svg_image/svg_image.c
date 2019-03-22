@@ -54,7 +54,6 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   image_base_t* image_base = IMAGE_BASE(widget);
-  return_value_if_fail(widget != NULL && c != NULL && vg != NULL, RET_BAD_PARAMS);
 
   if (image_base->image != NULL && svg_image_load_bsvg(widget) == RET_OK) {
     bsvg_t bsvg;

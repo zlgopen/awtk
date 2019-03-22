@@ -81,7 +81,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
 
 ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(widget != NULL && value <= 100, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL && value <= 100, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -97,7 +97,7 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
 
 ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   progress_bar->vertical = vertical;
 
@@ -106,7 +106,7 @@ ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical) {
 
 ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   progress_bar->show_text = show_text;
 
@@ -115,7 +115,7 @@ ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text) {
 
 static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* v) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_uint8(v, progress_bar->value);

@@ -34,7 +34,7 @@ static ret_t list_view_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   list_view_t* list_view = LIST_VIEW(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(list_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
     value_set_int(v, list_view->item_height);
@@ -52,7 +52,7 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   list_view_t* list_view = LIST_VIEW(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(list_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
     list_view->item_height = value_int(v);
@@ -271,7 +271,7 @@ widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 ret_t list_view_set_item_height(widget_t* widget, int32_t item_height) {
   list_view_t* list_view = LIST_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   list_view->item_height = item_height;
 
@@ -280,7 +280,7 @@ ret_t list_view_set_item_height(widget_t* widget, int32_t item_height) {
 
 ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_height) {
   list_view_t* list_view = LIST_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   list_view->default_item_height = default_item_height;
 
@@ -289,7 +289,7 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
 
 ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scroll_bar) {
   list_view_t* list_view = LIST_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   list_view->auto_hide_scroll_bar = auto_hide_scroll_bar;
 

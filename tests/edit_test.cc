@@ -162,6 +162,7 @@ TEST(Edit, basic) {
 TEST(Edit, cast) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(b, edit_cast(b));
+  ASSERT_EQ((edit_t*)NULL, EDIT(NULL));
   widget_destroy(b);
 }
 

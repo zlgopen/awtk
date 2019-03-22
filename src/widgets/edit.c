@@ -735,7 +735,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
 ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->limit.u.t.min = min;
   edit->limit.u.t.max = max;
@@ -746,7 +746,7 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
 
 ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t step) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->limit.u.i.min = min;
   edit->limit.u.i.max = max;
@@ -758,7 +758,7 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
 
 ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->limit.u.f.min = min;
   edit->limit.u.f.max = max;
@@ -770,7 +770,7 @@ ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step
 
 ret_t edit_set_readonly(widget_t* widget, bool_t readonly) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->readonly = readonly;
 
@@ -779,7 +779,7 @@ ret_t edit_set_readonly(widget_t* widget, bool_t readonly) {
 
 ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->auto_fix = auto_fix;
 
@@ -788,7 +788,7 @@ ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix) {
 
 ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->limit.type = type;
   if (type == INPUT_INT || type == INPUT_UINT) {
@@ -802,7 +802,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
 
 ret_t edit_set_input_tips(widget_t* widget, const char* tips) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL && tips != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL && tips != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(edit->tips);
   edit->tips = tk_strdup(tips);
@@ -812,9 +812,10 @@ ret_t edit_set_input_tips(widget_t* widget, const char* tips) {
 
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_t* edit = EDIT(widget);
-  input_type_t input_type = edit->limit.type;
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  input_type_t input_type = INPUT_TEXT;
+  return_value_if_fail(edit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
+  input_type = edit->limit.type;
   if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     if (input_type == INPUT_INT || input_type == INPUT_UINT) {
       value_set_int(v, edit->limit.u.i.min);
@@ -890,9 +891,10 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   edit_t* edit = EDIT(widget);
-  input_type_t input_type = edit->limit.type;
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  input_type_t input_type = INPUT_TEXT;
+  return_value_if_fail(edit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
+  input_type = edit->limit.type;
   if (tk_str_eq(name, WIDGET_PROP_MIN)) {
     if (input_type == INPUT_INT || input_type == INPUT_UINT) {
       edit->limit.u.i.min = value_int(v);
@@ -988,7 +990,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
 ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->password_visible = password_visible;
 
@@ -997,7 +999,7 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
 
 ret_t edit_set_focus(widget_t* widget, bool_t focus) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->focus = focus;
   widget->focused = focus;

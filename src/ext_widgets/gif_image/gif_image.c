@@ -56,7 +56,6 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   gif_image_t* image = GIF_IMAGE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   image_base_t* image_base = IMAGE_BASE(widget);
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   if (image_base->image == NULL) {
     return RET_OK;

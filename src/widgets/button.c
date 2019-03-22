@@ -128,7 +128,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
 
 ret_t button_set_repeat(widget_t* widget, int32_t repeat) {
   button_t* button = BUTTON(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(button != NULL, RET_BAD_PARAMS);
 
   button->repeat = repeat;
 
@@ -137,7 +137,7 @@ ret_t button_set_repeat(widget_t* widget, int32_t repeat) {
 
 ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press) {
   button_t* button = BUTTON(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(button != NULL, RET_BAD_PARAMS);
 
   button->enable_long_press = enable_long_press;
 
@@ -146,7 +146,7 @@ ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press) {
 
 static ret_t button_get_prop(widget_t* widget, const char* name, value_t* v) {
   button_t* button = BUTTON(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(button != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
     value_set_int(v, button->repeat);

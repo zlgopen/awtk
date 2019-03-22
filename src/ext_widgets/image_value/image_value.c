@@ -100,7 +100,7 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t image_value_get_prop(widget_t* widget, const char* name, value_t* v) {
   image_value_t* image_value = IMAGE_VALUE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_value != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_float(v, image_value->value);
@@ -158,7 +158,7 @@ widget_t* image_value_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 ret_t image_value_set_image(widget_t* widget, const char* image) {
   image_value_t* image_value = IMAGE_VALUE(widget);
-  return_value_if_fail(widget != NULL && image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_value != NULL && image != NULL, RET_BAD_PARAMS);
 
   image_value->image = tk_str_copy(image_value->image, image);
 
@@ -167,7 +167,7 @@ ret_t image_value_set_image(widget_t* widget, const char* image) {
 
 ret_t image_value_set_format(widget_t* widget, const char* format) {
   image_value_t* image_value = IMAGE_VALUE(widget);
-  return_value_if_fail(widget != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_value != NULL && format != NULL, RET_BAD_PARAMS);
 
   image_value->format = tk_str_copy(image_value->format, format);
 
@@ -176,7 +176,7 @@ ret_t image_value_set_format(widget_t* widget, const char* format) {
 
 ret_t image_value_set_value(widget_t* widget, float_t value) {
   image_value_t* image_value = IMAGE_VALUE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   if (image_value->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);

@@ -430,7 +430,7 @@ static ret_t slide_menu_on_scroll_done(void* ctx, event_t* e) {
 static ret_t slide_menu_scroll_to(widget_t* widget, int32_t xoffset_end) {
   int32_t xoffset = 0;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(slide_menu != NULL, RET_FAIL);
 
   xoffset = slide_menu->xoffset;
   if (xoffset == xoffset_end) {

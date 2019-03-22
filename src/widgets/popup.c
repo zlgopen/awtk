@@ -32,7 +32,7 @@
 
 static ret_t popup_get_prop(widget_t* widget, const char* name, value_t* v) {
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(popup != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK)) {
     value_set_bool(v, popup->close_when_click);
@@ -47,7 +47,7 @@ static ret_t popup_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v) {
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(popup != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK)) {
     popup->close_when_click = value_bool(v);
@@ -134,7 +134,7 @@ widget_t* popup_cast(widget_t* widget) {
 
 ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click) {
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(popup != NULL, RET_FAIL);
 
   popup->close_when_click = close_when_click;
 
@@ -143,7 +143,7 @@ ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click) {
 
 ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_click_outside) {
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(popup != NULL, RET_FAIL);
 
   popup->close_when_click_outside = close_when_click_outside;
 

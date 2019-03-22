@@ -54,8 +54,6 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
 
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-
   slider_get_dragger_rect(widget, &r);
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   if (color.rgba.a) {
@@ -213,7 +211,7 @@ ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t e
   uint16_t step = 0;
   uint16_t offset = 0;
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   step = slider->step;
   value = tk_max(tk_min(value, slider->max), slider->min);
@@ -251,7 +249,7 @@ ret_t slider_set_value(widget_t* widget, uint16_t value) {
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->min = min;
 
@@ -260,7 +258,7 @@ ret_t slider_set_min(widget_t* widget, uint16_t min) {
 
 ret_t slider_set_max(widget_t* widget, uint16_t max) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->max = max;
 
@@ -269,7 +267,7 @@ ret_t slider_set_max(widget_t* widget, uint16_t max) {
 
 ret_t slider_set_step(widget_t* widget, uint16_t step) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && step > 0, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && step > 0, RET_BAD_PARAMS);
 
   slider->step = step;
 
@@ -278,7 +276,7 @@ ret_t slider_set_step(widget_t* widget, uint16_t step) {
 
 ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && bar_size > 0, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && bar_size > 0, RET_BAD_PARAMS);
 
   slider->bar_size = bar_size;
 
@@ -287,7 +285,7 @@ ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size) {
 
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->vertical = vertical;
 
@@ -296,7 +294,7 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
 
 static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, slider->value);

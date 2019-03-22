@@ -2,7 +2,9 @@
 * 2019/03/22
   * 完善资源生成脚本。
   * widget vtable增加inputable属性。
-  * 修改listview没有scrollbar时的问题(感谢陈谭提供补丁)。
+  * 修改listview没有scrollbar时的问题(感谢陈谭/俊杰提供补丁)。
+  * edit/spinbox在修改text后处理prop changed事件，以更新控件状态。
+  * 修改参数检查的存在的问题(感谢俊杰提供补丁)
 
 * 2019/03/21
   * 增加lcd\_profile用于对绘制函数进行profile。

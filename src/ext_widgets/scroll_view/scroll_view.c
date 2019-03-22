@@ -145,7 +145,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   int32_t xoffset = 0;
   int32_t yoffset = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
 
   xoffset = scroll_view->xoffset;
   yoffset = scroll_view->yoffset;
@@ -359,7 +359,7 @@ static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {
 
 static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W) || tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
     value_set_int(v, tk_max(widget->w, scroll_view->virtual_w));
@@ -386,7 +386,7 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
 
 static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W)) {
     scroll_view->virtual_w = value_int(v);
@@ -445,7 +445,7 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_w = w;
 
@@ -454,7 +454,7 @@ ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w) {
 
 ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_h = h;
 
@@ -463,7 +463,7 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
 
 ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
 
   scroll_view->xoffset = xoffset;
   scroll_view->yoffset = yoffset;
@@ -475,7 +475,7 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
 
 ret_t scroll_view_set_xslidable(widget_t* widget, bool_t xslidable) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
 
   scroll_view->xslidable = xslidable;
 
@@ -484,7 +484,7 @@ ret_t scroll_view_set_xslidable(widget_t* widget, bool_t xslidable) {
 
 ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
 
   scroll_view->yslidable = yslidable;
 

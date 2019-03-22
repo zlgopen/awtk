@@ -27,7 +27,7 @@
 
 static ret_t guage_get_prop(widget_t* widget, const char* name, value_t* v) {
   guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(guage != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, guage->image);
@@ -71,7 +71,7 @@ static ret_t guage_on_destroy(widget_t* widget) {
 
 ret_t guage_set_image(widget_t* widget, const char* name) {
   guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(guage != NULL && name != NULL, RET_BAD_PARAMS);
 
   guage->image = tk_str_copy(guage->image, name);
 
@@ -80,7 +80,7 @@ ret_t guage_set_image(widget_t* widget, const char* name) {
 
 ret_t guage_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
   guage_t* guage = GUAGE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(guage != NULL, RET_BAD_PARAMS);
 
   guage->draw_type = draw_type;
 

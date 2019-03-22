@@ -93,7 +93,7 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_t* v) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     value_set_bool(v, image_animation->loop);
@@ -130,7 +130,7 @@ static ret_t image_animation_get_prop(widget_t* widget, const char* name, value_
 
 static ret_t image_animation_set_prop(widget_t* widget, const char* name, const value_t* v) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     return image_animation_set_loop(widget, value_bool(v));
@@ -237,7 +237,7 @@ widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 
 ret_t image_animation_set_loop(widget_t* widget, bool_t loop) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->loop = loop;
 
@@ -246,7 +246,7 @@ ret_t image_animation_set_loop(widget_t* widget, bool_t loop) {
 
 ret_t image_animation_set_image(widget_t* widget, const char* image) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL && image != NULL, RET_BAD_PARAMS);
 
   image_animation->image = tk_str_copy(image_animation->image, image);
 
@@ -255,7 +255,7 @@ ret_t image_animation_set_image(widget_t* widget, const char* image) {
 
 ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->interval = interval;
 
@@ -264,7 +264,7 @@ ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
 
 ret_t image_animation_set_delay(widget_t* widget, uint32_t delay) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->delay = delay;
 
@@ -273,7 +273,7 @@ ret_t image_animation_set_delay(widget_t* widget, uint32_t delay) {
 
 ret_t image_animation_set_auto_play(widget_t* widget, bool_t auto_play) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->auto_play = auto_play;
 
@@ -282,7 +282,7 @@ ret_t image_animation_set_auto_play(widget_t* widget, bool_t auto_play) {
 
 ret_t image_animation_set_unload_after_paint(widget_t* widget, bool_t unload_after_paint) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->unload_after_paint = unload_after_paint;
 
@@ -291,7 +291,7 @@ ret_t image_animation_set_unload_after_paint(widget_t* widget, bool_t unload_aft
 
 ret_t image_animation_set_sequence(widget_t* widget, const char* sequence) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && sequence != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL && sequence != NULL, RET_BAD_PARAMS);
 
   image_animation->sequence = tk_str_copy(image_animation->sequence, sequence);
 
@@ -301,7 +301,7 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence) {
 ret_t image_animation_set_range_sequence(widget_t* widget, uint32_t start_index,
                                          uint32_t end_index) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->index = start_index;
   image_animation->end_index = end_index;
@@ -375,7 +375,7 @@ static ret_t image_animation_on_update(const timer_info_t* info) {
 
 ret_t image_animation_play(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->timer_id == TK_INVALID_ID) {
     image_animation->timer_id =
@@ -387,7 +387,7 @@ ret_t image_animation_play(widget_t* widget) {
 
 ret_t image_animation_stop(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation_pause(widget);
   image_animation->index = -1;
@@ -397,7 +397,7 @@ ret_t image_animation_stop(widget_t* widget) {
 
 ret_t image_animation_pause(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->timer_id != TK_INVALID_ID) {
     timer_remove(image_animation->timer_id);
@@ -409,7 +409,7 @@ ret_t image_animation_pause(widget_t* widget) {
 
 ret_t image_animation_set_format(widget_t* widget, const char* format) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image_animation != NULL && format != NULL, RET_BAD_PARAMS);
 
   image_animation->format = tk_str_copy(image_animation->format, format);
 

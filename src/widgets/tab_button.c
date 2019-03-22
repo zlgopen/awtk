@@ -59,7 +59,7 @@ static ret_t tab_button_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
 
   if (tab_button->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -124,7 +124,7 @@ static int32_t tab_button_get_min_w(widget_t* widget) {
 
 static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tab_button != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_bool(v, tab_button->value);

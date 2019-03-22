@@ -408,10 +408,12 @@ ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, 
                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh) {
   float_t x = 0;
   float_t y = 0;
-  float_t w = sw / vg->ratio;
-  float_t h = sh / vg->ratio;
+  float_t w = 0;
+  float_t h = 0;
   return_value_if_fail(vg != NULL && img != NULL, RET_BAD_PARAMS);
 
+  w = sw / vg->ratio;
+  h = sh / vg->ratio;
   x = (dw - w) * 0.5f + dx;
   y = (dh - h) * 0.5f + dy;
 

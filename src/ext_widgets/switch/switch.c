@@ -69,7 +69,7 @@ static ret_t switch_on_scroll_done(void* ctx, event_t* e) {
 static ret_t switch_scroll_to(widget_t* widget, int32_t xoffset_end) {
   int32_t xoffset = 0;
   switch_t* aswitch = SWITCH(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(aswitch != NULL, RET_FAIL);
 
   xoffset = aswitch->xoffset;
   if (xoffset == xoffset_end) {
@@ -210,7 +210,7 @@ static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
 
 ret_t switch_set_value(widget_t* widget, bool_t value) {
   switch_t* aswitch = SWITCH(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(aswitch != NULL, RET_BAD_PARAMS);
 
   if (aswitch->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -234,7 +234,7 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
 
 static ret_t switch_get_prop(widget_t* widget, const char* name, value_t* v) {
   switch_t* aswitch = SWITCH(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(aswitch != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_bool(v, aswitch->value);
@@ -257,7 +257,7 @@ static ret_t switch_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 static ret_t switch_set_prop(widget_t* widget, const char* name, const value_t* v) {
   switch_t* aswitch = SWITCH(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(aswitch != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return switch_set_value(widget, value_bool(v));

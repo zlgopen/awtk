@@ -320,7 +320,7 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
 static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
   int32_t yoffset = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(widget != NULL, RET_FAIL);
+  return_value_if_fail(text_selector != NULL, RET_FAIL);
 
   yoffset = text_selector->yoffset;
   if (yoffset == yoffset_end) {

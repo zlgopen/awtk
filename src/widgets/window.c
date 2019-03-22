@@ -53,7 +53,7 @@ static ret_t window_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
   window_t* window = WINDOW(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(window != NULL, RET_BAD_PARAMS);
 
   if (window->fullscreen != fullscreen) {
     window->fullscreen = fullscreen;
