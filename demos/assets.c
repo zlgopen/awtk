@@ -117,10 +117,10 @@
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
-#include "assets/inc/data/app_json.data"
+#include "assets/inc/data/com_zlg_app_json.data"
 #include "assets/inc/data/test_dat.data"
 #include "assets/inc/data/test_json.data"
-#include "assets/inc/data/abc_any.data"
+#include "assets/inc/data/a_b_c_any.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -375,7 +375,6 @@
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #ifdef WITH_MINI_FONT
-#include "assets/inc/fonts/default.mini.res"
 #else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
 #endif /*WITH_MINI_FONT*/
@@ -629,10 +628,10 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, style_dialog_warn);
   assets_manager_add(rm, font_default);
-  assets_manager_add(rm, data_app_json);
+  assets_manager_add(rm, data_com_zlg_app_json);
   assets_manager_add(rm, data_test_dat);
   assets_manager_add(rm, data_test_json);
-  assets_manager_add(rm, data_abc_any);
+  assets_manager_add(rm, data_a_b_c_any);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);

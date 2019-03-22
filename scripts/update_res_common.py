@@ -19,6 +19,22 @@ OUTPUT_DIR=''
 IMAGEGEN_OPTIONS=''
 ###########################
 
+def to_var_name(s):
+    out='';
+    for c in s:
+        if(c.isalpha() or c.isdigit()):
+            out += c;
+        else:
+            out += '_';
+    return out;
+
+def fix_output_file_name(name):
+    filename, extname = os.path.splitext(name);
+    basename=os.path.basename(filename);
+    dirname=os.path.dirname(filename);
+    newname = os.path.normpath(os.path.join(dirname, to_var_name(basename) + extname));
+    return newname;
+
 def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
 
@@ -98,6 +114,7 @@ def gen_res_all_style():
     bin=copy.copy(f);
     inc=inc.replace('.xml', '.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    inc=fix_output_file_name(inc)
     themegen(raw, inc)
     bin=bin.replace('.xml', '.bin')
     themegen_bin(raw, bin)
@@ -110,6 +127,7 @@ def gen_res_svg():
     basename=os.path.basename(inc);
     inc=joinPath(OUTPUT_DIR, 'images/'+basename);
     inc=inc.replace('.svg', '.bsvg')
+    inc=fix_output_file_name(inc)
     bin=bin.replace('.svg', '.bsvg')
     svggen(raw, inc, bin)
 
@@ -122,6 +140,7 @@ def gen_res_png_jpg():
     inc=inc.replace('.png', '.data')
     inc=inc.replace('.jpg', '.data')
     inc=inc.replace('.gif', '.data')
+    inc=fix_output_file_name(inc)
     imagegen(raw, inc)
 
 def gen_res_all_image(): 
@@ -135,6 +154,7 @@ def gen_res_all_ui():
     bin=copy.copy(f);
     inc=inc.replace('.xml', '.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    inc=fix_output_file_name(inc)
     xml_to_ui(raw, inc)
     bin=bin.replace('.xml', '.bin')
     xml_to_ui_bin(raw, bin)
@@ -147,6 +167,7 @@ def gen_res_all_data():
     uextname = extname.replace('.', '_');
     inc=inc.replace(extname, uextname+'.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    inc=fix_output_file_name(inc)
     resgen(raw, inc)
 
 def gen_res_all_xml():
@@ -155,6 +176,7 @@ def gen_res_all_xml():
     raw=copy.copy(f);
     inc=inc.replace('.xml', '.data')
     inc=inc.replace(INPUT_DIR, OUTPUT_DIR)
+    inc=fix_output_file_name(inc)
     resgen(raw, inc)
 
 def gen_res_all_font():
@@ -164,6 +186,7 @@ def gen_res_all_font():
     res=res.replace(INPUT_DIR, '.')
     res=res.replace('.ttf', '.res');
     raw=raw.replace(INPUT_DIR, '.')
+    raw=fix_output_file_name(raw)
     resgen(raw, res)
   fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
 
@@ -174,6 +197,7 @@ def gen_res_all_script():
     res=res.replace(INPUT_DIR, '.')
     res=res.replace('.js', '.res');
     raw=raw.replace(INPUT_DIR, '.')
+    raw=fix_output_file_name(raw)
     resgen(raw, res)
 
 def gen_res_all_string():
