@@ -1,6 +1,6 @@
 <window anim_hint="htranslate" children_layout="default(c=1,r=2,s=5)">
   <view children_layout="default(c=1,h=24,m=5,s=5)">
-    <slider value="10"/>
+    <slider value="10" bar_size="5"/>
     <slider style="img" value="20" />
     <slider style="img" value="30" min="5" max="50" step="5"/>
 
@@ -18,7 +18,7 @@
   </view>
   
   <view children_layout="default(w=30,r=1,m=5,s=5)">
-    <slider value="10" vertical="true" />
+    <slider value="10" vertical="true" bar_size="5"/>
     <slider style="img_v" value="20" vertical="true" />
     <slider style="img_v" value="30" min="5" max="50" step="5" vertical="true"/>
 
