@@ -719,6 +719,13 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_PROP_CHANGED: {
+      prop_change_event_t* evt = (prop_change_event_t*)e;
+      if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_VALUE)) {
+        edit_update_status(widget);
+      }
+      break;
+    }
     default:
       break;
   }

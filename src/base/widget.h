@@ -81,7 +81,7 @@ struct _widget_vtable_t {
   /**
    * 是否属于可输入的控件(如：edit/slider等，用户可通过界面输入/改变数据或值)。
    */
-  uint32_t inputable: 1;
+  uint32_t inputable : 1;
   /**
    * 是否是focusable。
    *
