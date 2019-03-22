@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/03/22
+  * 完善资源生成脚本。
+  * widget vtable增加inputable属性。
+  * 修改listview没有scrollbar时的问题(感谢陈谭提供补丁)。
+
 * 2019/03/21
   * 增加lcd\_profile用于对绘制函数进行profile。
   * data资源支持同文件名，不同扩展名。
