@@ -258,12 +258,18 @@ typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 /*TK_NAME_LEN+1 must aligned to 4*/
 enum { TK_NAME_LEN = 31 };
 
+#ifdef WITH_CPPCHECK
+#define tk_str_eq strcmp
+#define tk_str_eq strcasecmp
+#else
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
 #define tk_str_ieq(s1, s2) (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0)
 
 #define tk_wstr_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
+#endif /*WITH_CPPCHECK*/
+
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)

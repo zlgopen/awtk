@@ -108,11 +108,15 @@ void tk_free(void* ptr);
  *
  * @return {void} 无。
  */
+#ifdef WITH_CPPCHECK
+#define TKMEM_FREE tk_free
+#else
 #define TKMEM_FREE(p)  \
   {                    \
     tk_free((void*)p); \
     p = NULL;          \
   }
+#endif /*WITH_CPPCHECK*/
 
 /*helpler*/
 #define TKMEM_ZALLOC(type) (type*)tk_calloc(1, sizeof(type), __FUNCTION__, __LINE__)
