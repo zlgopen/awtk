@@ -79,15 +79,19 @@ struct _widget_vtable_t {
    */
   uint32_t scrollable : 1;
   /**
-   * 是否是窗口。
+   * 是否属于可输入的控件(如：edit/slider等，用户可通过界面输入/改变数据或值)。
    */
-  uint32_t is_window : 1;
+  uint32_t inputable: 1;
   /**
    * 是否是focusable。
    *
    *>如编辑器。
    */
-  uint32_t is_focusable : 1;
+  uint32_t focusable : 1;
+  /**
+   * 是否是窗口。
+   */
+  uint32_t is_window : 1;
   /**
    * 是否是设计窗口。
    */

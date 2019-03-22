@@ -346,6 +346,7 @@ static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTI
                                             WIDGET_PROP_STEP,  NULL};
 TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .type = WIDGET_TYPE_SLIDER,
+                          .inputable = TRUE,
                           .clone_properties = s_slider_properties,
                           .persistent_properties = s_slider_properties,
                           .parent = TK_PARENT_VTABLE(widget),

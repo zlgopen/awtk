@@ -65,6 +65,12 @@ TEST(Slider, event) {
   widget_destroy(w);
 }
 
+TEST(Slider, inputable) {
+  widget_t* b = slider_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(b->vt->inputable, TRUE);
+  widget_destroy(b);
+}
+
 TEST(Slider, cast) {
   widget_t* w = slider_create(NULL, 0, 0, 100, 100);
 
