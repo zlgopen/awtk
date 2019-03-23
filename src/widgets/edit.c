@@ -978,8 +978,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     edit->offset_x = 0;
-    edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
     wstr_from_value(&(widget->text), v);
+    edit_set_cursor_pos(widget, 0x0fffffff, 0x0fffffff);
     return RET_OK;
   }
 
