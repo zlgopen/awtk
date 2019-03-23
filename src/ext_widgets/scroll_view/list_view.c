@@ -189,21 +189,25 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
       }
     }
 
-    if (!scroll_bar_is_mobile(scroll_bar) && list_view->auto_hide_scroll_bar) {
-      if (virtual_h <= widget->h) {
-        scroll_view->widget.w = list_view->widget.w;
-        widget_set_visible(scroll_bar, FALSE, FALSE);
-        widget_set_enable(scroll_bar, FALSE);
-      } else {
-        scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
-        widget_set_visible(scroll_bar, TRUE, FALSE);
-        widget_set_enable(scroll_bar, TRUE);
+    scroll_view->widget.w = list_view->widget.w;
+    if (scroll_bar != NULL) {
+      if (!scroll_bar_is_mobile(scroll_bar)) {
+        if (list_view->auto_hide_scroll_bar) {
+          if (virtual_h <= widget->h) {
+            widget_set_visible(scroll_bar, FALSE, FALSE);
+            widget_set_enable(scroll_bar, FALSE);
+          } else {
+            scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
+            widget_set_visible(scroll_bar, TRUE, FALSE);
+            widget_set_enable(scroll_bar, TRUE);
+          }
+        }
       }
-
-      w = scroll_view->widget.w;
     }
 
     y = 0;
+    w = scroll_view->widget.w;
+
     for (i = 0; i < n; i++) {
       widget_t* iter = children[i];
 
