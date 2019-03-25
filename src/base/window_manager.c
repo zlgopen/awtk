@@ -591,22 +591,36 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   }
   WIDGET_FOR_EACH_CHILD_END()
 
+  /*paint normal windows*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
-    if (wm->system_bar != iter) {
+    if (is_normal_window(iter)) {
       widget_paint(iter, c);
+
       if (!has_fullscreen_win) {
         has_fullscreen_win = is_window_fullscreen(iter);
       }
+      start = i + 1;
+      break;
     }
   }
   WIDGET_FOR_EACH_CHILD_END()
 
+  /*paint system_bar*/
   if (!has_fullscreen_win) {
     if (wm->system_bar != NULL && wm->system_bar->visible) {
       widget_paint(wm->system_bar, c);
     }
   }
+
+  /*paint dialog and other*/
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (i >= start && iter->visible) {
+    if (wm->system_bar != iter && !is_normal_window(iter)) {
+      widget_paint(iter, c);
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
 }
