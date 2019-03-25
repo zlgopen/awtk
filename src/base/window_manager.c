@@ -559,23 +559,28 @@ static ret_t window_manager_invalidate(widget_t* widget, rect_t* r) {
   return RET_OK;
 }
 
-int32_t window_manager_find_top_window_index(widget_t* widget) {
-  return_value_if_fail(widget != NULL, -1);
+widget_t* window_manager_get_top_main_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (is_normal_window(iter)) {
-    return i;
+  if (is_normal_window(iter) && iter->visible) {
+    return iter;
   }
   WIDGET_FOR_EACH_CHILD_END();
 
-  return -1;
+  return NULL;
 }
 
-widget_t* window_manager_get_top_main_window(widget_t* widget) {
-  int32_t index = window_manager_find_top_window_index(widget);
-  return_value_if_fail(index >= 0, NULL);
+widget_t* window_manager_get_top_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL, NULL);
 
-  return widget_get_child(widget, index);
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter->visible) {
+    return iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return NULL;
 }
 
 ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
@@ -832,12 +837,15 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
 
 ret_t window_manager_back(widget_t* widget) {
   event_t e;
-  widget_t* top_window = window_manager_get_top_main_window(widget);
+  widget_t* top_window = window_manager_get_top_window(widget);
   return_value_if_fail(top_window != NULL, RET_NOT_FOUND);
 
-  e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
-
-  return widget_dispatch(top_window, &e);
+  if (is_normal_window(top_window)) {
+    e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
+    return widget_dispatch(top_window, &e);
+  } else {
+    return window_manager_close_window(widget, top_window);
+  }
 }
 
 static ret_t window_manager_back_to_home_sync(widget_t* widget) {
