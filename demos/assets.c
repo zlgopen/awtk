@@ -375,6 +375,7 @@
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #ifdef WITH_MINI_FONT
+#include "assets/inc/fonts/default.mini.res"
 #else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
 #endif /*WITH_MINI_FONT*/

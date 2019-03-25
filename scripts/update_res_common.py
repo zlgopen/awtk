@@ -186,7 +186,6 @@ def gen_res_all_font():
     res=res.replace(INPUT_DIR, '.')
     res=res.replace('.ttf', '.res');
     raw=raw.replace(INPUT_DIR, '.')
-    raw=fix_output_file_name(raw)
     resgen(raw, res)
   fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18);
 
