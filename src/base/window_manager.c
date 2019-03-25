@@ -840,7 +840,7 @@ ret_t window_manager_back(widget_t* widget) {
   return widget_dispatch(top_window, &e);
 }
 
-ret_t window_manager_back_to_home(widget_t* widget) {
+static ret_t window_manager_back_to_home_sync(widget_t* widget) {
   widget_t* top = NULL;
   widget_t* home = NULL;
   int32_t children_nr = widget_count_children(widget);
@@ -867,4 +867,20 @@ ret_t window_manager_back_to_home(widget_t* widget) {
   return_value_if_fail(top != home, RET_OK);
 
   return window_manager_close_window(widget, top);
+}
+
+static ret_t window_manager_back_to_home_async(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+
+  window_manager_back_to_home_sync(widget);
+
+  return RET_REMOVE;
+}
+
+ret_t window_manager_back_to_home(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  idle_add(window_manager_back_to_home_async, widget);
+
+  return RET_OK;
 }
