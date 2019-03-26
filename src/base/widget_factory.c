@@ -56,6 +56,9 @@
 #include "base/widget_factory.h"
 #include "widgets/calibration_win.h"
 
+static widget_factory_t* widget_factory_init(widget_factory_t* factory);
+static ret_t widget_factory_deinit(widget_factory_t* factory);
+
 static widget_factory_t* s_widget_factory = NULL;
 typedef struct _creator_item_t {
   char type[TK_NAME_LEN + 1];
@@ -123,7 +126,7 @@ widget_factory_t* widget_factory_create(void) {
   return widget_factory_init(factory);
 }
 
-widget_factory_t* widget_factory_init(widget_factory_t* factory) {
+static widget_factory_t* widget_factory_init(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, NULL);
 
   darray_init(&(factory->creators), 0, default_destroy, (tk_compare_t)creator_item_cmp);
@@ -167,7 +170,7 @@ ret_t widget_factory_set(widget_factory_t* factory) {
   return RET_OK;
 }
 
-ret_t widget_factory_deinit(widget_factory_t* factory) {
+static ret_t widget_factory_deinit(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
   darray_deinit(&(factory->creators));

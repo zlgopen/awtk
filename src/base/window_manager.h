@@ -24,8 +24,8 @@
 
 #include "base/widget.h"
 #include "base/canvas.h"
-#include "base/window_animator.h"
 #include "base/input_device_status.h"
+#include "base/window_animator_factory.h"
 
 BEGIN_C_DECLS
 

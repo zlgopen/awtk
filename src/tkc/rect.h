@@ -141,6 +141,8 @@ rect_t* rect_cast(rect_t* rect);
  */
 ret_t rect_destroy(rect_t* r);
 
+rect_t* rect_scale(rect_t* r, float_t scale);
+
 rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
 bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
