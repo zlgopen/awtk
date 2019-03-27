@@ -22,8 +22,9 @@
 #ifndef TK_WINDOW_ANIMATOR_H
 #define TK_WINDOW_ANIMATOR_H
 
-#include "base/widget.h"
 #include "tkc/easing.h"
+#include "base/widget.h"
+#include "base/dialog_highlighter.h"
 
 BEGIN_C_DECLS
 
@@ -44,7 +45,7 @@ typedef struct _window_animator_vtable_t {
   window_animator_draw_curr_window_t draw_curr_window;
 } window_animator_vtable_t;
 
-typedef window_animator_t* (*window_animator_create_t)(bool_t open);
+typedef window_animator_t* (*window_animator_create_t)(bool_t open, object_t* args);
 
 /**
  * @enum window_animator_type_t
@@ -113,6 +114,7 @@ struct _window_animator_t {
   canvas_t* canvas;
   float_t time_percent;
 
+  dialog_highlighter_t* dialog_highlighter;
   const window_animator_vtable_t* vt;
 };
 

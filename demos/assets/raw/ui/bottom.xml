@@ -1,4 +1,5 @@
-<dialog anim_hint="bottom_to_top" x="0" y="bottom" w="100%" h="160">
+<dialog anim_hint="bottom_to_top" highlight="default(start_alpha=0, end_alpha=80)" 
+  x="0" y="bottom" w="100%" h="160">
   <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" />
   <dialog_client x="0" y="bottom" w="100%" h="-30">
     <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready?"/>

@@ -52,6 +52,6 @@ static const window_animator_vtable_t s_window_animator_bottom_to_top_vt = {
     .draw_prev_window = window_animator_bottom_to_top_draw_prev,
     .draw_curr_window = window_animator_bottom_to_top_draw_curr};
 
-window_animator_t* window_animator_bottom_to_top_create(bool_t open) {
+window_animator_t* window_animator_bottom_to_top_create(bool_t open, object_t* args) {
   return window_animator_create(open, &s_window_animator_bottom_to_top_vt);
 }

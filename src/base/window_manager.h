@@ -24,6 +24,7 @@
 
 #include "base/widget.h"
 #include "base/canvas.h"
+#include "base/dialog_highlighter.h"
 #include "base/input_device_status.h"
 #include "base/window_animator_factory.h"
 
@@ -69,6 +70,8 @@ typedef struct _window_manager_t {
   input_device_status_t input_device_status;
   uint32_t screen_saver_timer_id;
   uint32_t screen_saver_time;
+
+  dialog_highlighter_t* dialog_highlighter;
 } window_manager_t;
 
 /**
@@ -257,6 +260,7 @@ ret_t window_manager_back(widget_t* widget);
  */
 ret_t window_manager_back_to_home(widget_t* widget);
 
+ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter);
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 
 /*for compatible*/

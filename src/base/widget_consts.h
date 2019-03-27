@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_HIGHLIGHT
+ * dialog highlight。
+ */
+#define WIDGET_PROP_HIGHLIGHT "highlight"
+
+/**
  * @const WIDGET_PROP_BAR_SIZE
  * slider中的bar的的宽度或高度。
  */

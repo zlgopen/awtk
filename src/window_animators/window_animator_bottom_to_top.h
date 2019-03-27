@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-window_animator_t* window_animator_bottom_to_top_create(bool_t open);
+window_animator_t* window_animator_bottom_to_top_create(bool_t open, object_t* args);
 
 END_C_DECLS
 

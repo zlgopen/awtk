@@ -23,6 +23,7 @@ sources=Glob('tkc/*.c') +\
   Glob('platforms/pc/*.c') + \
   Glob('misc/*.cpp') + \
   Glob('window_animators/*.c') + \
+  Glob('dialog_highlighters/*.c') + \
   ['awtk_global.c'];
 
 sources += ['main_loop/main_loop_simple.c'];

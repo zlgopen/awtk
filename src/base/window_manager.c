@@ -596,28 +596,31 @@ ret_t window_manager_on_paint_children(widget_t* widget, canvas_t* c) {
   }
   WIDGET_FOR_EACH_CHILD_END()
 
-  /*paint normal windows*/
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (i >= start && iter->visible) {
-    if (is_normal_window(iter)) {
-      widget_paint(iter, c);
+  if(wm->dialog_highlighter != NULL) {
+    dialog_highlighter_draw(wm->dialog_highlighter, 1);
+  } else {
+    /*paint normal windows*/
+    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+    if (i >= start && iter->visible) {
+      if (is_normal_window(iter)) {
+        widget_paint(iter, c);
 
-      if (!has_fullscreen_win) {
-        has_fullscreen_win = is_window_fullscreen(iter);
+        if (!has_fullscreen_win) {
+          has_fullscreen_win = is_window_fullscreen(iter);
+        }
+        start = i + 1;
+        break;
       }
-      start = i + 1;
-      break;
+    }
+    WIDGET_FOR_EACH_CHILD_END()
+
+    /*paint system_bar*/
+    if (!has_fullscreen_win) {
+      if (wm->system_bar != NULL && wm->system_bar->visible) {
+        widget_paint(wm->system_bar, c);
+      }
     }
   }
-  WIDGET_FOR_EACH_CHILD_END()
-
-  /*paint system_bar*/
-  if (!has_fullscreen_win) {
-    if (wm->system_bar != NULL && wm->system_bar->visible) {
-      widget_paint(wm->system_bar, c);
-    }
-  }
-
   /*paint dialog and other*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
@@ -889,6 +892,15 @@ ret_t window_manager_back_to_home(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   idle_add(window_manager_back_to_home_async, widget);
+
+  return RET_OK;
+}
+
+ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  wm->dialog_highlighter = highlighter;
 
   return RET_OK;
 }

@@ -1,7 +1,7 @@
 ﻿/**
  * File:   window_animator_factory.h
  * Author: AWTK Develop Team
- * Brief:  widget factory
+ * Brief:  window animator factory
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -84,13 +84,13 @@ ret_t window_animator_factory_register(window_animator_factory_t* factory, const
  * 创建指定类型的窗口动画。
  * @annotation ["constructor"]
  * @param {window_animator_factory_t*} factory 窗口动画工厂对象。
- * @param {const char*} type 窗口动画类型。
  * @param {bool_t} open TRUE表示打开窗口时的动画，FALSE表示关闭窗口时的动画。
+ * @param {object_t*} args 参数。
  *
  * @return {window_animator_t*} 返回窗口动画对象。
  */
 window_animator_t* window_animator_factory_create_animator(window_animator_factory_t* factory,
-                                                           const char* type, bool_t open);
+                   bool_t open, object_t* args);
 
 /**
  * @method window_animator_factory_destroy

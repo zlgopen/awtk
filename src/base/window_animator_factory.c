@@ -75,14 +75,14 @@ ret_t window_animator_factory_register(window_animator_factory_t* factory, const
 }
 
 window_animator_t* window_animator_factory_create_animator(window_animator_factory_t* factory,
-                                                           const char* type, bool_t open) {
+                   bool_t open, object_t* args) {
   const creator_item_t* iter = NULL;
-  return_value_if_fail(factory != NULL && type != NULL, NULL);
+  return_value_if_fail(factory != NULL && args != NULL, NULL);
 
-  iter = darray_find(&(factory->creators), (void*)type);
+  iter = darray_find(&(factory->creators), (void*)args->name);
   return_value_if_fail(iter != NULL, NULL);
 
-  return iter->create(open);
+  return iter->create(open, args);
 }
 
 ret_t window_animator_factory_set(window_animator_factory_t* factory) {
@@ -109,74 +109,31 @@ ret_t window_animator_factory_destroy(window_animator_factory_t* factory) {
 }
 
 #ifdef WITH_WINDOW_ANIMATORS
-typedef struct _window_animation_parser_t {
-  func_call_parser_t base;
-  char name[TK_NAME_LEN + 1];
-  int duration;
-  int easing;
-} window_animation_parser_t;
-
-static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
-  window_animation_parser_t* p = (window_animation_parser_t*)parser;
-
-  tk_strncpy(p->name, func_name, TK_NAME_LEN);
-
-  return RET_OK;
-}
-
-static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const char* value) {
-  window_animation_parser_t* p = (window_animation_parser_t*)parser;
-
-  if (*name == 'd') { /*duration*/
-    p->duration = tk_atoi(value);
-  } else if (*name == 'e') { /*easing*/
-    const key_type_value_t* easing = easing_type_find(value);
-    p->easing = easing != NULL ? (int)(easing->value) : -1;
-  }
-
-  return RET_OK;
-}
-
-static ret_t window_animation_parser_parse(window_animation_parser_t* parser, const char* str) {
-  memset(parser, 0x00, sizeof(*parser));
-  func_call_parser_init(&(parser->base), str, strlen(str));
-
-  parser->easing = -1;
-  parser->base.on_name = parser_on_name;
-  parser->base.on_param = parser_on_param;
-  parser->base.on_done = NULL;
-
-  return func_call_parser_parse(&(parser->base));
-}
-
 static window_animator_t* window_animator_create_impl(const char* type, bool_t open) {
-  window_animation_parser_t parser;
+  value_t v;
+  object_t* args = NULL;
   window_animator_t* wa = NULL;
   window_animator_factory_t* factory = window_animator_factory();
 
   if (factory == NULL || type == NULL || *type == '\0') {
     return NULL;
   }
+  args = func_call_parse(type, strlen(type));
+  return_value_if_fail(args != NULL && args->name[0], NULL);
 
-  window_animation_parser_parse(&parser, type);
-  return_value_if_fail(parser.name[0] != '\0', NULL);
-
-  wa = window_animator_factory_create_animator(factory, parser.name, open);
+  wa = window_animator_factory_create_animator(factory, open, args);
   return_value_if_fail(wa != NULL, NULL);
 
-  if (parser.duration > 0) {
-    wa->duration = parser.duration;
+  if(object_get_prop(args, "duration", &v) == RET_OK) {
+    wa->duration = value_int(&v);
   }
 
-  if (parser.easing >= 0) {
-    wa->easing = easing_get((easing_type_t)(parser.easing));
+  
+  if(object_get_prop(args, "easing", &v) == RET_OK) {
+    wa->easing = easing_get((easing_type_t)(value_int(&v)));
   }
 
-  if (strchr(type, '=') != NULL) {
-    log_debug("parser.duration:%d parser.easing=%d\n", parser.duration, parser.easing);
-  }
-
-  func_call_parser_deinit(&(parser.base));
+  object_unref(args);
 
   return wa;
 }
