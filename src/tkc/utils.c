@@ -477,7 +477,7 @@ ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t
   tk_strncpy(str, name, size - 1);
 
   if (remove_extname) {
-    p = strchr(str, '.');
+    p = strrchr(str, '.');
     if (p != NULL) {
       *p = '\0';
     }
