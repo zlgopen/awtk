@@ -47,6 +47,31 @@ static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
 
 static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                             WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
+
+static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  dialog_t* dialog = DIALOG(widget);
+
+  if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
+    dialog->highlight = tk_str_copy(dialog->highlight, value_str(v));
+
+    return RET_OK;
+  }
+
+  return window_base_set_prop(widget, name, v);
+}
+
+static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
+  dialog_t* dialog = DIALOG(widget);
+
+  if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
+    value_set_str(v, dialog->highlight);
+
+    return RET_OK;
+  }
+
+  return window_base_get_prop(widget, name, v);
+}
+
 TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .type = WIDGET_TYPE_DIALOG,
                           .is_window = TRUE,
@@ -59,8 +84,8 @@ TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .on_paint_self = window_base_on_paint_self,
                           .on_paint_begin = window_base_on_paint_begin,
                           .on_paint_end = window_base_on_paint_end,
-                          .set_prop = window_base_set_prop,
-                          .get_prop = window_base_get_prop,
+                          .set_prop = dialog_set_prop,
+                          .get_prop = dialog_get_prop,
                           .on_destroy = window_base_on_destroy};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

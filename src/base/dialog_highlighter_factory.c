@@ -26,7 +26,8 @@
 #include "tkc/func_call_parser.h"
 #include "base/dialog_highlighter_factory.h"
 
-static dialog_highlighter_factory_t* dialog_highlighter_factory_init(dialog_highlighter_factory_t* factory);
+static dialog_highlighter_factory_t* dialog_highlighter_factory_init(
+    dialog_highlighter_factory_t* factory);
 static ret_t dialog_highlighter_factory_deinit(dialog_highlighter_factory_t* factory);
 
 static dialog_highlighter_factory_t* s_dialog_highlighter_factory = NULL;
@@ -51,7 +52,8 @@ dialog_highlighter_factory_t* dialog_highlighter_factory_create(void) {
   return dialog_highlighter_factory_init(factory);
 }
 
-static dialog_highlighter_factory_t* dialog_highlighter_factory_init(dialog_highlighter_factory_t* factory) {
+static dialog_highlighter_factory_t* dialog_highlighter_factory_init(
+    dialog_highlighter_factory_t* factory) {
   return_value_if_fail(factory != NULL, NULL);
 
   darray_init(&(factory->creators), 0, default_destroy, (tk_compare_t)creator_item_cmp);
@@ -60,7 +62,7 @@ static dialog_highlighter_factory_t* dialog_highlighter_factory_init(dialog_high
 }
 
 ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory, const char* type,
-                                       dialog_highlighter_create_t create) {
+                                          dialog_highlighter_create_t create) {
   creator_item_t* item = NULL;
   return_value_if_fail(factory != NULL && type != NULL && create != NULL, RET_BAD_PARAMS);
 
@@ -76,13 +78,13 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
 
 dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
     dialog_highlighter_factory_t* factory, const char* args) {
-  dialog_highlighter_t*  h = NULL;
+  dialog_highlighter_t* h = NULL;
   const creator_item_t* iter = NULL;
   object_t* args_obj = func_call_parse(args, strlen(args));
   return_value_if_fail(factory != NULL && args_obj != NULL, NULL);
 
   iter = darray_find(&(factory->creators), (void*)args_obj->name);
-  if(iter != NULL) {
+  if (iter != NULL) {
     h = iter->create(args_obj);
   }
   object_unref(args_obj);
@@ -112,4 +114,3 @@ ret_t dialog_highlighter_factory_destroy(dialog_highlighter_factory_t* factory) 
 
   return RET_OK;
 }
-

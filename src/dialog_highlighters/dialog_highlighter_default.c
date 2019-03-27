@@ -19,15 +19,19 @@
  *
  */
 
+#include "base/window_manager.h"
 #include "base/dialog_highlighter.h"
 #include "dialog_highlighters/dialog_highlighter_default.h"
 
 static ret_t dialog_highlighter_default_draw_mask(canvas_t* c, uint8_t alpha) {
-  wh_t w = canvas_get_width(c);
-  wh_t h = canvas_get_height(c);
-  color_t mask = color_init(0, 0, 0, alpha);
-  canvas_set_fill_color(c, mask);
-  canvas_fill_rect(c, 0, 0, w, h);
+  if (alpha > 1) {
+    wh_t w = canvas_get_width(c);
+    wh_t h = canvas_get_height(c);
+    color_t mask = color_init(0, 0, 0, alpha);
+
+    canvas_set_fill_color(c, mask);
+    canvas_fill_rect(c, 0, 0, w, h);
+  }
 
   return alpha;
 }
@@ -36,7 +40,12 @@ static ret_t dialog_highlighter_default_prepare(dialog_highlighter_t* h, canvas_
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   return_value_if_fail(h != NULL && h->vt != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if(dh->start_alpha == dh->end_alpha) {
+  /*
+   * optimization:
+   * if dh->start_alpha == dh->end_alpha, we draw mask layer only at the first time.
+   */
+  if (dh->start_alpha == dh->end_alpha) {
+    window_manager_paint_system_bar(window_manager(), c);
     dialog_highlighter_default_draw_mask(c, dh->start_alpha);
   }
 
@@ -50,9 +59,18 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
   rect_t dst = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
 
-  lcd_draw_image(c->lcd, img, &src, &dst);
+  if (percent == 1) {
+    /*if window is open, enable clip and draw system bar*/
+    canvas_draw_image(c, img, &src, &dst);
+    window_manager_paint_system_bar(window_manager(), c);
+  } else {
+    lcd_draw_image(c->lcd, img, &src, &dst);
+  }
 
-  if(dh->start_alpha != dh->end_alpha) {
+  /*
+   * only if dh->start_alpha != dh->end_alpha, we draw mask layer very time.
+   */
+  if (dh->start_alpha != dh->end_alpha) {
     uint8_t a = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
     dialog_highlighter_default_draw_mask(c, a);
   }
@@ -61,12 +79,11 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
 }
 
 static const dialog_highlighter_vtable_t s_dialog_highlighter_default_vt = {
-  .type = "dialog_highlighter_default_t",
-  .desc = "dialog_highlighter_default_t",
-  .size = sizeof(dialog_highlighter_default_t),
-  .prepare = dialog_highlighter_default_prepare,
-  .draw = dialog_highlighter_default_draw
-};
+    .type = "dialog_highlighter_default_t",
+    .desc = "dialog_highlighter_default_t",
+    .size = sizeof(dialog_highlighter_default_t),
+    .prepare = dialog_highlighter_default_prepare,
+    .draw = dialog_highlighter_default_draw};
 
 dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
   value_t v;
@@ -74,22 +91,21 @@ dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   return_value_if_fail(h != NULL, NULL);
 
-  dh->end_alpha = 0xff;
-  dh->start_alpha = 0xff;
+  dh->end_alpha = 0;
+  dh->start_alpha = 0;
 
-  if(object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_ALPHA, &v) == RET_OK) {
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
     dh->end_alpha = value_int(&v);
   }
-  
-  if(object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_START_ALPHA, &v) == RET_OK) {
+
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_START_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
   }
-  
-  if(object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_END_ALPHA, &v) == RET_OK) {
+
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_END_ALPHA, &v) == RET_OK) {
     dh->end_alpha = value_int(&v);
   }
 
   return h;
 }
-

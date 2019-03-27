@@ -99,7 +99,7 @@ object_t* func_call_parse(const char* str, uint32_t size) {
   memset(&parser, 0x00, sizeof(parser));
   func_call_parser_init(&(parser.base), str, size);
 
-      parser.obj = object_default_create();
+  parser.obj = object_default_create();
   parser.base.on_name = parser_on_name;
   parser.base.on_param = parser_on_param;
   return_value_if_fail(parser.obj != NULL, NULL);

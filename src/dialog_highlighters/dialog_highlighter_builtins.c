@@ -26,9 +26,8 @@
 ret_t dialog_highlighter_register_builtins(void) {
   dialog_highlighter_factory_t* f = dialog_highlighter_factory();
 
-  dialog_highlighter_factory_register(f, DIALOG_HIGHLIGHTER_DEFAULT, 
-      dialog_highlighter_default_create);
+  dialog_highlighter_factory_register(f, DIALOG_HIGHLIGHTER_DEFAULT,
+                                      dialog_highlighter_default_create);
 
   return RET_OK;
 }
-

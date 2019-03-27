@@ -123,8 +123,8 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
                        RET_FAIL);
-  return_value_if_fail(dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK,
-                       RET_FAIL);
+  return_value_if_fail(
+      dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
@@ -152,7 +152,7 @@ ret_t tk_deinit_internal(void) {
 
   window_animator_factory_destroy(window_animator_factory());
   window_animator_factory_set(NULL);
-  
+
   dialog_highlighter_factory_destroy(dialog_highlighter_factory());
   dialog_highlighter_factory_set(NULL);
 

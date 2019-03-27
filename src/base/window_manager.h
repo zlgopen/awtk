@@ -260,6 +260,7 @@ ret_t window_manager_back(widget_t* widget);
  */
 ret_t window_manager_back_to_home(widget_t* widget);
 
+ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
 ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter);
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

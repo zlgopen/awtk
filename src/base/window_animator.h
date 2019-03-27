@@ -105,16 +105,16 @@ struct _window_animator_t {
   bitmap_t prev_img;
   bitmap_t curr_img;
 
-  framebuffer_object_t prev_fbo;
-  framebuffer_object_t curr_fbo;
-
   bool_t open;
   float_t ratio;
   float_t percent;
   canvas_t* canvas;
   float_t time_percent;
 
+  framebuffer_object_t prev_fbo;
+  framebuffer_object_t curr_fbo;
   dialog_highlighter_t* dialog_highlighter;
+
   const window_animator_vtable_t* vt;
 };
 
@@ -138,9 +138,19 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms);
  */
 ret_t window_animator_destroy(window_animator_t* wa);
 
-/*public for implementation*/
+/**
+ * @method window_animator_create
+ * 创建窗口动画对象。
+ *
+ *>供子类构造函数用。
+ * @param {bool_t} open TRUE表示打开窗口的动画，FALSE表示关闭窗口的动画。
+ * @param {const window_animator_vtable_t*} vt 虚表对象。
+ *
+ * @return {window_animator_t*} 返回窗口动画对象。
+ */
 window_animator_t* window_animator_create(bool_t open, const window_animator_vtable_t* vt);
 
+/*public for factory*/
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win);
 

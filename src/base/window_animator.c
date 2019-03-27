@@ -23,31 +23,31 @@
 #include "base/window_manager.h"
 #include "base/dialog_highlighter_factory.h"
 
+static bool_t window_animator_is_overlap(window_animator_t* wa);
 static ret_t window_animator_paint_system_bar(window_animator_t* wa);
 static ret_t window_animator_update_percent(window_animator_t* wa);
 static ret_t window_animator_draw_prev_window(window_animator_t* wa);
 static ret_t window_animator_draw_curr_window(window_animator_t* wa);
-
 static ret_t window_animator_begin_frame_normal(window_animator_t* wa);
 static ret_t window_animator_begin_frame_overlap(window_animator_t* wa);
 
 static ret_t window_animator_prepare_highligter(window_animator_t* wa, canvas_t* c) {
   value_t v;
   widget_t* curr_win = wa->curr_win;
+  widget_t* wm = wa->curr_win->parent;
 
-  if(wa->open) {
-    if(widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+  if (wa->open && window_animator_is_overlap(wa)) {
+    if (widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
       dialog_highlighter_factory_t* f = dialog_highlighter_factory();
       wa->dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, value_str(&v));
     }
 
-    window_manager_set_dialog_highlighter(window_manager(), wa->dialog_highlighter); 
+    window_manager_set_dialog_highlighter(wm, wa->dialog_highlighter);
   } else {
-    wa->dialog_highlighter = WINDOW_MANAGER(window_manager())->dialog_highlighter;
+    wa->dialog_highlighter = WINDOW_MANAGER(wm)->dialog_highlighter;
   }
 
-  if(wa->dialog_highlighter != NULL) {
-    window_animator_paint_system_bar(wa);
+  if (wa->dialog_highlighter != NULL) {
     dialog_highlighter_prepare(wa->dialog_highlighter, c);
   }
 
@@ -57,13 +57,12 @@ static ret_t window_animator_prepare_highligter(window_animator_t* wa, canvas_t*
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = lcd_get_vgcanvas(wa->canvas->lcd);
-  if(wa->dialog_highlighter == NULL) {
+  if (wa->dialog_highlighter == NULL) {
     vgcanvas_destroy_fbo(vg, &(wa->prev_fbo));
   }
-
   vgcanvas_destroy_fbo(vg, &(wa->curr_fbo));
 #else
-  if(wa->dialog_highlighter == NULL) {
+  if (wa->dialog_highlighter == NULL) {
     bitmap_destroy(&(wa->prev_img));
   }
   bitmap_destroy(&(wa->curr_img));
@@ -76,10 +75,13 @@ static ret_t window_animator_open_destroy(window_animator_t* wa) {
 }
 
 static ret_t window_animator_close_destroy(window_animator_t* wa) {
+  widget_t* wm = wa->curr_win->parent;
+
   widget_destroy(wa->curr_win);
-  if(wa->dialog_highlighter != NULL) {
+
+  if (wa->dialog_highlighter != NULL) {
     dialog_highlighter_destroy(wa->dialog_highlighter);
-    window_manager_set_dialog_highlighter(window_manager(), NULL);
+    window_manager_set_dialog_highlighter(wm, NULL);
   }
 
   return window_animator_open_destroy(wa);
@@ -226,7 +228,7 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
   fbo_to_img(&(wa->curr_fbo), &(wa->curr_img));
   wa->ratio = wa->curr_fbo.ratio;
 
-  if(wa->dialog_highlighter != NULL) {
+  if (wa->dialog_highlighter != NULL) {
     dialog_highlighter_set_bg(wa->dialog_highlighter, &(wa->prev_img), &(wa->prev_fbo));
   }
 
@@ -270,8 +272,8 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
 
   wa->prev_img.flags = BITMAP_FLAG_OPAQUE;
   wa->curr_img.flags = BITMAP_FLAG_OPAQUE;
-  
-  if(wa->dialog_highlighter != NULL) {
+
+  if (wa->dialog_highlighter != NULL) {
     dialog_highlighter_set_bg(wa->dialog_highlighter, &(wa->prev_img), NULL);
   }
 
@@ -323,7 +325,7 @@ static ret_t window_animator_update_percent(window_animator_t* wa) {
 static ret_t window_animator_draw_prev_window(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL && wa->vt->draw_prev_window, RET_BAD_PARAMS);
 
-  if(wa->dialog_highlighter != NULL) {
+  if (wa->dialog_highlighter != NULL) {
     return dialog_highlighter_draw(wa->dialog_highlighter, wa->percent);
   } else {
     return wa->vt->draw_prev_window(wa);

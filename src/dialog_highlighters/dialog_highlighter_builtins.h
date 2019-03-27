@@ -26,6 +26,12 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @method dialog_highlighter_register_builtins
+ * 注册内置的对话框高亮策略。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t dialog_highlighter_register_builtins(void);
 
 END_C_DECLS

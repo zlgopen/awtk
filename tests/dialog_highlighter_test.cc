@@ -9,7 +9,7 @@ TEST(DialogHighLigters, basic) {
 
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   ASSERT_EQ(dh->start_alpha, dh->end_alpha);
-  ASSERT_EQ(dh->start_alpha, 0xff);
+  ASSERT_EQ(dh->start_alpha, 0);
 
   dialog_highlighter_destroy(h);
 }
@@ -33,7 +33,7 @@ TEST(DialogHighLigters, start_alpha) {
 
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   ASSERT_EQ(dh->start_alpha, 123);
-  ASSERT_EQ(dh->end_alpha, 0xff);
+  ASSERT_EQ(dh->end_alpha, 0);
 
   dialog_highlighter_destroy(h);
 }
@@ -45,7 +45,7 @@ TEST(DialogHighLigters, end_alpha) {
 
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   ASSERT_EQ(dh->end_alpha, 123);
-  ASSERT_EQ(dh->start_alpha, 0xff);
+  ASSERT_EQ(dh->start_alpha, 0);
 
   dialog_highlighter_destroy(h);
 }
@@ -69,4 +69,3 @@ TEST(DialogHighLigters, not_exist) {
   ASSERT_EQ(h == NULL, TRUE);
   dialog_highlighter_destroy(h);
 }
-

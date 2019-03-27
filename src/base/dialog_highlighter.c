@@ -21,14 +21,14 @@
 
 #include "base/dialog_highlighter.h"
 
-
 dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_t* vt) {
   dialog_highlighter_t* h = NULL;
   return_value_if_fail(vt != NULL && vt->size >= sizeof(dialog_highlighter_t), NULL);
+
   h = (dialog_highlighter_t*)TKMEM_ALLOC(vt->size);
   return_value_if_fail(h != NULL, NULL);
-  memset(h, 0x00, vt->size);
 
+  memset(h, 0x00, vt->size);
   h->vt = vt;
 
   return h;
@@ -38,7 +38,7 @@ ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c) {
   return_value_if_fail(h != NULL && h->vt != NULL && c != NULL, RET_BAD_PARAMS);
 
   h->canvas = c;
-  if(h->vt->prepare != NULL) {
+  if (h->vt->prepare != NULL) {
     return h->vt->prepare(h, c);
   }
 
@@ -48,12 +48,12 @@ ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c) {
 ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuffer_object_t* fbo) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
-  if(img != NULL) {
+  if (img != NULL) {
     h->img = *img;
   }
 
-  if(fbo != NULL) {
-    h->fbo = *fbo; 
+  if (fbo != NULL) {
+    h->fbo = *fbo;
   }
 
   return RET_OK;
@@ -62,16 +62,17 @@ ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuf
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
-  if(h->vt->draw != NULL) {
+  if (h->vt->draw != NULL) {
     return h->vt->draw(h, percent);
   }
 
   return RET_NOT_IMPL;
 }
 
-ret_t dialog_highlighter_on_destroy(dialog_highlighter_t* h) {
+static ret_t dialog_highlighter_on_destroy(dialog_highlighter_t* h) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
-  if(h->vt->on_destroy != NULL) {
+
+  if (h->vt->on_destroy != NULL) {
     h->vt->on_destroy(h);
   }
 
@@ -83,13 +84,16 @@ ret_t dialog_highlighter_destroy(dialog_highlighter_t* h) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
   dialog_highlighter_on_destroy(h);
-  bitmap_destroy(&(h->img));
-  vg = canvas_get_vgcanvas(h->canvas);
-  if(vg != NULL) {
+
+  if (h->fbo.handle) {
+    vg = canvas_get_vgcanvas(h->canvas);
     vgcanvas_destroy_fbo(vg, &(h->fbo));
+  } else {
+    bitmap_destroy(&(h->img));
   }
+
+  memset(h, 0x00, h->vt->size);
+  TKMEM_FREE(h);
 
   return RET_OK;
 }
-
-

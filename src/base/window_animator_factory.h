@@ -90,7 +90,7 @@ ret_t window_animator_factory_register(window_animator_factory_t* factory, const
  * @return {window_animator_t*} 返回窗口动画对象。
  */
 window_animator_t* window_animator_factory_create_animator(window_animator_factory_t* factory,
-                   bool_t open, object_t* args);
+                                                           bool_t open, object_t* args);
 
 /**
  * @method window_animator_factory_destroy
