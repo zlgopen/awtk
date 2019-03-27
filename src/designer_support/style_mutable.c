@@ -59,7 +59,7 @@ static ret_t style_item_set(style_item_t* first, const char* name, const value_t
 
   if (first != NULL) {
     while (iter) {
-      if (iter->name == name) {
+      if (tk_str_eq(iter->name, name)) {
         value_reset(&(iter->value));
         value_deep_copy(&(iter->value), value);
         return RET_OK;
@@ -77,7 +77,7 @@ static ret_t style_item_get(style_item_t* first, const char* name, value_t* valu
 
   if (first != NULL) {
     while (iter) {
-      if (iter->name == name) {
+      if (tk_str_eq(iter->name, name)) {
         *value = iter->value;
         return RET_OK;
       }
@@ -118,7 +118,7 @@ widget_state_style_t* widget_state_style_find(widget_state_style_t* first, const
   widget_state_style_t* iter = first;
 
   while (iter != NULL) {
-    if (iter->state == state) {
+    if (tk_str_eq(iter->state, state)) {
       return iter;
     }
     iter = iter->next;
