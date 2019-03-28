@@ -70,8 +70,8 @@ ret_t window_animator_slide_draw_prev(window_animator_t* wa) {
   return RET_OK;
 }
 
-window_animator_t* window_animator_slide_create(bool_t open, 
-    object_t* args, const window_animator_vtable_t* vt) {
+window_animator_t* window_animator_slide_create(bool_t open, object_t* args,
+                                                const window_animator_vtable_t* vt) {
   value_t v;
   window_animator_t* wa = window_animator_create(open, vt);
   window_animator_slide_t* was = (window_animator_slide_t*)wa;

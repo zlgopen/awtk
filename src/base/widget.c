@@ -848,7 +848,7 @@ static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
   if (widget->opacity < TK_OPACITY_ALPHA) {
     canvas_set_global_alpha(c, save_alpha);
   }
-  
+
   widget_on_paint_done(widget, c);
 
   return RET_OK;

@@ -114,7 +114,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   point_t p = {0, 0};
   widget_t* widget = im->widget;
   widget_t* win = widget_get_window(widget);
-  const char* close_anim_hint = "bottom_to_top";
+  const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
   const char* keyboard = input_type_to_keyboard_name(input_type);
 

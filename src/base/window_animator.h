@@ -41,7 +41,8 @@ typedef struct _window_animator_vtable_t {
   const char* desc;
   uint32_t size;
   bool_t overlap;
-  window_animator_init_t init;;
+  window_animator_init_t init;
+  ;
   window_animator_update_percent_t update_percent;
   window_animator_draw_prev_window_t draw_prev_window;
   window_animator_draw_curr_window_t draw_curr_window;

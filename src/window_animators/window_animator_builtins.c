@@ -49,9 +49,8 @@ ret_t window_animator_register_builtins(void) {
                                    window_animator_popup_create);
   window_animator_factory_register(factory, WINDOW_ANIMATOR_POPDOWN,
                                    window_animator_popdown_create);
-  window_animator_factory_register(factory, WINDOW_ANIMATOR_POPUP,
-                                   window_animator_popup_create);
-  
+  window_animator_factory_register(factory, WINDOW_ANIMATOR_POPUP, window_animator_popup_create);
+
   window_animator_factory_register(factory, WINDOW_ANIMATOR_SLIDE_UP,
                                    window_animator_slide_up_create);
   window_animator_factory_register(factory, WINDOW_ANIMATOR_SLIDE_DOWN,

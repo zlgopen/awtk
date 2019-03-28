@@ -129,7 +129,11 @@ static window_animator_t* window_animator_create_impl(const char* type, bool_t o
   }
 
   if (object_get_prop(args, "easing", &v) == RET_OK) {
-    wa->easing = easing_get((easing_type_t)(value_int(&v)));
+    const key_type_value_t* kv = easing_type_find(value_str(&v));
+
+    if (kv != NULL) {
+      wa->easing = easing_get((easing_type_t)(kv->value));
+    }
   }
 
   object_unref(args);
