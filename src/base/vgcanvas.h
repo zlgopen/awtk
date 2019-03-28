@@ -1090,6 +1090,7 @@ ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 
 END_C_DECLS
 

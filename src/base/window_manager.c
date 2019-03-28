@@ -30,11 +30,13 @@
 #include "base/system_info.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
+#include "base/dialog_highlighter_factory.h"
 
 static ret_t window_manager_inc_fps(widget_t* widget);
 static ret_t window_manager_update_fps(widget_t* widget);
 static ret_t window_manager_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_layout_child(widget_t* widget, widget_t* window);
+static ret_t window_manager_create_dialog_highlighter(widget_t* widget, widget_t* curr_win);
 
 static bool_t is_window_fullscreen(widget_t* widget) {
   value_t v;
@@ -137,6 +139,127 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
   return NULL;
 }
 
+ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate) {
+  canvas_t* c = NULL;
+  vgcanvas_t* vg = NULL;
+#ifndef WITH_NANOVG_GPU
+  rect_t r = {0};
+#endif /*WITH_NANOVG_GPU*/
+
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
+
+  c = wm->canvas;
+  vg = lcd_get_vgcanvas(c->lcd);
+
+#ifdef WITH_NANOVG_GPU
+  ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
+  ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
+  vgcanvas_scale(vg, 1, 1);
+  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  ENSURE(widget_paint(curr_win, c) == RET_OK);
+  ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
+  fbo_to_img(fbo, img);
+#else
+  r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
+  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
+  canvas_set_clip_rect(c, &r);
+  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  ENSURE(widget_paint(curr_win, c) == RET_OK);
+  ENSURE(canvas_end_frame(c) == RET_OK);
+  ENSURE(lcd_take_snapshot(c->lcd, img, auto_rotate) == RET_OK);
+#endif
+
+  return RET_OK;
+}
+
+ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate) {
+  canvas_t* c = NULL;
+  vgcanvas_t* vg = NULL;
+#ifndef WITH_NANOVG_GPU
+  rect_t r = {0};
+#endif /*WITH_NANOVG_GPU*/
+
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  dialog_highlighter_t* dialog_highlighter = NULL;
+
+  return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
+
+  c = wm->canvas;
+  vg = lcd_get_vgcanvas(c->lcd);
+  dialog_highlighter = wm->dialog_highlighter;
+
+#ifdef WITH_NANOVG_GPU
+  ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
+  ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
+  vgcanvas_scale(vg, 1, 1);
+
+  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  ENSURE(widget_paint(prev_win, c) == RET_OK);
+
+  if (dialog_highlighter != NULL) {
+    dialog_highlighter_prepare(dialog_highlighter, c);
+  }
+  ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
+  fbo_to_img(fbo, img);
+#else
+  r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
+  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
+  canvas_set_clip_rect(c, &r);
+  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  ENSURE(widget_paint(prev_win, c) == RET_OK);
+  if (dialog_highlighter != NULL) {
+    dialog_highlighter_prepare(dialog_highlighter, c);
+  }
+  ENSURE(canvas_end_frame(c) == RET_OK);
+  ENSURE(lcd_take_snapshot(c->lcd, img, auto_rotate) == RET_OK);
+#endif /*WITH_NANOVG_GPU*/
+
+  if (dialog_highlighter != NULL) {
+    dialog_highlighter_set_bg(dialog_highlighter, img, fbo);
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_manager_create_dialog_highlighter(widget_t* widget, widget_t* curr_win) {
+  value_t v;
+  ret_t ret = RET_FAIL;
+  dialog_highlighter_t* dialog_highlighter = NULL;
+
+  if (is_dialog(curr_win) && widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+    const char* args = value_str(&v);
+    if (args != NULL) {
+      dialog_highlighter_factory_t* f = dialog_highlighter_factory();
+      dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, args, curr_win);
+
+      if (dialog_highlighter != NULL) {
+        window_manager_set_dialog_highlighter(widget, dialog_highlighter);
+        ret = RET_OK;
+      }
+    }
+  }
+
+  return ret;
+}
+
+static ret_t window_manager_prepare_dialog_highlighter(widget_t* widget, widget_t* prev_win,
+                                                       widget_t* curr_win) {
+  if (window_manager_create_dialog_highlighter(widget, curr_win) == RET_OK) {
+    bitmap_t img = {0};
+    framebuffer_object_t fbo = {0};
+    window_manager_snap_prev_window(widget, prev_win, &img, &fbo, TRUE);
+
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}
+
 static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr_win, bool_t open) {
   value_t v;
   const char* anim_hint = NULL;
@@ -159,6 +282,7 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
   }
 
   if (anim_hint && *anim_hint) {
+    window_manager_create_dialog_highlighter(WIDGET(wm), curr_win);
     if (open) {
       wm->animator = window_animator_create_for_open(anim_hint, wm->canvas, prev_win, curr_win);
     } else {
@@ -166,10 +290,13 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
     }
 
     wm->animating = wm->animator != NULL;
+
     if (wm->animating) {
       wm->ignore_user_input = TRUE;
       log_debug("ignore_user_input\n");
     }
+  } else {
+    window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
   }
 
   return wm->animating ? RET_OK : RET_FAIL;

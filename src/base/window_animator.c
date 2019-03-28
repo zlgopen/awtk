@@ -31,29 +31,6 @@ static ret_t window_animator_draw_curr_window(window_animator_t* wa);
 static ret_t window_animator_begin_frame_normal(window_animator_t* wa);
 static ret_t window_animator_begin_frame_overlap(window_animator_t* wa);
 
-static ret_t window_animator_prepare_highligter(window_animator_t* wa, canvas_t* c) {
-  value_t v;
-  widget_t* curr_win = wa->curr_win;
-  widget_t* wm = wa->curr_win->parent;
-
-  if (wa->open && window_animator_is_overlap(wa)) {
-    if (widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
-      dialog_highlighter_factory_t* f = dialog_highlighter_factory();
-      wa->dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, value_str(&v));
-    }
-
-    window_manager_set_dialog_highlighter(wm, wa->dialog_highlighter);
-  } else {
-    wa->dialog_highlighter = WINDOW_MANAGER(wm)->dialog_highlighter;
-  }
-
-  if (wa->dialog_highlighter != NULL) {
-    dialog_highlighter_prepare(wa->dialog_highlighter, c);
-  }
-
-  return RET_OK;
-}
-
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = lcd_get_vgcanvas(wa->canvas->lcd);
@@ -75,14 +52,7 @@ static ret_t window_animator_open_destroy(window_animator_t* wa) {
 }
 
 static ret_t window_animator_close_destroy(window_animator_t* wa) {
-  widget_t* wm = wa->curr_win->parent;
-
   widget_destroy(wa->curr_win);
-
-  if (wa->dialog_highlighter != NULL) {
-    dialog_highlighter_destroy(wa->dialog_highlighter);
-    window_manager_set_dialog_highlighter(wm, NULL);
-  }
 
   return window_animator_open_destroy(wa);
 }
@@ -184,98 +154,21 @@ static ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   return window_animator_paint_system_bar(wa);
 }
 
-#ifdef WITH_NANOVG_GPU
-static ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
-  return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
-
-  memset(img, 0x00, sizeof(bitmap_t));
-  img->specific = (char*)NULL + fbo->id;
-  img->specific_ctx = NULL;
-  img->specific_destroy = NULL;
-  img->w = fbo->w * fbo->ratio;
-  img->h = fbo->h * fbo->ratio;
-
-  img->flags = BITMAP_FLAG_TEXTURE;
-
-  return RET_OK;
-}
-
+#ifdef WITH_VGCANVAS
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win) {
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   widget_t* wm = prev_win->parent;
+  bool_t auto_rotate = !window_animator_is_overlap(wa);
+
   wa->canvas = c;
   wa->prev_win = prev_win;
   wa->curr_win = curr_win;
+  wa->ratio = c->lcd->ratio;
   wa->duration = wa->duration ? wa->duration : 500;
 
-  ENSURE(vgcanvas_create_fbo(vg, &(wa->prev_fbo)) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
-  vgcanvas_scale(vg, 1, 1);
-  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
-  ENSURE(widget_paint(prev_win, c) == RET_OK);
-  window_animator_prepare_highligter(wa, c);
-  ENSURE(vgcanvas_unbind_fbo(vg, &(wa->prev_fbo)) == RET_OK);
-
-  ENSURE(vgcanvas_create_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-  vgcanvas_scale(vg, 1, 1);
-  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
-  ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(vgcanvas_unbind_fbo(vg, &(wa->curr_fbo)) == RET_OK);
-
-  fbo_to_img(&(wa->prev_fbo), &(wa->prev_img));
-  fbo_to_img(&(wa->curr_fbo), &(wa->curr_img));
-  wa->ratio = wa->curr_fbo.ratio;
-
-  if (wa->dialog_highlighter != NULL) {
-    dialog_highlighter_set_bg(wa->dialog_highlighter, &(wa->prev_img), &(wa->prev_fbo));
-  }
-
-  return RET_OK;
-}
-#elif defined(WITH_NANOVG_SOFT)
-ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
-                              widget_t* curr_win) {
-  rect_t r;
-  lcd_t* lcd = c->lcd;
-  bool_t auto_rotate = FALSE;
-  widget_t* wm = prev_win->parent;
-
-  wa->ratio = 1;
-  wa->canvas = c;
-  wa->prev_win = prev_win;
-  wa->curr_win = curr_win;
-  r = rect_init(0, 0, wm->w, wm->h);
-  wa->duration = wa->duration ? wa->duration : 500;
-
-  if (!(window_animator_is_overlap(wa))) {
-    auto_rotate = TRUE;
-  }
-
-  r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
-  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
-  canvas_set_clip_rect(c, &r);
-  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
-  ENSURE(widget_paint(prev_win, c) == RET_OK);
-  window_animator_prepare_highligter(wa, c);
-  ENSURE(lcd_take_snapshot(lcd, &(wa->prev_img), auto_rotate) == RET_OK);
-  ENSURE(canvas_end_frame(c) == RET_OK);
-
-  r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
-  ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
-  canvas_set_clip_rect(c, &r);
-  ENSURE(widget_on_paint_background(wm, c) == RET_OK);
-  ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(lcd_take_snapshot(lcd, &(wa->curr_img), auto_rotate) == RET_OK);
-  ENSURE(canvas_end_frame(c) == RET_OK);
-
-  wa->prev_img.flags = BITMAP_FLAG_OPAQUE;
-  wa->curr_img.flags = BITMAP_FLAG_OPAQUE;
-
-  if (wa->dialog_highlighter != NULL) {
-    dialog_highlighter_set_bg(wa->dialog_highlighter, &(wa->prev_img), NULL);
-  }
+  window_manager_snap_prev_window(wm, prev_win, &(wa->prev_img), &(wa->prev_fbo), auto_rotate);
+  window_manager_snap_curr_window(wm, curr_win, &(wa->curr_img), &(wa->curr_fbo), auto_rotate);
+  wa->dialog_highlighter = WINDOW_MANAGER(wm)->dialog_highlighter;
 
   return RET_OK;
 }

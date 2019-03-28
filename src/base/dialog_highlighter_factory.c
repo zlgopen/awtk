@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/enums.h"
 #include "tkc/easing.h"
+#include "base/window_manager.h"
 #include "tkc/func_call_parser.h"
 #include "base/dialog_highlighter_factory.h"
 
@@ -76,8 +77,22 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
   return RET_OK;
 }
 
+static ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
+  dialog_highlighter_t* h = (dialog_highlighter_t*)ctx;
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
+
+  if (wm->dialog_highlighter == h) {
+    window_manager_set_dialog_highlighter(WIDGET(wm), NULL);
+  }
+  dialog_highlighter_destroy(h);
+
+  log_debug("dialog_highlighter_on_dialog_destroy\n");
+
+  return RET_REMOVE;
+}
+
 dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
-    dialog_highlighter_factory_t* factory, const char* args) {
+    dialog_highlighter_factory_t* factory, const char* args, widget_t* dialog) {
   dialog_highlighter_t* h = NULL;
   const creator_item_t* iter = NULL;
   object_t* args_obj = func_call_parse(args, strlen(args));
@@ -88,6 +103,13 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
     h = iter->create(args_obj);
   }
   object_unref(args_obj);
+
+  if (h != NULL) {
+    h->dialog = dialog;
+    if (dialog != NULL) {
+      widget_on(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy, h);
+    }
+  }
 
   return h;
 }

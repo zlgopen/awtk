@@ -80,11 +80,12 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
  * @annotation ["constructor"]
  * @param {dialog_highlighter_factory_t*} factory 对话框高亮策略工厂对象。
  * @param {const char*} args 参数。如default(alpha=90)
+ * @param {widget_t*} dialog 对话框对象。
  *
  * @return {dialog_highlighter_t*} 返回窗口动画对象。
  */
 dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
-    dialog_highlighter_factory_t* factory, const char* args);
+    dialog_highlighter_factory_t* factory, const char* args, widget_t* dialog);
 
 /**
  * @method dialog_highlighter_factory_destroy

@@ -76,6 +76,12 @@ struct _dialog_highlighter_t {
    */
   canvas_t* canvas;
 
+  /**
+   * @property {widget_t*} dialog
+   * 对应的对话框。
+   */
+  widget_t* dialog;
+
   /*private*/
   framebuffer_object_t fbo;
   const dialog_highlighter_vtable_t* vt;
