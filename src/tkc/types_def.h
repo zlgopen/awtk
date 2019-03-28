@@ -45,7 +45,7 @@
 #define FALSE 0
 #endif /*FALSE*/
 
-#if defined (__GNUC__) && !defined (__cplusplus)
+#if defined(__GNUC__) && !defined(__cplusplus)
 typedef _Bool bool_t;
 #else
 typedef uint8_t bool_t;
