@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/03/28
+  * 修改 3rd/SDL/SConscript(感谢大恒提供补丁)
+
 * 2019/03/27
   * 修改style mutable的BUG(感谢朝泽提供补丁)
   * 修改utils的BUG(感谢朝泽提供补丁)

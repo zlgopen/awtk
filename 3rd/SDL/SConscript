@@ -92,5 +92,7 @@ elif OS_NAME == 'Linux':
 	Glob('src/core/unix/*.c')+\
 	Glob('src/main/dummy/*.c')
 
-env.Library(os.path.join(LIB_DIR, 'SDL2'), sources, CPPPATH = CPPPATH)
+CCFLAGS=os.environ['CCFLAGS'];
+CCFLAGS = CCFLAGS + ' -DSDL_STATIC_LIB -D__FLTUSED__ '
+env.Library(os.path.join(LIB_DIR, 'SDL2'), sources, CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 
