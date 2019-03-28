@@ -31,16 +31,6 @@ static ret_t window_animator_center_scale_update_percent(window_animator_t* wa) 
   return RET_OK;
 }
 
-static ret_t window_animator_center_scale_draw_prev(window_animator_t* wa) {
-  canvas_t* c = wa->canvas;
-  widget_t* win = wa->prev_win;
-
-  rect_t src = rect_init(win->x, win->y, win->w, win->h);
-  rect_t dst = rect_init(win->x, win->y, win->w, win->h);
-
-  return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
-}
-
 static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
@@ -64,7 +54,7 @@ static const window_animator_vtable_t s_window_animator_center_scale_vt = {
     .desc = "center_scale",
     .size = sizeof(window_animator_t),
     .update_percent = window_animator_center_scale_update_percent,
-    .draw_prev_window = window_animator_center_scale_draw_prev,
+    .draw_prev_window = window_animator_overlap_default_draw_prev,
     .draw_curr_window = window_animator_center_scale_draw_curr};
 
 window_animator_t* window_animator_center_scale_create(bool_t open, object_t* args) {

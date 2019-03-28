@@ -1,10 +1,14 @@
-<window x="0" y="0" w="320" h="480" children_layout="default(r=4,c=2,s=10,m=10)">
+<window x="0" y="0" w="320" h="480" children_layout="default(r=8,c=2,s=10,m=10)">
   <button name="open:dialog2" text="none"/>
   <button name="open:dialog1" text="center scale"/>
   <button name="open:fade" text="fade"/>
-  <button name="open:htranslate" text="htranslate"/>
-  <button name="open:vtranslate" text="vtranslate"/>
   <button name="open:top" text="top"/>
   <button name="open:bottom" text="bottom"/>
+  <button name="open:htranslate" text="htranslate"/>
+  <button name="open:vtranslate" text="vtranslate"/>
+  <button name="open:slide_left" text="slide left"/>
+  <button name="open:slide_right" text="slide right"/>
+  <button name="open:slide_up" text="slide up"/>
+  <button name="open:slide_down" text="slide down"/>
   <button name="close" text="Close"/>
 </window>

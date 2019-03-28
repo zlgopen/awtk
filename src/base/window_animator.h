@@ -31,6 +31,7 @@ BEGIN_C_DECLS
 struct _window_animator_t;
 typedef struct _window_animator_t window_animator_t;
 
+typedef ret_t (*window_animator_init_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_update_percent_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_prev_window_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_curr_window_t)(window_animator_t* wa);
@@ -40,6 +41,7 @@ typedef struct _window_animator_vtable_t {
   const char* desc;
   uint32_t size;
   bool_t overlap;
+  window_animator_init_t init;;
   window_animator_update_percent_t update_percent;
   window_animator_draw_prev_window_t draw_prev_window;
   window_animator_draw_curr_window_t draw_curr_window;
@@ -77,6 +79,30 @@ typedef window_animator_t* (*window_animator_create_t)(bool_t open, object_t* ar
  * 底部弹出。适用于对话框。
  */
 #define WINDOW_ANIMATOR_BOTTOM_TO_TOP "bottom_to_top"
+
+/**
+ * @const WINDOW_ANIMATOR_SLIDE_UP
+ * 向上弹出。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_SLIDE_UP "slide_up"
+
+/**
+ * @const WINDOW_ANIMATOR_SLIDE_DOWN
+ * 向下弹出。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_SLIDE_DOWN "slide_down"
+
+/**
+ * @const WINDOW_ANIMATOR_SLIDE_LEFT
+ * 向左边弹出。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_SLIDE_LEFT "slide_left"
+
+/**
+ * @const WINDOW_ANIMATOR_SLIDE_RIGHT
+ * 向右边弹出。适用于窗口。
+ */
+#define WINDOW_ANIMATOR_SLIDE_RIGHT "slide_right"
 
 /**
  * @const WINDOW_ANIMATOR_HTRANSLATE
@@ -153,6 +179,8 @@ window_animator_t* window_animator_create(bool_t open, const window_animator_vta
 /*public for factory*/
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win);
+
+ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa);
 
 END_C_DECLS
 

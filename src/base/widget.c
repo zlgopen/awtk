@@ -41,6 +41,7 @@ static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
+static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   event_t e = event_init(EVT_WILL_MOVE, widget);
@@ -829,6 +830,7 @@ static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
   if (widget->opacity < TK_OPACITY_ALPHA) {
     canvas_set_global_alpha(c, (widget->opacity * save_alpha) / 0xff);
   }
+
   if (widget->astyle != NULL) {
     ox += style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0);
     oy += style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0);
@@ -841,11 +843,13 @@ static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
   widget_on_paint_children(widget, c);
   widget_on_paint_border(widget, c);
   widget_on_paint_end(widget, c);
-  canvas_untranslate(c, ox, oy);
 
+  canvas_untranslate(c, ox, oy);
   if (widget->opacity < TK_OPACITY_ALPHA) {
     canvas_set_global_alpha(c, save_alpha);
   }
+  
+  widget_on_paint_done(widget, c);
 
   return RET_OK;
 }
@@ -1146,6 +1150,19 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
 
   e.c = c;
   e.e = event_init(EVT_BEFORE_PAINT, widget);
+  widget_dispatch(widget, (event_t*)(&e));
+
+  return ret;
+}
+
+static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  e.c = c;
+  e.e = event_init(EVT_PAINT_DONE, widget);
   widget_dispatch(widget, (event_t*)(&e));
 
   return ret;

@@ -177,6 +177,11 @@ typedef enum _event_type_t {
    */
   EVT_AFTER_PAINT,
   /**
+   * @const EVT_PAINT_DONE
+   * 绘制完成(canvas状态已经恢复)的事件名(paint_event_t)。
+   */
+  EVT_PAINT_DONE,
+  /**
    * @const EVT_LOCALE_CHANGED
    * locale改变的事件(event_t)。
    */

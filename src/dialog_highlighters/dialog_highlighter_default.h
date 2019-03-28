@@ -63,9 +63,9 @@ struct _dialog_highlighter_default_t {
  */
 dialog_highlighter_t* dialog_highlighter_default_create(object_t* args);
 
-#define DIALOG_HIGHLIGHTER_DEFAULT_PROP_START_ALPHA "start_alpha"
-#define DIALOG_HIGHLIGHTER_DEFAULT_PROP_END_ALPHA "end_alpha"
-#define DIALOG_HIGHLIGHTER_DEFAULT_PROP_ALPHA "alpha"
+#define DIALOG_HIGHLIGHTER_DEFAULT_ARG_START_ALPHA "start_alpha"
+#define DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA "end_alpha"
+#define DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA "alpha"
 
 END_C_DECLS
 

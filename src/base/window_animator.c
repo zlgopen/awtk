@@ -154,6 +154,17 @@ static ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   return window_animator_paint_system_bar(wa);
 }
 
+static ret_t window_animator_init(window_animator_t* wa) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(wa != NULL && wa->vt != NULL, RET_BAD_PARAMS);
+
+  if (wa->vt->init != NULL) {
+    ret = wa->vt->init(wa);
+  }
+
+  return ret;
+}
+
 #ifdef WITH_VGCANVAS
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win) {
@@ -166,6 +177,7 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
   wa->ratio = c->lcd->ratio;
   wa->duration = wa->duration ? wa->duration : 500;
 
+  window_animator_init(wa);
   window_manager_snap_prev_window(wm, prev_win, &(wa->prev_img), &(wa->prev_fbo), auto_rotate);
   window_manager_snap_curr_window(wm, curr_win, &(wa->curr_img), &(wa->curr_fbo), auto_rotate);
   wa->dialog_highlighter = WINDOW_MANAGER(wm)->dialog_highlighter;
@@ -229,4 +241,14 @@ static ret_t window_animator_draw_curr_window(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL && wa->vt->draw_curr_window, RET_BAD_PARAMS);
 
   return wa->vt->draw_curr_window(wa);
+}
+
+ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
+  canvas_t* c = wa->canvas;
+  widget_t* win = wa->prev_win;
+
+  rect_t src = rect_init(win->x, win->y, win->w, win->h);
+  rect_t dst = rect_init(win->x, win->y, win->w, win->h);
+
+  return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
 }

@@ -94,16 +94,16 @@ dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
   dh->end_alpha = 0;
   dh->start_alpha = 0;
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_ALPHA, &v) == RET_OK) {
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
     dh->end_alpha = value_int(&v);
   }
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_START_ALPHA, &v) == RET_OK) {
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_START_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
   }
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_PROP_END_ALPHA, &v) == RET_OK) {
+  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA, &v) == RET_OK) {
     dh->end_alpha = value_int(&v);
   }
 
