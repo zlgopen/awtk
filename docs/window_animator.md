@@ -9,9 +9,12 @@
 
 * htranslate: 左右平移动画(适合窗口)。
 * vtranslate: 上下平移动画(适合窗口)。
+
+对话框动画：
+
 * center\_scale: 缩放动画(适合对话框，没有硬件时加速慎用)。
-* top\_to\_bottom: 顶部向下弹出动画(适合对话框)。
-* bottom\_to\_top: 底部向上弹出动画(适合对话框)。
+* popdown: 顶部向下弹出动画(适合对话框)。
+* popup: 底部向上弹出动画(适合对话框)。
 * fade: 淡入淡出动画(适合提示信息)。
 
 ![](images/window_animator.png)

@@ -1,7 +1,7 @@
 /**
- * File:   window_animator_top_to_bottom.h
+ * File:   window_animator_popup.h
  * Author: AWTK Develop Team
- * Brief:  top to bottom window animator
+ * Brief:  popup window animator
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -21,13 +21,13 @@
 
 #include "base/window_animator.h"
 
-#ifndef TK_WINDOW_ANIMATOR_TOP_TO_BOTTOM_H
-#define TK_WINDOW_ANIMATOR_TOP_TO_BOTTOM_H
+#ifndef TK_WINDOW_ANIMATOR_POPUP_H
+#define TK_WINDOW_ANIMATOR_POPUP_H
 
 BEGIN_C_DECLS
 
-window_animator_t* window_animator_top_to_bottom_create(bool_t open, object_t* args);
+window_animator_t* window_animator_popup_create(bool_t open, object_t* args);
 
 END_C_DECLS
 
-#endif /*TK_WINDOW_ANIMATOR_TOP_TO_BOTTOM_H*/
+#endif /*TK_WINDOW_ANIMATOR_POPUP_H*/

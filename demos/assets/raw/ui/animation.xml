@@ -2,13 +2,13 @@
   <button name="open:dialog2" text="none"/>
   <button name="open:dialog1" text="center scale"/>
   <button name="open:fade" text="fade"/>
-  <button name="open:top" text="top"/>
-  <button name="open:bottom" text="bottom"/>
+  <button name="open:popdown" text="popdown"/>
+  <button name="open:popup" text="popup"/>
   <button name="open:htranslate" text="htranslate"/>
   <button name="open:vtranslate" text="vtranslate"/>
-  <button name="open:slide_left" text="slide left"/>
-  <button name="open:slide_right" text="slide right"/>
-  <button name="open:slide_up" text="slide up"/>
-  <button name="open:slide_down" text="slide down"/>
+  <button name="open:slide_left" text="slide_left"/>
+  <button name="open:slide_right" text="slide_right"/>
+  <button name="open:slide_up" text="slide_up"/>
+  <button name="open:slide_down" text="slide_down"/>
   <button name="close" text="Close"/>
 </window>

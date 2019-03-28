@@ -69,15 +69,20 @@ typedef window_animator_t* (*window_animator_create_t)(bool_t open, object_t* ar
 #define WINDOW_ANIMATOR_FADE "fade"
 
 /**
- * @const WINDOW_ANIMATOR_TOP_TOP_BOTTOM
+ * @const WINDOW_ANIMATOR_POPDOWN
  * 顶部部弹出。适用于对话框。
  */
+#define WINDOW_ANIMATOR_POPDOWN "popdown"
+
+/*for compatibility, use WINDOW_ANIMATOR_POPDOWN instead*/
 #define WINDOW_ANIMATOR_TOP_TO_BOTTOM "top_to_bottom"
 
 /**
- * @const WINDOW_ANIMATOR_BOTTOM_TO_TOP
+ * @const WINDOW_ANIMATOR_POPUP
  * 底部弹出。适用于对话框。
  */
+#define WINDOW_ANIMATOR_POPUP "popup"
+/*for compatibility, use WINDOW_ANIMATOR_POPUP instead*/
 #define WINDOW_ANIMATOR_BOTTOM_TO_TOP "bottom_to_top"
 
 /**
