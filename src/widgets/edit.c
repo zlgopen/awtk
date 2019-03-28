@@ -516,9 +516,12 @@ bool_t edit_is_valid_value(widget_t* widget) {
       return min <= v && v <= max;
     }
     case INPUT_EMAIL: {
-      const wchar_t* p = wcschr(text->str, '@');
-      /*FIXME*/
-      return text->size > 0 && p != NULL && p != text->str && wcschr(p + 1, '@') == NULL;
+      if (text->size > 0) {
+        const wchar_t* p = wcs_chr(text->str, '@');
+        return text->size > 0 && p != NULL && p != text->str && wcs_chr(p + 1, '@') == NULL;
+      } else {
+        return FALSE;
+      }
     }
     default:
       break;
