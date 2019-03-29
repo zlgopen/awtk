@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_animator.c
  * Author: AWTK Develop Team
  * Brief:  window_animator
@@ -154,6 +154,7 @@ static ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
   return window_animator_paint_system_bar(wa);
 }
 
+#ifdef WITH_WINDOW_ANIMATORS
 static ret_t window_animator_init(window_animator_t* wa) {
   ret_t ret = RET_NOT_IMPL;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_BAD_PARAMS);
@@ -165,7 +166,6 @@ static ret_t window_animator_init(window_animator_t* wa) {
   return ret;
 }
 
-#ifdef WITH_VGCANVAS
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win) {
   widget_t* wm = prev_win->parent;
@@ -189,7 +189,7 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
                               widget_t* curr_win) {
   return RET_OK;
 }
-#endif /*WITH_NANOVG_GPU|WITH_NANOVG_SOFT*/
+#endif /*WITH_WINDOW_ANIMATORS*/
 
 window_animator_t* window_animator_create(bool_t open, const window_animator_vtable_t* vt) {
   window_animator_t* wa = NULL;

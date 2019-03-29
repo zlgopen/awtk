@@ -130,8 +130,10 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
 
+#ifdef WITH_WINDOW_ANIMATORS
   window_animator_register_builtins();
   dialog_highlighter_register_builtins();
+#endif /*WITH_WINDOW_ANIMATORS*/
 
   return RET_OK;
 }
