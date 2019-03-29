@@ -270,12 +270,14 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
     return_value_if_fail(bitmap_init(img, fb.h, fb.w, (bitmap_format_t)(fb.format), NULL) == RET_OK,
                          RET_OOM);
 
+    img->flags = BITMAP_FLAG_OPAQUE;
     return image_rotate(img, &fb, &r, orientation);
   } else {
     rect_t r = rect_init(0, 0, fb.w, fb.h);
     return_value_if_fail(bitmap_init(img, fb.w, fb.h, (bitmap_format_t)(fb.format), NULL) == RET_OK,
                          RET_OOM);
 
+    img->flags = BITMAP_FLAG_OPAQUE;
     return image_copy(img, &fb, &r, 0, 0);
   }
 }

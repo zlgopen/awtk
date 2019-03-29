@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   system_info.h
  * Author: AWTK Develop Team
  * Brief:  system info
@@ -121,7 +121,7 @@ system_info_t* system_info_create(app_type_t app_type, const char* app_name, con
 }
 
 ret_t system_info_set_font_scale(system_info_t* info, float_t font_scale) {
-  return_value_if_fail(info != NULL && font_scale >= 0.5 && font_scale <= 2, RET_BAD_PARAMS);
+  return_value_if_fail(info != NULL && font_scale >= 0.5f && font_scale <= 2, RET_BAD_PARAMS);
 
   info->font_scale = font_scale;
 

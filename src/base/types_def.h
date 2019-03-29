@@ -258,4 +258,8 @@ typedef struct _widget_vtable_t widget_vtable_t;
 #define TK_EXTERN_VTABLE(vt)
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 
+#ifdef WITH_VGCANVAS
+#define WITH_WINDOW_ANIMATORS 1
+#endif /*WITH_VGCANVAS*/
+
 #endif /*TK_TYPES_DEF_H*/

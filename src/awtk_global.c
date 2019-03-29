@@ -36,6 +36,11 @@
 #include "base/widget_pool.h"
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
+#include "base/window_animator_factory.h"
+#include "window_animators/window_animator_builtins.h"
+
+#include "base/dialog_highlighter_factory.h"
+#include "dialog_highlighters/dialog_highlighter_builtins.h"
 
 #ifdef WITH_SDL
 #include "clip_board/clip_board_sdl.h"
@@ -116,10 +121,19 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
+                       RET_FAIL);
+  return_value_if_fail(
+      dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
+
+#ifdef WITH_WINDOW_ANIMATORS
+  window_animator_register_builtins();
+  dialog_highlighter_register_builtins();
+#endif /*WITH_WINDOW_ANIMATORS*/
 
   return RET_OK;
 }
@@ -144,6 +158,12 @@ ret_t tk_deinit_internal(void) {
 
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
+
+  window_animator_factory_destroy(window_animator_factory());
+  window_animator_factory_set(NULL);
+
+  dialog_highlighter_factory_destroy(dialog_highlighter_factory());
+  dialog_highlighter_factory_set(NULL);
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);

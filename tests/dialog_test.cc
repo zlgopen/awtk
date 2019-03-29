@@ -23,6 +23,12 @@ TEST(Dialog, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_ANIM_HINT, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), "center_scale"), 0);
 
+  value_set_str(&v1, "default(alpha=10)");
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_HIGHLIGHT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_HIGHLIGHT, &v2), RET_OK);
+  ASSERT_STREQ(DIALOG(w)->highlight, value_str(&v1));
+  ASSERT_STREQ(DIALOG(w)->highlight, value_str(&v2));
+
   w1 = widget_clone(w, NULL);
   ASSERT_EQ(widget_equal(w, w1), TRUE);
 

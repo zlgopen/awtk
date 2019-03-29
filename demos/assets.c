@@ -50,6 +50,7 @@
 #include "assets/inc/ui/animation.data"
 #include "assets/inc/ui/keyboard.data"
 #include "assets/inc/ui/kb_hex.data"
+#include "assets/inc/ui/popdown.data"
 #include "assets/inc/ui/color.data"
 #include "assets/inc/ui/color_picker.data"
 #include "assets/inc/ui/switch.data"
@@ -72,7 +73,9 @@
 #include "assets/inc/ui/svg_image.data"
 #include "assets/inc/ui/tab_list.data"
 #include "assets/inc/ui/animator.data"
+#include "assets/inc/ui/slide_down.data"
 #include "assets/inc/ui/scroll_view_h.data"
+#include "assets/inc/ui/slide_right.data"
 #include "assets/inc/ui/scroll_bar_h.data"
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/label.data"
@@ -96,24 +99,25 @@
 #include "assets/inc/ui/image_list.data"
 #include "assets/inc/ui/slide_view_v1.data"
 #include "assets/inc/ui/select1.data"
-#include "assets/inc/ui/bottom.data"
+#include "assets/inc/ui/slide_left.data"
 #include "assets/inc/ui/image_animation.data"
 #include "assets/inc/ui/image_value.data"
 #include "assets/inc/ui/slide_view.data"
 #include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/tab_top.data"
 #include "assets/inc/ui/slide_view_v.data"
-#include "assets/inc/ui/top.data"
 #include "assets/inc/ui/button.data"
 #include "assets/inc/ui/system_bar.data"
 #include "assets/inc/ui/list_view_d.data"
 #include "assets/inc/ui/vtranslate.data"
 #include "assets/inc/ui/kb_ufloat.data"
 #include "assets/inc/ui/kb_default.data"
+#include "assets/inc/ui/slide_up.data"
 #include "assets/inc/ui/rich_text2.data"
 #include "assets/inc/ui/list_view_h.data"
 #include "assets/inc/ui/color_picker_rgb.data"
 #include "assets/inc/ui/tab_bottom_compact.data"
+#include "assets/inc/ui/popup.data"
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
@@ -417,6 +421,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_animation);
   assets_manager_add(rm, ui_keyboard);
   assets_manager_add(rm, ui_kb_hex);
+  assets_manager_add(rm, ui_popdown);
   assets_manager_add(rm, ui_color);
   assets_manager_add(rm, ui_color_picker);
   assets_manager_add(rm, ui_switch);
@@ -439,7 +444,9 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_svg_image);
   assets_manager_add(rm, ui_tab_list);
   assets_manager_add(rm, ui_animator);
+  assets_manager_add(rm, ui_slide_down);
   assets_manager_add(rm, ui_scroll_view_h);
+  assets_manager_add(rm, ui_slide_right);
   assets_manager_add(rm, ui_scroll_bar_h);
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_label);
@@ -463,24 +470,25 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_image_list);
   assets_manager_add(rm, ui_slide_view_v1);
   assets_manager_add(rm, ui_select1);
-  assets_manager_add(rm, ui_bottom);
+  assets_manager_add(rm, ui_slide_left);
   assets_manager_add(rm, ui_image_animation);
   assets_manager_add(rm, ui_image_value);
   assets_manager_add(rm, ui_slide_view);
   assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_tab_top);
   assets_manager_add(rm, ui_slide_view_v);
-  assets_manager_add(rm, ui_top);
   assets_manager_add(rm, ui_button);
   assets_manager_add(rm, ui_system_bar);
   assets_manager_add(rm, ui_list_view_d);
   assets_manager_add(rm, ui_vtranslate);
   assets_manager_add(rm, ui_kb_ufloat);
   assets_manager_add(rm, ui_kb_default);
+  assets_manager_add(rm, ui_slide_up);
   assets_manager_add(rm, ui_rich_text2);
   assets_manager_add(rm, ui_list_view_h);
   assets_manager_add(rm, ui_color_picker_rgb);
   assets_manager_add(rm, ui_tab_bottom_compact);
+  assets_manager_add(rm, ui_popup);
   assets_manager_add(rm, ui_kb_uint);
   assets_manager_add(rm, ui_scroll_view_v);
   assets_manager_add(rm, strings_zh_CN);

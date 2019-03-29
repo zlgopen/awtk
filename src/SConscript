@@ -22,17 +22,15 @@ sources=Glob('tkc/*.c') +\
   Glob('widget_animators/*.c') + \
   Glob('platforms/pc/*.c') + \
   Glob('misc/*.cpp') + \
+  Glob('window_animators/*.c') + \
+  Glob('dialog_highlighters/*.c') + \
   ['awtk_global.c'];
 
 sources += ['main_loop/main_loop_simple.c'];
 if os.environ['LCD'] == 'SDL_GPU':
-  sources += ['window_animators/window_animator_gpu.c'];
   sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl_gpu.c'];
 elif os.environ['LCD'] == 'SDL_FB':
-  sources += ['window_animators/window_animator_fb.c'];
   sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl_fb.c']
-else:
-  sources += ['window_animators/window_animator_fb.c'];
 
 sources += [
   'input_methods/input_method_creator.c'
