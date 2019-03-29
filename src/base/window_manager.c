@@ -885,10 +885,24 @@ static ret_t window_manager_back_to_home_async(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-ret_t window_manager_back_to_home(widget_t* widget) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+static ret_t window_manager_back_to_home_on_dialog_destroy(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
 
   idle_add(window_manager_back_to_home_async, widget);
+
+  return RET_REMOVE;
+}
+
+ret_t window_manager_back_to_home(widget_t* widget) {
+  widget_t* top = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  top = window_manager_get_top_window(widget);
+  if (is_dialog(top)) {
+    widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
+  } else {
+    idle_add(window_manager_back_to_home_async, widget);
+  }
 
   return RET_OK;
 }

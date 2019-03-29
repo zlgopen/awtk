@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/03/29
+  * 修改window\_manager\_back\_to\_home的BUG。
+
 * 2019/03/28
   * 修改 3rd/SDL/SConscript(感谢大恒提供补丁)。
   * 修改bool\_t在aworks上重复定义的问题(感谢陈谭提供补丁)。
