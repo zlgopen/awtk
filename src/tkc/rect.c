@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   rect.c
  * Author: AWTK Develop Team
  * Brief:  rect struct and utils functions.
@@ -170,7 +170,7 @@ ret_t rect_destroy(rect_t* r) {
 rect_t* rect_scale(rect_t* r, float_t scale) {
   return_value_if_fail(r != NULL, r);
 
-  if (scale != 1.0) {
+  if (scale != 1.0f) {
     r->x *= scale;
     r->y *= scale;
     r->w *= scale;

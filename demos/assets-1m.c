@@ -24,7 +24,6 @@
 #include "assets/inc/styles/system_bar.data"
 #include "assets/inc/styles/tab_bottom_compact.data"
 #include "assets/inc/styles/dialog_warn.data"
-#include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/vgcanvas.data"
 #include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/slide_menu.data"
@@ -46,7 +45,6 @@
 #include "assets/inc/ui/locale.data"
 #include "assets/inc/ui/kb_int.data"
 #include "assets/inc/ui/tab_control.data"
-#include "assets/inc/ui/slide_view_v2.data"
 #include "assets/inc/ui/animation.data"
 #include "assets/inc/ui/keyboard.data"
 #include "assets/inc/ui/kb_hex.data"
@@ -59,11 +57,8 @@
 #include "assets/inc/ui/color_picker_hsv.data"
 #include "assets/inc/ui/tab_bottom.data"
 #include "assets/inc/ui/list_view_m.data"
-#include "assets/inc/ui/slide_view_h_loop.data"
 #include "assets/inc/ui/calibration_win.data"
 #include "assets/inc/ui/memtest.data"
-#include "assets/inc/ui/slide_view_h2.data"
-#include "assets/inc/ui/slide_view_v_loop.data"
 #include "assets/inc/ui/language.data"
 #include "assets/inc/ui/kb_float.data"
 #include "assets/inc/ui/htranslate.data"
@@ -84,12 +79,10 @@
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
-#include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/dialogs.data"
 #include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/stroke_gradient.data"
-#include "assets/inc/ui/slide_view_h1.data"
 #include "assets/inc/ui/basic.data"
 #include "assets/inc/ui/auto_play.data"
 #include "assets/inc/ui/guage.data"
@@ -97,15 +90,12 @@
 #include "assets/inc/ui/dialog1.data"
 #include "assets/inc/ui/fade.data"
 #include "assets/inc/ui/image_list.data"
-#include "assets/inc/ui/slide_view_v1.data"
 #include "assets/inc/ui/select1.data"
 #include "assets/inc/ui/slide_left.data"
 #include "assets/inc/ui/image_animation.data"
 #include "assets/inc/ui/image_value.data"
-#include "assets/inc/ui/slide_view.data"
 #include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/tab_top.data"
-#include "assets/inc/ui/slide_view_v.data"
 #include "assets/inc/ui/button.data"
 #include "assets/inc/ui/system_bar.data"
 #include "assets/inc/ui/list_view_d.data"
@@ -126,15 +116,12 @@
 #include "assets/inc/data/test_json.data"
 #include "assets/inc/data/a_b_c_any.data"
 #ifdef WITH_STB_IMAGE
-#include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
 #include "assets/inc/images/num_7.res"
 #include "assets/inc/images/close_p.res"
 #include "assets/inc/images/num_6.res"
 #include "assets/inc/images/shift.res"
-#include "assets/inc/images/ani7.res"
 #include "assets/inc/images/earth.res"
-#include "assets/inc/images/ani5.res"
 #include "assets/inc/images/contact.res"
 #include "assets/inc/images/battery_4.res"
 #include "assets/inc/images/num_4.res"
@@ -144,7 +131,6 @@
 #include "assets/inc/images/dialog_title.res"
 #include "assets/inc/images/battery_5.res"
 #include "assets/inc/images/num_5.res"
-#include "assets/inc/images/ani4.res"
 #include "assets/inc/images/me_active.res"
 #include "assets/inc/images/arrow_up_n.res"
 #include "assets/inc/images/left_on.res"
@@ -161,11 +147,9 @@
 #include "assets/inc/images/visible.res"
 #include "assets/inc/images/ani1.res"
 #include "assets/inc/images/arrow_left_o.res"
-#include "assets/inc/images/ani3.res"
 #include "assets/inc/images/clock_second.res"
 #include "assets/inc/images/battery_2.res"
 #include "assets/inc/images/num_2.res"
-#include "assets/inc/images/en.res"
 #include "assets/inc/images/slider_drag_o.res"
 #include "assets/inc/images/guage_bg.res"
 #include "assets/inc/images/battery_3.res"
@@ -180,7 +164,6 @@
 #include "assets/inc/images/msg_active.res"
 #include "assets/inc/images/radio_checked.res"
 #include "assets/inc/images/active_dot.res"
-#include "assets/inc/images/zh.res"
 #include "assets/inc/images/question.res"
 #include "assets/inc/images/discovery_active.res"
 #include "assets/inc/images/dot.res"
@@ -219,7 +202,6 @@
 #include "assets/inc/images/radio_unchecked.res"
 #include "assets/inc/images/close_n.res"
 #include "assets/inc/images/close_o.res"
-#include "assets/inc/images/clock_bg.res"
 #include "assets/inc/images/clock_minute.res"
 #include "assets/inc/images/cross.res"
 #include "assets/inc/images/clock.res"
@@ -232,7 +214,6 @@
 #include "assets/inc/images/arrow_right_o.res"
 #include "assets/inc/images/num_9.res"
 #include "assets/inc/images/edit_clear_n.res"
-#include "assets/inc/images/ani8.res"
 #include "assets/inc/images/logo.res"
 #include "assets/inc/images/invisible.res"
 #include "assets/inc/images/slider_drag_p.res"
@@ -245,7 +226,6 @@
 #include "assets/inc/images/close_o.data"
 #include "assets/inc/images/battery_1.data"
 #include "assets/inc/images/slider_bg.data"
-#include "assets/inc/images/ani3.data"
 #include "assets/inc/images/progress_circle.data"
 #include "assets/inc/images/muted.data"
 #include "assets/inc/images/num_8.data"
@@ -253,7 +233,6 @@
 #include "assets/inc/images/shift.data"
 #include "assets/inc/images/arrow_up_p.data"
 #include "assets/inc/images/discovery_active.data"
-#include "assets/inc/images/en.data"
 #include "assets/inc/images/right_on.data"
 #include "assets/inc/images/discovery.data"
 #include "assets/inc/images/rgb.data"
@@ -272,7 +251,6 @@
 #include "assets/inc/images/num_dot.data"
 #include "assets/inc/images/arrow_right_n.data"
 #include "assets/inc/images/visible.data"
-#include "assets/inc/images/clock_bg.data"
 #include "assets/inc/images/me_active.data"
 #include "assets/inc/images/cursor.data"
 #include "assets/inc/images/clock_minute.data"
@@ -280,15 +258,12 @@
 #include "assets/inc/images/checked.data"
 #include "assets/inc/images/middle_off.data"
 #include "assets/inc/images/close_p.data"
-#include "assets/inc/images/zh.data"
 #include "assets/inc/images/arrow_right_p.data"
 #include "assets/inc/images/ani9.data"
 #include "assets/inc/images/num_2.data"
 #include "assets/inc/images/arrow_up_o.data"
 #include "assets/inc/images/clock.data"
 #include "assets/inc/images/empty.data"
-#include "assets/inc/images/ani5.data"
-#include "assets/inc/images/ani4.data"
 #include "assets/inc/images/left_off.data"
 #include "assets/inc/images/radio_unchecked.data"
 #include "assets/inc/images/rgba.data"
@@ -296,7 +271,6 @@
 #include "assets/inc/images/arrow_up_n.data"
 #include "assets/inc/images/num_3.data"
 #include "assets/inc/images/msg_active.data"
-#include "assets/inc/images/ani8.data"
 #include "assets/inc/images/active_dot.data"
 #include "assets/inc/images/guage_pointer.data"
 #include "assets/inc/images/close_d.data"
@@ -310,7 +284,6 @@
 #include "assets/inc/images/contact.data"
 #include "assets/inc/images/bricks.data"
 #include "assets/inc/images/dialog_title.data"
-#include "assets/inc/images/ani7.data"
 #include "assets/inc/images/play_p.data"
 #include "assets/inc/images/battery_5.data"
 #include "assets/inc/images/green_btn_p.data"
@@ -323,7 +296,6 @@
 #include "assets/inc/images/contact_active.data"
 #include "assets/inc/images/slider_drag_o.data"
 #include "assets/inc/images/battery_4.data"
-#include "assets/inc/images/ani6.data"
 #include "assets/inc/images/message.data"
 #include "assets/inc/images/edit_clear_o.data"
 #include "assets/inc/images/ani1.data"
@@ -380,7 +352,6 @@ ret_t assets_init(void) {
   assets_manager_load(rm, ASSET_TYPE_STYLE, "default");
   assets_manager_load(rm, ASSET_TYPE_FONT, "default");
 #else
-  assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_vgcanvas);
   assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_slide_menu);
@@ -402,8 +373,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_locale);
   assets_manager_add(rm, ui_kb_int);
   assets_manager_add(rm, ui_tab_control);
-  assets_manager_add(rm, ui_slide_view_v2);
-  assets_manager_add(rm, ui_animation);
   assets_manager_add(rm, ui_keyboard);
   assets_manager_add(rm, ui_kb_hex);
   assets_manager_add(rm, ui_popdown);
@@ -415,11 +384,8 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_color_picker_hsv);
   assets_manager_add(rm, ui_tab_bottom);
   assets_manager_add(rm, ui_list_view_m);
-  assets_manager_add(rm, ui_slide_view_h_loop);
   assets_manager_add(rm, ui_calibration_win);
   assets_manager_add(rm, ui_memtest);
-  assets_manager_add(rm, ui_slide_view_h2);
-  assets_manager_add(rm, ui_slide_view_v_loop);
   assets_manager_add(rm, ui_language);
   assets_manager_add(rm, ui_kb_float);
   assets_manager_add(rm, ui_htranslate);
@@ -440,12 +406,10 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
-  assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_dialogs);
   assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_stroke_gradient);
-  assets_manager_add(rm, ui_slide_view_h1);
   assets_manager_add(rm, ui_basic);
   assets_manager_add(rm, ui_auto_play);
   assets_manager_add(rm, ui_guage);
@@ -453,15 +417,12 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_dialog1);
   assets_manager_add(rm, ui_fade);
   assets_manager_add(rm, ui_image_list);
-  assets_manager_add(rm, ui_slide_view_v1);
   assets_manager_add(rm, ui_select1);
   assets_manager_add(rm, ui_slide_left);
   assets_manager_add(rm, ui_image_animation);
   assets_manager_add(rm, ui_image_value);
-  assets_manager_add(rm, ui_slide_view);
   assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_tab_top);
-  assets_manager_add(rm, ui_slide_view_v);
   assets_manager_add(rm, ui_button);
   assets_manager_add(rm, ui_system_bar);
   assets_manager_add(rm, ui_list_view_d);
@@ -483,7 +444,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_close_o);
   assets_manager_add(rm, image_battery_1);
   assets_manager_add(rm, image_slider_bg);
-  assets_manager_add(rm, image_ani3);
   assets_manager_add(rm, image_progress_circle);
   assets_manager_add(rm, image_muted);
   assets_manager_add(rm, image_num_8);
@@ -491,7 +451,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_shift);
   assets_manager_add(rm, image_arrow_up_p);
   assets_manager_add(rm, image_discovery_active);
-  assets_manager_add(rm, image_en);
   assets_manager_add(rm, image_right_on);
   assets_manager_add(rm, image_discovery);
   assets_manager_add(rm, image_rgb);
@@ -510,7 +469,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_num_dot);
   assets_manager_add(rm, image_arrow_right_n);
   assets_manager_add(rm, image_visible);
-  assets_manager_add(rm, image_clock_bg);
   assets_manager_add(rm, image_me_active);
   assets_manager_add(rm, image_cursor);
   assets_manager_add(rm, image_clock_minute);
@@ -518,14 +476,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_checked);
   assets_manager_add(rm, image_middle_off);
   assets_manager_add(rm, image_close_p);
-  assets_manager_add(rm, image_zh);
   assets_manager_add(rm, image_arrow_right_p);
   assets_manager_add(rm, image_num_2);
   assets_manager_add(rm, image_arrow_up_o);
   assets_manager_add(rm, image_clock);
   assets_manager_add(rm, image_empty);
-  assets_manager_add(rm, image_ani5);
-  assets_manager_add(rm, image_ani4);
   assets_manager_add(rm, image_left_off);
   assets_manager_add(rm, image_radio_unchecked);
   assets_manager_add(rm, image_rgba);
@@ -533,7 +488,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_up_n);
   assets_manager_add(rm, image_num_3);
   assets_manager_add(rm, image_msg_active);
-  assets_manager_add(rm, image_ani8);
   assets_manager_add(rm, image_active_dot);
   assets_manager_add(rm, image_guage_pointer);
   assets_manager_add(rm, image_close_d);
@@ -547,7 +501,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_contact);
   assets_manager_add(rm, image_bricks);
   assets_manager_add(rm, image_dialog_title);
-  assets_manager_add(rm, image_ani7);
   assets_manager_add(rm, image_play_p);
   assets_manager_add(rm, image_battery_5);
   assets_manager_add(rm, image_green_btn_p);
@@ -560,7 +513,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_contact_active);
   assets_manager_add(rm, image_slider_drag_o);
   assets_manager_add(rm, image_battery_4);
-  assets_manager_add(rm, image_ani6);
   assets_manager_add(rm, image_message);
   assets_manager_add(rm, image_edit_clear_o);
   assets_manager_add(rm, image_ani1);

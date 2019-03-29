@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -142,8 +142,9 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
 ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
                                       framebuffer_object_t* fbo, bool_t auto_rotate) {
   canvas_t* c = NULL;
+#ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = NULL;
-#ifndef WITH_NANOVG_GPU
+#else
   rect_t r = {0};
 #endif /*WITH_NANOVG_GPU*/
 
@@ -152,9 +153,9 @@ ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitm
   return_value_if_fail(wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
   c = wm->canvas;
-  vg = lcd_get_vgcanvas(c->lcd);
 
 #ifdef WITH_NANOVG_GPU
+  vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
   vgcanvas_scale(vg, 1, 1);
@@ -178,8 +179,9 @@ ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitm
 ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
                                       framebuffer_object_t* fbo, bool_t auto_rotate) {
   canvas_t* c = NULL;
+#ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = NULL;
-#ifndef WITH_NANOVG_GPU
+#else
   rect_t r = {0};
 #endif /*WITH_NANOVG_GPU*/
 
@@ -190,10 +192,10 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
   return_value_if_fail(wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
   c = wm->canvas;
-  vg = lcd_get_vgcanvas(c->lcd);
   dialog_highlighter = wm->dialog_highlighter;
 
 #ifdef WITH_NANOVG_GPU
+  vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
   vgcanvas_scale(vg, 1, 1);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   emitter.c
  * Author: AWTK Develop Team
  * Brief:  emitter dispatcher
@@ -105,7 +105,6 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
 
   if (emitter->enable && emitter->items) {
     emitter_item_t* iter = emitter->items;
-    emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
       emitter->curr_iter = iter;
@@ -125,7 +124,6 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
         }
       }
 
-      prev = iter;
       iter = iter->next;
     }
   }
