@@ -1,6 +1,13 @@
 # 最新动态
+
 * 2019/03/29
   * 修改window\_manager\_back\_to\_home的BUG。
+  * 合并reworkwa分支：
+    * 窗口动画增加slide\_up/slide\_down/slide\_left/slide\_right.
+    * 窗口动画支持自定义。
+    * 支持对话框高亮策略。
+    * 更新文档。
+    * 新增src/dialog\_highlighters目录和一些文件，可能需要更新工程文件和文件拷贝脚本。
 
 * 2019/03/28
   * 修改 3rd/SDL/SConscript(感谢大恒提供补丁)。
