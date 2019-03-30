@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/03/30
   * 修改back\_to\_home的BUG #102(感谢陈谭提供补丁)。
+  * 更新stm32相关工程。
 
 * 2019/03/29
   * 修改window\_manager\_back\_to\_home的BUG。
