@@ -26,6 +26,7 @@
 #include "base/timer.h"
 #include "base/layout.h"
 #include "tkc/time_now.h"
+#include "widgets/dialog.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
@@ -979,6 +980,8 @@ ret_t window_manager_back(widget_t* widget) {
 }
 
 static ret_t window_manager_back_to_home_sync(widget_t* widget) {
+  uint32_t k = 0;
+  darray_t wins;
   widget_t* top = NULL;
   widget_t* home = NULL;
   int32_t children_nr = widget_count_children(widget);
@@ -988,6 +991,7 @@ static ret_t window_manager_back_to_home_sync(widget_t* widget) {
     return RET_OK;
   }
 
+  darray_init(&wins, 10, NULL, NULL);
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (home == NULL) {
     if (is_normal_window(iter)) {
@@ -995,10 +999,16 @@ static ret_t window_manager_back_to_home_sync(widget_t* widget) {
     }
   } else if ((i + 1) < children_nr) {
     if (!is_system_bar(iter)) {
-      window_manager_close_window_force(widget, iter);
+      darray_push(&wins, iter);
     }
   }
   WIDGET_FOR_EACH_CHILD_END()
+
+  for (k = 0; k < wins.size; k++) {
+    widget_t* iter = WIDGET(wins.elms[k]);
+    window_manager_close_window_force(widget, iter);
+  }
+  darray_deinit(&wins);
 
   children_nr = widget_count_children(widget);
   top = widget_get_child(widget, children_nr - 1);
@@ -1029,6 +1039,7 @@ ret_t window_manager_back_to_home(widget_t* widget) {
 
   top = window_manager_get_top_window(widget);
   if (is_dialog(top)) {
+    dialog_quit(top, 0);
     widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
   } else {
     idle_add(window_manager_back_to_home_async, widget);

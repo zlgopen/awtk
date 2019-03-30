@@ -302,6 +302,16 @@ static ret_t on_quit(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_back_to_home(void* ctx, event_t* e) {
+  widget_t* dialog = WIDGET(ctx);
+
+  dialog_quit(dialog, 0);
+  window_manager_back_to_home(window_manager());
+
+  (void)e;
+  return RET_OK;
+}
+
 static ret_t on_quit_app(void* ctx, event_t* e) {
   tk_quit();
 
@@ -486,6 +496,11 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_t* win = widget_get_window(widget);
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit, win);
+      }
+    } else if (tk_str_eq(name, "back_to_home")) {
+      widget_t* win = widget_get_window(widget);
+      if (win) {
+        widget_on(widget, EVT_CLICK, on_back_to_home, win);
       }
     } else if (tk_str_eq(name, "exit")) {
       widget_t* win = widget_get_window(widget);
