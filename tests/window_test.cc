@@ -65,3 +65,35 @@ TEST(Window, fullscreen) {
 
   widget_destroy(w);
 }
+
+TEST(Window, locale_info) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_get_locale_info(w), locale_info());
+
+  widget_destroy(w);
+}
+
+TEST(Window, image_manager) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_get_image_manager(w), image_manager());
+
+  widget_destroy(w);
+}
+
+TEST(Window, assets_manager) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_get_assets_manager(w), assets_manager());
+
+  widget_destroy(w);
+}
+
+TEST(Window, font_manager) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_get_font_manager(w), font_manager());
+
+  widget_destroy(w);
+}

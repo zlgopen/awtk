@@ -47,6 +47,12 @@ typedef struct _locale_info_t {
    * 语言。如：zh
    */
   char language[3];
+  /**
+   * @property {assets_manager_t*} assets_manager
+   * @annotation ["private"]
+   * 资源管理器。
+   */
+  assets_manager_t* assets_manager;
 
   const asset_info_t* strs;
 
@@ -82,19 +88,6 @@ ret_t locale_info_set(locale_info_t* locale_info);
  * @return {locale_info_t*} 返回locale_info对象。
  */
 locale_info_t* locale_info_create(const char* language, const char* country);
-
-/**
- * @method locale_info_init
- * 初始化locale_info。
- * @annotation ["constructor"]
- * @param {locale_info_t*} locale_info locale_info对象。
- * @param {char*} language 语言。
- * @param {char*} country 国家或地区。
- *
- * @return {locale_info_t*} 返回locale_info对象。
- */
-locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language,
-                                const char* country);
 
 /**
  * @method locale_info_tr
@@ -145,13 +138,15 @@ uint32_t locale_info_on(locale_info_t* locale_info, event_type_t type, event_fun
 ret_t locale_info_off(locale_info_t* locale_info, uint32_t id);
 
 /**
- * @method locale_info_deinit
- * @param {locale_info_t*} locale_info locale_info对象。
- * 释放全部资源。
+ * @method locale_info_set_assets_manager
+ * 设置资源管理器对象。
+ *
+ * @param {locale_info_t*} locale_info 图片管理器对象。
+ * @param {assets_manager_t*} assets_manager 资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_info_deinit(locale_info_t* locale_info);
+ret_t locale_info_set_assets_manager(locale_info_t* locale_info, assets_manager_t* assets_manager);
 
 /**
  * @method locale_info_destroy

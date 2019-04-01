@@ -432,6 +432,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ASSETS_MANAGER "assets_manager"
 
 /**
+ * @const WIDGET_PROP_LOCALE_INFO
+ * locale_info。
+ */
+#define WIDGET_PROP_LOCALE_INFO "locale_info"
+
+/**
  * @const WIDGET_PROP_FONT_MANAGER
  * 字体管理器。
  */

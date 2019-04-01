@@ -38,6 +38,8 @@
 #include "base/style.h"
 #include "base/theme.h"
 #include "base/layout_def.h"
+#include "base/locale_info.h"
+#include "base/image_manager.h"
 #include "base/widget_consts.h"
 #include "base/self_layouter.h"
 #include "base/children_layouter.h"
@@ -1818,6 +1820,12 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
+
+/*public for test*/
+locale_info_t* widget_get_locale_info(widget_t* widget);
+image_manager_t* widget_get_image_manager(widget_t* widget);
+assets_manager_t* widget_get_assets_manager(widget_t* widget);
+font_manager_t* widget_get_font_manager(widget_t* widget);
 
 END_C_DECLS
 

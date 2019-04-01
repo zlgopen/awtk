@@ -91,6 +91,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
     value_set_pointer(v, (void*)(image_manager()));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
+    value_set_pointer(v, (void*)(locale_info()));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
     value_set_pointer(v, (void*)(font_manager()));
     return RET_OK;

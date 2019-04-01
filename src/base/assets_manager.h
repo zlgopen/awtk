@@ -252,11 +252,11 @@ assets_manager_t* assets_manager(void);
 /**
  * @method assets_manager_set
  * 设置缺省资源管理器。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_set(assets_manager_t* rm);
+ret_t assets_manager_set(assets_manager_t* am);
 
 /**
  * @method assets_manager_create
@@ -272,105 +272,105 @@ assets_manager_t* assets_manager_create(uint32_t init_nr);
  * @method assets_manager_init
  * 初始化资源管理器。
  * @annotation ["constructor"]
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {uint32_t} init_nr 预先分配资源的个数。
  *
  * @return {assets_manager_t*} 返回asset manager对象。
  */
-assets_manager_t* assets_manager_init(assets_manager_t* rm, uint32_t init_nr);
+assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr);
 
 /**
  * @method assets_manager_set_res_root
  * 设置资源所在的目录(其下目录结构请参考demos)。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {const char*} res_root 资源所在的目录。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_set_res_root(assets_manager_t* rm, const char* res_root);
+ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root);
 
 /**
  * @method assets_manager_add
  * 向资源管理器中增加一个资源。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_info_t} info 待增加的资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_add(assets_manager_t* rm, const void* info);
+ret_t assets_manager_add(assets_manager_t* am, const void* info);
 
 /**
  * @method assets_manager_ref
  * 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
  * @annotation ["scriptable"]
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
-const asset_info_t* assets_manager_ref(assets_manager_t* rm, asset_type_t type, const char* name);
+const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
  * @method assets_manager_unref
  * 释放指定的资源。
  * @annotation ["scriptable"]
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_info_t*} info 资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_unref(assets_manager_t* rm, const asset_info_t* info);
+ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info);
 
 /**
  * @method assets_manager_find_in_cache
  * 在资源管理器的缓存中查找指定的资源(不引用)。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
-const asset_info_t* assets_manager_find_in_cache(assets_manager_t* rm, asset_type_t type,
+const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
                                                  const char* name);
 /**
  * @method assets_manager_load
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
-asset_info_t* assets_manager_load(assets_manager_t* rm, asset_type_t type, const char* name);
+asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
  * @method assets_manager_clear_cache
  * 清除指定类型的缓存。
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_clear_cache(assets_manager_t* rm, asset_type_t type);
+ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type);
 
 /**
  * @method assets_manager_deinit
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * 释放全部资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_deinit(assets_manager_t* rm);
+ret_t assets_manager_deinit(assets_manager_t* am);
 
 /**
  * @method assets_manager_destroy
- * @param {assets_manager_t*} rm asset manager对象。
+ * @param {assets_manager_t*} am asset manager对象。
  * 释放全部资源并销毁asset manager对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_destroy(assets_manager_t* rm);
+ret_t assets_manager_destroy(assets_manager_t* am);
 
 END_C_DECLS
 
