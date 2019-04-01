@@ -324,13 +324,8 @@ def gen_res_c():
     result += '#endif/*WITH_VGCANVAS*/\n'
 
     result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
-    result += "#ifdef WITH_MINI_FONT\n"
-    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.mini.res'))
-    result += genIncludes(files)
-    result += "#else/*WITH_MINI_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res'))
     result += genIncludes(files)
-    result += '#endif/*WITH_MINI_FONT*/\n'
     result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += genIncludes(files)

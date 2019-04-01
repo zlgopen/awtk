@@ -139,7 +139,6 @@ ret_t tk_init_internal(void) {
 }
 
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
-  ret_t ret = RET_FAIL;
   main_loop_t* loop = NULL;
   ENSURE(system_info_init(app_type, app_name, app_root) == RET_OK);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
