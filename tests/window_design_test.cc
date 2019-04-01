@@ -37,16 +37,16 @@ ret_t window_design_get_prop(widget_t* widget, const char* name, value_t* v) {
 }
 
 TK_DECL_VTABLE(window_design) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
-                          .size = sizeof(window_t),
-                          .is_window = TRUE,
-                          .parent = TK_PARENT_VTABLE(window_base),
-                          .create = window_design_create,
-                          .on_event = window_base_on_event,
-                          .on_paint_self = window_base_on_paint_self,
-                          .on_paint_begin = window_base_on_paint_begin,
-                          .on_paint_end = window_base_on_paint_end,
-                          .get_prop = window_design_get_prop,
-                          .on_destroy = window_base_on_destroy};
+                                 .size = sizeof(window_t),
+                                 .is_window = TRUE,
+                                 .parent = TK_PARENT_VTABLE(window_base),
+                                 .create = window_design_create,
+                                 .on_event = window_base_on_event,
+                                 .on_paint_self = window_base_on_paint_self,
+                                 .on_paint_begin = window_base_on_paint_begin,
+                                 .on_paint_end = window_base_on_paint_end,
+                                 .get_prop = window_design_get_prop,
+                                 .on_destroy = window_base_on_destroy};
 
 widget_t* window_design_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return window_base_create(parent, TK_REF_VTABLE(window_design), x, y, w, h);
