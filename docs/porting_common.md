@@ -63,12 +63,6 @@
  */
 
 /**
- * 如果FLASH空间较小，不足以放大字体文件时，请定义本宏
- *
- * #define WITH_MINI_FONT 1
- */
-
-/**
  * 如果有标准的malloc/free/calloc等函数，请定义本宏
  *
  * #define HAS_STD_MALLOC 1
