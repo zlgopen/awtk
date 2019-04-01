@@ -76,7 +76,7 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return darray_push(&(fm->fonts), font);
 }
 
-static font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
+font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
   font_cmp_info_t info = {name, size};
   return_value_if_fail(fm != NULL, NULL);
 
@@ -104,7 +104,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
   font_t* font = NULL;
 
   name = name != NULL ? name : TK_DEFAULT_FONT;
-  return_value_if_fail(fm != NULL && name != NULL, NULL);
+  return_value_if_fail(fm != NULL, NULL);
 
   font = font_manager_lookup(fm, name, size);
   if (font == NULL) {
@@ -120,6 +120,18 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
   }
 
   return font;
+}
+
+ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
+  font_t* font = NULL;
+
+  name = name != NULL ? name : TK_DEFAULT_FONT;
+  return_value_if_fail(fm != NULL, NULL);
+
+  font = font_manager_lookup(fm, name, size);
+  return_value_if_fail(font != NULL, RET_NOT_FOUND);
+
+  return darray_remove(&(fm->fonts), font);
 }
 
 ret_t font_manager_deinit(font_manager_t* fm) {
