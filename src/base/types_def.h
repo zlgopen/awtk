@@ -215,9 +215,18 @@ typedef enum _app_type_t {
 #define WITH_VGCANVAS 1
 #endif /*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
 
+#ifndef TK_DEFAULT_FONT
 #define TK_DEFAULT_FONT "default"
+#endif/*TK_DEFAULT_FONT*/
+
+#ifndef TK_DEFAULT_FONT_SIZE
 #define TK_DEFAULT_FONT_SIZE 18
+#endif/*TK_DEFAULT_FONT_SIZE*/
+
+#ifndef TK_MAX_FPS
 #define TK_MAX_FPS 100
+#endif/*TK_MAX_FPS*/
+
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x02
 
