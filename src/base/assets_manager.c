@@ -271,7 +271,6 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 
   if (info != NULL) {
     assets_manager_add(am, info);
-    asset_info_unref(info);
   }
 
   return info;
@@ -389,7 +388,6 @@ static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_t
 
   if (info == NULL) {
     info = assets_manager_load(am, type, name);
-    /*加载时初始计数为1，缓存时自动增加引用计数，此处不需要引用*/
   } else {
     asset_info_ref((asset_info_t*)info);
   }
@@ -439,20 +437,7 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
     return RET_OK;
   }
 
-  if (!(info->is_in_rom)) {
-    bool_t remove = info->refcount <= 1;
-
-    if (remove) {
-      tk_compare_t cmp = am->assets.compare;
-      am->assets.compare = pointer_compare;
-      if (darray_remove(&(am->assets), (void*)info) == RET_NOT_FOUND) {
-        asset_info_unref((asset_info_t*)info);
-      }
-      am->assets.compare = cmp;
-    }
-  }
-
-  return RET_OK;
+  return asset_info_unref((asset_info_t*)info);
 }
 
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {

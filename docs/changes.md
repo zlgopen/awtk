@@ -10,6 +10,7 @@
   * 调用SDL\_CaptureMouse支持鼠标离开SDL窗口(感谢尧燊提供补丁)。 
   * 增加style\_mutable\_get\_value
   * 增加style\_mutable\_cast
+  * 调用assets\_manager\_unref的BUG(感谢朝泽提供补丁)。
 
 * 2019/04/01
   * 从win获取locale info。
