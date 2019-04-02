@@ -166,6 +166,16 @@ ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, v
 ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v);
 
 /**
+ * @method style_mutable_cast
+ * 转换为style_mutable对象。
+ * @annotation ["cast", "scriptable"]
+ * @param {style_t*} s style对象。
+ *
+ * @return {style_t*} style对象。
+ */
+style_t* style_mutable_cast(style_t* s);
+
+/**
  * @method style_mutable_create
  * 创建style\_mutable对象。
  *
@@ -185,6 +195,8 @@ style_t* style_mutable_create(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t style_mutable_register(void);
+
+#define STYLE_MUTABLE(s) ((style_mutable_t*)(style_mutable_cast(s)))
 
 END_C_DECLS
 

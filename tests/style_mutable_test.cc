@@ -80,3 +80,14 @@ TEST(StyleMutable, basic) {
   style_destroy(style);
   widget_destroy(w);
 }
+
+TEST(StyleMutable, cast) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+  widget_t* b = button_create(w, 0, 0, 100, 100);
+  style_t* style_mutable = style_mutable_create(b);
+
+  ASSERT_EQ(style_mutable, style_mutable_cast(style_mutable));
+
+  style_destroy(style_mutable);
+  widget_destroy(w);
+}

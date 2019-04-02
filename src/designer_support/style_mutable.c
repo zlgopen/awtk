@@ -128,14 +128,14 @@ widget_state_style_t* widget_state_style_find(widget_state_style_t* first, const
 }
 
 const char* style_mutable_get_name(style_t* s) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
 
   return style->name;
 }
 
 ret_t style_mutable_set_name(style_t* s, const char* name) {
-  style_mutable_t* style = (style_mutable_t*)s;
-  return_value_if_fail(s != NULL && name != NULL, RET_BAD_PARAMS);
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL && name != NULL, RET_BAD_PARAMS);
 
   style->name = tk_str_copy(style->name, name);
 
@@ -143,21 +143,21 @@ ret_t style_mutable_set_name(style_t* s, const char* name) {
 }
 
 static const char* style_mutable_get_widget_state(style_t* s) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
 
   return (const char*)widget_get_prop_str(style->widget, WIDGET_PROP_STATE_FOR_STYLE,
                                           WIDGET_STATE_NORMAL);
 }
 
 static ret_t style_mutable_notify_widget_state_changed(style_t* s, widget_t* widget) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
 
   style->widget = widget;
   return style_notify_widget_state_changed(style->default_style, widget);
 }
 
 bool_t style_mutable_is_valid(style_t* s) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
@@ -175,7 +175,7 @@ static ret_t widget_state_style_get_value(widget_state_style_t* witer, const cha
 
 static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defval) {
   value_t v;
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
@@ -188,7 +188,7 @@ static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defva
 
 static color_t style_mutable_get_color(style_t* s, const char* name, color_t defval) {
   value_t v;
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
@@ -203,7 +203,7 @@ static color_t style_mutable_get_color(style_t* s, const char* name, color_t def
 
 const char* style_mutable_get_str(style_t* s, const char* name, const char* defval) {
   value_t v;
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
@@ -215,7 +215,7 @@ const char* style_mutable_get_str(style_t* s, const char* name, const char* defv
 }
 
 ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, value_t* v) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
   return widget_state_style_get_value(current, name, v);
@@ -223,8 +223,8 @@ ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, v
 
 ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v) {
   widget_state_style_t* witer = NULL;
-  style_mutable_t* style = (style_mutable_t*)s;
-  return_value_if_fail(s != NULL, RET_BAD_PARAMS);
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL, RET_BAD_PARAMS);
 
   witer = widget_state_style_find(style->styles, state);
   if (witer == NULL) {
@@ -262,8 +262,8 @@ ret_t style_mutable_set_str(style_t* s, const char* state, const char* name, con
 ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* ctx) {
   style_item_t* iter = NULL;
   widget_state_style_t* witer = NULL;
-  style_mutable_t* style = (style_mutable_t*)s;
-  return_value_if_fail(s != NULL && on_style_item != NULL, RET_BAD_PARAMS);
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL && on_style_item != NULL, RET_BAD_PARAMS);
 
   witer = style->styles;
   while (witer != NULL) {
@@ -281,8 +281,8 @@ ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* 
 ret_t style_mutable_reset(style_t* s) {
   style_item_t* iter = NULL;
   widget_state_style_t* witer = NULL;
-  style_mutable_t* style = (style_mutable_t*)s;
-  return_value_if_fail(s != NULL, RET_BAD_PARAMS);
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL, RET_BAD_PARAMS);
 
   witer = style->styles;
   while (witer != NULL) {
@@ -306,7 +306,7 @@ ret_t style_mutable_reset(style_t* s) {
 }
 
 static ret_t style_mutable_destroy(style_t* s) {
-  style_mutable_t* style = (style_mutable_t*)s;
+  style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(style->name);
@@ -351,4 +351,10 @@ static const style_factory_t s_style_factory = {.create_style = style_factory_cr
 ret_t style_mutable_register(void) {
   style_factory_set((style_factory_t*)&s_style_factory);
   return RET_OK;
+}
+
+style_t* style_mutable_cast(style_t* s) {
+  return_value_if_fail(s != NULL && s->vt == &style_mutable_vt, s);
+
+  return s;
 }
