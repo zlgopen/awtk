@@ -93,6 +93,7 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
 #define STR_KEY_SPACE "space"
 #define STR_KEY_PREFIX "key:"
 #define STR_PAGE_PREFIX "page:"
+#define STR_KEY_TAB "tab"
 #define STR_KEY_BACKSPACE "backspace"
 
 static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
@@ -117,6 +118,8 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
       code = TK_KEY_BACKSPACE;
     } else if (tk_str_eq(key, STR_KEY_SPACE)) {
       code = TK_KEY_SPACE;
+    } else if (tk_str_eq(key, STR_KEY_TAB)) {
+      code = TK_KEY_TAB;
     } else {
       code = *key;
     }
