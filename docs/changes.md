@@ -3,6 +3,7 @@
   * 修改窗口动画内存溢出问题(感谢陈谭提供补丁)。
   * 修改windows平台编译问题(感谢陈谭提供补丁)。
   * 软键盘支持tab键。
+  * 修改slideview clip的BUG(issue #105)。
 
 * 2019/04/01
   * 从win获取locale info。

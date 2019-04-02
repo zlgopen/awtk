@@ -46,8 +46,6 @@ static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int32_t ox
 
   rr.x += ox;
   rr.y += oy;
-  rr.w -= 1;
-  rr.h -= 1;
 
   return canvas_set_clip_rect(c, &rr);
 }
