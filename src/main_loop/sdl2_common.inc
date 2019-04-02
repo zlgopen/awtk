@@ -79,6 +79,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
       event.button = sdl_event->button.button;
       event.pressed = loop->pressed;
 
+      SDL_CaptureMouse(TRUE);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
@@ -91,6 +92,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
 
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       loop->pressed = 0;
+      SDL_CaptureMouse(FALSE);
       break;
     }
     case SDL_MOUSEMOTION: {
