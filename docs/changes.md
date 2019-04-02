@@ -8,6 +8,7 @@
   * EVT\_NONE移到tkc中(感谢尧燊提供补丁)。
   * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
   * 调用SDL\_CaptureMouse支持鼠标离开SDL窗口(感谢尧燊提供补丁)。 
+  * 增加style\_mutable\_get\_value
 
 * 2019/04/01
   * 从win获取locale info。

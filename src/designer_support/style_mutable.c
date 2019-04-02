@@ -164,7 +164,8 @@ bool_t style_mutable_is_valid(style_t* s) {
   return current != NULL || style_is_valid(style->default_style);
 }
 
-static ret_t style_mutable_get_value(widget_state_style_t* witer, const char* name, value_t* v) {
+static ret_t widget_state_style_get_value(widget_state_style_t* witer, const char* name,
+                                          value_t* v) {
   if (witer == NULL || witer->items == NULL) {
     return RET_NOT_FOUND;
   }
@@ -178,7 +179,7 @@ static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defva
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && style_mutable_get_value(current, name, &v) == RET_OK) {
+  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
     return value_int(&v);
   } else {
     return style_get_int(style->default_style, name, defval);
@@ -191,7 +192,7 @@ static color_t style_mutable_get_color(style_t* s, const char* name, color_t def
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && style_mutable_get_value(current, name, &v) == RET_OK) {
+  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
     color_t c;
     c.color = value_uint32(&v);
     return c;
@@ -206,11 +207,18 @@ const char* style_mutable_get_str(style_t* s, const char* name, const char* defv
   const char* state = style_mutable_get_widget_state(s);
   widget_state_style_t* current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && style_mutable_get_value(current, name, &v) == RET_OK) {
+  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
     return value_str(&v);
   } else {
     return style_get_str(style->default_style, name, defval);
   }
+}
+
+ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, value_t* v) {
+  style_mutable_t* style = (style_mutable_t*)s;
+  widget_state_style_t* current = widget_state_style_find(style->styles, state);
+
+  return widget_state_style_get_value(current, name, v);
 }
 
 ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v) {

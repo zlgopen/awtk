@@ -22,6 +22,8 @@ static ret_t on_style_item(void* ctx, const char* widget_state, const char* id,
 }
 
 TEST(StyleMutable, basic) {
+  value_t v;
+  value_t v1;
   int32_t i = 0;
   int32_t k = 0;
   int32_t n = 100;
@@ -49,6 +51,18 @@ TEST(StyleMutable, basic) {
       fg.color = 0xffff + 1;
       ASSERT_EQ(style_mutable_set_color(style, state, STYLE_ID_FG_COLOR, fg), RET_OK);
       ASSERT_EQ(style_get_color(style, STYLE_ID_FG_COLOR, trans).color, fg.color);
+
+      snprintf(font_name, sizeof(font_name), "font%d", i);
+      ASSERT_EQ(style_mutable_set_str(style, state, STYLE_ID_FONT_NAME, font_name), RET_OK);
+      ASSERT_EQ(string(style_get_str(style, STYLE_ID_FONT_NAME, "")), string(font_name));
+
+      snprintf(font_name, sizeof(font_name), "fonta%d", i);
+      value_set_str(&v, font_name);
+      ASSERT_EQ(style_mutable_set_value(style, state, STYLE_ID_FONT_NAME, &v), RET_OK);
+
+      ASSERT_EQ(string(style_get_str(style, STYLE_ID_FONT_NAME, "")), string(font_name));
+      ASSERT_EQ(style_mutable_get_value(style, state, STYLE_ID_FONT_NAME, &v1), RET_OK);
+      ASSERT_STREQ(value_str(&v1), font_name);
 
       snprintf(font_name, sizeof(font_name), "font%d", i);
       ASSERT_EQ(style_mutable_set_str(style, state, STYLE_ID_FONT_NAME, font_name), RET_OK);
