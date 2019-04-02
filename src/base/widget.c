@@ -426,6 +426,7 @@ ret_t widget_destroy_children(widget_t* widget) {
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_do_destroy(iter);
+  iter->parent = NULL;
   WIDGET_FOR_EACH_CHILD_END();
   widget->children->size = 0;
 
@@ -1577,9 +1578,12 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
 static ret_t widget_destroy_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
 
-  widget_destroy_sync(widget);
-
-  return RET_REMOVE;
+  if (widget->can_not_destroy) {
+    widget_destroy_sync(widget);
+    return RET_REMOVE;
+  } else {
+    return RET_REPEAT;
+  }
 }
 
 static ret_t widget_destroy_async(widget_t* widget) {
