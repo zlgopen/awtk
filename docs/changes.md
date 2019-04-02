@@ -4,6 +4,9 @@
   * 修改windows平台编译问题(感谢陈谭提供补丁)。
   * 软键盘支持tab键。
   * 修改slideview clip的BUG(issue #105)。
+  * 顶层窗口为dialog时，window\_manager\_back\_to\_home/window\_manager\_back直接返回失败(感谢尧燊提供补丁)。
+  * EVT\_NONE移到tkc中(感谢尧燊提供补丁)。
+  * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
 
 * 2019/04/01
   * 从win获取locale info。

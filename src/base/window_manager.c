@@ -975,7 +975,8 @@ ret_t window_manager_back(widget_t* widget) {
     e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
     return widget_dispatch(top_window, &e);
   } else {
-    return window_manager_close_window(widget, top_window);
+    log_warn("not support call window_manager_back on non-normal window\n");
+    return RET_FAIL;
   }
 }
 
@@ -1006,6 +1007,7 @@ static ret_t window_manager_back_to_home_sync(widget_t* widget) {
 
   for (k = 0; k < wins.size; k++) {
     widget_t* iter = WIDGET(wins.elms[k]);
+    assert(!is_dialog(iter));
     window_manager_close_window_force(widget, iter);
   }
   darray_deinit(&wins);
@@ -1025,27 +1027,20 @@ static ret_t window_manager_back_to_home_async(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t window_manager_back_to_home_on_dialog_destroy(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-
-  idle_add(window_manager_back_to_home_async, widget);
-
-  return RET_REMOVE;
-}
-
 ret_t window_manager_back_to_home(widget_t* widget) {
   widget_t* top = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   top = window_manager_get_top_window(widget);
-  if (is_dialog(top)) {
-    dialog_quit(top, 0);
-    widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
-  } else {
+  if (!is_dialog(top)) {
     idle_add(window_manager_back_to_home_async, widget);
-  }
 
-  return RET_OK;
+    return RET_OK;
+  } else {
+    log_warn("not support call window_manager_back_to_home on dialog\n");
+
+    return RET_FAIL;
+  }
 }
 
 ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter) {
