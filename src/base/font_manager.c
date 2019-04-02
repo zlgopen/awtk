@@ -126,7 +126,7 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   font_t* font = NULL;
 
   name = name != NULL ? name : TK_DEFAULT_FONT;
-  return_value_if_fail(fm != NULL, NULL);
+  return_value_if_fail(fm != NULL, RET_FAIL);
 
   font = font_manager_lookup(fm, name, size);
   return_value_if_fail(font != NULL, RET_NOT_FOUND);
