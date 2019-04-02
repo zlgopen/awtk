@@ -787,9 +787,11 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     if (radius > 3) {
       vgcanvas_t* vg = canvas_get_vgcanvas(c);
       if (vg != NULL) {
+        xy_t x = r->x + 0.5;
+        xy_t y = r->y + 0.5;
         vgcanvas_set_fill_color(vg, color);
         vgcanvas_translate(vg, c->ox, c->oy);
-        vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
+        vgcanvas_rounded_rect(vg, x, y, r->w, r->h, radius);
         vgcanvas_translate(vg, -c->ox, -c->oy);
         vgcanvas_fill(vg);
       } else {
@@ -826,9 +828,11 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
       if (radius > 3) {
         vgcanvas_t* vg = canvas_get_vgcanvas(c);
         if (vg != NULL) {
+          xy_t x = r->x + 0.5;
+          xy_t y = r->y + 0.5;
           vgcanvas_set_stroke_color(vg, bd);
           vgcanvas_translate(vg, c->ox, c->oy);
-          vgcanvas_rounded_rect(vg, r->x, r->y, r->w, r->h, radius);
+          vgcanvas_rounded_rect(vg, x, y, r->w, r->h, radius);
           vgcanvas_translate(vg, -c->ox, -c->oy);
           vgcanvas_stroke(vg);
         } else {
