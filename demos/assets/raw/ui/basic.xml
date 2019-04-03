@@ -40,7 +40,8 @@
   </grid>
   
   <grid x="20" y="bottom:10" w="80%" h="40" children_layout="default(r=1,c=5,x=2,s=10)">
-    <image draw_type="icon" image="earth"/>
+    <image draw_type="icon" image="earth" 
+      animation="rotation(from=0, to=6.28, repeat_times=0, duration=2000, easing=linear)"/>
     <image draw_type="icon" image="rgba" />
     <image draw_type="icon" image="rgb" />
     <image draw_type="icon" image="message"/>
