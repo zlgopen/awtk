@@ -425,8 +425,8 @@ ret_t widget_destroy_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_do_destroy(iter);
   iter->parent = NULL;
+  widget_do_destroy(iter);
   WIDGET_FOR_EACH_CHILD_END();
   widget->children->size = 0;
 
