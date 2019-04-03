@@ -3,6 +3,7 @@
   * 恢复WITH\_MINI\_FONT宏。
   * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
   * 修改edit软键盘无法关闭的BUG。
+  * 修改窗口动画因为取整导致的问题。
 
 * 2019/04/02
   * 软键盘支持tab键。
