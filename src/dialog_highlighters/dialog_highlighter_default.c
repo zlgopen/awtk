@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   dialog_highlighter.c
  * Author: AWTK Develop Team
  * Brief:  dialog_highlighter
@@ -33,7 +33,7 @@ static ret_t dialog_highlighter_default_draw_mask(canvas_t* c, uint8_t alpha) {
     canvas_fill_rect(c, 0, 0, w, h);
   }
 
-  return alpha;
+  return RET_OK;
 }
 
 static ret_t dialog_highlighter_default_prepare(dialog_highlighter_t* h, canvas_t* c) {
