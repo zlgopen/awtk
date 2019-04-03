@@ -49,6 +49,8 @@ typedef struct _color_component_t {
   int32_t last_hue;
   bool_t need_update;
   color_component_update_t update;
+
+  bool_t pressed;
 } color_component_t;
 
 /**

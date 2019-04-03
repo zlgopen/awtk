@@ -5,7 +5,8 @@
   * 修改edit软键盘无法关闭的BUG。
   * 修改窗口动画因为取整导致的问题。
   * text selector的options属性，指定范围时，支持指定格式。
-  * 修改window\_base\_load\_theme\_obj从自己的assets\_manager中加载资源。
+  * 修改window\_base\_load\_theme\_obj从自己的assets\_manager中加载资源(感谢朝泽提供补丁)。
+  * 修改color picker的BUG(感谢朝泽提供补丁)。
 
 * 2019/04/02
   * 软键盘支持tab键。

@@ -35,8 +35,9 @@ static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
   widget_to_local(widget, &p);
-  color_component->color_x = p.x;
-  color_component->color_y = p.y;
+  color_component->color_x = tk_clampi(p.x, 0, widget->w);
+  color_component->color_y = tk_clampi(p.y, 0, widget->h);
+  ;
   widget_invalidate_force(widget, NULL);
   widget_dispatch(widget, &evt);
 
@@ -45,26 +46,28 @@ static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e
 
 static ret_t color_component_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
+  color_component_t* component = COLOR_COMPONENT(widget);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
       color_component_update_pressed(widget, evt);
       widget_grab(widget->parent, widget);
+      component->pressed = TRUE;
     } break;
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed) {
+      if (component->pressed) {
         color_component_update_pressed(widget, evt);
       }
       break;
     }
     case EVT_POINTER_UP: {
-      pointer_event_t* evt = (pointer_event_t*)e;
       widget_ungrab(widget->parent, widget);
-      if (evt->pressed) {
+      if (component->pressed) {
         event_t changed = event_init(EVT_VALUE_CHANGED, widget);
         widget_dispatch(widget, &changed);
+        component->pressed = FALSE;
       }
       break;
     }
