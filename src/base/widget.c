@@ -1583,10 +1583,10 @@ static ret_t widget_destroy_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
 
   if (widget->can_not_destroy) {
+    return RET_REPEAT;
+  } else {
     widget_destroy_sync(widget);
     return RET_REMOVE;
-  } else {
-    return RET_REPEAT;
   }
 }
 
