@@ -52,6 +52,7 @@ static ret_t window_animator_open_destroy(window_animator_t* wa) {
 }
 
 static ret_t window_animator_close_destroy(window_animator_t* wa) {
+  widget_invalidate_force(wa->prev_win, NULL);
   widget_destroy(wa->curr_win);
 
   return window_animator_open_destroy(wa);
