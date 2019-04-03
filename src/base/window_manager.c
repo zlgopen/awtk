@@ -299,6 +299,7 @@ static ret_t window_manager_create_animator(window_manager_t* wm, widget_t* curr
       log_debug("ignore_user_input\n");
     }
   } else {
+    widget_invalidate_force(prev_win, NULL);
     window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
   }
 
