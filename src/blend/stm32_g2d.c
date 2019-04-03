@@ -55,6 +55,10 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint16_t o_offline = 0;
   uint16_t o_pixsize = 0;
 
+  if(c.rgba.a < 0xf0) {
+    return RET_NOT_IMPL;
+  }
+
   return_value_if_fail(fb != NULL && fb->data != NULL && dst != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
