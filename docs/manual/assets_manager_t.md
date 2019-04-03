@@ -84,7 +84,7 @@ assets_manager_t* assets_manager ();
 * 函数原型：
 
 ```
-ret_t assets_manager_add (assets_manager_t* rm, asset_info_t info);
+ret_t assets_manager_add (assets_manager_t* am, asset_info_t info);
 ```
 
 * 参数说明：
@@ -92,7 +92,7 @@ ret_t assets_manager_add (assets_manager_t* rm, asset_info_t info);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | info | asset\_info\_t | 待增加的资源。 |
 #### assets\_manager\_clear\_cache 函数
 -----------------------
@@ -107,7 +107,7 @@ ret_t assets_manager_add (assets_manager_t* rm, asset_info_t info);
 * 函数原型：
 
 ```
-ret_t assets_manager_clear_cache (assets_manager_t* rm, asset_type_t type);
+ret_t assets_manager_clear_cache (assets_manager_t* am, asset_type_t type);
 ```
 
 * 参数说明：
@@ -115,7 +115,7 @@ ret_t assets_manager_clear_cache (assets_manager_t* rm, asset_type_t type);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
 #### assets\_manager\_create 函数
 -----------------------
@@ -152,7 +152,7 @@ assets_manager_t* assets_manager_create (uint32_t init_nr);
 * 函数原型：
 
 ```
-ret_t assets_manager_deinit (assets_manager_t* rm);
+ret_t assets_manager_deinit (assets_manager_t* am);
 ```
 
 * 参数说明：
@@ -160,7 +160,7 @@ ret_t assets_manager_deinit (assets_manager_t* rm);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 #### assets\_manager\_destroy 函数
 -----------------------
 
@@ -174,7 +174,7 @@ ret_t assets_manager_deinit (assets_manager_t* rm);
 * 函数原型：
 
 ```
-ret_t assets_manager_destroy (assets_manager_t* rm);
+ret_t assets_manager_destroy (assets_manager_t* am);
 ```
 
 * 参数说明：
@@ -182,7 +182,7 @@ ret_t assets_manager_destroy (assets_manager_t* rm);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 #### assets\_manager\_find\_in\_cache 函数
 -----------------------
 
@@ -196,7 +196,7 @@ ret_t assets_manager_destroy (assets_manager_t* rm);
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_find_in_cache (assets_manager_t* rm, asset_type_t type, char* name);
+asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t type, char* name);
 ```
 
 * 参数说明：
@@ -204,7 +204,7 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* rm, asset_type_t t
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | asset\_info\_t* | 返回资源。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_init 函数
@@ -220,7 +220,7 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* rm, asset_type_t t
 * 函数原型：
 
 ```
-assets_manager_t* assets_manager_init (assets_manager_t* rm, uint32_t init_nr);
+assets_manager_t* assets_manager_init (assets_manager_t* am, uint32_t init_nr);
 ```
 
 * 参数说明：
@@ -228,7 +228,7 @@ assets_manager_t* assets_manager_init (assets_manager_t* rm, uint32_t init_nr);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | assets\_manager\_t* | 返回asset manager对象。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | init\_nr | uint32\_t | 预先分配资源的个数。 |
 #### assets\_manager\_load 函数
 -----------------------
@@ -243,7 +243,7 @@ assets_manager_t* assets_manager_init (assets_manager_t* rm, uint32_t init_nr);
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_load (assets_manager_t* rm, asset_type_t type, char* name);
+asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char* name);
 ```
 
 * 参数说明：
@@ -251,7 +251,7 @@ asset_info_t* assets_manager_load (assets_manager_t* rm, asset_type_t type, char
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | asset\_info\_t* | 返回资源。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_ref 函数
@@ -267,7 +267,7 @@ asset_info_t* assets_manager_load (assets_manager_t* rm, asset_type_t type, char
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_ref (assets_manager_t* rm, asset_type_t type, char* name);
+asset_info_t* assets_manager_ref (assets_manager_t* am, asset_type_t type, char* name);
 ```
 
 * 参数说明：
@@ -275,7 +275,7 @@ asset_info_t* assets_manager_ref (assets_manager_t* rm, asset_type_t type, char*
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | asset\_info\_t* | 返回资源。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_set 函数
@@ -291,7 +291,7 @@ asset_info_t* assets_manager_ref (assets_manager_t* rm, asset_type_t type, char*
 * 函数原型：
 
 ```
-ret_t assets_manager_set (assets_manager_t* rm);
+ret_t assets_manager_set (assets_manager_t* am);
 ```
 
 * 参数说明：
@@ -299,7 +299,7 @@ ret_t assets_manager_set (assets_manager_t* rm);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 #### assets\_manager\_set\_res\_root 函数
 -----------------------
 
@@ -313,7 +313,7 @@ ret_t assets_manager_set (assets_manager_t* rm);
 * 函数原型：
 
 ```
-ret_t assets_manager_set_res_root (assets_manager_t* rm, const char* res_root);
+ret_t assets_manager_set_res_root (assets_manager_t* am, const char* res_root);
 ```
 
 * 参数说明：
@@ -321,7 +321,7 @@ ret_t assets_manager_set_res_root (assets_manager_t* rm, const char* res_root);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | res\_root | const char* | 资源所在的目录。 |
 #### assets\_manager\_unref 函数
 -----------------------
@@ -336,7 +336,7 @@ ret_t assets_manager_set_res_root (assets_manager_t* rm, const char* res_root);
 * 函数原型：
 
 ```
-ret_t assets_manager_unref (assets_manager_t* rm, asset_info_t* info);
+ret_t assets_manager_unref (assets_manager_t* am, asset_info_t* info);
 ```
 
 * 参数说明：
@@ -344,5 +344,5 @@ ret_t assets_manager_unref (assets_manager_t* rm, asset_info_t* info);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| rm | assets\_manager\_t* | asset manager对象。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 | info | asset\_info\_t* | 资源。 |

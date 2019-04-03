@@ -7,7 +7,6 @@
 
 | 名称 | 说明 | 
 | -------- | ------- | 
-| EVT\_NONE | 无效事件名称。 |
 | EVT\_POINTER\_DOWN | 指针按下事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_DOWN\_ABORT | 取消前一个指针按下事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_MOVE | 指针移动事件名(pointer\_event\_t)。 |
@@ -35,6 +34,7 @@
 | EVT\_PAINT | 绘制的事件名(paint\_event\_t)。 |
 | EVT\_BEFORE\_PAINT | 即将绘制的事件名(paint\_event\_t)。 |
 | EVT\_AFTER\_PAINT | 绘制完成的事件名(paint\_event\_t)。 |
+| EVT\_PAINT\_DONE | 绘制完成(canvas状态已经恢复)的事件名(paint\_event\_t)。 |
 | EVT\_LOCALE\_CHANGED | locale改变的事件(event\_t)。 |
 | EVT\_ANIM\_START | 控件动画开始事件(event\_t)。 |
 | EVT\_ANIM\_STOP | 控件动画被主动停止的事件(event\_t)。 |

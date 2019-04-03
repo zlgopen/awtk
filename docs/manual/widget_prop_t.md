@@ -11,6 +11,7 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_HIGHLIGHT | dialog highlight。 |
 | WIDGET\_PROP\_BAR\_SIZE | slider中的bar的的宽度或高度。 |
 | WIDGET\_PROP\_OPACITY | 不透明度。 |
 | WIDGET\_PROP\_MIN\_W | 最小宽度。 |
@@ -72,6 +73,7 @@
 | WIDGET\_PROP\_STAGE | window stage |
 | WIDGET\_PROP\_IMAGE\_MANAGER | 图片管理器。 |
 | WIDGET\_PROP\_ASSETS\_MANAGER | 资源管理器。 |
+| WIDGET\_PROP\_LOCALE\_INFO | locale\_info。 |
 | WIDGET\_PROP\_FONT\_MANAGER | 字体管理器。 |
 | WIDGET\_PROP\_THEME\_OBJ | 窗口的主题对象。 |
 | WIDGET\_PROP\_DEFAULT\_THEME\_OBJ | 缺省的主题对象。 |

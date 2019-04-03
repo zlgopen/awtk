@@ -7,6 +7,7 @@
 
 | 名称 | 说明 | 
 | -------- | ------- | 
+| EVT\_NONE | 无效事件名称。 |
 | EVT\_PROP\_WILL\_CHANGE | 对象的属性即将改变的事件名(prop\_change\_event\_t)。 |
 | EVT\_PROP\_CHANGED | 对象的属性改变的事件名(prop\_change\_event\_t)。 |
 | EVT\_ITEMS\_WILL\_CHANGE | 即将增加和删除集合中的项目(event\_t)。 |

@@ -13,12 +13,11 @@
 | <a href="#locale_info_t_locale_info">locale\_info</a> | 获取缺省locale_info。 |
 | <a href="#locale_info_t_locale_info_change">locale\_info\_change</a> | 设置当前的国家和语言。 |
 | <a href="#locale_info_t_locale_info_create">locale\_info\_create</a> | 创建locale_info。 |
-| <a href="#locale_info_t_locale_info_deinit">locale\_info\_deinit</a> | 释放全部资源。 |
 | <a href="#locale_info_t_locale_info_destroy">locale\_info\_destroy</a> | 释放全部资源并销毁locale_info对象。 |
-| <a href="#locale_info_t_locale_info_init">locale\_info\_init</a> | 初始化locale_info。 |
 | <a href="#locale_info_t_locale_info_off">locale\_info\_off</a> | 注销指定事件的处理函数。 |
 | <a href="#locale_info_t_locale_info_on">locale\_info\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#locale_info_t_locale_info_set">locale\_info\_set</a> | 设置缺省locale_info。 |
+| <a href="#locale_info_t_locale_info_set_assets_manager">locale\_info\_set\_assets\_manager</a> | 设置资源管理器对象。 |
 | <a href="#locale_info_t_locale_info_tr">locale\_info\_tr</a> | 翻译字符串。 |
 ### 属性
 <p id="locale_info_t_properties">
@@ -95,28 +94,6 @@ locale_info_t* locale_info_create (char* language, char* country);
 | 返回值 | locale\_info\_t* | 返回locale\_info对象。 |
 | language | char* | 语言。 |
 | country | char* | 国家或地区。 |
-#### locale\_info\_deinit 函数
------------------------
-
-* 函数功能：
-
-> <p id="locale_info_t_locale_info_deinit"> 释放全部资源。
-
-
-
-
-* 函数原型：
-
-```
-ret_t locale_info_deinit (locale_info_t* locale_info);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| locale\_info | locale\_info\_t* | locale\_info对象。 |
 #### locale\_info\_destroy 函数
 -----------------------
 
@@ -139,30 +116,6 @@ ret_t locale_info_destroy (locale_info_t* locale_info);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
-#### locale\_info\_init 函数
------------------------
-
-* 函数功能：
-
-> <p id="locale_info_t_locale_info_init"> 初始化locale_info。
-
-
-
-
-* 函数原型：
-
-```
-locale_info_t* locale_info_init (locale_info_t* locale_info, char* language, char* country);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | locale\_info\_t* | 返回locale\_info对象。 |
-| locale\_info | locale\_info\_t* | locale\_info对象。 |
-| language | char* | 语言。 |
-| country | char* | 国家或地区。 |
 #### locale\_info\_off 函数
 -----------------------
 
@@ -233,6 +186,30 @@ ret_t locale_info_set (locale_info_t* locale_info);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
+#### locale\_info\_set\_assets\_manager 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="locale_info_t_locale_info_set_assets_manager"> 设置资源管理器对象。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t locale_info_set_assets_manager (locale_info_t* locale_info, assets_manager_t* assets_manager);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| locale\_info | locale\_info\_t* | 图片管理器对象。 |
+| assets\_manager | assets\_manager\_t* | 资源管理器。 |
 #### locale\_info\_tr 函数
 -----------------------
 
