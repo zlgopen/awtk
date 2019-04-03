@@ -109,6 +109,13 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t input_method_default_on_keyboard_open(void* ctx, event_t* e) {
+  input_method_t* im = (input_method_t*)ctx;
+  im->busy = FALSE;
+
+  return RET_REMOVE;
+}
+
 static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bool_t open_anim) {
   value_t v;
   point_t p = {0, 0};
@@ -129,6 +136,9 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     im->keyboard = window_open("kb_default");
   }
   return_value_if_fail(im->keyboard != NULL, RET_NOT_FOUND);
+
+  im->busy = TRUE;
+  widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
 
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";

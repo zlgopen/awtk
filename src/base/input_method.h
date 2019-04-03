@@ -239,6 +239,9 @@ struct _input_method_t {
    */
   input_method_request_t request;
   input_method_destroy_t destroy;
+
+  /*private*/
+  bool_t busy;
 };
 
 /**
