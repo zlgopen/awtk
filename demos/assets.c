@@ -378,8 +378,12 @@
 #include "assets/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
+#if defined(WITH_MINI_FONT)
+#include "assets/inc/fonts/default_mini.res"
+#else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_MINI_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/inc/fonts/default.data"
 #endif /*WITH_STB_FONT or WITH_FT_FONT*/
 #endif /*WITH_FS_RES*/
@@ -388,8 +392,12 @@ ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
 
 #ifdef WITH_FS_RES
-  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");
+#if defined(WITH_MINI_FONT)
+  assets_manager_load(rm, ASSET_TYPE_FONT, "default_mini");
+#else  /*WITH_MINI_FONT*/
   assets_manager_load(rm, ASSET_TYPE_FONT, "default");
+#endif /*WITH_MINI_FONT*/
+  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");
 #else
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_vgcanvas);
@@ -632,7 +640,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_system_bar);
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, style_dialog_warn);
+#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))
+  assets_manager_add(rm, font_default_mini);
+#else  /*WITH_MINI_FONT*/
   assets_manager_add(rm, font_default);
+#endif /*WITH_MINI_FONT*/
   assets_manager_add(rm, data_com_zlg_app_json);
   assets_manager_add(rm, data_test_dat);
   assets_manager_add(rm, data_test_json);

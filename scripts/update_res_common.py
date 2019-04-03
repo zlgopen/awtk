@@ -293,7 +293,14 @@ def gen_add_assets(files):
         basename = basename.replace('/', '_')
         basename = basename.replace('.data', '')
         basename = basename.replace('.bsvg', '')
-        result += '  assets_manager_add(rm, '+basename+');\n'
+        if basename == 'font_default':
+            result += "#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))\n"
+            result += '  assets_manager_add(rm, font_default_mini);\n'
+            result += "#else/*WITH_MINI_FONT*/\n"
+            result += '  assets_manager_add(rm, font_default);\n'
+            result += '#endif/*WITH_MINI_FONT*/\n'
+        else:
+            result += '  assets_manager_add(rm, '+basename+');\n'
     return result
 
 
@@ -324,8 +331,13 @@ def gen_res_c():
     result += '#endif/*WITH_VGCANVAS*/\n'
 
     result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
+    result += "#if defined(WITH_MINI_FONT)\n"
+    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default_mini.res'))
+    result += genIncludes(files)
+    result += "#else/*WITH_MINI_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res'))
     result += genIncludes(files)
+    result += '#endif/*WITH_MINI_FONT*/\n'
     result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += genIncludes(files)
@@ -339,8 +351,12 @@ def gen_res_c():
     result += ''
 
     result += '#ifdef WITH_FS_RES\n'
-    result += '  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");\n'
+    result += "#if defined(WITH_MINI_FONT)\n"
+    result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default_mini");\n'
+    result += "#else/*WITH_MINI_FONT*/\n"
     result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default");\n'
+    result += '#endif/*WITH_MINI_FONT*/\n'
+    result += '  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
@@ -385,6 +401,7 @@ def gen_res_web_c():
     result += '  return RET_OK;\n'
     result += '}\n'
     writeResult(result)
+
 
 def gen_res():
     prepare()
