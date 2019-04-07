@@ -282,18 +282,20 @@ float_t canvas_measure_utf8(canvas_t* c, const char* str) {
 }
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+  ret_t ret = RET_OK;
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   c->ox = 0;
   c->oy = 0;
 
+  ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   if (c->lcd->support_dirty_rect) {
     canvas_set_clip_rect(c, dirty_rect);
   } else {
     canvas_set_clip_rect(c, NULL);
   }
 
-  return lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
+  return ret;
 }
 
 static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {

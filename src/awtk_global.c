@@ -203,7 +203,7 @@ ret_t tk_deinit_internal(void) {
   return RET_OK;
 }
 
-static ret_t tk_exit(void) {
+ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
 
   return tk_deinit_internal();
