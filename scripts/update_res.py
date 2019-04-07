@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import os
 import sys 
 import update_res_common as common

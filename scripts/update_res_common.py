@@ -1,11 +1,10 @@
-#!/usr/bin/python
-
 import os
 import sys
 import copy
 import glob
 import shutil
 import platform
+from PIL import Image
 
 ###########################
 DPI = ''
@@ -412,7 +411,13 @@ def gen_res_json_one(res_type, files):
         uri = f.replace(os.getcwd(), "")
         filename, extname = os.path.splitext(uri)
         basename = os.path.basename(filename)
-        result = result + '    {name:"' + basename + '\", uri:"' + uri + '"},\n';
+        result = result + '    {name:"' + basename + '\", uri:"' + uri;
+        if res_type == 'image' and extname != '.svg' and extname != '.bsvg':
+            img = Image.open(f)
+            w, h = img.size
+            result = result + '", w:' + str(w) + ', h:' + str(h)+ '},\n';
+        else:
+            result = result + '"},\n';
     result = result + '  ],'
 
     return result;
