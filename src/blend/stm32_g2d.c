@@ -55,7 +55,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint16_t o_offline = 0;
   uint16_t o_pixsize = 0;
 
-  if(c.rgba.a < 0xf0) {
+  if (c.rgba.a < 0xf0) {
     return RET_NOT_IMPL;
   }
 

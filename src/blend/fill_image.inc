@@ -53,7 +53,7 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
     for (y = 0; y < h; y++) {
       p = (pixel_dst_t*)(dst->data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 
-      if(dark) {
+      if (dark) {
         for (x = 0; x < w; x++) {
           rgba_t drgba = pixel_dst_to_rgba((*p));
           *p++ = blend_rgba_dark(drgba, minus_a);

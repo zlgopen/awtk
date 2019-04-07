@@ -267,6 +267,10 @@ def writeResult(str):
     os.write(fd, str)
     os.close(fd)
 
+def writeResultJSON(str):
+    fd = os.open('assets.js', os.O_RDWR | os.O_CREAT | os.O_TRUNC)
+    os.write(fd, str)
+    os.close(fd)
 
 def genIncludes(files):
     str1 = ""
@@ -402,6 +406,31 @@ def gen_res_web_c():
     result += '}\n'
     writeResult(result)
 
+def gen_res_json_one(res_type, files):
+    result= "\n  " + res_type + ': [\n'
+    for f in files:
+        uri = f.replace(os.getcwd(), "")
+        filename, extname = os.path.splitext(uri)
+        basename = os.path.basename(filename)
+        result = result + '    {name:"' + basename + '\", uri:"' + uri + '"},\n';
+    result = result + '  ],'
+
+    return result;
+
+def gen_res_json():
+    result = 'const g_awtk_assets = {';
+
+    result = result + gen_res_json_one("image", glob.glob(joinPath(INPUT_DIR, 'images/*/*.*')));
+    result = result + gen_res_json_one("ui", glob.glob(joinPath(INPUT_DIR, 'ui/*.bin')));
+    result = result + gen_res_json_one("style", glob.glob(joinPath(INPUT_DIR, 'styles/*.bin')));
+    result = result + gen_res_json_one("string", glob.glob(joinPath(INPUT_DIR, 'strings/*.bin')));
+    result = result + gen_res_json_one("xml", glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')));
+    result = result + gen_res_json_one("data", glob.glob(joinPath(INPUT_DIR, 'data/*.*')));
+    result = result + gen_res_json_one("script", glob.glob(joinPath(INPUT_DIR, 'scripts/*.*')));
+    result = result + gen_res_json_one("font", glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')));
+    result = result + '\n};';
+
+    writeResultJSON(result);
 
 def gen_res():
     prepare()
@@ -448,6 +477,8 @@ def updateRes():
         cleanRes()
     elif ACTION == 'web':
         gen_res_web_c()
+    elif ACTION == 'json':
+        gen_res_json()
     elif ACTION == 'string':
         prepare()
         gen_res_all_string()
@@ -507,7 +538,7 @@ def showUsage():
     global DPI
     global ACTION
     global IMAGEGEN_OPTIONS
-    args = ' action[clean|web|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
+    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
     if len(sys.argv) == 1:
         print('=========================================================')
         print('Usage: '+sys.argv[0] + args)
