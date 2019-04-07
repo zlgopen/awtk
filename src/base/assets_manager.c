@@ -41,7 +41,22 @@ static int asset_cache_cmp_type(const void* a, const void* b) {
 
 static assets_manager_t* s_assets_manager = NULL;
 
-#ifdef WITH_FS_RES
+#if defined(AWTK_WEB)
+asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t));
+  return_value_if_fail(info != NULL, NULL);
+
+  memset(info, 0x00, sizeof(asset_info_t));
+  info->size = 0;
+  info->type = type;
+  info->subtype = 0;
+  info->refcount = 1;
+  info->is_in_rom = FALSE;
+  strncpy(info->name, name, TK_NAME_LEN);
+
+  return info;
+}
+#elif defined(WITH_FS_RES)
 #include "tkc/fs.h"
 
 static const char* assets_manager_get_res_root(assets_manager_t* am) {
