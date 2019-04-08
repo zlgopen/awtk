@@ -1169,7 +1169,7 @@ ret_t widget_on_paint_self(widget_t* widget, canvas_t* c) {
     ret = widget->vt->on_paint_self(widget, c);
   } else {
     paint_event_t e;
-    widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
+    widget_dispatch(widget, paint_event_init(&e, EVT_PAINT, widget, c));
   }
 
   return ret;
