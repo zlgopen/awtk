@@ -91,9 +91,8 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
     if (info != NULL) {
       if (info->subtype == fm->loader->type) {
         font = font_loader_load(fm->loader, name, info->data, info->size);
-      } else {
-        assets_manager_unref(assets_manager(), info);
       }
+      assets_manager_unref(assets_manager(), info);
     }
   }
 

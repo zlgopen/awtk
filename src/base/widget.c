@@ -425,8 +425,8 @@ ret_t widget_destroy_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_do_destroy(iter);
   iter->parent = NULL;
+  widget_do_destroy(iter);
   WIDGET_FOR_EACH_CHILD_END();
   widget->children->size = 0;
 
@@ -1168,12 +1168,8 @@ ret_t widget_on_paint_self(widget_t* widget, canvas_t* c) {
   if (widget->vt->on_paint_self) {
     ret = widget->vt->on_paint_self(widget, c);
   } else {
-    paint_event_t paint;
-    paint.c = c;
-    paint.e.type = EVT_PAINT;
-    paint.e.target = widget;
-
-    widget_dispatch(widget, (event_t*)&paint);
+    paint_event_t e;
+    widget_dispatch(widget, paint_event_init(&e, EVT_PAINT, widget, c));
   }
 
   return ret;
@@ -1219,9 +1215,7 @@ ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
     ret = widget->vt->on_paint_begin(widget, c);
   }
 
-  e.c = c;
-  e.e = event_init(EVT_BEFORE_PAINT, widget);
-  widget_dispatch(widget, (event_t*)(&e));
+  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
 
   return ret;
 }
@@ -1232,9 +1226,7 @@ static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  e.c = c;
-  e.e = event_init(EVT_PAINT_DONE, widget);
-  widget_dispatch(widget, (event_t*)(&e));
+  widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
 
   return ret;
 }
@@ -1249,9 +1241,7 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
     ret = widget->vt->on_paint_end(widget, c);
   }
 
-  e.c = c;
-  e.e = event_init(EVT_AFTER_PAINT, widget);
-  widget_dispatch(widget, (event_t*)(&e));
+  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
 
   return ret;
 }
@@ -1583,10 +1573,10 @@ static ret_t widget_destroy_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
 
   if (widget->can_not_destroy) {
+    return RET_REPEAT;
+  } else {
     widget_destroy_sync(widget);
     return RET_REMOVE;
-  } else {
-    return RET_REPEAT;
   }
 }
 
@@ -1614,7 +1604,11 @@ ret_t widget_destroy(widget_t* widget) {
   if (parent != NULL) {
     if (parent->target == widget || parent->key_target == widget) {
       widget_remove_child(parent, widget);
-      return widget_destroy_async(widget);
+      if (parent->parent == NULL) {
+        return widget_do_destroy(widget);
+      } else {
+        return widget_destroy_async(widget);
+      }
     }
 
     widget_remove_child(widget->parent, widget);

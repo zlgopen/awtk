@@ -19,6 +19,7 @@
 | <a href="#font_manager_t_font_manager_init">font\_manager\_init</a> | 初始化字体管理器。 |
 | <a href="#font_manager_t_font_manager_set">font\_manager\_set</a> | 设置缺省的字体管理器。 |
 | <a href="#font_manager_t_font_manager_set_assets_manager">font\_manager\_set\_assets\_manager</a> | 设置资源管理器对象 |
+| <a href="#font_manager_t_font_manager_unload_font">font\_manager\_unload\_font</a> | 卸载指定的字体。 |
 ### 属性
 <p id="font_manager_t_properties">
 
@@ -234,3 +235,27 @@ ret_t font_manager_set_assets_manager (font_manager_t* imm, assets_manager_t* as
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | font\_manager\_t* | 字体管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### font\_manager\_unload\_font 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_manager_t_font_manager_unload_font"> 卸载指定的字体。
+
+
+
+
+* 函数原型：
+
+```
+ret_t font_manager_unload_font (font_manager_t* fm, char* name, font_size_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
+| name | char* | 字体名，为NULL时使用TK\_DEFAULT\_FONT。 |
+| size | font\_size\_t | 字体的大小(矢量字体指定为0即可)。 |

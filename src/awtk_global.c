@@ -106,8 +106,6 @@ ret_t tk_init_internal(void) {
   font_loader = font_loader_bitmap();
 #endif /*WITH_TRUETYPE_FONT*/
 
-  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
-
 #ifdef WITH_WIDGET_POOL
   return_value_if_fail(widget_pool_set(widget_pool_create(WITH_WIDGET_POOL)) == RET_OK, RET_FAIL);
 #endif /*WITH_WIDGET_POOL*/
@@ -140,6 +138,7 @@ ret_t tk_init_internal(void) {
 
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
   main_loop_t* loop = NULL;
+  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   ENSURE(system_info_init(app_type, app_name, app_root) == RET_OK);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
@@ -204,7 +203,7 @@ ret_t tk_deinit_internal(void) {
   return RET_OK;
 }
 
-static ret_t tk_exit(void) {
+ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
 
   return tk_deinit_internal();

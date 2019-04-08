@@ -1,4 +1,25 @@
 # 最新动态
+* 2019/04/08
+  * 增加assets\_manager\_preload
+  * 重构
+  * 修改valgrind发现的内存泄露。
+
+* 2019/04/07
+  * 为适配AWTK-WEB做了写小的修改。
+  * 修改资源脚本，生成文件列表，用于awtk-web。
+
+* 2019/04/05
+  * 生成的常量数据增加字节对齐。
+
+* 2019/04/03
+  * 恢复WITH\_MINI\_FONT宏。
+  * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
+  * 修改edit软键盘无法关闭的BUG。
+  * 修改窗口动画因为取整导致的问题。
+  * text selector的options属性，指定范围时，支持指定格式。
+  * 修改window\_base\_load\_theme\_obj从自己的assets\_manager中加载资源(感谢朝泽提供补丁)。
+  * 修改color picker的BUG(感谢朝泽提供补丁)。
+
 * 2019/04/02
   * 软键盘支持tab键。
   * 修改窗口动画内存溢出问题(感谢陈谭提供补丁)。
@@ -8,6 +29,9 @@
   * EVT\_NONE移到tkc中(感谢尧燊提供补丁)。
   * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
   * 调用SDL\_CaptureMouse支持鼠标离开SDL窗口(感谢尧燊提供补丁)。 
+  * 增加style\_mutable\_get\_value
+  * 增加style\_mutable\_cast
+  * 调用assets\_manager\_unref的BUG(感谢朝泽提供补丁)。
 
 * 2019/04/01
   * 从win获取locale info。

@@ -513,7 +513,11 @@ static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
   return_value_if_fail(len <= TK_NAME_LEN, end + 1);
 
   tk_strncpy(name, p, len);
-  return_value_if_fail(object_eval((object_t*)obj, name, &v) == RET_OK, end + 1);
+  if (object_eval((object_t*)obj, name, &v) != RET_OK) {
+    value_reset(&v);
+
+    return end + 1;
+  }
 
   if (v.type == VALUE_TYPE_STRING) {
     str_append(str, value_str(&v));
@@ -522,6 +526,7 @@ static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
     tk_snprintf(num, TK_NUM_MAX_LEN, "%d", value_int(&v));
     str_append(str, num);
   }
+  value_reset(&v);
 
   return end + 1;
 }

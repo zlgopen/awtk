@@ -41,7 +41,22 @@ static int asset_cache_cmp_type(const void* a, const void* b) {
 
 static assets_manager_t* s_assets_manager = NULL;
 
-#ifdef WITH_FS_RES
+#if defined(AWTK_WEB)
+asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t));
+  return_value_if_fail(info != NULL, NULL);
+
+  memset(info, 0x00, sizeof(asset_info_t));
+  info->size = 0;
+  info->type = type;
+  info->subtype = 0;
+  info->refcount = 1;
+  info->is_in_rom = FALSE;
+  strncpy(info->name, name, TK_NAME_LEN);
+
+  return info;
+}
+#elif defined(WITH_FS_RES)
 #include "tkc/fs.h"
 
 static const char* assets_manager_get_res_root(assets_manager_t* am) {
@@ -271,7 +286,6 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 
   if (info != NULL) {
     assets_manager_add(am, info);
-    asset_info_unref(info);
   }
 
   return info;
@@ -389,7 +403,6 @@ static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_t
 
   if (info == NULL) {
     info = assets_manager_load(am, type, name);
-    /*加载时初始计数为1，缓存时自动增加引用计数，此处不需要引用*/
   } else {
     asset_info_ref((asset_info_t*)info);
   }
@@ -439,20 +452,7 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
     return RET_OK;
   }
 
-  if (!(info->is_in_rom)) {
-    bool_t remove = info->refcount <= 1;
-
-    if (remove) {
-      tk_compare_t cmp = am->assets.compare;
-      am->assets.compare = pointer_compare;
-      if (darray_remove(&(am->assets), (void*)info) == RET_NOT_FOUND) {
-        asset_info_unref((asset_info_t*)info);
-      }
-      am->assets.compare = cmp;
-    }
-  }
-
-  return RET_OK;
+  return asset_info_unref((asset_info_t*)info);
 }
 
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
@@ -463,6 +463,14 @@ ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   return darray_remove_all(&(am->assets), &info);
+}
+
+ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char* name) {
+  asset_info_t* info = assets_manager_load(am, type, name);
+  return_value_if_fail(info != NULL, RET_FAIL);
+  assets_manager_unref(am, info);
+
+  return RET_OK;
 }
 
 ret_t assets_manager_deinit(assets_manager_t* am) {

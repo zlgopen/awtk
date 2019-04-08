@@ -1,4 +1,6 @@
 ﻿#include "gtest/gtest.h"
+#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "text_selector/text_selector.h"
 
 #include <string>
@@ -129,6 +131,72 @@ TEST(TextSelector, cast) {
   widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
 
   ASSERT_EQ(w, text_selector_cast(w));
+
+  widget_destroy(w);
+}
+
+TEST(TextSelector, range) {
+  int32_t i = 0;
+  int32_t n = 0;
+  char text1[64];
+  char text2[64];
+  widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(text_selector_set_options(w, "1-10"), RET_OK);
+  n = text_selector_count_options(w);
+  ASSERT_EQ(n, 10);
+
+  for (i = 0; i < n; i++) {
+    text_selector_option_t* iter = text_selector_get_option(w, i);
+    ASSERT_EQ(iter->value, i + 1);
+    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_snprintf(text2, sizeof(text2) - 1, "%d", i + 1);
+    ASSERT_STREQ(text1, text2);
+  }
+
+  widget_destroy(w);
+}
+
+TEST(TextSelector, range_format) {
+  int32_t i = 0;
+  int32_t n = 0;
+  char text1[64];
+  char text2[64];
+  widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(text_selector_set_options(w, "1-10-%4d"), RET_OK);
+  n = text_selector_count_options(w);
+  ASSERT_EQ(n, 10);
+
+  for (i = 0; i < n; i++) {
+    text_selector_option_t* iter = text_selector_get_option(w, i);
+    ASSERT_EQ(iter->value, i + 1);
+    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_snprintf(text2, sizeof(text2) - 1, "%4d", i + 1);
+    ASSERT_STREQ(text1, text2);
+  }
+
+  widget_destroy(w);
+}
+
+TEST(TextSelector, range_format2) {
+  int32_t i = 0;
+  int32_t n = 0;
+  char text1[64];
+  char text2[64];
+  widget_t* w = text_selector_create(NULL, 0, 0, 100, 100);
+
+  ASSERT_EQ(text_selector_set_options(w, "1-100-item%4X"), RET_OK);
+  n = text_selector_count_options(w);
+  ASSERT_EQ(n, 100);
+
+  for (i = 0; i < n; i++) {
+    text_selector_option_t* iter = text_selector_get_option(w, i);
+    ASSERT_EQ(iter->value, i + 1);
+    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_snprintf(text2, sizeof(text2) - 1, "item%4X", i + 1);
+    ASSERT_STREQ(text1, text2);
+  }
 
   widget_destroy(w);
 }

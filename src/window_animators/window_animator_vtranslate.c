@@ -37,7 +37,7 @@ static ret_t window_animator_vtranslate_draw_prev(window_animator_t* wa) {
   widget_t* win = wa->prev_win;
   widget_t* curr_win = wa->curr_win;
   float_t percent = wa->percent;
-  float_t y = curr_win->h * percent;
+  float_t y = tk_roundi(curr_win->h * percent);
   float_t h = win->h - y;
 
   rect_t src = rect_init(win->x, y + win->y, win->w, h);
@@ -50,7 +50,7 @@ static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
-  float_t h = win->h * percent;
+  float_t h = tk_roundi(win->h * percent);
   float_t y = win->parent->h - h;
 
   rect_t src = rect_init(win->x, win->y, win->w, h);

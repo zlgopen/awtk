@@ -292,4 +292,10 @@ enum { TK_NAME_LEN = 31 };
 #include "awtk_config.h"
 #endif /*HAS_AWTK_CONFIG*/
 
+#ifdef _MSC_VER
+#define TK_CONST_DATA_ALIGN __declspec(align(8))
+#else
+#define TK_CONST_DATA_ALIGN __attribute__((aligned(8)))
+#endif /*_MSC_VER*/
+
 #endif /*TYPES_DEF_H*/

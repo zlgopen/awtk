@@ -112,6 +112,12 @@
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
 | <a href="#dialog_t_dialog_toast">dialog\_toast</a> | 显示『短暂提示信息』对话框。 |
 | <a href="#dialog_t_dialog_warn">dialog\_warn</a> | 显示『警告』对话框。 |
+### 属性
+<p id="dialog_t_properties">
+
+| 属性名称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#dialog_t_highlight">highlight</a> | const char* | 对话框高亮策略。 |
 #### dialog\_cast 函数
 -----------------------
 
@@ -415,3 +421,20 @@ ret_t dialog_warn (const char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text | const char* | 文本内容。 |
+#### highlight 属性
+-----------------------
+> <p id="dialog_t_highlight"> 对话框高亮策略。
+
+
+* 类型：const char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

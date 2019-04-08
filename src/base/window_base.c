@@ -48,6 +48,7 @@ ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
 
 static ret_t window_base_load_theme_obj(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
 
   const char* theme_name = widget->name;
 
@@ -56,7 +57,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (theme_name != NULL) {
-    window_base->res_theme = assets_manager_ref(assets_manager(), ASSET_TYPE_STYLE, theme_name);
+    window_base->res_theme = assets_manager_ref(am, ASSET_TYPE_STYLE, theme_name);
   }
 
   if (window_base->res_theme != NULL) {
@@ -155,7 +156,8 @@ ret_t window_base_on_destroy(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    assets_manager_unref(assets_manager(), window_base->res_theme);
+    assets_manager_t* am = widget_get_assets_manager(widget);
+    assets_manager_unref(am, window_base->res_theme);
   }
 
   return RET_OK;

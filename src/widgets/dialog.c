@@ -72,6 +72,13 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   return window_base_get_prop(widget, name, v);
 }
 
+static ret_t dialog_on_destroy(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  TKMEM_FREE(dialog->highlight);
+
+  return window_base_on_destroy(widget);
+}
+
 TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .type = WIDGET_TYPE_DIALOG,
                           .is_window = TRUE,
@@ -86,7 +93,7 @@ TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .on_paint_end = window_base_on_paint_end,
                           .set_prop = dialog_set_prop,
                           .get_prop = dialog_get_prop,
-                          .on_destroy = window_base_on_destroy};
+                          .on_destroy = dialog_on_destroy};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return window_base_create(parent, TK_REF_VTABLE(dialog), x, y, w, h);

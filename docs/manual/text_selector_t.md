@@ -388,7 +388,8 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 #### options 属性
 -----------------------
 > <p id="text_selector_t_options"> 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
- 对于数值选项，也可以指定一个范围，用『-』分隔起始值和结束值，如："1-7"表示1到7。
+ 对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。
+ 如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。
 
 
 * 类型：char*

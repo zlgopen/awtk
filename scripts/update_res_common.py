@@ -1,11 +1,10 @@
-#!/usr/bin/python
-
 import os
 import sys
 import copy
 import glob
 import shutil
 import platform
+from PIL import Image
 
 ###########################
 DPI = ''
@@ -238,6 +237,7 @@ def gen_res_all_script():
 
 
 def gen_res_all_string():
+    print('gen_res_all_string');
     strgen('strings/strings.xml', 'strings')
     strgen_bin('strings/strings.xml', 'strings')
 
@@ -267,6 +267,10 @@ def writeResult(str):
     os.write(fd, str)
     os.close(fd)
 
+def writeResultJSON(str):
+    fd = os.open('assets.js', os.O_RDWR | os.O_CREAT | os.O_TRUNC)
+    os.write(fd, str)
+    os.close(fd)
 
 def genIncludes(files):
     str1 = ""
@@ -293,7 +297,14 @@ def gen_add_assets(files):
         basename = basename.replace('/', '_')
         basename = basename.replace('.data', '')
         basename = basename.replace('.bsvg', '')
-        result += '  assets_manager_add(rm, '+basename+');\n'
+        if basename == 'font_default':
+            result += "#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))\n"
+            result += '  assets_manager_add(rm, font_default_mini);\n'
+            result += "#else/*WITH_MINI_FONT*/\n"
+            result += '  assets_manager_add(rm, font_default);\n'
+            result += '#endif/*WITH_MINI_FONT*/\n'
+        else:
+            result += '  assets_manager_add(rm, '+basename+');\n'
     return result
 
 
@@ -324,8 +335,13 @@ def gen_res_c():
     result += '#endif/*WITH_VGCANVAS*/\n'
 
     result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
+    result += "#if defined(WITH_MINI_FONT)\n"
+    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default_mini.res'))
+    result += genIncludes(files)
+    result += "#else/*WITH_MINI_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res'))
     result += genIncludes(files)
+    result += '#endif/*WITH_MINI_FONT*/\n'
     result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += genIncludes(files)
@@ -339,8 +355,12 @@ def gen_res_c():
     result += ''
 
     result += '#ifdef WITH_FS_RES\n'
-    result += '  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");\n'
-    result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default");\n'
+    result += "#if defined(WITH_MINI_FONT)\n"
+    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default_mini");\n'
+    result += "#else/*WITH_MINI_FONT*/\n"
+    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default");\n'
+    result += '#endif/*WITH_MINI_FONT*/\n'
+    result += '  assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
@@ -385,6 +405,38 @@ def gen_res_web_c():
     result += '  return RET_OK;\n'
     result += '}\n'
     writeResult(result)
+
+def gen_res_json_one(res_type, files):
+    result= "\n  " + res_type + ': [\n'
+    for f in files:
+        uri = f.replace(os.getcwd(), "")
+        filename, extname = os.path.splitext(uri)
+        basename = os.path.basename(filename)
+        result = result + '    {name:"' + basename + '\", uri:"' + uri;
+        if res_type == 'image' and extname != '.svg' and extname != '.bsvg':
+            img = Image.open(f)
+            w, h = img.size
+            result = result + '", w:' + str(w) + ', h:' + str(h)+ '},\n';
+        else:
+            result = result + '"},\n';
+    result = result + '  ],'
+
+    return result;
+
+def gen_res_json():
+    result = 'const g_awtk_assets = {';
+
+    result = result + gen_res_json_one("image", glob.glob(joinPath(INPUT_DIR, 'images/*/*.*')));
+    result = result + gen_res_json_one("ui", glob.glob(joinPath(INPUT_DIR, 'ui/*.bin')));
+    result = result + gen_res_json_one("style", glob.glob(joinPath(INPUT_DIR, 'styles/*.bin')));
+    result = result + gen_res_json_one("string", glob.glob(joinPath(INPUT_DIR, 'strings/*.bin')));
+    result = result + gen_res_json_one("xml", glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')));
+    result = result + gen_res_json_one("data", glob.glob(joinPath(INPUT_DIR, 'data/*.*')));
+    result = result + gen_res_json_one("script", glob.glob(joinPath(INPUT_DIR, 'scripts/*.*')));
+    result = result + gen_res_json_one("font", glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')));
+    result = result + '\n};';
+
+    writeResultJSON(result);
 
 def gen_res():
     prepare()
@@ -431,6 +483,8 @@ def updateRes():
         cleanRes()
     elif ACTION == 'web':
         gen_res_web_c()
+    elif ACTION == 'json':
+        gen_res_json()
     elif ACTION == 'string':
         prepare()
         gen_res_all_string()
@@ -490,7 +544,7 @@ def showUsage():
     global DPI
     global ACTION
     global IMAGEGEN_OPTIONS
-    args = ' action[clean|web|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
+    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565]'
     if len(sys.argv) == 1:
         print('=========================================================')
         print('Usage: '+sys.argv[0] + args)

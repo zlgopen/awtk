@@ -870,10 +870,16 @@ EvalResult eval_execute(const char* expression, const EvalHooks* hooks, void* us
   ctx.stack_level = 0;
 
   result = get_token(&ctx);
-  if (result != EVAL_RESULT_OK) return result;
+  if (result != EVAL_RESULT_OK) {
+    expr_str_clear(&ctx.str);
+    return result;
+  }
 
   result = parse_expr(&ctx, output);
-  if (result != EVAL_RESULT_OK) return result;
+  if (result != EVAL_RESULT_OK) {
+    expr_str_clear(&ctx.str);
+    return result;
+  }
 
   result = (ctx.token.type == EVAL_TOKEN_TYPE_END) ? EVAL_RESULT_OK : EVAL_RESULT_UNEXPECTED_CHAR;
   expr_str_clear(&ctx.str);

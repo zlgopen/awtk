@@ -164,31 +164,45 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
-ret_t text_selector_set_options(widget_t* widget, const char* options) {
-  return_value_if_fail(widget != NULL && options != NULL, RET_BAD_PARAMS);
-
-  if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
-    int start = 0;
-    int end = 0;
-    tk_sscanf(options, "%d-%d", &start, &end);
-    return text_selector_set_range_options(widget, start, end - start + 1, 1);
-  } else {
-    return text_selector_parse_options(widget, options);
-  }
-}
-
-ret_t text_selector_set_range_options(widget_t* widget, int32_t start, uint32_t nr, int32_t step) {
-  char text[32];
+static ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr,
+                                                int32_t step, const char* format) {
+  char text[64];
   uint32_t i = 0;
-  return_value_if_fail(widget != NULL && nr < 300, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && nr < 300 && format != NULL, RET_BAD_PARAMS);
 
   for (i = 0; i < nr; i++) {
     int32_t value = start + i * step;
-    tk_itoa(text, sizeof(text), value);
+    tk_snprintf(text, sizeof(text) - 1, format, value);
     text_selector_append_option(widget, value, text);
   }
 
   return RET_OK;
+}
+
+ret_t text_selector_set_range_options(widget_t* widget, int32_t start, uint32_t nr, int32_t step) {
+  return text_selector_set_range_options_ex(widget, start, nr, step, "%d");
+}
+
+ret_t text_selector_set_options(widget_t* widget, const char* options) {
+  return_value_if_fail(widget != NULL && options != NULL, RET_BAD_PARAMS);
+
+  if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
+    int nr = 0;
+    int end = 0;
+    int start = 0;
+    char format[32];
+    memset(format, 0x00, sizeof(format));
+
+    nr = tk_sscanf(options, "%d-%d-%31s", &start, &end, format);
+
+    if (nr < 3) {
+      tk_strncpy(format, "%d", sizeof(format) - 1);
+    }
+
+    return text_selector_set_range_options_ex(widget, start, end - start + 1, 1, format);
+  } else {
+    return text_selector_parse_options(widget, options);
+  }
 }
 
 static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t* v) {

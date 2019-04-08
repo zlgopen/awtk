@@ -609,20 +609,8 @@ static ret_t edit_update_status(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_request_input_method_in_timer(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-
-  if (widget_is_window_opened(widget)) {
-    input_method_request(input_method(), widget);
-  } else {
-    input_method_request(input_method(), NULL);
-  }
-
-  return RET_REMOVE;
-}
-
 static ret_t edit_request_input_method_on_window_open(void* ctx, event_t* e) {
-  widget_add_timer(WIDGET(ctx), edit_request_input_method_in_timer, 500);
+  input_method_request(input_method(), WIDGET(ctx));
 
   return RET_REMOVE;
 }
