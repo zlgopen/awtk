@@ -1,8 +1,9 @@
 # 最新动态
 * 2019/04/08
-  * 增加assets\_manager\_preload
   * 重构
   * 修改valgrind发现的内存泄露。
+  * 增加assets\_manager\_preload
+  * 合并optimization分支，fill\_image半透颜色性能提高3倍。
 
 * 2019/04/07
   * 为适配AWTK-WEB做了写小的修改。
