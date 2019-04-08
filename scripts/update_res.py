@@ -14,6 +14,8 @@ ASSET_C=common.joinPath(APP_ROOT, 'demos/assets.c')
 common.init(AWTK_ROOT, ASSETS_ROOT, ASSET_C);
 
 def buildTools():
+  os.system('scons '+common.toExe('bsvggen'))
+  os.system('scons '+common.toExe('strgen'))
   os.system('scons '+common.toExe('resgen'))
   os.system('scons '+common.toExe('themegen'))
   os.system('scons '+common.toExe('imagegen'))

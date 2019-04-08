@@ -237,6 +237,7 @@ def gen_res_all_script():
 
 
 def gen_res_all_string():
+    print('gen_res_all_string');
     strgen('strings/strings.xml', 'strings')
     strgen_bin('strings/strings.xml', 'strings')
 
@@ -355,11 +356,11 @@ def gen_res_c():
 
     result += '#ifdef WITH_FS_RES\n'
     result += "#if defined(WITH_MINI_FONT)\n"
-    result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default_mini");\n'
+    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default_mini");\n'
     result += "#else/*WITH_MINI_FONT*/\n"
-    result += '  assets_manager_load(rm, ASSET_TYPE_FONT, "default");\n'
+    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default");\n'
     result += '#endif/*WITH_MINI_FONT*/\n'
-    result += '  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");\n'
+    result += '  assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))

@@ -465,6 +465,14 @@ ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
   return darray_remove_all(&(am->assets), &info);
 }
 
+ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char* name) {
+  asset_info_t* info = assets_manager_load(am, type, name);
+  return_value_if_fail(info != NULL, RET_FAIL);
+  assets_manager_unref(am, info);
+
+  return RET_OK;
+}
+
 ret_t assets_manager_deinit(assets_manager_t* am) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 

@@ -149,7 +149,10 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
   mutable_image->fb = bitmap_create();
   return_value_if_fail(mutable_image->fb != NULL, RET_OOM);
 
-  return bitmap_init(mutable_image->fb, w, h, format, buff);
+  bitmap_init(mutable_image->fb, w, h, format, buff);
+  mutable_image->fb->should_free_handle = TRUE;
+
+  return RET_OK;
 }
 
 widget_t* mutable_image_cast(widget_t* widget) {

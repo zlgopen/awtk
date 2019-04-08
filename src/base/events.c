@@ -78,3 +78,55 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 
   return RET_OK;
 }
+
+event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int32_t dy) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(wheel_event_t));
+
+  event->e = event_init(type, target);
+  event->dy = dy;
+
+  return (event_t*)event;
+}
+
+event_t* pointer_event_init(pointer_event_t* event, uint32_t type, void* target, int32_t x,
+                            int32_t y) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(pointer_event_t));
+
+  event->e = event_init(type, target);
+  event->x = x;
+  event->y = y;
+
+  return (event_t*)event;
+}
+
+event_t* key_event_init(key_event_t* event, uint32_t type, void* target, int32_t key) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(key_event_t));
+
+  event->e = event_init(type, target);
+  event->key = key;
+
+  return (event_t*)event;
+}
+
+event_t* paint_event_init(paint_event_t* event, uint32_t type, void* target, canvas_t* c) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(paint_event_t));
+
+  event->e = event_init(type, target);
+  event->c = c;
+
+  return (event_t*)event;
+}
+
+event_t* window_event_init(window_event_t* event, uint32_t type, void* target, widget_t* window) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(window_event_t));
+
+  event->e = event_init(type, target);
+  event->window = window;
+
+  return (event_t*)event;
+}
