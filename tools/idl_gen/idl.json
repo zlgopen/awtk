@@ -476,6 +476,32 @@
             "type": "asset_type_t",
             "name": "type",
             "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\\_FS\\_RES时才生效。\n\n\n",
+        "name": "assets_manager_preload",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
           }
         ],
         "annotation": {},
@@ -23202,6 +23228,37 @@
       {
         "params": [
           {
+            "type": "window_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "window_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "pointer_event_t*",
             "name": "evt",
             "desc": "指针事件对象。"
@@ -23775,24 +23832,46 @@
         "name": "wheel_event_cast",
         "return": {
           "type": "wheel_event_t*",
-          "desc": "对象。"
+          "desc": "event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wheel_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "int32_t",
+            "name": "dy",
+            "desc": "滚轮的y值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "wheel_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
         }
       }
     ],
     "events": [],
     "properties": [
       {
-        "name": "dx",
-        "desc": " 滚轮的x值。\n\n",
-        "type": "int32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
         "name": "dy",
-        "desc": " 滚轮的x值。\n\n",
+        "desc": " 滚轮的y值。\n\n",
         "type": "int32_t",
         "annotation": {
           "readable": true,
@@ -23856,6 +23935,42 @@
         "return": {
           "type": "pointer_event_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "pointer_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "int32_t",
+            "name": "x",
+            "desc": "x的值。"
+          },
+          {
+            "type": "int32_t",
+            "name": "y",
+            "desc": "y的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "pointer_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
         }
       }
     ],
@@ -23954,6 +24069,37 @@
         "return": {
           "type": "key_event_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "key_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "int32_t",
+            "name": "key",
+            "desc": "key的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "key_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
         }
       }
     ],
@@ -24110,7 +24256,38 @@
         "name": "paint_event_cast",
         "return": {
           "type": "paint_event_t*",
-          "desc": "对象。"
+          "desc": "event 对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "paint_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "paint_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
         }
       }
     ],
@@ -29299,6 +29476,42 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 检查对话框是否已经退出模态。\r\n\r\n\r\n",
+        "name": "dialog_is_quited",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示已经退出，否则表示没有。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "dialog对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 检查对话框是否为模态对话框。\r\n\r\n\r\n",
+        "name": "dialog_is_modal",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是模态对话框，否则表示不是。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "const char*",
             "name": "text",
             "desc": "文本内容。"
@@ -29395,7 +29608,7 @@
       }
     ],
     "header": "widgets/dialog.h",
-    "desc": " 对话框。\r\n\r\n 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。\r\n\r\n 对话框通常由对话框标题和对话框客户区两部分组成：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   dialog_title_t -> dialog_t[arrowhead = \"ediamond\"]\r\n   dialog_client_t -> dialog_t[arrowhead = \"ediamond\"]\r\n ```\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 与窗口不同的是，打开对话框之后，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n >\r\n 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n 在c代码中使用函数dialog\\_create创建对话框。如：\r\n\r\n ```c\r\n   widget_t* ok = NULL;\r\n   widget_t* cancel = NULL;\r\n   widget_t* label = NULL;\r\n\r\n   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);\r\n\r\n   dialog_set_title(dlg, \"Dialog\");\r\n\r\n   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);\r\n   widget_set_text(ok, L\"Go\");\r\n\r\n   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);\r\n   widget_set_text(cancel, L\"Cancel\");\r\n\r\n   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);\r\n   widget_set_text(label, L\"AWTK is cool!\");\r\n\r\n   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);\r\n   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);\r\n\r\n   code = dialog_modal(dlg);\r\n\r\n   log_debug(\"code=%d\\n\", code);\r\n ```\r\n\r\n > 创建之后，再创建子控件，最后调用dialog\\_modal显示对话框。对话框关闭之后dialog\\_modal才会返回。\r\n\r\n > 完整示例请参考：[dialog\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
+    "desc": "\r\n 对话框。 对话框是一种特殊的窗口，大小和位置可以自由设置。\r\n\r\n AWTK中的对话框可以是模态的，也可以是非模态的。\r\n\r\n> 由于浏览器中无法实现主循环嵌套，因此无法实现模态对话框。\r\n 如果希望自己写的AWTK应用程序可以在浏览器(包括各种小程序)中运行或演示，\r\n 请避免使用模态对话框。\r\n\r\n 对话框通常由对话框标题和对话框客户区两部分组成：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   dialog_title_t -> dialog_t[arrowhead = \"ediamond\"]\r\n   dialog_client_t -> dialog_t[arrowhead = \"ediamond\"]\r\n ```\r\n\r\n dialog\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于dialog\\_t控件。\r\n\r\n 在xml中使用\"dialog\"标签创建对话框。如：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n <dialog_title x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" />\r\n <dialog_client x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog_client>\r\n </dialog>\r\n ```\r\n\r\n 如果你不需要对话框的标题，可以这样写：\r\n\r\n ```xml\r\n <dialog anim_hint=\"center_scale(duration=300)\" x=\"c\" y=\"m\" w=\"80%\" h=\"160\" text=\"Dialog\">\r\n   <label name=\"\" x=\"center\" y=\"middle:-20\" w=\"200\" h=\"30\" text=\"Are you ready?\"/>\r\n   <button name=\"quit\" x=\"10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"确定\"/>\r\n   <button name=\"quit\" x=\"right:10\" y=\"bottom:10\" w=\"40%\" h=\"30\" text=\"取消\"/>\r\n </dialog>\r\n ```\r\n\r\n 打开非模态对话框时，其用法与普通窗口一样。打开非模态对话框时，还需要调用dialog\\_modal。\r\n\r\n ```c\r\n  widget_t* dlg = dialog_open(name);\r\n\r\n  ret = dialog_modal(dlg);\r\n ```\r\n\r\n 关闭模态对话框用dialog\\_quit\r\n\r\n ```c\r\n static ret_t on_dialog_btn_click(void* ctx, event_t* evt) {\r\n   widget_t* win = widget_get_window(WIDGET(evt->target));\r\n   int code = (char*)ctx - (char*)NULL;\r\n\r\n   dialog_quit(win, code);\r\n\r\n    return RET_OK;\r\n }\r\n ```\r\n\r\n 关闭非模态对话框用window\\_close。\r\n\r\n ```c\r\n static ret_t on_dialog_btn_click(void* ctx, event_t* evt) {\r\n   widget_t* win = widget_get_window(WIDGET(evt->target));\r\n   int code = (char*)ctx - (char*)NULL;\r\n\r\n   window_close(win);\r\n\r\n   return RET_OK;\r\n }\r\n ```\r\n\r\n > 更多用法请参考：\r\n [dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)\r\n\r\n > 完整C代码示例请参考：\r\n\r\n * [非模态对话框](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)\r\n\r\n * [模态对话框](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog_modal.c)\r\n\r\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal border_color=\"#606060\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme default]\r\n (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)\r\n\r\n",
     "name": "dialog_t",
     "parent": "widget_t",
     "annotation": {

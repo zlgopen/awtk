@@ -12,6 +12,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#pointer_event_t_pointer_event_cast">pointer\_event\_cast</a> | 把event对象转pointer_event_t对象，主要给脚本语言使用。 |
+| <a href="#pointer_event_t_pointer_event_init">pointer\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="pointer_event_t_properties">
 
@@ -46,6 +47,32 @@ pointer_event_t* pointer_event_cast (event_t* event);
 | -------- | ----- | --------- |
 | 返回值 | pointer\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
+#### pointer\_event\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="pointer_event_t_pointer_event_init"> 初始化事件。
+
+
+
+
+* 函数原型：
+
+```
+event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type, int32_t x, int32_t y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | event\_t* | event对象。 |
+| event | pointer\_event\_t* | event对象。 |
+| target | void* | 事件目标。 |
+| type | uint32\_t | 事件类型。 |
+| x | int32\_t | x的值。 |
+| y | int32\_t | y的值。 |
 #### alt 属性
 -----------------------
 > <p id="pointer_event_t_alt"> alt键是否按下。
