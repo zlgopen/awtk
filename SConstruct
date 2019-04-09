@@ -12,7 +12,6 @@ DefaultEnvironment(CCFLAGS = awtk.CCFLAGS,
 )
 
 SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
-  '3rd/pixman/SConscript',
   '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
   '3rd/gpinyin/SConscript', 
