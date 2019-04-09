@@ -93,6 +93,7 @@ static void open_window(const char* name, widget_t* to_close) {
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
     dialog_modal(win);
+    /*window_manager_back_to_home(window_manager());*/
   }
 }
 

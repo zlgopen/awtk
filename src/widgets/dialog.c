@@ -141,6 +141,7 @@ uint32_t dialog_modal(widget_t* widget) {
 
   log_debug("%s run\n", __FUNCTION__);
 
+  dialog->quited = FALSE;
   running = main_loop()->running;
   widget_invalidate(widget, NULL);
   main_loop_run(main_loop());
@@ -156,10 +157,18 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
+  dialog->quited = TRUE;
   dialog->quit_code = code;
   main_loop_quit(main_loop());
 
   return RET_OK;
+}
+
+bool_t dialog_is_quited(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, FALSE);
+
+  return dialog->quited;
 }
 
 widget_t* dialog_cast(widget_t* widget) {

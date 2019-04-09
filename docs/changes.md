@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/04/09
+  * 修改window\_manager\_back\_to\_home。
+
 * 2019/04/08
   * 重构
   * 修改valgrind发现的内存泄露。

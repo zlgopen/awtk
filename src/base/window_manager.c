@@ -1028,6 +1028,14 @@ static ret_t window_manager_back_to_home_async(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t window_manager_back_to_home_on_dialog_destroy(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+
+  window_manager_back_to_home_sync(widget);
+
+  return RET_REMOVE;
+}
+
 ret_t window_manager_back_to_home(widget_t* widget) {
   widget_t* top = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -1038,7 +1046,11 @@ ret_t window_manager_back_to_home(widget_t* widget) {
 
     return RET_OK;
   } else {
-    log_warn("not support call window_manager_back_to_home on dialog\n");
+    if (dialog_is_quited(top)) {
+      widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
+    } else {
+      log_warn("not support call window_manager_back_to_home on dialog\n");
+    }
 
     return RET_FAIL;
   }

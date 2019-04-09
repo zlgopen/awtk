@@ -139,7 +139,7 @@ typedef struct _dialog_t {
   widget_t* title;
   widget_t* client;
   uint32_t quit_code;
-
+  bool_t quited;
 } dialog_t;
 
 /**
@@ -248,6 +248,17 @@ uint32_t dialog_modal(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_quit(widget_t* widget, uint32_t code);
+
+/**
+ * @method dialog_is_quited
+ * 检查对话框是否已经退出模态。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget dialog对象。
+ *
+ * @return {bool_t} 返回TRUE表示已经退出，否则表示没有。
+ */
+bool_t dialog_is_quited(widget_t* widget);
 
 /**
  * @method dialog_toast
