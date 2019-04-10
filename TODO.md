@@ -85,6 +85,9 @@
 * 窗口动画支持自定义。
 
 ## 短期计划(顺序不定)
+* 优化
+* WEB版本/小程序版本
+* 多进程支持
 * tree view
 * property sheet
 * file browser
