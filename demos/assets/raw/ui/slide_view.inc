@@ -3,9 +3,9 @@
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />
         <label x="center" y="bottom" w="100%" h="30%" text="Close" />
       </button>
-      <button name="btn02" style="grid_item"> 
+      <button name="open:back_to_home" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />
-        <label x="center" y="bottom" w="100%" h="30%" text="0.2" />
+        <label x="center" y="bottom" w="100%" h="30%" text="Home" />
       </button>
       <button name="btn03" style="grid_item"> 
         <image draw_type="icon" x="center" y="top" w="100%" h="80%" image="message" />

@@ -1,4 +1,4 @@
-<window anim_hint="htranslate" children_layout="default(c=2,h=30,m=5,s=5)">
+<window children_layout="default(c=2,h=30,m=5,s=5)">
     <button name="open:tab_top" text="Top"/>
     <button name="open:tab_bottom" text="Bottom"/>
     <button name="open:tab_top_compact" text="Top Compact"/>

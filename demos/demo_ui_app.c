@@ -92,8 +92,11 @@ static void open_window(const char* name, widget_t* to_close) {
   install_click_hander(win);
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
-    dialog_modal(win);
-    /*window_manager_back_to_home(window_manager());*/
+    int32_t ret = dialog_modal(win);
+
+    if (tk_str_eq(win->name, "back_to_home") && ret == 0) {
+      window_manager_back_to_home(window_manager());
+    }
   }
 }
 
