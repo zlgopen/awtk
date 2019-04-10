@@ -1,4 +1,4 @@
-<dialog theme="dialog" style="custom" highlight="default(alpha=40)" 
+<dialog theme="dialog" anim_hint="center_scale" style="custom" 
   x="c" y="m" w="80%" h="160">
   <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Hello AWTK" />
   <dialog_client style="custom" x="0" y="bottom" w="100%" h="-30">
