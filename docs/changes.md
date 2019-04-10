@@ -3,6 +3,7 @@
   * 更新demo，增加back\_to\_home的demo。
   * 修改SDL的BUG(感谢大恒和陈谭提供补丁)
   * 增加函数bitmap\_save\_png帮助调试显示相关的BUG。
+  * 修改widget\_destroy\_children的BUG(感谢朝泽和叶冬提供补丁)
 
 * 2019/04/09
   * 修改window\_manager\_back\_to\_home。

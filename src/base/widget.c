@@ -424,11 +424,13 @@ ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
 ret_t widget_destroy_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  iter->parent = NULL;
-  widget_do_destroy(iter);
-  WIDGET_FOR_EACH_CHILD_END();
-  widget->children->size = 0;
+  if (widget->children != NULL) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+    iter->parent = NULL;
+    widget_do_destroy(iter);
+    WIDGET_FOR_EACH_CHILD_END();
+    widget->children->size = 0;
+  }
 
   return RET_OK;
 }
