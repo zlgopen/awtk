@@ -288,6 +288,7 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
   c->ox = 0;
   c->oy = 0;
 
+  canvas_set_global_alpha(c, 0xff);
   ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   if (c->lcd->support_dirty_rect) {
     canvas_set_clip_rect(c, dirty_rect);
@@ -991,6 +992,7 @@ ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
 ret_t canvas_end_frame(canvas_t* c) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   canvas_draw_fps(c);
+  canvas_set_global_alpha(c, 0xff);
 
   return lcd_end_frame(c->lcd);
 }
