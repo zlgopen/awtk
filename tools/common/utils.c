@@ -114,7 +114,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
 
   fp = fopen(filename, "wb+");
   if (fp != NULL) {
-    fprintf(fp, "const unsigned char %s[] TK_CONST_DATA_ALIGN = {",
+    fprintf(fp, "TK_CONST_DATA_ALIGN(const unsigned char %s[]) = {",
             to_var_name(var_name, prefix, name));
     for (i = 0; i < size; i++) {
       if ((i % 20) == 0) {

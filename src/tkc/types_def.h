@@ -293,9 +293,9 @@ enum { TK_NAME_LEN = 31 };
 #endif /*HAS_AWTK_CONFIG*/
 
 #ifdef _MSC_VER
-#define TK_CONST_DATA_ALIGN __declspec(align(8))
+#define TK_CONST_DATA_ALIGN(v) __declspec(align(8)) v
 #else
-#define TK_CONST_DATA_ALIGN __attribute__((aligned(8)))
+#define TK_CONST_DATA_ALIGN(v) v __attribute__((aligned(8)))
 #endif /*_MSC_VER*/
 
 #endif /*TYPES_DEF_H*/
