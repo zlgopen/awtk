@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/04/12
+  * 增加函数ui\_loader\_load\_widget(ui\_loader.h)。
+
 * 2019/04/10
   * 更新demo，增加back\_to\_home的demo。
   * 修改SDL的BUG(感谢大恒和陈谭提供补丁)
