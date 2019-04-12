@@ -30,3 +30,15 @@ ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size, ui
 
   return loader->load(loader, data, size, b);
 }
+
+widget_t* ui_loader_load_widget(const char* name) {
+  ui_loader_t* loader = default_ui_loader();
+  ui_builder_t* builder = ui_builder_default(name);
+  const asset_info_t* ui = assets_manager_ref(assets_manager(), ASSET_TYPE_UI, name);
+  return_value_if_fail(ui != NULL, NULL);
+
+  ui_loader_load(loader, ui->data, ui->size, builder);
+  assets_manager_unref(assets_manager(), ui);
+
+  return builder->root;
+}

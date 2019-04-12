@@ -81,6 +81,7 @@
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/label.data"
 #include "assets/inc/ui/gif_image.data"
+#include "assets/inc/ui/test_view.data"
 #include "assets/inc/ui/auto_play_portrait.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
@@ -457,6 +458,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_label);
   assets_manager_add(rm, ui_gif_image);
+  assets_manager_add(rm, ui_test_view);
   assets_manager_add(rm, ui_auto_play_portrait);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);

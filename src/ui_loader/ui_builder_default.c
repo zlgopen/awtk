@@ -49,8 +49,6 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
     b->root = widget;
   }
 
-  // log_debug("%s %d %d %d %d\n", type, (int)(x), (int)(y), (int)(w), (int)(h));
-
   return RET_OK;
 }
 
@@ -75,16 +73,19 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
 
 static ret_t ui_builder_default_on_end(ui_builder_t* b) {
   if (b->root != NULL) {
-    widget_t* win = b->root;
-    event_t e = event_init(EVT_WINDOW_LOAD, win);
+    widget_t* widget = b->root;
 
-    if (win && win->name == NULL) {
-      widget_set_name(win, b->name);
+    widget_invalidate_force(widget, NULL);
+    if (widget && widget->name == NULL) {
+      widget_set_name(widget, b->name);
     }
 
-    widget_layout(win);
-    widget_dispatch(win, &e);
-    widget_invalidate_force(win, NULL);
+    if (widget->vt->is_window) {
+      event_t e = event_init(EVT_WINDOW_LOAD, widget);
+
+      widget_layout(widget);
+      widget_dispatch(widget, &e);
+    }
   }
 
   return RET_OK;

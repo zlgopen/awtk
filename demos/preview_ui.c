@@ -63,6 +63,12 @@ widget_t* preview_ui(const char* filename) {
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
 
+  if (builder->root != NULL && !(builder->root->vt->is_window)) {
+    widget_t* win = window_create(NULL, 0, 0, 0, 0);
+    widget_add_child(win, builder->root);
+    widget_layout(win);
+  }
+
   if (is_bin) {
     TKMEM_FREE(content);
   } else {

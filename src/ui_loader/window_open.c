@@ -20,19 +20,13 @@ static ret_t on_window_open(void* ctx, event_t* e) {
 }
 
 static widget_t* window_open_with_name(const char* name, widget_t* to_close) {
-  ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default(name);
-  const asset_info_t* ui = assets_manager_ref(assets_manager(), ASSET_TYPE_UI, name);
-  return_value_if_fail(ui != NULL, NULL);
+  widget_t* win = ui_loader_load_widget(name);
 
-  ui_loader_load(loader, ui->data, ui->size, builder);
-  assets_manager_unref(assets_manager(), ui);
-
-  if (builder->root != NULL) {
-    widget_on(builder->root, EVT_WINDOW_OPEN, on_window_open, to_close);
+  if (win != NULL) {
+    widget_on(win, EVT_WINDOW_OPEN, on_window_open, to_close);
   }
 
-  return builder->root;
+  return win;
 }
 
 typedef struct _ui_expr_info_t {
