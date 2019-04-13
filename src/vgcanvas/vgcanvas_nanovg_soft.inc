@@ -1,3 +1,4 @@
+#include "tkc/utils.h"
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;
@@ -87,7 +88,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   int32_t i = 0;
   int32_t f = 0;
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    i = (char*)(img->specific) - (char*)NULL;
+    i = tk_pointer_to_int(img->specific);
 
     return i;
   }
@@ -116,7 +117,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = (char*)NULL + i;
+    img->specific = tk_pointer_from_int(i);
     image_manager_update_specific(image_manager(), img);
   }
 

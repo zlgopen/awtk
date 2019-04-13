@@ -78,6 +78,9 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
 bool_t tk_str_start_with(const char* str, const char* prefix);
 const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size);
 
+int32_t tk_pointer_to_int(void* p);
+void* tk_pointer_from_int(int32_t v);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/

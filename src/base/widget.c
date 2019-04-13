@@ -1518,7 +1518,7 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return_value_if_fail(widget != NULL && on_timer != NULL, TK_INVALID_ID);
 
   id = timer_add(on_timer, widget, duration_ms);
-  widget_on(widget, EVT_DESTROY, widget_remove_timer_on_destroy, ((char*)NULL) + id);
+  widget_on(widget, EVT_DESTROY, widget_remove_timer_on_destroy, tk_pointer_from_int(id));
 
   return id;
 }

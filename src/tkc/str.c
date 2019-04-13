@@ -296,90 +296,90 @@ ret_t str_reset(str_t* str) {
   return RET_OK;
 }
 
-bool_t str_end_with(str_t* s, const char* str) {
+bool_t str_end_with(str_t* str, const char* text) {
   size_t len = 0;
-  return_value_if_fail(s != NULL && s->str != NULL && str != NULL, FALSE);
+  return_value_if_fail(str != NULL && str->str != NULL && text != NULL, FALSE);
 
-  len = strlen(str);
-  if (len > s->size) {
+  len = strlen(text);
+  if (len > str->size) {
     return FALSE;
   }
 
-  return strncmp(s->str + s->size - len, str, len) == 0;
+  return strncmp(str->str + str->size - len, text, len) == 0;
 }
 
-bool_t str_start_with(str_t* s, const char* str) {
-  return_value_if_fail(s != NULL && s->str != NULL && str != NULL, FALSE);
+bool_t str_start_with(str_t* str, const char* text) {
+  return_value_if_fail(str != NULL && str->str != NULL && text != NULL, FALSE);
 
-  return strncmp(s->str, str, strlen(str)) == 0;
+  return strncmp(str->str, text, strlen(text)) == 0;
 }
 
-ret_t str_trim_left(str_t* s, const char* str) {
+ret_t str_trim_left(str_t* str, const char* text) {
   uint32_t i = 0;
   uint32_t k = 0;
-  char* p = s->str;
-  uint32_t n = s->size;
-  return_value_if_fail(s != NULL && s->str != NULL, RET_BAD_PARAMS);
+  char* p = str->str;
+  uint32_t n = str->size;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
 
-  if (!s->size) {
+  if (!str->size) {
     return RET_OK;
   }
 
-  if (str == NULL) {
-    str = " ";
+  if (text == NULL) {
+    text = " ";
   }
 
   for (i = 0; i < n; i++) {
     char c = p[i];
-    if (strchr(str, c) == NULL) {
+    if (strchr(text, c) == NULL) {
       break;
     }
   }
 
-  s->size = n - i;
+  str->size = n - i;
   for (k = 0; i < n; i++, k++) {
     p[k] = p[i];
   }
-  s->str[s->size] = '\0';
+  str->str[str->size] = '\0';
 
   return RET_OK;
 }
 
-ret_t str_trim_right(str_t* s, const char* str) {
+ret_t str_trim_right(str_t* str, const char* text) {
   int32_t i = 0;
-  char* p = s->str;
-  uint32_t n = s->size;
-  return_value_if_fail(s != NULL && s->str != NULL, RET_BAD_PARAMS);
+  char* p = str->str;
+  uint32_t n = str->size;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
 
-  if (!s->size) {
+  if (!str->size) {
     return RET_OK;
   }
 
-  if (str == NULL) {
-    str = " ";
+  if (text == NULL) {
+    text = " ";
   }
 
   for (i = n - 1; i >= 0; i--) {
     char c = p[i];
-    if (strchr(str, c) == NULL) {
+    if (strchr(text, c) == NULL) {
       break;
     }
   }
 
   p[i + 1] = '\0';
-  s->size = i + 1;
+  str->size = i + 1;
 
   return RET_OK;
 }
 
-ret_t str_trim(str_t* s, const char* str) {
-  if (!s->size) {
+ret_t str_trim(str_t* str, const char* text) {
+  if (!str->size) {
     return RET_OK;
   }
 
-  str_trim_left(s, str);
+  str_trim_left(str, text);
 
-  return str_trim_right(s, str);
+  return str_trim_right(str, text);
 }
 
 static uint32_t str_count_sub_str(str_t* s, const char* str) {
@@ -398,27 +398,27 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
   return count;
 }
 
-ret_t str_replace(str_t* s, const char* str, const char* new_str) {
+ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   uint32_t count = 0;
 
-  return_value_if_fail(s != NULL && s->str != NULL && str != NULL && new_str != NULL,
+  return_value_if_fail(str != NULL && str->str != NULL && text != NULL && new_text != NULL,
                        RET_BAD_PARAMS);
 
-  count = str_count_sub_str(s, str);
+  count = str_count_sub_str(str, text);
 
   if (count > 0) {
-    char* p = s->str;
-    char* src = s->str;
-    uint32_t str_len = strlen(str);
-    uint32_t new_str_len = strlen(new_str);
-    uint32_t capacity = s->size + count * (strlen(new_str) - strlen(str)) + 1;
+    char* p = str->str;
+    char* src = str->str;
+    uint32_t str_len = strlen(text);
+    uint32_t new_text_len = strlen(new_text);
+    uint32_t capacity = str->size + count * (strlen(new_text) - strlen(text)) + 1;
 
     char* temp_str = (char*)TKMEM_ALLOC(capacity);
     char* dst = temp_str;
     return_value_if_fail(temp_str != NULL, RET_OOM);
     do {
       uint32_t size = 0;
-      p = strstr(src, str);
+      p = strstr(src, text);
       if (p != NULL) {
         size = (uint32_t)(p - src);
       } else {
@@ -428,19 +428,19 @@ ret_t str_replace(str_t* s, const char* str, const char* new_str) {
       src += size;
       dst += size;
       if (p != NULL) {
-        if (new_str_len > 0) {
-          memcpy(dst, new_str, new_str_len);
-          dst += new_str_len;
+        if (new_text_len > 0) {
+          memcpy(dst, new_text, new_text_len);
+          dst += new_text_len;
         }
         src += str_len;
       }
       *dst = '\0';
     } while (p != NULL);
 
-    TKMEM_FREE(s->str);
-    s->str = temp_str;
-    s->size = strlen(s->str);
-    s->capacity = capacity;
+    TKMEM_FREE(str->str);
+    str->str = temp_str;
+    str->size = strlen(str->str);
+    str->capacity = capacity;
   }
 
   return RET_OK;
