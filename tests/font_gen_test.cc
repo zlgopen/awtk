@@ -12,7 +12,7 @@
 #include <string>
 using std::string;
 
-#define TTF_FILE TK_ROOT "/data/fonts/starthere.ttf"
+#define TTF_FILE TK_ROOT "/tests/testdata/assets/raw/fonts/starthere.ttf"
 #define BUFF_SIZE 1024 * 1024
 
 TEST(FontGen, basic) {
@@ -47,3 +47,4 @@ TEST(FontGen, basic) {
   TKMEM_FREE(bmp_buff);
   TKMEM_FREE(ttf_buff);
 }
+
