@@ -1041,6 +1041,8 @@ ret_t window_manager_back_to_home(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   top = window_manager_get_top_window(widget);
+  return_value_if_fail(top != NULL, RET_BAD_PARAMS);
+
   if (!is_dialog(top) || !dialog_is_modal(top)) {
     idle_add(window_manager_back_to_home_async, widget);
 

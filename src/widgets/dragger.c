@@ -28,9 +28,13 @@ static ret_t dragger_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t dragger_move(widget_t* widget, xy_t dx, xy_t dy) {
+  xy_t x = 0;
+  xy_t y = 0;
   dragger_t* dragger = DRAGGER(widget);
-  xy_t x = dragger->save_x + dx;
-  xy_t y = dragger->save_y + dy;
+  return_value_if_fail(dragger != NULL, RET_BAD_PARAMS);
+
+  x = dragger->save_x + dx;
+  y = dragger->save_y + dy;
 
   x = tk_max(x, dragger->x_min);
   y = tk_max(y, dragger->y_min);
@@ -49,6 +53,7 @@ static ret_t dragger_move(widget_t* widget, xy_t dx, xy_t dy) {
 static ret_t dragger_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   dragger_t* dragger = DRAGGER(widget);
+  return_value_if_fail(dragger != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {

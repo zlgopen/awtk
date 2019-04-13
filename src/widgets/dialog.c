@@ -35,6 +35,7 @@
 
 static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
   dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(child->vt->type, WIDGET_TYPE_DIALOG_TITLE)) {
     dialog->title = child;
@@ -50,6 +51,7 @@ static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_O
 
 static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* v) {
   dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
     dialog->highlight = tk_str_copy(dialog->highlight, value_str(v));
@@ -62,6 +64,7 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
 
 static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
   dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
     value_set_str(v, dialog->highlight);
@@ -74,6 +77,8 @@ static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 static ret_t dialog_on_destroy(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+
   TKMEM_FREE(dialog->highlight);
 
   return window_base_on_destroy(widget);

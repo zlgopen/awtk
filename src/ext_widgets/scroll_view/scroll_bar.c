@@ -296,6 +296,7 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   widget_t* down = NULL;
   widget_t* dragger = NULL;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(widget != NULL && scroll_bar != NULL, RET_BAD_PARAMS);
 
   if (scroll_bar->dragger != NULL) {
     return RET_OK;
@@ -434,6 +435,7 @@ bool_t scroll_bar_is_mobile(widget_t* widget) {
 static ret_t scroll_bar_on_animate_end(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  return_value_if_fail(widget != NULL && scroll_bar != NULL, RET_REMOVE);
 
   scroll_bar->wa_value = NULL;
   scroll_bar->wa_opactiy = NULL;
@@ -495,6 +497,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
 
 static ret_t scroll_bar_update_dragger(widget_t* widget) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
   if (!scroll_bar_is_mobile(widget)) {
     rect_t r;

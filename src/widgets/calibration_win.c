@@ -27,6 +27,7 @@
 static point_t calibration_win_get_current_point(widget_t* widget, uint32_t point_name) {
   point_t pt = {0, 0};
   calibration_win_t* win = CALIBRATION_WIN(widget);
+  return_value_if_fail(win != NULL, pt);
 
   switch (point_name) {
     case PT_TOP_LEFT: {
@@ -61,6 +62,8 @@ static point_t calibration_win_get_current_point(widget_t* widget, uint32_t poin
 
 static ret_t calibration_win_invalidate(widget_t* widget, uint32_t point_name) {
   calibration_win_t* win = CALIBRATION_WIN(widget);
+  return_value_if_fail(win != NULL && widget != NULL, RET_BAD_PARAMS);
+
   if (point_name < PT_MAX_NR) {
     uint32_t cross_size = win->cross_size;
     point_t pt = calibration_win_get_current_point(widget, point_name);
@@ -76,6 +79,8 @@ static ret_t calibration_win_invalidate(widget_t* widget, uint32_t point_name) {
 static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   calibration_win_t* win = CALIBRATION_WIN(widget);
+  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
+
   if (win->cursor == PT_MAX_NR) {
     return RET_OK;
   }
@@ -98,7 +103,6 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
       calibration_win_invalidate(widget, win->cursor);
 
       if (win->cursor == PT_MAX_NR) {
-        p = win->points;
         if (win->on_done != NULL) {
           if (win->on_done(win->on_done_ctx, win->points) == RET_OK) {
             window_close(widget);
@@ -108,10 +112,13 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
         } else {
           window_close(widget);
         }
+#if 0        
+        p = win->points;
         log_debug("lt:{%d,%d} lr:{%d,%d} br:{%d,%d} bl:{%d,%d} center:{%d,%d}\n", p[PT_TOP_LEFT].x,
                   p[PT_TOP_LEFT].y, p[PT_TOP_RIGHT].x, p[PT_TOP_RIGHT].y, p[PT_BOTTOM_RIGHT].x,
                   p[PT_BOTTOM_RIGHT].y, p[PT_BOTTOM_LEFT].x, p[PT_BOTTOM_LEFT].y, p[PT_CENTER].x,
                   p[PT_CENTER].y);
+#endif
       }
       break;
     }

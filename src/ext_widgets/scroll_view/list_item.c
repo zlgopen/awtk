@@ -30,6 +30,7 @@ static ret_t list_item_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t list_item_on_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   list_item_t* list_item = LIST_ITEM(widget);
+  return_value_if_fail(widget != NULL && list_item != NULL, RET_BAD_PARAMS);
 
   if (!list_item->dragged) {
     widget_set_state(widget, WIDGET_STATE_PRESSED);
@@ -41,6 +42,8 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
 
 static ret_t list_item_remove_timer(widget_t* widget) {
   list_item_t* list_item = LIST_ITEM(widget);
+  return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
+
   if (list_item->timer_id != TK_INVALID_ID) {
     timer_remove(list_item->timer_id);
     list_item->timer_id = TK_INVALID_ID;
@@ -52,6 +55,7 @@ static ret_t list_item_remove_timer(widget_t* widget) {
 static ret_t list_item_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   list_item_t* list_item = LIST_ITEM(widget);
+  return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {

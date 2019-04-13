@@ -59,6 +59,7 @@ static ret_t switch_on_pointer_move(switch_t* aswitch, pointer_event_t* e) {
 static ret_t switch_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   switch_t* aswitch = SWITCH(ctx);
+  return_value_if_fail(widget != NULL && aswitch != NULL, RET_BAD_PARAMS);
 
   aswitch->wa = NULL;
   switch_set_value(widget, aswitch->xoffset == 0);
@@ -87,11 +88,15 @@ static ret_t switch_scroll_to(widget_t* widget, int32_t xoffset_end) {
 }
 
 static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
+  velocity_t* v = NULL;
   int32_t xoffset_end = 0;
-  widget_t* widget = WIDGET(aswitch);
-  velocity_t* v = &(aswitch->velocity);
   int32_t min_xoffset = 0;
-  int32_t max_xoffset = aswitch->max_xoffset_ratio * widget->w;
+  int32_t max_xoffset = 0;
+  widget_t* widget = WIDGET(aswitch);
+  return_value_if_fail(widget != NULL && aswitch != NULL, RET_BAD_PARAMS);
+
+  v = &(aswitch->velocity);
+  max_xoffset = aswitch->max_xoffset_ratio * widget->w;
 
   velocity_update(v, e->e.time, e->x, e->y);
   xoffset_end = aswitch->xoffset - v->yv;
@@ -119,6 +124,7 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
 static ret_t switch_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   switch_t* aswitch = SWITCH(widget);
+  return_value_if_fail(widget != NULL && aswitch != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -159,14 +165,23 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
 static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitmap_t* img) {
   int32_t w = 0;
   int32_t h = 0;
-  int32_t iw = img->w;
-  int32_t ih = img->h;
-  switch_t* aswitch = SWITCH(widget);
+  int32_t iw = 0;
+  int32_t ih = 0;
+  float_t wscale = 0;
+  float_t hscale = 0;
+  int32_t xoffset = 0;
+  int32_t round_radius = 0;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
-  float_t wscale = (float_t)(widget->w) / (float_t)iw;
-  float_t hscale = (float_t)(widget->h) / (float_t)ih;
-  int32_t xoffset = (float_t)(aswitch->xoffset) / wscale;
-  int32_t round_radius = aswitch->round_radius / hscale;
+  switch_t* aswitch = SWITCH(widget);
+  return_value_if_fail(img != NULL && widget != NULL && aswitch != NULL && vg != NULL,
+                       RET_BAD_PARAMS);
+
+  iw = img->w;
+  ih = img->h;
+  wscale = (float_t)(widget->w) / (float_t)iw;
+  hscale = (float_t)(widget->h) / (float_t)ih;
+  xoffset = (float_t)(aswitch->xoffset) / wscale;
+  round_radius = aswitch->round_radius / hscale;
 
   h = ih;
   w = iw * (1 - aswitch->max_xoffset_ratio);
@@ -195,8 +210,12 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 }
 
 static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
-  style_t* style = widget->astyle;
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, "switch");
+  style_t* style = NULL;
+  const char* image_name = NULL;
+  return_value_if_fail(widget != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, "switch");
 
   if (image_name != NULL) {
     bitmap_t img;

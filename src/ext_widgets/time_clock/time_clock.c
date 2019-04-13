@@ -159,8 +159,13 @@ static ret_t time_clock_set_prop(widget_t* widget, const char* name, const value
 }
 
 static ret_t time_clock_on_timer(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  time_clock_t* time_clock = TIME_CLOCK(widget);
+  widget_t* widget = NULL;
+  time_clock_t* time_clock = NULL;
+  return_value_if_fail(info != NULL, RET_REMOVE);
+
+  widget = WIDGET(info->ctx);
+  time_clock = TIME_CLOCK(widget);
+  return_value_if_fail(widget != NULL && time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->second++;
   if (time_clock->second >= 60) {
@@ -185,6 +190,7 @@ static ret_t time_clock_on_timer(const timer_info_t* info) {
 
 static ret_t time_clock_on_destroy(widget_t* widget) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
+  return_value_if_fail(widget != NULL && time_clock != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(time_clock->image);
   TKMEM_FREE(time_clock->bg_image);

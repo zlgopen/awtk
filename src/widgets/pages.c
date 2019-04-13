@@ -61,9 +61,11 @@ static widget_t* pages_find_target(widget_t* widget, xy_t x, xy_t y) {
 }
 
 static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
+  widget_t* active = NULL;
   pages_t* pages = PAGES(widget);
-  widget_t* active = widget_get_child(widget, pages->active);
+  return_value_if_fail(widget != NULL && pages != NULL, RET_BAD_PARAMS);
 
+  active = widget_get_child(widget, pages->active);
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);
 
   return widget_paint(active, c);

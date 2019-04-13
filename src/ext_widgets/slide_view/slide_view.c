@@ -126,6 +126,7 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   slide_view_t* slide_view = SLIDE_VIEW(ctx);
+  return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
     slide_view_activate_prev(slide_view);
@@ -220,6 +221,7 @@ static ret_t slide_view_on_pointer_move(slide_view_t* slide_view, pointer_event_
 static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->animating) {
     return RET_OK;
@@ -272,6 +274,8 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
 
 static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(widget != NULL && slide_view != NULL, NULL);
+
   if (slide_view->xoffset || slide_view->yoffset) {
     return NULL;
   }
@@ -690,10 +694,12 @@ static ret_t slide_view_paint_indicator(widget_t* widget, canvas_t* c) {
 
 static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   rect_t save_r;
+  widget_t* active = NULL;
   uint8_t save_a = c->lcd->global_alpha;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  widget_t* active = widget_get_child(widget, slide_view->active);
+  return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
+  active = widget_get_child(widget, slide_view->active);
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);
 
   canvas_get_clip_rect(c, &save_r);
@@ -724,6 +730,8 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
 
 static ret_t slide_view_on_destroy(widget_t* widget) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
+
   if (slide_view->timer_id) {
     timer_remove(slide_view->timer_id);
     slide_view->timer_id = 0;
@@ -809,6 +817,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
   widget_t* widget = WIDGET(timer->ctx);
   slide_view_t* slide_view = SLIDE_VIEW(timer->ctx);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
   widget_animator_t* animator =
       widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);

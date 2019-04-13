@@ -63,6 +63,7 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
 static ret_t popup_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_WINDOW_OPEN: {

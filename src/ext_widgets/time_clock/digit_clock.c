@@ -61,8 +61,11 @@ static wchar_t* digit_clock_translate_month(wchar_t* str, uint32_t size, uint32_
 
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt) {
   wchar_t temp[32];
+  wstr_t* str = NULL;
   const char* p = format;
-  wstr_t* str = &(widget->text);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  str = &(widget->text);
 
   str->size = 0;
   memset(temp, 0x00, sizeof(temp));
@@ -143,8 +146,11 @@ ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t*
 
 static ret_t digit_clock_update_time(widget_t* widget) {
   date_time_t dt;
+  const char* format = NULL;
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
-  const char* format = digit_clock->format ? digit_clock->format : "Y-M-D h:m:s";
+  return_value_if_fail(widget != NULL && digit_clock != NULL, RET_BAD_PARAMS);
+
+  format = digit_clock->format ? digit_clock->format : "Y-M-D h:m:s";
   return_value_if_fail(strlen(format) < 64, RET_BAD_PARAMS);
 
   date_time_init(&dt);
@@ -185,7 +191,11 @@ static ret_t digit_clock_set_prop(widget_t* widget, const char* name, const valu
 }
 
 static ret_t digit_clock_on_timer(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
+  widget_t* widget = NULL;
+  return_value_if_fail(info != NULL, RET_REMOVE);
+
+  widget = WIDGET(info->ctx);
+  return_value_if_fail(widget != NULL, RET_REMOVE);
 
   digit_clock_update_time(widget);
   widget_invalidate(widget, NULL);
@@ -195,6 +205,7 @@ static ret_t digit_clock_on_timer(const timer_info_t* info) {
 
 static ret_t digit_clock_on_destroy(widget_t* widget) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
+  return_value_if_fail(widget != NULL && digit_clock != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(digit_clock->format);
 

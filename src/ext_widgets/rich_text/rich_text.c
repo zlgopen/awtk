@@ -44,9 +44,11 @@ static ret_t rich_text_reset(widget_t* widget) {
 }
 
 static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
+  rich_text_render_node_t* iter = NULL;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  rich_text_render_node_t* iter = rich_text->render_node;
+  return_value_if_fail(widget != NULL && rich_text != NULL && c != NULL, RET_BAD_PARAMS);
 
+  iter = rich_text->render_node;
   while (iter != NULL) {
     rect_t* r = &(iter->rect);
     if (r->y > widget->h) {
@@ -106,6 +108,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 
 static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
   rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(widget != NULL && rich_text != NULL, RET_BAD_PARAMS);
 
   if (rich_text->render_node != NULL) {
     return RET_OK;

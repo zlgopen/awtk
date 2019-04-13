@@ -147,10 +147,14 @@ static ret_t keyboard_update_action_buton_info(widget_t* button, const char* tex
 
 static ret_t keyboard_on_action_info(void* ctx, event_t* e) {
   uint32_t i = 0;
+  uint32_t nr = 0;
+  widget_t** buttons = NULL;
   input_method_t* im = input_method();
   keyboard_t* keyboard = KEYBOARD(ctx);
-  uint32_t nr = keyboard->action_buttons.size;
-  widget_t** buttons = (widget_t**)keyboard->action_buttons.elms;
+  return_value_if_fail(keyboard != NULL && im != NULL, RET_BAD_PARAMS);
+
+  nr = keyboard->action_buttons.size;
+  buttons = (widget_t**)keyboard->action_buttons.elms;
 
   for (i = 0; i < nr; i++) {
     keyboard_update_action_buton_info(buttons[i], im->action_buton_text, im->action_button_enable);

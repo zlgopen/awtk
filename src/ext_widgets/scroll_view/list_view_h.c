@@ -64,6 +64,7 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
 static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   list_view_h_t* list_view = LIST_VIEW_H(widget);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN:
@@ -90,10 +91,14 @@ TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
                                .on_paint_self = list_view_h_on_paint_self};
 
 static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
+  int32_t spacing = 0;
+  int32_t item_width = 0;
   int32_t virtual_w = widget->w;
   list_view_h_t* list_view_h = LIST_VIEW_H(widget->parent);
-  int32_t spacing = list_view_h->spacing;
-  int32_t item_width = list_view_h->item_width;
+  return_value_if_fail(list_view_h != NULL, RET_BAD_PARAMS);
+
+  spacing = list_view_h->spacing;
+  item_width = list_view_h->item_width;
 
   if (widget->children != NULL) {
     int32_t i = 0;

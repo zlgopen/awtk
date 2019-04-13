@@ -157,6 +157,7 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
 
 static ret_t progress_circle_on_destroy(widget_t* widget) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(widget != NULL && progress_circle != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(progress_circle->unit);
 

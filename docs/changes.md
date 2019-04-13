@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/04/13
+  * 增加cppcheck和infer静态检查。
+  * 修改cppcheck和infer发现的警告。
+
 * 2019/04/12
   * 增加函数ui\_loader\_load\_widget(ui\_loader.h)。
 

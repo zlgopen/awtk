@@ -70,6 +70,8 @@ static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_
 
 static ret_t list_view_on_event(widget_t* widget, event_t* e) {
   list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+
   switch (e->type) {
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
@@ -97,35 +99,55 @@ TK_DECL_VTABLE(list_view) = {.type = WIDGET_TYPE_LIST_VIEW,
                              .on_paint_self = list_view_on_paint_self};
 
 static int32_t scroll_bar_to_scroll_view(list_view_t* list_view, int32_t v) {
-  scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
-  scroll_bar_t* scroll_bar = SCROLL_BAR(list_view->scroll_bar);
-  int32_t range = scroll_bar->virtual_size;
-  float_t percent = range > 0 ? (float_t)v / (float_t)(range) : 0;
+  int32_t range = 0;
+  float_t percent = 0;
+  scroll_view_t* scroll_view = NULL;
+  scroll_bar_t* scroll_bar = NULL;
+  return_value_if_fail(list_view != NULL, 0);
+
+  scroll_view = SCROLL_VIEW(list_view->scroll_view);
+  scroll_bar = SCROLL_BAR(list_view->scroll_bar);
+  return_value_if_fail(scroll_bar != NULL && scroll_view != NULL, 0);
+
+  range = scroll_bar->virtual_size;
+  percent = range > 0 ? (float_t)v / (float_t)(range) : 0;
 
   return percent * (scroll_view->virtual_h - list_view->scroll_view->h);
 }
 
 static ret_t list_view_on_scroll_bar_value_changed(void* ctx, event_t* e) {
+  int32_t offset = 0;
+  scroll_bar_t* scroll_bar = NULL;
   list_view_t* list_view = LIST_VIEW(ctx);
-  scroll_bar_t* scroll_bar = SCROLL_BAR(list_view->scroll_bar);
-  int32_t offset = scroll_bar_to_scroll_view(list_view, scroll_bar->value);
+  return_value_if_fail(list_view != NULL, RET_REMOVE);
 
+  scroll_bar = SCROLL_BAR(list_view->scroll_bar);
+  offset = scroll_bar_to_scroll_view(list_view, scroll_bar->value);
   scroll_view_set_offset(list_view->scroll_view, 0, offset);
 
   return RET_OK;
 }
 
 static int32_t scroll_view_to_scroll_bar(list_view_t* list_view, int32_t v) {
-  scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
-  scroll_bar_t* scroll_bar = SCROLL_BAR(list_view->scroll_bar);
-  int32_t range = scroll_view->virtual_h - list_view->scroll_view->h;
-  float_t percent = range > 0 ? (float_t)v / (float_t)range : 0;
+  int32_t range = 0;
+  float_t percent = 0;
+  scroll_view_t* scroll_view = NULL;
+  scroll_bar_t* scroll_bar = NULL;
+  return_value_if_fail(list_view != NULL, 0);
+
+  scroll_view = SCROLL_VIEW(list_view->scroll_view);
+  scroll_bar = SCROLL_BAR(list_view->scroll_bar);
+  return_value_if_fail(scroll_bar != NULL && scroll_view != NULL, 0);
+
+  range = scroll_view->virtual_h - list_view->scroll_view->h;
+  percent = range > 0 ? (float_t)v / (float_t)range : 0;
 
   return percent * scroll_bar->virtual_size;
 }
 
 static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, int32_t yoffset) {
   list_view_t* list_view = LIST_VIEW(widget->parent);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   if (scroll_bar_is_mobile(list_view->scroll_bar)) {
     int32_t value = scroll_view_to_scroll_bar(list_view, yoffset);
@@ -141,6 +163,8 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
 static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end,
                                                 int32_t yoffset_end, int32_t duration) {
   list_view_t* list_view = LIST_VIEW(widget->parent);
+  return_value_if_fail(widget != NULL && list_view != NULL, RET_BAD_PARAMS);
+
   if (scroll_bar_is_mobile(list_view->scroll_bar)) {
     int32_t value = scroll_view_to_scroll_bar(list_view, yoffset_end);
 
@@ -155,12 +179,21 @@ static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffse
 }
 
 static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
-  int32_t virtual_h = widget->h;
+  int32_t virtual_h = 0;
+  int32_t item_height = 0;
+  int32_t default_item_height = 0;
+  list_view_t* list_view = NULL;
+  widget_t* scroll_bar = NULL;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  list_view_t* list_view = LIST_VIEW(widget->parent);
-  widget_t* scroll_bar = list_view->scroll_bar;
-  int32_t item_height = list_view->item_height;
-  int32_t default_item_height = list_view->default_item_height;
+  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
+
+  virtual_h = widget->h;
+  list_view = LIST_VIEW(widget->parent);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+
+  scroll_bar = list_view->scroll_bar;
+  item_height = list_view->item_height;
+  default_item_height = list_view->default_item_height;
 
   if (widget->children != NULL) {
     int32_t i = 0;
@@ -251,6 +284,7 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
 static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
   list_view_t* list_view = LIST_VIEW(widget);
   const char* type = widget_get_type(child);
+  return_value_if_fail(list_view != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_VIEW)) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);

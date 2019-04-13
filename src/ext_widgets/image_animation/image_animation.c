@@ -44,8 +44,13 @@ ret_t image_animation_get_image_name(image_animation_t* image_animation,
 
 static ret_t on_idle_unload_image(const idle_info_t* info) {
   bitmap_t bitmap;
-  widget_t* widget = WIDGET(info->ctx);
-  image_animation_t* image_animation = IMAGE_ANIMATION(info->ctx);
+  widget_t* widget = NULL;
+  image_animation_t* image_animation = NULL;
+  return_value_if_fail(info != NULL, RET_REMOVE);
+
+  widget = WIDGET(info->ctx);
+  image_animation = IMAGE_ANIMATION(info->ctx);
+  return_value_if_fail(widget != NULL && image_animation != NULL, RET_REMOVE);
 
   if (image_animation->image_data != NULL) {
     memset(&bitmap, 0x00, sizeof(bitmap));
@@ -59,6 +64,7 @@ static ret_t on_idle_unload_image(const idle_info_t* info) {
 static ret_t image_animation_load_image(image_animation_t* image_animation, bitmap_t* bitmap) {
   char name[TK_NAME_LEN + 1];
   widget_t* widget = WIDGET(image_animation);
+  return_value_if_fail(widget != NULL && image_animation != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
   image_animation_get_image_name(image_animation, name);
   if (widget_load_image(widget, name, bitmap) == RET_OK) {
@@ -72,7 +78,8 @@ static ret_t image_animation_load_image(image_animation_t* image_animation, bitm
 
 static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(image_animation->image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && image_animation != NULL && image_animation->image != NULL,
+                       RET_BAD_PARAMS);
 
   if (image_animation->index >= 0) {
     bitmap_t bitmap;
@@ -160,6 +167,7 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
 
 static ret_t image_animation_on_destroy(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(widget != NULL && image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->timer_id != TK_INVALID_ID) {
     timer_remove(image_animation->timer_id);
@@ -192,8 +200,13 @@ TK_DECL_VTABLE(image_animation) = {.size = sizeof(image_animation_t),
                                    .on_paint_self = image_animation_on_paint_self};
 
 static ret_t image_animation_delay_play(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  widget_t* widget = NULL;
+  image_animation_t* image_animation = NULL;
+  return_value_if_fail(info != NULL, RET_REMOVE);
+
+  widget = WIDGET(info->ctx);
+  image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(widget != NULL && image_animation != NULL, RET_REMOVE);
 
   image_animation->timer_id = TK_INVALID_ID;
   image_animation_play(widget);
@@ -204,6 +217,7 @@ static ret_t image_animation_delay_play(const timer_info_t* info) {
 static ret_t image_animation_on_open(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(widget != NULL && image_animation != NULL, RET_REMOVE);
 
   if (image_animation->auto_play) {
     if (image_animation->delay > 0) {
@@ -322,6 +336,8 @@ static ret_t image_animation_restart(image_animation_t* image_animation) {
 
 static ret_t image_animation_next(image_animation_t* image_animation) {
   ret_t ret = RET_REMOVE;
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
+
   if (image_animation->sequence) {
     if (image_animation->sequence[image_animation->index + 1]) {
       image_animation->index++;
@@ -340,7 +356,7 @@ static ret_t image_animation_next(image_animation_t* image_animation) {
 ret_t image_animation_update(widget_t* widget) {
   ret_t ret = RET_REMOVE;
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(image_animation->image != NULL, RET_REMOVE);
+  return_value_if_fail(image_animation != NULL && image_animation->image != NULL, RET_REMOVE);
 
   if (image_animation->index < 0) {
     ret = image_animation_restart(image_animation);

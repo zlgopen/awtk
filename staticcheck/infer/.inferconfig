@@ -1,0 +1,6 @@
+{
+  "disable-issue-type": [
+    "DEAD_STORE"
+  ],
+  "liveness": false
+}

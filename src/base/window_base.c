@@ -146,6 +146,7 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
 
 ret_t window_base_on_destroy(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL && window_base != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(window_base->theme);
   TKMEM_FREE(window_base->open_anim_hint);
@@ -165,6 +166,7 @@ ret_t window_base_on_destroy(widget_t* widget) {
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
   window_base_t* win = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
 
   if (e->type == EVT_WINDOW_WILL_OPEN) {
     win->stage = WINDOW_STAGE_CREATED;

@@ -113,6 +113,7 @@ static ret_t idle_manager_dispatch_one(idle_manager_t* idle_manager, uint32_t di
 
   if (iter != NULL) {
     idle_info_t* idle = (idle_info_t*)object_ref((object_t*)(iter->data));
+    return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
 
     idle->dispatch_id = dispatch_id;
     if (idle->on_idle(idle) != RET_REPEAT) {

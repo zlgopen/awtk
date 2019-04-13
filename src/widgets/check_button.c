@@ -27,6 +27,7 @@
 static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {

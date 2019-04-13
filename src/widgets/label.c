@@ -182,7 +182,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   canvas_t* c = NULL;
   int32_t margin = 0;
   style_t* style = NULL;
-  uint32_t font_size = 20;
+  uint32_t font_size = 0;
   label_t* label = LABEL(widget);
 
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);

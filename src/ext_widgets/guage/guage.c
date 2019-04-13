@@ -63,6 +63,7 @@ static ret_t guage_set_prop(widget_t* widget, const char* name, const value_t* v
 
 static ret_t guage_on_destroy(widget_t* widget) {
   guage_t* guage = GUAGE(widget);
+  return_value_if_fail(guage != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(guage->image);
 
@@ -92,7 +93,7 @@ static const char* s_guage_properties[] = {WIDGET_PROP_DRAW_TYPE, WIDGET_PROP_IM
 static ret_t guage_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   guage_t* guage = GUAGE(widget);
-  return_value_if_fail(guage->image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && guage != NULL && guage->image != NULL, RET_BAD_PARAMS);
 
   if (widget_load_image(widget, guage->image, &bitmap) == RET_OK) {
     rect_t dst = rect_init(0, 0, widget->w, widget->h);

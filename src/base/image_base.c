@@ -26,6 +26,7 @@
 ret_t image_base_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   image_base_t* image = IMAGE_BASE(widget);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN:

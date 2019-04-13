@@ -29,6 +29,7 @@ static ret_t combo_box_item_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
+  return_value_if_fail(combo_box_item != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {

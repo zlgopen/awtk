@@ -51,8 +51,11 @@ static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t tab_button_on_paint_self(widget_t* widget, canvas_t* c) {
+  const char* icon = NULL;
   tab_button_t* tab_button = TAB_BUTTON(widget);
-  const char* icon = tab_button->value ? tab_button->active_icon : tab_button->icon;
+  return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
+
+  icon = tab_button->value ? tab_button->active_icon : tab_button->icon;
 
   return widget_paint_helper(widget, c, icon, NULL);
 }
@@ -162,6 +165,7 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
 
 static ret_t tab_button_on_destroy(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(widget != NULL && tab_button != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(tab_button->icon);
   TKMEM_FREE(tab_button->active_icon);

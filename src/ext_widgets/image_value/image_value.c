@@ -61,12 +61,14 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t i = 0;
   uint32_t nr = 0;
   char sub_name[8];
+  const char* format = NULL;
   char name[TK_NAME_LEN + 1];
   char str[IMAGE_VALUE_MAX_CHAR_NR + 1];
   bitmap_t bitmap[IMAGE_VALUE_MAX_CHAR_NR];
   image_value_t* image_value = IMAGE_VALUE(widget);
-  const char* format = image_value->format != NULL ? image_value->format : "%d";
+  return_value_if_fail(image_value != NULL && widget != NULL, RET_BAD_PARAMS);
 
+  format = image_value->format != NULL ? image_value->format : "%d";
   return_value_if_fail(image_value->image != NULL, RET_BAD_PARAMS);
 
   memset(bitmap, 0x00, sizeof(bitmap));
@@ -132,6 +134,7 @@ static ret_t image_value_set_prop(widget_t* widget, const char* name, const valu
 
 static ret_t image_value_on_destroy(widget_t* widget) {
   image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(image_value->image);
   TKMEM_FREE(image_value->format);

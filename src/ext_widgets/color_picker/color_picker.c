@@ -58,15 +58,23 @@ TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
                                 .create = color_picker_create};
 
 static ret_t color_picker_update_child(void* ctx, const void* iter) {
+  color_t c;
   float h = 0;
   float s = 0;
   float v = 0;
   int32_t value = 0;
-  widget_t* child = WIDGET(iter);
-  const char* name = child->name;
-  const char* type = child->vt->type;
+  widget_t* child = NULL;
+  const char* name = NULL;
+  const char* type = NULL;
   color_picker_t* color_picker = COLOR_PICKER(ctx);
-  color_t c = color_picker->c;
+  return_value_if_fail(ctx != NULL && color_picker != NULL && iter != NULL, RET_REMOVE);
+
+  child = WIDGET(iter);
+  return_value_if_fail(child != NULL, RET_REMOVE);
+
+  name = child->name;
+  type = child->vt->type;
+  c = color_picker->c;
 
   if (color_picker->trigger_child == child) {
     return RET_OK;
@@ -155,39 +163,47 @@ static ret_t color_picker_sync_children(widget_t* widget) {
 static ret_t color_picker_update_color(widget_t* widget, color_t color);
 
 static ret_t color_picker_set_color_r(widget_t* widget, uint8_t r) {
+  color_t c;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   c.rgba.r = r;
 
   return color_picker_update_color(widget, c);
 }
 
 static ret_t color_picker_set_color_g(widget_t* widget, uint8_t g) {
+  color_t c;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   c.rgba.g = g;
 
   return color_picker_update_color(widget, c);
 }
 
 static ret_t color_picker_set_color_b(widget_t* widget, uint8_t b) {
+  color_t c;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   c.rgba.b = b;
 
   return color_picker_update_color(widget, c);
 }
 
 static ret_t color_picker_set_color_h(widget_t* widget, float hh) {
+  color_t c;
   float h = 0;
   float s = 0;
   float v = 0;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(hh, s, v, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
@@ -195,12 +211,14 @@ static ret_t color_picker_set_color_h(widget_t* widget, float hh) {
 }
 
 static ret_t color_picker_set_color_s(widget_t* widget, float ss) {
+  color_t c;
   float h = 0;
   float s = 0;
   float v = 0;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(h, ss, v, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
@@ -208,12 +226,14 @@ static ret_t color_picker_set_color_s(widget_t* widget, float ss) {
 }
 
 static ret_t color_picker_set_color_v(widget_t* widget, float vv) {
+  color_t c;
   float h = 0;
   float s = 0;
   float v = 0;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(h, s, vv, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
@@ -221,12 +241,14 @@ static ret_t color_picker_set_color_v(widget_t* widget, float vv) {
 }
 
 static ret_t color_picker_set_color_sv(widget_t* widget, float ss, float vv) {
+  color_t c;
   float h = 0;
   float s = 0;
   float v = 0;
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  color_t c = color_picker->c;
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  c = color_picker->c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &h, &s, &v);
   convertHSVtoRGB(h, ss, vv, &(c.rgba.r), &(c.rgba.g), &(c.rgba.b));
 
@@ -234,12 +256,19 @@ static ret_t color_picker_set_color_sv(widget_t* widget, float ss, float vv) {
 }
 
 static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  widget_t* child = WIDGET(e->target);
-  const char* name = child->name;
-  const char* type = child->vt->type;
+  widget_t* widget = NULL;
+  widget_t* child = NULL;
+  const char* name = NULL;
+  const char* type = NULL;
   color_picker_t* color_picker = COLOR_PICKER(ctx);
+  return_value_if_fail(e != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
+  widget = WIDGET(ctx);
+  child = WIDGET(e->target);
+  name = child->name;
+  return_value_if_fail(child != NULL && child->vt != NULL, RET_BAD_PARAMS);
+
+  type = widget_get_type(child);
   color_picker->trigger_child = child;
   if (tk_str_eq(type, WIDGET_TYPE_EDIT) || tk_str_eq(type, WIDGET_TYPE_SPIN_BOX)) {
     int32_t v = edit_get_int(child);
@@ -296,9 +325,13 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
 }
 
 static ret_t color_picker_hook_children(void* ctx, const void* iter) {
+  const char* name = NULL;
+  const char* type = NULL;
   widget_t* child = WIDGET(iter);
-  const char* name = child->name;
-  const char* type = child->vt->type;
+  return_value_if_fail(child != NULL, RET_BAD_PARAMS);
+
+  name = child->name;
+  type = widget_get_type(child);
 
   if (name != NULL) {
     if (tk_str_eq(type, WIDGET_TYPE_EDIT) || tk_str_eq(type, WIDGET_TYPE_SLIDER) ||
@@ -331,6 +364,7 @@ widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
 
 static ret_t color_picker_update_color(widget_t* widget, color_t color) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
+  return_value_if_fail(widget != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
   if (color_picker->c.color != color.color) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);

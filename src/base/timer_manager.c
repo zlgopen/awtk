@@ -140,6 +140,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint32_t
 
   if (iter != NULL) {
     timer_info_t* timer = (timer_info_t*)object_ref((object_t*)(iter->data));
+    return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
 
     timer->now = now;
     if ((timer->start + timer->duration) <= now) {

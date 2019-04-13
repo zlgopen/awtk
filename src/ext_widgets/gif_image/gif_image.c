@@ -27,6 +27,7 @@
 
 static ret_t gif_image_on_timer(const timer_info_t* info) {
   gif_image_t* image = GIF_IMAGE(info->ctx);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   image->index++;
   if (image->index >= image->frames_nr) {
@@ -53,10 +54,13 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t y = 0;
   wh_t h = 0;
   bitmap_t bitmap;
+  vgcanvas_t* vg = NULL;
   gif_image_t* image = GIF_IMAGE(widget);
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   image_base_t* image_base = IMAGE_BASE(widget);
+  return_value_if_fail(image_base != NULL && image != NULL && widget != NULL && c != NULL,
+                       RET_BAD_PARAMS);
 
+  vg = lcd_get_vgcanvas(c->lcd);
   if (image_base->image == NULL) {
     return RET_OK;
   }

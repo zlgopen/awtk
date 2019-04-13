@@ -709,10 +709,14 @@ ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event,
 ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
   rect_t r;
   bitmap_t img;
+  int32_t margin = 0;
+  int32_t icon_at = 0;
+  uint16_t font_size = 0;
   style_t* style = widget->astyle;
-  int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
-  int32_t icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
-  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  return_value_if_fail(widget->astyle != NULL, RET_BAD_PARAMS);
+
+  margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+  icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
 
   wh_t w = widget->w - 2 * margin;
   wh_t h = widget->h - 2 * margin;

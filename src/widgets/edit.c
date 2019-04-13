@@ -42,8 +42,13 @@ static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
 
 static ret_t edit_update_caret(const timer_info_t* timer) {
   rect_t r;
-  edit_t* edit = EDIT(timer->ctx);
-  widget_t* widget = WIDGET(timer->ctx);
+  edit_t* edit = NULL;
+  widget_t* widget = NULL;
+  return_value_if_fail(timer != NULL, RET_REMOVE);
+
+  edit = EDIT(timer->ctx);
+  widget = WIDGET(timer->ctx);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_REMOVE);
 
   r = rect_init(edit->caret_x, 0, 1, widget->h);
   edit->caret_visible = !edit->caret_visible;
@@ -95,15 +100,25 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
 }
 
 static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t* r) {
-  edit_t* edit = EDIT(widget);
   xy_t y = 0;
+  int32_t min_p = 0;
+  int32_t max_p = 0;
+  int32_t sel_w = 0;
   int32_t text_w = 0;
   int32_t pos_w = 0;
   int32_t baseline = 0;
   int32_t font_size = 0;
-  int32_t min_p = edit->cursor_pos < edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
-  int32_t max_p = edit->cursor_pos > edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
-  int32_t sel_w = 0;
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  y = 0;
+  text_w = 0;
+  pos_w = 0;
+  baseline = 0;
+  font_size = 0;
+  min_p = edit->cursor_pos < edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
+  max_p = edit->cursor_pos > edit->cursor_pre ? edit->cursor_pos : edit->cursor_pre;
+  sel_w = 0;
 
   font_size = c->font_size;
   baseline = font_get_baseline(c->font, font_size);
@@ -168,25 +183,28 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
+  wh_t w = 0;
+  wh_t h = 0;
   wstr_t text;
+  style_t* style = NULL;
+  uint8_t left_margin = 0;
+  uint8_t right_margin = 0;
+  uint8_t top_margin = 0;
+  uint8_t bottom_margin = 0;
   edit_t* edit = EDIT(widget);
-  style_t* style = widget->astyle;
+  align_h_t align_h = (align_h_t)0;
   wchar_t temp_str[TEMP_STR_LEN + 1];
-  uint8_t left_margin = edit->left_margin;
-  uint8_t right_margin = edit->right_margin;
-  uint8_t top_margin = edit->top_margin;
-  uint8_t bottom_margin = edit->bottom_margin;
-  wh_t w = widget->w - left_margin - right_margin;
-  wh_t h = widget->h - top_margin - bottom_margin;
-  align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
-  /*
-    color_t selected_bg = style_get_color(style, STYLE_ID_SELECTED_FG_COLOR, trans);
-    color_t selected_fg = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, trans);
-    color_t selected_tc = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, trans);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
-    log_debug("selected_bg=0x%08X selected_fg=%08X selected_tc=%08X\n",
-        selected_bg.color, selected_fg.color, selected_tc.color);
-  */
+  style = widget->astyle;
+  left_margin = edit->left_margin;
+  right_margin = edit->right_margin;
+  top_margin = edit->top_margin;
+  bottom_margin = edit->bottom_margin;
+  w = widget->w - left_margin - right_margin;
+  h = widget->h - top_margin - bottom_margin;
+  align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+
   memset(temp_str, 0x00, sizeof(temp_str));
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, RET_FAIL);
   return_value_if_fail(edit_get_display_text(widget, c, &text, temp_str) == RET_OK, RET_FAIL);
@@ -212,6 +230,8 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t edit_set_cursor_pos(widget_t* widget, int32_t pre, int32_t pos) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
   if (pre <= 0) {
     edit->cursor_pre = 0;
   } else {
@@ -228,11 +248,16 @@ static ret_t edit_set_cursor_pos(widget_t* widget, int32_t pre, int32_t pos) {
 }
 
 static int32_t edit_calcu_pos(widget_t* widget, xy_t posx) {
-  edit_t* edit = EDIT(widget);
+  xy_t x = 0;
   int32_t pos = 0;
-  xy_t x = edit->offset_x;
-  canvas_t* c = WINDOW_MANAGER(window_manager())->canvas;
+  canvas_t* c = NULL;
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, 0);
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, 0);
+
+  x = edit->offset_x;
+  c = WINDOW_MANAGER(window_manager())->canvas;
+
   for (pos = 0; pos < widget->text.size; ++pos) {
     int32_t w = canvas_measure_text(c, widget->text.str + pos, 1);
     if (posx < x + w) {
@@ -255,13 +280,15 @@ static int32_t edit_calcu_pos(widget_t* widget, xy_t posx) {
 }
 
 static ret_t edit_remove_select_str(widget_t* widget) {
+  int32_t min_p = 0;
+  int32_t max_p = 0;
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
   if (edit->cursor_pos == edit->cursor_pre) {
     return RET_FAIL;
   }
 
-  int32_t min_p = 0;
-  int32_t max_p = 0;
   if (edit->cursor_pos < edit->cursor_pre) {
     min_p = edit->cursor_pos;
     max_p = edit->cursor_pre;
@@ -278,6 +305,8 @@ static ret_t edit_remove_select_str(widget_t* widget) {
 
 static ret_t edit_delete_prev_char(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
   if (edit_remove_select_str(widget) == RET_OK) {
     return RET_OK;
   }
@@ -293,6 +322,8 @@ static ret_t edit_delete_prev_char(widget_t* widget) {
 
 static ret_t edit_delete_next_char(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
   if (edit_remove_select_str(widget) == RET_OK) {
     return RET_OK;
   }
@@ -306,10 +337,15 @@ static ret_t edit_delete_next_char(widget_t* widget) {
 }
 
 static ret_t edit_input_char(widget_t* widget, wchar_t c) {
-  edit_t* edit = EDIT(widget);
-  wstr_t* text = &(widget->text);
-  input_type_t input_type = edit->limit.type;
+  wstr_t* text = NULL;
   ret_t ret = RET_FAIL;
+  edit_t* edit = EDIT(widget);
+  input_type_t input_type = (input_type_t)0;
+
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
+  input_type = edit->limit.type;
 
   edit_remove_select_str(widget);
 
@@ -416,15 +452,21 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
 
 static bool_t edit_is_number(widget_t* widget) {
   edit_t* edit = EDIT(widget);
-  input_type_t input_type = edit->limit.type;
+  input_type_t input_type = (input_type_t)0;
+  return_value_if_fail(widget != NULL && edit != NULL, FALSE);
+
+  input_type = edit->limit.type;
 
   return input_type == INPUT_UINT || input_type == INPUT_INT || input_type == INPUT_FLOAT ||
          input_type == INPUT_UFLOAT || input_type == INPUT_HEX;
 }
 
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
+  uint32_t key = 0;
   edit_t* edit = EDIT(widget);
-  uint32_t key = e->key;
+  return_value_if_fail(widget != NULL && edit != NULL && e != NULL, RET_BAD_PARAMS);
+
+  key = e->key;
   if (key == TK_KEY_BACKSPACE) {
     return edit_delete_prev_char(widget);
   } else if (key == TK_KEY_DELETE) {
@@ -466,8 +508,11 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
 }
 
 bool_t edit_is_valid_value(widget_t* widget) {
+  wstr_t* text = NULL;
   edit_t* edit = EDIT(widget);
-  wstr_t* text = &(widget->text);
+  return_value_if_fail(widget != NULL && edit != NULL, FALSE);
+
+  text = &(widget->text);
 
   switch (edit->limit.type) {
     case INPUT_TEXT: {
@@ -531,9 +576,12 @@ bool_t edit_is_valid_value(widget_t* widget) {
 }
 
 static ret_t edit_auto_fix(widget_t* widget) {
-  edit_t* edit = EDIT(widget);
-  wstr_t* text = &(widget->text);
   bool_t fix = FALSE;
+  wstr_t* text = NULL;
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
 
   switch (edit->limit.type) {
     case INPUT_TEXT: {
@@ -631,6 +679,7 @@ static ret_t edit_request_input_method(widget_t* widget) {
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   if (edit->readonly) {
     return RET_OK;
@@ -1025,9 +1074,11 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
 
 static ret_t edit_add_float(edit_t* edit, double delta) {
   double v = 0;
+  wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
-  wstr_t* text = &(widget->text);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
+  text = &(widget->text);
   return_value_if_fail(wstr_to_float(text, &v) == RET_OK, RET_FAIL);
 
   v += delta;
@@ -1052,9 +1103,11 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
 
 static ret_t edit_add_int(edit_t* edit, int delta) {
   int32_t v = 0;
+  wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
-  wstr_t* text = &(widget->text);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
+  text = &(widget->text);
   return_value_if_fail(wstr_to_int(text, &v) == RET_OK, RET_FAIL);
 
   v += delta;
@@ -1110,9 +1163,13 @@ ret_t edit_set_double(widget_t* widget, double value) {
 }
 
 ret_t edit_inc(edit_t* edit) {
+  wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
-  wstr_t* text = &(widget->text);
-  input_type_t input_type = edit->limit.type;
+  input_type_t input_type = (input_type_t)0;
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
+  input_type = edit->limit.type;
 
   switch (input_type) {
     case INPUT_FLOAT:
@@ -1142,9 +1199,13 @@ ret_t edit_inc(edit_t* edit) {
 }
 
 ret_t edit_dec(edit_t* edit) {
+  wstr_t* text = NULL;
   widget_t* widget = WIDGET(edit);
-  wstr_t* text = &(widget->text);
-  input_type_t input_type = edit->limit.type;
+  input_type_t input_type = (input_type_t)0;
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
+  input_type = edit->limit.type;
 
   switch (input_type) {
     case INPUT_FLOAT:
@@ -1175,6 +1236,7 @@ ret_t edit_dec(edit_t* edit) {
 
 ret_t edit_clear(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   widget->text.size = 0;
   edit->selected_start = 0;
@@ -1204,6 +1266,7 @@ static ret_t edit_on_clear(void* ctx, event_t* e) {
 static ret_t edit_on_password_visible(void* ctx, event_t* e) {
   edit_t* edit = EDIT(ctx);
   widget_t* widget = WIDGET(e->target);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
   edit->password_visible = widget_get_prop_bool(widget, WIDGET_PROP_VALUE, edit->password_visible);
 
@@ -1213,6 +1276,7 @@ static ret_t edit_on_password_visible(void* ctx, event_t* e) {
 static ret_t edit_hook_button(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* edit = WIDGET(ctx);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_REMOVE);
 
   if (widget->name && widget != edit) {
     const char* name = widget->name;
@@ -1232,6 +1296,8 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
 
 static ret_t edit_on_destroy(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
   if (edit->timer_id != TK_INVALID_ID) {
     timer_remove(edit->timer_id);
     edit->timer_id = TK_INVALID_ID;
@@ -1249,6 +1315,7 @@ static ret_t edit_on_destroy(widget_t* widget) {
 static ret_t edit_hook_children_button(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_REMOVE);
 
   widget_foreach(widget, edit_hook_button, widget);
   edit->idle_id = TK_INVALID_ID;

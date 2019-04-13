@@ -26,6 +26,8 @@
 
 static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
   color_tile_t* color_tile = COLOR_TILE(widget);
+  return_value_if_fail(color_tile != NULL, RET_BAD_PARAMS);
+
   canvas_set_fill_color(c, color_tile->bg);
   canvas_fill_rect(c, 0, 0, widget->w, widget->h);
 

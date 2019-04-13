@@ -47,6 +47,7 @@ static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e
 static ret_t color_component_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   color_component_t* component = COLOR_COMPONENT(widget);
+  return_value_if_fail(component != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -178,10 +179,7 @@ static ret_t color_component_init_image(bitmap_t* image, const char* name, int32
 }
 
 static ret_t color_component_update_sv(widget_t* widget) {
-  color_component_t* color_component = COLOR_COMPONENT(widget);
-  rgba_t rgba = color_component->c.rgba;
-  bitmap_t* image = &(color_component->image);
-
+  rgba_t rgba;
   float H = 0;
   float S = 0;
   float V = 0;
@@ -190,9 +188,18 @@ static ret_t color_component_update_sv(widget_t* widget) {
   uint8_t b = 0;
   int32_t x = 0;
   int32_t y = 0;
-  int32_t w = image->w;
-  int32_t h = image->h;
-  uint32_t* dst = (uint32_t*)(image->data);
+  int32_t w = 0;
+  int32_t h = 0;
+  uint32_t* dst = NULL;
+  bitmap_t* image = NULL;
+  color_component_t* color_component = COLOR_COMPONENT(widget);
+  return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
+
+  rgba = color_component->c.rgba;
+  image = &(color_component->image);
+  w = image->w;
+  h = image->h;
+  dst = (uint32_t*)(image->data);
 
   convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
 
@@ -210,9 +217,6 @@ static ret_t color_component_update_sv(widget_t* widget) {
 }
 
 static ret_t color_component_update_h(widget_t* widget) {
-  color_component_t* color_component = COLOR_COMPONENT(widget);
-  bitmap_t* image = &(color_component->image);
-
   float H = 0;
   float S = 1;
   float V = 1;
@@ -222,9 +226,17 @@ static ret_t color_component_update_h(widget_t* widget) {
   int32_t x = 0;
   int32_t y = 0;
   uint32_t v = 0;
-  int32_t w = image->w;
-  int32_t h = image->h;
-  uint32_t* dst = (uint32_t*)(image->data);
+  int32_t w = 0;
+  int32_t h = 0;
+  uint32_t* dst = NULL;
+  bitmap_t* image = NULL;
+  color_component_t* color_component = COLOR_COMPONENT(widget);
+  return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
+
+  image = &(color_component->image);
+  w = image->w;
+  h = image->h;
+  dst = (uint32_t*)(image->data);
 
   for (y = 0; y < h; y++) {
     H = (1 - (float)y / (float)h) * 360;
@@ -294,23 +306,23 @@ static ret_t color_component_set_type(widget_t* widget, const char* type) {
 
 float color_component_get_h(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
-  float v = 360 - color_component->color_y * 360 / widget->h;
+  return_value_if_fail(widget != NULL && color_component != NULL, 0);
 
-  return v;
+  return 360 - color_component->color_y * 360 / widget->h;
 }
 
 float color_component_get_s(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
-  float v = 1 - (float)(color_component->color_y) / (float)(widget->h);
+  return_value_if_fail(widget != NULL && color_component != NULL, 0);
 
-  return v;
+  return 1 - (float)(color_component->color_y) / (float)(widget->h);
 }
 
 float color_component_get_v(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
-  float v = (float)(color_component->color_x) / (float)(widget->w);
+  return_value_if_fail(widget != NULL && color_component != NULL, 0);
 
-  return v;
+  return (float)(color_component->color_x) / (float)(widget->w);
 }
 
 widget_t* color_component_cast(widget_t* widget) {

@@ -29,6 +29,7 @@
 static ret_t svg_image_load_bsvg(widget_t* widget) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   image_base_t* image_base = IMAGE_BASE(widget);
+  return_value_if_fail(svg_image != NULL && image_base != NULL, RET_BAD_PARAMS);
 
   if (svg_image->bsvg_asset != NULL && tk_str_eq(svg_image->bsvg_asset->name, image_base->image)) {
     return RET_OK;
@@ -54,6 +55,7 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   image_base_t* image_base = IMAGE_BASE(widget);
+  return_value_if_fail(svg_image != NULL && image_base != NULL && widget != NULL, RET_BAD_PARAMS);
 
   if (image_base->image != NULL && svg_image_load_bsvg(widget) == RET_OK) {
     bsvg_t bsvg;

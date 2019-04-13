@@ -1,0 +1,32 @@
+EXT_WIDGETS_FILES=\
+	$(AWTK_EXT_WIDGETS)/canvas_widget/canvas_widget.c \
+	$(AWTK_EXT_WIDGETS)/ext_widgets.c \
+	$(AWTK_EXT_WIDGETS)/gif_image/gif_image.c \
+	$(AWTK_EXT_WIDGETS)/image_value/image_value.c \
+	$(AWTK_EXT_WIDGETS)/slide_view/slide_view.c \
+	$(AWTK_EXT_WIDGETS)/slide_menu/slide_menu.c \
+	$(AWTK_EXT_WIDGETS)/image_animation/image_animation.c \
+	$(AWTK_EXT_WIDGETS)/color_picker/color_picker.c \
+	$(AWTK_EXT_WIDGETS)/color_picker/rgb_and_hsv.c \
+	$(AWTK_EXT_WIDGETS)/color_picker/color_component.c \
+	$(AWTK_EXT_WIDGETS)/mutable_image/mutable_image.c \
+	$(AWTK_EXT_WIDGETS)/scroll_view/scroll_view.c \
+	$(AWTK_EXT_WIDGETS)/scroll_view/list_view_h.c \
+	$(AWTK_EXT_WIDGETS)/scroll_view/list_view.c \
+	$(AWTK_EXT_WIDGETS)/scroll_view/scroll_bar.c \
+	$(AWTK_EXT_WIDGETS)/scroll_view/list_item.c \
+	$(AWTK_EXT_WIDGETS)/svg_image/svg_image.c \
+	$(AWTK_EXT_WIDGETS)/guage/guage_pointer.c \
+	$(AWTK_EXT_WIDGETS)/guage/guage.c \
+	$(AWTK_EXT_WIDGETS)/text_selector/text_selector.c \
+	$(AWTK_EXT_WIDGETS)/switch/switch.c \
+	$(AWTK_EXT_WIDGETS)/progress_circle/progress_circle.c \
+	$(AWTK_EXT_WIDGETS)/time_clock/digit_clock.c \
+	$(AWTK_EXT_WIDGETS)/time_clock/time_clock.c \
+	$(AWTK_EXT_WIDGETS)/rich_text/rich_text.c \
+	$(AWTK_EXT_WIDGETS)/rich_text/rich_text_parser.c \
+	$(AWTK_EXT_WIDGETS)/rich_text/rich_text_render_node.c \
+	$(AWTK_EXT_WIDGETS)/rich_text/rich_text_node.c \
+	$(AWTK_EXT_WIDGETS)/keyboard/candidates.c \
+	$(AWTK_EXT_WIDGETS)/keyboard/keyboard.c \
+

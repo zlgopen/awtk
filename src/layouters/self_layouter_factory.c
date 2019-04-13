@@ -58,6 +58,7 @@ self_layouter_t* self_layouter_create(const char* params) {
   memset(&parser, 0x00, sizeof(parser));
   return_value_if_fail(func_call_parser_init(&(parser.base), params, strlen(params)) != NULL, NULL);
 
+  parser.layouter = NULL;
   parser.base.on_name = self_layouter_parser_on_name;
   parser.base.on_param = self_layouter_parser_on_param;
 

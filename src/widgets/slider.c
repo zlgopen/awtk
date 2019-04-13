@@ -27,11 +27,15 @@
 #include "base/image_manager.h"
 
 static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
+  uint16_t value = 0;
+  uint16_t range = 0;
+  float fvalue = 0;
   slider_t* slider = SLIDER(widget);
-  uint16_t value = slider->value - slider->min;
-  uint16_t range = slider->max - slider->min;
-  float fvalue = (float)value / (float)range;
-  return_value_if_fail(r != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && r != NULL, RET_BAD_PARAMS);
+
+  value = slider->value - slider->min;
+  range = slider->max - slider->min;
+  fvalue = (float)value / (float)range;
 
   r->w = tk_min(widget->w, widget->h);
   r->h = r->w;
@@ -71,6 +75,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
 
 static uint32_t slider_get_bar_size(widget_t* widget) {
   slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL && widget != NULL, 0);
 
   if (slider->vertical) {
     return slider->bar_size ? slider->bar_size : (widget->w >> 1);
@@ -81,14 +86,23 @@ static uint32_t slider_get_bar_size(widget_t* widget) {
 
 static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
-  style_t* style = widget->astyle;
+  style_t* style = NULL;
+  uint16_t range = 0;
+  uint16_t value = 0;
+  float_t fvalue = 0;
+  uint32_t radius = 0;
+  const char* bg_image = 0;
+  image_draw_type_t draw_type;
   slider_t* slider = SLIDER(widget);
-  uint16_t range = slider->max - slider->min;
-  uint16_t value = slider->value - slider->min;
-  float_t fvalue = (float_t)value / (float_t)range;
-  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
-  const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  image_draw_type_t draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  range = slider->max - slider->min;
+  value = slider->value - slider->min;
+  fvalue = (float_t)value / (float_t)range;
+  radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
   if (slider->vertical) {
     r.y = 0;
@@ -142,6 +156,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
   uint16_t type = e->type;
   slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {

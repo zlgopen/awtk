@@ -63,6 +63,7 @@ children_layouter_t* children_layouter_create_new(const char* params) {
   parser.base.on_name = children_layouter_parser_on_name;
   parser.base.on_param = children_layouter_parser_on_param;
 
+  parser.layouter = NULL;
   func_call_parser_parse(&(parser.base));
   layouter = parser.layouter;
   func_call_parser_deinit(&(parser.base));

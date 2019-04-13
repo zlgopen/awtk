@@ -54,18 +54,29 @@ int32_t slide_menu_fix_index(widget_t* widget, int32_t index) {
 }
 
 static widget_t* slide_menu_get_child(widget_t* widget, int32_t index) {
-  widget_t** children = (widget_t**)(widget->children->elms);
+  widget_t** children = NULL;
+  return_value_if_fail(widget != NULL, NULL);
+
+  children = (widget_t**)(widget->children->elms);
+  return_value_if_fail(children != NULL, NULL);
 
   return children[slide_menu_fix_index(widget, index)];
 }
 
 static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
+  widget_t* current = NULL;
+  int32_t r = 0;
+  int32_t b = 0;
+  int32_t xx = 0;
+  int32_t yy = 0;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
-  widget_t* current = slide_menu_get_child(widget, slide_menu->value);
-  int32_t r = current->x + current->w;
-  int32_t b = current->y + current->h;
-  int32_t xx = x - widget->x;
-  int32_t yy = y - widget->y;
+  return_value_if_fail(widget != NULL && slide_menu != NULL, NULL);
+
+  current = slide_menu_get_child(widget, slide_menu->value);
+  r = current->x + current->w;
+  b = current->y + current->h;
+  xx = x - widget->x;
+  yy = y - widget->y;
 
   if (current->enable && xx >= current->x && yy >= current->y && xx <= r && yy <= b) {
     return current;
@@ -176,6 +187,7 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
 
 static int32_t slide_menu_get_delta_index(widget_t* widget) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return_value_if_fail(widget != NULL && slide_menu != NULL, 0);
 
   return tk_roundi((float_t)(slide_menu->xoffset) / (float_t)(widget->h));
 }
@@ -415,10 +427,14 @@ static ret_t slide_menu_set_value_only(slide_menu_t* slide_menu, int32_t index) 
 }
 
 static ret_t slide_menu_on_scroll_done(void* ctx, event_t* e) {
+  int32_t index = 0;
+  int32_t delta_index = 0;
   widget_t* widget = WIDGET(ctx);
   slide_menu_t* slide_menu = SLIDE_MENU(ctx);
-  int32_t delta_index = slide_menu_get_delta_index(widget);
-  int32_t index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
+  return_value_if_fail(widget != NULL && slide_menu != NULL, RET_BAD_PARAMS);
+
+  delta_index = slide_menu_get_delta_index(widget);
+  index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
 
   slide_menu->wa = NULL;
   slide_menu->xoffset = 0;
@@ -495,6 +511,7 @@ static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t*
 static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return_value_if_fail(widget != NULL && slide_menu != NULL, RET_BAD_PARAMS);
 
   if (slide_menu->wa != NULL) {
     return RET_OK;

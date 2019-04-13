@@ -33,7 +33,7 @@ bsvg_t* bsvg_init(bsvg_t* svg, const uint32_t* data, uint32_t size) {
 }
 
 const uint8_t* bsvg_visit_path(const uint8_t* p, void* ctx, tk_visit_t on_path) {
-  const svg_path_t* path = (const svg_path_t*)p;
+  const svg_path_t* path = NULL;
   do {
     path = (const svg_path_t*)p;
     on_path(ctx, path);

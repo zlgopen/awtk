@@ -59,9 +59,13 @@ ret_t scroll_view_invalidate_self(widget_t* widget) {
 }
 
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
+  int32_t virtual_w = 0;
+  int32_t virtual_h = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  int32_t virtual_w = tk_max(scroll_view->virtual_w, widget->w);
-  int32_t virtual_h = tk_max(scroll_view->virtual_h, widget->h);
+  return_value_if_fail(scroll_view != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  virtual_w = tk_max(scroll_view->virtual_w, widget->w);
+  virtual_h = tk_max(scroll_view->virtual_h, widget->h);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   int32_t r = iter->x + iter->w;
@@ -82,6 +86,7 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
 
 static ret_t scroll_view_on_layout_children(widget_t* widget) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   if (scroll_view->on_layout_children) {
     scroll_view->on_layout_children(widget);
@@ -109,6 +114,7 @@ static ret_t scroll_view_on_pointer_down(scroll_view_t* scroll_view, pointer_eve
 static ret_t scroll_view_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   scroll_view_t* scroll_view = SCROLL_VIEW(ctx);
+  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->wa = NULL;
   scroll_view_invalidate_self(widget);
@@ -117,9 +123,13 @@ static ret_t scroll_view_on_scroll_done(void* ctx, event_t* e) {
 }
 
 static ret_t scroll_view_fix_end_offset_default(widget_t* widget) {
+  int32_t xoffset_end = 0;
+  int32_t yoffset_end = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  int32_t xoffset_end = scroll_view->xoffset_end;
-  int32_t yoffset_end = scroll_view->yoffset_end;
+  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
+
+  xoffset_end = scroll_view->xoffset_end;
+  yoffset_end = scroll_view->yoffset_end;
 
   xoffset_end = tk_max(xoffset_end, 0);
   yoffset_end = tk_max(yoffset_end, 0);
@@ -278,6 +288,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN:
