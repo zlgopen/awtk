@@ -17,8 +17,9 @@ ALL_FILES=$(TKC_FILES) \
 					$(EXT_WIDGETS_FILES) \
 					$(AWTK_FILES) 
 
+ALL_FILES_FILTERED = $(filter-out ../..//src/tkc/expr_eval.c, $(ALL_FILES))
 all:
-	$(CC) $(CPPFLAGS) $(EXTRA_FLAGS) $(ALL_FILES) 
+	$(CC) $(CPPFLAGS) $(EXTRA_FLAGS) $(ALL_FILES_FILTERED) 
 	rm -f *.o 
 
 .PHONY:clean

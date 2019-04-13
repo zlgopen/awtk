@@ -2,7 +2,7 @@
 
 ### 安装infer
 
-请参考[staticcheck/cppcheck/](https://fbinfer.com/)
+请参考[https://fbinfer.com/](https://fbinfer.com/)
 
 ### 使用方法
 
