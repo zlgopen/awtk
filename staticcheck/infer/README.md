@@ -7,7 +7,7 @@
 ### 使用方法
 
 ```
-make
+python run.py
 ```
 
 
