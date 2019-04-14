@@ -47,4 +47,3 @@ TEST(FontGen, basic) {
   TKMEM_FREE(bmp_buff);
   TKMEM_FREE(ttf_buff);
 }
-

@@ -1,7 +1,7 @@
 /**
  * File:   image_loader.h
  * Author: AWTK Develop Team
- * Brief:  image_loader interface
+ * Brief:  stb image loader
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

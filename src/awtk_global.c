@@ -56,6 +56,10 @@
 #include "image_loader/image_loader_stb.h"
 #endif /*WITH_STB_IMAGE*/
 
+#ifdef AWTK_WEB
+#include "image_loader_web.h"
+#endif /*AWTK_WEB*/
+
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
@@ -99,6 +103,10 @@ ret_t tk_init_internal(void) {
 #ifdef WITH_STB_IMAGE
   image_loader = image_loader_stb();
 #endif /*WITH_STB_IMAGE*/
+
+#ifdef AWTK_WEB
+  image_loader = image_loader_web();
+#endif /*AWTK_WEB*/
 
 #ifdef WITH_TRUETYPE_FONT
   font_loader = font_loader_truetype();

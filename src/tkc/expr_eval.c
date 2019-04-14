@@ -203,7 +203,7 @@ static EvalResult expr_value_append_string(ExprValue* v, const char* str, size_t
 }
 
 void expr_value_init(ExprValue* v) {
-  if(v != NULL) {
+  if (v != NULL) {
     memset(v, 0x00, sizeof(ExprValue));
     v->type = EXPR_VALUE_TYPE_NUMBER;
   }
