@@ -570,3 +570,14 @@ TEST(Widget, is_keyboard) {
 
   widget_destroy(w);
 }
+
+#include "base/ui_loader.h"
+
+TEST(Widget, load_widget) {
+  widget_t* w = ui_loader_load_widget("test_view");
+
+  ASSERT_EQ(w != NULL, TRUE);
+  ASSERT_STREQ(w->name, "test_view");
+
+  widget_destroy(w);
+}

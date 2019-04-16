@@ -41,13 +41,26 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
       }
     }
   } else {
+    rgba_t rgba = c.rgba;
+    uint8_t minus_a = 0xff - a;
+    bool_t dark = rgba.r == 0 && rgba.g == 0 && rgba.b == 0;
+
+    rgba.r = (rgba.r * a) >> 8;
+    rgba.g = (rgba.g * a) >> 8;
+    rgba.b = (rgba.b * a) >> 8;
+    rgba.a = minus_a;
+
     for (y = 0; y < h; y++) {
       p = (pixel_dst_t*)(dst->data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 
-      for (x = 0; x < w; x++) {
-        rgba_t drgba = pixel_dst_to_rgba((*p));
-
-        *p++ = blend_rgba(drgba, c.rgba, a);
+      if (dark) {
+        for (x = 0; x < w; x++, p++) {
+          pixel_blend_rgba_dark(p, minus_a);
+        }
+      } else {
+        for (x = 0; x < w; x++, p++) {
+          pixel_blend_rgba_premulti(p, rgba);
+        }
       }
     }
   }

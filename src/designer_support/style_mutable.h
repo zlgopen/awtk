@@ -95,7 +95,7 @@ ret_t style_mutable_set_name(style_t* s, const char* name);
 
 /**
  * @method style_mutable_set_int
- * 设置指定name整数格式的值。
+ * 设置指定名称整数格式的值。
  * @annotation ["scriptable"]
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
@@ -108,7 +108,7 @@ ret_t style_mutable_set_int(style_t* s, const char* state, const char* name, uin
 
 /**
  * @method style_mutable_set_color
- * 设置指定name的颜色值。
+ * 设置指定名称的颜色值。
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
  * @param {const char*} name 属性名。
@@ -120,7 +120,7 @@ ret_t style_mutable_set_color(style_t* s, const char* state, const char* name, c
 
 /**
  * @method style_mutable_set_str
- * 设置指定name字符串的值。
+ * 设置指定名称字符串的值。
  * @param {style_t*} s style对象。
  * @param {const char*} state 控件状态。
  * @param {const char*} name 属性名。
@@ -142,6 +142,40 @@ ret_t style_mutable_set_str(style_t* s, const char* state, const char* name, con
 ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* ctx);
 
 /**
+ * @method style_mutable_get_value
+ * 获取指定名称的值。
+ * @param {style_t*} s style对象。
+ * @param {const char*} state 控件状态。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, value_t* v);
+
+/**
+ * @method style_mutable_set_value
+ * 设置指定名称的值。
+ * @param {style_t*} s style对象。
+ * @param {const char*} state 控件状态。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v);
+
+/**
+ * @method style_mutable_cast
+ * 转换为style_mutable对象。
+ * @annotation ["cast", "scriptable"]
+ * @param {style_t*} s style对象。
+ *
+ * @return {style_t*} style对象。
+ */
+style_t* style_mutable_cast(style_t* s);
+
+/**
  * @method style_mutable_create
  * 创建style\_mutable对象。
  *
@@ -161,6 +195,8 @@ style_t* style_mutable_create(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t style_mutable_register(void);
+
+#define STYLE_MUTABLE(s) ((style_mutable_t*)(style_mutable_cast(s)))
 
 END_C_DECLS
 

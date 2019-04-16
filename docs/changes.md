@@ -1,4 +1,99 @@
 # 最新动态
+* 2019/04/13
+  * 增加cppcheck和infer静态检查。
+  * 修改cppcheck和infer发现的警告。
+
+* 2019/04/12
+  * 增加函数ui\_loader\_load\_widget(ui\_loader.h)。
+
+* 2019/04/10
+  * 更新demo，增加back\_to\_home的demo。
+  * 修改SDL的BUG(感谢大恒和陈谭提供补丁)
+  * 增加函数bitmap\_save\_png帮助调试显示相关的BUG。
+  * 修改widget\_destroy\_children的BUG(感谢朝泽和叶冬提供补丁)
+
+* 2019/04/09
+  * 修改window\_manager\_back\_to\_home。
+  * dialog支持非模态用法(请参考dialog的手册)
+  
+> AWTK在浏览器中运行时无法支持模态对话框，
+> 如果希望开发的AWTK应用程序在浏览器(包括各种小程序)中运行和演示，请不要使用模态对话框。
+
+* 2019/04/08
+  * 重构
+  * 修改valgrind发现的内存泄露。
+  * 增加assets\_manager\_preload
+  * 合并optimization分支，fill\_image半透颜色性能提高3倍。
+
+* 2019/04/07
+  * 为适配AWTK-WEB做了写小的修改。
+  * 修改资源脚本，生成文件列表，用于awtk-web。
+
+* 2019/04/05
+  * 生成的常量数据增加字节对齐。
+
+* 2019/04/03
+  * 恢复WITH\_MINI\_FONT宏。
+  * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
+  * 修改edit软键盘无法关闭的BUG。
+  * 修改窗口动画因为取整导致的问题。
+  * text selector的options属性，指定范围时，支持指定格式。
+  * 修改window\_base\_load\_theme\_obj从自己的assets\_manager中加载资源(感谢朝泽提供补丁)。
+  * 修改color picker的BUG(感谢朝泽提供补丁)。
+
+* 2019/04/02
+  * 软键盘支持tab键。
+  * 修改窗口动画内存溢出问题(感谢陈谭提供补丁)。
+  * 修改windows平台编译问题(感谢陈谭提供补丁)。
+  * 修改slideview clip的BUG(issue #105)。
+  * 顶层窗口为dialog时，window\_manager\_back\_to\_home直接返回失败(感谢尧燊提供补丁)。
+  * EVT\_NONE移到tkc中(感谢尧燊提供补丁)。
+  * 修改widget\_destroy\_in\_idle中潜在的BUG(感谢尧燊提供补丁)。
+  * 调用SDL\_CaptureMouse支持鼠标离开SDL窗口(感谢尧燊提供补丁)。 
+  * 增加style\_mutable\_get\_value
+  * 增加style\_mutable\_cast
+  * 调用assets\_manager\_unref的BUG(感谢朝泽提供补丁)。
+
+* 2019/04/01
+  * 从win获取locale info。
+  * 增加测试。
+  * 修改issue #104
+  * 增加font\_manager\_unload\_font
+
+* 2019/03/30
+  * 修改back\_to\_home的BUG #102(感谢陈谭提供补丁)。
+  * 更新stm32相关工程。
+
+* 2019/03/29
+  * 修改window\_manager\_back\_to\_home的BUG。
+  * 合并reworkwa分支：
+    * 窗口动画增加slide\_up/slide\_down/slide\_left/slide\_right.
+    * 窗口动画支持自定义。
+    * 支持对话框高亮策略。
+    * 更新文档。
+    * 新增src/dialog\_highlighters目录和一些文件，可能需要更新工程文件和文件拷贝脚本。
+
+* 2019/03/28
+  * 修改 3rd/SDL/SConscript(感谢大恒提供补丁)。
+  * 修改bool\_t在aworks上重复定义的问题(感谢陈谭提供补丁)。
+  * 修改编辑器的BUG(感谢俊杰提供补丁)。
+
+* 2019/03/27
+  * 修改style mutable的BUG(感谢朝泽提供补丁)
+  * 修改utils的BUG(感谢朝泽提供补丁)
+
+* 2019/03/25
+  * 修改issue #101(感谢俊杰提供补丁)
+  * 修改issue #100。
+  * 更新STM32相关工程。
+
+* 2019/03/22
+  * 完善资源生成脚本。
+  * widget vtable增加inputable属性。
+  * 修改listview没有scrollbar时的问题(感谢陈谭/俊杰提供补丁)。
+  * edit/spinbox在修改text后处理prop changed事件，以更新控件状态。
+  * 修改参数检查的存在的问题(感谢俊杰提供补丁)
+
 * 2019/03/21
   * 增加lcd\_profile用于对绘制函数进行profile。
   * data资源支持同文件名，不同扩展名。

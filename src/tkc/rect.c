@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   rect.c
  * Author: AWTK Develop Team
  * Brief:  rect struct and utils functions.
@@ -165,4 +165,17 @@ ret_t rect_destroy(rect_t* r) {
   TKMEM_FREE(r);
 
   return RET_OK;
+}
+
+rect_t* rect_scale(rect_t* r, float_t scale) {
+  return_value_if_fail(r != NULL, r);
+
+  if (scale != 1.0f) {
+    r->x = tk_roundi(r->x * scale);
+    r->y = tk_roundi(r->y * scale);
+    r->w = tk_roundi(r->w * scale);
+    r->h = tk_roundi(r->h * scale);
+  }
+
+  return r;
 }

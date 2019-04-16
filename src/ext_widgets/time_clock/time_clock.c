@@ -31,7 +31,7 @@ static ret_t time_clock_reset_time(time_clock_t* time_clock);
 
 ret_t time_clock_set_hour(widget_t* widget, int32_t hour) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->hour = hour;
 
@@ -40,7 +40,7 @@ ret_t time_clock_set_hour(widget_t* widget, int32_t hour) {
 
 ret_t time_clock_set_minute(widget_t* widget, int32_t minute) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->minute = minute;
 
@@ -49,7 +49,7 @@ ret_t time_clock_set_minute(widget_t* widget, int32_t minute) {
 
 ret_t time_clock_set_second(widget_t* widget, int32_t second) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->second = second;
 
@@ -58,7 +58,7 @@ ret_t time_clock_set_second(widget_t* widget, int32_t second) {
 
 ret_t time_clock_set_hour_image(widget_t* widget, const char* hour_image) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->hour_image = tk_str_copy(time_clock->hour_image, hour_image);
 
@@ -67,7 +67,7 @@ ret_t time_clock_set_hour_image(widget_t* widget, const char* hour_image) {
 
 ret_t time_clock_set_minute_image(widget_t* widget, const char* minute_image) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->minute_image = tk_str_copy(time_clock->minute_image, minute_image);
 
@@ -76,7 +76,7 @@ ret_t time_clock_set_minute_image(widget_t* widget, const char* minute_image) {
 
 ret_t time_clock_set_second_image(widget_t* widget, const char* second_image) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->second_image = tk_str_copy(time_clock->second_image, second_image);
 
@@ -85,7 +85,7 @@ ret_t time_clock_set_second_image(widget_t* widget, const char* second_image) {
 
 ret_t time_clock_set_bg_image(widget_t* widget, const char* bg_image) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->bg_image = tk_str_copy(time_clock->bg_image, bg_image);
 
@@ -94,7 +94,7 @@ ret_t time_clock_set_bg_image(widget_t* widget, const char* bg_image) {
 
 ret_t time_clock_set_image(widget_t* widget, const char* image) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->image = tk_str_copy(time_clock->image, image);
 
@@ -103,7 +103,7 @@ ret_t time_clock_set_image(widget_t* widget, const char* image) {
 
 static ret_t time_clock_get_prop(widget_t* widget, const char* name, value_t* v) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(time_clock != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, TIME_CLOCK_PROP_HOUR)) {
     value_set_int(v, time_clock->hour);
@@ -159,8 +159,13 @@ static ret_t time_clock_set_prop(widget_t* widget, const char* name, const value
 }
 
 static ret_t time_clock_on_timer(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  time_clock_t* time_clock = TIME_CLOCK(widget);
+  widget_t* widget = NULL;
+  time_clock_t* time_clock = NULL;
+  return_value_if_fail(info != NULL, RET_REMOVE);
+
+  widget = WIDGET(info->ctx);
+  time_clock = TIME_CLOCK(widget);
+  return_value_if_fail(widget != NULL && time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock->second++;
   if (time_clock->second >= 60) {
@@ -185,6 +190,7 @@ static ret_t time_clock_on_timer(const timer_info_t* info) {
 
 static ret_t time_clock_on_destroy(widget_t* widget) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
+  return_value_if_fail(widget != NULL && time_clock != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(time_clock->image);
   TKMEM_FREE(time_clock->bg_image);

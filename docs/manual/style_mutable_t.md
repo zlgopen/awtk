@@ -15,20 +15,67 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#style_mutable_t_dialog_highlighter_register_builtins">dialog\_highlighter\_register\_builtins</a> | 注册内置的对话框高亮策略。 |
+| <a href="#style_mutable_t_style_mutable_cast">style\_mutable\_cast</a> | 转换为style_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
 | <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> | 获取style的名称。 |
+| <a href="#style_mutable_t_style_mutable_get_value">style\_mutable\_get\_value</a> | 获取指定名称的值。 |
 | <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style\_factory。 |
-| <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定name的颜色值。 |
-| <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> | 设置指定name整数格式的值。 |
+| <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定名称的颜色值。 |
+| <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> | 设置指定名称整数格式的值。 |
 | <a href="#style_mutable_t_style_mutable_set_name">style\_mutable\_set\_name</a> | 设置style的名称。 |
-| <a href="#style_mutable_t_style_mutable_set_str">style\_mutable\_set\_str</a> | 设置指定name字符串的值。 |
+| <a href="#style_mutable_t_style_mutable_set_str">style\_mutable\_set\_str</a> | 设置指定名称字符串的值。 |
+| <a href="#style_mutable_t_style_mutable_set_value">style\_mutable\_set\_value</a> | 设置指定名称的值。 |
 ### 属性
 <p id="style_mutable_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#style_mutable_t_name">name</a> | char* | 名称。 |
+#### dialog\_highlighter\_register\_builtins 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_dialog_highlighter_register_builtins"> 注册内置的对话框高亮策略。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_register_builtins ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### style\_mutable\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_style_mutable_cast"> 转换为style_mutable对象。
+
+
+
+
+* 函数原型：
+
+```
+style_t* style_mutable_cast (style_t* s);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | style\_t* | style对象。 |
+| s | style\_t* | style对象。 |
 #### style\_mutable\_create 函数
 -----------------------
 
@@ -100,6 +147,31 @@ const char* style_mutable_get_name (style_t* s);
 | -------- | ----- | --------- |
 | 返回值 | const char* | style的名称。 |
 | s | style\_t* | style对象。 |
+#### style\_mutable\_get\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_style_mutable_get_value"> 获取指定名称的值。
+
+
+
+
+* 函数原型：
+
+```
+ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, const value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
+| state | const char* | 控件状态。 |
+| name | const char* | 属性名。 |
+| v | const value\_t* | 值。 |
 #### style\_mutable\_register 函数
 -----------------------
 
@@ -126,7 +198,7 @@ ret_t style_mutable_register ();
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_color"> 设置指定name的颜色值。
+> <p id="style_mutable_t_style_mutable_set_color"> 设置指定名称的颜色值。
 
 
 
@@ -151,7 +223,7 @@ ret_t style_mutable_set_color (style_t* s, const char* state, const char* name, 
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_int"> 设置指定name整数格式的值。
+> <p id="style_mutable_t_style_mutable_set_int"> 设置指定名称整数格式的值。
 
 
 
@@ -199,7 +271,7 @@ ret_t style_mutable_set_name (style_t* s, const char* name);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_str"> 设置指定name字符串的值。
+> <p id="style_mutable_t_style_mutable_set_str"> 设置指定名称字符串的值。
 
 
 
@@ -219,6 +291,31 @@ ret_t style_mutable_set_str (style_t* s, const char* state, const char* name, co
 | state | const char* | 控件状态。 |
 | name | const char* | 属性名。 |
 | val | const char* | 值。 |
+#### style\_mutable\_set\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_style_mutable_set_value"> 设置指定名称的值。
+
+
+
+
+* 函数原型：
+
+```
+ret_t style_mutable_set_value (style_t* s, const char* state, const char* name, const value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
+| state | const char* | 控件状态。 |
+| name | const char* | 属性名。 |
+| v | const value\_t* | 值。 |
 #### name 属性
 -----------------------
 > <p id="style_mutable_t_name"> 名称。

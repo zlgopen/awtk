@@ -408,10 +408,12 @@ ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, 
                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh) {
   float_t x = 0;
   float_t y = 0;
-  float_t w = sw / vg->ratio;
-  float_t h = sh / vg->ratio;
+  float_t w = 0;
+  float_t h = 0;
   return_value_if_fail(vg != NULL && img != NULL, RET_BAD_PARAMS);
 
+  w = sw / vg->ratio;
+  h = sh / vg->ratio;
   x = (dw - w) * 0.5f + dx;
   y = (dh - h) * 0.5f + dy;
 
@@ -431,4 +433,19 @@ ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
 
 vgcanvas_t* vgcanvas_cast(vgcanvas_t* vg) {
   return vg;
+}
+
+ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
+  return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
+
+  memset(img, 0x00, sizeof(bitmap_t));
+  img->specific = tk_pointer_from_int(fbo->id);
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
+  img->w = fbo->w * fbo->ratio;
+  img->h = fbo->h * fbo->ratio;
+
+  img->flags = BITMAP_FLAG_TEXTURE;
+
+  return RET_OK;
 }

@@ -22,6 +22,7 @@
 #ifndef TK_FUNC_CALL_PARSER_H
 #define TK_FUNC_CALL_PARSER_H
 
+#include "tkc/object.h"
 #include "tkc/tokenizer.h"
 
 BEGIN_C_DECLS
@@ -60,7 +61,7 @@ struct _func_call_parser_t {
  * 初始化parser对象。
  * @annotation ["constructor"]
  * @param {func_call_parser_t*} parser parser对象。
- * @param {char*} str 要解析的字符串。
+ * @param {const char*} str 要解析的字符串。
  * @param {uint32_t} size 字符串长度。
  *
  * @return {func_call_parser_t*} parser对象本身。
@@ -85,6 +86,18 @@ ret_t func_call_parser_parse(func_call_parser_t* parser);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t func_call_parser_deinit(func_call_parser_t* parser);
+
+/**
+ * @method func_call_parser_parse
+ * 解析参数，并将结果生成一个object对象。
+ *
+ *> 调用者负责释放返回的object对象。
+ * @param {const char*} str 要解析的字符串。
+ * @param {uint32_t} size 字符串长度。
+ *
+ * @return {object_t*} 返回object对象。
+ */
+object_t* func_call_parse(const char* str, uint32_t size);
 
 END_C_DECLS
 

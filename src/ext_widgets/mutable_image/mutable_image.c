@@ -28,7 +28,7 @@
 
 static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
-  return_value_if_fail(mutable_image->prepare_image != NULL, NULL);
+  return_value_if_fail(mutable_image != NULL && mutable_image->prepare_image != NULL, NULL);
 
   if (mutable_image->image == NULL) {
     bitmap_format_t format = BITMAP_FMT_NONE;
@@ -91,6 +91,7 @@ static const char* s_mutable_image_clone_properties[] = {WIDGET_PROP_SCALE_X,  W
 
 static ret_t mutable_image_on_destroy(widget_t* widget) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(widget != NULL && mutable_image != NULL, RET_BAD_PARAMS);
 
   if (mutable_image->fb != NULL) {
     bitmap_destroy(mutable_image->fb);
@@ -149,7 +150,10 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
   mutable_image->fb = bitmap_create();
   return_value_if_fail(mutable_image->fb != NULL, RET_OOM);
 
-  return bitmap_init(mutable_image->fb, w, h, format, buff);
+  bitmap_init(mutable_image->fb, w, h, format, buff);
+  mutable_image->fb->should_free_handle = TRUE;
+
+  return RET_OK;
 }
 
 widget_t* mutable_image_cast(widget_t* widget) {

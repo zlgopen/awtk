@@ -75,6 +75,9 @@ ret_t window_manager_back (widget_t* widget);
 
 > <p id="window_manager_t_window_manager_back_to_home"> 回到主窗口，关闭之上的全部窗口。
 
+> 由于dialog通常需要用户确认，顶层窗口为dialog时调用会失败。
+
+
 
 
 * 函数原型：

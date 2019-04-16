@@ -1,0 +1,9 @@
+<dialog theme="dialog" anim_hint="center_scale" style="custom" 
+  x="c" y="m" w="80%" h="160">
+  <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Hello AWTK" />
+  <dialog_client style="custom" x="0" y="bottom" w="100%" h="-30">
+    <label x="center" y="middle:-20" w="200" h="30" text="Back To Home?"/>
+    <button style="green_btn" name="quit" x="10" y="bottom:10" w="40%" h="30" text="确定"/>
+    <button style="red_btn" name="quit" x="right:10" y="bottom:10" w="40%" h="30" text="取消"/>
+  </dialog_client>
+</dialog>

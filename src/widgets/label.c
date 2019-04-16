@@ -182,7 +182,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   canvas_t* c = NULL;
   int32_t margin = 0;
   style_t* style = NULL;
-  uint32_t font_size = 20;
+  uint32_t font_size = 0;
   label_t* label = LABEL(widget);
 
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
@@ -217,7 +217,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
 
 ret_t label_set_length(widget_t* widget, int32_t length) {
   label_t* label = LABEL(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
   label->length = length;
 
   return widget_invalidate_force(widget, NULL);
@@ -225,7 +225,7 @@ ret_t label_set_length(widget_t* widget, int32_t length) {
 
 static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
   label_t* label = LABEL(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(label != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     value_set_int(v, label->length);

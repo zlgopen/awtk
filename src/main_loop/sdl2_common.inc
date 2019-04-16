@@ -22,17 +22,14 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
   int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
 
-  memset(&event, 0x00, sizeof(event));
-  event.e.time = time_now_ms();
-  event.key = sdl_event->key.keysym.sym;
   switch (type) {
     case SDL_KEYDOWN: {
-      event.e.type = EVT_KEY_DOWN;
+      key_event_init(&event, EVT_KEY_DOWN, widget, sdl_event->key.keysym.sym);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     case SDL_KEYUP: {
-      event.e.type = EVT_KEY_UP;
+      key_event_init(&event, EVT_KEY_UP, widget, sdl_event->key.keysym.sym);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
@@ -47,18 +44,14 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
 static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   wheel_event_t event;
   widget_t* widget = loop->base.wm;
-
-  memset(&event, 0x00, sizeof(event));
-  event.e = event_init(EVT_WHEEL, widget);
-  event.dx = sdl_event->wheel.x;
-  event.dy = sdl_event->wheel.y;
+  event_t* e = wheel_event_init(&event, EVT_WHEEL, widget, sdl_event->wheel.y);
 
   if (event.dy > 0) {
     event.dy = tk_max(MIN_WHEEL_DELTA, event.dy);
   } else if (event.dy < 0) {
     event.dy = tk_min(-MIN_WHEEL_DELTA, event.dy);
   }
-  window_manager_dispatch_input_event(widget, (event_t*)&event);
+  window_manager_dispatch_input_event(widget, e);
 
   return RET_OK;
 }
@@ -69,34 +62,31 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   widget_t* widget = loop->base.wm;
 
   memset(&event, 0x00, sizeof(event));
-  event.e.time = time_now_ms();
   switch (type) {
     case SDL_MOUSEBUTTONDOWN: {
       loop->pressed = 1;
-      event.e.type = EVT_POINTER_DOWN;
-      event.x = sdl_event->button.x;
-      event.y = sdl_event->button.y;
+      pointer_event_init(&event, EVT_POINTER_DOWN, widget, sdl_event->button.x,
+                         sdl_event->button.y);
       event.button = sdl_event->button.button;
       event.pressed = loop->pressed;
 
+      SDL_CaptureMouse(TRUE);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     case SDL_MOUSEBUTTONUP: {
-      event.e.type = EVT_POINTER_UP;
-      event.x = sdl_event->button.x;
-      event.y = sdl_event->button.y;
+      pointer_event_init(&event, EVT_POINTER_UP, widget, sdl_event->button.x, sdl_event->button.y);
       event.button = sdl_event->button.button;
       event.pressed = loop->pressed;
 
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       loop->pressed = 0;
+      SDL_CaptureMouse(FALSE);
       break;
     }
     case SDL_MOUSEMOTION: {
-      event.e.type = EVT_POINTER_MOVE;
-      event.x = sdl_event->motion.x;
-      event.y = sdl_event->motion.y;
+      pointer_event_init(&event, EVT_POINTER_MOVE, widget, sdl_event->button.x,
+                         sdl_event->button.y);
       event.button = 0;
       event.pressed = loop->pressed;
 

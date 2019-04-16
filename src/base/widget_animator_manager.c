@@ -137,8 +137,9 @@ ret_t widget_animator_manager_remove(widget_animator_manager_t* am, widget_anima
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
   return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
 
-  prev = am->first;
   iter = am->first;
+  return_value_if_fail(iter != NULL, ret);
+
   if (iter == animator) {
     am->first = iter->next;
     ret = RET_OK;

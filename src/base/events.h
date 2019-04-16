@@ -37,11 +37,6 @@ BEGIN_C_DECLS
  */
 typedef enum _event_type_t {
   /**
-   * @const EVT_NONE
-   * 无效事件名称。
-   */
-  EVT_NONE = 0,
-  /**
    * @const EVT_POINTER_DOWN
    * 指针按下事件名(pointer_event_t)。
    */
@@ -177,6 +172,11 @@ typedef enum _event_type_t {
    */
   EVT_AFTER_PAINT,
   /**
+   * @const EVT_PAINT_DONE
+   * 绘制完成(canvas状态已经恢复)的事件名(paint_event_t)。
+   */
+  EVT_PAINT_DONE,
+  /**
    * @const EVT_LOCALE_CHANGED
    * locale改变的事件(event_t)。
    */
@@ -299,15 +299,9 @@ typedef enum _event_type_t {
 typedef struct _wheel_event_t {
   event_t e;
   /**
-   * @property {int32_t} dx
-   * @annotation ["readable", "scriptable"]
-   * 滚轮的x值。
-   */
-  int32_t dx;
-  /**
    * @property {int32_t} dy
    * @annotation ["readable", "scriptable"]
-   * 滚轮的x值。
+   * 滚轮的y值。
    */
   int32_t dy;
   /**
@@ -336,9 +330,21 @@ typedef struct _wheel_event_t {
  * 把event对象转wheel_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {wheel_event_t*} 对象。
+ * @return {wheel_event_t*} event对象。
  */
 wheel_event_t* wheel_event_cast(event_t* event);
+
+/**
+ * @method wheel_event_init
+ * 初始化事件。
+ * @param {wheel_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {int32_t} dy 滚轮的y值。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int32_t dy);
 
 /**
  * @class pointer_event_t
@@ -404,6 +410,20 @@ typedef struct _pointer_event_t {
 pointer_event_t* pointer_event_cast(event_t* event);
 
 /**
+ * @method pointer_event_init
+ * 初始化事件。
+ * @param {pointer_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {int32_t} x x的值。
+ * @param {int32_t} y y的值。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* pointer_event_init(pointer_event_t* event, uint32_t type, void* target, int32_t x,
+                            int32_t y);
+
+/**
  * @class key_event_t
  * @annotation ["scriptable"]
  * @parent event_t
@@ -454,6 +474,18 @@ typedef struct _key_event_t {
 key_event_t* key_event_cast(event_t* event);
 
 /**
+ * @method key_event_init
+ * 初始化事件。
+ * @param {key_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {int32_t} key key的值。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* key_event_init(key_event_t* event, uint32_t type, void* target, int32_t key);
+
+/**
  * @class paint_event_t
  * @annotation ["scriptable"]
  * @parent event_t
@@ -475,9 +507,21 @@ typedef struct _paint_event_t {
  * 把event对象转paint_event_t对象。主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {paint_event_t*} 对象。
+ * @return {paint_event_t*} event 对象。
  */
 paint_event_t* paint_event_cast(event_t* event);
+
+/**
+ * @method paint_event_init
+ * 初始化事件。
+ * @param {paint_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* paint_event_init(paint_event_t* event, uint32_t type, void* target, canvas_t* c);
 
 /**
  * @class window_event_t
@@ -504,6 +548,18 @@ typedef struct _window_event_t {
  * @return {window_event_t*} 对象。
  */
 window_event_t* window_event_cast(event_t* event);
+
+/**
+ * @method window_event_init
+ * 初始化事件。
+ * @param {window_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {widget_t*} widget window对象。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* window_event_init(window_event_t* event, uint32_t type, void* target, widget_t* widget);
 
 /**
  * @method pointer_event_rotate

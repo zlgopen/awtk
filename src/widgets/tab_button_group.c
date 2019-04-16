@@ -153,7 +153,7 @@ static ret_t tab_button_group_on_paint_end(widget_t* widget, canvas_t* c) {
 
 static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value_t* v) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tab_button_group != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_COMPACT)) {
     value_set_bool(v, tab_button_group->compact);
@@ -165,7 +165,7 @@ static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value
 
 static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const value_t* v) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tab_button_group != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_COMPACT)) {
     tab_button_group->compact = value_bool(v);

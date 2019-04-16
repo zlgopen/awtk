@@ -30,6 +30,7 @@
 | return         | 回车键          |
 | action         | 定制按钮        |
 | backspace      | 删除键          |
+| tab            | tab键           |
 | space          | 空格键          |
 | close          | 关闭软键盘      |
 | 前缀key:       | 键值            |

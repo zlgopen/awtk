@@ -50,6 +50,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
 
 static ret_t combo_box_on_destroy(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   str_reset(&(combo_box->text));
   combo_box_reset_options(widget);
@@ -60,6 +61,7 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
 
 static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_OPEN_WINDOW)) {
     value_set_str(v, combo_box->open_window);
@@ -83,6 +85,7 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
   combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
   combo_box_reset_options(widget);
   combo_box->options = tk_strdup(str);
@@ -244,6 +247,7 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
   widget_t* win = NULL;
   widget_t* widget = WIDGET(ctx);
   combo_box_t* combo_box = COMBO_BOX(ctx);
+  return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
@@ -395,6 +399,7 @@ int32_t combo_box_find_option(widget_t* widget, int32_t value) {
 
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   if (combo_box->option_items != NULL) {
     combo_box_option_t* option = combo_box_get_option(widget, index);

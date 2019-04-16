@@ -584,8 +584,8 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     GetClientRect(hwnd, &hwndRect);
 
                     /* if in the window, WM_MOUSEMOVE, etc, will cover it. */
-                    if(currentHnd != hwnd || pt.x < 0 || pt.y < 0 || pt.x > hwndRect.right || pt.y > hwndRect.right) {
-                        SDL_SendMouseMotion(data->window, 0, 0, (int)pt.x, (int)pt.y);
+                    if(currentHnd != hwnd || pt.x < 0 || pt.y < 0 || pt.x > hwndRect.right || pt.y > hwndRect.bottom) {
+                        SDL_SendMouseMotion(data->window, 0, 0, (int)pt.x/data->window->dpi_ratio, (int)pt.y/data->window->dpi_ratio);
                         SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_LBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_LEFT);
                         SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_RBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_RIGHT);
                         SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_MBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_MIDDLE);

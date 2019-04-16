@@ -93,6 +93,7 @@ static ret_t guage_pointer_set_prop(widget_t* widget, const char* name, const va
 
 static ret_t guage_pointer_on_destroy(widget_t* widget) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(widget != NULL && guage_pointer != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(guage_pointer->image);
   if (guage_pointer->bsvg_asset != NULL) {

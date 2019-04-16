@@ -415,6 +415,11 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap);
 uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
+#if defined(WITH_SDL) || defined(LINUX)
+/*for helping debug drawing bugs*/
+bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
+#endif /*defined(WITH_SDL) || defined(LINUX)*/
+
 END_C_DECLS
 
 #endif /*TK_BITMAP_H*/

@@ -204,8 +204,11 @@ ret_t widget_pool_clear_cache(widget_pool_t* pool) {
 
 static ret_t widget_pool_on_visit_count(void* ctx, named_value_t* nv) {
   int32_t* n = (int32_t*)ctx;
+  darray_t* arr = NULL;
+  return_value_if_fail(nv != NULL, RET_OK);
 
-  darray_t* arr = (darray_t*)value_pointer(&(nv->value));
+  arr = (darray_t*)value_pointer(&(nv->value));
+  return_value_if_fail(arr != NULL, RET_OK);
 
   *n += arr->size;
 

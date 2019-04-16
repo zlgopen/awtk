@@ -35,6 +35,7 @@
 
 static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
   dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(child->vt->type, WIDGET_TYPE_DIALOG_TITLE)) {
     dialog->title = child;
@@ -47,6 +48,42 @@ static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
 
 static const char* s_dialog_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP_OPEN_ANIM_HINT,
                                             WIDGET_PROP_CLOSE_ANIM_HINT, WIDGET_PROP_THEME, NULL};
+
+static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
+    dialog->highlight = tk_str_copy(dialog->highlight, value_str(v));
+
+    return RET_OK;
+  }
+
+  return window_base_set_prop(widget, name, v);
+}
+
+static ret_t dialog_get_prop(widget_t* widget, const char* name, value_t* v) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_HIGHLIGHT)) {
+    value_set_str(v, dialog->highlight);
+
+    return RET_OK;
+  }
+
+  return window_base_get_prop(widget, name, v);
+}
+
+static ret_t dialog_on_destroy(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(dialog->highlight);
+
+  return window_base_on_destroy(widget);
+}
+
 TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .type = WIDGET_TYPE_DIALOG,
                           .is_window = TRUE,
@@ -59,9 +96,9 @@ TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .on_paint_self = window_base_on_paint_self,
                           .on_paint_begin = window_base_on_paint_begin,
                           .on_paint_end = window_base_on_paint_end,
-                          .set_prop = window_base_set_prop,
-                          .get_prop = window_base_get_prop,
-                          .on_destroy = window_base_on_destroy};
+                          .set_prop = dialog_set_prop,
+                          .get_prop = dialog_get_prop,
+                          .on_destroy = dialog_on_destroy};
 
 widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return window_base_create(parent, TK_REF_VTABLE(dialog), x, y, w, h);
@@ -87,7 +124,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 ret_t dialog_set_title(widget_t* widget, const char* title) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL && title != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL && title != NULL, RET_BAD_PARAMS);
 
   return widget_set_text_utf8(dialog->title, title);
 }
@@ -109,6 +146,8 @@ uint32_t dialog_modal(widget_t* widget) {
 
   log_debug("%s run\n", __FUNCTION__);
 
+  dialog->quited = FALSE;
+  dialog->is_model = TRUE;
   running = main_loop()->running;
   widget_invalidate(widget, NULL);
   main_loop_run(main_loop());
@@ -122,12 +161,27 @@ uint32_t dialog_modal(widget_t* widget) {
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
+  dialog->quited = TRUE;
   dialog->quit_code = code;
   main_loop_quit(main_loop());
 
   return RET_OK;
+}
+
+bool_t dialog_is_quited(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, FALSE);
+
+  return dialog->quited;
+}
+
+bool_t dialog_is_modal(widget_t* widget) {
+  dialog_t* dialog = DIALOG(widget);
+  return_value_if_fail(dialog != NULL, FALSE);
+
+  return dialog->is_model;
 }
 
 widget_t* dialog_cast(widget_t* widget) {
@@ -138,14 +192,14 @@ widget_t* dialog_cast(widget_t* widget) {
 
 widget_t* dialog_get_title(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(dialog != NULL, NULL);
 
   return dialog->title;
 }
 
 widget_t* dialog_get_client(widget_t* widget) {
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(dialog != NULL, NULL);
 
   return dialog->client;
 }

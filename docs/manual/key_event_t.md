@@ -12,6 +12,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#key_event_t_key_event_cast">key\_event\_cast</a> | 把event对象转key_event_t对象，主要给脚本语言使用。 |
+| <a href="#key_event_t_key_event_init">key\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="key_event_t_properties">
 
@@ -44,6 +45,31 @@ key_event_t* key_event_cast (event_t* event);
 | -------- | ----- | --------- |
 | 返回值 | key\_event\_t* | 对象。 |
 | event | event\_t* | event对象。 |
+#### key\_event\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="key_event_t_key_event_init"> 初始化事件。
+
+
+
+
+* 函数原型：
+
+```
+event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_t key);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | event\_t* | event对象。 |
+| event | key\_event\_t* | event对象。 |
+| target | void* | 事件目标。 |
+| type | uint32\_t | 事件类型。 |
+| key | int32\_t | key的值。 |
 #### alt 属性
 -----------------------
 > <p id="key_event_t_alt"> alt键是否按下。

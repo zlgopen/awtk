@@ -32,6 +32,9 @@
 #define pixel_from_rgb pixel_dst_from_rgb
 #define pixel_to_rgba pixel_dst_to_rgba
 
+#define pixel_blend_rgba_dark pixel_rgba8888_blend_rgba_dark
+#define pixel_blend_rgba_premulti pixel_rgba8888_blend_rgba_premulti
+
 #include "pixel_ops.inc"
 #include "fill_image.inc"
 

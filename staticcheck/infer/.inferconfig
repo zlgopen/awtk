@@ -1,0 +1,6 @@
+{
+  "disable-issue-type": [
+    "DEAD_STORE", "MEMORY_LEAK"
+  ],
+  "liveness": false
+}

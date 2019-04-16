@@ -27,11 +27,15 @@
 #include "base/image_manager.h"
 
 static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
+  uint16_t value = 0;
+  uint16_t range = 0;
+  float fvalue = 0;
   slider_t* slider = SLIDER(widget);
-  uint16_t value = slider->value - slider->min;
-  uint16_t range = slider->max - slider->min;
-  float fvalue = (float)value / (float)range;
-  return_value_if_fail(r != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && r != NULL, RET_BAD_PARAMS);
+
+  value = slider->value - slider->min;
+  range = slider->max - slider->min;
+  fvalue = (float)value / (float)range;
 
   r->w = tk_min(widget->w, widget->h);
   r->h = r->w;
@@ -54,8 +58,6 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
 
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
-
   slider_get_dragger_rect(widget, &r);
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   if (color.rgba.a) {
@@ -73,6 +75,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
 
 static uint32_t slider_get_bar_size(widget_t* widget) {
   slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL && widget != NULL, 0);
 
   if (slider->vertical) {
     return slider->bar_size ? slider->bar_size : (widget->w >> 1);
@@ -83,14 +86,23 @@ static uint32_t slider_get_bar_size(widget_t* widget) {
 
 static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
-  style_t* style = widget->astyle;
+  style_t* style = NULL;
+  uint16_t range = 0;
+  uint16_t value = 0;
+  float_t fvalue = 0;
+  uint32_t radius = 0;
+  const char* bg_image = 0;
+  image_draw_type_t draw_type;
   slider_t* slider = SLIDER(widget);
-  uint16_t range = slider->max - slider->min;
-  uint16_t value = slider->value - slider->min;
-  float_t fvalue = (float_t)value / (float_t)range;
-  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
-  const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  image_draw_type_t draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  range = slider->max - slider->min;
+  value = slider->value - slider->min;
+  fvalue = (float_t)value / (float_t)range;
+  radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
+  draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
   if (slider->vertical) {
     r.y = 0;
@@ -144,6 +156,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
   uint16_t type = e->type;
   slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -213,7 +226,7 @@ ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t e
   uint16_t step = 0;
   uint16_t offset = 0;
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   step = slider->step;
   value = tk_max(tk_min(value, slider->max), slider->min);
@@ -251,7 +264,7 @@ ret_t slider_set_value(widget_t* widget, uint16_t value) {
 
 ret_t slider_set_min(widget_t* widget, uint16_t min) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->min = min;
 
@@ -260,7 +273,7 @@ ret_t slider_set_min(widget_t* widget, uint16_t min) {
 
 ret_t slider_set_max(widget_t* widget, uint16_t max) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->max = max;
 
@@ -269,7 +282,7 @@ ret_t slider_set_max(widget_t* widget, uint16_t max) {
 
 ret_t slider_set_step(widget_t* widget, uint16_t step) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && step > 0, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && step > 0, RET_BAD_PARAMS);
 
   slider->step = step;
 
@@ -278,7 +291,7 @@ ret_t slider_set_step(widget_t* widget, uint16_t step) {
 
 ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && bar_size > 0, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && bar_size > 0, RET_BAD_PARAMS);
 
   slider->bar_size = bar_size;
 
@@ -287,7 +300,7 @@ ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size) {
 
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   slider->vertical = vertical;
 
@@ -296,7 +309,7 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
 
 static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   slider_t* slider = SLIDER(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slider != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, slider->value);
@@ -346,6 +359,7 @@ static const char* s_slider_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTI
                                             WIDGET_PROP_STEP,  NULL};
 TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .type = WIDGET_TYPE_SLIDER,
+                          .inputable = TRUE,
                           .clone_properties = s_slider_properties,
                           .persistent_properties = s_slider_properties,
                           .parent = TK_PARENT_VTABLE(widget),

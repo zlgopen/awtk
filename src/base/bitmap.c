@@ -353,3 +353,39 @@ uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
 
   return bitmap->line_length;
 }
+
+#if defined(WITH_SDL) || defined(LINUX)
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#define STBI_FREE TKMEM_FREE
+#define STBI_MALLOC TKMEM_ALLOC
+#define STBI_REALLOC(p, s) TKMEM_REALLOC(p, s)
+
+#include "stb/stb_image_write.h"
+
+bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
+  color_t c;
+  uint32_t x = 0;
+  uint32_t y = 0;
+  bitmap_t* t = NULL;
+  uint32_t* p = NULL;
+  return_value_if_fail(bitmap != NULL && filename != NULL, FALSE);
+
+  t = bitmap_create_ex(bitmap->w, bitmap->h, 0, BITMAP_FMT_RGBA8888);
+  return_value_if_fail(t != NULL, FALSE);
+
+  p = (uint32_t*)(t->data);
+  for (y = 0; y < bitmap->h; y++) {
+    for (x = 0; x < bitmap->w; x++) {
+      bitmap_get_pixel(bitmap, x, y, &(c.rgba));
+      *p++ = c.color;
+    }
+  }
+
+  stbi_write_png(filename, t->w, t->h, 4, t->data, t->w * 4);
+  bitmap_destroy(t);
+
+  return TRUE;
+}
+
+#endif /*defined(WITH_SDL) || defined(LINUX)*/

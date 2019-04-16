@@ -1,0 +1,3 @@
+<view x="c" y="m" w="50%" h="50%">
+  <button x="c" y="m" w="80" h="30" text="OK" name="ok"/>
+</view>

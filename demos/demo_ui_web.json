@@ -1,0 +1,6 @@
+{
+  "name":"demoui",
+  "version":"1.0",
+  "assets" : "assets",
+  "sources":["demo_ui_app.c"]
+}

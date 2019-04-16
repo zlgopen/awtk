@@ -45,9 +45,11 @@
 #define FALSE 0
 #endif /*FALSE*/
 
-#ifndef bool_t
-#define bool_t uint8_t
-#endif /*bool_t*/
+#if defined(__GNUC__) && !defined(__cplusplus)
+typedef _Bool bool_t;
+#else
+typedef uint8_t bool_t;
+#endif
 
 typedef int32_t xy_t;
 typedef int32_t wh_t;
@@ -258,12 +260,18 @@ typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 /*TK_NAME_LEN+1 must aligned to 4*/
 enum { TK_NAME_LEN = 31 };
 
+#ifdef WITH_CPPCHECK
+#define tk_str_eq strcmp
+#define tk_str_eq strcasecmp
+#else
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
 #define tk_str_ieq(s1, s2) (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0)
 
 #define tk_wstr_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
+#endif /*WITH_CPPCHECK*/
+
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
@@ -283,5 +291,11 @@ enum { TK_NAME_LEN = 31 };
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #endif /*HAS_AWTK_CONFIG*/
+
+#ifdef _MSC_VER
+#define TK_CONST_DATA_ALIGN(v) __declspec(align(8)) v
+#else
+#define TK_CONST_DATA_ALIGN(v) v __attribute__((aligned(8)))
+#endif /*_MSC_VER*/
 
 #endif /*TYPES_DEF_H*/

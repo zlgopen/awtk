@@ -122,8 +122,8 @@ rich_text_node_t* rich_text_node_append(rich_text_node_t* node, rich_text_node_t
 }
 
 ret_t rich_text_node_destroy(rich_text_node_t* node) {
+  rich_text_node_t* next = NULL;
   rich_text_node_t* iter = node;
-  rich_text_node_t* next = node;
   return_value_if_fail(node != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {

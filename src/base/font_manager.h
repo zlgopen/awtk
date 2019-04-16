@@ -130,6 +130,17 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font);
 font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size);
 
 /**
+ * @method font_manager_unload_font
+ * 卸载指定的字体。
+ * @param {font_manager_t*} fm 字体管理器对象。
+ * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
+ * @param {font_size_t} size 字体的大小(矢量字体指定为0即可)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size);
+
+/**
  * @method font_manager_deinit
  * 析构字体管理器。
  * @param {font_manager_t*} fm 字体管理器对象。
@@ -146,6 +157,9 @@ ret_t font_manager_deinit(font_manager_t* fm);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t font_manager_destroy(font_manager_t* fm);
+
+/*public for test*/
+font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size);
 
 END_C_DECLS
 

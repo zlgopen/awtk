@@ -50,6 +50,8 @@ ret_t input_method_off(input_method_t* im, uint32_t id) {
 
 ret_t input_method_request(input_method_t* im, widget_t* widget) {
   return_value_if_fail(im != NULL && im->request != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(!(im->busy), RET_FAIL);
+
   if (im->widget == widget) {
     return RET_OK;
   }
@@ -97,9 +99,23 @@ ret_t input_method_dispatch_action(input_method_t* im) {
   return input_method_dispatch_to_widget(im, &e);
 }
 
-ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
+static ret_t input_method_dispatch_key_only(input_method_t* im, uint32_t key) {
   key_event_t e;
+  e.key = key;
+  e.e.type = EVT_KEY_DOWN;
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+  e.e.type = EVT_KEY_UP;
+  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+
+  return RET_OK;
+}
+
+ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+
+  if (key == TK_KEY_TAB) {
+    return input_method_dispatch_key_only(im, key);
+  }
 
   if (im->engine != NULL) {
     if (input_engine_input(im->engine, (char)key) == RET_OK) {
@@ -114,13 +130,7 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
     }
   }
 
-  e.key = key;
-  e.e.type = EVT_KEY_DOWN;
-  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
-  e.e.type = EVT_KEY_UP;
-  input_method_dispatch_to_widget(input_method(), (event_t*)&e);
-
-  return RET_OK;
+  return input_method_dispatch_key_only(im, key);
 }
 
 ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr) {

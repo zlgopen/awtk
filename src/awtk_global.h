@@ -84,6 +84,9 @@ ret_t tk_init_assets(void);
 ret_t tk_init_internal(void);
 ret_t tk_deinit_internal(void);
 
+/*public for web*/
+ret_t tk_exit(void);
+
 END_C_DECLS
 
 #endif /*TK_GLOBAL_H*/

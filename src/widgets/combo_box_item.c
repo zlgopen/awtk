@@ -29,6 +29,7 @@ static ret_t combo_box_item_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
+  return_value_if_fail(combo_box_item != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -82,7 +83,7 @@ static ret_t combo_box_item_set_prop(widget_t* widget, const char* name, const v
 
 static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t* v) {
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(combo_box_item != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, combo_box_item->value);
@@ -113,7 +114,7 @@ widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 ret_t combo_box_item_set_value(widget_t* widget, int32_t value) {
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(combo_box_item != NULL, RET_BAD_PARAMS);
 
   combo_box_item->value = value;
 
@@ -122,7 +123,7 @@ ret_t combo_box_item_set_value(widget_t* widget, int32_t value) {
 
 static ret_t combo_box_item_set_checked_only(widget_t* widget, bool_t checked) {
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(combo_box_item != NULL, RET_BAD_PARAMS);
 
   if (combo_box_item->checked != checked) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);

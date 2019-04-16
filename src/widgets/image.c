@@ -30,7 +30,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   image_t* image = IMAGE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   image_base_t* image_base = IMAGE_BASE(widget);
-  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   if (image_base->image == NULL) {
     return RET_OK;
@@ -62,7 +62,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t image_get_prop(widget_t* widget, const char* name, value_t* v) {
   image_t* image = IMAGE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_DRAW_TYPE)) {
     value_set_int(v, image->draw_type);
@@ -122,7 +122,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
   image_t* image = IMAGE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   image->draw_type = draw_type;
 

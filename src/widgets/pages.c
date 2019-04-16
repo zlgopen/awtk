@@ -27,7 +27,7 @@
 
 ret_t pages_set_active(widget_t* widget, uint32_t index) {
   pages_t* pages = PAGES(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index) {
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -61,9 +61,11 @@ static widget_t* pages_find_target(widget_t* widget, xy_t x, xy_t y) {
 }
 
 static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
+  widget_t* active = NULL;
   pages_t* pages = PAGES(widget);
-  widget_t* active = widget_get_child(widget, pages->active);
+  return_value_if_fail(widget != NULL && pages != NULL, RET_BAD_PARAMS);
 
+  active = widget_get_child(widget, pages->active);
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);
 
   return widget_paint(active, c);
@@ -71,7 +73,7 @@ static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
 
 static ret_t pages_get_prop(widget_t* widget, const char* name, value_t* v) {
   pages_t* pages = PAGES(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(pages != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     value_set_uint32(v, pages->active);

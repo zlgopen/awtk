@@ -27,6 +27,7 @@
 static ret_t check_button_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -81,7 +82,7 @@ static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   check_button_t* check_button = CHECK_BUTTON(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
   if (check_button->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -99,7 +100,7 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
 
 ret_t check_button_set_value(widget_t* widget, bool_t value) {
   check_button_t* check_button = CHECK_BUTTON(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
   check_button_set_value_only(widget, value);
 

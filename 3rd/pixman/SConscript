@@ -1,0 +1,11 @@
+import os
+
+env = DefaultEnvironment().Clone()
+LIB_DIR = os.environ['LIB_DIR'];
+BIN_DIR = os.environ['BIN_DIR'];
+
+CCFLAGS = os.environ['CCFLAGS'] + ' -DHAVE_CONFIG_H -DPIXMAN_NO_TLS '
+
+SOURCES = Glob('pixman/*.c') + Glob('pixman/*.s')
+env.Library(os.path.join(LIB_DIR, 'pixman'), SOURCES, CCFLAGS = CCFLAGS);
+

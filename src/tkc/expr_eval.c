@@ -174,6 +174,8 @@ static const char* number_to_string(double v, char* str, size_t capacity) {
 }
 
 static EvalResult expr_value_to_string(ExprValue* v) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (v->type == EXPR_VALUE_TYPE_NUMBER) {
     double val = v->v.val;
 
@@ -191,6 +193,8 @@ static EvalResult expr_value_to_string(ExprValue* v) {
 }
 
 static EvalResult expr_value_append_string(ExprValue* v, const char* str, size_t len) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (expr_value_to_string(v) == EVAL_RESULT_OK) {
     return expr_str_append_str(&(v->v.str), str, len);
   }
@@ -199,13 +203,17 @@ static EvalResult expr_value_append_string(ExprValue* v, const char* str, size_t
 }
 
 void expr_value_init(ExprValue* v) {
-  memset(v, 0x00, sizeof(ExprValue));
-  v->type = EXPR_VALUE_TYPE_NUMBER;
+  if (v != NULL) {
+    memset(v, 0x00, sizeof(ExprValue));
+    v->type = EXPR_VALUE_TYPE_NUMBER;
+  }
 
   return;
 }
 
 EvalResult expr_value_set_number(ExprValue* v, double val) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (v->type == EXPR_VALUE_TYPE_STRING) {
     expr_str_clear(&(v->v.str));
   }
@@ -217,6 +225,8 @@ EvalResult expr_value_set_number(ExprValue* v, double val) {
 }
 
 EvalResult expr_value_set_string(ExprValue* v, const char* str, size_t len) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (v->type == EXPR_VALUE_TYPE_NUMBER) {
     expr_str_init(&(v->v.str), len);
     v->type = EXPR_VALUE_TYPE_STRING;
@@ -229,6 +239,8 @@ EvalResult expr_value_set_string(ExprValue* v, const char* str, size_t len) {
 }
 
 static EvalResult expr_value_to_number(ExprValue* v) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (v->type == EXPR_VALUE_TYPE_STRING) {
     double val = atof(v->v.str.str);
     return expr_value_set_number(v, val);
@@ -238,6 +250,8 @@ static EvalResult expr_value_to_number(ExprValue* v) {
 }
 
 double expr_value_get_number(const ExprValue* v) {
+  return_value_if_fail(v != NULL, EVAL_RESULT_OK);
+
   if (v->type == EXPR_VALUE_TYPE_STRING) {
     return atof(v->v.str.str);
   } else {
@@ -246,6 +260,8 @@ double expr_value_get_number(const ExprValue* v) {
 }
 
 const char* expr_value_get_string(const ExprValue* v) {
+  return_value_if_fail(v != NULL, NULL);
+
   if (v->type == EXPR_VALUE_TYPE_STRING) {
     return (v->v.str.str);
   } else {
@@ -254,6 +270,8 @@ const char* expr_value_get_string(const ExprValue* v) {
 }
 
 static EvalResult expr_value_op(ExprValue* a, ExprValue* b, EvalTokenType op) {
+  return_value_if_fail(a != NULL && b != NULL, EVAL_RESULT_OK);
+
   if (a->type == EXPR_VALUE_TYPE_STRING || b->type == EXPR_VALUE_TYPE_STRING) {
     expr_value_to_string(a);
     expr_value_to_string(b);
@@ -870,10 +888,16 @@ EvalResult eval_execute(const char* expression, const EvalHooks* hooks, void* us
   ctx.stack_level = 0;
 
   result = get_token(&ctx);
-  if (result != EVAL_RESULT_OK) return result;
+  if (result != EVAL_RESULT_OK) {
+    expr_str_clear(&ctx.str);
+    return result;
+  }
 
   result = parse_expr(&ctx, output);
-  if (result != EVAL_RESULT_OK) return result;
+  if (result != EVAL_RESULT_OK) {
+    expr_str_clear(&ctx.str);
+    return result;
+  }
 
   result = (ctx.token.type == EVAL_TOKEN_TYPE_END) ? EVAL_RESULT_OK : EVAL_RESULT_UNEXPECTED_CHAR;
   expr_str_clear(&ctx.str);

@@ -37,7 +37,7 @@ static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP
 
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(keyboard != NULL, RET_BAD_PARAMS);
   darray_deinit(&(keyboard->action_buttons));
 
   return window_base_on_destroy(widget);
@@ -93,6 +93,7 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
 #define STR_KEY_SPACE "space"
 #define STR_KEY_PREFIX "key:"
 #define STR_PAGE_PREFIX "page:"
+#define STR_KEY_TAB "tab"
 #define STR_KEY_BACKSPACE "backspace"
 
 static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
@@ -117,6 +118,8 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
       code = TK_KEY_BACKSPACE;
     } else if (tk_str_eq(key, STR_KEY_SPACE)) {
       code = TK_KEY_SPACE;
+    } else if (tk_str_eq(key, STR_KEY_TAB)) {
+      code = TK_KEY_TAB;
     } else {
       code = *key;
     }
@@ -144,10 +147,14 @@ static ret_t keyboard_update_action_buton_info(widget_t* button, const char* tex
 
 static ret_t keyboard_on_action_info(void* ctx, event_t* e) {
   uint32_t i = 0;
+  uint32_t nr = 0;
+  widget_t** buttons = NULL;
   input_method_t* im = input_method();
   keyboard_t* keyboard = KEYBOARD(ctx);
-  uint32_t nr = keyboard->action_buttons.size;
-  widget_t** buttons = (widget_t**)keyboard->action_buttons.elms;
+  return_value_if_fail(keyboard != NULL && im != NULL, RET_BAD_PARAMS);
+
+  nr = keyboard->action_buttons.size;
+  buttons = (widget_t**)keyboard->action_buttons.elms;
 
   for (i = 0; i < nr; i++) {
     keyboard_update_action_buton_info(buttons[i], im->action_buton_text, im->action_button_enable);

@@ -290,6 +290,7 @@ TEST(ObejectDefault, copy_prop) {
 
   ASSERT_NE(object_copy_prop(obj, src, "not exist"), RET_OK);
 
+  object_unref(src);
   object_unref(obj);
 }
 
@@ -345,6 +346,7 @@ TEST(ObejectDefault, expr_str) {
   ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
 
+  value_reset(&v);
   object_unref(obj);
 }
 
@@ -360,6 +362,7 @@ TEST(ObejectDefault, clone) {
   ASSERT_EQ(object_eval(clone, "$a+$b", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
 
+  value_reset(&v);
   object_unref(obj);
   object_unref(clone);
 }

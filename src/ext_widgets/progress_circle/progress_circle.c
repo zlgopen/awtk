@@ -87,7 +87,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
 
 ret_t progress_circle_set_value(widget_t* widget, float_t value) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   if (progress_circle->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
@@ -103,7 +103,7 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value) {
 
 ret_t progress_circle_set_max(widget_t* widget, uint32_t max) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->max = max;
 
@@ -112,7 +112,7 @@ ret_t progress_circle_set_max(widget_t* widget, uint32_t max) {
 
 ret_t progress_circle_set_line_width(widget_t* widget, uint32_t line_width) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->line_width = line_width;
 
@@ -121,7 +121,7 @@ ret_t progress_circle_set_line_width(widget_t* widget, uint32_t line_width) {
 
 ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->start_angle = start_angle;
 
@@ -130,7 +130,7 @@ ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle) {
 
 ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->unit = tk_str_copy(progress_circle->unit, unit);
 
@@ -139,7 +139,7 @@ ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
 
 ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->show_text = show_text;
 
@@ -148,7 +148,7 @@ ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text) {
 
 ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_clock_wise) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   progress_circle->counter_clock_wise = counter_clock_wise;
 
@@ -157,6 +157,7 @@ ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_cl
 
 static ret_t progress_circle_on_destroy(widget_t* widget) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(widget != NULL && progress_circle != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(progress_circle->unit);
 
@@ -165,7 +166,7 @@ static ret_t progress_circle_on_destroy(widget_t* widget) {
 
 static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_t* v) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_circle != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_float(v, progress_circle->value);

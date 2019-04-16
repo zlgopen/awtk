@@ -73,6 +73,20 @@ struct _ui_loader_t {
 ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size,
                      ui_builder_t* builder);
 
+/**
+ * @method ui_loader_load_widget
+ *
+ * 从指定的资源加载widget对象，通常用于加载非窗口的widget。
+ *
+ *>需要自己将widget加入窗口后，再调用widget\_layout。
+ *
+ * @param {const char*} name 资源名。
+ *
+ * @return {widget_t*} 返回widget对象。
+ *
+ */
+widget_t* ui_loader_load_widget(const char* name);
+
 END_C_DECLS
 
 #endif /*TK_UI_LOADER_H*/

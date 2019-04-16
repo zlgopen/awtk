@@ -146,6 +146,8 @@ static ret_t candidates_update_candidates(widget_t* widget, const char* strs, ui
 
 static ret_t candidates_on_destroy_default(widget_t* widget) {
   candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(widget != NULL && candidates != NULL, RET_BAD_PARAMS);
+
   input_method_off(input_method(), candidates->event_id);
 
   return RET_OK;
@@ -153,6 +155,8 @@ static ret_t candidates_on_destroy_default(widget_t* widget) {
 
 static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
   candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(widget != NULL && candidates != NULL, RET_BAD_PARAMS);
+
   candidates->canvas = c;
   return widget_paint_helper(widget, c, NULL, NULL);
 }

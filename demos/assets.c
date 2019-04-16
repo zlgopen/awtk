@@ -50,9 +50,11 @@
 #include "assets/inc/ui/animation.data"
 #include "assets/inc/ui/keyboard.data"
 #include "assets/inc/ui/kb_hex.data"
+#include "assets/inc/ui/popdown.data"
 #include "assets/inc/ui/color.data"
 #include "assets/inc/ui/color_picker.data"
 #include "assets/inc/ui/switch.data"
+#include "assets/inc/ui/back_to_home.data"
 #include "assets/inc/ui/dragger.data"
 #include "assets/inc/ui/dialog2.data"
 #include "assets/inc/ui/color_picker_hsv.data"
@@ -72,11 +74,14 @@
 #include "assets/inc/ui/svg_image.data"
 #include "assets/inc/ui/tab_list.data"
 #include "assets/inc/ui/animator.data"
+#include "assets/inc/ui/slide_down.data"
 #include "assets/inc/ui/scroll_view_h.data"
+#include "assets/inc/ui/slide_right.data"
 #include "assets/inc/ui/scroll_bar_h.data"
 #include "assets/inc/ui/spinbox.data"
 #include "assets/inc/ui/label.data"
 #include "assets/inc/ui/gif_image.data"
+#include "assets/inc/ui/test_view.data"
 #include "assets/inc/ui/auto_play_portrait.data"
 #include "assets/inc/ui/text_selector.data"
 #include "assets/inc/ui/big_font.data"
@@ -96,31 +101,32 @@
 #include "assets/inc/ui/image_list.data"
 #include "assets/inc/ui/slide_view_v1.data"
 #include "assets/inc/ui/select1.data"
-#include "assets/inc/ui/bottom.data"
+#include "assets/inc/ui/slide_left.data"
 #include "assets/inc/ui/image_animation.data"
 #include "assets/inc/ui/image_value.data"
 #include "assets/inc/ui/slide_view.data"
 #include "assets/inc/ui/time_clock.data"
 #include "assets/inc/ui/tab_top.data"
 #include "assets/inc/ui/slide_view_v.data"
-#include "assets/inc/ui/top.data"
 #include "assets/inc/ui/button.data"
 #include "assets/inc/ui/system_bar.data"
 #include "assets/inc/ui/list_view_d.data"
 #include "assets/inc/ui/vtranslate.data"
 #include "assets/inc/ui/kb_ufloat.data"
 #include "assets/inc/ui/kb_default.data"
+#include "assets/inc/ui/slide_up.data"
 #include "assets/inc/ui/rich_text2.data"
 #include "assets/inc/ui/list_view_h.data"
 #include "assets/inc/ui/color_picker_rgb.data"
 #include "assets/inc/ui/tab_bottom_compact.data"
+#include "assets/inc/ui/popup.data"
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
-#include "assets/inc/data/app_json.data"
+#include "assets/inc/data/com_zlg_app_json.data"
 #include "assets/inc/data/test_dat.data"
 #include "assets/inc/data/test_json.data"
-#include "assets/inc/data/abc_any.data"
+#include "assets/inc/data/a_b_c_any.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
@@ -374,8 +380,8 @@
 #include "assets/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
-#ifdef WITH_MINI_FONT
-#include "assets/inc/fonts/default.mini.res"
+#if defined(WITH_MINI_FONT)
+#include "assets/inc/fonts/default_mini.res"
 #else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
 #endif /*WITH_MINI_FONT*/
@@ -388,8 +394,12 @@ ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
 
 #ifdef WITH_FS_RES
-  assets_manager_load(rm, ASSET_TYPE_STYLE, "default");
-  assets_manager_load(rm, ASSET_TYPE_FONT, "default");
+#if defined(WITH_MINI_FONT)
+  assets_manager_preload(rm, ASSET_TYPE_FONT, "default_mini");
+#else  /*WITH_MINI_FONT*/
+  assets_manager_preload(rm, ASSET_TYPE_FONT, "default");
+#endif /*WITH_MINI_FONT*/
+  assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");
 #else
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_vgcanvas);
@@ -417,9 +427,11 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_animation);
   assets_manager_add(rm, ui_keyboard);
   assets_manager_add(rm, ui_kb_hex);
+  assets_manager_add(rm, ui_popdown);
   assets_manager_add(rm, ui_color);
   assets_manager_add(rm, ui_color_picker);
   assets_manager_add(rm, ui_switch);
+  assets_manager_add(rm, ui_back_to_home);
   assets_manager_add(rm, ui_dragger);
   assets_manager_add(rm, ui_dialog2);
   assets_manager_add(rm, ui_color_picker_hsv);
@@ -439,11 +451,14 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_svg_image);
   assets_manager_add(rm, ui_tab_list);
   assets_manager_add(rm, ui_animator);
+  assets_manager_add(rm, ui_slide_down);
   assets_manager_add(rm, ui_scroll_view_h);
+  assets_manager_add(rm, ui_slide_right);
   assets_manager_add(rm, ui_scroll_bar_h);
   assets_manager_add(rm, ui_spinbox);
   assets_manager_add(rm, ui_label);
   assets_manager_add(rm, ui_gif_image);
+  assets_manager_add(rm, ui_test_view);
   assets_manager_add(rm, ui_auto_play_portrait);
   assets_manager_add(rm, ui_text_selector);
   assets_manager_add(rm, ui_big_font);
@@ -463,24 +478,25 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_image_list);
   assets_manager_add(rm, ui_slide_view_v1);
   assets_manager_add(rm, ui_select1);
-  assets_manager_add(rm, ui_bottom);
+  assets_manager_add(rm, ui_slide_left);
   assets_manager_add(rm, ui_image_animation);
   assets_manager_add(rm, ui_image_value);
   assets_manager_add(rm, ui_slide_view);
   assets_manager_add(rm, ui_time_clock);
   assets_manager_add(rm, ui_tab_top);
   assets_manager_add(rm, ui_slide_view_v);
-  assets_manager_add(rm, ui_top);
   assets_manager_add(rm, ui_button);
   assets_manager_add(rm, ui_system_bar);
   assets_manager_add(rm, ui_list_view_d);
   assets_manager_add(rm, ui_vtranslate);
   assets_manager_add(rm, ui_kb_ufloat);
   assets_manager_add(rm, ui_kb_default);
+  assets_manager_add(rm, ui_slide_up);
   assets_manager_add(rm, ui_rich_text2);
   assets_manager_add(rm, ui_list_view_h);
   assets_manager_add(rm, ui_color_picker_rgb);
   assets_manager_add(rm, ui_tab_bottom_compact);
+  assets_manager_add(rm, ui_popup);
   assets_manager_add(rm, ui_kb_uint);
   assets_manager_add(rm, ui_scroll_view_v);
   assets_manager_add(rm, strings_zh_CN);
@@ -628,11 +644,15 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_system_bar);
   assets_manager_add(rm, style_tab_bottom_compact);
   assets_manager_add(rm, style_dialog_warn);
+#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))
+  assets_manager_add(rm, font_default_mini);
+#else  /*WITH_MINI_FONT*/
   assets_manager_add(rm, font_default);
-  assets_manager_add(rm, data_app_json);
+#endif /*WITH_MINI_FONT*/
+  assets_manager_add(rm, data_com_zlg_app_json);
   assets_manager_add(rm, data_test_dat);
   assets_manager_add(rm, data_test_json);
-  assets_manager_add(rm, data_abc_any);
+  assets_manager_add(rm, data_a_b_c_any);
 #ifdef WITH_VGCANVAS
   assets_manager_add(rm, image_pointer_4);
   assets_manager_add(rm, image_china);

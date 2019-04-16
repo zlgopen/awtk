@@ -30,10 +30,14 @@ BEGIN_C_DECLS
  * @class dialog_t
  * @parent widget_t
  * @annotation ["scriptable","design","widget","window"]
- * 对话框。
  *
- * 对话框是一种特殊的窗口，大小和位置可以自由设置。
- * AWTK中的对话框是模态的，也就是说用户不能操作对话框后面的窗口。
+ * 对话框。 对话框是一种特殊的窗口，大小和位置可以自由设置。
+ *
+ * AWTK中的对话框可以是模态的，也可以是非模态的。
+ *
+ *> 由于浏览器中无法实现主循环嵌套，因此无法实现模态对话框。
+ * 如果希望自己写的AWTK应用程序可以在浏览器(包括各种小程序)中运行或演示，
+ * 请避免使用模态对话框。
  *
  * 对话框通常由对话框标题和对话框客户区两部分组成：
  *
@@ -69,7 +73,7 @@ BEGIN_C_DECLS
  * </dialog>
  * ```
  *
- * 与窗口不同的是，打开对话框之后，还需要调用dialog\_modal。
+ * 打开非模态对话框时，其用法与普通窗口一样。打开非模态对话框时，还需要调用dialog\_modal。
  *
  * ```c
  *  widget_t* dlg = dialog_open(name);
@@ -77,43 +81,42 @@ BEGIN_C_DECLS
  *  ret = dialog_modal(dlg);
  * ```
  *
- * >
- * 更多用法请参考：[dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
- *
- * 在c代码中使用函数dialog\_create创建对话框。如：
+ * 关闭模态对话框用dialog\_quit
  *
  * ```c
- *   widget_t* ok = NULL;
- *   widget_t* cancel = NULL;
- *   widget_t* label = NULL;
+ * static ret_t on_dialog_btn_click(void* ctx, event_t* evt) {
+ *   widget_t* win = widget_get_window(WIDGET(evt->target));
+ *   int code = (char*)ctx - (char*)NULL;
  *
- *   widget_t* dlg = dialog_create_simple(NULL, 0, 0, 240, 160);
+ *   dialog_quit(win, code);
  *
- *   dialog_set_title(dlg, "Dialog");
- *
- *   ok = button_create(dialog_get_client(dlg), 20, 80, 80, 30);
- *   widget_set_text(ok, L"Go");
- *
- *   cancel = button_create(dialog_get_client(dlg), 140, 80, 80, 30);
- *   widget_set_text(cancel, L"Cancel");
- *
- *   label = label_create(dialog_get_client(dlg), 10, 30, 200, 30);
- *   widget_set_text(label, L"AWTK is cool!");
- *
- *   widget_on(ok, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 1);
- *   widget_on(cancel, EVT_CLICK, on_dialog_btn_click, (char*)NULL + 2);
- *
- *   code = dialog_modal(dlg);
- *
- *   log_debug("code=%d\n", code);
+ *    return RET_OK;
+ * }
  * ```
  *
- * > 创建之后，再创建子控件，最后调用dialog\_modal显示对话框。对话框关闭之后dialog\_modal才会返回。
+ * 关闭非模态对话框用window\_close。
  *
- * > 完整示例请参考：[dialog
- * demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)
+ * ```c
+ * static ret_t on_dialog_btn_click(void* ctx, event_t* evt) {
+ *   widget_t* win = widget_get_window(WIDGET(evt->target));
+ *   int code = (char*)ctx - (char*)NULL;
  *
- * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ *   window_close(win);
+ *
+ *   return RET_OK;
+ * }
+ * ```
+ *
+ * > 更多用法请参考：
+ * [dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/)
+ *
+ * > 完整C代码示例请参考：
+ *
+ * * [非模态对话框](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog.c)
+ *
+ * * [模态对话框](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/dialog_modal.c)
+ *
+ *可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
  * ```xml
  * <style name="default">
@@ -121,18 +124,27 @@ BEGIN_C_DECLS
  * </style>
  * ```
  *
- * > 更多用法请参考：[theme
- * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)
+ * > 更多用法请参考：
+ * [theme default]
+ * (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)
  *
  */
 typedef struct _dialog_t {
   window_base_t window;
 
+  /**
+   * @property {const char*} highlight
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 对话框高亮策略。
+   */
+  char* highlight;
+
   /*private*/
   widget_t* title;
   widget_t* client;
   uint32_t quit_code;
-
+  bool_t quited;
+  bool_t is_model;
 } dialog_t;
 
 /**
@@ -241,6 +253,28 @@ uint32_t dialog_modal(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_quit(widget_t* widget, uint32_t code);
+
+/**
+ * @method dialog_is_quited
+ * 检查对话框是否已经退出模态。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget dialog对象。
+ *
+ * @return {bool_t} 返回TRUE表示已经退出，否则表示没有。
+ */
+bool_t dialog_is_quited(widget_t* widget);
+
+/**
+ * @method dialog_is_modal
+ * 检查对话框是否为模态对话框。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget dialog对象。
+ *
+ * @return {bool_t} 返回TRUE表示是模态对话框，否则表示不是。
+ */
+bool_t dialog_is_modal(widget_t* widget);
 
 /**
  * @method dialog_toast

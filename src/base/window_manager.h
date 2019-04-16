@@ -24,8 +24,9 @@
 
 #include "base/widget.h"
 #include "base/canvas.h"
-#include "base/window_animator.h"
+#include "base/dialog_highlighter.h"
 #include "base/input_device_status.h"
+#include "base/window_animator_factory.h"
 
 BEGIN_C_DECLS
 
@@ -69,6 +70,8 @@ typedef struct _window_manager_t {
   input_device_status_t input_device_status;
   uint32_t screen_saver_timer_id;
   uint32_t screen_saver_time;
+
+  dialog_highlighter_t* dialog_highlighter;
 } window_manager_t;
 
 /**
@@ -250,6 +253,9 @@ ret_t window_manager_back(widget_t* widget);
 /**
  * @method window_manager_back_to_home
  * 回到主窗口，关闭之上的全部窗口。
+ *
+ *> 由于dialog通常需要用户确认，顶层窗口为dialog时调用会失败。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 窗口管理器对象。
  *
@@ -257,6 +263,8 @@ ret_t window_manager_back(widget_t* widget);
  */
 ret_t window_manager_back_to_home(widget_t* widget);
 
+ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
+ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter);
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 
 /*for compatible*/
@@ -264,6 +272,13 @@ ret_t window_manager_back_to_home(widget_t* widget);
 
 /*public for window*/
 ret_t window_manager_layout_children(widget_t* widget);
+
+/*public for window animator*/
+ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate);
+
+ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate);
 
 END_C_DECLS
 

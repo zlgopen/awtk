@@ -44,9 +44,11 @@ static ret_t rich_text_reset(widget_t* widget) {
 }
 
 static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
+  rich_text_render_node_t* iter = NULL;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  rich_text_render_node_t* iter = rich_text->render_node;
+  return_value_if_fail(widget != NULL && rich_text != NULL && c != NULL, RET_BAD_PARAMS);
 
+  iter = rich_text->render_node;
   while (iter != NULL) {
     rect_t* r = &(iter->rect);
     if (r->y > widget->h) {
@@ -106,6 +108,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 
 static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
   rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(widget != NULL && rich_text != NULL, RET_BAD_PARAMS);
 
   if (rich_text->render_node != NULL) {
     return RET_OK;
@@ -164,7 +167,7 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
 
 static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_t* v) {
   rich_text_t* rich_text = RICH_TEXT(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(rich_text != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return rich_text_set_text(widget, value_str(v));

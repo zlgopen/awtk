@@ -36,6 +36,11 @@
 #include "base/widget_pool.h"
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
+#include "base/window_animator_factory.h"
+#include "window_animators/window_animator_builtins.h"
+
+#include "base/dialog_highlighter_factory.h"
+#include "dialog_highlighters/dialog_highlighter_builtins.h"
 
 #ifdef WITH_SDL
 #include "clip_board/clip_board_sdl.h"
@@ -50,6 +55,10 @@
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"
 #endif /*WITH_STB_IMAGE*/
+
+#ifdef AWTK_WEB
+#include "image_loader_web.h"
+#endif /*AWTK_WEB*/
 
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
@@ -95,13 +104,15 @@ ret_t tk_init_internal(void) {
   image_loader = image_loader_stb();
 #endif /*WITH_STB_IMAGE*/
 
+#ifdef AWTK_WEB
+  image_loader = image_loader_web();
+#endif /*AWTK_WEB*/
+
 #ifdef WITH_TRUETYPE_FONT
   font_loader = font_loader_truetype();
 #elif defined(WITH_BITMAP_FONT)
   font_loader = font_loader_bitmap();
 #endif /*WITH_TRUETYPE_FONT*/
-
-  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
 
 #ifdef WITH_WIDGET_POOL
   return_value_if_fail(widget_pool_set(widget_pool_create(WITH_WIDGET_POOL)) == RET_OK, RET_FAIL);
@@ -116,19 +127,35 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
+                       RET_FAIL);
+  return_value_if_fail(
+      dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
 
+#ifdef WITH_WINDOW_ANIMATORS
+  window_animator_register_builtins();
+  dialog_highlighter_register_builtins();
+#endif /*WITH_WINDOW_ANIMATORS*/
+
   return RET_OK;
 }
 
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
+  main_loop_t* loop = NULL;
+  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   ENSURE(system_info_init(app_type, app_name, app_root) == RET_OK);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
-  return main_loop_init(w, h) != NULL ? RET_OK : RET_FAIL;
+  loop = main_loop_init(w, h);
+  return_value_if_fail(loop != NULL, RET_FAIL);
+
+  WINDOW_MANAGER(window_manager())->canvas = &((loop)->canvas);
+
+  return RET_OK;
 }
 
 ret_t tk_deinit_internal(void) {
@@ -137,6 +164,12 @@ ret_t tk_deinit_internal(void) {
 
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
+
+  window_animator_factory_destroy(window_animator_factory());
+  window_animator_factory_set(NULL);
+
+  dialog_highlighter_factory_destroy(dialog_highlighter_factory());
+  dialog_highlighter_factory_set(NULL);
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
@@ -178,7 +211,7 @@ ret_t tk_deinit_internal(void) {
   return RET_OK;
 }
 
-static ret_t tk_exit(void) {
+ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
 
   return tk_deinit_internal();

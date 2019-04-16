@@ -1,0 +1,9 @@
+<dialog anim_hint="popdown" highlight="default(alpha=40)"  
+  x="0" y="0" w="100%" h="160">
+  <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" />
+  <dialog_client x="0" y="bottom" w="100%" h="-30">
+    <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready?"/>
+    <button name="quit" x="10" y="bottom:10" w="40%" h="30" text="Yes"/>
+    <button name="quit" x="right:10" y="bottom:10" w="40%" h="30" text="No"/>
+  </dialog_client>
+</dialog>

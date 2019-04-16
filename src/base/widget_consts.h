@@ -60,6 +60,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_HIGHLIGHT
+ * dialog highlight。
+ */
+#define WIDGET_PROP_HIGHLIGHT "highlight"
+
+/**
  * @const WIDGET_PROP_BAR_SIZE
  * slider中的bar的的宽度或高度。
  */
@@ -424,6 +430,12 @@ BEGIN_C_DECLS
  * 资源管理器。
  */
 #define WIDGET_PROP_ASSETS_MANAGER "assets_manager"
+
+/**
+ * @const WIDGET_PROP_LOCALE_INFO
+ * locale_info。
+ */
+#define WIDGET_PROP_LOCALE_INFO "locale_info"
 
 /**
  * @const WIDGET_PROP_FONT_MANAGER

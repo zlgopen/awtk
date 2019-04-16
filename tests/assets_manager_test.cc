@@ -31,6 +31,7 @@ TEST(AssetsManager, file_image) {
 
   r = assets_manager_ref(rm, ASSET_TYPE_IMAGE, "earth");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(r->refcount, 1);
   ASSERT_EQ(assets_manager_unref(rm, r), RET_OK);
 
   assets_manager_destroy(rm);
@@ -42,7 +43,14 @@ TEST(AssetsManager, file_script) {
 
   r = assets_manager_ref(rm, ASSET_TYPE_SCRIPT, "dummy");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(r->refcount, 2);
+
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_SCRIPT, "dummy");
+  ASSERT_EQ(r != NULL, true);
+
   ASSERT_EQ(assets_manager_unref(rm, r), RET_OK);
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_SCRIPT, "dummy");
+  ASSERT_EQ(r->refcount, 1);
 
   assets_manager_destroy(rm);
 }
@@ -104,12 +112,14 @@ TEST(AssetsManager, json) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager();
 #ifdef WITH_FS_RES
-  r = assets_manager_ref(rm, ASSET_TYPE_DATA, "app.json");
+  r = assets_manager_ref(rm, ASSET_TYPE_DATA, "com.zlg.app.json");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(strncmp((const char*)(r->data), "{}\n", 3), 0);
   assets_manager_unref(rm, r);
 #else
-  r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "app.json");
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "com.zlg.app.json");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(strncmp((const char*)(r->data), "{}\n", 3), 0);
 #endif /*WITH_FS_RES*/
 }
 
@@ -130,11 +140,13 @@ TEST(AssetsManager, any) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager();
 #ifdef WITH_FS_RES
-  r = assets_manager_ref(rm, ASSET_TYPE_DATA, "abc.any");
+  r = assets_manager_ref(rm, ASSET_TYPE_DATA, "a-b-c.any");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(strncmp((const char*)(r->data), "abc\n", 4), 0);
   assets_manager_unref(rm, r);
 #else
-  r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "abc.any");
+  r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "a-b-c.any");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(strncmp((const char*)(r->data), "abc\n", 4), 0);
 #endif /*WITH_FS_RES*/
 }

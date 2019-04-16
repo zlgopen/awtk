@@ -1,0 +1,4 @@
+<window style="sky" anim_hint="slide_down(start_alpha=0, end_alpha=200)"
+  fullscreen="true"> 
+  <button name="close" text="Close" x="c" y="m" w="80" h="30"/>
+</window>

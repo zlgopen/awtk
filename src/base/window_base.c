@@ -48,6 +48,7 @@ ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
 
 static ret_t window_base_load_theme_obj(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
 
   const char* theme_name = widget->name;
 
@@ -56,7 +57,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (theme_name != NULL) {
-    window_base->res_theme = assets_manager_ref(assets_manager(), ASSET_TYPE_STYLE, theme_name);
+    window_base->res_theme = assets_manager_ref(am, ASSET_TYPE_STYLE, theme_name);
   }
 
   if (window_base->res_theme != NULL) {
@@ -90,6 +91,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
     value_set_pointer(v, (void*)(image_manager()));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
+    value_set_pointer(v, (void*)(locale_info()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
     value_set_pointer(v, (void*)(font_manager()));
@@ -142,6 +146,7 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
 
 ret_t window_base_on_destroy(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL && window_base != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(window_base->theme);
   TKMEM_FREE(window_base->open_anim_hint);
@@ -152,7 +157,8 @@ ret_t window_base_on_destroy(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    assets_manager_unref(assets_manager(), window_base->res_theme);
+    assets_manager_t* am = widget_get_assets_manager(widget);
+    assets_manager_unref(am, window_base->res_theme);
   }
 
   return RET_OK;
@@ -160,6 +166,7 @@ ret_t window_base_on_destroy(widget_t* widget) {
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
   window_base_t* win = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
 
   if (e->type == EVT_WINDOW_WILL_OPEN) {
     win->stage = WINDOW_STAGE_CREATED;

@@ -34,6 +34,11 @@ BEGIN_C_DECLS
  */
 typedef enum _event_base_type_t {
   /**
+   * @const EVT_NONE
+   * 无效事件名称。
+   */
+  EVT_NONE = 0,
+  /**
    * @const EVT_PROP_WILL_CHANGE
    * 对象的属性即将改变的事件名(prop_change_event_t)。
    */

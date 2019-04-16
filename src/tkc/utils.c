@@ -477,7 +477,7 @@ ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t
   tk_strncpy(str, name, size - 1);
 
   if (remove_extname) {
-    p = strchr(str, '.');
+    p = strrchr(str, '.');
     if (p != NULL) {
       *p = '\0';
     }
@@ -716,4 +716,12 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
   out[i] = '\0';
 
   return out;
+}
+
+int32_t tk_pointer_to_int(void* p) {
+  return (char*)p - (char*)(NULL);
+}
+
+void* tk_pointer_from_int(int32_t v) {
+  return ((char*)NULL) + v;
 }

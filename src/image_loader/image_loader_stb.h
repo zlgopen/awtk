@@ -1,5 +1,5 @@
 ﻿/**
- * File:   stb.h
+ * File:   image_loader_stb.h
  * Author: AWTK Develop Team
  * Brief:  stb image loader
  *

@@ -215,9 +215,22 @@ typedef enum _app_type_t {
 #define WITH_VGCANVAS 1
 #endif /*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
 
+#ifndef TK_DEFAULT_FONT
+#ifdef WITH_MINI_FONT
+#define TK_DEFAULT_FONT "default_mini"
+#else
 #define TK_DEFAULT_FONT "default"
+#endif /*WITH_MINI_FONT*/
+#endif /*TK_DEFAULT_FONT*/
+
+#ifndef TK_DEFAULT_FONT_SIZE
 #define TK_DEFAULT_FONT_SIZE 18
+#endif /*TK_DEFAULT_FONT_SIZE*/
+
+#ifndef TK_MAX_FPS
 #define TK_MAX_FPS 100
+#endif /*TK_MAX_FPS*/
+
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x02
 
@@ -242,9 +255,9 @@ typedef struct _widget_vtable_t widget_vtable_t;
 
 #define TK_LONG_PRESS_TIME 1000
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) || defined(LINUX)
 #define WITH_WIDGET_TYPE_CHECK 1
-#endif /*WITH_SDL*/
+#endif /*WITH_SDL || defined(LINUX)*/
 
 #ifdef WITH_WIDGET_TYPE_CHECK
 #define TK_REF_VTABLE(vt) &(g_##vt##_vtable)
@@ -257,5 +270,9 @@ typedef struct _widget_vtable_t widget_vtable_t;
 #define TK_DECL_VTABLE(vt) static const widget_vtable_t s_##vt##_vtable
 #define TK_EXTERN_VTABLE(vt)
 #endif /*WITH_WIDGET_TYPE_CHECK*/
+
+#ifdef WITH_VGCANVAS
+#define WITH_WINDOW_ANIMATORS 1
+#endif /*WITH_VGCANVAS*/
 
 #endif /*TK_TYPES_DEF_H*/
