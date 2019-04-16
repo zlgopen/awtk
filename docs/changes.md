@@ -1,4 +1,13 @@
 # 最新动态
+* 2019/04/16
+  * window manager支持paint事件。
+
+* 2019/04/15
+  * 去掉widget\_is\_window\_opened中的警告。
+
+* 2019/04/14
+  * 为AWTK-WEB移植做了些修改。
+
 * 2019/04/13
   * 增加cppcheck和infer静态检查。
   * 修改cppcheck和infer发现的警告。
