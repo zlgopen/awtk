@@ -1,7 +1,7 @@
 /**
  * File:   soft_g2d.c
  * Author: AWTK Develop Team
- * Brief:  soft g2d
+ * Brief:  software implemented image operations
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -44,6 +44,9 @@
 #include "fill_image_bgra8888.h"
 #include "fill_image_rgb565.h"
 #include "fill_image_rgba8888.h"
+#include "fill_image_argb8888.h"
+#include "fill_image_abgr8888.h"
+
 #include "rotate_image_bgr565.h"
 #include "rotate_image_bgr888.h"
 #include "rotate_image_bgra8888.h"
@@ -81,6 +84,40 @@ ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t
   return RET_OK;
 }
 
+ret_t soft_clear_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
+  return_value_if_fail(dst != NULL && dst_r != NULL, RET_BAD_PARAMS);
+
+  switch (dst->format) {
+    case BITMAP_FMT_RGB565: {
+      return clear_rgb565_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_BGR565: {
+      return clear_bgr565_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_BGR888: {
+      return clear_bgr888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_BGRA8888: {
+      return clear_bgra8888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_ARGB8888: {
+      return clear_argb8888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_RGBA8888: {
+      return clear_rgba8888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_ABGR8888: {
+      return clear_abgr8888_rect(dst, dst_r, c);
+    }
+    default:
+      break;
+  }
+
+  assert(!"not supported format");
+
+  return RET_NOT_IMPL;
+}
+
 ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
   return_value_if_fail(dst != NULL && dst_r != NULL, RET_BAD_PARAMS);
 
@@ -97,8 +134,14 @@ ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_BGRA8888: {
       return fill_bgra8888_rect(dst, dst_r, c);
     }
+    case BITMAP_FMT_ARGB8888: {
+      return fill_argb8888_rect(dst, dst_r, c);
+    }
     case BITMAP_FMT_RGBA8888: {
       return fill_rgba8888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_ABGR8888: {
+      return fill_abgr8888_rect(dst, dst_r, c);
     }
     default:
       break;

@@ -36,6 +36,24 @@
 #define pixel_from_rgb pixel_dst_from_rgb
 #define pixel_to_rgba pixel_dst_to_rgba
 
+static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t alpha) {
+  uint32_t color = *(uint32_t*)src;
+  uint8_t sa = color >> 24;
+  uint8_t sr = color >> 16;
+  uint8_t sg = color >> 8;
+  uint8_t sb = color & 0xff;
+  uint8_t a = alpha > 0xf8 ? sa : ((sa * alpha) >> 8);
+
+  if (a > 0xf8) {
+    *(uint16_t*)dst = ((sr >> 3) << 11) | ((sg >> 2) << 5) | (sb >> 3);
+  } else if (a > 8) {
+    rgba_t rgba = {.a = a, .r = sr, .g = sg, .b = sb};
+    pixel_bgr565_blend_rgba(dst, rgba);
+  }
+}
+
+#define blend_a blend_a_bgr565_bgra8888
+
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 

@@ -127,8 +127,8 @@ ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration
 
 bool_t widget_is_window_opened(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
-  
-  if(win != NULL) {
+
+  if (win != NULL) {
     return WINDOW_STAGE_OPENED == widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   } else {
     return FALSE;

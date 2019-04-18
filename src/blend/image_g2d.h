@@ -28,6 +28,7 @@
 BEGIN_C_DECLS
 
 ret_t image_fill(bitmap_t* dst, rect_t* dst_r, color_t c);
+ret_t image_clear(bitmap_t* dst, rect_t* dst_r, color_t c);
 ret_t image_copy(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy);
 ret_t image_rotate(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o);
 ret_t image_blend(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t global_alpha);

@@ -17,13 +17,13 @@ static void test_blend_image(uint32_t stride, bitmap_format_t bgfmt, bitmap_form
   color_t c = color_init(0x40, 0x60, 0x80, 0xff);
   color_t c_clear = color_init(0x0, 0x0, 0x0, 0xff);
 
-  ASSERT_EQ(image_fill(fg, &r, c), RET_OK);
+  ASSERT_EQ(image_clear(fg, &r, c), RET_OK);
   ASSERT_EQ(image_blend(bg, fg, &r, &r, 0xff), RET_OK);
 
   bitmap_dump(bg);
   bitmap_check(bg, &r, c.rgba);
 
-  ASSERT_EQ(image_fill(bg, &r_all, c_clear), RET_OK);
+  ASSERT_EQ(image_clear(bg, &r_all, c_clear), RET_OK);
   bitmap_dump(bg);
 
   ASSERT_EQ(image_blend(bg, fg, &r_all, &r, 0xff), RET_OK);
