@@ -816,6 +816,8 @@ static ret_t window_manager_on_destroy(widget_t* widget) {
 }
 
 static const widget_vtable_t s_window_manager_vtable = {
+    .size = sizeof(window_manager_t),
+    .is_window_manager = TRUE,
     .type = WIDGET_TYPE_WINDOW_MANAGER,
     .set_prop = window_manager_set_prop,
     .get_prop = window_manager_get_prop,

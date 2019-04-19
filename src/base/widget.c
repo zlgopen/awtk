@@ -1488,8 +1488,12 @@ widget_t* widget_get_window(widget_t* widget) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL, NULL);
 
+  if (widget_is_designing_window(widget) && !widget_is_window_manager(iter->parent)) {
+    iter = iter->parent;
+  }
+
   while (iter) {
-    if (iter->vt->is_window) {
+    if (widget_is_window(iter)) {
       return iter;
     }
     iter = iter->parent;
@@ -1503,8 +1507,7 @@ widget_t* widget_get_window_manager(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    const char* type = widget_get_type(iter);
-    if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    if (widget_is_window_manager(iter)) {
       return iter;
     }
     iter = iter->parent;
@@ -2220,4 +2223,22 @@ ret_t widget_focus_prev(widget_t* widget) {
 
 ret_t widget_focus_next(widget_t* widget) {
   return widget_move_focus(widget, TRUE);
+}
+
+bool_t widget_is_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window;
+}
+
+bool_t widget_is_designing_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_designing_window;
+}
+
+bool_t widget_is_window_manager(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window_manager;
 }

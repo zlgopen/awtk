@@ -85,6 +85,9 @@
 | <a href="#widget_t_widget_insert_child">widget\_insert\_child</a> | 插入子控件到指定的位置。 |
 | <a href="#widget_t_widget_invalidate">widget\_invalidate</a> | 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。 |
 | <a href="#widget_t_widget_invalidate_force">widget\_invalidate\_force</a> | 请求强制重绘控件。 |
+| <a href="#widget_t_widget_is_designing_window">widget\_is\_designing\_window</a> | 判断当前控件是否是设计窗口。 |
+| <a href="#widget_t_widget_is_window">widget\_is\_window</a> | 判断当前控件是否是窗口。 |
+| <a href="#widget_t_widget_is_window_manager">widget\_is\_window\_manager</a> | 判断当前控件是否是窗口管理器。 |
 | <a href="#widget_t_widget_is_window_opened">widget\_is\_window\_opened</a> | 判断当前控件所在的窗口是否已经打开。 |
 | <a href="#widget_t_widget_layout">widget\_layout</a> | 布局当前控件及子控件。 |
 | <a href="#widget_t_widget_layout_children">widget\_layout\_children</a> | layout子控件。 |
@@ -991,6 +994,72 @@ ret_t widget_invalidate_force (widget_t* widget, rect_t* r);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | r | rect\_t* | 矩形对象(widget本地坐标)。 |
+#### widget\_is\_designing\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_designing_window"> 判断当前控件是否是设计窗口。
+
+
+
+
+* 函数原型：
+
+```
+bool_t widget_is_designing_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回当前控件是否是设计窗口。 |
+| widget | widget\_t* | 控件对象。 |
+#### widget\_is\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_window"> 判断当前控件是否是窗口。
+
+
+
+
+* 函数原型：
+
+```
+bool_t widget_is_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回当前控件是否是窗口。 |
+| widget | widget\_t* | 控件对象。 |
+#### widget\_is\_window\_manager 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_window_manager"> 判断当前控件是否是窗口管理器。
+
+
+
+
+* 函数原型：
+
+```
+bool_t widget_is_window_manager (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回当前控件是否是窗口管理器。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_is\_window\_opened 函数
 -----------------------
 

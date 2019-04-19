@@ -4,6 +4,7 @@
   * 优化scale窗口动画。
   * 完善default self layouter，right/center/bottom/middle支持百分比。
   * 内置对话框启用缺省高亮策略。
+  * 完善widget\_get\_window，支持designing window。
 
 * 2019/04/18
   * 增强scrollview的扩展性(感谢朝泽提供补丁) 

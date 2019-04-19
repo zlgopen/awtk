@@ -95,6 +95,10 @@ struct _widget_vtable_t {
    */
   uint32_t is_window : 1;
   /**
+   * 是否是窗口管理。
+   */
+  uint32_t is_window_manager : 1;
+  /**
    * 是否是设计窗口。
    */
   uint32_t is_designing_window : 1;
@@ -1249,6 +1253,36 @@ bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval);
  * @return {bool_t} 返回当前控件所在的窗口是否已经打开。
  */
 bool_t widget_is_window_opened(widget_t* widget);
+
+/**
+ * @method widget_is_window
+ * 判断当前控件是否是窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回当前控件是否是窗口。
+ */
+bool_t widget_is_window(widget_t* widget);
+
+/**
+ * @method widget_is_designing_window
+ * 判断当前控件是否是设计窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回当前控件是否是设计窗口。
+ */
+bool_t widget_is_designing_window(widget_t* widget);
+
+/**
+ * @method widget_is_window_manager
+ * 判断当前控件是否是窗口管理器。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回当前控件是否是窗口管理器。
+ */
+bool_t widget_is_window_manager(widget_t* widget);
 
 /**
  * @method widget_grab

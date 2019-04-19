@@ -12015,6 +12015,60 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 判断当前控件是否是窗口。\n\n\n",
+        "name": "widget_is_window",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回当前控件是否是窗口。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 判断当前控件是否是设计窗口。\n\n\n",
+        "name": "widget_is_designing_window",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回当前控件是否是设计窗口。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 判断当前控件是否是窗口管理器。\n\n\n",
+        "name": "widget_is_window_manager",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回当前控件是否是窗口管理器。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           },
           {
             "type": "widget_t*",
