@@ -312,6 +312,7 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   w = tk_max(label->w, 128) + 20;
   dialog = dialog_create_simple(NULL, 0, 0, w, h);
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, theme);
+  widget_set_prop_str(dialog, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
 
   client = dialog_get_client(dialog);
   title = dialog_get_title(dialog);
@@ -365,6 +366,7 @@ ret_t dialog_confirm(const char* text) {
   w = tk_max(label->w, 128) + 20;
   dialog = dialog_create_simple(NULL, 0, 0, w, h);
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_confirm");
+  widget_set_prop_str(dialog, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
 
   client = dialog_get_client(dialog);
   title = dialog_get_title(dialog);
