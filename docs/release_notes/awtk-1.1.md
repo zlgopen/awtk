@@ -1,5 +1,5 @@
 
-## AWTK 1.1 Release Notes
+## ZLG AWTK 1.1 Release Notes
 
 ### 一、介绍
 
@@ -42,8 +42,11 @@ ATWTK通过一系列的手段保证AWTK应用程序高效运行：
 * UI描述文件和主题文件使用高效的二进制格式，解析在瞬间完成。
 * 支持各种GPU加速接口。如OpenGL、DirectX、Vulman和Metal等。
 * 支持嵌入式平台的各种2D加速接口。目前STM32的DMA2D和NXP的PXP接口，厂家可以轻松扩展自己的加速接口。
-3.稳定
+
+#### 3.稳定
+
 AWTK通过下列方式极力让代码稳定可靠：
+
 * 使用cppcheck和facebook infer进行静态检查。
 * 使用valgrind进行动态内存检查。
 * 近两万行的单元测试代码。
@@ -55,6 +58,7 @@ AWTK通过下列方式极力让代码稳定可靠：
 * 手工测试。
 
 #### 4.强大
+
 * 丰富的控件(持续增加中)。
 * 支持各种图片格式(png/jpg/gif/svg)。
 * 支持各种字体格式(点阵和矢量)。
@@ -66,6 +70,9 @@ AWTK通过下列方式极力让代码稳定可靠：
 * 支持控件布局策略。
 * 支持对话框高亮策略。
 * 丰富的辅助工具。
+* 支持从低端的Cortex M3到各种高端CPU。
+* 支持无文件系统和自定义的文件系统。
+* 支持裸系统和RTOS。
 
 #### 5.易用
 
@@ -87,9 +94,7 @@ AWTK通过下列方式极力让代码稳定可靠：
 * 可以实现自己的LCD接口。
 * 可以扩展自己的矢量引擎(如使用skia/cairo)。
 * 所有扩展组件和内置组件具有相同的待遇。
-* 支持从低端的Cortex M3到各种高端CPU。
-* 支持无文件系统和自定义的文件系统。
-* 支持裸系统和RTOS。
+
 
 #### 7.多种开发语言
 
@@ -126,6 +131,8 @@ AWTK本身是用C语言开发的，可以通过IDL生成各种脚本语言的绑
 * 绘制半透明色矩形速度提高3倍。
 * 缩放不透明图片快1倍(bgr565格式LCD)。
 * 缩放半透明图片快30%(bgr565格式LCD)。
+
+
 #### 3.新增特性
 
 * 窗口动画支持自定义。
@@ -146,14 +153,15 @@ AWTK本身是用C语言开发的，可以通过IDL生成各种脚本语言的绑
 * UI XML文件支持简单表达式。
 
 #### 4.新增控件
+
 * 增加mutable image，用于实现camera和video时显示图像。
 
 #### 5.新增重要API
 
-* window_manager_back 返回上一级窗口。
-* window_manager_back_to_home 返回主窗口。
-* window_close_force 强制关闭窗口(忽略动画)。
-* ui_loader_load_widget 用于加载局部组件。
+* window\_manager\_back 返回上一级窗口。
+* window\_manager\_back\_to\_home 返回主窗口。
+* window\_close\_force 强制关闭窗口(忽略动画)。
+* ui\_loader\_load\_widget 用于加载局部组件。
 
 #### 6.Bug修改和完善功能
 
@@ -163,8 +171,8 @@ AWTK本身是用C语言开发的，可以通过IDL生成各种脚本语言的绑
 
 下一个版本计划推出下列功能：
 
-* AWTK-WEB。
-* AWTK-MVVM。
+* AWTK-WEB 让AWTK应用程序在浏览器中运行。
+* AWTK-MVVM 为嵌入式系统定制的MVVM框架。
 * 抽象音频接口。
 * 桌面版本支持多原生窗口。
 * 在sylixos和linux上支持多进程。
