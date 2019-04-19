@@ -63,16 +63,19 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
       srcp += src_line_offset;
     }
   } else {
-    float_t scale_x = (float_t)sw / (float_t)dw;
-    float_t scale_y = (float_t)sh / (float_t)dh;
+    uint32_t right = dw - 1;
+    uint32_t bottom = dh - 1;
+
+    uint32_t scale_x = (sw << 8) / dw;
+    uint32_t scale_y = (sh << 8) / dh;
 
     dstp += (dy * dst_line_length + dx * dst_bpp);
     for (j = 0; j < dh; j++) {
-      uint32_t y = sy + (j * scale_y);
-      uint8_t* row_data = ((uint8_t*)(src->data)) + y * src_line_length;
+      uint32_t y = sy + ((j == bottom) ? (sh - 1) : ((j * scale_y) >> 8));
+      uint8_t* row_data = ((uint8_t*)(src->data)) + y * src_line_length + sx * src_bpp;
 
       for (i = 0; i < dw; i++) {
-        uint32_t x = sx + (i * scale_x);
+        uint32_t x = (i == right) ? (sw - 1) : ((i * scale_x) >> 8);
 
         srcp = row_data + x * src_bpp;
         blend_a(dstp, srcp, a);
