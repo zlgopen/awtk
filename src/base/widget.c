@@ -1488,10 +1488,6 @@ widget_t* widget_get_window(widget_t* widget) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL, NULL);
 
-  if (widget_is_designing_window(widget) && !widget_is_window_manager(iter->parent)) {
-    iter = iter->parent;
-  }
-
   while (iter) {
     if (widget_is_window(iter)) {
       return iter;
