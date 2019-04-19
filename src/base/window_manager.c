@@ -556,6 +556,7 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
 }
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   rect_t* dr = &(wm->dirty_rect);
 
@@ -572,8 +573,15 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
     if (r.w > 0 && r.h > 0) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
+
+      widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
+
       ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
       window_manager_paint_cursor(widget, c);
+
+      widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
+      widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
+
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
       wm->last_dirty_rect = wm->dirty_rect;
@@ -590,10 +598,21 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
   uint32_t start_time = time_now_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
+  ENSURE(window_animator_begin_frame(wm->animator) == RET_OK);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
+
   ret_t ret = window_animator_update(wm->animator, start_time);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
+  widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
+
+  ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
+
   wm->last_paint_cost = time_now_ms() - start_time;
   window_manager_inc_fps(widget);
 
@@ -652,7 +671,6 @@ static ret_t window_manager_update_fps(widget_t* widget) {
 }
 
 ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
-  paint_event_t e;
   ret_t ret = RET_OK;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
@@ -661,14 +679,11 @@ ret_t window_manager_paint(widget_t* widget, canvas_t* c) {
   canvas_set_global_alpha(c, 0xff);
   window_manager_update_fps(widget);
 
-  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
   if (wm->animator != NULL) {
     ret = window_manager_paint_animation(widget, c);
   } else {
     ret = window_manager_paint_normal(widget, c);
   }
-  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
-  widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
 
   return ret;
 }

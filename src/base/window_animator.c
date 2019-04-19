@@ -28,8 +28,6 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa);
 static ret_t window_animator_update_percent(window_animator_t* wa);
 static ret_t window_animator_draw_prev_window(window_animator_t* wa);
 static ret_t window_animator_draw_curr_window(window_animator_t* wa);
-static ret_t window_animator_begin_frame_normal(window_animator_t* wa);
-static ret_t window_animator_begin_frame_overlap(window_animator_t* wa);
 
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
@@ -64,22 +62,6 @@ static bool_t window_animator_is_overlap(window_animator_t* wa) {
   return wa->vt->overlap;
 }
 
-static ret_t window_animator_begin_frame(window_animator_t* wa) {
-  return_value_if_fail(wa != NULL, RET_OK);
-
-  if (window_animator_is_overlap(wa)) {
-    return window_animator_begin_frame_overlap(wa);
-  } else {
-    return window_animator_begin_frame_normal(wa);
-  }
-}
-
-static ret_t window_animator_end_frame(window_animator_t* wa) {
-  canvas_end_frame(wa->canvas);
-
-  return RET_OK;
-}
-
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
   return_value_if_fail(wa != NULL, RET_FAIL);
 
@@ -93,10 +75,8 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
   }
 
   ENSURE(window_animator_update_percent(wa) == RET_OK);
-  ENSURE(window_animator_begin_frame(wa) == RET_OK);
   ENSURE(window_animator_draw_prev_window(wa) == RET_OK);
   ENSURE(window_animator_draw_curr_window(wa) == RET_OK);
-  ENSURE(window_animator_end_frame(wa) == RET_OK);
 
   return wa->time_percent >= 1 ? RET_DONE : RET_OK;
 }
@@ -255,3 +235,20 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
 
   return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
 }
+
+ret_t window_animator_begin_frame(window_animator_t* wa) {
+  return_value_if_fail(wa != NULL, RET_OK);
+
+  if (window_animator_is_overlap(wa)) {
+    return window_animator_begin_frame_overlap(wa);
+  } else {
+    return window_animator_begin_frame_normal(wa);
+  }
+}
+
+ret_t window_animator_end_frame(window_animator_t* wa) {
+  canvas_end_frame(wa->canvas);
+
+  return RET_OK;
+}
+
