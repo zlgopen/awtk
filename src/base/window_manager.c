@@ -580,7 +580,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       window_manager_paint_cursor(widget, c);
 
       widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
-      widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
 
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
@@ -609,7 +608,6 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   ret_t ret = window_animator_update(wm->animator, start_time);
 
   widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
-  widget_dispatch(widget, paint_event_init(&e, EVT_PAINT_DONE, widget, c));
 
   ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
 
