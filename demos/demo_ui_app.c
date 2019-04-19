@@ -611,6 +611,14 @@ static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t wm_on_before_paint(void* ctx, event_t* e) {
+  return RET_OK;
+}
+
+static ret_t wm_on_after_paint(void* ctx, event_t* e) {
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* wm = window_manager();
 
@@ -621,6 +629,8 @@ ret_t application_init() {
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
+  widget_on(wm, EVT_BEFORE_PAINT, wm_on_before_paint, wm);
+  widget_on(wm, EVT_AFTER_PAINT, wm_on_after_paint, wm);
 
   return show_preload_res_window();
 }

@@ -251,4 +251,3 @@ ret_t window_animator_end_frame(window_animator_t* wa) {
 
   return RET_OK;
 }
-

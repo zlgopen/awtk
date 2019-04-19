@@ -573,14 +573,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
     if (r.w > 0 && r.h > 0) {
       ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_NORMAL) == RET_OK);
-
-      widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
-
       ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
       window_manager_paint_cursor(widget, c);
-
-      widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
-
       ENSURE(canvas_end_frame(c) == RET_OK);
       wm->last_paint_cost = time_now_ms() - start_time;
       wm->last_dirty_rect = wm->dirty_rect;
