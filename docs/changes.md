@@ -1,4 +1,9 @@
 # 最新动态
+* 2019/04/19
+  * 完善scale算法。
+  * 优化scale窗口动画。
+  * 完善default self layouter，right/center/bottom/middle支持百分比。
+
 * 2019/04/18
   * 增强scrollview的扩展性(感谢朝泽提供补丁) 
   * 优化软件渲染(bgr565缩放半透明图片快30%，缩放不透明图片快一倍)。
