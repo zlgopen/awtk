@@ -6794,6 +6794,22 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "资源名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\n 从指定的资源加载widget对象，通常用于加载非窗口的widget。\n\n>需要自己将widget加入窗口后，再调用widget\\_layout。\n\n\n\n\n",
+        "name": "ui_loader_load_widget",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回widget对象。"
+        }
       }
     ],
     "events": [],
