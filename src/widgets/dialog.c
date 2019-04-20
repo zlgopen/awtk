@@ -161,7 +161,7 @@ uint32_t dialog_modal(widget_t* widget) {
   idle_add(dialog_idle_close, widget);
 
   return dialog->quit_code;
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 }
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
@@ -175,7 +175,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog->quited = TRUE;
   dialog->quit_code = code;
   main_loop_quit(main_loop());
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 
   return RET_OK;
 }
