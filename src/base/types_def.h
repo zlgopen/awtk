@@ -255,7 +255,7 @@ typedef struct _widget_vtable_t widget_vtable_t;
 
 #define TK_LONG_PRESS_TIME 1000
 
-#if defined(WITH_SDL) || defined(LINUX)
+#if defined(WITH_SDL) || defined(LINUX) || defined(AWTK_WEB)
 #define WITH_WIDGET_TYPE_CHECK 1
 #endif /*WITH_SDL || defined(LINUX)*/
 

@@ -140,6 +140,10 @@ static ret_t dialog_idle_close(const idle_info_t* info) {
 }
 
 uint32_t dialog_modal(widget_t* widget) {
+#ifdef AWTK_WEB
+  log_debug("awtk web not support dialog_modal\n");
+  return 0;
+#else
   bool_t running = FALSE;
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
@@ -157,15 +161,21 @@ uint32_t dialog_modal(widget_t* widget) {
   idle_add(dialog_idle_close, widget);
 
   return dialog->quit_code;
+#endif/*AWTK_WEB*/
 }
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
+#ifdef AWTK_WEB
+  log_debug("awtk web not support dialog_modal\n");
+  dialog_close(widget);
+#else
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
 
   dialog->quited = TRUE;
   dialog->quit_code = code;
   main_loop_quit(main_loop());
+#endif/*AWTK_WEB*/
 
   return RET_OK;
 }
