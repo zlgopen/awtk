@@ -106,6 +106,13 @@ typedef struct _im_commit_event_t {
    * 提交的文本。
    */
   const char* text;
+
+  /**
+   * @property {bool_t} replace;
+   * @annotation ["readable"]
+   * 是否替换原来的文本。
+   */
+  bool_t replace;
 } im_commit_event_t;
 
 /**
@@ -327,6 +334,17 @@ ret_t input_method_dispatch_action(input_method_t* im);
 ret_t input_method_commit_text(input_method_t* im, const char* text);
 
 /**
+ * @method input_method_commit_text_ex
+ * 提交输入文本。
+ * @param {input_method_t*} im 输入法对象。
+ * @param {bool_t} replace 是否替换原来的文本。
+ * @param {char*} text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_method_commit_text_ex(input_method_t* im, bool_t replace, const char* text);
+
+/**
  * @method input_method_dispatch_key
  * 提交按键。
  * @param {input_method_t*} im 输入法对象。
@@ -380,6 +398,8 @@ input_method_t* input_method(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_method_set(input_method_t* im);
+
+event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t replace);
 
 END_C_DECLS
 

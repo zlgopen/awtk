@@ -728,6 +728,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
+      if (evt->replace) {
+        edit_clear(edit);
+      }
       edit_commit_str(widget, evt->text);
       widget_invalidate(widget, NULL);
 
