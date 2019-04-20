@@ -3,12 +3,17 @@
 
 ### 一、介绍
 
-AWTK是ZLG开放源码的GUI引擎，旨在为嵌入式系统、WEB、各种小程序、手机和PC打造的通用GUI系统。其寓意有两个方面：
+AWTK全称Toolkit AnyWhere，是[ZLG](http://www.zlg.cn/)开发的开源GUI引擎，旨在为嵌入式系统、WEB、各种小程序、手机和PC打造的通用GUI引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的GUI引擎。
+
+AWTK寓意有两个方面：
 
 * Toolkit AnyWhere。 
 * ZLG物联网操作系统AWorks内置GUI。
 
-> ZLG AWTK源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
+AWTK源码仓库：
+
+* 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
+* 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
 
 ### 二、最终目标：
 * 支持开发嵌入式应用程序。
@@ -83,9 +88,11 @@ AWTK通过下列方式极力让代码稳定可靠：
 * 声明式的界面描述语言。一行代码启用控件动画，启用窗口动画，显示图片(png/jpg/svg/gif)。
 
 #### 6.高度扩展性
+
 * 可以扩展自己的控件。
 * 可以扩展自己的动画。
 * 可以实现自己的主循环。
+* 可以扩展自己的软键盘。
 * 可以扩展自己的图片加载器。
 * 可以扩展自己的字体加载器。
 * 可以扩展自己的输入法引擎。
@@ -100,7 +107,7 @@ AWTK通过下列方式极力让代码稳定可靠：
 
 AWTK本身是用C语言开发的，可以通过IDL生成各种脚本语言的绑定。生成的绑定代码不是简单的把C语言的API映射到脚本语言，而是生成脚本语言原生代码风格的API。目前支持以下语言(以后根据需要增加)：
 
-* C/C++
+* C
 * Lua
 * Javascript on jerryscript
 * Javascript on nodejs
@@ -151,6 +158,7 @@ AWTK本身是用C语言开发的，可以通过IDL生成各种脚本语言的绑
 * data资源支持同文件名不同扩展名。
 * window manager支持paint事件。
 * UI XML文件支持简单表达式。
+* 改进编译脚本和资源生成脚本。
 
 #### 4.新增控件
 
