@@ -1384,6 +1384,26 @@ ret_t canvas_set_text_color_str(canvas_t* c, const char* color) {
   return canvas_set_text_color(c, color_parse(color));
 }
 
+ret_t canvas_save(canvas_t* c) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+#if defined(AWTK_WEB)
+  vgcanvas_save(lcd_get_vgcanvas(c->lcd));
+#endif /*AWTK_WEB*/
+
+  return RET_OK;
+}
+
+ret_t canvas_restore(canvas_t* c) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+#if defined(AWTK_WEB)
+  vgcanvas_restore(lcd_get_vgcanvas(c->lcd));
+#endif /*AWTK_WEB*/
+
+  return RET_OK;
+}
+
 canvas_t* canvas_cast(canvas_t* c) {
   return c;
 }

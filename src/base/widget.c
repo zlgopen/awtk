@@ -946,14 +946,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     widget_layout_children(widget);
   }
 
-#if defined(AWTK_WEB)
-  vgcanvas_t* vg = canvas_get_vgcanvas(c);
-  vgcanvas_save(vg);
-#endif /*AWTK_WEB*/
+  canvas_save(c);
   widget_paint_impl(widget, c);
-#if defined(AWTK_WEB)
-  vgcanvas_restore(vg);
-#endif /*AWTK_WEB*/
+  canvas_restore(c);
+
   widget->dirty = FALSE;
 
   return RET_OK;
