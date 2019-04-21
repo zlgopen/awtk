@@ -26,6 +26,7 @@
 #include "base/image_manager.h"
 
 static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
+  rect_t dst;
   bitmap_t bitmap;
   image_t* image = IMAGE(widget);
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
@@ -50,10 +51,8 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
     }
   }
 
-  if (bitmap.data != NULL) {
-    rect_t dst = rect_init(0, 0, widget->w, widget->h);
-    canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
-  }
+  dst = rect_init(0, 0, widget->w, widget->h);
+  canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
 
   widget_paint_helper(widget, c, NULL, NULL);
 
