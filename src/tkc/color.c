@@ -69,7 +69,7 @@ const char* color_hex_str(color_t c, char str[TK_COLOR_HEX_LEN + 1]) {
 }
 
 const char* color_rgba_str(color_t c, char str[TK_COLOR_RGBA_LEN + 1]) {
-  float a = c.rgba.a / 0xff;
+  float a = c.rgba.a / 255.0f;
 
   tk_snprintf(str, TK_COLOR_RGBA_LEN, "rgba(%d,%d,%d,%1.1f)", (int)(c.rgba.r), (int)(c.rgba.g),
               (int)(c.rgba.b), a);
