@@ -552,7 +552,6 @@ static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, ca
     widget_paint(prev, c);
     canvas_untranslate(c, -r_xoffset, 0);
     canvas_restore(c);
-    log_debug("prev r_xoffset=%d\n", -r_xoffset);
   }
 
   if (next != NULL) {
@@ -563,7 +562,6 @@ static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, ca
     widget_paint(next, c);
     canvas_untranslate(c, xoffset, 0);
     canvas_restore(c);
-    log_debug("next xoffset=%d\n", xoffset);
   }
 
   return RET_OK;

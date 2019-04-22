@@ -29,110 +29,509 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @enum key_code_t
+ * @annotation ["scriptable"]
+ * @prefix TK_
+ * key code。
+ */
 typedef enum _key_code_t {
   TK_KEY_UNKNOWN = 0,
 
+  /**
+   * @const TK_KEY_RETURN
+   * TK_KEY_RETURN
+   */
   TK_KEY_RETURN = '\r',
+  /**
+   * @const TK_KEY_ESCAPE
+   * TK_KEY_ESCAPE
+   */
   TK_KEY_ESCAPE = '\033',
+  /**
+   * @const TK_KEY_BACKSPACE
+   * TK_KEY_BACKSPACE
+   */
   TK_KEY_BACKSPACE = '\b',
+  /**
+   * @const TK_KEY_TAB
+   * TK_KEY_TAB
+   */
   TK_KEY_TAB = '\t',
+  /**
+   * @const TK_KEY_SPACE
+   * TK_KEY_SPACE
+   */
   TK_KEY_SPACE = ' ',
+  /**
+   * @const TK_KEY_EXCLAIM
+   * TK_KEY_EXCLAIM
+   */
   TK_KEY_EXCLAIM = '!',
+  /**
+   * @const TK_KEY_QUOTEDBL
+   * TK_KEY_QUOTEDBL
+   */
   TK_KEY_QUOTEDBL = '"',
+  /**
+   * @const TK_KEY_HASH
+   * TK_KEY_HASH
+   */
   TK_KEY_HASH = '#',
+  /**
+   * @const TK_KEY_PERCENT
+   * TK_KEY_PERCENT
+   */
   TK_KEY_PERCENT = '%',
+  /**
+   * @const TK_KEY_DOLLAR
+   * TK_KEY_DOLLAR
+   */
   TK_KEY_DOLLAR = '$',
+  /**
+   * @const TK_KEY_AMPERSAND
+   * TK_KEY_AMPERSAND
+   */
   TK_KEY_AMPERSAND = '&',
+  /**
+   * @const TK_KEY_QUOTE
+   * TK_KEY_QUOTE
+   */
   TK_KEY_QUOTE = '\'',
+  /**
+   * @const TK_KEY_LEFTPAREN
+   * TK_KEY_LEFTPAREN
+   */
   TK_KEY_LEFTPAREN = '(',
+  /**
+   * @const TK_KEY_RIGHTPAREN
+   * TK_KEY_RIGHTPAREN
+   */
   TK_KEY_RIGHTPAREN = ')',
+  /**
+   * @const TK_KEY_ASTERISK
+   * TK_KEY_ASTERISK
+   */
   TK_KEY_ASTERISK = '*',
+  /**
+   * @const TK_KEY_PLUS
+   * TK_KEY_PLUS
+   */
   TK_KEY_PLUS = '+',
+  /**
+   * @const TK_KEY_COMMA
+   * TK_KEY_COMMA
+   */
   TK_KEY_COMMA = ',',
+  /**
+   * @const TK_KEY_MINUS
+   * TK_KEY_MINUS
+   */
   TK_KEY_MINUS = '-',
+  /**
+   * @const TK_KEY_PERIOD
+   * TK_KEY_PERIOD
+   */
   TK_KEY_PERIOD = '.',
+  /**
+   * @const TK_KEY_SLASH
+   * TK_KEY_SLASH
+   */
   TK_KEY_SLASH = '/',
+  /**
+   * @const TK_KEY_0
+   * TK_KEY_0
+   */
   TK_KEY_0 = '0',
+  /**
+   * @const TK_KEY_1
+   * TK_KEY_1
+   */
   TK_KEY_1 = '1',
+  /**
+   * @const TK_KEY_2
+   * TK_KEY_2
+   */
   TK_KEY_2 = '2',
+  /**
+   * @const TK_KEY_3
+   * TK_KEY_3
+   */
   TK_KEY_3 = '3',
+  /**
+   * @const TK_KEY_4
+   * TK_KEY_4
+   */
   TK_KEY_4 = '4',
+  /**
+   * @const TK_KEY_5
+   * TK_KEY_5
+   */
   TK_KEY_5 = '5',
+  /**
+   * @const TK_KEY_6
+   * TK_KEY_6
+   */
   TK_KEY_6 = '6',
+  /**
+   * @const TK_KEY_7
+   * TK_KEY_7
+   */
   TK_KEY_7 = '7',
+  /**
+   * @const TK_KEY_8
+   * TK_KEY_8
+   */
   TK_KEY_8 = '8',
+  /**
+   * @const TK_KEY_9
+   * TK_KEY_9
+   */
   TK_KEY_9 = '9',
+  /**
+   * @const TK_KEY_COLON
+   * TK_KEY_COLON
+   */
   TK_KEY_COLON = ':',
+  /**
+   * @const TK_KEY_SEMICOLON
+   * TK_KEY_SEMICOLON
+   */
   TK_KEY_SEMICOLON = ';',
+  /**
+   * @const TK_KEY_LESS
+   * TK_KEY_LESS
+   */
   TK_KEY_LESS = '<',
+  /**
+   * @const TK_KEY_EQUAL
+   * TK_KEY_EQUAL
+   */
   TK_KEY_EQUAL = '=',
+  /**
+   * @const TK_KEY_GREATER
+   * TK_KEY_GREATER
+   */
   TK_KEY_GREATER = '>',
+  /**
+   * @const TK_KEY_QUESTION
+   * TK_KEY_QUESTION
+   */
   TK_KEY_QUESTION = '?',
+  /**
+   * @const TK_KEY_AT
+   * TK_KEY_AT
+   */
   TK_KEY_AT = '@',
-  /*
-     Skip uppercase letters
+  /**
+   * @const TK_KEY_LEFTBRACKET
+   * TK_KEY_LEFTBRACKET
    */
   TK_KEY_LEFTBRACKET = '[',
+  /**
+   * @const TK_KEY_BACKSLASH
+   * TK_KEY_BACKSLASH
+   */
   TK_KEY_BACKSLASH = '\\',
+  /**
+   * @const TK_KEY_RIGHTBRACKET
+   * TK_KEY_RIGHTBRACKET
+   */
   TK_KEY_RIGHTBRACKET = ']',
+  /**
+   * @const TK_KEY_CARET
+   * TK_KEY_CARET
+   */
   TK_KEY_CARET = '^',
+  /**
+   * @const TK_KEY_UNDERSCORE
+   * TK_KEY_UNDERSCORE
+   */
   TK_KEY_UNDERSCORE = '_',
+  /**
+   * @const TK_KEY_BACKQUOTE
+   * TK_KEY_BACKQUOTE
+   */
   TK_KEY_BACKQUOTE = '`',
+  /**
+   * @const TK_KEY_a
+   * TK_KEY_a
+   */
   TK_KEY_a = 'a',
+  /**
+   * @const TK_KEY_b
+   * TK_KEY_b
+   */
   TK_KEY_b = 'b',
+  /**
+   * @const TK_KEY_c
+   * TK_KEY_c
+   */
   TK_KEY_c = 'c',
+  /**
+   * @const TK_KEY_d
+   * TK_KEY_d
+   */
   TK_KEY_d = 'd',
+  /**
+   * @const TK_KEY_e
+   * TK_KEY_e
+   */
   TK_KEY_e = 'e',
+  /**
+   * @const TK_KEY_f
+   * TK_KEY_f
+   */
   TK_KEY_f = 'f',
+  /**
+   * @const TK_KEY_g
+   * TK_KEY_g
+   */
   TK_KEY_g = 'g',
+  /**
+   * @const TK_KEY_h
+   * TK_KEY_h
+   */
   TK_KEY_h = 'h',
+  /**
+   * @const TK_KEY_i
+   * TK_KEY_i
+   */
   TK_KEY_i = 'i',
+  /**
+   * @const TK_KEY_j
+   * TK_KEY_j
+   */
   TK_KEY_j = 'j',
+  /**
+   * @const TK_KEY_k
+   * TK_KEY_k
+   */
   TK_KEY_k = 'k',
+  /**
+   * @const TK_KEY_l
+   * TK_KEY_l
+   */
   TK_KEY_l = 'l',
+  /**
+   * @const TK_KEY_m
+   * TK_KEY_m
+   */
   TK_KEY_m = 'm',
+  /**
+   * @const TK_KEY_n
+   * TK_KEY_n
+   */
   TK_KEY_n = 'n',
+  /**
+   * @const TK_KEY_o
+   * TK_KEY_o
+   */
   TK_KEY_o = 'o',
+  /**
+   * @const TK_KEY_p
+   * TK_KEY_p
+   */
   TK_KEY_p = 'p',
+  /**
+   * @const TK_KEY_q
+   * TK_KEY_q
+   */
   TK_KEY_q = 'q',
+  /**
+   * @const TK_KEY_r
+   * TK_KEY_r
+   */
   TK_KEY_r = 'r',
+  /**
+   * @const TK_KEY_s
+   * TK_KEY_s
+   */
   TK_KEY_s = 's',
+  /**
+   * @const TK_KEY_t
+   * TK_KEY_t
+   */
   TK_KEY_t = 't',
+  /**
+   * @const TK_KEY_u
+   * TK_KEY_u
+   */
   TK_KEY_u = 'u',
+  /**
+   * @const TK_KEY_v
+   * TK_KEY_v
+   */
   TK_KEY_v = 'v',
+  /**
+   * @const TK_KEY_w
+   * TK_KEY_w
+   */
   TK_KEY_w = 'w',
+  /**
+   * @const TK_KEY_x
+   * TK_KEY_x
+   */
   TK_KEY_x = 'x',
+  /**
+   * @const TK_KEY_y
+   * TK_KEY_y
+   */
   TK_KEY_y = 'y',
+  /**
+   * @const TK_KEY_z
+   * TK_KEY_z
+   */
   TK_KEY_z = 'z',
+  /**
+   * @const TK_KEY_A
+   * TK_KEY_A
+   */
   TK_KEY_A = 'A',
+  /**
+   * @const TK_KEY_B
+   * TK_KEY_B
+   */
   TK_KEY_B = 'B',
+  /**
+   * @const TK_KEY_C
+   * TK_KEY_C
+   */
   TK_KEY_C = 'C',
+  /**
+   * @const TK_KEY_D
+   * TK_KEY_D
+   */
   TK_KEY_D = 'D',
+  /**
+   * @const TK_KEY_E
+   * TK_KEY_E
+   */
   TK_KEY_E = 'E',
+  /**
+   * @const TK_KEY_F
+   * TK_KEY_F
+   */
   TK_KEY_F = 'F',
+  /**
+   * @const TK_KEY_G
+   * TK_KEY_G
+   */
   TK_KEY_G = 'G',
+  /**
+   * @const TK_KEY_H
+   * TK_KEY_H
+   */
   TK_KEY_H = 'H',
+  /**
+   * @const TK_KEY_I
+   * TK_KEY_I
+   */
   TK_KEY_I = 'I',
+  /**
+   * @const TK_KEY_J
+   * TK_KEY_J
+   */
   TK_KEY_J = 'J',
+  /**
+   * @const TK_KEY_K
+   * TK_KEY_K
+   */
   TK_KEY_K = 'K',
+  /**
+   * @const TK_KEY_L
+   * TK_KEY_L
+   */
   TK_KEY_L = 'L',
+  /**
+   * @const TK_KEY_M
+   * TK_KEY_M
+   */
   TK_KEY_M = 'M',
+  /**
+   * @const TK_KEY_N
+   * TK_KEY_N
+   */
   TK_KEY_N = 'N',
+  /**
+   * @const TK_KEY_O
+   * TK_KEY_O
+   */
   TK_KEY_O = 'O',
+  /**
+   * @const TK_KEY_P
+   * TK_KEY_P
+   */
   TK_KEY_P = 'P',
+  /**
+   * @const TK_KEY_Q
+   * TK_KEY_Q
+   */
   TK_KEY_Q = 'Q',
+  /**
+   * @const TK_KEY_R
+   * TK_KEY_R
+   */
   TK_KEY_R = 'R',
+  /**
+   * @const TK_KEY_S
+   * TK_KEY_S
+   */
   TK_KEY_S = 'S',
+  /**
+   * @const TK_KEY_T
+   * TK_KEY_T
+   */
   TK_KEY_T = 'T',
+  /**
+   * @const TK_KEY_U
+   * TK_KEY_U
+   */
   TK_KEY_U = 'U',
+  /**
+   * @const TK_KEY_V
+   * TK_KEY_V
+   */
   TK_KEY_V = 'V',
+  /**
+   * @const TK_KEY_W
+   * TK_KEY_W
+   */
   TK_KEY_W = 'W',
+  /**
+   * @const TK_KEY_X
+   * TK_KEY_X
+   */
   TK_KEY_X = 'X',
+  /**
+   * @const TK_KEY_Y
+   * TK_KEY_Y
+   */
   TK_KEY_Y = 'Y',
+  /**
+   * @const TK_KEY_Z
+   * TK_KEY_Z
+   */
   TK_KEY_Z = 'Z',
+  /**
+   * @const TK_KEY_DOT
+   * TK_KEY_DOT
+   */
   TK_KEY_DOT = '.',
+  /**
+   * @const TK_KEY_DELETE
+   * TK_KEY_DELETE
+   */
   TK_KEY_DELETE = '\177',
+  /**
+   * @const TK_KEY_LEFTBRACE
+   * TK_KEY_LEFTBRACE
+   */
   TK_KEY_LEFTBRACE = '(',
+  /**
+   * @const TK_KEY_RIGHTBRACE
+   * TK_KEY_RIGHTBRACE
+   */
   TK_KEY_RIGHTBRACE = ')',
 #ifdef SDL2
   TK_KEY_CAPSLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CAPSLOCK),

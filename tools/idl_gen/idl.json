@@ -4238,9 +4238,37 @@
             "desc": "文本。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 提交输入文本。\n\n\n",
         "name": "input_method_commit_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "input_method_t*",
+            "name": "im",
+            "desc": "输入法对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "replace",
+            "desc": "是否替换原来的文本。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 提交输入文本。\n\n\n",
+        "name": "input_method_commit_text_ex",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -4259,7 +4287,9 @@
             "desc": "键值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 提交按键。\n\n\n",
         "name": "input_method_dispatch_key",
         "return": {
@@ -4321,9 +4351,13 @@
       },
       {
         "params": [],
-        "annotation": {},
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": " 获取全局输入法对象。\n\n\n",
         "name": "input_method",
+        "alias": "input_method_instance",
         "return": {
           "type": "input_method_t*",
           "desc": "成功返回输入法对象，失败返回NULL。"
@@ -4416,6 +4450,418 @@
     "header": "base/input_method.h",
     "desc": " 输入法接口。\n\n 常见的实现方式有以下几种：\n\n * 空实现。用于不需要输入法的嵌入式平台。\n\n * 缺省实现。用于需要输入法的嵌入式平台。\n\n * 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。\n\n ```graphviz\n  [default_style]\n\n  input_method_default_t -> input_method_t [arrowhead=empty style=dashed]\n  input_method_sdl_t -> input_method_t [arrowhead=empty style=dashed]\n  input_method_null_t -> input_method_t [arrowhead=empty style=dashed]\n\n ```\n\n > 输入类型请参考：[input\\_type](input_type_t.md)\n\n\n",
     "name": "input_method_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": " key code。\n\n",
+    "consts": [
+      {
+        "desc": " TK_KEY_RETURN\n\n",
+        "name": "TK_KEY_RETURN"
+      },
+      {
+        "desc": " TK_KEY_ESCAPE\n\n",
+        "name": "TK_KEY_ESCAPE"
+      },
+      {
+        "desc": " TK_KEY_BACKSPACE\n\n",
+        "name": "TK_KEY_BACKSPACE"
+      },
+      {
+        "desc": " TK_KEY_TAB\n\n",
+        "name": "TK_KEY_TAB"
+      },
+      {
+        "desc": " TK_KEY_SPACE\n\n",
+        "name": "TK_KEY_SPACE"
+      },
+      {
+        "desc": " TK_KEY_EXCLAIM\n\n",
+        "name": "TK_KEY_EXCLAIM"
+      },
+      {
+        "desc": " TK_KEY_QUOTEDBL\n\n",
+        "name": "TK_KEY_QUOTEDBL"
+      },
+      {
+        "desc": " TK_KEY_HASH\n\n",
+        "name": "TK_KEY_HASH"
+      },
+      {
+        "desc": " TK_KEY_PERCENT\n\n",
+        "name": "TK_KEY_PERCENT"
+      },
+      {
+        "desc": " TK_KEY_DOLLAR\n\n",
+        "name": "TK_KEY_DOLLAR"
+      },
+      {
+        "desc": " TK_KEY_AMPERSAND\n\n",
+        "name": "TK_KEY_AMPERSAND"
+      },
+      {
+        "desc": " TK_KEY_QUOTE\n\n",
+        "name": "TK_KEY_QUOTE"
+      },
+      {
+        "desc": " TK_KEY_LEFTPAREN\n\n",
+        "name": "TK_KEY_LEFTPAREN"
+      },
+      {
+        "desc": " TK_KEY_RIGHTPAREN\n\n",
+        "name": "TK_KEY_RIGHTPAREN"
+      },
+      {
+        "desc": " TK_KEY_ASTERISK\n\n",
+        "name": "TK_KEY_ASTERISK"
+      },
+      {
+        "desc": " TK_KEY_PLUS\n\n",
+        "name": "TK_KEY_PLUS"
+      },
+      {
+        "desc": " TK_KEY_COMMA\n\n",
+        "name": "TK_KEY_COMMA"
+      },
+      {
+        "desc": " TK_KEY_MINUS\n\n",
+        "name": "TK_KEY_MINUS"
+      },
+      {
+        "desc": " TK_KEY_PERIOD\n\n",
+        "name": "TK_KEY_PERIOD"
+      },
+      {
+        "desc": " TK_KEY_SLASH\n\n",
+        "name": "TK_KEY_SLASH"
+      },
+      {
+        "desc": " TK_KEY_0\n\n",
+        "name": "TK_KEY_0"
+      },
+      {
+        "desc": " TK_KEY_1\n\n",
+        "name": "TK_KEY_1"
+      },
+      {
+        "desc": " TK_KEY_2\n\n",
+        "name": "TK_KEY_2"
+      },
+      {
+        "desc": " TK_KEY_3\n\n",
+        "name": "TK_KEY_3"
+      },
+      {
+        "desc": " TK_KEY_4\n\n",
+        "name": "TK_KEY_4"
+      },
+      {
+        "desc": " TK_KEY_5\n\n",
+        "name": "TK_KEY_5"
+      },
+      {
+        "desc": " TK_KEY_6\n\n",
+        "name": "TK_KEY_6"
+      },
+      {
+        "desc": " TK_KEY_7\n\n",
+        "name": "TK_KEY_7"
+      },
+      {
+        "desc": " TK_KEY_8\n\n",
+        "name": "TK_KEY_8"
+      },
+      {
+        "desc": " TK_KEY_9\n\n",
+        "name": "TK_KEY_9"
+      },
+      {
+        "desc": " TK_KEY_COLON\n\n",
+        "name": "TK_KEY_COLON"
+      },
+      {
+        "desc": " TK_KEY_SEMICOLON\n\n",
+        "name": "TK_KEY_SEMICOLON"
+      },
+      {
+        "desc": " TK_KEY_LESS\n\n",
+        "name": "TK_KEY_LESS"
+      },
+      {
+        "desc": " TK_KEY_EQUAL\n\n",
+        "name": "TK_KEY_EQUAL"
+      },
+      {
+        "desc": " TK_KEY_GREATER\n\n",
+        "name": "TK_KEY_GREATER"
+      },
+      {
+        "desc": " TK_KEY_QUESTION\n\n",
+        "name": "TK_KEY_QUESTION"
+      },
+      {
+        "desc": " TK_KEY_AT\n\n",
+        "name": "TK_KEY_AT"
+      },
+      {
+        "desc": " TK_KEY_LEFTBRACKET\n\n",
+        "name": "TK_KEY_LEFTBRACKET"
+      },
+      {
+        "desc": " TK_KEY_BACKSLASH\n\n",
+        "name": "TK_KEY_BACKSLASH"
+      },
+      {
+        "desc": " TK_KEY_RIGHTBRACKET\n\n",
+        "name": "TK_KEY_RIGHTBRACKET"
+      },
+      {
+        "desc": " TK_KEY_CARET\n\n",
+        "name": "TK_KEY_CARET"
+      },
+      {
+        "desc": " TK_KEY_UNDERSCORE\n\n",
+        "name": "TK_KEY_UNDERSCORE"
+      },
+      {
+        "desc": " TK_KEY_BACKQUOTE\n\n",
+        "name": "TK_KEY_BACKQUOTE"
+      },
+      {
+        "desc": " TK_KEY_a\n\n",
+        "name": "TK_KEY_a"
+      },
+      {
+        "desc": " TK_KEY_b\n\n",
+        "name": "TK_KEY_b"
+      },
+      {
+        "desc": " TK_KEY_c\n\n",
+        "name": "TK_KEY_c"
+      },
+      {
+        "desc": " TK_KEY_d\n\n",
+        "name": "TK_KEY_d"
+      },
+      {
+        "desc": " TK_KEY_e\n\n",
+        "name": "TK_KEY_e"
+      },
+      {
+        "desc": " TK_KEY_f\n\n",
+        "name": "TK_KEY_f"
+      },
+      {
+        "desc": " TK_KEY_g\n\n",
+        "name": "TK_KEY_g"
+      },
+      {
+        "desc": " TK_KEY_h\n\n",
+        "name": "TK_KEY_h"
+      },
+      {
+        "desc": " TK_KEY_i\n\n",
+        "name": "TK_KEY_i"
+      },
+      {
+        "desc": " TK_KEY_j\n\n",
+        "name": "TK_KEY_j"
+      },
+      {
+        "desc": " TK_KEY_k\n\n",
+        "name": "TK_KEY_k"
+      },
+      {
+        "desc": " TK_KEY_l\n\n",
+        "name": "TK_KEY_l"
+      },
+      {
+        "desc": " TK_KEY_m\n\n",
+        "name": "TK_KEY_m"
+      },
+      {
+        "desc": " TK_KEY_n\n\n",
+        "name": "TK_KEY_n"
+      },
+      {
+        "desc": " TK_KEY_o\n\n",
+        "name": "TK_KEY_o"
+      },
+      {
+        "desc": " TK_KEY_p\n\n",
+        "name": "TK_KEY_p"
+      },
+      {
+        "desc": " TK_KEY_q\n\n",
+        "name": "TK_KEY_q"
+      },
+      {
+        "desc": " TK_KEY_r\n\n",
+        "name": "TK_KEY_r"
+      },
+      {
+        "desc": " TK_KEY_s\n\n",
+        "name": "TK_KEY_s"
+      },
+      {
+        "desc": " TK_KEY_t\n\n",
+        "name": "TK_KEY_t"
+      },
+      {
+        "desc": " TK_KEY_u\n\n",
+        "name": "TK_KEY_u"
+      },
+      {
+        "desc": " TK_KEY_v\n\n",
+        "name": "TK_KEY_v"
+      },
+      {
+        "desc": " TK_KEY_w\n\n",
+        "name": "TK_KEY_w"
+      },
+      {
+        "desc": " TK_KEY_x\n\n",
+        "name": "TK_KEY_x"
+      },
+      {
+        "desc": " TK_KEY_y\n\n",
+        "name": "TK_KEY_y"
+      },
+      {
+        "desc": " TK_KEY_z\n\n",
+        "name": "TK_KEY_z"
+      },
+      {
+        "desc": " TK_KEY_A\n\n",
+        "name": "TK_KEY_A"
+      },
+      {
+        "desc": " TK_KEY_B\n\n",
+        "name": "TK_KEY_B"
+      },
+      {
+        "desc": " TK_KEY_C\n\n",
+        "name": "TK_KEY_C"
+      },
+      {
+        "desc": " TK_KEY_D\n\n",
+        "name": "TK_KEY_D"
+      },
+      {
+        "desc": " TK_KEY_E\n\n",
+        "name": "TK_KEY_E"
+      },
+      {
+        "desc": " TK_KEY_F\n\n",
+        "name": "TK_KEY_F"
+      },
+      {
+        "desc": " TK_KEY_G\n\n",
+        "name": "TK_KEY_G"
+      },
+      {
+        "desc": " TK_KEY_H\n\n",
+        "name": "TK_KEY_H"
+      },
+      {
+        "desc": " TK_KEY_I\n\n",
+        "name": "TK_KEY_I"
+      },
+      {
+        "desc": " TK_KEY_J\n\n",
+        "name": "TK_KEY_J"
+      },
+      {
+        "desc": " TK_KEY_K\n\n",
+        "name": "TK_KEY_K"
+      },
+      {
+        "desc": " TK_KEY_L\n\n",
+        "name": "TK_KEY_L"
+      },
+      {
+        "desc": " TK_KEY_M\n\n",
+        "name": "TK_KEY_M"
+      },
+      {
+        "desc": " TK_KEY_N\n\n",
+        "name": "TK_KEY_N"
+      },
+      {
+        "desc": " TK_KEY_O\n\n",
+        "name": "TK_KEY_O"
+      },
+      {
+        "desc": " TK_KEY_P\n\n",
+        "name": "TK_KEY_P"
+      },
+      {
+        "desc": " TK_KEY_Q\n\n",
+        "name": "TK_KEY_Q"
+      },
+      {
+        "desc": " TK_KEY_R\n\n",
+        "name": "TK_KEY_R"
+      },
+      {
+        "desc": " TK_KEY_S\n\n",
+        "name": "TK_KEY_S"
+      },
+      {
+        "desc": " TK_KEY_T\n\n",
+        "name": "TK_KEY_T"
+      },
+      {
+        "desc": " TK_KEY_U\n\n",
+        "name": "TK_KEY_U"
+      },
+      {
+        "desc": " TK_KEY_V\n\n",
+        "name": "TK_KEY_V"
+      },
+      {
+        "desc": " TK_KEY_W\n\n",
+        "name": "TK_KEY_W"
+      },
+      {
+        "desc": " TK_KEY_X\n\n",
+        "name": "TK_KEY_X"
+      },
+      {
+        "desc": " TK_KEY_Y\n\n",
+        "name": "TK_KEY_Y"
+      },
+      {
+        "desc": " TK_KEY_Z\n\n",
+        "name": "TK_KEY_Z"
+      },
+      {
+        "desc": " TK_KEY_DOT\n\n",
+        "name": "TK_KEY_DOT"
+      },
+      {
+        "desc": " TK_KEY_DELETE\n\n",
+        "name": "TK_KEY_DELETE"
+      },
+      {
+        "desc": " TK_KEY_LEFTBRACE\n\n",
+        "name": "TK_KEY_LEFTBRACE"
+      },
+      {
+        "desc": " TK_KEY_RIGHTBRACE\n\n",
+        "name": "TK_KEY_RIGHTBRACE"
+      }
+    ],
+    "header": "base/keys.h",
+    "name": "key_code_t",
+    "prefix": "TK_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -13785,6 +14231,38 @@
           }
         ],
         "annotation": {},
+        "desc": " begin frame\n\n\n",
+        "name": "window_animator_begin_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_animator_t*",
+            "name": "wa",
+            "desc": "窗口动画对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " end frame\n\n\n",
+        "name": "window_animator_end_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_animator_t*",
+            "name": "wa",
+            "desc": "窗口动画对象。"
+          }
+        ],
+        "annotation": {},
         "desc": " 销毁窗口动画对象。\n\n\n",
         "name": "window_animator_destroy",
         "return": {
@@ -22998,73 +23476,94 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建view对象\r\n\r\n",
-        "name": "view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "view对象。"
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为view对象(供脚本语言使用)。\r\n\r\n",
-        "name": "view_cast",
+        "desc": " 把event对象转window_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "window_event_cast",
         "return": {
-          "type": "widget_t*",
-          "desc": "view对象。"
+          "type": "window_event_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "window_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "window_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "pointer_event_t*",
+            "name": "evt",
+            "desc": "指针事件对象。"
+          },
+          {
+            "type": "system_info_t*",
+            "name": "info",
+            "desc": "系统信息。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 根据屏幕旋转方向修正pointer_event中的坐标。\n\n\n",
+        "name": "pointer_event_rotate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "widgets/view.h",
-    "desc": " 一个通用的容器控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\r\n\r\n 在xml中使用\"view\"标签创建view。如：\r\n\r\n ```xml\r\n  <view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n   </view>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
-    "name": "view_t",
-    "parent": "widget_t",
+    "properties": [
+      {
+        "name": "window",
+        "desc": " canvas。\n\n",
+        "type": "widget_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": " 窗口事件，由窗口管理器触发。\n\n",
+    "name": "window_event_t",
     "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
+      "scriptable": true
     },
+    "parent": "event_t",
     "level": 2
   },
   {
@@ -23271,102 +23770,6 @@
     "desc": " 对现有LCD对象进行包装，实现对各个函数的时间统计，用于辅助定位性能瓶颈。\r\n\r\n",
     "name": "lcd_profile_t",
     "parent": "lcd_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转window_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "window_event_cast",
-        "return": {
-          "type": "window_event_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "window_event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          },
-          {
-            "type": "void*",
-            "name": "target",
-            "desc": "事件目标。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "window对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 初始化事件。\n\n\n",
-        "name": "window_event_init",
-        "return": {
-          "type": "event_t*",
-          "desc": "event对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "pointer_event_t*",
-            "name": "evt",
-            "desc": "指针事件对象。"
-          },
-          {
-            "type": "system_info_t*",
-            "name": "info",
-            "desc": "系统信息。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 根据屏幕旋转方向修正pointer_event中的坐标。\n\n\n",
-        "name": "pointer_event_rotate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "window",
-        "desc": " canvas。\n\n",
-        "type": "widget_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 窗口事件，由窗口管理器触发。\n\n",
-    "name": "window_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
     "level": 2
   },
   {
@@ -24234,6 +24637,81 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
+        "name": "paint_event_cast",
+        "return": {
+          "type": "paint_event_t*",
+          "desc": "event 对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "paint_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 初始化事件。\n\n\n",
+        "name": "paint_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "c",
+        "desc": " canvas。\n\n",
+        "type": "canvas_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": " 绘制事件。\n\n",
+    "name": "paint_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {
           "constructor": true
@@ -24309,81 +24787,6 @@
   },
   {
     "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 把event对象转paint_event_t对象。主要给脚本语言使用。\n\n\n",
-        "name": "paint_event_cast",
-        "return": {
-          "type": "paint_event_t*",
-          "desc": "event 对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "paint_event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          },
-          {
-            "type": "void*",
-            "name": "target",
-            "desc": "事件目标。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": " 初始化事件。\n\n\n",
-        "name": "paint_event_init",
-        "return": {
-          "type": "event_t*",
-          "desc": "event对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "c",
-        "desc": " canvas。\n\n",
-        "type": "canvas_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": " 绘制事件。\n\n",
-    "name": "paint_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
     "methods": [],
     "events": [],
     "properties": [
@@ -24394,11 +24797,47 @@
         "annotation": {
           "readable": true
         }
+      },
+      {
+        "name": "replace;",
+        "desc": " 是否替换原来的文本。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
       }
     ],
     "header": "base/input_method.h",
     "desc": " 输入法提交输入的文本事件。\n\n",
     "name": "im_commit_event_t",
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "text",
+        "desc": " 软键盘上的action按钮显示的文本。\n\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": " 软键盘上的action按钮启用。\n\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/input_method.h",
+    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
+    "name": "im_action_button_info_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -26165,25 +26604,25 @@
     "events": [],
     "properties": [
       {
-        "name": "text",
-        "desc": " 软键盘上的action按钮显示的文本。\n\n",
+        "name": "candidates",
+        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
         "type": "char*",
         "annotation": {
           "readable": true
         }
       },
       {
-        "name": "enable",
-        "desc": " 软键盘上的action按钮启用。\n\n",
-        "type": "bool_t",
+        "name": "candidates_nr",
+        "desc": " 可选的文本的个数。\n\n",
+        "type": "uint32_t",
         "annotation": {
           "readable": true
         }
       }
     ],
     "header": "base/input_method.h",
-    "desc": " 设置软键盘上的action按钮的信息事件。\n\n",
-    "name": "im_action_button_info_event_t",
+    "desc": " 输入法请求显示候选字的事件。\n\n",
+    "name": "im_candidates_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -26525,30 +26964,77 @@
   },
   {
     "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
+    "methods": [
       {
-        "name": "candidates",
-        "desc": " 可选的文本，多个文本以\\0分隔。如：里\\0李\\0力\\0离\\0\n\n",
-        "type": "char*",
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
         "annotation": {
-          "readable": true
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建view对象\r\n\r\n",
+        "name": "view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
         }
       },
       {
-        "name": "candidates_nr",
-        "desc": " 可选的文本的个数。\n\n",
-        "type": "uint32_t",
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "view对象。"
+          }
+        ],
         "annotation": {
-          "readable": true
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为view对象(供脚本语言使用)。\r\n\r\n",
+        "name": "view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "view对象。"
         }
       }
     ],
-    "header": "base/input_method.h",
-    "desc": " 输入法请求显示候选字的事件。\n\n",
-    "name": "im_candidates_event_t",
-    "parent": "event_t",
+    "events": [],
+    "properties": [],
+    "header": "widgets/view.h",
+    "desc": " 一个通用的容器控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\r\n\r\n 在xml中使用\"view\"标签创建view。如：\r\n\r\n ```xml\r\n  <view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n   </view>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
+    "name": "view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
     "level": 2
   },
   {

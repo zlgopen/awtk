@@ -25,6 +25,7 @@
 | -------- | ------------ | 
 | <a href="#input_method_t_input_method">input\_method</a> | 获取全局输入法对象。 |
 | <a href="#input_method_t_input_method_commit_text">input\_method\_commit\_text</a> | 提交输入文本。 |
+| <a href="#input_method_t_input_method_commit_text_ex">input\_method\_commit\_text\_ex</a> | 提交输入文本。 |
 | <a href="#input_method_t_input_method_create">input\_method\_create</a> | 创建输入法对象。在具体实现中实现。 |
 | <a href="#input_method_t_input_method_destroy">input\_method\_destroy</a> | 销毁输入法对象。在具体实现中实现。 |
 | <a href="#input_method_t_input_method_dispatch">input\_method\_dispatch</a> | 分发一个事件。 |
@@ -88,6 +89,30 @@ ret_t input_method_commit_text (input_method_t* im, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | input\_method\_t* | 输入法对象。 |
+| text | char* | 文本。 |
+#### input\_method\_commit\_text\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="input_method_t_input_method_commit_text_ex"> 提交输入文本。
+
+
+
+
+* 函数原型：
+
+```
+ret_t input_method_commit_text_ex (input_method_t* im, bool_t replace, char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| im | input\_method\_t* | 输入法对象。 |
+| replace | bool\_t | 是否替换原来的文本。 |
 | text | char* | 文本。 |
 #### input\_method\_create 函数
 -----------------------

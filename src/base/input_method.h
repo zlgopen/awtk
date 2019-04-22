@@ -162,6 +162,7 @@ typedef struct _im_candidates_event_t {
  * @class input_method_t
  * 输入法接口。
  *
+ * @annotation ["scriptable"]
  * 常见的实现方式有以下几种：
  *
  * * 空实现。用于不需要输入法的嵌入式平台。
@@ -326,6 +327,7 @@ ret_t input_method_dispatch_action(input_method_t* im);
 /**
  * @method input_method_commit_text
  * 提交输入文本。
+ * @annotation ["scriptable"]
  * @param {input_method_t*} im 输入法对象。
  * @param {char*} text 文本。
  *
@@ -347,6 +349,7 @@ ret_t input_method_commit_text_ex(input_method_t* im, bool_t replace, const char
 /**
  * @method input_method_dispatch_key
  * 提交按键。
+ * @annotation ["scriptable"]
  * @param {input_method_t*} im 输入法对象。
  * @param {uint32_t} key 键值。
  *
@@ -385,6 +388,8 @@ ret_t input_method_destroy(input_method_t* im);
 /**
  * @method input_method
  * 获取全局输入法对象。
+ * @alias input_method_instance
+ * @annotation ["constructor", "scriptable"]
  *
  * @return {input_method_t*} 成功返回输入法对象，失败返回NULL。
  */
