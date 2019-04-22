@@ -1,6 +1,7 @@
 import os
 import copy
 import glob
+import subprocess
 
 def joinPath(root, subdir):
   return os.path.abspath(os.path.normpath(os.path.join(root, subdir)))
@@ -57,5 +58,6 @@ def toExe(name):
 def run(cmd, flags, files):
     cmd_args=cmd + ' ' + flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
     print(cmd_args)
-    os.system(cmd_args);
+    #os.system(cmd_args);
+    subprocess.call(cmd_args, shell=True);
 
