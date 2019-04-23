@@ -56,9 +56,8 @@ def toExe(name):
         return name
 
 def writeArgs(filename, str):
-    fd = os.open(filename, os.O_RDWR | os.O_CREAT | os.O_TRUNC)
-    os.write(fd, str)
-    os.close(fd)
+    with open(filename, "w") as text_file:
+        text_file.write(str);
 	
 def runArgsInFile(cmd, flags, files):
     cmd_args = flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
