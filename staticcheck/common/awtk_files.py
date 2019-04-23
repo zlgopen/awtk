@@ -55,9 +55,15 @@ def toExe(name):
     else:
         return name
 
+def writeArgs(filename, str):
+    fd = os.open(filename, os.O_RDWR | os.O_CREAT | os.O_TRUNC)
+    os.write(fd, str)
+    os.close(fd)
+	
 def run(cmd, flags, files):
-    cmd_args=cmd + ' ' + flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = cmd_args.replace('\\', '\\\\');
+    writeArgs("args.txt", cmd_args);
     print(cmd_args)
-    #os.system(cmd_args);
-    subprocess.call(cmd_args, shell=True);
+    os.system(cmd + ' @args.txt');
 
