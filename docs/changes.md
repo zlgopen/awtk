@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/04/23
+  * 修改编译脚本支持python3。建议大家都使用python3，python2很快不被官方支持了。
+  * 修改awtk-web在windows下编译的问题。
+  * 修改edit在scrollview中的问题(感谢朝泽提供补丁) 
+  * 增强scrollview的扩展性(感谢朝泽提供补丁) 
+
 * 2019/04/22
   * input method支持脚本化，方便在脚本中实现自定义软键盘。
   * key code支持脚本化。

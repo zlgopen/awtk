@@ -372,6 +372,17 @@ static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t scroll_view_on_add_child(widget_t* widget, widget_t* child) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
+
+  if (scroll_view->on_add_child) {
+    return scroll_view->on_add_child(widget, child);
+  } else {
+    return RET_CONTINUE;
+  }
+}
+
 static widget_t* scroll_view_find_target(widget_t* widget, xy_t x, xy_t y) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, NULL);
@@ -456,6 +467,7 @@ TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .invalidate = scroll_view_invalidate,
                                .on_layout_children = scroll_view_on_layout_children,
                                .on_paint_children = scroll_view_on_paint_children,
+                               .on_add_child = scroll_view_on_add_child,
                                .find_target = scroll_view_find_target,
                                .get_prop = scroll_view_get_prop,
                                .set_prop = scroll_view_set_prop};
