@@ -4,7 +4,7 @@ import copy
 import glob
 import shutil
 import platform
-from PIL import Image
+import image
 
 ###########################
 DPI = ''
@@ -263,14 +263,12 @@ def gen_res_all():
 
 
 def writeResult(str):
-    fd = os.open(ASSET_C, os.O_RDWR | os.O_CREAT | os.O_TRUNC)
-    os.write(fd, str)
-    os.close(fd)
+    with open(ASSET_C, "w") as text_file:
+        text_file.write(str);
 
 def writeResultJSON(str):
-    fd = os.open('assets.js', os.O_RDWR | os.O_CREAT | os.O_TRUNC)
-    os.write(fd, str)
-    os.close(fd)
+    with open('assets.js', "w") as text_file:
+        text_file.write(str);
 
 def genIncludes(files):
     str1 = ""

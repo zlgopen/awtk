@@ -23,4 +23,5 @@ scripts/update_res_common.pyc
 infer-out
 args.txt
 log
-.pyc
+*.pyc
+__pycache__
