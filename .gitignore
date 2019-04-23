@@ -21,3 +21,6 @@ tags
 awtk_config.pyc
 scripts/update_res_common.pyc
 infer-out
+args.txt
+log
+.pyc

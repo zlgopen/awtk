@@ -60,10 +60,16 @@ def writeArgs(filename, str):
     os.write(fd, str)
     os.close(fd)
 	
-def run(cmd, flags, files):
+def runArgsInFile(cmd, flags, files):
     cmd_args = flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
     cmd_args = cmd_args.replace('\\', '\\\\');
     writeArgs("args.txt", cmd_args);
     print(cmd_args)
     os.system(cmd + ' @args.txt');
+
+def run(cmd, flags, files):
+    cmd_args = cmd + ' ' + flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = cmd_args.replace('\\', '\\\\');
+    print(cmd_args)
+    os.system(cmd_args);
 
