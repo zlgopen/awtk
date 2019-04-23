@@ -676,6 +676,18 @@ static ret_t edit_request_input_method(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_pointer_up_cleanup(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  edit->focus = FALSE;
+  widget->focused = FALSE;
+  widget_ungrab(widget->parent, widget);
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+
+  return RET_OK;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
@@ -702,6 +714,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       edit_update_status(widget);
 
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      edit_pointer_up_cleanup(widget);
       break;
     }
     case EVT_POINTER_MOVE: {
