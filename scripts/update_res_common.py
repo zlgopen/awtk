@@ -4,7 +4,7 @@ import copy
 import glob
 import shutil
 import platform
-import image
+from PIL import Image
 
 ###########################
 DPI = ''
