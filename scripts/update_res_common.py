@@ -411,6 +411,7 @@ def gen_res_json_one(res_type, files):
     result= "\n  " + res_type + ': [\n'
     for f in files:
         uri = f.replace(os.getcwd(), "")[1:]
+        uri = uri.replace('\\', '/');
         filename, extname = os.path.splitext(uri)
         basename = os.path.basename(filename)
         result = result + '    {name:"' + basename + '\", uri:"' + uri;
