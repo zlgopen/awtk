@@ -164,13 +164,20 @@ uint32_t dialog_modal(widget_t* widget) {
 #endif /*AWTK_WEB*/
 }
 
+static bool_t is_dialog_opened(widget_t* widget) {
+  int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+
+  return stage == WINDOW_STAGE_OPENED;
+}
+
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
 #ifdef AWTK_WEB
   log_debug("awtk web not support dialog_modal\n");
   dialog_close(widget);
 #else
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(is_dialog_opened(widget), RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL && !(dialog->quited), RET_BAD_PARAMS);
 
   dialog->quited = TRUE;
   dialog->quit_code = code;
