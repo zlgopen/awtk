@@ -556,7 +556,6 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
 }
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
-  paint_event_t e;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   rect_t* dr = &(wm->dirty_rect);
 
