@@ -129,6 +129,32 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
+static ret_t lcd_sdl2_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
+  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+  if (w <= sdl->lcd_mem->base.w && h <= sdl->lcd_mem->base.h) return RET_OK;
+
+  lcd_sdl2_destroy(lcd);
+  sdl->lcd_mem->base.w = w;
+  sdl->lcd_mem->base.h = h;
+#ifdef WITH_FB_BGRA8888
+  /*SDL ABGR is rgba from low address to high address*/
+  sdl->texture =
+      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB_BGRA8888\n");
+#elif defined(WITH_FB_BGR888)
+  /*SDL ABGR is rgba from low address to high address*/
+  sdl->texture =
+      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB_BGR888\n");
+#else
+  /*SDL ABGR is rgba from low address to high address*/
+  sdl->texture =
+      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
+  log_debug("WITH_FB_BGR565\n");
+#endif
+  return RET_OK;
+}
+
 static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
@@ -181,6 +207,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   base->take_snapshot = lcd_sdl2_take_snapshot;
   base->get_desired_bitmap_format = lcd_sdl2_get_desired_bitmap_format;
   base->set_global_alpha = lcd_sdl2_set_global_alpha;
+  base->resize = lcd_sdl2_resize;
   base->destroy = lcd_sdl2_destroy;
 
   SDL_GetRendererOutputSize(render, &w, &h);
