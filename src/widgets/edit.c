@@ -165,10 +165,19 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
   }
 
   {
-    rect_t tmp;
-    canvas_get_clip_rect(c, &tmp);
-    canvas_set_clip_rect_ex(c, r, TRUE);
+    rect_t save_r;
+    rect_t clip_r;
+    rect_t edit_r;
+    point_t p = {.x = 0, .y = 0};
+
+    canvas_get_clip_rect(c, &save_r);
+    widget_to_screen(widget, &p);
+    edit_r = rect_init(p.x + edit->left_margin, p.y + edit->top_margin, r->w, r->h);
+    clip_r = rect_intersect(&save_r, &edit_r);
+
+    canvas_set_clip_rect(c, &clip_r);
     canvas_draw_text(c, text->str, text->size, edit->offset_x, y);
+
     if (sel_w > 0 && widget->focused && !edit->readonly) {
       xy_t sel_x = edit->cursor_pos < edit->cursor_pre ? edit->caret_x : edit->caret_x - sel_w++;
       canvas_set_fill_color(c, color_init(0, 0, 0, 0xff));
@@ -176,7 +185,7 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
       canvas_fill_rect(c, sel_x, r->y, sel_w, r->h);
       canvas_draw_text(c, text->str + min_p, max_p - min_p, sel_x, y);
     }
-    canvas_set_clip_rect(c, &tmp);
+    canvas_set_clip_rect(c, &save_r);
   }
   return RET_OK;
 }
