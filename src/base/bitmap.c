@@ -349,7 +349,9 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
 uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, 0);
 
-  assert(bitmap->line_length > bitmap->w);
+  if (bitmap->line_length < bitmap->w) {
+    bitmap_set_line_length(bitmap, 0);
+  }
 
   return bitmap->line_length;
 }
