@@ -3,6 +3,9 @@
   * 修改AGGE模式支持APP\_DESKTOP的问题(感谢尧燊提供补丁)
   * 更新文档。
   * fix toast bug
+  * 修改edit在scroll view中clip的BUG。
+  * 修改slider在scroll view中的BUG。
+  * 准备发布1.1，用cppcheck/infer/valgrind检查。
 
 * 2019/04/23
   * 修改编译脚本支持python3。建议大家都使用python3，python2很快不被官方支持了。
