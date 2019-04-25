@@ -57,7 +57,7 @@
 * 通过脏矩算法只更新变化的部分。
 * 支持3 FrameBuffer让界面以最高帧率运行(可选)。
 * UI描述文件和主题文件使用高效的二进制格式，解析在瞬间完成。
-* 支持各种GPU加速接口。如OpenGL、DirectX、Vulman和Metal等。
+* 支持各种GPU加速接口。如OpenGL、DirectX、Vulkan和Metal等。
 * 支持嵌入式平台的各种2D加速接口。目前STM32的DMA2D和NXP的PXP接口，厂家可以轻松扩展自己的加速接口。
 
 ### 3.稳定
