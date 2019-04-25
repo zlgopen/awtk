@@ -168,6 +168,8 @@ scons
 ./bin/demoui
 ```
 
+> 在Ubuntu 14上无法启动，请参考[FAQ](docs/faq.md)修改。
+
 ### Windows
 
 (请先安装python，scons和Visual Studio C++(版本>=2017)
