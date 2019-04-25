@@ -173,12 +173,15 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
 
     clip_r.x += c->ox;
     clip_r.y += c->oy;
-
     canvas_get_clip_rect(c, &save_r);
     r = rect_intersect(&save_r, &clip_r);
+
+    canvas_save(c);
     canvas_set_clip_rect(c, &r);
     slide_menu_paint_children(widget, c);
     canvas_set_clip_rect(c, &save_r);
+    canvas_restore(c);
+
     slide_menu_paint_mask(widget, c, &clip_r);
   }
 

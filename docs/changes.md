@@ -5,6 +5,7 @@
   * widget处理RET\_STOP返回值(感谢朝泽提供补丁)。
   * dragger除POINTER ABORT消息(感谢朝泽提供补丁)。
   * 修改窗口管理器取整的问题(感谢朝泽提供补丁)。
+  * 修改slide menu在web上裁剪的问题。
 
 * 2019/04/24
   * 修改AGGE模式支持APP\_DESKTOP的问题(感谢尧燊提供补丁)
