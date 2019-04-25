@@ -7,15 +7,26 @@
 
 [AWTK](https://github.com/zlgopen/awtk)全称Toolkit AnyWhere，是[ZLG](http://www.zlg.cn/)开发的开源GUI引擎，旨在为嵌入式系统、WEB、各种小程序、手机和PC打造的通用GUI引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的GUI引擎。
 
-[AWTK](https://github.com/zlgopen/awtk)寓意有两个方面：
+#### [AWTK](https://github.com/zlgopen/awtk)寓意有两个方面：
 
 * Toolkit AnyWhere。 
 * ZLG物联网操作系统AWorks内置GUI。
 
-[AWTK](https://github.com/zlgopen/awtk)源码仓库：
+#### [AWTK](https://github.com/zlgopen/awtk)源码仓库：
 
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
+
+
+#### 运行效果截图：
+
+![CleanAir-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/cleanair_main.png)
+
+![Meter-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/meter_main.png)
+
+![Chart-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/chart_main.png)
+
+![MusicPlayer-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/musicplayer_main.png)
 
 ## 二、最终目标：
 
@@ -203,6 +214,8 @@ bin\demoui
 * [模板工程](https://github.com/zlgopen/awtk-hello)
 
 * [C示例代码](https://github.com/zlgopen/awtk-c-demos)
+
+* [精彩示例](https://github.com/zlgopen/awtk-examples)
 
 * [AWTK-WEB](https://github.com/zlgopen/awtk-web)
 

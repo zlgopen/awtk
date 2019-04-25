@@ -5,15 +5,26 @@
 
 [AWTK](https://github.com/zlgopen/awtk)全称Toolkit AnyWhere，是[ZLG](http://www.zlg.cn/)开发的开源GUI引擎，旨在为嵌入式系统、WEB、各种小程序、手机和PC打造的通用GUI引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的GUI引擎。
 
-[AWTK](https://github.com/zlgopen/awtk)寓意有两个方面：
+#### [AWTK](https://github.com/zlgopen/awtk)寓意有两个方面：
 
 * Toolkit AnyWhere。 
 * ZLG物联网操作系统AWorks内置GUI。
 
-[AWTK](https://github.com/zlgopen/awtk)源码仓库：
+#### [AWTK](https://github.com/zlgopen/awtk)源码仓库：
 
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
+
+
+#### 运行效果截图：
+
+![CleanAir-Demo](http://zlgopen.bceapp.com/images/cleanair_main.png)
+
+![Meter-Demo](http://zlgopen.bceapp.com/images/meter_main.png)
+
+![Chart-Demo](http://zlgopen.bceapp.com/images/chart_main.png)
+
+![MusicPlayer-Demo](http://zlgopen.bceapp.com/images/musicplayer_main.png)
 
 ## 二、最终目标：
 
@@ -182,11 +193,12 @@
 
 下一个版本计划推出下列功能：
 
-* AWTK-WEB 让AWTK应用程序在浏览器中运行。
-* AWTK-MVVM 为嵌入式系统定制的MVVM框架。
+* 新增控件。
 * 抽象音频接口。
 * 桌面版本支持多原生窗口。
 * 在sylixos和linux上支持多进程。
-* 其它控件。
+* AWTK-WEB 让AWTK应用程序在浏览器中运行。
+* AWTK-MVVM 为嵌入式系统定制的MVVM框架。
+
 
 > 需要什么功能，请在github上留言，我们会优先安排。
