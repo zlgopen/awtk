@@ -3006,7 +3006,9 @@
             "desc": "字体的大小(矢量字体指定为0即可)。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": " 卸载指定的字体。\n\n\n",
         "name": "font_manager_unload_font",
         "return": {
@@ -3069,6 +3071,9 @@
     "header": "base/font_manager.h",
     "desc": " 字体管理器，负责字体的加载和缓存管理。\n (如果使用nanovg，字体由nanovg内部管理)\n\n",
     "name": "font_manager_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -6719,6 +6724,9 @@
     "header": "base/theme.h",
     "desc": " 主题。\n\n 负责管理缺省的主题数据，方便实现style\\_const。\n\n\n",
     "name": "theme_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
