@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @class theme_t
+ * @annotation ["scriptable"]
  * 主题。
  *
  * 负责管理缺省的主题数据，方便实现style\_const。
