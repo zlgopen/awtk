@@ -35,6 +35,11 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
+#define return_if_equal(p, value) \
+  if ((p) == value) {             \
+    return (value);               \
+  }
+
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -1293,11 +1298,12 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_keydown) {
     ret = widget->vt->on_keydown(widget, e);
   } else if (widget->key_target != NULL) {
-    widget_on_keydown(widget->key_target, e);
+    ret = widget_on_keydown(widget->key_target, e);
   }
 
   return ret;
@@ -1308,11 +1314,12 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_keyup) {
     ret = widget->vt->on_keyup(widget, e);
   } else if (widget->key_target != NULL) {
-    widget_on_keyup(widget->key_target, e);
+    ret = widget_on_keyup(widget->key_target, e);
   }
 
   return ret;
@@ -1368,9 +1375,10 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_down) {
-    ret = widget->vt->on_pointer_down(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_down(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
@@ -1381,11 +1389,12 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
         if (widget->key_target) {
           widget_dispatch_blur_event(widget->key_target);
         }
-        widget_dispatch(target, &focus);
+        ret = widget_dispatch(target, &focus);
       }
 
       widget->key_target = target;
       widget->key_target->focused = TRUE;
+      return_if_equal(ret, RET_STOP);
     }
   }
 
@@ -1403,9 +1412,10 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_move) {
-    ret = widget->vt->on_pointer_move(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_move(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
@@ -1417,14 +1427,15 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
     if (target != NULL) {
       pointer_event_t enter = *e;
       enter.e.type = EVT_POINTER_ENTER;
-
-      widget_dispatch(target, (event_t*)(&enter));
+      ret = widget_dispatch(target, (event_t*)(&enter));
     }
+
     widget->target = target;
+    return_if_equal(ret, RET_STOP);
   }
 
   if (widget->target != NULL) {
-    widget_on_pointer_move(widget->target, e);
+    ret = widget_on_pointer_move(widget->target, e);
   }
 
   return ret;
@@ -1436,14 +1447,15 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_up) {
-    ret = widget->vt->on_pointer_up(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_up(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL) {
-    widget_on_pointer_up(target, e);
+    ret = widget_on_pointer_up(target, e);
   }
 
   return ret;
