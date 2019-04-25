@@ -2137,6 +2137,7 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 ret_t widget_set_as_key_target(widget_t* widget) {
   if (widget != NULL) {
     if (widget->parent != NULL) {
+      widget->parent->focused = TRUE;
       widget->parent->key_target = widget;
       widget_set_as_key_target(widget->parent);
     }
