@@ -237,3 +237,7 @@ bin\demoui
 
 [最新动态](docs/changes.md)
 
+扫描入群交流：
+
+![wetchat_awtk](docs/images/wechat_awtk.jpg)
+
