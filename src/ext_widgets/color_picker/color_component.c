@@ -87,7 +87,7 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   xy_t x = tk_max(0, tk_min(color_component->color_x, (w - 1)));
   xy_t y = tk_max(0, tk_min(color_component->color_y, (h - 1)));
-  bitmap_t* image = &(color_component->image);
+  bitmap_t* image = (color_component->image);
 
   if (color_component->update == NULL) {
     color_component_set_type(widget, widget->name);
@@ -134,7 +134,7 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t color_component_on_destroy(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
-  bitmap_destroy(&(color_component->image));
+  bitmap_destroy((color_component->image));
 
   return RET_OK;
 }
@@ -147,35 +147,14 @@ TK_DECL_VTABLE(color_component) = {.size = sizeof(color_component_t),
                                    .on_event = color_component_on_event,
                                    .on_paint_self = color_component_on_paint_self};
 
-static ret_t bitmap_destroy_data(bitmap_t* bitmap) {
-  void* data = (void*)bitmap->data;
-
-  TKMEM_FREE(data);
-
-  return RET_OK;
-}
-
-static ret_t color_component_init_image(bitmap_t* image, const char* name, int32_t w, int32_t h) {
-  int32_t size = w * h * 4;
-
-  memset(image, 0x00, sizeof(bitmap_t));
-  image->w = w;
-  image->h = h;
-  image->flags = 0;
-  image->name = name;
+static bitmap_t* color_component_create_image(int32_t w, int32_t h) {
 #ifdef WITH_BITMAP_BGRA
-  image->format = BITMAP_FMT_BGRA8888;
+  bitmap_format_t format = BITMAP_FMT_BGRA8888;
 #else
-  image->format = BITMAP_FMT_RGBA8888;
+  bitmap_format_t format = BITMAP_FMT_RGBA8888;
 #endif /*WITH_BITMAP_BGRA*/
-  image->data = (uint8_t*)TKMEM_ALLOC(size);
-  return_value_if_fail(image->data != NULL, RET_OOM);
-  image->destroy = bitmap_destroy_data;
-  bitmap_set_line_length(image, 0);
 
-  memset((void*)(image->data), 0xff, size);
-
-  return RET_OK;
+  return bitmap_create_ex(w, h, 0, format);
 }
 
 static ret_t color_component_update_sv(widget_t* widget) {
@@ -196,7 +175,7 @@ static ret_t color_component_update_sv(widget_t* widget) {
   return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
 
   rgba = color_component->c.rgba;
-  image = &(color_component->image);
+  image = color_component->image;
   w = image->w;
   h = image->h;
   dst = (uint32_t*)(image->data);
@@ -233,7 +212,7 @@ static ret_t color_component_update_h(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
 
-  image = &(color_component->image);
+  image = color_component->image;
   w = image->w;
   h = image->h;
   dst = (uint32_t*)(image->data);
@@ -255,11 +234,13 @@ widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, NULL);
 
-  color_component_init_image(&(color_component->image), "", w, h);
+  color_component->image = color_component_create_image(w, h);
   color_component->c = color_init(0xff, 0xff, 0xff, 0xff);
   color_component->need_update = TRUE;
   color_component->last_hue = -1;
-
+  
+  ENSURE(color_component->image != NULL);
+  
   return widget;
 }
 
@@ -291,7 +272,7 @@ static ret_t color_component_set_type(widget_t* widget, const char* type) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL && type != NULL, RET_BAD_PARAMS);
 
-  color_component->image.name = type;
+  color_component->image->name = type;
 
   if (tk_str_eq(type, COLOR_PICKER_CHILD_SV)) {
     color_component->update = color_component_update_sv;

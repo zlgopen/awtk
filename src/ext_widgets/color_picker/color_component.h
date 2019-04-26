@@ -45,7 +45,7 @@ typedef struct _color_component_t {
   xy_t color_y;
 
   color_t c;
-  bitmap_t image;
+  bitmap_t* image;
   int32_t last_hue;
   bool_t need_update;
   color_component_update_t update;
