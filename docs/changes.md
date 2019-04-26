@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/04/26
+  * 重构color component.
+  * mutable bitmap支持web版本。
+
 * 2019/04/25
   * 更新文档。
   * theme/fontmanger 支持脚本化(感谢朝泽提供补丁)。
