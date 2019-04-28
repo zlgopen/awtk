@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/04/28
+  * AWTK WEB版本GIF目前在iPhone上正常，其它浏览器只显示第一张图片。
+
 * 2019/04/26
   * 重构color component.
   * mutable bitmap支持web版本。
