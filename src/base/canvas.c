@@ -291,7 +291,15 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
   canvas_set_global_alpha(c, 0xff);
   ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   if (c->lcd->support_dirty_rect) {
-    canvas_set_clip_rect(c, dirty_rect);
+    rect_t r = *dirty_rect;
+
+    r.x--;
+    r.y--;
+    r.w += 2;
+    r.h += 2;
+    rect_fix(&r, c->lcd->w, c->lcd->h);
+
+    canvas_set_clip_rect(c, &r);
   } else {
     canvas_set_clip_rect(c, NULL);
   }
