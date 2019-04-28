@@ -36,6 +36,14 @@ static rect_t* canvas_fix_rect(const rect_t* r, rect_t* o) {
   if (r != NULL) {
     *o = *r;
 
+    if (o->x < 0) {
+      o->x = 0;
+    }
+
+    if (o->y < 0) {
+      o->y = 0;
+    }
+
     if (o->w < 0) {
       o->w = -o->w;
       o->x = o->x - o->w + 1;
@@ -291,15 +299,19 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
   canvas_set_global_alpha(c, 0xff);
   ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   if (c->lcd->support_dirty_rect) {
-    rect_t r = *dirty_rect;
+    if (draw_mode == LCD_DRAW_NORMAL) {
+      rect_t r = *dirty_rect;
 
-    r.x--;
-    r.y--;
-    r.w += 2;
-    r.h += 2;
-    rect_fix(&r, c->lcd->w, c->lcd->h);
+      /*for vgcanvas anti alias*/
+      r.x--;
+      r.y--;
+      r.w += 2;
+      r.h += 2;
 
-    canvas_set_clip_rect(c, &r);
+      canvas_set_clip_rect(c, &r);
+    } else {
+      canvas_set_clip_rect(c, dirty_rect);
+    }
   } else {
     canvas_set_clip_rect(c, NULL);
   }
