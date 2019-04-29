@@ -224,7 +224,7 @@ pointer_t value_pointer(const value_t* v) {
   return NULL;
 }
 
-value_t* value_set_float(value_t* v, float value) {
+value_t* value_set_float(value_t* v, float_t value) {
   return_value_if_fail(v != NULL, NULL);
 
   v->value.f = value;
