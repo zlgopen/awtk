@@ -238,9 +238,9 @@ widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   color_component->c = color_init(0xff, 0xff, 0xff, 0xff);
   color_component->need_update = TRUE;
   color_component->last_hue = -1;
-  
+
   ENSURE(color_component->image != NULL);
-  
+
   return widget;
 }
 
