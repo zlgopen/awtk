@@ -62,7 +62,7 @@ typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
-typedef float (*lcd_measure_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr);
+typedef float_t (*lcd_measure_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y);
 
 typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
