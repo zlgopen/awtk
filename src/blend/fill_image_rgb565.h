@@ -25,4 +25,6 @@
 
 ret_t fill_rgb565_rect(bitmap_t* fb, rect_t* dst, color_t c);
 
+ret_t clear_rgb565_rect(bitmap_t* fb, rect_t* dst, color_t c);
+
 #endif /*TK_FILL_IMAGE_RGB565_H*/

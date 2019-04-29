@@ -34,7 +34,7 @@ typedef enum _token_type_t { TOKEN_NUMBER, TOKEN_CMD, TOKEN_EOF } token_type_t;
 
 static token_type_t svg_path_parser_next_token_type(svg_path_parser_t* parser) {
   const char* p = parser->p;
-  while (*p == ' ' || *p == ',') {
+  while (isspace(*p) || *p == ',') {
     p++;
   }
 

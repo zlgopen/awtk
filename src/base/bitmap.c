@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/pixel.h"
 #include "base/bitmap.h"
 
@@ -116,6 +117,16 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
   }
 }
 
+#ifdef AWTK_WEB
+#include <emscripten.h>
+static ret_t bitmap_web_destroy(bitmap_t* bitmap) {
+  int32_t id = tk_pointer_to_int(bitmap->specific);
+  EM_ASM_INT({ return VGCanvas.destroyMutableImage($0); }, id);
+
+  return RET_OK;
+}
+
+#endif /*AWTK_WEB*/
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format) {
   bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
   return_value_if_fail(bitmap != NULL, NULL);
@@ -130,6 +141,14 @@ bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_
   if (bitmap->data == NULL) {
     TKMEM_FREE(bitmap);
     bitmap = NULL;
+  } else {
+#ifdef AWTK_WEB
+    return_value_if_fail(format == BITMAP_FMT_RGBA8888, NULL);
+    int32_t id = EM_ASM_INT({ return VGCanvas.createMutableImage($0, $1, $2, $3, $4); },
+                            bitmap->data, w, h, line_length, format);
+    bitmap->specific = tk_pointer_from_int(id);
+    bitmap->specific_destroy = bitmap_web_destroy;
+#endif /*AWTK_WEB*/
   }
 
   return bitmap;
@@ -349,7 +368,9 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
 uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, 0);
 
-  assert(bitmap->line_length > bitmap->w);
+  if (bitmap->line_length < bitmap->w) {
+    bitmap_set_line_length(bitmap, 0);
+  }
 
   return bitmap->line_length;
 }

@@ -35,6 +35,11 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 
+#define return_if_equal(p, value) \
+  if ((p) == value) {             \
+    return (value);               \
+  }
+
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -127,8 +132,8 @@ ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration
 
 bool_t widget_is_window_opened(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
-  
-  if(win != NULL) {
+
+  if (win != NULL) {
     return WINDOW_STAGE_OPENED == widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   } else {
     return FALSE;
@@ -946,7 +951,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     widget_layout_children(widget);
   }
 
+  canvas_save(c);
   widget_paint_impl(widget, c);
+  canvas_restore(c);
+
   widget->dirty = FALSE;
 
   return RET_OK;
@@ -1290,11 +1298,12 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_keydown) {
     ret = widget->vt->on_keydown(widget, e);
   } else if (widget->key_target != NULL) {
-    widget_on_keydown(widget->key_target, e);
+    ret = widget_on_keydown(widget->key_target, e);
   }
 
   return ret;
@@ -1305,11 +1314,12 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_keyup) {
     ret = widget->vt->on_keyup(widget, e);
   } else if (widget->key_target != NULL) {
-    widget_on_keyup(widget->key_target, e);
+    ret = widget_on_keyup(widget->key_target, e);
   }
 
   return ret;
@@ -1365,9 +1375,10 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_down) {
-    ret = widget->vt->on_pointer_down(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_down(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
@@ -1378,11 +1389,12 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
         if (widget->key_target) {
           widget_dispatch_blur_event(widget->key_target);
         }
-        widget_dispatch(target, &focus);
+        ret = widget_dispatch(target, &focus);
       }
 
       widget->key_target = target;
       widget->key_target->focused = TRUE;
+      return_if_equal(ret, RET_STOP);
     }
   }
 
@@ -1400,9 +1412,10 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_move) {
-    ret = widget->vt->on_pointer_move(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_move(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
@@ -1414,14 +1427,15 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
     if (target != NULL) {
       pointer_event_t enter = *e;
       enter.e.type = EVT_POINTER_ENTER;
-
-      widget_dispatch(target, (event_t*)(&enter));
+      ret = widget_dispatch(target, (event_t*)(&enter));
     }
+
     widget->target = target;
+    return_if_equal(ret, RET_STOP);
   }
 
   if (widget->target != NULL) {
-    widget_on_pointer_move(widget->target, e);
+    ret = widget_on_pointer_move(widget->target, e);
   }
 
   return ret;
@@ -1433,14 +1447,15 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  widget_dispatch(widget, (event_t*)e);
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+
   if (widget->vt->on_pointer_up) {
-    ret = widget->vt->on_pointer_up(widget, e);
+    return_if_equal(ret = widget->vt->on_pointer_up(widget, e), RET_STOP);
   }
 
   target = widget_find_target(widget, e->x, e->y);
   if (target != NULL) {
-    widget_on_pointer_up(target, e);
+    ret = widget_on_pointer_up(target, e);
   }
 
   return ret;
@@ -1489,7 +1504,7 @@ widget_t* widget_get_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    if (iter->vt->is_window) {
+    if (widget_is_window(iter)) {
       return iter;
     }
     iter = iter->parent;
@@ -1503,8 +1518,7 @@ widget_t* widget_get_window_manager(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   while (iter) {
-    const char* type = widget_get_type(iter);
-    if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
+    if (widget_is_window_manager(iter)) {
       return iter;
     }
     iter = iter->parent;
@@ -2123,6 +2137,7 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 ret_t widget_set_as_key_target(widget_t* widget) {
   if (widget != NULL) {
     if (widget->parent != NULL) {
+      widget->parent->focused = TRUE;
       widget->parent->key_target = widget;
       widget_set_as_key_target(widget->parent);
     }
@@ -2220,4 +2235,22 @@ ret_t widget_focus_prev(widget_t* widget) {
 
 ret_t widget_focus_next(widget_t* widget) {
   return widget_move_focus(widget, TRUE);
+}
+
+bool_t widget_is_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window;
+}
+
+bool_t widget_is_designing_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_designing_window;
+}
+
+bool_t widget_is_window_manager(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window_manager;
 }

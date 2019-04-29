@@ -66,7 +66,6 @@ static inline pixel_t blend_rgba_premulti(rgba_t d, rgba_t s, uint8_t a) {
   uint8_t r = ((d.r * a) >> 8) + s.r;
   uint8_t g = ((d.g * a) >> 8) + s.g;
   uint8_t b = ((d.b * a) >> 8) + s.b;
-  ;
 
   pixel_t p = pixel_from_rgb(r, g, b);
 

@@ -77,3 +77,11 @@ git clone https://github.com/bkaradzic/bgfx.git
 
 > 如果您不需要使用SVG，仍然可以使用GL3作为NANOVG\_BACKEND。
 
+#### 6.Ubuntu 14上无法启动，有什么办法吗？
+
+Ubuntu 14上的OpenGL有问题，请使用AGGE软件渲染。修改awtk_config.py：
+
+```
+NANOVG_BACKEND='AGGE'
+```
+

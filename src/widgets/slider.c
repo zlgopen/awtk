@@ -152,6 +152,17 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t slider_pointer_up_cleanup(widget_t* widget) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  slider->dragging = FALSE;
+  widget_ungrab(widget->parent, widget);
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
 static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
   uint16_t type = e->type;
@@ -171,6 +182,10 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
       }
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      slider_pointer_up_cleanup(widget);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -200,12 +215,9 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       if (slider->dragging) {
-        slider->dragging = FALSE;
-        widget_ungrab(widget->parent, widget);
         slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED, TRUE);
       }
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
-      widget_invalidate(widget, NULL);
+      slider_pointer_up_cleanup(widget);
       break;
     }
     case EVT_POINTER_LEAVE:

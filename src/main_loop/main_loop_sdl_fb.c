@@ -58,12 +58,17 @@ static ret_t main_loop_sdl_fb_destroy(main_loop_t* l) {
 }
 
 static ret_t main_loop_sdl_fb_create_window(main_loop_simple_t* l) {
+  int win_flags = 0;
   int x = SDL_WINDOWPOS_UNDEFINED;
   int y = SDL_WINDOWPOS_UNDEFINED;
   int flags = SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED;
 
+  if (system_info()->app_type == APP_DESKTOP) {
+    win_flags |= SDL_WINDOW_RESIZABLE;
+  }
+
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-  LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow("AWTK Simulator", x, y, l->w, l->h, 0));
+  LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow("AWTK Simulator", x, y, l->w, l->h, win_flags));
   return_value_if_fail(LOOP_SDL_WINDOW(l) != NULL, RET_FAIL);
 
   LOOP_SDL_RENDER_SET(l, SDL_CreateRenderer(LOOP_SDL_WINDOW(l), -1, flags));

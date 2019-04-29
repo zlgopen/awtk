@@ -263,14 +263,12 @@ def gen_res_all():
 
 
 def writeResult(str):
-    fd = os.open(ASSET_C, os.O_RDWR | os.O_CREAT | os.O_TRUNC)
-    os.write(fd, str)
-    os.close(fd)
+    with open(ASSET_C, "w") as text_file:
+        text_file.write(str);
 
 def writeResultJSON(str):
-    fd = os.open('assets.js', os.O_RDWR | os.O_CREAT | os.O_TRUNC)
-    os.write(fd, str)
-    os.close(fd)
+    with open('assets.js', "w") as text_file:
+        text_file.write(str);
 
 def genIncludes(files):
     str1 = ""
@@ -413,6 +411,7 @@ def gen_res_json_one(res_type, files):
     result= "\n  " + res_type + ': [\n'
     for f in files:
         uri = f.replace(os.getcwd(), "")[1:]
+        uri = uri.replace('\\', '/');
         filename, extname = os.path.splitext(uri)
         basename = os.path.basename(filename)
         result = result + '    {name:"' + basename + '\", uri:"' + uri;

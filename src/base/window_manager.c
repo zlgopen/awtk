@@ -202,6 +202,9 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
   ENSURE(canvas_begin_frame(c, NULL, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  if (wm->system_bar) {
+    widget_paint(wm->system_bar, c);
+  }
   ENSURE(widget_paint(prev_win, c) == RET_OK);
 
   if (dialog_highlighter != NULL) {
@@ -215,6 +218,9 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
+  if (wm->system_bar) {
+    widget_paint(wm->system_bar, c);
+  }
   ENSURE(widget_paint(prev_win, c) == RET_OK);
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
@@ -584,10 +590,20 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
   uint32_t start_time = time_now_ms();
   window_manager_t* wm = WINDOW_MANAGER(widget);
 
+  ENSURE(window_animator_begin_frame(wm->animator) == RET_OK);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
+
   ret_t ret = window_animator_update(wm->animator, start_time);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
+
+  ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
+
   wm->last_paint_cost = time_now_ms() - start_time;
   window_manager_inc_fps(widget);
 
@@ -806,6 +822,8 @@ static ret_t window_manager_on_destroy(widget_t* widget) {
 }
 
 static const widget_vtable_t s_window_manager_vtable = {
+    .size = sizeof(window_manager_t),
+    .is_window_manager = TRUE,
     .type = WIDGET_TYPE_WINDOW_MANAGER,
     .set_prop = window_manager_set_prop,
     .get_prop = window_manager_get_prop,

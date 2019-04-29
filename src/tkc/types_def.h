@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAS_STDIO
+#if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
 #else
 #define STBI_NO_STDIO
@@ -161,7 +161,7 @@ typedef enum _ret_t {
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
 #define snprintf _snprintf
-#elif defined(HAS_STDIO)
+#elif defined(HAS_STDIO) || defined(AWTK_WEB)
 #define log_debug(format, args...) printf(format, ##args)
 #define log_info(format, args...) printf(format, ##args)
 #define log_warn(format, args...) printf(format, ##args)

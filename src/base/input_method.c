@@ -143,19 +143,20 @@ ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uin
   return input_method_dispatch(im, (event_t*)(&ce));
 }
 
-ret_t input_method_commit_text(input_method_t* im, const char* text) {
+ret_t input_method_commit_text_ex(input_method_t* im, bool_t replace, const char* text) {
   im_commit_event_t e;
   return_value_if_fail(im != NULL && text != NULL, RET_BAD_PARAMS);
-
-  e.text = text;
-  e.e = event_init(EVT_IM_COMMIT, NULL);
 
   if (im->engine) {
     input_engine_reset_input(im->engine);
     input_method_dispatch_candidates(im, "", 0);
   }
 
-  return input_method_dispatch_to_widget(input_method(), (event_t*)&e);
+  return input_method_dispatch_to_widget(input_method(), im_commit_event_init(&e, text, replace));
+}
+
+ret_t input_method_commit_text(input_method_t* im, const char* text) {
+  return input_method_commit_text_ex(im, FALSE, text);
 }
 
 ret_t input_method_destroy(input_method_t* im) {
@@ -165,4 +166,15 @@ ret_t input_method_destroy(input_method_t* im) {
   }
 
   return RET_OK;
+}
+
+event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t replace) {
+  return_value_if_fail(e != NULL && text != NULL, NULL);
+
+  e->text = text;
+  e->e.target = NULL;
+  e->replace = replace;
+  e->e.type = EVT_IM_COMMIT;
+
+  return (event_t*)e;
 }

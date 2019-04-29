@@ -571,6 +571,41 @@ TEST(Widget, is_keyboard) {
   widget_destroy(w);
 }
 
+TEST(Widget, is_window) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* group = group_box_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_is_window(w), TRUE);
+  ASSERT_EQ(widget_is_window(group), FALSE);
+
+  ASSERT_EQ(widget_is_window_manager(w->parent), TRUE);
+  ASSERT_EQ(widget_is_designing_window(group), FALSE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, is_window_manager) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* group = group_box_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_is_window_manager(w), FALSE);
+  ASSERT_EQ(widget_is_window_manager(group), FALSE);
+  ASSERT_EQ(widget_is_window_manager(w->parent), TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, get_window) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* group = group_box_create(w, 1, 0, 10, 20);
+  widget_t* group1 = group_box_create(group, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_get_window(group), w);
+  ASSERT_EQ(widget_get_window(group1), w);
+
+  widget_destroy(w);
+}
+
 #include "base/ui_loader.h"
 
 TEST(Widget, load_widget) {

@@ -30,6 +30,7 @@ BEGIN_C_DECLS
 
 /**
  * @class font_manager_t
+ * @annotation ["scriptable"]
  * 字体管理器，负责字体的加载和缓存管理。
  * (如果使用nanovg，字体由nanovg内部管理)
  */
@@ -132,6 +133,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 /**
  * @method font_manager_unload_font
  * 卸载指定的字体。
+ * @annotation ["scriptable"]
  * @param {font_manager_t*} fm 字体管理器对象。
  * @param {char*} name 字体名，为NULL时使用TK_DEFAULT_FONT。
  * @param {font_size_t} size 字体的大小(矢量字体指定为0即可)。

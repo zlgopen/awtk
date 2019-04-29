@@ -161,6 +161,24 @@ struct _window_animator_t {
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms);
 
 /**
+ * @method window_animator_begin_frame
+ * begin frame
+ * @param {window_animator_t*} wa 窗口动画对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_animator_begin_frame(window_animator_t* wa);
+
+/**
+ * @method window_animator_end_frame
+ * end frame
+ * @param {window_animator_t*} wa 窗口动画对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_animator_end_frame(window_animator_t* wa);
+
+/**
  * @method window_animator_destroy
  * 销毁窗口动画对象。
  * @param {window_animator_t*} wa 窗口动画对象。

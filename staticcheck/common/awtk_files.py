@@ -1,6 +1,7 @@
 import os
 import copy
 import glob
+import subprocess
 
 def joinPath(root, subdir):
   return os.path.abspath(os.path.normpath(os.path.join(root, subdir)))
@@ -27,9 +28,10 @@ AWKT_WINDOW_ANIMATORS_FILES=glob.glob(AWTK_SRC_DIR+'/window_animators/*.c')
 AWKT_DIALOG_HIGHLIGHTERS_FILES=glob.glob(AWTK_SRC_DIR+'/dialog_highlighters/*.c')
 AWKT_FONT_LOADER_FILES=glob.glob(AWTK_SRC_DIR+'/font_loader/*.c')
 AWKT_IMAGE_LOADER_FILES=glob.glob(AWTK_SRC_DIR+'/image_loader/*.c')
+AWKT_INPUT_METHOD_FILES=glob.glob(AWTK_SRC_DIR+'/input_methods/input_method_creator.c')
 AWKT_FONT_GLOBAL_FILES=glob.glob(AWTK_SRC_DIR+'/*.c')
 
-COMMON_FILES=AWKT_TKC_FILES + AWKT_BASE_FILES + AWKT_WIDGETS_FILES + AWKT_EXT_WIDGETS_FILES + AWKT_UILOADER_FILES + AWKT_LAYOUTERS_FILES + AWKT_SVG_FILES + AWKT_WIDGET_ANIMATORS_FILES + AWKT_WINDOW_ANIMATORS_FILES + AWKT_DIALOG_HIGHLIGHTERS_FILES + AWKT_CLIPBOARD_FILES + AWKT_FONT_GLOBAL_FILES;
+COMMON_FILES=AWKT_TKC_FILES + AWKT_BASE_FILES + AWKT_WIDGETS_FILES + AWKT_EXT_WIDGETS_FILES + AWKT_UILOADER_FILES + AWKT_LAYOUTERS_FILES + AWKT_SVG_FILES + AWKT_WIDGET_ANIMATORS_FILES + AWKT_WINDOW_ANIMATORS_FILES + AWKT_DIALOG_HIGHLIGHTERS_FILES + AWKT_CLIPBOARD_FILES + AWKT_FONT_GLOBAL_FILES + AWKT_INPUT_METHOD_FILES;
 
 INFER_FILES=COMMON_FILES
 WEB_FILES=COMMON_FILES + AWKT_XML_FILES
@@ -53,8 +55,20 @@ def toExe(name):
     else:
         return name
 
+def writeArgs(filename, str):
+    with open(filename, "w") as text_file:
+        text_file.write(str);
+	
+def runArgsInFile(cmd, flags, files):
+    cmd_args = flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = cmd_args.replace('\\', '\\\\');
+    writeArgs("args.txt", cmd_args);
+    print(cmd_args)
+    os.system(cmd + ' @args.txt');
+
 def run(cmd, flags, files):
-    cmd_args=cmd + ' ' + flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = cmd + ' ' + flags + ' ' + getIncludes() + ' ' + ' '.join(files) 
+    cmd_args = cmd_args.replace('\\', '\\\\');
     print(cmd_args)
     os.system(cmd_args);
 

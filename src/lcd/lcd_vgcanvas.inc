@@ -168,6 +168,10 @@ float_t lcd_vgcanvas_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   return_value_if_fail(nr < MAX_CHARS, RET_FAIL);
 
+  if (nr == 0) {
+    return 0;
+  }
+
   wcsncpy(temp, str, nr);
   temp[nr] = 0;
 
@@ -183,6 +187,10 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   char text[2 * MAX_CHARS + 1];
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   return_value_if_fail(nr < MAX_CHARS, RET_FAIL);
+
+  if (nr == 0) {
+    return RET_OK;
+  }
 
   wcsncpy(temp, str, nr);
   temp[nr] = 0;

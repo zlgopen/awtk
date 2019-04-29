@@ -27,6 +27,7 @@
 #define pixel_dst_format pixel_rgb565_format
 #define pixel_dst_to_rgba pixel_rgb565_to_rgba
 #define pixel_dst_from_rgb pixel_rgb565_from_rgb
+#define pixel_dst_from_rgba(r, g, b, a) pixel_rgb565_from_rgb(r, g, b)
 
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
@@ -39,4 +40,8 @@
 
 ret_t fill_rgb565_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   return fill_image(fb, dst, c);
+}
+
+ret_t clear_rgb565_rect(bitmap_t* fb, rect_t* dst, color_t c) {
+  return clear_image(fb, dst, c);
 }

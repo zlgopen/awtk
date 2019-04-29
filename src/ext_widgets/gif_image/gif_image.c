@@ -25,6 +25,17 @@
 #include "base/widget_vtable.h"
 #include "gif_image/gif_image.h"
 
+#ifdef AWTK_WEB
+static ret_t gif_image_on_timer(const timer_info_t* info) {
+  gif_image_t* image = GIF_IMAGE(info->ctx);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+
+  image->index = 0;
+  widget_invalidate_force(WIDGET(image), NULL);
+
+  return RET_REPEAT;
+}
+#else
 static ret_t gif_image_on_timer(const timer_info_t* info) {
   gif_image_t* image = GIF_IMAGE(info->ctx);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
@@ -49,10 +60,13 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
     return RET_REMOVE;
   }
 }
+#endif /*AWTK_WEB*/
 
 static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t y = 0;
   wh_t h = 0;
+  rect_t src;
+  rect_t dst;
   bitmap_t bitmap;
   vgcanvas_t* vg = NULL;
   gif_image_t* image = GIF_IMAGE(widget);
@@ -67,10 +81,15 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
 
   return_value_if_fail(widget_load_image(widget, image_base->image, &bitmap) == RET_OK,
                        RET_BAD_PARAMS);
+#ifdef AWTK_WEB
+  image->frames_nr = 1;
+  bitmap.gif_frame_h = bitmap.h;
+#else
   return_value_if_fail(bitmap.is_gif, RET_OK);
-
   image->delays = bitmap.gif_delays;
   image->frames_nr = bitmap.gif_frames_nr;
+#endif /*AWTK_WEB*/
+
   if (image->index >= image->frames_nr) {
     image->index = 0;
   }
@@ -89,16 +108,20 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
     }
   }
 
-  if (bitmap.data != NULL) {
-    rect_t src = rect_init(0, y, bitmap.w, h);
-    rect_t dst = rect_init(0, 0, widget->w, widget->h);
-    canvas_draw_image_scale_down(c, &bitmap, &src, &dst);
-  }
+  src = rect_init(0, y, bitmap.w, h);
+  dst = rect_init(0, 0, widget->w, widget->h);
+  canvas_draw_image_scale_down(c, &bitmap, &src, &dst);
 
+#ifdef AWTK_WEB
+  if (image->timer_id == TK_INVALID_ID) {
+    image->timer_id = timer_add(gif_image_on_timer, image, 16);
+  }
+#else
   if (image->timer_id == TK_INVALID_ID && image->frames_nr > 1) {
     uint32_t delay = image->delays[image->index];
     image->timer_id = timer_add(gif_image_on_timer, image, delay);
   }
+#endif /*AWTK_WEB*/
 
   return RET_OK;
 }

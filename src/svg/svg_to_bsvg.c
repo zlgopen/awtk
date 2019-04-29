@@ -87,13 +87,13 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
     } else if (tk_str_eq(k, "stroke-width")) {
       shape->stroke_width = tk_atoi(v);
     } else if (tk_str_eq(k, "stroke")) {
-      if (tk_str_eq(v, "transparent")) {
+      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none") || tk_str_eq(v, "")) {
         shape->no_stroke = TRUE;
       } else {
         shape->stroke = color_parse(v);
       }
     } else if (tk_str_eq(k, "fill")) {
-      if (tk_str_eq(v, "transparent")) {
+      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none") || tk_str_eq(v, "")) {
         shape->no_fill = TRUE;
       } else {
         shape->fill = color_parse(v);
@@ -419,7 +419,7 @@ static XmlBuilder* builder_init(xml_builder_t* b, uint32_t* buff, uint32_t buff_
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size) {
   xml_builder_t b;
   uint32_t* buff = NULL;
-  uint32_t buff_size = size + 100;
+  uint32_t buff_size = 2 * size + 100;
   return_value_if_fail(xml != NULL && out != NULL && out_size != NULL, RET_BAD_PARAMS);
 
   buff = (uint32_t*)TKMEM_ALLOC(buff_size);

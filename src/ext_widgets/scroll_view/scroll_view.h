@@ -123,6 +123,9 @@ typedef struct _scroll_view_t {
   widget_animator_t* wa;
   scroll_view_fix_end_offset_t fix_end_offset;
   widget_on_layout_children_t on_layout_children;
+  widget_on_paint_children_t on_paint_children;
+  widget_on_add_child_t on_add_child;
+  widget_find_target_t find_target;
   scroll_view_on_scroll_t on_scroll;
   scroll_view_on_scroll_to_t on_scroll_to;
   bool_t first_move_after_down;

@@ -35,15 +35,19 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t scale = wa->percent;
-  float_t alpha = wa->open ? wa->time_percent : 1 - wa->time_percent;
 
   rect_t src = rect_init(win->x, win->y, win->w, win->h);
   rect_t dst = rect_init(0, 0, win->w * scale, win->h * scale);
 
+  if (wa->time_percent < 5) {
+    float_t alpha = wa->open ? wa->time_percent : 1 - wa->time_percent;
+    lcd_set_global_alpha(c->lcd, alpha * 0xff);
+  } else {
+    lcd_set_global_alpha(c->lcd, 0xff);
+  }
+
   dst.x = win->x + ((win->w - dst.w) >> 1);
   dst.y = win->y + ((win->h - dst.h) >> 1);
-
-  lcd_set_global_alpha(c->lcd, alpha * 0xff);
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
 }

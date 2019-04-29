@@ -518,8 +518,11 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 ret_t canvas_end_frame(canvas_t* c);
-
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
+
+/*save/restore works for awtk web only*/
+ret_t canvas_save(canvas_t* c);
+ret_t canvas_restore(canvas_t* c);
 
 END_C_DECLS
 

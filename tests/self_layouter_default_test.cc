@@ -276,3 +276,94 @@ TEST(SelfLayoutDefault, right_bottom1020) {
   self_layouter_destroy(layouter);
   widget_destroy(w);
 }
+
+TEST(SelfLayoutDefault, right_bottom1020_percent) {
+  rect_t r;
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+  const char* layout_params = "default(x=r:10%,y=b:20%,w=30%,h=40%)";
+  self_layouter_t* layouter = self_layouter_create(layout_params);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x", 0), 10);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y", 0), 20);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w", 0), 30);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h", 0), 40);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_RIGHT_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_BOTTOM_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), H_ATTR_PERCENT);
+
+  r = rect_init(0, 0, 400, 300);
+  ASSERT_EQ(self_layouter_layout(layouter, b, &r), RET_OK);
+
+  ASSERT_EQ(b->x, 400 - 120 - 400 * 10 / 100);
+  ASSERT_EQ(b->y, 300 - 120 - 300 * 20 / 100);
+  ASSERT_EQ(b->w, 120);
+  ASSERT_EQ(b->h, 120);
+
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
+
+  self_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(SelfLayoutDefault, center_middle1020_percent) {
+  rect_t r;
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+  const char* layout_params = "default(x=c:10%,y=m:20%,w=30%,h=40%)";
+  self_layouter_t* layouter = self_layouter_create(layout_params);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x", 0), 10);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y", 0), 20);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w", 0), 30);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h", 0), 40);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_CENTER_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), H_ATTR_PERCENT);
+
+  r = rect_init(0, 0, 400, 300);
+  ASSERT_EQ(self_layouter_layout(layouter, b, &r), RET_OK);
+
+  ASSERT_EQ(b->x, 140 + 400 * 10 / 100);
+  ASSERT_EQ(b->y, 90 + 300 * 20 / 100);
+  ASSERT_EQ(b->w, 120);
+  ASSERT_EQ(b->h, 120);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
+
+  self_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(SelfLayoutDefault, center_middle1020minus_percent) {
+  rect_t r;
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+  const char* layout_params = "default(x=c:-10%,y=m:-20%,w=30%,h=40%)";
+  self_layouter_t* layouter = self_layouter_create(layout_params);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x", 0), -10);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y", 0), -20);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w", 0), 30);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h", 0), 40);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_CENTER_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_PERCENT);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), H_ATTR_PERCENT);
+
+  r = rect_init(0, 0, 400, 300);
+  ASSERT_EQ(self_layouter_layout(layouter, b, &r), RET_OK);
+
+  ASSERT_EQ(b->x, 140 - 400 * 10 / 100);
+  ASSERT_EQ(b->y, 90 - 300 * 20 / 100);
+  ASSERT_EQ(b->w, 120);
+  ASSERT_EQ(b->h, 120);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
+
+  self_layouter_destroy(layouter);
+  widget_destroy(w);
+}

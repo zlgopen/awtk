@@ -1,4 +1,70 @@
 # 最新动态
+* 2019/04/29
+  * 修改AWTK WEB脏矩形的BUG。
+  * 修改SVG解析器中一个BUG。
+
+* 2019/04/28
+  * AWTK WEB版本GIF目前在iPhone上正常，其它浏览器只显示第一张图片。
+
+* 2019/04/26
+  * 重构color component.
+  * mutable bitmap支持web版本。
+
+* 2019/04/25
+  * 更新文档。
+  * theme/fontmanger 支持脚本化(感谢朝泽提供补丁)。
+  * widget处理RET\_STOP返回值(感谢朝泽提供补丁)。
+  * dragger除POINTER ABORT消息(感谢朝泽提供补丁)。
+  * 修改窗口管理器取整的问题(感谢朝泽提供补丁)。
+  * 修改slide menu在web上裁剪的问题。
+  * 修改widget\_set\_as\_key\_target导致自定义软键盘焦点的问题。
+
+* 2019/04/24
+  * 修改AGGE模式支持APP\_DESKTOP的问题(感谢尧燊提供补丁)
+  * 更新文档。
+  * fix toast bug
+  * 修改edit在scroll view中clip的BUG。
+  * 修改slider在scroll view中的BUG。
+  * 准备发布1.1，用cppcheck/infer/valgrind检查。
+
+* 2019/04/23
+  * 修改编译脚本支持python3。建议大家都使用python3，python2很快不被官方支持了。
+  * 修改awtk-web在windows下编译的问题。
+  * 修改edit在scrollview中的问题(感谢朝泽提供补丁) 
+  * 增强scrollview的扩展性(感谢朝泽提供补丁) 
+
+* 2019/04/22
+  * input method支持脚本化，方便在脚本中实现自定义软键盘。
+  * key code支持脚本化。
+
+* 2019/04/21
+  * 为awtk web做了些改进。
+  * 重构time clock。
+
+* 2019/04/20
+  * 为awtk web做了些改进。
+
+* 2019/04/19
+  * 完善scale算法。
+  * 优化scale窗口动画。
+  * 完善default self layouter，right/center/bottom/middle支持百分比。
+  * 内置对话框启用缺省高亮策略。
+  * 完善widget\_get\_window，支持designing window。
+
+* 2019/04/18
+  * 增强scrollview的扩展性(感谢朝泽提供补丁) 
+  * 优化软件渲染(bgr565缩放半透明图片快30%，缩放不透明图片快一倍)。
+  * 增加image\_clear函数。
+
+* 2019/04/16
+  * window manager支持paint事件。
+
+* 2019/04/15
+  * 去掉widget\_is\_window\_opened中的警告。
+
+* 2019/04/14
+  * 为AWTK-WEB移植做了些修改。
+
 * 2019/04/13
   * 增加cppcheck和infer静态检查。
   * 修改cppcheck和infer发现的警告。

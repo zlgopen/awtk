@@ -27,6 +27,7 @@
 #define pixel_dst_format pixel_bgr565_format
 #define pixel_dst_to_rgba pixel_bgr565_to_rgba
 #define pixel_dst_from_rgb pixel_bgr565_from_rgb
+#define pixel_dst_from_rgba(r, g, b, a) pixel_bgr565_from_rgb(r, g, b)
 
 #define pixel_src_t pixel_bgr565_t
 #define pixel_src_format pixel_bgr565_format
@@ -35,6 +36,23 @@
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
 #define pixel_to_rgba pixel_dst_to_rgba
+
+static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a) {
+  if (a > 0xf8) {
+    *(uint16_t*)dst = *(uint16_t*)src;
+  } else if (a > 8) {
+    uint8_t minus_a = 0xff - a;
+    uint16_t sc = *(uint16_t*)src;
+    uint16_t dc = *(uint16_t*)dst;
+
+    uint8_t r = (((sc >> 11) << 3) * a + ((dc >> 11) << 3) * minus_a) >> 11;
+    uint8_t g = ((((sc >> 5) << 2) & 0xff) * a + ((((dc >> 5) << 2) & 0xff) * minus_a)) >> 10;
+    uint8_t b = ((((sc & 0x1f) << 3)) * a + ((((dc & 0x1f) << 3) & 0xff) * minus_a)) >> 11;
+    *(uint16_t*)dst = (r << 11) | (g << 5) | b;
+  }
+}
+
+#define blend_a blend_a_bgr565_bgra8888
 
 #include "pixel_ops.inc"
 #include "blend_image.inc"

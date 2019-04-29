@@ -79,11 +79,14 @@
           <switch x="r:10" y="m" w="60" h="20"/>
         </label>
       </list_item>
-      <list_item style="even" children_layout="default(rows=1,cols=0)">
-        <image draw_type="icon" w="30" image="earth"/>
-        <label w="-30" text="14.Hello AWTK !">
-          <switch x="r:10" y="m" w="60" h="20"/>
-        </label>
+      <list_item style="even" children_layout="default(rows=1,cols=1,m=15)">
+        <edit text="zlg awtk"/>
+      </list_item>
+      <list_item style="odd" children_layout="default(rows=1,cols=1,m=15)">
+        <slider value="50"/>
+      </list_item>
+      <list_item style="even" children_layout="default(rows=1,cols=1,m=15)">
+        <combo_box readonly="true" tr_text="ok" options="1:ok;2:cancel;"/>
       </list_item>
       <list_item style="even_clickable" name="clone_self" text="Clone Self" />
       <list_item style="odd_clickable" name="clone_self" text="Clone Self" />

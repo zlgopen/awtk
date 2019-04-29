@@ -36,6 +36,14 @@ static rect_t* canvas_fix_rect(const rect_t* r, rect_t* o) {
   if (r != NULL) {
     *o = *r;
 
+    if (o->x < 0) {
+      o->x = 0;
+    }
+
+    if (o->y < 0) {
+      o->y = 0;
+    }
+
     if (o->w < 0) {
       o->w = -o->w;
       o->x = o->x - o->w + 1;
@@ -290,8 +298,20 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
 
   canvas_set_global_alpha(c, 0xff);
   ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
-  if (c->lcd->support_dirty_rect) {
-    canvas_set_clip_rect(c, dirty_rect);
+  if (c->lcd->support_dirty_rect && dirty_rect != NULL) {
+    if (draw_mode == LCD_DRAW_NORMAL && c->lcd->type == LCD_VGCANVAS) {
+      rect_t r = *dirty_rect;
+
+      /*for vgcanvas anti alias*/
+      r.x--;
+      r.y--;
+      r.w += 2;
+      r.h += 2;
+
+      canvas_set_clip_rect(c, &r);
+    } else {
+      canvas_set_clip_rect(c, dirty_rect);
+    }
   } else {
     canvas_set_clip_rect(c, NULL);
   }
@@ -1382,6 +1402,26 @@ ret_t canvas_set_text_color_str(canvas_t* c, const char* color) {
   return_value_if_fail(c != NULL && color != NULL, RET_BAD_PARAMS);
 
   return canvas_set_text_color(c, color_parse(color));
+}
+
+ret_t canvas_save(canvas_t* c) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+#if defined(AWTK_WEB)
+  vgcanvas_save(lcd_get_vgcanvas(c->lcd));
+#endif /*AWTK_WEB*/
+
+  return RET_OK;
+}
+
+ret_t canvas_restore(canvas_t* c) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+#if defined(AWTK_WEB)
+  vgcanvas_restore(lcd_get_vgcanvas(c->lcd));
+#endif /*AWTK_WEB*/
+
+  return RET_OK;
 }
 
 canvas_t* canvas_cast(canvas_t* c) {

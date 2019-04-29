@@ -165,10 +165,19 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
   }
 
   {
-    rect_t tmp;
-    canvas_get_clip_rect(c, &tmp);
-    canvas_set_clip_rect_ex(c, r, TRUE);
+    rect_t save_r;
+    rect_t clip_r;
+    rect_t edit_r;
+    point_t p = {.x = 0, .y = 0};
+
+    canvas_get_clip_rect(c, &save_r);
+    widget_to_screen(widget, &p);
+    edit_r = rect_init(p.x + edit->left_margin, p.y + edit->top_margin, r->w, r->h);
+    clip_r = rect_intersect(&save_r, &edit_r);
+
+    canvas_set_clip_rect(c, &clip_r);
     canvas_draw_text(c, text->str, text->size, edit->offset_x, y);
+
     if (sel_w > 0 && widget->focused && !edit->readonly) {
       xy_t sel_x = edit->cursor_pos < edit->cursor_pre ? edit->caret_x : edit->caret_x - sel_w++;
       canvas_set_fill_color(c, color_init(0, 0, 0, 0xff));
@@ -176,7 +185,7 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
       canvas_fill_rect(c, sel_x, r->y, sel_w, r->h);
       canvas_draw_text(c, text->str + min_p, max_p - min_p, sel_x, y);
     }
-    canvas_set_clip_rect(c, &tmp);
+    canvas_set_clip_rect(c, &save_r);
   }
   return RET_OK;
 }
@@ -676,6 +685,18 @@ static ret_t edit_request_input_method(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_pointer_up_cleanup(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  edit->focus = FALSE;
+  widget->focused = FALSE;
+  widget_ungrab(widget->parent, widget);
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+
+  return RET_OK;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
@@ -704,6 +725,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
       break;
     }
+    case EVT_POINTER_DOWN_ABORT: {
+      edit_pointer_up_cleanup(widget);
+      break;
+    }
     case EVT_POINTER_MOVE: {
       if (widget->parent && widget->parent->grab_widget == widget) {
         pointer_event_t evt = *(pointer_event_t*)e;
@@ -728,6 +753,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
+      if (evt->replace) {
+        edit_clear(edit);
+      }
       edit_commit_str(widget, evt->text);
       widget_invalidate(widget, NULL);
 

@@ -35,6 +35,12 @@ ret_t image_fill(bitmap_t* dst, rect_t* dst_r, color_t c) {
   return soft_fill_rect(dst, dst_r, c);
 }
 
+ret_t image_clear(bitmap_t* dst, rect_t* dst_r, color_t c) {
+  return_value_if_fail(dst != NULL && dst_r != NULL, RET_OK);
+
+  return soft_clear_rect(dst, dst_r, c);
+}
+
 ret_t image_copy(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_OK);
 

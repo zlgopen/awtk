@@ -46,8 +46,16 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
       tk_snprintf(value, sizeof(value) - 1, "x=c:%d,", (int)layout->x);
       break;
     }
+    case X_ATTR_CENTER_PERCENT: {
+      tk_snprintf(value, sizeof(value) - 1, "x=c:%d%%,", (int)layout->x);
+      break;
+    }
     case X_ATTR_RIGHT: {
       tk_snprintf(value, sizeof(value) - 1, "x=r:%d,", (int)layout->x);
+      break;
+    }
+    case X_ATTR_RIGHT_PERCENT: {
+      tk_snprintf(value, sizeof(value) - 1, "x=r:%d%%,", (int)layout->x);
       break;
     }
     default: {
@@ -70,8 +78,16 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
       tk_snprintf(value, sizeof(value) - 1, "y=m:%d,", (int)layout->y);
       break;
     }
+    case Y_ATTR_MIDDLE_PERCENT: {
+      tk_snprintf(value, sizeof(value) - 1, "y=m:%d%%,", (int)layout->y);
+      break;
+    }
     case Y_ATTR_BOTTOM: {
       tk_snprintf(value, sizeof(value) - 1, "y=b:%d,", (int)layout->y);
+      break;
+    }
+    case Y_ATTR_BOTTOM_PERCENT: {
+      tk_snprintf(value, sizeof(value) - 1, "y=b:%d%%,", (int)layout->y);
       break;
     }
     default: {
@@ -178,14 +194,22 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
         if (v != NULL) {
           layout->x = tk_atoi(v + 1);
         }
-        layout->x_attr = X_ATTR_CENTER;
+        if (strchr(x, '%') != NULL) {
+          layout->x_attr = X_ATTR_CENTER_PERCENT;
+        } else {
+          layout->x_attr = X_ATTR_CENTER;
+        }
       } else if (x[0] == 'r') {
         const char* v = strchr(x, ':');
         if (v != NULL) {
           layout->x = tk_atoi(v + 1);
         }
-        layout->x_attr = X_ATTR_RIGHT;
-      } else if (strstr(x, "%") != NULL) {
+        if (strchr(x, '%') != NULL) {
+          layout->x_attr = X_ATTR_RIGHT_PERCENT;
+        } else {
+          layout->x_attr = X_ATTR_RIGHT;
+        }
+      } else if (strchr(x, '%') != NULL) {
         layout->x = tk_atoi(x);
         layout->x_attr = X_ATTR_PERCENT;
       } else {
@@ -201,14 +225,22 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
         if (v != NULL) {
           layout->y = tk_atoi(v + 1);
         }
-        layout->y_attr = Y_ATTR_MIDDLE;
+        if (strchr(y, '%') != NULL) {
+          layout->y_attr = Y_ATTR_MIDDLE_PERCENT;
+        } else {
+          layout->y_attr = Y_ATTR_MIDDLE;
+        }
       } else if (y[0] == 'b') {
         const char* v = strchr(y, ':');
         if (v != NULL) {
           layout->y = tk_atoi(v + 1);
         }
-        layout->y_attr = Y_ATTR_BOTTOM;
-      } else if (strstr(y, "%") != NULL) {
+        if (strchr(y, '%') != NULL) {
+          layout->y_attr = Y_ATTR_BOTTOM_PERCENT;
+        } else {
+          layout->y_attr = Y_ATTR_BOTTOM;
+        }
+      } else if (strchr(y, '%') != NULL) {
         layout->y = tk_atoi(y);
         layout->y_attr = Y_ATTR_PERCENT;
       } else {
@@ -278,8 +310,14 @@ static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t
       case X_ATTR_CENTER:
         x = (parent_w - w) / 2 + x;
         break;
+      case X_ATTR_CENTER_PERCENT:
+        x = (parent_w - w) / 2 + (x * parent_w) / 100;
+        break;
       case X_ATTR_RIGHT:
         x = (parent_w - w) - x;
+        break;
+      case X_ATTR_RIGHT_PERCENT:
+        x = (parent_w - w) - (x * parent_w) / 100;
         break;
       case X_ATTR_PERCENT:
         x = parent_w * x / 100;
@@ -292,8 +330,14 @@ static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t
       case Y_ATTR_MIDDLE:
         y = (parent_h - h) / 2 + y;
         break;
+      case Y_ATTR_MIDDLE_PERCENT:
+        y = (parent_h - h) / 2 + (y * parent_h) / 100;
+        break;
       case Y_ATTR_BOTTOM:
         y = (parent_h - h) - y;
+        break;
+      case Y_ATTR_BOTTOM_PERCENT:
+        y = (parent_h - h) - (y * parent_h) / 100;
         break;
       case Y_ATTR_PERCENT:
         y = parent_h * y / 100;

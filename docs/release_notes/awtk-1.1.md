@@ -1,7 +1,5 @@
 
-# AWTK = Toolkit AnyWhere
-
-![zlg](docs/images/zlg_adv.jpeg)
+## ZLG AWTK 1.1 Release Notes
 
 ## 一、介绍
 
@@ -20,13 +18,13 @@
 
 #### 运行效果截图：
 
-![CleanAir-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/cleanair_main.png)
+![CleanAir-Demo](http://zlgopen.bceapp.com/images/cleanair_main.png)
 
-![Meter-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/meter_main.png)
+![Meter-Demo](http://zlgopen.bceapp.com/images/meter_main.png)
 
-![Chart-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/chart_main.png)
+![Chart-Demo](http://zlgopen.bceapp.com/images/chart_main.png)
 
-![MusicPlayer-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/musicplayer_main.png)
+![MusicPlayer-Demo](http://zlgopen.bceapp.com/images/musicplayer_main.png)
 
 ## 二、最终目标：
 
@@ -136,108 +134,71 @@
 
 ### 9.开放源码，免费商用(LGPL)。
 
-## 四、模拟运行：
+## 四、1.1 版本更新
+-------------------
 
-### Mac
+### 1.稳定性增强
 
-如果没有安装scons和sdl2，请在终端运行下面的命令(假定已安装brew)：
+* 多个实际项目验证。
+* 新增数百个测试用例。
+* 增加控件运行时类型检查。
+* 使用infer静态检查，并修改发现的问题。
+* 使用cppcheck静态检查，并修改发现的问题。
+* 使用valgrind动态内存检查，并修改发现的问题。
 
-```
-brew install scons sdl2
-```
+### 2.优化性能
 
-编译运行(在终端下，进入awtk所在的目录，并运行下列命令)：
+* 绘制半透明色矩形速度提高3倍。
+* 缩放不透明图片快1倍(bgr565格式LCD)。
+* 缩放半透明图片快30%(bgr565格式LCD)。
 
-```
-scons
-./bin/demoui
-```
 
-### Ubuntu (版本>=16)
+### 3.新增特性
 
-如果没有安装scons和依赖的软件包，请在终端运行下面的命令：
+* 窗口动画支持自定义。
+* 新增4种内置窗口动画。
+* 对话框高亮策略支持自定义。
+* 内置动态和静态背景变暗的对话框高亮策略。
+* 新增 object_t接口。
+* 对话框支持非模态。
+* 窗口支持全屏窗口。
+* 增加toast/info/confirm等内置对话框。
+* slide view支持循环切换。
+* slide view增加更多切换动画。
+* 数字时钟支持英文的星期和月份。
+* 支持自定义软键盘。
+* 增加lcd_profile用于对绘制函数进行profile。
+* data资源支持同文件名不同扩展名。
+* window manager支持paint事件。
+* UI XML文件支持简单表达式。
+* 改进编译脚本和资源生成脚本。
 
-```
-sudo apt-get install scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
-```
+### 4.新增控件
 
-编译运行(在终端下，进入awtk所在的目录，并运行下列命令)：
+* 增加mutable image，用于实现camera和video时显示图像。
 
-```
-scons
-./bin/demoui
-```
+### 5.新增重要API
 
-> 在Ubuntu 14上无法启动，请参考[FAQ](docs/faq.md)修改。
+* window\_manager\_back 返回上一级窗口。
+* window\_manager\_back\_to\_home 返回主窗口。
+* window\_close\_force 强制关闭窗口(忽略动画)。
+* ui\_loader\_load\_widget 用于加载局部组件。
 
-### Windows
+### 6.Bug修改和完善功能
 
-(请先安装python，scons和Visual Studio C++(版本>=2017)
+详情请参考[docs/changes.md](https://github.com/zlgopen/awtk/blob/master/docs/changes.md)。
 
-编译运行(在命令行模式下，进入awtk所在的目录，并运行下列命令)：
+## 五、预告
+-------------------
 
-```
-scons
-bin\demoui
-```
+下一个版本计划推出下列功能：
 
-## 五、在线演示
+* 新增控件。
+* 抽象音频接口。
+* 桌面版本支持多原生窗口。
+* 在sylixos和linux上支持多进程。
+* AWTK-WEB 让AWTK应用程序在浏览器中运行。
+* AWTK-MVVM 为嵌入式系统定制的MVVM框架。
 
-* [基本控件在线演示](http://zlgopen.bceapp.com/awtk/demos/demoui/index.html)
 
-> 目前AWTK-WEB还处于测试阶段，部分功能不能正常工作。如有兴趣请在PC上自行编译运行。
-
-## 六、各个平台的移植
-
-#### 官方支持平台 
-
-* [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
-
-#### 移植示例(不定期更新)
-
-* [awtk-sylixos](https://github.com/zlgopen/awtk-sylixos)
-
-* [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
-
-* [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
-
-* [stm32f767igtx](https://github.com/zlgopen/awtk-stm32f767igtx-raw)
-
-* [linux-framebuffer(嵌入式Linux请用本项目)](https://github.com/zlgopen/awtk-linux-fb)
-
-## 七、各语言的绑定
-
-* [awtk-lua](https://github.com/zlgopen/awtk-lua)
-
-* [awtk-js](https://github.com/zlgopen/awtk-js)
-
-## 八、相关工程
-
-* [模板工程](https://github.com/zlgopen/awtk-hello)
-
-* [C示例代码](https://github.com/zlgopen/awtk-c-demos)
-
-* [精彩示例](https://github.com/zlgopen/awtk-examples)
-
-* [AWTK-WEB](https://github.com/zlgopen/awtk-web)
-
-* [AWTK-MVVM](https://github.com/zlgopen/awtk-mvvm)
-
-* [扩展控件实例: 二维码](https://github.com/CUITzhaoqi/awtk-qr)
-
-## 九、文档
-
-[文档](docs/README.md)
-
-## 十、任务完成情况
-
-[任务完成情况](TODO.md)
-
-## 十一、最新动态
-
-[最新动态](docs/changes.md)
-
-扫描入群交流：
-
-![wetchat_awtk](docs/images/wechat_awtk.jpg)
-
+> 需要什么功能，请在github上留言，我们会优先安排。
