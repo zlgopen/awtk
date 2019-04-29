@@ -419,7 +419,7 @@ static XmlBuilder* builder_init(xml_builder_t* b, uint32_t* buff, uint32_t buff_
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size) {
   xml_builder_t b;
   uint32_t* buff = NULL;
-  uint32_t buff_size = size + 100;
+  uint32_t buff_size = 2 * size + 100;
   return_value_if_fail(xml != NULL && out != NULL && out_size != NULL, RET_BAD_PARAMS);
 
   buff = (uint32_t*)TKMEM_ALLOC(buff_size);
