@@ -199,3 +199,130 @@ TEST(SVGToBSVG, polygon_lr) {
 
   TKMEM_FREE(out);
 }
+
+TEST(SVGToBSVG, polygon_no_fill1) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"black\" fill=\"none\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.no_fill, TRUE);
+  ASSERT_EQ(shape->shape.stroke_width, 5);
+  ASSERT_EQ(shape->nr, 4);
+
+  TKMEM_FREE(out);
+}
+
+TEST(SVGToBSVG, polygon_no_fill2) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"black\" fill=\"\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.no_fill, TRUE);
+  ASSERT_EQ(shape->shape.stroke_width, 5);
+  ASSERT_EQ(shape->nr, 4);
+
+  TKMEM_FREE(out);
+}
+
+TEST(SVGToBSVG, polygon_no_fill3) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"black\" fill=\"transparent\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.no_fill, TRUE);
+  ASSERT_EQ(shape->shape.stroke_width, 5);
+  ASSERT_EQ(shape->nr, 4);
+
+  TKMEM_FREE(out);
+}
+
+TEST(SVGToBSVG, polygon_no_stroke1) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"none\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.no_stroke, TRUE);
+
+  TKMEM_FREE(out);
+}
+
+TEST(SVGToBSVG, polygon_no_stroke2) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.no_stroke, TRUE);
+
+  TKMEM_FREE(out);
+}
+
+TEST(SVGToBSVG, polygon_no_stroke3) {
+  bsvg_t svg;
+  uint32_t* out = NULL;
+  uint32_t out_length = 0;
+  const svg_shape_polygon_t* shape = NULL;
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"transparent\" stroke-width=\"5\"/>";
+
+  tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
+  svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);
+
+  bsvg_init(&svg, out, out_length);
+  shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
+
+  ASSERT_EQ(shape->shape.no_stroke, TRUE);
+
+  TKMEM_FREE(out);
+}
+
