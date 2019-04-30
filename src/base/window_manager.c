@@ -205,6 +205,8 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
   if (wm->system_bar) {
     widget_paint(wm->system_bar, c);
   }
+
+  window_manager_paint_system_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
 
   if (dialog_highlighter != NULL) {
@@ -218,9 +220,7 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
   ENSURE(canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE) == RET_OK);
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
-  if (wm->system_bar) {
-    widget_paint(wm->system_bar, c);
-  }
+  window_manager_paint_system_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
@@ -608,14 +608,17 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   window_manager_inc_fps(widget);
 
   if (ret == RET_DONE) {
-    if (wm->animator->open) {
-      window_manager_dispatch_window_event(wm->animator->curr_win, EVT_WINDOW_OPEN);
-    }
-
+    bool_t is_open = wm->animator->open;
+    widget_t* curr_win = wm->animator->curr_win;
     window_animator_destroy(wm->animator);
+
     wm->animator = NULL;
     wm->animating = FALSE;
     wm->ignore_user_input = FALSE;
+
+    if (is_open) {
+      window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
+    }
 
     if (wm->pending_close_window != NULL) {
       widget_t* window = wm->pending_close_window;

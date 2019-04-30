@@ -19,6 +19,10 @@
  *
  */
 
+#ifdef AWTK_WEB
+#include <emscripten.h>
+#endif /*AWTK_WEB*/
+
 #include "base/window_animator.h"
 #include "base/window_manager.h"
 #include "base/dialog_highlighter_factory.h"
@@ -83,6 +87,9 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
 
 ret_t window_animator_destroy(window_animator_t* wa) {
   return_value_if_fail(wa != NULL, RET_FAIL);
+#ifdef AWTK_WEB
+  EM_ASM_INT({ return VGCanvas.animateEnd(); }, 0);
+#endif /*AWTK_WEB*/
 
   if (wa->open) {
     return window_animator_open_destroy(wa);
@@ -96,8 +103,17 @@ ret_t window_animator_destroy(window_animator_t* wa) {
 static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   window_manager_t* wm = WINDOW_MANAGER(wa->curr_win->parent);
 
-  if (!(wa->canvas->lcd->support_dirty_rect) && wm->system_bar) {
-    widget_paint(wm->system_bar, wa->canvas);
+  if (wm->system_bar != NULL) {
+#ifdef AWTK_WEB
+    widget_t* widget = wm->system_bar;
+    rect_t src = rect_init(widget->x, widget->y, widget->w, widget->h);
+    rect_t dst = rect_init(widget->x, widget->y, widget->w, widget->h);
+    canvas_draw_image(wa->canvas, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
+#else
+    if (!(wa->canvas->lcd->support_dirty_rect)) {
+      widget_paint(wm->system_bar, wa->canvas);
+    }
+#endif /*AWTK_WEB*/
   }
 
   return RET_OK;
@@ -187,6 +203,10 @@ window_animator_t* window_animator_create(bool_t open, const window_animator_vta
   wa->open = open;
   wa->easing = easing_get(EASING_CUBIC_OUT);
 
+#ifdef AWTK_WEB
+  EM_ASM_INT({ return VGCanvas.animateBegin(); }, 0);
+#endif /*AWTK_WEB*/
+
   return wa;
 }
 
@@ -214,7 +234,13 @@ static ret_t window_animator_draw_prev_window(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL && wa->vt->draw_prev_window, RET_BAD_PARAMS);
 
   if (wa->dialog_highlighter != NULL) {
-    return dialog_highlighter_draw(wa->dialog_highlighter, wa->percent);
+    float_t percent = wa->percent;
+    /*always < 1 to tell highlighter that it is animating.*/
+    if (percent >= 1) {
+      percent = 0.999;
+    }
+
+    return dialog_highlighter_draw(wa->dialog_highlighter, percent);
   } else {
     return wa->vt->draw_prev_window(wa);
   }
