@@ -2,6 +2,7 @@
 * 2019/04/30
   * 修改在32位系统上编译的BUG(感谢文涛提供补丁)。
   * 为awtk-web做了些修改，方便web版本中动画优化。
+  * 修改canvas\_fix\_rect导致text selector重影的问题。
 
 * 2019/04/29
   * 修改AWTK WEB脏矩形的BUG。

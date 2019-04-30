@@ -36,14 +36,6 @@ static rect_t* canvas_fix_rect(const rect_t* r, rect_t* o) {
   if (r != NULL) {
     *o = *r;
 
-    if (o->x < 0) {
-      o->x = 0;
-    }
-
-    if (o->y < 0) {
-      o->y = 0;
-    }
-
     if (o->w < 0) {
       o->w = -o->w;
       o->x = o->x - o->w + 1;
@@ -131,10 +123,10 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
 
   lcd_w = c->lcd->w;
   lcd_h = c->lcd->h;
-
+    
   if (r) {
-    c->clip_left = r->x;
-    c->clip_top = r->y;
+    c->clip_left = tk_max(0, r->x);
+    c->clip_top = tk_max(0, r->y);
     c->clip_right = r->x + r->w - 1;
     c->clip_bottom = r->y + r->h - 1;
   } else {
