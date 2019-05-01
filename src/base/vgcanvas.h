@@ -280,21 +280,21 @@ struct _vgcanvas_t {
    */
   float_t miter_limit;
   /**
-   * @property {char*} line_cap
+   * @property {const char*} line_cap
    * @annotation ["readable", "scriptable"]
    * line\_cap。
    * @see http://www.w3school.com.cn/tags/canvas_linecap.asp
    */
   const char* line_cap;
   /**
-   * @property {char*} line_join
+   * @property {const char*} line_join
    * @annotation ["readable", "scriptable"]
    * line\_join。
    * @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
    */
   const char* line_join;
   /**
-   * @property {char*} font
+   * @property {const char*} font
    * @annotation ["readable", "scriptable"]
    * 字体。
    */
@@ -306,7 +306,7 @@ struct _vgcanvas_t {
    */
   float_t font_size;
   /**
-   * @property {char*} text_align
+   * @property {const char*} text_align
    * @annotation ["readable", "scriptable"]
    * 文本对齐方式。
    *
@@ -314,7 +314,7 @@ struct _vgcanvas_t {
    */
   char* text_align;
   /**
-   * @property {char*} text_baseline
+   * @property {const char*} text_baseline
    * @annotation ["readable", "scriptable"]
    * 文本基线。
    *

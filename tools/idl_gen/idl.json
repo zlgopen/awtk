@@ -923,7 +923,7 @@
       {
         "name": "name",
         "desc": " 名称。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9001,7 +9001,7 @@
       {
         "name": "line_cap",
         "desc": " line\\_cap。\n @see http://www.w3school.com.cn/tags/canvas_linecap.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9010,7 +9010,7 @@
       {
         "name": "line_join",
         "desc": " line\\_join。\n @see http://www.w3school.com.cn/tags/canvas_linejoin.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9019,7 +9019,7 @@
       {
         "name": "font",
         "desc": " 字体。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9037,7 +9037,7 @@
       {
         "name": "text_align",
         "desc": " 文本对齐方式。\n\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9046,7 +9046,7 @@
       {
         "name": "text_baseline",
         "desc": " 文本基线。\n\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -24768,7 +24768,7 @@
       {
         "name": "name",
         "desc": " 属性的名称。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -24777,7 +24777,7 @@
       {
         "name": "value",
         "desc": " 属性的值。\n\n",
-        "type": "value_t*",
+        "type": "const value_t*",
         "annotation": {
           "readable": true,
           "scriptable": true

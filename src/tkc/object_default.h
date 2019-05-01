@@ -102,7 +102,7 @@ object_t* object_default_clone(object_default_t* o);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-#define object_default_unref object_unref
+ret_t object_default_unref(object_t* obj);
 
 #define OBJECT_DEFAULT(obj) ((object_default_t*)(obj))
 

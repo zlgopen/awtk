@@ -156,13 +156,13 @@ event_t event_init(uint32_t type, void* target);
 typedef struct _prop_change_event_t {
   event_t e;
   /**
-   * @property {char*} name
+   * @property {const char*} name
    * @annotation ["readable", "scriptable"]
    * 属性的名称。
    */
   const char* name;
   /**
-   * @property {value_t*} value
+   * @property {const value_t*} value
    * @annotation ["readable", "scriptable"]
    * 属性的值。
    */
