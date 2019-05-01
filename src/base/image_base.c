@@ -99,7 +99,7 @@ ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v) 
   return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
-    return image_set_image(widget, value_str(v));
+    return image_base_set_image(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SCALE_X)) {
     image->scale_x = value_float(v);
     return RET_OK;
@@ -148,7 +148,7 @@ widget_t* image_base_init(widget_t* widget) {
   return widget;
 }
 
-ret_t image_set_image(widget_t* widget, const char* name) {
+ret_t image_base_set_image(widget_t* widget, const char* name) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
@@ -157,7 +157,7 @@ ret_t image_set_image(widget_t* widget, const char* name) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_rotation(widget_t* widget, float_t rotation) {
+ret_t image_base_set_rotation(widget_t* widget, float_t rotation) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -166,7 +166,7 @@ ret_t image_set_rotation(widget_t* widget, float_t rotation) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
+ret_t image_base_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -176,7 +176,7 @@ ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
+ret_t image_base_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -186,7 +186,7 @@ ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_selected(widget_t* widget, bool_t selected) {
+ret_t image_base_set_selected(widget_t* widget, bool_t selected) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -195,7 +195,7 @@ ret_t image_set_selected(widget_t* widget, bool_t selected) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_selectable(widget_t* widget, bool_t selectable) {
+ret_t image_base_set_selectable(widget_t* widget, bool_t selectable) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -204,7 +204,7 @@ ret_t image_set_selectable(widget_t* widget, bool_t selectable) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_set_clickable(widget_t* widget, bool_t clickable) {
+ret_t image_base_set_clickable(widget_t* widget, bool_t clickable) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

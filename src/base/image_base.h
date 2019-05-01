@@ -105,7 +105,7 @@ typedef struct _image_base_t {
 } image_base_t;
 
 /**
- * @method image_set_image
+ * @method image_base_set_image
  * 设置控件的图片名称。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image对象。
@@ -113,10 +113,11 @@ typedef struct _image_base_t {
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_image(widget_t* widget, const char* name);
+ret_t image_base_set_image(widget_t* widget, const char* name);
+#define image_set_image image_base_set_image
 
 /**
- * @method image_set_rotation
+ * @method image_base_set_rotation
  * 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -124,10 +125,11 @@ ret_t image_set_image(widget_t* widget, const char* name);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_rotation(widget_t* widget, float_t rotation);
+ret_t image_base_set_rotation(widget_t* widget, float_t rotation);
+#define image_set_rotation image_base_set_rotation
 
 /**
- * @method image_set_scale
+ * @method image_base_set_scale
  * 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -136,10 +138,11 @@ ret_t image_set_rotation(widget_t* widget, float_t rotation);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y);
+ret_t image_base_set_scale(widget_t* widget, float_t scale_x, float_t scale_y);
+#define image_set_scale image_base_set_scale
 
 /**
- * @method image_set_anchor
+ * @method image_base_set_anchor
  * 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -148,10 +151,11 @@ ret_t image_set_scale(widget_t* widget, float_t scale_x, float_t scale_y);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y);
+ret_t image_base_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y);
+#define image_set_anchor image_base_set_anchor
 
 /**
- * @method image_set_selected
+ * @method image_base_set_selected
  * 设置控件的选中状态。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -159,10 +163,11 @@ ret_t image_set_anchor(widget_t* widget, float_t anchor_x, float_t anchor_y);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_selected(widget_t* widget, bool_t selected);
+ret_t image_base_set_selected(widget_t* widget, bool_t selected);
+#define image_set_selected image_base_set_selected
 
 /**
- * @method image_set_selectable
+ * @method image_base_set_selectable
  * 设置控件是否可以被选中。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -170,10 +175,11 @@ ret_t image_set_selected(widget_t* widget, bool_t selected);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_selectable(widget_t* widget, bool_t selectable);
+ret_t image_base_set_selectable(widget_t* widget, bool_t selectable);
+#define image_set_selectable image_base_set_selectable
 
 /**
- * @method image_set_clickable
+ * @method image_base_set_clickable
  * 设置控件是否可以被点击。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -181,7 +187,8 @@ ret_t image_set_selectable(widget_t* widget, bool_t selectable);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_clickable(widget_t* widget, bool_t clickable);
+ret_t image_base_set_clickable(widget_t* widget, bool_t clickable);
+#define image_set_clickable image_base_set_clickable
 
 /**
  * @method image_base_cast
