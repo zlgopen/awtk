@@ -124,7 +124,7 @@
     "properties": [],
     "header": "src/awtk_global.h",
     "desc": " TK全局对象。\n\n",
-    "name": "tk_t",
+    "name": "global_t",
     "annotation": {
       "scriptable": true,
       "fake": true
@@ -26272,7 +26272,6 @@
     "annotation": {
       "scriptable": true
     },
-    "alias": "object_base",
     "level": 2
   },
   {
