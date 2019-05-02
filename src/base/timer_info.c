@@ -22,10 +22,18 @@
 #include "base/timer_info.h"
 #include "base/timer_manager.h"
 
+#ifdef AWTK_WEB_JS
+#include <emscripten.h>
+#endif /*AWTK_WEB_JS*/
+
 static ret_t timer_info_on_destroy(timer_info_t* info) {
   if (info->on_destroy != NULL) {
     info->on_destroy(info);
   }
+
+#ifdef AWTK_WEB_JS
+  EM_ASM_INT({ return TBrowser.releaseFunction($0); }, info->on_timer);
+#endif /*AWTK_WEB_JS*/
 
   return RET_OK;
 }

@@ -304,4 +304,3 @@ object_t* object_default_clone(object_default_t* o) {
 ret_t object_default_unref(object_t* obj) {
   return object_unref(obj);
 }
-

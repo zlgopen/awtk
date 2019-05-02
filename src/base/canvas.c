@@ -123,7 +123,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
 
   lcd_w = c->lcd->w;
   lcd_h = c->lcd->h;
-    
+
   if (r) {
     c->clip_left = tk_max(0, r->x);
     c->clip_top = tk_max(0, r->y);

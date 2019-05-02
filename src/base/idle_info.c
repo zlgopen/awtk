@@ -22,10 +22,18 @@
 #include "base/idle_info.h"
 #include "base/idle_manager.h"
 
+#ifdef AWTK_WEB_JS
+#include <emscripten.h>
+#endif /*AWTK_WEB_JS*/
+
 static ret_t idle_info_on_destroy(idle_info_t* info) {
   if (info->on_destroy != NULL) {
     info->on_destroy(info);
   }
+
+#ifdef AWTK_WEB_JS
+  EM_ASM_INT({ return TBrowser.releaseFunction($0); }, info->on_idle);
+#endif /*AWTK_WEB_JS*/
 
   return RET_OK;
 }

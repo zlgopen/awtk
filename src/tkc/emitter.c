@@ -39,10 +39,18 @@ emitter_t* emitter_init(emitter_t* emitter) {
   return emitter;
 }
 
+#ifdef AWTK_WEB_JS
+#include <emscripten.h>
+#endif /*AWTK_WEB_JS*/
+
 static ret_t emitter_item_destroy(emitter_item_t* iter) {
   if (iter->on_destroy) {
     iter->on_destroy(iter);
   }
+
+#ifdef AWTK_WEB_JS
+  EM_ASM_INT({ return TBrowser.releaseFunction($0); }, iter->handler);
+#endif /*AWTK_WEB_JS*/
 
   memset(iter, 0x00, sizeof(emitter_item_t));
   TKMEM_FREE(iter);
