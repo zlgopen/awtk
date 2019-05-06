@@ -60,7 +60,7 @@ static ret_t on_idle(const idle_info_t* idle) {
   return update_progress_bar(WIDGET(idle->ctx));
 }
 
-void* thread_entry(void* args) {
+void* tk_thread_entry(void* args) {
   int nr = 500;
   while (nr-- > 0) {
     idle_queue(on_idle, args);
@@ -72,7 +72,7 @@ void* thread_entry(void* args) {
 }
 
 ret_t application_init() {
-  thread_t* thread = NULL;
+  tk_thread_t* thread = NULL;
   widget_t* progress_bar = NULL;
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* label = label_create(win, 10, 10, 300, 20);
@@ -80,8 +80,8 @@ ret_t application_init() {
   widget_set_text(label, L"Update progressbar in non GUI thread");
   progress_bar = progress_bar_create(win, 10, 80, 300, 20);
 
-  thread = thread_create(thread_entry, progress_bar);
-  thread_start(thread);
+  thread = tk_thread_create(tk_thread_entry, progress_bar);
+  tk_thread_start(thread);
 
   return RET_OK;
 }

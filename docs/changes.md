@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/05/06
+  * rename thread\_t to tk\_thread\_t。
+
 * 2019/05/02
   * 支持AWTK-JS的开发的应用程序在WEB上运行。
 
