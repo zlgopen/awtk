@@ -21,7 +21,7 @@ static ret_t load_image(const char* filename, bitmap_t* image) {
   memset(info, 0x00, sizeof(asset_info_t));
   info->size = size;
   info->type = ASSET_TYPE_IMAGE;
-  info->subtype = 0;
+  info->subtype = ASSET_TYPE_IMAGE_PNG;
   info->refcount = 1;
   info->is_in_rom = FALSE;
   strncpy(info->name, "name", TK_NAME_LEN);
