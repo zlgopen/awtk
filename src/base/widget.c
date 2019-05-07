@@ -1335,9 +1335,9 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  return_if_equal(widget_on_keydown_before_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_keydown_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_keydown_after_children(widget, e), RET_STOP); 
+  return_if_equal(widget_on_keydown_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_keydown_after_children(widget, e), RET_STOP);
 
   return RET_OK;
 }
@@ -1371,9 +1371,9 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  return_if_equal(widget_on_keyup_before_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_keyup_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_keyup_after_children(widget, e), RET_STOP); 
+  return_if_equal(widget_on_keyup_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_keyup_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_keyup_after_children(widget, e), RET_STOP);
 
   return RET_OK;
 }
@@ -1469,9 +1469,9 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  return_if_equal(widget_on_pointer_down_before_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_down_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_down_after_children(widget, e), RET_STOP); 
+  return_if_equal(widget_on_pointer_down_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_down_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_down_after_children(widget, e), RET_STOP);
 
   return RET_OK;
 }
@@ -1506,7 +1506,6 @@ static ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* 
   return ret;
 }
 
-
 static ret_t widget_on_pointer_move_after_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
 
@@ -1522,9 +1521,9 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  return_if_equal(widget_on_pointer_move_before_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_move_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_move_after_children(widget, e), RET_STOP); 
+  return_if_equal(widget_on_pointer_move_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_move_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_move_after_children(widget, e), RET_STOP);
 
   return RET_OK;
 }
@@ -1559,9 +1558,9 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  return_if_equal(widget_on_pointer_up_before_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_up_children(widget, e), RET_STOP); 
-  return_if_equal(widget_on_pointer_up_after_children(widget, e), RET_STOP); 
+  return_if_equal(widget_on_pointer_up_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_up_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_pointer_up_after_children(widget, e), RET_STOP);
 
   return RET_OK;
 }
