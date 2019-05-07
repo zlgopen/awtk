@@ -692,7 +692,11 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
 static ret_t edit_update_status(widget_t* widget) {
   if (widget->text.size == 0) {
-    widget_set_state(widget, WIDGET_STATE_EMPTY);
+    if (widget->focused) {
+      widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_EMPTY);
+    }
   } else if (widget->focused) {
     widget_set_state(widget, WIDGET_STATE_FOCUSED);
   } else {

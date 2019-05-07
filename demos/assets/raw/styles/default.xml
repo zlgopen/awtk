@@ -111,6 +111,7 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
   </style>
   <style name="number" border_color="#a0a0a0"  text_color="black" text_align_h="right">
     <normal     bg_color="#f0f0f0" />
@@ -118,6 +119,7 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
   </style>
   <style name="line" border="bottom" border_color="#a0a0a0"  text_color="black" text_align_h="left" text_align_v="bottom">
     <normal     bg_color="#f0f0f0" />
@@ -125,6 +127,7 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <error      bg_color="#f0f0f0" text_color="red" />
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
   </style>
 </edit>
 

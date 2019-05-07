@@ -6,6 +6,9 @@
   * 修改slider支持放在slide\_view中。
   * 修改slide\_menu支持放在slide\_view中。
 
+> 新增WIDGET\_STATE\_EMPTY\_FOCUS状态，请参考缺省主题为edit控件增加该状态。
+
+
 * 2019/05/06
   * rename thread\_t to tk\_thread\_t。
   * 软键盘支持delete键。
