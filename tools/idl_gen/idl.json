@@ -124,7 +124,7 @@
     "properties": [],
     "header": "src/awtk_global.h",
     "desc": " TK全局对象。\n\n",
-    "name": "tk_t",
+    "name": "global_t",
     "annotation": {
       "scriptable": true,
       "fake": true
@@ -923,7 +923,7 @@
       {
         "name": "name",
         "desc": " 名称。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9001,7 +9001,7 @@
       {
         "name": "line_cap",
         "desc": " line\\_cap。\n @see http://www.w3school.com.cn/tags/canvas_linecap.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9010,7 +9010,7 @@
       {
         "name": "line_join",
         "desc": " line\\_join。\n @see http://www.w3school.com.cn/tags/canvas_linejoin.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9019,7 +9019,7 @@
       {
         "name": "font",
         "desc": " 字体。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9037,7 +9037,7 @@
       {
         "name": "text_align",
         "desc": " 文本对齐方式。\n\n @see http://www.w3school.com.cn/tags/canvas_textalign.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -9046,7 +9046,7 @@
       {
         "name": "text_baseline",
         "desc": " 文本基线。\n\n @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -23800,7 +23800,7 @@
           "scriptable": true
         },
         "desc": " 设置控件的图片名称。\r\n\r\n",
-        "name": "image_set_image",
+        "name": "image_base_set_image",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23823,7 +23823,7 @@
           "scriptable": true
         },
         "desc": " 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_rotation",
+        "name": "image_base_set_rotation",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23851,7 +23851,7 @@
           "scriptable": true
         },
         "desc": " 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_scale",
+        "name": "image_base_set_scale",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23879,7 +23879,7 @@
           "scriptable": true
         },
         "desc": " 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_set_anchor",
+        "name": "image_base_set_anchor",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23902,7 +23902,7 @@
           "scriptable": true
         },
         "desc": " 设置控件的选中状态。\r\n\r\n",
-        "name": "image_set_selected",
+        "name": "image_base_set_selected",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23925,7 +23925,7 @@
           "scriptable": true
         },
         "desc": " 设置控件是否可以被选中。\r\n\r\n",
-        "name": "image_set_selectable",
+        "name": "image_base_set_selectable",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23948,7 +23948,7 @@
           "scriptable": true
         },
         "desc": " 设置控件是否可以被点击。\r\n\r\n",
-        "name": "image_set_clickable",
+        "name": "image_base_set_clickable",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -24768,7 +24768,7 @@
       {
         "name": "name",
         "desc": " 属性的名称。\n\n",
-        "type": "char*",
+        "type": "const char*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -24777,7 +24777,7 @@
       {
         "name": "value",
         "desc": " 属性的值。\n\n",
-        "type": "value_t*",
+        "type": "const value_t*",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -26272,7 +26272,6 @@
     "annotation": {
       "scriptable": true
     },
-    "alias": "object_base",
     "level": 2
   },
   {

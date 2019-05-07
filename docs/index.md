@@ -2,6 +2,7 @@
 ### 0.参考手册
 
 * [参考手册](manual.md)
+* [开发实践](https://github.com/zlgopen/awtk-examples/blob/master/docs/AWTK%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5.pdf)
 
 ### 1.使用文档
 * [避坑指南](trap_list.md)

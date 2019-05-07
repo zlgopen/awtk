@@ -183,7 +183,7 @@ bin\demoui
 
 ## 五、在线演示
 
-* [基本控件在线演示](http://zlgopen.bceapp.com/awtk/demos/demoui/index.html)
+* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
 
 > 目前AWTK-WEB还处于测试阶段，部分功能不能正常工作。如有兴趣请在PC上自行编译运行。
 
@@ -237,7 +237,4 @@ bin\demoui
 
 [最新动态](docs/changes.md)
 
-扫描入群交流：
-
-![wetchat_awtk](docs/images/wechat_awtk.jpg)
 

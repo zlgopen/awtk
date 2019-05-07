@@ -44,7 +44,7 @@ ret_t input_engine_input(input_engine_t* engine, int key) {
     return RET_BAD_PARAMS;
   }
 
-  if (key == TK_KEY_BACKSPACE) {
+  if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
     if (engine->keys.size > 0) {
       engine->keys.size--;
       engine->keys.str[engine->keys.size] = '\0';

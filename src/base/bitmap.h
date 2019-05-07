@@ -157,7 +157,7 @@ struct _bitmap_t {
    */
   uint16_t format;
   /**
-   * @property {char*} name
+   * @property {const char*} name
    * @annotation ["readable", "scriptable"]
    * 名称。
    */

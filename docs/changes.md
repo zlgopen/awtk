@@ -1,4 +1,19 @@
 # 最新动态
+* 2019/05/06
+  * rename thread\_t to tk\_thread\_t。
+  * 软键盘支持delete键。
+
+* 2019/05/02
+  * 支持AWTK-JS的开发的应用程序在WEB上运行。
+
+* 2019/05/01
+  * 修改image base函数名在jerryscript中引起的问题。
+
+* 2019/04/30
+  * 修改在32位系统上编译的BUG(感谢文涛提供补丁)。
+  * 为awtk-web做了些修改，方便web版本中动画优化。
+  * 修改canvas\_fix\_rect导致text selector重影的问题。
+
 * 2019/04/29
   * 修改AWTK WEB脏矩形的BUG。
   * 修改SVG解析器中一个BUG。

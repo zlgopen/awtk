@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class tk_t
+ * @class global_t
  * @annotation ["scriptable", "fake"]
  * TK全局对象。
  */

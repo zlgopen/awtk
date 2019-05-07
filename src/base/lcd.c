@@ -182,7 +182,7 @@ ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
   return lcd->draw_glyph(lcd, glyph, src, x, y);
 }
 
-float lcd_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
+float_t lcd_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
   return_value_if_fail(nr < 10240, 0.0f);
   return_value_if_fail(lcd != NULL && lcd->measure_text != NULL && str != NULL, 0.0f);
 

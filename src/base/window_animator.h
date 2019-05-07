@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator.h
  * Author: AWTK Develop Team
  * Brief:  window_animator

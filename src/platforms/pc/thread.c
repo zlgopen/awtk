@@ -25,26 +25,32 @@
 #ifdef WIN32
 #include <Windows.h>
 #include <process.h>
-#define thread_handle_t HANDLE
+#define tk_thread_handle_t HANDLE
 #elif defined(HAS_PTHREAD)
 #include "pthread.h"
-#define thread_handle_t pthread_t
+#define tk_thread_handle_t pthread_t
 #else
-#define thread_handle_t int
+#define tk_thread_handle_t int
 #endif
 
-struct _thread_t {
+struct _tk_thread_t {
   void* args;
   bool_t running;
-  thread_handle_t thread;
-  thread_entry_t entry;
+  tk_thread_handle_t thread;
+  tk_thread_entry_t entry;
 };
 
-thread_t* thread_create(thread_entry_t entry, void* args) {
-  thread_t* thread = NULL;
+void* tk_thread_get_args(tk_thread_t* thread) {
+  return_value_if_fail(thread != NULL, NULL);
+
+  return thread->args;
+}
+
+tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
+  tk_thread_t* thread = NULL;
   return_value_if_fail(entry != NULL, NULL);
 
-  thread = (thread_t*)TKMEM_ZALLOC(thread_t);
+  thread = (tk_thread_t*)TKMEM_ZALLOC(tk_thread_t);
   return_value_if_fail(thread != NULL, NULL);
 
   thread->args = args;
@@ -60,7 +66,7 @@ static void* entry(void* arg) {
 #else
 static void* entry(void* arg) {
 #endif
-  thread_t* thread = (thread_t*)arg;
+  tk_thread_t* thread = (tk_thread_t*)arg;
 
   thread->entry(thread->args);
   thread->running = FALSE;
@@ -73,7 +79,7 @@ static void* entry(void* arg) {
 #endif
 }
 
-ret_t thread_start(thread_t* thread) {
+ret_t tk_thread_start(tk_thread_t* thread) {
 #ifdef WIN32
   unsigned h = 0;
   uint32_t stack_size = 1024 * 1024;
@@ -95,7 +101,7 @@ ret_t thread_start(thread_t* thread) {
   return thread->running ? RET_OK : RET_FAIL;
 }
 
-ret_t thread_join(thread_t* thread) {
+ret_t tk_thread_join(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
   if (thread->running) {
 #ifdef WIN32
@@ -111,9 +117,9 @@ ret_t thread_join(thread_t* thread) {
   return RET_OK;
 }
 
-ret_t thread_destroy(thread_t* thread) {
+ret_t tk_thread_destroy(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
-  memset(thread, 0x00, sizeof(thread_t));
+  memset(thread, 0x00, sizeof(tk_thread_t));
   TKMEM_FREE(thread);
 
   return RET_OK;
