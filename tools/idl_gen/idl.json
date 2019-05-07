@@ -86,6 +86,7 @@
         },
         "desc": " 退出TK事件主循环。\n\n\n",
         "name": "tk_quit",
+        "alias": "global_quit",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

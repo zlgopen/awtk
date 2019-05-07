@@ -56,6 +56,7 @@ ret_t tk_run(void);
 /**
  * @method tk_quit
  * 退出TK事件主循环。
+ * @alias global_quit
  * @annotation ["static", "scriptable"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
