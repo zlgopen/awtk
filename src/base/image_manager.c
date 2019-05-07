@@ -65,17 +65,16 @@ ret_t image_manager_set(image_manager_t* imm) {
   return RET_OK;
 }
 
-image_manager_t* image_manager_create(image_loader_t* loader) {
+image_manager_t* image_manager_create(void) {
   image_manager_t* imm = TKMEM_ZALLOC(image_manager_t);
   return_value_if_fail(imm != NULL, NULL);
 
-  return image_manager_init(imm, loader);
+  return image_manager_init(imm);
 }
 
-image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader) {
+image_manager_t* image_manager_init(image_manager_t* imm) {
   return_value_if_fail(imm != NULL, NULL);
 
-  imm->loader = loader;
   darray_init(&(imm->images), 0, (tk_destroy_t)bitmap_cache_destroy, NULL);
   imm->assets_manager = assets_manager();
 
@@ -176,8 +175,8 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image_manager_add(imm, name, image);
 #endif
     return RET_OK;
-  } else if (imm->loader != NULL && res->subtype != ASSET_TYPE_IMAGE_BSVG) {
-    ret_t ret = image_loader_load(imm->loader, res, image);
+  } else if (res->subtype != ASSET_TYPE_IMAGE_BSVG) {
+    ret_t ret = image_loader_load_image(res, image);
     if (ret == RET_OK) {
       image_manager_add(imm, name, image);
       assets_manager_unref(imm->assets_manager, res);
@@ -251,7 +250,7 @@ ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* a
 ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   bitmap_cache_t b;
   b.last_access_time = time_now_s() - time_delta_s;
-  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_time;
   return darray_remove_all(&(imm->images), &b);
@@ -259,26 +258,24 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
 
 ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
   bitmap_cache_t b;
-  return_value_if_fail(imm != NULL && imm->loader != NULL && image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
 
   b.image.data = image->data;
-  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
-
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
+
   return darray_remove_all(&(imm->images), &b);
 }
 
 ret_t image_manager_deinit(image_manager_t* imm) {
-  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
-  imm->loader = NULL;
   darray_deinit(&(imm->images));
 
   return RET_OK;
 }
 
 ret_t image_manager_destroy(image_manager_t* imm) {
-  return_value_if_fail(imm != NULL && imm->loader != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   image_manager_deinit(imm);
   TKMEM_FREE(imm);

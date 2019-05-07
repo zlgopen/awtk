@@ -53,13 +53,6 @@ typedef struct _image_manager_t {
   darray_t images;
 
   /**
-   * @property {image_loader_t*} loader
-   * @annotation ["private"]
-   * 图片加载器。
-   */
-  image_loader_t* loader;
-
-  /**
    * @property {assets_manager_t*} assets_manager
    * @annotation ["private"]
    * 资源管理器。
@@ -89,22 +82,20 @@ ret_t image_manager_set(image_manager_t* imm);
  * @method image_manager_create
  * 创建图片管理器。
  * @annotation ["constructor"]
- * @param {image_loader_t*} loader 图片加载器。
  *
  * @return {image_manager_t*} 返回图片管理器对象。
  */
-image_manager_t* image_manager_create(image_loader_t* loader);
+image_manager_t* image_manager_create(void);
 
 /**
  * @method image_manager_init
  * 初始化图片管理器。
  * @annotation ["constructor"]
  * @param {image_manager_t*} imm 图片管理器对象。
- * @param {image_loader_t*} loader 图片加载器。
  *
  * @return {image_manager_t*} 返回图片管理器对象。
  */
-image_manager_t* image_manager_init(image_manager_t* imm, image_loader_t* loader);
+image_manager_t* image_manager_init(image_manager_t* imm);
 
 /**
  * @method image_manager_get_bitmap

@@ -82,6 +82,11 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   bool_t enable_bgr565 = FALSE;
   return_value_if_fail(l != NULL && image != NULL, RET_BAD_PARAMS);
 
+  if(asset->subtype != ASSET_TYPE_IMAGE_JPG && asset->subtype != ASSET_TYPE_IMAGE_PNG 
+      && asset->subtype != ASSET_TYPE_IMAGE_GIF && asset->subtype != ASSET_TYPE_IMAGE_BMP) {
+    return RET_NOT_IMPL;
+  }
+
 #ifdef WITH_BITMAP_BGR565
   enable_bgr565 = TRUE;
 #endif /*WITH_BITMAP_BGR565*/

@@ -99,13 +99,12 @@ ret_t tk_init_assets() {
 
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
-  image_loader_t* image_loader = NULL;
 #ifdef WITH_STB_IMAGE
-  image_loader = image_loader_stb();
+  image_loader_register(image_loader_stb());
 #endif /*WITH_STB_IMAGE*/
 
 #ifdef AWTK_WEB
-  image_loader = image_loader_web();
+  image_loader_register(image_loader_web());
 #endif /*AWTK_WEB*/
 
 #ifdef WITH_TRUETYPE_FONT
@@ -126,7 +125,7 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
-  return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(image_manager_set(image_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(

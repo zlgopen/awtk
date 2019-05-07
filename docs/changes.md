@@ -5,6 +5,7 @@
   * 重构pointer/key事件处理流程，分成三个阶段：子控件处理前、子控件和子控件处理后。
   * 修改slider支持放在slide\_view中。
   * 修改slide\_menu支持放在slide\_view中。
+  * 重构image loader支持自定义的image loader(使用imae\_loader\_register注册自己的loader)。
 
 > 新增WIDGET\_STATE\_EMPTY\_FOCUS状态，请参考缺省主题为edit控件增加该状态。
 
