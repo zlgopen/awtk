@@ -549,8 +549,7 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-    default:
-      break;
+    default: { return RET_OK; }
   }
 
   return RET_STOP;
