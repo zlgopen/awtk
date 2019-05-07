@@ -71,7 +71,7 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
   wstr_t* str = &(widget->text);
   bool_t invisible = str->size && (edit->limit.type == INPUT_PASSWORD && !(edit->password_visible));
 
-  if (!str->size && !widget->focused) {
+  if (!str->size) {
     if (edit->tips != NULL) {
       utf8_to_utf16(edit->tips, temp_str, TEMP_STR_LEN);
     }
@@ -94,6 +94,65 @@ static ret_t edit_get_display_text(widget_t* widget, canvas_t* c, wstr_t* text, 
     temp_str[size] = '\0';
     text->str = temp_str;
     text->size = size;
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_calc_offset_x(widget_t* widget, rect_t* r, int32_t text_align_h, int32_t pos_w,
+                                int32_t text_w) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && r != NULL, RET_BAD_PARAMS);
+
+  if (text_w <= r->w) {
+    switch (text_align_h) {
+      case ALIGN_H_LEFT:
+        edit->offset_x = r->x;
+        break;
+      case ALIGN_H_RIGHT:
+        edit->offset_x = r->x + (r->w - text_w);
+        break;
+      default:
+        edit->offset_x = r->x + ((r->w - text_w) >> 1);
+        break;
+    }
+  } else {
+    if (edit->caret_x < r->x) {
+      edit->offset_x += r->x - edit->caret_x;
+    } else if (edit->caret_x > r->x + r->w - 1) {
+      edit->offset_x -= edit->caret_x - r->x - r->w + 1;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_calc_caret_x(widget_t* widget, rect_t* r, int32_t text_align_h, int32_t pos_w,
+                               int32_t text_w) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && r != NULL, RET_BAD_PARAMS);
+
+  if (text_w == 0) {
+    switch (text_align_h) {
+      case ALIGN_H_LEFT:
+        edit->caret_x = r->x;
+        break;
+      case ALIGN_H_RIGHT:
+        edit->caret_x = r->x + r->w;
+        break;
+      default:
+        edit->caret_x = r->x + ((r->w) >> 1);
+        break;
+    }
+  } else if (text_w <= r->w) {
+    edit->caret_x = edit->offset_x + pos_w;
+  } else {
+    edit->caret_x = edit->offset_x + pos_w;
+    if (edit->caret_x < r->x) {
+      edit->caret_x = r->x;
+    } else if (edit->caret_x > r->x + r->w - 1) {
+      edit->caret_x = r->x + r->w - 1;
+    }
   }
 
   return RET_OK;
@@ -139,30 +198,8 @@ static ret_t edit_draw_text(widget_t* widget, canvas_t* c, wstr_t* text, rect_t*
       break;
   }
 
-  if (text_w <= r->w) {
-    switch (c->text_align_h) {
-      case ALIGN_H_LEFT:
-        edit->offset_x = r->x;
-        break;
-      case ALIGN_H_RIGHT:
-        edit->offset_x = r->x + (r->w - text_w);
-        break;
-      default:
-        edit->offset_x = r->x + ((r->w - text_w) >> 1);
-        break;
-    }
-
-    edit->caret_x = edit->offset_x + pos_w;
-  } else {
-    edit->caret_x = edit->offset_x + pos_w;
-    if (edit->caret_x < r->x) {
-      edit->offset_x += r->x - edit->caret_x;
-      edit->caret_x = r->x;
-    } else if (edit->caret_x > r->x + r->w - 1) {
-      edit->offset_x -= edit->caret_x - r->x - r->w + 1;
-      edit->caret_x = r->x + r->w - 1;
-    }
-  }
+  edit_calc_offset_x(widget, r, c->text_align_h, pos_w, text_w);
+  edit_calc_caret_x(widget, r, c->text_align_h, pos_w, widget->text.size ? text_w : 0);
 
   {
     rect_t save_r;
@@ -655,10 +692,10 @@ static ret_t edit_auto_fix(widget_t* widget) {
 }
 
 static ret_t edit_update_status(widget_t* widget) {
-  if (widget->focused) {
-    widget_set_state(widget, WIDGET_STATE_FOCUSED);
-  } else if (widget->text.size == 0) {
+  if (widget->text.size == 0) {
     widget_set_state(widget, WIDGET_STATE_EMPTY);
+  } else if (widget->focused) {
+    widget_set_state(widget, WIDGET_STATE_FOCUSED);
   } else {
     widget_set_state(widget, WIDGET_STATE_NORMAL);
   }
@@ -807,6 +844,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_VALUE)) {
         edit_update_status(widget);
       }
+      break;
+    }
+    case EVT_VALUE_CHANGING: {
+      edit_update_status(widget);
       break;
     }
     default:

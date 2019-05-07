@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/05/07
+  * edit在焦点状态时，如果文本为空仍然显示tips。
+
 * 2019/05/06
   * rename thread\_t to tk\_thread\_t。
   * 软键盘支持delete键。
