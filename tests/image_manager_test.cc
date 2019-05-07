@@ -56,7 +56,7 @@ TEST(ImageManager, add) {
 TEST(ImageManager, locale) {
   bitmap_t bmp;
   memset(&bmp, 0x00, sizeof(bmp));
-  image_manager_t* imm = image_manager_create(image_loader_stb());
+  image_manager_t* imm = image_manager_create();
   assets_manager_t* am = assets_manager_create(0);
 
   assets_manager_set_res_root(am, "tests/testdata");
