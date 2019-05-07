@@ -205,6 +205,6 @@
 * [date\_time](manual/date_time_t.md) 时间日期函数。
 * [event](manual/event_t.md) 事件基类。
 * [tk\_thread](manual/tk_thread_t.md) 线程。
-* [tk\_mutex](manual/tk_mutex_t.md) 线程。
+* [tk\_mutex](manual/tk_mutex_t.md) 互斥锁。
 
 
