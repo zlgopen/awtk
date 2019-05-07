@@ -165,10 +165,12 @@ static ret_t slider_pointer_up_cleanup(widget_t* widget) {
 }
 static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
+  ret = slider->dragging ? RET_STOP : RET_OK;
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
@@ -182,6 +184,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
       }
+      ret = slider->dragging ? RET_STOP : RET_OK;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -230,7 +233,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,
