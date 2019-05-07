@@ -691,8 +691,10 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
     ret = widget_on_event_default(widget, e);
   }
 
-  if (widget->emitter != NULL) {
-    ret = emitter_dispatch(widget->emitter, e);
+  if (ret != RET_STOP) {
+    if (widget->emitter != NULL) {
+      ret = emitter_dispatch(widget->emitter, e);
+    }
   }
   widget->can_not_destroy--;
 
