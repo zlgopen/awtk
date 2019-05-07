@@ -10638,6 +10638,10 @@
         "name": "WIDGET_STATE_EMPTY"
       },
       {
+        "desc": " 编辑器无内容同时聚焦的状态。\n\n",
+        "name": "WIDGET_STATE_EMPTY_FOCUS"
+      },
+      {
         "desc": " 输入错误状态。\n\n",
         "name": "WIDGET_STATE_ERROR"
       },
@@ -18011,23 +18015,23 @@
         "params": [],
         "annotation": {},
         "desc": " 创建thread对象。\n\n\n",
-        "name": "thread_create",
+        "name": "tk_thread_create",
         "return": {
-          "type": "thread_t*",
+          "type": "tk_thread_t*",
           "desc": "thread对象。"
         }
       },
       {
         "params": [
           {
-            "type": "thread_t*",
+            "type": "tk_thread_t*",
             "name": "thread",
             "desc": "thread对象。"
           }
         ],
         "annotation": {},
         "desc": " 启动线程。\n\n\n",
-        "name": "thread_start",
+        "name": "tk_thread_start",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18036,14 +18040,14 @@
       {
         "params": [
           {
-            "type": "thread_t*",
+            "type": "tk_thread_t*",
             "name": "thread",
             "desc": "thread对象。"
           }
         ],
         "annotation": {},
         "desc": " 等待线程退出。\n\n\n",
-        "name": "thread_join",
+        "name": "tk_thread_join",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18052,14 +18056,14 @@
       {
         "params": [
           {
-            "type": "thread_t*",
+            "type": "tk_thread_t*",
             "name": "thread",
             "desc": "thread对象。"
           }
         ],
         "annotation": {},
         "desc": " 销毁thread对象。\n\n\n",
-        "name": "thread_destroy",
+        "name": "tk_thread_destroy",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18070,7 +18074,7 @@
     "properties": [],
     "header": "tkc/thread.h",
     "desc": " 线程对象。\n\n",
-    "name": "thread_t",
+    "name": "tk_thread_t",
     "level": 1
   },
   {

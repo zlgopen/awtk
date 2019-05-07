@@ -17,8 +17,8 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#prop_change_event_t_name">name</a> | char* | 属性的名称。 |
-| <a href="#prop_change_event_t_value">value</a> | value\_t* | 属性的值。 |
+| <a href="#prop_change_event_t_name">name</a> | const char* | 属性的名称。 |
+| <a href="#prop_change_event_t_value">value</a> | const value\_t* | 属性的值。 |
 #### prop\_change\_event\_cast 函数
 -----------------------
 
@@ -47,7 +47,7 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -60,7 +60,7 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 
 
 
-* 类型：value\_t*
+* 类型：const value\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

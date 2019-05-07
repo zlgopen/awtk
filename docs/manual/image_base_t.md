@@ -19,13 +19,13 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#image_base_t_image_base_cast">image\_base\_cast</a> | 转换为image_base对象(供脚本语言使用)。 |
-| <a href="#image_base_t_image_set_anchor">image\_set\_anchor</a> | 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_clickable">image\_set\_clickable</a> | 设置控件是否可以被点击。 |
-| <a href="#image_base_t_image_set_image">image\_set\_image</a> | 设置控件的图片名称。 |
-| <a href="#image_base_t_image_set_rotation">image\_set\_rotation</a> | 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_scale">image\_set\_scale</a> | 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。 |
-| <a href="#image_base_t_image_set_selectable">image\_set\_selectable</a> | 设置控件是否可以被选中。 |
-| <a href="#image_base_t_image_set_selected">image\_set\_selected</a> | 设置控件的选中状态。 |
+| <a href="#image_base_t_image_base_set_anchor">image\_base\_set\_anchor</a> | 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_base_set_clickable">image\_base\_set\_clickable</a> | 设置控件是否可以被点击。 |
+| <a href="#image_base_t_image_base_set_image">image\_base\_set\_image</a> | 设置控件的图片名称。 |
+| <a href="#image_base_t_image_base_set_rotation">image\_base\_set\_rotation</a> | 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_base_set_scale">image\_base\_set\_scale</a> | 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。 |
+| <a href="#image_base_t_image_base_set_selectable">image\_base\_set\_selectable</a> | 设置控件是否可以被选中。 |
+| <a href="#image_base_t_image_base_set_selected">image\_base\_set\_selected</a> | 设置控件的选中状态。 |
 ### 属性
 <p id="image_base_t_properties">
 
@@ -61,19 +61,19 @@ widget_t* image_base_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | image\_base对象。 |
 | widget | widget\_t* | image\_base对象。 |
-#### image\_set\_anchor 函数
+#### image\_base\_set\_anchor 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_anchor"> 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。
+> <p id="image_base_t_image_base_set_anchor"> 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_anchor (widget_t* widget, float_t anchor_x, float_t anchor_y);
+ret_t image_base_set_anchor (widget_t* widget, float_t anchor_x, float_t anchor_y);
 ```
 
 * 参数说明：
@@ -84,19 +84,19 @@ ret_t image_set_anchor (widget_t* widget, float_t anchor_x, float_t anchor_y);
 | widget | widget\_t* | 控件对象。 |
 | anchor\_x | float\_t | 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。 |
 | anchor\_y | float\_t | 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。 |
-#### image\_set\_clickable 函数
+#### image\_base\_set\_clickable 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_clickable"> 设置控件是否可以被点击。
+> <p id="image_base_t_image_base_set_clickable"> 设置控件是否可以被点击。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_clickable (widget_t* widget, bool_t clickable);
+ret_t image_base_set_clickable (widget_t* widget, bool_t clickable);
 ```
 
 * 参数说明：
@@ -106,19 +106,19 @@ ret_t image_set_clickable (widget_t* widget, bool_t clickable);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | clickable | bool\_t | 是否可以被点击。 |
-#### image\_set\_image 函数
+#### image\_base\_set\_image 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_image"> 设置控件的图片名称。
+> <p id="image_base_t_image_base_set_image"> 设置控件的图片名称。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_image (widget_t* widget, char* name);
+ret_t image_base_set_image (widget_t* widget, char* name);
 ```
 
 * 参数说明：
@@ -128,19 +128,19 @@ ret_t image_set_image (widget_t* widget, char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image对象。 |
 | name | char* | 图片名称，该图片必须存在于资源管理器。 |
-#### image\_set\_rotation 函数
+#### image\_base\_set\_rotation 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_rotation"> 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。
+> <p id="image_base_t_image_base_set_rotation"> 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_rotation (widget_t* widget, float_t rotation);
+ret_t image_base_set_rotation (widget_t* widget, float_t rotation);
 ```
 
 * 参数说明：
@@ -150,19 +150,19 @@ ret_t image_set_rotation (widget_t* widget, float_t rotation);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | rotation | float\_t | 旋转角度(幅度)。 |
-#### image\_set\_scale 函数
+#### image\_base\_set\_scale 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_scale"> 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。
+> <p id="image_base_t_image_base_set_scale"> 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_scale (widget_t* widget, float_t scale_x, float_t scale_y);
+ret_t image_base_set_scale (widget_t* widget, float_t scale_x, float_t scale_y);
 ```
 
 * 参数说明：
@@ -173,19 +173,19 @@ ret_t image_set_scale (widget_t* widget, float_t scale_x, float_t scale_y);
 | widget | widget\_t* | 控件对象。 |
 | scale\_x | float\_t | X方向缩放比例。 |
 | scale\_y | float\_t | Y方向缩放比例。 |
-#### image\_set\_selectable 函数
+#### image\_base\_set\_selectable 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_selectable"> 设置控件是否可以被选中。
+> <p id="image_base_t_image_base_set_selectable"> 设置控件是否可以被选中。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_selectable (widget_t* widget, bool_t selectable);
+ret_t image_base_set_selectable (widget_t* widget, bool_t selectable);
 ```
 
 * 参数说明：
@@ -195,19 +195,19 @@ ret_t image_set_selectable (widget_t* widget, bool_t selectable);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | selectable | bool\_t | 是否可以被选中。 |
-#### image\_set\_selected 函数
+#### image\_base\_set\_selected 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_base_t_image_set_selected"> 设置控件的选中状态。
+> <p id="image_base_t_image_base_set_selected"> 设置控件的选中状态。
 
 
 
 * 函数原型：
 
 ```
-ret_t image_set_selected (widget_t* widget, bool_t selected);
+ret_t image_base_set_selected (widget_t* widget, bool_t selected);
 ```
 
 * 参数说明：

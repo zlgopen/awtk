@@ -18,6 +18,7 @@
 | WIDGET\_STATE\_CHECKED | 勾选状态。 |
 | WIDGET\_STATE\_UNCHECKED | 没勾选状态。 |
 | WIDGET\_STATE\_EMPTY | 编辑器无内容状态。 |
+| WIDGET\_STATE\_EMPTY\_FOCUS | 编辑器无内容同时聚焦的状态。 |
 | WIDGET\_STATE\_ERROR | 输入错误状态。 |
 | WIDGET\_STATE\_SELECTED | 选中状态。 |
 | WIDGET\_STATE\_NORMAL\_OF\_CHECKED | 正常状态(选中项)。 |
