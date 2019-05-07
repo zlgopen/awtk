@@ -225,6 +225,8 @@ bin\demoui
 
 * [扩展控件实例: 二维码](https://github.com/CUITzhaoqi/awtk-qr)
 
+* [扩展控件实例: 圆形滑块](https://github.com/longyuwlz/awtk_slider_circle)
+
 ## 九、文档
 
 [文档](docs/README.md)
