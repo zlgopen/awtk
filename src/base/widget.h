@@ -48,6 +48,7 @@ BEGIN_C_DECLS
 
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
+typedef ret_t (*widget_on_event_before_children_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
@@ -137,6 +138,7 @@ struct _widget_vtable_t {
   widget_on_add_child_t on_add_child;
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
+  widget_on_event_before_children_t on_event_before_children;
   widget_find_target_t find_target;
   widget_on_destroy_t on_destroy;
 };
