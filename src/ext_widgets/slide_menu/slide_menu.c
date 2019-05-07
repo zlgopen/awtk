@@ -517,7 +517,7 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && slide_menu != NULL, RET_BAD_PARAMS);
 
   if (slide_menu->wa != NULL) {
-    return RET_OK;
+    return RET_STOP;
   }
 
   switch (type) {
@@ -553,7 +553,7 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return RET_STOP;
 }
 
 TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
