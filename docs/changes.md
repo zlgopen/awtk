@@ -1,6 +1,10 @@
 # 最新动态
+
 * 2019/05/07
-  * edit在焦点状态时，如果文本为空仍然显示tips。
+  * edit在焦点状态时，如果文本为空，仍然显示tips。
+  * 重构pointer/key事件处理流程，分成三个阶段：子控件处理前、子控件和子控件处理后。
+  * 修改slider支持放在slide\_view中。
+  * 修改slide\_menu支持放在slide\_view中。
 
 * 2019/05/06
   * rename thread\_t to tk\_thread\_t。
