@@ -296,13 +296,12 @@ static ret_t edit_set_cursor_pos(widget_t* widget, int32_t pre, int32_t pos) {
 static int32_t edit_calcu_pos(widget_t* widget, xy_t posx) {
   xy_t x = 0;
   int32_t pos = 0;
-  canvas_t* c = NULL;
   edit_t* edit = EDIT(widget);
+  canvas_t* c = WINDOW_MANAGER(window_manager())->canvas;
   return_value_if_fail(widget != NULL && edit != NULL, 0);
   return_value_if_fail(widget_prepare_text_style(widget, c) == RET_OK, 0);
 
   x = edit->offset_x;
-  c = WINDOW_MANAGER(window_manager())->canvas;
 
   for (pos = 0; pos < widget->text.size; ++pos) {
     int32_t w = canvas_measure_text(c, widget->text.str + pos, 1);
