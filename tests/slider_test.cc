@@ -59,8 +59,10 @@ TEST(Slider, event) {
   slider_set_value(w, 10);
   ASSERT_EQ(s_log, "");
 
+  slider->dragging = TRUE;
   slider_set_value(w, 20);
   ASSERT_EQ(s_log, "will_change;change;");
+  slider->dragging = FALSE;
 
   widget_destroy(w);
 }

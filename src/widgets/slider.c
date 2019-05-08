@@ -229,8 +229,10 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_ENTER:
       widget_set_state(widget, slider->dragging ? WIDGET_STATE_PRESSED : WIDGET_STATE_OVER);
       break;
-    default:
+    default: {
+      ret = RET_OK;
       break;
+    }
   }
 
   return ret;
