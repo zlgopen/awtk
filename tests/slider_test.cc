@@ -49,7 +49,7 @@ TEST(slider, basic) {
 
 TEST(Slider, event) {
   widget_t* w = slider_create(NULL, 0, 0, 100, 100);
-
+  slider_t* slider = SLIDER(w);
   slider_set_value(w, 10);
 
   s_log = "";
