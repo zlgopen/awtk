@@ -29,3 +29,19 @@ node index.js
 ```
 node index.js  slider_circle.idl ../../../awtk_slider_circle/src
 ```
+
+## 三、合并多个 IDL 文件
+
+生成各种语言绑定时，需要把 AWTK 本身的 IDL、自定义控件的 IDL、和其它类的 IDL 合并到一个 IDL 文件中，这时可以使用 merge.js 工具。
+
+基本用法：
+
+```
+node merge.js [多个 IDL 文件（被依赖的放在前面）]
+```
+
+如：
+
+```
+node merge.js idl.json test.json
+```
