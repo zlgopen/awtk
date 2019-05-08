@@ -17,16 +17,15 @@
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
 
-
 #### 运行效果截图：
 
-![CleanAir-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/cleanair_main.png)
+![CleanAir-Demo](docs/images/cleanair_main.png)
 
-![Meter-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/meter_main.png)
+![Meter-Demo](docs/images/meter_main.png)
 
-![Chart-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/chart_main.png)
+![Chart-Demo](docs/images/chart_main.png)
 
-![MusicPlayer-Demo](https://raw.githubusercontent.com/zlgopen/awtk-examples/master/docs/images/musicplayer_main.png)
+![MusicPlayer-Demo](docs/images/musicplayer_main.png)
 
 ## 二、最终目标：
 
@@ -48,7 +47,7 @@
 
 [AWTK](https://github.com/zlgopen/awtk) 是跨平台的，这有两个方面的意思：
 
-* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorks、Windows、Linux、MacOS、嵌入式 Linux 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在浏览器 (即将公测)、各种小程序、Android 和 iOS 等平台上运行。
+* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorks、Windows、Linux、MacOS、嵌入式 Linux 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在浏览器 （即将公测）、各种小程序、Android 和 iOS 等平台上运行。
 
 * AWTK 同时还提供了一套跨平台的基础工具库。其中包括链表、数组、字符串 (UTF8 和 widechar)，事件发射器、值、对象、文件系统、互斥锁和线程、表达式和字符串解析等等，让你用 AWTK 开发的应用程序可以真正跨平台运行。
 
@@ -57,7 +56,7 @@
 [AWTK](https://github.com/zlgopen/awtk) 通过一系列的手段保证 AWTK 应用程序高效运行：
 
 * 通过脏矩算法只更新变化的部分。
-* 支持 3 FrameBuffer 让界面以最高帧率运行 (可选)。
+* 支持 3 FrameBuffer 让界面以最高帧率运行 （可选）。
 * UI 描述文件和主题文件使用高效的二进制格式，解析在瞬间完成。
 * 支持各种 GPU 加速接口。如 OpenGL、DirectX、Vulkan 和 Metal 等。
 * 支持嵌入式平台的各种 2D 加速接口。目前 STM32 的 DMA2D 和 NXP 的 PXP 接口，厂家可以轻松扩展自己的加速接口。
@@ -78,9 +77,9 @@
 
 ### 4. 强大
 
-* 丰富的控件 (持续增加中)。
+* 丰富的控件 （持续增加中）。
 * 支持各种图片格式 (png/jpg/gif/svg)。
-* 支持各种字体格式 (点阵和矢量)。
+* 支持各种字体格式 （点阵和矢量）。
 * 支持窗口动画
 * 支持控件动画
 * 支持高清屏。
@@ -98,7 +97,7 @@
 * 大量的示例代码。
 * 完善的 API 文档和使用文档。
 * ZLG 强大的技术支持团队。
-* 用 AWTK 本身开发的界面编辑器 (开发中)。
+* 用 AWTK 本身开发的界面编辑器 （开发中）。
 * 声明式的界面描述语言。一行代码启用控件动画，启用窗口动画，显示图片 (png/jpg/svg/gif)。
 
 ### 6. 高度扩展性
@@ -113,13 +112,12 @@
 * 可以扩展自己的控件布局算法。
 * 可以扩展自己的对话框高亮策略。
 * 可以实现自己的 LCD 接口。
-* 可以扩展自己的矢量引擎 (如使用 skia/cairo)。
+* 可以扩展自己的矢量引擎 （如使用 skia/cairo)。
 * 所有扩展组件和内置组件具有相同的待遇。
-
 
 ### 7. 多种开发语言
 
-[AWTK](https://github.com/zlgopen/awtk) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 (以后根据需要增加)：
+[AWTK](https://github.com/zlgopen/awtk) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 （以后根据需要增加）：
 
 * C
 * Lua
@@ -130,9 +128,9 @@
 
 * 支持 Unicode。
 * 支持输入法。
-* 支持字符串翻译 (实时生效)。
-* 支持图片翻译 (实时生效)。
-* 文字双向排版 (计划中)。
+* 支持字符串翻译 （实时生效）。
+* 支持图片翻译 （实时生效）。
+* 文字双向排版 （计划中）。
 
 ### 9. 开放源码，免费商用 (LGPL)。
 
@@ -140,20 +138,20 @@
 
 ### Mac
 
-如果没有安装 scons 和 sdl2，请在终端运行下面的命令 (假定已安装 brew)：
+如果没有安装 scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew)：
 
 ```
 brew install scons sdl2
 ```
 
-编译运行 (在终端下，进入 awtk 所在的目录，并运行下列命令)：
+编译运行 （在终端下，进入 awtk 所在的目录，并运行下列命令）：
 
 ```
 scons
 ./bin/demoui
 ```
 
-### Ubuntu (版本 >=16)
+### Ubuntu （版本 >=16)
 
 如果没有安装 scons 和依赖的软件包，请在终端运行下面的命令：
 
@@ -161,7 +159,7 @@ scons
 sudo apt-get install scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
 ```
 
-编译运行 (在终端下，进入 awtk 所在的目录，并运行下列命令)：
+编译运行 （在终端下，进入 awtk 所在的目录，并运行下列命令）：
 
 ```
 scons
@@ -172,9 +170,9 @@ scons
 
 ### Windows
 
-(请先安装 python，scons 和 Visual Studio C++(版本 >=2017)
+（请先安装 python，scons 和 Visual Studio C++（版本 >=2017)
 
-编译运行 (在命令行模式下，进入 awtk 所在的目录，并运行下列命令)：
+编译运行 （在命令行模式下，进入 awtk 所在的目录，并运行下列命令）：
 
 ```
 scons
@@ -193,7 +191,7 @@ bin\demoui
 
 * [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
-#### 移植示例 (不定期更新)
+#### 移植示例 （不定期更新）
 
 * [awtk-sylixos](https://github.com/zlgopen/awtk-sylixos)
 
@@ -203,7 +201,7 @@ bin\demoui
 
 * [stm32f767igtx](https://github.com/zlgopen/awtk-stm32f767igtx-raw)
 
-* [linux-framebuffer (嵌入式 Linux 请用本项目)](https://github.com/zlgopen/awtk-linux-fb)
+* [linux-framebuffer （嵌入式 Linux 请用本项目）](https://github.com/zlgopen/awtk-linux-fb)
 
 ## 七、各语言的绑定
 
@@ -238,6 +236,3 @@ bin\demoui
 ## 十一、最新动态
 
 [最新动态](docs/changes.md)
-
-
-
