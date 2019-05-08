@@ -367,33 +367,33 @@ class IDLGenerator {
     fs.writeFileSync(filename, str);
   }
 
-  static gen(sources_path, output_idl) {
+  static gen(sourcesPath, outputIDL) {
     let gen = new IDLGenerator();
     
     gen.result = []
-    gen.parseFolder(sources_path + '/**/*.h');
+    gen.parseFolder(sourcesPath + '/**/*.h');
 
     gen.postProcess();
-    gen.saveResult(output_idl);
+    gen.saveResult(outputIDL);
     console.log('\n==============================================');
-    console.log(`${sources_path} ==> ${output_idl}`);
+    console.log(`${sourcesPath} ==> ${outputIDL}`);
     console.log('==============================================');
   }
 }
 
-let output_idl = 'idl.json';
-let sources_path = path.normalize(path.join(__dirname, '../../src'));
+let outputIDL = 'idl.json';
+let sourcesPath = path.normalize(path.join(__dirname, '../../src'));
 
 if(process.argv.length == 3) {
-  output_idl = process.argv[2];
+  outputIDL = process.argv[2];
 } else if(process.argv.length > 3) {
-  output_idl = process.argv[2];
-  sources_path = path.normalize(process.argv[3]);
+  outputIDL = process.argv[2];
+  sourcesPath = path.normalize(process.argv[3]);
 }
 
-if(sources_path === '-h' || sources_path === '--help') {
-  console.log('node index.js output_idl sources_path');
+if(sourcesPath === '-h' || sourcesPath === '--help') {
+  console.log('Usage: node index.js outputIDL sourcesPath');
   process.exit(0);
 }
 
-IDLGenerator.gen(sources_path, output_idl)
+IDLGenerator.gen(sourcesPath, outputIDL)

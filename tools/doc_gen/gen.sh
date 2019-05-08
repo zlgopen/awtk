@@ -1,3 +1,4 @@
+#!/bin/bash
 
 genImages() {
   dot dots/*  -Tpng -O
@@ -7,11 +8,11 @@ genImages() {
   mv -v umls/*.png docs/images
 }
 
-for d in dots umls docs/images;
-do
-  rm -rf $d 
-  mkdir -p $d
-done
+if [ "$1" == "" ]
+then
+  node index.js
+else
+  node index.js "$1"
+fi
 
-node index.js
 genImages
