@@ -20,24 +20,6 @@
  */
 
 #include "awtk.h"
-#include "tkc/mem.h"
-#include "widgets/label.h"
-#include "base/idle.h"
-#include "base/timer.h"
-#include "widgets/button.h"
-#include "widgets/dialog.h"
-#include "widgets/image.h"
-#include "tkc/utils.h"
-#include "widgets/window.h"
-#include "tkc/time_now.h"
-#include "base/main_loop.h"
-#include "base/locale_info.h"
-#include "widgets/check_button.h"
-#include "widgets/progress_bar.h"
-#include "base/image_manager.h"
-#include "base/window_manager.h"
-#include "base/widget_factory.h"
-#include "ui_loader/ui_builder_default.h"
 #include "ext_widgets.h"
 
 static void install_click_hander(widget_t* widget);

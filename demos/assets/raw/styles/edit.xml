@@ -5,5 +5,6 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <error      bg_color="#404040" text_color="red" />
     <empty      bg_color="#404040" text_color="#a0a0a0" />
+    <empty_focus bg_color="#404040" text_color="#a0a0a0" />
   </style>
 </edit>
