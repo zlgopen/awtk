@@ -262,7 +262,27 @@ static ret_t on_button_events(void* ctx, event_t* e) {
       s_event_log += value_str(evt->value);
       s_event_log += " ";
       break;
-    } break;
+    }
+    case EVT_POINTER_MOVE: {
+      s_event_log += "EVT_POINTER_MOVE";
+      break;
+    }
+    case EVT_POINTER_DOWN: {
+      s_event_log += "EVT_POINTER_DOWN";
+      break;
+    }
+    case EVT_POINTER_UP: {
+      s_event_log += "EVT_POINTER_UP";
+      break;
+    }
+    case EVT_KEY_DOWN: {
+      s_event_log += "EVT_KEY_DOWN";
+      break;
+    }
+    case EVT_KEY_UP: {
+      s_event_log += "EVT_KEY_UP";
+      break;
+    }
   }
   return RET_OK;
 }
@@ -602,6 +622,110 @@ TEST(Widget, get_window) {
 
   ASSERT_EQ(widget_get_window(group), w);
   ASSERT_EQ(widget_get_window(group1), w);
+
+  widget_destroy(w);
+}
+
+static ret_t on_button_events_stop(void* ctx, event_t* e) {
+  switch (e->type) {
+    case EVT_POINTER_MOVE_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_MOVE_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_POINTER_DOWN_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_DOWN_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_POINTER_UP_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_UP_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_KEY_DOWN_BEFORE_CHILDREN: {
+      s_event_log += "EVT_KEY_DOWN_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_KEY_UP_BEFORE_CHILDREN: {
+      s_event_log += "EVT_KEY_UP_BEFORE_CHILDREN";
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_STOP;
+}
+
+TEST(Widget, EVT_POINTER_DOWN_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_DOWN, w, 1, 2);
+  widget_on(w, EVT_POINTER_DOWN_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_DOWN, on_button_events, NULL);
+  widget_on_pointer_down(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_DOWN_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_POINTER_UP_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_UP, w, 1, 2);
+  widget_on(w, EVT_POINTER_UP_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_UP, on_button_events, NULL);
+  widget_on_pointer_up(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_UP_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_POINTER_MOVE_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_MOVE, w, 1, 2);
+  widget_on(w, EVT_POINTER_MOVE_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_MOVE, on_button_events, NULL);
+  widget_on_pointer_move(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_MOVE_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_KEY_DOWN_BEFORE_CHILDREN) {
+  key_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  key_event_init(&evt, EVT_KEY_DOWN, w, 1);
+  widget_on(w, EVT_KEY_DOWN_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_KEY_DOWN, on_button_events, NULL);
+  widget_on_keydown(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_KEY_DOWN_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_KEY_UP_BEFORE_CHILDREN) {
+  key_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  key_event_init(&evt, EVT_KEY_UP, w, 1);
+  widget_on(w, EVT_KEY_UP_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_KEY_UP, on_button_events, NULL);
+  widget_on_keyup(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_KEY_UP_BEFORE_CHILDREN"));
 
   widget_destroy(w);
 }

@@ -42,25 +42,40 @@ typedef enum _event_type_t {
    */
   EVT_POINTER_DOWN = 0xff,
   /**
-   * @const EVT_POINTER_DOWN_ABORT
-   * 取消前一个指针按下事件名(pointer_event_t)。
+   * @const EVT_POINTER_DOWN_BEFORE_CHILDREN
+   * 指针按下事件名，在子控件处理之前触发(pointer_event_t)。
    */
-  EVT_POINTER_DOWN_ABORT,
+  EVT_POINTER_DOWN_BEFORE_CHILDREN,
   /**
    * @const EVT_POINTER_MOVE
    * 指针移动事件名(pointer_event_t)。
    */
   EVT_POINTER_MOVE,
   /**
+   * @const EVT_POINTER_MOVE_BEFORE_CHILDREN
+   * 指针移动事件名，在子控件处理之前触发(pointer_event_t)。
+   */
+  EVT_POINTER_MOVE_BEFORE_CHILDREN,
+  /**
    * @const EVT_POINTER_UP
    * 指针抬起事件名(pointer_event_t)。
    */
   EVT_POINTER_UP,
   /**
+   * @const EVT_POINTER_UP_BEFORE_CHILDREN
+   * 指针抬起事件名，在子控件处理之前触发(pointer_event_t)。
+   */
+  EVT_POINTER_UP_BEFORE_CHILDREN,
+  /**
    * @const EVT_WHEEL
    * 滚轮事件名(pointer_event_t)。
    */
   EVT_WHEEL,
+  /**
+   * @const EVT_POINTER_DOWN_ABORT
+   * 取消前一个指针按下事件名(pointer_event_t)。
+   */
+  EVT_POINTER_DOWN_ABORT,
   /**
    * @const EVT_CONTEXT_MENU
    * 右键/长按弹出上下文菜单的事件名(pointer_event_t)。
@@ -102,6 +117,11 @@ typedef enum _event_type_t {
    */
   EVT_KEY_DOWN,
   /**
+   * @const EVT_KEY_DOWN_BEFORE_CHILDREN
+   * 键按下事件名，在子控件处理之前触发(key_event_t)。
+   */
+  EVT_KEY_DOWN_BEFORE_CHILDREN,
+  /**
    * @const EVT_KEY_REPEAT
    * 按键repeat事件名(key_event_t)。
    */
@@ -111,6 +131,11 @@ typedef enum _event_type_t {
    * 键抬起事件名(key_event_t)。
    */
   EVT_KEY_UP,
+  /**
+   * @const EVT_KEY_UP_BEFORE_CHILDREN
+   * 键抬起事件名，在子控件处理之前触发(key_event_t)。
+   */
+  EVT_KEY_UP_BEFORE_CHILDREN,
   /**
    * @const EVT_WILL_MOVE
    * 即将移动Widget的事件名(event_t)。

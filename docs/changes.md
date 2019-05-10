@@ -2,7 +2,14 @@
 
 * 2019/05/10
   * 修改SDL输入法位置的BUG。
+  * 增加下列事件，在子控件处理之前触发，让用户注册的事件处理函数，有机会拦截这些事件。
+     * EVT\_POINTER\_DOWN\_BEFORE\_CHILDREN
+     * EVT\_POINTER\_UP\_BEFORE\_CHILDREN
+     * EVT\_POINTER\_UP\_BEFORE\_CHILDREN
+     * EVT\_KEY\_DOWN\_BEFORE\_CHILDREN
+     * EVT\_KEY\_UP\_BEFORE\_CHILDREN
 
+     
 * 2019/05/08
   * 完善 idl gen 工具支持外部项目并编写文档。 
   * 完善 doc gen 工具支持外部项目并编写文档。 
