@@ -3,8 +3,10 @@ import os.path
 import platform
 
 OS_NAME = platform.system()
+ARCH = platform.architecture();
+is32bit = (ARCH[0] == '32bit');
 
-if platform.machine() == 'i686' or platform.machine() == 'i386':
+if is32bit:
   TARGET_ARCH='x86'
 else:
   TARGET_ARCH=''
