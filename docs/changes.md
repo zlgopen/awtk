@@ -3,6 +3,7 @@
 * 2019/05/11
   * guage pointer支持锚点(感谢智明提供补丁)。
   * 修改在Ubuntu 18 32bit上编译的问题(感谢[hardyun](http://www.hardyun.com/)提供补丁)。
+  * 增加条件变量tk\_cond\_var。
 
 * 2019/05/10
   * 修改SDL输入法位置的BUG。
