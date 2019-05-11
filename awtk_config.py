@@ -4,10 +4,12 @@ import platform
 
 OS_NAME = platform.system()
 
-TARGET_ARCH=''
+if platform.machine() == 'i686' or platform.machine() == 'i386':
+  TARGET_ARCH='x86'
+else:
+  TARGET_ARCH=''
 
-#if you want to build windows 32bit version, uncomment the following line:
-#TARGET_ARCH='x86'
+print('TARGET_ARCH:' + TARGET_ARCH)
 
 def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
@@ -111,6 +113,8 @@ elif OS_NAME == 'Linux':
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_LOADSO_DLOPEN -DSDL_VIDEO_OPENGL_EGL -DSDL_VIDEO_OPENGL_ES2 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
   OS_PROJECTS=['3rd/SDL/SConscript']
+  if TARGET_ARCH == 'x86':
+    OS_FLAGS = OS_FLAGS + ' -DWITH_DOUBLE_FLOAT '
 
 elif OS_NAME == 'Windows':
   OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
