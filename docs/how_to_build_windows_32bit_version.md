@@ -27,3 +27,11 @@ TARGET_ARCH='x86'
 ```
 NANOVG_BACKEND='AGGE'
 ```
+
+* 3.编译32位版本需要重新生成资源。
+
+```
+scripts/update_res.py clean
+scripts/update_res.py all
+```
+
