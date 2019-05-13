@@ -3,7 +3,7 @@
 #include "widgets/button.h"
 #include "widgets/window.h"
 #include "layouters/self_layouter_default.h"
-#include "layouters/self_layouter_factory.h"
+#include "base/self_layouter_factory.h"
 
 using std::string;
 

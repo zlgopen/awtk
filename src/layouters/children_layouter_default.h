@@ -58,6 +58,8 @@ typedef struct _children_layouter_default_t {
  */
 children_layouter_t* children_layouter_default_create(void);
 
+#define CHILDREN_LAYOUTER_DEFAULT "default"
+
 END_C_DECLS
 
 #endif /*TK_CHILDREN_LAYOUTER_DEFAULT_H*/

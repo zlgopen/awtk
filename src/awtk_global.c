@@ -39,7 +39,11 @@
 #include "base/window_animator_factory.h"
 #include "window_animators/window_animator_builtins.h"
 
+#include "base/self_layouter_factory.h"
+#include "base/children_layouter_factory.h"
 #include "base/dialog_highlighter_factory.h"
+#include "layouters/self_layouter_builtins.h"
+#include "layouters/children_layouter_builtins.h"
 #include "dialog_highlighters/dialog_highlighter_builtins.h"
 
 #ifdef WITH_SDL
@@ -130,6 +134,10 @@ ret_t tk_init_internal(void) {
                        RET_FAIL);
   return_value_if_fail(
       dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(children_layouter_factory_set(children_layouter_factory_create()) == RET_OK,
+                       RET_FAIL);
+  return_value_if_fail(self_layouter_factory_set(self_layouter_factory_create()) == RET_OK,
+                       RET_FAIL);
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
@@ -139,6 +147,9 @@ ret_t tk_init_internal(void) {
   window_animator_register_builtins();
   dialog_highlighter_register_builtins();
 #endif /*WITH_WINDOW_ANIMATORS*/
+  
+  self_layouter_register_builtins();
+  children_layouter_register_builtins();
 
   return RET_OK;
 }
@@ -169,6 +180,12 @@ ret_t tk_deinit_internal(void) {
 
   dialog_highlighter_factory_destroy(dialog_highlighter_factory());
   dialog_highlighter_factory_set(NULL);
+
+  children_layouter_factory_destroy(children_layouter_factory());
+  children_layouter_factory_set(NULL);
+
+  children_layouter_factory_destroy(children_layouter_factory());
+  children_layouter_factory_set(NULL);
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);

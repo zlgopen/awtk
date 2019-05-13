@@ -40,6 +40,8 @@ typedef ret_t (*self_layouter_set_param_t)(self_layouter_t* layouter, const char
                                            const value_t* v);
 typedef ret_t (*self_layouter_destroy_t)(self_layouter_t* layouter);
 
+typedef self_layouter_t* (*self_layouter_create_t)(void);
+
 typedef struct _self_layouter_vtable_t {
   const char* type;
   self_layouter_to_string_t to_string;
@@ -143,6 +145,15 @@ int32_t self_layouter_get_param_int(self_layouter_t* layouter, const char* name,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t self_layouter_destroy(self_layouter_t* layouter);
+
+/**
+ * @method self_layouter_create
+ * 创建layouter对象。
+ * @param {const char*} params 参数。
+ *
+ * @return {self_layouter_t*} 返回layouter对象。
+ */
+self_layouter_t* self_layouter_create(const char* params);
 
 END_C_DECLS
 

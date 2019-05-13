@@ -1,5 +1,5 @@
 ﻿/**
- * File:   children_layouter_factory.c
+ * File:   children_layouter_parser.c
  * Author: AWTK Develop Team
  * Brief:  children layouter factory
  *
@@ -22,8 +22,8 @@
 #include "tkc/utils.h"
 #include "tkc/tokenizer.h"
 #include "tkc/func_call_parser.h"
+#include "base/children_layouter_factory.h"
 #include "layouters/children_layouter_default.h"
-#include "layouters/children_layouter_factory.h"
 
 typedef struct _children_layouter_parser_t {
   func_call_parser_t base;
@@ -32,14 +32,13 @@ typedef struct _children_layouter_parser_t {
 } children_layouter_parser_t;
 
 static ret_t children_layouter_parser_on_name(func_call_parser_t* parser, const char* func_name) {
+  children_layouter_factory_t* f = children_layouter_factory();
   children_layouter_parser_t* children_layouter_parser = (children_layouter_parser_t*)parser;
 
   return_value_if_fail(func_name != NULL, RET_BAD_PARAMS);
-  if (tk_str_eq(func_name, "default")) {
-    children_layouter_parser->layouter = children_layouter_default_create();
-  } else {
-    assert(!"not supported layouter");
-  }
+
+  children_layouter_parser->layouter = children_layouter_factory_create_layouter(f, func_name);
+  return_value_if_fail(children_layouter_parser->layouter != NULL, RET_NOT_IMPL);
 
   return RET_OK;
 }

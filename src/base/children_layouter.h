@@ -40,6 +40,8 @@ typedef ret_t (*children_layouter_set_param_t)(children_layouter_t* layouter, co
 typedef bool_t (*children_layouter_is_valid_t)(children_layouter_t* layouter);
 typedef ret_t (*children_layouter_destroy_t)(children_layouter_t* layouter);
 
+typedef children_layouter_t* (*children_layouter_create_t)(void);
+
 typedef struct _children_layouter_vtable_t {
   const char* type;
   children_layouter_to_string_t to_string;
@@ -164,6 +166,15 @@ bool_t children_layouter_is_valid(children_layouter_t* layouter);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t children_layouter_destroy(children_layouter_t* layouter);
+
+/**
+ * @method children_layouter_create
+ * 创建layouter对象。
+ * @param {const char*} params 参数。
+ *
+ * @return {children_layouter_t*} 返回layouter对象。
+ */
+children_layouter_t* children_layouter_create(const char* params);
 
 END_C_DECLS
 

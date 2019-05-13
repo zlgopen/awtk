@@ -62,6 +62,8 @@ self_layouter_t* self_layouter_default_create(void);
 bool_t self_layouter_default_is_valid(self_layouter_t* layouter);
 ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, rect_t* area);
 
+#define SELF_LAYOUTER_DEFAULT "default"
+
 END_C_DECLS
 
 #endif /*TK_SELF_LAYOUTER_DEFAULT_H*/
