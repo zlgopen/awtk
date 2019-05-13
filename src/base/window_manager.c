@@ -353,9 +353,9 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
 
 static ret_t window_manager_do_open_window(widget_t* widget, widget_t* window) {
   if (widget->children != NULL && widget->children->size > 0) {
-    idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
+    widget_add_idle(window, (idle_func_t)window_manager_check_if_need_open_animation);
   } else {
-    idle_add((idle_func_t)window_manager_idle_dispatch_window_open, window);
+    widget_add_idle(window, (idle_func_t)window_manager_idle_dispatch_window_open);
   }
 
   return RET_OK;

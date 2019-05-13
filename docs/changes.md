@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/05/13
+  * 增加widget\_add\_idle。
+  * 完善window\_manager\_do\_open\_window。
+
 * 2019/05/11
   * guage pointer支持锚点(感谢智明提供补丁)。
   * 修改在Ubuntu 18 32bit上编译的问题(感谢[hardyun](http://www.hardyun.com/)提供补丁)。

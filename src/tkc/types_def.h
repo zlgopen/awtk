@@ -60,7 +60,7 @@ typedef uint16_t font_size_t;
 typedef long double float_t;
 #else
 typedef float float_t;
-#endif/*WITH_DOUBLE_FLOAT*/
+#endif /*WITH_DOUBLE_FLOAT*/
 
 struct _value_t;
 typedef struct _value_t value_t;

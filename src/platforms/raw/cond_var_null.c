@@ -44,7 +44,7 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
 
 ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
-  
+
   return RET_OK;
 }
 
@@ -56,4 +56,3 @@ ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
 
   return RET_OK;
 }
-

@@ -28,7 +28,7 @@
 struct _tk_cond_var_t {
   bool_t inited;
   bool_t has_signal;
-  CRITICAL_SECTION  mutex;
+  CRITICAL_SECTION mutex;
   CONDITION_VARIABLE cond;
 };
 
@@ -47,8 +47,7 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
 
   EnterCriticalSection(&(cond_var->mutex));
-  while (!cond_var->has_signal)
-  {
+  while (!cond_var->has_signal) {
     SleepConditionVariableCS(&(cond_var->cond), &(cond_var->mutex), timeout_ms);
   }
   cond_var->has_signal = FALSE;
@@ -59,7 +58,7 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
 
 ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
-  
+
   EnterCriticalSection(&(cond_var->mutex));
   cond_var->has_signal = TRUE;
   LeaveCriticalSection(&(cond_var->mutex));
@@ -71,14 +70,12 @@ ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
 ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
 
-
   memset(cond_var, 0x00, sizeof(tk_cond_var_t));
 
   TKMEM_FREE(cond_var);
 
   return RET_OK;
 }
-
 
 #else
 #include <pthread.h>
@@ -87,8 +84,8 @@ ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
 struct _tk_cond_var_t {
   bool_t inited;
   bool_t has_signal;
-  pthread_mutex_t  mutex;
-  pthread_cond_t   cond;
+  pthread_mutex_t mutex;
+  pthread_cond_t cond;
 };
 
 tk_cond_var_t* tk_cond_var_create(void) {
@@ -106,14 +103,13 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
 
   pthread_mutex_lock(&(cond_var->mutex));
-  while (!cond_var->has_signal)
-  {
+  while (!cond_var->has_signal) {
     struct timespec ts;
     struct timeval now;
 
     gettimeofday(&now, NULL);
-    ts.tv_sec = now.tv_sec + timeout_ms/1000;
-    ts.tv_nsec = now.tv_usec * 1000 + timeout_ms%1000;
+    ts.tv_sec = now.tv_sec + timeout_ms / 1000;
+    ts.tv_nsec = now.tv_usec * 1000 + timeout_ms % 1000;
 
     pthread_cond_timedwait(&(cond_var->cond), &(cond_var->mutex), &ts);
   }
@@ -125,7 +121,7 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
 
 ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
-  
+
   pthread_mutex_lock(&(cond_var->mutex));
   cond_var->has_signal = TRUE;
   pthread_mutex_unlock(&(cond_var->mutex));
@@ -145,4 +141,4 @@ ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
 
   return RET_OK;
 }
-#endif/*PTHREAD*/
+#endif /*PTHREAD*/

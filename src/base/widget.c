@@ -1690,6 +1690,23 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
   return id;
 }
 
+static ret_t widget_remove_idle_on_destroy(void* ctx, event_t* e) {
+  uint32_t id = (char*)ctx - (char*)NULL;
+  idle_remove(id);
+
+  return RET_REMOVE;
+}
+
+uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle) {
+  uint32_t id = 0;
+  return_value_if_fail(widget != NULL && on_idle != NULL, TK_INVALID_ID);
+
+  id = idle_add(on_idle, widget);
+  widget_on(widget, EVT_DESTROY, widget_remove_idle_on_destroy, tk_pointer_from_int(id));
+
+  return id;
+}
+
 static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);

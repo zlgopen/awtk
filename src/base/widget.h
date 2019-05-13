@@ -32,6 +32,7 @@
 #include "tkc/emitter.h"
 
 #include "base/types_def.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include "base/events.h"
 #include "base/canvas.h"
@@ -1398,6 +1399,18 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
 uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
+ * @method widget_add_idle
+ * 创建idle。
+ * 该idle在控件销毁时自动销毁，**idle\_info\_t**的ctx为widget。
+ * 如果idle的生命周期与控件无关，请直接调用**idle_add**，以避免不必要的内存开销。
+ * @param {widget_t*} widget 控件对象。
+ * @param {idle_func_t} on_idle idle回调函数。
+ *
+ * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+
+/**
  * @method widget_load_image
  * 加载图片。
  * 返回的bitmap对象只在当前调用有效，请不保存对bitmap对象的引用。
@@ -1862,6 +1875,7 @@ locale_info_t* widget_get_locale_info(widget_t* widget);
 image_manager_t* widget_get_image_manager(widget_t* widget);
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
 font_manager_t* widget_get_font_manager(widget_t* widget);
+uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
 
 END_C_DECLS
 

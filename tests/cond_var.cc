@@ -12,19 +12,19 @@ static int32_t s_consumer = 0;
 static void* consumer(void* args) {
   tk_cond_var_t* cond = (tk_cond_var_t*)args;
 
-  while(s_consumer < s_max) {
+  while (s_consumer < s_max) {
     tk_cond_var_wait(cond, 10000);
     sleep_ms(100);
     s_consumer++;
   }
-  
+
   return NULL;
 }
 
 static void* producer(void* args) {
   tk_cond_var_t* cond = (tk_cond_var_t*)args;
-  
-  while(s_producer < s_max) {
+
+  while (s_producer < s_max) {
     tk_cond_var_awake(cond);
     sleep_ms(100);
     s_producer++;
@@ -48,4 +48,3 @@ TEST(CondVar, basic) {
   ASSERT_EQ(s_producer, s_max);
   ASSERT_EQ(s_consumer, s_max);
 }
-

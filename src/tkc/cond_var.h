@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class tk_cond_var_t
- * 条件变量。
+ * 简化版的条件变量。
  */
 struct _tk_cond_var_t;
 typedef struct _tk_cond_var_t tk_cond_var_t;
