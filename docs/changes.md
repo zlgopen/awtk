@@ -4,6 +4,7 @@
   * 增加widget\_add\_idle。
   * 完善window\_manager\_do\_open\_window。
   * 子控件布局算法和控件自身算法支持注册自定义算法。
+  * 增加函数widget\_find\_animator(感谢均权提供补丁)。
 
 * 2019/05/11
   * guage pointer支持锚点(感谢智明提供补丁)。

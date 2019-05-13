@@ -24,7 +24,7 @@ TEST(SelfLayoutFactory, basic) {
   l = self_layouter_factory_create_layouter(f, "test3");
   ASSERT_EQ(l != NULL, TRUE);
   self_layouter_destroy(l);
-  
+
   l = self_layouter_factory_create_layouter(f, "notexist");
   ASSERT_EQ(l == NULL, TRUE);
 

@@ -337,6 +337,10 @@ ret_t widget_pause_animator(widget_t* widget, const char* name) {
   return widget_animator_manager_pause(widget_animator_manager(), widget, name);
 }
 
+widget_animator_t* widget_find_animator(widget_t* widget, const char* name) {
+  return widget_animator_manager_find(widget_animator_manager(), widget, name);
+}
+
 ret_t widget_stop_animator(widget_t* widget, const char* name) {
   return widget_animator_manager_stop(widget_animator_manager(), widget, name);
 }

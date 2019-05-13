@@ -24,7 +24,7 @@ TEST(ChildrenLayoutFactory, basic) {
   l = children_layouter_factory_create_layouter(f, "test3");
   ASSERT_EQ(l != NULL, TRUE);
   children_layouter_destroy(l);
-  
+
   l = children_layouter_factory_create_layouter(f, "notexist");
   ASSERT_EQ(l == NULL, TRUE);
 

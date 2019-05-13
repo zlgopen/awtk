@@ -67,6 +67,20 @@ TEST(Image, anchor) {
   widget_destroy(WIDGET(w));
 }
 
+TEST(Image, animator) {
+  widget_t* w = (image_create(NULL, 0, 0, 400, 300));
+
+  ASSERT_EQ(widget_create_animator(w, "move(y_from=0, y_to=128)"), RET_OK);
+  ASSERT_EQ(widget_start_animator(w, "move"), RET_OK);
+  ASSERT_EQ(widget_pause_animator(w, "move"), RET_OK);
+  ASSERT_EQ(widget_find_animator(w, "move") != NULL, TRUE);
+  ASSERT_EQ(widget_destroy_animator(w, "move"), RET_OK);
+
+  ASSERT_EQ(widget_find_animator(w, "move") == NULL, TRUE);
+
+  widget_destroy((w));
+}
+
 TEST(Image, cast) {
   widget_t* w = image_create(NULL, 0, 0, 400, 300);
 

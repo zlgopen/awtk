@@ -28,12 +28,6 @@
 
 BEGIN_C_DECLS
 
-struct _widget_animator_manager_t;
-typedef struct _widget_animator_manager_t widget_animator_manager_t;
-
-struct _widget_animator_t;
-typedef struct _widget_animator_t widget_animator_t;
-
 typedef ret_t (*widget_animator_update_t)(widget_animator_t* animator, float_t percent);
 typedef ret_t (*widget_animator_destroy_t)(widget_animator_t* animator);
 

@@ -147,7 +147,7 @@ ret_t tk_init_internal(void) {
   window_animator_register_builtins();
   dialog_highlighter_register_builtins();
 #endif /*WITH_WINDOW_ANIMATORS*/
-  
+
   self_layouter_register_builtins();
   children_layouter_register_builtins();
 

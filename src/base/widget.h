@@ -43,6 +43,7 @@
 #include "base/image_manager.h"
 #include "base/widget_consts.h"
 #include "base/self_layouter.h"
+#include "base/widget_animator.h"
 #include "base/children_layouter.h"
 
 BEGIN_C_DECLS
@@ -824,6 +825,18 @@ ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_pause_animator(widget_t* widget, const char* name);
+
+/**
+ * @method widget_find_animator
+ * 查找指定名称的动画。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
+ */
+widget_animator_t* widget_find_animator(widget_t* widget, const char* name);
 
 /**
  * @method widget_stop_animator

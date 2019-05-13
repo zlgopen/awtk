@@ -243,6 +243,13 @@ typedef struct _widget_t widget_t;
 struct _widget_vtable_t;
 typedef struct _widget_vtable_t widget_vtable_t;
 
+struct _widget_animator_manager_t;
+typedef struct _widget_animator_manager_t widget_animator_manager_t;
+
+struct _widget_animator_t;
+typedef struct _widget_animator_t widget_animator_t;
+
+
 #define fix_xywh(x, y, w, h) \
   if (w < 0) {               \
     w = -w;                  \
