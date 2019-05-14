@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/05/14
+  * style增加margin\_left/margin\_right/margin\_top/margin\_bottom几个参数用于细化之前的margin参数。 这个只影响icon/text，不影响子控件(子控件由布局算法决定)
+  
 * 2019/05/13
   * 增加widget\_add\_idle。
   * 完善window\_manager\_do\_open\_window。

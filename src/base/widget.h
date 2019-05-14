@@ -1889,6 +1889,8 @@ image_manager_t* widget_get_image_manager(widget_t* widget);
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
 font_manager_t* widget_get_font_manager(widget_t* widget);
 uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
+                                 int32_t spacer, rect_t* r_text, rect_t* r_icon);
 
 END_C_DECLS
 

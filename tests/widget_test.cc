@@ -740,3 +740,87 @@ TEST(Widget, load_widget) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, calc_icon_text_rect_icon) {
+  rect_t ir = rect_init(10, 20, 200, 40);
+  rect_t r_icon;
+
+  widget_calc_icon_text_rect(&ir, 10, ICON_AT_TOP, 2, NULL, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.w);
+  ASSERT_EQ(r_icon.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_text) {
+  rect_t ir = rect_init(10, 20, 200, 40);
+  rect_t r_text;
+
+  widget_calc_icon_text_rect(&ir, 10, ICON_AT_TOP, 2, &r_text, NULL);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w);
+  ASSERT_EQ(r_text.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_top) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_TOP, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.w);
+  ASSERT_EQ(r_icon.h, ir.h - font_size - spacer);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, r_icon.h + spacer);
+  ASSERT_EQ(r_text.w, ir.w);
+  ASSERT_EQ(r_text.h, font_size);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_left) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_LEFT, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
+
+  ASSERT_EQ(r_text.x, ir.x + ir.h + spacer);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
+  ASSERT_EQ(r_text.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_right) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_RIGHT, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x + ir.w - ir.h);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
+  ASSERT_EQ(r_text.h, ir.h);
+}

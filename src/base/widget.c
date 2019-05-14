@@ -733,20 +733,77 @@ ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event,
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
 }
 
+ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
+                                 int32_t spacer, rect_t* r_text, rect_t* r_icon) {
+  return_value_if_fail(ir != NULL && (r_text != NULL || r_icon != NULL), RET_BAD_PARAMS);
+
+  if (r_icon == NULL) {
+    *r_text = *ir;
+
+    return RET_OK;
+  }
+
+  if (r_text == NULL) {
+    *r_icon = *ir;
+
+    return RET_OK;
+  }
+
+  return_value_if_fail(font_size < ir->h && spacer < ir->h && spacer < ir->w, RET_BAD_PARAMS);
+  switch (icon_at) {
+    case ICON_AT_RIGHT: {
+      *r_icon = rect_init(ir->x + ir->w - ir->h, ir->y, ir->h, ir->h);
+      *r_text = rect_init(ir->x, ir->y, ir->w - ir->h - spacer, ir->h);
+      break;
+    }
+    case ICON_AT_TOP: {
+      int32_t icon_h = ir->h - font_size - spacer;
+      *r_icon = rect_init(ir->x, ir->y, ir->w, icon_h);
+      *r_text = rect_init(ir->x, icon_h + spacer, ir->w, font_size);
+      break;
+    }
+    case ICON_AT_LEFT:
+    default: {
+      *r_icon = rect_init(ir->x, ir->y, ir->h, ir->h);
+      *r_text = rect_init(ir->x + ir->h + spacer, ir->y, ir->w - ir->h - spacer, ir->h);
+      break;
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
-  rect_t r;
+  rect_t ir;
+  wh_t w = 0;
+  wh_t h = 0;
   bitmap_t img;
+  rect_t r_icon;
+  rect_t r_text;
   int32_t margin = 0;
+  int32_t spacer = 0;
   int32_t icon_at = 0;
   uint16_t font_size = 0;
+  int32_t margin_left = 0;
+  int32_t margin_right = 0;
+  int32_t margin_top = 0;
+  int32_t margin_bottom = 0;
   style_t* style = widget->astyle;
+  int32_t align_h = ALIGN_H_LEFT;
+  int32_t align_v = ALIGN_V_MIDDLE;
   return_value_if_fail(widget->astyle != NULL, RET_BAD_PARAMS);
 
-  margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+  spacer = style_get_int(style, STYLE_ID_SPACER, 2);
+  margin = style_get_int(style, STYLE_ID_MARGIN, 0);
+  margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
+  margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
+  margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
+  margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
   icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
 
-  wh_t w = widget->w - 2 * margin;
-  wh_t h = widget->h - 2 * margin;
+  w = widget->w - margin_left - margin_right;
+  h = widget->h - margin_top - margin_bottom;
+  ir = rect_init(margin_left, margin_top, w, h);
 
   if (text == NULL) {
     text = &(widget->text);
@@ -758,45 +815,35 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
 
   widget_prepare_text_style(widget, c);
   font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+
+  if (icon_at == ICON_AT_RIGHT || icon_at == ICON_AT_LEFT) {
+   align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
+   align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
+  } else {
+   align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
+   align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+  }
+  canvas_set_text_align(c, align_h, align_v);
+
   if (icon != NULL && widget_load_image(widget, icon, &img) == RET_OK) {
     float_t dpr = system_info()->device_pixel_ratio;
 
     if (text != NULL && text->size > 0) {
-      if ((h > (img.h / dpr + font_size) && icon_at == ICON_AT_AUTO) || icon_at == ICON_AT_TOP) {
-        int text_h = font_size + margin;
-        int text_y = widget->h - text_h;
-
-        r = rect_init(0, 0, widget->w, text_y);
-        canvas_draw_icon_in_rect(c, &img, &r);
-
-        r = rect_init(margin, text_y, w, text_h);
-      } else if (icon_at == ICON_AT_RIGHT) {
-        r = rect_init(widget->x + widget->w - widget->h, 0, widget->h, widget->h);
-        canvas_draw_icon_in_rect(c, &img, &r);
-
-        canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
-        r = rect_init(margin, margin, widget->w - widget->h - margin, h);
-      } else {
-        r = rect_init(0, 0, widget->h, widget->h);
-        canvas_draw_icon_in_rect(c, &img, &r);
-
-        canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
-        r = rect_init(widget->h + margin, margin, widget->w - widget->h - 2 * margin, h);
+      if ((h > (img.h / dpr + font_size) && icon_at == ICON_AT_AUTO)) {
+        icon_at = ICON_AT_TOP;
       }
-      canvas_draw_text_in_rect(c, text->str, text->size, &r);
+
+      widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, &r_text, &r_icon);
+
+      canvas_draw_icon_in_rect(c, &img, &r_icon);
+      canvas_draw_text_in_rect(c, text->str, text->size, &r_text);
     } else {
-      r = rect_init(0, 0, widget->w, widget->h);
-      canvas_draw_icon_in_rect(c, &img, &r);
+      widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, NULL, &r_icon);
+      canvas_draw_icon_in_rect(c, &img, &r_icon);
     }
   } else if (text != NULL && text->size > 0) {
-    if (icon_at == ICON_AT_RIGHT) {
-      r = rect_init(margin, margin, w, h);
-      canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
-    } else {
-      r = rect_init(margin, margin, w, h);
-    }
-
-    canvas_draw_text_in_rect(c, text->str, text->size, &r);
+    widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, &r_text, NULL);
+    canvas_draw_text_in_rect(c, text->str, text->size, &r_text);
   }
 
   return RET_OK;
