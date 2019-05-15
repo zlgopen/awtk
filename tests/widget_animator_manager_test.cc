@@ -26,7 +26,7 @@ TEST(AnimatorManager, basic) {
   ASSERT_EQ(wa->state, ANIMATOR_CREATED);
   ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);
   ASSERT_EQ(wa->state, ANIMATOR_RUNNING);
-  
+
   ASSERT_EQ(widget_animator_manager_find(am, widget, "foo") != NULL, TRUE);
   ASSERT_EQ(widget_animator_manager_find(am, widget, "notexist") == NULL, TRUE);
 

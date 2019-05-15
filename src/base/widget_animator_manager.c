@@ -293,7 +293,7 @@ uint32_t widget_animator_manager_count(widget_animator_manager_t* am) {
 }
 
 widget_animator_t* widget_animator_manager_find(widget_animator_manager_t* am, widget_t* widget,
-                                       const char* name) {
+                                                const char* name) {
   widget_animator_t* iter = NULL;
   return_value_if_fail(am != NULL && widget != NULL && name != NULL, NULL);
 

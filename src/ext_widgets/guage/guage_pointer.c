@@ -244,9 +244,8 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_guage_pointer_properties[] = {GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE,
-                                                   WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y,
-                                                   NULL};
+static const char* s_guage_pointer_properties[] = {
+    GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE, WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y, NULL};
 
 TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),
                                  .type = WIDGET_TYPE_GUAGE_POINTER,

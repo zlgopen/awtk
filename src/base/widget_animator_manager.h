@@ -180,7 +180,7 @@ ret_t widget_animator_manager_pause(widget_animator_manager_t* am, widget_t* wid
  * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
  */
 widget_animator_t* widget_animator_manager_find(widget_animator_manager_t* am, widget_t* widget,
-                                       const char* name);
+                                                const char* name);
 /**
  * @method widget_animator_manager_remove_all
  * 销毁满足条件的动画。
