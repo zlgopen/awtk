@@ -1,7 +1,10 @@
 # 最新动态
 * 2019/05/15
   * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
-  
+  * 完善color_hex_str(感谢朝泽提供补丁)。
+  * 修改guage pointer中文档错误(感谢朝泽提供补丁)。
+
+   
 * 2019/05/14
   * style增加margin\_left/margin\_right/margin\_top/margin\_bottom几个参数用于细化之前的margin参数。 这个只影响icon/text，不影响子控件(子控件由布局算法决定)
   
