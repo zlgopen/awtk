@@ -3,6 +3,7 @@
   * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
   * 完善color_hex_str(感谢朝泽提供补丁)。
   * 修改guage pointer中文档错误(感谢朝泽提供补丁)。
+  * 增加vgcanvas_cairo。cairo速度快功能全，但代码体积稍大，请酌情使用。
 
    
 * 2019/05/14
