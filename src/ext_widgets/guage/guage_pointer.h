@@ -79,14 +79,14 @@ typedef struct _guage_pointer_t {
   char* image;
 
   /**
-   * @property {float_t} center_point_y
+   * @property {float_t} anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 旋转锚点x坐标。
    */
   float_t anchor_x;
 
   /**
-   * @property {float_t} center_point_y
+   * @property {float_t} anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 旋转锚点y坐标。
    */
