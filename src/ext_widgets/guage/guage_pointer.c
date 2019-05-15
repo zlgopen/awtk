@@ -46,63 +46,61 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
   return RET_OK;
 }
 
-static bool_t value_is_anchor_px(const char* value) {
+bool_t guage_pointer_value_is_anchor_px(const char* value) {
+  char* tmp = NULL;
   size_t len = strlen(value);
-  char* tmp;
   return_value_if_fail(len > ANCHOR_PX_STR_LEN, FALSE);
+
   tmp = value + len - ANCHOR_PX_STR_LEN;
-  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "Px") != 0 || tk_str_eq(tmp, "pX") != 0 ||
-      tk_str_eq(tmp, "PX") != 0) {
+  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
     return TRUE;
   }
   return FALSE;
 }
 
-static float_t anchor_set_value(bool_t* is_px, const char* value) {
-  float_t anchor_;
-  if (value_is_anchor_px(value)) {
-    size_t len = strlen(value);
-    size_t tmp_len = len - ANCHOR_PX_STR_LEN;
-    char* tmp = (char*)TKMEM_ALLOC(tmp_len);
-    memcpy(tmp, value, tmp_len);
-    anchor_ = tk_atof(tmp);
-    TKMEM_FREE(tmp);
-    tmp = NULL;
-    *is_px = TRUE;
-  } else {
-    anchor_ = tk_atof(value);
-    *is_px = FALSE;
-  }
-
-  return anchor_;
-}
-
-static ret_t set_anchor(widget_t* widget, const char* str_anchor_, bool_t is_x) {
+ret_t guage_pointer_set_anchor_for_str(widget_t* widget, const char* anchor, bool_t is_x) {
+  float_t max_size = 0.0f;
+  float_t anchor_tmp = 0.0f;
+  bool_t is_anchor_px = TRUE;
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  float_t anchor_;
-  bool_t is_anchor_px;
-  float_t max_size;
-  anchor_ = anchor_set_value(&is_anchor_px, str_anchor_);
+  return_value_if_fail(anchor != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
+
+  anchor_tmp = tk_atof(anchor);
   max_size = is_x ? widget->w : widget->h;
+  is_anchor_px = guage_pointer_value_is_anchor_px(anchor);
+
   if (is_anchor_px) {
-    return_value_if_fail(0 <= anchor_ && anchor_ <= max_size, RET_BAD_PARAMS);
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= max_size, RET_BAD_PARAMS);
   } else {
-    return_value_if_fail(0 <= anchor_ && anchor_ <= 1.0f, RET_BAD_PARAMS);
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= 1.0f, RET_BAD_PARAMS);
   }
 
-  if (is_x)
-    guage_pointer->anchor_x = is_anchor_px ? anchor_ : anchor_ * max_size;
-  else
-    guage_pointer->anchor_y = is_anchor_px ? anchor_ : anchor_ * max_size;
+  if (is_x) {
+    guage_pointer->anchor_x = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
+  } else {
+    guage_pointer->anchor_y = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
+  }
 
   return RET_OK;
 }
 
-ret_t guage_pointer_set_anchor(widget_t* widget, const char* str_anchor_x,
-                               const char* str_anchor_y) {
-  return_value_if_fail(set_anchor(widget, str_anchor_x, TRUE) == RET_OK, RET_BAD_PARAMS);
-  return_value_if_fail(set_anchor(widget, str_anchor_y, FALSE) == RET_OK, RET_BAD_PARAMS);
+ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
+  float tmp = 0.0f;
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
+
+  tmp = guage_pointer->anchor_x;
+
+  return_value_if_fail(guage_pointer_set_anchor_for_str(widget, anchor_x, TRUE) == RET_OK,
+                       RET_BAD_PARAMS);
+
+  if (guage_pointer_set_anchor_for_str(widget, anchor_y, FALSE) != RET_OK) {
+    guage_pointer->anchor_x = tmp;
+    return RET_BAD_PARAMS;
+  }
 
   return RET_OK;
 }
@@ -110,7 +108,7 @@ ret_t guage_pointer_set_anchor(widget_t* widget, const char* str_anchor_x,
 ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
   guage_pointer->image = tk_str_copy(guage_pointer->image, image);
   if (guage_pointer->image != NULL) {
     const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
@@ -137,10 +135,10 @@ static ret_t guage_pointer_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, guage_pointer->image);
     return RET_OK;
-  } else if (tk_str_eq(name, GUAGE_POINTER_ANCHOR_X)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
     value_set_int(v, guage_pointer->anchor_x);
     return RET_OK;
-  } else if (tk_str_eq(name, GUAGE_POINTER_ANCHOR_Y)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
     value_set_int(v, guage_pointer->anchor_y);
     return RET_OK;
   }
@@ -155,10 +153,10 @@ static ret_t guage_pointer_set_prop(widget_t* widget, const char* name, const va
     return guage_pointer_set_angle(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return guage_pointer_set_image(widget, value_str(v));
-  } else if (tk_str_eq(name, GUAGE_POINTER_ANCHOR_X)) {
-    return set_anchor(widget, value_str(v), TRUE);
-  } else if (tk_str_eq(name, GUAGE_POINTER_ANCHOR_Y)) {
-    return set_anchor(widget, value_str(v), FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
+    return guage_pointer_set_anchor_for_str(widget, value_str(v), TRUE);
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
+    return guage_pointer_set_anchor_for_str(widget, value_str(v), FALSE);
   }
 
   return RET_NOT_FOUND;
@@ -247,7 +245,7 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const char* s_guage_pointer_properties[] = {GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE,
-                                                   GUAGE_POINTER_ANCHOR_X, GUAGE_POINTER_ANCHOR_Y,
+                                                   WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y,
                                                    NULL};
 
 TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),

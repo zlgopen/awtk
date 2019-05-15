@@ -152,17 +152,17 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t guage_pointer_set_anchor(widget_t* widget, const char* str_anchor_x,
-                               const char* str_anchor_y);
+ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y);
 
 #define GUAGE_POINTER_PROP_ANGLE "angle"
 #define WIDGET_TYPE_GUAGE_POINTER "guage_pointer"
-#define GUAGE_POINTER_ANCHOR_X "anchor_x"
-#define GUAGE_POINTER_ANCHOR_Y "anchor_y"
 #define GUAGE_POINTER(widget) ((guage_pointer_t*)(guage_pointer_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(guage_pointer);
+
+/*public for test*/
+ret_t guage_pointer_set_anchor_for_str(widget_t* widget, const char* anchor, bool_t is_x);
 
 END_C_DECLS
 
