@@ -62,8 +62,13 @@ color_t* color_cast(color_t* color) {
 }
 
 const char* color_hex_str(color_t c, char str[TK_COLOR_HEX_LEN + 1]) {
-  tk_snprintf(str, TK_COLOR_HEX_LEN, "#%02X%02X%02X", (int)(c.rgba.r), (int)(c.rgba.g),
-              (int)(c.rgba.b));
+  if (c.rgba.a == 0xff) {
+    tk_snprintf(str, TK_COLOR_HEX_LEN, "#%02X%02X%02X", (int)(c.rgba.r), (int)(c.rgba.g),
+                (int)(c.rgba.b));
+  } else {
+    tk_snprintf(str, TK_COLOR_HEX_LEN, "#%02x%02x%02x%02x", (int)(c.rgba.r), (int)(c.rgba.g),
+                (int)(c.rgba.b), (int)(c.rgba.a));
+  }
 
   return str;
 }
