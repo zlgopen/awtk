@@ -4,6 +4,7 @@ import copy
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
+VGCANVAS=os.environ['VGCANVAS'];
 
 sources=Glob('tkc/*.c') +\
   Glob('base/*.c') + \
@@ -36,14 +37,17 @@ sources += [
   'input_methods/input_method_creator.c'
   ] + Glob('lcd/lcd_mem_*.c') ;
 
-if NANOVG_BACKEND == 'BGFX':
-  sources +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
-elif NANOVG_BACKEND == 'AGG':
-  sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
-elif NANOVG_BACKEND == 'AGGE':
-  sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+if VGCANVAS == 'CAIRO':
+  sources +=['vgcanvas/vgcanvas_cairo.c'];
 else:
-  sources +=['vgcanvas/vgcanvas_nanovg_gl.c'];
+  if NANOVG_BACKEND == 'BGFX':
+    sources +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
+  elif NANOVG_BACKEND == 'AGG':
+    sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+  elif NANOVG_BACKEND == 'AGGE':
+    sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+  else:
+    sources +=['vgcanvas/vgcanvas_nanovg_gl.c'];
 
 if os.environ['INPUT_ENGINE'] == 'null':
   sources += Glob('input_engines/input_engine_null.c')

@@ -19,11 +19,11 @@
  *
  */
 
-#include "tkc/mem.h"
-#include "tkc/utils.h"
-#include "tkc/color_parser.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
+#include "tkc/color_parser.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 
 ret_t vgcanvas_reset(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->reset != NULL, RET_BAD_PARAMS);
@@ -423,6 +423,10 @@ ret_t vgcanvas_draw_icon(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, 
 ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                       bitmap_format_t format, void* data) {
   return_value_if_fail(vg != NULL && data != NULL, RET_BAD_PARAMS);
+
+  if (vg->w == w && vg->h == h) {
+    return RET_OK;
+  }
 
   if (vg->vt->reinit != NULL) {
     return vg->vt->reinit(vg, w, h, stride, format, data);

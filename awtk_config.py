@@ -35,6 +35,7 @@ if OS_NAME == 'Windows':
 INPUT_ENGINE='pinyin'
 
 VGCANVAS='NANOVG'
+VGCANVAS='CAIRO'
 NANOVG_BACKEND='GL3'
 #NANOVG_BACKEND='GLES2'
 #NANOVG_BACKEND='GLES3'
@@ -43,12 +44,17 @@ NANOVG_BACKEND='GL3'
 #NANOVG_BACKEND='BGFX'
 
 FRAME_BUFFER_FORMAT=''
-if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGG':
+if VGCANVAS == 'CAIRO':
   LCD='SDL_FB'
   FRAME_BUFFER_FORMAT='bgr565'
   #FRAME_BUFFER_FORMAT='bgra8888'
-else:  
-  LCD='SDL_GPU'
+else:
+  if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGG':
+    LCD='SDL_FB'
+    FRAME_BUFFER_FORMAT='bgr565'
+    #FRAME_BUFFER_FORMAT='bgra8888'
+  else:  
+    LCD='SDL_GPU'
 
 NANOVG_BACKEND_LIBS=[];
 NANOVG_BACKEND_PROJS=[];
@@ -70,24 +76,32 @@ else:
   else:
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FB_BGR565=1';
 
-if NANOVG_BACKEND == 'AGG':
-  NANOVG_BACKEND_LIBS=['nanovg-agg', 'agg'];
-  NANOVG_BACKEND_PROJS=['3rd/agg/SConscript'];
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGG '
-elif NANOVG_BACKEND == 'AGGE':
-  NANOVG_BACKEND_LIBS=['nanovg-agge', 'agge'];
-  NANOVG_BACKEND_PROJS=['3rd/agge/SConscript'];
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGGE '
-elif NANOVG_BACKEND == 'BGFX':
-  NANOVG_BACKEND_LIBS=['nanovg-bgfx','bgfx'];
-  NANOVG_BACKEND_PROJS=['3rd/bgfx/SConscript'];
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_BGFX '
-elif NANOVG_BACKEND == 'GLES2':
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GLES2 -DWITH_NANOVG_GL '
-elif NANOVG_BACKEND == 'GLES3':
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GLES3 -DWITH_NANOVG_GL '
+if VGCANVAS == 'CAIRO':
+  NANOVG_BACKEND_LIBS=['cairo', 'pixman'];
+  NANOVG_BACKEND_PROJS=['3rd/cairo/SConscript', '3rd/pixman/SConscript'];
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_VGCANVAS_CAIRO -DHAVE_CONFIG_H -DCAIRO_WIN32_STATIC_BUILD '
 else:
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GL3 -DWITH_NANOVG_GL '
+  if NANOVG_BACKEND == 'AGG':
+    NANOVG_BACKEND_LIBS=['nanovg-agg', 'nanovg', 'agg'];
+    NANOVG_BACKEND_PROJS=['3rd/agg/SConscript'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGG '
+  elif NANOVG_BACKEND == 'AGGE':
+    NANOVG_BACKEND_LIBS=['nanovg-agge', 'nanovg', 'agge'];
+    NANOVG_BACKEND_PROJS=['3rd/agge/SConscript'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGGE '
+  elif NANOVG_BACKEND == 'BGFX':
+    NANOVG_BACKEND_LIBS=['nanovg-bgfx','nanovg', 'bgfx'];
+    NANOVG_BACKEND_PROJS=['3rd/bgfx/SConscript'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_BGFX '
+  elif NANOVG_BACKEND == 'GLES2':
+    NANOVG_BACKEND_LIBS=['nanovg'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GLES2 -DWITH_NANOVG_GL '
+  elif NANOVG_BACKEND == 'GLES3':
+    NANOVG_BACKEND_LIBS=['nanovg'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GLES3 -DWITH_NANOVG_GL '
+  else:
+    NANOVG_BACKEND_LIBS=['nanovg'];
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GL3 -DWITH_NANOVG_GL '
 
 OS_FLAGS=''
 OS_LIBS=[]
@@ -117,6 +131,8 @@ elif OS_NAME == 'Linux':
   OS_PROJECTS=['3rd/SDL/SConscript']
   if TARGET_ARCH == 'x86':
     OS_FLAGS = OS_FLAGS + ' -DWITH_DOUBLE_FLOAT '
+  else:
+    OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
 
 elif OS_NAME == 'Windows':
   OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
@@ -133,6 +149,7 @@ elif OS_NAME == 'Windows':
     OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN32 '
   else:
+    OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
     OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
     OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
     OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
@@ -141,7 +158,7 @@ elif OS_NAME == 'Windows':
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[TK_LIB_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
-LIBS=['awtk', 'gpinyin', 'awtk', 'linebreak'] + NANOVG_BACKEND_LIBS + ['nanovg', 'SDL2', 'glad'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'awtk', 'linebreak'] + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
@@ -149,6 +166,7 @@ CPPPATH=[TK_ROOT,
   joinPath(TK_SRC, 'ext_widgets'), 
   joinPath(TK_3RD_ROOT, 'pixman'), 
   joinPath(TK_3RD_ROOT, 'pixman/pixman'), 
+  joinPath(TK_3RD_ROOT, 'cairo/cairo'), 
   joinPath(TK_3RD_ROOT, 'bgfx/bgfx/include'), 
   joinPath(TK_3RD_ROOT, 'bgfx/bx/include'), 
   joinPath(TK_3RD_ROOT, 'bgfx/bimg/include'), 

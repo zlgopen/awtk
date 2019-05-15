@@ -1,11 +1,69 @@
 import os
 
-env = DefaultEnvironment().Clone()
-LIB_DIR = os.environ['LIB_DIR'];
-BIN_DIR = os.environ['BIN_DIR'];
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
 
-CCFLAGS = os.environ['CCFLAGS'] + ' -DHAVE_CONFIG_H -DPIXMAN_NO_TLS '
+sources=[
+  "pixman/pixman-access-accessors.c",
+  "pixman/pixman-access.c",
+  "pixman/pixman-bits-image.c",
+  "pixman/pixman.c",
+  "pixman/pixman-combine32.c",
+  "pixman/pixman-combine-float.c",
+  "pixman/pixman-conical-gradient.c",
+  "pixman/pixman-edge-accessors.c",
+  "pixman/pixman-edge.c",
+  "pixman/pixman-fast-path.c",
+  "pixman/pixman-filter.c",
+  "pixman/pixman-general.c",
+  "pixman/pixman-glyph.c",
+  "pixman/pixman-gradient-walker.c",
+  "pixman/pixman-image.c",
+  "pixman/pixman-implementation.c",
+  "pixman/pixman-linear-gradient.c",
+  "pixman/pixman-matrix.c",
+  "pixman/pixman-noop.c",
+  "pixman/pixman-radial-gradient.c",
+  "pixman/pixman-region16.c",
+  "pixman/pixman-region32.c",
+  "pixman/pixman-solid-fill.c",
+  "pixman/pixman-timer.c",
+  "pixman/pixman-trap.c",
+  "pixman/pixman-utils.c",
+  "pixman/pixman-mips.c",
+  "pixman/pixman-arm.c",
+  "pixman/pixman-x86.c",
+  "pixman/pixman-ppc.c"
+#  "pixman/pixman-region.c",
+#  "pixman/pixman-vmx.c",
+]
 
-SOURCES = Glob('pixman/*.c') + Glob('pixman/*.s')
-env.Library(os.path.join(LIB_DIR, 'pixman'), SOURCES, CCFLAGS = CCFLAGS);
+arm_sources=[
+  "pixman/pixman-arm-neon.c",
+  "pixman/pixman-arm-simd.c",
+  "pixman/pixman-arm-neon-asm-bilinear.S",
+  "pixman/pixman-arm-neon-asm.S",
+  "pixman/pixman-arm-simd-asm.S",
+  "pixman/pixman-arm-simd-asm-scaled.S",
+]
 
+ppc_sources=[
+]
+
+x86_sources=[
+#  "pixman/pixman-mmx.c",
+#  "pixman/pixman-sse2.c",
+#  "pixman/pixman-ssse3.c",
+]
+
+vmx_sources=[
+]
+
+mips_sources=[
+  "pixman/pixman-mips-dspr2.c",
+  "pixman/pixman-mips-dspr2-asm.S",
+  "pixman/pixman-mips-memcpy-asm.S",
+]
+
+env=DefaultEnvironment().Clone()
+env.Library(os.path.join(LIB_DIR, 'pixman'), sources + x86_sources)

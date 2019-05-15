@@ -1,0 +1,18 @@
+import os
+import platform 
+
+OS_NAME=platform.system()
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources=Glob('cairo/*.c') 
+
+env=DefaultEnvironment().Clone()
+
+if (OS_NAME == 'Darwin' or OS_NAME == 'Linux'):
+  env['CCFLAGS'] = ' -Wno-unused-variable -Wno-enum-conversion ' + env['CCFLAGS']
+
+env.Library(os.path.join(LIB_DIR, 'cairo'), sources)
+
+# env['LIBS'] = ['cairo', 'pixman'] + env['LIBS']
+# env.Program(os.path.join(BIN_DIR, 'cairo_stars'), ['demos/stars.c']);

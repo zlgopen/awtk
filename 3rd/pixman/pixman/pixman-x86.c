@@ -187,6 +187,7 @@ detect_cpu_features (void)
 	memcpy (vendor + 8, &c, 4);
 
 	if (strcmp (vendor, "AuthenticAMD") == 0 ||
+	    strcmp (vendor, "HygonGenuine") == 0 ||
 	    strcmp (vendor, "Geode by NSC") == 0)
 	{
 	    pixman_cpuid (0x80000000, &a, &b, &c, &d);
