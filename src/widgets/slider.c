@@ -67,7 +67,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
 
   image_name = style_get_str(style, STYLE_ID_ICON, NULL);
   if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-    canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
+    canvas_draw_image_ex(c, &img, IMAGE_DRAW_SCALE_AUTO, &r);
   }
 
   return RET_OK;
