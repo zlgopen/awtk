@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/05/16
+  * 去掉slist_remove中一个警告。
+  * 完善slider。垂直slider过宽或水平slider过高时缩放图标，否则显示有些怪异。
+
 * 2019/05/15
   * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
   * 完善color_hex_str(感谢朝泽提供补丁)。
