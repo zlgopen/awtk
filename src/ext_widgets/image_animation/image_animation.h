@@ -129,6 +129,7 @@ typedef struct _image_animation_t {
   uint32_t delay;
 
   /*private*/
+  bool_t inited;
   int32_t index;
   uint32_t timer_id;
   void* image_data;

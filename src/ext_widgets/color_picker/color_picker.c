@@ -392,7 +392,7 @@ widget_t* color_picker_cast(widget_t* widget) {
   return widget;
 }
 
-static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c) {
+static ret_t color_picker_init_if_not_inited(widget_t* widget) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(color_picker != NULL, RET_BAD_PARAMS);
   
@@ -404,4 +404,9 @@ static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c) {
 
   return RET_OK;
 }
+
+static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c) {
+  return color_picker_init_if_not_inited(widget);
+}
+
 
