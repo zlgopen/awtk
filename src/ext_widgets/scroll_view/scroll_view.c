@@ -286,6 +286,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 }
 
 static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
@@ -339,13 +340,15 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
           scroll_view->dragged = TRUE;
         }
       }
+
+      ret = scroll_view->dragged ? RET_STOP : RET_OK;
       break;
     }
     default:
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {

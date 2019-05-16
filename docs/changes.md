@@ -4,6 +4,7 @@
   * 完善slider。垂直slider过宽或水平slider过高时缩放图标，否则显示有些怪异。
   * image animitioin的自动播放放到第一次绘制时启动。
   * color picker的对子控件的hook放到第一次绘制时处理。
+  * slide view支持list view作为子控件。
 
 * 2019/05/15
   * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
