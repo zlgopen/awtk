@@ -52,7 +52,6 @@ static ret_t color_picker_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-
 TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
                                 .type = WIDGET_TYPE_COLOR_PICKER,
                                 .set_prop = color_picker_set_prop,
@@ -395,8 +394,8 @@ widget_t* color_picker_cast(widget_t* widget) {
 static ret_t color_picker_init_if_not_inited(widget_t* widget) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(color_picker != NULL, RET_BAD_PARAMS);
-  
-  if(!(color_picker->inited)) {
+
+  if (!(color_picker->inited)) {
     widget_foreach(WIDGET(widget), color_picker_hook_children, widget);
     color_picker_sync_children(WIDGET(widget));
     color_picker->inited = TRUE;
@@ -408,5 +407,3 @@ static ret_t color_picker_init_if_not_inited(widget_t* widget) {
 static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c) {
   return color_picker_init_if_not_inited(widget);
 }
-
-

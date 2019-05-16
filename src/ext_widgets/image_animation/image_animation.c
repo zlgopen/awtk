@@ -222,7 +222,7 @@ static ret_t image_animation_start_init_if_not_inited(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(widget != NULL && image_animation != NULL, RET_BAD_PARAMS);
 
-  if(!(image_animation->inited)) {
+  if (!(image_animation->inited)) {
     if (image_animation->auto_play) {
       if (image_animation->delay > 0) {
         image_animation->timer_id =
