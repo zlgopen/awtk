@@ -28,6 +28,8 @@
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"
 
+static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c);
+
 static ret_t color_picker_get_prop(widget_t* widget, const char* name, value_t* v) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
   return_value_if_fail(color_picker != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -50,11 +52,13 @@ static ret_t color_picker_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
+
 TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
                                 .type = WIDGET_TYPE_COLOR_PICKER,
                                 .set_prop = color_picker_set_prop,
                                 .get_prop = color_picker_get_prop,
                                 .parent = TK_PARENT_VTABLE(widget),
+                                .on_paint_begin = color_picker_on_paint_begin,
                                 .create = color_picker_create};
 
 static ret_t color_picker_update_child(void* ctx, const void* iter) {
@@ -343,20 +347,12 @@ static ret_t color_picker_hook_children(void* ctx, const void* iter) {
   return RET_OK;
 }
 
-static ret_t color_picker_on_window_will_open(void* ctx, event_t* e) {
-  widget_foreach(WIDGET(ctx), color_picker_hook_children, ctx);
-  color_picker_sync_children(WIDGET(ctx));
-
-  return RET_REMOVE;
-}
-
 widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_picker), x, y, w, h);
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  widget_t* win = widget_get_window(parent);
   return_value_if_fail(color_picker != NULL, NULL);
 
-  widget_on(win, EVT_WINDOW_WILL_OPEN, color_picker_on_window_will_open, color_picker);
+  color_picker->inited = FALSE;
   color_picker_set_color(widget, "gold");
 
   return widget;
@@ -395,3 +391,17 @@ widget_t* color_picker_cast(widget_t* widget) {
 
   return widget;
 }
+
+static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c) {
+  color_picker_t* color_picker = COLOR_PICKER(widget);
+  return_value_if_fail(color_picker != NULL, RET_BAD_PARAMS);
+  
+  if(!(color_picker->inited)) {
+    widget_foreach(WIDGET(widget), color_picker_hook_children, widget);
+    color_picker_sync_children(WIDGET(widget));
+    color_picker->inited = TRUE;
+  }
+
+  return RET_OK;
+}
+
