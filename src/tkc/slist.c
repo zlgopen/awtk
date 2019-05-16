@@ -75,7 +75,7 @@ void* slist_find(slist_t* slist, void* ctx) {
 ret_t slist_remove(slist_t* slist, void* ctx) {
   slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;
-  return_value_if_fail(slist != NULL && slist->first != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
   iter = slist->first;
   prev = slist->first;
