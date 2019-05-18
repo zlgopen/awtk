@@ -80,3 +80,69 @@ TEST(Slider, cast) {
 
   widget_destroy(w);
 }
+
+TEST(Slider, inc) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+  slider_t* slider = SLIDER(w);
+
+  slider_set_value(w, 0);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider->value, 3);
+
+  slider_set_value(w, 100);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider->value, 100);
+
+  widget_destroy(w);
+}
+
+TEST(Slider, inc_step) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+  slider_t* slider = SLIDER(w);
+
+  slider_set_value(w, 0);
+  slider_set_step(w, 10);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider_inc(w), RET_OK);
+  ASSERT_EQ(slider->value, 30);
+
+  widget_destroy(w);
+}
+
+TEST(Slider, dec) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+  slider_t* slider = SLIDER(w);
+
+  slider_set_value(w, 100);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider->value, 97);
+
+  slider_set_value(w, 0);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider->value, 0);
+
+  widget_destroy(w);
+}
+
+TEST(Slider, dec_step) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+  slider_t* slider = SLIDER(w);
+
+  slider_set_value(w, 100);
+  slider_set_step(w, 10);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider_dec(w), RET_OK);
+  ASSERT_EQ(slider->value, 70);
+
+  widget_destroy(w);
+}

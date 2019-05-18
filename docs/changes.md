@@ -2,6 +2,7 @@
 * 2019/05/18
   * 修改window\_manager\_open\_window将key\target设置为新窗口。
   * 合并text selector的补丁(感谢智明提供补丁)。
+  * slider支持上下左右键盘。
 
 * 2019/05/16
   * 去掉slist\_remove中一个警告。

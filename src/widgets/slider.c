@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/rect.h"
 #include "tkc/utils.h"
+#include "base/keys.h"
 #include "widgets/slider.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -163,6 +164,53 @@ static ret_t slider_pointer_up_cleanup(widget_t* widget) {
 
   return RET_OK;
 }
+
+static ret_t slider_add_value(widget_t* widget, int16_t delta) {
+  int32_t new_value = 0;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  new_value = slider->value + delta;
+
+  if (new_value < slider->min) {
+    new_value = slider->min;
+  }
+
+  if (new_value > slider->max) {
+    new_value = slider->max;
+  }
+
+  return slider_set_value(widget, new_value);
+}
+
+ret_t slider_inc(widget_t* widget) {
+  ret_t ret = RET_OK;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->step) {
+    ret = slider_add_value(widget, slider->step);
+  } else {
+    ret = slider_add_value(widget, 1);
+  }
+
+  return ret;
+}
+
+ret_t slider_dec(widget_t* widget) {
+  ret_t ret = RET_OK;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->step) {
+    ret = slider_add_value(widget, -slider->step);
+  } else {
+    ret = slider_add_value(widget, -1);
+  }
+
+  return ret;
+}
+
 static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
   ret_t ret = RET_OK;
@@ -229,6 +277,23 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_ENTER:
       widget_set_state(widget, slider->dragging ? WIDGET_STATE_PRESSED : WIDGET_STATE_OVER);
       break;
+    case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      if (slider->vertical) {
+        if (evt->key == TK_KEY_UP) {
+          slider_inc(widget);
+        } else if (evt->key == TK_KEY_DOWN) {
+          slider_dec(widget);
+        }
+      } else {
+        if (evt->key == TK_KEY_LEFT) {
+          slider_dec(widget);
+        } else if (evt->key == TK_KEY_RIGHT) {
+          slider_inc(widget);
+        }
+      }
+      break;
+    }
     default: {
       ret = RET_OK;
       break;

@@ -230,6 +230,8 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
 TK_EXTERN_VTABLE(slider);
 
 /*public for test*/
+ret_t slider_dec(widget_t* widget);
+ret_t slider_inc(widget_t* widget);
 ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype, bool_t force);
 
 END_C_DECLS
