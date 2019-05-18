@@ -393,7 +393,7 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
   window->dirty = FALSE;
   widget->target = window;
 
-  if(!widget_is_keyboard(window)) {
+  if (!widget_is_keyboard(window)) {
     widget->key_target = window;
   }
   widget_invalidate(window, NULL);

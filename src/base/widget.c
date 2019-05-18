@@ -386,7 +386,7 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
 
       widget_dispatch(widget, &e);
     }
-    
+
     widget_invalidate(widget, NULL);
   }
 
@@ -1094,10 +1094,15 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   }
 
   if (ret == RET_NOT_FOUND) {
-    if (widget->custom_props == NULL) {
-      widget->custom_props = object_default_create();
+    if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+      widget_set_focused(widget, value_bool(v));
+      ret = RET_OK;
+    } else {
+      if (widget->custom_props == NULL) {
+        widget->custom_props = object_default_create();
+      }
+      ret = object_set_prop(widget->custom_props, name, v);
     }
-    ret = object_set_prop(widget->custom_props, name, v);
   }
 
   if (ret != RET_NOT_FOUND) {
@@ -2364,7 +2369,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
   if (widget != NULL) {
     if (widget->parent != NULL) {
       widget->parent->focused = TRUE;
-      if(widget->parent->key_target != NULL && widget->parent->key_target != widget) {
+      if (widget->parent->key_target != NULL && widget->parent->key_target != widget) {
         widget_dispatch_blur_event(widget->parent->key_target);
       }
       widget->parent->key_target = widget;

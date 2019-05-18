@@ -450,7 +450,7 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
   text_selector->visible_nr = 5;
   text_selector->pressed = FALSE;
-  
+
   return widget;
 }
 
