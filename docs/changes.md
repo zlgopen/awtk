@@ -1,6 +1,9 @@
 # 最新动态
+* 2019/05/18
+  * 合并text selector的补丁(感谢智明提供补丁)。
+
 * 2019/05/16
-  * 去掉slist_remove中一个警告。
+  * 去掉slist\_remove中一个警告。
   * 完善slider。垂直slider过宽或水平slider过高时缩放图标，否则显示有些怪异。
   * image animitioin的自动播放放到第一次绘制时启动。
   * color picker的对子控件的hook放到第一次绘制时处理。
@@ -8,9 +11,9 @@
 
 * 2019/05/15
   * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
-  * 完善color_hex_str(感谢朝泽提供补丁)。
+  * 完善color\_hex\_str(感谢朝泽提供补丁)。
   * 修改guage pointer中文档错误(感谢朝泽提供补丁)。
-  * 增加vgcanvas_cairo。cairo速度快功能全，但代码体积稍大，请酌情使用。
+  * 增加vgcanvas\_cairo。cairo速度快功能全，但代码体积稍大，请酌情使用。
 
    
 * 2019/05/14

@@ -406,17 +406,19 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      text_selector->pressed = TRUE;
       widget_grab(widget->parent, widget);
       text_selector_on_pointer_down(text_selector, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
+      text_selector->pressed = FALSE;
       text_selector_on_pointer_up(text_selector, (pointer_event_t*)e);
       widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed) {
+      if (evt->pressed && text_selector->pressed) {
         text_selector_on_pointer_move(text_selector, evt);
         widget_invalidate(widget, NULL);
       }
@@ -447,7 +449,8 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   return_value_if_fail(text_selector != NULL, NULL);
 
   text_selector->visible_nr = 5;
-
+  text_selector->pressed = FALSE;
+  
   return widget;
 }
 
