@@ -1129,16 +1129,7 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->focus = focus;
-  widget->focused = focus;
-
-  if (focus) {
-    event_t e = event_init(EVT_FOCUS, widget);
-    widget_set_as_key_target(widget);
-    widget_dispatch(widget, &e);
-  } else {
-    event_t e = event_init(EVT_BLUR, widget);
-    widget_dispatch(widget, &e);
-  }
+  widget_set_focused(widget, focus);
   edit_update_status(widget);
 
   return RET_OK;

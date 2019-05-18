@@ -375,6 +375,18 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   if (widget->focused != focused) {
     widget->focused = focused;
     widget_update_style(widget);
+
+    if (focused) {
+      event_t e = event_init(EVT_FOCUS, widget);
+      widget_set_as_key_target(widget);
+
+      widget_dispatch(widget, &e);
+    } else {
+      event_t e = event_init(EVT_BLUR, widget);
+
+      widget_dispatch(widget, &e);
+    }
+    
     widget_invalidate(widget, NULL);
   }
 
@@ -2352,6 +2364,9 @@ ret_t widget_set_as_key_target(widget_t* widget) {
   if (widget != NULL) {
     if (widget->parent != NULL) {
       widget->parent->focused = TRUE;
+      if(widget->parent->key_target != NULL && widget->parent->key_target != widget) {
+        widget_dispatch_blur_event(widget->parent->key_target);
+      }
       widget->parent->key_target = widget;
       widget_set_as_key_target(widget->parent);
     }
