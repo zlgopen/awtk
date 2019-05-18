@@ -1,5 +1,6 @@
 # 最新动态
 * 2019/05/18
+  * 修改window\_manager\_open\_window将key\target设置为新窗口。
   * 合并text selector的补丁(感谢智明提供补丁)。
 
 * 2019/05/16
