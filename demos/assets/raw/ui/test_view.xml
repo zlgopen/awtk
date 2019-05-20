@@ -1,3 +1,4 @@
 <view x="c" y="m" w="50%" h="50%">
-  <button x="c" y="m" w="80" h="30" text="OK" name="ok"/>
+  <button x="c" y="m" w="80" h="30" text="cancel" name="cancel"/>
+  <button x="c" y="m" w="80" h="30" tr_text="ok" name="ok"/>
 </view>

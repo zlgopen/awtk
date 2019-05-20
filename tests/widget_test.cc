@@ -733,12 +733,19 @@ TEST(Widget, EVT_KEY_UP_BEFORE_CHILDREN) {
 #include "base/ui_loader.h"
 
 TEST(Widget, load_widget) {
+  paint_event_t e;
+  widget_t* win = window_create(NULL, 0, 0, 200, 200);
   widget_t* w = ui_loader_load_widget("test_view");
+  widget_t* button = widget_child(w, "ok");
 
   ASSERT_EQ(w != NULL, TRUE);
   ASSERT_STREQ(w->name, "test_view");
 
-  widget_destroy(w);
+  widget_add_child(win, w);
+  widget_dispatch(button, paint_event_init(&e, EVT_BEFORE_PAINT, w, NULL));
+  ASSERT_STREQ(button->text.str, L"确定");
+
+  widget_destroy(win);
 }
 
 TEST(Widget, calc_icon_text_rect_icon) {

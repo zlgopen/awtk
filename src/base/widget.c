@@ -233,15 +233,30 @@ font_manager_t* widget_get_font_manager(widget_t* widget) {
   return ret;
 }
 
+static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
+
+  widget_set_prop_str(widget, WIDGET_PROP_TEXT, tr_text);
+
+  return RET_REMOVE;
+}
+
 ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   value_t v;
   const char* tr_text = NULL;
+  widget_t* win = widget_get_window(widget);
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
-  tr_text = locale_info_tr(widget_get_locale_info(widget), text);
   widget->tr_text = tk_str_copy(widget->tr_text, text);
 
-  return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+  if (win != NULL) {
+    tr_text = locale_info_tr(widget_get_locale_info(widget), text);
+    return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+  } else {
+    widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+    return widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
+  }
 }
 
 ret_t widget_re_translate_text(widget_t* widget) {
