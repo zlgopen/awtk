@@ -53,7 +53,6 @@ static ret_t lcd_vgcanvas_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
 }
 
 static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, rect_t* r) {
-  log_debug("clip=%d %d %d %d\n", r->x, r->y, r->w, r->h);
   return vgcanvas_clip_rect(LCD(lcd)->canvas, r->x, r->y, r->w, r->h);
 }
 
