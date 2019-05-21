@@ -212,6 +212,7 @@
     <normal bg_color="#a0a0a0" fg_color="blue" border_color="#ffd700"/>
     <pressed bg_color="#a0a0a0" fg_color="blue" border_color="#ffa700"/>
     <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
+    <focused bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
   </style>
   
   <style name="round" round_radius="5">

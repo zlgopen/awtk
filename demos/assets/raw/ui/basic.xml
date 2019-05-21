@@ -16,7 +16,7 @@
   </row>
 
 
-  <slider name="slider" x="10" y="116" w="240" h="20" value="40"/>
+  <slider name="slider" x="10" y="116" w="240" h="20" value="40" focusable="true"/>
   <progress_bar name="bar1" x="10" y="142" w="240" h="16" value="40" show_text="true"/>
   <progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/>
 

@@ -2194,21 +2194,12 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
-                                                  WIDGET_PROP_STYLE,
-                                                  WIDGET_PROP_TR_TEXT,
-                                                  WIDGET_PROP_TEXT,
-                                                  WIDGET_PROP_ANIMATION,
-                                                  WIDGET_PROP_ENABLE,
-                                                  WIDGET_PROP_VISIBLE,
-                                                  WIDGET_PROP_FLOATING,
-                                                  WIDGET_PROP_CHILDREN_LAYOUT,
-                                                  WIDGET_PROP_SELF_LAYOUT,
-                                                  WIDGET_PROP_OPACITY,
-                                                  WIDGET_PROP_FOCUS,
-                                                  WIDGET_PROP_FOCUSABLE,
-                                                  WIDGET_PROP_SENSITIVE,
-                                                  NULL};
+static const char* s_widget_persistent_props[] = {
+    WIDGET_PROP_NAME,        WIDGET_PROP_STYLE,     WIDGET_PROP_TR_TEXT,
+    WIDGET_PROP_TEXT,        WIDGET_PROP_ANIMATION, WIDGET_PROP_ENABLE,
+    WIDGET_PROP_VISIBLE,     WIDGET_PROP_FLOATING,  WIDGET_PROP_CHILDREN_LAYOUT,
+    WIDGET_PROP_SELF_LAYOUT, WIDGET_PROP_OPACITY,   WIDGET_PROP_FOCUS,
+    WIDGET_PROP_FOCUSABLE,   WIDGET_PROP_SENSITIVE, NULL};
 
 const char** widget_get_persistent_props(void) {
   return s_widget_persistent_props;
