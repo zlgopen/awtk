@@ -1130,6 +1130,12 @@ typedef enum _window_closable_t {
 #define WIDGET_STATE_OVER_OF_CHECKED "over_of_checked"
 
 /**
+ * @const WIDGET_STATE_FOCUSED_OF_CHECKED
+ * 焦点状态(选中项)。
+ */
+#define WIDGET_STATE_FOCUSED_OF_CHECKED "focused_of_checked"
+
+/**
  * @const WIDGET_STATE_NORMAL_OF_ACTIVE
  * 正常状态(当前项)。
  */
@@ -1146,6 +1152,12 @@ typedef enum _window_closable_t {
  * 指针悬浮状态(当前项)。
  */
 #define WIDGET_STATE_OVER_OF_ACTIVE "over_of_active"
+
+/**
+ * @const WIDGET_STATE_FOCUSED_OF_ACTIVE
+ * 焦点状态(当前项)。
+ */
+#define WIDGET_STATE_FOCUSED_OF_ACTIVE "focused_of_active"
 
 END_C_DECLS
 

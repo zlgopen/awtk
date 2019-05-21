@@ -445,6 +445,18 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
     return WIDGET_STATE_DISABLE;
   }
 
+  if (widget_is_focusable(widget)) {
+    if (widget->focused) {
+      if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
+        state = WIDGET_STATE_FOCUSED;
+      }
+    } else {
+      if (tk_str_eq(state, WIDGET_STATE_FOCUSED)) {
+        state = WIDGET_STATE_NORMAL;
+      }
+    }
+  }
+
   if (active) {
     if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
       state = WIDGET_STATE_NORMAL_OF_ACTIVE;
@@ -452,6 +464,8 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
       state = WIDGET_STATE_PRESSED_OF_ACTIVE;
     } else if (tk_str_eq(state, WIDGET_STATE_OVER)) {
       state = WIDGET_STATE_OVER_OF_ACTIVE;
+    } else if (widget_is_focusable(widget) && widget->focused) {
+      state = WIDGET_STATE_FOCUSED_OF_ACTIVE;
     }
   } else if (checked) {
     if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
@@ -460,6 +474,8 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
       state = WIDGET_STATE_PRESSED_OF_CHECKED;
     } else if (tk_str_eq(state, WIDGET_STATE_OVER)) {
       state = WIDGET_STATE_OVER_OF_CHECKED;
+    } else if (widget_is_focusable(widget) && widget->focused) {
+      state = WIDGET_STATE_FOCUSED_OF_CHECKED;
     }
   }
 
@@ -1446,6 +1462,12 @@ static bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
          (widget->vt->return_key_to_activate && e->key == TK_KEY_RETURN);
 }
 
+static bool_t widget_is_move_focus_key(widget_t* widget, key_event_t* e) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL && e != NULL, FALSE);
+
+  return e->key == TK_KEY_MOVE_FOCUS;
+}
+
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
@@ -1456,6 +1478,8 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
 
   if (widget_is_activate_key(widget, e)) {
     widget_set_state(widget, WIDGET_STATE_PRESSED);
+  } else if (widget_is_move_focus_key(widget, e) && widget_is_focusable(widget)) {
+    widget_focus_next(widget);
   }
 
   return RET_OK;
@@ -2181,6 +2205,8 @@ static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
                                                   WIDGET_PROP_CHILDREN_LAYOUT,
                                                   WIDGET_PROP_SELF_LAYOUT,
                                                   WIDGET_PROP_OPACITY,
+                                                  WIDGET_PROP_FOCUS,
+                                                  WIDGET_PROP_FOCUSABLE,
                                                   WIDGET_PROP_SENSITIVE,
                                                   NULL};
 

@@ -36,6 +36,7 @@
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
     <over       bg_color="#e0e0e0" />
+    <focused    bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
@@ -247,9 +248,11 @@
     <normal  icon="unchecked" />
     <pressed icon="unchecked" />
     <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
     <normal_of_checked icon="checked" text_color="blue"/>
     <pressed_of_checked icon="checked" text_color="blue"/>
     <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
   </style>
   <style name="mute" >
     <normal  icon="unmuted" />
@@ -282,9 +285,11 @@
     <normal  icon="radio_unchecked" />
     <pressed icon="radio_unchecked" />
     <over    icon="radio_unchecked" text_color="green"/>
+    <focused icon="radio_unchecked" text_color="green"/>
     <normal_of_checked icon="radio_checked" text_color="red"/>
     <pressed_of_checked icon="radio_checked" text_color="red"/>
     <over_of_checked icon="radio_checked" text_color="green"/>
+    <focused_of_checked icon="radio_checked" text_color="green"/>
   </style>
   <style name="left">
     <normal  icon="left_off" />

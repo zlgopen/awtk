@@ -523,7 +523,6 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       return edit_set_cursor_pos(widget, edit->cursor_pos + 1, edit->cursor_pos + 1);
     }
   } else if (key == TK_KEY_TAB) {
-    widget_focus_next(widget);
     return RET_OK;
   } else if (key == TK_KEY_DOWN) {
     if (!edit_is_number(widget)) {

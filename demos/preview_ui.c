@@ -115,6 +115,15 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline
   str_init(&str, 1024);
   str_set(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
+#if defined(WIN32)
+#if !defined(NDEBUG)
+  {
+    AllocConsole();
+    FILE* fp = NULL;
+    freopen_s(&fp, "CONOUT$", "w+t", stdout);
+  }
+#endif /*NDEBUG*/
+#endif /*WIN32*/
 #else
 #include "tkc/mem.h"
 int main(int argc, char* argv[]) {
