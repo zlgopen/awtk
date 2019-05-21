@@ -204,6 +204,8 @@ static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
 TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
                           .type = WIDGET_TYPE_BUTTON,
                           .enable_pool = TRUE,
+                          .space_key_to_activate = TRUE,
+                          .return_key_to_activate = TRUE,
                           .parent = TK_PARENT_VTABLE(widget),
                           .create = button_create,
                           .clone_properties = s_button_properties,

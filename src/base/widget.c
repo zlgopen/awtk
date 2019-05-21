@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "base/keys.h"
 #include "base/enums.h"
 #include "tkc/time_now.h"
 #include "base/idle.h"
@@ -45,6 +46,20 @@ static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+
+static bool_t widget_is_focusable(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  if (widget->vt->focusable) {
+    return TRUE;
+  } else {
+    value_set_bool(&v, FALSE);
+    widget_get_prop(widget, WIDGET_PROP_FOCUSABLE, &v);
+
+    return value_bool(&v);
+  }
+}
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   event_t e = event_init(EVT_WILL_MOVE, widget);
@@ -1424,6 +1439,13 @@ static ret_t widget_on_keydown_after_children(widget_t* widget, key_event_t* e) 
   return ret;
 }
 
+static bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL && e != NULL, FALSE);
+
+  return (widget->vt->space_key_to_activate && e->key == TK_KEY_SPACE) ||
+         (widget->vt->return_key_to_activate && e->key == TK_KEY_RETURN);
+}
+
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
@@ -1431,6 +1453,10 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_if_equal(widget_on_keydown_before_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keydown_after_children(widget, e), RET_STOP);
+
+  if (widget_is_activate_key(widget, e)) {
+    widget_set_state(widget, WIDGET_STATE_PRESSED);
+  }
 
   return RET_OK;
 }
@@ -1475,6 +1501,16 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return_if_equal(widget_on_keyup_before_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keyup_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keyup_after_children(widget, e), RET_STOP);
+
+  if (widget_is_activate_key(widget, e)) {
+    pointer_event_t click;
+    if (widget_is_focusable(widget)) {
+      widget_set_state(widget, WIDGET_STATE_FOCUSED);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+    }
+    widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, 0, 0));
+  }
 
   return RET_OK;
 }
@@ -2408,14 +2444,6 @@ bool_t widget_is_keyboard(widget_t* widget) {
   }
 
   return FALSE;
-}
-
-static bool_t widget_is_focusable(widget_t* widget) {
-  value_t v;
-  value_set_bool(&v, FALSE);
-  widget_get_prop(widget, WIDGET_PROP_FOCUSABLE, &v);
-
-  return value_bool(&v);
 }
 
 static ret_t widget_on_visit_focusable(void* ctx, const void* data) {

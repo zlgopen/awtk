@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/05/21
+  * button/check\_button在收到回车和空格键时触发click事件。
+  * 
 * 2019/05/20
   * 修改ui\_loader\_load\_widget因为无窗口导致set\_tr\_text失败的问题。
 

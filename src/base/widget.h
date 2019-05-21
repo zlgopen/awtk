@@ -94,6 +94,16 @@ struct _widget_vtable_t {
    */
   uint32_t focusable : 1;
   /**
+   * 收到空格键触发click事件。
+   *
+   */
+  uint32_t space_key_to_activate : 1;
+  /**
+   * 收到回车键触发click事件。
+   *
+   */
+  uint32_t return_key_to_activate : 1;
+  /**
    * 是否是窗口。
    */
   uint32_t is_window : 1;
