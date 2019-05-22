@@ -42,9 +42,9 @@ elif NANOVG_BACKEND == 'BGFX':
     CPPPATH = CPPPATH + [joinPath(TK_3RD_ROOT, 'bgfx/bx/include/compat/msvc')];
   env.Library(os.path.join(LIB_DIR, 'nanovg-bgfx'), Glob('bgfx/*.cpp'), CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 
-  env['LIBS'] = ['nanovg-bgfx', 'bgfx', 'nanovg'] + env['LIBS']
-  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_fill'), Glob('demos/bgfx_sdl_fill.cpp'));
-  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_stroke'), Glob('demos/bgfx_sdl_stroke.cpp'));
-  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_draw_image'), Glob('demos/bgfx_sdl_draw_image.cpp'));
-  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_draw_text'), Glob('demos/bgfx_sdl_draw_text.cpp'));
+#  env['LIBS'] = ['nanovg-bgfx', 'bgfx', 'nanovg'] + env['LIBS']
+#  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_fill'), Glob('demos/bgfx_sdl_fill.cpp'));
+#  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_stroke'), Glob('demos/bgfx_sdl_stroke.cpp'));
+#  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_draw_image'), Glob('demos/bgfx_sdl_draw_image.cpp'));
+#  env.Program(os.path.join(BIN_DIR, 'bgfx_sdl_draw_text'), Glob('demos/bgfx_sdl_draw_text.cpp'));
 

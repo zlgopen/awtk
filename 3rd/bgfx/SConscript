@@ -50,6 +50,7 @@ BgSources=[
                 'bgfx/src/renderer_d3d12.cpp',
                 'bgfx/src/renderer_d3d9.cpp',
                 'bgfx/src/renderer_gl.cpp',
+                'bgfx/src/renderer_nvn.cpp',
                 'bgfx/src/renderer_gnm.cpp',
                 'bgfx/src/renderer_noop.cpp',
                 'bgfx/src/renderer_vk.cpp',
