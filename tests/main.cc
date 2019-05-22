@@ -33,6 +33,7 @@
 #include "tkc/mem.h"
 #include "base/idle.h"
 #include "base/system_info.h"
+#include "ext_widgets/ext_widgets.h"
 #include "gtest/gtest.h"
 #include "demos/assets.h"
 
@@ -45,6 +46,7 @@ GTEST_API_ int main(int argc, char** argv) {
 
   assets_init();
   tk_init_assets();
+  tk_ext_widgets_init();
 
   RUN_ALL_TESTS();
 

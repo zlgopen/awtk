@@ -2,7 +2,8 @@
 * 2019/05/22
   * 完善事件处理流程，修改slide menu放在slide view中的问题。
   * 窗口增加move\_focus\_next\_key/move\_focus\_prev\_key两个属性，用于设置焦点的键值。具体用法请参考：demos/assets/raw/ui/basic.xml。
-  
+  * 将ListView的布局策略放到children\_layouter\_list\_view中，并支持边距和间距等参数。
+  *   
 * 2019/05/21
   * button/check\_button在收到回车和空格键时触发click事件。
   * 支持用tab键切换任意控件的焦点。
