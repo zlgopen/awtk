@@ -540,6 +540,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 
   if (widget->grab_widget == child) {
     widget->grab_widget = NULL;
+    widget->grab_widget_count = 0;
   }
 
   if (widget->key_target == child) {
@@ -1574,7 +1575,7 @@ ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e) {
   widget_t* target = NULL;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  target = widget->target;
+  target = widget->grab_widget ? widget->grab_widget : widget->target;
   while (target != NULL) {
     widget_dispatch(target, e);
     target = target->target;
@@ -1638,6 +1639,8 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
+  widget->grab_widget = NULL;
+  widget->grab_widget_count = 0;
   return_if_equal(widget_on_pointer_down_before_children(widget, e), RET_STOP);
   return_if_equal(widget_on_pointer_down_children(widget, e), RET_STOP);
   return_if_equal(widget_on_pointer_down_after_children(widget, e), RET_STOP);
@@ -1699,10 +1702,17 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
   return_if_equal(widget_on_pointer_move_before_children(widget, e), RET_STOP);
-  return_if_equal(widget_on_pointer_move_children(widget, e), RET_STOP);
-  return_if_equal(widget_on_pointer_move_after_children(widget, e), RET_STOP);
+  if (widget_on_pointer_move_children(widget, e) == RET_STOP) {
+    if (e->pressed) {
+      pointer_event_t abort;
+      pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, e->x, e->y);
+      return_if_equal(widget_on_pointer_move_after_children(widget, &abort), RET_STOP);
+    }
 
-  return RET_OK;
+    return RET_STOP;
+  } else {
+    return widget_on_pointer_move_after_children(widget, e);
+  }
 }
 
 static ret_t widget_on_pointer_up_before_children(widget_t* widget, pointer_event_t* e) {
@@ -1744,15 +1754,31 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
   return_if_equal(widget_on_pointer_up_before_children(widget, e), RET_STOP);
-  return_if_equal(widget_on_pointer_up_children(widget, e), RET_STOP);
-  return_if_equal(widget_on_pointer_up_after_children(widget, e), RET_STOP);
+  if (widget_on_pointer_up_children(widget, e) == RET_STOP) {
+    if (e->pressed) {
+      pointer_event_t abort;
+      pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, e->x, e->y);
+      return_if_equal(widget_on_pointer_up_after_children(widget, &abort), RET_STOP);
+    }
+
+    return RET_STOP;
+  } else {
+    return widget_on_pointer_up_after_children(widget, e);
+  }
 
   return RET_OK;
 }
 
 ret_t widget_grab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  widget->grab_widget = child;
+  return_value_if_fail(widget->grab_widget == NULL || widget->grab_widget == child, RET_BAD_PARAMS);
+
+  if (widget->grab_widget == NULL) {
+    widget->grab_widget = child;
+    widget->grab_widget_count = 1;
+  } else {
+    widget->grab_widget_count++;
+  }
 
   if (widget->parent) {
     widget_grab(widget->parent, widget);
@@ -1768,7 +1794,12 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
     if (widget->parent) {
       widget_ungrab(widget->parent, widget);
     }
-    widget->grab_widget = NULL;
+
+    widget->grab_widget_count--;
+    if (widget->grab_widget_count <= 0) {
+      widget->grab_widget = NULL;
+      widget->grab_widget_count = 0;
+    }
   }
 
   return RET_OK;
@@ -2026,6 +2057,10 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->children = NULL;
   widget->initializing = TRUE;
   widget->state = WIDGET_STATE_NORMAL;
+  widget->target = NULL;
+  widget->key_target = NULL;
+  widget->grab_widget = NULL;
+  widget->grab_widget_count = 0;
 
   if (parent) {
     widget_add_child(parent, widget);

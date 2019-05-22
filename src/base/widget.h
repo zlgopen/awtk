@@ -359,19 +359,25 @@ struct _widget_t {
   widget_t* parent;
   /**
    * @property {widget_t*} target
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * 接收事件的子控件。
    */
   widget_t* target;
   /**
    * @property {widget_t*} grab_widget
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * grab事件的子控件。
    */
   widget_t* grab_widget;
   /**
+   * @property {int32_t} grab_widget_count
+   * @annotation ["private"]
+   * 有时子控件和控件自己都会grab widget，所需要grab的计数。
+   */
+  int32_t grab_widget_count;
+  /**
    * @property {widget_t*} key_target
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * 接收按键事件的子控件。
    */
   widget_t* key_target;

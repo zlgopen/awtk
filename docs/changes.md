@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/05/22
+  * 完善事件处理流程，修改slide menu放在slide view中的问题。
+  
 * 2019/05/21
   * button/check\_button在收到回车和空格键时触发click事件。
   * 支持用tab键切换任意控件的焦点。

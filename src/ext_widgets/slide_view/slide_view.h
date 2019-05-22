@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   slide_view.h
  * Author: AWTK Develop Team
  * Brief:  slide_view
@@ -119,6 +119,7 @@ typedef struct _slide_view_t {
   bool_t animating;
   uint32_t timer_id;
   bool_t dragged;
+  bool_t pressed;
   velocity_t velocity;
 } slide_view_t;
 

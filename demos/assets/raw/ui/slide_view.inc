@@ -103,8 +103,16 @@
       </button>
     </view>
     <view x="0" y="0" w="100%" h="100%" >
+      <slide_menu align_v="top" x="c" y="m" w="100%" h="80">
+        <button text="0"/>
+        <button text="1"/>
+        <button text="2"/>
+        <button text="3"/>
+        <button text="4"/>
+      </slide_menu>
+    </view>
+    <view x="0" y="0" w="100%" h="100%" >
       <slider x="center" y="10" w="80%" h="20" value="10"/>
       <slider style="img" x="center" y="50" w="80%" h="30" value="20" />
       <slider style="img_v" x="center" y="80" w="30" h="60%" value="20" vertical="true"/>
     </view>
-</window>
