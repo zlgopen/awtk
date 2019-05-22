@@ -32,6 +32,7 @@
 #include "tkc/emitter.h"
 
 #include "base/types_def.h"
+#include "base/keys.h"
 #include "base/idle.h"
 #include "base/timer.h"
 #include "base/events.h"

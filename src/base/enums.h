@@ -50,6 +50,8 @@ const key_type_value_t* find_item_by_value(const key_type_value_t* items, uint32
 const key_type_value_t* easing_type_find(const char* name);
 const key_type_value_t* easing_type_find_by_value(uint32_t value);
 
+const key_type_value_t* keys_type_find(const char* name);
+const key_type_value_t* keys_type_find_by_value(uint32_t value);
 END_C_DECLS
 
 #endif /*TK_ENUMS_H*/

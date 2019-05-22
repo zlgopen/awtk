@@ -722,7 +722,6 @@ typedef enum _key_code_t {
   TK_KEY_CAPSLOCK = 133,
   TK_KEY_HOME = 134,
   TK_KEY_END = 135,
-  TK_KEY_ENTER = 136,
   TK_KEY_INSERT = 137,
   TK_KEY_UP = 138,
   TK_KEY_DOWN = 139,

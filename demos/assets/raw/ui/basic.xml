@@ -1,4 +1,4 @@
-<window anim_hint="htranslate">
+<window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="up/down to change focus">
   <app_bar x="0" y="0" w="100%" h="30" >
     <label x="0" y="0" w="100%" h="100%" text="Basic Controls" />
   </app_bar>

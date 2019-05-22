@@ -25,9 +25,14 @@
 #include "base/window_manager.h"
 #include "widgets/window.h"
 
-static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,  WIDGET_PROP_OPEN_ANIM_HINT,
-                                            WIDGET_PROP_FULLSCREEN, WIDGET_PROP_CLOSE_ANIM_HINT,
-                                            WIDGET_PROP_THEME,      NULL};
+static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,
+                                            WIDGET_PROP_OPEN_ANIM_HINT,
+                                            WIDGET_PROP_FULLSCREEN,
+                                            WIDGET_PROP_CLOSE_ANIM_HINT,
+                                            WIDGET_PROP_MOVE_FOCUS_PREV_KEY,
+                                            WIDGET_PROP_MOVE_FOCUS_NEXT_KEY,
+                                            WIDGET_PROP_THEME,
+                                            NULL};
 
 static ret_t window_set_prop(widget_t* widget, const char* name, const value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_FULLSCREEN)) {

@@ -281,8 +281,12 @@ typedef struct _widget_animator_t widget_animator_t;
 #define WITH_WINDOW_ANIMATORS 1
 #endif /*WITH_VGCANVAS*/
 
-#ifndef TK_KEY_MOVE_FOCUS
-#define TK_KEY_MOVE_FOCUS TK_KEY_TAB
-#endif /*TK_KEY_MOVE_FOCUS*/
+#ifndef TK_KEY_MOVE_FOCUS_NEXT
+#define TK_KEY_MOVE_FOCUS_NEXT TK_KEY_TAB
+#endif /*TK_KEY_MOVE_FOCUS_NEXT*/
+
+#ifndef TK_KEY_MOVE_FOCUS_PREV
+#define TK_KEY_MOVE_FOCUS_PREV TK_KEY_UNKNOWN
+#endif /*TK_KEY_MOVE_FOCUS_PREV*/
 
 #endif /*TK_TYPES_DEF_H*/

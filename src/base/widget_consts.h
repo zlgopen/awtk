@@ -672,6 +672,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_FOCUSABLE "focusable"
 
 /**
+ * @const WIDGET_PROP_MOVE_FOCUS_NEXT_KEY
+ * 将焦点移到下一个的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_NEXT_KEY "move_focus_next_key"
+
+/**
+ * @const WIDGET_PROP_MOVE_FOCUS_PREV_KEY
+ * 将焦点移到下一个的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_PREV_KEY "move_focus_prev_key"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

@@ -1463,10 +1463,22 @@ static bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
          (widget->vt->return_key_to_activate && e->key == TK_KEY_RETURN);
 }
 
-static bool_t widget_is_move_focus_key(widget_t* widget, key_event_t* e) {
-  return_value_if_fail(widget != NULL && widget->vt != NULL && e != NULL, FALSE);
+static bool_t widget_is_move_focus_prev_key(widget_t* widget, key_event_t* e) {
+  int32_t key = TK_KEY_MOVE_FOCUS_PREV;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(widget != NULL && win != NULL && e != NULL, FALSE);
+  key = widget_get_prop_int(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, key);
 
-  return e->key == TK_KEY_MOVE_FOCUS;
+  return e->key == key;
+}
+
+static bool_t widget_is_move_focus_next_key(widget_t* widget, key_event_t* e) {
+  int32_t key = TK_KEY_MOVE_FOCUS_NEXT;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(widget != NULL && win != NULL && e != NULL, FALSE);
+  key = widget_get_prop_int(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, key);
+
+  return e->key == key;
 }
 
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
@@ -1477,10 +1489,14 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keydown_after_children(widget, e), RET_STOP);
 
-  if (widget_is_activate_key(widget, e)) {
-    widget_set_state(widget, WIDGET_STATE_PRESSED);
-  } else if (widget_is_move_focus_key(widget, e) && widget_is_focusable(widget)) {
-    widget_focus_next(widget);
+  if (!widget_is_window_manager(widget)) {
+    if (widget_is_activate_key(widget, e)) {
+      widget_set_state(widget, WIDGET_STATE_PRESSED);
+    } else if (widget_is_move_focus_next_key(widget, e) && widget_is_focusable(widget)) {
+      widget_focus_next(widget);
+    } else if (widget_is_move_focus_prev_key(widget, e) && widget_is_focusable(widget)) {
+      widget_focus_prev(widget);
+    }
   }
 
   return RET_OK;

@@ -137,6 +137,8 @@ typedef struct _window_base_t {
   /*private*/
   const asset_info_t* res_theme;
   font_manager_t* font_manager;
+  int32_t move_focus_prev_key;
+  int32_t move_focus_next_key;
 } window_base_t;
 
 /*for sub class*/

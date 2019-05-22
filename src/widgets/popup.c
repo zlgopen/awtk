@@ -106,6 +106,8 @@ static const char* s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
                                            WIDGET_PROP_THEME,
                                            WIDGET_PROP_CLOSE_WHEN_CLICK,
                                            WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
+                                           WIDGET_PROP_MOVE_FOCUS_PREV_KEY,
+                                           WIDGET_PROP_MOVE_FOCUS_NEXT_KEY,
                                            NULL};
 
 TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
