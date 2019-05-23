@@ -23,6 +23,7 @@
 * [AWTK 中的一些惯例](conventions.md)
 * [使用Qt Designer构建AWTK的界面](qt-designer.md)
 * [对话框高亮策略](dialog_highlight.md)
+* [控件焦点相关问题](widget_focus.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
