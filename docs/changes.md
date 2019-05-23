@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/05/23
+  * 修改edit在scrollview中的问题。
+  
+   
 * 2019/05/22
   * 完善事件处理流程，修改slide menu放在slide view中的问题。
   * 窗口增加move\_focus\_next\_key/move\_focus\_prev\_key两个属性，用于设置焦点的键值。具体用法请参考：demos/assets/raw/ui/basic.xml。

@@ -47,6 +47,10 @@ static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
+static widget_is_scrollable(widget_t* widget) {
+  return widget != NULL && widget->vt != NULL && widget->vt->scrollable;
+}
+
 static bool_t widget_is_focusable(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
@@ -2155,7 +2159,7 @@ ret_t widget_to_screen(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
-    if (iter->vt->scrollable) {
+    if (widget_is_scrollable(iter)) {
       p->x -= widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
       p->y -= widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
     }
@@ -2174,7 +2178,7 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
-    if (iter->vt->scrollable) {
+    if (widget_is_scrollable(iter)) {
       p->x += widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
       p->y += widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
     }
@@ -2484,15 +2488,49 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 }
 
+static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* parent) {
+  int32_t ox = 0;
+  int32_t oy = 0;
+  return_value_if_fail(widget != NULL && parent != NULL, RET_BAD_PARAMS);
+
+  ox = widget_get_prop_int(parent, WIDGET_PROP_XOFFSET, 0);
+  oy = widget_get_prop_int(parent, WIDGET_PROP_YOFFSET, 0);
+
+  if (oy > widget->y) {
+    oy = widget->y;
+  }
+
+  if (ox > widget->x) {
+    ox = widget->x;
+  }
+
+  if ((widget->y + widget->h) > (oy + parent->h)) {
+    oy = widget->y + widget->h - parent->h;
+  }
+
+  if ((widget->x + widget->w) > (ox + parent->w)) {
+    ox = widget->x + widget->w - parent->w;
+  }
+
+  widget_set_prop_int(parent, WIDGET_PROP_XOFFSET, ox);
+  widget_set_prop_int(parent, WIDGET_PROP_YOFFSET, oy);
+
+  return RET_OK;
+}
+
 ret_t widget_set_as_key_target(widget_t* widget) {
   if (widget != NULL) {
-    if (widget->parent != NULL) {
-      widget->parent->focused = TRUE;
-      if (widget->parent->key_target != NULL && widget->parent->key_target != widget) {
+    widget_t* parent = widget->parent;
+    if (parent != NULL) {
+      parent->focused = TRUE;
+      if (parent->key_target != NULL && parent->key_target != widget) {
         widget_dispatch_blur_event(widget->parent->key_target);
       }
-      widget->parent->key_target = widget;
-      widget_set_as_key_target(widget->parent);
+      parent->key_target = widget;
+      if (widget_is_scrollable(parent)) {
+        widget_ensure_visible_in_scroll_view(widget, parent);
+      }
+      widget_set_as_key_target(parent);
     }
   }
 
