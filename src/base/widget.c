@@ -94,6 +94,7 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
     widget_invalidate_force(widget, NULL);
     widget->w = w;
     widget->h = h;
+    widget->need_relayout_children = TRUE;
     widget_invalidate_force(widget, NULL);
 
     e.type = EVT_RESIZE;
@@ -115,6 +116,7 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
     widget->y = y;
     widget->w = w;
     widget->h = h;
+    widget->need_relayout_children = TRUE;
     widget_invalidate_force(widget, NULL);
 
     e.type = EVT_MOVE_RESIZE;
