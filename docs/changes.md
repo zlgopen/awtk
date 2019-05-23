@@ -4,6 +4,7 @@
   * resize后设置need_relayout_children标志(感谢朝泽提供补丁)。
   * 修改slide menu中find target的bug(感谢朝泽提供补丁)。
   * move focus时跳过不可见和不可用的widget。
+  * 当前没有焦点控件时，窗口收到tab键时，让第一个focusable控件得到焦点。
    
 * 2019/05/22
   * 完善事件处理流程，修改slide menu放在slide view中的问题。

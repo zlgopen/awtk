@@ -958,3 +958,32 @@ TEST(Widget, move_focus_skip_invisible) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, move_focus_first) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* view = view_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(view, 0, 0, 0, 0);
+  widget_t* b5 = button_create(view, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b4, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b5, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_visible(view, FALSE, FALSE);
+
+  ASSERT_EQ(widget_has_focused_widget_in_window(w), FALSE);
+  widget_focus_first(w);
+  ASSERT_EQ(widget_has_focused_widget_in_window(w), TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
+}

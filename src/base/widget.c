@@ -1498,10 +1498,18 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   if (!widget_is_window_manager(widget)) {
     if (widget_is_activate_key(widget, e)) {
       widget_set_state(widget, WIDGET_STATE_PRESSED);
-    } else if (widget_is_move_focus_next_key(widget, e) && widget_is_focusable(widget)) {
-      widget_focus_next(widget);
-    } else if (widget_is_move_focus_prev_key(widget, e) && widget_is_focusable(widget)) {
-      widget_focus_prev(widget);
+    } else if (widget_is_move_focus_next_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        widget_focus_next(widget);
+      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+        widget_focus_first(widget);
+      }
+    } else if (widget_is_move_focus_prev_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        widget_focus_prev(widget);
+      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+        widget_focus_first(widget);
+      }
     }
   }
 
@@ -2574,11 +2582,65 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   return RET_OK;
 }
 
-static ret_t widget_get_all_focusable_widgets_in_win(widget_t* widget, darray_t* all_focusable) {
+static ret_t widget_get_all_focusable_widgets_in_window(widget_t* widget, darray_t* all_focusable) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
   widget_foreach(win, widget_on_visit_focusable, all_focusable);
+
+  return RET_OK;
+}
+
+static ret_t widget_on_visit_first_focusable(void* ctx, const void* data) {
+  widget_t* widget = WIDGET(data);
+  widget_t** first = (widget_t**)ctx;
+
+  if (!(widget->visible) || !(widget->enable)) {
+    return RET_SKIP;
+  }
+
+  if (widget_is_focusable(widget)) {
+    *first = widget;
+
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+static widget_t* widget_get_first_focusable_widget_in_window(widget_t* widget) {
+  widget_t* first = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, first);
+
+  widget_foreach(win, widget_on_visit_first_focusable, &first);
+
+  return first;
+}
+
+bool_t widget_has_focused_widget_in_window(widget_t* widget) {
+  widget_t* iter = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, FALSE);
+
+  iter = win->key_target;
+  while (iter != NULL) {
+    if (widget_is_focusable(iter) && iter->focused) {
+      return TRUE;
+    }
+
+    iter = iter->key_target;
+  }
+
+  return FALSE;
+}
+
+ret_t widget_focus_first(widget_t* widget) {
+  widget_t* first = widget_get_first_focusable_widget_in_window(widget);
+
+  if (first != NULL) {
+    widget_set_prop_bool(first, WIDGET_PROP_FOCUS, TRUE);
+  }
 
   return RET_OK;
 }
@@ -2590,7 +2652,7 @@ ret_t widget_move_focus(widget_t* widget, bool_t next) {
   return_value_if_fail(widget != NULL && widget->focused, RET_BAD_PARAMS);
   return_value_if_fail(darray_init(&all_focusable, 10, NULL, NULL) != NULL, RET_OOM);
 
-  widget_get_all_focusable_widgets_in_win(widget, &all_focusable);
+  widget_get_all_focusable_widgets_in_window(widget, &all_focusable);
 
   if (all_focusable.size > 1) {
     for (i = 0; i < all_focusable.size; i++) {

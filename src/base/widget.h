@@ -1901,12 +1901,14 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 TK_EXTERN_VTABLE(widget);
 
 /*public for test*/
+ret_t widget_focus_first(widget_t* widget);
 ret_t widget_move_focus(widget_t* widget, bool_t next);
 locale_info_t* widget_get_locale_info(widget_t* widget);
 image_manager_t* widget_get_image_manager(widget_t* widget);
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
 font_manager_t* widget_get_font_manager(widget_t* widget);
 uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+bool_t widget_has_focused_widget_in_window(widget_t* widget);
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
                                  int32_t spacer, rect_t* r_text, rect_t* r_icon);
 
