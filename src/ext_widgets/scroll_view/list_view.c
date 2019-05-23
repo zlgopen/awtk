@@ -149,12 +149,14 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
   list_view_t* list_view = LIST_VIEW(widget->parent);
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
-  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+  if (list_view->scroll_bar != NULL) {
     int32_t value = scroll_view_to_scroll_bar(list_view, yoffset);
-
     scroll_bar_set_value_only(list_view->scroll_bar, value);
-    widget_set_opacity(list_view->scroll_bar, 0xff);
-    widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+
+    if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+      widget_set_opacity(list_view->scroll_bar, 0xff);
+      widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+    }
   }
 
   return RET_OK;
