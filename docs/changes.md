@@ -1,7 +1,8 @@
 # 最新动态
 * 2019/05/23
   * 修改edit在scrollview中的问题。
-  
+  * resize后设置need_relayout_children标志(感谢朝泽提供补丁)。
+  * 修改slide menu中find target的bug(感谢朝泽提供补丁)。
    
 * 2019/05/22
   * 完善事件处理流程，修改slide menu放在slide view中的问题。

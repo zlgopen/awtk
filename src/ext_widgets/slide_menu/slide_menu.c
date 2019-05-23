@@ -69,14 +69,16 @@ static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
   int32_t b = 0;
   int32_t xx = 0;
   int32_t yy = 0;
+  point_t p = {x, y};
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(widget != NULL && slide_menu != NULL, NULL);
 
+  widget_to_local(widget, &p);
   current = slide_menu_get_child(widget, slide_menu->value);
   r = current->x + current->w;
   b = current->y + current->h;
-  xx = x - widget->x;
-  yy = y - widget->y;
+  xx = p.x;
+  yy = p.y;
 
   if (current->enable && xx >= current->x && yy >= current->y && xx <= r && yy <= b) {
     return current;
