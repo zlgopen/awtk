@@ -6,7 +6,7 @@
   * move focus时跳过不可见和不可用的widget。
   * 当前没有焦点控件时，窗口收到tab键时，让第一个focusable控件得到焦点。
   * 修改guage pointer 在load widget时的警告信息。
-  
+  * 增加控件焦点相关问题的文档。  
    
 * 2019/05/22
   * 完善事件处理流程，修改slide menu放在slide view中的问题。
