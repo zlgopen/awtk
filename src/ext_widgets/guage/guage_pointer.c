@@ -47,7 +47,7 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
 }
 
 bool_t guage_pointer_value_is_anchor_px(const char* value) {
-  char* tmp = NULL;
+  const char* tmp = NULL;
   size_t len = strlen(value);
   return_value_if_fail(len > ANCHOR_PX_STR_LEN, FALSE);
 
@@ -105,11 +105,10 @@ ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const cha
   return RET_OK;
 }
 
-ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
+static ret_t guage_pointer_load_svg_asset(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
-  guage_pointer->image = tk_str_copy(guage_pointer->image, image);
+
   if (guage_pointer->image != NULL) {
     const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
 
@@ -119,6 +118,24 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
       } else {
         widget_unload_asset(widget, asset);
       }
+    }
+  }
+
+  return RET_REMOVE;
+}
+
+ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
+  widget_t* win = widget_get_window(widget);
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+  guage_pointer->image = tk_str_copy(guage_pointer->image, image);
+
+  if (guage_pointer->image != NULL) {
+    if (win != NULL) {
+      guage_pointer_load_svg_asset(widget, NULL);
+    } else {
+      widget_on(widget, EVT_BEFORE_PAINT, guage_pointer_load_svg_asset, widget);
     }
   }
 
