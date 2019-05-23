@@ -135,6 +135,11 @@ typedef enum _ret_t {
    */
   RET_STOP,
   /**
+   * @const RET_SKIP
+   * 跳过当前项。
+   */
+  RET_SKIP,
+  /**
    * @const RET_CONTINUE
    * 继续后续操作。
    */

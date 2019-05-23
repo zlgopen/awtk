@@ -1,9 +1,11 @@
 ﻿
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "widgets/view.h"
 #include "widgets/button.h"
 #include "widgets/label.h"
 #include "widgets/group_box.h"
+#include "widgets/button_group.h"
 #include "widgets/window.h"
 #include "base/style_const.h"
 #include "font_dummy.h"
@@ -830,4 +832,129 @@ TEST(Widget, calc_icon_text_rect_icon_right) {
   ASSERT_EQ(r_text.y, ir.y);
   ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
   ASSERT_EQ(r_text.h, ir.h);
+}
+
+static ret_t on_visit_count(void* ctx, const void* data) {
+  int32_t* count = (int32_t*)ctx;
+  widget_t* widget = WIDGET(data);
+  const char* type = widget->vt->type;
+
+  if (tk_str_eq(type, WIDGET_TYPE_BUTTON_GROUP)) {
+    return RET_SKIP;
+  } else if (tk_str_eq(type, WIDGET_TYPE_BUTTON)) {
+    *count = (*count) + 1;
+    return RET_OK;
+  } else if (tk_str_eq(type, WIDGET_TYPE_LABEL)) {
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+TEST(Widget, foreach_normal) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 3);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, foreach_stop) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  label_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_STOP);
+  ASSERT_EQ(count, 2);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, foreach_skip) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  widget_t* g = button_group_create(w, 0, 0, 400, 300);
+  button_create(g, 0, 0, 0, 0);
+  button_create(g, 0, 0, 0, 0);
+  label_create(g, 0, 0, 0, 0);
+  button_create(g, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 2);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_focused(b1, TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b3->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(b3->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus_skip_invisible) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* view = view_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(view, 0, 0, 0, 0);
+  widget_t* b5 = button_create(view, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b4, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b5, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_visible(view, FALSE, FALSE);
+
+  widget_set_focused(b1, TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b3->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(b3->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
 }

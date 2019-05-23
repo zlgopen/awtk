@@ -1828,14 +1828,19 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
 }
 
 ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
+  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
 
-  if (visit(ctx, widget) != RET_OK) {
-    return RET_DONE;
+  ret = visit(ctx, widget);
+  if (ret != RET_OK) {
+    return ret;
   }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_foreach(iter, visit, ctx);
+  ret = widget_foreach(iter, visit, ctx);
+  if (ret == RET_STOP || ret == RET_DONE) {
+    return ret;
+  }
   WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
@@ -2558,6 +2563,10 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
   darray_t* all_focusable = (darray_t*)ctx;
 
+  if (!(widget->visible) || !(widget->enable)) {
+    return RET_SKIP;
+  }
+
   if (widget_is_focusable(widget)) {
     darray_push(all_focusable, widget);
   }
@@ -2565,7 +2574,7 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   return RET_OK;
 }
 
-static ret_t widget_get_all_focusable_widgets_win(widget_t* widget, darray_t* all_focusable) {
+static ret_t widget_get_all_focusable_widgets_in_win(widget_t* widget, darray_t* all_focusable) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
@@ -2574,14 +2583,14 @@ static ret_t widget_get_all_focusable_widgets_win(widget_t* widget, darray_t* al
   return RET_OK;
 }
 
-static ret_t widget_move_focus(widget_t* widget, bool_t next) {
+ret_t widget_move_focus(widget_t* widget, bool_t next) {
   uint32_t i = 0;
   uint32_t focus = 0;
   darray_t all_focusable;
   return_value_if_fail(widget != NULL && widget->focused, RET_BAD_PARAMS);
   return_value_if_fail(darray_init(&all_focusable, 10, NULL, NULL) != NULL, RET_OOM);
 
-  widget_get_all_focusable_widgets_win(widget, &all_focusable);
+  widget_get_all_focusable_widgets_in_win(widget, &all_focusable);
 
   if (all_focusable.size > 1) {
     for (i = 0; i < all_focusable.size; i++) {
