@@ -11,7 +11,7 @@ if is32bit:
 else:
   TARGET_ARCH=''
 
-print('TARGET_ARCH:' + TARGET_ARCH)
+print('ARCH=' + str(ARCH) + ' TARGET_ARCH=' + TARGET_ARCH)
 
 def joinPath(root, subdir):
   return os.path.normpath(os.path.join(root, subdir))
