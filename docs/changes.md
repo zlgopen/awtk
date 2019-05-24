@@ -2,10 +2,11 @@
 * 2019/05/24
   * 部分控件增加inputable属性。
   * 修改progress circle半径的问题(感谢均权提供补丁)。
+  * 完善字符串翻译文，增加数字时钟中星期和月份的处理。
 
 * 2019/05/23
   * 修改edit在scrollview中的问题。
-  * resize后设置need_relayout_children标志(感谢朝泽提供补丁)。
+  * resize后设置need\_relayout\_children标志(感谢朝泽提供补丁)。
   * 修改slide menu中find target的bug(感谢朝泽提供补丁)。
   * move focus时跳过不可见和不可用的widget。
   * 当前没有焦点控件时，窗口收到tab键时，让第一个focusable控件得到焦点。
