@@ -43,7 +43,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
     float_t end_angle = 0;
-    float_t r = tk_min(cx, cy) - progress_circle->line_width;
+    float_t r = tk_min(cx, cy) - progress_circle->line_width / 2;
     bool_t ccw = progress_circle->counter_clock_wise;
     float_t start_angle = TK_D2R(progress_circle->start_angle);
     float_t angle = (M_PI * 2 * progress_circle->value) / progress_circle->max;
