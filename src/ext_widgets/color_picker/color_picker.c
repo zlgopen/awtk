@@ -53,6 +53,7 @@ static ret_t color_picker_set_prop(widget_t* widget, const char* name, const val
 }
 
 TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
+                                .inputable = TRUE,
                                 .type = WIDGET_TYPE_COLOR_PICKER,
                                 .set_prop = color_picker_set_prop,
                                 .get_prop = color_picker_get_prop,

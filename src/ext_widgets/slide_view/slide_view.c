@@ -774,6 +774,7 @@ static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PR
                                                 WIDGET_PROP_VERTICAL,  WIDGET_PROP_ANIM_HINT,
                                                 WIDGET_PROP_AUTO_PLAY, NULL};
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
+                              .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_VIEW,
                               .clone_properties = s_slide_view_properties,
                               .persistent_properties = s_slide_view_properties,

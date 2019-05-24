@@ -432,6 +432,7 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
 }
 
 TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
+                                 .inputable = TRUE,
                                  .type = WIDGET_TYPE_TEXT_SELECTOR,
                                  .clone_properties = s_text_selector_properties,
                                  .persistent_properties = s_text_selector_properties,

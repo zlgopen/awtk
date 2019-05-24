@@ -408,6 +408,7 @@ static const char* s_scroll_bar_clone_properties[] = {
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
 TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
+                                     .inputable = TRUE,
                                      .type = WIDGET_TYPE_SCROLL_BAR_MOBILE,
                                      .clone_properties = s_scroll_bar_clone_properties,
                                      .parent = TK_PARENT_VTABLE(widget),
@@ -418,6 +419,7 @@ TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
                                      .on_paint_self = scroll_bar_mobile_on_paint_self};
 
 TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
+                                      .inputable = TRUE,
                                       .type = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
                                       .clone_properties = s_scroll_bar_clone_properties,
                                       .persistent_properties = s_scroll_bar_persitent_properties,

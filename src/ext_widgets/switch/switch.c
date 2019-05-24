@@ -301,6 +301,7 @@ static const char* s_switch_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_XOFFS
                                             NULL};
 
 TK_DECL_VTABLE(switch) = {
+    .inputable = TRUE,
     .size = sizeof(switch_t),
     .type = WIDGET_TYPE_SWITCH,
     .clone_properties = s_switch_properties,

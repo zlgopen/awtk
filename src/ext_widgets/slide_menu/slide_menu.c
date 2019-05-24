@@ -575,6 +575,7 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
 }
 
 TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
+                              .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_MENU,
                               .clone_properties = s_slide_menu_properties,
                               .persistent_properties = s_slide_menu_properties,

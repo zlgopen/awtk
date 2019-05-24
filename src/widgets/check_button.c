@@ -143,6 +143,7 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 
 static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(check_button) = {
+    .inputable = TRUE,
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_CHECK_BUTTON,
     .space_key_to_activate = TRUE,
@@ -158,6 +159,7 @@ TK_DECL_VTABLE(check_button) = {
 };
 
 TK_DECL_VTABLE(radio_button) = {
+    .inputable = TRUE,
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_RADIO_BUTTON,
     .space_key_to_activate = TRUE,

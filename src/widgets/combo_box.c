@@ -144,6 +144,7 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
 }
 
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
+                             .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
                              .clone_properties = s_combo_box_properties,
                              .persistent_properties = s_combo_box_properties,
