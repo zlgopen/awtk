@@ -105,6 +105,11 @@ struct _widget_vtable_t {
    */
   uint32_t return_key_to_activate : 1;
   /**
+   * 只有active的子控件时可见的。如slide view和pages。
+   *
+   */
+  uint32_t only_active_child_visible : 1;
+  /**
    * 是否是窗口。
    */
   uint32_t is_window : 1;

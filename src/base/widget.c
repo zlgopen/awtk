@@ -2575,6 +2575,13 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
     return RET_SKIP;
   }
 
+  if (widget->vt->only_active_child_visible) {
+    widget_t* child = widget_find_target(widget, 1, 1);
+    widget_foreach(child, widget_on_visit_focusable, all_focusable);
+
+    return RET_SKIP;
+  }
+
   if (widget_is_focusable(widget)) {
     darray_push(all_focusable, widget);
   }
@@ -2591,29 +2598,18 @@ static ret_t widget_get_all_focusable_widgets_in_window(widget_t* widget, darray
   return RET_OK;
 }
 
-static ret_t widget_on_visit_first_focusable(void* ctx, const void* data) {
-  widget_t* widget = WIDGET(data);
-  widget_t** first = (widget_t**)ctx;
-
-  if (!(widget->visible) || !(widget->enable)) {
-    return RET_SKIP;
-  }
-
-  if (widget_is_focusable(widget)) {
-    *first = widget;
-
-    return RET_STOP;
-  }
-
-  return RET_OK;
-}
-
 static widget_t* widget_get_first_focusable_widget_in_window(widget_t* widget) {
   widget_t* first = NULL;
+  darray_t all_focusable;
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, first);
 
-  widget_foreach(win, widget_on_visit_first_focusable, &first);
+  darray_init(&all_focusable, 10, NULL, NULL);
+  widget_foreach(win, widget_on_visit_focusable, &all_focusable);
+  if (all_focusable.size > 0) {
+    first = WIDGET(all_focusable.elms[0]);
+  }
+  darray_deinit(&all_focusable);
 
   return first;
 }

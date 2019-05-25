@@ -7,6 +7,7 @@
 #include "widgets/group_box.h"
 #include "widgets/button_group.h"
 #include "widgets/window.h"
+#include "widgets/pages.h"
 #include "base/style_const.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
@@ -985,5 +986,48 @@ TEST(Widget, move_focus_first) {
   ASSERT_EQ(b1->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus_pages) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b0 = button_create(w, 0, 0, 0, 0);
+
+  widget_t* pages = pages_create(w, 0, 0, 400, 300);
+
+  widget_t* p1 = view_create(pages, 0, 0, 400, 300);
+  widget_t* p2 = view_create(pages, 0, 0, 400, 300);
+  widget_t* p3 = view_create(pages, 0, 0, 400, 300);
+
+  widget_t* b1 = button_create(p1, 0, 0, 0, 0);
+  widget_t* b2 = button_create(p2, 0, 0, 0, 0);
+  widget_t* b3 = button_create(p3, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b0, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_focus_first(w);
+  ASSERT_EQ(b0->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(b0->focused, FALSE);
+  ASSERT_EQ(b1->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b0->focused, TRUE);
+
+  pages_set_active(pages, 1);
+  widget_focus_first(w);
+  ASSERT_EQ(b0->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(b0->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b0->focused, TRUE);
   widget_destroy(w);
 }

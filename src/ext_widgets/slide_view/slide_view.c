@@ -776,6 +776,7 @@ static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PR
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_VIEW,
+                              .only_active_child_visible = TRUE,
                               .clone_properties = s_slide_view_properties,
                               .persistent_properties = s_slide_view_properties,
                               .parent = TK_PARENT_VTABLE(widget),

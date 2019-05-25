@@ -98,6 +98,7 @@ static const char* s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .inputable = TRUE,
                          .type = WIDGET_TYPE_PAGES,
+                         .only_active_child_visible = TRUE,
                          .clone_properties = s_pages_clone_properties,
                          .parent = TK_PARENT_VTABLE(widget),
                          .create = pages_create,
