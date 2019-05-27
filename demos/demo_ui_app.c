@@ -68,8 +68,23 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   return total_cost;
 }
 
+static ret_t window_to_background(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(e->target);
+  log_debug("%s to_background\n", win->name);
+  return RET_OK;
+}
+
+static ret_t window_to_foreground(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(e->target);
+  log_debug("%s to_foreground\n", win->name);
+  return RET_OK;
+}
+
 static void open_window(const char* name, widget_t* to_close) {
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
+
+  widget_on(win, EVT_WINDOW_TO_BACKGROUND, window_to_background, win);
+  widget_on(win, EVT_WINDOW_TO_FOREGROUND, window_to_foreground, win);
 
   install_click_hander(win);
 
