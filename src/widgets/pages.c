@@ -36,8 +36,8 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
+    widget_set_as_key_target(widget_get_child(widget, pages->active));
   }
-  widget->key_target = widget_get_child(widget, pages->active);
 
   return RET_OK;
 }
