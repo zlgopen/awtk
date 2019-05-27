@@ -429,6 +429,18 @@ typedef struct _pointer_event_t {
    */
   uint8_t ctrl : 1;
   /**
+   * @property {bool_t} cmd
+   * @annotation ["readable", "scriptable"]
+   * cmd键是否按下。
+   */
+  uint8_t cmd : 1;
+  /**
+   * @property {bool_t} menu
+   * @annotation ["readable", "scriptable"]
+   * menu键是否按下。
+   */
+  uint8_t menu : 1;
+  /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
@@ -477,27 +489,78 @@ typedef struct _key_event_t {
   /**
    * @property {bool_t} alt
    * @annotation ["readable", "scriptable"]
+   * 键值。
    * alt键是否按下。
    */
-  uint8_t alt : 1;
+  uint32_t alt : 1;
+  /**
+   * @property {bool_t} lalt
+   * @annotation ["readable", "scriptable"]
+   * left alt键是否按下。
+   */
+  uint32_t lalt : 1;
+  /**
+   * @property {bool_t} ralt
+   * @annotation ["readable", "scriptable"]
+   * right alt键是否按下。
+   */
+  uint32_t ralt : 1;
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
+   * right alt键是否按下。
    * ctrl键是否按下。
    */
-  uint8_t ctrl : 1;
+  uint32_t ctrl : 1;
+  /**
+   * @property {bool_t} lctrl
+   * @annotation ["readable", "scriptable"]
+   * left ctrl键是否按下。
+   */
+  uint32_t lctrl : 1;
+  /**
+   * @property {bool_t} rctrl
+   * @annotation ["readable", "scriptable"]
+   * right ctrl键是否按下。
+   */
+  uint32_t rctrl : 1;
   /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
-  uint8_t shift : 1;
+  uint32_t shift : 1;
+  /**
+   * @property {bool_t} lshift
+   * @annotation ["readable", "scriptable"]
+   * left shift键是否按下。
+   */
+  uint32_t lshift : 1;
+  /**
+   * @property {bool_t} rshift
+   * @annotation ["readable", "scriptable"]
+   * right shift键是否按下。
+   */
+  uint32_t rshift : 1;
+  /**
+   * @property {bool_t} cmd
+   * @annotation ["readable", "scriptable"]
+   * left shift键是否按下。
+   * cmd/win键是否按下。
+   */
+  uint32_t cmd : 1;
+  /**
+   * @property {bool_t} menu
+   * @annotation ["readable", "scriptable"]
+   * menu键是否按下。
+   */
+  uint32_t menu : 1;
   /**
    * @property {bool_t} capslock
    * @annotation ["readable", "scriptable"]
    * capslock键是否按下。
    */
-  uint8_t capslock : 1;
+  uint32_t capslock : 1;
 } key_event_t;
 
 /**

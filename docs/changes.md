@@ -4,6 +4,8 @@
     * 窗口被切换到前台时，把窗口管理器的key\_target设置到当前窗口。
     * pages切换当前页时，自动切换key\_target到当前页面。
     * slide view切换当前页时，自动切换key\_target到当前页面。
+    * 增加shortcut
+    * 完善按键处理
 
 * 2019/05/25
   * 修改窗口中存在pages/slideview时焦点切换的问题。
