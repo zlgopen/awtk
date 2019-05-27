@@ -47,7 +47,7 @@ static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
-static widget_is_scrollable(widget_t* widget) {
+static bool_t widget_is_scrollable(widget_t* widget) {
   return widget != NULL && widget->vt != NULL && widget->vt->scrollable;
 }
 
@@ -276,7 +276,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
     return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
   } else {
     widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
-    return widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
+    
+		return widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
   }
 }
 
@@ -888,7 +889,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
   }
-  canvas_set_text_align(c, align_h, align_v);
+  canvas_set_text_align(c, (align_h_t)align_h, (align_v_t)align_v);
 
   if (icon != NULL && widget_load_image(widget, icon, &img) == RET_OK) {
     float_t dpr = system_info()->device_pixel_ratio;
@@ -1795,8 +1796,6 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   } else {
     return widget_on_pointer_up_after_children(widget, e);
   }
-
-  return RET_OK;
 }
 
 ret_t widget_grab(widget_t* widget, widget_t* child) {

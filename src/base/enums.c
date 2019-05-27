@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   enums.c
  * Author: AWTK Develop Team
  * Brief:  enumerations
@@ -19,10 +19,11 @@
  *
  */
 
-#include "widgets/edit.h"
 #include "base/keys.h"
+#include "base/utils.h"
 #include "base/enums.h"
 #include "base/widget.h"
+#include "widgets/edit.h"
 #include "base/window_animator.h"
 #include "base/assets_manager.h"
 
@@ -208,9 +209,6 @@ static const key_type_value_t keys_type_name_value[] = {
     {"F10", 0, TK_KEY_F10},
     {"F11", 0, TK_KEY_F11},
     {"F12", 0, TK_KEY_F12},
-    {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
-    {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},
-    {"PAUSE", 0, TK_KEY_PAUSE},
     {"INSERT", 0, TK_KEY_INSERT},
     {"HOME", 0, TK_KEY_HOME},
     {"PAGEUP", 0, TK_KEY_PAGEUP},
@@ -220,6 +218,10 @@ static const key_type_value_t keys_type_name_value[] = {
     {"LEFT", 0, TK_KEY_LEFT},
     {"DOWN", 0, TK_KEY_DOWN},
     {"UP", 0, TK_KEY_UP},
+#ifdef SDL2
+    {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
+    {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},
+    {"PAUSE", 0, TK_KEY_PAUSE},
     {"NUMLOCKCLEAR", 0, TK_KEY_NUMLOCKCLEAR},
     {"APPLICATION", 0, TK_KEY_APPLICATION},
     {"POWER", 0, TK_KEY_POWER},
@@ -265,13 +267,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"DECIMALSEPARATOR", 0, TK_KEY_DECIMALSEPARATOR},
     {"CURRENCYUNIT", 0, TK_KEY_CURRENCYUNIT},
     {"CURRENCYSUBUNIT", 0, TK_KEY_CURRENCYSUBUNIT},
-    {"LCTRL", 0, TK_KEY_LCTRL},
-    {"LSHIFT", 0, TK_KEY_LSHIFT},
-    {"LALT", 0, TK_KEY_LALT},
-    {"LGUI", 0, TK_KEY_LGUI},
-    {"RCTRL", 0, TK_KEY_RCTRL},
-    {"RSHIFT", 0, TK_KEY_RSHIFT},
-    {"RALT", 0, TK_KEY_RALT},
+		{"LGUI", 0, TK_KEY_LGUI},
     {"RGUI", 0, TK_KEY_RGUI},
     {"MODE", 0, TK_KEY_MODE},
     {"AUDIONEXT", 0, TK_KEY_AUDIONEXT},
@@ -301,6 +297,15 @@ static const key_type_value_t keys_type_name_value[] = {
     {"SLEEP", 0, TK_KEY_SLEEP},
     {"APP1", 0, TK_KEY_APP1},
     {"APP2", 0, TK_KEY_APP2},
+
+#endif/*SDL2*/		
+    {"LCTRL", 0, TK_KEY_LCTRL},
+    {"LSHIFT", 0, TK_KEY_LSHIFT},
+    {"LALT", 0, TK_KEY_LALT},
+
+    {"RCTRL", 0, TK_KEY_RCTRL},
+    {"RSHIFT", 0, TK_KEY_RSHIFT},
+    {"RALT", 0, TK_KEY_RALT},
     {"LSHIFT", 0, TK_KEY_LSHIFT},
     {"RSHIFT", 0, TK_KEY_RSHIFT},
     {"LCTRL", 0, TK_KEY_LCTRL},
