@@ -1,7 +1,9 @@
 # 最新动态
 * 2019/05/27
-    * 窗口在切换到前台和后台时分别触发事件EVT_WINDOW_TO_FOREGROUND和EVT_WINDOW_TO_BACKGROUND
-    * 窗口被切换到前台时，把窗口管理器的key_target设置到当前窗口。
+    * 窗口在切换到前台和后台时分别触发事件EVT\_WINDOW\_TO\_FOREGROUND和EVT\_WINDOW\_TO\_BACKGROUND
+    * 窗口被切换到前台时，把窗口管理器的key\_target设置到当前窗口。
+    * pages切换当前页时，自动切换key\_target到当前页面。
+    * slide view切换当前页时，自动切换key\_target到当前页面。
 
 * 2019/05/25
   * 修改窗口中存在pages/slideview时焦点切换的问题。
