@@ -37,8 +37,8 @@ tk_cond_var_t* tk_cond_var_create(void) {
   return_value_if_fail(cond_var != NULL, NULL);
 
   cond_var->inited = TRUE;
-  InitializeCriticalSection(&(cond_var->mutex), NULL);
-  InitializeConditionVariable(&(cond_var->cond), NULL);
+  InitializeCriticalSection(&(cond_var->mutex));
+  InitializeConditionVariable(&(cond_var->cond));
 
   return cond_var;
 }
