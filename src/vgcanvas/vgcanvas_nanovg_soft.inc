@@ -60,8 +60,8 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
 
   vgcanvas->w = w;
   vgcanvas->h = h;
-  nanovg->base.format = format;
-  nanovg->base->buff = (uint32_t*)data;
+  vgcanvas->format = format;
+  vgcanvas->buff = (uint32_t*)data;
   nvgReinitAgge(vg, w, h, stride, bitmap_format_to_nanovg(format), data);
 
   return RET_OK;
