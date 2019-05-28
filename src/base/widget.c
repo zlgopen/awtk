@@ -1591,10 +1591,8 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
   widget_t* target = widget;
 
   while (target != NULL) {
-    event_t e = event_init(EVT_BLUR, target);
     if (target->focused) {
-      target->focused = FALSE;
-      widget_dispatch(target, &e);
+      widget_set_focused(target, FALSE);
     }
     target = target->key_target;
   }
@@ -1634,15 +1632,10 @@ static ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* 
   if (target != NULL && target->enable) {
     if (!(widget_is_keyboard(target))) {
       if (!target->focused) {
-        event_t focus = event_init(EVT_FOCUS, target);
-        if (widget->key_target) {
-          widget_dispatch_blur_event(widget->key_target);
-        }
-        ret = widget_dispatch(target, &focus);
+        widget_set_focused(target, TRUE);
+      } else {
+        widget->key_target = target;
       }
-
-      widget->key_target = target;
-      widget->key_target->focused = TRUE;
     }
   }
   return_if_equal(ret, RET_STOP);
@@ -2533,6 +2526,10 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* pa
 }
 
 ret_t widget_set_as_key_target(widget_t* widget) {
+  if(widget_is_keyboard(widget)) {
+    return RET_OK;
+  }
+  
   if (widget != NULL) {
     widget_t* parent = widget->parent;
     if (parent != NULL) {
