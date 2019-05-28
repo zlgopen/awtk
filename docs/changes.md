@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/05/28
+  * 修改enums.c 编译问题。
+  * 合并bgfx补丁（感谢大恒提供补丁）。
 * 2019/05/27
     * 窗口在切换到前台和后台时分别触发事件EVT\_WINDOW\_TO\_FOREGROUND和EVT\_WINDOW\_TO\_BACKGROUND
     * 窗口被切换到前台时，把窗口管理器的key\_target设置到当前窗口。
