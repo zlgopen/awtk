@@ -276,8 +276,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
     return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
   } else {
     widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
-    
-		return widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
+
+    return widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
   }
 }
 

@@ -33,7 +33,6 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-
 static int32_t getFreeViewId(void) {
   int32_t index = BEGIN_IDX;
   for (int32_t i = BEGIN_IDX; i < MAX_VIEW_COUNT; ++i) {
@@ -49,7 +48,7 @@ static int32_t getFreeViewId(void) {
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   struct NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-  curViewId =  getFreeViewId();
+  curViewId = getFreeViewId();
   handle = nvgluCreateFramebufferByViewId(vg, (int)(vgcanvas->w * vgcanvas->ratio),
                                           (int)(vgcanvas->h * vgcanvas->ratio), 0, curViewId);
   return_value_if_fail(handle != NULL, RET_FAIL);

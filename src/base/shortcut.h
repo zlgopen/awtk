@@ -32,6 +32,12 @@ BEGIN_C_DECLS
  */
 typedef struct _shortcut_t {
   /**
+   * @property {bool_t} is_valid
+   * @annotation ["readable"]
+   * 是否有效。
+   */
+  uint32_t is_valid : 1;
+  /**
    * @property {uint32_t} key
    * @annotation ["readable"]
    * 键值。
@@ -129,11 +135,20 @@ shortcut_t* shortcut_init_with_str(shortcut_t* shortcut, const char* str);
  * 比较两个快捷键对象。
  * @param {shortcut_t*} shortcut1 快捷键对象1。
  * @param {shortcut_t*} shortcut2 快捷键对象2。
- * @annotation ["constructor"]
  *
  * @return {bool_t} 返回TRUE表示相同，否则表示不同。
  */
 bool_t shortcut_equal(shortcut_t* shortcut1, shortcut_t* shortcut2);
+
+/**
+ * @method shortcut_match
+ * 检查事件与快捷键是否匹配。
+ * @param {shortcut_t*} filter 过滤器快捷键对象。
+ * @param {shortcut_t*} event 事件快捷键对象。
+ *
+ * @return {bool_t} 返回TRUE表示匹配，否则表示不匹配。
+ */
+bool_t shortcut_match(shortcut_t* filter, shortcut_t* event);
 
 END_C_DECLS
 

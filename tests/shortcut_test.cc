@@ -188,3 +188,109 @@ TEST(ShortCut, lshift_lctrl) {
   shortcut_init_with_str(&s2, "lshift+lctrl+home");
   ASSERT_EQ(shortcut_equal(&s1, &s2), TRUE);
 }
+
+TEST(ShortCut, lctrl_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.lctrl = TRUE;
+
+  shortcut_init_with_str(&filter, "ctrl+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "lctrl+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, rctrl_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.rctrl = TRUE;
+
+  shortcut_init_with_str(&filter, "ctrl+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "rctrl+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, lalt_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.lalt = TRUE;
+
+  shortcut_init_with_str(&filter, "alt+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "lalt+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, ralt_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.ralt = TRUE;
+
+  shortcut_init_with_str(&filter, "alt+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "ralt+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, lshift_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.lshift = TRUE;
+
+  shortcut_init_with_str(&filter, "shift+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "lshift+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, rshift_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.rshift = TRUE;
+
+  shortcut_init_with_str(&filter, "shift+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+
+  shortcut_init_with_str(&filter, "rshift+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, cmd_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.cmd = TRUE;
+
+  shortcut_init_with_str(&filter, "cmd+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}
+
+TEST(ShortCut, menu_match) {
+  shortcut_t event;
+  shortcut_t filter;
+
+  shortcut_init(&event, TK_KEY_a);
+  event.menu = TRUE;
+
+  shortcut_init_with_str(&filter, "menu+a");
+  ASSERT_EQ(shortcut_match(&filter, &event), TRUE);
+}

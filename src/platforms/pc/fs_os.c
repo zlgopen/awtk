@@ -222,7 +222,7 @@ static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   GetCurrentDirectory(MAX_PATH, path);
 #else
   getcwd(path, MAX_PATH);
-#endif/*WIN32*/  
+#endif /*WIN32*/
 
   return RET_OK;
 }

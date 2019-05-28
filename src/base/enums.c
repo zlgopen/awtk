@@ -245,7 +245,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"DECIMALSEPARATOR", 0, TK_KEY_DECIMALSEPARATOR},
     {"CURRENCYUNIT", 0, TK_KEY_CURRENCYUNIT},
     {"CURRENCYSUBUNIT", 0, TK_KEY_CURRENCYSUBUNIT},
-		{"LGUI", 0, TK_KEY_LGUI},
+    {"LGUI", 0, TK_KEY_LGUI},
     {"RGUI", 0, TK_KEY_RGUI},
     {"MODE", 0, TK_KEY_MODE},
     {"AUDIONEXT", 0, TK_KEY_AUDIONEXT},
@@ -276,7 +276,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"APP1", 0, TK_KEY_APP1},
     {"APP2", 0, TK_KEY_APP2},
 
-#endif/*SDL2*/		
+#endif /*SDL2*/
     {"LCTRL", 0, TK_KEY_LCTRL},
     {"RCTRL", 0, TK_KEY_RCTRL},
     {"LSHIFT", 0, TK_KEY_LSHIFT},
