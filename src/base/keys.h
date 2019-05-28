@@ -741,6 +741,7 @@ typedef enum _key_code_t {
   TK_KEY_F10 = 160,
   TK_KEY_F11 = 161,
   TK_KEY_F12 = 162,
+  TK_KEY_MENU = 255,
   TK_KEY_COMMAND = 255,
 #endif
 
