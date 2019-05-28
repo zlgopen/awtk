@@ -30,7 +30,7 @@ struct _object_vtable_t;
 typedef struct _object_vtable_t object_vtable_t;
 
 typedef ret_t (*object_on_destroy_t)(object_t* obj);
-typedef int (*object_compare_t)(object_t* obj, object_t* other);
+typedef int32_t (*object_compare_t)(object_t* obj, object_t* other);
 
 typedef ret_t (*object_remove_prop_t)(object_t* obj, const char* name);
 typedef ret_t (*object_get_prop_t)(object_t* obj, const char* name, value_t* v);
