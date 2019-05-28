@@ -60,7 +60,8 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
 
   vgcanvas->w = w;
   vgcanvas->h = h;
-  vgcanvas->buff = (uint32_t*)data;
+  nanovg->base.format = format;
+  nanovg->base->buff = (uint32_t*)data;
   nvgReinitAgge(vg, w, h, stride, bitmap_format_to_nanovg(format), data);
 
   return RET_OK;
@@ -125,18 +126,6 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 }
 
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-#if defined(WITH_NANOVG_GL3)
-  nvgDeleteGL3(vg);
-#elif defined(WITH_NANOVG_GLES2)
-  nvgDeleteGLES2(vg);
-#elif defined(WITH_NANOVG_GLES3)
-  nvgDeleteGLES3(vg);
-#elif defined(WITH_NANOVG_AGGE)
-  nvgDeleteAGGE(vg);
-#elif defined(WITH_NANOVG_AGG)
-  nvgDeleteAGG(vg);
-#endif
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;

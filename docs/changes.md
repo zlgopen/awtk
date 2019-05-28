@@ -1,8 +1,10 @@
 # 最新动态
 * 2019/05/28
   * 修改enums.c 编译问题(感谢陈潭提供补丁)。
+  * 修改vgcanvas_reinit的问题(感谢陈潭提供补丁)。
   * 合并bgfx补丁(感谢大恒提供补丁)。
   * 完善shortcut。
+  * 完善事件处理流程。
 
 * 2019/05/27
     * 窗口在切换到前台和后台时分别触发事件EVT\_WINDOW\_TO\_FOREGROUND和EVT\_WINDOW\_TO\_BACKGROUND

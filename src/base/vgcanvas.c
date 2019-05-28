@@ -424,7 +424,7 @@ ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                       bitmap_format_t format, void* data) {
   return_value_if_fail(vg != NULL && data != NULL, RET_BAD_PARAMS);
 
-  if (vg->w == w && vg->h == h) {
+  if (vg->w == w && vg->h == h && vg->buff == (uint32_t*)data) {
     return RET_OK;
   }
 

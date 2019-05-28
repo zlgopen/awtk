@@ -342,6 +342,13 @@ struct _vgcanvas_t {
    */
   uint32_t* buff;
 
+  /**
+   * @property {bitmap_format_t} format;
+   * @annotation ["private"]
+   * frame buffer format
+   */
+  bitmap_format_t format;
+
   rect_t clip_rect;
   const vgcanvas_vtable_t* vt;
 };
