@@ -76,6 +76,7 @@
 #include "assets/inc/ui/lua.data"
 #include "assets/inc/ui/main.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/overlay.data"
 #include "assets/inc/ui/popdown.data"
 #include "assets/inc/ui/popup.data"
 #include "assets/inc/ui/preload.data"
@@ -373,6 +374,7 @@
 #include "assets/inc/images/zh.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
+#include "assets/inc/images/ball.bsvg"
 #include "assets/inc/images/china.bsvg"
 #include "assets/inc/images/girl.bsvg"
 #include "assets/inc/images/pointer.bsvg"
@@ -606,6 +608,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_lua);
   assets_manager_add(rm, ui_main);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_overlay);
   assets_manager_add(rm, ui_popdown);
   assets_manager_add(rm, ui_popup);
   assets_manager_add(rm, ui_preload);
@@ -654,6 +657,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_vtranslate);
   assets_manager_add(rm, xml_test);
 #ifdef WITH_VGCANVAS
+  assets_manager_add(rm, image_ball);
   assets_manager_add(rm, image_china);
   assets_manager_add(rm, image_girl);
   assets_manager_add(rm, image_pointer);

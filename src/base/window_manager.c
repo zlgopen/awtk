@@ -911,6 +911,11 @@ static ret_t window_manager_layout_child(widget_t* widget, widget_t* window) {
   } else if (is_dialog(window)) {
     x = (widget->w - window->w) >> 1;
     y = (widget->h - window->h) >> 1;
+  } else {
+    x = widget->x;
+    y = widget->y;
+    w = widget->w;
+    h = widget->h;
   }
 
   widget_move_resize(window, x, y, w, h);

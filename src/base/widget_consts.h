@@ -709,6 +709,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_NORMAL_WINDOW "window"
 
 /**
+ * @const WIDGET_TYPE_OVERLAY
+ * overlay窗口。
+ */
+#define WIDGET_TYPE_OVERLAY "overlay"
+
+/**
  * @const WIDGET_TYPE_TOOL_BAR
  * 工具条。
  */

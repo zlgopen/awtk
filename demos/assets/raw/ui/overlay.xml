@@ -1,0 +1,4 @@
+<overlay text="overlay" x="0" y="0" w="100%" h="100%">
+  <svg image="ball" x="c" y="m" w="200" h="200"/> 
+  <button name="close" image="ball" x="c" y="m:150" w="80" h="30" text="Close"/> 
+</overlay>
