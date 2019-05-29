@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+#include "base/enums.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
@@ -437,11 +438,17 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     if (info != NULL) {
       return info;
     }
-
-    return NULL;
   } else {
-    return assets_manager_ref_impl(am, type, name);
+    info = assets_manager_ref_impl(am, type, name);
   }
+
+  if (info == NULL && type != ASSET_TYPE_STYLE) {
+    const key_type_value_t* kv = asset_type_find_by_value(type);
+    const char* asset_type = kv != NULL ? kv->name : "unknown";
+    log_warn("!!!Asset [name=%s type=%s] not exist!!!\n", name, asset_type);
+  }
+
+  return info;
 }
 
 ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {

@@ -2526,10 +2526,10 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* pa
 }
 
 ret_t widget_set_as_key_target(widget_t* widget) {
-  if(widget_is_keyboard(widget)) {
+  if (widget_is_keyboard(widget)) {
     return RET_OK;
   }
-  
+
   if (widget != NULL) {
     widget_t* parent = widget->parent;
     if (parent != NULL) {
