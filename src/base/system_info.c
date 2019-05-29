@@ -46,6 +46,7 @@ ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const c
 ret_t system_info_init(app_type_t app_type, const char* app_name, const char* app_root) {
   if (s_system_info == NULL) {
     s_system_info = system_info_create(app_type, app_name, app_root);
+    system_info_set_default_font(s_system_info, "default");
     return_value_if_fail(s_system_info != NULL, RET_BAD_PARAMS);
   } else {
     system_info_set_app_info(s_system_info, app_type, app_name, app_root);
@@ -215,3 +216,18 @@ done:
 
   return ret;
 }
+
+ret_t system_info_set_default_font(system_info_t* info, const char* default_font) {
+  return_value_if_fail(info != NULL && default_font != NULL, RET_BAD_PARAMS);
+
+  info->default_font = default_font;
+
+  return RET_OK;
+}
+
+const char* system_info_fix_font_name(const char* name) {
+  return_value_if_fail(system_info() != NULL, name);
+
+  return name != NULL ? name : system_info()->default_font;
+}
+

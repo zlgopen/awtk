@@ -2,6 +2,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "base/vgcanvas.h"
+#include "base/system_info.h"
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
 
@@ -230,16 +231,13 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
   int font_id = 0;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-
-  if (name == NULL) {
-    name = TK_DEFAULT_FONT;
-  }
+  const char* default_font = system_info_fix_font_name(NULL);
 
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
     const asset_info_t* r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
     if (r == NULL || r->subtype != ASSET_TYPE_FONT_TTF) {
-      name = TK_DEFAULT_FONT;
+      name = default_font;
       font_id = nvgFindFont(vg, name);
       if (font_id >= 0) {
         canvas->font_id = font_id;

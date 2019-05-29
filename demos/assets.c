@@ -372,7 +372,7 @@
 #include "assets/inc/images/visible.data"
 #include "assets/inc/images/warn.data"
 #include "assets/inc/images/zh.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/ball.bsvg"
 #include "assets/inc/images/china.bsvg"
@@ -380,38 +380,26 @@
 #include "assets/inc/images/pointer.bsvg"
 #include "assets/inc/images/pointer_1.bsvg"
 #include "assets/inc/images/pointer_4.bsvg"
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
-#if defined(WITH_MINI_FONT)
-#include "assets/inc/fonts/default_mini.res"
-#else /*WITH_MINI_FONT*/
 #include "assets/inc/fonts/default.res"
-#endif /*WITH_MINI_FONT*/
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif /*WITH_STB_FONT or WITH_FT_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_STB_FONT or WITH_FT_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
 
 #ifdef WITH_FS_RES
-#if defined(WITH_MINI_FONT)
-  assets_manager_preload(rm, ASSET_TYPE_FONT, "default_mini");
-#else  /*WITH_MINI_FONT*/
   assets_manager_preload(rm, ASSET_TYPE_FONT, "default");
-#endif /*WITH_MINI_FONT*/
   assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");
 #else
   assets_manager_add(rm, data_a_b_c_any);
   assets_manager_add(rm, data_com_zlg_app_json);
   assets_manager_add(rm, data_test_dat);
   assets_manager_add(rm, data_test_json);
-#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))
-  assets_manager_add(rm, font_default_mini);
-#else  /*WITH_MINI_FONT*/
   assets_manager_add(rm, font_default);
-#endif /*WITH_MINI_FONT*/
   assets_manager_add(rm, image_1);
   assets_manager_add(rm, image_2);
   assets_manager_add(rm, image_3);
@@ -663,7 +651,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_pointer);
   assets_manager_add(rm, image_pointer_1);
   assets_manager_add(rm, image_pointer_4);
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

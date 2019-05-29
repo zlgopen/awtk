@@ -196,10 +196,7 @@ bool_t vgcanvas_is_point_in_path(vgcanvas_t* vg, float_t x, float_t y) {
 ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
   return_value_if_fail(vg != NULL && vg->vt->set_font != NULL, RET_BAD_PARAMS);
 
-  if (font == NULL) {
-    font = TK_DEFAULT_FONT;
-  }
-
+  font = system_info_fix_font_name(font);
   vg->font = font;
 
   return vg->vt->set_font(vg, font);

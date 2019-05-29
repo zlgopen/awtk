@@ -426,7 +426,6 @@ static ret_t on_change_font_size(void* ctx, event_t* e) {
     font_scale = 1.1;
   }
   system_info_set_font_scale(system_info(), font_scale);
-
   widget_invalidate_force(win, NULL);
 
   return RET_OK;

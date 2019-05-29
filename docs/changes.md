@@ -2,7 +2,8 @@
 * 2019/05/29
   * 增加overlay窗口
   * 完善expr_eval
-  
+  * 去掉TK_DEFAULT_FONT宏定义，提供函数system\_info\_set\_default\_font设置缺省字体(一般不用调用)。
+   
 * 2019/05/28
   * 修改enums.c 编译问题(感谢陈潭提供补丁)。
   * 修改vgcanvas_reinit的问题(感谢陈潭提供补丁)。

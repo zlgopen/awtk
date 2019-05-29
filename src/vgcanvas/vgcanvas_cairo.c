@@ -338,10 +338,6 @@ static ret_t vgcanvas_cairo_set_font(vgcanvas_t* vgcanvas, const char* name) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   (void)canvas;
-  if (name == NULL) {
-    name = TK_DEFAULT_FONT;
-  }
-
   cairo_select_font_face(vg, name, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 
   return RET_OK;

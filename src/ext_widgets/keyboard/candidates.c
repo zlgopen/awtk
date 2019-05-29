@@ -25,6 +25,7 @@
 #include "widgets/button.h"
 #include "keyboard/candidates.h"
 #include "base/input_method.h"
+#include "base/system_info.h"
 #include "base/widget_vtable.h"
 
 static ret_t candidates_on_button_click(void* ctx, event_t* e) {
@@ -96,9 +97,10 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   widget_t** children = (widget_t**)(widget->children->elms);
   canvas_t* c = candidates->canvas;
   style_t* style = children[0]->astyle;
+  const char* font = system_info_fix_font_name(NULL);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
-  canvas_set_font(c, TK_DEFAULT_FONT, font_size);
+  canvas_set_font(c, font, font_size);
   for (i = 0; i < nr; i++) {
     iter = children[i];
     child_w = candidates_calc_child_width(candidates->canvas, iter);
