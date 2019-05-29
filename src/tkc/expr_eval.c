@@ -806,11 +806,7 @@ static EvalResult parse_product(EvalContext* ctx, ExprValue* output) {
 
   for (;;) {
     int type = ctx->token.type;
-    if (type == EVAL_TOKEN_TYPE_MULTIPLY || type == EVAL_TOKEN_TYPE_DIVIDE ||
-        type == EVAL_TOKEN_TYPE_E || type == EVAL_TOKEN_TYPE_L || type == EVAL_TOKEN_TYPE_G ||
-        type == EVAL_TOKEN_TYPE_NE || type == EVAL_TOKEN_TYPE_LE || type == EVAL_TOKEN_TYPE_GE ||
-        type == EVAL_TOKEN_TYPE_OR || type == EVAL_TOKEN_TYPE_AND ||
-        type == EVAL_TOKEN_TYPE_BITS_OR || type == EVAL_TOKEN_TYPE_BITS_AND) {
+    if (type == EVAL_TOKEN_TYPE_MULTIPLY || type == EVAL_TOKEN_TYPE_DIVIDE) {
       result = get_token(ctx);
       if (result != EVAL_RESULT_OK) return result;
 
@@ -861,6 +857,72 @@ static EvalResult parse_sum(EvalContext* ctx, ExprValue* output) {
   return EVAL_RESULT_OK;
 }
 
+static EvalResult parse_compare(EvalContext* ctx, ExprValue* output) {
+  ExprValue lhs;
+  ExprValue rhs;
+  EvalResult result;
+
+  expr_value_init(&lhs);
+  expr_value_init(&rhs);
+
+  result = parse_sum(ctx, &lhs);
+  if (result != EVAL_RESULT_OK) return result;
+
+  for (;;) {
+    int type = ctx->token.type;
+    if (type == EVAL_TOKEN_TYPE_E || type == EVAL_TOKEN_TYPE_L || type == EVAL_TOKEN_TYPE_G ||
+        type == EVAL_TOKEN_TYPE_NE || type == EVAL_TOKEN_TYPE_LE || type == EVAL_TOKEN_TYPE_GE) {
+      result = get_token(ctx);
+      if (result != EVAL_RESULT_OK) return result;
+
+      result = parse_sum(ctx, &rhs);
+      if (result != EVAL_RESULT_OK) return result;
+
+      expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+    } else {
+      break;
+    }
+  }
+
+  *output = lhs;
+  expr_value_clear(&rhs);
+
+  return EVAL_RESULT_OK;
+}
+
+static EvalResult parse_logic(EvalContext* ctx, ExprValue* output) {
+  ExprValue lhs;
+  ExprValue rhs;
+  EvalResult result;
+
+  expr_value_init(&lhs);
+  expr_value_init(&rhs);
+
+  result = parse_compare(ctx, &lhs);
+  if (result != EVAL_RESULT_OK) return result;
+
+  for (;;) {
+    int type = ctx->token.type;
+    if (type == EVAL_TOKEN_TYPE_OR || type == EVAL_TOKEN_TYPE_AND ||
+        type == EVAL_TOKEN_TYPE_BITS_OR || type == EVAL_TOKEN_TYPE_BITS_AND) {
+      result = get_token(ctx);
+      if (result != EVAL_RESULT_OK) return result;
+
+      result = parse_compare(ctx, &rhs);
+      if (result != EVAL_RESULT_OK) return result;
+
+      expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+    } else {
+      break;
+    }
+  }
+
+  *output = lhs;
+  expr_value_clear(&rhs);
+
+  return EVAL_RESULT_OK;
+}
+
 static EvalResult parse_expr(EvalContext* ctx, ExprValue* output) {
   EvalResult result;
 
@@ -869,7 +931,7 @@ static EvalResult parse_expr(EvalContext* ctx, ExprValue* output) {
   }
 
   ctx->stack_level++;
-  result = parse_sum(ctx, output);
+  result = parse_logic(ctx, output);
   ctx->stack_level--;
 
   return result;
