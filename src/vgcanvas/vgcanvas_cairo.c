@@ -707,8 +707,8 @@ static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
   vgcanvas->w = w;
   vgcanvas->h = h;
   vgcanvas->ratio = 1;
-  cairo->base.format = format;
-  cairo->base.buff = (uint32_t*)data;
+  vgcanvas->format = format;
+  vgcanvas->buff = (uint32_t*)data;
 
   surface = create_surface(w, h, format, data);
   return_value_if_fail(surface != NULL, RET_OOM);
