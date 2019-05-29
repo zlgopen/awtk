@@ -41,6 +41,7 @@
 #include "widgets/group_box.h"
 #include "widgets/image.h"
 #include "widgets/label.h"
+#include "widgets/overlay.h"
 #include "widgets/pages.h"
 #include "widgets/popup.h"
 #include "widgets/progress_bar.h"
