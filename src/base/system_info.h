@@ -32,7 +32,7 @@ BEGIN_C_DECLS
  * @parent object_t
  * 当前系统的信息。
  */
-typedef struct _system_info_t {
+struct _system_info_t {
   object_t object;
 
   /**
@@ -128,7 +128,7 @@ typedef struct _system_info_t {
    * 应用程序的根目录，用于定位资源文件。
    */
   const char* app_root;
-} system_info_t;
+};
 
 /**
  * @method system_info

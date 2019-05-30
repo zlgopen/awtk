@@ -24,6 +24,7 @@
 
 #include "tkc/emitter.h"
 #include "base/events.h"
+#include "base/types_def.h"
 #include "base/assets_manager.h"
 
 BEGIN_C_DECLS
@@ -34,7 +35,7 @@ BEGIN_C_DECLS
  * 本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。
  *
  */
-typedef struct _locale_info_t {
+struct _locale_info_t {
   /**
    * @property {char*} country;
    * @annotation ["readable"]
@@ -57,7 +58,7 @@ typedef struct _locale_info_t {
   const asset_info_t* strs;
 
   emitter_t* emitter;
-} locale_info_t;
+};
 
 /**
  * @method locale_info

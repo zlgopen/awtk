@@ -23,6 +23,7 @@
 #define TK_FONT_MANAGER_H
 
 #include "tkc/darray.h"
+#include "base/types_def.h"
 #include "base/font_loader.h"
 #include "base/assets_manager.h"
 

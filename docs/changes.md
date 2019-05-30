@@ -4,6 +4,7 @@
   * FAQ增加半透明相关的问答。
   * tab button放在scrollview中，激活时自动滚动到可见区域。
   * 候选字支持左右滚动。
+  * 资源管理可以设置自己的system info和locale info，方便IDE区分自己的窗口和被设计的窗口。
 
 * 2019/05/29
   * 增加overlay窗口

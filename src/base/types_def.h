@@ -281,4 +281,13 @@ typedef struct _widget_animator_t widget_animator_t;
 #define TK_KEY_MOVE_FOCUS_PREV TK_KEY_UNKNOWN
 #endif /*TK_KEY_MOVE_FOCUS_PREV*/
 
+struct _locale_info_t;
+typedef struct _locale_info_t locale_info_t;
+
+struct _assets_manager_t;
+typedef struct _assets_manager_t assets_manager_t;
+
+struct _system_info_t;
+typedef struct _system_info_t system_info_t;
+
 #endif /*TK_TYPES_DEF_H*/
