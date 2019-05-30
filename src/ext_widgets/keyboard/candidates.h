@@ -24,6 +24,7 @@
 
 #include "tkc/str.h"
 #include "base/widget.h"
+#include "base/hscrollable.h"
 
 BEGIN_C_DECLS
 
@@ -41,6 +42,7 @@ typedef struct _candidates_t {
   wh_t normal_h;
   uint32_t event_id;
   canvas_t* canvas;
+  hscrollable_t* hscrollable;
 } candidates_t;
 
 /**
