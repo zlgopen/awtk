@@ -109,6 +109,10 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
       index = widget_index_of(widget);
       widget_set_value(pages, index);
     }
+
+    if (value) {
+      widget_ensure_visible_in_viewport(widget);
+    }
   }
 
   return RET_OK;

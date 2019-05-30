@@ -69,7 +69,7 @@ typedef struct _system_info_t {
    * 字体缩放比例，用于实现字体整体放大。
    */
   float_t font_scale;
-  
+
   /**
    * @property {const char*} default_font
    * @annotation ["readable"]

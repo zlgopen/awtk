@@ -230,4 +230,3 @@ const char* system_info_fix_font_name(const char* name) {
 
   return name != NULL ? name : system_info()->default_font;
 }
-

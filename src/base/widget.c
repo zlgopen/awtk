@@ -2498,10 +2498,14 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* parent) {
   int32_t ox = 0;
   int32_t oy = 0;
+  int32_t old_ox = 0;
+  int32_t old_oy = 0;
   return_value_if_fail(widget != NULL && parent != NULL, RET_BAD_PARAMS);
 
   ox = widget_get_prop_int(parent, WIDGET_PROP_XOFFSET, 0);
   oy = widget_get_prop_int(parent, WIDGET_PROP_YOFFSET, 0);
+  old_ox = ox;
+  old_oy = oy;
 
   if (oy > widget->y) {
     oy = widget->y;
@@ -2519,8 +2523,30 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* pa
     ox = widget->x + widget->w - parent->w;
   }
 
-  widget_set_prop_int(parent, WIDGET_PROP_XOFFSET, ox);
-  widget_set_prop_int(parent, WIDGET_PROP_YOFFSET, oy);
+  if (ox != old_ox) {
+    widget_set_prop_int(parent, WIDGET_PROP_XOFFSET, ox);
+  }
+
+  if (oy != old_oy) {
+    widget_set_prop_int(parent, WIDGET_PROP_YOFFSET, oy);
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_ensure_visible_in_viewport(widget_t* widget) {
+  widget_t* parent = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  parent = widget->parent;
+  while (parent != NULL) {
+    if (widget_is_scrollable(parent)) {
+      widget_ensure_visible_in_scroll_view(widget, parent);
+    }
+
+    widget = parent;
+    parent = widget->parent;
+  }
 
   return RET_OK;
 }

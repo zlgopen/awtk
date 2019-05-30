@@ -372,7 +372,7 @@
 #include "assets/inc/images/visible.data"
 #include "assets/inc/images/warn.data"
 #include "assets/inc/images/zh.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/inc/images/ball.bsvg"
 #include "assets/inc/images/china.bsvg"
@@ -380,13 +380,13 @@
 #include "assets/inc/images/pointer.bsvg"
 #include "assets/inc/images/pointer_1.bsvg"
 #include "assets/inc/images/pointer_4.bsvg"
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #include "assets/inc/fonts/default.res"
-#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/inc/fonts/default.data"
-#endif/*WITH_STB_FONT or WITH_FT_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* rm = assets_manager();
@@ -651,7 +651,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_pointer);
   assets_manager_add(rm, image_pointer_1);
   assets_manager_add(rm, image_pointer_4);
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();
