@@ -940,8 +940,11 @@ ret_t widget_set_state(widget_t* widget, const char* state);
 /**
  * @method widget_set_opacity
  * 设置控件的不透明度。
+ * 
+ *>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。
+ * 
  * @param {widget_t*} widget 控件对象。
- * @param {uint8_t} opacity 不透明度。
+ * @param {uint8_t} opacity 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

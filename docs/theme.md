@@ -142,5 +142,8 @@ resource_manager_add(theme_default);
 
 > 参考: dialog1.xml
 
+### 六、相关文档
+
+* [AWTK中的颜色格式](color_format.md)
 
 
