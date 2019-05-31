@@ -28,20 +28,22 @@ TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
 TK_DEMO_ROOT  = joinPath(TK_ROOT, 'demos')
 GTEST_ROOT    = joinPath(TK_ROOT, '3rd/gtest/googletest')
 
-if OS_NAME == 'Windows':
-  TK_ROOT=TK_ROOT.replace('\\', '\\\\');
-
 #INPUT_ENGINE='null'
 INPUT_ENGINE='pinyin'
 
 VGCANVAS='NANOVG'
-NANOVG_BACKEND='GL3'
-VGCANVAS='CAIRO'
+#VGCANVAS='CAIRO'
 #NANOVG_BACKEND='GLES2'
 #NANOVG_BACKEND='GLES3'
 #NANOVG_BACKEND='AGG'
 #NANOVG_BACKEND='AGGE'
 #NANOVG_BACKEND='BGFX'
+if OS_NAME == 'Windows':
+  TK_ROOT=TK_ROOT.replace('\\', '\\\\');
+  NANOVG_BACKEND='AGGE'
+else:
+  NANOVG_BACKEND='GL3'
+
 
 FRAME_BUFFER_FORMAT=''
 if VGCANVAS == 'CAIRO':
