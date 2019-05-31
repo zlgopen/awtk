@@ -31,7 +31,7 @@
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
 
-static ret_t on_timer(const timer_info_t* info) {
+static ret_t refresh_in_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
 
   widget_invalidate(widget, NULL);
@@ -63,10 +63,17 @@ widget_t* preview_ui(const char* filename) {
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
 
+  if (builder->root == NULL) {
+    builder->root = label_create(NULL, 10, 10, 100, 30);
+    widget_set_text_utf8(builder->root, "not found ui file!");
+  }
+
   if (builder->root != NULL && !(builder->root->vt->is_window)) {
     widget_t* win = window_create(NULL, 0, 0, 0, 0);
     widget_add_child(win, builder->root);
     widget_layout(win);
+
+    timer_add(refresh_in_timer, builder->root, 1000);
   }
 
   if (is_bin) {
@@ -74,8 +81,6 @@ widget_t* preview_ui(const char* filename) {
   } else {
     str_reset(&s);
   }
-
-  timer_add(on_timer, builder->root, 1000);
 
   return builder->root;
 }
