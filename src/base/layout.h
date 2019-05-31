@@ -22,6 +22,7 @@
 #ifndef TK_LAYOUT_H
 #define TK_LAYOUT_H
 
+#include "tkc/darray.h"
 #include "base/types_def.h"
 
 BEGIN_C_DECLS
@@ -29,6 +30,10 @@ BEGIN_C_DECLS
 ret_t widget_layout_self(widget_t* widget);
 ret_t widget_layout_children(widget_t* widget);
 ret_t widget_layout_children_default(widget_t* widget);
+
+ret_t widget_layout_floating_children(widget_t* widget);
+ret_t widget_get_children_for_layout(widget_t* widget, darray_t* result, bool_t keep_disable,
+                                     bool_t keep_invisible);
 
 END_C_DECLS
 

@@ -21,6 +21,7 @@
 
 #include "tkc/rect.h"
 #include "tkc/utils.h"
+#include "base/layout.h"
 #include "base/widget.h"
 #include "tkc/tokenizer.h"
 #include "scroll_view/scroll_bar.h"
@@ -62,6 +63,14 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
     str_append(str, temp);
   }
 
+  if (!(layout->keep_disable)) {
+    str_append(str, "keep_disable=false,");
+  }
+
+  if (layout->keep_invisible) {
+    str_append(str, "keep_invisible=true,");
+  }
+
   str_trim_right(str, ",");
   str_append(str, ")");
 
@@ -99,6 +108,14 @@ static ret_t children_layouter_list_view_set_param(children_layouter_t* layouter
       l->default_item_height = val;
       break;
     }
+    case 'k': {
+      if (strstr(name, "invisible") != NULL || name[1] == 'i') {
+        l->keep_invisible = value_bool(v);
+      } else if (strstr(name, "disable") != NULL || name[1] == 'd') {
+        l->keep_disable = value_bool(v);
+      }
+      break;
+    }
     default:
       break;
   }
@@ -134,6 +151,16 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
     case 'd': {
       value_set_int(v, l->default_item_height);
       return RET_OK;
+    }
+    case 'k': {
+      if (strstr(name, "invisible") != NULL || name[1] == 'i') {
+        value_set_bool(v, l->keep_invisible);
+        return RET_OK;
+      } else if (strstr(name, "disable") != NULL || name[1] == 'd') {
+        value_set_bool(v, l->keep_disable);
+        return RET_OK;
+      }
+      break;
     }
     default: {
       assert(!"not support param");
@@ -176,10 +203,21 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
     int32_t x = x_margin;
     int32_t y = y_margin;
     int32_t h = item_height;
+    widget_t** children = NULL;
+    darray_t children_for_layout;
     int32_t w = widget->w - x_margin * 2;
-    widget_t** children = (widget_t**)(widget->children->elms);
 
-    n = widget->children->size;
+    widget_layout_floating_children(widget);
+    darray_init(&children_for_layout, widget->children->size, NULL, NULL);
+
+    return_value_if_fail(
+        widget_get_children_for_layout(widget, &children_for_layout, l->keep_disable,
+                                       l->keep_invisible) == RET_OK,
+        RET_BAD_PARAMS);
+
+    n = children_for_layout.size;
+    children = (widget_t**)(children_for_layout.elms);
+
     for (i = 0; i < n; i++) {
       widget_t* iter = children[i];
 
@@ -238,6 +276,8 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
       scroll_bar_set_value(scroll_bar, offset);
       scroll_view_set_offset(WIDGET(scroll_view), 0, offset);
     }
+
+    darray_deinit(&(children_for_layout));
   } else {
     scroll_bar_set_value(scroll_bar, 0);
     scroll_view_set_offset(WIDGET(scroll_view), 0, 0);
@@ -285,7 +325,7 @@ children_layouter_t* children_layouter_list_view_create(void) {
   return_value_if_fail(layouter != NULL, NULL);
 
   l = (children_layouter_t*)layouter;
-
+  layouter->keep_disable = TRUE;
   str_init(&(l->params), 0);
   l->vt = &s_children_layouter_list_view_vtable;
 

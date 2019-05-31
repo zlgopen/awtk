@@ -45,6 +45,8 @@ typedef struct _children_layouter_default_t {
   uint8_t spacing;
   uint8_t cols_is_width : 1;
   uint8_t rows_is_height : 1;
+  uint8_t keep_invisible : 1;
+  uint8_t keep_disable : 1;
 } children_layouter_default_t;
 
 /**

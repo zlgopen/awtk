@@ -13,6 +13,7 @@ TEST(ChildrenLayoutDefault, basic) {
   widget_t* b2 = button_create(w, 0, 0, 0, 0);
   const char* layout_params = "default(c=2,r=1,x=3,y=4,s=14)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
+  children_layouter_default_t* l = (children_layouter_default_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 2);
@@ -95,6 +96,142 @@ TEST(ChildrenLayoutDefault, hbox) {
   ASSERT_EQ(b2->y, 0);
   ASSERT_EQ(b2->w, 80);
   ASSERT_EQ(b2->h, 300);
+
+  children_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, disable0) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  children_layouter_t* layouter = children_layouter_create("default(r=1, c=0, keep_disable=true)");
+
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "x", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "y", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "s", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_disable", 1), 1);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_invisible", 1), 0);
+
+  widget_move_resize(w, 0, 0, 400, 300);
+  widget_move_resize(b1, 0, 0, 40, 0);
+  widget_move_resize(b2, 0, 0, 80, 0);
+  widget_set_enable(b2, FALSE);
+  ASSERT_EQ(children_layouter_layout(layouter, w), RET_OK);
+
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b1->y, 0);
+  ASSERT_EQ(b1->w, 40);
+  ASSERT_EQ(b1->h, 300);
+
+  ASSERT_EQ(b2->x, 40);
+  ASSERT_EQ(b2->y, 0);
+  ASSERT_EQ(b2->w, 80);
+  ASSERT_EQ(b2->h, 300);
+
+  children_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, disable1) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  children_layouter_t* layouter = children_layouter_create("default(r=1, c=0, keep_disable=false)");
+
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "x", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "y", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "s", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_disable", 1), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_invisible", 1), 0);
+
+  widget_move_resize(w, 0, 0, 400, 300);
+  widget_move_resize(b1, 0, 0, 40, 0);
+  widget_move_resize(b2, 0, 0, 80, 0);
+  widget_set_enable(b2, FALSE);
+  ASSERT_EQ(children_layouter_layout(layouter, w), RET_OK);
+
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b1->y, 0);
+  ASSERT_EQ(b1->w, 40);
+  ASSERT_EQ(b1->h, 300);
+
+  ASSERT_EQ(b2->x, 0);
+  ASSERT_EQ(b2->y, 0);
+  ASSERT_EQ(b2->w, 80);
+  ASSERT_EQ(b2->h, 0);
+
+  children_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, invisible0) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  children_layouter_t* layouter =
+      children_layouter_create("default(r=1, c=0, keep_invisible=true)");
+
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "x", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "y", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "s", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_invisible", 1), 1);
+
+  widget_move_resize(w, 0, 0, 400, 300);
+  widget_move_resize(b1, 0, 0, 40, 0);
+  widget_move_resize(b2, 0, 0, 80, 0);
+  widget_set_visible(b2, FALSE, FALSE);
+  ASSERT_EQ(children_layouter_layout(layouter, w), RET_OK);
+
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b1->y, 0);
+  ASSERT_EQ(b1->w, 40);
+  ASSERT_EQ(b1->h, 300);
+
+  ASSERT_EQ(b2->x, 40);
+  ASSERT_EQ(b2->y, 0);
+  ASSERT_EQ(b2->w, 80);
+  ASSERT_EQ(b2->h, 300);
+
+  children_layouter_destroy(layouter);
+  widget_destroy(w);
+}
+
+TEST(ChildrenLayoutDefault, invisible1) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  children_layouter_t* layouter =
+      children_layouter_create("default(r=1, c=0, keep_invisible=false)");
+
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "x", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "y", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "s", 0), 0);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "keep_invisible", 1), 0);
+
+  widget_move_resize(w, 0, 0, 400, 300);
+  widget_move_resize(b1, 0, 0, 40, 0);
+  widget_move_resize(b2, 0, 0, 80, 0);
+  widget_set_visible(b2, FALSE, FALSE);
+  ASSERT_EQ(children_layouter_layout(layouter, w), RET_OK);
+
+  ASSERT_EQ(b1->x, 0);
+  ASSERT_EQ(b1->y, 0);
+  ASSERT_EQ(b1->w, 40);
+  ASSERT_EQ(b1->h, 300);
+
+  ASSERT_EQ(b2->x, 0);
+  ASSERT_EQ(b2->y, 0);
+  ASSERT_EQ(b2->w, 80);
+  ASSERT_EQ(b2->h, 0);
 
   children_layouter_destroy(layouter);
   widget_destroy(w);

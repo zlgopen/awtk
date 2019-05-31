@@ -3,6 +3,8 @@
   * 修改cairo显示图片的问题(cairo需要alpha预乘的图片)。
   * 修改cairo SVG动画的问题(cairo不支持scale时，xy为0的情况)
   * 增加输入事件处理流程文档。
+  * children\_layouter\_default 增加keep\_disable和keep\_invisible参数。
+  * children\_layouter\_list\_view 增加keep\_disable和keep\_invisible参数。
 
 * 2019/05/30
   * 增加颜色格式描述文档。

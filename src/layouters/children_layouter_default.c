@@ -21,6 +21,7 @@
 
 #include "tkc/rect.h"
 #include "tkc/utils.h"
+#include "base/layout.h"
 #include "base/widget.h"
 #include "tkc/tokenizer.h"
 #include "layouters/self_layouter_default.h"
@@ -59,6 +60,14 @@ static const char* children_layouter_default_to_string(children_layouter_t* layo
   if (layout->spacing) {
     tk_snprintf(temp, sizeof(temp) - 1, "s=%d,", (int)(layout->spacing));
     str_append(str, temp);
+  }
+
+  if (!(layout->keep_disable)) {
+    str_append(str, "keep_disable=false,");
+  }
+
+  if (layout->keep_invisible) {
+    str_append(str, "keep_invisible=true,");
   }
 
   str_trim_right(str, ",");
@@ -108,6 +117,14 @@ static ret_t children_layouter_default_set_param(children_layouter_t* layouter, 
     }
     case 's': {
       l->spacing = val;
+      break;
+    }
+    case 'k': {
+      if (strstr(name, "invisible") != NULL || name[1] == 'i') {
+        l->keep_invisible = value_bool(v);
+      } else if (strstr(name, "disable") != NULL || name[1] == 'd') {
+        l->keep_disable = value_bool(v);
+      }
       break;
     }
     default:
@@ -170,6 +187,16 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
       value_set_int(v, l->spacing);
       return RET_OK;
     }
+    case 'k': {
+      if (strstr(name, "invisible") != NULL || name[1] == 'i') {
+        value_set_bool(v, l->keep_invisible);
+        return RET_OK;
+      } else if (strstr(name, "disable") != NULL || name[1] == 'd') {
+        value_set_bool(v, l->keep_disable);
+        return RET_OK;
+      }
+      break;
+    }
     default: {
       assert(!"not support param");
       break;
@@ -177,30 +204,6 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
   }
 
   return RET_FAIL;
-}
-
-static widget_t** children_layouter_default_get_children(widget_t* widget,
-                                                         widget_t** stack_children, uint32_t* nr) {
-  uint32_t s = 0;
-  uint32_t d = 0;
-  uint32_t n = widget->children->size;
-  widget_t** src = (widget_t**)(widget->children->elms);
-  widget_t** dst = (n > *nr) ? (widget_t**)TKMEM_ALLOC(n * sizeof(widget_t*)) : stack_children;
-  return_value_if_fail(dst != NULL, NULL);
-
-  for (s = 0, d = 0; s < n; s++) {
-    widget_t* iter = src[s];
-    if (iter->floating) {
-      widget_layout(iter);
-      continue;
-    }
-
-    dst[d++] = iter;
-  }
-
-  *nr = d;
-
-  return dst;
 }
 
 static ret_t children_layouter_default_layout(children_layouter_t* layouter, widget_t* widget) {
@@ -220,24 +223,27 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   rect_t area = {0, 0, 0, 0};
   widget_t* iter = NULL;
   widget_t** children = NULL;
-  widget_t* stack_children[5];
+  darray_t children_for_layout;
   children_layouter_default_t* layout = (children_layouter_default_t*)layouter;
 
   if (widget->children == NULL) {
     return RET_OK;
   }
-  n = ARRAY_SIZE(stack_children);
 
-  children = children_layouter_default_get_children(widget, stack_children, &n);
-  return_value_if_fail(children != NULL, RET_OOM);
+  widget_layout_floating_children(widget);
+  darray_init(&children_for_layout, widget->children->size, NULL, NULL);
+  return_value_if_fail(
+      widget_get_children_for_layout(widget, &children_for_layout, layout->keep_disable,
+                                     layout->keep_invisible) == RET_OK,
+      RET_BAD_PARAMS);
 
-  if (n < 1) {
-    if (children != stack_children) {
-      TKMEM_FREE(children);
-    }
+  n = children_for_layout.size;
+  if (children_for_layout.size < 1) {
+    darray_deinit(&(children_for_layout));
     return RET_OK;
   }
 
+  children = (widget_t**)(children_for_layout.elms);
   layout_w = widget_get_prop_int(widget, WIDGET_PROP_LAYOUT_W, widget->w);
   layout_h = widget_get_prop_int(widget, WIDGET_PROP_LAYOUT_H, widget->h);
 
@@ -353,9 +359,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     log_debug("not supported(rows=%d, cols=%d)\n", rows, cols);
   }
 
-  if (children != stack_children) {
-    TKMEM_FREE(children);
-  }
+  darray_deinit(&(children_for_layout));
 
   return RET_OK;
 }
@@ -390,10 +394,10 @@ children_layouter_t* children_layouter_default_create(void) {
   layouter = TKMEM_ZALLOC(children_layouter_default_t);
   return_value_if_fail(layouter != NULL, NULL);
 
+  layouter->keep_disable = TRUE;
   l = (children_layouter_t*)layouter;
 
   str_init(&(l->params), 0);
   l->vt = &s_children_layouter_default_vtable;
-
   return (children_layouter_t*)layouter;
 }

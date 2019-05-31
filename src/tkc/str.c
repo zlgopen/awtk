@@ -560,4 +560,3 @@ ret_t str_pop(str_t* str) {
 
   return RET_OK;
 }
-

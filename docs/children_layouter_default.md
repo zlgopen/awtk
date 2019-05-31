@@ -28,6 +28,8 @@ PARAM_LIST => PARAM | PARAM ',' PARAM_LIST
 |  x\_margin   | xm     | 水平方向的边距  |
 | y\_margin    |  ym    | 垂直方向的边距   |
 | spacing      | s      | 子控件之间的间距   |
+| keep_invisible | ki   | 是否给不可见的控件留位置(缺省否)|
+| keep_disable | kd   | 是否给不用的控件留位置(缺省是)|
 
 在代码中，可以通过widget\_set\_children\_layout函数启用子控件布局器：
 
