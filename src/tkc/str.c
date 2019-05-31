@@ -561,11 +561,3 @@ ret_t str_pop(str_t* str) {
   return RET_OK;
 }
 
-ret_t str_random(str_t* str, const char* format, uint32_t max) {
-  char buff[256];
-  return_value_if_fail(str != NULL && format != NULL && max > 0, RET_BAD_PARAMS);
-
-  tk_snprintf(buff, sizeof(buff) - 1, format, random() / max);
-
-  return str_set(str, buff);
-}

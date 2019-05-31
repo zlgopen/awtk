@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bitmap.c
  * Author: AWTK Develop Team
  * Brief:  bitmap interface
@@ -428,7 +428,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   bitmap_t* b = NULL;
   return_value_if_fail(bitmap != NULL, NULL);
 
-  b = bitmap_create_ex(bitmap->w, bitmap->h, bitmap->line_length, bitmap->format);
+  b = bitmap_create_ex(bitmap->w, bitmap->h, bitmap->line_length, (bitmap_format_t)(bitmap->format));
   return_value_if_fail(b != NULL, NULL);
 
   if (b->data != NULL) {

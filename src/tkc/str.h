@@ -397,17 +397,6 @@ ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj);
  */
 ret_t str_reset(str_t* str);
 
-/**
- * @method str_random
- * 产生一个随机字符串。
- * @param {str_t*} str str对象。
- * @param {const char*} format 格式。
- * @param {uint32_t} max 随机数的最大值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t str_random(str_t* str, const char* format, uint32_t max);
-
 END_C_DECLS
 
 #endif /*TK_STR_H*/
