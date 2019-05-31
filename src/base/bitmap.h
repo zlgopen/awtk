@@ -117,7 +117,12 @@ typedef enum _bitmap_flag_t {
    * @const BITMAP_FLAG_CHANGED
    * 如果是MUTABLE的图片，更新时需要设置此标志，底层可能会做特殊处理，比如更新图片到GPU。
    */
-  BITMAP_FLAG_CHANGED = 8
+  BITMAP_FLAG_CHANGED = 8,
+  /**
+   * @const BITMAP_FLAG_PREMULTI_ALPHA
+   * 预乘alpha。
+   */
+  BITMAP_FLAG_PREMULTI_ALPHA = 16
 } bitmap_flag_t;
 
 /**
@@ -414,6 +419,9 @@ typedef enum _image_draw_type_t {
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
 uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
+
+bitmap_t* bitmap_clone(bitmap_t* bitmap);
+ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 
 #if defined(WITH_SDL) || defined(LINUX)
 /*for helping debug drawing bugs*/

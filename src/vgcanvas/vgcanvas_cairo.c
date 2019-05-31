@@ -182,6 +182,13 @@ static ret_t vgcanvas_cairo_rotate(vgcanvas_t* vgcanvas, float_t rad) {
 static ret_t vgcanvas_cairo_scale(vgcanvas_t* vgcanvas, float_t x, float_t y) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
 
+  if (x == 0) {
+    x = 0.00001f;
+  }
+  if (y == 0) {
+    y = 0.00001f;
+  }
+
   cairo_scale(vg, x, y);
 
   return RET_OK;
@@ -423,6 +430,7 @@ static cairo_surface_t* vgcanvas_cairo_ensure_image(bitmap_t* img) {
   cairo_surface_t* surface = (cairo_surface_t*)img->specific;
 
   if (surface == NULL) {
+    bitmap_premulti_alpha(img);
     surface = create_surface(img->w, img->h, img->format, (void*)(img->data));
 
     if (surface != NULL) {

@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/05/31
+  * 修改cairo显示图片的问题(cairo需要alpha预乘的图片)。
+  * 修改cairo SVG动画的问题(cairo不支持scale时，xy为0的情况)
+
 * 2019/05/30
   * 增加颜色格式描述文档。
   * FAQ增加半透明相关的问答。
@@ -8,12 +12,12 @@
 
 * 2019/05/29
   * 增加overlay窗口
-  * 完善expr_eval
-  * 去掉TK_DEFAULT_FONT宏定义，提供函数system\_info\_set\_default\_font设置缺省字体(一般不用调用)。
+  * 完善expr\_eval
+  * 去掉TK\_DEFAULT\_FONT宏定义，提供函数system\_info\_set\_default\_font设置缺省字体(一般不用调用)。
    
 * 2019/05/28
   * 修改enums.c 编译问题(感谢陈潭提供补丁)。
-  * 修改vgcanvas_reinit的问题(感谢陈潭提供补丁)。
+  * 修改vgcanvas\_reinit的问题(感谢陈潭提供补丁)。
   * 合并bgfx补丁(感谢大恒提供补丁)。
   * 完善shortcut。
   * 完善shortcut。
