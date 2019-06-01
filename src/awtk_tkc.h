@@ -46,5 +46,6 @@
 #include "tkc/utils.h"
 #include "tkc/value.h"
 #include "tkc/wstr.h"
+#include "tkc/expr_eval.h"
 
 #endif /*TK_TKC_H*/

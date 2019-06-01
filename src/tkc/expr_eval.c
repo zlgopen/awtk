@@ -50,7 +50,9 @@ typedef enum {
   EVAL_TOKEN_TYPE_BITS_AND,
   EVAL_TOKEN_TYPE_SUBTRACT,
   EVAL_TOKEN_TYPE_MULTIPLY,
+  EVAL_TOKEN_TYPE_MODEL,
   EVAL_TOKEN_TYPE_DIVIDE,
+  EVAL_TOKEN_TYPE_COMMA,
   EVAL_TOKEN_TYPE_OPEN_BRACKET,
   EVAL_TOKEN_TYPE_CLOSE_BRACKET,
   EVAL_TOKEN_TYPE_NUMBER,
@@ -119,6 +121,34 @@ static char get_char(EvalContext* ctx) {
 
 static void put_char(EvalContext* ctx) {
   ctx->input--;
+}
+
+#define MAX_ARGS_NR 10
+
+static uint32_t args_count(const ExprValue* args) {
+  uint32_t i = 0;
+  for (i = 0; i < MAX_ARGS_NR; i++) {
+    if (args[i].type == EXPR_VALUE_TYPE_NONE) {
+      break;
+    }
+  }
+
+  return i;
+}
+
+static void args_init(ExprValue* args, uint32_t nr) {
+  uint32_t i = 0;
+  memset(args, 0x00, nr * sizeof(ExprValue));
+  for (i = 0; i < nr; i++) {
+    args[i].type = EXPR_VALUE_TYPE_NONE;
+  }
+}
+
+static void args_clear(ExprValue* args, uint32_t nr) {
+  uint32_t i = 0;
+  for (i = 0; i < nr; i++) {
+    expr_value_clear(args + i);
+  }
 }
 
 static EvalResult expr_str_init(ExprStr* str, size_t capacity) {
@@ -249,6 +279,23 @@ static EvalResult expr_value_to_number(ExprValue* v) {
   return EVAL_RESULT_OK;
 }
 
+static EvalResult expr_value_copy(ExprValue* v, const ExprValue* from) {
+  return_value_if_fail(v != NULL && from != NULL, EVAL_RESULT_OK);
+
+  if (v->type == EXPR_VALUE_TYPE_STRING) {
+    const char* str = expr_value_get_string(from);
+    if (str != NULL) {
+      return expr_value_set_string(v, str, strlen(str));
+    } else {
+      return expr_value_set_string(v, "", 0);
+    }
+  } else {
+    return expr_value_set_number(v, expr_value_get_number(from));
+  }
+
+  return EVAL_RESULT_OK;
+}
+
 double expr_value_get_number(const ExprValue* v) {
   return_value_if_fail(v != NULL, EVAL_RESULT_OK);
 
@@ -374,6 +421,10 @@ static EvalResult expr_value_op(ExprValue* a, ExprValue* b, EvalTokenType op) {
       }
       case EVAL_TOKEN_TYPE_DIVIDE: {
         a->v.val /= b->v.val;
+        break;
+      }
+      case EVAL_TOKEN_TYPE_MODEL: {
+        a->v.val = (int32_t)(a->v.val) % (int32_t)(b->v.val);
         break;
       }
       case EVAL_TOKEN_TYPE_ADD: {
@@ -660,8 +711,14 @@ static EvalResult get_token(EvalContext* ctx) {
         case '/':
           ctx->token.type = EVAL_TOKEN_TYPE_DIVIDE;
           break;
+        case '%':
+          ctx->token.type = EVAL_TOKEN_TYPE_MODEL;
+          break;
         case '(':
           ctx->token.type = EVAL_TOKEN_TYPE_OPEN_BRACKET;
+          break;
+        case ',':
+          ctx->token.type = EVAL_TOKEN_TYPE_COMMA;
           break;
         case ')':
           ctx->token.type = EVAL_TOKEN_TYPE_CLOSE_BRACKET;
@@ -673,6 +730,57 @@ static EvalResult get_token(EvalContext* ctx) {
 
     return EVAL_RESULT_OK;
   }
+}
+
+static EvalResult parse_func(EvalContext* ctx, ExprValue* output) {
+  EvalFunc func;
+  EvalResult result;
+  uint32_t args_nr = 0;
+  ExprValue args[MAX_ARGS_NR + 1];
+
+  args_init(args, MAX_ARGS_NR + 1);
+
+  if (!ctx->hooks || !ctx->hooks->get_func) {
+    return EVAL_RESULT_UNDEFINED_FUNCTION;
+  }
+
+  func = ctx->hooks->get_func(ctx->token.value.name, ctx->user_data);
+  if (!func) return EVAL_RESULT_UNDEFINED_FUNCTION;
+
+  result = get_token(ctx);
+  if (result != EVAL_RESULT_OK) return result;
+
+  if (ctx->token.type != EVAL_TOKEN_TYPE_OPEN_BRACKET) {
+    return EVAL_RESULT_EXPECTED_OPEN_BRACKET;
+  }
+
+  result = get_token(ctx);
+  if (result != EVAL_RESULT_OK) return result;
+
+  while (args_nr < MAX_ARGS_NR) {
+    result = parse_expr(ctx, args + args_nr);
+    if (result != EVAL_RESULT_OK) return result;
+
+    args_nr++;
+    if (ctx->token.type != EVAL_TOKEN_TYPE_COMMA) {
+      break;
+    }
+    get_token(ctx);
+  }
+
+  if (ctx->token.type != EVAL_TOKEN_TYPE_CLOSE_BRACKET) {
+    args_clear(args, MAX_ARGS_NR);
+    return EVAL_RESULT_EXPECTED_CLOSE_BRACKET;
+  }
+
+  result = func(args, ctx->user_data, output);
+  args_clear(args, MAX_ARGS_NR);
+
+  if (result != EVAL_RESULT_OK) {
+    return result;
+  }
+
+  return get_token(ctx);
 }
 
 static EvalResult parse_term(EvalContext* ctx, ExprValue* output) {
@@ -693,37 +801,7 @@ static EvalResult parse_term(EvalContext* ctx, ExprValue* output) {
       return EVAL_RESULT_EXPECTED_CLOSE_BRACKET;
     }
   } else if (ctx->token.type == EVAL_TOKEN_TYPE_FUNC) {
-    EvalFunc func;
-    ExprValue arg;
-    expr_value_init(&arg);
-
-    if (!ctx->hooks || !ctx->hooks->get_func) {
-      return EVAL_RESULT_UNDEFINED_FUNCTION;
-    }
-
-    func = ctx->hooks->get_func(ctx->token.value.name, ctx->user_data);
-    if (!func) return EVAL_RESULT_UNDEFINED_FUNCTION;
-
-    result = get_token(ctx);
-    if (result != EVAL_RESULT_OK) return result;
-
-    if (ctx->token.type != EVAL_TOKEN_TYPE_OPEN_BRACKET) {
-      return EVAL_RESULT_EXPECTED_OPEN_BRACKET;
-    }
-
-    result = get_token(ctx);
-    if (result != EVAL_RESULT_OK) return result;
-
-    result = parse_expr(ctx, &arg);
-    if (result != EVAL_RESULT_OK) return result;
-
-    if (ctx->token.type != EVAL_TOKEN_TYPE_CLOSE_BRACKET) {
-      return EVAL_RESULT_EXPECTED_CLOSE_BRACKET;
-    }
-
-    result = func(&arg, ctx->user_data, output);
-    if (result != EVAL_RESULT_OK) return result;
-    expr_value_clear(&arg);
+    return parse_func(ctx, output);
   } else if (ctx->token.type == EVAL_TOKEN_TYPE_VARIABLE) {
     if (!ctx->hooks || !ctx->hooks->get_variable) {
       return EVAL_RESULT_UNDEFINED_VARIABLE;
@@ -806,7 +884,8 @@ static EvalResult parse_product(EvalContext* ctx, ExprValue* output) {
 
   for (;;) {
     int type = ctx->token.type;
-    if (type == EVAL_TOKEN_TYPE_MULTIPLY || type == EVAL_TOKEN_TYPE_DIVIDE) {
+    if (type == EVAL_TOKEN_TYPE_MULTIPLY || type == EVAL_TOKEN_TYPE_DIVIDE ||
+        type == EVAL_TOKEN_TYPE_MODEL) {
       result = get_token(ctx);
       if (result != EVAL_RESULT_OK) return result;
 
@@ -1126,6 +1205,21 @@ static EvalResult func_sqrt(const ExprValue* input, void* user_data, ExprValue* 
   return EVAL_RESULT_OK;
 }
 
+static EvalResult func_if(const ExprValue* input, void* user_data, ExprValue* output) {
+  (void)user_data;
+  if (args_count(input) != 3) {
+    return EVAL_RESULT_BAD_PARAMS;
+  }
+
+  if (expr_value_get_number(input)) {
+    expr_value_copy(output, input + 1);
+  } else {
+    expr_value_copy(output, input + 2);
+  }
+
+  return EVAL_RESULT_OK;
+}
+
 static EvalResult func_ceil(const ExprValue* input, void* user_data, ExprValue* output) {
   (void)user_data;
   expr_value_set_number(output, ceil(expr_value_get_number(input)));
@@ -1152,7 +1246,7 @@ static EvalFunc default_get_func(const char* name, void* user_data) {
       {"acos", func_acos},     {"asin", func_asin},       {"atan", func_atan},
       {"exp", func_exp},       {"log", func_log},         {"log10", func_log10},
       {"sqrt", func_sqrt},     {"ceil", func_ceil},       {"floor", func_floor},
-      {"int", func_floor},     {"round", func_round}};
+      {"int", func_floor},     {"round", func_round},     {"if", func_if}};
 
   const EvalFunctionEntry* i = FUNCTIONS;
   const EvalFunctionEntry* e = i + (sizeof(FUNCTIONS) / sizeof(*FUNCTIONS));

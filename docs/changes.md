@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/06/2
+  * 完善expr eval的函数调用支持多个参数。
+
 * 2019/05/31
   * 修改cairo显示图片的问题(cairo需要alpha预乘的图片)。
   * 修改cairo SVG动画的问题(cairo不支持scale时，xy为0的情况)
