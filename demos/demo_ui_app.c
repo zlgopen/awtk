@@ -252,11 +252,11 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello AWTK!\nThis is a toast!", 3000);
   } else if (tk_str_eq(name, "info")) {
-    dialog_info("Hello AWTK!\nThis is info dialog!");
+    dialog_info(NULL, "Hello AWTK!\nThis is info dialog!");
   } else if (tk_str_eq(name, "warn")) {
-    dialog_warn("Hello AWTK!\nDanger!!!");
+    dialog_warn(NULL, "Hello AWTK!\nDanger!!!");
   } else if (tk_str_eq(name, "confirm")) {
-    dialog_confirm("Hello AWTK!\nAre you sure to close?");
+    dialog_confirm(NULL, "Hello AWTK!\nAre you sure to close?");
   } else {
     open_window(name, NULL);
   }

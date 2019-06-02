@@ -331,7 +331,7 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   widget_set_self_layout(label, params);
 
   h = label->h + 90;
-  w = tk_max(label->w, 128) + 20;
+  w = tk_max(label->w, 128) + 40;
   dialog = dialog_create_simple(NULL, 0, 0, w, h);
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, theme);
   widget_set_prop_str(dialog, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
@@ -358,15 +358,17 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   }
 }
 
-ret_t dialog_info(const char* text) {
-  return dialog_info_ex(text, "Infomation", "dialog_info");
+ret_t dialog_info(const char* title, const char* text) {
+  title = title != NULL ? title : "Infomation";
+  return dialog_info_ex(text, title, "dialog_info");
 }
 
-ret_t dialog_warn(const char* text) {
-  return dialog_info_ex(text, "Warnning", "dialog_warn");
+ret_t dialog_warn(const char* title, const char* text) {
+  title = title != NULL ? title : "Warnning";
+  return dialog_info_ex(text, title, "dialog_warn");
 }
 
-ret_t dialog_confirm(const char* text) {
+ret_t dialog_confirm(const char* stitle, const char* text) {
   uint32_t w = 0;
   uint32_t h = 0;
   char params[128];
@@ -378,6 +380,7 @@ ret_t dialog_confirm(const char* text) {
   widget_t* client = NULL;
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
 
+  stitle = stitle != NULL ? stitle : "Confirm";
   label = dialog_create_label(text);
   return_value_if_fail(label != NULL, RET_OOM);
 
@@ -385,7 +388,7 @@ ret_t dialog_confirm(const char* text) {
   widget_set_self_layout(label, params);
 
   h = label->h + 90;
-  w = tk_max(label->w, 128) + 20;
+  w = tk_max(label->w, 128) + 40;
   dialog = dialog_create_simple(NULL, 0, 0, w, h);
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_confirm");
   widget_set_prop_str(dialog, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
@@ -393,7 +396,7 @@ ret_t dialog_confirm(const char* text) {
   client = dialog_get_client(dialog);
   title = dialog_get_title(dialog);
 
-  widget_set_tr_text(title, "Confirm");
+  widget_set_tr_text(title, stitle);
   widget_add_child(client, label);
 
   ok = button_create(client, 0, 0, 0, 0);

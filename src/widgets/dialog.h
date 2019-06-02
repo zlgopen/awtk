@@ -299,11 +299,12 @@ ret_t dialog_toast(const char* text, uint32_t duration);
  * 主题由dialog_info.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_info(const char* text);
+ret_t dialog_info(const char* title, const char* text);
 
 /**
  * @method dialog_warn
@@ -312,11 +313,12 @@ ret_t dialog_info(const char* text);
  * 主题由dialog_warn.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_warn(const char* text);
+ret_t dialog_warn(const char* title, const char* text);
 
 /**
  * @method dialog_confirm
@@ -325,11 +327,12 @@ ret_t dialog_warn(const char* text);
  * 主题由dialog_confirm.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示确认，否则表示取消。
  */
-ret_t dialog_confirm(const char* text);
+ret_t dialog_confirm(const char* title, const char* text);
 
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 
