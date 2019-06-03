@@ -113,6 +113,7 @@ static ret_t style_const_destroy(style_t* s) {
 }
 
 static const style_vtable_t style_const_vt = {
+    .is_mutable = FALSE,
     .is_valid = style_const_is_valid,
     .notify_widget_state_changed = style_const_notify_widget_state_changed,
     .get_int = style_const_get_int,

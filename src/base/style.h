@@ -225,17 +225,22 @@ typedef bool_t (*style_is_valid_t)(style_t* s);
 typedef int32_t (*style_get_int_t)(style_t* s, const char* name, int32_t defval);
 typedef color_t (*style_get_color_t)(style_t* s, const char* name, color_t defval);
 typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char* defval);
+
+typedef ret_t (*style_set_t)(style_t* s, const char* state, const char* name, const value_t* value);
+
 typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
 
 typedef ret_t (*style_destroy_t)(style_t* s);
 
 typedef struct _style_vtable_t {
+  bool_t is_mutable;
   style_is_valid_t is_valid;
   style_get_int_t get_int;
   style_get_str_t get_str;
   style_get_color_t get_color;
   style_notify_widget_state_changed_t notify_widget_state_changed;
 
+  style_set_t set;
   style_destroy_t destroy;
 } style_vtable_t;
 
@@ -315,6 +320,29 @@ color_t style_get_color(style_t* s, const char* name, color_t defval);
  * @return {const char*} 返回字符串格式的值。
  */
 const char* style_get_str(style_t* s, const char* name, const char* defval);
+
+/**
+ * @method style_set
+ * 设置指定状态的指定属性的值(仅仅对mutable的style有效)。
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ * @param {const char*} state 状态。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_set(style_t* s, const char* state, const char* name, const value_t* value);
+
+/**
+ * @method style_is_mutable
+ * 检查style是否是mutable的。
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t style_is_mutable(style_t* s);
 
 /**
  * @method style_destroy

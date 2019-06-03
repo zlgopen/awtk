@@ -183,10 +183,11 @@ style_t* style_mutable_cast(style_t* s);
  *
  * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} widget 控件
+ * @param {style_t*} default_style 缺省的style。
  *
  * @return {style_t*} style对象。
  */
-style_t* style_mutable_create(widget_t* widget);
+style_t* style_mutable_create(widget_t* widget, style_t* default_style);
 
 /**
  * @method style_mutable_register

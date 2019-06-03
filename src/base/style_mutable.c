@@ -24,10 +24,11 @@
 #include "base/widget.h"
 #include "base/style_const.h"
 #include "base/style_factory.h"
-#include "designer_support/style_mutable.h"
+#include "base/style_mutable.h"
 
 typedef struct _style_item_t {
-  const char* name;
+  char name[TK_NAME_LEN + 1];
+  ;
   value_t value;
 
   struct _style_item_t* next;
@@ -38,7 +39,7 @@ static style_item_t* style_item_add(style_item_t* first, const char* name, const
   style_item_t* item = TKMEM_ZALLOC(style_item_t);
   return_value_if_fail(item != NULL, NULL);
 
-  item->name = name;
+  tk_strncpy(item->name, name, TK_NAME_LEN);
   value_reset(&(item->value));
   value_deep_copy(&(item->value), value);
 
@@ -89,7 +90,7 @@ static ret_t style_item_get(style_item_t* first, const char* name, value_t* valu
 }
 
 struct _widget_state_style_t {
-  const char* state;
+  char state[TK_NAME_LEN + 1];
   style_item_t* items;
 
   struct _widget_state_style_t* next;
@@ -100,7 +101,8 @@ widget_state_style_t* widget_state_style_add(widget_state_style_t* first, const 
   widget_state_style_t* item = TKMEM_ZALLOC(widget_state_style_t);
   return_value_if_fail(item != NULL, NULL);
 
-  item->state = state;
+  tk_strncpy(item->state, state, TK_NAME_LEN);
+  ;
   if (first != NULL) {
     while (iter->next) {
       iter = iter->next;
@@ -318,19 +320,26 @@ static ret_t style_mutable_destroy(style_t* s) {
 }
 
 static const style_vtable_t style_mutable_vt = {
+    .is_mutable = TRUE,
     .is_valid = style_mutable_is_valid,
     .notify_widget_state_changed = style_mutable_notify_widget_state_changed,
     .get_int = style_mutable_get_int,
     .get_str = style_mutable_get_str,
     .get_color = style_mutable_get_color,
+    .set = style_mutable_set_value,
     .destroy = style_mutable_destroy};
 
-style_t* style_mutable_create(widget_t* widget) {
+style_t* style_mutable_create(widget_t* widget, style_t* default_style) {
   style_mutable_t* style = TKMEM_ZALLOC(style_mutable_t);
   return_value_if_fail(style != NULL, NULL);
 
   style->style.vt = &style_mutable_vt;
-  style->default_style = style_const_create(widget);
+  if (default_style != NULL) {
+    style->widget = widget;
+    style->default_style = default_style;
+  } else {
+    style->default_style = style_const_create(widget);
+  }
 
   return (style_t*)style;
 }
@@ -340,7 +349,7 @@ static style_t* style_factory_create_style_mutable(style_factory_t* factory, wid
   return_value_if_fail(factory != NULL && widget != NULL, NULL);
 
   if (win && win->vt->is_designing_window) {
-    return style_mutable_create(widget);
+    return style_mutable_create(widget, NULL);
   } else {
     return style_const_create(widget);
   }

@@ -24,6 +24,7 @@ TEST(StyleConst, combo_box_item) {
   widget_t* b = combo_box_item_create(w, 0, 0, 10, 10);
   style_t* s = style_const_create(b);
 
+  ASSERT_EQ(style_is_mutable(s), FALSE);
   style_notify_widget_state_changed(s, b);
   icon = style_get_str(s, STYLE_ID_ICON, NULL);
   ASSERT_EQ(string(icon), "empty");

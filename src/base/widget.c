@@ -22,6 +22,8 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "tkc/color_parser.h"
+
 #include "base/keys.h"
 #include "base/enums.h"
 #include "tkc/time_now.h"
@@ -32,6 +34,7 @@
 #include "base/widget_pool.h"
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
+#include "base/style_mutable.h"
 #include "base/style_factory.h"
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
@@ -1157,6 +1160,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
       widget_set_focused(widget, value_bool(v));
       ret = RET_OK;
+    } else if (tk_str_start_with(name, "style:")) {
+      return widget_set_style(widget, name + 6, v);
     } else {
       if (widget->custom_props == NULL) {
         widget->custom_props = object_default_create();
@@ -2740,4 +2745,80 @@ ret_t widget_set_need_relayout_children(widget_t* widget) {
   widget->need_relayout_children = TRUE;
 
   return RET_OK;
+}
+
+static ret_t widget_ensure_style_mutable(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->astyle == NULL) {
+    widget->astyle = style_mutable_create(widget, NULL);
+    return_value_if_fail(widget->astyle != NULL, RET_OOM);
+  }
+
+  if (!(widget->astyle->vt->is_mutable)) {
+    widget->astyle = style_mutable_create(widget, widget->astyle);
+    return_value_if_fail(widget->astyle != NULL, RET_OOM);
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value) {
+  char str[256];
+  uint32_t len = 0;
+  char* name = NULL;
+  char* state = NULL;
+  return_value_if_fail(widget != NULL && state_and_name != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget_ensure_style_mutable(widget) == RET_OK, RET_BAD_PARAMS);
+
+  len = strlen(state_and_name);
+  return_value_if_fail(len < sizeof(str), RET_BAD_PARAMS);
+
+  memcpy(str, state_and_name, len);
+  str[len] = '\0';
+
+  name = strchr(str, ':');
+  if (name != NULL) {
+    *name++ = '\0';
+    state = str;
+  } else {
+    name = str;
+    state = WIDGET_STATE_NORMAL;
+  }
+
+  widget_invalidate(widget, NULL);
+
+  if (strstr(name, "_color") != NULL && value->type == VALUE_TYPE_STRING) {
+    value_t v;
+    color_t c = color_parse(value_str(value));
+    value_set_uint32(&v, c.color);
+
+    return style_set(widget->astyle, state, name, &v);
+  } else {
+    return style_set(widget->astyle, state, name, value);
+  }
+}
+
+ret_t widget_set_style_int(widget_t* widget, const char* state_and_name, int32_t value) {
+  value_t v;
+  return_value_if_fail(widget != NULL && state_and_name != NULL, RET_BAD_PARAMS);
+
+  value_set_int(&v, value);
+  return widget_set_style(widget, state_and_name, &v);
+}
+
+ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, color_t value) {
+  value_t v;
+  return_value_if_fail(widget != NULL && state_and_name != NULL, RET_BAD_PARAMS);
+
+  value_set_int(&v, value.color);
+  return widget_set_style(widget, state_and_name, &v);
+}
+
+ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const char* value) {
+  value_t v;
+  return_value_if_fail(widget != NULL && state_and_name != NULL && value != NULL, RET_BAD_PARAMS);
+
+  value_set_str(&v, value);
+  return widget_set_style(widget, state_and_name, &v);
 }

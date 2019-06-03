@@ -61,3 +61,16 @@ ret_t style_destroy(style_t* s) {
 
   return RET_FAIL;
 }
+
+ret_t style_set(style_t* s, const char* state, const char* name, const value_t* value) {
+  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->set != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(state != NULL && name != NULL && value != NULL, RET_BAD_PARAMS);
+
+  return s->vt->set(s, state, name, value);
+}
+
+bool_t style_is_mutable(style_t* s) {
+  return_value_if_fail(s != NULL && s->vt != NULL, FALSE);
+
+  return s->vt->is_mutable;
+}

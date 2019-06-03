@@ -1029,3 +1029,50 @@ TEST(Widget, move_focus_pages) {
   ASSERT_EQ(b0->focused, TRUE);
   widget_destroy(w);
 }
+
+TEST(Widget, mutable_style) {
+  value_t v;
+  color_t c = color_init(0, 0, 0, 0);
+  color_t black = color_init(0, 0, 0, 0xff);
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+
+  value_set_int(&v, 123);
+  ASSERT_EQ(widget_set_style(b, "font_size", &v), RET_OK);
+  ASSERT_EQ(style_get_int(b->astyle, "font_size", 0), value_int(&v));
+
+  value_set_int(&v, 321);
+  ASSERT_EQ(widget_set_style(b, "normal:font_size", &v), RET_OK);
+  ASSERT_EQ(style_get_int(b->astyle, "font_size", 0), value_int(&v));
+
+  value_set_str(&v, "black");
+  ASSERT_EQ(widget_set_style(b, "text_color", &v), RET_OK);
+  ASSERT_EQ(style_get_color(b->astyle, "text_color", c).color, black.color);
+
+  value_set_str(&v, "black");
+  ASSERT_EQ(widget_set_style(b, "normal:text_color", &v), RET_OK);
+  ASSERT_EQ(style_get_color(b->astyle, "text_color", c).color, black.color);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, mutable_style1) {
+  color_t c = color_init(0, 0, 0, 0);
+  color_t black = color_init(0, 0, 0, 0xff);
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_set_style_int(b, "font_size", 123), RET_OK);
+  ASSERT_EQ(style_get_int(b->astyle, "font_size", 0), 123);
+
+  ASSERT_EQ(widget_set_style_int(b, "normal:font_size", 321), RET_OK);
+  ASSERT_EQ(style_get_int(b->astyle, "font_size", 0), 321);
+
+  ASSERT_EQ(widget_set_style_str(b, "icon", "icon1"), RET_OK);
+  ASSERT_STREQ(style_get_str(b->astyle, "icon", NULL), "icon1");
+
+  ASSERT_EQ(widget_set_style_str(b, "normal:icon", "icon2"), RET_OK);
+  ASSERT_STREQ(style_get_str(b->astyle, "icon", NULL), "icon2");
+
+  widget_destroy(w);
+}

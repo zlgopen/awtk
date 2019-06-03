@@ -1,7 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "widgets/button.h"
 #include "widgets/window.h"
-#include "designer_support/style_mutable.h"
+#include "base/style_mutable.h"
 
 #include <string>
 
@@ -31,7 +31,7 @@ TEST(StyleMutable, basic) {
   color_t trans = color_init(0, 0, 0, 0);
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = button_create(w, 0, 0, 100, 100);
-  style_mutable_t* s = (style_mutable_t*)style_mutable_create(b);
+  style_mutable_t* s = (style_mutable_t*)style_mutable_create(b, NULL);
   style_t* style = (style_t*)s;
   const char* state_names[] = {WIDGET_STATE_NORMAL, WIDGET_STATE_PRESSED, WIDGET_STATE_OVER,
                                WIDGET_STATE_DISABLE, NULL};
@@ -84,8 +84,9 @@ TEST(StyleMutable, basic) {
 TEST(StyleMutable, cast) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = button_create(w, 0, 0, 100, 100);
-  style_t* style_mutable = style_mutable_create(b);
+  style_t* style_mutable = style_mutable_create(b, NULL);
 
+  ASSERT_EQ(style_is_mutable(style_mutable), TRUE);
   ASSERT_EQ(style_mutable, style_mutable_cast(style_mutable));
 
   style_destroy(style_mutable);

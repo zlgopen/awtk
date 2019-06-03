@@ -1884,6 +1884,42 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params);
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h);
 
+/**
+ * @method widget_set_style_int
+ * 设置整数类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_int(widget_t* widget, const char* state_and_name, int32_t value);
+
+/**
+ * @method widget_set_style_str
+ * 设置字符串类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {const char*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const char* value);
+
+/**
+ * @method widget_set_style_color
+ * 设置颜色类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {color_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, color_t value);
+
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
@@ -1920,6 +1956,7 @@ assets_manager_t* widget_get_assets_manager(widget_t* widget);
 font_manager_t* widget_get_font_manager(widget_t* widget);
 uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
 bool_t widget_has_focused_widget_in_window(widget_t* widget);
+ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
                                  int32_t spacer, rect_t* r_text, rect_t* r_icon);
 

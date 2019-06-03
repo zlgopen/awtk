@@ -1,12 +1,12 @@
 <window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="up/down to change focus">
   <app_bar x="0" y="0" w="100%" h="30" >
-    <label x="0" y="0" w="100%" h="100%" text="Basic Controls" />
+    <label x="0" y="0" w="100%" h="100%" text="Basic Controls" style:font_size="24" style:text_color="green"/>
   </app_bar>
 
   <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
     <button name="inc_value" text="Inc" focusable="true" focus="true"/>
     <button name="close" text="Close" focusable="true"/>
-    <button name="dec_value" text="Dec" focusable="true"/>
+    <button name="dec_value" text="Dec" focusable="true" style:focused:text_color="red"/>
   </row>
 
   <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">

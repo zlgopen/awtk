@@ -142,7 +142,90 @@ resource_manager_add(theme_default);
 
 > 参考: dialog1.xml
 
-### 六、相关文档
+### 六、inline style
+
+主题数据是只读的，它的好处是速度快，占用内存少。但在一些特殊情况下，我们希望通过函数直接修改控件的style，或者在UI描述的XML文件中直接写style。我们把这类style称为inline style，具体用法如下：
+
+* 在XML UI描述文件中使用inline style。
+
+控件的属性名以『style:』开头表示这是一个inline属性：
+
+```
+style:状态:名称
+```
+
+下面表示设置正常状态的字体大小为16：
+
+```
+style:normal:font_size="16"
+```
+
+状态可以省略，如果省略，表示正常状态(normal)，下面这个和上面的功能一样：
+
+```
+style:font_size="16"
+```
+
+完整示例：
+
+```
+<label x="0" y="0" w="100%" h="100%" text="Basic Controls" style:font_size="24" style:text_color="green"/>
+<button name="dec_value" text="Dec" focusable="true" style:focused:text_color="red"/>
+
+```
+
+* 在C代码中使用inline style。
+
+在C代码中可以使用下列函数设置style：
+
+```
+/**
+ * @method widget_set_style_int
+ * 设置整数类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {int32_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_int(widget_t* widget, const char* state_and_name, int32_t value);
+
+/**
+ * @method widget_set_style_str
+ * 设置字符串类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {const char*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const char* value);
+
+/**
+ * @method widget_set_style_color
+ * 设置颜色类型的style。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
+ * @param {color_t} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, color_t value);
+```
+
+示例：
+
+```
+widget_set_style_int(b, "font_size", 24);
+```
+
+> inline style会消耗更多内存，而且不方便切换主题，一般应该尽量避免使用。
+
+
+### 七、相关文档
 
 * [AWTK中的颜色格式](color_format.md)
 
